@@ -20,7 +20,7 @@ import {
 } from 'recharts';
 import { 
   Search, Package, TrendingUp, Globe, Factory, 
-  ArrowRight, Loader2, ChevronRight, BarChart3, Building2
+  ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles
 } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
 
