@@ -197,9 +197,83 @@ async def check_ai_service_health():
     return {
         "status": "operational" if has_key else "not_configured",
         "api_key_configured": has_key,
-        "model": "gemini-3-flash-preview",
+        "model": "gemini-2.0-flash",
         "provider": "Google Gemini via Emergent LLM"
     }
+
+
+@router.get("/summary")
+async def get_ai_trade_summary(
+    lang: str = Query(default="fr", description="Language for response (fr/en)")
+):
+    """
+    Get AI-generated comprehensive African trade summary
+    
+    Used for the "Vue d'ensemble" (Overview) tab.
+    Returns aggregate statistics across all African countries.
+    
+    Args:
+        lang: Language for the response
+    
+    Returns:
+        Trade summary with top countries, sectors, and growth metrics
+    """
+    try:
+        result = await gemini_trade_service.get_trade_summary(lang=lang)
+        
+        if "error" in result and len(result) <= 2:
+            raise HTTPException(status_code=500, detail=result["error"])
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating trade summary: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/value-chains")
+async def get_ai_value_chains(
+    sector: str = Query(default=None, description="Specific sector to analyze (coffee, cocoa, cotton, petroleum, minerals, automotive)"),
+    lang: str = Query(default="fr", description="Language for response (fr/en)")
+):
+    """
+    Get AI-analyzed African value chains
+    
+    Used for the "Chaînes de Valeur" (Value Chains) tab.
+    Analyzes production, transformation, and export opportunities.
+    
+    Args:
+        sector: Optional specific sector (coffee, cocoa, cotton, petroleum, minerals, automotive)
+        lang: Language for the response
+    
+    Returns:
+        Value chains analysis with stages, top producers, and AfCFTA opportunities
+    """
+    valid_sectors = ["coffee", "cocoa", "cotton", "petroleum", "minerals", "automotive", None]
+    if sector and sector not in valid_sectors:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid sector. Must be one of: {[s for s in valid_sectors if s]}"
+        )
+    
+    try:
+        result = await gemini_trade_service.get_value_chains_analysis(
+            sector=sector,
+            lang=lang
+        )
+        
+        if "error" in result and len(result) <= 2:
+            raise HTTPException(status_code=500, detail=result["error"])
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating value chains: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def register_routes(app_router):
