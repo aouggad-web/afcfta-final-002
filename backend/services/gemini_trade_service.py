@@ -471,6 +471,172 @@ Réponds en JSON valide uniquement.
             logger.error(f"Error getting trade balance: {str(e)}")
             return {"error": str(e)}
     
+    async def get_trade_summary(
+        self,
+        lang: str = "fr"
+    ) -> Dict:
+        """
+        Generate a comprehensive African trade summary for the "Vue d'ensemble" tab
+        Returns aggregate stats across all African countries
+        """
+        if not self.api_key:
+            return {"error": "API key not configured"}
+        
+        try:
+            chat = self._get_chat("summary-overview")
+            
+            lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
+            
+            prompt = f"""
+{lang_instruction}
+
+Génère un résumé complet du commerce africain basé sur les données IMF DOTS 2024 et UNCTAD 2024.
+
+IMPORTANT: Utilise des données RÉALISTES et VÉRIFIÉES.
+- Commerce total africain: ~$1.4-1.8 trillion USD (2024)
+- Commerce intra-africain: ~15-18% du total (~$180-220 milliards)
+- 54 pays membres de la ZLECAf
+
+Structure JSON requise:
+
+{{
+  "overview": {{
+    "total_african_trade_billion_usd": 1650,
+    "intra_african_trade_billion_usd": 186,
+    "intra_african_share_percent": 11.3,
+    "afcfta_countries": 54,
+    "total_opportunities_identified": 5387,
+    "year": 2024
+  }},
+  "top_trading_countries": [
+    {{"name": "Pays", "iso3": "XXX", "trade_volume_billion": 0.0, "rank": 1}}
+  ],
+  "top_sectors": [
+    {{"name": "Secteur", "hs_chapter": "XX", "value_billion": 0.0, "opportunities_count": 0}}
+  ],
+  "growth_metrics": {{
+    "yoy_growth_percent": 0.0,
+    "projected_2030_trade_billion": 0.0,
+    "afcfta_boost_potential_percent": 0.0
+  }},
+  "regional_blocs": [
+    {{"name": "CEDEAO/SADC/EAC/etc", "members": 0, "intra_bloc_trade_billion": 0.0}}
+  ],
+  "sources": ["IMF DOTS 2024", "UNCTAD 2024", "AfCFTA Secretariat"],
+  "data_quality": "VERIFIED"
+}}
+
+Réponds en JSON valide uniquement.
+"""
+            
+            message = UserMessage(text=prompt)
+            response = await chat.send_message(message)
+            
+            result = self._parse_json_response(response)
+            result["generated_by"] = "Gemini AI"
+            result["generation_date"] = datetime.utcnow().isoformat()
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error generating trade summary: {str(e)}")
+            return {"error": str(e)}
+    
+    async def get_value_chains_analysis(
+        self,
+        sector: str = None,
+        lang: str = "fr"
+    ) -> Dict:
+        """
+        Generate value chain analysis for African sectors
+        Used for "Chaînes de Valeur" tab
+        """
+        if not self.api_key:
+            return {"error": "API key not configured"}
+        
+        try:
+            chat = self._get_chat(f"value-chains-{sector or 'all'}")
+            
+            lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
+            
+            sector_filter = f"Concentre-toi sur le secteur {sector}." if sector else "Analyse les 6 principales chaînes de valeur africaines."
+            
+            prompt = f"""
+{lang_instruction}
+
+{sector_filter}
+
+Génère une analyse des chaînes de valeur africaines basée sur FAOSTAT, UNIDO, UNCTAD et ITC TradeMap 2024.
+
+DONNÉES CRITIQUES:
+- Café: Éthiopie (496K tonnes), Ouganda (288K), Kenya (42K)
+- Cacao: Côte d'Ivoire (2.2M tonnes, 45% mondial), Ghana (800K, 16%)
+- Coton: Mali (780K), Burkina Faso (600K), Bénin (550K)
+- Pétrole: Nigeria (1.8M barils/j), Angola (1.2M), Algérie (1M)
+- Minéraux: Afrique du Sud (#1 platine, or), RD Congo (#1 cobalt)
+- Automobile: Afrique du Sud (450K véhicules), Maroc (180K)
+
+Structure JSON requise:
+
+{{
+  "value_chains": [
+    {{
+      "id": "coffee",
+      "name": {{"fr": "Café", "en": "Coffee"}},
+      "icon": "☕",
+      "hs_code": "0901",
+      "color": "#7c3aed",
+      "stages": [
+        {{
+          "name": {{"fr": "Production", "en": "Production"}},
+          "countries": ["ETH", "UGA", "KEN"],
+          "value_billion": 2.8
+        }}
+      ],
+      "top_producers": [
+        {{
+          "country": "Éthiopie",
+          "iso3": "ETH",
+          "production_tonnes": 496000,
+          "market_share_percent": 42
+        }}
+      ],
+      "intra_african_potential_musd": 450,
+      "global_exports_musd": 3200,
+      "afcfta_opportunities": [
+        "Réduction tarifaire jusqu'à 90%",
+        "Règles d'origine favorisant transformation locale"
+      ]
+    }}
+  ],
+  "transformation_opportunities": [
+    {{
+      "input_product": "Café vert",
+      "output_product": "Café torréfié",
+      "value_added_percent": 300,
+      "key_countries": ["ETH", "KEN", "TZA"]
+    }}
+  ],
+  "sources": ["FAOSTAT 2024", "UNIDO INDSTAT", "ITC TradeMap"],
+  "data_year": 2024
+}}
+
+Réponds en JSON valide uniquement.
+"""
+            
+            message = UserMessage(text=prompt)
+            response = await chat.send_message(message)
+            
+            result = self._parse_json_response(response)
+            result["generated_by"] = "Gemini AI"
+            result["generation_date"] = datetime.utcnow().isoformat()
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error generating value chains: {str(e)}")
+            return {"error": str(e)}
+    
     def _parse_json_response(self, response: str) -> Dict:
         """Parse JSON from AI response, handling markdown code blocks"""
         try:
