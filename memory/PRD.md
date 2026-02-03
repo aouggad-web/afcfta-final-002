@@ -59,13 +59,17 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 ```
 /app/backend/
 ├── routes/
-│   ├── gemini_analysis.py    # API IA Gemini (NEW)
+│   ├── gemini_analysis.py    # API IA Gemini (/api/ai/*)
+│   ├── comtrade.py           # API UN COMTRADE (NEW)
 │   ├── substitution.py       # API substitution
-│   ├── oec.py               # API statistiques OEC
-│   ├── countries.py         # API profils pays
+│   ├── oec.py                # API statistiques OEC
+│   ├── countries.py          # API profils pays
 │   └── ...
 ├── services/
-│   ├── gemini_trade_service.py      # Service Gemini (NEW)
+│   ├── gemini_trade_service.py      # Service Gemini (IMPROVED)
+│   ├── comtrade_service.py          # Service UN COMTRADE v1 (NEW)
+│   ├── wto_service.py               # Service WTO tarifs (NEW)
+│   ├── data_source_selector.py      # Sélecteur intelligent (NEW)
 │   ├── real_trade_data_service.py   # Service OEC
 │   ├── real_substitution_service.py # Service substitution
 │   └── oec_trade_service.py         # Helper OEC
@@ -76,13 +80,16 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 ```
 /app/frontend/src/components/
 ├── opportunities/
-│   ├── AIAnalysis.jsx        # Analyse IA principale (NEW)
-│   ├── TradeSankeyDiagram.jsx # Diagramme Sankey (NEW)
+│   ├── AIAnalysis.jsx          # Analyse IA principale
+│   ├── TradeSankeyDiagram.jsx  # Diagramme Sankey
+│   ├── OpportunitySummary.jsx  # Vue d'ensemble (AI-CONNECTED)
+│   ├── ValueChains.jsx         # Chaînes de valeur (AI-CONNECTED)
+│   ├── ProductAnalysisView.jsx # Par Produit (AI-CONNECTED)
 │   ├── SubstitutionAnalysis.jsx
 │   ├── OpportunitiesTab.jsx
 │   └── ...
 ├── profiles/
-│   ├── AITradeSummary.jsx    # Résumé IA dans profils (NEW)
+│   ├── AITradeSummary.jsx      # Résumé IA dans profils
 │   └── CountryProfilesTab.jsx
 └── ...
 ```
