@@ -140,6 +140,19 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 
 ## 📅 Historique des Versions
 
+### v1.5.0 (3 Février 2025)
+- **Intégration UN COMTRADE v1 API** - Données commerciales plus récentes
+- **Data Source Selector intelligent** - Sélection automatique COMTRADE > OEC > WTO
+- **Optimisation des prompts Gemini** - Meilleure qualité des données
+- **Nouvelles APIs AI** :
+  - `GET /api/ai/summary` - Vue d'ensemble commerce africain
+  - `GET /api/ai/value-chains` - Analyse des chaînes de valeur
+- **Composants Frontend connectés aux données AI réelles** :
+  - Vue d'ensemble - Statistiques commerciales africaines
+  - Chaînes de Valeur - 6 secteurs clés (café, cacao, coton, pétrole, minéraux, automobile)
+  - Par Produit - Analyse IA par code HS
+- **Badges "Données générées par IA"** sur tous les composants utilisant Gemini
+
 ### v1.4.0 (31 Janvier 2025)
 - **Intégration Gemini AI** avec Emergent LLM Key
 - **Diagramme Sankey** pour visualisation des flux
