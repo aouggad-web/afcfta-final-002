@@ -6,7 +6,7 @@ Automatically chooses the best available data source based on:
 - Data coverage (completeness)
 
 Priority order:
-1. UN COMTRADE - Most recent (monthly updates), free tier
+1. UN COMTRADE - Most recent (monthly updates), subscription required
 2. OEC - Good coverage, historical data
 3. WTO - Tariff-focused, annual updates
 """
@@ -14,7 +14,6 @@ Priority order:
 from typing import Dict, Optional, List
 from datetime import datetime
 import logging
-import asyncio
 
 from .comtrade_service import comtrade_service
 from .wto_service import wto_service
@@ -48,7 +47,7 @@ class DataSourceSelector:
             "WTO": {"available": True, "last_check": None, "error_count": 0}
         }
         
-    async def get_latest_trade_data(
+    def get_latest_trade_data(
         self,
         reporter: str,
         partner: str = None,
@@ -58,7 +57,7 @@ class DataSourceSelector:
         Get the latest available trade data from the best source
         
         Priority order:
-        1. UN COMTRADE (most recent, monthly updates, free tier)
+        1. UN COMTRADE (most recent, monthly updates, subscription required)
         2. OEC (good coverage, needs Pro for latest)
         3. WTO (tariff-focused, annual)
         
@@ -78,14 +77,14 @@ class DataSourceSelector:
             "data": None,
             "source_used": None,
             "data_period": None,
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.now().isoformat()
         }
         
         # Try UN COMTRADE first (best for latest data)
         if self._source_status["UN_COMTRADE"]["available"]:
             try:
                 current_year = datetime.now().year - 1  # Use previous year for complete data
-                comtrade_data = await self.comtrade.get_bilateral_trade(
+                comtrade_data = self.comtrade.get_bilateral_trade(
                     reporter_code=reporter,
                     partner_code=partner or "0",
                     period=str(current_year),
@@ -117,7 +116,7 @@ class DataSourceSelector:
         # Fallback to OEC if available
         if self.oec and self._source_status["OEC"]["available"]:
             try:
-                oec_data = await self._get_oec_data(reporter, partner, hs_code)
+                oec_data = self._get_oec_data(reporter, partner, hs_code)
                 
                 results["sources_checked"].append({
                     "source": "OEC",
@@ -143,7 +142,7 @@ class DataSourceSelector:
         # Fallback to WTO (mainly for tariff data)
         if self._source_status["WTO"]["available"]:
             try:
-                wto_data = await self.wto.get_tariff_data(reporter, partner, hs_code)
+                wto_data = self.wto.get_tariff_data(reporter, partner, hs_code)
                 
                 results["sources_checked"].append({
                     "source": "WTO",
@@ -169,7 +168,7 @@ class DataSourceSelector:
         
         return results
     
-    async def get_trade_with_source_info(
+    def get_trade_with_source_info(
         self,
         reporter: str,
         partner: str = None,
@@ -179,7 +178,7 @@ class DataSourceSelector:
         Get trade data with detailed source information
         Useful for transparency about data provenance
         """
-        result = await self.get_latest_trade_data(reporter, partner, hs_code)
+        result = self.get_latest_trade_data(reporter, partner, hs_code)
         
         # Add source quality information
         result["data_quality"] = {
@@ -191,62 +190,7 @@ class DataSourceSelector:
         
         return result
     
-    async def compare_data_sources(
-        self,
-        country_codes: List[str]
-    ) -> Dict:
-        """
-        Compare all data sources to determine which has the latest data
-        
-        Returns:
-            Comparison report with latest available periods
-        """
-        comparison = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "countries_checked": country_codes,
-            "sources": {}
-        }
-        
-        # Check first 5 countries to avoid rate limits
-        for country in country_codes[:5]:
-            # Check COMTRADE
-            try:
-                comtrade_period = await self.comtrade.get_latest_available_period(country)
-                if "UN_COMTRADE" not in comparison["sources"]:
-                    comparison["sources"]["UN_COMTRADE"] = []
-                comparison["sources"]["UN_COMTRADE"].append({
-                    "country": country,
-                    "latest_period": comtrade_period
-                })
-            except Exception as e:
-                logger.error(f"Error checking COMTRADE for {country}: {str(e)}")
-            
-            # Check WTO
-            try:
-                wto_period = await self.wto.get_latest_available_year(country)
-                if "WTO" not in comparison["sources"]:
-                    comparison["sources"]["WTO"] = []
-                comparison["sources"]["WTO"].append({
-                    "country": country,
-                    "latest_period": wto_period
-                })
-            except Exception as e:
-                logger.error(f"Error checking WTO for {country}: {str(e)}")
-        
-        # Determine overall winner
-        avg_periods = {}
-        for source, data in comparison["sources"].items():
-            periods = [int(d["latest_period"]) for d in data if d["latest_period"]]
-            if periods:
-                avg_periods[source] = sum(periods) / len(periods)
-        
-        if avg_periods:
-            comparison["recommended_source"] = max(avg_periods, key=avg_periods.get)
-            comparison["average_latest_year"] = avg_periods
-        
-        return comparison
-    
-    async def get_best_source_for_country(self, country_code: str) -> str:
+    def get_best_source_for_country(self, country_code: str) -> str:
         """
         Determine the best data source for a specific country
         
@@ -261,17 +205,9 @@ class DataSourceSelector:
         
         # Check COMTRADE
         try:
-            period = await self.comtrade.get_latest_available_period(country_code)
+            period = self.comtrade.get_latest_available_period(country_code)
             if period:
                 sources_with_data.append(("UN_COMTRADE", int(period)))
-        except Exception:
-            pass
-        
-        # Check WTO
-        try:
-            period = await self.wto.get_latest_available_year(country_code)
-            if period:
-                sources_with_data.append(("WTO", int(period)))
         except Exception:
             pass
         
@@ -287,10 +223,11 @@ class DataSourceSelector:
         return {
             "sources": self._source_status,
             "recommended": self._get_recommended_source(),
-            "timestamp": datetime.utcnow().isoformat()
+            "comtrade_status": self.comtrade.get_service_status(),
+            "timestamp": datetime.now().isoformat()
         }
     
-    async def _get_oec_data(self, reporter: str, partner: str, hs_code: str) -> Optional[Dict]:
+    def _get_oec_data(self, reporter: str, partner: str, hs_code: str) -> Optional[Dict]:
         """Helper to get OEC data with proper format"""
         if not self.oec:
             return None
@@ -298,7 +235,7 @@ class DataSourceSelector:
         # OEC uses different ID format
         try:
             # Get exports for the country
-            exports = await self.oec.get_country_exports(reporter, 2022, limit=50)
+            exports = self.oec.get_country_exports(reporter, 2022, limit=50)
             if exports:
                 return {
                     "type": "exports",
@@ -313,7 +250,7 @@ class DataSourceSelector:
     def _update_source_status(self, source: str, success: bool):
         """Update source availability status"""
         if source in self._source_status:
-            self._source_status[source]["last_check"] = datetime.utcnow().isoformat()
+            self._source_status[source]["last_check"] = datetime.now().isoformat()
             if success:
                 self._source_status[source]["error_count"] = 0
             else:
