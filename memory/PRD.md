@@ -101,19 +101,28 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 | Service | Utilisation | Clé |
 |---------|-------------|-----|
 | **Google Gemini** | Analyse IA intelligente | Emergent LLM Key |
-| **API OEC** | Données commerciales réelles | Gratuit |
+| **UN COMTRADE v1** | Données commerciales récentes | Public (limité) ou clé API |
+| **API OEC** | Données commerciales historiques | Gratuit |
+| **WTO API** | Données tarifaires | Public |
 | **MongoDB** | Base de données | Local |
 
 ---
 
 ## 📊 Endpoints API Principaux
 
-### AI Analysis (NEW)
+### AI Analysis
 - `GET /api/ai/health` - Statut du service Gemini
+- `GET /api/ai/summary` - **Vue d'ensemble commerce africain (NEW)**
+- `GET /api/ai/value-chains` - **Analyse chaînes de valeur (NEW)**
 - `GET /api/ai/opportunities/{country}?mode=export|import|industrial` - Opportunités IA
 - `GET /api/ai/profile/{country}` - Profil économique IA
 - `GET /api/ai/balance/{country}` - Balance commerciale historique
 - `GET /api/ai/product/{hs_code}` - Analyse produit par code HS
+
+### COMTRADE (NEW)
+- `GET /api/comtrade/status` - Statut service COMTRADE
+- `GET /api/comtrade/bilateral/{reporter}` - Données commerciales bilatérales
+- `GET /api/comtrade/latest-period/{country}` - Dernière période disponible
 
 ### Substitution
 - `GET /api/substitution/opportunities/import/{country_iso3}` - Opportunités import
