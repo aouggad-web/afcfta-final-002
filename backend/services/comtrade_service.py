@@ -1,336 +1,292 @@
 """
-UN COMTRADE API Service
-Free tier: 500 calls/day, 100K records per call
-API Documentation: https://comtradeplus.un.org/
-Provides more recent trade data than OEC (monthly updates vs annual)
+UN COMTRADE API Service (v1 API)
+API Documentation: https://uncomtrade.org/docs/
+OpenAPI Spec: https://comtradeapi.un.org/data/v1/openapi.json
+Subscription required - Learn more at https://uncomtrade.org/docs/subscriptions/
 """
 
+import requests
 import os
-import logging
 from typing import Dict, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import time
-import httpx
+import logging
 
 logger = logging.getLogger(__name__)
 
-
 class COMTRADEService:
     """
-    UN COMTRADE API Service
-    Free tier: 500 calls/day, 100K records per call
-    More recent data than OEC (monthly updates)
+    UN COMTRADE v1 API Service with automatic fallback to secondary key
+    Requires subscription - see https://uncomtrade.org/docs/subscriptions/
     """
     
-    BASE_URL = "https://comtradeapi.un.org/public/v1/preview"
+    BASE_URL = "https://comtradeapi.un.org/data/v1"
     
     def __init__(self):
-        self.api_key = os.getenv("COMTRADE_API_KEY", "")
+        self.primary_api_key = os.getenv("COMTRADE_API_KEY", "")
+        self.secondary_api_key = os.getenv("COMTRADE_API_KEY_SECONDARY", "")
+        self.current_key = "primary"
         self.calls_today = 0
         self.max_calls_per_day = 500
-        self._cache = {}
-        self._cache_ttl = 3600  # 1 hour cache
         
-    def _get_cache_key(self, *args) -> str:
-        """Generate cache key from arguments"""
-        return "-".join(str(a) for a in args)
+        if not self.primary_api_key and not self.secondary_api_key:
+            logger.warning("⚠️ No COMTRADE API keys configured")
+        elif self.primary_api_key and self.secondary_api_key:
+            logger.info("✅ COMTRADE: Primary and secondary keys loaded")
+        elif self.primary_api_key:
+            logger.info("✅ COMTRADE: Primary key loaded (no secondary)")
+        else:
+            logger.info("✅ COMTRADE: Secondary key loaded (no primary)")
     
-    def _is_cache_valid(self, key: str) -> bool:
-        """Check if cache entry is still valid"""
-        if key not in self._cache:
-            return False
-        entry = self._cache[key]
-        return (datetime.utcnow() - entry["timestamp"]).seconds < self._cache_ttl
+    def _get_active_key(self) -> str:
+        """Get the currently active API key"""
+        if self.current_key == "primary" and self.primary_api_key:
+            return self.primary_api_key
+        elif self.secondary_api_key:
+            return self.secondary_api_key
+        return ""
     
-    async def get_bilateral_trade(
+    def _switch_to_secondary(self):
+        """Switch to secondary API key when primary fails or reaches limit"""
+        if self.secondary_api_key and self.current_key == "primary":
+            logger.info("🔄 Switching from primary to secondary COMTRADE API key")
+            self.current_key = "secondary"
+            self.calls_today = 0  # Reset counter for new key
+            return True
+        return False
+        
+    def get_bilateral_trade(
         self,
         reporter_code: str,
-        partner_code: str = "0",  # 0 = World
-        period: str = None,
-        hs_code: Optional[str] = None
+        partner_code: str,
+        period: str,
+        hs_code: Optional[str] = None,
+        type_code: str = "C",
+        freq_code: str = "A",
+        cl_code: str = "HS",
+        retry_with_secondary: bool = True
     ) -> Optional[Dict]:
         """
-        Get bilateral trade data between two countries
+        Get bilateral trade data between two countries using v1 API
         
         Args:
-            reporter_code: ISO3 country code or M49 numeric code (reporter)
-            partner_code: ISO3 country code or M49 numeric code (partner), "0" for World
-            period: Year (YYYY) format
-            hs_code: Optional HS code for specific product (AG2, AG4, AG6)
+            reporter_code: M49 country code (reporter)
+            partner_code: M49 country code (partner) or 'all' for all partners
+            period: Year (YYYY) or Month (YYYYMM) format
+            hs_code: Optional HS commodity code
+            type_code: Type of trade - 'C' for commodities, 'S' for services (default: 'C')
+            freq_code: Frequency - 'A' for annual, 'M' for monthly (default: 'A')
+            cl_code: Classification - 'HS', 'SITC', etc. (default: 'HS')
+            retry_with_secondary: Whether to retry with secondary key on failure
             
         Returns:
             Trade data dictionary or None if error
         """
         if self.calls_today >= self.max_calls_per_day:
-            logger.warning("COMTRADE API daily limit reached")
-            return None
+            if retry_with_secondary and self._switch_to_secondary():
+                logger.info("🔄 Retrying with secondary key after reaching daily limit")
+                return self.get_bilateral_trade(
+                    reporter_code, partner_code, period, hs_code, 
+                    type_code, freq_code, cl_code,
+                    retry_with_secondary=False
+                )
+            raise Exception("COMTRADE API daily limit reached on all keys")
         
-        # Default to current year if not specified
-        if not period:
-            period = str(datetime.now().year - 1)  # Use previous year for complete data
-        
-        # Build cache key
-        cache_key = self._get_cache_key("bilateral", reporter_code, partner_code, period, hs_code or "all")
-        if self._is_cache_valid(cache_key):
-            logger.debug(f"Cache hit for {cache_key}")
-            return self._cache[cache_key]["data"]
-        
-        # Build API URL - using preview endpoint (no auth needed)
-        url = f"{self.BASE_URL}/tariffline/C/A/{reporter_code}/{period}"
+        # Build v1 API URL: /get/{typeCode}/{freqCode}/{clCode}
+        url = f"{self.BASE_URL}/get/{type_code}/{freq_code}/{cl_code}"
         
         params = {
+            "reporterCode": reporter_code,
             "partnerCode": partner_code,
-            "motCode": "0",  # All modes of transport
+            "period": period,
         }
         
         if hs_code:
             params["cmdCode"] = hs_code
-            
+        
+        # Add API key using header (v1 API uses header-based auth)
+        api_key = self._get_active_key()
         headers = {}
-        if self.api_key:
-            headers["Ocp-Apim-Subscription-Key"] = self.api_key
+        if api_key:
+            headers["Ocp-Apim-Subscription-Key"] = api_key
             
         try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                response = await client.get(url, params=params, headers=headers)
-                self.calls_today += 1
-                
-                if response.status_code == 200:
-                    data = response.json()
-                    
-                    result = {
-                        "source": "UN_COMTRADE",
-                        "data": data.get("data", []),
-                        "count": data.get("count", 0),
-                        "metadata": {
-                            "reporter": reporter_code,
-                            "partner": partner_code,
-                            "period": period,
-                            "hs_code": hs_code
-                        },
-                        "timestamp": datetime.utcnow().isoformat(),
-                        "latest_period": period
-                    }
-                    
-                    # Cache the result
-                    self._cache[cache_key] = {
-                        "data": result,
-                        "timestamp": datetime.utcnow()
-                    }
-                    
-                    return result
-                    
-                elif response.status_code == 404:
-                    logger.info(f"No COMTRADE data for {reporter_code}/{period}")
-                    return None
-                else:
-                    logger.error(f"COMTRADE API error: {response.status_code} - {response.text[:200]}")
-                    return None
-                    
+            response = requests.get(url, params=params, headers=headers, timeout=30)
+            response.raise_for_status()
+            self.calls_today += 1
+            
+            data = response.json()
+            return {
+                "source": "UN_COMTRADE",
+                "data": data.get("data", []),
+                "metadata": data.get("metadata", {}),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "latest_period": period,
+                "api_key_used": self.current_key
+            }
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 429:  # Rate limit exceeded
+                logger.warning(f"⚠️ Rate limit hit on {self.current_key} key")
+                if retry_with_secondary and self._switch_to_secondary():
+                    logger.info("🔄 Retrying with secondary key after rate limit")
+                    return self.get_bilateral_trade(
+                        reporter_code, partner_code, period, hs_code,
+                        type_code, freq_code, cl_code,
+                        retry_with_secondary=False
+                    )
+            elif e.response.status_code == 401:  # Unauthorized
+                logger.error(f"❌ Authentication failed with {self.current_key} key")
+                if retry_with_secondary and self._switch_to_secondary():
+                    logger.info("🔄 Retrying with secondary key after auth failure")
+                    return self.get_bilateral_trade(
+                        reporter_code, partner_code, period, hs_code,
+                        type_code, freq_code, cl_code,
+                        retry_with_secondary=False
+                    )
+            
+            logger.error(f"COMTRADE API HTTP error: {e.response.status_code}")
+            return None
         except Exception as e:
             logger.error(f"COMTRADE API error: {str(e)}")
             return None
     
-    async def get_trade_summary(
+    def get_african_trade_data(
         self,
-        reporter_code: str,
-        period: str = None
-    ) -> Optional[Dict]:
-        """
-        Get trade summary (total exports/imports) for a country
-        
-        Args:
-            reporter_code: ISO3 or M49 country code
-            period: Year (YYYY)
-            
-        Returns:
-            Summary with total exports and imports
-        """
-        if not period:
-            period = str(datetime.now().year - 1)
-            
-        cache_key = self._get_cache_key("summary", reporter_code, period)
-        if self._is_cache_valid(cache_key):
-            return self._cache[cache_key]["data"]
-        
-        # Get exports (flowCode=X)
-        exports_url = f"{self.BASE_URL}/tariffline/C/A/{reporter_code}/{period}"
-        # Get imports (flowCode=M)
-        imports_url = f"{self.BASE_URL}/tariffline/C/A/{reporter_code}/{period}"
-        
-        try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                # Fetch both in parallel
-                exports_task = client.get(exports_url, params={"flowCode": "X", "partnerCode": "0"})
-                imports_task = client.get(imports_url, params={"flowCode": "M", "partnerCode": "0"})
-                
-                # Note: We can't truly parallelize with httpx in this simple way
-                # Just fetch sequentially for now
-                exports_resp = await client.get(exports_url, params={"flowCode": "X", "partnerCode": "0"})
-                self.calls_today += 1
-                
-                imports_resp = await client.get(imports_url, params={"flowCode": "M", "partnerCode": "0"})
-                self.calls_today += 1
-                
-                exports_total = 0
-                imports_total = 0
-                
-                if exports_resp.status_code == 200:
-                    exports_data = exports_resp.json().get("data", [])
-                    exports_total = sum(r.get("primaryValue", 0) for r in exports_data)
-                
-                if imports_resp.status_code == 200:
-                    imports_data = imports_resp.json().get("data", [])
-                    imports_total = sum(r.get("primaryValue", 0) for r in imports_data)
-                
-                result = {
-                    "source": "UN_COMTRADE",
-                    "reporter": reporter_code,
-                    "period": period,
-                    "total_exports_usd": exports_total,
-                    "total_imports_usd": imports_total,
-                    "trade_balance_usd": exports_total - imports_total,
-                    "timestamp": datetime.utcnow().isoformat()
-                }
-                
-                self._cache[cache_key] = {
-                    "data": result,
-                    "timestamp": datetime.utcnow()
-                }
-                
-                return result
-                
-        except Exception as e:
-            logger.error(f"COMTRADE summary error: {str(e)}")
-            return None
-    
-    async def get_african_trade_data(
-        self,
-        african_country_codes: List[str],
-        period: str = None
+        african_countries: List[str],
+        period: str
     ) -> List[Dict]:
         """
-        Get trade data for multiple African countries
+        Get trade data for all African countries
         
         Args:
-            african_country_codes: List of ISO3 country codes
-            period: Year (YYYY)
+            african_countries: List of M49 country codes
+            period: Year (YYYY) or Month (YYYYMM)
             
         Returns:
-            List of trade data per country
+            List of trade data
         """
-        if not period:
-            period = str(datetime.now().year - 1)
-            
         results = []
         
-        for country_code in african_country_codes:
-            if self.calls_today >= self.max_calls_per_day:
-                logger.warning(f"API limit reached after {len(results)} countries")
-                break
+        for reporter in african_countries:
+            try:
+                data = self.get_bilateral_trade(
+                    reporter_code=reporter,
+                    partner_code="all",
+                    period=period
+                )
                 
-            data = await self.get_bilateral_trade(
-                reporter_code=country_code,
-                partner_code="0",  # World
-                period=period
-            )
-            
-            if data:
-                results.append({
-                    "country": country_code,
-                    **data
-                })
+                if data:
+                    results.append(data)
+                    logger.info(f"✅ Retrieved data for {reporter}")
                 
-            # Rate limiting
-            await self._rate_limit_delay()
+                # Rate limiting - be nice to the API
+                time.sleep(0.2)
+                
+            except Exception as e:
+                if "daily limit reached" in str(e).lower():
+                    logger.warning(f"⚠️ API limit reached after {len(results)} countries")
+                    break
+                logger.error(f"❌ Error fetching data for {reporter}: {e}")
+                continue
             
+        logger.info(f"📊 Retrieved data for {len(results)}/{len(african_countries)} countries")
         return results
     
-    async def get_product_trade(
-        self,
-        hs_code: str,
-        period: str = None,
-        flow: str = "X"  # X=exports, M=imports
-    ) -> List[Dict]:
-        """
-        Get trade data for a specific product across African countries
-        
-        Args:
-            hs_code: HS code (2, 4, or 6 digits)
-            period: Year (YYYY)
-            flow: "X" for exports, "M" for imports
-            
-        Returns:
-            List of country trade data for the product
-        """
-        if not period:
-            period = str(datetime.now().year - 1)
-        
-        # Major African trading countries to sample
-        major_traders = ["ZAF", "EGY", "NGA", "MAR", "DZA", "KEN", "ETH", "GHA", "TUN", "CIV"]
-        
-        results = []
-        
-        for country in major_traders:
-            if self.calls_today >= self.max_calls_per_day:
-                break
-                
-            data = await self.get_bilateral_trade(
-                reporter_code=country,
-                partner_code="0",
-                period=period,
-                hs_code=hs_code
-            )
-            
-            if data and data.get("data"):
-                # Calculate total for this product
-                trade_value = sum(r.get("primaryValue", 0) for r in data["data"] if r.get("flowCode") == flow)
-                
-                if trade_value > 0:
-                    results.append({
-                        "country_iso3": country,
-                        "hs_code": hs_code,
-                        "trade_value_usd": trade_value,
-                        "flow": "export" if flow == "X" else "import",
-                        "period": period,
-                        "source": "UN_COMTRADE"
-                    })
-            
-            await self._rate_limit_delay()
-        
-        # Sort by trade value
-        results.sort(key=lambda x: x["trade_value_usd"], reverse=True)
-        
-        return results
-    
-    async def get_latest_available_period(self, country_code: str) -> Optional[str]:
+    def get_latest_available_period(self, country_code: str) -> Optional[str]:
         """
         Check the latest available data period for a country
         
         Returns:
-            Latest period (YYYY) or None
+            Latest period (YYYY or YYYYMM) or None
         """
         current_year = datetime.now().year
         
         # Try current year first, then previous years
         for year in range(current_year, current_year - 3, -1):
-            data = await self.get_bilateral_trade(
+            test_data = self.get_bilateral_trade(
                 reporter_code=country_code,
-                partner_code="0",
+                partner_code="0",  # World (v1 API uses '0' for world)
                 period=str(year)
             )
             
-            if data and data.get("data"):
+            if test_data and test_data.get("data"):
+                logger.info(f"✅ Latest data for {country_code}: {year}")
                 return str(year)
-                
-            await self._rate_limit_delay()
-                
+        
+        logger.warning(f"⚠️ No recent data found for {country_code}")
         return None
     
-    async def _rate_limit_delay(self):
-        """Add delay between requests to respect rate limits"""
-        import asyncio
-        await asyncio.sleep(0.2)  # 200ms between requests
+    def get_service_status(self) -> Dict:
+        """
+        Get current service status
+        
+        Returns:
+            Dict with service configuration and status
+        """
+        return {
+            "primary_key_configured": bool(self.primary_api_key),
+            "secondary_key_configured": bool(self.secondary_api_key),
+            "current_key": self.current_key,
+            "calls_today": self.calls_today,
+            "calls_remaining": self.max_calls_per_day - self.calls_today,
+            "can_switch_to_secondary": bool(self.secondary_api_key) and self.current_key == "primary"
+        }
+    
+    def get_metadata(
+        self,
+        type_code: str = "C",
+        freq_code: str = "A",
+        cl_code: str = "HS"
+    ) -> Optional[Dict]:
+        """
+        Get metadata for specified trade classification
+        
+        Args:
+            type_code: Type of trade - 'C' for commodities, 'S' for services
+            freq_code: Frequency - 'A' for annual, 'M' for monthly
+            cl_code: Classification - 'HS', 'SITC', 'BEC', 'EBOPS'
+            
+        Returns:
+            Metadata dictionary or None if error
+        """
+        url = f"{self.BASE_URL}/getMetadata/{type_code}/{freq_code}/{cl_code}"
+        
+        api_key = self._get_active_key()
+        headers = {}
+        if api_key:
+            headers["Ocp-Apim-Subscription-Key"] = api_key
+        
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
+            self.calls_today += 1
+            return response.json()
+        except Exception as e:
+            logger.error(f"Error fetching metadata: {str(e)}")
+            return None
+    
+    def get_live_update(self) -> Optional[Dict]:
+        """
+        Get live update information from the API
+        
+        Returns:
+            Live update info or None if error
+        """
+        url = f"{self.BASE_URL}/getLiveUpdate"
+        
+        api_key = self._get_active_key()
+        headers = {}
+        if api_key:
+            headers["Ocp-Apim-Subscription-Key"] = api_key
+        
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
+            self.calls_today += 1
+            return response.json()
+        except Exception as e:
+            logger.error(f"Error fetching live update: {str(e)}")
+            return None
 
 
 # Global service instance
