@@ -42,20 +42,40 @@ const AIOpportunityCard = ({ opportunity, mode, language, index }) => {
   const isExport = mode === 'export';
   const isIndustrial = mode === 'industrial';
   
+  // Handle different response formats - API returns nested product object
+  const product = opportunity.product || {};
+  
   const productName = isIndustrial 
-    ? opportunity.output_product 
-    : opportunity.product_name;
+    ? (product.name || opportunity.output_product || opportunity.product_name)
+    : (product.name || opportunity.product_name);
+  
   const hsCode = isIndustrial 
-    ? opportunity.output_hs_code 
-    : opportunity.hs_code;
+    ? (product.hs_code || opportunity.output_hs_code || opportunity.hs_code)
+    : (product.hs_code || opportunity.hs_code);
+  
   const partner = isExport 
-    ? opportunity.potential_partner 
-    : opportunity.potential_supplier;
-  const value = isExport 
-    ? opportunity.potential_value_musd 
-    : opportunity.substitution_potential_musd || opportunity.import_value_musd;
+    ? (opportunity.potential_partner || opportunity.target_markets?.[0])
+    : (opportunity.potential_supplier || opportunity.target_markets?.[0]);
+  
+  // Value calculation - handle all possible field names
+  let value = 0;
+  if (mode === 'export') {
+    value = opportunity.potential_value_musd || opportunity.current_value_musd || 0;
+  } else if (mode === 'import') {
+    value = opportunity.substitution_potential_musd || opportunity.import_value_musd || 0;
+  } else if (mode === 'industrial') {
+    value = opportunity.potential_value_musd || 0;
+  }
   
   const isEstimation = opportunity.is_estimation;
+  
+  // Industrial mode specific fields
+  const industrialInput = opportunity.industrial_input || {};
+  const inputProduct = industrialInput.name || opportunity.input_product || '';
+  const inputHsCode = industrialInput.hs_code || opportunity.input_hs_code || '';
+  const inputVolume = industrialInput.import_volume || opportunity.input_import_volume || '';
+  const transformationLogic = opportunity.transformation_logic || opportunity.rationale || '';
+  const targetMarkets = opportunity.target_markets || [];
 
   return (
     <Card className={`bg-white border-slate-200 shadow hover:shadow-lg transition-all ${
@@ -87,7 +107,12 @@ const AIOpportunityCard = ({ opportunity, mode, language, index }) => {
         <div className="flex items-center gap-2 text-sm text-slate-600 mb-4">
           <Globe className="h-4 w-4 text-emerald-500" />
           <span>
-            {isExport ? 'Vers' : 'De'}: <strong className="text-slate-800">{partner}</strong>
+            {isExport ? 'Vers' : isIndustrial ? 'Marchés cibles' : 'De'}: 
+            <strong className="text-slate-800 ml-1">
+              {isIndustrial && targetMarkets.length > 0 
+                ? targetMarkets.slice(0, 3).join(', ')
+                : partner || 'Non spécifié'}
+            </strong>
           </span>
         </div>
 
@@ -95,43 +120,53 @@ const AIOpportunityCard = ({ opportunity, mode, language, index }) => {
         <div className="bg-emerald-50 rounded-lg p-3 mb-4">
           <div className="flex items-center justify-between">
             <span className="text-sm text-emerald-600 font-medium">
-              {isExport ? 'Potentiel' : 'Valeur substituable'}
+              {isExport ? 'Potentiel' : isIndustrial ? 'Valeur potentielle' : 'Valeur substituable'}
             </span>
             <span className="text-xl font-black text-emerald-700">
               {formatValue(value)}
             </span>
           </div>
-          {opportunity.tariff_advantage && (
+          {(opportunity.tariff_reduction || opportunity.tariff_advantage) && (
             <div className="mt-2 pt-2 border-t border-emerald-200 flex items-center justify-between">
               <span className="text-xs text-emerald-600">Avantage tarifaire ZLECAf</span>
               <Badge className="bg-emerald-600 text-white">
-                -{opportunity.tariff_advantage}%
+                -{opportunity.tariff_reduction || opportunity.tariff_advantage}%
               </Badge>
             </div>
           )}
         </div>
 
         {/* Industrial mode extras */}
-        {isIndustrial && (
+        {isIndustrial && inputProduct && (
           <div className="bg-blue-50 rounded-lg p-3 mb-4">
             <p className="text-xs font-bold text-blue-600 uppercase mb-2">
               Chaîne de valeur
             </p>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-slate-600">{opportunity.input_product}</span>
-              <ArrowRight className="h-4 w-4 text-blue-400" />
-              <span className="font-bold text-slate-800">{opportunity.output_product}</span>
+              <div className="flex flex-col">
+                <span className="text-slate-600">{inputProduct}</span>
+                {inputHsCode && (
+                  <span className="text-[10px] text-slate-400">HS {inputHsCode}</span>
+                )}
+              </div>
+              <ArrowRight className="h-4 w-4 text-blue-400 flex-shrink-0" />
+              <div className="flex flex-col">
+                <span className="font-bold text-slate-800">{productName}</span>
+                {hsCode && (
+                  <span className="text-[10px] text-slate-400">HS {hsCode}</span>
+                )}
+              </div>
             </div>
-            {opportunity.input_import_volume && (
-              <p className="text-xs text-slate-500 mt-1">
-                Import: {opportunity.input_import_volume}
+            {inputVolume && (
+              <p className="text-xs text-slate-500 mt-2">
+                Volume importé: {inputVolume}
               </p>
             )}
           </div>
         )}
 
         {/* Rationale (expandable) */}
-        {opportunity.rationale && (
+        {(opportunity.rationale || transformationLogic) && (
           <>
             <Button
               variant="ghost"
@@ -139,17 +174,24 @@ const AIOpportunityCard = ({ opportunity, mode, language, index }) => {
               onClick={() => setExpanded(!expanded)}
               className="w-full justify-between text-slate-500 hover:text-slate-700"
             >
-              <span className="text-xs font-bold uppercase">Justification</span>
+              <span className="text-xs font-bold uppercase">
+                {isIndustrial ? 'Logique de transformation' : 'Justification'}
+              </span>
               {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </Button>
             {expanded && (
               <div className="mt-2 p-3 bg-slate-50 rounded-lg">
                 <p className="text-sm text-slate-700 leading-relaxed">
-                  {opportunity.rationale}
+                  {isIndustrial ? transformationLogic : opportunity.rationale}
                 </p>
-                {opportunity.data_year && (
+                {(opportunity.data_year || opportunity.year) && (
                   <p className="text-xs text-slate-400 mt-2 italic">
-                    Données: {opportunity.data_year}
+                    Données: {opportunity.data_year || opportunity.year}
+                  </p>
+                )}
+                {opportunity.data_source && (
+                  <p className="text-xs text-slate-400 italic">
+                    Source: {opportunity.data_source}
                   </p>
                 )}
               </div>
