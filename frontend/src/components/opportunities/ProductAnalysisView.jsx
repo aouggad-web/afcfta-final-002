@@ -553,9 +553,17 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           {/* Product Header */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8">
             <div className="text-center">
-              <Badge className="bg-white/20 text-white mb-4">
-                Rapport d'Intelligence Marché
-              </Badge>
+              <div className="flex justify-center gap-2 mb-4">
+                <Badge className="bg-white/20 text-white">
+                  Rapport d'Intelligence Marché
+                </Badge>
+                {productData.isAiGenerated && (
+                  <Badge className="bg-purple-500/30 text-white border-purple-400">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    Données IA
+                  </Badge>
+                )}
+              </div>
               
               {/* HS Navigation Breadcrumb */}
               <nav className="flex items-center justify-center gap-2 mb-4 text-xs font-bold uppercase tracking-wider text-white/70">
