@@ -2,15 +2,17 @@
 Gemini Trade Analysis Service
 Uses Google Gemini via Emergent LLM Key for intelligent trade analysis
 IMPROVED: Based on AI Studio app prompts for better data quality
+NOW WITH REDIS CACHING for optimized performance
 """
 import os
 import json
 import logging
 from typing import Dict, List, Optional, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 from emergentintegrations.llm.chat import LlmChat, UserMessage
+from services.redis_cache_service import cache_service, get_data_freshness
 
 load_dotenv()
 
