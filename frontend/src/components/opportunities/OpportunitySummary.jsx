@@ -88,6 +88,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [isAiGenerated, setIsAiGenerated] = useState(false);
+  const [dataFreshness, setDataFreshness] = useState(null);
 
   // Fetch trade summary data from AI API
   useEffect(() => {
@@ -105,6 +106,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
           // Use AI-generated data
           const aiData = aiSummary.data;
           setIsAiGenerated(true);
+          setDataFreshness(aiData.data_freshness || null);
           
           setData({
             totalOpportunities: aiData.overview?.total_opportunities_identified || 5387,
