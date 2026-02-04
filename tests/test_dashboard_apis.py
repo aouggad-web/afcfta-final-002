@@ -6,7 +6,7 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://trade-pulse-164.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://africomdata.preview.emergentagent.com')
 
 class TestHealthEndpoints:
     """Health check endpoint tests"""

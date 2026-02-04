@@ -9,7 +9,7 @@ import sys
 from datetime import datetime
 
 # Configuration de l'API
-BASE_URL = "https://trade-pulse-164.preview.emergentagent.com/api"
+BASE_URL = "https://africomdata.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 def test_faostat_unido_endpoints():
