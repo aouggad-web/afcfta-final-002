@@ -22,19 +22,29 @@ async def get_available_countries(
 ):
     """
     Get list of available African countries for analysis
+    Countries without trade data are marked with has_trade_data=False
     """
     countries = []
     for iso3, info in AFRICAN_COUNTRIES.items():
-        countries.append({
+        country_data = {
             "iso3": iso3,
             "name": info.get(f"name_{lang}", info.get("name_en", iso3)),
-            "oec_id": info.get("oec", "")
-        })
+            "oec_id": info.get("oec", ""),
+            "has_trade_data": info.get("has_trade_data", True)
+        }
+        
+        # Add note for countries without data
+        if not info.get("has_trade_data", True):
+            country_data["note"] = info.get("note", "Données non disponibles")
+        
+        countries.append(country_data)
     
     countries.sort(key=lambda x: x["name"])
     
     return {
         "total": len(countries),
+        "with_trade_data": len([c for c in countries if c["has_trade_data"]]),
+        "without_trade_data": len([c for c in countries if not c["has_trade_data"]]),
         "countries": countries
     }
 
