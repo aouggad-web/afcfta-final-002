@@ -292,12 +292,15 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
                   <SelectValue placeholder={txt.selectCountry} />
                 </SelectTrigger>
                 <SelectContent>
-                  {countries.filter(c => c.has_import_data || c.has_production_data).map((country) => (
+                  {countries.map((country) => (
                     <SelectItem key={country.iso3} value={country.iso3}>
                       <span className="flex items-center gap-2">
                         {country.name}
-                        {country.has_import_data && country.has_production_data && (
+                        {country.has_trade_data && (
                           <Sparkles className="h-3 w-3 text-amber-500" />
+                        )}
+                        {!country.has_trade_data && (
+                          <span className="text-xs text-slate-400">(pas de données)</span>
                         )}
                       </span>
                     </SelectItem>
