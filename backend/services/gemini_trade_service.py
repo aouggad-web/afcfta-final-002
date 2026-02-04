@@ -380,7 +380,12 @@ Réponds en JSON valide uniquement.
             result = self._parse_json_response(response)
             result["country"] = country_name
             result["generated_by"] = "Gemini AI"
-            result["generation_date"] = datetime.utcnow().isoformat()
+            result["generated_at"] = datetime.now(timezone.utc).isoformat()
+            result["data_freshness"] = get_data_freshness(None)
+            
+            # Cache with longer TTL for profiles
+            cache_service.set("gemini_profile", cache_params, result, "gemini_profile")
+            logger.info(f"Cached profile for {country_name}")
             
             return result
             
