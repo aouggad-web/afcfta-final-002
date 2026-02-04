@@ -194,7 +194,27 @@ Pour chaque opportunité, fournis EXACTEMENT ce format JSON:
   "is_estimation": true
 }}
 
-Réponds avec un JSON valide: {{"opportunities": [...], "sources": ["..."], "analysis_date": "..."}}
+IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats attendus à 3 et 5 ans:
+{{
+  "opportunities": [...],
+  "expected_results": {{
+    "scenario_3_years": {{
+      "export_growth_percent": 0.0,
+      "new_jobs_created": 0,
+      "industrial_value_added_musd": 0.0,
+      "key_milestones": ["Milestone 1", "Milestone 2"]
+    }},
+    "scenario_5_years": {{
+      "export_growth_percent": 0.0,
+      "new_jobs_created": 0,
+      "industrial_value_added_musd": 0.0,
+      "afcfta_market_share_percent": 0.0
+    }}
+  }},
+  "sources": ["..."],
+  "analysis_date": "..."
+}}
+"""
 """
             
             message = UserMessage(text=prompt)
