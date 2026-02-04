@@ -7,10 +7,49 @@ from typing import Optional
 import logging
 
 from services.gemini_trade_service import gemini_trade_service
+from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/ai", tags=["AI Trade Analysis"])
+
+# Countries without trade data (occupied territories, etc.)
+NO_DATA_COUNTRIES = {
+    "ESH": "RASD (Sahara Occidental)",
+    "RASD": "RASD (Sahara Occidental)",
+    "Sahara": "RASD (Sahara Occidental)",
+    "Western Sahara": "RASD (Sahara Occidental)",
+    "Sahara Occidental": "RASD (Sahara Occidental)"
+}
+
+
+def check_country_has_data(country_name: str) -> tuple:
+    """
+    Check if a country has trade data available
+    Returns (has_data, country_info) tuple
+    """
+    name_lower = country_name.lower().strip()
+    
+    # Check direct match in NO_DATA_COUNTRIES
+    for key, value in NO_DATA_COUNTRIES.items():
+        if key.lower() in name_lower or name_lower in key.lower():
+            return False, {
+                "name": value,
+                "iso3": "ESH",
+                "reason": "Territoire occupé - aucune statistique commerciale disponible dans les bases de données internationales (OEC, COMTRADE, WITS)"
+            }
+    
+    # Check by ISO3
+    for iso3, info in AFRICAN_COUNTRIES.items():
+        if info.get("name_fr", "").lower() == name_lower or info.get("name_en", "").lower() == name_lower:
+            if not info.get("has_trade_data", True):
+                return False, {
+                    "name": info.get("name_fr", country_name),
+                    "iso3": iso3,
+                    "reason": info.get("note", "Données non disponibles")
+                }
+    
+    return True, None
 
 
 @router.get("/opportunities/{country_name}")
@@ -41,6 +80,26 @@ async def get_ai_trade_opportunities(
             status_code=400, 
             detail=f"Invalid mode. Must be one of: {valid_modes}"
         )
+    
+    # Check if country has trade data
+    has_data, no_data_info = check_country_has_data(country_name)
+    if not has_data:
+        return {
+            "country": no_data_info["name"],
+            "iso3": no_data_info["iso3"],
+            "mode": mode,
+            "no_data": True,
+            "message": f"Aucune donnée commerciale disponible pour {no_data_info['name']}",
+            "reason": no_data_info["reason"],
+            "note": "Ce pays est membre de l'Union Africaine et signataire de la ZLECAf, mais n'a pas de statistiques commerciales disponibles dans les bases de données internationales.",
+            "opportunities": [],
+            "summary": {
+                "total_opportunities": 0,
+                "total_potential_value": 0,
+                "status": "NO_DATA_AVAILABLE"
+            },
+            "sources": ["OEC", "UN COMTRADE", "WITS - Aucune donnée trouvée"]
+        }
     
     try:
         result = await gemini_trade_service.analyze_trade_opportunities(
