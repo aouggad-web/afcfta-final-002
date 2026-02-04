@@ -14,8 +14,10 @@ MIGRATION STATUS:
 - statistics.py: COMPLETE
 - etl.py: COMPLETE
 - substitution.py: COMPLETE
-- gemini_analysis.py: COMPLETE
-- comtrade.py: COMPLETE (NEW - UN COMTRADE integration)
+- gemini_analysis.py: COMPLETE (NOW WITH CACHE)
+- comtrade.py: COMPLETE (UN COMTRADE integration)
+- rules_of_origin.py: COMPLETE (NEW - Extracted from server.py)
+- hs6_database.py: COMPLETE (NEW - Extracted from server.py)
 """
 
 from fastapi import APIRouter
@@ -34,6 +36,8 @@ from .etl import router as etl_router
 from .substitution import router as substitution_router
 from .gemini_analysis import router as gemini_router
 from .comtrade import router as comtrade_router
+from .rules_of_origin import router as rules_router
+from .hs6_database import router as hs6_db_router
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -50,3 +54,5 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(substitution_router, tags=["Trade Substitution"])
     api_router.include_router(gemini_router, tags=["AI Analysis"])
     api_router.include_router(comtrade_router, tags=["COMTRADE Data"])
+    api_router.include_router(rules_router, tags=["Rules of Origin"])
+    api_router.include_router(hs6_db_router, tags=["HS6 Database"])
