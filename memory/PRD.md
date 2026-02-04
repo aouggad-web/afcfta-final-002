@@ -138,9 +138,13 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 ## 📝 Backlog
 
 ### P0 - Haute Priorité
+- [x] **Bug corrigé (4 Fév 2025)**: Sélecteurs de pays vides dans Substitution et Vue d'ensemble
+  - Cause 1: Middleware CORS manquant dans server.py
+  - Cause 2: Frontend filtrait sur `has_import_data`/`has_production_data` au lieu de `has_trade_data`
 - [ ] Tests e2e complets avec Playwright
 
 ### P1 - Priorité Moyenne
+- [ ] Cache Redis pour les appels Gemini (optimisation performances)
 - [ ] Indicateur de fraîcheur des données (timestamp)
 - [ ] Recherche/filtre pour le fil d'actualités
 - [ ] Finaliser le refactoring backend (server.py)
