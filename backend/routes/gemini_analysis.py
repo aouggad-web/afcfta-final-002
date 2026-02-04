@@ -1,6 +1,7 @@
 """
 Gemini AI Trade Analysis Routes
 API endpoints for AI-powered trade analysis using Google Gemini
+NOW WITH REDIS CACHING for optimized performance
 """
 from fastapi import APIRouter, Query, HTTPException
 from typing import Optional
@@ -8,6 +9,7 @@ import logging
 
 from services.gemini_trade_service import gemini_trade_service
 from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
+from services.redis_cache_service import cache_service
 
 logger = logging.getLogger(__name__)
 
