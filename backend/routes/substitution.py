@@ -60,7 +60,11 @@ async def get_import_substitution_opportunities(
             country_iso3, year=year, min_value=min_value, lang=lang
         )
         
-        if "error" in result and not result.get("opportunities"):
+        # Handle "no_data" response (e.g., RASD - occupied territory)
+        if result.get("no_data"):
+            return result
+        
+        if result.get("error") and not result.get("opportunities"):
             raise HTTPException(status_code=404, detail=result["error"])
         
         return result
