@@ -346,6 +346,23 @@ async def fetch_all_news() -> List[Dict]:
             if isinstance(result, list):
                 all_articles.extend(result)
     
+    # Ajouter les projets structurants algériens comme actualités
+    for project in ALGERIA_STRUCTURAL_PROJECTS:
+        all_articles.append({
+            "id": f"dz-project-{project['id']}",
+            "title": f"🇩🇿 {project['title']}",
+            "summary": f"[{project['status']}] {project['summary']} - Investissement: ${project['investment_musd']}M USD",
+            "link": project["link"],
+            "source": project["source"],
+            "category": project["category"],
+            "region": project["region"],
+            "published_at": datetime.now().isoformat(),
+            "fetched_at": datetime.now().isoformat(),
+            "is_structural_project": True,
+            "country": "DZA",
+            "priority": True
+        })
+    
     # Dédupliquer par titre similaire
     seen_titles = set()
     unique_articles = []
@@ -355,8 +372,27 @@ async def fetch_all_news() -> List[Dict]:
             seen_titles.add(title_key)
             unique_articles.append(article)
     
-    # Trier par date de publication (plus récent en premier)
-    unique_articles.sort(key=lambda x: x["published_at"], reverse=True)
+    # Trier: Priorité Algérie d'abord, puis par date
+    def sort_key(article):
+        is_algeria = (
+            "algérie" in article.get("title", "").lower() or
+            "algeria" in article.get("title", "").lower() or
+            article.get("country") == "DZA" or
+            article.get("priority", False)
+        )
+        # Priority: Algeria first (0), then others (1), then by date
+        priority = 0 if is_algeria else 1
+        return (priority, article.get("published_at", ""))
+    
+    unique_articles.sort(key=sort_key, reverse=False)
+    # Reverse the date part but keep Algeria priority
+    unique_articles.sort(key=lambda x: (
+        0 if ("algérie" in x.get("title", "").lower() or 
+              "algeria" in x.get("title", "").lower() or 
+              x.get("country") == "DZA" or 
+              x.get("priority", False)) else 1,
+        x.get("published_at", "")
+    ), reverse=True)
     
     return unique_articles[:100]  # Limiter à 100 articles
 
