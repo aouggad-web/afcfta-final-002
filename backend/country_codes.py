@@ -63,7 +63,8 @@ AFRICAN_COUNTRIES = {
     "RWA": {"iso2": "RW", "name_fr": "Rwanda", "name_en": "Rwanda", "region": "East Africa"},
     # RASD - République Arabe Sahraouie Démocratique (Sahara Occidental)
     # Membre fondateur de l'Union Africaine (UA) depuis 1984
-    "ESH": {"iso2": "EH", "name_fr": "RASD (Sahara Occidental)", "name_en": "Sahrawi Arab Democratic Republic", "region": "North Africa"},
+    # ATTENTION: Territoire occupé - AUCUNE STATISTIQUE COMMERCIALE DISPONIBLE
+    "ESH": {"iso2": "EH", "name_fr": "RASD (Sahara Occidental)", "name_en": "Sahrawi Arab Democratic Republic", "region": "North Africa", "has_trade_data": False, "note": "Territoire occupé - pas de données commerciales"},
     "STP": {"iso2": "ST", "name_fr": "São Tomé-et-Príncipe", "name_en": "São Tomé and Príncipe", "region": "Central Africa"},
     "SEN": {"iso2": "SN", "name_fr": "Sénégal", "name_en": "Senegal", "region": "West Africa"},
     "SYC": {"iso2": "SC", "name_fr": "Seychelles", "name_en": "Seychelles", "region": "East Africa"},
