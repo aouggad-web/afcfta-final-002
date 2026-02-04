@@ -747,14 +747,20 @@ export default function AIAnalysis({ language = 'fr' }) {
             ))}
           </div>
 
-          {/* Sources footer */}
+          {/* Sources footer with data freshness */}
           {analysisData.sources && (
             <Card className="bg-slate-50 border-slate-200">
               <CardContent className="py-4 px-6">
-                <div className="flex items-center gap-2 text-sm text-slate-500">
-                  <Info className="h-4 w-4" />
-                  <span className="font-medium">{txt.sources}:</span>
-                  <span>{analysisData.sources.join(', ')}</span>
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2 text-sm text-slate-500">
+                    <Info className="h-4 w-4" />
+                    <span className="font-medium">{txt.sources}:</span>
+                    <span>{analysisData.sources.join(', ')}</span>
+                  </div>
+                  <DataFreshnessIndicator 
+                    freshness={analysisData.data_freshness} 
+                    language={currentLang}
+                  />
                 </div>
                 {analysisData.generated_by && (
                   <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">
