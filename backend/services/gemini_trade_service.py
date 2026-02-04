@@ -274,6 +274,12 @@ IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats atte
             result["country"] = country_name
             result["mode"] = mode
             result["generated_by"] = "Gemini AI"
+            result["generated_at"] = datetime.now(timezone.utc).isoformat()
+            result["data_freshness"] = get_data_freshness(None)  # Fresh data
+            
+            # Cache the result
+            cache_service.set("gemini_analysis", cache_params, result, "gemini_analysis")
+            logger.info(f"Cached analysis for {country_name} {mode}")
             
             return result
             
