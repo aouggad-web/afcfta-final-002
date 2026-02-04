@@ -566,6 +566,172 @@ export default function AIAnalysis({ language = 'fr' }) {
             />
           )}
 
+          {/* Expected Results Section */}
+          {analysisData.expected_results && (
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-blue-900">
+                  <TrendingUp className="h-5 w-5" />
+                  {currentLang === 'fr' ? 'Résultats Attendus' : 'Expected Results'}
+                </CardTitle>
+                <CardDescription className="text-blue-700">
+                  {currentLang === 'fr' 
+                    ? 'Projections basées sur la mise en œuvre des opportunités identifiées'
+                    : 'Projections based on implementing identified opportunities'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* 3-Year Scenario */}
+                  {analysisData.expected_results.scenario_3_years && (
+                    <div className="p-4 bg-white rounded-xl shadow border border-blue-100">
+                      <h4 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
+                        <Badge className="bg-blue-600">3 ans</Badge>
+                        {currentLang === 'fr' ? 'Horizon court terme' : 'Short-term horizon'}
+                      </h4>
+                      <ul className="space-y-2 text-sm">
+                        {analysisData.expected_results.scenario_3_years.export_growth_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Croissance exports' : 'Export growth'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              +{analysisData.expected_results.scenario_3_years.export_growth_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_3_years.import_substitution_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Substitution imports' : 'Import substitution'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              {analysisData.expected_results.scenario_3_years.import_substitution_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_3_years.new_jobs_created && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Emplois créés' : 'Jobs created'}
+                            </span>
+                            <span className="font-bold text-blue-600">
+                              {analysisData.expected_results.scenario_3_years.new_jobs_created.toLocaleString()}
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_3_years.savings_musd && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Économies' : 'Savings'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              ${analysisData.expected_results.scenario_3_years.savings_musd}M
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_3_years.industrial_value_added_musd && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Valeur ajoutée' : 'Value added'}
+                            </span>
+                            <span className="font-bold text-purple-600">
+                              ${analysisData.expected_results.scenario_3_years.industrial_value_added_musd}M
+                            </span>
+                          </li>
+                        )}
+                      </ul>
+                      {analysisData.expected_results.scenario_3_years.key_milestones && (
+                        <div className="mt-3 pt-3 border-t border-slate-100">
+                          <p className="text-xs font-bold text-slate-500 mb-1">
+                            {currentLang === 'fr' ? 'Jalons clés' : 'Key milestones'}
+                          </p>
+                          <ul className="text-xs text-slate-600 space-y-1">
+                            {analysisData.expected_results.scenario_3_years.key_milestones.map((m, i) => (
+                              <li key={i}>• {m}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* 5-Year Scenario */}
+                  {analysisData.expected_results.scenario_5_years && (
+                    <div className="p-4 bg-white rounded-xl shadow border border-indigo-100">
+                      <h4 className="font-bold text-indigo-800 mb-3 flex items-center gap-2">
+                        <Badge className="bg-indigo-600">5 ans</Badge>
+                        {currentLang === 'fr' ? 'Horizon moyen terme' : 'Medium-term horizon'}
+                      </h4>
+                      <ul className="space-y-2 text-sm">
+                        {analysisData.expected_results.scenario_5_years.export_growth_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Croissance exports' : 'Export growth'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              +{analysisData.expected_results.scenario_5_years.export_growth_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.import_substitution_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Substitution totale' : 'Total substitution'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              {analysisData.expected_results.scenario_5_years.import_substitution_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.new_jobs_created && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Emplois totaux' : 'Total jobs'}
+                            </span>
+                            <span className="font-bold text-blue-600">
+                              {analysisData.expected_results.scenario_5_years.new_jobs_created.toLocaleString()}
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.total_savings_musd && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Économies totales' : 'Total savings'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              ${analysisData.expected_results.scenario_5_years.total_savings_musd}M
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.afcfta_market_share_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Part marché ZLECAf' : 'AfCFTA market share'}
+                            </span>
+                            <span className="font-bold text-purple-600">
+                              {analysisData.expected_results.scenario_5_years.afcfta_market_share_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.afcfta_share_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Part ZLECAf' : 'AfCFTA share'}
+                            </span>
+                            <span className="font-bold text-purple-600">
+                              {analysisData.expected_results.scenario_5_years.afcfta_share_percent}%
+                            </span>
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Opportunities Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {analysisData.opportunities?.slice(0, 10).map((opp, idx) => (
