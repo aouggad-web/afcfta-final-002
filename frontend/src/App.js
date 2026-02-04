@@ -49,7 +49,7 @@ function App() {
       toolsTab: "Outils",
       logisticsTab: "Logistique",
       opportunitiesTab: "Opportunités",
-      memberCountries: "54 Pays Membres",
+      memberCountries: "55 Pays Membres",
       population: "1.3B+ Population"
     },
     en: {

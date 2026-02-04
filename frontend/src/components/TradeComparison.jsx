@@ -330,7 +330,7 @@ const TradeComparison = () => {
               <span>Commerce INTRA-AFRICAIN (entre pays africains uniquement)</span>
             </CardTitle>
             <CardDescription className="text-lg font-semibold">
-              Commerce réalisé uniquement entre les 54 pays africains membres de la ZLECAf
+              Commerce réalisé uniquement entre les 55 pays africains membres de la ZLECAf
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
