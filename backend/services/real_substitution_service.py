@@ -298,6 +298,26 @@ class RealSubstitutionService:
         if exporter not in self.african_countries:
             return {"error": f"Country {exporter} not found in AfCFTA"}
         
+        # Check if country has trade data
+        if not has_trade_data(exporter):
+            country_info = AFRICAN_COUNTRIES.get(exporter, {})
+            return {
+                "error": None,
+                "no_data": True,
+                "message": f"Aucune donnée commerciale disponible pour {country_info.get('name_fr', exporter)}",
+                "reason": country_info.get("note", "Données non disponibles dans les bases internationales"),
+                "exporter": {
+                    "iso3": exporter,
+                    "name": get_country_name(exporter, lang)
+                },
+                "opportunities": [],
+                "summary": {
+                    "total_opportunities": 0,
+                    "total_market_potential": 0,
+                    "status": "NO_DATA"
+                }
+            }
+        
         profile = COUNTRY_SUBSTITUTION_PROFILES.get(exporter, DEFAULT_SUBSTITUTION_PROFILE)
         
         opportunities = []
