@@ -337,6 +337,41 @@ async def get_ai_value_chains(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/cache/stats")
+async def get_cache_statistics():
+    """
+    Get Redis cache statistics
+    
+    Returns:
+        Cache status, hit rate, and key count
+    """
+    return cache_service.get_stats()
+
+
+@router.delete("/cache/clear")
+async def clear_cache(
+    pattern: str = Query(default=None, description="Pattern to clear (e.g., 'gemini_analysis'). Leave empty to clear all.")
+):
+    """
+    Clear cache entries (admin endpoint)
+    
+    Args:
+        pattern: Optional pattern to match (gemini_analysis, gemini_profile, etc.)
+    
+    Returns:
+        Number of cleared entries
+    """
+    if pattern:
+        cleared = cache_service.invalidate_pattern(pattern)
+    else:
+        cleared = cache_service.clear_all()
+    
+    return {
+        "cleared_entries": cleared,
+        "pattern": pattern or "all"
+    }
+
+
 def register_routes(app_router):
     """Register AI analysis routes with the main API router"""
     app_router.include_router(router)
