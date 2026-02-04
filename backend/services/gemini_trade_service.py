@@ -252,7 +252,6 @@ IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats atte
   "analysis_date": "..."
 }}
 """
-"""
             
             message = UserMessage(text=prompt)
             response = await chat.send_message(message)
