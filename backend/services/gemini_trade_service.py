@@ -92,9 +92,20 @@ class GeminiTradeService:
         """
         Analyze trade opportunities for a country using AI
         IMPROVED prompts based on AI Studio app
+        NOW WITH CACHING for performance optimization
         """
         if not self.api_key:
             return {"error": "API key not configured", "opportunities": []}
+        
+        # Check cache first
+        cache_params = {"country": country_name, "mode": mode, "lang": lang}
+        cached_result = cache_service.get("gemini_analysis", cache_params)
+        if cached_result:
+            logger.info(f"Cache HIT for {country_name} {mode} analysis")
+            # Add freshness info
+            cached_at = cached_result.get("_cache_metadata", {}).get("cached_at")
+            cached_result["data_freshness"] = get_data_freshness(cached_at)
+            return cached_result
         
         try:
             chat = self._get_chat(f"{country_name}-{mode}")
