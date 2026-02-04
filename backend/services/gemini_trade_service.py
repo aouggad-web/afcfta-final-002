@@ -178,7 +178,25 @@ Pour chaque opportunité, fournis EXACTEMENT ce format JSON:
   "is_estimation": false
 }}
 
-Réponds avec un JSON valide: {{"opportunities": [...], "sources": ["..."], "analysis_date": "..."}}
+IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats attendus:
+{{
+  "opportunities": [...],
+  "expected_results": {{
+    "scenario_3_years": {{
+      "import_substitution_percent": 0.0,
+      "savings_musd": 0.0,
+      "new_african_suppliers": 0,
+      "key_products": ["Produit 1", "Produit 2"]
+    }},
+    "scenario_5_years": {{
+      "import_substitution_percent": 0.0,
+      "total_savings_musd": 0.0,
+      "supply_chain_resilience_score": 0.0
+    }}
+  }},
+  "sources": ["..."],
+  "analysis_date": "..."
+}}
 """
             else:  # industrial
                 prompt = f"""
