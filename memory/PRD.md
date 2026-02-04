@@ -143,11 +143,11 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
   - Cause 2: Frontend filtrait sur `has_import_data`/`has_production_data` au lieu de `has_trade_data`
 - [ ] Tests e2e complets avec Playwright
 
-### P1 - Priorité Moyenne
-- [ ] Cache Redis pour les appels Gemini (optimisation performances)
-- [ ] Indicateur de fraîcheur des données (timestamp)
+### P1 - Priorité Moyenne (Complétés le 4 Fév 2025)
+- [x] **Cache Redis pour les appels Gemini** - TTL 6h, amélioration 550x des performances
+- [x] **Indicateur de fraîcheur des données** - Badge "Données en direct" ou "Il y a Xh"
+- [x] **Refactoring backend partiel** - Nouvelles routes: rules_of_origin.py, hs6_database.py
 - [ ] Recherche/filtre pour le fil d'actualités
-- [ ] Finaliser le refactoring backend (server.py)
 
 ### P2 - Priorité Basse
 - [ ] Refactoring frontend (OECTradeStats.jsx)
@@ -159,6 +159,18 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 ---
 
 ## 📅 Historique des Versions
+
+### v1.6.0 (4 Février 2025)
+- **Cache Redis intégré** - Mise en cache des appels Gemini (TTL 6h)
+  - Premier appel: ~27s, appels suivants: <0.1s (amélioration 550x)
+  - Endpoint de stats: `GET /api/ai/cache/stats`
+  - Invalidation: `DELETE /api/ai/cache/clear`
+- **Indicateur de fraîcheur des données** - Composant DataFreshnessIndicator
+  - Affiche "Données en direct" pour données fraîches
+  - Affiche "Il y a Xh/Xmin" pour données en cache
+- **Refactoring backend** - Extraction de routes depuis server.py
+  - `routes/rules_of_origin.py` - Règles d'Origine ZLECAf
+  - `routes/hs6_database.py` - Base de données HS6
 
 ### v1.5.0 (3 Février 2025)
 - **Intégration UN COMTRADE v1 API** - Données commerciales plus récentes
