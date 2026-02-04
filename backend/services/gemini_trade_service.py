@@ -295,9 +295,19 @@ IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats atte
         """
         Generate comprehensive economic profile for a country
         IMPROVED with parallel requests like AI Studio
+        NOW WITH CACHING (24h TTL)
         """
         if not self.api_key:
             return {"error": "API key not configured"}
+        
+        # Check cache first (longer TTL for profiles)
+        cache_params = {"country": country_name, "lang": lang, "type": "profile"}
+        cached_result = cache_service.get("gemini_profile", cache_params)
+        if cached_result:
+            logger.info(f"Cache HIT for {country_name} profile")
+            cached_at = cached_result.get("_cache_metadata", {}).get("cached_at")
+            cached_result["data_freshness"] = get_data_freshness(cached_at)
+            return cached_result
         
         try:
             chat = self._get_chat(f"profile-{country_name}")
