@@ -23,7 +23,7 @@ WITS_DATA_URL = "https://wits.worldbank.org/API/V1"
 # OEC API (Already integrated in oec_trade_service.py)
 OEC_BASE_URL = "https://api-v2.oec.world/tesseract/data.jsonrecords"
 
-# African Countries
+# African Countries (55 pays incluant la RASD - Membre UA depuis 1984)
 AFRICAN_COUNTRIES = {
     "DZA": {"name_fr": "Algérie", "name_en": "Algeria", "wits": "DZA", "oec": "afdza"},
     "AGO": {"name_fr": "Angola", "name_en": "Angola", "wits": "AGO", "oec": "afago"},
@@ -43,6 +43,9 @@ AFRICAN_COUNTRIES = {
     "EGY": {"name_fr": "Égypte", "name_en": "Egypt", "wits": "EGY", "oec": "afegy"},
     "GNQ": {"name_fr": "Guinée Équatoriale", "name_en": "Equatorial Guinea", "wits": "GNQ", "oec": "afgnq"},
     "ERI": {"name_fr": "Érythrée", "name_en": "Eritrea", "wits": "ERI", "oec": "aferi"},
+    # RASD - République Arabe Sahraouie Démocratique (Sahara Occidental)
+    # Membre fondateur de l'Union Africaine (UA) depuis 1984
+    "ESH": {"name_fr": "RASD (Sahara Occidental)", "name_en": "Sahrawi Arab Democratic Republic", "wits": "ESH", "oec": "afesh"},
     "SWZ": {"name_fr": "Eswatini", "name_en": "Eswatini", "wits": "SWZ", "oec": "afswz"},
     "ETH": {"name_fr": "Éthiopie", "name_en": "Ethiopia", "wits": "ETH", "oec": "afeth"},
     "GAB": {"name_fr": "Gabon", "name_en": "Gabon", "wits": "GAB", "oec": "afgab"},
