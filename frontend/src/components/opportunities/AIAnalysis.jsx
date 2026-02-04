@@ -2,6 +2,7 @@
  * AI Trade Analysis Component
  * Uses Gemini AI for intelligent trade opportunity analysis
  * Includes Sankey diagram visualization
+ * NOW WITH DATA FRESHNESS INDICATOR
  */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +24,7 @@ import {
 } from 'lucide-react';
 
 import TradeSankeyDiagram from './TradeSankeyDiagram';
+import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
