@@ -129,7 +129,26 @@ Pour chaque opportunité, fournis EXACTEMENT ce format JSON:
   "is_estimation": false
 }}
 
-Réponds avec un JSON valide: {{"opportunities": [...], "sources": ["..."], "analysis_date": "..."}}
+IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats attendus:
+{{
+  "opportunities": [...],
+  "expected_results": {{
+    "scenario_3_years": {{
+      "export_growth_percent": 0.0,
+      "new_market_penetration": 0,
+      "total_export_value_musd": 0.0,
+      "key_markets": ["Marché 1", "Marché 2"]
+    }},
+    "scenario_5_years": {{
+      "export_growth_percent": 0.0,
+      "total_export_value_musd": 0.0,
+      "afcfta_share_percent": 0.0,
+      "diversification_index": 0.0
+    }}
+  }},
+  "sources": ["..."],
+  "analysis_date": "..."
+}}
 """
             elif mode == "import":
                 prompt = f"""
