@@ -2,6 +2,7 @@
  * Trade Opportunities Summary Component
  * Displays aggregate view of intra-African trade opportunities
  * NOW CONNECTED TO REAL AI DATA from Gemini API
+ * WITH DATA FRESHNESS INDICATOR
  */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +17,7 @@ import {
   TrendingUp, DollarSign, Globe, Package, 
   ArrowUpRight, Loader2, AlertCircle, Sparkles 
 } from 'lucide-react';
+import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
