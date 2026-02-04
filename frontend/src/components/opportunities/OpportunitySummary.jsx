@@ -358,11 +358,15 @@ export default function OpportunitySummary({ language = 'fr' }) {
         </Card>
       </div>
 
-      {/* Source Footer */}
-      <div className="text-center">
+      {/* Source Footer with Data Freshness */}
+      <div className="flex items-center justify-center gap-4 flex-wrap">
         <p className="text-xs text-slate-400 italic">
           {data.sources ? data.sources.join(', ') : txt.source}
         </p>
+        <DataFreshnessIndicator 
+          freshness={dataFreshness} 
+          language={language}
+        />
       </div>
     </div>
   );
