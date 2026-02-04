@@ -13,7 +13,8 @@ from services.real_trade_data_service import (
     real_trade_service,
     AFRICAN_COUNTRIES,
     get_country_name,
-    get_product_name
+    get_product_name,
+    has_trade_data
 )
 
 logger = logging.getLogger(__name__)
