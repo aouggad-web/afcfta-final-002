@@ -143,22 +143,37 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
   - Cause 2: Frontend filtrait sur `has_import_data`/`has_production_data` au lieu de `has_trade_data`
 - [ ] Tests e2e complets avec Playwright
 
-### P1 - Priorité Moyenne (Complétés le 4 Fév 2025)
-- [x] **Cache Redis pour les appels Gemini** - TTL 6h, amélioration 550x des performances
-- [x] **Indicateur de fraîcheur des données** - Badge "Données en direct" ou "Il y a Xh"
-- [x] **Refactoring backend partiel** - Nouvelles routes: rules_of_origin.py, hs6_database.py
+### P1 - Priorité Moyenne 
+- [x] **Cache Redis pour les appels Gemini** (4 Fév) - TTL 6h, amélioration 550x des performances
+- [x] **Indicateur de fraîcheur des données** (4 Fév) - Badge "Données en direct" ou "Il y a Xh"
+- [x] **Refactoring backend partiel** (4 Fév) - Nouvelles routes: rules_of_origin.py, hs6_database.py
+- [x] **Refactoring frontend StatisticsTab** (5 Fév) - 4 sous-onglets organisés
+- [x] **Comparaison multi-pays** (5 Fév) - Radar chart + tableaux comparatifs
 - [ ] Recherche/filtre pour le fil d'actualités
 
 ### P2 - Priorité Basse
-- [ ] Refactoring frontend (OECTradeStats.jsx)
 - [ ] Exportation CSV/Excel
-- [ ] Comparaison multi-pays
 - [ ] Sauvegarde des recherches HS fréquentes
 - [ ] Sécurisation upload TRS pour administrateurs
 
 ---
 
 ## 📅 Historique des Versions
+
+### v1.7.0 (5 Février 2025)
+- **Refactoring Frontend StatisticsTab** - Organisation en 4 sous-onglets :
+  - Vue d'ensemble : OEC Stats, Zauba Stats, Top Exporters/Importers
+  - Produits : Tableau Top 20 produits
+  - Tendances : Commerce annuel et évolutions
+  - Comparaison Pays : Nouveau composant MultiCountryComparison
+- **Comparaison Multi-Pays** - Nouveau composant avancé :
+  - Sélection de 2 à 4 pays africains
+  - Radar chart avec 6 indicateurs normalisés
+  - Tableaux comparatifs (économie, commerce, développement)
+  - Bar chart exports/imports
+  - Intégration DataFreshnessIndicator
+- **Nouveaux fichiers** :
+  - `/app/frontend/src/components/statistics/MultiCountryComparison.jsx`
 
 ### v1.6.0 (4 Février 2025)
 - **Cache Redis intégré** - Mise en cache des appels Gemini (TTL 6h)
