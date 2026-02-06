@@ -832,6 +832,35 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                 </div>
               </div>
+
+              {/* Bouton pour afficher/masquer le calcul détaillé */}
+              {detailedResult && (
+                <div className="mt-6">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowDetailedBreakdown(!showDetailedBreakdown)}
+                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-purple-200 hover:bg-purple-50"
+                    data-testid="toggle-detailed-breakdown"
+                  >
+                    <Calculator className="h-5 w-5 text-purple-600" />
+                    <span className="font-semibold text-purple-700">
+                      {showDetailedBreakdown 
+                        ? (language === 'fr' ? 'Masquer le Détail du Calcul' : 'Hide Calculation Details')
+                        : (language === 'fr' ? 'Voir le Détail du Calcul NPF vs ZLECAf' : 'View NPF vs AfCFTA Calculation Details')}
+                    </span>
+                    {showDetailedBreakdown ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </Button>
+                  
+                  {showDetailedBreakdown && (
+                    <div className="mt-4 animate-in slide-in-from-top-2">
+                      <DetailedCalculationBreakdown 
+                        result={detailedResult} 
+                        language={language} 
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
