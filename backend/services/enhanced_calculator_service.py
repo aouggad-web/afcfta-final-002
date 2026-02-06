@@ -190,33 +190,54 @@ class EnhancedTariffCalculator:
         
         # Try to get specific HS6 tariff
         hs6 = hs_code[:6]
-        specific = self.get_hs6_tariff(country_iso3, hs6)
-        if specific:
-            rates["DD"] = specific.get("dd", rates["DD"])
+        try:
+            specific = self.get_hs6_tariff(country_iso3, hs6)
+            if specific and isinstance(specific, dict):
+                rates["DD"] = specific.get("dd", rates["DD"])
+        except Exception:
+            pass
         
         # Try detailed tariff (with sub-positions)
-        detailed = self.get_detailed(country_iso3, hs_code)
-        if detailed:
-            rates["DD"] = detailed.get("dd_rate", rates["DD"])
-            # Add any specific taxes
-            for tax_code, tax_rate in detailed.get("other_taxes", {}).items():
-                rates[tax_code] = tax_rate
+        try:
+            detailed = self.get_detailed(country_iso3, hs_code)
+            if detailed and isinstance(detailed, dict):
+                rates["DD"] = detailed.get("dd_rate", rates["DD"])
+                # Add any specific taxes
+                other_taxes = detailed.get("other_taxes", {})
+                if isinstance(other_taxes, dict):
+                    for tax_code, tax_rate in other_taxes.items():
+                        rates[tax_code] = tax_rate
+        except Exception:
+            pass
         
-        # Get country-level rates
+        # Get country-level rates (these return tuples (rate, source))
         chapter = hs_code[:2]
-        country_rate = self.get_tariff_rate(country_iso3, chapter)
-        if country_rate is not None and "DD" not in rates:
-            rates["DD"] = country_rate
+        try:
+            result = self.get_tariff_rate(country_iso3, chapter)
+            if result:
+                country_rate = result[0] if isinstance(result, tuple) else result
+                if country_rate is not None:
+                    rates["DD"] = country_rate
+        except Exception:
+            pass
         
-        vat = self.get_vat_rate(country_iso3)
-        if vat is not None:
-            rates["TVA"] = vat
+        try:
+            result = self.get_vat_rate(country_iso3)
+            if result:
+                vat = result[0] if isinstance(result, tuple) else result
+                if vat is not None:
+                    rates["TVA"] = vat
+        except Exception:
+            pass
         
-        other = self.get_other_taxes(country_iso3)
-        if other:
-            for key, val in other.items():
-                if key not in rates:
-                    rates[key] = val
+        try:
+            result = self.get_other_taxes(country_iso3)
+            if result:
+                other = result[0] if isinstance(result, tuple) else result
+                if other and isinstance(other, (int, float)):
+                    rates["OTHER"] = other
+        except Exception:
+            pass
         
         return rates
     
