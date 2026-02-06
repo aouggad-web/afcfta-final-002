@@ -260,7 +260,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
     setLoading(true);
     try {
-      // Calcul des tarifs
+      // Calcul des tarifs classique
       const response = await axios.post(`${API}/calculate-tariff`, {
         origin_country: originCountry,
         destination_country: destinationCountry,
@@ -269,6 +269,18 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       });
       
       setResult(response.data);
+      
+      // Récupérer le calcul détaillé NPF vs ZLECAf
+      try {
+        const detailedResponse = await axios.get(
+          `${API}/calculate/detailed/${destinationCountry}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}`
+        );
+        setDetailedResult(detailedResponse.data);
+        setShowDetailedBreakdown(true);
+      } catch (detailError) {
+        console.warn('Detailed calculation not available:', detailError.message);
+        setDetailedResult(null);
+      }
       
       // Récupérer les sous-positions si disponibles pour le pays de destination
       const hs6 = cleanHsCode.substring(0, 6);
