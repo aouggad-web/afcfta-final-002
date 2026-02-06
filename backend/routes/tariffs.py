@@ -429,3 +429,85 @@ async def get_detailed_countries_list():
         "count": len(COUNTRY_HS6_DETAILED),
         "description": "Pays avec sous-positions nationales (8-12 chiffres) disponibles"
     }
+
+
+# =============================================================================
+# ENHANCED CALCULATOR - DETAILED NPF vs ZLECAf BREAKDOWN
+# =============================================================================
+
+@router.post("/calculate/detailed")
+async def calculate_detailed_tariff_endpoint(
+    country_code: str = Query(..., description="ISO3 or ISO2 country code"),
+    hs_code: str = Query(..., description="HS code (6-12 digits)"),
+    fob_value: float = Query(..., description="FOB value in USD"),
+    freight: float = Query(0, description="Freight cost in USD"),
+    insurance: float = Query(0, description="Insurance cost in USD"),
+    language: str = Query("fr", description="Language: fr or en")
+):
+    """
+    Calcul détaillé des droits et taxes avec comparaison NPF vs ZLECAf
+    
+    Retourne:
+    - Détail ligne par ligne de chaque taxe (DD, TVA, autres)
+    - Base de calcul pour chaque taxe
+    - Comparaison complète NPF vs ZLECAf
+    - Économies réalisées avec ZLECAf
+    - Sous-positions disponibles si variantes de taux
+    
+    Méthodologie:
+    - CIF = FOB + Fret + Assurance
+    - DD (NPF) = CIF × Taux DD
+    - DD (ZLECAf) = 0% (exonéré)
+    - TVA = (CIF + DD) × Taux TVA
+    - Autres taxes = CIF × Taux
+    """
+    from services.enhanced_calculator_service import calculate_detailed_tariff
+    
+    if len(country_code) == 2:
+        iso3 = ISO2_TO_ISO3.get(country_code.upper(), country_code.upper())
+    else:
+        iso3 = country_code.upper()
+    
+    try:
+        result = calculate_detailed_tariff(
+            country_iso3=iso3,
+            hs_code=hs_code,
+            fob_value=fob_value,
+            freight=freight,
+            insurance=insurance,
+            language=language
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/calculate/detailed/{country_code}/{hs_code}")
+async def get_detailed_calculation(
+    country_code: str,
+    hs_code: str,
+    value: float = Query(10000, description="CIF value in USD"),
+    language: str = Query("fr", description="Language: fr or en")
+):
+    """
+    Version GET du calculateur détaillé pour une valeur donnée
+    Utilise value comme valeur CIF (FOB + Fret + Assurance combinés)
+    """
+    from services.enhanced_calculator_service import calculate_detailed_tariff
+    
+    if len(country_code) == 2:
+        iso3 = ISO2_TO_ISO3.get(country_code.upper(), country_code.upper())
+    else:
+        iso3 = country_code.upper()
+    
+    # Assume value is CIF (combined FOB + freight + insurance)
+    result = calculate_detailed_tariff(
+        country_iso3=iso3,
+        hs_code=hs_code,
+        fob_value=value,  # Treat as total CIF
+        freight=0,
+        insurance=0,
+        language=language
+    )
+    return result
+
