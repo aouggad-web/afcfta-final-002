@@ -13,7 +13,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { toast } from '../../hooks/use-toast';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
-import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info } from 'lucide-react';
+import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator } from 'lucide-react';
+import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import './calculator.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
