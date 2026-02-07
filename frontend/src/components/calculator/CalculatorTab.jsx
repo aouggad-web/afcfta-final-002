@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
@@ -62,6 +62,36 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [useSmartSearch, setUseSmartSearch] = useState(true);
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
+  const [countryTariffProfile, setCountryTariffProfile] = useState(null);
+  const [loadingProfile, setLoadingProfile] = useState(false);
+
+  const fetchCountryTariffProfile = useCallback(async (countryCode) => {
+    if (!countryCode) {
+      setCountryTariffProfile(null);
+      return;
+    }
+    setLoadingProfile(true);
+    try {
+      const response = await axios.get(`${API}/tariff-data/${countryCode}?limit=1`);
+      setCountryTariffProfile(response.data);
+    } catch (error) {
+      console.error('Error fetching country tariff profile:', error);
+      setCountryTariffProfile(null);
+    } finally {
+      setLoadingProfile(false);
+    }
+  }, []);
+
+  const handleDestinationChange = useCallback((value) => {
+    setDestinationCountry(value);
+    fetchCountryTariffProfile(value);
+  }, [fetchCountryTariffProfile]);
+
+  useEffect(() => {
+    if (destinationCountry) {
+      fetchCountryTariffProfile(destinationCountry);
+    }
+  }, [destinationCountry, fetchCountryTariffProfile]);
 
   const texts = {
     fr: {
@@ -334,7 +364,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
             <div className="space-y-2">
               <Label htmlFor="destination">{t.partnerCountry}</Label>
-              <Select value={destinationCountry} onValueChange={setDestinationCountry}>
+              <Select value={destinationCountry} onValueChange={handleDestinationChange}>
                 <SelectTrigger>
                   <SelectValue placeholder={t.partnerCountry} />
                 </SelectTrigger>
@@ -348,6 +378,53 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </Select>
             </div>
           </div>
+
+          {loadingProfile && (
+            <div className="text-center text-sm text-gray-500 py-2">
+              {language === 'fr' ? 'Chargement du tarif national...' : 'Loading national tariff...'}
+            </div>
+          )}
+
+          {countryTariffProfile && countryTariffProfile.summary && !loadingProfile && (
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-blue-800 text-sm flex items-center gap-1">
+                  {getFlag(countries.find(c => c.code === destinationCountry)?.iso2 || destinationCountry)}
+                  {language === 'fr' ? 'Tarif National' : 'National Tariff'} - {getCountryName(destinationCountry)}
+                </span>
+                <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 text-xs">
+                  {language === 'fr' ? 'Donn\u00e9es v\u00e9rifi\u00e9es' : 'Verified data'}
+                </Badge>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-xs">
+                <div className="bg-white rounded p-2 text-center shadow-sm">
+                  <div className="text-gray-500">{language === 'fr' ? 'DD moy.' : 'Avg. duty'}</div>
+                  <div className="font-bold text-lg text-blue-700">{countryTariffProfile.summary.dd_rate_range?.avg?.toFixed(1) || '0'}%</div>
+                  <div className="text-gray-400">{countryTariffProfile.summary.dd_rate_range?.min?.toFixed(0) || '0'}% - {countryTariffProfile.summary.dd_rate_range?.max?.toFixed(0) || '0'}%</div>
+                </div>
+                <div className="bg-white rounded p-2 text-center shadow-sm">
+                  <div className="text-gray-500">{language === 'fr' ? 'TVA' : 'VAT'}</div>
+                  <div className="font-bold text-lg text-orange-600">{countryTariffProfile.summary.vat_rate_pct || 0}%</div>
+                  <div className="text-gray-400">{countryTariffProfile.summary.vat_source || ''}</div>
+                </div>
+                <div className="bg-white rounded p-2 text-center shadow-sm">
+                  <div className="text-gray-500">{language === 'fr' ? 'Autres taxes' : 'Other taxes'}</div>
+                  <div className="font-bold text-lg text-red-600">{countryTariffProfile.summary.other_taxes_pct || 0}%</div>
+                  <div className="text-gray-400">
+                    {countryTariffProfile.summary.other_taxes_detail
+                      ? Object.entries(countryTariffProfile.summary.other_taxes_detail)
+                          .map(([k, v]) => `${k.toUpperCase()} ${v}%`)
+                          .join(', ')
+                      : ''}
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between items-center text-xs text-gray-500 pt-1 border-t border-blue-100">
+                <span>{(countryTariffProfile.summary.total_positions || 0).toLocaleString()} {language === 'fr' ? 'positions tarifaires' : 'tariff positions'}</span>
+                <span>{countryTariffProfile.summary.chapters_covered || 0} {language === 'fr' ? 'chapitres couverts' : 'chapters covered'}</span>
+              </div>
+            </div>
+          )}
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
