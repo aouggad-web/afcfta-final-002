@@ -1,0 +1,16 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "![API Status](https://img.shields.io/badge/API-Online-success) ![Version](https://img.shields.io/badge/version-2.0.0-blue) ![MongoDB](https://img.shields.io/badge/MongoDB-Connected-green) ![License](https://img.shields.io/badge/license-MIT-orange)",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
