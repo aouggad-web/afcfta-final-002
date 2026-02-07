@@ -49,28 +49,46 @@ class GenericScraper(BaseScraper):
     
     async def scrape(self) -> Dict[str, Any]:
         """
-        Generic scrape implementation.
+        Generic scrape implementation using the tariff data collector.
         
-        Returns basic country information and placeholder data.
-        Override this method in country-specific scrapers.
+        Consolidates existing ETL data (chapter tariffs, HS6 detailed rates,
+        VAT, other taxes) into structured tariff line records.
         """
-        logger.info(f"Using generic scraper for {self.country_name}")
+        logger.info(f"Collecting tariff data for {self.country_name} ({self.country_code})")
         
-        return {
-            "country_code": self.country_code,
-            "country_name": self.country_name,
-            "source_url": self.source_url,
-            "vat_rate": self.vat_rate,
-            "region": self.region,
-            "regional_blocks": self.regional_blocks,
-            "scrape_type": "generic",
-            "message": "No specific scraper implemented for this country",
-            "data": {
-                "tariffs": [],
-                "hs_codes": [],
-                "regulations": [],
+        try:
+            from services.tariff_data_collector import get_collector
+            collector = get_collector()
+            tariff_data = collector.collect_country_tariffs(self.country_code)
+            collector.save_country_tariffs(self.country_code, tariff_data)
+            
+            return {
+                "country_code": self.country_code,
+                "country_name": self.country_name,
+                "source_url": self.source_url,
+                "vat_rate": self.vat_rate,
+                "region": self.region,
+                "regional_blocks": self.regional_blocks,
+                "scrape_type": "tariff_collection",
+                "data": {
+                    "tariff_lines": len(tariff_data.get("tariff_lines", [])),
+                    "lines_with_sub_positions": tariff_data.get("summary", {}).get("lines_with_sub_positions", 0),
+                    "summary": tariff_data.get("summary", {}),
+                }
             }
-        }
+        except Exception as e:
+            logger.error(f"Tariff collection failed for {self.country_code}: {e}")
+            return {
+                "country_code": self.country_code,
+                "country_name": self.country_name,
+                "source_url": self.source_url,
+                "vat_rate": self.vat_rate,
+                "region": self.region,
+                "regional_blocks": self.regional_blocks,
+                "scrape_type": "generic_fallback",
+                "error": str(e),
+                "data": {"tariffs": [], "hs_codes": [], "regulations": []}
+            }
     
     async def validate(self, data: Dict[str, Any]) -> bool:
         """
