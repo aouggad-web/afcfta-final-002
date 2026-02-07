@@ -32,8 +32,17 @@ from .tariffs import router as tariffs_router
 from .statistics import router as statistics_router
 from .etl import router as etl_router
 from .substitution import router as substitution_router
-from .gemini_analysis import router as gemini_router
-from .trade_data import router as trade_data_router
+try:
+    from .gemini_analysis import router as gemini_router
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
+
+try:
+    from .trade_data import router as trade_data_router
+    TRADE_DATA_AVAILABLE = True
+except ImportError:
+    TRADE_DATA_AVAILABLE = False
 
 # Import export router from backend.routers
 try:
@@ -55,8 +64,10 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(statistics_router, tags=["Statistics"])
     api_router.include_router(etl_router, tags=["ETL Administration"])
     api_router.include_router(substitution_router, tags=["Trade Substitution"])
-    api_router.include_router(gemini_router, tags=["AI Analysis"])
-    api_router.include_router(trade_data_router, tags=["Trade Data Sources"])
+    if GEMINI_AVAILABLE:
+        api_router.include_router(gemini_router, tags=["AI Analysis"])
+    if TRADE_DATA_AVAILABLE:
+        api_router.include_router(trade_data_router, tags=["Trade Data Sources"])
     
     # Register export router if available
     if EXPORT_ROUTER_AVAILABLE:

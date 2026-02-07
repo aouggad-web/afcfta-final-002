@@ -103,28 +103,49 @@ from etl.hs6_database import (
 # Import routes module for modular endpoint registration
 from routes import register_routes
 
-# Import notification manager for system-wide notifications
-from backend.notifications import NotificationManager
+try:
+    from backend.notifications import NotificationManager
+except ImportError:
+    try:
+        from notifications import NotificationManager
+    except ImportError:
+        NotificationManager = None
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+mongo_url = os.environ.get('MONGO_URL', '')
+db = None
+client = None
+if mongo_url:
+    try:
+        client = AsyncIOMotorClient(mongo_url)
+        db = client[os.environ.get('DB_NAME', 'afcfta')]
+        logging.info("MongoDB connected successfully")
+    except Exception as e:
+        logging.warning(f"MongoDB connection failed: {e}. Running without database.")
+        db = None
+else:
+    logging.warning("MONGO_URL not set. Running without database.")
 
-# Initialize notification manager for system-wide alerts
-notification_manager = NotificationManager()
-logging.info(f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}")
+notification_manager = None
+if NotificationManager:
+    try:
+        notification_manager = NotificationManager()
+        logging.info(f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}")
+    except Exception as e:
+        logging.warning(f"Notification manager initialization failed: {e}")
 
-# Translations moved to translations.py
-# Gold reserves data moved to gold_reserves_data.py
-
-# Create the main app without a prefix
 app = FastAPI(title="Système Commercial ZLECAf - API Complète", version="2.0.0")
 
-# Create a router with the /api prefix
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 api_router = APIRouter(prefix="/api")
 
 # Pays membres de la ZLECAf avec données économiques
@@ -668,8 +689,8 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         destination_country_data=wb_data.get(dest_country['wb_code'], {})
     )
     
-    # Sauvegarder en base de données
-    await db.comprehensive_calculations.insert_one(result.dict())
+    if db is not None:
+        await db.comprehensive_calculations.insert_one(result.dict())
     
     return result
 
@@ -680,40 +701,37 @@ async def get_comprehensive_statistics():
     # Charger les statistiques enrichies depuis le JSON 2024
     enhanced_stats = get_enhanced_statistics()
     
-    # Statistiques de base de la DB
-    total_calculations = await db.comprehensive_calculations.count_documents({})
-    
-    # Économies totales
-    pipeline_savings = [
-        {"$group": {"_id": None, "total_savings": {"$sum": "$savings"}}}
-    ]
-    savings_result = await db.comprehensive_calculations.aggregate(pipeline_savings).to_list(1)
-    total_savings = savings_result[0]["total_savings"] if savings_result else 0
-    
-    # Pays les plus actifs
-    pipeline_countries = [
-        {"$group": {"_id": "$origin_country", "count": {"$sum": 1}}},
-        {"$sort": {"count": -1}},
-        {"$limit": 10}
-    ]
-    countries_result = await db.comprehensive_calculations.aggregate(pipeline_countries).to_list(10)
-    
-    # Codes SH les plus utilisés
-    pipeline_hs = [
-        {"$group": {"_id": "$hs_code", "count": {"$sum": 1}, "avg_savings": {"$avg": "$savings"}}},
-        {"$sort": {"count": -1}},
-        {"$limit": 10}
-    ]
-    hs_result = await db.comprehensive_calculations.aggregate(pipeline_hs).to_list(10)
-    
-    # Secteurs les plus bénéficiaires
-    pipeline_sectors = [
-        {"$addFields": {"sector": {"$substr": ["$hs_code", 0, 2]}}},
-        {"$group": {"_id": "$sector", "count": {"$sum": 1}, "total_savings": {"$sum": "$savings"}}},
-        {"$sort": {"total_savings": -1}},
-        {"$limit": 10}
-    ]
-    sectors_result = await db.comprehensive_calculations.aggregate(pipeline_sectors).to_list(10)
+    total_calculations = 0
+    total_savings = 0
+    countries_result = []
+    hs_result = []
+    sectors_result = []
+    if db is not None:
+        total_calculations = await db.comprehensive_calculations.count_documents({})
+        pipeline_savings = [
+            {"$group": {"_id": None, "total_savings": {"$sum": "$savings"}}}
+        ]
+        savings_result = await db.comprehensive_calculations.aggregate(pipeline_savings).to_list(1)
+        total_savings = savings_result[0]["total_savings"] if savings_result else 0
+        pipeline_countries = [
+            {"$group": {"_id": "$origin_country", "count": {"$sum": 1}}},
+            {"$sort": {"count": -1}},
+            {"$limit": 10}
+        ]
+        countries_result = await db.comprehensive_calculations.aggregate(pipeline_countries).to_list(10)
+        pipeline_hs = [
+            {"$group": {"_id": "$hs_code", "count": {"$sum": 1}, "avg_savings": {"$avg": "$savings"}}},
+            {"$sort": {"count": -1}},
+            {"$limit": 10}
+        ]
+        hs_result = await db.comprehensive_calculations.aggregate(pipeline_hs).to_list(10)
+        pipeline_sectors = [
+            {"$addFields": {"sector": {"$substr": ["$hs_code", 0, 2]}}},
+            {"$group": {"_id": "$sector", "count": {"$sum": 1}, "total_savings": {"$sum": "$savings"}}},
+            {"$sort": {"total_savings": -1}},
+            {"$limit": 10}
+        ]
+        sectors_result = await db.comprehensive_calculations.aggregate(pipeline_sectors).to_list(10)
     
     # Calcul de l'impact économique potentiel
     african_population = sum([country['population'] for country in AFRICAN_COUNTRIES])
@@ -2179,3 +2197,17 @@ register_substitution_routes(api_router)
 
 # Include the router in the main app
 app.include_router(api_router)
+
+from starlette.staticfiles import StaticFiles
+from starlette.responses import FileResponse
+
+build_dir = Path(__file__).parent.parent / "frontend" / "build"
+if build_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(build_dir / "static")), name="static")
+    
+    @app.get("/{full_path:path}")
+    async def serve_react(full_path: str):
+        file_path = build_dir / full_path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(str(file_path))
+        return FileResponse(str(build_dir / "index.html"))
