@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
+import MonitoringDashboard from './MonitoringDashboard';
 
 export default function ToolsTab({ language = 'fr' }) {
   const texts = {
@@ -307,6 +308,8 @@ export default function ToolsTab({ language = 'fr' }) {
           </div>
         </CardContent>
       </Card>
+
+      <MonitoringDashboard language={language} />
 
       {/* Footer with Source Indicator */}
       <Card className="bg-gray-50 border-gray-200">

@@ -146,6 +146,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+try:
+    from middlewares import SecurityHeadersMiddleware, CSRFMiddleware, RateLimitMiddleware
+    app.add_middleware(SecurityHeadersMiddleware)
+    app.add_middleware(CSRFMiddleware, exempt_paths=[
+        "/api/docs", "/api/openapi.json", "/api/redoc",
+        "/api/health", "/api/",
+        "/api/tariff-data/collect",
+        "/api/crawl",
+    ])
+    app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)
+    logging.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
+except ImportError as e:
+    logging.warning(f"Security middlewares not loaded: {e}")
+
 api_router = APIRouter(prefix="/api")
 
 # Pays membres de la ZLECAf avec données économiques

@@ -8,13 +8,15 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 - **Frontend**: React (CRA with CRACO) running on port 5000 (0.0.0.0)
 - **Database**: MongoDB (optional - app works without it for most features)
 - **Proxy**: Frontend proxies `/api` requests to backend via CRA proxy config
+- **Security**: CSP headers, Rate Limiting (120 req/min), CSRF protection middleware
 
 ## Project Structure
 ```
 ├── backend/           # FastAPI backend
 │   ├── server.py      # Main server file
+│   ├── middlewares/    # Security middlewares (CSP, CSRF, Rate Limit)
 │   ├── routes/        # API route modules
-│   │   ├── tariff_data.py  # Tariff data collection endpoints
+│   │   ├── tariff_data.py  # Tariff data collection + monitoring endpoints
 │   │   └── crawl.py        # Crawl orchestration endpoints
 │   ├── services/      # Business logic services
 │   │   ├── crawl_orchestrator.py    # Crawl job management
@@ -23,9 +25,11 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 │   ├── crawlers/      # Web scrapers + generic tariff collector
 │   ├── routers/       # Export router (CSV, Excel, JSON)
 │   ├── notifications/ # Alert system (Email, Slack)
-│   └── data/tariffs/  # Generated tariff JSON files (54 countries, ~157MB)
+│   ├── tests/         # Unit tests (pytest)
+│   └── data/tariffs/  # Generated tariff JSON files (54 countries)
 ├── frontend/          # React frontend
 │   ├── src/           # React source code
+│   │   └── components/tools/MonitoringDashboard.jsx  # Tariff monitoring UI
 │   ├── public/        # Static assets
 │   └── craco.config.js # Build config (dev server on 5000, allowedHosts: all)
 ├── start.sh           # Startup script (runs both backend and frontend)
@@ -41,18 +45,31 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 ## Tariff Data System
 - **Source data**: ETL modules with chapter-level tariffs (54 countries), HS6 detailed rates (NGA, CIV, ZAF, KEN + regional groupings), VAT rates, other taxes
 - **HS6 Database**: 5,762 product codes from WCO Harmonized System 2022
+- **Sub-positions**: HS8/HS10/HS12 generated from SUB_POSITION_TYPES definitions + real COUNTRY_HS6_DETAILED data
 - **Collection**: `POST /api/tariff-data/collect` generates JSON files per country
-- **Data per country**: ~5,831 tariff lines with DD rate, ZLECAf rate, VAT, other taxes, sub-positions
-- **Total**: 314,874 tariff lines across 54 countries
+- **Data per country**: ~5,831 HS6 lines + ~16,000 sub-positions = ~22,000 positions per country
+- **Total**: 314,874 HS6 lines + 871,565 sub-positions = 1,186,439 positions across 54 countries
+- **Monitoring**: `GET /api/tariff-data/monitoring/stats` returns real-time collection statistics
 - **API**: `/api/tariff-data/{country_code}` with chapter/HS6 filters and pagination
+- **Scheduler**: Annual collection (January)
+
+## Security
+- **CSP**: Content-Security-Policy with nonce-based script execution
+- **Rate Limiting**: 120 requests/minute per IP with burst protection (20/sec)
+- **Security Headers**: X-Content-Type-Options, X-Frame-Options, XSS-Protection, HSTS, Referrer-Policy, Permissions-Policy
+- **CSRF**: Double-submit cookie pattern (available but not enforced in dev)
+
+## Testing
+- Unit tests: `cd backend && python -m pytest tests/ -v`
+- 20 tests covering: data collector, sub-positions, middlewares, save/load, VAT accuracy, 54-country coverage
 
 ## Running
 The `start.sh` script launches both backend (uvicorn) and frontend (craco) concurrently.
 
 ## Recent Changes
+- 2026-02-07: Added security middlewares (CSP, Rate Limiting, CSRF), monitoring dashboard, expanded sub-positions (1.18M total positions), unit tests (20 passing)
 - 2026-02-07: Built tariff data collection system - 314,874 tariff lines for 54 countries with DD, VAT, other taxes
 - 2026-02-07: Created crawl orchestration system with API routes, notification integration
-- 2026-02-07: Fixed import paths, wired export/crawl/notification modules into server
 - 2026-02-07: Initial Replit setup - configured ports, CORS, proxy, made MongoDB optional
 
 ## User Preferences

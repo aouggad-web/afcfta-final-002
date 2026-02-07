@@ -97,6 +97,36 @@ async def get_country_tariff_data(
     }
 
 
+@router.get("/monitoring/stats")
+async def get_monitoring_stats():
+    collector = get_collector()
+    available = collector.get_available_countries()
+    stats = {"countries": [], "total_tariff_lines": 0, "total_sub_positions": 0, "total_positions": 0}
+    for cc in sorted(available):
+        data = collector.load_country_tariffs(cc)
+        if data:
+            summary = data.get("summary", {})
+            tl = summary.get("total_tariff_lines", 0)
+            sp = summary.get("total_sub_positions", 0)
+            tp = summary.get("total_positions", tl + sp)
+            stats["countries"].append({
+                "code": cc,
+                "tariff_lines": tl,
+                "sub_positions": sp,
+                "total_positions": tp,
+                "lines_with_sub_positions": summary.get("lines_with_sub_positions", 0),
+                "vat_rate": summary.get("vat_rate_pct", 0),
+                "dd_avg": summary.get("dd_rate_range", {}).get("avg", 0),
+                "chapters": summary.get("chapters_covered", 0),
+                "generated_at": data.get("generated_at", ""),
+            })
+            stats["total_tariff_lines"] += tl
+            stats["total_sub_positions"] += sp
+            stats["total_positions"] += tp
+    stats["country_count"] = len(stats["countries"])
+    return stats
+
+
 @router.get("/{country_code}/summary")
 async def get_country_tariff_summary(country_code: str):
     collector = get_collector()
