@@ -16,7 +16,7 @@ try:
 except ImportError:
     AIOSMTPLIB_AVAILABLE = False
 
-from backend.notifications.base_notifier import (
+from .base_notifier import (
     BaseNotifier,
     NotificationData,
     NotificationType,

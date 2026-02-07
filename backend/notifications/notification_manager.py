@@ -10,14 +10,14 @@ import asyncio
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 
-from backend.notifications.base_notifier import (
+from .base_notifier import (
     BaseNotifier,
     NotificationData,
     NotificationType,
     NotificationSeverity,
 )
-from backend.notifications.email_notifier import EmailNotifier
-from backend.notifications.slack_notifier import SlackNotifier
+from .email_notifier import EmailNotifier
+from .slack_notifier import SlackNotifier
 
 logger = logging.getLogger(__name__)
 

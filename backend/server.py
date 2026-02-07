@@ -2185,12 +2185,22 @@ async def get_all_unctad():
 
 from routes.substitution import register_routes as register_substitution_routes
 
-# Initialize export router with database connection
 try:
-    from backend.routers.export_router import init_db as init_export_db
+    from routers.export_router import init_db as init_export_db
     init_export_db(db)
 except ImportError:
     pass
+
+try:
+    from services.crawl_orchestrator import init_orchestrator
+    init_orchestrator(
+        db_client=client,
+        notification_manager=notification_manager,
+        max_concurrency=5,
+    )
+    logging.info("Crawl orchestrator initialized")
+except Exception as e:
+    logging.warning(f"Crawl orchestrator initialization failed: {e}")
 
 register_routes(api_router)
 register_substitution_routes(api_router)

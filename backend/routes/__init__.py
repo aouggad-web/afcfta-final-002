@@ -44,12 +44,17 @@ try:
 except ImportError:
     TRADE_DATA_AVAILABLE = False
 
-# Import export router from backend.routers
 try:
-    from backend.routers.export_router import router as export_router
+    from routers.export_router import router as export_router
     EXPORT_ROUTER_AVAILABLE = True
 except ImportError:
     EXPORT_ROUTER_AVAILABLE = False
+
+try:
+    from .crawl import router as crawl_router
+    CRAWL_AVAILABLE = True
+except ImportError:
+    CRAWL_AVAILABLE = False
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -69,6 +74,7 @@ def register_routes(api_router: APIRouter):
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(trade_data_router, tags=["Trade Data Sources"])
     
-    # Register export router if available
     if EXPORT_ROUTER_AVAILABLE:
         api_router.include_router(export_router, tags=["Export"])
+    if CRAWL_AVAILABLE:
+        api_router.include_router(crawl_router, tags=["Crawl Orchestration"])
