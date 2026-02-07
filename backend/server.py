@@ -452,6 +452,10 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # ============================================================
     # SOURCE PRINCIPALE: Données tarifaires collectées et vérifiées
     # ============================================================
+    collected_taxes_detail = []
+    collected_fiscal_advantages = []
+    collected_admin_formalities = []
+
     if tariff_service.is_loaded():
         tariff_info = tariff_service.get_tariff_precision_info(dest_iso3, hs_code_clean)
         if tariff_info:
@@ -461,6 +465,10 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             sub_position_used = tariff_info.get("sub_position_code")
             sub_position_description = tariff_info.get("sub_position_description")
             data_source = "collected_verified"
+
+            collected_taxes_detail = tariff_info.get("taxes_detail", [])
+            collected_fiscal_advantages = tariff_info.get("fiscal_advantages", [])
+            collected_admin_formalities = tariff_info.get("administrative_formalities", [])
 
             zlecaf_rate_val, zlecaf_source = tariff_service.get_zlecaf_rate(dest_iso3, hs6_code)
             if zlecaf_rate_val is not None:
@@ -473,7 +481,23 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                 zlecaf_source = f"ZLECAf ({product_category})"
 
             vat_rate, vat_source = tariff_service.get_vat_rate(dest_iso3)
-            other_taxes_rate, other_taxes_detail = tariff_service.get_other_taxes(dest_iso3)
+
+            if collected_taxes_detail:
+                product_other = sum(
+                    t["rate"] for t in collected_taxes_detail
+                    if t["tax"] not in ("D.D", "T.V.A")
+                ) / 100.0
+                other_taxes_rate = product_other
+                other_taxes_detail = {
+                    t["tax"].lower().replace(".", ""): t["rate"]
+                    for t in collected_taxes_detail
+                    if t["tax"] not in ("D.D", "T.V.A")
+                }
+                vat_from_detail = next((t["rate"] for t in collected_taxes_detail if t["tax"] == "T.V.A"), None)
+                if vat_from_detail is not None:
+                    vat_rate = vat_from_detail / 100.0
+            else:
+                other_taxes_rate, other_taxes_detail = tariff_service.get_other_taxes(dest_iso3)
     
     # ============================================================
     # FALLBACK: Modules ETL si données collectées non disponibles
@@ -543,14 +567,6 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     total_savings_with_taxes = normal_total - zlecaf_total
     total_savings_percentage = (total_savings_with_taxes / normal_total) * 100 if normal_total > 0 else 0
     
-    # Préparer les détails des taxes pour le journal de calcul
-    # Extraire les composantes des autres taxes
-    rs_rate = other_taxes_detail.get('rs', 0) / 100 if other_taxes_detail.get('rs') else 0
-    pcs_rate = other_taxes_detail.get('pcs', 0) / 100 if other_taxes_detail.get('pcs') else 0
-    cedeao_rate = other_taxes_detail.get('cedeao', 0) / 100 if other_taxes_detail.get('cedeao') else 0
-    tci_rate = other_taxes_detail.get('tci', 0) / 100 if other_taxes_detail.get('tci') else 0
-    
-    # Créer le journal de calcul détaillé pour NPF avec références légales
     legal_refs = {
         "cif": {"ref": "Incoterms 2020 - CIF", "url": "https://iccwbo.org/resources-for-business/incoterms-rules/incoterms-2020/"},
         "dd": {"ref": f"Tarif douanier {dest_iso3}", "url": None},
@@ -559,36 +575,77 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         "cedeao": {"ref": "Protocole CEDEAO A/P1/1/03", "url": None},
         "tci": {"ref": "Règlement CEMAC 02/01", "url": None},
         "vat": {"ref": f"Code Général des Impôts {dest_iso3}", "url": None},
-        "zlecaf": {"ref": "Accord ZLECAf Art. 8", "url": "https://au.int/en/treaties/agreement-establishing-african-continental-free-trade-area"}
+        "zlecaf": {"ref": "Accord ZLECAf Art. 8", "url": "https://au.int/en/treaties/agreement-establishing-african-continental-free-trade-area"},
+        "daps": {"ref": f"Décret exécutif - DAPS {dest_iso3}", "url": None},
+        "prct": {"ref": f"Loi de Finances {dest_iso3}", "url": None},
+        "tcs": {"ref": f"Réglementation sanitaire {dest_iso3}", "url": None},
     }
-    
+
     normal_journal = [
         {"step": 1, "component": "Valeur CIF", "base": request.value, "rate": "-", "amount": request.value, "cumulative": request.value, "legal_ref": legal_refs["cif"]["ref"], "legal_ref_url": legal_refs["cif"]["url"]},
-        {"step": 2, "component": "Droits de douane (DD)", "base": request.value, "rate": f"{normal_rate*100:.1f}%", "amount": round(normal_customs, 2), "cumulative": round(request.value + normal_customs, 2), "legal_ref": legal_refs["dd"]["ref"], "legal_ref_url": legal_refs["dd"]["url"]},
     ]
-    step = 3
-    cumulative = request.value + normal_customs
-    if rs_rate > 0:
-        rs_amount = round(request.value * rs_rate, 2)
-        cumulative += rs_amount
-        normal_journal.append({"step": step, "component": "Redevance statistique (RS)", "base": request.value, "rate": f"{rs_rate*100:.1f}%", "amount": rs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["rs"]["ref"], "legal_ref_url": legal_refs["rs"]["url"]})
-        step += 1
-    if pcs_rate > 0:
-        pcs_amount = round(request.value * pcs_rate, 2)
-        cumulative += pcs_amount
-        normal_journal.append({"step": step, "component": "PCS UEMOA", "base": request.value, "rate": f"{pcs_rate*100:.1f}%", "amount": pcs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["pcs"]["ref"], "legal_ref_url": legal_refs["pcs"]["url"]})
-        step += 1
-    if cedeao_rate > 0:
-        cedeao_amount = round(request.value * cedeao_rate, 2)
-        cumulative += cedeao_amount
-        normal_journal.append({"step": step, "component": "Prélèvement CEDEAO (PC)", "base": request.value, "rate": f"{cedeao_rate*100:.1f}%", "amount": cedeao_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["cedeao"]["ref"], "legal_ref_url": legal_refs["cedeao"]["url"]})
-        step += 1
-    if tci_rate > 0:
-        tci_amount = round(request.value * tci_rate, 2)
-        cumulative += tci_amount
-        normal_journal.append({"step": step, "component": "TCI CEMAC", "base": request.value, "rate": f"{tci_rate*100:.1f}%", "amount": tci_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["tci"]["ref"], "legal_ref_url": legal_refs["tci"]["url"]})
-        step += 1
-    normal_journal.append({"step": step, "component": "TVA", "base": round(normal_vat_base, 2), "rate": f"{vat_rate*100:.1f}%", "amount": round(normal_vat_amount, 2), "cumulative": round(normal_total, 2), "legal_ref": legal_refs["vat"]["ref"], "legal_ref_url": legal_refs["vat"]["url"]})
+    step = 2
+    cumulative = request.value
+
+    if collected_taxes_detail:
+        for tax_item in collected_taxes_detail:
+            tax_name = tax_item["tax"]
+            tax_rate_pct = tax_item["rate"]
+            tax_rate_dec = tax_rate_pct / 100.0
+            tax_amount = round(request.value * tax_rate_dec, 2) if tax_name != "T.V.A" else round(normal_vat_amount, 2)
+
+            if tax_name == "T.V.A":
+                tax_base = round(normal_vat_base, 2)
+                cumulative = round(normal_total, 2)
+            else:
+                tax_base = request.value
+                cumulative += tax_amount
+
+            ref_key = tax_name.lower().replace(".", "").replace(" ", "")
+            ref = legal_refs.get(ref_key, {"ref": tax_item.get("observation", ""), "url": None})
+
+            normal_journal.append({
+                "step": step,
+                "component": f"{tax_name} ({tax_item.get('observation', '')})" if tax_item.get("observation") else tax_name,
+                "base": tax_base,
+                "rate": f"{tax_rate_pct:.1f}%",
+                "amount": tax_amount,
+                "cumulative": round(cumulative, 2),
+                "legal_ref": ref["ref"],
+                "legal_ref_url": ref.get("url"),
+            })
+            step += 1
+    else:
+        normal_journal.append({"step": step, "component": "Droits de douane (DD)", "base": request.value, "rate": f"{normal_rate*100:.1f}%", "amount": round(normal_customs, 2), "cumulative": round(request.value + normal_customs, 2), "legal_ref": legal_refs["dd"]["ref"], "legal_ref_url": legal_refs["dd"]["url"]})
+        step = 3
+        cumulative = request.value + normal_customs
+
+        rs_rate = other_taxes_detail.get('rs', 0) / 100 if other_taxes_detail.get('rs') else 0
+        pcs_rate = other_taxes_detail.get('pcs', 0) / 100 if other_taxes_detail.get('pcs') else 0
+        cedeao_rate = other_taxes_detail.get('cedeao', 0) / 100 if other_taxes_detail.get('cedeao') else 0
+        tci_rate = other_taxes_detail.get('tci', 0) / 100 if other_taxes_detail.get('tci') else 0
+
+        if rs_rate > 0:
+            rs_amount = round(request.value * rs_rate, 2)
+            cumulative += rs_amount
+            normal_journal.append({"step": step, "component": "Redevance statistique (RS)", "base": request.value, "rate": f"{rs_rate*100:.1f}%", "amount": rs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["rs"]["ref"], "legal_ref_url": legal_refs["rs"]["url"]})
+            step += 1
+        if pcs_rate > 0:
+            pcs_amount = round(request.value * pcs_rate, 2)
+            cumulative += pcs_amount
+            normal_journal.append({"step": step, "component": "PCS UEMOA", "base": request.value, "rate": f"{pcs_rate*100:.1f}%", "amount": pcs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["pcs"]["ref"], "legal_ref_url": legal_refs["pcs"]["url"]})
+            step += 1
+        if cedeao_rate > 0:
+            cedeao_amount = round(request.value * cedeao_rate, 2)
+            cumulative += cedeao_amount
+            normal_journal.append({"step": step, "component": "Prélèvement CEDEAO (PC)", "base": request.value, "rate": f"{cedeao_rate*100:.1f}%", "amount": cedeao_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["cedeao"]["ref"], "legal_ref_url": legal_refs["cedeao"]["url"]})
+            step += 1
+        if tci_rate > 0:
+            tci_amount = round(request.value * tci_rate, 2)
+            cumulative += tci_amount
+            normal_journal.append({"step": step, "component": "TCI CEMAC", "base": request.value, "rate": f"{tci_rate*100:.1f}%", "amount": tci_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["tci"]["ref"], "legal_ref_url": legal_refs["tci"]["url"]})
+            step += 1
+        normal_journal.append({"step": step, "component": "TVA", "base": round(normal_vat_base, 2), "rate": f"{vat_rate*100:.1f}%", "amount": round(normal_vat_amount, 2), "cumulative": round(normal_total, 2), "legal_ref": legal_refs["vat"]["ref"], "legal_ref_url": legal_refs["vat"]["url"]})
     
     # Créer le journal de calcul détaillé pour ZLECAf avec références légales
     zlecaf_journal = [
@@ -711,20 +768,18 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         normal_tariff_amount=round(normal_customs, 2),
         zlecaf_tariff_rate=zlecaf_rate,
         zlecaf_tariff_amount=round(zlecaf_customs, 2),
-        # Taxes normales (NPF)
         normal_vat_rate=vat_rate,
         normal_vat_amount=round(normal_vat_amount, 2),
-        normal_statistical_fee=round(request.value * rs_rate, 2),
-        normal_community_levy=round(request.value * pcs_rate, 2),
-        normal_ecowas_levy=round(request.value * cedeao_rate, 2),
+        normal_statistical_fee=round(request.value * other_taxes_detail.get('rs', 0) / 100, 2) if other_taxes_detail.get('rs') else 0,
+        normal_community_levy=round(request.value * other_taxes_detail.get('pcs', 0) / 100, 2) if other_taxes_detail.get('pcs') else 0,
+        normal_ecowas_levy=round(request.value * other_taxes_detail.get('cedeao', 0) / 100, 2) if other_taxes_detail.get('cedeao') else 0,
         normal_other_taxes_total=round(other_taxes_amount, 2),
         normal_total_cost=round(normal_total, 2),
-        # Taxes ZLECAf
         zlecaf_vat_rate=vat_rate,
         zlecaf_vat_amount=round(zlecaf_vat_amount, 2),
-        zlecaf_statistical_fee=round(request.value * rs_rate, 2),
-        zlecaf_community_levy=round(request.value * pcs_rate, 2),
-        zlecaf_ecowas_levy=round(request.value * cedeao_rate, 2),
+        zlecaf_statistical_fee=round(request.value * other_taxes_detail.get('rs', 0) / 100, 2) if other_taxes_detail.get('rs') else 0,
+        zlecaf_community_levy=round(request.value * other_taxes_detail.get('pcs', 0) / 100, 2) if other_taxes_detail.get('pcs') else 0,
+        zlecaf_ecowas_levy=round(request.value * other_taxes_detail.get('cedeao', 0) / 100, 2) if other_taxes_detail.get('cedeao') else 0,
         zlecaf_other_taxes_total=round(other_taxes_amount, 2),
         zlecaf_total_cost=round(zlecaf_total, 2),
         # Économies
@@ -745,7 +800,10 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         available_sub_positions_count=len(sub_positions_available),
         rate_warning=rate_warning,
         sub_positions_details=sub_positions_details,
-        # Autres données
+        taxes_detail=collected_taxes_detail if collected_taxes_detail else None,
+        fiscal_advantages=collected_fiscal_advantages if collected_fiscal_advantages else None,
+        administrative_formalities=collected_admin_formalities if collected_admin_formalities else None,
+        data_source=data_source,
         rules_of_origin=rules,
         top_african_producers=top_producers,
         origin_country_data=wb_data.get(origin_country['wb_code'], {}),

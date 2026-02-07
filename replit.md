@@ -14,19 +14,26 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 ```
 ├── backend/           # FastAPI backend
 │   ├── server.py      # Main server file
+│   ├── models.py      # Pydantic response models
 │   ├── middlewares/    # Security middlewares (CSP, CSRF, Rate Limit)
 │   ├── routes/        # API route modules
 │   │   ├── tariff_data.py  # Tariff data collection + monitoring endpoints
 │   │   └── crawl.py        # Crawl orchestration endpoints
 │   ├── services/      # Business logic services
-│   │   ├── crawl_orchestrator.py    # Crawl job management
-│   │   └── tariff_data_collector.py # Tariff data consolidation engine
-│   ├── etl/           # Data extraction/transformation (HS6, tariffs, taxes)
+│   │   ├── tariff_data_collector.py # Tariff data consolidation engine (enhanced v2)
+│   │   ├── tariff_data_service.py   # Singleton data service with tax detail support
+│   │   └── crawl_orchestrator.py    # Crawl job management
+│   ├── etl/           # Data extraction/transformation
+│   │   ├── country_taxes_algeria.py  # Algeria-specific taxes (DAPS, DD, PRCT, TCS, TVA)
+│   │   ├── country_tariffs.py        # Chapter-level tariffs per country
+│   │   ├── country_tariffs_complete.py # Complete tariff system with VAT, other taxes
+│   │   ├── country_hs6_detailed*.py   # Country-specific HS6 sub-positions
+│   │   └── hs6_csv_database.py        # 5,762 HS6 codes from WCO 2022
 │   ├── crawlers/      # Web scrapers + generic tariff collector
 │   ├── routers/       # Export router (CSV, Excel, JSON)
 │   ├── notifications/ # Alert system (Email, Slack)
 │   ├── tests/         # Unit tests (pytest)
-│   └── data/tariffs/  # Generated tariff JSON files (54 countries)
+│   └── data/tariffs/  # Generated tariff JSON files (54 countries, enhanced_v2 format)
 ├── frontend/          # React frontend
 │   ├── src/           # React source code
 │   │   └── components/tools/MonitoringDashboard.jsx  # Tariff monitoring UI
@@ -42,19 +49,28 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 - REACT_APP_BACKEND_URL: empty string (uses proxy)
 - Frontend proxy: forwards API calls to http://localhost:8000
 
-## Tariff Data System
+## Tariff Data System (Enhanced v2)
 - **Architecture**: Collected tariff data (JSON files) is the single source of truth for the calculator
+- **Data Format**: `enhanced_v2` - includes individual tax components, fiscal advantages, administrative formalities
 - **Data Service**: `TariffDataService` singleton loads all collected data into memory at startup
 - **Auto-collection**: If no data files exist on startup, runs initial collection automatically
-- **Source data**: ETL modules with chapter-level tariffs (54 countries), HS6 detailed rates (NGA, CIV, ZAF, KEN + regional groupings), VAT rates, other taxes
+- **Source data**: ETL modules with chapter-level tariffs (54 countries), HS6 detailed rates, VAT rates, other taxes
+- **Country-specific tax modules**: Algeria has dedicated module (`country_taxes_algeria.py`) with:
+  - Product-level DAPS rates (30-200% on ~1095 products)
+  - Product-level DD rates (overrides chapter defaults)
+  - PRCT (2%), TCS (3% on food/agricultural products)
+  - TVA standard (19%) and reduced (9%)
+  - Administrative formalities by product category
+  - Fiscal advantages (ZLECAf DD exemption)
 - **HS6 Database**: 5,762 product codes from WCO Harmonized System 2022
 - **Sub-positions**: HS8/HS10/HS12 generated from SUB_POSITION_TYPES definitions + real COUNTRY_HS6_DETAILED data
 - **Collection**: `POST /api/tariff-data/collect` generates JSON files per country
 - **Data per country**: ~5,831 HS6 lines + ~16,000 sub-positions = ~22,000 positions per country
 - **Total**: 314,874 HS6 lines + 871,565 sub-positions = 1,186,439 positions across 54 countries
+- **Enhanced JSON per line**: `taxes_detail[]`, `fiscal_advantages[]`, `administrative_formalities[]`, `total_taxes_pct`
 - **Calculator integration**: `/api/calculate-tariff` uses collected data as primary source, ETL as fallback
+- **Calculator response**: Now includes `taxes_detail`, `fiscal_advantages`, `administrative_formalities`, `data_source`
 - **Status endpoint**: `GET /api/tariff-data/status` shows data source info
-- **Monitoring**: `GET /api/tariff-data/monitoring/stats` returns real-time collection statistics
 - **API**: `/api/tariff-data/{country_code}` with chapter/HS6 filters and pagination
 - **Scheduler**: Annual collection (January)
 
@@ -72,6 +88,9 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 The `start.sh` script launches both backend (uvicorn) and frontend (craco) concurrently.
 
 ## Recent Changes
+- 2026-02-07: Enhanced tariff data format v2 - individual tax components (DAPS, DD, PRCT, TCS, TVA), fiscal advantages (ZLECAf exemptions), administrative formalities per product
+- 2026-02-07: Created Algeria-specific tax module with verified rates: DAPS 30-200%, DD overrides per product, PRCT 2%, TCS 3%, TVA 19%/9%
+- 2026-02-07: Calculator now returns taxes_detail[], fiscal_advantages[], administrative_formalities[] in response
 - 2026-02-07: Connected collected tariff data to calculator - TariffDataService as single source of truth, auto-collection on startup, ETL fallback
 - 2026-02-07: Added security middlewares (CSP, Rate Limiting, CSRF), monitoring dashboard, expanded sub-positions (1.18M total positions), unit tests (20 passing)
 - 2026-02-07: Built tariff data collection system - 314,874 tariff lines for 54 countries with DD, VAT, other taxes
@@ -81,3 +100,5 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
 ## User Preferences
 - Language: French preferred for technical discussions
 - Focus: Fiscal/regulatory data accuracy for customs calculations
+- Data priority: Individual tax components per product (not just DD + VAT totals)
+- Validation reference: Algeria customs data (douane.gov.dz) for DAPS, DD, PRCT, TCS, TVA

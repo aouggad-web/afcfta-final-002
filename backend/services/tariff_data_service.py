@@ -113,6 +113,50 @@ class TariffDataService:
         detail = summary.get("other_taxes_detail", {})
         return (other_pct / 100.0, detail)
 
+    def get_taxes_detail(self, country_code: str, hs_code: str) -> Optional[Dict]:
+        country_code = country_code.upper()
+        hs6 = hs_code[:6].zfill(6)
+
+        if len(hs_code) > 6:
+            sub_data = self._sub_position_index.get(country_code, {}).get(hs_code)
+            if sub_data and sub_data.get("parent_line"):
+                line = sub_data["parent_line"]
+                return {
+                    "hs_code": hs_code,
+                    "parent_hs6": hs6,
+                    "description_fr": sub_data.get("description_fr", ""),
+                    "description_en": sub_data.get("description_en", ""),
+                    "dd_rate": sub_data.get("dd", line.get("dd_rate", 0)),
+                    "vat_rate": line.get("vat_rate", 0),
+                    "taxes_detail": line.get("taxes_detail", []),
+                    "total_taxes_pct": line.get("total_taxes_pct", 0),
+                    "fiscal_advantages": line.get("fiscal_advantages", []),
+                    "administrative_formalities": line.get("administrative_formalities", []),
+                    "unit": line.get("unit", "KG"),
+                    "category": line.get("category", ""),
+                    "precision": "sub_position",
+                }
+
+        line = self.get_tariff_line(country_code, hs6)
+        if line:
+            return {
+                "hs_code": hs6,
+                "parent_hs6": hs6,
+                "description_fr": line.get("description_fr", ""),
+                "description_en": line.get("description_en", ""),
+                "dd_rate": line.get("dd_rate", 0),
+                "vat_rate": line.get("vat_rate", 0),
+                "taxes_detail": line.get("taxes_detail", []),
+                "total_taxes_pct": line.get("total_taxes_pct", 0),
+                "fiscal_advantages": line.get("fiscal_advantages", []),
+                "administrative_formalities": line.get("administrative_formalities", []),
+                "unit": line.get("unit", "KG"),
+                "category": line.get("category", ""),
+                "precision": "hs6_collected",
+            }
+
+        return None
+
     def get_sub_position_rate(self, country_code: str, full_code: str) -> Tuple[Optional[float], str, str]:
         country_code = country_code.upper()
         full_code = full_code.replace(".", "").replace(" ", "")
@@ -141,6 +185,10 @@ class TariffDataService:
         if len(hs_code_clean) > 6:
             rate, desc, source = self.get_sub_position_rate(country_code, hs_code_clean)
             if rate is not None:
+                line = self.get_tariff_line(country_code, hs6)
+                taxes_detail = line.get("taxes_detail", []) if line else []
+                fiscal_advantages = line.get("fiscal_advantages", []) if line else []
+                admin_formalities = line.get("administrative_formalities", []) if line else []
                 return {
                     "rate": rate,
                     "source": source,
@@ -148,6 +196,9 @@ class TariffDataService:
                     "sub_position_code": hs_code_clean,
                     "sub_position_description": desc,
                     "description_fr": desc,
+                    "taxes_detail": taxes_detail,
+                    "fiscal_advantages": fiscal_advantages,
+                    "administrative_formalities": admin_formalities,
                 }
 
         line = self.get_tariff_line(country_code, hs6)
@@ -160,6 +211,9 @@ class TariffDataService:
                 "sub_position_code": None,
                 "sub_position_description": None,
                 "description_fr": line.get("description_fr", ""),
+                "taxes_detail": line.get("taxes_detail", []),
+                "fiscal_advantages": line.get("fiscal_advantages", []),
+                "administrative_formalities": line.get("administrative_formalities", []),
             }
 
         return None
