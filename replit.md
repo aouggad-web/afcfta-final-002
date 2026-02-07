@@ -43,12 +43,17 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 - Frontend proxy: forwards API calls to http://localhost:8000
 
 ## Tariff Data System
+- **Architecture**: Collected tariff data (JSON files) is the single source of truth for the calculator
+- **Data Service**: `TariffDataService` singleton loads all collected data into memory at startup
+- **Auto-collection**: If no data files exist on startup, runs initial collection automatically
 - **Source data**: ETL modules with chapter-level tariffs (54 countries), HS6 detailed rates (NGA, CIV, ZAF, KEN + regional groupings), VAT rates, other taxes
 - **HS6 Database**: 5,762 product codes from WCO Harmonized System 2022
 - **Sub-positions**: HS8/HS10/HS12 generated from SUB_POSITION_TYPES definitions + real COUNTRY_HS6_DETAILED data
 - **Collection**: `POST /api/tariff-data/collect` generates JSON files per country
 - **Data per country**: ~5,831 HS6 lines + ~16,000 sub-positions = ~22,000 positions per country
 - **Total**: 314,874 HS6 lines + 871,565 sub-positions = 1,186,439 positions across 54 countries
+- **Calculator integration**: `/api/calculate-tariff` uses collected data as primary source, ETL as fallback
+- **Status endpoint**: `GET /api/tariff-data/status` shows data source info
 - **Monitoring**: `GET /api/tariff-data/monitoring/stats` returns real-time collection statistics
 - **API**: `/api/tariff-data/{country_code}` with chapter/HS6 filters and pagination
 - **Scheduler**: Annual collection (January)
@@ -67,6 +72,7 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 The `start.sh` script launches both backend (uvicorn) and frontend (craco) concurrently.
 
 ## Recent Changes
+- 2026-02-07: Connected collected tariff data to calculator - TariffDataService as single source of truth, auto-collection on startup, ETL fallback
 - 2026-02-07: Added security middlewares (CSP, Rate Limiting, CSRF), monitoring dashboard, expanded sub-positions (1.18M total positions), unit tests (20 passing)
 - 2026-02-07: Built tariff data collection system - 314,874 tariff lines for 54 countries with DD, VAT, other taxes
 - 2026-02-07: Created crawl orchestration system with API routes, notification integration

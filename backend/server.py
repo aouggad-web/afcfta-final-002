@@ -103,6 +103,8 @@ from etl.hs6_database import (
 # Import routes module for modular endpoint registration
 from routes import register_routes
 
+from services.tariff_data_service import tariff_service
+
 try:
     from backend.notifications import NotificationManager
 except ImportError:
@@ -389,12 +391,30 @@ async def get_rules_of_origin(hs_code: str, lang: str = "fr"):
         }
     }
 
+@api_router.get("/tariff-data/status")
+async def get_tariff_data_status():
+    """Statut du service de données tarifaires collectées"""
+    stats = tariff_service.get_stats()
+    return {
+        "status": "active" if stats["loaded"] and stats["countries"] > 0 else "inactive",
+        "data_source": "collected_verified" if stats["loaded"] and stats["countries"] > 0 else "etl_fallback",
+        "countries_loaded": stats["countries"],
+        "total_hs6_lines": stats["total_hs6_lines"],
+        "total_sub_positions": stats["total_sub_positions"],
+        "total_positions": stats["total_positions"],
+        "description": "Données tarifaires consolidées et vérifiées pour le calculateur" if stats["loaded"] else "Utilisation des modules ETL comme source de données"
+    }
+
 @api_router.post("/calculate-tariff", response_model=TariffCalculationResponse)
 async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
-    """Calculer les tarifs complets avec données officielles 2025 et règles d'origine
+    """Calculer les tarifs complets avec données tarifaires collectées et vérifiées
     
     Accepte les codes ISO2 (ex: DZ) ou ISO3 (ex: DZA) pour les pays
     Supporte les codes HS de 6 à 12 chiffres pour plus de précision
+    
+    SOURCE DES DONNÉES:
+    - Principale: Données tarifaires collectées (1.18M positions, 54 pays)
+    - Fallback: Modules ETL si données collectées non disponibles
     
     ORDRE DE PRIORITÉ DES TARIFS:
     1. Sous-position nationale (8-12 chiffres) si fournie
@@ -427,47 +447,65 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     tariff_precision = "chapter"
     sub_position_used = None
     sub_position_description = None
+    data_source = "etl_fallback"
     
     # ============================================================
-    # PRIORITÉ 1: Sous-position nationale (8-12 chiffres)
+    # SOURCE PRINCIPALE: Données tarifaires collectées et vérifiées
     # ============================================================
-    if len(hs_code_clean) > 6:
-        rate, description, source = get_sub_position_rate(dest_iso3, hs_code_clean)
-        if rate is not None:
-            normal_rate = rate
-            npf_source = f"Sous-position nationale {dest_iso3} ({hs_code_clean})"
-            tariff_precision = "sub_position"
-            sub_position_used = hs_code_clean
-            sub_position_description = description
+    if tariff_service.is_loaded():
+        tariff_info = tariff_service.get_tariff_precision_info(dest_iso3, hs_code_clean)
+        if tariff_info:
+            normal_rate = tariff_info["rate"]
+            npf_source = tariff_info["source"]
+            tariff_precision = tariff_info["precision"]
+            sub_position_used = tariff_info.get("sub_position_code")
+            sub_position_description = tariff_info.get("sub_position_description")
+            data_source = "collected_verified"
+
+            zlecaf_rate_val, zlecaf_source = tariff_service.get_zlecaf_rate(dest_iso3, hs6_code)
+            if zlecaf_rate_val is not None:
+                zlecaf_rate = zlecaf_rate_val
+            else:
+                from etl.country_tariffs_complete import get_product_category, get_zlecaf_reduction_factor
+                product_category = get_product_category(hs6_code)
+                reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
+                zlecaf_rate = normal_rate * reduction_factor
+                zlecaf_source = f"ZLECAf ({product_category})"
+
+            vat_rate, vat_source = tariff_service.get_vat_rate(dest_iso3)
+            other_taxes_rate, other_taxes_detail = tariff_service.get_other_taxes(dest_iso3)
     
     # ============================================================
-    # PRIORITÉ 2: Tarifs SH6 RÉELS par pays de destination
+    # FALLBACK: Modules ETL si données collectées non disponibles
     # ============================================================
-    if tariff_precision == "chapter":
-        hs6_tariff = get_country_hs6_tariff(dest_iso3, hs6_code)
-        
-        if hs6_tariff:
-            normal_rate = hs6_tariff["dd"]
-            npf_source = f"Tarif SH6 {dest_iso3} ({hs6_code})"
-            tariff_precision = "hs6_country"
-        else:
-            # PRIORITÉ 3: Fallback vers taux par chapitre du pays
-            normal_rate, npf_source = get_tariff_rate_for_country(dest_iso3, hs6_code)
-            tariff_precision = "chapter"
-    
-    # Obtenir le taux ZLECAf calculé selon le calendrier de libéralisation
-    # Le taux ZLECAf est calculé à partir du taux normal avec réduction progressive
-    from etl.country_tariffs_complete import get_product_category, get_zlecaf_reduction_factor
-    product_category = get_product_category(hs6_code)
-    reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
-    zlecaf_rate = normal_rate * reduction_factor
-    zlecaf_source = f"ZLECAf ({product_category})"
-    
-    # Obtenir le taux de TVA du pays
-    vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
-    
-    # Obtenir les autres taxes du pays
-    other_taxes_rate, other_taxes_detail = get_other_taxes_for_country(dest_iso3)
+    if data_source != "collected_verified":
+        if len(hs_code_clean) > 6:
+            rate, description, source = get_sub_position_rate(dest_iso3, hs_code_clean)
+            if rate is not None:
+                normal_rate = rate
+                npf_source = f"Sous-position nationale {dest_iso3} ({hs_code_clean})"
+                tariff_precision = "sub_position"
+                sub_position_used = hs_code_clean
+                sub_position_description = description
+
+        if tariff_precision == "chapter":
+            hs6_tariff = get_country_hs6_tariff(dest_iso3, hs6_code)
+            if hs6_tariff:
+                normal_rate = hs6_tariff["dd"]
+                npf_source = f"Tarif SH6 {dest_iso3} ({hs6_code})"
+                tariff_precision = "hs6_country"
+            else:
+                normal_rate, npf_source = get_tariff_rate_for_country(dest_iso3, hs6_code)
+                tariff_precision = "chapter"
+
+        from etl.country_tariffs_complete import get_product_category, get_zlecaf_reduction_factor
+        product_category = get_product_category(hs6_code)
+        reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
+        zlecaf_rate = normal_rate * reduction_factor
+        zlecaf_source = f"ZLECAf ({product_category})"
+
+        vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
+        other_taxes_rate, other_taxes_detail = get_other_taxes_for_country(dest_iso3)
     
     # Source de tarif pour affichage
     rate_source = f"Tarif officiel {dest_iso3} - {npf_source}"
@@ -623,8 +661,20 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     wb_data = await wb_client.get_country_data([origin_country['wb_code'], dest_country['wb_code']])
     
     # Vérifier si des sous-positions alternatives existent pour ce HS6
-    sub_positions_available = get_all_sub_positions(dest_iso3, hs6_code)
-    has_varying, min_rate, max_rate = has_varying_rates(dest_iso3, hs6_code)
+    if tariff_service.is_loaded() and data_source == "collected_verified":
+        collected_subs = tariff_service.get_sub_positions_for_hs6(dest_iso3, hs6_code)
+        if collected_subs:
+            sub_positions_available = collected_subs
+            rates = [sp.get("dd", 0) / 100.0 for sp in collected_subs]
+            has_varying = len(set(rates)) > 1
+            min_rate = min(rates) if rates else 0
+            max_rate = max(rates) if rates else 0
+        else:
+            sub_positions_available = get_all_sub_positions(dest_iso3, hs6_code)
+            has_varying, min_rate, max_rate = has_varying_rates(dest_iso3, hs6_code)
+    else:
+        sub_positions_available = get_all_sub_positions(dest_iso3, hs6_code)
+        has_varying, min_rate, max_rate = has_varying_rates(dest_iso3, hs6_code)
     
     # Construire le warning et les détails si taux variables
     rate_warning = None
@@ -687,8 +737,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         zlecaf_calculation_journal=zlecaf_journal,
         computation_order_ref="Codes douaniers nationaux + Directives CEDEAO/UEMOA/CEMAC/EAC/SACU",
         last_verified="2025-01",
-        confidence_level="high" if tariff_precision in ["sub_position", "hs6_country"] else "medium",
-        # Précision tarifaire et sous-positions
+        confidence_level="high" if data_source == "collected_verified" or tariff_precision in ["sub_position", "hs6_country", "hs6_collected"] else "medium",
         tariff_precision=tariff_precision,
         sub_position_used=sub_position_used,
         sub_position_description=sub_position_description,
@@ -2215,6 +2264,27 @@ try:
     logging.info("Crawl orchestrator initialized")
 except Exception as e:
     logging.warning(f"Crawl orchestrator initialization failed: {e}")
+
+@app.on_event("startup")
+async def startup_load_tariff_data():
+    """Load collected tariff data on startup for the calculator"""
+    try:
+        tariff_service.load()
+        stats = tariff_service.get_stats()
+        if stats["countries"] > 0:
+            logging.info(f"Tariff data service ready: {stats['countries']} countries, "
+                         f"{stats['total_positions']:,} positions loaded")
+        else:
+            logging.info("No pre-collected tariff data found. Running initial collection...")
+            from services.tariff_data_collector import TariffDataCollector
+            collector = TariffDataCollector()
+            result = collector.collect_all_countries()
+            logging.info(f"Initial collection complete: {result['total_tariff_lines']} lines for {result['countries_processed']} countries")
+            tariff_service.load(force=True)
+            stats = tariff_service.get_stats()
+            logging.info(f"Tariff data service ready after collection: {stats['countries']} countries")
+    except Exception as e:
+        logging.warning(f"Tariff data service startup: {e}. Calculator will use ETL fallback.")
 
 register_routes(api_router)
 register_substitution_routes(api_router)
