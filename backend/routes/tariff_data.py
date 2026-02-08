@@ -412,27 +412,35 @@ async def list_downloads():
     available = sorted(collector.get_available_countries())
     countries = []
     for cc in available:
-        files = []
-        total_size = 0
         json_path = os.path.join(TARIFFS_DIR, f"{cc}_tariffs.json")
         has_data = os.path.exists(json_path)
+        if not has_data:
+            countries.append({
+                "code": cc, "name": COUNTRY_NAMES.get(cc, cc),
+                "csv_ready": False, "files": [], "file_count": 0, "total_size_kb": 0,
+            })
+            continue
+        first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
+        if not os.path.exists(first_csv):
+            _generate_country_csvs(cc)
+        files = []
+        total_size = 0
         for ch_start, ch_end in CHAPTER_GROUPS:
             csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{ch_start}-{ch_end}.csv")
             if os.path.exists(csv_path):
                 size_kb = round(os.path.getsize(csv_path) / 1024)
             else:
                 size_kb = 0
-            if has_data:
-                files.append({
-                    "group": f"{ch_start}-{ch_end}",
-                    "size_kb": size_kb,
-                    "download_url": f"/tariff-data/download/{cc}/{ch_start}-{ch_end}",
-                })
-                total_size += size_kb
+            files.append({
+                "group": f"{ch_start}-{ch_end}",
+                "size_kb": size_kb,
+                "download_url": f"/tariff-data/download/{cc}/{ch_start}-{ch_end}",
+            })
+            total_size += size_kb
         countries.append({
             "code": cc,
             "name": COUNTRY_NAMES.get(cc, cc),
-            "csv_ready": has_data,
+            "csv_ready": True,
             "files": files,
             "file_count": len(files),
             "total_size_kb": total_size,
