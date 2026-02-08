@@ -186,7 +186,7 @@ export default function TariffDownloads({ language = 'fr' }) {
                 </div>
               </div>
               <a
-                href={`${API}/tariff-data/download-zip/region/${regionKey}`}
+                href={`${API}/tariff-data/download-region-zip/${regionKey}`}
                 download
                 className="inline-flex items-center gap-2 bg-white text-gray-800 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors text-sm shadow-md no-underline"
               >

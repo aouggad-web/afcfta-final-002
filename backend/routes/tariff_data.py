@@ -519,7 +519,7 @@ async def download_country_zip(country_code: str):
     )
 
 
-@router.get("/download-zip/region/{region_key}")
+@router.get("/download-region-zip/{region_key}")
 async def download_region_zip(region_key: str):
     region = REGIONS.get(region_key)
     if not region:
