@@ -74,7 +74,7 @@ const CHAPTER_LABELS = {
 export default function TariffDownloads({ language = 'fr' }) {
   const [downloadData, setDownloadData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [downloading, setDownloading] = useState({});
+
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [expandedCountry, setExpandedCountry] = useState(null);
 
@@ -129,25 +129,8 @@ export default function TariffDownloads({ language = 'fr' }) {
     }
   };
 
-  const handleDownload = async (downloadUrl, filename, key) => {
-    setDownloading(prev => ({ ...prev, [key]: true }));
-    try {
-      const res = await axios.get(`${API}${downloadUrl}`, {
-        responseType: 'blob',
-      });
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', filename);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error('Download error:', err);
-    } finally {
-      setDownloading(prev => ({ ...prev, [key]: false }));
-    }
+  const handleDownload = (downloadUrl) => {
+    window.open(`${API}${downloadUrl}`, '_blank');
   };
 
   if (loading) {
@@ -247,9 +230,7 @@ export default function TariffDownloads({ language = 'fr' }) {
               {expandedCountry === country.code && country.files && (
                 <div className="px-4 pb-4 border-t border-gray-100">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
-                    {country.files.map((file) => {
-                      const dlKey = `${country.code}_${file.group}`;
-                      return (
+                    {country.files.map((file) => (
                         <div
                           key={file.group}
                           className="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-200"
@@ -266,19 +247,13 @@ export default function TariffDownloads({ language = 'fr' }) {
                             className="ml-2 shrink-0 hover:bg-green-50 hover:border-green-500 hover:text-green-700"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleDownload(
-                                file.download_url,
-                                `Tarifs_NPF_${country.name}_${country.code}_ch${file.group}.csv`,
-                                dlKey
-                              );
+                              handleDownload(file.download_url);
                             }}
-                            disabled={downloading[dlKey]}
                           >
-                            {downloading[dlKey] ? t.downloading : "📥"}
+                            📥
                           </Button>
                         </div>
-                      );
-                    })}
+                    ))}
                   </div>
                 </div>
               )}
