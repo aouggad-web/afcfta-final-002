@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
@@ -71,6 +70,65 @@ const CHAPTER_LABELS = {
   },
 };
 
+function DownloadButton({ url, label, icon, className, size = "normal" }) {
+  const [status, setStatus] = useState('idle');
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (status === 'loading') return;
+    setStatus('loading');
+    try {
+      const res = await fetch(`${API}${url}`);
+      if (!res.ok) throw new Error('Download failed');
+      const blob = await res.blob();
+      const disposition = res.headers.get('content-disposition') || '';
+      let filename = 'download.zip';
+      const match = disposition.match(/filename="?([^"]+)"?/);
+      if (match) filename = match[1];
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(blobUrl);
+      }, 200);
+      setStatus('done');
+      setTimeout(() => setStatus('idle'), 3000);
+    } catch (err) {
+      console.error('Download error:', err);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+    }
+  };
+
+  const sizeClasses = size === "small"
+    ? "px-2 py-1 text-xs"
+    : "px-4 py-2 text-sm";
+
+  const statusLabel = status === 'loading'
+    ? "⏳"
+    : status === 'done'
+    ? "✅"
+    : status === 'error'
+    ? "❌"
+    : `${icon} ${label}`;
+
+  return (
+    <button
+      onClick={handleClick}
+      disabled={status === 'loading'}
+      className={`inline-flex items-center gap-1 font-semibold rounded-lg transition-all ${sizeClasses} ${className} ${status === 'loading' ? 'opacity-70 cursor-wait' : 'hover:opacity-90 cursor-pointer'}`}
+    >
+      {statusLabel}
+    </button>
+  );
+}
+
 export default function TariffDownloads({ language = 'fr' }) {
   const [downloadData, setDownloadData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -81,29 +139,23 @@ export default function TariffDownloads({ language = 'fr' }) {
     title: "Téléchargement des Tarifs NPF (Droit Commun)",
     subtitle: "54 pays - Droits et taxes NPF avec sous-positions nationales",
     loading: "Chargement des données...",
-    downloadCountry: "Télécharger ZIP",
+    downloadCountry: "ZIP",
     downloadRegion: "Télécharger tout le groupe",
-    chapters: "Chapitres",
-    files: "fichiers",
-    total: "Total",
+    chapters: "Ch.",
     format: "HS6 + sous-positions nationales (HS8/HS10/HS12)",
     columnsDetail: "Code, Niveau, Description FR/EN, Taxes spécifiques au pays, Formalités, Total%",
     error: "Erreur de chargement",
-    seeChapters: "Voir les chapitres",
     countries: "pays",
   } : {
     title: "MFN Tariff Data Download (Common Law)",
     subtitle: "54 countries - MFN duties and taxes with national sub-positions",
     loading: "Loading data...",
-    downloadCountry: "Download ZIP",
+    downloadCountry: "ZIP",
     downloadRegion: "Download entire group",
-    chapters: "Chapters",
-    files: "files",
-    total: "Total",
+    chapters: "Ch.",
     format: "HS6 + national sub-positions (HS8/HS10/HS12)",
     columnsDetail: "Code, Level, Description FR/EN, Country-specific taxes, Formalities, Total%",
     error: "Loading error",
-    seeChapters: "See chapters",
     countries: "countries",
   };
 
@@ -185,13 +237,12 @@ export default function TariffDownloads({ language = 'fr' }) {
                   {regionCountries.length} {t.countries} — {Math.round(totalSizeKb / 1024 * 10) / 10} MB
                 </div>
               </div>
-              <a
-                href={`${API}/tariff-data/download-region-zip/${regionKey}`}
-                download
-                className="inline-flex items-center gap-2 bg-white text-gray-800 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors text-sm shadow-md no-underline"
-              >
-                📦 {t.downloadRegion}
-              </a>
+              <DownloadButton
+                url={`/tariff-data/download-region-zip/${regionKey}`}
+                label={t.downloadRegion}
+                icon="📦"
+                className="bg-white text-gray-800 shadow-md"
+              />
             </div>
 
             <CardContent className="p-3">
@@ -204,17 +255,16 @@ export default function TariffDownloads({ language = 'fr' }) {
                         <div className="text-xs text-gray-500">{country.code} — {country.total_size_kb} KB</div>
                       </div>
                       <div className="flex items-center gap-1 ml-2">
-                        <a
-                          href={`${API}/tariff-data/download-zip/${country.code}`}
-                          download
-                          className="inline-flex items-center gap-1 bg-green-600 text-white font-medium px-3 py-1.5 rounded hover:bg-green-700 transition-colors text-xs no-underline"
-                        >
-                          📥 ZIP
-                        </a>
+                        <DownloadButton
+                          url={`/tariff-data/download-zip/${country.code}`}
+                          label={t.downloadCountry}
+                          icon="📥"
+                          className="bg-green-600 text-white"
+                          size="small"
+                        />
                         <button
                           className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1.5"
                           onClick={() => setExpandedCountry(expandedCountry === country.code ? null : country.code)}
-                          title={t.seeChapters}
                         >
                           {expandedCountry === country.code ? "▲" : "▼"}
                         </button>
@@ -226,17 +276,17 @@ export default function TariffDownloads({ language = 'fr' }) {
                         {country.files.map((file) => (
                           <div key={file.group} className="flex items-center justify-between p-1.5 text-xs">
                             <div className="flex-1 min-w-0">
-                              <span className="font-medium">Ch. {file.group}</span>
+                              <span className="font-medium">{t.chapters} {file.group}</span>
                               <span className="text-gray-400 ml-1 hidden sm:inline">{chapterLabels[file.group]}</span>
                               <span className="text-gray-400 ml-1"> — {file.size_kb} KB</span>
                             </div>
-                            <a
-                              href={`${API}${file.download_url}`}
-                              download
-                              className="text-green-600 hover:text-green-800 font-medium no-underline ml-1"
-                            >
-                              CSV
-                            </a>
+                            <DownloadButton
+                              url={file.download_url}
+                              label="CSV"
+                              icon="📄"
+                              className="bg-gray-100 text-green-700 hover:bg-green-50"
+                              size="small"
+                            />
                           </div>
                         ))}
                       </div>
