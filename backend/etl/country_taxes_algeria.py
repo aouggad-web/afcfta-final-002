@@ -438,6 +438,59 @@ DZA_FORMALITIES_BY_CATEGORY = {
     ],
 }
 
+DZA_SUB_POSITION_DD_RULES = {
+    "breeding_slaughter": {
+        "chapters": [
+            "01", "02", "03", "04", "05",
+        ],
+        "overrides": {
+            "1000": 5.0,
+            "9000": 30.0,
+        },
+    },
+    "farmed_wild": {
+        "chapters": [
+            "01", "02", "03", "04", "05",
+        ],
+        "overrides": {
+            "1000": 5.0,
+            "9000": 15.0,
+        },
+    },
+    "new_used": {
+        "chapters": [
+            "84", "85", "87", "90",
+        ],
+        "overrides": {
+            "1000": None,
+            "9000": 30.0,
+        },
+    },
+    "assembly": {
+        "chapters": [
+            "84", "85", "87",
+        ],
+        "overrides": {
+            "1000": 5.0,
+            "2000": None,
+        },
+    },
+}
+
+
+def get_dza_sub_position_dd(hs6_code: str, sp_type: str, suffix: str, parent_dd: float) -> float:
+    rule = DZA_SUB_POSITION_DD_RULES.get(sp_type)
+    if not rule:
+        return parent_dd
+    chapter = hs6_code[:2].zfill(2)
+    if chapter not in rule.get("chapters", []):
+        return parent_dd
+    override = rule["overrides"].get(suffix)
+    if override is None:
+        return parent_dd
+    return override
+
+
 DZA_FISCAL_ADVANTAGES = {
     "zlecaf": {
         "tax": "dd",
