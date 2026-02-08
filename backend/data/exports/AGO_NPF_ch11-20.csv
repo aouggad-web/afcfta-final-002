@@ -1,0 +1,1109 @@
+﻿Code;Niveau;Chapitre;Description_FR;Description_EN;Categorie;Unite;DD_Taux_%;TVA_%;Autres_Taxes_%;Taxes_Detail;Formalites_Administratives;Total_Import_Taxes_%
+110100;HS6;11;Farines de blé ou de méteil;Wheat or meslin flour;flour;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1101001000;HS10;11;Farines de blé ou de méteil - Type 1;Wheat or meslin flour - Type 1;;;10.0;;;;;
+1101002000;HS10;11;Farines de blé ou de méteil - Type 2;Wheat or meslin flour - Type 2;;;10.0;;;;;
+1101009000;HS10;11;Farines de blé ou de méteil - Autre;Wheat or meslin flour - Other;;;10.0;;;;;
+110220;HS6;11;Farine de maïs;Maize flour;flour;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1102201000;HS10;11;Farine de maïs - Type 1;Maize flour - Type 1;;;10.0;;;;;
+1102202000;HS10;11;Farine de maïs - Type 2;Maize flour - Type 2;;;10.0;;;;;
+1102209000;HS10;11;Farine de maïs - Autre;Maize flour - Other;;;10.0;;;;;
+110290;HS6;11;Autres;Cereal flours;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1102901000;HS10;11;Autres - Type 1;Cereal flours - Type 1;;;10.0;;;;;
+1102902000;HS10;11;Autres - Type 2;Cereal flours - Type 2;;;10.0;;;;;
+1102909000;HS10;11;Autres - Autre;Cereal flours - Other;;;10.0;;;;;
+110311;HS6;11;De froment (blé);Cereal groats and meal;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1103111000;HS10;11;De froment (blé) - Type 1;Cereal groats and meal - Type 1;;;10.0;;;;;
+1103112000;HS10;11;De froment (blé) - Type 2;Cereal groats and meal - Type 2;;;10.0;;;;;
+1103119000;HS10;11;De froment (blé) - Autre;Cereal groats and meal - Other;;;10.0;;;;;
+110313;HS6;11;De maïs;Cereal groats and meal;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1103131000;HS10;11;De maïs - Type 1;Cereal groats and meal - Type 1;;;10.0;;;;;
+1103132000;HS10;11;De maïs - Type 2;Cereal groats and meal - Type 2;;;10.0;;;;;
+1103139000;HS10;11;De maïs - Autre;Cereal groats and meal - Other;;;10.0;;;;;
+110319;HS6;11;D'autres céréales;Cereal groats and meal;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1103191000;HS10;11;D'autres céréales - Type 1;Cereal groats and meal - Type 1;;;10.0;;;;;
+1103192000;HS10;11;D'autres céréales - Type 2;Cereal groats and meal - Type 2;;;10.0;;;;;
+1103199000;HS10;11;D'autres céréales - Autre;Cereal groats and meal - Other;;;10.0;;;;;
+110320;HS6;11;Agglomérés sous forme de pellets;Cereal pellets;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1103201000;HS10;11;Agglomérés sous forme de pellets - Type 1;Cereal pellets - Type 1;;;10.0;;;;;
+1103202000;HS10;11;Agglomérés sous forme de pellets - Type 2;Cereal pellets - Type 2;;;10.0;;;;;
+1103209000;HS10;11;Agglomérés sous forme de pellets - Autre;Cereal pellets - Other;;;10.0;;;;;
+110412;HS6;11;D'avoine;Cereal grains;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1104121000;HS10;11;D'avoine - Type 1;Cereal grains - Type 1;;;10.0;;;;;
+1104122000;HS10;11;D'avoine - Type 2;Cereal grains - Type 2;;;10.0;;;;;
+1104129000;HS10;11;D'avoine - Autre;Cereal grains - Other;;;10.0;;;;;
+110419;HS6;11;D'autres céréales;Cereal grains;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1104191000;HS10;11;D'autres céréales - Type 1;Cereal grains - Type 1;;;10.0;;;;;
+1104192000;HS10;11;D'autres céréales - Type 2;Cereal grains - Type 2;;;10.0;;;;;
+1104199000;HS10;11;D'autres céréales - Autre;Cereal grains - Other;;;10.0;;;;;
+110422;HS6;11;D'avoine;Cereal grains;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1104221000;HS10;11;D'avoine - Type 1;Cereal grains - Type 1;;;10.0;;;;;
+1104222000;HS10;11;D'avoine - Type 2;Cereal grains - Type 2;;;10.0;;;;;
+1104229000;HS10;11;D'avoine - Autre;Cereal grains - Other;;;10.0;;;;;
+110423;HS6;11;De maïs;Cereal grains;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1104231000;HS10;11;De maïs - Type 1;Cereal grains - Type 1;;;10.0;;;;;
+1104232000;HS10;11;De maïs - Type 2;Cereal grains - Type 2;;;10.0;;;;;
+1104239000;HS10;11;De maïs - Autre;Cereal grains - Other;;;10.0;;;;;
+110429;HS6;11;D'autres céréales;Cereal grains;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1104291000;HS10;11;D'autres céréales - Type 1;Cereal grains - Type 1;;;10.0;;;;;
+1104292000;HS10;11;D'autres céréales - Type 2;Cereal grains - Type 2;;;10.0;;;;;
+1104299000;HS10;11;D'autres céréales - Autre;Cereal grains - Other;;;10.0;;;;;
+110430;HS6;11;Germes de céréales;Cereal;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1104301000;HS10;11;Germes de céréales - Type 1;Cereal - Type 1;;;10.0;;;;;
+1104302000;HS10;11;Germes de céréales - Type 2;Cereal - Type 2;;;10.0;;;;;
+1104309000;HS10;11;Germes de céréales - Autre;Cereal - Other;;;10.0;;;;;
+110510;HS6;11;Farine;Flour;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1105101000;HS10;11;Farine - Type 1;Flour - Type 1;;;10.0;;;;;
+1105102000;HS10;11;Farine - Type 2;Flour - Type 2;;;10.0;;;;;
+1105109000;HS10;11;Farine - Autre;Flour - Other;;;10.0;;;;;
+110520;HS6;11;Flocons;Flakes;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1105201000;HS10;11;Flocons - Type 1;Flakes - Type 1;;;10.0;;;;;
+1105202000;HS10;11;Flocons - Type 2;Flakes - Type 2;;;10.0;;;;;
+1105209000;HS10;11;Flocons - Autre;Flakes - Other;;;10.0;;;;;
+110610;HS6;11;Des légumes à cosse secs du n°07.13;Flour;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1106101000;HS10;11;Des légumes à cosse secs du n°07.13 - Type 1;Flour - Type 1;;;10.0;;;;;
+1106102000;HS10;11;Des légumes à cosse secs du n°07.13 - Type 2;Flour - Type 2;;;10.0;;;;;
+1106109000;HS10;11;Des légumes à cosse secs du n°07.13 - Autre;Flour - Other;;;10.0;;;;;
+110620;HS6;11;Farine de manioc;Manioc flour;flour;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1106201000;HS10;11;Farine de manioc - Type 1;Manioc flour - Type 1;;;10.0;;;;;
+1106202000;HS10;11;Farine de manioc - Type 2;Manioc flour - Type 2;;;10.0;;;;;
+1106209000;HS10;11;Farine de manioc - Autre;Manioc flour - Other;;;10.0;;;;;
+110630;HS6;11;Des produits du Chapitre 8;Flour;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1106301000;HS10;11;Des produits du Chapitre 8 - Type 1;Flour - Type 1;;;10.0;;;;;
+1106302000;HS10;11;Des produits du Chapitre 8 - Type 2;Flour - Type 2;;;10.0;;;;;
+1106309000;HS10;11;Des produits du Chapitre 8 - Autre;Flour - Other;;;10.0;;;;;
+110710;HS6;11;Non torréfié;Malt;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1107101000;HS10;11;Non torréfié - Type 1;Malt - Type 1;;;10.0;;;;;
+1107102000;HS10;11;Non torréfié - Type 2;Malt - Type 2;;;10.0;;;;;
+1107109000;HS10;11;Non torréfié - Autre;Malt - Other;;;10.0;;;;;
+110720;HS6;11;Torréfié;Malt;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1107201000;HS10;11;Torréfié - Type 1;Malt - Type 1;;;10.0;;;;;
+1107202000;HS10;11;Torréfié - Type 2;Malt - Type 2;;;10.0;;;;;
+1107209000;HS10;11;Torréfié - Autre;Malt - Other;;;10.0;;;;;
+110811;HS6;11;Amidon de froment (blé);Starch;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1108111000;HS10;11;Amidon de froment (blé) - Type 1;Starch - Type 1;;;10.0;;;;;
+1108112000;HS10;11;Amidon de froment (blé) - Type 2;Starch - Type 2;;;10.0;;;;;
+1108119000;HS10;11;Amidon de froment (blé) - Autre;Starch - Other;;;10.0;;;;;
+110812;HS6;11;Amidon de maïs;Maize starch;starch;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1108120010;HS10;11;Amidon de maïs - Usage spécifique;Maize starch - Specific use;;;10.0;;;;;
+1108120090;HS10;11;Amidon de maïs - Autre usage;Maize starch - Other use;;;10.0;;;;;
+110813;HS6;11;Fécule de pommes de terre;Starch;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1108131000;HS10;11;Fécule de pommes de terre - Type 1;Starch - Type 1;;;10.0;;;;;
+1108132000;HS10;11;Fécule de pommes de terre - Type 2;Starch - Type 2;;;10.0;;;;;
+1108139000;HS10;11;Fécule de pommes de terre - Autre;Starch - Other;;;10.0;;;;;
+110814;HS6;11;Fécule de manioc;Manioc starch;starch;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1108140010;HS10;11;Fécule de manioc - Usage spécifique;Manioc starch - Specific use;;;10.0;;;;;
+1108140090;HS10;11;Fécule de manioc - Autre usage;Manioc starch - Other use;;;10.0;;;;;
+110819;HS6;11;Autres amidons et fécules;Starch;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1108191000;HS10;11;Autres amidons et fécules - Type 1;Starch - Type 1;;;10.0;;;;;
+1108192000;HS10;11;Autres amidons et fécules - Type 2;Starch - Type 2;;;10.0;;;;;
+1108199000;HS10;11;Autres amidons et fécules - Autre;Starch - Other;;;10.0;;;;;
+110820;HS6;11;Inuline;Inulin;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1108201000;HS10;11;Inuline - Type 1;Inulin - Type 1;;;10.0;;;;;
+1108202000;HS10;11;Inuline - Type 2;Inulin - Type 2;;;10.0;;;;;
+1108209000;HS10;11;Inuline - Autre;Inulin - Other;;;10.0;;;;;
+110900;HS6;11;Gluten de froment (blé);Wheat gluten;milling;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1109001000;HS10;11;Gluten de froment (blé) - Type 1;Wheat gluten - Type 1;;;10.0;;;;;
+1109002000;HS10;11;Gluten de froment (blé) - Type 2;Wheat gluten - Type 2;;;10.0;;;;;
+1109009000;HS10;11;Gluten de froment (blé) - Autre;Wheat gluten - Other;;;10.0;;;;;
+120110;HS6;12;De semence;Soya beans;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1201101000;HS10;12;De semence - Type 1;Soya beans - Type 1;;;10.0;;;;;
+1201102000;HS10;12;De semence - Type 2;Soya beans - Type 2;;;10.0;;;;;
+1201109000;HS10;12;De semence - Autre;Soya beans - Other;;;10.0;;;;;
+120190;HS6;12;Fèves de soja autres;Other soya beans;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1201900010;HS10;12;Fèves de soja autres - Usage spécifique;Other soya beans - Specific use;;;10.0;;;;;
+1201900090;HS10;12;Fèves de soja autres - Autre usage;Other soya beans - Other use;;;10.0;;;;;
+120230;HS6;12;De semence;Ground-nuts;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1202301000;HS10;12;De semence - Type 1;Ground-nuts - Type 1;;;10.0;;;;;
+1202302000;HS10;12;De semence - Type 2;Ground-nuts - Type 2;;;10.0;;;;;
+1202309000;HS10;12;De semence - Autre;Ground-nuts - Other;;;10.0;;;;;
+120241;HS6;12;Arachides en coques;Groundnuts in shell;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1202411000;HS10;12;Arachides en coques - Grade 1 / Premium;Groundnuts in shell - Grade 1 / Premium;;;10.0;;;;;
+1202412000;HS10;12;Arachides en coques - Grade 2 / Standard;Groundnuts in shell - Grade 2 / Standard;;;10.0;;;;;
+1202419000;HS10;12;Arachides en coques - Autre;Groundnuts in shell - Other;;;10.0;;;;;
+120242;HS6;12;Décortiquées;Ground-nuts;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1202421000;HS10;12;Décortiquées - Type 1;Ground-nuts - Type 1;;;10.0;;;;;
+1202422000;HS10;12;Décortiquées - Type 2;Ground-nuts - Type 2;;;10.0;;;;;
+1202429000;HS10;12;Décortiquées - Autre;Ground-nuts - Other;;;10.0;;;;;
+120300;HS6;12;Coprah;Copra;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1203001000;HS10;12;Coprah - Type 1;Copra - Type 1;;;10.0;;;;;
+1203002000;HS10;12;Coprah - Type 2;Copra - Type 2;;;10.0;;;;;
+1203009000;HS10;12;Coprah - Autre;Copra - Other;;;10.0;;;;;
+120400;HS6;12;"Graines de lin"","" même concassées";Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1204001000;HS10;12;"Graines de lin"","" même concassées - Type 1";Oil seeds - Type 1;;;10.0;;;;;
+1204002000;HS10;12;"Graines de lin"","" même concassées - Type 2";Oil seeds - Type 2;;;10.0;;;;;
+1204009000;HS10;12;"Graines de lin"","" même concassées - Autre";Oil seeds - Other;;;10.0;;;;;
+120510;HS6;12;Graines de navette ou de colza à faible teneur en acide érucique;Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1205101000;HS10;12;Graines de navette ou de colza à faible teneur en acide érucique - Type 1;Oil seeds - Type 1;;;10.0;;;;;
+1205102000;HS10;12;Graines de navette ou de colza à faible teneur en acide érucique - Type 2;Oil seeds - Type 2;;;10.0;;;;;
+1205109000;HS10;12;Graines de navette ou de colza à faible teneur en acide érucique - Autre;Oil seeds - Other;;;10.0;;;;;
+120590;HS6;12;Autres;Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1205901000;HS10;12;Autres - Type 1;Oil seeds - Type 1;;;10.0;;;;;
+1205902000;HS10;12;Autres - Type 2;Oil seeds - Type 2;;;10.0;;;;;
+1205909000;HS10;12;Autres - Autre;Oil seeds - Other;;;10.0;;;;;
+120600;HS6;12;Graines de tournesol;Sunflower seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1206000010;HS10;12;Graines de tournesol - Usage spécifique;Sunflower seeds - Specific use;;;10.0;;;;;
+1206000090;HS10;12;Graines de tournesol - Autre usage;Sunflower seeds - Other use;;;10.0;;;;;
+120710;HS6;12;Noix et amandes de palmiste;Palm nuts and kernels;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207100010;HS10;12;Noix et amandes de palmiste - Usage spécifique;Palm nuts and kernels - Specific use;;;10.0;;;;;
+1207100090;HS10;12;Noix et amandes de palmiste - Autre usage;Palm nuts and kernels - Other use;;;10.0;;;;;
+120721;HS6;12;Graines de coton de semence;Cotton seeds for sowing;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207211000;HS10;12;Graines de coton de semence - Variété 1;Cotton seeds for sowing - Variety 1;;;10.0;;;;;
+1207212000;HS10;12;Graines de coton de semence - Variété 2;Cotton seeds for sowing - Variety 2;;;10.0;;;;;
+1207219000;HS10;12;Graines de coton de semence - Autre;Cotton seeds for sowing - Other;;;10.0;;;;;
+120729;HS6;12;Autres;Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207291000;HS10;12;Autres - Type 1;Oil seeds - Type 1;;;10.0;;;;;
+1207292000;HS10;12;Autres - Type 2;Oil seeds - Type 2;;;10.0;;;;;
+1207299000;HS10;12;Autres - Autre;Oil seeds - Other;;;10.0;;;;;
+120730;HS6;12;Graines de ricin;Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207301000;HS10;12;Graines de ricin - Type 1;Oil seeds - Type 1;;;10.0;;;;;
+1207302000;HS10;12;Graines de ricin - Type 2;Oil seeds - Type 2;;;10.0;;;;;
+1207309000;HS10;12;Graines de ricin - Autre;Oil seeds - Other;;;10.0;;;;;
+120740;HS6;12;Graines de sésame;Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207401000;HS10;12;Graines de sésame - Type 1;Oil seeds - Type 1;;;10.0;;;;;
+1207402000;HS10;12;Graines de sésame - Type 2;Oil seeds - Type 2;;;10.0;;;;;
+1207409000;HS10;12;Graines de sésame - Autre;Oil seeds - Other;;;10.0;;;;;
+120750;HS6;12;Graines de moutarde;Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207501000;HS10;12;Graines de moutarde - Type 1;Oil seeds - Type 1;;;10.0;;;;;
+1207502000;HS10;12;Graines de moutarde - Type 2;Oil seeds - Type 2;;;10.0;;;;;
+1207509000;HS10;12;Graines de moutarde - Autre;Oil seeds - Other;;;10.0;;;;;
+120760;HS6;12;Graines de carthame (Carthamus tinctorius);Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207601000;HS10;12;Graines de carthame (Carthamus tinctorius) - Type 1;Oil seeds - Type 1;;;10.0;;;;;
+1207602000;HS10;12;Graines de carthame (Carthamus tinctorius) - Type 2;Oil seeds - Type 2;;;10.0;;;;;
+1207609000;HS10;12;Graines de carthame (Carthamus tinctorius) - Autre;Oil seeds - Other;;;10.0;;;;;
+120770;HS6;12;Graines de melon;Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207701000;HS10;12;Graines de melon - Type 1;Oil seeds - Type 1;;;10.0;;;;;
+1207702000;HS10;12;Graines de melon - Type 2;Oil seeds - Type 2;;;10.0;;;;;
+1207709000;HS10;12;Graines de melon - Autre;Oil seeds - Other;;;10.0;;;;;
+120791;HS6;12;Graines d'oeillette ou de pavot;Oil seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207911000;HS10;12;Graines d'oeillette ou de pavot - Type 1;Oil seeds - Type 1;;;10.0;;;;;
+1207912000;HS10;12;Graines d'oeillette ou de pavot - Type 2;Oil seeds - Type 2;;;10.0;;;;;
+1207919000;HS10;12;Graines d'oeillette ou de pavot - Autre;Oil seeds - Other;;;10.0;;;;;
+120799;HS6;12;Autres;Oil seeds and oleaginous fruits;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1207991000;HS10;12;Autres - Type 1;Oil seeds and oleaginous fruits - Type 1;;;10.0;;;;;
+1207992000;HS10;12;Autres - Type 2;Oil seeds and oleaginous fruits - Type 2;;;10.0;;;;;
+1207999000;HS10;12;Autres - Autre;Oil seeds and oleaginous fruits - Other;;;10.0;;;;;
+120810;HS6;12;De fèves de soja;Flours and meals;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1208101000;HS10;12;De fèves de soja - Type 1;Flours and meals - Type 1;;;10.0;;;;;
+1208102000;HS10;12;De fèves de soja - Type 2;Flours and meals - Type 2;;;10.0;;;;;
+1208109000;HS10;12;De fèves de soja - Autre;Flours and meals - Other;;;10.0;;;;;
+120890;HS6;12;Autres;Flours and meals of oil seeds or oleaginous fruits;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1208901000;HS10;12;Autres - Type 1;Flours and meals of oil seeds or oleaginous fruits - Type 1;;;10.0;;;;;
+1208902000;HS10;12;Autres - Type 2;Flours and meals of oil seeds or oleaginous fruits - Type 2;;;10.0;;;;;
+1208909000;HS10;12;Autres - Autre;Flours and meals of oil seeds or oleaginous fruits - Other;;;10.0;;;;;
+120910;HS6;12;Graines de betteraves à sucre;Seed;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209101000;HS10;12;Graines de betteraves à sucre - Type 1;Seed - Type 1;;;10.0;;;;;
+1209102000;HS10;12;Graines de betteraves à sucre - Type 2;Seed - Type 2;;;10.0;;;;;
+1209109000;HS10;12;Graines de betteraves à sucre - Autre;Seed - Other;;;10.0;;;;;
+120921;HS6;12;De luzerne;Seeds of forage plants;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209211000;HS10;12;De luzerne - Type 1;Seeds of forage plants - Type 1;;;10.0;;;;;
+1209212000;HS10;12;De luzerne - Type 2;Seeds of forage plants - Type 2;;;10.0;;;;;
+1209219000;HS10;12;De luzerne - Autre;Seeds of forage plants - Other;;;10.0;;;;;
+120922;HS6;12;De trèfle (Trifolium spp.);Seeds of forage plants;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209221000;HS10;12;De trèfle (Trifolium spp.) - Type 1;Seeds of forage plants - Type 1;;;10.0;;;;;
+1209222000;HS10;12;De trèfle (Trifolium spp.) - Type 2;Seeds of forage plants - Type 2;;;10.0;;;;;
+1209229000;HS10;12;De trèfle (Trifolium spp.) - Autre;Seeds of forage plants - Other;;;10.0;;;;;
+120923;HS6;12;De fétuque;Seeds of forage plants;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209231000;HS10;12;De fétuque - Type 1;Seeds of forage plants - Type 1;;;10.0;;;;;
+1209232000;HS10;12;De fétuque - Type 2;Seeds of forage plants - Type 2;;;10.0;;;;;
+1209239000;HS10;12;De fétuque - Autre;Seeds of forage plants - Other;;;10.0;;;;;
+120924;HS6;12;Du pâturin des prés du Kentucky (Poa pratensis L.);Seeds of forage plants;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209241000;HS10;12;Du pâturin des prés du Kentucky (Poa pratensis L.) - Type 1;Seeds of forage plants - Type 1;;;10.0;;;;;
+1209242000;HS10;12;Du pâturin des prés du Kentucky (Poa pratensis L.) - Type 2;Seeds of forage plants - Type 2;;;10.0;;;;;
+1209249000;HS10;12;Du pâturin des prés du Kentucky (Poa pratensis L.) - Autre;Seeds of forage plants - Other;;;10.0;;;;;
+120925;HS6;12;De ray grass (Lolium multiflorum Lam.;Seeds of forage plants;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209251000;HS10;12;De ray grass (Lolium multiflorum Lam. - Type 1;Seeds of forage plants - Type 1;;;10.0;;;;;
+1209252000;HS10;12;De ray grass (Lolium multiflorum Lam. - Type 2;Seeds of forage plants - Type 2;;;10.0;;;;;
+1209259000;HS10;12;De ray grass (Lolium multiflorum Lam. - Autre;Seeds of forage plants - Other;;;10.0;;;;;
+120929;HS6;12;Autres;Seeds of forage plants;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209291000;HS10;12;Autres - Type 1;Seeds of forage plants - Type 1;;;10.0;;;;;
+1209292000;HS10;12;Autres - Type 2;Seeds of forage plants - Type 2;;;10.0;;;;;
+1209299000;HS10;12;Autres - Autre;Seeds of forage plants - Other;;;10.0;;;;;
+120930;HS6;12;Graines de plantes herbacées utilisées principalement pour leurs fleurs;Seeds of herbaceous plants;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209301000;HS10;12;Graines de plantes herbacées utilisées principalement pour leurs fleurs - Type 1;Seeds of herbaceous plants - Type 1;;;10.0;;;;;
+1209302000;HS10;12;Graines de plantes herbacées utilisées principalement pour leurs fleurs - Type 2;Seeds of herbaceous plants - Type 2;;;10.0;;;;;
+1209309000;HS10;12;Graines de plantes herbacées utilisées principalement pour leurs fleurs - Autre;Seeds of herbaceous plants - Other;;;10.0;;;;;
+120991;HS6;12;Graines de légumes;Seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209911000;HS10;12;Graines de légumes - Type 1;Seeds - Type 1;;;10.0;;;;;
+1209912000;HS10;12;Graines de légumes - Type 2;Seeds - Type 2;;;10.0;;;;;
+1209919000;HS10;12;Graines de légumes - Autre;Seeds - Other;;;10.0;;;;;
+120999;HS6;12;Autres;Seeds;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1209991000;HS10;12;Autres - Type 1;Seeds - Type 1;;;10.0;;;;;
+1209992000;HS10;12;Autres - Type 2;Seeds - Type 2;;;10.0;;;;;
+1209999000;HS10;12;Autres - Autre;Seeds - Other;;;10.0;;;;;
+121010;HS6;12;Cônes de houblon;Hop cones;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1210101000;HS10;12;Cônes de houblon - Type 1;Hop cones - Type 1;;;10.0;;;;;
+1210102000;HS10;12;Cônes de houblon - Type 2;Hop cones - Type 2;;;10.0;;;;;
+1210109000;HS10;12;Cônes de houblon - Autre;Hop cones - Other;;;10.0;;;;;
+121020;HS6;12;Cônes de houblon;lupuline;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1210201000;HS10;12;Cônes de houblon - Type 1;lupuline - Type 1;;;10.0;;;;;
+1210202000;HS10;12;Cônes de houblon - Type 2;lupuline - Type 2;;;10.0;;;;;
+1210209000;HS10;12;Cônes de houblon - Autre;lupuline - Other;;;10.0;;;;;
+121120;HS6;12;Racines de Ginseng;Ginseng roots;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1211201000;HS10;12;Racines de Ginseng - Type 1;Ginseng roots - Type 1;;;10.0;;;;;
+1211202000;HS10;12;Racines de Ginseng - Type 2;Ginseng roots - Type 2;;;10.0;;;;;
+1211209000;HS10;12;Racines de Ginseng - Autre;Ginseng roots - Other;;;10.0;;;;;
+121130;HS6;12;Coca (feuille de);Coca leaf;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1211301000;HS10;12;Coca (feuille de) - Type 1;Coca leaf - Type 1;;;10.0;;;;;
+1211302000;HS10;12;Coca (feuille de) - Type 2;Coca leaf - Type 2;;;10.0;;;;;
+1211309000;HS10;12;Coca (feuille de) - Autre;Coca leaf - Other;;;10.0;;;;;
+121140;HS6;12;Paille de pavot;Poppy straw;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1211401000;HS10;12;Paille de pavot - Type 1;Poppy straw - Type 1;;;10.0;;;;;
+1211402000;HS10;12;Paille de pavot - Type 2;Poppy straw - Type 2;;;10.0;;;;;
+1211409000;HS10;12;Paille de pavot - Autre;Poppy straw - Other;;;10.0;;;;;
+121150;HS6;12;Ephédra;Ephedra;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1211501000;HS10;12;Ephédra - Type 1;Ephedra - Type 1;;;10.0;;;;;
+1211502000;HS10;12;Ephédra - Type 2;Ephedra - Type 2;;;10.0;;;;;
+1211509000;HS10;12;Ephédra - Autre;Ephedra - Other;;;10.0;;;;;
+121160;HS6;12;Ecorce de cerisier africain (Prunus africana);Bark of African cherry (Prunus africana);oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1211601000;HS10;12;Ecorce de cerisier africain (Prunus africana) - Type 1;Bark of African cherry (Prunus africana) - Type 1;;;10.0;;;;;
+1211602000;HS10;12;Ecorce de cerisier africain (Prunus africana) - Type 2;Bark of African cherry (Prunus africana) - Type 2;;;10.0;;;;;
+1211609000;HS10;12;Ecorce de cerisier africain (Prunus africana) - Autre;Bark of African cherry (Prunus africana) - Other;;;10.0;;;;;
+121190;HS6;12;Plantes pour parfumerie/pharmacie;Plants for perfumery/pharmacy;plants;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1211901000;HS10;12;Plantes pour parfumerie/pharmacie - Espèce 1;Plants for perfumery/pharmacy - Species 1;;;10.0;;;;;
+1211902000;HS10;12;Plantes pour parfumerie/pharmacie - Espèce 2;Plants for perfumery/pharmacy - Species 2;;;10.0;;;;;
+1211909000;HS10;12;Plantes pour parfumerie/pharmacie - Autre espèce;Plants for perfumery/pharmacy - Other species;;;10.0;;;;;
+121221;HS6;12;Destinées à l'alimentation humaine;Seaweeds and other algae;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1212211000;HS10;12;Destinées à l'alimentation humaine - Type 1;Seaweeds and other algae - Type 1;;;10.0;;;;;
+1212212000;HS10;12;Destinées à l'alimentation humaine - Type 2;Seaweeds and other algae - Type 2;;;10.0;;;;;
+1212219000;HS10;12;Destinées à l'alimentation humaine - Autre;Seaweeds and other algae - Other;;;10.0;;;;;
+121229;HS6;12;Autres;Seaweeds and other algae;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1212291000;HS10;12;Autres - Type 1;Seaweeds and other algae - Type 1;;;10.0;;;;;
+1212292000;HS10;12;Autres - Type 2;Seaweeds and other algae - Type 2;;;10.0;;;;;
+1212299000;HS10;12;Autres - Autre;Seaweeds and other algae - Other;;;10.0;;;;;
+121291;HS6;12;Betteraves à sucre;Sugar beet;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1212911000;HS10;12;Betteraves à sucre - Type 1;Sugar beet - Type 1;;;10.0;;;;;
+1212912000;HS10;12;Betteraves à sucre - Type 2;Sugar beet - Type 2;;;10.0;;;;;
+1212919000;HS10;12;Betteraves à sucre - Autre;Sugar beet - Other;;;10.0;;;;;
+121292;HS6;12;Canne à sucre fraîche;Fresh sugar cane;sugar;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+121293;HS6;12;Cannes à sucre;Sugar cane;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1212931000;HS10;12;Cannes à sucre - Type 1;Sugar cane - Type 1;;;10.0;;;;;
+1212932000;HS10;12;Cannes à sucre - Type 2;Sugar cane - Type 2;;;10.0;;;;;
+1212939000;HS10;12;Cannes à sucre - Autre;Sugar cane - Other;;;10.0;;;;;
+121294;HS6;12;Racines de chicorée;Chicory roots (Chicorium intybus sativum);oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1212941000;HS10;12;Racines de chicorée - Type 1;Chicory roots (Chicorium intybus sativum) - Type 1;;;10.0;;;;;
+1212942000;HS10;12;Racines de chicorée - Type 2;Chicory roots (Chicorium intybus sativum) - Type 2;;;10.0;;;;;
+1212949000;HS10;12;Racines de chicorée - Autre;Chicory roots (Chicorium intybus sativum) - Other;;;10.0;;;;;
+121299;HS6;12;Autres;Vegetable products;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1212991000;HS10;12;Autres - Type 1;Vegetable products - Type 1;;;10.0;;;;;
+1212992000;HS10;12;Autres - Type 2;Vegetable products - Type 2;;;10.0;;;;;
+1212999000;HS10;12;Autres - Autre;Vegetable products - Other;;;10.0;;;;;
+121300;HS6;12;Pailles et balles de céréales brutes;Cereal straw and husks;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1213001000;HS10;12;Pailles et balles de céréales brutes - Type 1;Cereal straw and husks - Type 1;;;10.0;;;;;
+1213002000;HS10;12;Pailles et balles de céréales brutes - Type 2;Cereal straw and husks - Type 2;;;10.0;;;;;
+1213009000;HS10;12;Pailles et balles de céréales brutes - Autre;Cereal straw and husks - Other;;;10.0;;;;;
+121410;HS6;12;Farine et agglomérés sous forme de pellets de luzerne;Lucerne (alfalfa) meal and pellets;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1214101000;HS10;12;Farine et agglomérés sous forme de pellets de luzerne - Type 1;Lucerne (alfalfa) meal and pellets - Type 1;;;10.0;;;;;
+1214102000;HS10;12;Farine et agglomérés sous forme de pellets de luzerne - Type 2;Lucerne (alfalfa) meal and pellets - Type 2;;;10.0;;;;;
+1214109000;HS10;12;Farine et agglomérés sous forme de pellets de luzerne - Autre;Lucerne (alfalfa) meal and pellets - Other;;;10.0;;;;;
+121490;HS6;12;Autres;Forage products including swedes;oilseeds;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1214901000;HS10;12;Autres - Type 1;Forage products including swedes - Type 1;;;10.0;;;;;
+1214902000;HS10;12;Autres - Type 2;Forage products including swedes - Type 2;;;10.0;;;;;
+1214909000;HS10;12;Autres - Autre;Forage products including swedes - Other;;;10.0;;;;;
+130120;HS6;13;Gomme arabique;Gum Arabic;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1301201000;HS10;13;Gomme arabique - Type 1;Gum Arabic - Type 1;;;10.0;;;;;
+1301202000;HS10;13;Gomme arabique - Type 2;Gum Arabic - Type 2;;;10.0;;;;;
+1301209000;HS10;13;Gomme arabique - Autre;Gum Arabic - Other;;;10.0;;;;;
+130190;HS6;13;Autres;Natural gums;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1301901000;HS10;13;Autres - Type 1;Natural gums - Type 1;;;10.0;;;;;
+1301902000;HS10;13;Autres - Type 2;Natural gums - Type 2;;;10.0;;;;;
+1301909000;HS10;13;Autres - Autre;Natural gums - Other;;;10.0;;;;;
+130211;HS6;13;Opium;Vegetable saps and extracts;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1302111000;HS10;13;Opium - Type 1;Vegetable saps and extracts - Type 1;;;10.0;;;;;
+1302112000;HS10;13;Opium - Type 2;Vegetable saps and extracts - Type 2;;;10.0;;;;;
+1302119000;HS10;13;Opium - Autre;Vegetable saps and extracts - Other;;;10.0;;;;;
+130212;HS6;13;De réglisse;Vegetable saps and extracts;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1302121000;HS10;13;De réglisse - Type 1;Vegetable saps and extracts - Type 1;;;10.0;;;;;
+1302122000;HS10;13;De réglisse - Type 2;Vegetable saps and extracts - Type 2;;;10.0;;;;;
+1302129000;HS10;13;De réglisse - Autre;Vegetable saps and extracts - Other;;;10.0;;;;;
+130213;HS6;13;De houblon;Vegetable saps and extracts;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1302131000;HS10;13;De houblon - Type 1;Vegetable saps and extracts - Type 1;;;10.0;;;;;
+1302132000;HS10;13;De houblon - Type 2;Vegetable saps and extracts - Type 2;;;10.0;;;;;
+1302139000;HS10;13;De houblon - Autre;Vegetable saps and extracts - Other;;;10.0;;;;;
+130214;HS6;13;D'éphédra;Vegetable saps and extracts;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1302141000;HS10;13;D'éphédra - Type 1;Vegetable saps and extracts - Type 1;;;10.0;;;;;
+1302142000;HS10;13;D'éphédra - Type 2;Vegetable saps and extracts - Type 2;;;10.0;;;;;
+1302149000;HS10;13;D'éphédra - Autre;Vegetable saps and extracts - Other;;;10.0;;;;;
+130219;HS6;13;Autres sucs et extraits végétaux;Other vegetable saps and extracts;gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1302191000;HS10;13;Autres sucs et extraits végétaux - Espèce 1;Other vegetable saps and extracts - Species 1;;;10.0;;;;;
+1302192000;HS10;13;Autres sucs et extraits végétaux - Espèce 2;Other vegetable saps and extracts - Species 2;;;10.0;;;;;
+1302199000;HS10;13;Autres sucs et extraits végétaux - Autre espèce;Other vegetable saps and extracts - Other species;;;10.0;;;;;
+130220;HS6;13;Matières pectiques;Pectic substances;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1302201000;HS10;13;Matières pectiques - Type 1;Pectic substances - Type 1;;;10.0;;;;;
+1302202000;HS10;13;Matières pectiques - Type 2;Pectic substances - Type 2;;;10.0;;;;;
+1302209000;HS10;13;Matières pectiques - Autre;Pectic substances - Other;;;10.0;;;;;
+130231;HS6;13;Agar-agar;Mucilages and thickeners;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1302311000;HS10;13;Agar-agar - Type 1;Mucilages and thickeners - Type 1;;;10.0;;;;;
+1302312000;HS10;13;Agar-agar - Type 2;Mucilages and thickeners - Type 2;;;10.0;;;;;
+1302319000;HS10;13;Agar-agar - Autre;Mucilages and thickeners - Other;;;10.0;;;;;
+130232;HS6;13;Mucilages et épaississants de caroubes;Mucilages and thickeners;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1302321000;HS10;13;Mucilages et épaississants de caroubes - Type 1;Mucilages and thickeners - Type 1;;;10.0;;;;;
+1302322000;HS10;13;Mucilages et épaississants de caroubes - Type 2;Mucilages and thickeners - Type 2;;;10.0;;;;;
+1302329000;HS10;13;Mucilages et épaississants de caroubes - Autre;Mucilages and thickeners - Other;;;10.0;;;;;
+130239;HS6;13;Autres;Mucilages and thickeners;lac_gums;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1302391000;HS10;13;Autres - Type 1;Mucilages and thickeners - Type 1;;;10.0;;;;;
+1302392000;HS10;13;Autres - Type 2;Mucilages and thickeners - Type 2;;;10.0;;;;;
+1302399000;HS10;13;Autres - Autre;Mucilages and thickeners - Other;;;10.0;;;;;
+140110;HS6;14;Bambous;Bamboos;plants;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1401101000;HS10;14;Bambous - Espèce 1;Bamboos - Species 1;;;10.0;;;;;
+1401102000;HS10;14;Bambous - Espèce 2;Bamboos - Species 2;;;10.0;;;;;
+1401109000;HS10;14;Bambous - Autre espèce;Bamboos - Other species;;;10.0;;;;;
+140120;HS6;14;Rotins;Rattans;plants;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1401200010;HS10;14;Rotins - Usage spécifique;Rattans - Specific use;;;10.0;;;;;
+1401200090;HS10;14;Rotins - Autre usage;Rattans - Other use;;;10.0;;;;;
+140190;HS6;14;Autres;Vegetable materials of a kind used primarily for plaiting;vegetable_materials;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1401901000;HS10;14;Autres - Type 1;Vegetable materials of a kind used primarily for plaiting - Type 1;;;10.0;;;;;
+1401902000;HS10;14;Autres - Type 2;Vegetable materials of a kind used primarily for plaiting - Type 2;;;10.0;;;;;
+1401909000;HS10;14;Autres - Autre;Vegetable materials of a kind used primarily for plaiting - Other;;;10.0;;;;;
+140420;HS6;14;Linters de coton;Vegetable products;vegetable_materials;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1404201000;HS10;14;Linters de coton - Type 1;Vegetable products - Type 1;;;10.0;;;;;
+1404202000;HS10;14;Linters de coton - Type 2;Vegetable products - Type 2;;;10.0;;;;;
+1404209000;HS10;14;Linters de coton - Autre;Vegetable products - Other;;;10.0;;;;;
+140490;HS6;14;Autres;Vegetable products;vegetable_materials;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1404901000;HS10;14;Autres - Type 1;Vegetable products - Type 1;;;10.0;;;;;
+1404902000;HS10;14;Autres - Type 2;Vegetable products - Type 2;;;10.0;;;;;
+1404909000;HS10;14;Autres - Autre;Vegetable products - Other;;;10.0;;;;;
+150110;HS6;15;Saindoux;Pig fat;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1501101000;HS10;15;Saindoux - Type 1;Pig fat - Type 1;;;20.0;;;;;
+1501102000;HS10;15;Saindoux - Type 2;Pig fat - Type 2;;;20.0;;;;;
+1501109000;HS10;15;Saindoux - Autre;Pig fat - Other;;;20.0;;;;;
+150120;HS6;15;Autres graisses de porc;Pig fat;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1501201000;HS10;15;Autres graisses de porc - Type 1;Pig fat - Type 1;;;20.0;;;;;
+1501202000;HS10;15;Autres graisses de porc - Type 2;Pig fat - Type 2;;;20.0;;;;;
+1501209000;HS10;15;Autres graisses de porc - Autre;Pig fat - Other;;;20.0;;;;;
+150190;HS6;15;Autres;Poultry fat;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1501901000;HS10;15;Autres - Type 1;Poultry fat - Type 1;;;20.0;;;;;
+1501902000;HS10;15;Autres - Type 2;Poultry fat - Type 2;;;20.0;;;;;
+1501909000;HS10;15;Autres - Autre;Poultry fat - Other;;;20.0;;;;;
+150210;HS6;15;Suif;Tallow;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1502101000;HS10;15;Suif - Type 1;Tallow - Type 1;;;20.0;;;;;
+1502102000;HS10;15;Suif - Type 2;Tallow - Type 2;;;20.0;;;;;
+1502109000;HS10;15;Suif - Autre;Tallow - Other;;;20.0;;;;;
+150290;HS6;15;Autres;Fats of bovine animals;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1502901000;HS10;15;Autres - Type 1;Fats of bovine animals - Type 1;;;20.0;;;;;
+1502902000;HS10;15;Autres - Type 2;Fats of bovine animals - Type 2;;;20.0;;;;;
+1502909000;HS10;15;Autres - Autre;Fats of bovine animals - Other;;;20.0;;;;;
+150300;HS6;15;Stéarine solaire;Lard stearin;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1503001000;HS10;15;Stéarine solaire - Type 1;Lard stearin - Type 1;;;20.0;;;;;
+1503002000;HS10;15;Stéarine solaire - Type 2;Lard stearin - Type 2;;;20.0;;;;;
+1503009000;HS10;15;Stéarine solaire - Autre;Lard stearin - Other;;;20.0;;;;;
+150410;HS6;15;Huiles de foies de poissons et leurs fractions;Oils of fish;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1504101000;HS10;15;Huiles de foies de poissons et leurs fractions - Type 1;Oils of fish - Type 1;;;20.0;;;;;
+1504102000;HS10;15;Huiles de foies de poissons et leurs fractions - Type 2;Oils of fish - Type 2;;;20.0;;;;;
+1504109000;HS10;15;Huiles de foies de poissons et leurs fractions - Autre;Oils of fish - Other;;;20.0;;;;;
+150420;HS6;15;Graisses et huiles de poissons et leurs fractions;Fats and oils and their fractions;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1504201000;HS10;15;Graisses et huiles de poissons et leurs fractions - Type 1;Fats and oils and their fractions - Type 1;;;20.0;;;;;
+1504202000;HS10;15;Graisses et huiles de poissons et leurs fractions - Type 2;Fats and oils and their fractions - Type 2;;;20.0;;;;;
+1504209000;HS10;15;Graisses et huiles de poissons et leurs fractions - Autre;Fats and oils and their fractions - Other;;;20.0;;;;;
+150430;HS6;15;Graisses et huiles de mammifères marins et leurs fractions;Fats and oils and their fractions;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1504301000;HS10;15;Graisses et huiles de mammifères marins et leurs fractions - Type 1;Fats and oils and their fractions - Type 1;;;20.0;;;;;
+1504302000;HS10;15;Graisses et huiles de mammifères marins et leurs fractions - Type 2;Fats and oils and their fractions - Type 2;;;20.0;;;;;
+1504309000;HS10;15;Graisses et huiles de mammifères marins et leurs fractions - Autre;Fats and oils and their fractions - Other;;;20.0;;;;;
+150500;HS6;15;Graisse de suint et substances grasses dérivées;Wool grease and fatty substances derived therefrom (including lanolin);fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1505001000;HS10;15;Graisse de suint et substances grasses dérivées - Type 1;Wool grease and fatty substances derived therefrom (including lanolin) - Type 1;;;20.0;;;;;
+1505002000;HS10;15;Graisse de suint et substances grasses dérivées - Type 2;Wool grease and fatty substances derived therefrom (including lanolin) - Type 2;;;20.0;;;;;
+1505009000;HS10;15;Graisse de suint et substances grasses dérivées - Autre;Wool grease and fatty substances derived therefrom (including lanolin) - Other;;;20.0;;;;;
+150600;HS6;15;Autres graisses et huiles animales et leurs fractions;Animal fats and oils and their fractions;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1506001000;HS10;15;Autres graisses et huiles animales et leurs fractions - Type 1;Animal fats and oils and their fractions - Type 1;;;20.0;;;;;
+1506002000;HS10;15;Autres graisses et huiles animales et leurs fractions - Type 2;Animal fats and oils and their fractions - Type 2;;;20.0;;;;;
+1506009000;HS10;15;Autres graisses et huiles animales et leurs fractions - Autre;Animal fats and oils and their fractions - Other;;;20.0;;;;;
+150710;HS6;15;Huile de soja brute;Crude soybean oil;oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1507100010;HS10;15;Huile de soja brute - Usage spécifique;Crude soybean oil - Specific use;;;20.0;;;;;
+1507100090;HS10;15;Huile de soja brute - Autre usage;Crude soybean oil - Other use;;;20.0;;;;;
+150790;HS6;15;Huile de soja raffinée;Refined soybean oil;oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1507901000;HS10;15;Huile de soja raffinée - Production locale;Refined soybean oil - Local production;;;20.0;;;;;
+1507909000;HS10;15;Huile de soja raffinée - Importé;Refined soybean oil - Imported;;;20.0;;;;;
+150810;HS6;15;Huile d'arachide brute;Crude groundnut oil;oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+150890;HS6;15;Huile d'arachide raffinée;Refined groundnut oil;oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1508901000;HS10;15;Huile d'arachide raffinée - Production locale;Refined groundnut oil - Local production;;;20.0;;;;;
+1508909000;HS10;15;Huile d'arachide raffinée - Importé;Refined groundnut oil - Imported;;;20.0;;;;;
+150910;HS6;15;Huile d'olive vierge;Virgin olive oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1509101000;HS10;15;Huile d'olive vierge - Type 1;Virgin olive oil - Type 1;;;20.0;;;;;
+1509102000;HS10;15;Huile d'olive vierge - Type 2;Virgin olive oil - Type 2;;;20.0;;;;;
+1509109000;HS10;15;Huile d'olive vierge - Autre;Virgin olive oil - Other;;;20.0;;;;;
+150920;HS6;15;Huile d'olive vierge extra;Vegetable oils;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1509201000;HS10;15;Huile d'olive vierge extra - Type 1;Vegetable oils - Type 1;;;20.0;;;;;
+1509202000;HS10;15;Huile d'olive vierge extra - Type 2;Vegetable oils - Type 2;;;20.0;;;;;
+1509209000;HS10;15;Huile d'olive vierge extra - Autre;Vegetable oils - Other;;;20.0;;;;;
+150930;HS6;15;Huile d'olive vierge;Vegetable oils;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1509301000;HS10;15;Huile d'olive vierge - Type 1;Vegetable oils - Type 1;;;20.0;;;;;
+1509302000;HS10;15;Huile d'olive vierge - Type 2;Vegetable oils - Type 2;;;20.0;;;;;
+1509309000;HS10;15;Huile d'olive vierge - Autre;Vegetable oils - Other;;;20.0;;;;;
+150940;HS6;15;Autres huiles d'olive vierges;Vegetable oils;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1509401000;HS10;15;Autres huiles d'olive vierges - Type 1;Vegetable oils - Type 1;;;20.0;;;;;
+1509402000;HS10;15;Autres huiles d'olive vierges - Type 2;Vegetable oils - Type 2;;;20.0;;;;;
+1509409000;HS10;15;Autres huiles d'olive vierges - Autre;Vegetable oils - Other;;;20.0;;;;;
+150990;HS6;15;Autres huiles d'olive;Other olive oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1509901000;HS10;15;Autres huiles d'olive - Type 1;Other olive oil - Type 1;;;20.0;;;;;
+1509902000;HS10;15;Autres huiles d'olive - Type 2;Other olive oil - Type 2;;;20.0;;;;;
+1509909000;HS10;15;Autres huiles d'olive - Autre;Other olive oil - Other;;;20.0;;;;;
+151010;HS6;15;Huile de grignons d'olive brute;Vegetable oils;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1510101000;HS10;15;Huile de grignons d'olive brute - Type 1;Vegetable oils - Type 1;;;20.0;;;;;
+1510102000;HS10;15;Huile de grignons d'olive brute - Type 2;Vegetable oils - Type 2;;;20.0;;;;;
+1510109000;HS10;15;Huile de grignons d'olive brute - Autre;Vegetable oils - Other;;;20.0;;;;;
+151090;HS6;15;Autres;Vegetable oils;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1510901000;HS10;15;Autres - Type 1;Vegetable oils - Type 1;;;20.0;;;;;
+1510902000;HS10;15;Autres - Type 2;Vegetable oils - Type 2;;;20.0;;;;;
+1510909000;HS10;15;Autres - Autre;Vegetable oils - Other;;;20.0;;;;;
+151110;HS6;15;Huile de palme brute;Crude palm oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1511101000;HS10;15;Huile de palme brute - Type 1;Crude palm oil - Type 1;;;20.0;;;;;
+1511102000;HS10;15;Huile de palme brute - Type 2;Crude palm oil - Type 2;;;20.0;;;;;
+1511109000;HS10;15;Huile de palme brute - Autre;Crude palm oil - Other;;;20.0;;;;;
+151190;HS6;15;Huile de palme raffinée;Refined palm oil;oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1511900010;HS10;15;Huile de palme raffinée - Usage spécifique;Refined palm oil - Specific use;;;20.0;;;;;
+1511900090;HS10;15;Huile de palme raffinée - Autre usage;Refined palm oil - Other use;;;20.0;;;;;
+151211;HS6;15;Huile de tournesol brute;Crude sunflower oil;oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+151219;HS6;15;Huile de tournesol raffinée;Refined sunflower oil;oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1512191000;HS10;15;Huile de tournesol raffinée - Production locale;Refined sunflower oil - Local production;;;20.0;;;;;
+1512199000;HS10;15;Huile de tournesol raffinée - Importé;Refined sunflower oil - Imported;;;20.0;;;;;
+151221;HS6;15;Huile de coton brute;Crude cottonseed oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1512211000;HS10;15;Huile de coton brute - Type 1;Crude cottonseed oil - Type 1;;;20.0;;;;;
+1512212000;HS10;15;Huile de coton brute - Type 2;Crude cottonseed oil - Type 2;;;20.0;;;;;
+1512219000;HS10;15;Huile de coton brute - Autre;Crude cottonseed oil - Other;;;20.0;;;;;
+151229;HS6;15;Autres huiles de coton;Other cottonseed oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1512291000;HS10;15;Autres huiles de coton - Type 1;Other cottonseed oil - Type 1;;;20.0;;;;;
+1512292000;HS10;15;Autres huiles de coton - Type 2;Other cottonseed oil - Type 2;;;20.0;;;;;
+1512299000;HS10;15;Autres huiles de coton - Autre;Other cottonseed oil - Other;;;20.0;;;;;
+151311;HS6;15;Huile de coco brute;Crude coconut oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1513111000;HS10;15;Huile de coco brute - Type 1;Crude coconut oil - Type 1;;;20.0;;;;;
+1513112000;HS10;15;Huile de coco brute - Type 2;Crude coconut oil - Type 2;;;20.0;;;;;
+1513119000;HS10;15;Huile de coco brute - Autre;Crude coconut oil - Other;;;20.0;;;;;
+151319;HS6;15;Autres huiles de coco;Other coconut oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1513191000;HS10;15;Autres huiles de coco - Type 1;Other coconut oil - Type 1;;;20.0;;;;;
+1513192000;HS10;15;Autres huiles de coco - Type 2;Other coconut oil - Type 2;;;20.0;;;;;
+1513199000;HS10;15;Autres huiles de coco - Autre;Other coconut oil - Other;;;20.0;;;;;
+151321;HS6;15;Huile de palmiste brute;Crude palm kernel oil;oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+151329;HS6;15;Autres huiles de palmiste;Other palm kernel oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1513291000;HS10;15;Autres huiles de palmiste - Type 1;Other palm kernel oil - Type 1;;;20.0;;;;;
+1513292000;HS10;15;Autres huiles de palmiste - Type 2;Other palm kernel oil - Type 2;;;20.0;;;;;
+1513299000;HS10;15;Autres huiles de palmiste - Autre;Other palm kernel oil - Other;;;20.0;;;;;
+151411;HS6;15;Huile de colza brute à faible teneur;Crude low erucic acid rape oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1514111000;HS10;15;Huile de colza brute à faible teneur - Type 1;Crude low erucic acid rape oil - Type 1;;;20.0;;;;;
+1514112000;HS10;15;Huile de colza brute à faible teneur - Type 2;Crude low erucic acid rape oil - Type 2;;;20.0;;;;;
+1514119000;HS10;15;Huile de colza brute à faible teneur - Autre;Crude low erucic acid rape oil - Other;;;20.0;;;;;
+151419;HS6;15;Autres huiles de colza à faible teneur;Other low erucic acid rape oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1514191000;HS10;15;Autres huiles de colza à faible teneur - Type 1;Other low erucic acid rape oil - Type 1;;;20.0;;;;;
+1514192000;HS10;15;Autres huiles de colza à faible teneur - Type 2;Other low erucic acid rape oil - Type 2;;;20.0;;;;;
+1514199000;HS10;15;Autres huiles de colza à faible teneur - Autre;Other low erucic acid rape oil - Other;;;20.0;;;;;
+151491;HS6;15;Huile de colza brute;Crude rape oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1514911000;HS10;15;Huile de colza brute - Type 1;Crude rape oil - Type 1;;;20.0;;;;;
+1514912000;HS10;15;Huile de colza brute - Type 2;Crude rape oil - Type 2;;;20.0;;;;;
+1514919000;HS10;15;Huile de colza brute - Autre;Crude rape oil - Other;;;20.0;;;;;
+151499;HS6;15;Autres huiles de colza;Other rape oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1514991000;HS10;15;Autres huiles de colza - Type 1;Other rape oil - Type 1;;;20.0;;;;;
+1514992000;HS10;15;Autres huiles de colza - Type 2;Other rape oil - Type 2;;;20.0;;;;;
+1514999000;HS10;15;Autres huiles de colza - Autre;Other rape oil - Other;;;20.0;;;;;
+151511;HS6;15;Huile de lin brute;Crude linseed oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1515111000;HS10;15;Huile de lin brute - Type 1;Crude linseed oil - Type 1;;;20.0;;;;;
+1515112000;HS10;15;Huile de lin brute - Type 2;Crude linseed oil - Type 2;;;20.0;;;;;
+1515119000;HS10;15;Huile de lin brute - Autre;Crude linseed oil - Other;;;20.0;;;;;
+151519;HS6;15;Autres huiles de lin;Other linseed oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1515191000;HS10;15;Autres huiles de lin - Type 1;Other linseed oil - Type 1;;;20.0;;;;;
+1515192000;HS10;15;Autres huiles de lin - Type 2;Other linseed oil - Type 2;;;20.0;;;;;
+1515199000;HS10;15;Autres huiles de lin - Autre;Other linseed oil - Other;;;20.0;;;;;
+151521;HS6;15;Huile de maïs brute;Crude maize oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1515211000;HS10;15;Huile de maïs brute - Type 1;Crude maize oil - Type 1;;;20.0;;;;;
+1515212000;HS10;15;Huile de maïs brute - Type 2;Crude maize oil - Type 2;;;20.0;;;;;
+1515219000;HS10;15;Huile de maïs brute - Autre;Crude maize oil - Other;;;20.0;;;;;
+151529;HS6;15;Autres huiles de maïs;Other maize oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1515291000;HS10;15;Autres huiles de maïs - Type 1;Other maize oil - Type 1;;;20.0;;;;;
+1515292000;HS10;15;Autres huiles de maïs - Type 2;Other maize oil - Type 2;;;20.0;;;;;
+1515299000;HS10;15;Autres huiles de maïs - Autre;Other maize oil - Other;;;20.0;;;;;
+151530;HS6;15;Huile de ricin;Castor oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1515301000;HS10;15;Huile de ricin - Type 1;Castor oil - Type 1;;;20.0;;;;;
+1515302000;HS10;15;Huile de ricin - Type 2;Castor oil - Type 2;;;20.0;;;;;
+1515309000;HS10;15;Huile de ricin - Autre;Castor oil - Other;;;20.0;;;;;
+151540;HS6;15;Huile de tung;Tung oil;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1515401000;HS10;15;Huile de tung - Type 1;Tung oil - Type 1;;;20.0;;;;;
+1515402000;HS10;15;Huile de tung - Type 2;Tung oil - Type 2;;;20.0;;;;;
+1515409000;HS10;15;Huile de tung - Autre;Tung oil - Other;;;20.0;;;;;
+151550;HS6;15;Huile de sésame;Sesame oil;oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1515501000;HS10;15;Huile de sésame - Type 1;Sesame oil - Type 1;;;20.0;;;;;
+1515502000;HS10;15;Huile de sésame - Type 2;Sesame oil - Type 2;;;20.0;;;;;
+1515509000;HS10;15;Huile de sésame - Autre;Sesame oil - Other;;;20.0;;;;;
+151560;HS6;15;Graisses et huiles d'origine microbienne et leurs fractions;Vegetable oils;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1515601000;HS10;15;Graisses et huiles d'origine microbienne et leurs fractions - Type 1;Vegetable oils - Type 1;;;20.0;;;;;
+1515602000;HS10;15;Graisses et huiles d'origine microbienne et leurs fractions - Type 2;Vegetable oils - Type 2;;;20.0;;;;;
+1515609000;HS10;15;Graisses et huiles d'origine microbienne et leurs fractions - Autre;Vegetable oils - Other;;;20.0;;;;;
+151590;HS6;15;Autres huiles végétales fixes;Other fixed vegetable fats and oils;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1515901000;HS10;15;Autres huiles végétales fixes - Type 1;Other fixed vegetable fats and oils - Type 1;;;20.0;;;;;
+1515902000;HS10;15;Autres huiles végétales fixes - Type 2;Other fixed vegetable fats and oils - Type 2;;;20.0;;;;;
+1515909000;HS10;15;Autres huiles végétales fixes - Autre;Other fixed vegetable fats and oils - Other;;;20.0;;;;;
+151610;HS6;15;Graisses animales hydrogénées;Hydrogenated animal fats;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1516101000;HS10;15;Graisses animales hydrogénées - Type 1;Hydrogenated animal fats - Type 1;;;20.0;;;;;
+1516102000;HS10;15;Graisses animales hydrogénées - Type 2;Hydrogenated animal fats - Type 2;;;20.0;;;;;
+1516109000;HS10;15;Graisses animales hydrogénées - Autre;Hydrogenated animal fats - Other;;;20.0;;;;;
+151620;HS6;15;Graisses végétales hydrogénées;Hydrogenated vegetable fats;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1516201000;HS10;15;Graisses végétales hydrogénées - Type 1;Hydrogenated vegetable fats - Type 1;;;20.0;;;;;
+1516202000;HS10;15;Graisses végétales hydrogénées - Type 2;Hydrogenated vegetable fats - Type 2;;;20.0;;;;;
+1516209000;HS10;15;Graisses végétales hydrogénées - Autre;Hydrogenated vegetable fats - Other;;;20.0;;;;;
+151630;HS6;15;Graisses et huiles d'origine microbienne et leurs fractions;Microbial fats and oils and their fractions;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1516301000;HS10;15;Graisses et huiles d'origine microbienne et leurs fractions - Type 1;Microbial fats and oils and their fractions - Type 1;;;20.0;;;;;
+1516302000;HS10;15;Graisses et huiles d'origine microbienne et leurs fractions - Type 2;Microbial fats and oils and their fractions - Type 2;;;20.0;;;;;
+1516309000;HS10;15;Graisses et huiles d'origine microbienne et leurs fractions - Autre;Microbial fats and oils and their fractions - Other;;;20.0;;;;;
+151710;HS6;15;Margarine;Margarine;fats;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1517101000;HS10;15;Margarine - Type 1;Margarine - Type 1;;;20.0;;;;;
+1517102000;HS10;15;Margarine - Type 2;Margarine - Type 2;;;20.0;;;;;
+1517109000;HS10;15;Margarine - Autre;Margarine - Other;;;20.0;;;;;
+151790;HS6;15;Autres mélanges de graisses;Other edible mixtures of fats;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1517901000;HS10;15;Autres mélanges de graisses - Type 1;Other edible mixtures of fats - Type 1;;;20.0;;;;;
+1517902000;HS10;15;Autres mélanges de graisses - Type 2;Other edible mixtures of fats - Type 2;;;20.0;;;;;
+1517909000;HS10;15;Autres mélanges de graisses - Autre;Other edible mixtures of fats - Other;;;20.0;;;;;
+151800;HS6;15;Graisses et huiles animales;mélanges ou préparations non alimentaires de graisses ou d'huiles animales;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1518001000;HS10;15;Graisses et huiles animales - Type 1;mélanges ou préparations non alimentaires de graisses ou d'huiles animales - Type 1;;;20.0;;;;;
+1518002000;HS10;15;Graisses et huiles animales - Type 2;mélanges ou préparations non alimentaires de graisses ou d'huiles animales - Type 2;;;20.0;;;;;
+1518009000;HS10;15;Graisses et huiles animales - Autre;mélanges ou préparations non alimentaires de graisses ou d'huiles animales - Other;;;20.0;;;;;
+152000;HS6;15;Glycérol brut;eaux et lessives glycérineuses;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1520001000;HS10;15;Glycérol brut - Type 1;eaux et lessives glycérineuses - Type 1;;;20.0;;;;;
+1520002000;HS10;15;Glycérol brut - Type 2;eaux et lessives glycérineuses - Type 2;;;20.0;;;;;
+1520009000;HS10;15;Glycérol brut - Autre;eaux et lessives glycérineuses - Other;;;20.0;;;;;
+152110;HS6;15;Cires végétales;Vegetable waxes;waxes;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1521101000;HS10;15;Cires végétales - Type 1;Vegetable waxes - Type 1;;;20.0;;;;;
+1521102000;HS10;15;Cires végétales - Type 2;Vegetable waxes - Type 2;;;20.0;;;;;
+1521109000;HS10;15;Cires végétales - Autre;Vegetable waxes - Other;;;20.0;;;;;
+152190;HS6;15;Cires d'abeilles et d'autres insectes;Beeswax and other insect waxes;waxes;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1521901000;HS10;15;Cires d'abeilles et d'autres insectes - Espèce 1;Beeswax and other insect waxes - Species 1;;;20.0;;;;;
+1521902000;HS10;15;Cires d'abeilles et d'autres insectes - Espèce 2;Beeswax and other insect waxes - Species 2;;;20.0;;;;;
+1521909000;HS10;15;Cires d'abeilles et d'autres insectes - Autre espèce;Beeswax and other insect waxes - Other species;;;20.0;;;;;
+152200;HS6;15;Dégras;résidus provenant du traitement des corps gras ou des cires animales ou végétales;fats_oils;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1522001000;HS10;15;Dégras - Type 1;résidus provenant du traitement des corps gras ou des cires animales ou végétales - Type 1;;;20.0;;;;;
+1522002000;HS10;15;Dégras - Type 2;résidus provenant du traitement des corps gras ou des cires animales ou végétales - Type 2;;;20.0;;;;;
+1522009000;HS10;15;Dégras - Autre;résidus provenant du traitement des corps gras ou des cires animales ou végétales - Other;;;20.0;;;;;
+160100;HS6;16;Saucisses et produits similaires;Sausages and similar products;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1601001000;HS10;16;Saucisses et produits similaires - Type 1;Sausages and similar products - Type 1;;;20.0;;;;;
+1601002000;HS10;16;Saucisses et produits similaires - Type 2;Sausages and similar products - Type 2;;;20.0;;;;;
+1601009000;HS10;16;Saucisses et produits similaires - Autre;Sausages and similar products - Other;;;20.0;;;;;
+160210;HS6;16;Préparations homogénéisées de viande;Homogenized meat preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+160220;HS6;16;Foies préparés;Prepared livers;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1602201000;HS10;16;Foies préparés - Espèce 1;Prepared livers - Species 1;;;20.0;;;;;
+1602202000;HS10;16;Foies préparés - Espèce 2;Prepared livers - Species 2;;;20.0;;;;;
+1602209000;HS10;16;Foies préparés - Autre espèce;Prepared livers - Other species;;;20.0;;;;;
+160231;HS6;16;Préparations de dindes;Turkey preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1602311000;HS10;16;Préparations de dindes - Type 1;Turkey preparations - Type 1;;;20.0;;;;;
+1602312000;HS10;16;Préparations de dindes - Type 2;Turkey preparations - Type 2;;;20.0;;;;;
+1602319000;HS10;16;Préparations de dindes - Autre;Turkey preparations - Other;;;20.0;;;;;
+160232;HS6;16;Préparations de volailles;Poultry preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1602321000;HS10;16;Préparations de volailles - Type 1;Poultry preparations - Type 1;;;20.0;;;;;
+1602322000;HS10;16;Préparations de volailles - Type 2;Poultry preparations - Type 2;;;20.0;;;;;
+1602329000;HS10;16;Préparations de volailles - Autre;Poultry preparations - Other;;;20.0;;;;;
+160239;HS6;16;Autres;Meat preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1602391000;HS10;16;Autres - Type 1;Meat preparations - Type 1;;;20.0;;;;;
+1602392000;HS10;16;Autres - Type 2;Meat preparations - Type 2;;;20.0;;;;;
+1602399000;HS10;16;Autres - Autre;Meat preparations - Other;;;20.0;;;;;
+160241;HS6;16;Jambons et morceaux de porcins;Hams and pork cuts;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1602411000;HS10;16;Jambons et morceaux de porcins - Type 1;Hams and pork cuts - Type 1;;;20.0;;;;;
+1602412000;HS10;16;Jambons et morceaux de porcins - Type 2;Hams and pork cuts - Type 2;;;20.0;;;;;
+1602419000;HS10;16;Jambons et morceaux de porcins - Autre;Hams and pork cuts - Other;;;20.0;;;;;
+160242;HS6;16;Epaules et leurs morceaux;Meat preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1602421000;HS10;16;Epaules et leurs morceaux - Type 1;Meat preparations - Type 1;;;20.0;;;;;
+1602422000;HS10;16;Epaules et leurs morceaux - Type 2;Meat preparations - Type 2;;;20.0;;;;;
+1602429000;HS10;16;Epaules et leurs morceaux - Autre;Meat preparations - Other;;;20.0;;;;;
+160249;HS6;16;Autres préparations de porcins;Other pork preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1602491000;HS10;16;Autres préparations de porcins - Type 1;Other pork preparations - Type 1;;;20.0;;;;;
+1602492000;HS10;16;Autres préparations de porcins - Type 2;Other pork preparations - Type 2;;;20.0;;;;;
+1602499000;HS10;16;Autres préparations de porcins - Autre;Other pork preparations - Other;;;20.0;;;;;
+160250;HS6;16;Préparations de bovins;Bovine preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1602501000;HS10;16;Préparations de bovins - Type 1;Bovine preparations - Type 1;;;20.0;;;;;
+1602502000;HS10;16;Préparations de bovins - Type 2;Bovine preparations - Type 2;;;20.0;;;;;
+1602509000;HS10;16;Préparations de bovins - Autre;Bovine preparations - Other;;;20.0;;;;;
+160290;HS6;16;Autres préparations de viandes;Other meat preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1602901000;HS10;16;Autres préparations de viandes - Espèce 1;Other meat preparations - Species 1;;;20.0;;;;;
+1602902000;HS10;16;Autres préparations de viandes - Espèce 2;Other meat preparations - Species 2;;;20.0;;;;;
+1602909000;HS10;16;Autres préparations de viandes - Autre espèce;Other meat preparations - Other species;;;20.0;;;;;
+160300;HS6;16;Extrait et jus de viande;Extracts and juices;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1603001000;HS10;16;Extrait et jus de viande - Type 1;Extracts and juices - Type 1;;;20.0;;;;;
+1603002000;HS10;16;Extrait et jus de viande - Type 2;Extracts and juices - Type 2;;;20.0;;;;;
+1603009000;HS10;16;Extrait et jus de viande - Autre;Extracts and juices - Other;;;20.0;;;;;
+160411;HS6;16;Saumons préparés;Prepared salmon;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604111000;HS10;16;Saumons préparés - Type 1;Prepared salmon - Type 1;;;20.0;;;;;
+1604112000;HS10;16;Saumons préparés - Type 2;Prepared salmon - Type 2;;;20.0;;;;;
+1604119000;HS10;16;Saumons préparés - Autre;Prepared salmon - Other;;;20.0;;;;;
+160412;HS6;16;Harengs préparés;Prepared herrings;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604121000;HS10;16;Harengs préparés - Type 1;Prepared herrings - Type 1;;;20.0;;;;;
+1604122000;HS10;16;Harengs préparés - Type 2;Prepared herrings - Type 2;;;20.0;;;;;
+1604129000;HS10;16;Harengs préparés - Autre;Prepared herrings - Other;;;20.0;;;;;
+160413;HS6;16;Sardines préparées;Prepared sardines;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604131000;HS10;16;Sardines préparées - Type 1;Prepared sardines - Type 1;;;20.0;;;;;
+1604132000;HS10;16;Sardines préparées - Type 2;Prepared sardines - Type 2;;;20.0;;;;;
+1604139000;HS10;16;Sardines préparées - Autre;Prepared sardines - Other;;;20.0;;;;;
+160414;HS6;16;Thons;Fish preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604141000;HS10;16;Thons - Type 1;Fish preparations - Type 1;;;20.0;;;;;
+1604142000;HS10;16;Thons - Type 2;Fish preparations - Type 2;;;20.0;;;;;
+1604149000;HS10;16;Thons - Autre;Fish preparations - Other;;;20.0;;;;;
+160415;HS6;16;Maquereaux préparés;Prepared mackerel;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604151000;HS10;16;Maquereaux préparés - Type 1;Prepared mackerel - Type 1;;;20.0;;;;;
+1604152000;HS10;16;Maquereaux préparés - Type 2;Prepared mackerel - Type 2;;;20.0;;;;;
+1604159000;HS10;16;Maquereaux préparés - Autre;Prepared mackerel - Other;;;20.0;;;;;
+160416;HS6;16;Anchois préparés;Prepared anchovies;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604161000;HS10;16;Anchois préparés - Type 1;Prepared anchovies - Type 1;;;20.0;;;;;
+1604162000;HS10;16;Anchois préparés - Type 2;Prepared anchovies - Type 2;;;20.0;;;;;
+1604169000;HS10;16;Anchois préparés - Autre;Prepared anchovies - Other;;;20.0;;;;;
+160417;HS6;16;Anguilles;Fish preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604171000;HS10;16;Anguilles - Type 1;Fish preparations - Type 1;;;20.0;;;;;
+1604172000;HS10;16;Anguilles - Type 2;Fish preparations - Type 2;;;20.0;;;;;
+1604179000;HS10;16;Anguilles - Autre;Fish preparations - Other;;;20.0;;;;;
+160418;HS6;16;Ailerons de requins;Fish preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604181000;HS10;16;Ailerons de requins - Type 1;Fish preparations - Type 1;;;20.0;;;;;
+1604182000;HS10;16;Ailerons de requins - Type 2;Fish preparations - Type 2;;;20.0;;;;;
+1604189000;HS10;16;Ailerons de requins - Autre;Fish preparations - Other;;;20.0;;;;;
+160419;HS6;16;Autres poissons préparés entiers;Other whole prepared fish;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604191000;HS10;16;Autres poissons préparés entiers - Espèce 1;Other whole prepared fish - Species 1;;;20.0;;;;;
+1604192000;HS10;16;Autres poissons préparés entiers - Espèce 2;Other whole prepared fish - Species 2;;;20.0;;;;;
+1604199000;HS10;16;Autres poissons préparés entiers - Autre espèce;Other whole prepared fish - Other species;;;20.0;;;;;
+160420;HS6;16;Autres préparations de poissons;Other fish preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604201000;HS10;16;Autres préparations de poissons - Espèce 1;Other fish preparations - Species 1;;;20.0;;;;;
+1604202000;HS10;16;Autres préparations de poissons - Espèce 2;Other fish preparations - Species 2;;;20.0;;;;;
+1604209000;HS10;16;Autres préparations de poissons - Autre espèce;Other fish preparations - Other species;;;20.0;;;;;
+160431;HS6;16;Caviar;Caviar;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604311000;HS10;16;Caviar - Espèce 1;Caviar - Species 1;;;20.0;;;;;
+1604312000;HS10;16;Caviar - Espèce 2;Caviar - Species 2;;;20.0;;;;;
+1604319000;HS10;16;Caviar - Autre espèce;Caviar - Other species;;;20.0;;;;;
+160432;HS6;16;Succédanés du caviar;Caviar substitutes;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1604321000;HS10;16;Succédanés du caviar - Espèce 1;Caviar substitutes - Species 1;;;20.0;;;;;
+1604322000;HS10;16;Succédanés du caviar - Espèce 2;Caviar substitutes - Species 2;;;20.0;;;;;
+1604329000;HS10;16;Succédanés du caviar - Autre espèce;Caviar substitutes - Other species;;;20.0;;;;;
+160510;HS6;16;Crabes préparés;Prepared crabs;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605101000;HS10;16;Crabes préparés - Type 1;Prepared crabs - Type 1;;;20.0;;;;;
+1605102000;HS10;16;Crabes préparés - Type 2;Prepared crabs - Type 2;;;20.0;;;;;
+1605109000;HS10;16;Crabes préparés - Autre;Prepared crabs - Other;;;20.0;;;;;
+160521;HS6;16;Crevettes préparées non conditionnées;Prepared shrimp not in containers;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605211000;HS10;16;Crevettes préparées non conditionnées - Type 1;Prepared shrimp not in containers - Type 1;;;20.0;;;;;
+1605212000;HS10;16;Crevettes préparées non conditionnées - Type 2;Prepared shrimp not in containers - Type 2;;;20.0;;;;;
+1605219000;HS10;16;Crevettes préparées non conditionnées - Autre;Prepared shrimp not in containers - Other;;;20.0;;;;;
+160529;HS6;16;Crevettes préparées autres;Other prepared shrimp;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605291000;HS10;16;Crevettes préparées autres - Type 1;Other prepared shrimp - Type 1;;;20.0;;;;;
+1605292000;HS10;16;Crevettes préparées autres - Type 2;Other prepared shrimp - Type 2;;;20.0;;;;;
+1605299000;HS10;16;Crevettes préparées autres - Autre;Other prepared shrimp - Other;;;20.0;;;;;
+160530;HS6;16;Homards;Crustacean preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605301000;HS10;16;Homards - Type 1;Crustacean preparations - Type 1;;;20.0;;;;;
+1605302000;HS10;16;Homards - Type 2;Crustacean preparations - Type 2;;;20.0;;;;;
+1605309000;HS10;16;Homards - Autre;Crustacean preparations - Other;;;20.0;;;;;
+160540;HS6;16;Autres crustacés;Crustacean preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605401000;HS10;16;Autres crustacés - Type 1;Crustacean preparations - Type 1;;;20.0;;;;;
+1605402000;HS10;16;Autres crustacés - Type 2;Crustacean preparations - Type 2;;;20.0;;;;;
+1605409000;HS10;16;Autres crustacés - Autre;Crustacean preparations - Other;;;20.0;;;;;
+160551;HS6;16;Huîtres;Mollusc preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605511000;HS10;16;Huîtres - Type 1;Mollusc preparations - Type 1;;;20.0;;;;;
+1605512000;HS10;16;Huîtres - Type 2;Mollusc preparations - Type 2;;;20.0;;;;;
+1605519000;HS10;16;Huîtres - Autre;Mollusc preparations - Other;;;20.0;;;;;
+160552;HS6;16;Coquilles St Jacques ou peignes;Mollusc preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605521000;HS10;16;Coquilles St Jacques ou peignes - Type 1;Mollusc preparations - Type 1;;;20.0;;;;;
+1605522000;HS10;16;Coquilles St Jacques ou peignes - Type 2;Mollusc preparations - Type 2;;;20.0;;;;;
+1605529000;HS10;16;Coquilles St Jacques ou peignes - Autre;Mollusc preparations - Other;;;20.0;;;;;
+160553;HS6;16;Moules préparées;Prepared mussels;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605531000;HS10;16;Moules préparées - Type 1;Prepared mussels - Type 1;;;20.0;;;;;
+1605532000;HS10;16;Moules préparées - Type 2;Prepared mussels - Type 2;;;20.0;;;;;
+1605539000;HS10;16;Moules préparées - Autre;Prepared mussels - Other;;;20.0;;;;;
+160554;HS6;16;Seiches et calamars préparés;Prepared cuttlefish and squid;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605541000;HS10;16;Seiches et calamars préparés - Type 1;Prepared cuttlefish and squid - Type 1;;;20.0;;;;;
+1605542000;HS10;16;Seiches et calamars préparés - Type 2;Prepared cuttlefish and squid - Type 2;;;20.0;;;;;
+1605549000;HS10;16;Seiches et calamars préparés - Autre;Prepared cuttlefish and squid - Other;;;20.0;;;;;
+160555;HS6;16;Poulpes préparés;Prepared octopus;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605551000;HS10;16;Poulpes préparés - Type 1;Prepared octopus - Type 1;;;20.0;;;;;
+1605552000;HS10;16;Poulpes préparés - Type 2;Prepared octopus - Type 2;;;20.0;;;;;
+1605559000;HS10;16;Poulpes préparés - Autre;Prepared octopus - Other;;;20.0;;;;;
+160556;HS6;16;Clams;Mollusc preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605561000;HS10;16;Clams - Type 1;Mollusc preparations - Type 1;;;20.0;;;;;
+1605562000;HS10;16;Clams - Type 2;Mollusc preparations - Type 2;;;20.0;;;;;
+1605569000;HS10;16;Clams - Autre;Mollusc preparations - Other;;;20.0;;;;;
+160557;HS6;16;Ormeaux;Mollusc preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605571000;HS10;16;Ormeaux - Type 1;Mollusc preparations - Type 1;;;20.0;;;;;
+1605572000;HS10;16;Ormeaux - Type 2;Mollusc preparations - Type 2;;;20.0;;;;;
+1605579000;HS10;16;Ormeaux - Autre;Mollusc preparations - Other;;;20.0;;;;;
+160558;HS6;16;Escargots;Mollusc preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605581000;HS10;16;Escargots - Type 1;Mollusc preparations - Type 1;;;20.0;;;;;
+1605582000;HS10;16;Escargots - Type 2;Mollusc preparations - Type 2;;;20.0;;;;;
+1605589000;HS10;16;Escargots - Autre;Mollusc preparations - Other;;;20.0;;;;;
+160559;HS6;16;Autres;Mollusc preparations;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605591000;HS10;16;Autres - Type 1;Mollusc preparations - Type 1;;;20.0;;;;;
+1605592000;HS10;16;Autres - Type 2;Mollusc preparations - Type 2;;;20.0;;;;;
+1605599000;HS10;16;Autres - Autre;Mollusc preparations - Other;;;20.0;;;;;
+160561;HS6;16;Bêches-de-mer;Aquatic invertebrates;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605611000;HS10;16;Bêches-de-mer - Type 1;Aquatic invertebrates - Type 1;;;20.0;;;;;
+1605612000;HS10;16;Bêches-de-mer - Type 2;Aquatic invertebrates - Type 2;;;20.0;;;;;
+1605619000;HS10;16;Bêches-de-mer - Autre;Aquatic invertebrates - Other;;;20.0;;;;;
+160562;HS6;16;Oursins;Aquatic invertebrates;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605621000;HS10;16;Oursins - Type 1;Aquatic invertebrates - Type 1;;;20.0;;;;;
+1605622000;HS10;16;Oursins - Type 2;Aquatic invertebrates - Type 2;;;20.0;;;;;
+1605629000;HS10;16;Oursins - Autre;Aquatic invertebrates - Other;;;20.0;;;;;
+160563;HS6;16;Méduses;Aquatic invertebrates;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605631000;HS10;16;Méduses - Type 1;Aquatic invertebrates - Type 1;;;20.0;;;;;
+1605632000;HS10;16;Méduses - Type 2;Aquatic invertebrates - Type 2;;;20.0;;;;;
+1605639000;HS10;16;Méduses - Autre;Aquatic invertebrates - Other;;;20.0;;;;;
+160569;HS6;16;Autres;Aquatic invertebrates;meat_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1605691000;HS10;16;Autres - Type 1;Aquatic invertebrates - Type 1;;;20.0;;;;;
+1605692000;HS10;16;Autres - Type 2;Aquatic invertebrates - Type 2;;;20.0;;;;;
+1605699000;HS10;16;Autres - Autre;Aquatic invertebrates - Other;;;20.0;;;;;
+170111;HS6;17;Sucre de canne brut;Raw cane sugar;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1701111000;HS10;17;Sucre de canne brut - Type 1;Raw cane sugar - Type 1;;;20.0;;;;;
+1701112000;HS10;17;Sucre de canne brut - Type 2;Raw cane sugar - Type 2;;;20.0;;;;;
+1701119000;HS10;17;Sucre de canne brut - Autre;Raw cane sugar - Other;;;20.0;;;;;
+170112;HS6;17;Sucre de betterave brut;Raw beet sugar;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1701121000;HS10;17;Sucre de betterave brut - Type 1;Raw beet sugar - Type 1;;;20.0;;;;;
+1701122000;HS10;17;Sucre de betterave brut - Type 2;Raw beet sugar - Type 2;;;20.0;;;;;
+1701129000;HS10;17;Sucre de betterave brut - Autre;Raw beet sugar - Other;;;20.0;;;;;
+170113;HS6;17;Sucre de canne mentionné dans la note 2;Cane sugar as specified in note 2;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1701131000;HS10;17;Sucre de canne mentionné dans la note 2 - Type 1;Cane sugar as specified in note 2 - Type 1;;;20.0;;;;;
+1701132000;HS10;17;Sucre de canne mentionné dans la note 2 - Type 2;Cane sugar as specified in note 2 - Type 2;;;20.0;;;;;
+1701139000;HS10;17;Sucre de canne mentionné dans la note 2 - Autre;Cane sugar as specified in note 2 - Other;;;20.0;;;;;
+170114;HS6;17;Autres sucres de canne;Other cane sugar;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1701141000;HS10;17;Autres sucres de canne - Type 1;Other cane sugar - Type 1;;;20.0;;;;;
+1701142000;HS10;17;Autres sucres de canne - Type 2;Other cane sugar - Type 2;;;20.0;;;;;
+1701149000;HS10;17;Autres sucres de canne - Autre;Other cane sugar - Other;;;20.0;;;;;
+170191;HS6;17;Sucre blanc avec aromatisants;White sugar with flavorings;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1701911000;HS10;17;Sucre blanc avec aromatisants - Type 1;White sugar with flavorings - Type 1;;;20.0;;;;;
+1701912000;HS10;17;Sucre blanc avec aromatisants - Type 2;White sugar with flavorings - Type 2;;;20.0;;;;;
+1701919000;HS10;17;Sucre blanc avec aromatisants - Autre;White sugar with flavorings - Other;;;20.0;;;;;
+170199;HS6;17;Autres sucres raffinés;Other refined sugar;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1701991000;HS10;17;Autres sucres raffinés - Type 1;Other refined sugar - Type 1;;;20.0;;;;;
+1701992000;HS10;17;Autres sucres raffinés - Type 2;Other refined sugar - Type 2;;;20.0;;;;;
+1701999000;HS10;17;Autres sucres raffinés - Autre;Other refined sugar - Other;;;20.0;;;;;
+170210;HS6;17;Lactose et sirop de lactose;Lactose and lactose syrup;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+170211;HS6;17;Lactose ≥99% pureté;Lactose ≥99% purity;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1702111000;HS10;17;Lactose ≥99% pureté - Type 1;Lactose ≥99% purity - Type 1;;;20.0;;;;;
+1702112000;HS10;17;Lactose ≥99% pureté - Type 2;Lactose ≥99% purity - Type 2;;;20.0;;;;;
+1702119000;HS10;17;Lactose ≥99% pureté - Autre;Lactose ≥99% purity - Other;;;20.0;;;;;
+170219;HS6;17;Autres lactoses;Other lactose;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1702191000;HS10;17;Autres lactoses - Type 1;Other lactose - Type 1;;;20.0;;;;;
+1702192000;HS10;17;Autres lactoses - Type 2;Other lactose - Type 2;;;20.0;;;;;
+1702199000;HS10;17;Autres lactoses - Autre;Other lactose - Other;;;20.0;;;;;
+170220;HS6;17;Sucre d'érable;Maple sugar;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+170230;HS6;17;Glucose et sirop de glucose;Glucose and glucose syrup;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1702301000;HS10;17;Glucose et sirop de glucose - Type 1;Glucose and glucose syrup - Type 1;;;20.0;;;;;
+1702302000;HS10;17;Glucose et sirop de glucose - Type 2;Glucose and glucose syrup - Type 2;;;20.0;;;;;
+1702309000;HS10;17;Glucose et sirop de glucose - Autre;Glucose and glucose syrup - Other;;;20.0;;;;;
+170240;HS6;17;Glucose chimiquement pur;Chemically pure glucose;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+170250;HS6;17;Fructose chimiquement pur;Chemically pure fructose;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+170260;HS6;17;Autres fructoses et sirops de fructose;Other fructose and fructose syrup;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1702601000;HS10;17;Autres fructoses et sirops de fructose - Type 1;Other fructose and fructose syrup - Type 1;;;20.0;;;;;
+1702602000;HS10;17;Autres fructoses et sirops de fructose - Type 2;Other fructose and fructose syrup - Type 2;;;20.0;;;;;
+1702609000;HS10;17;Autres fructoses et sirops de fructose - Autre;Other fructose and fructose syrup - Other;;;20.0;;;;;
+170290;HS6;17;Autres sucres (sucre inverti, miel artificiel);Other sugars (invert sugar, artificial honey);sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1702901000;HS10;17;Autres sucres (sucre inverti, miel artificiel) - Type 1;Other sugars (invert sugar, artificial honey) - Type 1;;;20.0;;;;;
+1702902000;HS10;17;Autres sucres (sucre inverti, miel artificiel) - Type 2;Other sugars (invert sugar, artificial honey) - Type 2;;;20.0;;;;;
+1702909000;HS10;17;Autres sucres (sucre inverti, miel artificiel) - Autre;Other sugars (invert sugar, artificial honey) - Other;;;20.0;;;;;
+170310;HS6;17;Mélasse de canne;Cane molasses;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1703101000;HS10;17;Mélasse de canne - Grade 1 / Premium;Cane molasses - Grade 1 / Premium;;;20.0;;;;;
+1703102000;HS10;17;Mélasse de canne - Grade 2 / Standard;Cane molasses - Grade 2 / Standard;;;20.0;;;;;
+1703109000;HS10;17;Mélasse de canne - Autre;Cane molasses - Other;;;20.0;;;;;
+170390;HS6;17;Autres mélasses;Other molasses;sugar;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1703901000;HS10;17;Autres mélasses - Type 1;Other molasses - Type 1;;;20.0;;;;;
+1703902000;HS10;17;Autres mélasses - Type 2;Other molasses - Type 2;;;20.0;;;;;
+1703909000;HS10;17;Autres mélasses - Autre;Other molasses - Other;;;20.0;;;;;
+170410;HS6;17;Gommes à mâcher;Chewing gum;confectionery;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1704101000;HS10;17;Gommes à mâcher - Type 1;Chewing gum - Type 1;;;20.0;;;;;
+1704102000;HS10;17;Gommes à mâcher - Type 2;Chewing gum - Type 2;;;20.0;;;;;
+1704109000;HS10;17;Gommes à mâcher - Autre;Chewing gum - Other;;;20.0;;;;;
+170490;HS6;17;Autres sucreries sans cacao;Other sugar confectionery without cocoa;confectionery;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1704901000;HS10;17;Autres sucreries sans cacao - Type 1;Other sugar confectionery without cocoa - Type 1;;;20.0;;;;;
+1704902000;HS10;17;Autres sucreries sans cacao - Type 2;Other sugar confectionery without cocoa - Type 2;;;20.0;;;;;
+1704909000;HS10;17;Autres sucreries sans cacao - Autre;Other sugar confectionery without cocoa - Other;;;20.0;;;;;
+180100;HS6;18;Cacao en fèves;Cocoa beans;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1801001000;HS10;18;Cacao en fèves - Type 1;Cocoa beans - Type 1;;;10.0;;;;;
+1801002000;HS10;18;Cacao en fèves - Type 2;Cocoa beans - Type 2;;;10.0;;;;;
+1801009000;HS10;18;Cacao en fèves - Autre;Cocoa beans - Other;;;10.0;;;;;
+180200;HS6;18;Coques, pellicules de cacao;Cocoa shells and husks;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+180310;HS6;18;Pâte de cacao non dégraissée;Cocoa paste;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1803101000;HS10;18;Pâte de cacao non dégraissée - Type 1;Cocoa paste - Type 1;;;10.0;;;;;
+1803102000;HS10;18;Pâte de cacao non dégraissée - Type 2;Cocoa paste - Type 2;;;10.0;;;;;
+1803109000;HS10;18;Pâte de cacao non dégraissée - Autre;Cocoa paste - Other;;;10.0;;;;;
+180320;HS6;18;Pâte de cacao dégraissée;Defatted cocoa paste;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+180400;HS6;18;Beurre de cacao;Cocoa butter;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1804001000;HS10;18;Beurre de cacao - Type 1;Cocoa butter - Type 1;;;10.0;;;;;
+1804002000;HS10;18;Beurre de cacao - Type 2;Cocoa butter - Type 2;;;10.0;;;;;
+1804009000;HS10;18;Beurre de cacao - Autre;Cocoa butter - Other;;;10.0;;;;;
+180500;HS6;18;Poudre de cacao sans sucre;Cocoa powder without sugar;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1805001000;HS10;18;Poudre de cacao sans sucre - Grade 1 / Premium;Cocoa powder without sugar - Grade 1 / Premium;;;10.0;;;;;
+1805002000;HS10;18;Poudre de cacao sans sucre - Grade 2 / Standard;Cocoa powder without sugar - Grade 2 / Standard;;;10.0;;;;;
+1805009000;HS10;18;Poudre de cacao sans sucre - Autre;Cocoa powder without sugar - Other;;;10.0;;;;;
+180610;HS6;18;Poudre de cacao sucrée;Sweetened cocoa powder;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1806101000;HS10;18;Poudre de cacao sucrée - Type 1;Sweetened cocoa powder - Type 1;;;10.0;;;;;
+1806102000;HS10;18;Poudre de cacao sucrée - Type 2;Sweetened cocoa powder - Type 2;;;10.0;;;;;
+1806109000;HS10;18;Poudre de cacao sucrée - Autre;Sweetened cocoa powder - Other;;;10.0;;;;;
+180620;HS6;18;Préparations alimentaires au cacao (>2kg);Cocoa food preparations (>2kg);cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1806201000;HS10;18;Préparations alimentaires au cacao (>2kg) - Type 1;Cocoa food preparations (>2kg) - Type 1;;;10.0;;;;;
+1806202000;HS10;18;Préparations alimentaires au cacao (>2kg) - Type 2;Cocoa food preparations (>2kg) - Type 2;;;10.0;;;;;
+1806209000;HS10;18;Préparations alimentaires au cacao (>2kg) - Autre;Cocoa food preparations (>2kg) - Other;;;10.0;;;;;
+180631;HS6;18;Chocolat fourré en blocs;Filled chocolate in blocks;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1806311000;HS10;18;Chocolat fourré en blocs - Type 1;Filled chocolate in blocks - Type 1;;;10.0;;;;;
+1806312000;HS10;18;Chocolat fourré en blocs - Type 2;Filled chocolate in blocks - Type 2;;;10.0;;;;;
+1806319000;HS10;18;Chocolat fourré en blocs - Autre;Filled chocolate in blocks - Other;;;10.0;;;;;
+180632;HS6;18;Chocolat non fourré en blocs;Unfilled chocolate in blocks;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1806321000;HS10;18;Chocolat non fourré en blocs - Type 1;Unfilled chocolate in blocks - Type 1;;;10.0;;;;;
+1806322000;HS10;18;Chocolat non fourré en blocs - Type 2;Unfilled chocolate in blocks - Type 2;;;10.0;;;;;
+1806329000;HS10;18;Chocolat non fourré en blocs - Autre;Unfilled chocolate in blocks - Other;;;10.0;;;;;
+180690;HS6;18;Autres chocolats et préparations;Other chocolates and preparations;cocoa;KG;10.0;14.0;0.0;D.D:10.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;26.0
+1806901000;HS10;18;Autres chocolats et préparations - Type 1;Other chocolates and preparations - Type 1;;;10.0;;;;;
+1806902000;HS10;18;Autres chocolats et préparations - Type 2;Other chocolates and preparations - Type 2;;;10.0;;;;;
+1806909000;HS10;18;Autres chocolats et préparations - Autre;Other chocolates and preparations - Other;;;10.0;;;;;
+190110;HS6;19;Préparations pour nourrissons;Infant food preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1901101000;HS10;19;Préparations pour nourrissons - Type 1;Infant food preparations - Type 1;;;20.0;;;;;
+1901102000;HS10;19;Préparations pour nourrissons - Type 2;Infant food preparations - Type 2;;;20.0;;;;;
+1901109000;HS10;19;Préparations pour nourrissons - Autre;Infant food preparations - Other;;;20.0;;;;;
+190120;HS6;19;Préparations pour boulangerie;Bakery preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1901201000;HS10;19;Préparations pour boulangerie - Type 1;Bakery preparations - Type 1;;;20.0;;;;;
+1901202000;HS10;19;Préparations pour boulangerie - Type 2;Bakery preparations - Type 2;;;20.0;;;;;
+1901209000;HS10;19;Préparations pour boulangerie - Autre;Bakery preparations - Other;;;20.0;;;;;
+190190;HS6;19;Autres préparations alimentaires de farines;Other flour food preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1901901000;HS10;19;Autres préparations alimentaires de farines - Type 1;Other flour food preparations - Type 1;;;20.0;;;;;
+1901902000;HS10;19;Autres préparations alimentaires de farines - Type 2;Other flour food preparations - Type 2;;;20.0;;;;;
+1901909000;HS10;19;Autres préparations alimentaires de farines - Autre;Other flour food preparations - Other;;;20.0;;;;;
+190211;HS6;19;Pâtes non cuites aux oeufs;Uncooked pasta with eggs;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1902111000;HS10;19;Pâtes non cuites aux oeufs - Type 1;Uncooked pasta with eggs - Type 1;;;20.0;;;;;
+1902112000;HS10;19;Pâtes non cuites aux oeufs - Type 2;Uncooked pasta with eggs - Type 2;;;20.0;;;;;
+1902119000;HS10;19;Pâtes non cuites aux oeufs - Autre;Uncooked pasta with eggs - Other;;;20.0;;;;;
+190219;HS6;19;Autres pâtes non cuites;Other uncooked pasta;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1902191000;HS10;19;Autres pâtes non cuites - Type 1;Other uncooked pasta - Type 1;;;20.0;;;;;
+1902192000;HS10;19;Autres pâtes non cuites - Type 2;Other uncooked pasta - Type 2;;;20.0;;;;;
+1902199000;HS10;19;Autres pâtes non cuites - Autre;Other uncooked pasta - Other;;;20.0;;;;;
+190220;HS6;19;Pâtes farcies;Stuffed pasta;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1902201000;HS10;19;Pâtes farcies - Type 1;Stuffed pasta - Type 1;;;20.0;;;;;
+1902202000;HS10;19;Pâtes farcies - Type 2;Stuffed pasta - Type 2;;;20.0;;;;;
+1902209000;HS10;19;Pâtes farcies - Autre;Stuffed pasta - Other;;;20.0;;;;;
+190230;HS6;19;Autres pâtes alimentaires;Other pasta;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1902301000;HS10;19;Autres pâtes alimentaires - Type 1;Other pasta - Type 1;;;20.0;;;;;
+1902302000;HS10;19;Autres pâtes alimentaires - Type 2;Other pasta - Type 2;;;20.0;;;;;
+1902309000;HS10;19;Autres pâtes alimentaires - Autre;Other pasta - Other;;;20.0;;;;;
+190240;HS6;19;Couscous;Couscous;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1902401000;HS10;19;Couscous - Type 1;Couscous - Type 1;;;20.0;;;;;
+1902402000;HS10;19;Couscous - Type 2;Couscous - Type 2;;;20.0;;;;;
+1902409000;HS10;19;Couscous - Autre;Couscous - Other;;;20.0;;;;;
+190300;HS6;19;Tapioca et substituts;Tapioca and substitutes;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1903001000;HS10;19;Tapioca et substituts - Type 1;Tapioca and substitutes - Type 1;;;20.0;;;;;
+1903002000;HS10;19;Tapioca et substituts - Type 2;Tapioca and substitutes - Type 2;;;20.0;;;;;
+1903009000;HS10;19;Tapioca et substituts - Autre;Tapioca and substitutes - Other;;;20.0;;;;;
+190410;HS6;19;Produits céréaliers soufflés (cornflakes);Puffed cereal products (cornflakes);processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1904101000;HS10;19;Produits céréaliers soufflés (cornflakes) - Type 1;Puffed cereal products (cornflakes) - Type 1;;;20.0;;;;;
+1904102000;HS10;19;Produits céréaliers soufflés (cornflakes) - Type 2;Puffed cereal products (cornflakes) - Type 2;;;20.0;;;;;
+1904109000;HS10;19;Produits céréaliers soufflés (cornflakes) - Autre;Puffed cereal products (cornflakes) - Other;;;20.0;;;;;
+190420;HS6;19;Préparations de flocons de céréales;Cereal flake preparations;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1904201000;HS10;19;Préparations de flocons de céréales - Type 1;Cereal flake preparations - Type 1;;;20.0;;;;;
+1904202000;HS10;19;Préparations de flocons de céréales - Type 2;Cereal flake preparations - Type 2;;;20.0;;;;;
+1904209000;HS10;19;Préparations de flocons de céréales - Autre;Cereal flake preparations - Other;;;20.0;;;;;
+190430;HS6;19;Bulgur;Bulgur wheat;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+190490;HS6;19;Autres céréales en grains;Other cereal grains;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1904901000;HS10;19;Autres céréales en grains - Espèce 1;Other cereal grains - Species 1;;;20.0;;;;;
+1904902000;HS10;19;Autres céréales en grains - Espèce 2;Other cereal grains - Species 2;;;20.0;;;;;
+1904909000;HS10;19;Autres céréales en grains - Autre espèce;Other cereal grains - Other species;;;20.0;;;;;
+190510;HS6;19;Pain croustillant (crispbread);Crispbread;bakery;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1905101000;HS10;19;Pain croustillant (crispbread) - Type 1;Crispbread - Type 1;;;20.0;;;;;
+1905102000;HS10;19;Pain croustillant (crispbread) - Type 2;Crispbread - Type 2;;;20.0;;;;;
+1905109000;HS10;19;Pain croustillant (crispbread) - Autre;Crispbread - Other;;;20.0;;;;;
+190520;HS6;19;Pain d'épices;Gingerbread;bakery;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+190531;HS6;19;Biscuits sucrés;Sweet biscuits;bakery;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1905311000;HS10;19;Biscuits sucrés - Type 1;Sweet biscuits - Type 1;;;20.0;;;;;
+1905312000;HS10;19;Biscuits sucrés - Type 2;Sweet biscuits - Type 2;;;20.0;;;;;
+1905319000;HS10;19;Biscuits sucrés - Autre;Sweet biscuits - Other;;;20.0;;;;;
+190532;HS6;19;Gaufres et gaufrettes;Waffles and wafers;bakery;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1905321000;HS10;19;Gaufres et gaufrettes - Type 1;Waffles and wafers - Type 1;;;20.0;;;;;
+1905322000;HS10;19;Gaufres et gaufrettes - Type 2;Waffles and wafers - Type 2;;;20.0;;;;;
+1905329000;HS10;19;Gaufres et gaufrettes - Autre;Waffles and wafers - Other;;;20.0;;;;;
+190540;HS6;19;Biscottes et pain grillé;Rusks and toasted bread;bakery;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1905401000;HS10;19;Biscottes et pain grillé - Type 1;Rusks and toasted bread - Type 1;;;20.0;;;;;
+1905402000;HS10;19;Biscottes et pain grillé - Type 2;Rusks and toasted bread - Type 2;;;20.0;;;;;
+1905409000;HS10;19;Biscottes et pain grillé - Autre;Rusks and toasted bread - Other;;;20.0;;;;;
+190590;HS6;19;Autres produits de boulangerie;Other bakery products;bakery;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+1905901000;HS10;19;Autres produits de boulangerie - Type 1;Other bakery products - Type 1;;;20.0;;;;;
+1905902000;HS10;19;Autres produits de boulangerie - Type 2;Other bakery products - Type 2;;;20.0;;;;;
+1905909000;HS10;19;Autres produits de boulangerie - Autre;Other bakery products - Other;;;20.0;;;;;
+200110;HS6;20;Concombres et cornichons au vinaigre;Cucumbers and gherkins in vinegar;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2001101000;HS10;20;Concombres et cornichons au vinaigre - Type 1;Cucumbers and gherkins in vinegar - Type 1;;;20.0;;;;;
+2001102000;HS10;20;Concombres et cornichons au vinaigre - Type 2;Cucumbers and gherkins in vinegar - Type 2;;;20.0;;;;;
+2001109000;HS10;20;Concombres et cornichons au vinaigre - Autre;Cucumbers and gherkins in vinegar - Other;;;20.0;;;;;
+200190;HS6;20;Autres légumes au vinaigre;Other vegetables in vinegar;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2001901000;HS10;20;Autres légumes au vinaigre - Espèce 1;Other vegetables in vinegar - Species 1;;;20.0;;;;;
+2001902000;HS10;20;Autres légumes au vinaigre - Espèce 2;Other vegetables in vinegar - Species 2;;;20.0;;;;;
+2001909000;HS10;20;Autres légumes au vinaigre - Autre espèce;Other vegetables in vinegar - Other species;;;20.0;;;;;
+200210;HS6;20;Tomates entières ou en morceaux;Whole or cut tomatoes;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2002101000;HS10;20;Tomates entières ou en morceaux - Type 1;Whole or cut tomatoes - Type 1;;;20.0;;;;;
+2002102000;HS10;20;Tomates entières ou en morceaux - Type 2;Whole or cut tomatoes - Type 2;;;20.0;;;;;
+2002109000;HS10;20;Tomates entières ou en morceaux - Autre;Whole or cut tomatoes - Other;;;20.0;;;;;
+200290;HS6;20;Autres tomates préparées;Other prepared tomatoes;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2002901000;HS10;20;Autres tomates préparées - Type 1;Other prepared tomatoes - Type 1;;;20.0;;;;;
+2002902000;HS10;20;Autres tomates préparées - Type 2;Other prepared tomatoes - Type 2;;;20.0;;;;;
+2002909000;HS10;20;Autres tomates préparées - Autre;Other prepared tomatoes - Other;;;20.0;;;;;
+200310;HS6;20;Champignons préparés;Prepared mushrooms;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2003101000;HS10;20;Champignons préparés - Espèce 1;Prepared mushrooms - Species 1;;;20.0;;;;;
+2003102000;HS10;20;Champignons préparés - Espèce 2;Prepared mushrooms - Species 2;;;20.0;;;;;
+2003109000;HS10;20;Champignons préparés - Autre espèce;Prepared mushrooms - Other species;;;20.0;;;;;
+200390;HS6;20;Autres;Vegetable preparations;vegetable_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2003901000;HS10;20;Autres - Type 1;Vegetable preparations - Type 1;;;20.0;;;;;
+2003902000;HS10;20;Autres - Type 2;Vegetable preparations - Type 2;;;20.0;;;;;
+2003909000;HS10;20;Autres - Autre;Vegetable preparations - Other;;;20.0;;;;;
+200410;HS6;20;Pommes de terre;Vegetable preparations;vegetable_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2004101000;HS10;20;Pommes de terre - Type 1;Vegetable preparations - Type 1;;;20.0;;;;;
+2004102000;HS10;20;Pommes de terre - Type 2;Vegetable preparations - Type 2;;;20.0;;;;;
+2004109000;HS10;20;Pommes de terre - Autre;Vegetable preparations - Other;;;20.0;;;;;
+200490;HS6;20;Autres légumes préparés;Other prepared vegetables;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2004901000;HS10;20;Autres légumes préparés - Espèce 1;Other prepared vegetables - Species 1;;;20.0;;;;;
+2004902000;HS10;20;Autres légumes préparés - Espèce 2;Other prepared vegetables - Species 2;;;20.0;;;;;
+2004909000;HS10;20;Autres légumes préparés - Autre espèce;Other prepared vegetables - Other species;;;20.0;;;;;
+200510;HS6;20;Légumes homogénéisés;Homogenized vegetables;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+200520;HS6;20;Pommes de terre préparées;Prepared potatoes;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2005201000;HS10;20;Pommes de terre préparées - Type 1;Prepared potatoes - Type 1;;;20.0;;;;;
+2005202000;HS10;20;Pommes de terre préparées - Type 2;Prepared potatoes - Type 2;;;20.0;;;;;
+2005209000;HS10;20;Pommes de terre préparées - Autre;Prepared potatoes - Other;;;20.0;;;;;
+200540;HS6;20;Pois préparés;Prepared peas;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2005401000;HS10;20;Pois préparés - Type 1;Prepared peas - Type 1;;;20.0;;;;;
+2005402000;HS10;20;Pois préparés - Type 2;Prepared peas - Type 2;;;20.0;;;;;
+2005409000;HS10;20;Pois préparés - Autre;Prepared peas - Other;;;20.0;;;;;
+200551;HS6;20;Haricots en grains préparés;Prepared shelled beans;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2005511000;HS10;20;Haricots en grains préparés - Type 1;Prepared shelled beans - Type 1;;;20.0;;;;;
+2005512000;HS10;20;Haricots en grains préparés - Type 2;Prepared shelled beans - Type 2;;;20.0;;;;;
+2005519000;HS10;20;Haricots en grains préparés - Autre;Prepared shelled beans - Other;;;20.0;;;;;
+200559;HS6;20;Autres;Vegetable preparations;vegetable_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2005591000;HS10;20;Autres - Type 1;Vegetable preparations - Type 1;;;20.0;;;;;
+2005592000;HS10;20;Autres - Type 2;Vegetable preparations - Type 2;;;20.0;;;;;
+2005599000;HS10;20;Autres - Autre;Vegetable preparations - Other;;;20.0;;;;;
+200560;HS6;20;Asperges préparées;Prepared asparagus;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2005601000;HS10;20;Asperges préparées - Type 1;Prepared asparagus - Type 1;;;20.0;;;;;
+2005602000;HS10;20;Asperges préparées - Type 2;Prepared asparagus - Type 2;;;20.0;;;;;
+2005609000;HS10;20;Asperges préparées - Autre;Prepared asparagus - Other;;;20.0;;;;;
+200570;HS6;20;Olives préparées;Prepared olives;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2005701000;HS10;20;Olives préparées - Type 1;Prepared olives - Type 1;;;20.0;;;;;
+2005702000;HS10;20;Olives préparées - Type 2;Prepared olives - Type 2;;;20.0;;;;;
+2005709000;HS10;20;Olives préparées - Autre;Prepared olives - Other;;;20.0;;;;;
+200580;HS6;20;Maïs doux préparé;Prepared sweet corn;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2005801000;HS10;20;Maïs doux préparé - Type 1;Prepared sweet corn - Type 1;;;20.0;;;;;
+2005802000;HS10;20;Maïs doux préparé - Type 2;Prepared sweet corn - Type 2;;;20.0;;;;;
+2005809000;HS10;20;Maïs doux préparé - Autre;Prepared sweet corn - Other;;;20.0;;;;;
+200591;HS6;20;Pousses de bambou préparées;Prepared bamboo shoots;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+200599;HS6;20;Autres;Vegetable preparations;vegetable_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2005991000;HS10;20;Autres - Type 1;Vegetable preparations - Type 1;;;20.0;;;;;
+2005992000;HS10;20;Autres - Type 2;Vegetable preparations - Type 2;;;20.0;;;;;
+2005999000;HS10;20;Autres - Autre;Vegetable preparations - Other;;;20.0;;;;;
+200600;HS6;20;Légumes et fruits confits au sucre;Vegetables and fruits preserved by sugar;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2006001000;HS10;20;Légumes et fruits confits au sucre - Espèce 1;Vegetables and fruits preserved by sugar - Species 1;;;20.0;;;;;
+2006002000;HS10;20;Légumes et fruits confits au sucre - Espèce 2;Vegetables and fruits preserved by sugar - Species 2;;;20.0;;;;;
+2006009000;HS10;20;Légumes et fruits confits au sucre - Autre espèce;Vegetables and fruits preserved by sugar - Other species;;;20.0;;;;;
+200710;HS6;20;Préparations homogénéisées (confitures);Homogenized preparations (jams);processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2007101000;HS10;20;Préparations homogénéisées (confitures) - Espèce 1;Homogenized preparations (jams) - Species 1;;;20.0;;;;;
+2007102000;HS10;20;Préparations homogénéisées (confitures) - Espèce 2;Homogenized preparations (jams) - Species 2;;;20.0;;;;;
+2007109000;HS10;20;Préparations homogénéisées (confitures) - Autre espèce;Homogenized preparations (jams) - Other species;;;20.0;;;;;
+200791;HS6;20;Confitures et marmelades d'agrumes;Citrus jams and marmalades;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2007911000;HS10;20;Confitures et marmelades d'agrumes - Espèce 1;Citrus jams and marmalades - Species 1;;;20.0;;;;;
+2007912000;HS10;20;Confitures et marmelades d'agrumes - Espèce 2;Citrus jams and marmalades - Species 2;;;20.0;;;;;
+2007919000;HS10;20;Confitures et marmelades d'agrumes - Autre espèce;Citrus jams and marmalades - Other species;;;20.0;;;;;
+200799;HS6;20;Autres confitures et marmelades;Other jams and marmalades;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2007991000;HS10;20;Autres confitures et marmelades - Espèce 1;Other jams and marmalades - Species 1;;;20.0;;;;;
+2007992000;HS10;20;Autres confitures et marmelades - Espèce 2;Other jams and marmalades - Species 2;;;20.0;;;;;
+2007999000;HS10;20;Autres confitures et marmelades - Autre espèce;Other jams and marmalades - Other species;;;20.0;;;;;
+200811;HS6;20;Cacahuètes préparées;Prepared groundnuts;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008111000;HS10;20;Cacahuètes préparées - Type 1;Prepared groundnuts - Type 1;;;20.0;;;;;
+2008112000;HS10;20;Cacahuètes préparées - Type 2;Prepared groundnuts - Type 2;;;20.0;;;;;
+2008119000;HS10;20;Cacahuètes préparées - Autre;Prepared groundnuts - Other;;;20.0;;;;;
+200819;HS6;20;Autres fruits à coques préparés;Other prepared nuts;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008191000;HS10;20;Autres fruits à coques préparés - Espèce 1;Other prepared nuts - Species 1;;;20.0;;;;;
+2008192000;HS10;20;Autres fruits à coques préparés - Espèce 2;Other prepared nuts - Species 2;;;20.0;;;;;
+2008199000;HS10;20;Autres fruits à coques préparés - Autre espèce;Other prepared nuts - Other species;;;20.0;;;;;
+200820;HS6;20;Ananas préparés;Prepared pineapples;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008201000;HS10;20;Ananas préparés - Type 1;Prepared pineapples - Type 1;;;20.0;;;;;
+2008202000;HS10;20;Ananas préparés - Type 2;Prepared pineapples - Type 2;;;20.0;;;;;
+2008209000;HS10;20;Ananas préparés - Autre;Prepared pineapples - Other;;;20.0;;;;;
+200830;HS6;20;Agrumes préparés;Prepared citrus;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008301000;HS10;20;Agrumes préparés - Espèce 1;Prepared citrus - Species 1;;;20.0;;;;;
+2008302000;HS10;20;Agrumes préparés - Espèce 2;Prepared citrus - Species 2;;;20.0;;;;;
+2008309000;HS10;20;Agrumes préparés - Autre espèce;Prepared citrus - Other species;;;20.0;;;;;
+200840;HS6;20;Poires préparées;Prepared pears;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008401000;HS10;20;Poires préparées - Type 1;Prepared pears - Type 1;;;20.0;;;;;
+2008402000;HS10;20;Poires préparées - Type 2;Prepared pears - Type 2;;;20.0;;;;;
+2008409000;HS10;20;Poires préparées - Autre;Prepared pears - Other;;;20.0;;;;;
+200850;HS6;20;Abricots préparés;Prepared apricots;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008501000;HS10;20;Abricots préparés - Type 1;Prepared apricots - Type 1;;;20.0;;;;;
+2008502000;HS10;20;Abricots préparés - Type 2;Prepared apricots - Type 2;;;20.0;;;;;
+2008509000;HS10;20;Abricots préparés - Autre;Prepared apricots - Other;;;20.0;;;;;
+200860;HS6;20;Cerises préparées;Prepared cherries;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008601000;HS10;20;Cerises préparées - Type 1;Prepared cherries - Type 1;;;20.0;;;;;
+2008602000;HS10;20;Cerises préparées - Type 2;Prepared cherries - Type 2;;;20.0;;;;;
+2008609000;HS10;20;Cerises préparées - Autre;Prepared cherries - Other;;;20.0;;;;;
+200870;HS6;20;Pêches préparées;Prepared peaches;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008701000;HS10;20;Pêches préparées - Type 1;Prepared peaches - Type 1;;;20.0;;;;;
+2008702000;HS10;20;Pêches préparées - Type 2;Prepared peaches - Type 2;;;20.0;;;;;
+2008709000;HS10;20;Pêches préparées - Autre;Prepared peaches - Other;;;20.0;;;;;
+200880;HS6;20;Fraises préparées;Prepared strawberries;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008801000;HS10;20;Fraises préparées - Type 1;Prepared strawberries - Type 1;;;20.0;;;;;
+2008802000;HS10;20;Fraises préparées - Type 2;Prepared strawberries - Type 2;;;20.0;;;;;
+2008809000;HS10;20;Fraises préparées - Autre;Prepared strawberries - Other;;;20.0;;;;;
+200891;HS6;20;Coeurs de palmiers;Fruit;vegetable_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008911000;HS10;20;Coeurs de palmiers - Type 1;Fruit - Type 1;;;20.0;;;;;
+2008912000;HS10;20;Coeurs de palmiers - Type 2;Fruit - Type 2;;;20.0;;;;;
+2008919000;HS10;20;Coeurs de palmiers - Autre;Fruit - Other;;;20.0;;;;;
+200893;HS6;20;Canneberges préparées;Prepared cranberries;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008931000;HS10;20;Canneberges préparées - Type 1;Prepared cranberries - Type 1;;;20.0;;;;;
+2008932000;HS10;20;Canneberges préparées - Type 2;Prepared cranberries - Type 2;;;20.0;;;;;
+2008939000;HS10;20;Canneberges préparées - Autre;Prepared cranberries - Other;;;20.0;;;;;
+200897;HS6;20;Mélanges de fruits préparés;Prepared fruit mixtures;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008971000;HS10;20;Mélanges de fruits préparés - Type 1;Prepared fruit mixtures - Type 1;;;20.0;;;;;
+2008972000;HS10;20;Mélanges de fruits préparés - Type 2;Prepared fruit mixtures - Type 2;;;20.0;;;;;
+2008979000;HS10;20;Mélanges de fruits préparés - Autre;Prepared fruit mixtures - Other;;;20.0;;;;;
+200899;HS6;20;Autres fruits préparés;Other prepared fruits;processed_food;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2008991000;HS10;20;Autres fruits préparés - Espèce 1;Other prepared fruits - Species 1;;;20.0;;;;;
+2008992000;HS10;20;Autres fruits préparés - Espèce 2;Other prepared fruits - Species 2;;;20.0;;;;;
+2008999000;HS10;20;Autres fruits préparés - Autre espèce;Other prepared fruits - Other species;;;20.0;;;;;
+200911;HS6;20;Jus d'orange congelé;Frozen orange juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009111000;HS10;20;Jus d'orange congelé - Type 1;Frozen orange juice - Type 1;;;20.0;;;;;
+2009112000;HS10;20;Jus d'orange congelé - Type 2;Frozen orange juice - Type 2;;;20.0;;;;;
+2009119000;HS10;20;Jus d'orange congelé - Autre;Frozen orange juice - Other;;;20.0;;;;;
+200912;HS6;20;Jus d'orange non congelé;Non-frozen orange juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009121000;HS10;20;Jus d'orange non congelé - Type 1;Non-frozen orange juice - Type 1;;;20.0;;;;;
+2009122000;HS10;20;Jus d'orange non congelé - Type 2;Non-frozen orange juice - Type 2;;;20.0;;;;;
+2009129000;HS10;20;Jus d'orange non congelé - Autre;Non-frozen orange juice - Other;;;20.0;;;;;
+200919;HS6;20;Autres jus d'orange;Other orange juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009191000;HS10;20;Autres jus d'orange - Type 1;Other orange juice - Type 1;;;20.0;;;;;
+2009192000;HS10;20;Autres jus d'orange - Type 2;Other orange juice - Type 2;;;20.0;;;;;
+2009199000;HS10;20;Autres jus d'orange - Autre;Other orange juice - Other;;;20.0;;;;;
+200921;HS6;20;Jus de pamplemousse;Grapefruit juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009211000;HS10;20;Jus de pamplemousse - Type 1;Grapefruit juice - Type 1;;;20.0;;;;;
+2009212000;HS10;20;Jus de pamplemousse - Type 2;Grapefruit juice - Type 2;;;20.0;;;;;
+2009219000;HS10;20;Jus de pamplemousse - Autre;Grapefruit juice - Other;;;20.0;;;;;
+200929;HS6;20;Autres jus d'agrumes;Other citrus juices;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009291000;HS10;20;Autres jus d'agrumes - Espèce 1;Other citrus juices - Species 1;;;20.0;;;;;
+2009292000;HS10;20;Autres jus d'agrumes - Espèce 2;Other citrus juices - Species 2;;;20.0;;;;;
+2009299000;HS10;20;Autres jus d'agrumes - Autre espèce;Other citrus juices - Other species;;;20.0;;;;;
+200931;HS6;20;Jus d'un seul agrume;Single citrus fruit juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009311000;HS10;20;Jus d'un seul agrume - Espèce 1;Single citrus fruit juice - Species 1;;;20.0;;;;;
+2009312000;HS10;20;Jus d'un seul agrume - Espèce 2;Single citrus fruit juice - Species 2;;;20.0;;;;;
+2009319000;HS10;20;Jus d'un seul agrume - Autre espèce;Single citrus fruit juice - Other species;;;20.0;;;;;
+200939;HS6;20;Autres;Juice;vegetable_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009391000;HS10;20;Autres - Type 1;Juice - Type 1;;;20.0;;;;;
+2009392000;HS10;20;Autres - Type 2;Juice - Type 2;;;20.0;;;;;
+2009399000;HS10;20;Autres - Autre;Juice - Other;;;20.0;;;;;
+200941;HS6;20;Jus d'ananas;Pineapple juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009411000;HS10;20;Jus d'ananas - Type 1;Pineapple juice - Type 1;;;20.0;;;;;
+2009412000;HS10;20;Jus d'ananas - Type 2;Pineapple juice - Type 2;;;20.0;;;;;
+2009419000;HS10;20;Jus d'ananas - Autre;Pineapple juice - Other;;;20.0;;;;;
+200949;HS6;20;Autres jus d'ananas;Other pineapple juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009491000;HS10;20;Autres jus d'ananas - Type 1;Other pineapple juice - Type 1;;;20.0;;;;;
+2009492000;HS10;20;Autres jus d'ananas - Type 2;Other pineapple juice - Type 2;;;20.0;;;;;
+2009499000;HS10;20;Autres jus d'ananas - Autre;Other pineapple juice - Other;;;20.0;;;;;
+200950;HS6;20;Jus de tomate;Tomato juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009501000;HS10;20;Jus de tomate - Type 1;Tomato juice - Type 1;;;20.0;;;;;
+2009502000;HS10;20;Jus de tomate - Type 2;Tomato juice - Type 2;;;20.0;;;;;
+2009509000;HS10;20;Jus de tomate - Autre;Tomato juice - Other;;;20.0;;;;;
+200961;HS6;20;Jus de raisin non concentré;Non-concentrated grape juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009611000;HS10;20;Jus de raisin non concentré - Type 1;Non-concentrated grape juice - Type 1;;;20.0;;;;;
+2009612000;HS10;20;Jus de raisin non concentré - Type 2;Non-concentrated grape juice - Type 2;;;20.0;;;;;
+2009619000;HS10;20;Jus de raisin non concentré - Autre;Non-concentrated grape juice - Other;;;20.0;;;;;
+200969;HS6;20;Autres;Juice;vegetable_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009691000;HS10;20;Autres - Type 1;Juice - Type 1;;;20.0;;;;;
+2009692000;HS10;20;Autres - Type 2;Juice - Type 2;;;20.0;;;;;
+2009699000;HS10;20;Autres - Autre;Juice - Other;;;20.0;;;;;
+200971;HS6;20;Jus de pomme non concentré;Non-concentrated apple juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009711000;HS10;20;Jus de pomme non concentré - Type 1;Non-concentrated apple juice - Type 1;;;20.0;;;;;
+2009712000;HS10;20;Jus de pomme non concentré - Type 2;Non-concentrated apple juice - Type 2;;;20.0;;;;;
+2009719000;HS10;20;Jus de pomme non concentré - Autre;Non-concentrated apple juice - Other;;;20.0;;;;;
+200979;HS6;20;Autres;Juice;vegetable_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009791000;HS10;20;Autres - Type 1;Juice - Type 1;;;20.0;;;;;
+2009792000;HS10;20;Autres - Type 2;Juice - Type 2;;;20.0;;;;;
+2009799000;HS10;20;Autres - Autre;Juice - Other;;;20.0;;;;;
+200981;HS6;20;Jus de canneberge;Cranberry juice;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009811000;HS10;20;Jus de canneberge - Type 1;Cranberry juice - Type 1;;;20.0;;;;;
+2009812000;HS10;20;Jus de canneberge - Type 2;Cranberry juice - Type 2;;;20.0;;;;;
+2009819000;HS10;20;Jus de canneberge - Autre;Cranberry juice - Other;;;20.0;;;;;
+200989;HS6;20;Autres jus de fruits ou légumes;Other fruit or vegetable juices;beverages;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009891000;HS10;20;Autres jus de fruits ou légumes - Espèce 1;Other fruit or vegetable juices - Species 1;;;20.0;;;;;
+2009892000;HS10;20;Autres jus de fruits ou légumes - Espèce 2;Other fruit or vegetable juices - Species 2;;;20.0;;;;;
+2009899000;HS10;20;Autres jus de fruits ou légumes - Autre espèce;Other fruit or vegetable juices - Other species;;;20.0;;;;;
+200990;HS6;20;Mélanges de jus;Juices;vegetable_preparations;KG;20.0;14.0;0.0;D.D:20.0% | IE:2.0% | T.V.A:14.0%;910 Déclaration d'Importation du Produit;36.0
+2009901000;HS10;20;Mélanges de jus - Type 1;Juices - Type 1;;;20.0;;;;;
+2009902000;HS10;20;Mélanges de jus - Type 2;Juices - Type 2;;;20.0;;;;;
+2009909000;HS10;20;Mélanges de jus - Autre;Juices - Other;;;20.0;;;;;

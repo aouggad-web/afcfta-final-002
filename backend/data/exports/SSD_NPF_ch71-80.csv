@@ -1,0 +1,1883 @@
+﻿Code;Niveau;Chapitre;Description_FR;Description_EN;Categorie;Unite;DD_Taux_%;TVA_%;Autres_Taxes_%;Taxes_Detail;Formalites_Administratives;Total_Import_Taxes_%
+710110;HS6;71;Perles fines;Pearls;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7101101000;HS10;71;Perles fines - Type 1;Pearls - Type 1;;;35.0;;;;;
+7101102000;HS10;71;Perles fines - Type 2;Pearls - Type 2;;;35.0;;;;;
+7101109000;HS10;71;Perles fines - Autre;Pearls - Other;;;35.0;;;;;
+710121;HS6;71;Brutes;Pearls;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7101211000;HS10;71;Brutes - Type 1;Pearls - Type 1;;;35.0;;;;;
+7101212000;HS10;71;Brutes - Type 2;Pearls - Type 2;;;35.0;;;;;
+7101219000;HS10;71;Brutes - Autre;Pearls - Other;;;35.0;;;;;
+710122;HS6;71;Travaillées;Pearls;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7101221000;HS10;71;Travaillées - Type 1;Pearls - Type 1;;;35.0;;;;;
+7101222000;HS10;71;Travaillées - Type 2;Pearls - Type 2;;;35.0;;;;;
+7101229000;HS10;71;Travaillées - Autre;Pearls - Other;;;35.0;;;;;
+710210;HS6;71;Non triés;Diamonds;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7102101000;HS10;71;Non triés - Type 1;Diamonds - Type 1;;;35.0;;;;;
+7102102000;HS10;71;Non triés - Type 2;Diamonds - Type 2;;;35.0;;;;;
+7102109000;HS10;71;Non triés - Autre;Diamonds - Other;;;35.0;;;;;
+710221;HS6;71;Bruts ou simplement sciés;Diamonds;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7102211000;HS10;71;Bruts ou simplement sciés - Type 1;Diamonds - Type 1;;;35.0;;;;;
+7102212000;HS10;71;Bruts ou simplement sciés - Type 2;Diamonds - Type 2;;;35.0;;;;;
+7102219000;HS10;71;Bruts ou simplement sciés - Autre;Diamonds - Other;;;35.0;;;;;
+710229;HS6;71;Autres;Diamonds;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7102291000;HS10;71;Autres - Type 1;Diamonds - Type 1;;;35.0;;;;;
+7102292000;HS10;71;Autres - Type 2;Diamonds - Type 2;;;35.0;;;;;
+7102299000;HS10;71;Autres - Autre;Diamonds - Other;;;35.0;;;;;
+710231;HS6;71;Bruts ou simplement sciés;Diamonds;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7102311000;HS10;71;Bruts ou simplement sciés - Type 1;Diamonds - Type 1;;;35.0;;;;;
+7102312000;HS10;71;Bruts ou simplement sciés - Type 2;Diamonds - Type 2;;;35.0;;;;;
+7102319000;HS10;71;Bruts ou simplement sciés - Autre;Diamonds - Other;;;35.0;;;;;
+710239;HS6;71;Autres;Diamonds;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7102391000;HS10;71;Autres - Type 1;Diamonds - Type 1;;;35.0;;;;;
+7102392000;HS10;71;Autres - Type 2;Diamonds - Type 2;;;35.0;;;;;
+7102399000;HS10;71;Autres - Autre;Diamonds - Other;;;35.0;;;;;
+710310;HS6;71;Brutes ou simplement sciés ou dégrossies;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7103101000;HS10;71;Brutes ou simplement sciés ou dégrossies - Type 1;Stones - Type 1;;;35.0;;;;;
+7103102000;HS10;71;Brutes ou simplement sciés ou dégrossies - Type 2;Stones - Type 2;;;35.0;;;;;
+7103109000;HS10;71;Brutes ou simplement sciés ou dégrossies - Autre;Stones - Other;;;35.0;;;;;
+710391;HS6;71;Rubis;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7103911000;HS10;71;Rubis - Type 1;Stones - Type 1;;;35.0;;;;;
+7103912000;HS10;71;Rubis - Type 2;Stones - Type 2;;;35.0;;;;;
+7103919000;HS10;71;Rubis - Autre;Stones - Other;;;35.0;;;;;
+710399;HS6;71;Autres;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7103991000;HS10;71;Autres - Type 1;Stones - Type 1;;;35.0;;;;;
+7103992000;HS10;71;Autres - Type 2;Stones - Type 2;;;35.0;;;;;
+7103999000;HS10;71;Autres - Autre;Stones - Other;;;35.0;;;;;
+710410;HS6;71;Quartz piézo-électrique;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7104101000;HS10;71;Quartz piézo-électrique - Type 1;Stones - Type 1;;;35.0;;;;;
+7104102000;HS10;71;Quartz piézo-électrique - Type 2;Stones - Type 2;;;35.0;;;;;
+7104109000;HS10;71;Quartz piézo-électrique - Autre;Stones - Other;;;35.0;;;;;
+710421;HS6;71;Diamants;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7104211000;HS10;71;Diamants - Type 1;Stones - Type 1;;;35.0;;;;;
+7104212000;HS10;71;Diamants - Type 2;Stones - Type 2;;;35.0;;;;;
+7104219000;HS10;71;Diamants - Autre;Stones - Other;;;35.0;;;;;
+710429;HS6;71;Autres;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7104291000;HS10;71;Autres - Type 1;Stones - Type 1;;;35.0;;;;;
+7104292000;HS10;71;Autres - Type 2;Stones - Type 2;;;35.0;;;;;
+7104299000;HS10;71;Autres - Autre;Stones - Other;;;35.0;;;;;
+710491;HS6;71;Diamants;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7104911000;HS10;71;Diamants - Type 1;Stones - Type 1;;;35.0;;;;;
+7104912000;HS10;71;Diamants - Type 2;Stones - Type 2;;;35.0;;;;;
+7104919000;HS10;71;Diamants - Autre;Stones - Other;;;35.0;;;;;
+710499;HS6;71;Autres;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7104991000;HS10;71;Autres - Type 1;Stones - Type 1;;;35.0;;;;;
+7104992000;HS10;71;Autres - Type 2;Stones - Type 2;;;35.0;;;;;
+7104999000;HS10;71;Autres - Autre;Stones - Other;;;35.0;;;;;
+710510;HS6;71;De diamants;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7105101000;HS10;71;De diamants - Type 1;Stones - Type 1;;;35.0;;;;;
+7105102000;HS10;71;De diamants - Type 2;Stones - Type 2;;;35.0;;;;;
+7105109000;HS10;71;De diamants - Autre;Stones - Other;;;35.0;;;;;
+710590;HS6;71;Autres;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7105901000;HS10;71;Autres - Type 1;Stones - Type 1;;;35.0;;;;;
+7105902000;HS10;71;Autres - Type 2;Stones - Type 2;;;35.0;;;;;
+7105909000;HS10;71;Autres - Autre;Stones - Other;;;35.0;;;;;
+710610;HS6;71;Poudres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7106101000;HS10;71;Poudres - Type 1;Metals - Type 1;;;35.0;;;;;
+7106102000;HS10;71;Poudres - Type 2;Metals - Type 2;;;35.0;;;;;
+7106109000;HS10;71;Poudres - Autre;Metals - Other;;;35.0;;;;;
+710691;HS6;71;Sous formes brutes;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7106911000;HS10;71;Sous formes brutes - Type 1;Metals - Type 1;;;35.0;;;;;
+7106912000;HS10;71;Sous formes brutes - Type 2;Metals - Type 2;;;35.0;;;;;
+7106919000;HS10;71;Sous formes brutes - Autre;Metals - Other;;;35.0;;;;;
+710692;HS6;71;Sous formes mi-ouvrées;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7106921000;HS10;71;Sous formes mi-ouvrées - Type 1;Metals - Type 1;;;35.0;;;;;
+7106922000;HS10;71;Sous formes mi-ouvrées - Type 2;Metals - Type 2;;;35.0;;;;;
+7106929000;HS10;71;Sous formes mi-ouvrées - Autre;Metals - Other;;;35.0;;;;;
+710700;HS6;71;Plaqué ou doublé d'argent sur métaux communs;Base metals clad with silver;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7107001000;HS10;71;Plaqué ou doublé d'argent sur métaux communs - Type 1;Base metals clad with silver - Type 1;;;35.0;;;;;
+7107002000;HS10;71;Plaqué ou doublé d'argent sur métaux communs - Type 2;Base metals clad with silver - Type 2;;;35.0;;;;;
+7107009000;HS10;71;Plaqué ou doublé d'argent sur métaux communs - Autre;Base metals clad with silver - Other;;;35.0;;;;;
+710811;HS6;71;Poudres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7108111000;HS10;71;Poudres - Type 1;Metals - Type 1;;;35.0;;;;;
+7108112000;HS10;71;Poudres - Type 2;Metals - Type 2;;;35.0;;;;;
+7108119000;HS10;71;Poudres - Autre;Metals - Other;;;35.0;;;;;
+710812;HS6;71;Sous autres formes brutes;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7108121000;HS10;71;Sous autres formes brutes - Type 1;Metals - Type 1;;;35.0;;;;;
+7108122000;HS10;71;Sous autres formes brutes - Type 2;Metals - Type 2;;;35.0;;;;;
+7108129000;HS10;71;Sous autres formes brutes - Autre;Metals - Other;;;35.0;;;;;
+710813;HS6;71;Sous autres formes mi-ouvrées;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7108131000;HS10;71;Sous autres formes mi-ouvrées - Type 1;Metals - Type 1;;;35.0;;;;;
+7108132000;HS10;71;Sous autres formes mi-ouvrées - Type 2;Metals - Type 2;;;35.0;;;;;
+7108139000;HS10;71;Sous autres formes mi-ouvrées - Autre;Metals - Other;;;35.0;;;;;
+710820;HS6;71;A usage monétaire;Gold;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7108201000;HS10;71;A usage monétaire - Type 1;Gold - Type 1;;;35.0;;;;;
+7108202000;HS10;71;A usage monétaire - Type 2;Gold - Type 2;;;35.0;;;;;
+7108209000;HS10;71;A usage monétaire - Autre;Gold - Other;;;35.0;;;;;
+710900;HS6;71;Plaqué ou doublé d'or sur métaux communs ou sur argent;Base metals or silver;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7109001000;HS10;71;Plaqué ou doublé d'or sur métaux communs ou sur argent - Type 1;Base metals or silver - Type 1;;;35.0;;;;;
+7109002000;HS10;71;Plaqué ou doublé d'or sur métaux communs ou sur argent - Type 2;Base metals or silver - Type 2;;;35.0;;;;;
+7109009000;HS10;71;Plaqué ou doublé d'or sur métaux communs ou sur argent - Autre;Base metals or silver - Other;;;35.0;;;;;
+711011;HS6;71;Sous forme brutes ou en poudres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7110111000;HS10;71;Sous forme brutes ou en poudres - Type 1;Metals - Type 1;;;35.0;;;;;
+7110112000;HS10;71;Sous forme brutes ou en poudres - Type 2;Metals - Type 2;;;35.0;;;;;
+7110119000;HS10;71;Sous forme brutes ou en poudres - Autre;Metals - Other;;;35.0;;;;;
+711019;HS6;71;Autres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7110191000;HS10;71;Autres - Type 1;Metals - Type 1;;;35.0;;;;;
+7110192000;HS10;71;Autres - Type 2;Metals - Type 2;;;35.0;;;;;
+7110199000;HS10;71;Autres - Autre;Metals - Other;;;35.0;;;;;
+711021;HS6;71;Sous forme brutes ou en poudres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7110211000;HS10;71;Sous forme brutes ou en poudres - Type 1;Metals - Type 1;;;35.0;;;;;
+7110212000;HS10;71;Sous forme brutes ou en poudres - Type 2;Metals - Type 2;;;35.0;;;;;
+7110219000;HS10;71;Sous forme brutes ou en poudres - Autre;Metals - Other;;;35.0;;;;;
+711029;HS6;71;Autres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7110291000;HS10;71;Autres - Type 1;Metals - Type 1;;;35.0;;;;;
+7110292000;HS10;71;Autres - Type 2;Metals - Type 2;;;35.0;;;;;
+7110299000;HS10;71;Autres - Autre;Metals - Other;;;35.0;;;;;
+711031;HS6;71;Sous formes brutes ou en poudres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7110311000;HS10;71;Sous formes brutes ou en poudres - Type 1;Metals - Type 1;;;35.0;;;;;
+7110312000;HS10;71;Sous formes brutes ou en poudres - Type 2;Metals - Type 2;;;35.0;;;;;
+7110319000;HS10;71;Sous formes brutes ou en poudres - Autre;Metals - Other;;;35.0;;;;;
+711039;HS6;71;Autres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7110391000;HS10;71;Autres - Type 1;Metals - Type 1;;;35.0;;;;;
+7110392000;HS10;71;Autres - Type 2;Metals - Type 2;;;35.0;;;;;
+7110399000;HS10;71;Autres - Autre;Metals - Other;;;35.0;;;;;
+711041;HS6;71;Sous formes brutes ou en poudres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7110411000;HS10;71;Sous formes brutes ou en poudres - Type 1;Metals - Type 1;;;35.0;;;;;
+7110412000;HS10;71;Sous formes brutes ou en poudres - Type 2;Metals - Type 2;;;35.0;;;;;
+7110419000;HS10;71;Sous formes brutes ou en poudres - Autre;Metals - Other;;;35.0;;;;;
+711049;HS6;71;Autres;Metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7110491000;HS10;71;Autres - Type 1;Metals - Type 1;;;35.0;;;;;
+7110492000;HS10;71;Autres - Type 2;Metals - Type 2;;;35.0;;;;;
+7110499000;HS10;71;Autres - Autre;Metals - Other;;;35.0;;;;;
+711100;HS6;71;Plaqué ou doublé de platine sur métaux communs;Base metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7111001000;HS10;71;Plaqué ou doublé de platine sur métaux communs - Type 1;Base metals - Type 1;;;35.0;;;;;
+7111002000;HS10;71;Plaqué ou doublé de platine sur métaux communs - Type 2;Base metals - Type 2;;;35.0;;;;;
+7111009000;HS10;71;Plaqué ou doublé de platine sur métaux communs - Autre;Base metals - Other;;;35.0;;;;;
+711230;HS6;71;Cendres contenant des métaux précieux ou des composés de métaux précieux;Waste and scrap of precious metal or of metal clad with precious metal;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7112301000;HS10;71;Cendres contenant des métaux précieux ou des composés de métaux précieux - Type 1;Waste and scrap of precious metal or of metal clad with precious metal - Type 1;;;35.0;;;;;
+7112302000;HS10;71;Cendres contenant des métaux précieux ou des composés de métaux précieux - Type 2;Waste and scrap of precious metal or of metal clad with precious metal - Type 2;;;35.0;;;;;
+7112309000;HS10;71;Cendres contenant des métaux précieux ou des composés de métaux précieux - Autre;Waste and scrap of precious metal or of metal clad with precious metal - Other;;;35.0;;;;;
+711291;HS6;71;D'or;Waste and scrap of precious metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7112911000;HS10;71;D'or - Type 1;Waste and scrap of precious metals - Type 1;;;35.0;;;;;
+7112912000;HS10;71;D'or - Type 2;Waste and scrap of precious metals - Type 2;;;35.0;;;;;
+7112919000;HS10;71;D'or - Autre;Waste and scrap of precious metals - Other;;;35.0;;;;;
+711292;HS6;71;De platine;Waste and scrap of precious metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7112921000;HS10;71;De platine - Type 1;Waste and scrap of precious metals - Type 1;;;35.0;;;;;
+7112922000;HS10;71;De platine - Type 2;Waste and scrap of precious metals - Type 2;;;35.0;;;;;
+7112929000;HS10;71;De platine - Autre;Waste and scrap of precious metals - Other;;;35.0;;;;;
+711299;HS6;71;Autres;Waste and scrap of precious metals;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7112991000;HS10;71;Autres - Type 1;Waste and scrap of precious metals - Type 1;;;35.0;;;;;
+7112992000;HS10;71;Autres - Type 2;Waste and scrap of precious metals - Type 2;;;35.0;;;;;
+7112999000;HS10;71;Autres - Autre;Waste and scrap of precious metals - Other;;;35.0;;;;;
+711311;HS6;71;En argent;Jewellery;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7113111000;HS10;71;En argent - Type 1;Jewellery - Type 1;;;35.0;;;;;
+7113112000;HS10;71;En argent - Type 2;Jewellery - Type 2;;;35.0;;;;;
+7113119000;HS10;71;En argent - Autre;Jewellery - Other;;;35.0;;;;;
+711319;HS6;71;En autres métaux précieux;Jewellery;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7113191000;HS10;71;En autres métaux précieux - Type 1;Jewellery - Type 1;;;35.0;;;;;
+7113192000;HS10;71;En autres métaux précieux - Type 2;Jewellery - Type 2;;;35.0;;;;;
+7113199000;HS10;71;En autres métaux précieux - Autre;Jewellery - Other;;;35.0;;;;;
+711320;HS6;71;En plaqués ou doublés de métaux précieux sur métaux communs;Jewellery;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7113201000;HS10;71;En plaqués ou doublés de métaux précieux sur métaux communs - Type 1;Jewellery - Type 1;;;35.0;;;;;
+7113202000;HS10;71;En plaqués ou doublés de métaux précieux sur métaux communs - Type 2;Jewellery - Type 2;;;35.0;;;;;
+7113209000;HS10;71;En plaqués ou doublés de métaux précieux sur métaux communs - Autre;Jewellery - Other;;;35.0;;;;;
+711411;HS6;71;En argent;Silversmiths' wares;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7114111000;HS10;71;En argent - Type 1;Silversmiths' wares - Type 1;;;35.0;;;;;
+7114112000;HS10;71;En argent - Type 2;Silversmiths' wares - Type 2;;;35.0;;;;;
+7114119000;HS10;71;En argent - Autre;Silversmiths' wares - Other;;;35.0;;;;;
+711419;HS6;71;En autres métaux précieux;Goldsmiths' wares;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7114191000;HS10;71;En autres métaux précieux - Type 1;Goldsmiths' wares - Type 1;;;35.0;;;;;
+7114192000;HS10;71;En autres métaux précieux - Type 2;Goldsmiths' wares - Type 2;;;35.0;;;;;
+7114199000;HS10;71;En autres métaux précieux - Autre;Goldsmiths' wares - Other;;;35.0;;;;;
+711420;HS6;71;En plaqués ou doublés de métaux précieux sur métaux communs;Goldsmiths' and silversmiths' wares;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7114201000;HS10;71;En plaqués ou doublés de métaux précieux sur métaux communs - Type 1;Goldsmiths' and silversmiths' wares - Type 1;;;35.0;;;;;
+7114202000;HS10;71;En plaqués ou doublés de métaux précieux sur métaux communs - Type 2;Goldsmiths' and silversmiths' wares - Type 2;;;35.0;;;;;
+7114209000;HS10;71;En plaqués ou doublés de métaux précieux sur métaux communs - Autre;Goldsmiths' and silversmiths' wares - Other;;;35.0;;;;;
+711510;HS6;71;Catalyseurs sous formes de toiles ou de treillis en platine;Metal;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7115101000;HS10;71;Catalyseurs sous formes de toiles ou de treillis en platine - Type 1;Metal - Type 1;;;35.0;;;;;
+7115102000;HS10;71;Catalyseurs sous formes de toiles ou de treillis en platine - Type 2;Metal - Type 2;;;35.0;;;;;
+7115109000;HS10;71;Catalyseurs sous formes de toiles ou de treillis en platine - Autre;Metal - Other;;;35.0;;;;;
+711590;HS6;71;Autres;Metal;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7115901000;HS10;71;Autres - Type 1;Metal - Type 1;;;35.0;;;;;
+7115902000;HS10;71;Autres - Type 2;Metal - Type 2;;;35.0;;;;;
+7115909000;HS10;71;Autres - Autre;Metal - Other;;;35.0;;;;;
+711610;HS6;71;En perles fines ou de culture;Pearls;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7116101000;HS10;71;En perles fines ou de culture - Type 1;Pearls - Type 1;;;35.0;;;;;
+7116102000;HS10;71;En perles fines ou de culture - Type 2;Pearls - Type 2;;;35.0;;;;;
+7116109000;HS10;71;En perles fines ou de culture - Autre;Pearls - Other;;;35.0;;;;;
+711620;HS6;71;En pierres gemmes ou en pierres synthétiques ou reconstituées;Stones;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7116201000;HS10;71;En pierres gemmes ou en pierres synthétiques ou reconstituées - Type 1;Stones - Type 1;;;35.0;;;;;
+7116202000;HS10;71;En pierres gemmes ou en pierres synthétiques ou reconstituées - Type 2;Stones - Type 2;;;35.0;;;;;
+7116209000;HS10;71;En pierres gemmes ou en pierres synthétiques ou reconstituées - Autre;Stones - Other;;;35.0;;;;;
+711711;HS6;71;Boutons de manchettes et boutons similaires;Jewellery;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7117111000;HS10;71;Boutons de manchettes et boutons similaires - Type 1;Jewellery - Type 1;;;35.0;;;;;
+7117112000;HS10;71;Boutons de manchettes et boutons similaires - Type 2;Jewellery - Type 2;;;35.0;;;;;
+7117119000;HS10;71;Boutons de manchettes et boutons similaires - Autre;Jewellery - Other;;;35.0;;;;;
+711719;HS6;71;Autres;Jewellery;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7117191000;HS10;71;Autres - Type 1;Jewellery - Type 1;;;35.0;;;;;
+7117192000;HS10;71;Autres - Type 2;Jewellery - Type 2;;;35.0;;;;;
+7117199000;HS10;71;Autres - Autre;Jewellery - Other;;;35.0;;;;;
+711790;HS6;71;Autres;Jewellery;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7117901000;HS10;71;Autres - Type 1;Jewellery - Type 1;;;35.0;;;;;
+7117902000;HS10;71;Autres - Type 2;Jewellery - Type 2;;;35.0;;;;;
+7117909000;HS10;71;Autres - Autre;Jewellery - Other;;;35.0;;;;;
+711810;HS6;71;Monnaies n'ayant pas cours légal;Coin (other than gold coin);jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7118101000;HS10;71;Monnaies n'ayant pas cours légal - Type 1;Coin (other than gold coin) - Type 1;;;35.0;;;;;
+7118102000;HS10;71;Monnaies n'ayant pas cours légal - Type 2;Coin (other than gold coin) - Type 2;;;35.0;;;;;
+7118109000;HS10;71;Monnaies n'ayant pas cours légal - Autre;Coin (other than gold coin) - Other;;;35.0;;;;;
+711890;HS6;71;Autres;Coin;jewelry;KG;35.0;18.0;0.0;D.D:35.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;53.0
+7118901000;HS10;71;Autres - Type 1;Coin - Type 1;;;35.0;;;;;
+7118902000;HS10;71;Autres - Type 2;Coin - Type 2;;;35.0;;;;;
+7118909000;HS10;71;Autres - Autre;Coin - Other;;;35.0;;;;;
+720110;HS6;72;Fontes brutes non alliées;Non-alloy pig iron;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7201101000;HS10;72;Fontes brutes non alliées - Type 1;Non-alloy pig iron - Type 1;;;25.0;;;;;
+7201102000;HS10;72;Fontes brutes non alliées - Type 2;Non-alloy pig iron - Type 2;;;25.0;;;;;
+7201109000;HS10;72;Fontes brutes non alliées - Autre;Non-alloy pig iron - Other;;;25.0;;;;;
+720120;HS6;72;Fontes brutes alliées;Alloy pig iron;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7201201000;HS10;72;Fontes brutes alliées - Type 1;Alloy pig iron - Type 1;;;25.0;;;;;
+7201202000;HS10;72;Fontes brutes alliées - Type 2;Alloy pig iron - Type 2;;;25.0;;;;;
+7201209000;HS10;72;Fontes brutes alliées - Autre;Alloy pig iron - Other;;;25.0;;;;;
+720150;HS6;72;Fontes spiegel;Spiegeleisen;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7201501000;HS10;72;Fontes spiegel - Type 1;Spiegeleisen - Type 1;;;25.0;;;;;
+7201502000;HS10;72;Fontes spiegel - Type 2;Spiegeleisen - Type 2;;;25.0;;;;;
+7201509000;HS10;72;Fontes spiegel - Autre;Spiegeleisen - Other;;;25.0;;;;;
+720211;HS6;72;Ferro-manganèse >2% carbone;Ferro-manganese >2% carbon;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+720219;HS6;72;Ferromanganèse ≤2% carbone;Ferromanganese ≤2% carbon;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202191000;HS10;72;Ferromanganèse ≤2% carbone - Type 1;Ferromanganese ≤2% carbon - Type 1;;;25.0;;;;;
+7202192000;HS10;72;Ferromanganèse ≤2% carbone - Type 2;Ferromanganese ≤2% carbon - Type 2;;;25.0;;;;;
+7202199000;HS10;72;Ferromanganèse ≤2% carbone - Autre;Ferromanganese ≤2% carbon - Other;;;25.0;;;;;
+720221;HS6;72;Ferro-silicium >55%;Ferro-silicon >55%;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+720229;HS6;72;Autres ferrosiliciums;Other ferrosilicon;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202291000;HS10;72;Autres ferrosiliciums - Type 1;Other ferrosilicon - Type 1;;;25.0;;;;;
+7202292000;HS10;72;Autres ferrosiliciums - Type 2;Other ferrosilicon - Type 2;;;25.0;;;;;
+7202299000;HS10;72;Autres ferrosiliciums - Autre;Other ferrosilicon - Other;;;25.0;;;;;
+720230;HS6;72;Ferrosilicomanganese;Ferrosilicomanganese;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202301000;HS10;72;Ferrosilicomanganese - Type 1;Ferrosilicomanganese - Type 1;;;25.0;;;;;
+7202302000;HS10;72;Ferrosilicomanganese - Type 2;Ferrosilicomanganese - Type 2;;;25.0;;;;;
+7202309000;HS10;72;Ferrosilicomanganese - Autre;Ferrosilicomanganese - Other;;;25.0;;;;;
+720241;HS6;72;Ferrochrome >4% carbone;Ferrochromium >4% carbon;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202411000;HS10;72;Ferrochrome >4% carbone - Type 1;Ferrochromium >4% carbon - Type 1;;;25.0;;;;;
+7202412000;HS10;72;Ferrochrome >4% carbone - Type 2;Ferrochromium >4% carbon - Type 2;;;25.0;;;;;
+7202419000;HS10;72;Ferrochrome >4% carbone - Autre;Ferrochromium >4% carbon - Other;;;25.0;;;;;
+720249;HS6;72;Autres ferrochromes;Other ferrochromium;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202491000;HS10;72;Autres ferrochromes - Type 1;Other ferrochromium - Type 1;;;25.0;;;;;
+7202492000;HS10;72;Autres ferrochromes - Type 2;Other ferrochromium - Type 2;;;25.0;;;;;
+7202499000;HS10;72;Autres ferrochromes - Autre;Other ferrochromium - Other;;;25.0;;;;;
+720250;HS6;72;Ferrosilicochrome;Ferrosilicochromium;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202501000;HS10;72;Ferrosilicochrome - Type 1;Ferrosilicochromium - Type 1;;;25.0;;;;;
+7202502000;HS10;72;Ferrosilicochrome - Type 2;Ferrosilicochromium - Type 2;;;25.0;;;;;
+7202509000;HS10;72;Ferrosilicochrome - Autre;Ferrosilicochromium - Other;;;25.0;;;;;
+720260;HS6;72;Ferronickel;Ferronickel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202601000;HS10;72;Ferronickel - Type 1;Ferronickel - Type 1;;;25.0;;;;;
+7202602000;HS10;72;Ferronickel - Type 2;Ferronickel - Type 2;;;25.0;;;;;
+7202609000;HS10;72;Ferronickel - Autre;Ferronickel - Other;;;25.0;;;;;
+720270;HS6;72;Ferromolybdène;Ferromolybdenum;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202701000;HS10;72;Ferromolybdène - Type 1;Ferromolybdenum - Type 1;;;25.0;;;;;
+7202702000;HS10;72;Ferromolybdène - Type 2;Ferromolybdenum - Type 2;;;25.0;;;;;
+7202709000;HS10;72;Ferromolybdène - Autre;Ferromolybdenum - Other;;;25.0;;;;;
+720280;HS6;72;Ferrotungstène et ferrosilicotungstène;Ferrotungsten;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202801000;HS10;72;Ferrotungstène et ferrosilicotungstène - Type 1;Ferrotungsten - Type 1;;;25.0;;;;;
+7202802000;HS10;72;Ferrotungstène et ferrosilicotungstène - Type 2;Ferrotungsten - Type 2;;;25.0;;;;;
+7202809000;HS10;72;Ferrotungstène et ferrosilicotungstène - Autre;Ferrotungsten - Other;;;25.0;;;;;
+720291;HS6;72;Ferrotitane et ferrosilicotitane;Ferrotitanium;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202911000;HS10;72;Ferrotitane et ferrosilicotitane - Type 1;Ferrotitanium - Type 1;;;25.0;;;;;
+7202912000;HS10;72;Ferrotitane et ferrosilicotitane - Type 2;Ferrotitanium - Type 2;;;25.0;;;;;
+7202919000;HS10;72;Ferrotitane et ferrosilicotitane - Autre;Ferrotitanium - Other;;;25.0;;;;;
+720292;HS6;72;Ferrovanadium;Ferrovanadium;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202921000;HS10;72;Ferrovanadium - Type 1;Ferrovanadium - Type 1;;;25.0;;;;;
+7202922000;HS10;72;Ferrovanadium - Type 2;Ferrovanadium - Type 2;;;25.0;;;;;
+7202929000;HS10;72;Ferrovanadium - Autre;Ferrovanadium - Other;;;25.0;;;;;
+720293;HS6;72;Ferroniobium;Ferroniobium;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202931000;HS10;72;Ferroniobium - Type 1;Ferroniobium - Type 1;;;25.0;;;;;
+7202932000;HS10;72;Ferroniobium - Type 2;Ferroniobium - Type 2;;;25.0;;;;;
+7202939000;HS10;72;Ferroniobium - Autre;Ferroniobium - Other;;;25.0;;;;;
+720299;HS6;72;Autres ferro-alliages;Other ferro-alloys;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7202991000;HS10;72;Autres ferro-alliages - Type 1;Other ferro-alloys - Type 1;;;25.0;;;;;
+7202992000;HS10;72;Autres ferro-alliages - Type 2;Other ferro-alloys - Type 2;;;25.0;;;;;
+7202999000;HS10;72;Autres ferro-alliages - Autre;Other ferro-alloys - Other;;;25.0;;;;;
+720310;HS6;72;Produits ferreux obtenus par réduction directe;Direct reduction iron products;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7203101000;HS10;72;Produits ferreux obtenus par réduction directe - Type 1;Direct reduction iron products - Type 1;;;25.0;;;;;
+7203102000;HS10;72;Produits ferreux obtenus par réduction directe - Type 2;Direct reduction iron products - Type 2;;;25.0;;;;;
+7203109000;HS10;72;Produits ferreux obtenus par réduction directe - Autre;Direct reduction iron products - Other;;;25.0;;;;;
+720390;HS6;72;Autres produits ferreux spongieux;Other spongy ferrous products;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7203901000;HS10;72;Autres produits ferreux spongieux - Type 1;Other spongy ferrous products - Type 1;;;25.0;;;;;
+7203902000;HS10;72;Autres produits ferreux spongieux - Type 2;Other spongy ferrous products - Type 2;;;25.0;;;;;
+7203909000;HS10;72;Autres produits ferreux spongieux - Autre;Other spongy ferrous products - Other;;;25.0;;;;;
+720410;HS6;72;Déchets de fonte;Cast iron waste;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7204101000;HS10;72;Déchets de fonte - Type 1;Cast iron waste - Type 1;;;25.0;;;;;
+7204102000;HS10;72;Déchets de fonte - Type 2;Cast iron waste - Type 2;;;25.0;;;;;
+7204109000;HS10;72;Déchets de fonte - Autre;Cast iron waste - Other;;;25.0;;;;;
+720421;HS6;72;Déchets d'acier inoxydable;Stainless steel waste;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7204211000;HS10;72;Déchets d'acier inoxydable - Type 1;Stainless steel waste - Type 1;;;25.0;;;;;
+7204212000;HS10;72;Déchets d'acier inoxydable - Type 2;Stainless steel waste - Type 2;;;25.0;;;;;
+7204219000;HS10;72;Déchets d'acier inoxydable - Autre;Stainless steel waste - Other;;;25.0;;;;;
+720429;HS6;72;Autres déchets d'aciers alliés;Other alloy steel waste;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7204291000;HS10;72;Autres déchets d'aciers alliés - Type 1;Other alloy steel waste - Type 1;;;25.0;;;;;
+7204292000;HS10;72;Autres déchets d'aciers alliés - Type 2;Other alloy steel waste - Type 2;;;25.0;;;;;
+7204299000;HS10;72;Autres déchets d'aciers alliés - Autre;Other alloy steel waste - Other;;;25.0;;;;;
+720430;HS6;72;Déchets de fer ou acier étamés;Waste of tinned iron or steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7204301000;HS10;72;Déchets de fer ou acier étamés - Type 1;Waste of tinned iron or steel - Type 1;;;25.0;;;;;
+7204302000;HS10;72;Déchets de fer ou acier étamés - Type 2;Waste of tinned iron or steel - Type 2;;;25.0;;;;;
+7204309000;HS10;72;Déchets de fer ou acier étamés - Autre;Waste of tinned iron or steel - Other;;;25.0;;;;;
+720441;HS6;72;Tournures et copeaux;Turnings and shavings;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7204411000;HS10;72;Tournures et copeaux - Type 1;Turnings and shavings - Type 1;;;25.0;;;;;
+7204412000;HS10;72;Tournures et copeaux - Type 2;Turnings and shavings - Type 2;;;25.0;;;;;
+7204419000;HS10;72;Tournures et copeaux - Autre;Turnings and shavings - Other;;;25.0;;;;;
+720449;HS6;72;Autres déchets de fer ou acier;Other iron or steel waste;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7204491000;HS10;72;Autres déchets de fer ou acier - Type 1;Other iron or steel waste - Type 1;;;25.0;;;;;
+7204492000;HS10;72;Autres déchets de fer ou acier - Type 2;Other iron or steel waste - Type 2;;;25.0;;;;;
+7204499000;HS10;72;Autres déchets de fer ou acier - Autre;Other iron or steel waste - Other;;;25.0;;;;;
+720450;HS6;72;Déchets lingotés;Remelting scrap ingots;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7204501000;HS10;72;Déchets lingotés - Type 1;Remelting scrap ingots - Type 1;;;25.0;;;;;
+7204502000;HS10;72;Déchets lingotés - Type 2;Remelting scrap ingots - Type 2;;;25.0;;;;;
+7204509000;HS10;72;Déchets lingotés - Autre;Remelting scrap ingots - Other;;;25.0;;;;;
+720510;HS6;72;Grenailles de fonte;Granules of pig iron;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7205101000;HS10;72;Grenailles de fonte - Type 1;Granules of pig iron - Type 1;;;25.0;;;;;
+7205102000;HS10;72;Grenailles de fonte - Type 2;Granules of pig iron - Type 2;;;25.0;;;;;
+7205109000;HS10;72;Grenailles de fonte - Autre;Granules of pig iron - Other;;;25.0;;;;;
+720521;HS6;72;Poudres de fontes alliées;Powders of alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7205211000;HS10;72;Poudres de fontes alliées - Type 1;Powders of alloy steel - Type 1;;;25.0;;;;;
+7205212000;HS10;72;Poudres de fontes alliées - Type 2;Powders of alloy steel - Type 2;;;25.0;;;;;
+7205219000;HS10;72;Poudres de fontes alliées - Autre;Powders of alloy steel - Other;;;25.0;;;;;
+720529;HS6;72;Autres poudres de fer ou acier;Other iron or steel powders;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7205291000;HS10;72;Autres poudres de fer ou acier - Type 1;Other iron or steel powders - Type 1;;;25.0;;;;;
+7205292000;HS10;72;Autres poudres de fer ou acier - Type 2;Other iron or steel powders - Type 2;;;25.0;;;;;
+7205299000;HS10;72;Autres poudres de fer ou acier - Autre;Other iron or steel powders - Other;;;25.0;;;;;
+720610;HS6;72;Lingots de fer ou acier;Iron or steel ingots;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7206101000;HS10;72;Lingots de fer ou acier - Type 1;Iron or steel ingots - Type 1;;;25.0;;;;;
+7206102000;HS10;72;Lingots de fer ou acier - Type 2;Iron or steel ingots - Type 2;;;25.0;;;;;
+7206109000;HS10;72;Lingots de fer ou acier - Autre;Iron or steel ingots - Other;;;25.0;;;;;
+720690;HS6;72;Autres fers et aciers non alliés;Other non-alloy iron and steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7206901000;HS10;72;Autres fers et aciers non alliés - Type 1;Other non-alloy iron and steel - Type 1;;;25.0;;;;;
+7206902000;HS10;72;Autres fers et aciers non alliés - Type 2;Other non-alloy iron and steel - Type 2;;;25.0;;;;;
+7206909000;HS10;72;Autres fers et aciers non alliés - Autre;Other non-alloy iron and steel - Other;;;25.0;;;;;
+720711;HS6;72;Demi-produits en fer <0,25% carbone;Iron semi-finished products <0.25% carbon;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7207111000;HS10;72;Demi-produits en fer <0,25% carbone - Type 1;Iron semi-finished products <0.25% carbon - Type 1;;;25.0;;;;;
+7207112000;HS10;72;Demi-produits en fer <0,25% carbone - Type 2;Iron semi-finished products <0.25% carbon - Type 2;;;25.0;;;;;
+7207119000;HS10;72;Demi-produits en fer <0,25% carbone - Autre;Iron semi-finished products <0.25% carbon - Other;;;25.0;;;;;
+720712;HS6;72;Autres demi-produits en fer;Other iron semi-products;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7207121000;HS10;72;Autres demi-produits en fer - Type 1;Other iron semi-products - Type 1;;;25.0;;;;;
+7207122000;HS10;72;Autres demi-produits en fer - Type 2;Other iron semi-products - Type 2;;;25.0;;;;;
+7207129000;HS10;72;Autres demi-produits en fer - Autre;Other iron semi-products - Other;;;25.0;;;;;
+720719;HS6;72;Demi-produits en fer autres;Other iron semi-finished products;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7207191000;HS10;72;Demi-produits en fer autres - Type 1;Other iron semi-finished products - Type 1;;;25.0;;;;;
+7207192000;HS10;72;Demi-produits en fer autres - Type 2;Other iron semi-finished products - Type 2;;;25.0;;;;;
+7207199000;HS10;72;Demi-produits en fer autres - Autre;Other iron semi-finished products - Other;;;25.0;;;;;
+720720;HS6;72;Demi-produits en fer >0.25% carbone;Iron semi-products >0.25% carbon;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7207201000;HS10;72;Demi-produits en fer >0.25% carbone - Type 1;Iron semi-products >0.25% carbon - Type 1;;;25.0;;;;;
+7207202000;HS10;72;Demi-produits en fer >0.25% carbone - Type 2;Iron semi-products >0.25% carbon - Type 2;;;25.0;;;;;
+7207209000;HS10;72;Demi-produits en fer >0.25% carbone - Autre;Iron semi-products >0.25% carbon - Other;;;25.0;;;;;
+720810;HS6;72;Produits laminés plats en fer >600mm;Flat-rolled iron products >600mm;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208101000;HS10;72;Produits laminés plats en fer >600mm - Type 1;Flat-rolled iron products >600mm - Type 1;;;25.0;;;;;
+7208102000;HS10;72;Produits laminés plats en fer >600mm - Type 2;Flat-rolled iron products >600mm - Type 2;;;25.0;;;;;
+7208109000;HS10;72;Produits laminés plats en fer >600mm - Autre;Flat-rolled iron products >600mm - Other;;;25.0;;;;;
+720825;HS6;72;Produits laminés plats en fer >600mm laminés à chaud;Flat-rolled iron products >600mm hot-rolled;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208251000;HS10;72;Produits laminés plats en fer >600mm laminés à chaud - Type 1;Flat-rolled iron products >600mm hot-rolled - Type 1;;;25.0;;;;;
+7208252000;HS10;72;Produits laminés plats en fer >600mm laminés à chaud - Type 2;Flat-rolled iron products >600mm hot-rolled - Type 2;;;25.0;;;;;
+7208259000;HS10;72;Produits laminés plats en fer >600mm laminés à chaud - Autre;Flat-rolled iron products >600mm hot-rolled - Other;;;25.0;;;;;
+720826;HS6;72;Produits laminés à chaud épaisseur 3-4.75mm;Hot-rolled products thickness 3-4.75mm;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208261000;HS10;72;Produits laminés à chaud épaisseur 3-4.75mm - Type 1;Hot-rolled products thickness 3-4.75mm - Type 1;;;25.0;;;;;
+7208262000;HS10;72;Produits laminés à chaud épaisseur 3-4.75mm - Type 2;Hot-rolled products thickness 3-4.75mm - Type 2;;;25.0;;;;;
+7208269000;HS10;72;Produits laminés à chaud épaisseur 3-4.75mm - Autre;Hot-rolled products thickness 3-4.75mm - Other;;;25.0;;;;;
+720827;HS6;72;Produits laminés à chaud épaisseur <3mm;Hot-rolled products thickness <3mm;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208271000;HS10;72;Produits laminés à chaud épaisseur <3mm - Type 1;Hot-rolled products thickness <3mm - Type 1;;;25.0;;;;;
+7208272000;HS10;72;Produits laminés à chaud épaisseur <3mm - Type 2;Hot-rolled products thickness <3mm - Type 2;;;25.0;;;;;
+7208279000;HS10;72;Produits laminés à chaud épaisseur <3mm - Autre;Hot-rolled products thickness <3mm - Other;;;25.0;;;;;
+720836;HS6;72;Autres produits laminés à chaud;Other hot-rolled products;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208361000;HS10;72;Autres produits laminés à chaud - Type 1;Other hot-rolled products - Type 1;;;25.0;;;;;
+7208362000;HS10;72;Autres produits laminés à chaud - Type 2;Other hot-rolled products - Type 2;;;25.0;;;;;
+7208369000;HS10;72;Autres produits laminés à chaud - Autre;Other hot-rolled products - Other;;;25.0;;;;;
+720837;HS6;72;Produits laminés à chaud épaisseur 4.75-10mm;Hot-rolled products thickness 4.75-10mm;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208371000;HS10;72;Produits laminés à chaud épaisseur 4.75-10mm - Type 1;Hot-rolled products thickness 4.75-10mm - Type 1;;;25.0;;;;;
+7208372000;HS10;72;Produits laminés à chaud épaisseur 4.75-10mm - Type 2;Hot-rolled products thickness 4.75-10mm - Type 2;;;25.0;;;;;
+7208379000;HS10;72;Produits laminés à chaud épaisseur 4.75-10mm - Autre;Hot-rolled products thickness 4.75-10mm - Other;;;25.0;;;;;
+720838;HS6;72;Produits laminés à chaud épaisseur 3-4.75mm;Hot-rolled products 3-4.75mm;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208381000;HS10;72;Produits laminés à chaud épaisseur 3-4.75mm - Type 1;Hot-rolled products 3-4.75mm - Type 1;;;25.0;;;;;
+7208382000;HS10;72;Produits laminés à chaud épaisseur 3-4.75mm - Type 2;Hot-rolled products 3-4.75mm - Type 2;;;25.0;;;;;
+7208389000;HS10;72;Produits laminés à chaud épaisseur 3-4.75mm - Autre;Hot-rolled products 3-4.75mm - Other;;;25.0;;;;;
+720839;HS6;72;Produits laminés à chaud <3mm;Hot-rolled products <3mm;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208391000;HS10;72;Produits laminés à chaud <3mm - Type 1;Hot-rolled products <3mm - Type 1;;;25.0;;;;;
+7208392000;HS10;72;Produits laminés à chaud <3mm - Type 2;Hot-rolled products <3mm - Type 2;;;25.0;;;;;
+7208399000;HS10;72;Produits laminés à chaud <3mm - Autre;Hot-rolled products <3mm - Other;;;25.0;;;;;
+720840;HS6;72;Produits laminés à chaud avec motifs;Hot-rolled products with patterns;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208401000;HS10;72;Produits laminés à chaud avec motifs - Type 1;Hot-rolled products with patterns - Type 1;;;25.0;;;;;
+7208402000;HS10;72;Produits laminés à chaud avec motifs - Type 2;Hot-rolled products with patterns - Type 2;;;25.0;;;;;
+7208409000;HS10;72;Produits laminés à chaud avec motifs - Autre;Hot-rolled products with patterns - Other;;;25.0;;;;;
+720851;HS6;72;Produits laminés à froid >3mm;Cold-rolled products >3mm;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208511000;HS10;72;Produits laminés à froid >3mm - Type 1;Cold-rolled products >3mm - Type 1;;;25.0;;;;;
+7208512000;HS10;72;Produits laminés à froid >3mm - Type 2;Cold-rolled products >3mm - Type 2;;;25.0;;;;;
+7208519000;HS10;72;Produits laminés à froid >3mm - Autre;Cold-rolled products >3mm - Other;;;25.0;;;;;
+720852;HS6;72;Produits laminés à froid 1-3mm;Cold-rolled products 1-3mm;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208521000;HS10;72;Produits laminés à froid 1-3mm - Type 1;Cold-rolled products 1-3mm - Type 1;;;25.0;;;;;
+7208522000;HS10;72;Produits laminés à froid 1-3mm - Type 2;Cold-rolled products 1-3mm - Type 2;;;25.0;;;;;
+7208529000;HS10;72;Produits laminés à froid 1-3mm - Autre;Cold-rolled products 1-3mm - Other;;;25.0;;;;;
+720853;HS6;72;Produits laminés à froid 0.5-1mm;Cold-rolled products 0.5-1mm;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208531000;HS10;72;Produits laminés à froid 0.5-1mm - Type 1;Cold-rolled products 0.5-1mm - Type 1;;;25.0;;;;;
+7208532000;HS10;72;Produits laminés à froid 0.5-1mm - Type 2;Cold-rolled products 0.5-1mm - Type 2;;;25.0;;;;;
+7208539000;HS10;72;Produits laminés à froid 0.5-1mm - Autre;Cold-rolled products 0.5-1mm - Other;;;25.0;;;;;
+720854;HS6;72;Produits laminés à froid <0.5mm;Cold-rolled products <0.5mm;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208541000;HS10;72;Produits laminés à froid <0.5mm - Type 1;Cold-rolled products <0.5mm - Type 1;;;25.0;;;;;
+7208542000;HS10;72;Produits laminés à froid <0.5mm - Type 2;Cold-rolled products <0.5mm - Type 2;;;25.0;;;;;
+7208549000;HS10;72;Produits laminés à froid <0.5mm - Autre;Cold-rolled products <0.5mm - Other;;;25.0;;;;;
+720890;HS6;72;Autres produits laminés plats;Other flat-rolled products;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7208901000;HS10;72;Autres produits laminés plats - Type 1;Other flat-rolled products - Type 1;;;25.0;;;;;
+7208902000;HS10;72;Autres produits laminés plats - Type 2;Other flat-rolled products - Type 2;;;25.0;;;;;
+7208909000;HS10;72;Autres produits laminés plats - Autre;Other flat-rolled products - Other;;;25.0;;;;;
+720915;HS6;72;Produits laminés plats en fer laminés à froid >600mm épaisseur ≥3mm;Cold-rolled flat products >600mm thickness ≥3mm;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7209151000;HS10;72;Produits laminés plats en fer laminés à froid >600mm épaisseur ≥3mm - Type 1;Cold-rolled flat products >600mm thickness ≥3mm - Type 1;;;25.0;;;;;
+7209152000;HS10;72;Produits laminés plats en fer laminés à froid >600mm épaisseur ≥3mm - Type 2;Cold-rolled flat products >600mm thickness ≥3mm - Type 2;;;25.0;;;;;
+7209159000;HS10;72;Produits laminés plats en fer laminés à froid >600mm épaisseur ≥3mm - Autre;Cold-rolled flat products >600mm thickness ≥3mm - Other;;;25.0;;;;;
+720916;HS6;72;D'une épaisseur excédant 1 mm mais inférieur à 3 mm;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7209161000;HS10;72;D'une épaisseur excédant 1 mm mais inférieur à 3 mm - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7209162000;HS10;72;D'une épaisseur excédant 1 mm mais inférieur à 3 mm - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7209169000;HS10;72;D'une épaisseur excédant 1 mm mais inférieur à 3 mm - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+720917;HS6;72;D'une épaisseur de 0;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7209171000;HS10;72;D'une épaisseur de 0 - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7209172000;HS10;72;D'une épaisseur de 0 - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7209179000;HS10;72;D'une épaisseur de 0 - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+720918;HS6;72;D'une épaisseur inférieur à 0;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7209181000;HS10;72;D'une épaisseur inférieur à 0 - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7209182000;HS10;72;D'une épaisseur inférieur à 0 - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7209189000;HS10;72;D'une épaisseur inférieur à 0 - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+720925;HS6;72;D'une épaisseur de 3 mm ou plus;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7209251000;HS10;72;D'une épaisseur de 3 mm ou plus - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7209252000;HS10;72;D'une épaisseur de 3 mm ou plus - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7209259000;HS10;72;D'une épaisseur de 3 mm ou plus - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+720926;HS6;72;D'une épaisseur excédant 1 mm mais inférieure à 3 mm;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7209261000;HS10;72;D'une épaisseur excédant 1 mm mais inférieure à 3 mm - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7209262000;HS10;72;D'une épaisseur excédant 1 mm mais inférieure à 3 mm - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7209269000;HS10;72;D'une épaisseur excédant 1 mm mais inférieure à 3 mm - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+720927;HS6;72;D'une épaisseur de 0;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7209271000;HS10;72;D'une épaisseur de 0 - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7209272000;HS10;72;D'une épaisseur de 0 - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7209279000;HS10;72;D'une épaisseur de 0 - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+720928;HS6;72;D'une épaisseur inférieure à 0;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7209281000;HS10;72;D'une épaisseur inférieure à 0 - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7209282000;HS10;72;D'une épaisseur inférieure à 0 - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7209289000;HS10;72;D'une épaisseur inférieure à 0 - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+720990;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7209901000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7209902000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7209909000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721011;HS6;72;Produits plats étamés ≥600mm;Tinplate flat products ≥600mm;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210111000;HS10;72;Produits plats étamés ≥600mm - Type 1;Tinplate flat products ≥600mm - Type 1;;;25.0;;;;;
+7210112000;HS10;72;Produits plats étamés ≥600mm - Type 2;Tinplate flat products ≥600mm - Type 2;;;25.0;;;;;
+7210119000;HS10;72;Produits plats étamés ≥600mm - Autre;Tinplate flat products ≥600mm - Other;;;25.0;;;;;
+721012;HS6;72;D'une épaisseur inférieure à 0;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210121000;HS10;72;D'une épaisseur inférieure à 0 - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7210122000;HS10;72;D'une épaisseur inférieure à 0 - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7210129000;HS10;72;D'une épaisseur inférieure à 0 - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721020;HS6;72;Plombés;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210201000;HS10;72;Plombés - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7210202000;HS10;72;Plombés - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7210209000;HS10;72;Plombés - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721030;HS6;72;Zingués électrolytiquement;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210301000;HS10;72;Zingués électrolytiquement - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7210302000;HS10;72;Zingués électrolytiquement - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7210309000;HS10;72;Zingués électrolytiquement - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721041;HS6;72;Produits plats galvanisés ondulés;Corrugated galvanized flat products;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210411000;HS10;72;Produits plats galvanisés ondulés - Type 1;Corrugated galvanized flat products - Type 1;;;25.0;;;;;
+7210412000;HS10;72;Produits plats galvanisés ondulés - Type 2;Corrugated galvanized flat products - Type 2;;;25.0;;;;;
+7210419000;HS10;72;Produits plats galvanisés ondulés - Autre;Corrugated galvanized flat products - Other;;;25.0;;;;;
+721049;HS6;72;Autres produits plats galvanisés;Other galvanized flat products;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210491000;HS10;72;Autres produits plats galvanisés - Type 1;Other galvanized flat products - Type 1;;;25.0;;;;;
+7210492000;HS10;72;Autres produits plats galvanisés - Type 2;Other galvanized flat products - Type 2;;;25.0;;;;;
+7210499000;HS10;72;Autres produits plats galvanisés - Autre;Other galvanized flat products - Other;;;25.0;;;;;
+721050;HS6;72;Revêtus d'oxydes de chrome ou de chrome et oxydes de chrome;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210501000;HS10;72;Revêtus d'oxydes de chrome ou de chrome et oxydes de chrome - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7210502000;HS10;72;Revêtus d'oxydes de chrome ou de chrome et oxydes de chrome - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7210509000;HS10;72;Revêtus d'oxydes de chrome ou de chrome et oxydes de chrome - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721061;HS6;72;Revêtus d'alliages d'aluminium et de zinc;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210611000;HS10;72;Revêtus d'alliages d'aluminium et de zinc - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7210612000;HS10;72;Revêtus d'alliages d'aluminium et de zinc - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7210619000;HS10;72;Revêtus d'alliages d'aluminium et de zinc - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721069;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210691000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7210692000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7210699000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721070;HS6;72;Produits plats peints ou plastifiés;Painted or plastic-coated flat products;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210701000;HS10;72;Produits plats peints ou plastifiés - Type 1;Painted or plastic-coated flat products - Type 1;;;25.0;;;;;
+7210702000;HS10;72;Produits plats peints ou plastifiés - Type 2;Painted or plastic-coated flat products - Type 2;;;25.0;;;;;
+7210709000;HS10;72;Produits plats peints ou plastifiés - Autre;Painted or plastic-coated flat products - Other;;;25.0;;;;;
+721090;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7210901000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7210902000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7210909000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721113;HS6;72;Laminés sur les quatres faces ou en cannelures fermées;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7211131000;HS10;72;Laminés sur les quatres faces ou en cannelures fermées - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7211132000;HS10;72;Laminés sur les quatres faces ou en cannelures fermées - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7211139000;HS10;72;Laminés sur les quatres faces ou en cannelures fermées - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721114;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7211141000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7211142000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7211149000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721119;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7211191000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7211192000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7211199000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721123;HS6;72;Contenant en poids moins de 0;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7211231000;HS10;72;Contenant en poids moins de 0 - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7211232000;HS10;72;Contenant en poids moins de 0 - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7211239000;HS10;72;Contenant en poids moins de 0 - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721129;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7211291000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7211292000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7211299000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721190;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7211901000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7211902000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7211909000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721210;HS6;72;Etamés;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7212101000;HS10;72;Etamés - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7212102000;HS10;72;Etamés - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7212109000;HS10;72;Etamés - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721220;HS6;72;Zingués électrolytiquement;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7212201000;HS10;72;Zingués électrolytiquement - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7212202000;HS10;72;Zingués électrolytiquement - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7212209000;HS10;72;Zingués électrolytiquement - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721230;HS6;72;Autrement zingués;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7212301000;HS10;72;Autrement zingués - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7212302000;HS10;72;Autrement zingués - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7212309000;HS10;72;Autrement zingués - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721240;HS6;72;Peints;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7212401000;HS10;72;Peints - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7212402000;HS10;72;Peints - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7212409000;HS10;72;Peints - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721250;HS6;72;Autrement revêtus;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7212501000;HS10;72;Autrement revêtus - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7212502000;HS10;72;Autrement revêtus - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7212509000;HS10;72;Autrement revêtus - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721260;HS6;72;Plaqués;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7212601000;HS10;72;Plaqués - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7212602000;HS10;72;Plaqués - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7212609000;HS10;72;Plaqués - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721310;HS6;72;Fil machine en fer avec crénelures;Ribbed iron wire rod;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7213101000;HS10;72;Fil machine en fer avec crénelures - Type 1;Ribbed iron wire rod - Type 1;;;25.0;;;;;
+7213102000;HS10;72;Fil machine en fer avec crénelures - Type 2;Ribbed iron wire rod - Type 2;;;25.0;;;;;
+7213109000;HS10;72;Fil machine en fer avec crénelures - Autre;Ribbed iron wire rod - Other;;;25.0;;;;;
+721320;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7213201000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7213202000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7213209000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721391;HS6;72;Fil machine en fer <6mm;Iron wire rod <6mm;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7213911000;HS10;72;Fil machine en fer <6mm - Type 1;Iron wire rod <6mm - Type 1;;;25.0;;;;;
+7213912000;HS10;72;Fil machine en fer <6mm - Type 2;Iron wire rod <6mm - Type 2;;;25.0;;;;;
+7213919000;HS10;72;Fil machine en fer <6mm - Autre;Iron wire rod <6mm - Other;;;25.0;;;;;
+721399;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7213991000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7213992000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7213999000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721410;HS6;72;Barres en fer forgées;Forged iron bars;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7214101000;HS10;72;Barres en fer forgées - Type 1;Forged iron bars - Type 1;;;25.0;;;;;
+7214102000;HS10;72;Barres en fer forgées - Type 2;Forged iron bars - Type 2;;;25.0;;;;;
+7214109000;HS10;72;Barres en fer forgées - Autre;Forged iron bars - Other;;;25.0;;;;;
+721420;HS6;72;Barres en fer avec crénelures;Ribbed iron bars;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7214201000;HS10;72;Barres en fer avec crénelures - Type 1;Ribbed iron bars - Type 1;;;25.0;;;;;
+7214202000;HS10;72;Barres en fer avec crénelures - Type 2;Ribbed iron bars - Type 2;;;25.0;;;;;
+7214209000;HS10;72;Barres en fer avec crénelures - Autre;Ribbed iron bars - Other;;;25.0;;;;;
+721430;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7214301000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7214302000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7214309000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721491;HS6;72;De section transversale rectangulaire;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7214911000;HS10;72;De section transversale rectangulaire - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7214912000;HS10;72;De section transversale rectangulaire - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7214919000;HS10;72;De section transversale rectangulaire - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721499;HS6;72;Autres :;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7214991000;HS10;72;Autres : - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7214992000;HS10;72;Autres : - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7214999000;HS10;72;Autres : - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721510;HS6;72;Barres laminées à froid;Cold-formed bars;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7215101000;HS10;72;Barres laminées à froid - Type 1;Cold-formed bars - Type 1;;;25.0;;;;;
+7215102000;HS10;72;Barres laminées à froid - Type 2;Cold-formed bars - Type 2;;;25.0;;;;;
+7215109000;HS10;72;Barres laminées à froid - Autre;Cold-formed bars - Other;;;25.0;;;;;
+721550;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7215501000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7215502000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7215509000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721590;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7215901000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7215902000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7215909000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721610;HS6;72;Profilés en U en fer;U-section iron profiles;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216101000;HS10;72;Profilés en U en fer - Type 1;U-section iron profiles - Type 1;;;25.0;;;;;
+7216102000;HS10;72;Profilés en U en fer - Type 2;U-section iron profiles - Type 2;;;25.0;;;;;
+7216109000;HS10;72;Profilés en U en fer - Autre;U-section iron profiles - Other;;;25.0;;;;;
+721621;HS6;72;Profilés en L;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216211000;HS10;72;Profilés en L - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216212000;HS10;72;Profilés en L - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216219000;HS10;72;Profilés en L - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721622;HS6;72;Profilés en T;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216221000;HS10;72;Profilés en T - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216222000;HS10;72;Profilés en T - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216229000;HS10;72;Profilés en T - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721631;HS6;72;Profilés en U à ailes parallèles ≥80mm;Parallel-flange U-profiles ≥80mm;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216311000;HS10;72;Profilés en U à ailes parallèles ≥80mm - Type 1;Parallel-flange U-profiles ≥80mm - Type 1;;;25.0;;;;;
+7216312000;HS10;72;Profilés en U à ailes parallèles ≥80mm - Type 2;Parallel-flange U-profiles ≥80mm - Type 2;;;25.0;;;;;
+7216319000;HS10;72;Profilés en U à ailes parallèles ≥80mm - Autre;Parallel-flange U-profiles ≥80mm - Other;;;25.0;;;;;
+721632;HS6;72;Profilés en I;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216321000;HS10;72;Profilés en I - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216322000;HS10;72;Profilés en I - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216329000;HS10;72;Profilés en I - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721633;HS6;72;Profilés en H;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216331000;HS10;72;Profilés en H - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216332000;HS10;72;Profilés en H - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216339000;HS10;72;Profilés en H - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721640;HS6;72;Profilés en L ou en T;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216401000;HS10;72;Profilés en L ou en T - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216402000;HS10;72;Profilés en L ou en T - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216409000;HS10;72;Profilés en L ou en T - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721650;HS6;72;Autres profilés simplement laminés ou filés à chaud;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216501000;HS10;72;Autres profilés simplement laminés ou filés à chaud - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216502000;HS10;72;Autres profilés simplement laminés ou filés à chaud - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216509000;HS10;72;Autres profilés simplement laminés ou filés à chaud - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721661;HS6;72;Obtenus à partir de produits laminés plats;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216611000;HS10;72;Obtenus à partir de produits laminés plats - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216612000;HS10;72;Obtenus à partir de produits laminés plats - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216619000;HS10;72;Obtenus à partir de produits laminés plats - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721669;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216691000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216692000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216699000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721691;HS6;72;Obtenus ou parachevés à froid à partir de produits laminés plats;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216911000;HS10;72;Obtenus ou parachevés à froid à partir de produits laminés plats - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216912000;HS10;72;Obtenus ou parachevés à froid à partir de produits laminés plats - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216919000;HS10;72;Obtenus ou parachevés à froid à partir de produits laminés plats - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721699;HS6;72;Autres;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7216991000;HS10;72;Autres - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7216992000;HS10;72;Autres - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7216999000;HS10;72;Autres - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721710;HS6;72;Fil de fer non revêtu;Uncoated iron wire;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7217101000;HS10;72;Fil de fer non revêtu - Type 1;Uncoated iron wire - Type 1;;;25.0;;;;;
+7217102000;HS10;72;Fil de fer non revêtu - Type 2;Uncoated iron wire - Type 2;;;25.0;;;;;
+7217109000;HS10;72;Fil de fer non revêtu - Autre;Uncoated iron wire - Other;;;25.0;;;;;
+721720;HS6;72;Fil de fer zingué;Zinc-coated iron wire;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7217201000;HS10;72;Fil de fer zingué - Type 1;Zinc-coated iron wire - Type 1;;;25.0;;;;;
+7217202000;HS10;72;Fil de fer zingué - Type 2;Zinc-coated iron wire - Type 2;;;25.0;;;;;
+7217209000;HS10;72;Fil de fer zingué - Autre;Zinc-coated iron wire - Other;;;25.0;;;;;
+721730;HS6;72;Revêtus d'autres métaux communs;Iron or non-alloy steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7217301000;HS10;72;Revêtus d'autres métaux communs - Type 1;Iron or non-alloy steel - Type 1;;;25.0;;;;;
+7217302000;HS10;72;Revêtus d'autres métaux communs - Type 2;Iron or non-alloy steel - Type 2;;;25.0;;;;;
+7217309000;HS10;72;Revêtus d'autres métaux communs - Autre;Iron or non-alloy steel - Other;;;25.0;;;;;
+721790;HS6;72;Autres fils de fer revêtus;Other coated iron wire;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7217901000;HS10;72;Autres fils de fer revêtus - Type 1;Other coated iron wire - Type 1;;;25.0;;;;;
+7217902000;HS10;72;Autres fils de fer revêtus - Type 2;Other coated iron wire - Type 2;;;25.0;;;;;
+7217909000;HS10;72;Autres fils de fer revêtus - Autre;Other coated iron wire - Other;;;25.0;;;;;
+721810;HS6;72;Lingots et autres formes primaires;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7218101000;HS10;72;Lingots et autres formes primaires - Type 1;Steel - Type 1;;;25.0;;;;;
+7218102000;HS10;72;Lingots et autres formes primaires - Type 2;Steel - Type 2;;;25.0;;;;;
+7218109000;HS10;72;Lingots et autres formes primaires - Autre;Steel - Other;;;25.0;;;;;
+721891;HS6;72;De section transversale rectangulaire;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7218911000;HS10;72;De section transversale rectangulaire - Type 1;Steel - Type 1;;;25.0;;;;;
+7218912000;HS10;72;De section transversale rectangulaire - Type 2;Steel - Type 2;;;25.0;;;;;
+7218919000;HS10;72;De section transversale rectangulaire - Autre;Steel - Other;;;25.0;;;;;
+721899;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7218991000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7218992000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7218999000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+721911;HS6;72;D'une épaisseur excédant 10 mm;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219111000;HS10;72;D'une épaisseur excédant 10 mm - Type 1;Steel - Type 1;;;25.0;;;;;
+7219112000;HS10;72;D'une épaisseur excédant 10 mm - Type 2;Steel - Type 2;;;25.0;;;;;
+7219119000;HS10;72;D'une épaisseur excédant 10 mm - Autre;Steel - Other;;;25.0;;;;;
+721912;HS6;72;D'une épaisseur de 4;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219121000;HS10;72;D'une épaisseur de 4 - Type 1;Steel - Type 1;;;25.0;;;;;
+7219122000;HS10;72;D'une épaisseur de 4 - Type 2;Steel - Type 2;;;25.0;;;;;
+7219129000;HS10;72;D'une épaisseur de 4 - Autre;Steel - Other;;;25.0;;;;;
+721913;HS6;72;D'une épaisseur de 3mm ou plus mais inférieure à 4;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219131000;HS10;72;D'une épaisseur de 3mm ou plus mais inférieure à 4 - Type 1;Steel - Type 1;;;25.0;;;;;
+7219132000;HS10;72;D'une épaisseur de 3mm ou plus mais inférieure à 4 - Type 2;Steel - Type 2;;;25.0;;;;;
+7219139000;HS10;72;D'une épaisseur de 3mm ou plus mais inférieure à 4 - Autre;Steel - Other;;;25.0;;;;;
+721914;HS6;72;D'une épaisseur inférieure à 3 mm;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219141000;HS10;72;D'une épaisseur inférieure à 3 mm - Type 1;Steel - Type 1;;;25.0;;;;;
+7219142000;HS10;72;D'une épaisseur inférieure à 3 mm - Type 2;Steel - Type 2;;;25.0;;;;;
+7219149000;HS10;72;D'une épaisseur inférieure à 3 mm - Autre;Steel - Other;;;25.0;;;;;
+721921;HS6;72;D'une épaisseur excédant 10 mm;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219211000;HS10;72;D'une épaisseur excédant 10 mm - Type 1;Steel - Type 1;;;25.0;;;;;
+7219212000;HS10;72;D'une épaisseur excédant 10 mm - Type 2;Steel - Type 2;;;25.0;;;;;
+7219219000;HS10;72;D'une épaisseur excédant 10 mm - Autre;Steel - Other;;;25.0;;;;;
+721922;HS6;72;D'une épaisseur de 4;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219221000;HS10;72;D'une épaisseur de 4 - Type 1;Steel - Type 1;;;25.0;;;;;
+7219222000;HS10;72;D'une épaisseur de 4 - Type 2;Steel - Type 2;;;25.0;;;;;
+7219229000;HS10;72;D'une épaisseur de 4 - Autre;Steel - Other;;;25.0;;;;;
+721923;HS6;72;D'une épaisseurs de 3 mm ou plus mais inférieure à 4;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219231000;HS10;72;D'une épaisseurs de 3 mm ou plus mais inférieure à 4 - Type 1;Steel - Type 1;;;25.0;;;;;
+7219232000;HS10;72;D'une épaisseurs de 3 mm ou plus mais inférieure à 4 - Type 2;Steel - Type 2;;;25.0;;;;;
+7219239000;HS10;72;D'une épaisseurs de 3 mm ou plus mais inférieure à 4 - Autre;Steel - Other;;;25.0;;;;;
+721924;HS6;72;D'une épaisseur inférieur à 3 mm;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219241000;HS10;72;D'une épaisseur inférieur à 3 mm - Type 1;Steel - Type 1;;;25.0;;;;;
+7219242000;HS10;72;D'une épaisseur inférieur à 3 mm - Type 2;Steel - Type 2;;;25.0;;;;;
+7219249000;HS10;72;D'une épaisseur inférieur à 3 mm - Autre;Steel - Other;;;25.0;;;;;
+721931;HS6;72;D'une épaisseur de 4;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219311000;HS10;72;D'une épaisseur de 4 - Type 1;Steel - Type 1;;;25.0;;;;;
+7219312000;HS10;72;D'une épaisseur de 4 - Type 2;Steel - Type 2;;;25.0;;;;;
+7219319000;HS10;72;D'une épaisseur de 4 - Autre;Steel - Other;;;25.0;;;;;
+721932;HS6;72;D'une épaisseur de 3 mm ou plus mais inférieure à 4;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219321000;HS10;72;D'une épaisseur de 3 mm ou plus mais inférieure à 4 - Type 1;Steel - Type 1;;;25.0;;;;;
+7219322000;HS10;72;D'une épaisseur de 3 mm ou plus mais inférieure à 4 - Type 2;Steel - Type 2;;;25.0;;;;;
+7219329000;HS10;72;D'une épaisseur de 3 mm ou plus mais inférieure à 4 - Autre;Steel - Other;;;25.0;;;;;
+721933;HS6;72;D'une épaisseur excédant 1 mm mais inférieure à 3 mm;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219331000;HS10;72;D'une épaisseur excédant 1 mm mais inférieure à 3 mm - Type 1;Steel - Type 1;;;25.0;;;;;
+7219332000;HS10;72;D'une épaisseur excédant 1 mm mais inférieure à 3 mm - Type 2;Steel - Type 2;;;25.0;;;;;
+7219339000;HS10;72;D'une épaisseur excédant 1 mm mais inférieure à 3 mm - Autre;Steel - Other;;;25.0;;;;;
+721934;HS6;72;D'une épaisseur de 0;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219341000;HS10;72;D'une épaisseur de 0 - Type 1;Steel - Type 1;;;25.0;;;;;
+7219342000;HS10;72;D'une épaisseur de 0 - Type 2;Steel - Type 2;;;25.0;;;;;
+7219349000;HS10;72;D'une épaisseur de 0 - Autre;Steel - Other;;;25.0;;;;;
+721935;HS6;72;D'une épaisseur inférieure à 0;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219351000;HS10;72;D'une épaisseur inférieure à 0 - Type 1;Steel - Type 1;;;25.0;;;;;
+7219352000;HS10;72;D'une épaisseur inférieure à 0 - Type 2;Steel - Type 2;;;25.0;;;;;
+7219359000;HS10;72;D'une épaisseur inférieure à 0 - Autre;Steel - Other;;;25.0;;;;;
+721990;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7219901000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7219902000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7219909000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722011;HS6;72;D'une épaisseur de 4;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7220111000;HS10;72;D'une épaisseur de 4 - Type 1;Steel - Type 1;;;25.0;;;;;
+7220112000;HS10;72;D'une épaisseur de 4 - Type 2;Steel - Type 2;;;25.0;;;;;
+7220119000;HS10;72;D'une épaisseur de 4 - Autre;Steel - Other;;;25.0;;;;;
+722012;HS6;72;D'une épaisseur inférieure à 4;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7220121000;HS10;72;D'une épaisseur inférieure à 4 - Type 1;Steel - Type 1;;;25.0;;;;;
+7220122000;HS10;72;D'une épaisseur inférieure à 4 - Type 2;Steel - Type 2;;;25.0;;;;;
+7220129000;HS10;72;D'une épaisseur inférieure à 4 - Autre;Steel - Other;;;25.0;;;;;
+722020;HS6;72;Simplement laminés à froid;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7220201000;HS10;72;Simplement laminés à froid - Type 1;Steel - Type 1;;;25.0;;;;;
+7220202000;HS10;72;Simplement laminés à froid - Type 2;Steel - Type 2;;;25.0;;;;;
+7220209000;HS10;72;Simplement laminés à froid - Autre;Steel - Other;;;25.0;;;;;
+722090;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7220901000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7220902000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7220909000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722100;HS6;72;Fils machine en aciers inoxydables;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7221001000;HS10;72;Fils machine en aciers inoxydables - Type 1;Steel - Type 1;;;25.0;;;;;
+7221002000;HS10;72;Fils machine en aciers inoxydables - Type 2;Steel - Type 2;;;25.0;;;;;
+7221009000;HS10;72;Fils machine en aciers inoxydables - Autre;Steel - Other;;;25.0;;;;;
+722211;HS6;72;de section circulaire;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7222111000;HS10;72;de section circulaire - Type 1;Steel - Type 1;;;25.0;;;;;
+7222112000;HS10;72;de section circulaire - Type 2;Steel - Type 2;;;25.0;;;;;
+7222119000;HS10;72;de section circulaire - Autre;Steel - Other;;;25.0;;;;;
+722219;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7222191000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7222192000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7222199000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722220;HS6;72;Barres simplement obtenues ou parachevées à froid;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7222201000;HS10;72;Barres simplement obtenues ou parachevées à froid - Type 1;Steel - Type 1;;;25.0;;;;;
+7222202000;HS10;72;Barres simplement obtenues ou parachevées à froid - Type 2;Steel - Type 2;;;25.0;;;;;
+7222209000;HS10;72;Barres simplement obtenues ou parachevées à froid - Autre;Steel - Other;;;25.0;;;;;
+722230;HS6;72;Autres barres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7222301000;HS10;72;Autres barres - Type 1;Steel - Type 1;;;25.0;;;;;
+7222302000;HS10;72;Autres barres - Type 2;Steel - Type 2;;;25.0;;;;;
+7222309000;HS10;72;Autres barres - Autre;Steel - Other;;;25.0;;;;;
+722240;HS6;72;Profilés;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7222401000;HS10;72;Profilés - Type 1;Steel - Type 1;;;25.0;;;;;
+7222402000;HS10;72;Profilés - Type 2;Steel - Type 2;;;25.0;;;;;
+7222409000;HS10;72;Profilés - Autre;Steel - Other;;;25.0;;;;;
+722300;HS6;72;Fils en aciers inoxydables;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7223001000;HS10;72;Fils en aciers inoxydables - Type 1;Steel - Type 1;;;25.0;;;;;
+7223002000;HS10;72;Fils en aciers inoxydables - Type 2;Steel - Type 2;;;25.0;;;;;
+7223009000;HS10;72;Fils en aciers inoxydables - Autre;Steel - Other;;;25.0;;;;;
+722410;HS6;72;Lingots et autres formes primaires;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7224101000;HS10;72;Lingots et autres formes primaires - Type 1;Steel - Type 1;;;25.0;;;;;
+7224102000;HS10;72;Lingots et autres formes primaires - Type 2;Steel - Type 2;;;25.0;;;;;
+7224109000;HS10;72;Lingots et autres formes primaires - Autre;Steel - Other;;;25.0;;;;;
+722490;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7224901000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7224902000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7224909000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722511;HS6;72;à grains orientés;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7225111000;HS10;72;à grains orientés - Type 1;Steel - Type 1;;;25.0;;;;;
+7225112000;HS10;72;à grains orientés - Type 2;Steel - Type 2;;;25.0;;;;;
+7225119000;HS10;72;à grains orientés - Autre;Steel - Other;;;25.0;;;;;
+722519;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7225191000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7225192000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7225199000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722530;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7225301000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7225302000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7225309000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722540;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7225401000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7225402000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7225409000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722550;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7225501000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7225502000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7225509000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722591;HS6;72;Zingués électroniquement;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7225911000;HS10;72;Zingués électroniquement - Type 1;Steel - Type 1;;;25.0;;;;;
+7225912000;HS10;72;Zingués électroniquement - Type 2;Steel - Type 2;;;25.0;;;;;
+7225919000;HS10;72;Zingués électroniquement - Autre;Steel - Other;;;25.0;;;;;
+722592;HS6;72;Autrement zingués;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7225921000;HS10;72;Autrement zingués - Type 1;Steel - Type 1;;;25.0;;;;;
+7225922000;HS10;72;Autrement zingués - Type 2;Steel - Type 2;;;25.0;;;;;
+7225929000;HS10;72;Autrement zingués - Autre;Steel - Other;;;25.0;;;;;
+722599;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7225991000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7225992000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7225999000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722611;HS6;72;à grains orientés;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7226111000;HS10;72;à grains orientés - Type 1;Steel - Type 1;;;25.0;;;;;
+7226112000;HS10;72;à grains orientés - Type 2;Steel - Type 2;;;25.0;;;;;
+7226119000;HS10;72;à grains orientés - Autre;Steel - Other;;;25.0;;;;;
+722619;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7226191000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7226192000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7226199000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722620;HS6;72;En aciers à coupe rapide;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7226201000;HS10;72;En aciers à coupe rapide - Type 1;Steel - Type 1;;;25.0;;;;;
+7226202000;HS10;72;En aciers à coupe rapide - Type 2;Steel - Type 2;;;25.0;;;;;
+7226209000;HS10;72;En aciers à coupe rapide - Autre;Steel - Other;;;25.0;;;;;
+722691;HS6;72;Simplement laminés à chaud;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7226911000;HS10;72;Simplement laminés à chaud - Type 1;Steel - Type 1;;;25.0;;;;;
+7226912000;HS10;72;Simplement laminés à chaud - Type 2;Steel - Type 2;;;25.0;;;;;
+7226919000;HS10;72;Simplement laminés à chaud - Autre;Steel - Other;;;25.0;;;;;
+722692;HS6;72;Simplement laminés à froid;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7226921000;HS10;72;Simplement laminés à froid - Type 1;Steel - Type 1;;;25.0;;;;;
+7226922000;HS10;72;Simplement laminés à froid - Type 2;Steel - Type 2;;;25.0;;;;;
+7226929000;HS10;72;Simplement laminés à froid - Autre;Steel - Other;;;25.0;;;;;
+722699;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7226991000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7226992000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7226999000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722710;HS6;72;En aciers à coupe rapide;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7227101000;HS10;72;En aciers à coupe rapide - Type 1;Steel - Type 1;;;25.0;;;;;
+7227102000;HS10;72;En aciers à coupe rapide - Type 2;Steel - Type 2;;;25.0;;;;;
+7227109000;HS10;72;En aciers à coupe rapide - Autre;Steel - Other;;;25.0;;;;;
+722720;HS6;72;En aciers silico-manganeux;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7227201000;HS10;72;En aciers silico-manganeux - Type 1;Steel - Type 1;;;25.0;;;;;
+7227202000;HS10;72;En aciers silico-manganeux - Type 2;Steel - Type 2;;;25.0;;;;;
+7227209000;HS10;72;En aciers silico-manganeux - Autre;Steel - Other;;;25.0;;;;;
+722790;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7227901000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7227902000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7227909000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+722810;HS6;72;Barres en aciers à coupe rapide;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7228101000;HS10;72;Barres en aciers à coupe rapide - Type 1;Steel - Type 1;;;25.0;;;;;
+7228102000;HS10;72;Barres en aciers à coupe rapide - Type 2;Steel - Type 2;;;25.0;;;;;
+7228109000;HS10;72;Barres en aciers à coupe rapide - Autre;Steel - Other;;;25.0;;;;;
+722820;HS6;72;Barres en aciers silico-manganeux;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7228201000;HS10;72;Barres en aciers silico-manganeux - Type 1;Steel - Type 1;;;25.0;;;;;
+7228202000;HS10;72;Barres en aciers silico-manganeux - Type 2;Steel - Type 2;;;25.0;;;;;
+7228209000;HS10;72;Barres en aciers silico-manganeux - Autre;Steel - Other;;;25.0;;;;;
+722830;HS6;72;Autres barres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7228301000;HS10;72;Autres barres - Type 1;Steel - Type 1;;;25.0;;;;;
+7228302000;HS10;72;Autres barres - Type 2;Steel - Type 2;;;25.0;;;;;
+7228309000;HS10;72;Autres barres - Autre;Steel - Other;;;25.0;;;;;
+722840;HS6;72;Autres barres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7228401000;HS10;72;Autres barres - Type 1;Steel - Type 1;;;25.0;;;;;
+7228402000;HS10;72;Autres barres - Type 2;Steel - Type 2;;;25.0;;;;;
+7228409000;HS10;72;Autres barres - Autre;Steel - Other;;;25.0;;;;;
+722850;HS6;72;Autres barres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7228501000;HS10;72;Autres barres - Type 1;Steel - Type 1;;;25.0;;;;;
+7228502000;HS10;72;Autres barres - Type 2;Steel - Type 2;;;25.0;;;;;
+7228509000;HS10;72;Autres barres - Autre;Steel - Other;;;25.0;;;;;
+722860;HS6;72;Autres barres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7228601000;HS10;72;Autres barres - Type 1;Steel - Type 1;;;25.0;;;;;
+7228602000;HS10;72;Autres barres - Type 2;Steel - Type 2;;;25.0;;;;;
+7228609000;HS10;72;Autres barres - Autre;Steel - Other;;;25.0;;;;;
+722870;HS6;72;Profilés;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7228701000;HS10;72;Profilés - Type 1;Steel - Type 1;;;25.0;;;;;
+7228702000;HS10;72;Profilés - Type 2;Steel - Type 2;;;25.0;;;;;
+7228709000;HS10;72;Profilés - Autre;Steel - Other;;;25.0;;;;;
+722880;HS6;72;Barres creuses pour le forage;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7228801000;HS10;72;Barres creuses pour le forage - Type 1;Steel - Type 1;;;25.0;;;;;
+7228802000;HS10;72;Barres creuses pour le forage - Type 2;Steel - Type 2;;;25.0;;;;;
+7228809000;HS10;72;Barres creuses pour le forage - Autre;Steel - Other;;;25.0;;;;;
+722920;HS6;72;En aciers silico-manganeux;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7229201000;HS10;72;En aciers silico-manganeux - Type 1;Steel - Type 1;;;25.0;;;;;
+7229202000;HS10;72;En aciers silico-manganeux - Type 2;Steel - Type 2;;;25.0;;;;;
+7229209000;HS10;72;En aciers silico-manganeux - Autre;Steel - Other;;;25.0;;;;;
+722990;HS6;72;Autres;Steel;iron_steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7229901000;HS10;72;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7229902000;HS10;72;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7229909000;HS10;72;Autres - Autre;Steel - Other;;;25.0;;;;;
+730110;HS6;73;Palplanches en fer ou acier;Iron or steel sheet piling;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7301101000;HS10;73;Palplanches en fer ou acier - Type 1;Iron or steel sheet piling - Type 1;;;25.0;;;;;
+7301102000;HS10;73;Palplanches en fer ou acier - Type 2;Iron or steel sheet piling - Type 2;;;25.0;;;;;
+7301109000;HS10;73;Palplanches en fer ou acier - Autre;Iron or steel sheet piling - Other;;;25.0;;;;;
+730120;HS6;73;Profilés;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7301201000;HS10;73;Profilés - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7301202000;HS10;73;Profilés - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7301209000;HS10;73;Profilés - Autre;Iron or steel - Other;;;25.0;;;;;
+730210;HS6;73;Rails de chemin de fer;Railway rails;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7302101000;HS10;73;Rails de chemin de fer - Type 1;Railway rails - Type 1;;;25.0;;;;;
+7302102000;HS10;73;Rails de chemin de fer - Type 2;Railway rails - Type 2;;;25.0;;;;;
+7302109000;HS10;73;Rails de chemin de fer - Autre;Railway rails - Other;;;25.0;;;;;
+730230;HS6;73;Aiguilles;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7302301000;HS10;73;Aiguilles - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7302302000;HS10;73;Aiguilles - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7302309000;HS10;73;Aiguilles - Autre;Iron or steel - Other;;;25.0;;;;;
+730240;HS6;73;Eclisses et selles d'assise;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7302401000;HS10;73;Eclisses et selles d'assise - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7302402000;HS10;73;Eclisses et selles d'assise - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7302409000;HS10;73;Eclisses et selles d'assise - Autre;Iron or steel - Other;;;25.0;;;;;
+730290;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7302901000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7302902000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7302909000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+730300;HS6;73;Tubes;Cast iron;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7303001000;HS10;73;Tubes - Type 1;Cast iron - Type 1;;;25.0;;;;;
+7303002000;HS10;73;Tubes - Type 2;Cast iron - Type 2;;;25.0;;;;;
+7303009000;HS10;73;Tubes - Autre;Cast iron - Other;;;25.0;;;;;
+730410;HS6;73;Tubes et tuyaux sans soudure en fer;Seamless iron pipes and tubes;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304101000;HS10;73;Tubes et tuyaux sans soudure en fer - Type 1;Seamless iron pipes and tubes - Type 1;;;25.0;;;;;
+7304102000;HS10;73;Tubes et tuyaux sans soudure en fer - Type 2;Seamless iron pipes and tubes - Type 2;;;25.0;;;;;
+7304109000;HS10;73;Tubes et tuyaux sans soudure en fer - Autre;Seamless iron pipes and tubes - Other;;;25.0;;;;;
+730411;HS6;73;En aciers inoxydables;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304111000;HS10;73;En aciers inoxydables - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7304112000;HS10;73;En aciers inoxydables - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7304119000;HS10;73;En aciers inoxydables - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730419;HS6;73;Autres;Iron or steel (excluding cast iron or stainless steel);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304191000;HS10;73;Autres - Type 1;Iron or steel (excluding cast iron or stainless steel) - Type 1;;;25.0;;;;;
+7304192000;HS10;73;Autres - Type 2;Iron or steel (excluding cast iron or stainless steel) - Type 2;;;25.0;;;;;
+7304199000;HS10;73;Autres - Autre;Iron or steel (excluding cast iron or stainless steel) - Other;;;25.0;;;;;
+730422;HS6;73;Tiges de forage en aciers inoxydables;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304221000;HS10;73;Tiges de forage en aciers inoxydables - Type 1;Steel - Type 1;;;25.0;;;;;
+7304222000;HS10;73;Tiges de forage en aciers inoxydables - Type 2;Steel - Type 2;;;25.0;;;;;
+7304229000;HS10;73;Tiges de forage en aciers inoxydables - Autre;Steel - Other;;;25.0;;;;;
+730423;HS6;73;Autres tiges de forage;Iron or steel (excluding cast iron or stainless steel);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304231000;HS10;73;Autres tiges de forage - Type 1;Iron or steel (excluding cast iron or stainless steel) - Type 1;;;25.0;;;;;
+7304232000;HS10;73;Autres tiges de forage - Type 2;Iron or steel (excluding cast iron or stainless steel) - Type 2;;;25.0;;;;;
+7304239000;HS10;73;Autres tiges de forage - Autre;Iron or steel (excluding cast iron or stainless steel) - Other;;;25.0;;;;;
+730424;HS6;73;Autres;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304241000;HS10;73;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7304242000;HS10;73;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7304249000;HS10;73;Autres - Autre;Steel - Other;;;25.0;;;;;
+730429;HS6;73;Autres;Iron or steel (excluding cast iron or stainless steel);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304291000;HS10;73;Autres - Type 1;Iron or steel (excluding cast iron or stainless steel) - Type 1;;;25.0;;;;;
+7304292000;HS10;73;Autres - Type 2;Iron or steel (excluding cast iron or stainless steel) - Type 2;;;25.0;;;;;
+7304299000;HS10;73;Autres - Autre;Iron or steel (excluding cast iron or stainless steel) - Other;;;25.0;;;;;
+730431;HS6;73;Etirés ou laminés à froid;Iron or non-alloy steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304311000;HS10;73;Etirés ou laminés à froid - Type 1;Iron or non-alloy steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7304312000;HS10;73;Etirés ou laminés à froid - Type 2;Iron or non-alloy steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7304319000;HS10;73;Etirés ou laminés à froid - Autre;Iron or non-alloy steel (excluding cast iron) - Other;;;25.0;;;;;
+730439;HS6;73;Autres;Iron or non-alloy steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304391000;HS10;73;Autres - Type 1;Iron or non-alloy steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7304392000;HS10;73;Autres - Type 2;Iron or non-alloy steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7304399000;HS10;73;Autres - Autre;Iron or non-alloy steel (excluding cast iron) - Other;;;25.0;;;;;
+730441;HS6;73;Etirés ou laminés à froid;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304411000;HS10;73;Etirés ou laminés à froid - Type 1;Steel - Type 1;;;25.0;;;;;
+7304412000;HS10;73;Etirés ou laminés à froid - Type 2;Steel - Type 2;;;25.0;;;;;
+7304419000;HS10;73;Etirés ou laminés à froid - Autre;Steel - Other;;;25.0;;;;;
+730449;HS6;73;Autres;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304491000;HS10;73;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7304492000;HS10;73;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7304499000;HS10;73;Autres - Autre;Steel - Other;;;25.0;;;;;
+730451;HS6;73;Etirés ou laminés à froid;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304511000;HS10;73;Etirés ou laminés à froid - Type 1;Steel - Type 1;;;25.0;;;;;
+7304512000;HS10;73;Etirés ou laminés à froid - Type 2;Steel - Type 2;;;25.0;;;;;
+7304519000;HS10;73;Etirés ou laminés à froid - Autre;Steel - Other;;;25.0;;;;;
+730459;HS6;73;Autres;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304591000;HS10;73;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7304592000;HS10;73;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7304599000;HS10;73;Autres - Autre;Steel - Other;;;25.0;;;;;
+730490;HS6;73;Autres;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7304901000;HS10;73;Autres - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7304902000;HS10;73;Autres - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7304909000;HS10;73;Autres - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730511;HS6;73;Tubes soudés longitudinalement pour oléoducs;Longitudinally welded tubes for oil pipelines;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7305111000;HS10;73;Tubes soudés longitudinalement pour oléoducs - Type 1;Longitudinally welded tubes for oil pipelines - Type 1;;;25.0;;;;;
+7305112000;HS10;73;Tubes soudés longitudinalement pour oléoducs - Type 2;Longitudinally welded tubes for oil pipelines - Type 2;;;25.0;;;;;
+7305119000;HS10;73;Tubes soudés longitudinalement pour oléoducs - Autre;Longitudinally welded tubes for oil pipelines - Other;;;25.0;;;;;
+730512;HS6;73;Soudés longitudinalement;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7305121000;HS10;73;Soudés longitudinalement - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7305122000;HS10;73;Soudés longitudinalement - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7305129000;HS10;73;Soudés longitudinalement - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730519;HS6;73;Autres;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7305191000;HS10;73;Autres - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7305192000;HS10;73;Autres - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7305199000;HS10;73;Autres - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730520;HS6;73;Tubes et tuyaux de cuvelage des types utilisés pour l'extraction du pétrole ou du gaz;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7305201000;HS10;73;Tubes et tuyaux de cuvelage des types utilisés pour l'extraction du pétrole ou du gaz - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7305202000;HS10;73;Tubes et tuyaux de cuvelage des types utilisés pour l'extraction du pétrole ou du gaz - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7305209000;HS10;73;Tubes et tuyaux de cuvelage des types utilisés pour l'extraction du pétrole ou du gaz - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730531;HS6;73;Soudés longitudinalement;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7305311000;HS10;73;Soudés longitudinalement - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7305312000;HS10;73;Soudés longitudinalement - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7305319000;HS10;73;Soudés longitudinalement - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730539;HS6;73;Autres;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7305391000;HS10;73;Autres - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7305392000;HS10;73;Autres - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7305399000;HS10;73;Autres - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730590;HS6;73;Autres;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7305901000;HS10;73;Autres - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7305902000;HS10;73;Autres - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7305909000;HS10;73;Autres - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730610;HS6;73;Tubes de cuvelage pour puits de pétrole;Oil well casing tubes;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306101000;HS10;73;Tubes de cuvelage pour puits de pétrole - Type 1;Oil well casing tubes - Type 1;;;25.0;;;;;
+7306102000;HS10;73;Tubes de cuvelage pour puits de pétrole - Type 2;Oil well casing tubes - Type 2;;;25.0;;;;;
+7306109000;HS10;73;Tubes de cuvelage pour puits de pétrole - Autre;Oil well casing tubes - Other;;;25.0;;;;;
+730611;HS6;73;Soudés;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306111000;HS10;73;Soudés - Type 1;Steel - Type 1;;;25.0;;;;;
+7306112000;HS10;73;Soudés - Type 2;Steel - Type 2;;;25.0;;;;;
+7306119000;HS10;73;Soudés - Autre;Steel - Other;;;25.0;;;;;
+730619;HS6;73;Autres;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306191000;HS10;73;Autres - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7306192000;HS10;73;Autres - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7306199000;HS10;73;Autres - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730621;HS6;73;Soudés;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306211000;HS10;73;Soudés - Type 1;Steel - Type 1;;;25.0;;;;;
+7306212000;HS10;73;Soudés - Type 2;Steel - Type 2;;;25.0;;;;;
+7306219000;HS10;73;Soudés - Autre;Steel - Other;;;25.0;;;;;
+730629;HS6;73;Autres;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306291000;HS10;73;Autres - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7306292000;HS10;73;Autres - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7306299000;HS10;73;Autres - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730630;HS6;73;Autres;Iron or non-alloy steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306301000;HS10;73;Autres - Type 1;Iron or non-alloy steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7306302000;HS10;73;Autres - Type 2;Iron or non-alloy steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7306309000;HS10;73;Autres - Autre;Iron or non-alloy steel (excluding cast iron) - Other;;;25.0;;;;;
+730640;HS6;73;Autres;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306401000;HS10;73;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7306402000;HS10;73;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7306409000;HS10;73;Autres - Autre;Steel - Other;;;25.0;;;;;
+730650;HS6;73;Autres;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306501000;HS10;73;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7306502000;HS10;73;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7306509000;HS10;73;Autres - Autre;Steel - Other;;;25.0;;;;;
+730661;HS6;73;De section carrée ou rectangulaire;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306611000;HS10;73;De section carrée ou rectangulaire - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7306612000;HS10;73;De section carrée ou rectangulaire - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7306619000;HS10;73;De section carrée ou rectangulaire - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730669;HS6;73;De section non circulaire;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306691000;HS10;73;De section non circulaire - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7306692000;HS10;73;De section non circulaire - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7306699000;HS10;73;De section non circulaire - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730690;HS6;73;Autres;Iron or steel (excluding cast iron);iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7306901000;HS10;73;Autres - Type 1;Iron or steel (excluding cast iron) - Type 1;;;25.0;;;;;
+7306902000;HS10;73;Autres - Type 2;Iron or steel (excluding cast iron) - Type 2;;;25.0;;;;;
+7306909000;HS10;73;Autres - Autre;Iron or steel (excluding cast iron) - Other;;;25.0;;;;;
+730711;HS6;73;Raccords de tuyauterie moulés en fonte;Cast iron pipe fittings;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307111000;HS10;73;Raccords de tuyauterie moulés en fonte - Type 1;Cast iron pipe fittings - Type 1;;;25.0;;;;;
+7307112000;HS10;73;Raccords de tuyauterie moulés en fonte - Type 2;Cast iron pipe fittings - Type 2;;;25.0;;;;;
+7307119000;HS10;73;Raccords de tuyauterie moulés en fonte - Autre;Cast iron pipe fittings - Other;;;25.0;;;;;
+730719;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307191000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7307192000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7307199000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+730721;HS6;73;Brides;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307211000;HS10;73;Brides - Type 1;Steel - Type 1;;;25.0;;;;;
+7307212000;HS10;73;Brides - Type 2;Steel - Type 2;;;25.0;;;;;
+7307219000;HS10;73;Brides - Autre;Steel - Other;;;25.0;;;;;
+730722;HS6;73;Coudes;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307221000;HS10;73;Coudes - Type 1;Steel - Type 1;;;25.0;;;;;
+7307222000;HS10;73;Coudes - Type 2;Steel - Type 2;;;25.0;;;;;
+7307229000;HS10;73;Coudes - Autre;Steel - Other;;;25.0;;;;;
+730723;HS6;73;Accessoires à souder bout à bout;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307231000;HS10;73;Accessoires à souder bout à bout - Type 1;Steel - Type 1;;;25.0;;;;;
+7307232000;HS10;73;Accessoires à souder bout à bout - Type 2;Steel - Type 2;;;25.0;;;;;
+7307239000;HS10;73;Accessoires à souder bout à bout - Autre;Steel - Other;;;25.0;;;;;
+730729;HS6;73;Autres;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307291000;HS10;73;Autres - Type 1;Steel - Type 1;;;25.0;;;;;
+7307292000;HS10;73;Autres - Type 2;Steel - Type 2;;;25.0;;;;;
+7307299000;HS10;73;Autres - Autre;Steel - Other;;;25.0;;;;;
+730791;HS6;73;Brides;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307911000;HS10;73;Brides - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7307912000;HS10;73;Brides - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7307919000;HS10;73;Brides - Autre;Iron or steel - Other;;;25.0;;;;;
+730792;HS6;73;Coudes;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307921000;HS10;73;Coudes - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7307922000;HS10;73;Coudes - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7307929000;HS10;73;Coudes - Autre;Iron or steel - Other;;;25.0;;;;;
+730793;HS6;73;Accessoires à souder bout à bout;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307931000;HS10;73;Accessoires à souder bout à bout - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7307932000;HS10;73;Accessoires à souder bout à bout - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7307939000;HS10;73;Accessoires à souder bout à bout - Autre;Iron or steel - Other;;;25.0;;;;;
+730799;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7307991000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7307992000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7307999000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+730810;HS6;73;Ponts et éléments de ponts en fer;Iron bridges and bridge sections;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7308101000;HS10;73;Ponts et éléments de ponts en fer - Type 1;Iron bridges and bridge sections - Type 1;;;25.0;;;;;
+7308102000;HS10;73;Ponts et éléments de ponts en fer - Type 2;Iron bridges and bridge sections - Type 2;;;25.0;;;;;
+7308109000;HS10;73;Ponts et éléments de ponts en fer - Autre;Iron bridges and bridge sections - Other;;;25.0;;;;;
+730820;HS6;73;Tours et pylônes;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7308201000;HS10;73;Tours et pylônes - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7308202000;HS10;73;Tours et pylônes - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7308209000;HS10;73;Tours et pylônes - Autre;Iron or steel - Other;;;25.0;;;;;
+730830;HS6;73;Portes;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7308301000;HS10;73;Portes - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7308302000;HS10;73;Portes - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7308309000;HS10;73;Portes - Autre;Iron or steel - Other;;;25.0;;;;;
+730840;HS6;73;Matériel d'échafaudage;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7308401000;HS10;73;Matériel d'échafaudage - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7308402000;HS10;73;Matériel d'échafaudage - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7308409000;HS10;73;Matériel d'échafaudage - Autre;Iron or steel - Other;;;25.0;;;;;
+730890;HS6;73;Autres constructions en fer;Other iron constructions;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7308901000;HS10;73;Autres constructions en fer - Type 1;Other iron constructions - Type 1;;;25.0;;;;;
+7308902000;HS10;73;Autres constructions en fer - Type 2;Other iron constructions - Type 2;;;25.0;;;;;
+7308909000;HS10;73;Autres constructions en fer - Autre;Other iron constructions - Other;;;25.0;;;;;
+730900;HS6;73;Réservoirs en fer >300L;Iron reservoirs >300L;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7309001000;HS10;73;Réservoirs en fer >300L - Type 1;Iron reservoirs >300L - Type 1;;;25.0;;;;;
+7309002000;HS10;73;Réservoirs en fer >300L - Type 2;Iron reservoirs >300L - Type 2;;;25.0;;;;;
+7309009000;HS10;73;Réservoirs en fer >300L - Autre;Iron reservoirs >300L - Other;;;25.0;;;;;
+731010;HS6;73;Réservoirs en fer 50-300L;Iron reservoirs 50-300L;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7310101000;HS10;73;Réservoirs en fer 50-300L - Type 1;Iron reservoirs 50-300L - Type 1;;;25.0;;;;;
+7310102000;HS10;73;Réservoirs en fer 50-300L - Type 2;Iron reservoirs 50-300L - Type 2;;;25.0;;;;;
+7310109000;HS10;73;Réservoirs en fer 50-300L - Autre;Iron reservoirs 50-300L - Other;;;25.0;;;;;
+731021;HS6;73;Boîtes de conserve en fer <50L;Iron cans <50L;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7310211000;HS10;73;Boîtes de conserve en fer <50L - Type 1;Iron cans <50L - Type 1;;;25.0;;;;;
+7310212000;HS10;73;Boîtes de conserve en fer <50L - Type 2;Iron cans <50L - Type 2;;;25.0;;;;;
+7310219000;HS10;73;Boîtes de conserve en fer <50L - Autre;Iron cans <50L - Other;;;25.0;;;;;
+731029;HS6;73;Autres;Tanks;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7310291000;HS10;73;Autres - Type 1;Tanks - Type 1;;;25.0;;;;;
+7310292000;HS10;73;Autres - Type 2;Tanks - Type 2;;;25.0;;;;;
+7310299000;HS10;73;Autres - Autre;Tanks - Other;;;25.0;;;;;
+731100;HS6;73;Récipients pour gaz comprimés;Compressed gas containers;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7311001000;HS10;73;Récipients pour gaz comprimés - Type 1;Compressed gas containers - Type 1;;;25.0;;;;;
+7311002000;HS10;73;Récipients pour gaz comprimés - Type 2;Compressed gas containers - Type 2;;;25.0;;;;;
+7311009000;HS10;73;Récipients pour gaz comprimés - Autre;Compressed gas containers - Other;;;25.0;;;;;
+731210;HS6;73;Câbles en fer non isolés;Non-insulated iron cables;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7312101000;HS10;73;Câbles en fer non isolés - Type 1;Non-insulated iron cables - Type 1;;;25.0;;;;;
+7312102000;HS10;73;Câbles en fer non isolés - Type 2;Non-insulated iron cables - Type 2;;;25.0;;;;;
+7312109000;HS10;73;Câbles en fer non isolés - Autre;Non-insulated iron cables - Other;;;25.0;;;;;
+731290;HS6;73;Autres câbles en fer;Other iron cables;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7312901000;HS10;73;Autres câbles en fer - Type 1;Other iron cables - Type 1;;;25.0;;;;;
+7312902000;HS10;73;Autres câbles en fer - Type 2;Other iron cables - Type 2;;;25.0;;;;;
+7312909000;HS10;73;Autres câbles en fer - Autre;Other iron cables - Other;;;25.0;;;;;
+731300;HS6;73;Ronces artificielles en fer;Barbed iron wire;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7313001000;HS10;73;Ronces artificielles en fer - Type 1;Barbed iron wire - Type 1;;;25.0;;;;;
+7313002000;HS10;73;Ronces artificielles en fer - Type 2;Barbed iron wire - Type 2;;;25.0;;;;;
+7313009000;HS10;73;Ronces artificielles en fer - Autre;Barbed iron wire - Other;;;25.0;;;;;
+731411;HS6;73;Toiles métalliques en fer;Iron woven wire cloth;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314111000;HS10;73;Toiles métalliques en fer - Type 1;Iron woven wire cloth - Type 1;;;25.0;;;;;
+7314112000;HS10;73;Toiles métalliques en fer - Type 2;Iron woven wire cloth - Type 2;;;25.0;;;;;
+7314119000;HS10;73;Toiles métalliques en fer - Autre;Iron woven wire cloth - Other;;;25.0;;;;;
+731412;HS6;73;Toiles métalliques continues ou sans fin;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314121000;HS10;73;Toiles métalliques continues ou sans fin - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7314122000;HS10;73;Toiles métalliques continues ou sans fin - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7314129000;HS10;73;Toiles métalliques continues ou sans fin - Autre;Iron or steel - Other;;;25.0;;;;;
+731414;HS6;73;Autres toiles métalliques tissées;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314141000;HS10;73;Autres toiles métalliques tissées - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7314142000;HS10;73;Autres toiles métalliques tissées - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7314149000;HS10;73;Autres toiles métalliques tissées - Autre;Iron or steel - Other;;;25.0;;;;;
+731419;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314191000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7314192000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7314199000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+731420;HS6;73;Grillages et treillis;Iron or steel wire;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314201000;HS10;73;Grillages et treillis - Type 1;Iron or steel wire - Type 1;;;25.0;;;;;
+7314202000;HS10;73;Grillages et treillis - Type 2;Iron or steel wire - Type 2;;;25.0;;;;;
+7314209000;HS10;73;Grillages et treillis - Autre;Iron or steel wire - Other;;;25.0;;;;;
+731431;HS6;73;Zingués;Iron or steel wire;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314311000;HS10;73;Zingués - Type 1;Iron or steel wire - Type 1;;;25.0;;;;;
+7314312000;HS10;73;Zingués - Type 2;Iron or steel wire - Type 2;;;25.0;;;;;
+7314319000;HS10;73;Zingués - Autre;Iron or steel wire - Other;;;25.0;;;;;
+731439;HS6;73;Autres;Iron or steel wire;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314391000;HS10;73;Autres - Type 1;Iron or steel wire - Type 1;;;25.0;;;;;
+7314392000;HS10;73;Autres - Type 2;Iron or steel wire - Type 2;;;25.0;;;;;
+7314399000;HS10;73;Autres - Autre;Iron or steel wire - Other;;;25.0;;;;;
+731441;HS6;73;Zingués;Iron or steel wire;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314411000;HS10;73;Zingués - Type 1;Iron or steel wire - Type 1;;;25.0;;;;;
+7314412000;HS10;73;Zingués - Type 2;Iron or steel wire - Type 2;;;25.0;;;;;
+7314419000;HS10;73;Zingués - Autre;Iron or steel wire - Other;;;25.0;;;;;
+731442;HS6;73;Recouverts de matières plastiques;Iron or steel wire;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314421000;HS10;73;Recouverts de matières plastiques - Type 1;Iron or steel wire - Type 1;;;25.0;;;;;
+7314422000;HS10;73;Recouverts de matières plastiques - Type 2;Iron or steel wire - Type 2;;;25.0;;;;;
+7314429000;HS10;73;Recouverts de matières plastiques - Autre;Iron or steel wire - Other;;;25.0;;;;;
+731449;HS6;73;Autres;Iron or steel wire;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314491000;HS10;73;Autres - Type 1;Iron or steel wire - Type 1;;;25.0;;;;;
+7314492000;HS10;73;Autres - Type 2;Iron or steel wire - Type 2;;;25.0;;;;;
+7314499000;HS10;73;Autres - Autre;Iron or steel wire - Other;;;25.0;;;;;
+731450;HS6;73;Tôles et bandes déployées;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7314501000;HS10;73;Tôles et bandes déployées - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7314502000;HS10;73;Tôles et bandes déployées - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7314509000;HS10;73;Tôles et bandes déployées - Autre;Iron or steel - Other;;;25.0;;;;;
+731511;HS6;73;Chaînes à rouleaux;Chain;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7315111000;HS10;73;Chaînes à rouleaux - Type 1;Chain - Type 1;;;25.0;;;;;
+7315112000;HS10;73;Chaînes à rouleaux - Type 2;Chain - Type 2;;;25.0;;;;;
+7315119000;HS10;73;Chaînes à rouleaux - Autre;Chain - Other;;;25.0;;;;;
+731512;HS6;73;Chaînes à maillons à rouleaux;Roller chains;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7315121000;HS10;73;Chaînes à maillons à rouleaux - Type 1;Roller chains - Type 1;;;25.0;;;;;
+7315122000;HS10;73;Chaînes à maillons à rouleaux - Type 2;Roller chains - Type 2;;;25.0;;;;;
+7315129000;HS10;73;Chaînes à maillons à rouleaux - Autre;Roller chains - Other;;;25.0;;;;;
+731519;HS6;73;Parties;Chain;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7315191000;HS10;73;Parties - Type 1;Chain - Type 1;;;25.0;;;;;
+7315192000;HS10;73;Parties - Type 2;Chain - Type 2;;;25.0;;;;;
+7315199000;HS10;73;Parties - Autre;Chain - Other;;;25.0;;;;;
+731520;HS6;73;Chaînes antidérapantes;Chain;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7315201000;HS10;73;Chaînes antidérapantes - Type 1;Chain - Type 1;;;25.0;;;;;
+7315202000;HS10;73;Chaînes antidérapantes - Type 2;Chain - Type 2;;;25.0;;;;;
+7315209000;HS10;73;Chaînes antidérapantes - Autre;Chain - Other;;;25.0;;;;;
+731581;HS6;73;Chaînes à maillons soudés;Welded link chains;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7315811000;HS10;73;Chaînes à maillons soudés - Type 1;Welded link chains - Type 1;;;25.0;;;;;
+7315812000;HS10;73;Chaînes à maillons soudés - Type 2;Welded link chains - Type 2;;;25.0;;;;;
+7315819000;HS10;73;Chaînes à maillons soudés - Autre;Welded link chains - Other;;;25.0;;;;;
+731582;HS6;73;Autres chaînes;Chain;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7315821000;HS10;73;Autres chaînes - Type 1;Chain - Type 1;;;25.0;;;;;
+7315822000;HS10;73;Autres chaînes - Type 2;Chain - Type 2;;;25.0;;;;;
+7315829000;HS10;73;Autres chaînes - Autre;Chain - Other;;;25.0;;;;;
+731589;HS6;73;Autres;Chain;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7315891000;HS10;73;Autres - Type 1;Chain - Type 1;;;25.0;;;;;
+7315892000;HS10;73;Autres - Type 2;Chain - Type 2;;;25.0;;;;;
+7315899000;HS10;73;Autres - Autre;Chain - Other;;;25.0;;;;;
+731590;HS6;73;Autres parties;Chain;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7315901000;HS10;73;Autres parties - Type 1;Chain - Type 1;;;25.0;;;;;
+7315902000;HS10;73;Autres parties - Type 2;Chain - Type 2;;;25.0;;;;;
+7315909000;HS10;73;Autres parties - Autre;Chain - Other;;;25.0;;;;;
+731600;HS6;73;Ancres et grappins en fer;Iron anchors and grapnels;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7316001000;HS10;73;Ancres et grappins en fer - Type 1;Iron anchors and grapnels - Type 1;;;25.0;;;;;
+7316002000;HS10;73;Ancres et grappins en fer - Type 2;Iron anchors and grapnels - Type 2;;;25.0;;;;;
+7316009000;HS10;73;Ancres et grappins en fer - Autre;Iron anchors and grapnels - Other;;;25.0;;;;;
+731700;HS6;73;Pointes et clous en fer;Iron nails and tacks;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7317001000;HS10;73;Pointes et clous en fer - Type 1;Iron nails and tacks - Type 1;;;25.0;;;;;
+7317002000;HS10;73;Pointes et clous en fer - Type 2;Iron nails and tacks - Type 2;;;25.0;;;;;
+7317009000;HS10;73;Pointes et clous en fer - Autre;Iron nails and tacks - Other;;;25.0;;;;;
+731811;HS6;73;Tire-fonds en fer;Iron coach screws;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318111000;HS10;73;Tire-fonds en fer - Type 1;Iron coach screws - Type 1;;;25.0;;;;;
+7318112000;HS10;73;Tire-fonds en fer - Type 2;Iron coach screws - Type 2;;;25.0;;;;;
+7318119000;HS10;73;Tire-fonds en fer - Autre;Iron coach screws - Other;;;25.0;;;;;
+731812;HS6;73;Autres vis à bois;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318121000;HS10;73;Autres vis à bois - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7318122000;HS10;73;Autres vis à bois - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7318129000;HS10;73;Autres vis à bois - Autre;Iron or steel - Other;;;25.0;;;;;
+731813;HS6;73;Crochets et pitons à pas de vis;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318131000;HS10;73;Crochets et pitons à pas de vis - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7318132000;HS10;73;Crochets et pitons à pas de vis - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7318139000;HS10;73;Crochets et pitons à pas de vis - Autre;Iron or steel - Other;;;25.0;;;;;
+731814;HS6;73;Vis autotaraudeuses;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318141000;HS10;73;Vis autotaraudeuses - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7318142000;HS10;73;Vis autotaraudeuses - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7318149000;HS10;73;Vis autotaraudeuses - Autre;Iron or steel - Other;;;25.0;;;;;
+731815;HS6;73;Vis à bois en fer;Iron wood screws;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318151000;HS10;73;Vis à bois en fer - Type 1;Iron wood screws - Type 1;;;25.0;;;;;
+7318152000;HS10;73;Vis à bois en fer - Type 2;Iron wood screws - Type 2;;;25.0;;;;;
+7318159000;HS10;73;Vis à bois en fer - Autre;Iron wood screws - Other;;;25.0;;;;;
+731816;HS6;73;Écrous en fer;Iron nuts;steel;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318161000;HS10;73;Écrous en fer - Type 1;Iron nuts - Type 1;;;25.0;;;;;
+7318162000;HS10;73;Écrous en fer - Type 2;Iron nuts - Type 2;;;25.0;;;;;
+7318169000;HS10;73;Écrous en fer - Autre;Iron nuts - Other;;;25.0;;;;;
+731819;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318191000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7318192000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7318199000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+731821;HS6;73;Rondelles destinées à faire ressort et autres rondelles de blocage;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318211000;HS10;73;Rondelles destinées à faire ressort et autres rondelles de blocage - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7318212000;HS10;73;Rondelles destinées à faire ressort et autres rondelles de blocage - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7318219000;HS10;73;Rondelles destinées à faire ressort et autres rondelles de blocage - Autre;Iron or steel - Other;;;25.0;;;;;
+731822;HS6;73;Autres rondelles;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318221000;HS10;73;Autres rondelles - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7318222000;HS10;73;Autres rondelles - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7318229000;HS10;73;Autres rondelles - Autre;Iron or steel - Other;;;25.0;;;;;
+731823;HS6;73;Rivets;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318231000;HS10;73;Rivets - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7318232000;HS10;73;Rivets - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7318239000;HS10;73;Rivets - Autre;Iron or steel - Other;;;25.0;;;;;
+731824;HS6;73;Goupilles et clavettes;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318241000;HS10;73;Goupilles et clavettes - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7318242000;HS10;73;Goupilles et clavettes - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7318249000;HS10;73;Goupilles et clavettes - Autre;Iron or steel - Other;;;25.0;;;;;
+731829;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7318291000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7318292000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7318299000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+731940;HS6;73;Epingles de sûreté et autres épingles;Safety pins and other pins;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7319401000;HS10;73;Epingles de sûreté et autres épingles - Type 1;Safety pins and other pins - Type 1;;;25.0;;;;;
+7319402000;HS10;73;Epingles de sûreté et autres épingles - Type 2;Safety pins and other pins - Type 2;;;25.0;;;;;
+7319409000;HS10;73;Epingles de sûreté et autres épingles - Autre;Safety pins and other pins - Other;;;25.0;;;;;
+731990;HS6;73;Autres;Sewing and knitting needles;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7319901000;HS10;73;Autres - Type 1;Sewing and knitting needles - Type 1;;;25.0;;;;;
+7319902000;HS10;73;Autres - Type 2;Sewing and knitting needles - Type 2;;;25.0;;;;;
+7319909000;HS10;73;Autres - Autre;Sewing and knitting needles - Other;;;25.0;;;;;
+732010;HS6;73;Ressorts à lames et leurs lames;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7320101000;HS10;73;Ressorts à lames et leurs lames - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7320102000;HS10;73;Ressorts à lames et leurs lames - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7320109000;HS10;73;Ressorts à lames et leurs lames - Autre;Iron or steel - Other;;;25.0;;;;;
+732020;HS6;73;Ressorts à hélice;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7320201000;HS10;73;Ressorts à hélice - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7320202000;HS10;73;Ressorts à hélice - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7320209000;HS10;73;Ressorts à hélice - Autre;Iron or steel - Other;;;25.0;;;;;
+732090;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7320901000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7320902000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7320909000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+732111;HS6;73;A combustibles gazeux ou à gaz et autres combustibles;Cooking appliances and plate warmers;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7321111000;HS10;73;A combustibles gazeux ou à gaz et autres combustibles - Type 1;Cooking appliances and plate warmers - Type 1;;;25.0;;;;;
+7321112000;HS10;73;A combustibles gazeux ou à gaz et autres combustibles - Type 2;Cooking appliances and plate warmers - Type 2;;;25.0;;;;;
+7321119000;HS10;73;A combustibles gazeux ou à gaz et autres combustibles - Autre;Cooking appliances and plate warmers - Other;;;25.0;;;;;
+732112;HS6;73;A combustibles liquides;Cooking appliances and plate warmers;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7321121000;HS10;73;A combustibles liquides - Type 1;Cooking appliances and plate warmers - Type 1;;;25.0;;;;;
+7321122000;HS10;73;A combustibles liquides - Type 2;Cooking appliances and plate warmers - Type 2;;;25.0;;;;;
+7321129000;HS10;73;A combustibles liquides - Autre;Cooking appliances and plate warmers - Other;;;25.0;;;;;
+732119;HS6;73;Autres;Cooking appliances and plate warmers;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7321191000;HS10;73;Autres - Type 1;Cooking appliances and plate warmers - Type 1;;;25.0;;;;;
+7321192000;HS10;73;Autres - Type 2;Cooking appliances and plate warmers - Type 2;;;25.0;;;;;
+7321199000;HS10;73;Autres - Autre;Cooking appliances and plate warmers - Other;;;25.0;;;;;
+732181;HS6;73;A combustibles gazeux ou à gaz et autres combustibles;Domestic appliances;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7321811000;HS10;73;A combustibles gazeux ou à gaz et autres combustibles - Type 1;Domestic appliances - Type 1;;;25.0;;;;;
+7321812000;HS10;73;A combustibles gazeux ou à gaz et autres combustibles - Type 2;Domestic appliances - Type 2;;;25.0;;;;;
+7321819000;HS10;73;A combustibles gazeux ou à gaz et autres combustibles - Autre;Domestic appliances - Other;;;25.0;;;;;
+732182;HS6;73;A combustibles liquides;Domestic appliances;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7321821000;HS10;73;A combustibles liquides - Type 1;Domestic appliances - Type 1;;;25.0;;;;;
+7321822000;HS10;73;A combustibles liquides - Type 2;Domestic appliances - Type 2;;;25.0;;;;;
+7321829000;HS10;73;A combustibles liquides - Autre;Domestic appliances - Other;;;25.0;;;;;
+732189;HS6;73;Autres;Domestic appliances;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7321891000;HS10;73;Autres - Type 1;Domestic appliances - Type 1;;;25.0;;;;;
+7321892000;HS10;73;Autres - Type 2;Domestic appliances - Type 2;;;25.0;;;;;
+7321899000;HS10;73;Autres - Autre;Domestic appliances - Other;;;25.0;;;;;
+732190;HS6;73;Parties;Domestic appliances;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7321901000;HS10;73;Parties - Type 1;Domestic appliances - Type 1;;;25.0;;;;;
+7321902000;HS10;73;Parties - Type 2;Domestic appliances - Type 2;;;25.0;;;;;
+7321909000;HS10;73;Parties - Autre;Domestic appliances - Other;;;25.0;;;;;
+732211;HS6;73;En fonte;Radiators and parts thereof;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7322111000;HS10;73;En fonte - Type 1;Radiators and parts thereof - Type 1;;;25.0;;;;;
+7322112000;HS10;73;En fonte - Type 2;Radiators and parts thereof - Type 2;;;25.0;;;;;
+7322119000;HS10;73;En fonte - Autre;Radiators and parts thereof - Other;;;25.0;;;;;
+732219;HS6;73;Autres;Radiators and parts thereof;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7322191000;HS10;73;Autres - Type 1;Radiators and parts thereof - Type 1;;;25.0;;;;;
+7322192000;HS10;73;Autres - Type 2;Radiators and parts thereof - Type 2;;;25.0;;;;;
+7322199000;HS10;73;Autres - Autre;Radiators and parts thereof - Other;;;25.0;;;;;
+732290;HS6;73;Autres;Air heaters and hot air distributors;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7322901000;HS10;73;Autres - Type 1;Air heaters and hot air distributors - Type 1;;;25.0;;;;;
+7322902000;HS10;73;Autres - Type 2;Air heaters and hot air distributors - Type 2;;;25.0;;;;;
+7322909000;HS10;73;Autres - Autre;Air heaters and hot air distributors - Other;;;25.0;;;;;
+732310;HS6;73;Paille de fer ou d'acier;éponges;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7323101000;HS10;73;Paille de fer ou d'acier - Type 1;éponges - Type 1;;;25.0;;;;;
+7323102000;HS10;73;Paille de fer ou d'acier - Type 2;éponges - Type 2;;;25.0;;;;;
+7323109000;HS10;73;Paille de fer ou d'acier - Autre;éponges - Other;;;25.0;;;;;
+732391;HS6;73;En fonte;Cast iron;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7323911000;HS10;73;En fonte - Type 1;Cast iron - Type 1;;;25.0;;;;;
+7323912000;HS10;73;En fonte - Type 2;Cast iron - Type 2;;;25.0;;;;;
+7323919000;HS10;73;En fonte - Autre;Cast iron - Other;;;25.0;;;;;
+732392;HS6;73;En fonte;Cast iron;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7323921000;HS10;73;En fonte - Type 1;Cast iron - Type 1;;;25.0;;;;;
+7323922000;HS10;73;En fonte - Type 2;Cast iron - Type 2;;;25.0;;;;;
+7323929000;HS10;73;En fonte - Autre;Cast iron - Other;;;25.0;;;;;
+732393;HS6;73;En aciers inoxydables;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7323931000;HS10;73;En aciers inoxydables - Type 1;Steel - Type 1;;;25.0;;;;;
+7323932000;HS10;73;En aciers inoxydables - Type 2;Steel - Type 2;;;25.0;;;;;
+7323939000;HS10;73;En aciers inoxydables - Autre;Steel - Other;;;25.0;;;;;
+732394;HS6;73;En fer ou en acier;Iron (excluding cast) or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7323941000;HS10;73;En fer ou en acier - Type 1;Iron (excluding cast) or steel - Type 1;;;25.0;;;;;
+7323942000;HS10;73;En fer ou en acier - Type 2;Iron (excluding cast) or steel - Type 2;;;25.0;;;;;
+7323949000;HS10;73;En fer ou en acier - Autre;Iron (excluding cast) or steel - Other;;;25.0;;;;;
+732399;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7323991000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7323992000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7323999000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+732410;HS6;73;Eviers et lavabos en acier inoxydable;Steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7324101000;HS10;73;Eviers et lavabos en acier inoxydable - Type 1;Steel - Type 1;;;25.0;;;;;
+7324102000;HS10;73;Eviers et lavabos en acier inoxydable - Type 2;Steel - Type 2;;;25.0;;;;;
+7324109000;HS10;73;Eviers et lavabos en acier inoxydable - Autre;Steel - Other;;;25.0;;;;;
+732421;HS6;73;En fonte;Cast iron;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7324211000;HS10;73;En fonte - Type 1;Cast iron - Type 1;;;25.0;;;;;
+7324212000;HS10;73;En fonte - Type 2;Cast iron - Type 2;;;25.0;;;;;
+7324219000;HS10;73;En fonte - Autre;Cast iron - Other;;;25.0;;;;;
+732429;HS6;73;Autres;Iron (other than cast) or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7324291000;HS10;73;Autres - Type 1;Iron (other than cast) or steel - Type 1;;;25.0;;;;;
+7324292000;HS10;73;Autres - Type 2;Iron (other than cast) or steel - Type 2;;;25.0;;;;;
+7324299000;HS10;73;Autres - Autre;Iron (other than cast) or steel - Other;;;25.0;;;;;
+732490;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7324901000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7324902000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7324909000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+732510;HS6;73;En fonte non malléable;Iron;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7325101000;HS10;73;En fonte non malléable - Type 1;Iron - Type 1;;;25.0;;;;;
+7325102000;HS10;73;En fonte non malléable - Type 2;Iron - Type 2;;;25.0;;;;;
+7325109000;HS10;73;En fonte non malléable - Autre;Iron - Other;;;25.0;;;;;
+732591;HS6;73;Boulets et articles similaires pour broyeurs;Iron;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7325911000;HS10;73;Boulets et articles similaires pour broyeurs - Type 1;Iron - Type 1;;;25.0;;;;;
+7325912000;HS10;73;Boulets et articles similaires pour broyeurs - Type 2;Iron - Type 2;;;25.0;;;;;
+7325919000;HS10;73;Boulets et articles similaires pour broyeurs - Autre;Iron - Other;;;25.0;;;;;
+732599;HS6;73;Autres :;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7325991000;HS10;73;Autres : - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7325992000;HS10;73;Autres : - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7325999000;HS10;73;Autres : - Autre;Iron or steel - Other;;;25.0;;;;;
+732611;HS6;73;Boulets et articles similaires pour broyeurs;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7326111000;HS10;73;Boulets et articles similaires pour broyeurs - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7326112000;HS10;73;Boulets et articles similaires pour broyeurs - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7326119000;HS10;73;Boulets et articles similaires pour broyeurs - Autre;Iron or steel - Other;;;25.0;;;;;
+732619;HS6;73;Autres :;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7326191000;HS10;73;Autres : - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7326192000;HS10;73;Autres : - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7326199000;HS10;73;Autres : - Autre;Iron or steel - Other;;;25.0;;;;;
+732620;HS6;73;Ouvrages en fils de fer ou d'acier;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7326201000;HS10;73;Ouvrages en fils de fer ou d'acier - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7326202000;HS10;73;Ouvrages en fils de fer ou d'acier - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7326209000;HS10;73;Ouvrages en fils de fer ou d'acier - Autre;Iron or steel - Other;;;25.0;;;;;
+732690;HS6;73;Autres;Iron or steel;iron_steel_articles;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7326901000;HS10;73;Autres - Type 1;Iron or steel - Type 1;;;25.0;;;;;
+7326902000;HS10;73;Autres - Type 2;Iron or steel - Type 2;;;25.0;;;;;
+7326909000;HS10;73;Autres - Autre;Iron or steel - Other;;;25.0;;;;;
+740100;HS6;74;Mattes de cuivre;cuivre de cément (précipité de cuivre).;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7401001000;HS10;74;Mattes de cuivre - Type 1;cuivre de cément (précipité de cuivre). - Type 1;;;10.0;;;;;
+7401002000;HS10;74;Mattes de cuivre - Type 2;cuivre de cément (précipité de cuivre). - Type 2;;;10.0;;;;;
+7401009000;HS10;74;Mattes de cuivre - Autre;cuivre de cément (précipité de cuivre). - Other;;;10.0;;;;;
+740200;HS6;74;Cuivre non affiné;anodes en cuivre pour affinage électrolytique;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7402001000;HS10;74;Cuivre non affiné - Type 1;anodes en cuivre pour affinage électrolytique - Type 1;;;10.0;;;;;
+7402002000;HS10;74;Cuivre non affiné - Type 2;anodes en cuivre pour affinage électrolytique - Type 2;;;10.0;;;;;
+7402009000;HS10;74;Cuivre non affiné - Autre;anodes en cuivre pour affinage électrolytique - Other;;;10.0;;;;;
+740311;HS6;74;Cathodes et sections de cathodes;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7403111000;HS10;74;Cathodes et sections de cathodes - Type 1;Copper - Type 1;;;10.0;;;;;
+7403112000;HS10;74;Cathodes et sections de cathodes - Type 2;Copper - Type 2;;;10.0;;;;;
+7403119000;HS10;74;Cathodes et sections de cathodes - Autre;Copper - Other;;;10.0;;;;;
+740312;HS6;74;Barres à fil (wire-bars);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7403121000;HS10;74;Barres à fil (wire-bars) - Type 1;Copper - Type 1;;;10.0;;;;;
+7403122000;HS10;74;Barres à fil (wire-bars) - Type 2;Copper - Type 2;;;10.0;;;;;
+7403129000;HS10;74;Barres à fil (wire-bars) - Autre;Copper - Other;;;10.0;;;;;
+740313;HS6;74;Billettes;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7403131000;HS10;74;Billettes - Type 1;Copper - Type 1;;;10.0;;;;;
+7403132000;HS10;74;Billettes - Type 2;Copper - Type 2;;;10.0;;;;;
+7403139000;HS10;74;Billettes - Autre;Copper - Other;;;10.0;;;;;
+740319;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7403191000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7403192000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7403199000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+740321;HS6;74;A base de cuivre-zinc (laiton);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7403211000;HS10;74;A base de cuivre-zinc (laiton) - Type 1;Copper - Type 1;;;10.0;;;;;
+7403212000;HS10;74;A base de cuivre-zinc (laiton) - Type 2;Copper - Type 2;;;10.0;;;;;
+7403219000;HS10;74;A base de cuivre-zinc (laiton) - Autre;Copper - Other;;;10.0;;;;;
+740322;HS6;74;A base de cuivre-étain (bronze);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7403221000;HS10;74;A base de cuivre-étain (bronze) - Type 1;Copper - Type 1;;;10.0;;;;;
+7403222000;HS10;74;A base de cuivre-étain (bronze) - Type 2;Copper - Type 2;;;10.0;;;;;
+7403229000;HS10;74;A base de cuivre-étain (bronze) - Autre;Copper - Other;;;10.0;;;;;
+740329;HS6;74;Autres alliages de cuivre (à l'exception des alliages mères du n°74.05);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7403291000;HS10;74;Autres alliages de cuivre (à l'exception des alliages mères du n°74.05) - Type 1;Copper - Type 1;;;10.0;;;;;
+7403292000;HS10;74;Autres alliages de cuivre (à l'exception des alliages mères du n°74.05) - Type 2;Copper - Type 2;;;10.0;;;;;
+7403299000;HS10;74;Autres alliages de cuivre (à l'exception des alliages mères du n°74.05) - Autre;Copper - Other;;;10.0;;;;;
+740400;HS6;74;Déchets et débris de cuivre;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7404001000;HS10;74;Déchets et débris de cuivre - Type 1;Copper - Type 1;;;10.0;;;;;
+7404002000;HS10;74;Déchets et débris de cuivre - Type 2;Copper - Type 2;;;10.0;;;;;
+7404009000;HS10;74;Déchets et débris de cuivre - Autre;Copper - Other;;;10.0;;;;;
+740500;HS6;74;Alliages mères de cuivre;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7405001000;HS10;74;Alliages mères de cuivre - Type 1;Copper - Type 1;;;10.0;;;;;
+7405002000;HS10;74;Alliages mères de cuivre - Type 2;Copper - Type 2;;;10.0;;;;;
+7405009000;HS10;74;Alliages mères de cuivre - Autre;Copper - Other;;;10.0;;;;;
+740610;HS6;74;Poudres à structure non lamellaire;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7406101000;HS10;74;Poudres à structure non lamellaire - Type 1;Copper - Type 1;;;10.0;;;;;
+7406102000;HS10;74;Poudres à structure non lamellaire - Type 2;Copper - Type 2;;;10.0;;;;;
+7406109000;HS10;74;Poudres à structure non lamellaire - Autre;Copper - Other;;;10.0;;;;;
+740620;HS6;74;Poudres à structure lamellaire;paillettes;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7406201000;HS10;74;Poudres à structure lamellaire - Type 1;paillettes - Type 1;;;10.0;;;;;
+7406202000;HS10;74;Poudres à structure lamellaire - Type 2;paillettes - Type 2;;;10.0;;;;;
+7406209000;HS10;74;Poudres à structure lamellaire - Autre;paillettes - Other;;;10.0;;;;;
+740710;HS6;74;En cuivre affiné;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7407101000;HS10;74;En cuivre affiné - Type 1;Copper - Type 1;;;10.0;;;;;
+7407102000;HS10;74;En cuivre affiné - Type 2;Copper - Type 2;;;10.0;;;;;
+7407109000;HS10;74;En cuivre affiné - Autre;Copper - Other;;;10.0;;;;;
+740721;HS6;74;A base de cuivre-zinc (laiton);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7407211000;HS10;74;A base de cuivre-zinc (laiton) - Type 1;Copper - Type 1;;;10.0;;;;;
+7407212000;HS10;74;A base de cuivre-zinc (laiton) - Type 2;Copper - Type 2;;;10.0;;;;;
+7407219000;HS10;74;A base de cuivre-zinc (laiton) - Autre;Copper - Other;;;10.0;;;;;
+740729;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7407291000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7407292000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7407299000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+740811;HS6;74;Dont la plus grande dimension de la section transversale excède 6 mm;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7408111000;HS10;74;Dont la plus grande dimension de la section transversale excède 6 mm - Type 1;Copper - Type 1;;;10.0;;;;;
+7408112000;HS10;74;Dont la plus grande dimension de la section transversale excède 6 mm - Type 2;Copper - Type 2;;;10.0;;;;;
+7408119000;HS10;74;Dont la plus grande dimension de la section transversale excède 6 mm - Autre;Copper - Other;;;10.0;;;;;
+740819;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7408191000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7408192000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7408199000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+740821;HS6;74;A base de cuivre-zinc (laiton);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7408211000;HS10;74;A base de cuivre-zinc (laiton) - Type 1;Copper - Type 1;;;10.0;;;;;
+7408212000;HS10;74;A base de cuivre-zinc (laiton) - Type 2;Copper - Type 2;;;10.0;;;;;
+7408219000;HS10;74;A base de cuivre-zinc (laiton) - Autre;Copper - Other;;;10.0;;;;;
+740822;HS6;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7408221000;HS10;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort) - Type 1;Copper - Type 1;;;10.0;;;;;
+7408222000;HS10;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort) - Type 2;Copper - Type 2;;;10.0;;;;;
+7408229000;HS10;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort) - Autre;Copper - Other;;;10.0;;;;;
+740829;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7408291000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7408292000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7408299000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+740911;HS6;74;Enroulées;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7409111000;HS10;74;Enroulées - Type 1;Copper - Type 1;;;10.0;;;;;
+7409112000;HS10;74;Enroulées - Type 2;Copper - Type 2;;;10.0;;;;;
+7409119000;HS10;74;Enroulées - Autre;Copper - Other;;;10.0;;;;;
+740919;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7409191000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7409192000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7409199000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+740921;HS6;74;Enroulées;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7409211000;HS10;74;Enroulées - Type 1;Copper - Type 1;;;10.0;;;;;
+7409212000;HS10;74;Enroulées - Type 2;Copper - Type 2;;;10.0;;;;;
+7409219000;HS10;74;Enroulées - Autre;Copper - Other;;;10.0;;;;;
+740929;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7409291000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7409292000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7409299000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+740931;HS6;74;Enroulées;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7409311000;HS10;74;Enroulées - Type 1;Copper - Type 1;;;10.0;;;;;
+7409312000;HS10;74;Enroulées - Type 2;Copper - Type 2;;;10.0;;;;;
+7409319000;HS10;74;Enroulées - Autre;Copper - Other;;;10.0;;;;;
+740939;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7409391000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7409392000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7409399000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+740940;HS6;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7409401000;HS10;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort) - Type 1;Copper - Type 1;;;10.0;;;;;
+7409402000;HS10;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort) - Type 2;Copper - Type 2;;;10.0;;;;;
+7409409000;HS10;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort) - Autre;Copper - Other;;;10.0;;;;;
+740990;HS6;74;En autres alliages de cuivre;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7409901000;HS10;74;En autres alliages de cuivre - Type 1;Copper - Type 1;;;10.0;;;;;
+7409902000;HS10;74;En autres alliages de cuivre - Type 2;Copper - Type 2;;;10.0;;;;;
+7409909000;HS10;74;En autres alliages de cuivre - Autre;Copper - Other;;;10.0;;;;;
+741011;HS6;74;En cuivre affiné;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7410111000;HS10;74;En cuivre affiné - Type 1;Copper - Type 1;;;10.0;;;;;
+7410112000;HS10;74;En cuivre affiné - Type 2;Copper - Type 2;;;10.0;;;;;
+7410119000;HS10;74;En cuivre affiné - Autre;Copper - Other;;;10.0;;;;;
+741012;HS6;74;En alliages de cuivre;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7410121000;HS10;74;En alliages de cuivre - Type 1;Copper - Type 1;;;10.0;;;;;
+7410122000;HS10;74;En alliages de cuivre - Type 2;Copper - Type 2;;;10.0;;;;;
+7410129000;HS10;74;En alliages de cuivre - Autre;Copper - Other;;;10.0;;;;;
+741021;HS6;74;En cuivre affiné;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7410211000;HS10;74;En cuivre affiné - Type 1;Copper - Type 1;;;10.0;;;;;
+7410212000;HS10;74;En cuivre affiné - Type 2;Copper - Type 2;;;10.0;;;;;
+7410219000;HS10;74;En cuivre affiné - Autre;Copper - Other;;;10.0;;;;;
+741022;HS6;74;En alliages de cuivre;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7410221000;HS10;74;En alliages de cuivre - Type 1;Copper - Type 1;;;10.0;;;;;
+7410222000;HS10;74;En alliages de cuivre - Type 2;Copper - Type 2;;;10.0;;;;;
+7410229000;HS10;74;En alliages de cuivre - Autre;Copper - Other;;;10.0;;;;;
+741110;HS6;74;En cuivre affiné;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7411101000;HS10;74;En cuivre affiné - Type 1;Copper - Type 1;;;10.0;;;;;
+7411102000;HS10;74;En cuivre affiné - Type 2;Copper - Type 2;;;10.0;;;;;
+7411109000;HS10;74;En cuivre affiné - Autre;Copper - Other;;;10.0;;;;;
+741121;HS6;74;A base de cuivre-zinc (laiton);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7411211000;HS10;74;A base de cuivre-zinc (laiton) - Type 1;Copper - Type 1;;;10.0;;;;;
+7411212000;HS10;74;A base de cuivre-zinc (laiton) - Type 2;Copper - Type 2;;;10.0;;;;;
+7411219000;HS10;74;A base de cuivre-zinc (laiton) - Autre;Copper - Other;;;10.0;;;;;
+741122;HS6;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7411221000;HS10;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort) - Type 1;Copper - Type 1;;;10.0;;;;;
+7411222000;HS10;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort) - Type 2;Copper - Type 2;;;10.0;;;;;
+7411229000;HS10;74;A base de cuivre-nickel (cupronickel) ou de cuivre-nickel-zinc (maillechort) - Autre;Copper - Other;;;10.0;;;;;
+741129;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7411291000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7411292000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7411299000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+741210;HS6;74;En cuivre affiné;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7412101000;HS10;74;En cuivre affiné - Type 1;Copper - Type 1;;;10.0;;;;;
+7412102000;HS10;74;En cuivre affiné - Type 2;Copper - Type 2;;;10.0;;;;;
+7412109000;HS10;74;En cuivre affiné - Autre;Copper - Other;;;10.0;;;;;
+741220;HS6;74;En alliages de cuivre;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7412201000;HS10;74;En alliages de cuivre - Type 1;Copper - Type 1;;;10.0;;;;;
+7412202000;HS10;74;En alliages de cuivre - Type 2;Copper - Type 2;;;10.0;;;;;
+7412209000;HS10;74;En alliages de cuivre - Autre;Copper - Other;;;10.0;;;;;
+741300;HS6;74;Torons;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7413001000;HS10;74;Torons - Type 1;Copper - Type 1;;;10.0;;;;;
+7413002000;HS10;74;Torons - Type 2;Copper - Type 2;;;10.0;;;;;
+7413009000;HS10;74;Torons - Autre;Copper - Other;;;10.0;;;;;
+741510;HS6;74;Pointes et clous;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7415101000;HS10;74;Pointes et clous - Type 1;Copper - Type 1;;;10.0;;;;;
+7415102000;HS10;74;Pointes et clous - Type 2;Copper - Type 2;;;10.0;;;;;
+7415109000;HS10;74;Pointes et clous - Autre;Copper - Other;;;10.0;;;;;
+741521;HS6;74;Rondelles (y compris les rondelles destinées à faire ressort);Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7415211000;HS10;74;Rondelles (y compris les rondelles destinées à faire ressort) - Type 1;Copper - Type 1;;;10.0;;;;;
+7415212000;HS10;74;Rondelles (y compris les rondelles destinées à faire ressort) - Type 2;Copper - Type 2;;;10.0;;;;;
+7415219000;HS10;74;Rondelles (y compris les rondelles destinées à faire ressort) - Autre;Copper - Other;;;10.0;;;;;
+741529;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7415291000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7415292000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7415299000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+741533;HS6;74;Vis;boulons et écrous;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7415331000;HS10;74;Vis - Type 1;boulons et écrous - Type 1;;;10.0;;;;;
+7415332000;HS10;74;Vis - Type 2;boulons et écrous - Type 2;;;10.0;;;;;
+7415339000;HS10;74;Vis - Autre;boulons et écrous - Other;;;10.0;;;;;
+741539;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7415391000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7415392000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7415399000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+741810;HS6;74;Articles de ménage ou d'économie domestique et leurs parties;éponges;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7418101000;HS10;74;Articles de ménage ou d'économie domestique et leurs parties - Type 1;éponges - Type 1;;;10.0;;;;;
+7418102000;HS10;74;Articles de ménage ou d'économie domestique et leurs parties - Type 2;éponges - Type 2;;;10.0;;;;;
+7418109000;HS10;74;Articles de ménage ou d'économie domestique et leurs parties - Autre;éponges - Other;;;10.0;;;;;
+741820;HS6;74;Articles d'hygiène ou de toilettes et leurs parties;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7418201000;HS10;74;Articles d'hygiène ou de toilettes et leurs parties - Type 1;Copper - Type 1;;;10.0;;;;;
+7418202000;HS10;74;Articles d'hygiène ou de toilettes et leurs parties - Type 2;Copper - Type 2;;;10.0;;;;;
+7418209000;HS10;74;Articles d'hygiène ou de toilettes et leurs parties - Autre;Copper - Other;;;10.0;;;;;
+741920;HS6;74;Coulés;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7419201000;HS10;74;Coulés - Type 1;Copper - Type 1;;;10.0;;;;;
+7419202000;HS10;74;Coulés - Type 2;Copper - Type 2;;;10.0;;;;;
+7419209000;HS10;74;Coulés - Autre;Copper - Other;;;10.0;;;;;
+741980;HS6;74;Autres;Copper;copper;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7419801000;HS10;74;Autres - Type 1;Copper - Type 1;;;10.0;;;;;
+7419802000;HS10;74;Autres - Type 2;Copper - Type 2;;;10.0;;;;;
+7419809000;HS10;74;Autres - Autre;Copper - Other;;;10.0;;;;;
+750110;HS6;75;Mattes de nickel;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7501101000;HS10;75;Mattes de nickel - Type 1;Nickel - Type 1;;;10.0;;;;;
+7501102000;HS10;75;Mattes de nickel - Type 2;Nickel - Type 2;;;10.0;;;;;
+7501109000;HS10;75;Mattes de nickel - Autre;Nickel - Other;;;10.0;;;;;
+750120;HS6;75;Sinters d'oxydes de nickel et autres produits de la métallurgie du nickel;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7501201000;HS10;75;Sinters d'oxydes de nickel et autres produits de la métallurgie du nickel - Type 1;Nickel - Type 1;;;10.0;;;;;
+7501202000;HS10;75;Sinters d'oxydes de nickel et autres produits de la métallurgie du nickel - Type 2;Nickel - Type 2;;;10.0;;;;;
+7501209000;HS10;75;Sinters d'oxydes de nickel et autres produits de la métallurgie du nickel - Autre;Nickel - Other;;;10.0;;;;;
+750210;HS6;75;Nickel non allié;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7502101000;HS10;75;Nickel non allié - Type 1;Nickel - Type 1;;;10.0;;;;;
+7502102000;HS10;75;Nickel non allié - Type 2;Nickel - Type 2;;;10.0;;;;;
+7502109000;HS10;75;Nickel non allié - Autre;Nickel - Other;;;10.0;;;;;
+750220;HS6;75;Alliages de nickel;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7502201000;HS10;75;Alliages de nickel - Type 1;Nickel - Type 1;;;10.0;;;;;
+7502202000;HS10;75;Alliages de nickel - Type 2;Nickel - Type 2;;;10.0;;;;;
+7502209000;HS10;75;Alliages de nickel - Autre;Nickel - Other;;;10.0;;;;;
+750300;HS6;75;Déchets et débris du nickel;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7503001000;HS10;75;Déchets et débris du nickel - Type 1;Nickel - Type 1;;;10.0;;;;;
+7503002000;HS10;75;Déchets et débris du nickel - Type 2;Nickel - Type 2;;;10.0;;;;;
+7503009000;HS10;75;Déchets et débris du nickel - Autre;Nickel - Other;;;10.0;;;;;
+750400;HS6;75;Poudres et paillettes de nickel;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7504001000;HS10;75;Poudres et paillettes de nickel - Type 1;Nickel - Type 1;;;10.0;;;;;
+7504002000;HS10;75;Poudres et paillettes de nickel - Type 2;Nickel - Type 2;;;10.0;;;;;
+7504009000;HS10;75;Poudres et paillettes de nickel - Autre;Nickel - Other;;;10.0;;;;;
+750511;HS6;75;En nickel non allié;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7505111000;HS10;75;En nickel non allié - Type 1;Nickel - Type 1;;;10.0;;;;;
+7505112000;HS10;75;En nickel non allié - Type 2;Nickel - Type 2;;;10.0;;;;;
+7505119000;HS10;75;En nickel non allié - Autre;Nickel - Other;;;10.0;;;;;
+750512;HS6;75;En alliages de nickel;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7505121000;HS10;75;En alliages de nickel - Type 1;Nickel - Type 1;;;10.0;;;;;
+7505122000;HS10;75;En alliages de nickel - Type 2;Nickel - Type 2;;;10.0;;;;;
+7505129000;HS10;75;En alliages de nickel - Autre;Nickel - Other;;;10.0;;;;;
+750521;HS6;75;En nickel non allié;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7505211000;HS10;75;En nickel non allié - Type 1;Nickel - Type 1;;;10.0;;;;;
+7505212000;HS10;75;En nickel non allié - Type 2;Nickel - Type 2;;;10.0;;;;;
+7505219000;HS10;75;En nickel non allié - Autre;Nickel - Other;;;10.0;;;;;
+750522;HS6;75;En alliage de nickel;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7505221000;HS10;75;En alliage de nickel - Type 1;Nickel - Type 1;;;10.0;;;;;
+7505222000;HS10;75;En alliage de nickel - Type 2;Nickel - Type 2;;;10.0;;;;;
+7505229000;HS10;75;En alliage de nickel - Autre;Nickel - Other;;;10.0;;;;;
+750610;HS6;75;En nickel non allié;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7506101000;HS10;75;En nickel non allié - Type 1;Nickel - Type 1;;;10.0;;;;;
+7506102000;HS10;75;En nickel non allié - Type 2;Nickel - Type 2;;;10.0;;;;;
+7506109000;HS10;75;En nickel non allié - Autre;Nickel - Other;;;10.0;;;;;
+750620;HS6;75;En alliages de nickel;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7506201000;HS10;75;En alliages de nickel - Type 1;Nickel - Type 1;;;10.0;;;;;
+7506202000;HS10;75;En alliages de nickel - Type 2;Nickel - Type 2;;;10.0;;;;;
+7506209000;HS10;75;En alliages de nickel - Autre;Nickel - Other;;;10.0;;;;;
+750711;HS6;75;En nickel non allié;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7507111000;HS10;75;En nickel non allié - Type 1;Nickel - Type 1;;;10.0;;;;;
+7507112000;HS10;75;En nickel non allié - Type 2;Nickel - Type 2;;;10.0;;;;;
+7507119000;HS10;75;En nickel non allié - Autre;Nickel - Other;;;10.0;;;;;
+750712;HS6;75;En alliages de nickel;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7507121000;HS10;75;En alliages de nickel - Type 1;Nickel - Type 1;;;10.0;;;;;
+7507122000;HS10;75;En alliages de nickel - Type 2;Nickel - Type 2;;;10.0;;;;;
+7507129000;HS10;75;En alliages de nickel - Autre;Nickel - Other;;;10.0;;;;;
+750720;HS6;75;Accessoires de tuyauterie;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7507201000;HS10;75;Accessoires de tuyauterie - Type 1;Nickel - Type 1;;;10.0;;;;;
+7507202000;HS10;75;Accessoires de tuyauterie - Type 2;Nickel - Type 2;;;10.0;;;;;
+7507209000;HS10;75;Accessoires de tuyauterie - Autre;Nickel - Other;;;10.0;;;;;
+750810;HS6;75;Toiles métalliques et grillage;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7508101000;HS10;75;Toiles métalliques et grillage - Type 1;Nickel - Type 1;;;10.0;;;;;
+7508102000;HS10;75;Toiles métalliques et grillage - Type 2;Nickel - Type 2;;;10.0;;;;;
+7508109000;HS10;75;Toiles métalliques et grillage - Autre;Nickel - Other;;;10.0;;;;;
+750890;HS6;75;Autres;Nickel;nickel;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7508901000;HS10;75;Autres - Type 1;Nickel - Type 1;;;10.0;;;;;
+7508902000;HS10;75;Autres - Type 2;Nickel - Type 2;;;10.0;;;;;
+7508909000;HS10;75;Autres - Autre;Nickel - Other;;;10.0;;;;;
+760110;HS6;76;Aluminium non allié;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7601101000;HS10;76;Aluminium non allié - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7601102000;HS10;76;Aluminium non allié - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7601109000;HS10;76;Aluminium non allié - Autre;Aluminium - Other;;;25.0;;;;;
+760120;HS6;76;Alliages d'aluminium;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7601201000;HS10;76;Alliages d'aluminium - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7601202000;HS10;76;Alliages d'aluminium - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7601209000;HS10;76;Alliages d'aluminium - Autre;Aluminium - Other;;;25.0;;;;;
+760200;HS6;76;Déchets et débris d'aluminium;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7602001000;HS10;76;Déchets et débris d'aluminium - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7602002000;HS10;76;Déchets et débris d'aluminium - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7602009000;HS10;76;Déchets et débris d'aluminium - Autre;Aluminium - Other;;;25.0;;;;;
+760310;HS6;76;Poudres à structure non lamellaire;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7603101000;HS10;76;Poudres à structure non lamellaire - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7603102000;HS10;76;Poudres à structure non lamellaire - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7603109000;HS10;76;Poudres à structure non lamellaire - Autre;Aluminium - Other;;;25.0;;;;;
+760320;HS6;76;Poudres à structure lamellaire;paillettes;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7603201000;HS10;76;Poudres à structure lamellaire - Type 1;paillettes - Type 1;;;25.0;;;;;
+7603202000;HS10;76;Poudres à structure lamellaire - Type 2;paillettes - Type 2;;;25.0;;;;;
+7603209000;HS10;76;Poudres à structure lamellaire - Autre;paillettes - Other;;;25.0;;;;;
+760410;HS6;76;En aluminium non allié;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7604101000;HS10;76;En aluminium non allié - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7604102000;HS10;76;En aluminium non allié - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7604109000;HS10;76;En aluminium non allié - Autre;Aluminium - Other;;;25.0;;;;;
+760421;HS6;76;Profilés creux;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7604211000;HS10;76;Profilés creux - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7604212000;HS10;76;Profilés creux - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7604219000;HS10;76;Profilés creux - Autre;Aluminium - Other;;;25.0;;;;;
+760429;HS6;76;Autres;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7604291000;HS10;76;Autres - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7604292000;HS10;76;Autres - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7604299000;HS10;76;Autres - Autre;Aluminium - Other;;;25.0;;;;;
+760511;HS6;76;Dont la plus grande dimension de la section transversale excède 7 mm;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7605111000;HS10;76;Dont la plus grande dimension de la section transversale excède 7 mm - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7605112000;HS10;76;Dont la plus grande dimension de la section transversale excède 7 mm - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7605119000;HS10;76;Dont la plus grande dimension de la section transversale excède 7 mm - Autre;Aluminium - Other;;;25.0;;;;;
+760519;HS6;76;Autres;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7605191000;HS10;76;Autres - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7605192000;HS10;76;Autres - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7605199000;HS10;76;Autres - Autre;Aluminium - Other;;;25.0;;;;;
+760521;HS6;76;Dont la plus grande dimension de la section transversale excède 7 mm;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7605211000;HS10;76;Dont la plus grande dimension de la section transversale excède 7 mm - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7605212000;HS10;76;Dont la plus grande dimension de la section transversale excède 7 mm - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7605219000;HS10;76;Dont la plus grande dimension de la section transversale excède 7 mm - Autre;Aluminium - Other;;;25.0;;;;;
+760529;HS6;76;Autres;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7605291000;HS10;76;Autres - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7605292000;HS10;76;Autres - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7605299000;HS10;76;Autres - Autre;Aluminium - Other;;;25.0;;;;;
+760611;HS6;76;En aluminium non allié;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7606111000;HS10;76;En aluminium non allié - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7606112000;HS10;76;En aluminium non allié - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7606119000;HS10;76;En aluminium non allié - Autre;Aluminium - Other;;;25.0;;;;;
+760612;HS6;76;En alliages d'aluminium;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7606121000;HS10;76;En alliages d'aluminium - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7606122000;HS10;76;En alliages d'aluminium - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7606129000;HS10;76;En alliages d'aluminium - Autre;Aluminium - Other;;;25.0;;;;;
+760691;HS6;76;En aluminium non allié;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7606911000;HS10;76;En aluminium non allié - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7606912000;HS10;76;En aluminium non allié - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7606919000;HS10;76;En aluminium non allié - Autre;Aluminium - Other;;;25.0;;;;;
+760692;HS6;76;En alliages d'aluminium;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7606921000;HS10;76;En alliages d'aluminium - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7606922000;HS10;76;En alliages d'aluminium - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7606929000;HS10;76;En alliages d'aluminium - Autre;Aluminium - Other;;;25.0;;;;;
+760711;HS6;76;Simplement laminées;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7607111000;HS10;76;Simplement laminées - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7607112000;HS10;76;Simplement laminées - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7607119000;HS10;76;Simplement laminées - Autre;Aluminium - Other;;;25.0;;;;;
+760719;HS6;76;Autres;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7607191000;HS10;76;Autres - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7607192000;HS10;76;Autres - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7607199000;HS10;76;Autres - Autre;Aluminium - Other;;;25.0;;;;;
+760720;HS6;76;Sur support;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7607201000;HS10;76;Sur support - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7607202000;HS10;76;Sur support - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7607209000;HS10;76;Sur support - Autre;Aluminium - Other;;;25.0;;;;;
+760810;HS6;76;En aluminium non allié;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7608101000;HS10;76;En aluminium non allié - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7608102000;HS10;76;En aluminium non allié - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7608109000;HS10;76;En aluminium non allié - Autre;Aluminium - Other;;;25.0;;;;;
+760820;HS6;76;En alliages d'aluminium;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7608201000;HS10;76;En alliages d'aluminium - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7608202000;HS10;76;En alliages d'aluminium - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7608209000;HS10;76;En alliages d'aluminium - Autre;Aluminium - Other;;;25.0;;;;;
+760900;HS6;76;Accessoires de tuyauterie (raccords;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7609001000;HS10;76;Accessoires de tuyauterie (raccords - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7609002000;HS10;76;Accessoires de tuyauterie (raccords - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7609009000;HS10;76;Accessoires de tuyauterie (raccords - Autre;Aluminium - Other;;;25.0;;;;;
+761010;HS6;76;Portes;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7610101000;HS10;76;Portes - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7610102000;HS10;76;Portes - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7610109000;HS10;76;Portes - Autre;Aluminium - Other;;;25.0;;;;;
+761090;HS6;76;Autres;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7610901000;HS10;76;Autres - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7610902000;HS10;76;Autres - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7610909000;HS10;76;Autres - Autre;Aluminium - Other;;;25.0;;;;;
+761100;HS6;76;Réservoirs;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7611001000;HS10;76;Réservoirs - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7611002000;HS10;76;Réservoirs - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7611009000;HS10;76;Réservoirs - Autre;Aluminium - Other;;;25.0;;;;;
+761210;HS6;76;Etuis tubulaires souples;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7612101000;HS10;76;Etuis tubulaires souples - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7612102000;HS10;76;Etuis tubulaires souples - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7612109000;HS10;76;Etuis tubulaires souples - Autre;Aluminium - Other;;;25.0;;;;;
+761290;HS6;76;Autres;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7612901000;HS10;76;Autres - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7612902000;HS10;76;Autres - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7612909000;HS10;76;Autres - Autre;Aluminium - Other;;;25.0;;;;;
+761300;HS6;76;Récipients en aluminium pour gaz comprimés ou liquifiés;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7613001000;HS10;76;Récipients en aluminium pour gaz comprimés ou liquifiés - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7613002000;HS10;76;Récipients en aluminium pour gaz comprimés ou liquifiés - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7613009000;HS10;76;Récipients en aluminium pour gaz comprimés ou liquifiés - Autre;Aluminium - Other;;;25.0;;;;;
+761410;HS6;76;Avec âme en acier;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7614101000;HS10;76;Avec âme en acier - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7614102000;HS10;76;Avec âme en acier - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7614109000;HS10;76;Avec âme en acier - Autre;Aluminium - Other;;;25.0;;;;;
+761490;HS6;76;Autres;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7614901000;HS10;76;Autres - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7614902000;HS10;76;Autres - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7614909000;HS10;76;Autres - Autre;Aluminium - Other;;;25.0;;;;;
+761510;HS6;76;Articles de ménage ou d'économie domestique et leurs parties;éponges;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7615101000;HS10;76;Articles de ménage ou d'économie domestique et leurs parties - Type 1;éponges - Type 1;;;25.0;;;;;
+7615102000;HS10;76;Articles de ménage ou d'économie domestique et leurs parties - Type 2;éponges - Type 2;;;25.0;;;;;
+7615109000;HS10;76;Articles de ménage ou d'économie domestique et leurs parties - Autre;éponges - Other;;;25.0;;;;;
+761520;HS6;76;Articles d'hygiène ou de toilette et leurs parties;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7615201000;HS10;76;Articles d'hygiène ou de toilette et leurs parties - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7615202000;HS10;76;Articles d'hygiène ou de toilette et leurs parties - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7615209000;HS10;76;Articles d'hygiène ou de toilette et leurs parties - Autre;Aluminium - Other;;;25.0;;;;;
+761610;HS6;76;Pointes;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7616101000;HS10;76;Pointes - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7616102000;HS10;76;Pointes - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7616109000;HS10;76;Pointes - Autre;Aluminium - Other;;;25.0;;;;;
+761691;HS6;76;Toiles métalliques;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7616911000;HS10;76;Toiles métalliques - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7616912000;HS10;76;Toiles métalliques - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7616919000;HS10;76;Toiles métalliques - Autre;Aluminium - Other;;;25.0;;;;;
+761699;HS6;76;Autres;Aluminium;aluminum;KG;25.0;18.0;0.0;D.D:25.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;43.0
+7616991000;HS10;76;Autres - Type 1;Aluminium - Type 1;;;25.0;;;;;
+7616992000;HS10;76;Autres - Type 2;Aluminium - Type 2;;;25.0;;;;;
+7616999000;HS10;76;Autres - Autre;Aluminium - Other;;;25.0;;;;;
+780110;HS6;78;Plomb affiné;Lead;lead;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7801101000;HS10;78;Plomb affiné - Type 1;Lead - Type 1;;;10.0;;;;;
+7801102000;HS10;78;Plomb affiné - Type 2;Lead - Type 2;;;10.0;;;;;
+7801109000;HS10;78;Plomb affiné - Autre;Lead - Other;;;10.0;;;;;
+780191;HS6;78;Contenant de l'antimoine comme autre élément prédominant en poids;Lead;lead;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7801911000;HS10;78;Contenant de l'antimoine comme autre élément prédominant en poids - Type 1;Lead - Type 1;;;10.0;;;;;
+7801912000;HS10;78;Contenant de l'antimoine comme autre élément prédominant en poids - Type 2;Lead - Type 2;;;10.0;;;;;
+7801919000;HS10;78;Contenant de l'antimoine comme autre élément prédominant en poids - Autre;Lead - Other;;;10.0;;;;;
+780199;HS6;78;Autres;Lead;lead;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7801991000;HS10;78;Autres - Type 1;Lead - Type 1;;;10.0;;;;;
+7801992000;HS10;78;Autres - Type 2;Lead - Type 2;;;10.0;;;;;
+7801999000;HS10;78;Autres - Autre;Lead - Other;;;10.0;;;;;
+780200;HS6;78;Déchets et débris de plomb;Lead;lead;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7802001000;HS10;78;Déchets et débris de plomb - Type 1;Lead - Type 1;;;10.0;;;;;
+7802002000;HS10;78;Déchets et débris de plomb - Type 2;Lead - Type 2;;;10.0;;;;;
+7802009000;HS10;78;Déchets et débris de plomb - Autre;Lead - Other;;;10.0;;;;;
+780411;HS6;78;Feuilles et bandes;Lead;lead;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7804111000;HS10;78;Feuilles et bandes - Type 1;Lead - Type 1;;;10.0;;;;;
+7804112000;HS10;78;Feuilles et bandes - Type 2;Lead - Type 2;;;10.0;;;;;
+7804119000;HS10;78;Feuilles et bandes - Autre;Lead - Other;;;10.0;;;;;
+780419;HS6;78;Autres;Lead;lead;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7804191000;HS10;78;Autres - Type 1;Lead - Type 1;;;10.0;;;;;
+7804192000;HS10;78;Autres - Type 2;Lead - Type 2;;;10.0;;;;;
+7804199000;HS10;78;Autres - Autre;Lead - Other;;;10.0;;;;;
+780420;HS6;78;Poudres et paillettes;Lead;lead;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7804201000;HS10;78;Poudres et paillettes - Type 1;Lead - Type 1;;;10.0;;;;;
+7804202000;HS10;78;Poudres et paillettes - Type 2;Lead - Type 2;;;10.0;;;;;
+7804209000;HS10;78;Poudres et paillettes - Autre;Lead - Other;;;10.0;;;;;
+780600;HS6;78;Autres ouvrages en plomb;Lead;lead;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7806001000;HS10;78;Autres ouvrages en plomb - Type 1;Lead - Type 1;;;10.0;;;;;
+7806002000;HS10;78;Autres ouvrages en plomb - Type 2;Lead - Type 2;;;10.0;;;;;
+7806009000;HS10;78;Autres ouvrages en plomb - Autre;Lead - Other;;;10.0;;;;;
+790111;HS6;79;Contenant en poids 99;Zinc;zinc;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7901111000;HS10;79;Contenant en poids 99 - Type 1;Zinc - Type 1;;;10.0;;;;;
+7901112000;HS10;79;Contenant en poids 99 - Type 2;Zinc - Type 2;;;10.0;;;;;
+7901119000;HS10;79;Contenant en poids 99 - Autre;Zinc - Other;;;10.0;;;;;
+790112;HS6;79;Contenant en poids moins de 99;Zinc;zinc;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7901121000;HS10;79;Contenant en poids moins de 99 - Type 1;Zinc - Type 1;;;10.0;;;;;
+7901122000;HS10;79;Contenant en poids moins de 99 - Type 2;Zinc - Type 2;;;10.0;;;;;
+7901129000;HS10;79;Contenant en poids moins de 99 - Autre;Zinc - Other;;;10.0;;;;;
+790120;HS6;79;Alliages de zinc;Zinc;zinc;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7901201000;HS10;79;Alliages de zinc - Type 1;Zinc - Type 1;;;10.0;;;;;
+7901202000;HS10;79;Alliages de zinc - Type 2;Zinc - Type 2;;;10.0;;;;;
+7901209000;HS10;79;Alliages de zinc - Autre;Zinc - Other;;;10.0;;;;;
+790200;HS6;79;Déchets et débris de zinc;Zinc;zinc;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7902001000;HS10;79;Déchets et débris de zinc - Type 1;Zinc - Type 1;;;10.0;;;;;
+7902002000;HS10;79;Déchets et débris de zinc - Type 2;Zinc - Type 2;;;10.0;;;;;
+7902009000;HS10;79;Déchets et débris de zinc - Autre;Zinc - Other;;;10.0;;;;;
+790310;HS6;79;Poussières de zinc;Zinc dust;zinc;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7903101000;HS10;79;Poussières de zinc - Type 1;Zinc dust - Type 1;;;10.0;;;;;
+7903102000;HS10;79;Poussières de zinc - Type 2;Zinc dust - Type 2;;;10.0;;;;;
+7903109000;HS10;79;Poussières de zinc - Autre;Zinc dust - Other;;;10.0;;;;;
+790390;HS6;79;Autres;Zinc;zinc;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7903901000;HS10;79;Autres - Type 1;Zinc - Type 1;;;10.0;;;;;
+7903902000;HS10;79;Autres - Type 2;Zinc - Type 2;;;10.0;;;;;
+7903909000;HS10;79;Autres - Autre;Zinc - Other;;;10.0;;;;;
+790400;HS6;79;Barres;Zinc;zinc;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7904001000;HS10;79;Barres - Type 1;Zinc - Type 1;;;10.0;;;;;
+7904002000;HS10;79;Barres - Type 2;Zinc - Type 2;;;10.0;;;;;
+7904009000;HS10;79;Barres - Autre;Zinc - Other;;;10.0;;;;;
+790500;HS6;79;Tôles;Zinc;zinc;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7905001000;HS10;79;Tôles - Type 1;Zinc - Type 1;;;10.0;;;;;
+7905002000;HS10;79;Tôles - Type 2;Zinc - Type 2;;;10.0;;;;;
+7905009000;HS10;79;Tôles - Autre;Zinc - Other;;;10.0;;;;;
+790700;HS6;79;Autres ouvrages en zinc;Zinc;zinc;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+7907001000;HS10;79;Autres ouvrages en zinc - Type 1;Zinc - Type 1;;;10.0;;;;;
+7907002000;HS10;79;Autres ouvrages en zinc - Type 2;Zinc - Type 2;;;10.0;;;;;
+7907009000;HS10;79;Autres ouvrages en zinc - Autre;Zinc - Other;;;10.0;;;;;
+800110;HS6;80;Etain non allié;Tin;tin;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+8001101000;HS10;80;Etain non allié - Type 1;Tin - Type 1;;;10.0;;;;;
+8001102000;HS10;80;Etain non allié - Type 2;Tin - Type 2;;;10.0;;;;;
+8001109000;HS10;80;Etain non allié - Autre;Tin - Other;;;10.0;;;;;
+800120;HS6;80;Alliages d'étain;Tin;tin;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+8001201000;HS10;80;Alliages d'étain - Type 1;Tin - Type 1;;;10.0;;;;;
+8001202000;HS10;80;Alliages d'étain - Type 2;Tin - Type 2;;;10.0;;;;;
+8001209000;HS10;80;Alliages d'étain - Autre;Tin - Other;;;10.0;;;;;
+800200;HS6;80;Déchets et débris d'étain;Tin;tin;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+8002001000;HS10;80;Déchets et débris d'étain - Type 1;Tin - Type 1;;;10.0;;;;;
+8002002000;HS10;80;Déchets et débris d'étain - Type 2;Tin - Type 2;;;10.0;;;;;
+8002009000;HS10;80;Déchets et débris d'étain - Autre;Tin - Other;;;10.0;;;;;
+800300;HS6;80;Barres;Tin;tin;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+8003001000;HS10;80;Barres - Type 1;Tin - Type 1;;;10.0;;;;;
+8003002000;HS10;80;Barres - Type 2;Tin - Type 2;;;10.0;;;;;
+8003009000;HS10;80;Barres - Autre;Tin - Other;;;10.0;;;;;
+800700;HS6;80;Autres ouvrages en étain;Tin;tin;KG;10.0;18.0;0.0;D.D:10.0% | T.V.A:18.0%;910 Déclaration d'Importation du Produit;28.0
+8007001000;HS10;80;Autres ouvrages en étain - Type 1;Tin - Type 1;;;10.0;;;;;
+8007002000;HS10;80;Autres ouvrages en étain - Type 2;Tin - Type 2;;;10.0;;;;;
+8007009000;HS10;80;Autres ouvrages en étain - Autre;Tin - Other;;;10.0;;;;;

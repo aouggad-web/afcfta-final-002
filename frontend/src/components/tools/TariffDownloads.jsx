@@ -44,45 +44,75 @@ const REGION_ICONS = {
   igad: "🌅",
 };
 
+const CHAPTER_LABELS = {
+  fr: {
+    "01-10": "Animaux, Produits animaux",
+    "11-20": "Produits végétaux, Graisses",
+    "21-30": "Industries alimentaires, Boissons, Tabacs",
+    "31-40": "Produits chimiques, Plastiques",
+    "41-50": "Peaux, Cuirs, Bois, Textiles",
+    "51-60": "Matières textiles",
+    "61-70": "Vêtements, Chaussures, Verre",
+    "71-80": "Métaux précieux, Métaux communs",
+    "81-90": "Métaux, Machines, Véhicules",
+    "91-99": "Instruments, Armes, Divers",
+  },
+  en: {
+    "01-10": "Animals, Animal products",
+    "11-20": "Vegetable products, Fats",
+    "21-30": "Food industries, Beverages, Tobacco",
+    "31-40": "Chemical products, Plastics",
+    "41-50": "Hides, Leather, Wood, Textiles",
+    "51-60": "Textile materials",
+    "61-70": "Clothing, Footwear, Glass",
+    "71-80": "Precious metals, Base metals",
+    "81-90": "Metals, Machinery, Vehicles",
+    "91-99": "Instruments, Arms, Miscellaneous",
+  },
+};
+
 export default function TariffDownloads({ language = 'fr' }) {
   const [downloadData, setDownloadData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState({});
   const [selectedRegion, setSelectedRegion] = useState(null);
+  const [expandedCountry, setExpandedCountry] = useState(null);
 
   const t = language === 'fr' ? {
     title: "Téléchargement des Tarifs NPF (Droit Commun)",
-    subtitle: "54 pays - Droits et taxes NPF - Format CSV compatible Excel",
+    subtitle: "54 pays - Droits et taxes NPF avec sous-positions nationales",
     loading: "Chargement...",
     allRegions: "Toutes les régions",
     download: "Télécharger",
     downloading: "...",
-    size: "Taille",
-    lines: "lignes HS6",
-    columns: "Colonnes",
-    columnsDetail: "Code HS6, DD%, TVA%, Autres taxes, Taxes détaillées, Formalités administratives",
+    chapters: "Chapitres",
+    files: "fichiers",
+    total: "Total",
     separator: "Séparateur: point-virgule (;)",
     encoding: "Encodage: UTF-8 (compatible Excel)",
-    totalCountries: "pays disponibles",
-    downloadAll: "Tout télécharger",
+    format: "HS6 + sous-positions nationales (HS8/HS10/HS12)",
+    columnsDetail: "Code, Niveau, DD%, TVA%, Autres taxes, Taxes détaillées, Formalités",
     error: "Erreur de chargement",
+    clickToExpand: "Cliquez pour voir les fichiers par chapitres",
   } : {
     title: "MFN Tariff Data Download (Common Law)",
-    subtitle: "54 countries - MFN duties and taxes - CSV format compatible with Excel",
+    subtitle: "54 countries - MFN duties and taxes with national sub-positions",
     loading: "Loading...",
     allRegions: "All regions",
     download: "Download",
     downloading: "...",
-    size: "Size",
-    lines: "HS6 lines",
-    columns: "Columns",
-    columnsDetail: "HS6 Code, DD%, VAT%, Other taxes, Tax details, Administrative formalities",
+    chapters: "Chapters",
+    files: "files",
+    total: "Total",
     separator: "Separator: semicolon (;)",
     encoding: "Encoding: UTF-8 (Excel compatible)",
-    totalCountries: "countries available",
-    downloadAll: "Download all",
+    format: "HS6 + national sub-positions (HS8/HS10/HS12)",
+    columnsDetail: "Code, Level, DD%, VAT%, Other taxes, Tax details, Formalities",
     error: "Loading error",
+    clickToExpand: "Click to see files by chapters",
   };
+
+  const chapterLabels = CHAPTER_LABELS[language] || CHAPTER_LABELS.fr;
 
   useEffect(() => {
     fetchDownloadList();
@@ -99,16 +129,16 @@ export default function TariffDownloads({ language = 'fr' }) {
     }
   };
 
-  const handleDownload = async (countryCode, countryName) => {
-    setDownloading(prev => ({ ...prev, [countryCode]: true }));
+  const handleDownload = async (downloadUrl, filename, key) => {
+    setDownloading(prev => ({ ...prev, [key]: true }));
     try {
-      const res = await axios.get(`${API}/tariff-data/download/${countryCode}`, {
+      const res = await axios.get(`${API}${downloadUrl}`, {
         responseType: 'blob',
       });
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `Tarifs_NPF_${countryName}_${countryCode}.csv`);
+      link.setAttribute('download', filename);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -116,7 +146,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     } catch (err) {
       console.error('Download error:', err);
     } finally {
-      setDownloading(prev => ({ ...prev, [countryCode]: false }));
+      setDownloading(prev => ({ ...prev, [key]: false }));
     }
   };
 
@@ -163,12 +193,12 @@ export default function TariffDownloads({ language = 'fr' }) {
           </CardTitle>
           <p className="text-gray-600">{t.subtitle}</p>
           <div className="flex flex-wrap gap-2 mt-3">
-            <Badge variant="outline" className="text-sm">5 831 {t.lines}</Badge>
+            <Badge variant="outline" className="text-sm">{t.format}</Badge>
             <Badge variant="outline" className="text-sm">{t.separator}</Badge>
             <Badge variant="outline" className="text-sm">{t.encoding}</Badge>
           </div>
           <p className="text-sm text-gray-500 mt-2">
-            {t.columns}: {t.columnsDetail}
+            {t.columnsDetail}
           </p>
         </CardHeader>
       </Card>
@@ -195,23 +225,63 @@ export default function TariffDownloads({ language = 'fr' }) {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="space-y-2">
         {displayedCountries.map((country) => (
           <Card key={country.code} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-4 flex items-center justify-between">
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm truncate">{country.name}</p>
-                <p className="text-xs text-gray-500">{country.code} - {country.size_kb} KB</p>
-              </div>
-              <Button
-                size="sm"
-                variant="outline"
-                className="ml-2 shrink-0 hover:bg-green-50 hover:border-green-500 hover:text-green-700"
-                onClick={() => handleDownload(country.code, country.name)}
-                disabled={downloading[country.code]}
+            <CardContent className="p-0">
+              <button
+                className="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 rounded-lg transition-colors"
+                onClick={() => setExpandedCountry(expandedCountry === country.code ? null : country.code)}
               >
-                {downloading[country.code] ? t.downloading : "📥"}
-              </Button>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm">{country.name}</p>
+                  <p className="text-xs text-gray-500">
+                    {country.code} - {country.file_count} {t.files} - {t.total}: {country.total_size_kb} KB
+                  </p>
+                </div>
+                <span className="text-gray-400 text-lg ml-2">
+                  {expandedCountry === country.code ? "▲" : "▼"}
+                </span>
+              </button>
+
+              {expandedCountry === country.code && country.files && (
+                <div className="px-4 pb-4 border-t border-gray-100">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+                    {country.files.map((file) => {
+                      const dlKey = `${country.code}_${file.group}`;
+                      return (
+                        <div
+                          key={file.group}
+                          className="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-200"
+                        >
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium">{t.chapters} {file.group}</p>
+                            <p className="text-xs text-gray-500 truncate">
+                              {chapterLabels[file.group] || ""} - {file.size_kb} KB
+                            </p>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="ml-2 shrink-0 hover:bg-green-50 hover:border-green-500 hover:text-green-700"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDownload(
+                                file.download_url,
+                                `Tarifs_NPF_${country.name}_${country.code}_ch${file.group}.csv`,
+                                dlKey
+                              );
+                            }}
+                            disabled={downloading[dlKey]}
+                          >
+                            {downloading[dlKey] ? t.downloading : "📥"}
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         ))}
