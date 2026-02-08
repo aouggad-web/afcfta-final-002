@@ -206,35 +206,57 @@ CHAPTER_GROUPS = [
     ("51", "60"), ("61", "70"), ("71", "80"), ("81", "90"), ("91", "99"),
 ]
 
-CSV_HEADER = [
-    "Code", "Niveau", "Chapitre", "Description_FR", "Description_EN",
-    "Categorie", "Unite",
-    "DD_Taux_%", "TVA_%", "Autres_Taxes_%",
-    "Taxes_Detail", "Formalites_Administratives",
-    "Total_Import_Taxes_%",
-]
-
-
-def _write_csv_line(writer, line, level="HS6"):
-    td = line.get("taxes_detail", [])
-    taxes_str = " | ".join([f"{t['tax']}:{t['rate']}%" for t in td]) if td else ""
-    af = line.get("administrative_formalities", [])
-    af_str = " | ".join([f"{f_item['code']} {f_item['document_fr']}" for f_item in af]) if af else ""
-    writer.writerow([
-        line.get("hs6", "") if level == "HS6" else line.get("code", ""),
-        level,
-        line.get("chapter", ""),
-        line.get("description_fr", ""),
-        line.get("description_en", ""),
-        line.get("category", "") if level == "HS6" else "",
-        line.get("unit", "") if level == "HS6" else "",
-        line.get("dd_rate", 0) if level == "HS6" else line.get("dd", 0),
-        line.get("vat_rate", 0) if level == "HS6" else "",
-        line.get("other_taxes_rate", 0) if level == "HS6" else "",
-        taxes_str if level == "HS6" else "",
-        af_str if level == "HS6" else "",
-        line.get("total_import_taxes", 0) if level == "HS6" else "",
-    ])
+CHAPTER_DESCRIPTIONS_FR = {
+    "01": "Animaux vivants", "02": "Viandes et abats comestibles",
+    "03": "Poissons et crustacés", "04": "Lait, oeufs, miel",
+    "05": "Autres produits d'origine animale", "06": "Plantes vivantes et fleurs",
+    "07": "Légumes, plantes, racines", "08": "Fruits comestibles, agrumes",
+    "09": "Café, thé, épices", "10": "Céréales",
+    "11": "Produits de la minoterie", "12": "Graines et fruits oléagineux",
+    "13": "Gommes, résines", "14": "Matières à tresser",
+    "15": "Graisses et huiles", "16": "Préparations de viandes/poissons",
+    "17": "Sucres et sucreries", "18": "Cacao et préparations",
+    "19": "Préparations de céréales", "20": "Préparations de légumes/fruits",
+    "21": "Préparations alimentaires diverses", "22": "Boissons, liquides alcooliques",
+    "23": "Résidus des industries alimentaires", "24": "Tabacs",
+    "25": "Sel, soufre, terres, pierres", "26": "Minerais, scories, cendres",
+    "27": "Combustibles minéraux, huiles", "28": "Produits chimiques inorganiques",
+    "29": "Produits chimiques organiques", "30": "Produits pharmaceutiques",
+    "31": "Engrais", "32": "Extraits tannants, peintures",
+    "33": "Huiles essentielles, parfumerie", "34": "Savons, cires, bougies",
+    "35": "Matières albuminoïdes, colles", "36": "Poudres, explosifs, allumettes",
+    "37": "Produits photographiques", "38": "Produits chimiques divers",
+    "39": "Matières plastiques", "40": "Caoutchouc",
+    "41": "Peaux et cuirs", "42": "Ouvrages en cuir",
+    "43": "Pelleteries et fourrures", "44": "Bois et ouvrages en bois",
+    "45": "Liège", "46": "Ouvrages de sparterie/vannerie",
+    "47": "Pâtes de bois, papier recyclé", "48": "Papiers et cartons",
+    "49": "Produits de l'édition, presse", "50": "Soie",
+    "51": "Laine, poils fins", "52": "Coton",
+    "53": "Autres fibres textiles végétales", "54": "Filaments synthétiques",
+    "55": "Fibres synthétiques discontinues", "56": "Ouates, feutres, cordages",
+    "57": "Tapis et revêtements de sol", "58": "Tissus spéciaux, broderies",
+    "59": "Tissus imprégnés, enduits", "60": "Étoffes de bonneterie",
+    "61": "Vêtements en bonneterie", "62": "Vêtements (hors bonneterie)",
+    "63": "Autres articles textiles confectionnés", "64": "Chaussures, guêtres",
+    "65": "Coiffures", "66": "Parapluies, cannes",
+    "67": "Plumes, fleurs artificielles", "68": "Ouvrages en pierres, ciment",
+    "69": "Produits céramiques", "70": "Verre et ouvrages en verre",
+    "71": "Perles, pierres précieuses, métaux précieux",
+    "72": "Fonte, fer et acier", "73": "Ouvrages en fonte, fer, acier",
+    "74": "Cuivre", "75": "Nickel", "76": "Aluminium",
+    "78": "Plomb", "79": "Zinc", "80": "Étain",
+    "81": "Autres métaux communs", "82": "Outils, coutellerie",
+    "83": "Ouvrages divers en métaux communs",
+    "84": "Machines, appareils mécaniques", "85": "Machines, appareils électriques",
+    "86": "Véhicules ferroviaires", "87": "Voitures automobiles, tracteurs",
+    "88": "Navigation aérienne", "89": "Navigation maritime",
+    "90": "Instruments d'optique, médecine", "91": "Horlogerie",
+    "92": "Instruments de musique", "93": "Armes et munitions",
+    "94": "Meubles, literie, éclairage", "95": "Jouets, jeux, articles de sport",
+    "96": "Ouvrages divers", "97": "Objets d'art, antiquités",
+    "99": "Codes spéciaux",
+}
 
 
 def _generate_country_csvs(country_code: str):
@@ -257,16 +279,55 @@ def _generate_country_csvs(country_code: str):
         csv_name = f"{country_code}_NPF_ch{ch_start}-{ch_end}.csv"
         csv_path = os.path.join(EXPORTS_DIR, csv_name)
 
+        by_chapter = {}
+        for l in group_lines:
+            ch = l.get("chapter", "00")
+            if ch not in by_chapter:
+                by_chapter[ch] = []
+            by_chapter[ch].append(l)
+
         with open(csv_path, "w", newline="", encoding="utf-8-sig") as csvfile:
             writer = csv.writer(csvfile, delimiter=";")
-            writer.writerow(CSV_HEADER)
-            for line in group_lines:
-                _write_csv_line(writer, line, "HS6")
-                for sp in line.get("sub_positions", []):
-                    sp["chapter"] = line.get("chapter", "")
-                    digits = sp.get("digits", len(sp.get("code", "")))
-                    level = f"HS{digits}" if digits else "SPN"
-                    _write_csv_line(writer, sp, level)
+            writer.writerow([
+                "Code", "Niveau", "Description_FR", "Description_EN",
+                "DD_%", "TVA_%", "Autres_Taxes_%",
+                "Taxes_Detail", "Formalites",
+                "Total_%",
+            ])
+
+            for ch in sorted(by_chapter.keys()):
+                ch_desc = CHAPTER_DESCRIPTIONS_FR.get(ch, "")
+                writer.writerow([f"CHAPITRE {ch}", "---", ch_desc, "", "", "", "", "", "", ""])
+
+                prev_taxes = ""
+                prev_formalites = ""
+                for line in by_chapter[ch]:
+                    td = line.get("taxes_detail", [])
+                    taxes_str = " | ".join([f"{t['tax']}:{t['rate']}%" for t in td]) if td else ""
+                    af = line.get("administrative_formalities", [])
+                    af_str = " | ".join([f"{fi['code']} {fi['document_fr']}" for fi in af]) if af else ""
+
+                    show_taxes = taxes_str if taxes_str != prev_taxes else "="
+                    show_form = af_str if af_str != prev_formalites else "="
+                    prev_taxes = taxes_str
+                    prev_formalites = af_str
+
+                    writer.writerow([
+                        line.get("hs6", ""), "HS6",
+                        line.get("description_fr", ""), line.get("description_en", ""),
+                        line.get("dd_rate", 0), line.get("vat_rate", 0),
+                        line.get("other_taxes_rate", 0),
+                        show_taxes, show_form,
+                        line.get("total_import_taxes", 0),
+                    ])
+
+                    for sp in line.get("sub_positions", []):
+                        digits = sp.get("digits", len(sp.get("code", "")))
+                        writer.writerow([
+                            sp.get("code", ""), f"HS{digits}",
+                            sp.get("description_fr", ""), sp.get("description_en", ""),
+                            sp.get("dd", 0), "", "", "", "", "",
+                        ])
 
         generated.append({
             "group": f"{ch_start}-{ch_end}",
