@@ -355,7 +355,7 @@ async def list_downloads():
                 files.append({
                     "group": f"{ch_start}-{ch_end}",
                     "size_kb": size_kb,
-                    "download_url": f"/api/tariff-data/download/{cc}/{ch_start}-{ch_end}",
+                    "download_url": f"/tariff-data/download/{cc}/{ch_start}-{ch_end}",
                 })
                 total_size += size_kb
         countries.append({
