@@ -91,7 +91,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     separator: "Séparateur: point-virgule (;)",
     encoding: "Encodage: UTF-8 (compatible Excel)",
     format: "HS6 + sous-positions nationales (HS8/HS10/HS12)",
-    columnsDetail: "Code, Niveau, Description FR/EN, DAPS%, DD%, PRCT%, TCS%, TVA%, Formalités, Total%",
+    columnsDetail: "Code, Niveau, Description FR/EN, Taxes spécifiques au pays (DD, TVA, etc.), Formalités, Total%",
     error: "Erreur de chargement",
     clickToExpand: "Cliquez pour voir les fichiers par chapitres",
   } : {
@@ -107,7 +107,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     separator: "Separator: semicolon (;)",
     encoding: "Encoding: UTF-8 (Excel compatible)",
     format: "HS6 + national sub-positions (HS8/HS10/HS12)",
-    columnsDetail: "Code, Level, Description FR/EN, DAPS%, DD%, PRCT%, TCS%, VAT%, Formalities, Total%",
+    columnsDetail: "Code, Level, Description FR/EN, Country-specific taxes (DD, VAT, etc.), Formalities, Total%",
     error: "Loading error",
     clickToExpand: "Click to see files by chapters",
   };

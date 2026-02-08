@@ -263,6 +263,18 @@ CHAPTER_DESCRIPTIONS_FR = {
 }
 
 
+def _discover_country_taxes(lines):
+    tax_names = []
+    seen = set()
+    for l in lines:
+        for td in l.get("taxes_detail", []):
+            t = td.get("tax", "")
+            if t and t not in seen:
+                seen.add(t)
+                tax_names.append(t)
+    return tax_names
+
+
 def _generate_country_csvs(country_code: str):
     json_path = os.path.join(TARIFFS_DIR, f"{country_code}_tariffs.json")
     if not os.path.exists(json_path):
@@ -273,6 +285,19 @@ def _generate_country_csvs(country_code: str):
 
     lines = data.get("tariff_lines", [])
     os.makedirs(EXPORTS_DIR, exist_ok=True)
+
+    tax_columns = _discover_country_taxes(lines)
+    if not tax_columns:
+        tax_columns = ["D.D", "T.V.A"]
+
+    num_tax_cols = len(tax_columns)
+    empty_taxes = [""] * num_tax_cols
+    header_base = ["Code", "Niveau", "Description_FR", "Description_EN", "Groupe_Utilisation"]
+    header_taxes = [f"{t}_%" for t in tax_columns]
+    header_end = ["Formalites", "Total_%"]
+    header = header_base + header_taxes + header_end
+    num_empty_end = len(header_end)
+    empty_row_suffix = [""] * (num_tax_cols + num_empty_end)
 
     generated = []
     for ch_start, ch_end in CHAPTER_GROUPS:
@@ -292,12 +317,7 @@ def _generate_country_csvs(country_code: str):
 
         with open(csv_path, "w", newline="", encoding="utf-8-sig") as csvfile:
             writer = csv.writer(csvfile, delimiter=";")
-            writer.writerow([
-                "Code", "Niveau", "Description_FR", "Description_EN",
-                "Groupe_Utilisation",
-                "DAPS_%", "DD_%", "PRCT_%", "TCS_%", "TVA_%",
-                "Formalites", "Total_%",
-            ])
+            writer.writerow(header)
 
             emitted_sections = set()
             for ch in sorted(by_chapter.keys()):
@@ -306,15 +326,13 @@ def _generate_country_csvs(country_code: str):
                 if sec_num and sec_num not in emitted_sections:
                     emitted_sections.add(sec_num)
                     writer.writerow([
-                        f"SECTION {sec_num}", "SECTION", sec["fr"], sec["en"],
-                        "", "", "", "", "", "", "", "",
-                    ])
+                        f"SECTION {sec_num}", "SECTION", sec["fr"], sec["en"], ""
+                    ] + empty_row_suffix)
 
                 ch_desc = CHAPTER_DESCRIPTIONS_FR.get(ch, "")
                 writer.writerow([
-                    f"CHAPITRE {ch}", "CHAPITRE", ch_desc, "",
-                    "", "", "", "", "", "", "", "",
-                ])
+                    f"CHAPITRE {ch}", "CHAPITRE", ch_desc, "", ""
+                ] + empty_row_suffix)
 
                 emitted_hs4 = set()
                 prev_formalites = ""
@@ -329,41 +347,40 @@ def _generate_country_csvs(country_code: str):
                         rangee_num = get_rangee_number(hs4)
                         writer.writerow([
                             hs4, f"RANGEE {rangee_num}",
-                            h4.get("en", ""), "",
-                            "", "", "", "", "", "", "", "",
-                        ])
+                            h4.get("en", ""), "", ""
+                        ] + empty_row_suffix)
 
                     writer.writerow([
                         hs6, "HS6",
-                        line.get("description_fr", ""), line.get("description_en", ""),
-                        "", "", "", "", "", "", "", "",
-                    ])
+                        line.get("description_fr", ""), line.get("description_en", ""), ""
+                    ] + empty_row_suffix)
 
                     parent_td = line.get("taxes_detail", [])
                     td_map = {}
                     for t in parent_td:
-                        td_map[t["tax"]] = t["rate"]
+                        td_map[t.get("tax", "")] = t.get("rate", 0)
 
                     parent_af = line.get("administrative_formalities", [])
                     parent_af_str = " | ".join([f"{fi['code']} {fi['document_fr']}" for fi in parent_af]) if parent_af else ""
 
                     util_group = get_utilization_group(ch)
 
-                    sp_daps = td_map.get("D.A.P.S", "")
-                    sp_prct = td_map.get("PRCT", "")
-                    sp_tcs = td_map.get("T.C.S", "")
-
                     subs = line.get("sub_positions", [])
                     if subs:
                         for sp in subs:
                             digits = sp.get("digits", len(sp.get("code", "")))
                             sp_dd = sp.get("dd", 0)
-                            sp_vat = line.get("vat_rate", 0)
 
-                            sp_total = sp_dd + sp_vat
-                            if sp_daps: sp_total += sp_daps
-                            if sp_prct: sp_total += sp_prct
-                            if sp_tcs: sp_total += sp_tcs
+                            sp_td_map = dict(td_map)
+                            sp_td_map["D.D"] = sp_dd
+
+                            tax_values = []
+                            sp_total = 0
+                            for tc in tax_columns:
+                                val = sp_td_map.get(tc, "")
+                                tax_values.append(val)
+                                if isinstance(val, (int, float)):
+                                    sp_total += val
 
                             show_form = parent_af_str if parent_af_str != prev_formalites else "="
                             prev_formalites = parent_af_str
@@ -372,17 +389,19 @@ def _generate_country_csvs(country_code: str):
                                 sp.get("code", ""), f"HS{digits}",
                                 sp.get("description_fr", ""), sp.get("description_en", ""),
                                 util_group,
-                                sp_daps, sp_dd, sp_prct, sp_tcs, sp_vat,
-                                show_form, round(sp_total, 2),
-                            ])
+                            ] + tax_values + [show_form, round(sp_total, 2)])
                     else:
                         dd_r = line.get("dd_rate", 0)
-                        vat_r = line.get("vat_rate", 0)
+                        direct_td_map = dict(td_map)
+                        direct_td_map["D.D"] = dd_r
 
-                        total_r = dd_r + vat_r
-                        if sp_daps: total_r += sp_daps
-                        if sp_prct: total_r += sp_prct
-                        if sp_tcs: total_r += sp_tcs
+                        tax_values = []
+                        total_r = 0
+                        for tc in tax_columns:
+                            val = direct_td_map.get(tc, "")
+                            tax_values.append(val)
+                            if isinstance(val, (int, float)):
+                                total_r += val
 
                         show_form = parent_af_str if parent_af_str != prev_formalites else "="
                         prev_formalites = parent_af_str
@@ -391,9 +410,7 @@ def _generate_country_csvs(country_code: str):
                             hs6, "HS6-DIRECT",
                             line.get("description_fr", ""), line.get("description_en", ""),
                             util_group,
-                            sp_daps, dd_r, sp_prct, sp_tcs, vat_r,
-                            show_form, round(total_r, 2),
-                        ])
+                        ] + tax_values + [show_form, round(total_r, 2)])
 
         generated.append({
             "group": f"{ch_start}-{ch_end}",
