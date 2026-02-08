@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import MonitoringDashboard from './MonitoringDashboard';
+import TariffDownloads from './TariffDownloads';
 
 export default function ToolsTab({ language = 'fr' }) {
   const texts = {
@@ -113,6 +114,8 @@ export default function ToolsTab({ language = 'fr' }) {
           </CardDescription>
         </CardHeader>
       </Card>
+
+      <TariffDownloads language={language} />
 
       {/* Widgets des outils */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
