@@ -88,6 +88,7 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 The `start.sh` script launches both backend (uvicorn) and frontend (craco) concurrently.
 
 ## Recent Changes
+- 2026-02-08: CSV export restructured to match douane.gov.dz hierarchy: Section (21) → Chapitre (97) → Rangée (HS4, 1229 headings from WCO 2022) → HS6 → Sub-positions. 12-column format with separate DAPS/DD/PRCT/TCS/TVA columns, utilization groups per chapter, corrected total calculation
 - 2026-02-07: Enhanced tariff data format v2 - individual tax components (DAPS, DD, PRCT, TCS, TVA), fiscal advantages (ZLECAf exemptions), administrative formalities per product
 - 2026-02-07: Created Algeria-specific tax module with verified rates: DAPS 30-200%, DD overrides per product, PRCT 2%, TCS 3%, TVA 19%/9%
 - 2026-02-07: Calculator now returns taxes_detail[], fiscal_advantages[], administrative_formalities[] in response
