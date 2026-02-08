@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Query
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from typing import Optional, List
 from pydantic import BaseModel
 import logging
@@ -7,6 +7,7 @@ import os
 import csv
 import json
 import io
+import zipfile
 
 from services.tariff_data_collector import get_collector
 from etl.hs_sections_headings import (
@@ -488,5 +489,59 @@ async def download_country_csv(country_code: str, chapter_group: str):
         csv_path,
         media_type="text/csv",
         filename=filename,
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@router.get("/download-zip/{country_code}")
+async def download_country_zip(country_code: str):
+    cc = country_code.upper()
+    first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
+    if not os.path.exists(first_csv):
+        results = _generate_country_csvs(cc)
+        if not results:
+            raise HTTPException(status_code=404, detail=f"No tariff data for {cc}")
+
+    name = COUNTRY_NAMES.get(cc, cc)
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for ch_start, ch_end in CHAPTER_GROUPS:
+            csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{ch_start}-{ch_end}.csv")
+            if os.path.exists(csv_path):
+                arcname = f"Tarifs_NPF_{name}_{cc}/ch{ch_start}-{ch_end}.csv"
+                zf.write(csv_path, arcname)
+    buf.seek(0)
+    filename = f"Tarifs_NPF_{name}_{cc}.zip"
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@router.get("/download-zip/region/{region_key}")
+async def download_region_zip(region_key: str):
+    region = REGIONS.get(region_key)
+    if not region:
+        raise HTTPException(status_code=404, detail=f"Unknown region: {region_key}")
+
+    region_name = region["name"].replace(" / ", "_").replace(" ", "_")
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for cc in region["countries"]:
+            first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
+            if not os.path.exists(first_csv):
+                _generate_country_csvs(cc)
+            name = COUNTRY_NAMES.get(cc, cc)
+            for ch_start, ch_end in CHAPTER_GROUPS:
+                csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{ch_start}-{ch_end}.csv")
+                if os.path.exists(csv_path):
+                    arcname = f"{region_name}/{name}_{cc}/ch{ch_start}-{ch_end}.csv"
+                    zf.write(csv_path, arcname)
+    buf.seek(0)
+    filename = f"Tarifs_NPF_{region_name}.zip"
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
