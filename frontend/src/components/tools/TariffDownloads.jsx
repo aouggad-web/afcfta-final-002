@@ -51,8 +51,8 @@ export default function TariffDownloads({ language = 'fr' }) {
   const [selectedRegion, setSelectedRegion] = useState(null);
 
   const t = language === 'fr' ? {
-    title: "Téléchargement des Données Tarifaires",
-    subtitle: "54 pays - Format CSV compatible Excel",
+    title: "Téléchargement des Tarifs NPF (Droit Commun)",
+    subtitle: "54 pays - Droits et taxes NPF - Format CSV compatible Excel",
     loading: "Chargement...",
     allRegions: "Toutes les régions",
     download: "Télécharger",
@@ -60,15 +60,15 @@ export default function TariffDownloads({ language = 'fr' }) {
     size: "Taille",
     lines: "lignes HS6",
     columns: "Colonnes",
-    columnsDetail: "Code HS6, DD%, TVA%, Taxes détaillées, Avantages fiscaux, Formalités",
+    columnsDetail: "Code HS6, DD%, TVA%, Autres taxes, Taxes détaillées, Formalités administratives",
     separator: "Séparateur: point-virgule (;)",
     encoding: "Encodage: UTF-8 (compatible Excel)",
     totalCountries: "pays disponibles",
     downloadAll: "Tout télécharger",
     error: "Erreur de chargement",
   } : {
-    title: "Tariff Data Download",
-    subtitle: "54 countries - CSV format compatible with Excel",
+    title: "MFN Tariff Data Download (Common Law)",
+    subtitle: "54 countries - MFN duties and taxes - CSV format compatible with Excel",
     loading: "Loading...",
     allRegions: "All regions",
     download: "Download",
@@ -76,7 +76,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     size: "Size",
     lines: "HS6 lines",
     columns: "Columns",
-    columnsDetail: "HS6 Code, DD%, VAT%, Tax details, Fiscal advantages, Formalities",
+    columnsDetail: "HS6 Code, DD%, VAT%, Other taxes, Tax details, Administrative formalities",
     separator: "Separator: semicolon (;)",
     encoding: "Encoding: UTF-8 (Excel compatible)",
     totalCountries: "countries available",
@@ -108,7 +108,7 @@ export default function TariffDownloads({ language = 'fr' }) {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `Tarifs_${countryName}_${countryCode}.csv`);
+      link.setAttribute('download', `Tarifs_NPF_${countryName}_${countryCode}.csv`);
       document.body.appendChild(link);
       link.click();
       link.remove();

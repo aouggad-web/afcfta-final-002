@@ -211,38 +211,31 @@ def _generate_csv(country_code: str) -> str:
 
     lines = data.get("tariff_lines", [])
     os.makedirs(EXPORTS_DIR, exist_ok=True)
-    csv_path = os.path.join(EXPORTS_DIR, f"{country_code}_tarifs.csv")
+    csv_path = os.path.join(EXPORTS_DIR, f"{country_code}_tarifs_NPF.csv")
 
     with open(csv_path, "w", newline="", encoding="utf-8-sig") as csvfile:
         writer = csv.writer(csvfile, delimiter=";")
         writer.writerow([
             "Code_HS6", "Chapitre", "Description_FR", "Description_EN",
-            "Categorie", "Unite", "Sensibilite",
-            "DD_Taux_%", "DD_Source", "ZLECAf_Taux_%", "ZLECAf_Source",
-            "TVA_%", "Autres_Taxes_%", "Total_Taxes_%",
-            "Taxes_Detail", "Avantages_Fiscaux", "Formalites_Administratives",
-            "Total_Import_Taxes_%", "ZLECAf_Total_Taxes_%",
+            "Categorie", "Unite",
+            "DD_Taux_%", "TVA_%", "Autres_Taxes_%",
+            "Taxes_Detail", "Formalites_Administratives",
+            "Total_Import_Taxes_%",
             "Nb_Sous_Positions"
         ])
         for line in lines:
             td = line.get("taxes_detail", [])
             taxes_str = " | ".join([f"{t['tax']}:{t['rate']}%" for t in td]) if td else ""
-            fa = line.get("fiscal_advantages", [])
-            fa_str = " | ".join([f"{a['tax']}:{a['rate']}% {a.get('condition_fr','')}" for a in fa]) if fa else ""
             af = line.get("administrative_formalities", [])
             af_str = " | ".join([f"{f_item['code']} {f_item['document_fr']}" for f_item in af]) if af else ""
             writer.writerow([
                 line.get("hs6", ""), line.get("chapter", ""),
                 line.get("description_fr", ""), line.get("description_en", ""),
                 line.get("category", ""), line.get("unit", ""),
-                line.get("sensitivity", ""),
-                line.get("dd_rate", 0), line.get("dd_source", ""),
-                line.get("zlecaf_rate", 0), line.get("zlecaf_source", ""),
-                line.get("vat_rate", 0), line.get("other_taxes_rate", 0),
-                line.get("total_taxes_pct", 0),
-                taxes_str, fa_str, af_str,
+                line.get("dd_rate", 0), line.get("vat_rate", 0),
+                line.get("other_taxes_rate", 0),
+                taxes_str, af_str,
                 line.get("total_import_taxes", 0),
-                line.get("zlecaf_total_taxes", 0),
                 line.get("sub_position_count", 0),
             ])
     return csv_path
@@ -254,7 +247,7 @@ async def list_downloads():
     available = sorted(collector.get_available_countries())
     countries = []
     for cc in available:
-        csv_path = os.path.join(EXPORTS_DIR, f"{cc}_tarifs.csv")
+        csv_path = os.path.join(EXPORTS_DIR, f"{cc}_tarifs_NPF.csv")
         exists = os.path.exists(csv_path)
         size_kb = round(os.path.getsize(csv_path) / 1024) if exists else 0
         countries.append({
@@ -274,7 +267,7 @@ async def list_downloads():
 @router.get("/download/{country_code}")
 async def download_country_csv(country_code: str):
     cc = country_code.upper()
-    csv_path = os.path.join(EXPORTS_DIR, f"{cc}_tarifs.csv")
+    csv_path = os.path.join(EXPORTS_DIR, f"{cc}_tarifs_NPF.csv")
 
     if not os.path.exists(csv_path):
         csv_path = _generate_csv(cc)
@@ -285,6 +278,6 @@ async def download_country_csv(country_code: str):
     return FileResponse(
         csv_path,
         media_type="text/csv",
-        filename=f"Tarifs_{name}_{cc}.csv",
-        headers={"Content-Disposition": f'attachment; filename="Tarifs_{name}_{cc}.csv"'},
+        filename=f"Tarifs_NPF_{name}_{cc}.csv",
+        headers={"Content-Disposition": f'attachment; filename="Tarifs_NPF_{name}_{cc}.csv"'},
     )
