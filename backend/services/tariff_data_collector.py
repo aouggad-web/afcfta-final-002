@@ -55,10 +55,11 @@ class TariffDataCollector:
         self._get_product_category = get_product_category
 
         try:
-            from etl.country_taxes_algeria import get_dza_taxes_for_hs6
+            from etl.country_taxes_algeria import get_dza_taxes_for_hs6, get_dza_sub_position_dd
             self._country_tax_modules["DZA"] = get_dza_taxes_for_hs6
+            self._country_sp_dd_modules = {"DZA": get_dza_sub_position_dd}
         except ImportError:
-            pass
+            self._country_sp_dd_modules = {}
 
         self._loaded = True
 
@@ -102,10 +103,18 @@ class TariffDataCollector:
         }
 
     def _generate_sub_positions(self, hs6_code: str, hs6_info: dict, dd_rate: float, country_code: str, detailed: dict) -> List[dict]:
+        sp_dd_func = self._country_sp_dd_modules.get(country_code)
+
         if detailed and "sub_positions" in detailed:
             subs = []
             for sp_code, sp_data in detailed["sub_positions"].items():
-                sp_dd = sp_data.get("dd", dd_rate)
+                sp_dd = sp_data.get("dd")
+                if sp_dd is None and sp_dd_func:
+                    suffix = sp_code[6:] if len(sp_code) > 6 else ""
+                    sp_type = hs6_info.get("typical_sub_position_types", [""])[0]
+                    sp_dd = sp_dd_func(hs6_code, sp_type, suffix, dd_rate)
+                elif sp_dd is None:
+                    sp_dd = dd_rate
                 if isinstance(sp_dd, float) and sp_dd < 1:
                     sp_dd = round(sp_dd * 100, 2)
                 subs.append({
@@ -122,6 +131,8 @@ class TariffDataCollector:
         if not sp_types or not hs6_info.get("has_sub_positions", False):
             return []
 
+        sp_dd_func = self._country_sp_dd_modules.get(country_code)
+
         subs = []
         for sp_type in sp_types:
             type_def = self._sub_position_types.get(sp_type)
@@ -134,10 +145,14 @@ class TariffDataCollector:
                 desc_en = hs6_info.get("description_en", "")
                 opt_fr = opt.get("fr", "")
                 opt_en = opt.get("en", "")
+                if sp_dd_func:
+                    sp_dd = sp_dd_func(hs6_code, sp_type, suffix, dd_rate)
+                else:
+                    sp_dd = dd_rate
                 subs.append({
                     "code": full_code,
                     "digits": len(full_code),
-                    "dd": dd_rate,
+                    "dd": sp_dd,
                     "description_fr": f"{desc_fr} - {opt_fr}" if opt_fr else desc_fr,
                     "description_en": f"{desc_en} - {opt_en}" if opt_en else desc_en,
                     "source": f"Nomenclature nationale {country_code} (type: {sp_type})",
