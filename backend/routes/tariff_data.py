@@ -9,6 +9,10 @@ import json
 import io
 
 from services.tariff_data_collector import get_collector
+from etl.hs_sections_headings import (
+    get_section_for_chapter, get_hs4_heading,
+    get_utilization_group, get_rangee_number,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -290,28 +294,64 @@ def _generate_country_csvs(country_code: str):
             writer = csv.writer(csvfile, delimiter=";")
             writer.writerow([
                 "Code", "Niveau", "Description_FR", "Description_EN",
-                "DD_%", "TVA_%", "Autres_Taxes_%",
-                "Taxes_Detail", "Formalites",
-                "Total_%",
+                "Groupe_Utilisation",
+                "DAPS_%", "DD_%", "PRCT_%", "TCS_%", "TVA_%",
+                "Formalites", "Total_%",
             ])
 
+            emitted_sections = set()
             for ch in sorted(by_chapter.keys()):
-                ch_desc = CHAPTER_DESCRIPTIONS_FR.get(ch, "")
-                writer.writerow([f"CHAPITRE {ch}", "---", ch_desc, "", "", "", "", "", "", ""])
-
-                prev_taxes = ""
-                prev_formalites = ""
-                for line in by_chapter[ch]:
+                sec = get_section_for_chapter(ch)
+                sec_num = sec.get("number", "")
+                if sec_num and sec_num not in emitted_sections:
+                    emitted_sections.add(sec_num)
                     writer.writerow([
-                        line.get("hs6", ""), "HS6",
+                        f"SECTION {sec_num}", "SECTION", sec["fr"], sec["en"],
+                        "", "", "", "", "", "", "", "",
+                    ])
+
+                ch_desc = CHAPTER_DESCRIPTIONS_FR.get(ch, "")
+                writer.writerow([
+                    f"CHAPITRE {ch}", "CHAPITRE", ch_desc, "",
+                    "", "", "", "", "", "", "", "",
+                ])
+
+                emitted_hs4 = set()
+                prev_formalites = ""
+
+                for line in by_chapter[ch]:
+                    hs6 = line.get("hs6", "")
+                    hs4 = hs6[:4] if len(hs6) >= 4 else ""
+
+                    if hs4 and hs4 not in emitted_hs4:
+                        emitted_hs4.add(hs4)
+                        h4 = get_hs4_heading(hs6)
+                        rangee_num = get_rangee_number(hs4)
+                        writer.writerow([
+                            hs4, f"RANGEE {rangee_num}",
+                            h4.get("en", ""), "",
+                            "", "", "", "", "", "", "", "",
+                        ])
+
+                    writer.writerow([
+                        hs6, "HS6",
                         line.get("description_fr", ""), line.get("description_en", ""),
-                        "", "", "", "", "", "",
+                        "", "", "", "", "", "", "", "",
                     ])
 
                     parent_td = line.get("taxes_detail", [])
-                    parent_taxes_str = " | ".join([f"{t['tax']}:{t['rate']}%" for t in parent_td]) if parent_td else ""
+                    td_map = {}
+                    for t in parent_td:
+                        td_map[t["tax"]] = t["rate"]
+
                     parent_af = line.get("administrative_formalities", [])
                     parent_af_str = " | ".join([f"{fi['code']} {fi['document_fr']}" for fi in parent_af]) if parent_af else ""
+
+                    util_group = get_utilization_group(ch)
+
+                    sp_daps = td_map.get("D.A.P.S", "")
+                    sp_prct = td_map.get("PRCT", "")
+                    sp_tcs = td_map.get("T.C.S", "")
 
                     subs = line.get("sub_positions", [])
                     if subs:
@@ -319,44 +359,40 @@ def _generate_country_csvs(country_code: str):
                             digits = sp.get("digits", len(sp.get("code", "")))
                             sp_dd = sp.get("dd", 0)
                             sp_vat = line.get("vat_rate", 0)
-                            sp_other = line.get("other_taxes_rate", 0)
 
-                            sp_taxes_parts = []
-                            for t in parent_td:
-                                if t["tax"] == "D.D":
-                                    sp_taxes_parts.append(f"D.D:{sp_dd}%")
-                                else:
-                                    sp_taxes_parts.append(f"{t['tax']}:{t['rate']}%")
-                            sp_taxes_str = " | ".join(sp_taxes_parts) if sp_taxes_parts else parent_taxes_str
-                            sp_total = sp_dd + sp_vat + sp_other
+                            sp_total = sp_dd + sp_vat
+                            if sp_daps: sp_total += sp_daps
+                            if sp_prct: sp_total += sp_prct
+                            if sp_tcs: sp_total += sp_tcs
 
-                            show_taxes = sp_taxes_str if sp_taxes_str != prev_taxes else "="
                             show_form = parent_af_str if parent_af_str != prev_formalites else "="
-                            prev_taxes = sp_taxes_str
                             prev_formalites = parent_af_str
 
                             writer.writerow([
                                 sp.get("code", ""), f"HS{digits}",
                                 sp.get("description_fr", ""), sp.get("description_en", ""),
-                                sp_dd, sp_vat, sp_other,
-                                show_taxes, show_form,
-                                sp_total,
+                                util_group,
+                                sp_daps, sp_dd, sp_prct, sp_tcs, sp_vat,
+                                show_form, round(sp_total, 2),
                             ])
                     else:
-                        td = parent_td
-                        taxes_str = parent_taxes_str
-                        af_str = parent_af_str
-                        show_taxes = taxes_str if taxes_str != prev_taxes else "="
-                        show_form = af_str if af_str != prev_formalites else "="
-                        prev_taxes = taxes_str
-                        prev_formalites = af_str
+                        dd_r = line.get("dd_rate", 0)
+                        vat_r = line.get("vat_rate", 0)
+
+                        total_r = dd_r + vat_r
+                        if sp_daps: total_r += sp_daps
+                        if sp_prct: total_r += sp_prct
+                        if sp_tcs: total_r += sp_tcs
+
+                        show_form = parent_af_str if parent_af_str != prev_formalites else "="
+                        prev_formalites = parent_af_str
+
                         writer.writerow([
-                            "", "HS6-DIRECT",
-                            "", "",
-                            line.get("dd_rate", 0), line.get("vat_rate", 0),
-                            line.get("other_taxes_rate", 0),
-                            show_taxes, show_form,
-                            line.get("total_import_taxes", 0),
+                            hs6, "HS6-DIRECT",
+                            line.get("description_fr", ""), line.get("description_en", ""),
+                            util_group,
+                            sp_daps, dd_r, sp_prct, sp_tcs, vat_r,
+                            show_form, round(total_r, 2),
                         ])
 
         generated.append({
