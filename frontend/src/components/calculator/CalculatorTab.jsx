@@ -14,6 +14,7 @@ import { toast } from '../../hooks/use-toast';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
 import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info } from 'lucide-react';
+import TariffDownloads from '../tools/TariffDownloads';
 import './calculator.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
