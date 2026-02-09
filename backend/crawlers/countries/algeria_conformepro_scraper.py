@@ -328,12 +328,40 @@ class AlgeriaConformeproScraper:
 
         return result
 
-    async def scrape_all_sub_positions(self, start_heading_idx: int = 0, max_headings: int = None):
+    def _load_last_progress(self):
+        import glob as globmod
+        progress_files = sorted(
+            globmod.glob(os.path.join(DATA_DIR, "DZA_progress_*.json")),
+            key=lambda p: int(os.path.basename(p).replace("DZA_progress_", "").replace(".json", ""))
+        )
+        if progress_files:
+            last_file = progress_files[-1]
+            try:
+                with open(last_file, "r", encoding="utf-8") as f:
+                    prev = json.load(f)
+                data = prev.get("data", [])
+                heading_idx = int(os.path.basename(last_file).replace("DZA_progress_", "").replace(".json", ""))
+                logger.info(f"Resume: loaded {len(data)} sub-positions from {os.path.basename(last_file)}, resuming from heading {heading_idx}")
+                return data, heading_idx
+            except Exception as e:
+                logger.warning(f"Could not load progress: {e}")
+        return [], 0
+
+    async def scrape_all_sub_positions(self, start_heading_idx: int = 0, max_headings: int = None, resume: bool = True):
         logger.info(f"Scraping sub-positions from {len(self.headings)} headings...")
         all_subs = []
-        end_idx = len(self.headings) if max_headings is None else min(start_heading_idx + max_headings, len(self.headings))
+        actual_start = start_heading_idx
 
-        for i in range(start_heading_idx, end_idx):
+        if resume and start_heading_idx == 0:
+            prev_data, prev_idx = self._load_last_progress()
+            if prev_data:
+                all_subs = prev_data
+                actual_start = prev_idx
+                logger.info(f"Resuming from heading {actual_start} with {len(all_subs)} sub-positions already collected")
+
+        end_idx = len(self.headings) if max_headings is None else min(actual_start + max_headings, len(self.headings))
+
+        for i in range(actual_start, end_idx):
             heading = self.headings[i]
             logger.info(f"  Heading {heading['code']} ({i+1}/{len(self.headings)})")
 
