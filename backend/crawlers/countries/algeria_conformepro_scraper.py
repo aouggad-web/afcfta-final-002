@@ -304,6 +304,28 @@ class AlgeriaConformeproScraper:
                     if text and "copies licence invalides" not in text.lower():
                         result["advantages"].append(text)
 
+        formalities_h2 = soup.find("h2", string=re.compile(r"[Ff]ormalit", re.I))
+        if formalities_h2:
+            ul = formalities_h2.find_next("ul")
+            if ul:
+                for li in ul.find_all("li"):
+                    text = li.get_text(strip=True)
+                    if text:
+                        result["formalities"].append(text)
+            else:
+                texts = []
+                for sib in formalities_h2.next_siblings:
+                    if sib.name == "h2":
+                        break
+                    if hasattr(sib, "get_text"):
+                        t = sib.get_text(strip=True)
+                        if t:
+                            for part in re.split(r"(?<=[a-zé\)])(?=[A-Z])", t):
+                                part = part.strip()
+                                if part:
+                                    texts.append(part)
+                result["formalities"] = texts
+
         return result
 
     async def scrape_all_sub_positions(self, start_heading_idx: int = 0, max_headings: int = None):
