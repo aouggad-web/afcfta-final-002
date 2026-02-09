@@ -452,7 +452,25 @@ async def start_crawl(country_code: str):
                 all_results = []
                 data_dir = Path(__file__).parent / "data" / "crawled"
                 chapters = [f"{i:02d}" for i in range(1, 98) if i != 77]
+                resume_from = 0
+                progress_files = sorted(data_dir.glob("TUN_progress_*.json"), key=lambda p: int(p.stem.split("_")[-1]))
+                if progress_files:
+                    last_progress = progress_files[-1]
+                    try:
+                        with open(last_progress, "r", encoding="utf-8") as f:
+                            prev = json.load(f)
+                        all_results = prev.get("sub_positions", [])
+                        resume_from = prev.get("chapters_done", 0)
+                        crawl_jobs[country_code]["progress"] = f"Reprise au chapitre {resume_from+1}/{len(chapters)} ({len(all_results)} positions récupérées)"
+                        crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                        logging.info(f"TUN: Resuming from chapter {resume_from} with {len(all_results)} positions")
+                    except Exception as e:
+                        logging.warning(f"TUN: Could not load progress: {e}")
+                        resume_from = 0
+                        all_results = []
                 for ch_idx, ch in enumerate(chapters):
+                    if ch_idx < resume_from:
+                        continue
                     crawl_jobs[country_code]["progress"] = f"Chapitre {ch} ({ch_idx+1}/{len(chapters)})..."
                     results = await scraper.scrape_chapter(ch)
                     all_results.extend(results)
@@ -477,7 +495,25 @@ async def start_crawl(country_code: str):
                 chapters = [f"{i:02d}" for i in range(1, 98) if i != 77]
                 all_results = []
                 data_dir = Path(__file__).parent / "data" / "crawled"
+                resume_from = 0
+                progress_files = sorted(data_dir.glob("MAR_progress_*.json"), key=lambda p: int(p.stem.split("_")[-1]))
+                if progress_files:
+                    last_progress = progress_files[-1]
+                    try:
+                        with open(last_progress, "r", encoding="utf-8") as f:
+                            prev = json.load(f)
+                        all_results = prev.get("sub_positions", [])
+                        resume_from = prev.get("chapters_done", 0)
+                        crawl_jobs[country_code]["progress"] = f"Reprise au chapitre {resume_from+1}/{len(chapters)} ({len(all_results)} positions récupérées)"
+                        crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                        logging.info(f"MAR: Resuming from chapter {resume_from} with {len(all_results)} positions")
+                    except Exception as e:
+                        logging.warning(f"MAR: Could not load progress: {e}")
+                        resume_from = 0
+                        all_results = []
                 for ch_idx, ch in enumerate(chapters):
+                    if ch_idx < resume_from:
+                        continue
                     crawl_jobs[country_code]["progress"] = f"Chapitre {ch} ({ch_idx+1}/{len(chapters)})..."
                     chapter_data = await scraper.scrape_chapter_with_taxes(ch)
                     all_results.extend(chapter_data)
