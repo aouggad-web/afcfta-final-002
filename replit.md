@@ -87,7 +87,22 @@ A comprehensive African Continental Free Trade Area (AfCFTA/ZLECAf) trade analys
 ## Running
 The `start.sh` script launches both backend (uvicorn) and frontend (craco) concurrently.
 
+## Web Crawling System
+- **Algeria scraper**: `backend/crawlers/countries/algeria_conformepro_scraper.py` - Extracts 15,947 national sub-positions (10-digit HS codes) from conformepro.dz
+  - 4-level hierarchy: Section (21) → Chapitre (97) → Rangée (HS4) → Sous-position (HS8/HS10)
+  - Extracts: DD, TVA, TCS, PRCT, DAPS rates + fiscal advantages + administrative formalities
+  - Rate limiting: 1.5s between requests
+  - Progressive save during crawl
+- **Crawl API routes**: 
+  - `POST /api/crawl/start/{country_code}` - Start crawl (async background task)
+  - `GET /api/crawl/status/{country_code}` - Check crawl progress
+  - `GET /api/crawl/data/{country_code}` - View crawled data (paginated, filterable)
+  - `GET /api/crawl/sources` - Available and planned crawlers
+- **Crawled data stored in**: `backend/data/crawled/` (JSON files per country)
+- **Planned crawlers**: Tunisia (tarifweb2025), Morocco (ADIL), Côte d'Ivoire (guce.gouv.ci), Cameroon, Senegal, South Africa, Kenya
+
 ## Recent Changes
+- 2026-02-09: Built Algeria web crawler for conformepro.dz - extracts real national sub-positions with exact designations, tax rates (DD, TVA, TCS, PRCT), fiscal advantages and formalities. Added crawl management API (start/status/data/sources endpoints)
 - 2026-02-08: CSV export restructured to match douane.gov.dz hierarchy: Section (21) → Chapitre (97) → Rangée (HS4, 1229 headings from WCO 2022) → HS6 → Sub-positions. 12-column format with separate DAPS/DD/PRCT/TCS/TVA columns, utilization groups per chapter, corrected total calculation
 - 2026-02-07: Enhanced tariff data format v2 - individual tax components (DAPS, DD, PRCT, TCS, TVA), fiscal advantages (ZLECAf exemptions), administrative formalities per product
 - 2026-02-07: Created Algeria-specific tax module with verified rates: DAPS 30-200%, DD overrides per product, PRCT 2%, TCS 3%, TVA 19%/9%

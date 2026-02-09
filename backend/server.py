@@ -156,6 +156,7 @@ try:
         "/api/health", "/api/",
         "/api/tariff-data/collect",
         "/api/crawl",
+        "/api/crawl/start",
     ])
     app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)
     logging.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
@@ -404,6 +405,160 @@ async def get_tariff_data_status():
         "total_positions": stats["total_positions"],
         "description": "Données tarifaires consolidées et vérifiées pour le calculateur" if stats["loaded"] else "Utilisation des modules ETL comme source de données"
     }
+
+crawl_jobs = {}
+
+@api_router.post("/crawl/start/{country_code}")
+async def start_crawl(country_code: str):
+    country_code = country_code.upper()
+    supported = {"DZA": "Algérie"}
+    if country_code not in supported:
+        raise HTTPException(status_code=400, detail=f"Crawl non supporté pour {country_code}. Pays supportés: {list(supported.keys())}")
+    
+    if country_code in crawl_jobs and crawl_jobs[country_code].get("status") == "running":
+        return {"status": "already_running", "job": crawl_jobs[country_code]}
+    
+    crawl_jobs[country_code] = {
+        "country": country_code,
+        "country_name": supported[country_code],
+        "status": "running",
+        "started_at": datetime.utcnow().isoformat(),
+        "progress": "Démarrage...",
+        "sub_positions_found": 0,
+    }
+    
+    async def run_crawl():
+        try:
+            if country_code == "DZA":
+                from crawlers.countries.algeria_conformepro_scraper import AlgeriaConformeproScraper
+                scraper = AlgeriaConformeproScraper()
+                crawl_jobs[country_code]["progress"] = "Extraction des sections..."
+                await scraper.scrape_sections()
+                crawl_jobs[country_code]["progress"] = f"{len(scraper.sections)} sections trouvées. Extraction des chapitres..."
+                await scraper.scrape_chapters()
+                crawl_jobs[country_code]["progress"] = f"{len(scraper.chapters)} chapitres trouvés. Extraction des rangées..."
+                await scraper.scrape_headings()
+                crawl_jobs[country_code]["progress"] = f"{len(scraper.headings)} rangées trouvées. Extraction des sous-positions..."
+                await scraper.scrape_all_sub_positions()
+                scraper.save_final()
+                crawl_jobs[country_code]["status"] = "completed"
+                crawl_jobs[country_code]["finished_at"] = datetime.utcnow().isoformat()
+                crawl_jobs[country_code]["sub_positions_found"] = len(scraper.sub_positions)
+                crawl_jobs[country_code]["stats"] = scraper.stats
+                crawl_jobs[country_code]["progress"] = f"Terminé: {len(scraper.sub_positions)} sous-positions extraites"
+        except Exception as e:
+            crawl_jobs[country_code]["status"] = "error"
+            crawl_jobs[country_code]["error"] = str(e)
+            crawl_jobs[country_code]["progress"] = f"Erreur: {str(e)}"
+            logging.error(f"Crawl error for {country_code}: {e}")
+    
+    asyncio.create_task(run_crawl())
+    return {"status": "started", "job": crawl_jobs[country_code]}
+
+@api_router.get("/crawl/status/{country_code}")
+async def get_crawl_status(country_code: str):
+    country_code = country_code.upper()
+    if country_code not in crawl_jobs:
+        crawled_path = Path(__file__).parent / "data" / "crawled" / f"{country_code}_tariffs.json"
+        if crawled_path.exists():
+            with open(crawled_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            return {
+                "status": "completed",
+                "country": country_code,
+                "sub_positions_found": data.get("stats", {}).get("sub_positions", len(data.get("sub_positions", []))),
+                "source": data.get("source", ""),
+                "extracted_at": data.get("extracted_at", ""),
+            }
+        return {"status": "not_found", "country": country_code}
+    return {"status": crawl_jobs[country_code]["status"], "job": crawl_jobs[country_code]}
+
+@api_router.get("/crawl/data/{country_code}")
+async def get_crawled_data(
+    country_code: str,
+    chapter: Optional[str] = None,
+    heading: Optional[str] = None,
+    search: Optional[str] = None,
+    page: int = 1,
+    per_page: int = 50,
+):
+    country_code = country_code.upper()
+    crawled_path = Path(__file__).parent / "data" / "crawled" / f"{country_code}_tariffs.json"
+    if not crawled_path.exists():
+        raise HTTPException(status_code=404, detail=f"Aucune donnée crawlée pour {country_code}")
+    
+    with open(crawled_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    positions = data.get("sub_positions", [])
+    
+    if chapter:
+        positions = [p for p in positions if p.get("chapter") == chapter.zfill(2)]
+    if heading:
+        positions = [p for p in positions if p.get("heading", "").startswith(heading)]
+    if search:
+        search_lower = search.lower()
+        positions = [p for p in positions if 
+            search_lower in p.get("name", "").lower() or
+            search_lower in p.get("designation", "").lower() or
+            search_lower in p.get("hs_code", "").lower()]
+    
+    total = len(positions)
+    start = (page - 1) * per_page
+    end = start + per_page
+    
+    return {
+        "country": country_code,
+        "source": data.get("source", ""),
+        "extracted_at": data.get("extracted_at", ""),
+        "total": total,
+        "page": page,
+        "per_page": per_page,
+        "pages": (total + per_page - 1) // per_page,
+        "positions": positions[start:end],
+    }
+
+@api_router.get("/crawl/sources")
+async def get_crawl_sources():
+    crawled_dir = Path(__file__).parent / "data" / "crawled"
+    sources = {
+        "available_crawlers": {
+            "DZA": {
+                "name": "Algérie",
+                "source": "conformepro.dz (données douane.gov.dz)",
+                "data_type": "Sous-positions nationales 10 chiffres",
+                "taxes": ["Droit de douane (DD)", "TVA", "TCS", "PRCT", "DAPS"],
+                "includes": ["Désignation exacte", "Avantages fiscaux", "Formalités administratives"],
+            },
+        },
+        "crawled_data": {},
+        "planned_crawlers": {
+            "TUN": {"name": "Tunisie", "source": "douane.gov.tn/tarifweb2025", "status": "En développement"},
+            "MAR": {"name": "Maroc", "source": "douane.gov.ma/adil", "status": "En développement"},
+            "CIV": {"name": "Côte d'Ivoire", "source": "guce.gouv.ci", "status": "En développement"},
+            "CMR": {"name": "Cameroun", "source": "douanes.cm", "status": "En développement"},
+            "SEN": {"name": "Sénégal", "source": "douanes.sn", "status": "Planifié"},
+            "ZAF": {"name": "Afrique du Sud", "source": "sars.gov.za", "status": "Planifié"},
+            "KEN": {"name": "Kenya", "source": "kra.go.ke", "status": "Planifié"},
+        },
+    }
+    
+    if crawled_dir.exists():
+        for f in crawled_dir.glob("*_tariffs.json"):
+            code = f.stem.replace("_tariffs", "")
+            try:
+                with open(f, "r", encoding="utf-8") as fh:
+                    meta = json.load(fh)
+                sources["crawled_data"][code] = {
+                    "country_name": meta.get("country_name", code),
+                    "source": meta.get("source", ""),
+                    "extracted_at": meta.get("extracted_at", ""),
+                    "sub_positions": meta.get("stats", {}).get("sub_positions", len(meta.get("sub_positions", []))),
+                }
+            except:
+                pass
+    
+    return sources
 
 @api_router.post("/calculate-tariff", response_model=TariffCalculationResponse)
 async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
