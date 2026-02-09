@@ -411,7 +411,7 @@ crawl_jobs = {}
 @api_router.post("/crawl/start/{country_code}")
 async def start_crawl(country_code: str):
     country_code = country_code.upper()
-    supported = {"DZA": "Algérie"}
+    supported = {"DZA": "Algérie", "TUN": "Tunisie", "MAR": "Maroc"}
     if country_code not in supported:
         raise HTTPException(status_code=400, detail=f"Crawl non supporté pour {country_code}. Pays supportés: {list(supported.keys())}")
     
@@ -446,6 +446,45 @@ async def start_crawl(country_code: str):
                 crawl_jobs[country_code]["sub_positions_found"] = len(scraper.sub_positions)
                 crawl_jobs[country_code]["stats"] = scraper.stats
                 crawl_jobs[country_code]["progress"] = f"Terminé: {len(scraper.sub_positions)} sous-positions extraites"
+            elif country_code == "TUN":
+                from crawlers.countries.tunisia_douane_scraper import TunisiaDouaneScraper
+                scraper = TunisiaDouaneScraper()
+                all_results = []
+                chapters = [f"{i:02d}" for i in range(1, 98) if i != 77]
+                for ch_idx, ch in enumerate(chapters):
+                    crawl_jobs[country_code]["progress"] = f"Chapitre {ch} ({ch_idx+1}/{len(chapters)})..."
+                    results = await scraper.scrape_chapter(ch)
+                    all_results.extend(results)
+                    crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                csv_path = str(Path(__file__).parent / "data" / "crawled" / "TUN_crawled.csv")
+                scraper.save_csv(all_results, csv_path)
+                json_path = Path(__file__).parent / "data" / "crawled" / "TUN_tariffs.json"
+                with open(json_path, "w", encoding="utf-8") as f:
+                    json.dump({"country_code": "TUN", "country_name": "Tunisie", "source": "douane.gov.tn/tarifweb2025", "extracted_at": datetime.utcnow().isoformat(), "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
+                crawl_jobs[country_code]["status"] = "completed"
+                crawl_jobs[country_code]["finished_at"] = datetime.utcnow().isoformat()
+                crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                crawl_jobs[country_code]["progress"] = f"Terminé: {len(all_results)} positions extraites"
+                await scraper._close_client()
+            elif country_code == "MAR":
+                from crawlers.countries.morocco_douane_scraper import MoroccoDouaneScraper
+                scraper = MoroccoDouaneScraper()
+                chapters = [f"{i:02d}" for i in range(1, 98) if i != 77]
+                all_results = []
+                for ch_idx, ch in enumerate(chapters):
+                    crawl_jobs[country_code]["progress"] = f"Chapitre {ch} ({ch_idx+1}/{len(chapters)})..."
+                    chapter_data = await scraper.scrape_chapter_with_taxes(ch)
+                    all_results.extend(chapter_data)
+                    crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                json_path = Path(__file__).parent / "data" / "crawled" / "MAR_tariffs.json"
+                with open(json_path, "w", encoding="utf-8") as f:
+                    json.dump({"country_code": "MAR", "country_name": "Maroc", "source": "douane.gov.ma/adil", "extracted_at": datetime.utcnow().isoformat(), "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
+                csv_path = str(Path(__file__).parent / "data" / "crawled" / "MAR_crawled.csv")
+                scraper.save_csv(all_results, csv_path)
+                crawl_jobs[country_code]["status"] = "completed"
+                crawl_jobs[country_code]["finished_at"] = datetime.utcnow().isoformat()
+                crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                crawl_jobs[country_code]["progress"] = f"Terminé: {len(all_results)} positions extraites"
         except Exception as e:
             crawl_jobs[country_code]["status"] = "error"
             crawl_jobs[country_code]["error"] = str(e)
@@ -530,11 +569,23 @@ async def get_crawl_sources():
                 "taxes": ["Droit de douane (DD)", "TVA", "TCS", "PRCT", "DAPS"],
                 "includes": ["Désignation exacte", "Avantages fiscaux", "Formalités administratives"],
             },
+            "TUN": {
+                "name": "Tunisie",
+                "source": "douane.gov.tn/tarifweb2025",
+                "data_type": "Positions nationales NDP 11 chiffres",
+                "taxes": ["Droit de Douane (DD)", "TVA", "RPD", "Droit de Consommation (DC)", "FODEC", "Droits spécifiques"],
+                "includes": ["Désignation exacte", "Régime import/export", "Préférences tarifaires", "Réglementation", "Groupe d'utilisation"],
+            },
+            "MAR": {
+                "name": "Maroc",
+                "source": "douane.gov.ma/adil",
+                "data_type": "Positions nationales 10 chiffres",
+                "taxes": ["Droit d'Importation (DI)", "Taxe Parafiscale à l'Importation (TPI)", "Taxe sur la Valeur Ajoutée (TVA)", "Taxe Intérieure de Consommation (TIC)"],
+                "includes": ["Désignation exacte", "Documents et normes à l'import", "Formalités particulières"],
+            },
         },
         "crawled_data": {},
         "planned_crawlers": {
-            "TUN": {"name": "Tunisie", "source": "douane.gov.tn/tarifweb2025", "status": "En développement"},
-            "MAR": {"name": "Maroc", "source": "douane.gov.ma/adil", "status": "En développement"},
             "CIV": {"name": "Côte d'Ivoire", "source": "guce.gouv.ci", "status": "En développement"},
             "CMR": {"name": "Cameroun", "source": "douanes.cm", "status": "En développement"},
             "SEN": {"name": "Sénégal", "source": "douanes.sn", "status": "Planifié"},

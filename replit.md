@@ -99,9 +99,17 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
   - `GET /api/crawl/data/{country_code}` - View crawled data (paginated, filterable)
   - `GET /api/crawl/sources` - Available and planned crawlers
 - **Crawled data stored in**: `backend/data/crawled/` (JSON files per country)
-- **Planned crawlers**: Tunisia (tarifweb2025), Morocco (ADIL), Côte d'Ivoire (guce.gouv.ci), Cameroon, Senegal, South Africa, Kenya
+- **Morocco scraper**: `backend/crawlers/countries/morocco_douane_scraper.py` - Extracts national positions (10-digit HS codes) from douane.gov.ma/adil
+  - Session-based ASP site: requires new HTTP session per chapter
+  - Positions list via info_0.asp, taxes via info_2.asp, formalities via info_4.asp
+  - Taxes: DI (Droit d'Importation), TPI (Taxe Parafiscale), TVA, TIC
+  - Rate limiting: 2s between requests
+  - ~96 chapters × ~100-900 positions/chapter
+- **Planned crawlers**: Côte d'Ivoire (guce.gouv.ci), Cameroon, Senegal, South Africa, Kenya
 
 ## Recent Changes
+- 2026-02-09: Built Morocco web crawler for douane.gov.ma/adil - extracts 10-digit positions with DI, TPI, TVA, TIC taxes and import formalities. Session-per-chapter approach bypasses ASP session constraints.
+- 2026-02-09: Tunisia crawler operational - 11-digit NDP codes with DD, TVA, RPD, DC, FODEC, preferential tariffs, regulatory requirements
 - 2026-02-09: Built Algeria web crawler for conformepro.dz - extracts real national sub-positions with exact designations, tax rates (DD, TVA, TCS, PRCT), fiscal advantages and formalities. Added crawl management API (start/status/data/sources endpoints)
 - 2026-02-08: CSV export restructured to match douane.gov.dz hierarchy: Section (21) → Chapitre (97) → Rangée (HS4, 1229 headings from WCO 2022) → HS6 → Sub-positions. 12-column format with separate DAPS/DD/PRCT/TCS/TVA columns, utilization groups per chapter, corrected total calculation
 - 2026-02-07: Enhanced tariff data format v2 - individual tax components (DAPS, DD, PRCT, TCS, TVA), fiscal advantages (ZLECAf exemptions), administrative formalities per product
