@@ -450,15 +450,20 @@ async def start_crawl(country_code: str):
                 from crawlers.countries.tunisia_douane_scraper import TunisiaDouaneScraper
                 scraper = TunisiaDouaneScraper()
                 all_results = []
+                data_dir = Path(__file__).parent / "data" / "crawled"
                 chapters = [f"{i:02d}" for i in range(1, 98) if i != 77]
                 for ch_idx, ch in enumerate(chapters):
                     crawl_jobs[country_code]["progress"] = f"Chapitre {ch} ({ch_idx+1}/{len(chapters)})..."
                     results = await scraper.scrape_chapter(ch)
                     all_results.extend(results)
                     crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
-                csv_path = str(Path(__file__).parent / "data" / "crawled" / "TUN_crawled.csv")
+                    if (ch_idx + 1) % 5 == 0 or ch_idx == len(chapters) - 1:
+                        progress_path = data_dir / f"TUN_progress_{ch_idx+1}.json"
+                        with open(progress_path, "w", encoding="utf-8") as f:
+                            json.dump({"country_code": "TUN", "country_name": "Tunisie", "source": "douane.gov.tn/tarifweb2025", "extracted_at": datetime.utcnow().isoformat(), "chapters_done": ch_idx+1, "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
+                csv_path = str(data_dir / "TUN_crawled.csv")
                 scraper.save_csv(all_results, csv_path)
-                json_path = Path(__file__).parent / "data" / "crawled" / "TUN_tariffs.json"
+                json_path = data_dir / "TUN_tariffs.json"
                 with open(json_path, "w", encoding="utf-8") as f:
                     json.dump({"country_code": "TUN", "country_name": "Tunisie", "source": "douane.gov.tn/tarifweb2025", "extracted_at": datetime.utcnow().isoformat(), "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
                 crawl_jobs[country_code]["status"] = "completed"
@@ -471,15 +476,20 @@ async def start_crawl(country_code: str):
                 scraper = MoroccoDouaneScraper()
                 chapters = [f"{i:02d}" for i in range(1, 98) if i != 77]
                 all_results = []
+                data_dir = Path(__file__).parent / "data" / "crawled"
                 for ch_idx, ch in enumerate(chapters):
                     crawl_jobs[country_code]["progress"] = f"Chapitre {ch} ({ch_idx+1}/{len(chapters)})..."
                     chapter_data = await scraper.scrape_chapter_with_taxes(ch)
                     all_results.extend(chapter_data)
                     crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
-                json_path = Path(__file__).parent / "data" / "crawled" / "MAR_tariffs.json"
+                    if (ch_idx + 1) % 5 == 0 or ch_idx == len(chapters) - 1:
+                        progress_path = data_dir / f"MAR_progress_{ch_idx+1}.json"
+                        with open(progress_path, "w", encoding="utf-8") as f:
+                            json.dump({"country_code": "MAR", "country_name": "Maroc", "source": "douane.gov.ma/adil", "extracted_at": datetime.utcnow().isoformat(), "chapters_done": ch_idx+1, "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
+                json_path = data_dir / "MAR_tariffs.json"
                 with open(json_path, "w", encoding="utf-8") as f:
                     json.dump({"country_code": "MAR", "country_name": "Maroc", "source": "douane.gov.ma/adil", "extracted_at": datetime.utcnow().isoformat(), "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
-                csv_path = str(Path(__file__).parent / "data" / "crawled" / "MAR_crawled.csv")
+                csv_path = str(data_dir / "MAR_crawled.csv")
                 scraper.save_csv(all_results, csv_path)
                 crawl_jobs[country_code]["status"] = "completed"
                 crawl_jobs[country_code]["finished_at"] = datetime.utcnow().isoformat()
