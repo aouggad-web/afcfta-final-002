@@ -1,0 +1,5346 @@
+{
+  "country": "DZA",
+  "source": "conformepro.dz",
+  "extracted_at": "2026-02-09T19:15:37.860917",
+  "count": 127,
+  "data": [
+    {
+      "raw_code": "01.01.211100",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2111.00Chevaux reproducteurs de race pure de course de pur sang arabeChevaux vivants de pur-sang arabe, destinés à la reproduction de race pure et à la course.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.211100/chevaux-reproducteurs-de-race-pure-de-course-de-pur-sang-arabe",
+      "hs_code": "0101211100",
+      "designation": "Chevaux > Reproducteurs de race pure > De course > De pur sang arabe",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Reproducteurs de race pure > De course > De pur sang arabe"
+    },
+    {
+      "raw_code": "01.01.211900",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2119.00Chevaux reproducteurs de race pure de course autres que de pur sang arabeChevaux vivants reproducteurs de race pure destinés à la course, autres que de pur-sang arabe.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.211900/chevaux-reproducteurs-de-race-pure-de-course-autres-que-de-pur-sang-arabe",
+      "hs_code": "0101211900",
+      "designation": "Chevaux > Reproducteurs de race pure > De course > Autres que de pur sang arabe",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Reproducteurs de race pure > De course > Autres que de pur sang arabe"
+    },
+    {
+      "raw_code": "01.01.219100",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2191.00Chevaux de pur sang arabe, reproducteurs de race pure, autres que de courseChevaux de pur sang arabe, reproducteurs de race pure, autres que de course.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.219100/chevaux-de-pur-sang-arabe-reproducteurs-de-race-pure-autres-que-de-course",
+      "hs_code": "0101219100",
+      "designation": "Chevaux de pur sang arabe, reproducteurs de race pure, autres que de course",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux de pur sang arabe, reproducteurs de race pure, autres que de course"
+    },
+    {
+      "raw_code": "01.01.219900",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2199.00Chevaux, reproducteurs de race pure, autres que de course, autresChevaux reproducteurs de race pure, autres que de course, autres que de pur-sang arabe.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.219900/chevaux-reproducteurs-de-race-pure-autres-que-de-course-autres",
+      "hs_code": "0101219900",
+      "designation": "Chevaux, reproducteurs de race pure, autres que de course, autres",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux, reproducteurs de race pure, autres que de course, autres"
+    },
+    {
+      "raw_code": "01.01.291000",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2910.00Chevaux autres de courseChevaux vivants autres que reproducteurs de race pure, destinés à la course.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.291000/chevaux-autres-de-course",
+      "hs_code": "0101291000",
+      "designation": "Chevaux > Autres > De course",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Autres > De course"
+    },
+    {
+      "raw_code": "01.01.292000",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2920.00Chevaux autres pour abattageChevaux vivants autres que reproducteurs, destinés à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.292000/chevaux-autres-pour-abattage",
+      "hs_code": "0101292000",
+      "designation": "Chevaux > Autres > Pour abattage",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Autres > Pour abattage"
+    },
+    {
+      "raw_code": "01.01.293100",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2931.00Chevaux autres pour parcs zoologiques etalons et hongresÉtalons et hongres (chevaux mâles) vivants, autres, destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.293100/chevaux-autres-pour-parcs-zoologiques-etalons-et-hongres",
+      "hs_code": "0101293100",
+      "designation": "Chevaux > Autres > Pour parcs zoologiques > Etalons et hongres",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Autres > Pour parcs zoologiques > Etalons et hongres"
+    },
+    {
+      "raw_code": "01.01.293200",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2932.00Chevaux vivants autres, pour parcs zoologiques: jumentsJuments (chevaux femelles) vivantes, autres, destinées aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.293200/chevaux-vivants-autres-pour-parcs-zoologiques-juments",
+      "hs_code": "0101293200",
+      "designation": "Chevaux vivants autres, pour parcs zoologiques: juments",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux vivants autres, pour parcs zoologiques: juments"
+    },
+    {
+      "raw_code": "01.01.293300",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2933.00Chevaux autres pour parcs zoologiques poulains et poulichesPoulains et pouliches (jeunes chevaux) vivants, autres, destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.293300/chevaux-autres-pour-parcs-zoologiques-poulains-et-pouliches",
+      "hs_code": "0101293300",
+      "designation": "Chevaux > Autres > Pour parcs zoologiques > Poulains et pouliches",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Autres > Pour parcs zoologiques > Poulains et pouliches"
+    },
+    {
+      "raw_code": "01.01.293400",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2934.00Chevaux autres pour parcs zoologiques poneys et ponettesPoneys et ponettes vivants, autres, destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.293400/chevaux-autres-pour-parcs-zoologiques-poneys-et-ponettes",
+      "hs_code": "0101293400",
+      "designation": "Chevaux > Autres > Pour parcs zoologiques > Poneys et ponettes",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Autres > Pour parcs zoologiques > Poneys et ponettes"
+    },
+    {
+      "raw_code": "01.01.299100",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2991.00Chevaux autres autres etalons et hongresÉtalons et hongres (chevaux mâles) vivants, autres que ceux destinés à la course, l'abattage ou les zoos.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.299100/chevaux-autres-autres-etalons-et-hongres",
+      "hs_code": "0101299100",
+      "designation": "Chevaux > Autres > Autres > Etalons et hongres",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Autres > Autres > Etalons et hongres"
+    },
+    {
+      "raw_code": "01.01.299200",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2992.00Chevaux vivants autres, autres: jumentsJuments (chevaux femelles) vivantes, autres que celles destinées à la course, l'abattage ou les zoos.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.299200/chevaux-vivants-autres-autres-juments",
+      "hs_code": "0101299200",
+      "designation": "Chevaux vivants autres, autres: juments",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux vivants autres, autres: juments"
+    },
+    {
+      "raw_code": "01.01.299300",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2993.00Chevaux autres autres poulains et poulichesPoulains et pouliches (jeunes chevaux) vivants, autres que ceux destinés à la course, l'abattage ou les zoos.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.299300/chevaux-autres-autres-poulains-et-pouliches",
+      "hs_code": "0101299300",
+      "designation": "Chevaux > Autres > Autres > Poulains et pouliches",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Autres > Autres > Poulains et pouliches"
+    },
+    {
+      "raw_code": "01.01.299400",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2994.00Chevaux autres autres poneys et ponettesPoneys et ponettes vivants, autres que ceux destinés à la course, l'abattage ou les zoos.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.299400/chevaux-autres-autres-poneys-et-ponettes",
+      "hs_code": "0101299400",
+      "designation": "Chevaux > Autres > Autres > Poneys et ponettes",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Chevaux > Autres > Autres > Poneys et ponettes"
+    },
+    {
+      "raw_code": "01.01.301000",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3010.00Anes reproducteurs de race pureÂnes vivants reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.301000/anes-reproducteurs-de-race-pure",
+      "hs_code": "0101301000",
+      "designation": "Anes > Reproducteurs de race pure",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Anes > Reproducteurs de race pure"
+    },
+    {
+      "raw_code": "01.01.309110",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3091.10Anes autres des especes domestiques anesÂnes mâles vivants autres, des espèces domestiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.309110/anes-autres-des-especes-domestiques-anes",
+      "hs_code": "0101309110",
+      "designation": "Anes > Autres > Des especes domestiques > Anes",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Anes > Autres > Des especes domestiques > Anes"
+    },
+    {
+      "raw_code": "01.01.309120",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3091.20Anes vivants autres, des espèces domestiques: anessesAnesses (femelles d'ânes) vivantes autres, des espèces domestiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.309120/anes-vivants-autres-des-esp%C3%A8ces-domestiques-anesses",
+      "hs_code": "0101309120",
+      "designation": "Anes vivants autres, des espèces domestiques: Anesses",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Anes vivants autres, des espèces domestiques: Anesses"
+    },
+    {
+      "raw_code": "01.01.309130",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3091.30Anes autres des especes domestiques anonsÂnons (petits d'ânes) vivants autres, des espèces domestiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.309130/anes-autres-des-especes-domestiques-anons",
+      "hs_code": "0101309130",
+      "designation": "Anes > Autres > Des especes domestiques > Anons",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Anes > Autres > Des especes domestiques > Anons"
+    },
+    {
+      "raw_code": "01.01.309900",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3099.00Anes autres autres que des especes domestiquesÂnes vivants autres que des espèces domestiques (ânes sauvages).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.309900/anes-autres-autres-que-des-especes-domestiques",
+      "hs_code": "0101309900",
+      "designation": "Anes > Autres > Autres que des especes domestiques",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Anes > Autres > Autres que des especes domestiques"
+    },
+    {
+      "raw_code": "01.01.901100",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9011.00Autres mulets des especes domestiquesMulets vivants des espèces domestiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.901100/autres-mulets-des-especes-domestiques",
+      "hs_code": "0101901100",
+      "designation": "Autres > Mulets > Des especes domestiques",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Autres > Mulets > Des especes domestiques"
+    },
+    {
+      "raw_code": "01.01.901900",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9019.00Autres mulets autres que des especes domestiquesMulets vivants autres que des espèces domestiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.901900/autres-mulets-autres-que-des-especes-domestiques",
+      "hs_code": "0101901900",
+      "designation": "Autres > Mulets > Autres que des especes domestiques",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Autres > Mulets > Autres que des especes domestiques"
+    },
+    {
+      "raw_code": "01.01.902100",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9021.00Autres bardots des especes domestiquesBardots vivants des espèces domestiques (croisement entre jument et âne mâle).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.902100/autres-bardots-des-especes-domestiques",
+      "hs_code": "0101902100",
+      "designation": "Autres > Bardots > Des especes domestiques",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Autres > Bardots > Des especes domestiques"
+    },
+    {
+      "raw_code": "01.01.902900",
+      "heading": "01.01",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9029.00Autres bardots autres que des especes domestiquesBardots vivants autres que des espèces domestiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.902900/autres-bardots-autres-que-des-especes-domestiques",
+      "hs_code": "0101902900",
+      "designation": "Autres > Bardots > Autres que des especes domestiques",
+      "designation_full": "Animaux vivants > Chevaux, anes, mulets et bardots, vivants. > Autres > Bardots > Autres que des especes domestiques"
+    },
+    {
+      "raw_code": "01.02.210000",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2100.00Bovins domestiques reproducteurs de race pureAnimaux vivants de l'espèce bovine domestique, reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.210000/bovins-domestiques-reproducteurs-de-race-pure",
+      "hs_code": "0102210000",
+      "designation": "Bovins domestiques > Reproducteurs de race pure",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques > Reproducteurs de race pure"
+    },
+    {
+      "raw_code": "01.02.291000",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2910.00Bovins domestiques autres vaches laitieresVaches laitières vivantes domestiques (autres que reproducteurs de race pure).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.291000/bovins-domestiques-autres-vaches-laitieres",
+      "hs_code": "0102291000",
+      "designation": "Bovins domestiques > Autres > Vaches laitieres",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques > Autres > Vaches laitieres"
+    },
+    {
+      "raw_code": "01.02.292000",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2920.00Bovins domestiques autres genisses pleines et velesGénisses pleines et vêlées (jeunes vaches gestantes ou ayant vêlé récemment) vivantes domestiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.292000/bovins-domestiques-autres-genisses-pleines-et-veles",
+      "hs_code": "0102292000",
+      "designation": "Bovins domestiques > Autres > Genisses pleines et veles",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques > Autres > Genisses pleines et veles"
+    },
+    {
+      "raw_code": "01.02.299110",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2991.10Bovins domestiques autres autres pour abattage veaux (qui n?ont pas de dents de remplacement)Veaux vivants domestiques destinés à l'abattage (n'ayant pas de dents de remplacement).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.299110/bovins-domestiques-autres-autres-pour-abattage-veaux-qui-nont-pas-de-dents-de-remplacement",
+      "hs_code": "0102299110",
+      "designation": "Bovins domestiques > Autres > Autres > Pour abattage > Veaux (qui n?ont pas de dents de remplacement)",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques > Autres > Autres > Pour abattage > Veaux (qui n?ont pas de dents de remplacement)"
+    },
+    {
+      "raw_code": "01.02.299120",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2991.20Bovins domestiques autres autres pour abattage taureaux, boeufs et taurillonsTaureaux, boeufs et taurillons vivants domestiques destinés à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.299120/bovins-domestiques-autres-autres-pour-abattage-taureaux-boeufs-et-taurillons",
+      "hs_code": "0102299120",
+      "designation": "Bovins domestiques > Autres > Autres > Pour abattage > Taureaux, boeufs et taurillons",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques > Autres > Autres > Pour abattage > Taureaux, boeufs et taurillons"
+    },
+    {
+      "raw_code": "01.02.299130",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2991.30Bovins domestiques autres autres pour abattage vachesVaches vivantes domestiques destinées à l'abattage (autres que vaches laitières).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.299130/bovins-domestiques-autres-autres-pour-abattage-vaches",
+      "hs_code": "0102299130",
+      "designation": "Bovins domestiques > Autres > Autres > Pour abattage > Vaches",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques > Autres > Autres > Pour abattage > Vaches"
+    },
+    {
+      "raw_code": "01.02.299190",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2991.90Bovins domestiques autres autres pour abattage autresAutres bovins vivants domestiques destinés à l'abattage (non spécifiquement classés ci-dessus).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.299190/bovins-domestiques-autres-autres-pour-abattage-autres",
+      "hs_code": "0102299190",
+      "designation": "Bovins domestiques > Autres > Autres > Pour abattage > Autres",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques > Autres > Autres > Pour abattage > Autres"
+    },
+    {
+      "raw_code": "01.02.299910",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2999.10Bovins domestiques autres que pour abattage: veaux (qui n'ont pas de dents de remplacement)Veaux vivants domestiques non destinés à l'abattage (n'ayant pas de dents de remplacement).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.299910/bovins-domestiques-autres-que-pour-abattage-veaux-qui-nont-pas-de-dents-de-remplacement",
+      "hs_code": "0102299910",
+      "designation": "Bovins domestiques autres que pour abattage: Veaux (qui n'ont pas de dents de remplacement)",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques autres que pour abattage: Veaux (qui n'ont pas de dents de remplacement)"
+    },
+    {
+      "raw_code": "01.02.299920",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2999.20Bovins domestiques autres que pour abattage: taureaux, boeufs et taurillonsTaureaux, boeufs et taurillons vivants domestiques non destinés à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.299920/bovins-domestiques-autres-que-pour-abattage-taureaux-boeufs-et-taurillons",
+      "hs_code": "0102299920",
+      "designation": "Bovins domestiques autres que pour abattage: Taureaux, boeufs et taurillons",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques autres que pour abattage: Taureaux, boeufs et taurillons"
+    },
+    {
+      "raw_code": "01.02.299930",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2999.30Bovins domestiques autres que pour abattage: vachesVaches vivantes domestiques non destinées à l'abattage (autres que vaches laitières et reproducteurs de race pure).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.299930/bovins-domestiques-autres-que-pour-abattage-vaches",
+      "hs_code": "0102299930",
+      "designation": "Bovins domestiques autres que pour abattage: Vaches",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques autres que pour abattage: Vaches"
+    },
+    {
+      "raw_code": "01.02.299990",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2999.90Bovins domestiques autres que pour abattage: autresAutres bovins vivants domestiques non destinés à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.299990/bovins-domestiques-autres-que-pour-abattage-autres",
+      "hs_code": "0102299990",
+      "designation": "Bovins domestiques autres que pour abattage: Autres",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Bovins domestiques autres que pour abattage: Autres"
+    },
+    {
+      "raw_code": "01.02.310000",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3100.00Buffles reproducteurs de race pureBuffles vivants, reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.310000/buffles-reproducteurs-de-race-pure",
+      "hs_code": "0102310000",
+      "designation": "Buffles > Reproducteurs de race pure",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Buffles > Reproducteurs de race pure"
+    },
+    {
+      "raw_code": "01.02.390000",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3900.00Buffles autresBuffles vivants, autres que reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.390000/buffles-autres",
+      "hs_code": "0102390000",
+      "designation": "Buffles > Autres",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Buffles > Autres"
+    },
+    {
+      "raw_code": "01.02.901000",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9010.00Autres reproducteurs de race pureAutres animaux de l'espèce bovine (non domestiques et non buffles), reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.901000/autres-reproducteurs-de-race-pure",
+      "hs_code": "0102901000",
+      "designation": "Autres > Reproducteurs de race pure",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Autres > Reproducteurs de race pure"
+    },
+    {
+      "raw_code": "01.02.909100",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9091.00Autres autres antilopes de la sous-famille bovinaeAntilopes vivantes de la sous-famille Bovinae (autres que reproducteurs de race pure).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.909100/autres-autres-antilopes-de-la-sous-famille-bovinae",
+      "hs_code": "0102909100",
+      "designation": "Autres > Autres > Antilopes de la sous-famille Bovinae",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Autres > Autres > Antilopes de la sous-famille Bovinae"
+    },
+    {
+      "raw_code": "01.02.909900",
+      "heading": "01.02",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9099.00Autres autres autresAutres animaux vivants de l'espèce bovine (non spécifiquement mentionnés : yaks, bisons, etc.).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.02.909900/autres-autres-autres",
+      "hs_code": "0102909900",
+      "designation": "Autres > Autres > Autres",
+      "designation_full": "Animaux vivants > Animaux vivants de l'espece bovine > Autres > Autres > Autres"
+    },
+    {
+      "raw_code": "01.04.101000",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1010.00De l'espece ovine reproducteurs de race pureAnimaux vivants de l'espèce ovine (moutons) reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Attestation d'emploi (pour exo. du d.d)"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.101000/de-lespece-ovine-reproducteurs-de-race-pure",
+      "hs_code": "0104101000",
+      "designation": "De l'espece ovine > Reproducteurs de race pure",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > De l'espece ovine > Reproducteurs de race pure"
+    },
+    {
+      "raw_code": "01.04.109110",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1091.10De l'espece ovine autres des especes domestiques pour abattageAnimaux vivants domestiques de l'espèce ovine, destinés à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.109110/de-lespece-ovine-autres-des-especes-domestiques-pour-abattage",
+      "hs_code": "0104109110",
+      "designation": "De l'espece ovine > Autres > Des especes domestiques > Pour abattage",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > De l'espece ovine > Autres > Des especes domestiques > Pour abattage"
+    },
+    {
+      "raw_code": "01.04.109191",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1091.91Animaux de l'espèce ovine, domestiques, autres que pour abattage: agneaux et agnelles (qui n'ont pas de dents de remplacement)Agneaux et agnelles vivants domestiques non destinés à l'abattage (n'ayant pas de dents de remplacement).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.109191/animaux-de-lesp%C3%A8ce-ovine-domestiques-autres-que-pour-abattage-agneaux-et-agnelles-qui-nont-pas-de-dents-de-remplacement",
+      "hs_code": "0104109191",
+      "designation": "Animaux de l'espèce ovine, domestiques, autres que pour abattage: Agneaux et agnelles (qui n'ont pas de dents de remplacement)",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > Animaux de l'espèce ovine, domestiques, autres que pour abattage: Agneaux et agnelles (qui n'ont pas de dents de remplacement)"
+    },
+    {
+      "raw_code": "01.04.109192",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1091.92De l'espece ovine autres des especes domestiques autres que pour abattage brebisBrebis vivantes domestiques non destinées à l'abattage (femelles matures de mouton).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.109192/de-lespece-ovine-autres-des-especes-domestiques-autres-que-pour-abattage-brebis",
+      "hs_code": "0104109192",
+      "designation": "De l'espece ovine > Autres > Des especes domestiques > Autres que pour abattage > Brebis",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > De l'espece ovine > Autres > Des especes domestiques > Autres que pour abattage > Brebis"
+    },
+    {
+      "raw_code": "01.04.109199",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1091.99De l'espece ovine autres des especes domestiques autres que pour abattage autresAutres animaux vivants domestiques de l'espèce ovine, non destinés à l'abattage (béliers, moutons).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.109199/de-lespece-ovine-autres-des-especes-domestiques-autres-que-pour-abattage-autres",
+      "hs_code": "0104109199",
+      "designation": "De l'espece ovine > Autres > Des especes domestiques > Autres que pour abattage > Autres",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > De l'espece ovine > Autres > Des especes domestiques > Autres que pour abattage > Autres"
+    },
+    {
+      "raw_code": "01.04.109900",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1099.00De l'espece ovine autres autres que des especes domestiquesAnimaux vivants de l'espèce ovine autres que des espèces domestiques (moutons sauvages).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.109900/de-lespece-ovine-autres-autres-que-des-especes-domestiques",
+      "hs_code": "0104109900",
+      "designation": "De l'espece ovine > Autres > Autres que des especes domestiques",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > De l'espece ovine > Autres > Autres que des especes domestiques"
+    },
+    {
+      "raw_code": "01.04.201000",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2010.00De l'espece caprine reproducteurs de race pureAnimaux vivants de l'espèce caprine (chèvres et boucs) reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Attestation d'emploi (pour exo. du d.d)"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.201000/de-lespece-caprine-reproducteurs-de-race-pure",
+      "hs_code": "0104201000",
+      "designation": "De l'espece caprine > Reproducteurs de race pure",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > De l'espece caprine > Reproducteurs de race pure"
+    },
+    {
+      "raw_code": "01.04.209110",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2091.10De l'espece caprine autres des especes domestiques pour abattageAnimaux vivants domestiques de l'espèce caprine, destinés à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.209110/de-lespece-caprine-autres-des-especes-domestiques-pour-abattage",
+      "hs_code": "0104209110",
+      "designation": "De l'espece caprine > Autres > Des especes domestiques > Pour abattage",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > De l'espece caprine > Autres > Des especes domestiques > Pour abattage"
+    },
+    {
+      "raw_code": "01.04.209191",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2091.91Animaux de l'espèce caprine, domestiques, autres que pour abattage: chèvresChèvres vivantes domestiques non destinées à l'abattage (femelles matures de chèvre).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.209191/animaux-de-lesp%C3%A8ce-caprine-domestiques-autres-que-pour-abattage-ch%C3%A8vres",
+      "hs_code": "0104209191",
+      "designation": "Animaux de l'espèce caprine, domestiques, autres que pour abattage: Chèvres",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > Animaux de l'espèce caprine, domestiques, autres que pour abattage: Chèvres"
+    },
+    {
+      "raw_code": "01.04.209192",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2091.92Animaux de l'espèce caprine, domestiques, autres que pour abattage: chevreaux (qui n'ont pas de dents de remplacement)Chevreaux vivants domestiques non destinés à l'abattage (n'ayant pas de dents de remplacement).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.209192/animaux-de-lesp%C3%A8ce-caprine-domestiques-autres-que-pour-abattage-chevreaux-qui-nont-pas-de-dents-de-remplacement",
+      "hs_code": "0104209192",
+      "designation": "Animaux de l'espèce caprine, domestiques, autres que pour abattage: Chevreaux (qui n'ont pas de dents de remplacement)",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > Animaux de l'espèce caprine, domestiques, autres que pour abattage: Chevreaux (qui n'ont pas de dents de remplacement)"
+    },
+    {
+      "raw_code": "01.04.209199",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2091.99Animaux de l'espèce caprine, domestiques, autres que pour abattage: autresAutres animaux vivants domestiques de l'espèce caprine, non destinés à l'abattage (boucs).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.209199/animaux-de-lesp%C3%A8ce-caprine-domestiques-autres-que-pour-abattage-autres",
+      "hs_code": "0104209199",
+      "designation": "Animaux de l'espèce caprine, domestiques, autres que pour abattage: Autres",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > Animaux de l'espèce caprine, domestiques, autres que pour abattage: Autres"
+    },
+    {
+      "raw_code": "01.04.209900",
+      "heading": "01.04",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2099.00De l'espece caprine autres autres que des especes domestiquesAnimaux vivants de l'espèce caprine autres que des espèces domestiques (chèvres sauvages).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 9.0,
+          "raw": "9%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.04.209900/de-lespece-caprine-autres-autres-que-des-especes-domestiques",
+      "hs_code": "0104209900",
+      "designation": "De l'espece caprine > Autres > Autres que des especes domestiques",
+      "designation_full": "Animaux vivants > Animaux vivants des especes ovine ou caprine > De l'espece caprine > Autres > Autres que des especes domestiques"
+    },
+    {
+      "raw_code": "01.05.111000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1110.00Poussins dits d'un jour 'chair' (moins de 185g)Poussins vivants dits d'un jour (moins de 185g) de l'espèce Gallus domesticus, destinés à la production de chair.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.111000/poussins-dits-dun-jour-chair-moins-de-185g",
+      "hs_code": "0105111000",
+      "designation": "Poussins dits d'un jour 'chair' (moins de 185g)",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Poussins dits d'un jour 'chair' (moins de 185g)"
+    },
+    {
+      "raw_code": "01.05.112000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1120.00Poussins dits d'un jour 'ponte' (moins de 185g)Poussins vivants dits d'un jour (moins de 185g) de l'espèce Gallus domesticus, destinés à la ponte.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.112000/poussins-dits-dun-jour-ponte-moins-de-185g",
+      "hs_code": "0105112000",
+      "designation": "Poussins dits d'un jour 'ponte' (moins de 185g)",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Poussins dits d'un jour 'ponte' (moins de 185g)"
+    },
+    {
+      "raw_code": "01.05.113000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1130.00Poussins dits d'un jour 'repro-chair' (moins de 185g)Poussins vivants dits d'un jour (moins de 185g) de l'espèce Gallus domesticus, destinés à donner des reproducteurs de race de chair.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.113000/poussins-dits-dun-jour-repro-chair-moins-de-185g",
+      "hs_code": "0105113000",
+      "designation": "Poussins dits d'un jour 'repro-chair' (moins de 185g)",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Poussins dits d'un jour 'repro-chair' (moins de 185g)"
+    },
+    {
+      "raw_code": "01.05.114000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1140.00Poussins dits d'un jour 'repro-ponte' (moins de 185g)Poussins vivants dits d'un jour (moins de 185g) de l'espèce Gallus domesticus, destinés à donner des reproducteurs de race de ponte.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.114000/poussins-dits-dun-jour-repro-ponte-moins-de-185g",
+      "hs_code": "0105114000",
+      "designation": "Poussins dits d'un jour 'repro-ponte' (moins de 185g)",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Poussins dits d'un jour 'repro-ponte' (moins de 185g)"
+    },
+    {
+      "raw_code": "01.05.121000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1210.00Dindons et dindes dits 'd'un jour' (moins de 185g) destinés à la reproductionDindons et dindes vivants dits 'd'un jour' (moins de 185g), destinés à donner des reproducteurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.121000/dindons-et-dindes-dits-dun-jour-moins-de-185g-destin%C3%A9s-%C3%A0-la-reproduction",
+      "hs_code": "0105121000",
+      "designation": "Dindons et dindes dits 'd'un jour' (moins de 185g) destinés à la reproduction",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Dindons et dindes dits 'd'un jour' (moins de 185g) destinés à la reproduction"
+    },
+    {
+      "raw_code": "01.05.122000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1220.00Dindons et dindes dits 'd'un jour' (moins de 185g) de race de chairDindons et dindes vivants dits 'd'un jour' (moins de 185g), de race de chair.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.122000/dindons-et-dindes-dits-dun-jour-moins-de-185g-de-race-de-chair",
+      "hs_code": "0105122000",
+      "designation": "Dindons et dindes dits 'd'un jour' (moins de 185g) de race de chair",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Dindons et dindes dits 'd'un jour' (moins de 185g) de race de chair"
+    },
+    {
+      "raw_code": "01.05.123000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1230.00Dindons et dindes dits 'd'un jour' (moins de 185g) de race de ponteDindons et dindes vivants dits 'd'un jour' (moins de 185g), de race de ponte.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.123000/dindons-et-dindes-dits-dun-jour-moins-de-185g-de-race-de-ponte",
+      "hs_code": "0105123000",
+      "designation": "Dindons et dindes dits 'd'un jour' (moins de 185g) de race de ponte",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Dindons et dindes dits 'd'un jour' (moins de 185g) de race de ponte"
+    },
+    {
+      "raw_code": "01.05.131000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1310.00Canards dits 'd'un jour' (moins de 185g) destinés à la reproductionCanards vivants dits 'd'un jour' (moins de 185g), destinés à donner des reproducteurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.131000/canards-dits-dun-jour-moins-de-185g-destin%C3%A9s-%C3%A0-la-reproduction",
+      "hs_code": "0105131000",
+      "designation": "Canards dits 'd'un jour' (moins de 185g) destinés à la reproduction",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Canards dits 'd'un jour' (moins de 185g) destinés à la reproduction"
+    },
+    {
+      "raw_code": "01.05.132000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1320.00Canards dits 'd'un jour' (moins de 185g) de race de chairCanards vivants dits 'd'un jour' (moins de 185g), de race de chair.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.132000/canards-dits-dun-jour-moins-de-185g-de-race-de-chair",
+      "hs_code": "0105132000",
+      "designation": "Canards dits 'd'un jour' (moins de 185g) de race de chair",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Canards dits 'd'un jour' (moins de 185g) de race de chair"
+    },
+    {
+      "raw_code": "01.05.133000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1330.00Canards dits 'd'un jour' (moins de 185g) de race de ponteCanards vivants dits 'd'un jour' (moins de 185g), de race de ponte.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.133000/canards-dits-dun-jour-moins-de-185g-de-race-de-ponte",
+      "hs_code": "0105133000",
+      "designation": "Canards dits 'd'un jour' (moins de 185g) de race de ponte",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Canards dits 'd'un jour' (moins de 185g) de race de ponte"
+    },
+    {
+      "raw_code": "01.05.141000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1410.00Oies dites 'd'un jour' (moins de 185g) destinées à la reproductionOies vivantes dites 'd'un jour' (moins de 185g), destinées à donner des reproducteurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.141000/oies-dites-dun-jour-moins-de-185g-destin%C3%A9es-%C3%A0-la-reproduction",
+      "hs_code": "0105141000",
+      "designation": "Oies dites 'd'un jour' (moins de 185g) destinées à la reproduction",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Oies dites 'd'un jour' (moins de 185g) destinées à la reproduction"
+    },
+    {
+      "raw_code": "01.05.142000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1420.00Oies dites 'd'un jour' (moins de 185g) de race de chairOies vivantes dites 'd'un jour' (moins de 185g), de race de chair.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.142000/oies-dites-dun-jour-moins-de-185g-de-race-de-chair",
+      "hs_code": "0105142000",
+      "designation": "Oies dites 'd'un jour' (moins de 185g) de race de chair",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Oies dites 'd'un jour' (moins de 185g) de race de chair"
+    },
+    {
+      "raw_code": "01.05.143000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1430.00Oies dites 'd'un jour' (moins de 185g) de race de ponteOies vivantes dites 'd'un jour' (moins de 185g), de race de ponte.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.143000/oies-dites-dun-jour-moins-de-185g-de-race-de-ponte",
+      "hs_code": "0105143000",
+      "designation": "Oies dites 'd'un jour' (moins de 185g) de race de ponte",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Oies dites 'd'un jour' (moins de 185g) de race de ponte"
+    },
+    {
+      "raw_code": "01.05.151000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1510.00Pintades dites 'd'un jour' (moins de 185g) destinées à la reproductionPintades vivantes dites 'd'un jour' (moins de 185g), destinées à donner des reproducteurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.151000/pintades-dites-dun-jour-moins-de-185g-destin%C3%A9es-%C3%A0-la-reproduction",
+      "hs_code": "0105151000",
+      "designation": "Pintades dites 'd'un jour' (moins de 185g) destinées à la reproduction",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Pintades dites 'd'un jour' (moins de 185g) destinées à la reproduction"
+    },
+    {
+      "raw_code": "01.05.152000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1520.00Pintades dites 'd'un jour' (moins de 185g) de race de chairPintades vivantes dites 'd'un jour' (moins de 185g), de race de chair.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.152000/pintades-dites-dun-jour-moins-de-185g-de-race-de-chair",
+      "hs_code": "0105152000",
+      "designation": "Pintades dites 'd'un jour' (moins de 185g) de race de chair",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Pintades dites 'd'un jour' (moins de 185g) de race de chair"
+    },
+    {
+      "raw_code": "01.05.153000",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1530.00Pintades dites 'd'un jour' (moins de 185g) de race de pontePintades vivantes dites 'd'un jour' (moins de 185g), de race de ponte.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.153000/pintades-dites-dun-jour-moins-de-185g-de-race-de-ponte",
+      "hs_code": "0105153000",
+      "designation": "Pintades dites 'd'un jour' (moins de 185g) de race de ponte",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Pintades dites 'd'un jour' (moins de 185g) de race de ponte"
+    },
+    {
+      "raw_code": "01.05.941100",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9411.00Volailles de l'espèce gallus domesticus (185g - 2000g): reproducteursVolailles vivantes de l'espèce Gallus domesticus (entre 185 g et 2000 g), reproducteurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.941100/volailles-de-lesp%C3%A8ce-gallus-domesticus-185g-2000g-reproducteurs",
+      "hs_code": "0105941100",
+      "designation": "Volailles de l'espèce Gallus domesticus (185g - 2000g): Reproducteurs",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Volailles de l'espèce Gallus domesticus (185g - 2000g): Reproducteurs"
+    },
+    {
+      "raw_code": "01.05.941200",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9412.00Volailles de l'espèce gallus domesticus (185g - 2000g): pour abattageVolailles vivantes de l'espèce Gallus domesticus (entre 185 g et 2000 g), destinées à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.941200/volailles-de-lesp%C3%A8ce-gallus-domesticus-185g-2000g-pour-abattage",
+      "hs_code": "0105941200",
+      "designation": "Volailles de l'espèce Gallus domesticus (185g - 2000g): Pour abattage",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Volailles de l'espèce Gallus domesticus (185g - 2000g): Pour abattage"
+    },
+    {
+      "raw_code": "01.05.941900",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9419.00Volailles de l'espèce gallus domesticus (185g - 2000g): autresAutres volailles vivantes de l'espèce Gallus domesticus (entre 185 g et 2000 g), non destinées à la reproduction ou à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.941900/volailles-de-lesp%C3%A8ce-gallus-domesticus-185g-2000g-autres",
+      "hs_code": "0105941900",
+      "designation": "Volailles de l'espèce Gallus domesticus (185g - 2000g): Autres",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Volailles de l'espèce Gallus domesticus (185g - 2000g): Autres"
+    },
+    {
+      "raw_code": "01.05.942100",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9421.00Volailles de l'espèce gallus domesticus (plus de 2000g): reproducteursVolailles vivantes de l'espèce Gallus domesticus (plus de 2000 g), reproducteurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.942100/volailles-de-lesp%C3%A8ce-gallus-domesticus-plus-de-2000g-reproducteurs",
+      "hs_code": "0105942100",
+      "designation": "Volailles de l'espèce Gallus domesticus (plus de 2000g): Reproducteurs",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Volailles de l'espèce Gallus domesticus (plus de 2000g): Reproducteurs"
+    },
+    {
+      "raw_code": "01.05.942200",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9422.00Volailles de l'espèce gallus domesticus (plus de 2000g): pour abattageVolailles vivantes de l'espèce Gallus domesticus (plus de 2000 g), destinées à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.942200/volailles-de-lesp%C3%A8ce-gallus-domesticus-plus-de-2000g-pour-abattage",
+      "hs_code": "0105942200",
+      "designation": "Volailles de l'espèce Gallus domesticus (plus de 2000g): Pour abattage",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Volailles de l'espèce Gallus domesticus (plus de 2000g): Pour abattage"
+    },
+    {
+      "raw_code": "01.05.942900",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9429.00Volailles de l'espèce gallus domesticus (plus de 2000g): autresAutres volailles vivantes de l'espèce Gallus domesticus (plus de 2000 g), non destinées à la reproduction ou à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.942900/volailles-de-lesp%C3%A8ce-gallus-domesticus-plus-de-2000g-autres",
+      "hs_code": "0105942900",
+      "designation": "Volailles de l'espèce Gallus domesticus (plus de 2000g): Autres",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Volailles de l'espèce Gallus domesticus (plus de 2000g): Autres"
+    },
+    {
+      "raw_code": "01.05.991100",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9911.00Autres autres dindes et dindons reproducteursDindons et dindes vivants (autres que 'dits d'un jour'), destinés à la reproduction.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.991100/autres-autres-dindes-et-dindons-reproducteurs",
+      "hs_code": "0105991100",
+      "designation": "Autres > Autres > Dindes et dindons > Reproducteurs",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Dindes et dindons > Reproducteurs"
+    },
+    {
+      "raw_code": "01.05.991200",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9912.00Autres autres dindes et dindons pour abattageDindons et dindes vivants (autres que 'dits d'un jour'), destinés à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.991200/autres-autres-dindes-et-dindons-pour-abattage",
+      "hs_code": "0105991200",
+      "designation": "Autres > Autres > Dindes et dindons > Pour abattage",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Dindes et dindons > Pour abattage"
+    },
+    {
+      "raw_code": "01.05.991900",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9919.00Autres autres dindes et dindons autresAutres dindons et dindes vivants (autres que reproducteurs ou pour abattage).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.991900/autres-autres-dindes-et-dindons-autres",
+      "hs_code": "0105991900",
+      "designation": "Autres > Autres > Dindes et dindons > Autres",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Dindes et dindons > Autres"
+    },
+    {
+      "raw_code": "01.05.992100",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9921.00Autres autres canards reproducteursCanards vivants (autres que 'dits d'un jour'), destinés à la reproduction.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.992100/autres-autres-canards-reproducteurs",
+      "hs_code": "0105992100",
+      "designation": "Autres > Autres > Canards > Reproducteurs",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Canards > Reproducteurs"
+    },
+    {
+      "raw_code": "01.05.992200",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9922.00Autres autres canards pour abattageCanards vivants (autres que 'dits d'un jour'), destinés à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.992200/autres-autres-canards-pour-abattage",
+      "hs_code": "0105992200",
+      "designation": "Autres > Autres > Canards > Pour abattage",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Canards > Pour abattage"
+    },
+    {
+      "raw_code": "01.05.992900",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9929.00Autres autres canards autresAutres canards vivants (autres que reproducteurs ou pour abattage).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.992900/autres-autres-canards-autres",
+      "hs_code": "0105992900",
+      "designation": "Autres > Autres > Canards > Autres",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Canards > Autres"
+    },
+    {
+      "raw_code": "01.05.993100",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9931.00Autres autres oies reproducteursOies vivantes (autres que 'dites d'un jour'), destinées à la reproduction.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.993100/autres-autres-oies-reproducteurs",
+      "hs_code": "0105993100",
+      "designation": "Autres > Autres > Oies > Reproducteurs",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Oies > Reproducteurs"
+    },
+    {
+      "raw_code": "01.05.993200",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9932.00Autres autres oies pour abattageOies vivantes (autres que 'dites d'un jour'), destinées à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.993200/autres-autres-oies-pour-abattage",
+      "hs_code": "0105993200",
+      "designation": "Autres > Autres > Oies > Pour abattage",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Oies > Pour abattage"
+    },
+    {
+      "raw_code": "01.05.993900",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9939.00Autres autres oies autresAutres oies vivantes (autres que reproducteurs ou pour abattage).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.993900/autres-autres-oies-autres",
+      "hs_code": "0105993900",
+      "designation": "Autres > Autres > Oies > Autres",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Oies > Autres"
+    },
+    {
+      "raw_code": "01.05.994100",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9941.00Autres autres pintades reproducteursPintades vivantes (autres que 'dites d'un jour'), destinées à la reproduction.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.994100/autres-autres-pintades-reproducteurs",
+      "hs_code": "0105994100",
+      "designation": "Autres > Autres > Pintades > Reproducteurs",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Pintades > Reproducteurs"
+    },
+    {
+      "raw_code": "01.05.994200",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9942.00Autres autres pintades pour abattagePintades vivantes (autres que 'dites d'un jour'), destinées à l'abattage.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.994200/autres-autres-pintades-pour-abattage",
+      "hs_code": "0105994200",
+      "designation": "Autres > Autres > Pintades > Pour abattage",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Pintades > Pour abattage"
+    },
+    {
+      "raw_code": "01.05.994900",
+      "heading": "01.05",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9949.00Autres autres pintades autresAutres pintades vivantes (autres que reproducteurs ou pour abattage).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.05.994900/autres-autres-pintades-autres",
+      "hs_code": "0105994900",
+      "designation": "Autres > Autres > Pintades > Autres",
+      "designation_full": "Animaux vivants > Coqs, poules, canards, oies, dindons, dindes et pintades, vivants, des especes domestiques > Autres > Autres > Pintades > Autres"
+    },
+    {
+      "raw_code": "01.06.111000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1110.00Mammiferes primates destines aux parcs zoologiquesPrimates vivants, destinés aux parcs zoologiques (singes, lémuriens, etc.).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.111000/mammiferes-primates-destines-aux-parcs-zoologiques",
+      "hs_code": "0106111000",
+      "designation": "Mammiferes > Primates > Destines aux parcs zoologiques",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Primates > Destines aux parcs zoologiques"
+    },
+    {
+      "raw_code": "01.06.119000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1190.00Mammiferes primates autresPrimates vivants, autres que ceux destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.119000/mammiferes-primates-autres",
+      "hs_code": "0106119000",
+      "designation": "Mammiferes > Primates > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Primates > Autres"
+    },
+    {
+      "raw_code": "01.06.121100",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1211.00Cétacés vivants: baleines, dauphins et marsouinsMammifères de l'ordre des cétacés vivants (baleines, dauphins et marsouins).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.121100/c%C3%A9tac%C3%A9s-vivants-baleines-dauphins-et-marsouins",
+      "hs_code": "0106121100",
+      "designation": "Cétacés vivants: Baleines, dauphins et marsouins",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Cétacés vivants: Baleines, dauphins et marsouins"
+    },
+    {
+      "raw_code": "01.06.121200",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1212.00Siréniens vivants: lamantins et dugongsMammifères de l'ordre des siréniens vivants (lamantins et dugongs).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.121200/sir%C3%A9niens-vivants-lamantins-et-dugongs",
+      "hs_code": "0106121200",
+      "designation": "Siréniens vivants: Lamantins et dugongs",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Siréniens vivants: Lamantins et dugongs"
+    },
+    {
+      "raw_code": "01.06.122100",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1221.00Otaries, phoques, lions de mer et morses, reproducteurs de race pureOtaries et phoques, lions de mer et morses vivants (Pinnipèdes), reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.122100/otaries-phoques-lions-de-mer-et-morses-reproducteurs-de-race-pure",
+      "hs_code": "0106122100",
+      "designation": "Otaries, phoques, lions de mer et morses, reproducteurs de race pure",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Otaries, phoques, lions de mer et morses, reproducteurs de race pure"
+    },
+    {
+      "raw_code": "01.06.122900",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1229.00Otaries, phoques, lions de mer et morses, autresOtaries et phoques, lions de mer et morses vivants (Pinnipèdes), autres que reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.122900/otaries-phoques-lions-de-mer-et-morses-autres",
+      "hs_code": "0106122900",
+      "designation": "Otaries, phoques, lions de mer et morses, autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Otaries, phoques, lions de mer et morses, autres"
+    },
+    {
+      "raw_code": "01.06.131000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1310.00Mammiferes chameaux et autres camelides (camelidae) reproducteur de race pureChameaux et autres camélidés vivants (chameaux, dromadaires, lamas, alpagas), reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.131000/mammiferes-chameaux-et-autres-camelides-camelidae-reproducteur-de-race-pure",
+      "hs_code": "0106131000",
+      "designation": "Mammiferes > Chameaux et autres camelides (Camelidae) > Reproducteur de race pure",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Chameaux et autres camelides (Camelidae) > Reproducteur de race pure"
+    },
+    {
+      "raw_code": "01.06.139000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1390.00Mammiferes chameaux et autres camelides (camelidae) autresAutres chameaux et camélidés vivants (non reproducteurs de race pure).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.139000/mammiferes-chameaux-et-autres-camelides-camelidae-autres",
+      "hs_code": "0106139000",
+      "designation": "Mammiferes > Chameaux et autres camelides (Camelidae) > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Chameaux et autres camelides (Camelidae) > Autres"
+    },
+    {
+      "raw_code": "01.06.141000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1410.00Mammiferes lapins et lievres reproducteur de race pureLapins et lièvres vivants, reproducteurs de race pure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.141000/mammiferes-lapins-et-lievres-reproducteur-de-race-pure",
+      "hs_code": "0106141000",
+      "designation": "Mammiferes > Lapins et lievres > Reproducteur de race pure",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Lapins et lievres > Reproducteur de race pure"
+    },
+    {
+      "raw_code": "01.06.149100",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1491.00Mammiferes lapins et lievres autres destines aux parcs zoologiquesLapins et lièvres vivants, autres, destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.149100/mammiferes-lapins-et-lievres-autres-destines-aux-parcs-zoologiques",
+      "hs_code": "0106149100",
+      "designation": "Mammiferes > Lapins et lievres > Autres > Destines aux parcs zoologiques",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Lapins et lievres > Autres > Destines aux parcs zoologiques"
+    },
+    {
+      "raw_code": "01.06.149910",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1499.10Mammiferes lapins et lievres autres autres lapinsLapins vivants (autres mammifères vivants).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.149910/mammiferes-lapins-et-lievres-autres-autres-lapins",
+      "hs_code": "0106149910",
+      "designation": "Mammiferes > Lapins et lievres > Autres > Autres > Lapins",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Lapins et lievres > Autres > Autres > Lapins"
+    },
+    {
+      "raw_code": "01.06.149920",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1499.20Mammiferes lapins et lievres autres autres lievresLièvres vivants (autres mammifères vivants).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.149920/mammiferes-lapins-et-lievres-autres-autres-lievres",
+      "hs_code": "0106149920",
+      "designation": "Mammiferes > Lapins et lievres > Autres > Autres > lievres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Lapins et lievres > Autres > Autres > lievres"
+    },
+    {
+      "raw_code": "01.06.191100",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1911.00Mammiferes autres reproducteurs de race pure chiensChiens reproducteurs de race pure, autres mammifères vivants.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.191100/mammiferes-autres-reproducteurs-de-race-pure-chiens",
+      "hs_code": "0106191100",
+      "designation": "Mammiferes > Autres > Reproducteurs de race pure > Chiens",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Autres > Reproducteurs de race pure > Chiens"
+    },
+    {
+      "raw_code": "01.06.191900",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1919.00Mammiferes autres reproducteurs de race pure autresAutres mammifères reproducteurs de race pure non spécifiés ailleurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.191900/mammiferes-autres-reproducteurs-de-race-pure-autres",
+      "hs_code": "0106191900",
+      "designation": "Mammiferes > Autres > Reproducteurs de race pure > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Autres > Reproducteurs de race pure > Autres"
+    },
+    {
+      "raw_code": "01.06.199100",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1991.00Mammiferes autres autres destines aux parcs zoologiquesMammifères vivants autres que les reproducteurs, destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Attestation d'exoneration d.d au profit de l'administration penitentiaire.",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.199100/mammiferes-autres-autres-destines-aux-parcs-zoologiques",
+      "hs_code": "0106199100",
+      "designation": "Mammiferes > Autres > Autres > Destines aux parcs zoologiques",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Autres > Autres > Destines aux parcs zoologiques"
+    },
+    {
+      "raw_code": "01.06.199210",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1992.10Mammiferes autres autres destines a l'elevage pour leur fourrure chamoisChamois vivants, destinés à l'élevage pour leur fourrure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Attestation d'exoneration d.d au profit de l'administration penitentiaire.",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.199210/mammiferes-autres-autres-destines-a-lelevage-pour-leur-fourrure-chamois",
+      "hs_code": "0106199210",
+      "designation": "Mammiferes > Autres > Autres > Destines a l'elevage pour leur fourrure > Chamois",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Autres > Autres > Destines a l'elevage pour leur fourrure > Chamois"
+    },
+    {
+      "raw_code": "01.06.199220",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1992.20Mammiferes autres autres destines a l'elevage pour leur fourrure renardsRenards vivants, destinés à l'élevage pour leur fourrure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Attestation d'exoneration d.d au profit de l'administration penitentiaire.",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.199220/mammiferes-autres-autres-destines-a-lelevage-pour-leur-fourrure-renards",
+      "hs_code": "0106199220",
+      "designation": "Mammiferes > Autres > Autres > Destines a l'elevage pour leur fourrure > Renards",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Autres > Autres > Destines a l'elevage pour leur fourrure > Renards"
+    },
+    {
+      "raw_code": "01.06.199230",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1992.30Mammiferes autres autres destines a l'elevage pour leur fourrure visonsVisons vivants, destinés à l'élevage pour leur fourrure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Attestation d'exoneration d.d au profit de l'administration penitentiaire.",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.199230/mammiferes-autres-autres-destines-a-lelevage-pour-leur-fourrure-visons",
+      "hs_code": "0106199230",
+      "designation": "Mammiferes > Autres > Autres > Destines a l'elevage pour leur fourrure > Visons",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Autres > Autres > Destines a l'elevage pour leur fourrure > Visons"
+    },
+    {
+      "raw_code": "01.06.199290",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1992.90Mammiferes autres autres destines a l'elevage pour leur fourrure autresAutres mammifères vivants, destinés à l'élevage pour leur fourrure.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Attestation d'exoneration d.d au profit de l'administration penitentiaire.",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.199290/mammiferes-autres-autres-destines-a-lelevage-pour-leur-fourrure-autres",
+      "hs_code": "0106199290",
+      "designation": "Mammiferes > Autres > Autres > Destines a l'elevage pour leur fourrure > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Autres > Autres > Destines a l'elevage pour leur fourrure > Autres"
+    },
+    {
+      "raw_code": "01.06.199910",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1999.10Mammiferes autres autres autres antilopes autres que ceux de la sous-famille bovinae du n 01.02Antilopes vivantes (autres que celles de la sous-famille Bovinae du N° 01.02).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Attestation d'exoneration d.d au profit de l'administration penitentiaire.",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.199910/mammiferes-autres-autres-autres-antilopes-autres-que-ceux-de-la-sous-famille-bovinae-du-n-0102",
+      "hs_code": "0106199910",
+      "designation": "Mammiferes > Autres > Autres > Autres > Antilopes autres que ceux de la sous-famille Bovinae du N 01.02",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Autres > Autres > Autres > Antilopes autres que ceux de la sous-famille Bovinae du N 01.02"
+    },
+    {
+      "raw_code": "01.06.199990",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 1999.90Mammiferes autres autres autres autresAutres mammifères vivants non spécifiés ailleurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Attestation d'exoneration d.d au profit de l'administration penitentiaire.",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.199990/mammiferes-autres-autres-autres-autres",
+      "hs_code": "0106199990",
+      "designation": "Mammiferes > Autres > Autres > Autres > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Mammiferes > Autres > Autres > Autres > Autres"
+    },
+    {
+      "raw_code": "01.06.201000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2010.00Reptiles (y compris les serpents et les tortues de mer) destines aux parcs zoologiquesReptiles vivants (y compris les serpents et les tortues de mer) destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.201000/reptiles-y-compris-les-serpents-et-les-tortues-de-mer-destines-aux-parcs-zoologiques",
+      "hs_code": "0106201000",
+      "designation": "Reptiles (y compris les serpents et les tortues de mer) > Destines aux parcs zoologiques",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Reptiles (y compris les serpents et les tortues de mer) > Destines aux parcs zoologiques"
+    },
+    {
+      "raw_code": "01.06.209100",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2091.00Reptiles (y compris les serpents et les tortues de mer) autres tortuesTortues vivantes (autres reptiles).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.209100/reptiles-y-compris-les-serpents-et-les-tortues-de-mer-autres-tortues",
+      "hs_code": "0106209100",
+      "designation": "Reptiles (y compris les serpents et les tortues de mer) > Autres > Tortues",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Reptiles (y compris les serpents et les tortues de mer) > Autres > Tortues"
+    },
+    {
+      "raw_code": "01.06.209900",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 2099.00Reptiles (y compris les serpents et les tortues de mer) autres autres reptilesAutres reptiles vivants non spécifiés (autres que les tortues).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.209900/reptiles-y-compris-les-serpents-et-les-tortues-de-mer-autres-autres-reptiles",
+      "hs_code": "0106209900",
+      "designation": "Reptiles (y compris les serpents et les tortues de mer) > Autres > Autres reptiles",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Reptiles (y compris les serpents et les tortues de mer) > Autres > Autres reptiles"
+    },
+    {
+      "raw_code": "01.06.311000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3110.00Oiseaux oiseaux de proie destines aux parcs zoologiquesOiseaux de proie vivants destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.311000/oiseaux-oiseaux-de-proie-destines-aux-parcs-zoologiques",
+      "hs_code": "0106311000",
+      "designation": "Oiseaux > Oiseaux de proie > Destines aux parcs zoologiques",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Oiseaux de proie > Destines aux parcs zoologiques"
+    },
+    {
+      "raw_code": "01.06.319000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3190.00Oiseaux oiseaux de proie autresAutres oiseaux de proie vivants non destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.319000/oiseaux-oiseaux-de-proie-autres",
+      "hs_code": "0106319000",
+      "designation": "Oiseaux > Oiseaux de proie > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Oiseaux de proie > Autres"
+    },
+    {
+      "raw_code": "01.06.321000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3210.00Oiseaux psittaciformes (y compris les perroquets, perruches, aras et cacatoes) destines aux parcs zoologiquesPsittaciformes (perroquets, perruches, aras et cacatoès) vivants, destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.321000/oiseaux-psittaciformes-y-compris-les-perroquets-perruches-aras-et-cacatoes-destines-aux-parcs-zoologiques",
+      "hs_code": "0106321000",
+      "designation": "Oiseaux > Psittaciformes (y compris les perroquets, perruches, aras et cacatoes) > Destines aux parcs zoologiques",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Psittaciformes (y compris les perroquets, perruches, aras et cacatoes) > Destines aux parcs zoologiques"
+    },
+    {
+      "raw_code": "01.06.329000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3290.00Oiseaux psittaciformes (y compris les perroquets, perruches, aras et cacatoes) autresAutres Psittaciformes (perroquets, perruches, aras et cacatoès) vivants.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.329000/oiseaux-psittaciformes-y-compris-les-perroquets-perruches-aras-et-cacatoes-autres",
+      "hs_code": "0106329000",
+      "designation": "Oiseaux > Psittaciformes (y compris les perroquets, perruches, aras et cacatoes) > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Psittaciformes (y compris les perroquets, perruches, aras et cacatoes) > Autres"
+    },
+    {
+      "raw_code": "01.06.331000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3310.00Oiseaux autruches , emeus (dromaius novaehollandiae) destines aux parcs zoologiquesAutruches et émeus (Dromaius novaehollandiae) vivants, destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.331000/oiseaux-autruches-emeus-dromaius-novaehollandiae-destines-aux-parcs-zoologiques",
+      "hs_code": "0106331000",
+      "designation": "Oiseaux > Autruches , emeus (Dromaius novaehollandiae) > Destines aux parcs zoologiques",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Autruches , emeus (Dromaius novaehollandiae) > Destines aux parcs zoologiques"
+    },
+    {
+      "raw_code": "01.06.339000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3390.00Oiseaux autruches , emeus (dromaius novaehollandiae) autresAutres autruches et émeus (Dromaius novaehollandiae) vivants.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.339000/oiseaux-autruches-emeus-dromaius-novaehollandiae-autres",
+      "hs_code": "0106339000",
+      "designation": "Oiseaux > Autruches , emeus (Dromaius novaehollandiae) > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Autruches , emeus (Dromaius novaehollandiae) > Autres"
+    },
+    {
+      "raw_code": "01.06.391000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3910.00Oiseaux autres destines aux parcs zoologiquesAutres oiseaux vivants non spécifiés, destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.391000/oiseaux-autres-destines-aux-parcs-zoologiques",
+      "hs_code": "0106391000",
+      "designation": "Oiseaux > Autres > Destines aux parcs zoologiques",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Autres > Destines aux parcs zoologiques"
+    },
+    {
+      "raw_code": "01.06.399100",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3991.00Oiseaux autres autres pigeonsPigeons vivants (autres oiseaux vivants).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.399100/oiseaux-autres-autres-pigeons",
+      "hs_code": "0106399100",
+      "designation": "Oiseaux > Autres > Autres > Pigeons",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Autres > Autres > Pigeons"
+    },
+    {
+      "raw_code": "01.06.399200",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3992.00Oiseaux autres autres perdrix, cailles?et grivesPerdrix, cailles et grives vivantes (autres oiseaux vivants).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.399200/oiseaux-autres-autres-perdrix-cailleset-grives",
+      "hs_code": "0106399200",
+      "designation": "Oiseaux > Autres > Autres > Perdrix, cailles?et grives",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Autres > Autres > Perdrix, cailles?et grives"
+    },
+    {
+      "raw_code": "01.06.399300",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3993.00Oiseaux autres autres becassinesBécassines vivantes (autres oiseaux vivants).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.399300/oiseaux-autres-autres-becassines",
+      "hs_code": "0106399300",
+      "designation": "Oiseaux > Autres > Autres > Becassines",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Autres > Autres > Becassines"
+    },
+    {
+      "raw_code": "01.06.399400",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3994.00Oiseaux autres autres canards sauvages, oies sauvages, coqs de bruyere et grousesCanards sauvages, Oies sauvages, coqs de bruyère et grouses vivants (autres oiseaux).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.399400/oiseaux-autres-autres-canards-sauvages-oies-sauvages-coqs-de-bruyere-et-grouses",
+      "hs_code": "0106399400",
+      "designation": "Oiseaux > Autres > Autres > Canards sauvages, Oies sauvages, coqs de bruyere et grouses",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Autres > Autres > Canards sauvages, Oies sauvages, coqs de bruyere et grouses"
+    },
+    {
+      "raw_code": "01.06.399900",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 3999.00Oiseaux autres autres autresAutres oiseaux vivants non spécifiés ailleurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.399900/oiseaux-autres-autres-autres",
+      "hs_code": "0106399900",
+      "designation": "Oiseaux > Autres > Autres > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Oiseaux > Autres > Autres > Autres"
+    },
+    {
+      "raw_code": "01.06.410000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 4100.00Insectes abeillesAbeilles vivantes (insectes).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 5.0,
+          "raw": "5%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.410000/insectes-abeilles",
+      "hs_code": "0106410000",
+      "designation": "Insectes > Abeilles",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Insectes > Abeilles"
+    },
+    {
+      "raw_code": "01.06.490000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 4900.00Insectes autresAutres insectes vivants non spécifiés.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.490000/insectes-autres",
+      "hs_code": "0106490000",
+      "designation": "Insectes > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Insectes > Autres"
+    },
+    {
+      "raw_code": "01.06.901000",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9010.00Autres destines aux parcs zoologiquesAutres animaux vivants non spécifiés (non mammifères, reptiles, oiseaux ou insectes) destinés aux parcs zoologiques.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.901000/autres-destines-aux-parcs-zoologiques",
+      "hs_code": "0106901000",
+      "designation": "Autres > Destines aux parcs zoologiques",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Autres > Destines aux parcs zoologiques"
+    },
+    {
+      "raw_code": "01.06.909100",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9091.00Autres autres grenouillesGrenouilles vivantes (autres animaux vivants).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.909100/autres-autres-grenouilles",
+      "hs_code": "0106909100",
+      "designation": "Autres > Autres > Grenouilles",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Autres > Autres > Grenouilles"
+    },
+    {
+      "raw_code": "01.06.909200",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9092.00Autres autres vers de terreVers de terre vivants (autres animaux vivants).",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+        "Certificat d'origine dans le cadre -zale- exo d.d"
+      ],
+      "formalities": [
+        "Visa de controle sanitaire veterinaire (m. agriculture)",
+        "Derogation sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.909200/autres-autres-vers-de-terre",
+      "hs_code": "0106909200",
+      "designation": "Autres > Autres > Vers de terre",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Autres > Autres > Vers de terre"
+    },
+    {
+      "raw_code": "01.06.909900",
+      "heading": "01.06",
+      "chapter": "01",
+      "section": "01",
+      "name": "Sous-position 9099.00Autres autres autresAutres animaux vivants non spécifiés ailleurs.",
+      "taxes": {
+        "DD": {
+          "name": "Droit de douane",
+          "rate": 30.0,
+          "raw": "30%"
+        },
+        "TVA": {
+          "name": "TVA",
+          "rate": 19.0,
+          "raw": "19%"
+        },
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [
+        "Certificat d'origine dans le cadre -zale- exo d.d",
+        "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne"
+      ],
+      "formalities": [
+        "Derogation sanitaire veterinaire (m. agriculture)",
+        "Visa de controle sanitaire veterinaire (m. agriculture)"
+      ],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.06.909900/autres-autres-autres",
+      "hs_code": "0106909900",
+      "designation": "Autres > Autres > Autres",
+      "designation_full": "Animaux vivants > Autres animaux vivants. > Autres > Autres > Autres"
+    }
+  ]
+}
