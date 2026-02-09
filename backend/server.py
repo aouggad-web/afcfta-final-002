@@ -560,6 +560,19 @@ async def get_crawl_sources():
     
     return sources
 
+@api_router.get("/crawl/download-sample/{country_code}")
+async def download_crawl_sample(country_code: str):
+    from starlette.responses import FileResponse
+    country_code = country_code.upper()
+    sample_path = Path(__file__).parent / "data" / "crawled" / f"{country_code}_sample.csv"
+    if not sample_path.exists():
+        raise HTTPException(status_code=404, detail=f"Pas de fichier échantillon pour {country_code}")
+    return FileResponse(
+        str(sample_path),
+        media_type="text/csv",
+        filename=f"{country_code}_tarif_douanier_echantillon.csv",
+    )
+
 @api_router.post("/calculate-tariff", response_model=TariffCalculationResponse)
 async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     """Calculer les tarifs complets avec données tarifaires collectées et vérifiées
