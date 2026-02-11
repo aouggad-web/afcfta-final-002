@@ -548,3 +548,14 @@ tariff_engine/normalized/*.json
 venv/
 __pycache__/
 *.pyc
+
+# Tariff engine outputs
+tariff_engine/pdf_sources/
+tariff_engine/raw_tables/
+tariff_engine/normalized/*.csv
+tariff_engine/normalized/*.json
+
+# Python
+venv/
+__pycache__/
+*.pyc
