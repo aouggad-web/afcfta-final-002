@@ -572,6 +572,84 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               )}
 
+              {/* Information sur la position tarifaire nationale (données crawlées authentiques) */}
+              {result.tariff_precision === 'national_position' && (
+                <div className="result-section tariff-info-section bg-gradient-to-r from-emerald-50 to-green-50 p-5 rounded-xl border border-emerald-200 shadow-sm">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Package className="w-6 h-6 text-emerald-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <h4 className="font-bold text-emerald-800">
+                          {language === 'fr' ? 'Position tarifaire nationale' : 'National tariff position'}
+                        </h4>
+                        <Badge className="bg-emerald-700 text-white text-xs">
+                          {language === 'fr' ? 'Données authentiques' : 'Authentic data'}
+                        </Badge>
+                        {result.data_source && (
+                          <Badge variant="outline" className="text-xs text-emerald-600 border-emerald-300">
+                            {result.data_source === 'crawled_authentic' ? (language === 'fr' ? 'Source officielle' : 'Official source') : result.data_source}
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="font-mono text-lg font-bold text-emerald-900 mb-1">{result.sub_position_used}</p>
+                      {result.sub_position_description && (
+                        <p className="text-gray-700 text-sm">{result.sub_position_description}</p>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 flex-shrink-0">
+                      <div className="bg-red-50 p-3 rounded-lg text-center border border-red-100">
+                        <p className="text-xs text-red-500 font-medium">{t.normalRate}</p>
+                        <p className="font-bold text-red-600 text-lg">{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
+                      </div>
+                      <div className="bg-green-50 p-3 rounded-lg text-center border border-green-100">
+                        <p className="text-xs text-green-500 font-medium">{t.zlecafRate}</p>
+                        <p className="font-bold text-green-600 text-lg">{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
+                      </div>
+                    </div>
+                  </div>
+                  {result.taxes_detail && result.taxes_detail.length > 0 && (
+                    <div className="mt-4 pl-16">
+                      <h5 className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+                        {language === 'fr' ? 'Taxes applicables' : 'Applicable taxes'}
+                      </h5>
+                      <div className="flex flex-wrap gap-1.5">
+                        {result.taxes_detail.map((tax, tIdx) => (
+                          <span key={tIdx} className="text-xs bg-white border border-emerald-200 text-gray-700 px-2 py-1 rounded-md">
+                            {tax.tax}: <strong>{tax.rate}%</strong>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {result.administrative_formalities && result.administrative_formalities.length > 0 && (
+                    <div className="mt-3 pl-16">
+                      <h5 className="text-xs font-semibold text-orange-600 mb-1">
+                        {language === 'fr' ? 'Formalités administratives' : 'Administrative formalities'}
+                      </h5>
+                      {result.administrative_formalities.map((f, fIdx) => (
+                        <p key={fIdx} className="text-xs text-orange-700">
+                          {typeof f === 'string' ? f : f.description || ''}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
+                    <div className="mt-3 pl-16">
+                      <h5 className="text-xs font-semibold text-blue-600 mb-1">
+                        {language === 'fr' ? 'Avantages fiscaux' : 'Fiscal advantages'}
+                      </h5>
+                      {result.fiscal_advantages.map((a, aIdx) => (
+                        <p key={aIdx} className="text-xs text-blue-700">
+                          {typeof a === 'string' ? a : a.description || ''}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Information sur le tarif SH6 précis */}
               {result.tariff_precision === 'hs6_country' && (
                 <div className="result-section tariff-info-section bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-xl border border-blue-200 shadow-sm">

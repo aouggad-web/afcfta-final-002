@@ -2201,12 +2201,33 @@ async def get_hs6_sub_position_suggestions(
     # Suggestions génériques basées sur la base HS6
     generic_suggestions = get_sub_position_suggestions(hs6, language)
     
-    # Si un pays est spécifié, obtenir les sous-positions nationales réelles
     country_sub_positions = []
+    authentic_data = False
     if country_code:
-        country_sub_positions = get_all_sub_positions(country_code.upper(), hs6)
+        cc = country_code.upper()
+        crawled_positions = crawled_service.lookup_by_hs6(cc, hs6)
+        if crawled_positions:
+            for cp in crawled_positions:
+                dd_tax = next((t for t in cp.get("taxes", []) if t["code"] in ("DD", "DI", "DDDROIT")), None)
+                dd_rate_pct = f"{dd_tax['rate_pct']}%" if dd_tax and dd_tax.get("rate_pct") is not None else ""
+                taxes_display = [f"{t['name']}: {t.get('raw_value', t.get('rate_pct', ''))}{'%' if t.get('rate_pct') is not None and '%' not in str(t.get('raw_value', '')) else ''}" for t in cp.get("taxes", [])]
+                country_sub_positions.append({
+                    "code": cp["code_raw"],
+                    "code_clean": cp["code_clean"],
+                    "dd_rate_pct": dd_rate_pct,
+                    "description_fr": cp["designation"],
+                    "description": cp["designation"],
+                    "taxes": cp.get("taxes", []),
+                    "taxes_display": taxes_display,
+                    "fiscal_advantages": cp.get("fiscal_advantages", []),
+                    "administrative_formalities": cp.get("administrative_formalities", []),
+                    "source": cp.get("source", ""),
+                    "data_source": "crawled_authentic",
+                })
+            authentic_data = True
+        else:
+            country_sub_positions = get_all_sub_positions(cc, hs6)
     
-    # Info de base sur le HS6
     hs6_info = get_hs6_info(hs6, language)
     
     return {
@@ -2216,7 +2237,8 @@ async def get_hs6_sub_position_suggestions(
         "generic_suggestions": generic_suggestions,
         "country_code": country_code.upper() if country_code else None,
         "country_sub_positions": country_sub_positions,
-        "has_country_specific_rates": len(country_sub_positions) > 0
+        "has_country_specific_rates": len(country_sub_positions) > 0,
+        "authentic_data": authentic_data
     }
 
 
@@ -2336,15 +2358,40 @@ async def smart_search_with_suggestions(
     for result in hs6_results:
         enriched = result.copy()
         
-        if include_sub_positions and result["has_sub_positions"]:
-            # Suggestions génériques
-            enriched["sub_position_suggestions"] = get_sub_position_suggestions(result["code"], language)
+        if include_sub_positions:
+            enriched["sub_position_suggestions"] = get_sub_position_suggestions(result["code"], language) if result["has_sub_positions"] else []
             
-            # Sous-positions nationales si pays fourni
             if country_code:
-                country_subs = get_all_sub_positions(country_code.upper(), result["code"])
-                enriched["country_sub_positions"] = country_subs
-                enriched["has_varying_rates"] = len(country_subs) > 1
+                cc = country_code.upper()
+                crawled_positions = crawled_service.lookup_by_hs6(cc, result["code"])
+                if crawled_positions:
+                    country_subs = []
+                    for cp in crawled_positions:
+                        dd_tax = next((t for t in cp.get("taxes", []) if t["code"] in ("DD", "DI", "DDDROIT")), None)
+                        dd_rate_pct = f"{dd_tax['rate_pct']}%" if dd_tax and dd_tax.get("rate_pct") is not None else ""
+                        taxes_display = [f"{t['name']}: {t.get('raw_value', t.get('rate_pct', ''))}{'%' if t.get('rate_pct') is not None and '%' not in str(t.get('raw_value', '')) else ''}" for t in cp.get("taxes", [])]
+                        country_subs.append({
+                            "code": cp["code_raw"],
+                            "code_clean": cp["code_clean"],
+                            "dd_rate_pct": dd_rate_pct,
+                            "description_fr": cp["designation"],
+                            "description": cp["designation"],
+                            "taxes": cp.get("taxes", []),
+                            "taxes_display": taxes_display,
+                            "fiscal_advantages": cp.get("fiscal_advantages", []),
+                            "administrative_formalities": cp.get("administrative_formalities", []),
+                            "source": cp.get("source", ""),
+                            "data_source": "crawled_authentic",
+                        })
+                    enriched["country_sub_positions"] = country_subs
+                    enriched["has_varying_rates"] = len(country_subs) > 1
+                    enriched["has_sub_positions"] = True
+                    enriched["authentic_data"] = True
+                else:
+                    country_subs = get_all_sub_positions(cc, result["code"])
+                    enriched["country_sub_positions"] = country_subs
+                    enriched["has_varying_rates"] = len(country_subs) > 1
+                    enriched["authentic_data"] = False
         
         # Règle d'origine
         rule = get_rule_of_origin(result["code"], language)
