@@ -104,6 +104,7 @@ from etl.hs6_database import (
 from routes import register_routes
 
 from services.tariff_data_service import tariff_service
+from services.crawled_data_service import crawled_service
 
 try:
     from backend.notifications import NotificationManager
@@ -396,6 +397,7 @@ async def get_rules_of_origin(hs_code: str, lang: str = "fr"):
 async def get_tariff_data_status():
     """Statut du service de données tarifaires collectées"""
     stats = tariff_service.get_stats()
+    crawled_stats = crawled_service.get_stats()
     return {
         "status": "active" if stats["loaded"] and stats["countries"] > 0 else "inactive",
         "data_source": "collected_verified" if stats["loaded"] and stats["countries"] > 0 else "etl_fallback",
@@ -403,8 +405,47 @@ async def get_tariff_data_status():
         "total_hs6_lines": stats["total_hs6_lines"],
         "total_sub_positions": stats["total_sub_positions"],
         "total_positions": stats["total_positions"],
+        "crawled_data": crawled_stats,
         "description": "Données tarifaires consolidées et vérifiées pour le calculateur" if stats["loaded"] else "Utilisation des modules ETL comme source de données"
     }
+
+@api_router.get("/crawled-data/status")
+async def get_crawled_data_status():
+    """Statut des données authentiques crawlées depuis les sites officiels"""
+    return crawled_service.get_stats()
+
+@api_router.post("/crawled-data/reload")
+async def reload_crawled_data():
+    """Recharger les données crawlées après un nouveau crawl"""
+    crawled_service.load(force=True)
+    stats = crawled_service.get_stats()
+    return {"status": "reloaded", **stats}
+
+@api_router.get("/crawled-data/lookup/{country_code}/{hs_code}")
+async def lookup_crawled_position(country_code: str, hs_code: str):
+    """Rechercher une position dans les données crawlées authentiques"""
+    if not crawled_service.is_loaded():
+        return {"error": "Données crawlées non chargées", "available": False}
+    
+    result = crawled_service.lookup(country_code.upper(), hs_code)
+    if not result:
+        sub_positions = crawled_service.lookup_by_hs6(country_code.upper(), hs_code[:6])
+        if sub_positions:
+            return {
+                "exact_match": False,
+                "hs6_sub_positions": sub_positions[:20],
+                "total_sub_positions": len(sub_positions),
+                "message": f"Position exacte non trouvée. {len(sub_positions)} sous-positions disponibles pour le HS6 {hs_code[:6]}"
+            }
+        return {"exact_match": False, "message": "Position non trouvée dans les données crawlées", "available": False}
+    
+    return {"exact_match": True, "position": result}
+
+@api_router.get("/crawled-data/search/{country_code}")
+async def search_crawled_positions(country_code: str, q: str = Query(..., min_length=2), limit: int = Query(50, le=200)):
+    """Rechercher dans les données crawlées par code ou désignation"""
+    results = crawled_service.search(country_code.upper(), q, limit=limit)
+    return {"query": q, "country": country_code.upper(), "results": results, "count": len(results)}
 
 crawl_jobs = {}
 
@@ -708,20 +749,80 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     hs6_code = hs_code_clean[:6].zfill(6)
     sector_code = hs6_code[:2]
     
-    # Variables pour traçabilité
     tariff_precision = "chapter"
     sub_position_used = None
     sub_position_description = None
     data_source = "etl_fallback"
     
-    # ============================================================
-    # SOURCE PRINCIPALE: Données tarifaires collectées et vérifiées
-    # ============================================================
     collected_taxes_detail = []
     collected_fiscal_advantages = []
     collected_admin_formalities = []
+    crawled_raw_taxes = []
 
-    if tariff_service.is_loaded():
+    # ============================================================
+    # PRIORITÉ 1: Données crawlées authentiques (sites officiels)
+    # ============================================================
+    if crawled_service.is_loaded():
+        crawled_result = crawled_service.lookup(dest_iso3, hs_code_clean)
+        if crawled_result:
+            data_source = "crawled_authentic"
+            sub_position_used = crawled_result["code_raw"]
+            sub_position_description = crawled_result["designation"]
+            tariff_precision = "national_position"
+            crawled_raw_taxes = crawled_result["taxes"]
+            raw_advantages = crawled_result.get("fiscal_advantages", [])
+            collected_fiscal_advantages = [
+                item if isinstance(item, dict) else {"description": item, "source": crawled_result["source"]}
+                for item in raw_advantages
+            ]
+            raw_formalities = crawled_result.get("administrative_formalities", [])
+            collected_admin_formalities = [
+                item if isinstance(item, dict) else {"description": item, "source": crawled_result["source"]}
+                for item in raw_formalities
+            ]
+
+            dd_tax = next((t for t in crawled_raw_taxes if t["code"] in ("DD", "DI", "DDDROIT", "Droit d'Importation (DI)")), None)
+            if dd_tax and dd_tax.get("rate_pct") is not None:
+                normal_rate = dd_tax["rate_pct"] / 100.0
+            else:
+                normal_rate = 0.0
+            npf_source = f"Source officielle: {crawled_result['source']}"
+
+            vat_tax = next((t for t in crawled_raw_taxes if t["code"] in ("TVA", "TVA/APTAXE") or "TVA" in t.get("name", "").upper() or "Valeur Ajoutée" in t.get("name", "")), None)
+            if vat_tax and vat_tax.get("rate_pct") is not None:
+                vat_rate = vat_tax["rate_pct"] / 100.0
+                vat_source = f"{vat_tax['name']} ({crawled_result['source']})"
+            else:
+                vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
+
+            other_taxes_rate = 0.0
+            other_taxes_detail = {}
+            for t in crawled_raw_taxes:
+                if t["code"] not in ("DD", "DI", "DDDROIT", "Droit d'Importation (DI)") and "TVA" not in t.get("code", "").upper() and "Valeur Ajoutée" not in t.get("name", ""):
+                    if t.get("rate_pct") is not None:
+                        other_taxes_rate += t["rate_pct"] / 100.0
+                        other_taxes_detail[t["code"]] = t["rate_pct"]
+
+            collected_taxes_detail = [
+                {
+                    "tax": t["name"],
+                    "rate": t["rate_pct"] if t.get("rate_pct") is not None else 0,
+                    "raw_value": t.get("raw_value", ""),
+                    "observation": f"Source: {t.get('source', crawled_result['source'])}",
+                }
+                for t in crawled_raw_taxes
+            ]
+
+            from etl.country_tariffs_complete import get_product_category, get_zlecaf_reduction_factor
+            product_category = get_product_category(hs6_code)
+            reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
+            zlecaf_rate = normal_rate * reduction_factor
+            zlecaf_source = f"ZLECAf ({product_category})"
+
+    # ============================================================
+    # PRIORITÉ 2: Données collectées ETL enrichies
+    # ============================================================
+    if data_source != "crawled_authentic" and tariff_service.is_loaded():
         tariff_info = tariff_service.get_tariff_precision_info(dest_iso3, hs_code_clean)
         if tariff_info:
             normal_rate = tariff_info["rate"]
@@ -765,9 +866,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                 other_taxes_rate, other_taxes_detail = tariff_service.get_other_taxes(dest_iso3)
     
     # ============================================================
-    # FALLBACK: Modules ETL si données collectées non disponibles
+    # PRIORITÉ 3: Modules ETL (fallback)
     # ============================================================
-    if data_source != "collected_verified":
+    if data_source not in ("crawled_authentic", "collected_verified"):
         if len(hs_code_clean) > 6:
             rate, description, source = get_sub_position_rate(dest_iso3, hs_code_clean)
             if rate is not None:
@@ -2591,6 +2692,17 @@ except Exception as e:
 @app.on_event("startup")
 async def startup_load_tariff_data():
     """Load collected tariff data on startup for the calculator"""
+    try:
+        crawled_service.load()
+        crawled_stats = crawled_service.get_stats()
+        if crawled_stats["total_positions"] > 0:
+            logging.info(f"Crawled data service ready: {crawled_stats['countries']} countries, "
+                         f"{crawled_stats['total_positions']:,} authentic positions")
+        else:
+            logging.info("No crawled data found yet.")
+    except Exception as e:
+        logging.warning(f"Crawled data service startup: {e}")
+
     try:
         tariff_service.load()
         stats = tariff_service.get_stats()

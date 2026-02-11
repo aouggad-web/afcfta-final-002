@@ -107,7 +107,22 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
   - ~96 chapters × ~100-900 positions/chapter
 - **Planned crawlers**: Côte d'Ivoire (guce.gouv.ci), Cameroon, Senegal, South Africa, Kenya
 
+## Crawled Data Integration
+- **CrawledDataService**: `backend/services/crawled_data_service.py` - Singleton service loading authentic crawled data
+  - Loads from `backend/data/crawled/*_tariffs.json` at startup
+  - Normalizes 3 different country formats (DZA/TUN/MAR) into common schema
+  - Indexes by exact HS code and HS6 prefix for fast lookup
+  - 47,741 authentic positions indexed (DZA: 17,115, TUN: 17,512, MAR: 13,114)
+- **Calculator priority**: crawled_authentic → collected_verified (ETL) → etl_fallback
+- **Data source field**: `data_source` in response indicates origin ("crawled_authentic" for verified data)
+- **API endpoints**:
+  - `GET /api/crawled-data/status` - Service status and loaded countries
+  - `POST /api/crawled-data/reload` - Reload after new crawl completes
+  - `GET /api/crawled-data/lookup/{country}/{hs_code}` - Direct lookup
+  - `GET /api/crawled-data/search/{country}?q=...` - Search by code or designation
+
 ## Recent Changes
+- 2026-02-11: Integrated 47,741 authentic crawled positions into calculator - CrawledDataService with 3-tier priority (crawled → ETL → fallback), new API endpoints for lookup/search/reload
 - 2026-02-09: Built Morocco web crawler for douane.gov.ma/adil - extracts 10-digit positions with DI, TPI, TVA, TIC taxes and import formalities. Session-per-chapter approach bypasses ASP session constraints.
 - 2026-02-09: Tunisia crawler operational - 11-digit NDP codes with DD, TVA, RPD, DC, FODEC, preferential tariffs, regulatory requirements
 - 2026-02-09: Built Algeria web crawler for conformepro.dz - extracts real national sub-positions with exact designations, tax rates (DD, TVA, TCS, PRCT), fiscal advantages and formalities. Added crawl management API (start/status/data/sources endpoints)
