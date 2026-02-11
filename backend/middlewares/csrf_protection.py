@@ -19,6 +19,12 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             "/api/openapi.json",
             "/api/redoc",
             "/api/health",
+            "/api/calculate-tariff",
+            "/api/tariff-data",
+            "/api/crawl",
+            "/api/crawled-data",
+            "/api/hs-codes",
+            "/api/hs6",
             "/api/",
         ]
 
