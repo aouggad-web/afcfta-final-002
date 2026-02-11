@@ -537,3 +537,14 @@ data_update_report.json
 /ports_africains_enriched_pro.json
 /airports_africains_original.json
 /*.csv.backup
+
+# Tariff engine outputs
+tariff_engine/pdf_sources/
+tariff_engine/raw_tables/
+tariff_engine/normalized/*.csv
+tariff_engine/normalized/*.json
+
+# Python
+venv/
+__pycache__/
+*.pyc
