@@ -45,7 +45,15 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             response.headers[CSRF_HEADER] = token
             return response
 
-        path = request.url.path
+        raw_path = request.url.path
+        path = raw_path
+        if not path.startswith("/"):
+            parts = raw_path.split("/api/", 1)
+            if len(parts) > 1:
+                path = "/api/" + parts[1]
+            else:
+                path = "/" + raw_path.split("/", 1)[-1] if "/" in raw_path else raw_path
+
         if any(path.startswith(p) for p in self.exempt_paths):
             return await call_next(request)
 
