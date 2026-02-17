@@ -105,14 +105,29 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
   - Taxes: DI (Droit d'Importation), TPI (Taxe Parafiscale), TVA, TIC
   - Rate limiting: 2s between requests
   - ~96 chapters × ~100-900 positions/chapter
-- **Planned crawlers**: Côte d'Ivoire (guce.gouv.ci), Cameroon, Senegal, South Africa, Kenya
+- **Planned crawlers**: Côte d'Ivoire (guce.gouv.ci), Cameroon, Senegal, Kenya
+- **Nigeria CET scraper**: `backend/crawlers/countries/nigeria_cet_scraper.py` - Extracts HS10 positions from ECOWAS CET PDFs
+  - Source: customs.gov.ng - 97 chapter PDFs
+  - PyMuPDF find_tables() for structured extraction
+  - Taxes: ID (Import Duty), VAT, IAT (Import Adjustment Tax), EXC (Excise Duty)
+  - 6,363 positions across 96 chapters
+- **South Africa SARS scraper**: `backend/crawlers/countries/southafrica_sars_scraper.py` - Extracts SACU tariff from single PDF
+  - Source: sars.gov.za - Schedule 1 Part 1 (703 pages)
+  - HS8 codes with 6 duty columns: General, EU/UK, EFTA, SADC, MERCOSUR, AfCFTA
+  - 8,589 positions per SACU country (ZAF, BWA, LSO, SWZ, NAM)
+  - Compound rates supported (e.g., "25% or 220c/kg")
 
 ## Crawled Data Integration
 - **CrawledDataService**: `backend/services/crawled_data_service.py` - Singleton service loading authentic crawled data
   - Loads from `backend/data/crawled/*_tariffs.json` at startup
-  - Normalizes 3 different country formats (DZA/TUN/MAR) into common schema
+  - Normalizes 5 different country formats (DZA/TUN/MAR/NGA/SACU) into common schema
   - Indexes by exact HS code and HS6 prefix for fast lookup
-  - 47,741 authentic positions indexed (DZA: 17,115, TUN: 17,512, MAR: 13,114)
+  - 97,036 authentic positions indexed across 9 countries:
+    - DZA: 17,115 (conformepro.dz)
+    - TUN: 17,512 (douane.gov.tn)
+    - MAR: 13,114 (douane.gov.ma)
+    - NGA: 6,363 (customs.gov.ng - ECOWAS CET)
+    - ZAF/BWA/LSO/SWZ/NAM: 8,589 each (sars.gov.za - SACU)
 - **Calculator priority**: crawled_authentic → collected_verified (ETL) → etl_fallback
 - **Data source field**: `data_source` in response indicates origin ("crawled_authentic" for verified data)
 - **API endpoints**:
@@ -122,6 +137,8 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
   - `GET /api/crawled-data/search/{country}?q=...` - Search by code or designation
 
 ## Recent Changes
+- 2026-02-17: Added Nigeria CET scraper (6,363 HS10 positions from 97 PDF chapters) and South Africa SARS/SACU scraper (8,589 HS8 positions for 5 SACU countries). Total: 97,036 authentic positions across 9 countries.
+- 2026-02-17: Updated CrawledDataService with `_normalize_standard()` for NGA/SACU formats, supporting all 9 countries
 - 2026-02-11: Integrated 47,741 authentic crawled positions into calculator - CrawledDataService with 3-tier priority (crawled → ETL → fallback), new API endpoints for lookup/search/reload
 - 2026-02-09: Built Morocco web crawler for douane.gov.ma/adil - extracts 10-digit positions with DI, TPI, TVA, TIC taxes and import formalities. Session-per-chapter approach bypasses ASP session constraints.
 - 2026-02-09: Tunisia crawler operational - 11-digit NDP codes with DD, TVA, RPD, DC, FODEC, preferential tariffs, regulatory requirements

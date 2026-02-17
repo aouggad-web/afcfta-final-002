@@ -97,7 +97,36 @@ class CrawledDataService:
             return self._normalize_tun(pos)
         elif country_code == "MAR":
             return self._normalize_mar(pos)
+        elif country_code == "NGA":
+            return self._normalize_standard(pos, country_code)
+        elif country_code in ("ZAF", "BWA", "LSO", "SWZ", "NAM"):
+            return self._normalize_standard(pos, country_code)
         return None
+
+    def _normalize_standard(self, pos: dict, country_code: str) -> Optional[dict]:
+        code_raw = pos.get("code_raw", "")
+        code_clean = pos.get("code_clean", code_raw.replace(".", "").replace(" ", ""))
+        if not code_clean:
+            return None
+
+        taxes = pos.get("taxes", [])
+        if not isinstance(taxes, list):
+            taxes = []
+
+        return {
+            "code_raw": code_raw,
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "chapter": pos.get("chapter", ""),
+            "heading": pos.get("heading", ""),
+            "statistical_unit": pos.get("statistical_unit", ""),
+            "check_digit": pos.get("check_digit", ""),
+            "taxes": taxes,
+            "fiscal_advantages": pos.get("fiscal_advantages", []),
+            "administrative_formalities": pos.get("administrative_formalities", []),
+            "source": pos.get("source", ""),
+            "country": country_code,
+        }
 
     def _normalize_dza(self, pos: dict) -> Optional[dict]:
         raw_code = pos.get("raw_code", "")
