@@ -137,6 +137,7 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
   - `GET /api/crawled-data/search/{country}?q=...` - Search by code or designation
 
 ## Recent Changes
+- 2026-02-17: Updated all statistics to 2024 data - OEC/BACI API now covers 2018-2024, default year changed to 2024 across all endpoints, trade products data updated (growth_2023_2024), 2023 data preserved for comparison
 - 2026-02-17: UI modernization - compact dark green header, sticky underline navigation tabs, smoother transitions, discrete scrollbar, cleaner layout with custom CSS (no Radix Tabs dependency in App shell)
 - 2026-02-17: Added Nigeria CET scraper (6,363 HS10 positions from 97 PDF chapters) and South Africa SARS/SACU scraper (8,589 HS8 positions for 5 SACU countries). Total: 97,036 authentic positions across 9 countries.
 - 2026-02-17: Updated CrawledDataService with `_normalize_standard()` for NGA/SACU formats, supporting all 9 countries

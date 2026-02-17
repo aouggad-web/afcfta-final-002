@@ -50,13 +50,13 @@ export default function OECTradeStats({ language = 'fr' }) {
   const [activeView, setActiveView] = useState('country');
   const [countries, setCountries] = useState([]);
   const [countryNameToIso3, setCountryNameToIso3] = useState({}); // Mapping name_en -> ISO3
-  const [years] = useState([2023, 2022, 2021, 2020, 2019, 2018]); // Années disponibles pour HS Rev. 2017
+  const [years] = useState([2024, 2023, 2022, 2021, 2020, 2019, 2018]); // Années disponibles pour HS Rev. 2017 (2018-2024)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
   // Filtres
   const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedYear, setSelectedYear] = useState('2022');
+  const [selectedYear, setSelectedYear] = useState('2024');
   const [selectedFlow, setSelectedFlow] = useState('exports');
   const [hsCode, setHsCode] = useState('');
   const [hsCodeName, setHsCodeName] = useState(''); // Dénomination du code HS
