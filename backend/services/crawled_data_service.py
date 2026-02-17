@@ -113,6 +113,11 @@ class CrawledDataService:
         if not isinstance(taxes, list):
             taxes = []
 
+        PREFERENTIAL_CODES = ("EU_UK", "EFTA", "SADC", "MERCOSUR", "AfCFTA")
+        for t in taxes:
+            if t.get("code") in PREFERENTIAL_CODES:
+                t["is_preferential"] = True
+
         return {
             "code_raw": code_raw,
             "code_clean": code_clean,

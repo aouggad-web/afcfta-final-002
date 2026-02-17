@@ -781,14 +781,14 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                 for item in raw_formalities
             ]
 
-            dd_tax = next((t for t in crawled_raw_taxes if t["code"] in ("DD", "DI", "DDDROIT", "Droit d'Importation (DI)")), None)
+            dd_tax = next((t for t in crawled_raw_taxes if t["code"] in ("DD", "DI", "DDDROIT", "ID", "GENERAL", "Droit d'Importation (DI)") or "Import Duty" in t.get("name", "") or "Customs Duty" in t.get("name", "")), None)
             if dd_tax and dd_tax.get("rate_pct") is not None:
                 normal_rate = dd_tax["rate_pct"] / 100.0
             else:
                 normal_rate = 0.0
             npf_source = f"Source officielle: {crawled_result['source']}"
 
-            vat_tax = next((t for t in crawled_raw_taxes if t["code"] in ("TVA", "TVA/APTAXE") or "TVA" in t.get("name", "").upper() or "Valeur Ajoutée" in t.get("name", "")), None)
+            vat_tax = next((t for t in crawled_raw_taxes if t["code"] in ("TVA", "TVA/APTAXE", "VAT") or "TVA" in t.get("name", "").upper() or "VAT" in t.get("name", "").upper() or "Valeur Ajoutée" in t.get("name", "") or "Value Added Tax" in t.get("name", "")), None)
             if vat_tax and vat_tax.get("rate_pct") is not None:
                 vat_rate = vat_tax["rate_pct"] / 100.0
                 vat_source = f"{vat_tax['name']} ({crawled_result['source']})"
@@ -797,8 +797,12 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
 
             other_taxes_rate = 0.0
             other_taxes_detail = {}
+            dd_codes = ("DD", "DI", "DDDROIT", "ID", "GENERAL", "Droit d'Importation (DI)")
             for t in crawled_raw_taxes:
-                if t["code"] not in ("DD", "DI", "DDDROIT", "Droit d'Importation (DI)") and "TVA" not in t.get("code", "").upper() and "Valeur Ajoutée" not in t.get("name", ""):
+                is_dd = t["code"] in dd_codes or "Import Duty" in t.get("name", "") or "Customs Duty" in t.get("name", "")
+                is_vat = t["code"] in ("TVA", "TVA/APTAXE", "VAT") or "TVA" in t.get("code", "").upper() or "VAT" in t.get("name", "").upper() or "Valeur Ajoutée" in t.get("name", "") or "Value Added Tax" in t.get("name", "")
+                is_preferential = t.get("is_preferential", False)
+                if not is_dd and not is_vat and not is_preferential:
                     if t.get("rate_pct") is not None:
                         other_taxes_rate += t["rate_pct"] / 100.0
                         other_taxes_detail[t["code"]] = t["rate_pct"]
