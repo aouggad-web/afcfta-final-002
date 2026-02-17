@@ -137,6 +137,7 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
   - `GET /api/crawled-data/search/{country}?q=...` - Search by code or designation
 
 ## Recent Changes
+- 2026-02-17: UI modernization - compact dark green header, sticky underline navigation tabs, smoother transitions, discrete scrollbar, cleaner layout with custom CSS (no Radix Tabs dependency in App shell)
 - 2026-02-17: Added Nigeria CET scraper (6,363 HS10 positions from 97 PDF chapters) and South Africa SARS/SACU scraper (8,589 HS8 positions for 5 SACU countries). Total: 97,036 authentic positions across 9 countries.
 - 2026-02-17: Updated CrawledDataService with `_normalize_standard()` for NGA/SACU formats, supporting all 9 countries
 - 2026-02-11: Integrated 47,741 authentic crawled positions into calculator - CrawledDataService with 3-tier priority (crawled → ETL → fallback), new API endpoints for lookup/search/reload
