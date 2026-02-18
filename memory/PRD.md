@@ -139,41 +139,54 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 
 ### P0 - Haute Priorité
 - [x] **Bug corrigé (4 Fév 2025)**: Sélecteurs de pays vides dans Substitution et Vue d'ensemble
-  - Cause 1: Middleware CORS manquant dans server.py
-  - Cause 2: Frontend filtrait sur `has_import_data`/`has_production_data` au lieu de `has_trade_data`
 - [ ] Tests e2e complets avec Playwright
 
 ### P1 - Priorité Moyenne 
-- [x] **Cache Redis pour les appels Gemini** (4 Fév) - TTL 6h, amélioration 550x des performances
-- [x] **Indicateur de fraîcheur des données** (4 Fév) - Badge "Données en direct" ou "Il y a Xh"
-- [x] **Refactoring backend partiel** (4 Fév) - Nouvelles routes: rules_of_origin.py, hs6_database.py
-- [x] **Refactoring frontend StatisticsTab** (5 Fév) - 4 sous-onglets organisés
-- [x] **Comparaison multi-pays** (5 Fév) - Radar chart + tableaux comparatifs
+- [x] **Cache Redis pour les appels Gemini** (4 Fév) - TTL 6h, amélioration 550x
+- [x] **Indicateur de fraîcheur des données** (4 Fév) - Badge "Données en direct"
+- [x] **Refactoring frontend StatisticsTab** (5 Fév) - 4 sous-onglets
+- [x] **Comparaison multi-pays** (5 Fév) - Radar chart + tableaux
+- [x] **Calculateur amélioré avec détails NPF vs ZLECAf** (6 Fév)
+  - Affichage étape par étape du calcul
+  - Détail de chaque taxe (DD, TVA, DAPS, etc.)
+  - Économies ZLECAf clairement affichées
+- [x] **Mise à jour OEC vers données 2024** (6 Fév)
 - [ ] Recherche/filtre pour le fil d'actualités
+- [ ] Intégration complète des données fiscales algériennes (crawler douane.gov.dz)
 
 ### P2 - Priorité Basse
 - [ ] Exportation CSV/Excel
+- [ ] Extension du crawler fiscal aux autres pays africains
 - [ ] Sauvegarde des recherches HS fréquentes
-- [ ] Sécurisation upload TRS pour administrateurs
 
 ---
 
 ## 📅 Historique des Versions
 
-### v1.7.0 (5 Février 2025)
-- **Refactoring Frontend StatisticsTab** - Organisation en 4 sous-onglets :
-  - Vue d'ensemble : OEC Stats, Zauba Stats, Top Exporters/Importers
-  - Produits : Tableau Top 20 produits
-  - Tendances : Commerce annuel et évolutions
-  - Comparaison Pays : Nouveau composant MultiCountryComparison
-- **Comparaison Multi-Pays** - Nouveau composant avancé :
-  - Sélection de 2 à 4 pays africains
-  - Radar chart avec 6 indicateurs normalisés
-  - Tableaux comparatifs (économie, commerce, développement)
-  - Bar chart exports/imports
-  - Intégration DataFreshnessIndicator
+### v1.8.0 (6 Février 2025)
+- **Calculateur amélioré avec détails NPF vs ZLECAf** :
+  - Nouveau service `enhanced_calculator_service.py`
+  - Affichage étape par étape : CIF → DD → TVA → Autres
+  - Base de calcul explicite (CIF vs CIF+DD)
+  - Comparaison côte à côte NPF / ZLECAf
+  - Bannière d'économies avec montant et pourcentage
+  - Endpoint: `GET /api/calculate/detailed/{country}/{hs_code}`
+- **Mise à jour OEC vers données 2024** :
+  - `DEFAULT_YEAR = 2024` dans oec_trade_service.py
+  - Toutes les requêtes OEC utilisent 2024 par défaut
+  - Données fraîches disponibles pour tous les pays africains
+- **Crawler fiscal algérien** (script prêt) :
+  - `etl/dza_tariff_connector.py` - Crawl douane.gov.dz
+  - Parse les sous-positions nationales (HS10)
+  - Extrait DD, TVA, TCS, PRCT, avantages fiscaux
 - **Nouveaux fichiers** :
-  - `/app/frontend/src/components/statistics/MultiCountryComparison.jsx`
+  - `/app/backend/services/enhanced_calculator_service.py`
+  - `/app/backend/etl/dza_tariff_connector.py`
+  - `/app/frontend/src/components/calculator/DetailedCalculationBreakdown.jsx`
+
+### v1.7.0 (5 Février 2025)
+- **Refactoring Frontend StatisticsTab** - 4 sous-onglets
+- **Comparaison Multi-Pays** - Radar chart + tableaux comparatifs
 
 ### v1.6.0 (4 Février 2025)
 - **Cache Redis intégré** - Mise en cache des appels Gemini (TTL 6h)
