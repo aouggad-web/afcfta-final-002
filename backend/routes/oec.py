@@ -62,7 +62,7 @@ async def get_oec_country_imports(
 @router.get("/product/{hs_code}")
 async def get_oec_product_trade(
     hs_code: str,
-    year: int = Query(2022),
+    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
     trade_flow: str = Query("exports"),
     limit: int = Query(50)
 ):
@@ -75,7 +75,7 @@ async def get_oec_product_trade(
 @router.get("/product/{hs_code}/africa")
 async def get_oec_african_exporters(
     hs_code: str,
-    year: int = Query(2022),
+    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
     limit: int = Query(20)
 ):
     """Top exportateurs africains pour un produit HS"""
@@ -88,7 +88,7 @@ async def get_oec_african_exporters(
 async def get_oec_bilateral_trade(
     exporter_iso3: str,
     importer_iso3: str,
-    year: int = Query(2022),
+    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
     hs_level: str = Query("HS4"),
     limit: int = Query(50)
 ):
