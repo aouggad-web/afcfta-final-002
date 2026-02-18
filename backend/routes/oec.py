@@ -1,13 +1,15 @@
 """
 OEC Trade Service routes
 Observatory of Economic Complexity integration
+MISE À JOUR 2025: Données 2024 maintenant disponibles
 """
 from fastapi import APIRouter, HTTPException, Query
 
 from services.oec_trade_service import (
     oec_service,
     get_african_countries_list,
-    AFRICAN_COUNTRIES_OEC
+    AFRICAN_COUNTRIES_OEC,
+    DEFAULT_YEAR
 )
 
 router = APIRouter(prefix="/oec")
@@ -21,19 +23,20 @@ async def get_oec_african_countries(
         "success": True,
         "total": len(AFRICAN_COUNTRIES_OEC),
         "countries": get_african_countries_list(language),
-        "source": "OEC/BACI"
+        "source": "OEC/BACI",
+        "latest_year": DEFAULT_YEAR
     }
 
 @router.get("/years")
 async def get_oec_available_years():
     """Années disponibles dans les données OEC"""
     years = await oec_service.get_available_years()
-    return {"success": True, "years": years, "source": "OEC/BACI"}
+    return {"success": True, "years": years, "source": "OEC/BACI", "default_year": DEFAULT_YEAR}
 
 @router.get("/exports/{country_iso3}")
 async def get_oec_country_exports(
     country_iso3: str,
-    year: int = Query(2022),
+    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
     hs_level: str = Query("HS4"),
     limit: int = Query(50)
 ):
@@ -46,7 +49,7 @@ async def get_oec_country_exports(
 @router.get("/imports/{country_iso3}")
 async def get_oec_country_imports(
     country_iso3: str,
-    year: int = Query(2022),
+    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
     hs_level: str = Query("HS4"),
     limit: int = Query(50)
 ):
