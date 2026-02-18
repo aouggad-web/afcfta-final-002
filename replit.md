@@ -105,7 +105,17 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
   - Taxes: DI (Droit d'Importation), TPI (Taxe Parafiscale), TVA, TIC
   - Rate limiting: 2s between requests
   - ~96 chapters × ~100-900 positions/chapter
-- **Planned crawlers**: Côte d'Ivoire (guce.gouv.ci), Cameroon, Senegal, Kenya
+- **Ghana UNIPASS scraper**: `backend/crawlers/countries/ghana_unipass_scraper.py` - Extracts HS10 positions from UNIPASS/ICUMS
+  - Source: external.unipassghana.com - POST-based pagination
+  - 6,447 positions with 5 tax columns: Import Duty, VAT, Excise, Export Duty, NHIL
+  - ECOWAS CET 5-band system (0%, 5%, 10%, 20%, 35%)
+  - Progressive save + resume capability
+- **EAC CET scraper**: `backend/crawlers/countries/eac_cet_scraper.py` - Extracts HS8 from EAC CET 2022 PDF
+  - Source: kra.go.ke - EAC Common External Tariff PDF
+  - 5,984 positions for 7 EAC countries (KEN, TZA, UGA, RWA, BDI, SSD, COD)
+  - Taxes: CET Import Duty, IDF (3.5%), RDL (2%), VAT (16-18%)
+  - EAC CET 3-band + sensitive items (0%, 10%, 25%, 35%)
+- **Planned crawlers**: Côte d'Ivoire (guce.gouv.ci), Cameroon, Senegal
 - **Nigeria CET scraper**: `backend/crawlers/countries/nigeria_cet_scraper.py` - Extracts HS10 positions from ECOWAS CET PDFs
   - Source: customs.gov.ng - 97 chapter PDFs
   - PyMuPDF find_tables() for structured extraction
@@ -120,14 +130,16 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
 ## Crawled Data Integration
 - **CrawledDataService**: `backend/services/crawled_data_service.py` - Singleton service loading authentic crawled data
   - Loads from `backend/data/crawled/*_tariffs.json` at startup
-  - Normalizes 5 different country formats (DZA/TUN/MAR/NGA/SACU) into common schema
+  - Normalizes 7 different country formats (DZA/TUN/MAR/NGA/SACU/EAC/GHA) into common schema
   - Indexes by exact HS code and HS6 prefix for fast lookup
-  - 97,036 authentic positions indexed across 9 countries:
+  - 144,964 authentic positions indexed across 17 countries:
     - DZA: 17,115 (conformepro.dz)
     - TUN: 17,512 (douane.gov.tn)
     - MAR: 13,114 (douane.gov.ma)
     - NGA: 6,363 (customs.gov.ng - ECOWAS CET)
     - ZAF/BWA/LSO/SWZ/NAM: 8,589 each (sars.gov.za - SACU)
+    - KEN/TZA/UGA/RWA/BDI/SSD/COD: 5,984 each (EAC CET 2022)
+    - GHA: 6,447 (unipassghana.com - UNIPASS/ICUMS)
 - **Calculator priority**: crawled_authentic → collected_verified (ETL) → etl_fallback
 - **Data source field**: `data_source` in response indicates origin ("crawled_authentic" for verified data)
 - **API endpoints**:
@@ -137,6 +149,9 @@ The `start.sh` script launches both backend (uvicorn) and frontend (craco) concu
   - `GET /api/crawled-data/search/{country}?q=...` - Search by code or designation
 
 ## Recent Changes
+- 2026-02-18: Added Ghana UNIPASS scraper - 6,447 HS10 positions with 5 taxes (Import Duty, VAT, Excise, Export Duty, NHIL) from external.unipassghana.com. Progressive save + resume capability.
+- 2026-02-18: Added EAC CET scraper - 5,984 HS8 positions for 7 EAC countries (KEN, TZA, UGA, RWA, BDI, SSD, COD) from EAC CET 2022 PDF. CET 3-band + IDF + RDL + VAT.
+- 2026-02-18: Updated CrawledDataService with `_normalize_eac_gha()` for EAC/GHA formats. Total: 144,964 authentic positions across 17 countries.
 - 2026-02-17: Updated all statistics to 2024 data - OEC/BACI API now covers 2018-2024, default year changed to 2024 across all endpoints, trade products data updated (growth_2023_2024), 2023 data preserved for comparison
 - 2026-02-17: UI modernization - compact dark green header, sticky underline navigation tabs, smoother transitions, discrete scrollbar, cleaner layout with custom CSS (no Radix Tabs dependency in App shell)
 - 2026-02-17: Added Nigeria CET scraper (6,363 HS10 positions from 97 PDF chapters) and South Africa SARS/SACU scraper (8,589 HS8 positions for 5 SACU countries). Total: 97,036 authentic positions across 9 countries.

@@ -90,6 +90,8 @@ class CrawledDataService:
         total = sum(len(idx) for idx in self._code_index.values())
         logger.info(f"Crawled data loaded: {len(self._country_data)} countries, {total} total positions")
 
+    EAC_COUNTRIES = {"KEN", "TZA", "UGA", "RWA", "BDI", "SSD", "COD"}
+
     def _normalize_position(self, country_code: str, pos: dict) -> Optional[dict]:
         if country_code == "DZA":
             return self._normalize_dza(pos)
@@ -101,6 +103,10 @@ class CrawledDataService:
             return self._normalize_standard(pos, country_code)
         elif country_code in ("ZAF", "BWA", "LSO", "SWZ", "NAM"):
             return self._normalize_standard(pos, country_code)
+        elif country_code in self.EAC_COUNTRIES:
+            return self._normalize_eac_gha(pos, country_code)
+        elif country_code == "GHA":
+            return self._normalize_eac_gha(pos, country_code)
         return None
 
     def _normalize_standard(self, pos: dict, country_code: str) -> Optional[dict]:
@@ -241,6 +247,52 @@ class CrawledDataService:
             "administrative_formalities": pos.get("formalities", []),
             "source": "douane.gov.ma/adil",
             "country": "MAR",
+        }
+
+    EAC_GHA_TAX_CODES = {
+        "CET Import Duty (Droit de Douane)": "CET_ID",
+        "Import Declaration Fee (IDF)": "IDF",
+        "Railway Development Levy (RDL)": "RDL",
+        "Value Added Tax (VAT)": "VAT",
+        "Import Duty (ECOWAS CET)": "ID",
+        "Import Excise Duty": "EXC",
+        "Export Duty": "ED",
+        "National Health Insurance Levy (NHIL)": "NHIL",
+    }
+
+    def _normalize_eac_gha(self, pos: dict, country_code: str) -> Optional[dict]:
+        code_raw = pos.get("hs_code", "") or pos.get("hs_code_display", "")
+        code_clean = code_raw.replace(".", "").replace(" ", "")
+        if not code_clean:
+            return None
+
+        taxes = []
+        taxes_detail = pos.get("taxes_detail", [])
+        for td in taxes_detail:
+            tax_name = td.get("tax_name", "")
+            rate = td.get("rate")
+            tax_code = self.EAC_GHA_TAX_CODES.get(tax_name, tax_name.split("(")[-1].rstrip(")").strip() if "(" in tax_name else tax_name)
+            taxes.append({
+                "code": tax_code,
+                "name": tax_name,
+                "rate_pct": rate,
+                "raw_value": f"{rate}%" if rate is not None else "",
+                "base": td.get("base", ""),
+                "source": pos.get("source", ""),
+            })
+
+        return {
+            "code_raw": pos.get("hs_code_display", pos.get("hs_code", "")),
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "chapter": pos.get("chapter", ""),
+            "heading": pos.get("heading", ""),
+            "statistical_unit": pos.get("unit", ""),
+            "taxes": taxes,
+            "fiscal_advantages": pos.get("fiscal_advantages", []),
+            "administrative_formalities": pos.get("administrative_formalities", []),
+            "source": pos.get("source", ""),
+            "country": country_code,
         }
 
     def _parse_rate(self, value: str) -> Optional[float]:

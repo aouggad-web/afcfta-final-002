@@ -59,3 +59,5 @@ rich==14.2.0
 typer==0.19.2
 markdown-it-py==4.0.0
 beautifulsoup4
+openpyxl
+xlrd
