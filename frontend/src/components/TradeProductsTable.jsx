@@ -43,7 +43,7 @@ function TradeProductsTable({ language = 'fr' }) {
       source: "Source",
       year: "Année",
       footerSources: "Sources: UNCTAD COMTRADE, ITC Trade Map, African Development Bank, AfCFTA Secretariat",
-      footerNote: "Les données représentent les 20 principaux produits par valeur commerciale. Classification selon le Système Harmonisé (HS). Données 2023.",
+      footerNote: "Les données représentent les 20 principaux produits par valeur commerciale. Classification selon le Système Harmonisé (HS). Données 2024.",
       titleImportWorld: "Top 20 Produits Importés par l'Afrique du Monde",
       titleExportWorld: "Top 20 Produits Exportés par l'Afrique vers le Monde",
       titleImportIntra: "Top 20 Produits Importés en Commerce Intra-Africain",
