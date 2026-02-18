@@ -7,6 +7,8 @@ Permet de récupérer les statistiques commerciales par:
 - Année
 
 API Documentation: https://oec.world/en/resources/documentation
+
+MISE À JOUR 2025: Les données 2024 sont maintenant disponibles
 """
 
 import httpx
@@ -23,13 +25,16 @@ OEC_BASE_URL = "https://api-v2.oec.world/tesseract/data.jsonrecords"
 # Cubes disponibles (datasets)
 # On utilise HS Rev. 2017 car c'est le plus proche de SH2022 et couvre les données récentes
 OEC_CUBES = {
-    "hs92": "trade_i_baci_a_92",      # HS Rev. 1992 (1995-2023)
-    "hs96": "trade_i_baci_a_96",      # HS Rev. 1996 (1998-2023)
-    "hs02": "trade_i_baci_a_02",      # HS Rev. 2002 (2003-2023)
-    "hs07": "trade_i_baci_a_07",      # HS Rev. 2007 (2008-2023)
-    "hs12": "trade_i_baci_a_12",      # HS Rev. 2012 (2013-2023)
-    "hs17": "trade_i_baci_a_17",      # HS Rev. 2017 (2018-2023) - UTILISÉ PAR DÉFAUT
+    "hs92": "trade_i_baci_a_92",      # HS Rev. 1992 (1995-2024)
+    "hs96": "trade_i_baci_a_96",      # HS Rev. 1996 (1998-2024)
+    "hs02": "trade_i_baci_a_02",      # HS Rev. 2002 (2003-2024)
+    "hs07": "trade_i_baci_a_07",      # HS Rev. 2007 (2008-2024)
+    "hs12": "trade_i_baci_a_12",      # HS Rev. 2012 (2013-2024)
+    "hs17": "trade_i_baci_a_17",      # HS Rev. 2017 (2018-2024) - UTILISÉ PAR DÉFAUT
 }
+
+# Année par défaut pour les requêtes - 2024 maintenant disponible
+DEFAULT_YEAR = 2024
 
 # Cube par défaut - HS Rev. 2017 pour cohérence avec SH2022
 DEFAULT_CUBE = "hs17"
