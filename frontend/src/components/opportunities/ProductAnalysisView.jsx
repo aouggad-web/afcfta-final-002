@@ -375,11 +375,11 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         ];
 
         const marketShareTrends = [
-          { year: 2019, countryValue: 180, regionalAverage: 150, globalAverage: 220 },
           { year: 2020, countryValue: 165, regionalAverage: 140, globalAverage: 200 },
           { year: 2021, countryValue: 210, regionalAverage: 175, globalAverage: 245 },
           { year: 2022, countryValue: 280, regionalAverage: 210, globalAverage: 290 },
-          { year: 2023, countryValue: 320, regionalAverage: 245, globalAverage: 330 }
+          { year: 2023, countryValue: 320, regionalAverage: 245, globalAverage: 330 },
+          { year: 2024, countryValue: 365, regionalAverage: 285, globalAverage: 375 }
         ];
 
         setProductData({
