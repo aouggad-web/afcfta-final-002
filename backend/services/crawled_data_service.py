@@ -109,6 +109,8 @@ class CrawledDataService:
             return self._normalize_eac_gha(pos, country_code)
         elif country_code == "EGY":
             return self._normalize_egy(pos)
+        elif country_code == "ETH":
+            return self._normalize_eth(pos)
         return None
 
     def _normalize_standard(self, pos: dict, country_code: str) -> Optional[dict]:
@@ -344,6 +346,73 @@ class CrawledDataService:
             "administrative_formalities": pos.get("administrative_formalities", []),
             "source": "egyptariffs.com",
             "country": "EGY",
+        }
+
+    def _normalize_eth(self, pos: dict) -> Optional[dict]:
+        code_clean = pos.get("code_clean", "")
+        if not code_clean:
+            code_raw = pos.get("code", "")
+            code_clean = code_raw.replace(".", "").replace(" ", "")
+        if not code_clean:
+            return None
+
+        taxes = []
+        taxes_detail = pos.get("taxes_detail", [])
+        for td in taxes_detail:
+            tax_code = td.get("tax_code", "")
+            taxes.append({
+                "code": tax_code,
+                "name": td.get("tax_name", tax_code),
+                "rate_pct": td.get("rate"),
+                "raw_value": f"{td.get('rate')}%" if td.get('rate') is not None else "",
+                "source": "customs.erca.gov.et",
+            })
+
+        if not taxes_detail:
+            raw_taxes = pos.get("taxes", {})
+            if isinstance(raw_taxes, dict):
+                eth_tax_names = {
+                    "DR": "Customs Duty",
+                    "ER": "Excise Tax",
+                    "VAT": "Value Added Tax",
+                    "WHR": "Withholding Tax",
+                    "SR": "Surtax",
+                    "EXR": "Export Tax",
+                    "D2R": "COMESA Preferential Duty",
+                    "DSR": "Development Surcharge",
+                    "DAR": "Additional Duty",
+                }
+                for code, rate in raw_taxes.items():
+                    if rate and rate > 0:
+                        taxes.append({
+                            "code": code,
+                            "name": eth_tax_names.get(code, code),
+                            "rate_pct": rate,
+                            "raw_value": f"{rate}%",
+                            "source": "customs.erca.gov.et",
+                        })
+
+        comesa_duty = pos.get("comesa_duty")
+        fiscal_advantages = []
+        if comesa_duty is not None and comesa_duty >= 0:
+            fiscal_advantages.append({
+                "name": "COMESA Preferential Rate",
+                "rate_pct": comesa_duty,
+                "description": f"Reduced duty rate of {comesa_duty}% for COMESA member countries"
+            })
+
+        return {
+            "code_raw": pos.get("code", code_clean),
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "designation_en": pos.get("designation_en", ""),
+            "chapter": code_clean[:2] if len(code_clean) >= 2 else "",
+            "statistical_unit": pos.get("unit", ""),
+            "taxes": taxes,
+            "fiscal_advantages": fiscal_advantages,
+            "administrative_formalities": [],
+            "source": "customs.erca.gov.et",
+            "country": "ETH",
         }
 
     def _parse_rate(self, value: str) -> Optional[float]:
