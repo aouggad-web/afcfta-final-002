@@ -107,6 +107,8 @@ class CrawledDataService:
             return self._normalize_eac_gha(pos, country_code)
         elif country_code == "GHA":
             return self._normalize_eac_gha(pos, country_code)
+        elif country_code == "EGY":
+            return self._normalize_egy(pos)
         return None
 
     def _normalize_standard(self, pos: dict, country_code: str) -> Optional[dict]:
@@ -293,6 +295,55 @@ class CrawledDataService:
             "administrative_formalities": pos.get("administrative_formalities", []),
             "source": pos.get("source", ""),
             "country": country_code,
+        }
+
+    def _normalize_egy(self, pos: dict) -> Optional[dict]:
+        code_clean = pos.get("code_clean", "")
+        if not code_clean:
+            code_raw = pos.get("code", "")
+            code_clean = code_raw.replace(".", "").replace(" ", "")
+        if not code_clean:
+            return None
+
+        taxes = []
+        taxes_detail = pos.get("taxes_detail", [])
+        for td in taxes_detail:
+            tax_code = td.get("tax_code", "")
+            taxes.append({
+                "code": tax_code,
+                "name": td.get("tax_name", tax_code),
+                "rate_pct": td.get("rate"),
+                "raw_value": f"{td.get('rate')}%" if td.get('rate') is not None else "",
+                "source": "egyptariffs.com",
+            })
+
+        if not taxes_detail:
+            raw_taxes = pos.get("taxes", {})
+            if isinstance(raw_taxes, dict):
+                tax_names = {
+                    "ID": "Import Duty (ضريبة الوارد)",
+                    "VAT": "VAT (ضريبة القيمة المضافة)",
+                }
+                for code, rate in raw_taxes.items():
+                    taxes.append({
+                        "code": code,
+                        "name": tax_names.get(code, code),
+                        "rate_pct": rate,
+                        "raw_value": f"{rate}%",
+                        "source": "egyptariffs.com",
+                    })
+
+        return {
+            "code_raw": pos.get("code", code_clean),
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "designation_en": pos.get("designation_en", ""),
+            "chapter": code_clean[:2] if len(code_clean) >= 2 else "",
+            "taxes": taxes,
+            "fiscal_advantages": [],
+            "administrative_formalities": pos.get("administrative_formalities", []),
+            "source": "egyptariffs.com",
+            "country": "EGY",
         }
 
     def _parse_rate(self, value: str) -> Optional[float]:
