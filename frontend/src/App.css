@@ -188,6 +188,13 @@ body {
   font-weight: 500;
 }
 
+.app-badge-highlight {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  border-color: rgba(255, 215, 0, 0.3);
+  font-weight: 600;
+}
+
 .lang-switcher {
   display: flex;
   gap: 0.25rem;

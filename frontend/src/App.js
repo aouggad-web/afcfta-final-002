@@ -37,12 +37,16 @@ const texts = {
     subtitle: "Levier de développement de l'Afrique",
     memberCountries: "54 Pays",
     population: "1.3B+ Pop.",
+    authenticData: "32 pays · données authentiques",
+    tariffPositions: "229 519 positions tarifaires",
   },
   en: {
     title: "AfCFTA Agreement",
     subtitle: "Africa's Development Lever",
     memberCountries: "54 Countries",
     population: "1.3B+ Pop.",
+    authenticData: "32 countries · authentic data",
+    tariffPositions: "229,519 tariff positions",
   },
 };
 
@@ -107,6 +111,7 @@ function App() {
               <div className="app-badges">
                 <span className="app-badge">{t.memberCountries}</span>
                 <span className="app-badge">{t.population}</span>
+                <span className="app-badge app-badge-highlight">{t.authenticData}</span>
               </div>
             </div>
           </div>
