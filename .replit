@@ -1,10 +1,11 @@
 modules = ["nodejs-20", "web", "python-3.11"]
 [agent]
 expertMode = true
+integrations = ["github:1.0.0"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["cargo", "glibcLocales", "libiconv", "libxcrypt", "openssl", "pkg-config", "rustc"]
+packages = ["cargo", "gitFull", "glibcLocales", "gnupg", "libiconv", "libxcrypt", "openssl", "pkg-config", "rustc"]
 
 [userenv]
 

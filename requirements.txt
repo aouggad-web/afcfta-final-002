@@ -62,3 +62,4 @@ beautifulsoup4
 openpyxl
 xlrd
 xlrd
+dulwich
