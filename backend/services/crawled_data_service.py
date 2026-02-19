@@ -113,6 +113,10 @@ class CrawledDataService:
             return self._normalize_eth(pos)
         elif country_code == "CIV":
             return self._normalize_civ(pos)
+        elif country_code == "SEN":
+            return self._normalize_sen(pos)
+        elif country_code == "CMR":
+            return self._normalize_cmr(pos)
         return None
 
     def _normalize_standard(self, pos: dict, country_code: str) -> Optional[dict]:
@@ -482,6 +486,137 @@ class CrawledDataService:
             "source": "guce.gouv.ci",
             "country": "CIV",
             "notes": notes,
+        }
+
+    def _normalize_sen(self, pos: dict) -> Optional[dict]:
+        code_clean = pos.get("code_clean", "")
+        if not code_clean:
+            code_raw = pos.get("code", "")
+            code_clean = code_raw.replace(".", "").replace(" ", "")
+        if not code_clean:
+            return None
+
+        taxes = []
+        taxes_detail = pos.get("taxes_detail", [])
+        for td in taxes_detail:
+            tax_code = td.get("tax_code", "")
+            rate = td.get("rate")
+            if rate is None:
+                continue
+            taxes.append({
+                "code": tax_code,
+                "name": td.get("tax_name", tax_code),
+                "rate_pct": rate,
+                "raw_value": f"{rate}%",
+                "source": "douanes.sn + TEC CEDEAO",
+            })
+
+        if not taxes:
+            raw_taxes = pos.get("taxes", {})
+            if isinstance(raw_taxes, dict):
+                sen_tax_names = {
+                    "DD": "Droit de Douane (TEC CEDEAO)",
+                    "RS": "Redevance Statistique",
+                    "PCS": "Prélèvement Communautaire de Solidarité (UEMOA)",
+                    "PCC": "Prélèvement Communautaire CEDEAO",
+                    "PUA": "Prélèvement Union Africaine",
+                    "TVA": "Taxe sur la Valeur Ajoutée",
+                }
+                for code, rate in raw_taxes.items():
+                    if rate is not None:
+                        taxes.append({
+                            "code": code,
+                            "name": sen_tax_names.get(code, code),
+                            "rate_pct": rate,
+                            "raw_value": f"{rate}%",
+                            "source": "douanes.sn",
+                        })
+
+        return {
+            "code_raw": pos.get("code", code_clean),
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "chapter": code_clean[:2] if len(code_clean) >= 2 else "",
+            "statistical_unit": pos.get("unit", ""),
+            "taxes": taxes,
+            "fiscal_advantages": [],
+            "administrative_formalities": [],
+            "source": "douanes.sn + TEC CEDEAO",
+            "country": "SEN",
+            "notes": [
+                "Nomenclature TEC CEDEAO identique pour les 15 États membres",
+                "Taxes nationales Sénégal: RS (1%), PCS (1%), PCC (0.5%), PUA (0.2%)",
+            ],
+        }
+
+    def _normalize_cmr(self, pos: dict) -> Optional[dict]:
+        code_clean = pos.get("code_clean", "")
+        if not code_clean:
+            code_raw = pos.get("code", "")
+            code_clean = code_raw.replace(".", "").replace(" ", "")
+        if not code_clean:
+            return None
+
+        taxes = []
+        taxes_detail = pos.get("taxes_detail", [])
+        for td in taxes_detail:
+            tax_code = td.get("tax_code", "")
+            rate = td.get("rate")
+            if rate is None:
+                continue
+            if tax_code == "DA" and rate == -1:
+                taxes.append({
+                    "code": "DA",
+                    "name": td.get("tax_name", "Droit d'Accise"),
+                    "rate_pct": None,
+                    "raw_value": "variable (5-50%)",
+                    "source": "CEMAC Tarif des Douanes",
+                    "note": td.get("note", ""),
+                })
+            else:
+                taxes.append({
+                    "code": tax_code,
+                    "name": td.get("tax_name", tax_code),
+                    "rate_pct": rate,
+                    "raw_value": f"{rate}%",
+                    "source": "CEMAC Tarif des Douanes",
+                })
+
+        if not taxes:
+            raw_taxes = pos.get("taxes", {})
+            if isinstance(raw_taxes, dict):
+                cmr_tax_names = {
+                    "DD": "Droit de Douane (TEC CEMAC)",
+                    "TCI": "Taxe Communautaire d'Intégration",
+                    "TVA": "Taxe sur la Valeur Ajoutée (incl. CAC)",
+                    "DA": "Droit d'Accise",
+                    "RI": "Redevance Informatique",
+                }
+                for code, rate in raw_taxes.items():
+                    if rate is not None and rate != "variable":
+                        taxes.append({
+                            "code": code,
+                            "name": cmr_tax_names.get(code, code),
+                            "rate_pct": rate,
+                            "raw_value": f"{rate}%",
+                            "source": "CEMAC Tarif des Douanes",
+                        })
+
+        return {
+            "code_raw": pos.get("code", code_clean),
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "chapter": code_clean[:2] if len(code_clean) >= 2 else "",
+            "statistical_unit": "",
+            "taxes": taxes,
+            "fiscal_advantages": [],
+            "administrative_formalities": [],
+            "source": "CEMAC Tarif des Douanes",
+            "country": "CMR",
+            "notes": [
+                "TVA Cameroun: 19.25% (17.5% + 10% CAC)",
+                "Le TEC CEMAC s'applique aux 6 États membres",
+            ],
         }
 
     def _parse_rate(self, value: str) -> Optional[float]:

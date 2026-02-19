@@ -38,6 +38,8 @@ The platform features a Python FastAPI backend (port 8000) and a React frontend 
     -   guce.gouv.ci (Côte d'Ivoire GUCE - Guichet Unique du Commerce Extérieur)
     -   customs.gov.ng (Nigeria ECOWAS CET PDFs)
     -   sars.gov.za (South Africa SARS)
+    -   douanes.sn + TEC CEDEAO (Senegal - ECOWAS TEC with national taxes)
+    -   CEMAC Tarif des Douanes PDF (Cameroon - CEMAC CET)
 -   **Data Sources (ETL):** WCO Harmonized System 2022 for HS6 codes, various national customs and tax authority data sources.
 -   **Notification System:** Email, Slack (for alerts)
 -   **Testing Framework:** Pytest (Python)
