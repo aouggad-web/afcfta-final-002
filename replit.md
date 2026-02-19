@@ -35,6 +35,7 @@ The platform features a Python FastAPI backend (port 8000) and a React frontend 
     -   kra.go.ke (EAC CET PDF)
     -   egyptariffs.com (Egyptian Customs Authority)
     -   customs.erca.gov.et (Ethiopian Customs Commission - ECC)
+    -   guce.gouv.ci (Côte d'Ivoire GUCE - Guichet Unique du Commerce Extérieur)
     -   customs.gov.ng (Nigeria ECOWAS CET PDFs)
     -   sars.gov.za (South Africa SARS)
 -   **Data Sources (ETL):** WCO Harmonized System 2022 for HS6 codes, various national customs and tax authority data sources.

@@ -111,6 +111,8 @@ class CrawledDataService:
             return self._normalize_egy(pos)
         elif country_code == "ETH":
             return self._normalize_eth(pos)
+        elif country_code == "CIV":
+            return self._normalize_civ(pos)
         return None
 
     def _normalize_standard(self, pos: dict, country_code: str) -> Optional[dict]:
@@ -413,6 +415,73 @@ class CrawledDataService:
             "administrative_formalities": [],
             "source": "customs.erca.gov.et",
             "country": "ETH",
+        }
+
+    def _normalize_civ(self, pos: dict) -> Optional[dict]:
+        code_clean = pos.get("code_clean", "")
+        if not code_clean:
+            code_raw = pos.get("code", "")
+            code_clean = code_raw.replace(".", "").replace(" ", "")
+        if not code_clean:
+            return None
+
+        taxes = []
+        taxes_detail = pos.get("taxes_detail", [])
+        for td in taxes_detail:
+            tax_code = td.get("tax_code", "")
+            rate = td.get("rate")
+            if rate is None:
+                continue
+            taxes.append({
+                "code": tax_code,
+                "name": td.get("tax_name", tax_code),
+                "rate_pct": rate,
+                "raw_value": f"{rate}%" if td.get("rate_type") == "ad_valorem" else f"{rate} FCFA",
+                "source": "guce.gouv.ci",
+            })
+
+        if not taxes:
+            raw_taxes = pos.get("taxes", {})
+            if isinstance(raw_taxes, dict):
+                civ_tax_names = {
+                    "DD": "Droit de Douane",
+                    "TVA": "Taxe sur la Valeur Ajoutée",
+                    "DUS": "Droit Unique de Sortie",
+                    "TUB": "Taxe Unique sur les Boissons",
+                    "TSB_PT": "Taxe Spéciale Boissons",
+                    "PSV": "Prélèvement Spécial de Viabilité",
+                    "TUF": "Taxe Unique sur les Fuels",
+                    "SPEC": "Montant Spécifique",
+                }
+                for code, rate in raw_taxes.items():
+                    if rate is not None:
+                        taxes.append({
+                            "code": code,
+                            "name": civ_tax_names.get(code, code),
+                            "rate_pct": rate,
+                            "raw_value": f"{rate}%",
+                            "source": "guce.gouv.ci",
+                        })
+
+        fiscal_advantages = []
+        notes = [
+            "PCS (Prélèvement Communautaire de Solidarité): 0.8% sur toutes importations",
+            "PUA (Prélèvement Union Africaine): 0.2% sur toutes importations",
+            "RS (Redevance Statistique): 1% sur toutes importations",
+        ]
+
+        return {
+            "code_raw": pos.get("code", code_clean),
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "chapter": code_clean[:2] if len(code_clean) >= 2 else "",
+            "statistical_unit": pos.get("unit", ""),
+            "taxes": taxes,
+            "fiscal_advantages": fiscal_advantages,
+            "administrative_formalities": [],
+            "source": "guce.gouv.ci",
+            "country": "CIV",
+            "notes": notes,
         }
 
     def _parse_rate(self, value: str) -> Optional[float]:
