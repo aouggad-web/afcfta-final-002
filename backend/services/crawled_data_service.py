@@ -91,6 +91,8 @@ class CrawledDataService:
         logger.info(f"Crawled data loaded: {len(self._country_data)} countries, {total} total positions")
 
     EAC_COUNTRIES = {"KEN", "TZA", "UGA", "RWA", "BDI", "SSD", "COD"}
+    ECOWAS_TEC_COUNTRIES = {"BEN", "BFA", "MLI", "NER", "TGO", "GIN"}
+    CEMAC_TEC_COUNTRIES = {"GAB", "COG", "TCD", "CAF"}
 
     def _normalize_position(self, country_code: str, pos: dict) -> Optional[dict]:
         if country_code == "DZA":
@@ -117,6 +119,10 @@ class CrawledDataService:
             return self._normalize_sen(pos)
         elif country_code == "CMR":
             return self._normalize_cmr(pos)
+        elif country_code in self.ECOWAS_TEC_COUNTRIES:
+            return self._normalize_ecowas_member(pos, country_code)
+        elif country_code in self.CEMAC_TEC_COUNTRIES:
+            return self._normalize_cemac_member(pos, country_code)
         return None
 
     def _normalize_standard(self, pos: dict, country_code: str) -> Optional[dict]:
@@ -615,6 +621,133 @@ class CrawledDataService:
             "country": "CMR",
             "notes": [
                 "TVA Cameroun: 19.25% (17.5% + 10% CAC)",
+                "Le TEC CEMAC s'applique aux 6 États membres",
+            ],
+        }
+
+    ECOWAS_COUNTRY_NAMES = {
+        "BEN": "Bénin", "BFA": "Burkina Faso", "MLI": "Mali",
+        "NER": "Niger", "TGO": "Togo", "GIN": "Guinée",
+    }
+    CEMAC_COUNTRY_NAMES = {
+        "GAB": "Gabon", "COG": "Congo (Brazzaville)",
+        "TCD": "Tchad", "CAF": "République Centrafricaine",
+    }
+
+    def _normalize_ecowas_member(self, pos: dict, country_code: str) -> Optional[dict]:
+        code_clean = pos.get("code_clean", "")
+        if not code_clean:
+            code_raw = pos.get("code", "")
+            code_clean = code_raw.replace(".", "").replace(" ", "")
+        if not code_clean:
+            return None
+
+        taxes = []
+        taxes_detail = pos.get("taxes_detail", [])
+        source = pos.get("source", f"TEC CEDEAO + {country_code}")
+        for td in taxes_detail:
+            tax_code = td.get("tax_code", "")
+            rate = td.get("rate")
+            if rate is None:
+                continue
+            taxes.append({
+                "code": tax_code,
+                "name": td.get("tax_name", tax_code),
+                "rate_pct": rate,
+                "raw_value": f"{rate}%",
+                "source": source,
+            })
+
+        if not taxes:
+            raw_taxes = pos.get("taxes", {})
+            if isinstance(raw_taxes, dict):
+                for code, rate in raw_taxes.items():
+                    if rate is not None:
+                        taxes.append({
+                            "code": code,
+                            "name": code,
+                            "rate_pct": rate,
+                            "raw_value": f"{rate}%",
+                            "source": source,
+                        })
+
+        return {
+            "code_raw": pos.get("code", code_clean),
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "chapter": code_clean[:2] if len(code_clean) >= 2 else "",
+            "statistical_unit": pos.get("unit", ""),
+            "taxes": taxes,
+            "fiscal_advantages": [],
+            "administrative_formalities": [],
+            "source": source,
+            "country": country_code,
+            "notes": [
+                f"Pays: {self.ECOWAS_COUNTRY_NAMES.get(country_code, country_code)}",
+                "Nomenclature TEC CEDEAO identique pour les États membres",
+            ],
+        }
+
+    def _normalize_cemac_member(self, pos: dict, country_code: str) -> Optional[dict]:
+        code_clean = pos.get("code_clean", "")
+        if not code_clean:
+            code_raw = pos.get("code", "")
+            code_clean = code_raw.replace(".", "").replace(" ", "")
+        if not code_clean:
+            return None
+
+        taxes = []
+        taxes_detail = pos.get("taxes_detail", [])
+        source = pos.get("source", f"TEC CEMAC + {country_code}")
+        for td in taxes_detail:
+            tax_code = td.get("tax_code", "")
+            rate = td.get("rate")
+            if rate is None:
+                continue
+            if tax_code == "DA" and rate == -1:
+                taxes.append({
+                    "code": "DA",
+                    "name": td.get("tax_name", "Droit d'Accise"),
+                    "rate_pct": None,
+                    "raw_value": "variable (5-50%)",
+                    "source": source,
+                    "note": td.get("note", ""),
+                })
+            else:
+                taxes.append({
+                    "code": tax_code,
+                    "name": td.get("tax_name", tax_code),
+                    "rate_pct": rate,
+                    "raw_value": f"{rate}%",
+                    "source": source,
+                })
+
+        if not taxes:
+            raw_taxes = pos.get("taxes", {})
+            if isinstance(raw_taxes, dict):
+                for code, rate in raw_taxes.items():
+                    if rate is not None and rate != -1:
+                        taxes.append({
+                            "code": code,
+                            "name": code,
+                            "rate_pct": rate,
+                            "raw_value": f"{rate}%",
+                            "source": source,
+                        })
+
+        return {
+            "code_raw": pos.get("code", code_clean),
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "chapter": code_clean[:2] if len(code_clean) >= 2 else "",
+            "statistical_unit": "",
+            "taxes": taxes,
+            "fiscal_advantages": [],
+            "administrative_formalities": [],
+            "source": source,
+            "country": country_code,
+            "notes": [
+                f"Pays: {self.CEMAC_COUNTRY_NAMES.get(country_code, country_code)}",
                 "Le TEC CEMAC s'applique aux 6 États membres",
             ],
         }
