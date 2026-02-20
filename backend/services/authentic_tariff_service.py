@@ -66,6 +66,7 @@ def get_available_countries() -> List[Dict[str, Any]]:
     countries = []
     
     if not os.path.exists(TARIFF_DATA_DIR):
+        logger.warning(f"Tariff data directory not found: {TARIFF_DATA_DIR}")
         return countries
     
     for filename in os.listdir(TARIFF_DATA_DIR):
@@ -73,14 +74,24 @@ def get_available_countries() -> List[Dict[str, Any]]:
             iso3 = filename.replace('_tariffs.json', '')
             data = load_country_tariffs(iso3)
             if data:
+                summary = data.get('summary', {})
                 countries.append({
                     'iso3': iso3,
-                    'total_lines': data['summary']['total_tariff_lines'],
-                    'total_sub_positions': data['summary']['total_sub_positions'],
-                    'vat_rate': data['summary']['vat_rate_pct'],
-                    'dd_range': data['summary']['dd_rate_range'],
-                    'has_detailed_taxes': data['summary'].get('has_detailed_taxes', False)
+                    'country_code': data.get('country_code', iso3),
+                    'total_lines': summary.get('total_tariff_lines', 0),
+                    'total_sub_positions': summary.get('total_sub_positions', 0),
+                    'total_positions': summary.get('total_positions', 0),
+                    'vat_rate': summary.get('vat_rate_pct', 0),
+                    'vat_source': summary.get('vat_source', ''),
+                    'dd_range': summary.get('dd_rate_range', {}),
+                    'chapters_covered': summary.get('chapters_covered', 0),
+                    'has_detailed_taxes': summary.get('has_detailed_taxes', False),
+                    'data_format': data.get('data_format', 'unknown'),
+                    'generated_at': data.get('generated_at', '')
                 })
+    
+    # Sort by ISO3 code
+    countries.sort(key=lambda x: x['iso3'])
     
     return countries
 
