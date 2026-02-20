@@ -140,6 +140,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     subtitle: "54 pays - Droits et taxes NPF avec sous-positions nationales",
     loading: "Chargement des données...",
     downloadCountry: "ZIP",
+    downloadJson: "JSON",
     downloadRegion: "Télécharger tout le groupe",
     chapters: "Ch.",
     format: "HS6 + sous-positions nationales (HS8/HS10/HS12)",
@@ -151,6 +152,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     subtitle: "54 countries - MFN duties and taxes with national sub-positions",
     loading: "Loading data...",
     downloadCountry: "ZIP",
+    downloadJson: "JSON",
     downloadRegion: "Download entire group",
     chapters: "Ch.",
     format: "HS6 + national sub-positions (HS8/HS10/HS12)",
@@ -262,6 +264,15 @@ export default function TariffDownloads({ language = 'fr' }) {
                           className="bg-green-600 text-white"
                           size="small"
                         />
+                        {country.json_ready && (
+                          <DownloadButton
+                            url={`/tariff-data/download-json/${country.code}`}
+                            label={t.downloadJson}
+                            icon="📋"
+                            className="bg-blue-600 text-white"
+                            size="small"
+                          />
+                        )}
                         <button
                           className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1.5"
                           onClick={() => setExpandedCountry(expandedCountry === country.code ? null : country.code)}
