@@ -42,8 +42,8 @@ function TradeProductsTable({ language = 'fr' }) {
       topImporters: "Top Importateurs",
       source: "Source",
       year: "Année",
-      footerSources: "Sources: UNCTAD COMTRADE, ITC Trade Map, African Development Bank, AfCFTA Secretariat",
-      footerNote: "Les données représentent les 20 principaux produits par valeur commerciale. Classification selon le Système Harmonisé (HS). Données 2023.",
+      footerSources: "Sources: UNCTAD COMTRADE, OEC/BACI 2024, ITC Trade Map, African Development Bank, AfCFTA Secretariat",
+      footerNote: "Les données représentent les 20 principaux produits par valeur commerciale. Classification selon le Système Harmonisé (HS). Données 2024.",
       titleImportWorld: "Top 20 Produits Importés par l'Afrique du Monde",
       titleExportWorld: "Top 20 Produits Exportés par l'Afrique vers le Monde",
       titleImportIntra: "Top 20 Produits Importés en Commerce Intra-Africain",
@@ -70,8 +70,8 @@ function TradeProductsTable({ language = 'fr' }) {
       topImporters: "Top Importers",
       source: "Source",
       year: "Year",
-      footerSources: "Sources: UNCTAD COMTRADE, ITC Trade Map, African Development Bank, AfCFTA Secretariat",
-      footerNote: "Data represents the top 20 products by trade value. Classification according to the Harmonized System (HS). 2023 data.",
+      footerSources: "Sources: UNCTAD COMTRADE, OEC/BACI 2024, ITC Trade Map, African Development Bank, AfCFTA Secretariat",
+      footerNote: "Data represents the top 20 products by trade value. Classification according to the Harmonized System (HS). 2024 data.",
       titleImportWorld: "Top 20 Products Imported by Africa from the World",
       titleExportWorld: "Top 20 Products Exported by Africa to the World",
       titleImportIntra: "Top 20 Products Imported in Intra-African Trade",
@@ -188,7 +188,7 @@ function TradeProductsTable({ language = 'fr' }) {
                   <span className="text-gray-600">{product.share_percent}%</span>
                 </td>
                 <td className="px-3 py-3 text-center">
-                  {renderGrowthBadge(product.growth_2022_2023)}
+                  {renderGrowthBadge(product.growth_2023_2024)}
                 </td>
                 <td className="px-3 py-3">
                   <div className="flex flex-wrap gap-1">

@@ -1,88 +1,82 @@
-/* Calculator Tab - Smooth Animations & Clean Layout */
+/* Calculator Tab - Smooth & Clean */
 
-/* Smooth transitions for all interactive elements */
 .calculator-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.2s ease;
 }
 
 .calculator-card:hover {
-  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
-/* Result sections - fade in animation */
+/* Result sections - staggered fade in */
 .result-section {
-  animation: fadeSlideIn 0.4s ease-out forwards;
+  animation: fadeSlideIn 0.35s ease-out forwards;
   opacity: 0;
-  transform: translateY(10px);
 }
 
-.result-section:nth-child(1) { animation-delay: 0.05s; }
-.result-section:nth-child(2) { animation-delay: 0.1s; }
-.result-section:nth-child(3) { animation-delay: 0.15s; }
-.result-section:nth-child(4) { animation-delay: 0.2s; }
-.result-section:nth-child(5) { animation-delay: 0.25s; }
-.result-section:nth-child(6) { animation-delay: 0.3s; }
+.result-section:nth-child(1) { animation-delay: 0s; }
+.result-section:nth-child(2) { animation-delay: 0.06s; }
+.result-section:nth-child(3) { animation-delay: 0.12s; }
+.result-section:nth-child(4) { animation-delay: 0.18s; }
+.result-section:nth-child(5) { animation-delay: 0.24s; }
+.result-section:nth-child(6) { animation-delay: 0.30s; }
 
 @keyframes fadeSlideIn {
   to {
     opacity: 1;
     transform: translateY(0);
   }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
-/* Warning box - attention animation */
+/* Warning box */
 .rate-warning-box {
-  animation: warningPulse 0.5s ease-out;
+  animation: warningIn 0.4s ease-out;
   position: relative;
   z-index: 10;
   margin: 1rem 0;
 }
 
-@keyframes warningPulse {
-  0% {
-    transform: scale(0.98);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.01);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+@keyframes warningIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-/* Rate cards in warning */
+/* Rate cards */
 .rate-card {
-  transition: all 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .rate-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Sub-positions list - smooth expand */
+/* Sub-positions list */
 .sub-positions-container {
   overflow: hidden;
   transition: max-height 0.3s ease-out;
 }
 
 .sub-position-item {
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease, transform 0.15s ease;
   margin-bottom: 0.5rem;
+  border-radius: 8px;
 }
 
 .sub-position-item:hover {
-  transform: translateX(4px);
-  background-color: rgba(139, 92, 246, 0.1);
+  transform: translateX(3px);
+  background-color: rgba(139, 92, 246, 0.06);
 }
 
 .sub-position-item:last-child {
   margin-bottom: 0;
 }
 
-/* Graph container - prevent overlap */
+/* Chart container */
 .chart-container {
   position: relative;
   z-index: 1;
@@ -92,26 +86,12 @@
   isolation: isolate;
 }
 
-/* Savings section - celebration effect */
+/* Savings section */
 .savings-section {
-  animation: celebrateIn 0.6s ease-out;
+  animation: fadeSlideIn 0.4s ease-out forwards;
 }
 
-@keyframes celebrateIn {
-  0% {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.02);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Journal table - clean scroll */
+/* Journal table */
 .journal-container {
   position: relative;
   z-index: 1;
@@ -120,7 +100,7 @@
 
 .journal-container .overflow-x-auto {
   scrollbar-width: thin;
-  scrollbar-color: #a78bfa #f3e8ff;
+  scrollbar-color: rgba(0,0,0,0.15) transparent;
 }
 
 .journal-container .overflow-x-auto::-webkit-scrollbar {
@@ -128,80 +108,73 @@
 }
 
 .journal-container .overflow-x-auto::-webkit-scrollbar-track {
-  background: #f3e8ff;
-  border-radius: 3px;
+  background: transparent;
 }
 
 .journal-container .overflow-x-auto::-webkit-scrollbar-thumb {
-  background: #a78bfa;
+  background: rgba(0,0,0,0.15);
   border-radius: 3px;
 }
 
-/* Details/Summary smooth animation */
+/* Details/Summary */
 details {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 details[open] summary {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 details summary {
-  transition: all 0.2s ease;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
 }
 
 details summary:hover {
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
-/* Prevent layout shift with fixed heights */
+/* Tariff info section */
 .tariff-info-section {
   min-height: fit-content;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
-/* Badge animations */
+/* Badge pop */
 .badge-animated {
-  animation: badgePop 0.3s ease;
+  animation: badgePop 0.25s ease;
 }
 
 @keyframes badgePop {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
-/* Form inputs - clean focus states */
+/* Form inputs */
 .calculator-input:focus {
-  transition: all 0.2s ease;
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2);
 }
 
-/* Select dropdowns - higher z-index */
+/* Select dropdowns */
 .calculator-select [data-radix-popper-content-wrapper] {
   z-index: 100 !important;
 }
 
-/* Responsive improvements */
+/* Responsive */
 @media (max-width: 768px) {
   .rate-warning-box .grid-cols-3 {
     grid-template-columns: 1fr;
     gap: 0.75rem;
   }
-  
+
   .sub-position-item {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
-  
+
   .chart-container {
-    min-height: 280px;
+    min-height: 260px;
   }
 }
 
@@ -213,15 +186,10 @@ details summary:hover {
 .loading-overlay::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(255, 255, 255, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 50;
+  border-radius: inherit;
 }
 
 /* Smooth scroll for results */
@@ -229,7 +197,7 @@ details summary:hover {
   scroll-behavior: smooth;
 }
 
-/* Gap utilities for consistent spacing */
+/* Gap utilities */
 .section-gap {
   margin-bottom: 1.25rem;
 }

@@ -23,12 +23,12 @@ OEC_BASE_URL = "https://api-v2.oec.world/tesseract/data.jsonrecords"
 # Cubes disponibles (datasets)
 # On utilise HS Rev. 2017 car c'est le plus proche de SH2022 et couvre les données récentes
 OEC_CUBES = {
-    "hs92": "trade_i_baci_a_92",      # HS Rev. 1992 (1995-2023)
-    "hs96": "trade_i_baci_a_96",      # HS Rev. 1996 (1998-2023)
-    "hs02": "trade_i_baci_a_02",      # HS Rev. 2002 (2003-2023)
-    "hs07": "trade_i_baci_a_07",      # HS Rev. 2007 (2008-2023)
-    "hs12": "trade_i_baci_a_12",      # HS Rev. 2012 (2013-2023)
-    "hs17": "trade_i_baci_a_17",      # HS Rev. 2017 (2018-2023) - UTILISÉ PAR DÉFAUT
+    "hs92": "trade_i_baci_a_92",      # HS Rev. 1992 (1995-2024)
+    "hs96": "trade_i_baci_a_96",      # HS Rev. 1996 (1998-2024)
+    "hs02": "trade_i_baci_a_02",      # HS Rev. 2002 (2003-2024)
+    "hs07": "trade_i_baci_a_07",      # HS Rev. 2007 (2008-2024)
+    "hs12": "trade_i_baci_a_12",      # HS Rev. 2012 (2013-2024)
+    "hs17": "trade_i_baci_a_17",      # HS Rev. 2017 (2018-2024) - UTILISÉ PAR DÉFAUT
 }
 
 # Cube par défaut - HS Rev. 2017 pour cohérence avec SH2022
@@ -381,8 +381,8 @@ class OECTradeService:
     
     async def get_available_years(self) -> List[int]:
         """Retourne les années disponibles dans l'API pour le cube HS17"""
-        # Le cube HS Rev. 2017 couvre 2018-2023
-        return list(range(2018, 2024))
+        # Le cube HS Rev. 2017 couvre 2018-2024
+        return list(range(2018, 2025))
     
     async def get_top_african_exporters(
         self,

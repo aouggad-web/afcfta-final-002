@@ -104,7 +104,7 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
       setError(null);
       
       try {
-        const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+        const API_URL = process.env.REACT_APP_BACKEND_URL || '';
         const url = selectedCountry && selectedCountry !== 'ALL'
           ? `${API_URL}/api/logistics/ports?country_iso=${selectedCountry}`
           : `${API_URL}/api/logistics/ports`;

@@ -103,28 +103,67 @@ from etl.hs6_database import (
 # Import routes module for modular endpoint registration
 from routes import register_routes
 
-# Import notification manager for system-wide notifications
-from backend.notifications import NotificationManager
+from services.tariff_data_service import tariff_service
+from services.crawled_data_service import crawled_service
+
+try:
+    from backend.notifications import NotificationManager
+except ImportError:
+    try:
+        from notifications import NotificationManager
+    except ImportError:
+        NotificationManager = None
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+mongo_url = os.environ.get('MONGO_URL', '')
+db = None
+client = None
+if mongo_url:
+    try:
+        client = AsyncIOMotorClient(mongo_url)
+        db = client[os.environ.get('DB_NAME', 'afcfta')]
+        logging.info("MongoDB connected successfully")
+    except Exception as e:
+        logging.warning(f"MongoDB connection failed: {e}. Running without database.")
+        db = None
+else:
+    logging.warning("MONGO_URL not set. Running without database.")
 
-# Initialize notification manager for system-wide alerts
-notification_manager = NotificationManager()
-logging.info(f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}")
+notification_manager = None
+if NotificationManager:
+    try:
+        notification_manager = NotificationManager()
+        logging.info(f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}")
+    except Exception as e:
+        logging.warning(f"Notification manager initialization failed: {e}")
 
-# Translations moved to translations.py
-# Gold reserves data moved to gold_reserves_data.py
-
-# Create the main app without a prefix
 app = FastAPI(title="Système Commercial ZLECAf - API Complète", version="2.0.0")
 
-# Create a router with the /api prefix
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+try:
+    from middlewares import SecurityHeadersMiddleware, CSRFMiddleware, RateLimitMiddleware
+    app.add_middleware(SecurityHeadersMiddleware)
+    app.add_middleware(CSRFMiddleware, exempt_paths=[
+        "/api/docs", "/api/openapi.json", "/api/redoc",
+        "/api/health", "/api/",
+        "/api/tariff-data/collect",
+        "/api/crawl",
+        "/api/crawl/start",
+    ])
+    app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)
+    logging.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
+except ImportError as e:
+    logging.warning(f"Security middlewares not loaded: {e}")
+
 api_router = APIRouter(prefix="/api")
 
 # Pays membres de la ZLECAf avec données économiques
@@ -354,12 +393,334 @@ async def get_rules_of_origin(hs_code: str, lang: str = "fr"):
         }
     }
 
+@api_router.get("/tariff-data/status")
+async def get_tariff_data_status():
+    """Statut du service de données tarifaires collectées"""
+    stats = tariff_service.get_stats()
+    crawled_stats = crawled_service.get_stats()
+    return {
+        "status": "active" if stats["loaded"] and stats["countries"] > 0 else "inactive",
+        "data_source": "collected_verified" if stats["loaded"] and stats["countries"] > 0 else "etl_fallback",
+        "countries_loaded": stats["countries"],
+        "total_hs6_lines": stats["total_hs6_lines"],
+        "total_sub_positions": stats["total_sub_positions"],
+        "total_positions": stats["total_positions"],
+        "crawled_data": crawled_stats,
+        "description": "Données tarifaires consolidées et vérifiées pour le calculateur" if stats["loaded"] else "Utilisation des modules ETL comme source de données"
+    }
+
+@api_router.get("/crawled-data/status")
+async def get_crawled_data_status():
+    """Statut des données authentiques crawlées depuis les sites officiels"""
+    return crawled_service.get_stats()
+
+@api_router.post("/crawled-data/reload")
+async def reload_crawled_data():
+    """Recharger les données crawlées après un nouveau crawl"""
+    crawled_service.load(force=True)
+    stats = crawled_service.get_stats()
+    return {"status": "reloaded", **stats}
+
+@api_router.get("/crawled-data/lookup/{country_code}/{hs_code}")
+async def lookup_crawled_position(country_code: str, hs_code: str):
+    """Rechercher une position dans les données crawlées authentiques"""
+    if not crawled_service.is_loaded():
+        return {"error": "Données crawlées non chargées", "available": False}
+    
+    result = crawled_service.lookup(country_code.upper(), hs_code)
+    if not result:
+        sub_positions = crawled_service.lookup_by_hs6(country_code.upper(), hs_code[:6])
+        if sub_positions:
+            return {
+                "exact_match": False,
+                "hs6_sub_positions": sub_positions[:20],
+                "total_sub_positions": len(sub_positions),
+                "message": f"Position exacte non trouvée. {len(sub_positions)} sous-positions disponibles pour le HS6 {hs_code[:6]}"
+            }
+        return {"exact_match": False, "message": "Position non trouvée dans les données crawlées", "available": False}
+    
+    return {"exact_match": True, "position": result}
+
+@api_router.get("/crawled-data/search/{country_code}")
+async def search_crawled_positions(country_code: str, q: str = Query(..., min_length=2), limit: int = Query(50, le=200)):
+    """Rechercher dans les données crawlées par code ou désignation"""
+    results = crawled_service.search(country_code.upper(), q, limit=limit)
+    return {"query": q, "country": country_code.upper(), "results": results, "count": len(results)}
+
+crawl_jobs = {}
+
+@api_router.post("/crawl/start/{country_code}")
+async def start_crawl(country_code: str):
+    country_code = country_code.upper()
+    supported = {"DZA": "Algérie", "TUN": "Tunisie", "MAR": "Maroc"}
+    if country_code not in supported:
+        raise HTTPException(status_code=400, detail=f"Crawl non supporté pour {country_code}. Pays supportés: {list(supported.keys())}")
+    
+    if country_code in crawl_jobs and crawl_jobs[country_code].get("status") == "running":
+        return {"status": "already_running", "job": crawl_jobs[country_code]}
+    
+    crawl_jobs[country_code] = {
+        "country": country_code,
+        "country_name": supported[country_code],
+        "status": "running",
+        "started_at": datetime.utcnow().isoformat(),
+        "progress": "Démarrage...",
+        "sub_positions_found": 0,
+    }
+    
+    async def run_crawl():
+        try:
+            if country_code == "DZA":
+                from crawlers.countries.algeria_conformepro_scraper import AlgeriaConformeproScraper
+                scraper = AlgeriaConformeproScraper()
+                crawl_jobs[country_code]["progress"] = "Extraction des sections..."
+                await scraper.scrape_sections()
+                crawl_jobs[country_code]["progress"] = f"{len(scraper.sections)} sections trouvées. Extraction des chapitres..."
+                await scraper.scrape_chapters()
+                crawl_jobs[country_code]["progress"] = f"{len(scraper.chapters)} chapitres trouvés. Extraction des rangées..."
+                await scraper.scrape_headings()
+                crawl_jobs[country_code]["progress"] = f"{len(scraper.headings)} rangées trouvées. Extraction des sous-positions..."
+                await scraper.scrape_all_sub_positions()
+                scraper.save_final()
+                crawl_jobs[country_code]["status"] = "completed"
+                crawl_jobs[country_code]["finished_at"] = datetime.utcnow().isoformat()
+                crawl_jobs[country_code]["sub_positions_found"] = len(scraper.sub_positions)
+                crawl_jobs[country_code]["stats"] = scraper.stats
+                crawl_jobs[country_code]["progress"] = f"Terminé: {len(scraper.sub_positions)} sous-positions extraites"
+            elif country_code == "TUN":
+                from crawlers.countries.tunisia_douane_scraper import TunisiaDouaneScraper
+                scraper = TunisiaDouaneScraper()
+                all_results = []
+                data_dir = Path(__file__).parent / "data" / "crawled"
+                chapters = [f"{i:02d}" for i in range(1, 98) if i != 77]
+                resume_from = 0
+                progress_files = sorted(data_dir.glob("TUN_progress_*.json"), key=lambda p: int(p.stem.split("_")[-1]))
+                if progress_files:
+                    last_progress = progress_files[-1]
+                    try:
+                        with open(last_progress, "r", encoding="utf-8") as f:
+                            prev = json.load(f)
+                        all_results = prev.get("sub_positions", [])
+                        resume_from = prev.get("chapters_done", 0)
+                        crawl_jobs[country_code]["progress"] = f"Reprise au chapitre {resume_from+1}/{len(chapters)} ({len(all_results)} positions récupérées)"
+                        crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                        logging.info(f"TUN: Resuming from chapter {resume_from} with {len(all_results)} positions")
+                    except Exception as e:
+                        logging.warning(f"TUN: Could not load progress: {e}")
+                        resume_from = 0
+                        all_results = []
+                for ch_idx, ch in enumerate(chapters):
+                    if ch_idx < resume_from:
+                        continue
+                    crawl_jobs[country_code]["progress"] = f"Chapitre {ch} ({ch_idx+1}/{len(chapters)})..."
+                    results = await scraper.scrape_chapter(ch)
+                    all_results.extend(results)
+                    crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                    if (ch_idx + 1) % 5 == 0 or ch_idx == len(chapters) - 1:
+                        progress_path = data_dir / f"TUN_progress_{ch_idx+1}.json"
+                        with open(progress_path, "w", encoding="utf-8") as f:
+                            json.dump({"country_code": "TUN", "country_name": "Tunisie", "source": "douane.gov.tn/tarifweb2025", "extracted_at": datetime.utcnow().isoformat(), "chapters_done": ch_idx+1, "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
+                csv_path = str(data_dir / "TUN_crawled.csv")
+                scraper.save_csv(all_results, csv_path)
+                json_path = data_dir / "TUN_tariffs.json"
+                with open(json_path, "w", encoding="utf-8") as f:
+                    json.dump({"country_code": "TUN", "country_name": "Tunisie", "source": "douane.gov.tn/tarifweb2025", "extracted_at": datetime.utcnow().isoformat(), "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
+                crawl_jobs[country_code]["status"] = "completed"
+                crawl_jobs[country_code]["finished_at"] = datetime.utcnow().isoformat()
+                crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                crawl_jobs[country_code]["progress"] = f"Terminé: {len(all_results)} positions extraites"
+                await scraper._close_client()
+            elif country_code == "MAR":
+                from crawlers.countries.morocco_douane_scraper import MoroccoDouaneScraper
+                scraper = MoroccoDouaneScraper()
+                chapters = [f"{i:02d}" for i in range(1, 98) if i != 77]
+                all_results = []
+                data_dir = Path(__file__).parent / "data" / "crawled"
+                resume_from = 0
+                progress_files = sorted(data_dir.glob("MAR_progress_*.json"), key=lambda p: int(p.stem.split("_")[-1]))
+                if progress_files:
+                    last_progress = progress_files[-1]
+                    try:
+                        with open(last_progress, "r", encoding="utf-8") as f:
+                            prev = json.load(f)
+                        all_results = prev.get("sub_positions", [])
+                        resume_from = prev.get("chapters_done", 0)
+                        crawl_jobs[country_code]["progress"] = f"Reprise au chapitre {resume_from+1}/{len(chapters)} ({len(all_results)} positions récupérées)"
+                        crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                        logging.info(f"MAR: Resuming from chapter {resume_from} with {len(all_results)} positions")
+                    except Exception as e:
+                        logging.warning(f"MAR: Could not load progress: {e}")
+                        resume_from = 0
+                        all_results = []
+                for ch_idx, ch in enumerate(chapters):
+                    if ch_idx < resume_from:
+                        continue
+                    crawl_jobs[country_code]["progress"] = f"Chapitre {ch} ({ch_idx+1}/{len(chapters)})..."
+                    chapter_data = await scraper.scrape_chapter_with_taxes(ch)
+                    all_results.extend(chapter_data)
+                    crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                    if (ch_idx + 1) % 5 == 0 or ch_idx == len(chapters) - 1:
+                        progress_path = data_dir / f"MAR_progress_{ch_idx+1}.json"
+                        with open(progress_path, "w", encoding="utf-8") as f:
+                            json.dump({"country_code": "MAR", "country_name": "Maroc", "source": "douane.gov.ma/adil", "extracted_at": datetime.utcnow().isoformat(), "chapters_done": ch_idx+1, "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
+                json_path = data_dir / "MAR_tariffs.json"
+                with open(json_path, "w", encoding="utf-8") as f:
+                    json.dump({"country_code": "MAR", "country_name": "Maroc", "source": "douane.gov.ma/adil", "extracted_at": datetime.utcnow().isoformat(), "stats": {"sub_positions": len(all_results)}, "sub_positions": all_results}, f, ensure_ascii=False)
+                csv_path = str(data_dir / "MAR_crawled.csv")
+                scraper.save_csv(all_results, csv_path)
+                crawl_jobs[country_code]["status"] = "completed"
+                crawl_jobs[country_code]["finished_at"] = datetime.utcnow().isoformat()
+                crawl_jobs[country_code]["sub_positions_found"] = len(all_results)
+                crawl_jobs[country_code]["progress"] = f"Terminé: {len(all_results)} positions extraites"
+        except Exception as e:
+            crawl_jobs[country_code]["status"] = "error"
+            crawl_jobs[country_code]["error"] = str(e)
+            crawl_jobs[country_code]["progress"] = f"Erreur: {str(e)}"
+            logging.error(f"Crawl error for {country_code}: {e}")
+    
+    asyncio.create_task(run_crawl())
+    return {"status": "started", "job": crawl_jobs[country_code]}
+
+@api_router.get("/crawl/status/{country_code}")
+async def get_crawl_status(country_code: str):
+    country_code = country_code.upper()
+    if country_code not in crawl_jobs:
+        crawled_path = Path(__file__).parent / "data" / "crawled" / f"{country_code}_tariffs.json"
+        if crawled_path.exists():
+            with open(crawled_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            return {
+                "status": "completed",
+                "country": country_code,
+                "sub_positions_found": data.get("stats", {}).get("sub_positions", len(data.get("sub_positions", []))),
+                "source": data.get("source", ""),
+                "extracted_at": data.get("extracted_at", ""),
+            }
+        return {"status": "not_found", "country": country_code}
+    return {"status": crawl_jobs[country_code]["status"], "job": crawl_jobs[country_code]}
+
+@api_router.get("/crawl/data/{country_code}")
+async def get_crawled_data(
+    country_code: str,
+    chapter: Optional[str] = None,
+    heading: Optional[str] = None,
+    search: Optional[str] = None,
+    page: int = 1,
+    per_page: int = 50,
+):
+    country_code = country_code.upper()
+    crawled_path = Path(__file__).parent / "data" / "crawled" / f"{country_code}_tariffs.json"
+    if not crawled_path.exists():
+        raise HTTPException(status_code=404, detail=f"Aucune donnée crawlée pour {country_code}")
+    
+    with open(crawled_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    positions = data.get("sub_positions", [])
+    
+    if chapter:
+        positions = [p for p in positions if p.get("chapter") == chapter.zfill(2)]
+    if heading:
+        positions = [p for p in positions if p.get("heading", "").startswith(heading)]
+    if search:
+        search_lower = search.lower()
+        positions = [p for p in positions if 
+            search_lower in p.get("name", "").lower() or
+            search_lower in p.get("designation", "").lower() or
+            search_lower in p.get("hs_code", "").lower()]
+    
+    total = len(positions)
+    start = (page - 1) * per_page
+    end = start + per_page
+    
+    return {
+        "country": country_code,
+        "source": data.get("source", ""),
+        "extracted_at": data.get("extracted_at", ""),
+        "total": total,
+        "page": page,
+        "per_page": per_page,
+        "pages": (total + per_page - 1) // per_page,
+        "positions": positions[start:end],
+    }
+
+@api_router.get("/crawl/sources")
+async def get_crawl_sources():
+    crawled_dir = Path(__file__).parent / "data" / "crawled"
+    sources = {
+        "available_crawlers": {
+            "DZA": {
+                "name": "Algérie",
+                "source": "conformepro.dz (données douane.gov.dz)",
+                "data_type": "Sous-positions nationales 10 chiffres",
+                "taxes": ["Droit de douane (DD)", "TVA", "TCS", "PRCT", "DAPS"],
+                "includes": ["Désignation exacte", "Avantages fiscaux", "Formalités administratives"],
+            },
+            "TUN": {
+                "name": "Tunisie",
+                "source": "douane.gov.tn/tarifweb2025",
+                "data_type": "Positions nationales NDP 11 chiffres",
+                "taxes": ["Droit de Douane (DD)", "TVA", "RPD", "Droit de Consommation (DC)", "FODEC", "Droits spécifiques"],
+                "includes": ["Désignation exacte", "Régime import/export", "Préférences tarifaires", "Réglementation", "Groupe d'utilisation"],
+            },
+            "MAR": {
+                "name": "Maroc",
+                "source": "douane.gov.ma/adil",
+                "data_type": "Positions nationales 10 chiffres",
+                "taxes": ["Droit d'Importation (DI)", "Taxe Parafiscale à l'Importation (TPI)", "Taxe sur la Valeur Ajoutée (TVA)", "Taxe Intérieure de Consommation (TIC)"],
+                "includes": ["Désignation exacte", "Documents et normes à l'import", "Formalités particulières"],
+            },
+        },
+        "crawled_data": {},
+        "planned_crawlers": {
+            "CIV": {"name": "Côte d'Ivoire", "source": "guce.gouv.ci", "status": "En développement"},
+            "CMR": {"name": "Cameroun", "source": "douanes.cm", "status": "En développement"},
+            "SEN": {"name": "Sénégal", "source": "douanes.sn", "status": "Planifié"},
+            "ZAF": {"name": "Afrique du Sud", "source": "sars.gov.za", "status": "Planifié"},
+            "KEN": {"name": "Kenya", "source": "kra.go.ke", "status": "Planifié"},
+        },
+    }
+    
+    if crawled_dir.exists():
+        for f in crawled_dir.glob("*_tariffs.json"):
+            code = f.stem.replace("_tariffs", "")
+            try:
+                with open(f, "r", encoding="utf-8") as fh:
+                    meta = json.load(fh)
+                sources["crawled_data"][code] = {
+                    "country_name": meta.get("country_name", code),
+                    "source": meta.get("source", ""),
+                    "extracted_at": meta.get("extracted_at", ""),
+                    "sub_positions": meta.get("stats", {}).get("sub_positions", len(meta.get("sub_positions", []))),
+                }
+            except:
+                pass
+    
+    return sources
+
+@api_router.get("/crawl/download-sample/{country_code}")
+async def download_crawl_sample(country_code: str):
+    from starlette.responses import FileResponse
+    country_code = country_code.upper()
+    sample_path = Path(__file__).parent / "data" / "crawled" / f"{country_code}_sample.csv"
+    if not sample_path.exists():
+        raise HTTPException(status_code=404, detail=f"Pas de fichier échantillon pour {country_code}")
+    return FileResponse(
+        str(sample_path),
+        media_type="text/csv",
+        filename=f"{country_code}_tarif_douanier_echantillon.csv",
+    )
+
 @api_router.post("/calculate-tariff", response_model=TariffCalculationResponse)
 async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
-    """Calculer les tarifs complets avec données officielles 2025 et règles d'origine
+    """Calculer les tarifs complets avec données tarifaires collectées et vérifiées
     
     Accepte les codes ISO2 (ex: DZ) ou ISO3 (ex: DZA) pour les pays
     Supporte les codes HS de 6 à 12 chiffres pour plus de précision
+    
+    SOURCE DES DONNÉES:
+    - Principale: Données tarifaires collectées (1.18M positions, 54 pays)
+    - Fallback: Modules ETL si données collectées non disponibles
     
     ORDRE DE PRIORITÉ DES TARIFS:
     1. Sous-position nationale (8-12 chiffres) si fournie
@@ -388,51 +749,157 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     hs6_code = hs_code_clean[:6].zfill(6)
     sector_code = hs6_code[:2]
     
-    # Variables pour traçabilité
     tariff_precision = "chapter"
     sub_position_used = None
     sub_position_description = None
+    data_source = "etl_fallback"
+    
+    collected_taxes_detail = []
+    collected_fiscal_advantages = []
+    collected_admin_formalities = []
+    crawled_raw_taxes = []
+
+    # ============================================================
+    # PRIORITÉ 1: Données crawlées authentiques (sites officiels)
+    # ============================================================
+    if crawled_service.is_loaded():
+        crawled_result = crawled_service.lookup(dest_iso3, hs_code_clean)
+        if crawled_result:
+            data_source = "crawled_authentic"
+            sub_position_used = crawled_result["code_raw"]
+            sub_position_description = crawled_result["designation"]
+            tariff_precision = "national_position"
+            crawled_raw_taxes = crawled_result["taxes"]
+            raw_advantages = crawled_result.get("fiscal_advantages", [])
+            collected_fiscal_advantages = [
+                item if isinstance(item, dict) else {"description": item, "source": crawled_result["source"]}
+                for item in raw_advantages
+            ]
+            raw_formalities = crawled_result.get("administrative_formalities", [])
+            collected_admin_formalities = [
+                item if isinstance(item, dict) else {"description": item, "source": crawled_result["source"]}
+                for item in raw_formalities
+            ]
+
+            dd_tax = next((t for t in crawled_raw_taxes if t["code"] in ("DD", "DI", "DDDROIT", "ID", "GENERAL", "Droit d'Importation (DI)") or "Import Duty" in t.get("name", "") or "Customs Duty" in t.get("name", "")), None)
+            if dd_tax and dd_tax.get("rate_pct") is not None:
+                normal_rate = dd_tax["rate_pct"] / 100.0
+            else:
+                normal_rate = 0.0
+            npf_source = f"Source officielle: {crawled_result['source']}"
+
+            vat_tax = next((t for t in crawled_raw_taxes if t["code"] in ("TVA", "TVA/APTAXE", "VAT") or "TVA" in t.get("name", "").upper() or "VAT" in t.get("name", "").upper() or "Valeur Ajoutée" in t.get("name", "") or "Value Added Tax" in t.get("name", "")), None)
+            if vat_tax and vat_tax.get("rate_pct") is not None:
+                vat_rate = vat_tax["rate_pct"] / 100.0
+                vat_source = f"{vat_tax['name']} ({crawled_result['source']})"
+            else:
+                vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
+
+            other_taxes_rate = 0.0
+            other_taxes_detail = {}
+            dd_codes = ("DD", "DI", "DDDROIT", "ID", "GENERAL", "Droit d'Importation (DI)")
+            for t in crawled_raw_taxes:
+                is_dd = t["code"] in dd_codes or "Import Duty" in t.get("name", "") or "Customs Duty" in t.get("name", "")
+                is_vat = t["code"] in ("TVA", "TVA/APTAXE", "VAT") or "TVA" in t.get("code", "").upper() or "VAT" in t.get("name", "").upper() or "Valeur Ajoutée" in t.get("name", "") or "Value Added Tax" in t.get("name", "")
+                is_preferential = t.get("is_preferential", False)
+                if not is_dd and not is_vat and not is_preferential:
+                    if t.get("rate_pct") is not None:
+                        other_taxes_rate += t["rate_pct"] / 100.0
+                        other_taxes_detail[t["code"]] = t["rate_pct"]
+
+            collected_taxes_detail = [
+                {
+                    "tax": t["name"],
+                    "rate": t["rate_pct"] if t.get("rate_pct") is not None else 0,
+                    "raw_value": t.get("raw_value", ""),
+                    "observation": f"Source: {t.get('source', crawled_result['source'])}",
+                }
+                for t in crawled_raw_taxes
+            ]
+
+            from etl.country_tariffs_complete import get_product_category, get_zlecaf_reduction_factor
+            product_category = get_product_category(hs6_code)
+            reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
+            zlecaf_rate = normal_rate * reduction_factor
+            zlecaf_source = f"ZLECAf ({product_category})"
+
+    # ============================================================
+    # PRIORITÉ 2: Données collectées ETL enrichies
+    # ============================================================
+    if data_source != "crawled_authentic" and tariff_service.is_loaded():
+        tariff_info = tariff_service.get_tariff_precision_info(dest_iso3, hs_code_clean)
+        if tariff_info:
+            normal_rate = tariff_info["rate"]
+            npf_source = tariff_info["source"]
+            tariff_precision = tariff_info["precision"]
+            sub_position_used = tariff_info.get("sub_position_code")
+            sub_position_description = tariff_info.get("sub_position_description")
+            data_source = "collected_verified"
+
+            collected_taxes_detail = tariff_info.get("taxes_detail", [])
+            collected_fiscal_advantages = tariff_info.get("fiscal_advantages", [])
+            collected_admin_formalities = tariff_info.get("administrative_formalities", [])
+
+            zlecaf_rate_val, zlecaf_source = tariff_service.get_zlecaf_rate(dest_iso3, hs6_code)
+            if zlecaf_rate_val is not None:
+                zlecaf_rate = zlecaf_rate_val
+            else:
+                from etl.country_tariffs_complete import get_product_category, get_zlecaf_reduction_factor
+                product_category = get_product_category(hs6_code)
+                reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
+                zlecaf_rate = normal_rate * reduction_factor
+                zlecaf_source = f"ZLECAf ({product_category})"
+
+            vat_rate, vat_source = tariff_service.get_vat_rate(dest_iso3)
+
+            if collected_taxes_detail:
+                product_other = sum(
+                    t["rate"] for t in collected_taxes_detail
+                    if t["tax"] not in ("D.D", "T.V.A")
+                ) / 100.0
+                other_taxes_rate = product_other
+                other_taxes_detail = {
+                    t["tax"].lower().replace(".", ""): t["rate"]
+                    for t in collected_taxes_detail
+                    if t["tax"] not in ("D.D", "T.V.A")
+                }
+                vat_from_detail = next((t["rate"] for t in collected_taxes_detail if t["tax"] == "T.V.A"), None)
+                if vat_from_detail is not None:
+                    vat_rate = vat_from_detail / 100.0
+            else:
+                other_taxes_rate, other_taxes_detail = tariff_service.get_other_taxes(dest_iso3)
     
     # ============================================================
-    # PRIORITÉ 1: Sous-position nationale (8-12 chiffres)
+    # PRIORITÉ 3: Modules ETL (fallback)
     # ============================================================
-    if len(hs_code_clean) > 6:
-        rate, description, source = get_sub_position_rate(dest_iso3, hs_code_clean)
-        if rate is not None:
-            normal_rate = rate
-            npf_source = f"Sous-position nationale {dest_iso3} ({hs_code_clean})"
-            tariff_precision = "sub_position"
-            sub_position_used = hs_code_clean
-            sub_position_description = description
-    
-    # ============================================================
-    # PRIORITÉ 2: Tarifs SH6 RÉELS par pays de destination
-    # ============================================================
-    if tariff_precision == "chapter":
-        hs6_tariff = get_country_hs6_tariff(dest_iso3, hs6_code)
-        
-        if hs6_tariff:
-            normal_rate = hs6_tariff["dd"]
-            npf_source = f"Tarif SH6 {dest_iso3} ({hs6_code})"
-            tariff_precision = "hs6_country"
-        else:
-            # PRIORITÉ 3: Fallback vers taux par chapitre du pays
-            normal_rate, npf_source = get_tariff_rate_for_country(dest_iso3, hs6_code)
-            tariff_precision = "chapter"
-    
-    # Obtenir le taux ZLECAf calculé selon le calendrier de libéralisation
-    # Le taux ZLECAf est calculé à partir du taux normal avec réduction progressive
-    from etl.country_tariffs_complete import get_product_category, get_zlecaf_reduction_factor
-    product_category = get_product_category(hs6_code)
-    reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
-    zlecaf_rate = normal_rate * reduction_factor
-    zlecaf_source = f"ZLECAf ({product_category})"
-    
-    # Obtenir le taux de TVA du pays
-    vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
-    
-    # Obtenir les autres taxes du pays
-    other_taxes_rate, other_taxes_detail = get_other_taxes_for_country(dest_iso3)
+    if data_source not in ("crawled_authentic", "collected_verified"):
+        if len(hs_code_clean) > 6:
+            rate, description, source = get_sub_position_rate(dest_iso3, hs_code_clean)
+            if rate is not None:
+                normal_rate = rate
+                npf_source = f"Sous-position nationale {dest_iso3} ({hs_code_clean})"
+                tariff_precision = "sub_position"
+                sub_position_used = hs_code_clean
+                sub_position_description = description
+
+        if tariff_precision == "chapter":
+            hs6_tariff = get_country_hs6_tariff(dest_iso3, hs6_code)
+            if hs6_tariff:
+                normal_rate = hs6_tariff["dd"]
+                npf_source = f"Tarif SH6 {dest_iso3} ({hs6_code})"
+                tariff_precision = "hs6_country"
+            else:
+                normal_rate, npf_source = get_tariff_rate_for_country(dest_iso3, hs6_code)
+                tariff_precision = "chapter"
+
+        from etl.country_tariffs_complete import get_product_category, get_zlecaf_reduction_factor
+        product_category = get_product_category(hs6_code)
+        reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
+        zlecaf_rate = normal_rate * reduction_factor
+        zlecaf_source = f"ZLECAf ({product_category})"
+
+        vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
+        other_taxes_rate, other_taxes_detail = get_other_taxes_for_country(dest_iso3)
     
     # Source de tarif pour affichage
     rate_source = f"Tarif officiel {dest_iso3} - {npf_source}"
@@ -470,14 +937,6 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     total_savings_with_taxes = normal_total - zlecaf_total
     total_savings_percentage = (total_savings_with_taxes / normal_total) * 100 if normal_total > 0 else 0
     
-    # Préparer les détails des taxes pour le journal de calcul
-    # Extraire les composantes des autres taxes
-    rs_rate = other_taxes_detail.get('rs', 0) / 100 if other_taxes_detail.get('rs') else 0
-    pcs_rate = other_taxes_detail.get('pcs', 0) / 100 if other_taxes_detail.get('pcs') else 0
-    cedeao_rate = other_taxes_detail.get('cedeao', 0) / 100 if other_taxes_detail.get('cedeao') else 0
-    tci_rate = other_taxes_detail.get('tci', 0) / 100 if other_taxes_detail.get('tci') else 0
-    
-    # Créer le journal de calcul détaillé pour NPF avec références légales
     legal_refs = {
         "cif": {"ref": "Incoterms 2020 - CIF", "url": "https://iccwbo.org/resources-for-business/incoterms-rules/incoterms-2020/"},
         "dd": {"ref": f"Tarif douanier {dest_iso3}", "url": None},
@@ -486,36 +945,77 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         "cedeao": {"ref": "Protocole CEDEAO A/P1/1/03", "url": None},
         "tci": {"ref": "Règlement CEMAC 02/01", "url": None},
         "vat": {"ref": f"Code Général des Impôts {dest_iso3}", "url": None},
-        "zlecaf": {"ref": "Accord ZLECAf Art. 8", "url": "https://au.int/en/treaties/agreement-establishing-african-continental-free-trade-area"}
+        "zlecaf": {"ref": "Accord ZLECAf Art. 8", "url": "https://au.int/en/treaties/agreement-establishing-african-continental-free-trade-area"},
+        "daps": {"ref": f"Décret exécutif - DAPS {dest_iso3}", "url": None},
+        "prct": {"ref": f"Loi de Finances {dest_iso3}", "url": None},
+        "tcs": {"ref": f"Réglementation sanitaire {dest_iso3}", "url": None},
     }
-    
+
     normal_journal = [
         {"step": 1, "component": "Valeur CIF", "base": request.value, "rate": "-", "amount": request.value, "cumulative": request.value, "legal_ref": legal_refs["cif"]["ref"], "legal_ref_url": legal_refs["cif"]["url"]},
-        {"step": 2, "component": "Droits de douane (DD)", "base": request.value, "rate": f"{normal_rate*100:.1f}%", "amount": round(normal_customs, 2), "cumulative": round(request.value + normal_customs, 2), "legal_ref": legal_refs["dd"]["ref"], "legal_ref_url": legal_refs["dd"]["url"]},
     ]
-    step = 3
-    cumulative = request.value + normal_customs
-    if rs_rate > 0:
-        rs_amount = round(request.value * rs_rate, 2)
-        cumulative += rs_amount
-        normal_journal.append({"step": step, "component": "Redevance statistique (RS)", "base": request.value, "rate": f"{rs_rate*100:.1f}%", "amount": rs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["rs"]["ref"], "legal_ref_url": legal_refs["rs"]["url"]})
-        step += 1
-    if pcs_rate > 0:
-        pcs_amount = round(request.value * pcs_rate, 2)
-        cumulative += pcs_amount
-        normal_journal.append({"step": step, "component": "PCS UEMOA", "base": request.value, "rate": f"{pcs_rate*100:.1f}%", "amount": pcs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["pcs"]["ref"], "legal_ref_url": legal_refs["pcs"]["url"]})
-        step += 1
-    if cedeao_rate > 0:
-        cedeao_amount = round(request.value * cedeao_rate, 2)
-        cumulative += cedeao_amount
-        normal_journal.append({"step": step, "component": "Prélèvement CEDEAO (PC)", "base": request.value, "rate": f"{cedeao_rate*100:.1f}%", "amount": cedeao_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["cedeao"]["ref"], "legal_ref_url": legal_refs["cedeao"]["url"]})
-        step += 1
-    if tci_rate > 0:
-        tci_amount = round(request.value * tci_rate, 2)
-        cumulative += tci_amount
-        normal_journal.append({"step": step, "component": "TCI CEMAC", "base": request.value, "rate": f"{tci_rate*100:.1f}%", "amount": tci_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["tci"]["ref"], "legal_ref_url": legal_refs["tci"]["url"]})
-        step += 1
-    normal_journal.append({"step": step, "component": "TVA", "base": round(normal_vat_base, 2), "rate": f"{vat_rate*100:.1f}%", "amount": round(normal_vat_amount, 2), "cumulative": round(normal_total, 2), "legal_ref": legal_refs["vat"]["ref"], "legal_ref_url": legal_refs["vat"]["url"]})
+    step = 2
+    cumulative = request.value
+
+    if collected_taxes_detail:
+        for tax_item in collected_taxes_detail:
+            tax_name = tax_item["tax"]
+            tax_rate_pct = tax_item["rate"]
+            tax_rate_dec = tax_rate_pct / 100.0
+            tax_amount = round(request.value * tax_rate_dec, 2) if tax_name != "T.V.A" else round(normal_vat_amount, 2)
+
+            if tax_name == "T.V.A":
+                tax_base = round(normal_vat_base, 2)
+                cumulative = round(normal_total, 2)
+            else:
+                tax_base = request.value
+                cumulative += tax_amount
+
+            ref_key = tax_name.lower().replace(".", "").replace(" ", "")
+            ref = legal_refs.get(ref_key, {"ref": tax_item.get("observation", ""), "url": None})
+
+            normal_journal.append({
+                "step": step,
+                "component": f"{tax_name} ({tax_item.get('observation', '')})" if tax_item.get("observation") else tax_name,
+                "base": tax_base,
+                "rate": f"{tax_rate_pct:.1f}%",
+                "amount": tax_amount,
+                "cumulative": round(cumulative, 2),
+                "legal_ref": ref["ref"],
+                "legal_ref_url": ref.get("url"),
+            })
+            step += 1
+    else:
+        normal_journal.append({"step": step, "component": "Droits de douane (DD)", "base": request.value, "rate": f"{normal_rate*100:.1f}%", "amount": round(normal_customs, 2), "cumulative": round(request.value + normal_customs, 2), "legal_ref": legal_refs["dd"]["ref"], "legal_ref_url": legal_refs["dd"]["url"]})
+        step = 3
+        cumulative = request.value + normal_customs
+
+        rs_rate = other_taxes_detail.get('rs', 0) / 100 if other_taxes_detail.get('rs') else 0
+        pcs_rate = other_taxes_detail.get('pcs', 0) / 100 if other_taxes_detail.get('pcs') else 0
+        cedeao_rate = other_taxes_detail.get('cedeao', 0) / 100 if other_taxes_detail.get('cedeao') else 0
+        tci_rate = other_taxes_detail.get('tci', 0) / 100 if other_taxes_detail.get('tci') else 0
+
+        if rs_rate > 0:
+            rs_amount = round(request.value * rs_rate, 2)
+            cumulative += rs_amount
+            normal_journal.append({"step": step, "component": "Redevance statistique (RS)", "base": request.value, "rate": f"{rs_rate*100:.1f}%", "amount": rs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["rs"]["ref"], "legal_ref_url": legal_refs["rs"]["url"]})
+            step += 1
+        if pcs_rate > 0:
+            pcs_amount = round(request.value * pcs_rate, 2)
+            cumulative += pcs_amount
+            normal_journal.append({"step": step, "component": "PCS UEMOA", "base": request.value, "rate": f"{pcs_rate*100:.1f}%", "amount": pcs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["pcs"]["ref"], "legal_ref_url": legal_refs["pcs"]["url"]})
+            step += 1
+        if cedeao_rate > 0:
+            cedeao_amount = round(request.value * cedeao_rate, 2)
+            cumulative += cedeao_amount
+            normal_journal.append({"step": step, "component": "Prélèvement CEDEAO (PC)", "base": request.value, "rate": f"{cedeao_rate*100:.1f}%", "amount": cedeao_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["cedeao"]["ref"], "legal_ref_url": legal_refs["cedeao"]["url"]})
+            step += 1
+        if tci_rate > 0:
+            tci_amount = round(request.value * tci_rate, 2)
+            cumulative += tci_amount
+            normal_journal.append({"step": step, "component": "TCI CEMAC", "base": request.value, "rate": f"{tci_rate*100:.1f}%", "amount": tci_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["tci"]["ref"], "legal_ref_url": legal_refs["tci"]["url"]})
+            step += 1
+        normal_journal.append({"step": step, "component": "TVA", "base": round(normal_vat_base, 2), "rate": f"{vat_rate*100:.1f}%", "amount": round(normal_vat_amount, 2), "cumulative": round(normal_total, 2), "legal_ref": legal_refs["vat"]["ref"], "legal_ref_url": legal_refs["vat"]["url"]})
     
     # Créer le journal de calcul détaillé pour ZLECAf avec références légales
     zlecaf_journal = [
@@ -588,8 +1088,20 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     wb_data = await wb_client.get_country_data([origin_country['wb_code'], dest_country['wb_code']])
     
     # Vérifier si des sous-positions alternatives existent pour ce HS6
-    sub_positions_available = get_all_sub_positions(dest_iso3, hs6_code)
-    has_varying, min_rate, max_rate = has_varying_rates(dest_iso3, hs6_code)
+    if tariff_service.is_loaded() and data_source == "collected_verified":
+        collected_subs = tariff_service.get_sub_positions_for_hs6(dest_iso3, hs6_code)
+        if collected_subs:
+            sub_positions_available = collected_subs
+            rates = [sp.get("dd", 0) / 100.0 for sp in collected_subs]
+            has_varying = len(set(rates)) > 1
+            min_rate = min(rates) if rates else 0
+            max_rate = max(rates) if rates else 0
+        else:
+            sub_positions_available = get_all_sub_positions(dest_iso3, hs6_code)
+            has_varying, min_rate, max_rate = has_varying_rates(dest_iso3, hs6_code)
+    else:
+        sub_positions_available = get_all_sub_positions(dest_iso3, hs6_code)
+        has_varying, min_rate, max_rate = has_varying_rates(dest_iso3, hs6_code)
     
     # Construire le warning et les détails si taux variables
     rate_warning = None
@@ -626,20 +1138,18 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         normal_tariff_amount=round(normal_customs, 2),
         zlecaf_tariff_rate=zlecaf_rate,
         zlecaf_tariff_amount=round(zlecaf_customs, 2),
-        # Taxes normales (NPF)
         normal_vat_rate=vat_rate,
         normal_vat_amount=round(normal_vat_amount, 2),
-        normal_statistical_fee=round(request.value * rs_rate, 2),
-        normal_community_levy=round(request.value * pcs_rate, 2),
-        normal_ecowas_levy=round(request.value * cedeao_rate, 2),
+        normal_statistical_fee=round(request.value * other_taxes_detail.get('rs', 0) / 100, 2) if other_taxes_detail.get('rs') else 0,
+        normal_community_levy=round(request.value * other_taxes_detail.get('pcs', 0) / 100, 2) if other_taxes_detail.get('pcs') else 0,
+        normal_ecowas_levy=round(request.value * other_taxes_detail.get('cedeao', 0) / 100, 2) if other_taxes_detail.get('cedeao') else 0,
         normal_other_taxes_total=round(other_taxes_amount, 2),
         normal_total_cost=round(normal_total, 2),
-        # Taxes ZLECAf
         zlecaf_vat_rate=vat_rate,
         zlecaf_vat_amount=round(zlecaf_vat_amount, 2),
-        zlecaf_statistical_fee=round(request.value * rs_rate, 2),
-        zlecaf_community_levy=round(request.value * pcs_rate, 2),
-        zlecaf_ecowas_levy=round(request.value * cedeao_rate, 2),
+        zlecaf_statistical_fee=round(request.value * other_taxes_detail.get('rs', 0) / 100, 2) if other_taxes_detail.get('rs') else 0,
+        zlecaf_community_levy=round(request.value * other_taxes_detail.get('pcs', 0) / 100, 2) if other_taxes_detail.get('pcs') else 0,
+        zlecaf_ecowas_levy=round(request.value * other_taxes_detail.get('cedeao', 0) / 100, 2) if other_taxes_detail.get('cedeao') else 0,
         zlecaf_other_taxes_total=round(other_taxes_amount, 2),
         zlecaf_total_cost=round(zlecaf_total, 2),
         # Économies
@@ -652,8 +1162,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         zlecaf_calculation_journal=zlecaf_journal,
         computation_order_ref="Codes douaniers nationaux + Directives CEDEAO/UEMOA/CEMAC/EAC/SACU",
         last_verified="2025-01",
-        confidence_level="high" if tariff_precision in ["sub_position", "hs6_country"] else "medium",
-        # Précision tarifaire et sous-positions
+        confidence_level="high" if data_source == "collected_verified" or tariff_precision in ["sub_position", "hs6_country", "hs6_collected"] else "medium",
         tariff_precision=tariff_precision,
         sub_position_used=sub_position_used,
         sub_position_description=sub_position_description,
@@ -661,15 +1170,18 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         available_sub_positions_count=len(sub_positions_available),
         rate_warning=rate_warning,
         sub_positions_details=sub_positions_details,
-        # Autres données
+        taxes_detail=collected_taxes_detail if collected_taxes_detail else None,
+        fiscal_advantages=collected_fiscal_advantages if collected_fiscal_advantages else None,
+        administrative_formalities=collected_admin_formalities if collected_admin_formalities else None,
+        data_source=data_source,
         rules_of_origin=rules,
         top_african_producers=top_producers,
         origin_country_data=wb_data.get(origin_country['wb_code'], {}),
         destination_country_data=wb_data.get(dest_country['wb_code'], {})
     )
     
-    # Sauvegarder en base de données
-    await db.comprehensive_calculations.insert_one(result.dict())
+    if db is not None:
+        await db.comprehensive_calculations.insert_one(result.dict())
     
     return result
 
@@ -680,40 +1192,37 @@ async def get_comprehensive_statistics():
     # Charger les statistiques enrichies depuis le JSON 2024
     enhanced_stats = get_enhanced_statistics()
     
-    # Statistiques de base de la DB
-    total_calculations = await db.comprehensive_calculations.count_documents({})
-    
-    # Économies totales
-    pipeline_savings = [
-        {"$group": {"_id": None, "total_savings": {"$sum": "$savings"}}}
-    ]
-    savings_result = await db.comprehensive_calculations.aggregate(pipeline_savings).to_list(1)
-    total_savings = savings_result[0]["total_savings"] if savings_result else 0
-    
-    # Pays les plus actifs
-    pipeline_countries = [
-        {"$group": {"_id": "$origin_country", "count": {"$sum": 1}}},
-        {"$sort": {"count": -1}},
-        {"$limit": 10}
-    ]
-    countries_result = await db.comprehensive_calculations.aggregate(pipeline_countries).to_list(10)
-    
-    # Codes SH les plus utilisés
-    pipeline_hs = [
-        {"$group": {"_id": "$hs_code", "count": {"$sum": 1}, "avg_savings": {"$avg": "$savings"}}},
-        {"$sort": {"count": -1}},
-        {"$limit": 10}
-    ]
-    hs_result = await db.comprehensive_calculations.aggregate(pipeline_hs).to_list(10)
-    
-    # Secteurs les plus bénéficiaires
-    pipeline_sectors = [
-        {"$addFields": {"sector": {"$substr": ["$hs_code", 0, 2]}}},
-        {"$group": {"_id": "$sector", "count": {"$sum": 1}, "total_savings": {"$sum": "$savings"}}},
-        {"$sort": {"total_savings": -1}},
-        {"$limit": 10}
-    ]
-    sectors_result = await db.comprehensive_calculations.aggregate(pipeline_sectors).to_list(10)
+    total_calculations = 0
+    total_savings = 0
+    countries_result = []
+    hs_result = []
+    sectors_result = []
+    if db is not None:
+        total_calculations = await db.comprehensive_calculations.count_documents({})
+        pipeline_savings = [
+            {"$group": {"_id": None, "total_savings": {"$sum": "$savings"}}}
+        ]
+        savings_result = await db.comprehensive_calculations.aggregate(pipeline_savings).to_list(1)
+        total_savings = savings_result[0]["total_savings"] if savings_result else 0
+        pipeline_countries = [
+            {"$group": {"_id": "$origin_country", "count": {"$sum": 1}}},
+            {"$sort": {"count": -1}},
+            {"$limit": 10}
+        ]
+        countries_result = await db.comprehensive_calculations.aggregate(pipeline_countries).to_list(10)
+        pipeline_hs = [
+            {"$group": {"_id": "$hs_code", "count": {"$sum": 1}, "avg_savings": {"$avg": "$savings"}}},
+            {"$sort": {"count": -1}},
+            {"$limit": 10}
+        ]
+        hs_result = await db.comprehensive_calculations.aggregate(pipeline_hs).to_list(10)
+        pipeline_sectors = [
+            {"$addFields": {"sector": {"$substr": ["$hs_code", 0, 2]}}},
+            {"$group": {"_id": "$sector", "count": {"$sum": 1}, "total_savings": {"$sum": "$savings"}}},
+            {"$sort": {"total_savings": -1}},
+            {"$limit": 10}
+        ]
+        sectors_result = await db.comprehensive_calculations.aggregate(pipeline_sectors).to_list(10)
     
     # Calcul de l'impact économique potentiel
     african_population = sum([country['population'] for country in AFRICAN_COUNTRIES])
@@ -1696,12 +2205,33 @@ async def get_hs6_sub_position_suggestions(
     # Suggestions génériques basées sur la base HS6
     generic_suggestions = get_sub_position_suggestions(hs6, language)
     
-    # Si un pays est spécifié, obtenir les sous-positions nationales réelles
     country_sub_positions = []
+    authentic_data = False
     if country_code:
-        country_sub_positions = get_all_sub_positions(country_code.upper(), hs6)
+        cc = country_code.upper()
+        crawled_positions = crawled_service.lookup_by_hs6(cc, hs6)
+        if crawled_positions:
+            for cp in crawled_positions:
+                dd_tax = next((t for t in cp.get("taxes", []) if t["code"] in ("DD", "DI", "DDDROIT")), None)
+                dd_rate_pct = f"{dd_tax['rate_pct']}%" if dd_tax and dd_tax.get("rate_pct") is not None else ""
+                taxes_display = [f"{t['name']}: {t.get('raw_value', t.get('rate_pct', ''))}{'%' if t.get('rate_pct') is not None and '%' not in str(t.get('raw_value', '')) else ''}" for t in cp.get("taxes", [])]
+                country_sub_positions.append({
+                    "code": cp["code_raw"],
+                    "code_clean": cp["code_clean"],
+                    "dd_rate_pct": dd_rate_pct,
+                    "description_fr": cp["designation"],
+                    "description": cp["designation"],
+                    "taxes": cp.get("taxes", []),
+                    "taxes_display": taxes_display,
+                    "fiscal_advantages": cp.get("fiscal_advantages", []),
+                    "administrative_formalities": cp.get("administrative_formalities", []),
+                    "source": cp.get("source", ""),
+                    "data_source": "crawled_authentic",
+                })
+            authentic_data = True
+        else:
+            country_sub_positions = get_all_sub_positions(cc, hs6)
     
-    # Info de base sur le HS6
     hs6_info = get_hs6_info(hs6, language)
     
     return {
@@ -1711,7 +2241,8 @@ async def get_hs6_sub_position_suggestions(
         "generic_suggestions": generic_suggestions,
         "country_code": country_code.upper() if country_code else None,
         "country_sub_positions": country_sub_positions,
-        "has_country_specific_rates": len(country_sub_positions) > 0
+        "has_country_specific_rates": len(country_sub_positions) > 0,
+        "authentic_data": authentic_data
     }
 
 
@@ -1831,15 +2362,40 @@ async def smart_search_with_suggestions(
     for result in hs6_results:
         enriched = result.copy()
         
-        if include_sub_positions and result["has_sub_positions"]:
-            # Suggestions génériques
-            enriched["sub_position_suggestions"] = get_sub_position_suggestions(result["code"], language)
+        if include_sub_positions:
+            enriched["sub_position_suggestions"] = get_sub_position_suggestions(result["code"], language) if result["has_sub_positions"] else []
             
-            # Sous-positions nationales si pays fourni
             if country_code:
-                country_subs = get_all_sub_positions(country_code.upper(), result["code"])
-                enriched["country_sub_positions"] = country_subs
-                enriched["has_varying_rates"] = len(country_subs) > 1
+                cc = country_code.upper()
+                crawled_positions = crawled_service.lookup_by_hs6(cc, result["code"])
+                if crawled_positions:
+                    country_subs = []
+                    for cp in crawled_positions:
+                        dd_tax = next((t for t in cp.get("taxes", []) if t["code"] in ("DD", "DI", "DDDROIT")), None)
+                        dd_rate_pct = f"{dd_tax['rate_pct']}%" if dd_tax and dd_tax.get("rate_pct") is not None else ""
+                        taxes_display = [f"{t['name']}: {t.get('raw_value', t.get('rate_pct', ''))}{'%' if t.get('rate_pct') is not None and '%' not in str(t.get('raw_value', '')) else ''}" for t in cp.get("taxes", [])]
+                        country_subs.append({
+                            "code": cp["code_raw"],
+                            "code_clean": cp["code_clean"],
+                            "dd_rate_pct": dd_rate_pct,
+                            "description_fr": cp["designation"],
+                            "description": cp["designation"],
+                            "taxes": cp.get("taxes", []),
+                            "taxes_display": taxes_display,
+                            "fiscal_advantages": cp.get("fiscal_advantages", []),
+                            "administrative_formalities": cp.get("administrative_formalities", []),
+                            "source": cp.get("source", ""),
+                            "data_source": "crawled_authentic",
+                        })
+                    enriched["country_sub_positions"] = country_subs
+                    enriched["has_varying_rates"] = len(country_subs) > 1
+                    enriched["has_sub_positions"] = True
+                    enriched["authentic_data"] = True
+                else:
+                    country_subs = get_all_sub_positions(cc, result["code"])
+                    enriched["country_sub_positions"] = country_subs
+                    enriched["has_varying_rates"] = len(country_subs) > 1
+                    enriched["authentic_data"] = False
         
         # Règle d'origine
         rule = get_rule_of_origin(result["code"], language)
@@ -2167,15 +2723,71 @@ async def get_all_unctad():
 
 from routes.substitution import register_routes as register_substitution_routes
 
-# Initialize export router with database connection
 try:
-    from backend.routers.export_router import init_db as init_export_db
+    from routers.export_router import init_db as init_export_db
     init_export_db(db)
 except ImportError:
     pass
+
+try:
+    from services.crawl_orchestrator import init_orchestrator
+    init_orchestrator(
+        db_client=client,
+        notification_manager=notification_manager,
+        max_concurrency=5,
+    )
+    logging.info("Crawl orchestrator initialized")
+except Exception as e:
+    logging.warning(f"Crawl orchestrator initialization failed: {e}")
+
+@app.on_event("startup")
+async def startup_load_tariff_data():
+    """Load collected tariff data on startup for the calculator"""
+    try:
+        crawled_service.load()
+        crawled_stats = crawled_service.get_stats()
+        if crawled_stats["total_positions"] > 0:
+            logging.info(f"Crawled data service ready: {crawled_stats['countries']} countries, "
+                         f"{crawled_stats['total_positions']:,} authentic positions")
+        else:
+            logging.info("No crawled data found yet.")
+    except Exception as e:
+        logging.warning(f"Crawled data service startup: {e}")
+
+    try:
+        tariff_service.load()
+        stats = tariff_service.get_stats()
+        if stats["countries"] > 0:
+            logging.info(f"Tariff data service ready: {stats['countries']} countries, "
+                         f"{stats['total_positions']:,} positions loaded")
+        else:
+            logging.info("No pre-collected tariff data found. Running initial collection...")
+            from services.tariff_data_collector import TariffDataCollector
+            collector = TariffDataCollector()
+            result = collector.collect_all_countries()
+            logging.info(f"Initial collection complete: {result['total_tariff_lines']} lines for {result['countries_processed']} countries")
+            tariff_service.load(force=True)
+            stats = tariff_service.get_stats()
+            logging.info(f"Tariff data service ready after collection: {stats['countries']} countries")
+    except Exception as e:
+        logging.warning(f"Tariff data service startup: {e}. Calculator will use ETL fallback.")
 
 register_routes(api_router)
 register_substitution_routes(api_router)
 
 # Include the router in the main app
 app.include_router(api_router)
+
+from starlette.staticfiles import StaticFiles
+from starlette.responses import FileResponse
+
+build_dir = Path(__file__).parent.parent / "frontend" / "build"
+if build_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(build_dir / "static")), name="static")
+    
+    @app.get("/{full_path:path}")
+    async def serve_react(full_path: str):
+        file_path = build_dir / full_path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(str(file_path))
+        return FileResponse(str(build_dir / "index.html"))

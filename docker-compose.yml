@@ -1,13 +1,17 @@
 version: '3.8'
 
+# Required environment variables (set in .env file, see .env.example):
+#   MONGO_ROOT_USER     - MongoDB root username
+#   MONGO_ROOT_PASSWORD - MongoDB root password (use a strong, unique password)
+
 services:
   mongodb:
     image: mongo:7.0
     container_name: afcfta-mongodb
     restart: unless-stopped
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-admin}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-changeme}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     ports:
       - "27017:27017"
     volumes:
@@ -27,7 +31,7 @@ services:
     container_name: afcfta-backend
     restart: unless-stopped
     environment:
-      - MONGO_URL=mongodb://${MONGO_ROOT_USER:-admin}:${MONGO_ROOT_PASSWORD:-changeme}@mongodb:27017/
+      - MONGO_URL=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/
       - DB_NAME=${MONGO_DB:-afcfta}
       - EMAIL_NOTIFICATIONS_ENABLED=${EMAIL_ENABLED:-false}
       - EMAIL_SMTP_HOST=${EMAIL_SMTP_HOST:-smtp.gmail.com}
