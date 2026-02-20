@@ -311,7 +311,7 @@ MIT License - See LICENSE file for details
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for step-by-step instructions on how to upload a new file or submit a Pull Request.
 
 ## 📧 Support
 
