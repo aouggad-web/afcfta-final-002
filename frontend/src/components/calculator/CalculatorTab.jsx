@@ -259,51 +259,193 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     }
 
     setLoading(true);
+    
+    // Mapping ISO2 -> ISO3 pour les pays
+    const ISO2_TO_ISO3 = {
+      'DZ': 'DZA', 'AO': 'AGO', 'BJ': 'BEN', 'BW': 'BWA', 'BF': 'BFA', 'BI': 'BDI', 'CM': 'CMR', 'CV': 'CPV',
+      'CF': 'CAF', 'TD': 'TCD', 'KM': 'COM', 'CG': 'COG', 'CD': 'COD', 'CI': 'CIV', 'DJ': 'DJI', 'EG': 'EGY',
+      'GQ': 'GNQ', 'ER': 'ERI', 'SZ': 'SWZ', 'ET': 'ETH', 'GA': 'GAB', 'GM': 'GMB', 'GH': 'GHA', 'GN': 'GIN',
+      'GW': 'GNB', 'KE': 'KEN', 'LS': 'LSO', 'LR': 'LBR', 'LY': 'LBY', 'MG': 'MDG', 'MW': 'MWI', 'ML': 'MLI',
+      'MR': 'MRT', 'MU': 'MUS', 'MA': 'MAR', 'MZ': 'MOZ', 'NA': 'NAM', 'NE': 'NER', 'NG': 'NGA', 'RW': 'RWA',
+      'ST': 'STP', 'SN': 'SEN', 'SC': 'SYC', 'SL': 'SLE', 'SO': 'SOM', 'ZA': 'ZAF', 'SS': 'SSD', 'SD': 'SDN',
+      'TZ': 'TZA', 'TG': 'TGO', 'TN': 'TUN', 'UG': 'UGA', 'ZM': 'ZMB', 'ZW': 'ZWE'
+    };
+    
+    // Convertir les codes pays en ISO3
+    const destISO3 = destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry;
+    const originISO3 = originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry;
+    
     try {
-      // Calcul des tarifs classique
-      const response = await axios.post(`${API}/calculate-tariff`, {
-        origin_country: originCountry,
-        destination_country: destinationCountry,
-        hs_code: cleanHsCode,
-        value: parseFloat(value)
-      });
+      // PRIORITÉ 1: Essayer d'utiliser les données tarifaires AUTHENTIQUES
+      let authenticResult = null;
+      let useAuthenticData = false;
       
-      setResult(response.data);
-      
-      // Récupérer le calcul détaillé NPF vs ZLECAf
       try {
-        const detailedResponse = await axios.get(
-          `${API}/calculate/detailed/${destinationCountry}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}`
+        const authenticResponse = await axios.get(
+          `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}`
         );
-        setDetailedResult(detailedResponse.data);
+        authenticResult = authenticResponse.data;
+        useAuthenticData = true;
+        console.log('✅ Using AUTHENTIC tariff data for', destISO3);
+      } catch (authError) {
+        console.log('ℹ️ Authentic tariff data not available for', destISO3, '- falling back to calculated data');
+      }
+      
+      if (useAuthenticData && authenticResult) {
+        // Transformer les données authentiques au format attendu par l'UI
+        const npfCalc = authenticResult.npf_calculation || {};
+        const zlecafCalc = authenticResult.zlecaf_calculation || {};
+        const savings = authenticResult.savings || {};
+        const rates = authenticResult.rates || {};
+        
+        // Construire le résultat au format compatible
+        const transformedResult = {
+          origin_country: originCountry,
+          destination_country: destinationCountry,
+          hs_code: cleanHsCode,
+          hs6_code: authenticResult.hs6 || cleanHsCode.substring(0, 6),
+          value: parseFloat(value),
+          
+          // Tarifs
+          normal_tariff_rate: (rates.dd_rate_pct || 0) / 100,
+          normal_tariff_amount: npfCalc.dd?.amount || 0,
+          zlecaf_tariff_rate: 0, // DD exempt under ZLECAf
+          zlecaf_tariff_amount: zlecafCalc.dd?.amount || 0,
+          
+          // TVA
+          normal_vat_rate: (rates.vat_rate_pct || 0) / 100,
+          normal_vat_amount: npfCalc.vat?.amount || 0,
+          zlecaf_vat_rate: (rates.vat_rate_pct || 0) / 100,
+          zlecaf_vat_amount: zlecafCalc.vat?.amount || 0,
+          
+          // Autres taxes
+          normal_other_taxes_total: npfCalc.other_taxes?.amount || 0,
+          zlecaf_other_taxes_total: zlecafCalc.other_taxes?.amount || 0,
+          
+          // Totaux
+          normal_total_cost: npfCalc.total_to_pay || 0,
+          zlecaf_total_cost: zlecafCalc.total_to_pay || 0,
+          
+          // Économies
+          savings: savings.amount || 0,
+          savings_percentage: savings.percentage || 0,
+          total_savings_with_taxes: savings.amount || 0,
+          total_savings_percentage: savings.percentage || 0,
+          
+          // Précision et source
+          tariff_precision: 'authentic_data',
+          data_source: 'authentic_tariff',
+          
+          // Détails des taxes
+          taxes_detail: authenticResult.taxes_detail || [],
+          
+          // Avantages fiscaux
+          fiscal_advantages: authenticResult.fiscal_advantages || [],
+          
+          // Formalités administratives
+          administrative_formalities: authenticResult.administrative_formalities || [],
+          
+          // Sous-positions
+          has_sub_positions: authenticResult.has_sub_positions || false,
+          sub_position_count: authenticResult.sub_position_count || 0,
+          sub_position: authenticResult.sub_position,
+          
+          // Règles d'origine (placeholder - à récupérer séparément si nécessaire)
+          rules_of_origin: {
+            rule: 'ZLECAf Rules of Origin',
+            requirement: language === 'fr' ? 'Certificat d\'origine ZLECAf requis' : 'AfCFTA Certificate of Origin required',
+            regional_content: 40
+          },
+          
+          // Journal de calcul NPF
+          normal_calculation_journal: [
+            { step: 1, component: 'Valeur CIF', base: parseFloat(value), rate: '-', amount: parseFloat(value), cumulative: parseFloat(value), legal_ref: 'Incoterms 2020' },
+            { step: 2, component: 'Droits de Douane (DD)', base: parseFloat(value), rate: `${rates.dd_rate_pct || 0}%`, amount: npfCalc.dd?.amount || 0, cumulative: parseFloat(value) + (npfCalc.dd?.amount || 0), legal_ref: `Tarif ${destISO3}` },
+            { step: 3, component: 'TVA', base: npfCalc.vat?.base || parseFloat(value), rate: `${rates.vat_rate_pct || 0}%`, amount: npfCalc.vat?.amount || 0, cumulative: npfCalc.total_to_pay || 0, legal_ref: `CGI ${destISO3}` }
+          ],
+          
+          // Journal de calcul ZLECAf
+          zlecaf_calculation_journal: [
+            { step: 1, component: 'Valeur CIF', base: parseFloat(value), rate: '-', amount: parseFloat(value), cumulative: parseFloat(value), legal_ref: 'Incoterms 2020' },
+            { step: 2, component: 'Droits de Douane ZLECAf', base: parseFloat(value), rate: '0%', amount: 0, cumulative: parseFloat(value), legal_ref: 'AfCFTA Art. 8 - Exonération DD' },
+            { step: 3, component: 'TVA', base: zlecafCalc.vat?.base || parseFloat(value), rate: `${rates.vat_rate_pct || 0}%`, amount: zlecafCalc.vat?.amount || 0, cumulative: zlecafCalc.total_to_pay || 0, legal_ref: `CGI ${destISO3}` }
+          ],
+          
+          computation_order_ref: `Données tarifaires officielles ${destISO3} - Format enhanced_v2`,
+          last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',
+          confidence_level: 'very_high'
+        };
+        
+        setResult(transformedResult);
+        setDetailedResult(authenticResult);
         setShowDetailedBreakdown(true);
-      } catch (detailError) {
-        console.warn('Detailed calculation not available:', detailError.message);
-        setDetailedResult(null);
+        
+        // Récupérer les sous-positions authentiques
+        const hs6 = cleanHsCode.substring(0, 6);
+        try {
+          const subPosResponse = await axios.get(`${API}/authentic-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
+          setSubPositions(subPosResponse.data);
+        } catch (subPosError) {
+          setSubPositions(null);
+        }
+        
+        // Info SH6 depuis les données authentiques
+        setHs6TariffInfo({
+          code: hs6,
+          description: authenticResult.description,
+          has_specific_tariff: true
+        });
+        
+        toast({
+          title: `✅ ${t.calculationSuccess}`,
+          description: `${t.potentialSavings}: ${formatCurrency(savings.amount || 0)} (Données officielles ${destISO3})`,
+        });
+        
+      } else {
+        // FALLBACK: Utiliser l'ancien endpoint si pas de données authentiques
+        const response = await axios.post(`${API}/calculate-tariff`, {
+          origin_country: originCountry,
+          destination_country: destinationCountry,
+          hs_code: cleanHsCode,
+          value: parseFloat(value)
+        });
+        
+        setResult(response.data);
+        
+        // Récupérer le calcul détaillé NPF vs ZLECAf
+        try {
+          const detailedResponse = await axios.get(
+            `${API}/calculate/detailed/${destinationCountry}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}`
+          );
+          setDetailedResult(detailedResponse.data);
+          setShowDetailedBreakdown(true);
+        } catch (detailError) {
+          console.warn('Detailed calculation not available:', detailError.message);
+          setDetailedResult(null);
+        }
+        
+        // Récupérer les sous-positions si disponibles pour le pays de destination
+        const hs6 = cleanHsCode.substring(0, 6);
+        try {
+          const subPosResponse = await axios.get(`${API}/tariffs/sub-positions/${destinationCountry}/${hs6}?language=${language}`);
+          setSubPositions(subPosResponse.data);
+        } catch (subPosError) {
+          setSubPositions(null);
+        }
+        
+        // Récupérer les informations SH6 spécifiques si disponibles
+        try {
+          const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);
+          setHs6TariffInfo(hs6Response.data);
+        } catch (hs6Error) {
+          setHs6TariffInfo(null);
+        }
+        
+        toast({
+          title: t.calculationSuccess,
+          description: `${t.potentialSavings}: ${formatCurrency(response.data.savings)}`,
+        });
       }
-      
-      // Récupérer les sous-positions si disponibles pour le pays de destination
-      const hs6 = cleanHsCode.substring(0, 6);
-      try {
-        const subPosResponse = await axios.get(`${API}/tariffs/sub-positions/${destinationCountry}/${hs6}?language=${language}`);
-        setSubPositions(subPosResponse.data);
-      } catch (subPosError) {
-        setSubPositions(null);
-      }
-      
-      // Récupérer les informations SH6 spécifiques si disponibles
-      try {
-        const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);
-        setHs6TariffInfo(hs6Response.data);
-      } catch (hs6Error) {
-        // Pas de tarif SH6 spécifique, ce n'est pas une erreur
-        setHs6TariffInfo(null);
-      }
-      
-      toast({
-        title: t.calculationSuccess,
-        description: `${t.potentialSavings}: ${formatCurrency(response.data.savings)}`,
-      });
     } catch (error) {
       console.error('Calculation error:', error);
       toast({
