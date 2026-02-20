@@ -115,12 +115,15 @@ class TestAuthenticTariffsCalculate:
         )
         assert response.status_code == 404
         
-    def test_calculate_tariff_nonexistent_hs_code(self):
-        """Should return 404 for non-existent HS code"""
+    def test_calculate_tariff_catch_all_hs_code(self):
+        """Code 999999 is valid - it's a catch-all 'Commodities not specified' category"""
         response = requests.get(
             f"{BASE_URL}/api/authentic-tariffs/calculate/MAR/999999?value=1000"
         )
-        assert response.status_code == 404
+        # 999999 actually exists as a catch-all category
+        assert response.status_code == 200
+        data = response.json()
+        assert "not specified" in data["description"].lower() or "commodities" in data["description"].lower()
 
 
 class TestAuthenticTariffsCountrySummary:
