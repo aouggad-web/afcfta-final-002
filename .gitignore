@@ -23,6 +23,9 @@ dist/
 *token.json*
 *credentials.json*
 
+# Secrets - never commit actual secret values
+.github/secrets/
+
 # Generated tariff data (157MB+)
 backend/data/tariffs/
 
