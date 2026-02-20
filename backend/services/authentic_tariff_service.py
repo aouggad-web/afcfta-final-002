@@ -13,7 +13,7 @@ from functools import lru_cache
 logger = logging.getLogger(__name__)
 
 # Base directory for tariff data files
-TARIFF_DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data', 'tariffs')
+TARIFF_DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
 
 # Cache for loaded tariff data
 _tariff_cache: Dict[str, Dict] = {}
