@@ -620,6 +620,84 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-5 pt-6 results-container">
+              {/* Information sur les DONNÉES AUTHENTIQUES */}
+              {result.data_source === 'authentic_tariff' && (
+                <div className="result-section bg-gradient-to-r from-emerald-50 via-green-50 to-teal-50 p-5 rounded-xl border-2 border-emerald-400 shadow-lg" data-testid="authentic-data-badge">
+                  <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                      <span className="text-2xl">✓</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <h4 className="font-bold text-emerald-800 text-lg">
+                          {language === 'fr' ? 'Données Tarifaires Officielles' : 'Official Tariff Data'}
+                        </h4>
+                        <Badge className="bg-emerald-600 text-white px-3 py-1">
+                          {language === 'fr' ? 'Vérifié' : 'Verified'}
+                        </Badge>
+                      </div>
+                      <p className="text-gray-700 text-sm mb-3">
+                        {language === 'fr' 
+                          ? `Calcul basé sur les tarifs douaniers officiels du ${getCountryName(destinationCountry)} avec ${result.sub_position_count || 0} sous-positions nationales.`
+                          : `Calculation based on official customs tariffs of ${getCountryName(destinationCountry)} with ${result.sub_position_count || 0} national sub-headings.`}
+                      </p>
+                      
+                      {/* Détail des taxes authentiques */}
+                      {result.taxes_detail && result.taxes_detail.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {result.taxes_detail.map((tax, idx) => (
+                            <Badge key={idx} variant="outline" className="bg-white border-emerald-300 text-emerald-700">
+                              {tax.tax}: {tax.rate}%
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-shrink-0 text-right">
+                      <p className="text-xs text-gray-500 mb-1">
+                        {language === 'fr' ? 'Confiance' : 'Confidence'}
+                      </p>
+                      <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg px-4 py-2">
+                        {language === 'fr' ? 'Très élevée' : 'Very High'}
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  {/* Avantages fiscaux ZLECAf */}
+                  {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
+                    <div className="mt-4 p-3 bg-white/70 rounded-lg border border-emerald-200">
+                      <p className="text-sm font-semibold text-emerald-800 mb-2">
+                        {language === 'fr' ? '🎯 Avantages ZLECAf applicables:' : '🎯 Applicable AfCFTA advantages:'}
+                      </p>
+                      <ul className="space-y-1">
+                        {result.fiscal_advantages.map((adv, idx) => (
+                          <li key={idx} className="text-sm text-gray-700 flex items-start gap-2">
+                            <span className="text-emerald-500">✓</span>
+                            <span>{language === 'fr' ? adv.condition_fr : adv.condition_en}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {/* Formalités administratives */}
+                  {result.administrative_formalities && result.administrative_formalities.length > 0 && (
+                    <div className="mt-3 p-3 bg-amber-50/70 rounded-lg border border-amber-200">
+                      <p className="text-sm font-semibold text-amber-800 mb-2">
+                        {language === 'fr' ? '📋 Documents requis:' : '📋 Required documents:'}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {result.administrative_formalities.map((form, idx) => (
+                          <Badge key={idx} variant="outline" className="bg-white border-amber-300 text-amber-700 text-xs">
+                            {language === 'fr' ? form.document_fr : form.document_en}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Information sur la sous-position nationale si utilisée */}
               {result.tariff_precision === 'sub_position' && (
                 <div className="result-section tariff-info-section bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200 shadow-sm">
