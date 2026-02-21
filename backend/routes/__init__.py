@@ -17,7 +17,9 @@ MIGRATION STATUS:
 - gemini_analysis.py: COMPLETE (NOW WITH CACHE)
 - comtrade.py: COMPLETE (UN COMTRADE integration)
 - rules_of_origin.py: COMPLETE (NEW - Extracted from server.py)
-- hs6_database.py: COMPLETE (NEW - Extracted from server.py)
+- hs6_database.py: COMPLETE (UPDATED - Full HS6 search routes)
+- authentic_tariffs.py: COMPLETE (54 countries tariff data)
+- tariffs_calculation.py: COMPLETE (NEW - Tariff calculation utilities)
 """
 
 from fastapi import APIRouter
@@ -39,6 +41,7 @@ from .comtrade import router as comtrade_router
 from .rules_of_origin import router as rules_router
 from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
+from .tariffs_calculation import router as tariffs_calc_router
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -58,3 +61,4 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(rules_router, tags=["Rules of Origin"])
     api_router.include_router(hs6_db_router, tags=["HS6 Database"])
     api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"])
+    api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"])
