@@ -933,6 +933,30 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               )}
 
+              {/* GRAPHIQUES AVANCÉS - Répartition des taxes */}
+              {result.data_source === 'authentic_tariff' && result.taxes_detail && result.taxes_detail.length > 0 && (
+                <div className="result-section grid md:grid-cols-2 gap-4">
+                  {/* Graphique en camembert NPF */}
+                  <TaxDistributionPieChart 
+                    taxes={result.taxes_detail} 
+                    cifValue={parseFloat(value)} 
+                    regime="npf" 
+                    language={language}
+                  />
+                  
+                  {/* Graphique en camembert ZLECAf */}
+                  <TaxDistributionPieChart 
+                    taxes={result.taxes_detail.map(t => ({
+                      ...t,
+                      rate: (t.tax.toLowerCase().includes('d.d') || t.tax.toLowerCase().includes('douane')) ? 0 : t.rate
+                    }))} 
+                    cifValue={parseFloat(value)} 
+                    regime="zlecaf" 
+                    language={language}
+                  />
+                </div>
+              )}
+
               {/* Information sur la sous-position nationale si utilisée */}
               {result.tariff_precision === 'sub_position' && (
                 <div className="result-section tariff-info-section bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200 shadow-sm">
