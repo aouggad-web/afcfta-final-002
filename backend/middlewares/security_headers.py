@@ -17,7 +17,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             f"style-src 'self' 'nonce-{nonce}' 'unsafe-inline' https://fonts.googleapis.com",
             "img-src 'self' data: https: blob:",
             "font-src 'self' https://fonts.gstatic.com",
-            "connect-src 'self' https://api.worldbank.org https://api-v2.oec.world https://comtradeapi.un.org",
+            "connect-src 'self' https://api.worldbank.org https://api-v2.oec.world",
             "frame-ancestors 'self'",
             "base-uri 'self'",
             "form-action 'self'",

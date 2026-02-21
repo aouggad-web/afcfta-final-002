@@ -1,12 +1,11 @@
 """
 Trade Data API Routes
-Endpoints for accessing UN COMTRADE, WTO, and smart data source selection
+Endpoints for accessing WTO and smart data source selection
 """
 
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional, List
 from services.data_source_selector import data_source_selector
-from services.comtrade_service import comtrade_service
 from services.wto_service import wto_service
 
 router = APIRouter(prefix="/api", tags=["Trade Data"])
@@ -48,24 +47,6 @@ async def compare_data_sources(
     """
     comparison = data_source_selector.compare_data_sources(countries)
     return comparison
-
-
-@router.get("/trade-data/comtrade/{reporter}/{partner}")
-async def get_comtrade_data(
-    reporter: str,
-    partner: str,
-    period: str = Query(..., description="Year (YYYY) or Month (YYYYMM)"),
-    hs_code: Optional[str] = None
-):
-    """
-    Get UN COMTRADE bilateral trade data directly
-    """
-    data = comtrade_service.get_bilateral_trade(reporter, partner, period, hs_code)
-    
-    if not data:
-        raise HTTPException(status_code=404, detail="No COMTRADE data available")
-    
-    return data
 
 
 @router.get("/trade-data/wto/{reporter}/{partner}")
