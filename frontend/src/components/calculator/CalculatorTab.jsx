@@ -9,12 +9,15 @@ import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
 import { Progress } from '../ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { toast } from '../../hooks/use-toast';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
-import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator } from 'lucide-react';
+import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe } from 'lucide-react';
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
+import { DetailedTaxTable, SavingsHighlight } from './TaxBreakdownChart';
+import MultiCountryComparison from './MultiCountryComparison';
 import './calculator.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
