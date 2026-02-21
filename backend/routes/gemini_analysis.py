@@ -1,16 +1,57 @@
 """
 Gemini AI Trade Analysis Routes
 API endpoints for AI-powered trade analysis using Google Gemini
+NOW WITH REDIS CACHING for optimized performance
 """
 from fastapi import APIRouter, Query, HTTPException
 from typing import Optional
 import logging
 
 from services.gemini_trade_service import gemini_trade_service
+from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
+from services.redis_cache_service import cache_service
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/ai", tags=["AI Trade Analysis"])
+
+# Countries without trade data (occupied territories, etc.)
+NO_DATA_COUNTRIES = {
+    "ESH": "RASD (Sahara Occidental)",
+    "RASD": "RASD (Sahara Occidental)",
+    "Sahara": "RASD (Sahara Occidental)",
+    "Western Sahara": "RASD (Sahara Occidental)",
+    "Sahara Occidental": "RASD (Sahara Occidental)"
+}
+
+
+def check_country_has_data(country_name: str) -> tuple:
+    """
+    Check if a country has trade data available
+    Returns (has_data, country_info) tuple
+    """
+    name_lower = country_name.lower().strip()
+    
+    # Check direct match in NO_DATA_COUNTRIES
+    for key, value in NO_DATA_COUNTRIES.items():
+        if key.lower() in name_lower or name_lower in key.lower():
+            return False, {
+                "name": value,
+                "iso3": "ESH",
+                "reason": "Territoire occupé - aucune statistique commerciale disponible dans les bases de données internationales (OEC, COMTRADE, WITS)"
+            }
+    
+    # Check by ISO3
+    for iso3, info in AFRICAN_COUNTRIES.items():
+        if info.get("name_fr", "").lower() == name_lower or info.get("name_en", "").lower() == name_lower:
+            if not info.get("has_trade_data", True):
+                return False, {
+                    "name": info.get("name_fr", country_name),
+                    "iso3": iso3,
+                    "reason": info.get("note", "Données non disponibles")
+                }
+    
+    return True, None
 
 
 @router.get("/opportunities/{country_name}")
@@ -41,6 +82,26 @@ async def get_ai_trade_opportunities(
             status_code=400, 
             detail=f"Invalid mode. Must be one of: {valid_modes}"
         )
+    
+    # Check if country has trade data
+    has_data, no_data_info = check_country_has_data(country_name)
+    if not has_data:
+        return {
+            "country": no_data_info["name"],
+            "iso3": no_data_info["iso3"],
+            "mode": mode,
+            "no_data": True,
+            "message": f"Aucune donnée commerciale disponible pour {no_data_info['name']}",
+            "reason": no_data_info["reason"],
+            "note": "Ce pays est membre de l'Union Africaine et signataire de la ZLECAf, mais n'a pas de statistiques commerciales disponibles dans les bases de données internationales.",
+            "opportunities": [],
+            "summary": {
+                "total_opportunities": 0,
+                "total_potential_value": 0,
+                "status": "NO_DATA_AVAILABLE"
+            },
+            "sources": ["OEC", "UN COMTRADE", "WITS - Aucune donnée trouvée"]
+        }
     
     try:
         result = await gemini_trade_service.analyze_trade_opportunities(
@@ -197,8 +258,117 @@ async def check_ai_service_health():
     return {
         "status": "operational" if has_key else "not_configured",
         "api_key_configured": has_key,
-        "model": "gemini-3-flash-preview",
+        "model": "gemini-2.0-flash",
         "provider": "Google Gemini via Emergent LLM"
+    }
+
+
+@router.get("/summary")
+async def get_ai_trade_summary(
+    lang: str = Query(default="fr", description="Language for response (fr/en)")
+):
+    """
+    Get AI-generated comprehensive African trade summary
+    
+    Used for the "Vue d'ensemble" (Overview) tab.
+    Returns aggregate statistics across all African countries.
+    
+    Args:
+        lang: Language for the response
+    
+    Returns:
+        Trade summary with top countries, sectors, and growth metrics
+    """
+    try:
+        result = await gemini_trade_service.get_trade_summary(lang=lang)
+        
+        if "error" in result and len(result) <= 2:
+            raise HTTPException(status_code=500, detail=result["error"])
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating trade summary: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/value-chains")
+async def get_ai_value_chains(
+    sector: str = Query(default=None, description="Specific sector to analyze (coffee, cocoa, cotton, petroleum, minerals, automotive)"),
+    lang: str = Query(default="fr", description="Language for response (fr/en)")
+):
+    """
+    Get AI-analyzed African value chains
+    
+    Used for the "Chaînes de Valeur" (Value Chains) tab.
+    Analyzes production, transformation, and export opportunities.
+    
+    Args:
+        sector: Optional specific sector (coffee, cocoa, cotton, petroleum, minerals, automotive)
+        lang: Language for the response
+    
+    Returns:
+        Value chains analysis with stages, top producers, and AfCFTA opportunities
+    """
+    valid_sectors = ["coffee", "cocoa", "cotton", "petroleum", "minerals", "automotive", None]
+    if sector and sector not in valid_sectors:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid sector. Must be one of: {[s for s in valid_sectors if s]}"
+        )
+    
+    try:
+        result = await gemini_trade_service.get_value_chains_analysis(
+            sector=sector,
+            lang=lang
+        )
+        
+        if "error" in result and len(result) <= 2:
+            raise HTTPException(status_code=500, detail=result["error"])
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating value chains: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/cache/stats")
+async def get_cache_statistics():
+    """
+    Get Redis cache statistics
+    
+    Returns:
+        Cache status, hit rate, and key count
+    """
+    return cache_service.get_stats()
+
+
+@router.delete("/cache/clear")
+async def clear_cache(
+    pattern: str = Query(default=None, description="Pattern to clear (e.g., 'gemini_analysis'). Leave empty to clear all.")
+):
+    """
+    Clear cache entries (admin endpoint)
+    
+    Args:
+        pattern: Optional pattern to match (gemini_analysis, gemini_profile, etc.)
+    
+    Returns:
+        Number of cleared entries
+    """
+    if pattern:
+        cleared = cache_service.invalidate_pattern(pattern)
+    else:
+        cleared = cache_service.clear_all()
+    
+    return {
+        "cleared_entries": cleared,
+        "pattern": pattern or "all"
     }
 
 

@@ -9,10 +9,15 @@ import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
 import { Progress } from '../ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { toast } from '../../hooks/use-toast';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
+import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe } from 'lucide-react';
+import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
+import { DetailedTaxTable, SavingsHighlight } from './TaxBreakdownChart';
+import MultiCountryComparison from './MultiCountryComparison';
 import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info } from 'lucide-react';
 import TariffDownloads from '../tools/TariffDownloads';
 import './calculator.css';
@@ -56,8 +61,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [hsCode, setHsCode] = useState('');
   const [value, setValue] = useState('');
   const [result, setResult] = useState(null);
+  const [detailedResult, setDetailedResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showHSBrowser, setShowHSBrowser] = useState(false);
+  const [showDetailedBreakdown, setShowDetailedBreakdown] = useState(false);
   const [hs6TariffInfo, setHs6TariffInfo] = useState(null);
   const [subPositions, setSubPositions] = useState(null);
   const [useSmartSearch, setUseSmartSearch] = useState(true);
@@ -287,39 +294,193 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     }
 
     setLoading(true);
+    
+    // Mapping ISO2 -> ISO3 pour les pays
+    const ISO2_TO_ISO3 = {
+      'DZ': 'DZA', 'AO': 'AGO', 'BJ': 'BEN', 'BW': 'BWA', 'BF': 'BFA', 'BI': 'BDI', 'CM': 'CMR', 'CV': 'CPV',
+      'CF': 'CAF', 'TD': 'TCD', 'KM': 'COM', 'CG': 'COG', 'CD': 'COD', 'CI': 'CIV', 'DJ': 'DJI', 'EG': 'EGY',
+      'GQ': 'GNQ', 'ER': 'ERI', 'SZ': 'SWZ', 'ET': 'ETH', 'GA': 'GAB', 'GM': 'GMB', 'GH': 'GHA', 'GN': 'GIN',
+      'GW': 'GNB', 'KE': 'KEN', 'LS': 'LSO', 'LR': 'LBR', 'LY': 'LBY', 'MG': 'MDG', 'MW': 'MWI', 'ML': 'MLI',
+      'MR': 'MRT', 'MU': 'MUS', 'MA': 'MAR', 'MZ': 'MOZ', 'NA': 'NAM', 'NE': 'NER', 'NG': 'NGA', 'RW': 'RWA',
+      'ST': 'STP', 'SN': 'SEN', 'SC': 'SYC', 'SL': 'SLE', 'SO': 'SOM', 'ZA': 'ZAF', 'SS': 'SSD', 'SD': 'SDN',
+      'TZ': 'TZA', 'TG': 'TGO', 'TN': 'TUN', 'UG': 'UGA', 'ZM': 'ZMB', 'ZW': 'ZWE'
+    };
+    
+    // Convertir les codes pays en ISO3
+    const destISO3 = destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry;
+    const originISO3 = originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry;
+    
     try {
-      // Calcul des tarifs
-      const response = await axios.post(`${API}/calculate-tariff`, {
-        origin_country: originCountry,
-        destination_country: destinationCountry,
-        hs_code: cleanHsCode,
-        value: parseFloat(value)
-      });
+      // PRIORITÉ 1: Essayer d'utiliser les données tarifaires AUTHENTIQUES
+      let authenticResult = null;
+      let useAuthenticData = false;
       
-      setResult(response.data);
-      
-      // Récupérer les sous-positions si disponibles pour le pays de destination
-      const hs6 = cleanHsCode.substring(0, 6);
       try {
-        const subPosResponse = await axios.get(`${API}/tariffs/sub-positions/${destinationCountry}/${hs6}?language=${language}`);
-        setSubPositions(subPosResponse.data);
-      } catch (subPosError) {
-        setSubPositions(null);
+        const authenticResponse = await axios.get(
+          `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}`
+        );
+        authenticResult = authenticResponse.data;
+        useAuthenticData = true;
+        console.log('✅ Using AUTHENTIC tariff data for', destISO3);
+      } catch (authError) {
+        console.log('ℹ️ Authentic tariff data not available for', destISO3, '- falling back to calculated data');
       }
       
-      // Récupérer les informations SH6 spécifiques si disponibles
-      try {
-        const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);
-        setHs6TariffInfo(hs6Response.data);
-      } catch (hs6Error) {
-        // Pas de tarif SH6 spécifique, ce n'est pas une erreur
-        setHs6TariffInfo(null);
+      if (useAuthenticData && authenticResult) {
+        // Transformer les données authentiques au format attendu par l'UI
+        const npfCalc = authenticResult.npf_calculation || {};
+        const zlecafCalc = authenticResult.zlecaf_calculation || {};
+        const savings = authenticResult.savings || {};
+        const rates = authenticResult.rates || {};
+        
+        // Construire le résultat au format compatible
+        const transformedResult = {
+          origin_country: originCountry,
+          destination_country: destinationCountry,
+          hs_code: cleanHsCode,
+          hs6_code: authenticResult.hs6 || cleanHsCode.substring(0, 6),
+          value: parseFloat(value),
+          
+          // Tarifs
+          normal_tariff_rate: (rates.dd_rate_pct || 0) / 100,
+          normal_tariff_amount: npfCalc.dd?.amount || 0,
+          zlecaf_tariff_rate: 0, // DD exempt under ZLECAf
+          zlecaf_tariff_amount: zlecafCalc.dd?.amount || 0,
+          
+          // TVA
+          normal_vat_rate: (rates.vat_rate_pct || 0) / 100,
+          normal_vat_amount: npfCalc.vat?.amount || 0,
+          zlecaf_vat_rate: (rates.vat_rate_pct || 0) / 100,
+          zlecaf_vat_amount: zlecafCalc.vat?.amount || 0,
+          
+          // Autres taxes
+          normal_other_taxes_total: npfCalc.other_taxes?.amount || 0,
+          zlecaf_other_taxes_total: zlecafCalc.other_taxes?.amount || 0,
+          
+          // Totaux
+          normal_total_cost: npfCalc.total_to_pay || 0,
+          zlecaf_total_cost: zlecafCalc.total_to_pay || 0,
+          
+          // Économies
+          savings: savings.amount || 0,
+          savings_percentage: savings.percentage || 0,
+          total_savings_with_taxes: savings.amount || 0,
+          total_savings_percentage: savings.percentage || 0,
+          
+          // Précision et source
+          tariff_precision: 'authentic_data',
+          data_source: 'authentic_tariff',
+          
+          // Détails des taxes
+          taxes_detail: authenticResult.taxes_detail || [],
+          
+          // Avantages fiscaux
+          fiscal_advantages: authenticResult.fiscal_advantages || [],
+          
+          // Formalités administratives
+          administrative_formalities: authenticResult.administrative_formalities || [],
+          
+          // Sous-positions
+          has_sub_positions: authenticResult.has_sub_positions || false,
+          sub_position_count: authenticResult.sub_position_count || 0,
+          sub_position: authenticResult.sub_position,
+          
+          // Règles d'origine (placeholder - à récupérer séparément si nécessaire)
+          rules_of_origin: {
+            rule: 'ZLECAf Rules of Origin',
+            requirement: language === 'fr' ? 'Certificat d\'origine ZLECAf requis' : 'AfCFTA Certificate of Origin required',
+            regional_content: 40
+          },
+          
+          // Journal de calcul NPF
+          normal_calculation_journal: [
+            { step: 1, component: 'Valeur CIF', base: parseFloat(value), rate: '-', amount: parseFloat(value), cumulative: parseFloat(value), legal_ref: 'Incoterms 2020' },
+            { step: 2, component: 'Droits de Douane (DD)', base: parseFloat(value), rate: `${rates.dd_rate_pct || 0}%`, amount: npfCalc.dd?.amount || 0, cumulative: parseFloat(value) + (npfCalc.dd?.amount || 0), legal_ref: `Tarif ${destISO3}` },
+            { step: 3, component: 'TVA', base: npfCalc.vat?.base || parseFloat(value), rate: `${rates.vat_rate_pct || 0}%`, amount: npfCalc.vat?.amount || 0, cumulative: npfCalc.total_to_pay || 0, legal_ref: `CGI ${destISO3}` }
+          ],
+          
+          // Journal de calcul ZLECAf
+          zlecaf_calculation_journal: [
+            { step: 1, component: 'Valeur CIF', base: parseFloat(value), rate: '-', amount: parseFloat(value), cumulative: parseFloat(value), legal_ref: 'Incoterms 2020' },
+            { step: 2, component: 'Droits de Douane ZLECAf', base: parseFloat(value), rate: '0%', amount: 0, cumulative: parseFloat(value), legal_ref: 'AfCFTA Art. 8 - Exonération DD' },
+            { step: 3, component: 'TVA', base: zlecafCalc.vat?.base || parseFloat(value), rate: `${rates.vat_rate_pct || 0}%`, amount: zlecafCalc.vat?.amount || 0, cumulative: zlecafCalc.total_to_pay || 0, legal_ref: `CGI ${destISO3}` }
+          ],
+          
+          computation_order_ref: `Données tarifaires officielles ${destISO3} - Format enhanced_v2`,
+          last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',
+          confidence_level: 'very_high'
+        };
+        
+        setResult(transformedResult);
+        setDetailedResult(authenticResult);
+        setShowDetailedBreakdown(true);
+        
+        // Récupérer les sous-positions authentiques
+        const hs6 = cleanHsCode.substring(0, 6);
+        try {
+          const subPosResponse = await axios.get(`${API}/authentic-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
+          setSubPositions(subPosResponse.data);
+        } catch (subPosError) {
+          setSubPositions(null);
+        }
+        
+        // Info SH6 depuis les données authentiques
+        setHs6TariffInfo({
+          code: hs6,
+          description: authenticResult.description,
+          has_specific_tariff: true
+        });
+        
+        toast({
+          title: `✅ ${t.calculationSuccess}`,
+          description: `${t.potentialSavings}: ${formatCurrency(savings.amount || 0)} (Données officielles ${destISO3})`,
+        });
+        
+      } else {
+        // FALLBACK: Utiliser l'ancien endpoint si pas de données authentiques
+        const response = await axios.post(`${API}/calculate-tariff`, {
+          origin_country: originCountry,
+          destination_country: destinationCountry,
+          hs_code: cleanHsCode,
+          value: parseFloat(value)
+        });
+        
+        setResult(response.data);
+        
+        // Récupérer le calcul détaillé NPF vs ZLECAf
+        try {
+          const detailedResponse = await axios.get(
+            `${API}/calculate/detailed/${destinationCountry}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}`
+          );
+          setDetailedResult(detailedResponse.data);
+          setShowDetailedBreakdown(true);
+        } catch (detailError) {
+          console.warn('Detailed calculation not available:', detailError.message);
+          setDetailedResult(null);
+        }
+        
+        // Récupérer les sous-positions si disponibles pour le pays de destination
+        const hs6 = cleanHsCode.substring(0, 6);
+        try {
+          const subPosResponse = await axios.get(`${API}/tariffs/sub-positions/${destinationCountry}/${hs6}?language=${language}`);
+          setSubPositions(subPosResponse.data);
+        } catch (subPosError) {
+          setSubPositions(null);
+        }
+        
+        // Récupérer les informations SH6 spécifiques si disponibles
+        try {
+          const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);
+          setHs6TariffInfo(hs6Response.data);
+        } catch (hs6Error) {
+          setHs6TariffInfo(null);
+        }
+        
+        toast({
+          title: t.calculationSuccess,
+          description: `${t.potentialSavings}: ${formatCurrency(response.data.savings)}`,
+        });
       }
-      
-      toast({
-        title: t.calculationSuccess,
-        description: `${t.potentialSavings}: ${formatCurrency(response.data.savings)}`,
-      });
     } catch (error) {
       console.error('Calculation error:', error);
       toast({
@@ -360,6 +521,75 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
   return (
     <div className="space-y-6">
+      {/* Onglets Principal */}
+      <Tabs defaultValue="calculator" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsTrigger value="calculator" className="flex items-center gap-2" data-testid="calculator-single-tab">
+            <Calculator className="w-4 h-4" />
+            {language === 'fr' ? 'Calculateur' : 'Calculator'}
+          </TabsTrigger>
+          <TabsTrigger value="compare" className="flex items-center gap-2" data-testid="calculator-compare-tab">
+            <Globe className="w-4 h-4" />
+            {language === 'fr' ? 'Comparaison Multi-Pays' : 'Multi-Country Comparison'}
+          </TabsTrigger>
+        </TabsList>
+        
+        {/* Onglet Calculateur Standard */}
+        <TabsContent value="calculator">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" style={{ minHeight: '600px' }}>
+            {/* Formulaire de calcul */}
+            <Card className="shadow-2xl border-t-4 border-t-green-600" style={{ minHeight: '400px' }}>
+              <CardHeader className="bg-gradient-to-r from-green-50 to-yellow-50">
+                <CardTitle className="flex items-center space-x-2 text-2xl text-green-700">
+                  <span>📊</span>
+                  <span>{t.calculatorTitle}</span>
+                </CardTitle>
+                <CardDescription className="text-gray-700 font-semibold">
+                  {t.calculatorDesc}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="origin">{t.originCountry}</Label>
+                    <Select value={originCountry} onValueChange={(val) => {
+                      console.log('Origin country selected:', val);
+                      setOriginCountry(val);
+                    }}>
+                      <SelectTrigger data-testid="origin-country-select">
+                        <SelectValue placeholder={t.originCountry} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map((country) => (
+                          <SelectItem key={country.code} value={country.code} data-testid={`origin-${country.code}`}>
+                            {getFlag(country.iso2 || country.code)} {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="destination">{t.partnerCountry}</Label>
+                    <Select value={destinationCountry} onValueChange={(val) => {
+                      console.log('Destination country selected:', val);
+                      setDestinationCountry(val);
+                    }}>
+                      <SelectTrigger data-testid="destination-country-select">
+                        <SelectValue placeholder={t.partnerCountry} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map((country) => (
+                          <SelectItem key={country.code} value={country.code} data-testid={`dest-${country.code}`}>
+                            {getFlag(country.iso2 || country.code)} {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
       <Card className="shadow-2xl border-t-4 border-t-green-600">
         <CardHeader className="bg-gradient-to-r from-green-50 to-yellow-50">
           <CardTitle className="flex items-center space-x-2 text-2xl text-green-700">
@@ -581,6 +811,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           <Button 
             onClick={calculateTariff}
             disabled={loading}
+            data-testid="calculate-tariff-button"
             className="w-full bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 text-white font-bold text-lg py-6 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all"
           >
             {loading ? `⏳ ${t.calculating}` : `🧮 ${t.calculateBtn}`}
@@ -612,6 +843,273 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-5 pt-6 results-container">
+              {/* Information sur les DONNÉES AUTHENTIQUES */}
+              {result.data_source === 'authentic_tariff' && (
+                <div className="result-section bg-gradient-to-r from-emerald-50 via-green-50 to-teal-50 p-5 rounded-xl border-2 border-emerald-400 shadow-lg" data-testid="authentic-data-badge">
+                  <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                      <span className="text-2xl">✓</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <h4 className="font-bold text-emerald-800 text-lg">
+                          {language === 'fr' ? 'Données Tarifaires Officielles' : 'Official Tariff Data'}
+                        </h4>
+                        <Badge className="bg-emerald-600 text-white px-3 py-1">
+                          {language === 'fr' ? 'Vérifié' : 'Verified'}
+                        </Badge>
+                      </div>
+                      <p className="text-gray-700 text-sm mb-3">
+                        {language === 'fr' 
+                          ? `Calcul basé sur les tarifs douaniers officiels du ${getCountryName(destinationCountry)} avec ${result.sub_position_count || 0} sous-positions nationales.`
+                          : `Calculation based on official customs tariffs of ${getCountryName(destinationCountry)} with ${result.sub_position_count || 0} national sub-headings.`}
+                      </p>
+                      
+                      {/* Détail des taxes authentiques */}
+                      {result.taxes_detail && result.taxes_detail.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {result.taxes_detail.map((tax, idx) => (
+                            <Badge key={idx} variant="outline" className="bg-white border-emerald-300 text-emerald-700">
+                              {tax.tax}: {tax.rate}%
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-shrink-0 text-right">
+                      <p className="text-xs text-gray-500 mb-1">
+                        {language === 'fr' ? 'Confiance' : 'Confidence'}
+                      </p>
+                      <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg px-4 py-2">
+                        {language === 'fr' ? 'Très élevée' : 'Very High'}
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  {/* Avantages fiscaux ZLECAf */}
+                  {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
+                    <div className="mt-4 p-3 bg-white/70 rounded-lg border border-emerald-200">
+                      <p className="text-sm font-semibold text-emerald-800 mb-2">
+                        {language === 'fr' ? '🎯 Avantages ZLECAf applicables:' : '🎯 Applicable AfCFTA advantages:'}
+                      </p>
+                      <ul className="space-y-1">
+                        {result.fiscal_advantages.map((adv, idx) => (
+                          <li key={idx} className="text-sm text-gray-700 flex items-start gap-2">
+                            <span className="text-emerald-500">✓</span>
+                            <span>{language === 'fr' ? adv.condition_fr : adv.condition_en}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {/* Formalités administratives */}
+                  {result.administrative_formalities && result.administrative_formalities.length > 0 && (
+                    <div className="mt-3 p-3 bg-amber-50/70 rounded-lg border border-amber-200">
+                      <p className="text-sm font-semibold text-amber-800 mb-2">
+                        {language === 'fr' ? '📋 Documents requis:' : '📋 Required documents:'}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {result.administrative_formalities.map((form, idx) => (
+                          <Badge key={idx} variant="outline" className="bg-white border-amber-300 text-amber-700 text-xs">
+                            {language === 'fr' ? form.document_fr : form.document_en}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* TABLEAU DÉTAILLÉ DE TOUTES LES TAXES AVEC INTITULÉS */}
+              {result.data_source === 'authentic_tariff' && result.taxes_detail && result.taxes_detail.length > 0 && (
+                <div className="result-section bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden" data-testid="all-taxes-table">
+                  <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+                    <h4 className="font-bold text-lg text-blue-900 flex items-center gap-2">
+                      <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">📋</span>
+                      {language === 'fr' ? 'Détail Complet des Taxes' : 'Complete Tax Breakdown'}
+                    </h4>
+                    <p className="text-sm text-blue-700 mt-1">
+                      {language === 'fr' 
+                        ? `${result.taxes_detail.length} taxes applicables pour ${getCountryName(destinationCountry)}`
+                        : `${result.taxes_detail.length} applicable taxes for ${getCountryName(destinationCountry)}`}
+                    </p>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 gap-0">
+                    {/* Colonne NPF */}
+                    <div className="border-r border-gray-200">
+                      <div className="p-3 bg-red-50 border-b border-red-100">
+                        <h5 className="font-bold text-red-800 flex items-center gap-2">
+                          <span>🚫</span>
+                          {language === 'fr' ? 'Régime NPF (Sans préférence)' : 'MFN Regime (No preference)'}
+                        </h5>
+                      </div>
+                      <div className="p-4">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="text-left text-gray-500 border-b">
+                              <th className="pb-2">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
+                              <th className="pb-2 text-center">{language === 'fr' ? 'Taux' : 'Rate'}</th>
+                              <th className="pb-2 text-right">{language === 'fr' ? 'Montant' : 'Amount'}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b bg-gray-50">
+                              <td className="py-2 font-medium">
+                                <span className="font-mono">CIF</span>
+                                <span className="text-xs text-gray-500 block">{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
+                              </td>
+                              <td className="py-2 text-center">-</td>
+                              <td className="py-2 text-right font-mono font-bold">{formatCurrency(parseFloat(value))}</td>
+                            </tr>
+                            {result.taxes_detail.map((tax, idx) => {
+                              const taxAmount = parseFloat(value) * (tax.rate / 100);
+                              return (
+                                <tr key={idx} className="border-b hover:bg-gray-50">
+                                  <td className="py-2">
+                                    <div className="flex items-center gap-2">
+                                      <span 
+                                        className="w-3 h-3 rounded-full flex-shrink-0"
+                                        style={{ 
+                                          backgroundColor: tax.tax.toLowerCase().includes('d.d') || tax.tax.toLowerCase().includes('douane') ? '#dc2626' :
+                                            tax.tax.toLowerCase().includes('tva') || tax.tax.toLowerCase().includes('vat') ? '#f59e0b' :
+                                            tax.tax.toLowerCase().includes('cedeao') ? '#10b981' :
+                                            tax.tax.toLowerCase().includes('ciss') ? '#ec4899' :
+                                            '#8b5cf6'
+                                        }}
+                                      />
+                                      <div>
+                                        <span className="font-mono font-medium">{tax.tax}</span>
+                                        {tax.observation && tax.observation !== tax.tax && (
+                                          <span className="text-xs text-gray-500 block">{tax.observation}</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className="py-2 text-center font-mono">{tax.rate}%</td>
+                                  <td className="py-2 text-right font-mono">{formatCurrency(taxAmount)}</td>
+                                </tr>
+                              );
+                            })}
+                            <tr className="bg-red-50 font-bold">
+                              <td className="py-3" colSpan={2}>
+                                {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
+                              </td>
+                              <td className="py-3 text-right font-mono text-lg text-red-700">
+                                {formatCurrency(result.normal_total_cost)}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    
+                    {/* Colonne ZLECAf */}
+                    <div>
+                      <div className="p-3 bg-emerald-50 border-b border-emerald-100">
+                        <h5 className="font-bold text-emerald-800 flex items-center gap-2">
+                          <span>✅</span>
+                          {language === 'fr' ? 'Régime ZLECAf (Préférentiel)' : 'AfCFTA Regime (Preferential)'}
+                        </h5>
+                      </div>
+                      <div className="p-4">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="text-left text-gray-500 border-b">
+                              <th className="pb-2">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
+                              <th className="pb-2 text-center">{language === 'fr' ? 'Taux' : 'Rate'}</th>
+                              <th className="pb-2 text-right">{language === 'fr' ? 'Montant' : 'Amount'}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b bg-gray-50">
+                              <td className="py-2 font-medium">
+                                <span className="font-mono">CIF</span>
+                                <span className="text-xs text-gray-500 block">{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
+                              </td>
+                              <td className="py-2 text-center">-</td>
+                              <td className="py-2 text-right font-mono font-bold">{formatCurrency(parseFloat(value))}</td>
+                            </tr>
+                            {result.taxes_detail.map((tax, idx) => {
+                              const isDD = tax.tax.toLowerCase().includes('d.d') || tax.tax.toLowerCase().includes('douane');
+                              const effectiveRate = isDD ? 0 : tax.rate;
+                              const taxAmount = parseFloat(value) * (effectiveRate / 100);
+                              return (
+                                <tr key={idx} className={`border-b hover:bg-gray-50 ${isDD ? 'bg-emerald-50' : ''}`}>
+                                  <td className="py-2">
+                                    <div className="flex items-center gap-2">
+                                      <span 
+                                        className="w-3 h-3 rounded-full flex-shrink-0"
+                                        style={{ 
+                                          backgroundColor: isDD ? '#10b981' :
+                                            tax.tax.toLowerCase().includes('tva') || tax.tax.toLowerCase().includes('vat') ? '#f59e0b' :
+                                            tax.tax.toLowerCase().includes('cedeao') ? '#10b981' :
+                                            tax.tax.toLowerCase().includes('ciss') ? '#ec4899' :
+                                            '#8b5cf6'
+                                        }}
+                                      />
+                                      <div>
+                                        <span className={`font-mono font-medium ${isDD ? 'text-emerald-700' : ''}`}>{tax.tax}</span>
+                                        {tax.observation && tax.observation !== tax.tax && (
+                                          <span className="text-xs text-gray-500 block">{tax.observation}</span>
+                                        )}
+                                        {isDD && (
+                                          <Badge className="mt-1 bg-emerald-100 text-emerald-700 text-xs">
+                                            {language === 'fr' ? 'Exonéré ZLECAf' : 'AfCFTA Exempt'}
+                                          </Badge>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className="py-2 text-center font-mono">
+                                    {isDD ? (
+                                      <span>
+                                        <span className="line-through text-gray-400">{tax.rate}%</span>
+                                        <span className="text-emerald-600 font-bold ml-1">0%</span>
+                                      </span>
+                                    ) : (
+                                      <span>{tax.rate}%</span>
+                                    )}
+                                  </td>
+                                  <td className={`py-2 text-right font-mono ${isDD ? 'text-emerald-600 font-bold' : ''}`}>
+                                    {formatCurrency(taxAmount)}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                            <tr className="bg-emerald-50 font-bold">
+                              <td className="py-3" colSpan={2}>
+                                {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
+                              </td>
+                              <td className="py-3 text-right font-mono text-lg text-emerald-700">
+                                {formatCurrency(result.zlecaf_total_cost)}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Économies */}
+                  <div className="p-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="text-3xl">💰</span>
+                        <div>
+                          <p className="text-sm opacity-90">{language === 'fr' ? 'Économies grâce à la ZLECAf' : 'Savings thanks to AfCFTA'}</p>
+                          <p className="text-2xl font-bold">{formatCurrency(result.savings || (result.normal_total_cost - result.zlecaf_total_cost))}</p>
+                        </div>
+                      </div>
+                      <Badge className="bg-white/20 text-white text-lg px-4 py-2">
+                        -{result.savings_percentage || ((result.normal_total_cost - result.zlecaf_total_cost) / result.normal_total_cost * 100).toFixed(1)}%
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Information sur la sous-position nationale si utilisée */}
               {result.tariff_precision === 'sub_position' && (
                 <div className="result-section tariff-info-section bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200 shadow-sm">
@@ -1044,10 +1542,47 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                 </div>
               </div>
+
+              {/* Bouton pour afficher/masquer le calcul détaillé */}
+              {detailedResult && (
+                <div className="mt-6">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowDetailedBreakdown(!showDetailedBreakdown)}
+                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-purple-200 hover:bg-purple-50"
+                    data-testid="toggle-detailed-breakdown"
+                  >
+                    <Calculator className="h-5 w-5 text-purple-600" />
+                    <span className="font-semibold text-purple-700">
+                      {showDetailedBreakdown 
+                        ? (language === 'fr' ? 'Masquer le Détail du Calcul' : 'Hide Calculation Details')
+                        : (language === 'fr' ? 'Voir le Détail du Calcul NPF vs ZLECAf' : 'View NPF vs AfCFTA Calculation Details')}
+                    </span>
+                    {showDetailedBreakdown ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </Button>
+                  
+                  {showDetailedBreakdown && (
+                    <div className="mt-4 animate-in slide-in-from-top-2">
+                      <DetailedCalculationBreakdown 
+                        result={detailedResult} 
+                        language={language} 
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
       )}
+          </div>
+        </TabsContent>
+        
+        {/* Onglet Comparaison Multi-Pays */}
+        <TabsContent value="compare">
+          <MultiCountryComparison language={language} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

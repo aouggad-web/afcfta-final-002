@@ -141,6 +141,7 @@ if NotificationManager:
 
 app = FastAPI(title="Système Commercial ZLECAf - API Complète", version="2.0.0")
 
+# Configure CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -149,6 +150,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Create a router with the /api prefix
 try:
     from middlewares import SecurityHeadersMiddleware, CSRFMiddleware, RateLimitMiddleware
     app.add_middleware(SecurityHeadersMiddleware)

@@ -2,6 +2,7 @@
  * AI Trade Analysis Component
  * Uses Gemini AI for intelligent trade opportunity analysis
  * Includes Sankey diagram visualization
+ * NOW WITH DATA FRESHNESS INDICATOR
  */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +24,7 @@ import {
 } from 'lucide-react';
 
 import TradeSankeyDiagram from './TradeSankeyDiagram';
+import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -42,20 +44,40 @@ const AIOpportunityCard = ({ opportunity, mode, language, index }) => {
   const isExport = mode === 'export';
   const isIndustrial = mode === 'industrial';
   
+  // Handle different response formats - API returns nested product object
+  const product = opportunity.product || {};
+  
   const productName = isIndustrial 
-    ? opportunity.output_product 
-    : opportunity.product_name;
+    ? (product.name || opportunity.output_product || opportunity.product_name)
+    : (product.name || opportunity.product_name);
+  
   const hsCode = isIndustrial 
-    ? opportunity.output_hs_code 
-    : opportunity.hs_code;
+    ? (product.hs_code || opportunity.output_hs_code || opportunity.hs_code)
+    : (product.hs_code || opportunity.hs_code);
+  
   const partner = isExport 
-    ? opportunity.potential_partner 
-    : opportunity.potential_supplier;
-  const value = isExport 
-    ? opportunity.potential_value_musd 
-    : opportunity.substitution_potential_musd || opportunity.import_value_musd;
+    ? (opportunity.potential_partner || opportunity.target_markets?.[0])
+    : (opportunity.potential_supplier || opportunity.target_markets?.[0]);
+  
+  // Value calculation - handle all possible field names
+  let value = 0;
+  if (mode === 'export') {
+    value = opportunity.potential_value_musd || opportunity.current_value_musd || 0;
+  } else if (mode === 'import') {
+    value = opportunity.substitution_potential_musd || opportunity.import_value_musd || 0;
+  } else if (mode === 'industrial') {
+    value = opportunity.potential_value_musd || 0;
+  }
   
   const isEstimation = opportunity.is_estimation;
+  
+  // Industrial mode specific fields
+  const industrialInput = opportunity.industrial_input || {};
+  const inputProduct = industrialInput.name || opportunity.input_product || '';
+  const inputHsCode = industrialInput.hs_code || opportunity.input_hs_code || '';
+  const inputVolume = industrialInput.import_volume || opportunity.input_import_volume || '';
+  const transformationLogic = opportunity.transformation_logic || opportunity.rationale || '';
+  const targetMarkets = opportunity.target_markets || [];
 
   return (
     <Card className={`bg-white border-slate-200 shadow hover:shadow-lg transition-all ${
@@ -87,7 +109,12 @@ const AIOpportunityCard = ({ opportunity, mode, language, index }) => {
         <div className="flex items-center gap-2 text-sm text-slate-600 mb-4">
           <Globe className="h-4 w-4 text-emerald-500" />
           <span>
-            {isExport ? 'Vers' : 'De'}: <strong className="text-slate-800">{partner}</strong>
+            {isExport ? 'Vers' : isIndustrial ? 'Marchés cibles' : 'De'}: 
+            <strong className="text-slate-800 ml-1">
+              {isIndustrial && targetMarkets.length > 0 
+                ? targetMarkets.slice(0, 3).join(', ')
+                : partner || 'Non spécifié'}
+            </strong>
           </span>
         </div>
 
@@ -95,43 +122,53 @@ const AIOpportunityCard = ({ opportunity, mode, language, index }) => {
         <div className="bg-emerald-50 rounded-lg p-3 mb-4">
           <div className="flex items-center justify-between">
             <span className="text-sm text-emerald-600 font-medium">
-              {isExport ? 'Potentiel' : 'Valeur substituable'}
+              {isExport ? 'Potentiel' : isIndustrial ? 'Valeur potentielle' : 'Valeur substituable'}
             </span>
             <span className="text-xl font-black text-emerald-700">
               {formatValue(value)}
             </span>
           </div>
-          {opportunity.tariff_advantage && (
+          {(opportunity.tariff_reduction || opportunity.tariff_advantage) && (
             <div className="mt-2 pt-2 border-t border-emerald-200 flex items-center justify-between">
               <span className="text-xs text-emerald-600">Avantage tarifaire ZLECAf</span>
               <Badge className="bg-emerald-600 text-white">
-                -{opportunity.tariff_advantage}%
+                -{opportunity.tariff_reduction || opportunity.tariff_advantage}%
               </Badge>
             </div>
           )}
         </div>
 
         {/* Industrial mode extras */}
-        {isIndustrial && (
+        {isIndustrial && inputProduct && (
           <div className="bg-blue-50 rounded-lg p-3 mb-4">
             <p className="text-xs font-bold text-blue-600 uppercase mb-2">
               Chaîne de valeur
             </p>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-slate-600">{opportunity.input_product}</span>
-              <ArrowRight className="h-4 w-4 text-blue-400" />
-              <span className="font-bold text-slate-800">{opportunity.output_product}</span>
+              <div className="flex flex-col">
+                <span className="text-slate-600">{inputProduct}</span>
+                {inputHsCode && (
+                  <span className="text-[10px] text-slate-400">HS {inputHsCode}</span>
+                )}
+              </div>
+              <ArrowRight className="h-4 w-4 text-blue-400 flex-shrink-0" />
+              <div className="flex flex-col">
+                <span className="font-bold text-slate-800">{productName}</span>
+                {hsCode && (
+                  <span className="text-[10px] text-slate-400">HS {hsCode}</span>
+                )}
+              </div>
             </div>
-            {opportunity.input_import_volume && (
-              <p className="text-xs text-slate-500 mt-1">
-                Import: {opportunity.input_import_volume}
+            {inputVolume && (
+              <p className="text-xs text-slate-500 mt-2">
+                Volume importé: {inputVolume}
               </p>
             )}
           </div>
         )}
 
         {/* Rationale (expandable) */}
-        {opportunity.rationale && (
+        {(opportunity.rationale || transformationLogic) && (
           <>
             <Button
               variant="ghost"
@@ -139,17 +176,24 @@ const AIOpportunityCard = ({ opportunity, mode, language, index }) => {
               onClick={() => setExpanded(!expanded)}
               className="w-full justify-between text-slate-500 hover:text-slate-700"
             >
-              <span className="text-xs font-bold uppercase">Justification</span>
+              <span className="text-xs font-bold uppercase">
+                {isIndustrial ? 'Logique de transformation' : 'Justification'}
+              </span>
               {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </Button>
             {expanded && (
               <div className="mt-2 p-3 bg-slate-50 rounded-lg">
                 <p className="text-sm text-slate-700 leading-relaxed">
-                  {opportunity.rationale}
+                  {isIndustrial ? transformationLogic : opportunity.rationale}
                 </p>
-                {opportunity.data_year && (
+                {(opportunity.data_year || opportunity.year) && (
                   <p className="text-xs text-slate-400 mt-2 italic">
-                    Données: {opportunity.data_year}
+                    Données: {opportunity.data_year || opportunity.year}
+                  </p>
+                )}
+                {opportunity.data_source && (
+                  <p className="text-xs text-slate-400 italic">
+                    Source: {opportunity.data_source}
                   </p>
                 )}
               </div>
@@ -304,14 +348,17 @@ export default function AIAnalysis({ language = 'fr' }) {
     const totalValue = opps.reduce((sum, opp) => {
       let val = 0;
       if (mode === 'export') {
-        val = opp.potential_value_musd || 0;
+        val = opp.potential_value_musd || opp.current_value_musd || 0;
       } else if (mode === 'import') {
         val = opp.substitution_potential_musd || opp.import_value_musd || 0;
       } else if (mode === 'industrial') {
-        // Industrial mode: parse estimated_output which may be string like "1800 MUSD"
-        const outputStr = opp.estimated_output || '';
-        const match = outputStr.match(/(\d+)/);
-        val = match ? parseFloat(match[1]) : 0;
+        // Industrial mode: check potential_value_musd first, then try parsing estimated_output
+        val = opp.potential_value_musd || 0;
+        if (!val && opp.estimated_output) {
+          const outputStr = opp.estimated_output || '';
+          const match = outputStr.match(/(\d+)/);
+          val = match ? parseFloat(match[1]) : 0;
+        }
       }
       return sum + val;
     }, 0);
@@ -521,6 +568,172 @@ export default function AIAnalysis({ language = 'fr' }) {
             />
           )}
 
+          {/* Expected Results Section */}
+          {analysisData.expected_results && (
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-blue-900">
+                  <TrendingUp className="h-5 w-5" />
+                  {currentLang === 'fr' ? 'Résultats Attendus' : 'Expected Results'}
+                </CardTitle>
+                <CardDescription className="text-blue-700">
+                  {currentLang === 'fr' 
+                    ? 'Projections basées sur la mise en œuvre des opportunités identifiées'
+                    : 'Projections based on implementing identified opportunities'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* 3-Year Scenario */}
+                  {analysisData.expected_results.scenario_3_years && (
+                    <div className="p-4 bg-white rounded-xl shadow border border-blue-100">
+                      <h4 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
+                        <Badge className="bg-blue-600">3 ans</Badge>
+                        {currentLang === 'fr' ? 'Horizon court terme' : 'Short-term horizon'}
+                      </h4>
+                      <ul className="space-y-2 text-sm">
+                        {analysisData.expected_results.scenario_3_years.export_growth_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Croissance exports' : 'Export growth'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              +{analysisData.expected_results.scenario_3_years.export_growth_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_3_years.import_substitution_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Substitution imports' : 'Import substitution'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              {analysisData.expected_results.scenario_3_years.import_substitution_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_3_years.new_jobs_created && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Emplois créés' : 'Jobs created'}
+                            </span>
+                            <span className="font-bold text-blue-600">
+                              {analysisData.expected_results.scenario_3_years.new_jobs_created.toLocaleString()}
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_3_years.savings_musd && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Économies' : 'Savings'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              ${analysisData.expected_results.scenario_3_years.savings_musd}M
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_3_years.industrial_value_added_musd && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Valeur ajoutée' : 'Value added'}
+                            </span>
+                            <span className="font-bold text-purple-600">
+                              ${analysisData.expected_results.scenario_3_years.industrial_value_added_musd}M
+                            </span>
+                          </li>
+                        )}
+                      </ul>
+                      {analysisData.expected_results.scenario_3_years.key_milestones && (
+                        <div className="mt-3 pt-3 border-t border-slate-100">
+                          <p className="text-xs font-bold text-slate-500 mb-1">
+                            {currentLang === 'fr' ? 'Jalons clés' : 'Key milestones'}
+                          </p>
+                          <ul className="text-xs text-slate-600 space-y-1">
+                            {analysisData.expected_results.scenario_3_years.key_milestones.map((m, i) => (
+                              <li key={i}>• {m}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* 5-Year Scenario */}
+                  {analysisData.expected_results.scenario_5_years && (
+                    <div className="p-4 bg-white rounded-xl shadow border border-indigo-100">
+                      <h4 className="font-bold text-indigo-800 mb-3 flex items-center gap-2">
+                        <Badge className="bg-indigo-600">5 ans</Badge>
+                        {currentLang === 'fr' ? 'Horizon moyen terme' : 'Medium-term horizon'}
+                      </h4>
+                      <ul className="space-y-2 text-sm">
+                        {analysisData.expected_results.scenario_5_years.export_growth_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Croissance exports' : 'Export growth'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              +{analysisData.expected_results.scenario_5_years.export_growth_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.import_substitution_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Substitution totale' : 'Total substitution'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              {analysisData.expected_results.scenario_5_years.import_substitution_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.new_jobs_created && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Emplois totaux' : 'Total jobs'}
+                            </span>
+                            <span className="font-bold text-blue-600">
+                              {analysisData.expected_results.scenario_5_years.new_jobs_created.toLocaleString()}
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.total_savings_musd && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Économies totales' : 'Total savings'}
+                            </span>
+                            <span className="font-bold text-emerald-600">
+                              ${analysisData.expected_results.scenario_5_years.total_savings_musd}M
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.afcfta_market_share_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Part marché ZLECAf' : 'AfCFTA market share'}
+                            </span>
+                            <span className="font-bold text-purple-600">
+                              {analysisData.expected_results.scenario_5_years.afcfta_market_share_percent}%
+                            </span>
+                          </li>
+                        )}
+                        {analysisData.expected_results.scenario_5_years.afcfta_share_percent && (
+                          <li className="flex justify-between">
+                            <span className="text-slate-600">
+                              {currentLang === 'fr' ? 'Part ZLECAf' : 'AfCFTA share'}
+                            </span>
+                            <span className="font-bold text-purple-600">
+                              {analysisData.expected_results.scenario_5_years.afcfta_share_percent}%
+                            </span>
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Opportunities Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {analysisData.opportunities?.slice(0, 10).map((opp, idx) => (
@@ -534,14 +747,20 @@ export default function AIAnalysis({ language = 'fr' }) {
             ))}
           </div>
 
-          {/* Sources footer */}
+          {/* Sources footer with data freshness */}
           {analysisData.sources && (
             <Card className="bg-slate-50 border-slate-200">
               <CardContent className="py-4 px-6">
-                <div className="flex items-center gap-2 text-sm text-slate-500">
-                  <Info className="h-4 w-4" />
-                  <span className="font-medium">{txt.sources}:</span>
-                  <span>{analysisData.sources.join(', ')}</span>
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2 text-sm text-slate-500">
+                    <Info className="h-4 w-4" />
+                    <span className="font-medium">{txt.sources}:</span>
+                    <span>{analysisData.sources.join(', ')}</span>
+                  </div>
+                  <DataFreshnessIndicator 
+                    freshness={analysisData.data_freshness} 
+                    language={currentLang}
+                  />
                 </div>
                 {analysisData.generated_by && (
                   <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">

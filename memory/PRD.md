@@ -1,6 +1,6 @@
 # ZLECAf Trade Opportunity Finder - Product Requirements Document
 
-## 📋 Résumé du Projet
+## Résumé du Projet
 
 Application d'analyse commerciale pour l'Afrique sous la Zone de Libre-Échange Continentale Africaine (ZLECAf/AfCFTA).
 
@@ -12,165 +12,137 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - Découvrir les possibilités de substitution d'importations extra-africaines
 
 ### Principe Directeur
-**FIABILITÉ DES DONNÉES** : Pas d'estimations sauf dans des cas extrêmes et justifiés, et ces estimations doivent être clairement marquées comme "ESTIMATION".
+**FIABILITÉ DES DONNÉES** : Données tarifaires authentiques issues des administrations douanières nationales.
 
 ---
 
-## 🎯 Fonctionnalités Implémentées
+## Fonctionnalités Implémentées
 
-### ✅ Phase 1 : Infrastructure de Base (Terminé)
-- [x] Base de données HS6 complète bilingue (FR/EN)
-- [x] Règles d'Origine (RoO) spécifiques ZLECAf
-- [x] Gestion des tarifs douaniers nationaux
-- [x] Profils pays détaillés avec indicateurs économiques
+### Phase 1-5 : Infrastructure, OEC, Substitution, IA, Comparaison (Terminé)
+- Base de données HS6 bilingue, Règles d'Origine ZLECAf
+- Statistiques OEC 2024, Analyse de Substitution
+- Intelligence Artificielle Gemini avec Cache Redis
+- Comparaison Multi-Pays (statistiques)
 
-### ✅ Phase 2 : Intégration API OEC (Terminé)
-- [x] Statistiques commerciales en temps réel via API OEC
-- [x] Commerce bilatéral entre pays africains
-- [x] Top produits exportés/importés par pays
-- [x] Correction de l'affichage des codes HS
+### Phase 6 : Données Tarifaires Authentiques (Terminé - 21 Fév 2025)
+- **54 fichiers JSON de tarifs nationaux authentiques** pour TOUS les pays africains
+- **~315,000 lignes tarifaires HS6** au total
+- **~871,000 sous-positions nationales** (HS8-HS10) au total
+- **Taxes détaillées** : DD, TVA, TPI, CEDEAO, CISS, PRCT, T.C.S, AIR, etc.
+- **Avantages fiscaux ZLECAf** intégrés
+- **Formalités administratives** requises
 
-### ✅ Phase 3 : Analyse de Substitution (Terminé)
-- [x] Service d'analyse avec données réelles OEC
-- [x] Identification des fournisseurs africains potentiels
-- [x] Calcul des potentiels de substitution
-- [x] Interface utilisateur dédiée
+### Phase 7 : Améliorations Calculateur (Terminé - 21 Fév 2025)
+- **Affichage de TOUTES les taxes avec leurs intitulés** :
+  - D.D (Droit de Douane)
+  - T.V.A (Taxe sur la Valeur Ajoutée)
+  - CEDEAO (Prélèvement Communautaire)
+  - CISS (Contribution CEDEAO)
+  - TPI (Taxe Parafiscale à l'Importation)
+  - PRCT (Prélèvement à la Compensation du Transport)
+  - T.C.S (Taxe de Contrôle Sanitaire)
+  - AIR (Acompte Impôt sur le Revenu)
+  - Et plus...
 
-### ✅ Phase 4 : Intelligence Artificielle Gemini (Terminé - 31 Jan 2025)
-- [x] Intégration Google Gemini via Emergent LLM Key
-- [x] Analyse IA des opportunités d'export
-- [x] Analyse IA de substitution d'import
-- [x] Analyse IA des chaînes de valeur industrielles
-- [x] Profil économique IA des pays
-- [x] Balance commerciale historique avec analyse de tendance
-- [x] **Indicateurs ESTIMATION** clairement affichés
-
-### ✅ Phase 5 : Visualisation Sankey (Terminé - 31 Jan 2025)
-- [x] Diagramme Sankey des flux commerciaux
-- [x] Filtrage interactif par nœud
-- [x] Adaptation de l'app AI Studio de l'utilisateur
-- [x] Intégration avec données réelles
+### Phase 8 : Comparaison Multi-Pays (Terminé - 21 Fév 2025)
+- **Sélection par région** : Afrique du Nord, Ouest, Centrale, Est, Australe
+- **Comparaison instantanée** de plusieurs pays pour un même produit
+- **Tableau détaillé** avec toutes les taxes par pays
+- **Meilleur choix** mis en évidence (coût ZLECAf le plus bas)
+- **Graphiques** : Barres comparatives et Radar chart
 
 ---
 
-## 🏗️ Architecture Technique
+## Architecture Technique
 
 ### Backend (FastAPI + Python)
 ```
 /app/backend/
+├── data/
+│   └── {54 fichiers}_tariffs.json   # Données tarifaires authentiques
 ├── routes/
-│   ├── gemini_analysis.py    # API IA Gemini (NEW)
-│   ├── substitution.py       # API substitution
-│   ├── oec.py               # API statistiques OEC
-│   ├── countries.py         # API profils pays
-│   └── ...
+│   ├── authentic_tariffs.py          # Endpoints tarifs authentiques
+│   ├── hs6_database.py               # Recherche HS6
+│   ├── tariffs_calculation.py        # Calculs tarifaires
+│   └── ... (17 modules de routes)
 ├── services/
-│   ├── gemini_trade_service.py      # Service Gemini (NEW)
-│   ├── real_trade_data_service.py   # Service OEC
-│   ├── real_substitution_service.py # Service substitution
-│   └── oec_trade_service.py         # Helper OEC
+│   ├── authentic_tariff_service.py   # Chargement données JSON
+│   ├── redis_cache_service.py        # Cache Redis
+│   └── ...
 └── server.py
 ```
 
 ### Frontend (React + Shadcn UI)
 ```
 /app/frontend/src/components/
-├── opportunities/
-│   ├── AIAnalysis.jsx        # Analyse IA principale (NEW)
-│   ├── TradeSankeyDiagram.jsx # Diagramme Sankey (NEW)
-│   ├── SubstitutionAnalysis.jsx
-│   ├── OpportunitiesTab.jsx
-│   └── ...
-├── profiles/
-│   ├── AITradeSummary.jsx    # Résumé IA dans profils (NEW)
-│   └── CountryProfilesTab.jsx
+├── calculator/
+│   ├── CalculatorTab.jsx              # Avec onglets et tableau taxes
+│   ├── MultiCountryComparison.jsx     # Comparaison multi-pays
+│   ├── TaxBreakdownChart.jsx          # Graphiques taxes
+│   └── DetailedCalculationBreakdown.jsx
 └── ...
 ```
 
 ---
 
-## 🔌 Intégrations Tierces
+## Endpoints API - Tarifs Authentiques
 
-| Service | Utilisation | Clé |
-|---------|-------------|-----|
-| **Google Gemini** | Analyse IA intelligente | Emergent LLM Key |
-| **API OEC** | Données commerciales réelles | Gratuit |
-| **MongoDB** | Base de données | Local |
-
----
-
-## 📊 Endpoints API Principaux
-
-### AI Analysis (NEW)
-- `GET /api/ai/health` - Statut du service Gemini
-- `GET /api/ai/opportunities/{country}?mode=export|import|industrial` - Opportunités IA
-- `GET /api/ai/profile/{country}` - Profil économique IA
-- `GET /api/ai/balance/{country}` - Balance commerciale historique
-- `GET /api/ai/product/{hs_code}` - Analyse produit par code HS
-
-### Substitution
-- `GET /api/substitution/opportunities/import/{country_iso3}` - Opportunités import
-- `GET /api/substitution/opportunities/export/{country_iso3}` - Opportunités export
-- `GET /api/substitution/countries` - Liste des pays
-
-### OEC Trade
-- `GET /api/oec/bilateral/{reporter}/{partner}` - Commerce bilatéral
-- `GET /api/oec/products/{country}` - Top produits
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/authentic-tariffs/countries` | 54 pays avec statistiques |
+| `GET /api/authentic-tariffs/calculate/{country}/{hs_code}` | Calcul NPF vs ZLECAf avec taxes_detail |
+| `GET /api/authentic-tariffs/country/{iso3}/summary` | Résumé tarifs du pays |
+| `GET /api/authentic-tariffs/country/{iso3}/taxes/{hs_code}` | Détail des taxes avec intitulés |
+| `GET /api/authentic-tariffs/search/{country}?q=` | Recherche produits |
 
 ---
 
-## 📝 Backlog
+## Tests
 
-### P0 - Haute Priorité
-- [ ] Tests e2e complets avec Playwright
+### Backend : 100% (12/12 tests passés)
+- Liste des 54 pays
+- Taxes détaillées avec intitulés
+- Calculs NPF vs ZLECAf
+- Comparaison multi-pays
+
+### Frontend : Fonctionnel
+- Comparaison Multi-Pays : ✅ 100%
+- Calculateur standard : ✅ Fonctionnel
+
+---
+
+## Backlog
+
+### P0 - Terminé
+- [x] Intégration 54 fichiers tarifs authentiques
+- [x] Affichage de toutes les taxes avec intitulés
+- [x] Comparaison multi-pays
 
 ### P1 - Priorité Moyenne
-- [ ] Indicateur de fraîcheur des données (timestamp)
-- [ ] Recherche/filtre pour le fil d'actualités
-- [ ] Finaliser le refactoring backend (server.py)
+- [ ] Exportation CSV/Excel (feature payante potentielle)
+- [ ] Amélioration des graphiques
 
 ### P2 - Priorité Basse
-- [ ] Refactoring frontend (OECTradeStats.jsx)
-- [ ] Exportation CSV/Excel
-- [ ] Comparaison multi-pays
-- [ ] Sauvegarde des recherches HS fréquentes
-- [ ] Sécurisation upload TRS pour administrateurs
+- [ ] Plus de sources d'actualités pour l'Algérie
+- [ ] Tests e2e complets avec Playwright
 
 ---
 
-## 📅 Historique des Versions
+## Historique des Versions
 
-### v1.4.0 (31 Janvier 2025)
-- **Intégration Gemini AI** avec Emergent LLM Key
-- **Diagramme Sankey** pour visualisation des flux
-- **Indicateurs ESTIMATION** obligatoires
-- Nettoyage des fichiers obsolètes
-- Tests complets (23/23 passés)
+### v2.1.0 (21 Février 2025) - FEATURE
+- **Comparaison Multi-Pays** avec sélection par région
+- **Affichage TOUTES les taxes** avec codes et intitulés complets
+- **Refactoring routes backend** : hs6_database.py, tariffs_calculation.py
+- **Graphiques améliorés** : tableau détaillé NPF vs ZLECAf
 
-### v1.3.0 (30 Janvier 2025)
-- Analyse de substitution avec données réelles OEC
-- Correction de l'affichage des codes HS
-- Onglet Opportunités restructuré
-
-### v1.2.0 (29 Janvier 2025)
-- Intégration API OEC
-- Commerce bilatéral
-- Top produits par pays
-
-### v1.1.0 (28 Janvier 2025)
-- Profils pays détaillés
-- Indicateurs World Bank
-- Projets structurants
-
-### v1.0.0 (Janvier 2025)
-- MVP initial
-- Base de données HS6
-- Règles d'origine ZLECAf
+### v2.0.0 (21 Février 2025) - MAJOR
+- **54 pays africains** avec données tarifaires authentiques
+- **~315,000 lignes HS6** + **~871,000 sous-positions**
 
 ---
 
-## 👥 Contacts
+## Contacts
 
 - **Développement** : Emergent AI
-- **Design** : Basé sur l'app AI Studio de l'utilisateur
-- **Données** : IMF, UNCTAD, OEC, World Bank
+- **Données** : Administrations douanières africaines

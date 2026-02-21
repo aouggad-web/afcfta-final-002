@@ -32,7 +32,7 @@ function ProductionTab({ language = 'fr' }) {
           <div className="hidden md:flex items-center gap-2">
             <Badge className="bg-white/20 text-white text-xs">
               <Globe className="w-3 h-3 mr-1" />
-              54 pays
+              55 pays
             </Badge>
             <Badge className="bg-white/20 text-white text-xs">
               <Database className="w-3 h-3 mr-1" />

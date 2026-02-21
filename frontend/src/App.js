@@ -61,6 +61,40 @@ function App() {
     i18n.changeLanguage(newLang);
   };
 
+  const texts = {
+    fr: {
+      title: "Accord de la ZLECAf",
+      subtitle: "Levier de développement de l'AFRIQUE",
+      dashboardTab: "Dashboard",
+      calculatorTab: "Calculateur",
+      statisticsTab: "Statistiques", 
+      productionTab: "Production",
+      rulesTab: "Règles d'Origine",
+      profilesTab: "Profils Pays",
+      toolsTab: "Outils",
+      logisticsTab: "Logistique",
+      opportunitiesTab: "Opportunités",
+      memberCountries: "55 Pays Membres",
+      population: "1.3B+ Population"
+    },
+    en: {
+      title: "AfCFTA Agreement",
+      subtitle: "AFRICA's Development Lever",
+      dashboardTab: "Dashboard",
+      calculatorTab: "Calculator",
+      statisticsTab: "Statistics",
+      productionTab: "Production",
+      rulesTab: "Rules of Origin", 
+      profilesTab: "Country Profiles",
+      toolsTab: "Tools",
+      logisticsTab: "Logistics",
+      opportunitiesTab: "Opportunities",
+      memberCountries: "54 Member Countries",
+      population: "1.3B+ Population"
+    }
+  };
+
+  const t = texts[language];
   const t = texts[language] || texts.fr;
 
   useEffect(() => {

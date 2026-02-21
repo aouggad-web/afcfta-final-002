@@ -14,6 +14,12 @@ MIGRATION STATUS:
 - statistics.py: COMPLETE
 - etl.py: COMPLETE
 - substitution.py: COMPLETE
+- gemini_analysis.py: COMPLETE (NOW WITH CACHE)
+- comtrade.py: COMPLETE (UN COMTRADE integration)
+- rules_of_origin.py: COMPLETE (NEW - Extracted from server.py)
+- hs6_database.py: COMPLETE (UPDATED - Full HS6 search routes)
+- authentic_tariffs.py: COMPLETE (54 countries tariff data)
+- tariffs_calculation.py: COMPLETE (NEW - Tariff calculation utilities)
 - gemini_analysis.py: COMPLETE
 - trade_data.py: COMPLETE (UN COMTRADE & WTO integration)
 """
@@ -32,6 +38,12 @@ from .tariffs import router as tariffs_router
 from .statistics import router as statistics_router
 from .etl import router as etl_router
 from .substitution import router as substitution_router
+from .gemini_analysis import router as gemini_router
+from .comtrade import router as comtrade_router
+from .rules_of_origin import router as rules_router
+from .hs6_database import router as hs6_db_router
+from .authentic_tariffs import router as authentic_tariffs_router
+from .tariffs_calculation import router as tariffs_calc_router
 try:
     from .gemini_analysis import router as gemini_router
     GEMINI_AVAILABLE = True
@@ -75,6 +87,12 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(statistics_router, tags=["Statistics"])
     api_router.include_router(etl_router, tags=["ETL Administration"])
     api_router.include_router(substitution_router, tags=["Trade Substitution"])
+    api_router.include_router(gemini_router, tags=["AI Analysis"])
+    api_router.include_router(comtrade_router, tags=["COMTRADE Data"])
+    api_router.include_router(rules_router, tags=["Rules of Origin"])
+    api_router.include_router(hs6_db_router, tags=["HS6 Database"])
+    api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"])
+    api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"])
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"])
     if TRADE_DATA_AVAILABLE:

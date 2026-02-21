@@ -77,18 +77,12 @@ class COMTRADEService:
     
     BASE_URL = "https://comtradeapi.un.org/data/v1"
     
-    # Retry configuration
-    MAX_RETRIES = 3
-    BASE_DELAY_SECONDS = 2
-    REQUEST_DELAY_SECONDS = 1  # Delay between batch requests
-    
     def __init__(self):
         self.primary_api_key = os.getenv("COMTRADE_API_KEY", "")
         self.secondary_api_key = os.getenv("COMTRADE_API_KEY_SECONDARY", "")
         self.current_key = "primary"
         self.calls_today = 0
         self.max_calls_per_day = 500
-        self.last_error = None
         
         if not self.primary_api_key and not self.secondary_api_key:
             logger.warning("⚠️ No COMTRADE API keys configured")
@@ -165,186 +159,15 @@ class COMTRADEService:
         if hs_code:
             params["cmdCode"] = hs_code
         
-        api_key = self._get_active_key()
-        if api_key:
-            params["subscription-key"] = api_key
         # Add API key using header (v1 API uses header-based auth)
         api_key = self._get_active_key()
         headers = {}
         if api_key:
             headers["Ocp-Apim-Subscription-Key"] = api_key
-        
-        # Exponential backoff retry logic for rate limiting
-        max_retries = self.MAX_RETRIES
-        base_delay = self.BASE_DELAY_SECONDS
-        
-        for attempt in range(max_retries):
-            try:
-                response = requests.get(url, params=params, headers=headers, timeout=30)
-                response.raise_for_status()
-                self.calls_today += 1
-                
-                data = response.json()
-                return {
-                    "source": "UN_COMTRADE",
-                    "data": data.get("data", []),
-                    "metadata": data.get("metadata", {}),
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
-                    "latest_period": period,
-                    "api_key_used": self.current_key
-                }
-            except requests.exceptions.HTTPError as e:
-                if e.response.status_code == 429:  # Rate limit exceeded
-                    # Check for Retry-After header
-                    retry_after = e.response.headers.get('Retry-After')
-                    if retry_after:
-                        try:
-                            delay = int(retry_after)
-                        except ValueError:
-                            delay = base_delay * (2 ** attempt)
-                    else:
-                        delay = base_delay * (2 ** attempt)
-                    
-                    logger.warning(f"⚠️ Rate limit hit on {self.current_key} key (attempt {attempt + 1}/{max_retries})")
-                    
-                    if attempt < max_retries - 1:
-                        logger.info(f"⏳ Waiting {delay} seconds before retry...")
-                        time.sleep(delay)
-                        continue
-                    else:
-                        # Last attempt failed, try secondary key
-                        if retry_with_secondary and self._switch_to_secondary():
-                            logger.info("🔄 Retrying with secondary key after rate limit")
-                            return self.get_bilateral_trade(
-                                reporter_code, partner_code, period, hs_code,
-                                type_code, freq_code, cl_code,
-                                retry_with_secondary=False
-                            )
-                        logger.error(f"❌ Rate limit exceeded on all keys")
-                        return None
-                        
-                elif e.response.status_code == 401:  # Unauthorized
-                    logger.error(f"❌ Authentication failed with {self.current_key} key")
-                    if retry_with_secondary and self._switch_to_secondary():
-                        logger.info("🔄 Retrying with secondary key after auth failure")
-                        return self.get_bilateral_trade(
-                            reporter_code, partner_code, period, hs_code,
-                            type_code, freq_code, cl_code,
-                            retry_with_secondary=False
-                        )
-                    return None
-                    
-                elif e.response.status_code == 400:  # Bad request
-                    logger.error(f"❌ Bad request for {reporter_code}: {e.response.status_code}")
-                    logger.error(f"   URL: {url}")
-                    logger.error(f"   Params: {params}")
-                    try:
-                        error_detail = e.response.json()
-                        logger.error(f"   Error details: {error_detail}")
-                    except Exception:
-                        logger.error(f"   Response text: {e.response.text[:200]}")
-                    return None
-                else:
-                    logger.error(f"❌ HTTP error {e.response.status_code} for {reporter_code}")
-                    return None
-                    
-            except requests.exceptions.Timeout:
-                logger.warning(f"⚠️ Timeout for {reporter_code} (attempt {attempt + 1}/{max_retries})")
-                if attempt < max_retries - 1:
-                    delay = base_delay * (2 ** attempt)
-                    logger.info(f"⏳ Waiting {delay} seconds before retry...")
-                    time.sleep(delay)
-                    continue
-                logger.error(f"❌ Timeout after {max_retries} attempts")
-                return None
-                
-            except Exception as e:
-                logger.error(f"❌ COMTRADE API error for {reporter_code}: {str(e)}")
-                return None
-        
-        return None
             
-        # Retry logic with exponential backoff for rate limiting
-        max_retries = 3
-        backoff_factor = 2
-        
-        for attempt in range(max_retries):
-            try:
-                response = requests.get(url, params=params, headers=headers, timeout=30)
-                response.raise_for_status()
-                self.calls_today += 1
-                
-                data = response.json()
-                return {
-                    "source": "UN_COMTRADE",
-                    "data": data.get("data", []),
-                    "metadata": data.get("metadata", {}),
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
-                    "latest_period": period,
-                    "api_key_used": self.current_key
-                }
-            except requests.exceptions.HTTPError as e:
-                if e.response.status_code == 429:  # Rate limit exceeded
-                    logger.warning(f"⚠️ Rate limit hit on {self.current_key} key (attempt {attempt + 1}/{max_retries})")
-                    
-                    # First try switching to secondary key
-                    if retry_with_secondary and self._switch_to_secondary():
-                        logger.info("🔄 Retrying with secondary key after rate limit")
-                        return self.get_bilateral_trade(
-                            reporter_code, partner_code, period, hs_code,
-                            type_code, freq_code, cl_code,
-                            retry_with_secondary=False
-                        )
-                    
-                    # If no secondary key or already using it, apply exponential backoff
-                    if attempt < max_retries - 1:
-                        wait_time = backoff_factor ** (attempt + 1)  # 2s, 4s, 8s
-                        logger.info(f"⏳ Waiting {wait_time}s before retry {attempt + 1}/{max_retries}")
-                        time.sleep(wait_time)
-                        continue
-                    else:
-                        logger.error(f"❌ Rate limit exceeded after {max_retries} attempts")
-                        return None
-                        
-                elif e.response.status_code == 401:  # Unauthorized
-                    logger.error(f"❌ Authentication failed with {self.current_key} key. Check API credentials.")
-                    if retry_with_secondary and self._switch_to_secondary():
-                        logger.info("🔄 Retrying with secondary key after auth failure")
-                        return self.get_bilateral_trade(
-                            reporter_code, partner_code, period, hs_code,
-                            type_code, freq_code, cl_code,
-                            retry_with_secondary=False
-                        )
-                    return None
-                    
-                elif e.response.status_code == 400:  # Bad request
-                    logger.error(f"❌ Bad request: {url} with params {params}")
-                    return None
-                
-                logger.error(f"COMTRADE API HTTP error: {e.response.status_code}")
-                return None
-            except Exception as e:
-                logger.error(f"COMTRADE API error: {str(e)}")
-                return None
         try:
-            response = requests.get(self.BASE_URL, params=params, timeout=30);
-            response.raise_for_status();
-            self.calls_today += 1;
-            self.last_error = None
-            # Use retry function with exponential backoff
-            response = make_api_request_with_retry(url, headers=headers, params=params, max_retries=3, initial_delay=1)
-            
-            if response is None:
-                # If retry failed due to rate limit and we have a secondary key, try it
-                if retry_with_secondary and self._switch_to_secondary():
-                    logger.info("🔄 Retrying with secondary key after request failure")
-                    return self.get_bilateral_trade(
-                        reporter_code, partner_code, period, hs_code,
-                        type_code, freq_code, cl_code,
-                        retry_with_secondary=False
-                    )
-                return None
-            
+            response = requests.get(url, params=params, headers=headers, timeout=30)
+            response.raise_for_status()
             self.calls_today += 1
             
             data = response.json()
@@ -380,7 +203,6 @@ class COMTRADEService:
             logger.error(f"COMTRADE API HTTP error: {e.response.status_code}")
             return None
         except Exception as e:
-            self.last_error = str(e)
             logger.error(f"COMTRADE API error: {str(e)}")
             return None
     
@@ -416,9 +238,10 @@ class COMTRADEService:
                 
                 if data:
                     results.append(data)
-                    logger.info(f"✅ Retrieved data for {reporter} ({i+1}/{len(african_countries)})")
-                else:
-                    logger.warning(f"⚠️ No data for {reporter}")
+                    logger.info(f"✅ Retrieved data for {reporter}")
+                
+                # Rate limiting - be nice to the API
+                time.sleep(0.2)
                 
             except Exception as e:
                 if "daily limit reached" in str(e).lower():
@@ -553,6 +376,8 @@ class COMTRADEService:
             headers["Ocp-Apim-Subscription-Key"] = api_key
         
         try:
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
             # Use retry function with exponential backoff
             response = make_api_request_with_retry(url, headers=headers, max_retries=3, initial_delay=1)
             
@@ -594,4 +419,5 @@ class COMTRADEService:
 
 
 # Global service instance
+comtrade_service = COMTRADEService()
 comtrade_service = COMTRADEService()
