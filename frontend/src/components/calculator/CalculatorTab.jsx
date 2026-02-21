@@ -494,7 +494,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="origin">{t.originCountry}</Label>
-                    <Select value={originCountry} onValueChange={setOriginCountry}>
+                    <Select value={originCountry} onValueChange={(val) => {
+                      console.log('Origin country selected:', val);
+                      setOriginCountry(val);
+                    }}>
                       <SelectTrigger data-testid="origin-country-select">
                         <SelectValue placeholder={t.originCountry} />
                       </SelectTrigger>
@@ -504,20 +507,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             {getFlag(country.iso2 || country.code)} {country.name}
                           </SelectItem>
                         ))}
-                </SelectContent>
-              </Select>
-            </div>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="destination">{t.partnerCountry}</Label>
-              <Select value={destinationCountry} onValueChange={setDestinationCountry}>
-                <SelectTrigger data-testid="destination-country-select">
-                  <SelectValue placeholder={t.partnerCountry} />
-                </SelectTrigger>
-                <SelectContent>
-                  {countries.map((country) => (
-                    <SelectItem key={country.code} value={country.code} data-testid={`dest-${country.code}`}>
-                      {getFlag(country.iso2 || country.code)} {country.name}
+                  <div className="space-y-2">
+                    <Label htmlFor="destination">{t.partnerCountry}</Label>
+                    <Select value={destinationCountry} onValueChange={(val) => {
+                      console.log('Destination country selected:', val);
+                      setDestinationCountry(val);
+                    }}>
+                      <SelectTrigger data-testid="destination-country-select">
+                        <SelectValue placeholder={t.partnerCountry} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map((country) => (
+                          <SelectItem key={country.code} value={country.code} data-testid={`dest-${country.code}`}>
+                            {getFlag(country.iso2 || country.code)} {country.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
