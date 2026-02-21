@@ -957,6 +957,209 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               )}
 
+              {/* SECTION FORMALITÉS ET DOCUMENTS NÉCESSAIRES */}
+              {result.data_source === 'authentic_tariff' && (
+                <div className="result-section bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden" data-testid="formalities-section">
+                  <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 border-b">
+                    <h4 className="font-bold text-lg text-amber-900 flex items-center gap-2">
+                      <ClipboardList className="w-5 h-5" />
+                      {language === 'fr' ? 'Formalités et Documents Nécessaires' : 'Required Formalities and Documents'}
+                    </h4>
+                    <p className="text-sm text-amber-700 mt-1">
+                      {language === 'fr' 
+                        ? `Documents requis pour l'importation vers ${getCountryName(destinationCountry)}`
+                        : `Documents required for import to ${getCountryName(destinationCountry)}`}
+                    </p>
+                  </div>
+                  
+                  <div className="p-4 space-y-4">
+                    {/* Documents obligatoires */}
+                    <div>
+                      <h5 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-amber-600" />
+                        {language === 'fr' ? 'Documents Obligatoires' : 'Mandatory Documents'}
+                      </h5>
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {/* Documents standards toujours requis */}
+                        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span className="text-amber-600 font-bold text-sm">1</span>
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-800">
+                              {language === 'fr' ? 'Facture Commerciale' : 'Commercial Invoice'}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {language === 'fr' ? 'Détail des marchandises, prix, conditions de vente' : 'Details of goods, prices, terms of sale'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span className="text-amber-600 font-bold text-sm">2</span>
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-800">
+                              {language === 'fr' ? 'Liste de Colisage' : 'Packing List'}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {language === 'fr' ? 'Poids, dimensions, nombre de colis' : 'Weight, dimensions, number of packages'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span className="text-amber-600 font-bold text-sm">3</span>
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-800">
+                              {language === 'fr' ? 'Connaissement / LTA' : 'Bill of Lading / AWB'}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {language === 'fr' ? 'Document de transport maritime ou aérien' : 'Sea or air transport document'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span className="text-amber-600 font-bold text-sm">4</span>
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-800">
+                              {language === 'fr' ? 'Déclaration en Douane' : 'Customs Declaration'}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {language === 'fr' ? 'Formulaire DAU ou équivalent national' : 'SAD form or national equivalent'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* Documents spécifiques du pays */}
+                        {result.administrative_formalities && result.administrative_formalities.map((form, idx) => (
+                          <div key={idx} className="flex items-start gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                            <div className="w-8 h-8 bg-amber-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <span className="text-amber-700 font-bold text-sm">{5 + idx}</span>
+                            </div>
+                            <div>
+                              <p className="font-medium text-amber-900">
+                                {language === 'fr' ? form.document_fr : form.document_en}
+                              </p>
+                              {form.code && (
+                                <p className="text-xs text-amber-600">Code: {form.code}</p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Documents ZLECAf */}
+                    <div className="pt-4 border-t border-gray-200">
+                      <h5 className="font-semibold text-emerald-800 mb-3 flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-emerald-600" />
+                        {language === 'fr' ? 'Documents pour Bénéficier du Tarif ZLECAf' : 'Documents to Benefit from AfCFTA Rate'}
+                      </h5>
+                      <div className="grid md:grid-cols-2 gap-3">
+                        <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                          <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <CheckCircle className="w-4 h-4 text-emerald-600" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-emerald-900">
+                              {language === 'fr' ? 'Certificat d\'Origine ZLECAf' : 'AfCFTA Certificate of Origin'}
+                            </p>
+                            <p className="text-xs text-emerald-600">
+                              {language === 'fr' 
+                                ? 'Délivré par l\'autorité compétente du pays exportateur'
+                                : 'Issued by competent authority of exporting country'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                          <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <CheckCircle className="w-4 h-4 text-emerald-600" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-emerald-900">
+                              {language === 'fr' ? 'Déclaration du Fournisseur' : 'Supplier Declaration'}
+                            </p>
+                            <p className="text-xs text-emerald-600">
+                              {language === 'fr' 
+                                ? 'Attestant l\'origine africaine du produit'
+                                : 'Attesting African origin of the product'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Avantages fiscaux */}
+                      {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
+                        <div className="mt-4 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border border-emerald-200">
+                          <p className="font-semibold text-emerald-800 mb-2 flex items-center gap-2">
+                            <Sparkles className="w-4 h-4" />
+                            {language === 'fr' ? 'Avantages obtenus avec ces documents:' : 'Benefits obtained with these documents:'}
+                          </p>
+                          <ul className="space-y-2">
+                            {result.fiscal_advantages.map((adv, idx) => (
+                              <li key={idx} className="flex items-center gap-2 text-sm">
+                                <span className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                                <span className="text-gray-700">{language === 'fr' ? adv.condition_fr : adv.condition_en}</span>
+                                {adv.rate !== undefined && adv.rate === 0 && (
+                                  <Badge className="bg-emerald-100 text-emerald-700 text-xs ml-auto">
+                                    {language === 'fr' ? 'Exonération totale' : 'Full exemption'}
+                                  </Badge>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Règles d'origine */}
+                    {result.rules_of_origin && (
+                      <div className="pt-4 border-t border-gray-200">
+                        <h5 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
+                          <Info className="w-4 h-4 text-blue-600" />
+                          {language === 'fr' ? 'Critères d\'Origine à Respecter' : 'Origin Criteria to Meet'}
+                        </h5>
+                        <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                          <div className="grid md:grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-sm text-blue-600 mb-1">{language === 'fr' ? 'Règle applicable:' : 'Applicable rule:'}</p>
+                              <p className="font-semibold text-blue-900">{result.rules_of_origin.rule}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-blue-600 mb-1">{language === 'fr' ? 'Contenu régional minimum:' : 'Minimum regional content:'}</p>
+                              <p className="font-semibold text-blue-900">{result.rules_of_origin.regional_content}% {language === 'fr' ? 'africain' : 'African'}</p>
+                            </div>
+                          </div>
+                          <p className="text-sm text-gray-700 mt-3 pt-3 border-t border-blue-200">
+                            <span className="font-medium">{language === 'fr' ? 'Exigence:' : 'Requirement:'}</span> {result.rules_of_origin.requirement}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Note importante */}
+                    <div className="mt-4 p-3 bg-gray-100 rounded-lg text-xs text-gray-600">
+                      <p className="flex items-start gap-2">
+                        <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                        <span>
+                          {language === 'fr' 
+                            ? 'Ces documents doivent être présentés au moment du dédouanement. Des documents supplémentaires peuvent être requis selon la nature des produits (certificats sanitaires, licences, etc.).'
+                            : 'These documents must be presented at customs clearance. Additional documents may be required depending on the nature of the products (sanitary certificates, licenses, etc.).'}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Information sur la sous-position nationale si utilisée */}
               {result.tariff_precision === 'sub_position' && (
                 <div className="result-section tariff-info-section bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200 shadow-sm">
