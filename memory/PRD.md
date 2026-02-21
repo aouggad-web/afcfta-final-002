@@ -1,6 +1,6 @@
 # ZLECAf Trade Opportunity Finder - Product Requirements Document
 
-## 📋 Résumé du Projet
+## Résumé du Projet
 
 Application d'analyse commerciale pour l'Afrique sous la Zone de Libre-Échange Continentale Africaine (ZLECAf/AfCFTA).
 
@@ -12,238 +12,209 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - Découvrir les possibilités de substitution d'importations extra-africaines
 
 ### Principe Directeur
-**FIABILITÉ DES DONNÉES** : Pas d'estimations sauf dans des cas extrêmes et justifiés, et ces estimations doivent être clairement marquées comme "ESTIMATION".
+**FIABILITÉ DES DONNÉES** : Données tarifaires authentiques issues des administrations douanières nationales.
 
 ---
 
-## 🎯 Fonctionnalités Implémentées
+## Fonctionnalités Implémentées
 
-### ✅ Phase 1 : Infrastructure de Base (Terminé)
+### Phase 1 : Infrastructure de Base (Terminé)
 - [x] Base de données HS6 complète bilingue (FR/EN)
 - [x] Règles d'Origine (RoO) spécifiques ZLECAf
 - [x] Gestion des tarifs douaniers nationaux
 - [x] Profils pays détaillés avec indicateurs économiques
 
-### ✅ Phase 2 : Intégration API OEC (Terminé)
+### Phase 2 : Intégration API OEC (Terminé)
 - [x] Statistiques commerciales en temps réel via API OEC
 - [x] Commerce bilatéral entre pays africains
 - [x] Top produits exportés/importés par pays
-- [x] Correction de l'affichage des codes HS
+- [x] Mise à jour vers données OEC 2024
 
-### ✅ Phase 3 : Analyse de Substitution (Terminé)
+### Phase 3 : Analyse de Substitution (Terminé)
 - [x] Service d'analyse avec données réelles OEC
 - [x] Identification des fournisseurs africains potentiels
 - [x] Calcul des potentiels de substitution
-- [x] Interface utilisateur dédiée
 
-### ✅ Phase 4 : Intelligence Artificielle Gemini (Terminé - 31 Jan 2025)
+### Phase 4 : Intelligence Artificielle Gemini (Terminé)
 - [x] Intégration Google Gemini via Emergent LLM Key
-- [x] Analyse IA des opportunités d'export
-- [x] Analyse IA de substitution d'import
-- [x] Analyse IA des chaînes de valeur industrielles
-- [x] Profil économique IA des pays
-- [x] Balance commerciale historique avec analyse de tendance
-- [x] **Indicateurs ESTIMATION** clairement affichés
+- [x] Analyse IA des opportunités d'export/import
+- [x] Cache Redis pour performances optimales (550x faster)
+- [x] Indicateur de fraîcheur des données
 
-### ✅ Phase 5 : Visualisation Sankey (Terminé - 31 Jan 2025)
-- [x] Diagramme Sankey des flux commerciaux
-- [x] Filtrage interactif par nœud
-- [x] Adaptation de l'app AI Studio de l'utilisateur
-- [x] Intégration avec données réelles
+### Phase 5 : Comparaison Multi-Pays (Terminé)
+- [x] Radar chart comparatif
+- [x] Tableaux d'indicateurs économiques
+- [x] Commerce intra-africain vs mondial
+
+### Phase 6 : Données Tarifaires Authentiques (Terminé - 21 Fév 2025)
+- [x] **49 fichiers JSON de tarifs nationaux authentiques**
+- [x] **~5800 lignes tarifaires HS6 par pays**
+- [x] **~16000 sous-positions nationales (HS8-HS10) par pays**
+- [x] **Taxes détaillées : DD, TVA, TPI, CEDEAO, CISS, etc.**
+- [x] **Avantages fiscaux ZLECAf intégrés**
+- [x] **Formalités administratives requises**
+- [x] **API complète /api/authentic-tariffs/*
 
 ---
 
-## 🏗️ Architecture Technique
+## Architecture Technique
 
 ### Backend (FastAPI + Python)
 ```
 /app/backend/
+├── data/
+│   ├── AGO_tariffs.json     # Angola
+│   ├── BDI_tariffs.json     # Burundi
+│   ├── ... (49 fichiers)
+│   └── ZWE_tariffs.json     # Zimbabwe
 ├── routes/
-│   ├── gemini_analysis.py    # API IA Gemini (/api/ai/*)
-│   ├── comtrade.py           # API UN COMTRADE (NEW)
-│   ├── substitution.py       # API substitution
+│   ├── authentic_tariffs.py  # NEW - Endpoints tarifs authentiques
+│   ├── gemini_analysis.py    # API IA Gemini
 │   ├── oec.py                # API statistiques OEC
-│   ├── countries.py          # API profils pays
 │   └── ...
 ├── services/
-│   ├── gemini_trade_service.py      # Service Gemini (IMPROVED)
-│   ├── comtrade_service.py          # Service UN COMTRADE v1 (NEW)
-│   ├── wto_service.py               # Service WTO tarifs (NEW)
-│   ├── data_source_selector.py      # Sélecteur intelligent (NEW)
-│   ├── real_trade_data_service.py   # Service OEC
-│   ├── real_substitution_service.py # Service substitution
-│   └── oec_trade_service.py         # Helper OEC
+│   ├── authentic_tariff_service.py  # NEW - Chargement données JSON
+│   ├── redis_cache_service.py       # Cache Redis
+│   ├── gemini_trade_service.py
+│   └── ...
 └── server.py
 ```
 
 ### Frontend (React + Shadcn UI)
 ```
 /app/frontend/src/components/
+├── calculator/
+│   ├── CalculatorTab.jsx              # UPDATED - Utilise données authentiques
+│   └── DetailedCalculationBreakdown.jsx
 ├── opportunities/
-│   ├── AIAnalysis.jsx          # Analyse IA principale
-│   ├── TradeSankeyDiagram.jsx  # Diagramme Sankey
-│   ├── OpportunitySummary.jsx  # Vue d'ensemble (AI-CONNECTED)
-│   ├── ValueChains.jsx         # Chaînes de valeur (AI-CONNECTED)
-│   ├── ProductAnalysisView.jsx # Par Produit (AI-CONNECTED)
-│   ├── SubstitutionAnalysis.jsx
-│   ├── OpportunitiesTab.jsx
-│   └── ...
-├── profiles/
-│   ├── AITradeSummary.jsx      # Résumé IA dans profils
-│   └── CountryProfilesTab.jsx
-└── ...
+│   ├── AIAnalysis.jsx
+│   └── SubstitutionAnalysis.jsx
+├── statistics/
+│   ├── StatisticsTab.jsx
+│   └── MultiCountryComparison.jsx
+└── ui/
+    └── data-freshness-indicator.jsx
 ```
 
 ---
 
-## 🔌 Intégrations Tierces
+## Intégrations Tierces
 
 | Service | Utilisation | Clé |
 |---------|-------------|-----|
 | **Google Gemini** | Analyse IA intelligente | Emergent LLM Key |
-| **UN COMTRADE v1** | Données commerciales récentes | Public (limité) ou clé API |
-| **API OEC** | Données commerciales historiques | Gratuit |
-| **WTO API** | Données tarifaires | Public |
+| **Redis** | Cache performant | Local |
+| **API OEC** | Données commerciales 2024 | Gratuit |
 | **MongoDB** | Base de données | Local |
 
 ---
 
-## 📊 Endpoints API Principaux
+## Endpoints API - Tarifs Authentiques (NEW)
 
-### AI Analysis
-- `GET /api/ai/health` - Statut du service Gemini
-- `GET /api/ai/summary` - **Vue d'ensemble commerce africain (NEW)**
-- `GET /api/ai/value-chains` - **Analyse chaînes de valeur (NEW)**
-- `GET /api/ai/opportunities/{country}?mode=export|import|industrial` - Opportunités IA
-- `GET /api/ai/profile/{country}` - Profil économique IA
-- `GET /api/ai/balance/{country}` - Balance commerciale historique
-- `GET /api/ai/product/{hs_code}` - Analyse produit par code HS
+### Liste des pays
+- `GET /api/authentic-tariffs/countries` - 49 pays avec statistiques
 
-### COMTRADE (NEW)
-- `GET /api/comtrade/status` - Statut service COMTRADE
-- `GET /api/comtrade/bilateral/{reporter}` - Données commerciales bilatérales
-- `GET /api/comtrade/latest-period/{country}` - Dernière période disponible
+### Calcul de tarifs
+- `GET /api/authentic-tariffs/calculate/{country}/{hs_code}?value=X` - Calcul NPF vs ZLECAf
 
-### Substitution
-- `GET /api/substitution/opportunities/import/{country_iso3}` - Opportunités import
-- `GET /api/substitution/opportunities/export/{country_iso3}` - Opportunités export
-- `GET /api/substitution/countries` - Liste des pays
+### Données par pays
+- `GET /api/authentic-tariffs/country/{iso3}/summary` - Résumé tarifs du pays
+- `GET /api/authentic-tariffs/country/{iso3}/line/{hs_code}` - Ligne tarifaire complète
+- `GET /api/authentic-tariffs/country/{iso3}/sub-positions/{hs6}` - Sous-positions nationales
+- `GET /api/authentic-tariffs/country/{iso3}/taxes/{hs_code}` - Détail des taxes
+- `GET /api/authentic-tariffs/country/{iso3}/advantages/{hs_code}` - Avantages fiscaux
+- `GET /api/authentic-tariffs/country/{iso3}/formalities/{hs_code}` - Formalités administratives
 
-### OEC Trade
-- `GET /api/oec/bilateral/{reporter}/{partner}` - Commerce bilatéral
-- `GET /api/oec/products/{country}` - Top produits
+### Recherche
+- `GET /api/authentic-tariffs/search/{country}?q=cacao` - Recherche produits
 
 ---
 
-## 📝 Backlog
+## Structure des Données Authentiques
 
-### P0 - Haute Priorité
-- [x] **Bug corrigé (4 Fév 2025)**: Sélecteurs de pays vides dans Substitution et Vue d'ensemble
+```json
+{
+  "country_code": "MAR",
+  "data_format": "enhanced_v2",
+  "summary": {
+    "total_tariff_lines": 5831,
+    "total_sub_positions": 16145,
+    "vat_rate_pct": 20.0,
+    "dd_rate_range": {"min": 0, "max": 40, "avg": 12.01}
+  },
+  "tariff_lines": [
+    {
+      "hs6": "180100",
+      "description_fr": "Cacao en fèves",
+      "description_en": "Cocoa beans",
+      "dd_rate": 10.0,
+      "vat_rate": 20.0,
+      "taxes_detail": [...],
+      "fiscal_advantages": [...],
+      "administrative_formalities": [...],
+      "sub_positions": [...]
+    }
+  ]
+}
+```
+
+---
+
+## Backlog
+
+### P0 - Terminé
+- [x] Intégration 49 fichiers tarifs authentiques (21 Fév 2025)
+- [x] APIs backend /api/authentic-tariffs/*
+- [x] Frontend CalculatorTab utilise données authentiques
+
+### P1 - Priorité Moyenne
+- [ ] Finaliser refactoring server.py (50+ routes à migrer)
+- [ ] Améliorer graphiques dans calculateur
 - [ ] Tests e2e complets avec Playwright
-
-### P1 - Priorité Moyenne 
-- [x] **Cache Redis pour les appels Gemini** (4 Fév) - TTL 6h, amélioration 550x
-- [x] **Indicateur de fraîcheur des données** (4 Fév) - Badge "Données en direct"
-- [x] **Refactoring frontend StatisticsTab** (5 Fév) - 4 sous-onglets
-- [x] **Comparaison multi-pays** (5 Fév) - Radar chart + tableaux
-- [x] **Calculateur amélioré avec détails NPF vs ZLECAf** (6 Fév)
-  - Affichage étape par étape du calcul
-  - Détail de chaque taxe (DD, TVA, DAPS, etc.)
-  - Économies ZLECAf clairement affichées
-- [x] **Mise à jour OEC vers données 2024** (6 Fév)
-- [ ] Recherche/filtre pour le fil d'actualités
-- [ ] Intégration complète des données fiscales algériennes (crawler douane.gov.dz)
 
 ### P2 - Priorité Basse
 - [ ] Exportation CSV/Excel
-- [ ] Extension du crawler fiscal aux autres pays africains
-- [ ] Sauvegarde des recherches HS fréquentes
+- [ ] Intégrer les 5 pays restants (DZA, ETH, SDN, SOM, STP)
+- [ ] Plus de sources d'actualités pour l'Algérie
 
 ---
 
-## 📅 Historique des Versions
+## Historique des Versions
+
+### v2.0.0 (21 Février 2025) - MAJOR
+- **DONNÉES TARIFAIRES AUTHENTIQUES INTÉGRÉES**
+  - 49 fichiers JSON avec tarifs officiels
+  - ~5800 lignes HS6 par pays
+  - ~16000 sous-positions nationales par pays
+  - Taxes détaillées (DD, TVA, TPI, CEDEAO, CISS...)
+  - Avantages fiscaux ZLECAf
+  - Formalités administratives
+- **Nouveaux endpoints API** :
+  - `GET /api/authentic-tariffs/countries`
+  - `GET /api/authentic-tariffs/calculate/{country}/{hs_code}`
+  - `GET /api/authentic-tariffs/country/{iso3}/summary`
+  - `GET /api/authentic-tariffs/search/{country}?q=...`
+- **Frontend mis à jour** :
+  - CalculatorTab utilise données authentiques en priorité
+  - Badge "Données Tarifaires Officielles" affiché
+  - Détail des taxes et avantages fiscaux
+  - Formalités administratives requises
 
 ### v1.8.0 (6 Février 2025)
-- **Calculateur amélioré avec détails NPF vs ZLECAf** :
-  - Nouveau service `enhanced_calculator_service.py`
-  - Affichage étape par étape : CIF → DD → TVA → Autres
-  - Base de calcul explicite (CIF vs CIF+DD)
-  - Comparaison côte à côte NPF / ZLECAf
-  - Bannière d'économies avec montant et pourcentage
-  - Endpoint: `GET /api/calculate/detailed/{country}/{hs_code}`
-- **Mise à jour OEC vers données 2024** :
-  - `DEFAULT_YEAR = 2024` dans oec_trade_service.py
-  - Toutes les requêtes OEC utilisent 2024 par défaut
-  - Données fraîches disponibles pour tous les pays africains
-- **Crawler fiscal algérien** (script prêt) :
-  - `etl/dza_tariff_connector.py` - Crawl douane.gov.dz
-  - Parse les sous-positions nationales (HS10)
-  - Extrait DD, TVA, TCS, PRCT, avantages fiscaux
-- **Nouveaux fichiers** :
-  - `/app/backend/services/enhanced_calculator_service.py`
-  - `/app/backend/etl/dza_tariff_connector.py`
-  - `/app/frontend/src/components/calculator/DetailedCalculationBreakdown.jsx`
+- Calculateur amélioré avec détails NPF vs ZLECAf
+- Mise à jour OEC vers données 2024
 
 ### v1.7.0 (5 Février 2025)
-- **Refactoring Frontend StatisticsTab** - 4 sous-onglets
-- **Comparaison Multi-Pays** - Radar chart + tableaux comparatifs
+- Refactoring Frontend StatisticsTab
+- Comparaison Multi-Pays avec Radar chart
 
 ### v1.6.0 (4 Février 2025)
-- **Cache Redis intégré** - Mise en cache des appels Gemini (TTL 6h)
-  - Premier appel: ~27s, appels suivants: <0.1s (amélioration 550x)
-  - Endpoint de stats: `GET /api/ai/cache/stats`
-  - Invalidation: `DELETE /api/ai/cache/clear`
-- **Indicateur de fraîcheur des données** - Composant DataFreshnessIndicator
-  - Affiche "Données en direct" pour données fraîches
-  - Affiche "Il y a Xh/Xmin" pour données en cache
-- **Refactoring backend** - Extraction de routes depuis server.py
-  - `routes/rules_of_origin.py` - Règles d'Origine ZLECAf
-  - `routes/hs6_database.py` - Base de données HS6
-
-### v1.5.0 (3 Février 2025)
-- **Intégration UN COMTRADE v1 API** - Données commerciales plus récentes
-- **Data Source Selector intelligent** - Sélection automatique COMTRADE > OEC > WTO
-- **Optimisation des prompts Gemini** - Meilleure qualité des données
-- **Nouvelles APIs AI** :
-  - `GET /api/ai/summary` - Vue d'ensemble commerce africain
-  - `GET /api/ai/value-chains` - Analyse des chaînes de valeur
-- **Composants Frontend connectés aux données AI réelles** :
-  - Vue d'ensemble - Statistiques commerciales africaines
-  - Chaînes de Valeur - 6 secteurs clés (café, cacao, coton, pétrole, minéraux, automobile)
-  - Par Produit - Analyse IA par code HS
-- **Badges "Données générées par IA"** sur tous les composants utilisant Gemini
-
-### v1.4.0 (31 Janvier 2025)
-- **Intégration Gemini AI** avec Emergent LLM Key
-- **Diagramme Sankey** pour visualisation des flux
-- **Indicateurs ESTIMATION** obligatoires
-- Nettoyage des fichiers obsolètes
-- Tests complets (23/23 passés)
-
-### v1.3.0 (30 Janvier 2025)
-- Analyse de substitution avec données réelles OEC
-- Correction de l'affichage des codes HS
-- Onglet Opportunités restructuré
-
-### v1.2.0 (29 Janvier 2025)
-- Intégration API OEC
-- Commerce bilatéral
-- Top produits par pays
-
-### v1.1.0 (28 Janvier 2025)
-- Profils pays détaillés
-- Indicateurs World Bank
-- Projets structurants
-
-### v1.0.0 (Janvier 2025)
-- MVP initial
-- Base de données HS6
-- Règles d'origine ZLECAf
+- Cache Redis intégré (amélioration 550x)
+- Indicateur de fraîcheur des données
 
 ---
 
-## 👥 Contacts
+## Contacts
 
 - **Développement** : Emergent AI
-- **Design** : Basé sur l'app AI Studio de l'utilisateur
-- **Données** : IMF, UNCTAD, OEC, World Bank
+- **Données** : Administrations douanières africaines, IMF, UNCTAD, OEC
