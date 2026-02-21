@@ -72,6 +72,7 @@ jobs:
       
       - name: Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -83,19 +84,22 @@ jobs:
           title: "chore(data): automated data update - run ${{ github.run_number }}"
           body: |
             ## Automated Data Update
-            
+
             This PR contains automated data updates from external sources.
-            
+
             **Run:** #${{ github.run_number }}
             **Workflow:** ${{ github.workflow }}
             **Triggered:** ${{ github.event_name }}
-            
+
             ### Changes
             - Updated World Bank data
             - Updated production data
             - Updated UN COMTRADE data
-            
+
             Please review and merge if all checks pass.
+
+            > **Note:** To enable automatic PR creation, go to Settings > Actions > General
+            > and enable "Allow GitHub Actions to create and approve pull requests".
           labels: |
             automated
             data-update
@@ -113,22 +117,20 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           
           # Add Comtrade API status if available
-          if command -v python &> /dev/null; then
-            python -c "
-            import sys
-            import os
-            sys.path.insert(0, 'backend')
-            try:
-                from services.comtrade_service import comtrade_service
-                status = comtrade_service.get_service_status()
-                print(f'**Comtrade API Status:**')
-                print(f'- Active Key: {status[\"current_key\"]}')
-                print(f'- Calls Today: {status[\"calls_today\"]}/{status[\"calls_today\"] + status[\"calls_remaining\"]}')
-                print(f'- Remaining: {status[\"calls_remaining\"]}')
-            except Exception as e:
-                print(f'⚠️ Could not get Comtrade status: {e}')
-            " >> $GITHUB_STEP_SUMMARY || echo "⚠️ Could not retrieve Comtrade status" >> $GITHUB_STEP_SUMMARY
-          fi
+          python - >> $GITHUB_STEP_SUMMARY << 'PYEOF' || echo "⚠️ Could not retrieve Comtrade status" >> $GITHUB_STEP_SUMMARY
+import sys
+import os
+sys.path.insert(0, 'backend')
+try:
+    from services.comtrade_service import comtrade_service
+    status = comtrade_service.get_service_status()
+    print('**Comtrade API Status:**')
+    print(f'- Active Key: {status["current_key"]}')
+    print(f'- Calls Today: {status["calls_today"]}/{status["calls_today"] + status["calls_remaining"]}')
+    print(f'- Remaining: {status["calls_remaining"]}')
+except Exception as e:
+    print(f'⚠️ Could not get Comtrade status: {e}')
+PYEOF
           
           echo "" >> $GITHUB_STEP_SUMMARY
           
