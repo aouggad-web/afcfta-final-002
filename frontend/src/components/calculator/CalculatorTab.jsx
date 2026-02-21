@@ -476,12 +476,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <div className="space-y-2">
               <Label htmlFor="origin">{t.originCountry}</Label>
               <Select value={originCountry} onValueChange={setOriginCountry}>
-                <SelectTrigger>
+                <SelectTrigger data-testid="origin-country-select">
                   <SelectValue placeholder={t.originCountry} />
                 </SelectTrigger>
                 <SelectContent>
                   {countries.map((country) => (
-                    <SelectItem key={country.code} value={country.code}>
+                    <SelectItem key={country.code} value={country.code} data-testid={`origin-${country.code}`}>
                       {getFlag(country.iso2 || country.code)} {country.name}
                     </SelectItem>
                   ))}
@@ -492,12 +492,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <div className="space-y-2">
               <Label htmlFor="destination">{t.partnerCountry}</Label>
               <Select value={destinationCountry} onValueChange={setDestinationCountry}>
-                <SelectTrigger>
+                <SelectTrigger data-testid="destination-country-select">
                   <SelectValue placeholder={t.partnerCountry} />
                 </SelectTrigger>
                 <SelectContent>
                   {countries.map((country) => (
-                    <SelectItem key={country.code} value={country.code}>
+                    <SelectItem key={country.code} value={country.code} data-testid={`dest-${country.code}`}>
                       {getFlag(country.iso2 || country.code)} {country.name}
                     </SelectItem>
                   ))}
