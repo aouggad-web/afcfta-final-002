@@ -599,6 +599,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           <Button 
             onClick={calculateTariff}
             disabled={loading}
+            data-testid="calculate-tariff-button"
             className="w-full bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 text-white font-bold text-lg py-6 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all"
           >
             {loading ? `⏳ ${t.calculating}` : `🧮 ${t.calculateBtn}`}
