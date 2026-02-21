@@ -16,7 +16,7 @@ import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
 import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe } from 'lucide-react';
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
-import { DetailedTaxTable, SavingsHighlight } from './TaxBreakdownChart';
+import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
 import './calculator.css';
 
