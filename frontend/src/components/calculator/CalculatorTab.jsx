@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
@@ -18,6 +18,8 @@ import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calcula
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import { DetailedTaxTable, SavingsHighlight } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
+import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info } from 'lucide-react';
+import TariffDownloads from '../tools/TariffDownloads';
 import './calculator.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -68,6 +70,36 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [useSmartSearch, setUseSmartSearch] = useState(true);
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
+  const [countryTariffProfile, setCountryTariffProfile] = useState(null);
+  const [loadingProfile, setLoadingProfile] = useState(false);
+
+  const fetchCountryTariffProfile = useCallback(async (countryCode) => {
+    if (!countryCode) {
+      setCountryTariffProfile(null);
+      return;
+    }
+    setLoadingProfile(true);
+    try {
+      const response = await axios.get(`${API}/tariff-data/${countryCode}?limit=1`);
+      setCountryTariffProfile(response.data);
+    } catch (error) {
+      console.error('Error fetching country tariff profile:', error);
+      setCountryTariffProfile(null);
+    } finally {
+      setLoadingProfile(false);
+    }
+  }, []);
+
+  const handleDestinationChange = useCallback((value) => {
+    setDestinationCountry(value);
+    fetchCountryTariffProfile(value);
+  }, [fetchCountryTariffProfile]);
+
+  useEffect(() => {
+    if (destinationCountry) {
+      fetchCountryTariffProfile(destinationCountry);
+    }
+  }, [destinationCountry, fetchCountryTariffProfile]);
 
   const texts = {
     fr: {
@@ -461,6 +493,32 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     }
   };
 
+  const COUNTRIES_WITH_AUTHENTIC_DATA = new Set([
+    'DZA','MAR','GHA','KEN','EGY','ETH','CIV','NGA','ZAF','SEN','CMR','TUN',
+    'UGA','TZA','RWA','MUS','BEN','BFA','MLI','NER','TGO','GIN',
+    'GAB','COG','TCD','CAF','BWA','SWZ','NAM','LSO','BDI','SSD','COD'
+  ]);
+
+  const TRADE_BLOCS = {
+    'BEN': 'CEDEAO', 'BFA': 'AES', 'MLI': 'AES', 'NER': 'AES', 'TGO': 'CEDEAO', 'GIN': 'CEDEAO',
+    'SEN': 'CEDEAO', 'CIV': 'CEDEAO', 'NGA': 'CEDEAO', 'GHA': 'CEDEAO',
+    'CMR': 'CEMAC', 'GAB': 'CEMAC', 'COG': 'CEMAC', 'TCD': 'CEMAC', 'CAF': 'CEMAC',
+    'KEN': 'EAC', 'TZA': 'EAC', 'UGA': 'EAC', 'RWA': 'EAC', 'BDI': 'EAC', 'SSD': 'EAC', 'COD': 'EAC',
+    'ZAF': 'SACU', 'BWA': 'SACU', 'SWZ': 'SACU', 'NAM': 'SACU', 'LSO': 'SACU',
+    'DZA': '', 'MAR': '', 'TUN': '', 'EGY': '', 'ETH': '', 'MUS': ''
+  };
+
+  const getBlocColor = (bloc) => {
+    const colors = {
+      'CEDEAO': 'bg-amber-100 text-amber-700 border-amber-300',
+      'AES': 'bg-orange-100 text-orange-700 border-orange-300',
+      'CEMAC': 'bg-blue-100 text-blue-700 border-blue-300',
+      'EAC': 'bg-green-100 text-green-700 border-green-300',
+      'SACU': 'bg-purple-100 text-purple-700 border-purple-300',
+    };
+    return colors[bloc] || 'bg-gray-100 text-gray-600 border-gray-300';
+  };
+
   return (
     <div className="space-y-6">
       {/* Onglets Principal */}
@@ -532,6 +590,135 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
 
                 <div className="space-y-2">
+      <Card className="shadow-2xl border-t-4 border-t-green-600">
+        <CardHeader className="bg-gradient-to-r from-green-50 to-yellow-50">
+          <CardTitle className="flex items-center space-x-2 text-2xl text-green-700">
+            <span>📊</span>
+            <span>{t.calculatorTitle}</span>
+          </CardTitle>
+          <CardDescription className="text-gray-700 font-semibold">
+            {t.calculatorDesc}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="origin">{t.originCountry}</Label>
+              <Select value={originCountry} onValueChange={setOriginCountry}>
+                <SelectTrigger>
+                  <SelectValue placeholder={t.originCountry} />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => {
+                    const hasData = COUNTRIES_WITH_AUTHENTIC_DATA.has(country.code);
+                    const bloc = TRADE_BLOCS[country.code];
+                    return (
+                      <SelectItem key={country.code} value={country.code}>
+                        <span className="flex items-center gap-2">
+                          <span>{getFlag(country.iso2 || country.code)} {country.name}</span>
+                          {hasData && <span className="inline-block w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title={language === 'fr' ? 'Données authentiques' : 'Authentic data'}></span>}
+                          {bloc && <span className={`text-[10px] px-1.5 py-0 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
+                        </span>
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="destination">{t.partnerCountry}</Label>
+              <Select value={destinationCountry} onValueChange={handleDestinationChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder={t.partnerCountry} />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => {
+                    const hasData = COUNTRIES_WITH_AUTHENTIC_DATA.has(country.code);
+                    const bloc = TRADE_BLOCS[country.code];
+                    return (
+                      <SelectItem key={country.code} value={country.code}>
+                        <span className="flex items-center gap-2">
+                          <span>{getFlag(country.iso2 || country.code)} {country.name}</span>
+                          {hasData && <span className="inline-block w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title={language === 'fr' ? 'Données authentiques' : 'Authentic data'}></span>}
+                          {bloc && <span className={`text-[10px] px-1.5 py-0 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
+                        </span>
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 text-xs text-gray-500">
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span> {language === 'fr' ? 'Données authentiques' : 'Authentic data'}</span>
+            <span className="text-gray-300">|</span>
+            <span className="font-medium text-gray-400">{language === 'fr' ? 'Blocs:' : 'Blocs:'} CEDEAO · CEMAC · EAC · SACU · AES</span>
+          </div>
+
+          {loadingProfile && (
+            <div className="text-center text-sm text-gray-500 py-2">
+              {language === 'fr' ? 'Chargement du tarif national...' : 'Loading national tariff...'}
+            </div>
+          )}
+
+          {countryTariffProfile && countryTariffProfile.summary && !loadingProfile && (
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 space-y-2">
+              <div className="flex items-center justify-between flex-wrap gap-1">
+                <span className="font-semibold text-blue-800 text-sm flex items-center gap-1">
+                  {getFlag(countries.find(c => c.code === destinationCountry)?.iso2 || destinationCountry)}
+                  {language === 'fr' ? 'Tarif National' : 'National Tariff'} - {getCountryName(destinationCountry)}
+                </span>
+                <div className="flex items-center gap-1">
+                  {TRADE_BLOCS[destinationCountry] && (
+                    <Badge variant="outline" className={`text-xs border ${getBlocColor(TRADE_BLOCS[destinationCountry])}`}>
+                      {TRADE_BLOCS[destinationCountry]}
+                    </Badge>
+                  )}
+                  <Badge variant="outline" className={`text-xs ${
+                    COUNTRIES_WITH_AUTHENTIC_DATA.has(destinationCountry)
+                      ? 'bg-green-100 text-green-700 border-green-300'
+                      : 'bg-gray-100 text-gray-500 border-gray-300'
+                  }`}>
+                    {COUNTRIES_WITH_AUTHENTIC_DATA.has(destinationCountry)
+                      ? (language === 'fr' ? 'Données authentiques' : 'Authentic data')
+                      : (language === 'fr' ? 'Données estimées' : 'Estimated data')
+                    }
+                  </Badge>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-xs">
+                <div className="bg-white rounded p-2 text-center shadow-sm">
+                  <div className="text-gray-500">{language === 'fr' ? 'DD moy.' : 'Avg. duty'}</div>
+                  <div className="font-bold text-lg text-blue-700">{countryTariffProfile.summary.dd_rate_range?.avg?.toFixed(1) || '0'}%</div>
+                  <div className="text-gray-400">{countryTariffProfile.summary.dd_rate_range?.min?.toFixed(0) || '0'}% - {countryTariffProfile.summary.dd_rate_range?.max?.toFixed(0) || '0'}%</div>
+                </div>
+                <div className="bg-white rounded p-2 text-center shadow-sm">
+                  <div className="text-gray-500">{language === 'fr' ? 'TVA' : 'VAT'}</div>
+                  <div className="font-bold text-lg text-orange-600">{countryTariffProfile.summary.vat_rate_pct || 0}%</div>
+                  <div className="text-gray-400">{countryTariffProfile.summary.vat_source || ''}</div>
+                </div>
+                <div className="bg-white rounded p-2 text-center shadow-sm">
+                  <div className="text-gray-500">{language === 'fr' ? 'Autres taxes' : 'Other taxes'}</div>
+                  <div className="font-bold text-lg text-red-600">{countryTariffProfile.summary.other_taxes_pct || 0}%</div>
+                  <div className="text-gray-400">
+                    {countryTariffProfile.summary.other_taxes_detail
+                      ? Object.entries(countryTariffProfile.summary.other_taxes_detail)
+                          .map(([k, v]) => `${k.toUpperCase()} ${v}%`)
+                          .join(', ')
+                      : ''}
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between items-center text-xs text-gray-500 pt-1 border-t border-blue-100">
+                <span>{(countryTariffProfile.summary.total_positions || 0).toLocaleString()} {language === 'fr' ? 'positions tarifaires' : 'tariff positions'}</span>
+                <span>{countryTariffProfile.summary.chapters_covered || 0} {language === 'fr' ? 'chapitres couverts' : 'chapters covered'}</span>
+              </div>
+            </div>
+          )}
+
+          <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="hs-code" className="flex items-center gap-2">
                 <Package className="w-4 h-4" />
@@ -641,8 +828,18 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <span>💰</span>
                 <span>{t.detailedResults}</span>
               </CardTitle>
-              <CardDescription className="text-yellow-100 font-semibold">
-                {countryFlags[result.origin_country]} {getCountryName(result.origin_country)} → {countryFlags[result.destination_country]} {getCountryName(result.destination_country)}
+              <CardDescription className="text-yellow-100 font-semibold flex items-center gap-2 flex-wrap">
+                <span>{getFlag(result.origin_country)} {getCountryName(result.origin_country)} → {getFlag(result.destination_country)} {getCountryName(result.destination_country)}</span>
+                {TRADE_BLOCS[result.destination_country] && (
+                  <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                    {TRADE_BLOCS[result.destination_country]}
+                  </span>
+                )}
+                {COUNTRIES_WITH_AUTHENTIC_DATA.has(result.destination_country) && (
+                  <span className="bg-green-400/30 text-green-100 text-xs px-2 py-0.5 rounded-full">
+                    {language === 'fr' ? 'Données authentiques' : 'Authentic data'}
+                  </span>
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-5 pt-6 results-container">
@@ -941,6 +1138,84 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       </div>
                     </div>
                   </div>
+                </div>
+              )}
+
+              {/* Information sur la position tarifaire nationale (données crawlées authentiques) */}
+              {result.tariff_precision === 'national_position' && (
+                <div className="result-section tariff-info-section bg-gradient-to-r from-emerald-50 to-green-50 p-5 rounded-xl border border-emerald-200 shadow-sm">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Package className="w-6 h-6 text-emerald-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <h4 className="font-bold text-emerald-800">
+                          {language === 'fr' ? 'Position tarifaire nationale' : 'National tariff position'}
+                        </h4>
+                        <Badge className="bg-emerald-700 text-white text-xs">
+                          {language === 'fr' ? 'Données authentiques' : 'Authentic data'}
+                        </Badge>
+                        {result.data_source && (
+                          <Badge variant="outline" className="text-xs text-emerald-600 border-emerald-300">
+                            {result.data_source === 'crawled_authentic' ? (language === 'fr' ? 'Source officielle' : 'Official source') : result.data_source}
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="font-mono text-lg font-bold text-emerald-900 mb-1">{result.sub_position_used}</p>
+                      {result.sub_position_description && (
+                        <p className="text-gray-700 text-sm">{result.sub_position_description}</p>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 flex-shrink-0">
+                      <div className="bg-red-50 p-3 rounded-lg text-center border border-red-100">
+                        <p className="text-xs text-red-500 font-medium">{t.normalRate}</p>
+                        <p className="font-bold text-red-600 text-lg">{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
+                      </div>
+                      <div className="bg-green-50 p-3 rounded-lg text-center border border-green-100">
+                        <p className="text-xs text-green-500 font-medium">{t.zlecafRate}</p>
+                        <p className="font-bold text-green-600 text-lg">{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
+                      </div>
+                    </div>
+                  </div>
+                  {result.taxes_detail && result.taxes_detail.length > 0 && (
+                    <div className="mt-4 pl-16">
+                      <h5 className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+                        {language === 'fr' ? 'Taxes applicables' : 'Applicable taxes'}
+                      </h5>
+                      <div className="flex flex-wrap gap-1.5">
+                        {result.taxes_detail.map((tax, tIdx) => (
+                          <span key={tIdx} className="text-xs bg-white border border-emerald-200 text-gray-700 px-2 py-1 rounded-md">
+                            {tax.tax}: <strong>{tax.rate}%</strong>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {result.administrative_formalities && result.administrative_formalities.length > 0 && (
+                    <div className="mt-3 pl-16">
+                      <h5 className="text-xs font-semibold text-orange-600 mb-1">
+                        {language === 'fr' ? 'Formalités administratives' : 'Administrative formalities'}
+                      </h5>
+                      {result.administrative_formalities.map((f, fIdx) => (
+                        <p key={fIdx} className="text-xs text-orange-700">
+                          {typeof f === 'string' ? f : f.description || ''}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
+                    <div className="mt-3 pl-16">
+                      <h5 className="text-xs font-semibold text-blue-600 mb-1">
+                        {language === 'fr' ? 'Avantages fiscaux' : 'Fiscal advantages'}
+                      </h5>
+                      {result.fiscal_advantages.map((a, aIdx) => (
+                        <p key={aIdx} className="text-xs text-blue-700">
+                          {typeof a === 'string' ? a : a.description || ''}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 

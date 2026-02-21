@@ -57,8 +57,8 @@ async def get_imports_from_world(lang: str = 'fr'):
     }
     return {
         "title": titles.get(lang, titles['fr']),
-        "source": "UNCTAD/ITC Trade Map 2023",
-        "year": 2023,
+        "source": "UNCTAD/ITC Trade Map + OEC/BACI 2024",
+        "year": 2024,
         "products": translate_products_list(get_top_imports_from_world(), lang)
     }
 
@@ -71,8 +71,8 @@ async def get_exports_to_world(lang: str = 'fr'):
     }
     return {
         "title": titles.get(lang, titles['fr']),
-        "source": "UNCTAD/ITC Trade Map 2023",
-        "year": 2023,
+        "source": "UNCTAD/ITC Trade Map + OEC/BACI 2024",
+        "year": 2024,
         "products": translate_products_list(get_top_exports_to_world(), lang)
     }
 
@@ -85,8 +85,8 @@ async def get_intra_imports(lang: str = 'fr'):
     }
     return {
         "title": titles.get(lang, titles['fr']),
-        "source": "UNCTAD/AfCFTA Secretariat 2023",
-        "year": 2023,
+        "source": "UNCTAD/AfCFTA Secretariat 2024",
+        "year": 2024,
         "products": translate_products_list(get_top_intra_african_imports(), lang)
     }
 
@@ -99,8 +99,8 @@ async def get_intra_exports(lang: str = 'fr'):
     }
     return {
         "title": titles.get(lang, titles['fr']),
-        "source": "UNCTAD/AfCFTA Secretariat 2023",
-        "year": 2023,
+        "source": "UNCTAD/AfCFTA Secretariat 2024",
+        "year": 2024,
         "products": translate_products_list(get_top_intra_african_exports(), lang)
     }
 

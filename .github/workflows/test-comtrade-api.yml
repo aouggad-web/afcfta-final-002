@@ -1,0 +1,159 @@
+name: Test Comtrade API
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/services/comtrade_service.py'
+      - '.github/workflows/test-comtrade-api.yml'
+      - 'backend/tests/test_comtrade_service.py'
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pytest python-dotenv
+      
+      - name: Test primary key connectivity
+        id: test_primary
+        env:
+          COMTRADE_API_KEY: ${{ secrets.COMTRADE_API_KEY }}
+        run: |
+          python -c "
+          import os
+          import sys
+          sys.path.insert(0, 'backend')
+          from services.comtrade_service import COMTRADEService
+          
+          service = COMTRADEService()
+          print('Testing primary key...')
+          
+          if not service.primary_api_key:
+              print('⚠️ Primary key not configured')
+              sys.exit(0)
+          
+          health = service.health_check()
+          print(f'Primary key status: {health}')
+          
+          if health['connected']:
+              print('✅ Primary key is working')
+              sys.exit(0)
+          else:
+              print(f'❌ Primary key failed: {health.get(\"last_error\")}')
+              sys.exit(1)
+          "
+        continue-on-error: true
+      
+      - name: Test secondary key connectivity
+        id: test_secondary
+        env:
+          COMTRADE_API_KEY_SECONDARY: ${{ secrets.COMTRADE_API_KEY_SECONDARY }}
+        run: |
+          python -c "
+          import os
+          import sys
+          sys.path.insert(0, 'backend')
+          from services.comtrade_service import COMTRADEService
+          
+          # Override to test secondary key as primary
+          os.environ['COMTRADE_API_KEY'] = os.getenv('COMTRADE_API_KEY_SECONDARY', '')
+          os.environ.pop('COMTRADE_API_KEY_SECONDARY', None)
+          
+          service = COMTRADEService()
+          print('Testing secondary key...')
+          
+          if not service.primary_api_key:
+              print('⚠️ Secondary key not configured')
+              sys.exit(0)
+          
+          health = service.health_check()
+          print(f'Secondary key status: {health}')
+          
+          if health['connected']:
+              print('✅ Secondary key is working')
+              sys.exit(0)
+          else:
+              print(f'❌ Secondary key failed: {health.get(\"last_error\")}')
+              sys.exit(1)
+          "
+        continue-on-error: true
+      
+      - name: Test fallback logic
+        env:
+          COMTRADE_API_KEY: ${{ secrets.COMTRADE_API_KEY }}
+          COMTRADE_API_KEY_SECONDARY: ${{ secrets.COMTRADE_API_KEY_SECONDARY }}
+        run: |
+          python -c "
+          import sys
+          sys.path.insert(0, 'backend')
+          from services.comtrade_service import COMTRADEService
+          
+          service = COMTRADEService()
+          print('Testing fallback logic...')
+          
+          status = service.get_service_status()
+          print(f'Service status: {status}')
+          
+          if status['primary_key_configured'] and status['secondary_key_configured']:
+              print('✅ Both keys are configured')
+              if service._switch_to_secondary():
+                  print('✅ Successfully switched to secondary key')
+              else:
+                  print('❌ Failed to switch to secondary key')
+                  sys.exit(1)
+          elif status['primary_key_configured']:
+              print('⚠️ Only primary key configured')
+          elif status['secondary_key_configured']:
+              print('⚠️ Only secondary key configured')
+          else:
+              print('❌ No keys configured')
+              sys.exit(1)
+          "
+      
+      - name: Run unit tests
+        run: |
+          cd backend
+          python -m pytest tests/test_comtrade_service.py -v
+      
+      - name: Create test summary
+        if: always()
+        run: |
+          echo "## Comtrade API Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date:** $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.test_primary.outcome }}" == "success" ]; then
+            echo "✅ Primary key: Working" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.test_primary.outcome }}" == "skipped" ]; then
+            echo "⚠️ Primary key: Not configured" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Primary key: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.test_secondary.outcome }}" == "success" ]; then
+            echo "✅ Secondary key: Working" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.test_secondary.outcome }}" == "skipped" ]; then
+            echo "⚠️ Secondary key: Not configured" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Secondary key: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Recommendation:** Ensure at least one API key is configured in repository secrets." >> $GITHUB_STEP_SUMMARY

@@ -10,6 +10,8 @@ from services.oec_trade_service import (
     get_african_countries_list,
     AFRICAN_COUNTRIES_OEC,
     DEFAULT_YEAR
+    get_country_name_to_iso3_mapping,
+    AFRICAN_COUNTRIES_OEC
 )
 
 router = APIRouter(prefix="/oec")
@@ -27,6 +29,19 @@ async def get_oec_african_countries(
         "latest_year": DEFAULT_YEAR
     }
 
+@router.get("/countries/name-to-iso3")
+async def get_oec_country_name_mapping():
+    """
+    Mapping inversé des noms de pays (name_en) vers codes ISO3.
+    Utile pour convertir les noms de pays retournés par l'API OEC en codes ISO3
+    pour afficher les drapeaux dans le frontend.
+    """
+    return {
+        "success": True,
+        "mapping": get_country_name_to_iso3_mapping(),
+        "source": "OEC/BACI"
+    }
+
 @router.get("/years")
 async def get_oec_available_years():
     """Années disponibles dans les données OEC"""
@@ -37,6 +52,7 @@ async def get_oec_available_years():
 async def get_oec_country_exports(
     country_iso3: str,
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    year: int = Query(2024),
     hs_level: str = Query("HS4"),
     limit: int = Query(50)
 ):
@@ -50,6 +66,7 @@ async def get_oec_country_exports(
 async def get_oec_country_imports(
     country_iso3: str,
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    year: int = Query(2024),
     hs_level: str = Query("HS4"),
     limit: int = Query(50)
 ):
@@ -63,6 +80,7 @@ async def get_oec_country_imports(
 async def get_oec_product_trade(
     hs_code: str,
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    year: int = Query(2024),
     trade_flow: str = Query("exports"),
     limit: int = Query(50)
 ):
@@ -76,6 +94,7 @@ async def get_oec_product_trade(
 async def get_oec_african_exporters(
     hs_code: str,
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    year: int = Query(2024),
     limit: int = Query(20)
 ):
     """Top exportateurs africains pour un produit HS"""
@@ -89,6 +108,7 @@ async def get_oec_bilateral_trade(
     exporter_iso3: str,
     importer_iso3: str,
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    year: int = Query(2024),
     hs_level: str = Query("HS4"),
     limit: int = Query(50)
 ):

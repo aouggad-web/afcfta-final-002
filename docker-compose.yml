@@ -1,0 +1,61 @@
+version: '3.8'
+
+# Required environment variables (set in .env file, see .env.example):
+#   MONGO_ROOT_USER     - MongoDB root username
+#   MONGO_ROOT_PASSWORD - MongoDB root password (use a strong, unique password)
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: afcfta-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - afcfta-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: afcfta-backend
+    restart: unless-stopped
+    environment:
+      - MONGO_URL=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/
+      - DB_NAME=${MONGO_DB:-afcfta}
+      - EMAIL_NOTIFICATIONS_ENABLED=${EMAIL_ENABLED:-false}
+      - EMAIL_SMTP_HOST=${EMAIL_SMTP_HOST:-smtp.gmail.com}
+      - EMAIL_SMTP_PORT=${EMAIL_SMTP_PORT:-587}
+      - EMAIL_SMTP_USER=${EMAIL_SMTP_USER:-}
+      - EMAIL_SMTP_PASSWORD=${EMAIL_SMTP_PASSWORD:-}
+      - EMAIL_FROM=${EMAIL_FROM:-noreply@afcfta.com}
+      - EMAIL_TO=${EMAIL_TO:-}
+      - SLACK_NOTIFICATIONS_ENABLED=${SLACK_ENABLED:-false}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL:-}
+      - SLACK_CHANNEL=${SLACK_CHANNEL:-#afcfta-monitoring}
+    ports:
+      - "8000:8000"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - afcfta-network
+    volumes:
+      - ./worker-logs:/app/worker-logs
+
+networks:
+  afcfta-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:

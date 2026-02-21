@@ -153,7 +153,7 @@ export default function AITradeSummary({ countryName, language = 'fr' }) {
             <AlertTriangle className="h-6 w-6 mx-auto mb-2" />
             <p>{error}</p>
             <Button variant="outline" size="sm" onClick={fetchAnalysis} className="mt-2">
-              Réessayer
+              {txt.retryBtn || 'Réessayer'}
             </Button>
           </div>
         )}

@@ -1,39 +1,33 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# IDE and editors
-.idea/
-.vscode/
-
 # Dependencies
 node_modules/
 /node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+
+# IDE and editors
+.idea/
+.vscode/
 
 # Testing
 /coverage
 
-# Next.js
-/.next/
-/out/
-next-env.d.ts
-*.tsbuildinfo
-
 # Production builds
 /build
 dist/
-dist
 
-# Environment files (comprehensive coverage)
-
+# Environment files
+*.env
+*.env.*
+!.env.example
 *token.json*
 *credentials.json*
+
+# Secrets - never commit actual secret values
+.github/secrets/
+
+# Generated tariff data (157MB+)
+backend/data/tariffs/
 
 # Logs and debug files
 npm-debug.log*
@@ -48,7 +42,7 @@ dump.rdb
 
 # Python
 __pycache__/
-*pyc*
+*.pyc
 venv/
 .venv/
 
@@ -56,13 +50,9 @@ venv/
 chainlit.md
 .chainlit
 .ipynb_checkpoints/
-.ac
 
 # Deployment
 .vercel
-
-# Data and databases
-agenthub/agents/youtube/db
 
 # Archive files and large assets
 **/*.zip
@@ -541,3 +531,35 @@ android-sdk/ -e
 # Environment files
 *.env
 *.env.*
+# Data update reports
+data_update_report.json
+
+# Backup data files
+/ports_africains_backup.json
+/ports_africains_old.json
+/ports_africains_enriched.json
+/ports_africains_enriched_pro.json
+/airports_africains_original.json
+/*.csv.backup
+
+# Tariff engine outputs
+tariff_engine/pdf_sources/
+tariff_engine/raw_tables/
+tariff_engine/normalized/*.csv
+tariff_engine/normalized/*.json
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Tariff engine outputs
+tariff_engine/pdf_sources/
+tariff_engine/raw_tables/
+tariff_engine/normalized/*.csv
+tariff_engine/normalized/*.json
+
+# Python
+venv/
+__pycache__/
+*.pyc

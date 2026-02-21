@@ -9,6 +9,7 @@ permissions:
   contents: write    # nécessaire pour push
   actions: read
   checks: read
+  pull-requests: write    # required for PR creation
 
 jobs:
   refresh-data:
@@ -34,16 +35,80 @@ jobs:
           # TODO: remplacez --demo par l'intégration réelle (e‑Tariff/UNCTAD/OEC)
           python backend/make_release.py --demo
 
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(ops): refresh AfCFTA datasets via Lyra+ weekly cron"
+          committer: lyra-plus-bot <lyra-plus-bot@users.noreply.github.com>
+          author: lyra-plus-bot <lyra-plus-bot@users.noreply.github.com>
+          branch: lyra-plus-data-update-${{ github.run_number }}
+          delete-branch: true
+          title: "chore(ops): refresh AfCFTA datasets via Lyra+ weekly cron"
+          body: |
+            ## Lyra+ Weekly Data Refresh
+            
+            This PR contains the weekly AfCFTA dataset refresh from the Lyra+ pipeline.
+            
+            **Run:** #${{ github.run_number }}
+            **Workflow:** ${{ github.workflow }}
+            
+            ### Changes
+            - Refreshed AfCFTA datasets in frontend/public/data
+            
+            Please review and merge if all checks pass.
+          labels: |
+            automated
+            lyra-plus
+            data-update
+          add-paths: |
+            frontend/public/data/
       - name: Commit & push data changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -e  # Exit on any error
           git config user.name "lyra-plus-bot"
           git config user.email "lyra-plus-bot@users.noreply.github.com"
           git add frontend/public/data || true
           if ! git diff --cached --quiet; then
             git commit -m "chore(ops): refresh AfCFTA datasets via Lyra+ weekly cron"
+            
+            # Pull latest changes with rebase to handle concurrent updates
+            echo "Syncing with remote main branch..."
+            if git pull --rebase origin main; then
+              echo "✓ Successfully rebased changes"
+            else
+              echo "⚠️  Rebase failed, aborting rebase and attempting regular merge"
+              git rebase --abort
+              git pull --no-rebase origin main  # Will exit if merge fails due to set -e
+              echo "✓ Successfully merged changes"
+            fi
+            
+            # Pull and rebase before pushing to handle any remote changes
+            echo "Pulling latest changes from remote..."
+            git pull --rebase origin main || {
+              echo "⚠️ Rebase failed, aborting and falling back to merge strategy..."
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase origin main || {
+                echo "❌ Failed to pull remote changes"
+            # Pull latest changes and rebase our commit on top
+            echo "Pulling latest changes before push..."
+            git pull --rebase origin ${{ github.ref_name }} || {
+              echo "⚠️ Rebase conflict detected, attempting to resolve..."
+              # Prefer our changes for data files in case of conflicts
+              git checkout --ours -- frontend/public/data 2>/dev/null || true
+              git add frontend/public/data 2>/dev/null || true
+              git rebase --continue || {
+                echo "❌ Failed to resolve conflicts automatically"
+                git rebase --abort
+                exit 1
+              }
+            }
+            
+            # Now push the changes
             git push
+            echo "✅ Data updated and pushed successfully"
           else
             echo "No data changes to commit."
           fi
