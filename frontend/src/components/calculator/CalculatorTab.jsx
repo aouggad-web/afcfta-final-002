@@ -702,6 +702,195 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               )}
 
+              {/* TABLEAU DÉTAILLÉ DE TOUTES LES TAXES AVEC INTITULÉS */}
+              {result.data_source === 'authentic_tariff' && result.taxes_detail && result.taxes_detail.length > 0 && (
+                <div className="result-section bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden" data-testid="all-taxes-table">
+                  <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+                    <h4 className="font-bold text-lg text-blue-900 flex items-center gap-2">
+                      <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">📋</span>
+                      {language === 'fr' ? 'Détail Complet des Taxes' : 'Complete Tax Breakdown'}
+                    </h4>
+                    <p className="text-sm text-blue-700 mt-1">
+                      {language === 'fr' 
+                        ? `${result.taxes_detail.length} taxes applicables pour ${getCountryName(destinationCountry)}`
+                        : `${result.taxes_detail.length} applicable taxes for ${getCountryName(destinationCountry)}`}
+                    </p>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 gap-0">
+                    {/* Colonne NPF */}
+                    <div className="border-r border-gray-200">
+                      <div className="p-3 bg-red-50 border-b border-red-100">
+                        <h5 className="font-bold text-red-800 flex items-center gap-2">
+                          <span>🚫</span>
+                          {language === 'fr' ? 'Régime NPF (Sans préférence)' : 'MFN Regime (No preference)'}
+                        </h5>
+                      </div>
+                      <div className="p-4">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="text-left text-gray-500 border-b">
+                              <th className="pb-2">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
+                              <th className="pb-2 text-center">{language === 'fr' ? 'Taux' : 'Rate'}</th>
+                              <th className="pb-2 text-right">{language === 'fr' ? 'Montant' : 'Amount'}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b bg-gray-50">
+                              <td className="py-2 font-medium">
+                                <span className="font-mono">CIF</span>
+                                <span className="text-xs text-gray-500 block">{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
+                              </td>
+                              <td className="py-2 text-center">-</td>
+                              <td className="py-2 text-right font-mono font-bold">{formatCurrency(parseFloat(value))}</td>
+                            </tr>
+                            {result.taxes_detail.map((tax, idx) => {
+                              const taxAmount = parseFloat(value) * (tax.rate / 100);
+                              return (
+                                <tr key={idx} className="border-b hover:bg-gray-50">
+                                  <td className="py-2">
+                                    <div className="flex items-center gap-2">
+                                      <span 
+                                        className="w-3 h-3 rounded-full flex-shrink-0"
+                                        style={{ 
+                                          backgroundColor: tax.tax.toLowerCase().includes('d.d') || tax.tax.toLowerCase().includes('douane') ? '#dc2626' :
+                                            tax.tax.toLowerCase().includes('tva') || tax.tax.toLowerCase().includes('vat') ? '#f59e0b' :
+                                            tax.tax.toLowerCase().includes('cedeao') ? '#10b981' :
+                                            tax.tax.toLowerCase().includes('ciss') ? '#ec4899' :
+                                            '#8b5cf6'
+                                        }}
+                                      />
+                                      <div>
+                                        <span className="font-mono font-medium">{tax.tax}</span>
+                                        {tax.observation && tax.observation !== tax.tax && (
+                                          <span className="text-xs text-gray-500 block">{tax.observation}</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className="py-2 text-center font-mono">{tax.rate}%</td>
+                                  <td className="py-2 text-right font-mono">{formatCurrency(taxAmount)}</td>
+                                </tr>
+                              );
+                            })}
+                            <tr className="bg-red-50 font-bold">
+                              <td className="py-3" colSpan={2}>
+                                {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
+                              </td>
+                              <td className="py-3 text-right font-mono text-lg text-red-700">
+                                {formatCurrency(result.normal_total_cost)}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    
+                    {/* Colonne ZLECAf */}
+                    <div>
+                      <div className="p-3 bg-emerald-50 border-b border-emerald-100">
+                        <h5 className="font-bold text-emerald-800 flex items-center gap-2">
+                          <span>✅</span>
+                          {language === 'fr' ? 'Régime ZLECAf (Préférentiel)' : 'AfCFTA Regime (Preferential)'}
+                        </h5>
+                      </div>
+                      <div className="p-4">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="text-left text-gray-500 border-b">
+                              <th className="pb-2">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
+                              <th className="pb-2 text-center">{language === 'fr' ? 'Taux' : 'Rate'}</th>
+                              <th className="pb-2 text-right">{language === 'fr' ? 'Montant' : 'Amount'}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b bg-gray-50">
+                              <td className="py-2 font-medium">
+                                <span className="font-mono">CIF</span>
+                                <span className="text-xs text-gray-500 block">{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
+                              </td>
+                              <td className="py-2 text-center">-</td>
+                              <td className="py-2 text-right font-mono font-bold">{formatCurrency(parseFloat(value))}</td>
+                            </tr>
+                            {result.taxes_detail.map((tax, idx) => {
+                              const isDD = tax.tax.toLowerCase().includes('d.d') || tax.tax.toLowerCase().includes('douane');
+                              const effectiveRate = isDD ? 0 : tax.rate;
+                              const taxAmount = parseFloat(value) * (effectiveRate / 100);
+                              return (
+                                <tr key={idx} className={`border-b hover:bg-gray-50 ${isDD ? 'bg-emerald-50' : ''}`}>
+                                  <td className="py-2">
+                                    <div className="flex items-center gap-2">
+                                      <span 
+                                        className="w-3 h-3 rounded-full flex-shrink-0"
+                                        style={{ 
+                                          backgroundColor: isDD ? '#10b981' :
+                                            tax.tax.toLowerCase().includes('tva') || tax.tax.toLowerCase().includes('vat') ? '#f59e0b' :
+                                            tax.tax.toLowerCase().includes('cedeao') ? '#10b981' :
+                                            tax.tax.toLowerCase().includes('ciss') ? '#ec4899' :
+                                            '#8b5cf6'
+                                        }}
+                                      />
+                                      <div>
+                                        <span className={`font-mono font-medium ${isDD ? 'text-emerald-700' : ''}`}>{tax.tax}</span>
+                                        {tax.observation && tax.observation !== tax.tax && (
+                                          <span className="text-xs text-gray-500 block">{tax.observation}</span>
+                                        )}
+                                        {isDD && (
+                                          <Badge className="mt-1 bg-emerald-100 text-emerald-700 text-xs">
+                                            {language === 'fr' ? 'Exonéré ZLECAf' : 'AfCFTA Exempt'}
+                                          </Badge>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className="py-2 text-center font-mono">
+                                    {isDD ? (
+                                      <span>
+                                        <span className="line-through text-gray-400">{tax.rate}%</span>
+                                        <span className="text-emerald-600 font-bold ml-1">0%</span>
+                                      </span>
+                                    ) : (
+                                      <span>{tax.rate}%</span>
+                                    )}
+                                  </td>
+                                  <td className={`py-2 text-right font-mono ${isDD ? 'text-emerald-600 font-bold' : ''}`}>
+                                    {formatCurrency(taxAmount)}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                            <tr className="bg-emerald-50 font-bold">
+                              <td className="py-3" colSpan={2}>
+                                {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
+                              </td>
+                              <td className="py-3 text-right font-mono text-lg text-emerald-700">
+                                {formatCurrency(result.zlecaf_total_cost)}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Économies */}
+                  <div className="p-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="text-3xl">💰</span>
+                        <div>
+                          <p className="text-sm opacity-90">{language === 'fr' ? 'Économies grâce à la ZLECAf' : 'Savings thanks to AfCFTA'}</p>
+                          <p className="text-2xl font-bold">{formatCurrency(result.savings || (result.normal_total_cost - result.zlecaf_total_cost))}</p>
+                        </div>
+                      </div>
+                      <Badge className="bg-white/20 text-white text-lg px-4 py-2">
+                        -{result.savings_percentage || ((result.normal_total_cost - result.zlecaf_total_cost) / result.normal_total_cost * 100).toFixed(1)}%
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Information sur la sous-position nationale si utilisée */}
               {result.tariff_precision === 'sub_position' && (
                 <div className="result-section tariff-info-section bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200 shadow-sm">
