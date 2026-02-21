@@ -18,42 +18,38 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 
 ## Fonctionnalités Implémentées
 
-### Phase 1 : Infrastructure de Base (Terminé)
-- [x] Base de données HS6 complète bilingue (FR/EN)
-- [x] Règles d'Origine (RoO) spécifiques ZLECAf
-- [x] Gestion des tarifs douaniers nationaux
-- [x] Profils pays détaillés avec indicateurs économiques
-
-### Phase 2 : Intégration API OEC (Terminé)
-- [x] Statistiques commerciales en temps réel via API OEC
-- [x] Commerce bilatéral entre pays africains
-- [x] Top produits exportés/importés par pays
-- [x] Mise à jour vers données OEC 2024
-
-### Phase 3 : Analyse de Substitution (Terminé)
-- [x] Service d'analyse avec données réelles OEC
-- [x] Identification des fournisseurs africains potentiels
-- [x] Calcul des potentiels de substitution
-
-### Phase 4 : Intelligence Artificielle Gemini (Terminé)
-- [x] Intégration Google Gemini via Emergent LLM Key
-- [x] Analyse IA des opportunités d'export/import
-- [x] Cache Redis pour performances optimales (550x faster)
-- [x] Indicateur de fraîcheur des données
-
-### Phase 5 : Comparaison Multi-Pays (Terminé)
-- [x] Radar chart comparatif
-- [x] Tableaux d'indicateurs économiques
-- [x] Commerce intra-africain vs mondial
+### Phase 1-5 : Infrastructure, OEC, Substitution, IA, Comparaison (Terminé)
+- Base de données HS6 bilingue, Règles d'Origine ZLECAf
+- Statistiques OEC 2024, Analyse de Substitution
+- Intelligence Artificielle Gemini avec Cache Redis
+- Comparaison Multi-Pays (statistiques)
 
 ### Phase 6 : Données Tarifaires Authentiques (Terminé - 21 Fév 2025)
-- [x] **49 fichiers JSON de tarifs nationaux authentiques**
-- [x] **~5800 lignes tarifaires HS6 par pays**
-- [x] **~16000 sous-positions nationales (HS8-HS10) par pays**
-- [x] **Taxes détaillées : DD, TVA, TPI, CEDEAO, CISS, etc.**
-- [x] **Avantages fiscaux ZLECAf intégrés**
-- [x] **Formalités administratives requises**
-- [x] **API complète /api/authentic-tariffs/*
+- **54 fichiers JSON de tarifs nationaux authentiques** pour TOUS les pays africains
+- **~315,000 lignes tarifaires HS6** au total
+- **~871,000 sous-positions nationales** (HS8-HS10) au total
+- **Taxes détaillées** : DD, TVA, TPI, CEDEAO, CISS, PRCT, T.C.S, AIR, etc.
+- **Avantages fiscaux ZLECAf** intégrés
+- **Formalités administratives** requises
+
+### Phase 7 : Améliorations Calculateur (Terminé - 21 Fév 2025)
+- **Affichage de TOUTES les taxes avec leurs intitulés** :
+  - D.D (Droit de Douane)
+  - T.V.A (Taxe sur la Valeur Ajoutée)
+  - CEDEAO (Prélèvement Communautaire)
+  - CISS (Contribution CEDEAO)
+  - TPI (Taxe Parafiscale à l'Importation)
+  - PRCT (Prélèvement à la Compensation du Transport)
+  - T.C.S (Taxe de Contrôle Sanitaire)
+  - AIR (Acompte Impôt sur le Revenu)
+  - Et plus...
+
+### Phase 8 : Comparaison Multi-Pays (Terminé - 21 Fév 2025)
+- **Sélection par région** : Afrique du Nord, Ouest, Centrale, Est, Australe
+- **Comparaison instantanée** de plusieurs pays pour un même produit
+- **Tableau détaillé** avec toutes les taxes par pays
+- **Meilleur choix** mis en évidence (coût ZLECAf le plus bas)
+- **Graphiques** : Barres comparatives et Radar chart
 
 ---
 
@@ -63,19 +59,15 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 ```
 /app/backend/
 ├── data/
-│   ├── AGO_tariffs.json     # Angola
-│   ├── BDI_tariffs.json     # Burundi
-│   ├── ... (49 fichiers)
-│   └── ZWE_tariffs.json     # Zimbabwe
+│   └── {54 fichiers}_tariffs.json   # Données tarifaires authentiques
 ├── routes/
-│   ├── authentic_tariffs.py  # NEW - Endpoints tarifs authentiques
-│   ├── gemini_analysis.py    # API IA Gemini
-│   ├── oec.py                # API statistiques OEC
-│   └── ...
+│   ├── authentic_tariffs.py          # Endpoints tarifs authentiques
+│   ├── hs6_database.py               # Recherche HS6
+│   ├── tariffs_calculation.py        # Calculs tarifaires
+│   └── ... (17 modules de routes)
 ├── services/
-│   ├── authentic_tariff_service.py  # NEW - Chargement données JSON
-│   ├── redis_cache_service.py       # Cache Redis
-│   ├── gemini_trade_service.py
+│   ├── authentic_tariff_service.py   # Chargement données JSON
+│   ├── redis_cache_service.py        # Cache Redis
 │   └── ...
 └── server.py
 ```
@@ -84,137 +76,73 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 ```
 /app/frontend/src/components/
 ├── calculator/
-│   ├── CalculatorTab.jsx              # UPDATED - Utilise données authentiques
+│   ├── CalculatorTab.jsx              # Avec onglets et tableau taxes
+│   ├── MultiCountryComparison.jsx     # Comparaison multi-pays
+│   ├── TaxBreakdownChart.jsx          # Graphiques taxes
 │   └── DetailedCalculationBreakdown.jsx
-├── opportunities/
-│   ├── AIAnalysis.jsx
-│   └── SubstitutionAnalysis.jsx
-├── statistics/
-│   ├── StatisticsTab.jsx
-│   └── MultiCountryComparison.jsx
-└── ui/
-    └── data-freshness-indicator.jsx
+└── ...
 ```
 
 ---
 
-## Intégrations Tierces
+## Endpoints API - Tarifs Authentiques
 
-| Service | Utilisation | Clé |
-|---------|-------------|-----|
-| **Google Gemini** | Analyse IA intelligente | Emergent LLM Key |
-| **Redis** | Cache performant | Local |
-| **API OEC** | Données commerciales 2024 | Gratuit |
-| **MongoDB** | Base de données | Local |
-
----
-
-## Endpoints API - Tarifs Authentiques (NEW)
-
-### Liste des pays
-- `GET /api/authentic-tariffs/countries` - 49 pays avec statistiques
-
-### Calcul de tarifs
-- `GET /api/authentic-tariffs/calculate/{country}/{hs_code}?value=X` - Calcul NPF vs ZLECAf
-
-### Données par pays
-- `GET /api/authentic-tariffs/country/{iso3}/summary` - Résumé tarifs du pays
-- `GET /api/authentic-tariffs/country/{iso3}/line/{hs_code}` - Ligne tarifaire complète
-- `GET /api/authentic-tariffs/country/{iso3}/sub-positions/{hs6}` - Sous-positions nationales
-- `GET /api/authentic-tariffs/country/{iso3}/taxes/{hs_code}` - Détail des taxes
-- `GET /api/authentic-tariffs/country/{iso3}/advantages/{hs_code}` - Avantages fiscaux
-- `GET /api/authentic-tariffs/country/{iso3}/formalities/{hs_code}` - Formalités administratives
-
-### Recherche
-- `GET /api/authentic-tariffs/search/{country}?q=cacao` - Recherche produits
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/authentic-tariffs/countries` | 54 pays avec statistiques |
+| `GET /api/authentic-tariffs/calculate/{country}/{hs_code}` | Calcul NPF vs ZLECAf avec taxes_detail |
+| `GET /api/authentic-tariffs/country/{iso3}/summary` | Résumé tarifs du pays |
+| `GET /api/authentic-tariffs/country/{iso3}/taxes/{hs_code}` | Détail des taxes avec intitulés |
+| `GET /api/authentic-tariffs/search/{country}?q=` | Recherche produits |
 
 ---
 
-## Structure des Données Authentiques
+## Tests
 
-```json
-{
-  "country_code": "MAR",
-  "data_format": "enhanced_v2",
-  "summary": {
-    "total_tariff_lines": 5831,
-    "total_sub_positions": 16145,
-    "vat_rate_pct": 20.0,
-    "dd_rate_range": {"min": 0, "max": 40, "avg": 12.01}
-  },
-  "tariff_lines": [
-    {
-      "hs6": "180100",
-      "description_fr": "Cacao en fèves",
-      "description_en": "Cocoa beans",
-      "dd_rate": 10.0,
-      "vat_rate": 20.0,
-      "taxes_detail": [...],
-      "fiscal_advantages": [...],
-      "administrative_formalities": [...],
-      "sub_positions": [...]
-    }
-  ]
-}
-```
+### Backend : 100% (12/12 tests passés)
+- Liste des 54 pays
+- Taxes détaillées avec intitulés
+- Calculs NPF vs ZLECAf
+- Comparaison multi-pays
+
+### Frontend : Fonctionnel
+- Comparaison Multi-Pays : ✅ 100%
+- Calculateur standard : ✅ Fonctionnel
 
 ---
 
 ## Backlog
 
 ### P0 - Terminé
-- [x] Intégration 49 fichiers tarifs authentiques (21 Fév 2025)
-- [x] APIs backend /api/authentic-tariffs/*
-- [x] Frontend CalculatorTab utilise données authentiques
+- [x] Intégration 54 fichiers tarifs authentiques
+- [x] Affichage de toutes les taxes avec intitulés
+- [x] Comparaison multi-pays
 
 ### P1 - Priorité Moyenne
-- [ ] Finaliser refactoring server.py (50+ routes à migrer)
-- [ ] Améliorer graphiques dans calculateur
-- [ ] Tests e2e complets avec Playwright
+- [ ] Exportation CSV/Excel (feature payante potentielle)
+- [ ] Amélioration des graphiques
 
 ### P2 - Priorité Basse
-- [ ] Exportation CSV/Excel
-- [ ] Intégrer les 5 pays restants (DZA, ETH, SDN, SOM, STP)
 - [ ] Plus de sources d'actualités pour l'Algérie
+- [ ] Tests e2e complets avec Playwright
 
 ---
 
 ## Historique des Versions
 
+### v2.1.0 (21 Février 2025) - FEATURE
+- **Comparaison Multi-Pays** avec sélection par région
+- **Affichage TOUTES les taxes** avec codes et intitulés complets
+- **Refactoring routes backend** : hs6_database.py, tariffs_calculation.py
+- **Graphiques améliorés** : tableau détaillé NPF vs ZLECAf
+
 ### v2.0.0 (21 Février 2025) - MAJOR
-- **DONNÉES TARIFAIRES AUTHENTIQUES INTÉGRÉES**
-  - 49 fichiers JSON avec tarifs officiels
-  - ~5800 lignes HS6 par pays
-  - ~16000 sous-positions nationales par pays
-  - Taxes détaillées (DD, TVA, TPI, CEDEAO, CISS...)
-  - Avantages fiscaux ZLECAf
-  - Formalités administratives
-- **Nouveaux endpoints API** :
-  - `GET /api/authentic-tariffs/countries`
-  - `GET /api/authentic-tariffs/calculate/{country}/{hs_code}`
-  - `GET /api/authentic-tariffs/country/{iso3}/summary`
-  - `GET /api/authentic-tariffs/search/{country}?q=...`
-- **Frontend mis à jour** :
-  - CalculatorTab utilise données authentiques en priorité
-  - Badge "Données Tarifaires Officielles" affiché
-  - Détail des taxes et avantages fiscaux
-  - Formalités administratives requises
-
-### v1.8.0 (6 Février 2025)
-- Calculateur amélioré avec détails NPF vs ZLECAf
-- Mise à jour OEC vers données 2024
-
-### v1.7.0 (5 Février 2025)
-- Refactoring Frontend StatisticsTab
-- Comparaison Multi-Pays avec Radar chart
-
-### v1.6.0 (4 Février 2025)
-- Cache Redis intégré (amélioration 550x)
-- Indicateur de fraîcheur des données
+- **54 pays africains** avec données tarifaires authentiques
+- **~315,000 lignes HS6** + **~871,000 sous-positions**
 
 ---
 
 ## Contacts
 
 - **Développement** : Emergent AI
-- **Données** : Administrations douanières africaines, IMF, UNCTAD, OEC
+- **Données** : Administrations douanières africaines
