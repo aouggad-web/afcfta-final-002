@@ -1294,6 +1294,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           </Card>
         </div>
       )}
+          </div>
+        </TabsContent>
+        
+        {/* Onglet Comparaison Multi-Pays */}
+        <TabsContent value="compare">
+          <MultiCountryComparison language={language} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
