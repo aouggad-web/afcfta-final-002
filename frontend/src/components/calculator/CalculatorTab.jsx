@@ -1515,8 +1515,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               </div>
 
-              {/* Bouton pour afficher/masquer le calcul détaillé */}
-              {detailedResult && (
+              {/* Bouton pour afficher/masquer le calcul détaillé - UNIQUEMENT pour données estimées (non authentiques) */}
+              {detailedResult && detailedResult.data_source !== 'authentic_tariff' && (
                 <div className="mt-6">
                   <Button
                     variant="outline"
