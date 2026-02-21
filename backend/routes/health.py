@@ -51,22 +51,6 @@ async def detailed_health():
             "message": f"Notification system error: {str(e)}"
         }
 
-    # Check COMTRADE API
-    try:
-        from services.comtrade_service import comtrade_service
-        # Use previous year to ensure data availability
-        test_year = str(datetime.now().year - 1)
-        test_data = comtrade_service.get_bilateral_trade("KEN", "TZA", test_year)
-        checks["comtrade_api"] = {
-            "status": "healthy" if test_data else "degraded",
-            "message": "COMTRADE API accessible"
-        }
-    except Exception as e:
-        checks["comtrade_api"] = {
-            "status": "unhealthy",
-            "message": f"COMTRADE API error: {str(e)}"
-        }
-
     # Check WTO API
     try:
         from services.wto_service import wto_service
@@ -90,7 +74,6 @@ async def detailed_health():
             "tariff_calculator": "enabled",
             "hs6_database": "enabled",
             "oec_integration": "enabled",
-            "comtrade_integration": "enabled",
             "wto_integration": "enabled",
             "news_feed": "enabled",
             "notifications": (

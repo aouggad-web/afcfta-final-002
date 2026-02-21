@@ -2,7 +2,7 @@
 Données Commerce Africain - Top Produits Import/Export
 ========================================================
 Sources:
-- UNCTAD COMTRADE Database 2023-2024
+- UNCTAD Trade Statistics Database 2023-2024
 - OEC/BACI Database 2024
 - African Development Bank Trade Statistics
 - ITC Trade Map 2024

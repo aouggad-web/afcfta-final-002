@@ -270,36 +270,6 @@ oec_client = OECAPIClient()
 async def root():
     return {"message": "Système Commercial ZLECAf API - Version Complète"}
 
-@api_router.get("/comtrade/health")
-async def check_comtrade_health():
-    """Check Comtrade API health and configuration"""
-    from services.comtrade_service import comtrade_service
-    
-    try:
-        health_status = comtrade_service.health_check()
-        return {
-            "status": "operational" if health_status["connected"] else "error",
-            "using_key": "secondary" if health_status["using_secondary"] else "primary",
-            "api_calls_today": health_status["calls_today"],
-            "rate_limit_remaining": health_status["rate_limit_remaining"],
-            "last_error": health_status["last_error"],
-            "primary_key_configured": health_status["primary_key_configured"],
-            "secondary_key_configured": health_status["secondary_key_configured"],
-            "timestamp": health_status["timestamp"]
-        }
-    except Exception as e:
-        logging.error(f"Error checking Comtrade health: {str(e)}")
-        return {
-            "status": "error",
-            "error": str(e),
-            "timestamp": datetime.utcnow().isoformat()
-        }
-
-# NOTE: /health and /health/status endpoints migrated to /routes/health.py
-
-# NOTE: /countries endpoint MIGRATED to /routes/countries.py
-# NOTE: /country-profile/{country_code} endpoint MIGRATED to /routes/countries.py
-
 @api_router.get("/rules-of-origin/stats")
 async def get_rules_of_origin_statistics():
     """Obtenir les statistiques de la base de données des règles d'origine ZLECAf"""
@@ -2674,7 +2644,7 @@ async def get_unctad_ports():
 async def get_unctad_flows():
     """
     Get UNCTAD trade flow statistics
-    Source: UNCTAD COMTRADE 2023
+    Source: UNCTAD Trade Statistics 2023
     """
     return get_unctad_trade_flows()
 

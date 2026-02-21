@@ -125,7 +125,7 @@ async def get_unctad_ports():
 async def get_unctad_flows():
     """
     Get UNCTAD trade flow statistics
-    Source: UNCTAD COMTRADE 2023
+    Source: UNCTAD Trade Statistics 2023
     """
     return get_unctad_trade_flows()
 

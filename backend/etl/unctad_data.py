@@ -1,7 +1,7 @@
 """
 UNCTAD Trade Statistics Data
 =============================
-Source: UNCTAD COMTRADE Database 2024
+Source: UNCTAD Trade Statistics Database 2024
        UNCTAD Maritime Transport Review 2024/2025
        Lloyd's List Top 100 Container Ports 2024/2025
        Official Port Authority Reports (EPAL, ANP, etc.)
@@ -183,7 +183,7 @@ UNCTAD_PORT_STATISTICS = {
 
 # =============================================================================
 # UNCTAD TRADE FLOW STATISTICS
-# Source: UNCTAD COMTRADE 2024/2025
+# Source: UNCTAD Trade Statistics 2024/2025
 # =============================================================================
 
 UNCTAD_TRADE_FLOWS = {

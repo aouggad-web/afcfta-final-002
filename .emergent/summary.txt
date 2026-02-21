@@ -4,7 +4,7 @@ L'utilisateur souhaite créer une application d'analyse commerciale pour l'Afriq
 2.  L'intégration des Règles d'Origine (RoO)par codes  HS6 spécifiques au produit de la ZLECAf.
 3.  Un outil pour rechercher les statistiques de commerce international via l'API de l'OEC.
 4.  Une fonctionnalité pour gérer les tarifs douaniers nationaux, avec avertissement en cas de variations de taux.
-5.  Une fonctionnalité avancée d'**analyse de substitution des importations** en utilisant des données commerciales réelles (OEC, UNCTAD,COMTRADE) pour identifier les opportunités de production et d'exportation au sein de la ZLECAf, en ciblant les produits actuellement importés de l'extérieur de l'Afrique.
+5.  Une fonctionnalité avancée d'**analyse de substitution des importations** en utilisant des données commerciales réelles (OEC, UNCTAD) pour identifier les opportunités de production et d'exportation au sein de la ZLECAf, en ciblant les produits actuellement importés de l'extérieur de l'Afrique.
 6.  L'intégration de fonctionnalités et de visualisations (diagramme Sankey, analyse par IA) inspirées d'une application de l'utilisateur sur AI Studio.
 
 **PRODUCT REQUIREMENTS:**

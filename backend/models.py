@@ -111,7 +111,7 @@ class CountryEconomicProfile(BaseModel):
 class TradeDataSource(BaseModel):
     """Model for trade data from various sources"""
     
-    source: str = Field(..., description="Data source name (COMTRADE, WTO, OEC, etc.)")
+    source: str = Field(..., description="Data source name (WTO, OEC, etc.)")
     reporter_country: str = Field(..., description="ISO3 reporter country code")
     partner_country: str = Field(..., description="ISO3 partner country code")
     hs_code: Optional[str] = Field(None, description="HS product code")
@@ -124,7 +124,7 @@ class TradeDataSource(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "source": "UN_COMTRADE",
+                "source": "OEC",
                 "reporter_country": "KEN",
                 "partner_country": "GHA",
                 "hs_code": "080300",
@@ -149,8 +149,8 @@ class DataSourceComparison(BaseModel):
         json_schema_extra = {
             "example": {
                 "timestamp": "2026-02-01T10:00:00",
-                "sources_compared": ["UN_COMTRADE", "WTO", "OEC"],
-                "recommended_source": "UN_COMTRADE",
+                "sources_compared": ["WTO", "OEC"],
+                "recommended_source": "OEC",
                 "details": {}
             }
         }

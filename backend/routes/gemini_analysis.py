@@ -38,7 +38,7 @@ def check_country_has_data(country_name: str) -> tuple:
             return False, {
                 "name": value,
                 "iso3": "ESH",
-                "reason": "Territoire occupé - aucune statistique commerciale disponible dans les bases de données internationales (OEC, COMTRADE, WITS)"
+                "reason": "Territoire occupé - aucune statistique commerciale disponible dans les bases de données internationales (OEC, WITS)"
             }
     
     # Check by ISO3
@@ -100,7 +100,7 @@ async def get_ai_trade_opportunities(
                 "total_potential_value": 0,
                 "status": "NO_DATA_AVAILABLE"
             },
-            "sources": ["OEC", "UN COMTRADE", "WITS - Aucune donnée trouvée"]
+            "sources": ["OEC", "WITS - Aucune donnée trouvée"]
         }
     
     try:

@@ -13,7 +13,7 @@ A comprehensive tariff calculator and trade information system for the African C
 - **Rules of Origin**: Access ZLECAf rules of origin by HS code
 - **Country Profiles**: Detailed economic profiles for all member states
 - **Trade Statistics**: Comprehensive trade statistics and projections
-- **Real-time Data**: Integration with World Bank, UN COMTRADE v1, and OEC APIs
+- **Real-time Data**: Integration with World Bank and OEC APIs
 - **Automated Data Updates**: Daily automated updates from multiple data sources
 - **Data Export**: Export tariff data in CSV and Excel formats (NEW)
 - **Notifications**: Email and Slack notifications for system events (NEW)
@@ -50,7 +50,6 @@ The health endpoints provide real-time monitoring of:
 |----------|--------|-------------|
 | `/api/trade-data/latest` | GET | Get latest trade data using smart source selection |
 | `/api/trade-data/compare-sources` | GET | Compare all data sources for freshness |
-| `/api/trade-data/comtrade/{reporter}/{partner}` | GET | Get UN COMTRADE bilateral trade data directly |
 | `/api/trade-data/wto/{reporter}/{partner}` | GET | Get WTO tariff and trade data directly |
 
 ### Data Export Endpoints (NEW)
@@ -72,11 +71,6 @@ GET /api/trade-data/latest?reporter=KEN&partner=GHA&hs_code=080300
 **Compare Data Sources:**
 ```bash
 GET /api/trade-data/compare-sources?countries=KEN&countries=GHA&countries=TZA
-```
-
-**Direct COMTRADE Access:**
-```bash
-GET /api/trade-data/comtrade/KEN/GHA?period=2025&hs_code=080300
 ```
 
 **Direct WTO Access:**
@@ -154,7 +148,7 @@ GET /api/export/comparison/csv?countries=KE,TZ&hs_codes=080300,080400
 - **Backend**: FastAPI (Python)
 - **Frontend**: React with Shadcn/UI components
 - **Database**: MongoDB
-- **External APIs**: World Bank API, OEC API, UN COMTRADE API, WTO API
+- **External APIs**: World Bank API, OEC API, WTO API
 - **Notifications**: Email (SMTP) and Slack webhooks
 - **Deployment**: Docker with docker-compose
 
@@ -190,7 +184,6 @@ See [NOTIFICATIONS.md](NOTIFICATIONS.md) for detailed setup instructions.
 ## 📦 Data Sources
 
 - **World Bank** - World Development Indicators (updated daily)
-- **UN COMTRADE** - Most recent bilateral trade data (up to 500 calls/day free tier)
 - **WTO Data Portal** - Tariff and trade policy data (free access)
 - **OEC** - Atlas of Economic Complexity (Observatory of Economic Complexity)
 - **UNCTAD** - Tariff data
@@ -204,7 +197,7 @@ The API automatically selects the best data source based on:
 2. **API availability** - Rate limits and accessibility
 3. **Data coverage** - Specific query requirements
 
-Priority order: **UN COMTRADE** → **OEC** → **World Bank** → **WTO**
+Priority order: **OEC** → **World Bank** → **WTO**
 
 Data is automatically updated daily at 2:00 AM UTC via GitHub Actions. See [docs/AUTO_UPDATE_DATA.md](docs/AUTO_UPDATE_DATA.md) for details.
 
@@ -298,7 +291,6 @@ The system automatically updates economic data daily from external sources:
 
 For more information, see:
 - [docs/AUTO_UPDATE_DATA.md](docs/AUTO_UPDATE_DATA.md) - Automated data update system
-- [docs/COMTRADE_INTEGRATION.md](docs/COMTRADE_INTEGRATION.md) - UN COMTRADE v1 API integration guide
 
 To manually trigger an update:
 1. Go to the Actions tab on GitHub
