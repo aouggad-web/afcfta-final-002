@@ -494,38 +494,58 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="origin">{t.originCountry}</Label>
-                    <Select value={originCountry} onValueChange={(val) => {
-                      console.log('Origin country selected:', val);
-                      setOriginCountry(val);
-                    }}>
-                      <SelectTrigger data-testid="origin-country-select">
-                        <SelectValue placeholder={t.originCountry} />
+                    <Select 
+                      value={originCountry} 
+                      onValueChange={setOriginCountry}
+                    >
+                      <SelectTrigger id="origin" data-testid="origin-country-select">
+                        <SelectValue placeholder={t.originCountry}>
+                          {originCountry && countries.find(c => c.code === originCountry) ? (
+                            <span>{getFlag(countries.find(c => c.code === originCountry)?.iso2)} {countries.find(c => c.code === originCountry)?.name}</span>
+                          ) : null}
+                        </SelectValue>
                       </SelectTrigger>
-                      <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country.code} value={country.code} data-testid={`origin-${country.code}`}>
+                      <SelectContent className="max-h-[300px]">
+                        {countries && countries.length > 0 ? countries.map((country) => (
+                          <SelectItem 
+                            key={country.code} 
+                            value={country.code} 
+                            data-testid={`origin-${country.code}`}
+                          >
                             {getFlag(country.iso2 || country.code)} {country.name}
                           </SelectItem>
-                        ))}
+                        )) : (
+                          <SelectItem value="loading" disabled>Chargement...</SelectItem>
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="destination">{t.partnerCountry}</Label>
-                    <Select value={destinationCountry} onValueChange={(val) => {
-                      console.log('Destination country selected:', val);
-                      setDestinationCountry(val);
-                    }}>
-                      <SelectTrigger data-testid="destination-country-select">
-                        <SelectValue placeholder={t.partnerCountry} />
+                    <Select 
+                      value={destinationCountry} 
+                      onValueChange={setDestinationCountry}
+                    >
+                      <SelectTrigger id="destination" data-testid="destination-country-select">
+                        <SelectValue placeholder={t.partnerCountry}>
+                          {destinationCountry && countries.find(c => c.code === destinationCountry) ? (
+                            <span>{getFlag(countries.find(c => c.code === destinationCountry)?.iso2)} {countries.find(c => c.code === destinationCountry)?.name}</span>
+                          ) : null}
+                        </SelectValue>
                       </SelectTrigger>
-                      <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country.code} value={country.code} data-testid={`dest-${country.code}`}>
+                      <SelectContent className="max-h-[300px]">
+                        {countries && countries.length > 0 ? countries.map((country) => (
+                          <SelectItem 
+                            key={country.code} 
+                            value={country.code} 
+                            data-testid={`dest-${country.code}`}
+                          >
                             {getFlag(country.iso2 || country.code)} {country.name}
                           </SelectItem>
-                        ))}
+                        )) : (
+                          <SelectItem value="loading" disabled>Chargement...</SelectItem>
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
