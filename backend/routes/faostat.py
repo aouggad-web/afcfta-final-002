@@ -5,8 +5,13 @@ Updated for 2024 data
 from fastapi import APIRouter, Query, HTTPException
 from typing import Optional, List
 import logging
+import sys
+import os
 
-from ..services.faostat_service import (
+# Add parent directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+
+from services.faostat_service import (
     get_production_data,
     get_production_by_country,
     get_top_producers,
