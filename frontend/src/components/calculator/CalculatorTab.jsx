@@ -524,14 +524,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         {countries.map((country) => (
                           <SelectItem key={country.code} value={country.code} data-testid={`dest-${country.code}`}>
                             {getFlag(country.iso2 || country.code)} {country.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
 
-          <div className="space-y-2">
+                <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="hs-code" className="flex items-center gap-2">
                 <Package className="w-4 h-4" />
