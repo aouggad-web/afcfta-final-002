@@ -560,17 +560,18 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 onRuleOfOriginLoad={setRuleOfOrigin}
               />
             ) : (
-              <>
-                <Input
+              <div className="calculator-form-group">
+                <input
                   type="text"
                   placeholder={language === 'fr' ? "Ex: 090111, 870323, 8517" : "Ex: 090111, 870323, 8517"}
                   value={hsCode}
                   onChange={(e) => setHsCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 12))}
-                  className="font-mono text-lg"
+                  className="font-mono"
+                  style={{ fontSize: '16px', letterSpacing: '1px' }}
                   data-testid="hs-code-simple-input"
                 />
-                <p className="text-xs text-gray-500 italic">{t.hsCodeHint}</p>
-              </>
+                <p style={{ color: '#A0AAB4', fontSize: '12px', marginTop: '4px', fontStyle: 'italic' }}>{t.hsCodeHint}</p>
+              </div>
             )}
             
             <Button
@@ -578,7 +579,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               variant="outline"
               size="sm"
               onClick={() => setShowHSBrowser(!showHSBrowser)}
-              className="w-full mt-2 text-blue-600 border-blue-300 hover:bg-blue-50"
+              className="w-full mt-2"
+              style={{ 
+                background: 'transparent', 
+                border: '1px solid rgba(212,175,55,0.3)', 
+                color: '#D4AF37',
+                borderRadius: '10px'
+              }}
               data-testid="toggle-hs-browser"
             >
               {showHSBrowser ? (
@@ -597,7 +604,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
           {/* HS Code Browser Panel */}
           {showHSBrowser && (
-            <div className="border-2 border-blue-200 rounded-lg overflow-hidden">
+            <div style={{ border: '1px solid rgba(212,175,55,0.2)', borderRadius: '10px', overflow: 'hidden' }}>
               <HSCodeBrowser
                 onSelect={(code) => {
                   setHsCode(code.code);
@@ -609,10 +616,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </div>
           )}
 
-          <div className="space-y-2">
-            <Label htmlFor="value">{t.valueLabel}</Label>
-            <Input
-              id="value"
+          <div className="calculator-form-group">
+            <label>{t.valueLabel}</label>
+            <input
               type="number"
               value={value}
               onChange={(e) => setValue(e.target.value)}
