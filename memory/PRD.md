@@ -154,10 +154,14 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - Calculs NPF vs ZLECAf
 - Comparaison multi-pays
 
-### Frontend : 100% (iteration_14)
+### Frontend : 100% (iteration_17 - 22 Fév 2025)
 - ✅ Bug Select corrigé - État React mis à jour correctement
 - ✅ Calculateur fonctionnel avec tous les champs
 - ✅ Comparaison Multi-Pays fonctionnelle
+- ✅ Thème sombre avec bon contraste (texte blanc/or sur fond sombre)
+- ✅ Tableaux NPF vs ZLECAf bien lisibles
+- ✅ Graphiques en camembert avec légendes visibles
+- ✅ Section Formalités et Documents complète
 
 ---
 
