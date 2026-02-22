@@ -72,6 +72,17 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - ✅ **Avantages fiscaux** listés avec les bénéfices obtenus
 - ✅ **Règles d'origine** avec critères à respecter
 
+### Phase 11 : Recherche Intuitive et Sous-positions Nationales (Terminé - 22 Fév 2025)
+- ✅ **Recherche par préfixe** : Taper "76" affiche uniquement le chapitre 76 (Aluminium)
+- ✅ **En-tête de chapitre** : "📦 Chapitre 76: Aluminium et ouvrages" affiché en haut des résultats
+- ✅ **Sous-positions nationales (HS8-HS12)** affichées pour chaque code HS6 :
+  - Code complet (ex: 7601102000)
+  - Type de position (HS10)
+  - Description en français
+  - Taux DD
+  - Bouton "Utiliser" pour sélection directe
+- ✅ **Mode simple amélioré** : Input direct pour le code HS sans recherche obligatoire
+
 ---
 
 ## Architecture Technique
