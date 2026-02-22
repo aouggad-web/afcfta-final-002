@@ -859,12 +859,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                         }}
                                       />
                                       <div>
-                                        <span className={`font-mono font-medium ${isDD ? 'text-emerald-700' : ''}`}>{tax.tax}</span>
+                                        <span className="font-mono font-medium" style={{ color: isDD ? '#10b981' : '#F5F5F5' }}>{tax.tax}</span>
                                         {tax.observation && tax.observation !== tax.tax && (
-                                          <span className="text-xs text-gray-500 block">{tax.observation}</span>
+                                          <span className="text-xs block" style={{ color: '#A0AAB4' }}>{tax.observation}</span>
                                         )}
                                         {isDD && (
-                                          <Badge className="mt-1 bg-emerald-100 text-emerald-700 text-xs">
+                                          <Badge className="mt-1 text-xs" style={{ background: 'rgba(16,185,129,0.2)', color: '#10b981' }}>
                                             {language === 'fr' ? 'Exonéré ZLECAf' : 'AfCFTA Exempt'}
                                           </Badge>
                                         )}
@@ -874,24 +874,24 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                   <td className="py-2 text-center font-mono">
                                     {isDD ? (
                                       <span>
-                                        <span className="line-through text-gray-400">{tax.rate}%</span>
-                                        <span className="text-emerald-600 font-bold ml-1">0%</span>
+                                        <span className="line-through" style={{ color: '#6B7280' }}>{tax.rate}%</span>
+                                        <span className="font-bold ml-1" style={{ color: '#10b981' }}>0%</span>
                                       </span>
                                     ) : (
-                                      <span>{tax.rate}%</span>
+                                      <span style={{ color: '#F5F5F5' }}>{tax.rate}%</span>
                                     )}
                                   </td>
-                                  <td className={`py-2 text-right font-mono ${isDD ? 'text-emerald-600 font-bold' : ''}`}>
+                                  <td className="py-2 text-right font-mono" style={{ color: isDD ? '#10b981' : '#F5F5F5', fontWeight: isDD ? 'bold' : 'normal' }}>
                                     {formatCurrency(taxAmount)}
                                   </td>
                                 </tr>
                               );
                             })}
-                            <tr className="bg-emerald-50 font-bold">
-                              <td className="py-3" colSpan={2}>
+                            <tr className="font-bold" style={{ background: 'rgba(16,185,129,0.15)' }}>
+                              <td className="py-3" colSpan={2} style={{ color: '#F5F5F5' }}>
                                 {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
                               </td>
-                              <td className="py-3 text-right font-mono text-lg text-emerald-700">
+                              <td className="py-3 text-right font-mono text-lg" style={{ color: '#10b981' }}>
                                 {formatCurrency(result.zlecaf_total_cost)}
                               </td>
                             </tr>
@@ -902,16 +902,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                   
                   {/* Économies */}
-                  <div className="p-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white">
+                  <div className="p-4" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span className="text-3xl">💰</span>
                         <div>
-                          <p className="text-sm opacity-90">{language === 'fr' ? 'Économies grâce à la ZLECAf' : 'Savings thanks to AfCFTA'}</p>
-                          <p className="text-2xl font-bold">{formatCurrency(result.savings || (result.normal_total_cost - result.zlecaf_total_cost))}</p>
+                          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.9)' }}>{language === 'fr' ? 'Économies grâce à la ZLECAf' : 'Savings thanks to AfCFTA'}</p>
+                          <p className="text-2xl font-bold" style={{ color: '#fff' }}>{formatCurrency(result.savings || (result.normal_total_cost - result.zlecaf_total_cost))}</p>
                         </div>
                       </div>
-                      <Badge className="bg-white/20 text-white text-lg px-4 py-2">
+                      <Badge className="text-lg px-4 py-2" style={{ background: 'rgba(255,255,255,0.2)', color: '#fff' }}>
                         -{result.savings_percentage || ((result.normal_total_cost - result.zlecaf_total_cost) / result.normal_total_cost * 100).toFixed(1)}%
                       </Badge>
                     </div>
@@ -945,9 +945,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
               {/* SECTION FORMALITÉS ET DOCUMENTS NÉCESSAIRES */}
               {result.data_source === 'authentic_tariff' && (
-                <div className="result-section bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden" data-testid="formalities-section">
-                  <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 border-b">
-                    <h4 className="font-bold text-lg text-amber-900 flex items-center gap-2">
+                <div className="result-section rounded-xl shadow-lg overflow-hidden" style={{ background: '#1B232C', border: '1px solid rgba(255,255,255,0.1)' }} data-testid="formalities-section">
+                  <div className="p-4 border-b" style={{ background: 'linear-gradient(135deg, rgba(217,123,45,0.15), rgba(249,115,22,0.1))', borderColor: 'rgba(217,123,45,0.2)' }}>
+                    <h4 className="font-bold text-lg flex items-center gap-2" style={{ color: '#D97B2D' }}>
                       <ClipboardList className="w-5 h-5" />
                       {language === 'fr' ? 'Formalités et Documents Nécessaires' : 'Required Formalities and Documents'}
                     </h4>
