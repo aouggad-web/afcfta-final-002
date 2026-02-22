@@ -55,6 +55,22 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - ✅ **Bug Select corrigé** : Les menus déroulants du calculateur fonctionnent correctement
 - ✅ **Graphiques améliorés** : Ajout des graphiques en camembert (TaxDistributionPieChart) pour la répartition NPF vs ZLECAf
 - ✅ **Intégration API FAOSTAT 2024** : Données de production agricole en temps réel
+- ✅ **Bug DetailedCalculationBreakdown corrigé** : Exclusion du composant pour les données authentiques
+- ✅ **Mode simple HS amélioré** : Input direct pour le code HS (sans recherche obligatoire)
+
+### Phase 10 : Formalités et Documents (Terminé - 22 Fév 2025)
+- ✅ **Section "Formalités et Documents Nécessaires"** ajoutée au calculateur
+- ✅ **Documents obligatoires affichés** :
+  - Facture Commerciale
+  - Liste de Colisage
+  - Connaissement / LTA
+  - Déclaration en Douane
+- ✅ **Documents ZLECAf affichés** :
+  - Certificat d'Origine ZLECAf
+  - Déclaration du Fournisseur
+- ✅ **Documents spécifiques au pays** depuis l'API
+- ✅ **Avantages fiscaux** listés avec les bénéfices obtenus
+- ✅ **Règles d'origine** avec critères à respecter
 
 ---
 
