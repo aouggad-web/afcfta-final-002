@@ -213,30 +213,76 @@ export default function SmartHSSearch({
 
         {/* Search Results Dropdown */}
         {showResults && searchResults.length > 0 && (
-          <div className="absolute z-50 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-80 overflow-y-auto">
+          <div className="absolute z-50 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-96 overflow-y-auto">
+            {/* Chapter header if code search */}
+            {searchResults[0]?.chapter_name && (
+              <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 text-sm font-semibold">
+                📦 {searchResults[0].full_position}
+              </div>
+            )}
+            
             {searchResults.map((result, idx) => (
-              <div
-                key={idx}
-                className="p-3 hover:bg-blue-50 cursor-pointer border-b last:border-b-0"
-                onClick={() => handleCodeSelect(result.code, result.description)}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="font-mono font-bold text-blue-700">{result.code}</span>
-                    <span className="mx-2 text-gray-400">-</span>
-                    <span className="text-gray-700">{result.description}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">{result.category}</Badge>
-                    <Badge className={`text-xs text-white ${getSensitivityColor(result.sensitivity)}`}>
-                      {getSensitivityLabel(result.sensitivity)}
-                    </Badge>
+              <div key={idx} className="border-b last:border-b-0">
+                {/* Main HS6 code */}
+                <div
+                  className="p-3 hover:bg-blue-50 cursor-pointer"
+                  onClick={() => handleCodeSelect(result.code, result.description)}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-mono font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">{result.code}</span>
+                        <span className="text-xs text-gray-400">HS6</span>
+                        {result.category && (
+                          <Badge variant="outline" className="text-xs">{result.category}</Badge>
+                        )}
+                      </div>
+                      <p className="text-gray-700 mt-1 text-sm">{result.description}</p>
+                    </div>
+                    <Button size="sm" variant="ghost" className="shrink-0 text-blue-600">
+                      {t.useCode}
+                    </Button>
                   </div>
                 </div>
-                {result.has_sub_positions && (
-                  <div className="mt-1 text-xs text-purple-600">
-                    <Info className="inline h-3 w-3 mr-1" />
-                    Sous-positions disponibles
+                
+                {/* Sub-positions nationales (HS8-HS12) */}
+                {result.sub_positions && result.sub_positions.length > 0 && (
+                  <div className="bg-gradient-to-r from-purple-50 to-indigo-50 px-3 py-2 border-t border-purple-100">
+                    <p className="text-xs font-semibold text-purple-700 mb-2 flex items-center gap-1">
+                      <Info className="h-3 w-3" />
+                      {language === 'fr' ? 'Sous-positions nationales disponibles:' : 'National sub-positions available:'}
+                    </p>
+                    <div className="space-y-1">
+                      {result.sub_positions.slice(0, 5).map((sp, spIdx) => (
+                        <div 
+                          key={spIdx}
+                          className="flex items-center justify-between bg-white p-2 rounded border border-purple-200 hover:border-purple-400 cursor-pointer transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSubPositionSelect(sp.code, sp.description_fr || sp.description_en);
+                          }}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-sm font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded">{sp.code}</span>
+                            <span className="text-xs text-gray-400">HS{sp.digits}</span>
+                          </div>
+                          <div className="flex-1 px-2">
+                            <span className="text-sm text-gray-700">{language === 'fr' ? sp.description_fr : sp.description_en}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge className="bg-amber-100 text-amber-700 text-xs">DD: {sp.dd}%</Badge>
+                            <Button size="sm" variant="outline" className="text-xs h-6 text-purple-600 border-purple-300">
+                              {language === 'fr' ? 'Utiliser' : 'Use'}
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                      {result.sub_positions.length > 5 && (
+                        <p className="text-xs text-purple-600 text-center pt-1">
+                          +{result.sub_positions.length - 5} {language === 'fr' ? 'autres sous-positions' : 'more sub-positions'}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
