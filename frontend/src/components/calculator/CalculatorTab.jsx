@@ -714,13 +714,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   
                   {/* Formalités administratives */}
                   {result.administrative_formalities && result.administrative_formalities.length > 0 && (
-                    <div className="mt-3 p-3 bg-amber-50/70 rounded-lg border border-amber-200">
-                      <p className="text-sm font-semibold text-amber-800 mb-2">
+                    <div className="mt-3 p-3 rounded-lg" style={{ background: 'rgba(217,123,45,0.1)', border: '1px solid rgba(217,123,45,0.3)' }}>
+                      <p className="text-sm font-semibold mb-2" style={{ color: '#D97B2D' }}>
                         {language === 'fr' ? '📋 Documents requis:' : '📋 Required documents:'}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {result.administrative_formalities.map((form, idx) => (
-                          <Badge key={idx} variant="outline" className="bg-white border-amber-300 text-amber-700 text-xs">
+                          <Badge key={idx} variant="outline" className="text-xs" style={{ background: 'rgba(217,123,45,0.15)', borderColor: 'rgba(217,123,45,0.4)', color: '#D97B2D' }}>
                             {language === 'fr' ? form.document_fr : form.document_en}
                           </Badge>
                         ))}
@@ -732,13 +732,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
               {/* TABLEAU DÉTAILLÉ DE TOUTES LES TAXES AVEC INTITULÉS */}
               {result.data_source === 'authentic_tariff' && result.taxes_detail && result.taxes_detail.length > 0 && (
-                <div className="result-section bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden" data-testid="all-taxes-table">
-                  <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-                    <h4 className="font-bold text-lg text-blue-900 flex items-center gap-2">
-                      <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">📋</span>
+                <div className="result-section rounded-xl shadow-lg overflow-hidden" style={{ background: '#1B232C', border: '1px solid rgba(255,255,255,0.1)' }} data-testid="all-taxes-table">
+                  <div className="p-4 border-b" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(99,102,241,0.1))', borderColor: 'rgba(59,130,246,0.2)' }}>
+                    <h4 className="font-bold text-lg flex items-center gap-2" style={{ color: '#3B82F6' }}>
+                      <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.2)' }}>📋</span>
                       {language === 'fr' ? 'Détail Complet des Taxes' : 'Complete Tax Breakdown'}
                     </h4>
-                    <p className="text-sm text-blue-700 mt-1">
+                    <p className="text-sm mt-1" style={{ color: '#93C5FD' }}>
                       {language === 'fr' 
                         ? `${result.taxes_detail.length} taxes applicables pour ${getCountryName(destinationCountry)}`
                         : `${result.taxes_detail.length} applicable taxes for ${getCountryName(destinationCountry)}`}
@@ -747,9 +747,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   
                   <div className="grid md:grid-cols-2 gap-0">
                     {/* Colonne NPF */}
-                    <div className="border-r border-gray-200">
-                      <div className="p-3 bg-red-50 border-b border-red-100">
-                        <h5 className="font-bold text-red-800 flex items-center gap-2">
+                    <div style={{ borderRight: '1px solid rgba(255,255,255,0.1)' }}>
+                      <div className="p-3 border-b" style={{ background: 'rgba(239,68,68,0.15)', borderColor: 'rgba(239,68,68,0.2)' }}>
+                        <h5 className="font-bold flex items-center gap-2" style={{ color: '#EF4444' }}>
                           <span>🚫</span>
                           {language === 'fr' ? 'Régime NPF (Sans préférence)' : 'MFN Regime (No preference)'}
                         </h5>
@@ -757,25 +757,25 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <div className="p-4">
                         <table className="w-full text-sm">
                           <thead>
-                            <tr className="text-left text-gray-500 border-b">
-                              <th className="pb-2">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
+                            <tr className="border-b" style={{ color: '#A0AAB4', borderColor: 'rgba(255,255,255,0.1)' }}>
+                              <th className="pb-2 text-left">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
                               <th className="pb-2 text-center">{language === 'fr' ? 'Taux' : 'Rate'}</th>
                               <th className="pb-2 text-right">{language === 'fr' ? 'Montant' : 'Amount'}</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="border-b bg-gray-50">
+                            <tr className="border-b" style={{ background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.1)' }}>
                               <td className="py-2 font-medium">
-                                <span className="font-mono">CIF</span>
-                                <span className="text-xs text-gray-500 block">{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
+                                <span className="font-mono" style={{ color: '#F5F5F5' }}>CIF</span>
+                                <span className="text-xs block" style={{ color: '#A0AAB4' }}>{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
                               </td>
-                              <td className="py-2 text-center">-</td>
-                              <td className="py-2 text-right font-mono font-bold">{formatCurrency(parseFloat(value))}</td>
+                              <td className="py-2 text-center" style={{ color: '#A0AAB4' }}>-</td>
+                              <td className="py-2 text-right font-mono font-bold" style={{ color: '#F5F5F5' }}>{formatCurrency(parseFloat(value))}</td>
                             </tr>
                             {result.taxes_detail.map((tax, idx) => {
                               const taxAmount = parseFloat(value) * (tax.rate / 100);
                               return (
-                                <tr key={idx} className="border-b hover:bg-gray-50">
+                                <tr key={idx} className="border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
                                   <td className="py-2">
                                     <div className="flex items-center gap-2">
                                       <span 
