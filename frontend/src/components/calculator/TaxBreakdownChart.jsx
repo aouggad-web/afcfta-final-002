@@ -173,10 +173,12 @@ export function TaxDistributionPieChart({ taxes, cifValue, regime, language = 'f
     ? (language === 'fr' ? 'Régime NPF' : 'MFN Regime')
     : (language === 'fr' ? 'Régime ZLECAf' : 'AfCFTA Regime');
   
+  const regimeColor = regime === 'npf' ? '#EF4444' : '#10b981';
+  
   return (
-    <Card className="shadow-lg">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
+    <Card className="shadow-lg" style={{ background: '#1B232C' }}>
+      <CardHeader className="pb-2" style={{ background: `rgba(${regime === 'npf' ? '239,68,68' : '16,185,129'},0.1)` }}>
+        <CardTitle className="text-lg flex items-center gap-2" style={{ color: regimeColor }}>
           <span className="text-2xl">🥧</span>
           {language === 'fr' ? 'Répartition des Taxes' : 'Tax Distribution'} - {regimeLabel}
         </CardTitle>
@@ -206,25 +208,25 @@ export function TaxDistributionPieChart({ taxes, cifValue, regime, language = 'f
             </ResponsiveContainer>
           </div>
           <div className="w-full lg:w-1/2 space-y-2">
-            <p className="font-semibold text-gray-700 mb-3">
+            <p className="font-semibold mb-3" style={{ color: '#A0AAB4' }}>
               {language === 'fr' ? 'Total des taxes:' : 'Total taxes:'} 
-              <span className="text-xl ml-2 text-red-600">{formatCurrency(totalTaxes)}</span>
+              <span className="text-xl ml-2" style={{ color: regimeColor }}>{formatCurrency(totalTaxes)}</span>
             </p>
             {pieData.map((tax, idx) => (
-              <div key={idx} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+              <div key={idx} className="flex items-center justify-between p-2 rounded" style={{ background: 'rgba(255,255,255,0.05)' }}>
                 <div className="flex items-center gap-2">
                   <div 
                     className="w-4 h-4 rounded-full" 
                     style={{ backgroundColor: tax.fill }}
                   />
-                  <span className="font-medium text-sm">{tax.name}</span>
+                  <span className="font-medium text-sm" style={{ color: '#F5F5F5' }}>{tax.name}</span>
                   {tax.fullName !== tax.name && (
-                    <span className="text-xs text-gray-500">({tax.fullName})</span>
+                    <span className="text-xs" style={{ color: '#A0AAB4' }}>({tax.fullName})</span>
                   )}
                 </div>
                 <div className="text-right">
-                  <span className="font-bold text-sm">{formatCurrency(tax.value)}</span>
-                  <span className="text-xs text-gray-500 ml-1">({tax.percentage}%)</span>
+                  <span className="font-bold text-sm" style={{ color: '#F5F5F5' }}>{formatCurrency(tax.value)}</span>
+                  <span className="text-xs ml-1" style={{ color: '#A0AAB4' }}>({tax.percentage}%)</span>
                 </div>
               </div>
             ))}
