@@ -1894,15 +1894,28 @@ async def smart_search_with_suggestions(
         enriched["chapter_name"] = lang_chapters.get(chapter, "")
         enriched["full_position"] = f"Chapitre {chapter}: {lang_chapters.get(chapter, '')}" if language == "fr" else f"Chapter {chapter}: {lang_chapters.get(chapter, '')}"
         
-        if include_sub_positions and result.get("has_sub_positions", False):
-            # Suggestions génériques
+        # Toujours essayer de récupérer les sous-positions nationales depuis les données authentiques
+        if include_sub_positions and country_code:
+            try:
+                from services.authentic_tariff_service import authentic_tariff_service
+                sub_pos_data = authentic_tariff_service.get_sub_positions(country_code.upper(), result["code"], language)
+                if sub_pos_data and sub_pos_data.get("sub_positions"):
+                    enriched["sub_positions"] = sub_pos_data["sub_positions"]
+                    enriched["has_sub_positions"] = True
+                    enriched["has_varying_rates"] = len(sub_pos_data["sub_positions"]) > 1
+                else:
+                    # Fallback: anciennes données
+                    country_subs = get_all_sub_positions(country_code.upper(), result["code"])
+                    if country_subs:
+                        enriched["sub_positions"] = country_subs
+                        enriched["has_sub_positions"] = True
+            except Exception as e:
+                # Fallback silencieux
+                pass
+        
+        # Suggestions génériques si pas de sous-positions nationales
+        if include_sub_positions and result.get("has_sub_positions", False) and not enriched.get("sub_positions"):
             enriched["sub_position_suggestions"] = get_sub_position_suggestions(result["code"], language)
-            
-            # Sous-positions nationales si pays fourni
-            if country_code:
-                country_subs = get_all_sub_positions(country_code.upper(), result["code"])
-                enriched["sub_positions"] = country_subs
-                enriched["has_varying_rates"] = len(country_subs) > 1
         
         # Règle d'origine
         rule = get_rule_of_origin(result["code"], language)
