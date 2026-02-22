@@ -535,13 +535,37 @@ body {
   color: inherit;
 }
 
-/* Titres / paragraphes */
+/* Titres / paragraphes - couleur par défaut sur fond sombre */
 h1, h2, h3, h4, h5, h6, p, label, span, small, strong, li {
-  color: #F5F5F5 !important;
+  color: #F5F5F5;
+}
+
+/* Les éléments avec style inline doivent prendre leurs couleurs */
+[style*="color"] {
+  color: unset;
 }
 
 .text-muted, .muted, small {
   color: #A0AAB4 !important;
+}
+
+/* ===== CALCULATOR CARDS DARK THEME ===== */
+.afcfta-card h3,
+.afcfta-card h4,
+.afcfta-card p {
+  color: #F5F5F5;
+}
+
+/* Tables dans le thème sombre */
+.afcfta-card table,
+.afcfta-card table th,
+.afcfta-card table td {
+  color: #F5F5F5;
+}
+
+/* Badge styling */
+.afcfta-card .badge {
+  color: inherit;
 }
 
 /* ===== FORM CONTROLS PATCH ===== */
