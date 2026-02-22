@@ -16,10 +16,9 @@ class TestSmartSearchChapters:
         response = requests.get(
             f"{BASE_URL}/api/hs6/smart-search",
             params={
-                "q": "70",
+                "query": "70",
                 "country_code": "SEN",
-                "include_sub_positions": True,
-                "limit": 20
+                "include_sub_positions": True
             }
         )
         
@@ -66,10 +65,9 @@ class TestSmartSearchChapters:
         response = requests.get(
             f"{BASE_URL}/api/hs6/smart-search",
             params={
-                "q": "71",
+                "query": "71",
                 "country_code": "SEN",
-                "include_sub_positions": True,
-                "limit": 20
+                "include_sub_positions": True
             }
         )
         
@@ -97,7 +95,7 @@ class TestSmartSearchChapters:
         response = requests.get(
             f"{BASE_URL}/api/hs6/smart-search",
             params={
-                "q": "70",
+                "query": "70",
                 "country_code": "SEN"
             }
         )
@@ -119,7 +117,7 @@ class TestSmartSearchChapters:
         response = requests.get(
             f"{BASE_URL}/api/hs6/smart-search",
             params={
-                "q": "70",
+                "query": "70",
                 "country_code": "SEN",
                 "include_sub_positions": True
             }
@@ -152,7 +150,7 @@ class TestSmartSearchChapters:
         response = requests.get(
             f"{BASE_URL}/api/hs6/smart-search",
             params={
-                "q": "verre",
+                "query": "verre",
                 "country_code": "SEN",
                 "language": "fr"
             }
@@ -172,7 +170,7 @@ class TestSmartSearchChapters:
         response = requests.get(
             f"{BASE_URL}/api/hs6/smart-search",
             params={
-                "q": "70"
+                "query": "70"
             }
         )
         
@@ -192,7 +190,7 @@ class TestDarkThemeStyling:
         response = requests.get(
             f"{BASE_URL}/api/hs6/smart-search",
             params={
-                "q": "70",
+                "query": "70",
                 "country_code": "SEN"
             }
         )
@@ -212,7 +210,7 @@ class TestDarkThemeStyling:
         response = requests.get(
             f"{BASE_URL}/api/hs6/smart-search",
             params={
-                "q": "70",
+                "query": "70",
                 "country_code": "SEN",
                 "include_sub_positions": True
             }
