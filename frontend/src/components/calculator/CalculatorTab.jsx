@@ -641,34 +641,34 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       {/* Résultats complets avec visualisations */}
       {result && (
         <div className="space-y-4">
-          <Card className="border-l-4 border-l-green-500 shadow-xl bg-gradient-to-br from-white to-green-50">
-            <CardHeader className="bg-gradient-to-r from-green-600 to-yellow-500 text-white rounded-t-lg">
-              <CardTitle className="flex items-center space-x-2 text-2xl">
+          <Card className="shadow-xl" style={{ borderLeft: '4px solid #10b981', background: 'rgba(27,35,44,0.95)' }}>
+            <CardHeader style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.25), rgba(212,175,55,0.15))', borderRadius: '12px 12px 0 0' }}>
+              <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#10b981' }}>
                 <span>💰</span>
                 <span>{t.detailedResults}</span>
               </CardTitle>
-              <CardDescription className="text-yellow-100 font-semibold">
+              <CardDescription style={{ color: '#D4AF37' }} className="font-semibold">
                 {countryFlags[result.origin_country]} {getCountryName(result.origin_country)} → {countryFlags[result.destination_country]} {getCountryName(result.destination_country)}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-5 pt-6 results-container">
               {/* Information sur les DONNÉES AUTHENTIQUES */}
               {result.data_source === 'authentic_tariff' && (
-                <div className="result-section bg-gradient-to-r from-emerald-50 via-green-50 to-teal-50 p-5 rounded-xl border-2 border-emerald-400 shadow-lg" data-testid="authentic-data-badge">
+                <div className="result-section p-5 rounded-xl border-2 shadow-lg" style={{ background: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.4)' }} data-testid="authentic-data-badge">
                   <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
-                      <span className="text-2xl">✓</span>
+                    <div className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+                      <span className="text-2xl text-white">✓</span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <h4 className="font-bold text-emerald-800 text-lg">
+                        <h4 className="font-bold text-lg" style={{ color: '#10b981' }}>
                           {language === 'fr' ? 'Données Tarifaires Officielles' : 'Official Tariff Data'}
                         </h4>
-                        <Badge className="bg-emerald-600 text-white px-3 py-1">
+                        <Badge className="px-3 py-1" style={{ background: '#10b981', color: '#fff' }}>
                           {language === 'fr' ? 'Vérifié' : 'Verified'}
                         </Badge>
                       </div>
-                      <p className="text-gray-700 text-sm mb-3">
+                      <p className="text-sm mb-3" style={{ color: '#A0AAB4' }}>
                         {language === 'fr' 
                           ? `Calcul basé sur les tarifs douaniers officiels du ${getCountryName(destinationCountry)} avec ${result.sub_position_count || 0} sous-positions nationales.`
                           : `Calculation based on official customs tariffs of ${getCountryName(destinationCountry)} with ${result.sub_position_count || 0} national sub-headings.`}
@@ -678,7 +678,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       {result.taxes_detail && result.taxes_detail.length > 0 && (
                         <div className="flex flex-wrap gap-2">
                           {result.taxes_detail.map((tax, idx) => (
-                            <Badge key={idx} variant="outline" className="bg-white border-emerald-300 text-emerald-700">
+                            <Badge key={idx} variant="outline" style={{ background: 'rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.4)', color: '#10b981' }}>
                               {tax.tax}: {tax.rate}%
                             </Badge>
                           ))}
@@ -686,10 +686,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       )}
                     </div>
                     <div className="flex-shrink-0 text-right">
-                      <p className="text-xs text-gray-500 mb-1">
+                      <p className="text-xs mb-1" style={{ color: '#A0AAB4' }}>
                         {language === 'fr' ? 'Confiance' : 'Confidence'}
                       </p>
-                      <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg px-4 py-2">
+                      <Badge className="text-lg px-4 py-2" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff' }}>
                         {language === 'fr' ? 'Très élevée' : 'Very High'}
                       </Badge>
                     </div>
@@ -697,14 +697,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   
                   {/* Avantages fiscaux ZLECAf */}
                   {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
-                    <div className="mt-4 p-3 bg-white/70 rounded-lg border border-emerald-200">
-                      <p className="text-sm font-semibold text-emerald-800 mb-2">
+                    <div className="mt-4 p-3 rounded-lg" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+                      <p className="text-sm font-semibold mb-2" style={{ color: '#10b981' }}>
                         {language === 'fr' ? '🎯 Avantages ZLECAf applicables:' : '🎯 Applicable AfCFTA advantages:'}
                       </p>
                       <ul className="space-y-1">
                         {result.fiscal_advantages.map((adv, idx) => (
-                          <li key={idx} className="text-sm text-gray-700 flex items-start gap-2">
-                            <span className="text-emerald-500">✓</span>
+                          <li key={idx} className="text-sm flex items-start gap-2" style={{ color: '#F5F5F5' }}>
+                            <span style={{ color: '#10b981' }}>✓</span>
                             <span>{language === 'fr' ? adv.condition_fr : adv.condition_en}</span>
                           </li>
                         ))}
