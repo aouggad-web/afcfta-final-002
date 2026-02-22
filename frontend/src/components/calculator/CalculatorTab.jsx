@@ -583,11 +583,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               />
             ) : (
               <>
-                <HSCodeSearch
+                <Input
+                  type="text"
+                  placeholder={language === 'fr' ? "Ex: 090111, 870323, 8517" : "Ex: 090111, 870323, 8517"}
                   value={hsCode}
-                  onChange={setHsCode}
-                  language={language}
-                  data-testid="hs-code-selector"
+                  onChange={(e) => setHsCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 12))}
+                  className="font-mono text-lg"
+                  data-testid="hs-code-simple-input"
                 />
                 <p className="text-xs text-gray-500 italic">{t.hsCodeHint}</p>
               </>
