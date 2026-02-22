@@ -480,13 +480,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         <TabsContent value="calculator">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" style={{ minHeight: '600px' }}>
             {/* Formulaire de calcul */}
-            <Card className="shadow-2xl border-t-4 border-t-green-600" style={{ minHeight: '400px' }}>
-              <CardHeader className="bg-gradient-to-r from-green-50 to-yellow-50">
-                <CardTitle className="flex items-center space-x-2 text-2xl text-green-700">
+            <Card className="shadow-2xl" style={{ minHeight: '400px', borderTop: '4px solid #D4AF37' }}>
+              <CardHeader style={{ background: 'linear-gradient(135deg, rgba(193,122,43,0.2), rgba(212,175,55,0.1))' }}>
+                <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#D4AF37' }}>
                   <span>📊</span>
                   <span>{t.calculatorTitle}</span>
                 </CardTitle>
-                <CardDescription className="text-gray-700 font-semibold">
+                <CardDescription style={{ color: '#A0AAB4' }} className="font-semibold">
                   {t.calculatorDesc}
                 </CardDescription>
               </CardHeader>
