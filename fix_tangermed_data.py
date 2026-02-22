@@ -1,8 +1,11 @@
 
 import json
 from pathlib import Path
+import os
 
-FILE_PATH = Path('/app/ports_africains.json')
+# Support both Docker (/app/) and local environments
+ROOT_DIR = Path(os.environ.get('APP_ROOT', Path(__file__).parent))
+FILE_PATH = ROOT_DIR / 'ports_africains.json'
 
 def fix_tanger():
     try:

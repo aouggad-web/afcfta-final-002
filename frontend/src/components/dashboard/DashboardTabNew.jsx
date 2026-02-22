@@ -38,23 +38,27 @@ const translations = {
     overview: "Vue d'ensemble ZLECAf",
     totalGdp: "PIB Combiné Afrique",
     intraAfricanTrade: "Commerce Intra-Africain",
-    majorPorts: "Ports Majeurs",
-    afcftaProgress: "Progression ZLECAf",
+    dataCoverage: "Couverture Données",
+    tariffPositions: "Positions Tarifaires",
     countries: "pays membres",
     billion: "milliards USD",
     growth: "Croissance 2024",
-    source: "Source: FMI WEO Oct 2025, UNCTAD"
+    source: "Source: FMI WEO Oct 2025, UNCTAD",
+    authenticCountries: "pays avec données authentiques",
+    authenticPositions: "positions vérifiées",
   },
   en: {
     overview: "AfCFTA Overview",
     totalGdp: "Combined Africa GDP",
     intraAfricanTrade: "Intra-African Trade",
-    majorPorts: "Major Ports",
-    afcftaProgress: "AfCFTA Progress",
+    dataCoverage: "Data Coverage",
+    tariffPositions: "Tariff Positions",
     countries: "member countries",
     billion: "billion USD",
     growth: "Growth 2024",
-    source: "Source: IMF WEO Oct 2025, UNCTAD"
+    source: "Source: IMF WEO Oct 2025, UNCTAD",
+    authenticCountries: "countries with authentic data",
+    authenticPositions: "verified positions",
   }
 };
 
@@ -107,20 +111,35 @@ const DashboardTabNew = ({ language = 'fr' }) => {
           trend={7.7}
         />
         <MiniWidget
-          title={t.majorPorts}
-          value="68"
-          subtitle="35.5M TEU/an"
-          icon={Ship}
-          color="from-indigo-600 to-purple-700"
-          trend={8.1}
+          title={t.dataCoverage}
+          value="32"
+          subtitle={t.authenticCountries}
+          icon={Globe}
+          color="from-emerald-600 to-teal-700"
         />
         <MiniWidget
-          title={t.afcftaProgress}
-          value="57%"
-          subtitle="Phase 2 en cours"
+          title={t.tariffPositions}
+          value="229K"
+          subtitle={t.authenticPositions}
           icon={Target}
           color="from-amber-600 to-orange-700"
         />
+      </div>
+
+      {/* Blocs commerciaux couverts */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {[
+          { name: 'CEDEAO', count: 7, color: 'border-amber-400 bg-amber-50', text: 'text-amber-700' },
+          { name: 'CEMAC', count: 5, color: 'border-blue-400 bg-blue-50', text: 'text-blue-700' },
+          { name: 'EAC', count: 7, color: 'border-green-400 bg-green-50', text: 'text-green-700' },
+          { name: 'SACU', count: 5, color: 'border-purple-400 bg-purple-50', text: 'text-purple-700' },
+          { name: 'AES', count: 3, color: 'border-orange-400 bg-orange-50', text: 'text-orange-700' },
+        ].map(bloc => (
+          <div key={bloc.name} className={`rounded-lg border-l-4 ${bloc.color} p-3 shadow-sm`}>
+            <div className={`font-bold text-lg ${bloc.text}`}>{bloc.name}</div>
+            <div className="text-xs text-gray-500">{bloc.count} {language === 'fr' ? 'pays couverts' : 'countries covered'}</div>
+          </div>
+        ))}
       </div>
 
       {/* Section principale: Fil d'actualités */}

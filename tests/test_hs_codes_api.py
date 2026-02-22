@@ -281,7 +281,7 @@ class TestRulesOfOriginIntegration:
         assert data["hs_code"] == "180100"
         assert data["sector_code"] == "18"
         assert "rules" in data
-        assert data["rules"]["regional_content"] == 40
+        assert data["rules"]["regional_content"] == 100  # Wholly obtained
     
     def test_rules_for_coffee(self):
         """Test rules of origin for coffee (chapter 09)"""
@@ -292,7 +292,7 @@ class TestRulesOfOriginIntegration:
         
         data = response.json()
         assert data["sector_code"] == "09"
-        assert data["rules"]["regional_content"] == 35
+        assert data["rules"]["regional_content"] == 100  # Wholly obtained
     
     def test_rules_for_fish(self):
         """Test rules of origin for fish (chapter 03)"""

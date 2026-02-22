@@ -9,8 +9,7 @@ Provides real trade data for African countries
 """
 import httpx
 import asyncio
-from typing import Dict, List, Optional, Any
-from datetime import datetime
+from typing import Dict, List
 import logging
 from collections import defaultdict
 

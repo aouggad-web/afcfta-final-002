@@ -349,24 +349,59 @@ export default function SmartHSSearch({
                 <div>
                   <Separator className="my-3" />
                   <h4 className="text-xs font-semibold text-gray-600 mb-2 flex items-center gap-2">
-                    {t.countrySpecificRates}
+                    {suggestions.authentic_data 
+                      ? (language === 'fr' ? 'Positions tarifaires nationales (source officielle)' : 'National tariff positions (official source)')
+                      : t.countrySpecificRates}
                     <Badge className="bg-green-600 text-white text-xs">{suggestions.country_code}</Badge>
+                    {suggestions.authentic_data && (
+                      <Badge className="bg-emerald-700 text-white text-xs">
+                        {language === 'fr' ? 'Données authentiques' : 'Authentic data'}
+                      </Badge>
+                    )}
                   </h4>
-                  <div className="space-y-1">
+                  <div className="text-xs text-gray-500 mb-2">
+                    {suggestions.country_sub_positions.length} {language === 'fr' ? 'positions trouvées' : 'positions found'}
+                    {suggestions.country_sub_positions[0]?.source && (
+                      <span> — {language === 'fr' ? 'Source' : 'Source'}: {suggestions.country_sub_positions[0].source}</span>
+                    )}
+                  </div>
+                  <div className="space-y-1 max-h-96 overflow-y-auto">
                     {suggestions.country_sub_positions.map((sp, idx) => (
                       <div
                         key={idx}
-                        className="bg-white p-2 rounded border flex items-center justify-between hover:bg-green-50 cursor-pointer"
-                        onClick={() => handleSubPositionSelect(sp.code, sp.description_fr || sp.description)}
+                        className="bg-white p-2 rounded border hover:bg-green-50 cursor-pointer"
+                        onClick={() => handleSubPositionSelect(sp.code_clean || sp.code, sp.description_fr || sp.description)}
                       >
-                        <div>
-                          <span className="font-mono font-bold text-green-700">{sp.code}</span>
-                          <span className="mx-2 text-gray-400">-</span>
-                          <span className="text-sm text-gray-700">{sp.description_fr || sp.description}</span>
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <span className="font-mono font-bold text-green-700">{sp.code}</span>
+                            <span className="mx-2 text-gray-400">—</span>
+                            <span className="text-sm text-gray-700">{sp.description_fr || sp.description}</span>
+                          </div>
+                          {sp.dd_rate_pct && (
+                            <Badge className="bg-blue-600 text-white ml-2 shrink-0">
+                              DD {sp.dd_rate_pct}
+                            </Badge>
+                          )}
                         </div>
-                        <Badge className="bg-blue-600 text-white">
-                          {sp.dd_rate_pct || `${(sp.dd * 100).toFixed(0)}%`}
-                        </Badge>
+                        {sp.taxes_display && sp.taxes_display.length > 0 && (
+                          <div className="mt-1 flex flex-wrap gap-1">
+                            {sp.taxes_display.map((tax, tIdx) => (
+                              <span key={tIdx} className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">
+                                {tax}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {sp.administrative_formalities && sp.administrative_formalities.length > 0 && (
+                          <div className="mt-1">
+                            {sp.administrative_formalities.slice(0, 2).map((f, fIdx) => (
+                              <span key={fIdx} className="text-xs text-orange-600 mr-2">
+                                ⚠ {typeof f === 'string' ? f : f.text || f.description || ''}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>

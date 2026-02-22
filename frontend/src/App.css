@@ -1,4 +1,4 @@
-/* African-inspired Color Palette */
+/* Modern African-inspired Color Palette */
 :root {
   --african-red: #E31B23;
   --african-green: #009639;
@@ -9,10 +9,10 @@
   --african-turquoise: #06AED5;
 }
 
-/* Stabilisation globale - désactive animations problématiques */
+/* GPU acceleration for smoother rendering */
 * {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Smooth scrolling */
@@ -26,54 +26,25 @@ body {
   overflow-x: hidden;
 }
 
-/* African pattern animations - DISABLED FOR STABILITY */
-@keyframes african-pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.95;
-  }
+/* Smooth transitions for nav elements only */
+.nav-tab, .lang-btn {
+  transition: all 0.2s ease;
 }
 
-@keyframes slide-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Card entrance animations - DISABLED */
+/* Card entrance animations */
 .card-animate {
-  /* animation: slide-in 0.5s ease-out; */
+  animation: slideUp 0.35s ease-out;
 }
 
-/* Button hover effects - MINIMAL */
-button {
-  /* transition: all 0.3s ease; */
-}
-
-button:hover {
-  /* transform: translateY(-2px); */
-  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Enhanced shadows for cards */
 .shadow-african {
-  box-shadow: 0 4px 6px rgba(227, 27, 35, 0.1),
-              0 8px 16px rgba(0, 150, 57, 0.1),
-              0 12px 24px rgba(255, 215, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06),
+              0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 /* Gradient text effect */
@@ -86,93 +57,291 @@ button:hover {
 
 /* Loading animation */
 @keyframes loading-pulse {
-  0% {
-    background-position: 200% center;
-  }
-  100% {
-    background-position: -200% center;
-  }
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
 }
 
 .loading-shimmer {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
-  animation: loading-pulse 2s infinite;
+  animation: loading-pulse 1.5s ease-in-out infinite;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }
 
-/* Custom scrollbar with African colors */
+/* Discrete scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #E31B23, #FFD700, #009639);
-  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #009639, #FFD700, #E31B23);
+  background: rgba(0, 0, 0, 0.25);
 }
 
 /* Tooltip styling */
 .recharts-tooltip-wrapper {
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* Card hover effects - Disabled to prevent jumping */
-.hover-lift {
-  /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+/* ============================================
+   HEADER - Modern compact design
+   ============================================ */
+.app-header {
+  background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 40%, #1a472a 100%);
+  position: relative;
+  overflow: hidden;
 }
 
-.hover-lift:hover {
-  /* transform: translateY(-4px); */
-  /* box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); */
+.app-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(227, 27, 35, 0.06) 0%, transparent 50%);
+  pointer-events: none;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+.app-header-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+.app-logo {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+.app-logo:hover {
+  transform: scale(1.05);
 }
 
-.App-link {
-    color: #61dafb;
+.app-title-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
+
+.app-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 215, 0, 0.7);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.app-badges {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.app-badge {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 500;
+}
+
+.app-badge-highlight {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  border-color: rgba(255, 215, 0, 0.3);
+  font-weight: 600;
+}
+
+.lang-switcher {
+  display: flex;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 0.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lang-btn {
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.lang-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-btn.active {
+  color: #1a472a;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   NAVIGATION TABS - Smooth horizontal scroll
+   ============================================ */
+.nav-tabs-wrapper {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.nav-tabs-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.nav-tabs-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #6b7280;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.nav-tab:hover {
+  color: #1f2937;
+  background: #f9fafb;
+}
+
+.nav-tab.active {
+  color: #059669;
+  border-bottom-color: #059669;
+  font-weight: 600;
+}
+
+.nav-tab-icon {
+  font-size: 1rem;
+}
+
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.tab-panel {
+  animation: tabFadeIn 0.25s ease-out;
+}
+
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .app-header-inner {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+  }
+
+  .app-title {
+    font-size: 1.2rem;
+  }
+
+  .app-badges {
+    display: none;
+  }
+
+  .nav-tab {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .main-content {
+    padding: 1rem 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title-group {
+    gap: 0.5rem;
+  }
+
+  .app-logo {
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
+}
+
+/* Unused legacy styles cleaned up */
