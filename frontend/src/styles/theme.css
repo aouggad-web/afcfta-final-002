@@ -524,3 +524,178 @@ body {
 .afcfta-fadeIn {
   animation: fadeIn 0.3s ease-out;
 }
+
+/* ===== READABILITY PATCH ===== */
+:root {
+  color-scheme: dark;
+}
+
+/* Tout texte dans l'app */
+#root, #root * {
+  color: inherit;
+}
+
+/* Titres / paragraphes */
+h1, h2, h3, h4, h5, h6, p, label, span, small, strong, li {
+  color: #F5F5F5 !important;
+}
+
+.text-muted, .muted, small {
+  color: #A0AAB4 !important;
+}
+
+/* ===== FORM CONTROLS PATCH ===== */
+
+/* Native select */
+select, .afcfta-select {
+  width: 100%;
+  background: #1B232C !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(212,175,55,0.25) !important;
+  border-radius: 10px;
+  padding: 12px 12px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23D4AF37' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+select:focus, .afcfta-select:focus {
+  border-color: rgba(212,175,55,0.5) !important;
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
+}
+
+/* Options du menu dropdown */
+select option {
+  background: #1B232C !important;
+  color: #FFFFFF !important;
+  padding: 10px;
+}
+
+/* Inputs */
+input, textarea {
+  width: 100%;
+  background: #1B232C !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  border-radius: 10px;
+  padding: 12px 12px;
+  outline: none;
+  font-size: 14px;
+}
+
+input:focus, textarea:focus {
+  border-color: rgba(212,175,55,0.35) !important;
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
+}
+
+input::placeholder, textarea::placeholder {
+  color: #A0AAB4 !important;
+}
+
+/* ===== SHADCN/RADIX SELECT PATCH ===== */
+
+/* Trigger button */
+[data-testid*="select"], 
+[role="combobox"],
+button[data-state] {
+  background: #1B232C !important;
+  border: 1px solid rgba(212,175,55,0.25) !important;
+  color: #FFFFFF !important;
+  border-radius: 10px;
+}
+
+[data-testid*="select"]:hover,
+[role="combobox"]:hover {
+  border-color: rgba(212,175,55,0.4) !important;
+}
+
+/* Dropdown content */
+[role="listbox"],
+[data-radix-popper-content-wrapper] > div {
+  background: #1B232C !important;
+  border: 1px solid rgba(212,175,55,0.2) !important;
+  border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* Options */
+[role="option"] {
+  color: #FFFFFF !important;
+  background: transparent !important;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+[role="option"]:hover,
+[role="option"][data-highlighted] {
+  background: rgba(212,175,55,0.12) !important;
+  color: #D4AF37 !important;
+}
+
+[role="option"][data-state="checked"] {
+  background: rgba(212,175,55,0.2) !important;
+  color: #D4AF37 !important;
+}
+
+/* ===== CALCULATOR SPECIFIC ===== */
+
+.calculator-form-group {
+  margin-bottom: 16px;
+}
+
+.calculator-form-group label {
+  display: block;
+  color: #A0AAB4;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.calculator-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .calculator-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Country select styling */
+.country-select-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: #1B232C;
+  border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.country-select-trigger:hover {
+  border-color: rgba(212,175,55,0.4);
+}
+
+.country-flag {
+  font-size: 18px;
+}
+
+.country-name {
+  flex: 1;
+  text-align: left;
+}
+
+.country-code {
+  color: #A0AAB4;
+  font-size: 12px;
+}
