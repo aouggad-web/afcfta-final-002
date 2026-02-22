@@ -1897,12 +1897,12 @@ async def smart_search_with_suggestions(
         # Toujours essayer de récupérer les sous-positions nationales depuis les données authentiques
         if include_sub_positions and country_code:
             try:
-                from services.authentic_tariff_service import authentic_tariff_service
-                sub_pos_data = authentic_tariff_service.get_sub_positions(country_code.upper(), result["code"], language)
-                if sub_pos_data and sub_pos_data.get("sub_positions"):
-                    enriched["sub_positions"] = sub_pos_data["sub_positions"]
+                from services.authentic_tariff_service import get_sub_positions as get_authentic_sub_positions
+                sub_positions_list = get_authentic_sub_positions(country_code.upper(), result["code"])
+                if sub_positions_list:
+                    enriched["sub_positions"] = sub_positions_list
                     enriched["has_sub_positions"] = True
-                    enriched["has_varying_rates"] = len(sub_pos_data["sub_positions"]) > 1
+                    enriched["has_varying_rates"] = len(sub_positions_list) > 1
                 else:
                     # Fallback: anciennes données
                     country_subs = get_all_sub_positions(country_code.upper(), result["code"])
