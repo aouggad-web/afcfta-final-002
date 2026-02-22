@@ -951,7 +951,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <ClipboardList className="w-5 h-5" />
                       {language === 'fr' ? 'Formalités et Documents Nécessaires' : 'Required Formalities and Documents'}
                     </h4>
-                    <p className="text-sm text-amber-700 mt-1">
+                    <p className="text-sm mt-1" style={{ color: '#FBBF24' }}>
                       {language === 'fr' 
                         ? `Documents requis pour l'importation vers ${getCountryName(destinationCountry)}`
                         : `Documents required for import to ${getCountryName(destinationCountry)}`}
@@ -961,63 +961,63 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <div className="p-4 space-y-4">
                     {/* Documents obligatoires */}
                     <div>
-                      <h5 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-amber-600" />
+                      <h5 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#F5F5F5' }}>
+                        <FileText className="w-4 h-4" style={{ color: '#D97B2D' }} />
                         {language === 'fr' ? 'Documents Obligatoires' : 'Mandatory Documents'}
                       </h5>
                       <div className="grid md:grid-cols-2 gap-3">
                         {/* Documents standards toujours requis */}
-                        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                          <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <span className="text-amber-600 font-bold text-sm">1</span>
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.2)' }}>
+                            <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>1</span>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-800">
+                            <p className="font-medium" style={{ color: '#F5F5F5' }}>
                               {language === 'fr' ? 'Facture Commerciale' : 'Commercial Invoice'}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs" style={{ color: '#A0AAB4' }}>
                               {language === 'fr' ? 'Détail des marchandises, prix, conditions de vente' : 'Details of goods, prices, terms of sale'}
                             </p>
                           </div>
                         </div>
                         
-                        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                          <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <span className="text-amber-600 font-bold text-sm">2</span>
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.2)' }}>
+                            <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>2</span>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-800">
+                            <p className="font-medium" style={{ color: '#F5F5F5' }}>
                               {language === 'fr' ? 'Liste de Colisage' : 'Packing List'}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs" style={{ color: '#A0AAB4' }}>
                               {language === 'fr' ? 'Poids, dimensions, nombre de colis' : 'Weight, dimensions, number of packages'}
                             </p>
                           </div>
                         </div>
                         
-                        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                          <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <span className="text-amber-600 font-bold text-sm">3</span>
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.2)' }}>
+                            <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>3</span>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-800">
+                            <p className="font-medium" style={{ color: '#F5F5F5' }}>
                               {language === 'fr' ? 'Connaissement / LTA' : 'Bill of Lading / AWB'}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs" style={{ color: '#A0AAB4' }}>
                               {language === 'fr' ? 'Document de transport maritime ou aérien' : 'Sea or air transport document'}
                             </p>
                           </div>
                         </div>
                         
-                        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                          <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <span className="text-amber-600 font-bold text-sm">4</span>
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.2)' }}>
+                            <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>4</span>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-800">
+                            <p className="font-medium" style={{ color: '#F5F5F5' }}>
                               {language === 'fr' ? 'Déclaration en Douane' : 'Customs Declaration'}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs" style={{ color: '#A0AAB4' }}>
                               {language === 'fr' ? 'Formulaire DAU ou équivalent national' : 'SAD form or national equivalent'}
                             </p>
                           </div>
@@ -1025,16 +1025,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         
                         {/* Documents spécifiques du pays */}
                         {result.administrative_formalities && result.administrative_formalities.map((form, idx) => (
-                          <div key={idx} className="flex items-start gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
-                            <div className="w-8 h-8 bg-amber-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                              <span className="text-amber-700 font-bold text-sm">{5 + idx}</span>
+                          <div key={idx} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(217,123,45,0.1)', border: '1px solid rgba(217,123,45,0.3)' }}>
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.3)' }}>
+                              <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>{5 + idx}</span>
                             </div>
                             <div>
-                              <p className="font-medium text-amber-900">
+                              <p className="font-medium" style={{ color: '#FBBF24' }}>
                                 {language === 'fr' ? form.document_fr : form.document_en}
                               </p>
                               {form.code && (
-                                <p className="text-xs text-amber-600">Code: {form.code}</p>
+                                <p className="text-xs" style={{ color: '#D97B2D' }}>Code: {form.code}</p>
                               )}
                             </div>
                           </div>
@@ -1043,9 +1043,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </div>
                     
                     {/* Documents ZLECAf */}
-                    <div className="pt-4 border-t border-gray-200">
-                      <h5 className="font-semibold text-emerald-800 mb-3 flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-emerald-600" />
+                    <div className="pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                      <h5 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#10b981' }}>
+                        <CheckCircle className="w-4 h-4" style={{ color: '#10b981' }} />
                         {language === 'fr' ? 'Documents pour Bénéficier du Tarif ZLECAf' : 'Documents to Benefit from AfCFTA Rate'}
                       </h5>
                       <div className="grid md:grid-cols-2 gap-3">
