@@ -1049,15 +1049,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         {language === 'fr' ? 'Documents pour Bénéficier du Tarif ZLECAf' : 'Documents to Benefit from AfCFTA Rate'}
                       </h5>
                       <div className="grid md:grid-cols-2 gap-3">
-                        <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                          <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <CheckCircle className="w-4 h-4 text-emerald-600" />
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(16,185,129,0.2)' }}>
+                            <CheckCircle className="w-4 h-4" style={{ color: '#10b981' }} />
                           </div>
                           <div>
-                            <p className="font-medium text-emerald-900">
+                            <p className="font-medium" style={{ color: '#10b981' }}>
                               {language === 'fr' ? 'Certificat d\'Origine ZLECAf' : 'AfCFTA Certificate of Origin'}
                             </p>
-                            <p className="text-xs text-emerald-600">
+                            <p className="text-xs" style={{ color: '#6EE7B7' }}>
                               {language === 'fr' 
                                 ? 'Délivré par l\'autorité compétente du pays exportateur'
                                 : 'Issued by competent authority of exporting country'}
@@ -1065,15 +1065,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           </div>
                         </div>
                         
-                        <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                          <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <CheckCircle className="w-4 h-4 text-emerald-600" />
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(16,185,129,0.2)' }}>
+                            <CheckCircle className="w-4 h-4" style={{ color: '#10b981' }} />
                           </div>
                           <div>
-                            <p className="font-medium text-emerald-900">
+                            <p className="font-medium" style={{ color: '#10b981' }}>
                               {language === 'fr' ? 'Déclaration du Fournisseur' : 'Supplier Declaration'}
                             </p>
-                            <p className="text-xs text-emerald-600">
+                            <p className="text-xs" style={{ color: '#6EE7B7' }}>
                               {language === 'fr' 
                                 ? 'Attestant l\'origine africaine du produit'
                                 : 'Attesting African origin of the product'}
@@ -1084,18 +1084,18 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       
                       {/* Avantages fiscaux */}
                       {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
-                        <div className="mt-4 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border border-emerald-200">
-                          <p className="font-semibold text-emerald-800 mb-2 flex items-center gap-2">
+                        <div className="mt-4 p-4 rounded-lg" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+                          <p className="font-semibold mb-2 flex items-center gap-2" style={{ color: '#10b981' }}>
                             <Sparkles className="w-4 h-4" />
                             {language === 'fr' ? 'Avantages obtenus avec ces documents:' : 'Benefits obtained with these documents:'}
                           </p>
                           <ul className="space-y-2">
                             {result.fiscal_advantages.map((adv, idx) => (
                               <li key={idx} className="flex items-center gap-2 text-sm">
-                                <span className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
-                                <span className="text-gray-700">{language === 'fr' ? adv.condition_fr : adv.condition_en}</span>
+                                <span className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs" style={{ background: '#10b981' }}>✓</span>
+                                <span style={{ color: '#F5F5F5' }}>{language === 'fr' ? adv.condition_fr : adv.condition_en}</span>
                                 {adv.rate !== undefined && adv.rate === 0 && (
-                                  <Badge className="bg-emerald-100 text-emerald-700 text-xs ml-auto">
+                                  <Badge className="text-xs ml-auto" style={{ background: 'rgba(16,185,129,0.2)', color: '#10b981' }}>
                                     {language === 'fr' ? 'Exonération totale' : 'Full exemption'}
                                   </Badge>
                                 )}
@@ -1108,23 +1108,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     
                     {/* Règles d'origine */}
                     {result.rules_of_origin && (
-                      <div className="pt-4 border-t border-gray-200">
-                        <h5 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
-                          <Info className="w-4 h-4 text-blue-600" />
+                      <div className="pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <h5 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#3B82F6' }}>
+                          <Info className="w-4 h-4" style={{ color: '#3B82F6' }} />
                           {language === 'fr' ? 'Critères d\'Origine à Respecter' : 'Origin Criteria to Meet'}
                         </h5>
-                        <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <div className="p-4 rounded-lg" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)' }}>
                           <div className="grid md:grid-cols-2 gap-4">
                             <div>
-                              <p className="text-sm text-blue-600 mb-1">{language === 'fr' ? 'Règle applicable:' : 'Applicable rule:'}</p>
-                              <p className="font-semibold text-blue-900">{result.rules_of_origin.rule}</p>
+                              <p className="text-sm mb-1" style={{ color: '#93C5FD' }}>{language === 'fr' ? 'Règle applicable:' : 'Applicable rule:'}</p>
+                              <p className="font-semibold" style={{ color: '#3B82F6' }}>{result.rules_of_origin.rule}</p>
                             </div>
                             <div>
-                              <p className="text-sm text-blue-600 mb-1">{language === 'fr' ? 'Contenu régional minimum:' : 'Minimum regional content:'}</p>
-                              <p className="font-semibold text-blue-900">{result.rules_of_origin.regional_content}% {language === 'fr' ? 'africain' : 'African'}</p>
+                              <p className="text-sm mb-1" style={{ color: '#93C5FD' }}>{language === 'fr' ? 'Contenu régional minimum:' : 'Minimum regional content:'}</p>
+                              <p className="font-semibold" style={{ color: '#3B82F6' }}>{result.rules_of_origin.regional_content}% {language === 'fr' ? 'africain' : 'African'}</p>
                             </div>
                           </div>
-                          <p className="text-sm text-gray-700 mt-3 pt-3 border-t border-blue-200">
+                          <p className="text-sm mt-3 pt-3" style={{ color: '#F5F5F5', borderTop: '1px solid rgba(59,130,246,0.2)' }}>
                             <span className="font-medium">{language === 'fr' ? 'Exigence:' : 'Requirement:'}</span> {result.rules_of_origin.requirement}
                           </p>
                         </div>
@@ -1132,7 +1132,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     )}
                     
                     {/* Note importante */}
-                    <div className="mt-4 p-3 bg-gray-100 rounded-lg text-xs text-gray-600">
+                    <div className="mt-4 p-3 rounded-lg text-xs" style={{ background: 'rgba(255,255,255,0.05)', color: '#A0AAB4' }}>
                       <p className="flex items-start gap-2">
                         <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
                         <span>
@@ -1148,15 +1148,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
               {/* Information sur la sous-position nationale si utilisée */}
               {result.tariff_precision === 'sub_position' && (
-                <div className="result-section tariff-info-section bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200 shadow-sm">
+                <div className="result-section tariff-info-section p-5 rounded-xl shadow-sm" style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.3)' }}>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6 text-purple-600" />
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(139,92,246,0.2)' }}>
+                      <Package className="w-6 h-6" style={{ color: '#8B5CF6' }} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <h4 className="font-bold text-purple-800">{t.subPositionInfo}</h4>
-                        <Badge className="bg-purple-600 text-white text-xs">{t.precisionHigh}</Badge>
+                        <h4 className="font-bold" style={{ color: '#8B5CF6' }}>{t.subPositionInfo}</h4>
+                        <Badge className="text-xs" style={{ background: '#8B5CF6', color: '#fff' }}>{t.precisionHigh}</Badge>
                       </div>
                       <p className="font-mono text-lg font-bold text-purple-900 mb-1">{result.sub_position_used}</p>
                       {result.sub_position_description && (
