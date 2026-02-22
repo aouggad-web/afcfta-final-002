@@ -245,6 +245,8 @@ export function DetailedTaxTable({ taxes, cifValue, regime, language = 'fr', isZ
     ? (language === 'fr' ? 'Régime NPF (Normale)' : 'MFN Regime (Normal)')
     : (language === 'fr' ? 'Régime ZLECAf (Préférentiel)' : 'AfCFTA Regime (Preferential)');
   
+  const regimeColor = isZlecaf ? '#10b981' : '#3B82F6';
+  
   let runningTotal = cifValue;
   const taxRows = taxes.map(t => {
     const isDD = t.tax.toLowerCase().includes('d.d') || t.tax.toLowerCase().includes('douane');
@@ -268,9 +270,9 @@ export function DetailedTaxTable({ taxes, cifValue, regime, language = 'fr', isZ
   const totalTaxes = taxRows.reduce((sum, t) => sum + t.amount, 0);
   
   return (
-    <Card className={`shadow-lg ${isZlecaf ? 'border-emerald-200 bg-emerald-50/30' : 'border-blue-200 bg-blue-50/30'}`}>
-      <CardHeader className="pb-2">
-        <CardTitle className={`text-lg flex items-center gap-2 ${isZlecaf ? 'text-emerald-700' : 'text-blue-700'}`}>
+    <Card className="shadow-lg" style={{ background: '#1B232C', border: `1px solid ${isZlecaf ? 'rgba(16,185,129,0.3)' : 'rgba(59,130,246,0.3)'}` }}>
+      <CardHeader className="pb-2" style={{ background: `rgba(${isZlecaf ? '16,185,129' : '59,130,246'},0.1)` }}>
+        <CardTitle className="text-lg flex items-center gap-2" style={{ color: regimeColor }}>
           {isZlecaf ? '✓' : '📋'} {regimeLabel}
         </CardTitle>
       </CardHeader>
@@ -278,39 +280,42 @@ export function DetailedTaxTable({ taxes, cifValue, regime, language = 'fr', isZ
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className={`${isZlecaf ? 'bg-emerald-100' : 'bg-blue-100'}`}>
-                <th className="text-left p-2 font-semibold">
+              <tr style={{ background: `rgba(${isZlecaf ? '16,185,129' : '59,130,246'},0.15)` }}>
+                <th className="text-left p-2 font-semibold" style={{ color: '#F5F5F5' }}>
                   {language === 'fr' ? 'Code Taxe' : 'Tax Code'}
                 </th>
-                <th className="text-left p-2 font-semibold">
+                <th className="text-left p-2 font-semibold" style={{ color: '#F5F5F5' }}>
                   {language === 'fr' ? 'Intitulé' : 'Description'}
                 </th>
-                <th className="text-center p-2 font-semibold">
+                <th className="text-center p-2 font-semibold" style={{ color: '#F5F5F5' }}>
                   {language === 'fr' ? 'Taux' : 'Rate'}
                 </th>
-                <th className="text-right p-2 font-semibold">
+                <th className="text-right p-2 font-semibold" style={{ color: '#F5F5F5' }}>
                   {language === 'fr' ? 'Montant' : 'Amount'}
                 </th>
-                <th className="text-right p-2 font-semibold">
+                <th className="text-right p-2 font-semibold" style={{ color: '#F5F5F5' }}>
                   {language === 'fr' ? 'Cumulatif' : 'Cumulative'}
                 </th>
               </tr>
             </thead>
             <tbody>
               {/* CIF Row */}
-              <tr className="bg-gray-100 font-semibold">
-                <td className="p-2">CIF</td>
-                <td className="p-2">{language === 'fr' ? 'Valeur en douane' : 'Customs Value'}</td>
-                <td className="text-center p-2">-</td>
-                <td className="text-right p-2">{formatCurrency(cifValue)}</td>
-                <td className="text-right p-2">{formatCurrency(cifValue)}</td>
+              <tr style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <td className="p-2 font-semibold" style={{ color: '#F5F5F5' }}>CIF</td>
+                <td className="p-2 font-semibold" style={{ color: '#F5F5F5' }}>{language === 'fr' ? 'Valeur en douane' : 'Customs Value'}</td>
+                <td className="text-center p-2" style={{ color: '#A0AAB4' }}>-</td>
+                <td className="text-right p-2" style={{ color: '#F5F5F5' }}>{formatCurrency(cifValue)}</td>
+                <td className="text-right p-2" style={{ color: '#F5F5F5' }}>{formatCurrency(cifValue)}</td>
               </tr>
               
               {/* Tax Rows */}
               {taxRows.map((tax, idx) => (
                 <tr 
                   key={idx} 
-                  className={`border-b ${tax.isExempt ? 'bg-emerald-50' : 'hover:bg-gray-50'}`}
+                  style={{ 
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                    background: tax.isExempt ? 'rgba(16,185,129,0.1)' : 'transparent'
+                  }}
                 >
                   <td className="p-2">
                     <div className="flex items-center gap-2">
@@ -318,48 +323,48 @@ export function DetailedTaxTable({ taxes, cifValue, regime, language = 'fr', isZ
                         className="w-3 h-3 rounded-full" 
                         style={{ backgroundColor: tax.color }}
                       />
-                      <span className="font-mono font-medium">{tax.code}</span>
+                      <span className="font-mono font-medium" style={{ color: '#F5F5F5' }}>{tax.code}</span>
                     </div>
                   </td>
                   <td className="p-2">
-                    <span className={tax.isExempt ? 'text-emerald-600' : ''}>
+                    <span style={{ color: tax.isExempt ? '#10b981' : '#F5F5F5' }}>
                       {tax.name}
                     </span>
                     {tax.isExempt && (
-                      <Badge className="ml-2 bg-emerald-100 text-emerald-700 text-xs">
+                      <Badge className="ml-2 text-xs" style={{ background: 'rgba(16,185,129,0.2)', color: '#10b981' }}>
                         {language === 'fr' ? 'Exonéré ZLECAf' : 'AfCFTA Exempt'}
                       </Badge>
                     )}
                   </td>
                   <td className="text-center p-2">
-                    <span className={tax.isExempt ? 'line-through text-gray-400' : ''}>
+                    <span style={{ textDecoration: tax.isExempt ? 'line-through' : 'none', color: tax.isExempt ? '#6B7280' : '#F5F5F5' }}>
                       {tax.rate}%
                     </span>
                     {tax.isExempt && (
-                      <span className="text-emerald-600 ml-1 font-bold">→ 0%</span>
+                      <span className="ml-1 font-bold" style={{ color: '#10b981' }}>→ 0%</span>
                     )}
                   </td>
-                  <td className={`text-right p-2 font-mono ${tax.isExempt ? 'text-emerald-600' : ''}`}>
+                  <td className="text-right p-2 font-mono" style={{ color: tax.isExempt ? '#10b981' : '#F5F5F5' }}>
                     {formatCurrency(tax.amount)}
                   </td>
-                  <td className="text-right p-2 font-mono text-gray-600">
+                  <td className="text-right p-2 font-mono" style={{ color: '#A0AAB4' }}>
                     {formatCurrency(tax.cumulative)}
                   </td>
                 </tr>
               ))}
               
               {/* Total Row */}
-              <tr className={`font-bold ${isZlecaf ? 'bg-emerald-100' : 'bg-blue-100'}`}>
-                <td className="p-2" colSpan={2}>
+              <tr className="font-bold" style={{ background: `rgba(${isZlecaf ? '16,185,129' : '59,130,246'},0.15)` }}>
+                <td className="p-2" colSpan={2} style={{ color: '#F5F5F5' }}>
                   {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
                 </td>
-                <td className="text-center p-2">
+                <td className="text-center p-2" style={{ color: '#F5F5F5' }}>
                   {((totalTaxes / cifValue) * 100).toFixed(1)}%
                 </td>
-                <td className="text-right p-2 text-lg">
+                <td className="text-right p-2 text-lg" style={{ color: '#F5F5F5' }}>
                   {formatCurrency(totalTaxes)}
                 </td>
-                <td className={`text-right p-2 text-lg ${isZlecaf ? 'text-emerald-700' : 'text-blue-700'}`}>
+                <td className="text-right p-2 text-lg" style={{ color: regimeColor }}>
                   {formatCurrency(cifValue + totalTaxes)}
                 </td>
               </tr>
