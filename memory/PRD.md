@@ -83,6 +83,21 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
   - Bouton "Utiliser" pour sélection directe
 - ✅ **Mode simple amélioré** : Input direct pour le code HS sans recherche obligatoire
 
+### Phase 12 : Refonte Thème Sombre et Contraste (Terminé - 22 Fév 2025)
+- ✅ **Thème sombre professionnel** avec accents cuivre (#C17A2B) et or (#D4AF37)
+- ✅ **Contraste texte adaptatif** :
+  - Texte blanc (#F5F5F5) sur fond sombre (#1B232C)
+  - Texte secondaire (#A0AAB4) pour les descriptions
+  - Couleurs d'accent pour les titres (or pour standard, vert pour ZLECAf, rouge pour NPF)
+- ✅ **Composants Card** adaptés au thème sombre
+- ✅ **Formulaires natifs stylisés** :
+  - Éléments `<select>` et `<input>` avec fond sombre
+  - Bordures dorées au focus
+  - Flèche de dropdown personnalisée
+- ✅ **Tableaux de taxes** avec bon contraste (texte blanc, fonds semi-transparents)
+- ✅ **Graphiques en camembert** avec tooltips adaptés au thème
+- ✅ **Section Formalités** avec cartes bien visibles
+
 ---
 
 ## Architecture Technique
