@@ -213,33 +213,33 @@ export default function SmartHSSearch({
 
         {/* Search Results Dropdown */}
         {showResults && searchResults.length > 0 && (
-          <div className="absolute z-50 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-96 overflow-y-auto">
+          <div className="absolute z-50 w-full mt-1 bg-[#1B232C] border border-[rgba(212,175,55,0.2)] rounded-lg shadow-2xl max-h-96 overflow-y-auto">
             {/* Chapter header if code search */}
             {searchResults[0]?.chapter_name && (
-              <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 text-sm font-semibold">
+              <div className="sticky top-0 bg-gradient-to-r from-[#C17A2B] to-[#D4AF37] text-[#0b0f14] px-4 py-2 text-sm font-bold">
                 📦 {searchResults[0].full_position}
               </div>
             )}
             
             {searchResults.map((result, idx) => (
-              <div key={idx} className="border-b last:border-b-0">
+              <div key={idx} className="border-b border-[rgba(255,255,255,0.08)] last:border-b-0">
                 {/* Main HS6 code */}
                 <div
-                  className="p-3 hover:bg-blue-50 cursor-pointer"
+                  className="p-3 hover:bg-[rgba(212,175,55,0.1)] cursor-pointer transition-colors"
                   onClick={() => handleCodeSelect(result.code, result.description)}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-mono font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">{result.code}</span>
-                        <span className="text-xs text-gray-400">HS6</span>
+                        <span className="font-mono font-bold text-[#D4AF37] bg-[rgba(212,175,55,0.15)] px-2 py-0.5 rounded text-base">{result.code}</span>
+                        <span className="text-xs text-[#A0AAB4]">HS6</span>
                         {result.category && (
-                          <Badge variant="outline" className="text-xs">{result.category}</Badge>
+                          <Badge variant="outline" className="text-xs border-[rgba(255,255,255,0.15)] text-[#A0AAB4]">{result.category}</Badge>
                         )}
                       </div>
-                      <p className="text-gray-700 mt-1 text-sm">{result.description}</p>
+                      <p className="text-[#F5F5F5] mt-1 text-sm">{result.description}</p>
                     </div>
-                    <Button size="sm" variant="ghost" className="shrink-0 text-blue-600">
+                    <Button size="sm" variant="ghost" className="shrink-0 text-[#D4AF37] hover:bg-[rgba(212,175,55,0.15)]">
                       {t.useCode}
                     </Button>
                   </div>
@@ -247,8 +247,8 @@ export default function SmartHSSearch({
                 
                 {/* Sub-positions nationales (HS8-HS12) */}
                 {result.sub_positions && result.sub_positions.length > 0 && (
-                  <div className="bg-gradient-to-r from-purple-50 to-indigo-50 px-3 py-2 border-t border-purple-100">
-                    <p className="text-xs font-semibold text-purple-700 mb-2 flex items-center gap-1">
+                  <div className="bg-[rgba(139,92,246,0.08)] px-3 py-2 border-t border-[rgba(139,92,246,0.2)]">
+                    <p className="text-xs font-semibold text-[#A78BFA] mb-2 flex items-center gap-1">
                       <Info className="h-3 w-3" />
                       {language === 'fr' ? 'Sous-positions nationales disponibles:' : 'National sub-positions available:'}
                     </p>
@@ -256,29 +256,29 @@ export default function SmartHSSearch({
                       {result.sub_positions.slice(0, 5).map((sp, spIdx) => (
                         <div 
                           key={spIdx}
-                          className="flex items-center justify-between bg-white p-2 rounded border border-purple-200 hover:border-purple-400 cursor-pointer transition-colors"
+                          className="flex items-center justify-between bg-[#15202A] p-2 rounded border border-[rgba(139,92,246,0.25)] hover:border-[#A78BFA] cursor-pointer transition-colors"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleSubPositionSelect(sp.code, sp.description_fr || sp.description_en);
                           }}
                         >
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-sm font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded">{sp.code}</span>
-                            <span className="text-xs text-gray-400">HS{sp.digits}</span>
+                            <span className="font-mono text-sm font-bold text-[#A78BFA] bg-[rgba(139,92,246,0.15)] px-2 py-0.5 rounded">{sp.code}</span>
+                            <span className="text-xs text-[#A0AAB4]">HS{sp.digits}</span>
                           </div>
                           <div className="flex-1 px-2">
-                            <span className="text-sm text-gray-700">{language === 'fr' ? sp.description_fr : sp.description_en}</span>
+                            <span className="text-sm text-[#F5F5F5]">{language === 'fr' ? sp.description_fr : sp.description_en}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Badge className="bg-amber-100 text-amber-700 text-xs">DD: {sp.dd}%</Badge>
-                            <Button size="sm" variant="outline" className="text-xs h-6 text-purple-600 border-purple-300">
+                            <Badge className="bg-[rgba(212,175,55,0.15)] text-[#D4AF37] text-xs border border-[rgba(212,175,55,0.3)]">DD: {sp.dd}%</Badge>
+                            <Button size="sm" variant="outline" className="text-xs h-6 text-[#A78BFA] border-[rgba(139,92,246,0.4)] hover:bg-[rgba(139,92,246,0.15)]">
                               {language === 'fr' ? 'Utiliser' : 'Use'}
                             </Button>
                           </div>
                         </div>
                       ))}
                       {result.sub_positions.length > 5 && (
-                        <p className="text-xs text-purple-600 text-center pt-1">
+                        <p className="text-xs text-[#A78BFA] text-center pt-1">
                           +{result.sub_positions.length - 5} {language === 'fr' ? 'autres sous-positions' : 'more sub-positions'}
                         </p>
                       )}
@@ -291,7 +291,7 @@ export default function SmartHSSearch({
         )}
 
         {showResults && searchResults.length === 0 && searchQuery.length >= 2 && !loading && (
-          <div className="absolute z-50 w-full mt-1 bg-white border rounded-lg shadow-lg p-4 text-center text-gray-500">
+          <div className="absolute z-50 w-full mt-1 bg-[#1B232C] border border-[rgba(255,255,255,0.1)] rounded-lg shadow-lg p-4 text-center text-[#A0AAB4]">
             {t.noResults}
           </div>
         )}
