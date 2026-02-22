@@ -789,23 +789,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                         }}
                                       />
                                       <div>
-                                        <span className="font-mono font-medium">{tax.tax}</span>
+                                        <span className="font-mono font-medium" style={{ color: '#F5F5F5' }}>{tax.tax}</span>
                                         {tax.observation && tax.observation !== tax.tax && (
-                                          <span className="text-xs text-gray-500 block">{tax.observation}</span>
+                                          <span className="text-xs block" style={{ color: '#A0AAB4' }}>{tax.observation}</span>
                                         )}
                                       </div>
                                     </div>
                                   </td>
-                                  <td className="py-2 text-center font-mono">{tax.rate}%</td>
-                                  <td className="py-2 text-right font-mono">{formatCurrency(taxAmount)}</td>
+                                  <td className="py-2 text-center font-mono" style={{ color: '#F5F5F5' }}>{tax.rate}%</td>
+                                  <td className="py-2 text-right font-mono" style={{ color: '#F5F5F5' }}>{formatCurrency(taxAmount)}</td>
                                 </tr>
                               );
                             })}
-                            <tr className="bg-red-50 font-bold">
-                              <td className="py-3" colSpan={2}>
+                            <tr className="font-bold" style={{ background: 'rgba(239,68,68,0.15)' }}>
+                              <td className="py-3" colSpan={2} style={{ color: '#F5F5F5' }}>
                                 {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
                               </td>
-                              <td className="py-3 text-right font-mono text-lg text-red-700">
+                              <td className="py-3 text-right font-mono text-lg" style={{ color: '#EF4444' }}>
                                 {formatCurrency(result.normal_total_cost)}
                               </td>
                             </tr>
@@ -816,8 +816,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     
                     {/* Colonne ZLECAf */}
                     <div>
-                      <div className="p-3 bg-emerald-50 border-b border-emerald-100">
-                        <h5 className="font-bold text-emerald-800 flex items-center gap-2">
+                      <div className="p-3 border-b" style={{ background: 'rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.2)' }}>
+                        <h5 className="font-bold flex items-center gap-2" style={{ color: '#10b981' }}>
                           <span>✅</span>
                           {language === 'fr' ? 'Régime ZLECAf (Préférentiel)' : 'AfCFTA Regime (Preferential)'}
                         </h5>
@@ -825,27 +825,27 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <div className="p-4">
                         <table className="w-full text-sm">
                           <thead>
-                            <tr className="text-left text-gray-500 border-b">
-                              <th className="pb-2">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
+                            <tr className="border-b" style={{ color: '#A0AAB4', borderColor: 'rgba(255,255,255,0.1)' }}>
+                              <th className="pb-2 text-left">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
                               <th className="pb-2 text-center">{language === 'fr' ? 'Taux' : 'Rate'}</th>
                               <th className="pb-2 text-right">{language === 'fr' ? 'Montant' : 'Amount'}</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="border-b bg-gray-50">
+                            <tr className="border-b" style={{ background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.1)' }}>
                               <td className="py-2 font-medium">
-                                <span className="font-mono">CIF</span>
-                                <span className="text-xs text-gray-500 block">{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
+                                <span className="font-mono" style={{ color: '#F5F5F5' }}>CIF</span>
+                                <span className="text-xs block" style={{ color: '#A0AAB4' }}>{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
                               </td>
-                              <td className="py-2 text-center">-</td>
-                              <td className="py-2 text-right font-mono font-bold">{formatCurrency(parseFloat(value))}</td>
+                              <td className="py-2 text-center" style={{ color: '#A0AAB4' }}>-</td>
+                              <td className="py-2 text-right font-mono font-bold" style={{ color: '#F5F5F5' }}>{formatCurrency(parseFloat(value))}</td>
                             </tr>
                             {result.taxes_detail.map((tax, idx) => {
                               const isDD = tax.tax.toLowerCase().includes('d.d') || tax.tax.toLowerCase().includes('douane');
                               const effectiveRate = isDD ? 0 : tax.rate;
                               const taxAmount = parseFloat(value) * (effectiveRate / 100);
                               return (
-                                <tr key={idx} className={`border-b hover:bg-gray-50 ${isDD ? 'bg-emerald-50' : ''}`}>
+                                <tr key={idx} className="border-b" style={{ borderColor: 'rgba(255,255,255,0.1)', background: isDD ? 'rgba(16,185,129,0.1)' : 'transparent' }}>
                                   <td className="py-2">
                                     <div className="flex items-center gap-2">
                                       <span 
