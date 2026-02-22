@@ -491,63 +491,41 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="origin">{t.originCountry}</Label>
-                    <Select 
-                      value={originCountry} 
-                      onValueChange={setOriginCountry}
+                <div className="calculator-grid-2">
+                  {/* Pays d'origine */}
+                  <div className="calculator-form-group">
+                    <label>{t.originCountry}</label>
+                    <select
+                      className="afcfta-select"
+                      value={originCountry}
+                      onChange={(e) => setOriginCountry(e.target.value)}
+                      data-testid="origin-country-select"
                     >
-                      <SelectTrigger id="origin" data-testid="origin-country-select">
-                        <SelectValue placeholder={t.originCountry}>
-                          {originCountry && countries.find(c => c.code === originCountry) ? (
-                            <span>{getFlag(countries.find(c => c.code === originCountry)?.iso2)} {countries.find(c => c.code === originCountry)?.name}</span>
-                          ) : null}
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent className="max-h-[300px]">
-                        {countries && countries.length > 0 ? countries.map((country) => (
-                          <SelectItem 
-                            key={country.code} 
-                            value={country.code} 
-                            data-testid={`origin-${country.code}`}
-                          >
-                            {getFlag(country.iso2 || country.code)} {country.name}
-                          </SelectItem>
-                        )) : (
-                          <SelectItem value="loading" disabled>Chargement...</SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
+                      <option value="">{t.originCountry}</option>
+                      {countries && countries.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {getFlag(country.iso2 || country.code)} {country.name} ({country.code})
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="destination">{t.partnerCountry}</Label>
-                    <Select 
-                      value={destinationCountry} 
-                      onValueChange={setDestinationCountry}
+                  {/* Pays partenaire */}
+                  <div className="calculator-form-group">
+                    <label>{t.partnerCountry}</label>
+                    <select
+                      className="afcfta-select"
+                      value={destinationCountry}
+                      onChange={(e) => setDestinationCountry(e.target.value)}
+                      data-testid="destination-country-select"
                     >
-                      <SelectTrigger id="destination" data-testid="destination-country-select">
-                        <SelectValue placeholder={t.partnerCountry}>
-                          {destinationCountry && countries.find(c => c.code === destinationCountry) ? (
-                            <span>{getFlag(countries.find(c => c.code === destinationCountry)?.iso2)} {countries.find(c => c.code === destinationCountry)?.name}</span>
-                          ) : null}
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent className="max-h-[300px]">
-                        {countries && countries.length > 0 ? countries.map((country) => (
-                          <SelectItem 
-                            key={country.code} 
-                            value={country.code} 
-                            data-testid={`dest-${country.code}`}
-                          >
-                            {getFlag(country.iso2 || country.code)} {country.name}
-                          </SelectItem>
-                        )) : (
-                          <SelectItem value="loading" disabled>Chargement...</SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
+                      <option value="">{t.partnerCountry}</option>
+                      {countries && countries.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {getFlag(country.iso2 || country.code)} {country.name} ({country.code})
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
