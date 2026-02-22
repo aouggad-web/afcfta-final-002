@@ -51,6 +51,53 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - **Meilleur choix** mis en évidence (coût ZLECAf le plus bas)
 - **Graphiques** : Barres comparatives et Radar chart
 
+### Phase 9 : Corrections et Améliorations (Terminé - 21 Fév 2025)
+- ✅ **Bug Select corrigé** : Les menus déroulants du calculateur fonctionnent correctement
+- ✅ **Graphiques améliorés** : Ajout des graphiques en camembert (TaxDistributionPieChart) pour la répartition NPF vs ZLECAf
+- ✅ **Intégration API FAOSTAT 2024** : Données de production agricole en temps réel
+- ✅ **Bug DetailedCalculationBreakdown corrigé** : Exclusion du composant pour les données authentiques
+- ✅ **Mode simple HS amélioré** : Input direct pour le code HS (sans recherche obligatoire)
+
+### Phase 10 : Formalités et Documents (Terminé - 22 Fév 2025)
+- ✅ **Section "Formalités et Documents Nécessaires"** ajoutée au calculateur
+- ✅ **Documents obligatoires affichés** :
+  - Facture Commerciale
+  - Liste de Colisage
+  - Connaissement / LTA
+  - Déclaration en Douane
+- ✅ **Documents ZLECAf affichés** :
+  - Certificat d'Origine ZLECAf
+  - Déclaration du Fournisseur
+- ✅ **Documents spécifiques au pays** depuis l'API
+- ✅ **Avantages fiscaux** listés avec les bénéfices obtenus
+- ✅ **Règles d'origine** avec critères à respecter
+
+### Phase 11 : Recherche Intuitive et Sous-positions Nationales (Terminé - 22 Fév 2025)
+- ✅ **Recherche par préfixe** : Taper "76" affiche uniquement le chapitre 76 (Aluminium)
+- ✅ **En-tête de chapitre** : "📦 Chapitre 76: Aluminium et ouvrages" affiché en haut des résultats
+- ✅ **Sous-positions nationales (HS8-HS12)** affichées pour chaque code HS6 :
+  - Code complet (ex: 7601102000)
+  - Type de position (HS10)
+  - Description en français
+  - Taux DD
+  - Bouton "Utiliser" pour sélection directe
+- ✅ **Mode simple amélioré** : Input direct pour le code HS sans recherche obligatoire
+
+### Phase 12 : Refonte Thème Sombre et Contraste (Terminé - 22 Fév 2025)
+- ✅ **Thème sombre professionnel** avec accents cuivre (#C17A2B) et or (#D4AF37)
+- ✅ **Contraste texte adaptatif** :
+  - Texte blanc (#F5F5F5) sur fond sombre (#1B232C)
+  - Texte secondaire (#A0AAB4) pour les descriptions
+  - Couleurs d'accent pour les titres (or pour standard, vert pour ZLECAf, rouge pour NPF)
+- ✅ **Composants Card** adaptés au thème sombre
+- ✅ **Formulaires natifs stylisés** :
+  - Éléments `<select>` et `<input>` avec fond sombre
+  - Bordures dorées au focus
+  - Flèche de dropdown personnalisée
+- ✅ **Tableaux de taxes** avec bon contraste (texte blanc, fonds semi-transparents)
+- ✅ **Graphiques en camembert** avec tooltips adaptés au thème
+- ✅ **Section Formalités** avec cartes bien visibles
+
 ---
 
 ## Architecture Technique
@@ -62,13 +109,14 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 │   └── {54 fichiers}_tariffs.json   # Données tarifaires authentiques
 ├── routes/
 │   ├── authentic_tariffs.py          # Endpoints tarifs authentiques
+│   ├── faostat.py                    # Endpoints FAOSTAT 2024
 │   ├── hs6_database.py               # Recherche HS6
 │   ├── tariffs_calculation.py        # Calculs tarifaires
 │   └── ... (17 modules de routes)
 ├── services/
 │   ├── authentic_tariff_service.py   # Chargement données JSON
-│   ├── redis_cache_service.py        # Cache Redis
-│   └── ...
+│   ├── faostat_service.py            # Service FAOSTAT
+│   └── redis_cache_service.py        # Cache Redis
 └── server.py
 ```
 
@@ -76,11 +124,12 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 ```
 /app/frontend/src/components/
 ├── calculator/
-│   ├── CalculatorTab.jsx              # Avec onglets et tableau taxes
+│   ├── CalculatorTab.jsx              # Avec onglets, Select corrigé, graphiques améliorés
 │   ├── MultiCountryComparison.jsx     # Comparaison multi-pays
-│   ├── TaxBreakdownChart.jsx          # Graphiques taxes
+│   ├── TaxBreakdownChart.jsx          # Graphiques taxes (camembert, barres)
 │   └── DetailedCalculationBreakdown.jsx
-└── ...
+└── statistics/
+    └── ProductionTab.jsx              # Données FAO 2024
 ```
 
 ---
@@ -93,7 +142,7 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 | `GET /api/authentic-tariffs/calculate/{country}/{hs_code}` | Calcul NPF vs ZLECAf avec taxes_detail |
 | `GET /api/authentic-tariffs/country/{iso3}/summary` | Résumé tarifs du pays |
 | `GET /api/authentic-tariffs/country/{iso3}/taxes/{hs_code}` | Détail des taxes avec intitulés |
-| `GET /api/authentic-tariffs/search/{country}?q=` | Recherche produits |
+| `GET /api/faostat/production` | Données production agricole 2024 |
 
 ---
 
@@ -105,9 +154,14 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - Calculs NPF vs ZLECAf
 - Comparaison multi-pays
 
-### Frontend : Fonctionnel
-- Comparaison Multi-Pays : ✅ 100%
-- Calculateur standard : ✅ Fonctionnel
+### Frontend : 100% (iteration_17 - 22 Fév 2025)
+- ✅ Bug Select corrigé - État React mis à jour correctement
+- ✅ Calculateur fonctionnel avec tous les champs
+- ✅ Comparaison Multi-Pays fonctionnelle
+- ✅ Thème sombre avec bon contraste (texte blanc/or sur fond sombre)
+- ✅ Tableaux NPF vs ZLECAf bien lisibles
+- ✅ Graphiques en camembert avec légendes visibles
+- ✅ Section Formalités et Documents complète
 
 ---
 
@@ -117,10 +171,11 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - [x] Intégration 54 fichiers tarifs authentiques
 - [x] Affichage de toutes les taxes avec intitulés
 - [x] Comparaison multi-pays
+- [x] Correction bug Select components
 
 ### P1 - Priorité Moyenne
+- [ ] Finaliser refactoring server.py (supprimer routes dupliquées)
 - [ ] Exportation CSV/Excel (feature payante potentielle)
-- [ ] Amélioration des graphiques
 
 ### P2 - Priorité Basse
 - [ ] Plus de sources d'actualités pour l'Algérie
@@ -130,11 +185,15 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 
 ## Historique des Versions
 
+### v2.2.0 (21 Février 2025) - BUG FIX & ENHANCEMENT
+- **Bug Fix P0** : Correction des composants Select (menus déroulants) dans CalculatorTab
+- **Graphiques améliorés** : Ajout TaxDistributionPieChart pour NPF vs ZLECAf
+- **Tests passés** : 100% backend et frontend (iteration_14)
+
 ### v2.1.0 (21 Février 2025) - FEATURE
 - **Comparaison Multi-Pays** avec sélection par région
 - **Affichage TOUTES les taxes** avec codes et intitulés complets
-- **Refactoring routes backend** : hs6_database.py, tariffs_calculation.py
-- **Graphiques améliorés** : tableau détaillé NPF vs ZLECAf
+- **Intégration FAOSTAT 2024** pour données production agricole
 
 ### v2.0.0 (21 Février 2025) - MAJOR
 - **54 pays africains** avec données tarifaires authentiques

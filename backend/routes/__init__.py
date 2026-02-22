@@ -42,6 +42,7 @@ from .rules_of_origin import router as rules_router
 from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
+from .faostat import router as faostat_router
 try:
     from .gemini_analysis import router as gemini_router
     GEMINI_AVAILABLE = True
@@ -90,6 +91,7 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(hs6_db_router, tags=["HS6 Database"])
     api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"])
     api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"])
+    api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"])
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"])
     if TRADE_DATA_AVAILABLE:

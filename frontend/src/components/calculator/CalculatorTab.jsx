@@ -14,9 +14,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { toast } from '../../hooks/use-toast';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
-import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe } from 'lucide-react';
+import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList } from 'lucide-react';
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
-import { DetailedTaxTable, SavingsHighlight } from './TaxBreakdownChart';
+import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
 import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info } from 'lucide-react';
 import TariffDownloads from '../tools/TariffDownloads';
@@ -538,54 +538,52 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         <TabsContent value="calculator">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" style={{ minHeight: '600px' }}>
             {/* Formulaire de calcul */}
-            <Card className="shadow-2xl border-t-4 border-t-green-600" style={{ minHeight: '400px' }}>
-              <CardHeader className="bg-gradient-to-r from-green-50 to-yellow-50">
-                <CardTitle className="flex items-center space-x-2 text-2xl text-green-700">
+            <Card className="shadow-2xl" style={{ minHeight: '400px', borderTop: '4px solid #D4AF37' }}>
+              <CardHeader style={{ background: 'linear-gradient(135deg, rgba(193,122,43,0.2), rgba(212,175,55,0.1))' }}>
+                <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#D4AF37' }}>
                   <span>📊</span>
                   <span>{t.calculatorTitle}</span>
                 </CardTitle>
-                <CardDescription className="text-gray-700 font-semibold">
+                <CardDescription style={{ color: '#A0AAB4' }} className="font-semibold">
                   {t.calculatorDesc}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="origin">{t.originCountry}</Label>
-                    <Select value={originCountry} onValueChange={(val) => {
-                      console.log('Origin country selected:', val);
-                      setOriginCountry(val);
-                    }}>
-                      <SelectTrigger data-testid="origin-country-select">
-                        <SelectValue placeholder={t.originCountry} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country.code} value={country.code} data-testid={`origin-${country.code}`}>
-                            {getFlag(country.iso2 || country.code)} {country.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                <div className="calculator-grid-2">
+                  {/* Pays d'origine */}
+                  <div className="calculator-form-group">
+                    <label>{t.originCountry}</label>
+                    <select
+                      className="afcfta-select"
+                      value={originCountry}
+                      onChange={(e) => setOriginCountry(e.target.value)}
+                      data-testid="origin-country-select"
+                    >
+                      <option value="">{t.originCountry}</option>
+                      {countries && countries.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {getFlag(country.iso2 || country.code)} {country.name} ({country.code})
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="destination">{t.partnerCountry}</Label>
-                    <Select value={destinationCountry} onValueChange={(val) => {
-                      console.log('Destination country selected:', val);
-                      setDestinationCountry(val);
-                    }}>
-                      <SelectTrigger data-testid="destination-country-select">
-                        <SelectValue placeholder={t.partnerCountry} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country.code} value={country.code} data-testid={`dest-${country.code}`}>
-                            {getFlag(country.iso2 || country.code)} {country.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  {/* Pays partenaire */}
+                  <div className="calculator-form-group">
+                    <label>{t.partnerCountry}</label>
+                    <select
+                      className="afcfta-select"
+                      value={destinationCountry}
+                      onChange={(e) => setDestinationCountry(e.target.value)}
+                      data-testid="destination-country-select"
+                    >
+                      <option value="">{t.partnerCountry}</option>
+                      {countries && countries.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {getFlag(country.iso2 || country.code)} {country.name} ({country.code})
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
@@ -749,15 +747,18 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 onRuleOfOriginLoad={setRuleOfOrigin}
               />
             ) : (
-              <>
-                <HSCodeSearch
+              <div className="calculator-form-group">
+                <input
+                  type="text"
+                  placeholder={language === 'fr' ? "Ex: 090111, 870323, 8517" : "Ex: 090111, 870323, 8517"}
                   value={hsCode}
-                  onChange={setHsCode}
-                  language={language}
-                  data-testid="hs-code-selector"
+                  onChange={(e) => setHsCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 12))}
+                  className="font-mono"
+                  style={{ fontSize: '16px', letterSpacing: '1px' }}
+                  data-testid="hs-code-simple-input"
                 />
-                <p className="text-xs text-gray-500 italic">{t.hsCodeHint}</p>
-              </>
+                <p style={{ color: '#A0AAB4', fontSize: '12px', marginTop: '4px', fontStyle: 'italic' }}>{t.hsCodeHint}</p>
+              </div>
             )}
             
             <Button
@@ -765,7 +766,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               variant="outline"
               size="sm"
               onClick={() => setShowHSBrowser(!showHSBrowser)}
-              className="w-full mt-2 text-blue-600 border-blue-300 hover:bg-blue-50"
+              className="w-full mt-2"
+              style={{ 
+                background: 'transparent', 
+                border: '1px solid rgba(212,175,55,0.3)', 
+                color: '#D4AF37',
+                borderRadius: '10px'
+              }}
               data-testid="toggle-hs-browser"
             >
               {showHSBrowser ? (
@@ -784,7 +791,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
           {/* HS Code Browser Panel */}
           {showHSBrowser && (
-            <div className="border-2 border-blue-200 rounded-lg overflow-hidden">
+            <div style={{ border: '1px solid rgba(212,175,55,0.2)', borderRadius: '10px', overflow: 'hidden' }}>
               <HSCodeBrowser
                 onSelect={(code) => {
                   setHsCode(code.code);
@@ -796,10 +803,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </div>
           )}
 
-          <div className="space-y-2">
-            <Label htmlFor="value">{t.valueLabel}</Label>
-            <Input
-              id="value"
+          <div className="calculator-form-group">
+            <label>{t.valueLabel}</label>
+            <input
               type="number"
               value={value}
               onChange={(e) => setValue(e.target.value)}
@@ -822,12 +828,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       {/* Résultats complets avec visualisations */}
       {result && (
         <div className="space-y-4">
-          <Card className="border-l-4 border-l-green-500 shadow-xl bg-gradient-to-br from-white to-green-50">
-            <CardHeader className="bg-gradient-to-r from-green-600 to-yellow-500 text-white rounded-t-lg">
-              <CardTitle className="flex items-center space-x-2 text-2xl">
+          <Card className="shadow-xl" style={{ borderLeft: '4px solid #10b981', background: 'rgba(27,35,44,0.95)' }}>
+            <CardHeader style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.25), rgba(212,175,55,0.15))', borderRadius: '12px 12px 0 0' }}>
+              <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#10b981' }}>
                 <span>💰</span>
                 <span>{t.detailedResults}</span>
               </CardTitle>
+              <CardDescription style={{ color: '#D4AF37' }} className="font-semibold">
+                {countryFlags[result.origin_country]} {getCountryName(result.origin_country)} → {countryFlags[result.destination_country]} {getCountryName(result.destination_country)}
               <CardDescription className="text-yellow-100 font-semibold flex items-center gap-2 flex-wrap">
                 <span>{getFlag(result.origin_country)} {getCountryName(result.origin_country)} → {getFlag(result.destination_country)} {getCountryName(result.destination_country)}</span>
                 {TRADE_BLOCS[result.destination_country] && (
@@ -845,21 +853,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <CardContent className="space-y-5 pt-6 results-container">
               {/* Information sur les DONNÉES AUTHENTIQUES */}
               {result.data_source === 'authentic_tariff' && (
-                <div className="result-section bg-gradient-to-r from-emerald-50 via-green-50 to-teal-50 p-5 rounded-xl border-2 border-emerald-400 shadow-lg" data-testid="authentic-data-badge">
+                <div className="result-section p-5 rounded-xl border-2 shadow-lg" style={{ background: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.4)' }} data-testid="authentic-data-badge">
                   <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
-                      <span className="text-2xl">✓</span>
+                    <div className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+                      <span className="text-2xl text-white">✓</span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <h4 className="font-bold text-emerald-800 text-lg">
+                        <h4 className="font-bold text-lg" style={{ color: '#10b981' }}>
                           {language === 'fr' ? 'Données Tarifaires Officielles' : 'Official Tariff Data'}
                         </h4>
-                        <Badge className="bg-emerald-600 text-white px-3 py-1">
+                        <Badge className="px-3 py-1" style={{ background: '#10b981', color: '#fff' }}>
                           {language === 'fr' ? 'Vérifié' : 'Verified'}
                         </Badge>
                       </div>
-                      <p className="text-gray-700 text-sm mb-3">
+                      <p className="text-sm mb-3" style={{ color: '#A0AAB4' }}>
                         {language === 'fr' 
                           ? `Calcul basé sur les tarifs douaniers officiels du ${getCountryName(destinationCountry)} avec ${result.sub_position_count || 0} sous-positions nationales.`
                           : `Calculation based on official customs tariffs of ${getCountryName(destinationCountry)} with ${result.sub_position_count || 0} national sub-headings.`}
@@ -869,7 +877,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       {result.taxes_detail && result.taxes_detail.length > 0 && (
                         <div className="flex flex-wrap gap-2">
                           {result.taxes_detail.map((tax, idx) => (
-                            <Badge key={idx} variant="outline" className="bg-white border-emerald-300 text-emerald-700">
+                            <Badge key={idx} variant="outline" style={{ background: 'rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.4)', color: '#10b981' }}>
                               {tax.tax}: {tax.rate}%
                             </Badge>
                           ))}
@@ -877,10 +885,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       )}
                     </div>
                     <div className="flex-shrink-0 text-right">
-                      <p className="text-xs text-gray-500 mb-1">
+                      <p className="text-xs mb-1" style={{ color: '#A0AAB4' }}>
                         {language === 'fr' ? 'Confiance' : 'Confidence'}
                       </p>
-                      <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg px-4 py-2">
+                      <Badge className="text-lg px-4 py-2" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff' }}>
                         {language === 'fr' ? 'Très élevée' : 'Very High'}
                       </Badge>
                     </div>
@@ -888,14 +896,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   
                   {/* Avantages fiscaux ZLECAf */}
                   {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
-                    <div className="mt-4 p-3 bg-white/70 rounded-lg border border-emerald-200">
-                      <p className="text-sm font-semibold text-emerald-800 mb-2">
+                    <div className="mt-4 p-3 rounded-lg" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+                      <p className="text-sm font-semibold mb-2" style={{ color: '#10b981' }}>
                         {language === 'fr' ? '🎯 Avantages ZLECAf applicables:' : '🎯 Applicable AfCFTA advantages:'}
                       </p>
                       <ul className="space-y-1">
                         {result.fiscal_advantages.map((adv, idx) => (
-                          <li key={idx} className="text-sm text-gray-700 flex items-start gap-2">
-                            <span className="text-emerald-500">✓</span>
+                          <li key={idx} className="text-sm flex items-start gap-2" style={{ color: '#F5F5F5' }}>
+                            <span style={{ color: '#10b981' }}>✓</span>
                             <span>{language === 'fr' ? adv.condition_fr : adv.condition_en}</span>
                           </li>
                         ))}
@@ -905,13 +913,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   
                   {/* Formalités administratives */}
                   {result.administrative_formalities && result.administrative_formalities.length > 0 && (
-                    <div className="mt-3 p-3 bg-amber-50/70 rounded-lg border border-amber-200">
-                      <p className="text-sm font-semibold text-amber-800 mb-2">
+                    <div className="mt-3 p-3 rounded-lg" style={{ background: 'rgba(217,123,45,0.1)', border: '1px solid rgba(217,123,45,0.3)' }}>
+                      <p className="text-sm font-semibold mb-2" style={{ color: '#D97B2D' }}>
                         {language === 'fr' ? '📋 Documents requis:' : '📋 Required documents:'}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {result.administrative_formalities.map((form, idx) => (
-                          <Badge key={idx} variant="outline" className="bg-white border-amber-300 text-amber-700 text-xs">
+                          <Badge key={idx} variant="outline" className="text-xs" style={{ background: 'rgba(217,123,45,0.15)', borderColor: 'rgba(217,123,45,0.4)', color: '#D97B2D' }}>
                             {language === 'fr' ? form.document_fr : form.document_en}
                           </Badge>
                         ))}
@@ -923,13 +931,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
               {/* TABLEAU DÉTAILLÉ DE TOUTES LES TAXES AVEC INTITULÉS */}
               {result.data_source === 'authentic_tariff' && result.taxes_detail && result.taxes_detail.length > 0 && (
-                <div className="result-section bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden" data-testid="all-taxes-table">
-                  <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-                    <h4 className="font-bold text-lg text-blue-900 flex items-center gap-2">
-                      <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">📋</span>
+                <div className="result-section rounded-xl shadow-lg overflow-hidden" style={{ background: '#1B232C', border: '1px solid rgba(255,255,255,0.1)' }} data-testid="all-taxes-table">
+                  <div className="p-4 border-b" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(99,102,241,0.1))', borderColor: 'rgba(59,130,246,0.2)' }}>
+                    <h4 className="font-bold text-lg flex items-center gap-2" style={{ color: '#3B82F6' }}>
+                      <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.2)' }}>📋</span>
                       {language === 'fr' ? 'Détail Complet des Taxes' : 'Complete Tax Breakdown'}
                     </h4>
-                    <p className="text-sm text-blue-700 mt-1">
+                    <p className="text-sm mt-1" style={{ color: '#93C5FD' }}>
                       {language === 'fr' 
                         ? `${result.taxes_detail.length} taxes applicables pour ${getCountryName(destinationCountry)}`
                         : `${result.taxes_detail.length} applicable taxes for ${getCountryName(destinationCountry)}`}
@@ -938,9 +946,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   
                   <div className="grid md:grid-cols-2 gap-0">
                     {/* Colonne NPF */}
-                    <div className="border-r border-gray-200">
-                      <div className="p-3 bg-red-50 border-b border-red-100">
-                        <h5 className="font-bold text-red-800 flex items-center gap-2">
+                    <div style={{ borderRight: '1px solid rgba(255,255,255,0.1)' }}>
+                      <div className="p-3 border-b" style={{ background: 'rgba(239,68,68,0.15)', borderColor: 'rgba(239,68,68,0.2)' }}>
+                        <h5 className="font-bold flex items-center gap-2" style={{ color: '#EF4444' }}>
                           <span>🚫</span>
                           {language === 'fr' ? 'Régime NPF (Sans préférence)' : 'MFN Regime (No preference)'}
                         </h5>
@@ -948,25 +956,25 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <div className="p-4">
                         <table className="w-full text-sm">
                           <thead>
-                            <tr className="text-left text-gray-500 border-b">
-                              <th className="pb-2">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
+                            <tr className="border-b" style={{ color: '#A0AAB4', borderColor: 'rgba(255,255,255,0.1)' }}>
+                              <th className="pb-2 text-left">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
                               <th className="pb-2 text-center">{language === 'fr' ? 'Taux' : 'Rate'}</th>
                               <th className="pb-2 text-right">{language === 'fr' ? 'Montant' : 'Amount'}</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="border-b bg-gray-50">
+                            <tr className="border-b" style={{ background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.1)' }}>
                               <td className="py-2 font-medium">
-                                <span className="font-mono">CIF</span>
-                                <span className="text-xs text-gray-500 block">{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
+                                <span className="font-mono" style={{ color: '#F5F5F5' }}>CIF</span>
+                                <span className="text-xs block" style={{ color: '#A0AAB4' }}>{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
                               </td>
-                              <td className="py-2 text-center">-</td>
-                              <td className="py-2 text-right font-mono font-bold">{formatCurrency(parseFloat(value))}</td>
+                              <td className="py-2 text-center" style={{ color: '#A0AAB4' }}>-</td>
+                              <td className="py-2 text-right font-mono font-bold" style={{ color: '#F5F5F5' }}>{formatCurrency(parseFloat(value))}</td>
                             </tr>
                             {result.taxes_detail.map((tax, idx) => {
                               const taxAmount = parseFloat(value) * (tax.rate / 100);
                               return (
-                                <tr key={idx} className="border-b hover:bg-gray-50">
+                                <tr key={idx} className="border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
                                   <td className="py-2">
                                     <div className="flex items-center gap-2">
                                       <span 
@@ -980,23 +988,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                         }}
                                       />
                                       <div>
-                                        <span className="font-mono font-medium">{tax.tax}</span>
+                                        <span className="font-mono font-medium" style={{ color: '#F5F5F5' }}>{tax.tax}</span>
                                         {tax.observation && tax.observation !== tax.tax && (
-                                          <span className="text-xs text-gray-500 block">{tax.observation}</span>
+                                          <span className="text-xs block" style={{ color: '#A0AAB4' }}>{tax.observation}</span>
                                         )}
                                       </div>
                                     </div>
                                   </td>
-                                  <td className="py-2 text-center font-mono">{tax.rate}%</td>
-                                  <td className="py-2 text-right font-mono">{formatCurrency(taxAmount)}</td>
+                                  <td className="py-2 text-center font-mono" style={{ color: '#F5F5F5' }}>{tax.rate}%</td>
+                                  <td className="py-2 text-right font-mono" style={{ color: '#F5F5F5' }}>{formatCurrency(taxAmount)}</td>
                                 </tr>
                               );
                             })}
-                            <tr className="bg-red-50 font-bold">
-                              <td className="py-3" colSpan={2}>
+                            <tr className="font-bold" style={{ background: 'rgba(239,68,68,0.15)' }}>
+                              <td className="py-3" colSpan={2} style={{ color: '#F5F5F5' }}>
                                 {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
                               </td>
-                              <td className="py-3 text-right font-mono text-lg text-red-700">
+                              <td className="py-3 text-right font-mono text-lg" style={{ color: '#EF4444' }}>
                                 {formatCurrency(result.normal_total_cost)}
                               </td>
                             </tr>
@@ -1007,8 +1015,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     
                     {/* Colonne ZLECAf */}
                     <div>
-                      <div className="p-3 bg-emerald-50 border-b border-emerald-100">
-                        <h5 className="font-bold text-emerald-800 flex items-center gap-2">
+                      <div className="p-3 border-b" style={{ background: 'rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.2)' }}>
+                        <h5 className="font-bold flex items-center gap-2" style={{ color: '#10b981' }}>
                           <span>✅</span>
                           {language === 'fr' ? 'Régime ZLECAf (Préférentiel)' : 'AfCFTA Regime (Preferential)'}
                         </h5>
@@ -1016,27 +1024,27 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <div className="p-4">
                         <table className="w-full text-sm">
                           <thead>
-                            <tr className="text-left text-gray-500 border-b">
-                              <th className="pb-2">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
+                            <tr className="border-b" style={{ color: '#A0AAB4', borderColor: 'rgba(255,255,255,0.1)' }}>
+                              <th className="pb-2 text-left">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
                               <th className="pb-2 text-center">{language === 'fr' ? 'Taux' : 'Rate'}</th>
                               <th className="pb-2 text-right">{language === 'fr' ? 'Montant' : 'Amount'}</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="border-b bg-gray-50">
+                            <tr className="border-b" style={{ background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.1)' }}>
                               <td className="py-2 font-medium">
-                                <span className="font-mono">CIF</span>
-                                <span className="text-xs text-gray-500 block">{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
+                                <span className="font-mono" style={{ color: '#F5F5F5' }}>CIF</span>
+                                <span className="text-xs block" style={{ color: '#A0AAB4' }}>{language === 'fr' ? 'Valeur en douane' : 'Customs value'}</span>
                               </td>
-                              <td className="py-2 text-center">-</td>
-                              <td className="py-2 text-right font-mono font-bold">{formatCurrency(parseFloat(value))}</td>
+                              <td className="py-2 text-center" style={{ color: '#A0AAB4' }}>-</td>
+                              <td className="py-2 text-right font-mono font-bold" style={{ color: '#F5F5F5' }}>{formatCurrency(parseFloat(value))}</td>
                             </tr>
                             {result.taxes_detail.map((tax, idx) => {
                               const isDD = tax.tax.toLowerCase().includes('d.d') || tax.tax.toLowerCase().includes('douane');
                               const effectiveRate = isDD ? 0 : tax.rate;
                               const taxAmount = parseFloat(value) * (effectiveRate / 100);
                               return (
-                                <tr key={idx} className={`border-b hover:bg-gray-50 ${isDD ? 'bg-emerald-50' : ''}`}>
+                                <tr key={idx} className="border-b" style={{ borderColor: 'rgba(255,255,255,0.1)', background: isDD ? 'rgba(16,185,129,0.1)' : 'transparent' }}>
                                   <td className="py-2">
                                     <div className="flex items-center gap-2">
                                       <span 
@@ -1050,12 +1058,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                         }}
                                       />
                                       <div>
-                                        <span className={`font-mono font-medium ${isDD ? 'text-emerald-700' : ''}`}>{tax.tax}</span>
+                                        <span className="font-mono font-medium" style={{ color: isDD ? '#10b981' : '#F5F5F5' }}>{tax.tax}</span>
                                         {tax.observation && tax.observation !== tax.tax && (
-                                          <span className="text-xs text-gray-500 block">{tax.observation}</span>
+                                          <span className="text-xs block" style={{ color: '#A0AAB4' }}>{tax.observation}</span>
                                         )}
                                         {isDD && (
-                                          <Badge className="mt-1 bg-emerald-100 text-emerald-700 text-xs">
+                                          <Badge className="mt-1 text-xs" style={{ background: 'rgba(16,185,129,0.2)', color: '#10b981' }}>
                                             {language === 'fr' ? 'Exonéré ZLECAf' : 'AfCFTA Exempt'}
                                           </Badge>
                                         )}
@@ -1065,24 +1073,24 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                   <td className="py-2 text-center font-mono">
                                     {isDD ? (
                                       <span>
-                                        <span className="line-through text-gray-400">{tax.rate}%</span>
-                                        <span className="text-emerald-600 font-bold ml-1">0%</span>
+                                        <span className="line-through" style={{ color: '#6B7280' }}>{tax.rate}%</span>
+                                        <span className="font-bold ml-1" style={{ color: '#10b981' }}>0%</span>
                                       </span>
                                     ) : (
-                                      <span>{tax.rate}%</span>
+                                      <span style={{ color: '#F5F5F5' }}>{tax.rate}%</span>
                                     )}
                                   </td>
-                                  <td className={`py-2 text-right font-mono ${isDD ? 'text-emerald-600 font-bold' : ''}`}>
+                                  <td className="py-2 text-right font-mono" style={{ color: isDD ? '#10b981' : '#F5F5F5', fontWeight: isDD ? 'bold' : 'normal' }}>
                                     {formatCurrency(taxAmount)}
                                   </td>
                                 </tr>
                               );
                             })}
-                            <tr className="bg-emerald-50 font-bold">
-                              <td className="py-3" colSpan={2}>
+                            <tr className="font-bold" style={{ background: 'rgba(16,185,129,0.15)' }}>
+                              <td className="py-3" colSpan={2} style={{ color: '#F5F5F5' }}>
                                 {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
                               </td>
-                              <td className="py-3 text-right font-mono text-lg text-emerald-700">
+                              <td className="py-3 text-right font-mono text-lg" style={{ color: '#10b981' }}>
                                 {formatCurrency(result.zlecaf_total_cost)}
                               </td>
                             </tr>
@@ -1093,16 +1101,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                   
                   {/* Économies */}
-                  <div className="p-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white">
+                  <div className="p-4" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span className="text-3xl">💰</span>
                         <div>
-                          <p className="text-sm opacity-90">{language === 'fr' ? 'Économies grâce à la ZLECAf' : 'Savings thanks to AfCFTA'}</p>
-                          <p className="text-2xl font-bold">{formatCurrency(result.savings || (result.normal_total_cost - result.zlecaf_total_cost))}</p>
+                          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.9)' }}>{language === 'fr' ? 'Économies grâce à la ZLECAf' : 'Savings thanks to AfCFTA'}</p>
+                          <p className="text-2xl font-bold" style={{ color: '#fff' }}>{formatCurrency(result.savings || (result.normal_total_cost - result.zlecaf_total_cost))}</p>
                         </div>
                       </div>
-                      <Badge className="bg-white/20 text-white text-lg px-4 py-2">
+                      <Badge className="text-lg px-4 py-2" style={{ background: 'rgba(255,255,255,0.2)', color: '#fff' }}>
                         -{result.savings_percentage || ((result.normal_total_cost - result.zlecaf_total_cost) / result.normal_total_cost * 100).toFixed(1)}%
                       </Badge>
                     </div>
@@ -1110,17 +1118,244 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               )}
 
+              {/* GRAPHIQUES AVANCÉS - Répartition des taxes */}
+              {result.data_source === 'authentic_tariff' && result.taxes_detail && result.taxes_detail.length > 0 && (
+                <div className="result-section grid md:grid-cols-2 gap-4">
+                  {/* Graphique en camembert NPF */}
+                  <TaxDistributionPieChart 
+                    taxes={result.taxes_detail} 
+                    cifValue={parseFloat(value)} 
+                    regime="npf" 
+                    language={language}
+                  />
+                  
+                  {/* Graphique en camembert ZLECAf */}
+                  <TaxDistributionPieChart 
+                    taxes={result.taxes_detail.map(t => ({
+                      ...t,
+                      rate: (t.tax.toLowerCase().includes('d.d') || t.tax.toLowerCase().includes('douane')) ? 0 : t.rate
+                    }))} 
+                    cifValue={parseFloat(value)} 
+                    regime="zlecaf" 
+                    language={language}
+                  />
+                </div>
+              )}
+
+              {/* SECTION FORMALITÉS ET DOCUMENTS NÉCESSAIRES */}
+              {result.data_source === 'authentic_tariff' && (
+                <div className="result-section rounded-xl shadow-lg overflow-hidden" style={{ background: '#1B232C', border: '1px solid rgba(255,255,255,0.1)' }} data-testid="formalities-section">
+                  <div className="p-4 border-b" style={{ background: 'linear-gradient(135deg, rgba(217,123,45,0.15), rgba(249,115,22,0.1))', borderColor: 'rgba(217,123,45,0.2)' }}>
+                    <h4 className="font-bold text-lg flex items-center gap-2" style={{ color: '#D97B2D' }}>
+                      <ClipboardList className="w-5 h-5" />
+                      {language === 'fr' ? 'Formalités et Documents Nécessaires' : 'Required Formalities and Documents'}
+                    </h4>
+                    <p className="text-sm mt-1" style={{ color: '#FBBF24' }}>
+                      {language === 'fr' 
+                        ? `Documents requis pour l'importation vers ${getCountryName(destinationCountry)}`
+                        : `Documents required for import to ${getCountryName(destinationCountry)}`}
+                    </p>
+                  </div>
+                  
+                  <div className="p-4 space-y-4">
+                    {/* Documents obligatoires */}
+                    <div>
+                      <h5 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#F5F5F5' }}>
+                        <FileText className="w-4 h-4" style={{ color: '#D97B2D' }} />
+                        {language === 'fr' ? 'Documents Obligatoires' : 'Mandatory Documents'}
+                      </h5>
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {/* Documents standards toujours requis */}
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.2)' }}>
+                            <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>1</span>
+                          </div>
+                          <div>
+                            <p className="font-medium" style={{ color: '#F5F5F5' }}>
+                              {language === 'fr' ? 'Facture Commerciale' : 'Commercial Invoice'}
+                            </p>
+                            <p className="text-xs" style={{ color: '#A0AAB4' }}>
+                              {language === 'fr' ? 'Détail des marchandises, prix, conditions de vente' : 'Details of goods, prices, terms of sale'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.2)' }}>
+                            <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>2</span>
+                          </div>
+                          <div>
+                            <p className="font-medium" style={{ color: '#F5F5F5' }}>
+                              {language === 'fr' ? 'Liste de Colisage' : 'Packing List'}
+                            </p>
+                            <p className="text-xs" style={{ color: '#A0AAB4' }}>
+                              {language === 'fr' ? 'Poids, dimensions, nombre de colis' : 'Weight, dimensions, number of packages'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.2)' }}>
+                            <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>3</span>
+                          </div>
+                          <div>
+                            <p className="font-medium" style={{ color: '#F5F5F5' }}>
+                              {language === 'fr' ? 'Connaissement / LTA' : 'Bill of Lading / AWB'}
+                            </p>
+                            <p className="text-xs" style={{ color: '#A0AAB4' }}>
+                              {language === 'fr' ? 'Document de transport maritime ou aérien' : 'Sea or air transport document'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.2)' }}>
+                            <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>4</span>
+                          </div>
+                          <div>
+                            <p className="font-medium" style={{ color: '#F5F5F5' }}>
+                              {language === 'fr' ? 'Déclaration en Douane' : 'Customs Declaration'}
+                            </p>
+                            <p className="text-xs" style={{ color: '#A0AAB4' }}>
+                              {language === 'fr' ? 'Formulaire DAU ou équivalent national' : 'SAD form or national equivalent'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* Documents spécifiques du pays */}
+                        {result.administrative_formalities && result.administrative_formalities.map((form, idx) => (
+                          <div key={idx} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(217,123,45,0.1)', border: '1px solid rgba(217,123,45,0.3)' }}>
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(217,123,45,0.3)' }}>
+                              <span className="font-bold text-sm" style={{ color: '#D97B2D' }}>{5 + idx}</span>
+                            </div>
+                            <div>
+                              <p className="font-medium" style={{ color: '#FBBF24' }}>
+                                {language === 'fr' ? form.document_fr : form.document_en}
+                              </p>
+                              {form.code && (
+                                <p className="text-xs" style={{ color: '#D97B2D' }}>Code: {form.code}</p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Documents ZLECAf */}
+                    <div className="pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                      <h5 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#10b981' }}>
+                        <CheckCircle className="w-4 h-4" style={{ color: '#10b981' }} />
+                        {language === 'fr' ? 'Documents pour Bénéficier du Tarif ZLECAf' : 'Documents to Benefit from AfCFTA Rate'}
+                      </h5>
+                      <div className="grid md:grid-cols-2 gap-3">
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(16,185,129,0.2)' }}>
+                            <CheckCircle className="w-4 h-4" style={{ color: '#10b981' }} />
+                          </div>
+                          <div>
+                            <p className="font-medium" style={{ color: '#10b981' }}>
+                              {language === 'fr' ? 'Certificat d\'Origine ZLECAf' : 'AfCFTA Certificate of Origin'}
+                            </p>
+                            <p className="text-xs" style={{ color: '#6EE7B7' }}>
+                              {language === 'fr' 
+                                ? 'Délivré par l\'autorité compétente du pays exportateur'
+                                : 'Issued by competent authority of exporting country'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(16,185,129,0.2)' }}>
+                            <CheckCircle className="w-4 h-4" style={{ color: '#10b981' }} />
+                          </div>
+                          <div>
+                            <p className="font-medium" style={{ color: '#10b981' }}>
+                              {language === 'fr' ? 'Déclaration du Fournisseur' : 'Supplier Declaration'}
+                            </p>
+                            <p className="text-xs" style={{ color: '#6EE7B7' }}>
+                              {language === 'fr' 
+                                ? 'Attestant l\'origine africaine du produit'
+                                : 'Attesting African origin of the product'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Avantages fiscaux */}
+                      {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
+                        <div className="mt-4 p-4 rounded-lg" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+                          <p className="font-semibold mb-2 flex items-center gap-2" style={{ color: '#10b981' }}>
+                            <Sparkles className="w-4 h-4" />
+                            {language === 'fr' ? 'Avantages obtenus avec ces documents:' : 'Benefits obtained with these documents:'}
+                          </p>
+                          <ul className="space-y-2">
+                            {result.fiscal_advantages.map((adv, idx) => (
+                              <li key={idx} className="flex items-center gap-2 text-sm">
+                                <span className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs" style={{ background: '#10b981' }}>✓</span>
+                                <span style={{ color: '#F5F5F5' }}>{language === 'fr' ? adv.condition_fr : adv.condition_en}</span>
+                                {adv.rate !== undefined && adv.rate === 0 && (
+                                  <Badge className="text-xs ml-auto" style={{ background: 'rgba(16,185,129,0.2)', color: '#10b981' }}>
+                                    {language === 'fr' ? 'Exonération totale' : 'Full exemption'}
+                                  </Badge>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Règles d'origine */}
+                    {result.rules_of_origin && (
+                      <div className="pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <h5 className="font-semibold mb-3 flex items-center gap-2" style={{ color: '#3B82F6' }}>
+                          <Info className="w-4 h-4" style={{ color: '#3B82F6' }} />
+                          {language === 'fr' ? 'Critères d\'Origine à Respecter' : 'Origin Criteria to Meet'}
+                        </h5>
+                        <div className="p-4 rounded-lg" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)' }}>
+                          <div className="grid md:grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-sm mb-1" style={{ color: '#93C5FD' }}>{language === 'fr' ? 'Règle applicable:' : 'Applicable rule:'}</p>
+                              <p className="font-semibold" style={{ color: '#3B82F6' }}>{result.rules_of_origin.rule}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm mb-1" style={{ color: '#93C5FD' }}>{language === 'fr' ? 'Contenu régional minimum:' : 'Minimum regional content:'}</p>
+                              <p className="font-semibold" style={{ color: '#3B82F6' }}>{result.rules_of_origin.regional_content}% {language === 'fr' ? 'africain' : 'African'}</p>
+                            </div>
+                          </div>
+                          <p className="text-sm mt-3 pt-3" style={{ color: '#F5F5F5', borderTop: '1px solid rgba(59,130,246,0.2)' }}>
+                            <span className="font-medium">{language === 'fr' ? 'Exigence:' : 'Requirement:'}</span> {result.rules_of_origin.requirement}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Note importante */}
+                    <div className="mt-4 p-3 rounded-lg text-xs" style={{ background: 'rgba(255,255,255,0.05)', color: '#A0AAB4' }}>
+                      <p className="flex items-start gap-2">
+                        <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                        <span>
+                          {language === 'fr' 
+                            ? 'Ces documents doivent être présentés au moment du dédouanement. Des documents supplémentaires peuvent être requis selon la nature des produits (certificats sanitaires, licences, etc.).'
+                            : 'These documents must be presented at customs clearance. Additional documents may be required depending on the nature of the products (sanitary certificates, licenses, etc.).'}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Information sur la sous-position nationale si utilisée */}
               {result.tariff_precision === 'sub_position' && (
-                <div className="result-section tariff-info-section bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200 shadow-sm">
+                <div className="result-section tariff-info-section p-5 rounded-xl shadow-sm" style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.3)' }}>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6 text-purple-600" />
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(139,92,246,0.2)' }}>
+                      <Package className="w-6 h-6" style={{ color: '#8B5CF6' }} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <h4 className="font-bold text-purple-800">{t.subPositionInfo}</h4>
-                        <Badge className="bg-purple-600 text-white text-xs">{t.precisionHigh}</Badge>
+                        <h4 className="font-bold" style={{ color: '#8B5CF6' }}>{t.subPositionInfo}</h4>
+                        <Badge className="text-xs" style={{ background: '#8B5CF6', color: '#fff' }}>{t.precisionHigh}</Badge>
                       </div>
                       <p className="font-mono text-lg font-bold text-purple-900 mb-1">{result.sub_position_used}</p>
                       {result.sub_position_description && (
@@ -1543,8 +1778,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               </div>
 
-              {/* Bouton pour afficher/masquer le calcul détaillé */}
-              {detailedResult && (
+              {/* Bouton pour afficher/masquer le calcul détaillé - UNIQUEMENT pour données estimées (non authentiques) */}
+              {detailedResult && detailedResult.data_source !== 'authentic_tariff' && (
                 <div className="mt-6">
                   <Button
                     variant="outline"
