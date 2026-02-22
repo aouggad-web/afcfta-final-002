@@ -1867,12 +1867,51 @@ async def smart_search_with_suggestions(
     query_clean = query.strip().replace(".", "").replace(" ", "")
     is_numeric_query = query_clean.isdigit()
     
-    # Search HS6 codes with improved filtering
-    if is_numeric_query:
-        # NUMERIC: filter by prefix only
-        hs6_results = [r for r in search_hs6_codes(query, language, limit=50) if r["code"].startswith(query_clean)][:15]
-    else:
-        hs6_results = search_hs6_codes(query, language, limit=15)
+    # Priorité aux données authentiques du pays partenaire si spécifié
+    hs6_results = []
+    
+    if country_code:
+        # Charger les données authentiques du pays
+        try:
+            from services.authentic_tariff_service import load_country_tariffs
+            country_data = load_country_tariffs(country_code.upper())
+            if country_data and country_data.get("tariff_lines"):
+                tariff_lines = country_data["tariff_lines"]
+                
+                if is_numeric_query:
+                    # Filtrer par préfixe de code
+                    matching = [t for t in tariff_lines if t.get("hs6", "").startswith(query_clean)]
+                else:
+                    # Recherche dans les descriptions
+                    query_lower = query.lower()
+                    matching = []
+                    for t in tariff_lines:
+                        desc_fr = t.get("description_fr", "").lower()
+                        desc_en = t.get("description_en", "").lower()
+                        if query_lower in desc_fr or query_lower in desc_en:
+                            matching.append(t)
+                
+                # Convertir au format attendu
+                for t in matching[:20]:
+                    hs6_code = t.get("hs6", "")
+                    hs6_results.append({
+                        "code": hs6_code,
+                        "description": t.get(f"description_{language}", t.get("description_fr", "")),
+                        "category": t.get("category", ""),
+                        "has_sub_positions": t.get("has_sub_positions", False),
+                        "dd_rate": t.get("dd_rate", 0),
+                        "total_taxes": t.get("total_import_taxes", 0),
+                        "from_authentic": True
+                    })
+        except Exception as e:
+            pass  # Fallback to standard search
+    
+    # Fallback: recherche standard si pas de résultats authentiques
+    if not hs6_results:
+        if is_numeric_query:
+            hs6_results = [r for r in search_hs6_codes(query, language, limit=50) if r["code"].startswith(query_clean)][:15]
+        else:
+            hs6_results = search_hs6_codes(query, language, limit=15)
     
     # Get chapter info
     chapter_info = None
