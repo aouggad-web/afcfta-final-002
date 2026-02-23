@@ -4,6 +4,7 @@ from typing import Optional, List
 from pydantic import BaseModel
 import logging
 import os
+import re
 import csv
 import json
 import io
@@ -435,7 +436,7 @@ async def list_downloads():
         if not has_data:
             countries.append({
                 "code": cc, "name": COUNTRY_NAMES.get(cc, cc),
-                "csv_ready": False, "files": [], "file_count": 0, "total_size_kb": 0,
+                "csv_ready": False, "json_ready": False, "files": [], "file_count": 0, "total_size_kb": 0,
             })
             continue
         first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
@@ -455,10 +456,14 @@ async def list_downloads():
                 "download_url": f"/tariff-data/download/{cc}/{ch_start}-{ch_end}",
             })
             total_size += size_kb
+        json_size_kb = round(os.path.getsize(json_path) / 1024)
         countries.append({
             "code": cc,
             "name": COUNTRY_NAMES.get(cc, cc),
             "csv_ready": True,
+            "json_ready": True,
+            "json_size_kb": json_size_kb,
+            "json_download_url": f"/tariff-data/download-json/{cc}",
             "files": files,
             "file_count": len(files),
             "total_size_kb": total_size,
@@ -515,6 +520,33 @@ async def download_country_zip(country_code: str):
     return StreamingResponse(
         buf,
         media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+def _safe_filename_part(name: str) -> str:
+    return re.sub(r"[^\w\-]", "_", name)
+
+
+@router.get("/download-json/{country_code}")
+async def download_country_json(country_code: str):
+    cc = country_code.upper()
+    json_path = os.path.join(TARIFFS_DIR, f"{cc}_tariffs.json")
+
+    if not os.path.exists(json_path):
+        collector = get_collector()
+        data = collector.collect_country_tariffs(cc)
+        collector.save_country_tariffs(cc, data)
+
+    if not os.path.exists(json_path):
+        raise HTTPException(status_code=404, detail=f"No tariff data for {cc}")
+
+    name = _safe_filename_part(COUNTRY_NAMES.get(cc, cc))
+    filename = f"Tarifs_NPF_{name}_{cc}.json"
+    return FileResponse(
+        json_path,
+        media_type="application/json",
+        filename=filename,
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
