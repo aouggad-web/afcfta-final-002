@@ -104,7 +104,6 @@ function App() {
     };
     return reverseMapping[activeTab] || activeTab;
   };
-  const t = texts[language];
   const t = texts[language] || texts.fr;
 
   useEffect(() => {
@@ -282,83 +281,6 @@ function App() {
       
       {/* Contenu principal */}
       {renderContent()}
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'dashboard': return <DashboardTabNew language={language} />;
-      case 'calculator': return <CalculatorTab countries={countries} language={language} />;
-      case 'statistics': return <StatisticsTab language={language} />;
-      case 'opportunities': return <OpportunitiesTab language={language} />;
-      case 'production': return <ProductionTab language={language} />;
-      case 'logistics': return <LogisticsTab language={language} />;
-      case 'tools': return <ToolsTab language={language} />;
-      case 'rules': return <RulesTab language={language} />;
-      case 'profiles': return <CountryProfilesTab language={language} />;
-      default: return <CalculatorTab countries={countries} language={language} />;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Toaster />
-
-      {/* Header */}
-      <header className="app-header">
-        <div className="app-header-inner">
-          <div className="app-title-group">
-            <div className="app-logo">🌍</div>
-            <div>
-              <div className="app-title">{t.title}</div>
-              <div className="app-subtitle">{t.subtitle}</div>
-              <div className="app-badges">
-                <span className="app-badge">{t.memberCountries}</span>
-                <span className="app-badge">{t.population}</span>
-                <span className="app-badge app-badge-highlight">{t.authenticData}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="lang-switcher">
-            <button
-              className={`lang-btn ${language === 'fr' ? 'active' : ''}`}
-              onClick={() => handleLanguageChange('fr')}
-              data-testid="lang-fr-btn"
-            >
-              FR
-            </button>
-            <button
-              className={`lang-btn ${language === 'en' ? 'active' : ''}`}
-              onClick={() => handleLanguageChange('en')}
-              data-testid="lang-en-btn"
-            >
-              EN
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Navigation Tabs */}
-      <nav className="nav-tabs-wrapper">
-        <div className="nav-tabs-inner">
-          {TABS.map((tab) => (
-            <button
-              key={tab.id}
-              className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-              data-testid={`${tab.id}-tab`}
-            >
-              <span className="nav-tab-icon">{tab.icon}</span>
-              {tab[language] || tab.fr}
-            </button>
-          ))}
-        </div>
-      </nav>
-
-      {/* Content */}
-      <main className="main-content">
-        <div className="tab-panel" key={activeTab}>
-          {renderTabContent()}
-        </div>
-      </main>
     </div>
   );
 }
