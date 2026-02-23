@@ -54,16 +54,6 @@ jobs:
           echo "update_status=$?" >> $GITHUB_OUTPUT
         continue-on-error: true
       
-      - name: Update UN COMTRADE Data
-        env:
-          COMTRADE_API_KEY: ${{ secrets.COMTRADE_API_KEY }}
-          COMTRADE_API_KEY_SECONDARY: ${{ secrets.COMTRADE_API_KEY_SECONDARY }}
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        run: |
-          echo "Updating UN COMTRADE data..."
-          python scripts/update_comtrade_data.py
-        continue-on-error: true
-      
       - name: Check for changes
         id: check_changes
         run: |
@@ -93,8 +83,8 @@ jobs:
 
             ### Changes
             - Updated World Bank data
+            - Updated OEC data
             - Updated production data
-            - Updated UN COMTRADE data
 
             Please review and merge if all checks pass.
 
@@ -114,24 +104,6 @@ jobs:
           echo "## Data Update Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Date:** $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # Add Comtrade API status if available
-          python - >> $GITHUB_STEP_SUMMARY << 'PYEOF' || echo "⚠️ Could not retrieve Comtrade status" >> $GITHUB_STEP_SUMMARY
-import sys
-import os
-sys.path.insert(0, 'backend')
-try:
-    from services.comtrade_service import comtrade_service
-    status = comtrade_service.get_service_status()
-    print('**Comtrade API Status:**')
-    print(f'- Active Key: {status["current_key"]}')
-    print(f'- Calls Today: {status["calls_today"]}/{status["calls_today"] + status["calls_remaining"]}')
-    print(f'- Remaining: {status["calls_remaining"]}')
-except Exception as e:
-    print(f'⚠️ Could not get Comtrade status: {e}')
-PYEOF
-          
           echo "" >> $GITHUB_STEP_SUMMARY
           
           if [ -f data_update_report.json ]; then
