@@ -18,7 +18,6 @@ import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calcula
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
-import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info } from 'lucide-react';
 import TariffDownloads from '../tools/TariffDownloads';
 import './calculator.css';
 
@@ -834,8 +833,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <span>💰</span>
                 <span>{t.detailedResults}</span>
               </CardTitle>
-              <CardDescription style={{ color: '#D4AF37' }} className="font-semibold">
-                {countryFlags[result.origin_country]} {getCountryName(result.origin_country)} → {countryFlags[result.destination_country]} {getCountryName(result.destination_country)}
               <CardDescription className="text-yellow-100 font-semibold flex items-center gap-2 flex-wrap">
                 <span>{getFlag(result.origin_country)} {getCountryName(result.origin_country)} → {getFlag(result.destination_country)} {getCountryName(result.destination_country)}</span>
                 {TRADE_BLOCS[result.destination_country] && (
@@ -1810,8 +1807,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           </Card>
         </div>
       )}
-          </div>
-        </TabsContent>
+                </div>
+            </CardContent>
+          </Card>
+        </div>
+      </TabsContent>
         
         {/* Onglet Comparaison Multi-Pays */}
         <TabsContent value="compare">
