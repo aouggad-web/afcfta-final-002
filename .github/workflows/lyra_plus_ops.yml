@@ -25,10 +25,10 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Python deps (optionnel)
+      - name: Install Python deps
         run: |
           python -m pip install --upgrade pip
-          pip install openpyxl || true
+          pip install -r backend/requirements.txt
 
       - name: Generate datasets (Lyra+ pipeline)
         run: |

@@ -95,6 +95,7 @@ body {
   display: flex;
   gap: 8px;
   margin-top: 10px;
+  flex-wrap: wrap;
 }
 
 .afcfta-badge {
@@ -110,16 +111,42 @@ body {
   font-weight: 600;
 }
 
+
+.afcfta-topbar-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.afcfta-brand {
+  min-width: 260px;
+  flex: 1 1 620px;
+}
+
+.afcfta-lang-switch {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 /* Nav tabs */
 .afcfta-tabs {
   display: flex;
   gap: 8px;
   margin-top: 14px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
 
 .afcfta-tab {
   display: inline-flex;
+  white-space: nowrap;
   align-items: center;
   gap: 6px;
   padding: 8px 12px;
@@ -132,6 +159,7 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: transform .15s ease, border-color .15s ease, background .15s ease, color .15s ease;
+  flex: 0 0 auto;
 }
 
 .afcfta-tab:hover {
@@ -145,6 +173,12 @@ body {
   border-color: rgba(212,175,55,0.35);
   background: var(--goldSoft);
   color: var(--gold);
+}
+
+
+.afcfta-tab:focus-visible {
+  outline: 2px solid rgba(212,175,55,0.75);
+  outline-offset: 2px;
 }
 
 .afcfta-tab svg,
@@ -370,6 +404,9 @@ body {
 }
 
 @media (max-width: 640px) {
+  .afcfta-topbar { padding: 14px 12px; }
+  .afcfta-topbar-head { align-items: stretch; }
+  .afcfta-lang-switch { width: 100%; justify-content: flex-start; }
   .afcfta-grid-4,
   .afcfta-grid-3,
   .afcfta-grid-2 { grid-template-columns: 1fr; }
@@ -530,23 +567,14 @@ body {
   color-scheme: dark;
 }
 
-/* Tout texte dans l'app */
-#root, #root * {
-  color: inherit;
+/* Scope typography rules to app shell to avoid forcing styles globally */
+.afcfta-shell {
+  color: var(--text);
 }
 
-/* Titres / paragraphes - couleur par défaut sur fond sombre */
-h1, h2, h3, h4, h5, h6, p, label, span, small, strong, li {
-  color: #F5F5F5;
-}
-
-/* Les éléments avec style inline doivent prendre leurs couleurs */
-[style*="color"] {
-  color: unset;
-}
-
-.text-muted, .muted, small {
-  color: #A0AAB4 !important;
+.afcfta-shell .text-muted,
+.afcfta-shell .muted {
+  color: var(--muted) !important;
 }
 
 /* ===== CALCULATOR CARDS DARK THEME ===== */
@@ -571,7 +599,7 @@ h1, h2, h3, h4, h5, h6, p, label, span, small, strong, li {
 /* ===== FORM CONTROLS PATCH ===== */
 
 /* Native select */
-select, .afcfta-select {
+.afcfta-shell select, .afcfta-select {
   width: 100%;
   background: #1B232C !important;
   color: #FFFFFF !important;
@@ -586,20 +614,20 @@ select, .afcfta-select {
   background-position: right 12px center;
 }
 
-select:focus, .afcfta-select:focus {
+.afcfta-shell select:focus, .afcfta-select:focus {
   border-color: rgba(212,175,55,0.5) !important;
   box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
 }
 
 /* Options du menu dropdown */
-select option {
+.afcfta-shell select option {
   background: #1B232C !important;
   color: #FFFFFF !important;
   padding: 10px;
 }
 
 /* Inputs */
-input, textarea {
+.afcfta-shell input, .afcfta-shell textarea {
   width: 100%;
   background: #1B232C !important;
   color: #FFFFFF !important;
@@ -610,21 +638,21 @@ input, textarea {
   font-size: 14px;
 }
 
-input:focus, textarea:focus {
+.afcfta-shell input:focus, .afcfta-shell textarea:focus {
   border-color: rgba(212,175,55,0.35) !important;
   box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
 }
 
-input::placeholder, textarea::placeholder {
+.afcfta-shell input::placeholder, .afcfta-shell textarea::placeholder {
   color: #A0AAB4 !important;
 }
 
 /* ===== SHADCN/RADIX SELECT PATCH ===== */
 
 /* Trigger button */
-[data-testid*="select"], 
-[role="combobox"],
-button[data-state] {
+[data-testid*="select"],
+.afcfta-shell [role="combobox"],
+.afcfta-shell [data-radix-collection-item] {
   background: #1B232C !important;
   border: 1px solid rgba(212,175,55,0.25) !important;
   color: #FFFFFF !important;
@@ -632,7 +660,7 @@ button[data-state] {
 }
 
 [data-testid*="select"]:hover,
-[role="combobox"]:hover {
+.afcfta-shell [role="combobox"]:hover {
   border-color: rgba(212,175,55,0.4) !important;
 }
 
@@ -662,6 +690,49 @@ button[data-state] {
 [role="option"][data-state="checked"] {
   background: rgba(212,175,55,0.2) !important;
   color: #D4AF37 !important;
+}
+
+/* Harmonisation des tabs utilitaires avec le thème sombre */
+.afcfta-shell .tabs-list-enhanced,
+.afcfta-shell .tabs-list-boxed,
+.afcfta-shell .tabs-vertical .tabs-list-vertical,
+.afcfta-shell .tabs-list-mini {
+  background: rgba(27,35,44,0.86) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: none !important;
+}
+
+.afcfta-shell .tab-trigger-enhanced,
+.afcfta-shell .tab-trigger-mini,
+.afcfta-shell .tab-trigger-stat {
+  color: var(--muted) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.afcfta-shell .tab-trigger-enhanced:hover,
+.afcfta-shell .tab-trigger-mini:hover,
+.afcfta-shell .tab-trigger-stat:hover {
+  color: var(--text) !important;
+  background: rgba(255,255,255,0.05) !important;
+}
+
+.afcfta-shell .tab-trigger-enhanced[data-state="active"],
+.afcfta-shell .tab-trigger-mini[data-state="active"],
+.afcfta-shell .tab-trigger-stat[data-state="active"] {
+  color: var(--gold) !important;
+  background: var(--goldSoft) !important;
+  border-color: rgba(212,175,55,0.3) !important;
+}
+
+.afcfta-shell .tab-badge {
+  background: rgba(255,255,255,0.08) !important;
+  color: var(--muted) !important;
+}
+
+.afcfta-shell .tab-trigger-enhanced[data-state="active"] .tab-badge {
+  background: rgba(212,175,55,0.18) !important;
+  color: var(--gold) !important;
 }
 
 /* ===== CALCULATOR SPECIFIC ===== */
