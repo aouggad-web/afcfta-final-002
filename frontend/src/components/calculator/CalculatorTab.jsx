@@ -1280,17 +1280,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           <Package className="w-5 h-5" style={{ color: '#8B5CF6' }} />
                         </div>
                         <div>
-                          <h4 className="font-bold text-purple-800">
+                          <h4 className="font-bold" style={{ color: '#A78BFA' }}>
                             {language === 'fr' ? 'Sous-positions disponibles' : 'Available sub-headings'}
                           </h4>
-                          <p className="text-sm text-purple-600">
+                          <p className="text-sm" style={{ color: '#8B5CF6' }}>
                             {language === 'fr' ? 'Cliquez pour sélectionner le taux exact' : 'Click to select exact rate'}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge className="bg-purple-600 text-white">{result.sub_positions_details.length}</Badge>
-                        <Badge className="bg-gradient-to-r from-green-500 to-red-500 text-white text-xs">
+                        <Badge style={{ background: '#8B5CF6', color: '#fff' }}>{result.sub_positions_details.length}</Badge>
+                        <Badge className="text-xs" style={{ background: 'linear-gradient(90deg, #10b981, #EF4444)', color: '#fff' }}>
                           {result.rate_warning.min_rate_pct} → {result.rate_warning.max_rate_pct}
                         </Badge>
                       </div>
@@ -1308,11 +1308,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         return (
                           <div 
                             key={idx} 
-                            className={`sub-position-item p-3 rounded-lg cursor-pointer flex items-center justify-between border transition-all ${
-                              isCurrentRate 
-                                ? 'bg-blue-50 border-blue-300 shadow-sm' 
-                                : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
-                            }`}
+                            className="sub-position-item p-3 rounded-lg cursor-pointer flex items-center justify-between transition-all"
+                            style={{ 
+                              background: isCurrentRate ? 'rgba(59,130,246,0.15)' : 'rgba(255,255,255,0.05)',
+                              border: isCurrentRate ? '1px solid rgba(59,130,246,0.4)' : '1px solid rgba(255,255,255,0.1)'
+                            }}
                             onClick={() => {
                               setHsCode(sp.code);
                               toast({
@@ -1322,24 +1322,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             }}
                           >
                             <div className="flex items-center gap-3 min-w-0 flex-1">
-                              <code className="font-mono font-bold text-purple-800 bg-purple-100 px-2 py-1 rounded text-sm">
+                              <code className="font-mono font-bold px-2 py-1 rounded text-sm" style={{ background: 'rgba(139,92,246,0.2)', color: '#A78BFA' }}>
                                 {sp.code}
                               </code>
-                              <span className="text-gray-700 text-sm truncate">
+                              <span className="text-sm truncate" style={{ color: '#F5F5F5' }}>
                                 {language === 'fr' ? sp.description_fr : sp.description_en}
                               </span>
                             </div>
                             <div className="flex items-center gap-2 flex-shrink-0 ml-3">
                               {isCurrentRate && (
-                                <Badge className="bg-blue-100 text-blue-700 text-xs">
+                                <Badge className="text-xs" style={{ background: 'rgba(59,130,246,0.2)', color: '#60A5FA' }}>
                                   {language === 'fr' ? 'Actuel' : 'Current'}
                                 </Badge>
                               )}
-                              <Badge className={`text-white font-bold px-3 ${
-                                isMinRate ? 'bg-green-500' :
-                                isMaxRate ? 'bg-red-500' :
-                                isCurrentRate ? 'bg-blue-500' : 'bg-gray-500'
-                              }`}>
+                              <Badge className="font-bold px-3" style={{ 
+                                background: isMinRate ? '#10b981' : isMaxRate ? '#EF4444' : isCurrentRate ? '#3B82F6' : '#6B7280',
+                                color: '#fff'
+                              }}>
                                 {sp.dd_rate_pct}
                               </Badge>
                             </div>
@@ -1353,26 +1352,26 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               
               {/* Badge tarif par chapitre si pas de SH6 spécifique */}
               {result.tariff_precision === 'chapter' && (
-                <div className="result-section tariff-info-section bg-gray-50 p-4 rounded-xl border border-gray-200 shadow-sm">
+                <div className="result-section tariff-info-section p-4 rounded-xl shadow-sm" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <Package className="w-5 h-5 text-gray-500" />
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                      <Package className="w-5 h-5" style={{ color: '#A0AAB4' }} />
                     </div>
                     <div className="flex-1">
-                      <span className="text-sm text-gray-600">{t.chapterTariffApplied}</span>
+                      <span className="text-sm" style={{ color: '#A0AAB4' }}>{t.chapterTariffApplied}</span>
                     </div>
                     <div className="flex gap-2">
-                      <Badge variant="outline" className="text-gray-600">{t.sectorPrefix} {result.hs_code?.substring(0, 2)}</Badge>
-                      <Badge variant="outline" className="text-amber-600 border-amber-300">{t.precisionMedium}</Badge>
+                      <Badge variant="outline" style={{ color: '#A0AAB4', borderColor: 'rgba(255,255,255,0.2)' }}>{t.sectorPrefix} {result.hs_code?.substring(0, 2)}</Badge>
+                      <Badge variant="outline" style={{ color: '#F59E0B', borderColor: 'rgba(245,158,11,0.4)' }}>{t.precisionMedium}</Badge>
                     </div>
                   </div>
                 </div>
               )}
 
               {/* Graphique comparaison complète avec TOUTES les taxes */}
-              <div className="chart-container result-section bg-white p-5 rounded-xl shadow-md border border-gray-100">
-                <h4 className="font-bold text-lg mb-4 text-gray-800 flex items-center gap-2">
-                  <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">📊</span>
+              <div className="chart-container result-section p-5 rounded-xl shadow-md" style={{ background: '#1B232C', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <h4 className="font-bold text-lg mb-4 flex items-center gap-2" style={{ color: '#F5F5F5' }}>
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.2)' }}>📊</span>
                   {t.completeComparison}
                 </h4>
                 <ResponsiveContainer width="100%" height={280} debounce={300}>
