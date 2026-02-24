@@ -196,8 +196,6 @@ export function TaxDistributionPieChart({ taxes, cifValue, regime, language = 'f
                   outerRadius={100}
                   paddingAngle={2}
                   dataKey="value"
-                  label={({ name, percentage }) => `${name}: ${percentage}%`}
-                  labelLine={false}
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />

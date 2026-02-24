@@ -409,14 +409,13 @@ function ProductionAgriculture({ language = 'fr' }) {
                             outerRadius={120}
                             paddingAngle={2}
                             dataKey="value"
-                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                            labelLine={false}
                           >
                             {prepareCountryChartData().slice(0, 6).map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.fill} />
                             ))}
                           </Pie>
                           <Tooltip formatter={(value) => formatNumber(value) + ' ' + t.tonnes} />
+                          <Legend />
                         </PieChart>
                       </ResponsiveContainer>
                     </CardContent>
