@@ -1303,19 +1303,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         <h4 className="font-bold" style={{ color: '#8B5CF6' }}>{t.subPositionInfo}</h4>
                         <Badge className="text-xs" style={{ background: '#8B5CF6', color: '#fff' }}>{t.precisionHigh}</Badge>
                       </div>
-                      <p className="font-mono text-lg font-bold text-purple-900 mb-1">{result.sub_position_used}</p>
+                      <p className="font-mono text-lg font-bold mb-1" style={{ color: '#A78BFA' }}>{result.sub_position_used}</p>
                       {result.sub_position_description && (
-                        <p className="text-gray-600 text-sm">{result.sub_position_description}</p>
+                        <p className="text-sm" style={{ color: '#A0AAB4' }}>{result.sub_position_description}</p>
                       )}
                     </div>
                     <div className="grid grid-cols-2 gap-2 flex-shrink-0">
-                      <div className="bg-red-50 p-3 rounded-lg text-center border border-red-100">
-                        <p className="text-xs text-red-500 font-medium">{t.normalRate}</p>
-                        <p className="font-bold text-red-600 text-lg">{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
+                      <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
+                        <p className="text-xs font-medium" style={{ color: '#F87171' }}>{t.normalRate}</p>
+                        <p className="font-bold text-lg" style={{ color: '#EF4444' }}>{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
                       </div>
-                      <div className="bg-green-50 p-3 rounded-lg text-center border border-green-100">
-                        <p className="text-xs text-green-500 font-medium">{t.zlecafRate}</p>
-                        <p className="font-bold text-green-600 text-lg">{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
+                      <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                        <p className="text-xs font-medium" style={{ color: '#34D399' }}>{t.zlecafRate}</p>
+                        <p className="font-bold text-lg" style={{ color: '#10b981' }}>{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
                       </div>
                     </div>
                   </div>
@@ -1402,32 +1402,32 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
               {/* Information sur le tarif SH6 précis */}
               {result.tariff_precision === 'hs6_country' && (
-                <div className="result-section tariff-info-section bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-xl border border-blue-200 shadow-sm">
+                <div className="result-section tariff-info-section p-5 rounded-xl shadow-sm" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)' }}>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6 text-blue-600" />
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.2)' }}>
+                      <Package className="w-6 h-6" style={{ color: '#3B82F6' }} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <h4 className="font-bold text-blue-800">{t.hs6TariffInfo}</h4>
-                        <Badge className="bg-blue-600 text-white text-xs">{t.hs6TariffApplied}</Badge>
+                        <h4 className="font-bold" style={{ color: '#3B82F6' }}>{t.hs6TariffInfo}</h4>
+                        <Badge className="text-xs" style={{ background: '#3B82F6', color: '#fff' }}>{t.hs6TariffApplied}</Badge>
                       </div>
-                      <p className="font-semibold text-gray-800">{hs6TariffInfo?.description || `Code ${result.hs6_code}`}</p>
-                      <p className="text-blue-600 text-sm font-mono mt-1">Code: {result.hs6_code}</p>
+                      <p className="font-semibold" style={{ color: '#F5F5F5' }}>{hs6TariffInfo?.description || `Code ${result.hs6_code}`}</p>
+                      <p className="text-sm font-mono mt-1" style={{ color: '#60A5FA' }}>Code: {result.hs6_code}</p>
                     </div>
                     <div className="grid grid-cols-2 gap-2 flex-shrink-0">
-                      <div className="bg-red-50 p-3 rounded-lg text-center border border-red-100">
-                        <p className="text-xs text-red-500 font-medium">{t.normalRate}</p>
-                        <p className="font-bold text-red-600 text-lg">{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
+                      <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
+                        <p className="text-xs font-medium" style={{ color: '#F87171' }}>{t.normalRate}</p>
+                        <p className="font-bold text-lg" style={{ color: '#EF4444' }}>{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
                       </div>
-                      <div className="bg-green-50 p-3 rounded-lg text-center border border-green-100">
-                        <p className="text-xs text-green-500 font-medium">{t.zlecafRate}</p>
-                        <p className="font-bold text-green-600 text-lg">{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
+                      <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                        <p className="text-xs font-medium" style={{ color: '#34D399' }}>{t.zlecafRate}</p>
+                        <p className="font-bold text-lg" style={{ color: '#10b981' }}>{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
                       </div>
                     </div>
                   </div>
                   {result.available_sub_positions_count > 0 && !result.rate_warning?.has_variation && (
-                    <p className="text-xs text-blue-600 mt-3 pl-16">
+                    <p className="text-xs mt-3 pl-16" style={{ color: '#60A5FA' }}>
                       {result.available_sub_positions_count} {t.subPositionsAvailable}
                     </p>
                   )}
@@ -1437,18 +1437,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               {/* WARNING: Taux variables selon sous-positions nationales */}
               {result.rate_warning && result.rate_warning.has_variation && (
                 <div 
-                  className="rate-warning-box bg-gradient-to-r from-amber-50 via-orange-50 to-yellow-50 p-5 rounded-xl border-l-4 border-amber-500 shadow-lg" 
+                  className="rate-warning-box p-5 rounded-xl shadow-lg" 
+                  style={{ background: 'rgba(245,158,11,0.15)', borderLeft: '4px solid #F59E0B' }}
                   data-testid="rate-warning-box"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
-                      <AlertTriangle className="w-6 h-6 text-amber-600" />
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.2)' }}>
+                      <AlertTriangle className="w-6 h-6" style={{ color: '#F59E0B' }} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-bold text-lg text-amber-800 mb-2">
+                      <h4 className="font-bold text-lg mb-2" style={{ color: '#FBBF24' }}>
                         {language === 'fr' ? 'Attention: Taux de droits variables' : 'Warning: Variable duty rates'}
                       </h4>
-                      <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                      <p className="text-sm leading-relaxed mb-4" style={{ color: '#F5F5F5' }}>
                         {language === 'fr' 
                           ? `Ce code SH6 (${result.hs6_code}) comporte plusieurs sous-positions nationales avec des taux différents.`
                           : `This HS6 code (${result.hs6_code}) has multiple national sub-headings with different rates.`}
@@ -1456,28 +1457,28 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       
                       {/* Visualisation des taux min/max/utilisé */}
                       <div className="grid grid-cols-3 gap-3 mb-4">
-                        <div className="rate-card bg-green-50 p-3 rounded-lg text-center border border-green-200 shadow-sm">
-                          <p className="text-xs text-green-600 font-medium uppercase tracking-wide">{language === 'fr' ? 'Minimum' : 'Minimum'}</p>
-                          <p className="text-2xl font-bold text-green-700 mt-1">{result.rate_warning.min_rate_pct}</p>
+                        <div className="rate-card p-3 rounded-lg text-center shadow-sm" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                          <p className="text-xs font-medium uppercase tracking-wide" style={{ color: '#34D399' }}>{language === 'fr' ? 'Minimum' : 'Minimum'}</p>
+                          <p className="text-2xl font-bold mt-1" style={{ color: '#10b981' }}>{result.rate_warning.min_rate_pct}</p>
                         </div>
-                        <div className="rate-card bg-blue-50 p-3 rounded-lg text-center border-2 border-blue-400 shadow-md relative">
+                        <div className="rate-card p-3 rounded-lg text-center shadow-md relative" style={{ background: 'rgba(59,130,246,0.15)', border: '2px solid #3B82F6' }}>
                           <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                            <Badge className="bg-blue-600 text-white text-xs px-2">
+                            <Badge className="text-xs px-2" style={{ background: '#3B82F6', color: '#fff' }}>
                               {language === 'fr' ? 'Utilisé' : 'Used'}
                             </Badge>
                           </div>
-                          <p className="text-xs text-blue-600 font-medium uppercase tracking-wide mt-2">{language === 'fr' ? 'Actuel' : 'Current'}</p>
-                          <p className="text-2xl font-bold text-blue-700 mt-1">{result.rate_warning.rate_used_pct}</p>
+                          <p className="text-xs font-medium uppercase tracking-wide mt-2" style={{ color: '#60A5FA' }}>{language === 'fr' ? 'Actuel' : 'Current'}</p>
+                          <p className="text-2xl font-bold mt-1" style={{ color: '#3B82F6' }}>{result.rate_warning.rate_used_pct}</p>
                         </div>
-                        <div className="rate-card bg-red-50 p-3 rounded-lg text-center border border-red-200 shadow-sm">
-                          <p className="text-xs text-red-600 font-medium uppercase tracking-wide">{language === 'fr' ? 'Maximum' : 'Maximum'}</p>
-                          <p className="text-2xl font-bold text-red-700 mt-1">{result.rate_warning.max_rate_pct}</p>
+                        <div className="rate-card p-3 rounded-lg text-center shadow-sm" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
+                          <p className="text-xs font-medium uppercase tracking-wide" style={{ color: '#F87171' }}>{language === 'fr' ? 'Maximum' : 'Maximum'}</p>
+                          <p className="text-2xl font-bold mt-1" style={{ color: '#EF4444' }}>{result.rate_warning.max_rate_pct}</p>
                         </div>
                       </div>
                       
-                      <div className="flex items-start gap-2 bg-amber-100/50 p-3 rounded-lg">
-                        <Info className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                        <p className="text-sm text-amber-800">
+                      <div className="flex items-start gap-2 p-3 rounded-lg" style={{ background: 'rgba(245,158,11,0.1)' }}>
+                        <Info className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#F59E0B' }} />
+                        <p className="text-sm" style={{ color: '#FBBF24' }}>
                           {language === 'fr' 
                             ? 'Pour un calcul précis, sélectionnez la sous-position correspondant exactement à votre produit ci-dessous.'
                             : 'For an accurate calculation, select the sub-heading that exactly matches your product below.'}
@@ -1490,28 +1491,29 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
               {/* Sous-positions détaillées - Affiché uniquement si taux variables */}
               {result.sub_positions_details && result.sub_positions_details.length > 0 && result.rate_warning?.has_variation && (
-                <div className="result-section bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="result-section rounded-xl shadow-sm overflow-hidden" style={{ background: '#1B232C', border: '1px solid rgba(139,92,246,0.3)' }}>
                   <div 
-                    className="p-4 bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-purple-100 cursor-pointer"
+                    className="p-4 cursor-pointer" 
+                    style={{ background: 'rgba(139,92,246,0.15)', borderBottom: '1px solid rgba(139,92,246,0.2)' }}
                     onClick={() => document.getElementById('sub-positions-details')?.toggleAttribute('open')}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                          <Package className="w-5 h-5 text-purple-600" />
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(139,92,246,0.2)' }}>
+                          <Package className="w-5 h-5" style={{ color: '#8B5CF6' }} />
                         </div>
                         <div>
-                          <h4 className="font-bold text-purple-800">
+                          <h4 className="font-bold" style={{ color: '#A78BFA' }}>
                             {language === 'fr' ? 'Sous-positions disponibles' : 'Available sub-headings'}
                           </h4>
-                          <p className="text-sm text-purple-600">
+                          <p className="text-sm" style={{ color: '#8B5CF6' }}>
                             {language === 'fr' ? 'Cliquez pour sélectionner le taux exact' : 'Click to select exact rate'}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge className="bg-purple-600 text-white">{result.sub_positions_details.length}</Badge>
-                        <Badge className="bg-gradient-to-r from-green-500 to-red-500 text-white text-xs">
+                        <Badge style={{ background: '#8B5CF6', color: '#fff' }}>{result.sub_positions_details.length}</Badge>
+                        <Badge className="text-xs" style={{ background: 'linear-gradient(90deg, #10b981, #EF4444)', color: '#fff' }}>
                           {result.rate_warning.min_rate_pct} → {result.rate_warning.max_rate_pct}
                         </Badge>
                       </div>
@@ -1529,11 +1531,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         return (
                           <div 
                             key={idx} 
-                            className={`sub-position-item p-3 rounded-lg cursor-pointer flex items-center justify-between border transition-all ${
-                              isCurrentRate 
-                                ? 'bg-blue-50 border-blue-300 shadow-sm' 
-                                : 'bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50'
-                            }`}
+                            className="sub-position-item p-3 rounded-lg cursor-pointer flex items-center justify-between transition-all"
+                            style={{ 
+                              background: isCurrentRate ? 'rgba(59,130,246,0.15)' : 'rgba(255,255,255,0.05)',
+                              border: isCurrentRate ? '1px solid rgba(59,130,246,0.4)' : '1px solid rgba(255,255,255,0.1)'
+                            }}
                             onClick={() => {
                               setHsCode(sp.code);
                               toast({
@@ -1543,24 +1545,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             }}
                           >
                             <div className="flex items-center gap-3 min-w-0 flex-1">
-                              <code className="font-mono font-bold text-purple-800 bg-purple-100 px-2 py-1 rounded text-sm">
+                              <code className="font-mono font-bold px-2 py-1 rounded text-sm" style={{ background: 'rgba(139,92,246,0.2)', color: '#A78BFA' }}>
                                 {sp.code}
                               </code>
-                              <span className="text-gray-700 text-sm truncate">
+                              <span className="text-sm truncate" style={{ color: '#F5F5F5' }}>
                                 {language === 'fr' ? sp.description_fr : sp.description_en}
                               </span>
                             </div>
                             <div className="flex items-center gap-2 flex-shrink-0 ml-3">
                               {isCurrentRate && (
-                                <Badge className="bg-blue-100 text-blue-700 text-xs">
+                                <Badge className="text-xs" style={{ background: 'rgba(59,130,246,0.2)', color: '#60A5FA' }}>
                                   {language === 'fr' ? 'Actuel' : 'Current'}
                                 </Badge>
                               )}
-                              <Badge className={`text-white font-bold px-3 ${
-                                isMinRate ? 'bg-green-500' :
-                                isMaxRate ? 'bg-red-500' :
-                                isCurrentRate ? 'bg-blue-500' : 'bg-gray-500'
-                              }`}>
+                              <Badge className="font-bold px-3" style={{ 
+                                background: isMinRate ? '#10b981' : isMaxRate ? '#EF4444' : isCurrentRate ? '#3B82F6' : '#6B7280',
+                                color: '#fff'
+                              }}>
                                 {sp.dd_rate_pct}
                               </Badge>
                             </div>
@@ -1574,26 +1575,26 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               
               {/* Badge tarif par chapitre si pas de SH6 spécifique */}
               {result.tariff_precision === 'chapter' && (
-                <div className="result-section tariff-info-section bg-gray-50 p-4 rounded-xl border border-gray-200 shadow-sm">
+                <div className="result-section tariff-info-section p-4 rounded-xl shadow-sm" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <Package className="w-5 h-5 text-gray-500" />
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                      <Package className="w-5 h-5" style={{ color: '#A0AAB4' }} />
                     </div>
                     <div className="flex-1">
-                      <span className="text-sm text-gray-600">{t.chapterTariffApplied}</span>
+                      <span className="text-sm" style={{ color: '#A0AAB4' }}>{t.chapterTariffApplied}</span>
                     </div>
                     <div className="flex gap-2">
-                      <Badge variant="outline" className="text-gray-600">{t.sectorPrefix} {result.hs_code?.substring(0, 2)}</Badge>
-                      <Badge variant="outline" className="text-amber-600 border-amber-300">{t.precisionMedium}</Badge>
+                      <Badge variant="outline" style={{ color: '#A0AAB4', borderColor: 'rgba(255,255,255,0.2)' }}>{t.sectorPrefix} {result.hs_code?.substring(0, 2)}</Badge>
+                      <Badge variant="outline" style={{ color: '#F59E0B', borderColor: 'rgba(245,158,11,0.4)' }}>{t.precisionMedium}</Badge>
                     </div>
                   </div>
                 </div>
               )}
 
               {/* Graphique comparaison complète avec TOUTES les taxes */}
-              <div className="chart-container result-section bg-white p-5 rounded-xl shadow-md border border-gray-100">
-                <h4 className="font-bold text-lg mb-4 text-gray-800 flex items-center gap-2">
-                  <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">📊</span>
+              <div className="chart-container result-section p-5 rounded-xl shadow-md" style={{ background: '#1B232C', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <h4 className="font-bold text-lg mb-4 flex items-center gap-2" style={{ color: '#F5F5F5' }}>
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.2)' }}>📊</span>
                   {t.completeComparison}
                 </h4>
                 <ResponsiveContainer width="100%" height={280} debounce={300}>
@@ -1614,10 +1615,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     }
                   ]}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => formatCurrency(value)} />
-                    <Legend />
+                    <XAxis dataKey="name" tick={{ fill: '#A0AAB4' }} />
+                    <YAxis tick={{ fill: '#A0AAB4' }} />
+                    <Tooltip formatter={(value) => formatCurrency(value)} contentStyle={{ background: '#1B232C', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px' }} labelStyle={{ color: '#F5F5F5' }} />
+                    <Legend wrapperStyle={{ color: '#F5F5F5' }} />
                     <Bar dataKey={t.merchandiseValue} stackId="a" fill="#60a5fa" />
                     <Bar dataKey={t.customsDuties} stackId="a" fill="#ef4444" />
                     <Bar dataKey={t.vat} stackId="a" fill="#f59e0b" />
@@ -1627,35 +1628,35 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </div>
 
               {/* Économies TOTALES */}
-              <div className="savings-section result-section text-center bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 p-6 rounded-xl shadow-lg border border-green-200">
-                <p className="text-base font-semibold text-gray-600 mb-3">{t.totalSavings}</p>
-                <p className="text-4xl md:text-5xl font-extrabold text-green-600 mb-4">
+              <div className="savings-section result-section text-center p-6 rounded-xl shadow-lg" style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.15))', border: '1px solid rgba(16,185,129,0.3)' }}>
+                <p className="text-base font-semibold mb-3" style={{ color: '#A0AAB4' }}>{t.totalSavings}</p>
+                <p className="text-4xl md:text-5xl font-extrabold mb-4" style={{ color: '#10b981' }}>
                   {formatCurrency(result.total_savings_with_taxes)}
                 </p>
-                <div className="inline-flex items-center gap-2 bg-green-600 text-white px-5 py-2 rounded-full shadow-md">
+                <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full shadow-md" style={{ background: '#10b981', color: '#fff' }}>
                   <Sparkles className="w-5 h-5" />
                   <span className="text-xl font-bold">{result.total_savings_percentage.toFixed(1)}%</span>
                   <span className="text-sm opacity-90">{t.totalSavingsPercent}</span>
                 </div>
-                <Progress value={result.total_savings_percentage} className="w-full mt-5 h-2 bg-green-100" />
-                <p className="text-sm text-gray-500 mt-4">
-                  {t.totalCostComparison} <span className="font-semibold text-red-600">{formatCurrency(result.normal_total_cost)}</span> (NPF) 
+                <Progress value={result.total_savings_percentage} className="w-full mt-5 h-2" style={{ background: 'rgba(16,185,129,0.2)' }} />
+                <p className="text-sm mt-4" style={{ color: '#A0AAB4' }}>
+                  {t.totalCostComparison} <span className="font-semibold" style={{ color: '#EF4444' }}>{formatCurrency(result.normal_total_cost)}</span> (NPF) 
                   {' '}{t.vs}{' '}
-                  <span className="font-semibold text-green-600">{formatCurrency(result.zlecaf_total_cost)}</span> (ZLECAf)
+                  <span className="font-semibold" style={{ color: '#10b981' }}>{formatCurrency(result.zlecaf_total_cost)}</span> (ZLECAf)
                 </p>
               </div>
 
               {/* Journal de calcul détaillé */}
               {result.normal_calculation_journal && (
-                <Card className="journal-container result-section shadow-md border-0 overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-slate-50 to-gray-50 border-b border-gray-100 py-4">
-                    <CardTitle className="text-lg font-bold text-gray-800 flex items-center gap-3">
-                      <div className="w-9 h-9 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <Package className="w-5 h-5 text-purple-600" />
+                <Card className="journal-container result-section shadow-md border-0 overflow-hidden" style={{ background: '#1B232C' }}>
+                  <CardHeader className="py-4" style={{ background: 'rgba(139,92,246,0.1)', borderBottom: '1px solid rgba(139,92,246,0.2)' }}>
+                    <CardTitle className="text-lg font-bold flex items-center gap-3" style={{ color: '#F5F5F5' }}>
+                      <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'rgba(139,92,246,0.2)' }}>
+                        <Package className="w-5 h-5" style={{ color: '#8B5CF6' }} />
                       </div>
                       {t.calculationJournal}
                     </CardTitle>
-                    <CardDescription className="text-gray-500 text-sm mt-1">
+                    <CardDescription className="text-sm mt-1" style={{ color: '#A0AAB4' }}>
                       {result.computation_order_ref}
                     </CardDescription>
                   </CardHeader>
@@ -1663,32 +1664,32 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <div className="overflow-x-auto">
                       <Table>
                         <TableHeader>
-                          <TableRow>
-                            <TableHead>{t.step}</TableHead>
-                            <TableHead>{t.component}</TableHead>
-                            <TableHead>{t.base}</TableHead>
-                            <TableHead>{t.rate}</TableHead>
-                            <TableHead>{t.amount}</TableHead>
-                            <TableHead>{t.cumulative}</TableHead>
-                            <TableHead>{t.legalRef}</TableHead>
+                          <TableRow style={{ background: 'rgba(255,255,255,0.05)' }}>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.step}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.component}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.base}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.rate}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.amount}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.cumulative}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.legalRef}</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {result.normal_calculation_journal.map((entry, index) => (
-                            <TableRow key={index} className={index % 2 === 0 ? 'bg-gray-50' : ''}>
-                              <TableCell className="font-bold">{entry.step}</TableCell>
-                              <TableCell className="font-semibold">{entry.component}</TableCell>
-                              <TableCell>{formatCurrency(entry.base)}</TableCell>
-                              <TableCell className="font-semibold text-red-600">{entry.rate}</TableCell>
-                              <TableCell className="font-bold text-blue-600">{formatCurrency(entry.amount)}</TableCell>
-                              <TableCell className="font-bold">{formatCurrency(entry.cumulative)}</TableCell>
+                            <TableRow key={index} style={{ background: index % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
+                              <TableCell className="font-bold" style={{ color: '#F5F5F5' }}>{entry.step}</TableCell>
+                              <TableCell className="font-semibold" style={{ color: '#F5F5F5' }}>{entry.component}</TableCell>
+                              <TableCell style={{ color: '#F5F5F5' }}>{formatCurrency(entry.base)}</TableCell>
+                              <TableCell className="font-semibold" style={{ color: '#EF4444' }}>{entry.rate}</TableCell>
+                              <TableCell className="font-bold" style={{ color: '#3B82F6' }}>{formatCurrency(entry.amount)}</TableCell>
+                              <TableCell className="font-bold" style={{ color: '#F5F5F5' }}>{formatCurrency(entry.cumulative)}</TableCell>
                               <TableCell className="text-xs">
                                 {entry.legal_ref_url ? (
-                                  <a href={entry.legal_ref_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                                  <a href={entry.legal_ref_url} target="_blank" rel="noopener noreferrer" style={{ color: '#60A5FA' }} className="hover:underline">
                                     {entry.legal_ref}
                                   </a>
                                 ) : (
-                                  entry.legal_ref || '-'
+                                  <span style={{ color: '#A0AAB4' }}>{entry.legal_ref || '-'}</span>
                                 )}
                               </TableCell>
                             </TableRow>
@@ -1701,23 +1702,24 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               )}
 
               {/* Règles d'origine avec style africain */}
-              <div className="bg-gradient-to-r from-amber-100 to-orange-100 p-6 rounded-xl border-l-4 border-orange-500 shadow-lg">
-                <h4 className="font-bold text-xl text-orange-800 mb-3 flex items-center gap-2">
+              <div className="p-6 rounded-xl shadow-lg" style={{ background: 'rgba(217,123,45,0.15)', borderLeft: '4px solid #D97B2D' }}>
+                <h4 className="font-bold text-xl mb-3 flex items-center gap-2" style={{ color: '#FBBF24' }}>
                   <span>📜</span> {t.rulesOrigin}
                 </h4>
-                <div className="bg-white p-4 rounded-lg space-y-2">
-                  <p className="text-sm text-amber-800 font-semibold">
-                    <strong className="text-orange-600">{t.ruleType}:</strong> {result.rules_of_origin.rule}
+                <div className="p-4 rounded-lg space-y-2" style={{ background: 'rgba(0,0,0,0.2)' }}>
+                  <p className="text-sm font-semibold" style={{ color: '#F5F5F5' }}>
+                    <strong style={{ color: '#D97B2D' }}>{t.ruleType}:</strong> {result.rules_of_origin.rule}
                   </p>
-                  <p className="text-sm text-amber-800 font-semibold">
-                    <strong className="text-orange-600">{t.requirement}:</strong> {result.rules_of_origin.requirement}
+                  <p className="text-sm font-semibold" style={{ color: '#F5F5F5' }}>
+                    <strong style={{ color: '#D97B2D' }}>{t.requirement}:</strong> {result.rules_of_origin.requirement}
                   </p>
                   <div className="mt-3">
                     <Progress 
                       value={result.rules_of_origin.regional_content} 
                       className="w-full h-3"
+                      style={{ background: 'rgba(217,123,45,0.2)' }}
                     />
-                    <p className="text-sm text-amber-700 mt-2 font-bold text-center">
+                    <p className="text-sm mt-2 font-bold text-center" style={{ color: '#FBBF24' }}>
                       🌍 {t.minRegionalContent}: {result.rules_of_origin.regional_content}% {t.african}
                     </p>
                   </div>
@@ -1730,11 +1732,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <Button
                     variant="outline"
                     onClick={() => setShowDetailedBreakdown(!showDetailedBreakdown)}
-                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-purple-200 hover:bg-purple-50"
+                    className="w-full flex items-center justify-center gap-2 py-3"
+                    style={{ background: 'rgba(139,92,246,0.1)', border: '2px solid rgba(139,92,246,0.4)', color: '#A78BFA' }}
                     data-testid="toggle-detailed-breakdown"
                   >
-                    <Calculator className="h-5 w-5 text-purple-600" />
-                    <span className="font-semibold text-purple-700">
+                    <Calculator className="h-5 w-5" style={{ color: '#8B5CF6' }} />
+                    <span className="font-semibold">
                       {showDetailedBreakdown 
                         ? (language === 'fr' ? 'Masquer le Détail du Calcul' : 'Hide Calculation Details')
                         : (language === 'fr' ? 'Voir le Détail du Calcul NPF vs ZLECAf' : 'View NPF vs AfCFTA Calculation Details')}
