@@ -97,7 +97,7 @@ export default function LogisticsTab({ language = 'fr' }) {
         </Tabs>
 
         {/* Data Sources - Compact footer */}
-        <Card className="bg-gradient-to-r from-slate-50 to-gray-50 border-0 shadow-sm mt-6">
+        <Card className="border-0 shadow-sm mt-6" style={{background:'rgba(27,35,44,0.7)'}}>
           <CardContent className="py-4">
             <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-gray-500">
               <span className="flex items-center gap-1">

@@ -126,12 +126,12 @@ export default function StatisticsTab({ language = 'fr' }) {
             {statistics && statistics.top_exporters_2024 && statistics.top_importers_2024 && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card className="shadow-xl" data-testid="top-exporters-chart">
-                  <CardHeader className="bg-gradient-to-r from-emerald-50 to-green-100 pb-2">
-                    <CardTitle className="text-lg font-bold text-emerald-700 flex items-center gap-2">
+                  <CardHeader className="afcfta-dark-gradient pb-2" style={{borderBottom:'1px solid rgba(52,211,153,0.2)'}}>
+                    <CardTitle className="text-lg font-bold text-emerald-400 flex items-center gap-2">
                       <TrendingUp className="h-5 w-5" />
                       {txt.topExporters}
                     </CardTitle>
-                    <CardDescription className="text-emerald-600 text-xs">
+                    <CardDescription className="text-emerald-400 text-xs">
                       {txt.exportsEvolution}
                     </CardDescription>
                   </CardHeader>
@@ -170,12 +170,12 @@ export default function StatisticsTab({ language = 'fr' }) {
                 </Card>
 
                 <Card className="shadow-xl" data-testid="top-importers-chart">
-                  <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-100 pb-2">
-                    <CardTitle className="text-lg font-bold text-blue-700 flex items-center gap-2">
+                  <CardHeader className="afcfta-dark-gradient pb-2" style={{borderBottom:'1px solid rgba(96,165,250,0.2)'}}>
+                    <CardTitle className="text-lg font-bold text-blue-400 flex items-center gap-2">
                       <TrendingUp className="h-5 w-5 rotate-180" />
                       {txt.topImporters}
                     </CardTitle>
-                    <CardDescription className="text-blue-600 text-xs">
+                    <CardDescription className="text-blue-400 text-xs">
                       {txt.importsVolume}
                     </CardDescription>
                   </CardHeader>

@@ -119,28 +119,28 @@ export default function MonitoringDashboard({ language = 'fr' }) {
 
   return (
     <div className="space-y-6">
-      <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <Card className="afcfta-dark-gradient border-2" style={{borderColor:'rgba(96,165,250,0.3)'}}>
         <CardHeader>
-          <CardTitle className="text-2xl text-blue-800">{t.title}</CardTitle>
+          <CardTitle className="text-2xl text-blue-400">{t.title}</CardTitle>
           <CardDescription>{t.subtitle}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white rounded-xl p-4 shadow text-center">
-              <div className="text-3xl font-bold text-blue-600">{stats?.country_count || 0}</div>
-              <div className="text-sm text-gray-500">{t.totalCountries}</div>
+            <div className="rounded-xl p-4 shadow text-center" style={{background:'rgba(255,255,255,0.06)'}}>
+              <div className="text-3xl font-bold text-blue-400">{stats?.country_count || 0}</div>
+              <div className="text-sm" style={{color:'var(--afcfta-muted)'}}>{t.totalCountries}</div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow text-center">
-              <div className="text-3xl font-bold text-green-600">{formatNumber(stats?.total_tariff_lines)}</div>
-              <div className="text-sm text-gray-500">{t.totalLines}</div>
+            <div className="rounded-xl p-4 shadow text-center" style={{background:'rgba(255,255,255,0.06)'}}>
+              <div className="text-3xl font-bold text-green-400">{formatNumber(stats?.total_tariff_lines)}</div>
+              <div className="text-sm" style={{color:'var(--afcfta-muted)'}}>{t.totalLines}</div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow text-center">
-              <div className="text-3xl font-bold text-purple-600">{formatNumber(stats?.total_sub_positions)}</div>
-              <div className="text-sm text-gray-500">{t.totalSub}</div>
+            <div className="rounded-xl p-4 shadow text-center" style={{background:'rgba(255,255,255,0.06)'}}>
+              <div className="text-3xl font-bold text-purple-400">{formatNumber(stats?.total_sub_positions)}</div>
+              <div className="text-sm" style={{color:'var(--afcfta-muted)'}}>{t.totalSub}</div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow text-center">
-              <div className="text-3xl font-bold text-orange-600">{formatNumber(stats?.total_positions)}</div>
-              <div className="text-sm text-gray-500">{t.totalPositions}</div>
+            <div className="rounded-xl p-4 shadow text-center" style={{background:'rgba(255,255,255,0.06)'}}>
+              <div className="text-3xl font-bold text-orange-400">{formatNumber(stats?.total_positions)}</div>
+              <div className="text-sm" style={{color:'var(--afcfta-muted)'}}>{t.totalPositions}</div>
             </div>
           </div>
 
@@ -153,14 +153,14 @@ export default function MonitoringDashboard({ language = 'fr' }) {
             </Button>
           </div>
 
-          {error && <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg mb-4">{error}</div>}
+          {error && <div className="border text-red-400 p-3 rounded-lg mb-4" style={{background:'rgba(239,68,68,0.1)', borderColor:'rgba(239,68,68,0.3)'}}>{error}</div>}
 
-          <Card className="bg-amber-50 border-amber-200 mb-4">
+          <Card className="mb-4" style={{background:'rgba(251,191,36,0.08)', border:'1px solid rgba(251,191,36,0.25)'}}>
             <CardContent className="p-4 flex items-center gap-4">
-              <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-300 text-xs px-2 py-1">{t.scheduler}</Badge>
-              <span className="text-sm text-amber-700">{t.schedulerDesc}</span>
+              <Badge variant="outline" className="text-amber-400 border-amber-400 text-xs px-2 py-1">{t.scheduler}</Badge>
+              <span className="text-sm text-amber-400">{t.schedulerDesc}</span>
               {stats?.countries?.[0]?.generated_at && (
-                <span className="text-xs text-amber-600 ml-auto">{t.lastRun}: {formatDate(stats.countries[0].generated_at)}</span>
+              <span className="text-xs text-amber-400 ml-auto">{t.lastRun}: {formatDate(stats.countries[0].generated_at)}</span>
               )}
             </CardContent>
           </Card>
