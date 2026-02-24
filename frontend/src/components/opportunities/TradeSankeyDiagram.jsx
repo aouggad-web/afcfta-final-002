@@ -201,7 +201,7 @@ export default function TradeSankeyDiagram({
   // Handle node click for filtering
   const handleNodeClick = useCallback((filterType, value) => {
     setActiveFilters(prev => {
-      const newFilters = { ...prev };
+      const newFilters = { ...prev };  
       // Toggle filter
       if (newFilters[filterType] === value) {
         newFilters[filterType] = '';
