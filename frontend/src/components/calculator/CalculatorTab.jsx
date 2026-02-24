@@ -1458,15 +1458,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                               <TableCell className="font-semibold" style={{ color: '#F5F5F5' }}>{entry.component}</TableCell>
                               <TableCell style={{ color: '#F5F5F5' }}>{formatCurrency(entry.base)}</TableCell>
                               <TableCell className="font-semibold" style={{ color: '#EF4444' }}>{entry.rate}</TableCell>
-                              <TableCell className="font-bold text-blue-600">{formatCurrency(entry.amount)}</TableCell>
-                              <TableCell className="font-bold">{formatCurrency(entry.cumulative)}</TableCell>
+                              <TableCell className="font-bold" style={{ color: '#3B82F6' }}>{formatCurrency(entry.amount)}</TableCell>
+                              <TableCell className="font-bold" style={{ color: '#F5F5F5' }}>{formatCurrency(entry.cumulative)}</TableCell>
                               <TableCell className="text-xs">
                                 {entry.legal_ref_url ? (
-                                  <a href={entry.legal_ref_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                                  <a href={entry.legal_ref_url} target="_blank" rel="noopener noreferrer" style={{ color: '#60A5FA' }} className="hover:underline">
                                     {entry.legal_ref}
                                   </a>
                                 ) : (
-                                  entry.legal_ref || '-'
+                                  <span style={{ color: '#A0AAB4' }}>{entry.legal_ref || '-'}</span>
                                 )}
                               </TableCell>
                             </TableRow>
@@ -1479,23 +1479,24 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               )}
 
               {/* Règles d'origine avec style africain */}
-              <div className="bg-gradient-to-r from-amber-100 to-orange-100 p-6 rounded-xl border-l-4 border-orange-500 shadow-lg">
-                <h4 className="font-bold text-xl text-orange-800 mb-3 flex items-center gap-2">
+              <div className="p-6 rounded-xl shadow-lg" style={{ background: 'rgba(217,123,45,0.15)', borderLeft: '4px solid #D97B2D' }}>
+                <h4 className="font-bold text-xl mb-3 flex items-center gap-2" style={{ color: '#FBBF24' }}>
                   <span>📜</span> {t.rulesOrigin}
                 </h4>
-                <div className="bg-white p-4 rounded-lg space-y-2">
-                  <p className="text-sm text-amber-800 font-semibold">
-                    <strong className="text-orange-600">{t.ruleType}:</strong> {result.rules_of_origin.rule}
+                <div className="p-4 rounded-lg space-y-2" style={{ background: 'rgba(0,0,0,0.2)' }}>
+                  <p className="text-sm font-semibold" style={{ color: '#F5F5F5' }}>
+                    <strong style={{ color: '#D97B2D' }}>{t.ruleType}:</strong> {result.rules_of_origin.rule}
                   </p>
-                  <p className="text-sm text-amber-800 font-semibold">
-                    <strong className="text-orange-600">{t.requirement}:</strong> {result.rules_of_origin.requirement}
+                  <p className="text-sm font-semibold" style={{ color: '#F5F5F5' }}>
+                    <strong style={{ color: '#D97B2D' }}>{t.requirement}:</strong> {result.rules_of_origin.requirement}
                   </p>
                   <div className="mt-3">
                     <Progress 
                       value={result.rules_of_origin.regional_content} 
                       className="w-full h-3"
+                      style={{ background: 'rgba(217,123,45,0.2)' }}
                     />
-                    <p className="text-sm text-amber-700 mt-2 font-bold text-center">
+                    <p className="text-sm mt-2 font-bold text-center" style={{ color: '#FBBF24' }}>
                       🌍 {t.minRegionalContent}: {result.rules_of_origin.regional_content}% {t.african}
                     </p>
                   </div>
@@ -1508,11 +1509,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <Button
                     variant="outline"
                     onClick={() => setShowDetailedBreakdown(!showDetailedBreakdown)}
-                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-purple-200 hover:bg-purple-50"
+                    className="w-full flex items-center justify-center gap-2 py-3"
+                    style={{ background: 'rgba(139,92,246,0.1)', border: '2px solid rgba(139,92,246,0.4)', color: '#A78BFA' }}
                     data-testid="toggle-detailed-breakdown"
                   >
-                    <Calculator className="h-5 w-5 text-purple-600" />
-                    <span className="font-semibold text-purple-700">
+                    <Calculator className="h-5 w-5" style={{ color: '#8B5CF6' }} />
+                    <span className="font-semibold">
                       {showDetailedBreakdown 
                         ? (language === 'fr' ? 'Masquer le Détail du Calcul' : 'Hide Calculation Details')
                         : (language === 'fr' ? 'Voir le Détail du Calcul NPF vs ZLECAf' : 'View NPF vs AfCFTA Calculation Details')}
