@@ -3,9 +3,9 @@
   /* Core */
   --bg: #0F1419;            /* background principal */
   --surface: #111827;       /* surface page */
-  --card: #1B232C;          /* cards */
-  --card2: #15202A;         /* cards secondaires */
-  --border: rgba(255,255,255,0.08);
+  --afcfta-card: #1B232C;          /* cards */
+  --afcfta-card2: #15202A;         /* cards secondaires */
+  --afcfta-border: rgba(255,255,255,0.08);
 
   /* Brand accents */
   --copper: #C17A2B;        /* cuivre */
@@ -15,7 +15,7 @@
 
   /* Text */
   --text: #F5F5F5;
-  --muted: #A0AAB4;
+  --afcfta-muted: #A0AAB4;
 
   /* Status */
   --success: #3FA34D;
@@ -55,7 +55,7 @@ body {
 
 /* Header top */
 .afcfta-topbar {
-  background: linear-gradient(135deg, var(--bg), var(--card));
+  background: linear-gradient(135deg, var(--bg), var(--afcfta-card));
   border: 1px solid rgba(212,175,55,0.14);
   border-radius: var(--r-lg);
   padding: 18px 18px;
@@ -87,7 +87,7 @@ body {
 
 .afcfta-subtitle {
   margin: 6px 0 0;
-  color: var(--muted);
+  color: var(--afcfta-muted);
   font-size: 13px;
 }
 
@@ -95,6 +95,7 @@ body {
   display: flex;
   gap: 8px;
   margin-top: 10px;
+  flex-wrap: wrap;
 }
 
 .afcfta-badge {
@@ -110,28 +111,55 @@ body {
   font-weight: 600;
 }
 
+
+.afcfta-topbar-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.afcfta-brand {
+  min-width: 260px;
+  flex: 1 1 620px;
+}
+
+.afcfta-lang-switch {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 /* Nav tabs */
 .afcfta-tabs {
   display: flex;
   gap: 8px;
   margin-top: 14px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
 
 .afcfta-tab {
   display: inline-flex;
+  white-space: nowrap;
   align-items: center;
   gap: 6px;
   padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.03);
-  color: var(--muted);
+  color: var(--afcfta-muted);
   text-decoration: none;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: transform .15s ease, border-color .15s ease, background .15s ease, color .15s ease;
+  flex: 0 0 auto;
 }
 
 .afcfta-tab:hover {
@@ -147,6 +175,12 @@ body {
   color: var(--gold);
 }
 
+
+.afcfta-tab:focus-visible {
+  outline: 2px solid rgba(212,175,55,0.75);
+  outline-offset: 2px;
+}
+
 .afcfta-tab svg,
 .afcfta-tab .icon {
   width: 14px;
@@ -157,7 +191,7 @@ body {
 /* Cards */
 .afcfta-card {
   background: rgba(27,35,44,0.82);
-  border: 1px solid var(--border);
+  border: 1px solid var(--afcfta-border);
   border-radius: var(--r-md);
   padding: 16px 16px;
   box-shadow: 0 14px 30px rgba(0,0,0,.28);
@@ -167,7 +201,7 @@ body {
 .afcfta-card h3 {
   margin: 0 0 6px 0;
   font-size: 13px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
   font-weight: 600;
 }
 
@@ -178,7 +212,7 @@ body {
 }
 
 .afcfta-card .subvalue {
-  color: var(--muted);
+  color: var(--afcfta-muted);
   font-size: 12px;
   margin-top: 6px;
 }
@@ -241,7 +275,7 @@ body {
 
 .afcfta-btn-secondary {
   background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
+  border: 1px solid var(--afcfta-border);
   color: var(--text);
 }
 
@@ -300,13 +334,13 @@ body {
 .afcfta-sectionHead p {
   margin: 3px 0 0;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
 }
 
 /* Form elements */
 .afcfta-input {
   background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
+  border: 1px solid var(--afcfta-border);
   border-radius: var(--r-sm);
   padding: 12px 14px;
   color: var(--text);
@@ -322,21 +356,21 @@ body {
 }
 
 .afcfta-input::placeholder {
-  color: var(--muted);
+  color: var(--afcfta-muted);
   opacity: 0.6;
 }
 
 .afcfta-label {
   display: block;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
   margin-bottom: 6px;
   font-weight: 500;
 }
 
 .afcfta-select {
   background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
+  border: 1px solid var(--afcfta-border);
   border-radius: var(--r-sm);
   padding: 12px 14px;
   color: var(--text);
@@ -370,6 +404,9 @@ body {
 }
 
 @media (max-width: 640px) {
+  .afcfta-topbar { padding: 14px 12px; }
+  .afcfta-topbar-head { align-items: stretch; }
+  .afcfta-lang-switch { width: 100%; justify-content: flex-start; }
   .afcfta-grid-4,
   .afcfta-grid-3,
   .afcfta-grid-2 { grid-template-columns: 1fr; }
@@ -391,15 +428,15 @@ body {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
   background: rgba(255,255,255,0.02);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--afcfta-border);
 }
 
 .afcfta-table td {
   padding: 12px 14px;
   font-size: 13px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--afcfta-border);
   color: var(--text);
 }
 
@@ -473,7 +510,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--card);
+  background: var(--afcfta-card);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -499,13 +536,13 @@ body {
   align-items: center;
   justify-content: center;
   padding: 40px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
 }
 
 .afcfta-spinner {
   width: 24px;
   height: 24px;
-  border: 3px solid var(--border);
+  border: 3px solid var(--afcfta-border);
   border-top-color: var(--gold);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -530,23 +567,14 @@ body {
   color-scheme: dark;
 }
 
-/* Tout texte dans l'app */
-#root, #root * {
-  color: inherit;
+/* Scope typography rules to app shell to avoid forcing styles globally */
+.afcfta-shell {
+  color: var(--text);
 }
 
-/* Titres / paragraphes - couleur par défaut sur fond sombre */
-h1, h2, h3, h4, h5, h6, p, label, span, small, strong, li {
-  color: #F5F5F5;
-}
-
-/* Les éléments avec style inline doivent prendre leurs couleurs */
-[style*="color"] {
-  color: unset;
-}
-
-.text-muted, .muted, small {
-  color: #A0AAB4 !important;
+.afcfta-shell .text-muted,
+.afcfta-shell .muted {
+  color: var(--afcfta-muted) !important;
 }
 
 /* ===== CALCULATOR CARDS DARK THEME ===== */
@@ -571,7 +599,7 @@ h1, h2, h3, h4, h5, h6, p, label, span, small, strong, li {
 /* ===== FORM CONTROLS PATCH ===== */
 
 /* Native select */
-select, .afcfta-select {
+.afcfta-shell select, .afcfta-select {
   width: 100%;
   background: #1B232C !important;
   color: #FFFFFF !important;
@@ -586,20 +614,20 @@ select, .afcfta-select {
   background-position: right 12px center;
 }
 
-select:focus, .afcfta-select:focus {
+.afcfta-shell select:focus, .afcfta-select:focus {
   border-color: rgba(212,175,55,0.5) !important;
   box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
 }
 
 /* Options du menu dropdown */
-select option {
+.afcfta-shell select option {
   background: #1B232C !important;
   color: #FFFFFF !important;
   padding: 10px;
 }
 
 /* Inputs */
-input, textarea {
+.afcfta-shell input, .afcfta-shell textarea {
   width: 100%;
   background: #1B232C !important;
   color: #FFFFFF !important;
@@ -610,21 +638,21 @@ input, textarea {
   font-size: 14px;
 }
 
-input:focus, textarea:focus {
+.afcfta-shell input:focus, .afcfta-shell textarea:focus {
   border-color: rgba(212,175,55,0.35) !important;
   box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
 }
 
-input::placeholder, textarea::placeholder {
+.afcfta-shell input::placeholder, .afcfta-shell textarea::placeholder {
   color: #A0AAB4 !important;
 }
 
 /* ===== SHADCN/RADIX SELECT PATCH ===== */
 
 /* Trigger button */
-[data-testid*="select"], 
-[role="combobox"],
-button[data-state] {
+[data-testid*="select"],
+.afcfta-shell [role="combobox"],
+.afcfta-shell [data-radix-collection-item] {
   background: #1B232C !important;
   border: 1px solid rgba(212,175,55,0.25) !important;
   color: #FFFFFF !important;
@@ -632,7 +660,7 @@ button[data-state] {
 }
 
 [data-testid*="select"]:hover,
-[role="combobox"]:hover {
+.afcfta-shell [role="combobox"]:hover {
   border-color: rgba(212,175,55,0.4) !important;
 }
 
@@ -662,6 +690,49 @@ button[data-state] {
 [role="option"][data-state="checked"] {
   background: rgba(212,175,55,0.2) !important;
   color: #D4AF37 !important;
+}
+
+/* Harmonisation des tabs utilitaires avec le thème sombre */
+.afcfta-shell .tabs-list-enhanced,
+.afcfta-shell .tabs-list-boxed,
+.afcfta-shell .tabs-vertical .tabs-list-vertical,
+.afcfta-shell .tabs-list-mini {
+  background: rgba(27,35,44,0.86) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: none !important;
+}
+
+.afcfta-shell .tab-trigger-enhanced,
+.afcfta-shell .tab-trigger-mini,
+.afcfta-shell .tab-trigger-stat {
+  color: var(--afcfta-muted) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.afcfta-shell .tab-trigger-enhanced:hover,
+.afcfta-shell .tab-trigger-mini:hover,
+.afcfta-shell .tab-trigger-stat:hover {
+  color: var(--text) !important;
+  background: rgba(255,255,255,0.05) !important;
+}
+
+.afcfta-shell .tab-trigger-enhanced[data-state="active"],
+.afcfta-shell .tab-trigger-mini[data-state="active"],
+.afcfta-shell .tab-trigger-stat[data-state="active"] {
+  color: var(--gold) !important;
+  background: var(--goldSoft) !important;
+  border-color: rgba(212,175,55,0.3) !important;
+}
+
+.afcfta-shell .tab-badge {
+  background: rgba(255,255,255,0.08) !important;
+  color: var(--afcfta-muted) !important;
+}
+
+.afcfta-shell .tab-trigger-enhanced[data-state="active"] .tab-badge {
+  background: rgba(212,175,55,0.18) !important;
+  color: var(--gold) !important;
 }
 
 /* ===== CALCULATOR SPECIFIC ===== */
@@ -722,4 +793,141 @@ button[data-state] {
 .country-code {
   color: #A0AAB4;
   font-size: 12px;
+}
+
+/* ===== OVERFLOW & DISPLAY FIXES ===== */
+
+/* Prevent text overflow in table cells */
+.afcfta-shell table td,
+.afcfta-shell table th {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 0;
+  min-width: 0;
+}
+
+/* Ensure tables with fixed-width columns don't overflow their containers */
+.afcfta-shell .overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent recharts SVG overflow */
+.afcfta-shell .recharts-responsive-container {
+  overflow: hidden;
+}
+
+/* Ensure cards never overflow their parent */
+.afcfta-shell .afcfta-card,
+.afcfta-shell [class*="rounded"] {
+  min-width: 0;
+}
+
+/* Badge text wrap prevention */
+.afcfta-shell .badge,
+.afcfta-shell [class*="badge"] {
+  white-space: nowrap;
+}
+
+/* Recharts legend text wrapping */
+.afcfta-shell .recharts-legend-item-text {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fix chart container height auto-sizing */
+.afcfta-shell .recharts-wrapper {
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .afcfta-shell .recharts-legend-item-text {
+    max-width: 80px;
+  }
+}
+
+/* ===== COMPONENT DARK THEME OVERRIDES ===== */
+
+/* Fix dark gray text to light for dark background */
+.afcfta-shell .text-slate-900,
+.afcfta-shell .text-gray-900,
+.afcfta-shell .text-gray-800,
+.afcfta-shell .text-gray-700 {
+  color: var(--text) !important;
+}
+
+/* Fix medium gray text to muted dark theme color */
+.afcfta-shell .text-slate-500,
+.afcfta-shell .text-gray-500,
+.afcfta-shell .text-gray-600 {
+  color: var(--afcfta-muted) !important;
+}
+
+/* Brighten saturated text colors for dark background visibility */
+.afcfta-shell .text-orange-700,
+.afcfta-shell .text-orange-800 { color: #fb923c !important; }
+.afcfta-shell .text-blue-700,
+.afcfta-shell .text-blue-800 { color: #60a5fa !important; }
+.afcfta-shell .text-green-700,
+.afcfta-shell .text-green-800 { color: #4ade80 !important; }
+.afcfta-shell .text-purple-700,
+.afcfta-shell .text-purple-800 { color: #c084fc !important; }
+.afcfta-shell .text-red-700,
+.afcfta-shell .text-red-800 { color: #f87171 !important; }
+.afcfta-shell .text-emerald-700,
+.afcfta-shell .text-emerald-800 { color: #34d399 !important; }
+.afcfta-shell .text-amber-700,
+.afcfta-shell .text-amber-800 { color: #fbbf24 !important; }
+.afcfta-shell .text-indigo-700,
+.afcfta-shell .text-indigo-800 { color: #818cf8 !important; }
+.afcfta-shell .text-teal-700 { color: #2dd4bf !important; }
+.afcfta-shell .text-cyan-700 { color: #22d3ee !important; }
+.afcfta-shell .text-yellow-700,
+.afcfta-shell .text-yellow-800 { color: #fde047 !important; }
+.afcfta-shell .text-lime-700 { color: #a3e635 !important; }
+
+/* Fix white and light gray backgrounds to dark card colors */
+.afcfta-shell .bg-white {
+  background-color: var(--afcfta-card) !important;
+}
+.afcfta-shell .bg-gray-50,
+.afcfta-shell .bg-slate-50 {
+  background-color: rgba(255,255,255,0.04) !important;
+}
+.afcfta-shell .bg-gray-100,
+.afcfta-shell .bg-slate-100 {
+  background-color: rgba(255,255,255,0.07) !important;
+}
+.afcfta-shell .bg-gray-200 {
+  background-color: rgba(255,255,255,0.10) !important;
+}
+
+/* Fix colored light backgrounds to dark card */
+.afcfta-shell .bg-orange-50,
+.afcfta-shell .bg-red-50,
+.afcfta-shell .bg-blue-50,
+.afcfta-shell .bg-cyan-50,
+.afcfta-shell .bg-green-50,
+.afcfta-shell .bg-emerald-50,
+.afcfta-shell .bg-purple-50,
+.afcfta-shell .bg-pink-50,
+.afcfta-shell .bg-amber-50,
+.afcfta-shell .bg-yellow-50,
+.afcfta-shell .bg-indigo-50,
+.afcfta-shell .bg-lime-50,
+.afcfta-shell .bg-teal-50 {
+  background-color: var(--afcfta-card) !important;
+}
+
+/* Fix light borders to dark theme borders */
+.afcfta-shell .border-gray-200,
+.afcfta-shell .border-slate-100,
+.afcfta-shell .border-gray-100 {
+  border-color: var(--afcfta-border) !important;
+}
+
+/* Reusable dark gradient background for cards */
+.afcfta-dark-gradient {
+  background: linear-gradient(135deg, rgba(27,35,44,0.95), rgba(21,32,42,0.95)) !important;
 }

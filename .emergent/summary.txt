@@ -1,7 +1,7 @@
 <analysis>**original_problem_statement:**
 L'utilisateur souhaite créer une application d'analyse commerciale pour l'Afrique. La demande a évolué pour inclure :
 1.  Une base de données complète de codes HS6 bilingues (FR/EN).
-2.  L'intégration des Règles d'Origine (RoO) spécifiques au produit de la ZLECAf.
+2.  L'intégration des Règles d'Origine (RoO)par codes  HS6 spécifiques au produit de la ZLECAf.
 3.  Un outil pour rechercher les statistiques de commerce international via l'API de l'OEC.
 4.  Une fonctionnalité pour gérer les tarifs douaniers nationaux, avec avertissement en cas de variations de taux.
 5.  Une fonctionnalité avancée d'**analyse de substitution des importations** en utilisant des données commerciales réelles (OEC, UNCTAD) pour identifier les opportunités de production et d'exportation au sein de la ZLECAf, en ciblant les produits actuellement importés de l'extérieur de l'Afrique.
@@ -67,7 +67,7 @@ Aucun bug connu n'est en cours. Les problèmes précédents concernant les donn�
 **Completed work in this session**
 -   **Correction des onglets Production/Logistique vides**: Résolution de l'erreur React () en remplaçant un  par un composant  de Shadcn.
 -   **Correction des données du commerce bilatéral OEC**: La valeur totale du commerce Algérie-Tunisie a été corrigée en augmentant la limite de produits de l'API à 500 et en triant les résultats après la récupération, affichant désormais la bonne valeur (~1.8Md$) et les bons produits (pétrole/gaz).
--   **Correction de l'affichage des codes HS de l'OEC**: Implémentation d'une fonction pour extraire le vrai code HS à 4 chiffres à partir de l'ID interne de l'OEC (ex: 178704 -> 8704).
+-   **Correction de l'affichage des codes HS de l'OEC**: Implémentation d'une fonction pour extraire le vrai code HS à 6 chiffres à partir de l'ID interne de l'OEC (ex: 178704 -> 8704).
 -   **Implémentation de l'onglet Opportunités (v1)**: Création d'un nouvel onglet et intégration de trois nouveaux composants (, , ) basés sur le code de l'utilisateur, peuplés avec des données simulées détaillées.
 -   **Implémentation de l'analyse de substitution avec DONNÉES RÉELLES**:
     -   Création de services backend (, ) et de routes () pour analyser les opportunités.

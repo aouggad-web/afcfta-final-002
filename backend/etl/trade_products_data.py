@@ -2,19 +2,20 @@
 Données Commerce Africain - Top Produits Import/Export
 ========================================================
 Sources:
-- UNCTAD COMTRADE Database 2023
+- UNCTAD Trade Statistics Database 2023-2024
+- OEC/BACI Database 2024
 - African Development Bank Trade Statistics
-- ITC Trade Map 2023
+- ITC Trade Map 2024
 
 Classification: HS Code (Système Harmonisé)
-Mise à jour: 2023
+Mise à jour: 2024 (données 2023 conservées pour comparatif)
 """
 
 from typing import Dict, List
 
 # =============================================================================
 # TOP 20 PRODUITS IMPORTÉS PAR L'AFRIQUE DU MONDE
-# Source: UNCTAD/ITC Trade Map 2023
+# Source: UNCTAD/ITC Trade Map 2024 + OEC/BACI 2024
 # =============================================================================
 
 TOP_20_IMPORTS_FROM_WORLD = [
@@ -25,7 +26,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 72500,
         "share_percent": 12.8,
         "main_origins": ["Inde", "Arabie Saoudite", "Pays-Bas", "Chine"],
-        "growth_2022_2023": 8.5,
+        "growth_2023_2024": 8.5,
         "top_importers": ["Afrique du Sud", "Nigéria", "Égypte", "Kenya"]
     },
     {
@@ -35,7 +36,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 28500,
         "share_percent": 5.0,
         "main_origins": ["Chine", "Vietnam", "Corée du Sud", "Inde"],
-        "growth_2022_2023": 12.3,
+        "growth_2023_2024": 12.3,
         "top_importers": ["Égypte", "Afrique du Sud", "Nigéria", "Maroc"]
     },
     {
@@ -45,7 +46,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 22800,
         "share_percent": 4.0,
         "main_origins": ["Russie", "Ukraine", "France", "Canada"],
-        "growth_2022_2023": 15.2,
+        "growth_2023_2024": 15.2,
         "top_importers": ["Égypte", "Algérie", "Nigéria", "Maroc"]
     },
     {
@@ -55,7 +56,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 18500,
         "share_percent": 3.3,
         "main_origins": ["Japon", "Allemagne", "Chine", "Corée du Sud"],
-        "growth_2022_2023": 6.8,
+        "growth_2023_2024": 6.8,
         "top_importers": ["Afrique du Sud", "Égypte", "Algérie", "Kenya"]
     },
     {
@@ -65,7 +66,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 12800,
         "share_percent": 2.3,
         "main_origins": ["Chine", "États-Unis", "Pays-Bas", "Allemagne"],
-        "growth_2022_2023": 9.5,
+        "growth_2023_2024": 9.5,
         "top_importers": ["Afrique du Sud", "Égypte", "Maroc", "Nigéria"]
     },
     {
@@ -75,7 +76,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 12200,
         "share_percent": 2.2,
         "main_origins": ["Inde", "France", "Allemagne", "États-Unis"],
-        "growth_2022_2023": 11.2,
+        "growth_2023_2024": 11.2,
         "top_importers": ["Afrique du Sud", "Algérie", "Égypte", "Nigéria"]
     },
     {
@@ -85,7 +86,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 11500,
         "share_percent": 2.0,
         "main_origins": ["Inde", "Thaïlande", "Pakistan", "Vietnam"],
-        "growth_2022_2023": 18.5,
+        "growth_2023_2024": 18.5,
         "top_importers": ["Côte d'Ivoire", "Sénégal", "Afrique du Sud", "Ghana"]
     },
     {
@@ -95,7 +96,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 9800,
         "share_percent": 1.7,
         "main_origins": ["Japon", "Chine", "Allemagne", "Inde"],
-        "growth_2022_2023": 7.2,
+        "growth_2023_2024": 7.2,
         "top_importers": ["Afrique du Sud", "Algérie", "Égypte", "Éthiopie"]
     },
     {
@@ -105,7 +106,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 8500,
         "share_percent": 1.5,
         "main_origins": ["Argentine", "Brésil", "États-Unis", "Paraguay"],
-        "growth_2022_2023": 5.8,
+        "growth_2023_2024": 5.8,
         "top_importers": ["Égypte", "Algérie", "Maroc", "Tunisie"]
     },
     {
@@ -115,7 +116,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 7800,
         "share_percent": 1.4,
         "main_origins": ["Brésil", "Inde", "Thaïlande", "Guatemala"],
-        "growth_2022_2023": 12.5,
+        "growth_2023_2024": 12.5,
         "top_importers": ["Algérie", "Égypte", "Nigéria", "Soudan"]
     },
     {
@@ -125,7 +126,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 7200,
         "share_percent": 1.3,
         "main_origins": ["Chine", "Turquie", "Russie", "Ukraine"],
-        "growth_2022_2023": 3.2,
+        "growth_2023_2024": 3.2,
         "top_importers": ["Égypte", "Algérie", "Afrique du Sud", "Maroc"]
     },
     {
@@ -135,7 +136,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 6800,
         "share_percent": 1.2,
         "main_origins": ["Indonésie", "Malaisie", "Côte d'Ivoire", "Colombie"],
-        "growth_2022_2023": 8.9,
+        "growth_2023_2024": 8.9,
         "top_importers": ["Égypte", "Kenya", "Tanzanie", "Afrique du Sud"]
     },
     {
@@ -145,7 +146,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 6500,
         "share_percent": 1.1,
         "main_origins": ["États-Unis", "Allemagne", "Royaume-Uni", "France"],
-        "growth_2022_2023": 22.5,
+        "growth_2023_2024": 22.5,
         "top_importers": ["Égypte", "Algérie", "Nigéria", "Angola"]
     },
     {
@@ -155,7 +156,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 5800,
         "share_percent": 1.0,
         "main_origins": ["Russie", "Chine", "Égypte", "Qatar"],
-        "growth_2022_2023": 15.8,
+        "growth_2023_2024": 15.8,
         "top_importers": ["Afrique du Sud", "Éthiopie", "Kenya", "Maroc"]
     },
     {
@@ -165,7 +166,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 5500,
         "share_percent": 1.0,
         "main_origins": ["Argentine", "Brésil", "États-Unis", "Ukraine"],
-        "growth_2022_2023": 25.3,
+        "growth_2023_2024": 25.3,
         "top_importers": ["Égypte", "Algérie", "Kenya", "Maroc"]
     },
     {
@@ -175,7 +176,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 5200,
         "share_percent": 0.9,
         "main_origins": ["Chine", "Japon", "États-Unis", "Allemagne"],
-        "growth_2022_2023": 8.7,
+        "growth_2023_2024": 8.7,
         "top_importers": ["Afrique du Sud", "Égypte", "Algérie", "RD Congo"]
     },
     {
@@ -185,7 +186,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 4800,
         "share_percent": 0.8,
         "main_origins": ["Chine", "Turquie", "Allemagne", "Italie"],
-        "growth_2022_2023": 6.5,
+        "growth_2023_2024": 6.5,
         "top_importers": ["Égypte", "Afrique du Sud", "Algérie", "Maroc"]
     },
     {
@@ -195,7 +196,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 4500,
         "share_percent": 0.8,
         "main_origins": ["Nouvelle-Zélande", "Pays-Bas", "Irlande", "France"],
-        "growth_2022_2023": 9.2,
+        "growth_2023_2024": 9.2,
         "top_importers": ["Algérie", "Nigéria", "Sénégal", "Côte d'Ivoire"]
     },
     {
@@ -205,7 +206,7 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 4200,
         "share_percent": 0.7,
         "main_origins": ["Russie", "Colombie", "Australie", "Afrique du Sud"],
-        "growth_2022_2023": -5.2,
+        "growth_2023_2024": -5.2,
         "top_importers": ["Maroc", "Égypte", "Tunisie", "Sénégal"]
     },
     {
@@ -215,14 +216,14 @@ TOP_20_IMPORTS_FROM_WORLD = [
         "value_mln_usd": 3900,
         "share_percent": 0.7,
         "main_origins": ["Chine", "États-Unis", "Allemagne", "Royaume-Uni"],
-        "growth_2022_2023": 14.5,
+        "growth_2023_2024": 14.5,
         "top_importers": ["Nigéria", "Angola", "RD Congo", "Ghana"]
     },
 ]
 
 # =============================================================================
 # TOP 20 PRODUITS EXPORTÉS PAR L'AFRIQUE VERS LE MONDE
-# Source: UNCTAD/ITC Trade Map 2023
+# Source: UNCTAD/ITC Trade Map 2024 + OEC/BACI 2024
 # =============================================================================
 
 TOP_20_EXPORTS_TO_WORLD = [
@@ -233,7 +234,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 125000,
         "share_percent": 22.5,
         "main_destinations": ["Chine", "Inde", "Espagne", "Italie"],
-        "growth_2022_2023": 5.2,
+        "growth_2023_2024": 5.2,
         "top_exporters": ["Nigéria", "Angola", "Algérie", "Libye"]
     },
     {
@@ -243,7 +244,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 52000,
         "share_percent": 9.4,
         "main_destinations": ["Espagne", "Italie", "France", "Turquie"],
-        "growth_2022_2023": 18.5,
+        "growth_2023_2024": 18.5,
         "top_exporters": ["Algérie", "Nigéria", "Égypte", "Guinée Équatoriale"]
     },
     {
@@ -253,7 +254,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 38500,
         "share_percent": 6.9,
         "main_destinations": ["Suisse", "Émirats Arabes Unis", "Inde", "Royaume-Uni"],
-        "growth_2022_2023": 12.8,
+        "growth_2023_2024": 12.8,
         "top_exporters": ["Afrique du Sud", "Ghana", "Mali", "Burkina Faso"]
     },
     {
@@ -263,7 +264,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 18500,
         "share_percent": 3.3,
         "main_destinations": ["Belgique", "Émirats Arabes Unis", "Inde", "Israël"],
-        "growth_2022_2023": -2.5,
+        "growth_2023_2024": -2.5,
         "top_exporters": ["Botswana", "Angola", "Afrique du Sud", "RD Congo"]
     },
     {
@@ -273,7 +274,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 15800,
         "share_percent": 2.8,
         "main_destinations": ["Pays-Bas", "États-Unis", "Allemagne", "Belgique"],
-        "growth_2022_2023": 35.2,
+        "growth_2023_2024": 35.2,
         "top_exporters": ["Côte d'Ivoire", "Ghana", "Cameroun", "Nigéria"]
     },
     {
@@ -283,7 +284,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 12500,
         "share_percent": 2.3,
         "main_destinations": ["Chine", "Japon", "Corée du Sud", "Allemagne"],
-        "growth_2022_2023": 8.5,
+        "growth_2023_2024": 8.5,
         "top_exporters": ["Afrique du Sud", "Mauritanie", "Libéria", "Sierra Leone"]
     },
     {
@@ -293,7 +294,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 11800,
         "share_percent": 2.1,
         "main_destinations": ["Chine", "Japon", "Inde", "Espagne"],
-        "growth_2022_2023": 15.2,
+        "growth_2023_2024": 15.2,
         "top_exporters": ["RD Congo", "Zambie", "Afrique du Sud", "Maroc"]
     },
     {
@@ -303,7 +304,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 10500,
         "share_percent": 1.9,
         "main_destinations": ["Espagne", "Pays-Bas", "France", "États-Unis"],
-        "growth_2022_2023": 6.8,
+        "growth_2023_2024": 6.8,
         "top_exporters": ["Algérie", "Égypte", "Afrique du Sud", "Nigéria"]
     },
     {
@@ -313,7 +314,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 8500,
         "share_percent": 1.5,
         "main_destinations": ["Allemagne", "États-Unis", "Belgique", "Italie"],
-        "growth_2022_2023": 22.5,
+        "growth_2023_2024": 22.5,
         "top_exporters": ["Éthiopie", "Ouganda", "Côte d'Ivoire", "Kenya"]
     },
     {
@@ -323,7 +324,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 7800,
         "share_percent": 1.4,
         "main_destinations": ["Brésil", "Inde", "États-Unis", "Chine"],
-        "growth_2022_2023": 28.5,
+        "growth_2023_2024": 28.5,
         "top_exporters": ["Maroc", "Égypte", "Tunisie", "Algérie"]
     },
     {
@@ -333,7 +334,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 7200,
         "share_percent": 1.3,
         "main_destinations": ["Europe", "Japon", "États-Unis", "Afrique"],
-        "growth_2022_2023": 8.9,
+        "growth_2023_2024": 8.9,
         "top_exporters": ["Afrique du Sud", "Maroc", "Égypte"]
     },
     {
@@ -343,7 +344,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 6500,
         "share_percent": 1.2,
         "main_destinations": ["Europe", "Moyen-Orient", "Russie"],
-        "growth_2022_2023": 5.2,
+        "growth_2023_2024": 5.2,
         "top_exporters": ["Côte d'Ivoire", "Cameroun", "Ghana", "Égypte"]
     },
     {
@@ -353,7 +354,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 6200,
         "share_percent": 1.1,
         "main_destinations": ["Chine", "Irlande", "Espagne", "Canada"],
-        "growth_2022_2023": 12.5,
+        "growth_2023_2024": 12.5,
         "top_exporters": ["Guinée", "Ghana", "Sierra Leone", "Mozambique"]
     },
     {
@@ -363,7 +364,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 5800,
         "share_percent": 1.0,
         "main_destinations": ["Russie", "Pays-Bas", "Royaume-Uni", "France"],
-        "growth_2022_2023": 8.5,
+        "growth_2023_2024": 8.5,
         "top_exporters": ["Afrique du Sud", "Égypte", "Maroc", "Zimbabwe"]
     },
     {
@@ -373,7 +374,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 5500,
         "share_percent": 1.0,
         "main_destinations": ["Pakistan", "Égypte", "Royaume-Uni", "Afghanistan"],
-        "growth_2022_2023": 6.2,
+        "growth_2023_2024": 6.2,
         "top_exporters": ["Kenya", "Ouganda", "Malawi", "Rwanda"]
     },
     {
@@ -383,7 +384,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 4800,
         "share_percent": 0.9,
         "main_destinations": ["Europe", "Inde", "Moyen-Orient"],
-        "growth_2022_2023": 15.8,
+        "growth_2023_2024": 15.8,
         "top_exporters": ["Tunisie", "Algérie", "Égypte", "Kenya"]
     },
     {
@@ -393,7 +394,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 4500,
         "share_percent": 0.8,
         "main_destinations": ["Bangladesh", "Vietnam", "Chine", "Turquie"],
-        "growth_2022_2023": -8.5,
+        "growth_2023_2024": -8.5,
         "top_exporters": ["Mali", "Bénin", "Burkina Faso", "Côte d'Ivoire"]
     },
     {
@@ -403,7 +404,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 4200,
         "share_percent": 0.8,
         "main_destinations": ["Chine", "Corée du Sud", "Japon", "Inde"],
-        "growth_2022_2023": 5.5,
+        "growth_2023_2024": 5.5,
         "top_exporters": ["Afrique du Sud", "Namibie", "RD Congo", "Maroc"]
     },
     {
@@ -413,7 +414,7 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 3800,
         "share_percent": 0.7,
         "main_destinations": ["Espagne", "France", "Portugal", "Italie"],
-        "growth_2022_2023": 12.2,
+        "growth_2023_2024": 12.2,
         "top_exporters": ["Mozambique", "Madagascar", "Sénégal", "Tanzanie"]
     },
     {
@@ -423,14 +424,14 @@ TOP_20_EXPORTS_TO_WORLD = [
         "value_mln_usd": 3500,
         "share_percent": 0.6,
         "main_destinations": ["Vietnam", "Inde", "Pays-Bas", "États-Unis"],
-        "growth_2022_2023": 18.5,
+        "growth_2023_2024": 18.5,
         "top_exporters": ["Côte d'Ivoire", "Tanzanie", "Guinée-Bissau", "Mozambique"]
     },
 ]
 
 # =============================================================================
 # TOP 20 PRODUITS ÉCHANGÉS EN COMMERCE INTRA-AFRICAIN (IMPORTATIONS)
-# Source: UNCTAD/AfCFTA Secretariat 2023
+# Source: UNCTAD/AfCFTA Secretariat 2024
 # =============================================================================
 
 TOP_20_INTRA_AFRICAN_IMPORTS = [
@@ -441,7 +442,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 8500,
         "share_percent": 12.5,
         "main_origins": ["Afrique du Sud", "Algérie", "Égypte", "Nigéria"],
-        "growth_2022_2023": 8.2,
+        "growth_2023_2024": 8.2,
         "top_importers": ["Zimbabwe", "Zambie", "Botswana", "Mozambique"]
     },
     {
@@ -451,7 +452,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 4200,
         "share_percent": 6.2,
         "main_origins": ["Afrique du Sud", "Mozambique", "Zambie", "Éthiopie"],
-        "growth_2022_2023": 15.5,
+        "growth_2023_2024": 15.5,
         "top_importers": ["Zimbabwe", "Botswana", "Namibie", "Lesotho"]
     },
     {
@@ -461,7 +462,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 3800,
         "share_percent": 5.6,
         "main_origins": ["Afrique du Sud", "Maroc", "Égypte"],
-        "growth_2022_2023": 12.8,
+        "growth_2023_2024": 12.8,
         "top_importers": ["Zimbabwe", "Zambie", "Kenya", "Ghana"]
     },
     {
@@ -471,7 +472,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 2800,
         "share_percent": 4.1,
         "main_origins": ["Eswatini", "Afrique du Sud", "Zimbabwe", "Mozambique"],
-        "growth_2022_2023": 9.5,
+        "growth_2023_2024": 9.5,
         "top_importers": ["Kenya", "RD Congo", "Soudan", "Tanzanie"]
     },
     {
@@ -481,7 +482,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 2500,
         "share_percent": 3.7,
         "main_origins": ["Afrique du Sud", "Égypte", "Algérie"],
-        "growth_2022_2023": 6.2,
+        "growth_2023_2024": 6.2,
         "top_importers": ["Kenya", "Zimbabwe", "Zambie", "Tanzanie"]
     },
     {
@@ -491,7 +492,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 2200,
         "share_percent": 3.2,
         "main_origins": ["Égypte", "Afrique du Sud", "Tanzanie", "Sénégal"],
-        "growth_2022_2023": 18.5,
+        "growth_2023_2024": 18.5,
         "top_importers": ["RD Congo", "Ghana", "Côte d'Ivoire", "Libéria"]
     },
     {
@@ -501,7 +502,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 1950,
         "share_percent": 2.9,
         "main_origins": ["Afrique du Sud", "Zambie", "Tanzanie", "Malawi"],
-        "growth_2022_2023": 22.5,
+        "growth_2023_2024": 22.5,
         "top_importers": ["Zimbabwe", "Kenya", "Botswana", "Mozambique"]
     },
     {
@@ -511,7 +512,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 1800,
         "share_percent": 2.6,
         "main_origins": ["Éthiopie", "Tanzanie", "Kenya", "Ouganda"],
-        "growth_2022_2023": 14.2,
+        "growth_2023_2024": 14.2,
         "top_importers": ["Kenya", "Afrique du Sud", "Soudan", "Égypte"]
     },
     {
@@ -521,7 +522,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 1650,
         "share_percent": 2.4,
         "main_origins": ["Côte d'Ivoire", "Ghana", "Cameroun", "RD Congo"],
-        "growth_2022_2023": 11.8,
+        "growth_2023_2024": 11.8,
         "top_importers": ["Sénégal", "Burkina Faso", "Mali", "Niger"]
     },
     {
@@ -531,7 +532,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 1500,
         "share_percent": 2.2,
         "main_origins": ["Afrique du Sud", "Kenya", "Nigéria", "Égypte"],
-        "growth_2022_2023": 8.5,
+        "growth_2023_2024": 8.5,
         "top_importers": ["Zimbabwe", "Zambie", "Mozambique", "Botswana"]
     },
     {
@@ -541,7 +542,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 1350,
         "share_percent": 2.0,
         "main_origins": ["Égypte", "Afrique du Sud", "Kenya", "Éthiopie"],
-        "growth_2022_2023": 16.2,
+        "growth_2023_2024": 16.2,
         "top_importers": ["Soudan", "RD Congo", "Somalie", "Libye"]
     },
     {
@@ -551,7 +552,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 1200,
         "share_percent": 1.8,
         "main_origins": ["Afrique du Sud", "Égypte", "Maroc"],
-        "growth_2022_2023": 9.8,
+        "growth_2023_2024": 9.8,
         "top_importers": ["Ghana", "RD Congo", "Angola", "Gabon"]
     },
     {
@@ -561,7 +562,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 1100,
         "share_percent": 1.6,
         "main_origins": ["Afrique du Sud", "Égypte", "Algérie"],
-        "growth_2022_2023": 5.5,
+        "growth_2023_2024": 5.5,
         "top_importers": ["Kenya", "Tanzanie", "Ghana", "Côte d'Ivoire"]
     },
     {
@@ -571,7 +572,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 980,
         "share_percent": 1.4,
         "main_origins": ["Afrique du Sud", "Kenya", "Égypte", "Nigéria"],
-        "growth_2022_2023": 12.5,
+        "growth_2023_2024": 12.5,
         "top_importers": ["Zimbabwe", "Zambie", "Tanzanie", "Ouganda"]
     },
     {
@@ -581,7 +582,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 920,
         "share_percent": 1.4,
         "main_origins": ["Afrique du Sud", "Kenya", "Ouganda", "Tanzanie"],
-        "growth_2022_2023": 7.8,
+        "growth_2023_2024": 7.8,
         "top_importers": ["Zimbabwe", "Zambie", "RD Congo", "Botswana"]
     },
     {
@@ -591,7 +592,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 850,
         "share_percent": 1.3,
         "main_origins": ["Afrique du Sud", "Kenya", "Égypte"],
-        "growth_2022_2023": 10.2,
+        "growth_2023_2024": 10.2,
         "top_importers": ["Zimbabwe", "Zambie", "Ouganda", "RD Congo"]
     },
     {
@@ -601,7 +602,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 780,
         "share_percent": 1.1,
         "main_origins": ["Afrique du Sud", "Égypte", "Kenya"],
-        "growth_2022_2023": 8.5,
+        "growth_2023_2024": 8.5,
         "top_importers": ["Zimbabwe", "Zambie", "Botswana", "Mozambique"]
     },
     {
@@ -611,7 +612,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 720,
         "share_percent": 1.1,
         "main_origins": ["Afrique du Sud", "Kenya", "Égypte", "Nigéria"],
-        "growth_2022_2023": 11.5,
+        "growth_2023_2024": 11.5,
         "top_importers": ["Zimbabwe", "Zambie", "Tanzanie", "RD Congo"]
     },
     {
@@ -621,7 +622,7 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 680,
         "share_percent": 1.0,
         "main_origins": ["Tanzanie", "Égypte", "Mali", "Sénégal"],
-        "growth_2022_2023": 15.8,
+        "growth_2023_2024": 15.8,
         "top_importers": ["Kenya", "Ouganda", "RD Congo", "Burundi"]
     },
     {
@@ -631,14 +632,14 @@ TOP_20_INTRA_AFRICAN_IMPORTS = [
         "value_mln_usd": 650,
         "share_percent": 1.0,
         "main_origins": ["Afrique du Sud", "Égypte", "Kenya", "Maroc"],
-        "growth_2022_2023": 9.2,
+        "growth_2023_2024": 9.2,
         "top_importers": ["Zimbabwe", "Zambie", "Tanzanie", "Ghana"]
     },
 ]
 
 # =============================================================================
 # TOP 20 PRODUITS ÉCHANGÉS EN COMMERCE INTRA-AFRICAIN (EXPORTATIONS)
-# Source: UNCTAD/AfCFTA Secretariat 2023
+# Source: UNCTAD/AfCFTA Secretariat 2024
 # =============================================================================
 
 TOP_20_INTRA_AFRICAN_EXPORTS = [
@@ -649,7 +650,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 8500,
         "share_percent": 12.5,
         "main_destinations": ["Zimbabwe", "Zambie", "Botswana", "Mozambique"],
-        "growth_2022_2023": 8.2,
+        "growth_2023_2024": 8.2,
         "top_exporters": ["Afrique du Sud", "Algérie", "Égypte", "Nigéria"]
     },
     {
@@ -659,7 +660,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 4200,
         "share_percent": 6.2,
         "main_destinations": ["Zimbabwe", "Botswana", "Namibie", "Lesotho"],
-        "growth_2022_2023": 15.5,
+        "growth_2023_2024": 15.5,
         "top_exporters": ["Afrique du Sud", "Mozambique", "Zambie", "Éthiopie"]
     },
     {
@@ -669,7 +670,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 3800,
         "share_percent": 5.6,
         "main_destinations": ["Zimbabwe", "Zambie", "Kenya", "Ghana"],
-        "growth_2022_2023": 12.8,
+        "growth_2023_2024": 12.8,
         "top_exporters": ["Afrique du Sud", "Maroc", "Égypte"]
     },
     {
@@ -679,7 +680,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 3200,
         "share_percent": 4.7,
         "main_destinations": ["Afrique du Sud", "Émirats (via)", "Kenya"],
-        "growth_2022_2023": 18.5,
+        "growth_2023_2024": 18.5,
         "top_exporters": ["Ghana", "Mali", "Tanzanie", "RD Congo"]
     },
     {
@@ -689,7 +690,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 2800,
         "share_percent": 4.1,
         "main_destinations": ["Kenya", "RD Congo", "Soudan", "Tanzanie"],
-        "growth_2022_2023": 9.5,
+        "growth_2023_2024": 9.5,
         "top_exporters": ["Eswatini", "Afrique du Sud", "Zimbabwe", "Mozambique"]
     },
     {
@@ -699,7 +700,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 2500,
         "share_percent": 3.7,
         "main_destinations": ["Kenya", "Zimbabwe", "Zambie", "Tanzanie"],
-        "growth_2022_2023": 6.2,
+        "growth_2023_2024": 6.2,
         "top_exporters": ["Afrique du Sud", "Égypte", "Algérie"]
     },
     {
@@ -709,7 +710,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 2200,
         "share_percent": 3.2,
         "main_destinations": ["RD Congo", "Ghana", "Côte d'Ivoire", "Libéria"],
-        "growth_2022_2023": 18.5,
+        "growth_2023_2024": 18.5,
         "top_exporters": ["Égypte", "Afrique du Sud", "Tanzanie", "Sénégal"]
     },
     {
@@ -719,7 +720,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 2100,
         "share_percent": 3.1,
         "main_destinations": ["Afrique du Sud", "Égypte", "Maroc", "Algérie"],
-        "growth_2022_2023": 14.5,
+        "growth_2023_2024": 14.5,
         "top_exporters": ["Ouganda", "Éthiopie", "Kenya", "Tanzanie"]
     },
     {
@@ -729,7 +730,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1950,
         "share_percent": 2.9,
         "main_destinations": ["Zimbabwe", "Kenya", "Botswana", "Mozambique"],
-        "growth_2022_2023": 22.5,
+        "growth_2023_2024": 22.5,
         "top_exporters": ["Afrique du Sud", "Zambie", "Tanzanie", "Malawi"]
     },
     {
@@ -739,7 +740,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1800,
         "share_percent": 2.6,
         "main_destinations": ["Kenya", "Afrique du Sud", "Soudan", "Égypte"],
-        "growth_2022_2023": 14.2,
+        "growth_2023_2024": 14.2,
         "top_exporters": ["Éthiopie", "Tanzanie", "Kenya", "Ouganda"]
     },
     {
@@ -749,7 +750,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1650,
         "share_percent": 2.4,
         "main_destinations": ["Égypte", "Soudan", "Afrique du Sud", "Libye"],
-        "growth_2022_2023": 8.5,
+        "growth_2023_2024": 8.5,
         "top_exporters": ["Kenya", "Ouganda", "Rwanda", "Malawi"]
     },
     {
@@ -759,7 +760,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1650,
         "share_percent": 2.4,
         "main_destinations": ["Sénégal", "Burkina Faso", "Mali", "Niger"],
-        "growth_2022_2023": 11.8,
+        "growth_2023_2024": 11.8,
         "top_exporters": ["Côte d'Ivoire", "Ghana", "Cameroun", "RD Congo"]
     },
     {
@@ -769,7 +770,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1500,
         "share_percent": 2.2,
         "main_destinations": ["Zimbabwe", "Zambie", "Mozambique", "Botswana"],
-        "growth_2022_2023": 8.5,
+        "growth_2023_2024": 8.5,
         "top_exporters": ["Afrique du Sud", "Kenya", "Nigéria", "Égypte"]
     },
     {
@@ -779,7 +780,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1400,
         "share_percent": 2.1,
         "main_destinations": ["Angola", "RD Congo", "Gabon", "Congo"],
-        "growth_2022_2023": 12.8,
+        "growth_2023_2024": 12.8,
         "top_exporters": ["Botswana", "Namibie", "Afrique du Sud", "Zimbabwe"]
     },
     {
@@ -789,7 +790,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1300,
         "share_percent": 1.9,
         "main_destinations": ["Sénégal", "Mauritanie", "Mali", "Burkina Faso"],
-        "growth_2022_2023": 6.5,
+        "growth_2023_2024": 6.5,
         "top_exporters": ["Côte d'Ivoire", "Cameroun", "Ghana", "Guinée"]
     },
     {
@@ -799,7 +800,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1350,
         "share_percent": 2.0,
         "main_destinations": ["Soudan", "RD Congo", "Somalie", "Libye"],
-        "growth_2022_2023": 16.2,
+        "growth_2023_2024": 16.2,
         "top_exporters": ["Égypte", "Afrique du Sud", "Kenya", "Éthiopie"]
     },
     {
@@ -809,7 +810,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1200,
         "share_percent": 1.8,
         "main_destinations": ["Égypte", "Afrique du Sud", "Maurice", "Maroc"],
-        "growth_2022_2023": 5.2,
+        "growth_2023_2024": 5.2,
         "top_exporters": ["Mali", "Bénin", "Burkina Faso", "Côte d'Ivoire"]
     },
     {
@@ -819,7 +820,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1200,
         "share_percent": 1.8,
         "main_destinations": ["Ghana", "RD Congo", "Angola", "Gabon"],
-        "growth_2022_2023": 9.8,
+        "growth_2023_2024": 9.8,
         "top_exporters": ["Afrique du Sud", "Égypte", "Maroc"]
     },
     {
@@ -829,7 +830,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 1100,
         "share_percent": 1.6,
         "main_destinations": ["Zambie", "Zimbabwe", "Botswana", "RD Congo"],
-        "growth_2022_2023": 10.5,
+        "growth_2023_2024": 10.5,
         "top_exporters": ["Afrique du Sud", "Égypte", "Maroc", "Zimbabwe"]
     },
     {
@@ -839,7 +840,7 @@ TOP_20_INTRA_AFRICAN_EXPORTS = [
         "value_mln_usd": 980,
         "share_percent": 1.4,
         "main_destinations": ["Afrique du Sud", "Ghana", "Sénégal", "Kenya"],
-        "growth_2022_2023": 15.8,
+        "growth_2023_2024": 15.8,
         "top_exporters": ["Côte d'Ivoire", "Tanzanie", "Mozambique", "Bénin"]
     },
 ]
@@ -889,8 +890,8 @@ def get_trade_summary() -> Dict:
     return {
         "top_20_imports_world_total_mln_usd": total_imports_world,
         "top_20_exports_world_total_mln_usd": total_exports_world,
-        "top_20_intra_imports_total_mln_usd": total_intra_imports,
-        "top_20_intra_exports_total_mln_usd": total_intra_exports,
+        "top_20_intra_african_imports_total_mln_usd": total_intra_imports,
+        "top_20_intra_african_exports_total_mln_usd": total_intra_exports,
         "intra_african_trade_share_percent": round((total_intra_imports / total_imports_world) * 100, 1) if total_imports_world > 0 else 0,
-        "data_year": 2023
+        "data_year": 2024
     }

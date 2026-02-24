@@ -19,7 +19,6 @@ CACHE_TTL = {
     "gemini_summary": 6 * 60 * 60,        # 6 hours for summaries
     "gemini_value_chains": 6 * 60 * 60,   # 6 hours for value chains
     "gemini_product": 12 * 60 * 60,       # 12 hours for product analysis
-    "comtrade_data": 24 * 60 * 60,        # 24 hours for COMTRADE data
     "oec_data": 24 * 60 * 60,             # 24 hours for OEC data
     "default": 6 * 60 * 60                # 6 hours default
 }

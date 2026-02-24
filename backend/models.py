@@ -74,8 +74,13 @@ class TariffCalculationResponse(BaseModel):
     has_varying_sub_positions: bool = False  # Si d'autres taux existent pour ce HS6
     available_sub_positions_count: int = 0
     # WARNING: Taux variables selon sous-positions
-    rate_warning: Optional[Dict[str, Any]] = None  # Warning si taux différents par sous-position
-    sub_positions_details: Optional[List[Dict[str, Any]]] = None  # Liste des sous-positions avec leurs taux
+    rate_warning: Optional[Dict[str, Any]] = None
+    sub_positions_details: Optional[List[Dict[str, Any]]] = None
+    # Taxes détaillées par produit (format enrichi)
+    taxes_detail: Optional[List[Dict[str, Any]]] = None
+    fiscal_advantages: Optional[List[Dict[str, Any]]] = None
+    administrative_formalities: Optional[List[Dict[str, Any]]] = None
+    data_source: Optional[str] = None
     # Règles d'origine
     rules_of_origin: Dict[str, Any]
     # Top producteurs africains
@@ -101,3 +106,51 @@ class CountryEconomicProfile(BaseModel):
     customs: Dict[str, Any] = {}
     infrastructure_ranking: Dict[str, Any] = {}
     ongoing_projects: List[Dict[str, Any]] = []
+
+
+class TradeDataSource(BaseModel):
+    """Model for trade data from various sources"""
+    
+    source: str = Field(..., description="Data source name (WTO, OEC, etc.)")
+    reporter_country: str = Field(..., description="ISO3 reporter country code")
+    partner_country: str = Field(..., description="ISO3 partner country code")
+    hs_code: Optional[str] = Field(None, description="HS product code")
+    period: str = Field(..., description="Data period (YYYY or YYYYMM)")
+    trade_value: Optional[float] = Field(None, description="Trade value in USD")
+    trade_flow: Optional[str] = Field(None, description="Import or Export")
+    data: Dict = Field(..., description="Raw data from source")
+    fetched_at: datetime = Field(default_factory=datetime.utcnow)
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "source": "OEC",
+                "reporter_country": "KEN",
+                "partner_country": "GHA",
+                "hs_code": "080300",
+                "period": "2025",
+                "trade_value": 1500000.50,
+                "trade_flow": "Export",
+                "data": {},
+                "fetched_at": "2026-02-01T10:00:00"
+            }
+        }
+
+
+class DataSourceComparison(BaseModel):
+    """Model for data source comparison results"""
+    
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    sources_compared: List[str]
+    recommended_source: str
+    details: Dict
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "timestamp": "2026-02-01T10:00:00",
+                "sources_compared": ["WTO", "OEC"],
+                "recommended_source": "OEC",
+                "details": {}
+            }
+        }

@@ -258,7 +258,7 @@ COUNTRY_OTHER_TAXES = {
     "SWZ": {"other": 0.0},
     
     # Autres
-    "DZA": {"daps": 0.0, "other": 0.0},  # DAPS variable selon produit
+    "DZA": {"daps": 0.0, "prct": 2.0, "tcs": 3.0, "other": 0.0},
     "MAR": {"tpi": 0.25, "other": 0.0},  # Taxe parafiscale à l'importation
     "TUN": {"air": 1.0, "other": 0.0},  # Avance sur Impôt sur le Revenu
     "EGY": {"other": 0.0},

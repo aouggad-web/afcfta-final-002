@@ -410,7 +410,7 @@ export default function AIAnalysis({ language = 'fr' }) {
           <div className="flex flex-col lg:flex-row gap-4 items-end">
             {/* Mode selection */}
             <div className="flex-1 space-y-2">
-              <label className="text-sm font-medium text-slate-700">Mode d'analyse</label>
+              <label className="text-sm font-medium text-slate-700">{txt.analysisModeLabel}</label>
               <Tabs value={mode} onValueChange={setMode} className="w-full">
                 <TabsList className="grid grid-cols-3 w-full">
                   <TabsTrigger value="export" className="flex items-center gap-2">
@@ -544,7 +544,7 @@ export default function AIAnalysis({ language = 'fr' }) {
                       )}
                     </div>
                     <div>
-                      <p className="text-sm text-slate-500">Fiabilité</p>
+                      <p className="text-sm text-slate-500">{txt.reliability}</p>
                       <p className="text-lg font-bold text-slate-900">
                         {summaryStats.hasEstimations ? txt.estimation : txt.verified}
                       </p>

@@ -119,7 +119,7 @@ const OpportunityCard = ({ opportunity, type, language }) => {
               {isImport ? "Import actuel" : "Capacité"}
             </p>
             <p className="font-bold text-lg text-slate-900">
-              {formatValue(isImport ? product.import_value : product.production_capacity)}
+              {formatValue(isImport ? product.import_value : (product.export_capacity ?? product.production_capacity))}
             </p>
           </div>
           <div className="bg-emerald-50 rounded-lg p-3">

@@ -386,8 +386,8 @@ class OECTradeService:
     
     async def get_available_years(self) -> List[int]:
         """Retourne les années disponibles dans l'API pour le cube HS17"""
-        # Le cube HS Rev. 2017 couvre 2018-2023
-        return list(range(2018, 2024))
+        # Le cube HS Rev. 2017 couvre 2018-2024
+        return list(range(2018, 2025))
     
     async def get_top_african_exporters(
         self,
@@ -569,3 +569,44 @@ def get_african_countries_list(language: str = "fr") -> List[Dict]:
             key=lambda x: normalize_for_sort(x[1].get(name_key, ""))
         )
     ]
+
+
+def get_country_name_to_iso3_mapping() -> Dict[str, str]:
+    """
+    Crée un mapping inversé des noms de pays (name_en) vers ISO3.
+    Utile pour le frontend qui reçoit des noms de pays de l'API OEC
+    et doit les convertir en codes ISO3 pour afficher les drapeaux.
+    
+    The mapping keys use the "name_en" field from AFRICAN_COUNTRIES_OEC entries.
+    
+    Inclut également des variantes de noms pour une meilleure compatibilité
+    avec les différentes représentations possibles des noms de pays dans l'API OEC.
+    
+    Returns:
+        Dict[str, str]: Mapping of country names to ISO3 codes
+    """
+    mapping = {}
+    
+    for iso3, info in AFRICAN_COUNTRIES_OEC.items():
+        # Nom principal en anglais
+        name_en = info["name_en"]
+        mapping[name_en] = iso3
+        
+        # Ajouter des variantes communes pour certains pays
+        # Ces variantes sont nécessaires car l'API OEC peut retourner des noms différents
+        if iso3 == "COG":
+            # Congo peut être "Congo" ou "Republic of the Congo"
+            mapping["Republic of the Congo"] = iso3
+        elif iso3 == "COD":
+            # DR Congo peut avoir plusieurs variantes
+            mapping["Democratic Republic of the Congo"] = iso3
+            mapping["Congo, Dem. Rep."] = iso3
+        elif iso3 == "CIV":
+            # Côte d'Ivoire peut apparaître avec ou sans accents (name_en est "Ivory Coast")
+            mapping["Cote d'Ivoire"] = iso3
+            mapping["Côte d'Ivoire"] = iso3
+        elif iso3 == "STP":
+            # São Tomé avec et sans accents
+            mapping["Sao Tome and Principe"] = iso3
+    
+    return mapping

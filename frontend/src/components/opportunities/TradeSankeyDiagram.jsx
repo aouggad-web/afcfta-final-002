@@ -201,7 +201,7 @@ export default function TradeSankeyDiagram({
   // Handle node click for filtering
   const handleNodeClick = useCallback((filterType, value) => {
     setActiveFilters(prev => {
-      const newFilters = { ...prev };
+      const newFilters = { ...prev };  
       // Toggle filter
       if (newFilters[filterType] === value) {
         newFilters[filterType] = '';
@@ -417,7 +417,7 @@ export default function TradeSankeyDiagram({
           <ResponsiveContainer width="100%" height="100%">
             <Sankey
               data={data}
-              node={<CustomSankeyNode containerWidth={700} onNodeClick={handleNodeClick} />}
+              node={<CustomSankeyNode onNodeClick={handleNodeClick} />}
               nodePadding={25}
               margin={{ top: 10, right: 120, bottom: 10, left: 120 }}
               link={{ stroke: '#cbd5e1', strokeOpacity: 0.3 }}

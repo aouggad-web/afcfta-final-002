@@ -7,6 +7,7 @@ from typing import Optional
 import logging
 import json
 import unicodedata
+from pathlib import Path
 
 from country_data import get_country_data, REAL_COUNTRY_DATA
 from constants import AFRICAN_COUNTRIES
@@ -154,7 +155,8 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         infra_ranking = None
         
         try:
-            with open('/app/classement_infrastructure_afrique.json', 'r') as f:
+            infra_path = Path(__file__).parent.parent.parent / 'classement_infrastructure_afrique.json'
+            with open(infra_path, 'r') as f:
                 infra_data = json.load(f)
             
             search_name = normalize_name(country_search_name)

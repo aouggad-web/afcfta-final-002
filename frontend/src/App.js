@@ -26,6 +26,37 @@ import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+const TABS = [
+  { id: 'dashboard', icon: '📊', fr: 'Dashboard', en: 'Dashboard' },
+  { id: 'calculator', icon: '🧮', fr: 'Calculateur', en: 'Calculator' },
+  { id: 'statistics', icon: '📈', fr: 'Statistiques', en: 'Statistics' },
+  { id: 'opportunities', icon: '🎯', fr: 'Opportunités', en: 'Opportunities' },
+  { id: 'production', icon: '🏭', fr: 'Production', en: 'Production' },
+  { id: 'logistics', icon: '🚢', fr: 'Logistique', en: 'Logistics' },
+  { id: 'tools', icon: '🛠️', fr: 'Outils', en: 'Tools' },
+  { id: 'rules', icon: '📜', fr: "Règles d'Origine", en: 'Rules of Origin' },
+  { id: 'profiles', icon: '🌍', fr: 'Profils Pays', en: 'Country Profiles' },
+];
+
+const texts = {
+  fr: {
+    title: "Accord de la ZLECAf",
+    subtitle: "Levier de développement de l'Afrique",
+    memberCountries: "54 Pays",
+    population: "1.3B+ Pop.",
+    authenticData: "32 pays · données authentiques",
+    tariffPositions: "229 519 positions tarifaires",
+  },
+  en: {
+    title: "AfCFTA Agreement",
+    subtitle: "Africa's Development Lever",
+    memberCountries: "54 Countries",
+    population: "1.3B+ Pop.",
+    authenticData: "32 countries · authentic data",
+    tariffPositions: "229,519 tariff positions",
+  },
+};
+
 function App() {
   const { i18n } = useTranslation();
   const [countries, setCountries] = useState([]);
@@ -33,7 +64,6 @@ function App() {
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
 
-  // Synchronise le state language avec i18next
   const handleLanguageChange = (newLang) => {
     setLanguage(newLang);
     i18n.changeLanguage(newLang);
@@ -74,6 +104,7 @@ function App() {
     };
     return reverseMapping[activeTab] || activeTab;
   };
+  const t = texts[language] || texts.fr;
 
   useEffect(() => {
     fetchCountries(language);

@@ -2,9 +2,11 @@
 import json
 import random
 from pathlib import Path
+import os
 
-# Chemin du fichier
-FILE_PATH = Path('ports_africains.json')
+# Support both Docker (/app/) and local environments
+ROOT_DIR = Path(os.environ.get('APP_ROOT', Path(__file__).parent.parent))
+FILE_PATH = ROOT_DIR / 'ports_africains.json'
 
 def load_ports():
     try:

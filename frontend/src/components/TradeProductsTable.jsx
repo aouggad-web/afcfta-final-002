@@ -43,6 +43,7 @@ function TradeProductsTable({ language = 'fr' }) {
       source: "Source",
       year: "Année",
       footerSources: "Sources: UNCTAD COMTRADE, ITC Trade Map, African Development Bank, AfCFTA Secretariat",
+      footerSources: "Sources: UNCTAD COMTRADE, OEC/BACI 2024, ITC Trade Map, African Development Bank, AfCFTA Secretariat",
       footerNote: "Les données représentent les 20 principaux produits par valeur commerciale. Classification selon le Système Harmonisé (HS). Données 2024.",
       titleImportWorld: "Top 20 Produits Importés par l'Afrique du Monde",
       titleExportWorld: "Top 20 Produits Exportés par l'Afrique vers le Monde",
@@ -71,6 +72,7 @@ function TradeProductsTable({ language = 'fr' }) {
       source: "Source",
       year: "Year",
       footerSources: "Sources: UNCTAD COMTRADE, ITC Trade Map, African Development Bank, AfCFTA Secretariat",
+      footerSources: "Sources: UNCTAD COMTRADE, OEC/BACI 2024, ITC Trade Map, African Development Bank, AfCFTA Secretariat",
       footerNote: "Data represents the top 20 products by trade value. Classification according to the Harmonized System (HS). 2024 data.",
       titleImportWorld: "Top 20 Products Imported by Africa from the World",
       titleExportWorld: "Top 20 Products Exported by Africa to the World",
@@ -188,7 +190,7 @@ function TradeProductsTable({ language = 'fr' }) {
                   <span className="text-gray-600">{product.share_percent}%</span>
                 </td>
                 <td className="px-3 py-3 text-center">
-                  {renderGrowthBadge(product.growth_2022_2023)}
+                  {renderGrowthBadge(product.growth_2023_2024)}
                 </td>
                 <td className="px-3 py-3">
                   <div className="flex flex-wrap gap-1">
@@ -246,11 +248,11 @@ function TradeProductsTable({ language = 'fr' }) {
               </div>
               <div className="bg-white/10 backdrop-blur rounded-xl p-4">
                 <p className="text-indigo-200 text-xs uppercase">{t.importIntra}</p>
-                <p className="text-2xl font-bold">{formatValue(summary.top_20_intra_imports_total_mln_usd)}</p>
+                <p className="text-2xl font-bold">{formatValue(summary.top_20_intra_african_imports_total_mln_usd)}</p>
               </div>
               <div className="bg-white/10 backdrop-blur rounded-xl p-4">
                 <p className="text-indigo-200 text-xs uppercase">{t.exportIntra}</p>
-                <p className="text-2xl font-bold">{formatValue(summary.top_20_intra_exports_total_mln_usd)}</p>
+                <p className="text-2xl font-bold">{formatValue(summary.top_20_intra_african_exports_total_mln_usd)}</p>
               </div>
             </div>
           </CardContent>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
+import MonitoringDashboard from './MonitoringDashboard';
+import TariffDownloads from './TariffDownloads';
 
 export default function ToolsTab({ language = 'fr' }) {
   const texts = {
@@ -113,20 +115,21 @@ export default function ToolsTab({ language = 'fr' }) {
         </CardHeader>
       </Card>
 
+      <TariffDownloads language={language} />
+
       {/* Widgets des outils */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-gradient-to-br from-orange-50 to-red-50 border-l-4 border-l-orange-500 shadow-xl hover:shadow-2xl transition-shadow">
-          <CardContent className="pt-6">
+        <Card className="afcfta-dark-gradient border-l-4 border-l-orange-500 shadow-xl hover:shadow-2xl transition-shadow">          <CardContent className="pt-6">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-4xl">🚧</span>
-              <h3 className="font-bold text-xl text-orange-700">{t.ntbTitle}</h3>
+              <h3 className="font-bold text-xl text-orange-400">{t.ntbTitle}</h3>
             </div>
-            <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+            <p className="text-sm mb-4 leading-relaxed" style={{color:'var(--afcfta-muted)'}}>
               {t.ntbDesc}
             </p>
-            <div className="bg-white p-3 rounded-lg mb-3">
-              <p className="text-xs text-gray-600"><strong>Status:</strong> <Badge className="bg-green-600 ml-2">{t.ntbStatus}</Badge></p>
-              <p className="text-xs text-gray-600 mt-1"><strong>{t.ntbCountries}</strong> 54 {language === 'fr' ? 'membres ZLECAf' : 'AfCFTA members'}</p>
+            <div className="p-3 rounded-lg mb-3" style={{background:'rgba(255,255,255,0.06)'}}>
+              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-green-600 ml-2">{t.ntbStatus}</Badge></p>
+              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.ntbCountries}</strong> 54 {language === 'fr' ? 'membres ZLECAf' : 'AfCFTA members'}</p>
             </div>
             <a 
               href="https://tradebarriers.africa" 
@@ -139,18 +142,17 @@ export default function ToolsTab({ language = 'fr' }) {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-l-4 border-l-blue-500 shadow-xl hover:shadow-2xl transition-shadow">
-          <CardContent className="pt-6">
+        <Card className="afcfta-dark-gradient border-l-4 border-l-blue-500 shadow-xl hover:shadow-2xl transition-shadow">          <CardContent className="pt-6">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-4xl">💻</span>
-              <h3 className="font-bold text-xl text-blue-700">{t.digitalTitle}</h3>
+              <h3 className="font-bold text-xl text-blue-400">{t.digitalTitle}</h3>
             </div>
-            <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+            <p className="text-sm mb-4 leading-relaxed" style={{color:'var(--afcfta-muted)'}}>
               {t.digitalDesc}
             </p>
-            <div className="bg-white p-3 rounded-lg mb-3">
-              <p className="text-xs text-gray-600"><strong>{t.digitalAdoption}</strong> 18 {language === 'fr' ? 'février' : 'February'} 2024</p>
-              <p className="text-xs text-gray-600 mt-1"><strong>Status:</strong> <Badge className="bg-green-600 ml-2">{t.digitalStatus}</Badge></p>
+            <div className="p-3 rounded-lg mb-3" style={{background:'rgba(255,255,255,0.06)'}}>
+              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.digitalAdoption}</strong> 18 {language === 'fr' ? 'février' : 'February'} 2024</p>
+              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-green-600 ml-2">{t.digitalStatus}</Badge></p>
             </div>
             <a 
               href="https://au.int/en/treaties/protocol-digital-trade" 
@@ -163,18 +165,17 @@ export default function ToolsTab({ language = 'fr' }) {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-l-4 border-l-green-500 shadow-xl hover:shadow-2xl transition-shadow">
-          <CardContent className="pt-6">
+        <Card className="afcfta-dark-gradient border-l-4 border-l-green-500 shadow-xl hover:shadow-2xl transition-shadow">          <CardContent className="pt-6">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-4xl">🚀</span>
-              <h3 className="font-bold text-xl text-green-700">{t.gtiTitle}</h3>
+              <h3 className="font-bold text-xl text-green-400">{t.gtiTitle}</h3>
             </div>
-            <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+            <p className="text-sm mb-4 leading-relaxed" style={{color:'var(--afcfta-muted)'}}>
               {t.gtiDesc}
             </p>
-            <div className="bg-white p-3 rounded-lg mb-3">
-              <p className="text-xs text-gray-600"><strong>Status:</strong> <Badge className="bg-green-600 ml-2">{t.gtiStatus}</Badge></p>
-              <p className="text-xs text-gray-600 mt-1"><strong>{t.gtiFocus}</strong> {t.gtiCorridors}</p>
+            <div className="p-3 rounded-lg mb-3" style={{background:'rgba(255,255,255,0.06)'}}>
+              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-green-600 ml-2">{t.gtiStatus}</Badge></p>
+              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.gtiFocus}</strong> {t.gtiCorridors}</p>
             </div>
             <a 
               href="https://www.tralac.org/news/article/afcfta-guided-trade-initiative.html" 
@@ -190,8 +191,8 @@ export default function ToolsTab({ language = 'fr' }) {
 
       {/* Section PAPSS */}
       <Card className="shadow-2xl border-t-4 border-t-purple-600">
-        <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
-          <CardTitle className="text-2xl font-bold text-purple-700 flex items-center gap-2">
+        <CardHeader className="afcfta-dark-gradient" style={{borderBottom:'1px solid rgba(192,132,252,0.2)'}}>
+          <CardTitle className="text-2xl font-bold text-purple-400 flex items-center gap-2">
             <span>💳</span>
             <span>{t.papssTitle}</span>
           </CardTitle>
@@ -202,8 +203,8 @@ export default function ToolsTab({ language = 'fr' }) {
         <CardContent className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-bold text-lg text-purple-700 mb-3">{t.papssAbout}</h4>
-              <p className="text-gray-700 mb-4">
+              <h4 className="font-bold text-lg text-purple-400 mb-3">{t.papssAbout}</h4>
+              <p style={{color:'var(--afcfta-muted)'}} className="mb-4">
                 {t.papssDesc}
               </p>
               <div className="space-y-2">
@@ -222,19 +223,19 @@ export default function ToolsTab({ language = 'fr' }) {
               </div>
             </div>
             <div>
-              <h4 className="font-bold text-lg text-purple-700 mb-3">{t.papssAdvantages}</h4>
-              <div className="bg-purple-50 p-4 rounded-lg space-y-3">
+              <h4 className="font-bold text-lg text-purple-400 mb-3">{t.papssAdvantages}</h4>
+              <div className="p-4 rounded-lg space-y-3" style={{background:'rgba(192,132,252,0.08)', border:'1px solid rgba(192,132,252,0.2)'}}>
                 <div>
-                  <p className="text-sm font-semibold text-purple-800">💰 {t.papssCost}</p>
-                  <p className="text-xs text-gray-600">{t.papssCostDesc}</p>
+                  <p className="text-sm font-semibold text-purple-400">💰 {t.papssCost}</p>
+                  <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.papssCostDesc}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-purple-800">⚡ {t.papssSpeed}</p>
-                  <p className="text-xs text-gray-600">{t.papssSpeedDesc}</p>
+                  <p className="text-sm font-semibold text-purple-400">⚡ {t.papssSpeed}</p>
+                  <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.papssSpeedDesc}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-purple-800">🔒 {t.papssSecurity}</p>
-                  <p className="text-xs text-gray-600">{t.papssSecurityDesc}</p>
+                  <p className="text-sm font-semibold text-purple-400">🔒 {t.papssSecurity}</p>
+                  <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.papssSecurityDesc}</p>
                 </div>
               </div>
               <Badge className="mt-4 bg-yellow-600">{t.papssDeployment}</Badge>
@@ -245,8 +246,8 @@ export default function ToolsTab({ language = 'fr' }) {
 
       {/* Section Ressources Additionnelles */}
       <Card className="shadow-xl">
-        <CardHeader className="bg-gradient-to-r from-gray-50 to-blue-50">
-          <CardTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
+        <CardHeader className="afcfta-dark-gradient" style={{borderBottom:'1px solid rgba(255,255,255,0.08)'}}>
+          <CardTitle className="text-xl font-bold flex items-center gap-2">
             <span>📚</span>
             <span>{t.resourcesTitle}</span>
           </CardTitle>
@@ -257,12 +258,13 @@ export default function ToolsTab({ language = 'fr' }) {
               href="https://au.int/en/cfta" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition border border-blue-200"
+              className="flex items-center gap-3 p-4 rounded-lg transition"
+              style={{background:'rgba(59,130,246,0.1)', border:'1px solid rgba(59,130,246,0.25)'}}
             >
-              <span className="text-blue-600 text-2xl">🌐</span>
+              <span className="text-blue-400 text-2xl">🌐</span>
               <div>
-                <p className="font-semibold text-blue-800">{t.secretariat}</p>
-                <p className="text-xs text-gray-600">{t.secretariatDesc}</p>
+                <p className="font-semibold text-blue-400">{t.secretariat}</p>
+                <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.secretariatDesc}</p>
               </div>
             </a>
 
@@ -270,12 +272,13 @@ export default function ToolsTab({ language = 'fr' }) {
               href="https://www.tralac.org/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition border border-green-200"
+              className="flex items-center gap-3 p-4 rounded-lg transition"
+              style={{background:'rgba(74,222,128,0.1)', border:'1px solid rgba(74,222,128,0.25)'}}
             >
-              <span className="text-green-600 text-2xl">⚖️</span>
+              <span className="text-green-400 text-2xl">⚖️</span>
               <div>
-                <p className="font-semibold text-green-800">{t.tralac}</p>
-                <p className="text-xs text-gray-600">{t.tralacDesc}</p>
+                <p className="font-semibold text-green-400">{t.tralac}</p>
+                <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.tralacDesc}</p>
               </div>
             </a>
 
@@ -283,12 +286,13 @@ export default function ToolsTab({ language = 'fr' }) {
               href="https://www.worldbank.org/en/topic/trade/publication/the-african-continental-free-trade-area" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition border border-purple-200"
+              className="flex items-center gap-3 p-4 rounded-lg transition"
+              style={{background:'rgba(192,132,252,0.1)', border:'1px solid rgba(192,132,252,0.25)'}}
             >
-              <span className="text-purple-600 text-2xl">🏛️</span>
+              <span className="text-purple-400 text-2xl">🏛️</span>
               <div>
-                <p className="font-semibold text-purple-800">{t.worldBank}</p>
-                <p className="text-xs text-gray-600">{t.worldBankDesc}</p>
+                <p className="font-semibold text-purple-400">{t.worldBank}</p>
+                <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.worldBankDesc}</p>
               </div>
             </a>
 
@@ -296,17 +300,20 @@ export default function ToolsTab({ language = 'fr' }) {
               href="https://www.uneca.org/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition border border-orange-200"
+              className="flex items-center gap-3 p-4 rounded-lg transition"
+              style={{background:'rgba(251,146,60,0.1)', border:'1px solid rgba(251,146,60,0.25)'}}
             >
-              <span className="text-orange-600 text-2xl">📈</span>
+              <span className="text-orange-400 text-2xl">📈</span>
               <div>
-                <p className="font-semibold text-orange-800">{t.uneca}</p>
-                <p className="text-xs text-gray-600">{t.unecaDesc}</p>
+                <p className="font-semibold text-orange-400">{t.uneca}</p>
+                <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.unecaDesc}</p>
               </div>
             </a>
           </div>
         </CardContent>
       </Card>
+
+      <MonitoringDashboard language={language} />
 
       {/* Footer with Source Indicator */}
       <Card className="bg-gray-50 border-gray-200">

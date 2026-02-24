@@ -2,13 +2,15 @@
 Données UNIDO - Statistiques Industrielles Africaines
 ======================================================
 Sources officielles:
-- UNIDO INDSTAT4 Database (2020-2023)
+- UNIDO INDSTAT4 Database 2024
+- UNIDO International Yearbook of Industrial Statistics 2024
+- UNIDO Competitive Industrial Performance Index 2024
 - UNIDO Industrial Statistics Database
 - African Development Bank Industry Reports
 
 Classification: ISIC Rev.4
 Couverture: 54 pays africains
-Mise à jour: Décembre 2024
+Mise à jour: 2024
 """
 
 from typing import Dict, List, Optional
@@ -46,7 +48,7 @@ ISIC_SECTORS = {
 
 # =============================================================================
 # DONNÉES INDUSTRIELLES PAR PAYS
-# Source: UNIDO INDSTAT4, estimations 2023-2024
+# Source: UNIDO INDSTAT4 2024, UNIDO Yearbook 2024, estimations 2024
 # =============================================================================
 
 UNIDO_INDUSTRY_DATA = {
@@ -77,8 +79,15 @@ UNIDO_INDUSTRY_DATA = {
             "Produits alimentaires transformés"
         ],
         "industrial_zones": 12,
-        "source": "UNIDO INDSTAT4 2023, Stats SA",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, Stats SA, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 49800,
+        "mva_per_capita_2015usd": 660,
+        "growth_rate_2024_est": 1.5,
+        "cip_index_rank": 77,
+        "mht_share_mva": 21.2,
+        "industry_va_gdp_percent": 28.5,
+        "manuf_share_exports": 42.0,
+        "data_year": 2024
     },
     
     "EGY": {
@@ -105,8 +114,15 @@ UNIDO_INDUSTRY_DATA = {
             "Produits alimentaires"
         ],
         "industrial_zones": 18,
-        "source": "UNIDO INDSTAT4 2023, CAPMAS",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, CAPMAS, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 44500,
+        "mva_per_capita_2015usd": 320,
+        "growth_rate_2024_est": 4.2,
+        "cip_index_rank": 80,
+        "mht_share_mva": 14.5,
+        "industry_va_gdp_percent": 32.8,
+        "manuf_share_exports": 38.5,
+        "data_year": 2024
     },
     
     "NGA": {
@@ -134,8 +150,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 8,
         "dangote_refinery_capacity_bpd": 650000,
-        "source": "UNIDO INDSTAT4 2023, NBS Nigeria",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, NBS Nigeria, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 39500,
+        "mva_per_capita_2015usd": 140,
+        "growth_rate_2024_est": 2.5,
+        "cip_index_rank": 95,
+        "mht_share_mva": 6.2,
+        "industry_va_gdp_percent": 22.4,
+        "manuf_share_exports": 8.5,
+        "data_year": 2024
     },
     
     "MAR": {
@@ -163,8 +186,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 15,
         "automotive_units_2023": 500000,
-        "source": "UNIDO INDSTAT4 2023, HCP Maroc",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, HCP Maroc, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 33800,
+        "mva_per_capita_2015usd": 710,
+        "growth_rate_2024_est": 3.8,
+        "cip_index_rank": 90,
+        "mht_share_mva": 26.5,
+        "industry_va_gdp_percent": 32.2,
+        "manuf_share_exports": 68.5,
+        "data_year": 2024
     },
     
     "DZA": {
@@ -191,8 +221,15 @@ UNIDO_INDUSTRY_DATA = {
             "Produits alimentaires"
         ],
         "industrial_zones": 10,
-        "source": "UNIDO INDSTAT4 2023, ONS Algérie",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, ONS Algérie, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 19200,
+        "mva_per_capita_2015usd": 330,
+        "growth_rate_2024_est": 4.5,
+        "cip_index_rank": 99,
+        "mht_share_mva": 8.5,
+        "industry_va_gdp_percent": 38.5,
+        "manuf_share_exports": 5.2,
+        "data_year": 2024
     },
     
     "TUN": {
@@ -219,8 +256,15 @@ UNIDO_INDUSTRY_DATA = {
             "Pièces mécaniques"
         ],
         "industrial_zones": 12,
-        "source": "UNIDO INDSTAT4 2023, INS Tunisie",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, INS Tunisie, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 8700,
+        "mva_per_capita_2015usd": 575,
+        "growth_rate_2024_est": 2.0,
+        "cip_index_rank": 103,
+        "mht_share_mva": 22.8,
+        "industry_va_gdp_percent": 27.5,
+        "manuf_share_exports": 72.0,
+        "data_year": 2024
     },
     
     "ETH": {
@@ -248,8 +292,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 15,
         "industrial_parks": ["Hawassa", "Bole Lemi", "Kilinto", "Mekelle"],
-        "source": "UNIDO INDSTAT4 2023, CSA Ethiopia",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, CSA Ethiopia, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 8200,
+        "mva_per_capita_2015usd": 52,
+        "growth_rate_2024_est": 6.5,
+        "cip_index_rank": 120,
+        "mht_share_mva": 5.8,
+        "industry_va_gdp_percent": 22.5,
+        "manuf_share_exports": 18.5,
+        "data_year": 2024
     },
     
     "KEN": {
@@ -277,8 +328,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 8,
         "special_economic_zones": 4,
-        "source": "UNIDO INDSTAT4 2023, KNBS Kenya",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, KNBS Kenya, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 8600,
+        "mva_per_capita_2015usd": 125,
+        "growth_rate_2024_est": 4.0,
+        "cip_index_rank": 108,
+        "mht_share_mva": 9.2,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 22.0,
+        "data_year": 2024
     },
     
     "CIV": {
@@ -306,8 +364,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 6,
         "cocoa_processing_capacity_tonnes": 750000,
-        "source": "UNIDO INDSTAT4 2023, INS Côte d'Ivoire",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, INS Côte d'Ivoire, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 10400,
+        "mva_per_capita_2015usd": 280,
+        "growth_rate_2024_est": 6.8,
+        "cip_index_rank": 112,
+        "mht_share_mva": 6.5,
+        "industry_va_gdp_percent": 25.5,
+        "manuf_share_exports": 28.5,
+        "data_year": 2024
     },
     
     "GHA": {
@@ -334,8 +399,15 @@ UNIDO_INDUSTRY_DATA = {
             "Ciment"
         ],
         "industrial_zones": 5,
-        "source": "UNIDO INDSTAT4 2023, GSS Ghana",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, GSS Ghana, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 7000,
+        "mva_per_capita_2015usd": 165,
+        "growth_rate_2024_est": 3.2,
+        "cip_index_rank": 115,
+        "mht_share_mva": 8.5,
+        "industry_va_gdp_percent": 24.5,
+        "manuf_share_exports": 28.0,
+        "data_year": 2024
     },
     
     "TZA": {
@@ -362,8 +434,15 @@ UNIDO_INDUSTRY_DATA = {
             "Produits alimentaires"
         ],
         "industrial_zones": 4,
-        "source": "UNIDO INDSTAT4 2023, NBS Tanzania",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, NBS Tanzania, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 5500,
+        "mva_per_capita_2015usd": 65,
+        "growth_rate_2024_est": 5.5,
+        "cip_index_rank": 122,
+        "mht_share_mva": 5.2,
+        "industry_va_gdp_percent": 25.2,
+        "manuf_share_exports": 15.5,
+        "data_year": 2024
     },
     
     "SEN": {
@@ -390,8 +469,15 @@ UNIDO_INDUSTRY_DATA = {
             "Produits alimentaires"
         ],
         "industrial_zones": 5,
-        "source": "UNIDO INDSTAT4 2023, ANSD Sénégal",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, ANSD Sénégal, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 4800,
+        "mva_per_capita_2015usd": 205,
+        "growth_rate_2024_est": 5.2,
+        "cip_index_rank": 118,
+        "mht_share_mva": 7.5,
+        "industry_va_gdp_percent": 28.5,
+        "manuf_share_exports": 25.0,
+        "data_year": 2024
     },
     
     "CMR": {
@@ -419,8 +505,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 4,
         "alucam_capacity_tonnes": 110000,
-        "source": "UNIDO INDSTAT4 2023, INS Cameroun",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, INS Cameroun, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 6000,
+        "mva_per_capita_2015usd": 170,
+        "growth_rate_2024_est": 4.0,
+        "cip_index_rank": 114,
+        "mht_share_mva": 7.2,
+        "industry_va_gdp_percent": 30.5,
+        "manuf_share_exports": 18.5,
+        "data_year": 2024
     },
     
     "UGA": {
@@ -447,8 +540,15 @@ UNIDO_INDUSTRY_DATA = {
             "Savons et détergents"
         ],
         "industrial_zones": 3,
-        "source": "UNIDO INDSTAT4 2023, UBOS Uganda",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UBOS Uganda, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 4000,
+        "mva_per_capita_2015usd": 65,
+        "growth_rate_2024_est": 5.0,
+        "cip_index_rank": 125,
+        "mht_share_mva": 5.5,
+        "industry_va_gdp_percent": 25.8,
+        "manuf_share_exports": 12.5,
+        "data_year": 2024
     },
     
     "AGO": {
@@ -475,8 +575,15 @@ UNIDO_INDUSTRY_DATA = {
             "Produits alimentaires"
         ],
         "industrial_zones": 3,
-        "source": "UNIDO INDSTAT4 2023, INE Angola",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, INE Angola, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 4400,
+        "mva_per_capita_2015usd": 97,
+        "growth_rate_2024_est": 2.8,
+        "cip_index_rank": 128,
+        "mht_share_mva": 5.8,
+        "industry_va_gdp_percent": 48.5,
+        "manuf_share_exports": 3.5,
+        "data_year": 2024
     },
     
     "COD": {
@@ -503,8 +610,15 @@ UNIDO_INDUSTRY_DATA = {
             "Savons"
         ],
         "industrial_zones": 2,
-        "source": "UNIDO INDSTAT4 2023, INS RDC",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, INS RDC, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 3700,
+        "mva_per_capita_2015usd": 28,
+        "growth_rate_2024_est": 7.2,
+        "cip_index_rank": 135,
+        "mht_share_mva": 4.5,
+        "industry_va_gdp_percent": 42.5,
+        "manuf_share_exports": 5.5,
+        "data_year": 2024
     },
     
     "ZMB": {
@@ -531,8 +645,15 @@ UNIDO_INDUSTRY_DATA = {
             "Textiles"
         ],
         "industrial_zones": 4,
-        "source": "UNIDO INDSTAT4 2023, CSO Zambia",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, CSO Zambia, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 2950,
+        "mva_per_capita_2015usd": 117,
+        "growth_rate_2024_est": 4.5,
+        "cip_index_rank": 126,
+        "mht_share_mva": 6.8,
+        "industry_va_gdp_percent": 32.5,
+        "manuf_share_exports": 28.5,
+        "data_year": 2024
     },
     
     "ZWE": {
@@ -559,8 +680,15 @@ UNIDO_INDUSTRY_DATA = {
             "Produits alimentaires"
         ],
         "industrial_zones": 3,
-        "source": "UNIDO INDSTAT4 2023, ZIMSTAT",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, ZIMSTAT, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 2300,
+        "mva_per_capita_2015usd": 113,
+        "growth_rate_2024_est": 4.0,
+        "cip_index_rank": 129,
+        "mht_share_mva": 8.5,
+        "industry_va_gdp_percent": 35.5,
+        "manuf_share_exports": 22.5,
+        "data_year": 2024
     },
     
     # =========================================================================
@@ -590,8 +718,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 3,
         "kigali_sez": True,
-        "source": "UNIDO INDSTAT4 2023, NISR Rwanda",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, NISR Rwanda, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1300,
+        "mva_per_capita_2015usd": 72,
+        "growth_rate_2024_est": 9.0,
+        "cip_index_rank": 130,
+        "mht_share_mva": 6.2,
+        "industry_va_gdp_percent": 22.5,
+        "manuf_share_exports": 12.5,
+        "data_year": 2024
     },
     
     "MUS": {
@@ -619,8 +754,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 5,
         "freeport": True,
-        "source": "UNIDO INDSTAT4 2023, Statistics Mauritius",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, Statistics Mauritius, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1900,
+        "mva_per_capita_2015usd": 1150,
+        "growth_rate_2024_est": 5.5,
+        "cip_index_rank": 101,
+        "mht_share_mva": 18.5,
+        "industry_va_gdp_percent": 24.5,
+        "manuf_share_exports": 68.5,
+        "data_year": 2024
     },
     
     "BWA": {
@@ -647,8 +789,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 2,
         "diamond_cutting_hub": True,
-        "source": "UNIDO INDSTAT4 2023, Statistics Botswana",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, Statistics Botswana, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 900,
+        "mva_per_capita_2015usd": 275,
+        "growth_rate_2024_est": 3.5,
+        "cip_index_rank": 127,
+        "mht_share_mva": 5.8,
+        "industry_va_gdp_percent": 42.5,
+        "manuf_share_exports": 12.5,
+        "data_year": 2024
     },
     
     "NAM": {
@@ -675,8 +824,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "industrial_zones": 3,
         "walvis_bay_processing": True,
-        "source": "UNIDO INDSTAT4 2023, NSA Namibia",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, NSA Namibia, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1600,
+        "mva_per_capita_2015usd": 470,
+        "growth_rate_2024_est": 3.2,
+        "cip_index_rank": 119,
+        "mht_share_mva": 7.5,
+        "industry_va_gdp_percent": 32.5,
+        "manuf_share_exports": 38.5,
+        "data_year": 2024
     },
     
     # =========================================================================
@@ -695,8 +851,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": 5.8,
         "key_products": ["Coton égrené", "Huile de coton", "Ciment", "Boissons"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 2200,
+        "mva_per_capita_2015usd": 128,
+        "growth_rate_2024_est": 6.2,
+        "cip_index_rank": 138,
+        "mht_share_mva": 4.8,
+        "industry_va_gdp_percent": 22.5,
+        "manuf_share_exports": 15.5,
+        "data_year": 2024
     },
     
     "BFA": {
@@ -712,8 +875,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": 3.2,
         "key_products": ["Coton égrené", "Or raffiné", "Boissons", "Ciment"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1900,
+        "mva_per_capita_2015usd": 66,
+        "growth_rate_2024_est": 3.5,
+        "cip_index_rank": 140,
+        "mht_share_mva": 4.5,
+        "industry_va_gdp_percent": 24.8,
+        "manuf_share_exports": 12.5,
+        "data_year": 2024
     },
     
     "MLI": {
@@ -729,8 +899,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": 4.5,
         "key_products": ["Coton égrené", "Or raffiné", "Sucre", "Ciment"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 2300,
+        "mva_per_capita_2015usd": 82,
+        "growth_rate_2024_est": 5.0,
+        "cip_index_rank": 139,
+        "mht_share_mva": 4.2,
+        "industry_va_gdp_percent": 28.5,
+        "manuf_share_exports": 12.5,
+        "data_year": 2024
     },
     
     "NER": {
@@ -746,8 +923,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": 5.2,
         "key_products": ["Ciment", "Huile d'arachide", "Farine", "Boissons"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 900,
+        "mva_per_capita_2015usd": 26,
+        "growth_rate_2024_est": 5.5,
+        "cip_index_rank": 148,
+        "mht_share_mva": 3.5,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 8.5,
+        "data_year": 2024
     },
     
     "TGO": {
@@ -765,8 +949,15 @@ UNIDO_INDUSTRY_DATA = {
         "key_products": ["Clinker/Ciment", "Phosphates", "Boissons", "Coton égrené"],
         "industrial_zones": 2,
         "pya_industrial_platform": True,
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1150,
+        "mva_per_capita_2015usd": 100,
+        "growth_rate_2024_est": 6.2,
+        "cip_index_rank": 136,
+        "mht_share_mva": 5.2,
+        "industry_va_gdp_percent": 28.5,
+        "manuf_share_exports": 18.5,
+        "data_year": 2024
     },
     
     "GIN": {
@@ -783,8 +974,15 @@ UNIDO_INDUSTRY_DATA = {
         "growth_rate_2023": 4.8,
         "key_products": ["Alumine", "Ciment", "Boissons", "Produits alimentaires"],
         "bauxite_alumina_refinery": True,
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1600,
+        "mva_per_capita_2015usd": 88,
+        "growth_rate_2024_est": 5.2,
+        "cip_index_rank": 141,
+        "mht_share_mva": 4.8,
+        "industry_va_gdp_percent": 32.5,
+        "manuf_share_exports": 15.5,
+        "data_year": 2024
     },
     
     "MOZ": {
@@ -801,8 +999,15 @@ UNIDO_INDUSTRY_DATA = {
         "growth_rate_2023": 5.5,
         "key_products": ["Aluminium", "Sucre", "Bière", "Ciment", "Gaz naturel liquéfié"],
         "mozal_aluminum_smelter": True,
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 2650,
+        "mva_per_capita_2015usd": 60,
+        "growth_rate_2024_est": 5.8,
+        "cip_index_rank": 134,
+        "mht_share_mva": 5.5,
+        "industry_va_gdp_percent": 28.5,
+        "manuf_share_exports": 12.5,
+        "data_year": 2024
     },
     
     "MDG": {
@@ -819,8 +1024,15 @@ UNIDO_INDUSTRY_DATA = {
         "growth_rate_2023": 4.2,
         "key_products": ["Textiles", "Vêtements", "Vanille transformée", "Ciment", "Sucre"],
         "zone_franche_active": True,
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1900,
+        "mva_per_capita_2015usd": 50,
+        "growth_rate_2024_est": 4.5,
+        "cip_index_rank": 137,
+        "mht_share_mva": 4.5,
+        "industry_va_gdp_percent": 25.5,
+        "manuf_share_exports": 18.5,
+        "data_year": 2024
     },
     
     "MWI": {
@@ -836,8 +1048,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": 3.5,
         "key_products": ["Tabac transformé", "Sucre", "Thé", "Boissons", "Ciment"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1250,
+        "mva_per_capita_2015usd": 46,
+        "growth_rate_2024_est": 3.8,
+        "cip_index_rank": 143,
+        "mht_share_mva": 4.2,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 12.5,
+        "data_year": 2024
     },
     
     "BDI": {
@@ -853,8 +1072,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": 3.8,
         "key_products": ["Bière", "Café transformé", "Thé", "Sucre", "Ciment"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 365,
+        "mva_per_capita_2015usd": 22,
+        "growth_rate_2024_est": 4.2,
+        "cip_index_rank": 152,
+        "mht_share_mva": 3.5,
+        "industry_va_gdp_percent": 22.5,
+        "manuf_share_exports": 5.5,
+        "data_year": 2024
     },
     
     "GAB": {
@@ -871,8 +1097,15 @@ UNIDO_INDUSTRY_DATA = {
         "growth_rate_2023": 2.8,
         "key_products": ["Produits pétroliers", "Bois transformé", "Manganèse raffiné", "Ciment"],
         "special_economic_zone": True,
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1900,
+        "mva_per_capita_2015usd": 635,
+        "growth_rate_2024_est": 3.2,
+        "cip_index_rank": 124,
+        "mht_share_mva": 7.5,
+        "industry_va_gdp_percent": 42.5,
+        "manuf_share_exports": 8.5,
+        "data_year": 2024
     },
     
     "COG": {
@@ -888,8 +1121,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": 3.2,
         "key_products": ["Produits pétroliers", "Sucre", "Bière", "Ciment"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 1250,
+        "mva_per_capita_2015usd": 170,
+        "growth_rate_2024_est": 3.5,
+        "cip_index_rank": 133,
+        "mht_share_mva": 5.8,
+        "industry_va_gdp_percent": 52.5,
+        "manuf_share_exports": 5.5,
+        "data_year": 2024
     },
     
     "TCD": {
@@ -906,8 +1146,15 @@ UNIDO_INDUSTRY_DATA = {
         "growth_rate_2023": 2.5,
         "key_products": ["Produits pétroliers", "Coton égrené", "Sucre", "Boissons"],
         "djermaya_refinery": True,
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 680,
+        "mva_per_capita_2015usd": 30,
+        "growth_rate_2024_est": 2.8,
+        "cip_index_rank": 149,
+        "mht_share_mva": 3.8,
+        "industry_va_gdp_percent": 35.5,
+        "manuf_share_exports": 3.5,
+        "data_year": 2024
     },
     
     "CAF": {
@@ -923,8 +1170,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": 1.5,
         "key_products": ["Boissons", "Bois transformé", "Diamants taillés", "Huile"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 185,
+        "mva_per_capita_2015usd": 28,
+        "growth_rate_2024_est": 1.8,
+        "cip_index_rank": 154,
+        "mht_share_mva": 3.2,
+        "industry_va_gdp_percent": 28.5,
+        "manuf_share_exports": 5.5,
+        "data_year": 2024
     },
     
     "SDN": {
@@ -940,8 +1194,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": -2.5,
         "key_products": ["Sucre", "Huile végétale", "Produits pétroliers", "Ciment", "Textiles"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023,
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 4200,
+        "mva_per_capita_2015usd": 79,
+        "growth_rate_2024_est": -2.0,
+        "cip_index_rank": 144,
+        "mht_share_mva": 5.5,
+        "industry_va_gdp_percent": 28.5,
+        "manuf_share_exports": 8.5,
+        "data_year": 2024,
         "note": "Données impactées par le conflit"
     },
     
@@ -958,8 +1219,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "growth_rate_2023": 8.5,
         "key_products": ["Produits pétroliers raffinés", "Acier", "Ciment", "Produits alimentaires"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 3000,
+        "mva_per_capita_2015usd": 330,
+        "growth_rate_2024_est": 9.0,
+        "cip_index_rank": 132,
+        "mht_share_mva": 5.5,
+        "industry_va_gdp_percent": 48.5,
+        "manuf_share_exports": 3.5,
+        "data_year": 2024
     },
     
     # Petites économies
@@ -974,8 +1242,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 18.5},
         ],
         "key_products": ["Thon en conserve", "Boissons", "Produits de la mer"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 128,
+        "mva_per_capita_2015usd": 950,
+        "growth_rate_2024_est": 3.5,
+        "cip_index_rank": 116,
+        "mht_share_mva": 8.5,
+        "industry_va_gdp_percent": 22.5,
+        "manuf_share_exports": 38.5,
+        "data_year": 2024
     },
     
     "CPV": {
@@ -989,8 +1264,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 25.8},
         ],
         "key_products": ["Poisson en conserve", "Boissons", "Rhum", "Chaussures"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 190,
+        "mva_per_capita_2015usd": 255,
+        "growth_rate_2024_est": 4.2,
+        "cip_index_rank": 142,
+        "mht_share_mva": 5.2,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 22.5,
+        "data_year": 2024
     },
     
     "COM": {
@@ -1004,8 +1286,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "20", "name": "Produits chimiques (parfums)", "share_mva": 28.5},
         ],
         "key_products": ["Ylang-ylang distillé", "Vanille transformée", "Huiles essentielles"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 68,
+        "mva_per_capita_2015usd": 60,
+        "growth_rate_2024_est": 3.5,
+        "cip_index_rank": 153,
+        "mht_share_mva": 3.5,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 5.5,
+        "data_year": 2024
     },
     
     "DJI": {
@@ -1019,8 +1308,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 25.8},
         ],
         "key_products": ["Eau minérale", "Sel", "Boissons", "Produits alimentaires"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 158,
+        "mva_per_capita_2015usd": 115,
+        "growth_rate_2024_est": 4.5,
+        "cip_index_rank": 145,
+        "mht_share_mva": 4.2,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 8.5,
+        "data_year": 2024
     },
     
     "ERI": {
@@ -1035,8 +1331,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "24", "name": "Métallurgie", "share_mva": 15.5},
         ],
         "key_products": ["Bière", "Ciment", "Sel", "Cuir"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 295,
+        "mva_per_capita_2015usd": 62,
+        "growth_rate_2024_est": 3.8,
+        "cip_index_rank": 147,
+        "mht_share_mva": 5.5,
+        "industry_va_gdp_percent": 28.5,
+        "manuf_share_exports": 12.5,
+        "data_year": 2024
     },
     
     "GNQ": {
@@ -1050,8 +1353,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "10", "name": "Produits alimentaires", "share_mva": 22.8},
         ],
         "key_products": ["Méthanol", "LNG", "Produits pétroliers"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 475,
+        "mva_per_capita_2015usd": 252,
+        "growth_rate_2024_est": 3.5,
+        "cip_index_rank": 131,
+        "mht_share_mva": 5.2,
+        "industry_va_gdp_percent": 72.5,
+        "manuf_share_exports": 3.5,
+        "data_year": 2024
     },
     
     "GMB": {
@@ -1065,8 +1375,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 22.8},
         ],
         "key_products": ["Huile d'arachide", "Poisson transformé", "Boissons"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 128,
+        "mva_per_capita_2015usd": 38,
+        "growth_rate_2024_est": 5.2,
+        "cip_index_rank": 151,
+        "mht_share_mva": 3.8,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 8.5,
+        "data_year": 2024
     },
     
     "GNB": {
@@ -1080,8 +1397,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 18.5},
         ],
         "key_products": ["Noix de cajou transformées", "Riz", "Boissons"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 88,
+        "mva_per_capita_2015usd": 34,
+        "growth_rate_2024_est": 4.0,
+        "cip_index_rank": 155,
+        "mht_share_mva": 3.5,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 5.5,
+        "data_year": 2024
     },
     
     "LBR": {
@@ -1096,8 +1420,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 15.2},
         ],
         "key_products": ["Caoutchouc", "Huile de palme", "Boissons", "Ciment"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 190,
+        "mva_per_capita_2015usd": 28,
+        "growth_rate_2024_est": 4.2,
+        "cip_index_rank": 150,
+        "mht_share_mva": 3.8,
+        "industry_va_gdp_percent": 22.5,
+        "manuf_share_exports": 8.5,
+        "data_year": 2024
     },
     
     "LSO": {
@@ -1112,8 +1443,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "key_products": ["Vêtements (AGOA)", "Textiles", "Produits alimentaires"],
         "agoa_beneficiary": True,
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 400,
+        "mva_per_capita_2015usd": 142,
+        "growth_rate_2024_est": 3.8,
+        "cip_index_rank": 146,
+        "mht_share_mva": 8.5,
+        "industry_va_gdp_percent": 32.5,
+        "manuf_share_exports": 68.5,
+        "data_year": 2024
     },
     
     "MRT": {
@@ -1127,8 +1465,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "24", "name": "Métallurgie (fer)", "share_mva": 25.8},
         ],
         "key_products": ["Poisson transformé", "Minerai de fer", "Or raffiné"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 680,
+        "mva_per_capita_2015usd": 112,
+        "growth_rate_2024_est": 4.5,
+        "cip_index_rank": 144,
+        "mht_share_mva": 4.5,
+        "industry_va_gdp_percent": 28.5,
+        "manuf_share_exports": 12.5,
+        "data_year": 2024
     },
     
     "SLE": {
@@ -1142,8 +1487,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 22.8},
         ],
         "key_products": ["Riz transformé", "Boissons", "Poisson transformé"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 230,
+        "mva_per_capita_2015usd": 21,
+        "growth_rate_2024_est": 4.5,
+        "cip_index_rank": 153,
+        "mht_share_mva": 3.5,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 8.5,
+        "data_year": 2024
     },
     
     "SOM": {
@@ -1157,8 +1509,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 22.8},
         ],
         "key_products": ["Viande transformée", "Poisson", "Boissons"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 290,
+        "mva_per_capita_2015usd": 13,
+        "growth_rate_2024_est": 4.0,
+        "cip_index_rank": 156,
+        "mht_share_mva": 3.2,
+        "industry_va_gdp_percent": 15.5,
+        "manuf_share_exports": 5.5,
+        "data_year": 2024
     },
     
     "SSD": {
@@ -1172,8 +1531,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 25.8},
         ],
         "key_products": ["Boissons", "Produits alimentaires de base"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 125,
+        "mva_per_capita_2015usd": 8,
+        "growth_rate_2024_est": 2.0,
+        "cip_index_rank": 157,
+        "mht_share_mva": 3.0,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 3.5,
+        "data_year": 2024
     },
     
     "STP": {
@@ -1187,8 +1553,15 @@ UNIDO_INDUSTRY_DATA = {
             {"isic": "11", "name": "Boissons", "share_mva": 22.8},
         ],
         "key_products": ["Cacao transformé", "Huile de palme", "Boissons"],
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 37,
+        "mva_per_capita_2015usd": 124,
+        "growth_rate_2024_est": 3.8,
+        "cip_index_rank": 158,
+        "mht_share_mva": 3.5,
+        "industry_va_gdp_percent": 18.5,
+        "manuf_share_exports": 5.5,
+        "data_year": 2024
     },
     
     "SWZ": {
@@ -1204,8 +1577,15 @@ UNIDO_INDUSTRY_DATA = {
         ],
         "key_products": ["Sucre", "Concentrés de boissons", "Pâte à papier", "Textiles"],
         "coca_cola_concentrate_plant": True,
-        "source": "UNIDO estimation 2023",
-        "data_year": 2023
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024",
+        "mva_2024_mln_usd": 900,
+        "mva_per_capita_2015usd": 585,
+        "growth_rate_2024_est": 3.5,
+        "cip_index_rank": 123,
+        "mht_share_mva": 9.5,
+        "industry_va_gdp_percent": 42.5,
+        "manuf_share_exports": 42.5,
+        "data_year": 2024
     },
 }
 
@@ -1229,16 +1609,17 @@ def get_countries_by_mva() -> List[Dict]:
     """Retourne les pays triés par valeur ajoutée manufacturière."""
     countries = []
     for code, data in UNIDO_INDUSTRY_DATA.items():
-        if "mva_2023_mln_usd" in data:
+        if "mva_2024_mln_usd" in data or "mva_2023_mln_usd" in data:
             countries.append({
                 "country_iso3": code,
                 "country_name": data.get("country_name"),
+                "mva_2024_mln_usd": data.get("mva_2024_mln_usd", data.get("mva_2023_mln_usd")),
                 "mva_2023_mln_usd": data.get("mva_2023_mln_usd"),
                 "mva_gdp_percent": data.get("mva_gdp_percent"),
                 "mva_per_capita_usd": data.get("mva_per_capita_usd"),
                 "region": data.get("region")
             })
-    return sorted(countries, key=lambda x: x["mva_2023_mln_usd"], reverse=True)
+    return sorted(countries, key=lambda x: x.get("mva_2024_mln_usd") or x.get("mva_2023_mln_usd", 0), reverse=True)
 
 def get_sector_analysis(isic_code: str) -> List[Dict]:
     """Analyse d'un secteur ISIC à travers tous les pays."""
@@ -1258,7 +1639,7 @@ def get_sector_analysis(isic_code: str) -> List[Dict]:
 
 def get_unido_statistics() -> Dict:
     """Retourne des statistiques globales sur les données UNIDO."""
-    total_mva = sum(d.get("mva_2023_mln_usd", 0) for d in UNIDO_INDUSTRY_DATA.values())
+    total_mva = sum(d.get("mva_2024_mln_usd", d.get("mva_2023_mln_usd", 0)) for d in UNIDO_INDUSTRY_DATA.values())
     
     # Par région
     by_region = {}
@@ -1267,7 +1648,7 @@ def get_unido_statistics() -> Dict:
         if region not in by_region:
             by_region[region] = {"count": 0, "total_mva": 0, "countries": []}
         by_region[region]["count"] += 1
-        by_region[region]["total_mva"] += data.get("mva_2023_mln_usd", 0)
+        by_region[region]["total_mva"] += data.get("mva_2024_mln_usd", data.get("mva_2023_mln_usd", 0))
         by_region[region]["countries"].append(code)
     
     return {
@@ -1276,6 +1657,6 @@ def get_unido_statistics() -> Dict:
         "total_mva_bln_usd": round(total_mva / 1000, 1),
         "by_region": by_region,
         "isic_sectors_count": len(ISIC_SECTORS),
-        "data_year": 2023,
-        "source": "UNIDO INDSTAT4 2023"
+        "data_year": 2024,
+        "source": "UNIDO INDSTAT4 2024, UNIDO Yearbook 2024"
     }

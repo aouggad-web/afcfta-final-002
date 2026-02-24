@@ -1,293 +1,128 @@
 """
-UN COMTRADE API Service (v1 API)
-API Documentation: https://uncomtrade.org/docs/
-OpenAPI Spec: https://comtradeapi.un.org/data/v1/openapi.json
-Subscription required - Learn more at https://uncomtrade.org/docs/subscriptions/
+UN COMTRADE API Service
+
+Provides a reusable service for accessing the UN COMTRADE trade data API.
+Handles API key rotation and rate limiting.
 """
 
-import requests
 import os
-from typing import Dict, List, Optional
-from datetime import datetime, timezone
 import time
-import logging
+import requests
+from datetime import datetime, date
 
-logger = logging.getLogger(__name__)
 
-class COMTRADEService:
-    """
-    UN COMTRADE v1 API Service with automatic fallback to secondary key
-    Requires subscription - see https://uncomtrade.org/docs/subscriptions/
-    """
-    
-    BASE_URL = "https://comtradeapi.un.org/data/v1"
-    
+class ComtradeService:
+    """Service for fetching data from the UN COMTRADE API."""
+
+    BASE_URL = "https://comtradeapi.un.org/data/v1/get/C/A/HS"
+    CALLS_PER_DAY_LIMIT = 500
+
     def __init__(self):
-        self.primary_api_key = os.getenv("COMTRADE_API_KEY", "")
-        self.secondary_api_key = os.getenv("COMTRADE_API_KEY_SECONDARY", "")
+        self.primary_key = os.environ.get("COMTRADE_API_KEY", "")
+        self.secondary_key = os.environ.get("COMTRADE_API_KEY_SECONDARY", "")
         self.current_key = "primary"
         self.calls_today = 0
-        self.max_calls_per_day = 500
-        
-        if not self.primary_api_key and not self.secondary_api_key:
-            logger.warning("⚠️ No COMTRADE API keys configured")
-        elif self.primary_api_key and self.secondary_api_key:
-            logger.info("✅ COMTRADE: Primary and secondary keys loaded")
-        elif self.primary_api_key:
-            logger.info("✅ COMTRADE: Primary key loaded (no secondary)")
-        else:
-            logger.info("✅ COMTRADE: Secondary key loaded (no primary)")
-    
-    def _get_active_key(self) -> str:
-        """Get the currently active API key"""
-        if self.current_key == "primary" and self.primary_api_key:
-            return self.primary_api_key
-        elif self.secondary_api_key:
-            return self.secondary_api_key
-        return ""
-    
-    def _switch_to_secondary(self):
-        """Switch to secondary API key when primary fails or reaches limit"""
-        if self.secondary_api_key and self.current_key == "primary":
-            logger.info("🔄 Switching from primary to secondary COMTRADE API key")
+        self._last_reset_date = date.today()
+
+    def _reset_daily_counter_if_needed(self):
+        today = date.today()
+        if today != self._last_reset_date:
+            self.calls_today = 0
+            self._last_reset_date = today
+
+    def _get_api_key(self):
+        self._reset_daily_counter_if_needed()
+        if self.current_key == "primary" and self.primary_key:
+            return self.primary_key
+        if self.secondary_key:
             self.current_key = "secondary"
-            self.calls_today = 0  # Reset counter for new key
+            return self.secondary_key
+        return None
+
+    def rotate_to_secondary(self):
+        """Switch to the secondary API key if available."""
+        if self.secondary_key and self.current_key != "secondary":
+            self.current_key = "secondary"
             return True
         return False
-        
-    def get_bilateral_trade(
-        self,
-        reporter_code: str,
-        partner_code: str,
-        period: str,
-        hs_code: Optional[str] = None,
-        type_code: str = "C",
-        freq_code: str = "A",
-        cl_code: str = "HS",
-        retry_with_secondary: bool = True
-    ) -> Optional[Dict]:
+
+    def fetch(self, reporter_code, partner_code="0", period=None, max_retries=3):
         """
-        Get bilateral trade data between two countries using v1 API
-        
+        Fetch trade data from COMTRADE.
+
         Args:
-            reporter_code: M49 country code (reporter)
-            partner_code: M49 country code (partner) or 'all' for all partners
-            period: Year (YYYY) or Month (YYYYMM) format
-            hs_code: Optional HS commodity code
-            type_code: Type of trade - 'C' for commodities, 'S' for services (default: 'C')
-            freq_code: Frequency - 'A' for annual, 'M' for monthly (default: 'A')
-            cl_code: Classification - 'HS', 'SITC', etc. (default: 'HS')
-            retry_with_secondary: Whether to retry with secondary key on failure
-            
+            reporter_code: Numeric M49 country code (e.g. 504 for Morocco)
+            partner_code: Partner country code, "0" for world total
+            period: Year as string (e.g. "2023"), defaults to previous year
+            max_retries: Number of retry attempts on transient errors
+
         Returns:
-            Trade data dictionary or None if error
+            List of trade data records, or None on failure
         """
-        if self.calls_today >= self.max_calls_per_day:
-            if retry_with_secondary and self._switch_to_secondary():
-                logger.info("🔄 Retrying with secondary key after reaching daily limit")
-                return self.get_bilateral_trade(
-                    reporter_code, partner_code, period, hs_code, 
-                    type_code, freq_code, cl_code,
-                    retry_with_secondary=False
-                )
-            raise Exception("COMTRADE API daily limit reached on all keys")
-        
-        # Build v1 API URL: /get/{typeCode}/{freqCode}/{clCode}
-        url = f"{self.BASE_URL}/get/{type_code}/{freq_code}/{cl_code}"
-        
+        if period is None:
+            period = str(datetime.now().year - 1)
+
+        api_key = self._get_api_key()
+        if not api_key:
+            return None
+
         params = {
             "reporterCode": reporter_code,
             "partnerCode": partner_code,
             "period": period,
+            "subscription-key": api_key,
         }
-        
-        if hs_code:
-            params["cmdCode"] = hs_code
-        
-        # Add API key using header (v1 API uses header-based auth)
-        api_key = self._get_active_key()
-        headers = {}
-        if api_key:
-            headers["Ocp-Apim-Subscription-Key"] = api_key
-            
-        try:
-            response = requests.get(url, params=params, headers=headers, timeout=30)
-            response.raise_for_status()
-            self.calls_today += 1
-            
-            data = response.json()
-            return {
-                "source": "UN_COMTRADE",
-                "data": data.get("data", []),
-                "metadata": data.get("metadata", {}),
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "latest_period": period,
-                "api_key_used": self.current_key
-            }
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 429:  # Rate limit exceeded
-                logger.warning(f"⚠️ Rate limit hit on {self.current_key} key")
-                if retry_with_secondary and self._switch_to_secondary():
-                    logger.info("🔄 Retrying with secondary key after rate limit")
-                    return self.get_bilateral_trade(
-                        reporter_code, partner_code, period, hs_code,
-                        type_code, freq_code, cl_code,
-                        retry_with_secondary=False
-                    )
-            elif e.response.status_code == 401:  # Unauthorized
-                logger.error(f"❌ Authentication failed with {self.current_key} key")
-                if retry_with_secondary and self._switch_to_secondary():
-                    logger.info("🔄 Retrying with secondary key after auth failure")
-                    return self.get_bilateral_trade(
-                        reporter_code, partner_code, period, hs_code,
-                        type_code, freq_code, cl_code,
-                        retry_with_secondary=False
-                    )
-            
-            logger.error(f"COMTRADE API HTTP error: {e.response.status_code}")
-            return None
-        except Exception as e:
-            logger.error(f"COMTRADE API error: {str(e)}")
-            return None
-    
-    def get_african_trade_data(
-        self,
-        african_countries: List[str],
-        period: str
-    ) -> List[Dict]:
-        """
-        Get trade data for all African countries
-        
-        Args:
-            african_countries: List of M49 country codes
-            period: Year (YYYY) or Month (YYYYMM)
-            
-        Returns:
-            List of trade data
-        """
-        results = []
-        
-        for reporter in african_countries:
+
+        for attempt in range(1, max_retries + 1):
             try:
-                data = self.get_bilateral_trade(
-                    reporter_code=reporter,
-                    partner_code="all",
-                    period=period
-                )
-                
-                if data:
-                    results.append(data)
-                    logger.info(f"✅ Retrieved data for {reporter}")
-                
-                # Rate limiting - be nice to the API
-                time.sleep(0.2)
-                
-            except Exception as e:
-                if "daily limit reached" in str(e).lower():
-                    logger.warning(f"⚠️ API limit reached after {len(results)} countries")
-                    break
-                logger.error(f"❌ Error fetching data for {reporter}: {e}")
-                continue
-            
-        logger.info(f"📊 Retrieved data for {len(results)}/{len(african_countries)} countries")
-        return results
-    
-    def get_latest_available_period(self, country_code: str) -> Optional[str]:
-        """
-        Check the latest available data period for a country
-        
-        Returns:
-            Latest period (YYYY or YYYYMM) or None
-        """
-        current_year = datetime.now().year
-        
-        # Try current year first, then previous years
-        for year in range(current_year, current_year - 3, -1):
-            test_data = self.get_bilateral_trade(
-                reporter_code=country_code,
-                partner_code="0",  # World (v1 API uses '0' for world)
-                period=str(year)
-            )
-            
-            if test_data and test_data.get("data"):
-                logger.info(f"✅ Latest data for {country_code}: {year}")
-                return str(year)
-        
-        logger.warning(f"⚠️ No recent data found for {country_code}")
+                response = requests.get(self.BASE_URL, params=params, timeout=30)
+                self.calls_today += 1
+
+                if response.status_code == 200:
+                    data = response.json()
+                    return data.get("data") or []
+
+                if response.status_code == 429:
+                    wait = 2 ** attempt
+                    time.sleep(wait)
+                    if attempt == max_retries - 1:
+                        self.rotate_to_secondary()
+                        api_key = self._get_api_key()
+                        if api_key:
+                            params["subscription-key"] = api_key
+                    continue
+
+                if response.status_code in (401, 403):
+                    if not self.rotate_to_secondary():
+                        return None
+                    api_key = self._get_api_key()
+                    if api_key:
+                        params["subscription-key"] = api_key
+                    continue
+
+                # Non-retryable error
+                return None
+
+            except requests.exceptions.RequestException:
+                if attempt < max_retries:
+                    time.sleep(2)
+                else:
+                    return None
+
         return None
-    
-    def get_service_status(self) -> Dict:
-        """
-        Get current service status
-        
-        Returns:
-            Dict with service configuration and status
-        """
+
+    def get_service_status(self):
+        """Return the current service status as a dictionary."""
+        self._reset_daily_counter_if_needed()
+        calls_remaining = max(0, self.CALLS_PER_DAY_LIMIT - self.calls_today)
         return {
-            "primary_key_configured": bool(self.primary_api_key),
-            "secondary_key_configured": bool(self.secondary_api_key),
             "current_key": self.current_key,
+            "primary_key_configured": bool(self.primary_key),
+            "secondary_key_configured": bool(self.secondary_key),
             "calls_today": self.calls_today,
-            "calls_remaining": self.max_calls_per_day - self.calls_today,
-            "can_switch_to_secondary": bool(self.secondary_api_key) and self.current_key == "primary"
+            "calls_remaining": calls_remaining,
         }
-    
-    def get_metadata(
-        self,
-        type_code: str = "C",
-        freq_code: str = "A",
-        cl_code: str = "HS"
-    ) -> Optional[Dict]:
-        """
-        Get metadata for specified trade classification
-        
-        Args:
-            type_code: Type of trade - 'C' for commodities, 'S' for services
-            freq_code: Frequency - 'A' for annual, 'M' for monthly
-            cl_code: Classification - 'HS', 'SITC', 'BEC', 'EBOPS'
-            
-        Returns:
-            Metadata dictionary or None if error
-        """
-        url = f"{self.BASE_URL}/getMetadata/{type_code}/{freq_code}/{cl_code}"
-        
-        api_key = self._get_active_key()
-        headers = {}
-        if api_key:
-            headers["Ocp-Apim-Subscription-Key"] = api_key
-        
-        try:
-            response = requests.get(url, headers=headers, timeout=30)
-            response.raise_for_status()
-            self.calls_today += 1
-            return response.json()
-        except Exception as e:
-            logger.error(f"Error fetching metadata: {str(e)}")
-            return None
-    
-    def get_live_update(self) -> Optional[Dict]:
-        """
-        Get live update information from the API
-        
-        Returns:
-            Live update info or None if error
-        """
-        url = f"{self.BASE_URL}/getLiveUpdate"
-        
-        api_key = self._get_active_key()
-        headers = {}
-        if api_key:
-            headers["Ocp-Apim-Subscription-Key"] = api_key
-        
-        try:
-            response = requests.get(url, headers=headers, timeout=30)
-            response.raise_for_status()
-            self.calls_today += 1
-            return response.json()
-        except Exception as e:
-            logger.error(f"Error fetching live update: {str(e)}")
-            return None
 
 
-# Global service instance
-comtrade_service = COMTRADEService()
+# Module-level singleton
+comtrade_service = ComtradeService()

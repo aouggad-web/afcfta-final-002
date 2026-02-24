@@ -8,6 +8,11 @@ import pandas as pd
 from typing import Dict, List, Optional
 from datetime import datetime
 import io
+import os
+from pathlib import Path
+
+# Support both Docker (/app/) and local environments
+ROOT_DIR = Path(os.environ.get('APP_ROOT', Path(__file__).parent.parent))
 
 class UNCTADMaritimeCollector:
     """Collecteur de données maritimes UNCTAD via Data360"""
@@ -218,10 +223,12 @@ def main():
     """Script principal pour enrichir les ports avec UNCTAD"""
     collector = UNCTADMaritimeCollector()
     
-    # Enrichir les ports existants
+    # Enrichir les ports existants - write back to source file to maintain single source of truth
+    # Previously created ports_africains_enriched.json, now updates in-place
+    ports_file = str(ROOT_DIR / 'ports_africains.json')
     collector.enrich_ports_with_unctad_data(
-        ports_file='/app/ports_africains.json',
-        output_file='/app/ports_africains_enriched.json'
+        ports_file=ports_file,
+        output_file=ports_file  # Update in-place to avoid multiple versions
     )
 
 

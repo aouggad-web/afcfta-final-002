@@ -9,6 +9,7 @@ permissions:
   contents: write    # nécessaire pour push
   actions: read
   checks: read
+  pull-requests: write    # required for PR creation
 
 jobs:
   refresh-data:
@@ -24,26 +25,41 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Python deps (optionnel)
+      - name: Install Python deps
         run: |
           python -m pip install --upgrade pip
-          pip install openpyxl || true
+          pip install -r backend/requirements.txt
 
       - name: Generate datasets (Lyra+ pipeline)
         run: |
           # TODO: remplacez --demo par l'intégration réelle (e‑Tariff/UNCTAD/OEC)
           python backend/make_release.py --demo
 
-      - name: Commit & push data changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "lyra-plus-bot"
-          git config user.email "lyra-plus-bot@users.noreply.github.com"
-          git add frontend/public/data || true
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(ops): refresh AfCFTA datasets via Lyra+ weekly cron"
-            git push
-          else
-            echo "No data changes to commit."
-          fi
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(ops): refresh AfCFTA datasets via Lyra+ weekly cron"
+          committer: lyra-plus-bot <lyra-plus-bot@users.noreply.github.com>
+          author: lyra-plus-bot <lyra-plus-bot@users.noreply.github.com>
+          branch: lyra-plus-data-update-${{ github.run_number }}
+          delete-branch: true
+          title: "chore(ops): refresh AfCFTA datasets via Lyra+ weekly cron"
+          body: |
+            ## Lyra+ Weekly Data Refresh
+            
+            This PR contains the weekly AfCFTA dataset refresh from the Lyra+ pipeline.
+            
+            **Run:** #${{ github.run_number }}
+            **Workflow:** ${{ github.workflow }}
+            
+            ### Changes
+            - Refreshed AfCFTA datasets in frontend/public/data
+            
+            Please review and merge if all checks pass.
+          labels: |
+            automated
+            lyra-plus
+            data-update
+          add-paths: |
+            frontend/public/data/
