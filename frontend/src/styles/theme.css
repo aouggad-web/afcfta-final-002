@@ -3,9 +3,9 @@
   /* Core */
   --bg: #0F1419;            /* background principal */
   --surface: #111827;       /* surface page */
-  --card: #1B232C;          /* cards */
-  --card2: #15202A;         /* cards secondaires */
-  --border: rgba(255,255,255,0.08);
+  --afcfta-card: #1B232C;          /* cards */
+  --afcfta-card2: #15202A;         /* cards secondaires */
+  --afcfta-border: rgba(255,255,255,0.08);
 
   /* Brand accents */
   --copper: #C17A2B;        /* cuivre */
@@ -15,7 +15,7 @@
 
   /* Text */
   --text: #F5F5F5;
-  --muted: #A0AAB4;
+  --afcfta-muted: #A0AAB4;
 
   /* Status */
   --success: #3FA34D;
@@ -55,7 +55,7 @@ body {
 
 /* Header top */
 .afcfta-topbar {
-  background: linear-gradient(135deg, var(--bg), var(--card));
+  background: linear-gradient(135deg, var(--bg), var(--afcfta-card));
   border: 1px solid rgba(212,175,55,0.14);
   border-radius: var(--r-lg);
   padding: 18px 18px;
@@ -87,7 +87,7 @@ body {
 
 .afcfta-subtitle {
   margin: 6px 0 0;
-  color: var(--muted);
+  color: var(--afcfta-muted);
   font-size: 13px;
 }
 
@@ -153,7 +153,7 @@ body {
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.03);
-  color: var(--muted);
+  color: var(--afcfta-muted);
   text-decoration: none;
   font-size: 12px;
   font-weight: 500;
@@ -191,7 +191,7 @@ body {
 /* Cards */
 .afcfta-card {
   background: rgba(27,35,44,0.82);
-  border: 1px solid var(--border);
+  border: 1px solid var(--afcfta-border);
   border-radius: var(--r-md);
   padding: 16px 16px;
   box-shadow: 0 14px 30px rgba(0,0,0,.28);
@@ -201,7 +201,7 @@ body {
 .afcfta-card h3 {
   margin: 0 0 6px 0;
   font-size: 13px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
   font-weight: 600;
 }
 
@@ -212,7 +212,7 @@ body {
 }
 
 .afcfta-card .subvalue {
-  color: var(--muted);
+  color: var(--afcfta-muted);
   font-size: 12px;
   margin-top: 6px;
 }
@@ -275,7 +275,7 @@ body {
 
 .afcfta-btn-secondary {
   background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
+  border: 1px solid var(--afcfta-border);
   color: var(--text);
 }
 
@@ -334,13 +334,13 @@ body {
 .afcfta-sectionHead p {
   margin: 3px 0 0;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
 }
 
 /* Form elements */
 .afcfta-input {
   background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
+  border: 1px solid var(--afcfta-border);
   border-radius: var(--r-sm);
   padding: 12px 14px;
   color: var(--text);
@@ -356,21 +356,21 @@ body {
 }
 
 .afcfta-input::placeholder {
-  color: var(--muted);
+  color: var(--afcfta-muted);
   opacity: 0.6;
 }
 
 .afcfta-label {
   display: block;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
   margin-bottom: 6px;
   font-weight: 500;
 }
 
 .afcfta-select {
   background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
+  border: 1px solid var(--afcfta-border);
   border-radius: var(--r-sm);
   padding: 12px 14px;
   color: var(--text);
@@ -428,15 +428,15 @@ body {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
   background: rgba(255,255,255,0.02);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--afcfta-border);
 }
 
 .afcfta-table td {
   padding: 12px 14px;
   font-size: 13px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--afcfta-border);
   color: var(--text);
 }
 
@@ -510,7 +510,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--card);
+  background: var(--afcfta-card);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -536,13 +536,13 @@ body {
   align-items: center;
   justify-content: center;
   padding: 40px;
-  color: var(--muted);
+  color: var(--afcfta-muted);
 }
 
 .afcfta-spinner {
   width: 24px;
   height: 24px;
-  border: 3px solid var(--border);
+  border: 3px solid var(--afcfta-border);
   border-top-color: var(--gold);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -574,7 +574,7 @@ body {
 
 .afcfta-shell .text-muted,
 .afcfta-shell .muted {
-  color: var(--muted) !important;
+  color: var(--afcfta-muted) !important;
 }
 
 /* ===== CALCULATOR CARDS DARK THEME ===== */
@@ -705,7 +705,7 @@ body {
 .afcfta-shell .tab-trigger-enhanced,
 .afcfta-shell .tab-trigger-mini,
 .afcfta-shell .tab-trigger-stat {
-  color: var(--muted) !important;
+  color: var(--afcfta-muted) !important;
   background: transparent !important;
   border-color: transparent !important;
 }
@@ -727,7 +727,7 @@ body {
 
 .afcfta-shell .tab-badge {
   background: rgba(255,255,255,0.08) !important;
-  color: var(--muted) !important;
+  color: var(--afcfta-muted) !important;
 }
 
 .afcfta-shell .tab-trigger-enhanced[data-state="active"] .tab-badge {
