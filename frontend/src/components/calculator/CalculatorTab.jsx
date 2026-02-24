@@ -1392,10 +1392,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     }
                   ]}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => formatCurrency(value)} />
-                    <Legend />
+                    <XAxis dataKey="name" tick={{ fill: '#A0AAB4' }} />
+                    <YAxis tick={{ fill: '#A0AAB4' }} />
+                    <Tooltip formatter={(value) => formatCurrency(value)} contentStyle={{ background: '#1B232C', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px' }} labelStyle={{ color: '#F5F5F5' }} />
+                    <Legend wrapperStyle={{ color: '#F5F5F5' }} />
                     <Bar dataKey={t.merchandiseValue} stackId="a" fill="#60a5fa" />
                     <Bar dataKey={t.customsDuties} stackId="a" fill="#ef4444" />
                     <Bar dataKey={t.vat} stackId="a" fill="#f59e0b" />
@@ -1405,35 +1405,35 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </div>
 
               {/* Économies TOTALES */}
-              <div className="savings-section result-section text-center bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 p-6 rounded-xl shadow-lg border border-green-200">
-                <p className="text-base font-semibold text-gray-600 mb-3">{t.totalSavings}</p>
-                <p className="text-4xl md:text-5xl font-extrabold text-green-600 mb-4">
+              <div className="savings-section result-section text-center p-6 rounded-xl shadow-lg" style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.15))', border: '1px solid rgba(16,185,129,0.3)' }}>
+                <p className="text-base font-semibold mb-3" style={{ color: '#A0AAB4' }}>{t.totalSavings}</p>
+                <p className="text-4xl md:text-5xl font-extrabold mb-4" style={{ color: '#10b981' }}>
                   {formatCurrency(result.total_savings_with_taxes)}
                 </p>
-                <div className="inline-flex items-center gap-2 bg-green-600 text-white px-5 py-2 rounded-full shadow-md">
+                <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full shadow-md" style={{ background: '#10b981', color: '#fff' }}>
                   <Sparkles className="w-5 h-5" />
                   <span className="text-xl font-bold">{result.total_savings_percentage.toFixed(1)}%</span>
                   <span className="text-sm opacity-90">{t.totalSavingsPercent}</span>
                 </div>
-                <Progress value={result.total_savings_percentage} className="w-full mt-5 h-2 bg-green-100" />
-                <p className="text-sm text-gray-500 mt-4">
-                  {t.totalCostComparison} <span className="font-semibold text-red-600">{formatCurrency(result.normal_total_cost)}</span> (NPF) 
+                <Progress value={result.total_savings_percentage} className="w-full mt-5 h-2" style={{ background: 'rgba(16,185,129,0.2)' }} />
+                <p className="text-sm mt-4" style={{ color: '#A0AAB4' }}>
+                  {t.totalCostComparison} <span className="font-semibold" style={{ color: '#EF4444' }}>{formatCurrency(result.normal_total_cost)}</span> (NPF) 
                   {' '}{t.vs}{' '}
-                  <span className="font-semibold text-green-600">{formatCurrency(result.zlecaf_total_cost)}</span> (ZLECAf)
+                  <span className="font-semibold" style={{ color: '#10b981' }}>{formatCurrency(result.zlecaf_total_cost)}</span> (ZLECAf)
                 </p>
               </div>
 
               {/* Journal de calcul détaillé */}
               {result.normal_calculation_journal && (
-                <Card className="journal-container result-section shadow-md border-0 overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-slate-50 to-gray-50 border-b border-gray-100 py-4">
-                    <CardTitle className="text-lg font-bold text-gray-800 flex items-center gap-3">
-                      <div className="w-9 h-9 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <Package className="w-5 h-5 text-purple-600" />
+                <Card className="journal-container result-section shadow-md border-0 overflow-hidden" style={{ background: '#1B232C' }}>
+                  <CardHeader className="py-4" style={{ background: 'rgba(139,92,246,0.1)', borderBottom: '1px solid rgba(139,92,246,0.2)' }}>
+                    <CardTitle className="text-lg font-bold flex items-center gap-3" style={{ color: '#F5F5F5' }}>
+                      <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'rgba(139,92,246,0.2)' }}>
+                        <Package className="w-5 h-5" style={{ color: '#8B5CF6' }} />
                       </div>
                       {t.calculationJournal}
                     </CardTitle>
-                    <CardDescription className="text-gray-500 text-sm mt-1">
+                    <CardDescription className="text-sm mt-1" style={{ color: '#A0AAB4' }}>
                       {result.computation_order_ref}
                     </CardDescription>
                   </CardHeader>
@@ -1441,23 +1441,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <div className="overflow-x-auto">
                       <Table>
                         <TableHeader>
-                          <TableRow>
-                            <TableHead>{t.step}</TableHead>
-                            <TableHead>{t.component}</TableHead>
-                            <TableHead>{t.base}</TableHead>
-                            <TableHead>{t.rate}</TableHead>
-                            <TableHead>{t.amount}</TableHead>
-                            <TableHead>{t.cumulative}</TableHead>
-                            <TableHead>{t.legalRef}</TableHead>
+                          <TableRow style={{ background: 'rgba(255,255,255,0.05)' }}>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.step}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.component}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.base}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.rate}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.amount}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.cumulative}</TableHead>
+                            <TableHead style={{ color: '#A0AAB4' }}>{t.legalRef}</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {result.normal_calculation_journal.map((entry, index) => (
-                            <TableRow key={index} className={index % 2 === 0 ? 'bg-gray-50' : ''}>
-                              <TableCell className="font-bold">{entry.step}</TableCell>
-                              <TableCell className="font-semibold">{entry.component}</TableCell>
-                              <TableCell>{formatCurrency(entry.base)}</TableCell>
-                              <TableCell className="font-semibold text-red-600">{entry.rate}</TableCell>
+                            <TableRow key={index} style={{ background: index % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
+                              <TableCell className="font-bold" style={{ color: '#F5F5F5' }}>{entry.step}</TableCell>
+                              <TableCell className="font-semibold" style={{ color: '#F5F5F5' }}>{entry.component}</TableCell>
+                              <TableCell style={{ color: '#F5F5F5' }}>{formatCurrency(entry.base)}</TableCell>
+                              <TableCell className="font-semibold" style={{ color: '#EF4444' }}>{entry.rate}</TableCell>
                               <TableCell className="font-bold text-blue-600">{formatCurrency(entry.amount)}</TableCell>
                               <TableCell className="font-bold">{formatCurrency(entry.cumulative)}</TableCell>
                               <TableCell className="text-xs">
