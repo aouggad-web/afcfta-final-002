@@ -135,10 +135,10 @@ function ProductionMacro({ language = 'fr' }) {
             </CardHeader>
             <CardContent className="pt-6">
               <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={prepareChartData()}>
+                <LineChart data={prepareChartData()} margin={{ left: 50, right: 20, top: 10, bottom: 10 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="year" />
-                  <YAxis label={{ value: t.gdpPercent, angle: -90, position: 'insideLeft' }} />
+                  <YAxis label={{ value: t.gdpPercent, angle: -90, position: 'insideLeft', offset: -10, style: { fontSize: 11 } }} />
                   <Tooltip />
                   <Legend />
                   {Object.keys(macroData.data_by_sector).map((sector, index) => (
@@ -165,10 +165,10 @@ function ProductionMacro({ language = 'fr' }) {
             </CardHeader>
             <CardContent className="pt-6">
               <ResponsiveContainer width="100%" height={400}>
-                <BarChart data={prepareChartData()}>
+                <BarChart data={prepareChartData()} margin={{ left: 50, right: 20, top: 10, bottom: 10 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="year" />
-                  <YAxis label={{ value: t.gdpPercent, angle: -90, position: 'insideLeft' }} />
+                  <YAxis label={{ value: t.gdpPercent, angle: -90, position: 'insideLeft', offset: -10, style: { fontSize: 11 } }} />
                   <Tooltip />
                   <Legend />
                   {Object.keys(macroData.data_by_sector).map((sector, index) => (

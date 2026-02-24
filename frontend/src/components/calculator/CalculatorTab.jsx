@@ -535,65 +535,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         
         {/* Onglet Calculateur Standard */}
         <TabsContent value="calculator">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" style={{ minHeight: '600px' }}>
-            {/* Formulaire de calcul */}
-            <Card className="shadow-2xl" style={{ minHeight: '400px', borderTop: '4px solid #D4AF37' }}>
-              <CardHeader style={{ background: 'linear-gradient(135deg, rgba(193,122,43,0.2), rgba(212,175,55,0.1))' }}>
-                <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#D4AF37' }}>
-                  <span>📊</span>
-                  <span>{t.calculatorTitle}</span>
-                </CardTitle>
-                <CardDescription style={{ color: '#A0AAB4' }} className="font-semibold">
-                  {t.calculatorDesc}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="calculator-grid-2">
-                  {/* Pays d'origine */}
-                  <div className="calculator-form-group">
-                    <label>{t.originCountry}</label>
-                    <select
-                      className="afcfta-select"
-                      value={originCountry}
-                      onChange={(e) => setOriginCountry(e.target.value)}
-                      data-testid="origin-country-select"
-                    >
-                      <option value="">{t.originCountry}</option>
-                      {countries && countries.map((country) => (
-                        <option key={country.code} value={country.code}>
-                          {getFlag(country.iso2 || country.code)} {country.name} ({country.code})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Pays partenaire */}
-                  <div className="calculator-form-group">
-                    <label>{t.partnerCountry}</label>
-                    <select
-                      className="afcfta-select"
-                      value={destinationCountry}
-                      onChange={(e) => setDestinationCountry(e.target.value)}
-                      data-testid="destination-country-select"
-                    >
-                      <option value="">{t.partnerCountry}</option>
-                      {countries && countries.map((country) => (
-                        <option key={country.code} value={country.code}>
-                          {getFlag(country.iso2 || country.code)} {country.name} ({country.code})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-      <Card className="shadow-2xl border-t-4 border-t-green-600">
-        <CardHeader className="bg-gradient-to-r from-green-50 to-yellow-50">
-          <CardTitle className="flex items-center space-x-2 text-2xl text-green-700">
+          <div className="space-y-6">
+      <Card className="shadow-2xl" style={{ borderTop: '4px solid #D4AF37' }}>
+        <CardHeader style={{ background: 'linear-gradient(135deg, rgba(193,122,43,0.2), rgba(212,175,55,0.1))' }}>
+          <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#D4AF37' }}>
             <span>📊</span>
             <span>{t.calculatorTitle}</span>
           </CardTitle>
-          <CardDescription className="text-gray-700 font-semibold">
+          <CardDescription style={{ color: '#A0AAB4' }} className="font-semibold">
             {t.calculatorDesc}
           </CardDescription>
         </CardHeader>
@@ -602,7 +551,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <div className="space-y-2">
               <Label htmlFor="origin">{t.originCountry}</Label>
               <Select value={originCountry} onValueChange={setOriginCountry}>
-                <SelectTrigger>
+                <SelectTrigger data-testid="origin-country-select">
                   <SelectValue placeholder={t.originCountry} />
                 </SelectTrigger>
                 <SelectContent>
@@ -626,7 +575,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <div className="space-y-2">
               <Label htmlFor="destination">{t.partnerCountry}</Label>
               <Select value={destinationCountry} onValueChange={handleDestinationChange}>
-                <SelectTrigger>
+                <SelectTrigger data-testid="destination-country-select">
                   <SelectValue placeholder={t.partnerCountry} />
                 </SelectTrigger>
                 <SelectContent>
@@ -1807,10 +1756,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           </Card>
         </div>
       )}
-                </div>
-            </CardContent>
-          </Card>
-        </div>
+          </div>
       </TabsContent>
         
         {/* Onglet Comparaison Multi-Pays */}

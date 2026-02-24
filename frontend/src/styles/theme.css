@@ -794,3 +794,55 @@ body {
   color: #A0AAB4;
   font-size: 12px;
 }
+
+/* ===== OVERFLOW & DISPLAY FIXES ===== */
+
+/* Prevent text overflow in table cells */
+.afcfta-shell table td,
+.afcfta-shell table th {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 0;
+  min-width: 0;
+}
+
+/* Ensure tables with fixed-width columns don't overflow their containers */
+.afcfta-shell .overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent recharts SVG overflow */
+.afcfta-shell .recharts-responsive-container {
+  overflow: hidden;
+}
+
+/* Ensure cards never overflow their parent */
+.afcfta-shell .afcfta-card,
+.afcfta-shell [class*="rounded"] {
+  min-width: 0;
+}
+
+/* Badge text wrap prevention */
+.afcfta-shell .badge,
+.afcfta-shell [class*="badge"] {
+  white-space: nowrap;
+}
+
+/* Recharts legend text wrapping */
+.afcfta-shell .recharts-legend-item-text {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fix chart container height auto-sizing */
+.afcfta-shell .recharts-wrapper {
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .afcfta-shell .recharts-legend-item-text {
+    max-width: 80px;
+  }
+}

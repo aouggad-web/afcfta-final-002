@@ -307,17 +307,17 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
         </CardHeader>
         <CardContent className="pt-6">
           {statistics.trade_evolution && (
-            <div style={{ minHeight: '300px' }}>
-              <ResponsiveContainer width="100%" height={280}>
+            <div style={{ minHeight: '320px' }}>
+              <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={[
                   { année: '2023', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2023) },
                   { année: '2024', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2024) },
                   { année: '2025', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.12 },
                   { année: '2030', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.52 }
-                ]}>
+                ]} margin={{ left: 60, right: 20, top: 10, bottom: 10 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="année" tick={{ fontSize: 12, fontWeight: 'bold' }} />
-                  <YAxis tick={{ fontSize: 11 }} label={{ value: t.billionUSD, angle: -90, position: 'insideLeft', style: { fontSize: 12 } }} />
+                  <YAxis tick={{ fontSize: 11 }} label={{ value: t.billionUSD, angle: -90, position: 'insideLeft', offset: -10, style: { fontSize: 11 } }} />
                   <Tooltip formatter={(value) => [`$${value.toFixed(1)}B`, language === 'en' ? 'Trade' : 'Commerce']} />
                   <Legend />
                   <Line type="monotone" dataKey="valeur" stroke="#10b981" strokeWidth={3} name={t.intraAfricanTrade} />
@@ -338,8 +338,8 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
           <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Graphique Barres Comparatif */}
-              <div style={{ minHeight: '350px' }}>
-                <ResponsiveContainer width="100%" height={330}>
+              <div style={{ minHeight: '360px' }}>
+                <ResponsiveContainer width="100%" height={340}>
                   <BarChart 
                     data={statistics.top_5_gdp_trade_comparison.map(country => ({
                       pays: translateCountry(country.country),
@@ -349,12 +349,12 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       [t.importsIntraAfr]: parseFloat(country.imports_intra_african)
                     }))}
                     layout="vertical"
-                    margin={{ left: 10, right: 30, top: 10, bottom: 10 }}
+                    margin={{ left: 10, right: 30, top: 10, bottom: 30 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis 
                       type="number" 
-                      label={{ value: t.billionUSD, position: 'bottom', style: { fontSize: 12, fontWeight: 'bold' } }}
+                      label={{ value: t.billionUSD, position: 'insideBottom', offset: -10, style: { fontSize: 11, fontWeight: 'bold' } }}
                       tick={{ fontSize: 11 }}
                     />
                     <YAxis 
@@ -442,9 +442,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       })}
                       cx="50%"
                       cy="50%"
-                      labelLine={false}
-                      label={(entry) => `${entry.value}%`}
-                      outerRadius={80}
+                      outerRadius={100}
                       fill="#8884d8"
                       dataKey="value"
                     >

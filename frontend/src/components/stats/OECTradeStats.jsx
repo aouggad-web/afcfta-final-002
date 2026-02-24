@@ -668,13 +668,13 @@ export default function OECTradeStats({ language = 'fr' }) {
                           outerRadius={70}
                           paddingAngle={2}
                           dataKey="value"
-                          label={({ name }) => name}
                         >
                           {prepareChartData(productData, 'product', 8).map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.fill} />
                           ))}
                         </Pie>
                         <Tooltip formatter={(v) => formatValue(v)} />
+                        <Legend iconSize={10} wrapperStyle={{ fontSize: '11px' }} />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>

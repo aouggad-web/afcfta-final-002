@@ -369,9 +369,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                         data={prepareSectorPieData()}
                         cx="50%"
                         cy="50%"
-                        labelLine={false}
-                        label={({ name, percent }) => `${name.substring(0, 12)}... ${(percent * 100).toFixed(0)}%`}
-                        outerRadius={100}
+                        outerRadius={90}
                         fill="#8884d8"
                         dataKey="value"
                       >
@@ -380,6 +378,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                         ))}
                       </Pie>
                       <Tooltip formatter={(value) => value + '% ' + (language === 'en' ? 'of MVA' : 'de la MVA')} />
+                      <Legend />
                     </PieChart>
                   </ResponsiveContainer>
                 </CardContent>
