@@ -846,3 +846,88 @@ body {
     max-width: 80px;
   }
 }
+
+/* ===== COMPONENT DARK THEME OVERRIDES ===== */
+
+/* Fix dark gray text to light for dark background */
+.afcfta-shell .text-slate-900,
+.afcfta-shell .text-gray-900,
+.afcfta-shell .text-gray-800,
+.afcfta-shell .text-gray-700 {
+  color: var(--text) !important;
+}
+
+/* Fix medium gray text to muted dark theme color */
+.afcfta-shell .text-slate-500,
+.afcfta-shell .text-gray-500,
+.afcfta-shell .text-gray-600 {
+  color: var(--afcfta-muted) !important;
+}
+
+/* Brighten saturated text colors for dark background visibility */
+.afcfta-shell .text-orange-700,
+.afcfta-shell .text-orange-800 { color: #fb923c !important; }
+.afcfta-shell .text-blue-700,
+.afcfta-shell .text-blue-800 { color: #60a5fa !important; }
+.afcfta-shell .text-green-700,
+.afcfta-shell .text-green-800 { color: #4ade80 !important; }
+.afcfta-shell .text-purple-700,
+.afcfta-shell .text-purple-800 { color: #c084fc !important; }
+.afcfta-shell .text-red-700,
+.afcfta-shell .text-red-800 { color: #f87171 !important; }
+.afcfta-shell .text-emerald-700,
+.afcfta-shell .text-emerald-800 { color: #34d399 !important; }
+.afcfta-shell .text-amber-700,
+.afcfta-shell .text-amber-800 { color: #fbbf24 !important; }
+.afcfta-shell .text-indigo-700,
+.afcfta-shell .text-indigo-800 { color: #818cf8 !important; }
+.afcfta-shell .text-teal-700 { color: #2dd4bf !important; }
+.afcfta-shell .text-cyan-700 { color: #22d3ee !important; }
+.afcfta-shell .text-yellow-700,
+.afcfta-shell .text-yellow-800 { color: #fde047 !important; }
+.afcfta-shell .text-lime-700 { color: #a3e635 !important; }
+
+/* Fix white and light gray backgrounds to dark card colors */
+.afcfta-shell .bg-white {
+  background-color: var(--afcfta-card) !important;
+}
+.afcfta-shell .bg-gray-50,
+.afcfta-shell .bg-slate-50 {
+  background-color: rgba(255,255,255,0.04) !important;
+}
+.afcfta-shell .bg-gray-100,
+.afcfta-shell .bg-slate-100 {
+  background-color: rgba(255,255,255,0.07) !important;
+}
+.afcfta-shell .bg-gray-200 {
+  background-color: rgba(255,255,255,0.10) !important;
+}
+
+/* Fix colored light backgrounds to dark card */
+.afcfta-shell .bg-orange-50,
+.afcfta-shell .bg-red-50,
+.afcfta-shell .bg-blue-50,
+.afcfta-shell .bg-cyan-50,
+.afcfta-shell .bg-green-50,
+.afcfta-shell .bg-emerald-50,
+.afcfta-shell .bg-purple-50,
+.afcfta-shell .bg-pink-50,
+.afcfta-shell .bg-amber-50,
+.afcfta-shell .bg-yellow-50,
+.afcfta-shell .bg-indigo-50,
+.afcfta-shell .bg-lime-50,
+.afcfta-shell .bg-teal-50 {
+  background-color: var(--afcfta-card) !important;
+}
+
+/* Fix light borders to dark theme borders */
+.afcfta-shell .border-gray-200,
+.afcfta-shell .border-slate-100,
+.afcfta-shell .border-gray-100 {
+  border-color: var(--afcfta-border) !important;
+}
+
+/* Reusable dark gradient background for cards */
+.afcfta-dark-gradient {
+  background: linear-gradient(135deg, rgba(27,35,44,0.95), rgba(21,32,42,0.95)) !important;
+}
