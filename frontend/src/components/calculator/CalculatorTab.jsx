@@ -1158,19 +1158,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         <h4 className="font-bold" style={{ color: '#8B5CF6' }}>{t.subPositionInfo}</h4>
                         <Badge className="text-xs" style={{ background: '#8B5CF6', color: '#fff' }}>{t.precisionHigh}</Badge>
                       </div>
-                      <p className="font-mono text-lg font-bold text-purple-900 mb-1">{result.sub_position_used}</p>
+                      <p className="font-mono text-lg font-bold mb-1" style={{ color: '#A78BFA' }}>{result.sub_position_used}</p>
                       {result.sub_position_description && (
-                        <p className="text-gray-600 text-sm">{result.sub_position_description}</p>
+                        <p className="text-sm" style={{ color: '#A0AAB4' }}>{result.sub_position_description}</p>
                       )}
                     </div>
                     <div className="grid grid-cols-2 gap-2 flex-shrink-0">
-                      <div className="bg-red-50 p-3 rounded-lg text-center border border-red-100">
-                        <p className="text-xs text-red-500 font-medium">{t.normalRate}</p>
-                        <p className="font-bold text-red-600 text-lg">{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
+                      <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
+                        <p className="text-xs font-medium" style={{ color: '#F87171' }}>{t.normalRate}</p>
+                        <p className="font-bold text-lg" style={{ color: '#EF4444' }}>{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
                       </div>
-                      <div className="bg-green-50 p-3 rounded-lg text-center border border-green-100">
-                        <p className="text-xs text-green-500 font-medium">{t.zlecafRate}</p>
-                        <p className="font-bold text-green-600 text-lg">{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
+                      <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                        <p className="text-xs font-medium" style={{ color: '#34D399' }}>{t.zlecafRate}</p>
+                        <p className="font-bold text-lg" style={{ color: '#10b981' }}>{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
                       </div>
                     </div>
                   </div>
@@ -1179,27 +1179,27 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
               {/* Information sur le tarif SH6 précis */}
               {result.tariff_precision === 'hs6_country' && (
-                <div className="result-section tariff-info-section bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-xl border border-blue-200 shadow-sm">
+                <div className="result-section tariff-info-section p-5 rounded-xl shadow-sm" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)' }}>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6 text-blue-600" />
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(59,130,246,0.2)' }}>
+                      <Package className="w-6 h-6" style={{ color: '#3B82F6' }} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <h4 className="font-bold text-blue-800">{t.hs6TariffInfo}</h4>
-                        <Badge className="bg-blue-600 text-white text-xs">{t.hs6TariffApplied}</Badge>
+                        <h4 className="font-bold" style={{ color: '#3B82F6' }}>{t.hs6TariffInfo}</h4>
+                        <Badge className="text-xs" style={{ background: '#3B82F6', color: '#fff' }}>{t.hs6TariffApplied}</Badge>
                       </div>
-                      <p className="font-semibold text-gray-800">{hs6TariffInfo?.description || `Code ${result.hs6_code}`}</p>
-                      <p className="text-blue-600 text-sm font-mono mt-1">Code: {result.hs6_code}</p>
+                      <p className="font-semibold" style={{ color: '#F5F5F5' }}>{hs6TariffInfo?.description || `Code ${result.hs6_code}`}</p>
+                      <p className="text-sm font-mono mt-1" style={{ color: '#60A5FA' }}>Code: {result.hs6_code}</p>
                     </div>
                     <div className="grid grid-cols-2 gap-2 flex-shrink-0">
-                      <div className="bg-red-50 p-3 rounded-lg text-center border border-red-100">
-                        <p className="text-xs text-red-500 font-medium">{t.normalRate}</p>
-                        <p className="font-bold text-red-600 text-lg">{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
+                      <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}>
+                        <p className="text-xs font-medium" style={{ color: '#F87171' }}>{t.normalRate}</p>
+                        <p className="font-bold text-lg" style={{ color: '#EF4444' }}>{(result.normal_tariff_rate * 100).toFixed(1)}%</p>
                       </div>
-                      <div className="bg-green-50 p-3 rounded-lg text-center border border-green-100">
-                        <p className="text-xs text-green-500 font-medium">{t.zlecafRate}</p>
-                        <p className="font-bold text-green-600 text-lg">{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
+                      <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                        <p className="text-xs font-medium" style={{ color: '#34D399' }}>{t.zlecafRate}</p>
+                        <p className="font-bold text-lg" style={{ color: '#10b981' }}>{(result.zlecaf_tariff_rate * 100).toFixed(1)}%</p>
                       </div>
                     </div>
                   </div>
