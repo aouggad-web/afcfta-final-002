@@ -97,6 +97,13 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - ✅ **Tableaux de taxes** avec bon contraste (texte blanc, fonds semi-transparents)
 - ✅ **Graphiques en camembert** avec tooltips adaptés au thème
 - ✅ **Section Formalités** avec cartes bien visibles
+- ✅ **Toutes les sections de résultats** avec fond sombre uniforme :
+  - Tableaux NPF vs ZLECAf
+  - Section économies
+  - Graphiques en barres et camembert
+  - Documents et Formalités
+  - Règles d'origine
+  - Journal de calcul détaillé
 
 ---
 
