@@ -6,28 +6,16 @@ API Documentation: https://apiportal.wto.org/
 
 import os
 import logging
+import time
 from typing import Dict, List, Optional
 from datetime import datetime
 import httpx
-WTO Data Portal API Service
-Free access to tariff and trade data
-API Documentation: https://data.wto.org/
-"""
-
 import requests
-import time
-from typing import Dict, Optional
-from datetime import datetime
 from requests.exceptions import HTTPError
-import logging
 
 logger = logging.getLogger(__name__)
 
 
-class WTOService:
-    """
-    WTO API Service for tariff and trade policy data
-    Free public access available
 def make_wto_request_with_retry(url, params=None, max_retries=5):
     """
     Make WTO API request with exponential backoff for rate limits
@@ -43,11 +31,6 @@ def make_wto_request_with_retry(url, params=None, max_retries=5):
     def calculate_backoff(attempt):
         """
         Calculate exponential backoff wait time formula: (2^attempt) * 2 seconds.
-        
-        Note: This is a pure calculation function. Calling code is responsible for
-        not invoking it on the final failed attempt (when attempt >= max_retries - 1).
-        For max_retries=5, this should only be called for attempts 0-3, yielding
-        wait times of 2, 4, 8, 16 seconds.
         """
         return (2 ** attempt) * 2
     
@@ -86,8 +69,7 @@ def make_wto_request_with_retry(url, params=None, max_retries=5):
             logger.error(f"❌ Error fetching data: {e}")
             return None
     
-    # All paths in the loop should return, but include this as a safety fallback
-    raise RuntimeError(f"Unexpected: retry loop completed without returning (max_retries={max_retries})")
+    return None
 
 
 class WTOService:
@@ -190,16 +172,18 @@ class WTOService:
                     logger.error(f"WTO API error: {response.status_code}")
                     return None
                     
-        pass
+        except Exception as e:
+            logger.error(f"WTO tariff data error: {str(e)}")
+            return None
     
-    def get_tariff_data(
+    def get_tariff_data_sync(
         self,
         reporter_code: str,
         partner_code: str,
         product_code: Optional[str] = None
     ) -> Optional[Dict]:
         """
-        Get tariff data from WTO
+        Get tariff data from WTO (synchronous version)
         
         Args:
             reporter_code: ISO3 country code
@@ -270,22 +254,6 @@ class WTOService:
         
         # Use simple average indicator
         indicator = "HS_M_0020"  # Simple Average MFN
-    def get_trade_indicators(
-        self,
-        country_code: str,
-        indicator: str = "TRADE_VALUE"
-    ) -> Optional[Dict]:
-        """
-        Get trade indicators from WTO
-        
-        Args:
-            country_code: ISO3 country code
-            indicator: Trade indicator type
-            
-        Returns:
-            Trade indicator data or None if error
-        """
-        endpoint = f"{self.BASE_URL}/data"
         
         params = {
             "i": indicator,
@@ -343,6 +311,48 @@ class WTOService:
             logger.error(f"WTO MFN average error: {str(e)}")
             return None
     
+    def get_trade_indicators(
+        self,
+        country_code: str,
+        indicator: str = "TRADE_VALUE"
+    ) -> Optional[Dict]:
+        """
+        Get trade indicators from WTO
+        
+        Args:
+            country_code: ISO3 country code
+            indicator: Trade indicator type
+            
+        Returns:
+            Trade indicator data or None if error
+        """
+        endpoint = f"{self.BASE_URL}/data"
+        
+        params = {
+            "i": indicator,
+            "r": country_code,
+            "ps": "last",
+            "max": 100,
+            "fmt": "json"
+        }
+            
+        try:
+            response = make_wto_request_with_retry(endpoint, params=params, max_retries=5)
+            
+            if response is None:
+                return None
+            
+            data = response.json()
+            return {
+                "source": "WTO",
+                "indicator": indicator,
+                "data": data,
+                "timestamp": datetime.utcnow().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"WTO API error: {str(e)}")
+            return None
+    
     async def get_afcfta_tariff_comparison(
         self,
         country_code: str,
@@ -398,34 +408,20 @@ class WTOService:
             Latest year as string (e.g., "2023")
         """
         data = await self.get_tariff_data(country_code)
-            "fmt": "json"
-        }
         
-        try:
-            response = make_wto_request_with_retry(endpoint, params=params, max_retries=5)
+        if data and data.get("latest_period"):
+            return data["latest_period"]
             
-            if response is None:
-                return None
-            
-            data = response.json()
-            return {
-                "source": "WTO",
-                "indicator": indicator,
-                "data": data,
-                "timestamp": datetime.utcnow().isoformat()
-            }
-        except Exception as e:
-            logger.error(f"WTO API error: {str(e)}")
-            return None
+        return None
     
-    def get_latest_available_year(self, country_code: str) -> Optional[str]:
+    def get_latest_available_year_sync(self, country_code: str) -> Optional[str]:
         """
-        Get the latest available year for a country in WTO database
+        Get the latest available year for a country in WTO database (sync)
         
         Returns:
             Latest year as string or None
         """
-        data = self.get_tariff_data(country_code, "wld")
+        data = self.get_tariff_data_sync(country_code, "wld")
         
         if data and data.get("latest_period"):
             return data["latest_period"]
