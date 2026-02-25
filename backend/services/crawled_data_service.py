@@ -99,11 +99,137 @@ class CrawledDataService:
         total = sum(len(idx) for idx in self._code_index.values())
         logger.info(f"Crawled data loaded: {len(self._country_data)} countries, {total} total positions")
 
+    def _convert_tariff_lines_to_positions(self, data: dict, country_code: str) -> List[dict]:
+        """Convert new tariff_lines format to positions format"""
+        positions = []
+        tariff_lines = data.get("tariff_lines", [])
+        
+        for line in tariff_lines:
+            hs6 = line.get("hs6", "")
+            if not hs6:
+                continue
+            
+            # Build taxes list from taxes_detail
+            taxes = []
+            taxes_detail = line.get("taxes_detail", {})
+            if isinstance(taxes_detail, dict):
+                for tax_code, tax_info in taxes_detail.items():
+                    if isinstance(tax_info, dict):
+                        taxes.append({
+                            "code": tax_code,
+                            "name": tax_info.get("label", tax_code),
+                            "rate": tax_info.get("rate", 0),
+                            "is_preferential": tax_code.upper() in ("ZLECAF", "AFCFTA", "CEDEAO", "EAC", "SADC", "CEMAC")
+                        })
+                    elif isinstance(tax_info, (int, float)):
+                        taxes.append({
+                            "code": tax_code,
+                            "name": tax_code,
+                            "rate": tax_info
+                        })
+            
+            # Add DD (customs duty) if present
+            dd_rate = line.get("dd_rate", 0)
+            if dd_rate and not any(t.get("code") == "DD" for t in taxes):
+                taxes.insert(0, {
+                    "code": "DD",
+                    "name": "Droit de Douane",
+                    "rate": dd_rate
+                })
+            
+            # Add VAT if present
+            vat_rate = line.get("vat_rate", 0)
+            if vat_rate and not any(t.get("code") in ("TVA", "VAT") for t in taxes):
+                taxes.append({
+                    "code": "TVA",
+                    "name": "Taxe sur la Valeur Ajoutée",
+                    "rate": vat_rate
+                })
+            
+            # Create main position for HS6
+            main_position = {
+                "code_raw": hs6,
+                "code_clean": hs6,
+                "designation": line.get("description_fr", line.get("description_en", "")),
+                "description_fr": line.get("description_fr", ""),
+                "description_en": line.get("description_en", ""),
+                "chapter": line.get("chapter", hs6[:2] if len(hs6) >= 2 else ""),
+                "heading": hs6[:4] if len(hs6) >= 4 else "",
+                "statistical_unit": line.get("unit", ""),
+                "taxes": taxes,
+                "dd_rate": dd_rate,
+                "vat_rate": vat_rate,
+                "zlecaf_rate": line.get("zlecaf_rate", 0),
+                "total_taxes_pct": line.get("total_taxes_pct", 0),
+                "zlecaf_total_taxes": line.get("zlecaf_total_taxes", 0),
+                "fiscal_advantages": line.get("fiscal_advantages", []),
+                "administrative_formalities": line.get("administrative_formalities", []),
+                "source": line.get("dd_source", ""),
+                "country": country_code,
+                "is_enhanced_format": True,
+            }
+            positions.append(main_position)
+            
+            # Add sub-positions if available
+            sub_positions = line.get("sub_positions", [])
+            for sp in sub_positions:
+                sp_code = sp.get("code", "")
+                if not sp_code:
+                    continue
+                
+                sp_taxes = []
+                sp_dd = sp.get("dd", dd_rate)
+                if sp_dd:
+                    sp_taxes.append({
+                        "code": "DD",
+                        "name": "Droit de Douane",
+                        "rate": sp_dd
+                    })
+                if vat_rate:
+                    sp_taxes.append({
+                        "code": "TVA", 
+                        "name": "Taxe sur la Valeur Ajoutée",
+                        "rate": vat_rate
+                    })
+                
+                sub_position = {
+                    "code_raw": sp_code,
+                    "code_clean": sp_code.replace(".", "").replace(" ", ""),
+                    "designation": sp.get("description_fr", sp.get("description_en", "")),
+                    "description_fr": sp.get("description_fr", ""),
+                    "description_en": sp.get("description_en", ""),
+                    "chapter": sp_code[:2] if len(sp_code) >= 2 else "",
+                    "heading": sp_code[:4] if len(sp_code) >= 4 else "",
+                    "statistical_unit": sp.get("unit", ""),
+                    "taxes": sp_taxes,
+                    "dd_rate": sp_dd,
+                    "vat_rate": vat_rate,
+                    "zlecaf_rate": line.get("zlecaf_rate", 0),
+                    "fiscal_advantages": line.get("fiscal_advantages", []),
+                    "administrative_formalities": line.get("administrative_formalities", []),
+                    "source": sp.get("source", ""),
+                    "country": country_code,
+                    "parent_hs6": hs6,
+                    "is_enhanced_format": True,
+                }
+                positions.append(sub_position)
+        
+        return positions
+
+    # All 54 African countries supported
     EAC_COUNTRIES = {"KEN", "TZA", "UGA", "RWA", "BDI", "SSD", "COD"}
-    ECOWAS_TEC_COUNTRIES = {"BEN", "BFA", "MLI", "NER", "TGO", "GIN"}
-    CEMAC_TEC_COUNTRIES = {"GAB", "COG", "TCD", "CAF"}
+    ECOWAS_TEC_COUNTRIES = {"BEN", "BFA", "MLI", "NER", "TGO", "GIN", "SEN", "CIV", "GHA", "NGA", "GMB", "GNB", "LBR", "SLE", "CPV"}
+    CEMAC_TEC_COUNTRIES = {"GAB", "COG", "TCD", "CAF", "CMR", "GNQ"}
+    SACU_COUNTRIES = {"ZAF", "BWA", "LSO", "SWZ", "NAM"}
+    NORTH_AFRICA = {"DZA", "TUN", "MAR", "EGY", "LBY"}
+    COMESA_OTHER = {"ETH", "ERI", "DJI", "SOM", "SDN", "MWI", "ZMB", "ZWE", "MUS", "SYC", "COM", "MDG", "MOZ", "AGO", "MRT", "STP"}
 
     def _normalize_position(self, country_code: str, pos: dict) -> Optional[dict]:
+        # Check if it's already in enhanced format (from tariff_lines conversion)
+        if pos.get("is_enhanced_format"):
+            return self._normalize_enhanced_format(pos, country_code)
+        
+        # Original normalization logic for old formats
         if country_code == "DZA":
             return self._normalize_dza(pos)
         elif country_code == "TUN":
@@ -112,7 +238,7 @@ class CrawledDataService:
             return self._normalize_mar(pos)
         elif country_code == "NGA":
             return self._normalize_standard(pos, country_code)
-        elif country_code in ("ZAF", "BWA", "LSO", "SWZ", "NAM"):
+        elif country_code in self.SACU_COUNTRIES:
             return self._normalize_standard(pos, country_code)
         elif country_code in self.EAC_COUNTRIES:
             return self._normalize_eac_gha(pos, country_code)
@@ -132,7 +258,37 @@ class CrawledDataService:
             return self._normalize_ecowas_member(pos, country_code)
         elif country_code in self.CEMAC_TEC_COUNTRIES:
             return self._normalize_cemac_member(pos, country_code)
-        return None
+        # Fallback for any other country - use standard normalization
+        return self._normalize_standard(pos, country_code)
+
+    def _normalize_enhanced_format(self, pos: dict, country_code: str) -> Optional[dict]:
+        """Normalize positions that are already in enhanced format"""
+        code_clean = pos.get("code_clean", "")
+        if not code_clean:
+            return None
+        
+        return {
+            "code_raw": pos.get("code_raw", code_clean),
+            "code_clean": code_clean,
+            "designation": pos.get("designation", ""),
+            "description_fr": pos.get("description_fr", ""),
+            "description_en": pos.get("description_en", ""),
+            "chapter": pos.get("chapter", ""),
+            "heading": pos.get("heading", ""),
+            "statistical_unit": pos.get("statistical_unit", ""),
+            "check_digit": pos.get("check_digit", ""),
+            "taxes": pos.get("taxes", []),
+            "dd_rate": pos.get("dd_rate", 0),
+            "vat_rate": pos.get("vat_rate", 0),
+            "zlecaf_rate": pos.get("zlecaf_rate", 0),
+            "total_taxes_pct": pos.get("total_taxes_pct", 0),
+            "zlecaf_total_taxes": pos.get("zlecaf_total_taxes", 0),
+            "fiscal_advantages": pos.get("fiscal_advantages", []),
+            "administrative_formalities": pos.get("administrative_formalities", []),
+            "source": pos.get("source", ""),
+            "country": country_code,
+            "parent_hs6": pos.get("parent_hs6", ""),
+        }
 
     def _normalize_standard(self, pos: dict, country_code: str) -> Optional[dict]:
         code_raw = pos.get("code_raw", "")
