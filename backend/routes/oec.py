@@ -77,7 +77,6 @@ async def get_oec_country_imports(
 async def get_oec_product_trade(
     hs_code: str,
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    year: int = Query(2024),
     trade_flow: str = Query("exports"),
     limit: int = Query(50)
 ):
