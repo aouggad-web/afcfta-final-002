@@ -21,7 +21,7 @@ AFRICAN_COUNTRIES = [
     {"code": "DJ", "name": "Djibouti", "region": "Afrique de l'Est", "iso3": "DJI", "wb_code": "DJI", "population": 990000},
     {"code": "EG", "name": "Égypte", "region": "Afrique du Nord", "iso3": "EGY", "wb_code": "EGY", "population": 102300000},
     {"code": "GQ", "name": "Guinée Équatoriale", "region": "Afrique Centrale", "iso3": "GNQ", "wb_code": "GNQ", "population": 1400000},
-    {"code": "ER", "name": "Érythrée", "region": "Afrique de l'Est", "iso3": "ERI", "wb_code": "ERI", "population": 3500000},
+    {"code": "ER", "name": "Érythrée", "region": "Afrique de l'Est", "iso3": "ERI", "wb_code": "ERI", "population": 3500000, "zlecaf_signatory": False, "note": "Seul membre UA non signataire de la ZLECAf"},
     {"code": "SZ", "name": "Eswatini", "region": "Afrique Australe", "iso3": "SWZ", "wb_code": "SWZ", "population": 1160000},
     {"code": "ET", "name": "Éthiopie", "region": "Afrique de l'Est", "iso3": "ETH", "wb_code": "ETH", "population": 115000000},
     {"code": "GA", "name": "Gabon", "region": "Afrique Centrale", "iso3": "GAB", "wb_code": "GAB", "population": 2200000},
