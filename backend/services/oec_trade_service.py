@@ -237,13 +237,33 @@ class OECTradeService:
         """
         Récupère les importations d'un pays par produit avec valeur et volume.
         Utilise le cube HS17 (compatible SH2022) avec HS4 par défaut.
+        
+        IMPORTANT: Récupère d'abord le total global, puis les produits détaillés.
         """
         country_info = AFRICAN_COUNTRIES_OEC.get(country_iso3.upper())
         if not country_info:
             return {"error": f"Country {country_iso3} not found", "data": []}
         
-        # Récupérer plus de données pour pouvoir trier et filtrer
-        # Inclure Trade Value et Quantity (volume)
+        # 1. D'abord, récupérer le TOTAL GLOBAL des importations (sans drilldown par produit)
+        total_params = self._build_params(
+            cube=OEC_CUBES[DEFAULT_CUBE],
+            drilldowns=["Year", "Importer Country"],
+            measures=["Trade Value", "Quantity"],
+            cuts={
+                "Year": str(year),
+                "Importer Country": country_info["oec_id"]
+            },
+            limit=1
+        )
+        total_result = await self._make_request(total_params)
+        global_total_value = 0
+        global_total_quantity = 0
+        if total_result.get("data"):
+            global_total_value = total_result["data"][0].get("Trade Value", 0)
+            global_total_quantity = total_result["data"][0].get("Quantity", 0)
+        
+        # 2. Ensuite, récupérer les produits détaillés (avec une limite plus élevée)
+        # Utiliser une limite de 2000 pour couvrir la plupart des cas
         params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Importer Country", hs_level],
@@ -252,11 +272,15 @@ class OECTradeService:
                 "Year": str(year),
                 "Importer Country": country_info["oec_id"]
             },
-            limit=500  # Récupérer plus pour avoir tous les produits
+            limit=2000  # Augmenté pour couvrir tous les produits
         )
         
         result = await self._make_request(params)
-        return self._format_product_response(result, "imports", country_info, limit)
+        return self._format_product_response(
+            result, "imports", country_info, limit, 
+            global_total_value=global_total_value,
+            global_total_quantity=global_total_quantity
+        )
     
     def _get_hs6_prefix(self, hs_code: str) -> int:
         """
