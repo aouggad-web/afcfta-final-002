@@ -49,18 +49,27 @@ class CrawledDataService:
                 with open(f, 'r', encoding='utf-8') as fh:
                     data = json.load(fh)
 
-                positions_key = "sub_positions" if "sub_positions" in data else "positions"
-                positions = data.get(positions_key, [])
+                # Support both old format (positions/sub_positions) and new format (tariff_lines)
+                data_format = data.get("data_format", "")
+                
+                if "tariff_lines" in data:
+                    # New enhanced format with tariff_lines
+                    positions = self._convert_tariff_lines_to_positions(data, country_code)
+                else:
+                    # Old format
+                    positions_key = "sub_positions" if "sub_positions" in data else "positions"
+                    positions = data.get(positions_key, [])
 
                 if not positions:
                     continue
 
                 self._country_data[country_code] = {
-                    "source": data.get("source", ""),
-                    "extracted_at": data.get("extracted_at", ""),
-                    "stats": data.get("stats", {}),
+                    "source": data.get("source", data.get("data_format", "")),
+                    "extracted_at": data.get("extracted_at", data.get("generated_at", "")),
+                    "stats": data.get("stats", data.get("summary", {})),
                     "country_name": data.get("country_name", country_code),
                     "total_positions": len(positions),
+                    "data_format": data_format,
                 }
 
                 code_idx = {}
