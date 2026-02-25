@@ -43,6 +43,8 @@ export const COUNTRY_NAMES = {
   'NER': { fr: 'Niger', en: 'Niger' },
   'NGA': { fr: 'Nigéria', en: 'Nigeria' },
   'RWA': { fr: 'Rwanda', en: 'Rwanda' },
+  // RASD - République Arabe Sahraouie Démocratique
+  'ESH': { fr: 'RASD (Sahara Occ.)', en: 'SADR (Western Sahara)', hasTradeData: false },
   'STP': { fr: 'São Tomé', en: 'São Tomé' },
   'SEN': { fr: 'Sénégal', en: 'Senegal' },
   'SYC': { fr: 'Seychelles', en: 'Seychelles' },
