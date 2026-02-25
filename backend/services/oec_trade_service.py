@@ -201,6 +201,8 @@ class OECTradeService:
         Utilise le cube HS17 (compatible SH2022) avec HS4 par défaut.
         HS4 offre un bon équilibre entre granularité et couverture des données.
         
+        IMPORTANT: Récupère d'abord le total global, puis les produits détaillés.
+        
         Args:
             country_iso3: Code ISO3 du pays (ex: "NGA" pour Nigeria)
             year: Année (ex: 2022)
@@ -211,8 +213,25 @@ class OECTradeService:
         if not country_info:
             return {"error": f"Country {country_iso3} not found", "data": []}
         
-        # Récupérer plus de données pour pouvoir trier et filtrer
-        # Inclure Trade Value et Quantity (volume)
+        # 1. D'abord, récupérer le TOTAL GLOBAL des exportations (sans drilldown par produit)
+        total_params = self._build_params(
+            cube=OEC_CUBES[DEFAULT_CUBE],
+            drilldowns=["Year", "Exporter Country"],
+            measures=["Trade Value", "Quantity"],
+            cuts={
+                "Year": str(year),
+                "Exporter Country": country_info["oec_id"]
+            },
+            limit=1
+        )
+        total_result = await self._make_request(total_params)
+        global_total_value = 0
+        global_total_quantity = 0
+        if total_result.get("data"):
+            global_total_value = total_result["data"][0].get("Trade Value", 0)
+            global_total_quantity = total_result["data"][0].get("Quantity", 0)
+        
+        # 2. Ensuite, récupérer les produits détaillés (avec une limite plus élevée)
         params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Exporter Country", hs_level],
@@ -221,11 +240,15 @@ class OECTradeService:
                 "Year": str(year),
                 "Exporter Country": country_info["oec_id"]
             },
-            limit=500  # Récupérer plus pour avoir tous les produits
+            limit=2000  # Augmenté pour couvrir tous les produits
         )
         
         result = await self._make_request(params)
-        return self._format_product_response(result, "exports", country_info, limit)
+        return self._format_product_response(
+            result, "exports", country_info, limit,
+            global_total_value=global_total_value,
+            global_total_quantity=global_total_quantity
+        )
     
     async def get_imports_by_product(
         self,
