@@ -22,7 +22,7 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     totalLines: "Lignes HS6",
     totalSub: "Sous-positions (HS8-12)",
     totalPositions: "Positions totales",
-    collectAll: "Collecter les 54 pays",
+    collectAll: "Collecter les 55 pays",
     collecting: "Collecte en cours...",
     refresh: "Actualiser",
     country: "Pays",
