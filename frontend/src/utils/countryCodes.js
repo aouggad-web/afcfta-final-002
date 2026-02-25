@@ -53,6 +53,10 @@ export const AFRICAN_COUNTRIES = {
   "NER": { iso2: "NE", name_fr: "Niger", name_en: "Niger", region: "West Africa", flag: "🇳🇪" },
   "NGA": { iso2: "NG", name_fr: "Nigéria", name_en: "Nigeria", region: "West Africa", flag: "🇳🇬" },
   "RWA": { iso2: "RW", name_fr: "Rwanda", name_en: "Rwanda", region: "East Africa", flag: "🇷🇼" },
+  // RASD - République Arabe Sahraouie Démocratique (Sahara Occidental)
+  // Membre fondateur de l'Union Africaine - Signataire de la ZLECAf
+  // ATTENTION: Pas de données commerciales disponibles
+  "ESH": { iso2: "EH", name_fr: "RASD (Sahara Occidental)", name_en: "Sahrawi Arab Democratic Republic", region: "North Africa", flag: "🇪🇭", hasTradeData: false, note: "Membre UA - Pas de statistiques commerciales" },
   "STP": { iso2: "ST", name_fr: "São Tomé-et-Príncipe", name_en: "São Tomé and Príncipe", region: "Central Africa", flag: "🇸🇹" },
   "SEN": { iso2: "SN", name_fr: "Sénégal", name_en: "Senegal", region: "West Africa", flag: "🇸🇳" },
   "SYC": { iso2: "SC", name_fr: "Seychelles", name_en: "Seychelles", region: "East Africa", flag: "🇸🇨" },
