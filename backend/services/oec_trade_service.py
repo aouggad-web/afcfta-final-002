@@ -486,25 +486,45 @@ class OECTradeService:
             "source": "OEC/BACI"
         }
     
-    def _format_product_response(self, result: Dict, flow: str, country_info: Dict, limit: int = 50) -> Dict:
-        """Formate la réponse pour les produits, triée par valeur décroissante"""
+    def _format_product_response(
+        self, result: Dict, flow: str, country_info: Dict, limit: int = 50,
+        global_total_value: float = 0, global_total_quantity: float = 0
+    ) -> Dict:
+        """
+        Formate la réponse pour les produits, triée par valeur décroissante.
+        
+        Args:
+            result: Résultat de la requête OEC
+            flow: Type de flux ('exports' ou 'imports')
+            country_info: Informations sur le pays
+            limit: Nombre de produits à retourner
+            global_total_value: Total global des échanges (calculé séparément)
+            global_total_quantity: Quantité totale globale
+        """
         data = result.get("data", [])
         
         # Trier par Trade Value décroissante
         sorted_data = sorted(data, key=lambda x: x.get("Trade Value", 0), reverse=True)
         
-        # Limiter au nombre demandé
+        # Limiter au nombre demandé pour l'affichage
         limited_data = sorted_data[:limit]
         
-        # Calculer le volume total (en tonnes métriques)
-        total_quantity = sum(row.get("Quantity", 0) for row in sorted_data)
+        # Calculer les totaux des données récupérées (pour comparaison)
+        fetched_total_value = sum(row.get("Trade Value", 0) for row in sorted_data)
+        fetched_total_quantity = sum(row.get("Quantity", 0) for row in sorted_data)
+        
+        # Utiliser le total global s'il est disponible, sinon utiliser le total calculé
+        final_total_value = global_total_value if global_total_value > 0 else fetched_total_value
+        final_total_quantity = global_total_quantity if global_total_quantity > 0 else fetched_total_quantity
         
         return {
             "country": country_info,
             "trade_flow": flow,
-            "total_products": len(limited_data),
-            "total_value": sum(row.get("Trade Value", 0) for row in sorted_data),  # Total sur toutes les données
-            "total_quantity": total_quantity,
+            "total_products": len(sorted_data),
+            "total_products_displayed": len(limited_data),
+            "total_value": final_total_value,  # Total GLOBAL (valeur correcte)
+            "total_value_fetched": fetched_total_value,  # Total des données récupérées (pour debug)
+            "total_quantity": final_total_quantity,
             "quantity_unit": "tonnes",
             "currency": "USD",
             "data": limited_data,
