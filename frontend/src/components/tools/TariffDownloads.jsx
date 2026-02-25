@@ -137,7 +137,7 @@ export default function TariffDownloads({ language = 'fr' }) {
   const isFr = language === 'fr';
   const t = isFr ? {
     title: "Téléchargement des Tarifs NPF (Droit Commun)",
-    subtitle: "54 pays - Droits et taxes NPF avec sous-positions nationales",
+    subtitle: "55 pays - Droits et taxes NPF avec sous-positions nationales",
     loading: "Chargement des données...",
     downloadCountry: "ZIP",
     downloadJson: "JSON",
