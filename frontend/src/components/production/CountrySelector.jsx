@@ -10,6 +10,7 @@ const AFRICAN_COUNTRIES_BY_REGION = {
     { code: 'EGY', name: 'Égypte', flag: '🇪🇬' },
     { code: 'LBY', name: 'Libye', flag: '🇱🇾' },
     { code: 'MAR', name: 'Maroc', flag: '🇲🇦' },
+    { code: 'ESH', name: 'RASD (Sahara Occ.)', flag: '🇪🇭', hasTradeData: false, note: 'Membre UA - Pas de statistiques' },
     { code: 'TUN', name: 'Tunisie', flag: '🇹🇳' },
   ],
   "Afrique de l'Ouest": [
