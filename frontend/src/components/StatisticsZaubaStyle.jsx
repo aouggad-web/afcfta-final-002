@@ -10,6 +10,7 @@ const API_URL = BACKEND_URL || '';
 const StatisticsZaubaStyle = ({ language = 'fr' }) => {
   const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState(null);
+  const [africaTotals, setAfricaTotals] = useState(null);
   const [selectedYear, setSelectedYear] = useState('2024');
   const [selectedFilter, setSelectedFilter] = useState('all');
 
