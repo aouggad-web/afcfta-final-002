@@ -30,7 +30,7 @@ export const AFRICAN_COUNTRIES = {
   "DJI": { iso2: "DJ", name_fr: "Djibouti", name_en: "Djibouti", region: "East Africa", flag: "🇩🇯" },
   "EGY": { iso2: "EG", name_fr: "Égypte", name_en: "Egypt", region: "North Africa", flag: "🇪🇬" },
   "GNQ": { iso2: "GQ", name_fr: "Guinée Équatoriale", name_en: "Equatorial Guinea", region: "Central Africa", flag: "🇬🇶" },
-  "ERI": { iso2: "ER", name_fr: "Érythrée", name_en: "Eritrea", region: "East Africa", flag: "🇪🇷" },
+  "ERI": { iso2: "ER", name_fr: "Érythrée", name_en: "Eritrea", region: "East Africa", flag: "🇪🇷", zlecafSignatory: false, note: "Seul membre UA non signataire" },
   "SWZ": { iso2: "SZ", name_fr: "Eswatini", name_en: "Eswatini", region: "Southern Africa", flag: "🇸🇿" },
   "ETH": { iso2: "ET", name_fr: "Éthiopie", name_en: "Ethiopia", region: "East Africa", flag: "🇪🇹" },
   "GAB": { iso2: "GA", name_fr: "Gabon", name_en: "Gabon", region: "Central Africa", flag: "🇬🇦" },
