@@ -100,6 +100,8 @@ export const COUNTRY_NAMES = {
   'NE': { fr: 'Niger', en: 'Niger' },
   'NG': { fr: 'Nigéria', en: 'Nigeria' },
   'RW': { fr: 'Rwanda', en: 'Rwanda' },
+  // RASD ISO2
+  'EH': { fr: 'RASD (Sahara Occ.)', en: 'SADR (Western Sahara)', hasTradeData: false },
   'ST': { fr: 'São Tomé', en: 'São Tomé' },
   'SN': { fr: 'Sénégal', en: 'Senegal' },
   'SC': { fr: 'Seychelles', en: 'Seychelles' },
