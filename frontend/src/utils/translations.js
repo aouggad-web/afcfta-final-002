@@ -20,7 +20,7 @@ export const COUNTRY_NAMES = {
   'DJI': { fr: 'Djibouti', en: 'Djibouti' },
   'EGY': { fr: 'Égypte', en: 'Egypt' },
   'GNQ': { fr: 'Guinée Équatoriale', en: 'Equatorial Guinea' },
-  'ERI': { fr: 'Érythrée', en: 'Eritrea' },
+  'ERI': { fr: 'Érythrée', en: 'Eritrea', zlecafSignatory: false },
   'SWZ': { fr: 'Eswatini', en: 'Eswatini' },
   'ETH': { fr: 'Éthiopie', en: 'Ethiopia' },
   'GAB': { fr: 'Gabon', en: 'Gabon' },
