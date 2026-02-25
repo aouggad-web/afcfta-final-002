@@ -130,6 +130,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
 
   useEffect(() => {
     fetchStatistics();
+    fetchAfricaTotals();
   }, []);
 
   const fetchStatistics = async () => {
@@ -141,6 +142,15 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
     } catch (error) {
       console.error('Erreur:', error);
       setLoading(false);
+    }
+  };
+
+  const fetchAfricaTotals = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/oec/africa/totals?year=2024`);
+      setAfricaTotals(response.data);
+    } catch (error) {
+      console.error('Erreur OEC Africa Totals:', error);
     }
   };
 
