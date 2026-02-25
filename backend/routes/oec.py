@@ -90,7 +90,6 @@ async def get_oec_product_trade(
 async def get_oec_african_exporters(
     hs_code: str,
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    year: int = Query(2024),
     limit: int = Query(20)
 ):
     """Top exportateurs africains pour un produit HS"""
