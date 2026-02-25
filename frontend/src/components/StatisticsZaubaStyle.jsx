@@ -186,14 +186,18 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
           {/* Volume Total */}
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
             <p className="text-xs font-semibold text-gray-600 mb-1">{t.totalExports}</p>
-            <p className="text-3xl font-extrabold text-green-700">$1,434B</p>
+            <p className="text-3xl font-extrabold text-green-700">
+              ${africaTotals?.exports_billions ? africaTotals.exports_billions.toFixed(0) : '720'}B
+            </p>
             <p className="text-xs text-gray-500 mt-1">{t.estimated2024}</p>
           </div>
 
           {/* Prix Moyen */}
           <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-4 rounded-lg border border-orange-200">
             <p className="text-xs font-semibold text-gray-600 mb-1">{t.totalImports}</p>
-            <p className="text-3xl font-extrabold text-orange-700">$1,272B</p>
+            <p className="text-3xl font-extrabold text-orange-700">
+              ${africaTotals?.imports_billions ? africaTotals.imports_billions.toFixed(0) : '761'}B
+            </p>
             <p className="text-xs text-gray-500 mt-1">{t.estimated2024}</p>
           </div>
 
