@@ -732,8 +732,11 @@ def get_african_countries_list(language: str = "fr") -> List[Dict]:
     return [
         {
             "iso3": iso3,
-            "oec_id": info["oec_id"],
-            "name": info.get(name_key, info["name_en"])
+            "oec_id": info.get("oec_id"),
+            "name": info.get(name_key, info["name_en"]),
+            "has_trade_data": info.get("has_trade_data", True),
+            "zlecaf_signatory": info.get("zlecaf_signatory", True),
+            "note": info.get("note", "")
         }
         for iso3, info in sorted(
             AFRICAN_COUNTRIES_OEC.items(), 
