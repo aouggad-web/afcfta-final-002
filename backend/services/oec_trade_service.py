@@ -128,6 +128,10 @@ AFRICAN_COUNTRIES_OEC = {
     "NER": {"oec_id": "afner", "name_fr": "Niger", "name_en": "Niger"},
     "NGA": {"oec_id": "afnga", "name_fr": "Nigeria", "name_en": "Nigeria"},
     "RWA": {"oec_id": "afrwa", "name_fr": "Rwanda", "name_en": "Rwanda"},
+    # RASD - République Arabe Sahraouie Démocratique
+    # Membre fondateur de l'Union Africaine - Signataire de la ZLECAf
+    # ATTENTION: Pas de données commerciales disponibles (territoire occupé)
+    "ESH": {"oec_id": None, "name_fr": "RASD (Sahara Occidental)", "name_en": "Sahrawi Arab Democratic Republic", "has_trade_data": False, "zlecaf_signatory": True, "note": "Membre UA - Pas de statistiques commerciales"},
     "STP": {"oec_id": "afstp", "name_fr": "São Tomé-et-Príncipe", "name_en": "São Tomé and Príncipe"},
     "SEN": {"oec_id": "afsen", "name_fr": "Sénégal", "name_en": "Senegal"},
     "SYC": {"oec_id": "afsyc", "name_fr": "Seychelles", "name_en": "Seychelles"},
