@@ -46,7 +46,7 @@ const AFRICAN_COUNTRIES_BY_REGION = {
     { code: 'BDI', name: 'Burundi', flag: '🇧🇮' },
     { code: 'COM', name: 'Comores', flag: '🇰🇲' },
     { code: 'DJI', name: 'Djibouti', flag: '🇩🇯' },
-    { code: 'ERI', name: 'Érythrée', flag: '🇪🇷' },
+    { code: 'ERI', name: 'Érythrée', flag: '🇪🇷', zlecafSignatory: false, note: 'Non signataire ZLECAf' },
     { code: 'ETH', name: 'Éthiopie', flag: '🇪🇹' },
     { code: 'KEN', name: 'Kenya', flag: '🇰🇪' },
     { code: 'MDG', name: 'Madagascar', flag: '🇲🇬' },
