@@ -587,6 +587,106 @@ class OECTradeService:
             "retrieved_at": datetime.utcnow().isoformat()
         }
 
+    async def get_africa_totals(self, year: int) -> Dict:
+        """
+        Récupère les totaux d'exportations et d'importations pour toute l'Afrique.
+        Fait une requête agrégée à l'API OEC pour tous les pays africains.
+        
+        Args:
+            year: Année des données
+            
+        Returns:
+            Totaux des exports et imports africains
+        """
+        try:
+            # Construire la liste des IDs OEC pour tous les pays africains
+            african_ids = [info["oec_id"] for info in AFRICAN_COUNTRIES_OEC.values()]
+            
+            # Requête pour les exportations totales africaines
+            exports_params = self._build_params(
+                cube=OEC_CUBES[DEFAULT_CUBE],
+                drilldowns=["Year", "Exporter Country"],
+                measures=["Trade Value", "Quantity"],
+                cuts={
+                    "Year": str(year),
+                },
+                limit=100
+            )
+            exports_result = await self._make_request(exports_params)
+            
+            # Filtrer et sommer uniquement les pays africains
+            total_exports = 0
+            total_exports_qty = 0
+            exports_by_country = []
+            for row in exports_result.get("data", []):
+                country_id = row.get("Exporter Country ID", "")
+                if country_id in african_ids:
+                    value = row.get("Trade Value", 0)
+                    qty = row.get("Quantity", 0)
+                    total_exports += value
+                    total_exports_qty += qty
+                    exports_by_country.append({
+                        "country_id": country_id,
+                        "country_name": row.get("Exporter Country", ""),
+                        "value": value,
+                        "quantity": qty
+                    })
+            
+            # Requête pour les importations totales africaines
+            imports_params = self._build_params(
+                cube=OEC_CUBES[DEFAULT_CUBE],
+                drilldowns=["Year", "Importer Country"],
+                measures=["Trade Value", "Quantity"],
+                cuts={
+                    "Year": str(year),
+                },
+                limit=100
+            )
+            imports_result = await self._make_request(imports_params)
+            
+            # Filtrer et sommer uniquement les pays africains
+            total_imports = 0
+            total_imports_qty = 0
+            imports_by_country = []
+            for row in imports_result.get("data", []):
+                country_id = row.get("Importer Country ID", "")
+                if country_id in african_ids:
+                    value = row.get("Trade Value", 0)
+                    qty = row.get("Quantity", 0)
+                    total_imports += value
+                    total_imports_qty += qty
+                    imports_by_country.append({
+                        "country_id": country_id,
+                        "country_name": row.get("Importer Country", ""),
+                        "value": value,
+                        "quantity": qty
+                    })
+            
+            # Trier par valeur décroissante
+            exports_by_country.sort(key=lambda x: x["value"], reverse=True)
+            imports_by_country.sort(key=lambda x: x["value"], reverse=True)
+            
+            return {
+                "year": year,
+                "total_exports": total_exports,
+                "total_imports": total_imports,
+                "total_exports_quantity": total_exports_qty,
+                "total_imports_quantity": total_imports_qty,
+                "exports_billions": round(total_exports / 1e9, 2),
+                "imports_billions": round(total_imports / 1e9, 2),
+                "trade_balance": total_exports - total_imports,
+                "top_10_exporters": exports_by_country[:10],
+                "top_10_importers": imports_by_country[:10],
+                "total_countries_with_data": len(exports_by_country),
+                "currency": "USD",
+                "source": "OEC/BACI",
+                "retrieved_at": datetime.utcnow().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Error getting Africa totals: {str(e)}")
+            return {"error": str(e)}
+
 
 # Instance globale du service
 oec_service = OECTradeService()
