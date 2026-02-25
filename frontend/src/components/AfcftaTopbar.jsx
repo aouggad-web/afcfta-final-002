@@ -40,7 +40,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
               : "African trade intelligence platform — duties, VAT, total taxes and analytics."}
           </div>
           <div className="afcfta-badges">
-            <span className="afcfta-badge">{isFrench ? "55 pays membres" : "55 member states"}</span>
+            <span className="afcfta-badge">{isFrench ? "54 signataires ZLECAf" : "54 AfCFTA signatories"}</span>
             <span className="afcfta-badge">{isFrench ? "1,3 Md+ habitants" : "1.3B+ population"}</span>
             <span className="afcfta-badge">{isFrench ? "Données actualisées" : "Updated dataset"}</span>
           </div>
