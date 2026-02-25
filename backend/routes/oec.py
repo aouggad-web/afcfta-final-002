@@ -9,9 +9,8 @@ from services.oec_trade_service import (
     oec_service,
     get_african_countries_list,
     AFRICAN_COUNTRIES_OEC,
-    DEFAULT_YEAR
-    get_country_name_to_iso3_mapping,
-    AFRICAN_COUNTRIES_OEC
+    DEFAULT_YEAR,
+    get_country_name_to_iso3_mapping
 )
 
 router = APIRouter(prefix="/oec")
