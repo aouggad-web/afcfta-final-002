@@ -105,7 +105,7 @@ AFRICAN_COUNTRIES_OEC = {
     "DJI": {"oec_id": "afdji", "name_fr": "Djibouti", "name_en": "Djibouti"},
     "EGY": {"oec_id": "afegy", "name_fr": "Égypte", "name_en": "Egypt"},
     "GNQ": {"oec_id": "afgnq", "name_fr": "Guinée équatoriale", "name_en": "Equatorial Guinea"},
-    "ERI": {"oec_id": "aferi", "name_fr": "Érythrée", "name_en": "Eritrea"},
+    "ERI": {"oec_id": "aferi", "name_fr": "Érythrée", "name_en": "Eritrea", "zlecaf_signatory": False, "note": "Seul membre UA non signataire de la ZLECAf"},
     "SWZ": {"oec_id": "afswz", "name_fr": "Eswatini", "name_en": "Eswatini"},
     "ETH": {"oec_id": "afeth", "name_fr": "Éthiopie", "name_en": "Ethiopia"},
     "GAB": {"oec_id": "afgab", "name_fr": "Gabon", "name_en": "Gabon"},
