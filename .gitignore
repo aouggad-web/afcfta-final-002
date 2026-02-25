@@ -579,3 +579,7 @@ tariff_engine/normalized/*.json
 venv/
 __pycache__/
 *.pyc
+-e 
+# Environment files
+*.env
+*.env.*
