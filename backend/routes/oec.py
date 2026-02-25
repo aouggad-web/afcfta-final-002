@@ -64,7 +64,6 @@ async def get_oec_country_exports(
 async def get_oec_country_imports(
     country_iso3: str,
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
-    year: int = Query(2024),
     hs_level: str = Query("HS4"),
     limit: int = Query(50)
 ):
