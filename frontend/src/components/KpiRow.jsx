@@ -6,7 +6,7 @@ export default function KpiRow({ language = "fr", stats }) {
       type: "gdp",
       title: language === 'fr' ? "PIB combiné Afrique" : "Combined Africa GDP",
       value: stats?.gdp || "$2.7T",
-      subtext: language === 'fr' ? "54 pays membres" : "54 member countries"
+      subtext: language === 'fr' ? "55 pays membres" : "55 member countries"
     },
     {
       type: "trade",
