@@ -129,7 +129,7 @@ export default function ToolsTab({ language = 'fr' }) {
             </p>
             <div className="p-3 rounded-lg mb-3" style={{background:'rgba(255,255,255,0.06)'}}>
               <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-green-600 ml-2">{t.ntbStatus}</Badge></p>
-              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.ntbCountries}</strong> 54 {language === 'fr' ? 'membres ZLECAf' : 'AfCFTA members'}</p>
+              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.ntbCountries}</strong> 55 {language === 'fr' ? 'membres ZLECAf' : 'AfCFTA members'}</p>
             </div>
             <a 
               href="https://tradebarriers.africa" 
