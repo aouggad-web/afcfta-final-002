@@ -111,3 +111,17 @@ async def get_oec_bilateral_trade(
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])
     return result
+
+
+@router.get("/africa/totals")
+async def get_oec_africa_totals(
+    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)")
+):
+    """
+    Récupère les totaux d'exportations et d'importations pour toute l'Afrique.
+    Ces données sont utilisées pour les statistiques globales de la ZLECAf.
+    """
+    result = await oec_service.get_africa_totals(year)
+    if "error" in result:
+        raise HTTPException(status_code=500, detail=result["error"])
+    return result
