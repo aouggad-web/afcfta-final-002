@@ -168,14 +168,43 @@ export default function MultiCountryComparison({ language = 'fr' }) {
         const countryInfo = availableCountries.find(c => c.iso3 === iso || c.code === iso);
         const countryName = countryInfo?.name_fr || countryInfo?.name || iso;
         
-        // Try AI profile first, fallback to basic country data
+        // Try AI profile first, fallback to country-profile endpoint
         try {
           const profileRes = await axios.get(`${API}/ai/profile/${countryName}?lang=${language}`);
           return { iso, data: profileRes.data, source: 'ai' };
         } catch {
-          // Fallback to basic country endpoint
-          const basicRes = await axios.get(`${API}/countries/${iso}?lang=${language}`);
-          return { iso, data: basicRes.data, source: 'basic' };
+          // Fallback to country-profile endpoint with full economic data
+          try {
+            const countryProfileRes = await axios.get(`${API}/country-profile/${iso}`);
+            // Transform country-profile data to match AI format
+            const profile = countryProfileRes.data;
+            const transformedData = {
+              country_name: profile.country_name,
+              economic_indicators: {
+                gdp_billion_usd: profile.gdp_usd ? profile.gdp_usd / 1e9 : 0,
+                gdp_per_capita_usd: profile.gdp_per_capita || 0,
+                inflation_percent: profile.inflation_rate || 0,
+                unemployment_percent: profile.unemployment_rate || 0,
+                population_millions: profile.population_millions || (profile.population ? profile.population / 1e6 : 0)
+              },
+              development_indices: {
+                hdi_score: profile.hdi || profile.projections?.development_index || 0,
+                hdi_world_rank: profile.hdi_rank || '-',
+                gai_score: profile.projections?.gai_score || 0,
+                gai_world_rank: profile.projections?.gai_rank || '-'
+              },
+              trade_summary: {
+                total_exports_musd: (profile.projections?.exports_2024_billion_usd || 0) * 1000,
+                total_imports_musd: (profile.projections?.imports_2024_billion_usd || 0) * 1000,
+                trade_balance_musd: (profile.projections?.trade_balance_2024_billion_usd || 0) * 1000
+              }
+            };
+            return { iso, data: transformedData, source: 'profile' };
+          } catch {
+            // Final fallback to basic country endpoint
+            const basicRes = await axios.get(`${API}/countries/${iso}?lang=${language}`);
+            return { iso, data: basicRes.data, source: 'basic' };
+          }
         }
       });
 
