@@ -117,24 +117,24 @@ const OpportunityCard = ({ opportunity, type, language }) => {
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="bg-slate-50 rounded-lg p-3">
             <p className="text-xs text-slate-500 mb-1">
-              {isImport ? "Import actuel" : "Capacité"}
+              {isImport ? "Import actuel" : "Marché potentiel"}
             </p>
             <p className="font-bold text-lg text-slate-900">
-              {formatValue(isImport ? product.import_value : (product.export_capacity ?? product.production_capacity))}
+              {formatValue(isImport ? product?.import_value : opportunity.total_market_potential)}
             </p>
           </div>
           <div className="bg-emerald-50 rounded-lg p-3">
             <p className="text-xs text-emerald-600 mb-1">
-              {isImport ? "Potentiel substitution" : "Capture estimée"}
+              {isImport ? "Potentiel substitution" : "Avantage ZLECAf"}
             </p>
             <p className="font-bold text-lg text-emerald-700">
-              {formatValue(isImport ? opportunity.substitution_potential : opportunity.estimated_capture)}
+              {isImport ? formatValue(opportunity.substitution_potential) : (opportunity.afcfta_advantage || '-')}
             </p>
           </div>
         </div>
 
         {/* Current Source (for imports) */}
-        {isImport && product.current_source && (
+        {isImport && product?.current_source && (
           <div className="mb-4 flex items-center gap-2 text-sm text-slate-500">
             <Globe className="h-4 w-4" />
             <span>Source actuelle: <strong className="text-slate-700">{product.current_source}</strong></span>
@@ -160,7 +160,7 @@ const OpportunityCard = ({ opportunity, type, language }) => {
                   )}
                 </div>
                 <span className="text-sm font-semibold text-emerald-600">
-                  {formatValue(isImport ? target.production_capacity : target.capture_potential)}
+                  {formatValue(isImport ? (target.export_value || target.production_capacity) : target.market_size)}
                 </span>
               </div>
             ))}
