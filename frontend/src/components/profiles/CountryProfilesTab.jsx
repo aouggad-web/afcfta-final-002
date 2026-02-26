@@ -383,51 +383,79 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
               {/* SECTION DETTE PUBLIQUE */}
               {(countryProfile.total_debt_pct_gdp || countryProfile.external_debt_pct_gdp) && (
-                <div className="mb-4">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
-                    <span>💳</span> {language === 'fr' ? 'Dette Publique 2024' : 'Public Debt 2024'}
-                    <span className="text-xs font-normal text-gray-500">(FMI/BM)</span>
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 border-b border-amber-500/30 pb-2">
+                    <span className="text-2xl">💳</span> {language === 'fr' ? 'Dette Publique 2024' : 'Public Debt 2024'}
+                    <span className="text-xs font-normal text-gray-400 ml-2">(FMI/BM)</span>
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {/* Dette Totale */}
-                    <div className={`p-4 rounded-lg shadow-lg border-2 text-center ${
-                      countryProfile.total_debt_pct_gdp > 80 ? 'bg-red-50 border-red-400' :
-                      countryProfile.total_debt_pct_gdp > 60 ? 'bg-orange-50 border-orange-400' :
-                      countryProfile.total_debt_pct_gdp > 40 ? 'bg-yellow-50 border-yellow-400' :
-                      'bg-green-50 border-green-400'
+                    <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
+                      countryProfile.total_debt_pct_gdp > 80 
+                        ? 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20' 
+                        : countryProfile.total_debt_pct_gdp > 60 
+                          ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
+                          : countryProfile.total_debt_pct_gdp > 40 
+                            ? 'bg-gradient-to-br from-yellow-900/80 to-amber-700/60 border-yellow-500 shadow-yellow-500/20'
+                            : 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20'
                     }`}>
-                      <p className="text-xs font-semibold text-gray-700 mb-1">📊 {language === 'fr' ? 'Dette Totale' : 'Total Debt'}</p>
-                      <p className={`text-3xl font-extrabold ${
-                        countryProfile.total_debt_pct_gdp > 80 ? 'text-red-600' :
-                        countryProfile.total_debt_pct_gdp > 60 ? 'text-orange-600' :
-                        countryProfile.total_debt_pct_gdp > 40 ? 'text-yellow-600' :
-                        'text-green-600'
-                      }`}>
+                      <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">📊 {language === 'fr' ? 'Dette Totale' : 'Total Debt'}</p>
+                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                         {countryProfile.total_debt_pct_gdp ? `${countryProfile.total_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
                       </p>
-                      <p className="text-xs text-gray-600 mt-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
+                      <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
                     </div>
 
-                    {/* Dette Extérieure % PIB */}
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-4 rounded-lg shadow-lg border-2 border-blue-400 text-center">
-                      <p className="text-xs font-semibold text-blue-700 mb-1">🌍 {language === 'fr' ? 'Dette Extérieure' : 'External Debt'}</p>
-                      <p className="text-3xl font-extrabold text-blue-600">
+                    {/* Dette Extérieure */}
+                    <div className="bg-gradient-to-br from-blue-900/80 to-indigo-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 text-center transform hover:scale-105 transition-all">
+                      <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">🌍 {language === 'fr' ? 'Dette Extérieure' : 'External Debt'}</p>
+                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                         {countryProfile.external_debt_pct_gdp ? `${countryProfile.external_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
                       </p>
-                      <p className="text-xs text-blue-600 mt-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
+                      <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
                       {countryProfile.external_debt_bn_usd && (
-                        <p className="text-sm font-bold text-blue-800 mt-2">
+                        <p className="text-lg font-bold text-amber-400 mt-2">
                           ${countryProfile.external_debt_bn_usd.toFixed(1)}B
                         </p>
                       )}
                     </div>
 
-                    {/* Dette Intérieure % PIB */}
-                    <div className="bg-gradient-to-br from-purple-50 to-pink-100 p-4 rounded-lg shadow-lg border-2 border-purple-400 text-center">
-                      <p className="text-xs font-semibold text-purple-700 mb-1">🏠 {language === 'fr' ? 'Dette Intérieure' : 'Domestic Debt'}</p>
-                      <p className="text-3xl font-extrabold text-purple-600">
+                    {/* Dette Intérieure */}
+                    <div className="bg-gradient-to-br from-purple-900/80 to-violet-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
+                      <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">🏠 {language === 'fr' ? 'Dette Intérieure' : 'Domestic Debt'}</p>
+                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                         {countryProfile.domestic_debt_pct_gdp ? `${countryProfile.domestic_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
                       </p>
+                      <p className="text-xs text-purple-200 mt-2 bg-purple-950/50 rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
+                    </div>
+
+                    {/* Indicateur de Viabilité */}
+                    <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
+                      countryProfile.total_debt_pct_gdp <= 40 
+                        ? 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20' 
+                        : countryProfile.total_debt_pct_gdp <= 60 
+                          ? 'bg-gradient-to-br from-amber-900/80 to-yellow-700/60 border-amber-500 shadow-amber-500/20'
+                          : countryProfile.total_debt_pct_gdp <= 80 
+                            ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
+                            : 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20'
+                    }`}>
+                      <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">⚖️ {language === 'fr' ? 'Viabilité' : 'Sustainability'}</p>
+                      <div className="flex justify-center items-center py-2">
+                        {countryProfile.total_debt_pct_gdp <= 40 ? (
+                          <span className="text-lg font-extrabold text-green-300">✓ FAIBLE RISQUE</span>
+                        ) : countryProfile.total_debt_pct_gdp <= 60 ? (
+                          <span className="text-lg font-extrabold text-amber-300">⚠ MODÉRÉ</span>
+                        ) : countryProfile.total_debt_pct_gdp <= 80 ? (
+                          <span className="text-lg font-extrabold text-orange-300">⚠ ÉLEVÉ</span>
+                        ) : (
+                          <span className="text-lg font-extrabold text-red-300">🚨 CRITIQUE</span>
+                        )}
+                      </div>
+                      <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">{language === 'fr' ? 'Seuil FMI: 60%' : 'IMF threshold: 60%'}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
                       <p className="text-xs text-purple-600 mt-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
                     </div>
 
