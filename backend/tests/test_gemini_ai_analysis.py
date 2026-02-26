@@ -9,7 +9,7 @@ import os
 # Get BASE_URL from environment
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 if not BASE_URL:
-    BASE_URL = "https://inspiring-proskuriakova-1.preview.emergentagent.com"
+    BASE_URL = "https://commerce-africain.preview.emergentagent.com"
 
 
 class TestAIHealthEndpoint:
