@@ -648,32 +648,32 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                           </div>
                           
                           {countryProfile.projections.gini_index_2024 && (
-                            <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-3 rounded-lg border-l-4 border-orange-500">
-                              <p className="text-xs font-semibold text-orange-700">📊 {t.giniIndex}</p>
-                              <p className="text-2xl font-bold text-orange-600">
+                            <div className="bg-gradient-to-br from-orange-900/80 to-amber-800/60 p-4 rounded-xl border-2 border-orange-500 shadow-lg shadow-orange-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-orange-300 mb-2 uppercase tracking-wide">📊 {t.giniIndex}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.gini_index_2024).toFixed(1)}
                               </p>
-                              <p className="text-xs text-gray-600">{t.outOf100} (2024)</p>
+                              <p className="text-xs text-orange-200 mt-2 bg-orange-950/50 rounded-full px-2 py-1">{t.outOf100} (2024)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.poverty_rate_3usd_2024 && (
-                            <div className="bg-gradient-to-br from-red-50 to-rose-50 p-3 rounded-lg border-l-4 border-red-500">
-                              <p className="text-xs font-semibold text-red-700">💰 {t.povertyRate}</p>
-                              <p className="text-2xl font-bold text-red-600">
+                            <div className="bg-gradient-to-br from-red-900/80 to-rose-800/60 p-4 rounded-xl border-2 border-red-500 shadow-lg shadow-red-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-red-300 mb-2 uppercase tracking-wide">💰 {t.povertyRate}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.poverty_rate_3usd_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-gray-600">{t.populationPercent} (2024)</p>
+                              <p className="text-xs text-red-200 mt-2 bg-red-950/50 rounded-full px-2 py-1">{t.populationPercent} (2024)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.urban_population_pct_2024 && (
-                            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-3 rounded-lg border-l-4 border-purple-500">
-                              <p className="text-xs font-semibold text-purple-700">🏙️ {t.urbanPopulation}</p>
-                              <p className="text-2xl font-bold text-purple-600">
+                            <div className="bg-gradient-to-br from-purple-900/80 to-indigo-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">🏙️ {t.urbanPopulation}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.urban_population_pct_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-gray-600">{t.ofTotal} (2024)</p>
+                              <p className="text-xs text-purple-200 mt-2 bg-purple-950/50 rounded-full px-2 py-1">{t.ofTotal} (2024)</p>
                             </div>
                           )}
                         </div>
