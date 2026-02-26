@@ -508,6 +508,15 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
               </CardContent>
             </Card>
           )}
+
+          {/* Trade Sankey Diagram - Flow visualization */}
+          {sankeyOpportunities.length > 0 && (
+            <TradeSankeyDiagram
+              opportunities={sankeyOpportunities}
+              mode={activeTab}
+              language={currentLang}
+            />
+          )}
         </>
       )}
 
