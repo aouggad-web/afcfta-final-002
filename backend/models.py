@@ -96,9 +96,13 @@ class CountryEconomicProfile(BaseModel):
     country_code: str
     country_name: str
     population: Optional[int] = None
+    population_millions: Optional[float] = None
     gdp_usd: Optional[float] = None
     gdp_per_capita: Optional[float] = None
     inflation_rate: Optional[float] = None
+    unemployment_rate: Optional[float] = None
+    hdi: Optional[float] = None
+    hdi_rank: Optional[int] = None
     region: str
     trade_profile: Dict[str, Any] = {}
     projections: Dict[str, Any] = {}
