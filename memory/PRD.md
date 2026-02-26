@@ -105,6 +105,17 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
   - Règles d'origine
   - Journal de calcul détaillé
 
+### Phase 13 : Amélioration UI Profils Pays (Terminé - 26 Fév 2025)
+- ✅ **Correction erreur de syntaxe JSX** dans CountryProfilesTab.jsx (lignes orphelines supprimées)
+- ✅ **Thème sombre appliqué** aux sections "Indicateurs World Bank Data360" :
+  - **Indicateurs Sociaux** : Espérance de vie (vert), Indice Gini (orange), Taux de pauvreté (rouge), Population urbaine (violet)
+  - **Digital & Connectivité** : Accès Internet (bleu), Cybersécurité (indigo), Accès Électricité (jaune), Couverture 3G (teal)
+  - **Environnement & Égalité** : Femmes actives (rose), Stress hydrique (bleu), Émissions GES (gris), Pauvreté éducative (violet)
+- ✅ **Section Performance Infrastructure & Logistique** : Score IPL (violet) et AIDI 2025 (orange) avec thème sombre
+- ✅ **Bug d'affichage "0" corrigé** pour la valeur de pauvreté (condition !== undefined && !== null)
+- ✅ **Titres des sections** avec couleurs cohérentes (rose pour social, cyan pour digital, emerald pour environnement)
+- ✅ **Footer source** adapté au thème sombre avec lien data360.worldbank.org
+
 ---
 
 ## Architecture Technique
