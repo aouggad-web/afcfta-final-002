@@ -301,9 +301,48 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 <div className="bg-gradient-to-br from-purple-50 to-pink-100 p-3 rounded-lg shadow border border-purple-300 text-center">
                   <p className="text-xs font-semibold text-purple-700 mb-1">📊 {t.hdi2024}</p>
                   <p className="text-2xl font-bold text-purple-600">
-                    {countryProfile.projections?.development_index || 'N/A'}
+                    {countryProfile.hdi || countryProfile.projections?.development_index || 'N/A'}
                   </p>
-                  <p className="text-xs text-purple-600 mt-1">{t.hdiDesc}</p>
+                  <p className="text-xs text-purple-600 mt-1">{countryProfile.hdi_rank ? `Rang: #${countryProfile.hdi_rank}` : t.hdiDesc}</p>
+                </div>
+              </div>
+
+              {/* Indicateurs Inflation & Chômage */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+                {/* Inflation */}
+                <div className="bg-gradient-to-br from-red-50 to-orange-100 p-3 rounded-lg shadow border border-red-300 text-center">
+                  <p className="text-xs font-semibold text-red-700 mb-1">📈 {language === 'fr' ? 'Inflation 2024' : 'Inflation 2024'}</p>
+                  <p className={`text-2xl font-bold ${countryProfile.inflation_rate && countryProfile.inflation_rate > 10 ? 'text-red-600' : countryProfile.inflation_rate && countryProfile.inflation_rate > 5 ? 'text-orange-600' : 'text-green-600'}`}>
+                    {countryProfile.inflation_rate ? `${countryProfile.inflation_rate.toFixed(1)}%` : 'N/A'}
+                  </p>
+                  <p className="text-xs text-gray-600 mt-1">FMI/BM</p>
+                </div>
+
+                {/* Chômage */}
+                <div className="bg-gradient-to-br from-gray-50 to-slate-100 p-3 rounded-lg shadow border border-gray-300 text-center">
+                  <p className="text-xs font-semibold text-gray-700 mb-1">👔 {language === 'fr' ? 'Chômage 2024' : 'Unemployment 2024'}</p>
+                  <p className={`text-2xl font-bold ${countryProfile.unemployment_rate && countryProfile.unemployment_rate > 20 ? 'text-red-600' : countryProfile.unemployment_rate && countryProfile.unemployment_rate > 10 ? 'text-orange-600' : 'text-green-600'}`}>
+                    {countryProfile.unemployment_rate ? `${countryProfile.unemployment_rate.toFixed(1)}%` : 'N/A'}
+                  </p>
+                  <p className="text-xs text-gray-600 mt-1">OIT/BM</p>
+                </div>
+
+                {/* Population */}
+                <div className="bg-gradient-to-br from-cyan-50 to-blue-100 p-3 rounded-lg shadow border border-cyan-300 text-center">
+                  <p className="text-xs font-semibold text-cyan-700 mb-1">👥 Population</p>
+                  <p className="text-2xl font-bold text-cyan-600">
+                    {countryProfile.population_millions ? `${countryProfile.population_millions.toFixed(1)}M` : (countryProfile.population ? formatNumber(countryProfile.population) : 'N/A')}
+                  </p>
+                  <p className="text-xs text-cyan-600 mt-1">2024</p>
+                </div>
+
+                {/* Rang IDH */}
+                <div className="bg-gradient-to-br from-indigo-50 to-violet-100 p-3 rounded-lg shadow border border-indigo-300 text-center">
+                  <p className="text-xs font-semibold text-indigo-700 mb-1">🏆 {language === 'fr' ? 'Rang IDH' : 'HDI Rank'}</p>
+                  <p className="text-2xl font-bold text-indigo-600">
+                    #{countryProfile.hdi_rank || 'N/A'}
+                  </p>
+                  <p className="text-xs text-indigo-600 mt-1">/193 pays</p>
                 </div>
               </div>
 
