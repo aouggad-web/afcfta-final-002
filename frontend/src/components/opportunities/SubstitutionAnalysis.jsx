@@ -200,7 +200,11 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
       loading: "Analyse en cours...",
       importSubtitle: "Produits actuellement importés hors Afrique pouvant être sourcés localement",
       exportSubtitle: "Produits que ce pays peut exporter vers d'autres pays ZLECAf",
-      source: "Sources: UN Comtrade, OEC, UNCTAD, Offices nationaux de statistiques"
+      source: "Sources: UN Comtrade, OEC, UNCTAD, Offices nationaux de statistiques",
+      outsideAfrica: "Hors Afrique",
+      product: "Produit",
+      afcftaMarkets: "Marchés ZLECAf",
+      tradeFlows: "Flux Commerciaux"
     },
     en: {
       title: "Trade Substitution Analysis",
@@ -217,7 +221,11 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
       loading: "Analysis in progress...",
       importSubtitle: "Products currently imported from outside Africa that can be sourced locally",
       exportSubtitle: "Products this country can export to other AfCFTA countries",
-      source: "Sources: UN Comtrade, OEC, UNCTAD, National statistics offices"
+      source: "Sources: UN Comtrade, OEC, UNCTAD, National statistics offices",
+      outsideAfrica: "Outside Africa",
+      product: "Product",
+      afcftaMarkets: "AfCFTA Markets",
+      tradeFlows: "Trade Flows"
     }
   };
 
