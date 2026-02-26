@@ -621,29 +621,31 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               {/* World Bank Data360 Indicators */}
               {countryProfile.projections?.life_expectancy_2023 && (
                 <div className="mb-4">
-                  <Card className="shadow-xl border-t-4 border-t-blue-600">
-                    <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
-                      <CardTitle className="text-xl font-bold text-blue-700 flex items-center gap-2">
-                        <span>🌐</span>
+                  <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
+                    <CardHeader className="bg-gradient-to-r from-blue-900/50 via-purple-900/30 to-pink-900/30 border-b border-blue-500/30">
+                      <CardTitle className="text-xl font-bold text-blue-400 flex items-center gap-3">
+                        <span className="text-2xl">🌐</span>
                         <span>{t.worldBankIndicators}</span>
                       </CardTitle>
-                      <p className="text-sm text-blue-600 mt-1">
+                      <p className="text-sm text-gray-300 mt-1">
                         {t.officialData}
                       </p>
                     </CardHeader>
-                    <CardContent className="pt-6">
+                    <CardContent className="pt-6 bg-gray-900/50">
                       {/* Section 1: People (Social) */}
                       <div className="mb-6">
-                        <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                          <span>👥</span>
+                        <h4 className="text-lg font-bold text-pink-400 mb-4 flex items-center gap-2 border-b border-pink-500/30 pb-2">
+                          <span className="text-2xl">👥</span>
                           <span>{t.socialIndicators}</span>
                         </h4>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                          <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-3 rounded-lg border-l-4 border-green-500">
-                            <p className="text-xs font-semibold text-green-700">🏥 {t.lifeExpectancy}</p>
-                            <p className="text-2xl font-bold text-green-600">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          <div className="bg-gradient-to-br from-green-900/80 to-emerald-800/60 p-4 rounded-xl border-2 border-green-500 shadow-lg shadow-green-500/20 transform hover:scale-105 transition-all">
+                            <p className="text-xs font-bold text-green-300 mb-2 uppercase tracking-wide">🏥 {t.lifeExpectancy}</p>
+                            <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                               {countryProfile.projections.life_expectancy_2023}
                             </p>
+                            <p className="text-xs text-green-200 mt-2 bg-green-950/50 rounded-full px-2 py-1">{t.years} (2023)</p>
+                          </div>
                             <p className="text-xs text-gray-600">{t.years} (2023)</p>
                           </div>
                           
