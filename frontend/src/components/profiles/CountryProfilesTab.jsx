@@ -730,58 +730,58 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
                       {/* Section 3: Environment & Gender */}
                       <div>
-                        <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                          <span>🌍</span>
+                        <h4 className="text-lg font-bold text-emerald-400 mb-4 flex items-center gap-2 border-b border-emerald-500/30 pb-2">
+                          <span className="text-2xl">🌍</span>
                           <span>{t.environmentEquality}</span>
                         </h4>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           {countryProfile.projections.female_labor_force_pct_2024 && (
-                            <div className="bg-gradient-to-br from-pink-50 to-rose-50 p-3 rounded-lg border-l-4 border-pink-500">
-                              <p className="text-xs font-semibold text-pink-700">👩‍💼 {t.workingWomen}</p>
-                              <p className="text-2xl font-bold text-pink-600">
+                            <div className="bg-gradient-to-br from-pink-900/80 to-rose-800/60 p-4 rounded-xl border-2 border-pink-500 shadow-lg shadow-pink-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-pink-300 mb-2 uppercase tracking-wide">👩‍💼 {t.workingWomen}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.female_labor_force_pct_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-gray-600">{t.femalePopulation} (2024)</p>
+                              <p className="text-xs text-pink-200 mt-2 bg-pink-950/50 rounded-full px-2 py-1">{t.femalePopulation} (2024)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.water_stress_2022 && (
-                            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-3 rounded-lg border-l-4 border-blue-500">
-                              <p className="text-xs font-semibold text-blue-700">💧 {t.waterStress}</p>
-                              <p className="text-2xl font-bold text-blue-600">
+                            <div className="bg-gradient-to-br from-blue-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">💧 {t.waterStress}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.water_stress_2022).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-gray-600">{t.resources} (2022)</p>
+                              <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{t.resources} (2022)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.ghg_emissions_mt_2022 && (
-                            <div className="bg-gradient-to-br from-gray-50 to-slate-50 p-3 rounded-lg border-l-4 border-gray-500">
-                              <p className="text-xs font-semibold text-gray-700">🏭 {t.ghgEmissions}</p>
-                              <p className="text-2xl font-bold text-gray-600">
+                            <div className="bg-gradient-to-br from-gray-900/80 to-slate-800/60 p-4 rounded-xl border-2 border-gray-500 shadow-lg shadow-gray-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-gray-300 mb-2 uppercase tracking-wide">🏭 {t.ghgEmissions}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.ghg_emissions_mt_2022).toFixed(1)}
                               </p>
-                              <p className="text-xs text-gray-600">Mt CO₂e (2022)</p>
+                              <p className="text-xs text-gray-200 mt-2 bg-gray-950/50 rounded-full px-2 py-1">Mt CO₂e (2022)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.learning_poverty_2023 && (
-                            <div className="bg-gradient-to-br from-violet-50 to-purple-50 p-3 rounded-lg border-l-4 border-violet-500">
-                              <p className="text-xs font-semibold text-violet-700">📚 {t.learningPoverty}</p>
-                              <p className="text-2xl font-bold text-violet-600">
+                            <div className="bg-gradient-to-br from-violet-900/80 to-purple-800/60 p-4 rounded-xl border-2 border-violet-500 shadow-lg shadow-violet-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-violet-300 mb-2 uppercase tracking-wide">📚 {t.learningPoverty}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.learning_poverty_2023).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-gray-600">{t.children} (2023)</p>
+                              <p className="text-xs text-violet-200 mt-2 bg-violet-950/50 rounded-full px-2 py-1">{t.children} (2023)</p>
                             </div>
                           )}
                         </div>
                       </div>
                       
                       {/* Source footer */}
-                      <div className="mt-4 pt-4 border-t border-gray-200">
-                        <p className="text-xs text-gray-500 text-center">
-                          {t.source}: <strong>World Bank Data360</strong> - {t.officialData} • 
-                          <a href="https://data360.worldbank.org" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">
+                      <div className="mt-6 pt-4 border-t border-gray-700">
+                        <p className="text-xs text-gray-400 text-center">
+                          {t.source}: <strong className="text-blue-400">World Bank Data360</strong> - {t.officialData} • 
+                          <a href="https://data360.worldbank.org" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline ml-1">
                             data360.worldbank.org
                           </a>
                         </p>
