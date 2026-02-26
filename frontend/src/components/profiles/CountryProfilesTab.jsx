@@ -793,46 +793,46 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
               {/* Infrastructure Section (AIDI 2025 & LPI 2023) */}
               {countryProfile.infrastructure_ranking && (
-                <Card className="shadow-lg border-l-4 border-l-orange-500">
-                  <CardHeader className="bg-gradient-to-r from-orange-50 to-yellow-50">
-                    <CardTitle className="text-xl font-bold text-orange-700 flex items-center gap-2">
+                <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
+                  <CardHeader className="bg-gradient-to-r from-orange-900/50 via-amber-900/30 to-yellow-900/30 border-b border-orange-500/30">
+                    <CardTitle className="text-xl font-bold text-orange-400 flex items-center gap-2">
                       <span>🏗️</span>
                       <span>{t.infrastructurePerformance}</span>
                     </CardTitle>
-                    <CardDescription className="font-semibold text-gray-700">
+                    <CardDescription className="font-semibold text-gray-300">
                       {t.continentalRanking}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-4">
+                  <CardContent className="pt-6 bg-gray-900/50">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-purple-50 p-3 rounded-lg text-center">
-                        <p className="text-xs font-semibold text-purple-700 mb-1">📊 {t.lpiScore}</p>
-                        <p className="text-2xl font-bold text-purple-600">
+                      <div className="bg-gradient-to-br from-purple-900/80 to-indigo-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
+                        <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">📊 {t.lpiScore}</p>
+                        <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                           {countryProfile.infrastructure_ranking.lpi_infrastructure_score}/5
                         </p>
-                        <p className="text-xs text-purple-600 mt-1">{t.infrastructure}</p>
-                        <div className="mt-2 text-xs bg-purple-100 rounded px-2 py-1">
-                          {t.worldRank}: <strong>#{countryProfile.infrastructure_ranking.lpi_world_rank}</strong>
+                        <p className="text-xs text-purple-200 mt-2">{t.infrastructure}</p>
+                        <div className="mt-2 text-xs bg-purple-950/50 rounded-full px-3 py-1">
+                          {t.worldRank}: <strong className="text-white">#{countryProfile.infrastructure_ranking.lpi_world_rank}</strong>
                         </div>
                       </div>
                       
-                      <div className="bg-orange-50 p-3 rounded-lg text-center">
-                        <p className="text-xs font-semibold text-orange-700 mb-1">🏗️ {t.aidiScore}</p>
-                        <p className="text-2xl font-bold text-orange-600">
+                      <div className="bg-gradient-to-br from-orange-900/80 to-amber-800/60 p-4 rounded-xl border-2 border-orange-500 shadow-lg shadow-orange-500/20 text-center transform hover:scale-105 transition-all">
+                        <p className="text-xs font-bold text-orange-300 mb-2 uppercase tracking-wide">🏗️ {t.aidiScore}</p>
+                        <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                           {countryProfile.infrastructure_ranking.aidi_transport_score}/100
                         </p>
-                        <p className="text-xs text-orange-600 mt-1">{t.globalIndex}</p>
-                        <div className="mt-2 text-xs bg-orange-100 rounded px-2 py-1">
-                          {t.africaRank}: <strong>#{countryProfile.infrastructure_ranking.africa_rank}</strong>
+                        <p className="text-xs text-orange-200 mt-2">{t.globalIndex}</p>
+                        <div className="mt-2 text-xs bg-orange-950/50 rounded-full px-3 py-1">
+                          {t.africaRank}: <strong className="text-white">#{countryProfile.infrastructure_ranking.africa_rank}</strong>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="mt-4 bg-gray-50 p-3 rounded-lg">
-                      <p className="text-xs text-gray-700">
-                        <strong>IPL ({language === 'fr' ? 'Indice de Performance Logistique' : 'Logistics Performance Index'})</strong> : {t.lpiDescription}
+                    <div className="mt-6 bg-gray-800/50 p-4 rounded-xl border border-gray-700">
+                      <p className="text-xs text-gray-300">
+                        <strong className="text-blue-400">IPL ({language === 'fr' ? 'Indice de Performance Logistique' : 'Logistics Performance Index'})</strong> : {t.lpiDescription}
                         <br />
-                        <strong>AIDI (Africa Infrastructure Development Index)</strong> : {t.aidiDescription}
+                        <strong className="text-orange-400">AIDI (Africa Infrastructure Development Index)</strong> : {t.aidiDescription}
                       </p>
                     </div>
                   </CardContent>
