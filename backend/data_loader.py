@@ -119,6 +119,11 @@ def get_country_commerce_profile(country_code: str) -> Optional[Dict]:
         'exports_2024_billion_usd': float(row['Exportations_2024_Mds_USD']) if pd.notna(row['Exportations_2024_Mds_USD']) else None,
         'imports_2024_billion_usd': float(row['Importations_2024_Mds_USD']) if pd.notna(row['Importations_2024_Mds_USD']) else None,
         'trade_balance_2024_billion_usd': float(row['Balance_Commerciale_2024_Mds_USD']) if pd.notna(row['Balance_Commerciale_2024_Mds_USD']) else None,
+        # Données de dette publique 2024
+        'total_debt_pct_gdp': float(row['Dette_Totale_Pct_PIB']) if pd.notna(row.get('Dette_Totale_Pct_PIB')) else None,
+        'external_debt_bn_usd': float(row['Dette_Exterieure_Mds_USD']) if pd.notna(row.get('Dette_Exterieure_Mds_USD')) else None,
+        'external_debt_pct_gdp': float(row['Dette_Exterieure_Pct_PIB']) if pd.notna(row.get('Dette_Exterieure_Pct_PIB')) else None,
+        'domestic_debt_pct_gdp': float(row['Dette_Interieure_Pct_PIB']) if pd.notna(row.get('Dette_Interieure_Pct_PIB')) else None,
         'export_products': export_products,
         'import_products': import_products,
         'export_partners': export_partners,
