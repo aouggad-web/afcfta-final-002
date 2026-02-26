@@ -456,36 +456,6 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                   </div>
                 </div>
               )}
-                      <p className="text-xs text-purple-600 mt-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
-                    </div>
-
-                    {/* Ratio Dette/PIB Indicateur */}
-                    <div className="bg-gradient-to-br from-gray-50 to-slate-100 p-4 rounded-lg shadow-lg border-2 border-gray-400 text-center">
-                      <p className="text-xs font-semibold text-gray-700 mb-1">⚖️ {language === 'fr' ? 'Viabilité' : 'Sustainability'}</p>
-                      <div className="flex justify-center items-center h-12">
-                        {countryProfile.total_debt_pct_gdp <= 40 ? (
-                          <span className="px-3 py-1 rounded-full bg-green-500 text-white font-bold text-sm">
-                            {language === 'fr' ? '✓ FAIBLE RISQUE' : '✓ LOW RISK'}
-                          </span>
-                        ) : countryProfile.total_debt_pct_gdp <= 60 ? (
-                          <span className="px-3 py-1 rounded-full bg-yellow-500 text-white font-bold text-sm">
-                            {language === 'fr' ? '⚠ MODÉRÉ' : '⚠ MODERATE'}
-                          </span>
-                        ) : countryProfile.total_debt_pct_gdp <= 80 ? (
-                          <span className="px-3 py-1 rounded-full bg-orange-500 text-white font-bold text-sm">
-                            {language === 'fr' ? '⚠ ÉLEVÉ' : '⚠ HIGH'}
-                          </span>
-                        ) : (
-                          <span className="px-3 py-1 rounded-full bg-red-500 text-white font-bold text-sm">
-                            {language === 'fr' ? '🚨 CRITIQUE' : '🚨 CRITICAL'}
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1">{language === 'fr' ? 'Seuil FMI: 60%' : 'IMF threshold: 60%'}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
 
               {/* AI Trade Analysis Section */}
               <div className="mb-4">
