@@ -681,48 +681,48 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
                       {/* Section 2: Digital & Infrastructure */}
                       <div className="mb-6">
-                        <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                          <span>💻</span>
+                        <h4 className="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2 border-b border-cyan-500/30 pb-2">
+                          <span className="text-2xl">💻</span>
                           <span>{t.digitalConnectivity}</span>
                         </h4>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           {countryProfile.projections.internet_users_pct_2024 && (
-                            <div className="bg-gradient-to-br from-blue-50 to-sky-50 p-3 rounded-lg border-l-4 border-blue-500">
-                              <p className="text-xs font-semibold text-blue-700">🌐 {t.internetAccess}</p>
-                              <p className="text-2xl font-bold text-blue-600">
+                            <div className="bg-gradient-to-br from-blue-900/80 to-sky-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">🌐 {t.internetAccess}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.internet_users_pct_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-gray-600">{t.populationPercent} (2024)</p>
+                              <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{t.populationPercent} (2024)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.cybersecurity_index_2024 && (
-                            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-3 rounded-lg border-l-4 border-indigo-500">
-                              <p className="text-xs font-semibold text-indigo-700">🔒 {t.cybersecurity}</p>
-                              <p className="text-2xl font-bold text-indigo-600">
+                            <div className="bg-gradient-to-br from-indigo-900/80 to-purple-800/60 p-4 rounded-xl border-2 border-indigo-500 shadow-lg shadow-indigo-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-indigo-300 mb-2 uppercase tracking-wide">🔒 {t.cybersecurity}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.cybersecurity_index_2024).toFixed(1)}
                               </p>
-                              <p className="text-xs text-gray-600">ITU GCI (2024)</p>
+                              <p className="text-xs text-indigo-200 mt-2 bg-indigo-950/50 rounded-full px-2 py-1">ITU GCI (2024)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.electricity_access_2022 && (
-                            <div className="bg-gradient-to-br from-yellow-50 to-amber-50 p-3 rounded-lg border-l-4 border-yellow-500">
-                              <p className="text-xs font-semibold text-yellow-700">⚡ {t.electricityAccess}</p>
-                              <p className="text-2xl font-bold text-yellow-600">
+                            <div className="bg-gradient-to-br from-yellow-900/80 to-amber-800/60 p-4 rounded-xl border-2 border-yellow-500 shadow-lg shadow-yellow-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-yellow-300 mb-2 uppercase tracking-wide">⚡ {t.electricityAccess}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.electricity_access_2022).toFixed(0)}%
                               </p>
-                              <p className="text-xs text-gray-600">{t.populationPercent} (2022)</p>
+                              <p className="text-xs text-yellow-200 mt-2 bg-yellow-950/50 rounded-full px-2 py-1">{t.populationPercent} (2022)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.mobile_3g_coverage_2024 && (
-                            <div className="bg-gradient-to-br from-teal-50 to-cyan-50 p-3 rounded-lg border-l-4 border-teal-500">
-                              <p className="text-xs font-semibold text-teal-700">📱 {t.coverage3g}</p>
-                              <p className="text-2xl font-bold text-teal-600">
+                            <div className="bg-gradient-to-br from-teal-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-teal-500 shadow-lg shadow-teal-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-teal-300 mb-2 uppercase tracking-wide">📱 {t.coverage3g}</p>
+                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.mobile_3g_coverage_2024).toFixed(0)}%
                               </p>
-                              <p className="text-xs text-gray-600">{t.populationPercent} (2024)</p>
+                              <p className="text-xs text-teal-200 mt-2 bg-teal-950/50 rounded-full px-2 py-1">{t.populationPercent} (2024)</p>
                             </div>
                           )}
                         </div>
