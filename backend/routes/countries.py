@@ -91,6 +91,12 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         profile.hdi_rank = commerce_data.get('hdi_rank_2024')
         profile.population_millions = commerce_data.get('population_2024_million')
         
+        # Données de dette publique 2024
+        profile.total_debt_pct_gdp = commerce_data.get('total_debt_pct_gdp')
+        profile.external_debt_bn_usd = commerce_data.get('external_debt_bn_usd')
+        profile.external_debt_pct_gdp = commerce_data.get('external_debt_pct_gdp')
+        profile.domestic_debt_pct_gdp = commerce_data.get('domestic_debt_pct_gdp')
+        
         # Projections enrichies avec données commerce
         profile.projections = {
             "gdp_growth_forecast_2024": f"{commerce_data['growth_rate_2024']}%" if commerce_data['growth_rate_2024'] else '3.0%',
