@@ -517,19 +517,50 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     </CardHeader>
                     <CardContent className="pt-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {countryProfile.ongoing_projects.map((project, index) => (
-                          <div key={index} className="bg-white rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
-                            <div className="bg-emerald-600 text-white p-3">
-                              <h5 className="font-bold text-sm leading-tight">{project.titre}</h5>
+                        {countryProfile.ongoing_projects.map((project, index) => {
+                          const isOperational = project.statut?.includes('OPÉRATIONNEL') || project.statut?.includes('✅');
+                          const isConstruction = project.statut?.includes('construction') || project.statut?.includes('Construction');
+                          
+                          return (
+                          <div key={index} className={`rounded-xl shadow-md border-2 hover:shadow-xl transition-all overflow-hidden flex flex-col ${
+                            isOperational ? 'border-green-500 bg-green-50' : 
+                            isConstruction ? 'border-amber-400 bg-amber-50' :
+                            'border-gray-200 bg-white'
+                          }`}>
+                            <div className={`text-white p-3 ${
+                              isOperational ? 'bg-gradient-to-r from-green-600 to-emerald-600' :
+                              isConstruction ? 'bg-gradient-to-r from-amber-500 to-orange-500' :
+                              'bg-gradient-to-r from-emerald-600 to-teal-600'
+                            }`}>
+                              <h5 className="font-bold text-sm leading-tight flex items-center gap-2">
+                                {isOperational && <span>✅</span>}
+                                {isConstruction && <span>🏗️</span>}
+                                {project.titre}
+                              </h5>
                             </div>
                             <div className="p-4 flex-grow flex flex-col gap-3">
-                              <div className="flex justify-between items-start">
-                                <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                              <div className="flex justify-between items-start flex-wrap gap-2">
+                                <Badge variant="outline" className={`text-xs ${
+                                  isOperational ? 'bg-green-100 text-green-700 border-green-300' :
+                                  'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                }`}>
                                   {project.secteur}
                                 </Badge>
-                                <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                <span className={`text-xs font-bold px-2 py-1 rounded ${
+                                  isOperational ? 'bg-green-200 text-green-800' :
+                                  'bg-gray-100 text-gray-600'
+                                }`}>
                                   🏁 {project.echeance}
                                 </span>
+                              </div>
+                              
+                              {/* Statut bien visible */}
+                              <div className={`px-3 py-2 rounded-lg text-sm font-bold text-center ${
+                                isOperational ? 'bg-green-500 text-white' :
+                                isConstruction ? 'bg-amber-400 text-amber-900' :
+                                'bg-blue-100 text-blue-800'
+                              }`}>
+                                {project.statut}
                               </div>
                               
                               <div className="space-y-2 text-sm text-gray-600 flex-grow">
@@ -541,13 +572,13 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                                 </div>
                               </div>
                               
-                              <div className="mt-auto pt-3 border-t border-gray-100 text-xs text-gray-400 flex justify-between items-center">
+                              <div className="mt-auto pt-3 border-t border-gray-100 text-xs text-gray-500 flex justify-between items-center">
                                 <span className="truncate max-w-[70%]">🤝 {project.partenaires}</span>
-                                <span className="italic">{project.statut}</span>
+                                <span className="italic text-gray-400">{project.source?.split('/')[0]}</span>
                               </div>
                             </div>
                           </div>
-                        ))}
+                        )})}
                       </div>
                     </CardContent>
                   </Card>
