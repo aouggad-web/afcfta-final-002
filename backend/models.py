@@ -103,6 +103,11 @@ class CountryEconomicProfile(BaseModel):
     unemployment_rate: Optional[float] = None
     hdi: Optional[float] = None
     hdi_rank: Optional[int] = None
+    # Données de dette publique
+    total_debt_pct_gdp: Optional[float] = None
+    external_debt_bn_usd: Optional[float] = None
+    external_debt_pct_gdp: Optional[float] = None
+    domestic_debt_pct_gdp: Optional[float] = None
     region: str
     trade_profile: Dict[str, Any] = {}
     projections: Dict[str, Any] = {}
