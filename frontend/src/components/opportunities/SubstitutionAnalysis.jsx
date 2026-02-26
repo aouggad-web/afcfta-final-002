@@ -305,11 +305,13 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
         const markets = opp.target_markets || opp.potential_markets || [];
         if (!markets.length) return [];
         
+        const productName = opp.exportable_product?.name || opp.export_product?.name || txt.product;
+        
         return markets.map(market => ({
           exportingCountry: countryName,
-          product_name: opp.exportable_product?.name || txt.product,
+          product_name: productName,
           potential_partner: market.country_name || market.name,
-          potential_value_musd: (market.capture_potential || market.import_value || 0) / 1e6,
+          potential_value_musd: (market.market_size || market.capture_potential || market.import_value || 0) / 1e6,
         }));
       }
     }).filter(item => {
