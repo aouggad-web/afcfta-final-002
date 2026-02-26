@@ -72,8 +72,8 @@ const StatCard = ({ title, value, icon: Icon, trend, color = "emerald", subtitle
 // Opportunity Card Component
 const OpportunityCard = ({ opportunity, type, language }) => {
   const isImport = type === 'import';
-  const product = isImport ? opportunity.imported_product : opportunity.exportable_product;
-  const targets = isImport ? opportunity.african_suppliers : opportunity.target_markets;
+  const product = isImport ? opportunity.imported_product : (opportunity.exportable_product || opportunity.export_product);
+  const targets = isImport ? opportunity.african_suppliers : (opportunity.target_markets || opportunity.potential_markets);
   
   const difficultyColors = {
     easy: "bg-emerald-100 text-emerald-700",
