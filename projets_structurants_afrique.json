@@ -1,15 +1,26 @@
 {
   "DZA": [
     {
-      "titre": "Ligne Ferroviaire Minière Béchar-Tindouf-Gara Djebilet",
-      "secteur": "Mines & Transport",
-      "statut": "En construction (Avancé)",
-      "budget": "Est. 1.5 - 2 Mrd USD (Rail)",
-      "echeance": "Janvier 2026 (Premier train)",
-      "description": "Mégaprojet ferroviaire de 950 km reliant le gisement de fer de Gara Djebilet (Tindouf) au réseau national à Béchar. Le projet est crucial pour l'exploitation de l'une des plus grandes réserves de fer au monde (3.5 Mrd tonnes).",
-      "impact": "Acheminement de 40-50M tonnes/an de minerai vers le port d'Arzew/Oran. Création de 15,000 emplois directs. Désenclavement du Sud-Ouest.",
-      "partenaires": "Partenariat Algéro-Chinois (CRCC)",
-      "source": "Ministère des Travaux Publics / ANESRIF 2025"
+      "titre": "Mine de Fer Gara Djebilet - Production",
+      "secteur": "Mines & Industrie",
+      "statut": "✅ OPÉRATIONNEL (depuis Juillet 2024)",
+      "budget": "6 Milliards USD (Total projet intégré)",
+      "echeance": "Phase 2: 2026-2027",
+      "description": "Exploitation du gisement de fer de Gara Djebilet à Tindouf, l'un des plus grands au monde (3.5 milliards de tonnes). La Phase 1 est opérationnelle depuis juillet 2024 avec les premiers convois de minerai exportés.",
+      "impact": "Production actuelle: 2-3M tonnes/an. Objectif: 50M tonnes/an en Phase 2. Création de 12,000 emplois directs. Revenus estimés: 2-4 Mrd USD/an.",
+      "partenaires": "FERAAL (Algérie), CRCC (Chine), Baowu Steel (Chine)",
+      "source": "Ministère de l'Industrie et des Mines - Janvier 2025"
+    },
+    {
+      "titre": "Ligne Ferroviaire Minière Béchar-Gara Djebilet",
+      "secteur": "Transport Ferroviaire",
+      "statut": "En construction avancée",
+      "budget": "1.5 - 2 Milliards USD",
+      "echeance": "Premier train: Janvier 2026",
+      "description": "Ligne ferroviaire de 950 km reliant le gisement de fer de Gara Djebilet au réseau national à Béchar, puis aux ports d'Arzew et Oran.",
+      "impact": "Capacité: 40-50M tonnes/an de minerai. Désenclavement du Sud-Ouest algérien. Connexion avec la Dorsale Transsaharienne.",
+      "partenaires": "ANESRIF, CRCC (China Railway Construction Corporation)",
+      "source": "ANESRIF / Ministère des Travaux Publics 2025"
     },
     {
       "titre": "Projet Phosphate Intégré (PPI) - Bled El Hadba",
@@ -32,6 +43,28 @@
       "impact": "Désenclavement total du Grand Sud. Support logistique pour le commerce avec le Sahel. Vitesse commerciale 220 km/h sur tronçons nord.",
       "partenaires": "ANESRIF, BAD (Banque Africaine de Développement)",
       "source": "Présidence de la République / ANESRIF"
+    },
+    {
+      "titre": "Port en eaux profondes El Hamdania (Cherchell)",
+      "secteur": "Infrastructure Portuaire",
+      "statut": "En construction",
+      "budget": "3.3 Milliards USD",
+      "echeance": "2027-2028 (Phase 1)",
+      "description": "Méga-port commercial et logistique à Cherchell. Hub méditerranéen majeur relié au réseau ferroviaire et autoroutier.",
+      "impact": "Capacité: 6.5 millions de conteneurs EVP/an. Création de 200,000 emplois directs et indirects.",
+      "partenaires": "CSCEC (Chine), COSCO, Ministère des Transports",
+      "source": "Ministère des Transports 2025"
+    },
+    {
+      "titre": "Centrale solaire Tafouk1 (Programme 15 GW)",
+      "secteur": "Énergie Renouvelable",
+      "statut": "✅ Phase 1 OPÉRATIONNELLE",
+      "budget": "Multi-milliards USD",
+      "echeance": "2030 (15 GW total)",
+      "description": "Programme national de développement du solaire photovoltaïque. Première phase de 1 GW à Djanet opérationnelle depuis 2024.",
+      "impact": "Objectif: 15 GW solaire d'ici 2030. Réduction des émissions CO2 et diversification du mix énergétique.",
+      "partenaires": "SKTM, Sonelgaz, Partenaires internationaux",
+      "source": "Ministère de l'Énergie / Sonelgaz 2025"
     }
   ],
   "EGY": [
