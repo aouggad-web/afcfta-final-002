@@ -206,6 +206,12 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 
 ## Historique des Versions
 
+### v2.3.0 (26 Février 2025) - UI/UX ENHANCEMENT
+- **Amélioration Profils Pays** : Thème sombre appliqué à toutes les cartes d'indicateurs World Bank Data360
+- **Correction syntaxe JSX** : Suppression des lignes orphelines dans CountryProfilesTab.jsx
+- **Bug fix** : Affichage correct de la valeur 0 pour le taux de pauvreté
+- **Cohérence visuelle** : Toutes les sections respectent maintenant le thème sombre de l'application
+
 ### v2.2.0 (21 Février 2025) - BUG FIX & ENHANCEMENT
 - **Bug Fix P0** : Correction des composants Select (menus déroulants) dans CalculatorTab
 - **Graphiques améliorés** : Ajout TaxDistributionPieChart pour NPF vs ZLECAf
