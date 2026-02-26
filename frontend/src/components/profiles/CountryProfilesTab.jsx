@@ -247,102 +247,137 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
       {countryProfile && (
         <div className="space-y-4">
-          <Card className="shadow-2xl border-l-4 border-l-green-600">
-            <CardHeader className="bg-gradient-to-r from-green-100 via-yellow-100 to-red-100">
-              <CardTitle className="flex items-center space-x-2 text-2xl">
-                <span className="text-4xl">{getFlag(countryProfile.country_code)}</span>
-                <span className="font-bold text-green-700">{countryProfile.country_name}</span>
+          <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
+            <CardHeader className="bg-gradient-to-r from-green-900/50 via-amber-900/30 to-red-900/30 border-b border-amber-500/30">
+              <CardTitle className="flex items-center space-x-3 text-2xl">
+                <span className="text-5xl drop-shadow-lg">{getFlag(countryProfile.country_code)}</span>
+                <div>
+                  <span className="font-bold text-amber-400 text-3xl">{countryProfile.country_name}</span>
+                  <p className="text-sm text-gray-300 mt-1">{countryProfile.region}</p>
+                </div>
               </CardTitle>
-              <CardDescription className="text-lg font-semibold text-gray-700">
-                {countryProfile.region} • 👥 {t.population}: {formatNumber(countryProfile.population)} {t.inhabitants}
+              <CardDescription className="text-lg font-semibold text-gray-200 flex items-center gap-4 mt-2">
+                <span className="bg-amber-600/30 px-3 py-1 rounded-full text-amber-300">👥 {countryProfile.population_millions ? `${countryProfile.population_millions.toFixed(1)}M` : formatNumber(countryProfile.population)} {t.inhabitants}</span>
+                <span className="bg-green-600/30 px-3 py-1 rounded-full text-green-300">🌍 UA Member</span>
               </CardDescription>
             </CardHeader>
-            <CardContent className="pt-4">
-              {/* Indicateurs économiques principaux - COMPACTS */}
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
-                {countryProfile.gdp_usd && (
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-100 p-3 rounded-lg shadow border border-green-300 text-center">
-                    <p className="text-xs font-semibold text-green-700 mb-1">💰 {t.totalGdp}</p>
-                    <p className="text-2xl font-bold text-green-600">
-                      ${(countryProfile.gdp_usd / 1000000000).toFixed(1)}B
+            <CardContent className="pt-6 bg-gray-900/50">
+              {/* SECTION: Indicateurs Économiques Principaux */}
+              <div className="mb-6">
+                <h3 className="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 border-b border-amber-500/30 pb-2">
+                  <span className="text-2xl">💰</span> {language === 'fr' ? 'Indicateurs Économiques' : 'Economic Indicators'}
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  {/* PIB Total */}
+                  {countryProfile.gdp_usd && (
+                    <div className="bg-gradient-to-br from-emerald-900/80 to-green-800/60 p-4 rounded-xl border-2 border-emerald-500 shadow-lg shadow-emerald-500/20 text-center transform hover:scale-105 transition-all">
+                      <p className="text-xs font-bold text-emerald-300 mb-2 uppercase tracking-wide">💵 {t.totalGdp}</p>
+                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                        ${(countryProfile.gdp_usd / 1000000000).toFixed(1)}B
+                      </p>
+                      <p className="text-xs text-emerald-200 mt-2 bg-emerald-950/50 rounded-full px-2 py-1">{t.rank}: #{countryProfile.projections?.africa_rank || 'N/A'}</p>
+                    </div>
+                  )}
+                  
+                  {/* PIB par Habitant */}
+                  {countryProfile.gdp_per_capita && (
+                    <div className="bg-gradient-to-br from-blue-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 text-center transform hover:scale-105 transition-all">
+                      <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">👤 {t.gdpPerCapita}</p>
+                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                        ${formatNumber(Math.round(countryProfile.gdp_per_capita))}
+                      </p>
+                      <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{t.perPerson}</p>
+                    </div>
+                  )}
+                  
+                  {/* Croissance 2024 */}
+                  <div className="bg-gradient-to-br from-teal-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-teal-500 shadow-lg shadow-teal-500/20 text-center transform hover:scale-105 transition-all">
+                    <p className="text-xs font-bold text-teal-300 mb-2 uppercase tracking-wide">📈 {language === 'fr' ? 'Croissance' : 'Growth'} 2024</p>
+                    <p className={`text-3xl font-extrabold drop-shadow-lg ${parseFloat(countryProfile.projections?.gdp_growth_forecast_2024) >= 5 ? 'text-green-400' : parseFloat(countryProfile.projections?.gdp_growth_forecast_2024) >= 3 ? 'text-white' : 'text-orange-400'}`}>
+                      {countryProfile.projections?.gdp_growth_forecast_2024 || 'N/A'}
                     </p>
-                    <p className="text-xs text-green-600 mt-1">{t.rank}: #{countryProfile.projections?.africa_rank || 'N/A'}</p>
+                    <p className="text-xs text-teal-200 mt-2 bg-teal-950/50 rounded-full px-2 py-1">FMI 2024</p>
                   </div>
-                )}
-                
-                {countryProfile.gdp_per_capita && (
-                  <div className="bg-gradient-to-br from-blue-50 to-cyan-100 p-3 rounded-lg shadow border border-blue-300 text-center">
-                    <p className="text-xs font-semibold text-blue-700 mb-1">👤 {t.gdpPerCapita}</p>
-                    <p className="text-2xl font-bold text-blue-600">
-                      ${formatNumber(Math.round(countryProfile.gdp_per_capita))}
+                  
+                  {/* Projection 2025 */}
+                  <div className="bg-gradient-to-br from-amber-900/80 to-yellow-800/60 p-4 rounded-xl border-2 border-amber-500 shadow-lg shadow-amber-500/20 text-center transform hover:scale-105 transition-all">
+                    <p className="text-xs font-bold text-amber-300 mb-2 uppercase tracking-wide">🎯 Projection 2025</p>
+                    <p className={`text-3xl font-extrabold drop-shadow-lg ${countryProfile.projections?.gdp_growth_projection_2025 && countryProfile.projections?.gdp_growth_projection_2025 !== 'N/A' ? 'text-white' : 'text-gray-400'}`}>
+                      {countryProfile.projections?.gdp_growth_projection_2025 || 'N/A'}
                     </p>
-                    <p className="text-xs text-blue-600 mt-1">{t.perPerson}</p>
+                    <p className="text-xs text-amber-200 mt-2 bg-amber-950/50 rounded-full px-2 py-1">FMI/BM</p>
                   </div>
-                )}
-                
-                {/* Croissance 2024 */}
-                <div className="bg-gradient-to-br from-teal-50 to-cyan-100 p-3 rounded-lg shadow border border-teal-300 text-center">
-                  <p className="text-xs font-semibold text-teal-700 mb-1">📈 {language === 'fr' ? 'Croissance 2024' : 'Growth 2024'}</p>
-                  <p className={`text-2xl font-bold ${parseFloat(countryProfile.projections?.gdp_growth_forecast_2024) >= 5 ? 'text-green-600' : parseFloat(countryProfile.projections?.gdp_growth_forecast_2024) >= 3 ? 'text-teal-600' : 'text-orange-600'}`}>
-                    {countryProfile.projections?.gdp_growth_forecast_2024 || 'N/A'}
-                  </p>
-                  <p className="text-xs text-teal-600 mt-1">{language === 'fr' ? 'Réel 2024' : 'Actual 2024'}</p>
-                </div>
-                
-                {/* Projection 2025 - NOUVEAU */}
-                <div className="bg-gradient-to-br from-amber-50 to-yellow-100 p-3 rounded-lg shadow border-2 border-amber-400 text-center">
-                  <p className="text-xs font-semibold text-amber-700 mb-1">🎯 {language === 'fr' ? 'Projection 2025' : 'Projection 2025'}</p>
-                  <p className={`text-2xl font-bold ${countryProfile.projections?.gdp_growth_projection_2025 && countryProfile.projections?.gdp_growth_projection_2025 !== 'N/A' ? 'text-amber-600' : 'text-gray-400'}`}>
-                    {countryProfile.projections?.gdp_growth_projection_2025 || 'N/A'}
-                  </p>
-                  <p className="text-xs text-amber-600 mt-1">FMI/BM</p>
-                </div>
-                
-                <div className="bg-gradient-to-br from-purple-50 to-pink-100 p-3 rounded-lg shadow border border-purple-300 text-center">
-                  <p className="text-xs font-semibold text-purple-700 mb-1">📊 {t.hdi2024}</p>
-                  <p className="text-2xl font-bold text-purple-600">
-                    {countryProfile.hdi || countryProfile.projections?.development_index || 'N/A'}
-                  </p>
-                  <p className="text-xs text-purple-600 mt-1">{countryProfile.hdi_rank ? `Rang: #${countryProfile.hdi_rank}` : t.hdiDesc}</p>
+                  
+                  {/* IDH */}
+                  <div className="bg-gradient-to-br from-purple-900/80 to-violet-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
+                    <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">📊 {t.hdi2024}</p>
+                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                      {countryProfile.hdi || countryProfile.projections?.development_index || 'N/A'}
+                    </p>
+                    <p className="text-xs text-purple-200 mt-2 bg-purple-950/50 rounded-full px-2 py-1">{countryProfile.hdi_rank ? `Rang #${countryProfile.hdi_rank}` : 'PNUD'}</p>
+                  </div>
                 </div>
               </div>
 
-              {/* Indicateurs Inflation & Chômage */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
-                {/* Inflation */}
-                <div className="bg-gradient-to-br from-red-50 to-orange-100 p-3 rounded-lg shadow border border-red-300 text-center">
-                  <p className="text-xs font-semibold text-red-700 mb-1">📈 {language === 'fr' ? 'Inflation 2024' : 'Inflation 2024'}</p>
-                  <p className={`text-2xl font-bold ${countryProfile.inflation_rate && countryProfile.inflation_rate > 10 ? 'text-red-600' : countryProfile.inflation_rate && countryProfile.inflation_rate > 5 ? 'text-orange-600' : 'text-green-600'}`}>
-                    {countryProfile.inflation_rate ? `${countryProfile.inflation_rate.toFixed(1)}%` : 'N/A'}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1">FMI/BM</p>
-                </div>
+              {/* SECTION: Indicateurs Sociaux */}
+              <div className="mb-6">
+                <h3 className="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 border-b border-amber-500/30 pb-2">
+                  <span className="text-2xl">👥</span> {language === 'fr' ? 'Indicateurs Sociaux' : 'Social Indicators'}
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {/* Inflation */}
+                  <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
+                    countryProfile.inflation_rate && countryProfile.inflation_rate > 15 
+                      ? 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20' 
+                      : countryProfile.inflation_rate && countryProfile.inflation_rate > 7 
+                        ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
+                        : 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20'
+                  }`}>
+                    <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">📈 Inflation 2024</p>
+                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                      {countryProfile.inflation_rate ? `${countryProfile.inflation_rate.toFixed(1)}%` : 'N/A'}
+                    </p>
+                    <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">FMI/BM</p>
+                  </div>
 
-                {/* Chômage */}
-                <div className="bg-gradient-to-br from-gray-50 to-slate-100 p-3 rounded-lg shadow border border-gray-300 text-center">
-                  <p className="text-xs font-semibold text-gray-700 mb-1">👔 {language === 'fr' ? 'Chômage 2024' : 'Unemployment 2024'}</p>
-                  <p className={`text-2xl font-bold ${countryProfile.unemployment_rate && countryProfile.unemployment_rate > 20 ? 'text-red-600' : countryProfile.unemployment_rate && countryProfile.unemployment_rate > 10 ? 'text-orange-600' : 'text-green-600'}`}>
-                    {countryProfile.unemployment_rate ? `${countryProfile.unemployment_rate.toFixed(1)}%` : 'N/A'}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1">OIT/BM</p>
-                </div>
+                  {/* Chômage */}
+                  <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
+                    countryProfile.unemployment_rate && countryProfile.unemployment_rate > 25 
+                      ? 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20' 
+                      : countryProfile.unemployment_rate && countryProfile.unemployment_rate > 15 
+                        ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
+                        : 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20'
+                  }`}>
+                    <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">👔 {language === 'fr' ? 'Chômage' : 'Unemployment'} 2024</p>
+                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                      {countryProfile.unemployment_rate ? `${countryProfile.unemployment_rate.toFixed(1)}%` : 'N/A'}
+                    </p>
+                    <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">OIT/BM</p>
+                  </div>
 
-                {/* Population */}
-                <div className="bg-gradient-to-br from-cyan-50 to-blue-100 p-3 rounded-lg shadow border border-cyan-300 text-center">
-                  <p className="text-xs font-semibold text-cyan-700 mb-1">👥 Population</p>
-                  <p className="text-2xl font-bold text-cyan-600">
-                    {countryProfile.population_millions ? `${countryProfile.population_millions.toFixed(1)}M` : (countryProfile.population ? formatNumber(countryProfile.population) : 'N/A')}
-                  </p>
-                  <p className="text-xs text-cyan-600 mt-1">2024</p>
-                </div>
+                  {/* Population */}
+                  <div className="bg-gradient-to-br from-cyan-900/80 to-blue-800/60 p-4 rounded-xl border-2 border-cyan-500 shadow-lg shadow-cyan-500/20 text-center transform hover:scale-105 transition-all">
+                    <p className="text-xs font-bold text-cyan-300 mb-2 uppercase tracking-wide">👥 Population</p>
+                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                      {countryProfile.population_millions ? `${countryProfile.population_millions.toFixed(1)}M` : (countryProfile.population ? formatNumber(countryProfile.population) : 'N/A')}
+                    </p>
+                    <p className="text-xs text-cyan-200 mt-2 bg-cyan-950/50 rounded-full px-2 py-1">2024</p>
+                  </div>
 
-                {/* Rang IDH */}
-                <div className="bg-gradient-to-br from-indigo-50 to-violet-100 p-3 rounded-lg shadow border border-indigo-300 text-center">
-                  <p className="text-xs font-semibold text-indigo-700 mb-1">🏆 {language === 'fr' ? 'Rang IDH' : 'HDI Rank'}</p>
-                  <p className="text-2xl font-bold text-indigo-600">
-                    #{countryProfile.hdi_rank || 'N/A'}
-                  </p>
-                  <p className="text-xs text-indigo-600 mt-1">/193 pays</p>
+                  {/* Rang IDH Mondial */}
+                  <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
+                    countryProfile.hdi_rank && countryProfile.hdi_rank <= 80 
+                      ? 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20' 
+                      : countryProfile.hdi_rank && countryProfile.hdi_rank <= 120 
+                        ? 'bg-gradient-to-br from-amber-900/80 to-yellow-700/60 border-amber-500 shadow-amber-500/20'
+                        : 'bg-gradient-to-br from-red-900/80 to-orange-700/60 border-red-500 shadow-red-500/20'
+                  }`}>
+                    <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">🏆 {language === 'fr' ? 'Rang IDH' : 'HDI Rank'}</p>
+                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                      #{countryProfile.hdi_rank || 'N/A'}
+                    </p>
+                    <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">/193 pays</p>
+                  </div>
                 </div>
               </div>
 
