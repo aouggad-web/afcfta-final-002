@@ -277,6 +277,50 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
   const currentData = activeTab === 'import' ? importData : exportData;
   const opportunities = currentData?.opportunities || [];
 
+  // Get selected country name for Sankey diagram
+  const countryName = useMemo(() => {
+    const found = countries.find(c => c.iso3 === selectedCountry);
+    return found?.name || selectedCountry;
+  }, [countries, selectedCountry]);
+
+  // Transform substitution data for TradeSankeyDiagram
+  // Converts nested API structure to flat format expected by Sankey
+  const sankeyOpportunities = useMemo(() => {
+    if (!opportunities.length) return [];
+
+    return opportunities.flatMap(opp => {
+      if (activeTab === 'import') {
+        // Import mode: african_suppliers[] → potential_supplier → product → importingCountry
+        const suppliers = opp.african_suppliers || [];
+        if (!suppliers.length) return [];
+        
+        return suppliers.map(supplier => ({
+          potential_supplier: supplier.country_name,
+          product_name: opp.imported_product?.name || txt.product,
+          importingCountry: countryName,
+          substitution_potential_musd: (supplier.export_value || supplier.production_capacity || 0) / 1e6,
+        }));
+      } else {
+        // Export mode: potential_markets[] → exportingCountry → product → potential_partner
+        const markets = opp.target_markets || opp.potential_markets || [];
+        if (!markets.length) return [];
+        
+        return markets.map(market => ({
+          exportingCountry: countryName,
+          product_name: opp.exportable_product?.name || txt.product,
+          potential_partner: market.country_name || market.name,
+          potential_value_musd: (market.capture_potential || market.import_value || 0) / 1e6,
+        }));
+      }
+    }).filter(item => {
+      // Filter out entries with very low values
+      const value = activeTab === 'import' 
+        ? item.substitution_potential_musd 
+        : item.potential_value_musd;
+      return value > 0.1; // At least $100K
+    });
+  }, [opportunities, activeTab, countryName, txt.product]);
+
   return (
     <div className="space-y-6" data-testid="substitution-analysis">
       {/* Header */}
