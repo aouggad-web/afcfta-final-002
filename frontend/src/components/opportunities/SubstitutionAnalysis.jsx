@@ -18,8 +18,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
-  CartesianGrid, Tooltip, Sankey, PieChart, Pie, Cell, Legend
+  CartesianGrid, Tooltip, PieChart, Pie, Cell, Legend
 } from 'recharts';
+import TradeSankeyDiagram from './TradeSankeyDiagram';
 import { 
   TrendingUp, TrendingDown, Globe, Package, Factory, Ship,
   ArrowRight, ArrowLeftRight, Loader2, AlertCircle, Search,
