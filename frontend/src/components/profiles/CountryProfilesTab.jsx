@@ -646,8 +646,6 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             </p>
                             <p className="text-xs text-green-200 mt-2 bg-green-950/50 rounded-full px-2 py-1">{t.years} (2023)</p>
                           </div>
-                            <p className="text-xs text-gray-600">{t.years} (2023)</p>
-                          </div>
                           
                           {countryProfile.projections.gini_index_2024 && (
                             <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-3 rounded-lg border-l-4 border-orange-500">
