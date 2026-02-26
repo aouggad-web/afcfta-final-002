@@ -144,10 +144,15 @@ def get_all_countries_trade_performance() -> List[Dict]:
             'country': row['Pays'],
             'code': row['Code_ISO'],
             'gdp_2024': float(row['PIB_2024_Mds_USD']) if pd.notna(row['PIB_2024_Mds_USD']) else 0,
+            'population_2024': float(row['Population_2024_M']) if pd.notna(row['Population_2024_M']) else 0,
+            'gdp_per_capita_2024': float(row['PIB_par_habitant_2024_USD']) if pd.notna(row['PIB_par_habitant_2024_USD']) else 0,
             'exports_2024': float(row['Exportations_2024_Mds_USD']) if pd.notna(row['Exportations_2024_Mds_USD']) else 0,
             'imports_2024': float(row['Importations_2024_Mds_USD']) if pd.notna(row['Importations_2024_Mds_USD']) else 0,
             'trade_balance_2024': float(row['Balance_Commerciale_2024_Mds_USD']) if pd.notna(row['Balance_Commerciale_2024_Mds_USD']) else 0,
             'hdi_2024': float(row['IDH_2024']) if pd.notna(row['IDH_2024']) else 0,
+            'hdi_rank_2024': int(row['IDH_Rang_2024']) if pd.notna(row.get('IDH_Rang_2024')) else None,
+            'inflation_2024': float(row['Inflation_2024_Pct']) if pd.notna(row.get('Inflation_2024_Pct')) else None,
+            'unemployment_2024': float(row['Chomage_2024_Pct']) if pd.notna(row.get('Chomage_2024_Pct')) else None,
             'growth_rate_2024': float(row['Croissance_PIB_2024_Pct']) if pd.notna(row['Croissance_PIB_2024_Pct']) else 0
         })
     
