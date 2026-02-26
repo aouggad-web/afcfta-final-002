@@ -85,7 +85,11 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         # Données économiques 2024
         profile.gdp_usd = commerce_data['gdp_2024_billion_usd'] * 1000000000 if commerce_data['gdp_2024_billion_usd'] else None
         profile.gdp_per_capita = commerce_data['gdp_per_capita_2024']
-        profile.inflation_rate = None
+        profile.inflation_rate = commerce_data.get('inflation_2024')
+        profile.unemployment_rate = commerce_data.get('unemployment_2024')
+        profile.hdi = commerce_data.get('hdi_2024')
+        profile.hdi_rank = commerce_data.get('hdi_rank_2024')
+        profile.population_millions = commerce_data.get('population_2024_million')
         
         # Projections enrichies avec données commerce
         profile.projections = {
