@@ -657,7 +657,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             </div>
                           )}
                           
-                          {countryProfile.projections.poverty_rate_3usd_2024 && (
+                          {countryProfile.projections.poverty_rate_3usd_2024 !== undefined && countryProfile.projections.poverty_rate_3usd_2024 !== null && (
                             <div className="bg-gradient-to-br from-red-900/80 to-rose-800/60 p-4 rounded-xl border-2 border-red-500 shadow-lg shadow-red-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-red-300 mb-2 uppercase tracking-wide">💰 {t.povertyRate}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
