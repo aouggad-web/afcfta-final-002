@@ -116,6 +116,17 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - ✅ **Titres des sections** avec couleurs cohérentes (rose pour social, cyan pour digital, emerald pour environnement)
 - ✅ **Footer source** adapté au thème sombre avec lien data360.worldbank.org
 
+### Phase 14 : Intégration TradeSankeyDiagram dans Substitution (Terminé - 26 Fév 2025)
+- ✅ **Suppression import mort** : `Sankey` de recharts retiré de SubstitutionAnalysis.jsx
+- ✅ **Import TradeSankeyDiagram** : Composant connecté à l'onglet Substitution
+- ✅ **Transformation de données (sankeyOpportunities useMemo)** :
+  - Mode Import : african_suppliers[] → potential_supplier → product → importingCountry
+  - Mode Export : potential_markets[] → exportingCountry → product → potential_partner
+  - Conversion USD → MUSD pour le format attendu par TradeSankeyDiagram
+- ✅ **i18n** : Ajout des clés `outsideAfrica`, `product`, `afcftaMarkets`, `tradeFlows` (FR + EN)
+- ✅ **Correction OpportunityCard** : Support des deux structures API (`exportable_product` et `export_product`)
+- ✅ **Affichage données Export** : Marché potentiel et Avantage ZLECAf (% réduction tarifaire)
+
 ---
 
 ## Architecture Technique
