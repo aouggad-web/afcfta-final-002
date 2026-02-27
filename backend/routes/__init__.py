@@ -15,12 +15,12 @@ MIGRATION STATUS:
 - etl.py: COMPLETE
 - substitution.py: COMPLETE
 - gemini_analysis.py: COMPLETE (NOW WITH CACHE)
-- rules_of_origin.py: COMPLETE (NEW - Extracted from server.py)
-- hs6_database.py: COMPLETE (UPDATED - Full HS6 search routes)
+- rules_of_origin.py: COMPLETE (Extracted from server.py)
+- hs6_database.py: COMPLETE (Full HS6 search routes)
 - authentic_tariffs.py: COMPLETE (54 countries tariff data)
-- tariffs_calculation.py: COMPLETE (NEW - Tariff calculation utilities)
-- gemini_analysis.py: COMPLETE
+- tariffs_calculation.py: COMPLETE (Tariff calculation utilities)
 - trade_data.py: COMPLETE (WTO integration)
+- calculator.py: COMPLETE (Main tariff calculator - extracted from server.py)
 """
 
 from fastapi import APIRouter
@@ -43,6 +43,7 @@ from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
 from .faostat import router as faostat_router
+from .calculator import router as calculator_router
 try:
     from .gemini_analysis import router as gemini_router
     GEMINI_AVAILABLE = True
