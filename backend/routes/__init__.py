@@ -93,6 +93,7 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"])
     api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"])
     api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"])
+    api_router.include_router(calculator_router, tags=["Calculator"])
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"])
     if TRADE_DATA_AVAILABLE:
