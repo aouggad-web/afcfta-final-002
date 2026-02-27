@@ -27,7 +27,7 @@ from etl.country_hs6_detailed import (
 from services.tariff_data_service import tariff_service
 from services.crawled_data_service import crawled_service
 
-router = APIRouter(prefix="/calculator", tags=["Calculator"])
+router = APIRouter(tags=["Calculator"])
 
 # API Clients for external data
 class WorldBankAPIClient:
