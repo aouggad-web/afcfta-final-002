@@ -156,7 +156,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     
     # Use ISO3 for calculations
     dest_iso3 = dest_country['iso3']
-    origin_iso3 = origin_country['iso3']
+    # origin_iso3 available if needed for bilateral calculations
     
     # Clean and normalize HS code
     hs_code_clean = request.hs_code.replace(".", "").replace(" ", "")
