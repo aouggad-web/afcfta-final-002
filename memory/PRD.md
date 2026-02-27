@@ -242,6 +242,12 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - **Correction OpportunityCard** : Support des deux structures API (import et export)
 - **i18n amélioré** : Nouvelles clés de traduction pour le Sankey (FR/EN)
 
+### v3.0.0 (27 Février 2025) - REFACTORING MAJEUR
+- **server.py refactorisé** : 2920 → 194 lignes (-93%)
+- **Nouveau module `/routes/calculator.py`** : Endpoint `/calculate-tariff` extrait
+- **Architecture modulaire** : Tous les endpoints dans `/routes/`
+- **Performances** : Démarrage plus rapide, code maintenable
+
 ### v2.2.0 (21 Février 2025) - BUG FIX & ENHANCEMENT
 - **Bug Fix P0** : Correction des composants Select (menus déroulants) dans CalculatorTab
 - **Graphiques améliorés** : Ajout TaxDistributionPieChart pour NPF vs ZLECAf
