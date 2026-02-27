@@ -127,6 +127,18 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - ✅ **Correction OpportunityCard** : Support des deux structures API (`exportable_product` et `export_product`)
 - ✅ **Affichage données Export** : Marché potentiel et Avantage ZLECAf (% réduction tarifaire)
 
+### Phase 15 : Refactoring server.py (Terminé - 27 Fév 2025)
+- ✅ **Réduction massive** : 2920 lignes → 194 lignes (-93%)
+- ✅ **Extraction endpoint `/calculate-tariff`** : Créé `/routes/calculator.py` (550 lignes)
+- ✅ **Suppression endpoints dupliqués** : Tous les endpoints sont maintenant dans `/routes/`
+- ✅ **Structure finale server.py** :
+  - Configuration FastAPI et middlewares
+  - Connexion MongoDB
+  - Events de démarrage (chargement données tarifaires)
+  - Enregistrement des routes depuis `/routes/`
+  - Service de fichiers statiques frontend
+- ✅ **Tests validés** : API `/calculate-tariff`, `/health`, `/countries` fonctionnels
+
 ---
 
 ## Architecture Technique
