@@ -223,6 +223,13 @@ Fournir aux entreprises, décideurs et analystes africains un outil complet pour
 - **Bug fix** : Affichage correct de la valeur 0 pour le taux de pauvreté
 - **Cohérence visuelle** : Toutes les sections respectent maintenant le thème sombre de l'application
 
+### v2.3.1 (26 Février 2025) - FEATURE (PR #85 Integration)
+- **TradeSankeyDiagram intégré** dans l'onglet Substitution pour visualiser les flux commerciaux
+- **Mode Import** : Visualisation Fournisseurs africains → Produits → Pays importateur
+- **Mode Export** : Visualisation Pays exportateur → Produits → Marchés cibles
+- **Correction OpportunityCard** : Support des deux structures API (import et export)
+- **i18n amélioré** : Nouvelles clés de traduction pour le Sankey (FR/EN)
+
 ### v2.2.0 (21 Février 2025) - BUG FIX & ENHANCEMENT
 - **Bug Fix P0** : Correction des composants Select (menus déroulants) dans CalculatorTab
 - **Graphiques améliorés** : Ajout TaxDistributionPieChart pour NPF vs ZLECAf
