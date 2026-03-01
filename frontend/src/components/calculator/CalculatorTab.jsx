@@ -14,7 +14,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { toast } from '../../hooks/use-toast';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
-import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck } from 'lucide-react';
+import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield } from 'lucide-react';
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
