@@ -361,6 +361,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           normal_total_cost: npfCalc.total_to_pay || 0,
           zlecaf_total_cost: zlecafCalc.total_to_pay || 0,
           
+          // Totaux en pourcentage (pour l'affichage)
+          total_taxes_npf: rates.total_rate_pct || (rates.dd_rate_pct || 0) + (rates.vat_rate_pct || 0) + (rates.other_taxes_pct || 0),
+          total_taxes_zlecaf: (rates.vat_rate_pct || 0) + (rates.other_taxes_pct || 0), // DD exonéré sous ZLECAf
+          
           // Économies
           savings: savings.amount || 0,
           savings_percentage: savings.percentage || 0,
