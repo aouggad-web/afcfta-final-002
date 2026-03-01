@@ -302,9 +302,6 @@ class DZAAdapter(BaseAdapter):
             "983": "Opérateur économique",
         }
         return authority_map.get(code, "Administration douanière DZA")
-            "220": "Ministère de la Santé",
-        }
-        return authority_map.get(code, "Administration douanière DZA")
     
     def get_summary(self) -> Dict[str, Any]:
         """Retourne un résumé des données transformées"""
