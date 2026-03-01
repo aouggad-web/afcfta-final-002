@@ -259,7 +259,8 @@ class DZAAdapter(BaseAdapter):
             
             # Visas et contrôles (200-299)
             "200": "Présidence du Conseil - Secrétariat Général",
-            "210": "Ministère de l'Agriculture (Contrôle Phytosanitaire)",
+            "210": "Ministère du Commerce",  # Autorisation de Libre Circulation
+            "211": "Ministère de l'Agriculture (Contrôle Phytosanitaire)",  # Visa phytosanitaire
             "215": "Ministère de l'Agriculture (Certificat Phytosanitaire)",
             "216": "Direction des Services Vétérinaires",
             "220": "Ministère du Commerce - Métrologie Légale",
