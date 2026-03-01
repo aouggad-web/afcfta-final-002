@@ -1,45 +1,38 @@
 <analysis>**original_problem_statement:**
-The user's initial request was to fix and enhance a full-stack ZLECAf Trade Calculator application. Throughout the sessions, the scope has expanded significantly with new user requests.
+The user's initial request was to fix and enhance a full-stack ZLECAf Trade Calculator application. The scope has now expanded to building a comprehensive regulatory data engine for all 54 AfCFTA countries.
 
 PRODUCT REQUIREMENTS:
-1.  **Build Regulatory Engine v3 (P0)**: Build a canonical regulatory engine to process, validate, and serve detailed tariff and compliance data (duties, taxes, requirements, formalities) for all African countries, starting with Morocco (MAR) and Algeria (DZA).
-2.  **Integrate Regulatory Engine into Frontend (P0)**: Display the detailed regulatory data within the main calculator and in a separate, clearly presented sub-tab.
-3.  **Enhance UI/UX (P0)**: Improve the display and readability of the calculator and the new regulatory information section.
-4.  **Fix HS Code Search (P1)**: Debug and fix the HS code search bar in the main calculator.
-5.  **Refactor Backend (P1)**: Refactor the monolithic  file into a modular, route-based architecture.
-6.  **Integrate Sankey Diagram (P2)**: Integrate a GitHub pull request to add a .
-7.  **Integrate Tariff Data (P2)**: Integrate tariff data for all 54 AfCFTA countries.
+1.  **Build Regulatory Engine v3 (P0 - In Progress)**: Build a canonical regulatory engine to process, validate, and serve detailed tariff and compliance data for all African countries. The engine now supports all 54 countries using flat-file storage, but a migration to PostgreSQL is in progress.
+2.  **Integrate Regulatory Engine into Frontend (P0 - DONE)**: Display the detailed regulatory data within the main calculator and in a separate, clearly presented sub-tab.
+3.  **Enhance UI/UX (P0 - DONE)**: Improve the display and readability of the calculator and the new regulatory information section.
+4.  **Add Text Search API (P1 - NEW)**: Add a new API endpoint to allow text-based search for products by their description.
+5.  **Migrate Engine to PostgreSQL (P1 - In Progress)**: Migrate the engine's data from flat files to a PostgreSQL database for better scalability and query performance.
+6.  **Refactor Backend API (P2)**: Refactor the API service to query data from PostgreSQL instead of the current flat-file () system.
+7.  **Integrate Sankey Diagram (P2)**: Integrate a GitHub pull request to add a .
 8.  **Audit and Correct OEC Data (P3)**: Correct trade statistics from the OEC.
 9.  **Add RASD (SADR) (P3)**: Add the Sahrawi Arab Democratic Republic as the 55th country.
 10. **Clarify AfCFTA Membership Stats (P4)**: Correct the header statistics.
 11. **Audit and Enhance Economic Indicators (P4)**: Verify and augment economic indicators.
-12. **Enhance Country Profile Page (P5)**: Add new data sections and improve layout.
+12. **Enhance Country Profile Page (P5)**: Enhance Country Profile Page.
 
 **User's preferred language**: French
 
 **what currently exists?**
-The project is a full-stack ZLECAf Trade Calculator with a FastAPI backend and a React/Shadcn UI frontend. In this session, the agent successfully built and integrated the Regulatory Engine v3 for Algeria (DZA).
-
-This involved:
-- **Backend**: Creating a full data processing pipeline () that transforms raw Algerian tariff data into a canonical format and serves it via a new high-performance API endpoint ().
-- **Data Accuracy**: Collaborating with the user to correct tax names, issuing authorities for documents, and calculation logic based on an official circular (). The Algerian data adapter () and source files were updated accordingly.
-- **Frontend**: Integrating the new engine data into the UI by adding a dedicated Réglementation tab with a modern, clear, and readable design ().
-- **Bug Fix**: The previously broken HS Code search bar fix was tested and confirmed to be working.
-- **UI Refactoring**: A major redesign of the main Calculateur tab was started to match the new regulatory panel's aesthetic, but this work was interrupted by an environment failure.
+The ZLECAf Trade Calculator is a full-stack application (FastAPI/React) where the regulatory data engine has been scaled to support all 54 AfCFTA countries using a flat-file system ( files). 1.5GB of data has been generated and is served by the  endpoint. PostgreSQL has been installed and configured, and a data migration script exists but was interrupted by a critical environment crash. The application is currently non-functional due to a persistent 502 Bad Gateway error.
 
 **Last working item**:
--   **Last item agent was working**: The agent was performing a major UI refactoring of the main calculator tab in . The goal was to replace the old input form and results display with a cleaner, more modern design consistent with the new Réglementation tab. The agent successfully replaced large chunks of code but was unable to complete the cleanup and verify the result before the environment crashed.
+-   **Last item agent was working**: The agent was attempting to resolve a 502 Bad Gateway error that has rendered the development environment unusable. After several failed attempts to connect, the agent concluded the environment was unrecoverable (a recurring issue) and advised the user to create a new fork. The user agreed and was instructed on how to do so.
 -   **Status**: BLOCKED
 -   **Agent Testing Done**: N
--   **Which testing method agent to use?**: screenshot tool
+-   **Which testing method agent to use?**: NA (Environment is down)
 -   **User Testing Done**: N
 
 **All Pending/In progress Issue list**:
 -   **Issue 1: Critical Environment Failure (P0 - HIGHEST)**
-    -   **Description**: The development environment is completely unresponsive, returning a 502 Bad Gateway error for all  commands. This is a hard blocker for any development, debugging, or testing.
-    -   **Attempted fixes**: The agent advised the user to fork the job, as this was the solution in the previous session.
+    -   **Description**: The development environment is completely unresponsive, returning a 502 Bad Gateway error for all commands. This is a hard blocker for all development. It's a recurring issue, indicating a potential platform-level resource problem that simple forks may not permanently solve.
+    -   **Attempted fixes**: The previous agent confirmed the environment was unresponsive and correctly advised the user to fork the job again.
     -   **Next debug checklist**:
-        1.  After the fork, the new agent's first action must be to verify environment stability with simple commands like CNAME
+        1.  After the fork, the new agent's **first and most critical action** must be to verify environment stability with simple commands like CNAME
 CONTRIBUTING.md
 DEPLOYMENT.md
 Dockerfile
@@ -165,141 +158,117 @@ wb_logistics_africa.json
 worldbank_data_latest.json
 zlecaf_corrections_2024.json
 zones_franches_afrique.json
-} and backend                          RUNNING   pid 45, uptime 0:00:04
+} and backend                          RUNNING   pid 46, uptime 0:00:07
 code-server                      STOPPED   Not started
-frontend                         STOPPING  
-mongodb                          RUNNING   pid 48, uptime 0:00:04
-nginx-code-proxy                 RUNNING   pid 44, uptime 0:00:04.
+frontend                         STOPPED   Mar 01 06:10 PM
+mongodb                          RUNNING   pid 49, uptime 0:00:07
+nginx-code-proxy                 RUNNING   pid 45, uptime 0:00:07.
+        2.  If the environment is still unresponsive, do not attempt to fix it. Escalate by recommending the user contact Emergent support, as this is a persistent platform issue.
     -   **Why fix this issue and what will be achieved with the fix?**: This is the root blocker. No progress can be made until the environment is functional.
     -   **Status**: BLOCKED
     -   **Is recurring issue?**: Y
-    -   **Should Test frontend/backend/both after fix?**: NA
     -   **Blocked on other issue**: This blocks all other tasks and issues.
 
--   **Issue 2: Incomplete UI Refactoring of Calculator Tab (P1)**
-    -   **Description**: The refactoring of  is unfinished. New UI code was added, but the process of removing the old code was incomplete, leaving the component in a broken state that prevents the app from rendering correctly.
-    -   **Attempted fixes**: The agent made several attempts to remove the old code blocks using  but was unsuccessful before the environment crashed.
-    -   **Next debug checklist**:
-        1.  Once the environment is stable, carefully review .
-        2.  Identify and remove the remaining obsolete JSX code for the old input form and results display. The new code for the results section begins around line 911. The old code to be removed likely exists between lines 1017 and 1871.
-        3.  Ensure all JSX tags are properly closed and the component structure is valid.
-        4.  Run  to check for syntax errors.
-        5.  Take a screenshot to visually confirm the new calculator UI renders correctly.
-    -   **Why fix this issue and what will be achieved with the fix?**: The app's main calculator page is currently broken. Fixing this will complete the UI overhaul and restore core functionality.
-    -   **Status**: IN PROGRESS
-    -   **Is recurring issue?**: N
-    -   **Should Test frontend/backend/both after fix?**: frontend
-    -   **Blocked on other issue**: Issue 1: Critical Environment Failure
-
 **In progress Task List**:
--   **Task 1: Complete UI Refactoring of Calculator Tab (P1)**
-    -   **Where to resume**: .
-    -   **What will be achieved with this?**: A modern, readable, and fully functional UI for the main calculator, providing a consistent user experience with the rest of the application.
+-   **Task 1: Complete and Verify PostgreSQL Migration (P1)**
+    -   **Where to resume**: The migration script  was interrupted by the environment crash.
+    -   **What will be achieved with this?**: A fully populated PostgreSQL database with all 894,783 regulatory records, enabling faster queries and the subsequent API refactor.
     -   **Status**: IN PROGRESS
-    -   **Should Test frontend/backend/both after fix?**: frontend
+    -   **Should Test frontend/backend/both after fix?**: backend
     -   **Blocked on something**: Issue 1: Critical Environment Failure.
+    -   **Next Steps**:
+        1.  Once the environment is stable, start the PostgreSQL service: .
+        2.  Check if any data was partially committed. It may be necessary to add logic to  to truncate tables (, , , ) before re-running to ensure a clean slate.
+        3.  Execute the migration: . Monitor its progress.
+        4.  Verify data integrity by querying the tables for a few sample countries and commodity codes.
 
 **Upcoming and Future Tasks**
 -   **Upcoming Tasks:**
-    -   **(P1) Scale the Regulatory Engine**: Add more adapters for other AfCFTA countries, starting with Morocco (MAR), to expand the engine's coverage.
+    -   **(P1) Implement Text Search API**: Create a new API endpoint to search for products by text description, querying the PostgreSQL  table.
+    -   **(P2) Refactor API Service**: Modify  to fetch data from the PostgreSQL database instead of the flat-file system.
 
 -   **Future Tasks:**
-    -   **(P2) Migrate Engine to PostgreSQL**: Consider migrating the engine's data from flat files to a PostgreSQL database for better scalability.
-    -   **(P3) Audit and Correct OEC Data**: Correct trade statistics from the OEC.
-    -   **(P3) Add RASD (SADR)**: Add the Sahrawi Arab Democratic Republic as the 55th country.
-    -   **(P4) Clarify AfCFTA Membership Stats**: Correct the header statistics on the homepage.
-    -   **(P4) Audit and Enhance Economic Indicators**: Verify and augment economic indicators.
+    -   **(P2) Integrate Sankey Diagram.**
+    -   **(P3) Audit and Correct OEC Data.**
+    -   **(P3) Add RASD (SADR).**
+    -   **(P4) Clarify AfCFTA Membership Stats.**
+    -   **(P4) Audit and Enhance Economic Indicators.**
+    -   **(P5) Enhance Country Profile Page.**
 
 **Completed work in this session**
--   **Regulatory Engine v3 (Backend)**: Successfully built the entire backend for the engine, including the data adapter for Algeria (), a pipeline to generate canonical data (), and a FastAPI service and router to expose the data via .
--   **Regulatory Engine Integration (Frontend)**: Created a new Réglementation tab and integrated a new component () to display the engine's data with a modern and clear UI.
--   **Algerian Data Correction**: Per user instructions, corrected tax names (e.g., Taxe de Contribution de Solidarité), calculation logic, and issuing authorities for over 80 document types in the .
--   **HS Code Search Bar Fix Verified**: Tested and confirmed that the previously implemented fix for the HS code search bar is working correctly.
--   **UI/UX Enhancement**: Redesigned the Réglementation tab's data display for improved readability and user experience.
+-   Identified the persistence of the 502 Bad Gateway error even after a fork.
+-   Correctly diagnosed the recurring environment failure as a platform-level issue.
+-   Guided the user to create another fork as the only viable step.
 
 **Earlier issues found/mentioned but not fixed**
-None.
+None. The focus is solely on the environment failure.
 
 **Known issue recurrence from previous fork**
 -   **Issue recurrence in previous fork**: Critical Environment Failure (502 Bad Gateway).
--   **Recurrence count**: 2 (This error has now occurred at the end of two consecutive jobs).
+-   **Recurrence count**: 4 (This error has now occurred at the end of four consecutive jobs, always after heavy processing).
 -   **Status**: BLOCKED
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Backend**: FastAPI with a modular router architecture.
--   **Frontend**: React with Vite, using Shadcn UI, Tailwind CSS, and Recharts.
--   **Regulatory Engine**: A Python-based data pipeline that transforms country-specific data (e.g., ) into a standardized canonical format () and serves it via a new, fast API. This is the core new feature.
--   **Data-Driven Correction**: The agent's workflow relies heavily on user-provided data (e.g., PDFs, lists) to ensure the accuracy of regulatory information.
+-   **Backend**: FastAPI
+-   **Frontend**: React, Vite, Shadcn UI, Tailwind CSS
+-   **Data Pipeline**: Python scripts for data transformation.
+-   **Database**: Transitioning from a flat-file () system to PostgreSQL with SQLAlchemy.
 
 **key DB schema**
-The application does not use a traditional database.
--   **Regulatory Engine Canonical Data Model (JSONL files in ):**
-    -   : {, , , , }
-    -   : {, , , , , , , }
-    -   : {, , , , , }
-    -   : {, , , }
+-   **commodities**: {uid=0(root) gid=0(root) groups=0(root), , , , ...}
+-   **measures**: {uid=0(root) gid=0(root) groups=0(root),  (FK), , , , ...}
+-   **requirements**: {uid=0(root) gid=0(root) groups=0(root),  (FK), , , ...}
+-   **benefits**: {uid=0(root) gid=0(root) groups=0(root),  (FK), }
 
 **All files of reference**
--   : **Heavily modified and currently in a broken state.** Needs immediate attention.
--   : **New file** containing all logic for processing Algerian data, including tax calculations and document authority mapping.
--   : **New file** for orchestrating the data generation process.
--   : **New file** defining the  router.
--   : **New file** for the improved regulatory data UI.
--   : Modified to add the new  router.
--   : Modified to correct the name of T.C.S.
--   : Updated to reflect progress.
+-   : Service to migrate data to PostgreSQL. **Execution was interrupted.**
+-   : Defines the SQLAlchemy ORM models.
+-   : **Needs refactoring to use PostgreSQL.**
+-   : Directory containing the generated  data (1.5 GB).
 
 **Areas that need refactoring**:
--    is the highest priority. It is extremely large and its current broken state prevents the application from working. Once fixed, it should be considered for being broken down into smaller, more manageable components.
+-   : Must be updated to query PostgreSQL instead of the flat-file system once the migration is complete.
 
 **key api endpoints**
--   : Core calculator endpoint.
--   : Smart search for HS codes.
--   : **New** endpoint for the Regulatory Engine. Params:  (e.g., 'DZA'), .
+-   : Serves regulatory data. Currently reads from  files. Params: , .
 
 **Critical Info for New Agent**
--   **ENVIRONMENT IS BLOCKED**: Your first and most critical task is to handle the 502 Bad Gateway error. The user has been advised to **fork the job**. Confirm the environment is stable before any other action.
--   **User's Preferred Language**: The user communicates exclusively in **French**. All your responses and explanations must be in French.
--   **Fix Broken UI First**: Immediately after stabilizing the environment, you must fix the broken UI in . This is the top priority development task.
--   **Data Accuracy is Paramount**: The user is very detail-oriented regarding regulatory data. Double-check all changes to tax names, document authorities, and calculation logic against user feedback and provided sources.
+-   **USER'S LANGUAGE IS FRENCH**: You must communicate exclusively in French.
+-   **ENVIRONMENT IS CRITICALLY UNSTABLE**: Your first action is to verify the new forked environment is stable. This is the fourth consecutive job to fail with a 502 Bad Gateway error. If this fork is also broken, advise the user to contact Emergent support directly, as repeated forking is not a solution.
+-   **POSTGRESQL MIGRATION IS INCOMPLETE**: The primary technical task, once the environment is stable, is to resume and complete the data migration from  files to the PostgreSQL database.
 
 **documents and test reports created in this job**
--    (updated)
--   All files for the new Regulatory Engine under .
--   The user uploaded  which was used for data correction.
+-    (updated in previous session)
+-   Canonical data and indexes at  (1.5 GB).
 
 **Last 10 User Messages and any pending HUMAN messages**
-- The user asked to improve the display of the regulatory and calculator tabs.
-- The agent implemented a new, modern design for the regulatory tab, which the user approved.
-- The user then asked to apply a similar improved design to the main calculator tab, optimizing for readability.
-- The agent began this refactoring work.
-- The user sent continue and ok prompts while the agent was working.
-- The agent's work was interrupted by a 502 Bad Gateway environment crash.
-- The agent's final message informed the user of the crash and recommended forking the job, summarizing the completed work.
+1.  **User approved the plan**: Verify environment stability, start PostgreSQL, and complete the data migration.
+2.  **User message**: ok (Acknowledged agent's attempt to retry connection).
+3.  **User message**: creer un nouveau fork (Agreed with the agent's recommendation to fork the job again due to the persistent 502 error).
 
 **Project Health Check:**
 -   **Broken**:
-    1.  The entire development environment (502 Bad Gateway).
-    2.  The main calculator page UI () is non-functional due to the incomplete refactoring.
--   **Mocked**: None.
+    1.  The entire development environment (502 Bad Gateway). This is a recurring, critical failure that blocks all progress.
 
 **3rd Party Integrations**
--   **OEC API (The Observatory of Economic Complexity)**: Used to fetch trade data. No API key required.
+-   **OEC API**: Used for trade data.
+-   **PostgreSQL**: Database for the regulatory engine.
 
 **Testing status**
 -   **Testing agent used after significant changes**: NO
 -   **Troubleshoot agent used after agent stuck in loop**: NO
 -   **Test files created**: None.
--   **Known regressions**: The main calculator UI is currently broken.
+-   **Known regressions**: The entire application is down.
 
 **Credentials to test flow:**
-None required.
+-   **PostgreSQL**:
+    -   URL: 
+    -   User: 
+    -   Password: 
+    -   Database: 
 
 **What agent forgot to execute**
-The agent was blocked by the environment failure before it could:
-1.  Finish the UI refactoring of .
-2.  Take a screenshot to validate the redesigned calculator.
-3.  Run a final comprehensive test of all the new features implemented during the session.</analysis>
+The agent was entirely blocked by the environment failure and could not execute any tasks.</analysis>
