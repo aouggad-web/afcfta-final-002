@@ -1014,6 +1014,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </CardContent>
             </Card>
           )}
+        </div>
+      )}
           </div>
       </TabsContent>
         
