@@ -1770,31 +1770,53 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         {/* Onglet Réglementation - Moteur Réglementaire v3 */}
         <TabsContent value="regulatory">
           <div className="space-y-6">
-            <Card className="shadow-2xl" style={{ borderTop: '4px solid #D4AF37' }}>
-              <CardHeader style={{ background: 'linear-gradient(135deg, rgba(193,122,43,0.2), rgba(212,175,55,0.1))' }}>
-                <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#D4AF37' }}>
-                  <Scale className="w-6 h-6" />
-                  <span>{language === 'fr' ? 'Moteur Réglementaire AfCFTA' : 'AfCFTA Regulatory Engine'}</span>
-                </CardTitle>
-                <CardDescription style={{ color: '#A0AAB4' }} className="font-semibold">
-                  {language === 'fr' 
-                    ? 'Accédez aux détails réglementaires complets : mesures tarifaires, formalités administratives et avantages fiscaux ZLECAf'
-                    : 'Access complete regulatory details: tariff measures, administrative formalities and AfCFTA fiscal advantages'}
-                </CardDescription>
+            {/* Header avec recherche */}
+            <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 overflow-hidden">
+              <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
+              
+              <CardHeader className="relative">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl border border-amber-500/20">
+                    <Scale className="w-8 h-8 text-amber-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-2xl text-white">
+                      {language === 'fr' ? 'Moteur Réglementaire AfCFTA' : 'AfCFTA Regulatory Engine'}
+                    </CardTitle>
+                    <CardDescription className="text-slate-400 text-base mt-1">
+                      {language === 'fr' 
+                        ? 'Consultez les droits, taxes et formalités pour chaque code tarifaire'
+                        : 'View duties, taxes and formalities for each tariff code'}
+                    </CardDescription>
+                  </div>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <CardContent className="relative space-y-6">
+                {/* Champs de recherche */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label>{language === 'fr' ? 'Pays de destination' : 'Destination Country'}</Label>
+                    <Label className="text-slate-300 font-medium">
+                      {language === 'fr' ? 'Pays de destination' : 'Destination Country'}
+                    </Label>
                     <Select value={destinationCountry} onValueChange={handleDestinationChange}>
-                      <SelectTrigger data-testid="regulatory-country-select">
-                        <SelectValue placeholder={language === 'fr' ? 'Sélectionner un pays' : 'Select a country'} />
+                      <SelectTrigger 
+                        data-testid="regulatory-country-select"
+                        className="h-12 bg-slate-800/50 border-slate-600 hover:border-amber-500/50 transition-colors"
+                      >
+                        <SelectValue placeholder={language === 'fr' ? 'Sélectionner un pays...' : 'Select a country...'} />
                       </SelectTrigger>
                       <SelectContent>
                         {countries.map((country) => (
                           <SelectItem key={country.code} value={country.code}>
                             <span className="flex items-center gap-2">
-                              <span>{getFlag(country.iso2 || country.code)} {country.name}</span>
+                              <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
+                              <span>{country.name}</span>
+                              {country.code === 'DZA' && (
+                                <span className="ml-2 text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">
+                                  {language === 'fr' ? 'Disponible' : 'Available'}
+                                </span>
+                              )}
                             </span>
                           </SelectItem>
                         ))}
@@ -1803,29 +1825,49 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>{language === 'fr' ? 'Code HS (6-12 chiffres)' : 'HS Code (6-12 digits)'}</Label>
+                    <Label className="text-slate-300 font-medium">
+                      {language === 'fr' ? 'Code HS (6 à 12 chiffres)' : 'HS Code (6 to 12 digits)'}
+                    </Label>
                     <Input
                       value={hsCode}
                       onChange={(e) => setHsCode(e.target.value)}
-                      placeholder={language === 'fr' ? 'Ex: 010110 ou 0101101000' : 'E.g: 010110 or 0101101000'}
-                      className="font-mono"
+                      placeholder={language === 'fr' ? 'Ex: 010110, 0101101000...' : 'E.g: 010110, 0101101000...'}
+                      className="h-12 font-mono text-lg bg-slate-800/50 border-slate-600 hover:border-amber-500/50 focus:border-amber-500 transition-colors"
                       data-testid="regulatory-hs-input"
                     />
                   </div>
                 </div>
 
-                <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
-                    <div className="text-sm text-slate-400">
-                      <p className="font-medium text-slate-300 mb-1">
-                        {language === 'fr' ? 'Comment utiliser le moteur réglementaire ?' : 'How to use the regulatory engine?'}
+                {/* Guide d'utilisation */}
+                <div className="bg-slate-700/30 border border-slate-600/50 rounded-xl p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20 shrink-0">
+                      <Info className="w-5 h-5 text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white mb-2">
+                        {language === 'fr' ? 'Guide d\'utilisation' : 'How to use'}
                       </p>
-                      <ul className="list-disc list-inside space-y-1">
-                        <li>{language === 'fr' ? 'Sélectionnez le pays de destination (ex: Algérie - DZA)' : 'Select destination country (e.g: Algeria - DZA)'}</li>
-                        <li>{language === 'fr' ? 'Entrez un code HS6 (6 chiffres) pour voir toutes les sous-positions' : 'Enter an HS6 code (6 digits) to see all sub-positions'}</li>
-                        <li>{language === 'fr' ? 'Ou entrez un code national complet (8-12 chiffres) pour des détails précis' : 'Or enter a full national code (8-12 digits) for precise details'}</li>
-                      </ul>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div className="flex items-start gap-2">
+                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold shrink-0">1</span>
+                          <span className="text-slate-400">
+                            {language === 'fr' ? 'Sélectionnez le pays de destination' : 'Select the destination country'}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold shrink-0">2</span>
+                          <span className="text-slate-400">
+                            {language === 'fr' ? 'Entrez un code HS6 ou HS10' : 'Enter an HS6 or HS10 code'}
+                          </span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold shrink-0">3</span>
+                          <span className="text-slate-400">
+                            {language === 'fr' ? 'Consultez droits, taxes et documents' : 'View duties, taxes and documents'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1841,15 +1883,22 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               />
             )}
 
-            {/* Message si pas de données */}
+            {/* Message si pas de données sélectionnées */}
             {(!destinationCountry || !hsCode || hsCode.length < 6) && (
-              <Card className="bg-slate-800/30 border-slate-700">
-                <CardContent className="p-8 text-center">
-                  <Scale className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                  <p className="text-slate-400">
+              <Card className="bg-slate-800/30 border-slate-700 border-dashed">
+                <CardContent className="p-12 text-center">
+                  <div className="w-20 h-20 mx-auto mb-6 bg-slate-700/30 rounded-2xl flex items-center justify-center">
+                    <Scale className="w-10 h-10 text-slate-500" />
+                  </div>
+                  <p className="text-slate-400 text-lg mb-2">
                     {language === 'fr' 
-                      ? 'Sélectionnez un pays et entrez un code HS pour afficher les détails réglementaires'
-                      : 'Select a country and enter an HS code to display regulatory details'}
+                      ? 'Sélectionnez un pays et entrez un code HS'
+                      : 'Select a country and enter an HS code'}
+                  </p>
+                  <p className="text-slate-500 text-sm">
+                    {language === 'fr' 
+                      ? 'Les détails réglementaires s\'afficheront automatiquement'
+                      : 'Regulatory details will appear automatically'}
                   </p>
                 </CardContent>
               </Card>
