@@ -817,137 +817,203 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         </CardContent>
       </Card>
 
-      {/* Résultats complets avec visualisations */}
+      {/* === RÉSULTATS === */}
       {result && (
         <div className="space-y-4">
-          <Card className="shadow-xl" style={{ borderLeft: '4px solid #10b981', background: 'rgba(27,35,44,0.95)' }}>
-            <CardHeader style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.25), rgba(212,175,55,0.15))', borderRadius: '12px 12px 0 0' }}>
-              <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#10b981' }}>
-                <span>💰</span>
-                <span>{t.detailedResults}</span>
-              </CardTitle>
-              <CardDescription className="text-yellow-100 font-semibold flex items-center gap-2 flex-wrap">
-                <span>{getFlag(result.origin_country)} {getCountryName(result.origin_country)} → {getFlag(result.destination_country)} {getCountryName(result.destination_country)}</span>
-                {TRADE_BLOCS[result.destination_country] && (
-                  <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-bold">
-                    {TRADE_BLOCS[result.destination_country]}
-                  </span>
-                )}
-                {COUNTRIES_WITH_AUTHENTIC_DATA.has(result.destination_country) && (
-                  <span className="bg-green-400/30 text-green-100 text-xs px-2 py-0.5 rounded-full">
-                    {language === 'fr' ? 'Données authentiques' : 'Authentic data'}
-                  </span>
-                )}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-5 pt-6 results-container">
-              {/* Information sur les DONNÉES AUTHENTIQUES */}
-              {result.data_source === 'authentic_tariff' && (
-                <div className="result-section p-5 rounded-xl border-2 shadow-lg" style={{ background: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.4)' }} data-testid="authentic-data-badge">
-                  <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
-                      <span className="text-2xl text-white">✓</span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <h4 className="font-bold text-lg" style={{ color: '#10b981' }}>
-                          {language === 'fr' ? 'Données Tarifaires Officielles' : 'Official Tariff Data'}
-                        </h4>
-                        <Badge className="px-3 py-1" style={{ background: '#10b981', color: '#fff' }}>
-                          {language === 'fr' ? 'Vérifié' : 'Verified'}
+          {/* En-tête des résultats avec synthèse */}
+          <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 overflow-hidden">
+            <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
+            
+            <CardHeader className="relative">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 rounded-xl border border-emerald-500/20">
+                    <CheckCircle className="w-8 h-8 text-emerald-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl text-white flex items-center gap-2">
+                      {t.detailedResults}
+                      {result.data_source === 'authentic_tariff' && (
+                        <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 border text-xs">
+                          {language === 'fr' ? 'Données Officielles' : 'Official Data'}
                         </Badge>
-                      </div>
-                      <p className="text-sm mb-3" style={{ color: '#A0AAB4' }}>
-                        {language === 'fr' 
-                          ? `Calcul basé sur les tarifs douaniers officiels du ${getCountryName(destinationCountry)} avec ${result.sub_position_count || 0} sous-positions nationales.`
-                          : `Calculation based on official customs tariffs of ${getCountryName(destinationCountry)} with ${result.sub_position_count || 0} national sub-headings.`}
-                      </p>
-                      
-                      {/* Détail des taxes authentiques */}
-                      {result.taxes_detail && result.taxes_detail.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {result.taxes_detail.map((tax, idx) => (
-                            <Badge key={idx} variant="outline" style={{ background: 'rgba(16,185,129,0.15)', borderColor: 'rgba(16,185,129,0.4)', color: '#10b981' }}>
-                              {tax.tax}: {tax.rate}%
-                            </Badge>
-                          ))}
-                        </div>
                       )}
-                    </div>
-                    <div className="flex-shrink-0 text-right">
-                      <p className="text-xs mb-1" style={{ color: '#A0AAB4' }}>
-                        {language === 'fr' ? 'Confiance' : 'Confidence'}
-                      </p>
-                      <Badge className="text-lg px-4 py-2" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff' }}>
-                        {language === 'fr' ? 'Très élevée' : 'Very High'}
-                      </Badge>
-                    </div>
+                    </CardTitle>
+                    <CardDescription className="text-slate-400 flex items-center gap-2 mt-1">
+                      <span className="text-lg">{getFlag(result.origin_country)}</span>
+                      <span>{getCountryName(result.origin_country)}</span>
+                      <span className="text-slate-500">→</span>
+                      <span className="text-lg">{getFlag(result.destination_country)}</span>
+                      <span>{getCountryName(result.destination_country)}</span>
+                      {TRADE_BLOCS[result.destination_country] && (
+                        <Badge variant="outline" className={`text-xs ml-2 ${getBlocColor(TRADE_BLOCS[result.destination_country])}`}>
+                          {TRADE_BLOCS[result.destination_country]}
+                        </Badge>
+                      )}
+                    </CardDescription>
                   </div>
-                  
-                  {/* Avantages fiscaux ZLECAf */}
-                  {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
-                    <div className="mt-4 p-3 rounded-lg" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
-                      <p className="text-sm font-semibold mb-2" style={{ color: '#10b981' }}>
-                        {language === 'fr' ? '🎯 Avantages ZLECAf applicables:' : '🎯 Applicable AfCFTA advantages:'}
-                      </p>
-                      <ul className="space-y-1">
-                        {result.fiscal_advantages.map((adv, idx) => (
-                          <li key={idx} className="text-sm flex items-start gap-2" style={{ color: '#F5F5F5' }}>
-                            <span style={{ color: '#10b981' }}>✓</span>
-                            <span>{language === 'fr' ? adv.condition_fr : adv.condition_en}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  
-                  {/* Formalités administratives */}
-                  {result.administrative_formalities && result.administrative_formalities.length > 0 && (
-                    <div className="mt-3 p-3 rounded-lg" style={{ background: 'rgba(217,123,45,0.1)', border: '1px solid rgba(217,123,45,0.3)' }}>
-                      <p className="text-sm font-semibold mb-2" style={{ color: '#D97B2D' }}>
-                        {language === 'fr' ? '📋 Documents requis:' : '📋 Required documents:'}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {result.administrative_formalities.map((form, idx) => (
-                          <Badge key={idx} variant="outline" className="text-xs" style={{ background: 'rgba(217,123,45,0.15)', borderColor: 'rgba(217,123,45,0.4)', color: '#D97B2D' }}>
-                            {language === 'fr' ? form.document_fr : form.document_en}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
-              )}
+              </div>
+            </CardHeader>
+            
+            <CardContent className="relative">
+              {/* Grille de synthèse économique */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {/* Total NPF */}
+                <div className="bg-red-500/10 rounded-xl p-4 border border-red-500/20">
+                  <p className="text-red-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
+                  <p className="text-3xl font-bold text-red-400 mt-1">{(result.total_taxes_npf || 0).toFixed(1)}%</p>
+                  <p className="text-red-400/60 text-xs mt-1">{language === 'fr' ? 'Sans accord' : 'No agreement'}</p>
+                </div>
+                
+                {/* Total ZLECAf */}
+                <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
+                  <p className="text-emerald-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
+                  <p className="text-3xl font-bold text-emerald-400 mt-1">{(result.total_taxes_zlecaf || 0).toFixed(1)}%</p>
+                  <p className="text-emerald-400/60 text-xs mt-1">{language === 'fr' ? 'Avec accord' : 'With agreement'}</p>
+                </div>
+                
+                {/* Économie */}
+                <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
+                  <p className="text-amber-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
+                  <p className="text-3xl font-bold text-amber-400 mt-1">
+                    -{((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)).toFixed(1)}%
+                  </p>
+                  <p className="text-amber-400/60 text-xs mt-1">{language === 'fr' ? 'Certificat Origine' : 'Origin Certificate'}</p>
+                </div>
+                
+                {/* Montant économisé */}
+                <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
+                  <p className="text-blue-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Montant Économisé' : 'Amount Saved'}</p>
+                  <p className="text-2xl font-bold text-blue-400 mt-1">
+                    {((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)) / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} €
+                  </p>
+                  <p className="text-blue-400/60 text-xs mt-1">{language === 'fr' ? 'Sur votre valeur' : 'On your value'}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-              {/* TABLEAU DÉTAILLÉ DE TOUTES LES TAXES AVEC INTITULÉS */}
-              {result.data_source === 'authentic_tariff' && result.taxes_detail && result.taxes_detail.length > 0 && (
-                <div className="result-section rounded-xl shadow-lg overflow-hidden" style={{ background: '#1B232C', border: '1px solid rgba(255,255,255,0.1)' }} data-testid="all-taxes-table">
-                  <div className="p-4 border-b" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(99,102,241,0.1))', borderColor: 'rgba(59,130,246,0.2)' }}>
-                    <h4 className="font-bold text-lg flex items-center gap-2" style={{ color: '#3B82F6' }}>
-                      <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.2)' }}>📋</span>
-                      {language === 'fr' ? 'Détail Complet des Taxes' : 'Complete Tax Breakdown'}
-                    </h4>
-                    <p className="text-sm mt-1" style={{ color: '#93C5FD' }}>
-                      {language === 'fr' 
-                        ? `${result.taxes_detail.length} taxes applicables pour ${getCountryName(destinationCountry)}`
-                        : `${result.taxes_detail.length} applicable taxes for ${getCountryName(destinationCountry)}`}
-                    </p>
+          {/* Détail des taxes */}
+          {result.taxes_detail && result.taxes_detail.length > 0 && (
+            <Card className="bg-slate-800/50 border-slate-700 overflow-hidden">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                    <ClipboardList className="w-5 h-5 text-blue-400" />
                   </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-0">
-                    {/* Colonne NPF */}
-                    <div style={{ borderRight: '1px solid rgba(255,255,255,0.1)' }}>
-                      <div className="p-3 border-b" style={{ background: 'rgba(239,68,68,0.15)', borderColor: 'rgba(239,68,68,0.2)' }}>
-                        <h5 className="font-bold flex items-center gap-2" style={{ color: '#EF4444' }}>
-                          <span>🚫</span>
-                          {language === 'fr' ? 'Régime NPF (Sans préférence)' : 'MFN Regime (No preference)'}
-                        </h5>
+                  <div>
+                    <CardTitle className="text-lg text-white">{language === 'fr' ? 'Détail des Taxes' : 'Tax Breakdown'}</CardTitle>
+                    <CardDescription className="text-slate-400">
+                      {result.taxes_detail.length} {language === 'fr' ? 'taxes applicables' : 'applicable taxes'}
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {result.taxes_detail.map((tax, idx) => (
+                    <div 
+                      key={idx}
+                      className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg border border-slate-700 hover:border-blue-500/30 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-500/10 rounded-lg">
+                          <FileText className="w-4 h-4 text-blue-400" />
+                        </div>
+                        <div>
+                          <span className="font-mono text-white font-semibold">{tax.tax}</span>
+                          {tax.observation && (
+                            <p className="text-slate-400 text-sm">{tax.observation}</p>
+                          )}
+                        </div>
                       </div>
-                      <div className="p-4">
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="border-b" style={{ color: '#A0AAB4', borderColor: 'rgba(255,255,255,0.1)' }}>
-                              <th className="pb-2 text-left">{language === 'fr' ? 'Taxe' : 'Tax'}</th>
+                      <div className="flex items-center gap-4">
+                        <div className="text-right">
+                          <p className="text-slate-500 text-xs">{language === 'fr' ? 'NPF' : 'MFN'}</p>
+                          <p className="text-white font-bold">{tax.rate}%</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-slate-500 text-xs">{language === 'fr' ? 'ZLECAf' : 'AfCFTA'}</p>
+                          <p className="text-emerald-400 font-bold">
+                            {tax.tax === 'D.D' || tax.tax === 'DD' ? '0%' : `${tax.rate}%`}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Documents requis */}
+          {result.administrative_formalities && result.administrative_formalities.length > 0 && (
+            <Card className="bg-slate-800/50 border-slate-700">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                    <FileCheck className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg text-white">{language === 'fr' ? 'Documents Requis' : 'Required Documents'}</CardTitle>
+                    <CardDescription className="text-slate-400">
+                      {result.administrative_formalities.length} {language === 'fr' ? 'formalités' : 'formalities'}
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {result.administrative_formalities.map((form, idx) => (
+                    <div 
+                      key={idx}
+                      className="p-3 bg-slate-700/30 rounded-lg border border-slate-700"
+                    >
+                      <div className="flex items-start gap-2">
+                        <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 border font-mono shrink-0">
+                          {form.code}
+                        </Badge>
+                        <p className="text-slate-300 text-sm">{form.document_fr || form.document_en}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Avantages ZLECAf */}
+          {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
+            <Card className="bg-gradient-to-br from-emerald-900/20 to-slate-800/50 border-emerald-500/30">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                    <Shield className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg text-white">{language === 'fr' ? 'Avantages ZLECAf' : 'AfCFTA Advantages'}</CardTitle>
+                    <CardDescription className="text-emerald-400/60">
+                      {language === 'fr' ? 'Exonérations applicables' : 'Applicable exemptions'}
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {result.fiscal_advantages.map((adv, idx) => (
+                    <div 
+                      key={idx}
+                      className="flex items-center gap-3 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20"
+                    >
+                      <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0" />
+                      <span className="text-slate-300">{adv.condition_fr || adv.condition_en}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
                               <th className="pb-2 text-center">{language === 'fr' ? 'Taux' : 'Rate'}</th>
                               <th className="pb-2 text-right">{language === 'fr' ? 'Montant' : 'Amount'}</th>
                             </tr>
