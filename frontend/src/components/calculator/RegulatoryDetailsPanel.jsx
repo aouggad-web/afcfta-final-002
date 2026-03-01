@@ -215,10 +215,13 @@ export default function RegulatoryDetailsPanel({
       }
     };
 
-    if (availableCountries.length > 0 || countryCode) {
+    // Debounce: attendre que l'utilisateur finisse de taper
+    const timeoutId = setTimeout(() => {
       fetchData();
-    }
-  }, [countryCode, hsCode, availableCountries, t.noData, t.notAvailable, onDataLoaded]);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [countryCode, hsCode, t.noData, onDataLoaded]);
 
   const convertToISO3 = (iso2) => {
     const map = {
