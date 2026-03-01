@@ -238,14 +238,70 @@ class DZAAdapter(BaseAdapter):
     def _get_issuing_authority(self, code: str) -> str:
         """
         Détermine l'autorité émettrice selon le code de formalité
-        Sources : Réglementation douanière algérienne
+        Source : Nomenclature des documents douaniers algériens
         """
         authority_map = {
-            "910": "Ministère du Commerce",
-            "210": "Ministère du Commerce",
-            "902": "Ministère du Commerce - Inspection du Contrôle aux Frontières",
+            # Autorisations spéciales (100-199)
+            "100": "Direction Générale de la Sûreté Nationale (DGSN) / MDN",
+            "101": "Bureau de dépôt",
+            "105": "Ministère des Postes et Télécommunications",
+            "110": "Administration des Douanes et/ou Administration Fiscale",
+            "115": "Ministère de l'Agriculture (Médicaments Vétérinaires)",
+            "120": "Ministère de la Santé (Stupéfiants)",
+            "130": "Ministère de la Santé (Édulcorants Intenses)",
+            "140": "Administration des Impôts Indirects",
+            "150": "Service des Impôts Indirects (SNTA)",
+            "160": "Ministère de l'Agriculture (Contrôle Sanitaire Vétérinaire)",
+            "170": "Autorité du pays d'origine (Herdbook)",
+            "180": "Ministère du Commerce (Dérogation Sanitaire)",
+            "190": "Conseil Supérieur de l'Information & DGSN",
+            "195": "Ministère de la Culture (Beaux Arts)",
+            
+            # Visas et contrôles (200-299)
+            "200": "Présidence du Conseil - Secrétariat Général",
+            "210": "Ministère de l'Agriculture (Contrôle Phytosanitaire)",
+            "215": "Ministère de l'Agriculture (Certificat Phytosanitaire)",
             "216": "Direction des Services Vétérinaires",
-            "230": "Ministère de l'Agriculture",
+            "220": "Ministère du Commerce - Métrologie Légale",
+            "230": "Administration des Impôts Indirects (Garantie)",
+            "240": "Ministère de l'Industrie et de l'Énergie",
+            
+            # Autorisations diverses (300-599)
+            "300": "Ministère des Moudjahidines",
+            "350": "Directeur de l'établissement",
+            "351": "Service concerné du Ministère",
+            "356": "Services concernés",
+            "400": "Ministère de la Santé (Opium)",
+            "500": "Ministère de la Santé (Prohibition)",
+            "510": "Administration des Douanes (CKD)",
+            
+            # Documents commerciaux (600-699)
+            "600": "Opérateur économique",
+            "610": "Banque domiciliataire",
+            "620": "Centre National du Registre du Commerce",
+            "625": "Compagnie aérienne",
+            "630": "Compagnie d'assurance",
+            "635": "Consulat",
+            "640": "Déclarant",
+            "645": "Déclarant",
+            "659": "Organisme de contrôle de conformité",
+            "667": "Douane du pays d'origine (EUR.1)",
+            "670": "Banque d'Algérie",
+            
+            # Licences invalides (700-899)
+            "700": "Ministère des Moudjahidines",
+            "705": "Service des pensions",
+            "710": "Service des handicapés",
+            "871": "Ministère de la Défense Nationale (MDN)",
+            "872": "SONATRACH",
+            
+            # Documents douaniers spéciaux (900-999)
+            "902": "Ministère du Commerce - Inspection du Contrôle aux Frontières",
+            "910": "Ministère du Commerce",
+            "980": "Service concerné du Ministère (SONATRACH)",
+            "983": "Opérateur économique",
+        }
+        return authority_map.get(code, "Administration douanière DZA")
             "220": "Ministère de la Santé",
         }
         return authority_map.get(code, "Administration douanière DZA")
