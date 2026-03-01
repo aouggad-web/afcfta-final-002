@@ -4,6 +4,8 @@ Pipeline de génération des données canoniques
 
 Génère les fichiers JSONL canoniques et les index de recherche
 pour le Moteur Réglementaire AfCFTA v3.
+
+Pays supportés : DZA, MAR, EGY, NGA, ZAF, KEN, CIV, GHA + tous les pays avec format enhanced_v2
 """
 
 import json
@@ -16,7 +18,22 @@ from typing import Dict, Any, List
 sys.path.insert(0, str(Path(__file__).parent))
 
 from adapters.dza_adapter import DZAAdapter
+from adapters.generic_adapter import GenericAdapter, create_adapter
 from schemas.canonical_model import CanonicalTariffLine
+
+# Liste des pays majeurs à traiter en priorité
+MAJOR_COUNTRIES = ["DZA", "MAR", "EGY", "NGA", "ZAF", "KEN", "CIV", "GHA"]
+
+# Tous les pays disponibles dans /app/backend/data/tariffs/
+ALL_AVAILABLE_COUNTRIES = [
+    "DZA", "MAR", "EGY", "NGA", "ZAF", "KEN", "CIV", "GHA",
+    "ETH", "TUN", "SEN", "CMR", "UGA", "TZA", "RWA", "MUS",
+    "BEN", "BFA", "MLI", "NER", "TGO", "GIN", "GAB", "COG", 
+    "TCD", "CAF", "BWA", "SWZ", "NAM", "LSO", "BDI", "SSD", "COD",
+    "GNB", "CPV", "SYC", "GNQ", "ZWE", "DJI", "MRT", "LBY",
+    "SLE", "LBR", "GMB", "GNQ", "COM", "STP", "MWI", "MDG",
+    "MOZ", "ZMB", "AGO", "ERI", "SOM"
+]
 
 
 class RegulatoryPipeline:
@@ -27,10 +44,16 @@ class RegulatoryPipeline:
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
         # Registre des adaptateurs par pays
+        # DZA utilise son adaptateur spécifique (plus de détails)
+        # Tous les autres utilisent l'adaptateur générique
         self.adapters = {
             "DZA": DZAAdapter,
-            # Ajouter d'autres adaptateurs ici
         }
+        
+        # Ajouter les pays majeurs avec l'adaptateur générique
+        for country in MAJOR_COUNTRIES:
+            if country not in self.adapters:
+                self.adapters[country] = lambda iso3=country: create_adapter(iso3)
         
         self.stats = {}
     
