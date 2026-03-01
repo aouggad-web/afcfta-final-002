@@ -110,8 +110,21 @@ class RegulatoryPipeline:
     
     def _process_country(self, iso3: str) -> int:
         """Traite un pays et génère le fichier JSONL"""
-        adapter_class = self.adapters[iso3]
-        adapter = adapter_class()
+        # Vérifier si le fichier source existe
+        source_path = Path(f"/app/backend/data/tariffs/{iso3}_tariffs.json")
+        if not source_path.exists():
+            raise FileNotFoundError(f"Fichier tarifs non trouvé: {source_path}")
+        
+        # Créer l'adaptateur
+        if iso3 in self.adapters:
+            adapter_class = self.adapters[iso3]
+            if iso3 == "DZA":
+                adapter = adapter_class()
+            else:
+                adapter = adapter_class()
+        else:
+            # Utiliser l'adaptateur générique pour les pays non enregistrés
+            adapter = create_adapter(iso3)
         
         output_file = self.output_dir / f"{iso3}_canonical.jsonl"
         count = 0
