@@ -1,44 +1,45 @@
 <analysis>**original_problem_statement:**
-The user's initial request was to fix and enhance a full-stack ZLECAf Trade Calculator application. Throughout the session, the scope expanded significantly with new user requests.
+The user's initial request was to fix and enhance a full-stack ZLECAf Trade Calculator application. Throughout the sessions, the scope has expanded significantly with new user requests.
 
 PRODUCT REQUIREMENTS:
-1.  **Integrate Tariff Data (P0)**: Integrate tariff data for all 54 AfCFTA countries.
-2.  **Audit and Correct OEC Data (P1)**: Correct trade statistics from the OEC.
-3.  **Add RASD (SADR) (P2)**: Add the Sahrawi Arab Democratic Republic as the 55th country.
-4.  **Clarify AfCFTA Membership Stats (P3)**: Correct the header statistics.
-5.  **Audit and Enhance Economic Indicators (P4)**: Verify and augment economic indicators.
-6.  **Enhance Country Profile Page (P5)**: Add new data sections and improve layout.
-7.  **UI/UX Consistency (P6 & P7)**: Refactor UI components to match the application's dark theme.
-8.  **Integrate Sankey Diagram (NEW)**: Integrate a GitHub pull request to add a  to the substitution analysis tab for visualizing trade flows.
-9.  **Refactor Backend (NEW)**: Refactor the monolithic  file into a modular, route-based architecture.
-10. **Fix HS Code Search (NEW)**: Debug and fix the HS code search bar in the main calculator, which was not returning results.
-11. **Build Regulatory Engine v3 (NEW)**: A major new feature to build a canonical regulatory engine to process, validate, and serve detailed tariff and compliance data (duties, taxes, requirements, formalities) for all African countries, starting with Morocco (MAR) and Algeria (DZA).
+1.  **Build Regulatory Engine v3 (P0)**: Build a canonical regulatory engine to process, validate, and serve detailed tariff and compliance data (duties, taxes, requirements, formalities) for all African countries, starting with Morocco (MAR) and Algeria (DZA).
+2.  **Integrate Regulatory Engine into Frontend (P0)**: Display the detailed regulatory data within the main calculator and in a separate, clearly presented sub-tab.
+3.  **Enhance UI/UX (P0)**: Improve the display and readability of the calculator and the new regulatory information section.
+4.  **Fix HS Code Search (P1)**: Debug and fix the HS code search bar in the main calculator.
+5.  **Refactor Backend (P1)**: Refactor the monolithic  file into a modular, route-based architecture.
+6.  **Integrate Sankey Diagram (P2)**: Integrate a GitHub pull request to add a .
+7.  **Integrate Tariff Data (P2)**: Integrate tariff data for all 54 AfCFTA countries.
+8.  **Audit and Correct OEC Data (P3)**: Correct trade statistics from the OEC.
+9.  **Add RASD (SADR) (P3)**: Add the Sahrawi Arab Democratic Republic as the 55th country.
+10. **Clarify AfCFTA Membership Stats (P4)**: Correct the header statistics.
+11. **Audit and Enhance Economic Indicators (P4)**: Verify and augment economic indicators.
+12. **Enhance Country Profile Page (P5)**: Add new data sections and improve layout.
 
 **User's preferred language**: French
 
 **what currently exists?**
-The project is a full-stack ZLECAf Trade Calculator with a FastAPI backend and a React/Shadcn UI frontend. The agent has successfully completed a significant amount of work:
-- Fixed initial startup errors and corrupted files.
-- Completed all original UI/UX enhancements on the Country Profile page, ensuring a consistent dark theme.
-- Successfully integrated a user-provided pull request to add a Sankey diagram for trade flow visualization in the Substitution Analysis tab, including fixing related bugs.
-- Completely refactored the backend's monolithic  (from 2920 lines to 194 lines) into a clean, modular architecture using routers in the  directory.
-- Applied a fix for the broken HS code search bar, but testing was prevented by an environment crash.
+The project is a full-stack ZLECAf Trade Calculator with a FastAPI backend and a React/Shadcn UI frontend. In this session, the agent successfully built and integrated the Regulatory Engine v3 for Algeria (DZA).
+
+This involved:
+- **Backend**: Creating a full data processing pipeline () that transforms raw Algerian tariff data into a canonical format and serves it via a new high-performance API endpoint ().
+- **Data Accuracy**: Collaborating with the user to correct tax names, issuing authorities for documents, and calculation logic based on an official circular (). The Algerian data adapter () and source files were updated accordingly.
+- **Frontend**: Integrating the new engine data into the UI by adding a dedicated Réglementation tab with a modern, clear, and readable design ().
+- **Bug Fix**: The previously broken HS Code search bar fix was tested and confirmed to be working.
+- **UI Refactoring**: A major redesign of the main Calculateur tab was started to match the new regulatory panel's aesthetic, but this work was interrupted by an environment failure.
 
 **Last working item**:
--   **Last item agent was working**: The agent was attempting to begin the implementation of the Regulatory Engine v3, a major new feature requested by the user. The plan was to start with the data adapter for Algeria (). However, all work was completely halted by a persistent environment failure.
+-   **Last item agent was working**: The agent was performing a major UI refactoring of the main calculator tab in . The goal was to replace the old input form and results display with a cleaner, more modern design consistent with the new Réglementation tab. The agent successfully replaced large chunks of code but was unable to complete the cleanup and verify the result before the environment crashed.
 -   **Status**: BLOCKED
 -   **Agent Testing Done**: N
--   **Which testing method agent to use?**: NA
+-   **Which testing method agent to use?**: screenshot tool
 -   **User Testing Done**: N
 
 **All Pending/In progress Issue list**:
 -   **Issue 1: Critical Environment Failure (P0 - HIGHEST)**
     -   **Description**: The development environment is completely unresponsive, returning a 502 Bad Gateway error for all  commands. This is a hard blocker for any development, debugging, or testing.
-    -   **Attempted fixes**: The user initiated a restart of the environment, but the issue persisted immediately after. The agent confirmed the failure with multiple basic commands.
+    -   **Attempted fixes**: The agent advised the user to fork the job, as this was the solution in the previous session.
     -   **Next debug checklist**:
-        1.  Advise the user to **fork the job**. This is the most likely solution to get a fresh, working environment.
-        2.  If forking fails, advise the user to contact Emergent support, as the underlying pod is likely unhealthy.
-        3.  Once the environment is restored, the very first action must be to verify stability with a simple command like CNAME
+        1.  After the fork, the new agent's first action must be to verify environment stability with simple commands like CNAME
 CONTRIBUTING.md
 DEPLOYMENT.md
 Dockerfile
@@ -98,6 +99,7 @@ docker-compose.yml
 docs/
 douanes_africaines.json
 duty_rate_pct:
+engine/
 except
 export_validation_csv.py
 fix_lpi_ranks.py
@@ -163,116 +165,125 @@ wb_logistics_africa.json
 worldbank_data_latest.json
 zlecaf_corrections_2024.json
 zones_franches_afrique.json
-} and backend                          RUNNING   pid 46, uptime 0:00:04
+} and backend                          RUNNING   pid 45, uptime 0:00:04
 code-server                      STOPPED   Not started
-frontend                         RUNNING   pid 48, uptime 0:00:04
-mongodb                          RUNNING   pid 49, uptime 0:00:04
-nginx-code-proxy                 RUNNING   pid 45, uptime 0:00:04 before resuming any other task.
-    -   **Why fix this issue and what will be achieved with the fix?**: Resolving this is critical. Without a functioning environment, no progress can be made on any other task or issue.
+frontend                         STOPPING  
+mongodb                          RUNNING   pid 48, uptime 0:00:04
+nginx-code-proxy                 RUNNING   pid 44, uptime 0:00:04.
+    -   **Why fix this issue and what will be achieved with the fix?**: This is the root blocker. No progress can be made until the environment is functional.
     -   **Status**: BLOCKED
     -   **Is recurring issue?**: Y
     -   **Should Test frontend/backend/both after fix?**: NA
-    -   **Blocked on other issue**: This is the root blocker for all other issues.
+    -   **Blocked on other issue**: This blocks all other tasks and issues.
 
--   **Issue 2: HS Code Search Bar is Broken (P1)**
-    -   **Description**: The search bar for HS codes in the main calculator does not return any results when a user types a query (e.g., voiture).
-    -   **Attempted fixes**:
-        1.  Corrected the API call parameter in the frontend from  to  in .
-        2.  Identified that the backend endpoint was failing because a required data file, , was missing.
-        3.  Created a new script  to generate this file from the existing tariff data.
-        4.  Successfully ran the script and created .
+-   **Issue 2: Incomplete UI Refactoring of Calculator Tab (P1)**
+    -   **Description**: The refactoring of  is unfinished. New UI code was added, but the process of removing the old code was incomplete, leaving the component in a broken state that prevents the app from rendering correctly.
+    -   **Attempted fixes**: The agent made several attempts to remove the old code blocks using  but was unsuccessful before the environment crashed.
     -   **Next debug checklist**:
-        1.  Once the environment is stable, restart the backend service: backend: stopped
-backend: started.
-        2.  Test the API endpoint directly to confirm it returns results: The preview environment is not responding. It may be starting up..
-        3.  Take a screenshot of the calculator UI while searching to provide visual confirmation to the user that the fix works.
-    -   **Why fix this issue and what will be achieved with the fix?**: This is a user-reported bug in a core feature of the application. Fixing it will restore expected functionality.
-    -   **Status**: TESTING PENDING
+        1.  Once the environment is stable, carefully review .
+        2.  Identify and remove the remaining obsolete JSX code for the old input form and results display. The new code for the results section begins around line 911. The old code to be removed likely exists between lines 1017 and 1871.
+        3.  Ensure all JSX tags are properly closed and the component structure is valid.
+        4.  Run  to check for syntax errors.
+        5.  Take a screenshot to visually confirm the new calculator UI renders correctly.
+    -   **Why fix this issue and what will be achieved with the fix?**: The app's main calculator page is currently broken. Fixing this will complete the UI overhaul and restore core functionality.
+    -   **Status**: IN PROGRESS
     -   **Is recurring issue?**: N
-    -   **Should Test frontend/backend/both after fix?**: both
+    -   **Should Test frontend/backend/both after fix?**: frontend
     -   **Blocked on other issue**: Issue 1: Critical Environment Failure
 
 **In progress Task List**:
-None.
+-   **Task 1: Complete UI Refactoring of Calculator Tab (P1)**
+    -   **Where to resume**: .
+    -   **What will be achieved with this?**: A modern, readable, and fully functional UI for the main calculator, providing a consistent user experience with the rest of the application.
+    -   **Status**: IN PROGRESS
+    -   **Should Test frontend/backend/both after fix?**: frontend
+    -   **Blocked on something**: Issue 1: Critical Environment Failure.
 
 **Upcoming and Future Tasks**
 -   **Upcoming Tasks:**
-    -   **Task 1: Implement the AfCFTA Canonical Regulatory Engine v3 (P0)**: This is the user's highest priority feature request once the environment is fixed. The goal is to create a robust system for handling detailed regulatory data.
-        -   **Phase 1: Build Core Engine & Adapters**: Create the directory structure (), define canonical JSON schemas, and write Python adapters (, ) to transform source data into the new canonical format.
-        -   **Phase 2: Generate Canonical Data & Indexes**: Create and run a pipeline to generate the canonical  files and build performance indexes (, ) for fast API lookups.
-        -   **Phase 3: Create API Endpoint**: Implement a new FastAPI service () and router () to expose the data via a new endpoint: .
+    -   **(P1) Scale the Regulatory Engine**: Add more adapters for other AfCFTA countries, starting with Morocco (MAR), to expand the engine's coverage.
 
 -   **Future Tasks:**
-    -   **Task 2: Integrate Regulatory Engine into Frontend (P1)**: Update the frontend to call the new  endpoint and display the rich compliance and formality data for each national tariff code.
-    -   **Task 3: Scale the Engine (P2)**: Add more adapters for other AfCFTA countries to expand the engine's coverage.
-    -   **Task 4: Migrate to PostgreSQL (P2)**: As discussed with the user, consider migrating the engine's data from flat files to a PostgreSQL database to improve scalability and performance as more countries are added.
+    -   **(P2) Migrate Engine to PostgreSQL**: Consider migrating the engine's data from flat files to a PostgreSQL database for better scalability.
+    -   **(P3) Audit and Correct OEC Data**: Correct trade statistics from the OEC.
+    -   **(P3) Add RASD (SADR)**: Add the Sahrawi Arab Democratic Republic as the 55th country.
+    -   **(P4) Clarify AfCFTA Membership Stats**: Correct the header statistics on the homepage.
+    -   **(P4) Audit and Enhance Economic Indicators**: Verify and augment economic indicators.
 
 **Completed work in this session**
--   **UI Overhaul on Country Profile Page**: Successfully refactored all remaining light-themed components to a consistent dark theme and fixed a conditional rendering bug ().
--   **Sankey Diagram Integration**: Integrated the  component into the Substitution tab for both import and export modes, including data transformation logic and bug fixes (, ).
--   **Major Backend Refactoring**: Transformed the monolithic  into a modular architecture, moving endpoints into separate files in . The main server file was reduced by 93% in size.
--   **Deletion of Old files**: The backup  was deleted after successful refactoring.
+-   **Regulatory Engine v3 (Backend)**: Successfully built the entire backend for the engine, including the data adapter for Algeria (), a pipeline to generate canonical data (), and a FastAPI service and router to expose the data via .
+-   **Regulatory Engine Integration (Frontend)**: Created a new Réglementation tab and integrated a new component () to display the engine's data with a modern and clear UI.
+-   **Algerian Data Correction**: Per user instructions, corrected tax names (e.g., Taxe de Contribution de Solidarité), calculation logic, and issuing authorities for over 80 document types in the .
+-   **HS Code Search Bar Fix Verified**: Tested and confirmed that the previously implemented fix for the HS code search bar is working correctly.
+-   **UI/UX Enhancement**: Redesigned the Réglementation tab's data display for improved readability and user experience.
 
 **Earlier issues found/mentioned but not fixed**
 None.
+
+**Known issue recurrence from previous fork**
+-   **Issue recurrence in previous fork**: Critical Environment Failure (502 Bad Gateway).
+-   **Recurrence count**: 2 (This error has now occurred at the end of two consecutive jobs).
+-   **Status**: BLOCKED
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Backend**: FastAPI with a modular router architecture. Data is loaded from static files at startup.
--   **Frontend**: React with Vite, using Shadcn UI for components, Tailwind CSS for styling, and Recharts for diagrams.
--   **Data Processing**: Python scripts (like the new ) are used for batch data manipulation.
--   **Regulatory Engine (Planned)**: A new Python-based data pipeline to transform, validate, and index country-specific tariff and compliance data into a canonical format ( files) to be served by a new, highly performant API.
+-   **Backend**: FastAPI with a modular router architecture.
+-   **Frontend**: React with Vite, using Shadcn UI, Tailwind CSS, and Recharts.
+-   **Regulatory Engine**: A Python-based data pipeline that transforms country-specific data (e.g., ) into a standardized canonical format () and serves it via a new, fast API. This is the core new feature.
+-   **Data-Driven Correction**: The agent's workflow relies heavily on user-provided data (e.g., PDFs, lists) to ensure the accuracy of regulatory information.
 
 **key DB schema**
 The application does not use a traditional database.
--   Primary data is stored in static files in .
--   **Planned Canonical Data Model (JSONL files in ):**
-    -   : Defines each national tariff code (e.g., , , , description).
-    -   : Defines duties and taxes for each code (e.g., , ).
-    -   : Defines administrative formalities and required documents for each code (e.g., ).
+-   **Regulatory Engine Canonical Data Model (JSONL files in ):**
+    -   : {, , , , }
+    -   : {, , , , , , , }
+    -   : {, , , , , }
+    -   : {, , , }
 
 **All files of reference**
--   : Heavily modified for UI theme consistency.
--   : Modified to integrate the Sankey Diagram.
--   : Majorly refactored to be a lean app entry point.
--   : New file containing the logic for the  endpoint.
--   : Modified to fix a bug in the API call.
--   : **New file** created to generate the HS code database.
--   : **New file** generated to fix the search bar bug.
+-   : **Heavily modified and currently in a broken state.** Needs immediate attention.
+-   : **New file** containing all logic for processing Algerian data, including tax calculations and document authority mapping.
+-   : **New file** for orchestrating the data generation process.
+-   : **New file** defining the  router.
+-   : **New file** for the improved regulatory data UI.
+-   : Modified to add the new  router.
+-   : Modified to correct the name of T.C.S.
+-   : Updated to reflect progress.
+
+**Areas that need refactoring**:
+-    is the highest priority. It is extremely large and its current broken state prevents the application from working. Once fixed, it should be considered for being broken down into smaller, more manageable components.
 
 **key api endpoints**
 -   : Core calculator endpoint.
--   : Provides data for the substitution analysis tab and Sankey diagram.
--   : (Buggy) Endpoint for the HS code search bar.
--   : **Planned** new endpoint for the Regulatory Engine v3.
+-   : Smart search for HS codes.
+-   : **New** endpoint for the Regulatory Engine. Params:  (e.g., 'DZA'), .
 
 **Critical Info for New Agent**
--   **ENVIRONMENT IS BLOCKED**: Your first and most critical task is to resolve the 502 Bad Gateway error. The recommended first step is to advise the user to **fork the job**. No other work is possible until the environment is stable.
+-   **ENVIRONMENT IS BLOCKED**: Your first and most critical task is to handle the 502 Bad Gateway error. The user has been advised to **fork the job**. Confirm the environment is stable before any other action.
 -   **User's Preferred Language**: The user communicates exclusively in **French**. All your responses and explanations must be in French.
--   **User's Top Priority**: Once the environment is fixed, the user's highest priority is the implementation of the **Regulatory Engine v3**. You should prioritize this task, starting with the fix for the HS code search as a quick win before diving into the larger engine build.
+-   **Fix Broken UI First**: Immediately after stabilizing the environment, you must fix the broken UI in . This is the top priority development task.
+-   **Data Accuracy is Paramount**: The user is very detail-oriented regarding regulatory data. Double-check all changes to tax names, document authorities, and calculation logic against user feedback and provided sources.
 
 **documents and test reports created in this job**
--    (updated multiple times)
--   
--   
+-    (updated)
+-   All files for the new Regulatory Engine under .
+-   The user uploaded  which was used for data correction.
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **point de situation**: User asked for a status update while the environment was down.
-2.  **redemarage effectue ece que cela fonctionne en plus du fichier MAR ESSAYER ALGERIE PLUS COMPLET**: User confirmed they restarted the environment and asked if it was working. They also requested to proceed with the Regulatory Engine using Algeria's data as it is more complete.
-3.  **OK**: Acknowledged agent's plan.
-4.  **CONTINUE**: Prompt to continue.
-5.  **ok**: Acknowledged.
-6.  **continue**: Prompt to continue.
-7.  **ok**: Acknowledged.
-8.  **continue**: Prompt to continue.
-9.  **continue**: Prompt to continue.
-10. **ok**: Acknowledged that the environment is still down and the agent will proceed once it's back.
--   **Pending Messages**: The user is waiting for the agent to fix the environment and start building the Regulatory Engine v3.
+- The user asked to improve the display of the regulatory and calculator tabs.
+- The agent implemented a new, modern design for the regulatory tab, which the user approved.
+- The user then asked to apply a similar improved design to the main calculator tab, optimizing for readability.
+- The agent began this refactoring work.
+- The user sent continue and ok prompts while the agent was working.
+- The agent's work was interrupted by a 502 Bad Gateway environment crash.
+- The agent's final message informed the user of the crash and recommended forking the job, summarizing the completed work.
 
 **Project Health Check:**
--   **Broken**: The entire development environment is non-functional (502 Bad Gateway). The HS code search bar feature is also broken, with a fix applied but pending a final test.
+-   **Broken**:
+    1.  The entire development environment (502 Bad Gateway).
+    2.  The main calculator page UI () is non-functional due to the incomplete refactoring.
 -   **Mocked**: None.
 
 **3rd Party Integrations**
@@ -282,10 +293,13 @@ The application does not use a traditional database.
 -   **Testing agent used after significant changes**: NO
 -   **Troubleshoot agent used after agent stuck in loop**: NO
 -   **Test files created**: None.
--   **Known regressions**: The HS code search bar is a user-reported bug that was not present at the start of the session.
+-   **Known regressions**: The main calculator UI is currently broken.
 
 **Credentials to test flow:**
 None required.
 
 **What agent forgot to execute**
-The agent was blocked by an environment failure before it could execute the final test for the HS code search bar fix. Nothing was forgotten, but several tasks are now pending due to this blocker.</analysis>
+The agent was blocked by the environment failure before it could:
+1.  Finish the UI refactoring of .
+2.  Take a screenshot to validate the redesigned calculator.
+3.  Run a final comprehensive test of all the new features implemented during the session.</analysis>
