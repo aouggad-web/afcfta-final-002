@@ -1,0 +1,291 @@
+<analysis>**original_problem_statement:**
+The user's initial request was to fix and enhance a full-stack ZLECAf Trade Calculator application. Throughout the session, the scope expanded significantly with new user requests.
+
+PRODUCT REQUIREMENTS:
+1.  **Integrate Tariff Data (P0)**: Integrate tariff data for all 54 AfCFTA countries.
+2.  **Audit and Correct OEC Data (P1)**: Correct trade statistics from the OEC.
+3.  **Add RASD (SADR) (P2)**: Add the Sahrawi Arab Democratic Republic as the 55th country.
+4.  **Clarify AfCFTA Membership Stats (P3)**: Correct the header statistics.
+5.  **Audit and Enhance Economic Indicators (P4)**: Verify and augment economic indicators.
+6.  **Enhance Country Profile Page (P5)**: Add new data sections and improve layout.
+7.  **UI/UX Consistency (P6 & P7)**: Refactor UI components to match the application's dark theme.
+8.  **Integrate Sankey Diagram (NEW)**: Integrate a GitHub pull request to add a  to the substitution analysis tab for visualizing trade flows.
+9.  **Refactor Backend (NEW)**: Refactor the monolithic  file into a modular, route-based architecture.
+10. **Fix HS Code Search (NEW)**: Debug and fix the HS code search bar in the main calculator, which was not returning results.
+11. **Build Regulatory Engine v3 (NEW)**: A major new feature to build a canonical regulatory engine to process, validate, and serve detailed tariff and compliance data (duties, taxes, requirements, formalities) for all African countries, starting with Morocco (MAR) and Algeria (DZA).
+
+**User's preferred language**: French
+
+**what currently exists?**
+The project is a full-stack ZLECAf Trade Calculator with a FastAPI backend and a React/Shadcn UI frontend. The agent has successfully completed a significant amount of work:
+- Fixed initial startup errors and corrupted files.
+- Completed all original UI/UX enhancements on the Country Profile page, ensuring a consistent dark theme.
+- Successfully integrated a user-provided pull request to add a Sankey diagram for trade flow visualization in the Substitution Analysis tab, including fixing related bugs.
+- Completely refactored the backend's monolithic  (from 2920 lines to 194 lines) into a clean, modular architecture using routers in the  directory.
+- Applied a fix for the broken HS code search bar, but testing was prevented by an environment crash.
+
+**Last working item**:
+-   **Last item agent was working**: The agent was attempting to begin the implementation of the Regulatory Engine v3, a major new feature requested by the user. The plan was to start with the data adapter for Algeria (). However, all work was completely halted by a persistent environment failure.
+-   **Status**: BLOCKED
+-   **Agent Testing Done**: N
+-   **Which testing method agent to use?**: NA
+-   **User Testing Done**: N
+
+**All Pending/In progress Issue list**:
+-   **Issue 1: Critical Environment Failure (P0 - HIGHEST)**
+    -   **Description**: The development environment is completely unresponsive, returning a 502 Bad Gateway error for all  commands. This is a hard blocker for any development, debugging, or testing.
+    -   **Attempted fixes**: The user initiated a restart of the environment, but the issue persisted immediately after. The agent confirmed the failure with multiple basic commands.
+    -   **Next debug checklist**:
+        1.  Advise the user to **fork the job**. This is the most likely solution to get a fresh, working environment.
+        2.  If forking fails, advise the user to contact Emergent support, as the underlying pod is likely unhealthy.
+        3.  Once the environment is restored, the very first action must be to verify stability with a simple command like CNAME
+CONTRIBUTING.md
+DEPLOYMENT.md
+Dockerfile
+EOF
+IMPLEMENTATION_COMPLETE.md
+IMPLEMENTATION_SUMMARY.md
+INTEGRATION.md
+LYRA_OPS_IMPLEMENTATION.md
+NOTIFICATIONS.md
+PY
+PYTHONPATH=.
+README.md
+SCRAPER_IMPLEMENTATION_SUMMARY.md
+UNIT_OK
+ZLECAF_54_PAYS_DONNEES_COMPLETES.csv
+ZLECAF_COUNTRIES_DATA_EXTRACTION.md
+ZLECAF_DATA_UPDATED.csv
+ZLECAF_DONNEES_VALIDATION.xlsx
+ZLECAF_VALIDATION.csv
+ZLECAf_COMPLET_AVEC_NOTATIONS.csv
+ZLECAf_COMPLET_AVEC_NOTATIONS.xlsx
+ZLECAf_ENRICHI_2024_COMMERCE.csv
+ZLECAf_ENRICHI_2024_COMMERCE.csv.backup
+add_missing_countries.py
+add_trs_data.py
+airports_africains.json
+airports_africains_original.json
+analyze_validation_file.py
+apply_corrections.py
+attached_assets/
+backend/
+backend_test.py
+backend_test_2024_data.py
+backend_test_review_validation.py
+cands=[]
+check_missing_csv.py
+check_tanger.py
+classement_infrastructure_afrique.json
+complete_excel_with_ratings.py
+continue
+corridors_terrestres.json
+cost_engine.py
+country_data_updated.py
+crawlQueue.ts
+crawlWorker.ts
+create_complete_excel_final.py
+create_enhanced_excel_2024.py
+create_validation_file.py
+csrf.ts
+current_heading
+debug_loader.py
+delta_engine.py
+description:
+detailed_verification.py
+df
+docker-compose.yml
+docs/
+douanes_africaines.json
+duty_rate_pct:
+except
+export_validation_csv.py
+fix_lpi_ranks.py
+fix_tangermed_data.py
+fix_tariffs_and_stats.py
+for
+from
+frontend/
+generate_production_data.py
+gold_reserves_gai_2025.json
+heading_ctx:
+hs_code:
+if
+import
+integrate_validated_data.py
+kg,g,l,hl,m,m2,m3,no,nos,u,unit,pair,prs,pc,pcs,set,doz,ton,t
+memory/
+middleware.ts
+out
+ports_africains.json
+ports_africains_backup.json
+ports_africains_enriched.json
+ports_africains_enriched_pro.json
+ports_africains_old.json
+production_africaine.json
+projets_structurants_afrique.json
+qa_engine.py
+rateLimit.ts
+registry.csv
+replit.md
+requirements.txt
+return
+review_validation_results.json
+route.ts
+scripts/
+shapes=[x.df.shape
+source_pdf:
+src/
+start.sh*
+tariff_engine/
+test_faostat_unido.py
+test_reports/
+test_result.md
+test_results_2024_detailed.json
+test_results_detailed.json
+test_scraper_infrastructure.py
+tests/
+try:
+unit:
+update_aidi_2025_full.py
+update_aidi_final.py
+update_aidi_user_correction.py
+update_all_african_countries_worldbank.py
+update_all_countries.py
+update_all_ports_precise.py
+update_infrastructure_data.py
+update_infrastructure_ranking.py
+update_projects_structurants.py
+update_worldbank_data.py
+validation_master.xlsx
+verify_data_quality.py
+wb_logistics_africa.json
+worldbank_data_latest.json
+zlecaf_corrections_2024.json
+zones_franches_afrique.json
+} and backend                          RUNNING   pid 46, uptime 0:00:04
+code-server                      STOPPED   Not started
+frontend                         RUNNING   pid 48, uptime 0:00:04
+mongodb                          RUNNING   pid 49, uptime 0:00:04
+nginx-code-proxy                 RUNNING   pid 45, uptime 0:00:04 before resuming any other task.
+    -   **Why fix this issue and what will be achieved with the fix?**: Resolving this is critical. Without a functioning environment, no progress can be made on any other task or issue.
+    -   **Status**: BLOCKED
+    -   **Is recurring issue?**: Y
+    -   **Should Test frontend/backend/both after fix?**: NA
+    -   **Blocked on other issue**: This is the root blocker for all other issues.
+
+-   **Issue 2: HS Code Search Bar is Broken (P1)**
+    -   **Description**: The search bar for HS codes in the main calculator does not return any results when a user types a query (e.g., voiture).
+    -   **Attempted fixes**:
+        1.  Corrected the API call parameter in the frontend from  to  in .
+        2.  Identified that the backend endpoint was failing because a required data file, , was missing.
+        3.  Created a new script  to generate this file from the existing tariff data.
+        4.  Successfully ran the script and created .
+    -   **Next debug checklist**:
+        1.  Once the environment is stable, restart the backend service: backend: stopped
+backend: started.
+        2.  Test the API endpoint directly to confirm it returns results: The preview environment is not responding. It may be starting up..
+        3.  Take a screenshot of the calculator UI while searching to provide visual confirmation to the user that the fix works.
+    -   **Why fix this issue and what will be achieved with the fix?**: This is a user-reported bug in a core feature of the application. Fixing it will restore expected functionality.
+    -   **Status**: TESTING PENDING
+    -   **Is recurring issue?**: N
+    -   **Should Test frontend/backend/both after fix?**: both
+    -   **Blocked on other issue**: Issue 1: Critical Environment Failure
+
+**In progress Task List**:
+None.
+
+**Upcoming and Future Tasks**
+-   **Upcoming Tasks:**
+    -   **Task 1: Implement the AfCFTA Canonical Regulatory Engine v3 (P0)**: This is the user's highest priority feature request once the environment is fixed. The goal is to create a robust system for handling detailed regulatory data.
+        -   **Phase 1: Build Core Engine & Adapters**: Create the directory structure (), define canonical JSON schemas, and write Python adapters (, ) to transform source data into the new canonical format.
+        -   **Phase 2: Generate Canonical Data & Indexes**: Create and run a pipeline to generate the canonical  files and build performance indexes (, ) for fast API lookups.
+        -   **Phase 3: Create API Endpoint**: Implement a new FastAPI service () and router () to expose the data via a new endpoint: .
+
+-   **Future Tasks:**
+    -   **Task 2: Integrate Regulatory Engine into Frontend (P1)**: Update the frontend to call the new  endpoint and display the rich compliance and formality data for each national tariff code.
+    -   **Task 3: Scale the Engine (P2)**: Add more adapters for other AfCFTA countries to expand the engine's coverage.
+    -   **Task 4: Migrate to PostgreSQL (P2)**: As discussed with the user, consider migrating the engine's data from flat files to a PostgreSQL database to improve scalability and performance as more countries are added.
+
+**Completed work in this session**
+-   **UI Overhaul on Country Profile Page**: Successfully refactored all remaining light-themed components to a consistent dark theme and fixed a conditional rendering bug ().
+-   **Sankey Diagram Integration**: Integrated the  component into the Substitution tab for both import and export modes, including data transformation logic and bug fixes (, ).
+-   **Major Backend Refactoring**: Transformed the monolithic  into a modular architecture, moving endpoints into separate files in . The main server file was reduced by 93% in size.
+-   **Deletion of Old files**: The backup  was deleted after successful refactoring.
+
+**Earlier issues found/mentioned but not fixed**
+None.
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+-   **Backend**: FastAPI with a modular router architecture. Data is loaded from static files at startup.
+-   **Frontend**: React with Vite, using Shadcn UI for components, Tailwind CSS for styling, and Recharts for diagrams.
+-   **Data Processing**: Python scripts (like the new ) are used for batch data manipulation.
+-   **Regulatory Engine (Planned)**: A new Python-based data pipeline to transform, validate, and index country-specific tariff and compliance data into a canonical format ( files) to be served by a new, highly performant API.
+
+**key DB schema**
+The application does not use a traditional database.
+-   Primary data is stored in static files in .
+-   **Planned Canonical Data Model (JSONL files in ):**
+    -   : Defines each national tariff code (e.g., , , , description).
+    -   : Defines duties and taxes for each code (e.g., , ).
+    -   : Defines administrative formalities and required documents for each code (e.g., ).
+
+**All files of reference**
+-   : Heavily modified for UI theme consistency.
+-   : Modified to integrate the Sankey Diagram.
+-   : Majorly refactored to be a lean app entry point.
+-   : New file containing the logic for the  endpoint.
+-   : Modified to fix a bug in the API call.
+-   : **New file** created to generate the HS code database.
+-   : **New file** generated to fix the search bar bug.
+
+**key api endpoints**
+-   : Core calculator endpoint.
+-   : Provides data for the substitution analysis tab and Sankey diagram.
+-   : (Buggy) Endpoint for the HS code search bar.
+-   : **Planned** new endpoint for the Regulatory Engine v3.
+
+**Critical Info for New Agent**
+-   **ENVIRONMENT IS BLOCKED**: Your first and most critical task is to resolve the 502 Bad Gateway error. The recommended first step is to advise the user to **fork the job**. No other work is possible until the environment is stable.
+-   **User's Preferred Language**: The user communicates exclusively in **French**. All your responses and explanations must be in French.
+-   **User's Top Priority**: Once the environment is fixed, the user's highest priority is the implementation of the **Regulatory Engine v3**. You should prioritize this task, starting with the fix for the HS code search as a quick win before diving into the larger engine build.
+
+**documents and test reports created in this job**
+-    (updated multiple times)
+-   
+-   
+
+**Last 10 User Messages and any pending HUMAN messages**
+1.  **point de situation**: User asked for a status update while the environment was down.
+2.  **redemarage effectue ece que cela fonctionne en plus du fichier MAR ESSAYER ALGERIE PLUS COMPLET**: User confirmed they restarted the environment and asked if it was working. They also requested to proceed with the Regulatory Engine using Algeria's data as it is more complete.
+3.  **OK**: Acknowledged agent's plan.
+4.  **CONTINUE**: Prompt to continue.
+5.  **ok**: Acknowledged.
+6.  **continue**: Prompt to continue.
+7.  **ok**: Acknowledged.
+8.  **continue**: Prompt to continue.
+9.  **continue**: Prompt to continue.
+10. **ok**: Acknowledged that the environment is still down and the agent will proceed once it's back.
+-   **Pending Messages**: The user is waiting for the agent to fix the environment and start building the Regulatory Engine v3.
+
+**Project Health Check:**
+-   **Broken**: The entire development environment is non-functional (502 Bad Gateway). The HS code search bar feature is also broken, with a fix applied but pending a final test.
+-   **Mocked**: None.
+
+**3rd Party Integrations**
+-   **OEC API (The Observatory of Economic Complexity)**: Used to fetch trade data. No API key required.
+
+**Testing status**
+-   **Testing agent used after significant changes**: NO
+-   **Troubleshoot agent used after agent stuck in loop**: NO
+-   **Test files created**: None.
+-   **Known regressions**: The HS code search bar is a user-reported bug that was not present at the start of the session.
+
+**Credentials to test flow:**
+None required.
+
+**What agent forgot to execute**
+The agent was blocked by an environment failure before it could execute the final test for the HS code search bar fix. Nothing was forgotten, but several tasks are now pending due to this blocker.</analysis>
