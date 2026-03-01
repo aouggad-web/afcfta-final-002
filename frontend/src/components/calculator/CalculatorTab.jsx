@@ -1060,8 +1060,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       </SelectTrigger>
                       <SelectContent>
                         {countries.map((country) => {
-                          // Pays avec données canoniques du Moteur Réglementaire v3
-                          const REGULATORY_ENGINE_COUNTRIES = ['DZA', 'MAR', 'EGY', 'NGA', 'ZAF', 'KEN', 'CIV', 'GHA'];
+                          // Tous les 54 pays AfCFTA avec données canoniques du Moteur Réglementaire v3
+                          const REGULATORY_ENGINE_COUNTRIES = [
+                            'AGO', 'BDI', 'BEN', 'BFA', 'BWA', 'CAF', 'CIV', 'CMR', 'COD', 'COG',
+                            'COM', 'CPV', 'DJI', 'DZA', 'EGY', 'ERI', 'ETH', 'GAB', 'GHA', 'GIN',
+                            'GMB', 'GNB', 'GNQ', 'KEN', 'LBR', 'LBY', 'LSO', 'MAR', 'MDG', 'MLI',
+                            'MOZ', 'MRT', 'MUS', 'MWI', 'NAM', 'NER', 'NGA', 'RWA', 'SDN', 'SEN',
+                            'SLE', 'SOM', 'SSD', 'STP', 'SWZ', 'SYC', 'TCD', 'TGO', 'TUN', 'TZA',
+                            'UGA', 'ZAF', 'ZMB', 'ZWE'
+                          ];
                           const hasRegulatoryData = REGULATORY_ENGINE_COUNTRIES.includes(country.code);
                           return (
                             <SelectItem key={country.code} value={country.code}>
