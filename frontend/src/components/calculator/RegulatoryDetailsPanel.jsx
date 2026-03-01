@@ -179,20 +179,14 @@ export default function RegulatoryDetailsPanel({
   // Charger les données quand le pays ou le code change
   useEffect(() => {
     const fetchData = async () => {
-      if (!countryCode || !hsCode) {
+      if (!countryCode || !hsCode || hsCode.length < 6) {
         setData(null);
+        setError(null);
         return;
       }
 
       // Convertir en ISO3 si nécessaire
       const iso3 = countryCode.length === 2 ? convertToISO3(countryCode) : countryCode;
-      
-      // Si la liste des pays est chargée et que le pays n'est pas disponible
-      if (availableCountries.length > 0 && !availableCountries.includes(iso3)) {
-        setError(t.notAvailable);
-        setData(null);
-        return;
-      }
 
       setLoading(true);
       setError(null);
