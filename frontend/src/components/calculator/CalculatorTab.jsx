@@ -541,22 +541,37 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         {/* Onglet Calculateur Standard */}
         <TabsContent value="calculator">
           <div className="space-y-6">
-      <Card className="shadow-2xl" style={{ borderTop: '4px solid #D4AF37' }}>
-        <CardHeader style={{ background: 'linear-gradient(135deg, rgba(193,122,43,0.2), rgba(212,175,55,0.1))' }}>
-          <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#D4AF37' }}>
-            <span>📊</span>
-            <span>{t.calculatorTitle}</span>
-          </CardTitle>
-          <CardDescription style={{ color: '#A0AAB4' }} className="font-semibold">
-            {t.calculatorDesc}
-          </CardDescription>
+      
+      {/* === FORMULAIRE DE CALCUL === */}
+      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+        
+        <CardHeader className="relative">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl border border-amber-500/20">
+              <Calculator className="w-8 h-8 text-amber-400" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl text-white">{t.calculatorTitle}</CardTitle>
+              <CardDescription className="text-slate-400 text-base mt-1">{t.calculatorDesc}</CardDescription>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <CardContent className="relative space-y-6">
+          {/* Sélection des pays */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Pays d'origine */}
             <div className="space-y-2">
-              <Label htmlFor="origin">{t.originCountry}</Label>
+              <Label className="text-slate-300 font-medium flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-xs text-blue-400">1</span>
+                {t.originCountry}
+              </Label>
               <Select value={originCountry} onValueChange={setOriginCountry}>
-                <SelectTrigger data-testid="origin-country-select">
+                <SelectTrigger 
+                  data-testid="origin-country-select"
+                  className="h-12 bg-slate-800/50 border-slate-600 hover:border-blue-500/50 transition-colors"
+                >
                   <SelectValue placeholder={t.originCountry} />
                 </SelectTrigger>
                 <SelectContent>
@@ -566,9 +581,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     return (
                       <SelectItem key={country.code} value={country.code}>
                         <span className="flex items-center gap-2">
-                          <span>{getFlag(country.iso2 || country.code)} {country.name}</span>
-                          {hasData && <span className="inline-block w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title={language === 'fr' ? 'Données authentiques' : 'Authentic data'}></span>}
-                          {bloc && <span className={`text-[10px] px-1.5 py-0 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
+                          <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
+                          <span>{country.name}</span>
+                          {hasData && <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>}
+                          {bloc && <span className={`text-[10px] px-1.5 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
                         </span>
                       </SelectItem>
                     );
@@ -577,10 +593,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </Select>
             </div>
 
+            {/* Pays de destination */}
             <div className="space-y-2">
-              <Label htmlFor="destination">{t.partnerCountry}</Label>
+              <Label className="text-slate-300 font-medium flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-amber-500/20 flex items-center justify-center text-xs text-amber-400">2</span>
+                {t.partnerCountry}
+              </Label>
               <Select value={destinationCountry} onValueChange={handleDestinationChange}>
-                <SelectTrigger data-testid="destination-country-select">
+                <SelectTrigger 
+                  data-testid="destination-country-select"
+                  className="h-12 bg-slate-800/50 border-slate-600 hover:border-amber-500/50 transition-colors"
+                >
                   <SelectValue placeholder={t.partnerCountry} />
                 </SelectTrigger>
                 <SelectContent>
@@ -590,9 +613,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     return (
                       <SelectItem key={country.code} value={country.code}>
                         <span className="flex items-center gap-2">
-                          <span>{getFlag(country.iso2 || country.code)} {country.name}</span>
-                          {hasData && <span className="inline-block w-2 h-2 rounded-full bg-green-500 flex-shrink-0" title={language === 'fr' ? 'Données authentiques' : 'Authentic data'}></span>}
-                          {bloc && <span className={`text-[10px] px-1.5 py-0 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
+                          <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
+                          <span>{country.name}</span>
+                          {hasData && <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>}
+                          {bloc && <span className={`text-[10px] px-1.5 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
                         </span>
                       </SelectItem>
                     );
@@ -602,77 +626,83 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 text-xs text-gray-500">
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span> {language === 'fr' ? 'Données authentiques' : 'Authentic data'}</span>
-            <span className="text-gray-300">|</span>
-            <span className="font-medium text-gray-400">{language === 'fr' ? 'Blocs:' : 'Blocs:'} CEDEAO · CEMAC · EAC · SACU · AES</span>
+          {/* Légende */}
+          <div className="flex items-center gap-4 text-xs text-slate-500 bg-slate-800/30 rounded-lg px-4 py-2">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              {language === 'fr' ? 'Données authentiques' : 'Authentic data'}
+            </span>
+            <span className="text-slate-600">|</span>
+            <span className="text-slate-400">{language === 'fr' ? 'Blocs:' : 'Blocs:'} CEDEAO · CEMAC · EAC · SACU · AES</span>
           </div>
 
+          {/* Profil tarifaire du pays */}
           {loadingProfile && (
-            <div className="text-center text-sm text-gray-500 py-2">
-              {language === 'fr' ? 'Chargement du tarif national...' : 'Loading national tariff...'}
+            <div className="flex items-center justify-center gap-3 py-4">
+              <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-slate-400">{language === 'fr' ? 'Chargement du tarif national...' : 'Loading national tariff...'}</span>
             </div>
           )}
 
           {countryTariffProfile && countryTariffProfile.summary && !loadingProfile && (
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 space-y-2">
-              <div className="flex items-center justify-between flex-wrap gap-1">
-                <span className="font-semibold text-blue-800 text-sm flex items-center gap-1">
-                  {getFlag(countries.find(c => c.code === destinationCountry)?.iso2 || destinationCountry)}
-                  {language === 'fr' ? 'Tarif National' : 'National Tariff'} - {getCountryName(destinationCountry)}
+            <div className="bg-slate-700/30 border border-slate-600/50 rounded-xl overflow-hidden">
+              <div className="px-4 py-3 bg-slate-700/50 border-b border-slate-600/50 flex items-center justify-between flex-wrap gap-2">
+                <span className="font-semibold text-white flex items-center gap-2">
+                  <span className="text-lg">{getFlag(countries.find(c => c.code === destinationCountry)?.iso2 || destinationCountry)}</span>
+                  {language === 'fr' ? 'Profil Tarifaire' : 'Tariff Profile'} - {getCountryName(destinationCountry)}
                 </span>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   {TRADE_BLOCS[destinationCountry] && (
                     <Badge variant="outline" className={`text-xs border ${getBlocColor(TRADE_BLOCS[destinationCountry])}`}>
                       {TRADE_BLOCS[destinationCountry]}
                     </Badge>
                   )}
-                  <Badge variant="outline" className={`text-xs ${
+                  <Badge className={`text-xs ${
                     COUNTRIES_WITH_AUTHENTIC_DATA.has(destinationCountry)
-                      ? 'bg-green-100 text-green-700 border-green-300'
-                      : 'bg-gray-100 text-gray-500 border-gray-300'
-                  }`}>
+                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                      : 'bg-slate-500/20 text-slate-400 border-slate-500/30'
+                  } border`}>
                     {COUNTRIES_WITH_AUTHENTIC_DATA.has(destinationCountry)
-                      ? (language === 'fr' ? 'Données authentiques' : 'Authentic data')
-                      : (language === 'fr' ? 'Données estimées' : 'Estimated data')
+                      ? (language === 'fr' ? 'Authentique' : 'Authentic')
+                      : (language === 'fr' ? 'Estimé' : 'Estimated')
                     }
                   </Badge>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-2 text-xs">
-                <div className="bg-white rounded p-2 text-center shadow-sm">
-                  <div className="text-gray-500">{language === 'fr' ? 'DD moy.' : 'Avg. duty'}</div>
-                  <div className="font-bold text-lg text-blue-700">{countryTariffProfile.summary.dd_rate_range?.avg?.toFixed(1) || '0'}%</div>
-                  <div className="text-gray-400">{countryTariffProfile.summary.dd_rate_range?.min?.toFixed(0) || '0'}% - {countryTariffProfile.summary.dd_rate_range?.max?.toFixed(0) || '0'}%</div>
+              <div className="grid grid-cols-3 divide-x divide-slate-600/50">
+                <div className="p-4 text-center">
+                  <p className="text-slate-500 text-xs uppercase tracking-wide">{language === 'fr' ? 'DD moyen' : 'Avg. duty'}</p>
+                  <p className="text-2xl font-bold text-blue-400 mt-1">{countryTariffProfile.summary.dd_rate_range?.avg?.toFixed(1) || '0'}%</p>
+                  <p className="text-slate-500 text-xs">{countryTariffProfile.summary.dd_rate_range?.min?.toFixed(0) || '0'}% - {countryTariffProfile.summary.dd_rate_range?.max?.toFixed(0) || '0'}%</p>
                 </div>
-                <div className="bg-white rounded p-2 text-center shadow-sm">
-                  <div className="text-gray-500">{language === 'fr' ? 'TVA' : 'VAT'}</div>
-                  <div className="font-bold text-lg text-orange-600">{countryTariffProfile.summary.vat_rate_pct || 0}%</div>
-                  <div className="text-gray-400">{countryTariffProfile.summary.vat_source || ''}</div>
+                <div className="p-4 text-center">
+                  <p className="text-slate-500 text-xs uppercase tracking-wide">{language === 'fr' ? 'TVA' : 'VAT'}</p>
+                  <p className="text-2xl font-bold text-amber-400 mt-1">{countryTariffProfile.summary.vat_rate_pct || 0}%</p>
+                  <p className="text-slate-500 text-xs">{countryTariffProfile.summary.vat_source || ''}</p>
                 </div>
-                <div className="bg-white rounded p-2 text-center shadow-sm">
-                  <div className="text-gray-500">{language === 'fr' ? 'Autres taxes' : 'Other taxes'}</div>
-                  <div className="font-bold text-lg text-red-600">{countryTariffProfile.summary.other_taxes_pct || 0}%</div>
-                  <div className="text-gray-400">
+                <div className="p-4 text-center">
+                  <p className="text-slate-500 text-xs uppercase tracking-wide">{language === 'fr' ? 'Autres' : 'Other'}</p>
+                  <p className="text-2xl font-bold text-red-400 mt-1">{countryTariffProfile.summary.other_taxes_pct || 0}%</p>
+                  <p className="text-slate-500 text-xs truncate">
                     {countryTariffProfile.summary.other_taxes_detail
-                      ? Object.entries(countryTariffProfile.summary.other_taxes_detail)
-                          .map(([k, v]) => `${k.toUpperCase()} ${v}%`)
-                          .join(', ')
-                      : ''}
-                  </div>
+                      ? Object.entries(countryTariffProfile.summary.other_taxes_detail).map(([k, v]) => `${k} ${v}%`).join(', ')
+                      : '-'}
+                  </p>
                 </div>
               </div>
-              <div className="flex justify-between items-center text-xs text-gray-500 pt-1 border-t border-blue-100">
-                <span>{(countryTariffProfile.summary.total_positions || 0).toLocaleString()} {language === 'fr' ? 'positions tarifaires' : 'tariff positions'}</span>
-                <span>{countryTariffProfile.summary.chapters_covered || 0} {language === 'fr' ? 'chapitres couverts' : 'chapters covered'}</span>
+              <div className="px-4 py-2 bg-slate-800/50 border-t border-slate-600/50 flex justify-between text-xs text-slate-500">
+                <span>{(countryTariffProfile.summary.total_positions || 0).toLocaleString()} {language === 'fr' ? 'positions' : 'positions'}</span>
+                <span>{countryTariffProfile.summary.chapters_covered || 0} {language === 'fr' ? 'chapitres' : 'chapters'}</span>
               </div>
             </div>
           )}
 
-          <div className="space-y-2">
+          {/* Code HS */}
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label htmlFor="hs-code" className="flex items-center gap-2">
-                <Package className="w-4 h-4" />
+              <Label className="text-slate-300 font-medium flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-xs text-purple-400">3</span>
+                <Package className="w-4 h-4 text-purple-400" />
                 {t.hsCodeLabel}
               </Label>
               <Button
@@ -680,7 +710,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 variant="ghost"
                 size="sm"
                 onClick={() => setUseSmartSearch(!useSmartSearch)}
-                className="text-xs text-purple-600 hover:text-purple-700"
+                className="text-xs text-purple-400 hover:text-purple-300 hover:bg-purple-500/10"
               >
                 <Sparkles className="w-3 h-3 mr-1" />
                 {useSmartSearch ? 'Mode simple' : 'Recherche intelligente'}
@@ -700,17 +730,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 onRuleOfOriginLoad={setRuleOfOrigin}
               />
             ) : (
-              <div className="calculator-form-group">
-                <input
+              <div className="space-y-2">
+                <Input
                   type="text"
                   placeholder={language === 'fr' ? "Ex: 090111, 870323, 8517" : "Ex: 090111, 870323, 8517"}
                   value={hsCode}
                   onChange={(e) => setHsCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 12))}
-                  className="font-mono"
-                  style={{ fontSize: '16px', letterSpacing: '1px' }}
+                  className="h-12 font-mono text-lg bg-slate-800/50 border-slate-600 hover:border-purple-500/50 focus:border-purple-500 transition-colors tracking-wider"
                   data-testid="hs-code-simple-input"
                 />
-                <p style={{ color: '#A0AAB4', fontSize: '12px', marginTop: '4px', fontStyle: 'italic' }}>{t.hsCodeHint}</p>
+                <p className="text-slate-500 text-xs">{t.hsCodeHint}</p>
               </div>
             )}
             
@@ -719,13 +748,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               variant="outline"
               size="sm"
               onClick={() => setShowHSBrowser(!showHSBrowser)}
-              className="w-full mt-2"
-              style={{ 
-                background: 'transparent', 
-                border: '1px solid rgba(212,175,55,0.3)', 
-                color: '#D4AF37',
-                borderRadius: '10px'
-              }}
+              className="w-full bg-slate-800/30 border-slate-600 hover:border-amber-500/50 hover:bg-slate-700/30 text-slate-300"
               data-testid="toggle-hs-browser"
             >
               {showHSBrowser ? (
@@ -744,7 +767,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
           {/* HS Code Browser Panel */}
           {showHSBrowser && (
-            <div style={{ border: '1px solid rgba(212,175,55,0.2)', borderRadius: '10px', overflow: 'hidden' }}>
+            <div className="border border-slate-700 rounded-xl overflow-hidden">
               <HSCodeBrowser
                 onSelect={(code) => {
                   setHsCode(code.code);
@@ -756,24 +779,40 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </div>
           )}
 
-          <div className="calculator-form-group">
-            <label>{t.valueLabel}</label>
-            <input
+          {/* Valeur */}
+          <div className="space-y-2">
+            <Label className="text-slate-300 font-medium flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-xs text-emerald-400">4</span>
+              {t.valueLabel}
+            </Label>
+            <Input
               type="number"
               value={value}
               onChange={(e) => setValue(e.target.value)}
               placeholder="100000"
               min="0"
+              className="h-12 font-mono text-lg bg-slate-800/50 border-slate-600 hover:border-emerald-500/50 focus:border-emerald-500 transition-colors"
             />
           </div>
 
+          {/* Bouton Calculer */}
           <Button 
             onClick={calculateTariff}
             disabled={loading}
             data-testid="calculate-tariff-button"
-            className="w-full bg-gradient-to-r from-red-600 via-yellow-500 to-green-600 text-white font-bold text-lg py-6 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all"
+            className="w-full h-14 text-lg font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg hover:shadow-xl transition-all"
           >
-            {loading ? `⏳ ${t.calculating}` : `🧮 ${t.calculateBtn}`}
+            {loading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                {t.calculating}
+              </>
+            ) : (
+              <>
+                <Calculator className="w-5 h-5 mr-2" />
+                {t.calculateBtn}
+              </>
+            )}
           </Button>
         </CardContent>
       </Card>
