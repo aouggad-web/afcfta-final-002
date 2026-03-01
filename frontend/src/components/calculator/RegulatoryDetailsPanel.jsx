@@ -184,9 +184,11 @@ export default function RegulatoryDetailsPanel({
         return;
       }
 
-      // Vérifier si le pays est disponible
+      // Convertir en ISO3 si nécessaire
       const iso3 = countryCode.length === 2 ? convertToISO3(countryCode) : countryCode;
-      if (!availableCountries.includes(iso3) && availableCountries.length > 0) {
+      
+      // Si la liste des pays est chargée et que le pays n'est pas disponible
+      if (availableCountries.length > 0 && !availableCountries.includes(iso3)) {
         setError(t.notAvailable);
         setData(null);
         return;
