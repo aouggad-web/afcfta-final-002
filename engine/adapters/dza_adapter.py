@@ -129,7 +129,18 @@ class DZAAdapter(BaseAdapter):
         )
     
     def _extract_measures(self, parent: Dict, sub: Dict = None) -> list:
-        """Extrait les mesures tarifaires"""
+        """
+        Extrait les mesures tarifaires selon la méthode de calcul algérienne
+        (Circulaire 419/DGD/SP/D.420 du 22 mars 2008)
+        
+        Ordre de calcul :
+        1. D.D (Droit de Douane) - sur valeur en douane
+        2. Autres taxes (PRCT, T.C.S, D.A.P.S, etc.)
+        3. T.V.A - sur (VD + DD + taxes incluses dans l'assiette TVA)
+        
+        Taxes INCLUSES dans l'assiette TVA : D.D, TIC, TPP, TCLS, DCA, T.Carburants
+        Taxes EXCLUES de l'assiette TVA : TAPT, T.Pneus, T.Huiles, TSP, TSV, D.RTA, D.GARANTIE
+        """
         measures = []
         national_code = sub.get("code", parent.get("hs6", "")) if sub else parent.get("hs6", "")
         
@@ -144,27 +155,33 @@ class DZAAdapter(BaseAdapter):
             name_en="Customs Duty",
             rate_pct=float(dd_rate or 0),
             is_zlecaf_applicable=True,
-            zlecaf_rate_pct=0.0,  # Exonération ZLECAf
-            observation="Tarif national DZA"
+            zlecaf_rate_pct=0.0,  # Exonération ZLECAf (AfCFTA Art. 8)
+            observation="Base: Valeur en douane (Art. 16 Code des Douanes)"
         ))
         
         # Extraire les autres taxes depuis taxes_detail
+        # en respectant les intitulés EXACTS du fichier source
         taxes_detail = parent.get("taxes_detail", [])
         for tax in taxes_detail:
             tax_code = tax.get("tax", "")
             if tax_code.upper().replace(".", "") == "DD":
                 continue  # Déjà traité
             
+            # Déterminer si la taxe est incluse dans l'assiette TVA
+            # Selon Circulaire 419: TVA calculée sur VD + DD + taxes incluses
+            taxes_incluses_tva = ["TIC", "TPP", "TCLS", "DCA", "PRCT", "TCS"]
+            is_in_tva_base = any(t in tax_code.upper().replace(".", "") for t in taxes_incluses_tva)
+            
             measures.append(Measure(
                 country_iso3="DZA",
                 national_code=national_code,
                 measure_type=self.map_measure_type(tax_code),
                 code=tax_code,
-                name_fr=tax.get("observation", tax_code),
+                name_fr=tax.get("observation", tax_code),  # Intitulé EXACT du fichier source
                 name_en=None,
                 rate_pct=float(tax.get("rate", 0)),
-                is_zlecaf_applicable=False,
-                observation=tax.get("observation")
+                is_zlecaf_applicable=False,  # Seul le DD est exonéré sous ZLECAf
+                observation=f"{'Inclus' if is_in_tva_base else 'Exclus'} de l'assiette TVA"
             ))
         
         return measures
