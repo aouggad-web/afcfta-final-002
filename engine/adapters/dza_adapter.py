@@ -170,7 +170,16 @@ class DZAAdapter(BaseAdapter):
             # Déterminer si la taxe est incluse dans l'assiette TVA
             # Selon Circulaire 419: TVA calculée sur VD + DD + taxes incluses
             taxes_incluses_tva = ["TIC", "TPP", "TCLS", "DCA", "PRCT", "TCS"]
+            is_tva = tax_code.upper().replace(".", "") == "TVA"
             is_in_tva_base = any(t in tax_code.upper().replace(".", "") for t in taxes_incluses_tva)
+            
+            # Note d'observation selon le type de taxe
+            if is_tva:
+                obs_note = "Base: VD + DD + taxes incluses (Circ. 419)"
+            elif is_in_tva_base:
+                obs_note = "Inclus dans l'assiette TVA (Circ. 419)"
+            else:
+                obs_note = "Exclus de l'assiette TVA (Circ. 419)"
             
             measures.append(Measure(
                 country_iso3="DZA",
