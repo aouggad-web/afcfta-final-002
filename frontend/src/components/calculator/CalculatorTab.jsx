@@ -18,6 +18,7 @@ import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calcula
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
+import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
 import './calculator.css';
 
