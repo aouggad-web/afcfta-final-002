@@ -31,7 +31,7 @@ const API = `${BACKEND_URL}/api`;
 axios.interceptors.response.use(
   (response) => {
     const ct = response.headers['content-type'] || '';
-    if (!ct.includes('application/json') && !ct.includes('application/')) {
+    if (ct.includes('text/html')) {
       return Promise.reject(new Error('Non-JSON response'));
     }
     return response;
