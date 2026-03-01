@@ -1,0 +1,18 @@
+{
+  "country_iso3": "MRT",
+  "country_name": "MRT",
+  "processed_lines": 5831,
+  "sub_positions": 16139,
+  "total_positions": 21970,
+  "chapters_covered": 98,
+  "vat_rate": 16.0,
+  "dd_range": {
+    "min": 0.0,
+    "max": 20.0,
+    "avg": 8.5
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/MRT_canonical.jsonl",
+  "record_count": 16569,
+  "generated_at": "2026-03-01T17:37:31.054150"
+}

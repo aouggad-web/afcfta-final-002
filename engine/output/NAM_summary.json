@@ -1,0 +1,18 @@
+{
+  "country_iso3": "NAM",
+  "country_name": "NAM",
+  "processed_lines": 5831,
+  "sub_positions": 16143,
+  "total_positions": 21974,
+  "chapters_covered": 98,
+  "vat_rate": 15.0,
+  "dd_range": {
+    "min": 0.0,
+    "max": 45.0,
+    "avg": 15.52
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/NAM_canonical.jsonl",
+  "record_count": 16572,
+  "generated_at": "2026-03-01T17:37:33.250322"
+}

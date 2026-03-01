@@ -1,0 +1,18 @@
+{
+  "country_iso3": "RWA",
+  "country_name": "RWA",
+  "processed_lines": 5831,
+  "sub_positions": 16141,
+  "total_positions": 21972,
+  "chapters_covered": 98,
+  "vat_rate": 18.0,
+  "dd_range": {
+    "min": 0.0,
+    "max": 75.0,
+    "avg": 15.05
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/RWA_canonical.jsonl",
+  "record_count": 16571,
+  "generated_at": "2026-03-01T17:37:34.819110"
+}

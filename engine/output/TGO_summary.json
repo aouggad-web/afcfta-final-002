@@ -1,0 +1,18 @@
+{
+  "country_iso3": "TGO",
+  "country_name": "TGO",
+  "processed_lines": 5831,
+  "sub_positions": 16139,
+  "total_positions": 21970,
+  "chapters_covered": 98,
+  "vat_rate": 18.0,
+  "dd_range": {
+    "min": 0.0,
+    "max": 35.0,
+    "avg": 14.44
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/TGO_canonical.jsonl",
+  "record_count": 16569,
+  "generated_at": "2026-03-01T17:37:43.243758"
+}
