@@ -74,6 +74,12 @@ try:
 except ImportError:
     TARIFF_DATA_AVAILABLE = False
 
+try:
+    from .regulatory_engine import router as regulatory_engine_router
+    REGULATORY_ENGINE_AVAILABLE = True
+except ImportError:
+    REGULATORY_ENGINE_AVAILABLE = False
+
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
     api_router.include_router(health_router, tags=["Health"])
