@@ -180,14 +180,25 @@ class RegulatoryEngineService:
             )]
         
         results = []
-        for entry in hs6_index[hs6]:
-            record = self._read_line(country_iso3, entry["line"])
+        for line_num in hs6_index[hs6]:
+            # Support pour l'ancien et le nouveau format d'index
+            if isinstance(line_num, dict):
+                actual_line = line_num.get("line", line_num)
+                national_code = line_num.get("national_code", "")
+            else:
+                actual_line = line_num
+                national_code = ""
+            
+            record = self._read_line(country_iso3, actual_line)
             if record:
                 processing_time = (time.time() - start_time) * 1000
+                # Extraire le code national du record si pas dans l'index
+                if not national_code and record.commodity:
+                    national_code = record.commodity.national_code
                 results.append(RegulatoryEngineResponse(
                     success=True,
                     country_iso3=country_iso3,
-                    national_code=entry["national_code"],
+                    national_code=national_code,
                     hs6=hs6,
                     data=record,
                     processing_time_ms=round(processing_time, 2)
