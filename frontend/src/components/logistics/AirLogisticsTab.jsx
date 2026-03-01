@@ -243,7 +243,7 @@ export default function AirLogisticsTab({ language = 'fr' }) {
   return (
     <div className="space-y-4">
       {/* Header Section - Compact */}
-      <Card className="bg-gradient-to-r from-sky-600 to-blue-600 text-white shadow-lg">
+      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-white shadow-lg">
         <CardHeader className="py-3">
           <CardTitle className="text-lg font-bold flex items-center gap-2">
             <span>✈️</span>
