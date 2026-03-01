@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-03-01T02:52:42.665873",
+  "started_at": "2026-03-01T03:14:59.388877",
   "countries_processed": [
     {
       "country": "DZA",
@@ -8,5 +8,5 @@
   ],
   "countries_failed": [],
   "total_records": 16569,
-  "completed_at": "2026-03-01T02:52:43.640095"
+  "completed_at": "2026-03-01T03:15:00.366903"
 }
