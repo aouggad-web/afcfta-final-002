@@ -18,7 +18,7 @@ function ProductionTab({ language = 'fr' }) {
   return (
     <div className="space-y-5">
       {/* Compact Header with Export */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white p-4 rounded-xl shadow-lg">
+      <div className="flex items-center justify-between bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
             <BarChart3 className="w-5 h-5" />

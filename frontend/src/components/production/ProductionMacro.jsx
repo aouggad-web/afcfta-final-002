@@ -54,7 +54,8 @@ function ProductionMacro({ language = 'fr' }) {
     setLoading(true);
     try {
       const response = await axios.get(`${API}/production/macro/${countryIso3}`);
-      setMacroData(response.data);
+      const d = response.data;
+      setMacroData(typeof d === 'object' && d !== null && !Array.isArray(d) ? d : null);
     } catch (error) {
       console.error('Error fetching macro data:', error);
     } finally {

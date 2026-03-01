@@ -168,7 +168,7 @@ export function LSCIChartWidget({ language }) {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${API}/statistics/unctad/lsci`);
-        setData(res.data || []);
+        setData(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error('Error:', err);
       } finally {

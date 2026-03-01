@@ -176,7 +176,7 @@ function ProductionManufacturing({ language = 'fr' }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white shadow-xl overflow-hidden">
+      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-white shadow-xl overflow-hidden">
         <CardHeader>
           <div className="flex items-start justify-between">
             <div>

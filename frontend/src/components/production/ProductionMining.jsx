@@ -54,7 +54,8 @@ function ProductionMining({ language = 'fr' }) {
     setLoading(true);
     try {
       const response = await axios.get(`${API}/production/mining/${countryIso3}`);
-      setMiningData(response.data);
+      const d = response.data;
+      setMiningData(typeof d === 'object' && d !== null && !Array.isArray(d) ? d : null);
     } catch (error) {
       console.error('Error fetching mining data:', error);
     } finally {

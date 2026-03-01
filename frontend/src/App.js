@@ -26,6 +26,19 @@ import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Interceptor: reject responses that are not valid JSON objects/arrays
+// (prevents HTML fallback pages from SPA static servers being stored in state)
+axios.interceptors.response.use(
+  (response) => {
+    const ct = response.headers['content-type'] || '';
+    if (!ct.includes('application/json') && !ct.includes('application/')) {
+      return Promise.reject(new Error('Non-JSON response'));
+    }
+    return response;
+  },
+  (error) => Promise.reject(error)
+);
+
 const TABS = [
   { id: 'dashboard', icon: '📊', fr: 'Dashboard', en: 'Dashboard' },
   { id: 'calculator', icon: '🧮', fr: 'Calculateur', en: 'Calculator' },
@@ -114,7 +127,13 @@ function App() {
   const fetchCountries = async (lang) => {
     try {
       const response = await axios.get(`${API}/countries?lang=${lang}`);
-      setCountries(response.data);
+      const data = response.data;
+      const countriesArray = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.countries)
+        ? data.countries
+        : [];
+      setCountries(countriesArray);
     } catch (error) {
       console.error('Error loading countries:', error);
       toast({

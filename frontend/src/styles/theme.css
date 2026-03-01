@@ -931,3 +931,30 @@ body {
 .afcfta-dark-gradient {
   background: linear-gradient(135deg, rgba(27,35,44,0.95), rgba(21,32,42,0.95)) !important;
 }
+
+/* Fix light gradient backgrounds (from-X-50, from-X-100) to dark theme */
+.afcfta-shell [class*="from-blue-50"],
+.afcfta-shell [class*="from-cyan-50"],
+.afcfta-shell [class*="from-green-50"],
+.afcfta-shell [class*="from-emerald-50"],
+.afcfta-shell [class*="from-purple-50"],
+.afcfta-shell [class*="from-pink-50"],
+.afcfta-shell [class*="from-indigo-50"],
+.afcfta-shell [class*="from-slate-50"],
+.afcfta-shell [class*="from-gray-50"],
+.afcfta-shell [class*="from-orange-50"],
+.afcfta-shell [class*="from-amber-50"],
+.afcfta-shell [class*="from-blue-100"],
+.afcfta-shell [class*="from-purple-100"],
+.afcfta-shell [class*="from-green-100"] {
+  background-image: none !important;
+  background-color: var(--afcfta-card) !important;
+}
+
+/* Fix text-gray-700 and text-gray-600 to be readable on dark theme */
+.afcfta-shell .text-gray-700 {
+  color: var(--text-muted, #A0AAB4) !important;
+}
+.afcfta-shell .text-gray-600 {
+  color: var(--text-muted, #A0AAB4) !important;
+}
