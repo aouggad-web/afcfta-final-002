@@ -236,11 +236,14 @@ class DZAAdapter(BaseAdapter):
         return advantages
     
     def _get_issuing_authority(self, code: str) -> str:
-        """Détermine l'autorité émettrice selon le code"""
+        """
+        Détermine l'autorité émettrice selon le code de formalité
+        Sources : Réglementation douanière algérienne
+        """
         authority_map = {
-            "910": "Direction Générale des Douanes (DGD)",
+            "910": "Ministère du Commerce",
             "210": "Ministère du Commerce",
-            "902": "Direction Générale des Douanes (DGD)",
+            "902": "Ministère du Commerce - Inspection du Contrôle aux Frontières",
             "216": "Direction des Services Vétérinaires",
             "230": "Ministère de l'Agriculture",
             "220": "Ministère de la Santé",
