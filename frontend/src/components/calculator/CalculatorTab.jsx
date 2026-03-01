@@ -523,10 +523,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     <div className="space-y-6">
       {/* Onglets Principal */}
       <Tabs defaultValue="calculator" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-4">
+        <TabsList className="grid w-full grid-cols-3 mb-4">
           <TabsTrigger value="calculator" className="flex items-center gap-2" data-testid="calculator-single-tab">
             <Calculator className="w-4 h-4" />
             {language === 'fr' ? 'Calculateur' : 'Calculator'}
+          </TabsTrigger>
+          <TabsTrigger value="regulatory" className="flex items-center gap-2" data-testid="calculator-regulatory-tab">
+            <Scale className="w-4 h-4" />
+            {language === 'fr' ? 'Réglementation' : 'Regulations'}
           </TabsTrigger>
           <TabsTrigger value="compare" className="flex items-center gap-2" data-testid="calculator-compare-tab">
             <Globe className="w-4 h-4" />
