@@ -1767,6 +1767,96 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           </div>
       </TabsContent>
         
+        {/* Onglet Réglementation - Moteur Réglementaire v3 */}
+        <TabsContent value="regulatory">
+          <div className="space-y-6">
+            <Card className="shadow-2xl" style={{ borderTop: '4px solid #D4AF37' }}>
+              <CardHeader style={{ background: 'linear-gradient(135deg, rgba(193,122,43,0.2), rgba(212,175,55,0.1))' }}>
+                <CardTitle className="flex items-center space-x-2 text-2xl" style={{ color: '#D4AF37' }}>
+                  <Scale className="w-6 h-6" />
+                  <span>{language === 'fr' ? 'Moteur Réglementaire AfCFTA' : 'AfCFTA Regulatory Engine'}</span>
+                </CardTitle>
+                <CardDescription style={{ color: '#A0AAB4' }} className="font-semibold">
+                  {language === 'fr' 
+                    ? 'Accédez aux détails réglementaires complets : mesures tarifaires, formalités administratives et avantages fiscaux ZLECAf'
+                    : 'Access complete regulatory details: tariff measures, administrative formalities and AfCFTA fiscal advantages'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>{language === 'fr' ? 'Pays de destination' : 'Destination Country'}</Label>
+                    <Select value={destinationCountry} onValueChange={handleDestinationChange}>
+                      <SelectTrigger data-testid="regulatory-country-select">
+                        <SelectValue placeholder={language === 'fr' ? 'Sélectionner un pays' : 'Select a country'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map((country) => (
+                          <SelectItem key={country.code} value={country.code}>
+                            <span className="flex items-center gap-2">
+                              <span>{getFlag(country.iso2 || country.code)} {country.name}</span>
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>{language === 'fr' ? 'Code HS (6-12 chiffres)' : 'HS Code (6-12 digits)'}</Label>
+                    <Input
+                      value={hsCode}
+                      onChange={(e) => setHsCode(e.target.value)}
+                      placeholder={language === 'fr' ? 'Ex: 010110 ou 0101101000' : 'E.g: 010110 or 0101101000'}
+                      className="font-mono"
+                      data-testid="regulatory-hs-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                    <div className="text-sm text-slate-400">
+                      <p className="font-medium text-slate-300 mb-1">
+                        {language === 'fr' ? 'Comment utiliser le moteur réglementaire ?' : 'How to use the regulatory engine?'}
+                      </p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>{language === 'fr' ? 'Sélectionnez le pays de destination (ex: Algérie - DZA)' : 'Select destination country (e.g: Algeria - DZA)'}</li>
+                        <li>{language === 'fr' ? 'Entrez un code HS6 (6 chiffres) pour voir toutes les sous-positions' : 'Enter an HS6 code (6 digits) to see all sub-positions'}</li>
+                        <li>{language === 'fr' ? 'Ou entrez un code national complet (8-12 chiffres) pour des détails précis' : 'Or enter a full national code (8-12 digits) for precise details'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Panneau des détails réglementaires */}
+            {destinationCountry && hsCode && hsCode.length >= 6 && (
+              <RegulatoryDetailsPanel
+                countryCode={destinationCountry}
+                hsCode={hsCode}
+                language={language}
+              />
+            )}
+
+            {/* Message si pas de données */}
+            {(!destinationCountry || !hsCode || hsCode.length < 6) && (
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-8 text-center">
+                  <Scale className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+                  <p className="text-slate-400">
+                    {language === 'fr' 
+                      ? 'Sélectionnez un pays et entrez un code HS pour afficher les détails réglementaires'
+                      : 'Select a country and enter an HS code to display regulatory details'}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </TabsContent>
+        
         {/* Onglet Comparaison Multi-Pays */}
         <TabsContent value="compare">
           <MultiCountryComparison language={language} />
