@@ -1059,19 +1059,24 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         <SelectValue placeholder={language === 'fr' ? 'Sélectionner un pays...' : 'Select a country...'} />
                       </SelectTrigger>
                       <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country.code} value={country.code}>
-                            <span className="flex items-center gap-2">
-                              <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
-                              <span>{country.name}</span>
-                              {country.code === 'DZA' && (
-                                <span className="ml-2 text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">
-                                  {language === 'fr' ? 'Disponible' : 'Available'}
-                                </span>
-                              )}
-                            </span>
-                          </SelectItem>
-                        ))}
+                        {countries.map((country) => {
+                          // Pays avec données canoniques du Moteur Réglementaire v3
+                          const REGULATORY_ENGINE_COUNTRIES = ['DZA', 'MAR', 'EGY', 'NGA', 'ZAF', 'KEN', 'CIV', 'GHA'];
+                          const hasRegulatoryData = REGULATORY_ENGINE_COUNTRIES.includes(country.code);
+                          return (
+                            <SelectItem key={country.code} value={country.code}>
+                              <span className="flex items-center gap-2">
+                                <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
+                                <span>{country.name}</span>
+                                {hasRegulatoryData && (
+                                  <span className="ml-2 text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">
+                                    {language === 'fr' ? 'Disponible' : 'Available'}
+                                  </span>
+                                )}
+                              </span>
+                            </SelectItem>
+                          );
+                        })}
                       </SelectContent>
                     </Select>
                   </div>
