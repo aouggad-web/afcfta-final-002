@@ -57,13 +57,19 @@ class RegulatoryPipeline:
         
         self.stats = {}
     
-    def run(self, countries: List[str] = None) -> Dict[str, Any]:
+    def run(self, countries: List[str] = None, major_only: bool = False) -> Dict[str, Any]:
         """
         Exécute le pipeline pour les pays spécifiés.
-        Si countries est None, traite tous les pays disponibles.
+        
+        Args:
+            countries: Liste des codes ISO3 à traiter. Si None, traite tous les majeurs.
+            major_only: Si True, traite uniquement les 8 pays majeurs.
         """
         if countries is None:
-            countries = list(self.adapters.keys())
+            if major_only:
+                countries = MAJOR_COUNTRIES
+            else:
+                countries = list(self.adapters.keys())
         
         results = {
             "started_at": datetime.now().isoformat(),
