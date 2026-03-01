@@ -190,7 +190,7 @@ class DZAAdapter(BaseAdapter):
                 name_en=None,
                 rate_pct=float(tax.get("rate", 0)),
                 is_zlecaf_applicable=False,  # Seul le DD est exonéré sous ZLECAf
-                observation=f"{'Inclus' if is_in_tva_base else 'Exclus'} de l'assiette TVA"
+                observation=obs_note
             ))
         
         return measures
