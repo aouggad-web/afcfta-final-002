@@ -1,12 +1,40 @@
 {
-  "started_at": "2026-03-01T17:26:59.779947",
+  "started_at": "2026-03-01T17:27:07.986547",
   "countries_processed": [
+    {
+      "country": "DZA",
+      "records": 16569
+    },
     {
       "country": "MAR",
       "records": 16575
+    },
+    {
+      "country": "EGY",
+      "records": 16570
+    },
+    {
+      "country": "NGA",
+      "records": 16577
+    },
+    {
+      "country": "ZAF",
+      "records": 16568
+    },
+    {
+      "country": "KEN",
+      "records": 16572
+    },
+    {
+      "country": "CIV",
+      "records": 16567
+    },
+    {
+      "country": "GHA",
+      "records": 16572
     }
   ],
   "countries_failed": [],
-  "total_records": 16575,
-  "completed_at": "2026-03-01T17:27:00.531405"
+  "total_records": 132570,
+  "completed_at": "2026-03-01T17:27:14.755372"
 }
