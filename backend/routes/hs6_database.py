@@ -440,12 +440,17 @@ async def smart_search_hs6(
     # Get sub-positions if requested and country is specified
     results_with_subs = []
     if include_sub_positions and country_code:
-        from services.authentic_tariff_service import authentic_tariff_service
+        from services.authentic_tariff_service import get_sub_positions
         for result in scored_results[:limit]:
             hs6 = result["code"]
-            sub_positions = authentic_tariff_service.get_sub_positions(country_code, hs6, language)
-            result["sub_positions"] = sub_positions.get("sub_positions", []) if sub_positions else []
-            result["has_sub_positions"] = len(result["sub_positions"]) > 0
+            try:
+                sub_positions = get_sub_positions(country_code, hs6)
+                result["sub_positions"] = sub_positions if isinstance(sub_positions, list) else []
+                result["has_sub_positions"] = len(result["sub_positions"]) > 0
+            except Exception as e:
+                logger.warning(f"Error getting sub-positions for {country_code}/{hs6}: {e}")
+                result["sub_positions"] = []
+                result["has_sub_positions"] = False
             results_with_subs.append(result)
         final_results = results_with_subs
     else:

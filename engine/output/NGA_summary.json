@@ -1,0 +1,18 @@
+{
+  "country_iso3": "NGA",
+  "country_name": "Nigeria",
+  "processed_lines": 5831,
+  "sub_positions": 16147,
+  "total_positions": 21978,
+  "chapters_covered": 98,
+  "vat_rate": 7.5,
+  "dd_range": {
+    "min": 0.0,
+    "max": 60.0,
+    "avg": 14.47
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/NGA_canonical.jsonl",
+  "record_count": 16577,
+  "generated_at": "2026-03-01T17:27:11.580206"
+}

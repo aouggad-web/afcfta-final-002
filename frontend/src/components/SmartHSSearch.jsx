@@ -92,7 +92,7 @@ export default function SmartHSSearch({
       try {
         const response = await axios.get(`${API}/hs6/smart-search`, {
           params: {
-            query,
+            q: query,
             country_code: destinationCountry || undefined,
             language,
             include_sub_positions: true

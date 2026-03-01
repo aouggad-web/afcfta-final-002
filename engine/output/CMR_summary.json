@@ -1,0 +1,18 @@
+{
+  "country_iso3": "CMR",
+  "country_name": "CMR",
+  "processed_lines": 5831,
+  "sub_positions": 16142,
+  "total_positions": 21973,
+  "chapters_covered": 98,
+  "vat_rate": 19.25,
+  "dd_range": {
+    "min": 0.0,
+    "max": 30.0,
+    "avg": 14.02
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/CMR_canonical.jsonl",
+  "record_count": 16572,
+  "generated_at": "2026-03-01T17:37:16.526644"
+}
