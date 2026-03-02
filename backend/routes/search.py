@@ -74,8 +74,11 @@ async def search_commodities(
     
     try:
         with engine.connect() as conn:
+            # Déterminer la langue de recherche
+            ts_config = 'french' if lang == 'fr' else 'english'
+            
             # Construire la requête
-            base_query = """
+            base_query = f"""
                 SELECT 
                     c.id,
                     c.country_iso3,
@@ -87,10 +90,10 @@ async def search_commodities(
                     c.total_npf_pct,
                     c.total_zlecaf_pct,
                     c.savings_pct,
-                    ts_rank(to_tsvector('french', c.description_fr), plainto_tsquery('french', :query)) as rank
+                    ts_rank(to_tsvector('{ts_config}', c.description_fr), plainto_tsquery('{ts_config}', :query)) as rank
                 FROM commodities c
                 JOIN countries co ON c.country_iso3 = co.iso3
-                WHERE to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :query)
+                WHERE to_tsvector('{ts_config}', c.description_fr) @@ plainto_tsquery('{ts_config}', :query)
             """
             
             params = {"query": q, "limit": limit, "offset": offset}
