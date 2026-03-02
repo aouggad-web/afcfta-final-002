@@ -836,9 +836,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
       {/* === RÉSULTATS === */}
       {result && (
-        <div className="space-y-4">
+        <div className="space-y-4 animate-in fade-in duration-300">
           {/* En-tête des résultats avec synthèse */}
-          <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 overflow-hidden">
+          <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 overflow-hidden transition-all duration-300">
             <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
             
             <CardHeader className="relative">

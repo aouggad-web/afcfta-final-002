@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
@@ -65,13 +65,12 @@ export default function NationalPositionsSelector({
 
   const t = texts[language] || texts.fr;
 
-  useEffect(() => {
-    if (countryCode && hs6Code && hs6Code.length >= 6) {
-      fetchPositions();
+  // Memoize fetchPositions to prevent unnecessary re-renders
+  const fetchPositions = useCallback(async () => {
+    if (!countryCode || !hs6Code || hs6Code.length < 6) {
+      return;
     }
-  }, [countryCode, hs6Code]);
-
-  const fetchPositions = async () => {
+    
     setLoading(true);
     setError(null);
     
@@ -86,21 +85,24 @@ export default function NationalPositionsSelector({
         setPositions(response.data.sub_positions);
       } else {
         // Fallback: Rechercher dans PostgreSQL
-        const searchResponse = await axios.get(
-          `${API}/commodities/search/simple`,
-          { params: { q: hs6Code.substring(0, 6), country: countryCode, limit: 50 } }
-        );
-        
-        if (searchResponse.data.results) {
-          // Transformer les résultats au format attendu
-          setPositions(searchResponse.data.results.map(r => ({
-            code: r.national_code,
-            description_fr: r.description,
-            description_en: r.description,
-            dd_rate_pct: r.npf_rate || 0,
-            vat_rate_pct: 18, // Default VAT
-            total_rate_pct: (r.npf_rate || 0) + 18
-          })));
+        try {
+          const searchResponse = await axios.get(
+            `${API}/commodities/search/simple`,
+            { params: { q: hs6Code.substring(0, 6), country: countryCode, limit: 50 } }
+          );
+          
+          if (searchResponse.data.results) {
+            setPositions(searchResponse.data.results.map(r => ({
+              code: r.national_code,
+              description_fr: r.description,
+              description_en: r.description,
+              dd_rate_pct: r.npf_rate || 0,
+              vat_rate_pct: 18,
+              total_rate_pct: (r.npf_rate || 0) + 18
+            })));
+          }
+        } catch {
+          // PostgreSQL not available, keep existing positions
         }
       }
     } catch (err) {
@@ -109,7 +111,17 @@ export default function NationalPositionsSelector({
     } finally {
       setLoading(false);
     }
-  };
+  }, [countryCode, hs6Code, language, t.loadError]);
+
+  // Debounced effect to prevent rapid API calls
+  useEffect(() => {
+    if (countryCode && hs6Code && hs6Code.length >= 6) {
+      const timeoutId = setTimeout(() => {
+        fetchPositions();
+      }, 300);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [countryCode, hs6Code, fetchPositions]);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('fr-FR', {
@@ -156,7 +168,7 @@ export default function NationalPositionsSelector({
   }
 
   return (
-    <Card className="bg-slate-800/50 border-slate-700 overflow-hidden">
+    <Card className="bg-slate-800/50 border-slate-700 overflow-hidden transition-all duration-300">
       <CardHeader 
         className="py-3 cursor-pointer hover:bg-slate-700/30 transition-colors"
         onClick={() => setExpanded(!expanded)}
