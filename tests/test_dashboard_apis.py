@@ -6,7 +6,7 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://regulatory-db.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://afcfta-trade-calc.preview.emergentagent.com')
 
 class TestHealthEndpoints:
     """Health check endpoint tests"""
@@ -26,7 +26,7 @@ class TestHealthEndpoints:
         assert response.status_code == 200
         data = response.json()
         assert data["status"] == "healthy"
-        assert "checks" in data
+        assert "components" in data
         print(f"✓ Detailed health check passed: {data['status']}")
 
 

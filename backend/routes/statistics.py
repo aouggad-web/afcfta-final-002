@@ -21,6 +21,13 @@ from etl.unctad_data import (
     get_all_unctad_data
 )
 
+# Import cache service
+try:
+    from services.cache_service import cache_get, cache_set, generate_cache_key
+    CACHE_AVAILABLE = True
+except ImportError:
+    CACHE_AVAILABLE = False
+
 def translate_products_list(products: list, language: str = 'fr') -> list:
     """Translate product names and country names in a products list"""
     if language == 'fr':
@@ -41,7 +48,7 @@ router = APIRouter(prefix="/statistics")
 
 
 # =============================================================================
-# MAIN STATISTICS ENDPOINT - Dashboard Data
+# MAIN STATISTICS ENDPOINT - Dashboard Data (CACHED)
 # =============================================================================
 
 @router.get("")
@@ -49,8 +56,16 @@ async def get_main_statistics():
     """
     Main statistics endpoint for the dashboard
     Returns comprehensive African trade statistics
+    CACHED: 1 hour TTL
     """
-    return {
+    # Check cache first
+    if CACHE_AVAILABLE:
+        cache_key = generate_cache_key("statistics", "main")
+        cached = cache_get(cache_key)
+        if cached:
+            return cached
+    
+    result = {
         "overview": {
             "estimated_combined_gdp": 2706000000000,  # $2.706T - PIB combiné Afrique 2024
             "african_countries_members": 54,
@@ -164,6 +179,12 @@ async def get_main_statistics():
         "source": "IMF WEO 2024, World Bank, UNCTAD, OEC/BACI, AfCFTA Secretariat",
         "last_updated": "2024-12"
     }
+    
+    # Cache the result
+    if CACHE_AVAILABLE:
+        cache_set(cache_key, result, "statistics")
+    
+    return result
 
 # =============================================================================
 # TRADE PRODUCTS ENDPOINTS

@@ -23,7 +23,7 @@ import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 // Interceptor: reject responses that are not valid JSON objects/arrays
