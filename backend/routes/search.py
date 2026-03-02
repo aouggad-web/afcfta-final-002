@@ -141,6 +141,7 @@ async def search_commodities(
             
             return {
                 "query": q,
+                "language": lang,
                 "country_filter": country,
                 "total_results": total,
                 "limit": limit,
