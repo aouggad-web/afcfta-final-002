@@ -8,7 +8,7 @@ import AirLogisticsMap from './AirLogisticsMap';
 import AirportCard from './AirportCard';
 import AirportDetailsModal from './AirportDetailsModal';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 export default function AirLogisticsTab({ language = 'fr' }) {
