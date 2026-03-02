@@ -161,8 +161,9 @@ async def search_commodities(
                 count_query = """
                     SELECT COUNT(*) FROM commodities c
                     WHERE (
-                        to_tsvector('english', c.description_fr) @@ plainto_tsquery('english', :query)
+                        to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :search_term)
                         OR c.description_fr ILIKE :pattern
+                        OR c.description_fr ILIKE :original_pattern
                     )
                 """
             else:
