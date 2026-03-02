@@ -797,8 +797,24 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               placeholder="100000"
               min="0"
               className="h-12 font-mono text-lg bg-slate-800/50 border-slate-600 hover:border-emerald-500/50 focus:border-emerald-500 transition-colors"
+              data-testid="cif-value-input"
             />
           </div>
+
+          {/* Sélecteur de Positions Nationales */}
+          {destinationCountry && hsCode && hsCode.length >= 6 && (
+            <NationalPositionsSelector
+              countryCode={destinationCountry}
+              hs6Code={hsCode}
+              cifValue={value}
+              language={language}
+              selectedPosition={hsCode}
+              onPositionSelect={(code, description) => {
+                setHsCode(code);
+                setSelectedSubPositionDesc(description);
+              }}
+            />
+          )}
 
           {/* Bouton Calculer */}
           <Button 
