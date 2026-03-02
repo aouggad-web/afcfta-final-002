@@ -9,7 +9,7 @@ import sys
 from datetime import datetime
 
 # Configuration de l'API
-BASE_URL = "https://regulatory-db.preview.emergentagent.com/api"
+BASE_URL = "https://afcfta-trade-calc.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 def test_faostat_unido_endpoints():
