@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd /home/runner/workspace/backend && python -m uvicorn server:app --host 0.0.0.0 --port 8000 --reload &
 # Determine script directory for portable paths
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BACKEND_DIR="$SCRIPT_DIR/backend"
