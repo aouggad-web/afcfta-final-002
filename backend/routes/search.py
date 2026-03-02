@@ -78,8 +78,18 @@ async def search_commodities(
             # Déterminer la langue de recherche
             ts_config = 'french' if lang == 'fr' else 'english'
             
-            # Pour l'anglais, on utilise aussi ILIKE car les descriptions sont en français
-            # mais peuvent contenir des termes techniques anglais
+            # Pour l'anglais, traduire le terme de recherche si possible
+            search_term = q
+            if lang == 'en':
+                # Chercher une traduction
+                trans_result = conn.execute(text(
+                    "SELECT fr_term FROM search_translations WHERE en_term = :term"
+                ), {"term": q.lower()})
+                trans_row = trans_result.fetchone()
+                if trans_row:
+                    search_term = trans_row.fr_term
+            
+            # Pour l'anglais, on utilise la traduction + ILIKE
             if lang == 'en':
                 base_query = f"""
                     SELECT 
@@ -95,13 +105,15 @@ async def search_commodities(
                         c.savings_pct,
                         CASE 
                             WHEN c.description_fr ILIKE :pattern THEN 1.0
+                            WHEN c.description_fr ILIKE :original_pattern THEN 0.8
                             ELSE 0.5
                         END as rank
                     FROM commodities c
                     JOIN countries co ON c.country_iso3 = co.iso3
                     WHERE (
-                        to_tsvector('english', c.description_fr) @@ plainto_tsquery('english', :query)
+                        to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :search_term)
                         OR c.description_fr ILIKE :pattern
+                        OR c.description_fr ILIKE :original_pattern
                     )
                 """
             else:
@@ -124,7 +136,14 @@ async def search_commodities(
                     WHERE to_tsvector('{ts_config}', c.description_fr) @@ plainto_tsquery('{ts_config}', :query)
                 """
             
-            params = {"query": q, "pattern": f"%{q}%", "limit": limit, "offset": offset}
+            params = {
+                "query": q, 
+                "search_term": search_term,
+                "pattern": f"%{search_term}%", 
+                "original_pattern": f"%{q}%",
+                "limit": limit, 
+                "offset": offset
+            }
             
             # Filtrer par pays si spécifié
             if country:
