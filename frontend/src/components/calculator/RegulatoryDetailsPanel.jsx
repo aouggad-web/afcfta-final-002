@@ -204,7 +204,10 @@ export default function RegulatoryDetailsPanel({
 
         if (response.data.success) {
           setData(response.data);
-          onDataLoaded(response.data);
+          // Call onDataLoaded only if it's a function
+          if (typeof onDataLoaded === 'function') {
+            onDataLoaded(response.data);
+          }
         } else {
           setError(response.data.error || t.noData);
           setData(null);
@@ -218,12 +221,13 @@ export default function RegulatoryDetailsPanel({
       }
     };
 
+    // Debounce the API call to prevent excessive requests
     const timeoutId = setTimeout(() => {
       fetchData();
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [countryCode, hsCode, t.noData, onDataLoaded]);
+  }, [countryCode, hsCode, t.noData]); // Remove onDataLoaded from dependencies to prevent re-render loops
 
   const toggleSection = (section) => {
     setExpandedSections(prev => ({

@@ -96,11 +96,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     fetchCountryTariffProfile(value);
   }, [fetchCountryTariffProfile]);
 
-  useEffect(() => {
-    if (destinationCountry) {
-      fetchCountryTariffProfile(destinationCountry);
-    }
-  }, [destinationCountry, fetchCountryTariffProfile]);
+  // Remove redundant useEffect - handleDestinationChange already calls fetchCountryTariffProfile
 
   const texts = {
     fr: {
