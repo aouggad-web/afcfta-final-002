@@ -8,6 +8,16 @@ Build a comprehensive African Continental Free Trade Area (AfCFTA) trade calcula
 ### Regulatory Engine v3 - 54/54 Countries Complete
 All 54 AfCFTA member countries now have full regulatory data in the canonical format.
 
+### PostgreSQL Migration - COMPLETE (2026-03-02) ✅
+All data migrated from JSONL flat files to PostgreSQL database:
+- **54 countries** migrated
+- **894,783 commodités** (positions tarifaires)
+- **2,439,140 mesures** (taxes et droits)
+- **920,297 formalités** administratives
+- **894,783 avantages fiscaux** ZLECAf
+
+**Database:** `postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory`
+
 ## Architecture
 
 ```
