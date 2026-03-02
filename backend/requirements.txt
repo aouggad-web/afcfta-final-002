@@ -19,7 +19,7 @@ cryptography==46.0.2
 dnspython==2.8.0
 ecdsa==0.19.1
 email-validator==2.3.0
-faostat
+faostat==1.1.2
 fastapi==0.110.1
 feedparser==6.0.12
 flake8==7.3.0

@@ -24,11 +24,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
 
       - name: Install Python deps
         run: |
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
+
+      - name: Validate environment
+        run: python backend/validate_env.py
 
       - name: Generate datasets (Lyra+ pipeline)
         run: |
