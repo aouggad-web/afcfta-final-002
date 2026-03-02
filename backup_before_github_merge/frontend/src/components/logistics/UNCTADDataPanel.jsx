@@ -72,7 +72,7 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
         axios.get(`${API}/statistics/unctad/lsci`)
       ]);
       setPortData(portsRes.data);
-      setLsciData(Array.isArray(lsciRes.data) ? lsciRes.data : []);
+      setLsciData(lsciRes.data);
     } catch (err) {
       console.error('Error fetching UNCTAD data:', err);
       setError(t.error);
@@ -99,7 +99,7 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
   };
 
   const prepareLSCIChartData = () => {
-    if (!lsciData || !Array.isArray(lsciData)) return [];
+    if (!lsciData) return [];
     return lsciData.slice(0, 10).map(item => ({
       name: language === 'en' ? item.country : item.country_fr,
       lsci: item.lsci_2023,
@@ -134,7 +134,7 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
   return (
     <div className="space-y-6" data-testid="unctad-panel">
       {/* Header */}
-      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-white shadow-xl">
+      <Card className="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 text-white shadow-xl">
         <CardHeader>
           <CardTitle className="text-2xl font-bold flex items-center gap-3">
             <Ship className="w-7 h-7" />

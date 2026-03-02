@@ -146,7 +146,7 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
   return (
     <div className="space-y-4 animate-fade-in">
       {/* Compact Header */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+      <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-cyan-600 text-white p-4 rounded-xl shadow-lg">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
             <Ship className="w-5 h-5" />

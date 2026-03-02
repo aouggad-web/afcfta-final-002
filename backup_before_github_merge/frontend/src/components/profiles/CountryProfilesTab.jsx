@@ -213,13 +213,13 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
   return (
     <div className="space-y-6">
-      <Card className="shadow-xl border border-[rgba(212,175,55,0.2)] bg-gradient-to-br from-slate-800 to-slate-900">
-        <CardHeader className="bg-gradient-to-r from-[#1B232C] to-[#15202A] border-b border-[rgba(212,175,55,0.14)]">
-          <CardTitle className="text-2xl font-bold text-amber-400 flex items-center gap-2">
+      <Card className="shadow-xl border-t-4 border-t-blue-600">
+        <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50">
+          <CardTitle className="text-2xl font-bold text-blue-700 flex items-center gap-2">
             <span>🌍</span>
             <span>{t.title}</span>
           </CardTitle>
-          <CardDescription className="font-semibold text-slate-400">
+          <CardDescription className="font-semibold text-gray-700">
             {t.description}
           </CardDescription>
         </CardHeader>
@@ -231,7 +231,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               fetchCountryProfile(value);
             }}
           >
-            <SelectTrigger className="text-lg font-semibold border border-[rgba(212,175,55,0.25)] focus:border-[rgba(212,175,55,0.5)]">
+            <SelectTrigger className="text-lg font-semibold border-2 border-blue-300 focus:border-blue-500">
               <SelectValue placeholder={t.selectPlaceholder} />
             </SelectTrigger>
             <SelectContent>

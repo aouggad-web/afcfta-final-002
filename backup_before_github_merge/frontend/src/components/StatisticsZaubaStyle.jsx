@@ -137,8 +137,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/api/statistics`);
-      const data = response.data;
-      setStatistics(typeof data === 'object' && data !== null && !Array.isArray(data) ? data : null);
+      setStatistics(response.data);
       setLoading(false);
     } catch (error) {
       console.error('Erreur:', error);

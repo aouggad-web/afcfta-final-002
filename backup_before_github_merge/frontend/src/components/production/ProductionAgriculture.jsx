@@ -153,13 +153,11 @@ function ProductionAgriculture({ language = 'fr' }) {
     setLoading(true);
     try {
       const response = await axios.get(`${API}/faostat/production/${countryIso3}?language=${language}`);
-      const d = response.data;
-      const validData = typeof d === 'object' && d !== null && !Array.isArray(d) ? d : null;
-      setFaostatData(validData);
+      setFaostatData(response.data);
       
       // Fetch trends for main commodity if available
-      if (validData?.commodities && Object.keys(validData.commodities).length > 0) {
-        const firstCommodity = Object.values(validData.commodities)[0];
+      if (response.data.commodities && Object.keys(response.data.commodities).length > 0) {
+        const firstCommodity = Object.values(response.data.commodities)[0];
         if (firstCommodity?.commodity_code) {
           fetchTrends(countryIso3, firstCommodity.commodity_code);
         }

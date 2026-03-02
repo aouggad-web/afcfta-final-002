@@ -94,13 +94,13 @@ const CustomSankeyTooltip = ({ active, payload, language = 'fr' }) => {
 
 // Custom Node renderer
 const CustomSankeyNode = (props) => {
-  const { x, y, width, height, payload, onNodeClick } = props;
+  const { x, y, width, height, payload, containerWidth, onNodeClick } = props;
   
   if (!payload || !payload.name) return null;
   if (height < 1) return null;
 
-  const isSource = payload.type === 'source';
-  const isSink = payload.type === 'sink';
+  const isSource = x < containerWidth / 3;
+  const isSink = x > containerWidth * 2 / 3;
   const isActive = payload.isActive;
   const color = payload.color || '#8884d8';
 
@@ -417,7 +417,7 @@ export default function TradeSankeyDiagram({
           <ResponsiveContainer width="100%" height="100%">
             <Sankey
               data={data}
-              node={(nodeProps) => <CustomSankeyNode {...nodeProps} onNodeClick={handleNodeClick} />}
+              node={<CustomSankeyNode onNodeClick={handleNodeClick} />}
               nodePadding={25}
               margin={{ top: 10, right: 120, bottom: 10, left: 120 }}
               link={{ stroke: '#cbd5e1', strokeOpacity: 0.3 }}

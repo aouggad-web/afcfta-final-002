@@ -17,7 +17,7 @@ export function FilterBar({
   compact = false 
 }) {
   return (
-    <Card className={`border border-[rgba(212,175,55,0.1)] shadow-sm bg-[rgba(27,35,44,0.8)] ${className}`}>
+    <Card className={`border-0 shadow-sm bg-gradient-to-r from-slate-50 to-gray-50 ${className}`}>
       <CardContent className={compact ? "py-3 px-4" : "py-4 px-5"}>
         <div className="flex flex-wrap items-center gap-3">
           {children}
