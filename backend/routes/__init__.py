@@ -44,11 +44,7 @@ from .authentic_tariffs import router as authentic_tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
 from .faostat import router as faostat_router
 from .calculator import router as calculator_router
-try:
-    from .gemini_analysis import router as gemini_router
-    GEMINI_AVAILABLE = True
-except ImportError:
-    GEMINI_AVAILABLE = False
+GEMINI_AVAILABLE = True  # already imported above
 
 try:
     from .trade_data import router as trade_data_router
@@ -112,8 +108,6 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"])
     api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"])
     api_router.include_router(calculator_router, tags=["Calculator"])
-    if GEMINI_AVAILABLE:
-        api_router.include_router(gemini_router, tags=["AI Analysis"])
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(trade_data_router, tags=["Trade Data Sources"])
     

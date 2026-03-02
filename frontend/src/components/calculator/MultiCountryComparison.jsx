@@ -16,7 +16,7 @@ import {
 } from 'recharts';
 import { Search, Globe, TrendingDown, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
-const API = process.env.REACT_APP_BACKEND_URL + '/api';
+const API = (process.env.REACT_APP_BACKEND_URL || '') + '/api';
 
 // Country flag emoji helper
 const getFlag = (iso2) => {
