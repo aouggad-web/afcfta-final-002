@@ -18,6 +18,12 @@ Nouveaux endpoints créés:
 - `GET /api/commodities/countries` - Liste des pays migrés
 - `GET /api/commodities/stats` - Statistiques de la base
 
+**Support bilingue (FR/EN):**
+- Index full-text français : `idx_desc_ft` (french)
+- Index full-text anglais : `idx_desc_ft_en` (english)
+- Table de traduction : `search_translations` (49 termes EN→FR)
+- Recherche `?lang=en` traduit automatiquement les termes (coffee→café, vehicle→véhicule, etc.)
+
 ### OEC Data Audit & Statistics - COMPLETE (2026-03-02) ✅
 - Endpoint `/api/statistics` avec données complètes
 - Commerce MONDIAL vs INTRA-AFRICAIN tableaux fonctionnels
