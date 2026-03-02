@@ -98,6 +98,8 @@ async def get_main_statistics():
             "intra_african_trade_2023": 111.8,  # Milliards USD
             "intra_african_trade_2024": 123.5,  # Milliards USD (estimé +10.5%)
             "growth_rate_2024": 10.5,
+            "growth_rate_2023_2024": 10.5,
+            "trend": "Croissance soutenue",
             "zlecaf_target_2030": 200,
             "projected_2025": 138.3,
             "projected_2030": 188.0
