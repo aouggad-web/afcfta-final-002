@@ -59,12 +59,13 @@ async def search_commodities(
     Recherche textuelle dans les descriptions de produits.
     
     Utilise la recherche full-text PostgreSQL avec support du français ET anglais.
+    - Pour le français: recherche full-text optimisée
+    - Pour l'anglais: recherche combinée (full-text + ILIKE) car les descriptions sont en français
     
     Exemples:
     - `/api/commodities/search?q=café` (français par défaut)
-    - `/api/commodities/search?q=coffee&lang=en` (anglais)
+    - `/api/commodities/search?q=coffee&lang=en` (anglais - cherche aussi dans les termes techniques)
     - `/api/commodities/search?q=véhicule&country=SEN`
-    - `/api/commodities/search?q=vehicle&country=SEN&lang=en`
     """
     if not POSTGRES_AVAILABLE:
         raise HTTPException(
