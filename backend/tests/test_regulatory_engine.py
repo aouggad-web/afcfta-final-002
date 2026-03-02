@@ -7,7 +7,7 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://regulatory-db.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://afcfta-trade-calc.preview.emergentagent.com').rstrip('/')
 
 
 class TestRegulatoryEngineCountries:

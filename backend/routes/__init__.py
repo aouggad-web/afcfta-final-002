@@ -86,6 +86,12 @@ try:
 except ImportError:
     SEARCH_AVAILABLE = False
 
+try:
+    from .cache import router as cache_router
+    CACHE_ROUTER_AVAILABLE = True
+except ImportError:
+    CACHE_ROUTER_AVAILABLE = False
+
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
     api_router.include_router(health_router, tags=["Health"])
@@ -121,3 +127,5 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(regulatory_engine_router, tags=["Regulatory Engine v3"])
     if SEARCH_AVAILABLE:
         api_router.include_router(search_router, tags=["Text Search"])
+    if CACHE_ROUTER_AVAILABLE:
+        api_router.include_router(cache_router, tags=["Cache Management"])

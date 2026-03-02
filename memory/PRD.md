@@ -5,6 +5,19 @@ Build a comprehensive African Continental Free Trade Area (AfCFTA) trade calcula
 
 ## Implementation Status: ALL MAJOR FEATURES COMPLETE ✅
 
+### Redis Cache - COMPLETE (2026-03-02) ✅
+- Redis server installed and running
+- Cache service with configurable TTLs
+- API endpoints for cache management:
+  - `GET /api/cache/stats` - Cache statistics
+  - `GET /api/cache/keys` - List cached keys
+  - `DELETE /api/cache/clear` - Clear all cache
+  - `DELETE /api/cache/clear/{prefix}` - Clear by prefix
+- Cached endpoints:
+  - `/api/statistics` (TTL: 1 hour)
+  - `/api/commodities/search` (TTL: 30 minutes)
+- Response includes `from_cache: true/false` indicator
+
 ### Calculator Improvements - COMPLETE (2026-03-02) ✅
 - **New NationalPositionsSelector component** showing all available national positions
 - **CIF Value displayed prominently** in green banner (25,000 $US)
