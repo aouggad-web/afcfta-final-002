@@ -17,29 +17,42 @@ Successfully integrated all updates from `https://github.com/aouggad-web/afcfta-
 - Logistics components updates
 - Production components updates
 
+### OEC Data Audit & Statistics Fix - COMPLETE (2026-03-02) ✅
+Fixed all NaN issues in statistics display:
+- Created `/api/statistics` main endpoint with comprehensive data
+- Created `/api/statistics/trade-performance` for global commerce data
+- Created `/api/statistics/trade-performance-intra-african` for intra-African trade
+- Added `trade_evolution` data with growth rates
+- All KPIs now display correctly:
+  - PIB Total: $2706B
+  - Exports (Monde): $1434B
+  - Imports (Monde): $1272B
+  - Commerce Intra-Africain 2024: $123.5B
+  - Croissance 2023-2024: +10.5%
+
 ## Architecture
 
 ```
 /app
 ├── backend/
-│   ├── routes/             # API endpoints
-│   ├── services/           # Business logic
+│   ├── routes/
+│   │   └── statistics.py   # NEW: Main stats + trade performance endpoints
+│   ├── services/
 │   └── server.py
 ├── engine/                 # Regulatory Engine v3
 │   ├── api/
 │   │   └── engine_service.py
-│   ├── database/           # PostgreSQL models (ready)
-│   │   ├── models.py
-│   │   └── migration.py
 │   └── output/             # 1.5GB canonical JSONL data
 │       └── {ISO3}_canonical.jsonl (54 files)
 ├── frontend/
 │   └── src/components/
-│       ├── calculator/     # Trade calculator
-│       ├── logistics/      # Ports, corridors, airports
-│       ├── opportunities/  # AI analysis, Sankey diagrams
-│       ├── production/     # Macro, Agriculture, Mining
-│       └── profiles/       # Country profiles
+│       ├── calculator/
+│       ├── TradeComparison.jsx  # FIXED: Uses correct API endpoints
+│       ├── StatisticsZaubaStyle.jsx
+│       ├── logistics/
+│       ├── opportunities/
+│       ├── production/
+│       └── profiles/
 └── memory/PRD.md
 ```
 
@@ -56,52 +69,31 @@ Successfully integrated all updates from `https://github.com/aouggad-web/afcfta-
 | HS6 Codes per Country | ~5,831 |
 | Avg Response Time | <5ms |
 
-## Key Features
+## Key API Endpoints
 
-### Calculator
-- NPF vs ZLECAf tax comparison
-- Real-time savings calculation
-- Support for 54 countries
-- Sub-position selection
+### Statistics (NEW)
+```
+GET /api/statistics
+  Returns: overview, top_exporters_2024, top_importers_2024, 
+           top_10_gdp_2024, trade_evolution, sector_performance
 
-### Logistics
-- Maritime logistics (68 ports)
-- Air logistics (120+ airports)
-- Land corridors (15 routes)
-- Free trade zones
+GET /api/statistics/trade-performance
+  Returns: Global trade data for all countries (exports/imports with world)
 
-### Production Analysis
-- Macro (World Bank/IMF)
-- Agriculture (FAOSTAT)
-- Manufacturing (UNIDO)
-- Mining (USGS)
-
-### Opportunities
-- AI-powered analysis (Gemini)
-- Trade Sankey diagrams
-- Import substitution analysis
-- Value chain mapping
-
-## API Endpoints
+GET /api/statistics/trade-performance-intra-african
+  Returns: Intra-African trade data (commerce between African countries only)
+```
 
 ### Calculator
 ```
 POST /api/authentic-tariffs/calculate
-  ?country_iso3={ISO3}
-  &hs_code={HS_CODE}
-  &cif_value={VALUE}
-
-Response: NPF calculation, ZLECAf calculation, savings
+  ?country_iso3={ISO3}&hs_code={HS_CODE}&cif_value={VALUE}
 ```
 
 ### Regulatory Engine
 ```
 GET /api/regulatory-engine/details
-  ?country={ISO3}
-  &code={HS_CODE}
-  &search_type=hs6
-
-Response: commodity, measures, requirements, fiscal_advantages
+  ?country={ISO3}&code={HS_CODE}&search_type=hs6
 ```
 
 ## Completed Work (March 2026)
@@ -114,6 +106,10 @@ Response: commodity, measures, requirements, fiscal_advantages
 - [x] CountryProfilesTab UI improvements
 - [x] Production tabs working
 - [x] Logistics with map visualization
+- [x] **OEC Data Audit - All NaN issues fixed**
+- [x] **Statistics endpoints created**
+- [x] **Trade comparison tables working**
+- [x] **Intra-African trade percentages displayed**
 
 ## Backlog
 
@@ -122,7 +118,6 @@ Response: commodity, measures, requirements, fiscal_advantages
 - [ ] Text search API for product descriptions
 
 ### P2 - Medium Priority
-- [ ] OEC data audit
 - [ ] RASD (55th country) addition
 
 ### P3 - Low Priority
@@ -132,5 +127,6 @@ Response: commodity, measures, requirements, fiscal_advantages
 
 ## Testing Status
 - Frontend: Compiled successfully, lint passed
-- Backend: API endpoints working (HTTP 200)
-- Calculator: Verified with multiple countries
+- Backend: All API endpoints verified (HTTP 200)
+- Statistics: All KPIs displaying correctly
+- Tables: Commerce MONDIAL and INTRA-AFRICAIN working
