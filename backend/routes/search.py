@@ -110,9 +110,9 @@ async def search_commodities(
             rows = result.fetchall()
             
             # Compter le total (pour la pagination)
-            count_query = """
+            count_query = f"""
                 SELECT COUNT(*) FROM commodities c
-                WHERE to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :query)
+                WHERE to_tsvector('{ts_config}', c.description_fr) @@ plainto_tsquery('{ts_config}', :query)
             """
             if country:
                 count_query += " AND c.country_iso3 = :country"
