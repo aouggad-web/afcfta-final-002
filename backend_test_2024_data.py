@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Dict, Any, List
 
 # Configuration de l'API
-BASE_URL = "https://regulatory-data-hub.preview.emergentagent.com/api"
+BASE_URL = "https://regulatory-db.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 class ZLECAf2024DataTester:

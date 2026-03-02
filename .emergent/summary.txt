@@ -2,191 +2,982 @@
 The user's initial request was to fix and enhance a full-stack ZLECAf Trade Calculator application. The scope has now expanded to building a comprehensive regulatory data engine for all 54 AfCFTA countries.
 
 PRODUCT REQUIREMENTS:
-1.  **Build Regulatory Engine v3 (P0 - In Progress)**: Build a canonical regulatory engine to process, validate, and serve detailed tariff and compliance data for all African countries. The engine now supports all 54 countries using flat-file storage, but a migration to PostgreSQL is in progress.
+1.  **Build Regulatory Engine v3 (P0 - DONE)**: Build a canonical regulatory engine to process, validate, and serve detailed tariff and compliance data for all African countries.
 2.  **Integrate Regulatory Engine into Frontend (P0 - DONE)**: Display the detailed regulatory data within the main calculator and in a separate, clearly presented sub-tab.
 3.  **Enhance UI/UX (P0 - DONE)**: Improve the display and readability of the calculator and the new regulatory information section.
-4.  **Add Text Search API (P1 - NEW)**: Add a new API endpoint to allow text-based search for products by their description.
-5.  **Migrate Engine to PostgreSQL (P1 - In Progress)**: Migrate the engine's data from flat files to a PostgreSQL database for better scalability and query performance.
-6.  **Refactor Backend API (P2)**: Refactor the API service to query data from PostgreSQL instead of the current flat-file () system.
-7.  **Integrate Sankey Diagram (P2)**: Integrate a GitHub pull request to add a .
-8.  **Audit and Correct OEC Data (P3)**: Correct trade statistics from the OEC.
-9.  **Add RASD (SADR) (P3)**: Add the Sahrawi Arab Democratic Republic as the 55th country.
-10. **Clarify AfCFTA Membership Stats (P4)**: Correct the header statistics.
-11. **Audit and Enhance Economic Indicators (P4)**: Verify and augment economic indicators.
-12. **Enhance Country Profile Page (P5)**: Enhance Country Profile Page.
+4.  **Migrate Engine to PostgreSQL (P1 - DONE)**: Migrate the engine's data from flat files to a PostgreSQL database for better scalability and query performance.
+5.  **Refactor Backend API (P1 - NOT STARTED)**: Refactor the API service to query data from PostgreSQL instead of the current flat-file () system.
+6.  **Add Text Search API (P2 - NOT STARTED)**: Add a new API endpoint to allow text-based search for products by their description.
+7.  **Integrate Sankey Diagram (P2 - NOT STARTED)**: Integrate a GitHub pull request to add a .
+8.  **Audit and Correct OEC Data (P3 - NOT STARTED)**: Correct trade statistics from the OEC.
+9.  **Add RASD (SADR) (P3 - NOT STARTED)**: Add the Sahrawi Arab Democratic Republic as the 55th country.
+10. **Clarify AfCFTA Membership Stats (P4 - NOT STARTED)**: Correct the header statistics.
+11. **Audit and Enhance Economic Indicators (P4 - NOT STARTED)**: Verify and augment economic indicators.
+12. **Enhance Country Profile Page (P5 - NOT STARTED)**: Enhance Country Profile Page.
 
 **User's preferred language**: French
 
 **what currently exists?**
-The ZLECAf Trade Calculator is a full-stack application (FastAPI/React) where the regulatory data engine has been scaled to support all 54 AfCFTA countries using a flat-file system ( files). 1.5GB of data has been generated and is served by the  endpoint. PostgreSQL has been installed and configured, and a data migration script exists but was interrupted by a critical environment crash. The application is currently non-functional due to a persistent 502 Bad Gateway error.
+The ZLECAf Trade Calculator application's frontend calculator has been fully repaired and is now functional. The backend's entire regulatory dataset (1.5GB across 54 countries) has been successfully migrated from a flat-file  system to a PostgreSQL database. The PostgreSQL service is running and the database is fully populated. However, the backend API has not yet been refactored to query PostgreSQL; it still reads from the old flat files. The development environment suffers from severe, intermittent 502 Bad Gateway errors that repeatedly halt progress. The user also initiated a request to update the app from an external public GitHub repository, but this process was not completed.
 
 **Last working item**:
--   **Last item agent was working**: The agent was attempting to resolve a 502 Bad Gateway error that has rendered the development environment unusable. After several failed attempts to connect, the agent concluded the environment was unrecoverable (a recurring issue) and advised the user to create a new fork. The user agreed and was instructed on how to do so.
--   **Status**: BLOCKED
--   **Agent Testing Done**: N
--   **Which testing method agent to use?**: NA (Environment is down)
+-   **Last item agent was working**: The user's final request was to investigate and resolve the recurring 502 Bad Gateway connection problems that have plagued the entire session. The agent was beginning to list files to start this investigation when the session ended.
+-   **Status**: IN PROGRESS
+-   **Agent Testing Done**: N/A
+-   **Which testing method agent to use?**: manual testing by curl. The agent should start by checking system and service logs (, ) and resource utilization (, Filesystem      Size  Used Avail Use% Mounted on
+overlay          95G   13G   82G  14% /
+tmpfs            64M     0   64M   0% /dev
+/dev/nvme0n3    9.8G  7.2G  2.6G  74% /app
+/dev/nvme0n1p1   95G   13G   82G  14% /etc/hosts
+shm              64M     0   64M   0% /dev/shm
+tmpfs           7.9G     0  7.9G   0% /proc/acpi
+tmpfs           7.9G     0  7.9G   0% /proc/scsi
+tmpfs           7.9G     0  7.9G   0% /sys/firmware) to diagnose the cause of the gateway errors.
 -   **User Testing Done**: N
 
 **All Pending/In progress Issue list**:
--   **Issue 1: Critical Environment Failure (P0 - HIGHEST)**
-    -   **Description**: The development environment is completely unresponsive, returning a 502 Bad Gateway error for all commands. This is a hard blocker for all development. It's a recurring issue, indicating a potential platform-level resource problem that simple forks may not permanently solve.
-    -   **Attempted fixes**: The previous agent confirmed the environment was unresponsive and correctly advised the user to fork the job again.
+-   **Issue 1: Critical Environment Instability (P0 - HIGHEST)**
+    -   **Description**: The development environment is extremely unstable, frequently crashing with a 502 Bad Gateway error, which halts all work. This is a recurring, hard blocker. The user's last instruction was to fix this.
+    -   **Attempted fixes**: The agent could only wait for the environment to recover intermittently. No root cause has been identified.
     -   **Next debug checklist**:
-        1.  After the fork, the new agent's **first and most critical action** must be to verify environment stability with simple commands like CNAME
-CONTRIBUTING.md
-DEPLOYMENT.md
-Dockerfile
-EOF
-IMPLEMENTATION_COMPLETE.md
-IMPLEMENTATION_SUMMARY.md
-INTEGRATION.md
-LYRA_OPS_IMPLEMENTATION.md
-NOTIFICATIONS.md
-PY
-PYTHONPATH=.
-README.md
-SCRAPER_IMPLEMENTATION_SUMMARY.md
-UNIT_OK
-ZLECAF_54_PAYS_DONNEES_COMPLETES.csv
-ZLECAF_COUNTRIES_DATA_EXTRACTION.md
-ZLECAF_DATA_UPDATED.csv
-ZLECAF_DONNEES_VALIDATION.xlsx
-ZLECAF_VALIDATION.csv
-ZLECAf_COMPLET_AVEC_NOTATIONS.csv
-ZLECAf_COMPLET_AVEC_NOTATIONS.xlsx
-ZLECAf_ENRICHI_2024_COMMERCE.csv
-ZLECAf_ENRICHI_2024_COMMERCE.csv.backup
-add_missing_countries.py
-add_trs_data.py
-airports_africains.json
-airports_africains_original.json
-analyze_validation_file.py
-apply_corrections.py
-attached_assets/
-backend/
-backend_test.py
-backend_test_2024_data.py
-backend_test_review_validation.py
-cands=[]
-check_missing_csv.py
-check_tanger.py
-classement_infrastructure_afrique.json
-complete_excel_with_ratings.py
-continue
-corridors_terrestres.json
-cost_engine.py
-country_data_updated.py
-crawlQueue.ts
-crawlWorker.ts
-create_complete_excel_final.py
-create_enhanced_excel_2024.py
-create_validation_file.py
-csrf.ts
-current_heading
-debug_loader.py
-delta_engine.py
-description:
-detailed_verification.py
-df
-docker-compose.yml
-docs/
-douanes_africaines.json
-duty_rate_pct:
-engine/
-except
-export_validation_csv.py
-fix_lpi_ranks.py
-fix_tangermed_data.py
-fix_tariffs_and_stats.py
-for
-from
-frontend/
-generate_production_data.py
-gold_reserves_gai_2025.json
-heading_ctx:
-hs_code:
-if
-import
-integrate_validated_data.py
-kg,g,l,hl,m,m2,m3,no,nos,u,unit,pair,prs,pc,pcs,set,doz,ton,t
-memory/
-middleware.ts
-out
-ports_africains.json
-ports_africains_backup.json
-ports_africains_enriched.json
-ports_africains_enriched_pro.json
-ports_africains_old.json
-production_africaine.json
-projets_structurants_afrique.json
-qa_engine.py
-rateLimit.ts
-registry.csv
-replit.md
-requirements.txt
-return
-review_validation_results.json
-route.ts
-scripts/
-shapes=[x.df.shape
-source_pdf:
-src/
-start.sh*
-tariff_engine/
-test_faostat_unido.py
-test_reports/
-test_result.md
-test_results_2024_detailed.json
-test_results_detailed.json
-test_scraper_infrastructure.py
-tests/
-try:
-unit:
-update_aidi_2025_full.py
-update_aidi_final.py
-update_aidi_user_correction.py
-update_all_african_countries_worldbank.py
-update_all_countries.py
-update_all_ports_precise.py
-update_infrastructure_data.py
-update_infrastructure_ranking.py
-update_projects_structurants.py
-update_worldbank_data.py
-validation_master.xlsx
-verify_data_quality.py
-wb_logistics_africa.json
-worldbank_data_latest.json
-zlecaf_corrections_2024.json
-zones_franches_afrique.json
-} and backend                          RUNNING   pid 46, uptime 0:00:07
-code-server                      STOPPED   Not started
-frontend                         STOPPED   Mar 01 06:10 PM
-mongodb                          RUNNING   pid 49, uptime 0:00:07
-nginx-code-proxy                 RUNNING   pid 45, uptime 0:00:07.
-        2.  If the environment is still unresponsive, do not attempt to fix it. Escalate by recommending the user contact Emergent support, as this is a persistent platform issue.
-    -   **Why fix this issue and what will be achieved with the fix?**: This is the root blocker. No progress can be made until the environment is functional.
-    -   **Status**: BLOCKED
+        1.  Check  logs for all services: ==> /var/log/supervisor/backend.err.log <==
+2026-03-01 23:42:19,989 - INFO - Crawled data loaded for ZAF: 8589 positions indexed
+2026-03-01 23:42:20,180 - INFO - Crawled data loaded for GNQ: 21970 positions indexed
+2026-03-01 23:42:20,668 - INFO - Crawled data loaded for BDI: 21970 positions indexed
+2026-03-01 23:42:21,019 - INFO - Crawled data loaded for UGA: 21970 positions indexed
+2026-03-01 23:42:21,558 - INFO - Crawled data loaded for ZWE: 21972 positions indexed
+2026-03-01 23:42:21,932 - INFO - Crawled data loaded for DJI: 21971 positions indexed
+2026-03-01 23:42:22,980 - INFO - Crawled data loaded for TUN: 17512 positions indexed
+2026-03-01 23:42:23,161 - INFO - Crawled data loaded for COM: 21971 positions indexed
+2026-03-01 23:42:23,252 - INFO - Crawled data loaded for GIN: 6129 positions indexed
+2026-03-01 23:42:23,415 - INFO - Crawled data loaded for ZMB: 21970 positions indexed
+2026-03-01 23:42:23,967 - INFO - Crawled data loaded for MRT: 21970 positions indexed
+2026-03-01 23:42:24,162 - INFO - Crawled data loaded for KEN: 21973 positions indexed
+2026-03-01 23:42:24,255 - INFO - Crawled data loaded for COG: 5239 positions indexed
+2026-03-01 23:42:24,426 - INFO - Crawled data loaded for RWA: 21972 positions indexed
+2026-03-01 23:42:25,070 - INFO - Crawled data loaded for TZA: 21970 positions indexed
+2026-03-01 23:42:25,152 - INFO - Crawled data loaded for GAB: 5239 positions indexed
+2026-03-01 23:42:25,317 - INFO - Crawled data loaded for MDG: 21970 positions indexed
+2026-03-01 23:42:25,490 - INFO - Crawled data loaded for MWI: 21971 positions indexed
+2026-03-01 23:42:25,606 - INFO - Crawled data loaded for NER: 6129 positions indexed
+2026-03-01 23:42:25,668 - INFO - Crawled data loaded for NGA: 6350 positions indexed
+2026-03-01 23:42:26,361 - INFO - Crawled data loaded for LBY: 21974 positions indexed
+2026-03-01 23:42:26,435 - INFO - Crawled data loaded for CIV: 6129 positions indexed
+2026-03-01 23:42:26,560 - INFO - Crawled data loaded for BEN: 6129 positions indexed
+2026-03-01 23:42:26,839 - INFO - Crawled data loaded for DZA: 17115 positions indexed
+2026-03-01 23:42:27,012 - INFO - Crawled data loaded for LBR: 21970 positions indexed
+2026-03-01 23:42:27,805 - INFO - Crawled data loaded for GMB: 21971 positions indexed
+2026-03-01 23:42:27,906 - INFO - Crawled data loaded for LSO: 8589 positions indexed
+2026-03-01 23:42:28,086 - INFO - Crawled data loaded for MUS: 21970 positions indexed
+2026-03-01 23:42:28,277 - INFO - Crawled data loaded for SLE: 21970 positions indexed
+2026-03-01 23:42:28,451 - INFO - Crawled data loaded for ERI: 21971 positions indexed
+2026-03-01 23:42:28,640 - INFO - Crawled data loaded for GHA: 21973 positions indexed
+2026-03-01 23:42:29,532 - INFO - Crawled data loaded for SDN: 21971 positions indexed
+2026-03-01 23:42:29,609 - INFO - Crawled data loaded for MAR: 13114 positions indexed
+2026-03-01 23:42:29,777 - INFO - Crawled data loaded for MOZ: 21968 positions indexed
+2026-03-01 23:42:29,946 - INFO - Crawled data loaded for STP: 21971 positions indexed
+2026-03-01 23:42:30,025 - INFO - Crawled data loaded for CMR: 5239 positions indexed
+2026-03-01 23:42:30,184 - INFO - Crawled data loaded for SOM: 21972 positions indexed
+2026-03-01 23:42:30,278 - INFO - Crawled data loaded for NAM: 8589 positions indexed
+2026-03-01 23:42:30,368 - INFO - Crawled data loaded for BWA: 8589 positions indexed
+2026-03-01 23:42:30,487 - INFO - Crawled data loaded for SEN: 6129 positions indexed
+2026-03-01 23:42:31,475 - INFO - Crawled data loaded for SSD: 21973 positions indexed
+2026-03-01 23:42:31,597 - INFO - Crawled data loaded for TGO: 6129 positions indexed
+2026-03-01 23:42:31,684 - INFO - Crawled data loaded for TCD: 5239 positions indexed
+2026-03-01 23:42:31,797 - INFO - Crawled data loaded for MLI: 6129 positions indexed
+2026-03-01 23:42:31,974 - INFO - Crawled data loaded for AGO: 21972 positions indexed
+2026-03-01 23:42:31,974 - INFO - Crawled data loaded: 54 countries, 875336 total positions
+2026-03-01 23:42:31,978 - INFO - Crawled data service ready: ['CAF', 'GNB', 'ETH', 'BFA', 'EGY', 'COD', 'SWZ', 'SYC', 'CPV', 'ZAF', 'GNQ', 'BDI', 'UGA', 'ZWE', 'DJI', 'TUN', 'COM', 'GIN', 'ZMB', 'MRT', 'KEN', 'COG', 'RWA', 'TZA', 'GAB', 'MDG', 'MWI', 'NER', 'NGA', 'LBY', 'CIV', 'BEN', 'DZA', 'LBR', 'GMB', 'LSO', 'MUS', 'SLE', 'ERI', 'GHA', 'SDN', 'MAR', 'MOZ', 'STP', 'CMR', 'SOM', 'NAM', 'BWA', 'SEN', 'SSD', 'TGO', 'TCD', 'MLI', 'AGO'] countries, 875,336 authentic positions
+2026-03-01 23:42:39,932 - INFO - Tariff data loaded: 54 countries, 314874 HS6 lines, 871565 sub-positions
+2026-03-01 23:42:39,933 - INFO - Tariff data service ready: 54 countries, 1,186,439 positions loaded
+INFO:     Application startup complete.
+INFO:     Will watch for changes in these directories: ['/app/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [48] using WatchFiles
+2026-03-02 00:02:54,485 - INFO - Countries package not found, skipping auto-registration
+2026-03-02 00:02:54,485 - INFO - Scraper registry initialized: 0/54 countries have specific scrapers (0.0% coverage)
+2026-03-02 00:02:54,580 - INFO - MongoDB connected successfully
+2026-03-02 00:02:54,580 - WARNING - No notification channels are enabled
+2026-03-02 00:02:54,581 - INFO - Notification manager initialized with channels: []
+2026-03-02 00:02:54,584 - INFO - Security middlewares loaded: CSP headers, CSRF protection, Rate limiting
+2026-03-02 00:02:54,584 - INFO - Crawl orchestrator initialized
+INFO:     Started server process [79]
+INFO:     Waiting for application startup.
+2026-03-02 00:02:54,893 - INFO - Crawled data loaded for CAF: 5239 positions indexed
+2026-03-02 00:02:55,322 - INFO - Crawled data loaded for GNB: 21971 positions indexed
+2026-03-02 00:02:55,721 - INFO - Crawled data loaded for ETH: 21973 positions indexed
+2026-03-02 00:02:56,102 - INFO - Crawled data loaded for BFA: 6129 positions indexed
+2026-03-02 00:02:56,422 - INFO - Crawled data loaded for EGY: 21971 positions indexed
+2026-03-02 00:02:56,924 - INFO - Crawled data loaded for COD: 21970 positions indexed
+2026-03-02 00:02:57,090 - INFO - Crawled data loaded for SWZ: 8589 positions indexed
+2026-03-02 00:02:57,489 - INFO - Crawled data loaded for SYC: 21971 positions indexed
+2026-03-02 00:02:57,986 - INFO - Crawled data loaded for CPV: 21971 positions indexed
+2026-03-02 00:02:58,094 - INFO - Crawled data loaded for ZAF: 8589 positions indexed
+2026-03-02 00:02:58,285 - INFO - Crawled data loaded for GNQ: 21970 positions indexed
+2026-03-02 00:02:58,739 - INFO - Crawled data loaded for BDI: 21970 positions indexed
+2026-03-02 00:02:58,945 - INFO - Crawled data loaded for UGA: 21970 positions indexed
+2026-03-02 00:02:59,449 - INFO - Crawled data loaded for ZWE: 21972 positions indexed
+2026-03-02 00:02:59,631 - INFO - Crawled data loaded for DJI: 21971 positions indexed
+2026-03-02 00:03:00,456 - INFO - Crawled data loaded for TUN: 17512 positions indexed
+2026-03-02 00:03:00,646 - INFO - Crawled data loaded for COM: 21971 positions indexed
+2026-03-02 00:03:00,739 - INFO - Crawled data loaded for GIN: 6129 positions indexed
+2026-03-02 00:03:00,909 - INFO - Crawled data loaded for ZMB: 21970 positions indexed
+2026-03-02 00:03:01,514 - INFO - Crawled data loaded for MRT: 21970 positions indexed
+2026-03-02 00:03:01,718 - INFO - Crawled data loaded for KEN: 21973 positions indexed
+2026-03-02 00:03:01,813 - INFO - Crawled data loaded for COG: 5239 positions indexed
+2026-03-02 00:03:01,992 - INFO - Crawled data loaded for RWA: 21972 positions indexed
+2026-03-02 00:03:02,672 - INFO - Crawled data loaded for TZA: 21970 positions indexed
+2026-03-02 00:03:02,758 - INFO - Crawled data loaded for GAB: 5239 positions indexed
+2026-03-02 00:03:02,932 - INFO - Crawled data loaded for MDG: 21970 positions indexed
+2026-03-02 00:03:03,116 - INFO - Crawled data loaded for MWI: 21971 positions indexed
+2026-03-02 00:03:03,245 - INFO - Crawled data loaded for NER: 6129 positions indexed
+2026-03-02 00:03:03,306 - INFO - Crawled data loaded for NGA: 6350 positions indexed
+2026-03-02 00:03:04,036 - INFO - Crawled data loaded for LBY: 21974 positions indexed
+2026-03-02 00:03:04,114 - INFO - Crawled data loaded for CIV: 6129 positions indexed
+2026-03-02 00:03:04,245 - INFO - Crawled data loaded for BEN: 6129 positions indexed
+2026-03-02 00:03:04,546 - INFO - Crawled data loaded for DZA: 17115 positions indexed
+2026-03-02 00:03:04,726 - INFO - Crawled data loaded for LBR: 21970 positions indexed
+2026-03-02 00:03:05,567 - INFO - Crawled data loaded for GMB: 21971 positions indexed
+2026-03-02 00:03:05,675 - INFO - Crawled data loaded for LSO: 8589 positions indexed
+2026-03-02 00:03:05,864 - INFO - Crawled data loaded for MUS: 21970 positions indexed
+2026-03-02 00:03:06,068 - INFO - Crawled data loaded for SLE: 21970 positions indexed
+2026-03-02 00:03:06,257 - INFO - Crawled data loaded for ERI: 21971 positions indexed
+2026-03-02 00:03:06,460 - INFO - Crawled data loaded for GHA: 21973 positions indexed
+2026-03-02 00:03:07,457 - INFO - Crawled data loaded for SDN: 21971 positions indexed
+2026-03-02 00:03:07,538 - INFO - Crawled data loaded for MAR: 13114 positions indexed
+2026-03-02 00:03:07,745 - INFO - Crawled data loaded for MOZ: 21968 positions indexed
+2026-03-02 00:03:07,933 - INFO - Crawled data loaded for STP: 21971 positions indexed
+2026-03-02 00:03:08,015 - INFO - Crawled data loaded for CMR: 5239 positions indexed
+2026-03-02 00:03:08,184 - INFO - Crawled data loaded for SOM: 21972 positions indexed
+2026-03-02 00:03:08,283 - INFO - Crawled data loaded for NAM: 8589 positions indexed
+2026-03-02 00:03:08,378 - INFO - Crawled data loaded for BWA: 8589 positions indexed
+2026-03-02 00:03:08,554 - INFO - Crawled data loaded for SEN: 6129 positions indexed
+2026-03-02 00:03:09,620 - INFO - Crawled data loaded for SSD: 21973 positions indexed
+2026-03-02 00:03:09,750 - INFO - Crawled data loaded for TGO: 6129 positions indexed
+2026-03-02 00:03:09,836 - INFO - Crawled data loaded for TCD: 5239 positions indexed
+2026-03-02 00:03:09,954 - INFO - Crawled data loaded for MLI: 6129 positions indexed
+2026-03-02 00:03:10,140 - INFO - Crawled data loaded for AGO: 21972 positions indexed
+2026-03-02 00:03:10,141 - INFO - Crawled data loaded: 54 countries, 875336 total positions
+2026-03-02 00:03:10,146 - INFO - Crawled data service ready: ['CAF', 'GNB', 'ETH', 'BFA', 'EGY', 'COD', 'SWZ', 'SYC', 'CPV', 'ZAF', 'GNQ', 'BDI', 'UGA', 'ZWE', 'DJI', 'TUN', 'COM', 'GIN', 'ZMB', 'MRT', 'KEN', 'COG', 'RWA', 'TZA', 'GAB', 'MDG', 'MWI', 'NER', 'NGA', 'LBY', 'CIV', 'BEN', 'DZA', 'LBR', 'GMB', 'LSO', 'MUS', 'SLE', 'ERI', 'GHA', 'SDN', 'MAR', 'MOZ', 'STP', 'CMR', 'SOM', 'NAM', 'BWA', 'SEN', 'SSD', 'TGO', 'TCD', 'MLI', 'AGO'] countries, 875,336 authentic positions
+2026-03-02 00:03:18,412 - INFO - Tariff data loaded: 54 countries, 314874 HS6 lines, 871565 sub-positions
+2026-03-02 00:03:18,412 - INFO - Tariff data service ready: 54 countries, 1,186,439 positions loaded
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [79]
+INFO:     Stopping reloader process [48]
+INFO:     Will watch for changes in these directories: ['/app/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [3374] using WatchFiles
+2026-03-02 00:16:10,787 - INFO - Countries package not found, skipping auto-registration
+2026-03-02 00:16:10,787 - INFO - Scraper registry initialized: 0/54 countries have specific scrapers (0.0% coverage)
+2026-03-02 00:16:10,827 - INFO - MongoDB connected successfully
+2026-03-02 00:16:10,827 - WARNING - No notification channels are enabled
+2026-03-02 00:16:10,827 - INFO - Notification manager initialized with channels: []
+2026-03-02 00:16:10,830 - INFO - Security middlewares loaded: CSP headers, CSRF protection, Rate limiting
+2026-03-02 00:16:10,830 - INFO - Crawl orchestrator initialized
+INFO:     Started server process [3376]
+INFO:     Waiting for application startup.
+2026-03-02 00:16:11,045 - INFO - Crawled data loaded for CAF: 5239 positions indexed
+2026-03-02 00:16:11,329 - INFO - Crawled data loaded for GNB: 21971 positions indexed
+2026-03-02 00:16:11,623 - INFO - Crawled data loaded for ETH: 21973 positions indexed
+2026-03-02 00:16:11,878 - INFO - Crawled data loaded for BFA: 6129 positions indexed
+2026-03-02 00:16:12,065 - INFO - Crawled data loaded for EGY: 21971 positions indexed
+2026-03-02 00:16:12,395 - INFO - Crawled data loaded for COD: 21970 positions indexed
+2026-03-02 00:16:12,506 - INFO - Crawled data loaded for SWZ: 8589 positions indexed
+2026-03-02 00:16:12,866 - INFO - Crawled data loaded for SYC: 21971 positions indexed
+2026-03-02 00:16:13,263 - INFO - Crawled data loaded for CPV: 21971 positions indexed
+2026-03-02 00:16:13,369 - INFO - Crawled data loaded for ZAF: 8589 positions indexed
+2026-03-02 00:16:13,555 - INFO - Crawled data loaded for GNQ: 21970 positions indexed
+2026-03-02 00:16:13,982 - INFO - Crawled data loaded for BDI: 21970 positions indexed
+2026-03-02 00:16:14,170 - INFO - Crawled data loaded for UGA: 21970 positions indexed
+2026-03-02 00:16:14,656 - INFO - Crawled data loaded for ZWE: 21972 positions indexed
+2026-03-02 00:16:14,836 - INFO - Crawled data loaded for DJI: 21971 positions indexed
+2026-03-02 00:16:15,613 - INFO - Crawled data loaded for TUN: 17512 positions indexed
+2026-03-02 00:16:15,798 - INFO - Crawled data loaded for COM: 21971 positions indexed
+2026-03-02 00:16:15,886 - INFO - Crawled data loaded for GIN: 6129 positions indexed
+2026-03-02 00:16:16,052 - INFO - Crawled data loaded for ZMB: 21970 positions indexed
+2026-03-02 00:16:16,629 - INFO - Crawled data loaded for MRT: 21970 positions indexed
+2026-03-02 00:16:16,824 - INFO - Crawled data loaded for KEN: 21973 positions indexed
+2026-03-02 00:16:16,917 - INFO - Crawled data loaded for COG: 5239 positions indexed
+2026-03-02 00:16:17,089 - INFO - Crawled data loaded for RWA: 21972 positions indexed
+2026-03-02 00:16:17,763 - INFO - Crawled data loaded for TZA: 21970 positions indexed
+2026-03-02 00:16:17,848 - INFO - Crawled data loaded for GAB: 5239 positions indexed
+2026-03-02 00:16:18,018 - INFO - Crawled data loaded for MDG: 21970 positions indexed
+2026-03-02 00:16:18,194 - INFO - Crawled data loaded for MWI: 21971 positions indexed
+2026-03-02 00:16:18,313 - INFO - Crawled data loaded for NER: 6129 positions indexed
+2026-03-02 00:16:18,372 - INFO - Crawled data loaded for NGA: 6350 positions indexed
+2026-03-02 00:16:19,148 - INFO - Crawled data loaded for LBY: 21974 positions indexed
+2026-03-02 00:16:19,227 - INFO - Crawled data loaded for CIV: 6129 positions indexed
+2026-03-02 00:16:19,357 - INFO - Crawled data loaded for BEN: 6129 positions indexed
+2026-03-02 00:16:19,646 - INFO - Crawled data loaded for DZA: 17115 positions indexed
+2026-03-02 00:16:19,824 - INFO - Crawled data loaded for LBR: 21970 positions indexed
+2026-03-02 00:16:20,667 - INFO - Crawled data loaded for GMB: 21971 positions indexed
+2026-03-02 00:16:20,783 - INFO - Crawled data loaded for LSO: 8589 positions indexed
+2026-03-02 00:16:20,979 - INFO - Crawled data loaded for MUS: 21970 positions indexed
+2026-03-02 00:16:21,176 - INFO - Crawled data loaded for SLE: 21970 positions indexed
+2026-03-02 00:16:21,355 - INFO - Crawled data loaded for ERI: 21971 positions indexed
+2026-03-02 00:16:21,551 - INFO - Crawled data loaded for GHA: 21973 positions indexed
+2026-03-02 00:16:22,509 - INFO - Crawled data loaded for SDN: 21971 positions indexed
+2026-03-02 00:16:22,588 - INFO - Crawled data loaded for MAR: 13114 positions indexed
+2026-03-02 00:16:22,760 - INFO - Crawled data loaded for MOZ: 21968 positions indexed
+2026-03-02 00:16:22,931 - INFO - Crawled data loaded for STP: 21971 positions indexed
+2026-03-02 00:16:23,011 - INFO - Crawled data loaded for CMR: 5239 positions indexed
+2026-03-02 00:16:23,175 - INFO - Crawled data loaded for SOM: 21972 positions indexed
+2026-03-02 00:16:23,273 - INFO - Crawled data loaded for NAM: 8589 positions indexed
+2026-03-02 00:16:23,367 - INFO - Crawled data loaded for BWA: 8589 positions indexed
+2026-03-02 00:16:23,492 - INFO - Crawled data loaded for SEN: 6129 positions indexed
+2026-03-02 00:16:24,562 - INFO - Crawled data loaded for SSD: 21973 positions indexed
+2026-03-02 00:16:24,687 - INFO - Crawled data loaded for TGO: 6129 positions indexed
+2026-03-02 00:16:24,774 - INFO - Crawled data loaded for TCD: 5239 positions indexed
+2026-03-02 00:16:24,894 - INFO - Crawled data loaded for MLI: 6129 positions indexed
+2026-03-02 00:16:25,079 - INFO - Crawled data loaded for AGO: 21972 positions indexed
+2026-03-02 00:16:25,079 - INFO - Crawled data loaded: 54 countries, 875336 total positions
+2026-03-02 00:16:25,084 - INFO - Crawled data service ready: ['CAF', 'GNB', 'ETH', 'BFA', 'EGY', 'COD', 'SWZ', 'SYC', 'CPV', 'ZAF', 'GNQ', 'BDI', 'UGA', 'ZWE', 'DJI', 'TUN', 'COM', 'GIN', 'ZMB', 'MRT', 'KEN', 'COG', 'RWA', 'TZA', 'GAB', 'MDG', 'MWI', 'NER', 'NGA', 'LBY', 'CIV', 'BEN', 'DZA', 'LBR', 'GMB', 'LSO', 'MUS', 'SLE', 'ERI', 'GHA', 'SDN', 'MAR', 'MOZ', 'STP', 'CMR', 'SOM', 'NAM', 'BWA', 'SEN', 'SSD', 'TGO', 'TCD', 'MLI', 'AGO'] countries, 875,336 authentic positions
+2026-03-02 00:16:33,888 - INFO - Tariff data loaded: 54 countries, 314874 HS6 lines, 871565 sub-positions
+2026-03-02 00:16:33,888 - INFO - Tariff data service ready: 54 countries, 1,186,439 positions loaded
+INFO:     Application startup complete.
+INFO:     Will watch for changes in these directories: ['/app/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [45] using WatchFiles
+
+==> /var/log/supervisor/backend.out.log <==
+INFO:     10.79.167.145:41852 - "GET /api/regulatory-engine/details?country=COG&code=010110&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:41852 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:46730 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51460 - "GET /api/regulatory-engine/details?country=COG&code=010110&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51460 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51460 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51460 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:41852 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:41852 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51460 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:41852 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51460 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:41852 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:53496 - "GET /api/tariff-data/CPV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:42188 - "GET /api/tariff-data/CPV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:42188 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:42188 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:53502 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:42188 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:53502 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:53502 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:42188 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:42188 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:42188 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:53502 - "GET /api/regulatory-engine/details?country=CIV&code=090111&search_type=hs6 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:41848 - "GET /api/hs6/smart-search?q=87&country_code=CPV&language=fr&include_sub_positions=true HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:53828 - "GET /api/hs6/smart-search?q=87&country_code=CPV&language=fr&include_sub_positions=true HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:53834 - "GET /api/hs6/smart-search?q=870&country_code=CPV&language=fr&include_sub_positions=true HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:53848 - "GET /api/hs6/smart-search?q=8703&country_code=CPV&language=fr&include_sub_positions=true HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:35730 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:35730 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:53864 - "GET /api/hs6/smart-search?q=870323&country_code=CPV&language=fr&include_sub_positions=true HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:51930 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:35730 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:35730 - "GET /api/hs6/smart-search?q=090111&country_code=CIV&language=fr&include_sub_positions=true HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:39078 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:39078 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:39078 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:59860 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:59860 - "GET /api/hs6/smart-search?q=090111&country_code=CIV&language=fr&include_sub_positions=true HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:43766 - "GET /api/hs6/smart-search?q=090111&country_code=CIV&language=fr&include_sub_positions=true HTTP/1.1" 500 Internal Server Error
+✅ Loaded production data from /app/backend/../production_africaine.json
+   - Value added macro: 648 records
+   - Agriculture FAOSTAT: 648 records
+   - Manufacturing UNIDO: 432 records
+   - Mining USGS: 432 records
+✅ Loaded 15 land corridors from /app/backend/../corridors_terrestres.json
+INFO:     10.79.167.146:51162 - "GET /api/hs6/smart-search?q=090111&country_code=CIV&language=fr&include_sub_positions=true HTTP/1.1" 200 OK
+INFO:     10.79.167.145:46914 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:57510 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:57514 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:46920 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:57514 - "GET /api/hs6/smart-search?q=090111&country_code=CIV&language=fr&include_sub_positions=true HTTP/1.1" 200 OK
+INFO:     10.79.167.146:44208 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:44208 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:44222 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:54950 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:44222 - "GET /api/hs6/smart-search?q=0901111000&country_code=CIV&language=fr&include_sub_positions=true HTTP/1.1" 200 OK
+INFO:     10.79.167.145:32920 - "GET /api/authentic-tariffs/calculate/CIV/0901111000?value=10000&language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51926 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:43616 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:43616 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:43616 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:43616 - "GET /api/authentic-tariffs/calculate/CIV/090111?value=10000&language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:43616 - "GET /api/authentic-tariffs/country/CIV/sub-positions/090111?language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:42798 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:42798 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:49768 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:49768 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:49768 - "GET /api/authentic-tariffs/calculate/CIV/090111?value=10000&language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:49768 - "GET /api/authentic-tariffs/country/CIV/sub-positions/090111?language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:46160 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:46160 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:33252 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:33252 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:38776 - "GET /api/authentic-tariffs/calculate/CIV/090111?value=10000&language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:33252 - "GET /api/authentic-tariffs/country/CIV/sub-positions/090111?language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:57938 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:48316 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:48318 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:57952 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:57952 - "GET /api/authentic-tariffs/calculate/CIV/090111?value=10000&language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:48318 - "GET /api/authentic-tariffs/country/CIV/sub-positions/090111?language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:44214 - "GET /api/authentic-tariffs/calculate/CIV/090111?value=10000&language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:34018 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:34018 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:32984 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:35848 - "GET /api/tariff-data/CIV?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:35848 - "GET /api/authentic-tariffs/calculate/CIV/090111?value=10000&language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:32984 - "GET /api/authentic-tariffs/country/CIV/sub-positions/090111?language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:50924 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:41026 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:47150 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:46848 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:51506 - "GET /api/tariff-data/DZA?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:46050 - "GET /api/tariff-data/DZA?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:36318 - "GET /api/hs6/smart-search?q=08&country_code=DZA&language=fr&include_sub_positions=true HTTP/1.1" 200 OK
+INFO:     10.79.167.145:53888 - "GET /api/hs-codes/chapters HTTP/1.1" 200 OK
+INFO:     10.79.167.146:50412 - "GET /api/hs-codes/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.146:50412 - "GET /api/hs-codes/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.145:53888 - "GET /api/hs-codes/chapters HTTP/1.1" 200 OK
+INFO:     10.79.167.145:47924 - "GET /api/hs-codes/chapters HTTP/1.1" 200 OK
+INFO:     10.79.167.145:47928 - "GET /api/hs-codes/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.146:52516 - "GET /api/hs-codes/chapters HTTP/1.1" 200 OK
+INFO:     10.79.167.146:52516 - "GET /api/hs-codes/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.145:40792 - "GET /api/authentic-tariffs/calculate/DZA/0801111000?value=6000&language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:40792 - "GET /api/authentic-tariffs/country/DZA/sub-positions/080111?language=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:58760 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:39536 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:49308 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:49312 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:49324 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:49338 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:39546 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:39556 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:49344 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:49350 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:39572 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:49360 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:39576 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:39584 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:51040 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:42974 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:51056 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:51060 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:51068 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:51082 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:42990 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:42998 - "GET /api/regulatory-engine/details?country=DZA&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:43012 - "GET /api/tariff-data/AGO?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:43012 - "GET /api/tariff-data/AGO?limit=1 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:51094 - "GET /api/regulatory-engine/details?country=AGO&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:51098 - "GET /api/regulatory-engine/details?country=AGO&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:43012 - "GET /api/regulatory-engine/details?country=AGO&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:34338 - "GET /api/regulatory-engine/details?country=AGO&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:59966 - "GET /api/regulatory-engine/details?country=AGO&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:34344 - "GET /api/regulatory-engine/details?country=AGO&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:34356 - "GET /api/regulatory-engine/details?country=AGO&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:59980 - "GET /api/regulatory-engine/details?country=AGO&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.145:59990 - "GET /api/regulatory-engine/details?country=AGO&code=0801111000&search_type=national HTTP/1.1" 500 Internal Server Error
+INFO:     10.79.167.146:48292 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:34298 - "GET /api/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:48292 - "GET /api/country-profile/TCD?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:56900 - "GET /api/statistics/unctad/ports HTTP/1.1" 200 OK
+INFO:     10.79.167.146:34284 - "GET /api/statistics/unctad/lsci HTTP/1.1" 200 OK
+INFO:     10.79.167.145:56900 - "GET /api/logistics/ports HTTP/1.1" 200 OK
+INFO:     10.79.167.146:34284 - "GET /api/statistics/unctad/ports HTTP/1.1" 200 OK
+INFO:     10.79.167.145:56900 - "GET /api/statistics/unctad/lsci HTTP/1.1" 200 OK
+INFO:     10.79.167.146:34284 - "GET /api/logistics/ports HTTP/1.1" 200 OK
+INFO:     10.79.167.145:56900 - "GET /api/logistics/ports HTTP/1.1" 200 OK
+INFO:     10.79.167.146:34284 - "GET /api/logistics/ports HTTP/1.1" 200 OK
+INFO:     10.79.167.146:44618 - "GET /api/logistics/ports/SOM-BOS-001 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:45462 - "GET /api/substitution/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:41648 - "GET /api/ai/health HTTP/1.1" 200 OK
+INFO:     10.79.167.145:41648 - "GET /api/ai/health HTTP/1.1" 200 OK
+INFO:     10.79.167.145:41658 - "GET /api/substitution/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:59882 - "GET /api/ai/opportunities/Burkina%20Faso?mode=export&lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51126 - "GET /api/oec/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51120 - "GET /api/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.145:58304 - "GET /api/oec/africa/totals?year=2024 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51120 - "GET /api/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51120 - "GET /api/oec/countries/name-to-iso3 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51120 - "GET /api/oec/countries?lang=fr HTTP/1.1" 200 OK
+INFO:     10.79.167.145:58304 - "GET /api/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51120 - "GET /api/oec/countries/name-to-iso3 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:51120 - "GET /api/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.145:58304 - "GET /api/oec/africa/totals?year=2024 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:53920 - "GET /api/oec/exports/BFA?year=2024&limit=20 HTTP/1.1" 200 OK
+INFO:     10.79.167.145:44872 - "GET /api/oec/imports/BFA?year=2024&limit=20 HTTP/1.1" 200 OK
+INFO:     10.79.167.146:48766 - "GET /api/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.146:48766 - "GET /api/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.146:48766 - "GET /api/trade-performance HTTP/1.1" 200 OK
+INFO:     10.79.167.146:48766 - "GET /api/trade-performance HTTP/1.1" 200 OK
+INFO:     10.79.167.146:39126 - "GET /api/news?force_refresh=false HTTP/1.1" 200 OK
+INFO:     10.79.167.145:43984 - "GET /api/news/by-category?force_refresh=false HTTP/1.1" 200 OK
+INFO:     10.79.167.146:39134 - "GET /api/news/by-region?force_refresh=false HTTP/1.1" 200 OK
+INFO:     10.79.167.145:43994 - "GET /api/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.145:43994 - "GET /api/news/by-category?force_refresh=false HTTP/1.1" 200 OK
+INFO:     10.79.167.145:43984 - "GET /api/news/by-region?force_refresh=false HTTP/1.1" 200 OK
+INFO:     10.79.167.145:44004 - "GET /api/statistics HTTP/1.1" 200 OK
+INFO:     10.79.167.146:39134 - "GET /api/news?force_refresh=false HTTP/1.1" 200 OK
+Rafraîchissement des actualités...
+Rafraîchissement des actualités...
+Rafraîchissement des actualités...
+INFO:     10.79.167.146:59370 - "GET /api/news/by-category?force_refresh=true HTTP/1.1" 200 OK
+INFO:     10.79.167.145:42528 - "GET /api/news/by-region?force_refresh=true HTTP/1.1" 200 OK
+INFO:     10.79.167.146:59366 - "GET /api/news?force_refresh=true HTTP/1.1" 200 OK
+✅ Loaded production data from /app/backend/../production_africaine.json
+   - Value added macro: 648 records
+   - Agriculture FAOSTAT: 648 records
+   - Manufacturing UNIDO: 432 records
+   - Mining USGS: 432 records
+✅ Loaded 15 land corridors from /app/backend/../corridors_terrestres.json
+✅ Loaded production data from /app/backend/../production_africaine.json
+   - Value added macro: 648 records
+   - Agriculture FAOSTAT: 648 records
+   - Manufacturing UNIDO: 432 records
+   - Mining USGS: 432 records
+✅ Loaded 15 land corridors from /app/backend/../corridors_terrestres.json
+INFO:     10.79.167.146:57294 - "GET /api/health HTTP/1.1" 200 OK
+
+==> /var/log/supervisor/code-server.err.log <==
+[23:42:50] Error: Home directory not found
+    at getDirectory (/usr/lib/code-server/lib/vscode/node_modules/@vscode/deviceid/dist/storage.js:40:15)
+    at Object.setDeviceId (/usr/lib/code-server/lib/vscode/node_modules/@vscode/deviceid/dist/storage.js:85:28)
+    at Module.getDeviceId (/usr/lib/code-server/lib/vscode/node_modules/@vscode/deviceid/dist/devdeviceid.js:46:23)
+    at async yF (file:///usr/lib/code-server/lib/vscode/out/server-main.js:78:20442)
+    at async Promise.all (index 4)
+    at async Yz (file:///usr/lib/code-server/lib/vscode/out/server-main.js:194:413)
+    at async cq (file:///usr/lib/code-server/lib/vscode/out/server-main.js:195:1392)
+Failed login attempt {"xForwardedFor":"105.99.39.16,162.158.45.165,34.160.159.238, 10.79.167.146","remoteAddress":"127.0.0.1","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36","timestamp":1772408576}
+
+==> /var/log/supervisor/code-server.out.log <==
+[2026-03-01T23:42:49.086Z] info  code-server 4.109.2 9184b645cc7aa41b750e2f2ef956f2896512dd84
+[2026-03-01T23:42:49.128Z] info  Using user-data-dir /root/.local/share/code-server
+[2026-03-01T23:42:49.294Z] info  Using config file /root/.config/code-server/config.yaml
+[2026-03-01T23:42:49.295Z] info  HTTP server listening on http://0.0.0.0:8080/
+[2026-03-01T23:42:49.295Z] info    - Authentication is enabled
+[2026-03-01T23:42:49.295Z] info      - Using password from $PASSWORD
+[2026-03-01T23:42:49.295Z] info    - Not serving HTTPS
+[2026-03-01T23:42:49.295Z] info  Session server listening on /root/.local/share/code-server/code-server-ipc.sock
+[23:42:50] 
+
+
+
+
+[reconnection-grace-time] No CLI argument provided, using default: 10800000ms (10800s)
+[23:42:50] Extension host agent started.
+
+==> /var/log/supervisor/frontend.err.log <==
+(node:287) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:287) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:78) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:78) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:78) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:78) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:71) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:71) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:84) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:84) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:85) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:85) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:83) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:83) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:83) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:83) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:83) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:83) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:86) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:86) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:80) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:80) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+
+==> /var/log/supervisor/frontend.out.log <==
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+Proxy error: Could not proxy request /favicon.ico from regulatory-data-hub.cluster-0.preview.emergentcf.cloud to http://localhost:8000.
+See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNREFUSED).
+
+Proxy error: Could not proxy request /favicon.ico from regulatory-data-hub.cluster-0.preview.emergentcf.cloud to http://localhost:8000.
+See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNREFUSED).
+
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.79.140.217:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.79.134.86:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.79.162.40:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.79.134.90:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.79.141.219:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.79.134.163:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.79.141.223:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Proxy error: Could not proxy request /favicon.ico from regulatory-data-hub.cluster-12.preview.emergentcf.cloud to http://localhost:8000.
+See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNREFUSED).
+
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.79.161.66:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://10.79.154.169:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+webpack compiled successfully
+yarn run v1.22.22
+$ craco start
+Attempting to bind to HOST environment variable: 0.0.0.0
+If this was unintentional, check that you haven't mistakenly set it in your shell.
+Learn more here: https://cra.link/advanced-config
+
+
+==> /var/log/supervisor/nginx-proxy.err.log <==
+
+==> /var/log/supervisor/nginx-proxy.out.log <==
+
+==> /var/log/supervisor/supervisord.log <==
+2026-03-01 18:10:46,705 INFO spawned: 'frontend' with pid 268
+2026-03-01 18:10:47,840 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 18:20:14,027 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-01 18:20:14,030 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-01 18:20:14,031 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-01 18:20:14,031 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-01 18:20:14,042 INFO RPC interface 'supervisor' initialized
+2026-03-01 18:20:14,042 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-01 18:20:14,044 INFO daemonizing the supervisord process
+2026-03-01 18:20:14,045 INFO supervisord started with pid 39
+2026-03-01 18:20:14,649 INFO spawned: 'nginx-code-proxy' with pid 47
+2026-03-01 18:20:14,651 INFO spawned: 'backend' with pid 48
+2026-03-01 18:20:14,670 INFO spawned: 'frontend' with pid 49
+2026-03-01 18:20:14,682 INFO spawned: 'mongodb' with pid 50
+2026-03-01 18:20:16,097 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 18:20:16,097 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 18:20:16,097 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 18:20:17,063 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-01 19:28:53,592 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-01 19:28:53,691 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-01 19:28:53,691 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-01 19:28:53,691 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-01 19:28:53,696 INFO RPC interface 'supervisor' initialized
+2026-03-01 19:28:53,696 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-01 19:28:53,697 INFO daemonizing the supervisord process
+2026-03-01 19:28:53,697 INFO supervisord started with pid 39
+2026-03-01 19:28:53,926 INFO spawned: 'nginx-code-proxy' with pid 47
+2026-03-01 19:28:53,927 INFO spawned: 'backend' with pid 48
+2026-03-01 19:28:53,930 INFO spawned: 'frontend' with pid 49
+2026-03-01 19:28:53,931 INFO spawned: 'mongodb' with pid 50
+2026-03-01 19:28:55,029 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 19:28:55,029 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 19:28:55,029 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 19:28:56,006 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-01 20:00:10,179 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-01 20:00:10,261 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-01 20:00:10,261 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-01 20:00:10,261 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-01 20:00:10,326 INFO RPC interface 'supervisor' initialized
+2026-03-01 20:00:10,326 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-01 20:00:10,328 INFO daemonizing the supervisord process
+2026-03-01 20:00:10,328 INFO supervisord started with pid 39
+2026-03-01 20:00:10,801 INFO spawned: 'nginx-code-proxy' with pid 47
+2026-03-01 20:00:10,806 INFO spawned: 'backend' with pid 48
+2026-03-01 20:00:10,819 INFO spawned: 'frontend' with pid 49
+2026-03-01 20:00:10,825 INFO spawned: 'mongodb' with pid 50
+2026-03-01 20:00:12,119 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 20:00:12,119 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 20:00:12,119 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 20:00:12,882 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-01 20:03:24,788 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-01 20:03:24,793 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-01 20:03:24,793 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-01 20:03:24,793 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-01 20:03:24,804 INFO RPC interface 'supervisor' initialized
+2026-03-01 20:03:24,804 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-01 20:03:24,805 INFO daemonizing the supervisord process
+2026-03-01 20:03:24,806 INFO supervisord started with pid 40
+2026-03-01 20:03:25,808 INFO spawned: 'nginx-code-proxy' with pid 46
+2026-03-01 20:03:25,811 INFO spawned: 'backend' with pid 47
+2026-03-01 20:03:25,822 INFO spawned: 'frontend' with pid 51
+2026-03-01 20:03:25,826 INFO spawned: 'mongodb' with pid 53
+2026-03-01 20:03:26,905 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 20:03:26,905 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 20:03:26,905 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 20:03:28,033 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-01 20:10:08,683 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-01 20:10:08,684 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-01 20:10:08,684 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-01 20:10:08,684 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-01 20:10:08,691 INFO RPC interface 'supervisor' initialized
+2026-03-01 20:10:08,691 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-01 20:10:08,693 INFO daemonizing the supervisord process
+2026-03-01 20:10:08,693 INFO supervisord started with pid 39
+2026-03-01 20:10:09,698 INFO spawned: 'nginx-code-proxy' with pid 45
+2026-03-01 20:10:09,703 INFO spawned: 'backend' with pid 46
+2026-03-01 20:10:09,717 INFO spawned: 'frontend' with pid 48
+2026-03-01 20:10:09,724 INFO spawned: 'mongodb' with pid 50
+2026-03-01 20:10:10,849 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 20:10:10,849 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 20:10:10,849 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 20:10:12,017 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-01 21:08:25,376 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-01 21:08:25,376 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-01 21:08:25,376 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-01 21:08:25,376 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-01 21:08:25,386 INFO RPC interface 'supervisor' initialized
+2026-03-01 21:08:25,386 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-01 21:08:25,388 INFO daemonizing the supervisord process
+2026-03-01 21:08:25,388 INFO supervisord started with pid 39
+2026-03-01 21:08:26,391 INFO spawned: 'nginx-code-proxy' with pid 45
+2026-03-01 21:08:26,392 INFO spawned: 'backend' with pid 46
+2026-03-01 21:08:26,396 INFO spawned: 'frontend' with pid 48
+2026-03-01 21:08:26,399 INFO spawned: 'mongodb' with pid 49
+2026-03-01 21:08:27,439 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 21:08:27,439 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 21:08:27,439 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 21:08:29,011 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-01 22:14:26,364 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-01 22:14:26,365 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-01 22:14:26,365 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-01 22:14:26,365 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-01 22:14:26,370 INFO RPC interface 'supervisor' initialized
+2026-03-01 22:14:26,370 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-01 22:14:26,371 INFO daemonizing the supervisord process
+2026-03-01 22:14:26,371 INFO supervisord started with pid 39
+2026-03-01 22:14:27,374 INFO spawned: 'nginx-code-proxy' with pid 45
+2026-03-01 22:14:27,374 INFO spawned: 'backend' with pid 46
+2026-03-01 22:14:27,380 INFO spawned: 'frontend' with pid 48
+2026-03-01 22:14:27,382 INFO spawned: 'mongodb' with pid 49
+2026-03-01 22:14:28,408 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 22:14:28,408 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 22:14:28,408 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 22:14:30,010 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-01 22:24:22,163 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-01 22:24:22,163 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-01 22:24:22,163 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-01 22:24:22,163 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-01 22:24:22,168 INFO RPC interface 'supervisor' initialized
+2026-03-01 22:24:22,168 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-01 22:24:22,169 INFO daemonizing the supervisord process
+2026-03-01 22:24:22,169 INFO supervisord started with pid 39
+2026-03-01 22:24:23,171 INFO spawned: 'nginx-code-proxy' with pid 45
+2026-03-01 22:24:23,172 INFO spawned: 'backend' with pid 46
+2026-03-01 22:24:23,177 INFO spawned: 'frontend' with pid 48
+2026-03-01 22:24:23,178 INFO spawned: 'mongodb' with pid 49
+2026-03-01 22:24:24,185 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 22:24:24,185 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 22:24:24,185 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 22:24:26,010 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-01 22:29:23,216 INFO waiting for backend to stop
+2026-03-01 22:29:23,233 INFO stopped: backend (exit status 0)
+2026-03-01 22:29:23,235 INFO spawned: 'backend' with pid 1327
+2026-03-01 22:29:24,407 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 23:42:09,615 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-01 23:42:09,616 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-01 23:42:09,616 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-01 23:42:09,616 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-01 23:42:09,621 INFO RPC interface 'supervisor' initialized
+2026-03-01 23:42:09,621 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-01 23:42:09,622 INFO daemonizing the supervisord process
+2026-03-01 23:42:09,623 INFO supervisord started with pid 39
+2026-03-01 23:42:10,624 INFO spawned: 'nginx-code-proxy' with pid 46
+2026-03-01 23:42:10,625 INFO spawned: 'backend' with pid 47
+2026-03-01 23:42:10,630 INFO spawned: 'frontend' with pid 49
+2026-03-01 23:42:10,633 INFO spawned: 'mongodb' with pid 50
+2026-03-01 23:42:11,641 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 23:42:11,641 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 23:42:11,641 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-01 23:42:13,024 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-01 23:42:45,158 INFO spawned: 'code-server' with pid 172
+2026-03-01 23:42:50,295 INFO success: code-server entered RUNNING state, process has stayed up for > than 5 seconds (startsecs)
+2026-03-02 00:00:34,851 WARN received SIGTERM indicating exit request
+2026-03-02 00:02:47,338 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-02 00:02:47,339 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-02 00:02:47,339 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-02 00:02:47,339 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-02 00:02:47,349 INFO RPC interface 'supervisor' initialized
+2026-03-02 00:02:47,350 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-02 00:02:47,351 INFO daemonizing the supervisord process
+2026-03-02 00:02:47,351 INFO supervisord started with pid 39
+2026-03-02 00:02:47,668 INFO spawned: 'nginx-code-proxy' with pid 47
+2026-03-02 00:02:47,669 INFO spawned: 'backend' with pid 48
+2026-03-02 00:02:47,676 INFO spawned: 'frontend' with pid 49
+2026-03-02 00:02:47,677 INFO spawned: 'mongodb' with pid 50
+2026-03-02 00:02:48,955 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-02 00:02:48,955 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-02 00:02:48,955 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-02 00:02:50,033 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+2026-03-02 00:15:57,504 INFO waiting for backend to stop
+2026-03-02 00:15:59,504 INFO waiting for backend to stop
+2026-03-02 00:16:01,504 INFO waiting for backend to stop
+2026-03-02 00:16:03,504 INFO waiting for backend to stop
+2026-03-02 00:16:05,504 INFO waiting for backend to stop
+2026-03-02 00:16:06,007 INFO stopped: backend (exit status 0)
+2026-03-02 00:16:06,009 INFO spawned: 'backend' with pid 3374
+2026-03-02 00:16:07,205 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-02 00:50:22,076 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-02 00:50:22,080 INFO Included extra file "/etc/supervisor/conf.d/supervisord.conf" during parsing
+2026-03-02 00:50:22,080 INFO Included extra file "/etc/supervisor/conf.d/supervisord_code_server.conf" during parsing
+2026-03-02 00:50:22,080 INFO Included extra file "/etc/supervisor/conf.d/supervisord_nginx_proxy.conf" during parsing
+2026-03-02 00:50:22,116 INFO RPC interface 'supervisor' initialized
+2026-03-02 00:50:22,116 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-02 00:50:22,117 INFO daemonizing the supervisord process
+2026-03-02 00:50:22,118 INFO supervisord started with pid 38
+2026-03-02 00:50:23,121 INFO spawned: 'nginx-code-proxy' with pid 44
+2026-03-02 00:50:23,122 INFO spawned: 'backend' with pid 45
+2026-03-02 00:50:23,128 INFO spawned: 'frontend' with pid 47
+2026-03-02 00:50:23,130 INFO spawned: 'mongodb' with pid 48
+2026-03-02 00:50:24,362 INFO success: backend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-02 00:50:24,362 INFO success: frontend entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-02 00:50:24,362 INFO success: mongodb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-03-02 00:50:26,015 INFO success: nginx-code-proxy entered RUNNING state, process has stayed up for > than 2 seconds (startsecs)
+        2.  Check system logs for resource-related errors: 
+        3.  Monitor resource usage immediately after a crash if possible: top - 00:50:26 up  9:25,  0 user,  load average: 1.37, 0.58, 0.51
+Tasks:  19 total,   2 running,  17 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 66.7 us,  0.0 sy,  0.0 ni, 33.3 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st 
+MiB Mem :  15975.1 total,   5731.5 free,   6344.1 used,   4190.9 buff/cache     
+MiB Swap:      0.0 total,      0.0 free,      0.0 used.   9631.0 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+     75 root      20   0  362076 144524  37340 R  46.7   0.9   0:01.30 python
+     38 root      20   0   37240  25816   5160 S   6.7   0.2   0:00.02 supervi+
+      1 root      20   0    4192   2892   2580 S   0.0   0.0   0:00.02 entrypo+
+     12 root      20   0   38960  29640   9636 S   0.0   0.2   0:00.15 e1_moni+
+     15 root      20   0    4192   1980   1668 S   0.0   0.0   0:00.00 entrypo+
+     19 root      20   0  269888 105680  18660 S   0.0   0.6   0:01.55 uvicorn
+     21 root      20   0 5263532 148444  43324 S   0.0   0.9   0:01.01 node
+     44 root      20   0   13456   9004   7240 S   0.0   0.1   0:00.00 nginx
+     45 root      20   0  102752  26956   9604 S   0.0   0.2   0:00.13 uvicorn
+     48 root      20   0  544952 153400  73032 S   0.0   0.9   0:00.87 mongod
+     60 root      20   0   13888   3660   1464 S   0.0   0.0   0:00.00 nginx
+     74 root      20   0   15900  10984   5188 S   0.0   0.1   0:00.02 python
+    131 root      20   0    4544   3292   2608 S   0.0   0.0   0:00.00 bash
+    133 root      20   0    4192   2896   2608 S   0.0   0.0   0:00.00 bash
+    134 root      20   0    4192   1520   1220 S   0.0   0.0   0:00.00 bash
+    135 root      20   0    2644   1332   1232 S   0.0   0.0   0:00.00 tee
+    156 root      20   0    9144   4648   2604 R   0.0   0.0   0:00.00 top
+    157 root      20   0    4044   1812   1672 S   0.0   0.0   0:00.00 find
+    158 root      20   0    2300   1256   1164 S   0.0   0.0   0:00.00 xargs,                total        used        free      shared  buff/cache   available
+Mem:            15Gi       6.1Gi       5.7Gi        44Mi       4.1Gi       9.5Gi
+Swap:             0B          0B          0B, Filesystem      Size  Used Avail Use% Mounted on
+overlay          95G   13G   82G  14% /
+tmpfs            64M     0   64M   0% /dev
+/dev/nvme0n3    9.8G  7.2G  2.6G  74% /app
+/dev/nvme0n1p1   95G   13G   82G  14% /etc/hosts
+shm              64M     0   64M   0% /dev/shm
+tmpfs           7.9G     0  7.9G   0% /proc/acpi
+tmpfs           7.9G     0  7.9G   0% /proc/scsi
+tmpfs           7.9G     0  7.9G   0% /sys/firmware.
+        4.  Investigate if the large data processing (like the migration) correlates with the crashes, suggesting a memory or CPU limit is being hit.
+    -   **Why fix this issue and what will be achieved with the fix?**: This is the root blocker. No reliable progress can be made until the environment is stable.
+    -   **Status**: IN PROGRESS
     -   **Is recurring issue?**: Y
-    -   **Blocked on other issue**: This blocks all other tasks and issues.
+    -   **Should Test frontend/backend/both after fix?**: both
+    -   **Blocked on other issue**: This blocks all other tasks.
+-   **Issue 2: Incomplete Code Merge from GitHub (P2)**
+    -   **Description**: The user requested to update the application with code from a public GitHub repository (). The agent encountered several issues (, cloning errors) and the process was not completed. The user's intent and the importance of this merge are unclear.
+    -   **Attempted fixes**: The agent attempted to clone and diff the repository.
+    -   **Next debug checklist**:
+        1.  After stabilizing the environment, ask the user to confirm if they still want to proceed with this merge.
+        2.  Clarify what features or fixes this external repository contains.
+        3.  If confirmed, devise a safe merge strategy (e.g., apply changes as a patch, manually integrate file by file) to avoid breaking the now-working application.
+    -   **Why fix this issue and what will be achieved with the fix?**: To incorporate external changes requested by the user.
+    -   **Status**: BLOCKED
+    -   **Is recurring issue?**: N
+    -   **Should Test frontend/backend/both after fix?**: both
+    -   **Blocked on other issue**: Issue 1: Critical Environment Instability
 
 **In progress Task List**:
--   **Task 1: Complete and Verify PostgreSQL Migration (P1)**
-    -   **Where to resume**: The migration script  was interrupted by the environment crash.
-    -   **What will be achieved with this?**: A fully populated PostgreSQL database with all 894,783 regulatory records, enabling faster queries and the subsequent API refactor.
-    -   **Status**: IN PROGRESS
+-   **Task 1: Refactor Backend API to use PostgreSQL (P1)**
+    -   **Where to resume**: This task has not started. The database migration is complete, so the next step is to modify the backend code.
+    -   **What will be achieved with this?**: The application will leverage the performance and scalability of the new PostgreSQL database, decommissioning the slow flat-file system.
+    -   **Status**: NOT STARTED
     -   **Should Test frontend/backend/both after fix?**: backend
-    -   **Blocked on something**: Issue 1: Critical Environment Failure.
+    -   **Blocked on something**: Issue 1: Critical Environment Instability.
     -   **Next Steps**:
-        1.  Once the environment is stable, start the PostgreSQL service: .
-        2.  Check if any data was partially committed. It may be necessary to add logic to  to truncate tables (, , , ) before re-running to ensure a clean slate.
-        3.  Execute the migration: . Monitor its progress.
-        4.  Verify data integrity by querying the tables for a few sample countries and commodity codes.
+        1.  Modify  to replace file-reading logic with SQLAlchemy queries to the PostgreSQL database.
+        2.  Ensure all endpoints (, etc.) fetch data from PostgreSQL.
+        3.  Test the API endpoints thoroughly to ensure they return the same data structure as before to avoid breaking the frontend.
 
 **Upcoming and Future Tasks**
 -   **Upcoming Tasks:**
-    -   **(P1) Implement Text Search API**: Create a new API endpoint to search for products by text description, querying the PostgreSQL  table.
-    -   **(P2) Refactor API Service**: Modify  to fetch data from the PostgreSQL database instead of the flat-file system.
-
+    -   **(P2) Implement Text Search API**: Create a new API endpoint () that performs a text search against the  column in the PostgreSQL  table.
 -   **Future Tasks:**
     -   **(P2) Integrate Sankey Diagram.**
     -   **(P3) Audit and Correct OEC Data.**
@@ -196,17 +987,17 @@ nginx-code-proxy                 RUNNING   pid 45, uptime 0:00:07.
     -   **(P5) Enhance Country Profile Page.**
 
 **Completed work in this session**
--   Identified the persistence of the 502 Bad Gateway error even after a fork.
--   Correctly diagnosed the recurring environment failure as a platform-level issue.
--   Guided the user to create another fork as the only viable step.
+-   **Trade Calculator Fully Repaired**: Fixed a cascade of bugs preventing the calculator from working. This included a backend  in , missing frontend  icons (, ) in , and incorrect frontend data mapping for calculating totals. The calculator is now fully functional and verified.
+-   **PostgreSQL Migration Completed**: Successfully installed PostgreSQL, created the database, and migrated the entire 1.5GB regulatory dataset (894,783 commodities, 2.4M+ measures) for all 54 AfCFTA countries from  files. The database is populated and queryable.
+-   **Backend Configuration Updated**: The  was added to the  file.
 
 **Earlier issues found/mentioned but not fixed**
-None. The focus is solely on the environment failure.
+The core recurring 502 Bad Gateway issue remains the primary unresolved problem.
 
 **Known issue recurrence from previous fork**
 -   **Issue recurrence in previous fork**: Critical Environment Failure (502 Bad Gateway).
--   **Recurrence count**: 4 (This error has now occurred at the end of four consecutive jobs, always after heavy processing).
--   **Status**: BLOCKED
+-   **Recurrence count**: 5+ (The issue occurred multiple times within this session alone).
+-   **Status**: IN PROGRESS
 
 **Code Architecture**
 
@@ -214,8 +1005,7 @@ None. The focus is solely on the environment failure.
 **Key Technical Concepts**
 -   **Backend**: FastAPI
 -   **Frontend**: React, Vite, Shadcn UI, Tailwind CSS
--   **Data Pipeline**: Python scripts for data transformation.
--   **Database**: Transitioning from a flat-file () system to PostgreSQL with SQLAlchemy.
+-   **Database**: PostgreSQL with SQLAlchemy (migration complete). Flat-file  system is still in use by the API but is now deprecated.
 
 **key DB schema**
 -   **commodities**: {uid=0(root) gid=0(root) groups=0(root), , , , ...}
@@ -224,44 +1014,56 @@ None. The focus is solely on the environment failure.
 -   **benefits**: {uid=0(root) gid=0(root) groups=0(root),  (FK), }
 
 **All files of reference**
--   : Service to migrate data to PostgreSQL. **Execution was interrupted.**
--   : Defines the SQLAlchemy ORM models.
--   : **Needs refactoring to use PostgreSQL.**
--   : Directory containing the generated  data (1.5 GB).
+-   : **Needs refactoring** to use PostgreSQL.
+-   : **Fixed**. Contains the main calculator logic.
+-   : **Fixed**. Was the source of an .
+-   : Python script used to perform the successful migration.
+-   : Updated with the  for PostgreSQL.
+-   : Directory containing logs critical for debugging the environment instability.
 
 **Areas that need refactoring**:
--   : Must be updated to query PostgreSQL instead of the flat-file system once the migration is complete.
+-   : Must be updated to query PostgreSQL instead of reading from the  directory.
 
 **key api endpoints**
--   : Serves regulatory data. Currently reads from  files. Params: , .
+-   : Serves regulatory data. **Currently reads from  files.**
+-   : Powers the main calculator.
+-   : Provides sub-position suggestions in the calculator.
 
 **Critical Info for New Agent**
 -   **USER'S LANGUAGE IS FRENCH**: You must communicate exclusively in French.
--   **ENVIRONMENT IS CRITICALLY UNSTABLE**: Your first action is to verify the new forked environment is stable. This is the fourth consecutive job to fail with a 502 Bad Gateway error. If this fork is also broken, advise the user to contact Emergent support directly, as repeated forking is not a solution.
--   **POSTGRESQL MIGRATION IS INCOMPLETE**: The primary technical task, once the environment is stable, is to resume and complete the data migration from  files to the PostgreSQL database.
+-   **TOP PRIORITY: FIX ENVIRONMENT INSTABILITY**: The user's last command was to fix the 502 Bad Gateway errors. This is a severe, recurring problem that blocks all progress. Investigate logs and system resources before doing anything else.
+-   **POSTGRESQL MIGRATION IS COMPLETE**: The database is ready. The next major development task is to refactor the backend API to use it.
+-   **CALCULATOR IS NOW WORKING**: The previous agent fixed multiple frontend and backend bugs. Do not try to re-debug the calculator unless a new regression appears.
+-   **UNCLEAR GITHUB MERGE**: The user tried to merge code from an external repository. This was not completed. Clarify with the user if this is still required before attempting it.
 
 **documents and test reports created in this job**
--    (updated in previous session)
--   Canonical data and indexes at  (1.5 GB).
+-    (updated to reflect completed migration)
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **User approved the plan**: Verify environment stability, start PostgreSQL, and complete the data migration.
-2.  **User message**: ok (Acknowledged agent's attempt to retry connection).
-3.  **User message**: creer un nouveau fork (Agreed with the agent's recommendation to fork the job again due to the persistent 502 error).
+1.  **user**:  (User's final instruction, setting the top priority).
+2.  **user**:  (User made the external repo public for the agent).
+3.  **user**:  (User instruction to proceed with the GitHub merge attempt).
+4.  **user**:  (User initiated the request to merge code).
+5.  **user**:  (Generic instruction to proceed).
+6.  **user**:  (A slightly confusing message, but likely part of the GitHub update request).
+7.  **user**:  (Acknowledged the successful DB migration).
+8.  **user**:  (User initiated the PostgreSQL migration task after the calculator was fixed).
+9.  **user**:  (Acknowledged agent's progress).
+10. **user**:  (User asked the agent to wait during an environment crash).
 
 **Project Health Check:**
 -   **Broken**:
-    1.  The entire development environment (502 Bad Gateway). This is a recurring, critical failure that blocks all progress.
+    1.  The development environment itself is critically unstable, suffering from frequent 502 Bad Gateway errors.
 
 **3rd Party Integrations**
 -   **OEC API**: Used for trade data.
--   **PostgreSQL**: Database for the regulatory engine.
+-   **PostgreSQL**: Database for the regulatory engine. (Successfully integrated and populated).
 
 **Testing status**
 -   **Testing agent used after significant changes**: NO
 -   **Troubleshoot agent used after agent stuck in loop**: NO
 -   **Test files created**: None.
--   **Known regressions**: The entire application is down.
+-   **Known regressions**: The entire application is at risk of going down at any moment due to environment instability.
 
 **Credentials to test flow:**
 -   **PostgreSQL**:
@@ -271,4 +1073,4 @@ None. The focus is solely on the environment failure.
     -   Database: 
 
 **What agent forgot to execute**
-The agent was entirely blocked by the environment failure and could not execute any tasks.</analysis>
+The agent did not forget any tasks but was repeatedly interrupted by critical environment failures. The plan to refactor the API post-migration was superseded by the user's more urgent request to fix the unstable environment.</analysis>
