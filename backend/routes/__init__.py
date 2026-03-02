@@ -37,7 +37,6 @@ from .tariffs import router as tariffs_router
 from .statistics import router as statistics_router
 from .etl import router as etl_router
 from .substitution import router as substitution_router
-from .gemini_analysis import router as gemini_router
 from .rules_of_origin import router as rules_router
 from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
@@ -48,6 +47,7 @@ try:
     from .gemini_analysis import router as gemini_router
     GEMINI_AVAILABLE = True
 except ImportError:
+    gemini_router = None
     GEMINI_AVAILABLE = False
 
 try:
@@ -99,15 +99,14 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(statistics_router, tags=["Statistics"])
     api_router.include_router(etl_router, tags=["ETL Administration"])
     api_router.include_router(substitution_router, tags=["Trade Substitution"])
-    api_router.include_router(gemini_router, tags=["AI Analysis"])
+    if GEMINI_AVAILABLE:
+        api_router.include_router(gemini_router, tags=["AI Analysis"])
     api_router.include_router(rules_router, tags=["Rules of Origin"])
     api_router.include_router(hs6_db_router, tags=["HS6 Database"])
     api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"])
     api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"])
     api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"])
     api_router.include_router(calculator_router, tags=["Calculator"])
-    if GEMINI_AVAILABLE:
-        api_router.include_router(gemini_router, tags=["AI Analysis"])
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(trade_data_router, tags=["Trade Data Sources"])
     

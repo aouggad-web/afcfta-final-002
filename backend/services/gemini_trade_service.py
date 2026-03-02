@@ -11,7 +11,15 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 
-from emergentintegrations.llm.chat import LlmChat, UserMessage
+try:
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+    EMERGENT_AVAILABLE = True
+except ImportError:
+    LlmChat = None
+    UserMessage = None
+    EMERGENT_AVAILABLE = False
+    logging.warning("emergentintegrations not installed; AI features will be disabled")
+
 from services.redis_cache_service import cache_service, get_data_freshness
 
 load_dotenv()
@@ -68,10 +76,14 @@ class GeminiTradeService:
         self.api_key = os.environ.get("EMERGENT_LLM_KEY")
         if not self.api_key:
             logger.warning("EMERGENT_LLM_KEY not found in environment")
+        if not EMERGENT_AVAILABLE:
+            logger.warning("emergentintegrations not installed; AI features disabled")
         self._session_counter = 0
     
-    def _get_chat(self, session_suffix: str = "") -> LlmChat:
+    def _get_chat(self, session_suffix: str = ""):
         """Create a new chat instance with Gemini"""
+        if not EMERGENT_AVAILABLE or LlmChat is None:
+            raise RuntimeError("emergentintegrations package is not installed")
         self._session_counter += 1
         session_id = f"trade-analysis-{self._session_counter}-{session_suffix}"
         
@@ -94,6 +106,8 @@ class GeminiTradeService:
         IMPROVED prompts based on AI Studio app
         NOW WITH CACHING for performance optimization
         """
+        if not EMERGENT_AVAILABLE:
+            return {"error": "emergentintegrations not installed", "opportunities": []}
         if not self.api_key:
             return {"error": "API key not configured", "opportunities": []}
         
