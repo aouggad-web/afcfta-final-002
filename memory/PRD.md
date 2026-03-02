@@ -5,6 +5,13 @@ Build a comprehensive African Continental Free Trade Area (AfCFTA) trade calcula
 
 ## Implementation Status: ALL MAJOR FEATURES COMPLETE ✅
 
+### Calculator Improvements - COMPLETE (2026-03-02) ✅
+- **New NationalPositionsSelector component** showing all available national positions
+- **CIF Value displayed prominently** in green banner (25,000 $US)
+- **Exact product descriptions** instead of "Type 1, Type 2" (e.g., "Voitures 1500-3000cc neuves")
+- **Estimated duties** calculated for each position
+- **Results section enhanced** with CIF value, tariff code, and product name
+
 ### PostgreSQL Migration - COMPLETE (2026-03-02) ✅
 - **54 pays** migrés depuis les fichiers JSONL
 - **894,783 produits** dans la base PostgreSQL
