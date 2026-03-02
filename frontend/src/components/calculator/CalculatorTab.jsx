@@ -878,6 +878,48 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </CardHeader>
             
             <CardContent className="relative">
+              {/* Bandeau Valeur CIF + Code HS sélectionné */}
+              <div className="mb-6 p-4 bg-gradient-to-r from-slate-700/50 to-slate-800/50 rounded-xl border border-slate-600/50">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Valeur CIF */}
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-emerald-500/10 rounded-lg">
+                      <DollarSign className="w-5 h-5 text-emerald-400" />
+                    </div>
+                    <div>
+                      <p className="text-slate-500 text-xs uppercase">{language === 'fr' ? 'Valeur CIF' : 'CIF Value'}</p>
+                      <p className="text-xl font-bold text-emerald-400">
+                        {formatCurrency(parseFloat(value) || 0)}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Code HS utilisé */}
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-purple-500/10 rounded-lg">
+                      <Package className="w-5 h-5 text-purple-400" />
+                    </div>
+                    <div>
+                      <p className="text-slate-500 text-xs uppercase">{language === 'fr' ? 'Code Tarifaire' : 'Tariff Code'}</p>
+                      <p className="font-mono text-lg font-bold text-purple-400">{result.hs_code || hsCode}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Description produit */}
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-500/10 rounded-lg">
+                      <FileText className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-slate-500 text-xs uppercase">{language === 'fr' ? 'Produit' : 'Product'}</p>
+                      <p className="text-sm text-slate-300 truncate">
+                        {selectedSubPositionDesc || detailedResult?.description || result.description || (language === 'fr' ? 'Position sélectionnée' : 'Selected position')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Grille de synthèse économique */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {/* Total NPF */}
