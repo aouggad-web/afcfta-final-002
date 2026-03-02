@@ -65,9 +65,20 @@ commodities:
   - country_iso3 VARCHAR(3) FK
   - national_code VARCHAR(15)
   - hs6 VARCHAR(6)
-  - description_fr TEXT (full-text indexed)
+  - description_fr TEXT (full-text indexed FR + EN)
   - total_npf_pct, total_zlecaf_pct, savings_pct FLOAT
   - measures, requirements, fiscal_advantages JSONB
+
+search_translations:
+  - en_term VARCHAR(100) PRIMARY KEY
+  - fr_term VARCHAR(100) NOT NULL
+  (49 traductions: coffee→café, vehicle→véhicule, rice→riz, etc.)
+
+Indexes:
+  - idx_comm_country (country_iso3)
+  - idx_comm_hs6 (hs6)
+  - idx_desc_ft (to_tsvector('french', description_fr))
+  - idx_desc_ft_en (to_tsvector('english', description_fr))
 ```
 
 ## Key API Endpoints
