@@ -2,6 +2,7 @@
 API de Recherche Textuelle pour les Produits
 =============================================
 Permet de rechercher des produits par description dans la base PostgreSQL.
+CACHED: Search results cached for 30 minutes
 """
 
 from fastapi import APIRouter, Query, HTTPException
@@ -15,6 +16,13 @@ DATABASE_URL = os.environ.get(
     "DATABASE_URL",
     "postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory"
 )
+
+# Import cache service
+try:
+    from services.cache_service import cache_get, cache_set, generate_cache_key
+    CACHE_AVAILABLE = True
+except ImportError:
+    CACHE_AVAILABLE = False
 
 # Flag pour savoir si PostgreSQL est disponible
 POSTGRES_AVAILABLE = False
@@ -57,6 +65,7 @@ async def search_commodities(
 ):
     """
     Recherche textuelle dans les descriptions de produits.
+    CACHED: 30 minutes TTL
     
     Utilise la recherche full-text PostgreSQL avec support du français ET anglais.
     - Pour le français: recherche full-text optimisée
@@ -67,6 +76,14 @@ async def search_commodities(
     - `/api/commodities/search?q=coffee&lang=en` (anglais - cherche aussi dans les termes techniques)
     - `/api/commodities/search?q=véhicule&country=SEN`
     """
+    # Check cache first
+    if CACHE_AVAILABLE:
+        cache_key = generate_cache_key("search", q, country=country, lang=lang, limit=limit, offset=offset)
+        cached = cache_get(cache_key)
+        if cached:
+            cached["from_cache"] = True
+            return cached
+    
     if not POSTGRES_AVAILABLE:
         raise HTTPException(
             status_code=503,
@@ -196,15 +213,22 @@ async def search_commodities(
                     "relevance_score": round(row.rank, 4) if row.rank else 0
                 })
             
-            return {
+            result_data = {
                 "query": q,
                 "language": lang,
                 "country_filter": country,
                 "total_results": total,
                 "limit": limit,
                 "offset": offset,
-                "results": results
+                "results": results,
+                "from_cache": False
             }
+            
+            # Cache the result
+            if CACHE_AVAILABLE:
+                cache_set(cache_key, result_data, "search")
+            
+            return result_data
             
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur de recherche: {str(e)}")
