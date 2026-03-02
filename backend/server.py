@@ -183,7 +183,7 @@ from starlette.staticfiles import StaticFiles
 from starlette.responses import FileResponse
 
 build_dir = Path(__file__).parent.parent / "frontend" / "build"
-if build_dir.exists():
+if build_dir.exists() and (build_dir / "static").exists():
     app.mount("/static", StaticFiles(directory=str(build_dir / "static")), name="static")
     
     @app.get("/{full_path:path}")

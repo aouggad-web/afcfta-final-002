@@ -67,7 +67,7 @@ const TradeComparison = () => {
         // Pour 2024, charger les vraies données depuis l'API (GLOBAL et INTRA-AFRICAIN)
         if (selectedYear === '2024') {
           // 1. COMMERCE MONDIAL (avec tous les partenaires)
-          const tradeGlobalResponse = await axios.get(`${API_URL}/api/trade-performance`);
+          const tradeGlobalResponse = await axios.get(`${API_URL}/api/statistics/trade-performance`);
           const tradeGlobalData = tradeGlobalResponse.data.countries_global;
           
           const formattedGlobalData = tradeGlobalData.map(country => ({
@@ -83,7 +83,7 @@ const TradeComparison = () => {
           setTradePerformanceGlobal(tradeGlobalData);
           
           // 2. COMMERCE INTRA-AFRICAIN (uniquement entre pays africains)
-          const tradeIntraResponse = await axios.get(`${API_URL}/api/trade-performance-intra-african`);
+          const tradeIntraResponse = await axios.get(`${API_URL}/api/statistics/trade-performance-intra-african`);
           const tradeIntraData = tradeIntraResponse.data.countries_intra_african;
           
           const formattedIntraData = tradeIntraData.map(country => ({

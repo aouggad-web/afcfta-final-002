@@ -3,129 +3,144 @@
 ## Original Problem Statement
 Build a comprehensive African Continental Free Trade Area (AfCFTA) trade calculator platform that provides accurate tariff calculations, regulatory information, and trade intelligence for all 54 African countries.
 
-## Implementation Status: MAJOR MILESTONE ACHIEVED ✅
+## Implementation Status: ALL MAJOR FEATURES COMPLETE ✅
 
-### Regulatory Engine v3 - 54/54 Countries Complete
-All 54 AfCFTA member countries now have full regulatory data in the canonical format.
+### Calculator Improvements - COMPLETE (2026-03-02) ✅
+- **New NationalPositionsSelector component** showing all available national positions
+- **CIF Value displayed prominently** in green banner (25,000 $US)
+- **Exact product descriptions** instead of "Type 1, Type 2" (e.g., "Voitures 1500-3000cc neuves")
+- **Estimated duties** calculated for each position
+- **Results section enhanced** with CIF value, tariff code, and product name
+
+### PostgreSQL Migration - COMPLETE (2026-03-02) ✅
+- **54 pays** migrés depuis les fichiers JSONL
+- **894,783 produits** dans la base PostgreSQL
+- Index full-text français créé pour recherche performante
+- Temps de migration: 3.3 minutes
+
+### Text Search API - COMPLETE (2026-03-02) ✅
+Nouveaux endpoints créés:
+- `GET /api/commodities/search` - Recherche full-text avec ranking
+- `GET /api/commodities/search/simple` - Recherche ILIKE rapide
+- `GET /api/commodities/countries` - Liste des pays migrés
+- `GET /api/commodities/stats` - Statistiques de la base
+
+**Support bilingue (FR/EN):**
+- Index full-text français : `idx_desc_ft` (french)
+- Index full-text anglais : `idx_desc_ft_en` (english)
+- Table de traduction : `search_translations` (49 termes EN→FR)
+- Recherche `?lang=en` traduit automatiquement les termes (coffee→café, vehicle→véhicule, etc.)
+
+### OEC Data Audit & Statistics - COMPLETE (2026-03-02) ✅
+- Endpoint `/api/statistics` avec données complètes
+- Commerce MONDIAL vs INTRA-AFRICAIN tableaux fonctionnels
+- Plus de valeurs NaN
+
+### GitHub Repository Integration - COMPLETE (2026-03-02) ✅
+- 15 fichiers frontend intégrés depuis `afcfta-final-002`
 
 ## Architecture
 
 ```
 /app
 ├── backend/
-│   ├── app/services/
 │   ├── routes/
-│   └── server.py
-├── engine/                      # Regulatory Engine v3 - COMPLETE
-│   ├── adapters/
-│   │   ├── base_adapter.py
-│   │   ├── dza_adapter.py      
-│   │   └── generic_adapter.py  # NEW: Universal adapter
-│   ├── api/
-│   │   └── engine_service.py   # UPDATED: Fixed index format
-│   ├── database/               # NEW: PostgreSQL support
-│   │   ├── models.py           # SQLAlchemy models
-│   │   └── migration.py        # Migration service
-│   ├── output/                 # 1.5GB canonical data
-│   │   ├── {ISO3}_canonical.jsonl (54 files)
-│   │   └── indexes/            # 109 index files
-│   ├── schemas/
-│   └── pipeline.py             # UPDATED: 54 countries
+│   │   ├── statistics.py   # Stats + trade performance
+│   │   └── search.py       # NEW: PostgreSQL text search API
+│   └── .env                # DATABASE_URL configured
+├── engine/
+│   ├── output/             # 1.5GB JSONL files (54 countries)
+│   └── migrate_all.py      # Migration script
 ├── frontend/
-│   └── src/components/calculator/
-│       └── CalculatorTab.jsx   # UPDATED: 54 country badges
-└── memory/PRD.md
+│   └── src/components/
+└── PostgreSQL Database
+    ├── countries (54 rows)
+    └── commodities (894,783 rows with JSONB measures)
 ```
 
-## Data Statistics
-
-| Metric | Value |
-|--------|-------|
-| Countries | 54 |
-| Total Records | 894,783 |
-| Data Size | 1.5 GB |
-| Index Files | 109 |
-| HS6 Codes per Country | ~5,831 |
-| Avg Response Time | <5ms |
-
-## Countries with Full Regulatory Data
-
-### North Africa
-DZA (Algeria), EGY (Egypt), LBY (Libya), MAR (Morocco), TUN (Tunisia)
-
-### West Africa  
-BEN (Benin), BFA (Burkina Faso), CIV (Côte d'Ivoire), CPV (Cape Verde), 
-GHA (Ghana), GIN (Guinea), GMB (Gambia), GNB (Guinea-Bissau), 
-LBR (Liberia), MLI (Mali), MRT (Mauritania), NER (Niger), 
-NGA (Nigeria), SEN (Senegal), SLE (Sierra Leone), TGO (Togo)
-
-### Central Africa
-CAF (Central African Republic), CMR (Cameroon), COD (DR Congo), 
-COG (Congo), GAB (Gabon), GNQ (Equatorial Guinea), 
-STP (São Tomé and Príncipe), TCD (Chad)
-
-### East Africa
-BDI (Burundi), COM (Comoros), DJI (Djibouti), ERI (Eritrea), 
-ETH (Ethiopia), KEN (Kenya), MDG (Madagascar), MUS (Mauritius), 
-RWA (Rwanda), SOM (Somalia), SSD (South Sudan), SDN (Sudan), 
-SYC (Seychelles), TZA (Tanzania), UGA (Uganda)
-
-### Southern Africa
-AGO (Angola), BWA (Botswana), LSO (Lesotho), MWI (Malawi), 
-MOZ (Mozambique), NAM (Namibia), SWZ (Eswatini), ZAF (South Africa), 
-ZMB (Zambia), ZWE (Zimbabwe)
-
-## API Endpoints
-
-### Regulatory Engine v3
-```
-GET /api/regulatory-engine/details
-  ?country={ISO3}     # e.g., SEN, MAR, NGA
-  &code={HS_CODE}     # e.g., 090111, 870323
-  &search_type=hs6    # or 'national'
-
-Response: {
-  success: true,
-  country_iso3: "SEN",
-  total_npf_pct: 40.0,
-  total_zlecaf_pct: 20.0,
-  savings_pct: 20.0,
-  commodity: { ... },
-  measures: [ ... ],
-  requirements: [ ... ],
-  fiscal_advantages: [ ... ]
-}
-```
-
-## PostgreSQL Schema (Migration Ready)
+## Database Schema (PostgreSQL)
 
 ```sql
--- 5 tables created
-countries (iso3, name_fr, currency, vat_rate, total_positions)
-commodities (country_iso3, national_code, hs6, description_fr, total_npf_pct, ...)
-measures (commodity_id, measure_type, code, rate_pct, zlecaf_rate_pct)
-requirements (commodity_id, code, document_fr, issuing_authority)
-fiscal_advantages (commodity_id, tax_code, reduced_rate_pct, condition_fr)
+countries:
+  - iso3 VARCHAR(3) PRIMARY KEY
+  - name_fr VARCHAR(100)
+  - total_positions INTEGER
+  - last_updated TIMESTAMP
 
--- To run migration:
-python /app/engine/database/migration.py --database-url postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory
+commodities:
+  - id SERIAL PRIMARY KEY
+  - country_iso3 VARCHAR(3) FK
+  - national_code VARCHAR(15)
+  - hs6 VARCHAR(6)
+  - description_fr TEXT (full-text indexed FR + EN)
+  - total_npf_pct, total_zlecaf_pct, savings_pct FLOAT
+  - measures, requirements, fiscal_advantages JSONB
+
+search_translations:
+  - en_term VARCHAR(100) PRIMARY KEY
+  - fr_term VARCHAR(100) NOT NULL
+  (49 traductions: coffee→café, vehicle→véhicule, rice→riz, etc.)
+
+Indexes:
+  - idx_comm_country (country_iso3)
+  - idx_comm_hs6 (hs6)
+  - idx_desc_ft (to_tsvector('french', description_fr))
+  - idx_desc_ft_en (to_tsvector('english', description_fr))
+```
+
+## Key API Endpoints
+
+### Text Search (NEW)
+```
+GET /api/commodities/search?q={query}&country={ISO3}&limit=50
+GET /api/commodities/search/simple?q={query}&country={ISO3}
+GET /api/commodities/countries
+GET /api/commodities/stats
+```
+
+### Statistics
+```
+GET /api/statistics
+GET /api/statistics/trade-performance
+GET /api/statistics/trade-performance-intra-african
+```
+
+### Calculator
+```
+POST /api/authentic-tariffs/calculate?country_iso3={ISO3}&hs_code={CODE}&cif_value={VALUE}
 ```
 
 ## Completed Work (March 2026)
 
-- [x] Regulatory Engine v3 for 54 countries
-- [x] Generic adapter for enhanced_v2 format
-- [x] 894,783 canonical records generated
-- [x] Index generation for all countries
-- [x] PostgreSQL models and migration service
-- [x] Frontend updated with 54-country badges
-- [x] API bug fix for new index format
+- [x] PostgreSQL migration (54 pays, 894,783 produits)
+- [x] Text Search API with full-text ranking
+- [x] OEC Data Audit (NaN fixed)
+- [x] Statistics endpoints
+- [x] GitHub integration
+- [x] Calculator functional
+- [x] Regulatory Engine v3
+
+## Credentials
+
+**PostgreSQL:**
+- Host: localhost:5432
+- Database: afcfta_regulatory
+- User: afcfta
+- Password: afcfta2026
 
 ## Backlog
 
-- [ ] Complete PostgreSQL migration
-- [ ] Text search API for product descriptions
-- [ ] OEC data audit
+### P2 - Medium Priority
 - [ ] RASD (55th country) addition
+- [ ] Integrate search UI in frontend
+
+### P3 - Low Priority
 - [ ] PDF export functionality
-- [ ] Performance optimization for large queries
+- [ ] Performance optimization
+- [ ] API caching with Redis
+
+## Testing Status
+- Backend: All endpoints verified ✅
+- PostgreSQL: 894,783 records migrated ✅
+- Search API: Full-text working ✅
+- Frontend: Compiled successfully ✅

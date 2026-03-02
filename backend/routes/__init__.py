@@ -80,6 +80,12 @@ try:
 except ImportError:
     REGULATORY_ENGINE_AVAILABLE = False
 
+try:
+    from .search import router as search_router
+    SEARCH_AVAILABLE = True
+except ImportError:
+    SEARCH_AVAILABLE = False
+
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
     api_router.include_router(health_router, tags=["Health"])
@@ -113,3 +119,5 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(tariff_data_router, tags=["Tariff Data Collection"])
     if REGULATORY_ENGINE_AVAILABLE:
         api_router.include_router(regulatory_engine_router, tags=["Regulatory Engine v3"])
+    if SEARCH_AVAILABLE:
+        api_router.include_router(search_router, tags=["Text Search"])
