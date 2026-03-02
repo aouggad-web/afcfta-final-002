@@ -26,7 +26,7 @@ class TestHealthEndpoints:
         assert response.status_code == 200
         data = response.json()
         assert data["status"] == "healthy"
-        assert "checks" in data
+        assert "components" in data
         print(f"✓ Detailed health check passed: {data['status']}")
 
 
