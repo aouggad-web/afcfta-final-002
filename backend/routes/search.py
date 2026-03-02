@@ -78,26 +78,53 @@ async def search_commodities(
             # Déterminer la langue de recherche
             ts_config = 'french' if lang == 'fr' else 'english'
             
-            # Construire la requête
-            base_query = f"""
-                SELECT 
-                    c.id,
-                    c.country_iso3,
-                    co.name_fr as country_name,
-                    c.national_code,
-                    c.hs6,
-                    c.description_fr,
-                    c.chapter,
-                    c.total_npf_pct,
-                    c.total_zlecaf_pct,
-                    c.savings_pct,
-                    ts_rank(to_tsvector('{ts_config}', c.description_fr), plainto_tsquery('{ts_config}', :query)) as rank
-                FROM commodities c
-                JOIN countries co ON c.country_iso3 = co.iso3
-                WHERE to_tsvector('{ts_config}', c.description_fr) @@ plainto_tsquery('{ts_config}', :query)
-            """
+            # Pour l'anglais, on utilise aussi ILIKE car les descriptions sont en français
+            # mais peuvent contenir des termes techniques anglais
+            if lang == 'en':
+                base_query = f"""
+                    SELECT 
+                        c.id,
+                        c.country_iso3,
+                        co.name_fr as country_name,
+                        c.national_code,
+                        c.hs6,
+                        c.description_fr,
+                        c.chapter,
+                        c.total_npf_pct,
+                        c.total_zlecaf_pct,
+                        c.savings_pct,
+                        CASE 
+                            WHEN c.description_fr ILIKE :pattern THEN 1.0
+                            ELSE 0.5
+                        END as rank
+                    FROM commodities c
+                    JOIN countries co ON c.country_iso3 = co.iso3
+                    WHERE (
+                        to_tsvector('english', c.description_fr) @@ plainto_tsquery('english', :query)
+                        OR c.description_fr ILIKE :pattern
+                    )
+                """
+            else:
+                # Recherche française standard
+                base_query = f"""
+                    SELECT 
+                        c.id,
+                        c.country_iso3,
+                        co.name_fr as country_name,
+                        c.national_code,
+                        c.hs6,
+                        c.description_fr,
+                        c.chapter,
+                        c.total_npf_pct,
+                        c.total_zlecaf_pct,
+                        c.savings_pct,
+                        ts_rank(to_tsvector('{ts_config}', c.description_fr), plainto_tsquery('{ts_config}', :query)) as rank
+                    FROM commodities c
+                    JOIN countries co ON c.country_iso3 = co.iso3
+                    WHERE to_tsvector('{ts_config}', c.description_fr) @@ plainto_tsquery('{ts_config}', :query)
+                """
             
-            params = {"query": q, "limit": limit, "offset": offset}
+            params = {"query": q, "pattern": f"%{q}%", "limit": limit, "offset": offset}
             
             # Filtrer par pays si spécifié
             if country:
