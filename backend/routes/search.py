@@ -51,18 +51,20 @@ def get_db():
 async def search_commodities(
     q: str = Query(..., min_length=2, description="Terme de recherche (minimum 2 caractères)"),
     country: Optional[str] = Query(None, description="Code ISO3 du pays (optionnel)"),
+    lang: str = Query("fr", description="Langue de recherche: 'fr' (français) ou 'en' (anglais)"),
     limit: int = Query(50, ge=1, le=200, description="Nombre maximum de résultats"),
     offset: int = Query(0, ge=0, description="Décalage pour la pagination")
 ):
     """
     Recherche textuelle dans les descriptions de produits.
     
-    Utilise la recherche full-text PostgreSQL avec support du français.
+    Utilise la recherche full-text PostgreSQL avec support du français ET anglais.
     
     Exemples:
-    - `/api/commodities/search?q=café`
+    - `/api/commodities/search?q=café` (français par défaut)
+    - `/api/commodities/search?q=coffee&lang=en` (anglais)
     - `/api/commodities/search?q=véhicule&country=SEN`
-    - `/api/commodities/search?q=riz&limit=20`
+    - `/api/commodities/search?q=vehicle&country=SEN&lang=en`
     """
     if not POSTGRES_AVAILABLE:
         raise HTTPException(
