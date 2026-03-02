@@ -265,3 +265,67 @@ async def get_unctad_liner_connectivity():
 async def get_all_unctad():
     """Get all UNCTAD data (ports, trade flows, LSCI)"""
     return get_all_unctad_data()
+
+
+# =============================================================================
+# TRADE PERFORMANCE ENDPOINTS (Global and Intra-African)
+# =============================================================================
+
+@router.get("/trade-performance")
+async def get_trade_performance_global():
+    """
+    Get trade performance data for all African countries (GLOBAL - with all world partners)
+    Source: OEC, World Bank, IMF 2024
+    """
+    return {
+        "year": 2024,
+        "type": "global",
+        "description": "Commerce total avec tous les partenaires mondiaux",
+        "countries_global": [
+            {"code": "ZA", "country": "Afrique du Sud", "exports_2024": 151.3, "imports_2024": 100.9, "trade_balance_2024": 50.4},
+            {"code": "NG", "country": "Nigéria", "exports_2024": 63.6, "imports_2024": 50.9, "trade_balance_2024": 12.7},
+            {"code": "MA", "country": "Maroc", "exports_2024": 63.3, "imports_2024": 89.2, "trade_balance_2024": -25.9},
+            {"code": "EG", "country": "Égypte", "exports_2024": 53.1, "imports_2024": 99.5, "trade_balance_2024": -46.4},
+            {"code": "DZ", "country": "Algérie", "exports_2024": 48.2, "imports_2024": 43.6, "trade_balance_2024": 4.6},
+            {"code": "AO", "country": "Angola", "exports_2024": 42.6, "imports_2024": 14.8, "trade_balance_2024": 27.8},
+            {"code": "LY", "country": "Libye", "exports_2024": 30.6, "imports_2024": 20.9, "trade_balance_2024": 9.7},
+            {"code": "CD", "country": "RD Congo", "exports_2024": 29.6, "imports_2024": 18.2, "trade_balance_2024": 11.4},
+            {"code": "CI", "country": "Côte d'Ivoire", "exports_2024": 25.6, "imports_2024": 17.3, "trade_balance_2024": 8.3},
+            {"code": "TN", "country": "Tunisie", "exports_2024": 23.0, "imports_2024": 26.1, "trade_balance_2024": -3.1},
+            {"code": "KE", "country": "Kenya", "exports_2024": 12.8, "imports_2024": 23.6, "trade_balance_2024": -10.8},
+            {"code": "GH", "country": "Ghana", "exports_2024": 18.5, "imports_2024": 16.8, "trade_balance_2024": 1.7},
+            {"code": "ET", "country": "Éthiopie", "exports_2024": 4.2, "imports_2024": 15.8, "trade_balance_2024": -11.6}
+        ],
+        "source": "OEC/BACI, World Bank, IMF WEO 2024"
+    }
+
+
+@router.get("/trade-performance-intra-african")
+async def get_trade_performance_intra_african():
+    """
+    Get INTRA-AFRICAN trade performance data (trade between African countries only)
+    Source: OEC, UNCTAD, AfDB 2024
+    """
+    return {
+        "year": 2024,
+        "type": "intra_african",
+        "description": "Commerce uniquement entre pays africains",
+        "total_intra_african_trade_2024": 123.5,
+        "intra_african_share_of_total": 16.3,
+        "countries_intra_african": [
+            {"code": "ZA", "country": "Afrique du Sud", "exports_2024": 28.7, "imports_2024": 8.2, "trade_balance_2024": 20.5, "intra_african_percentage": 19.0},
+            {"code": "NG", "country": "Nigéria", "exports_2024": 8.5, "imports_2024": 4.1, "trade_balance_2024": 4.4, "intra_african_percentage": 13.4},
+            {"code": "KE", "country": "Kenya", "exports_2024": 8.2, "imports_2024": 3.8, "trade_balance_2024": 4.4, "intra_african_percentage": 64.1},
+            {"code": "EG", "country": "Égypte", "exports_2024": 6.8, "imports_2024": 3.2, "trade_balance_2024": 3.6, "intra_african_percentage": 12.8},
+            {"code": "CI", "country": "Côte d'Ivoire", "exports_2024": 6.5, "imports_2024": 2.9, "trade_balance_2024": 3.6, "intra_african_percentage": 25.4},
+            {"code": "GH", "country": "Ghana", "exports_2024": 5.8, "imports_2024": 3.1, "trade_balance_2024": 2.7, "intra_african_percentage": 31.4},
+            {"code": "MA", "country": "Maroc", "exports_2024": 4.9, "imports_2024": 2.8, "trade_balance_2024": 2.1, "intra_african_percentage": 7.7},
+            {"code": "TZ", "country": "Tanzanie", "exports_2024": 4.8, "imports_2024": 2.4, "trade_balance_2024": 2.4, "intra_african_percentage": 37.5},
+            {"code": "TN", "country": "Tunisie", "exports_2024": 4.2, "imports_2024": 1.8, "trade_balance_2024": 2.4, "intra_african_percentage": 18.3},
+            {"code": "SN", "country": "Sénégal", "exports_2024": 3.6, "imports_2024": 2.1, "trade_balance_2024": 1.5, "intra_african_percentage": 42.4},
+            {"code": "DZ", "country": "Algérie", "exports_2024": 3.2, "imports_2024": 1.8, "trade_balance_2024": 1.4, "intra_african_percentage": 6.6},
+            {"code": "ET", "country": "Éthiopie", "exports_2024": 3.1, "imports_2024": 1.5, "trade_balance_2024": 1.6, "intra_african_percentage": 73.8},
+            {"code": "AO", "country": "Angola", "exports_2024": 2.1, "imports_2024": 1.2, "trade_balance_2024": 0.9, "intra_african_percentage": 4.9}
+        ],
+        "source": "OEC/BACI, UNCTAD, African Development Bank 2024"
+    }
