@@ -73,6 +73,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
   const [countryTariffProfile, setCountryTariffProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
+  const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
+  const [regulatorySelectedPosDesc, setRegulatorySelectedPosDesc] = useState(null);
 
   const fetchCountryTariffProfile = useCallback(async (countryCode) => {
     if (!countryCode) {
@@ -95,6 +97,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setDestinationCountry(value);
     fetchCountryTariffProfile(value);
   }, [fetchCountryTariffProfile]);
+
+  const handleRegulatoryHsCodeChange = useCallback((e) => {
+    setHsCode(e.target.value);
+    setRegulatorySelectedPos(null);
+    setRegulatorySelectedPosDesc(null);
+  }, []);
 
   // Remove redundant useEffect - handleDestinationChange already calls fetchCountryTariffProfile
 
@@ -1153,7 +1161,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </Label>
                     <Input
                       value={hsCode}
-                      onChange={(e) => setHsCode(e.target.value)}
+                      onChange={handleRegulatoryHsCodeChange}
                       placeholder={language === 'fr' ? 'Ex: 010110, 0101101000...' : 'E.g: 010110, 0101101000...'}
                       className="h-12 font-mono text-lg bg-slate-800/50 border-slate-600 hover:border-amber-500/50 focus:border-amber-500 transition-colors"
                       data-testid="regulatory-hs-input"
@@ -1197,11 +1205,39 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </CardContent>
             </Card>
 
+            {/* Sélecteur de Positions Nationales */}
+            {destinationCountry && hsCode && hsCode.length >= 6 && (
+              <>
+                <NationalPositionsSelector
+                  countryCode={destinationCountry}
+                  hs6Code={hsCode.substring(0, 6)}
+                  language={language}
+                  selectedPosition={regulatorySelectedPos}
+                  onPositionSelect={(code, description) => {
+                    setRegulatorySelectedPos(code);
+                    setRegulatorySelectedPosDesc(description);
+                  }}
+                />
+                {regulatorySelectedPosDesc && (
+                  <div className="flex items-start gap-3 p-4 bg-amber-500/10 rounded-xl border border-amber-500/30">
+                    <FileText className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-xs text-amber-400/70 uppercase tracking-wide font-medium mb-1">
+                        {language === 'fr' ? 'Intitulé exact de la position nationale' : 'Exact title of national position'}
+                      </p>
+                      <p className="text-white font-medium">{regulatorySelectedPosDesc}</p>
+                      <p className="text-amber-400/60 font-mono text-sm mt-1">{regulatorySelectedPos}</p>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
             {/* Panneau des détails réglementaires */}
             {destinationCountry && hsCode && hsCode.length >= 6 && (
               <RegulatoryDetailsPanel
                 countryCode={destinationCountry}
-                hsCode={hsCode}
+                hsCode={regulatorySelectedPos || hsCode}
                 language={language}
               />
             )}
