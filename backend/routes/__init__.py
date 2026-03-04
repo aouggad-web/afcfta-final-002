@@ -93,6 +93,25 @@ try:
 except ImportError:
     CACHE_ROUTER_AVAILABLE = False
 
+try:
+    from .north_africa_crawlers import router as north_africa_crawlers_router
+    NORTH_AFRICA_CRAWLERS_AVAILABLE = True
+except ImportError:
+    NORTH_AFRICA_CRAWLERS_AVAILABLE = False
+
+try:
+    from .regional_calculator import router as regional_calculator_router
+    REGIONAL_CALCULATOR_AVAILABLE = True
+except ImportError:
+    REGIONAL_CALCULATOR_AVAILABLE = False
+
+try:
+    from .investment_intelligence import router as investment_intelligence_router
+    INVESTMENT_INTELLIGENCE_AVAILABLE = True
+except ImportError:
+    INVESTMENT_INTELLIGENCE_AVAILABLE = False
+
+
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
     api_router.include_router(health_router, tags=["Health"])
@@ -129,3 +148,9 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(search_router, tags=["Text Search"])
     if CACHE_ROUTER_AVAILABLE:
         api_router.include_router(cache_router, tags=["Cache Management"])
+    if NORTH_AFRICA_CRAWLERS_AVAILABLE:
+        api_router.include_router(north_africa_crawlers_router, tags=["North Africa Crawlers"])
+    if REGIONAL_CALCULATOR_AVAILABLE:
+        api_router.include_router(regional_calculator_router, tags=["Regional Calculator"])
+    if INVESTMENT_INTELLIGENCE_AVAILABLE:
+        api_router.include_router(investment_intelligence_router, tags=["Investment Intelligence"])
