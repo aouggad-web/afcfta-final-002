@@ -550,3 +550,301 @@ class TestNorthAfricaCrawlerBase:
         assert record["taxes"]["TVA"] == 20.0
         assert record["total_taxes_pct"] == pytest.approx(37.5)
         assert "scraped_at" in record
+
+
+# ==================== Advanced Regional Intelligence Tests ====================
+
+class TestRegionalIntelligenceAdvanced:
+    """Tests for the new advanced regional intelligence methods."""
+
+    def setup_method(self):
+        from services.regional_intelligence_service import RegionalIntelligenceService
+        self.intel = RegionalIntelligenceService()
+
+    # ---------- optimal_trade_route ----------
+
+    def test_optimal_route_returns_all_countries(self):
+        result = self.intel.optimal_trade_route(
+            hs_code="870321",
+            origin_region="sub_saharan_africa",
+            target_market="europe",
+        )
+        assert "routes" in result
+        assert len(result["routes"]) == 4
+        codes = {r["country_code"] for r in result["routes"]}
+        assert codes == {"DZA", "MAR", "EGY", "TUN"}
+
+    def test_optimal_route_has_required_fields(self):
+        result = self.intel.optimal_trade_route(
+            hs_code="870321",
+            origin_region="sub_saharan_africa",
+            target_market="europe",
+        )
+        assert "optimal_route" in result
+        assert result["optimal_route"] is not None
+        route = result["optimal_route"]
+        assert "combined_score" in route
+        assert "clearance_days_avg" in route
+        assert "dd_rate_typical_pct" in route
+        assert "annual_duty_estimate_usd" in route
+
+    def test_optimal_route_for_eu_favors_eu_countries(self):
+        result = self.intel.optimal_trade_route(
+            hs_code="610910",
+            origin_region="sub_saharan_africa",
+            target_market="europe",
+            preferences=["lowest_cost", "most_reliable"],
+        )
+        # Countries with EU agreements should rank better for EU target
+        top = result["optimal_route"]["country_code"]
+        eu_countries = {"MAR", "EGY", "TUN"}
+        assert top in eu_countries
+
+    def test_optimal_route_annual_duty_positive(self):
+        result = self.intel.optimal_trade_route(
+            hs_code="870321",
+            origin_region="asia",
+            target_market="mena",
+            annual_volume=5_000_000,
+        )
+        for route in result["routes"]:
+            assert route["annual_duty_estimate_usd"] >= 0
+
+    def test_optimal_route_sorted_by_score(self):
+        result = self.intel.optimal_trade_route(
+            hs_code="840710",
+            origin_region="americas",
+            target_market="africa",
+        )
+        scores = [r["combined_score"] for r in result["routes"]]
+        assert scores == sorted(scores, reverse=True)
+
+    def test_optimal_route_metadata(self):
+        result = self.intel.optimal_trade_route(
+            hs_code="270900",
+            origin_region="sub_saharan_africa",
+            target_market="europe",
+            annual_volume=10_000_000,
+            preferences=["fastest_clearance"],
+        )
+        assert result["hs_code"] == "270900"
+        assert result["origin_region"] == "sub_saharan_africa"
+        assert result["target_market"] == "europe"
+        assert result["annual_volume_usd"] == 10_000_000
+        assert "generated_at" in result
+
+    # ---------- investment_analysis ----------
+
+    def test_investment_analysis_returns_all_countries(self):
+        result = self.intel.investment_analysis(industry="automotive")
+        assert "recommendations" in result
+        assert len(result["recommendations"]) == 4
+        codes = {r["country_code"] for r in result["recommendations"]}
+        assert codes == {"DZA", "MAR", "EGY", "TUN"}
+
+    def test_investment_analysis_has_required_fields(self):
+        result = self.intel.investment_analysis(
+            industry="textile",
+            target_markets=["eu"],
+            investment_size=20_000_000,
+            employment_target=500,
+        )
+        assert result["industry"] == "textile"
+        assert result["investment_size_usd"] == 20_000_000
+        assert result["employment_target"] == 500
+        assert "top_recommendation" in result
+        assert "size_note" in result
+        assert "generated_at" in result
+
+    def test_investment_analysis_automotive_eu_recommends_mar(self):
+        result = self.intel.investment_analysis(
+            industry="automotive",
+            target_markets=["eu"],
+        )
+        # Morocco is the regional automotive + EU leader
+        assert result["top_recommendation"] == "MAR"
+
+    def test_investment_analysis_textile_us_includes_egy(self):
+        result = self.intel.investment_analysis(
+            industry="textile",
+            target_markets=["us"],
+        )
+        # Egypt QIZ gives US access for textiles; should rank high
+        us_accessible = [
+            r for r in result["recommendations"]
+            if "US" in r["markets_accessible"]
+        ]
+        assert any(r["country_code"] == "EGY" for r in us_accessible)
+
+    def test_investment_analysis_rank_field(self):
+        result = self.intel.investment_analysis(industry="ict")
+        ranks = [r["rank"] for r in result["recommendations"]]
+        assert sorted(ranks) == [1, 2, 3, 4]
+
+    def test_investment_analysis_large_investment_note(self):
+        result = self.intel.investment_analysis(
+            industry="automotive",
+            investment_size=100_000_000,
+        )
+        assert "Large-scale" in result["size_note"]
+
+    def test_investment_analysis_small_investment_note(self):
+        result = self.intel.investment_analysis(
+            industry="ict",
+            investment_size=500_000,
+        )
+        assert "Smaller" in result["size_note"]
+
+    # ---------- get_preferential_matrix_by_hs ----------
+
+    def test_preferential_matrix_structure(self):
+        result = self.intel.get_preferential_matrix_by_hs(hs_code="870321")
+        assert "hs_code" in result
+        assert "matrix" in result
+        assert set(result["matrix"].keys()) == {"DZA", "MAR", "EGY", "TUN"}
+
+    def test_preferential_matrix_hs_chapter_detection(self):
+        result = self.intel.get_preferential_matrix_by_hs(hs_code="870321")
+        assert result["hs_chapter"] == "87"
+        assert result["product_category"] == "vehicles_transport"
+
+    def test_preferential_matrix_agricultural_chapter(self):
+        result = self.intel.get_preferential_matrix_by_hs(hs_code="100190")
+        assert result["product_category"] == "agricultural"
+
+    def test_preferential_matrix_machinery_chapter(self):
+        result = self.intel.get_preferential_matrix_by_hs(hs_code="841431")
+        assert result["product_category"] == "machinery_electronics"
+
+    def test_preferential_matrix_invalid_hs_too_short(self):
+        with pytest.raises(ValueError, match="Invalid HS code"):
+            self.intel.get_preferential_matrix_by_hs(hs_code="8")
+
+    def test_preferential_matrix_invalid_hs_non_numeric(self):
+        with pytest.raises(ValueError, match="Invalid HS code"):
+            self.intel.get_preferential_matrix_by_hs(hs_code="XY1234")
+
+    def test_preferential_matrix_eu_access_countries(self):
+        result = self.intel.get_preferential_matrix_by_hs(hs_code="610910")
+        eu_countries = result["best_for_eu_access"]
+        assert "MAR" in eu_countries
+        assert "EGY" in eu_countries
+        assert "TUN" in eu_countries
+        # Algeria does NOT have EU agreement
+        assert "DZA" not in eu_countries
+
+    def test_preferential_matrix_us_access_countries(self):
+        result = self.intel.get_preferential_matrix_by_hs(hs_code="870321")
+        us_countries = result["best_for_us_access"]
+        # MAR has US FTA, EGY has QIZ
+        assert "MAR" in us_countries
+        assert "EGY" in us_countries
+
+    def test_preferential_matrix_afcfta_universal(self):
+        result = self.intel.get_preferential_matrix_by_hs(hs_code="270900")
+        for country_data in result["matrix"].values():
+            agreements = [a["agreement"] for a in country_data["applicable_agreements"]]
+            assert any("AfCFTA" in ag for ag in agreements)
+
+    def test_preferential_matrix_qiz_egypt_only(self):
+        result = self.intel.get_preferential_matrix_by_hs(hs_code="610910")
+        egy_agreements = [
+            a["agreement"]
+            for a in result["matrix"]["EGY"]["applicable_agreements"]
+        ]
+        assert any("QIZ" in ag for ag in egy_agreements)
+        # Other countries should NOT have QIZ
+        for country_code in ["DZA", "MAR", "TUN"]:
+            agreements = [
+                a["agreement"]
+                for a in result["matrix"][country_code]["applicable_agreements"]
+            ]
+            assert not any("QIZ" in ag for ag in agreements)
+
+    def test_preferential_matrix_generated_at(self):
+        result = self.intel.get_preferential_matrix_by_hs(hs_code="840710")
+        assert "generated_at" in result
+
+    # ---------- get_trade_flows ----------
+
+    def test_trade_flows_structure(self):
+        result = self.intel.get_trade_flows()
+        assert "intra_regional" in result
+        assert "eu_access" in result
+        assert "mena_hub" in result
+        assert "africa_gateway" in result
+        assert "generated_at" in result
+
+    def test_trade_flows_intra_regional_pairs(self):
+        result = self.intel.get_trade_flows()
+        intra = result["intra_regional"]
+        expected_pairs = {"dza_mar", "dza_tun", "egy_tun", "mar_tun", "mar_egy"}
+        assert set(intra.keys()) == expected_pairs
+
+    def test_trade_flows_eu_access_countries(self):
+        result = self.intel.get_trade_flows()
+        eu = result["eu_access"]
+        countries = {v["country"] for v in eu.values()}
+        # MAR and TUN are EU-focused in the model
+        assert "MAR" in countries
+        assert "TUN" in countries
+
+    def test_trade_flows_suez_canal_egypt(self):
+        result = self.intel.get_trade_flows()
+        mena = result["mena_hub"]
+        egy_position = mena.get("egy_position", {})
+        assert egy_position.get("country") == "EGY"
+        assert "Suez Canal" in str(egy_position.get("strategic_assets", []))
+
+    def test_trade_flows_africa_gateway(self):
+        result = self.intel.get_trade_flows()
+        gateway = result["africa_gateway"]
+        countries = {v["country"] for v in gateway.values()}
+        # All North African countries should feature
+        assert len(countries) >= 2
+
+    # ---------- get_opportunity_map ----------
+
+    def test_opportunity_map_default_sectors(self):
+        result = self.intel.get_opportunity_map()
+        assert "opportunity_map" in result
+        assert "overall_ranking" in result
+        assert "best_overall" in result
+        # Default 4 sectors
+        assert len(result["opportunity_map"]) >= 4
+
+    def test_opportunity_map_custom_sectors(self):
+        result = self.intel.get_opportunity_map(sectors=["automotive", "ict"])
+        assert set(result["opportunity_map"].keys()) == {"automotive", "ict"}
+
+    def test_opportunity_map_rankings_structure(self):
+        result = self.intel.get_opportunity_map(sectors=["automotive"])
+        auto = result["opportunity_map"]["automotive"]
+        assert "rankings" in auto
+        assert "top_country" in auto
+        assert len(auto["rankings"]) == 4
+
+    def test_opportunity_map_automotive_top_mar(self):
+        result = self.intel.get_opportunity_map(sectors=["automotive"])
+        top = result["opportunity_map"]["automotive"]["top_country"]
+        # Morocco is the clear automotive leader
+        assert top == "MAR"
+
+    def test_opportunity_map_overall_ranking_all_countries(self):
+        result = self.intel.get_opportunity_map()
+        codes = {r["country_code"] for r in result["overall_ranking"]}
+        assert codes == {"DZA", "MAR", "EGY", "TUN"}
+
+    def test_opportunity_map_score_fields(self):
+        result = self.intel.get_opportunity_map(sectors=["textile"])
+        rankings = result["opportunity_map"]["textile"]["rankings"]
+        for r in rankings:
+            assert "combined_score" in r
+            assert "cost_structure" in r
+            assert "market_access" in r
+            assert "regulatory_environment" in r
+            assert "infrastructure_quality" in r
+
+    def test_opportunity_map_generated_at(self):
+        result = self.intel.get_opportunity_map(sectors=["agriculture"])
+        assert "generated_at" in result
