@@ -334,7 +334,7 @@ def load_morocco_base_positions() -> List[Dict[str, Any]]:
             logger.warning(f"Could not load Morocco reference file: {exc}. Generating synthetic base.")
 
     # Fallback: generate synthetic base positions
-    from morocco_uma_scraper import generate_reference_positions
+    from crawlers.countries.morocco_uma_scraper import generate_reference_positions
     logger.info("Generating Morocco reference positions (fallback)...")
     return generate_reference_positions()
 
@@ -493,7 +493,7 @@ def run_scraper(
 
     # Step 1: Generate / load Morocco reference
     if "MAR" in countries:
-        from morocco_uma_scraper import run_scraper as mar_run
+        from crawlers.countries.morocco_uma_scraper import run_scraper as mar_run
         logger.info("\n[1/2] Generating Morocco reference tariffs...")
         mar_result = mar_run()
         results["MAR"] = {
