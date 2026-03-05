@@ -6,6 +6,11 @@ Provides advanced analytics and decision support for North African trade:
 - Data freshness monitoring for all country datasets
 - Regional trade intelligence reporting
 - Best market entry strategy recommendations
+- Optimal trade route finder with multi-preference ranking
+- Investment location analysis with sector scoring
+- Preferential agreement matrix by HS code
+- Regional trade flow analytics
+- Sectoral opportunity mapping
 """
 
 import json
@@ -424,6 +429,838 @@ class RegionalIntelligenceService:
                 }
 
         return result
+
+    # ==================== Optimal Trade Route ====================
+
+    def optimal_trade_route(
+        self,
+        hs_code: str,
+        origin_region: str = "sub_saharan_africa",
+        target_market: str = "europe",
+        annual_volume: float = 1_000_000,
+        preferences: Optional[List[str]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Find the optimal North African transit/processing country for a trade lane.
+
+        For goods flowing from an origin region to a target market, ranks the
+        four North African countries based on:
+        - Customs duty (cost preference)
+        - Port throughput / clearance speed (fastest_clearance preference)
+        - Trade agreement coverage (most_reliable preference)
+        - Special economic zone availability
+
+        Args:
+            hs_code: HS tariff code
+            origin_region: Origin macro-region (sub_saharan_africa, asia, americas, etc.)
+            target_market: Destination market (europe, us, mena, africa, etc.)
+            annual_volume: Annual shipment value in USD
+            preferences: Ordered list of preferences to weight ranking
+                         (lowest_cost, fastest_clearance, most_reliable)
+
+        Returns:
+            Ranked list of optimal routes with justification
+        """
+        if preferences is None:
+            preferences = ["lowest_cost", "fastest_clearance", "most_reliable"]
+
+        target_upper = target_market.upper()
+
+        # Country-level suitability data for routing
+        country_routing: Dict[str, Dict[str, Any]] = {
+            "DZA": {
+                "country_name": "Algeria",
+                "port_capacity_score": 5,   # Algiers, Oran, Annaba
+                "clearance_days_avg": 5,
+                "eu_agreement": False,
+                "us_agreement": False,
+                "comesa": False,
+                "afcfta": True,
+                "free_zones": [],
+                "dd_rate_typical": 15.0,
+                "infrastructure_score": 5,
+                "reliability_score": 6,
+            },
+            "MAR": {
+                "country_name": "Morocco",
+                "port_capacity_score": 9,   # Tanger-Med largest in Africa
+                "clearance_days_avg": 2,
+                "eu_agreement": True,
+                "us_agreement": True,
+                "comesa": False,
+                "afcfta": True,
+                "free_zones": ["Tanger-Med Free Zone", "Casablanca Finance City"],
+                "dd_rate_typical": 10.0,
+                "infrastructure_score": 8,
+                "reliability_score": 8,
+            },
+            "EGY": {
+                "country_name": "Egypt",
+                "port_capacity_score": 8,   # Suez Canal gateway
+                "clearance_days_avg": 3,
+                "eu_agreement": True,
+                "us_agreement": True,  # via QIZ
+                "comesa": True,
+                "afcfta": True,
+                "free_zones": ["SCZONE", "Port Said SEZ", "QIZ Zones"],
+                "dd_rate_typical": 12.0,
+                "infrastructure_score": 7,
+                "reliability_score": 7,
+            },
+            "TUN": {
+                "country_name": "Tunisia",
+                "port_capacity_score": 6,   # Tunis-La Goulette, Sfax
+                "clearance_days_avg": 2,
+                "eu_agreement": True,
+                "us_agreement": False,
+                "comesa": False,
+                "afcfta": True,
+                "free_zones": ["Offshore enterprise zones", "Economic development zones"],
+                "dd_rate_typical": 8.0,
+                "infrastructure_score": 7,
+                "reliability_score": 8,
+            },
+        }
+
+        routes = []
+        for country_code, profile in country_routing.items():
+            # Score based on preferences
+            cost_score = max(0, 10 - profile["dd_rate_typical"] / 4)
+            clearance_score = max(0, 10 - profile["clearance_days_avg"])
+            reliability_score = profile["reliability_score"]
+
+            # Bonus for target market agreements
+            agreement_bonus = 0
+            if target_upper in ("EUROPE", "EU") and profile["eu_agreement"]:
+                agreement_bonus += 2
+            if target_upper in ("US", "UNITED_STATES") and profile["us_agreement"]:
+                agreement_bonus += 2
+            if target_upper in ("COMESA", "EAST_AFRICA") and profile["comesa"]:
+                agreement_bonus += 2
+            if target_upper in ("AFRICA", "MENA"):
+                agreement_bonus += 1  # All have AfCFTA
+
+            # Weighted combined score per preference order
+            pref_weights = {"lowest_cost": 0, "fastest_clearance": 0, "most_reliable": 0}
+            n = len(preferences)
+            for i, pref in enumerate(preferences[:3]):
+                pref = pref.lower()
+                if pref in pref_weights:
+                    pref_weights[pref] = (n - i) / n
+
+            combined = (
+                cost_score * pref_weights["lowest_cost"]
+                + clearance_score * pref_weights["fastest_clearance"]
+                + reliability_score * pref_weights["most_reliable"]
+                + agreement_bonus
+            )
+
+            annual_duty_estimate = annual_volume * profile["dd_rate_typical"] / 100
+            routes.append({
+                "country_code": country_code,
+                "country_name": profile["country_name"],
+                "combined_score": round(combined, 2),
+                "cost_score": round(cost_score, 1),
+                "clearance_speed_score": round(clearance_score, 1),
+                "reliability_score": round(reliability_score, 1),
+                "clearance_days_avg": profile["clearance_days_avg"],
+                "dd_rate_typical_pct": profile["dd_rate_typical"],
+                "annual_duty_estimate_usd": round(annual_duty_estimate, 0),
+                "eu_agreement": profile["eu_agreement"],
+                "us_agreement": profile["us_agreement"],
+                "free_zones": profile["free_zones"],
+                "infrastructure_score": profile["infrastructure_score"],
+                "port_capacity_score": profile["port_capacity_score"],
+            })
+
+        routes.sort(key=lambda x: x["combined_score"], reverse=True)
+
+        return {
+            "hs_code": hs_code,
+            "origin_region": origin_region,
+            "target_market": target_market,
+            "annual_volume_usd": annual_volume,
+            "preferences": preferences,
+            "routes": routes,
+            "optimal_route": routes[0] if routes else None,
+            "generated_at": datetime.utcnow().isoformat(),
+        }
+
+    # ==================== Investment Analysis ====================
+
+    def investment_analysis(
+        self,
+        industry: str,
+        target_markets: Optional[List[str]] = None,
+        investment_size: float = 10_000_000,
+        employment_target: int = 100,
+    ) -> Dict[str, Any]:
+        """
+        Analyze investment opportunities across North African countries for a given industry.
+
+        Scores each country on:
+        - Sector-specific capabilities
+        - Target market access (EU, US, Africa, MENA)
+        - Investment environment (incentives, SEZs, legal framework)
+        - Cost of employment / operational costs
+        - Infrastructure quality
+
+        Args:
+            industry: Industry/sector name (automotive, textile, agriculture, ict, etc.)
+            target_markets: List of target export markets (eu, us, africa, mena, arab)
+            investment_size: Capital investment in USD
+            employment_target: Target number of employees
+
+        Returns:
+            Investment analysis with country rankings and recommendations
+        """
+        if target_markets is None:
+            target_markets = ["eu", "africa"]
+
+        target_markets_lower = [m.lower() for m in target_markets]
+
+        industry_lower = industry.lower()
+
+        # Country investment profiles
+        country_investment: Dict[str, Dict[str, Any]] = {
+            "DZA": {
+                "country_name": "Algeria",
+                "sector_strengths": ["hydrocarbons", "agriculture", "mining", "construction"],
+                "labour_cost_index": 4,      # 1=cheapest, 10=most expensive
+                "ease_of_investment": 5,
+                "infrastructure_quality": 5,
+                "incentives": ["Tax holidays", "Customs exemptions (ANDI)"],
+                "investment_law": "Ordinance 22-18 (2022)",
+                "eu_access": False,
+                "us_access": False,
+                "special_zones": [],
+                "est_op_cost_factor": 0.8,  # relative to regional average
+            },
+            "MAR": {
+                "country_name": "Morocco",
+                "sector_strengths": [
+                    "automotive", "aerospace", "textiles", "agriculture",
+                    "renewable_energy", "phosphates", "tourism",
+                ],
+                "labour_cost_index": 4,
+                "ease_of_investment": 8,
+                "infrastructure_quality": 8,
+                "incentives": [
+                    "Industrial Acceleration Plan",
+                    "Tanger-Med SEZ",
+                    "Investment Charter 2022",
+                    "CIMR pension exemptions",
+                ],
+                "investment_law": "Investment Charter Law 03-22 (2022)",
+                "eu_access": True,
+                "us_access": True,
+                "special_zones": ["Tanger-Med", "Casablanca Finance City", "Dakhla Offshore"],
+                "est_op_cost_factor": 0.85,
+            },
+            "EGY": {
+                "country_name": "Egypt",
+                "sector_strengths": [
+                    "textiles", "food_processing", "ict", "petrochemicals",
+                    "tourism", "construction", "renewable_energy",
+                ],
+                "labour_cost_index": 3,      # lower cost
+                "ease_of_investment": 7,
+                "infrastructure_quality": 7,
+                "incentives": [
+                    "Investment Law 72/2017",
+                    "QIZ US market access",
+                    "SCZONE Suez Canal zone",
+                    "New Administrative Capital SEZ",
+                    "COMESA preferential access",
+                ],
+                "investment_law": "Investment Law 72/2017",
+                "eu_access": True,
+                "us_access": True,  # via QIZ
+                "special_zones": ["SCZONE", "QIZ Zones", "Port Said SEZ"],
+                "est_op_cost_factor": 0.70,
+            },
+            "TUN": {
+                "country_name": "Tunisia",
+                "sector_strengths": [
+                    "textiles", "automotive_components", "ict", "olive_oil",
+                    "phosphates", "tourism",
+                ],
+                "labour_cost_index": 4,
+                "ease_of_investment": 7,
+                "infrastructure_quality": 7,
+                "incentives": [
+                    "Offshore regime (full tax exemption for export-oriented firms)",
+                    "Investment Code 2016",
+                    "DCFTA preparation benefits",
+                    "EU deep association advantages",
+                ],
+                "investment_law": "Investment Code Law 71/2016",
+                "eu_access": True,
+                "us_access": False,
+                "special_zones": ["Offshore enterprise zones", "Economic development zones"],
+                "est_op_cost_factor": 0.80,
+            },
+        }
+
+        results = []
+        for country_code, profile in country_investment.items():
+            # Sector match score: pre-process strengths to avoid redundant operations in loop
+            sector_score = 5  # default
+            for strength in profile["sector_strengths"]:
+                strength_normalized = strength.replace("_", " ")
+                if strength_normalized in industry_lower or industry_lower in strength:
+                    sector_score = 9
+                    break
+                # partial word match
+                if any(w in industry_lower for w in strength_normalized.split()):
+                    sector_score = max(sector_score, 7)
+
+            # Market access score
+            market_score = 0
+            markets_matched = []
+            for mkt in target_markets_lower:
+                if mkt in ("eu", "europe") and profile["eu_access"]:
+                    market_score += 3
+                    markets_matched.append("EU")
+                elif mkt in ("us", "usa", "united_states") and profile["us_access"]:
+                    market_score += 3
+                    markets_matched.append("US")
+                elif mkt in ("africa", "afcfta"):
+                    market_score += 1  # all have AfCFTA
+                    markets_matched.append("Africa (AfCFTA)")
+                elif mkt in ("mena", "arab", "gafta"):
+                    market_score += 1
+                    markets_matched.append("MENA/GAFTA")
+            market_score = min(10, market_score * 2)
+
+            # Operational cost score: maps est_op_cost_factor [0.7, 1.0] to score [8, 5]
+            # Lower cost factor → higher score (more cost-efficient for the investor)
+            cost_score = 10 - (profile["est_op_cost_factor"] * 10 - 5)
+
+            # Investment environment
+            env_score = (profile["ease_of_investment"] + profile["infrastructure_quality"]) / 2
+
+            # Weighted combined
+            combined = (
+                sector_score * 0.30
+                + market_score * 0.30
+                + env_score * 0.25
+                + cost_score * 0.15
+            )
+
+            results.append({
+                "country_code": country_code,
+                "country_name": profile["country_name"],
+                "combined_score": round(combined, 2),
+                "sector_score": sector_score,
+                "market_access_score": round(market_score, 1),
+                "environment_score": round(env_score, 1),
+                "cost_efficiency_score": round(cost_score, 1),
+                "markets_accessible": markets_matched,
+                "key_incentives": profile["incentives"],
+                "investment_law": profile["investment_law"],
+                "special_zones": profile["special_zones"],
+                "estimated_op_cost_factor": profile["est_op_cost_factor"],
+                "eu_access": profile["eu_access"],
+                "us_access": profile["us_access"],
+            })
+
+        results.sort(key=lambda x: x["combined_score"], reverse=True)
+        for rank, rec in enumerate(results, 1):
+            rec["rank"] = rank
+
+        # Size-adjusted recommendation note
+        size_note = ""
+        if investment_size >= 50_000_000:
+            size_note = "Large-scale investment: Morocco and Egypt offer strongest incentive packages."
+        elif investment_size >= 10_000_000:
+            size_note = "Mid-scale investment: All four countries offer viable incentive frameworks."
+        else:
+            size_note = "Smaller investment: Tunisia offshore regime or Morocco CFC may offer best ROI."
+
+        return {
+            "industry": industry,
+            "target_markets": target_markets,
+            "investment_size_usd": investment_size,
+            "employment_target": employment_target,
+            "recommendations": results,
+            "top_recommendation": results[0]["country_code"] if results else None,
+            "size_note": size_note,
+            "generated_at": datetime.utcnow().isoformat(),
+        }
+
+    # ==================== Preferential Matrix by HS ====================
+
+    def get_preferential_matrix_by_hs(
+        self,
+        hs_code: str,
+    ) -> Dict[str, Any]:
+        """
+        Return the full preferential trade agreement matrix applicable to a given HS code.
+
+        Cross-references the HS code chapter/section against known
+        sector-specific preferences (agricultural, textile, automotive, etc.)
+        and returns per-country applicable agreements with indicative rates.
+
+        Args:
+            hs_code: HS tariff code (6-10 digits)
+
+        Returns:
+            Matrix of {country: [applicable_agreements]} for the HS code
+        """
+        # Validate the HS code upfront: digits only, 2-14 characters
+        stripped = hs_code.strip()
+        if not stripped:
+            raise ValueError("Invalid HS code: must not be empty")
+        if not stripped.isdigit():
+            raise ValueError(
+                f"Invalid HS code '{hs_code}': must contain only digits"
+            )
+        if len(stripped) < 2:
+            raise ValueError(
+                f"Invalid HS code '{hs_code}': must be at least 2 digits"
+            )
+        if len(stripped) > 14:
+            raise ValueError(
+                f"Invalid HS code '{hs_code}': must be at most 14 digits"
+            )
+
+        # Extract the 2-digit chapter number
+        chapter_number = int(stripped[:2])
+        if chapter_number < 1 or chapter_number > 99:
+            raise ValueError(
+                f"Invalid HS chapter {chapter_number:02d}: must be between 01 and 99"
+            )
+
+        # Determine product category from chapter
+        if 1 <= chapter_number <= 24:
+            product_category = "agricultural"
+        elif 25 <= chapter_number <= 27:
+            product_category = "minerals_energy"
+        elif 28 <= chapter_number <= 40:
+            product_category = "chemicals_plastics"
+        elif 41 <= chapter_number <= 63:
+            product_category = "textiles_leather"
+        elif 64 <= chapter_number <= 83:
+            product_category = "manufactured_goods"
+        elif 84 <= chapter_number <= 85:
+            product_category = "machinery_electronics"
+        elif 86 <= chapter_number <= 89:
+            product_category = "vehicles_transport"
+        elif 90 <= chapter_number <= 97:
+            product_category = "precision_instruments"
+        else:
+            product_category = "other"
+
+        # Base agreement matrix
+        base_matrix = self.get_preferential_agreements_matrix()["matrix"]
+
+        matrix: Dict[str, Any] = {}
+        for country_code, agreements in base_matrix.items():
+            applicable = []
+
+            # GAFTA is universal
+            if agreements.get("GAFTA"):
+                applicable.append({
+                    "agreement": "Arab Free Trade Area (GAFTA)",
+                    "markets": "Arab countries",
+                    "indicative_dd_reduction": "0-100%",
+                    "notes": "Applies to most goods",
+                })
+
+            # AfCFTA - universal
+            applicable.append({
+                "agreement": "African Continental FTA (AfCFTA)",
+                "markets": "Africa (54 countries)",
+                "indicative_dd_reduction": "Phased to 0% over schedule",
+                "notes": "Tariff phase-down per national schedule",
+            })
+
+            # EU Association
+            if agreements.get("EU"):
+                dd_reduction = "0%" if product_category != "agricultural" else "reduced"
+                applicable.append({
+                    "agreement": "EU Association Agreement",
+                    "markets": "European Union (27 members)",
+                    "indicative_dd_reduction": dd_reduction,
+                    "notes": (
+                        "Most preferential rates; agricultural products may have quotas"
+                        if product_category == "agricultural"
+                        else "Duty-free for industrial products"
+                    ),
+                })
+
+            # EFTA
+            if agreements.get("EFTA"):
+                applicable.append({
+                    "agreement": "EFTA Agreement",
+                    "markets": "Switzerland, Norway, Iceland, Liechtenstein",
+                    "indicative_dd_reduction": "0-100%",
+                    "notes": "Similar to EU; mainly industrial goods",
+                })
+
+            # Agadir (MAR, EGY, TUN + Jordan)
+            if agreements.get("Agadir"):
+                applicable.append({
+                    "agreement": "Agadir Agreement",
+                    "markets": "Morocco, Egypt, Tunisia, Jordan",
+                    "indicative_dd_reduction": "0%",
+                    "notes": "Full liberalisation within member states",
+                })
+
+            # US via Morocco FTA
+            if agreements.get("US") and country_code == "MAR":
+                applicable.append({
+                    "agreement": "US-Morocco FTA",
+                    "markets": "United States",
+                    "indicative_dd_reduction": "0-100% (phased)",
+                    "notes": "Comprehensive bilateral FTA since 2006",
+                })
+
+            # QIZ (Egypt specific)
+            if agreements.get("QIZ") and country_code == "EGY":
+                applicable.append({
+                    "agreement": "QIZ (Qualified Industrial Zones)",
+                    "markets": "United States",
+                    "indicative_dd_reduction": "0%",
+                    "notes": (
+                        "Duty-free US access for qualifying manufactured goods "
+                        "with Israeli content requirement"
+                    ),
+                })
+
+            # COMESA (Egypt)
+            if agreements.get("COMESA") and country_code == "EGY":
+                applicable.append({
+                    "agreement": "COMESA Preferential Rates",
+                    "markets": "COMESA member states (21 countries)",
+                    "indicative_dd_reduction": "0-80%",
+                    "notes": "Common Market for Eastern and Southern Africa",
+                })
+
+            # Turkey FTA
+            if agreements.get("Turkey"):
+                applicable.append({
+                    "agreement": "Turkey FTA",
+                    "markets": "Turkey",
+                    "indicative_dd_reduction": "0-100% (sector dependent)",
+                    "notes": "Bilateral FTA covering industrial and agricultural goods",
+                })
+
+            matrix[country_code] = {
+                "applicable_agreements": applicable,
+                "agreement_count": len(applicable),
+                "has_eu_access": bool(agreements.get("EU")),
+                "has_us_access": bool(agreements.get("US") or agreements.get("QIZ")),
+                "has_africa_access": True,  # all have AfCFTA
+            }
+
+        return {
+            "hs_code": hs_code,
+            "hs_chapter": f"{chapter_number:02d}",
+            "product_category": product_category,
+            "matrix": matrix,
+            "best_for_eu_access": [c for c, d in matrix.items() if d["has_eu_access"]],
+            "best_for_us_access": [c for c, d in matrix.items() if d["has_us_access"]],
+            "generated_at": datetime.utcnow().isoformat(),
+        }
+
+    # ==================== Trade Flows ====================
+
+    def get_trade_flows(self) -> Dict[str, Any]:
+        """
+        Return regional trade flow intelligence across North African countries.
+
+        Provides:
+        - Intra-regional trade metrics
+        - EU-bound trade advantages by country
+        - MENA hub positioning
+        - Africa gateway opportunities
+        - Key commodity flows
+
+        Returns:
+            Dict with intra-regional, EU, MENA, and Africa trade flow data
+        """
+        return {
+            "generated_at": datetime.utcnow().isoformat(),
+            "intra_regional": {
+                "dza_mar": {
+                    "status": "active",
+                    "main_flows": ["Natural gas", "Agricultural products", "Manufactured goods"],
+                    "agreements": ["GAFTA", "AfCFTA"],
+                    "border_crossings": ["Tlemcen-Oujda"],
+                    "notes": "Land and sea. Border reopened 2021 partially.",
+                },
+                "dza_tun": {
+                    "status": "active",
+                    "main_flows": ["Petroleum products", "Food", "Textiles"],
+                    "agreements": ["GAFTA", "AfCFTA"],
+                    "border_crossings": ["Ghardimaou-Souk Ahras"],
+                    "notes": "Strong historical trade relationship",
+                },
+                "egy_tun": {
+                    "status": "active",
+                    "main_flows": ["Machinery", "Chemicals", "Textiles"],
+                    "agreements": ["Agadir", "GAFTA", "AfCFTA"],
+                    "border_crossings": ["Sea routes: Alexandria-Tunis"],
+                    "notes": "Both Agadir members - enhanced preferences",
+                },
+                "mar_tun": {
+                    "status": "active",
+                    "main_flows": ["Olive oil", "Phosphates", "Automotive parts"],
+                    "agreements": ["Agadir", "GAFTA", "AfCFTA"],
+                    "border_crossings": ["Sea routes: Tunis-Casablanca"],
+                    "notes": "Strong Agadir Agreement integration",
+                },
+                "mar_egy": {
+                    "status": "active",
+                    "main_flows": ["Chemicals", "Agricultural products", "Manufactured goods"],
+                    "agreements": ["Agadir", "GAFTA", "AfCFTA"],
+                    "border_crossings": ["Sea routes via Mediterranean"],
+                    "notes": "Both have EU agreements enabling triangular EU trade",
+                },
+            },
+            "eu_access": {
+                "mar_advantage": {
+                    "country": "MAR",
+                    "agreement": "EU Association Agreement + US FTA",
+                    "key_sectors": ["Automotive", "Aerospace", "Agriculture", "Textiles"],
+                    "port": "Tanger-Med (largest in Africa - 9M TEU capacity)",
+                    "dd_reduction": "0% on industrial goods",
+                    "notes": "Most integrated EU supply chain partner in North Africa",
+                },
+                "tun_deep_integration": {
+                    "country": "TUN",
+                    "agreement": "EU Association Agreement (most advanced in region)",
+                    "key_sectors": ["Textiles", "Automotive components", "ICT", "Olive oil"],
+                    "port": "Tunis-La Goulette",
+                    "dd_reduction": "0% on industrial goods",
+                    "notes": "Preparing DCFTA (Deep Comprehensive FTA) for deeper integration",
+                },
+                "egy_eu_partnership": {
+                    "country": "EGY",
+                    "agreement": "EU Partnership Agreement",
+                    "key_sectors": ["Textiles", "Chemicals", "Food"],
+                    "port": "Port Said, Alexandria",
+                    "dd_reduction": "Progressive reduction",
+                    "notes": "Also benefits from QIZ for US market access",
+                },
+            },
+            "mena_hub": {
+                "egy_position": {
+                    "country": "EGY",
+                    "strategic_assets": ["Suez Canal", "SCZONE", "Largest Arab market (105M)"],
+                    "agreements": ["COMESA", "GAFTA", "Agadir", "QIZ", "AfCFTA"],
+                    "annual_suez_transits": "~21,000 vessels",
+                    "notes": "Largest MENA economy, COMESA anchor, QIZ US gateway",
+                },
+                "mar_atlantic_position": {
+                    "country": "MAR",
+                    "strategic_assets": ["Tanger-Med", "Atlantic + Mediterranean access", "EU FTA"],
+                    "agreements": ["EU", "US", "EFTA", "Agadir", "GAFTA", "AfCFTA"],
+                    "notes": "Atlantic gateway for sub-Saharan Africa to EU/US",
+                },
+            },
+            "africa_gateway": {
+                "dza_sahel_corridor": {
+                    "country": "DZA",
+                    "corridor": "Trans-Saharan Highway",
+                    "connects": ["Mali", "Niger", "Nigeria"],
+                    "notes": "Key land corridor to sub-Saharan Africa via Sahel",
+                },
+                "egy_east_africa": {
+                    "country": "EGY",
+                    "corridor": "Suez Canal + COMESA membership",
+                    "connects": ["East Africa", "Horn of Africa", "Southern Africa"],
+                    "notes": "COMESA membership enables preferential access to 21 countries",
+                },
+                "mar_west_africa": {
+                    "country": "MAR",
+                    "corridor": "Atlantic coast + AfCFTA",
+                    "connects": ["West Africa", "Senegal", "Côte d'Ivoire"],
+                    "notes": "Morocco-Nigeria gas pipeline project will enhance connectivity",
+                },
+            },
+        }
+
+    # ==================== Opportunity Map ====================
+
+    def get_opportunity_map(
+        self,
+        sectors: Optional[List[str]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Generate a sectoral investment opportunity map across North Africa.
+
+        For each requested sector, scores all four countries across multiple
+        dimensions (cost structure, market access, regulatory environment,
+        infrastructure quality) and identifies the best location.
+
+        Args:
+            sectors: List of sectors to analyze
+                     (automotive, textile, agriculture, renewable_energy, ict, etc.)
+
+        Returns:
+            Sector-by-sector opportunity map with country scores
+        """
+        if sectors is None:
+            sectors = ["automotive", "textile", "agriculture", "renewable_energy"]
+
+        # Sector opportunity matrix: {sector: {country: {dimension: score}}}
+        sector_profiles: Dict[str, Dict[str, Dict[str, Any]]] = {
+            "automotive": {
+                "DZA": {
+                    "cost_structure": 6, "market_access": 4, "regulatory": 5, "infrastructure": 5,
+                    "notes": "Growing domestic market; limited export FTAs",
+                },
+                "MAR": {
+                    "cost_structure": 7, "market_access": 9, "regulatory": 8, "infrastructure": 8,
+                    "notes": "Renault, Stellantis plants; Tanger-Med hub for EU export",
+                },
+                "EGY": {
+                    "cost_structure": 8, "market_access": 7, "regulatory": 7, "infrastructure": 7,
+                    "notes": "Large domestic market; growing regional hub",
+                },
+                "TUN": {
+                    "cost_structure": 7, "market_access": 8, "regulatory": 7, "infrastructure": 7,
+                    "notes": "Established components cluster; EU proximity",
+                },
+            },
+            "textile": {
+                "DZA": {
+                    "cost_structure": 6, "market_access": 4, "regulatory": 5, "infrastructure": 5,
+                    "notes": "Large workforce; limited EU/US access",
+                },
+                "MAR": {
+                    "cost_structure": 7, "market_access": 9, "regulatory": 8, "infrastructure": 8,
+                    "notes": "Fast-fashion cluster; EU Association near-shoring",
+                },
+                "EGY": {
+                    "cost_structure": 9, "market_access": 8, "regulatory": 7, "infrastructure": 7,
+                    "notes": "QIZ for US duty-free; very competitive labour cost",
+                },
+                "TUN": {
+                    "cost_structure": 8, "market_access": 9, "regulatory": 8, "infrastructure": 7,
+                    "notes": "Offshore regime; most advanced EU integration for textile",
+                },
+            },
+            "agriculture": {
+                "DZA": {
+                    "cost_structure": 7, "market_access": 4, "regulatory": 5, "infrastructure": 5,
+                    "notes": "Fertile Mitidja plain; subsidized inputs; limited exports",
+                },
+                "MAR": {
+                    "cost_structure": 8, "market_access": 9, "regulatory": 8, "infrastructure": 8,
+                    "notes": "Plan Maroc Vert; EU seasonal workers; citrus/olive exports",
+                },
+                "EGY": {
+                    "cost_structure": 8, "market_access": 7, "regulatory": 7, "infrastructure": 7,
+                    "notes": "Nile delta fertility; COMESA/GAFTA market access",
+                },
+                "TUN": {
+                    "cost_structure": 7, "market_access": 8, "regulatory": 7, "infrastructure": 6,
+                    "notes": "World's largest olive oil exporter; EU origin quotas",
+                },
+            },
+            "renewable_energy": {
+                "DZA": {
+                    "cost_structure": 9, "market_access": 5, "regulatory": 6, "infrastructure": 6,
+                    "notes": "World's largest solar potential; Desertec concept",
+                },
+                "MAR": {
+                    "cost_structure": 8, "market_access": 9, "regulatory": 9, "infrastructure": 8,
+                    "notes": "Noor solar complex; 52% renewable target 2030; EU grid connection",
+                },
+                "EGY": {
+                    "cost_structure": 8, "market_access": 7, "regulatory": 7, "infrastructure": 7,
+                    "notes": "Benban solar park; wind corridor Zafarana/Gulf of Suez",
+                },
+                "TUN": {
+                    "cost_structure": 7, "market_access": 8, "regulatory": 7, "infrastructure": 6,
+                    "notes": "TuNur solar export project; EU green hydrogen potential",
+                },
+            },
+            "ict": {
+                "DZA": {
+                    "cost_structure": 7, "market_access": 4, "regulatory": 5, "infrastructure": 5,
+                    "notes": "Growing tech ecosystem; large educated workforce",
+                },
+                "MAR": {
+                    "cost_structure": 7, "market_access": 8, "regulatory": 8, "infrastructure": 8,
+                    "notes": "Casablanca Finance City; nearshore EU IT services",
+                },
+                "EGY": {
+                    "cost_structure": 8, "market_access": 7, "regulatory": 7, "infrastructure": 7,
+                    "notes": "Smart Village tech park; large developer pool; lower costs",
+                },
+                "TUN": {
+                    "cost_structure": 7, "market_access": 8, "regulatory": 7, "infrastructure": 7,
+                    "notes": "Strong EU IT service export; offshore regime for IT firms",
+                },
+            },
+        }
+
+        opportunity_map: Dict[str, Any] = {}
+        for sector in sectors:
+            sector_lower = sector.lower().replace(" ", "_").replace("-", "_")
+
+            # Try exact match first, then partial match
+            profile = sector_profiles.get(sector_lower)
+            if profile is None:
+                for key in sector_profiles:
+                    if key in sector_lower or sector_lower in key:
+                        profile = sector_profiles[key]
+                        break
+            if profile is None:
+                # Generic fallback
+                profile = {
+                    c: {"cost_structure": 6, "market_access": 6, "regulatory": 6, "infrastructure": 6, "notes": ""}
+                    for c in NORTH_AFRICA_COUNTRIES
+                }
+
+            sector_results = []
+            for country_code in NORTH_AFRICA_COUNTRIES:
+                scores = profile.get(country_code, {})
+                combined = (
+                    scores.get("cost_structure", 5) * 0.25
+                    + scores.get("market_access", 5) * 0.30
+                    + scores.get("regulatory", 5) * 0.25
+                    + scores.get("infrastructure", 5) * 0.20
+                )
+                sector_results.append({
+                    "country_code": country_code,
+                    "combined_score": round(combined, 2),
+                    "cost_structure": scores.get("cost_structure", 5),
+                    "market_access": scores.get("market_access", 5),
+                    "regulatory_environment": scores.get("regulatory", 5),
+                    "infrastructure_quality": scores.get("infrastructure", 5),
+                    "notes": scores.get("notes", ""),
+                })
+
+            sector_results.sort(key=lambda x: x["combined_score"], reverse=True)
+            opportunity_map[sector] = {
+                "rankings": sector_results,
+                "top_country": sector_results[0]["country_code"] if sector_results else None,
+            }
+
+        # Summary: best overall country across sectors
+        country_totals: Dict[str, float] = {c: 0.0 for c in NORTH_AFRICA_COUNTRIES}
+        for sector_data in opportunity_map.values():
+            for rec in sector_data["rankings"]:
+                country_totals[rec["country_code"]] += rec["combined_score"]
+
+        overall_ranking = sorted(country_totals.items(), key=lambda x: x[1], reverse=True)
+
+        return {
+            "sectors_analyzed": sectors,
+            "opportunity_map": opportunity_map,
+            "overall_ranking": [
+                {"country_code": c, "total_score": round(s, 2)}
+                for c, s in overall_ranking
+            ],
+            "best_overall": overall_ranking[0][0] if overall_ranking else None,
+            "generated_at": datetime.utcnow().isoformat(),
+        }
 
 
 # Module-level singleton

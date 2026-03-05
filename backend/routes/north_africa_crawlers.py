@@ -5,21 +5,26 @@ Provides endpoints to manage crawling operations for:
 - DZA (Algeria), MAR (Morocco), EGY (Egypt), TUN (Tunisia)
 
 Endpoints:
-  POST /api/crawlers/north-africa/start-all     # All 4 countries
-  POST /api/crawlers/north-africa/start         # Selected countries
-  GET  /api/crawlers/north-africa/status        # Regional dashboard
-  GET  /api/crawlers/north-africa/jobs          # List jobs
-  GET  /api/crawlers/north-africa/jobs/{id}     # Job detail
+  POST /api/crawlers/north-africa/start-all               # All 4 countries
+  POST /api/crawlers/north-africa/start                   # Selected countries
+  GET  /api/crawlers/north-africa/status                  # Regional dashboard
+  GET  /api/crawlers/north-africa/jobs                    # List jobs
+  GET  /api/crawlers/north-africa/jobs/{id}               # Job detail
   POST /api/crawlers/north-africa/jobs/{id}/cancel
-  POST /api/crawlers/north-africa/sync          # Cross-validate data
-  GET  /api/crawlers/north-africa/countries     # Supported countries info
+  POST /api/crawlers/north-africa/sync                    # Cross-validate data
+  GET  /api/crawlers/north-africa/countries               # Supported countries info
+  POST /api/crawlers/north-africa/optimal-route           # Trade route optimization
+  POST /api/crawlers/north-africa/investment-analysis     # Investment location analysis
+  GET  /api/crawlers/north-africa/preferential-matrix/{hs_code}  # Per-HS agreement matrix
+  GET  /api/crawlers/north-africa/trade-flows             # Regional trade flow data
+  POST /api/crawlers/north-africa/opportunity-map         # Sectoral opportunity map
 """
 
 import logging
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
@@ -36,11 +41,68 @@ class NorthAfricaCrawlRequest(BaseModel):
     resume: bool = True
 
 
+class OptimalRouteRequest(BaseModel):
+    hs_code: str = Field(..., description="HS tariff code (6-10 digits)")
+    origin_region: str = Field(
+        default="sub_saharan_africa",
+        description="Origin macro-region (sub_saharan_africa, asia, americas, europe, mena)",
+    )
+    target_market: str = Field(
+        default="europe",
+        description="Target destination market (europe, us, mena, africa, comesa)",
+    )
+    annual_volume: float = Field(
+        default=1_000_000,
+        gt=0,
+        description="Annual shipment value in USD",
+    )
+    preferences: Optional[List[str]] = Field(
+        default=None,
+        description=(
+            "Ordered list of preferences for ranking: "
+            "lowest_cost, fastest_clearance, most_reliable"
+        ),
+    )
+
+
+class InvestmentAnalysisRequest(BaseModel):
+    industry: str = Field(
+        ...,
+        description="Industry/sector (automotive, textile, agriculture, renewable_energy, ict, etc.)",
+    )
+    target_markets: Optional[List[str]] = Field(
+        default=None,
+        description="Target export markets (eu, us, africa, mena, arab)",
+    )
+    investment_size: float = Field(
+        default=10_000_000,
+        gt=0,
+        description="Capital investment size in USD",
+    )
+    employment_target: int = Field(
+        default=100,
+        ge=1,
+        description="Target number of employees",
+    )
+
+
+class OpportunityMapRequest(BaseModel):
+    sectors: Optional[List[str]] = Field(
+        default=None,
+        description="Sectors to analyze (automotive, textile, agriculture, renewable_energy, ict)",
+    )
+
+
 # ==================== Helper ====================
 
 def _get_orchestrator():
     from services.crawlers.regional_orchestrator import get_north_africa_orchestrator
     return get_north_africa_orchestrator()
+
+
+def _get_intelligence():
+    from services.regional_intelligence_service import get_regional_intelligence
+    return get_regional_intelligence()
 
 
 # ==================== Endpoints ====================
@@ -111,8 +173,7 @@ async def get_regional_status():
 
     # Enrich with data freshness
     try:
-        from services.regional_intelligence_service import get_regional_intelligence
-        intel = get_regional_intelligence()
+        intel = _get_intelligence()
         freshness = intel.get_data_freshness()
         status["data_freshness"] = freshness.to_dict()
     except Exception as exc:
@@ -213,3 +274,128 @@ async def get_supported_countries():
         "region": "North Africa",
         "countries": countries,
     }
+
+
+# ==================== Advanced Regional Intelligence Endpoints ====================
+
+
+@router.post("/optimal-route")
+async def find_optimal_trade_route(request: OptimalRouteRequest):
+    """
+    Find the optimal North African transit/processing country for a trade lane.
+
+    Ranks DZA, MAR, EGY, TUN by combined cost/clearance/reliability score
+    based on the stated origin region, target market, and preferences.
+
+    Body:
+    - hs_code: HS tariff code (6-10 digits)
+    - origin_region: sub_saharan_africa | asia | americas | europe | mena
+    - target_market: europe | us | mena | africa | comesa
+    - annual_volume: Annual shipment value in USD
+    - preferences: Ordered list of [lowest_cost, fastest_clearance, most_reliable]
+    """
+    try:
+        intel = _get_intelligence()
+        result = intel.optimal_trade_route(
+            hs_code=request.hs_code,
+            origin_region=request.origin_region,
+            target_market=request.target_market,
+            annual_volume=request.annual_volume,
+            preferences=request.preferences,
+        )
+        return result
+    except Exception as exc:
+        logger.error(f"Optimal route analysis failed: {exc}")
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post("/investment-analysis")
+async def investment_location_analysis(request: InvestmentAnalysisRequest):
+    """
+    Analyze investment opportunities across DZA, MAR, EGY, TUN for a sector.
+
+    Scores each country on sector capabilities, market access, regulatory
+    environment, and cost efficiency to recommend the best investment location.
+
+    Body:
+    - industry: Sector name (automotive, textile, agriculture, ict, etc.)
+    - target_markets: Target export markets (eu, us, africa, mena, arab)
+    - investment_size: Capital investment in USD
+    - employment_target: Target number of employees
+    """
+    try:
+        intel = _get_intelligence()
+        result = intel.investment_analysis(
+            industry=request.industry,
+            target_markets=request.target_markets,
+            investment_size=request.investment_size,
+            employment_target=request.employment_target,
+        )
+        return result
+    except Exception as exc:
+        logger.error(f"Investment analysis failed: {exc}")
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/preferential-matrix/{hs_code}")
+async def get_preferential_matrix(hs_code: str):
+    """
+    Get the full preferential trade agreement matrix for a specific HS code.
+
+    Returns per-country applicable trade agreements with indicative rates
+    and market access details for the given HS code chapter.
+
+    Path parameter:
+    - hs_code: HS tariff code (6-10 digits)
+    """
+    try:
+        intel = _get_intelligence()
+        result = intel.get_preferential_matrix_by_hs(hs_code=hs_code)
+        return result
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        logger.error(f"Preferential matrix lookup failed for {hs_code}: {exc}")
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/trade-flows")
+async def get_regional_trade_flows():
+    """
+    Get regional trade flow intelligence across North African countries.
+
+    Returns:
+    - Intra-regional trade metrics (DZA-MAR, DZA-TUN, EGY-TUN, MAR-TUN, MAR-EGY)
+    - EU-bound trade advantages (MAR, TUN, EGY)
+    - MENA hub positioning (EGY Suez Canal, MAR Atlantic)
+    - Africa gateway corridors (DZA Sahel, EGY COMESA, MAR West Africa)
+    """
+    try:
+        intel = _get_intelligence()
+        return intel.get_trade_flows()
+    except Exception as exc:
+        logger.error(f"Trade flows query failed: {exc}")
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post("/opportunity-map")
+async def get_opportunity_map(request: OpportunityMapRequest):
+    """
+    Generate a sectoral investment opportunity map across North Africa.
+
+    Scores all four countries across cost structure, market access,
+    regulatory environment, and infrastructure quality for each sector.
+
+    Body:
+    - sectors: List of sectors to analyze
+               (automotive, textile, agriculture, renewable_energy, ict)
+               Defaults to all four major sectors if not specified.
+    """
+    try:
+        intel = _get_intelligence()
+        result = intel.get_opportunity_map(sectors=request.sectors)
+        return result
+    except Exception as exc:
+        logger.error(f"Opportunity map generation failed: {exc}")
+        raise HTTPException(status_code=500, detail=str(exc))
+
