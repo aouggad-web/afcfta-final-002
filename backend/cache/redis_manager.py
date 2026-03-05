@@ -45,7 +45,7 @@ class _InMemoryFallback:
         return value
 
     def set(self, key: str, value: str, ex: int = 0) -> None:
-        expires_at = time.time() + ex if ex else 0.0
+        expires_at = time.time() + ex if ex else float('inf')
         self._store[key] = (value, expires_at)
 
     def delete_pattern(self, pattern: str) -> int:

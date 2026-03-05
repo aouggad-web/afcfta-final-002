@@ -11,8 +11,6 @@ import math
 from dataclasses import dataclass, field
 from typing import Any
 
-import numpy as np
-
 # ---------------------------------------------------------------------------
 # Country dataset – realistic African market metrics (2024 estimates)
 # ---------------------------------------------------------------------------

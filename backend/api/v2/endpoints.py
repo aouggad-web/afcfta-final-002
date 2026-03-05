@@ -256,7 +256,7 @@ async def analytics_dashboard(
     timeframe: str = Query(default="2024"),
 ) -> dict[str, Any]:
     """Return aggregated dashboard metrics for AfCFTA regional performance."""
-    regions_filter = [region] if (region and isinstance(region, str)) else None
+    regions_filter = [region] if region else None
     regional = _regional_engine.get_regional_dashboard(regions=regions_filter, timeframe=timeframe)
     kpis = _dashboard_gen.generate_kpi_metrics()
     flows = _dashboard_gen.generate_investment_flow_data(timeframe=timeframe)
