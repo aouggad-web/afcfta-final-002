@@ -107,8 +107,11 @@ export default function ComprehensiveSearch({ language = 'fr' }) {
       const data = await apiV2.comprehensiveSearch(query, filters, { page: pageNum, limit: 10 });
       setResults(data);
       setActiveTab('products');
-    } catch {
-      setError(language === 'fr' ? 'Erreur lors de la recherche.' : 'Search failed. Please try again.');
+    } catch (err) {
+      console.error('[ComprehensiveSearch]', err);
+      setError(language === 'fr'
+        ? `Erreur: ${err.message || 'Recherche échouée.'}`
+        : `Error: ${err.message || 'Search failed. Please try again.'}`);
     } finally {
       setLoading(false);
     }
@@ -193,6 +196,8 @@ export default function ComprehensiveSearch({ language = 'fr' }) {
                     <button
                       key={c}
                       onClick={() => toggleFilter('countries', c)}
+                      aria-label={`${filters.countries.includes(c) ? 'Remove' : 'Add'} ${c} filter`}
+                      aria-pressed={filters.countries.includes(c)}
                       className={`px-2 py-0.5 rounded-full text-xs border transition-colors ${
                         filters.countries.includes(c)
                           ? 'bg-blue-600 text-white border-blue-600'

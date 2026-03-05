@@ -14,7 +14,9 @@ const ESSENTIAL_URLS = [
 // Install: pre-cache essential static assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => cache.addAll(ESSENTIAL_URLS).catch(() => {}))
+    caches.open(STATIC_CACHE).then((cache) =>
+      cache.addAll(ESSENTIAL_URLS).catch((err) => console.error('[SW] Pre-cache failed:', err))
+    )
   );
   self.skipWaiting();
 });

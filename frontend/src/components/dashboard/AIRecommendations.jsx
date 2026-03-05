@@ -80,6 +80,7 @@ export default function AIRecommendations({ language = 'fr' }) {
       setRecommendations(data.recommendations || data || []);
       setFetched(true);
     } catch (err) {
+      console.error('[AIRecommendations]', err);
       setError(language === 'fr' ? 'Impossible de charger les recommandations.' : 'Failed to load recommendations.');
     } finally {
       setLoading(false);

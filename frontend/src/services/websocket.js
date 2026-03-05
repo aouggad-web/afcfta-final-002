@@ -21,8 +21,8 @@ class WebSocketService {
           const { type, data } = JSON.parse(event.data);
           const channelListeners = this.listeners[channel]?.[type] || [];
           channelListeners.forEach((cb) => cb(data));
-        } catch {
-          // ignore malformed messages
+        } catch (err) {
+          console.debug('[ws] malformed message on channel', channel, ':', event.data, err);
         }
       };
 
