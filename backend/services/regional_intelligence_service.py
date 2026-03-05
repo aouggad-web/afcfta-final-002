@@ -704,14 +704,15 @@ class RegionalIntelligenceService:
 
         results = []
         for country_code, profile in country_investment.items():
-            # Sector match score
+            # Sector match score: pre-process strengths to avoid redundant operations in loop
             sector_score = 5  # default
             for strength in profile["sector_strengths"]:
-                if strength.replace("_", " ") in industry_lower or industry_lower in strength:
+                strength_normalized = strength.replace("_", " ")
+                if strength_normalized in industry_lower or industry_lower in strength:
                     sector_score = 9
                     break
-                # partial match
-                if any(w in industry_lower for w in strength.replace("_", " ").split()):
+                # partial word match
+                if any(w in industry_lower for w in strength_normalized.split()):
                     sector_score = max(sector_score, 7)
 
             # Market access score
@@ -732,7 +733,8 @@ class RegionalIntelligenceService:
                     markets_matched.append("MENA/GAFTA")
             market_score = min(10, market_score * 2)
 
-            # Operational cost score (lower cost = higher score)
+            # Operational cost score: maps est_op_cost_factor [0.7, 1.0] to score [8, 5]
+            # Lower cost factor → higher score (more cost-efficient for the investor)
             cost_score = 10 - (profile["est_op_cost_factor"] * 10 - 5)
 
             # Investment environment
@@ -806,32 +808,46 @@ class RegionalIntelligenceService:
         Returns:
             Matrix of {country: [applicable_agreements]} for the HS code
         """
-        # Extract the 2-digit chapter from the HS code
-        if len(hs_code) < 2:
-            raise ValueError(f"Invalid HS code '{hs_code}': must be at least 2 digits")
-        try:
-            ch_int = int(hs_code[:2])
-        except ValueError:
-            raise ValueError(f"Invalid HS code '{hs_code}': first two characters must be numeric")
-        if ch_int < 1 or ch_int > 99:
-            raise ValueError(f"Invalid HS chapter {ch_int}: must be between 01 and 99")
+        # Validate the HS code upfront: digits only, 2-14 characters
+        stripped = hs_code.strip()
+        if not stripped:
+            raise ValueError("Invalid HS code: must not be empty")
+        if not stripped.isdigit():
+            raise ValueError(
+                f"Invalid HS code '{hs_code}': must contain only digits"
+            )
+        if len(stripped) < 2:
+            raise ValueError(
+                f"Invalid HS code '{hs_code}': must be at least 2 digits"
+            )
+        if len(stripped) > 14:
+            raise ValueError(
+                f"Invalid HS code '{hs_code}': must be at most 14 digits"
+            )
+
+        # Extract the 2-digit chapter number
+        chapter_number = int(stripped[:2])
+        if chapter_number < 1 or chapter_number > 99:
+            raise ValueError(
+                f"Invalid HS chapter {chapter_number:02d}: must be between 01 and 99"
+            )
 
         # Determine product category from chapter
-        if 1 <= ch_int <= 24:
+        if 1 <= chapter_number <= 24:
             product_category = "agricultural"
-        elif 25 <= ch_int <= 27:
+        elif 25 <= chapter_number <= 27:
             product_category = "minerals_energy"
-        elif 28 <= ch_int <= 40:
+        elif 28 <= chapter_number <= 40:
             product_category = "chemicals_plastics"
-        elif 41 <= ch_int <= 63:
+        elif 41 <= chapter_number <= 63:
             product_category = "textiles_leather"
-        elif 64 <= ch_int <= 83:
+        elif 64 <= chapter_number <= 83:
             product_category = "manufactured_goods"
-        elif 84 <= ch_int <= 85:
+        elif 84 <= chapter_number <= 85:
             product_category = "machinery_electronics"
-        elif 86 <= ch_int <= 89:
+        elif 86 <= chapter_number <= 89:
             product_category = "vehicles_transport"
-        elif 90 <= ch_int <= 97:
+        elif 90 <= chapter_number <= 97:
             product_category = "precision_instruments"
         else:
             product_category = "other"
@@ -862,7 +878,7 @@ class RegionalIntelligenceService:
 
             # EU Association
             if agreements.get("EU"):
-                dd_reduction = "0%" if product_category not in ("agricultural",) else "reduced"
+                dd_reduction = "0%" if product_category != "agricultural" else "reduced"
                 applicable.append({
                     "agreement": "EU Association Agreement",
                     "markets": "European Union (27 members)",
@@ -941,7 +957,7 @@ class RegionalIntelligenceService:
 
         return {
             "hs_code": hs_code,
-            "hs_chapter": f"{ch_int:02d}",
+            "hs_chapter": f"{chapter_number:02d}",
             "product_category": product_category,
             "matrix": matrix,
             "best_for_eu_access": [c for c, d in matrix.items() if d["has_eu_access"]],

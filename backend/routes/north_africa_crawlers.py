@@ -352,6 +352,8 @@ async def get_preferential_matrix(hs_code: str):
         intel = _get_intelligence()
         result = intel.get_preferential_matrix_by_hs(hs_code=hs_code)
         return result
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:
         logger.error(f"Preferential matrix lookup failed for {hs_code}: {exc}")
         raise HTTPException(status_code=500, detail=str(exc))
