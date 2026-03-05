@@ -277,15 +277,15 @@ async def ai_recommendations(profile: UserProfile) -> dict[str, Any]:
     if _REC_AVAILABLE and _RECOMMENDATION_ENGINE is not None:
         try:
             raw_profile = {
-                "sectors": profile.sectors,
                 "risk_tolerance": profile.risk_tolerance,
-                "budget_usd": profile.budget_usd,
-                "countries": profile.countries,
+                "sector_preferences": profile.sectors,
+                "investment_size": profile.budget_usd,
+                "geographic_preferences": profile.countries,
                 "time_horizon_years": profile.time_horizon_years,
             }
             recs = _RECOMMENDATION_ENGINE.generate_recommendations(
-                investor_profile=raw_profile,
-                top_n=5,
+                user_profile=raw_profile,
+                limit=5,
             )
             recs_list = [r.to_dict() if hasattr(r, "to_dict") else r for r in recs]
             return {
