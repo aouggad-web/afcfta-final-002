@@ -111,6 +111,12 @@ try:
 except ImportError:
     INVESTMENT_INTELLIGENCE_AVAILABLE = False
 
+try:
+    from .uma_regions import router as uma_regions_router
+    UMA_REGIONS_AVAILABLE = True
+except ImportError:
+    UMA_REGIONS_AVAILABLE = False
+
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -154,3 +160,5 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(regional_calculator_router, tags=["Regional Calculator"])
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
         api_router.include_router(investment_intelligence_router, tags=["Investment Intelligence"])
+    if UMA_REGIONS_AVAILABLE:
+        api_router.include_router(uma_regions_router, tags=["UMA North Africa Regions"])
