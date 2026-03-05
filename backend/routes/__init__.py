@@ -111,6 +111,48 @@ try:
 except ImportError:
     INVESTMENT_INTELLIGENCE_AVAILABLE = False
 
+try:
+    from .ai_intelligence import router as ai_intelligence_router
+    AI_INTELLIGENCE_AVAILABLE = True
+except ImportError:
+    AI_INTELLIGENCE_AVAILABLE = False
+
+try:
+    from .regional_analytics import router as regional_analytics_router
+    REGIONAL_ANALYTICS_AVAILABLE = True
+except ImportError:
+    REGIONAL_ANALYTICS_AVAILABLE = False
+
+try:
+    from .enhanced_search import router as enhanced_search_router
+    ENHANCED_SEARCH_AVAILABLE = True
+except ImportError:
+    ENHANCED_SEARCH_AVAILABLE = False
+
+try:
+    from .performance import router as performance_router
+    PERFORMANCE_AVAILABLE = True
+except ImportError:
+    PERFORMANCE_AVAILABLE = False
+
+try:
+    from api.graphql.schema import router as graphql_router
+    GRAPHQL_AVAILABLE = True
+except ImportError:
+    GRAPHQL_AVAILABLE = False
+
+try:
+    from api.websocket.handlers import router as websocket_router
+    WEBSOCKET_AVAILABLE = True
+except ImportError:
+    WEBSOCKET_AVAILABLE = False
+
+try:
+    from api.mobile.lightweight_endpoints import router as mobile_router
+    MOBILE_AVAILABLE = True
+except ImportError:
+    MOBILE_AVAILABLE = False
+
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -154,3 +196,17 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(regional_calculator_router, tags=["Regional Calculator"])
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
         api_router.include_router(investment_intelligence_router, tags=["Investment Intelligence"])
+    if AI_INTELLIGENCE_AVAILABLE:
+        api_router.include_router(ai_intelligence_router, tags=["AI Investment Intelligence"])
+    if REGIONAL_ANALYTICS_AVAILABLE:
+        api_router.include_router(regional_analytics_router, tags=["Regional Analytics Dashboard"])
+    if ENHANCED_SEARCH_AVAILABLE:
+        api_router.include_router(enhanced_search_router, tags=["Enhanced Search & Filtering"])
+    if PERFORMANCE_AVAILABLE:
+        api_router.include_router(performance_router, tags=["Performance Monitoring"])
+    if GRAPHQL_AVAILABLE:
+        api_router.include_router(graphql_router, tags=["GraphQL"])
+    if WEBSOCKET_AVAILABLE:
+        api_router.include_router(websocket_router, tags=["WebSocket Real-time"])
+    if MOBILE_AVAILABLE:
+        api_router.include_router(mobile_router, tags=["Mobile API"])
