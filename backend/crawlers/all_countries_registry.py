@@ -667,12 +667,12 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "name_en": "Sudan",
         "name_fr": "Soudan",
         "region": Region.NORTH_AFRICA,
-        "blocks": [RegionalBlock.COMESA, RegionalBlock.IGAD],
+        "blocks": [RegionalBlock.AMU, RegionalBlock.COMESA, RegionalBlock.IGAD],
         "vat_rate": 17.0,
         "customs_url": "https://www.customs.gov.sd",
         "priority": Priority.MEDIUM,
         "languages": ["ar", "en"],
-        "notes": "Port Sudan gateway"
+        "notes": "Port Sudan gateway, North Africa UMA regional system"
     },
     "TZA": {
         "iso2": "TZ",
@@ -783,7 +783,7 @@ REGIONAL_BLOCKS: Dict[str, List[str]] = {
         "UGA", "ZMB", "ZWE"
     ],
     RegionalBlock.AMU.value: [
-        "DZA", "LBY", "MRT", "MAR", "TUN"
+        "DZA", "EGY", "LBY", "MRT", "MAR", "TUN", "SDN"
     ],
     RegionalBlock.ECCAS.value: [
         "AGO", "BDI", "CMR", "CAF", "TCD", "COG", "COD", "GNQ",
