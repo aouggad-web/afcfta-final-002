@@ -602,7 +602,7 @@ class InvestmentScoringEngine:
             + gdp_score * 0.25
             + trade_score * 0.20
             + market_size_score * 0.20
-            + afcfta_bonus * 1.0 * 0.10
+            + afcfta_bonus * 0.10
         )
         return _clamp(raw)
 
@@ -708,7 +708,7 @@ class InvestmentScoringEngine:
             adjusted["economic_fundamentals"] = min(adjusted["economic_fundamentals"] * 1.1, 0.30)
             adjusted["business_environment"] = max(adjusted["business_environment"] * 0.85, 0.05)
 
-        # Re-normalise so weights sum to 1
+        # Re-normalize so weights sum to 1
         total = sum(adjusted.values())
         if total > 0:
             adjusted = {k: v / total for k, v in adjusted.items()}

@@ -1,5 +1,5 @@
 """
-Personalised Recommendation Engine for AfCFTA investment opportunities.
+Personalized Recommendation Engine for AfCFTA investment opportunities.
 
 Matches investor profiles to curated African investment opportunities
 without requiring any external ML libraries.
