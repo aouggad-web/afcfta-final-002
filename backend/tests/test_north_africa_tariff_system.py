@@ -859,3 +859,303 @@ class TestRegionalIntelligenceAdvanced:
     def test_opportunity_map_generated_at(self):
         result = self.intel.get_opportunity_map(sectors=["agriculture"])
         assert "generated_at" in result
+
+
+# ==================== Administrative Formalities Tests ====================
+
+class TestAdministrativeFormalities:
+    """
+    Tests for the administrative formalities and document requirements
+    integrated into MAR and TUN enhanced_v2 tariff data.
+
+    Validates:
+    - ETL module functions produce correct formality sets per category
+    - MAR and TUN crawled data files have rich multi-document formalities
+    - DZA formalities are unchanged (regression)
+    - Specific categories produce the expected regulatory documents
+    """
+
+    # ---------- ETL module unit tests ----------
+
+    def test_mar_etl_imports_cleanly(self):
+        from etl.country_taxes_morocco import (
+            MAR_FORMALITIES_BY_CATEGORY,
+            get_mar_formality_category,
+            get_mar_formalities_for_line,
+        )
+        assert "animal_products" in MAR_FORMALITIES_BY_CATEGORY
+        assert "pharmaceuticals" in MAR_FORMALITIES_BY_CATEGORY
+        assert "general" in MAR_FORMALITIES_BY_CATEGORY
+
+    def test_tun_etl_imports_cleanly(self):
+        from etl.country_taxes_tunisia import (
+            TUN_FORMALITIES_BY_CATEGORY,
+            get_tun_formality_category,
+            get_tun_formalities_for_line,
+        )
+        assert "animal_products" in TUN_FORMALITIES_BY_CATEGORY
+        assert "pharmaceuticals" in TUN_FORMALITIES_BY_CATEGORY
+        assert "general" in TUN_FORMALITIES_BY_CATEGORY
+
+    def test_mar_animal_products_category(self):
+        """Livestock/animal products must require veterinary control (C01)."""
+        from etl.country_taxes_morocco import get_mar_formalities_for_line
+        for cat in ("livestock", "meat", "fish", "dairy", "poultry"):
+            forms = get_mar_formalities_for_line(cat, "01")
+            codes = {f["code"] for f in forms}
+            assert "910" in codes, f"{cat}: missing DUM (910)"
+            assert "C01" in codes, f"{cat}: missing veterinary control C01"
+
+    def test_mar_food_agriculture_category(self):
+        """Plant/agricultural products must require phytosanitary control (C02)."""
+        from etl.country_taxes_morocco import get_mar_formalities_for_line
+        for cat in ("vegetables", "fruits", "cereals", "oilseeds"):
+            forms = get_mar_formalities_for_line(cat, "07")
+            codes = {f["code"] for f in forms}
+            assert "C02" in codes, f"{cat}: missing phytosanitary C02"
+
+    def test_mar_pharmaceuticals_category(self):
+        """Pharmaceuticals must require Ministry of Health auth (C04, C05)."""
+        from etl.country_taxes_morocco import get_mar_formalities_for_line
+        forms = get_mar_formalities_for_line("pharmaceuticals", "30")
+        codes = {f["code"] for f in forms}
+        assert "C04" in codes, "MAR pharma: missing Ministry of Health auth C04"
+        assert "C05" in codes, "MAR pharma: missing AMM visa C05"
+
+    def test_mar_vehicles_machinery_category(self):
+        """Vehicles/machinery must require IMANOR conformity (C03)."""
+        from etl.country_taxes_morocco import get_mar_formalities_for_line
+        for cat in ("vehicles", "machinery", "electrical"):
+            forms = get_mar_formalities_for_line(cat, "87")
+            codes = {f["code"] for f in forms}
+            assert "C03" in codes, f"{cat}: missing IMANOR certificate C03"
+
+    def test_mar_chemicals_category(self):
+        """Chemicals must require chemical analysis certificate (C11)."""
+        from etl.country_taxes_morocco import get_mar_formalities_for_line
+        forms = get_mar_formalities_for_line("chemicals", "28")
+        codes = {f["code"] for f in forms}
+        assert "C11" in codes, "MAR chemicals: missing chemical analysis C11"
+
+    def test_mar_hydrocarbons_category(self):
+        """Hydrocarbons must require ONHYM authorization (C09)."""
+        from etl.country_taxes_morocco import get_mar_formalities_for_line
+        forms = get_mar_formalities_for_line("mineral_fuels", "27")
+        codes = {f["code"] for f in forms}
+        assert "C09" in codes, "MAR mineral fuels: missing ONHYM auth C09"
+
+    def test_mar_arms_category(self):
+        """Arms must require Ministry of Interior authorization (C10)."""
+        from etl.country_taxes_morocco import get_mar_formalities_for_line
+        forms = get_mar_formalities_for_line("arms", "93")
+        codes = {f["code"] for f in forms}
+        assert "C10" in codes, "MAR arms: missing Interior Ministry auth C10"
+
+    def test_mar_general_has_only_910(self):
+        """General products must have at least DUM (910)."""
+        from etl.country_taxes_morocco import get_mar_formalities_for_line
+        forms = get_mar_formalities_for_line("general", "49")
+        codes = {f["code"] for f in forms}
+        assert "910" in codes
+
+    def test_tun_animal_products_category(self):
+        """TUN animal products must require veterinary certificate (102)."""
+        from etl.country_taxes_tunisia import get_tun_formalities_for_line
+        for cat in ("livestock", "meat", "fish", "dairy"):
+            forms = get_tun_formalities_for_line(cat, "01")
+            codes = {f["code"] for f in forms}
+            assert "102" in codes, f"TUN {cat}: missing vet cert 102"
+
+    def test_tun_food_agriculture_category(self):
+        """TUN agricultural products must require ONAGRI authorization (101)."""
+        from etl.country_taxes_tunisia import get_tun_formalities_for_line
+        for cat in ("vegetables", "fruits", "cereals"):
+            forms = get_tun_formalities_for_line(cat, "07")
+            codes = {f["code"] for f in forms}
+            assert "101" in codes, f"TUN {cat}: missing ONAGRI auth 101"
+
+    def test_tun_pharmaceuticals_category(self):
+        """TUN pharma must require Ministry of Health authorization (103)."""
+        from etl.country_taxes_tunisia import get_tun_formalities_for_line
+        forms = get_tun_formalities_for_line("pharmaceuticals", "30")
+        codes = {f["code"] for f in forms}
+        assert "103" in codes, "TUN pharma: missing Health auth 103"
+
+    def test_tun_vehicles_machinery_category(self):
+        """TUN vehicles must require INNORPI conformity (104)."""
+        from etl.country_taxes_tunisia import get_tun_formalities_for_line
+        for cat in ("vehicles", "machinery", "electrical"):
+            forms = get_tun_formalities_for_line(cat, "87")
+            codes = {f["code"] for f in forms}
+            assert "104" in codes, f"TUN {cat}: missing INNORPI cert 104"
+
+    def test_tun_chemicals_category(self):
+        """TUN chemicals must require ANPE environmental declaration (105)."""
+        from etl.country_taxes_tunisia import get_tun_formalities_for_line
+        forms = get_tun_formalities_for_line("chemicals", "28")
+        codes = {f["code"] for f in forms}
+        assert "105" in codes, "TUN chemicals: missing ANPE declaration 105"
+
+    def test_tun_hydrocarbons_category(self):
+        """TUN hydrocarbons must require STEG/ETAP authorization (108)."""
+        from etl.country_taxes_tunisia import get_tun_formalities_for_line
+        forms = get_tun_formalities_for_line("mineral_fuels", "27")
+        codes = {f["code"] for f in forms}
+        assert "108" in codes, "TUN mineral_fuels: missing STEG/ETAP auth 108"
+
+    def test_tun_arms_category(self):
+        """TUN arms must require Ministry of Interior authorization (109)."""
+        from etl.country_taxes_tunisia import get_tun_formalities_for_line
+        forms = get_tun_formalities_for_line("arms", "93")
+        codes = {f["code"] for f in forms}
+        assert "109" in codes, "TUN arms: missing Interior Ministry auth 109"
+
+    def test_all_formalities_have_required_fields(self):
+        """Every formality entry must have code, document_fr, document_en, is_mandatory."""
+        from etl.country_taxes_morocco import MAR_FORMALITIES_BY_CATEGORY
+        from etl.country_taxes_tunisia import TUN_FORMALITIES_BY_CATEGORY
+
+        required = {"code", "document_fr", "document_en", "is_mandatory"}
+        for country, mapping in [("MAR", MAR_FORMALITIES_BY_CATEGORY), ("TUN", TUN_FORMALITIES_BY_CATEGORY)]:
+            for bucket, forms in mapping.items():
+                for f in forms:
+                    missing = required - set(f.keys())
+                    assert not missing, (
+                        f"{country}/{bucket}: formality {f.get('code','?')} missing fields {missing}"
+                    )
+
+    def test_all_formalities_include_910_base(self):
+        """Every formality bucket for both countries must include DUM (910) as first entry."""
+        from etl.country_taxes_morocco import MAR_FORMALITIES_BY_CATEGORY
+        from etl.country_taxes_tunisia import TUN_FORMALITIES_BY_CATEGORY
+
+        for country, mapping in [("MAR", MAR_FORMALITIES_BY_CATEGORY), ("TUN", TUN_FORMALITIES_BY_CATEGORY)]:
+            for bucket, forms in mapping.items():
+                assert forms, f"{country}/{bucket}: empty formalities list"
+                assert forms[0]["code"] == "910", (
+                    f"{country}/{bucket}: first formality must be 910 (DUM), got {forms[0]['code']}"
+                )
+
+    # ---------- Data file integration tests ----------
+
+    def _load(self, cc: str) -> list:
+        import json
+        path = os.path.join(
+            os.path.dirname(__file__), "..", "data", "crawled", f"{cc}_tariffs.json"
+        )
+        with open(path, encoding="utf-8") as f:
+            d = json.load(f)
+        return d["tariff_lines"]
+
+    def test_mar_data_has_multiple_document_types(self):
+        """MAR crawled data must use more than just code 910."""
+        lines = self._load("MAR")
+        distinct_codes = {
+            f["code"]
+            for line in lines
+            for f in line.get("administrative_formalities", [])
+        }
+        assert len(distinct_codes) >= 5, (
+            f"MAR: expected ≥5 distinct document codes, got {sorted(distinct_codes)}"
+        )
+
+    def test_tun_data_has_multiple_document_types(self):
+        """TUN crawled data must use more than just code 910."""
+        lines = self._load("TUN")
+        distinct_codes = {
+            f["code"]
+            for line in lines
+            for f in line.get("administrative_formalities", [])
+        }
+        assert len(distinct_codes) >= 5, (
+            f"TUN: expected ≥5 distinct document codes, got {sorted(distinct_codes)}"
+        )
+
+    def test_dza_data_formalities_unchanged(self):
+        """DZA formalities must still be present and use the expected codes."""
+        lines = self._load("DZA")
+        distinct_codes = {
+            f["code"]
+            for line in lines
+            for f in line.get("administrative_formalities", [])
+        }
+        # DZA uses codes 910, 210, 215, 216, 902, 920, 930, 940, 950, 960
+        assert "910" in distinct_codes
+        assert "216" in distinct_codes, "DZA veterinary cert (216) should still be present"
+        assert "920" in distinct_codes, "DZA Ministry of Health auth (920) should still be present"
+
+    def test_mar_livestock_lines_have_veterinary_doc(self):
+        """All MAR livestock tariff lines must require veterinary control (C01)."""
+        lines = self._load("MAR")
+        livestock_lines = [l for l in lines if l.get("category") == "livestock"]
+        assert livestock_lines, "Expected some MAR livestock lines"
+        for line in livestock_lines:
+            codes = {f["code"] for f in line.get("administrative_formalities", [])}
+            assert "C01" in codes, (
+                f"MAR livestock {line['hs6']}: missing veterinary control C01"
+            )
+
+    def test_tun_livestock_lines_have_veterinary_doc(self):
+        """All TUN livestock tariff lines must require veterinary certificate (102)."""
+        lines = self._load("TUN")
+        livestock_lines = [l for l in lines if l.get("category") == "livestock"]
+        assert livestock_lines, "Expected some TUN livestock lines"
+        for line in livestock_lines:
+            codes = {f["code"] for f in line.get("administrative_formalities", [])}
+            assert "102" in codes, (
+                f"TUN livestock {line['hs6']}: missing veterinary certificate 102"
+            )
+
+    def test_mar_pharma_lines_have_health_ministry_doc(self):
+        """All MAR pharmaceuticals lines must require Ministry of Health auth (C04)."""
+        lines = self._load("MAR")
+        pharma_lines = [l for l in lines if l.get("category") in ("pharmaceuticals", "pharma")]
+        assert pharma_lines, "Expected some MAR pharma lines"
+        for line in pharma_lines:
+            codes = {f["code"] for f in line.get("administrative_formalities", [])}
+            assert "C04" in codes, (
+                f"MAR pharma {line['hs6']}: missing Ministry of Health auth C04"
+            )
+
+    def test_tun_pharma_lines_have_health_ministry_doc(self):
+        """All TUN pharmaceuticals lines must require DPHM authorization (103)."""
+        lines = self._load("TUN")
+        pharma_lines = [l for l in lines if l.get("category") in ("pharmaceuticals", "pharma")]
+        assert pharma_lines, "Expected some TUN pharma lines"
+        for line in pharma_lines:
+            codes = {f["code"] for f in line.get("administrative_formalities", [])}
+            assert "103" in codes, (
+                f"TUN pharma {line['hs6']}: missing DPHM authorization 103"
+            )
+
+    def test_every_line_has_at_least_one_formality(self):
+        """No tariff line should have an empty formalities list."""
+        for cc in ("MAR", "TUN", "DZA"):
+            lines = self._load(cc)
+            empty = [l["hs6"] for l in lines if not l.get("administrative_formalities")]
+            assert not empty, f"{cc}: {len(empty)} tariff lines have empty formalities: {empty[:5]}"
+
+    def test_authentic_tariff_service_returns_formalities_for_mar(self):
+        """get_administrative_formalities() must return enriched docs for MAR."""
+        from services.authentic_tariff_service import get_administrative_formalities
+        # Reload cache by resetting _tariff_cache
+        import services.authentic_tariff_service as svc
+        svc._tariff_cache.pop("MAR", None)
+
+        # hs6 010110 = livestock → should have C01 (veterinary)
+        forms = get_administrative_formalities("MAR", "010110")
+        assert forms, "MAR/010110: no formalities returned"
+        codes = {f["code"] for f in forms}
+        assert "C01" in codes, f"MAR/010110: expected C01, got {sorted(codes)}"
+
+    def test_authentic_tariff_service_returns_formalities_for_tun(self):
+        """get_administrative_formalities() must return enriched docs for TUN."""
+        from services.authentic_tariff_service import get_administrative_formalities
+        import services.authentic_tariff_service as svc
+        svc._tariff_cache.pop("TUN", None)
+
+        # hs6 300490 = pharmaceuticals → should have 103 (DPHM)
+        forms = get_administrative_formalities("TUN", "300490")
+        assert forms, "TUN/300490: no formalities returned"
+        codes = {f["code"] for f in forms}
+        assert "103" in codes, f"TUN/300490: expected 103, got {sorted(codes)}"
