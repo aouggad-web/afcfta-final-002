@@ -15,12 +15,58 @@ These levies fall into four categories:
    - KEN  KEBS CoC (for regulated goods — already captured as STDCERT)
 
 2. COMMUNITY / REGIONAL LEVIES
-   Harmonised levies mandated by regional economic communities:
-   ECOWAS: CEDEAO/PCC (0.5%), RS (1%), PCS (1%), PUA (0.2%)
-   UEMOA:  additional RS + PCS on top of ECOWAS base
-   AES:    PC-AES (0.5%) replacing PCC for MLI/BFA/NER since 2025
-   CEMAC:  TCI (1%), RI (0.45%)
-   EAC:    IDF (KEN 3.5%), RDL (KEN 2%), Infrastructure Levy (UGA 1.5%)
+   Harmonised levies mandated by regional economic communities (RECs):
+
+   ── WEST AFRICA ────────────────────────────────────────────────────────
+   ECOWAS (15 members — BEN BFA CPV CIV GMB GHA GIN GNB LBR MLI NER NGA SEN SLE TGO):
+     CEDEAO/PCC (0.5% CIF) — ECOWAS Community Levy
+     RS  (1.0% CIF) — Statistical Levy (UEMOA/ECOWAS)
+     PCS (1.0% CIF) — UEMOA Community Solidarity Levy
+     PUA (0.2% CIF) — African Union Levy
+   UEMOA (8 francophone members): additional RS + PCS on top of ECOWAS base
+   AES (Alliance des États du Sahel — MLI BFA NER since 2025):
+     PC-AES (0.5% CIF) — Confederal Levy replacing ECOWAS PCC
+
+   ── CENTRAL AFRICA ─────────────────────────────────────────────────────
+   CEMAC (6 members — CMR CAF TCD COG GAB GNQ):
+     TCI (1.0% CIF) — Community Integration Tax (Règlement CEMAC n°17/99)
+     RI  (0.45% CIF) — IT User Fee (Redevance Informatique)
+   ECCAS/CEEAC (11 members — CMR CAF TCD COG GAB GNQ COD AGO RWA BDI STP):
+     CCI (0.4% CIF) — Community Integration Contribution (non-CEMAC members)
+     Note: CEMAC members pay TCI instead of CCI.
+
+   ── EAST AFRICA ────────────────────────────────────────────────────────
+   EAC (7 members — BDI KEN RWA SSD TZA UGA COD):
+     IDF     (3.5% CIF) — Import Declaration Fee (KEN only; KRA Finance Act 2022)
+     RDL     (2.0% CIF) — Railway Development Levy (KEN only; Kenya Railways)
+     INFRALVY (1.5% CIF) — Infrastructure Levy (UGA only; Uganda Finance Act 2020)
+     PDL     (1.0% CIF) — Port Development Levy (TZA only; Tanzania Ports Authority)
+
+   ── SOUTHERN AFRICA ────────────────────────────────────────────────────
+   SADC (16 members — AGO BWA COM COD LSO MDG MUS MWI MOZ NAM SYC SWZ TZA ZAF ZMB ZWE):
+     Free Trade Area only — no common external levy.
+     National para-fiscal levies apply:
+       MOZ  TRA (0.5% CIF) — Customs Regularization Fee (AT-MZ)
+       COMLEV (0.5% CIF) — COMESA Community Levy (ZMB ZWE MWI — when applicable)
+   SACU (5 members — ZAF BWA LSO NAM SWZ):
+     Revenue Sharing Pool — no separate import levy code. Common external tariff shared.
+
+   ── EAST/SOUTHERN AFRICA (COMESA) ──────────────────────────────────────
+   COMESA (21 members — BDI COM DJI EGY ERI ETH KEN LSO LBY MDG MWI MUS RWA SDN SOM
+            SSD SWZ TUN UGA ZMB ZWE):
+     COMLEV (0.5% CIF) — Community Levy where applied (ZMB ZWE MWI primary users)
+
+   ── NORTH AFRICA ───────────────────────────────────────────────────────
+   AMU/UMA (5 members — DZA LBY MAR MRT TUN):
+     No common external tariff or community levy yet (negotiations ongoing).
+     National levies apply:
+       DZA PRCT (2% CIF), TCS (3%), DAPS (30-200%)
+       MAR TPI (varies)
+       TUN AIR (1%) — Redevance de Navigation Aérienne
+
+   ── HORN OF AFRICA ─────────────────────────────────────────────────────
+   IGAD (8 members — DJI ERI ETH KEN SOM SSD SDN UGA):
+     Intergovernmental coordination body only — no common import levy.
 
 3. NATIONAL FISCAL LEVIES
    Country-specific surcharges levied alongside customs duty:
@@ -36,12 +82,13 @@ These levies fall into four categories:
    - AGO  IE  (varies)   — Imposto Especial de Consumo
    - CMR  CAC (10% of DD) — Centimes Additionnels Communaux
    - MOZ  TRA (0.5%)     — Taxa de Regularização Aduaneira
+   - TUN  AIR (1.0%)     — Redevance de Navigation Aérienne
 
 4. PORT / INFRASTRUCTURE LEVIES
    - KEN  IDF (3.5% CIF) — Import Declaration Fee (Kenya Revenue Authority)
    - KEN  RDL (2.0% CIF) — Railway Development Levy (KRA / Kenya Railways)
    - UGA  INFRALVY (1.5% CIF) — Infrastructure Levy (URA)
-   - TZA  PDL (1.0%)    — Port Development Levy (TPA)
+   - TZA  PDL (1.0% CIF) — Port Development Levy (TPA)
    - GHA  CPL (1.0%)    — COVID-19 Levy (GRA, renewed annually)
 
 Sources:
@@ -50,13 +97,18 @@ Sources:
   EGY GOEIC: Law 118/1975, Decree 991/2015, Decree 1267/2015, Ministerial Decree 43/2016
   KEN IDF/RDL: Finance Act 2022 (Kenya); EAC-CET 2022 (EAC)
   UGA Infrastructure Levy: Uganda Finance Act 2020
+  TZA PDL: Tanzania Ports Authority Act Cap 415; Finance Act 2023
   GHA GETFUND: Ghana Education Trust Fund Act 581/1997
   GHA NHIL:   National Health Insurance Act 650/2003
   ETH SUR:    Ethiopian Customs Proclamation 859/2014
   CMR TCI/CAC: Règlement CEMAC n°17/99/CEMAC-20-CM-03
+  ECCAS CCI:  Règlement CEEAC / Contribution Communautaire d'Intégration (0.4% CIF)
   ECOWAS RS/PCS: UEMOA Directive 02/98/CM/UEMOA; Règlement CEDEAO C/REG.2/6/00
   DZA PRCT/TCS: Loi de Finances 2024 (DZ); Décret exécutif 22-147
   MAR TPI: Circulaire Douanière 6050/2024 (ADII)
+  MOZ TRA: Lei das Alfândegas 25/2009 (AT-MZ)
+  TUN AIR: Loi de finances Tunisie / Office de l'Aviation Civile et des Aéroports (OACA)
+  ZMB/ZWE COMLEV: COMESA Treaty 1994; ZRA/ZIMRA Customs Procedures
 
 Last updated: 2025
 """
@@ -106,13 +158,15 @@ LEVY_DESCRIPTIONS: Dict[str, Tuple[str, str]] = {
     "ECOWAS":   ("Prélèvement Communautaire CEDEAO",
                  "ECOWAS Community Levy (0.5% CIF)"),
 
-    # ── EAC / Kenya / Uganda levies ───────────────────────────────────────
+    # ── EAC / Kenya / Uganda / Tanzania levies ───────────────────────────
     "IDF":      ("Import Declaration Fee Kenya — IDF (3,5% CIF)",
                  "Kenya Import Declaration Fee (3.5% of CIF); Kenya Finance Act 2022 — KRA"),
     "RDL":      ("Railway Development Levy Kenya — RDL (2% CIF)",
                  "Kenya Railway Development Levy (2% of CIF); KRA / Kenya Railways Corporation"),
     "INFRALVY": ("Infrastructure Levy Uganda (1,5% CIF)",
                  "Uganda Infrastructure Levy (1.5% of CIF); Uganda Finance Act 2020 — URA"),
+    "PDL":      ("Port Development Levy Tanzanie — PDL (1% CIF)",
+                 "Tanzania Port Development Levy (1.0% of CIF); Tanzania Ports Authority (TPA) — Finance Act 2023"),
 
     # ── Ethiopia-specific levies ───────────────────────────────────────────
     "SUR":      ("Taxe Complémentaire Éthiopie / Surtaxe (10% du DD)",
