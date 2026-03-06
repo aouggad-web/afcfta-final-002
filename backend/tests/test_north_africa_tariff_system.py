@@ -1882,3 +1882,429 @@ class TestAllAfricaFormalities:
             extras = get_para_fiscal_formalities("NGA", bucket, ch)
             codes = [f["code"] for f in extras]
             assert "FORMM" in codes, f"NGA/{bucket}/ch{ch}: FORMM not in {codes}"
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # EGY chapter-level GOEIC scoping
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def test_egy_goeic_chapter_30_included(self):
+        """EGY ch30 (pharmaceuticals) must have GOEIC."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("EGY", "pharmaceuticals", "30")
+        codes = [f["code"] for f in extras]
+        assert "GOEIC" in codes
+
+    def test_egy_goeic_chapter_87_included(self):
+        """EGY ch87 (vehicles) must have GOEIC."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("EGY", "vehicles_machinery", "87")
+        codes = [f["code"] for f in extras]
+        assert "GOEIC" in codes
+
+    def test_egy_goeic_chapter_27_exempt(self):
+        """EGY ch27 (crude oil/gas) is exempt from GOEIC."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("EGY", "hydrocarbons", "27")
+        codes = [f["code"] for f in extras]
+        assert "GOEIC" not in codes
+
+    def test_egy_goeic_chapter_93_exempt(self):
+        """EGY ch93 (arms) is exempt from GOEIC."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("EGY", "arms_security", "93")
+        codes = [f["code"] for f in extras]
+        assert "GOEIC" not in codes
+
+    def test_egy_goeic_chapter_01_exempt(self):
+        """EGY ch01 (live animals) is exempt from GOEIC."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("EGY", "animal_products", "01")
+        codes = [f["code"] for f in extras]
+        assert "GOEIC" not in codes
+
+    def test_egy_goeic_chapter_10_exempt(self):
+        """EGY ch10 (cereals) is exempt from GOEIC."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("EGY", "food_agriculture", "10")
+        codes = [f["code"] for f in extras]
+        assert "GOEIC" not in codes
+
+    def test_egy_goeic_chapter_84_included(self):
+        """EGY ch84 (machinery) must have GOEIC."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("EGY", "general", "84")
+        codes = [f["code"] for f in extras]
+        assert "GOEIC" in codes
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # ETH chapter-level ETHPERMIT scoping
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def test_eth_chapter_14_exempt(self):
+        """ETH ch14 (vegetable materials) is exempt from ETHPERMIT."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("ETH", "food_agriculture", "14")
+        codes = [f["code"] for f in extras]
+        assert "ETHPERMIT" not in codes
+
+    def test_eth_chapter_15_has_ethpermit(self):
+        """ETH ch15 (animal/vegetable fats) requires ETHPERMIT (boundary chapter)."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("ETH", "food_agriculture", "15")
+        codes = [f["code"] for f in extras]
+        assert "ETHPERMIT" in codes
+
+    def test_eth_chapter_16_has_ethpermit(self):
+        """ETH ch16 (preparations of meat) requires ETHPERMIT (processed food)."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("ETH", "food_agriculture", "16")
+        codes = [f["code"] for f in extras]
+        assert "ETHPERMIT" in codes
+
+    def test_eth_chapter_84_has_ethpermit(self):
+        """ETH ch84 (machinery) requires ETHPERMIT."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("ETH", "general", "84")
+        codes = [f["code"] for f in extras]
+        assert "ETHPERMIT" in codes
+
+    def test_eth_chapter_01_exempt(self):
+        """ETH ch01 (live animals) is exempt from ETHPERMIT."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("ETH", "animal_products", "01")
+        codes = [f["code"] for f in extras]
+        assert "ETHPERMIT" not in codes
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # get_para_fiscal_formalities — CEMAC individual members
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def test_cemac_get_formalities_gab(self):
+        """get_para_fiscal_formalities for GAB returns ECTN."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("GAB", "general", "84")
+        codes = [f["code"] for f in extras]
+        assert "ECTN" in codes
+
+    def test_cemac_get_formalities_caf(self):
+        """get_para_fiscal_formalities for CAF returns ECTN."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("CAF", "general", "87")
+        codes = [f["code"] for f in extras]
+        assert "ECTN" in codes
+
+    def test_cemac_get_formalities_cog(self):
+        """get_para_fiscal_formalities for COG returns ECTN."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("COG", "food_agriculture", "16")
+        codes = [f["code"] for f in extras]
+        assert "ECTN" in codes
+
+    def test_cemac_get_formalities_gnq(self):
+        """get_para_fiscal_formalities for GNQ returns ECTN."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("GNQ", "pharmaceuticals", "30")
+        codes = [f["code"] for f in extras]
+        assert "ECTN" in codes
+
+    def test_cemac_get_formalities_tcd(self):
+        """get_para_fiscal_formalities for TCD returns ECTN."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("TCD", "general", "84")
+        codes = [f["code"] for f in extras]
+        assert "ECTN" in codes
+
+    def test_get_formalities_unknown_country_returns_empty(self):
+        """get_para_fiscal_formalities for a country with no registration returns []."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        extras = get_para_fiscal_formalities("ZZZ", "general", "84")
+        assert extras == []
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Data files — individual CEMAC members have ECTN on all lines
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def test_gab_all_lines_have_ectn(self):
+        """GAB tariff data: all 5831 lines carry ECTN formality."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "GAB_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("GAB_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        without = [l["hs_code"] for l in lines
+                   if not any(fm["code"] == "ECTN" for fm in l.get("administrative_formalities", []))]
+        assert without == [], f"GAB lines without ECTN: {without[:5]}"
+
+    def test_caf_all_lines_have_ectn(self):
+        """CAF tariff data: all lines carry ECTN formality."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "CAF_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("CAF_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        without = [l["hs_code"] for l in lines
+                   if not any(fm["code"] == "ECTN" for fm in l.get("administrative_formalities", []))]
+        assert without == [], f"CAF lines without ECTN: {without[:5]}"
+
+    def test_cog_all_lines_have_ectn(self):
+        """COG tariff data: all lines carry ECTN formality."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "COG_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("COG_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        without = [l["hs_code"] for l in lines
+                   if not any(fm["code"] == "ECTN" for fm in l.get("administrative_formalities", []))]
+        assert without == [], f"COG lines without ECTN: {without[:5]}"
+
+    def test_gnq_all_lines_have_ectn(self):
+        """GNQ tariff data: all lines carry ECTN formality."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "GNQ_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("GNQ_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        without = [l["hs_code"] for l in lines
+                   if not any(fm["code"] == "ECTN" for fm in l.get("administrative_formalities", []))]
+        assert without == [], f"GNQ lines without ECTN: {without[:5]}"
+
+    def test_tcd_all_lines_have_ectn(self):
+        """TCD tariff data: all lines carry ECTN formality."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "TCD_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("TCD_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        without = [l["hs_code"] for l in lines
+                   if not any(fm["code"] == "ECTN" for fm in l.get("administrative_formalities", []))]
+        assert without == [], f"TCD lines without ECTN: {without[:5]}"
+
+    def test_cemac_ectn_authorities_country_specific(self):
+        """Each CEMAC country has its own shippers council in the ECTN authority."""
+        from etl.para_fiscal_levies import COUNTRY_PARA_FISCAL_FORMALITIES
+        expected = {
+            "CMR": "CNCC",
+            "CAF": "CCC",
+            "COG": "CCC",
+            "GAB": "CGC",
+            "GNQ": "CNC-GQ",
+            "TCD": "CTC",
+        }
+        for cc, acronym in expected.items():
+            entry = COUNTRY_PARA_FISCAL_FORMALITIES[cc][0]
+            auth = entry["authority_en"]
+            assert acronym in auth, f"{cc}: expected '{acronym}' in authority '{auth}'"
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # enrich_observation — extended code coverage
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def test_enrich_observation_getfund(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("GETFUND")
+        assert "Ghana" in obs and "Education" in obs
+
+    def test_enrich_observation_nhil(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("NHIL")
+        assert "Health Insurance" in obs and "Ghana" in obs
+
+    def test_enrich_observation_sur(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("SUR")
+        assert "Ethiopia" in obs and "Surcharge" in obs
+
+    def test_enrich_observation_tci(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("TCI")
+        assert "CEMAC" in obs and "1%" in obs
+
+    def test_enrich_observation_cac(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("CAC")
+        assert "Cameroon" in obs or "Centimes" in obs
+
+    def test_enrich_observation_prct(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("PRCT")
+        assert "Algeria" in obs or "Transport" in obs
+
+    def test_enrich_observation_tpi(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("TPI")
+        assert "Morocco" in obs or "TPI" in obs
+
+    def test_enrich_observation_idf(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("IDF")
+        assert "Kenya" in obs and "3.5" in obs
+
+    def test_enrich_observation_rdl(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("RDL")
+        assert "Railway" in obs and "Kenya" in obs
+
+    def test_enrich_observation_cedeao(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("CEDEAO")
+        assert "ECOWAS" in obs or "CEDEAO" in obs
+
+    def test_enrich_observation_rs(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("RS")
+        assert "Statistical" in obs or "Statistique" in obs or "UEMOA" in obs
+
+    def test_enrich_observation_pcs(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("PCS")
+        assert "UEMOA" in obs or "Solidarity" in obs
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Data-level validation — enriched observations in country files
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def test_eth_sur_observation_descriptive(self):
+        """ETH SUR tax_detail has a descriptive observation (not empty)."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "ETH_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("ETH_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        sur_entry = next(
+            (t for l in lines for t in l.get("taxes_detail", []) if t["tax"] == "SUR"),
+            None,
+        )
+        assert sur_entry is not None, "No SUR tax found in ETH"
+        obs = sur_entry["observation"]
+        assert len(obs) > 20, f"SUR observation too short: '{obs}'"
+        assert "Ethiopia" in obs or "Proclamation" in obs
+
+    def test_cmr_tci_observation_descriptive(self):
+        """CMR TCI tax_detail has a descriptive observation referencing CEMAC."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "CMR_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("CMR_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        tci_entry = next(
+            (t for l in lines for t in l.get("taxes_detail", []) if t["tax"] == "TCI"),
+            None,
+        )
+        assert tci_entry is not None, "No TCI tax found in CMR"
+        obs = tci_entry["observation"]
+        assert "CEMAC" in obs, f"Expected 'CEMAC' in TCI observation: '{obs}'"
+
+    def test_mar_tpi_observation_descriptive(self):
+        """MAR TPI tax_detail has a descriptive observation."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "MAR_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("MAR_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        tpi_entry = next(
+            (t for l in lines for t in l.get("taxes_detail", []) if t["tax"] == "TPI"),
+            None,
+        )
+        assert tpi_entry is not None, "No TPI tax found in MAR"
+        obs = tpi_entry["observation"]
+        assert len(obs) > 10, f"TPI observation too short: '{obs}'"
+
+    def test_mar_other_taxes_rate_non_zero(self):
+        """MAR other_taxes_rate reflects TPI levy."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "MAR_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("MAR_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        non_zero = [l for l in lines if l.get("other_taxes_rate", 0) > 0]
+        assert len(non_zero) > 0, "MAR other_taxes_rate is always 0"
+
+    def test_ken_other_taxes_rate_reflects_idf(self):
+        """KEN other_taxes_rate is 3.5 (IDF) for all lines."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "KEN_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("KEN_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        wrong = [l["hs_code"] for l in lines if l.get("other_taxes_rate", 0) != 3.5]
+        assert wrong == [], f"KEN lines with wrong other_taxes_rate: {wrong[:5]}"
+
+    def test_eth_sur_rate_is_ten_percent(self):
+        """ETH SUR rate is 10% (of customs duty)."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "ETH_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("ETH_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        sur_rates = {t["rate"] for l in lines for t in l.get("taxes_detail", []) if t["tax"] == "SUR"}
+        assert sur_rates == {10.0}, f"Unexpected SUR rates: {sur_rates}"
+
+    def test_gab_other_taxes_rate_non_zero(self):
+        """GAB other_taxes_rate reflects TCI levy (non-zero)."""
+        import json, os
+        path = os.path.join(os.path.dirname(__file__), "..", "data", "crawled", "GAB_tariffs.json")
+        if not os.path.exists(path):
+            pytest.skip("GAB_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        lines = d["tariff_lines"]
+        zero = [l for l in lines if l.get("other_taxes_rate", 0) == 0]
+        assert len(zero) == 0, f"GAB has {len(zero)} lines with other_taxes_rate=0"
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # LEVY_DESCRIPTIONS — extended coverage checks
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def test_levy_descriptions_cemac_codes(self):
+        """LEVY_DESCRIPTIONS includes CEMAC-specific codes."""
+        from etl.para_fiscal_levies import LEVY_DESCRIPTIONS
+        for code in ["TCI", "RI", "CAC"]:
+            assert code in LEVY_DESCRIPTIONS, f"Missing CEMAC code: {code}"
+
+    def test_levy_descriptions_ecowas_codes(self):
+        """LEVY_DESCRIPTIONS includes ECOWAS/UEMOA community levy codes."""
+        from etl.para_fiscal_levies import LEVY_DESCRIPTIONS
+        for code in ["CEDEAO", "PCC", "RS", "PCS", "PUA", "ETLS"]:
+            assert code in LEVY_DESCRIPTIONS, f"Missing ECOWAS code: {code}"
+
+    def test_levy_descriptions_country_specific_codes(self):
+        """LEVY_DESCRIPTIONS covers major country-specific levies."""
+        from etl.para_fiscal_levies import LEVY_DESCRIPTIONS
+        for code in ["CISS", "GETFUND", "NHIL", "IDF", "RDL", "SUR", "PRCT", "TPI", "IE", "TRA"]:
+            assert code in LEVY_DESCRIPTIONS, f"Missing country code: {code}"
+
+    def test_levy_descriptions_entries_have_both_languages(self):
+        """Every entry in LEVY_DESCRIPTIONS is a 2-tuple (fr, en)."""
+        from etl.para_fiscal_levies import LEVY_DESCRIPTIONS
+        for code, val in LEVY_DESCRIPTIONS.items():
+            assert isinstance(val, tuple) and len(val) == 2, \
+                f"{code}: expected (fr, en) tuple, got {type(val)}"
+            assert val[0] and val[1], f"{code}: empty language string"
+
+    def test_ectn_countries_constant(self):
+        """ECTN_COUNTRIES set contains all 6 CEMAC members."""
+        from etl.para_fiscal_levies import ECTN_COUNTRIES
+        expected = {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"}
+        assert ECTN_COUNTRIES == expected
