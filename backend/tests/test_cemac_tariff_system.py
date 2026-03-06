@@ -315,3 +315,103 @@ class TestCEMACRoutes:
     def test_load_country_file_unknown_returns_none(self):
         from routes.cemac_crawlers import _load_country_file
         assert _load_country_file("XXX") is None
+
+
+# ==================== Sub-Position Tests ====================
+
+class TestCEMACSubPositions:
+    """Tests for the CEMAC /sub-positions endpoint."""
+
+    def test_sub_positions_endpoint_structure(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        assert "regional_totals" in result
+        assert "countries" in result
+        assert "note" in result
+
+    def test_sub_positions_has_six_countries(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        assert len(result["countries"]) == 6
+
+    def test_sub_positions_all_countries_present(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        codes = {r["iso3"] for r in result["countries"]}
+        assert codes == set(CEMAC_CODES)
+
+    def test_sub_positions_gnq_is_enhanced_v2(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        gnq = next(r for r in result["countries"] if r["iso3"] == "GNQ")
+        assert gnq["data_format"] == "enhanced_v2"
+        assert gnq["sub_positions"] > 0
+
+    def test_sub_positions_gnq_count(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        gnq = next(r for r in result["countries"] if r["iso3"] == "GNQ")
+        assert gnq["sub_positions"] >= 16000
+
+    def test_sub_positions_gnq_lines_with_sub(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        gnq = next(r for r in result["countries"] if r["iso3"] == "GNQ")
+        assert gnq["lines_with_sub_positions"] >= 5000
+
+    def test_sub_positions_old_format_countries_have_zero(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        old_format = [r for r in result["countries"] if r["data_format"] == "old"]
+        for r in old_format:
+            assert r["sub_positions"] == 0, \
+                f"{r['iso3']}: old-format country should have 0 sub-positions"
+
+    def test_sub_positions_sorted_descending(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        counts = [r["sub_positions"] for r in result["countries"]]
+        assert counts == sorted(counts, reverse=True)
+
+    def test_sub_positions_regional_totals_fields(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        totals = result["regional_totals"]
+        for field in ("total_tariff_lines", "total_sub_positions",
+                      "total_lines_with_sub_positions", "avg_sub_positions_per_line"):
+            assert field in totals, f"Missing regional_totals field: {field}"
+
+    def test_sub_positions_regional_total_matches_sum(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        country_sum = sum(r["sub_positions"] for r in result["countries"])
+        assert result["regional_totals"]["total_sub_positions"] == country_sum
+
+    def test_sub_positions_country_entry_fields(self):
+        from routes.cemac_crawlers import get_cemac_sub_positions
+        result = get_cemac_sub_positions()
+        required = {"iso3", "country_name", "data_format", "tariff_lines",
+                    "sub_positions", "lines_with_sub_positions", "avg_sub_per_line"}
+        for row in result["countries"]:
+            missing = required - set(row.keys())
+            assert not missing, f"{row.get('iso3')}: missing {missing}"
+
+    def test_count_sub_positions_helper_old_returns_zero(self):
+        from routes.cemac_crawlers import _count_sub_positions
+        fake_lines = [{"chapter": "01", "dd_rate": 20.0}]
+        assert _count_sub_positions(fake_lines, "old") == 0
+
+    def test_count_sub_positions_helper_enhanced_v2(self):
+        from routes.cemac_crawlers import _count_sub_positions
+        fake_lines = [
+            {"sub_position_count": 3},
+            {"sub_positions": [{"code": "a"}, {"code": "b"}]},
+            {},
+        ]
+        assert _count_sub_positions(fake_lines, "enhanced_v2") == 5
+
+    def test_data_summary_includes_lines_with_sub(self):
+        from routes.cemac_crawlers import _country_data_summary
+        entry = _country_data_summary("GNQ")
+        assert "lines_with_sub_positions" in entry
+        assert entry["lines_with_sub_positions"] >= 5000

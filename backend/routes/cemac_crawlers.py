@@ -121,6 +121,27 @@ def _load_country_file(country_code: str) -> Optional[Dict]:
         return None
 
 
+def _count_sub_positions(lines: List[Dict], data_format: str) -> int:
+    """
+    Count total sub-positions across all tariff lines.
+
+    For enhanced_v2 files each line carries a ``sub_position_count`` integer
+    (or a ``sub_positions`` list when the count field is absent).
+    Old-format files store the leaf-level HS8 codes directly as positions —
+    they contain no nested sub-positions, so the count is 0.
+    """
+    if data_format != "enhanced_v2":
+        return 0
+    total = 0
+    for ln in lines:
+        cnt = ln.get("sub_position_count")
+        if cnt is not None:
+            total += int(cnt)
+        else:
+            total += len(ln.get("sub_positions", []))
+    return total
+
+
 def _country_data_summary(country_code: str) -> Dict[str, Any]:
     """Build a per-country data summary entry."""
     data = _load_country_file(country_code)
@@ -132,6 +153,7 @@ def _country_data_summary(country_code: str) -> Dict[str, Any]:
             "status": "no_data",
             "tariff_lines": 0,
             "sub_positions": 0,
+            "lines_with_sub_positions": 0,
             "chapters_covered": 0,
             "data_format": None,
             "generated_at": None,
@@ -143,17 +165,22 @@ def _country_data_summary(country_code: str) -> Dict[str, Any]:
         lines = data.get("tariff_lines", [])
         summary = data.get("summary", {})
         total_lines = summary.get("total_tariff_lines", len(lines))
-        sub_positions = summary.get("total_sub_positions", 0)
+        # Prefer the precise per-line count over the summary field
+        sub_positions = _count_sub_positions(lines, data_format)
+        lines_with_sub = summary.get(
+            "lines_with_sub_positions",
+            sum(1 for ln in lines if ln.get("has_sub_positions", False)),
+        )
         chapters = summary.get("chapters_covered", 0)
         dd_range = summary.get("dd_rate_range", {})
         generated_at = data.get("generated_at")
     else:
         lines = data.get("positions", [])
         total_lines = len(lines)
-        # Derive chapters from positions
         chapters_set = {p.get("chapter", "") for p in lines if p.get("chapter")}
         chapters = len(chapters_set)
-        sub_positions = 0
+        sub_positions = 0   # old-format positions are already leaf-level HS8 codes
+        lines_with_sub = 0
         dd_rates = [p.get("taxes", {}).get("DD", 0) for p in lines if "DD" in p.get("taxes", {})]
         dd_range = {
             "min": min(dd_rates) if dd_rates else 0,
@@ -170,6 +197,7 @@ def _country_data_summary(country_code: str) -> Dict[str, Any]:
         "generated_at": generated_at,
         "tariff_lines": total_lines,
         "sub_positions": sub_positions,
+        "lines_with_sub_positions": lines_with_sub,
         "chapters_covered": chapters,
         "dd_rate_range": dd_range,
         "vat_rate": cfg.get("tva_rate"),
@@ -314,4 +342,92 @@ def get_cemac_country_data(
             "pages": (total + page_size - 1) // page_size,
         },
         "tariff_lines": paginated,
+    }
+
+
+@router.get("/sub-positions")
+def get_cemac_sub_positions():
+    """
+    How many sub-positions (10-digit HS codes) we get per CEMAC member state.
+
+    Sub-positions are the most granular tariff level: each 6-digit HS tariff
+    line (hs6) may expand into multiple 10-digit national sub-positions that
+    carry the actual applicable rate.
+
+    Returns per-country counts sorted from highest to lowest, plus CEMAC
+    regional totals.
+
+    Notes:
+    - Countries with *enhanced_v2* data (e.g. GNQ) have full sub-position data.
+    - Countries with *old-format* data (CMR, CAF, COG, GAB, TCD) store HS8
+      codes as flat positions; their 10-digit sub-positions are not yet
+      available in the current crawl output.
+    """
+    rows = []
+    regional_sub = 0
+    regional_lines = 0
+    regional_lines_with_sub = 0
+
+    for cc, cfg in CEMAC_COUNTRIES.items():
+        data = _load_country_file(cc)
+        if data is None:
+            rows.append({
+                "iso3": cc,
+                "country_name": cfg["country_name_en"],
+                "data_format": None,
+                "tariff_lines": 0,
+                "sub_positions": 0,
+                "lines_with_sub_positions": 0,
+                "avg_sub_per_line": 0.0,
+                "status": "no_data",
+            })
+            continue
+
+        data_format = data.get("data_format", "old")
+        if data_format == "enhanced_v2":
+            lines = data.get("tariff_lines", [])
+            sub_total = _count_sub_positions(lines, data_format)
+            lines_with_sub = sum(1 for ln in lines if ln.get("has_sub_positions", False))
+        else:
+            lines = data.get("positions", [])
+            sub_total = 0
+            lines_with_sub = 0
+
+        n_lines = len(lines)
+        avg = round(sub_total / n_lines, 2) if n_lines else 0.0
+
+        regional_sub += sub_total
+        regional_lines += n_lines
+        regional_lines_with_sub += lines_with_sub
+
+        rows.append({
+            "iso3": cc,
+            "country_name": cfg["country_name_en"],
+            "data_format": data_format,
+            "tariff_lines": n_lines,
+            "sub_positions": sub_total,
+            "lines_with_sub_positions": lines_with_sub,
+            "avg_sub_per_line": avg,
+            "status": "available",
+        })
+
+    rows.sort(key=lambda r: r["sub_positions"], reverse=True)
+
+    regional_avg = (
+        round(regional_sub / regional_lines, 2) if regional_lines else 0.0
+    )
+
+    return {
+        "region": "CEMAC",
+        "note": (
+            "Sub-positions are 10-digit national HS codes nested under each "
+            "6-digit tariff line. Only enhanced_v2 data files include them."
+        ),
+        "regional_totals": {
+            "total_tariff_lines": regional_lines,
+            "total_sub_positions": regional_sub,
+            "total_lines_with_sub_positions": regional_lines_with_sub,
+            "avg_sub_positions_per_line": regional_avg,
+        },
+        "countries": rows,
     }

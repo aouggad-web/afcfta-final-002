@@ -106,6 +106,12 @@ except ImportError:
     CEMAC_CRAWLERS_AVAILABLE = False
 
 try:
+    from .regional_data import router as regional_data_router
+    REGIONAL_DATA_AVAILABLE = True
+except ImportError:
+    REGIONAL_DATA_AVAILABLE = False
+
+try:
     from .regional_calculator import router as regional_calculator_router
     REGIONAL_CALCULATOR_AVAILABLE = True
 except ImportError:
@@ -158,6 +164,8 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(north_africa_crawlers_router, tags=["North Africa Crawlers"])
     if CEMAC_CRAWLERS_AVAILABLE:
         api_router.include_router(cemac_crawlers_router, tags=["CEMAC Crawlers"])
+    if REGIONAL_DATA_AVAILABLE:
+        api_router.include_router(regional_data_router, tags=["Regional Data Inventory"])
     if REGIONAL_CALCULATOR_AVAILABLE:
         api_router.include_router(regional_calculator_router, tags=["Regional Calculator"])
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
