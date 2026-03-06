@@ -1608,3 +1608,277 @@ class TestAllAfricaFormalities:
                 f"COD/{cat}/ch{ch}: OCCDECL not in {codes}"
             assert codes[-1] == "OCCDECL", \
                 f"COD/{cat}/ch{ch}: OCCDECL should be last, got {codes[-1]}"
+
+    # ---- Para-fiscal analogue systems (NGA FORMM, EGY GOEIC, ETH ETHPERMIT, CEMAC ECTN) ----
+
+    def test_para_fiscal_levies_module_imports_cleanly(self):
+        """etl/para_fiscal_levies.py must import without errors."""
+        from etl.para_fiscal_levies import (
+            LEVY_DESCRIPTIONS,
+            COUNTRY_PARA_FISCAL_FORMALITIES,
+            enrich_observation,
+            get_para_fiscal_formalities,
+        )
+        assert LEVY_DESCRIPTIONS
+        assert COUNTRY_PARA_FISCAL_FORMALITIES
+        assert callable(enrich_observation)
+        assert callable(get_para_fiscal_formalities)
+
+    def test_levy_descriptions_cover_key_codes(self):
+        """LEVY_DESCRIPTIONS must cover all common para-fiscal levy codes."""
+        from etl.para_fiscal_levies import LEVY_DESCRIPTIONS
+        required = {"CISS", "IDF", "RDL", "GETFUND", "NHIL",
+                    "CEDEAO", "PCC", "RS", "PCS", "PUA",
+                    "TCI", "CAC", "SUR", "PRCT", "TPI", "IE"}
+        missing = required - set(LEVY_DESCRIPTIONS.keys())
+        assert not missing, f"LEVY_DESCRIPTIONS missing codes: {missing}"
+
+    def test_enrich_observation_ciss(self):
+        """enrich_observation('CISS') must return descriptive text with legal basis."""
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("CISS")
+        assert "1%" in obs, "CISS observation should mention 1% rate"
+        assert "Nigeria" in obs, "CISS observation should mention Nigeria"
+        assert obs != "CISS", "observation should not just be the code"
+
+    def test_enrich_observation_idf(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("IDF")
+        assert "3.5" in obs, "IDF observation should mention 3.5% rate"
+        assert "Kenya" in obs or "KRA" in obs
+
+    def test_enrich_observation_unknown_returns_code(self):
+        from etl.para_fiscal_levies import enrich_observation
+        obs = enrich_observation("UNKNOWNCODE")
+        assert obs == "UNKNOWNCODE"
+
+    def test_nga_all_lines_have_formm(self):
+        """Every NGA tariff line must carry FORMM (CBN Form M pre-import authorization)."""
+        lines = self._load("NGA")
+        assert lines
+        missing = [
+            l["hs6"] for l in lines
+            if not any(f["code"] == "FORMM" for f in l.get("administrative_formalities", []))
+        ]
+        assert not missing, f"NGA: {len(missing)} lines missing FORMM — first 5: {missing[:5]}"
+
+    def test_nga_formm_authority_is_cbn(self):
+        """NGA FORMM must reference the Central Bank of Nigeria."""
+        lines = self._load("NGA")
+        for l in lines[:20]:
+            for fm in l.get("administrative_formalities", []):
+                if fm["code"] == "FORMM":
+                    assert "CBN" in fm["authority_en"] or "Central Bank" in fm["authority_en"], \
+                        f"NGA FORMM authority should reference CBN: {fm['authority_en']}"
+                    assert fm["is_mandatory"] is True
+                    break
+
+    def test_nga_formm_from_get_formalities(self):
+        """get_formalities_for_line('NGA', ...) always produces FORMM for all buckets."""
+        from etl.africa_formalities import get_formalities_for_line
+        for cat, ch in [("livestock", "01"), ("pharmaceuticals", "30"),
+                         ("vehicles", "87"), ("general", "84"),
+                         ("hydrocarbons", "27"), ("arms", "93")]:
+            forms = get_formalities_for_line("NGA", cat, ch)
+            codes = [f["code"] for f in forms]
+            assert "FORMM" in codes, f"NGA/{cat}/ch{ch}: FORMM not in {codes}"
+
+    def test_nga_taxes_ciss_has_proper_observation(self):
+        """NGA taxes_detail CISS entry must have a descriptive observation (not empty)."""
+        lines = self._load("NGA")
+        for l in lines:
+            for tx in l.get("taxes_detail", []):
+                if tx.get("tax") == "CISS":
+                    obs = tx.get("observation", "")
+                    assert obs and obs != "CISS", \
+                        f"NGA CISS observation should be descriptive, got: '{obs}'"
+                    assert "1%" in obs or "CISS" in obs, \
+                        f"NGA CISS observation should describe the levy"
+                    break
+            else:
+                continue
+            break
+
+    def test_nga_other_taxes_rate_reflects_para_fiscal(self):
+        """NGA other_taxes_rate must reflect CISS + CEDEAO sum (≥ 1.0%)."""
+        lines = self._load("NGA")
+        for l in lines:
+            rate = l.get("other_taxes_rate", 0.0)
+            if rate > 0:
+                assert rate >= 1.0, \
+                    f"NGA other_taxes_rate should be ≥ 1.0 (CISS 1%), got {rate}"
+                break
+
+    def test_egy_manufactured_lines_have_goeic(self):
+        """EGY manufactured goods lines (ch84-87) must carry GOEIC."""
+        lines = self._load("EGY")
+        manufactured = [l for l in lines if l.get("chapter") in ("84", "85", "87")]
+        assert manufactured
+        for l in manufactured[:5]:
+            codes = {f["code"] for f in l.get("administrative_formalities", [])}
+            assert "GOEIC" in codes, \
+                f"EGY/ch{l['chapter']}/{l['hs6']}: missing GOEIC inspection cert"
+
+    def test_egy_raw_animal_lines_no_goeic(self):
+        """EGY ch01 (live animals) must NOT carry GOEIC."""
+        lines = self._load("EGY")
+        ch01 = [l for l in lines if l.get("chapter") == "01"]
+        assert ch01
+        for l in ch01[:5]:
+            codes = {f["code"] for f in l.get("administrative_formalities", [])}
+            assert "GOEIC" not in codes, \
+                f"EGY/ch01/{l['hs6']}: GOEIC should not apply to live animals"
+
+    def test_egy_crude_oil_no_goeic(self):
+        """EGY ch27 (crude oil/gas) must NOT carry GOEIC."""
+        lines = self._load("EGY")
+        ch27 = [l for l in lines if l.get("chapter") == "27"]
+        if ch27:
+            for l in ch27[:3]:
+                codes = {f["code"] for f in l.get("administrative_formalities", [])}
+                assert "GOEIC" not in codes, \
+                    f"EGY/ch27/{l['hs6']}: GOEIC should not apply to crude oil"
+
+    def test_egy_goeic_authority_is_goeic(self):
+        """EGY GOEIC formality must reference GOEIC and Decree 991/2015."""
+        lines = self._load("EGY")
+        for l in lines:
+            for fm in l.get("administrative_formalities", []):
+                if fm["code"] == "GOEIC":
+                    assert "GOEIC" in fm["authority_en"], \
+                        f"EGY GOEIC authority must mention GOEIC: {fm['authority_en']}"
+                    assert fm["is_mandatory"] is True
+                    break
+            else:
+                continue
+            break
+
+    def test_eth_manufactured_lines_have_ethpermit(self):
+        """ETH vehicles/machinery lines (ch87) must carry ETHPERMIT."""
+        lines = self._load("ETH")
+        ch87 = [l for l in lines if l.get("chapter") == "87"]
+        assert ch87
+        for l in ch87[:5]:
+            codes = {f["code"] for f in l.get("administrative_formalities", [])}
+            assert "ETHPERMIT" in codes, \
+                f"ETH/ch87/{l['hs6']}: missing ETHPERMIT (Ministry of Trade permit)"
+
+    def test_eth_raw_animal_lines_no_ethpermit(self):
+        """ETH ch01 (live animals) must NOT carry ETHPERMIT."""
+        lines = self._load("ETH")
+        ch01 = [l for l in lines if l.get("chapter") == "01"]
+        assert ch01
+        for l in ch01[:5]:
+            codes = {f["code"] for f in l.get("administrative_formalities", [])}
+            assert "ETHPERMIT" not in codes, \
+                f"ETH/ch01/{l['hs6']}: ETHPERMIT should not apply to live animals"
+
+    def test_eth_processed_food_has_ethpermit(self):
+        """ETH processed food (ch16 — meat preparations) must carry ETHPERMIT."""
+        lines = self._load("ETH")
+        ch16 = [l for l in lines if l.get("chapter") == "16"]
+        assert ch16, "ETH should have ch16 lines (processed meat/fish preparations)"
+        for l in ch16[:3]:
+            codes = {f["code"] for f in l.get("administrative_formalities", [])}
+            assert "ETHPERMIT" in codes, \
+                f"ETH/ch16/{l['hs6']}: ETHPERMIT should apply to processed food"
+
+    def test_cemac_countries_have_ectn(self):
+        """All 6 CEMAC countries must have ECTN on every tariff line."""
+        cemac = ["CMR", "CAF", "COG", "GAB", "GNQ", "TCD"]
+        for cc in cemac:
+            lines = self._load(cc)
+            assert lines
+            missing = [
+                l["hs6"] for l in lines
+                if not any(f["code"] == "ECTN" for f in l.get("administrative_formalities", []))
+            ]
+            assert not missing, (
+                f"{cc}: {len(missing)} lines missing ECTN — first 5: {missing[:5]}"
+            )
+
+    def test_cemac_ectn_authority_is_national_shippers_council(self):
+        """CEMAC ECTN formality must reference the national shippers council."""
+        for cc in ["CMR", "CAF", "COG", "GAB", "GNQ", "TCD"]:
+            lines = self._load(cc)
+            for l in lines[:10]:
+                for fm in l.get("administrative_formalities", []):
+                    if fm["code"] == "ECTN":
+                        assert "Chargeurs" in fm["authority_fr"] or "Shippers" in fm["authority_en"], \
+                            f"{cc} ECTN authority should reference Shippers Council: {fm['authority_fr']}"
+                        assert fm["is_mandatory"] is True
+                        break
+
+    def test_non_cemac_no_ectn(self):
+        """Non-CEMAC countries must NOT have ECTN."""
+        for cc in ["NGA", "KEN", "ZAF", "GHA", "ETH", "SEN", "BEN"]:
+            lines = self._load(cc)
+            ectn_lines = [
+                l["hs6"] for l in lines
+                if any(f["code"] == "ECTN" for f in l.get("administrative_formalities", []))
+            ]
+            assert not ectn_lines, f"{cc}: should NOT have ECTN, found in {len(ectn_lines)} lines"
+
+    def test_nga_not_in_cemac_ectn(self):
+        """NGA gets FORMM (not ECTN)."""
+        from etl.africa_formalities import get_formalities_for_line
+        forms = get_formalities_for_line("NGA", "general", "84")
+        codes = [f["code"] for f in forms]
+        assert "FORMM" in codes
+        assert "ECTN" not in codes
+
+    def test_ken_idf_observation_descriptive(self):
+        """KEN taxes_detail IDF must have a descriptive observation."""
+        lines = self._load("KEN")
+        for l in lines:
+            for tx in l.get("taxes_detail", []):
+                if tx.get("tax") == "IDF":
+                    obs = tx.get("observation", "")
+                    assert obs and obs != "IDF", f"KEN IDF observation should be descriptive, got '{obs}'"
+                    assert "3.5" in obs or "Import Declaration" in obs
+                    break
+            else:
+                continue
+            break
+
+    def test_gha_getfund_observation_descriptive(self):
+        """GHA taxes_detail GETFUND and NHIL must have descriptive observations."""
+        lines = self._load("GHA")
+        for l in lines:
+            taxes = {tx["tax"]: tx["observation"] for tx in l.get("taxes_detail", [])}
+            if "GETFUND" in taxes:
+                obs = taxes["GETFUND"]
+                assert obs and obs != "GETFUND", f"GHA GETFUND observation should be descriptive"
+                assert "Ghana" in obs or "Education" in obs or "2.5" in obs
+            if "NHIL" in taxes:
+                obs = taxes["NHIL"]
+                assert obs and obs != "NHIL", f"GHA NHIL observation should be descriptive"
+                assert "Health" in obs or "2.5" in obs
+            if "GETFUND" in taxes:  # only check when we found the relevant taxes
+                break
+
+    def test_nga_other_taxes_rate_non_zero(self):
+        """NGA other_taxes_rate must be > 0 (has CISS 1% + CEDEAO 1%)."""
+        lines = self._load("NGA")
+        zero_count = sum(1 for l in lines if l.get("other_taxes_rate", 0) == 0)
+        assert zero_count == 0, \
+            f"NGA: {zero_count} lines have other_taxes_rate=0 despite CISS/CEDEAO levies"
+
+    def test_gha_other_taxes_rate_reflects_getfund_nhil(self):
+        """GHA other_taxes_rate must reflect GETFUND 2.5% + NHIL 2.5% + CEDEAO 1% = ~6%."""
+        lines = self._load("GHA")
+        for l in lines:
+            rate = l.get("other_taxes_rate", 0)
+            if rate > 0:
+                assert rate >= 5.0, f"GHA other_taxes_rate expected ≥5% (GETFUND+NHIL+CEDEAO), got {rate}"
+                break
+
+    def test_para_fiscal_get_formalities_all_buckets_nga(self):
+        """get_para_fiscal_formalities for NGA always returns FORMM regardless of bucket."""
+        from etl.para_fiscal_levies import get_para_fiscal_formalities
+        for bucket, ch in [("general", "84"), ("animal_products", "01"),
+                             ("pharmaceuticals", "30"), ("hydrocarbons", "27"),
+                             ("arms_security", "93")]:
+            extras = get_para_fiscal_formalities("NGA", bucket, ch)
+            codes = [f["code"] for f in extras]
+            assert "FORMM" in codes, f"NGA/{bucket}/ch{ch}: FORMM not in {codes}"

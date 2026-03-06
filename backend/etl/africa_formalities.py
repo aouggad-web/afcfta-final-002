@@ -103,16 +103,27 @@ Regulatory document code scheme (UNCTAD ASYCUDA-compatible mnemonic codes):
   AGRIINPUT Agricultural Inputs (fertilizers/pesticides) Authorization
   ARMAUTH  Arms / Explosives / Security Equipment Authorization
   OCCDECL  OCC Conformité + Redevance OCC (DRC only — all imports; Décret 090-0012/1990)
+  FORMM    Form M — CBN Pre-Import Authorization (Nigeria only — all commercial imports)
+  GOEIC    GOEIC Import Inspection Certificate (Egypt — manufactured/industrial goods)
+  ETHPERMIT Ethiopia Import Trade Permit (Ethiopia — consumer/manufactured goods)
+  ECTN     Electronic Cargo Tracking Note / BSC (CEMAC countries — maritime freight)
 
 These codes align with UNCTAD NTM classification:
   SPS A/B → VETCERT / PHYTOCERT
   TBT B/C → STDCERT
   CITES   → VETCERT (wildlife)
   NTM E   → PHARMAUTH / ENVDECL / ENERGYAUTH / ARMAUTH / AGRIINPUT
-  COD-specific: OCCDECL added to every import line (OCC universal mandate)
+  Country-specific universal mandates (analogous to DRC OCC):
+    COD  → OCCDECL (all imports — Redevance OCC 1.5% CIF)
+    NGA  → FORMM   (all commercial imports — CBN Form M)
+    EGY  → GOEIC   (manufactured goods — GOEIC Decree 991/2015)
+    ETH  → ETHPERMIT (consumer/manufactured goods — MoTRI Proc. 980/2016)
+    CEMAC → ECTN   (maritime freight — BSC/CNCC)
 
 Last updated: 2025
 """
+
+from etl.para_fiscal_levies import get_para_fiscal_formalities
 
 # =============================================================================
 # COUNTRY-SPECIFIC REGULATORY AUTHORITIES
@@ -142,6 +153,9 @@ COUNTRY_AUTHORITIES = {
         "energy":       "Egyptian General Petroleum Corporation (EGPC) / Ministry of Petroleum",
         "interior":     "Ministry of Interior",
         "agri_inputs":  "GAPQ / Central Administration of Pesticides — Ministry of Agriculture",
+        # GOEIC: mandatory import inspection for manufactured/industrial goods.
+        # Legal basis: Law 118/1975; Ministerial Decrees 991/2015 & 1267/2015; Decree 43/2016.
+        "goeic":        "Organisation Générale du Contrôle des Exportations et Importations (GOEIC) — Ministère du Commerce et de l'Industrie d'Égypte",
     },
     "LBY": {
         "customs":      "Libyan Customs Authority — Ministry of Finance (GNU)",
@@ -320,6 +334,10 @@ COUNTRY_AUTHORITIES = {
         "energy":       "Nigerian National Petroleum Corporation (NNPC) / DPR (Dept of Petroleum Resources)",
         "interior":     "Nigeria Police Force / Ministry of Interior",
         "agri_inputs":  "NAQS / National Fertiliser Quality Control (NFQC) — FMARD",
+        # Form M: mandatory pre-import authorization for all commercial imports via CBN-authorized banks.
+        # Legal basis: CBN Act Cap C4 LFN 2004; FOREX (Monitoring) Act Cap F34 LFN 2004.
+        # CISS (1% CIF) is collected by NCS via same banks — Finance (Misc.) Act 2003.
+        "form_m":       "Banque Centrale du Nigeria (CBN) — Banques Agréées (Authorized Dealer Banks)",
     },
     "SEN": {
         "customs":      "Direction Générale des Douanes et Droits Indirects (DGDDI) — Sénégal",
@@ -366,6 +384,7 @@ COUNTRY_AUTHORITIES = {
         "energy":       "Société de Patrimoine des Eaux et Électricité (SODECA) / Ministère des Mines",
         "interior":     "Ministère de l'Intérieur et de la Sécurité Publique",
         "agri_inputs":  "Service de la Protection des Végétaux / Ministère de l'Agriculture",
+        "ectn":         "Conseil Centrafricain des Chargeurs (CCC) / Direction Générale des Douanes (DGD-CF)",
     },
     "CMR": {
         "customs":      "Direction Générale des Douanes (DGD) — Cameroun — Loi 2003/011",
@@ -377,6 +396,9 @@ COUNTRY_AUTHORITIES = {
         "energy":       "Société Nationale des Hydrocarbures (SNH) / TRADEX",
         "interior":     "Ministère de l'Administration Territoriale (MINAT)",
         "agri_inputs":  "DPV — MINADER / Comité de Gestion des Pesticides (MINRESI)",
+        # ECTN/BSC: Electronic Cargo Tracking Note mandatory for all maritime freight.
+        # Issued by CNCC (Conseil National des Chargeurs du Cameroun) per MINFI arrêté.
+        "ectn":         "Conseil National des Chargeurs du Cameroun (CNCC) / Direction Générale des Douanes (DGD-CM)",
     },
     "COG": {
         "customs":      "Direction Générale des Douanes (DGD) — République du Congo",
@@ -388,6 +410,7 @@ COUNTRY_AUTHORITIES = {
         "energy":       "Société Nationale des Pétroles du Congo (SNPC)",
         "interior":     "Ministère de l'Intérieur et de la Décentralisation",
         "agri_inputs":  "Direction de l'Agriculture — Service Phytosanitaire",
+        "ectn":         "Conseil Congolais des Chargeurs (CCC) / Direction Générale des Douanes (DGD-CG)",
     },
     "GAB": {
         "customs":      "Direction Générale des Douanes (DGD) — Gabon",
@@ -399,6 +422,7 @@ COUNTRY_AUTHORITIES = {
         "energy":       "Société Nationale des Pétroles du Gabon (GAPCO) / GABON OIL",
         "interior":     "Ministère de l'Intérieur",
         "agri_inputs":  "Direction de l'Agriculture / CNAMGS — homologation intrants",
+        "ectn":         "Conseil Gabonais des Chargeurs (CGC) / Direction Générale des Douanes (DGD-GA)",
     },
     "GNQ": {
         "customs":      "Dirección General de Aduanas (DGA) — Ministerio de Finanzas, Guinea Ecuatorial",
@@ -410,6 +434,7 @@ COUNTRY_AUTHORITIES = {
         "energy":       "Ministerio de Minas e Hidrocarburos / GEPetrol",
         "interior":     "Ministerio del Interior y Corporaciones Locales",
         "agri_inputs":  "Dirección de Agricultura — Sanidad Vegetal",
+        "ectn":         "Consejo Nacional de Cargadores (CNC-GQ) / Dirección General de Aduanas (DGA-GQ)",
     },
     "TCD": {
         "customs":      "Direction Générale des Douanes (DGD) — République du Tchad",
@@ -421,6 +446,7 @@ COUNTRY_AUTHORITIES = {
         "energy":       "SONACOH (Société Nationale des Combustibles) / COTCO",
         "interior":     "Ministère de la Sécurité Publique",
         "agri_inputs":  "Direction des Intrants Agricoles — Ministère de l'Agriculture",
+        "ectn":         "Conseil Tchadien des Chargeurs (CTC) / Direction Générale des Douanes (DGD-TD) — transit via Douala",
     },
 
     # ── EAC ───────────────────────────────────────────────────────────────────
@@ -680,6 +706,9 @@ COUNTRY_AUTHORITIES = {
         "energy":       "Ethiopian Petroleum Supply Enterprise (EPSE) / EEP (Electric Power)",
         "interior":     "Ministry of Peace Ethiopia",
         "agri_inputs":  "Plant Health / Pesticides Registration Directorate — Ministry of Agriculture",
+        # Import Trade Permit: required for consumer, manufactured and strategic goods.
+        # Legal basis: Commercial Code of Ethiopia; Proclamation 980/2016 (Trade Competition & Consumer Protection).
+        "trade_permit": "Ministère du Commerce et de l'Intégration Régionale d'Éthiopie (MoTRI) — Proclamation 980/2016",
     },
     "SOM": {
         "customs":      "Federal Ministry of Finance — Customs Authority, Federal Republic of Somalia",
@@ -1190,5 +1219,10 @@ def get_formalities_for_line(country_iso3: str, category: str, chapter: str) -> 
                 "is_mandatory": True,
             }
         )
+
+    # Para-fiscal formality injection (NGA Form M, EGY GOEIC, ETH Import Permit, CEMAC ECTN)
+    # Delegates to etl/para_fiscal_levies.py which documents the legal basis for each country.
+    para_fiscal = get_para_fiscal_formalities(country_iso3, bucket, ch)
+    formalities.extend(para_fiscal)
 
     return formalities
