@@ -42,6 +42,10 @@ CEMAC (using CEMAC TEC HS8)
 
 EAC (using EAC CET HS8)
   BDI  Office Burundais des Recettes (OBR) / BUFMAR (pharma) / MINAGRIE (agri)
+  COD  Direction Générale des Douanes et Accises (DGDA) — Loi 17/001 /
+       OCC (Office Congolais de Contrôle — Décret 090-0012/1990; Certificat de
+       Conformité OCC + Redevance OCC 1.5 % CIF applicable à TOUTES importations) /
+       OV (Office Vétérinaire) / DPV (phyto) / FPIP (pharma) / ACE (environment)
   KEN  Kenya Revenue Authority / Kenya Customs Service (KCS) / KEBS (standards) /
        PPB (pharma) / KEPHIS (plant health) / DVS (vet) — KEBS Act Cap 496; PPB Act 2017
   RWA  Rwanda Revenue Authority (RRA) / Rwanda Customs / RDB / NAEB /
@@ -98,12 +102,14 @@ Regulatory document code scheme (UNCTAD ASYCUDA-compatible mnemonic codes):
   ENERGYAUTH Energy / Hydrocarbons Import Authorization
   AGRIINPUT Agricultural Inputs (fertilizers/pesticides) Authorization
   ARMAUTH  Arms / Explosives / Security Equipment Authorization
+  OCCDECL  OCC Conformité + Redevance OCC (DRC only — all imports; Décret 090-0012/1990)
 
 These codes align with UNCTAD NTM classification:
   SPS A/B → VETCERT / PHYTOCERT
   TBT B/C → STDCERT
   CITES   → VETCERT (wildlife)
   NTM E   → PHARMAUTH / ENVDECL / ENERGYAUTH / ARMAUTH / AGRIINPUT
+  COD-specific: OCCDECL added to every import line (OCC universal mandate)
 
 Last updated: 2025
 """
@@ -713,11 +719,16 @@ COUNTRY_AUTHORITIES = {
         "veterinary":   "Office Vétérinaire (OV) — Ministère de l'Agriculture",
         "phytosanitary":"Direction de la Protection des Végétaux (DPV) — Ministère de l'Agriculture",
         "health":       "Fonds de Promotion de l'Industrie Pharmaceutique (FPIP) / DSAMF",
-        "standards":    "Office Congolais de Contrôle (OCC)",
+        "standards":    "Office Congolais de Contrôle (OCC) — Décret 090-0012 du 31 janvier 1990",
         "environment":  "Agence Congolaise de l'Environnement (ACE)",
         "energy":       "Société Nationale d'Electricité (SNEL) / Ministère des Hydrocarbures",
         "interior":     "Ministère de l'Intérieur, Sécurité, Décentralisation et Affaires Coutumières",
         "agri_inputs":  "Direction de la Protection des Végétaux / INERA (Institut National de l'Environnement)",
+        # OCC is a cross-cutting authority in DRC: its Certificat de Conformité and
+        # Redevance OCC (1.5 % of CIF value) apply to ALL imports regardless of category.
+        # Legal basis: Décret 090-0012 du 31/01/1990 portant création de l'OCC, modifié
+        # par les Décrets 09/11 du 24/04/2009 et 18/041 du 24/09/2018.
+        "occ":          "Office Congolais de Contrôle (OCC) — Décret 090-0012 du 31/01/1990",
     },
 }
 
@@ -1153,4 +1164,31 @@ def get_formalities_for_line(country_iso3: str, category: str, chapter: str) -> 
         bucket = _chapter_to_bucket(ch)
 
     builder = _BUCKET_BUILDERS.get(bucket, _b_general)
-    return builder(auth)
+    formalities = builder(auth)
+
+    # COD (DRC) — OCC universal injection
+    # The Office Congolais de Contrôle (OCC) issues a Certificat de Conformité
+    # and levies a Redevance OCC (1.5 % of CIF value) on ALL imports into the
+    # DRC, regardless of product category.
+    # Source: Décret 090-0012 du 31/01/1990, Décret 09/11 du 24/04/2009,
+    #         Décret 18/041 du 24/09/2018; DGDA circulaire no. 003/DGDA/2019.
+    if country_iso3 == "COD":
+        occ_authority = auth.get("occ", "Office Congolais de Contrôle (OCC)")
+        formalities.append(
+            {
+                "code": "OCCDECL",
+                "document_fr": (
+                    "Certificat de Conformité OCC + Redevance OCC "
+                    "(1,5 % CIF — obligatoire pour toutes importations en RDC)"
+                ),
+                "document_en": (
+                    "OCC Conformity Certificate + OCC Special Levy "
+                    "(1.5 % of CIF value — mandatory for all imports into DRC)"
+                ),
+                "authority_fr": occ_authority,
+                "authority_en": occ_authority,
+                "is_mandatory": True,
+            }
+        )
+
+    return formalities

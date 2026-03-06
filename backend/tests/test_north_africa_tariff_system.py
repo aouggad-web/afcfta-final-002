@@ -1479,3 +1479,132 @@ class TestAllAfricaFormalities:
         if forms:
             codes = {f["code"] for f in forms}
             assert "PHYTOCERT" in codes, f"KEN/070190: expected PHYTOCERT, got {sorted(codes)}"
+
+    # ---- DRC / COD — OCC-specific tests ----
+
+    def test_cod_occ_authority_has_dedicated_role(self):
+        """COD authority entry must have an 'occ' key referencing OCC."""
+        from etl.africa_formalities import COUNTRY_AUTHORITIES
+        auth = COUNTRY_AUTHORITIES.get("COD", {})
+        assert "occ" in auth, "COD authority entry must have an 'occ' role"
+        assert "OCC" in auth["occ"], f"COD occ role must reference OCC, got: {auth['occ']}"
+        assert "Décret" in auth["occ"] or "Decret" in auth["occ"], \
+            "COD occ authority should include legal citation (Décret)"
+
+    def test_cod_all_lines_have_occdecl(self):
+        """Every COD tariff line must carry OCCDECL (OCC universal mandate)."""
+        lines = self._load("COD")
+        assert lines, "COD: no tariff lines found"
+        missing = [
+            l["hs6"]
+            for l in lines
+            if not any(f["code"] == "OCCDECL" for f in l.get("administrative_formalities", []))
+        ]
+        assert not missing, (
+            f"COD: {len(missing)} lines missing OCCDECL — "
+            f"first 5: {missing[:5]}"
+        )
+
+    def test_cod_occdecl_has_correct_authority(self):
+        """OCCDECL entries in COD must reference OCC and the Décret."""
+        lines = self._load("COD")
+        for l in lines[:20]:
+            for fm in l.get("administrative_formalities", []):
+                if fm["code"] == "OCCDECL":
+                    assert "OCC" in fm["authority_fr"], \
+                        f"COD OCCDECL authority_fr should mention OCC: {fm['authority_fr']}"
+                    assert fm["is_mandatory"] is True, \
+                        "COD OCCDECL must be mandatory"
+                    assert "1,5" in fm["document_fr"] or "1.5" in fm["document_en"], \
+                        "OCCDECL should mention the 1.5% CIF redevance rate"
+                    break
+
+    def test_cod_occdecl_is_always_last_formality(self):
+        """OCCDECL should be the last formality in every COD line (injected after bucket docs)."""
+        lines = self._load("COD")
+        for l in lines[:50]:
+            forms = l.get("administrative_formalities", [])
+            if forms:
+                assert forms[-1]["code"] == "OCCDECL", (
+                    f"COD {l['hs6']}: OCCDECL should be the last doc, "
+                    f"got {forms[-1]['code']}"
+                )
+
+    def test_cod_pharma_lines_have_both_pharmauth_and_occdecl(self):
+        """COD pharmaceutical lines (ch30) must have PHARMAUTH *and* OCCDECL."""
+        lines = self._load("COD")
+        ch30 = [l for l in lines if l.get("chapter") == "30"]
+        assert ch30, "COD: no chapter 30 lines found"
+        for l in ch30:
+            codes = {f["code"] for f in l.get("administrative_formalities", [])}
+            assert "PHARMAUTH" in codes, f"COD/ch30/{l['hs6']}: missing PHARMAUTH"
+            assert "OCCDECL" in codes, f"COD/ch30/{l['hs6']}: missing OCCDECL"
+
+    def test_cod_animal_lines_have_vetcert_and_occdecl(self):
+        """COD animal product lines must have VETCERT *and* OCCDECL."""
+        lines = self._load("COD")
+        animal = [l for l in lines if l.get("chapter") in ("01", "02", "03", "04", "05")]
+        assert animal, "COD: no animal product lines found"
+        for l in animal[:5]:
+            codes = {f["code"] for f in l.get("administrative_formalities", [])}
+            assert "VETCERT" in codes, f"COD/{l['chapter']}/{l['hs6']}: missing VETCERT"
+            assert "OCCDECL" in codes, f"COD/{l['chapter']}/{l['hs6']}: missing OCCDECL"
+
+    def test_cod_vehicle_lines_have_stdcert_and_occdecl(self):
+        """COD vehicle lines (ch87) must have STDCERT (from OCC) *and* OCCDECL."""
+        lines = self._load("COD")
+        vehicles = [l for l in lines if l.get("chapter") == "87"]
+        assert vehicles, "COD: no chapter 87 (vehicle) lines found"
+        for l in vehicles[:5]:
+            codes = {f["code"] for f in l.get("administrative_formalities", [])}
+            assert "STDCERT" in codes, f"COD/ch87/{l['hs6']}: missing STDCERT"
+            assert "OCCDECL" in codes, f"COD/ch87/{l['hs6']}: missing OCCDECL"
+
+    def test_cod_general_lines_have_impdec_and_occdecl(self):
+        """COD general (mineral) lines must have at minimum IMPDEC and OCCDECL."""
+        lines = self._load("COD")
+        # ch26 = ores — DRC's most important export category → imports of equipment etc.
+        # ch72 = iron and steel = general manufactured goods
+        general_chs = [l for l in lines if l.get("chapter") in ("26", "72")]
+        if not general_chs:
+            general_chs = lines[:5]
+        for l in general_chs[:5]:
+            codes = {f["code"] for f in l.get("administrative_formalities", [])}
+            assert "IMPDEC" in codes, f"COD/{l['hs6']}: missing IMPDEC"
+            assert "OCCDECL" in codes, f"COD/{l['hs6']}: missing OCCDECL"
+
+    def test_other_countries_do_not_have_occdecl(self):
+        """No country other than COD should have OCCDECL in its tariff data."""
+        other_countries = ["NGA", "KEN", "ZAF", "ETH", "CMR", "GHA", "SEN", "TZA"]
+        for cc in other_countries:
+            lines = self._load(cc)
+            occ_lines = [
+                l["hs6"]
+                for l in lines
+                if any(f["code"] == "OCCDECL" for f in l.get("administrative_formalities", []))
+            ]
+            assert not occ_lines, (
+                f"{cc}: should NOT have OCCDECL, but found it in {len(occ_lines)} lines"
+            )
+
+    def test_cod_occdecl_from_get_formalities_for_line(self):
+        """get_formalities_for_line for COD always injects OCCDECL regardless of bucket."""
+        from etl.africa_formalities import get_formalities_for_line
+        test_cases = [
+            ("livestock",       "01"),
+            ("food",            "07"),
+            ("pharmaceuticals", "30"),
+            ("vehicles",        "87"),
+            ("general",         "26"),
+            ("chemicals",       "28"),
+            ("hydrocarbons",    "27"),
+            ("arms",            "93"),
+            ("fertilizers",     "31"),
+        ]
+        for cat, ch in test_cases:
+            forms = get_formalities_for_line("COD", cat, ch)
+            codes = [f["code"] for f in forms]
+            assert "OCCDECL" in codes, \
+                f"COD/{cat}/ch{ch}: OCCDECL not in {codes}"
+            assert codes[-1] == "OCCDECL", \
+                f"COD/{cat}/ch{ch}: OCCDECL should be last, got {codes[-1]}"
