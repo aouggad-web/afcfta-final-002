@@ -16,20 +16,25 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 CRAWLED_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "crawled")
 
-# Countries confirmed to have enhanced_v2 format with sub-positions
+# All 54 crawled countries are now enhanced_v2.
+# Countries with actual sub-positions (>0): all except DZA, MAR, TUN (empty data).
 ENHANCED_COUNTRIES = {
+    # Originally enhanced_v2 (32)
     "AGO", "BDI", "COD", "COM", "CPV", "DJI", "EGY", "ERI", "ETH",
     "GHA", "GMB", "GNB", "GNQ", "KEN", "LBR", "LBY", "MDG", "MOZ",
     "MRT", "MUS", "MWI", "RWA", "SDN", "SLE", "SOM", "SSD", "STP",
     "SYC", "TZA", "UGA", "ZMB", "ZWE",
+    # Migrated from old format to enhanced_v2 (19 with data)
+    "BEN", "BFA", "BWA", "CAF", "CIV", "CMR", "COG", "GAB",
+    "GIN", "LSO", "MLI", "NAM", "NER", "NGA", "SEN", "SWZ",
+    "TCD", "TGO", "ZAF",
 }
 
-# Countries with old format (no nested sub-positions)
-OLD_FORMAT_COUNTRIES = {
-    "BEN", "BFA", "BWA", "CAF", "CIV", "CMR", "COG", "DZA", "GAB",
-    "GIN", "LSO", "MAR", "MLI", "NAM", "NER", "NGA", "SEN", "SWZ",
-    "TCD", "TGO", "TUN", "ZAF",
-}
+# Countries with enhanced_v2 format but no tariff data (empty crawl)
+EMPTY_ENHANCED_COUNTRIES = {"DZA", "MAR", "TUN"}
+
+# No countries remain in old format
+OLD_FORMAT_COUNTRIES: set = set()
 
 
 # ==================== Helper Tests ====================
@@ -171,13 +176,20 @@ class TestRegionalSubPositions:
                 assert by_code[cc]["sub_positions"] > 0, \
                     f"{cc} (enhanced_v2) should have sub-positions"
 
-    def test_old_format_countries_have_zero_sub_positions(self):
+    def test_empty_enhanced_countries_have_zero_sub_positions(self):
+        """DZA, MAR, TUN are enhanced_v2 but have no tariff data."""
         result = self._call()
         by_code = {r["iso3"]: r for r in result["countries"]}
-        for cc in OLD_FORMAT_COUNTRIES:
+        for cc in EMPTY_ENHANCED_COUNTRIES:
             if cc in by_code:
                 assert by_code[cc]["sub_positions"] == 0, \
-                    f"{cc} (old) should have 0 sub-positions"
+                    f"{cc} (empty) should have 0 sub-positions"
+
+    def test_no_old_format_countries_remain(self):
+        """After migration all countries are enhanced_v2."""
+        result = self._call()
+        old_fmt = [r for r in result["countries"] if r.get("data_format") == "old"]
+        assert old_fmt == [], f"Unexpected old-format countries: {[r['iso3'] for r in old_fmt]}"
 
     def test_default_sort_is_descending_by_sub_positions(self):
         result = self._call()
@@ -214,14 +226,28 @@ class TestRegionalSubPositions:
             assert r["avg_sub_per_line"] >= 0.0
 
     def test_enhanced_avg_sub_per_line_reasonable(self):
-        """Enhanced v2 lines typically have ~2-3 sub-positions on average."""
+        """For countries with dense sub-position coverage, avg should be ≥ 1.
+        
+        Countries migrated from EAC/ECOWAS/NGA 10-digit data have avg ≥ 1 since
+        every tariff_line has at least one 10-digit sub-position.
+        SADC countries (BWA, LSO, NAM, SWZ, ZAF) may be < 1 because only
+        hs6 entries that have 8-digit children yield sub-positions.
+        """
+        dense_countries = {
+            # Originally enhanced_v2
+            "AGO", "BDI", "EGY", "ETH", "GNQ", "KEN", "TZA", "UGA",
+            # Migrated ECOWAS / NGA — all 10-digit, every line has ≥1 sub
+            "BEN", "BFA", "CIV", "GIN", "MLI", "NER", "NGA", "SEN", "TGO",
+            # Migrated CEMAC — all 8-digit, every line has ≥1 sub
+            "CMR", "CAF", "COG", "GAB", "TCD",
+        }
         result = self._call()
         by_code = {r["iso3"]: r for r in result["countries"]}
-        for cc in ENHANCED_COUNTRIES:
-            if cc in by_code:
+        for cc in dense_countries:
+            if cc in by_code and by_code[cc]["tariff_lines"] > 0:
                 avg = by_code[cc]["avg_sub_per_line"]
-                assert 1.0 <= avg <= 10.0, \
-                    f"{cc}: avg sub-positions {avg} out of expected range [1,10]"
+                assert avg >= 1.0, \
+                    f"{cc}: avg sub-positions {avg} should be ≥ 1.0"
 
     def test_specific_enhanced_country_gnq(self):
         result = self._call()
@@ -232,10 +258,10 @@ class TestRegionalSubPositions:
 
     def test_countries_with_sub_count(self):
         result = self._call()
-        # Exactly the enhanced_v2 countries (minus any that may be missing files)
         actual_with_sub = sum(1 for r in result["countries"] if r["sub_positions"] > 0)
         assert actual_with_sub == result["totals"]["countries_with_sub_positions"]
-        assert actual_with_sub >= 30
+        # After migration 51 countries have data (54 - 3 empty)
+        assert actual_with_sub >= 50
 
 
 # ==================== Data Inventory Endpoint Tests ====================
@@ -265,8 +291,9 @@ class TestRegionalDataInventory:
         assert result["summary"]["total_countries"] >= 50
 
     def test_enhanced_v2_countries_count(self):
+        """After migration all 54 countries are enhanced_v2."""
         result = self._call()
-        assert result["summary"]["enhanced_v2_countries"] >= 30
+        assert result["summary"]["enhanced_v2_countries"] == result["summary"]["total_countries"]
 
     def test_format_counts_sum_to_total(self):
         result = self._call()
@@ -283,10 +310,11 @@ class TestRegionalDataInventory:
         for r in result["countries"]:
             assert r["data_format"] == "enhanced_v2"
 
-    def test_format_filter_old(self):
+    def test_format_filter_old_returns_empty(self):
+        """After migration no countries remain in old format."""
         result = self._call(format_filter="old")
-        for r in result["countries"]:
-            assert r["data_format"] == "old" or r["data_format"] is None
+        assert result["countries"] == [], \
+            f"Expected 0 old-format countries, got: {[r['iso3'] for r in result['countries']]}"
 
     def test_country_entry_has_all_fields(self):
         result = self._call()

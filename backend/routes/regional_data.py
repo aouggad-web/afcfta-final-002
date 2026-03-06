@@ -85,6 +85,7 @@ def _build_country_entry(cc: str, data: Dict) -> Dict[str, Any]:
             "tariff_lines": 0,
             "sub_positions": 0,
             "lines_with_sub_positions": 0,
+            "avg_sub_per_line": 0.0,
             "chapters_covered": 0,
             "generated_at": data.get("generated_at") or data.get("extracted_at"),
         }
