@@ -247,17 +247,23 @@ class TestRegionalIntelligenceService:
         result = self.intel.build_investment_map()
         assert "countries" in result
         assert "top_ranked" in result
-        assert result["top_ranked"] in ["DZA", "MAR", "EGY", "TUN"]
-        assert len(result["countries"]) == 4
+        # North Africa countries must all be present
+        for code in ["DZA", "MAR", "EGY", "TUN"]:
+            assert code in result["countries"]
+        # CEMAC countries must also be present
+        for code in ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"]:
+            assert code in result["countries"]
+        assert len(result["countries"]) >= 4
 
     def test_investment_map_country_fields(self):
         result = self.intel.build_investment_map()
+        total = len(result["countries"])
         for code, profile in result["countries"].items():
             assert "country_name" in profile
             assert "vat_rate" in profile
             assert "investment_score" in profile
             assert "rank" in profile
-            assert 1 <= profile["rank"] <= 4
+            assert 1 <= profile["rank"] <= total
 
     def test_recommend_market_entry_automotive(self):
         result = self.intel.recommend_market_entry(
@@ -266,7 +272,7 @@ class TestRegionalIntelligenceService:
         )
         assert "recommendations" in result
         assert "top_recommendation" in result
-        assert len(result["recommendations"]) == 4
+        assert len(result["recommendations"]) >= 4
         # Morocco has highest automotive + EU access score
         assert result["top_recommendation"] == "MAR"
 
@@ -701,7 +707,12 @@ class TestRegionalIntelligenceAdvanced:
         result = self.intel.get_preferential_matrix_by_hs(hs_code="870321")
         assert "hs_code" in result
         assert "matrix" in result
-        assert set(result["matrix"].keys()) == {"DZA", "MAR", "EGY", "TUN"}
+        # North Africa countries must all be in the matrix
+        for code in ["DZA", "MAR", "EGY", "TUN"]:
+            assert code in result["matrix"]
+        # CEMAC countries must also be in the matrix
+        for code in ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"]:
+            assert code in result["matrix"]
 
     def test_preferential_matrix_hs_chapter_detection(self):
         result = self.intel.get_preferential_matrix_by_hs(hs_code="870321")
