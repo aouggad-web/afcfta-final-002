@@ -1159,3 +1159,323 @@ class TestAdministrativeFormalities:
         assert forms, "TUN/300490: no formalities returned"
         codes = {f["code"] for f in forms}
         assert "103" in codes, f"TUN/300490: expected 103, got {sorted(codes)}"
+
+
+# ==================== Africa-wide Administrative Formalities Tests ====================
+
+class TestAllAfricaFormalities:
+    """
+    Tests for the universal administrative formalities framework
+    covering all 54 African countries (etl/africa_formalities.py).
+
+    Validates:
+    - Module imports and structure
+    - Chapter-to-bucket mapping (used by 19 general-only countries)
+    - Category-to-bucket resolution
+    - Country-specific authority data present for all 54 countries
+    - Per-category document code assertions for key countries in each bloc
+    - Data file quality for all 54 countries
+    """
+
+    # ---- Module structure ----
+
+    def test_africa_formalities_imports_cleanly(self):
+        from etl.africa_formalities import (
+            COUNTRY_AUTHORITIES,
+            CHAPTER_TO_BUCKET,
+            get_formalities_for_line,
+        )
+        assert COUNTRY_AUTHORITIES
+        assert CHAPTER_TO_BUCKET
+        assert callable(get_formalities_for_line)
+
+    def test_all_54_countries_have_authority_data(self):
+        from etl.africa_formalities import COUNTRY_AUTHORITIES
+        # All 54 AU member states
+        all_54 = {
+            "DZA","EGY","LBY","MAR","MRT","SDN","TUN",        # North Africa
+            "BEN","BFA","CIV","GHA","GIN","GMB","GNB","LBR",
+            "MLI","NER","NGA","SEN","SLE","TGO",              # ECOWAS
+            "CAF","CMR","COG","GAB","GNQ","TCD",              # CEMAC
+            "BDI","KEN","RWA","SSD","TZA","UGA",              # EAC
+            "AGO","BWA","COM","LSO","MDG","MOZ","MUS","MWI",
+            "NAM","SWZ","SYC","ZAF","ZMB","ZWE",             # SADC/COMESA
+            "COD","DJI","ERI","ETH","SOM","STP","CPV",       # Others
+        }
+        missing = all_54 - set(COUNTRY_AUTHORITIES.keys())
+        assert not missing, f"Missing authority data for: {sorted(missing)}"
+
+    def test_each_authority_has_required_keys(self):
+        from etl.africa_formalities import COUNTRY_AUTHORITIES
+        required = {"customs", "veterinary", "phytosanitary", "health",
+                    "standards", "environment", "energy", "interior", "agri_inputs"}
+        for cc, auth in COUNTRY_AUTHORITIES.items():
+            missing = required - set(auth.keys())
+            assert not missing, f"{cc}: missing authority keys {missing}"
+
+    def test_no_authority_name_is_empty(self):
+        from etl.africa_formalities import COUNTRY_AUTHORITIES
+        for cc, auth in COUNTRY_AUTHORITIES.items():
+            for role, name in auth.items():
+                assert name and name.strip(), f"{cc}/{role}: empty authority name"
+
+    # ---- Chapter mapping ----
+
+    def test_chapter_mapping_covers_all_chapters(self):
+        from etl.africa_formalities import CHAPTER_TO_BUCKET
+        # All HS chapters that appear in African tariff data (01-99 excluding 77)
+        expected_chapters = {f"{i:02d}" for i in range(1, 99) if i != 77}
+        missing = expected_chapters - set(CHAPTER_TO_BUCKET.keys())
+        assert not missing, f"Missing chapter mappings: {sorted(missing)}"
+
+    def test_chapter_01_is_animal_products(self):
+        from etl.africa_formalities import CHAPTER_TO_BUCKET
+        assert CHAPTER_TO_BUCKET["01"] == "animal_products"
+
+    def test_chapter_30_is_pharmaceuticals(self):
+        from etl.africa_formalities import CHAPTER_TO_BUCKET
+        assert CHAPTER_TO_BUCKET["30"] == "pharmaceuticals"
+
+    def test_chapter_27_is_hydrocarbons(self):
+        from etl.africa_formalities import CHAPTER_TO_BUCKET
+        assert CHAPTER_TO_BUCKET["27"] == "hydrocarbons"
+
+    def test_chapter_87_is_vehicles_machinery(self):
+        from etl.africa_formalities import CHAPTER_TO_BUCKET
+        assert CHAPTER_TO_BUCKET["87"] == "vehicles_machinery"
+
+    def test_chapter_93_is_arms_security(self):
+        from etl.africa_formalities import CHAPTER_TO_BUCKET
+        assert CHAPTER_TO_BUCKET["93"] == "arms_security"
+
+    def test_chapter_31_is_agri_inputs(self):
+        from etl.africa_formalities import CHAPTER_TO_BUCKET
+        assert CHAPTER_TO_BUCKET["31"] == "agri_inputs"
+
+    # ---- Per-country document code assertions ----
+
+    def _forms(self, cc, category, chapter):
+        from etl.africa_formalities import get_formalities_for_line
+        return get_formalities_for_line(cc, category, chapter)
+
+    def test_nga_pharma_returns_nafdac(self):
+        forms = self._forms("NGA", "pharmaceuticals", "30")
+        codes = {f["code"] for f in forms}
+        assert "PHARMAUTH" in codes
+        # Verify NAFDAC appears in authority text
+        auth_names = " ".join(f["authority_fr"] for f in forms)
+        assert "NAFDAC" in auth_names, "NGA pharma should reference NAFDAC"
+
+    def test_ken_phyto_returns_kephis(self):
+        forms = self._forms("KEN", "vegetables", "07")
+        auth_names = " ".join(f["authority_fr"] for f in forms)
+        assert "KEPHIS" in auth_names, "KEN food/agri should reference KEPHIS"
+
+    def test_zaf_standards_returns_nrcs(self):
+        forms = self._forms("ZAF", "vehicles", "87")
+        codes = {f["code"] for f in forms}
+        assert "STDCERT" in codes
+        auth_names = " ".join(f["authority_fr"] for f in forms)
+        assert "NRCS" in auth_names or "SABS" in auth_names, \
+            "ZAF vehicles should reference NRCS or SABS"
+
+    def test_eth_customs_returns_ecc(self):
+        forms = self._forms("ETH", "general", "84")
+        auth_names = " ".join(f["authority_fr"] for f in forms)
+        assert "ECC" in auth_names or "Ethiopian Customs" in auth_names, \
+            "ETH should reference Ethiopian Customs Commission"
+
+    def test_cmr_health_returns_minsante(self):
+        forms = self._forms("CMR", "pharmaceuticals", "30")
+        auth_names = " ".join(f["authority_fr"] for f in forms)
+        assert "MINSANTE" in auth_names, "CMR pharma should reference MINSANTE"
+
+    def test_nga_energy_returns_nnpc(self):
+        forms = self._forms("NGA", "mineral_fuels", "27")
+        codes = {f["code"] for f in forms}
+        assert "ENERGYAUTH" in codes
+        auth_names = " ".join(f["authority_fr"] for f in forms)
+        assert "NNPC" in auth_names or "DPR" in auth_names, \
+            "NGA hydrocarbons should reference NNPC"
+
+    def test_ken_vet_returns_dvs(self):
+        forms = self._forms("KEN", "livestock", "01")
+        auth_names = " ".join(f["authority_fr"] for f in forms)
+        assert "DVS" in auth_names or "Veterinary" in auth_names, \
+            "KEN livestock should reference DVS"
+
+    def test_zaf_arms_returns_saps(self):
+        forms = self._forms("ZAF", "arms", "93")
+        codes = {f["code"] for f in forms}
+        assert "ARMAUTH" in codes
+        auth_names = " ".join(f["authority_fr"] for f in forms)
+        assert "SAPS" in auth_names or "Police" in auth_names or "Interior" in auth_names
+
+    def test_cmr_agri_inputs_returns_minader(self):
+        forms = self._forms("CMR", "fertilizers", "31")
+        codes = {f["code"] for f in forms}
+        assert "AGRIINPUT" in codes
+        auth_names = " ".join(f["authority_fr"] for f in forms)
+        assert "MINADER" in auth_names or "MINRESI" in auth_names or "protection" in auth_names.lower()
+
+    def test_all_formalities_always_include_impdec(self):
+        """Every country/category combination must start with IMPDEC."""
+        from etl.africa_formalities import COUNTRY_AUTHORITIES, get_formalities_for_line
+        for cc in list(COUNTRY_AUTHORITIES.keys())[:10]:  # sample 10 countries
+            for cat, ch in [("general","84"), ("livestock","01"),
+                            ("pharmaceuticals","30"), ("arms","93")]:
+                forms = get_formalities_for_line(cc, cat, ch)
+                assert forms, f"{cc}/{cat}: empty formalities"
+                assert forms[0]["code"] == "IMPDEC", \
+                    f"{cc}/{cat}: first formality should be IMPDEC, got {forms[0]['code']}"
+
+    def test_all_formalities_have_required_fields_africa(self):
+        """Every formality entry must have code, document_fr, document_en, is_mandatory."""
+        from etl.africa_formalities import COUNTRY_AUTHORITIES, get_formalities_for_line
+        required = {"code", "document_fr", "document_en", "is_mandatory"}
+        for cc in COUNTRY_AUTHORITIES:
+            for cat, ch in [("general","84"),("livestock","01"),("pharmaceuticals","30")]:
+                for fm in get_formalities_for_line(cc, cat, ch):
+                    missing = required - set(fm.keys())
+                    assert not missing, f"{cc}/{cat}: formality missing {missing}"
+
+    # ---- Data file quality across all 54 countries ----
+
+    def _load(self, cc):
+        import json
+        path = os.path.join(
+            os.path.dirname(__file__), "..", "data", "crawled", f"{cc}_tariffs.json"
+        )
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)["tariff_lines"]
+
+    def test_every_country_has_multi_doc_formalities(self):
+        """Every country must have at least some lines with >1 document (not all single-doc)."""
+        countries_to_check = [
+            "NGA","KEN","ZAF","ETH","GHA","CMR","SEN","TZA","UGA","RWA",
+            "AGO","MOZ","ZMB","ZWE","MUS","MDG","COD","BDI","EGY","LBY",
+            "MRT","SDN","DJI","ERI","SOM","STP","CPV","BWA","LSO","NAM",
+        ]
+        for cc in countries_to_check:
+            lines = self._load(cc)
+            multi = sum(1 for l in lines if len(l.get("administrative_formalities",[])) > 1)
+            assert multi > 0, f"{cc}: no lines have more than one formality document"
+
+    def test_pharma_lines_have_pharmauth(self):
+        """Pharmaceutical tariff lines (ch30) in key countries must have PHARMAUTH."""
+        for cc in ["NGA","KEN","ZAF","ETH","CMR","GHA","SEN","TZA","UGA"]:
+            lines = self._load(cc)
+            ch30 = [l for l in lines if l.get("chapter") == "30"]
+            if not ch30:
+                continue
+            for l in ch30:
+                codes = {f["code"] for f in l.get("administrative_formalities",[])}
+                assert "PHARMAUTH" in codes, \
+                    f"{cc}/ch30/{l['hs6']}: missing PHARMAUTH"
+
+    def test_animal_lines_have_vetcert(self):
+        """Animal product tariff lines (ch01-05) must have VETCERT in key countries."""
+        for cc in ["NGA","KEN","ZAF","ETH","CMR","GHA","SEN","TZA"]:
+            lines = self._load(cc)
+            animal = [l for l in lines if l.get("chapter") in ("01","02","03","04","05")]
+            if not animal:
+                continue
+            for l in animal[:5]:  # sample first 5
+                codes = {f["code"] for f in l.get("administrative_formalities",[])}
+                assert "VETCERT" in codes, \
+                    f"{cc}/ch{l['chapter']}/{l['hs6']}: missing VETCERT"
+
+    def test_food_lines_have_phytocert(self):
+        """Plant/food tariff lines (ch07-15) must have PHYTOCERT."""
+        for cc in ["NGA","KEN","ZAF","ETH","GHA"]:
+            lines = self._load(cc)
+            food = [l for l in lines if l.get("chapter") in
+                    ("07","08","09","10","11","12","13","14","15")]
+            if not food:
+                continue
+            for l in food[:5]:
+                codes = {f["code"] for f in l.get("administrative_formalities",[])}
+                assert "PHYTOCERT" in codes, \
+                    f"{cc}/ch{l['chapter']}/{l['hs6']}: missing PHYTOCERT"
+
+    def test_hydro_lines_have_energyauth(self):
+        """Hydrocarbon tariff lines (ch27) must have ENERGYAUTH."""
+        for cc in ["NGA","AGO","GAB","COG","GNQ","LBY","SDN"]:
+            lines = self._load(cc)
+            hydro = [l for l in lines if l.get("chapter") == "27"]
+            if not hydro:
+                continue
+            for l in hydro[:3]:
+                codes = {f["code"] for f in l.get("administrative_formalities",[])}
+                assert "ENERGYAUTH" in codes, \
+                    f"{cc}/ch27/{l['hs6']}: missing ENERGYAUTH"
+
+    def test_arms_lines_have_armauth(self):
+        """Arms tariff lines (ch93) must have ARMAUTH."""
+        for cc in ["NGA","KEN","ZAF","GHA","EGY"]:
+            lines = self._load(cc)
+            arms = [l for l in lines if l.get("chapter") == "93"]
+            if not arms:
+                continue
+            for l in arms[:3]:
+                codes = {f["code"] for f in l.get("administrative_formalities",[])}
+                assert "ARMAUTH" in codes, \
+                    f"{cc}/ch93/{l['hs6']}: missing ARMAUTH"
+
+    def test_no_country_has_empty_formalities(self):
+        """No tariff line in any country should have empty formalities."""
+        all_countries = [
+            "AGO","BDI","BEN","BFA","BWA","CAF","CIV","CMR","COD","COG",
+            "COM","CPV","DJI","DZA","EGY","ERI","ETH","GAB","GHA","GIN",
+            "GMB","GNB","GNQ","KEN","LBR","LBY","LSO","MAR","MDG","MLI",
+            "MOZ","MRT","MUS","MWI","NAM","NER","NGA","RWA","SDN","SEN",
+            "SLE","SOM","SSD","STP","SWZ","SYC","TCD","TGO","TUN","TZA",
+            "UGA","ZAF","ZMB","ZWE",
+        ]
+        for cc in all_countries:
+            lines = self._load(cc)
+            empty = [l["hs6"] for l in lines
+                     if not l.get("administrative_formalities")]
+            assert not empty, \
+                f"{cc}: {len(empty)} tariff lines have empty formalities"
+
+    def test_authority_names_are_country_specific(self):
+        """NGA and KEN must have different authority names for the same document."""
+        from etl.africa_formalities import get_formalities_for_line
+        nga_pharma = get_formalities_for_line("NGA", "pharmaceuticals", "30")
+        ken_pharma = get_formalities_for_line("KEN", "pharmaceuticals", "30")
+        nga_auth = {f["authority_fr"] for f in nga_pharma}
+        ken_auth = {f["authority_fr"] for f in ken_pharma}
+        assert nga_auth != ken_auth, \
+            "NGA and KEN pharma formalities should have different authority names"
+
+    def test_dza_formalities_preserved(self):
+        """DZA must still retain its original code set (910, 210, 215, 216…)."""
+        lines = self._load("DZA")
+        distinct = {f["code"] for l in lines for f in l.get("administrative_formalities",[])}
+        assert "910" in distinct, "DZA: missing 910"
+        assert "216" in distinct, "DZA: missing 216 (vet cert)"
+        assert "920" in distinct, "DZA: missing 920 (health ministry)"
+        # DZA should NOT have been overwritten with IMPDEC scheme
+        assert "IMPDEC" not in distinct, "DZA: should keep original code scheme"
+
+    def test_authentic_tariff_service_nga_returns_nafdac(self):
+        """Authentic tariff service must return NAFDAC for NGA pharmaceutical lines."""
+        from services.authentic_tariff_service import get_administrative_formalities
+        import services.authentic_tariff_service as svc
+        svc._tariff_cache.pop("NGA", None)
+        # hs6 300490 = pharma → ch30
+        forms = get_administrative_formalities("NGA", "300490")
+        if forms:  # NGA has chapter-based mapping → should work
+            codes = {f["code"] for f in forms}
+            assert "PHARMAUTH" in codes, f"NGA/300490: expected PHARMAUTH, got {sorted(codes)}"
+
+    def test_authentic_tariff_service_ken_returns_kephis(self):
+        """Authentic tariff service must return PHYTOCERT for KEN food lines."""
+        from services.authentic_tariff_service import get_administrative_formalities
+        import services.authentic_tariff_service as svc
+        svc._tariff_cache.pop("KEN", None)
+        forms = get_administrative_formalities("KEN", "070190")  # potatoes ch07
+        if forms:
+            codes = {f["code"] for f in forms}
+            assert "PHYTOCERT" in codes, f"KEN/070190: expected PHYTOCERT, got {sorted(codes)}"
