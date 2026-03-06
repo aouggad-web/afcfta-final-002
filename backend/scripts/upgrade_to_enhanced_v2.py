@@ -236,9 +236,9 @@ def _default_fiscal_advantage(dd_rate: float) -> List[Dict]:
 
 _DEFAULT_ADMIN = [
     {
-        "code": "910",
-        "document_fr": "Déclaration d'Importation du Produit",
-        "document_en": "Product Import Declaration",
+        "code": "IMPDEC",
+        "document_fr": "Déclaration d'Importation",
+        "document_en": "Import Declaration",
     }
 ]
 

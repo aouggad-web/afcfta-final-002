@@ -2308,3 +2308,223 @@ class TestAllAfricaFormalities:
         from etl.para_fiscal_levies import ECTN_COUNTRIES
         expected = {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"}
         assert ECTN_COUNTRIES == expected
+
+
+# =============================================================================
+# NO MOCKED DATA — Verify every country uses real ASYCUDA-compatible codes
+# =============================================================================
+
+class TestNoMockedData:
+    """
+    Ensure that no placeholder/mocked formality codes remain in production
+    data files or generated data.
+
+    Background:
+    - Code "910" is the REAL DGD/ADII/GUCE import declaration code for
+      DZA, MAR and TUN (North Africa ASYCUDA systems).  It is legitimate
+      only for those three countries.
+    - All other countries must use the ASYCUDA-compatible code "IMPDEC"
+      (or a country-specific code) — never the generic "910" placeholder.
+    """
+
+    # Countries where code "910" is a genuine customs code
+    _NORTH_AFRICA_910 = {"DZA", "MAR", "TUN"}
+
+    def _crawled_codes(self, cc: str) -> set:
+        import json, os
+        path = os.path.join(
+            os.path.dirname(__file__), "..", "data", "crawled", f"{cc}_tariffs.json"
+        )
+        if not os.path.exists(path):
+            pytest.skip(f"{cc}_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        return {
+            fm["code"]
+            for line in d.get("tariff_lines", [])
+            for fm in line.get("administrative_formalities", [])
+        }
+
+    def _tariffs_codes(self, cc: str) -> set:
+        import json, os
+        path = os.path.join(
+            os.path.dirname(__file__), "..", "data", "tariffs", f"{cc}_tariffs.json"
+        )
+        if not os.path.exists(path):
+            pytest.skip(f"data/tariffs/{cc}_tariffs.json not found")
+        with open(path) as f:
+            d = json.load(f)
+        return {
+            fm["code"]
+            for line in d.get("tariff_lines", [])
+            for fm in line.get("administrative_formalities", [])
+        }
+
+    # ── Crawled data: non-North-Africa countries must not use "910" ──────
+
+    def test_eth_crawled_no_mocked_910(self):
+        """ETH crawled data must not use code 910 (placeholder for North Africa only)."""
+        codes = self._crawled_codes("ETH")
+        assert "910" not in codes, f"ETH has mocked code 910: {codes}"
+        assert "IMPDEC" in codes, f"ETH missing real IMPDEC code"
+
+    def test_sdn_crawled_no_mocked_910(self):
+        """SDN crawled data must not use code 910."""
+        codes = self._crawled_codes("SDN")
+        assert "910" not in codes, f"SDN has mocked code 910: {codes}"
+        assert "IMPDEC" in codes, f"SDN missing real IMPDEC code"
+
+    def test_som_crawled_no_mocked_910(self):
+        """SOM crawled data must not use code 910."""
+        codes = self._crawled_codes("SOM")
+        assert "910" not in codes, f"SOM has mocked code 910: {codes}"
+        assert "IMPDEC" in codes, f"SOM missing real IMPDEC code"
+
+    def test_stp_crawled_no_mocked_910(self):
+        """STP crawled data must not use code 910."""
+        codes = self._crawled_codes("STP")
+        assert "910" not in codes, f"STP has mocked code 910: {codes}"
+        assert "IMPDEC" in codes, f"STP missing real IMPDEC code"
+
+    def test_nga_crawled_no_mocked_910(self):
+        """NGA crawled data must not use code 910."""
+        codes = self._crawled_codes("NGA")
+        assert "910" not in codes, f"NGA has mocked code 910"
+        assert "IMPDEC" in codes
+
+    def test_ken_crawled_no_mocked_910(self):
+        """KEN crawled data must not use code 910."""
+        codes = self._crawled_codes("KEN")
+        assert "910" not in codes, f"KEN has mocked code 910"
+        assert "IMPDEC" in codes
+
+    def test_zaf_crawled_no_mocked_910(self):
+        """ZAF crawled data must not use code 910."""
+        codes = self._crawled_codes("ZAF")
+        assert "910" not in codes, f"ZAF has mocked code 910"
+        assert "IMPDEC" in codes
+
+    # ── Crawled data: all 54 countries must have multi-type formalities ───
+
+    def test_all_crawled_countries_have_impdec(self):
+        """Every country in data/crawled/ must include IMPDEC formality,
+        except North-African countries that use their own national code schemes
+        (DZA/MAR/TUN use their own ASYCUDA codes: 910/210/C01-C11/101-109)."""
+        import json, os
+        # North-African countries use national ASYCUDA code schemes instead of IMPDEC
+        _NATIONAL_SCHEME = {"DZA", "MAR", "TUN"}
+        crawled_dir = os.path.join(os.path.dirname(__file__), "..", "data", "crawled")
+        missing = []
+        for fname in sorted(os.listdir(crawled_dir)):
+            if not fname.endswith("_tariffs.json"):
+                continue
+            cc = fname.replace("_tariffs.json", "")
+            if cc in _NATIONAL_SCHEME:
+                continue  # These use their own national code schemes — skip
+            with open(os.path.join(crawled_dir, fname)) as f:
+                d = json.load(f)
+            codes = {
+                fm["code"]
+                for line in d.get("tariff_lines", [])
+                for fm in line.get("administrative_formalities", [])
+            }
+            if "IMPDEC" not in codes:
+                missing.append(f"{cc}: {sorted(codes)}")
+        assert missing == [], (
+            f"Countries missing IMPDEC in crawled data:\n" + "\n".join(missing)
+        )
+
+    def test_non_north_africa_crawled_no_910(self):
+        """Non-North-Africa countries in data/crawled/ must NOT have code 910."""
+        import json, os
+        crawled_dir = os.path.join(os.path.dirname(__file__), "..", "data", "crawled")
+        offenders = []
+        for fname in sorted(os.listdir(crawled_dir)):
+            if not fname.endswith("_tariffs.json"):
+                continue
+            cc = fname.replace("_tariffs.json", "")
+            if cc in self._NORTH_AFRICA_910:
+                continue
+            with open(os.path.join(crawled_dir, fname)) as f:
+                d = json.load(f)
+            codes = {
+                fm["code"]
+                for line in d.get("tariff_lines", [])
+                for fm in line.get("administrative_formalities", [])
+            }
+            if "910" in codes:
+                offenders.append(f"{cc}: {sorted(codes)}")
+        assert offenders == [], (
+            f"Non-North-Africa countries with mocked code 910:\n" + "\n".join(offenders)
+        )
+
+    # ── data/tariffs/ stale files: must now use real codes ───────────────
+
+    def test_eth_tariffs_dir_uses_real_codes(self):
+        """data/tariffs/ETH must use real ASYCUDA codes (not just 910)."""
+        codes = self._tariffs_codes("ETH")
+        assert "910" not in codes, f"ETH (data/tariffs) still has mocked 910"
+        assert "IMPDEC" in codes
+
+    def test_sdn_tariffs_dir_uses_real_codes(self):
+        """data/tariffs/SDN must use real ASYCUDA codes."""
+        codes = self._tariffs_codes("SDN")
+        assert "910" not in codes, f"SDN (data/tariffs) still has mocked 910"
+        assert "IMPDEC" in codes
+
+    def test_som_tariffs_dir_uses_real_codes(self):
+        """data/tariffs/SOM must use real ASYCUDA codes."""
+        codes = self._tariffs_codes("SOM")
+        assert "910" not in codes, f"SOM (data/tariffs) still has mocked 910"
+        assert "IMPDEC" in codes
+
+    def test_stp_tariffs_dir_uses_real_codes(self):
+        """data/tariffs/STP must use real ASYCUDA codes."""
+        codes = self._tariffs_codes("STP")
+        assert "910" not in codes, f"STP (data/tariffs) still has mocked 910"
+        assert "IMPDEC" in codes
+
+    # ── Collector fallback must use IMPDEC, not 910 ──────────────────────
+
+    def test_tariff_collector_fallback_uses_impdec(self):
+        """TariffDataCollector fallback formality must use IMPDEC, not code 910."""
+        from services.tariff_data_collector import TariffDataCollector
+        collector = TariffDataCollector()
+        # Use a country not in special-case modules (e.g. GHA which has ECOWAS levies
+        # but no dedicated _get_country_taxes module)
+        data = collector.collect_country_tariffs("COM")
+        # Collect all formality codes from the generated data
+        codes = {
+            fm["code"]
+            for line in data.get("tariff_lines", [])
+            for fm in line.get("administrative_formalities", [])
+        }
+        assert "910" not in codes, (
+            f"TariffDataCollector fallback still produces code 910: {sorted(codes)}"
+        )
+
+    def test_upgrade_script_default_admin_uses_impdec(self):
+        """upgrade_to_enhanced_v2._DEFAULT_ADMIN must use IMPDEC, not code 910."""
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+        from scripts.upgrade_to_enhanced_v2 import _DEFAULT_ADMIN
+        codes = {item["code"] for item in _DEFAULT_ADMIN}
+        assert "910" not in codes, f"_DEFAULT_ADMIN still has code 910: {_DEFAULT_ADMIN}"
+        assert "IMPDEC" in codes, f"_DEFAULT_ADMIN missing IMPDEC: {_DEFAULT_ADMIN}"
+
+    # ── North-Africa codes are STILL real and correct ────────────────────
+
+    def test_dza_910_is_legitimate(self):
+        """DZA must still have code 910 (it is the real DGD DUM code)."""
+        codes = self._crawled_codes("DZA")
+        assert "910" in codes, "DZA lost its real code 910 (DUM)"
+
+    def test_mar_910_is_legitimate(self):
+        """MAR must still have code 910 (ADII official code)."""
+        codes = self._crawled_codes("MAR")
+        assert "910" in codes, "MAR lost its real code 910"
+
+    def test_tun_910_is_legitimate(self):
+        """TUN must still have code 910 (GUCE official code)."""
+        codes = self._crawled_codes("TUN")
+        assert "910" in codes, "TUN lost its real code 910"
