@@ -16,8 +16,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 CRAWLED_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "crawled")
 
-# All 54 crawled countries are now enhanced_v2.
-# Countries with actual sub-positions (>0): all except DZA, MAR, TUN (empty data).
+# All 54 crawled countries are now enhanced_v2 with real tariff data.
 ENHANCED_COUNTRIES = {
     # Originally enhanced_v2 (32)
     "AGO", "BDI", "COD", "COM", "CPV", "DJI", "EGY", "ERI", "ETH",
@@ -28,10 +27,12 @@ ENHANCED_COUNTRIES = {
     "BEN", "BFA", "BWA", "CAF", "CIV", "CMR", "COG", "GAB",
     "GIN", "LSO", "MLI", "NAM", "NER", "NGA", "SEN", "SWZ",
     "TCD", "TGO", "ZAF",
+    # North Africa — previously empty, now populated from national sources
+    "DZA", "MAR", "TUN",
 }
 
-# Countries with enhanced_v2 format but no tariff data (empty crawl)
-EMPTY_ENHANCED_COUNTRIES = {"DZA", "MAR", "TUN"}
+# No countries remain empty or in old format
+EMPTY_ENHANCED_COUNTRIES: set = set()
 
 # No countries remain in old format
 OLD_FORMAT_COUNTRIES: set = set()
@@ -176,14 +177,15 @@ class TestRegionalSubPositions:
                 assert by_code[cc]["sub_positions"] > 0, \
                     f"{cc} (enhanced_v2) should have sub-positions"
 
-    def test_empty_enhanced_countries_have_zero_sub_positions(self):
-        """DZA, MAR, TUN are enhanced_v2 but have no tariff data."""
+    def test_north_africa_countries_have_sub_positions(self):
+        """DZA, MAR, TUN are now populated with real tariff data."""
         result = self._call()
         by_code = {r["iso3"]: r for r in result["countries"]}
-        for cc in EMPTY_ENHANCED_COUNTRIES:
+        for cc in ("DZA", "MAR", "TUN"):
             if cc in by_code:
-                assert by_code[cc]["sub_positions"] == 0, \
-                    f"{cc} (empty) should have 0 sub-positions"
+                assert by_code[cc]["sub_positions"] > 0, \
+                    f"{cc} should now have sub-positions from national source data"
+                assert by_code[cc]["data_format"] == "enhanced_v2"
 
     def test_no_old_format_countries_remain(self):
         """After migration all countries are enhanced_v2."""
@@ -260,8 +262,8 @@ class TestRegionalSubPositions:
         result = self._call()
         actual_with_sub = sum(1 for r in result["countries"] if r["sub_positions"] > 0)
         assert actual_with_sub == result["totals"]["countries_with_sub_positions"]
-        # After migration 51 countries have data (54 - 3 empty)
-        assert actual_with_sub >= 50
+        # All 54 countries now have real tariff data
+        assert actual_with_sub == result["totals"]["total_countries"]
 
 
 # ==================== Data Inventory Endpoint Tests ====================
