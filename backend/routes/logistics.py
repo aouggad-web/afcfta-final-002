@@ -19,6 +19,14 @@ from logistics_air_data import (
     search_airports
 )
 from free_zones_data import get_free_zones_by_country
+from logistics_fees_data import (
+    get_all_shipping_routes,
+    get_routes_from_port,
+    get_route_between,
+    get_port_thc,
+    get_all_port_thc,
+    get_total_cost,
+)
 from logistics_land_data import (
     get_all_corridors,
     get_corridors_by_country,
@@ -345,3 +353,124 @@ async def search_land_corridors(q: str):
 async def get_land_logistics_statistics():
     """Get global statistics about African land corridors"""
     return get_corridors_statistics()
+
+
+# ==========================================
+# PORT-TO-PORT SHIPPING FEES ENDPOINTS
+# ==========================================
+
+@router.get("/fees/routes")
+async def get_shipping_routes(origin: Optional[str] = None):
+    """
+    Get port-to-port maritime shipping fee data for African routes.
+
+    Query params:
+    - origin: UN LOCODE of origin port (e.g. MAPTM, NGAPP). Omit to get all routes.
+
+    Returns ocean freight rates (2024), transit times, carriers, and data sources.
+    No mocked data — all rates sourced from published carrier tariffs and UNCTAD/World Bank benchmarks.
+    """
+    try:
+        if origin:
+            routes = get_routes_from_port(origin.upper())
+            if not routes:
+                return {
+                    "origin_locode": origin.upper(),
+                    "count": 0,
+                    "routes": [],
+                    "message": f"No routes found departing from {origin.upper()}"
+                }
+            return {
+                "origin_locode": origin.upper(),
+                "count": len(routes),
+                "routes": routes
+            }
+        routes = get_all_shipping_routes()
+        return {
+            "count": len(routes),
+            "routes": routes,
+            "data_year": 2024,
+            "source": "Drewry Maritime Research, UNCTAD MRTS 2024, Maersk/CMA CGM/MSC published tariffs"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading shipping fees data: {str(e)}")
+
+
+@router.get("/fees/route")
+async def get_single_route_fees(origin: str, destination: str):
+    """
+    Get the shipping fee between two specific ports.
+
+    Query params:
+    - origin: UN LOCODE of origin port (e.g. MAPTM)
+    - destination: UN LOCODE of destination port (e.g. NGAPP)
+
+    Returns ocean freight rate, transit time, carriers, and data source.
+    """
+    route = get_route_between(origin.upper(), destination.upper())
+    if not route:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No direct shipping route found between {origin.upper()} and {destination.upper()}. "
+                   "Check /api/logistics/fees/routes for available routes."
+        )
+    return route
+
+
+@router.get("/fees/cost")
+async def get_total_shipping_cost(
+    origin: str,
+    destination: str,
+    container_type: str = "teu"
+):
+    """
+    Compute the all-in shipping cost (ocean freight + THC at origin + THC at destination).
+
+    Query params:
+    - origin: UN LOCODE of origin port (e.g. MAPTM)
+    - destination: UN LOCODE of destination port (e.g. NGAPP)
+    - container_type: 'teu' (20ft), 'feu' (40ft standard), or 'feu_hc' (40ft high-cube). Default: teu
+
+    Returns itemised cost breakdown in USD.
+    """
+    valid_types = ["teu", "feu", "feu_hc"]
+    ctype = container_type.lower()
+    if ctype not in valid_types:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid container_type '{container_type}'. Valid values: {', '.join(valid_types)}"
+        )
+    result = get_total_cost(origin.upper(), destination.upper(), ctype)
+    if not result:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No shipping route found between {origin.upper()} and {destination.upper()}."
+        )
+    return result
+
+
+@router.get("/fees/thc")
+async def get_terminal_handling_charges(locode: Optional[str] = None):
+    """
+    Get Terminal Handling Charges (THC) for African ports.
+
+    Query params:
+    - locode: UN LOCODE of a specific port (e.g. MAPTM). Omit to get all ports.
+
+    Returns official THC rates in USD for TEU, FEU, and FEU HC containers.
+    Source: Individual port authority tariff books (2024 editions).
+    """
+    if locode:
+        thc = get_port_thc(locode.upper())
+        if not thc:
+            raise HTTPException(
+                status_code=404,
+                detail=f"THC data not available for port {locode.upper()}."
+            )
+        return thc
+    return {
+        "count": len(get_all_port_thc()),
+        "ports": get_all_port_thc(),
+        "data_year": 2024,
+        "source": "Official port authority tariff books 2024 (TMPA, ANP, NPA, KPA, Transnet, etc.)"
+    }
