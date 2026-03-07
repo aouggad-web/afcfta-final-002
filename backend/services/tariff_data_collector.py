@@ -87,7 +87,7 @@ class TariffDataCollector:
         }]
 
         formalities = [
-            {"code": "910", "document_fr": "Déclaration d'Importation du Produit", "document_en": "Product Import Declaration"},
+            {"code": "IMPDEC", "document_fr": "Déclaration d'Importation", "document_en": "Import Declaration"},
         ]
 
         return {
