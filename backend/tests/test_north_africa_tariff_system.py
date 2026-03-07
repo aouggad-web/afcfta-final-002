@@ -2511,8 +2511,6 @@ class TestNoMockedData:
 
     def test_upgrade_script_default_admin_uses_impdec(self):
         """upgrade_to_enhanced_v2._DEFAULT_ADMIN must use IMPDEC, not code 910."""
-        import sys
-        import os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
         from scripts.upgrade_to_enhanced_v2 import _DEFAULT_ADMIN
         codes = {item["code"] for item in _DEFAULT_ADMIN}
@@ -2874,10 +2872,10 @@ class TestCustomsPlatformUtilityFunctions:
         assert countries == ["ZAF"]
 
     def test_get_countries_by_platform_asycuda_world_count(self):
-        """42 countries should use ASYCUDA World."""
+        """42 countries use ASYCUDA World; the 12 non-ASYCUDA countries must not be listed."""
         ns = self._load_registry_module()
         countries = ns["get_countries_by_platform"](ns["CustomsPlatform"].ASYCUDA_WORLD)
-        assert len(countries) >= 30, f"Expected ≥30 ASYCUDA World countries, got {len(countries)}"
+        assert len(countries) == 42, f"Expected 42 ASYCUDA World countries, got {len(countries)}"
         assert "GHA" not in countries
         assert "NGA" not in countries
         assert "KEN" not in countries
@@ -2918,8 +2916,6 @@ class TestCustomsPlatformUtilityFunctions:
 
     def test_formality_impdec_uses_platform_name_kenya(self):
         """get_formalities_for_line('KEN', ...) IMPDEC document_en must be IDF, not generic."""
-        import sys
-        import os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
         try:
             from etl.africa_formalities import get_formalities_for_line
@@ -2935,8 +2931,6 @@ class TestCustomsPlatformUtilityFunctions:
 
     def test_formality_impdec_uses_platform_name_ghana(self):
         """get_formalities_for_line('GHA', ...) IMPDEC document_en must be CUSDEC."""
-        import sys
-        import os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
         try:
             from etl.africa_formalities import get_formalities_for_line
@@ -2952,8 +2946,6 @@ class TestCustomsPlatformUtilityFunctions:
 
     def test_formality_impdec_uses_platform_name_south_africa(self):
         """get_formalities_for_line('ZAF', ...) IMPDEC must show Bill of Entry DA 306."""
-        import sys
-        import os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
         try:
             from etl.africa_formalities import get_formalities_for_line
@@ -2969,8 +2961,6 @@ class TestCustomsPlatformUtilityFunctions:
 
     def test_formality_impdec_uses_platform_name_nigeria(self):
         """get_formalities_for_line('NGA', ...) IMPDEC must show SGD."""
-        import sys
-        import os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
         try:
             from etl.africa_formalities import get_formalities_for_line
@@ -2986,8 +2976,6 @@ class TestCustomsPlatformUtilityFunctions:
 
     def test_formality_impdec_asycuda_uses_sad(self):
         """ASYCUDA World countries should show SAD in IMPDEC document_en."""
-        import sys
-        import os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
         try:
             from etl.africa_formalities import get_formalities_for_line
