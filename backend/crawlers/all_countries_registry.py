@@ -81,93 +81,123 @@ class CustomsPlatform(str, Enum):
 
 CUSTOMS_PLATFORM_INFO: Dict[str, Dict] = {
     "ASYCUDA World": {
-        "vendor":    "UNCTAD (United Nations Conference on Trade and Development)",
-        "url":       "https://asycuda.org",
-        "notes":     "Most widely deployed customs platform in Africa. Used by 30+ AU members.",
+        "vendor":       "UNCTAD (United Nations Conference on Trade and Development)",
+        "url":          "https://asycuda.org",
+        "decl_form_en": "Customs Declaration (SAD — Single Administrative Document)",
+        "decl_form_fr": "Déclaration en Douane (DAU — Document Administratif Unique)",
+        "notes":        "Most widely deployed customs platform in Africa. Used by 30+ AU members.",
     },
     "ASYCUDA++": {
-        "vendor":    "UNCTAD",
-        "url":       "https://asycuda.org",
-        "notes":     "Legacy version; most countries have migrated or are migrating to ASYCUDA World.",
+        "vendor":       "UNCTAD",
+        "url":          "https://asycuda.org",
+        "decl_form_en": "Customs Declaration (SAD — Single Administrative Document)",
+        "decl_form_fr": "Déclaration en Douane (DAU — Document Administratif Unique)",
+        "notes":        "Legacy version; most countries have migrated or are migrating to ASYCUDA World.",
     },
     "GCNET": {
-        "vendor":    "GCNet (Ghana Community Network Services Ltd) / GRA",
-        "url":       "https://www.gra.gov.gh",
-        "notes":     "Ghana-specific customs and port management platform. Interfaces with ASYCUDA "
-                     "but is a separate national system.",
+        "vendor":       "GCNet (Ghana Community Network Services Ltd) / GRA",
+        "url":          "https://www.gra.gov.gh",
+        "decl_form_en": "Customs Declaration Form (CUSDEC)",
+        "decl_form_fr": "Déclaration en Douane (CUSDEC)",
+        "notes":        "Ghana-specific customs and port management platform. Interfaces with ASYCUDA "
+                        "but is a separate national system.",
     },
     "NICIS/CuCMS": {
-        "vendor":    "Nigeria Customs Service (NCS) / in-house / WIPRO",
-        "url":       "https://www.customs.gov.ng",
-        "notes":     "Nigeria Customs Integrated System (NICIS II), now migrating to CuCMS. "
-                     "Replaced manual processing; separate from ASYCUDA.",
+        "vendor":       "Nigeria Customs Service (NCS) / in-house / WIPRO",
+        "url":          "https://www.customs.gov.ng",
+        "decl_form_en": "Single Goods Declaration (SGD)",
+        "decl_form_fr": "Déclaration Unique de Marchandises (SGD)",
+        "notes":        "Nigeria Customs Integrated System (NICIS II), now migrating to CuCMS. "
+                        "Replaced manual processing; separate from ASYCUDA.",
     },
     "iCMS": {
-        "vendor":    "Kenya Revenue Authority (KRA) / in-house",
-        "url":       "https://www.kra.go.ke",
-        "notes":     "Integrated Customs Management System. Replaced SIMBA in Kenya in 2022. "
-                     "End-to-end digitized process.",
+        "vendor":       "Kenya Revenue Authority (KRA) / in-house",
+        "url":          "https://www.kra.go.ke",
+        "decl_form_en": "Import Declaration Form (IDF)",
+        "decl_form_fr": "Formulaire de Déclaration d'Importation (IDF)",
+        "notes":        "Integrated Customs Management System. Replaced SIMBA in Kenya in 2022. "
+                        "End-to-end digitized process.",
     },
     "SIMBA": {
-        "vendor":    "Tanzania Revenue Authority (TRA) / WiseTech Global (CargoWise)",
-        "url":       "https://www.tra.go.tz",
-        "notes":     "Single Import Billing, Manifest and Assessment system. Tanzania-specific. "
-                     "Not ASYCUDA.",
+        "vendor":       "Tanzania Revenue Authority (TRA) / WiseTech Global (CargoWise)",
+        "url":          "https://www.tra.go.tz",
+        "decl_form_en": "Customs Entry / Customs Declaration (TANCIS)",
+        "decl_form_fr": "Déclaration en Douane (TANCIS)",
+        "notes":        "Single Import Billing, Manifest and Assessment system. Tanzania-specific. "
+                        "Not ASYCUDA.",
     },
     "BADR": {
-        "vendor":    "Administration des Douanes et Impôts Indirects (ADII) / in-house",
-        "url":       "https://www.douane.gov.ma",
-        "notes":     "Base Automatisée des Douanes en Réseau. Morocco's fully national customs "
-                     "platform; uses national codes C01-C11, 910 etc. Not ASYCUDA.",
+        "vendor":       "Administration des Douanes et Impôts Indirects (ADII) / in-house",
+        "url":          "https://www.douane.gov.ma",
+        "decl_form_en": "Customs Declaration — DUM (Déclaration Unique de Marchandises)",
+        "decl_form_fr": "Déclaration Unique de Marchandises (DUM) — BADR",
+        "notes":        "Base Automatisée des Douanes en Réseau. Morocco's fully national customs "
+                        "platform; uses national codes C01-C11, 910 etc. Not ASYCUDA.",
     },
     "SINDA": {
-        "vendor":    "Direction Générale des Douanes (DGD-TN) / in-house (ASYCUDA-derived)",
-        "url":       "https://www.douane.finances.tn",
-        "notes":     "Système Informatique des Douanes et Accises. Evolved from ASYCUDA++ "
-                     "with heavy Tunisian customisation; uses national codes 910, 101-109 etc.",
+        "vendor":       "Direction Générale des Douanes (DGD-TN) / in-house (ASYCUDA-derived)",
+        "url":          "https://www.douane.finances.tn",
+        "decl_form_en": "Customs Declaration — DUM (Déclaration Unique de Marchandises) via SINDA",
+        "decl_form_fr": "Déclaration Unique de Marchandises (DUM) — SINDA / GUCE",
+        "notes":        "Système Informatique des Douanes et Accises. Evolved from ASYCUDA++ "
+                        "with heavy Tunisian customisation; uses national codes 910, 101-109 etc.",
     },
     "NAFEZA": {
-        "vendor":    "Egyptian Customs Authority (ECA) / Misr Technology Services",
-        "url":       "https://www.nafeza.gov.eg",
-        "notes":     "National Single Window for Foreign Trade Facilitation. Integrated "
-                     "with GOEIC, ACS and bank channels. Mandatory for all shipments to Egypt "
-                     "since 2022.",
+        "vendor":       "Egyptian Customs Authority (ECA) / Misr Technology Services",
+        "url":          "https://www.nafeza.gov.eg",
+        "decl_form_en": "Electronic Import Notice (EIN) + Customs Declaration via ACS",
+        "decl_form_fr": "Avis d'Importation Électronique (EIN) + Déclaration Douanière via ACS",
+        "notes":        "National Single Window for Foreign Trade Facilitation. Integrated "
+                        "with GOEIC, ACS and bank channels. Mandatory for all shipments to Egypt "
+                        "since 2022.",
     },
     "ECTS": {
-        "vendor":    "Ethiopian Customs Commission (ECC) / in-house",
-        "url":       "https://www.customs.gov.et",
-        "notes":     "Ethiopian Customs Tax System. National platform; not ASYCUDA World. "
-                     "Uses ETHPERMIT (MoTRI) as a mandatory pre-clearance step.",
+        "vendor":       "Ethiopian Customs Commission (ECC) / in-house",
+        "url":          "https://www.customs.gov.et",
+        "decl_form_en": "Customs Declaration (CD) — Ethiopian Customs Tax System (ECTS)",
+        "decl_form_fr": "Déclaration en Douane (CD) — Système ECTS",
+        "notes":        "Ethiopian Customs Tax System. National platform; not ASYCUDA World. "
+                        "Uses ETHPERMIT (MoTRI) as a mandatory pre-clearance step.",
     },
     "TradeNet": {
-        "vendor":    "Mauritius Network Services (MNS) / TradeLinkMU",
-        "url":       "https://www.tradenet.intnet.mu",
-        "notes":     "Mauritius TradeNet (now TradeLinkMU). Single-window platform covering "
-                     "customs, port, and regulatory agencies. Interfaces with ASYCUDA++.",
+        "vendor":       "Mauritius Network Services (MNS) / TradeLinkMU",
+        "url":          "https://www.tradenet.intnet.mu",
+        "decl_form_en": "Import Declaration (TradeNet / TradeLinkMU)",
+        "decl_form_fr": "Déclaration d'Importation (TradeNet / TradeLinkMU)",
+        "notes":        "Mauritius TradeNet (now TradeLinkMU). Single-window platform covering "
+                        "customs, port, and regulatory agencies. Interfaces with ASYCUDA++.",
     },
     "SARS EDI": {
-        "vendor":    "South African Revenue Service (SARS) / in-house",
-        "url":       "https://www.sars.gov.za",
-        "notes":     "SARS Customs EDI / Risk Assessment System (RAS). South Africa's fully "
-                     "national customs platform; not ASYCUDA.",
+        "vendor":       "South African Revenue Service (SARS) / in-house",
+        "url":          "https://www.sars.gov.za",
+        "decl_form_en": "Bill of Entry (DA 306 / DA 306A) — SARS eFiling",
+        "decl_form_fr": "Déclaration en Douane (DA 306 / DA 306A) — SARS eFiling",
+        "notes":        "SARS Customs EDI / Risk Assessment System (RAS). South Africa's fully "
+                        "national customs platform; not ASYCUDA.",
     },
     "GAINDE": {
-        "vendor":    "GAINDE 2000 (GIE Douanes-Secteur Privé) / Senegal",
-        "url":       "https://www.gainde2000.sn",
-        "notes":     "Guichet Automatisé d'Information pour le Négoce et le Dédouanement "
-                     "des Exportateurs. Senegal's single-window platform; interfaces with "
-                     "ASYCUDA World (GAINDE 2000 acts as front-end).",
+        "vendor":       "GAINDE 2000 (GIE Douanes-Secteur Privé) / Senegal",
+        "url":          "https://www.gainde2000.sn",
+        "decl_form_en": "Customs Declaration (Déclaration en Douane) via GAINDE 2000",
+        "decl_form_fr": "Déclaration en Douane — Guichet GAINDE 2000",
+        "notes":        "Guichet Automatisé d'Information pour le Négoce et le Dédouanement "
+                        "des Exportateurs. Senegal's single-window platform; interfaces with "
+                        "ASYCUDA World (GAINDE 2000 acts as front-end).",
     },
     "SYDONIA/ASYCUDA": {
-        "vendor":    "UNCTAD / DGDA DRC (adapted)",
-        "url":       "https://www.douanes.cd",
-        "notes":     "DRC uses a heavily customised ASYCUDA-derived system (historically called "
-                     "SYDONIA). OCC integration is unique to DRC (OCCDECL mandatory for all imports).",
+        "vendor":       "UNCTAD / DGDA DRC (adapted)",
+        "url":          "https://www.douanes.cd",
+        "decl_form_en": "Customs Declaration (SYDONIA / ASYCUDA-DRC)",
+        "decl_form_fr": "Déclaration en Douane (SYDONIA / ASYCUDA-RDC)",
+        "notes":        "DRC uses a heavily customised ASYCUDA-derived system (historically called "
+                        "SYDONIA). OCC integration is unique to DRC (OCCDECL mandatory for all imports).",
     },
     "Unknown": {
-        "vendor":    "N/A",
-        "url":       None,
-        "notes":     "Customs management platform not confirmed / limited digitization.",
+        "vendor":       "N/A",
+        "url":          None,
+        "decl_form_en": "Import Declaration",
+        "decl_form_fr": "Déclaration d'Importation",
+        "notes":        "Customs management platform not confirmed / limited digitization.",
     },
 }
 
@@ -1083,13 +1113,87 @@ def validate_registry() -> Dict[str, Any]:
         report["by_priority"][priority.name] = count
     
     # Check for missing required fields
-    required_fields = ["iso2", "iso3", "name_en", "region", "vat_rate", "customs_url"]
+    required_fields = [
+        "iso2", "iso3", "name_en", "region", "vat_rate", "customs_url", "customs_platform"
+    ]
     for code, config in AFRICAN_COUNTRIES_REGISTRY.items():
         for field in required_fields:
             if field not in config or config[field] is None:
                 report["missing_data"].append(f"{code}: missing {field}")
     
     return report
+
+
+def get_country_platform(country_code: str) -> "Optional[CustomsPlatform]":
+    """
+    Return the customs management platform for a given country.
+
+    Args:
+        country_code: ISO3 country code (e.g. 'GHA', 'KEN', 'ZAF')
+
+    Returns:
+        CustomsPlatform enum value, or None if country not found.
+
+    Examples:
+        >>> get_country_platform('GHA')
+        <CustomsPlatform.GCNET: 'GCNET'>
+        >>> get_country_platform('DZA')
+        <CustomsPlatform.ASYCUDA_WORLD: 'ASYCUDA World'>
+        >>> get_country_platform('KEN')
+        <CustomsPlatform.ICMS: 'iCMS'>
+    """
+    config = AFRICAN_COUNTRIES_REGISTRY.get(country_code.upper())
+    if config is None:
+        return None
+    return config.get("customs_platform")
+
+
+def get_country_declaration_form(country_code: str, lang: str = "en") -> str:
+    """
+    Return the country-specific import declaration form name.
+
+    This is the actual name of the customs entry document used in the
+    country's customs management system — e.g. 'Bill of Entry (DA 306)' for
+    South Africa, 'Import Declaration Form (IDF)' for Kenya, 'CUSDEC' for
+    Ghana, rather than the generic 'Import Declaration'.
+
+    Args:
+        country_code: ISO3 country code.
+        lang: 'en' for English (default) or 'fr' for French.
+
+    Returns:
+        Localised form name string.  Falls back to generic 'Import Declaration'
+        if the platform or country is unknown.
+    """
+    platform = get_country_platform(country_code)
+    if platform is None:
+        return "Import Declaration" if lang == "en" else "Déclaration d'Importation"
+    info = CUSTOMS_PLATFORM_INFO.get(platform.value, {})
+    key = "decl_form_en" if lang == "en" else "decl_form_fr"
+    return info.get(key, "Import Declaration" if lang == "en" else "Déclaration d'Importation")
+
+
+def get_countries_by_platform(platform: "CustomsPlatform") -> List[str]:
+    """
+    Return all country codes that use the specified customs platform.
+
+    Args:
+        platform: CustomsPlatform enum value.
+
+    Returns:
+        Sorted list of ISO3 country codes.
+
+    Examples:
+        >>> get_countries_by_platform(CustomsPlatform.GCNET)
+        ['GHA']
+        >>> get_countries_by_platform(CustomsPlatform.ASYCUDA_WORLD)
+        ['AGO', 'BDI', ...]  # 42 countries
+    """
+    return sorted(
+        code
+        for code, config in AFRICAN_COUNTRIES_REGISTRY.items()
+        if config.get("customs_platform") == platform
+    )
 
 
 # Run validation on import

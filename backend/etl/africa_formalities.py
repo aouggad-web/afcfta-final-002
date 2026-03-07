@@ -131,6 +131,42 @@ Last updated: 2025
 
 from etl.para_fiscal_levies import get_para_fiscal_formalities
 
+# Import platform-specific declaration form helper from all_countries_registry.
+# We load the file directly (via importlib) to bypass crawlers/__init__.py which
+# pulls in httpx through base_scraper and is not available in all environments.
+import importlib.util as _imp_util
+import os as _os
+
+_DECLARATION_FORM_CACHE: dict[tuple[str, str], str] | None = None  # {(country_code, lang): form_name}
+
+def _get_decl_form(country_code: str, lang: str = "en") -> str:
+    """Return the platform-specific import declaration form name for a country.
+
+    Loads all_countries_registry directly (bypassing crawlers/__init__.py) and
+    caches results for the process lifetime to avoid repeated file loads.
+    """
+    global _DECLARATION_FORM_CACHE
+    if _DECLARATION_FORM_CACHE is None:
+        _DECLARATION_FORM_CACHE = {}
+        _reg_path = _os.path.join(
+            _os.path.dirname(__file__), "..", "crawlers", "all_countries_registry.py"
+        )
+        try:
+            _spec = _imp_util.spec_from_file_location("_acr_no_init", _reg_path)
+            _mod = _imp_util.module_from_spec(_spec)
+            _spec.loader.exec_module(_mod)
+            _get_fn = _mod.get_country_declaration_form
+            # Pre-populate cache for all known countries and both languages
+            for _cc in _mod.AFRICAN_COUNTRIES_REGISTRY:
+                _DECLARATION_FORM_CACHE[(_cc, "en")] = _get_fn(_cc, lang="en")
+                _DECLARATION_FORM_CACHE[(_cc, "fr")] = _get_fn(_cc, lang="fr")
+        except (ImportError, FileNotFoundError, AttributeError, OSError):
+            pass  # fallback will return generic name on cache miss
+    key = (country_code.upper(), lang)
+    if key in _DECLARATION_FORM_CACHE:
+        return _DECLARATION_FORM_CACHE[key]
+    return "Import Declaration" if lang == "en" else "Déclaration d'Importation"
+
 # =============================================================================
 # COUNTRY-SPECIFIC REGULATORY AUTHORITIES
 # Keyed by ISO3; each value is a dict of authority roles → official name
@@ -1178,13 +1214,21 @@ def get_formalities_for_line(country_iso3: str, category: str, chapter: str) -> 
         List of formality dicts; always at least one entry (IMPDEC).
     """
     auth = COUNTRY_AUTHORITIES.get(country_iso3)
+
+    # Look up the platform-specific declaration form name for this country.
+    # e.g. "Import Declaration Form (IDF)" for Kenya (iCMS),
+    #      "Bill of Entry (DA 306)" for South Africa (SARS EDI),
+    #      "CUSDEC" for Ghana (GCNET), "Single Goods Declaration (SGD)" for Nigeria (NICIS).
+    decl_form_en = _get_decl_form(country_iso3, lang="en")
+    decl_form_fr = _get_decl_form(country_iso3, lang="fr")
+
     if not auth:
-        # Fallback: return bare import declaration
+        # Fallback: return bare import declaration with platform-specific name
         return [
             {
                 "code": "IMPDEC",
-                "document_fr": "Déclaration d'Importation",
-                "document_en": "Import Declaration",
+                "document_fr": decl_form_fr,
+                "document_en": decl_form_en,
                 "authority_fr": f"Customs Authority — {country_iso3}",
                 "authority_en": f"Customs Authority — {country_iso3}",
                 "is_mandatory": True,
@@ -1200,6 +1244,15 @@ def get_formalities_for_line(country_iso3: str, category: str, chapter: str) -> 
 
     builder = _BUCKET_BUILDERS.get(bucket, _b_general)
     formalities = builder(auth)
+
+    # Patch every IMPDEC entry with the platform-specific document name.
+    # The bucket builders use generic names; this ensures each country shows
+    # the correct local declaration form (e.g. IDF for Kenya, Bill of Entry
+    # for South Africa) without requiring all builders to be platform-aware.
+    for fm in formalities:
+        if fm.get("code") == "IMPDEC":
+            fm["document_en"] = decl_form_en
+            fm["document_fr"] = decl_form_fr
 
     # COD (DRC) — OCC universal injection
     # The Office Congolais de Contrôle (OCC) issues a Certificat de Conformité

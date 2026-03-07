@@ -2511,7 +2511,8 @@ class TestNoMockedData:
 
     def test_upgrade_script_default_admin_uses_impdec(self):
         """upgrade_to_enhanced_v2._DEFAULT_ADMIN must use IMPDEC, not code 910."""
-        import sys, os
+        import sys
+        import os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
         from scripts.upgrade_to_enhanced_v2 import _DEFAULT_ADMIN
         codes = {item["code"] for item in _DEFAULT_ADMIN}
@@ -2720,3 +2721,282 @@ class TestCustomsPlatform:
                 f"this should NOT happen since IMPDEC is platform-agnostic. "
                 f"Got codes: {sorted(codes)}"
             )
+
+
+# =============================================================================
+# CUSTOMS PLATFORM UTILITY FUNCTIONS
+# =============================================================================
+
+class TestCustomsPlatformUtilityFunctions:
+    """
+    Verify the new utility functions added to all_countries_registry.py:
+      - get_country_platform()
+      - get_country_declaration_form()
+      - get_countries_by_platform()
+    And that validate_registry() now requires customs_platform.
+    """
+
+    def _load_registry_module(self):
+        """Load the registry module via exec to bypass httpx dependency."""
+        import importlib.util, os, sys
+        reg_path = os.path.join(
+            os.path.dirname(__file__), "..", "crawlers", "all_countries_registry.py"
+        )
+        sys.modules.setdefault("httpx", type(sys)("httpx"))
+        ns = {}
+        with open(reg_path) as f:
+            src = f.read()
+        safe_src = "\n".join(
+            line for line in src.splitlines()
+            if not line.strip().startswith("from .") and not line.strip().startswith("from crawlers.")
+        )
+        exec(compile(safe_src, reg_path, "exec"), ns)
+        return ns
+
+    # ── get_country_platform ─────────────────────────────────────────────────
+
+    def test_get_country_platform_gcnet(self):
+        """GHA → GCNET."""
+        ns = self._load_registry_module()
+        p = ns["get_country_platform"]("GHA")
+        assert p == ns["CustomsPlatform"].GCNET
+
+    def test_get_country_platform_icms(self):
+        """KEN → iCMS."""
+        ns = self._load_registry_module()
+        assert ns["get_country_platform"]("KEN") == ns["CustomsPlatform"].ICMS
+
+    def test_get_country_platform_simba(self):
+        """TZA → SIMBA."""
+        ns = self._load_registry_module()
+        assert ns["get_country_platform"]("TZA") == ns["CustomsPlatform"].SIMBA
+
+    def test_get_country_platform_sars_edi(self):
+        """ZAF → SARS EDI."""
+        ns = self._load_registry_module()
+        assert ns["get_country_platform"]("ZAF") == ns["CustomsPlatform"].SARS_EDI
+
+    def test_get_country_platform_nicis(self):
+        """NGA → NICIS/CuCMS."""
+        ns = self._load_registry_module()
+        assert ns["get_country_platform"]("NGA") == ns["CustomsPlatform"].NICIS
+
+    def test_get_country_platform_nafeza(self):
+        """EGY → NAFEZA."""
+        ns = self._load_registry_module()
+        assert ns["get_country_platform"]("EGY") == ns["CustomsPlatform"].NAFEZA
+
+    def test_get_country_platform_asycuda_world(self):
+        """DZA → ASYCUDA World."""
+        ns = self._load_registry_module()
+        assert ns["get_country_platform"]("DZA") == ns["CustomsPlatform"].ASYCUDA_WORLD
+
+    def test_get_country_platform_case_insensitive(self):
+        """Country code lookup should be case-insensitive."""
+        ns = self._load_registry_module()
+        assert ns["get_country_platform"]("gha") == ns["CustomsPlatform"].GCNET
+
+    def test_get_country_platform_unknown_country(self):
+        """Unknown country code should return None."""
+        ns = self._load_registry_module()
+        assert ns["get_country_platform"]("XYZ") is None
+
+    # ── get_country_declaration_form ─────────────────────────────────────────
+
+    def test_declaration_form_kenya_en(self):
+        """Kenya uses 'Import Declaration Form (IDF)' not generic 'Import Declaration'."""
+        ns = self._load_registry_module()
+        form = ns["get_country_declaration_form"]("KEN", lang="en")
+        assert "IDF" in form, f"KEN EN form: {form}"
+
+    def test_declaration_form_ghana_en(self):
+        """Ghana uses 'CUSDEC' not generic 'Import Declaration'."""
+        ns = self._load_registry_module()
+        form = ns["get_country_declaration_form"]("GHA", lang="en")
+        assert "CUSDEC" in form, f"GHA EN form: {form}"
+
+    def test_declaration_form_nigeria_en(self):
+        """Nigeria uses 'Single Goods Declaration (SGD)'."""
+        ns = self._load_registry_module()
+        form = ns["get_country_declaration_form"]("NGA", lang="en")
+        assert "SGD" in form, f"NGA EN form: {form}"
+
+    def test_declaration_form_south_africa_en(self):
+        """South Africa uses 'Bill of Entry (DA 306)'."""
+        ns = self._load_registry_module()
+        form = ns["get_country_declaration_form"]("ZAF", lang="en")
+        assert "DA 306" in form, f"ZAF EN form: {form}"
+
+    def test_declaration_form_egypt_en(self):
+        """Egypt uses 'Electronic Import Notice (EIN)'."""
+        ns = self._load_registry_module()
+        form = ns["get_country_declaration_form"]("EGY", lang="en")
+        assert "EIN" in form, f"EGY EN form: {form}"
+
+    def test_declaration_form_french(self):
+        """French form name should differ from English for non-generic platforms."""
+        ns = self._load_registry_module()
+        en = ns["get_country_declaration_form"]("KEN", lang="en")
+        fr = ns["get_country_declaration_form"]("KEN", lang="fr")
+        assert en != fr, "French and English form names should differ"
+        assert "IDF" in fr, f"KEN FR form: {fr}"
+
+    def test_declaration_form_asycuda_is_sad(self):
+        """ASYCUDA World countries use SAD (Single Administrative Document)."""
+        ns = self._load_registry_module()
+        form = ns["get_country_declaration_form"]("BWA", lang="en")
+        assert "SAD" in form, f"BWA EN form (ASYCUDA): {form}"
+
+    def test_declaration_form_unknown_country_fallback(self):
+        """Unknown country falls back to generic 'Import Declaration'."""
+        ns = self._load_registry_module()
+        form = ns["get_country_declaration_form"]("XYZ", lang="en")
+        assert form == "Import Declaration"
+
+    # ── get_countries_by_platform ─────────────────────────────────────────────
+
+    def test_get_countries_by_platform_gcnet(self):
+        """Only GHA uses GCNET."""
+        ns = self._load_registry_module()
+        countries = ns["get_countries_by_platform"](ns["CustomsPlatform"].GCNET)
+        assert countries == ["GHA"]
+
+    def test_get_countries_by_platform_simba(self):
+        """Only TZA uses SIMBA."""
+        ns = self._load_registry_module()
+        countries = ns["get_countries_by_platform"](ns["CustomsPlatform"].SIMBA)
+        assert countries == ["TZA"]
+
+    def test_get_countries_by_platform_sars_edi(self):
+        """Only ZAF uses SARS EDI."""
+        ns = self._load_registry_module()
+        countries = ns["get_countries_by_platform"](ns["CustomsPlatform"].SARS_EDI)
+        assert countries == ["ZAF"]
+
+    def test_get_countries_by_platform_asycuda_world_count(self):
+        """42 countries should use ASYCUDA World."""
+        ns = self._load_registry_module()
+        countries = ns["get_countries_by_platform"](ns["CustomsPlatform"].ASYCUDA_WORLD)
+        assert len(countries) >= 30, f"Expected ≥30 ASYCUDA World countries, got {len(countries)}"
+        assert "GHA" not in countries
+        assert "NGA" not in countries
+        assert "KEN" not in countries
+        assert "TZA" not in countries
+        assert "ZAF" not in countries
+
+    def test_get_countries_by_platform_results_are_sorted(self):
+        """Results from get_countries_by_platform must be sorted."""
+        ns = self._load_registry_module()
+        countries = ns["get_countries_by_platform"](ns["CustomsPlatform"].ASYCUDA_WORLD)
+        assert countries == sorted(countries)
+
+    # ── validate_registry includes customs_platform ─────────────────────────
+
+    def test_validate_registry_includes_customs_platform(self):
+        """validate_registry() must flag countries missing customs_platform."""
+        ns = self._load_registry_module()
+        # Tamper with one entry by temporarily removing customs_platform
+        reg = ns["AFRICAN_COUNTRIES_REGISTRY"]
+        original = reg["AGO"].pop("customs_platform")
+        try:
+            report = ns["validate_registry"]()
+            assert any("customs_platform" in item for item in report["missing_data"]), (
+                "validate_registry() should flag missing customs_platform"
+            )
+        finally:
+            reg["AGO"]["customs_platform"] = original
+
+    def test_validate_registry_passes_with_all_platforms(self):
+        """validate_registry() should report no missing_data for the full registry."""
+        ns = self._load_registry_module()
+        report = ns["validate_registry"]()
+        assert report["missing_data"] == [], (
+            f"Registry has missing data: {report['missing_data']}"
+        )
+
+    # ── Platform-specific names propagate through get_formalities_for_line ───
+
+    def test_formality_impdec_uses_platform_name_kenya(self):
+        """get_formalities_for_line('KEN', ...) IMPDEC document_en must be IDF, not generic."""
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+        try:
+            from etl.africa_formalities import get_formalities_for_line
+        except ImportError:
+            import pytest
+            pytest.skip("africa_formalities import failed")
+        forms = get_formalities_for_line("KEN", "general", "87")
+        impdec = next((f for f in forms if f["code"] == "IMPDEC"), None)
+        assert impdec is not None, "KEN: no IMPDEC formality found"
+        assert "IDF" in impdec["document_en"], (
+            f"KEN IMPDEC document_en should contain 'IDF', got: {impdec['document_en']}"
+        )
+
+    def test_formality_impdec_uses_platform_name_ghana(self):
+        """get_formalities_for_line('GHA', ...) IMPDEC document_en must be CUSDEC."""
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+        try:
+            from etl.africa_formalities import get_formalities_for_line
+        except ImportError:
+            import pytest
+            pytest.skip("africa_formalities import failed")
+        forms = get_formalities_for_line("GHA", "general", "87")
+        impdec = next((f for f in forms if f["code"] == "IMPDEC"), None)
+        assert impdec is not None, "GHA: no IMPDEC formality found"
+        assert "CUSDEC" in impdec["document_en"], (
+            f"GHA IMPDEC document_en should contain 'CUSDEC', got: {impdec['document_en']}"
+        )
+
+    def test_formality_impdec_uses_platform_name_south_africa(self):
+        """get_formalities_for_line('ZAF', ...) IMPDEC must show Bill of Entry DA 306."""
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+        try:
+            from etl.africa_formalities import get_formalities_for_line
+        except ImportError:
+            import pytest
+            pytest.skip("africa_formalities import failed")
+        forms = get_formalities_for_line("ZAF", "general", "87")
+        impdec = next((f for f in forms if f["code"] == "IMPDEC"), None)
+        assert impdec is not None, "ZAF: no IMPDEC formality found"
+        assert "DA 306" in impdec["document_en"], (
+            f"ZAF IMPDEC document_en should contain 'DA 306', got: {impdec['document_en']}"
+        )
+
+    def test_formality_impdec_uses_platform_name_nigeria(self):
+        """get_formalities_for_line('NGA', ...) IMPDEC must show SGD."""
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+        try:
+            from etl.africa_formalities import get_formalities_for_line
+        except ImportError:
+            import pytest
+            pytest.skip("africa_formalities import failed")
+        forms = get_formalities_for_line("NGA", "general", "87")
+        impdec = next((f for f in forms if f["code"] == "IMPDEC"), None)
+        assert impdec is not None, "NGA: no IMPDEC formality found"
+        assert "SGD" in impdec["document_en"], (
+            f"NGA IMPDEC document_en should contain 'SGD', got: {impdec['document_en']}"
+        )
+
+    def test_formality_impdec_asycuda_uses_sad(self):
+        """ASYCUDA World countries should show SAD in IMPDEC document_en."""
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+        try:
+            from etl.africa_formalities import get_formalities_for_line
+        except ImportError:
+            import pytest
+            pytest.skip("africa_formalities import failed")
+        forms = get_formalities_for_line("BWA", "general", "87")
+        impdec = next((f for f in forms if f["code"] == "IMPDEC"), None)
+        assert impdec is not None, "BWA: no IMPDEC formality found"
+        assert "SAD" in impdec["document_en"], (
+            f"BWA (ASYCUDA World) IMPDEC document_en should contain 'SAD', got: {impdec['document_en']}"
+        )
