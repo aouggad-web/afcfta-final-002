@@ -91,7 +91,13 @@ HORN OF AFRICA / GREATER AFRICA
   STP  Serviço Nacional das Alfândegas (AGOSTEP) / Ministério da Saúde
   CPV  Direcção Geral das Alfândegas / ARFA (food/pharma) / IGAE (standards)
 
-Regulatory document code scheme (UNCTAD ASYCUDA-compatible mnemonic codes):
+Regulatory document code scheme (UNCTAD NTM-aligned functional codes — platform-agnostic):
+
+  These codes describe the TYPE of document / control required, independent of
+  the customs management software in use (ASYCUDA World, GCNET, SIMBA, iCMS,
+  BADR, NICIS, NAFEZA, ECTS, TradeNet, etc.).  See CUSTOMS_PLATFORM in
+  crawlers/all_countries_registry.py for the actual platform per country.
+
   IMPDEC   Import Declaration (universal — all imports)
   VETCERT  Veterinary / Sanitary Certificate (animal products, SPS measure)
   PHYTOCERT Phytosanitary Certificate (plant products, SPS measure)

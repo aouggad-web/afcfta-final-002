@@ -2311,7 +2311,7 @@ class TestAllAfricaFormalities:
 
 
 # =============================================================================
-# NO MOCKED DATA — Verify every country uses real ASYCUDA-compatible codes
+# NO MOCKED DATA — Verify every country uses real functional document codes
 # =============================================================================
 
 class TestNoMockedData:
@@ -2321,10 +2321,13 @@ class TestNoMockedData:
 
     Background:
     - Code "910" is the REAL DGD/ADII/GUCE import declaration code for
-      DZA, MAR and TUN (North Africa ASYCUDA systems).  It is legitimate
+      DZA, MAR and TUN (North-Africa national code schemes).  It is legitimate
       only for those three countries.
-    - All other countries must use the ASYCUDA-compatible code "IMPDEC"
-      (or a country-specific code) — never the generic "910" placeholder.
+    - IMPDEC/VETCERT/PHYTOCERT/… are UNCTAD NTM-aligned functional document-type
+      codes, NOT ASYCUDA codes.  They are platform-agnostic and apply to all
+      countries regardless of which customs software they use (ASYCUDA World,
+      GCNET, iCMS, SIMBA, BADR, NICIS, NAFEZA, ECTS, TradeNet, etc.).
+    - "910" must NEVER be used as a generic fallback for non-North-Africa countries.
     """
 
     # Countries where code "910" is a genuine customs code
@@ -2407,11 +2410,14 @@ class TestNoMockedData:
     # ── Crawled data: all 54 countries must have multi-type formalities ───
 
     def test_all_crawled_countries_have_impdec(self):
-        """Every country in data/crawled/ must include IMPDEC formality,
+        """Every country in data/crawled/ must include IMPDEC functional code,
         except North-African countries that use their own national code schemes
-        (DZA/MAR/TUN use their own ASYCUDA codes: 910/210/C01-C11/101-109)."""
+        (DZA/MAR/TUN use their own codes: 910/210/C01-C11/101-109).
+        Note: IMPDEC is a UNCTAD NTM functional code — platform-agnostic, NOT
+        specific to ASYCUDA. It applies regardless of which customs software
+        the country uses (GCNET, iCMS, SIMBA, NAFEZA, NICIS, etc.)."""
         import json, os
-        # North-African countries use national ASYCUDA code schemes instead of IMPDEC
+        # North-African countries use national code schemes instead of IMPDEC
         _NATIONAL_SCHEME = {"DZA", "MAR", "TUN"}
         crawled_dir = os.path.join(os.path.dirname(__file__), "..", "data", "crawled")
         missing = []
@@ -2461,25 +2467,25 @@ class TestNoMockedData:
     # ── data/tariffs/ stale files: must now use real codes ───────────────
 
     def test_eth_tariffs_dir_uses_real_codes(self):
-        """data/tariffs/ETH must use real ASYCUDA codes (not just 910)."""
+        """data/tariffs/ETH must use real functional codes (not just 910)."""
         codes = self._tariffs_codes("ETH")
         assert "910" not in codes, f"ETH (data/tariffs) still has mocked 910"
         assert "IMPDEC" in codes
 
     def test_sdn_tariffs_dir_uses_real_codes(self):
-        """data/tariffs/SDN must use real ASYCUDA codes."""
+        """data/tariffs/SDN must use real functional codes."""
         codes = self._tariffs_codes("SDN")
         assert "910" not in codes, f"SDN (data/tariffs) still has mocked 910"
         assert "IMPDEC" in codes
 
     def test_som_tariffs_dir_uses_real_codes(self):
-        """data/tariffs/SOM must use real ASYCUDA codes."""
+        """data/tariffs/SOM must use real functional codes."""
         codes = self._tariffs_codes("SOM")
         assert "910" not in codes, f"SOM (data/tariffs) still has mocked 910"
         assert "IMPDEC" in codes
 
     def test_stp_tariffs_dir_uses_real_codes(self):
-        """data/tariffs/STP must use real ASYCUDA codes."""
+        """data/tariffs/STP must use real functional codes."""
         codes = self._tariffs_codes("STP")
         assert "910" not in codes, f"STP (data/tariffs) still has mocked 910"
         assert "IMPDEC" in codes
@@ -2528,3 +2534,189 @@ class TestNoMockedData:
         """TUN must still have code 910 (GUCE official code)."""
         codes = self._crawled_codes("TUN")
         assert "910" in codes, "TUN lost its real code 910"
+
+
+# =============================================================================
+# CUSTOMS PLATFORM REGISTRY — Verify every country has a real platform entry
+# =============================================================================
+
+class TestCustomsPlatform:
+    """
+    Verify that the CustomsPlatform registry in all_countries_registry.py
+    accurately reflects the customs management software used by each of the
+    54 African countries.
+
+    Key facts:
+    - IMPDEC/VETCERT/… formality codes are UNCTAD NTM functional codes, NOT
+      ASYCUDA codes.  They apply regardless of which customs platform is used.
+    - Not all African customs administrations use ASYCUDA.  Known non-ASYCUDA:
+        GHA → GCNET           NGA → NICIS/CuCMS
+        KEN → iCMS            TZA → SIMBA
+        ZAF → SARS EDI        EGY → NAFEZA
+        MAR → BADR            TUN → SINDA (ASYCUDA-derived, national codes)
+        ETH → ECTS            MUS → TradeNet
+        SEN → GAINDE          COD → SYDONIA/ASYCUDA (heavily customised)
+    """
+
+    def _load_registry(self):
+        """Load AFRICAN_COUNTRIES_REGISTRY via direct file import."""
+        import importlib.util, os, sys
+        reg_path = os.path.join(
+            os.path.dirname(__file__), "..", "crawlers", "all_countries_registry.py"
+        )
+        spec = importlib.util.spec_from_file_location("all_countries_registry", reg_path)
+        mod = importlib.util.module_from_spec(spec)
+        # Stub out httpx-dependent sub-imports
+        sys.modules.setdefault("httpx", type(sys)("httpx"))
+        try:
+            spec.loader.exec_module(mod)
+        except Exception:
+            # If crawler imports fail, load just what we need via exec
+            with open(reg_path) as f:
+                src = f.read()
+            ns = {}
+            # Strip the import of crawlers submodules that need httpx
+            safe_src = "\n".join(
+                line for line in src.splitlines()
+                if not line.strip().startswith("from .") and not line.strip().startswith("from crawlers.")
+            )
+            exec(compile(safe_src, reg_path, "exec"), ns)
+            return ns["AFRICAN_COUNTRIES_REGISTRY"], ns["CustomsPlatform"], ns["CUSTOMS_PLATFORM_INFO"]
+        return mod.AFRICAN_COUNTRIES_REGISTRY, mod.CustomsPlatform, mod.CUSTOMS_PLATFORM_INFO
+
+    def test_all_54_countries_have_customs_platform(self):
+        """All 54 countries must have a customs_platform field."""
+        registry, _, _ = self._load_registry()
+        missing = [cc for cc, data in registry.items() if "customs_platform" not in data]
+        assert missing == [], f"Countries missing customs_platform: {missing}"
+        assert len(registry) == 54, f"Expected 54 countries, got {len(registry)}"
+
+    def test_customs_platform_values_are_valid_enum_members(self):
+        """customs_platform values must be valid CustomsPlatform enum members."""
+        registry, CustomsPlatform, _ = self._load_registry()
+        valid_values = {p.value for p in CustomsPlatform}
+        invalid = []
+        for cc, data in registry.items():
+            p = data.get("customs_platform")
+            if p is not None and p.value not in valid_values:
+                invalid.append(f"{cc}: {p!r}")
+        assert invalid == [], f"Invalid platform values: {invalid}"
+
+    def test_non_asycuda_countries_identified(self):
+        """Key non-ASYCUDA countries must NOT be mapped to ASYCUDA_WORLD."""
+        registry, CustomsPlatform, _ = self._load_registry()
+        # These countries are definitively NOT standard ASYCUDA World
+        non_asycuda = {
+            "GHA": "GCNET",
+            "NGA": "NICIS",
+            "KEN": "ICMS",
+            "TZA": "SIMBA",
+            "ZAF": "SARS_EDI",
+            "EGY": "NAFEZA",
+            "MAR": "BADR",
+            "TUN": "SINDA",
+            "ETH": "ECTS",
+            "MUS": "TRADENET",
+        }
+        for cc, expected_attr in non_asycuda.items():
+            data = registry.get(cc, {})
+            platform = data.get("customs_platform")
+            assert platform is not None, f"{cc}: missing customs_platform"
+            expected = getattr(CustomsPlatform, expected_attr)
+            assert platform == expected, (
+                f"{cc}: expected platform {expected.value!r}, got {platform.value!r}"
+            )
+
+    # Minimum number of African countries expected to use ASYCUDA World
+    _MIN_ASYCUDA_WORLD_COUNTRIES = 30
+
+    def test_asycuda_world_is_most_common_platform(self):
+        """ASYCUDA World should be the majority platform (≥30 countries)."""
+        registry, CustomsPlatform, _ = self._load_registry()
+        asycuda_count = sum(
+            1 for data in registry.values()
+            if data.get("customs_platform") == CustomsPlatform.ASYCUDA_WORLD
+        )
+        assert asycuda_count >= self._MIN_ASYCUDA_WORLD_COUNTRIES, (
+            f"Expected ≥{self._MIN_ASYCUDA_WORLD_COUNTRIES} ASYCUDA World countries, got {asycuda_count}"
+        )
+
+    def test_dza_uses_asycuda_world(self):
+        """DZA must use ASYCUDA World (national code scheme uses numeric codes like 910)."""
+        registry, CustomsPlatform, _ = self._load_registry()
+        platform = registry["DZA"]["customs_platform"]
+        assert platform == CustomsPlatform.ASYCUDA_WORLD
+
+    def test_mar_uses_badr(self):
+        """MAR must use BADR (Morocco's fully national system, not ASYCUDA)."""
+        registry, CustomsPlatform, _ = self._load_registry()
+        platform = registry["MAR"]["customs_platform"]
+        assert platform == CustomsPlatform.BADR
+
+    def test_ken_uses_icms(self):
+        """KEN must use iCMS (KRA's national system, replaced SIMBA in 2022)."""
+        registry, CustomsPlatform, _ = self._load_registry()
+        platform = registry["KEN"]["customs_platform"]
+        assert platform == CustomsPlatform.ICMS
+
+    def test_tza_uses_simba(self):
+        """TZA must use SIMBA (TRA system, not ASYCUDA)."""
+        registry, CustomsPlatform, _ = self._load_registry()
+        platform = registry["TZA"]["customs_platform"]
+        assert platform == CustomsPlatform.SIMBA
+
+    def test_gha_uses_gcnet(self):
+        """GHA must use GCNET (Ghana Revenue Authority, not ASYCUDA)."""
+        registry, CustomsPlatform, _ = self._load_registry()
+        platform = registry["GHA"]["customs_platform"]
+        assert platform == CustomsPlatform.GCNET
+
+    def test_cod_uses_sydonia(self):
+        """COD must use SYDONIA/ASYCUDA (DRC's ASYCUDA-derived system)."""
+        registry, CustomsPlatform, _ = self._load_registry()
+        platform = registry["COD"]["customs_platform"]
+        assert platform == CustomsPlatform.SYDONIA
+
+    def test_customs_platform_info_covers_all_enum_members(self):
+        """CUSTOMS_PLATFORM_INFO dict must have an entry for every CustomsPlatform value."""
+        _, CustomsPlatform, CUSTOMS_PLATFORM_INFO = self._load_registry()
+        missing = []
+        for p in CustomsPlatform:
+            if p.value not in CUSTOMS_PLATFORM_INFO:
+                missing.append(p.value)
+        assert missing == [], f"CustomsPlatform values not in CUSTOMS_PLATFORM_INFO: {missing}"
+
+    def test_customs_platform_info_has_required_keys(self):
+        """Every entry in CUSTOMS_PLATFORM_INFO must have vendor and notes."""
+        _, _, CUSTOMS_PLATFORM_INFO = self._load_registry()
+        for platform, info in CUSTOMS_PLATFORM_INFO.items():
+            assert "vendor" in info, f"{platform}: missing 'vendor'"
+            assert "notes" in info, f"{platform}: missing 'notes'"
+            assert "url" in info, f"{platform}: missing 'url'"
+            assert info["vendor"], f"{platform}: empty vendor"
+
+    def test_formality_codes_are_platform_agnostic(self):
+        """IMPDEC formality code must appear for non-ASYCUDA countries (GHA, NGA, KEN, TZA, ZAF).
+
+        This confirms IMPDEC is a functional code, not an ASYCUDA-specific code.
+        If IMPDEC were ASYCUDA-only, these countries' crawled data would be wrong.
+        """
+        import json, os
+        non_asycuda_with_impdec = ["GHA", "NGA", "KEN", "TZA", "ZAF"]
+        crawled_dir = os.path.join(os.path.dirname(__file__), "..", "data", "crawled")
+        for cc in non_asycuda_with_impdec:
+            path = os.path.join(crawled_dir, f"{cc}_tariffs.json")
+            if not os.path.exists(path):
+                continue
+            with open(path) as f:
+                d = json.load(f)
+            codes = {
+                fm["code"]
+                for line in d.get("tariff_lines", [])
+                for fm in line.get("administrative_formalities", [])
+            }
+            assert "IMPDEC" in codes, (
+                f"{cc} (non-ASYCUDA platform) is missing IMPDEC — "
+                f"this should NOT happen since IMPDEC is platform-agnostic. "
+                f"Got codes: {sorted(codes)}"
+            )
