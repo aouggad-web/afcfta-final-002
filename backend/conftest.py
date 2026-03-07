@@ -38,6 +38,9 @@ _REQUIRED_PACKAGES: list[tuple[str, str]] = [
     ("motor",           "motor==3.3.1"),
     ("pydantic",        "pydantic==2.12.0"),
     ("pytest_asyncio",  "pytest-asyncio==1.3.0"),
+    ("fastapi",         "fastapi[standard]==0.115.12"),
+    ("pandas",          "pandas>=2.0"),
+    ("openpyxl",        "openpyxl>=3.1"),
 ]
 
 
