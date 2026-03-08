@@ -53,6 +53,60 @@ def generate_demo_data(output_dir: Path):
                     "B": 1500,
                     "C": 352
                 }
+            },
+            "CM": {
+                "name": "Cameroun",
+                "total_lines": 5800,
+                "categories": {
+                    "A": 3800,
+                    "B": 1400,
+                    "C": 600
+                }
+            },
+            "CF": {
+                "name": "République Centrafricaine",
+                "total_lines": 4200,
+                "categories": {
+                    "A": 2800,
+                    "B": 1000,
+                    "C": 400
+                }
+            },
+            "TD": {
+                "name": "Tchad",
+                "total_lines": 4500,
+                "categories": {
+                    "A": 3000,
+                    "B": 1100,
+                    "C": 400
+                }
+            },
+            "CG": {
+                "name": "République du Congo",
+                "total_lines": 4800,
+                "categories": {
+                    "A": 3200,
+                    "B": 1200,
+                    "C": 400
+                }
+            },
+            "GQ": {
+                "name": "Guinée Équatoriale",
+                "total_lines": 3500,
+                "categories": {
+                    "A": 2300,
+                    "B": 850,
+                    "C": 350
+                }
+            },
+            "GA": {
+                "name": "Gabon",
+                "total_lines": 5200,
+                "categories": {
+                    "A": 3500,
+                    "B": 1200,
+                    "C": 500
+                }
             }
         }
     }
@@ -94,6 +148,16 @@ def generate_demo_data(output_dir: Path):
         ["MA", "85", "B", "15.0", "10.0", "5.0", "0.0"],
         ["ZA", "84", "A", "8.0", "4.0", "1.0", "0.0"],
         ["ZA", "61", "C", "20.0", "15.0", "10.0", "5.0"],
+        # CEMAC countries (CEMAC CET: 5/10/20/30%)
+        ["CM", "27", "A", "5.0", "2.5", "0.0", "0.0"],
+        ["CM", "44", "B", "10.0", "7.0", "3.0", "0.0"],
+        ["CM", "84", "A", "10.0", "5.0", "2.0", "0.0"],
+        ["CF", "27", "A", "5.0", "2.5", "0.0", "0.0"],
+        ["TD", "27", "A", "5.0", "2.5", "0.0", "0.0"],
+        ["CG", "27", "A", "5.0", "2.5", "0.0", "0.0"],
+        ["GQ", "27", "A", "5.0", "2.5", "0.0", "0.0"],
+        ["GA", "44", "B", "10.0", "7.0", "3.0", "0.0"],
+        ["GA", "26", "A", "5.0", "2.5", "0.0", "0.0"],
     ]
     
     with open(output_dir / 'zlecaf_dismantling_schedule.csv', 'w', encoding='utf-8', newline='') as f:

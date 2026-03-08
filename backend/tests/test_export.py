@@ -4,7 +4,7 @@ Tests for export endpoints
 import pytest
 from unittest.mock import MagicMock
 from fastapi.testclient import TestClient
-from backend.routers.export_router import router, init_db
+from routers.export_router import router, init_db
 import io
 import pandas as pd
 
