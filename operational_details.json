@@ -1,0 +1,1163 @@
+{
+  "metadata": {
+    "title": "Operational Details & Fees - African Free Zones",
+    "description": "Detailed operational costs, fees, and regulatory requirements for African free zones",
+    "version": "1.0.0",
+    "generated_at": "2025-01-15T00:00:00Z",
+    "methodology": {
+      "currency": "USD (2024 estimates)",
+      "labor_costs": "Gross monthly wages including statutory contributions",
+      "utility_costs": "Commercial tariff rates applicable to zone tenants",
+      "data_sources": [
+        "Zone Authority Fee Schedules",
+        "OECD Cost of Doing Business",
+        "ILO Wage Database",
+        "Utility Provider Tariffs",
+        "Expert Assessment 2024"
+      ]
+    },
+    "total_zones": 30
+  },
+  "zones": [
+    {
+      "zone_id": "MAR-TFZ-001",
+      "zone_name": "Tanger Med Zones (TMZ)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "setup": {
+        "estimated_cost_usd": 50000,
+        "typical_timeline_months": 3,
+        "minimum_investment_usd": 100000
+      },
+      "annual_fees_usd": 8000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.09,
+        "water_usd_per_m3": 0.8,
+        "internet_mbps_included": 45
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 12,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 350,
+        "semi_skilled": 525,
+        "skilled": 900,
+        "managerial": 1800
+      },
+      "incentives": {
+        "tax_incentive_score": 85,
+        "corporate_tax_rate_pct": 8.8,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 6000,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MAR-KEN-001",
+      "zone_name": "Atlantic Free Zone (Kenitra)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "setup": {
+        "estimated_cost_usd": 38000,
+        "typical_timeline_months": 4,
+        "minimum_investment_usd": 76000
+      },
+      "annual_fees_usd": 6500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.1,
+        "water_usd_per_m3": 0.9,
+        "internet_mbps_included": 35
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 9,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 300,
+        "semi_skilled": 450,
+        "skilled": 780,
+        "managerial": 1560
+      },
+      "incentives": {
+        "tax_incentive_score": 82,
+        "corporate_tax_rate_pct": 9.5,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5000,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "EGY-SCZ-001",
+      "zone_name": "Suez Canal Economic Zone (SCZone)",
+      "country_iso": "EGY",
+      "region": "North Africa",
+      "setup": {
+        "estimated_cost_usd": 45000,
+        "typical_timeline_months": 4,
+        "minimum_investment_usd": 90000
+      },
+      "annual_fees_usd": 7000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.06,
+        "water_usd_per_m3": 0.5,
+        "internet_mbps_included": 40
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 8,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 200,
+        "semi_skilled": 300,
+        "skilled": 600,
+        "managerial": 1200
+      },
+      "incentives": {
+        "tax_incentive_score": 80,
+        "corporate_tax_rate_pct": 10.0,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5500,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DJI-DIFTZ-001",
+      "zone_name": "Djibouti International Free Trade Zone",
+      "country_iso": "DJI",
+      "region": "East Africa",
+      "setup": {
+        "estimated_cost_usd": 40000,
+        "typical_timeline_months": 3,
+        "minimum_investment_usd": 80000
+      },
+      "annual_fees_usd": 7500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.14,
+        "water_usd_per_m3": 2.5,
+        "internet_mbps_included": 30
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 10,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 250,
+        "semi_skilled": 375,
+        "skilled": 700,
+        "managerial": 1400
+      },
+      "incentives": {
+        "tax_incentive_score": 80,
+        "corporate_tax_rate_pct": 10.0,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 6000,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NGA-LEK-001",
+      "zone_name": "Lekki Free Trade Zone",
+      "country_iso": "NGA",
+      "region": "West Africa",
+      "setup": {
+        "estimated_cost_usd": 55000,
+        "typical_timeline_months": 6,
+        "minimum_investment_usd": 110000
+      },
+      "annual_fees_usd": 9000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.18,
+        "water_usd_per_m3": 1.2,
+        "internet_mbps_included": 25
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 7,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 180,
+        "semi_skilled": 270,
+        "skilled": 550,
+        "managerial": 1100
+      },
+      "incentives": {
+        "tax_incentive_score": 72,
+        "corporate_tax_rate_pct": 12.0,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 8000,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-TIN-001",
+      "zone_name": "Zone Franche de Tindouf",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "setup": {
+        "estimated_cost_usd": 35000,
+        "typical_timeline_months": 8,
+        "minimum_investment_usd": 70000
+      },
+      "annual_fees_usd": 5000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.04,
+        "water_usd_per_m3": 0.4,
+        "internet_mbps_included": 15
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 4,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 220,
+        "semi_skilled": 330,
+        "skilled": 520,
+        "managerial": 1040
+      },
+      "incentives": {
+        "tax_incentive_score": 68,
+        "corporate_tax_rate_pct": 13.0,
+        "import_duty_exemption": true,
+        "vat_exemption": false,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5500,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-ELO-001",
+      "zone_name": "Zone Franche d'Oran (Bethioua)",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "setup": {
+        "estimated_cost_usd": 32000,
+        "typical_timeline_months": 7,
+        "minimum_investment_usd": 64000
+      },
+      "annual_fees_usd": 5500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.04,
+        "water_usd_per_m3": 0.4,
+        "internet_mbps_included": 20
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 5,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 230,
+        "semi_skilled": 345,
+        "skilled": 540,
+        "managerial": 1080
+      },
+      "incentives": {
+        "tax_incentive_score": 70,
+        "corporate_tax_rate_pct": 12.5,
+        "import_duty_exemption": true,
+        "vat_exemption": false,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5000,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GAB-NKO-001",
+      "zone_name": "Zone Economique Speciale de Nkok (GSEZ)",
+      "country_iso": "GAB",
+      "region": "Central Africa",
+      "setup": {
+        "estimated_cost_usd": 42000,
+        "typical_timeline_months": 5,
+        "minimum_investment_usd": 84000
+      },
+      "annual_fees_usd": 7000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.1,
+        "water_usd_per_m3": 1.0,
+        "internet_mbps_included": 25
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 8,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 280,
+        "semi_skilled": 420,
+        "skilled": 650,
+        "managerial": 1300
+      },
+      "incentives": {
+        "tax_incentive_score": 75,
+        "corporate_tax_rate_pct": 11.2,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 6500,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "SEN-DIS-001",
+      "zone_name": "Zone Economique Speciale (DAKAR)",
+      "country_iso": "SEN",
+      "region": "West Africa",
+      "setup": {
+        "estimated_cost_usd": 38000,
+        "typical_timeline_months": 5,
+        "minimum_investment_usd": 76000
+      },
+      "annual_fees_usd": 6500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.12,
+        "water_usd_per_m3": 1.1,
+        "internet_mbps_included": 28
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 7,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 200,
+        "semi_skilled": 300,
+        "skilled": 580,
+        "managerial": 1160
+      },
+      "incentives": {
+        "tax_incentive_score": 75,
+        "corporate_tax_rate_pct": 11.2,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5500,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BEN-GLO-001",
+      "zone_name": "Zone Economique Speciale (Glo-Djigbe)",
+      "country_iso": "BEN",
+      "region": "West Africa",
+      "setup": {
+        "estimated_cost_usd": 28000,
+        "typical_timeline_months": 5,
+        "minimum_investment_usd": 56000
+      },
+      "annual_fees_usd": 5000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.14,
+        "water_usd_per_m3": 1.2,
+        "internet_mbps_included": 18
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 5,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 150,
+        "semi_skilled": 225,
+        "skilled": 450,
+        "managerial": 900
+      },
+      "incentives": {
+        "tax_incentive_score": 72,
+        "corporate_tax_rate_pct": 12.0,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4500,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TGO-PIA-001",
+      "zone_name": "Plateforme Industrielle d'Adetikope (PIA)",
+      "country_iso": "TGO",
+      "region": "West Africa",
+      "setup": {
+        "estimated_cost_usd": 30000,
+        "typical_timeline_months": 4,
+        "minimum_investment_usd": 60000
+      },
+      "annual_fees_usd": 5500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.13,
+        "water_usd_per_m3": 1.1,
+        "internet_mbps_included": 22
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 5,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 160,
+        "semi_skilled": 240,
+        "skilled": 470,
+        "managerial": 940
+      },
+      "incentives": {
+        "tax_incentive_score": 75,
+        "corporate_tax_rate_pct": 11.2,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4500,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZAF-COE-001",
+      "zone_name": "Coega Special Economic Zone",
+      "country_iso": "ZAF",
+      "region": "Southern Africa",
+      "setup": {
+        "estimated_cost_usd": 65000,
+        "typical_timeline_months": 4,
+        "minimum_investment_usd": 130000
+      },
+      "annual_fees_usd": 10000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.12,
+        "water_usd_per_m3": 0.9,
+        "internet_mbps_included": 55
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 14,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 500,
+        "semi_skilled": 750,
+        "skilled": 1400,
+        "managerial": 2800
+      },
+      "incentives": {
+        "tax_incentive_score": 78,
+        "corporate_tax_rate_pct": 10.5,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 8500,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MUS-MFP-001",
+      "zone_name": "Mauritius Freeport & Smart City",
+      "country_iso": "MUS",
+      "region": "East Africa",
+      "setup": {
+        "estimated_cost_usd": 70000,
+        "typical_timeline_months": 2,
+        "minimum_investment_usd": 140000
+      },
+      "annual_fees_usd": 9000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.16,
+        "water_usd_per_m3": 1.5,
+        "internet_mbps_included": 100
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 20,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 600,
+        "semi_skilled": 900,
+        "skilled": 1800,
+        "managerial": 3600
+      },
+      "incentives": {
+        "tax_incentive_score": 90,
+        "corporate_tax_rate_pct": 7.5,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 7000,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ETH-HAW-001",
+      "zone_name": "Hawassa Industrial Park",
+      "country_iso": "ETH",
+      "region": "East Africa",
+      "setup": {
+        "estimated_cost_usd": 25000,
+        "typical_timeline_months": 6,
+        "minimum_investment_usd": 50000
+      },
+      "annual_fees_usd": 4000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.04,
+        "water_usd_per_m3": 0.3,
+        "internet_mbps_included": 12
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 2,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 80,
+        "semi_skilled": 120,
+        "skilled": 280,
+        "managerial": 560
+      },
+      "incentives": {
+        "tax_incentive_score": 80,
+        "corporate_tax_rate_pct": 10.0,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4000,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "KEN-EPZ-001",
+      "zone_name": "Nairobi Export Processing Zone",
+      "country_iso": "KEN",
+      "region": "East Africa",
+      "setup": {
+        "estimated_cost_usd": 40000,
+        "typical_timeline_months": 4,
+        "minimum_investment_usd": 80000
+      },
+      "annual_fees_usd": 6500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.18,
+        "water_usd_per_m3": 1.4,
+        "internet_mbps_included": 35
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 8,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 250,
+        "semi_skilled": 375,
+        "skilled": 700,
+        "managerial": 1400
+      },
+      "incentives": {
+        "tax_incentive_score": 78,
+        "corporate_tax_rate_pct": 10.5,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5500,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TUN-PAE-001",
+      "zone_name": "Parc d'Activites Economiques de Zarzis",
+      "country_iso": "TUN",
+      "region": "North Africa",
+      "setup": {
+        "estimated_cost_usd": 35000,
+        "typical_timeline_months": 4,
+        "minimum_investment_usd": 70000
+      },
+      "annual_fees_usd": 5500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.08,
+        "water_usd_per_m3": 0.7,
+        "internet_mbps_included": 30
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 7,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 260,
+        "semi_skilled": 390,
+        "skilled": 620,
+        "managerial": 1240
+      },
+      "incentives": {
+        "tax_incentive_score": 78,
+        "corporate_tax_rate_pct": 10.5,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5000,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CMR-KRI-001",
+      "zone_name": "Zone Industrielle de Kribi (ZIK)",
+      "country_iso": "CMR",
+      "region": "Central Africa",
+      "setup": {
+        "estimated_cost_usd": 38000,
+        "typical_timeline_months": 7,
+        "minimum_investment_usd": 76000
+      },
+      "annual_fees_usd": 6000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.09,
+        "water_usd_per_m3": 0.8,
+        "internet_mbps_included": 18
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 6,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 200,
+        "semi_skilled": 300,
+        "skilled": 520,
+        "managerial": 1040
+      },
+      "incentives": {
+        "tax_incentive_score": 68,
+        "corporate_tax_rate_pct": 13.0,
+        "import_duty_exemption": true,
+        "vat_exemption": false,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 6000,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GHA-TEM-001",
+      "zone_name": "Tema Export Processing Zone",
+      "country_iso": "GHA",
+      "region": "West Africa",
+      "setup": {
+        "estimated_cost_usd": 38000,
+        "typical_timeline_months": 5,
+        "minimum_investment_usd": 76000
+      },
+      "annual_fees_usd": 6000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.15,
+        "water_usd_per_m3": 1.2,
+        "internet_mbps_included": 28
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 7,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 220,
+        "semi_skilled": 330,
+        "skilled": 580,
+        "managerial": 1160
+      },
+      "incentives": {
+        "tax_incentive_score": 75,
+        "corporate_tax_rate_pct": 11.2,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5500,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "RWA-KSE-001",
+      "zone_name": "Kigali Special Economic Zone (KSEZ)",
+      "country_iso": "RWA",
+      "region": "East Africa",
+      "setup": {
+        "estimated_cost_usd": 35000,
+        "typical_timeline_months": 3,
+        "minimum_investment_usd": 70000
+      },
+      "annual_fees_usd": 6000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.22,
+        "water_usd_per_m3": 1.6,
+        "internet_mbps_included": 45
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 8,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 180,
+        "semi_skilled": 270,
+        "skilled": 520,
+        "managerial": 1040
+      },
+      "incentives": {
+        "tax_incentive_score": 82,
+        "corporate_tax_rate_pct": 9.5,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4500,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CIV-PK-001",
+      "zone_name": "Parc Industriel de Koumassi (PIK)",
+      "country_iso": "CIV",
+      "region": "West Africa",
+      "setup": {
+        "estimated_cost_usd": 32000,
+        "typical_timeline_months": 5,
+        "minimum_investment_usd": 64000
+      },
+      "annual_fees_usd": 5500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.13,
+        "water_usd_per_m3": 1.1,
+        "internet_mbps_included": 22
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 6,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 170,
+        "semi_skilled": 255,
+        "skilled": 480,
+        "managerial": 960
+      },
+      "incentives": {
+        "tax_incentive_score": 72,
+        "corporate_tax_rate_pct": 12.0,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5000,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TZA-EPZ-001",
+      "zone_name": "Benjamin William Mkapa SEZ (Morogoro)",
+      "country_iso": "TZA",
+      "region": "East Africa",
+      "setup": {
+        "estimated_cost_usd": 28000,
+        "typical_timeline_months": 6,
+        "minimum_investment_usd": 56000
+      },
+      "annual_fees_usd": 5000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.12,
+        "water_usd_per_m3": 0.9,
+        "internet_mbps_included": 16
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 4,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 140,
+        "semi_skilled": 210,
+        "skilled": 400,
+        "managerial": 800
+      },
+      "incentives": {
+        "tax_incentive_score": 72,
+        "corporate_tax_rate_pct": 12.0,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4500,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZMB-LSK-001",
+      "zone_name": "Lusaka South Multi-Facility Economic Zone",
+      "country_iso": "ZMB",
+      "region": "Southern Africa",
+      "setup": {
+        "estimated_cost_usd": 30000,
+        "typical_timeline_months": 6,
+        "minimum_investment_usd": 60000
+      },
+      "annual_fees_usd": 5000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.1,
+        "water_usd_per_m3": 0.8,
+        "internet_mbps_included": 18
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 5,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 160,
+        "semi_skilled": 240,
+        "skilled": 430,
+        "managerial": 860
+      },
+      "incentives": {
+        "tax_incentive_score": 72,
+        "corporate_tax_rate_pct": 12.0,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4500,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "AGO-ZEE-001",
+      "zone_name": "Zona Economica Especial de Luanda",
+      "country_iso": "AGO",
+      "region": "Southern Africa",
+      "setup": {
+        "estimated_cost_usd": 50000,
+        "typical_timeline_months": 9,
+        "minimum_investment_usd": 100000
+      },
+      "annual_fees_usd": 8000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.2,
+        "water_usd_per_m3": 2.0,
+        "internet_mbps_included": 12
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 8,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 280,
+        "semi_skilled": 420,
+        "skilled": 700,
+        "managerial": 1400
+      },
+      "incentives": {
+        "tax_incentive_score": 65,
+        "corporate_tax_rate_pct": 13.8,
+        "import_duty_exemption": true,
+        "vat_exemption": false,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 8000,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MOZ-NAC-001",
+      "zone_name": "Nacala Special Economic Zone",
+      "country_iso": "MOZ",
+      "region": "Southern Africa",
+      "setup": {
+        "estimated_cost_usd": 28000,
+        "typical_timeline_months": 7,
+        "minimum_investment_usd": 56000
+      },
+      "annual_fees_usd": 4500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.08,
+        "water_usd_per_m3": 0.6,
+        "internet_mbps_included": 12
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 3,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 120,
+        "semi_skilled": 180,
+        "skilled": 360,
+        "managerial": 720
+      },
+      "incentives": {
+        "tax_incentive_score": 68,
+        "corporate_tax_rate_pct": 13.0,
+        "import_duty_exemption": true,
+        "vat_exemption": false,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4000,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "COD-MAL-001",
+      "zone_name": "Zone Economique Speciale de Maluku",
+      "country_iso": "COD",
+      "region": "Central Africa",
+      "setup": {
+        "estimated_cost_usd": 40000,
+        "typical_timeline_months": 12,
+        "minimum_investment_usd": 80000
+      },
+      "annual_fees_usd": 6000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.25,
+        "water_usd_per_m3": 3.0,
+        "internet_mbps_included": 6
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 3,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 80,
+        "semi_skilled": 120,
+        "skilled": 280,
+        "managerial": 560
+      },
+      "incentives": {
+        "tax_incentive_score": 62,
+        "corporate_tax_rate_pct": 14.5,
+        "import_duty_exemption": true,
+        "vat_exemption": false,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 9000,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "UGA-NAM-001",
+      "zone_name": "Namanve Industrial & Business Park",
+      "country_iso": "UGA",
+      "region": "East Africa",
+      "setup": {
+        "estimated_cost_usd": 28000,
+        "typical_timeline_months": 6,
+        "minimum_investment_usd": 56000
+      },
+      "annual_fees_usd": 4500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.18,
+        "water_usd_per_m3": 1.2,
+        "internet_mbps_included": 20
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 4,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 130,
+        "semi_skilled": 195,
+        "skilled": 380,
+        "managerial": 760
+      },
+      "incentives": {
+        "tax_incentive_score": 70,
+        "corporate_tax_rate_pct": 12.5,
+        "import_duty_exemption": true,
+        "vat_exemption": false,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4500,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MWI-BLT-001",
+      "zone_name": "Blantyre Industrial Park",
+      "country_iso": "MWI",
+      "region": "Southern Africa",
+      "setup": {
+        "estimated_cost_usd": 22000,
+        "typical_timeline_months": 7,
+        "minimum_investment_usd": 44000
+      },
+      "annual_fees_usd": 4000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.14,
+        "water_usd_per_m3": 0.8,
+        "internet_mbps_included": 10
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 2,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 90,
+        "semi_skilled": 135,
+        "skilled": 280,
+        "managerial": 560
+      },
+      "incentives": {
+        "tax_incentive_score": 68,
+        "corporate_tax_rate_pct": 13.0,
+        "import_duty_exemption": true,
+        "vat_exemption": false,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4000,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NAM-WAL-001",
+      "zone_name": "Walvis Bay Export Processing Zone",
+      "country_iso": "NAM",
+      "region": "Southern Africa",
+      "setup": {
+        "estimated_cost_usd": 42000,
+        "typical_timeline_months": 4,
+        "minimum_investment_usd": 84000
+      },
+      "annual_fees_usd": 6500,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.1,
+        "water_usd_per_m3": 1.0,
+        "internet_mbps_included": 35
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 9,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 320,
+        "semi_skilled": 480,
+        "skilled": 850,
+        "managerial": 1700
+      },
+      "incentives": {
+        "tax_incentive_score": 78,
+        "corporate_tax_rate_pct": 10.5,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 5500,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BWA-SIR-001",
+      "zone_name": "Selebi-Phikwe Economic Diversification Unit (SPEDU)",
+      "country_iso": "BWA",
+      "region": "Southern Africa",
+      "setup": {
+        "estimated_cost_usd": 45000,
+        "typical_timeline_months": 4,
+        "minimum_investment_usd": 90000
+      },
+      "annual_fees_usd": 7000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.11,
+        "water_usd_per_m3": 0.9,
+        "internet_mbps_included": 30
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 10,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 400,
+        "semi_skilled": 600,
+        "skilled": 1000,
+        "managerial": 2000
+      },
+      "incentives": {
+        "tax_incentive_score": 78,
+        "corporate_tax_rate_pct": 10.5,
+        "import_duty_exemption": true,
+        "vat_exemption": true,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 6000,
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MDG-EHO-001",
+      "zone_name": "Zone Franche d'Ehoala (Fort-Dauphin)",
+      "country_iso": "MDG",
+      "region": "East Africa",
+      "setup": {
+        "estimated_cost_usd": 25000,
+        "typical_timeline_months": 8,
+        "minimum_investment_usd": 50000
+      },
+      "annual_fees_usd": 4000,
+      "utility_costs": {
+        "electricity_usd_per_kwh": 0.18,
+        "water_usd_per_m3": 1.3,
+        "internet_mbps_included": 8
+      },
+      "land_lease": {
+        "rate_usd_per_m2_per_year": 2,
+        "typical_lease_term_years": 25,
+        "renewal_option": true
+      },
+      "labor_costs_usd_per_month": {
+        "unskilled": 80,
+        "semi_skilled": 120,
+        "skilled": 260,
+        "managerial": 520
+      },
+      "incentives": {
+        "tax_incentive_score": 65,
+        "corporate_tax_rate_pct": 13.8,
+        "import_duty_exemption": true,
+        "vat_exemption": false,
+        "repatriation_of_profits": true
+      },
+      "regulatory_compliance_cost_usd_annual": 4500,
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    }
+  ]
+}

@@ -114,7 +114,16 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       globalIndex: "Indice Global",
       africaRank: "Rang Afrique",
       lpiDescription: "Évalue la qualité des infrastructures liées au commerce et au transport (Banque Mondiale).",
-      aidiDescription: "Mesure composite du développement des infrastructures (Transport, Électricité, TIC, Eau) par la BAD."
+      aidiDescription: "Mesure composite du développement des infrastructures (Transport, Électricité, TIC, Eau) par la BAD.",
+      customsTitle: "Administration des Douanes",
+      customsSubtitle: "Dénomination officielle, coordonnées et principaux bureaux de passage",
+      customsAdministration: "Dénomination officielle",
+      customsAddress: "Adresse du siège",
+      customsWebsite: "Site web officiel",
+      customsPortOffices: "Bureaux portuaires principaux",
+      customsAirOffices: "Bureaux aéroportuaires principaux",
+      customsLandOffices: "Bureaux terrestres / frontières",
+      customsVisitSite: "Visiter le site"
     },
     en: {
       title: "Country Economic Profiles",
@@ -178,7 +187,16 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       globalIndex: "Global Index",
       africaRank: "Africa Rank",
       lpiDescription: "Evaluates the quality of trade and transport related infrastructure (World Bank).",
-      aidiDescription: "Composite measure of infrastructure development (Transport, Electricity, ICT, Water) by AfDB."
+      aidiDescription: "Composite measure of infrastructure development (Transport, Electricity, ICT, Water) by AfDB.",
+      customsTitle: "Customs Administration",
+      customsSubtitle: "Official denomination, contact details and main border offices",
+      customsAdministration: "Official Denomination",
+      customsAddress: "Headquarters Address",
+      customsWebsite: "Official Website",
+      customsPortOffices: "Main Port Offices",
+      customsAirOffices: "Main Airport Offices",
+      customsLandOffices: "Land Border Offices",
+      customsVisitSite: "Visit website"
     }
   };
 
@@ -187,6 +205,9 @@ export default function CountryProfilesTab({ language = 'fr' }) {
   useEffect(() => {
     fetchCountries();
   }, [language]);
+
+  const hasOfficeData = (value) =>
+    value && value !== 'N/A' && value !== 'N/A (pays enclavé)' && value !== 'N/A (État insulaire)';
 
   const fetchCountries = async () => {
     try {
@@ -789,6 +810,106 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     </CardContent>
                   </Card>
                 </div>
+              )}
+
+              {/* Customs Administration Section */}
+              {countryProfile.customs && countryProfile.customs.administration && (
+                <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
+                  <CardHeader className="bg-gradient-to-r from-teal-900/50 via-cyan-900/30 to-blue-900/30 border-b border-teal-500/30">
+                    <CardTitle className="text-xl font-bold text-teal-400 flex items-center gap-2">
+                      <span>🛃</span>
+                      <span>{t.customsTitle}</span>
+                    </CardTitle>
+                    <CardDescription className="font-semibold text-gray-300">
+                      {t.customsSubtitle}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-6 bg-gray-900/50">
+                    {/* Official info row */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                      <div className="bg-gradient-to-br from-teal-900/60 to-cyan-800/40 p-4 rounded-xl border border-teal-500/40">
+                        <p className="text-xs font-bold text-teal-300 mb-2 uppercase tracking-wide">🏛️ {t.customsAdministration}</p>
+                        <p className="text-sm font-semibold text-white leading-snug">{countryProfile.customs.administration}</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-cyan-900/60 to-blue-800/40 p-4 rounded-xl border border-cyan-500/40">
+                        <p className="text-xs font-bold text-cyan-300 mb-2 uppercase tracking-wide">📍 {t.customsAddress}</p>
+                        <p className="text-sm text-white leading-snug">{countryProfile.customs.adresse || '—'}</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-900/60 to-indigo-800/40 p-4 rounded-xl border border-blue-500/40">
+                        <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">🌐 {t.customsWebsite}</p>
+                        {countryProfile.customs.website && countryProfile.customs.website !== 'N/A' ? (
+                          <a
+                            href={countryProfile.customs.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-400 hover:text-blue-200 hover:underline break-all"
+                          >
+                            {countryProfile.customs.website}
+                          </a>
+                        ) : (
+                          <p className="text-sm text-gray-400 italic">N/A</p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Bureaux row */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-gray-800/60 p-4 rounded-xl border border-blue-500/30">
+                        <p className="text-xs font-bold text-blue-300 mb-3 uppercase tracking-wide flex items-center gap-1">
+                          <span>⚓</span> {t.customsPortOffices}
+                        </p>
+                        {hasOfficeData(countryProfile.customs.bureaux_portuaires) ? (
+                          <ul className="space-y-1">
+                            {countryProfile.customs.bureaux_portuaires.split(';').map((b, i) => (
+                              <li key={i} className="text-xs text-gray-300 flex items-start gap-1">
+                                <span className="text-blue-400 mt-0.5">•</span>
+                                <span>{b.trim()}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-xs text-gray-500 italic">{countryProfile.customs.bureaux_portuaires || '—'}</p>
+                        )}
+                      </div>
+
+                      <div className="bg-gray-800/60 p-4 rounded-xl border border-sky-500/30">
+                        <p className="text-xs font-bold text-sky-300 mb-3 uppercase tracking-wide flex items-center gap-1">
+                          <span>✈️</span> {t.customsAirOffices}
+                        </p>
+                        {hasOfficeData(countryProfile.customs.bureaux_aeriens) ? (
+                          <ul className="space-y-1">
+                            {countryProfile.customs.bureaux_aeriens.split(';').map((b, i) => (
+                              <li key={i} className="text-xs text-gray-300 flex items-start gap-1">
+                                <span className="text-sky-400 mt-0.5">•</span>
+                                <span>{b.trim()}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-xs text-gray-500 italic">—</p>
+                        )}
+                      </div>
+
+                      <div className="bg-gray-800/60 p-4 rounded-xl border border-emerald-500/30">
+                        <p className="text-xs font-bold text-emerald-300 mb-3 uppercase tracking-wide flex items-center gap-1">
+                          <span>🚧</span> {t.customsLandOffices}
+                        </p>
+                        {hasOfficeData(countryProfile.customs.bureaux_terrestres) ? (
+                          <ul className="space-y-1">
+                            {countryProfile.customs.bureaux_terrestres.split(';').map((b, i) => (
+                              <li key={i} className="text-xs text-gray-300 flex items-start gap-1">
+                                <span className="text-emerald-400 mt-0.5">•</span>
+                                <span>{b.trim()}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-xs text-gray-500 italic">{countryProfile.customs.bureaux_terrestres || '—'}</p>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               )}
 
               {/* Infrastructure Section (AIDI 2025 & LPI 2023) */}

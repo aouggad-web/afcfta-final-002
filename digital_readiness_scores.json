@@ -1,0 +1,721 @@
+{
+  "metadata": {
+    "title": "Digital Readiness Scores - African Free Zones",
+    "description": "Comprehensive digital maturity assessment for African free trade and industrial zones under the AfCFTA framework",
+    "version": "1.0.0",
+    "generated_at": "2025-01-15T00:00:00Z",
+    "methodology": {
+      "scoring_scale": "0-100 (higher = more digitally mature)",
+      "dimensions": [
+        "ICT Infrastructure",
+        "E-Governance",
+        "Fintech Ecosystem",
+        "Cybersecurity Readiness",
+        "Digital Skills Availability",
+        "Innovation Hubs"
+      ],
+      "aggregation": "Simple arithmetic mean of six dimension scores",
+      "data_sources": [
+        "ITU Digital Development Index",
+        "World Bank GovTech Maturity Index",
+        "GSMA Mobile Economy Africa",
+        "AfCFTA Secretariat Surveys",
+        "Zone Authority Disclosures",
+        "Expert Assessment 2024"
+      ]
+    },
+    "total_zones": 30
+  },
+  "zones": [
+    {
+      "zone_id": "MAR-TFZ-001",
+      "zone_name": "Tanger Med Zones (TMZ)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "scores": {
+        "ict_infrastructure": 82,
+        "e_governance": 78,
+        "fintech_ecosystem": 72,
+        "cybersecurity_readiness": 70,
+        "digital_skills_availability": 75,
+        "innovation_hubs": 80,
+        "overall_digital_readiness": 76.2
+      },
+      "rankings": {
+        "continental_rank": 4,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "trend": "Improving",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MAR-KEN-001",
+      "zone_name": "Atlantic Free Zone (Kenitra)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "scores": {
+        "ict_infrastructure": 74,
+        "e_governance": 72,
+        "fintech_ecosystem": 68,
+        "cybersecurity_readiness": 65,
+        "digital_skills_availability": 70,
+        "innovation_hubs": 68,
+        "overall_digital_readiness": 69.5
+      },
+      "rankings": {
+        "continental_rank": 7,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "trend": "Improving",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "EGY-SCZ-001",
+      "zone_name": "Suez Canal Economic Zone (SCZone)",
+      "country_iso": "EGY",
+      "region": "North Africa",
+      "scores": {
+        "ict_infrastructure": 76,
+        "e_governance": 74,
+        "fintech_ecosystem": 70,
+        "cybersecurity_readiness": 68,
+        "digital_skills_availability": 72,
+        "innovation_hubs": 74,
+        "overall_digital_readiness": 72.3
+      },
+      "rankings": {
+        "continental_rank": 5,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "trend": "Improving",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DJI-DIFTZ-001",
+      "zone_name": "Djibouti International Free Trade Zone",
+      "country_iso": "DJI",
+      "region": "East Africa",
+      "scores": {
+        "ict_infrastructure": 70,
+        "e_governance": 68,
+        "fintech_ecosystem": 65,
+        "cybersecurity_readiness": 60,
+        "digital_skills_availability": 60,
+        "innovation_hubs": 62,
+        "overall_digital_readiness": 64.2
+      },
+      "rankings": {
+        "continental_rank": 12,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NGA-LEK-001",
+      "zone_name": "Lekki Free Trade Zone",
+      "country_iso": "NGA",
+      "region": "West Africa",
+      "scores": {
+        "ict_infrastructure": 65,
+        "e_governance": 60,
+        "fintech_ecosystem": 75,
+        "cybersecurity_readiness": 55,
+        "digital_skills_availability": 68,
+        "innovation_hubs": 72,
+        "overall_digital_readiness": 65.8
+      },
+      "rankings": {
+        "continental_rank": 10,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-TIN-001",
+      "zone_name": "Zone Franche de Tindouf",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "scores": {
+        "ict_infrastructure": 55,
+        "e_governance": 58,
+        "fintech_ecosystem": 50,
+        "cybersecurity_readiness": 52,
+        "digital_skills_availability": 52,
+        "innovation_hubs": 48,
+        "overall_digital_readiness": 52.5
+      },
+      "rankings": {
+        "continental_rank": 21,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-ELO-001",
+      "zone_name": "Zone Franche d'Oran (Bethioua)",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "scores": {
+        "ict_infrastructure": 62,
+        "e_governance": 60,
+        "fintech_ecosystem": 55,
+        "cybersecurity_readiness": 55,
+        "digital_skills_availability": 58,
+        "innovation_hubs": 55,
+        "overall_digital_readiness": 57.5
+      },
+      "rankings": {
+        "continental_rank": 16,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GAB-NKO-001",
+      "zone_name": "Zone Economique Speciale de Nkok (GSEZ)",
+      "country_iso": "GAB",
+      "region": "Central Africa",
+      "scores": {
+        "ict_infrastructure": 62,
+        "e_governance": 60,
+        "fintech_ecosystem": 55,
+        "cybersecurity_readiness": 52,
+        "digital_skills_availability": 55,
+        "innovation_hubs": 58,
+        "overall_digital_readiness": 57.0
+      },
+      "rankings": {
+        "continental_rank": 17,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "SEN-DIS-001",
+      "zone_name": "Zone Economique Speciale (DAKAR)",
+      "country_iso": "SEN",
+      "region": "West Africa",
+      "scores": {
+        "ict_infrastructure": 68,
+        "e_governance": 65,
+        "fintech_ecosystem": 70,
+        "cybersecurity_readiness": 58,
+        "digital_skills_availability": 65,
+        "innovation_hubs": 68,
+        "overall_digital_readiness": 65.7
+      },
+      "rankings": {
+        "continental_rank": 11,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BEN-GLO-001",
+      "zone_name": "Zone Economique Speciale (Glo-Djigbe)",
+      "country_iso": "BEN",
+      "region": "West Africa",
+      "scores": {
+        "ict_infrastructure": 55,
+        "e_governance": 52,
+        "fintech_ecosystem": 58,
+        "cybersecurity_readiness": 48,
+        "digital_skills_availability": 52,
+        "innovation_hubs": 50,
+        "overall_digital_readiness": 52.5
+      },
+      "rankings": {
+        "continental_rank": 22,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TGO-PIA-001",
+      "zone_name": "Plateforme Industrielle d'Adetikope (PIA)",
+      "country_iso": "TGO",
+      "region": "West Africa",
+      "scores": {
+        "ict_infrastructure": 58,
+        "e_governance": 55,
+        "fintech_ecosystem": 60,
+        "cybersecurity_readiness": 50,
+        "digital_skills_availability": 55,
+        "innovation_hubs": 52,
+        "overall_digital_readiness": 55.0
+      },
+      "rankings": {
+        "continental_rank": 19,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZAF-COE-001",
+      "zone_name": "Coega Special Economic Zone",
+      "country_iso": "ZAF",
+      "region": "Southern Africa",
+      "scores": {
+        "ict_infrastructure": 80,
+        "e_governance": 78,
+        "fintech_ecosystem": 80,
+        "cybersecurity_readiness": 78,
+        "digital_skills_availability": 80,
+        "innovation_hubs": 82,
+        "overall_digital_readiness": 79.7
+      },
+      "rankings": {
+        "continental_rank": 2,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "trend": "Improving",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MUS-MFP-001",
+      "zone_name": "Mauritius Freeport & Smart City",
+      "country_iso": "MUS",
+      "region": "East Africa",
+      "scores": {
+        "ict_infrastructure": 85,
+        "e_governance": 88,
+        "fintech_ecosystem": 85,
+        "cybersecurity_readiness": 82,
+        "digital_skills_availability": 82,
+        "innovation_hubs": 82,
+        "overall_digital_readiness": 84.0
+      },
+      "rankings": {
+        "continental_rank": 1,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "trend": "Improving",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ETH-HAW-001",
+      "zone_name": "Hawassa Industrial Park",
+      "country_iso": "ETH",
+      "region": "East Africa",
+      "scores": {
+        "ict_infrastructure": 52,
+        "e_governance": 50,
+        "fintech_ecosystem": 55,
+        "cybersecurity_readiness": 45,
+        "digital_skills_availability": 50,
+        "innovation_hubs": 48,
+        "overall_digital_readiness": 50.0
+      },
+      "rankings": {
+        "continental_rank": 26,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "KEN-EPZ-001",
+      "zone_name": "Nairobi Export Processing Zone",
+      "country_iso": "KEN",
+      "region": "East Africa",
+      "scores": {
+        "ict_infrastructure": 72,
+        "e_governance": 70,
+        "fintech_ecosystem": 80,
+        "cybersecurity_readiness": 65,
+        "digital_skills_availability": 72,
+        "innovation_hubs": 75,
+        "overall_digital_readiness": 72.3
+      },
+      "rankings": {
+        "continental_rank": 6,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "trend": "Improving",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TUN-PAE-001",
+      "zone_name": "Parc d'Activites Economiques de Zarzis",
+      "country_iso": "TUN",
+      "region": "North Africa",
+      "scores": {
+        "ict_infrastructure": 72,
+        "e_governance": 70,
+        "fintech_ecosystem": 65,
+        "cybersecurity_readiness": 65,
+        "digital_skills_availability": 70,
+        "innovation_hubs": 65,
+        "overall_digital_readiness": 67.8
+      },
+      "rankings": {
+        "continental_rank": 8,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CMR-KRI-001",
+      "zone_name": "Zone Industrielle de Kribi (ZIK)",
+      "country_iso": "CMR",
+      "region": "Central Africa",
+      "scores": {
+        "ict_infrastructure": 55,
+        "e_governance": 52,
+        "fintech_ecosystem": 52,
+        "cybersecurity_readiness": 48,
+        "digital_skills_availability": 52,
+        "innovation_hubs": 50,
+        "overall_digital_readiness": 51.5
+      },
+      "rankings": {
+        "continental_rank": 24,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GHA-TEM-001",
+      "zone_name": "Tema Export Processing Zone",
+      "country_iso": "GHA",
+      "region": "West Africa",
+      "scores": {
+        "ict_infrastructure": 68,
+        "e_governance": 65,
+        "fintech_ecosystem": 72,
+        "cybersecurity_readiness": 58,
+        "digital_skills_availability": 65,
+        "innovation_hubs": 68,
+        "overall_digital_readiness": 66.0
+      },
+      "rankings": {
+        "continental_rank": 9,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "RWA-KSE-001",
+      "zone_name": "Kigali Special Economic Zone (KSEZ)",
+      "country_iso": "RWA",
+      "region": "East Africa",
+      "scores": {
+        "ict_infrastructure": 78,
+        "e_governance": 82,
+        "fintech_ecosystem": 75,
+        "cybersecurity_readiness": 72,
+        "digital_skills_availability": 72,
+        "innovation_hubs": 80,
+        "overall_digital_readiness": 76.5
+      },
+      "rankings": {
+        "continental_rank": 3,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "trend": "Improving",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CIV-PK-001",
+      "zone_name": "Parc Industriel de Koumassi (PIK)",
+      "country_iso": "CIV",
+      "region": "West Africa",
+      "scores": {
+        "ict_infrastructure": 60,
+        "e_governance": 58,
+        "fintech_ecosystem": 65,
+        "cybersecurity_readiness": 52,
+        "digital_skills_availability": 58,
+        "innovation_hubs": 58,
+        "overall_digital_readiness": 58.5
+      },
+      "rankings": {
+        "continental_rank": 15,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TZA-EPZ-001",
+      "zone_name": "Benjamin William Mkapa SEZ (Morogoro)",
+      "country_iso": "TZA",
+      "region": "East Africa",
+      "scores": {
+        "ict_infrastructure": 55,
+        "e_governance": 52,
+        "fintech_ecosystem": 58,
+        "cybersecurity_readiness": 48,
+        "digital_skills_availability": 52,
+        "innovation_hubs": 50,
+        "overall_digital_readiness": 52.5
+      },
+      "rankings": {
+        "continental_rank": 23,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZMB-LSK-001",
+      "zone_name": "Lusaka South Multi-Facility Economic Zone",
+      "country_iso": "ZMB",
+      "region": "Southern Africa",
+      "scores": {
+        "ict_infrastructure": 58,
+        "e_governance": 55,
+        "fintech_ecosystem": 60,
+        "cybersecurity_readiness": 50,
+        "digital_skills_availability": 55,
+        "innovation_hubs": 52,
+        "overall_digital_readiness": 55.0
+      },
+      "rankings": {
+        "continental_rank": 20,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "AGO-ZEE-001",
+      "zone_name": "Zona Economica Especial de Luanda",
+      "country_iso": "AGO",
+      "region": "Southern Africa",
+      "scores": {
+        "ict_infrastructure": 55,
+        "e_governance": 50,
+        "fintech_ecosystem": 55,
+        "cybersecurity_readiness": 45,
+        "digital_skills_availability": 50,
+        "innovation_hubs": 48,
+        "overall_digital_readiness": 50.5
+      },
+      "rankings": {
+        "continental_rank": 25,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MOZ-NAC-001",
+      "zone_name": "Nacala Special Economic Zone",
+      "country_iso": "MOZ",
+      "region": "Southern Africa",
+      "scores": {
+        "ict_infrastructure": 50,
+        "e_governance": 48,
+        "fintech_ecosystem": 52,
+        "cybersecurity_readiness": 42,
+        "digital_skills_availability": 48,
+        "innovation_hubs": 45,
+        "overall_digital_readiness": 47.5
+      },
+      "rankings": {
+        "continental_rank": 27,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "COD-MAL-001",
+      "zone_name": "Zone Economique Speciale de Maluku",
+      "country_iso": "COD",
+      "region": "Central Africa",
+      "scores": {
+        "ict_infrastructure": 40,
+        "e_governance": 38,
+        "fintech_ecosystem": 48,
+        "cybersecurity_readiness": 35,
+        "digital_skills_availability": 40,
+        "innovation_hubs": 38,
+        "overall_digital_readiness": 39.8
+      },
+      "rankings": {
+        "continental_rank": 30,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "UGA-NAM-001",
+      "zone_name": "Namanve Industrial & Business Park",
+      "country_iso": "UGA",
+      "region": "East Africa",
+      "scores": {
+        "ict_infrastructure": 58,
+        "e_governance": 55,
+        "fintech_ecosystem": 62,
+        "cybersecurity_readiness": 48,
+        "digital_skills_availability": 55,
+        "innovation_hubs": 55,
+        "overall_digital_readiness": 55.5
+      },
+      "rankings": {
+        "continental_rank": 18,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MWI-BLT-001",
+      "zone_name": "Blantyre Industrial Park",
+      "country_iso": "MWI",
+      "region": "Southern Africa",
+      "scores": {
+        "ict_infrastructure": 45,
+        "e_governance": 42,
+        "fintech_ecosystem": 48,
+        "cybersecurity_readiness": 38,
+        "digital_skills_availability": 45,
+        "innovation_hubs": 40,
+        "overall_digital_readiness": 43.0
+      },
+      "rankings": {
+        "continental_rank": 28,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NAM-WAL-001",
+      "zone_name": "Walvis Bay Export Processing Zone",
+      "country_iso": "NAM",
+      "region": "Southern Africa",
+      "scores": {
+        "ict_infrastructure": 68,
+        "e_governance": 65,
+        "fintech_ecosystem": 62,
+        "cybersecurity_readiness": 62,
+        "digital_skills_availability": 65,
+        "innovation_hubs": 62,
+        "overall_digital_readiness": 64.0
+      },
+      "rankings": {
+        "continental_rank": 13,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BWA-SIR-001",
+      "zone_name": "Selebi-Phikwe Economic Diversification Unit (SPEDU)",
+      "country_iso": "BWA",
+      "region": "Southern Africa",
+      "scores": {
+        "ict_infrastructure": 65,
+        "e_governance": 68,
+        "fintech_ecosystem": 62,
+        "cybersecurity_readiness": 60,
+        "digital_skills_availability": 65,
+        "innovation_hubs": 60,
+        "overall_digital_readiness": 63.3
+      },
+      "rankings": {
+        "continental_rank": 14,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "trend": "Stable",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MDG-EHO-001",
+      "zone_name": "Zone Franche d'Ehoala (Fort-Dauphin)",
+      "country_iso": "MDG",
+      "region": "East Africa",
+      "scores": {
+        "ict_infrastructure": 42,
+        "e_governance": 40,
+        "fintech_ecosystem": 45,
+        "cybersecurity_readiness": 35,
+        "digital_skills_availability": 42,
+        "innovation_hubs": 38,
+        "overall_digital_readiness": 40.3
+      },
+      "rankings": {
+        "continental_rank": 29,
+        "regional_rank": 8,
+        "total_zones_assessed": 30
+      },
+      "trend": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    }
+  ]
+}
