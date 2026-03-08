@@ -230,6 +230,10 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(regional_calculator_router, tags=["Regional Calculator"])
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
         api_router.include_router(investment_intelligence_router, tags=["Investment Intelligence"])
+    if AI_INTELLIGENCE_AVAILABLE:
+        api_router.include_router(ai_intelligence_router, tags=["AI Intelligence"])
+    if ENHANCED_SEARCH_AVAILABLE:
+        api_router.include_router(enhanced_search_router, tags=["Enhanced Search"])
     if SADC_INTELLIGENCE_AVAILABLE:
         api_router.include_router(sadc_intelligence_router, tags=["SADC Intelligence"])
     if AI_INTELLIGENCE_AVAILABLE:
