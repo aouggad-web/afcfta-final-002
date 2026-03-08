@@ -94,6 +94,16 @@ except ImportError:
     CACHE_ROUTER_AVAILABLE = False
 
 try:
+    from .dza_crawler import router as dza_crawler_router
+    DZA_CRAWLER_AVAILABLE = True
+except ImportError:
+    DZA_CRAWLER_AVAILABLE = False
+
+try:
+    from .enhanced_calculator import router as enhanced_calculator_router
+    ENHANCED_CALCULATOR_AVAILABLE = True
+except ImportError:
+    ENHANCED_CALCULATOR_AVAILABLE = False
     from .north_africa_crawlers import router as north_africa_crawlers_router
     NORTH_AFRICA_CRAWLERS_AVAILABLE = True
 except ImportError:
@@ -202,6 +212,10 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(search_router, tags=["Text Search"])
     if CACHE_ROUTER_AVAILABLE:
         api_router.include_router(cache_router, tags=["Cache Management"])
+    if DZA_CRAWLER_AVAILABLE:
+        api_router.include_router(dza_crawler_router, tags=["DZA Crawler"])
+    if ENHANCED_CALCULATOR_AVAILABLE:
+        api_router.include_router(enhanced_calculator_router, tags=["Enhanced Calculator v2"])
     if NORTH_AFRICA_CRAWLERS_AVAILABLE:
         api_router.include_router(north_africa_crawlers_router, tags=["North Africa Crawlers"])
     if CEMAC_CRAWLERS_AVAILABLE:
