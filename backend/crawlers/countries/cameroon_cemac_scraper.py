@@ -262,12 +262,81 @@ def build_cameroon_taxes(dd_rate: float, tva_status: str, has_accise: bool) -> T
     return taxes, taxes_detail
 
 
-def parse_pdf(pdf_path: str) -> List[dict]:
-    logger.info(f"Parsing CEMAC tariff PDF: {pdf_path}")
-    doc = fitz.open(pdf_path)
+def _process_page_positions(
+    results: List[dict],
+    seen_codes: set,
+    stats: dict,
+) -> List[dict]:
+    """Extract and deduplicate tariff positions from a single page's matched rows.
 
-    all_positions = []
-    seen_codes = set()
+    Args:
+        results: Matched rows returned by :func:`match_data_to_codes`.
+        seen_codes: Set of already-processed code strings (mutated in place).
+        stats: Running extraction statistics dict (mutated in place).
+
+    Returns:
+        List of new position dicts extracted from this page.
+    """
+    positions: List[dict] = []
+    for r in results:
+        stats['raw_extractions'] += 1
+
+        code_str = r['code'].rstrip('.')
+        code_clean = code_str.replace('.', '')
+
+        if code_clean in seen_codes:
+            stats['duplicates'] += 1
+            continue
+
+        chapter = code_clean[:2]
+        stats['chapters'].add(chapter)
+
+        taxes, taxes_detail = build_cameroon_taxes(r['dd_rate'], r['tva_status'], r['has_accise'])
+
+        positions.append({
+            'code': code_str,
+            'code_clean': code_clean,
+            'code_length': len(code_clean),
+            'designation': r['designation'],
+            'chapter': chapter,
+            'hs6': f"{code_clean[:4]}.{code_clean[4:6]}",
+            'taxes': taxes,
+            'taxes_detail': taxes_detail,
+            'source': 'CEMAC Tarif des Douanes (PDF officiel)',
+            'data_type': 'regional_cet',
+        })
+        seen_codes.add(code_clean)
+        stats['final_positions'] += 1
+
+    return positions
+
+
+def parse_pdf(pdf_path: str) -> List[dict]:
+    """Parse the official CEMAC customs tariff PDF and return tariff positions.
+
+    Each position dict contains:
+    - ``code`` / ``code_clean``: national tariff code
+    - ``designation``: French product description
+    - ``chapter``: 2-digit HS chapter
+    - ``hs6``: dotted HS6 prefix
+    - ``taxes`` / ``taxes_detail``: duty and tax breakdown
+
+    Args:
+        pdf_path: Filesystem path to the CEMAC tariff PDF.
+
+    Returns:
+        List of tariff position dicts. An empty list is returned when the
+        file cannot be opened or no usable data is found.
+    """
+    logger.info("Parsing CEMAC tariff PDF: %s", pdf_path)
+    try:
+        doc = fitz.open(pdf_path)
+    except Exception as exc:
+        logger.error("Cannot open PDF %s: %s", pdf_path, exc)
+        return []
+
+    all_positions: List[dict] = []
+    seen_codes: set = set()
     stats = {
         'total_pages': doc.page_count,
         'pages_with_data': 0,
@@ -278,59 +347,38 @@ def parse_pdf(pdf_path: str) -> List[dict]:
         'chapters': set(),
     }
 
-    for page_num in range(doc.page_count):
-        page = doc[page_num]
-        items = extract_page_data(page)
-
-        if not items:
-            continue
-
-        codes, designations, dd_rates, tva_values, accise_flags = parse_page_tariffs(items)
-
-        if not codes:
-            continue
-
-        stats['pages_with_data'] += 1
-        results = match_data_to_codes(codes, designations, dd_rates, tva_values, accise_flags)
-
-        for r in results:
-            stats['raw_extractions'] += 1
-
-            code_str = r['code'].rstrip('.')
-            code_clean = code_str.replace('.', '')
-
-            if code_clean in seen_codes:
-                stats['duplicates'] += 1
+    try:
+        for page_num in range(doc.page_count):
+            try:
+                page = doc[page_num]
+                items = extract_page_data(page)
+            except Exception as exc:
+                logger.warning("Error reading page %d: %s", page_num, exc)
                 continue
 
-            chapter = code_clean[:2]
-            stats['chapters'].add(chapter)
+            if not items:
+                continue
 
-            taxes, taxes_detail = build_cameroon_taxes(r['dd_rate'], r['tva_status'], r['has_accise'])
+            codes, designations, dd_rates, tva_values, accise_flags = parse_page_tariffs(items)
+            if not codes:
+                continue
 
-            position = {
-                'code': code_str,
-                'code_clean': code_clean,
-                'code_length': len(code_clean),
-                'designation': r['designation'],
-                'chapter': chapter,
-                'hs6': f"{code_clean[:4]}.{code_clean[4:6]}",
-                'taxes': taxes,
-                'taxes_detail': taxes_detail,
-                'source': 'CEMAC Tarif des Douanes (PDF officiel)',
-                'data_type': 'regional_cet',
-            }
+            stats['pages_with_data'] += 1
+            results = match_data_to_codes(codes, designations, dd_rates, tva_values, accise_flags)
+            page_positions = _process_page_positions(results, seen_codes, stats)
+            all_positions.extend(page_positions)
+    finally:
+        doc.close()
 
-            all_positions.append(position)
-            seen_codes.add(code_clean)
-            stats['final_positions'] += 1
-
-    doc.close()
-
-    stats['chapters'] = len(stats['chapters'])
-    logger.info(f"Extracted {stats['final_positions']} positions from {stats['pages_with_data']} pages")
-    logger.info(f"Chapters: {stats['chapters']}, Duplicates skipped: {stats['duplicates']}")
-    logger.info(f"Stats: {stats}")
+    chapters_count = len(stats['chapters'])
+    stats['chapters'] = chapters_count
+    logger.info(
+        "Extracted %d positions from %d pages (chapters: %d, duplicates skipped: %d)",
+        stats['final_positions'],
+        stats['pages_with_data'],
+        chapters_count,
+        stats['duplicates'],
+    )
     return all_positions
 
 

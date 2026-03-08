@@ -1,4 +1,7 @@
 """
+Services/Crawlers sub-package.
+Provides the DZA async tariff connector, crawler manager, and data validator.
+"""
 North African tariff crawlers service package.
 
 Provides BaseScraper-compatible adapters and orchestration for:

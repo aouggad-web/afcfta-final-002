@@ -23,6 +23,9 @@ from config.regional_config import (
     NORTH_AFRICA_COUNTRIES,
     REGIONAL_CONFIG,
     NORTH_AFRICA_VAT_RATES,
+    CEMAC_COUNTRIES,
+    CEMAC_CONFIG,
+    CEMAC_VAT_RATES,
 )
 
 logger = logging.getLogger(__name__)
@@ -205,6 +208,97 @@ class RegionalIntelligenceService:
                 "investment_score": 7.0,
                 "notes": "Most advanced EU association, textile/automotive expertise",
             },
+            # CEMAC countries
+            "CMR": {
+                "country_name": "Cameroon",
+                "market_size_gdp_bn_usd": 44,
+                "population_m": 27,
+                "strategic_position": "CEMAC hub, Atlantic gateway, bilingual",
+                "key_sectors": ["Oil & Gas", "Timber", "Agriculture", "Mining"],
+                "trade_agreements_count": 3,
+                "eu_access": True,  # EPA with EU
+                "us_access": False,
+                "port_access": ["Douala (main CEMAC port)", "Kribi deep-water port"],
+                "special_zones": ["Kribi Free Trade Zone", "Douala SEZ"],
+                "vat_rate": CEMAC_VAT_RATES["CMR"],
+                "investment_score": 6.5,
+                "notes": "Largest CEMAC economy; bilingual (French/English); Kribi emerging",
+            },
+            "CAF": {
+                "country_name": "Central African Republic",
+                "market_size_gdp_bn_usd": 2.5,
+                "population_m": 5,
+                "strategic_position": "Landlocked, diamond and gold deposits",
+                "key_sectors": ["Mining", "Agriculture", "Timber"],
+                "trade_agreements_count": 2,
+                "eu_access": False,
+                "us_access": False,
+                "port_access": [],
+                "special_zones": [],
+                "vat_rate": CEMAC_VAT_RATES["CAF"],
+                "investment_score": 3.5,
+                "notes": "High-risk environment; rich in minerals but limited infrastructure",
+            },
+            "TCD": {
+                "country_name": "Chad",
+                "market_size_gdp_bn_usd": 11,
+                "population_m": 17,
+                "strategic_position": "Landlocked, Sahel gateway, oil producer",
+                "key_sectors": ["Oil", "Agriculture", "Livestock"],
+                "trade_agreements_count": 2,
+                "eu_access": False,
+                "us_access": False,
+                "port_access": [],
+                "special_zones": [],
+                "vat_rate": CEMAC_VAT_RATES["TCD"],
+                "investment_score": 4.0,
+                "notes": "Oil revenue dependent; challenging logistics and governance",
+            },
+            "COG": {
+                "country_name": "Republic of the Congo",
+                "market_size_gdp_bn_usd": 13,
+                "population_m": 6,
+                "strategic_position": "Atlantic coast, oil and timber",
+                "key_sectors": ["Oil & Gas", "Timber", "Mining"],
+                "trade_agreements_count": 2,
+                "eu_access": False,
+                "us_access": False,
+                "port_access": ["Pointe-Noire"],
+                "special_zones": ["Pointe-Noire Free Zone"],
+                "vat_rate": CEMAC_VAT_RATES["COG"],
+                "investment_score": 5.0,
+                "notes": "Oil-dependent; Pointe-Noire key transit port for CEMAC",
+            },
+            "GNQ": {
+                "country_name": "Equatorial Guinea",
+                "market_size_gdp_bn_usd": 10,
+                "population_m": 1.5,
+                "strategic_position": "Gulf of Guinea oil state",
+                "key_sectors": ["Oil & Gas", "Fishing"],
+                "trade_agreements_count": 2,
+                "eu_access": False,
+                "us_access": False,
+                "port_access": ["Malabo", "Bata"],
+                "special_zones": [],
+                "vat_rate": CEMAC_VAT_RATES["GNQ"],
+                "investment_score": 4.5,
+                "notes": "High per-capita income from oil; small population limits domestic market",
+            },
+            "GAB": {
+                "country_name": "Gabon",
+                "market_size_gdp_bn_usd": 20,
+                "population_m": 2.4,
+                "strategic_position": "Gulf of Guinea, timber and manganese",
+                "key_sectors": ["Oil & Gas", "Timber", "Mining", "Agriculture"],
+                "trade_agreements_count": 3,
+                "eu_access": True,  # EPA with EU
+                "us_access": False,
+                "port_access": ["Libreville", "Port-Gentil", "Owendo"],
+                "special_zones": ["Nkok Special Economic Zone"],
+                "vat_rate": CEMAC_VAT_RATES["GAB"],
+                "investment_score": 6.0,
+                "notes": "Nkok SEZ attracts timber value-added processing; stable governance",
+            },
         }
 
         for country_code, profile in country_profiles.items():
@@ -237,10 +331,10 @@ class RegionalIntelligenceService:
         priority: str = "eu_access",
     ) -> Dict[str, Any]:
         """
-        Recommend the best North African market entry country for a given sector.
+        Recommend the best African market entry country for a given sector.
 
         Args:
-            sector: Industry sector (automotive, textiles, agriculture, etc.)
+            sector: Industry sector (automotive, textiles, agriculture, oil_gas, timber, mining, etc.)
             origin_country: Investor's home country ISO2/3
             target_market_size: 'large' | 'medium' | 'small'
             priority: 'eu_access' | 'us_access' | 'regional_hub' | 'cost'
@@ -270,6 +364,31 @@ class RegionalIntelligenceService:
             "TUN": {
                 "textiles": 10, "automotive": 8, "ict": 8, "olive_oil": 10,
                 "eu_access": 9, "us_access": 3, "regional_hub": 5, "cost": 7,
+            },
+            # CEMAC countries
+            "CMR": {
+                "oil_gas": 9, "timber": 8, "agriculture": 7, "mining": 6,
+                "eu_access": 6, "us_access": 2, "regional_hub": 9, "cost": 6,
+            },
+            "CAF": {
+                "mining": 7, "agriculture": 5, "timber": 6,
+                "eu_access": 2, "us_access": 1, "regional_hub": 2, "cost": 5,
+            },
+            "TCD": {
+                "oil": 8, "agriculture": 6, "livestock": 7,
+                "eu_access": 2, "us_access": 1, "regional_hub": 3, "cost": 5,
+            },
+            "COG": {
+                "oil_gas": 9, "timber": 7, "mining": 6,
+                "eu_access": 3, "us_access": 1, "regional_hub": 5, "cost": 5,
+            },
+            "GNQ": {
+                "oil_gas": 10, "fishing": 6,
+                "eu_access": 2, "us_access": 1, "regional_hub": 3, "cost": 4,
+            },
+            "GAB": {
+                "oil_gas": 8, "timber": 9, "mining": 8, "agriculture": 5,
+                "eu_access": 5, "us_access": 1, "regional_hub": 5, "cost": 6,
             },
         }
 
@@ -353,10 +472,65 @@ class RegionalIntelligenceService:
                 "QIZ": False,
                 "Turkey": True,
             },
+            # CEMAC countries
+            "CMR": {
+                "EU": True,   # Economic Partnership Agreement (EPA)
+                "US": False,
+                "EFTA": False,
+                "CEMAC": True,
+                "ECCAS": True,
+                "AFCFTA": True,
+                "QIZ": False,
+            },
+            "CAF": {
+                "EU": False,
+                "US": False,
+                "EFTA": False,
+                "CEMAC": True,
+                "ECCAS": True,
+                "AFCFTA": True,
+                "QIZ": False,
+            },
+            "TCD": {
+                "EU": False,
+                "US": False,
+                "EFTA": False,
+                "CEMAC": True,
+                "ECCAS": True,
+                "AFCFTA": True,
+                "QIZ": False,
+            },
+            "COG": {
+                "EU": False,
+                "US": False,
+                "EFTA": False,
+                "CEMAC": True,
+                "ECCAS": True,
+                "AFCFTA": True,
+                "QIZ": False,
+            },
+            "GNQ": {
+                "EU": False,
+                "US": False,
+                "EFTA": False,
+                "CEMAC": True,
+                "ECCAS": True,
+                "AFCFTA": True,
+                "QIZ": False,
+            },
+            "GAB": {
+                "EU": True,   # Economic Partnership Agreement (EPA)
+                "US": False,
+                "EFTA": False,
+                "CEMAC": True,
+                "ECCAS": True,
+                "AFCFTA": True,
+                "QIZ": False,
+            },
         }
 
         # Identify best country per external market
-        external_markets = ["EU", "US", "EFTA", "COMESA", "QIZ"]
+        external_markets = ["EU", "US", "EFTA", "COMESA", "QIZ", "CEMAC"]
         best_by_market = {}
         for market in external_markets:
             countries_with_access = [

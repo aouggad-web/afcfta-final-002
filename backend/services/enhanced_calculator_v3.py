@@ -1,8 +1,8 @@
 """
-Enhanced Calculator v3 - Regional North Africa Trade Calculator.
+Enhanced Calculator v3 - Regional African Trade Calculator.
 
-Extends the existing tariff calculator with regional North African features:
-- Best trade route finder (DZA, MAR, EGY, TUN)
+Extends the existing tariff calculator with regional features:
+- Best trade route finder (DZA, MAR, EGY, TUN; CMR, CAF, TCD, COG, GNQ, GAB)
 - Cross-border transit optimization
 - Preferential agreement stacking
 - Free zone arbitrage analysis
@@ -15,6 +15,8 @@ from typing import Any, Dict, List, Optional, Tuple
 from config.regional_config import (
     NORTH_AFRICA_COUNTRIES,
     NORTH_AFRICA_VAT_RATES,
+    CEMAC_COUNTRIES,
+    CEMAC_VAT_RATES,
 )
 
 logger = logging.getLogger(__name__)
@@ -60,6 +62,61 @@ COUNTRY_DD_PROFILES: Dict[str, Dict[str, Any]] = {
         "agadir": True,
         "eu_integration": "most_advanced",
         "offshore_regime": True,
+    },
+    # CEMAC countries
+    "CMR": {
+        "country_name": "Cameroon",
+        "vat_rate": CEMAC_VAT_RATES["CMR"],
+        "dd_bands": [5, 10, 20, 30],  # CEMAC CET: 5/10/20/30%
+        "special_taxes": ["CAC", "EC"],
+        "cemac": True,
+        "eccas": True,
+        "free_zones": ["Kribi Free Trade Zone"],
+    },
+    "CAF": {
+        "country_name": "Central African Republic",
+        "vat_rate": CEMAC_VAT_RATES["CAF"],
+        "dd_bands": [5, 10, 20, 30],
+        "special_taxes": ["EC"],
+        "cemac": True,
+        "eccas": True,
+        "free_zones": [],
+    },
+    "TCD": {
+        "country_name": "Chad",
+        "vat_rate": CEMAC_VAT_RATES["TCD"],
+        "dd_bands": [5, 10, 20, 30],
+        "special_taxes": ["EC"],
+        "cemac": True,
+        "eccas": True,
+        "free_zones": [],
+    },
+    "COG": {
+        "country_name": "Republic of the Congo",
+        "vat_rate": CEMAC_VAT_RATES["COG"],
+        "dd_bands": [5, 10, 20, 30],
+        "special_taxes": ["EC"],
+        "cemac": True,
+        "eccas": True,
+        "free_zones": ["Pointe-Noire Free Zone"],
+    },
+    "GNQ": {
+        "country_name": "Equatorial Guinea",
+        "vat_rate": CEMAC_VAT_RATES["GNQ"],
+        "dd_bands": [5, 10, 20, 30],
+        "special_taxes": ["EC"],
+        "cemac": True,
+        "eccas": True,
+        "free_zones": [],
+    },
+    "GAB": {
+        "country_name": "Gabon",
+        "vat_rate": CEMAC_VAT_RATES["GAB"],
+        "dd_bands": [5, 10, 20, 30],
+        "special_taxes": ["EC"],
+        "cemac": True,
+        "eccas": True,
+        "free_zones": ["Nkok Special Economic Zone"],
     },
 }
 
@@ -114,15 +171,36 @@ TRADE_ROUTES: List[Dict[str, Any]] = [
         "target_market": "NORTH_AFRICA",
         "notes": "Comprehensive regional market coverage",
     },
+    {
+        "route_id": "CEMAC_REGIONAL",
+        "label": "CEMAC Regional (all 6 countries)",
+        "path": ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"],
+        "target_market": "CEMAC",
+        "notes": "CEMAC Customs Union – harmonised external tariff (CET)",
+    },
+    {
+        "route_id": "CMR_GATEWAY",
+        "label": "Cameroon → Central Africa Gateway",
+        "path": ["CMR"],
+        "target_market": "CMR",
+        "notes": "Cameroon: largest CEMAC economy and main Atlantic gateway",
+    },
+    {
+        "route_id": "GAB_NKOK_SEZ",
+        "label": "Gabon → Nkok SEZ",
+        "path": ["GAB"],
+        "target_market": "GAB",
+        "notes": "Nkok Special Economic Zone for manufacturing and timber processing",
+    },
 ]
 
 
 class EnhancedCalculatorV3:
     """
-    Enhanced tariff calculator with North African regional intelligence.
+    Enhanced tariff calculator with African regional intelligence.
 
     Provides:
-    - Regional route comparison (DZA vs MAR vs EGY vs TUN)
+    - Regional route comparison (North Africa: DZA/MAR/EGY/TUN; CEMAC: CMR/CAF/TCD/COG/GNQ/GAB)
     - Preferential agreement detection and stacking
     - Free zone arbitrage analysis
     - Total landed cost calculation per country
@@ -193,21 +271,26 @@ class EnhancedCalculatorV3:
         dd_rates: Optional[Dict[str, float]] = None,
     ) -> Dict[str, Any]:
         """
-        Find the optimal trade route across North African countries.
+        Find the optimal trade route for the given target market.
 
         Args:
             hs_code: HS tariff code
             cif_value: CIF value in USD
-            target_market: Target destination market
+            target_market: Target destination market (NORTH_AFRICA, CEMAC, or ISO3 code)
             dd_rates: Known DD rates per country from crawled data
 
         Returns:
             Dict with route ranking and cost comparison
         """
         dd_rates = dd_rates or {}
-        results = []
 
-        for country_code in NORTH_AFRICA_COUNTRIES:
+        if target_market == "CEMAC":
+            countries = CEMAC_COUNTRIES
+        else:
+            countries = NORTH_AFRICA_COUNTRIES
+
+        results = []
+        for country_code in countries:
             dd_rate = dd_rates.get(country_code)
             calc = self.calculate_country_taxes(
                 country_code=country_code,

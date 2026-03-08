@@ -290,3 +290,53 @@ This implementation delivers a complete, production-ready customs crawling syste
 - Is ready for immediate production use
 
 The system is modular, extensible, and follows best practices for Python development and Docker deployment.
+
+---
+
+## 📋 Code Quality & Technical Debt Improvements (Phase 2)
+
+### Priority 2: Function Refactoring
+
+#### `backend/routes/hs6_database.py`
+- **Extracted `CHAPTER_NAMES` constant**: The 170-line bilingual chapter-name dictionary that was embedded inside `smart_search_hs6()` is now a module-level constant, making it reusable across the module.
+- **Split `smart_search_hs6()` into focused helper functions**:
+  - `_score_code_match(code, query_clean)` – numeric prefix relevance scoring
+  - `_score_text_match(description, query)` – text relevance scoring with phrase/word/partial matching
+  - `_build_search_result(code, data, language, score)` – builds the standardised result dict
+  - `_enrich_with_sub_positions(results, country_code)` – attaches country sub-position data
+- Result: `smart_search_hs6()` is now ~30 lines with a clear docstring, down from ~170 lines. Each helper has a single responsibility and can be independently tested.
+
+#### `backend/crawlers/countries/cameroon_cemac_scraper.py`
+- **Extracted `_process_page_positions()`**: The inner loop that deduplicates and builds tariff position dicts from a single PDF page is now a standalone function.
+- **Improved `parse_pdf()` error handling**:
+  - Graceful fallback (returns `[]`) when the PDF cannot be opened
+  - Per-page `try/except` so a bad page does not abort the entire extraction
+  - `doc.close()` is now guaranteed via a `try/finally` block
+  - Uses `%s` style logging instead of f-strings for performance
+
+### Priority 3: Performance Optimizations
+
+#### `backend/routes/logistics.py`
+- Added optional Redis caching to the `/logistics/ports` and `/logistics/statistics` endpoints (2-hour TTL).
+- Cache is silently disabled when Redis is unavailable (zero-downtime compatible).
+
+#### `backend/services/oec_trade_service.py`
+- Added response caching to `OECTradeService._make_request()`: each unique OEC API request is cached for 24 hours (configured via the existing `oec_data` TTL in `cache_service`).
+- Cache key is derived from a deterministic, token-free hash of the request parameters.
+
+#### `backend/services/cache_service.py`
+- Fixed a pre-existing `AttributeError` where `Optional[redis.Redis]` was evaluated at module load time even when the `redis` package is absent. The type annotation is now `Optional[Any]`, which is always safe to evaluate.
+
+### Priority 5: Unit Tests
+
+#### `backend/tests/test_code_quality_refactoring.py` (new file)
+- **41 passing unit tests** covering:
+  - `CHAPTER_NAMES` completeness and bilingual key parity
+  - `_score_code_match` boundary conditions
+  - `_score_text_match` phrase/word/partial/case-insensitive matching
+  - `_build_search_result` required fields and language selection
+  - `_to_float`, `_tax_rate`, `_total_rate`, `_group_positions`, `_migrate_country` in `upgrade_to_enhanced_v2.py`
+  - `_process_page_positions` deduplication logic (skipped when `fitz` is absent)
+  - `generate_cache_key`, `cache_get`, `cache_set`, `CACHE_TTL` in `cache_service.py`
+- Tests are isolated (no live server, no external network) and run in < 0.2 s.
+

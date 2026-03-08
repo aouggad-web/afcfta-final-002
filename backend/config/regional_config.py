@@ -1,9 +1,13 @@
 """
-Regional configuration for the North African tariff intelligence system.
+Regional configuration for the African tariff intelligence system.
 
 Covers all 7 North African (UMA/AMU + extended) countries:
   DZA (Algeria), MAR (Morocco), EGY (Egypt), TUN (Tunisia),
   LBY (Libya), SDN (Sudan), MRT (Mauritania)
+Covers:
+- North Africa: DZA (Algeria), MAR (Morocco), EGY (Egypt), TUN (Tunisia)
+- CEMAC: CMR (Cameroon), CAF (Central African Republic), TCD (Chad),
+          COG (Republic of the Congo), GNQ (Equatorial Guinea), GAB (Gabon)
 """
 
 # Core 4 countries with high-quality scrapers (existing coverage)
@@ -17,6 +21,7 @@ UMA_CORE_MEMBERS = ["MAR", "DZA", "TUN", "LBY", "MRT"]
 
 # Extended North Africa (full AfCFTA coverage)
 NORTH_AFRICA_EXTENDED = UMA_COUNTRIES
+CEMAC_COUNTRIES = ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"]
 
 REGIONAL_CONFIG = {
     "region_name": "North Africa",
@@ -84,6 +89,53 @@ COUNTRY_DATA_RELIABILITY = {
     "LBY": "low",
     "SDN": "low",
     "MRT": "low",
+}
+
+# CEMAC regional configuration
+CEMAC_CONFIG = {
+    "region_name": "CEMAC",
+    "region_name_fr": "Afrique Centrale (CEMAC)",
+    "countries": CEMAC_COUNTRIES,
+    "regional_gdp_coverage_pct": 65,  # ~65% of Central African region GDP
+    "common_agreements": [
+        "AFCFTA",
+        "CEMAC Customs Union",
+        "ECCAS",
+    ],
+    "cross_validation": {
+        "enabled": True,
+        "tolerance_pct": 5.0,
+        "min_coverage_pct": 60.0,
+    },
+    "performance_targets": {
+        "crawl_speed_boost": "10x-20x",
+        "data_freshness_days": 1,
+        "api_response_simple_ms": 500,
+        "api_response_regional_ms": 2000,
+        "uptime_pct": 99.5,
+    },
+    "data_paths": {
+        "raw": "data/raw",
+        "parsed": "data/parsed",
+        "published": "data/published",
+        "regional": "data/regional",
+    },
+    "orchestrator": {
+        "max_concurrency": 6,
+        "retry_failed": True,
+        "max_retries": 3,
+    },
+}
+
+# CEMAC country VAT rates
+# CEMAC uses a harmonized external tariff (TEC) with a standard VAT of 19.25%
+CEMAC_VAT_RATES = {
+    "CMR": 19.25,   # Cameroon
+    "CAF": 19.0,    # Central African Republic
+    "TCD": 18.0,    # Chad
+    "COG": 18.0,    # Republic of the Congo
+    "GNQ": 15.0,    # Equatorial Guinea
+    "GAB": 18.0,    # Gabon
 }
 
 # Country-specific preferential agreements for cross-validation

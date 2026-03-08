@@ -2,372 +2,531 @@
   {
     "region": "Afrique du Nord",
     "pays": "Algérie",
-    "administration_douaniere": "Direction Générale des Douanes Algériennes",
+    "administration_douaniere": "Direction Générale des Douanes Algériennes (DGD)",
+    "adresse": "19 rue Docteur Saadane, Alger Centre, Algérie",
     "site_web": "http://www.douane.gov.dz/",
-    "bureaux_importants": "Port d'Alger (Port); Port d'Oran (Port); Aéroport d'Alger (Aéroport); Taleb Larbi (Frontière Tunisie)"
+    "bureaux_portuaires": "Port d'Alger; Port d'Oran",
+    "bureaux_aeriens": "Aéroport Houari Boumediene d'Alger",
+    "bureaux_terrestres": "Taleb Larbi (Frontière Tunisie); Oujda (Frontière Maroc)"
   },
   {
     "region": "Afrique du Nord",
     "pays": "Maroc",
     "administration_douaniere": "Administration des Douanes et Impôts Indirects (ADII)",
+    "adresse": "Quartier Administratif, Hay Riad, BP 5050, Rabat 10000, Maroc",
     "site_web": "https://www.douane.gov.ma/",
-    "bureaux_importants": "Port de Tanger Med (Port); Port de Casablanca (Port); Aéroport Mohammed V de Casablanca (Aéroport)"
+    "bureaux_portuaires": "Port de Tanger Med; Port de Casablanca",
+    "bureaux_aeriens": "Aéroport Mohammed V de Casablanca",
+    "bureaux_terrestres": "Bab Mellilia (Frontière Mellilia/Espagne); Oujda (Frontière Algérie)"
   },
   {
     "region": "Afrique du Nord",
     "pays": "Tunisie",
     "administration_douaniere": "Direction Générale des Douanes Tunisiennes",
+    "adresse": "Rue de la Palestine, Centre Urbain Nord, Tunis 1080, Tunisie",
     "site_web": "https://www.douane.gov.tn/",
-    "bureaux_importants": "Port de Radès (Port); Port de Sfax (Port); Aéroport de Tunis-Carthage (Aéroport)"
+    "bureaux_portuaires": "Port de Radès; Port de Sfax",
+    "bureaux_aeriens": "Aéroport de Tunis-Carthage",
+    "bureaux_terrestres": "Ras Jedir (Frontière Libye); Bab el Assel (Frontière Algérie)"
   },
   {
     "region": "Afrique du Nord",
     "pays": "Égypte",
-    "administration_douaniere": "Egyptian Customs Authority",
+    "administration_douaniere": "Egyptian Customs Authority (ECA)",
+    "adresse": "4 Rue Ahmed Orabi, Mohandiseen, Giza, Le Caire 12411, Égypte",
     "site_web": "https://www.customs.gov.eg/",
-    "bureaux_importants": "Port d'Alexandrie (Port); Port Saïd (Port); Aéroport International du Caire (Aéroport)"
+    "bureaux_portuaires": "Port d'Alexandrie; Port Saïd",
+    "bureaux_aeriens": "Aéroport International du Caire",
+    "bureaux_terrestres": "Salloum (Frontière Libye); Rafah (Frontière Gaza)"
   },
   {
     "region": "Afrique du Nord",
     "pays": "Libye",
-    "administration_douaniere": "Libyan Customs Authority",
+    "administration_douaniere": "Libyan Customs Authority (LCA)",
+    "adresse": "Rue Gamal Abdel Nasser, Tripoli, Libye",
     "site_web": "N/A",
-    "bureaux_importants": "Port de Tripoli (Port); Port de Misrata (Port); Ras Jedir (Frontière Tunisie)"
+    "bureaux_portuaires": "Port de Tripoli; Port de Misrata",
+    "bureaux_aeriens": "Aéroport International de Mitiga (Tripoli)",
+    "bureaux_terrestres": "Ras Jedir (Frontière Tunisie); Salloum (Frontière Égypte)"
   },
   {
     "region": "Afrique du Nord",
     "pays": "Mauritanie",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes de Mauritanie",
+    "adresse": "Avenue Abdallaye, BP 220, Nouakchott, Mauritanie",
     "site_web": "http://www.douanes.gov.mr/",
-    "bureaux_importants": "Port de Nouakchott (Port); Port de Nouadhibou (Port); Rosso (Frontière Sénégal)"
+    "bureaux_portuaires": "Port de Nouakchott (Port de l'Amitié)",
+    "bureaux_aeriens": "Aéroport International de Nouakchott-Oumtounsy",
+    "bureaux_terrestres": "Rosso (Frontière Sénégal); Guerguerat (Frontière Maroc)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Bénin",
-    "administration_douaniere": "Douanes Béninoises",
+    "administration_douaniere": "Direction Générale des Douanes et Droits Indirects du Bénin",
+    "adresse": "Boulevard de la Marina, BP 1, Cotonou, Bénin",
     "site_web": "https://douanes.gouv.bj/",
-    "bureaux_importants": "Port de Cotonou (Port); Aéroport de Cotonou (Aéroport); Sèmè-Kraké (Frontière Nigéria)"
+    "bureaux_portuaires": "Port Autonome de Cotonou",
+    "bureaux_aeriens": "Aéroport International Cadjehoun de Cotonou",
+    "bureaux_terrestres": "Sèmè-Kraké (Frontière Nigéria); Hillacondji (Frontière Togo)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Burkina Faso",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes du Burkina Faso",
+    "adresse": "01 BP 3672, Avenue Pr. Joseph Ki-Zerbo, Ouagadougou 01, Burkina Faso",
     "site_web": "https://www.douanes.bf/",
-    "bureaux_importants": "Ouaga-Route (Bureau central); Ouaga-Aéroport (Aéroport); Dakola (Frontière Ghana)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International de Ouagadougou",
+    "bureaux_terrestres": "Dakola (Frontière Ghana); Faramana (Frontière Mali)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Cabo Verde",
-    "administration_douaniere": "Direção Nacional das Alfândegas",
+    "administration_douaniere": "Direção Nacional das Alfândegas de Cabo Verde (DNA)",
+    "adresse": "Rua de Carvalho, Plateau, Praia, Santiago, Cabo Verde",
     "site_web": "https://www.dnre.gov.cv/",
-    "bureaux_importants": "Porto Grande - Mindelo (Port); Port de Praia (Port); Aéroport Amílcar Cabral (Aéroport)"
+    "bureaux_portuaires": "Porto Grande - Mindelo (São Vicente)",
+    "bureaux_aeriens": "Aéroport International Amílcar Cabral (Santiago)",
+    "bureaux_terrestres": "N/A (État insulaire)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Côte d'Ivoire",
-    "administration_douaniere": "Douanes de Côte d'Ivoire",
+    "administration_douaniere": "Douanes de Côte d'Ivoire (DGD-CI)",
+    "adresse": "Avenue Joseph Anoma, Plateau, BP V 50, Abidjan 01, Côte d'Ivoire",
     "site_web": "http://www.douanes.ci/",
-    "bureaux_importants": "Port d'Abidjan (Port); Port de San Pedro (Port); Aéroport Félix Houphouët-Boigny (Aéroport)"
+    "bureaux_portuaires": "Port Autonome d'Abidjan; Port de San Pedro",
+    "bureaux_aeriens": "Aéroport International Félix Houphouët-Boigny d'Abidjan",
+    "bureaux_terrestres": "Noé (Frontière Ghana); Zégoua (Frontière Mali)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Gambie",
-    "administration_douaniere": "Gambia Revenue Authority (GRA)",
+    "administration_douaniere": "Gambia Revenue Authority (GRA) - Customs",
+    "adresse": "GRA House, Banjul, Gambie",
     "site_web": "https://www.gra.gm/",
-    "bureaux_importants": "Port de Banjul (Port); Aéroport de Banjul (Aéroport); Farafenni (Frontière Sénégal)"
+    "bureaux_portuaires": "Port de Banjul",
+    "bureaux_aeriens": "Aéroport International de Banjul-Yundum",
+    "bureaux_terrestres": "Farafenni (Frontière Sénégal)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Ghana",
-    "administration_douaniere": "Ghana Revenue Authority - Customs Division",
+    "administration_douaniere": "Ghana Revenue Authority - Customs Division (GRA)",
+    "adresse": "Customs House, Starlets 91 Road, Accra, Ghana",
     "site_web": "https://gra.gov.gh/",
-    "bureaux_importants": "Port de Tema (Port); Port de Takoradi (Port); Aéroport de Kotoka (Aéroport); Aflao (Frontière Togo)"
+    "bureaux_portuaires": "Port de Tema; Port de Takoradi",
+    "bureaux_aeriens": "Aéroport International Kotoka d'Accra",
+    "bureaux_terrestres": "Aflao (Frontière Togo); Hamale (Frontière Burkina Faso)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Guinée",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes de Guinée",
+    "adresse": "Boulevard du Commerce, BP 569, Conakry, Guinée",
     "site_web": "https://douanes.gov.gn/",
-    "bureaux_importants": "Port de Conakry (Port); Aéroport de Conakry (Aéroport); Pamelap (Frontière Sierra Leone)"
+    "bureaux_portuaires": "Port Autonome de Conakry",
+    "bureaux_aeriens": "Aéroport International Ahmed Sékou Touré de Conakry",
+    "bureaux_terrestres": "Pamelap (Frontière Sierra Leone); Kourémalé (Frontière Mali)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Guinée-Bissau",
-    "administration_douaniere": "Direção-Geral das Alfândegas",
+    "administration_douaniere": "Direção-Geral das Alfândegas da Guiné-Bissau (DGA)",
+    "adresse": "Avenida Domingos Ramos, Bissau, Guinée-Bissau",
     "site_web": "N/A",
-    "bureaux_importants": "Port de Bissau (Port); Aéroport Osvaldo Vieira (Aéroport)"
+    "bureaux_portuaires": "Port de Bissau",
+    "bureaux_aeriens": "Aéroport International Osvaldo Vieira de Bissau",
+    "bureaux_terrestres": "Mpack (Frontière Sénégal)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Libéria",
-    "administration_douaniere": "Liberia Revenue Authority (LRA)",
+    "administration_douaniere": "Liberia Revenue Authority (LRA) - Customs",
+    "adresse": "Broad Street, Monrovia 1000, Libéria",
     "site_web": "https://www.lra.gov.lr/",
-    "bureaux_importants": "Freeport of Monrovia (Port); Aéroport Roberts (Aéroport); Ganta (Frontière Guinée)"
+    "bureaux_portuaires": "Freeport of Monrovia",
+    "bureaux_aeriens": "Aéroport International Roberts",
+    "bureaux_terrestres": "Ganta (Frontière Guinée); Bo Waterside (Frontière Sierra Leone)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Mali",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes du Mali",
+    "adresse": "Boulevard du Peuple, BP 2236, Bamako, Mali",
     "site_web": "https://www.douanes.gouv.ml/",
-    "bureaux_importants": "Bamako-Ferroviaire (Bureau central); Bamako-Aéroport (Aéroport); Diboli (Frontière Sénégal)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International Président Modibo Keïta de Bamako",
+    "bureaux_terrestres": "Diboli (Frontière Sénégal); Zégoua (Frontière Côte d'Ivoire)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Niger",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes du Niger",
+    "adresse": "Avenue de la Mairie, BP 623, Niamey, Niger",
     "site_web": "http://www.douanes.gouv.ne/",
-    "bureaux_importants": "Niamey-Route (Bureau central); Gaya (Frontière Bénin); Birni-N'Konni (Frontière Nigéria)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International Diori Hamani de Niamey",
+    "bureaux_terrestres": "Gaya (Frontière Bénin); Birni-N'Konni (Frontière Nigéria)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Nigéria",
     "administration_douaniere": "Nigeria Customs Service (NCS)",
+    "adresse": "NCS Headquarters, 12 Sokode Crescent, Wuse Zone 3, Abuja, Nigéria",
     "site_web": "https://www.customs.gov.ng/",
-    "bureaux_importants": "Port d'Apapa (Port); Port de Tincan Island (Port); Aéroport Murtala Muhammed (Aéroport); Seme (Frontière Bénin)"
+    "bureaux_portuaires": "Port d'Apapa (Lagos); Port de Tincan Island (Lagos)",
+    "bureaux_aeriens": "Aéroport International Murtala Muhammed de Lagos",
+    "bureaux_terrestres": "Seme (Frontière Bénin); Mfun (Frontière Cameroun)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Sénégal",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes du Sénégal",
+    "adresse": "Rue du 18 Juin 1940, BP 481, Dakar, Sénégal",
     "site_web": "https://www.douanes.sn/",
-    "bureaux_importants": "Port de Dakar (Port); Aéroport Blaise Diagne (Aéroport); Rosso (Frontière Mauritanie)"
+    "bureaux_portuaires": "Port Autonome de Dakar",
+    "bureaux_aeriens": "Aéroport International Blaise Diagne de Dakar",
+    "bureaux_terrestres": "Rosso (Frontière Mauritanie); Kidira (Frontière Mali)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Sierra Leone",
-    "administration_douaniere": "National Revenue Authority (NRA)",
+    "administration_douaniere": "National Revenue Authority (NRA) - Customs",
+    "adresse": "37 Siaka Stevens Street, Freetown, Sierra Leone",
     "site_web": "https://nra.gov.sl/",
-    "bureaux_importants": "Port de Freetown (Port); Aéroport de Lungi (Aéroport)"
+    "bureaux_portuaires": "Port de Freetown (Queen Elizabeth II Quay)",
+    "bureaux_aeriens": "Aéroport International de Lungi",
+    "bureaux_terrestres": "Pamelap (Frontière Guinée); Jendema (Frontière Libéria)"
   },
   {
     "region": "Afrique de l'Ouest",
     "pays": "Togo",
-    "administration_douaniere": "Office Togolais des Recettes (OTR)",
+    "administration_douaniere": "Office Togolais des Recettes (OTR) - Division Douanes",
+    "adresse": "Avenue de Sarakawa, BP 362, Lomé, Togo",
     "site_web": "https://www.otr.tg/",
-    "bureaux_importants": "Port de Lomé (Port); Aéroport de Lomé (Aéroport); Kodjoviakopé (Frontière Ghana)"
+    "bureaux_portuaires": "Port Autonome de Lomé",
+    "bureaux_aeriens": "Aéroport International Gnassingbé Eyadéma de Lomé",
+    "bureaux_terrestres": "Kodjoviakopé (Frontière Ghana); Cinkassé (Frontière Burkina Faso)"
   },
   {
     "region": "Afrique Centrale",
     "pays": "Cameroun",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes du Cameroun (DGD)",
+    "adresse": "Avenue Hippocrate, BP 33, Yaoundé, Cameroun",
     "site_web": "https://www.douanes.cm/",
-    "bureaux_importants": "Port de Douala (Port); Port de Kribi (Port); Aéroport de Douala (Aéroport)"
+    "bureaux_portuaires": "Port Autonome de Douala; Port Autonome de Kribi",
+    "bureaux_aeriens": "Aéroport International de Douala",
+    "bureaux_terrestres": "Ekok (Frontière Nigéria); Kye-Ossi (Frontière Gabon)"
   },
   {
     "region": "Afrique Centrale",
     "pays": "Gabon",
-    "administration_douaniere": "Direction Générale des Douanes et Droits Indirects (DGDDI)",
+    "administration_douaniere": "Direction Générale des Douanes et Droits Indirects du Gabon (DGDDI)",
+    "adresse": "BP 275, Avenue du Colonel Parant, Libreville, Gabon",
     "site_web": "https://douanes.ga/",
-    "bureaux_importants": "Port d'Owendo (Port); Aéroport de Libreville (Aéroport)"
+    "bureaux_portuaires": "Port d'Owendo (Libreville)",
+    "bureaux_aeriens": "Aéroport International Léon-Mba de Libreville",
+    "bureaux_terrestres": "Meyo-Kyé (Frontière Cameroun)"
   },
   {
     "region": "Afrique Centrale",
     "pays": "Guinée Équatoriale",
     "administration_douaniere": "Aduanas de Guinea Ecuatorial",
+    "adresse": "Calle Patricio Lumumba, Malabo, Guinée Équatoriale",
     "site_web": "N/A",
-    "bureaux_importants": "Port de Malabo (Port); Port de Bata (Port)"
+    "bureaux_portuaires": "Port de Malabo (Bioko); Port de Bata (continent)",
+    "bureaux_aeriens": "Aéroport International de Malabo",
+    "bureaux_terrestres": "Ebebiyin (Frontière Cameroun)"
   },
   {
     "region": "Afrique Centrale",
     "pays": "République Centrafricaine",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes et des Droits Indirects de la RCA",
+    "adresse": "Avenue David Dacko, BP 130, Bangui, République Centrafricaine",
     "site_web": "N/A",
-    "bureaux_importants": "Bangui (Bureau central); Garoua-Boulaï (Frontière Cameroun)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International de Bangui M'Poko",
+    "bureaux_terrestres": "Garoua-Boulaï (Frontière Cameroun); Sido (Frontière Tchad)"
   },
   {
     "region": "Afrique Centrale",
     "pays": "République du Congo",
-    "administration_douaniere": "Direction Générale des Douanes et des Droits Indirects",
+    "administration_douaniere": "Direction Générale des Douanes et des Droits Indirects du Congo (DGDDI)",
+    "adresse": "Avenue des Trois Martyrs, BP 2110, Brazzaville, République du Congo",
     "site_web": "http://www.douanes.gouv.cg/",
-    "bureaux_importants": "Port de Pointe-Noire (Port); Aéroport de Maya-Maya (Aéroport)"
+    "bureaux_portuaires": "Port Autonome de Pointe-Noire",
+    "bureaux_aeriens": "Aéroport International Maya-Maya de Brazzaville",
+    "bureaux_terrestres": "Ouesso (Frontière Cameroun)"
   },
   {
     "region": "Afrique Centrale",
     "pays": "République Démocratique du Congo",
     "administration_douaniere": "Direction Générale des Douanes et Accises (DGDA)",
+    "adresse": "Avenue des Aviateurs 10, Kinshasa-Gombe, République Démocratique du Congo",
     "site_web": "https://www.dgda.gouv.cd/",
-    "bureaux_importants": "Port de Matadi (Port); Kasumbalesa (Frontière Zambie); Aéroport de N'djili (Aéroport)"
+    "bureaux_portuaires": "Port de Matadi; Port de Kinshasa (fluvial)",
+    "bureaux_aeriens": "Aéroport International de N'djili (Kinshasa)",
+    "bureaux_terrestres": "Kasumbalesa (Frontière Zambie); Kasindi (Frontière Ouganda)"
   },
   {
     "region": "Afrique Centrale",
     "pays": "Tchad",
-    "administration_douaniere": "Direction Générale des Douanes et Droits Indirects",
+    "administration_douaniere": "Direction Générale des Douanes et Droits Indirects du Tchad",
+    "adresse": "Avenue Charles de Gaulle, BP 440, N'Djamena, Tchad",
     "site_web": "N/A",
-    "bureaux_importants": "N'Djamena (Bureau central); Kourmé (Frontière Cameroun)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International Hassan Djamous de N'Djamena",
+    "bureaux_terrestres": "Ngueli (Frontière Cameroun); Adré (Frontière Soudan)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Burundi",
-    "administration_douaniere": "Office Burundais des Recettes (OBR)",
+    "administration_douaniere": "Office Burundais des Recettes (OBR) - Département des Douanes",
+    "adresse": "Boulevard de l'UPRONA, BP 3059, Bujumbura, Burundi",
     "site_web": "https://www.obr.bi/",
-    "bureaux_importants": "Bujumbura (Bureau central); Kobero (Frontière Tanzanie)"
+    "bureaux_portuaires": "Port de Bujumbura (lac Tanganyika)",
+    "bureaux_aeriens": "Aéroport International de Bujumbura",
+    "bureaux_terrestres": "Kobero (Frontière Tanzanie); Gasenyi (Frontière Rwanda)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Comores",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes et des Droits Indirects des Comores",
+    "adresse": "Boulevard de Strasbourg, BP 32, Moroni, Comores",
     "site_web": "http://www.douane.gov.km/",
-    "bureaux_importants": "Port de Moroni (Port); Port de Mutsamudu (Port)"
+    "bureaux_portuaires": "Port de Moroni (Grande Comore); Port de Mutsamudu (Anjouan)",
+    "bureaux_aeriens": "Aéroport International Prince Said Ibrahim (Moroni)",
+    "bureaux_terrestres": "N/A (État insulaire)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Djibouti",
-    "administration_douaniere": "Douanes et Droits Indirects",
-    "site_web": "N/A",
-    "bureaux_importants": "Port de Djibouti (Port); Aéroport de Djibouti (Aéroport)"
+    "administration_douaniere": "Direction de la Douane et des Droits Indirects de Djibouti",
+    "adresse": "Rue de Paris, BP 80, Djibouti-ville, Djibouti",
+    "site_web": "https://www.douane.gouv.dj/",
+    "bureaux_portuaires": "Port de Djibouti; Port de Doraleh",
+    "bureaux_aeriens": "Aéroport International Ambouli de Djibouti",
+    "bureaux_terrestres": "Galafi (Frontière Éthiopie)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Érythrée",
-    "administration_douaniere": "Department of Customs",
+    "administration_douaniere": "Eritrean Customs Administration - Department of Customs",
+    "adresse": "Harnet Avenue, Asmara, Érythrée",
     "site_web": "N/A",
-    "bureaux_importants": "Port de Massawa (Port); Port d'Assab (Port)"
+    "bureaux_portuaires": "Port de Massawa; Port d'Assab",
+    "bureaux_aeriens": "Aéroport International d'Asmara",
+    "bureaux_terrestres": "Omhajer (Frontière Éthiopie/Soudan)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Éthiopie",
-    "administration_douaniere": "Ethiopian Customs Commission",
+    "administration_douaniere": "Ethiopian Customs Commission (ECC)",
+    "adresse": "Churchill Avenue, Kirkos Sub-City, BP 3248, Addis-Abeba, Éthiopie",
     "site_web": "https://www.customs.gov.et/",
-    "bureaux_importants": "Addis-Abeba (Bureau central); Aéroport de Bole (Aéroport); Moyale (Frontière Kenya)"
+    "bureaux_portuaires": "N/A (pays enclavé - transit via Djibouti)",
+    "bureaux_aeriens": "Aéroport International Bole d'Addis-Abeba",
+    "bureaux_terrestres": "Moyale (Frontière Kenya); Galafi (Frontière Djibouti)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Kenya",
-    "administration_douaniere": "Kenya Revenue Authority (KRA)",
+    "administration_douaniere": "Kenya Revenue Authority (KRA) - Customs & Border Control",
+    "adresse": "Times Tower, Haile Selassie Avenue, Upper Hill, Nairobi, Kenya",
     "site_web": "https://www.kra.go.ke/",
-    "bureaux_importants": "Port de Mombasa (Port); Aéroport Jomo Kenyatta (Aéroport); Busia (Frontière Ouganda)"
+    "bureaux_portuaires": "Port de Mombasa",
+    "bureaux_aeriens": "Aéroport International Jomo Kenyatta de Nairobi",
+    "bureaux_terrestres": "Busia (Frontière Ouganda); Moyale (Frontière Éthiopie)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Rwanda",
-    "administration_douaniere": "Rwanda Revenue Authority (RRA)",
+    "administration_douaniere": "Rwanda Revenue Authority (RRA) - Customs",
+    "adresse": "KG 2 Roundabout, Kacyiru, BP 3987, Kigali, Rwanda",
     "site_web": "https://www.rra.gov.rw/",
-    "bureaux_importants": "Kigali (Port sec); Gatuna (Frontière Ouganda); Rusumo (Frontière Tanzanie)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International de Kigali (Kanombe)",
+    "bureaux_terrestres": "Gatuna (Frontière Ouganda); Rusumo (Frontière Tanzanie)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Seychelles",
-    "administration_douaniere": "Seychelles Revenue Commission (SRC)",
+    "administration_douaniere": "Seychelles Revenue Commission (SRC) - Customs Division",
+    "adresse": "Independence House, Independence Avenue, Victoria, Mahé, Seychelles",
     "site_web": "https://www.src.gov.sc/",
-    "bureaux_importants": "Port de Victoria (Port); Aéroport International des Seychelles (Aéroport)"
+    "bureaux_portuaires": "Port de Victoria (Mahé)",
+    "bureaux_aeriens": "Aéroport International des Seychelles (Mahé)",
+    "bureaux_terrestres": "N/A (État insulaire)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Somalie",
-    "administration_douaniere": "Somalia Customs",
+    "administration_douaniere": "Somalia Customs Authority (Gumrugga Soomaaliya)",
+    "adresse": "Hamar Weyne District, Mogadiscio, Somalie",
     "site_web": "N/A",
-    "bureaux_importants": "Port de Mogadiscio (Port); Aéroport de Mogadiscio (Aéroport)"
+    "bureaux_portuaires": "Port de Mogadiscio; Port de Berbera (Somaliland)",
+    "bureaux_aeriens": "Aéroport International Aden Adde de Mogadiscio",
+    "bureaux_terrestres": "Dolow (Frontière Éthiopie)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Soudan",
-    "administration_douaniere": "Sudan Customs",
+    "administration_douaniere": "Sudan Customs Authority",
+    "adresse": "Rue Qasr, Khartoum, Soudan",
     "site_web": "http://www.customs.gov.sd/",
-    "bureaux_importants": "Port-Soudan (Port); Aéroport de Khartoum (Aéroport)"
+    "bureaux_portuaires": "Port-Soudan (Mer Rouge)",
+    "bureaux_aeriens": "Aéroport International de Khartoum",
+    "bureaux_terrestres": "Wadi Halfa (Frontière Égypte); Gallabat (Frontière Éthiopie)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Soudan du Sud",
-    "administration_douaniere": "South Sudan National Revenue Authority",
+    "administration_douaniere": "South Sudan National Revenue Authority (SSNRA) - Customs",
+    "adresse": "Kololo Road, Juba, Soudan du Sud",
     "site_web": "https://nra.gov.ss/",
-    "bureaux_importants": "Juba (Bureau central); Nimule (Frontière Ouganda)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International de Juba",
+    "bureaux_terrestres": "Nimule (Frontière Ouganda); Joda (Frontière Soudan)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Tanzanie",
-    "administration_douaniere": "Tanzania Revenue Authority (TRA)",
+    "administration_douaniere": "Tanzania Revenue Authority (TRA) - Customs & Excise",
+    "adresse": "Blue Tower, 2 Ohio Street, Dar es Salaam, Tanzanie",
     "site_web": "https://www.tra.go.tz/",
-    "bureaux_importants": "Port de Dar es Salaam (Port); Aéroport Julius Nyerere (Aéroport); Tunduma (Frontière Zambie)"
+    "bureaux_portuaires": "Port de Dar es Salaam; Port de Zanzibar",
+    "bureaux_aeriens": "Aéroport International Julius Nyerere (Dar es Salaam)",
+    "bureaux_terrestres": "Tunduma (Frontière Zambie); Namanga (Frontière Kenya)"
   },
   {
     "region": "Afrique de l'Est",
     "pays": "Ouganda",
-    "administration_douaniere": "Uganda Revenue Authority (URA)",
+    "administration_douaniere": "Uganda Revenue Authority (URA) - Customs",
+    "adresse": "Plot 1 Nakawa Industrial Area, Jinja Road, BP 7279, Kampala, Ouganda",
     "site_web": "https://www.ura.go.ug/",
-    "bureaux_importants": "Malaba (Frontière Kenya); Busia (Frontière Kenya); Aéroport d'Entebbe (Aéroport)"
+    "bureaux_portuaires": "Port Bell (Lac Victoria)",
+    "bureaux_aeriens": "Aéroport International d'Entebbe",
+    "bureaux_terrestres": "Malaba (Frontière Kenya); Mutukula (Frontière Tanzanie)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Angola",
-    "administration_douaniere": "Administração Geral Tributária (AGT)",
+    "administration_douaniere": "Administração Geral Tributária de Angola (AGT) - Alfândega",
+    "adresse": "Rua Padre Manuel Martins 38, Bairro Ingombotas, Luanda, Angola",
     "site_web": "https://www.agt.minfin.gov.ao/",
-    "bureaux_importants": "Port de Luanda (Port); Port de Lobito (Port); Aéroport de Luanda (Aéroport)"
+    "bureaux_portuaires": "Porto de Luanda; Porto do Lobito",
+    "bureaux_aeriens": "Aeroporto Internacional 4 de Fevereiro de Luanda",
+    "bureaux_terrestres": "Santa Clara (Frontière Namibie); Luau (Frontière RDC/Zambie)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Botswana",
-    "administration_douaniere": "Botswana Unified Revenue Service (BURS)",
+    "administration_douaniere": "Botswana Unified Revenue Service (BURS) - Customs",
+    "adresse": "Plazza 1, Sebele 1, Private Bag 0013, Gaborone, Botswana",
     "site_web": "https://www.burs.org.bw/",
-    "bureaux_importants": "Tlokweng Gate (Frontière Afrique du Sud); Ramatlabama (Frontière Afrique du Sud)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International Sir Seretse Khama de Gaborone",
+    "bureaux_terrestres": "Tlokweng Gate (Frontière Afrique du Sud); Kazungula (Frontière Zambie)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Eswatini",
-    "administration_douaniere": "Eswatini Revenue Service (ERS)",
+    "administration_douaniere": "Eswatini Revenue Service (ERS) - Customs",
+    "adresse": "Revenue House, Gwamile Street, Private Bag A195, Mbabane H100, Eswatini",
     "site_web": "https://www.ers.org.sz/",
-    "bureaux_importants": "Ngwenya/Oshoek (Frontière Afrique du Sud)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International King Mswati III d'Eswatini",
+    "bureaux_terrestres": "Ngwenya/Oshoek (Frontière Afrique du Sud)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Lesotho",
-    "administration_douaniere": "Lesotho Revenue Authority (LRA)",
+    "administration_douaniere": "Lesotho Revenue Authority (LRA) - Customs",
+    "adresse": "Corner Kingsway & Parliament Road, BP 1085, Maseru 100, Lesotho",
     "site_web": "https://www.lra.org.ls/",
-    "bureaux_importants": "Maseru Bridge (Frontière Afrique du Sud)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International de Maseru",
+    "bureaux_terrestres": "Maseru Bridge (Frontière Afrique du Sud)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Madagascar",
-    "administration_douaniere": "Direction Générale des Douanes",
+    "administration_douaniere": "Direction Générale des Douanes de Madagascar (DGD)",
+    "adresse": "Rue Fernand Kasanga, Tsimbazaza, BP 169, Antananarivo 101, Madagascar",
     "site_web": "https://www.douanes.gov.mg/",
-    "bureaux_importants": "Port de Toamasina (Port); Aéroport d'Ivato (Aéroport)"
+    "bureaux_portuaires": "Port de Toamasina (Tamatave)",
+    "bureaux_aeriens": "Aéroport International d'Ivato (Antananarivo)",
+    "bureaux_terrestres": "N/A (État insulaire)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Malawi",
-    "administration_douaniere": "Malawi Revenue Authority (MRA)",
+    "administration_douaniere": "Malawi Revenue Authority (MRA) - Customs",
+    "adresse": "Customs House, Victoria Avenue, BP 1964, Blantyre, Malawi",
     "site_web": "https://www.mra.mw/",
-    "bureaux_importants": "Mwanza (Frontière Mozambique); Songwe (Frontière Tanzanie)"
+    "bureaux_portuaires": "Port de Chipoka (Lac Malawi)",
+    "bureaux_aeriens": "Aéroport International de Kamuzu (Lilongwe)",
+    "bureaux_terrestres": "Mwanza (Frontière Mozambique); Mchinji (Frontière Zambie)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Maurice",
-    "administration_douaniere": "Mauritius Revenue Authority (MRA) - Customs",
+    "administration_douaniere": "Mauritius Revenue Authority (MRA) - Customs Department",
+    "adresse": "Ehram Court, Cnr Mgr Gonin & Sir Virgil Naz Streets, Port-Louis 11519, Maurice",
     "site_web": "https://www.mra.mu/",
-    "bureaux_importants": "Port-Louis (Port); Aéroport Sir Seewoosagur Ramgoolam (Aéroport)"
+    "bureaux_portuaires": "Port-Louis Harbour (Port franc de Maurice)",
+    "bureaux_aeriens": "Aéroport International Sir Seewoosagur Ramgoolam (Plaisance)",
+    "bureaux_terrestres": "N/A (État insulaire)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Mozambique",
-    "administration_douaniere": "Autoridade Tributária de Moçambique",
+    "administration_douaniere": "Autoridade Tributária de Moçambique (AT) - Alfândega",
+    "adresse": "Rua da Rádio Moçambique 58, Sommerschield, Maputo, Mozambique",
     "site_web": "https://www.at.gov.mz/",
-    "bureaux_importants": "Port de Maputo (Port); Port de Beira (Port)"
+    "bureaux_portuaires": "Port de Maputo; Port de Beira",
+    "bureaux_aeriens": "Aéroport International de Maputo",
+    "bureaux_terrestres": "Ressano Garcia (Frontière Afrique du Sud); Machipanda (Frontière Zimbabwe)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Namibie",
-    "administration_douaniere": "Namibia Revenue Agency (NamRA)",
+    "administration_douaniere": "Namibia Revenue Agency (NamRA) - Customs",
+    "adresse": "Customs House, 15 John Meinert Street, Private Bag 13232, Windhoek, Namibie",
     "site_web": "https://www.namra.com.na/",
-    "bureaux_importants": "Port de Walvis Bay (Port); Aéroport de Windhoek (Aéroport)"
+    "bureaux_portuaires": "Port de Walvis Bay",
+    "bureaux_aeriens": "Aéroport International Hosea Kutako de Windhoek",
+    "bureaux_terrestres": "Noordoewer (Frontière Afrique du Sud); Ariamsvlei (Frontière Afrique du Sud)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Afrique du Sud",
-    "administration_douaniere": "South African Revenue Service (SARS)",
+    "administration_douaniere": "South African Revenue Service (SARS) - Customs & Excise",
+    "adresse": "299 Bronkhorst Street, Nieuw Muckleneuk, Pretoria 0181, Afrique du Sud",
     "site_web": "https://www.sars.gov.za/",
-    "bureaux_importants": "Port de Durban (Port); Aéroport O.R. Tambo (Aéroport); Beitbridge (Frontière Zimbabwe)"
+    "bureaux_portuaires": "Port de Durban; Port du Cap",
+    "bureaux_aeriens": "Aéroport International O.R. Tambo (Johannesburg)",
+    "bureaux_terrestres": "Beitbridge (Frontière Zimbabwe); Lebombo/Ressano Garcia (Frontière Mozambique)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Zambie",
-    "administration_douaniere": "Zambia Revenue Authority (ZRA)",
+    "administration_douaniere": "Zambia Revenue Authority (ZRA) - Customs & Excise",
+    "adresse": "Revenue House, Haile Selassie Avenue, BP 35710, Lusaka, Zambie",
     "site_web": "https://www.zra.org.zm/",
-    "bureaux_importants": "Chirundu (Frontière Zimbabwe); Kasumbalesa (Frontière RDC); Nakonde (Frontière Tanzanie)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International Kenneth Kaunda de Lusaka",
+    "bureaux_terrestres": "Chirundu (Frontière Zimbabwe); Kasumbalesa (Frontière RDC)"
   },
   {
     "region": "Afrique Australe",
     "pays": "Zimbabwe",
-    "administration_douaniere": "Zimbabwe Revenue Authority (ZIMRA)",
+    "administration_douaniere": "Zimbabwe Revenue Authority (ZIMRA) - Customs",
+    "adresse": "6th Floor Livingstone House, 2nd Street & Kwame Nkrumah Avenue, Harare, Zimbabwe",
     "site_web": "https://www.zimra.co.zw/",
-    "bureaux_importants": "Beitbridge (Frontière Afrique du Sud); Forbes (Mutare) (Frontière Mozambique)"
+    "bureaux_portuaires": "N/A (pays enclavé)",
+    "bureaux_aeriens": "Aéroport International Robert Gabriel Mugabe de Harare",
+    "bureaux_terrestres": "Beitbridge (Frontière Afrique du Sud); Forbes/Mutare (Frontière Mozambique)"
   }
 ]

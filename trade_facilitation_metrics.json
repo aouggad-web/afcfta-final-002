@@ -1,0 +1,1078 @@
+{
+  "metadata": {
+    "title": "Cross-Border Trade Facilitation Metrics - African Free Zones",
+    "description": "Comprehensive trade efficiency and logistics data for African free zones",
+    "version": "1.0.0",
+    "generated_at": "2025-01-15T00:00:00Z",
+    "methodology": {
+      "scoring_scale": "0-100 (higher = more efficient)",
+      "clearance_time_unit": "working days",
+      "dimensions": [
+        "Customs Clearance",
+        "Documentation Requirements",
+        "Logistics & Corridors",
+        "Trade Finance & Payments"
+      ],
+      "data_sources": [
+        "WTO Trade Facilitation Agreement Monitor",
+        "World Bank LPI",
+        "UNCTAD TRAINS",
+        "Zone Authority Data",
+        "Expert Assessment 2024"
+      ]
+    },
+    "total_zones": 30
+  },
+  "zones": [
+    {
+      "zone_id": "MAR-TFZ-001",
+      "zone_name": "Tanger Med Zones (TMZ)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 1.5,
+          "export_days": 1.0,
+          "efficiency_score": 85
+        },
+        "documentation": {
+          "documents_required": 5,
+          "digitization_score": 85
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 88,
+          "transport_cost_index": 70,
+          "warehousing_score": 88
+        },
+        "finance": {
+          "trade_finance_availability": 82,
+          "cross_border_payments": 80
+        },
+        "overall_trade_facilitation": 80.4
+      },
+      "rankings": {
+        "continental_rank": 2,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Advanced",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MAR-KEN-001",
+      "zone_name": "Atlantic Free Zone (Kenitra)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 2.0,
+          "export_days": 1.5,
+          "efficiency_score": 78
+        },
+        "documentation": {
+          "documents_required": 6,
+          "digitization_score": 78
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 80,
+          "transport_cost_index": 68,
+          "warehousing_score": 78
+        },
+        "finance": {
+          "trade_finance_availability": 74,
+          "cross_border_payments": 72
+        },
+        "overall_trade_facilitation": 73.2
+      },
+      "rankings": {
+        "continental_rank": 5,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Advanced",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "EGY-SCZ-001",
+      "zone_name": "Suez Canal Economic Zone (SCZone)",
+      "country_iso": "EGY",
+      "region": "North Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 2.0,
+          "export_days": 1.5,
+          "efficiency_score": 82
+        },
+        "documentation": {
+          "documents_required": 7,
+          "digitization_score": 82
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 90,
+          "transport_cost_index": 72,
+          "warehousing_score": 85
+        },
+        "finance": {
+          "trade_finance_availability": 80,
+          "cross_border_payments": 76
+        },
+        "overall_trade_facilitation": 76.9
+      },
+      "rankings": {
+        "continental_rank": 3,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Advanced",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DJI-DIFTZ-001",
+      "zone_name": "Djibouti International Free Trade Zone",
+      "country_iso": "DJI",
+      "region": "East Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 2.5,
+          "export_days": 2.0,
+          "efficiency_score": 78
+        },
+        "documentation": {
+          "documents_required": 7,
+          "digitization_score": 78
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 85,
+          "transport_cost_index": 68,
+          "warehousing_score": 82
+        },
+        "finance": {
+          "trade_finance_availability": 72,
+          "cross_border_payments": 70
+        },
+        "overall_trade_facilitation": 72.1
+      },
+      "rankings": {
+        "continental_rank": 6,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Advanced",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NGA-LEK-001",
+      "zone_name": "Lekki Free Trade Zone",
+      "country_iso": "NGA",
+      "region": "West Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 4.0,
+          "export_days": 3.5,
+          "efficiency_score": 60
+        },
+        "documentation": {
+          "documents_required": 9,
+          "digitization_score": 60
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 65,
+          "transport_cost_index": 55,
+          "warehousing_score": 68
+        },
+        "finance": {
+          "trade_finance_availability": 65,
+          "cross_border_payments": 70
+        },
+        "overall_trade_facilitation": 58.6
+      },
+      "rankings": {
+        "continental_rank": 17,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-TIN-001",
+      "zone_name": "Zone Franche de Tindouf",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 5.0,
+          "export_days": 4.5,
+          "efficiency_score": 55
+        },
+        "documentation": {
+          "documents_required": 10,
+          "digitization_score": 55
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 58,
+          "transport_cost_index": 50,
+          "warehousing_score": 55
+        },
+        "finance": {
+          "trade_finance_availability": 52,
+          "cross_border_payments": 50
+        },
+        "overall_trade_facilitation": 48.0
+      },
+      "rankings": {
+        "continental_rank": 25,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-ELO-001",
+      "zone_name": "Zone Franche d'Oran (Bethioua)",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 4.0,
+          "export_days": 3.5,
+          "efficiency_score": 62
+        },
+        "documentation": {
+          "documents_required": 9,
+          "digitization_score": 62
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 62,
+          "transport_cost_index": 55,
+          "warehousing_score": 62
+        },
+        "finance": {
+          "trade_finance_availability": 58,
+          "cross_border_payments": 55
+        },
+        "overall_trade_facilitation": 55.0
+      },
+      "rankings": {
+        "continental_rank": 19,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GAB-NKO-001",
+      "zone_name": "Zone Economique Speciale de Nkok (GSEZ)",
+      "country_iso": "GAB",
+      "region": "Central Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 3.0,
+          "export_days": 2.5,
+          "efficiency_score": 68
+        },
+        "documentation": {
+          "documents_required": 8,
+          "digitization_score": 68
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 65,
+          "transport_cost_index": 58,
+          "warehousing_score": 70
+        },
+        "finance": {
+          "trade_finance_availability": 65,
+          "cross_border_payments": 62
+        },
+        "overall_trade_facilitation": 62.0
+      },
+      "rankings": {
+        "continental_rank": 15,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "SEN-DIS-001",
+      "zone_name": "Zone Economique Speciale (DAKAR)",
+      "country_iso": "SEN",
+      "region": "West Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 3.0,
+          "export_days": 2.5,
+          "efficiency_score": 70
+        },
+        "documentation": {
+          "documents_required": 8,
+          "digitization_score": 70
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 72,
+          "transport_cost_index": 62,
+          "warehousing_score": 70
+        },
+        "finance": {
+          "trade_finance_availability": 68,
+          "cross_border_payments": 68
+        },
+        "overall_trade_facilitation": 64.8
+      },
+      "rankings": {
+        "continental_rank": 12,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BEN-GLO-001",
+      "zone_name": "Zone Economique Speciale (Glo-Djigbe)",
+      "country_iso": "BEN",
+      "region": "West Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 3.5,
+          "export_days": 3.0,
+          "efficiency_score": 62
+        },
+        "documentation": {
+          "documents_required": 8,
+          "digitization_score": 62
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 65,
+          "transport_cost_index": 58,
+          "warehousing_score": 60
+        },
+        "finance": {
+          "trade_finance_availability": 58,
+          "cross_border_payments": 58
+        },
+        "overall_trade_facilitation": 57.6
+      },
+      "rankings": {
+        "continental_rank": 18,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TGO-PIA-001",
+      "zone_name": "Plateforme Industrielle d'Adetikope (PIA)",
+      "country_iso": "TGO",
+      "region": "West Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 3.0,
+          "export_days": 2.5,
+          "efficiency_score": 68
+        },
+        "documentation": {
+          "documents_required": 7,
+          "digitization_score": 68
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 70,
+          "transport_cost_index": 60,
+          "warehousing_score": 68
+        },
+        "finance": {
+          "trade_finance_availability": 62,
+          "cross_border_payments": 62
+        },
+        "overall_trade_facilitation": 63.0
+      },
+      "rankings": {
+        "continental_rank": 13,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZAF-COE-001",
+      "zone_name": "Coega Special Economic Zone",
+      "country_iso": "ZAF",
+      "region": "Southern Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 2.5,
+          "export_days": 2.0,
+          "efficiency_score": 80
+        },
+        "documentation": {
+          "documents_required": 6,
+          "digitization_score": 80
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 80,
+          "transport_cost_index": 70,
+          "warehousing_score": 82
+        },
+        "finance": {
+          "trade_finance_availability": 82,
+          "cross_border_payments": 80
+        },
+        "overall_trade_facilitation": 75.2
+      },
+      "rankings": {
+        "continental_rank": 4,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Advanced",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MUS-MFP-001",
+      "zone_name": "Mauritius Freeport & Smart City",
+      "country_iso": "MUS",
+      "region": "East Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 1.0,
+          "export_days": 0.8,
+          "efficiency_score": 90
+        },
+        "documentation": {
+          "documents_required": 4,
+          "digitization_score": 90
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 82,
+          "transport_cost_index": 75,
+          "warehousing_score": 90
+        },
+        "finance": {
+          "trade_finance_availability": 88,
+          "cross_border_payments": 88
+        },
+        "overall_trade_facilitation": 84.3
+      },
+      "rankings": {
+        "continental_rank": 1,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Advanced",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ETH-HAW-001",
+      "zone_name": "Hawassa Industrial Park",
+      "country_iso": "ETH",
+      "region": "East Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 5.0,
+          "export_days": 4.0,
+          "efficiency_score": 55
+        },
+        "documentation": {
+          "documents_required": 10,
+          "digitization_score": 55
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 58,
+          "transport_cost_index": 52,
+          "warehousing_score": 60
+        },
+        "finance": {
+          "trade_finance_availability": 52,
+          "cross_border_payments": 50
+        },
+        "overall_trade_facilitation": 49.4
+      },
+      "rankings": {
+        "continental_rank": 24,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "KEN-EPZ-001",
+      "zone_name": "Nairobi Export Processing Zone",
+      "country_iso": "KEN",
+      "region": "East Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 3.0,
+          "export_days": 2.5,
+          "efficiency_score": 70
+        },
+        "documentation": {
+          "documents_required": 7,
+          "digitization_score": 70
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 72,
+          "transport_cost_index": 62,
+          "warehousing_score": 72
+        },
+        "finance": {
+          "trade_finance_availability": 72,
+          "cross_border_payments": 75
+        },
+        "overall_trade_facilitation": 67.1
+      },
+      "rankings": {
+        "continental_rank": 9,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TUN-PAE-001",
+      "zone_name": "Parc d'Activites Economiques de Zarzis",
+      "country_iso": "TUN",
+      "region": "North Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 2.5,
+          "export_days": 2.0,
+          "efficiency_score": 72
+        },
+        "documentation": {
+          "documents_required": 7,
+          "digitization_score": 72
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 70,
+          "transport_cost_index": 65,
+          "warehousing_score": 70
+        },
+        "finance": {
+          "trade_finance_availability": 68,
+          "cross_border_payments": 65
+        },
+        "overall_trade_facilitation": 66.5
+      },
+      "rankings": {
+        "continental_rank": 10,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CMR-KRI-001",
+      "zone_name": "Zone Industrielle de Kribi (ZIK)",
+      "country_iso": "CMR",
+      "region": "Central Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 4.0,
+          "export_days": 3.5,
+          "efficiency_score": 58
+        },
+        "documentation": {
+          "documents_required": 9,
+          "digitization_score": 58
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 60,
+          "transport_cost_index": 52,
+          "warehousing_score": 62
+        },
+        "finance": {
+          "trade_finance_availability": 55,
+          "cross_border_payments": 52
+        },
+        "overall_trade_facilitation": 53.1
+      },
+      "rankings": {
+        "continental_rank": 22,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GHA-TEM-001",
+      "zone_name": "Tema Export Processing Zone",
+      "country_iso": "GHA",
+      "region": "West Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 3.5,
+          "export_days": 3.0,
+          "efficiency_score": 65
+        },
+        "documentation": {
+          "documents_required": 8,
+          "digitization_score": 65
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 68,
+          "transport_cost_index": 60,
+          "warehousing_score": 68
+        },
+        "finance": {
+          "trade_finance_availability": 68,
+          "cross_border_payments": 68
+        },
+        "overall_trade_facilitation": 62.1
+      },
+      "rankings": {
+        "continental_rank": 14,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "RWA-KSE-001",
+      "zone_name": "Kigali Special Economic Zone (KSEZ)",
+      "country_iso": "RWA",
+      "region": "East Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 2.0,
+          "export_days": 1.8,
+          "efficiency_score": 80
+        },
+        "documentation": {
+          "documents_required": 5,
+          "digitization_score": 80
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 72,
+          "transport_cost_index": 58,
+          "warehousing_score": 75
+        },
+        "finance": {
+          "trade_finance_availability": 72,
+          "cross_border_payments": 75
+        },
+        "overall_trade_facilitation": 71.5
+      },
+      "rankings": {
+        "continental_rank": 7,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CIV-PK-001",
+      "zone_name": "Parc Industriel de Koumassi (PIK)",
+      "country_iso": "CIV",
+      "region": "West Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 3.5,
+          "export_days": 3.0,
+          "efficiency_score": 62
+        },
+        "documentation": {
+          "documents_required": 8,
+          "digitization_score": 62
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 65,
+          "transport_cost_index": 58,
+          "warehousing_score": 65
+        },
+        "finance": {
+          "trade_finance_availability": 62,
+          "cross_border_payments": 62
+        },
+        "overall_trade_facilitation": 59.2
+      },
+      "rankings": {
+        "continental_rank": 16,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TZA-EPZ-001",
+      "zone_name": "Benjamin William Mkapa SEZ (Morogoro)",
+      "country_iso": "TZA",
+      "region": "East Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 4.0,
+          "export_days": 3.5,
+          "efficiency_score": 60
+        },
+        "documentation": {
+          "documents_required": 9,
+          "digitization_score": 60
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 62,
+          "transport_cost_index": 55,
+          "warehousing_score": 60
+        },
+        "finance": {
+          "trade_finance_availability": 58,
+          "cross_border_payments": 58
+        },
+        "overall_trade_facilitation": 54.9
+      },
+      "rankings": {
+        "continental_rank": 20,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZMB-LSK-001",
+      "zone_name": "Lusaka South Multi-Facility Economic Zone",
+      "country_iso": "ZMB",
+      "region": "Southern Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 4.0,
+          "export_days": 3.5,
+          "efficiency_score": 60
+        },
+        "documentation": {
+          "documents_required": 9,
+          "digitization_score": 60
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 62,
+          "transport_cost_index": 52,
+          "warehousing_score": 60
+        },
+        "finance": {
+          "trade_finance_availability": 58,
+          "cross_border_payments": 56
+        },
+        "overall_trade_facilitation": 54.2
+      },
+      "rankings": {
+        "continental_rank": 21,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "AGO-ZEE-001",
+      "zone_name": "Zona Economica Especial de Luanda",
+      "country_iso": "AGO",
+      "region": "Southern Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 6.0,
+          "export_days": 5.0,
+          "efficiency_score": 48
+        },
+        "documentation": {
+          "documents_required": 11,
+          "digitization_score": 48
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 50,
+          "transport_cost_index": 45,
+          "warehousing_score": 52
+        },
+        "finance": {
+          "trade_finance_availability": 50,
+          "cross_border_payments": 48
+        },
+        "overall_trade_facilitation": 42.4
+      },
+      "rankings": {
+        "continental_rank": 27,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MOZ-NAC-001",
+      "zone_name": "Nacala Special Economic Zone",
+      "country_iso": "MOZ",
+      "region": "Southern Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 5.0,
+          "export_days": 4.5,
+          "efficiency_score": 52
+        },
+        "documentation": {
+          "documents_required": 10,
+          "digitization_score": 52
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 55,
+          "transport_cost_index": 48,
+          "warehousing_score": 55
+        },
+        "finance": {
+          "trade_finance_availability": 50,
+          "cross_border_payments": 48
+        },
+        "overall_trade_facilitation": 46.5
+      },
+      "rankings": {
+        "continental_rank": 26,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "COD-MAL-001",
+      "zone_name": "Zone Economique Speciale de Maluku",
+      "country_iso": "COD",
+      "region": "Central Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 8.0,
+          "export_days": 7.0,
+          "efficiency_score": 38
+        },
+        "documentation": {
+          "documents_required": 13,
+          "digitization_score": 38
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 40,
+          "transport_cost_index": 35,
+          "warehousing_score": 42
+        },
+        "finance": {
+          "trade_finance_availability": 40,
+          "cross_border_payments": 40
+        },
+        "overall_trade_facilitation": 32.1
+      },
+      "rankings": {
+        "continental_rank": 30,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "UGA-NAM-001",
+      "zone_name": "Namanve Industrial & Business Park",
+      "country_iso": "UGA",
+      "region": "East Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 4.5,
+          "export_days": 4.0,
+          "efficiency_score": 58
+        },
+        "documentation": {
+          "documents_required": 9,
+          "digitization_score": 58
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 60,
+          "transport_cost_index": 50,
+          "warehousing_score": 58
+        },
+        "finance": {
+          "trade_finance_availability": 56,
+          "cross_border_payments": 58
+        },
+        "overall_trade_facilitation": 52.2
+      },
+      "rankings": {
+        "continental_rank": 23,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MWI-BLT-001",
+      "zone_name": "Blantyre Industrial Park",
+      "country_iso": "MWI",
+      "region": "Southern Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 5.5,
+          "export_days": 5.0,
+          "efficiency_score": 48
+        },
+        "documentation": {
+          "documents_required": 10,
+          "digitization_score": 48
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 50,
+          "transport_cost_index": 42,
+          "warehousing_score": 48
+        },
+        "finance": {
+          "trade_finance_availability": 45,
+          "cross_border_payments": 44
+        },
+        "overall_trade_facilitation": 41.6
+      },
+      "rankings": {
+        "continental_rank": 28,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NAM-WAL-001",
+      "zone_name": "Walvis Bay Export Processing Zone",
+      "country_iso": "NAM",
+      "region": "Southern Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 2.5,
+          "export_days": 2.0,
+          "efficiency_score": 75
+        },
+        "documentation": {
+          "documents_required": 6,
+          "digitization_score": 75
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 72,
+          "transport_cost_index": 65,
+          "warehousing_score": 72
+        },
+        "finance": {
+          "trade_finance_availability": 68,
+          "cross_border_payments": 68
+        },
+        "overall_trade_facilitation": 68.5
+      },
+      "rankings": {
+        "continental_rank": 8,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BWA-SIR-001",
+      "zone_name": "Selebi-Phikwe Economic Diversification Unit (SPEDU)",
+      "country_iso": "BWA",
+      "region": "Southern Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 3.0,
+          "export_days": 2.5,
+          "efficiency_score": 72
+        },
+        "documentation": {
+          "documents_required": 6,
+          "digitization_score": 72
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 68,
+          "transport_cost_index": 62,
+          "warehousing_score": 68
+        },
+        "finance": {
+          "trade_finance_availability": 65,
+          "cross_border_payments": 65
+        },
+        "overall_trade_facilitation": 65.0
+      },
+      "rankings": {
+        "continental_rank": 11,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Intermediate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MDG-EHO-001",
+      "zone_name": "Zone Franche d'Ehoala (Fort-Dauphin)",
+      "country_iso": "MDG",
+      "region": "East Africa",
+      "scores": {
+        "customs_clearance": {
+          "import_days": 6.0,
+          "export_days": 5.5,
+          "efficiency_score": 45
+        },
+        "documentation": {
+          "documents_required": 11,
+          "digitization_score": 45
+        },
+        "logistics": {
+          "trade_corridor_connectivity": 45,
+          "transport_cost_index": 40,
+          "warehousing_score": 48
+        },
+        "finance": {
+          "trade_finance_availability": 44,
+          "cross_border_payments": 42
+        },
+        "overall_trade_facilitation": 38.2
+      },
+      "rankings": {
+        "continental_rank": 29,
+        "regional_rank": 8,
+        "total_zones_assessed": 30
+      },
+      "facilitation_level": "Basic",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    }
+  ]
+}
