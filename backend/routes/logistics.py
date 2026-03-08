@@ -40,6 +40,13 @@ from logistics_land_data import (
     get_corridors_statistics
 )
 
+# Optional cache integration
+try:
+    from services.cache_service import cache_get, cache_set, generate_cache_key
+    CACHE_AVAILABLE = True
+except ImportError:
+    CACHE_AVAILABLE = False
+
 router = APIRouter(prefix="/logistics")
 
 # ==========================================
@@ -53,12 +60,18 @@ async def get_ports(country_iso: Optional[str] = None):
     Query params:
     - country_iso: Filter ports by country (e.g., MAR, NGA, ZAF)
     """
+    if CACHE_AVAILABLE:
+        cache_key = generate_cache_key("logistics:ports", country_iso or "all")
+        cached = cache_get(cache_key)
+        if cached:
+            return cached
+
     try:
         ports = get_all_ports(country_iso=country_iso)
-        return {
-            "count": len(ports),
-            "ports": ports
-        }
+        result = {"count": len(ports), "ports": ports}
+        if CACHE_AVAILABLE:
+            cache_set(cache_key, result, "countries")
+        return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error loading ports data: {str(e)}")
 
@@ -122,7 +135,13 @@ async def search_ports_endpoint(q: str):
 
 @router.get("/statistics")
 async def get_logistics_statistics():
-    """Get global logistics statistics for African ports"""
+    """Get global logistics statistics for African ports (cached 2 h)."""
+    if CACHE_AVAILABLE:
+        cache_key = generate_cache_key("logistics:statistics")
+        cached = cache_get(cache_key)
+        if cached:
+            return cached
+
     all_ports = get_all_ports()
     
     total_teu = sum(
@@ -135,18 +154,18 @@ async def get_logistics_statistics():
     )
     
     # Count ports by type
-    port_types = {}
+    port_types: dict = {}
     for port in all_ports:
         ptype = port.get('port_type', 'Unknown')
         port_types[ptype] = port_types.get(ptype, 0) + 1
     
     # Count ports by country
-    ports_by_country = {}
+    ports_by_country: dict = {}
     for port in all_ports:
         country = port.get('country_name', 'Unknown')
         ports_by_country[country] = ports_by_country.get(country, 0) + 1
     
-    return {
+    result = {
         "total_ports": len(all_ports),
         "total_container_throughput_teu": total_teu,
         "total_cargo_throughput_tons": total_cargo,
@@ -154,6 +173,9 @@ async def get_logistics_statistics():
         "ports_by_country": dict(sorted(ports_by_country.items(), key=lambda x: x[1], reverse=True)),
         "year": 2024
     }
+    if CACHE_AVAILABLE:
+        cache_set(cache_key, result, "countries")
+    return result
 
 # ==========================================
 # AIR CARGO ENDPOINTS
