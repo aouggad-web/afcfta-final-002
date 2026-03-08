@@ -134,6 +134,16 @@ except ImportError:
     INVESTMENT_INTELLIGENCE_AVAILABLE = False
 
 try:
+    import importlib.util as _ilu
+    import os as _os
+    _ep_path = _os.path.join(_os.path.dirname(__file__), "..", "api", "v2", "endpoints.py")
+    _spec = _ilu.spec_from_file_location("api_v2_endpoints", _ep_path)
+    _mod = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_mod)
+    api_v2_router = _mod.router
+    API_V2_AVAILABLE = True
+except Exception:
+    API_V2_AVAILABLE = False
     from .sadc_intelligence import router as sadc_intelligence_router
     SADC_INTELLIGENCE_AVAILABLE = True
 except ImportError:
@@ -230,6 +240,8 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(regional_calculator_router, tags=["Regional Calculator"])
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
         api_router.include_router(investment_intelligence_router, tags=["Investment Intelligence"])
+    if API_V2_AVAILABLE:
+        api_router.include_router(api_v2_router, tags=["API v2"])
     if AI_INTELLIGENCE_AVAILABLE:
         api_router.include_router(ai_intelligence_router, tags=["AI Intelligence"])
     if ENHANCED_SEARCH_AVAILABLE:
