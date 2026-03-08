@@ -134,6 +134,10 @@ except ImportError:
     INVESTMENT_INTELLIGENCE_AVAILABLE = False
 
 try:
+    from .sadc_intelligence import router as sadc_intelligence_router
+    SADC_INTELLIGENCE_AVAILABLE = True
+except ImportError:
+    SADC_INTELLIGENCE_AVAILABLE = False
     from .ai_intelligence import router as ai_intelligence_router
     AI_INTELLIGENCE_AVAILABLE = True
 except ImportError:
@@ -226,6 +230,8 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(regional_calculator_router, tags=["Regional Calculator"])
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
         api_router.include_router(investment_intelligence_router, tags=["Investment Intelligence"])
+    if SADC_INTELLIGENCE_AVAILABLE:
+        api_router.include_router(sadc_intelligence_router, tags=["SADC Intelligence"])
     if AI_INTELLIGENCE_AVAILABLE:
         api_router.include_router(ai_intelligence_router, tags=["AI Investment Intelligence"])
     if REGIONAL_ANALYTICS_AVAILABLE:
