@@ -112,7 +112,8 @@ const formatCurrency = (value) => {
 const REGIONS = {
   'north': ['DZA', 'EGY', 'LBY', 'MAR', 'TUN', 'MRT', 'SDN'],
   'west': ['BEN', 'BFA', 'CPV', 'CIV', 'GMB', 'GHA', 'GIN', 'GNB', 'LBR', 'MLI', 'NER', 'NGA', 'SEN', 'SLE', 'TGO'],
-  'central': ['CMR', 'CAF', 'TCD', 'COG', 'COD', 'GNQ', 'GAB', 'STP'],
+  'cemac': ['CMR', 'CAF', 'TCD', 'COG', 'GNQ', 'GAB'],
+  'central': ['COD', 'STP'],
   'east': ['BDI', 'COM', 'DJI', 'ERI', 'ETH', 'KEN', 'MDG', 'MUS', 'RWA', 'SYC', 'SOM', 'SSD', 'TZA', 'UGA'],
   'south': ['AGO', 'BWA', 'LSO', 'MWI', 'MOZ', 'NAM', 'ZAF', 'SWZ', 'ZMB', 'ZWE']
 };
@@ -150,7 +151,8 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       regions: {
         north: 'Afrique du Nord',
         west: 'Afrique de l\'Ouest',
-        central: 'Afrique Centrale',
+        cemac: 'CEMAC (Afrique Centrale)',
+        central: 'Afrique Centrale (autres)',
         east: 'Afrique de l\'Est',
         south: 'Afrique Australe'
       }
@@ -178,7 +180,8 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       regions: {
         north: 'North Africa',
         west: 'West Africa',
-        central: 'Central Africa',
+        cemac: 'CEMAC (Central Africa)',
+        central: 'Central Africa (other)',
         east: 'East Africa',
         south: 'Southern Africa'
       }

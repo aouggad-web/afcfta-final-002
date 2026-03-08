@@ -199,8 +199,11 @@ def get_country_customs_info(country_name: str) -> Optional[Dict]:
         if entry['pays'].lower() == country_name.lower():
             return {
                 'administration': entry['administration_douaniere'],
+                'adresse': entry.get('adresse', ''),
                 'website': entry['site_web'],
-                'offices': entry['bureaux_importants']
+                'bureaux_portuaires': entry.get('bureaux_portuaires', ''),
+                'bureaux_aeriens': entry.get('bureaux_aeriens', ''),
+                'bureaux_terrestres': entry.get('bureaux_terrestres', ''),
             }
     return None
 

@@ -8,6 +8,7 @@ import LogisticsMap from './LogisticsMap';
 import PortCard from './PortCard';
 import PortDetailsModal from './PortDetailsModal';
 import UNCTADDataPanel from './UNCTADDataPanel';
+import ShippingFeesCalculator from './ShippingFeesCalculator';
 import { 
   FilterBar, 
   SearchFilter, 
@@ -16,7 +17,7 @@ import {
   ResultsCounter,
   FilterDivider 
 } from '../common/FilterComponents';
-import { Anchor, Ship, MapPin, BarChart3 } from 'lucide-react';
+import { Anchor, Ship, MapPin, BarChart3, DollarSign } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -277,6 +278,9 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
 
       {/* UNCTAD Data Panel */}
       <UNCTADDataPanel language={language} />
+
+      {/* Shipping Fees Calculator */}
+      <ShippingFeesCalculator language={language} />
 
       {/* Port Details Modal */}
       <PortDetailsModal
