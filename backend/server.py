@@ -5,13 +5,21 @@ Refactored: Routes extracted to /routes/ modules
 Version: 3.0.0
 """
 
+import sys
+import os
+from pathlib import Path
+
+# Ensure the backend directory is on sys.path so that subpackages
+# (intelligence, performance, search, api, dashboard) can import each other.
+_backend_dir = Path(__file__).parent
+if str(_backend_dir) not in sys.path:
+    sys.path.insert(0, str(_backend_dir))
+
 from fastapi import FastAPI, APIRouter
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
-import os
 import logging
-from pathlib import Path
 
 # Import routes module for modular endpoint registration
 from routes import register_routes

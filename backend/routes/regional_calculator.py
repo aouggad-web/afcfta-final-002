@@ -1,8 +1,8 @@
 """
-Regional Calculator API Routes for North Africa.
+Regional Calculator API Routes for Africa.
 
 Provides advanced tariff calculation endpoints leveraging the
-EnhancedCalculatorV3 with regional North African intelligence.
+EnhancedCalculatorV3 with regional intelligence for North Africa and CEMAC.
 
 Endpoints:
   POST /api/enhanced-calculator/regional-route    # Best path analysis
@@ -22,20 +22,30 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/enhanced-calculator", tags=["Regional Calculator"])
 
+NORTH_AFRICA_COUNTRIES = ["DZA", "MAR", "EGY", "TUN"]
+CEMAC_COUNTRIES = ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"]
+ALL_SUPPORTED_COUNTRIES = NORTH_AFRICA_COUNTRIES + CEMAC_COUNTRIES
+
 
 # ==================== Request Models ====================
 
 class RegionalRouteRequest(BaseModel):
     hs_code: str = Field(..., description="HS tariff code (6-10 digits)")
     cif_value: float = Field(..., gt=0, description="CIF value in USD")
-    target_market: str = Field(default="NORTH_AFRICA", description="Target market")
+    target_market: str = Field(
+        default="NORTH_AFRICA",
+        description="Target market: NORTH_AFRICA or CEMAC",
+    )
     dd_rates: Optional[Dict[str, float]] = Field(
         None, description="Known DD rates per country {ISO3: rate_pct}"
     )
 
 
 class CountryTaxRequest(BaseModel):
-    country_code: str = Field(..., description="ISO3 country code (DZA/MAR/EGY/TUN)")
+    country_code: str = Field(
+        ...,
+        description="ISO3 country code (DZA/MAR/EGY/TUN or CMR/CAF/TCD/COG/GNQ/GAB)",
+    )
     hs_code: str = Field(..., description="HS tariff code")
     cif_value: float = Field(..., gt=0, description="CIF value in USD")
     dd_rate: Optional[float] = Field(None, ge=0, le=300, description="Override DD rate %")
@@ -69,10 +79,11 @@ def _get_calculator():
 @router.post("/regional-route")
 async def find_best_route(request: RegionalRouteRequest):
     """
-    Find the optimal trade route across North African countries.
+    Find the optimal trade route for the given target market.
 
-    Compares total landed costs (DD + VAT) across DZA, MAR, EGY, TUN
-    and ranks countries by lowest total cost.
+    For NORTH_AFRICA: compares DZA, MAR, EGY, TUN.
+    For CEMAC: compares CMR, CAF, TCD, COG, GNQ, GAB.
+    Rankings are ordered by lowest total landed cost.
     """
     calculator = _get_calculator()
     try:
@@ -91,16 +102,17 @@ async def find_best_route(request: RegionalRouteRequest):
 @router.post("/country-taxes")
 async def calculate_country_taxes(request: CountryTaxRequest):
     """
-    Calculate import tax breakdown for a specific North African country.
+    Calculate import tax breakdown for a specific country.
 
+    Supports North Africa (DZA/MAR/EGY/TUN) and CEMAC
+    (CMR/CAF/TCD/COG/GNQ/GAB) countries.
     Returns DD, VAT, and total landed cost for a given HS code and CIF value.
     """
     calculator = _get_calculator()
-    supported = ["DZA", "MAR", "EGY", "TUN"]
-    if request.country_code.upper() not in supported:
+    if request.country_code.upper() not in ALL_SUPPORTED_COUNTRIES:
         raise HTTPException(
             status_code=400,
-            detail=f"Unsupported country. Must be one of: {supported}",
+            detail=f"Unsupported country. Must be one of: {ALL_SUPPORTED_COUNTRIES}",
         )
 
     try:
@@ -120,9 +132,10 @@ async def calculate_country_taxes(request: CountryTaxRequest):
 @router.get("/investment-map")
 async def get_investment_map():
     """
-    Get the North African regional investment opportunity map.
+    Get the regional investment opportunity map.
 
-    Provides comparative analysis of DZA, MAR, EGY, TUN including:
+    Provides comparative analysis of North Africa (DZA, MAR, EGY, TUN)
+    and CEMAC (CMR, CAF, TCD, COG, GNQ, GAB) including:
     - Market size and population
     - Strategic position and port access
     - Trade agreements count and key markets
@@ -143,7 +156,7 @@ async def optimize_supply_chain(request: SupplyChainRequest):
     """
     Multi-country supply chain optimization analysis.
 
-    Compares total tax burden across North African countries for a
+    Compares total tax burden across North African and CEMAC countries for a
     set of HS codes, helping identify the optimal production base.
     """
     calculator = _get_calculator()
@@ -193,10 +206,10 @@ async def get_free_zone_opportunities(
     cif_value: float = Query(1000.0, gt=0, description="CIF value in USD"),
 ):
     """
-    Identify free zone arbitrage opportunities across North Africa.
+    Identify free zone arbitrage opportunities across North Africa and CEMAC.
 
-    Returns special economic zones in DZA/MAR/EGY/TUN that may offer
-    reduced or zero customs duties for the given HS code.
+    Returns special economic zones in DZA/MAR/EGY/TUN and CMR/COG/GAB that
+    may offer reduced or zero customs duties for the given HS code.
     """
     calculator = _get_calculator()
     try:
