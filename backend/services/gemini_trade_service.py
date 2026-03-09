@@ -84,6 +84,11 @@ class GeminiTradeService:
         """Create a new chat instance with Gemini"""
         if not EMERGENT_AVAILABLE or LlmChat is None:
             raise RuntimeError("emergentintegrations package is not installed")
+        if not self.api_key:
+            raise RuntimeError(
+                "EMERGENT_LLM_KEY is not configured. "
+                "Set the EMERGENT_LLM_KEY environment variable to enable AI features."
+            )
         self._session_counter += 1
         session_id = f"trade-analysis-{self._session_counter}-{session_suffix}"
         
