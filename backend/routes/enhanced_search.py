@@ -219,11 +219,11 @@ async def enhanced_hs_code_search(
         "fuzzy_matches": fuzzy,
         "semantic_matches": semantic,
         "total_results": len(exact) + len(fuzzy) + len(semantic),
+    }
+"""
 AfCFTA Platform - Enhanced Search API Routes
 Intelligent HS code search and advanced investment opportunity filtering.
 """
-
-from __future__ import annotations
 
 import logging
 from typing import Any, Dict, List, Optional

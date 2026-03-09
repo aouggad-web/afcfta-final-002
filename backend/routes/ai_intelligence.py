@@ -11,11 +11,10 @@ import logging
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
+"""
 AfCFTA Platform - AI Investment Intelligence API Routes
 Exposes the InvestmentIntelligenceEngine via REST endpoints.
 """
-
-from __future__ import annotations
 
 import logging
 from typing import Any, Dict, List, Optional

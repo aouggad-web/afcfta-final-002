@@ -456,6 +456,7 @@ class DZATariffConnector:
             lambda: out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"),
         )
         logger.info(f"DZA tariff data saved to {out_file}")
+"""
 Algeria (DZA) Tariff Connector.
 
 Wraps the existing AlgeriaConformeproScraper into the NorthAfricaCrawlerBase
