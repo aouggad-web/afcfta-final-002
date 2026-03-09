@@ -153,6 +153,8 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "source": "Egyptian Customs Authority + Base UMA Maroc",
         "source_url": "https://www.customs.gov.eg",
         "currency": "EGP (Livre Égyptienne)",
+        "data_type": "uma_north_africa_derived",
+        "trade_bloc": "COMESA + GAFTA + QIZ",
         "vat_rate": 14.0,
         "vat_name": "Value Added Tax (VAT)",
         "vat_base": "CIF + CD",
@@ -174,6 +176,15 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "national_taxes": {},   # VAT is the main additional tax
         "tva_exempt_chapters": ["30"],
         "excise_chapters": ["22", "24", "33"],
+        # DD derivation factors relative to Morocco base bands (used by build_country_position)
+        "dd_factors": {
+            "raw_materials": 0.80,       # 2.5% → ~2.0%
+            "intermediate_goods": 1.20,  # 10% → ~12%
+            "final_goods": 1.20,         # 25% → ~30%
+            "agricultural": 0.50,        # 40% → ~20% (food security policy)
+            "luxury_goods": 0.89,        # 45% → ~40%
+        },
+        "vat": {"standard": 14.0, "reduced": [5.0]},
         "notes": [
             "Base UMA (structure Maroc) adaptée aux taux CD égyptiens",
             "CD: 2%, 5%, 12%, 22%, 30%, 40%, 60%",
@@ -262,51 +273,6 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
             "TS (Taxe Statistique): 0.5% sur CIF",
             "Exemptions larges pour matériaux de reconstruction",
             "Zone franche Misurata opérationnelle",
-        ],
-    },
-    # ------------------------------------------------------------------
-    # MOROCCO (reference – included for completeness)
-    # ------------------------------------------------------------------
-    "MAR": {
-        "country": "MAR",
-        "country_name": "Morocco",
-        "country_name_fr": "Maroc",
-        "source": "ADII Maroc (données de référence UMA)",
-        "source_url": "https://www.douane.gov.ma",
-        "currency": "MAD (Dirham Marocain)",
-        "vat_rate": 20.0,
-        "vat_name": "Taxe sur la Valeur Ajoutée (TVA)",
-        "vat_base": "CIF + DI + TPI",
-        "tariff_overrides": {
-            "0":    ["25", "26", "27", "30", "31"],
-            "2.5":  ["28", "29", "32", "35", "38", "47", "50", "51",
-                     "52", "53", "54", "55", "56", "58", "59", "60",
-                     "68", "74", "75", "84", "85", "86", "87", "88",
-                     "89", "90"],
-            "10":   ["06", "10", "11", "12", "23", "57"],
-            "17.5": ["01", "02", "03", "07", "08", "09", "15", "39",
-                     "40", "42", "44", "48", "69", "70", "72", "73",
-                     "76", "82", "83"],
-            "25":   ["04", "16", "17", "18", "19", "20", "21", "33",
-                     "61", "62", "63", "64", "94", "95"],
-            "40":   ["22", "24"],
-        },
-        "national_taxes": {
-            "TPI": {
-                "code": "TPI",
-                "name": "Taxe Parafiscale à l'Importation",
-                "rate": 0.25,
-                "type": "ad_valorem",
-                "base": "CIF",
-            },
-        },
-        "tva_exempt_chapters": [],
-        "excise_chapters": ["22", "24", "33"],
-        "notes": [
-            "Pays de référence UMA – données ADII les plus complètes",
-            "DI: 0%, 2.5%, 10%, 17.5%, 25%, 40%",
-            "TPI: 0.25%; TVA: 20% (7%, 10%, 14% réduits)",
-            "7 accords préférentiels (UE, USA, GAFTA, Agadir, AfCFTA, AELE, Turquie)",
         ],
     },
     # ------------------------------------------------------------------
