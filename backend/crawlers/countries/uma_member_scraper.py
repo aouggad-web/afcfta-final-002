@@ -88,6 +88,13 @@ COUNTRY_CONFIGS: Dict[str, Dict] = {
                 "code": "TSS",
                 "name": "Taxe de Solidarité Sociale",
                 "rate": 1.0,
+                "type": "ad_valorem",
+                "base": "CIF",
+            },
+        },
+    },
+}  # end of first COUNTRY_CONFIGS (superseded by the complete definition below)
+
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -207,13 +214,16 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
                 "code": "TS",
                 "name": "Taxe Statistique",
                 "rate": 0.5,
-        "preferential_zero_rate": ["COMESA", "QIZ_US", "GAFTA", "AGADIR"],
-        "special_zones": ["SCZONE", "QIZ_Zones", "New_Capital_SEZ"],
+                "type": "ad_valorem",
+                "base": "CIF",
+            },
+        },
         "notes": [
-            "COMESA member: up to 100% preference for member-state goods",
-            "QIZ: US duty-free access for qualifying manufactured goods",
-            "Development duty 1-2% applies to most imports",
-            "Source: ECA (Egyptian Customs Authority) / WTO schedule",
+            "Base UMA (structure Maroc) adaptée aux taux libyens",
+            "DD: 0%, 5%, 15%, 25%, 40% – reconstruction focus",
+            "Aucune TVA – Libye",
+            "TS (Taxe Statistique): 0.5% sur CIF",
+            "Exemptions larges pour matériaux de reconstruction",
         ],
     },
     "TUN": {
@@ -332,6 +342,10 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
                 "code": "FODEC",
                 "name": "Fonds de Développement de la Compétitivité",
                 "rate": 1.0,
+                "type": "ad_valorem",
+                "base": "CIF",
+            },
+        },
         "preferential_zero_rate": ["EU_AA", "EFTA", "GAFTA", "AGADIR"],
         "special_zones": ["Bizerte_EDZ", "Sfax_EZ", "Offshore_Regime"],
         "notes": [
@@ -434,16 +448,6 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
     # ------------------------------------------------------------------
     # SUDAN
     # ------------------------------------------------------------------
-        "preferential_zero_rate": ["GAFTA", "Reconstruction_Materials"],
-        "special_zones": ["Misrata_FZ"],
-        "notes": [
-            "Post-conflict reconstruction: many tariffs suspended or waived",
-            "Dual administration creates enforcement inconsistencies",
-            "Data based on 2010 pre-conflict schedule; current application varies",
-            "Oil sector: separate NOC fiscal regime",
-            "Data reliability: LOW",
-        ],
-    },
     "SDN": {
         "country": "SDN",
         "country_name": "Sudan",
@@ -472,6 +476,10 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
                 "code": "DS",
                 "name": "Development Surcharge",
                 "rate": 2.0,
+                "type": "ad_valorem",
+                "base": "CIF",
+            },
+        },
         "country_name_ar": "السودان",
         "currency": "SDG",
         "source": "Sudan Customs Administration + COMESA schedule",
@@ -509,15 +517,6 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
     # ------------------------------------------------------------------
     # MAURITANIA
     # ------------------------------------------------------------------
-        "preferential_zero_rate": ["COMESA", "GAFTA"],
-        "special_zones": ["Khartoum_FTZ", "PortSudan_TZ"],
-        "notes": [
-            "COMESA member: preferential tariff elimination schedule",
-            "Post-sanctions economy (US sanctions lifted 2017)",
-            "Agriculture: gum arabic, cotton, sesame key exports",
-            "Data reliability: LOW – political transition ongoing",
-        ],
-    },
     "MRT": {
         "country": "MRT",
         "country_name": "Mauritania",
@@ -543,6 +542,15 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         },
         "national_taxes": {
             "TS": {
+                "code": "TS",
+                "name": "Taxe Statistique",
+                "rate": 1.0,
+                "type": "ad_valorem",
+                "base": "CIF",
+            },
+        },
+    },
+    "MRT": {
         "country_name_ar": "موريتانيا",
         "currency": "MRU",
         "source": "Direction Générale des Douanes de Mauritanie",
@@ -751,17 +759,6 @@ def save_country_results(country_code: str, positions: List[Dict], config: Dict,
     }
     for key, tax_info in config["national_taxes"].items():
         tax_legend[tax_info["code"]] = f"{tax_info['name']} ({tax_info['rate']}%)"
-        "preferential_zero_rate": ["UMA_partial", "GAFTA", "ECOWAS_partial"],
-        "special_zones": ["Nouakchott_FZ"],
-        "notes": [
-            "Bridge country between Maghreb (UMA) and West Africa (ECOWAS)",
-            "Mining sector: iron ore, gold, copper dominate exports",
-            "Atlantic fisheries: major EU and China access agreements",
-            "Renewable energy: significant solar/wind potential",
-            "Data reliability: LOW",
-        ],
-    },
-}
 
 # ── Band mapping ─────────────────────────────────────────────────────────────
 
@@ -1014,31 +1011,6 @@ def run_scraper(
 
     elapsed = time.time() - start_time
     logger.info(f"\nAll UMA countries generated in {elapsed:.1f}s")
-        "country_name_fr": config.get("country_name_fr", ""),
-        "country_name_ar": config.get("country_name_ar", ""),
-        "currency": config["currency"],
-        "trade_bloc": config["trade_bloc"],
-        "source": config["source"],
-        "source_url": config["source_url"],
-        "method": "uma_member_derived_from_morocco_reference",
-        "hs_level": "HS8",
-        "nomenclature": f"HS8 (derived from Morocco NTS)",
-        "data_type": config["data_type"],
-        "extracted_at": datetime.utcnow().isoformat() + "Z",
-        "total_positions": len(positions),
-        "special_zones": config.get("special_zones", []),
-        "preferential_agreements": config.get("preferential_zero_rate", []),
-        "positions": positions,
-        "tax_legend": tax_legend,
-        "notes": config.get("notes", []),
-        "generation_time_s": round(elapsed, 3),
-    }
-
-    with open(out_file, "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=2)
-
-    logger.info(f"  Saved {len(positions)} positions → {out_file}")
-    return str(out_file)
 
 
 def run_scraper(
