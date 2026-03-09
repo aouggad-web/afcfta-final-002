@@ -873,8 +873,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "customs_url": "https://www.customs.gov.sd",
         "priority": Priority.MEDIUM,
         "languages": ["ar", "en"],
-        "notes": "Port Sudan gateway, North Africa UMA regional system"
-        "notes": "Port Sudan gateway",
+        "notes": "Port Sudan gateway, North Africa UMA regional system",
         "customs_platform": CustomsPlatform.ASYCUDA_WORLD
     },
     "TZA": {

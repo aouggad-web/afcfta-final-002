@@ -30,7 +30,10 @@ _hs6_db_spec = _ilu.spec_from_file_location(
 )
 _hs6_db = _ilu.module_from_spec(_hs6_db_spec)
 
-# Stub out the fastapi dependency to avoid a heavyweight import during tests
+# Stub out the fastapi dependency to avoid a heavyweight import during tests.
+# We temporarily install the stub only if fastapi is not already in sys.modules,
+# then restore the original state after exec_module() so other test files that
+# do `from fastapi.testclient import TestClient` are not affected.
 import types as _types
 _fastapi_stub = _types.ModuleType("fastapi")
 _fastapi_stub.APIRouter = type("APIRouter", (), {
@@ -39,9 +42,18 @@ _fastapi_stub.APIRouter = type("APIRouter", (), {
 })
 _fastapi_stub.HTTPException = type("HTTPException", (Exception,), {})
 _fastapi_stub.Query = lambda *a, **kw: None
-sys.modules.setdefault("fastapi", _fastapi_stub)
+_fastapi_original = sys.modules.get("fastapi", None)
+if _fastapi_original is None:
+    sys.modules["fastapi"] = _fastapi_stub
 
 _hs6_db_spec.loader.exec_module(_hs6_db)
+
+# Restore sys.modules to its pre-stub state so we don't shadow the real fastapi
+# package for other test modules collected in the same pytest session.
+if _fastapi_original is None:
+    sys.modules.pop("fastapi", None)
+else:
+    sys.modules["fastapi"] = _fastapi_original
 
 CHAPTER_NAMES = _hs6_db.CHAPTER_NAMES
 _score_code_match = _hs6_db._score_code_match

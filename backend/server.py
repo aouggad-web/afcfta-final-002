@@ -47,7 +47,14 @@ db = None
 client = None
 if mongo_url:
     try:
-        client = AsyncIOMotorClient(mongo_url)
+        client = AsyncIOMotorClient(
+            mongo_url,
+            maxPoolSize=50,
+            minPoolSize=5,
+            maxIdleTimeMS=30000,
+            connectTimeoutMS=20000,
+            serverSelectionTimeoutMS=5000,
+        )
         db = client[os.environ.get('DB_NAME', 'afcfta')]
         logging.info("MongoDB connected successfully")
     except Exception as e:
@@ -76,11 +83,21 @@ app = FastAPI(
 )
 
 # CORS middleware
+_cors_origins = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "https://afcfta.trade",
+    "https://www.afcfta.trade",
+]
+_frontend_url = os.environ.get("FRONTEND_URL", "")
+if _frontend_url:
+    _cors_origins.append(_frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
