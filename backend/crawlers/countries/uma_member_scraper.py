@@ -224,6 +224,52 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
             "Zone franche Misurata opérationnelle",
         ],
     },
+    # ------------------------------------------------------------------
+    # TUNISIA
+    # ------------------------------------------------------------------
+    "TUN": {
+        "country": "TUN",
+        "country_name": "Tunisia",
+        "country_name_fr": "Tunisie",
+        "source": "DG Douanes Tunisie + Base UMA Maroc",
+        "source_url": "https://www.douane.gov.tn",
+        "currency": "TND (Dinar Tunisien)",
+        "vat_rate": 19.0,
+        "vat_name": "Taxe sur la Valeur Ajoutée (TVA)",
+        "vat_base": "CIF + DD + FODEC",
+        "tariff_overrides": {
+            "0":  ["25", "26", "27", "28", "29", "30", "31"],
+            "10": ["06", "10", "11", "12", "23", "32", "35", "38",
+                   "47", "50", "51", "52", "53", "54", "55", "56",
+                   "58", "59", "60", "68", "74", "75", "84", "85",
+                   "86", "88", "89", "90"],
+            "20": ["01", "02", "03", "07", "08", "09", "15", "39",
+                   "40", "44", "48", "57", "72", "73", "76", "82",
+                   "83", "87"],
+            "30": ["42", "63", "65", "69", "70"],
+            "36": ["04", "16", "17", "18", "19", "20", "21", "71",
+                   "91", "95"],
+            "43": ["33", "61", "62", "64", "94"],
+            "50": ["22", "24"],
+        },
+        "national_taxes": {
+            "FODEC": {
+                "code": "FODEC",
+                "name": "Fonds de Développement de la Compétitivité",
+                "rate": 1.0,
+                "type": "ad_valorem",
+                "base": "CIF",
+            },
+        },
+        "preferential_zero_rate": ["EU_AA", "EFTA", "GAFTA", "AGADIR"],
+        "special_zones": ["Bizerte_EDZ", "Sfax_EZ", "Offshore_Regime"],
+        "notes": [
+            "EU Association Agreement 1998: industrial goods largely duty-free",
+            "DCFTA (ALECA) negotiations ongoing for agriculture/services",
+            "Offshore regime: 10% CIT for fully export-oriented enterprises",
+            "Source: Direction Générale des Douanes de Tunisie",
+        ],
+    },
     "DZA": {
         "country": "DZA",
         "country_name": "Algeria",
