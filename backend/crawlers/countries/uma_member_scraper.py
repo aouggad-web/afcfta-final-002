@@ -144,46 +144,6 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         ],
     },
     # ------------------------------------------------------------------
-    # EGYPT
-    # ------------------------------------------------------------------
-    "EGY": {
-        "country": "EGY",
-        "country_name": "Egypt",
-        "country_name_fr": "Égypte",
-        "source": "Egyptian Customs Authority + Base UMA Maroc",
-        "source_url": "https://www.customs.gov.eg",
-        "currency": "EGP (Livre Égyptienne)",
-        "vat_rate": 14.0,
-        "vat_name": "Value Added Tax (VAT)",
-        "vat_base": "CIF + CD",
-        "tariff_overrides": {
-            "0": [],
-            "2": ["01", "02", "03", "06", "07", "08", "09", "10",
-                  "11", "12", "15", "23", "25", "26", "27", "28",
-                  "29", "30", "31", "32", "35", "38", "47"],
-            "5": ["84", "85", "86", "88", "89", "90"],
-            "12": ["50", "51", "52", "53", "54", "55", "56", "58",
-                   "59", "60", "68", "74", "75"],
-            "22": ["39", "40", "44", "48", "57", "72", "73", "76",
-                   "82", "83"],
-            "30": ["04", "16", "17", "18", "19", "20", "21", "42",
-                   "63", "65", "69", "70", "87", "94"],
-            "40": ["33", "61", "62", "64", "71", "91", "95"],
-            "60": ["22", "24"],
-        },
-        "national_taxes": {},   # VAT is the main additional tax
-        "tva_exempt_chapters": ["30"],
-        "excise_chapters": ["22", "24", "33"],
-        "notes": [
-            "Base UMA (structure Maroc) adaptée aux taux CD égyptiens",
-            "CD: 2%, 5%, 12%, 22%, 30%, 40%, 60%",
-            "Investment Law 72/2017: 50% tax deduction (Upper Egypt, 7 ans)",
-            "QIZ: accès USA 0% pour textiles avec 10,5% contenu israélien",
-            "SCZONE (Suez Canal): taux douanier 5% unique + exonération TVA inputs",
-            "COMESA: 0% intracommunautaire avec Certificat d'Origine",
-        ],
-    },
-    # ------------------------------------------------------------------
     # LIBYA
     # ------------------------------------------------------------------
     "LBY": {
@@ -262,97 +222,6 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
             "TS (Taxe Statistique): 0.5% sur CIF",
             "Exemptions larges pour matériaux de reconstruction",
             "Zone franche Misurata opérationnelle",
-        ],
-    },
-    # ------------------------------------------------------------------
-    # MOROCCO (reference – included for completeness)
-    # ------------------------------------------------------------------
-    "MAR": {
-        "country": "MAR",
-        "country_name": "Morocco",
-        "country_name_fr": "Maroc",
-        "source": "ADII Maroc (données de référence UMA)",
-        "source_url": "https://www.douane.gov.ma",
-        "currency": "MAD (Dirham Marocain)",
-        "vat_rate": 20.0,
-        "vat_name": "Taxe sur la Valeur Ajoutée (TVA)",
-        "vat_base": "CIF + DI + TPI",
-        "tariff_overrides": {
-            "0":    ["25", "26", "27", "30", "31"],
-            "2.5":  ["28", "29", "32", "35", "38", "47", "50", "51",
-                     "52", "53", "54", "55", "56", "58", "59", "60",
-                     "68", "74", "75", "84", "85", "86", "87", "88",
-                     "89", "90"],
-            "10":   ["06", "10", "11", "12", "23", "57"],
-            "17.5": ["01", "02", "03", "07", "08", "09", "15", "39",
-                     "40", "42", "44", "48", "69", "70", "72", "73",
-                     "76", "82", "83"],
-            "25":   ["04", "16", "17", "18", "19", "20", "21", "33",
-                     "61", "62", "63", "64", "94", "95"],
-            "40":   ["22", "24"],
-        },
-        "national_taxes": {
-            "TPI": {
-                "code": "TPI",
-                "name": "Taxe Parafiscale à l'Importation",
-                "rate": 0.25,
-                "type": "ad_valorem",
-                "base": "CIF",
-            },
-        },
-        "tva_exempt_chapters": [],
-        "excise_chapters": ["22", "24", "33"],
-        "notes": [
-            "Pays de référence UMA – données ADII les plus complètes",
-            "DI: 0%, 2.5%, 10%, 17.5%, 25%, 40%",
-            "TPI: 0.25%; TVA: 20% (7%, 10%, 14% réduits)",
-            "7 accords préférentiels (UE, USA, GAFTA, Agadir, AfCFTA, AELE, Turquie)",
-        ],
-    },
-    # ------------------------------------------------------------------
-    # TUNISIA
-    # ------------------------------------------------------------------
-    "TUN": {
-        "country": "TUN",
-        "country_name": "Tunisia",
-        "country_name_fr": "Tunisie",
-        "source": "DG Douanes Tunisie + Base UMA Maroc",
-        "source_url": "https://www.douane.gov.tn",
-        "currency": "TND (Dinar Tunisien)",
-        "vat_rate": 19.0,
-        "vat_name": "Taxe sur la Valeur Ajoutée (TVA)",
-        "vat_base": "CIF + DD + FODEC",
-        "tariff_overrides": {
-            "0":  ["25", "26", "27", "28", "29", "30", "31"],
-            "10": ["06", "10", "11", "12", "23", "32", "35", "38",
-                   "47", "50", "51", "52", "53", "54", "55", "56",
-                   "58", "59", "60", "68", "74", "75", "84", "85",
-                   "86", "88", "89", "90"],
-            "20": ["01", "02", "03", "07", "08", "09", "15", "39",
-                   "40", "44", "48", "57", "72", "73", "76", "82",
-                   "83", "87"],
-            "30": ["42", "63", "65", "69", "70"],
-            "36": ["04", "16", "17", "18", "19", "20", "21", "71",
-                   "91", "95"],
-            "43": ["33", "61", "62", "64", "94"],
-            "50": ["22", "24"],
-        },
-        "national_taxes": {
-            "FODEC": {
-                "code": "FODEC",
-                "name": "Fonds de Développement de la Compétitivité",
-                "rate": 1.0,
-                "type": "ad_valorem",
-                "base": "CIF",
-            },
-        },
-        "preferential_zero_rate": ["EU_AA", "EFTA", "GAFTA", "AGADIR"],
-        "special_zones": ["Bizerte_EDZ", "Sfax_EZ", "Offshore_Regime"],
-        "notes": [
-            "EU Association Agreement 1998: industrial goods largely duty-free",
-            "DCFTA (ALECA) negotiations ongoing for agriculture/services",
-            "Offshore regime: 10% CIT for fully export-oriented enterprises",
-            "Source: Direction Générale des Douanes de Tunisie",
         ],
     },
     "DZA": {
@@ -551,6 +420,8 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         },
     },
     "MRT": {
+        "country": "MRT",
+        "country_name": "Mauritania",
         "country_name_ar": "موريتانيا",
         "currency": "MRU",
         "source": "Direction Générale des Douanes de Mauritanie",
