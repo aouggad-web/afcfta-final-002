@@ -252,6 +252,20 @@ except ImportError:
     mobile_router = None
     MOBILE_AVAILABLE = False
 
+try:
+    from .currencies import router as currencies_router
+    CURRENCIES_AVAILABLE = True
+except ImportError:
+    currencies_router = None
+    CURRENCIES_AVAILABLE = False
+
+try:
+    from .exchange_rates import router as exchange_rates_router
+    EXCHANGE_RATES_AVAILABLE = True
+except ImportError:
+    exchange_rates_router = None
+    EXCHANGE_RATES_AVAILABLE = False
+
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -326,3 +340,7 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(websocket_router, tags=["WebSocket Real-time"])
     if MOBILE_AVAILABLE:
         api_router.include_router(mobile_router, tags=["Mobile API"])
+    if CURRENCIES_AVAILABLE:
+        api_router.include_router(currencies_router, tags=["Currencies"])
+    if EXCHANGE_RATES_AVAILABLE:
+        api_router.include_router(exchange_rates_router, tags=["Exchange Rates"])

@@ -264,6 +264,14 @@ async def startup_load_tariff_data():
     except Exception as e:
         logger.warning(f"Tariff data service startup: {e}. Calculator will use ETL fallback.")
 
+    # Start the exchange rate scheduler (updates every 4 hours, first run immediate)
+    try:
+        from tasks.scheduler import start_scheduler
+        start_scheduler(interval_hours=4)
+        logger.info("Exchange rate scheduler started (interval=4h)")
+    except Exception as e:
+        logger.warning(f"Exchange rate scheduler startup failed: {e}")
+
 # =============================================================================
 # REGISTER ALL ROUTES
 # =============================================================================
