@@ -24,6 +24,9 @@ MIGRATION STATUS:
 """
 
 from fastapi import APIRouter
+import logging
+
+_logger = logging.getLogger(__name__)
 
 # Import all route modules
 from .health import router as health_router
@@ -41,7 +44,13 @@ from .rules_of_origin import router as rules_router
 from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
-from .faostat import router as faostat_router
+try:
+    from .faostat import router as faostat_router
+    FAOSTAT_AVAILABLE = True
+except ImportError:
+    _logger.warning("faostat package not installed; FAOSTAT routes will be unavailable")
+    faostat_router = None
+    FAOSTAT_AVAILABLE = False
 from .calculator import router as calculator_router
 try:
     from .gemini_analysis import router as gemini_router
@@ -213,7 +222,8 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(hs6_db_router, tags=["HS6 Database"])
     api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"])
     api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"])
-    api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"])
+    if FAOSTAT_AVAILABLE:
+        api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"])
     api_router.include_router(calculator_router, tags=["Calculator"])
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(trade_data_router, tags=["Trade Data Sources"])
