@@ -343,17 +343,24 @@ async def validate_transaction(body: TransactionValidationRequest):
 
     # Domiciliation alert
     domiciliation_alert = None
-    if domiciliation.required or (
+    domiciliation_triggered = domiciliation.required or (
         domiciliation.conditional
         and domiciliation.threshold_usd is not None
         and body.amount_usd >= domiciliation.threshold_usd
-    ):
+    )
+    if domiciliation_triggered:
+        docs = ", ".join(str(d) for d in (domiciliation.mandatory_documents or []))
+        threshold_str = (
+            "toutes opérations"
+            if domiciliation.threshold_usd == 0
+            else f"{domiciliation.threshold_usd:,.0f} USD"
+        )
         domiciliation_alert = {
             "required": True,
             "message": (
                 f"Domiciliation bancaire obligatoire pour ce pays "
-                f"(seuil: {domiciliation.threshold_usd:,.0f} USD). "
-                f"Documents requis: {', '.join(domiciliation.mandatory_documents)}."
+                f"(seuil: {threshold_str}). "
+                f"Documents requis: {docs}."
             ),
             "timeline_days": domiciliation.timeline_days,
         }
@@ -371,11 +378,7 @@ async def validate_transaction(body: TransactionValidationRequest):
         "recommended_instruments": [i.model_dump() for i in instruments[:3]],
         "summary": {
             "alert_level": risk["alert_level"],
-            "domiciliation_required": domiciliation.required or (
-                domiciliation.conditional
-                and domiciliation.threshold_usd is not None
-                and body.amount_usd >= domiciliation.threshold_usd
-            ),
+            "domiciliation_required": domiciliation_triggered,
             "compliance_warnings": compliance["warnings"],
             "top_instrument": instruments[0].code if instruments else None,
         },

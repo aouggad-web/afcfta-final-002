@@ -12,6 +12,7 @@ const texts = {
     title: '🏦 Système Bancaire Africain – ZLECAf',
     subtitle: 'Réglementations de change, domiciliation et financement du commerce',
     selectCountry: 'Sélectionner un pays',
+    selectCountryPrompt: 'Sélectionnez un pays pour afficher les informations bancaires, réglementaires et de risque.',
     banks: 'Banques',
     centralBank: 'Banque Centrale',
     commercialBanks: 'Banques Commerciales',
@@ -21,6 +22,7 @@ const texts = {
     domiciliationConditional: 'Domiciliation Conditionnelle',
     domiciliationFree: 'Non Requise',
     threshold: 'Seuil',
+    allOperations: 'Toutes opérations',
     timeline: 'Délai rapatriement',
     days: 'jours',
     regulation: 'Réglementation',
@@ -33,9 +35,20 @@ const texts = {
     politicalRisk: 'Risque Politique',
     transferRisk: 'Risque Transfert',
     alertLevel: 'Niveau Alerte',
+    riskScore: 'Score',
+    maxExposure: 'Exposition max recommandée',
+    exposureWarning: '⚠ Montant dépasse l\'exposition recommandée',
+    priorAuthRequired: '⚠ Autorisation préalable requise',
+    penalties: 'Sanctions',
     instruments: 'Instruments Recommandés',
+    coverage: 'Couverture',
     paymentSystems: 'Systèmes de Paiement',
     compliance: 'Conformité (KYC/AML)',
+    amlFramework: 'Cadre AML',
+    kycRequired: 'KYC requis',
+    sanctionsScreening: 'Contrôle des sanctions',
+    reportingRequirements: 'Obligations de déclaration',
+    fiuLabel: 'Cellule FIU',
     loading: 'Chargement…',
     error: 'Erreur de chargement',
     noData: 'Données non disponibles',
@@ -54,6 +67,7 @@ const texts = {
     title: '🏦 African Banking System – AfCFTA',
     subtitle: 'Forex regulations, domiciliation and trade finance',
     selectCountry: 'Select a country',
+    selectCountryPrompt: 'Select a country to display banking, regulatory and risk information.',
     banks: 'Banks',
     centralBank: 'Central Bank',
     commercialBanks: 'Commercial Banks',
@@ -63,6 +77,7 @@ const texts = {
     domiciliationConditional: 'Conditional Domiciliation',
     domiciliationFree: 'Not Required',
     threshold: 'Threshold',
+    allOperations: 'All operations',
     timeline: 'Repatriation deadline',
     days: 'days',
     regulation: 'Regulation',
@@ -75,9 +90,20 @@ const texts = {
     politicalRisk: 'Political Risk',
     transferRisk: 'Transfer Risk',
     alertLevel: 'Alert Level',
+    riskScore: 'Score',
+    maxExposure: 'Max recommended exposure',
+    exposureWarning: '⚠ Amount exceeds recommended exposure',
+    priorAuthRequired: '⚠ Prior authorization required',
+    penalties: 'Penalties',
     instruments: 'Recommended Instruments',
+    coverage: 'Coverage',
     paymentSystems: 'Payment Systems',
     compliance: 'Compliance (KYC/AML)',
+    amlFramework: 'AML Framework',
+    kycRequired: 'KYC required',
+    sanctionsScreening: 'Sanctions screening',
+    reportingRequirements: 'Reporting requirements',
+    fiuLabel: 'FIU',
     loading: 'Loading…',
     error: 'Loading error',
     noData: 'Data not available',
@@ -255,7 +281,7 @@ function ForexTab({ data, t }) {
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           {domiciliation?.threshold_usd != null && (
-            <p><strong>{t.threshold} :</strong> {domiciliation.threshold_usd === 0 ? 'Toutes opérations' : `${domiciliation.threshold_usd.toLocaleString()} USD`}</p>
+            <p><strong>{t.threshold} :</strong> {domiciliation.threshold_usd === 0 ? t.allOperations : `${domiciliation.threshold_usd.toLocaleString()} USD`}</p>
           )}
           {domiciliation?.timeline_days && (
             <p><strong>{t.timeline} :</strong> {domiciliation.timeline_days} {t.days}</p>
@@ -280,14 +306,14 @@ function ForexTab({ data, t }) {
           <div className="flex items-center gap-2">
             <RegulationBadge level={forex_regulation?.regulation_level} />
             {forex_regulation?.prior_authorization_required && (
-              <span className="text-xs text-red-600">⚠ Autorisation préalable requise</span>
+              <span className="text-xs text-red-600">{t.priorAuthRequired}</span>
             )}
           </div>
           {forex_regulation?.repatriation_deadline_days && (
             <p><strong>{t.timeline} :</strong> {forex_regulation.repatriation_deadline_days} {t.days}</p>
           )}
           {forex_regulation?.penalties && (
-            <p className="text-xs text-red-700 bg-red-50 p-2 rounded"><strong>Sanctions :</strong> {forex_regulation.penalties}</p>
+            <p className="text-xs text-red-700 bg-red-50 p-2 rounded"><strong>{t.penalties} :</strong> {forex_regulation.penalties}</p>
           )}
           {forex_regulation?.notes && <p className="text-gray-600 text-xs italic">{forex_regulation.notes}</p>}
           {data.authorized_currencies?.length > 0 && (
@@ -320,15 +346,15 @@ function RiskTab({ data, t }) {
           <div><span className="text-gray-500">{t.forexRisk} :</span> <RiskBadge level={data.forex_risk} /></div>
           <div><span className="text-gray-500">{t.politicalRisk} :</span> <RiskBadge level={data.political_risk} /></div>
           <div><span className="text-gray-500">{t.transferRisk} :</span> <RiskBadge level={data.transfer_risk} /></div>
-          <div><span className="text-gray-500">Score :</span> <strong>{data.risk_score}/10</strong></div>
+          <div><span className="text-gray-500">{t.riskScore} :</span> <strong>{data.risk_score}/10</strong></div>
         </div>
         {data.max_recommended_exposure_usd && (
           <p className="text-xs text-gray-600">
-            Exposition max recommandée : <strong>{data.max_recommended_exposure_usd.toLocaleString()} USD</strong>
+            {t.maxExposure} : <strong>{data.max_recommended_exposure_usd.toLocaleString()} USD</strong>
           </p>
         )}
         {data.exposure_warning && (
-          <p className="text-xs text-red-700 bg-red-50 p-2 rounded">⚠ Montant dépasse l'exposition recommandée</p>
+          <p className="text-xs text-red-700 bg-red-50 p-2 rounded">{t.exposureWarning}</p>
         )}
         {data.recommended_instruments?.length > 0 && (
           <div>
@@ -359,7 +385,7 @@ function InstrumentsTab({ instruments, t }) {
             <div className="flex items-center gap-2 flex-wrap">
               <CardTitle className="text-sm">{inst.name_fr}</CardTitle>
               <span className={`px-2 py-0.5 rounded text-xs font-medium ${inst.risk_coverage === 'full' ? 'bg-green-100 text-green-800' : inst.risk_coverage === 'partial' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-700'}`}>
-                Couverture : {inst.risk_coverage}
+                {t.coverage} : {inst.risk_coverage}
               </span>
               {inst.typical_cost_pct != null && (
                 <span className="text-xs text-gray-500">~{inst.typical_cost_pct}%</span>
@@ -428,11 +454,11 @@ function ComplianceTab({ data, t }) {
         <CardHeader><CardTitle className="text-base">{t.compliance}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
           <div>
-            <span className="font-medium">Cadre AML :</span> {data.aml_framework}
+            <span className="font-medium">{t.amlFramework} :</span> {data.aml_framework}
           </div>
           {data.kyc_requirements?.length > 0 && (
             <div>
-              <span className="font-medium">KYC requis :</span>
+              <span className="font-medium">{t.kycRequired} :</span>
               <div className="flex flex-wrap gap-1 mt-1">
                 {data.kyc_requirements.map((r) => (
                   <span key={r} className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs">{r.replace(/_/g, ' ')}</span>
@@ -441,11 +467,11 @@ function ComplianceTab({ data, t }) {
             </div>
           )}
           {data.sanctions_screening && (
-            <div><span className="font-medium">Contrôle des sanctions :</span> {data.sanctions_screening}</div>
+            <div><span className="font-medium">{t.sanctionsScreening} :</span> {data.sanctions_screening}</div>
           )}
           {data.reporting_requirements && (
             <div className="bg-yellow-50 p-2 rounded text-xs">
-              <div className="font-medium mb-1">Obligations de déclaration :</div>
+              <div className="font-medium mb-1">{t.reportingRequirements} :</div>
               {Object.entries(data.reporting_requirements).map(([k, v]) => (
                 <div key={k}>{k.replace(/_/g, ' ')} : <strong>{typeof v === 'number' ? v.toLocaleString() : v}</strong></div>
               ))}
@@ -453,7 +479,7 @@ function ComplianceTab({ data, t }) {
           )}
           {data.compliance_contacts && (
             <div className="text-xs text-gray-600 space-y-0.5">
-              {data.compliance_contacts.fiu && <div>Cellule FIU : <strong>{data.compliance_contacts.fiu}</strong></div>}
+              {data.compliance_contacts.fiu && <div>{t.fiuLabel} : <strong>{data.compliance_contacts.fiu}</strong></div>}
               {data.compliance_contacts.website && (
                 <a href={data.compliance_contacts.website} target="_blank" rel="noreferrer" className="text-blue-500 underline">{data.compliance_contacts.website}</a>
               )}
@@ -555,7 +581,7 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
 
       {!selectedCountry && (
         <div className="bg-blue-50 border border-blue-200 rounded p-4 text-sm text-blue-700">
-          Sélectionnez un pays pour afficher les informations bancaires, réglementaires et de risque.
+          {t.selectCountryPrompt}
         </div>
       )}
 
