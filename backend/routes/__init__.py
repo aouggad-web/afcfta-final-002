@@ -24,6 +24,9 @@ MIGRATION STATUS:
 """
 
 from fastapi import APIRouter
+import logging
+
+_logger = logging.getLogger(__name__)
 
 # Import all route modules
 from .health import router as health_router
@@ -56,6 +59,9 @@ except ImportError:
     faostat_router = None
     FAOSTAT_AVAILABLE = False
 
+    _logger.warning("faostat package not installed; FAOSTAT routes will be unavailable")
+    faostat_router = None
+    FAOSTAT_AVAILABLE = False
 from .calculator import router as calculator_router
 
 try:
