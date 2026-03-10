@@ -144,6 +144,57 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         ],
     },
     # ------------------------------------------------------------------
+    # EGYPT
+    # ------------------------------------------------------------------
+    "EGY": {
+        "country": "EGY",
+        "country_name": "Egypt",
+        "country_name_fr": "Égypte",
+        "source": "Egyptian Customs Authority + Base UMA Maroc",
+        "source_url": "https://www.customs.gov.eg",
+        "currency": "EGP (Livre Égyptienne)",
+        "data_type": "uma_north_africa_derived",
+        "trade_bloc": "COMESA + GAFTA + QIZ",
+        "vat_rate": 14.0,
+        "vat_name": "Value Added Tax (VAT)",
+        "vat_base": "CIF + CD",
+        "tariff_overrides": {
+            "0": [],
+            "2": ["01", "02", "03", "06", "07", "08", "09", "10",
+                  "11", "12", "15", "23", "25", "26", "27", "28",
+                  "29", "30", "31", "32", "35", "38", "47"],
+            "5": ["84", "85", "86", "88", "89", "90"],
+            "12": ["50", "51", "52", "53", "54", "55", "56", "58",
+                   "59", "60", "68", "74", "75"],
+            "22": ["39", "40", "44", "48", "57", "72", "73", "76",
+                   "82", "83"],
+            "30": ["04", "16", "17", "18", "19", "20", "21", "42",
+                   "63", "65", "69", "70", "87", "94"],
+            "40": ["33", "61", "62", "64", "71", "91", "95"],
+            "60": ["22", "24"],
+        },
+        "national_taxes": {},   # VAT is the main additional tax
+        "tva_exempt_chapters": ["30"],
+        "excise_chapters": ["22", "24", "33"],
+        # DD derivation factors relative to Morocco base bands (used by build_country_position)
+        "dd_factors": {
+            "raw_materials": 0.80,       # 2.5% → ~2.0%
+            "intermediate_goods": 1.20,  # 10% → ~12%
+            "final_goods": 1.20,         # 25% → ~30%
+            "agricultural": 0.50,        # 40% → ~20% (food security policy)
+            "luxury_goods": 0.89,        # 45% → ~40%
+        },
+        "vat": {"standard": 14.0, "reduced": [5.0]},
+        "notes": [
+            "Base UMA (structure Maroc) adaptée aux taux CD égyptiens",
+            "CD: 2%, 5%, 12%, 22%, 30%, 40%, 60%",
+            "Investment Law 72/2017: 50% tax deduction (Upper Egypt, 7 ans)",
+            "QIZ: accès USA 0% pour textiles avec 10,5% contenu israélien",
+            "SCZONE (Suez Canal): taux douanier 5% unique + exonération TVA inputs",
+            "COMESA: 0% intracommunautaire avec Certificat d'Origine",
+        ],
+    },
+    # ------------------------------------------------------------------
     # LIBYA
     # ------------------------------------------------------------------
     "LBY": {
