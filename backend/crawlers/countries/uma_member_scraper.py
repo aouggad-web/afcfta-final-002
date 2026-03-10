@@ -466,6 +466,8 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         },
     },
     "MRT": {
+        "country": "MRT",
+        "country_name": "Mauritania",
         "country_name_ar": "موريتانيا",
         "currency": "MRU",
         "source": "Direction Générale des Douanes de Mauritanie",
