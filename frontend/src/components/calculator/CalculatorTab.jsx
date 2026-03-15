@@ -424,10 +424,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         setDetailedResult(authenticResult);
         setShowDetailedBreakdown(true);
         
-        // Récupérer les sous-positions authentiques
+        // Récupérer les sous-positions authentiques depuis PostgreSQL
         const hs6 = cleanHsCode.substring(0, 6);
         try {
-          const subPosResponse = await axios.get(`${API}/authentic-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
+          // Try PostgreSQL API first (has real descriptions)
+          let subPosResponse;
+          try {
+            subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
+          } catch (pgErr) {
+            // Fallback to old API
+            subPosResponse = await axios.get(`${API}/authentic-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
+          }
           setSubPositions(subPosResponse.data);
         } catch (subPosError) {
           setSubPositions(null);
@@ -471,7 +478,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         // Récupérer les sous-positions si disponibles pour le pays de destination
         const hs6 = cleanHsCode.substring(0, 6);
         try {
-          const subPosResponse = await axios.get(`${API}/tariffs/sub-positions/${destinationCountry}/${hs6}?language=${language}`);
+          // Try PostgreSQL API first
+          let subPosResponse;
+          try {
+            subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destinationCountry}/sub-positions/${hs6}?language=${language}`);
+          } catch (pgErr) {
+            subPosResponse = await axios.get(`${API}/tariffs/sub-positions/${destinationCountry}/${hs6}?language=${language}`);
+          }
           setSubPositions(subPosResponse.data);
         } catch (subPosError) {
           setSubPositions(null);

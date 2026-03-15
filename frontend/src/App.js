@@ -22,6 +22,7 @@ import RulesTab from './components/rules/RulesTab';
 import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
+import BankingInfoPanel from './components/banking/BankingInfoPanel';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -46,6 +47,7 @@ const TABS = [
   { id: 'opportunities', icon: '🎯', fr: 'Opportunités', en: 'Opportunities' },
   { id: 'production', icon: '🏭', fr: 'Production', en: 'Production' },
   { id: 'logistics', icon: '🚢', fr: 'Logistique', en: 'Logistics' },
+  { id: 'banking', icon: '🏦', fr: 'Banque', en: 'Banking' },
   { id: 'tools', icon: '🛠️', fr: 'Outils', en: 'Tools' },
   { id: 'rules', icon: '📜', fr: "Règles d'Origine", en: 'Rules of Origin' },
   { id: 'profiles', icon: '🌍', fr: 'Profils Pays', en: 'Country Profiles' },
@@ -92,6 +94,7 @@ function App() {
         'opps': 'opportunities',
         'production': 'production',
         'logistics': 'logistics',
+        'banking': 'banking',
         'tools': 'tools',
         'roo': 'rules',
         'profiles': 'profiles'
@@ -111,6 +114,7 @@ function App() {
       'opportunities': 'opps',
       'production': 'production',
       'logistics': 'logistics',
+      'banking': 'banking',
       'tools': 'tools',
       'rules': 'roo',
       'profiles': 'profiles'
@@ -233,6 +237,20 @@ function App() {
             <div style={{ height: 14 }} />
             <div className="afcfta-card">
               <LogisticsTab language={language} />
+            </div>
+          </div>
+        );
+      case 'banking':
+        return (
+          <div className="afcfta-section afcfta-fadeIn">
+            <SectionHeader 
+              title={language === 'fr' ? "Système Bancaire Africain" : "African Banking System"}
+              subtitle={language === 'fr' ? "Change, domiciliation, financement du commerce" : "Forex, domiciliation, trade finance"}
+              dotColor="info"
+            />
+            <div style={{ height: 14 }} />
+            <div className="afcfta-card">
+              <BankingInfoPanel language={language} countries={countries} />
             </div>
           </div>
         );

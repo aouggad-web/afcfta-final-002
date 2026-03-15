@@ -6,6 +6,7 @@ import {
   Target,
   Factory,
   Ship,
+  Landmark,
   Wrench,
   FileCheck,
   Globe2
@@ -21,6 +22,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
     { id: "opps", label: isFrench ? "Opportunités" : "Opportunities", icon: Target },
     { id: "production", label: isFrench ? "Production" : "Production", icon: Factory },
     { id: "logistics", label: isFrench ? "Logistique" : "Logistics", icon: Ship },
+    { id: "banking", label: isFrench ? "Banque" : "Banking", icon: Landmark },
     { id: "tools", label: isFrench ? "Outils" : "Tools", icon: Wrench },
     { id: "roo", label: isFrench ? "Règles d'Origine" : "Rules of Origin", icon: FileCheck },
     { id: "profiles", label: isFrench ? "Profils pays" : "Country Profiles", icon: Globe2 }

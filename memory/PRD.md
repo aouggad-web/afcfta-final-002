@@ -1,159 +1,94 @@
-# ZLECAf Trade Calculator - Product Requirements Document
+# ZLECAf Trade Calculator - PRD
 
 ## Original Problem Statement
-Build a comprehensive African Continental Free Trade Area (AfCFTA) trade calculator platform that provides accurate tariff calculations, regulatory information, and trade intelligence for all 54 African countries.
+Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a full-stack trade calculator application featuring tariff calculations, regulatory compliance, and trade analytics.
 
-## Implementation Status: ALL MAJOR FEATURES COMPLETE ✅
-
-### Redis Cache - COMPLETE (2026-03-02) ✅
-- Redis server installed and running
-- Cache service with configurable TTLs
-- API endpoints for cache management:
-  - `GET /api/cache/stats` - Cache statistics
-  - `GET /api/cache/keys` - List cached keys
-  - `DELETE /api/cache/clear` - Clear all cache
-  - `DELETE /api/cache/clear/{prefix}` - Clear by prefix
-- Cached endpoints:
-  - `/api/statistics` (TTL: 1 hour)
-  - `/api/commodities/search` (TTL: 30 minutes)
-- Response includes `from_cache: true/false` indicator
-
-### Calculator Improvements - COMPLETE (2026-03-02) ✅
-- **New NationalPositionsSelector component** showing all available national positions
-- **CIF Value displayed prominently** in green banner (25,000 $US)
-- **Exact product descriptions** instead of "Type 1, Type 2" (e.g., "Voitures 1500-3000cc neuves")
-- **Estimated duties** calculated for each position
-- **Results section enhanced** with CIF value, tariff code, and product name
-
-### PostgreSQL Migration - COMPLETE (2026-03-02) ✅
-- **54 pays** migrés depuis les fichiers JSONL
-- **894,783 produits** dans la base PostgreSQL
-- Index full-text français créé pour recherche performante
-- Temps de migration: 3.3 minutes
-
-### Text Search API - COMPLETE (2026-03-02) ✅
-Nouveaux endpoints créés:
-- `GET /api/commodities/search` - Recherche full-text avec ranking
-- `GET /api/commodities/search/simple` - Recherche ILIKE rapide
-- `GET /api/commodities/countries` - Liste des pays migrés
-- `GET /api/commodities/stats` - Statistiques de la base
-
-**Support bilingue (FR/EN):**
-- Index full-text français : `idx_desc_ft` (french)
-- Index full-text anglais : `idx_desc_ft_en` (english)
-- Table de traduction : `search_translations` (49 termes EN→FR)
-- Recherche `?lang=en` traduit automatiquement les termes (coffee→café, vehicle→véhicule, etc.)
-
-### OEC Data Audit & Statistics - COMPLETE (2026-03-02) ✅
-- Endpoint `/api/statistics` avec données complètes
-- Commerce MONDIAL vs INTRA-AFRICAIN tableaux fonctionnels
-- Plus de valeurs NaN
-
-### GitHub Repository Integration - COMPLETE (2026-03-02) ✅
-- 15 fichiers frontend intégrés depuis `afcfta-final-002`
+## Core Requirements
+1. **Regulatory Engine**: Process, validate, and serve detailed tariff and compliance data for all African countries
+2. **Trade Calculator**: Calculate import taxes comparing NPF vs ZLECAf regimes with savings display
+3. **Multi-Country Support**: Cover all 54 AfCFTA member states
+4. **Data Accuracy**: Display authentic national tariff positions with exact descriptions
 
 ## Architecture
+- **Backend**: FastAPI (Python)
+- **Frontend**: React + Vite + Tailwind CSS + Shadcn UI
+- **Database**: MongoDB (primary), PostgreSQL (regulatory data - migration done)
+- **Caching**: Redis
 
-```
-/app
-├── backend/
-│   ├── routes/
-│   │   ├── statistics.py   # Stats + trade performance
-│   │   └── search.py       # NEW: PostgreSQL text search API
-│   └── .env                # DATABASE_URL configured
-├── engine/
-│   ├── output/             # 1.5GB JSONL files (54 countries)
-│   └── migrate_all.py      # Migration script
-├── frontend/
-│   └── src/components/
-└── PostgreSQL Database
-    ├── countries (54 rows)
-    └── commodities (894,783 rows with JSONB measures)
-```
+## What's Been Implemented
 
-## Database Schema (PostgreSQL)
+### March 15, 2026 - PostgreSQL Migration Complete
+- ✅ Migrated all 54 countries to PostgreSQL (894,783 records)
+- ✅ Created full-text search index for French descriptions
+- ✅ New `/api/postgres-tariffs/*` API endpoints
+- ✅ Frontend updated to use PostgreSQL API with fallback
+- ✅ Real national tariff descriptions (e.g., Kenya: "Café Arabica AA" instead of "Type 1")
+- Note: Some countries (Algeria) use generic labels in their official nomenclature
 
-```sql
-countries:
-  - iso3 VARCHAR(3) PRIMARY KEY
-  - name_fr VARCHAR(100)
-  - total_positions INTEGER
-  - last_updated TIMESTAMP
+### March 15, 2026 - Banking System Integration
+- ✅ Added Banking tab with full African banking system data
+- ✅ Integrated `banking_system` module (banks_registry, foreign_exchange, trade_finance, risk_assessment, compliance)
+- ✅ Created `/api/banking/*` endpoints for country banks, regulations, risk assessment
+- ✅ BankingInfoPanel component with tabs: Banks, Forex, Risk, Instruments, Payment Systems, Compliance
 
-commodities:
-  - id SERIAL PRIMARY KEY
-  - country_iso3 VARCHAR(3) FK
-  - national_code VARCHAR(15)
-  - hs6 VARCHAR(6)
-  - description_fr TEXT (full-text indexed FR + EN)
-  - total_npf_pct, total_zlecaf_pct, savings_pct FLOAT
-  - measures, requirements, fiscal_advantages JSONB
+### March 15, 2026 - GitHub Update
+- Added African currencies system (`currencies.py`, `exchange_rates.py`)
+- Added AI intelligence routes (`ai_intelligence.py`, `investment_intelligence.py`)
+- Added regional analytics dashboard
+- Added shipping fees calculator
+- Added comprehensive search component
 
-search_translations:
-  - en_term VARCHAR(100) PRIMARY KEY
-  - fr_term VARCHAR(100) NOT NULL
-  (49 traductions: coffee→café, vehicle→véhicule, rice→riz, etc.)
+### Previous Sessions
+- ✅ Built Regulatory Engine v3
+- ✅ PostgreSQL migration (1.5GB regulatory data)
+- ✅ Text Search API (French/English support)
+- ✅ Redis caching implementation
+- ✅ OEC data audit (fixed NaN values)
+- ✅ UI flickering fix
+- ✅ Calculator UI enhancements
 
-Indexes:
-  - idx_comm_country (country_iso3)
-  - idx_comm_hs6 (hs6)
-  - idx_desc_ft (to_tsvector('french', description_fr))
-  - idx_desc_ft_en (to_tsvector('english', description_fr))
-```
+## Pending Issues
+1. **P0**: National positions display "Type 1, Type 2" instead of exact descriptions
+2. **P1**: Core API still uses flat files (.jsonl) instead of PostgreSQL
 
-## Key API Endpoints
+## Prioritized Backlog
 
-### Text Search (NEW)
-```
-GET /api/commodities/search?q={query}&country={ISO3}&limit=50
-GET /api/commodities/search/simple?q={query}&country={ISO3}
-GET /api/commodities/countries
-GET /api/commodities/stats
-```
+### P0 (Critical)
+- [ ] Fix national position descriptions in calculator
 
-### Statistics
-```
-GET /api/statistics
-GET /api/statistics/trade-performance
-GET /api/statistics/trade-performance-intra-african
-```
+### P1 (High)
+- [ ] Refactor `/api/authentic-tariffs/calculate` to use PostgreSQL
+- [ ] Refactor `/api/regulatory-engine/details` to use PostgreSQL
 
-### Calculator
-```
-POST /api/authentic-tariffs/calculate?country_iso3={ISO3}&hs_code={CODE}&cif_value={VALUE}
-```
+### P2 (Medium)
+- [ ] Integrate Sankey Diagram (PR pending)
+- [ ] Full API v2 migration
 
-## Completed Work (March 2026)
+### P3 (Low)
+- [ ] Add RASD (Sahrawi Arab Democratic Republic) as 55th country
+- [ ] Audit economic indicators
 
-- [x] PostgreSQL migration (54 pays, 894,783 produits)
-- [x] Text Search API with full-text ranking
-- [x] OEC Data Audit (NaN fixed)
-- [x] Statistics endpoints
-- [x] GitHub integration
-- [x] Calculator functional
-- [x] Regulatory Engine v3
+### P4 (Enhancement)
+- [ ] Enhanced country profile pages
+- [ ] Mobile API optimization
+
+## API Endpoints
+- `GET /api/health` - Health check
+- `POST /api/authentic-tariffs/calculate` - Tariff calculation
+- `GET /api/authentic-tariffs/country/{iso3}/sub-positions/{hs6}` - Sub-positions
+- `GET /api/commodities/search` - Text search (PostgreSQL)
+- `GET /api/statistics` - Dashboard statistics
+- `GET /api/currencies` - African currencies (NEW)
+- `GET /api/exchange-rates` - Exchange rates (NEW)
+- `GET /api/banking` - Banking information (NEW)
 
 ## Credentials
+- **PostgreSQL**: `postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory`
+- **Redis**: `redis://localhost:6379`
 
-**PostgreSQL:**
-- Host: localhost:5432
-- Database: afcfta_regulatory
-- User: afcfta
-- Password: afcfta2026
-
-## Backlog
-
-### P2 - Medium Priority
-- [ ] RASD (55th country) addition
-- [ ] Integrate search UI in frontend
-
-### P3 - Low Priority
-- [ ] PDF export functionality
-- [ ] Performance optimization
-- [ ] API caching with Redis
-
-## Testing Status
-- Backend: All endpoints verified ✅
-- PostgreSQL: 894,783 records migrated ✅
-- Search API: Full-text working ✅
-- Frontend: Compiled successfully ✅
+## Tech Stack Versions
+- Python 3.11+
+- React 18
+- FastAPI 0.100+
+- PostgreSQL 15
+- Redis 7
