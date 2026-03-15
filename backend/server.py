@@ -5,13 +5,46 @@ Refactored: Routes extracted to /routes/ modules
 Version: 3.0.0
 """
 
+import sys
+import os
+from pathlib import Path
+
+# Ensure the backend directory is on sys.path so that subpackages
+# (intelligence, performance, search, api, dashboard) can import each other.
+_backend_dir = Path(__file__).parent
+if str(_backend_dir) not in sys.path:
+    sys.path.insert(0, str(_backend_dir))
+
 from fastapi import FastAPI, APIRouter
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
-import os
 import logging
-from pathlib import Path
+import logging.config
+
+# Configure structured logging
+logging.config.dictConfig({
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "default": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "default",
+        },
+    },
+    "root": {
+        "level": os.environ.get("LOG_LEVEL", "INFO"),
+        "handlers": ["console"],
+    },
+})
+
+logger = logging.getLogger(__name__)
 
 # Import routes module for modular endpoint registration
 from routes import register_routes
@@ -39,23 +72,30 @@ db = None
 client = None
 if mongo_url:
     try:
-        client = AsyncIOMotorClient(mongo_url)
+        client = AsyncIOMotorClient(
+            mongo_url,
+            maxPoolSize=50,
+            minPoolSize=5,
+            maxIdleTimeMS=30000,
+            connectTimeoutMS=20000,
+            serverSelectionTimeoutMS=5000,
+        )
         db = client[os.environ.get('DB_NAME', 'afcfta')]
-        logging.info("MongoDB connected successfully")
+        logger.info("MongoDB connected successfully")
     except Exception as e:
-        logging.warning(f"MongoDB connection failed: {e}. Running without database.")
+        logger.warning(f"MongoDB connection failed: {e}. Running without database.")
         db = None
 else:
-    logging.warning("MONGO_URL not set. Running without database.")
+    logger.warning("MONGO_URL not set. Running without database.")
 
 # Notification Manager
 notification_manager = None
 if NotificationManager:
     try:
         notification_manager = NotificationManager()
-        logging.info(f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}")
+        logger.info(f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}")
     except Exception as e:
-        logging.warning(f"Notification manager initialization failed: {e}")
+        logger.warning(f"Notification manager initialization failed: {e}")
 
 # =============================================================================
 # FASTAPI APP SETUP
@@ -64,15 +104,47 @@ if NotificationManager:
 app = FastAPI(
     title="Système Commercial ZLECAf - API Complète",
     version="3.0.0",
-    description="API pour le calculateur tarifaire ZLECAf avec données de 54 pays africains"
+    description=(
+        "API complète pour le calculateur tarifaire ZLECAf avec données de 54 pays africains. "
+        "Includes tariff calculation, HS code lookup, rules of origin, logistics data, "
+        "and trade intelligence for the African Continental Free Trade Area."
+    ),
+    contact={
+        "name": "AfCFTA Trade Calculator Support",
+        "url": "https://afcfta.trade",
+    },
+    license_info={
+        "name": "MIT",
+    },
+    openapi_tags=[
+        {"name": "Health", "description": "Health check and status endpoints"},
+        {"name": "Calculator", "description": "Tariff calculation endpoints"},
+        {"name": "HS Codes", "description": "Harmonized System code search and lookup"},
+        {"name": "Countries", "description": "Country profiles and economic data"},
+        {"name": "Tariffs", "description": "Tariff data for African countries"},
+        {"name": "Rules of Origin", "description": "AfCFTA rules of origin"},
+        {"name": "Logistics", "description": "Maritime, aviation, and land logistics"},
+        {"name": "Statistics", "description": "Trade statistics and analytics"},
+        {"name": "News", "description": "African trade news feed"},
+    ],
 )
 
 # CORS middleware
+_cors_origins = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "https://afcfta.trade",
+    "https://www.afcfta.trade",
+]
+_frontend_url = os.environ.get("FRONTEND_URL", "")
+if _frontend_url:
+    _cors_origins.append(_frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -88,9 +160,9 @@ try:
         "/api/crawl/start",
     ])
     app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)
-    logging.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
+    logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
 except ImportError as e:
-    logging.warning(f"Security middlewares not loaded: {e}")
+    logger.warning(f"Security middlewares not loaded: {e}")
 
 # API Router with /api prefix
 api_router = APIRouter(prefix="/api")
@@ -119,18 +191,45 @@ try:
         notification_manager=notification_manager,
         max_concurrency=5,
     )
-    logging.info("Crawl orchestrator initialized")
+    logger.info("Crawl orchestrator initialized")
 except Exception as e:
-    logging.warning(f"Crawl orchestrator initialization failed: {e}")
+    logger.warning(f"Crawl orchestrator initialization failed: {e}")
 
 # =============================================================================
 # STARTUP EVENTS
 # =============================================================================
 
+async def _setup_database_indexes():
+    """Create MongoDB indexes for optimal query performance."""
+    if db is None:
+        return
+    try:
+        from pymongo import ASCENDING, DESCENDING, IndexModel
+        # customs_data collection indexes
+        customs_data = db["customs_data"]
+        await customs_data.create_indexes([
+            IndexModel([("country_code", ASCENDING)]),
+            IndexModel([("imported_at", DESCENDING)]),
+            IndexModel([("country_code", ASCENDING), ("imported_at", DESCENDING)]),
+        ])
+        # tariff_lines indexes (if collection exists)
+        tariff_lines = db["tariff_lines"]
+        await tariff_lines.create_indexes([
+            IndexModel([("country_code", ASCENDING)]),
+            IndexModel([("hs_code", ASCENDING)]),
+            IndexModel([("country_code", ASCENDING), ("hs_code", ASCENDING)]),
+        ])
+        logger.info("MongoDB indexes created successfully")
+    except Exception as e:
+        logger.warning(f"MongoDB index creation skipped: {e}")
+
 @app.on_event("startup")
 async def startup_load_tariff_data():
     """Load collected tariff data on startup for the calculator"""
-    
+
+    # Set up database indexes for performance
+    await _setup_database_indexes()
+
     # Set database for calculator routes
     set_calculator_db(db)
     
@@ -139,31 +238,39 @@ async def startup_load_tariff_data():
         crawled_service.load()
         crawled_stats = crawled_service.get_stats()
         if crawled_stats["total_positions"] > 0:
-            logging.info(f"Crawled data service ready: {crawled_stats['countries']} countries, "
-                         f"{crawled_stats['total_positions']:,} authentic positions")
+            logger.info(f"Crawled data service ready: {crawled_stats['countries']} countries, "
+                        f"{crawled_stats['total_positions']:,} authentic positions")
         else:
-            logging.info("No crawled data found yet.")
+            logger.info("No crawled data found yet.")
     except Exception as e:
-        logging.warning(f"Crawled data service startup: {e}")
+        logger.warning(f"Crawled data service startup: {e}")
 
     # Load tariff data
     try:
         tariff_service.load()
         stats = tariff_service.get_stats()
         if stats["countries"] > 0:
-            logging.info(f"Tariff data service ready: {stats['countries']} countries, "
-                         f"{stats['total_positions']:,} positions loaded")
+            logger.info(f"Tariff data service ready: {stats['countries']} countries, "
+                        f"{stats['total_positions']:,} positions loaded")
         else:
-            logging.info("No pre-collected tariff data found. Running initial collection...")
+            logger.info("No pre-collected tariff data found. Running initial collection...")
             from services.tariff_data_collector import TariffDataCollector
             collector = TariffDataCollector()
             result = collector.collect_all_countries()
-            logging.info(f"Initial collection complete: {result['total_tariff_lines']} lines for {result['countries_processed']} countries")
+            logger.info(f"Initial collection complete: {result['total_tariff_lines']} lines for {result['countries_processed']} countries")
             tariff_service.load(force=True)
             stats = tariff_service.get_stats()
-            logging.info(f"Tariff data service ready after collection: {stats['countries']} countries")
+            logger.info(f"Tariff data service ready after collection: {stats['countries']} countries")
     except Exception as e:
-        logging.warning(f"Tariff data service startup: {e}. Calculator will use ETL fallback.")
+        logger.warning(f"Tariff data service startup: {e}. Calculator will use ETL fallback.")
+
+    # Start the exchange rate scheduler (updates every 4 hours, first run immediate)
+    try:
+        from tasks.scheduler import start_scheduler
+        start_scheduler(interval_hours=4)
+        logger.info("Exchange rate scheduler started (interval=4h)")
+    except Exception as e:
+        logger.warning(f"Exchange rate scheduler startup failed: {e}")
 
 # =============================================================================
 # REGISTER ALL ROUTES

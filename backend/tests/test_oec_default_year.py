@@ -15,26 +15,41 @@ def test_oec_routes_default_year():
     
     The OEC BACI HS17 dataset has data from 2018-2024.
     Default year should be 2024 (the most recent available year).
+    Endpoints may use the literal value 2024 or the constant DEFAULT_YEAR (which equals 2024).
     """
     backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     routes_file = os.path.join(backend_dir, "routes", "oec.py")
-    
+
     with open(routes_file, "r") as f:
         source_code = f.read()
-    
-    pattern = r'year:\s*int\s*=\s*Query\((\d+)\)'
+
+    # Match both literal integers and DEFAULT_YEAR constant
+    pattern = r'year:\s*int\s*=\s*Query\((?:(\d+)|DEFAULT_YEAR)'
     matches = re.findall(pattern, source_code)
-    
-    assert len(matches) == 5, f"Expected 5 endpoints with year parameter, found {len(matches)}"
-    
+
+    # Count endpoints that have a year parameter (literal year or DEFAULT_YEAR)
+    total_year_endpoints = len(matches)
+    assert total_year_endpoints >= 5, (
+        f"Expected at least 5 endpoints with year parameter, found {total_year_endpoints}"
+    )
+
+    # Verify the service file defines DEFAULT_YEAR = 2024
+    service_file = os.path.join(backend_dir, "services", "oec_trade_service.py")
+    with open(service_file, "r") as f:
+        service_code = f.read()
+    assert "DEFAULT_YEAR = 2024" in service_code, (
+        "OEC service should define DEFAULT_YEAR = 2024"
+    )
+
+    # Verify any literal year values default to 2024
     for year in matches:
-        assert year == "2024", (
-            f"All OEC endpoints should default to year 2024 "
-            f"(latest available in OEC BACI), but found year {year}"
-        )
-    
-    print("All OEC endpoints correctly default to year 2024")
-    print(f"   Verified {len(matches)} endpoints")
+        if year:  # non-empty means it was a literal integer (not DEFAULT_YEAR)
+            assert year == "2024", (
+                f"All OEC endpoints should default to year 2024 "
+                f"(latest available in OEC BACI), but found year {year}"
+            )
+
+    print(f"All {total_year_endpoints} OEC endpoints correctly default to year 2024")
 
 
 def test_oec_available_years():

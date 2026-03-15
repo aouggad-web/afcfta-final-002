@@ -52,6 +52,12 @@ services:
       - afcfta-network
     volumes:
       - ./worker-logs:/app/worker-logs
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys, requests; r = requests.get('http://localhost:8000/api/health', timeout=8); sys.exit(0 if r.status_code == 200 else 1)"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
 
 networks:
   afcfta-network:

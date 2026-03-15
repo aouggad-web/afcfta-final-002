@@ -24,7 +24,7 @@ import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
 import BankingInfoPanel from './components/banking/BankingInfoPanel';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 // Interceptor: reject responses that are not valid JSON objects/arrays

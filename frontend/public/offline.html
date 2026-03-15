@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AfCFTA Intel – Hors ligne</title>
+  <meta name="theme-color" content="#1a365d" />
+  <link rel="manifest" href="/manifest.json" />
+  <style>
+    :root {
+      --primary: #1a365d;
+      --accent: #3b82f6;
+      --text: #2d3748;
+      --muted: #718096;
+      --bg: #f7fafc;
+      --card: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .offline-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      filter: grayscale(0.3);
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 4px 24px rgba(26, 54, 93, 0.12);
+      max-width: 480px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: #2563eb; }
+
+    .cached-features {
+      margin-top: 2rem;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 1.5rem;
+    }
+
+    .cached-features h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      text-align: left;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      color: #10b981;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: #ef4444;
+      border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="offline-icon">🌍</div>
+    <h1>
+      <span class="status-dot"></span>
+      Connexion indisponible
+    </h1>
+    <p>
+      Vous êtes actuellement hors ligne. Certaines fonctionnalités restent
+      disponibles grâce au cache de l'application.
+    </p>
+    <button class="btn" onclick="window.location.reload()">
+      🔄 Réessayer
+    </button>
+
+    <div class="cached-features">
+      <h2>Fonctionnalités disponibles hors ligne :</h2>
+      <ul class="feature-list">
+        <li>Données pays mises en cache</li>
+        <li>Recherches sauvegardées</li>
+        <li>Préférences utilisateur</li>
+        <li>Calculs tarifaires de base</li>
+        <li>Données régionales en cache</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    AfCFTA Intelligence Platform v3.0 &mdash; PWA Mode
+  </footer>
+
+  <script>
+    // Auto-reload when connectivity is restored
+    window.addEventListener('online', () => {
+      window.location.reload();
+    });
+
+    // Show current connectivity status
+    function updateStatus() {
+      document.querySelector('.status-dot').style.background =
+        navigator.onLine ? '#10b981' : '#ef4444';
+    }
+    window.addEventListener('online',  updateStatus);
+    window.addEventListener('offline', updateStatus);
+    updateStatus();
+  </script>
+</body>
+</html>
