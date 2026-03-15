@@ -113,14 +113,24 @@ export default function NationalPositionsSelector({
     setApiNote(null);
     
     try {
-      const response = await axios.get(
-        `${API}/authentic-tariffs/country/${countryCode}/sub-positions/${hs6Code.substring(0, 6)}`,
-        { params: { language } }
-      );
+      // Try PostgreSQL API first (has real descriptions)
+      let response;
+      try {
+        response = await axios.get(
+          `${API}/postgres-tariffs/country/${countryCode}/sub-positions/${hs6Code.substring(0, 6)}`,
+          { params: { language } }
+        );
+      } catch (pgErr) {
+        // Fallback to old API if PostgreSQL not available
+        response = await axios.get(
+          `${API}/authentic-tariffs/country/${countryCode}/sub-positions/${hs6Code.substring(0, 6)}`,
+          { params: { language } }
+        );
+      }
       
       if (response.data.success && response.data.sub_positions?.length > 0) {
         setPositions(response.data.sub_positions);
-        setApiNote(language === 'fr' ? response.data.note_fr : response.data.note_en);
+        setApiNote(response.data.note || (language === 'fr' ? response.data.note_fr : response.data.note_en));
       } else {
         setPositions([]);
       }

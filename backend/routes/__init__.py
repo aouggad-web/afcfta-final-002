@@ -232,6 +232,13 @@ except ImportError:
     BANKING_AVAILABLE = False
 
 try:
+    from .postgres_tariffs import router as postgres_tariffs_router
+    POSTGRES_TARIFFS_AVAILABLE = True
+except ImportError:
+    postgres_tariffs_router = None
+    POSTGRES_TARIFFS_AVAILABLE = False
+
+try:
     from api.graphql.schema import router as graphql_router
     GRAPHQL_AVAILABLE = True
 except ImportError:
@@ -334,6 +341,8 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(performance_router, tags=["Performance Monitoring"])
     if BANKING_AVAILABLE:
         api_router.include_router(banking_router, tags=["Banking System"])
+    if POSTGRES_TARIFFS_AVAILABLE:
+        api_router.include_router(postgres_tariffs_router, tags=["PostgreSQL Tariffs"])
     if GRAPHQL_AVAILABLE:
         api_router.include_router(graphql_router, tags=["GraphQL"])
     if WEBSOCKET_AVAILABLE:

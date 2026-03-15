@@ -17,6 +17,14 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### March 15, 2026 - PostgreSQL Migration Complete
+- ✅ Migrated all 54 countries to PostgreSQL (894,783 records)
+- ✅ Created full-text search index for French descriptions
+- ✅ New `/api/postgres-tariffs/*` API endpoints
+- ✅ Frontend updated to use PostgreSQL API with fallback
+- ✅ Real national tariff descriptions (e.g., Kenya: "Café Arabica AA" instead of "Type 1")
+- Note: Some countries (Algeria) use generic labels in their official nomenclature
+
 ### March 15, 2026 - Banking System Integration
 - ✅ Added Banking tab with full African banking system data
 - ✅ Integrated `banking_system` module (banks_registry, foreign_exchange, trade_finance, risk_assessment, compliance)
