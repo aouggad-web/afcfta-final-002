@@ -88,3 +88,7 @@ credentials/
 coverage/
 .nyc_output/
 test-results/
+-e 
+# Environment files
+*.env
+*.env.*
