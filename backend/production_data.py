@@ -6,9 +6,14 @@ Charge et expose les données de production pour 2021-2024
 import json
 import os
 from typing import List, Dict, Optional
+from pathlib import Path
 
-# Chemin du fichier JSON
-DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'production_africaine.json')
+# Determine data file path with fallback
+ROOT_DIR = Path(__file__).parent.parent
+DATA_DIR = ROOT_DIR / "data" / "json"
+DATA_FILE = str(DATA_DIR / "production_africaine.json")
+if not os.path.exists(DATA_FILE):
+    DATA_FILE = str(ROOT_DIR / "production_africaine.json")
 
 # Cache global
 _production_data = None

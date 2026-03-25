@@ -6,12 +6,16 @@ from pathlib import Path
 from typing import List, Optional
 from fastapi import HTTPException
 
+# Determine data file path with fallback
 ROOT_DIR = Path(__file__).parent.parent
+DATA_DIR = ROOT_DIR / "data" / "json"
+PORTS_FILE = DATA_DIR / "ports_africains.json"
+if not PORTS_FILE.exists():
+    PORTS_FILE = ROOT_DIR / "ports_africains.json"
 
 def load_ports_data():
     """Load African ports data from JSON file"""
-    ports_path = ROOT_DIR / "ports_africains.json"
-    with open(ports_path, 'r', encoding='utf-8') as f:
+    with open(PORTS_FILE, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 def get_all_ports(country_iso: Optional[str] = None) -> List[dict]:

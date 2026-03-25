@@ -7,25 +7,33 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 ROOT_DIR = Path(__file__).parent.parent
+DATA_DIR = ROOT_DIR / "data"
 
 # Load the corrections and enhanced statistics
 def load_corrections_data():
     """Load the 2024 corrections JSON with tariffs and enhanced statistics"""
-    corrections_path = ROOT_DIR / "zlecaf_corrections_2024.json"
+    # Try new location first, then fall back to old location
+    corrections_path = DATA_DIR / "json" / "zlecaf_corrections_2024.json"
+    if not corrections_path.exists():
+        corrections_path = ROOT_DIR / "zlecaf_corrections_2024.json"
     with open(corrections_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 # Load the complete commerce data
 def load_commerce_data():
     """Load the enriched 2024 commerce data for all 54 countries"""
-    commerce_path = ROOT_DIR / "ZLECAf_ENRICHI_2024_COMMERCE.csv"
+    commerce_path = DATA_DIR / "csv" / "ZLECAf_ENRICHI_2024_COMMERCE.csv"
+    if not commerce_path.exists():
+        commerce_path = ROOT_DIR / "ZLECAf_ENRICHI_2024_COMMERCE.csv"
     df = pd.read_csv(commerce_path)
     return df
 
 # Load the complete country economic data
 def load_country_economic_data():
     """Load the complete economic data for 54 countries"""
-    economic_path = ROOT_DIR / "ZLECAF_54_PAYS_DONNEES_COMPLETES.csv"
+    economic_path = DATA_DIR / "csv" / "ZLECAF_54_PAYS_DONNEES_COMPLETES.csv"
+    if not economic_path.exists():
+        economic_path = ROOT_DIR / "ZLECAF_54_PAYS_DONNEES_COMPLETES.csv"
     df = pd.read_csv(economic_path)
     return df
 
@@ -178,14 +186,18 @@ def get_tariff_corrections() -> Dict:
 # Load customs data
 def load_customs_data():
     """Load African customs administrations data"""
-    customs_path = ROOT_DIR / "douanes_africaines.json"
+    customs_path = DATA_DIR / "json" / "douanes_africaines.json"
+    if not customs_path.exists():
+        customs_path = ROOT_DIR / "douanes_africaines.json"
     with open(customs_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 # Load infrastructure ranking data
 def load_infrastructure_ranking():
     """Load African infrastructure ranking (IPL & AIDI)"""
-    ranking_path = ROOT_DIR / "classement_infrastructure_afrique.json"
+    ranking_path = DATA_DIR / "json" / "classement_infrastructure_afrique.json"
+    if not ranking_path.exists():
+        ranking_path = ROOT_DIR / "classement_infrastructure_afrique.json"
     with open(ranking_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
