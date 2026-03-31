@@ -1,0 +1,94 @@
+🚨 Corrections urgentes — Nettoyage & Sécurisation du repo
+
+Branche : fix/cleanup-security-phases-1-4
+Cible : main
+
+
+Contexte
+Audit du dépôt révélant plusieurs problèmes critiques :
+
+~80 fichiers parasites committés accidentellement à la racine
+Données brutes (CSV/JSON/XLSX) non organisées
+Dossiers en doublon dans le repo
+Sécurité backend à renforcer
+
+
+Changements apportés
+🔴 Phase 1 — Sécurité Git
+
+ Scan de l'historique Git pour secrets exposés (SMTP, MongoDB, Slack)
+ Purge du .env de l'historique avec git-filter-repo
+ .gitignore renforcé (.env, __pycache__, logs, etc.)
+ .env.example nettoyé et documenté
+
+🟡 Phase 2 — Nettoyage de la racine
+
+ Suppression des ~80 fichiers parasites (for, df, except, cands=[], PYTHONPATH=., EOF, PY, UNIT_OK...)
+ Données CSV déplacées dans data/csv/
+ Données JSON déplacées dans data/json/
+ Données XLSX déplacées dans data/xlsx/
+ Imports Python du backend mis à jour
+ Crawlers TypeScript déplacés dans engine/crawlers/
+
+🔵 Phase 3 — Structure & doublons
+
+ Suppression de backup_before_github_merge/ (doublon commité)
+ Suppression de src/components/trade/ (doublon de frontend/src/components)
+ Structure de dossiers propre créée :
+
+  backend/
+  ├── routers/
+  ├── services/
+  ├── models/
+  └── middleware/
+  data/
+  ├── csv/
+  ├── json/
+  └── xlsx/
+  engine/
+  └── crawlers/
+  scripts/        ← scripts utilitaires (plus à la racine)
+🟢 Phase 4 — Hardening sécurité backend
+
+ allow_origins=["*"] remplacé par liste depuis variable d'env ALLOWED_ORIGINS
+ SecurityHeadersMiddleware ajouté (X-Frame-Options, CSP, HSTS, X-Content-Type-Options)
+ Modèles Pydantic stricts créés pour valider tous les inputs
+ Rate limiting prêt à activer (slowapi)
+ SECURITY_CHECKLIST.md généré pour suivi
+
+
+Tests à effectuer avant merge
+bash# 1. Rebuild Docker
+docker-compose up --build
+
+# 2. Vérifier le health check
+curl http://localhost:8000/api/health
+
+# 3. Tester un calcul de tarif
+curl -X POST http://localhost:8000/api/calculate-tariff \
+  -H "Content-Type: application/json" \
+  -d '{"origin_country":"KE","destination_country":"GH","hs_code":"080300","value":10000}'
+
+# 4. Vérifier que les données sont accessibles
+curl http://localhost:8000/api/countries
+
+Actions manuelles requises APRÈS le merge
+
+⚠️ Ces actions ne peuvent pas être automatisées — à faire manuellement :
+
+
+Gmail → Révoquer l'App Password actuel → En créer un nouveau
+Slack → Regénérer l'URL du webhook dans Settings > Incoming Webhooks
+MongoDB Atlas → Changer le mot de passe de l'utilisateur DB
+Mettre à jour le .env de production avec les nouveaux credentials
+Redéployer le service
+
+
+Checklist reviewer
+
+ Aucun secret visible dans les fichiers modifiés
+ Les imports Python fonctionnent avec les nouveaux chemins data/
+ Le frontend ne référence pas src/components/trade/ supprimé
+ Docker build réussit sans erreur
+ API health check renvoie 200
+

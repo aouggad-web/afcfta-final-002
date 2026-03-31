@@ -11,7 +11,7 @@ from .models import CurrencyInfo
 logger = logging.getLogger(__name__)
 
 # Path to the canonical currency data file (repo root)
-_DATA_FILE = Path(__file__).parent.parent.parent / "currencies_african_complete.json"
+_DATA_FILE = Path(__file__).parent.parent.parent / "data" / "json" / "currencies_african_complete.json"
 
 
 def _load_currencies() -> Tuple[Dict[str, CurrencyInfo], Dict[str, CurrencyInfo]]:

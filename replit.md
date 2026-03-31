@@ -9,6 +9,20 @@ The ZLECAf Trade Calculator is an African Continental Free Trade Area (AfCFTA/ZL
 - Data priority: Individual tax components per product (not just DD + VAT totals)
 - Validation reference: Algeria customs data (douane.gov.dz) for DAPS, DD, PRCT, TCS, TVA
 
+## Repository Structure
+```
+backend/          ← FastAPI application (Python)
+data/
+├── json/         ← African trade/logistics JSON datasets (35 files)
+├── csv/          ← ZLECAf CSV datasets (6 files)
+└── xlsx/         ← ZLECAf Excel files (3 files)
+engine/
+└── crawlers/     ← TypeScript crawler utilities
+scripts/          ← Utility & maintenance Python scripts
+frontend/         ← React application (CRACO, port 5000)
+SECURITY_CHECKLIST.md ← Security audit tracking
+```
+
 ## System Architecture
 The platform features a Python FastAPI backend (port 8000) and a React frontend (port 5000), with API requests proxied from the frontend to the backend. While MongoDB is optional, the system primarily relies on a robust tariff data system.
 
