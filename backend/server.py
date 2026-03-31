@@ -132,6 +132,7 @@ app = FastAPI(
 # CORS middleware
 _cors_origins = [
     "http://localhost:3000",
+    "http://localhost:5000",
     "http://localhost:8000",
     "https://afcfta.trade",
     "https://www.afcfta.trade",
@@ -140,9 +141,15 @@ _frontend_url = os.environ.get("FRONTEND_URL", "")
 if _frontend_url:
     _cors_origins.append(_frontend_url)
 
+# Allow all Replit dev/deployment domains
+_replit_dev_domain = os.environ.get("REPLIT_DEV_DOMAIN", "")
+if _replit_dev_domain:
+    _cors_origins.append(f"https://{_replit_dev_domain}")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins,
+    allow_origin_regex=r"https://.*\.replit\.dev|https://.*\.replit\.app",
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],

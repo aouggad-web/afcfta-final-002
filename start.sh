@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cd /home/runner/workspace/backend && python -m uvicorn server:app --host 0.0.0.0 --port 8000 --reload &
-# Determine script directory for portable paths
+set -e
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BACKEND_DIR="$SCRIPT_DIR/backend"
 FRONTEND_DIR="$SCRIPT_DIR/frontend"
@@ -20,8 +20,8 @@ for i in $(seq 1 30); do
     sleep 2
 done
 
-# Start frontend
-cd "$FRONTEND_DIR" && PORT=5000 HOST=0.0.0.0 npx craco start &
+# Start frontend dev server on port 5000
+cd "$FRONTEND_DIR" && PORT=5000 BROWSER=none npx craco start &
 FRONTEND_PID=$!
 
 wait $BACKEND_PID $FRONTEND_PID
