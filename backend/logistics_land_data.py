@@ -8,7 +8,7 @@ import os
 from typing import List, Dict, Optional
 
 # Chemin du fichier JSON
-DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'corridors_terrestres.json')
+DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'json', 'corridors_terrestres.json')
 
 # Cache global
 _corridors_data = None

@@ -10,7 +10,7 @@ ROOT_DIR = Path(__file__).parent.parent
 
 def load_ports_data():
     """Load African ports data from JSON file"""
-    ports_path = ROOT_DIR / "ports_africains.json"
+    ports_path = ROOT_DIR / "data" / "json" / "ports_africains.json"
     with open(ports_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 

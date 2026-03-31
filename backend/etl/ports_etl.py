@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 # Chemins
 ROOT_DIR = Path(__file__).parent.parent.parent
-PORTS_FILE = ROOT_DIR / 'ports_africains.json'
+PORTS_FILE = ROOT_DIR / 'data' / 'json' / 'ports_africains.json'
 ETL_LOG_FILE = ROOT_DIR / 'backend' / 'etl' / 'etl_log.json'
 
 # Import des données TRS officielles
