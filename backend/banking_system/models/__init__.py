@@ -2,6 +2,7 @@
 Banking system Pydantic models
 """
 from .bank_models import (
+    BankContact,
     CentralBank,
     CommercialBank,
     RegionalBank,
@@ -19,6 +20,7 @@ from .finance_models import (
 )
 
 __all__ = [
+    "BankContact",
     "CentralBank",
     "CommercialBank",
     "RegionalBank",
