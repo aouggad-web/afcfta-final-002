@@ -10,6 +10,8 @@ Endpoints:
   GET  /banking/payment-systems/regional
   GET  /banking/forex/domiciliation-rules
   GET  /banking/compliance/{country_code}
+  GET  /banking/register         ← new: global searchable banks directory
+  GET  /banking/regulations/summary ← new: all-countries regulation overview
   POST /banking/transaction/validate
 """
 
@@ -21,6 +23,7 @@ import logging
 from banking_system import (
     get_country_banks,
     get_regional_banks,
+    get_banks_register,
     get_forex_profile,
     get_domiciliation_rules,
     get_trade_finance_instruments,
@@ -33,6 +36,7 @@ from banking_system import (
     assess_transaction_risk,
 )
 from banking_system.banks_registry import CENTRAL_BANKS
+from banking_system.foreign_exchange import FOREX_PROFILES
 
 logger = logging.getLogger(__name__)
 
@@ -293,6 +297,88 @@ async def get_compliance_requirements(country_code: str):
     - **country_code**: Code ISO2 du pays
     """
     return get_country_compliance(country_code.upper())
+
+
+# ---------------------------------------------------------------------------
+# BANKS REGISTER ENDPOINT
+# ---------------------------------------------------------------------------
+
+@router.get(
+    "/register",
+    summary="Registre global et consultable de toutes les banques africaines",
+    tags=["Banking"],
+)
+async def get_banks_register_endpoint(
+    search: Optional[str] = Query(default=None, description="Recherche textuelle (nom, sigle, pays)"),
+    country_code: Optional[str] = Query(default=None, description="Filtrer par code ISO2 du pays"),
+    bank_type: Optional[str] = Query(default=None, description="Type de banque: central | commercial | regional"),
+    trade_finance_only: bool = Query(default=False, description="Seulement les banques avec services trade finance"),
+):
+    """
+    Retourne le registre global de toutes les banques africaines (centrales, commerciales, régionales)
+    avec leurs coordonnées complètes (adresse, téléphone, email, site web).
+
+    Permet une recherche textuelle et plusieurs filtres combinables.
+    """
+    results = get_banks_register(
+        search=search,
+        country_code=country_code.upper() if country_code else None,
+        bank_type=bank_type,
+        trade_finance_only=trade_finance_only,
+    )
+    return {"total": len(results), "results": results}
+
+
+# ---------------------------------------------------------------------------
+# REGULATIONS SUMMARY ENDPOINT
+# ---------------------------------------------------------------------------
+
+@router.get(
+    "/regulations/summary",
+    summary="Synthèse des réglementations de change pour tous les pays africains",
+    tags=["Banking"],
+)
+async def get_regulations_summary(
+    regulation_level: Optional[str] = Query(
+        default=None,
+        description="Filtrer par niveau: strict | moderate | liberal",
+    ),
+):
+    """
+    Retourne une synthèse comparative des réglementations de change pour tous les
+    pays africains disponibles : domiciliation, rapatriement, autorisation préalable,
+    niveau de contrôle des changes.
+
+    Inclut également les données de base des banques centrales (devise, SWIFT).
+    """
+    summary = []
+    for code, profile in FOREX_PROFILES.items():
+        level = profile.forex_regulation.regulation_level
+        if regulation_level and level != regulation_level:
+            continue
+        cb = CENTRAL_BANKS.get(code)
+        summary.append({
+            "country_code": code,
+            "country_name": profile.country_name,
+            "central_bank": profile.central_bank_name,
+            "currency_code": cb.currency_code if cb else "N/A",
+            "regulation_level": level,
+            "domiciliation_required": profile.domiciliation.required,
+            "domiciliation_conditional": profile.domiciliation.conditional,
+            "threshold_usd": profile.domiciliation.threshold_usd,
+            "repatriation_days": profile.forex_regulation.repatriation_deadline_days,
+            "prior_authorization": profile.forex_regulation.prior_authorization_required,
+            "authorization_threshold_usd": profile.forex_regulation.authorization_threshold_usd,
+            "declaration_threshold_usd": profile.forex_regulation.declaration_threshold_usd,
+            "penalties": profile.forex_regulation.penalties,
+            "banking_act": cb.banking_act if cb else None,
+            "central_bank_website": cb.website if cb else None,
+            "central_bank_phone": cb.phone if cb else None,
+            "central_bank_email": cb.email if cb else None,
+        })
+
+    summary.sort(key=lambda x: x["country_name"])
+    return {"total": len(summary), "results": summary}
 
 
 # ---------------------------------------------------------------------------
