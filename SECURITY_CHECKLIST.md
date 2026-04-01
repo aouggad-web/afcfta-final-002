@@ -33,10 +33,12 @@
 
 ## Phase 4 — Backend Security Hardening
 - [x] CORS `allow_origins` now controlled via `ALLOWED_ORIGINS` environment variable
+- [x] CORS `allow_headers` restricted to required headers only (no wildcard)
 - [x] SecurityHeadersMiddleware in place (CSP, X-Frame-Options, HSTS, X-Content-Type-Options)
 - [x] CSRFMiddleware active on mutation endpoints
+- [x] CSRF cookie `secure` flag controlled via `HTTPS_ENABLED` env variable (true in production)
 - [x] RateLimitMiddleware active (120 req/min, burst 20)
-- [x] ALLOWED_ORIGINS documented in .env.example
+- [x] ALLOWED_ORIGINS and HTTPS_ENABLED documented in .env.example
 
 ## Manual Actions Required After Deployment
 These cannot be automated — must be done manually:

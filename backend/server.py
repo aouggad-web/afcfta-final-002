@@ -160,7 +160,7 @@ app.add_middleware(
     allow_origin_regex=r"https://.*\.replit\.dev|https://.*\.replit\.app",
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["*"],
+    allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
 )
 
 # Security middlewares (optional)
