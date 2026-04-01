@@ -14,7 +14,7 @@ import {
   PieChart, Pie, Cell, XAxis, YAxis, Tooltip, CartesianGrid
 } from 'recharts';
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = `${process.env.REACT_APP_BACKEND_URL || ""}/api`;
 
 // ============================================================
 // WIDGET: Live Trade Statistics (données temps réel)

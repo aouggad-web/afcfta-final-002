@@ -5,7 +5,7 @@ import { Badge } from '../ui/badge';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 function ProductionMining({ language = 'fr' }) {

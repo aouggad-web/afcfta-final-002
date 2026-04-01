@@ -12,11 +12,21 @@ from fastapi import APIRouter, HTTPException, Query
 from typing import Optional, List
 from pydantic import BaseModel
 
-import sys
+import importlib.util
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "engine"))
 
-from api.engine_service import get_service
+# Load engine_service using importlib to avoid sys.path pollution that would
+# shadow the backend 'api' package with engine's 'api' package.
+_engine_service_path = Path(__file__).parent.parent.parent / "engine" / "api" / "engine_service.py"
+
+try:
+    _spec = importlib.util.spec_from_file_location("engine_api_engine_service", _engine_service_path)
+    _engine_service_mod = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(_engine_service_mod)
+    get_service = _engine_service_mod.get_service
+except Exception:
+    def get_service():
+        return None
 
 
 router = APIRouter(prefix="/regulatory-engine", tags=["Regulatory Engine v3"])

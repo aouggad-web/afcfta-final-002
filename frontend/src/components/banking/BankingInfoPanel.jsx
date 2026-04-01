@@ -62,6 +62,49 @@ const texts = {
     website: 'Site web',
     mandatory_documents: 'Documents obligatoires',
     notes: 'Notes',
+    address: 'Adresse',
+    phone: 'Téléphone',
+    email: 'E-mail',
+    established: 'Fondée en',
+    bankingAct: 'Loi bancaire',
+    licenseType: 'Agrément',
+    correspondents: 'Correspondants',
+    register: 'Registre',
+    regulations: 'Réglementations',
+    registerTitle: 'Registre des Banques Africaines',
+    registerSubtitle: 'Annuaire consultable – banques centrales, commerciales et régionales',
+    searchPlaceholder: 'Rechercher (nom, sigle, pays…)',
+    filterType: 'Type de banque',
+    allTypes: 'Tous types',
+    centralType: 'Banques centrales',
+    commercialType: 'Banques commerciales',
+    regionalType: 'Banques régionales',
+    tradeFinanceOnly: 'Trade finance seulement',
+    allCountries: 'Tous les pays',
+    resultCount: 'résultat(s)',
+    regulationsTitle: 'Réglementations de Change – Vue Comparative',
+    regulationsSubtitle: 'Synthèse des contrôles de change pour les pays africains AfCFTA',
+    filterRegulation: 'Niveau de réglementation',
+    allLevels: 'Tous niveaux',
+    domiciliation: 'Domiciliation',
+    priorAuth: 'Autorisation',
+    repatriation: 'Rapatriement',
+    countryCol: 'Pays',
+    bankCol: 'Banque centrale',
+    currencyCol: 'Devise',
+    regulationCol: 'Réglementation',
+    domiciliationCol: 'Domiciliation',
+    priorAuthCol: 'Autor. préalable',
+    repatriationCol: 'Rapatriement',
+    bankingActCol: 'Loi bancaire',
+    contactCol: 'Contact',
+    required: 'Obligatoire',
+    conditional: 'Conditionnelle',
+    free: 'Libre',
+    notRequired: 'Non requis',
+    memberCountries: 'Pays membres',
+    focusAreas: 'Domaines',
+    contact: 'Contact',
   },
   en: {
     title: '🏦 African Banking System – AfCFTA',
@@ -117,6 +160,49 @@ const texts = {
     website: 'Website',
     mandatory_documents: 'Mandatory documents',
     notes: 'Notes',
+    address: 'Address',
+    phone: 'Phone',
+    email: 'Email',
+    established: 'Established',
+    bankingAct: 'Banking Act',
+    licenseType: 'License',
+    correspondents: 'Correspondents',
+    register: 'Register',
+    regulations: 'Regulations',
+    registerTitle: 'African Banks Register',
+    registerSubtitle: 'Searchable directory – central, commercial and regional banks',
+    searchPlaceholder: 'Search (name, code, country…)',
+    filterType: 'Bank type',
+    allTypes: 'All types',
+    centralType: 'Central banks',
+    commercialType: 'Commercial banks',
+    regionalType: 'Regional banks',
+    tradeFinanceOnly: 'Trade finance only',
+    allCountries: 'All countries',
+    resultCount: 'result(s)',
+    regulationsTitle: 'Forex Regulations – Comparative View',
+    regulationsSubtitle: 'Forex control summary for AfCFTA African countries',
+    filterRegulation: 'Regulation level',
+    allLevels: 'All levels',
+    domiciliation: 'Domiciliation',
+    priorAuth: 'Authorization',
+    repatriation: 'Repatriation',
+    countryCol: 'Country',
+    bankCol: 'Central Bank',
+    currencyCol: 'Currency',
+    regulationCol: 'Regulation',
+    domiciliationCol: 'Domiciliation',
+    priorAuthCol: 'Prior auth.',
+    repatriationCol: 'Repatriation',
+    bankingActCol: 'Banking Act',
+    contactCol: 'Contact',
+    required: 'Required',
+    conditional: 'Conditional',
+    free: 'Free',
+    notRequired: 'Not required',
+    memberCountries: 'Member countries',
+    focusAreas: 'Focus areas',
+    contact: 'Contact',
   },
 };
 
@@ -137,26 +223,67 @@ function RegulationBadge({ level }) {
   return <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>{level?.toUpperCase()}</span>;
 }
 
+function ContactBlock({ contact, t }) {
+  if (!contact) return null;
+  return (
+    <div className="mt-2 text-xs text-gray-600 space-y-0.5 border-t pt-2">
+      {contact.address && <div className="flex gap-1"><span className="text-gray-400">📍</span>{contact.address}</div>}
+      {contact.phone && (
+        <div className="flex gap-1"><span className="text-gray-400">📞</span>
+          <a href={`tel:${contact.phone}`} className="text-blue-600 hover:underline">{contact.phone}</a>
+        </div>
+      )}
+      {contact.email && (
+        <div className="flex gap-1"><span className="text-gray-400">✉</span>
+          <a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline">{contact.email}</a>
+        </div>
+      )}
+      {contact.department && <div className="flex gap-1"><span className="text-gray-400">🏢</span><span className="italic">{contact.department}</span></div>}
+    </div>
+  );
+}
+
 // ── Tab navigation ────────────────────────────────────────────────────────────
 
-const TABS = ['banks', 'forex', 'risk', 'instruments', 'paymentSystems', 'compliance'];
+const COUNTRY_TABS = ['banks', 'forex', 'risk', 'instruments', 'paymentSystems', 'compliance'];
+const GLOBAL_TABS = ['register', 'regulations'];
+const ALL_TABS = [...COUNTRY_TABS, ...GLOBAL_TABS];
 
 function TabBar({ activeTab, onChange, t }) {
   return (
     <div className="flex gap-1 flex-wrap border-b mb-4">
-      {TABS.map((tab) => (
-        <button
-          key={tab}
-          onClick={() => onChange(tab)}
-          className={`px-3 py-1.5 text-sm font-medium rounded-t transition-colors ${
-            activeTab === tab
-              ? 'bg-white border-b-2 border-blue-600 text-blue-700'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          {t[tab]}
-        </button>
-      ))}
+      <div className="flex gap-1 flex-wrap">
+        <span className="text-xs text-gray-400 self-center pr-1 border-r mr-1">Par pays</span>
+        {COUNTRY_TABS.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => onChange(tab)}
+            className={`px-3 py-1.5 text-sm font-medium rounded-t transition-colors ${
+              activeTab === tab
+                ? 'bg-white border-b-2 border-blue-600 text-blue-700'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            {t[tab]}
+          </button>
+        ))}
+      </div>
+      <div className="flex gap-1 flex-wrap ml-2">
+        <span className="text-xs text-gray-400 self-center pr-1 border-r mr-1">Global</span>
+        {GLOBAL_TABS.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => onChange(tab)}
+            className={`px-3 py-1.5 text-sm font-medium rounded-t transition-colors ${
+              activeTab === tab
+                ? 'bg-white border-b-2 border-emerald-600 text-emerald-700'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            {t[tab]}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
@@ -180,11 +307,20 @@ function BanksTab({ data, t }) {
             <span>{t.currency}: <strong>{central_bank?.currency_code} – {central_bank?.currency_name}</strong></span>
             <span>{t.swiftCode}: <strong>{central_bank?.swift_code || '—'}</strong></span>
             <span>{t.regulation}: <RegulationBadge level={central_bank?.forex_regulation} /></span>
+            {central_bank?.established_year && (
+              <span>{t.established}: <strong>{central_bank.established_year}</strong></span>
+            )}
           </div>
+          {central_bank?.banking_act && (
+            <p className="text-xs text-gray-500 italic">{t.bankingAct}: {central_bank.banking_act}</p>
+          )}
           {central_bank?.website && (
             <a href={central_bank.website} target="_blank" rel="noreferrer" className="text-blue-600 text-xs underline">
               {central_bank.website}
             </a>
+          )}
+          {central_bank?.contact && (
+            <ContactBlock contact={central_bank.contact} t={t} />
           )}
         </CardContent>
       </Card>
@@ -196,36 +332,30 @@ function BanksTab({ data, t }) {
             <CardTitle className="text-base">{t.commercialBanks}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs border-collapse">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border px-2 py-1 text-left">Nom</th>
-                    <th className="border px-2 py-1">{t.swiftCode}</th>
-                    <th className="border px-2 py-1">{t.tradeFinance}</th>
-                    <th className="border px-2 py-1 text-left">{t.services}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {commercial_banks.map((bank, i) => (
-                    <tr key={i} className="hover:bg-gray-50">
-                      <td className="border px-2 py-1 font-medium">{bank.name}</td>
-                      <td className="border px-2 py-1 text-center font-mono">{bank.swift_code || '—'}</td>
-                      <td className="border px-2 py-1 text-center">
-                        {bank.trade_finance ? <span className="text-green-700 font-bold">✓</span> : <span className="text-red-400">✗</span>}
-                      </td>
-                      <td className="border px-2 py-1">
-                        <div className="flex flex-wrap gap-0.5">
-                          {bank.services?.slice(0, 3).map((s) => (
-                            <span key={s} className="bg-blue-50 text-blue-700 px-1 rounded text-xs">{s}</span>
-                          ))}
-                          {bank.services?.length > 3 && <span className="text-gray-400 text-xs">+{bank.services.length - 3}</span>}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="space-y-3">
+              {commercial_banks.map((bank, i) => (
+                <div key={i} className="border rounded p-3 text-sm hover:bg-gray-50">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                      <span className="font-semibold">{bank.name}</span>
+                      {bank.abbreviation && <span className="ml-1 text-gray-500 text-xs">({bank.abbreviation})</span>}
+                      {bank.license_type && <span className="ml-2 bg-gray-100 text-gray-600 text-xs px-1.5 py-0.5 rounded">{bank.license_type}</span>}
+                    </div>
+                    <div className="flex gap-1 items-center">
+                      {bank.trade_finance && <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded font-medium">Trade Finance ✓</span>}
+                      {bank.swift_code && <span className="font-mono text-xs bg-gray-100 px-2 py-0.5 rounded">{bank.swift_code}</span>}
+                    </div>
+                  </div>
+                  {bank.services?.length > 0 && (
+                    <div className="flex flex-wrap gap-0.5 mt-1.5">
+                      {bank.services.map((s) => (
+                        <span key={s} className="bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded text-xs">{s}</span>
+                      ))}
+                    </div>
+                  )}
+                  {bank.contact && <ContactBlock contact={bank.contact} t={t} />}
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -238,12 +368,25 @@ function BanksTab({ data, t }) {
             <CardTitle className="text-base">{t.regionalBanks}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-wrap gap-2">
+            <div className="space-y-3">
               {regional_banks.map((rb, i) => (
-                <div key={i} className="border rounded p-2 text-xs bg-gray-50 min-w-40">
-                  <div className="font-semibold">{rb.abbreviation}</div>
-                  <div className="text-gray-600 text-xs">{rb.headquarters}</div>
-                  {rb.website && <a href={rb.website} target="_blank" rel="noreferrer" className="text-blue-500 underline text-xs">{t.website}</a>}
+                <div key={i} className="border rounded p-3 text-sm bg-gray-50">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                      <span className="font-semibold">{rb.abbreviation}</span>
+                      <span className="ml-2 text-gray-600 text-xs">{rb.name}</span>
+                    </div>
+                    <span className="text-xs text-gray-500">{rb.headquarters}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-0.5 mt-1">
+                    {rb.focus_areas?.map((f) => (
+                      <span key={f} className="bg-emerald-50 text-emerald-700 text-xs px-1.5 py-0.5 rounded">{f}</span>
+                    ))}
+                  </div>
+                  {rb.contact && <ContactBlock contact={rb.contact} t={t} />}
+                  {rb.website && !rb.contact && (
+                    <a href={rb.website} target="_blank" rel="noreferrer" className="text-blue-500 underline text-xs mt-1 block">{rb.website}</a>
+                  )}
                 </div>
               ))}
             </div>
@@ -491,6 +634,392 @@ function ComplianceTab({ data, t }) {
   );
 }
 
+// ── Register Tab ──────────────────────────────────────────────────────────────
+
+const TYPE_COLORS = {
+  central: 'bg-blue-100 text-blue-800',
+  commercial: 'bg-purple-100 text-purple-800',
+  regional: 'bg-emerald-100 text-emerald-800',
+};
+
+const TYPE_ICONS = { central: '🏛️', commercial: '🏦', regional: '🌍' };
+
+function RegisterTab({ t, countries }) {
+  const [search, setSearch] = useState('');
+  const [filterType, setFilterType] = useState('');
+  const [filterCountry, setFilterCountry] = useState('');
+  const [tradeOnly, setTradeOnly] = useState(false);
+  const [results, setResults] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState(null);
+
+  const fetchRegister = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (search) params.set('search', search);
+      if (filterType) params.set('bank_type', filterType);
+      if (filterCountry) params.set('country_code', filterCountry);
+      if (tradeOnly) params.set('trade_finance_only', 'true');
+      const res = await axios.get(`${API}/banking/register?${params}`);
+      setResults(res.data.results || []);
+      setTotal(res.data.total || 0);
+    } catch {
+      setResults([]);
+      setTotal(0);
+    } finally {
+      setLoading(false);
+    }
+  }, [search, filterType, filterCountry, tradeOnly]);
+
+  useEffect(() => {
+    fetchRegister();
+  }, [fetchRegister]);
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <h3 className="font-semibold text-gray-800">{t.registerTitle}</h3>
+        <p className="text-xs text-gray-500">{t.registerSubtitle}</p>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap gap-2">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={t.searchPlaceholder}
+          className="border rounded px-3 py-1.5 text-sm bg-white min-w-48 flex-1"
+        />
+        <select
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value)}
+          className="border rounded px-3 py-1.5 text-sm bg-white"
+        >
+          <option value="">{t.allTypes}</option>
+          <option value="central">{t.centralType}</option>
+          <option value="commercial">{t.commercialType}</option>
+          <option value="regional">{t.regionalType}</option>
+        </select>
+        <select
+          value={filterCountry}
+          onChange={(e) => setFilterCountry(e.target.value)}
+          className="border rounded px-3 py-1.5 text-sm bg-white"
+        >
+          <option value="">{t.allCountries}</option>
+          {countries.map((c) => (
+            <option key={c.country_code} value={c.country_code}>
+              {c.country_name} ({c.country_code})
+            </option>
+          ))}
+        </select>
+        <label className="flex items-center gap-1.5 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={tradeOnly}
+            onChange={(e) => setTradeOnly(e.target.checked)}
+            className="accent-blue-600"
+          />
+          {t.tradeFinanceOnly}
+        </label>
+      </div>
+
+      <p className="text-xs text-gray-500">{total} {t.resultCount}</p>
+
+      {loading && <div className="text-center py-6 text-gray-400">{t.loading}</div>}
+
+      {!loading && (
+        <div className="space-y-2">
+          {results.map((bank, i) => {
+            const isOpen = expanded === i;
+            return (
+              <div
+                key={i}
+                className="border rounded-lg overflow-hidden hover:border-blue-300 transition-colors"
+              >
+                <button
+                  className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50"
+                  onClick={() => setExpanded(isOpen ? null : i)}
+                >
+                  <div className="flex items-center gap-2 flex-wrap min-w-0">
+                    <span className="text-base">{TYPE_ICONS[bank.type]}</span>
+                    <div className="min-w-0">
+                      <span className="font-medium text-sm">{bank.name}</span>
+                      {bank.abbreviation && (
+                        <span className="ml-1.5 text-gray-500 text-xs">({bank.abbreviation})</span>
+                      )}
+                    </div>
+                    <span className={`text-xs px-2 py-0.5 rounded font-medium ${TYPE_COLORS[bank.type]}`}>
+                      {bank.country_code ? `${bank.country_name} · ${bank.country_code}` : bank.country_name}
+                    </span>
+                    {bank.trade_finance && (
+                      <span className="bg-green-50 text-green-700 text-xs px-1.5 py-0.5 rounded">Trade ✓</span>
+                    )}
+                  </div>
+                  <span className="text-gray-400 text-sm shrink-0 ml-2">{isOpen ? '▲' : '▼'}</span>
+                </button>
+
+                {isOpen && (
+                  <div className="px-4 pb-4 pt-1 bg-white border-t text-sm space-y-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                      {bank.swift_code && (
+                        <div><span className="text-gray-500">{t.swiftCode}: </span><span className="font-mono">{bank.swift_code}</span></div>
+                      )}
+                      {bank.currency_code && (
+                        <div><span className="text-gray-500">{t.currency}: </span><strong>{bank.currency_code} – {bank.currency_name}</strong></div>
+                      )}
+                      {bank.forex_regulation && (
+                        <div><span className="text-gray-500">{t.regulation}: </span><RegulationBadge level={bank.forex_regulation} /></div>
+                      )}
+                      {bank.established_year && (
+                        <div><span className="text-gray-500">{t.established}: </span>{bank.established_year}</div>
+                      )}
+                      {bank.license_type && (
+                        <div><span className="text-gray-500">{t.licenseType}: </span>{bank.license_type}</div>
+                      )}
+                      {bank.banking_act && (
+                        <div className="md:col-span-2"><span className="text-gray-500">{t.bankingAct}: </span><span className="italic">{bank.banking_act}</span></div>
+                      )}
+                    </div>
+
+                    {bank.services?.length > 0 && (
+                      <div>
+                        <span className="text-xs text-gray-500 block mb-1">{t.services}:</span>
+                        <div className="flex flex-wrap gap-1">
+                          {bank.services.map((s) => (
+                            <span key={s} className="bg-blue-50 text-blue-700 text-xs px-1.5 py-0.5 rounded">{s}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {bank.correspondent_banks?.length > 0 && (
+                      <div>
+                        <span className="text-xs text-gray-500">{t.correspondents}: </span>
+                        <span className="text-xs">{bank.correspondent_banks.join(' · ')}</span>
+                      </div>
+                    )}
+
+                    {bank.member_countries?.length > 0 && (
+                      <div>
+                        <span className="text-xs text-gray-500">{t.memberCountries}: </span>
+                        <div className="flex flex-wrap gap-0.5 mt-0.5">
+                          {bank.member_countries.map((c) => (
+                            <span key={c} className="bg-gray-100 text-gray-600 text-xs px-1.5 py-0.5 rounded">{c}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Contact block */}
+                    {(bank.contact?.address || bank.contact?.phone || bank.contact?.email || bank.website) && (
+                      <div className="border-t pt-2 space-y-0.5 text-xs text-gray-600">
+                        <div className="font-medium text-gray-700 mb-1">{t.contact}</div>
+                        {bank.contact?.address && (
+                          <div className="flex gap-1"><span className="text-gray-400">📍</span>{bank.contact.address}</div>
+                        )}
+                        {bank.contact?.phone && (
+                          <div className="flex gap-1"><span className="text-gray-400">📞</span>
+                            <a href={`tel:${bank.contact.phone}`} className="text-blue-600 hover:underline">{bank.contact.phone}</a>
+                          </div>
+                        )}
+                        {bank.contact?.email && (
+                          <div className="flex gap-1"><span className="text-gray-400">✉</span>
+                            <a href={`mailto:${bank.contact.email}`} className="text-blue-600 hover:underline">{bank.contact.email}</a>
+                          </div>
+                        )}
+                        {bank.contact?.department && (
+                          <div className="flex gap-1"><span className="text-gray-400">🏢</span><span className="italic">{bank.contact.department}</span></div>
+                        )}
+                        {bank.website && (
+                          <div className="flex gap-1"><span className="text-gray-400">🌐</span>
+                            <a href={bank.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{bank.website}</a>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          {results.length === 0 && !loading && (
+            <p className="text-center text-gray-400 text-sm py-8">{t.noData}</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Regulations Tab ───────────────────────────────────────────────────────────
+
+const REG_COLORS = { strict: 'bg-red-100 text-red-800', moderate: 'bg-yellow-100 text-yellow-800', liberal: 'bg-green-100 text-green-800' };
+const DOM_COLORS = { required: 'text-red-700 font-medium', conditional: 'text-yellow-700', free: 'text-green-700' };
+
+function RegulationsTab({ t }) {
+  const [data, setData] = useState([]);
+  const [filterLevel, setFilterLevel] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    axios.get(`${API}/banking/regulations/summary`)
+      .then((r) => setData(r.data.results || []))
+      .catch(() => setData([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filtered = filterLevel ? data.filter((d) => d.regulation_level === filterLevel) : data;
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <h3 className="font-semibold text-gray-800">{t.regulationsTitle}</h3>
+        <p className="text-xs text-gray-500">{t.regulationsSubtitle}</p>
+      </div>
+
+      <div className="flex flex-wrap gap-2 items-center">
+        <select
+          value={filterLevel}
+          onChange={(e) => setFilterLevel(e.target.value)}
+          className="border rounded px-3 py-1.5 text-sm bg-white"
+        >
+          <option value="">{t.allLevels}</option>
+          <option value="strict">{t.strict}</option>
+          <option value="moderate">{t.moderate}</option>
+          <option value="liberal">{t.liberal}</option>
+        </select>
+        <span className="text-xs text-gray-400">{filtered.length} {t.resultCount}</span>
+      </div>
+
+      {loading && <div className="text-center py-6 text-gray-400">{t.loading}</div>}
+
+      {!loading && (
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs border-collapse min-w-[600px]">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border px-2 py-1.5 text-left">{t.countryCol}</th>
+                <th className="border px-2 py-1.5 text-left">{t.bankCol}</th>
+                <th className="border px-2 py-1.5">{t.currencyCol}</th>
+                <th className="border px-2 py-1.5">{t.regulationCol}</th>
+                <th className="border px-2 py-1.5">{t.domiciliationCol}</th>
+                <th className="border px-2 py-1.5">{t.priorAuthCol}</th>
+                <th className="border px-2 py-1.5">{t.repatriationCol}</th>
+                <th className="border px-2 py-1.5">{t.contactCol}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((row, i) => {
+                const isOpen = expanded === i;
+                const domText = row.domiciliation_required
+                  ? t.required
+                  : row.domiciliation_conditional
+                  ? t.conditional
+                  : t.free;
+                const domKey = row.domiciliation_required ? 'required' : row.domiciliation_conditional ? 'conditional' : 'free';
+
+                return (
+                  <React.Fragment key={i}>
+                    <tr
+                      className="hover:bg-blue-50 cursor-pointer"
+                      onClick={() => setExpanded(isOpen ? null : i)}
+                    >
+                      <td className="border px-2 py-1.5 font-medium">
+                        <span className="mr-1">{isOpen ? '▼' : '▶'}</span>
+                        {row.country_name}
+                        <span className="ml-1 text-gray-400">({row.country_code})</span>
+                      </td>
+                      <td className="border px-2 py-1.5 text-gray-600">{row.central_bank}</td>
+                      <td className="border px-2 py-1.5 text-center font-mono">{row.currency_code}</td>
+                      <td className="border px-2 py-1.5 text-center">
+                        <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${REG_COLORS[row.regulation_level] || 'bg-gray-100'}`}>
+                          {row.regulation_level?.toUpperCase()}
+                        </span>
+                      </td>
+                      <td className={`border px-2 py-1.5 text-center ${DOM_COLORS[domKey]}`}>{domText}</td>
+                      <td className="border px-2 py-1.5 text-center">
+                        {row.prior_authorization
+                          ? <span className="text-red-600 font-medium">{t.yes}</span>
+                          : <span className="text-green-600">{t.no}</span>}
+                      </td>
+                      <td className="border px-2 py-1.5 text-center text-gray-600">
+                        {row.repatriation_days ? `${row.repatriation_days}j` : '—'}
+                      </td>
+                      <td className="border px-2 py-1.5 text-center">
+                        {(row.central_bank_phone || row.central_bank_email) ? (
+                          <span className="text-blue-600">📋</span>
+                        ) : '—'}
+                      </td>
+                    </tr>
+                    {isOpen && (
+                      <tr className="bg-blue-50">
+                        <td colSpan={8} className="border px-4 py-3">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-xs">
+                            <div className="space-y-1">
+                              {row.threshold_usd != null && (
+                                <div><span className="text-gray-500">{t.threshold}: </span>
+                                  <strong>{row.threshold_usd === 0 ? t.allOperations : `${row.threshold_usd.toLocaleString()} USD`}</strong>
+                                </div>
+                              )}
+                              {row.authorization_threshold_usd && (
+                                <div><span className="text-gray-500">Seuil autorisation: </span>
+                                  <strong>{row.authorization_threshold_usd.toLocaleString()} USD</strong>
+                                </div>
+                              )}
+                              {row.declaration_threshold_usd && (
+                                <div><span className="text-gray-500">Seuil déclaration: </span>
+                                  <strong>{row.declaration_threshold_usd.toLocaleString()} USD</strong>
+                                </div>
+                              )}
+                              {row.penalties && (
+                                <div className="text-red-700 bg-red-50 p-1.5 rounded">
+                                  <span className="font-medium">{t.penalties}: </span>{row.penalties}
+                                </div>
+                              )}
+                              {row.banking_act && (
+                                <div><span className="text-gray-500">{t.bankingAct}: </span><span className="italic">{row.banking_act}</span></div>
+                              )}
+                            </div>
+                            <div className="space-y-1">
+                              {row.central_bank_phone && (
+                                <div className="flex gap-1"><span className="text-gray-400">📞</span>
+                                  <a href={`tel:${row.central_bank_phone}`} className="text-blue-600 hover:underline">{row.central_bank_phone}</a>
+                                </div>
+                              )}
+                              {row.central_bank_email && (
+                                <div className="flex gap-1"><span className="text-gray-400">✉</span>
+                                  <a href={`mailto:${row.central_bank_email}`} className="text-blue-600 hover:underline">{row.central_bank_email}</a>
+                                </div>
+                              )}
+                              {row.central_bank_website && (
+                                <div className="flex gap-1"><span className="text-gray-400">🌐</span>
+                                  <a href={row.central_bank_website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{row.central_bank_website}</a>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+              {filtered.length === 0 && (
+                <tr><td colSpan={8} className="border px-4 py-6 text-center text-gray-400">{t.noData}</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Component ─────────────────────────────────────────────────────────────
 
 export default function BankingInfoPanel({ language = 'fr', selectedCountry: propCountry }) {
@@ -509,6 +1038,8 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const isGlobalTab = GLOBAL_TABS.includes(activeTab);
 
   // Load country list once
   useEffect(() => {
@@ -554,11 +1085,12 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
 
   const handleCountryChange = (e) => {
     setSelectedCountry(e.target.value);
+    if (GLOBAL_TABS.includes(activeTab)) return;
     setActiveTab('banks');
   };
 
   return (
-    <div className="p-4 space-y-4 max-w-4xl mx-auto">
+    <div className="p-4 space-y-4 max-w-5xl mx-auto">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -579,30 +1111,40 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
         </select>
       </div>
 
-      {!selectedCountry && (
-        <div className="bg-blue-50 border border-blue-200 rounded p-4 text-sm text-blue-700">
-          {t.selectCountryPrompt}
-        </div>
-      )}
+      {/* Tab bar - always visible */}
+      <TabBar activeTab={activeTab} onChange={setActiveTab} t={t} />
 
-      {loading && (
-        <div className="text-center py-8 text-gray-500">{t.loading}</div>
-      )}
+      {/* Global tabs - no country needed */}
+      {activeTab === 'register' && <RegisterTab t={t} countries={countries} />}
+      {activeTab === 'regulations' && <RegulationsTab t={t} />}
 
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded p-3 text-sm text-red-700">{error}</div>
-      )}
-
-      {selectedCountry && !loading && (
+      {/* Country-specific tabs */}
+      {!isGlobalTab && (
         <>
-          <TabBar activeTab={activeTab} onChange={setActiveTab} t={t} />
+          {!selectedCountry && (
+            <div className="bg-blue-50 border border-blue-200 rounded p-4 text-sm text-blue-700">
+              {t.selectCountryPrompt}
+            </div>
+          )}
 
-          {activeTab === 'banks' && <BanksTab data={bankData} t={t} />}
-          {activeTab === 'forex' && <ForexTab data={forexData} t={t} />}
-          {activeTab === 'risk' && <RiskTab data={riskData} t={t} />}
-          {activeTab === 'instruments' && <InstrumentsTab instruments={instruments} t={t} />}
-          {activeTab === 'paymentSystems' && <PaymentSystemsTab systems={paymentSystems} t={t} />}
-          {activeTab === 'compliance' && <ComplianceTab data={complianceData} t={t} />}
+          {loading && (
+            <div className="text-center py-8 text-gray-500">{t.loading}</div>
+          )}
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded p-3 text-sm text-red-700">{error}</div>
+          )}
+
+          {selectedCountry && !loading && (
+            <>
+              {activeTab === 'banks' && <BanksTab data={bankData} t={t} />}
+              {activeTab === 'forex' && <ForexTab data={forexData} t={t} />}
+              {activeTab === 'risk' && <RiskTab data={riskData} t={t} />}
+              {activeTab === 'instruments' && <InstrumentsTab instruments={instruments} t={t} />}
+              {activeTab === 'paymentSystems' && <PaymentSystemsTab systems={paymentSystems} t={t} />}
+              {activeTab === 'compliance' && <ComplianceTab data={complianceData} t={t} />}
+            </>
+          )}
         </>
       )}
     </div>

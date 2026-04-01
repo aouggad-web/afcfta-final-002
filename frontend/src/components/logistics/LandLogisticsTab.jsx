@@ -8,7 +8,7 @@ import CorridorMap from './CorridorMap';
 import CorridorCard from './CorridorCard';
 import CorridorDetailsModal from './CorridorDetailsModal';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 export default function LandLogisticsTab({ language = 'fr' }) {

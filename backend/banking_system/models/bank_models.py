@@ -5,6 +5,16 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 
 
+class BankContact(BaseModel):
+    """Contact information for a bank"""
+    address: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    website: Optional[str] = None
+    contact_person: Optional[str] = None
+    department: Optional[str] = None
+
+
 class CentralBank(BaseModel):
     """Modèle d'une banque centrale africaine"""
     country_code: str = Field(..., description="Code ISO2 du pays")
@@ -19,6 +29,12 @@ class CentralBank(BaseModel):
     )
     currency_code: str = Field(..., description="Code ISO 4217 de la devise")
     currency_name: str
+    address: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    established_year: Optional[int] = None
+    banking_act: Optional[str] = None
+    contact: Optional[BankContact] = None
 
 
 class CommercialBank(BaseModel):
@@ -30,6 +46,12 @@ class CommercialBank(BaseModel):
     trade_finance: bool = False
     correspondent_banks: List[str] = Field(default_factory=list)
     services: List[str] = Field(default_factory=list)
+    website: Optional[str] = None
+    address: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    license_type: Optional[str] = None
+    contact: Optional[BankContact] = None
 
 
 class RegionalBank(BaseModel):
@@ -41,6 +63,9 @@ class RegionalBank(BaseModel):
     website: Optional[str] = None
     member_countries: List[str] = Field(default_factory=list)
     focus_areas: List[str] = Field(default_factory=list)
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    contact: Optional[BankContact] = None
 
 
 class BankingSystemInfo(BaseModel):

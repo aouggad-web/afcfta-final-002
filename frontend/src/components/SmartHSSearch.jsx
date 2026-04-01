@@ -7,7 +7,7 @@ import { Input } from './ui/input';
 import { Separator } from './ui/separator';
 import { ChevronDown, ChevronUp, Search, Info, AlertTriangle } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 /**

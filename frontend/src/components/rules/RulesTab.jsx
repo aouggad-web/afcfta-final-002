@@ -9,7 +9,7 @@ import { Separator } from '../ui/separator';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import { FileText, ChevronDown, ChevronUp, Globe, CheckCircle } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 export default function RulesTab({ language = 'fr' }) {

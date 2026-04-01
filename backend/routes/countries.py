@@ -165,10 +165,7 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         infra_ranking = None
         
         try:
-            # Try new location first
             infra_path = Path(__file__).parent.parent.parent / 'data' / 'json' / 'classement_infrastructure_afrique.json'
-            if not infra_path.exists():
-                infra_path = Path(__file__).parent.parent.parent / 'classement_infrastructure_afrique.json'
             with open(infra_path, 'r') as f:
                 infra_data = json.load(f)
             

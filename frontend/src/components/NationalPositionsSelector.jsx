@@ -6,7 +6,7 @@ import { Button } from './ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { ChevronDown, ChevronUp, Package, Check, DollarSign, Percent, FileText, AlertCircle, TrendingUp, TrendingDown, Info, Car, Leaf, Cog, Zap } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 /**

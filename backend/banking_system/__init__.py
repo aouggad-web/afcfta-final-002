@@ -9,7 +9,7 @@ Provides data and logic for:
 - Country risk assessment
 """
 
-from .banks_registry import get_central_bank, get_country_banks, get_regional_banks, CENTRAL_BANKS
+from .banks_registry import get_central_bank, get_country_banks, get_regional_banks, get_banks_register, CENTRAL_BANKS
 from .foreign_exchange import get_forex_profile, get_domiciliation_rules, FOREX_PROFILES
 from .trade_finance import get_trade_finance_instruments, recommend_instruments
 from .payment_systems import get_payment_systems, get_regional_systems
@@ -21,6 +21,7 @@ __all__ = [
     "get_central_bank",
     "get_country_banks",
     "get_regional_banks",
+    "get_banks_register",
     "CENTRAL_BANKS",
     # Forex / domiciliation
     "get_forex_profile",

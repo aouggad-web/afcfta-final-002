@@ -321,27 +321,66 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     transition_period = transition_periods.get(sector_code, 'immediate')
     
     # ============================================================
-    # AMOUNT CALCULATIONS
+    # AMOUNT CALCULATIONS - Assiette cumulative (cascading base)
+    # Each tax base = CIF + sum of all preceding taxes
     # ============================================================
-    
-    # Customs duties
+
+    # 1. Customs duties (always on CIF)
     normal_customs = request.value * normal_rate
     zlecaf_customs = request.value * zlecaf_rate
-    
-    # Other taxes (on CIF value)
-    other_taxes_amount = request.value * other_taxes_rate
-    
-    # VAT calculated on (Value + DD + Other taxes)
-    normal_vat_base = request.value + normal_customs + other_taxes_amount
-    zlecaf_vat_base = request.value + zlecaf_customs + other_taxes_amount
-    
+
+    # 2. Other taxes applied cumulatively after DD
+    normal_running = normal_customs    # accumulated taxes so far (normal regime)
+    zlecaf_running = zlecaf_customs    # accumulated taxes so far (ZLECAf regime)
+    other_taxes_amount = 0.0
+    zlecaf_other_amount = 0.0
+    _normal_tax_amounts: dict = {}    # key -> amount (for individual fee fields)
+    _zlecaf_tax_amounts: dict = {}
+
+    _dd_names = {"D.D", "DD", "DI", "DDDROIT", "Droit d'Importation (DI)"}
+    _vat_names = {"T.V.A", "TVA", "VAT"}
+
+    if collected_taxes_detail:
+        for tax in collected_taxes_detail:
+            tname = tax["tax"]
+            is_dd = tname in _dd_names or "Import Duty" in tname or "Customs Duty" in tname
+            is_vat = tname in _vat_names or "TVA" in tname.upper() or "VAT" in tname.upper()
+            if is_dd or is_vat:
+                continue
+            rate = tax["rate"] / 100.0
+            n_amount = round((request.value + normal_running) * rate, 2)
+            z_amount = round((request.value + zlecaf_running) * rate, 2)
+            other_taxes_amount += n_amount
+            zlecaf_other_amount += z_amount
+            normal_running += n_amount
+            zlecaf_running += z_amount
+            key = tname.lower().replace(".", "").replace(" ", "")
+            _normal_tax_amounts[key] = n_amount
+            _zlecaf_tax_amounts[key] = z_amount
+    else:
+        for key, rate_pct in other_taxes_detail.items():
+            if key == "other" or not isinstance(rate_pct, (int, float)) or rate_pct == 0:
+                continue
+            rate = rate_pct / 100.0
+            n_amount = round((request.value + normal_running) * rate, 2)
+            z_amount = round((request.value + zlecaf_running) * rate, 2)
+            other_taxes_amount += n_amount
+            zlecaf_other_amount += z_amount
+            normal_running += n_amount
+            zlecaf_running += z_amount
+            _normal_tax_amounts[key] = n_amount
+            _zlecaf_tax_amounts[key] = z_amount
+
+    # 3. VAT (last, base = CIF + all preceding taxes)
+    normal_vat_base = request.value + normal_running
+    zlecaf_vat_base = request.value + zlecaf_running
     normal_vat_amount = normal_vat_base * vat_rate
     zlecaf_vat_amount = zlecaf_vat_base * vat_rate
-    
-    # Totals
+
+    # 4. Totals
     normal_total = request.value + normal_customs + other_taxes_amount + normal_vat_amount
-    zlecaf_total = request.value + zlecaf_customs + other_taxes_amount + zlecaf_vat_amount
-    
+    zlecaf_total = request.value + zlecaf_customs + zlecaf_other_amount + zlecaf_vat_amount
+
     # Savings
     savings = normal_customs - zlecaf_customs
     savings_percentage = (savings / normal_customs) * 100 if normal_customs > 0 else 0
@@ -369,18 +408,22 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     cumulative = request.value
 
     if collected_taxes_detail:
+        journal_running = 0.0  # taxes accumulated so far
         for tax_item in collected_taxes_detail:
             tax_name = tax_item["tax"]
             tax_rate_pct = tax_item["rate"]
             tax_rate_dec = tax_rate_pct / 100.0
-            tax_amount = round(request.value * tax_rate_dec, 2) if tax_name != "T.V.A" else round(normal_vat_amount, 2)
 
-            if tax_name == "T.V.A":
+            is_vat = tax_name in _vat_names or "TVA" in tax_name.upper() or "VAT" in tax_name.upper()
+            if is_vat:
                 tax_base = round(normal_vat_base, 2)
+                tax_amount = round(normal_vat_amount, 2)
                 cumulative = round(normal_total, 2)
             else:
-                tax_base = request.value
-                cumulative += tax_amount
+                tax_base = round(request.value + journal_running, 2)
+                tax_amount = round(tax_base * tax_rate_dec, 2)
+                journal_running += tax_amount
+                cumulative = round(request.value + journal_running, 2)
 
             ref_key = tax_name.lower().replace(".", "").replace(" ", "")
             ref = legal_refs.get(ref_key, {"ref": tax_item.get("observation", ""), "url": None})
@@ -399,7 +442,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     else:
         normal_journal.append({"step": step, "component": "Droits de douane (DD)", "base": request.value, "rate": f"{normal_rate*100:.1f}%", "amount": round(normal_customs, 2), "cumulative": round(request.value + normal_customs, 2), "legal_ref": legal_refs["dd"]["ref"], "legal_ref_url": legal_refs["dd"]["url"]})
         step = 3
-        cumulative = request.value + normal_customs
+        journal_running = normal_customs  # track cumulative taxes for cascading base
 
         rs_rate = other_taxes_detail.get('rs', 0) / 100 if other_taxes_detail.get('rs') else 0
         pcs_rate = other_taxes_detail.get('pcs', 0) / 100 if other_taxes_detail.get('pcs') else 0
@@ -407,24 +450,28 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         tci_rate = other_taxes_detail.get('tci', 0) / 100 if other_taxes_detail.get('tci') else 0
 
         if rs_rate > 0:
-            rs_amount = round(request.value * rs_rate, 2)
-            cumulative += rs_amount
-            normal_journal.append({"step": step, "component": "Redevance statistique (RS)", "base": request.value, "rate": f"{rs_rate*100:.1f}%", "amount": rs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["rs"]["ref"], "legal_ref_url": legal_refs["rs"]["url"]})
+            rs_base = round(request.value + journal_running, 2)
+            rs_amount = round(rs_base * rs_rate, 2)
+            journal_running += rs_amount
+            normal_journal.append({"step": step, "component": "Redevance statistique (RS)", "base": rs_base, "rate": f"{rs_rate*100:.1f}%", "amount": rs_amount, "cumulative": round(request.value + journal_running, 2), "legal_ref": legal_refs["rs"]["ref"], "legal_ref_url": legal_refs["rs"]["url"]})
             step += 1
         if pcs_rate > 0:
-            pcs_amount = round(request.value * pcs_rate, 2)
-            cumulative += pcs_amount
-            normal_journal.append({"step": step, "component": "PCS UEMOA", "base": request.value, "rate": f"{pcs_rate*100:.1f}%", "amount": pcs_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["pcs"]["ref"], "legal_ref_url": legal_refs["pcs"]["url"]})
+            pcs_base = round(request.value + journal_running, 2)
+            pcs_amount = round(pcs_base * pcs_rate, 2)
+            journal_running += pcs_amount
+            normal_journal.append({"step": step, "component": "PCS UEMOA", "base": pcs_base, "rate": f"{pcs_rate*100:.1f}%", "amount": pcs_amount, "cumulative": round(request.value + journal_running, 2), "legal_ref": legal_refs["pcs"]["ref"], "legal_ref_url": legal_refs["pcs"]["url"]})
             step += 1
         if cedeao_rate > 0:
-            cedeao_amount = round(request.value * cedeao_rate, 2)
-            cumulative += cedeao_amount
-            normal_journal.append({"step": step, "component": "Prélèvement CEDEAO (PC)", "base": request.value, "rate": f"{cedeao_rate*100:.1f}%", "amount": cedeao_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["cedeao"]["ref"], "legal_ref_url": legal_refs["cedeao"]["url"]})
+            cedeao_base = round(request.value + journal_running, 2)
+            cedeao_amount = round(cedeao_base * cedeao_rate, 2)
+            journal_running += cedeao_amount
+            normal_journal.append({"step": step, "component": "Prélèvement CEDEAO (PC)", "base": cedeao_base, "rate": f"{cedeao_rate*100:.1f}%", "amount": cedeao_amount, "cumulative": round(request.value + journal_running, 2), "legal_ref": legal_refs["cedeao"]["ref"], "legal_ref_url": legal_refs["cedeao"]["url"]})
             step += 1
         if tci_rate > 0:
-            tci_amount = round(request.value * tci_rate, 2)
-            cumulative += tci_amount
-            normal_journal.append({"step": step, "component": "TCI CEMAC", "base": request.value, "rate": f"{tci_rate*100:.1f}%", "amount": tci_amount, "cumulative": round(cumulative, 2), "legal_ref": legal_refs["tci"]["ref"], "legal_ref_url": legal_refs["tci"]["url"]})
+            tci_base = round(request.value + journal_running, 2)
+            tci_amount = round(tci_base * tci_rate, 2)
+            journal_running += tci_amount
+            normal_journal.append({"step": step, "component": "TCI CEMAC", "base": tci_base, "rate": f"{tci_rate*100:.1f}%", "amount": tci_amount, "cumulative": round(request.value + journal_running, 2), "legal_ref": legal_refs["tci"]["ref"], "legal_ref_url": legal_refs["tci"]["url"]})
             step += 1
         normal_journal.append({"step": step, "component": "TVA", "base": round(normal_vat_base, 2), "rate": f"{vat_rate*100:.1f}%", "amount": round(normal_vat_amount, 2), "cumulative": round(normal_total, 2), "legal_ref": legal_refs["vat"]["ref"], "legal_ref_url": legal_refs["vat"]["url"]})
     
@@ -435,9 +482,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     ]
     step = 3
     zlecaf_cumulative = request.value + zlecaf_customs
-    if other_taxes_rate > 0:
-        zlecaf_cumulative += other_taxes_amount
-        zlecaf_journal.append({"step": step, "component": "Autres taxes", "base": request.value, "rate": f"{other_taxes_rate*100:.1f}%", "amount": round(other_taxes_amount, 2), "cumulative": round(zlecaf_cumulative, 2), "legal_ref": "Taxes communautaires", "legal_ref_url": None})
+    if zlecaf_other_amount > 0:
+        zlecaf_cumulative += zlecaf_other_amount
+        zlecaf_journal.append({"step": step, "component": "Autres taxes", "base": request.value + zlecaf_customs, "rate": "-", "amount": round(zlecaf_other_amount, 2), "cumulative": round(zlecaf_cumulative, 2), "legal_ref": "Taxes communautaires", "legal_ref_url": None})
         step += 1
     zlecaf_journal.append({"step": step, "component": "TVA", "base": round(zlecaf_vat_base, 2), "rate": f"{vat_rate*100:.1f}%", "amount": round(zlecaf_vat_amount, 2), "cumulative": round(zlecaf_total, 2), "legal_ref": legal_refs["vat"]["ref"], "legal_ref_url": legal_refs["vat"]["url"]})
     
@@ -548,17 +595,17 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         zlecaf_tariff_amount=round(zlecaf_customs, 2),
         normal_vat_rate=vat_rate,
         normal_vat_amount=round(normal_vat_amount, 2),
-        normal_statistical_fee=round(request.value * other_taxes_detail.get('rs', 0) / 100, 2) if other_taxes_detail.get('rs') else 0,
-        normal_community_levy=round(request.value * other_taxes_detail.get('pcs', 0) / 100, 2) if other_taxes_detail.get('pcs') else 0,
-        normal_ecowas_levy=round(request.value * other_taxes_detail.get('cedeao', 0) / 100, 2) if other_taxes_detail.get('cedeao') else 0,
+        normal_statistical_fee=_normal_tax_amounts.get('rs', 0),
+        normal_community_levy=_normal_tax_amounts.get('pcs', 0),
+        normal_ecowas_levy=_normal_tax_amounts.get('cedeao', 0),
         normal_other_taxes_total=round(other_taxes_amount, 2),
         normal_total_cost=round(normal_total, 2),
         zlecaf_vat_rate=vat_rate,
         zlecaf_vat_amount=round(zlecaf_vat_amount, 2),
-        zlecaf_statistical_fee=round(request.value * other_taxes_detail.get('rs', 0) / 100, 2) if other_taxes_detail.get('rs') else 0,
-        zlecaf_community_levy=round(request.value * other_taxes_detail.get('pcs', 0) / 100, 2) if other_taxes_detail.get('pcs') else 0,
-        zlecaf_ecowas_levy=round(request.value * other_taxes_detail.get('cedeao', 0) / 100, 2) if other_taxes_detail.get('cedeao') else 0,
-        zlecaf_other_taxes_total=round(other_taxes_amount, 2),
+        zlecaf_statistical_fee=_zlecaf_tax_amounts.get('rs', 0),
+        zlecaf_community_levy=_zlecaf_tax_amounts.get('pcs', 0),
+        zlecaf_ecowas_levy=_zlecaf_tax_amounts.get('cedeao', 0),
+        zlecaf_other_taxes_total=round(zlecaf_other_amount, 2),
         zlecaf_total_cost=round(zlecaf_total, 2),
         # Savings
         savings=round(savings, 2),

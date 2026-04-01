@@ -24,7 +24,7 @@ import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
 import BankingInfoPanel from './components/banking/BankingInfoPanel';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 // Interceptor: reject responses that are not valid JSON objects/arrays
@@ -300,24 +300,33 @@ function App() {
     }
   };
 
+  const sidebarCollapsed =
+    typeof window !== 'undefined' &&
+    document.querySelector('.afcfta-sidebar.collapsed') !== null;
+
   return (
-    <div className="afcfta-shell">
+    <div className="afcfta-layout">
       <Toaster />
-      
-      {/* Header avec navigation */}
-      <AfcftaTopbar 
-        active={getTopbarActiveTab()} 
+
+      {/* Sidebar navigation */}
+      <AfcftaTopbar
+        active={getTopbarActiveTab()}
         onTabChange={handleTabChange}
         language={language}
       />
-      
-      {/* KPI Row - visible uniquement sur le dashboard */}
-      {activeTab === 'dashboard' && (
-        <KpiRow language={language} stats={stats} />
-      )}
-      
-      {/* Contenu principal */}
-      {renderContent()}
+
+      {/* Main content area */}
+      <main className="afcfta-main" id="afcfta-main-content">
+        <div className="afcfta-shell">
+          {/* KPI Row - dashboard uniquement */}
+          {activeTab === 'dashboard' && (
+            <KpiRow language={language} stats={stats} />
+          )}
+
+          {/* Contenu principal */}
+          {renderContent()}
+        </div>
+      </main>
     </div>
   );
 }

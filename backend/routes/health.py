@@ -54,7 +54,7 @@ async def detailed_health():
     # Check WTO API
     try:
         from services.wto_service import wto_service
-        test_data = wto_service.get_tariff_data("KEN", "wld")
+        test_data = await wto_service.get_tariff_data("KEN", "wld")
         checks["wto_api"] = {
             "status": "healthy" if test_data else "degraded",
             "message": "WTO API accessible"
