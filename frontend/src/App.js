@@ -6,7 +6,7 @@ import { Toaster } from './components/ui/toaster';
 
 import './styles/theme.css';
 
-import TopHeader from './components/TopHeader';
+import AfcftaTopbar from './components/AfcftaTopbar';
 import KpiRow from './components/KpiRow';
 import SectionHeader from './components/SectionHeader';
 
@@ -60,6 +60,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const t = texts[language] || texts.fr;
 
@@ -322,38 +323,20 @@ function App() {
   };
 
   return (
-    <div className="afcfta-layout-v2">
+    <div className="afcfta-layout afcfta-layout--topnav">
       <Toaster />
 
-      <TopHeader
+      <AfcftaTopbar
         active={getTopbarActiveTab()}
         onTabChange={handleTabChange}
         language={language}
+        mobileOpen={mobileMenuOpen}
+        onMobileOpen={() => setMobileMenuOpen(true)}
+        onMobileClose={() => setMobileMenuOpen(false)}
       />
 
-      <main className="afcfta-main-v2" id="afcfta-main-content">
+      <main className="afcfta-main afcfta-main--topnav" id="afcfta-main-content">
         <div className="afcfta-shell">
-          <section className="afcfta-hero afcfta-fadeIn">
-            <div className="afcfta-hero__content">
-              <div className="afcfta-hero__eyebrow">
-                <span className="afcfta-hero__dot" />
-                {language === 'fr' ? 'Plateforme continentale' : 'Continental platform'}
-              </div>
-
-              <h1 className="afcfta-hero__title">{t.title}</h1>
-              <p className="afcfta-hero__subtitle">{t.subtitle}</p>
-              <p className="afcfta-hero__lead">{t.shellLead}</p>
-
-              <div className="afcfta-hero__ribbons">
-                <span className="afcfta-hero__badge">{t.ribbon1}</span>
-                <span className="afcfta-hero__badge">{t.ribbon2}</span>
-                <span className="afcfta-hero__badge">{t.ribbon3}</span>
-              </div>
-            </div>
-          </section>
-
-          {activeTab === 'dashboard' && <KpiRow language={language} stats={stats} />}
-
           {renderContent()}
         </div>
       </main>
