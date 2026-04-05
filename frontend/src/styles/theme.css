@@ -958,3 +958,229 @@ body {
 .afcfta-shell .text-gray-600 {
   color: var(--text-muted, #A0AAB4) !important;
 }
+
+/* ================================================================
+   STEP 1 — shell global / header / entry experience
+   ================================================================ */
+
+.afcfta-main {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0)),
+    transparent;
+}
+
+.afcfta-shell {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 24px 26px 52px;
+}
+
+.afcfta-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(212,137,26,0.16);
+  background:
+    radial-gradient(900px 320px at 0% 0%, rgba(212,137,26,0.10), transparent 55%),
+    radial-gradient(700px 280px at 100% 0%, rgba(26,122,74,0.08), transparent 60%),
+    linear-gradient(135deg, rgba(18,26,40,0.96), rgba(12,18,25,0.98));
+  box-shadow: 0 22px 50px rgba(0,0,0,0.28);
+  margin-bottom: 18px;
+}
+
+.afcfta-hero__content {
+  position: relative;
+  z-index: 1;
+  padding: 26px 26px 22px;
+}
+
+.afcfta-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.afcfta-hero__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--terra);
+  box-shadow: 0 0 0 5px rgba(200,83,26,0.10);
+}
+
+.afcfta-hero__title {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.04;
+  color: var(--text);
+  font-weight: 900;
+  letter-spacing: -0.4px;
+}
+
+.afcfta-hero__subtitle {
+  margin: 10px 0 0;
+  max-width: 980px;
+  font-size: 16px;
+  color: rgba(234,224,208,0.92);
+}
+
+.afcfta-hero__lead {
+  margin: 10px 0 0;
+  max-width: 920px;
+  font-size: 13px;
+  color: var(--afcfta-muted);
+}
+
+.afcfta-hero__ribbons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.afcfta-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.afcfta-mobile-topbar {
+  display: none;
+}
+
+.afcfta-mobile-topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.afcfta-mobile-topbar__icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--terra), var(--gold));
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.afcfta-mobile-topbar__text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.afcfta-mobile-topbar__title {
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.afcfta-mobile-topbar__subtitle {
+  color: var(--afcfta-muted);
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.afcfta-mobile-topbar__lang {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.afcfta-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+  backdrop-filter: blur(3px);
+}
+
+.afcfta-mobile-close {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: none;
+  border: none;
+  color: var(--afcfta-muted);
+  cursor: pointer;
+  padding: 4px;
+}
+
+@media (max-width: 768px) {
+  .afcfta-mobile-topbar {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: rgba(14,22,32,0.96);
+    border-bottom: 1px solid rgba(200,83,26,0.14);
+    position: sticky;
+    top: 0;
+    z-index: 55;
+    backdrop-filter: blur(8px);
+  }
+
+  .afcfta-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease, width 0.25s ease;
+  }
+
+  .afcfta-sidebar.mobile-open {
+    transform: translateX(0);
+    width: var(--sidebar-w) !important;
+    box-shadow: 4px 0 30px rgba(0,0,0,0.5);
+  }
+
+  .afcfta-mobile-close {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .afcfta-sidebar-toggle {
+    display: none;
+  }
+
+  .afcfta-main {
+    margin-left: 0 !important;
+  }
+
+  .afcfta-shell {
+    padding: 14px 14px 40px;
+  }
+
+  .afcfta-hero__content {
+    padding: 18px 16px 16px;
+  }
+
+  .afcfta-hero__subtitle {
+    font-size: 14px;
+  }
+
+  .afcfta-hero__lead {
+    font-size: 12px;
+  }
+}
