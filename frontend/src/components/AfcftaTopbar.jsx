@@ -115,12 +115,38 @@ export default function AfcftaTopbar({
         role="navigation"
         aria-label={isFrench ? "Menu principal" : "Main menu"}
       >
-        <div className="afcfta-sidebar-logo">
-          <div className="afcfta-sidebar-icon">🌍</div>
+        <div className="afcfta-sidebar-header">
+          <div className="afcfta-sidebar-brand">
+            <div className="afcfta-sidebar-logoIcon">🌍</div>
 
-          <div className="afcfta-sidebar-title">
-            <h1>{isFrench ? "ZLECAf" : "AfCFTA"}</h1>
-            <p>{isFrench ? "Intelligence Commerciale" : "Trade Intelligence"}</p>
+            <div className="afcfta-sidebar-brandText">
+              <div className="afcfta-sidebar-titleMain">
+                {isFrench ? "ZLECAf" : "AfCFTA"}
+              </div>
+
+              <div className="afcfta-sidebar-subtitle">
+                {isFrench ? "Trade Intelligence Platform" : "Trade Intelligence Platform"}
+              </div>
+            </div>
+          </div>
+
+          <div className="afcfta-sidebar-divider" />
+
+          <div className="afcfta-sidebar-stats">
+            <div className="afcfta-sidebar-stat">
+              <span>🌍</span>
+              <span>{isFrench ? "54 pays" : "54 countries"}</span>
+            </div>
+
+            <div className="afcfta-sidebar-stat">
+              <span>📊</span>
+              <span>229K HS</span>
+            </div>
+
+            <div className="afcfta-sidebar-stat">
+              <span>✅</span>
+              <span>{isFrench ? "Données fiables" : "Verified data"}</span>
+            </div>
           </div>
 
           <button
@@ -130,12 +156,6 @@ export default function AfcftaTopbar({
           >
             <X size={16} />
           </button>
-        </div>
-
-        <div className="afcfta-sidebar-badges">
-          <span className="afcfta-badge">🌍 {isFrench ? "54 pays ZLECAf" : "54 AfCFTA members"}</span>
-          <span className="afcfta-badge">📊 {isFrench ? "229 519 positions" : "229,519 tariff lines"}</span>
-          <span className="afcfta-badge">✅ {isFrench ? "Données authentiques" : "Authentic data"}</span>
         </div>
 
         <nav className="afcfta-sidebar-nav" aria-label={isFrench ? "Navigation principale" : "Main navigation"}>
