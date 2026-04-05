@@ -4,15 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { toast } from './hooks/use-toast';
 import { Toaster } from './components/ui/toaster';
 
-// Import du nouveau thème
 import './styles/theme.css';
 
-// Import des nouveaux composants de layout
 import AfcftaTopbar from './components/AfcftaTopbar';
 import KpiRow from './components/KpiRow';
 import SectionHeader from './components/SectionHeader';
 
-// Import des composants de contenu
 import CalculatorTab from './components/calculator/CalculatorTab';
 import StatisticsTab from './components/statistics/StatisticsTab';
 import ProductionTab from './components/production/ProductionTab';
@@ -27,8 +24,6 @@ import BankingInfoPanel from './components/banking/BankingInfoPanel';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-// Interceptor: reject responses that are not valid JSON objects/arrays
-// (prevents HTML fallback pages from SPA static servers being stored in state)
 axios.interceptors.response.use(
   (response) => {
     const ct = response.headers['content-type'] || '';
@@ -40,44 +35,35 @@ axios.interceptors.response.use(
   (error) => Promise.reject(error)
 );
 
-const TABS = [
-  { id: 'dashboard', icon: '📊', fr: 'Dashboard', en: 'Dashboard' },
-  { id: 'calculator', icon: '🧮', fr: 'Calculateur', en: 'Calculator' },
-  { id: 'statistics', icon: '📈', fr: 'Statistiques', en: 'Statistics' },
-  { id: 'opportunities', icon: '🎯', fr: 'Opportunités', en: 'Opportunities' },
-  { id: 'production', icon: '🏭', fr: 'Production', en: 'Production' },
-  { id: 'logistics', icon: '🚢', fr: 'Logistique', en: 'Logistics' },
-  { id: 'banking', icon: '🏦', fr: 'Banque', en: 'Banking' },
-  { id: 'tools', icon: '🛠️', fr: 'Outils', en: 'Tools' },
-  { id: 'rules', icon: '📜', fr: "Règles d'Origine", en: 'Rules of Origin' },
-  { id: 'profiles', icon: '🌍', fr: 'Profils Pays', en: 'Country Profiles' },
-];
-
 const texts = {
   fr: {
-    title: "Accord de la ZLECAf",
-    subtitle: "Levier de développement de l'Afrique",
-    memberCountries: "54 Pays",
-    population: "1.3B+ Pop.",
-    authenticData: "32 pays · données authentiques",
-    tariffPositions: "229 519 positions tarifaires",
+    title: 'Accord de la ZLECAf',
+    subtitle: "Plateforme d'intelligence commerciale africaine — droits, TVA, taxes totales et analyses.",
+    ribbon1: '54 signataires ZLECAf',
+    ribbon2: '1,3 Md+ habitants',
+    ribbon3: 'Données actualisées',
+    shellLead: 'Intelligence commerciale, douanière, logistique et réglementaire pour les marchés africains.',
   },
   en: {
-    title: "AfCFTA Agreement",
-    subtitle: "Africa's Development Lever",
-    memberCountries: "54 Countries",
-    population: "1.3B+ Pop.",
-    authenticData: "32 countries · authentic data",
-    tariffPositions: "229,519 tariff positions",
+    title: 'AfCFTA Agreement',
+    subtitle: 'African trade intelligence platform — duties, VAT, total taxes and analytics.',
+    ribbon1: '54 AfCFTA signatories',
+    ribbon2: '1.3B+ inhabitants',
+    ribbon3: 'Updated data',
+    shellLead: 'Trade, customs, logistics and regulatory intelligence for African markets.',
   },
 };
 
 function App() {
   const { i18n } = useTranslation();
   const [countries, setCountries] = useState([]);
-  const [activeTab, setActiveTab] = useState('calculator');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const t = texts[language] || texts.fr;
 
   const handleLanguageChange = (newLang) => {
     setLanguage(newLang);
@@ -86,42 +72,44 @@ function App() {
 
   const handleTabChange = (type, value) => {
     if (type === 'tab') {
-      // Map les IDs du topbar vers les IDs internes
       const tabMapping = {
-        'dashboard': 'dashboard',
-        'calculator': 'calculator',
-        'stats': 'statistics',
-        'opps': 'opportunities',
-        'production': 'production',
-        'logistics': 'logistics',
-        'banking': 'banking',
-        'tools': 'tools',
-        'roo': 'rules',
-        'profiles': 'profiles'
+        dashboard: 'dashboard',
+        calculator: 'calculator',
+        stats: 'statistics',
+        opps: 'opportunities',
+        production: 'production',
+        logistics: 'logistics',
+        banking: 'banking',
+        tools: 'tools',
+        roo: 'rules',
+        profiles: 'profiles',
       };
       setActiveTab(tabMapping[value] || value);
+      setMobileMenuOpen(false);
     } else if (type === 'language') {
       handleLanguageChange(value);
+    } else if (type === 'collapse') {
+      setSidebarCollapsed(Boolean(value));
+    } else if (type === 'mobile_menu') {
+      setMobileMenuOpen(Boolean(value));
     }
   };
 
-  // Map inverse pour le topbar
   const getTopbarActiveTab = () => {
     const reverseMapping = {
-      'dashboard': 'dashboard',
-      'calculator': 'calculator',
-      'statistics': 'stats',
-      'opportunities': 'opps',
-      'production': 'production',
-      'logistics': 'logistics',
-      'banking': 'banking',
-      'tools': 'tools',
-      'rules': 'roo',
-      'profiles': 'profiles'
+      dashboard: 'dashboard',
+      calculator: 'calculator',
+      statistics: 'stats',
+      opportunities: 'opps',
+      production: 'production',
+      logistics: 'logistics',
+      banking: 'banking',
+      tools: 'tools',
+      rules: 'roo',
+      profiles: 'profiles',
     };
     return reverseMapping[activeTab] || activeTab;
   };
-  const t = texts[language] || texts.fr;
 
   useEffect(() => {
     fetchCountries(language);
@@ -141,21 +129,23 @@ function App() {
     } catch (error) {
       console.error('Error loading countries:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger la liste des pays",
-        variant: "destructive"
+        title: language === 'fr' ? 'Erreur' : 'Error',
+        description:
+          language === 'fr'
+            ? 'Impossible de charger la liste des pays'
+            : 'Unable to load country list',
+        variant: 'destructive',
       });
     }
   };
 
   const fetchStats = async () => {
     try {
-      // Placeholder - could fetch real stats from API
       setStats({
-        gdp: "$2.7T",
-        trade: "$235B",
-        ports: "68",
-        progress: "57%"
+        gdp: '$2.7T',
+        trade: '$235B',
+        ports: '68',
+        progress: '57%',
       });
     } catch (error) {
       console.error('Error loading stats:', error);
@@ -170,12 +160,17 @@ function App() {
             <DashboardTabNew language={language} />
           </div>
         );
+
       case 'calculator':
         return (
           <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader 
-              title={language === 'fr' ? "Calculateur de Tarifs Douaniers" : "Customs Tariff Calculator"}
-              subtitle={language === 'fr' ? "Calculs basés sur les données officielles des administrations douanières" : "Calculations based on official customs data"}
+            <SectionHeader
+              title={language === 'fr' ? 'Calculateur de Tarifs Douaniers' : 'Customs Tariff Calculator'}
+              subtitle={
+                language === 'fr'
+                  ? 'Calculs basés sur les données officielles des administrations douanières'
+                  : 'Calculations based on official customs data'
+              }
               dotColor="copper"
             />
             <div style={{ height: 14 }} />
@@ -184,12 +179,13 @@ function App() {
             </div>
           </div>
         );
+
       case 'statistics':
         return (
           <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader 
-              title={language === 'fr' ? "Statistiques Commerciales" : "Trade Statistics"}
-              subtitle={language === 'fr' ? "Données OEC, COMTRADE, UNCTAD" : "OEC, COMTRADE, UNCTAD Data"}
+            <SectionHeader
+              title={language === 'fr' ? 'Statistiques Commerciales' : 'Trade Statistics'}
+              subtitle={language === 'fr' ? 'Données OEC, COMTRADE, UNCTAD' : 'OEC, COMTRADE, UNCTAD Data'}
               dotColor="info"
             />
             <div style={{ height: 14 }} />
@@ -198,12 +194,17 @@ function App() {
             </div>
           </div>
         );
+
       case 'opportunities':
         return (
           <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader 
-              title={language === 'fr' ? "Opportunités Commerciales" : "Trade Opportunities"}
-              subtitle={language === 'fr' ? "Analyse des marchés et substitution d'importations" : "Market analysis and import substitution"}
+            <SectionHeader
+              title={language === 'fr' ? 'Opportunités Commerciales' : 'Trade Opportunities'}
+              subtitle={
+                language === 'fr'
+                  ? "Analyse des marchés et substitution d'importations"
+                  : 'Market analysis and import substitution'
+              }
               dotColor="success"
             />
             <div style={{ height: 14 }} />
@@ -212,12 +213,17 @@ function App() {
             </div>
           </div>
         );
+
       case 'production':
         return (
           <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader 
-              title={language === 'fr' ? "Production Africaine" : "African Production"}
-              subtitle={language === 'fr' ? "Données FAOSTAT et capacités industrielles" : "FAOSTAT data and industrial capacity"}
+            <SectionHeader
+              title={language === 'fr' ? 'Production Africaine' : 'African Production'}
+              subtitle={
+                language === 'fr'
+                  ? 'Données FAOSTAT et capacités industrielles'
+                  : 'FAOSTAT data and industrial capacity'
+              }
               dotColor="warning"
             />
             <div style={{ height: 14 }} />
@@ -226,12 +232,17 @@ function App() {
             </div>
           </div>
         );
+
       case 'logistics':
         return (
           <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader 
-              title={language === 'fr' ? "Logistique & Infrastructure" : "Logistics & Infrastructure"}
-              subtitle={language === 'fr' ? "Ports, corridors, connectivité maritime" : "Ports, corridors, maritime connectivity"}
+            <SectionHeader
+              title={language === 'fr' ? 'Logistique & Infrastructure' : 'Logistics & Infrastructure'}
+              subtitle={
+                language === 'fr'
+                  ? 'Ports, corridors, connectivité maritime'
+                  : 'Ports, corridors, maritime connectivity'
+              }
               dotColor="info"
             />
             <div style={{ height: 14 }} />
@@ -240,12 +251,17 @@ function App() {
             </div>
           </div>
         );
+
       case 'banking':
         return (
           <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader 
-              title={language === 'fr' ? "Système Bancaire Africain" : "African Banking System"}
-              subtitle={language === 'fr' ? "Change, domiciliation, financement du commerce" : "Forex, domiciliation, trade finance"}
+            <SectionHeader
+              title={language === 'fr' ? 'Système Bancaire Africain' : 'African Banking System'}
+              subtitle={
+                language === 'fr'
+                  ? 'Change, domiciliation, financement du commerce'
+                  : 'Forex, domiciliation, trade finance'
+              }
               dotColor="info"
             />
             <div style={{ height: 14 }} />
@@ -254,12 +270,13 @@ function App() {
             </div>
           </div>
         );
+
       case 'tools':
         return (
           <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader 
-              title={language === 'fr' ? "Outils d'Analyse" : "Analysis Tools"}
-              subtitle={language === 'fr' ? "Convertisseurs, recherche HS, IA" : "Converters, HS search, AI"}
+            <SectionHeader
+              title={language === 'fr' ? "Outils d'Analyse" : 'Analysis Tools'}
+              subtitle={language === 'fr' ? 'Convertisseurs, recherche HS, IA' : 'Converters, HS search, AI'}
             />
             <div style={{ height: 14 }} />
             <div className="afcfta-card">
@@ -267,12 +284,17 @@ function App() {
             </div>
           </div>
         );
+
       case 'rules':
         return (
           <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader 
-              title={language === 'fr' ? "Règles d'Origine ZLECAf" : "AfCFTA Rules of Origin"}
-              subtitle={language === 'fr' ? "Critères d'éligibilité au tarif préférentiel" : "Preferential tariff eligibility criteria"}
+            <SectionHeader
+              title={language === 'fr' ? "Règles d'Origine ZLECAf" : 'AfCFTA Rules of Origin'}
+              subtitle={
+                language === 'fr'
+                  ? "Critères d'éligibilité au tarif préférentiel"
+                  : 'Preferential tariff eligibility criteria'
+              }
               dotColor="copper"
             />
             <div style={{ height: 14 }} />
@@ -281,12 +303,17 @@ function App() {
             </div>
           </div>
         );
+
       case 'profiles':
         return (
           <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader 
-              title={language === 'fr' ? "Profils Pays" : "Country Profiles"}
-              subtitle={language === 'fr' ? "Données économiques et commerciales par pays" : "Economic and trade data by country"}
+            <SectionHeader
+              title={language === 'fr' ? 'Profils Pays' : 'Country Profiles'}
+              subtitle={
+                language === 'fr'
+                  ? 'Données économiques et commerciales par pays'
+                  : 'Economic and trade data by country'
+              }
               dotColor="success"
             />
             <div style={{ height: 14 }} />
@@ -295,35 +322,53 @@ function App() {
             </div>
           </div>
         );
+
       default:
         return null;
     }
   };
 
-  const sidebarCollapsed =
-    typeof window !== 'undefined' &&
-    document.querySelector('.afcfta-sidebar.collapsed') !== null;
-
   return (
     <div className="afcfta-layout">
       <Toaster />
 
-      {/* Sidebar navigation */}
       <AfcftaTopbar
         active={getTopbarActiveTab()}
         onTabChange={handleTabChange}
         language={language}
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed((prev) => !prev)}
+        mobileOpen={mobileMenuOpen}
+        onMobileOpen={() => setMobileMenuOpen(true)}
+        onMobileClose={() => setMobileMenuOpen(false)}
       />
 
-      {/* Main content area */}
-      <main className="afcfta-main" id="afcfta-main-content">
+      <main
+        className={`afcfta-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}
+        id="afcfta-main-content"
+      >
         <div className="afcfta-shell">
-          {/* KPI Row - dashboard uniquement */}
-          {activeTab === 'dashboard' && (
-            <KpiRow language={language} stats={stats} />
-          )}
+          <section className="afcfta-hero afcfta-fadeIn">
+            <div className="afcfta-hero__content">
+              <div className="afcfta-hero__eyebrow">
+                <span className="afcfta-hero__dot" />
+                {language === 'fr' ? 'Plateforme continentale' : 'Continental platform'}
+              </div>
 
-          {/* Contenu principal */}
+              <h1 className="afcfta-hero__title">{t.title}</h1>
+              <p className="afcfta-hero__subtitle">{t.subtitle}</p>
+              <p className="afcfta-hero__lead">{t.shellLead}</p>
+
+              <div className="afcfta-hero__ribbons">
+                <span className="afcfta-hero__badge">{t.ribbon1}</span>
+                <span className="afcfta-hero__badge">{t.ribbon2}</span>
+                <span className="afcfta-hero__badge">{t.ribbon3}</span>
+              </div>
+            </div>
+          </section>
+
+          {activeTab === 'dashboard' && <KpiRow language={language} stats={stats} />}
+
           {renderContent()}
         </div>
       </main>
