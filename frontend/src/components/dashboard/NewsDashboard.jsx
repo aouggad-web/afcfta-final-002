@@ -56,7 +56,7 @@ const translations = {
     yesterday: 'Hier',
     daysAgo: 'il y a {days} jours',
     strategicHeadline: 'Lecture stratégique du flux économique africain',
-    strategicLead: 'Surveillance des signaux commerce, finance, énergie, infrastructures et chaînes d'approvisionnement.',
+    strategicLead: "Surveillance des signaux commerce, finance, énergie, infrastructures et chaînes d'approvisionnement.",
     footer:
       'Actualités agrégées depuis Agence Ecofin, AllAfrica et flux associés. Les articles complets restent consultables sur les sites sources.',
   },

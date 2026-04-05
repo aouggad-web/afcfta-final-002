@@ -1203,3 +1203,291 @@ body {
     transform: rotate(360deg);
   }
 }
+
+
+
+/* ================================================================
+   STEP 3 — shared components / transverse design grammar
+   ================================================================ */
+
+.afcfta-sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  box-shadow: 0 14px 28px rgba(0,0,0,0.14);
+}
+
+.afcfta-sectionHead.compact {
+  padding: 14px 16px;
+}
+
+.afcfta-sectionHead .left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.afcfta-sectionHead-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.afcfta-sectionHead-copy {
+  min-width: 0;
+}
+
+.afcfta-sectionHead-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.afcfta-sectionHead h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(20px, 2.6vw, 28px);
+  line-height: 1.08;
+  font-weight: 850;
+  letter-spacing: -0.25px;
+}
+
+.afcfta-sectionHead p {
+  margin: 8px 0 0;
+  color: var(--afcfta-muted);
+  font-size: 14px;
+  line-height: 1.45;
+  max-width: 980px;
+}
+
+.afcfta-sectionHead-right {
+  flex-shrink: 0;
+}
+
+.afcfta-kpiRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.afcfta-kpiCard {
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 18px;
+  padding: 16px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  box-shadow: 0 14px 28px rgba(0,0,0,0.14);
+  min-height: 152px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.afcfta-kpiCard-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.afcfta-kpiCard-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--afcfta-muted);
+}
+
+.afcfta-kpiCard-value {
+  margin-top: 8px;
+  font-size: clamp(24px, 2.8vw, 34px);
+  font-weight: 850;
+  color: var(--text);
+  line-height: 1;
+}
+
+.afcfta-kpiCard-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.afcfta-kpiCard-bottom {
+  margin-top: 14px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.afcfta-kpiCard-subvalue {
+  color: var(--afcfta-muted);
+  font-size: 12px;
+  line-height: 1.45;
+  max-width: 78%;
+}
+
+.afcfta-kpiCard-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--afcfta-muted);
+}
+
+/* Shared surfaces */
+
+.afcfta-panel {
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  box-shadow: 0 14px 28px rgba(0,0,0,0.14);
+}
+
+.afcfta-panel-header {
+  padding: 16px 18px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.afcfta-panel-title {
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.afcfta-panel-subtitle {
+  margin-top: 6px;
+  color: var(--afcfta-muted);
+  font-size: 13px;
+}
+
+/* Shared tabs normalization */
+
+.tabs-list-boxed,
+[data-slot="tabs-list"] {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 4px;
+  gap: 4px;
+}
+
+[data-slot="tabs-trigger"] {
+  border-radius: 10px !important;
+  color: var(--afcfta-muted) !important;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+[data-slot="tabs-trigger"][data-state="active"] {
+  background: rgba(255,255,255,0.08) !important;
+  color: var(--text) !important;
+  box-shadow: inset 0 0 0 1px rgba(212,137,26,0.16);
+}
+
+/* Shared cards in content areas */
+
+.afcfta-card-soft {
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.025);
+}
+
+.afcfta-card-soft-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.afcfta-card-soft-title {
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.afcfta-card-soft-body {
+  padding: 16px;
+}
+
+/* Table baseline */
+
+.afcfta-table-shell {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+}
+
+.afcfta-table-shell table {
+  width: 100%;
+}
+
+.afcfta-table-shell thead tr {
+  background: rgba(255,255,255,0.04);
+}
+
+.afcfta-table-shell th {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.afcfta-table-shell td {
+  color: var(--afcfta-muted);
+  font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+  .afcfta-kpiRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .afcfta-sectionHead {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .afcfta-sectionHead-right {
+    width: 100%;
+  }
+
+  .afcfta-kpiRow {
+    grid-template-columns: 1fr;
+  }
+
+  .afcfta-kpiCard {
+    min-height: 136px;
+  }
+
+  .afcfta-kpiCard-subvalue {
+    max-width: 100%;
+  }
+}
