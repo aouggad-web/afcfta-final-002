@@ -6,7 +6,7 @@ import { Toaster } from './components/ui/toaster';
 
 import './styles/theme.css';
 
-import AfcftaTopbar from './components/AfcftaTopbar';
+import TopHeader from './components/TopHeader';
 import KpiRow from './components/KpiRow';
 import SectionHeader from './components/SectionHeader';
 
@@ -60,8 +60,6 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const t = texts[language] || texts.fr;
 
@@ -85,13 +83,8 @@ function App() {
         profiles: 'profiles',
       };
       setActiveTab(tabMapping[value] || value);
-      setMobileMenuOpen(false);
     } else if (type === 'language') {
       handleLanguageChange(value);
-    } else if (type === 'collapse') {
-      setSidebarCollapsed(Boolean(value));
-    } else if (type === 'mobile_menu') {
-      setMobileMenuOpen(Boolean(value));
     }
   };
 
@@ -329,24 +322,16 @@ function App() {
   };
 
   return (
-    <div className="afcfta-layout">
+    <div className="afcfta-layout-v2">
       <Toaster />
 
-      <AfcftaTopbar
+      <TopHeader
         active={getTopbarActiveTab()}
         onTabChange={handleTabChange}
         language={language}
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed((prev) => !prev)}
-        mobileOpen={mobileMenuOpen}
-        onMobileOpen={() => setMobileMenuOpen(true)}
-        onMobileClose={() => setMobileMenuOpen(false)}
       />
 
-      <main
-        className={`afcfta-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}
-        id="afcfta-main-content"
-      >
+      <main className="afcfta-main-v2" id="afcfta-main-content">
         <div className="afcfta-shell">
           <section className="afcfta-hero afcfta-fadeIn">
             <div className="afcfta-hero__content">

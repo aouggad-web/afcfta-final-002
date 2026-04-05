@@ -1515,6 +1515,183 @@ body {
   color: var(--afcfta-muted);
   padding: 6px 8px;
   border-radius: 8px;
+
+
+/* ================================================================
+   TOP HEADER — horizontal navigation layout
+   ================================================================ */
+
+.afcfta-topHeader {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid rgba(212, 137, 26, 0.18);
+}
+
+.afcfta-topHeader__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.afcfta-topHeader__timestamp {
+  font-size: 12px;
+  color: var(--afcfta-muted);
+  font-weight: 500;
+}
+
+.afcfta-topHeader__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.afcfta-topHeader__brandIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), #f5c542);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.afcfta-topHeader__brandName {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.3px;
+}
+
+.afcfta-topHeader__lang {
+  display: flex;
+  gap: 8px;
+}
+
+.afcfta-langBtn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--afcfta-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.afcfta-langBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.afcfta-langBtn.active {
+  background: var(--goldSoft);
+  border-color: rgba(212, 175, 55, 0.3);
+  color: var(--gold);
+}
+
+.afcfta-topHeader__nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 28px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.afcfta-topHeader__nav::-webkit-scrollbar {
+  display: none;
+}
+
+.afcfta-navTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--afcfta-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.afcfta-navTab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+}
+
+.afcfta-navTab.active {
+  background: var(--goldSoft);
+  border-color: rgba(212, 175, 55, 0.25);
+  color: var(--gold);
+}
+
+.afcfta-navTab svg {
+  opacity: 0.85;
+}
+
+.afcfta-navTab.active svg {
+  opacity: 1;
+}
+
+/* Layout without sidebar */
+.afcfta-layout-v2 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.afcfta-main-v2 {
+  flex: 1;
+  padding: 0;
+}
+
+@media (max-width: 1024px) {
+  .afcfta-topHeader__bar {
+    padding: 8px 16px;
+  }
+
+  .afcfta-topHeader__nav {
+    padding: 8px 16px;
+  }
+
+  .afcfta-navTab {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .afcfta-topHeader__brand {
+    display: none;
+  }
+
+  .afcfta-topHeader__bar {
+    justify-content: space-between;
+  }
+
+  .afcfta-navTab span {
+    display: none;
+  }
+
+  .afcfta-navTab {
+    padding: 10px 12px;
+  }
+}
+
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.05);
 }
