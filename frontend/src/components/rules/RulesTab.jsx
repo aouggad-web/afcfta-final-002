@@ -167,7 +167,7 @@ export default function RulesTab({ language = 'fr' }) {
       )}
 
       {/* Rules of Origin Results */}
-      {!loading && rulesOfOrigin && (
+      {!loading && rulesOfOrigin && rulesOfOrigin.rule && (
         <Card className="shadow-2xl border-l-4 border-l-amber-500">
           <CardHeader className="bg-gradient-to-r from-amber-100 to-yellow-100">
             <CardTitle className="text-xl font-bold text-amber-800 flex items-center gap-2">
@@ -180,17 +180,23 @@ export default function RulesTab({ language = 'fr' }) {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
+            {rulesOfOrigin.warning && (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
+                ⚠️ {rulesOfOrigin.warning}
+              </div>
+            )}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                 <h4 className="font-semibold mb-2 text-gray-700">{t.ruleType}</h4>
                 <Badge variant="secondary" className="text-base px-4 py-2 bg-orange-100 text-orange-800">
-                  {rulesOfOrigin.rules.rule}
+                  {rulesOfOrigin.rule.category || rulesOfOrigin.match_type}
                 </Badge>
               </div>
               
               <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                 <h4 className="font-semibold mb-2 text-gray-700">{t.requirement}</h4>
-                <p className="text-sm font-medium text-gray-800">{rulesOfOrigin.rules.requirement}</p>
+                <p className="text-sm font-medium text-gray-800">{rulesOfOrigin.rule.psr}</p>
               </div>
             </div>
 
@@ -198,44 +204,26 @@ export default function RulesTab({ language = 'fr' }) {
               <h4 className="font-semibold mb-3 text-green-800">{t.minRegionalContent}</h4>
               <div className="flex items-center gap-4">
                 <div className="flex-1">
-                  <Progress value={rulesOfOrigin.rules.regional_content} className="w-full h-4" />
+                  <Progress value={rulesOfOrigin.rule.value_added_threshold || 30} className="w-full h-4" />
                 </div>
                 <span className="text-2xl font-bold text-green-700">
-                  {rulesOfOrigin.rules.regional_content}%
+                  {rulesOfOrigin.rule.value_added_threshold || 30}%
                 </span>
               </div>
               <p className="text-sm text-green-700 mt-2">
-                {rulesOfOrigin.rules.regional_content}% {t.regionalContentRequired}
+                {rulesOfOrigin.rule.value_added_threshold || 30}% {t.regionalContentRequired}
               </p>
             </div>
 
-            <Separator />
-
-            <div>
-              <h4 className="font-semibold mb-3 text-gray-700">{t.requiredDocumentation}</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {rulesOfOrigin.explanation.documentation_required.map((doc, index) => (
-                  <Badge key={index} variant="outline" className="justify-start py-2 px-3">
-                    <CheckCircle className="w-4 h-4 mr-2 text-green-600" />
-                    {doc}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <h4 className="font-semibold text-blue-800 mb-2">{t.adminInfo}</h4>
-              <div className="space-y-2 text-sm text-blue-700">
-                <p className="flex items-center gap-2">
-                  <span className="font-semibold">{t.validityPeriod}:</span> 
-                  {rulesOfOrigin.explanation.validity_period}
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="font-semibold">{t.issuingAuthority}:</span> 
-                  {rulesOfOrigin.explanation.issuing_authority}
-                </p>
-              </div>
-            </div>
+            {rulesOfOrigin.rule.notes && (
+              <>
+                <Separator />
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <h4 className="font-semibold text-blue-800 mb-2">{t.adminInfo}</h4>
+                  <p className="text-sm text-blue-700">{rulesOfOrigin.rule.notes}</p>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       )}
