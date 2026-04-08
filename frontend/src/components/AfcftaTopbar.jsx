@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   LayoutDashboard,
   Calculator,
@@ -11,6 +11,7 @@ import {
   FileCheck,
   Globe2,
   Menu,
+  X,
 } from "lucide-react";
 
 const NAV_ITEMS = (isFrench) => [
@@ -30,14 +31,18 @@ export default function AfcftaTopbar({
   active = "dashboard",
   onTabChange,
   language = "fr",
-  mobileOpen = false,
-  onMobileOpen,
 }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isFrench = language === "fr";
   const navItems = NAV_ITEMS(isFrench);
 
   const handleTab = (id) => {
     onTabChange && onTabChange("tab", id);
+    setMobileMenuOpen(false); // Close menu after selection
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
@@ -45,11 +50,12 @@ export default function AfcftaTopbar({
       {/* Mobile strip */}
       <div className="afcfta-mobile-topbar">
         <button
-          onClick={onMobileOpen}
+          onClick={toggleMobileMenu}
           className="afcfta-mobile-menuBtn"
           aria-label={isFrench ? "Ouvrir le menu" : "Open menu"}
+          data-testid="mobile-menu-toggle"
         >
-          <Menu size={18} />
+          {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
         </button>
 
         <div className="afcfta-mobile-brand">
@@ -79,6 +85,28 @@ export default function AfcftaTopbar({
           </button>
         </div>
       </div>
+
+      {/* Mobile Navigation Dropdown */}
+      {mobileMenuOpen && (
+        <div className="afcfta-mobile-nav-dropdown" data-testid="mobile-nav-dropdown">
+          <nav className="afcfta-mobile-nav-list">
+            {navItems.map(({ id, label, icon: Icon }) => {
+              const isActive = active === id;
+              return (
+                <button
+                  key={id}
+                  onClick={() => handleTab(id)}
+                  className={`afcfta-mobile-nav-item ${isActive ? "active" : ""}`}
+                  data-testid={`mobile-nav-${id}`}
+                >
+                  <Icon size={18} />
+                  <span>{label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+      )}
 
       {/* Desktop top header */}
       <header className="afcfta-topHeader">
