@@ -6,6 +6,7 @@ Charge et expose les données de production pour 2021-2024
 import json
 import os
 from typing import List, Dict, Optional
+from pathlib import Path
 
 # Chemin du fichier JSON
 DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'json', 'production_africaine.json')

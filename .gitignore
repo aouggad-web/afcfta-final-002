@@ -19,8 +19,7 @@ dist/
 .env
 .env.*
 !.env.example
-*token.json*
-*credentials.json*
+*.local
 
 # Secrets
 .github/secrets/
@@ -28,7 +27,8 @@ dist/
 # Generated tariff data (large files)
 backend/data/tariffs/
 
-# Logs and debug files
+# === Node.js ===
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -54,20 +54,18 @@ chainlit.md
 .chainlit
 .ipynb_checkpoints/
 
-# Deployment
-.vercel
+# === Logs ===
+logs/
+*.log
+*.log.*
 
-# Archive files and large assets
-**/*.zip
-**/*.tar.gz
-**/*.tar
-**/*.tgz
-*.pack
-*.deb
-*.dylib
-
-# Build caches
-.cache/
+# === IDE ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
 
 # Mobile development
 android-sdk/

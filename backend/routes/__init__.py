@@ -47,10 +47,24 @@ from .tariffs import router as tariffs_router
 from .statistics import router as statistics_router
 from .etl import router as etl_router
 from .substitution import router as substitution_router
-from .rules_of_origin import router as rules_router
+from .rules_of_origin import router as rules_router, init_data as init_rules_data
 from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
+
+# Load Rules of Origin data
+try:
+    import sys
+    import os
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+    from etl.afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES
+    RULES_OF_ORIGIN_DATA_LOADED = True
+    _logger.info(f"Loaded {len(CHAPTER_RULES)} chapter rules of origin")
+except Exception as e:
+    CHAPTER_RULES = {}
+    ORIGIN_TYPES = {}
+    RULES_OF_ORIGIN_DATA_LOADED = False
+    _logger.warning(f"Failed to load rules of origin data: {e}")
 
 try:
     from .faostat import router as faostat_router
@@ -276,6 +290,11 @@ except ImportError:
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
+    # Initialize Rules of Origin with official data
+    if RULES_OF_ORIGIN_DATA_LOADED:
+        init_rules_data(CHAPTER_RULES, ORIGIN_TYPES)
+        _logger.info("Rules of Origin data initialized successfully")
+    
     api_router.include_router(health_router, tags=["Health"])
     if NEWS_AVAILABLE:
         api_router.include_router(news_router, tags=["News"])

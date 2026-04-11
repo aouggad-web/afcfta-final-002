@@ -171,7 +171,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
         {/* Language switch */}
         <div className="afcfta-lang-switch" aria-label={isFrench ? "Langue" : "Language"}>
           <button
-            className={`afcfta-btn-sm ${isFrench ? "afcfta-btn" : "afcfta-btn-secondary"}`}
+            className={`afcfta-langBtn ${isFrench ? "active" : ""}`}
             onClick={() => onTabChange && onTabChange("language", "fr")}
             style={{ flex: 1, padding: "6px 0", fontSize: "12px", textAlign: "center" }}
             aria-pressed={isFrench}
@@ -179,7 +179,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
             🇫🇷 FR
           </button>
           <button
-            className={`afcfta-btn-sm ${!isFrench ? "afcfta-btn" : "afcfta-btn-secondary"}`}
+            className={`afcfta-langBtn ${!isFrench ? "active" : ""}`}
             onClick={() => onTabChange && onTabChange("language", "en")}
             style={{ flex: 1, padding: "6px 0", fontSize: "12px", textAlign: "center" }}
             aria-pressed={!isFrench}

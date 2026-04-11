@@ -5,7 +5,12 @@ import json
 from pathlib import Path
 from typing import List, Optional
 
+# Determine data file path with fallback
 ROOT_DIR = Path(__file__).parent.parent
+DATA_DIR = ROOT_DIR / "data" / "json"
+AIRPORTS_FILE = DATA_DIR / "airports_africains.json"
+if not AIRPORTS_FILE.exists():
+    AIRPORTS_FILE = ROOT_DIR / "airports_africains.json"
 
 def load_airports_data():
     """Load African airports data from JSON file"""
