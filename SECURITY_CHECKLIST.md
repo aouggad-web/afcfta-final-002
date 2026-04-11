@@ -1,36 +1,27 @@
-# 🔒 Checklist de Sécurité — ZLECAf Trade Calculator
+# Security Checklist — ZLECAf Trade Calculator
 
-## ✅ Actions Complétées
+## Phase 1: Preparation
 
-- [x] Fichiers parasites supprimés de la racine
-- [x] Données organisées dans data/{csv,json,xlsx}/
-- [x] .gitignore renforcé
-- [x] .env.example documenté
-- [x] Structure de dossiers propre
+- [ ] Verify that the repository is public and has been reviewed by the team.  
+- [ ] Ensure that all secrets are removed from the repository.  
+- [ ] Confirm that the repository has a valid README file.  
 
-## ⚠️ Actions Requises (Manuelles)
+## Phase 2: Requirements
 
-### Après le merge sur GitHub :
+- [ ] Ensure that all dependencies have been updated to their latest versions.  
+- [ ] Check that security tools are integrated into the CI/CD pipeline.  
 
-1. **Gmail/SMTP**
-   - [ ] Révoquer l'App Password actuel
-   - [ ] Créer un nouveau App Password
-   - [ ] Mettre à jour le .env de production
+## Phase 3: Testing
 
-2. **Slack Webhook**
-   - [ ] Regénérer l'URL dans Settings > Incoming Webhooks
-   - [ ] Mettre à jour le .env de production
+- [ ] Conduct unit tests to verify functionality.  
+- [ ] Perform integration tests to ensure components work together correctly.  
 
-3. **MongoDB Atlas**
-   - [ ] Changer le mot de passe de l'utilisateur DB
-   - [ ] Mettre à jour le MONGO_URL en production
+## Phase 4: Review
 
-4. **Déploiement**
-   - [ ] Redéployer le service avec les nouveaux credentials
+- [ ] Conduct a thorough code review focusing on security best practices.  
+- [ ] Ensure documentation is up-to-date and includes security considerations.  
 
-## 🛡️ Recommandations Futures
+## Verification Commands
 
-- [ ] Activer le rate limiting avec slowapi
-- [ ] Implémenter le CSP (Content Security Policy) strict
-- [ ] Ajouter des tests de sécurité automatisés
-- [ ] Configurer les alertes de sécurité GitHub
+- Run `npm audit` to check for vulnerabilities.  
+- Execute `docker scan` on images for security issues.
