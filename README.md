@@ -181,6 +181,65 @@ SLACK_CHANNEL=#afcfta-monitoring
 
 See [NOTIFICATIONS.md](NOTIFICATIONS.md) for detailed setup instructions.
 
+## 🚢✈️ Maritime & Aviation Logistics Data
+
+Comprehensive logistics data for African ports and airports is available as structured JSON files.
+
+### Files
+
+| File | Description |
+|------|-------------|
+| `ports_africains.json` | Base data for 68 African commercial ports |
+| `airports_africains.json` | Base data for 64 African cargo airports |
+| `ports_africains_enhanced_maritime_logistics.json` | Enhanced maritime logistics data (v2.0) |
+| `airports_africains_enhanced_aviation_logistics.json` | Enhanced aviation logistics data (v2.0) |
+
+### Enhanced Data Structure
+
+Both enhanced files share the same top-level structure:
+
+```json
+{
+  "metadata": { "enhancement_version": "2.0", "enhancement_date": "...", "coverage": {...} },
+  "agents_database": { /* complete provider profiles */ },
+  "enhanced_locations": [ /* original entries + enrichment */ ]
+}
+```
+
+### Maritime Enhancement (`ports_africains_enhanced_maritime_logistics.json`)
+
+Covers **68 African ports** with:
+
+- **Global Carriers**: Maersk, MSC, CMA CGM, Hapag-Lloyd, COSCO, ONE — country-level offices with phone, email, manager and certification details
+- **Regional Specialists**: Bolloré Africa Logistics (AGL), APM Terminals, DP World — terminal-level contacts
+- **Local Agents**: Marsa Maroc, Algérie Ferries, CNAN Group — departmental contacts (commercial, operations, customs, security)
+- **Service Providers**: Customs brokers, freight forwarders (Kuehne+Nagel, DB Schenker, DSV), trucking companies and warehouse operators
+- **Port Authority Contacts**: Five standard departments per port (Capitainerie, Douanes, Commercial, Sûreté ISPS, Environnement)
+- **Logistics Network Index**: Which carriers and specialists are present at each port
+
+**Regenerate the file:**
+```bash
+python3 enhance_maritime_logistics_data.py
+```
+
+### Aviation Enhancement (`airports_africains_enhanced_aviation_logistics.json`)
+
+Covers **64 African airports** with:
+
+- **Global Cargo Airlines**: Emirates SkyCargo, Qatar Airways Cargo, Turkish Cargo, Ethiopian Cargo, Cargolux — station-level contacts with GDP/CEIV certifications
+- **Integrators**: DHL Express, FedEx Express, UPS Airlines — gateway contacts and healthcare certifications
+- **Ground Handlers**: Swissport, Menzies Aviation — cargo terminal contacts and ISAGO certifications
+- **Service Providers**: Air cargo customs brokers, IATA-certified freight forwarders (Kuehne+Nagel, DB Schenker, Expeditors), aircraft support (Air BP, HAECO), cargo warehouse operators (WFS, dnata)
+- **Airport Authority Contacts**: Six standard departments (ATC, Customs, Cargo Operations, Security, Commercial, Veterinary)
+- **Logistics Network Index**: Which airlines, integrators and handlers are present at each airport
+
+**Regenerate the file:**
+```bash
+python3 enhance_airport_aviation_logistics.py
+```
+
+---
+
 ## 📦 Data Sources
 
 - **World Bank** - World Development Indicators (updated daily)

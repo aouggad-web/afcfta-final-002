@@ -13,7 +13,7 @@ if not FREE_ZONES_FILE.exists():
 def load_free_zones():
     """Charger les zones franches depuis le fichier JSON"""
     try:
-        with open(FREE_ZONES_FILE, 'r', encoding='utf-8') as f:
+        with open(ROOT_DIR / 'data' / 'json' / 'zones_franches_afrique.json', 'r', encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError:
         return []

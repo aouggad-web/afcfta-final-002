@@ -14,7 +14,8 @@ if not AIRPORTS_FILE.exists():
 
 def load_airports_data():
     """Load African airports data from JSON file"""
-    with open(AIRPORTS_FILE, 'r', encoding='utf-8') as f:
+    airports_path = ROOT_DIR / "data" / "json" / "airports_africains.json"
+    with open(airports_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 def get_all_airports(country_iso: Optional[str] = None) -> List[dict]:

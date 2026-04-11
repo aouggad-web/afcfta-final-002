@@ -1,42 +1,31 @@
-# ============================================================
-# ZLECAf Trade Calculator — .gitignore
-# ============================================================
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+.yarn/install-state.gz
 
-# === Environnement ===
+# IDE and editors
+.idea/
+.vscode/
+
+# Testing
+/coverage
+
+# Production builds
+/build
+dist/
+
+# Environment files — never commit actual secrets
 .env
 .env.*
 !.env.example
 *.local
 
-# === Python ===
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
-.nox/
-.hypothesis/
-venv/
-ENV/
+# Secrets
+.github/secrets/
+
+# Generated tariff data (large files)
+backend/data/tariffs/
 
 # === Node.js ===
 node_modules/
@@ -44,6 +33,26 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+dump.rdb
+*.log
+
+# System files
+.DS_Store
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+.eggs/
+
+# Development tools
+chainlit.md
+.chainlit
+.ipynb_checkpoints/
 
 # === Logs ===
 logs/
@@ -58,81 +67,9 @@ logs/
 *~
 .DS_Store
 
-# === Build ===
-frontend/build/
-frontend/dist/
-*.min.js
-*.min.css
+# Mobile development
+android-sdk/
 
-# === Données sensibles ===
-*.sqlite
-*.db
-backup_*/
-*_backup/
+# Backup files
+*.backup
 *.bak
-
-# === Fichiers temporaires ===
-tmp/
-temp/
-*.tmp
-*.temp
-
-# === Secrets ===
-*.pem
-*.key
-*.crt
-secrets/
-credentials/
-
-# === Tests ===
-coverage/
-.nyc_output/
-test-results/
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*

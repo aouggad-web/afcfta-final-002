@@ -260,8 +260,11 @@ COUNTRY_OTHER_TAXES = {
     # Autres
     "DZA": {"daps": 0.0, "prct": 2.0, "tcs": 3.0, "other": 0.0},
     "MAR": {"tpi": 0.25, "other": 0.0},  # Taxe parafiscale à l'importation
-    "TUN": {"air": 1.0, "other": 0.0},  # Avance sur Impôt sur le Revenu
+    "TUN": {"air": 1.0, "fodec": 1.0, "other": 0.0},  # FODEC 1%, AIR 1%
     "EGY": {"other": 0.0},
+    "LBY": {"ts": 0.5, "other": 0.0},   # Taxe Statistique 0.5% (UMA)
+    "SDN": {"ds": 2.0, "other": 0.0},   # Development Surcharge 2% (UMA)
+    "MRT": {"ts": 1.0, "other": 0.0},   # Taxe Statistique 1% (UMA)
     "AGO": {"ie": 2.0, "other": 0.0},  # Imposto de Emolumentos 2%
     "MOZ": {"other": 0.0},
     "ZMB": {"other": 0.0},

@@ -10,172 +10,225 @@ import {
   Wrench,
   FileCheck,
   Globe2,
+  ChevronLeft,
+  ChevronRight,
   Menu,
   X,
 } from "lucide-react";
 
-const NAV_ITEMS = (isFrench) => [
-  { id: "dashboard", label: isFrench ? "Tableau de bord" : "Dashboard", icon: LayoutDashboard },
-  { id: "calculator", label: isFrench ? "Calculateur" : "Calculator", icon: Calculator },
-  { id: "stats", label: isFrench ? "Statistiques" : "Statistics", icon: BarChart3 },
-  { id: "opps", label: isFrench ? "Opportunités" : "Opportunities", icon: Target },
-  { id: "production", label: isFrench ? "Production" : "Production", icon: Factory },
-  { id: "logistics", label: isFrench ? "Logistique" : "Logistics", icon: Ship },
-  { id: "banking", label: isFrench ? "Banque" : "Banking", icon: Landmark },
-  { id: "tools", label: isFrench ? "Outils" : "Tools", icon: Wrench },
-  { id: "roo", label: isFrench ? "Règles d'Origine" : "Rules of Origin", icon: FileCheck },
-  { id: "profiles", label: isFrench ? "Profils pays" : "Country Profiles", icon: Globe2 },
+/* ─── Navigation groups ─────────────────────────────────────── */
+const GROUPS = (isFrench) => [
+  {
+    label: isFrench ? "Principal" : "Main",
+    items: [
+      { id: "dashboard",   label: isFrench ? "Tableau de bord"    : "Dashboard",         icon: LayoutDashboard },
+      { id: "calculator",  label: isFrench ? "Calculateur"         : "Calculator",        icon: Calculator },
+    ],
+  },
+  {
+    label: isFrench ? "Analyses" : "Analytics",
+    items: [
+      { id: "stats",       label: isFrench ? "Statistiques"        : "Statistics",        icon: BarChart3 },
+      { id: "opps",        label: isFrench ? "Opportunités"        : "Opportunities",     icon: Target },
+      { id: "production",  label: isFrench ? "Production"          : "Production",        icon: Factory },
+    ],
+  },
+  {
+    label: isFrench ? "Opérations" : "Operations",
+    items: [
+      { id: "logistics",   label: isFrench ? "Logistique"          : "Logistics",         icon: Ship },
+      { id: "banking",     label: isFrench ? "Banque"              : "Banking",           icon: Landmark },
+      { id: "tools",       label: isFrench ? "Outils"              : "Tools",             icon: Wrench },
+    ],
+  },
+  {
+    label: isFrench ? "Référence" : "Reference",
+    items: [
+      { id: "roo",         label: isFrench ? "Règles d'Origine"    : "Rules of Origin",   icon: FileCheck },
+      { id: "profiles",    label: isFrench ? "Profils Pays"        : "Country Profiles",  icon: Globe2 },
+    ],
+  },
 ];
 
-export default function AfcftaTopbar({
-  active = "dashboard",
-  onTabChange,
-  language = "fr",
-}) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+/* ─── Sidebar component ─────────────────────────────────────── */
+export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr" }) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const isFrench = language === "fr";
-  const navItems = NAV_ITEMS(isFrench);
+  const groups = GROUPS(isFrench);
 
   const handleTab = (id) => {
     onTabChange && onTabChange("tab", id);
-    setMobileMenuOpen(false); // Close menu after selection
+    setMobileOpen(false);
   };
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+  /* ── Mobile topbar strip ── */
+  const mobileBar = (
+    <div className="afcfta-mobile-topbar">
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="afcfta-btn-sm afcfta-btn-secondary"
+        style={{ padding: "8px", borderRadius: "8px", flexShrink: 0 }}
+        aria-label="Ouvrir le menu"
+      >
+        <Menu size={18} />
+      </button>
 
-  return (
-    <>
-      {/* Mobile strip */}
-      <div className="afcfta-mobile-topbar">
-        <button
-          onClick={toggleMobileMenu}
-          className="afcfta-mobile-menuBtn"
-          aria-label={isFrench ? "Ouvrir le menu" : "Open menu"}
-          data-testid="mobile-menu-toggle"
+      <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, overflow: "hidden" }}>
+        <div
+          style={{
+            width: 30, height: 30, flexShrink: 0,
+            background: "linear-gradient(135deg,var(--terra),var(--gold))",
+            borderRadius: 8,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 16,
+          }}
         >
-          {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
-
-        <div className="afcfta-mobile-brand">
-          <div className="afcfta-mobile-brandIcon">🌍</div>
-          <div className="afcfta-mobile-brandText">
-            <div className="afcfta-mobile-brandTitle">
-              {isFrench ? "Accord de la ZLECAf" : "AfCFTA Agreement"}
-            </div>
-            <div className="afcfta-mobile-brandSub">
-              {isFrench ? "Trade Intelligence Platform" : "Trade Intelligence Platform"}
-            </div>
-          </div>
+          🌍
         </div>
-
-        <div className="afcfta-mobile-lang">
-          <button
-            className={`afcfta-langBtn ${isFrench ? "active" : ""}`}
-            onClick={() => onTabChange && onTabChange("language", "fr")}
-          >
-            FR
-          </button>
-          <button
-            className={`afcfta-langBtn ${!isFrench ? "active" : ""}`}
-            onClick={() => onTabChange && onTabChange("language", "en")}
-          >
-            EN
-          </button>
-        </div>
+        <span style={{ fontWeight: 800, fontSize: 13, color: "var(--gold)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
+        </span>
       </div>
 
-      {/* Mobile Navigation Dropdown */}
-      {mobileMenuOpen && (
-        <div className="afcfta-mobile-nav-dropdown" data-testid="mobile-nav-dropdown">
-          <nav className="afcfta-mobile-nav-list">
-            {navItems.map(({ id, label, icon: Icon }) => {
+      <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
+        <button
+          className={`afcfta-btn-sm ${isFrench ? "afcfta-btn" : "afcfta-btn-secondary"}`}
+          onClick={() => onTabChange && onTabChange("language", "fr")}
+          style={{ padding: "5px 8px", fontSize: "11px" }}
+        >FR</button>
+        <button
+          className={`afcfta-btn-sm ${!isFrench ? "afcfta-btn" : "afcfta-btn-secondary"}`}
+          onClick={() => onTabChange && onTabChange("language", "en")}
+          style={{ padding: "5px 8px", fontSize: "11px" }}
+        >EN</button>
+      </div>
+    </div>
+  );
+
+  /* ── Sidebar inner content (shared desktop + mobile) ── */
+  const sidebarContent = (
+    <>
+      {/* Logo */}
+      <div className="afcfta-sidebar-logo">
+        <div className="afcfta-sidebar-icon">🌍</div>
+        <div className="afcfta-sidebar-title">
+          <h1>{isFrench ? "ZLECAf" : "AfCFTA"}</h1>
+          <p>{isFrench ? "Intelligence Commerciale" : "Trade Intelligence"}</p>
+        </div>
+        {/* Close button — mobile only */}
+        <button
+          onClick={() => setMobileOpen(false)}
+          style={{
+            display: "none", // shown via media query in JSX
+            position: "absolute", right: 10, top: 10,
+            background: "none", border: "none", color: "var(--afcfta-muted)",
+            cursor: "pointer", padding: 4,
+          }}
+          className="afcfta-mobile-close"
+          aria-label="Fermer"
+        >
+          <X size={16} />
+        </button>
+      </div>
+
+      {/* Badges */}
+      <div className="afcfta-sidebar-badges">
+        <span className="afcfta-badge">🌍 {isFrench ? "54 pays ZLECAf" : "54 AfCFTA members"}</span>
+        <span className="afcfta-badge">📊 {isFrench ? "229 519 positions" : "229,519 tariff lines"}</span>
+        <span className="afcfta-badge">✅ {isFrench ? "Données authentiques" : "Authentic data"}</span>
+      </div>
+
+      {/* Nav groups */}
+      <nav className="afcfta-sidebar-nav" aria-label={isFrench ? "Navigation principale" : "Main navigation"}>
+        {groups.map((group) => (
+          <div key={group.label} className="afcfta-nav-group">
+            <div className="afcfta-nav-group-label">{group.label}</div>
+            {group.items.map(({ id, label, icon: Icon }) => {
               const isActive = active === id;
               return (
                 <button
                   key={id}
                   onClick={() => handleTab(id)}
-                  className={`afcfta-mobile-nav-item ${isActive ? "active" : ""}`}
-                  data-testid={`mobile-nav-${id}`}
+                  className={`afcfta-nav-item ${isActive ? "active" : ""}`}
+                  role="tab"
+                  aria-selected={isActive}
+                  title={label}
                 >
-                  <Icon size={18} />
-                  <span>{label}</span>
+                  <span className="afcfta-nav-icon">
+                    <Icon size={15} />
+                  </span>
+                  <span className="afcfta-nav-label">{label}</span>
                 </button>
               );
             })}
-          </nav>
+          </div>
+        ))}
+      </nav>
+
+      {/* Footer */}
+      <div className="afcfta-sidebar-footer">
+        {/* Language switch */}
+        <div className="afcfta-lang-switch" aria-label={isFrench ? "Langue" : "Language"}>
+          <button
+            className={`afcfta-langBtn ${isFrench ? "active" : ""}`}
+            onClick={() => onTabChange && onTabChange("language", "fr")}
+            style={{ flex: 1, padding: "6px 0", fontSize: "12px", textAlign: "center" }}
+            aria-pressed={isFrench}
+          >
+            🇫🇷 FR
+          </button>
+          <button
+            className={`afcfta-langBtn ${!isFrench ? "active" : ""}`}
+            onClick={() => onTabChange && onTabChange("language", "en")}
+            style={{ flex: 1, padding: "6px 0", fontSize: "12px", textAlign: "center" }}
+            aria-pressed={!isFrench}
+          >
+            🇬🇧 EN
+          </button>
         </div>
+
+        {/* Collapse toggle — desktop only */}
+        <button
+          className="afcfta-sidebar-toggle"
+          onClick={() => setCollapsed((c) => !c)}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          style={{ marginTop: 6 }}
+        >
+          {collapsed
+            ? <ChevronRight size={14} />
+            : <><ChevronLeft size={14} /><span className="afcfta-sidebar-toggle-label" style={{ fontSize: 11 }}>{isFrench ? "Réduire" : "Collapse"}</span></>
+          }
+        </button>
+      </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile topbar strip */}
+      {mobileBar}
+
+      {/* Overlay — mobile */}
+      {mobileOpen && (
+        <div
+          className="afcfta-sidebar-overlay"
+          onClick={() => setMobileOpen(false)}
+          style={{
+            position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
+            zIndex: 99, backdropFilter: "blur(2px)",
+          }}
+        />
       )}
 
-      {/* Desktop top header */}
-      <header className="afcfta-topHeader">
-        <div className="afcfta-topHeader-main">
-          <div className="afcfta-topHeader-left">
-            <div className="afcfta-topHeader-brandRow">
-              <div className="afcfta-topHeader-logo">🌍</div>
-
-              <div className="afcfta-topHeader-brandText">
-                <h1>{isFrench ? "Accord de la ZLECAf" : "AfCFTA Agreement"}</h1>
-                <p>
-                  {isFrench
-                    ? "Plateforme d'intelligence commerciale africaine — droits, TVA, taxes totales et analyses."
-                    : "African trade intelligence platform — duties, VAT, total taxes and analytics."}
-                </p>
-              </div>
-            </div>
-
-            <div className="afcfta-topHeader-badges">
-              <span className="afcfta-topHeader-badge">
-                {isFrench ? "54 signataires ZLECAf" : "54 AfCFTA signatories"}
-              </span>
-              <span className="afcfta-topHeader-badge">
-                {isFrench ? "1,3 Md+ habitants" : "1.3B+ inhabitants"}
-              </span>
-              <span className="afcfta-topHeader-badge">
-                {isFrench ? "Données actualisées" : "Updated data"}
-              </span>
-            </div>
-          </div>
-
-          <div className="afcfta-topHeader-right">
-            <button
-              className={`afcfta-langSwitchBtn ${isFrench ? "active" : ""}`}
-              onClick={() => onTabChange && onTabChange("language", "fr")}
-            >
-              🇫🇷 {isFrench ? "Français" : "French"}
-            </button>
-            <button
-              className={`afcfta-langSwitchBtn ${!isFrench ? "active" : ""}`}
-              onClick={() => onTabChange && onTabChange("language", "en")}
-            >
-              🇬🇧 English
-            </button>
-          </div>
-        </div>
-
-        <nav
-          className="afcfta-topHeader-nav"
-          aria-label={isFrench ? "Navigation principale" : "Main navigation"}
-        >
-          {navItems.map(({ id, label, icon: Icon }) => {
-            const isActive = active === id;
-            return (
-              <button
-                key={id}
-                onClick={() => handleTab(id)}
-                className={`afcfta-topNav-item ${isActive ? "active" : ""}`}
-                aria-selected={isActive}
-                role="tab"
-                title={label}
-              >
-                <Icon size={15} />
-                <span>{label}</span>
-              </button>
-            );
-          })}
-        </nav>
-      </header>
+      {/* Sidebar */}
+      <aside
+        className={`afcfta-sidebar ${collapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`}
+        role="navigation"
+        aria-label={isFrench ? "Menu principal" : "Main menu"}
+      >
+        {sidebarContent}
+      </aside>
     </>
   );
 }

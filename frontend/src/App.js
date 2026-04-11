@@ -322,10 +322,15 @@ function App() {
     }
   };
 
+  const sidebarCollapsed =
+    typeof window !== 'undefined' &&
+    document.querySelector('.afcfta-sidebar.collapsed') !== null;
+
   return (
-    <div className="afcfta-layout afcfta-layout--topnav">
+    <div className="afcfta-layout">
       <Toaster />
 
+      {/* Sidebar navigation */}
       <AfcftaTopbar
         active={getTopbarActiveTab()}
         onTabChange={handleTabChange}
@@ -335,8 +340,15 @@ function App() {
         onMobileClose={() => setMobileMenuOpen(false)}
       />
 
-      <main className="afcfta-main afcfta-main--topnav" id="afcfta-main-content">
+      {/* Main content area */}
+      <main className="afcfta-main" id="afcfta-main-content">
         <div className="afcfta-shell">
+          {/* KPI Row - dashboard uniquement */}
+          {activeTab === 'dashboard' && (
+            <KpiRow language={language} stats={stats} />
+          )}
+
+          {/* Contenu principal */}
           {renderContent()}
         </div>
       </main>

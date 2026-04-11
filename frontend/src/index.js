@@ -7,6 +7,9 @@ import 'leaflet/dist/leaflet.css';
 // Import i18n configuration
 import './i18n';
 
+// Import mobile responsive styles
+import './styles/mobile.css';
+
 // Fix complet pour ResizeObserver errors
 // Supprime complètement les erreurs ResizeObserver
 window.addEventListener('error', e => {
@@ -44,6 +47,20 @@ window.ResizeObserver = class ResizeObserver extends _ {
     super(callback);
   }
 };
+
+// Register PWA Service Worker
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js', { scope: '/' })
+      .then((registration) => {
+        console.log('[PWA] Service worker registered:', registration.scope);
+      })
+      .catch((err) => {
+        console.warn('[PWA] Service worker registration failed:', err);
+      });
+  });
+}
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

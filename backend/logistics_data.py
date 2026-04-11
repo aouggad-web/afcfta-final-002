@@ -15,7 +15,8 @@ if not PORTS_FILE.exists():
 
 def load_ports_data():
     """Load African ports data from JSON file"""
-    with open(PORTS_FILE, 'r', encoding='utf-8') as f:
+    ports_path = ROOT_DIR / "data" / "json" / "ports_africains.json"
+    with open(ports_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 def get_all_ports(country_iso: Optional[str] = None) -> List[dict]:

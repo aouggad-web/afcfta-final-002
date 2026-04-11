@@ -225,7 +225,7 @@ def main():
     
     # Enrichir les ports existants - write back to source file to maintain single source of truth
     # Previously created ports_africains_enriched.json, now updates in-place
-    ports_file = str(ROOT_DIR / 'ports_africains.json')
+    ports_file = str(ROOT_DIR / 'data' / 'json' / 'ports_africains.json')
     collector.enrich_ports_with_unctad_data(
         ports_file=ports_file,
         output_file=ports_file  # Update in-place to avoid multiple versions

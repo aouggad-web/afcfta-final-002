@@ -24,6 +24,8 @@ USER appuser
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')"
+    CMD python -c "import requests; requests.get('http://localhost:8000/api/health')"
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD python -c "import sys, requests; r = requests.get('http://localhost:8000/api/health', timeout=8); sys.exit(0 if r.status_code == 200 else 1)"
 
 CMD ["uvicorn", "backend.server:app", "--host", "0.0.0.0", "--port", "8000"]

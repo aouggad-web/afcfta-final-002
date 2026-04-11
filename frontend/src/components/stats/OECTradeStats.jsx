@@ -12,7 +12,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieC
 import { ArrowUpRight, ArrowDownRight, Globe2, TrendingUp, Search, RefreshCw, BarChart3, Filter } from 'lucide-react';
 import { getCountryFlag, getCountryInfo } from '../../utils/countryCodes';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 // Palette de couleurs africaines moderne
@@ -34,16 +34,85 @@ const formatQuantity = (quantity) => {
 
 /**
  * Extrait le vrai code HS depuis l'identifiant OEC
- * L'ID OEC a un préfixe (1-21) suivi du code HS (4 ou 6 chiffres)
+ * L'ID OEC a un préfixe (1-21) suivi du code HS (2, 4 ou 6 chiffres)
  * Ex: 52711 -> code HS4 = 2711 (Petroleum Gas)
  * Ex: 178704 -> code HS4 = 8704 (Vehicles)
  */
 const extractHSCode = (oecId, hsLevel = 'HS4') => {
   if (!oecId) return '-';
   const idStr = String(oecId);
-  const digits = hsLevel === 'HS6' ? 6 : 4;
-  // Prendre les N derniers chiffres (4 pour HS4, 6 pour HS6)
+  const digits = hsLevel === 'HS6' ? 6 : hsLevel === 'HS2' ? 2 : 4;
+  // Prendre les N derniers chiffres (2 pour HS2, 4 pour HS4, 6 pour HS6)
   return idStr.slice(-digits).padStart(digits, '0');
+};
+
+// HS classification levels
+const HS_LEVELS = [
+  { value: 'HS2', digits: 2 },
+  { value: 'HS4', digits: 4 },
+  { value: 'HS6', digits: 6 },
+];
+
+// Available HS revisions
+const HS_REVISIONS = ['2022', '2017', '2012'];
+
+// Popular HS codes by level and language
+const POPULAR_HS_CODES = {
+  HS2: {
+    fr: [
+      { code: '09', label: 'Café, thé, épices' },
+      { code: '08', label: 'Fruits et noix' },
+      { code: '27', label: 'Combustibles' },
+      { code: '71', label: 'Métaux précieux' },
+      { code: '52', label: 'Coton' },
+    ],
+    en: [
+      { code: '09', label: 'Coffee, tea, spices' },
+      { code: '08', label: 'Fruits & nuts' },
+      { code: '27', label: 'Fuels' },
+      { code: '71', label: 'Precious metals' },
+      { code: '52', label: 'Cotton' },
+    ],
+  },
+  HS4: {
+    fr: [
+      { code: '0901', label: 'Café' },
+      { code: '1801', label: 'Cacao' },
+      { code: '2709', label: 'Pétrole brut' },
+      { code: '7108', label: 'Or' },
+      { code: '5201', label: 'Coton non cardé' },
+    ],
+    en: [
+      { code: '0901', label: 'Coffee' },
+      { code: '1801', label: 'Cocoa' },
+      { code: '2709', label: 'Crude oil' },
+      { code: '7108', label: 'Gold' },
+      { code: '5201', label: 'Uncarded cotton' },
+    ],
+  },
+  HS6: {
+    fr: [
+      { code: '090111', label: 'Café non torréfié' },
+      { code: '180100', label: 'Fèves de cacao' },
+      { code: '270900', label: 'Pétrole brut' },
+      { code: '710812', label: 'Or sous forme brute' },
+      { code: '520100', label: 'Coton non cardé' },
+    ],
+    en: [
+      { code: '090111', label: 'Unroasted coffee' },
+      { code: '180100', label: 'Cocoa beans' },
+      { code: '270900', label: 'Crude oil' },
+      { code: '710812', label: 'Gold in raw form' },
+      { code: '520100', label: 'Uncarded cotton' },
+    ],
+  },
+};
+
+// HS level badge colors
+const HS_LEVEL_COLORS = {
+  HS2: { badge: 'bg-emerald-100 text-emerald-700', btn: 'bg-emerald-600', indicator: 'text-emerald-600' },
+  HS4: { badge: 'bg-blue-100 text-blue-700', btn: 'bg-blue-600', indicator: 'text-blue-600' },
+  HS6: { badge: 'bg-violet-100 text-violet-700', btn: 'bg-violet-600', indicator: 'text-violet-600' },
 };
 
 export default function OECTradeStats({ language = 'fr' }) {
@@ -61,6 +130,10 @@ export default function OECTradeStats({ language = 'fr' }) {
   const [hsCode, setHsCode] = useState('');
   const [hsCodeName, setHsCodeName] = useState(''); // Dénomination du code HS
   const [secondCountry, setSecondCountry] = useState('');
+
+  // Classification HS
+  const [hsLevel, setHsLevel] = useState('HS6'); // HS2 / HS4 / HS6
+  const [hsRevision, setHsRevision] = useState('2022'); // 2022 / 2017 / 2012
   
   // Résultats
   const [tradeData, setTradeData] = useState(null);
@@ -108,7 +181,14 @@ export default function OECTradeStats({ language = 'fr' }) {
       cotton: "Coton",
       gold: "Or",
       oil: "Pétrole",
-      diamonds: "Diamants"
+      diamonds: "Diamants",
+      hsLevel: "Niveau de Classification",
+      hsRevision: "Version HS",
+      hsLevelDesc: "Sélectionnez le niveau de granularité souhaité",
+      revisionDesc: "Version de la nomenclature douanière",
+      hs2Description: "Chapitres - Vue d'ensemble par secteurs",
+      hs4Description: "Positions - Groupes de produits détaillés",
+      hs6Description: "Sous-positions - Produits spécifiques"
     },
     en: {
       title: "OEC Trade Statistics",
@@ -150,21 +230,42 @@ export default function OECTradeStats({ language = 'fr' }) {
       cotton: "Cotton",
       gold: "Gold",
       oil: "Oil",
-      diamonds: "Diamonds"
+      diamonds: "Diamonds",
+      hsLevel: "Classification Level",
+      hsRevision: "HS Version",
+      hsLevelDesc: "Select desired granularity level",
+      revisionDesc: "Customs nomenclature version",
+      hs2Description: "Chapters - Sector overview",
+      hs4Description: "Headings - Detailed product groups",
+      hs6Description: "Subheadings - Specific products"
     }
   };
 
   const t = texts[language];
 
-  // Popular HS codes for quick selection (HS6 format for SH2022 consistency)
-  const popularHSCodes = [
-    { code: '090111', label: t.coffee },    // Café non torréfié
-    { code: '180100', label: t.cocoa },     // Fèves de cacao
-    { code: '520100', label: t.cotton },    // Coton non cardé
-    { code: '710812', label: t.gold },      // Or sous formes brutes
-    { code: '270900', label: t.oil },       // Huiles brutes de pétrole
-    { code: '710231', label: t.diamonds }   // Diamants non montés
-  ];
+  // Utility: get popular HS codes for current level and language
+  const getPopularHSCodes = (level, lang) => {
+    const langKey = lang === 'en' ? 'en' : 'fr';
+    return (POPULAR_HS_CODES[level] || POPULAR_HS_CODES.HS6)[langKey] || [];
+  };
+
+  // Utility: get adaptive placeholder based on HS level
+  const getPlaceholderForLevel = (level, lang) => {
+    if (lang === 'en') {
+      if (level === 'HS2') return 'Ex: 09 (Coffee, tea, spices)';
+      if (level === 'HS4') return 'Ex: 0901 (Coffee)';
+      return 'Ex: 090111 (Unroasted coffee)';
+    }
+    if (level === 'HS2') return 'Ex: 09 (Café, thé, épices)';
+    if (level === 'HS4') return 'Ex: 0901 (Café)';
+    return 'Ex: 090111 (Café non torréfié)';
+  };
+
+  // Get digits count for current HS level
+  const hsLevelDigits = { HS2: 2, HS4: 4, HS6: 6 }[hsLevel] || 6;
+
+  // HS level description text
+  const hsLevelDescription = { HS2: t.hs2Description, HS4: t.hs4Description, HS6: t.hs6Description }[hsLevel];
 
   // Charger les pays africains et le mapping name_en -> ISO3
   useEffect(() => {
@@ -263,7 +364,7 @@ export default function OECTradeStats({ language = 'fr' }) {
     
     try {
       const response = await axios.get(`${API}/oec/product/${hsCode}`, {
-        params: { year: selectedYear, trade_flow: selectedFlow, limit: 30 }
+        params: { year: selectedYear, trade_flow: selectedFlow, limit: 30, hs_level: hsLevel, hs_revision: hsRevision }
       });
       
       setProductData(response.data);
@@ -273,7 +374,7 @@ export default function OECTradeStats({ language = 'fr' }) {
     } finally {
       setLoading(false);
     }
-  }, [hsCode, selectedYear, selectedFlow]);
+  }, [hsCode, selectedYear, selectedFlow, hsLevel, hsRevision]);
 
   // Recherche commerce bilatéral
   const searchBilateral = useCallback(async () => {
@@ -553,17 +654,77 @@ export default function OECTradeStats({ language = 'fr' }) {
 
         {/* Vue par Produit */}
         <TabsContent value="product" className="space-y-6 mt-6">
+          {/* Panneau Configuration HS */}
+          <Card className="shadow-lg border-slate-200">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold text-slate-800">{t.hsLevel}</CardTitle>
+              <CardDescription>{t.hsLevelDesc}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Sélecteur de niveau HS */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-slate-700">{t.hsLevel}</Label>
+                  <div className="flex gap-2">
+                    {HS_LEVELS.map((level) => {
+                      const colors = HS_LEVEL_COLORS[level.value];
+                      const isActive = hsLevel === level.value;
+                      return (
+                        <button
+                          key={level.value}
+                          onClick={() => { setHsLevel(level.value); setHsCode(''); setHsCodeName(''); }}
+                          data-testid={`hs-level-${level.value.toLowerCase()}`}
+                          className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold border-2 transition-all ${
+                            isActive
+                              ? `${colors.badge} border-current`
+                              : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-slate-300'
+                          }`}
+                        >
+                          {level.value}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="text-xs text-slate-500">{hsLevelDescription}</p>
+                </div>
+
+                {/* Sélecteur de révision HS */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-slate-700">{t.hsRevision}</Label>
+                  <Select value={hsRevision} onValueChange={setHsRevision}>
+                    <SelectTrigger className="bg-white" data-testid="hs-revision-select">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {HS_REVISIONS.map((rev) => (
+                        <SelectItem key={rev} value={rev}>HS {rev}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-slate-500">{t.revisionDesc}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Filtres de recherche */}
           <Card className="shadow-lg border-slate-200">
             <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="space-y-2 md:col-span-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.hsCodeLabel}</Label>
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-medium text-slate-700">{t.hsCodeLabel}</Label>
+                    <Badge variant="secondary" className={`${HS_LEVEL_COLORS[hsLevel].badge} font-mono text-xs px-1.5 py-0.5`}>
+                      {hsLevel}
+                    </Badge>
+                  </div>
                   <div className="relative">
                     <Input
                       value={hsCode}
-                      onChange={(e) => setHsCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                      placeholder={t.hsCodePlaceholder}
+                      onChange={(e) => setHsCode(e.target.value.replace(/\D/g, '').slice(0, hsLevelDigits))}
+                      placeholder={getPlaceholderForLevel(hsLevel, language)}
                       className="bg-white"
+                      maxLength={hsLevelDigits}
                       data-testid="hs-code-input"
                     />
                     {/* Affichage de la dénomination du code HS */}
@@ -578,7 +739,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   {/* Quick select buttons */}
                   <div className="flex flex-wrap gap-2 mt-2">
                     <span className="text-xs text-slate-500">{t.popularProducts}:</span>
-                    {popularHSCodes.map((item) => (
+                    {getPopularHSCodes(hsLevel, language).map((item) => (
                       <button
                         key={item.code}
                         onClick={() => setHsCode(item.code)}
@@ -634,9 +795,14 @@ export default function OECTradeStats({ language = 'fr' }) {
               <Card className="shadow-lg">
                 <CardHeader className="bg-gradient-to-r from-violet-50 to-purple-50 border-b">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold text-slate-800">
-                      HS {productData.hs_code} - {selectedFlow === 'exports' ? t.exports : t.imports}
-                    </CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className={`${HS_LEVEL_COLORS[hsLevel].badge} font-mono text-xs px-1.5 py-0.5`}>
+                        {hsLevel}
+                      </Badge>
+                      <CardTitle className="text-lg font-semibold text-slate-800">
+                        {productData.hs_code} - {selectedFlow === 'exports' ? t.exports : t.imports}
+                      </CardTitle>
+                    </div>
                     <Badge variant="outline" className="text-violet-700 border-violet-300">
                       {t.dataYear} {selectedYear}
                     </Badge>

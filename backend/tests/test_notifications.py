@@ -2,8 +2,8 @@
 Tests pour les notifications
 """
 import pytest
-from backend.notifications.notification_manager import NotificationManager
-from backend.notifications.base_notifier import NotificationType, NotificationSeverity
+from notifications.notification_manager import NotificationManager
+from notifications.base_notifier import NotificationType, NotificationSeverity
 
 
 @pytest.mark.asyncio

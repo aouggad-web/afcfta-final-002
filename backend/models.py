@@ -1,10 +1,11 @@
 """
 Pydantic models for ZLECAf API
 """
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 import uuid
+import re
 
 
 class CountryInfo(BaseModel):
@@ -20,10 +21,26 @@ class CountryInfo(BaseModel):
 
 class TariffCalculationRequest(BaseModel):
     """Request model for tariff calculation"""
-    origin_country: str
-    destination_country: str
-    hs_code: str
-    value: float
+    origin_country: str = Field(..., description="ISO2 or ISO3 country code for origin", min_length=2, max_length=3)
+    destination_country: str = Field(..., description="ISO2 or ISO3 country code for destination", min_length=2, max_length=3)
+    hs_code: str = Field(..., description="HS code (2-12 digits)", min_length=2, max_length=12)
+    value: float = Field(..., description="Customs value in USD", gt=0)
+
+    @field_validator("origin_country", "destination_country")
+    @classmethod
+    def validate_country_code(cls, v: str) -> str:
+        v = v.strip().upper()
+        if not re.match(r'^[A-Z]{2,3}$', v):
+            raise ValueError("Country code must be 2-3 uppercase letters")
+        return v
+
+    @field_validator("hs_code")
+    @classmethod
+    def validate_hs_code(cls, v: str) -> str:
+        v = v.strip()
+        if not re.match(r'^\d{2,12}$', v):
+            raise ValueError("HS code must contain 2-12 digits only")
+        return v
 
 
 class TariffCalculationResponse(BaseModel):

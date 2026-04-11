@@ -39,11 +39,12 @@ CACHE_TTL = {
     "default": 600             # 10 minutes
 }
 
-# Global Redis client
-_redis_client: Optional[redis.Redis] = None
+# Global Redis client (type hinted with a forward reference so it is safe
+# even when the redis package is not installed)
+_redis_client: "Optional[Any]" = None
 
 
-def get_redis_client() -> Optional[redis.Redis]:
+def get_redis_client() -> "Optional[Any]":
     """Get or create Redis client singleton."""
     global _redis_client
     

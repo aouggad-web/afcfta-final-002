@@ -12,7 +12,12 @@ from typing import Dict, Any, Optional, List
 from functools import lru_cache
 
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Use append (not insert) to avoid shadowing the backend 'api' package
+# which takes higher priority when placed earlier in sys.path.
+_engine_root = str(Path(__file__).parent.parent)
+if _engine_root not in sys.path:
+    sys.path.append(_engine_root)
 
 from schemas.canonical_model import (
     CanonicalTariffLine, RegulatoryEngineResponse, CommodityCode,

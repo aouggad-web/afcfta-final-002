@@ -8,12 +8,8 @@ import os
 from typing import List, Dict, Optional
 from pathlib import Path
 
-# Determine data file path with fallback
-ROOT_DIR = Path(__file__).parent.parent
-DATA_DIR = ROOT_DIR / "data" / "json"
-DATA_FILE = str(DATA_DIR / "production_africaine.json")
-if not os.path.exists(DATA_FILE):
-    DATA_FILE = str(ROOT_DIR / "production_africaine.json")
+# Chemin du fichier JSON
+DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'json', 'production_africaine.json')
 
 # Cache global
 _production_data = None

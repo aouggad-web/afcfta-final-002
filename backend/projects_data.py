@@ -13,7 +13,7 @@ if not PROJECTS_FILE.exists():
 def load_ongoing_projects():
     """Charger les projets structurants depuis le fichier JSON"""
     try:
-        with open(PROJECTS_FILE, 'r', encoding='utf-8') as f:
+        with open(ROOT_DIR / 'data' / 'json' / 'projets_structurants_afrique.json', 'r', encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError:
         return {}

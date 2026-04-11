@@ -1,14 +1,84 @@
 #!/usr/bin/env python3
 """
 Test pour l'endpoint de santé /api/health
+Inclut la vérification de l'absence d'erreurs 502 Bad Gateway persistantes.
 """
 
 import sys
+import importlib.util
 from pathlib import Path
 
 # Ajouter le backend au path pour l'import
 backend_path = Path(__file__).parent.parent / 'backend'
 sys.path.insert(0, str(backend_path))
+
+
+def _load_health_router():
+    """Charge uniquement le module health sans déclencher l'init du package routes."""
+    health_path = backend_path / 'routes' / 'health.py'
+    spec = importlib.util.spec_from_file_location('backend.routes.health', health_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.router
+
+
+def test_health_endpoint_no_502():
+    """
+    Vérifie que l'endpoint /api/health retourne 200 et non 502 Bad Gateway.
+    Utilise le TestClient de FastAPI pour tester sans serveur externe.
+    """
+    from fastapi.testclient import TestClient
+    from fastapi import FastAPI
+
+    router = _load_health_router()
+    app = FastAPI()
+    app.include_router(router)
+
+    with TestClient(app, raise_server_exceptions=False) as client:
+        response = client.get("/health")
+
+    assert response.status_code != 502, (
+        f"502 Bad Gateway détecté sur /health: {response.text}"
+    )
+    assert response.status_code == 200, (
+        f"Statut inattendu {response.status_code} sur /health: {response.text}"
+    )
+    data = response.json()
+    assert data.get("status") == "healthy", (
+        f"Le health check ne renvoie pas 'healthy': {data}"
+    )
+    print("✅ /health retourne 200 (pas de 502 Bad Gateway)")
+
+
+def test_detailed_health_endpoint_no_502():
+    """
+    Vérifie que /api/health/status retourne 200 avec la structure correcte
+    (champ 'components', non 'checks') et n'est pas un 502.
+    """
+    from fastapi.testclient import TestClient
+    from fastapi import FastAPI
+
+    router = _load_health_router()
+    app = FastAPI()
+    app.include_router(router)
+
+    with TestClient(app, raise_server_exceptions=False) as client:
+        response = client.get("/health/status")
+
+    assert response.status_code != 502, (
+        f"502 Bad Gateway détecté sur /health/status: {response.text}"
+    )
+    assert response.status_code == 200, (
+        f"Statut inattendu {response.status_code} sur /health/status: {response.text}"
+    )
+    data = response.json()
+    assert data.get("status") == "healthy", (
+        f"Le health/status ne renvoie pas 'healthy': {data}"
+    )
+    assert "components" in data, (
+        f"Champ 'components' manquant dans /health/status: {list(data.keys())}"
+    )
+    print("✅ /health/status retourne 200 avec 'components' (pas de 502 Bad Gateway)")
 
 
 def test_health_logic():

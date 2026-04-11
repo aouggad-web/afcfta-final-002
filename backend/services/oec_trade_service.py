@@ -13,6 +13,7 @@ MISE À JOUR 2025: Les données 2024 sont maintenant disponibles
 
 import httpx
 import asyncio
+import json
 from typing import Dict, List, Optional
 from datetime import datetime
 import logging
@@ -155,17 +156,39 @@ class OECTradeService:
     def __init__(self, api_token: Optional[str] = None):
         self.api_token = api_token
         self.timeout = 30.0
+
+        # Optional cache integration
+        try:
+            from services.cache_service import cache_get, cache_set, generate_cache_key
+            self._cache_get = cache_get
+            self._cache_set = cache_set
+            self._cache_key = generate_cache_key
+            self._cache_available = True
+        except ImportError:
+            self._cache_available = False
     
     async def _make_request(self, params: Dict) -> Dict:
-        """Effectue une requête à l'API OEC"""
+        """Effectue une requête à l'API OEC avec mise en cache optionnelle."""
         if self.api_token:
             params["token"] = self.api_token
+
+        # Build a stable cache key from sorted params (excluding token)
+        if self._cache_available:
+            cache_params = {k: v for k, v in params.items() if k != "token"}
+            raw_key = json.dumps(cache_params, sort_keys=True)
+            cache_key = self._cache_key("oec_request", raw_key)
+            cached = self._cache_get(cache_key)
+            if cached is not None:
+                return cached
         
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
                 response = await client.get(OEC_BASE_URL, params=params)
                 response.raise_for_status()
-                return response.json()
+                data = response.json()
+                if self._cache_available and "error" not in data:
+                    self._cache_set(cache_key, data, "oec_data")
+                return data
             except httpx.HTTPStatusError as e:
                 logger.error(f"OEC API error: {e.response.status_code}")
                 return {"error": str(e), "data": []}
