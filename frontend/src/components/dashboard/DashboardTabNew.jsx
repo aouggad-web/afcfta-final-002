@@ -27,6 +27,7 @@ const translations = {
     countries: 'pays membres',
     authenticCountries: 'pays avec données authentiques',
     authenticPositions: 'positions vérifiées',
+    nationalSubPositions: 'Sous-Positions tarifaires nationales',
     growth: 'Croissance 2024',
     strategicCoverage: 'Couverture stratégique',
     strategicCoverageSub: 'Blocs commerciaux et profondeur de données',
@@ -48,6 +49,7 @@ const translations = {
     countries: 'member countries',
     authenticCountries: 'countries with authentic data',
     authenticPositions: 'verified positions',
+    nationalSubPositions: 'National tariff sub-positions',
     growth: 'Growth 2024',
     strategicCoverage: 'Strategic coverage',
     strategicCoverageSub: 'Trade blocs and data depth',
@@ -291,8 +293,8 @@ const DashboardTabNew = ({ language = 'fr' }) => {
               </div>
 
               <div className="rounded-xl border px-3 py-3 text-center bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.06)]">
-                <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)]">
-                  {t.coverage}
+                <div className="text-[10px] uppercase tracking-wide text-[var(--afcfta-muted)] leading-tight">
+                  {t.nationalSubPositions}
                 </div>
                 <div className="mt-1 text-xl font-bold text-[var(--text)]">
                   {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : authenticData.totalPositionsFormatted}
