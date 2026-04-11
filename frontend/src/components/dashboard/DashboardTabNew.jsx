@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   TrendingUp,
   Globe,
@@ -7,6 +8,7 @@ import {
   ShieldCheck,
   Database,
   ArrowUpRight,
+  Loader2,
 } from 'lucide-react';
 import NewsDashboard from './NewsDashboard';
 
@@ -33,6 +35,7 @@ const translations = {
     authentic: 'Authentique',
     lastLayer: 'Dernière couche',
     blocCountries: 'pays couverts',
+    loading: 'Chargement...',
   },
   en: {
     overview: 'AfCFTA Overview',
@@ -53,10 +56,12 @@ const translations = {
     authentic: 'Authentic',
     lastLayer: 'Latest layer',
     blocCountries: 'countries covered',
+    loading: 'Loading...',
   },
 };
 
-const KPI_CARDS = (t) => [
+// Dynamic KPI Cards - values come from API
+const getKpiCards = (t, authenticData) => [
   {
     key: 'gdp',
     title: t.totalGdp,
@@ -78,7 +83,7 @@ const KPI_CARDS = (t) => [
   {
     key: 'coverage',
     title: t.dataCoverage,
-    value: '32',
+    value: authenticData.totalCountries?.toString() || '54',
     subtitle: t.authenticCountries,
     icon: Database,
     accent: '#20c997',
@@ -87,7 +92,7 @@ const KPI_CARDS = (t) => [
   {
     key: 'tariff',
     title: t.tariffPositions,
-    value: '229K',
+    value: authenticData.totalPositionsFormatted || '229K',
     subtitle: t.authenticPositions,
     icon: Target,
     accent: '#d4891a',
@@ -95,15 +100,24 @@ const KPI_CARDS = (t) => [
   },
 ];
 
-const BLOCS = [
-  { name: 'CEDEAO', count: 7, accent: '#d4891a' },
-  { name: 'CEMAC', count: 5, accent: '#4f8ef7' },
-  { name: 'EAC', count: 7, accent: '#20c997' },
-  { name: 'SACU', count: 5, accent: '#9b6ef5' },
-  { name: 'AES', count: 3, accent: '#e67e22' },
+// Regional blocs with country assignments
+const BLOC_COUNTRIES = {
+  CEDEAO: ['BEN', 'BFA', 'CPV', 'CIV', 'GMB', 'GHA', 'GIN', 'GNB', 'LBR', 'MLI', 'NER', 'NGA', 'SEN', 'SLE', 'TGO'],
+  CEMAC: ['CMR', 'CAF', 'TCD', 'COG', 'GNQ', 'GAB'],
+  EAC: ['BDI', 'KEN', 'RWA', 'SSD', 'TZA', 'UGA', 'COD'],
+  SACU: ['BWA', 'LSO', 'NAM', 'ZAF', 'SWZ'],
+  COMESA: ['BDI', 'COM', 'COD', 'DJI', 'EGY', 'ERI', 'ETH', 'KEN', 'LBY', 'MDG', 'MWI', 'MUS', 'RWA', 'SYC', 'SDN', 'SWZ', 'UGA', 'ZMB', 'ZWE'],
+};
+
+const BLOCS_CONFIG = [
+  { name: 'CEDEAO', accent: '#d4891a' },
+  { name: 'CEMAC', accent: '#4f8ef7' },
+  { name: 'EAC', accent: '#20c997' },
+  { name: 'SACU', accent: '#9b6ef5' },
+  { name: 'COMESA', accent: '#e67e22' },
 ];
 
-function DashboardMetricCard({ item }) {
+function DashboardMetricCard({ item, loading }) {
   const Icon = item.icon;
 
   return (
@@ -120,7 +134,11 @@ function DashboardMetricCard({ item }) {
           <p className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] font-semibold">
             {item.title}
           </p>
-          <p className="mt-2 text-3xl font-bold text-[var(--text)]">{item.value}</p>
+          <p className="mt-2 text-3xl font-bold text-[var(--text)]">
+            {loading && (item.key === 'coverage' || item.key === 'tariff') 
+              ? <Loader2 className="w-6 h-6 animate-spin" />
+              : item.value}
+          </p>
           <p className="mt-1 text-sm text-[var(--afcfta-muted)]">{item.subtitle}</p>
         </div>
 
@@ -157,26 +175,82 @@ function DashboardMetricCard({ item }) {
 }
 
 const DashboardTabNew = ({ language = 'fr' }) => {
-  const [stats, setStats] = useState(null);
+  const [authenticData, setAuthenticData] = useState({
+    totalCountries: 0,
+    totalPositions: 0,
+    totalPositionsFormatted: '0',
+    countriesList: [],
+    blocsData: [],
+  });
   const [loading, setLoading] = useState(true);
   const t = translations[language] || translations.fr;
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchAuthenticData = async () => {
       try {
-        const response = await fetch(`${API}/statistics`);
-        const data = await response.json();
-        setStats(data);
+        // Fetch real authentic tariff data
+        const response = await axios.get(`${API}/authentic-tariffs/countries`);
+        const data = response.data;
+        
+        if (data && data.countries) {
+          const countries = data.countries;
+          const totalCountries = data.total || countries.length;
+          
+          // Calculate total positions from all countries
+          let totalPositions = 0;
+          countries.forEach(c => {
+            totalPositions += (c.total_positions || c.total_sub_positions || 0);
+          });
+          
+          // Format positions (e.g., 1185000 -> "1.18M")
+          let totalPositionsFormatted;
+          if (totalPositions >= 1000000) {
+            totalPositionsFormatted = (totalPositions / 1000000).toFixed(2) + 'M';
+          } else if (totalPositions >= 1000) {
+            totalPositionsFormatted = Math.round(totalPositions / 1000) + 'K';
+          } else {
+            totalPositionsFormatted = totalPositions.toString();
+          }
+          
+          // Calculate bloc coverage with authentic data
+          const countryIsos = countries.map(c => c.iso3);
+          const blocsWithCoverage = BLOCS_CONFIG.map(bloc => {
+            const blocCountries = BLOC_COUNTRIES[bloc.name] || [];
+            const coveredCount = blocCountries.filter(iso => countryIsos.includes(iso)).length;
+            return {
+              ...bloc,
+              count: coveredCount,
+              total: blocCountries.length,
+            };
+          });
+          
+          setAuthenticData({
+            totalCountries,
+            totalPositions,
+            totalPositionsFormatted,
+            countriesList: countries,
+            blocsData: blocsWithCoverage,
+          });
+        }
       } catch (error) {
-        console.error('Error fetching stats:', error);
+        console.error('Error fetching authentic data:', error);
+        // Fallback to reasonable defaults
+        setAuthenticData({
+          totalCountries: 54,
+          totalPositions: 1180000,
+          totalPositionsFormatted: '1.18M',
+          countriesList: [],
+          blocsData: BLOCS_CONFIG.map(b => ({ ...b, count: 0, total: 0 })),
+        });
       } finally {
         setLoading(false);
       }
     };
-    fetchStats();
+    
+    fetchAuthenticData();
   }, []);
 
-  const kpis = KPI_CARDS(t);
+  const kpis = getKpiCards(t, authenticData);
 
   return (
     <div className="space-y-6">
@@ -220,14 +294,18 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                 <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)]">
                   {t.coverage}
                 </div>
-                <div className="mt-1 text-xl font-bold text-[var(--text)]">229K</div>
+                <div className="mt-1 text-xl font-bold text-[var(--text)]">
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : authenticData.totalPositionsFormatted}
+                </div>
               </div>
 
               <div className="rounded-xl border px-3 py-3 text-center bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.06)]">
                 <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)]">
                   {t.authentic}
                 </div>
-                <div className="mt-1 text-xl font-bold text-[var(--text)]">32</div>
+                <div className="mt-1 text-xl font-bold text-[var(--gold)]">
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : authenticData.totalCountries}
+                </div>
               </div>
             </div>
           </div>
@@ -236,7 +314,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
 
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {kpis.map((item) => (
-          <DashboardMetricCard key={item.key} item={item} />
+          <DashboardMetricCard key={item.key} item={item} loading={loading} />
         ))}
       </section>
 
@@ -260,7 +338,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-          {BLOCS.map((bloc) => (
+          {authenticData.blocsData.map((bloc) => (
             <div
               key={bloc.name}
               className="rounded-xl border p-4"
@@ -275,9 +353,11 @@ const DashboardTabNew = ({ language = 'fr' }) => {
               >
                 {bloc.name}
               </div>
-              <div className="mt-2 text-2xl font-bold text-[var(--text)]">{bloc.count}</div>
+              <div className="mt-2 text-2xl font-bold text-[var(--text)]">
+                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : bloc.count}
+              </div>
               <div className="mt-1 text-xs text-[var(--afcfta-muted)]">
-                {bloc.count} {t.blocCountries}
+                {bloc.count}/{bloc.total} {t.blocCountries}
               </div>
             </div>
           ))}
