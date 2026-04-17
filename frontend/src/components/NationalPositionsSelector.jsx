@@ -46,7 +46,9 @@ export default function NationalPositionsSelector({
       digits: "chiffres",
       showMore: "Voir plus",
       showLess: "Voir moins",
-      selectToCalculate: "Sélectionner pour calculer les droits exacts"
+      selectToCalculate: "Sélectionner pour calculer les droits exacts",
+      nationalPosition: "Position tarifaire nationale",
+      nationalSubPosition: "Sous-position tarifaire nationale"
     },
     en: {
       title: "National Tariff Positions",
@@ -65,7 +67,9 @@ export default function NationalPositionsSelector({
       digits: "digits",
       showMore: "Show more",
       showLess: "Show less",
-      selectToCalculate: "Select to calculate exact duties"
+      selectToCalculate: "Select to calculate exact duties",
+      nationalPosition: "National tariff position",
+      nationalSubPosition: "National tariff sub-position"
     }
   };
 
@@ -194,7 +198,7 @@ export default function NationalPositionsSelector({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-emerald-500/20 rounded-lg">
-                    <DollarSign className="w-5 h-5 text-emerald-400" />
+                    < DollarSign className="w-5 h-5 text-emerald-400" />
                   </div>
                   <div>
                     <p className="text-slate-400 text-xs uppercase tracking-wide">{t.cifValue}</p>
@@ -240,13 +244,19 @@ export default function NationalPositionsSelector({
           {!loading && sortedPositions.length > 0 && (
             <div className="space-y-3">
               {sortedPositions.map((position, idx) => {
-                const currentCode = position.code || position.hs_code;
+                const currentCode = position.code || position.hs_code || '';
                 const isSelected = selectedPosition === currentCode;
                 const estimatedDuties = calculateEstimatedDuties(position);
                 const desc = language === 'fr' ? (position.description_fr || position.description) : (position.description_en || position.description);
                 const isLongDesc = desc && desc.length > 150;
                 const isDescExpanded = expandedDescriptions[idx];
                 
+                // Logic for dynamic badge label
+                const codeLen = currentCode.replace(/\./g, '').length;
+                let badgeLabel = `HS${codeLen} digits`;
+                if (codeLen === 8) badgeLabel = t.nationalPosition;
+                if (codeLen === 10) badgeLabel = t.nationalSubPosition;
+
                 return (
                   <div 
                     key={idx}
@@ -266,8 +276,8 @@ export default function NationalPositionsSelector({
                             }`}>
                               {currentCode}
                             </span>
-                            <Badge variant="outline" className="text-xs border-slate-600 text-slate-400">
-                              HS{position.digits || currentCode.length} digits
+                            <Badge variant="outline" className="text-xs border-slate-600 text-slate-400 uppercase">
+                              {badgeLabel}
                             </Badge>
                           </div>
                           
