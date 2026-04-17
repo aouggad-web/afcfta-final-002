@@ -75,33 +75,44 @@ def calculate_import_taxes(
 ) -> Dict[str, Any]:
     """
     Calculates detailed import taxes using country-specific methodologies.
-    Supports Algerian (DZA) and Tunisian (TUN) cascade logic.
+    Supports Algerian (DZA), Tunisian (TUN), and Moroccan (MAR) cascade logic.
     """
     tariff_line = get_tariff_line(country_iso3, hs_code)
     if not tariff_line: return {'error': 'Data not found'}
     
     # 1. Exchange Rates & Base
-    exchange_rates = {'DZA': 135.0, 'TUN': 3.10}
+    exchange_rates = {'DZA': 135.0, 'TUN': 3.10, 'MAR': 10.0}
     rate = exchange_rates.get(country_iso3, 1.0)
     base_local = cif_value * rate
     
     # 2. Extract Rates
     dd_rate = tariff_line.get('dd_rate', tariff_line.get('dd', 0)) / 100
-    vat_rate = tariff_line.get('vat_rate', 19) / 100
-    dc_rate = tariff_line.get('dc_rate', 0) / 100  # Consumption Tax
+    vat_rate = tariff_line.get('vat_rate', 20 if country_iso3 == 'MAR' else 19) / 100
     
     # --- CALCULATION LOGIC ---
-    if country_iso3 == 'TUN':
+    if country_iso3 == 'MAR':
+        # MOROCCAN CASCADE (ADII)
+        di_amt = base_local * dd_rate  # Droit d'Importation
+        tpi_amt = base_local * 0.0025  # Taxe Parafiscale (0.25%)
+        tva_base = base_local + di_amt + tpi_amt
+        tva_amt = tva_base * vat_rate
+        total_taxes = di_amt + tpi_amt + tva_amt
+        methodology = "Moroccan Official Cascade (ADII)"
+        currency = 'MAD'
+
+    elif country_iso3 == 'TUN':
         # TUNISIAN CASCADE (2026)
+        dc_rate = tariff_line.get('dc_rate', 0) / 100
         dd_amt = base_local * dd_rate
         dc_amt = (base_local + dd_amt) * dc_rate
         rpd_amt = (dd_amt + dc_amt) * 0.03
         tva_base = base_local + dd_amt + dc_amt + rpd_amt
         tva_amt = tva_base * vat_rate
         air_base = tva_base + tva_amt
-        air_amt = air_base * 0.10  # Avance sur l'Impôt (10%)
+        air_amt = air_base * 0.10
         total_taxes = dd_amt + dc_amt + rpd_amt + tva_amt + air_amt
         methodology = "Tunisian Cascade (RPD + AIR)"
+        currency = 'TND'
     
     elif country_iso3 == 'DZA':
         # ALGERIAN CASCADE
@@ -112,6 +123,7 @@ def calculate_import_taxes(
         tva_amt = tva_base * vat_rate
         total_taxes = dd_amt + tcs_amt + prct_amt + tva_amt + 3500
         methodology = "Algerian Official Cascade"
+        currency = 'DZD'
     
     else:
         # STANDARD REGIME
@@ -119,11 +131,13 @@ def calculate_import_taxes(
         tva_amt = (base_local + dd_amt) * vat_rate
         total_taxes = dd_amt + tva_amt
         methodology = "Standard Comparison"
+        currency = 'USD'
 
     return {
         'hs_code': hs_code,
         'country': country_iso3,
         'total_taxes': round(total_taxes, 2),
         'methodology': methodology,
-        'currency': 'TND' if country_iso3 == 'TUN' else ('DZD' if country_iso3 == 'DZA' else 'USD')
+        'currency': currency,
+        'base_value_local': round(base_local, 2)
     }
