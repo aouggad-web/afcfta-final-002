@@ -15,39 +15,16 @@ _tariff_cache: Dict[str, Dict] = {}
 def load_country_tariffs(country_iso3: str) -> Optional[Dict]:
     """Load tariff data for a specific country."""
     global _tariff_cache
-    if country_iso3 in _tariff_cache:
-        return _tariff_cache[country_iso3]
+    if country_iso3 in _tariff_cache: return _tariff_cache[country_iso3]
     file_path = os.path.join(DATA_DIR, f'{country_iso3}_tariffs.json')
-    if not os.path.exists(file_path):
-        return None
+    if not os.path.exists(file_path): return None
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        with open(file_path, 'r', encoding='utf-8') as f: data = json.load(f)
         _tariff_cache[country_iso3] = data
         return data
     except Exception as e:
         logger.error(f"Error loading tariffs for {country_iso3}: {e}")
         return None
-
-def get_available_countries() -> List[Dict[str, Any]]:
-    """Get list of countries with authentic tariff data."""
-    countries = []
-    if not os.path.exists(DATA_DIR):
-        return countries
-    for filename in os.listdir(DATA_DIR):
-        if filename.endswith('_tariffs.json'):
-            iso3 = filename.replace('_tariffs.json', '')
-            data = load_country_tariffs(iso3)
-            if data:
-                summary = data.get('summary', {})
-                countries.append({
-                    'iso3': iso3,
-                    'country_code': data.get('country_code', iso3),
-                    'total_lines': summary.get('total_tariff_lines', 0),
-                    'vat_rate': summary.get('vat_rate_pct', 0)
-                })
-    countries.sort(key=lambda x: x['iso3'])
-    return countries
 
 def get_tariff_line(country_iso3: str, hs_code: str) -> Optional[Dict]:
     data = load_country_tariffs(country_iso3)
@@ -74,70 +51,75 @@ def calculate_import_taxes(
     language: str = 'fr'
 ) -> Dict[str, Any]:
     """
-    Calculates detailed import taxes using country-specific methodologies.
-    Supports Algerian (DZA), Tunisian (TUN), and Moroccan (MAR) cascade logic.
+    Calculates detailed import taxes using the Unified African Cascade Method.
+    
+    Step 1: Customs Duties (DD) on CIF Value
+    Step 2: Parafiscal Taxes on CIF Value
+    Step 3: VAT (TVA) on (CIF + DD + Parafiscal)
+    Step 4: Advance Tax on (CIF) or (Total TTC) - country dependent
     """
     tariff_line = get_tariff_line(country_iso3, hs_code)
-    if not tariff_line: return {'error': 'Data not found'}
-    
-    # 1. Exchange Rates & Base
+    if not tariff_line: return {'error': 'Tariff line not found'}
+
+    # Setup country parameters
     exchange_rates = {'DZA': 135.0, 'TUN': 3.10, 'MAR': 10.0}
     rate = exchange_rates.get(country_iso3, 1.0)
-    base_local = cif_value * rate
+    base_caf = cif_value * rate
     
-    # 2. Extract Rates
-    dd_rate = tariff_line.get('dd_rate', tariff_line.get('dd', 0)) / 100
-    vat_rate = tariff_line.get('vat_rate', 20 if country_iso3 == 'MAR' else 19) / 100
-    
-    # --- CALCULATION LOGIC ---
-    if country_iso3 == 'MAR':
-        # MOROCCAN CASCADE (ADII)
-        di_amt = base_local * dd_rate  # Droit d'Importation
-        tpi_amt = base_local * 0.0025  # Taxe Parafiscale (0.25%)
-        tva_base = base_local + di_amt + tpi_amt
-        tva_amt = tva_base * vat_rate
-        total_taxes = di_amt + tpi_amt + tva_amt
-        methodology = "Moroccan Official Cascade (ADII)"
-        currency = 'MAD'
+    dd_rate = (tariff_line.get('dd_rate', tariff_line.get('dd', 0))) / 100
+    tva_rate = 0.19 # Default
+    if country_iso3 == 'MAR': tva_rate = 0.20
+    elif country_iso3 == 'TUN': tva_rate = 0.19
 
+    # --- THE CASCADE ---
+    
+    # 1. Droits de Douane (Base: CAF)
+    dd_amount = base_caf * dd_rate
+    
+    # 2. Taxes Parafiscales (Base: CAF)
+    # Algeria: TCS (3%) + PRCT (2%) | Morocco: TPI (0.25%) | Tunisia: RPD + DC
+    parafiscal_amt = 0
+    if country_iso3 == 'DZA':
+        parafiscal_amt = base_caf * 0.05 # 3% TCS + 2% PRCT
+    elif country_iso3 == 'MAR':
+        parafiscal_amt = base_caf * 0.0025 # 0.25% TPI
     elif country_iso3 == 'TUN':
-        # TUNISIAN CASCADE (2026)
-        dc_rate = tariff_line.get('dc_rate', 0) / 100
-        dd_amt = base_local * dd_rate
-        dc_amt = (base_local + dd_amt) * dc_rate
-        rpd_amt = (dd_amt + dc_amt) * 0.03
-        tva_base = base_local + dd_amt + dc_amt + rpd_amt
-        tva_amt = tva_base * vat_rate
-        air_base = tva_base + tva_amt
-        air_amt = air_base * 0.10
-        total_taxes = dd_amt + dc_amt + rpd_amt + tva_amt + air_amt
-        methodology = "Tunisian Cascade (RPD + AIR)"
-        currency = 'TND'
+        # Special case: Tunisia DC is on (CAF + DD)
+        dc_amt = (base_caf + dd_amount) * (tariff_line.get('dc_rate', 0) / 100)
+        rpd_amt = (dd_amount + dc_amt) * 0.03
+        parafiscal_amt = dc_amt + rpd_amt
+
+    # 3. TVA (Base: CAF + DD + Parafiscal)
+    tva_base = base_caf + dd_amount + parafiscal_amt
+    tva_amount = tva_base * tva_rate
     
+    # 4. Avance sur Impôt
+    advance_tax_amt = 0
+    if country_iso3 == 'TUN':
+        # Tunisia AIR (10%) on Total TTC (CAF + DD + DC + RPD + TVA)
+        advance_tax_amt = (tva_base + tva_amount) * 0.10
     elif country_iso3 == 'DZA':
-        # ALGERIAN CASCADE
-        dd_amt = base_local * dd_rate
-        tcs_amt = base_local * 0.03
-        prct_amt = base_local * 0.02
-        tva_base = base_local + dd_amt + tcs_amt + prct_amt
-        tva_amt = tva_base * vat_rate
-        total_taxes = dd_amt + tcs_amt + prct_amt + tva_amt + 3500
-        methodology = "Algerian Official Cascade"
-        currency = 'DZD'
-    
-    else:
-        # STANDARD REGIME
-        dd_amt = base_local * dd_rate
-        tva_amt = (base_local + dd_amt) * vat_rate
-        total_taxes = dd_amt + tva_amt
-        methodology = "Standard Comparison"
-        currency = 'USD'
+        # Algeria PRCT is already in parafiscal (on CAF only)
+        advance_tax_amt = 0 
+
+    # Final Totals
+    fixed_fees = 3500 if country_iso3 == 'DZA' else (2.0 if country_iso3 == 'TUN' else 0)
+    total_to_pay = dd_amount + parafiscal_amt + tva_amount + advance_tax_amt + fixed_fees
 
     return {
         'hs_code': hs_code,
         'country': country_iso3,
-        'total_taxes': round(total_taxes, 2),
-        'methodology': methodology,
-        'currency': currency,
-        'base_value_local': round(base_local, 2)
+        'currency': 'DZD' if country_iso3 == 'DZA' else ('TND' if country_iso3 == 'TUN' else 'MAD'),
+        'calculation_cascade': {
+            'step1_customs_duty': round(dd_amount, 2),
+            'step2_parafiscal': round(parafiscal_amt, 2),
+            'step3_tva': round(tva_amount, 2),
+            'step4_advance_tax': round(advance_tax_amt, 2),
+            'fixed_fees': fixed_fees
+        },
+        'total_to_pay': round(total_to_pay, 2),
+        'methodology': 'Unified African Cascade (v2026)'
     }
+
+def get_available_countries():
+    return [{'iso3': 'DZA', 'name': 'Algérie'}, {'iso3': 'TUN', 'name': 'Tunisie'}, {'iso3': 'MAR', 'name': 'Maroc'}]
