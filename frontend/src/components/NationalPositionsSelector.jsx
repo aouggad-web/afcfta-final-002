@@ -4,14 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { ChevronDown, ChevronUp, Package, Check, DollarSign, Percent, FileText, AlertCircle, TrendingUp, TrendingDown, Info, Car, Leaf, Cog, Zap } from 'lucide-react';
+import { ChevronDown, ChevronUp, Package, Check, DollarSign, Percent, FileText, AlertCircle, TrendingUp, TrendingDown, Info, Car, Leaf, Cog, Zap, Maximize2, Minimize2 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 /**
- * Composant amélioré pour afficher et sélectionner les positions nationales
- * avec détails complets des tarifs et descriptions exactes
+ * Optimized component to display and select national tariff positions.
+ * Now handles long, multi-line denominations correctly with expandable view.
  */
 export default function NationalPositionsSelector({
   countryCode,
@@ -24,6 +24,7 @@ export default function NationalPositionsSelector({
   const [positions, setPositions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(true);
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
   const [error, setError] = useState(null);
   const [apiNote, setApiNote] = useState(null);
 
@@ -36,17 +37,15 @@ export default function NationalPositionsSelector({
       ddRate: "Droit de Douane",
       estimatedDuties: "Droits Estimés",
       select: "Sélectionner",
-      selected: "Sélectionné",
+      selected: "Sélectionnée",
       noPositions: "Aucune sous-position nationale disponible pour ce code HS",
       loadError: "Erreur lors du chargement des positions",
       positions: "positions disponibles",
       cifValue: "Valeur CIF Déclarée",
       source: "Source",
       digits: "chiffres",
-      newProduct: "Neuf",
-      usedProduct: "Occasion",
-      ageCategory: "Catégorie d'âge",
-      taxImpact: "Impact fiscal",
+      showMore: "Voir plus",
+      showLess: "Voir moins",
       selectToCalculate: "Sélectionner pour calculer les droits exacts"
     },
     en: {
@@ -64,44 +63,20 @@ export default function NationalPositionsSelector({
       cifValue: "Declared CIF Value",
       source: "Source",
       digits: "digits",
-      newProduct: "New",
-      usedProduct: "Used",
-      ageCategory: "Age category",
-      taxImpact: "Tax impact",
+      showMore: "Show more",
+      showLess: "Show less",
       selectToCalculate: "Select to calculate exact duties"
     }
   };
 
   const t = texts[language] || texts.fr;
 
-  // Fonction pour déterminer l'icône selon le type de produit
-  const getProductIcon = useCallback((description) => {
-    const desc = (description || '').toLowerCase();
-    if (desc.includes('neuf') || desc.includes('new')) return <Zap className="w-4 h-4 text-emerald-400" />;
-    if (desc.includes('occasion') || desc.includes('used')) return <Cog className="w-4 h-4 text-amber-400" />;
-    if (desc.includes('voiture') || desc.includes('car') || desc.includes('véhicule')) return <Car className="w-4 h-4 text-blue-400" />;
-    if (desc.includes('agricole') || desc.includes('agri')) return <Leaf className="w-4 h-4 text-green-400" />;
-    return <Package className="w-4 h-4 text-slate-400" />;
-  }, []);
-
-  // Fonction pour extraire les tags de la description
-  const extractTags = useCallback((description) => {
-    const tags = [];
-    const desc = (description || '').toLowerCase();
-    
-    if (desc.includes('neuf') || desc.includes('new')) tags.push({ label: language === 'fr' ? 'Neuf' : 'New', color: 'emerald' });
-    if (desc.includes('occasion') || desc.includes('used')) tags.push({ label: language === 'fr' ? 'Occasion' : 'Used', color: 'amber' });
-    
-    // Catégories d'âge pour véhicules
-    const ageMatch = desc.match(/<(\d+)\s*ans?|>(\d+)\s*ans?|(\d+)-(\d+)\s*ans?/i);
-    if (ageMatch) {
-      if (desc.includes('<')) tags.push({ label: `<${ageMatch[1] || ageMatch[3]} ans`, color: 'blue' });
-      else if (desc.includes('>')) tags.push({ label: `>${ageMatch[2] || ageMatch[4]} ans`, color: 'orange' });
-      else if (ageMatch[3] && ageMatch[4]) tags.push({ label: `${ageMatch[3]}-${ageMatch[4]} ans`, color: 'purple' });
-    }
-    
-    return tags;
-  }, [language]);
+  const toggleDescription = (idx) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
+    }));
+  };
 
   const fetchPositions = useCallback(async () => {
     if (!countryCode || !hs6Code || hs6Code.length < 6) {
@@ -121,16 +96,18 @@ export default function NationalPositionsSelector({
           { params: { language } }
         );
       } catch (pgErr) {
-        // Fallback to old API if PostgreSQL not available
+        // Fallback to optimized smart search if PG is missing
         response = await axios.get(
-          `${API}/authentic-tariffs/country/${countryCode}/sub-positions/${hs6Code.substring(0, 6)}`,
-          { params: { language } }
+          `${API}/hs6/smart-search`,
+          { params: { q: hs6Code.substring(0, 6), country_code: countryCode, include_sub_positions: true } }
         );
       }
       
-      if (response.data.success && response.data.sub_positions?.length > 0) {
-        setPositions(response.data.sub_positions);
-        setApiNote(response.data.note || (language === 'fr' ? response.data.note_fr : response.data.note_en));
+      const data = response.data;
+      if (data.results || (data.success && data.sub_positions)) {
+        const results = data.results || data.sub_positions;
+        setPositions(results);
+        setApiNote(data.note || (language === 'fr' ? data.note_fr : data.note_en));
       } else {
         setPositions([]);
       }
@@ -163,27 +140,21 @@ export default function NationalPositionsSelector({
 
   const calculateEstimatedDuties = useCallback((position) => {
     const value = parseFloat(cifValue) || 0;
-    const ddRate = position.dd || 0;
+    const ddRate = position.dd || position.duty_rate_pct || 0;
     return value * ddRate / 100;
   }, [cifValue]);
 
-  // Trier les positions par taux de DD (plus bas en premier)
   const sortedPositions = useMemo(() => {
-    return [...positions].sort((a, b) => (a.dd || 0) - (b.dd || 0));
-  }, [positions]);
-
-  // Calculer le min et max DD pour la visualisation
-  const { minDD, maxDD } = useMemo(() => {
-    if (positions.length === 0) return { minDD: 0, maxDD: 100 };
-    const dds = positions.map(p => p.dd || 0);
-    return { minDD: Math.min(...dds), maxDD: Math.max(...dds) };
+    return [...positions].sort((a, b) => (a.dd || a.duty_rate_pct || 0) - (b.dd || b.duty_rate_pct || 0));
   }, [positions]);
 
   const handleSelect = useCallback((position) => {
     if (onPositionSelect) {
-      onPositionSelect(position.code, position.description_fr || position.description_en);
+      const code = position.code || position.hs_code;
+      const desc = language === 'fr' ? (position.description_fr || position.description) : (position.description_en || position.description);
+      onPositionSelect(code, desc);
     }
-  }, [onPositionSelect]);
+  }, [onPositionSelect, language]);
 
   if (!countryCode || !hs6Code || hs6Code.length < 6) {
     return null;
@@ -218,7 +189,6 @@ export default function NationalPositionsSelector({
 
       {expanded && (
         <CardContent className="pt-0 space-y-4">
-          {/* Valeur CIF affichée */}
           {cifValue && (
             <div className="p-4 bg-gradient-to-r from-emerald-500/10 to-emerald-600/5 rounded-xl border border-emerald-500/20">
               <div className="flex items-center justify-between">
@@ -233,19 +203,10 @@ export default function NationalPositionsSelector({
                     </p>
                   </div>
                 </div>
-                {positions.length > 0 && (
-                  <div className="text-right">
-                    <p className="text-slate-500 text-xs">{t.taxImpact}</p>
-                    <p className="text-sm text-slate-300">
-                      {formatCurrency(calculateEstimatedDuties({ dd: minDD }))} - {formatCurrency(calculateEstimatedDuties({ dd: maxDD }))}
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
           )}
 
-          {/* Note informative */}
           {apiNote && (
             <div className="flex items-start gap-2 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
               <Info className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
@@ -279,166 +240,80 @@ export default function NationalPositionsSelector({
           {!loading && sortedPositions.length > 0 && (
             <div className="space-y-3">
               {sortedPositions.map((position, idx) => {
-                const isSelected = selectedPosition === position.code;
+                const currentCode = position.code || position.hs_code;
+                const isSelected = selectedPosition === currentCode;
                 const estimatedDuties = calculateEstimatedDuties(position);
-                const tags = extractTags(position.description_fr || position.description_en);
-                const isLowestRate = position.dd === minDD;
-                const isHighestRate = position.dd === maxDD;
+                const desc = language === 'fr' ? (position.description_fr || position.description) : (position.description_en || position.description);
+                const isLongDesc = desc && desc.length > 150;
+                const isDescExpanded = expandedDescriptions[idx];
                 
                 return (
                   <div 
                     key={idx}
-                    className={`
-                      relative rounded-xl border-2 transition-all duration-200 cursor-pointer overflow-hidden
-                      ${isSelected 
+                    className={`relative rounded-xl border-2 transition-all duration-200 cursor-pointer overflow-hidden ${
+                      isSelected 
                         ? 'border-purple-500 bg-purple-500/10' 
                         : 'border-slate-700 bg-slate-800/30 hover:border-slate-600 hover:bg-slate-800/50'
-                      }
-                    `}
+                    }`}
                     onClick={() => handleSelect(position)}
                   >
-                    {/* Badge meilleur taux */}
-                    {isLowestRate && positions.length > 1 && (
-                      <div className="absolute top-0 right-0">
-                        <div className="bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg flex items-center gap-1">
-                          <TrendingDown className="w-3 h-3" />
-                          {language === 'fr' ? 'Meilleur taux' : 'Best rate'}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {isHighestRate && positions.length > 1 && !isLowestRate && (
-                      <div className="absolute top-0 right-0">
-                        <div className="bg-red-500/80 text-white text-xs font-bold px-3 py-1 rounded-bl-lg flex items-center gap-1">
-                          <TrendingUp className="w-3 h-3" />
-                          {language === 'fr' ? 'Taux élevé' : 'High rate'}
-                        </div>
-                      </div>
-                    )}
-
                     <div className="p-4">
                       <div className="flex items-start gap-4">
-                        {/* Icône et Code */}
-                        <div className="flex-shrink-0">
-                          <div className={`
-                            p-3 rounded-xl
-                            ${isSelected ? 'bg-purple-500/20' : 'bg-slate-700/50'}
-                          `}>
-                            {getProductIcon(position.description_fr || position.description_en)}
-                          </div>
-                        </div>
-
-                        {/* Détails */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap mb-2">
-                            <span className={`
-                              font-mono text-lg font-bold px-3 py-1 rounded-lg
-                              ${isSelected 
-                                ? 'bg-purple-500/30 text-purple-300' 
-                                : 'bg-amber-500/20 text-amber-400'
-                              }
-                            `}>
-                              {position.code}
+                            <span className={`font-mono text-lg font-bold px-3 py-1 rounded-lg ${
+                              isSelected ? 'bg-purple-500/30 text-purple-300' : 'bg-amber-500/20 text-amber-400'
+                            }`}>
+                              {currentCode}
                             </span>
                             <Badge variant="outline" className="text-xs border-slate-600 text-slate-400">
-                              HS{position.digits || 10}
+                              HS{position.digits || currentCode.length} digits
                             </Badge>
-                            {isSelected && (
-                              <Badge className="bg-purple-500 text-white">
-                                <Check className="w-3 h-3 mr-1" />
-                                {t.selected}
-                              </Badge>
-                            )}
                           </div>
                           
-                          {/* Description */}
-                          <p className={`text-base mb-2 ${isSelected ? 'text-white' : 'text-slate-300'}`}>
-                            {language === 'fr' ? position.description_fr : position.description_en}
-                          </p>
-                          
-                          {/* Tags */}
-                          {tags.length > 0 && (
-                            <div className="flex items-center gap-2 mb-3">
-                              {tags.map((tag, tagIdx) => (
-                                <Badge 
-                                  key={tagIdx} 
-                                  className={`text-xs bg-${tag.color}-500/20 text-${tag.color}-400 border-${tag.color}-500/30 border`}
-                                >
-                                  {tag.label}
-                                </Badge>
-                              ))}
-                            </div>
-                          )}
-
-                          {/* Source */}
-                          {position.source && (
-                            <p className="text-xs text-slate-500 flex items-center gap-1">
-                              <FileText className="w-3 h-3" />
-                              {t.source}: {position.source}
+                          <div className="relative">
+                            <p className={`text-base leading-relaxed transition-all ${
+                              isSelected ? 'text-white' : 'text-slate-200'
+                            } ${!isDescExpanded && isLongDesc ? 'line-clamp-2' : ''}`}>
+                              {desc}
                             </p>
-                          )}
+                            {isLongDesc && (
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleDescription(idx);
+                                }}
+                                className="mt-1 text-purple-400 hover:text-purple-300 text-xs font-semibold flex items-center gap-1"
+                              >
+                                {isDescExpanded ? <><Minimize2 className="w-3 h-3"/> {t.showLess}</> : <><Maximize2 className="w-3 h-3"/> {t.showMore}</>}
+                              </button>
+                            )}
+                          </div>
                         </div>
 
-                        {/* Taux et Montants */}
                         <div className="flex-shrink-0 text-right space-y-2">
                           <div>
                             <p className="text-xs text-slate-500 uppercase">{t.ddRate}</p>
                             <p className={`text-2xl font-bold ${
-                              isLowestRate ? 'text-emerald-400' : 
-                              isHighestRate ? 'text-red-400' : 
-                              'text-amber-400'
+                              (position.dd || position.duty_rate_pct) === 0 ? 'text-emerald-400' : 'text-amber-400'
                             }`}>
-                              {position.dd || 0}%
+                              {position.dd || position.duty_rate_pct || 0}%
                             </p>
                           </div>
                           {cifValue && (
                             <div className="pt-2 border-t border-slate-700">
                               <p className="text-xs text-slate-500 uppercase">{t.estimatedDuties}</p>
-                              <p className={`text-xl font-bold ${
-                                isLowestRate ? 'text-emerald-400' : 
-                                isHighestRate ? 'text-red-400' : 
-                                'text-amber-400'
-                              }`}>
+                              <p className="text-xl font-bold text-amber-400">
                                 {formatCurrency(estimatedDuties)}
                               </p>
                             </div>
                           )}
                         </div>
                       </div>
-
-                      {/* Bouton de sélection */}
-                      {!isSelected && (
-                        <div className="mt-3 pt-3 border-t border-slate-700/50">
-                          <Button
-                            size="sm"
-                            className="w-full bg-slate-700 hover:bg-slate-600 text-slate-200"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleSelect(position);
-                            }}
-                          >
-                            {t.selectToCalculate}
-                          </Button>
-                        </div>
-                      )}
                     </div>
                   </div>
                 );
               })}
-            </div>
-          )}
-
-          {/* Légende */}
-          {!loading && positions.length > 1 && (
-            <div className="flex items-center justify-center gap-6 pt-4 border-t border-slate-700 text-xs text-slate-500">
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-                <span>{language === 'fr' ? 'Taux le plus bas' : 'Lowest rate'}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span>{language === 'fr' ? 'Taux le plus élevé' : 'Highest rate'}</span>
-              </div>
             </div>
           )}
         </CardContent>
