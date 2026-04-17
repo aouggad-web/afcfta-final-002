@@ -1,269 +1,522 @@
 {
-  "last_update": "2026-04-11T21:13:12.370367",
+  "last_update": "2026-04-15T21:19:04.449392",
   "articles": [
     {
-      "id": "4815b5c8eb1c",
-      "title": "Afrique Australe: Le Secrétaire exécutif de la SADC portera la voix de l'Afrique australe aux Réunions de printemps 2026 du FMI et de la Banque mondiale",
-      "summary": "[SADC] Son Excellence Monsieur Elias Magosi, Secrétaire exécutif de la Communauté de développement de l'Afrique australe (SADC), participera aux Réunions de printemps du Fonds monétaire international et du Groupe de la Banque mondiale, prévues du 13...",
-      "link": "https://fr.allafrica.com/stories/202604110235.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique Australe",
-      "published_at": "2026-04-11T19:44:09",
-      "fetched_at": "2026-04-11T21:13:11.769547"
+      "id": "a40ea1169718",
+      "title": "Uganda: From Postbank to Pearl - A Homegrown Bank Reimagining Banking in Uganda",
+      "summary": "[Nile Post] There is something quietly significant unfolding in Uganda's banking sector, and it goes beyond the headline figures.",
+      "link": "https://allafrica.com/stories/202604150717.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-15T17:58:30",
+      "fetched_at": "2026-04-15T21:19:03.753927"
     },
     {
-      "id": "1e8724d9b945",
-      "title": "Tunisie: L'hôpital Charles Nicolle lance un projet de digitalisation des marchés publics par l'IA",
-      "summary": "[La Presse] L'hôpital universitaire Charles Nicolle et la start-up \"Data to Innov\" ont signé, ce samedi 11 avril 2026, une convention de partenariat visant à développer des solutions numériques innovantes basées sur les technologies de...",
-      "link": "https://fr.allafrica.com/stories/202604110224.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique du Nord",
-      "published_at": "2026-04-11T19:23:24",
-      "fetched_at": "2026-04-11T21:13:11.769579"
+      "id": "72c61bff6aab",
+      "title": "Uganda: Kasese Moves to Clear Illegal Structures in Trade Order Crackdown",
+      "summary": "[Nile Post] Authorities in Kasese Municipality have announced a crackdown on illegal business structures, with enforcement operations set to begin on April 15, 2026.",
+      "link": "https://allafrica.com/stories/202604150693.html",
+      "source": "AllAfrica",
+      "category": "Commerce",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-15T17:31:37",
+      "fetched_at": "2026-04-15T21:19:03.768506"
     },
     {
-      "id": "88a647cab26e",
-      "title": "Congo-Brazzaville: Exploitation minière - Ulsan Mining Congo va produire deux millions de tonnes d'acier par année",
-      "summary": "[Les DÃ©pÃªches de Brazzaville] La société Ulsan Holding, à travers sa filiale congolaise Ulsan Mining Congo, a annoncé, le 6 avril, la poursuite active de ses investissements après le développement du minerai de fer de Mayoko-Mossendjo, dans le...",
-      "link": "https://fr.allafrica.com/stories/202604110223.html",
+      "id": "4cee77516c9d",
+      "title": "Afrique: FMI, Banque mondiale - Une relation qui se renforce",
+      "summary": "[Togonews] Le ministre des Finances et du Budget, Essowé Georges Barcola, est à Washington cette semaine pour participer aux Assemblées de printemps du FMI et de la Banque mondiale.",
+      "link": "https://fr.allafrica.com/stories/202604150661.html",
       "source": "AllAfrica (FR)",
       "category": "Économie",
-      "region": "Afrique Centrale",
-      "published_at": "2026-04-11T19:21:33",
-      "fetched_at": "2026-04-11T21:13:11.769624"
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-15T16:59:45",
+      "fetched_at": "2026-04-15T21:19:03.932227"
     },
     {
-      "id": "3416328e8d3b",
-      "title": "Afrique: Dakar abrite l'AFOGEX 2026, du du 10 au 12 juin",
-      "summary": "[APS] Dakar -- L'édition 2026 du Salon Africa Oil & Gas Expo (AFOGEX), une manifestation dédiée au secteur du pétrole et du gaz en Afrique de l'Ouest, se tient à Dakar du 10 au 12 juin, a-t-on appris des organisateurs.",
-      "link": "https://fr.allafrica.com/stories/202604110216.html",
+      "id": "4dcd49f11ee6",
+      "title": "Togo: Le secteur privé doit être acteur et non spectateur",
+      "summary": "[Togonews] Le constat est partagé : le secteur privé reste largement en marge des financements climatiques internationaux, non par manque d'intérêt, mais en raison de procédures d'accès jugées trop complexes et de barrières techniques difficiles à...",
+      "link": "https://fr.allafrica.com/stories/202604150657.html",
+      "source": "AllAfrica (FR)",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-15T16:59:44",
+      "fetched_at": "2026-04-15T21:19:03.932265"
+    },
+    {
+      "id": "9d17345e439c",
+      "title": "Africa: US-Iran Tensions - Crude Oil Rebounds Above $100 Per Barrel",
+      "summary": "[Vanguard] The price of crude oil has risen to over $100 per barrel from $90 in the global market, following the collapse of talks between the United States and Iran over the weekend.",
+      "link": "https://allafrica.com/stories/202604150622.html",
+      "source": "AllAfrica",
+      "category": "Commerce",
+      "region": "Afrique",
+      "published_at": "2026-04-15T16:38:15",
+      "fetched_at": "2026-04-15T21:19:03.768664"
+    },
+    {
+      "id": "0eaaec4b0940",
+      "title": "Afrique: La transformation agricole de l'Éthiopie est un exemple pour le pays selon la CUA",
+      "summary": "[ENA] Addis-Abeba -- La Commission de l'Union africaine estime que les avancées de l'Éthiopie en matière de transformation agricole constituent une référence pour les autres pays du continent engagés dans l'amélioration de leur sécurité alimentaire...",
+      "link": "https://fr.allafrica.com/stories/202604150594.html",
       "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique",
-      "published_at": "2026-04-11T19:18:40",
-      "fetched_at": "2026-04-11T21:13:11.769669"
+      "published_at": "2026-04-15T16:19:26",
+      "fetched_at": "2026-04-15T21:19:03.931992"
     },
     {
-      "id": "75a390e4e8f0",
-      "title": "Congo-Kinshasa: Conférence sur l'agriculture au Maniema - Priorité au café, cacao et palmier à huile",
-      "summary": "[Radio Okapi] La première conférence provinciale sur l'agriculture, l'environnement, le tourisme et l'eau s'est clôturée vendredi 9 avril au Maniema, après trois jours de travaux. Les participants ont formulé une série de recommandations concrètes...",
-      "link": "https://fr.allafrica.com/stories/202604110210.html",
+      "id": "96c097283e6d",
+      "title": "Congo-Kinshasa: Le naufrage d'une pirogue sur le lac Tanganyika fait au moins trente morts",
+      "summary": "[RFI] En République démocratique du Congo (RDC), un nouveau naufrage s'est produit sur le lac Tanganyika dans la nuit du dimanche 12 au lundi 13 avril 2026. Une embarcation en bois et motorisée a chaviré à la suite d'un vent violent. Le mardi 14...",
+      "link": "https://fr.allafrica.com/stories/202604150550.html",
       "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique Centrale",
-      "published_at": "2026-04-11T19:07:47",
-      "fetched_at": "2026-04-11T21:13:11.769713"
+      "published_at": "2026-04-15T15:42:42",
+      "fetched_at": "2026-04-15T21:19:03.932033"
     },
     {
-      "id": "eb5baca7f261",
-      "title": "Afrique: Tunisie - 5e en Afrique dans l'évaluation 2025 du climat des affaires par la Banque mondiale",
-      "summary": "[La Presse] La Tunisie occupe la cinquième place sur dix pays africains évalués dans le rapport \"Business Ready 2025\" de la Banque mondiale, avec un score global d'environ 52,7 points sur 100, inférieur à la moyenne mondiale. Ce classement place le...",
-      "link": "https://fr.allafrica.com/stories/202604110186.html",
+      "id": "6690c36b8829",
+      "title": "Growth vs Corruption: Top bank CEO predicts South Africa's economic future - Business Insider Africa",
+      "summary": "Growth vs Corruption: Top bank CEO predicts South Africa's economic future  Business Insider Africa",
+      "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPaF95UVlJSEZoRzc3ZTM3WU4wN3RwVGhZd18zSFdCWDlKZDRIb0tONUg5Z3RfOFZBUUN4Y0RRN2RtdmVVNnpGMmNpTThIODdwcFZmMVh3WExwd0pQb0ZWNVp1azV0MGl3TEVLOVdkTDRKQjc2cVVlWHZkVV9sQndTLW93bUxVcDRhV1R0RTdpLUdrb2xjRDlvdEFXRzBlODUtcmNwWk5MMFhTR3BwVGgwNDVBekNwY3dhWWZQelVVTHYxTERLM0FGdQ?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Finance",
+      "region": "Afrique Australe",
+      "published_at": "2026-04-15T15:29:58",
+      "fetched_at": "2026-04-15T21:19:04.232091"
+    },
+    {
+      "id": "7c92edd61c40",
+      "title": "South Africa: South Africa to Host Landmark African Union Ministerial Session On Transport and Energy",
+      "summary": "[African Union] At a defining moment for Africa's infrastructure development trajectory, the African Union Commission (AUC), in collaboration with the Government of the Republic of South Africa, will convene the Fifth Session of the Specialised...",
+      "link": "https://allafrica.com/stories/202604150523.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique Australe",
+      "published_at": "2026-04-15T15:21:30",
+      "fetched_at": "2026-04-15T21:19:03.800782"
+    },
+    {
+      "id": "76e44d9eba40",
+      "title": "Kenya: Pressure Mounts On Ruto To Address Rising Costs",
+      "summary": "[Capital FM] Nairobi -- The United Alternative Government opposition formation has called on President William Ruto to convene a special sitting of Parliament within seven days to address what it describes as a deepening fuel crisis, as pump prices...",
+      "link": "https://allafrica.com/stories/202604150520.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-15T15:20:26",
+      "fetched_at": "2026-04-15T21:19:03.800591"
+    },
+    {
+      "id": "c9ad4688f8c0",
+      "title": "Zimbabwe: Nurses Announce Plans For Nationwide Strike",
+      "summary": "[New Zimbabwe] Zimbabwean nurses have announced plans to embark on a nationwide strike from April 20 to 22 stating that concerns they raised last month were ignored by government.",
+      "link": "https://allafrica.com/stories/202604150514.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique Australe",
+      "published_at": "2026-04-15T15:14:53",
+      "fetched_at": "2026-04-15T21:19:03.800635"
+    },
+    {
+      "id": "455a3e62907a",
+      "title": "Africa: African Consultative Group Meeting: Statement by the Chairman of the African Caucus and the Managing Director of the IMF",
+      "summary": "[IMF] Washington, DC -- Mr. Seedy Keita, Chairman of the African Caucus and Minister of Finance and Economic Affairs of The Gambia, and Ms. Kristalina Georgieva, Managing Director of the International Monetary Fund (IMF), issued the following...",
+      "link": "https://allafrica.com/stories/202604150500.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-15T14:45:54",
+      "fetched_at": "2026-04-15T21:19:03.800821"
+    },
+    {
+      "id": "ebcc832727ac",
+      "title": "Kenya: Pain for Commuters As Matatus, Boda Bodas Hike Fares",
+      "summary": "[Capital FM] Nairobi -- Travellers across the country are already feeling the pinch of the latest fuel price hike, with public transport operators moving quickly to raise fares to cushion themselves from rising operating costs.",
+      "link": "https://allafrica.com/stories/202604150494.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-15T13:45:23",
+      "fetched_at": "2026-04-15T21:19:03.800669"
+    },
+    {
+      "id": "6e131d23f9d2",
+      "title": "Afrique: La région subsaharienne sous pression face au choc énergétique mondial, selon le FMI",
+      "summary": "[allAfrica] L'Afrique subsaharienne apparaît comme l'une des régions les plus exposées aux conséquences économiques de la guerre au Moyen-Orient et à la flambée des prix de l'énergie, selon le dernier rapport sur les Perspectives de l'économie...",
+      "link": "https://fr.allafrica.com/stories/202604150477.html",
+      "source": "AllAfrica (FR)",
+      "category": "Économie",
+      "region": "Afrique",
+      "published_at": "2026-04-15T13:35:45",
+      "fetched_at": "2026-04-15T21:19:03.931874"
+    },
+    {
+      "id": "b646cda87c0a",
+      "title": "Réunions de printemps 2026 : économie mondiale, le FMI alerte sur les risques liés aux tensions géopolitiques - Zoom Eco",
+      "summary": "Réunions de printemps 2026 : économie mondiale, le FMI alerte sur les risques liés aux tensions géopolitiques  Zoom Eco",
+      "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPVzNXQU1IZlBfV05vZUc0dzFFNHdUYXdzTG1YT2pndUREbVBMTlROTVpQUXJOTnZ1bnRLT1V3UUpkbGllYVpSd0ZhX0h4SGkydGVkczlCOTJkN0pSbWkwVktaNFlWZ29ranJRV28tV1VVakRNQW8zbVY1eG9yb09GTWtnUENyR1lMSVJhWWk1UnJkUlFGdFB5NkIyUGFYYmVJeTB0RURvTElVeTl0SU91ZlRENy1TTENDWUQ3MG9sbmVwLVdLQjBTVlRhR2RucHh5elE?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Finance",
+      "region": "Afrique",
+      "published_at": "2026-04-15T13:18:46",
+      "fetched_at": "2026-04-15T21:19:04.389301"
+    },
+    {
+      "id": "1a5bc4b7591e",
+      "title": "Kenya: CBK Licenses 32 Digital Lenders, Total Rises to 227",
+      "summary": "[Capital FM] Nairobi -- The Central Bank of Kenya (CBK) has licensed an additional 32 Digital Credit Providers (DCPs), bringing the total number of approved players in the country to 227.",
+      "link": "https://allafrica.com/stories/202604150392.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-15T11:36:18",
+      "fetched_at": "2026-04-15T21:19:03.753894"
+    },
+    {
+      "id": "0b0c8495b4c5",
+      "title": "Afrique: Le FMI alerte sur un risque de dégradation durable dans la région subsaharienne",
+      "summary": "[Sud Quotidien] À l'occasion des Assemblées de printemps 2026 à Washington, le FMI dresse un constat préoccupant pour l'Afrique subsaharienne. Entre tensions géopolitiques, inflation persistante et resserrement financier, la région fait face à un...",
+      "link": "https://fr.allafrica.com/stories/202604150393.html",
+      "source": "AllAfrica (FR)",
+      "category": "Économie",
+      "region": "Afrique",
+      "published_at": "2026-04-15T11:36:18",
+      "fetched_at": "2026-04-15T21:19:03.932085"
+    },
+    {
+      "id": "6b4a6082964a",
+      "title": "Afrique: Haute technologie - La Tunisie brille à un concours mondial et décroche sa place à la finale en Chine",
+      "summary": "[Tunis Afrique Presse] Tunis -- La Tunisie s'est distinguée, lors de la phase régionale de la 10 édition de la \"Huawei ICT Competition\", en réussissant, pour la troisième année consécutive, à qualifier trois équipes pour la finale mondiale prévue en...",
+      "link": "https://fr.allafrica.com/stories/202604150290.html",
       "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T18:38:28",
-      "fetched_at": "2026-04-11T21:13:11.769405"
+      "published_at": "2026-04-15T10:35:37",
+      "fetched_at": "2026-04-15T21:19:03.932122"
     },
     {
-      "id": "b34499c8d382",
-      "title": "Sénégal : stabiliser les équilibres sans fragiliser l’économie réelle, dans une Afrique et un monde sous tension. - Financial Afrik",
-      "summary": "Sénégal : stabiliser les équilibres sans fragiliser l’économie réelle, dans une Afrique et un monde sous tension.  Financial Afrik",
-      "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxPQ0hUX1VPNWhRUEJkVXRSc2Rfc2xzZEtHN3J6YmpGRmZCV2RZZGhLdWVETjdHV1V2Zld1djI2cTNyV0hEUnNyZkZqNWF2akNsT2d6Y0cxMUdDc0lNTGhXMFkzYmVLczhxU1ZrVFh2ODVaeFRUTDY3QXFMZUt6NUhlTWo3amVCYklyUVdNMnJISjI4Ylp0U1NReVVYNTZOY1BKenpKc25hVEYzaTJDS1NhZk5HNDBrNjR6clhIZVdMV1k3cHhnblJWZkxjMHhlRVhQT3BGTGl2MTNmOURkcnN0Y1J4eXBzUQ?oc=5",
+      "id": "9f176b1a1076",
+      "title": "Ghana: Ghana Records $4.2bn Trade Surplus for Fourth Quarter 2025",
+      "summary": "[Ghanaian Times] GHANA'S trade surplus surged to a record $4.2 billion in the fourth quarter of 2025, reflecting a strong rebound in export performance.",
+      "link": "https://allafrica.com/stories/202604150261.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-15T10:18:29",
+      "fetched_at": "2026-04-15T21:19:03.800844"
+    },
+    {
+      "id": "06d7fc2f8da3",
+      "title": "Liberia: Infrastructure Gaps Threaten Harper Port's Trade Potential",
+      "summary": "[Liberian Observer] At a time when West Africa's maritime sector is expanding and regional ports are grappling with congestion, the Port of Harper in Maryland County is struggling to position itself as a viable trade hub due to persistent...",
+      "link": "https://allafrica.com/stories/202604150254.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-15T10:15:43",
+      "fetched_at": "2026-04-15T21:19:03.800872"
+    },
+    {
+      "id": "bb23f87438c2",
+      "title": "South Africa's township businesses are fighting a silent cashflow crisis - ZAWYA",
+      "summary": "South Africa's township businesses are fighting a silent cashflow crisis  ZAWYA",
+      "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQN3RCRjhfT2thYW9JcWo2Qk1aX0d6MmdraVllemNIazdmcnQxNkpDUEswdEFsd1NybUZ5NEo5WHJvS0Y5Y1Fxa3hMbHdraldWbDkyTmdDRjA4SExBNnhjTU5LWXZYc1NiRW9CTkZ0eGRWSkdGTHI2WmhXLUxRYnEtRWFacjRmbUN0cEVSNnpERGxBZjJoTW9qbFZWSFZ4REFzMmZJY1BUSXJnSXQ4TTRhTVFRTTVTeE5OMDV6Rw?oc=5",
       "source": "Google News (Reuters, AFP, etc.)",
       "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-11T18:37:01",
-      "fetched_at": "2026-04-11T21:13:12.175545"
+      "region": "Afrique Australe",
+      "published_at": "2026-04-15T10:07:45",
+      "fetched_at": "2026-04-15T21:19:04.232152"
     },
     {
-      "id": "d5c4b8acbd12",
-      "title": "Madagascar: Ceo Summit - La transformation locale comme levier de développement",
-      "summary": "[L'Express de Madagascar] Clap de fin pour la deuxième édition du CEO Summit. Plusieurs résolutions ont été prises lors de cette édition, avec un accent particulier sur la transformation locale pour Madagascar.",
-      "link": "https://fr.allafrica.com/stories/202604110088.html",
+      "id": "9d19d9ce5068",
+      "title": "Maroc: Sur Ordre de Sa Majesté le Roi, SAR le Prince Héritier Moulay El Hassan inaugure la 'Tour Mohammed VI'",
+      "summary": "[Libération] Sur Ordre de Sa Majesté le Roi, SAR le Prince Héritier Moulay El Hassan inaugure la \"Tour Mohammed VI\".",
+      "link": "https://fr.allafrica.com/stories/202604150230.html",
+      "source": "AllAfrica (FR)",
+      "category": "Économie",
+      "region": "Afrique du Nord",
+      "published_at": "2026-04-15T09:52:50",
+      "fetched_at": "2026-04-15T21:19:03.932196"
+    },
+    {
+      "id": "9af7860bd7c4",
+      "title": "Congo-Kinshasa: 1,25 milliard USD levés grâce à l'emprunt international « Mbote » (Eurobond)",
+      "summary": "[Radio Okapi] La République démocratique du Congo a réussi une opération majeure sur les marchés financiers internationaux en levant 1,25 milliard de dollars américains à travers son tout premier emprunt international, appelé Eurobond « Mbote ».",
+      "link": "https://fr.allafrica.com/stories/202604150185.html",
       "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique Centrale",
-      "published_at": "2026-04-11T12:51:22",
-      "fetched_at": "2026-04-11T21:13:11.769446"
+      "published_at": "2026-04-15T09:31:50",
+      "fetched_at": "2026-04-15T21:19:03.932166"
     },
     {
-      "id": "8b7d3c7ac63c",
-      "title": "Cote d'Ivoire: 23 000 tonnes de cacao résiduel enlevées après les plaintes de planteurs",
-      "summary": "[RFI] En Côte d'Ivoire, le Conseil Café Cacao (CCC), le régulateur de la filière, a annoncé cette semaine l'octroi de 23 000 tonnes de cacao à l'organisation interprofessionnelle agricole (OIA). Cette mesure devrait permettre d'écouler les derniers...",
-      "link": "https://fr.allafrica.com/stories/202604110050.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-11T12:10:10",
-      "fetched_at": "2026-04-11T21:13:11.769486"
-    },
-    {
-      "id": "a6cbfcf2bc3f",
-      "title": "Afrique: BAD - Le continent se dote d'une Nouvelle architecture financière",
-      "summary": "[Les DÃ©pÃªches de Brazzaville] Le dialogue consultatif sur la Nouvelle architecture financière africaine (Nafa), tenu par la Banque africaine de développement (BAD) le 9 avril à Abidjan, en Côte d'Ivoire, a débouché sur l'adoption de celle-ci dans...",
-      "link": "https://fr.allafrica.com/stories/202604110026.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-11T11:38:11",
-      "fetched_at": "2026-04-11T21:13:11.769366"
-    },
-    {
-      "id": "6496fdb93076",
-      "title": "Afrique: Revue de presse de l'Afrique Francophone du 11 avril 2026",
-      "summary": "[allAfrica] Tchad : Mahamat Idriss Déby remanie son premier cercle à la présidence",
-      "link": "https://fr.allafrica.com/stories/202604110001.html",
+      "id": "ad2afe921e21",
+      "title": "Madagascar: Carburant - Le FMI remet en cause l'urgence énergétique",
+      "summary": "[L'Express de Madagascar] Les émissaires du FMI recommandent le maintien du mécanisme d'ajustement automatique du prix du carburant. Ce qui va à l'encontre de la décision étatique de plafonner les prix à la pompe dans le cadre de l'état d'urgence...",
+      "link": "https://fr.allafrica.com/stories/202604150181.html",
       "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique Centrale",
-      "published_at": "2026-04-11T09:00:09",
-      "fetched_at": "2026-04-11T21:13:11.769312"
+      "published_at": "2026-04-15T09:29:35",
+      "fetched_at": "2026-04-15T21:19:03.931933"
     },
     {
-      "id": "2e16b6ffd9ab",
-      "title": "Namibia: Commercial Banks Liquidity Tighten As Deposits Decline",
-      "summary": "[Namibian] The banking industry has recorded the highest level in its loan-to-deposit ratio (LDR) in recent years, as more people borrow and dig into savings.",
-      "link": "https://allafrica.com/stories/202604100537.html",
+      "id": "0c7d786f3d1a",
+      "title": "Kenya: Kerosene Spared in Latest Fuel Review On Sh108 Subsidy",
+      "summary": "[Capital FM] Nairobi -- Kerosene prices remained unchanged at Sh152.78 per litre in the latest review by the Energy and Petroleum Regulatory Authority (EPRA), after the government applied the highest subsidy on the product.",
+      "link": "https://allafrica.com/stories/202604150118.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-15T08:49:05",
+      "fetched_at": "2026-04-15T21:19:03.800901"
+    },
+    {
+      "id": "adaa3fbb3758",
+      "title": "South Africa: Shops Keep Food Prices High While Farming Costs Drop",
+      "summary": "[Scrolla] The Competition Commission of South Africa found that the farm price for white maize dropped sharply by December last year.   Shops did not pass these large savings on to buyers and stores kept the cost of maize meal very high.",
+      "link": "https://allafrica.com/stories/202604150113.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique Australe",
+      "published_at": "2026-04-15T08:40:45",
+      "fetched_at": "2026-04-15T21:19:03.800710"
+    },
+    {
+      "id": "ec0aaa53bcb8",
+      "title": "Kenya: How Kenya Lost Sh3.2bn in Abrupt Fuel Deal Cancellation",
+      "summary": "[Capital FM] Appearing before the Senate Standing Committee on Energy, Managing Director Angeline Maangi disclosed that the firm had moved to secure fuel supplies under an urgent government request, only for the Ministry of Energy and Petroleum to...",
+      "link": "https://allafrica.com/stories/202604150081.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-15T06:44:05",
+      "fetched_at": "2026-04-15T21:19:03.800743"
+    },
+    {
+      "id": "4a1efd15680a",
+      "title": "Liberia: 'Liberia Is Not Poor - It Is Poorly Negotiated' - Tengbeh Pushes Trade-for-Transformation Agenda",
+      "summary": "[Liberian Investigator] Monrovia - The Executive Director of the Liberia Labour and Governance Alliance, George S. Tengbeh, has sounded the alarm over what he describes as a deep structural failure in how Liberia manages its natural resources,...",
+      "link": "https://allafrica.com/stories/202604150066.html",
       "source": "AllAfrica",
       "category": "Commerce",
-      "region": "Afrique Australe",
-      "published_at": "2026-04-10T17:46:47",
-      "fetched_at": "2026-04-11T21:13:11.752736"
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-15T05:23:02",
+      "fetched_at": "2026-04-15T21:19:03.768564"
     },
     {
-      "id": "3de502021dae",
-      "title": "Impact du conflit au Moyen-Orient sur l’Afrique : De la gestion des chocs au renforcement de la résilience - La Presse de Tunisie",
-      "summary": "Impact du conflit au Moyen-Orient sur l’Afrique : De la gestion des chocs au renforcement de la résilience  La Presse de Tunisie",
-      "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPalZRSjBwd3RTaHRtdGJJX1I1eDdsZ1dIaU10NTY1a3JYeElzbXVTTXVvMmFYVWJUU1dCYXd6ODdHaC1yeDdBRUdnRnBfYW1FYlNZc0QyVUNab3dTOTRTNUNXRVlBS3pIbjBXUVNyV21uQk9PUWNZZDk2dHdNemZQSmlvNkVXUWNLZU9ZQUh1eGlFY3dxQjNwUWFOSWw1aE52bWNjTGxEdVhBRXFzbk1mQkFqRkhLZV96Z09BQVl2VUNOcVRsaGhtVk5tNVNqRmtNclNqUmdn?oc=5",
+      "id": "37527b0eff05",
+      "title": "Nigeria: IMF Urges Caution As Middle East War Clouds Outlook Ahead of CBN Rate Decision",
+      "summary": "[Leadership] Ahead of the Monetary Policy Committee (MPC) meeting of the Central Bank of Nigeria next month (May 2026), the International Monetary Fund has urged central banks across the world to adopt a cautious \"wait and see\" approach as the...",
+      "link": "https://allafrica.com/stories/202604150063.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-15T05:23:01",
+      "fetched_at": "2026-04-15T21:19:03.753954"
+    },
+    {
+      "id": "c236722d8cd0",
+      "title": "Ethiopia: Central Bank Governor Highlights Ethiopia's Financial Reforms At IMF-World Bank Meetings",
+      "summary": "[ENA] Addis Ababa -- Governor of the National Bank of Ethiopia, Eyob Tekalign, took center stage at a Capacity Development Talk held on the sidelines of the IMF/World Bank Spring Meetings 2026, where he presented Ethiopia's comprehensive financial...",
+      "link": "https://allafrica.com/stories/202604150026.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-15T04:56:20",
+      "fetched_at": "2026-04-15T21:19:03.753852"
+    },
+    {
+      "id": "abfc87ea2532",
+      "title": "Afrique économie - Tunisie: vers un retour de la centrale syndicale UGTT sur le devant de la scène? - RFI",
+      "summary": "Afrique économie - Tunisie: vers un retour de la centrale syndicale UGTT sur le devant de la scène?  RFI",
+      "link": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQakd1dVAyd2lIREJESG1Zd21hWkQ0LVNJTS1Gc2FjNHBNQ3FZMHZGNTIxeTVtOEhlYVB1Q0ctU0duV3FuNWRqSkFqeDFhMWw2UlJfbnU3VDdOT01xcjJqaVJLTF9wUHBGMHY4LWRPdVlWNm9iWnNGcUlFQm1YZVdVRTVSOWlIYVZBWUw2SjFMWHBmdlUzeVlGcmI4M0NXekRrZktLZFctYXA4MTlUdmhYbFdZVXpaRnplb2JQRHJjY2xxLUFKdW1Vcmw1dFFuVVVpRnIxMzhIbU02dGkzb1E?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique du Nord",
+      "published_at": "2026-04-14T22:41:00",
+      "fetched_at": "2026-04-15T21:19:04.389517"
+    },
+    {
+      "id": "8ec08544c23a",
+      "title": "East Africa: East Africa's Trade Wall - Tear Down Barriers or Share the Blame",
+      "summary": "[Nile Post] East Africa's trade story is one of promise repeatedly slowed by its own policies. The numbers suggest momentum: intra-regional trade has climbed from about $9.8 billion in 2021 to $12.1 billion in 2023, reaching $14.3 billion in 2024.",
+      "link": "https://allafrica.com/stories/202604140637.html",
+      "source": "AllAfrica",
+      "category": "Commerce",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-14T18:20:45",
+      "fetched_at": "2026-04-15T21:19:03.768629"
+    },
+    {
+      "id": "bbddd0e4d68f",
+      "title": "Nigeria: UBA Equips Over 700 Young Professionals Under Graduate Programme",
+      "summary": "[Vanguard] United Bank for Africa (UBA) Plc has reinforced its commitment towards tackling youth unemployment across the continent with the successful employment of over 700 young professionals under its Graduate Management Acceleration Programme...",
+      "link": "https://allafrica.com/stories/202604140616.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-14T18:02:35",
+      "fetched_at": "2026-04-15T21:19:03.754101"
+    },
+    {
+      "id": "85e14dc3d241",
+      "title": "Nigeria: Cardoso Living Up to His Promise 1",
+      "summary": "[Vanguard] CBN Governor Yemi Cardoso, during his confirmation hearing, September 2023.",
+      "link": "https://allafrica.com/stories/202604140614.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-14T18:02:34",
+      "fetched_at": "2026-04-15T21:19:03.754123"
+    },
+    {
+      "id": "3430b480c8a8",
+      "title": "Liberia: Liberia's Banknote Printing Debate: Necessity or Cause for Concern?",
+      "summary": "[New Dawn] The Central Bank of Liberia's (CBL) proposal to print additional banknotes, intended to replace worn currency and address growing liquidity pressures, has triggered intense public debate.",
+      "link": "https://allafrica.com/stories/202604140605.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-14T17:33:25",
+      "fetched_at": "2026-04-15T21:19:03.754019"
+    },
+    {
+      "id": "d58aa4cf48a7",
+      "title": "Liberia: NPA Deputy Managing Director Tours Harper Port, Highlights Major Trade Opportunities",
+      "summary": "[FrontPageAfrica] Harper -- The Deputy Managing Director for Operations of the National Port Authority (NPA), Emmanuel M. Horton, has described the Port of Harper as a strategic gateway capable of boosting Liberia's economy if investments in...",
+      "link": "https://allafrica.com/stories/202604140359.html",
+      "source": "AllAfrica",
+      "category": "Commerce",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-14T11:16:38",
+      "fetched_at": "2026-04-15T21:19:03.768593"
+    },
+    {
+      "id": "029ced4410a9",
+      "title": "Somalia: Somalia President Meets Chinese Delegation to Boost Security, Trade Ties",
+      "summary": "[Shabelle] Mogadishu -- Somalia's President Hassan Sheikh Mohamud met a senior Chinese delegation on Tuesday to discuss security, peace and trade, in talks aimed at strengthening bilateral relations between the two countries.",
+      "link": "https://allafrica.com/stories/202604140341.html",
+      "source": "AllAfrica",
+      "category": "Commerce",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-04-14T11:09:10",
+      "fetched_at": "2026-04-15T21:19:03.768533"
+    },
+    {
+      "id": "b0a94818e32a",
+      "title": "Sudan: Second Phase of Currency Exchange to Begin in Khartoum and Al-Gezira On April 15",
+      "summary": "[SNA] Khartoum, April 12, 2026 (SUNA) - The Central Bank of Sudan (CBOS) has announced the launch of the second phase of its currency exchange process in Khartoum and Al-Gezira on April 15, running until May 15, alongside the completion of exchange...",
+      "link": "https://allafrica.com/stories/202604140284.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-14T10:24:21",
+      "fetched_at": "2026-04-15T21:19:03.753992"
+    },
+    {
+      "id": "4fc4aa7fe483",
+      "title": "From Fragmented Markets to Regional Powerhouse: Africa’s Path to Economic Growth - Devdiscourse",
+      "summary": "From Fragmented Markets to Regional Powerhouse: Africa’s Path to Economic Growth  Devdiscourse",
+      "link": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOVm8wSl9YZDdScHFYY0tlak1qb3ExZlh3ZUN5eGZZRzN6LXJWajdIaTB5U2Z5M2dKb29odzFKc0FsQ2prN0J4YVlHazRjU3M5SVRjNmRYcllyNXc1djZkRjNhTkFfcUp3RzJZbm5hN0RmcnBUX2twMHdhUVFsbnVhR3gwMVhrdjlCTmZOZXRsY0tDSGFwamRZX29TZUlucFpmMkI4ZXdVdUxPMTBFZ3hXNHBPOWI1YWpiNklWd05hRFJlOG1Na3hFSEpOM3DSAdIBQVVfeXFMT25TQWswZW12WnN3SmxCX2NNR3ZpMUlkUkdOWHdDbzNFbEdwUVAzeW1oekdiY3VpdlR5TVRaQm44RTUyelRVMVRiX1hnZjJScFdwYzM2ejhuQzBNUXNmUUgwSndLbTRKX1F3cm9CMzlnVHB1VGRlSVU3Uk4yWUhuX1plQ2N0c2l2X0ZQTVZkblBDcTJKQnF2SUt0aVR4c0QwMllmTzd4d204djhBcWNvRTVhM2dtWE1ZRHpiNzVlX1RRLWpERXNhaHZXQnhoTTJXbnlR?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique",
+      "published_at": "2026-04-14T03:22:15",
+      "fetched_at": "2026-04-15T21:19:04.232383"
+    },
+    {
+      "id": "2799d72d94a1",
+      "title": "Afrique économie - En Tanzanie, les véhicules électriques passent à la vitesse supérieure - RFI",
+      "summary": "Afrique économie - En Tanzanie, les véhicules électriques passent à la vitesse supérieure  RFI",
+      "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxPekxaay1xblJodFpCdmxiSDJkTkZnR3o5dkM4bWNkM1pGa1RaWHJSSWlSLTZCb2FIQkJ0Z1RkMlFOTzEteHVjSGtaRV9hbUJmRGFLNTVOY0wxRUc1dXp2cm5DM3k5LXlvZXZXRW1TUTZ2QkhPQjdLWG5RNW53WV9saFJSZHVTWEhTbDI2eDR0blZOMk1xODRMLVQ0YlRyallHSkJfVW53VGdockpxempXUWYtYURLMWFNbXR5TERrbnQ1UUVtYjN5Znc0QUFLUHRwOF81dTIzcUhjbVc3ak9PSjV1YTBFdw?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-13T22:03:00",
+      "fetched_at": "2026-04-15T21:19:04.389246"
+    },
+    {
+      "id": "8f3fc50678b7",
+      "title": "Ethiopia: Ethiopia, Afreximbank Deepen Push for African Self-Reliance and Economic Cooperation",
+      "summary": "[ENA] Addis Ababa -- Ethiopia and the African Export-Import Bank have stepped up high-level engagements aimed at advancing Africa's economic self-reliance and strengthening continental cooperation amid mounting global pressures.",
+      "link": "https://allafrica.com/stories/202604130536.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-04-13T12:52:47",
+      "fetched_at": "2026-04-15T21:19:03.754053"
+    },
+    {
+      "id": "3447d9778ce0",
+      "title": "Can Africa prosper from the dollar’s decline? - The Africa Report",
+      "summary": "Can Africa prosper from the dollar’s decline?  The Africa Report",
+      "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQNWF0LUxJeU01VFVSNDlTRWFhV2c2a1J0Qi1TYUJnRE9iSTg4d1lYMElyVThvUXZUSGpTMGdZRTZQMGxkdy1MNWRLTFBwanZMWHZIZnAxaHBkbXRRMTB0TjA4UDA0UUtBanR4akRRaTczaXZjbk40V29CYTczcDdaSnZKaTBnNVNHeDg4?oc=5",
       "source": "Google News (Reuters, AFP, etc.)",
       "category": "Mines",
-      "region": "Afrique du Nord",
-      "published_at": "2026-04-10T17:45:00",
-      "fetched_at": "2026-04-11T21:13:12.175692"
+      "region": "Afrique",
+      "published_at": "2026-04-13T11:23:00",
+      "fetched_at": "2026-04-15T21:19:04.232295"
     },
     {
-      "id": "9d61321d1a98",
-      "title": "Uganda: Government Ties Embassy Funding to Trade, Investment Performance",
-      "summary": "[Nile Post] Uganda's diplomatic Missions must increasingly be evaluated based on their contribution to the country's economic diplomacy agenda, rather than on protocol activities alone.",
-      "link": "https://allafrica.com/stories/202604100510.html",
+      "id": "664feae1b34c",
+      "title": "Africa Business Weekly: Positioning Gauteng as South Africa’s economic hub - CNBC Africa",
+      "summary": "Africa Business Weekly: Positioning Gauteng as South Africa’s economic hub  CNBC Africa",
+      "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOV0lwc1NHZGlyMUJvdUMwN1VJbzN5RXVIUUlOdEswR1gyWFFnWDBnNE5jZDhaRWhzVmVzTkxTX2QyRGRZampFdnVDN19yeHp6R0RxZDZVSU01VEFFOXAwcmxIT0pDWktDX3FGNDl6N2xWaE1DaHZhQjY1UzIwN0pvbVFQMmFmS05MSzBFNE41SGpMbTRoa3A1Tkdzc05pRUhCcWZwTGFEWW1fWW1MSk9BYVNSbjFXSENI?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique Australe",
+      "published_at": "2026-04-13T09:54:25",
+      "fetched_at": "2026-04-15T21:19:04.232476"
+    },
+    {
+      "id": "a97cb6db7b3d",
+      "title": "Uganda: Afreximbank 2025 Profit Rises 19% As Assets Hit $48.5 Billion",
+      "summary": "[Independent (Kampala)] Cairo, Egypt -- African Export-Import Bank (Afreximbank) posted a 19% rise in net profit for 2025, driven by strong lending growth and continued financing of key sectors across Africa.",
+      "link": "https://allafrica.com/stories/202604130200.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique du Nord",
+      "published_at": "2026-04-13T09:47:12",
+      "fetched_at": "2026-04-15T21:19:03.754075"
+    },
+    {
+      "id": "725b11500fe6",
+      "title": "Malawi: Malawians Hold Nuanced Views On Open Trade, Support Greater African Say in Global Forums",
+      "summary": "[Afrobarometer] Few citizens are familiar with the AfCFTA.",
+      "link": "https://allafrica.com/stories/202604130136.html",
+      "source": "AllAfrica",
+      "category": "Commerce",
+      "region": "Afrique Australe",
+      "published_at": "2026-04-13T08:46:40",
+      "fetched_at": "2026-04-15T21:19:03.768699"
+    },
+    {
+      "id": "b74566ad3c6a",
+      "title": "Kenya: Kenya Eyes Free Trade Agreement With India to Boost Exports",
+      "summary": "[Capital FM] Nairobi -- Kenya is considering a Free Trade Agreement with India as it seeks to boost exports and address a widening trade imbalance.",
+      "link": "https://allafrica.com/stories/202604130111.html",
       "source": "AllAfrica",
       "category": "Commerce",
       "region": "Afrique de l'Est",
-      "published_at": "2026-04-10T17:15:50",
-      "fetched_at": "2026-04-11T21:13:11.752769"
+      "published_at": "2026-04-13T07:07:58",
+      "fetched_at": "2026-04-15T21:19:03.768736"
     },
     {
-      "id": "b684036b1da4",
-      "title": "Cheikh Mbacké Sène: Economic intelligence: Africa’s next frontier - Africa Business Communities",
-      "summary": "Cheikh Mbacké Sène: Economic intelligence: Africa’s next frontier  Africa Business Communities",
-      "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQWmR4VUVaLUE5TmdGV3pPRGZWTHVpeUQ1RFVQdlE4V0hjel8zVVFEeGw1bjBkTTVzZ2gwdDJyUTJXejFjT1M5a2lUZ01SdC1HaFNvOXJ1WDBEeGRVeGdrY2hEd0U1alJRSjBMNVBzS0dGR3NpaGUxdTlfM2QxV2oxX2Q2dTYwcEwtczhrRXpjU3hiY0RtcTZyMUZhSDVGM0dsRXU1MkdvZDlYZ1JZOFE?oc=5",
+      "id": "416307a82de2",
+      "title": "Afrique économie - Crise au Moyen-Orient: l'importation des hydrocarbures, grande vulnérabilité du Maroc - RFI",
+      "summary": "Afrique économie - Crise au Moyen-Orient: l'importation des hydrocarbures, grande vulnérabilité du Maroc  RFI",
+      "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOQWFpdy11Y2ZXT1haQ1V4ZVZJMW01M2w3azk4NXpmbjVFcFNhUjRPby1fT2cwZTNpMjNyT1BiQ29YWlFYTlNDOURPZEpLTlNULVpub28yNjBiM0E5V09SSnlRV0RRUHE0bW1VZHNGYW00LTM2UmhDbDJjdXFVNmJRMDFKb0gzTnc4akhJekE1S0ZaM0VmZE1kWVhheS0zU2tWOENnWURRTmxXeXpDdUUzUjZDV0FCMnBILTRlVTI4VXdJaWVTUDRxbkFUMEVSRDlkNldCQTZoQ0F1MlJuS05kT2g4STh1aDVk?oc=5",
       "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Économie",
-      "region": "Afrique",
-      "published_at": "2026-04-10T12:31:50",
-      "fetched_at": "2026-04-11T21:13:12.121253"
-    },
-    {
-      "id": "1f9c5ded6d2d",
-      "title": "Kenya: Air France Boosts Nairobi Capacity On Rising Travel Demand",
-      "summary": "[Capital FM] Nairobi -- Air France will increase passenger capacity on its Nairobi route from May, deploying a larger aircraft to meet growing demand for travel between East Africa and Europe.",
-      "link": "https://allafrica.com/stories/202604100396.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique de l'Est",
-      "published_at": "2026-04-10T12:14:23",
-      "fetched_at": "2026-04-11T21:13:11.731399"
-    },
-    {
-      "id": "e9bfde987914",
-      "title": "Kenya: Petition Filed to Suspend Energy CS Wandayi Over Substandard Fuel Import Scandal",
-      "summary": "[Capital FM] Nairobi -- A petitioner is seeking the suspension of Energy and Petroleum Cabinet Secretary Opiyo Wandayi over alleged involvement in the importation of substandard fuel.",
-      "link": "https://allafrica.com/stories/202604100390.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique de l'Est",
-      "published_at": "2026-04-10T12:14:22",
-      "fetched_at": "2026-04-11T21:13:11.731434"
-    },
-    {
-      "id": "eeb478d7f420",
-      "title": "Namibia: Cabinet Prohibits Mining Activities At Kunene Region Village",
-      "summary": "[Namibian] Land at the Kunene region village of Okoutjete has been put under the protection of the police to deter any illegal mining activities.",
-      "link": "https://allafrica.com/stories/202604100386.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique Australe",
-      "published_at": "2026-04-10T12:12:51",
-      "fetched_at": "2026-04-11T21:13:11.731470"
-    },
-    {
-      "id": "61f7c7d9f257",
-      "title": "Nigeria: Navy Dismantles 12 Illegal Refineries, Recovers 531,500 Litres of Stolen Crude",
-      "summary": "[Vanguard] The Nigerian Navy said on Friday that in furtherance of operations against oil theft, its personnel of Operation Delta Sentinel, in the first quarter of 2026, conducted over 183 successful operations across key operational areas,...",
-      "link": "https://allafrica.com/stories/202604100380.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-10T12:12:48",
-      "fetched_at": "2026-04-11T21:13:11.731499"
-    },
-    {
-      "id": "3bd4d6aa3a11",
-      "title": "Kenya: Kenya Power Staff Succumbs to Injuries After Attack in Isiolo",
-      "summary": "[Capital FM] Nairobi -- A manhunt has been launched for a suspect linked to the fatal attack of a Kenya Power employee in Checheles near Isiolo Town.",
-      "link": "https://allafrica.com/stories/202604100131.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique de l'Est",
-      "published_at": "2026-04-10T09:28:28",
-      "fetched_at": "2026-04-11T21:13:11.731529"
-    },
-    {
-      "id": "412af26a8e3f",
-      "title": "South Africa: 12,000 Jobs in Limbo As Ferroalloys-Eskom Standoff Saga Stretches to Another Day",
-      "summary": "[Daily Maverick] The one thing we do know is that nobody will leave the negotiation table happy, and that's probably the best possible outcome.",
-      "link": "https://allafrica.com/stories/202604100126.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique Australe",
-      "published_at": "2026-04-10T09:25:43",
-      "fetched_at": "2026-04-11T21:13:11.731562"
-    },
-    {
-      "id": "a3d58122f3aa",
-      "title": "Nigeria: Govt, Operators Outline Path to Nigeria's 3mbpd Oil Production Target",
-      "summary": "[Vanguard] Nigeria's oil and gas regulators and operators have outlined a coordinated pathway to achieving crude oil production of three million barrels per day (mbpd), stressing the need for sustained regulatory reforms, investment inflows,...",
-      "link": "https://allafrica.com/stories/202604100115.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-10T09:20:23",
-      "fetched_at": "2026-04-11T21:13:11.731588"
-    },
-    {
-      "id": "3eb6f9045164",
-      "title": "Uganda: Uganda Secures Shs2.1 Trillion Boost for Urban Infrastructure, Jobs",
-      "summary": "[Independent (Kampala)] Kampala, Uganda -- The Government of Uganda, in partnership with the World Bank, is set to begin implementing the 2.1 trillion shillings Urban, Cities and Municipalities Infrastructure Development (UCMID) Programme in the...",
-      "link": "https://allafrica.com/stories/202604100113.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique de l'Est",
-      "published_at": "2026-04-10T09:20:20",
-      "fetched_at": "2026-04-11T21:13:11.731622"
-    },
-    {
-      "id": "5783eb8bc797",
-      "title": "Kenya: Kenya, Morocco Ink 11 Deals to Unlock Trade and Investment",
-      "summary": "[Capital FM] Nairobi -- Kenya-Morocco signed 11 agreements is set to boost development across key sectors, including agriculture, health, education, and the blue economy.",
-      "link": "https://allafrica.com/stories/202604100096.html",
-      "source": "AllAfrica",
-      "category": "Économie",
+      "category": "Commerce",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-10T08:39:45",
-      "fetched_at": "2026-04-11T21:13:11.731353"
+      "published_at": "2026-04-12T22:02:00",
+      "fetched_at": "2026-04-15T21:19:04.389478"
     },
     {
       "id": "2d761825d1da",
@@ -274,238 +527,7 @@
       "category": "Finance",
       "region": "Afrique",
       "published_at": "2026-04-10T08:20:03",
-      "fetched_at": "2026-04-11T21:13:12.120963"
-    },
-    {
-      "id": "ed06e68b6b8e",
-      "title": "Nigeria: Nigeria's Poverty Rate Climbs to 63% Despite Easing Inflation - World Bank",
-      "summary": "[Vanguard] Poverty in Nigeria rose to 63 per cent in 2025 despite a slowdown in inflation, underscoring the limited impact of recent macroeconomic improvements on household welfare, the World Bank has said.",
-      "link": "https://allafrica.com/stories/202604100079.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-10T07:14:33",
-      "fetched_at": "2026-04-11T21:13:11.745554"
-    },
-    {
-      "id": "7ff8832595e5",
-      "title": "Middle East, Senegal, growth… Africa’s agenda at the IMF and World Bank spring meetings - The Africa Report",
-      "summary": "Middle East, Senegal, growth… Africa’s agenda at the IMF and World Bank spring meetings  The Africa Report",
-      "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPdTh2anhGRXpSN3hMUHlwRUhjMmVuM2tENWdKVWZVd28tREdyMFM1cHhoRXFTeGJFTndvV0R6ekZwNjdxZlpWNjU3RS1QVjF3V3lPYXJZOUhXNEE2d2hkanBLZkJ3OUxiaUs4SHpvekNZU1JzbkVQenhRS0hHaEhPRS1EQmY1VUpUbnJpRGxOU1NLMENMZnB1WnpSYVpCYXFqNmJIbE5CZllRU3RlX1ZuQndTREZac3l5cHpoZTA3VEk?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Finance",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-10T01:36:52",
-      "fetched_at": "2026-04-11T21:13:12.121147"
-    },
-    {
-      "id": "c1115f71345a",
-      "title": "East Africa: Uganda to Launch Two New Satellites to Space - Museveni",
-      "summary": "[Nile Post] President Museveni has announced that Uganda is set to launch two new satellites into space as part of efforts to strengthen security, environmental monitoring, and communications.",
-      "link": "https://allafrica.com/stories/202604090704.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique de l'Est",
-      "published_at": "2026-04-09T23:19:58",
-      "fetched_at": "2026-04-11T21:13:11.731654"
-    },
-    {
-      "id": "7f09ec347188",
-      "title": "Liberia: Afreximbank Delivers Strong Fy2025 Results",
-      "summary": "[Liberian Observer] African Export-Import Bank (\"Afreximbank\" or the \"Bank\") and its subsidiaries (the \"Group\") has announced strong results for the year ended 31 December 2025, underscoring sustained financial resilience, increased market...",
-      "link": "https://allafrica.com/stories/202604090697.html",
-      "source": "AllAfrica",
-      "category": "Commerce",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-09T22:34:00",
-      "fetched_at": "2026-04-11T21:13:11.752664"
-    },
-    {
-      "id": "ab324dfec19c",
-      "title": "La campagne agricole d'Afrique de l'Ouest et des pays du Sahel face aux perturbations au Moyen-Orient - RFI",
-      "summary": "La campagne agricole d'Afrique de l'Ouest et des pays du Sahel face aux perturbations au Moyen-Orient  RFI",
-      "link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxNVmpLbmpFTjREblVVUlhkTUJyOXhUOVF0dTQ0aTNqYkdybFFyZUZQZ3dSSHE2bmVBdzVSSkh5bVRFQWpRYVdjU25PWTFKei1UV04weGU1cmNwUHhwalZqUWNBbmJObHhFOWI3clJJV0puNGszb1VxOVJpTkdkZU82Q3hGT3VRenRyU3VyaHdGLUVHRG5pa1hDLUhzN1V5cEtHU3hxMEFlekZFSEpraTFGcWlvRmNRUDRTVUY0R2lNQXFCajE1cXlmN1J3VTlxSnhnN25YUGE2V0FDaHJ3c1FGNG1sZHJpTkhuNmVwYlkxR2g1UGJkZ2c?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Mines",
-      "region": "Afrique",
-      "published_at": "2026-04-09T22:01:00",
-      "fetched_at": "2026-04-11T21:13:12.175740"
-    },
-    {
-      "id": "a6390373670e",
-      "title": "Brèves économiques d'Afrique centrale - Semaine du 06 au 10 avril 2026 - tresor.economie.gouv.fr",
-      "summary": "Brèves économiques d'Afrique centrale - Semaine du 06 au 10 avril 2026  tresor.economie.gouv.fr",
-      "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPdEhQVHR4bjQ2NHFwMWJfVEJTdmsyYkk1RU0ycHRzV244d0lJcEFMRmpnalI0dzJSMzQ5R2d2emZpMEtvcDBTZTNEMTNDYnNPazczNFZnT3FYQkl0LVBFTHQydTIzNVJNdXRueE5wN0ludThTdERFYktiLVIzVE1XakI0eDhlUDVycmNhUE5iLWhYcW1KUDZmY0ZNVkk0N0RaWGk2anpQOWd6a3prUVVZQ054M3ZlRzlMYWhUZ04zdlNLUQ?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Mines",
-      "region": "Afrique",
-      "published_at": "2026-04-09T22:00:00",
-      "fetched_at": "2026-04-11T21:13:12.175487"
-    },
-    {
-      "id": "e2daa219b32b",
-      "title": "Namibia: Afreximbank Shields Country With N$167 Billion",
-      "summary": "[Namibian] The African Export-Import Bank (Afreximbank) has made N$167.3 billion (US$10 billion) available to all member states, including Namibia.",
-      "link": "https://allafrica.com/stories/202604090647.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique Australe",
-      "published_at": "2026-04-09T16:08:34",
-      "fetched_at": "2026-04-11T21:13:11.745630"
-    },
-    {
-      "id": "95c797635d2d",
-      "title": "Liberia: Central Bank of Liberia Mandates 1 Percent Coin Payout On All Bank Withdrawals",
-      "summary": "[Liberian Investigator] MONROVIA -- Liberians making cash withdrawals in Liberian dollars will now receive coins whether they want them or not, under a new Central Bank of Liberia policy taking effect Monday.",
-      "link": "https://allafrica.com/stories/202604090643.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-09T16:05:11",
-      "fetched_at": "2026-04-11T21:13:11.745659"
-    },
-    {
-      "id": "ca6d6970b2d8",
-      "title": "Devex Invested: Startup money is flowing to Africa. Can it reshape economies? - Devex",
-      "summary": "Devex Invested: Startup money is flowing to Africa. Can it reshape economies?  Devex",
-      "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPNGhmclZCV0dteC1HSjN6bERiR0ZqU0xyMExRQnR2eE91akt5RWJSNUVVMExzdnRXS1UwS2hDSVhoYWJVLU1JV2s1MTFSYVNxNlhTTW9BOEREcXZkdDBjZXhVSjVRQzU2ZmRqTkRpNGVQa0J6YWhDV3ZxV1R5ZGcta3FIMk9mOTBJdEFvV1RkYVRKbVYzS1hRRldjOWIwRVZYZGJIcGxoN0NmbkJC?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Télécoms",
-      "region": "Afrique",
-      "published_at": "2026-04-09T15:33:22",
-      "fetched_at": "2026-04-11T21:13:12.120911"
-    },
-    {
-      "id": "973cfab0db0b",
-      "title": "Liberia: Boakai Calls Emergency Session to Print Money. Here's What's Really Going On.",
-      "summary": "[Liberian Investigator] - When a president invokes a rarely used constitutional provision to drag lawmakers back to the Capitol two weeks ahead of the regular legislative calendar, and the top item on the agenda is printing more money, it is worth...",
-      "link": "https://allafrica.com/stories/202604090529.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-09T13:14:33",
-      "fetched_at": "2026-04-11T21:13:11.745779"
-    },
-    {
-      "id": "c4b6fbb4c09a",
-      "title": "World’s largest ride-hailing company pledges over $300 million investment in Africa’s largest economy - Business Insider Africa",
-      "summary": "World’s largest ride-hailing company pledges over $300 million investment in Africa’s largest economy  Business Insider Africa",
-      "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNWkh0RGgyWUtSRGc2ODNmSDRKUm1JN1ZkM3JoUFJESHd4bFhMSUhyeEpXcnpSano2TW1PRXBDY1JJdmxpaVptSzFyWmQxZDVucUY3THRKLUlXUHB1MFN0VUF5eDZacjA1cllLSWtGRTVNdE5wbHpEWTVuMmlmck10SXF3bHVEaUo5NnUwTmJOOVlEcG51NTQySDJEV3NCZDJFYTNBOENseUh3dldvQWltNDBHbEdjS2R3MURUUkpWTmhWaURXVXB3XzZTMWp0QWZ5X2M4?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Finance",
-      "region": "Afrique",
-      "published_at": "2026-04-09T12:34:37",
-      "fetched_at": "2026-04-11T21:13:12.121023"
-    },
-    {
-      "id": "4ea739392d20",
-      "title": "Kenya: Nigeria's Zenith Bank Acquires Paramount Bank in CBK-Approved Deal",
-      "summary": "[Capital FM] Nairobi -- Nigeria's Zenith Bank Plc has completed the acquisition of 100 percent shareholding in Paramount Bank Limited, following regulatory approvals.",
-      "link": "https://allafrica.com/stories/202604090455.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-09T12:25:02",
-      "fetched_at": "2026-04-11T21:13:11.745685"
-    },
-    {
-      "id": "00b983c6efc1",
-      "title": "Kenya: CBK Holds Rate At 8.75pc Amid Middle East Conflict Risks",
-      "summary": "[Capital FM] Nairobi -- The Central Bank of Kenya (CBK) has retained the Central Bank Rate (CBR) at 8.75 percent, citing rising global risks linked to the ongoing Middle East conflict.",
-      "link": "https://allafrica.com/stories/202604090366.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique de l'Est",
-      "published_at": "2026-04-09T11:22:01",
-      "fetched_at": "2026-04-11T21:13:11.745716"
-    },
-    {
-      "id": "0492b0e92465",
-      "title": "Liberia: CBL Defends Planned Banknote Printing As Boakai Recalls Legislature, Mixed Reactions Trail Move - Bank Cites Replacement Needs, Economic Growth",
-      "summary": "[FrontPageAfrica] Monrovia -- The Central Bank of Liberia has defended its plan to print additional Liberian dollar banknotes as President Joseph Nyuma Boakai recalls the Legislature from its break to deliberate on the proposal amid growing public...",
-      "link": "https://allafrica.com/stories/202604090359.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-09T11:18:15",
-      "fetched_at": "2026-04-11T21:13:11.745746"
-    },
-    {
-      "id": "75aa4e1294b6",
-      "title": "Kenya: Ruto Hosts U.S. Lawmakers in Nairobi As Kenya Seeks Deeper Trade, Security Ties",
-      "summary": "[Capital FM] Nairobi -- President William Ruto on Wednesday hosted a bipartisan delegation of United States lawmakers at State House, Nairobi, in a meeting that underscored deepening bilateral ties.",
-      "link": "https://allafrica.com/stories/202604090108.html",
-      "source": "AllAfrica",
-      "category": "Commerce",
-      "region": "Afrique de l'Est",
-      "published_at": "2026-04-09T05:29:41",
-      "fetched_at": "2026-04-11T21:13:11.752701"
-    },
-    {
-      "id": "b39299e8b970",
-      "title": "Mozambique: World Bank Accused of Using Outdated Statistics",
-      "summary": "[AIM] Maputo -- Mozambican Finance Minister Carla Louveira has accused the World Bank of using outdated statistics in its latest report on Mozambique.",
-      "link": "https://allafrica.com/stories/202604090025.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique Centrale",
-      "published_at": "2026-04-09T04:56:43",
-      "fetched_at": "2026-04-11T21:13:11.745808"
-    },
-    {
-      "id": "a7499a6892cc",
-      "title": "Africa: Global Trade in Wild Birds Is Poorly Monitored - the Risks to Wildlife, Ecosystems and Human Health",
-      "summary": "[The Conversation Africa] Birds have, for centuries, been captured from the wild to be kept in cages - valued for their looks, songs and ability to imitate sounds. Data compiled by the Convention on International Trade in Endangered Species (CITES),...",
-      "link": "https://allafrica.com/stories/202604090002.html",
-      "source": "AllAfrica",
-      "category": "Commerce",
-      "region": "Afrique",
-      "published_at": "2026-04-09T04:38:06",
-      "fetched_at": "2026-04-11T21:13:11.752810"
-    },
-    {
-      "id": "25d82b505785",
-      "title": "Hydrocarbures : Arkab examine avec un groupe qatari les opportunités de partenariat et d’investissement - AL24 News",
-      "summary": "Hydrocarbures : Arkab examine avec un groupe qatari les opportunités de partenariat et d’investissement  AL24 News",
-      "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPb2dUQzBEdFhlWG5LR2x1TGdDR0RnTUtfR0IzT1pDN1lxaEdjM29uUGJNUjdjTnZGZk4tN1ljTXZSWVZUZGRtYnZvYi1USmRnNWQxWVI1dWVTTmVELUxXYlFoZFpZSjZBTHFxOXhjZnV0OGlBekY0b1BzMEJkRmY4UzZmUmRObDdqdmhQSnJSOWN4YjkzaXI2dDRrYV96TlVhdUF1WjMzOUI5ZFRCTHNhaDFiM3Y3X2ZGYThKLXNUUUZ3Zw?oc=5",
-      "source": "Algérie Économie",
-      "category": "Finance",
-      "region": "Afrique Centrale",
-      "published_at": "2026-04-09T04:35:58",
-      "fetched_at": "2026-04-11T21:13:12.360214"
-    },
-    {
-      "id": "1397e008f13f",
-      "title": "Afrique économie - Corne de l'Afrique: le commerce du bétail paralysé par la crise au Moyen-Orient - RFI",
-      "summary": "Afrique économie - Corne de l'Afrique: le commerce du bétail paralysé par la crise au Moyen-Orient  RFI",
-      "link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQNWhkQjBlUk9iOFBhZnZ0T3dXbjF6WExveC1FTndoaWtCcEV1WjRtcm1YMHFadHR6T2plMXZlbFNVZUk4VFFrOHNSdW1HbVp6N1JLdjh3eDJRc085cmRiWGJKUDJYZHZJTnBHcjh0WlY4ODN0TXFQM1lEX2FJMlNWMTlNTjQ3SnQtenkxWlVMNUZHRVZJLUJmUUV6LWVKT0VMemoyMTh3OXhkQ2x3WHZwcnZpQXpLMlNaaTlpSWxqRHlUektvRTFzYm1wclRDVUNETHlhWU1qS3BvdmFOdnM3Unl6N2c?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Commerce",
-      "region": "Afrique",
-      "published_at": "2026-04-08T23:55:00",
-      "fetched_at": "2026-04-11T21:13:12.175650"
-    },
-    {
-      "id": "c09f3dcd1015",
-      "title": "Gambia: Govt Spends Over D316m to Cushion Fuel Price Shock",
-      "summary": "[The Point] The Government of The Gambia has unveiled a massive fuel subsidy package exceeding D316 million in a decisive move to shield citizens and businesses from the sharp rise in global fuel prices driven by escalating tensions in the Middle...",
-      "link": "https://allafrica.com/stories/202604080729.html",
-      "source": "AllAfrica",
-      "category": "Commerce",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-08T18:05:30",
-      "fetched_at": "2026-04-11T21:13:11.752865"
-    },
-    {
-      "id": "30b7c961aa02",
-      "title": "Ghana: Kwame Jantuah Backs Mahama's Move to Address Fuel Prices",
-      "summary": "[Ghanaian Times] A member of the Convention People's Party, Kwame Jantuah, has welcomed plans by John Dramani Mahama to hold an emergency cabinet meeting on rising fuel prices.",
-      "link": "https://allafrica.com/stories/202604080708.html",
-      "source": "AllAfrica",
-      "category": "Commerce",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-08T17:41:56",
-      "fetched_at": "2026-04-11T21:13:11.752921"
+      "fetched_at": "2026-04-15T21:19:04.232251"
     },
     {
       "id": "1beb2fe9225f",
@@ -516,7 +538,7 @@
       "category": "Commerce",
       "region": "Afrique",
       "published_at": "2026-04-08T13:12:09",
-      "fetched_at": "2026-04-11T21:13:12.120847"
+      "fetched_at": "2026-04-15T21:19:04.232201"
     },
     {
       "id": "161a9b0da5dc",
@@ -527,62 +549,29 @@
       "category": "Économie",
       "region": "Afrique",
       "published_at": "2026-04-08T11:14:49",
-      "fetched_at": "2026-04-11T21:13:12.175606"
+      "fetched_at": "2026-04-15T21:19:04.389402"
     },
     {
-      "id": "bba557dd08e6",
-      "title": "Liberia: Ministry of Commerce Cracks Down On Expired Goods in Bong County",
-      "summary": "[New Dawn] Gbarnga, Bong County - April 8, 2026 - The Bong County chapter of the Ministry of Commerce and Industry has confiscated a quantity of expired and unwholesome goods from several business establishments across the county.",
-      "link": "https://allafrica.com/stories/202604080342.html",
-      "source": "AllAfrica",
-      "category": "Commerce",
+      "id": "624d27cdbd33",
+      "title": "Senegal: The diaspora, a key driver of the economy [Business Africa] - MSN",
+      "summary": "Senegal: The diaspora, a key driver of the economy [Business Africa]  MSN",
+      "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNQ2Q4Zk9NaE1oNmNVSnlIUl9SaUNNNkh4RkpoTVpua3pVMkt3V0dkY1FwUHRBRFU4aFNrVkZhejEwaEVGNzZHaFJHTTlsa2pJVlQ2dm5WT1Q3Q0pUM0lEUUJWZ3IwLWFBOFc1SF9sOXJBeERKbEtWMXJQaXVISDNkT29ORWRablhtVGZfcGtsc1o1TDl6NWZIT2hrdGJrRUxEVlZhOER3ellNNFdvellwVHo2MA?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Mines",
       "region": "Afrique de l'Ouest",
-      "published_at": "2026-04-08T10:51:09",
-      "fetched_at": "2026-04-11T21:13:11.752837"
+      "published_at": "2026-04-03T08:44:36",
+      "fetched_at": "2026-04-15T21:19:04.232330"
     },
     {
-      "id": "dd5e0a4ac70d",
-      "title": "Africa: Planting Trees to Remove Carbon Can Harm the Environment - or Protect It - Study Highlights Trade-Offs",
-      "summary": "[The Conversation Africa] Global efforts to limit climate change require deep cuts to carbon emissions. However, global emissions are still growing. Currently, we emit roughly 42 billion tonnes of carbon dioxide from fossil fuel use and land use...",
-      "link": "https://allafrica.com/stories/202604080033.html",
-      "source": "AllAfrica",
-      "category": "Commerce",
-      "region": "Afrique Centrale",
-      "published_at": "2026-04-08T04:35:41",
-      "fetched_at": "2026-04-11T21:13:11.752898"
-    },
-    {
-      "id": "b3637262d82f",
-      "title": "Afrique économie - Égypte: des obligations citoyennes pour financer la dette publique - RFI",
-      "summary": "Afrique économie - Égypte: des obligations citoyennes pour financer la dette publique  RFI",
-      "link": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNN2QtMmptNDluRWpvbmtEYTVHbGlnc1k5LVp3Vjl2WHBrWUtWcUhGZzh3bnppRkdGM0R2bWM5ZlJwZjhmVTJtQW1hUG9jak4yWTJLZGRCM3p1eFZuQU1RZWpIMXZ4Ni00R0RoLWk3dWYtNWlLZHkzWm5Lak1rRWZucXc3X1JiQ3EtaUVmOGtjNXBwYlJSUkN3YWkzUWxMYTNZcXBFUXdjb1JlbFNaTHRheWR3NnN6VV9QWlZTRnd5OVhldzVpcDd2dDh5OGc?oc=5",
+      "id": "443907f10bea",
+      "title": "Afrique économie - L’industrie sud-africaine de la noix de macadamia en quête de nouveaux débouchés - RFI",
+      "summary": "Afrique économie - L’industrie sud-africaine de la noix de macadamia en quête de nouveaux débouchés  RFI",
+      "link": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxOSmZaODBmM2ZfcW82WnhLWTF0RnZ2bnQyMnVqVHRTY3ZpQ0FUa0tjaThvQWdnb1RXb29QRUl2TGxQYVZlbEtURG9qV2lwd2hlOW1TRFpsNnlIMTY3cTNpQTZXdTVUbGp6a3lfdEU4VnFKcVNuMW55U21JYmRTUVF5WWg1LVRtMFJKVTBOdDJrSXgzUGRmQ3VidWphRjBvYVFLc0RkQmJoSXE0ZEJoTU1hRndtaG91UmlMS1BoSTU0eV9tSk1FN3B0WEtla1NGLXBUVnlZeTR2YnFzc0hoWEc3TFN4TjVGVGJtV1QtMVJB?oc=5",
       "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Finance",
+      "category": "Économie",
       "region": "Afrique",
-      "published_at": "2026-04-07T22:10:00",
-      "fetched_at": "2026-04-11T21:13:12.175778"
-    },
-    {
-      "id": "6e0c6c8d74c8",
-      "title": "Afrique économie - Centrafrique: Baoro, un pôle de développement grâce au retour des rapatriés - RFI",
-      "summary": "Afrique économie - Centrafrique: Baoro, un pôle de développement grâce au retour des rapatriés  RFI",
-      "link": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxQVkVhdmEwSnkwSzZuems2WkZtbHU1cFNheU5YaUpicDJ6U3VBRTNRcXN1dWtxUVNuUzVxbWx6WmdYdy1KRU10cDRQN0Y1NXRQaG80dHJOelkweEQ4d2dFMTZaWm56Y2dPX2ZmcG1teDdhRE9tYndNV1Z2WXN4N08zVjVKNVBaN0tHdjBKVjcybGRiQXFiQUtmVm9JQXNtZko0VUhoOE9sVmdyMUtYYTVURDdLMnVjSkFOMkxxbzhWbm9zejl4bTJkZDI2RzN2RmxLYWpMUzhidDN4bUVubFRBckxCb1hWZHdnWW1n?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Mines",
-      "region": "Afrique Centrale",
-      "published_at": "2026-04-06T22:38:00",
-      "fetched_at": "2026-04-11T21:13:12.175820"
-    },
-    {
-      "id": "383345eb42db",
-      "title": "La diaspora représente-elle vraiment un levier économique pour l'Afrique? - RFI",
-      "summary": "La diaspora représente-elle vraiment un levier économique pour l'Afrique?  RFI",
-      "link": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxPTGRBamZkdjNBcWE0NERXbjV3bjVJVmpCS1NzTE51dE9BVGtEYTNyMkV6bUd1OVpCZWJVZ1FKaDJkOVNQNkhLYkdSbnh4b3ZKMUZ2ZWJna200a2xuT1pqVHRYY095NmpCcjhNSkJPVmdqMzBvcGtValhBZ3dzRnkxVVBwRnpoU2t5VW13dHphYzFrZlVBb0hlelJLcENzVTczU05EQzdvY0FzZEktWUN6ZWR1cVEzdDB6bDdkQl9hSUFuWklySUE2TVpLZFp0MTFlYnFhcEwxTjd2RWQw?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Mines",
-      "region": "Afrique",
-      "published_at": "2026-03-19T07:00:00",
-      "fetched_at": "2026-04-11T21:13:12.175863"
+      "published_at": "2026-04-03T07:00:00",
+      "fetched_at": "2026-04-15T21:19:04.389613"
     },
     {
       "id": "5f337ce67e34",
@@ -593,7 +582,18 @@
       "category": "Mines",
       "region": "Afrique Centrale",
       "published_at": "2026-03-18T07:00:00",
-      "fetched_at": "2026-04-11T21:13:12.175425"
+      "fetched_at": "2026-04-15T21:19:04.389345"
+    },
+    {
+      "id": "962297032e57",
+      "title": "Afrique économie - Minerais stratégiques: l’Afrique face au défi des contrats équitables - RFI",
+      "summary": "Afrique économie - Minerais stratégiques: l’Afrique face au défi des contrats équitables  RFI",
+      "link": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQdmFES2FPV0pUZVoyVWNEYUh1OE5nVDFIZzRTRGtZTGNBbHNITktTbDJvMTlzOG9aQU5hVG9ZRTZISmRyVm5qWG1XMklUaUhrZHc5dHYxdWZENHlDYTdUVU9CeHdNZENrMGlFYXJlTTlKMmczSU56MXdhRGJ6VW1mM2RKTE0wanVYNk5kc2ExeDFLekNVejgyNFc0MzVFSWRMYUhTbWdNVTBRbGZvMlYtb2hTRU1RTEx5eDdWV2FNUnFqY1dNS1hpWF9rQzUwdURhcjd6QWttdk1rUjlPa0E?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique",
+      "published_at": "2026-02-23T08:00:00",
+      "fetched_at": "2026-04-15T21:19:04.389665"
     },
     {
       "id": "083c8feb0f57",
@@ -604,7 +604,18 @@
       "category": "Mines",
       "region": "Afrique",
       "published_at": "2026-02-19T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.121116"
+      "fetched_at": "2026-04-15T21:19:04.232427"
+    },
+    {
+      "id": "257e3137386a",
+      "title": "Afrique économie - Guinée: pourquoi la pénurie de liquidités perdure? - RFI",
+      "summary": "Afrique économie - Guinée: pourquoi la pénurie de liquidités perdure?  RFI",
+      "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOVjItQ3hnTFdUWGN0ejZqSTZxR05LejcwQ0lzaVZSUWV6dXZNQnhKUnZRenlqY0dkTWl4elVvMTJoSjllYUNmbXhneDNqZVFGMzloZnRQaE1mTVhxUEZGeGhnc3RmV25NTlJ6Y254TVliaEhfeUZ2WXhPRG1fNkFtcklKWkNaS0xkMXRRX3U2ZHRqSTQ3emQ4X3N3UzlHRmE3Q29kd2dMLVVvNTZ0cXBhVGVmd0E5MFNIMHg1UDNCbXRTRGM?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-02-09T08:00:00",
+      "fetched_at": "2026-04-15T21:19:04.389555"
     },
     {
       "id": "57c3eb0f9cb2",
@@ -615,7 +626,7 @@
       "category": "Finance",
       "region": "Afrique",
       "published_at": "2026-02-05T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.360491"
+      "fetched_at": "2026-04-15T21:19:04.284109"
     },
     {
       "id": "0960d5b3a6e9",
@@ -626,18 +637,18 @@
       "category": "Mines",
       "region": "Afrique",
       "published_at": "2026-01-19T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.121191"
+      "fetched_at": "2026-04-15T21:19:04.232518"
     },
     {
-      "id": "e02b8d64ebe4",
-      "title": "South Africa economic outlook, December 2025 - Deloitte",
-      "summary": "South Africa economic outlook, December 2025  Deloitte",
-      "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxONndsU0R4MmgxT1RrMVNoQ28wTkVjZE1yMkZXQUNoWG5NakM1eGV0LUNoeURzc05PeVJzcksyZjNBc3p3dTdxXzhTV25QTU1KLUxFMy1sazg2b2V5UWlld0ZPZk12alJBUEtNUTZ1OENKei1NTUgwTHFPWHQ4dlhVYmhacXdoWmoyWVp1b0hNczlmQQ?oc=5",
+      "id": "a552294d3e8d",
+      "title": "L'économie africaine 2025 - AFD - Agence Française de Développement",
+      "summary": "L'économie africaine 2025  AFD - Agence Française de Développement",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBNcnB0b0NJUFEtaEFlM053SW84RjR5VkgzUTBFUmREV29CaHVoX1dRRVpqX1ZqYzBlbHFNbW1waExaOENxcGxudkp4R3VHS2NfbzdqaTBuRFpvZGJ6NWc1aTNCMzNobTZ0?oc=5",
       "source": "Google News (Reuters, AFP, etc.)",
       "category": "Économie",
-      "region": "Afrique Australe",
-      "published_at": "2025-12-08T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.121294"
+      "region": "Afrique",
+      "published_at": "2026-01-14T08:00:00",
+      "fetched_at": "2026-04-15T21:19:04.389447"
     },
     {
       "id": "dz-project-zone-franche-belloua",
@@ -647,8 +658,8 @@
       "source": "Ministère du Commerce",
       "category": "Commerce",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370125",
-      "fetched_at": "2026-04-11T21:13:12.370126",
+      "published_at": "2026-04-15T21:19:04.449169",
+      "fetched_at": "2026-04-15T21:19:04.449170",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -661,8 +672,8 @@
       "source": "Algerian Qatari Steel (AQS)",
       "category": "Industrie",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370123",
-      "fetched_at": "2026-04-11T21:13:12.370123",
+      "published_at": "2026-04-15T21:19:04.449167",
+      "fetched_at": "2026-04-15T21:19:04.449168",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -675,8 +686,8 @@
       "source": "Sonatrach/NNPC",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370120",
-      "fetched_at": "2026-04-11T21:13:12.370121",
+      "published_at": "2026-04-15T21:19:04.449165",
+      "fetched_at": "2026-04-15T21:19:04.449166",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -689,8 +700,8 @@
       "source": "SKTM/Sonelgaz",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370118",
-      "fetched_at": "2026-04-11T21:13:12.370119",
+      "published_at": "2026-04-15T21:19:04.449162",
+      "fetched_at": "2026-04-15T21:19:04.449163",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -703,8 +714,8 @@
       "source": "Sonatrach",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370115",
-      "fetched_at": "2026-04-11T21:13:12.370116",
+      "published_at": "2026-04-15T21:19:04.449160",
+      "fetched_at": "2026-04-15T21:19:04.449161",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -717,8 +728,8 @@
       "source": "Stellantis Algeria",
       "category": "Industrie",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370113",
-      "fetched_at": "2026-04-11T21:13:12.370114",
+      "published_at": "2026-04-15T21:19:04.449157",
+      "fetched_at": "2026-04-15T21:19:04.449158",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -731,8 +742,8 @@
       "source": "Direction des Travaux Publics",
       "category": "Infrastructure",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370110",
-      "fetched_at": "2026-04-11T21:13:12.370111",
+      "published_at": "2026-04-15T21:19:04.449155",
+      "fetched_at": "2026-04-15T21:19:04.449155",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -745,8 +756,8 @@
       "source": "Ministère des Transports",
       "category": "Infrastructure",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370108",
-      "fetched_at": "2026-04-11T21:13:12.370109",
+      "published_at": "2026-04-15T21:19:04.449152",
+      "fetched_at": "2026-04-15T21:19:04.449153",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -759,8 +770,8 @@
       "source": "ASMIDAL/Sonatrach",
       "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370105",
-      "fetched_at": "2026-04-11T21:13:12.370106",
+      "published_at": "2026-04-15T21:19:04.449150",
+      "fetched_at": "2026-04-15T21:19:04.449151",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -773,11 +784,22 @@
       "source": "Ministère de l'Industrie Algérien",
       "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-11T21:13:12.370100",
-      "fetched_at": "2026-04-11T21:13:12.370103",
+      "published_at": "2026-04-15T21:19:04.449144",
+      "fetched_at": "2026-04-15T21:19:04.449147",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
+    },
+    {
+      "id": "ef0ab2eb54f3",
+      "title": "Un géant égyptien souhaite investir en Algérie - الخبر",
+      "summary": "Un géant égyptien souhaite investir en Algérie  الخبر",
+      "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOYngtVFltOGluMVNSc0tPWkdoODFuVVI0LWwyU1poOGpjNlJKd1BlQXNhNmJGekN0dzlhREZnRzY2eUNFRXRLWnJQN2pDSl8yaFdXc2Y2N2tFSEhKTkRoVkt1TE1hU1VjeHQwY2tHTkEzaVpkYU5FVEg4aDVfemVZMllxMU1pdkFpdFhkWVF3eE9wcEsy?oc=5",
+      "source": "Algérie Économie",
+      "category": "Économie",
+      "region": "Afrique du Nord",
+      "published_at": "2026-04-13T16:45:01",
+      "fetched_at": "2026-04-15T21:19:04.283796"
     },
     {
       "id": "c2ff8f95b7d6",
@@ -788,7 +810,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-04-10T09:42:00",
-      "fetched_at": "2026-04-11T21:13:12.308024"
+      "fetched_at": "2026-04-15T21:19:04.439396"
     },
     {
       "id": "dd7f0acae9f2",
@@ -799,7 +821,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2026-04-02T03:08:10",
-      "fetched_at": "2026-04-11T21:13:12.308257"
+      "fetched_at": "2026-04-15T21:19:04.439616"
     },
     {
       "id": "4d550e99d6b6",
@@ -810,7 +832,18 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-03-17T20:07:28",
-      "fetched_at": "2026-04-11T21:13:12.360324"
+      "fetched_at": "2026-04-15T21:19:04.283966"
+    },
+    {
+      "id": "d21ac7c20755",
+      "title": "Algérie : l'AAPI examine des projets industriels et énergétiques avec une délégation de Bosnie-Herzégovine - AL24 News",
+      "summary": "Algérie : l'AAPI examine des projets industriels et énergétiques avec une délégation de Bosnie-Herzégovine  AL24 News",
+      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPMzRLQUFXSUV3ZmcyaXBHWUU4My1Wa2pnQTgxVnBPd0N2T2hsWHZWcG5vT21TdzJQZ09tQmJrZG1nM3pfQ3VDbnNWcjJKaDNlOHdDek5maHh0VVJUd19NcXEtMURSYlhDT0xid19uQUdHX1FyQzRXWHlsU2ZVZ1hCRlhzMXVDTjF6YXloZEdja0pjUk9Mc1NmR3BTX2RzcHlLWWlkZnN1ckdkTll5OWlncHZ1aDFfOGlPRUMyOE1SdnNLS2hkWmc?oc=5",
+      "source": "Algérie Économie",
+      "category": "Économie",
+      "region": "Afrique du Nord",
+      "published_at": "2026-02-25T08:00:00",
+      "fetched_at": "2026-04-15T21:19:04.284035"
     },
     {
       "id": "79fe70a69b8c",
@@ -821,7 +854,7 @@
       "category": "Énergie",
       "region": "Afrique du Nord",
       "published_at": "2026-02-23T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.308216"
+      "fetched_at": "2026-04-15T21:19:04.439581"
     },
     {
       "id": "6afd401d54c5",
@@ -832,18 +865,18 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-02-18T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.360418"
+      "fetched_at": "2026-04-15T21:19:04.283995"
     },
     {
-      "id": "c8f354f798d5",
-      "title": "l’Algérie enregistre des progrès en matière d’investissement, d’exportations hors hydrocarbures, de numérisation… : c’est le FMI qui le dit ! - Actualité - El Moudjahid",
-      "summary": "l’Algérie enregistre des progrès en matière d’investissement, d’exportations hors hydrocarbures, de numérisation… : c’est le FMI qui le dit ! - Actualité  El Moudjahid",
-      "link": "https://news.google.com/rss/articles/CBMijwJBVV95cUxPVG1JVW5YWHl6djlsQUc3MUlWRVl4WVlqSTRCdzRKZ1dEZFdyeW53UHJhT3IzUVI5aWNQX2ZVaGVvZm5Pc1otZ011V1l4cjN6UEtaUUFKcC1FT0R2NkNlQXZMb3Jlcm1TbEZvVktwNnhVeFR1ZkNaSU1jWnVTSGtfUlJzNWw5amM3bWQ3cWxsRWtabU1aX183eUlWei1DcV9XNlpWQ051SERWcUktdDB1Xzdyc0tPZ0N5d2ZZbWd3UHpFS0RONThKUlpCbkdRRU01SW5FY2RWeXV0bU4wTmtVOGRVOGZYcE81dkFocHlGYkVpcGk2TEp6aE0tUG54aVQza1lEV09mRHgwc1NkTzh3?oc=5",
+      "id": "5012ecc328df",
+      "title": "Abdellatif Hemamda, spécialiste en économie, conseiller en investissement : «L’Algérie vit une révolution stratégique» - El Moudjahid",
+      "summary": "Abdellatif Hemamda, spécialiste en économie, conseiller en investissement : «L’Algérie vit une révolution stratégique»  El Moudjahid",
+      "link": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxPY2c1bnBwSGZnM1JWOFVUWEczRWZncXVGWTZpcXVOOHU3VUdib2ZRWmsyclFaZU5rRU1lRVJGNWxQT2dhWnNzeVB0c2FOc0xVMjJKOUVzbmhnMzhrY1R6SGZKOF9mTXo1TXoyUjZzLVJ6YlBETndMRE9wT3BKQWhoOG9kU0l0Z3lSdDhyaXo0cU5McXk4QV9QdTMtUUN3SG5tajFscktGMGNlRnQ5T2lXME1oMlJKVGVSXzAwNjNlQmhOR3VjaHNXNFlMM0ZlWDlOajZnTTFqbENiWGcwWHpvR09fSjd4bVlxb0wzWExoczk?oc=5",
       "source": "Algérie Économie",
       "category": "Finance",
       "region": "Afrique du Nord",
-      "published_at": "2026-02-04T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.360295"
+      "published_at": "2026-02-10T21:05:09",
+      "fetched_at": "2026-04-15T21:19:04.283870"
     },
     {
       "id": "c5c2ce21b0a6",
@@ -854,7 +887,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-02-04T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.360353"
+      "fetched_at": "2026-04-15T21:19:04.283939"
     },
     {
       "id": "b9b7cf85dbcf",
@@ -865,7 +898,7 @@
       "category": "Commerce",
       "region": "Afrique du Nord",
       "published_at": "2026-02-01T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.308073"
+      "fetched_at": "2026-04-15T21:19:04.439442"
     },
     {
       "id": "960255ba5e40",
@@ -876,7 +909,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-01-28T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.360457"
+      "fetched_at": "2026-04-15T21:19:04.284073"
     },
     {
       "id": "df2268cc865e",
@@ -887,18 +920,18 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-01-18T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.360260"
+      "fetched_at": "2026-04-15T21:19:04.283836"
     },
     {
       "id": "14c276f906e5",
       "title": "Opel’s New Production Unit Signals the Revival of Algeria’s Automotive Industry - Trendsnafrica",
       "summary": "Opel’s New Production Unit Signals the Revival of Algeria’s Automotive Industry  Trendsnafrica",
-      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPOFYtMmdhcmp0ZGl3bVhyeFNJUUlTWkRhZ3Zlbk93YzJHUVh5MmMyeW5rZkNhYTVUek5aOGpPdWh6LWc1VDBVUVNMUjNRb3dwbFNqakQ5cTlmbWt5TjAyR215LUZzWHhXSlNnUnl0YjZHWHhHXzJRRTU0VzNDUDZOcURsM0lNcTFPUGhHbUZscWpIcU1uTGozWmhqSXk0QjM3clpYLVhNYw?oc=5",
+      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPOFYtMmdhcmp0ZGl3bVhyeFNJUUlTWkRhZ3Zlbk93YzJHUVh5MmMyeW5rZkNhYTVUek5aOGpPdWh6LWc1VDBVUVNMUjNRb3dwbFNqakQ5cTlmbWt5TjAyR215LUZzWHhXSlNnUnl0YjZHWHhHXzJRRTU0VzNDUDZOcURsM0lNcTFPUGhHbUZscWpIcU1uTGozWmhqSXk0QjM3clpYLVhNY9IBrwFBVV95cUxPVDE1UnJwVy04OGh0SFlpNHExOW13aFdKSTJYS0NLRzYzTnF3c2F6RlcxNTlsY2lzT3NsMHY5VmlFQ2xzLXlMNFYtYUpRc3JtclhCcnhLdjFaZEZOZ3RlcUJpTm54MktYN092ZUJHc3BzZjhhV3lIdjRSZVJfWWFOV2tZZnhJSUZxTEJabVE1RUZvcXlUVEFra2pkREZ5eW5WX3ZkV0hxRmFQVTdMa2pB?oc=5",
       "source": "Algérie Économie",
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-01-16T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.308297"
+      "fetched_at": "2026-04-15T21:19:04.439655"
     },
     {
       "id": "9dd708faba78",
@@ -909,7 +942,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-01-09T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.308363"
+      "fetched_at": "2026-04-15T21:19:04.439697"
     },
     {
       "id": "9c610573c49f",
@@ -920,18 +953,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2026-01-04T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.308183"
-    },
-    {
-      "id": "aa3586b64a42",
-      "title": "Algérie-Allemagne : un premier sommet pour l’investissement - El Moudjahid",
-      "summary": "Algérie-Allemagne : un premier sommet pour l’investissement  El Moudjahid",
-      "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPd3ZtbmwtQmRFT2ZBOVBEV0FPaWJob1Jnb3BSbFQ2WkxSdWkwcHlmSUxlMHZ3QVh2aDhIbmw0blJEZ3d3YkZycEMtRmRfRVBNU0U5WjNneHFDTW5YcklHRmh0MENOb2o2dlY4RVVzYlp0dmMycGxjZm5xV2lkdVZFeU1XNm4tNzJ5VmtWc2xWY3lwLXRPUjAxQ2RmSzgtUktUX3kxQ2hEZUY?oc=5",
-      "source": "Algérie Économie",
-      "category": "Finance",
-      "region": "Afrique du Nord",
-      "published_at": "2025-12-10T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.360518"
+      "fetched_at": "2026-04-15T21:19:04.439549"
     },
     {
       "id": "1e9da89ab157",
@@ -942,7 +964,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2025-12-10T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.308107"
+      "fetched_at": "2026-04-15T21:19:04.439475"
     },
     {
       "id": "6ab14a506c1b",
@@ -953,7 +975,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2025-12-02T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.308326"
+      "fetched_at": "2026-04-15T21:19:04.439725"
     },
     {
       "id": "0a51a7ce1056",
@@ -964,7 +986,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2025-11-20T08:00:00",
-      "fetched_at": "2026-04-11T21:13:12.360392"
+      "fetched_at": "2026-04-15T21:19:04.283910"
     },
     {
       "id": "d2a424e1222b",
@@ -975,7 +997,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2025-11-14T14:44:06",
-      "fetched_at": "2026-04-11T21:13:12.308147"
+      "fetched_at": "2026-04-15T21:19:04.439514"
     }
   ]
 }
