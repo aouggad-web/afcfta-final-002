@@ -1,9 +1,3 @@
-"""
-Authentic Tariff Data Service
-Loads and provides access to real tariff data from African countries
-Data format: enhanced_v2 (HS6 with sub-positions, taxes, advantages, formalities)
-"""
-
 import json
 import os
 import logging
@@ -13,30 +7,20 @@ from functools import lru_cache
 logger = logging.getLogger(__name__)
 
 # Base directory for tariff data files
-TARIFF_DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
+# Note: This is relative to the backend/ directory
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
 
 # Cache for loaded tariff data
 _tariff_cache: Dict[str, Dict] = {}
 
-
 def load_country_tariffs(country_iso3: str) -> Optional[Dict]:
-    """
-    Load tariff data for a specific country
-    
-    Args:
-        country_iso3: ISO3 country code (e.g., 'DZA', 'ETH')
-    
-    Returns:
-        Complete tariff data dictionary or None if not found
-    """
+    """Load tariff data for a specific country."""
     global _tariff_cache
     
-    # Check cache first
     if country_iso3 in _tariff_cache:
         return _tariff_cache[country_iso3]
     
-    # Try to load from file
-    file_path = os.path.join(TARIFF_DATA_DIR, f'{country_iso3}_tariffs.json')
+    file_path = os.path.join(DATA_DIR, f'{country_iso3}_tariffs.json')
     
     if not os.path.exists(file_path):
         logger.warning(f"Tariff file not found: {file_path}")
@@ -46,30 +30,22 @@ def load_country_tariffs(country_iso3: str) -> Optional[Dict]:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
-        # Cache the data
         _tariff_cache[country_iso3] = data
-        logger.info(f"Loaded tariffs for {country_iso3}: {data['summary']['total_tariff_lines']} lines")
-        
+        logger.info(f"Loaded tariffs for {country_iso3}")
         return data
     except Exception as e:
         logger.error(f"Error loading tariffs for {country_iso3}: {e}")
         return None
 
-
 def get_available_countries() -> List[Dict[str, Any]]:
-    """
-    Get list of countries with authentic tariff data
-    
-    Returns:
-        List of country info dictionaries
-    """
+    """Get list of countries with authentic tariff data."""
     countries = []
     
-    if not os.path.exists(TARIFF_DATA_DIR):
-        logger.warning(f"Tariff data directory not found: {TARIFF_DATA_DIR}")
+    if not os.path.exists(DATA_DIR):
+        logger.warning(f"Tariff data directory not found: {DATA_DIR}")
         return countries
     
-    for filename in os.listdir(TARIFF_DATA_DIR):
+    for filename in os.listdir(DATA_DIR):
         if filename.endswith('_tariffs.json'):
             iso3 = filename.replace('_tariffs.json', '')
             data = load_country_tariffs(iso3)
@@ -90,41 +66,26 @@ def get_available_countries() -> List[Dict[str, Any]]:
                     'generated_at': data.get('generated_at', '')
                 })
     
-    # Sort by ISO3 code
     countries.sort(key=lambda x: x['iso3'])
-    
     return countries
 
-
 def get_tariff_line(country_iso3: str, hs_code: str) -> Optional[Dict]:
-    """
-    Get tariff line for a specific HS code
-    
-    Args:
-        country_iso3: ISO3 country code
-        hs_code: HS code (6-12 digits)
-    
-    Returns:
-        Tariff line data or None
-    """
+    """Get tariff line for a specific HS code."""
     data = load_country_tariffs(country_iso3)
     if not data:
         return None
     
     hs6 = hs_code[:6]
     
-    # Build index if not exists
     if '_hs6_index' not in data:
         data['_hs6_index'] = {line['hs6']: line for line in data['tariff_lines']}
     
     tariff_line = data['_hs6_index'].get(hs6)
     
     if tariff_line and len(hs_code) > 6:
-        # Try to find specific sub-position rate
         sub_positions = tariff_line.get('sub_positions', [])
         for sp in sub_positions:
             if sp['code'] == hs_code or sp['code'].startswith(hs_code):
-                # Return tariff line with sub-position specific DD rate
                 result = dict(tariff_line)
                 result['matched_sub_position'] = sp
                 result['dd_rate'] = sp['dd']
@@ -132,78 +93,37 @@ def get_tariff_line(country_iso3: str, hs_code: str) -> Optional[Dict]:
     
     return tariff_line
 
-
 def get_sub_positions(country_iso3: str, hs6: str) -> List[Dict]:
-    """
-    Get all sub-positions for an HS6 code
-    
-    Args:
-        country_iso3: ISO3 country code
-        hs6: 6-digit HS code
-    
-    Returns:
-        List of sub-positions with their rates
-    """
+    """Get all sub-positions for an HS6 code."""
     tariff_line = get_tariff_line(country_iso3, hs6)
     if not tariff_line:
         return []
     
     return tariff_line.get('sub_positions', [])
 
-
 def get_taxes_detail(country_iso3: str, hs_code: str) -> List[Dict]:
-    """
-    Get detailed tax breakdown for an HS code
-    
-    Args:
-        country_iso3: ISO3 country code
-        hs_code: HS code
-    
-    Returns:
-        List of tax components with rates
-    """
+    """Get detailed tax breakdown for an HS code."""
     tariff_line = get_tariff_line(country_iso3, hs_code)
     if not tariff_line:
         return []
     
     return tariff_line.get('taxes_detail', [])
 
-
 def get_fiscal_advantages(country_iso3: str, hs_code: str) -> List[Dict]:
-    """
-    Get fiscal advantages (including ZLECAf exemptions) for an HS code
-    
-    Args:
-        country_iso3: ISO3 country code
-        hs_code: HS code
-    
-    Returns:
-        List of fiscal advantages
-    """
+    """Get fiscal advantages for an HS code."""
     tariff_line = get_tariff_line(country_iso3, hs_code)
     if not tariff_line:
         return []
     
     return tariff_line.get('fiscal_advantages', [])
 
-
 def get_administrative_formalities(country_iso3: str, hs_code: str) -> List[Dict]:
-    """
-    Get required administrative formalities for an HS code
-    
-    Args:
-        country_iso3: ISO3 country code
-        hs_code: HS code
-    
-    Returns:
-        List of required documents/formalities
-    """
+    """Get required administrative formalities for an HS code."""
     tariff_line = get_tariff_line(country_iso3, hs_code)
     if not tariff_line:
         return []
     
     return tariff_line.get('administrative_formalities', [])
-
 
 def calculate_import_taxes(
     country_iso3: str, 
@@ -213,17 +133,8 @@ def calculate_import_taxes(
     language: str = 'fr'
 ) -> Dict[str, Any]:
     """
-    Calculate detailed import taxes for a product
-    
-    Args:
-        country_iso3: ISO3 country code
-        hs_code: HS code (6-12 digits)
-        cif_value: CIF value in USD
-        apply_zlecaf: Whether to apply ZLECAf preferential rates
-        language: Language for descriptions ('fr' or 'en')
-    
-    Returns:
-        Detailed tax calculation breakdown
+    Calculates detailed import taxes using the official methodology.
+    Includes special cascade logic for Algeria (DZA).
     """
     tariff_line = get_tariff_line(country_iso3, hs_code)
     
@@ -234,108 +145,82 @@ def calculate_import_taxes(
             'country': country_iso3
         }
     
-    # Get description
-    desc_key = f'description_{language}'
-    description = tariff_line.get(desc_key, tariff_line.get('description_fr', ''))
+    # 1. Base Values
+    exchange_rate = 135.0  # Default USD/DZD estimate for calculation
+    base_usd = cif_value
+    base_local = cif_value * (exchange_rate if country_iso3 == 'DZA' else 1.0)
+    currency = 'DZD' if country_iso3 == 'DZA' else 'USD'
     
-    # Get tax rates
-    dd_rate = tariff_line['dd_rate'] / 100  # Convert to decimal
-    vat_rate = tariff_line.get('vat_rate', 19) / 100
-    other_taxes_rate = tariff_line.get('other_taxes_rate', 0) / 100
+    dd_rate = tariff_line.get('dd_rate', tariff_line.get('dd', 0)) / 100
+    vat_rate = tariff_line.get('vat_rate', 19 if country_iso3 == 'DZA' else 15) / 100
     
-    # Check for sub-position specific rate
-    sub_pos_info = None
-    if 'matched_sub_position' in tariff_line:
-        sub_pos_info = tariff_line['matched_sub_position']
+    # Specific taxes for Algeria
+    tcs_rate = 0.03 if country_iso3 == 'DZA' else 0.0
+    prct_rate = 0.02 if country_iso3 == 'DZA' else 0.0
+    daps_rate = tariff_line.get('daps_rate', 0) / 100
     
-    # Get detailed taxes
-    taxes_detail = tariff_line.get('taxes_detail', [])
+    # --- NPF (Normal) Calculation ---
+    # Droits de Douane (DD)
+    dd_amount_npf = base_local * dd_rate
     
-    # Apply ZLECAf exemptions if requested
-    zlecaf_dd_rate = 0  # DD is exempt under ZLECAf
-    fiscal_advantages = tariff_line.get('fiscal_advantages', [])
+    # Taxes on Customs Value only (Algeria PRCT & TCS)
+    tcs_amount_npf = base_local * tcs_rate
+    prct_amount_npf = base_local * prct_rate
+    daps_amount_npf = base_local * daps_rate
     
-    # Calculate NPF (Normal) regime
-    dd_amount = round(cif_value * dd_rate, 2)
-    vat_base_npf = cif_value + dd_amount
-    vat_amount_npf = round(vat_base_npf * vat_rate, 2)
-    other_taxes_npf = round(cif_value * other_taxes_rate, 2)
-    total_npf = round(cif_value + dd_amount + vat_amount_npf + other_taxes_npf, 2)
+    # VAT Cascade (Base = CAF + DD + TCS + PRCT + DAPS)
+    vat_base_npf = base_local + dd_amount_npf + tcs_amount_npf + prct_amount_npf + daps_amount_npf
+    vat_amount_npf = vat_base_npf * vat_rate
     
-    # Calculate ZLECAf regime
-    dd_amount_zlecaf = 0  # Exempt
-    vat_base_zlecaf = cif_value  # VAT on CIF only (no DD)
-    vat_amount_zlecaf = round(vat_base_zlecaf * vat_rate, 2)
-    other_taxes_zlecaf = round(cif_value * other_taxes_rate, 2)
-    total_zlecaf = round(cif_value + dd_amount_zlecaf + vat_amount_zlecaf + other_taxes_zlecaf, 2)
+    fixed_fees = 3500 if country_iso3 == 'DZA' else 0
+    total_taxes_npf = dd_amount_npf + tcs_amount_npf + prct_amount_npf + daps_amount_npf + vat_amount_npf + fixed_fees
+    
+    # --- AfCFTA Calculation ---
+    dd_amount_zlecaf = 0  # Preferential rate
+    tcs_amount_zlecaf = base_local * tcs_rate
+    prct_amount_zlecaf = base_local * prct_rate
+    daps_amount_zlecaf = base_local * daps_rate
+    
+    vat_base_zlecaf = base_local + dd_amount_zlecaf + tcs_amount_zlecaf + prct_amount_zlecaf + daps_amount_zlecaf
+    vat_amount_zlecaf = vat_base_zlecaf * vat_rate
+    
+    total_taxes_zlecaf = dd_amount_zlecaf + tcs_amount_zlecaf + prct_amount_zlecaf + daps_amount_zlecaf + vat_amount_zlecaf + fixed_fees
     
     # Savings
-    savings = round(total_npf - total_zlecaf, 2)
-    savings_pct = round((savings / total_npf) * 100, 1) if total_npf > 0 else 0
+    savings = total_taxes_npf - total_taxes_zlecaf
+    savings_pct = (savings / total_taxes_npf * 100) if total_taxes_npf > 0 else 0
     
-    # Build response
-    result = {
+    return {
         'hs_code': hs_code,
-        'hs6': hs_code[:6],
-        'description': description,
+        'description': tariff_line.get(f'description_{language}', tariff_line.get('description_fr', '')),
         'country_iso3': country_iso3,
-        'cif_value': cif_value,
-        'currency': 'USD',
-        'data_source': 'authentic_tariff',
-        
-        # Rates
-        'rates': {
-            'dd_rate_pct': tariff_line['dd_rate'],
-            'vat_rate_pct': tariff_line.get('vat_rate', 19),
-            'other_taxes_pct': tariff_line.get('other_taxes_rate', 0),
-            'total_rate_pct': tariff_line.get('total_taxes_pct', 0)
-        },
-        
-        # NPF Calculation
+        'cif_value_usd': base_usd,
+        'base_value_local': base_local,
+        'currency': currency,
         'npf_calculation': {
-            'regime': 'NPF',
-            'cif_value': cif_value,
-            'dd': {'rate_pct': tariff_line['dd_rate'], 'amount': dd_amount},
-            'vat': {'rate_pct': tariff_line.get('vat_rate', 19), 'base': vat_base_npf, 'amount': vat_amount_npf},
-            'other_taxes': {'rate_pct': tariff_line.get('other_taxes_rate', 0), 'amount': other_taxes_npf},
-            'total_taxes': round(dd_amount + vat_amount_npf + other_taxes_npf, 2),
-            'total_to_pay': total_npf
+            'dd': dd_amount_npf,
+            'tcs': tcs_amount_npf,
+            'prct': prct_amount_npf,
+            'daps': daps_amount_npf,
+            'vat': vat_amount_npf,
+            'fixed_fees': fixed_fees,
+            'total_taxes': total_taxes_npf
         },
-        
-        # ZLECAf Calculation
         'zlecaf_calculation': {
-            'regime': 'ZLECAf',
-            'cif_value': cif_value,
-            'dd': {'rate_pct': 0, 'amount': dd_amount_zlecaf, 'exempt': True},
-            'vat': {'rate_pct': tariff_line.get('vat_rate', 19), 'base': vat_base_zlecaf, 'amount': vat_amount_zlecaf},
-            'other_taxes': {'rate_pct': tariff_line.get('other_taxes_rate', 0), 'amount': other_taxes_zlecaf},
-            'total_taxes': round(dd_amount_zlecaf + vat_amount_zlecaf + other_taxes_zlecaf, 2),
-            'total_to_pay': total_zlecaf
+            'dd': dd_amount_zlecaf,
+            'tcs': tcs_amount_zlecaf,
+            'prct': prct_amount_zlecaf,
+            'daps': daps_amount_zlecaf,
+            'vat': vat_amount_zlecaf,
+            'fixed_fees': fixed_fees,
+            'total_taxes': total_taxes_zlecaf
         },
-        
-        # Savings
         'savings': {
             'amount': savings,
-            'percentage': savings_pct
+            'percentage': round(savings_pct, 2)
         },
-        
-        # Detailed tax breakdown
-        'taxes_detail': taxes_detail,
-        
-        # Fiscal advantages
-        'fiscal_advantages': fiscal_advantages,
-        
-        # Administrative formalities
-        'administrative_formalities': tariff_line.get('administrative_formalities', []),
-        
-        # Sub-position info
-        'sub_position': sub_pos_info,
-        'has_sub_positions': tariff_line.get('has_sub_positions', False),
-        'sub_position_count': tariff_line.get('sub_position_count', 0)
+        'methodology': 'Algerian Official Cascade (DZD)' if country_iso3 == 'DZA' else 'Standard NPF/AfCFTA Comparison'
     }
-    
-    return result
-
 
 def search_tariff_lines(
     country_iso3: str, 
@@ -343,18 +228,7 @@ def search_tariff_lines(
     language: str = 'fr',
     limit: int = 20
 ) -> List[Dict]:
-    """
-    Search tariff lines by description or HS code
-    
-    Args:
-        country_iso3: ISO3 country code
-        query: Search query (description or HS code)
-        language: Language for descriptions
-        limit: Maximum results
-    
-    Returns:
-        List of matching tariff lines
-    """
+    """Search tariff lines by description or HS code."""
     data = load_country_tariffs(country_iso3)
     if not data:
         return []
@@ -365,12 +239,10 @@ def search_tariff_lines(
     desc_key = f'description_{language}'
     
     for line in data['tariff_lines']:
-        # Match by HS code
         if line['hs6'].startswith(query):
             results.append(line)
             continue
         
-        # Match by description
         desc = line.get(desc_key, line.get('description_fr', '')).lower()
         if query_lower in desc:
             results.append(line)
@@ -380,27 +252,15 @@ def search_tariff_lines(
     
     return results
 
-
 def get_country_summary(country_iso3: str) -> Optional[Dict]:
-    """
-    Get summary statistics for a country's tariff data
-    
-    Args:
-        country_iso3: ISO3 country code
-    
-    Returns:
-        Summary dictionary or None
-    """
+    """Get summary statistics for a country's tariff data."""
     data = load_country_tariffs(country_iso3)
     if not data:
         return None
     
     return data['summary']
 
-
-# Initialize - preload available country data
 def init_tariff_data():
-    """Initialize and preload tariff data"""
+    """Initialize and preload tariff data."""
     countries = get_available_countries()
-    logger.info(f"Initialized authentic tariff data for {len(countries)} countries: {[c['iso3'] for c in countries]}")
     return countries
