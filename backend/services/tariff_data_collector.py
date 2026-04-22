@@ -19,6 +19,7 @@ class TariffDataCollector:
         self._other_taxes = None
         self._hs6_detailed = None
         self._sub_position_types = None
+        self._official_sub_position_desc = None
         self._country_tax_modules = {}
         self._loaded = False
 
@@ -296,12 +297,94 @@ class TariffDataCollector:
         logger.info(f"Saved {len(data.get('tariff_lines', []))} tariff lines + {data['summary'].get('total_sub_positions', 0)} sub-positions for {country_code}")
         return str(filepath)
 
+    @staticmethod
+    def _is_generic_type_label(text: str) -> bool:
+        return text.endswith(" - Type 1") or text.endswith(" - Type 2")
+
+    def _resolve_official_sub_position_descriptions(self, codes: List[str]) -> Dict[str, Dict[str, str]]:
+        """
+        Résout les codes 10 chiffres demandés en s'appuyant sur les jeux locaux
+        qui contiennent déjà des libellés nationaux détaillés.
+        """
+        if self._official_sub_position_desc is None:
+            self._official_sub_position_desc = {}
+
+        unresolved = {c for c in codes if c and c not in self._official_sub_position_desc}
+        if not unresolved:
+            return self._official_sub_position_desc
+
+        base_data_dir = Path(__file__).parent.parent / "data"
+        preferred_files = [
+            base_data_dir / "LSO_tariffs.json",
+            base_data_dir / "ZAF_tariffs.json",
+            base_data_dir / "KEN_tariffs.json",
+        ]
+        candidate_files = [p for p in preferred_files if p.exists()]
+
+        for json_path in candidate_files:
+            if not unresolved:
+                break
+            try:
+                with open(json_path, "r", encoding="utf-8") as f:
+                    payload = json.load(f)
+            except Exception:
+                continue
+
+            for line in payload.get("tariff_lines", []):
+                for sp in line.get("sub_positions", []):
+                    code = str(sp.get("code", ""))
+                    if code not in unresolved:
+                        continue
+                    fr = str(sp.get("description_fr", ""))
+                    en = str(sp.get("description_en", ""))
+                    if self._is_generic_type_label(fr) or self._is_generic_type_label(en):
+                        continue
+                    self._official_sub_position_desc[code] = {"fr": fr, "en": en}
+                    unresolved.discard(code)
+
+        for code in unresolved:
+            self._official_sub_position_desc[code] = {}
+
+        return self._official_sub_position_desc
+
+    def _normalize_sub_position_descriptions(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Remplace les libellés génériques "Type 1/Type 2" par un libellé officiel
+        10 chiffres existant localement, quand il est disponible.
+        """
+        generic_codes = [
+            sp.get("code", "")
+            for line in data.get("tariff_lines", [])
+            for sp in line.get("sub_positions", [])
+            if self._is_generic_type_label(sp.get("description_fr", "")) or
+            self._is_generic_type_label(sp.get("description_en", ""))
+        ]
+        official_index = self._resolve_official_sub_position_descriptions(generic_codes)
+
+        for line in data.get("tariff_lines", []):
+            for sp in line.get("sub_positions", []):
+                fr = sp.get("description_fr", "")
+                en = sp.get("description_en", "")
+                code = sp.get("code", "")
+
+                if code in official_index and (
+                    self._is_generic_type_label(fr) or self._is_generic_type_label(en)
+                ):
+                    official = official_index[code]
+                    if official.get("fr"):
+                        sp["description_fr"] = official["fr"]
+                    if official.get("en"):
+                        sp["description_en"] = official["en"]
+
+        return data
+
     def load_country_tariffs(self, country_code: str) -> Optional[Dict[str, Any]]:
         filepath = DATA_DIR / f"{country_code.upper()}_tariffs.json"
         if not filepath.exists():
             return None
         with open(filepath, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+        return self._normalize_sub_position_descriptions(data)
 
     def get_available_countries(self) -> List[str]:
         if not DATA_DIR.exists():
