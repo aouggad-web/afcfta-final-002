@@ -39,6 +39,13 @@ from logistics_land_data import (
     search_corridors,
     get_corridors_statistics
 )
+from logistics_operators_data import (
+    get_all_operators_with_contacts,
+    get_operator_by_id,
+    get_operators_by_country,
+    get_operators_summary,
+    LOGISTICS_OPERATORS,
+)
 
 # Optional cache integration
 try:
@@ -496,3 +503,73 @@ async def get_terminal_handling_charges(locode: Optional[str] = None):
         "data_year": 2024,
         "source": "Official port authority tariff books 2024 (TMPA, ANP, NPA, KPA, Transnet, etc.)"
     }
+
+
+# =============================================================================
+# INTERVENANTS LOGISTIQUES — Opérateurs avec contacts réels
+# =============================================================================
+
+@router.get("/operators")
+async def get_logistics_operators(category: Optional[str] = None):
+    """
+    Retourne tous les intervenants logistiques africains avec leurs coordonnées réelles.
+    
+    Catégories disponibles :
+    - armateurs : Compagnies maritimes (MSC, Maersk, CMA CGM…)
+    - port_operators : Opérateurs de terminaux (DP World, APM Terminals, Bolloré…)
+    - transitaires : Freight forwarders (DHL, DSV, Kuehne+Nagel, GEODIS…)
+    - rail_operators : Compagnies ferroviaires (ONCF, SNTF, Transnet, KRC…)
+    - trucking_companies : Transporteurs routiers
+    - air_cargo : Compagnies cargo aérien
+    - customs_agents : Commissionnaires en douane & Autorités douanières
+    - regulatory_bodies : Organismes de régulation & associations
+    """
+    data = get_all_operators_with_contacts(category)
+    summary = get_operators_summary()
+    if category and category not in data:
+        raise HTTPException(status_code=404, detail=f"Catégorie '{category}' inconnue. Catégories: {list(LOGISTICS_OPERATORS.keys())}")
+    return {
+        "operators": data,
+        "summary": summary,
+        "data_source": "Sites officiels, Lloyd's List, IATA, BIMCO, UNCTAD 2024",
+        "last_updated": "Avril 2025",
+    }
+
+
+@router.get("/operators/summary")
+async def get_logistics_operators_summary():
+    """Résumé statistique des intervenants logistiques."""
+    return get_operators_summary()
+
+
+@router.get("/operators/country/{country_iso}")
+async def get_operators_for_country(country_iso: str):
+    """
+    Retourne tous les intervenants logistiques présents dans un pays donné.
+    country_iso : code ISO-3 du pays (ex: DZA, MAR, NGA, KEN…)
+    """
+    operators = get_operators_by_country(country_iso.upper())
+    if not operators:
+        return {
+            "country_iso": country_iso.upper(),
+            "count": 0,
+            "operators": [],
+            "message": f"Aucun intervenant référencé pour {country_iso.upper()}"
+        }
+    return {
+        "country_iso": country_iso.upper(),
+        "count": len(operators),
+        "operators": operators,
+    }
+
+
+@router.get("/operators/{operator_id}")
+async def get_single_operator(operator_id: str):
+    """
+    Retourne le détail complet d'un intervenant logistique par son ID.
+    Exemple: msc, maersk, cmacgm, dhl_global, oncf, sntf…
+    """
+    operator = get_operator_by_id(operator_id.lower())
+    if not operator:
+        raise HTTPException(status_code=404, detail=f"Opérateur '{operator_id}' non trouvé.")
+    return operator
