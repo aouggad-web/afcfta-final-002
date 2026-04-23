@@ -25,28 +25,41 @@ FAOSTAT_AGRICULTURE_DATA = {
     "DZA": {
         "country_name": "Algérie",
         "region": "Afrique du Nord",
-        "main_crops": ["Blé", "Orge", "Pomme de terre", "Tomate", "Dattes", "Olives"],
+        "main_crops": ["Blé", "Orge", "Pomme de terre", "Oranges", "Dattes", "Olives", "Tomates"],
+        "display_order": ["Blé", "Orge", "Pomme de terre", "Oranges", "Dattes", "Olives", "Tomates"],
         "production_2023": {
             "Blé": {"value": 3500000, "unit": "tonnes", "rank_africa": 4, "area_ha": 1800000, "yield_kg_ha": 1944},
             "Orge": {"value": 2100000, "unit": "tonnes", "rank_africa": 2, "area_ha": 1200000, "yield_kg_ha": 1750},
             "Pomme de terre": {"value": 5200000, "unit": "tonnes", "rank_africa": 2, "area_ha": 170000, "yield_kg_ha": 30588},
-            "Tomate": {"value": 1400000, "unit": "tonnes", "rank_africa": 4, "area_ha": 45000, "yield_kg_ha": 31111},
+            "Oranges": {"value": 950000, "unit": "tonnes", "rank_africa": 4, "area_ha": 62000, "yield_kg_ha": 15322},
             "Dattes": {"value": 1200000, "unit": "tonnes", "rank_africa": 1, "area_ha": 170000, "yield_kg_ha": 7059},
             "Olives": {"value": 850000, "unit": "tonnes", "rank_africa": 3, "area_ha": 500000, "yield_kg_ha": 1700},
+            "Tomates": {"value": 1400000, "unit": "tonnes", "rank_africa": 4, "area_ha": 45000, "yield_kg_ha": 31111},
         },
         "evolution": {
             "Blé": [{"year": 2020, "value": 2500000}, {"year": 2021, "value": 2800000}, {"year": 2022, "value": 3200000}, {"year": 2023, "value": 3500000}],
-            "Dattes": [{"year": 2020, "value": 1050000}, {"year": 2021, "value": 1100000}, {"year": 2022, "value": 1150000}, {"year": 2023, "value": 1200000}],
+            "Orge": [{"year": 2020, "value": 1800000}, {"year": 2021, "value": 1950000}, {"year": 2022, "value": 2050000}, {"year": 2023, "value": 2100000}],
             "Pomme de terre": [{"year": 2020, "value": 4600000}, {"year": 2021, "value": 4800000}, {"year": 2022, "value": 5000000}, {"year": 2023, "value": 5200000}],
+            "Dattes": [{"year": 2020, "value": 1050000}, {"year": 2021, "value": 1100000}, {"year": 2022, "value": 1150000}, {"year": 2023, "value": 1200000}],
         },
         "livestock_2023": {
             "Ovins": {"value": 30000000, "unit": "têtes", "rank_africa": 2},
             "Caprins": {"value": 5000000, "unit": "têtes", "rank_africa": 8},
             "Bovins": {"value": 2000000, "unit": "têtes", "rank_africa": 15},
+            "Camelins": {"value": 340000, "unit": "têtes", "rank_africa": 5},
+            "Volailles": {"value": 200000000, "unit": "têtes", "rank_africa": 7},
+        },
+        "livestock_production_2023": {
+            "Viande ovine": {"value": 285000, "unit": "tonnes"},
+            "Lait": {"value": 3800000, "unit": "tonnes"},
+            "Laine": {"value": 75000, "unit": "tonnes"},
+            "Oeufs": {"value": 320000, "unit": "tonnes"},
         },
         "fisheries_2023": {
-            "capture": {"value": 95000, "unit": "tonnes"},
-            "aquaculture": {"value": 5500, "unit": "tonnes"},
+            "capture": {"value": 95000, "unit": "tonnes", "rank_africa": 11},
+            "aquaculture": {"value": 5500, "unit": "tonnes", "rank_africa": 14},
+            "species": ["Anchois", "Sardine", "Thon", "Merlu", "Crevettes"],
+            "main_ports": ["Oran", "Alger", "Annaba", "Béjaïa", "Skikda"],
         },
         "key_indicators": {
             "agri_gdp_percent": 12.5,
@@ -55,7 +68,7 @@ FAOSTAT_AGRICULTURE_DATA = {
             "arable_land_ha": 7500000,
             "irrigated_land_ha": 1200000,
         },
-        "source": "FAOSTAT 2023, Ministère de l'Agriculture Algérie",
+        "source": "FAOSTAT 2023, Ministère de l'Agriculture Algérie (MADR)",
         "data_year": 2023
     },
     

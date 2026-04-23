@@ -1,707 +1,689 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { Button } from '../ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { 
-  BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, 
-  Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart,
-  PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
+import {
+  BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid,
+  Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell
 } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
-import { 
-  Wheat, Beef, Fish, TrendingUp, Award, AlertTriangle, Loader2, 
-  Info, Globe, BarChart3, RefreshCw, Search
+import {
+  Wheat, Beef, Fish, TrendingUp, AlertTriangle, Loader2,
+  Globe, BarChart3, Droplets, Award, Info
 } from 'lucide-react';
-import { Input } from '../ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const CHART_COLORS = ['#10b981', '#059669', '#047857', '#065f46', '#064e3b', '#22c55e', '#16a34a', '#15803d', '#f59e0b', '#ef4444'];
+const COLORS_CULTURES  = ['#16a34a','#15803d','#22c55e','#84cc16','#f59e0b','#ea580c','#dc2626','#10b981','#059669'];
+const COLORS_ELEVAGE   = ['#92400e','#b45309','#d97706','#fbbf24','#fde68a'];
+const COLORS_PECHE     = ['#0369a1','#0284c7','#0ea5e9','#38bdf8','#7dd3fc'];
 
-function ProductionAgriculture({ language = 'fr' }) {
-  const [selectedCountry, setSelectedCountry] = useState('CIV');
-  const [faostatData, setFaostatData] = useState(null);
-  const [faostatStats, setFaostatStats] = useState(null);
-  const [commodities, setCommodities] = useState([]);
-  const [topProducers, setTopProducers] = useState(null);
-  const [selectedCommodity, setSelectedCommodity] = useState('661'); // Cocoa by default
-  const [trends, setTrends] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [loadingTopProducers, setLoadingTopProducers] = useState(false);
-  const [activeTab, setActiveTab] = useState('country');
+const TEXTS = {
+  fr: {
+    title: 'Production Agricole FAO',
+    subtitle: 'Données officielles FAOSTAT — Cultures, Élevage, Pêche & Aquaculture',
+    selectCountry: 'Sélectionner un pays',
+    loading: 'Chargement des données FAO…',
+    noData: 'Aucune donnée disponible pour ce pays',
+    tabCultures: 'Cultures',
+    tabElevage: 'Élevage',
+    tabPeche: 'Pêche & Aquaculture',
+    cultures: 'Grandes cultures',
+    production: 'Production 2023',
+    tonnes: 'tonnes',
+    tetes: 'têtes',
+    hectares: 'ha',
+    rendement: 'Rendement',
+    surface: 'Surface',
+    rankAfrique: 'Rang Afrique',
+    evolution: 'Évolution 2020–2023',
+    livestock: 'Cheptel',
+    livestockProd: 'Production animale',
+    capture: 'Pêche de capture',
+    aquaculture: 'Aquaculture',
+    species: 'Espèces principales',
+    ports: 'Principaux ports',
+    indicators: 'Indicateurs clés',
+    agriGDP: 'Part dans le PIB',
+    agriEmploy: 'Emploi agricole',
+    arable: 'Terres arables',
+    irrigated: 'Terres irriguées',
+    source: 'Source',
+    noLivestock: 'Données élevage non disponibles pour ce pays',
+    noFisheries: 'Données pêche non disponibles pour ce pays',
+    topCerealsDZA: 'Grandes céréales (cultures stratégiques)',
+  },
+  en: {
+    title: 'FAO Agricultural Production',
+    subtitle: 'Official FAOSTAT data — Crops, Livestock, Fisheries & Aquaculture',
+    selectCountry: 'Select a country',
+    loading: 'Loading FAO data…',
+    noData: 'No data available for this country',
+    tabCultures: 'Crops',
+    tabElevage: 'Livestock',
+    tabPeche: 'Fisheries & Aquaculture',
+    cultures: 'Major crops',
+    production: '2023 Production',
+    tonnes: 'tonnes',
+    tetes: 'heads',
+    hectares: 'ha',
+    rendement: 'Yield',
+    surface: 'Area',
+    rankAfrique: 'Africa Rank',
+    evolution: 'Trend 2020–2023',
+    livestock: 'Livestock population',
+    livestockProd: 'Animal production',
+    capture: 'Capture fisheries',
+    aquaculture: 'Aquaculture',
+    species: 'Main species',
+    ports: 'Main ports',
+    indicators: 'Key indicators',
+    agriGDP: 'Share of GDP',
+    agriEmploy: 'Agricultural employment',
+    arable: 'Arable land',
+    irrigated: 'Irrigated land',
+    source: 'Source',
+    noLivestock: 'Livestock data not available for this country',
+    noFisheries: 'Fisheries data not available for this country',
+    topCerealsDZA: 'Major cereals (strategic crops)',
+  }
+};
 
-  // Translations
-  const texts = {
-    fr: {
-      title: "Production Agricole FAO 2024",
-      subtitle: "Données officielles FAOSTAT - Production agricole africaine (2022-2024)",
-      countries: "pays africains",
-      products: "produits agricoles",
-      loading: "Chargement des données FAO...",
-      noData: "Données non disponibles",
-      noDataDesc: "Aucune donnée disponible pour ce pays.",
-      data: "Données",
-      countryTab: "Par Pays",
-      commodityTab: "Par Produit",
-      compareTab: "Comparaison",
-      selectCountry: "Sélectionner un pays",
-      selectCommodity: "Sélectionner un produit",
-      productionByYear: "Production par Année",
-      tonnes: "tonnes",
-      africa: "Afrique",
-      topProducers: "Top Producteurs Africains",
-      rank: "Rang",
-      country: "Pays",
-      production: "Production",
-      year: "Année",
-      trend: "Tendance",
-      increasing: "En hausse",
-      decreasing: "En baisse",
-      stable: "Stable",
-      change: "Variation",
-      source: "Source: FAOSTAT (FAO) - Données 2024",
-      refresh: "Actualiser",
-      viewTopProducers: "Voir les Top Producteurs",
-      commodityOverview: "Aperçu du Produit",
-      countryProduction: "Production du Pays",
-      noProductionData: "Pas de données de production pour ce pays",
-      evolutionTitle: "Évolution de la Production",
-      radarComparison: "Comparaison Multi-Produits"
-    },
-    en: {
-      title: "FAO Agricultural Production 2024",
-      subtitle: "Official FAOSTAT data - African agricultural production (2022-2024)",
-      countries: "African countries",
-      products: "agricultural products",
-      loading: "Loading FAO data...",
-      noData: "Data not available",
-      noDataDesc: "No data available for this country.",
-      data: "Data",
-      countryTab: "By Country",
-      commodityTab: "By Product",
-      compareTab: "Comparison",
-      selectCountry: "Select a country",
-      selectCommodity: "Select a product",
-      productionByYear: "Production by Year",
-      tonnes: "tonnes",
-      africa: "Africa",
-      topProducers: "Top African Producers",
-      rank: "Rank",
-      country: "Country",
-      production: "Production",
-      year: "Year",
-      trend: "Trend",
-      increasing: "Increasing",
-      decreasing: "Decreasing",
-      stable: "Stable",
-      change: "Change",
-      source: "Source: FAOSTAT (FAO) - 2024 Data",
-      refresh: "Refresh",
-      viewTopProducers: "View Top Producers",
-      commodityOverview: "Product Overview",
-      countryProduction: "Country Production",
-      noProductionData: "No production data for this country",
-      evolutionTitle: "Production Evolution",
-      radarComparison: "Multi-Product Comparison"
-    }
-  };
-  const t = texts[language] || texts.fr;
+const fmt = (n) => {
+  if (!n && n !== 0) return '—';
+  if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`;
+  if (n >= 1000) return `${(n / 1000).toFixed(0)}K`;
+  return n.toLocaleString();
+};
 
-  // Fetch FAOSTAT statistics on mount
+const fmtUnit = (n, unit = 'tonnes') => `${fmt(n)} ${unit}`;
+
+export default function ProductionAgriculture({ language = 'fr' }) {
+  const t = TEXTS[language] || TEXTS.fr;
+  const [country, setCountry]   = useState('DZA');
+  const [detail, setDetail]     = useState(null);
+  const [faoStats, setFaoStats] = useState(null);
+  const [loading, setLoading]   = useState(false);
+  const [activeTab, setActiveTab] = useState('cultures');
+
+  useEffect(() => { fetchFaoStats(); }, []);
+
   useEffect(() => {
-    fetchFaostatStats();
-    fetchCommodities();
-  }, [language]);
+    if (country) fetchDetail(country);
+  }, [country]);
 
-  // Fetch country data when selected country changes
-  useEffect(() => {
-    if (selectedCountry) {
-      fetchCountryData(selectedCountry);
-    }
-  }, [selectedCountry, language]);
-
-  // Fetch top producers when commodity changes
-  useEffect(() => {
-    if (selectedCommodity) {
-      fetchTopProducers(selectedCommodity);
-    }
-  }, [selectedCommodity, language]);
-
-  const fetchFaostatStats = async () => {
+  const fetchFaoStats = async () => {
     try {
-      const response = await axios.get(`${API}/faostat/statistics`);
-      setFaostatStats(response.data);
-    } catch (error) {
-      console.error('Error fetching FAOSTAT statistics:', error);
-    }
+      const r = await axios.get(`${API}/faostat/statistics`);
+      setFaoStats(r.data);
+    } catch (_) {}
   };
 
-  const fetchCommodities = async () => {
-    try {
-      const response = await axios.get(`${API}/faostat/commodities?language=${language}`);
-      setCommodities(response.data.commodities || []);
-    } catch (error) {
-      console.error('Error fetching commodities:', error);
-    }
-  };
-
-  const fetchCountryData = async (countryIso3) => {
+  const fetchDetail = async (iso3) => {
     setLoading(true);
+    setDetail(null);
     try {
-      const response = await axios.get(`${API}/faostat/production/${countryIso3}?language=${language}`);
-      const d = response.data;
-      const validData = typeof d === 'object' && d !== null && !Array.isArray(d) ? d : null;
-      setFaostatData(validData);
-      
-      // Fetch trends for main commodity if available
-      if (validData?.commodities && Object.keys(validData.commodities).length > 0) {
-        const firstCommodity = Object.values(validData.commodities)[0];
-        if (firstCommodity?.commodity_code) {
-          fetchTrends(countryIso3, firstCommodity.commodity_code);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching country data:', error);
-      setFaostatData(null);
+      const r = await axios.get(`${API}/faostat/country-detail/${iso3}?language=${language}`);
+      setDetail(r.data);
+    } catch (err) {
+      console.error('Error fetching country detail:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchTopProducers = async (commodityCode) => {
-    setLoadingTopProducers(true);
-    try {
-      const response = await axios.get(`${API}/faostat/top-producers/${commodityCode}?year=2024&limit=10&language=${language}`);
-      setTopProducers(response.data);
-    } catch (error) {
-      console.error('Error fetching top producers:', error);
-      setTopProducers(null);
-    } finally {
-      setLoadingTopProducers(false);
-    }
-  };
+  // ── Charts data ──────────────────────────────────────────────────────────
+  const culturesChartData = () =>
+    (detail?.cultures || []).map((c, i) => ({
+      name: c.name.length > 14 ? c.name.slice(0, 14) + '…' : c.name,
+      fullName: c.name,
+      value: c.value_2023,
+      fill: COLORS_CULTURES[i % COLORS_CULTURES.length],
+    }));
 
-  const fetchTrends = async (countryIso3, commodityCode) => {
-    try {
-      const response = await axios.get(`${API}/faostat/trends/${countryIso3}/${commodityCode}?language=${language}`);
-      setTrends(response.data);
-    } catch (error) {
-      console.error('Error fetching trends:', error);
-      setTrends(null);
-    }
-  };
-
-  const formatNumber = (num) => {
-    if (num === null || num === undefined) return '0';
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
-    return num.toLocaleString();
-  };
-
-  const getTrendBadge = (trend) => {
-    switch(trend) {
-      case 'increasing':
-        return <Badge className="bg-green-500 text-white"><TrendingUp className="w-3 h-3 mr-1" />{t.increasing}</Badge>;
-      case 'decreasing':
-        return <Badge className="bg-red-500 text-white"><TrendingUp className="w-3 h-3 mr-1 rotate-180" />{t.decreasing}</Badge>;
-      default:
-        return <Badge className="bg-gray-500 text-white">{t.stable}</Badge>;
-    }
-  };
-
-  // Prepare chart data for country production
-  const prepareCountryChartData = () => {
-    if (!faostatData?.commodities) return [];
-    
-    return Object.entries(faostatData.commodities).map(([name, data], index) => {
-      const latestYear = Object.keys(data.years || {}).sort().pop();
-      return {
-        name: name.length > 15 ? name.substring(0, 15) + '...' : name,
-        fullName: name,
-        value: data.years?.[latestYear] || 0,
-        year: latestYear,
-        fill: CHART_COLORS[index % CHART_COLORS.length]
-      };
-    }).sort((a, b) => b.value - a.value);
-  };
-
-  // Prepare evolution data
-  const prepareEvolutionData = () => {
-    if (!faostatData?.commodities) return [];
-    
-    const years = faostatData.years_available || [2022, 2023, 2024];
-    return years.map(year => {
-      const dataPoint = { year };
-      Object.entries(faostatData.commodities).forEach(([name, data]) => {
-        if (data.years?.[year]) {
-          dataPoint[name] = data.years[year];
-        }
-      });
-      return dataPoint;
+  const evolutionChartData = () => {
+    const evo = detail?.evolution || {};
+    const crops = Object.keys(evo);
+    if (!crops.length) return [];
+    const years = [2020, 2021, 2022, 2023];
+    return years.map(y => {
+      const row = { year: y };
+      crops.forEach(c => { row[c] = evo[c]?.[y] || evo[c]?.[String(y)] || null; });
+      return row;
     });
   };
 
-  // Prepare top producers chart data
-  const prepareTopProducersData = () => {
-    if (!topProducers?.top_producers) return [];
-    
-    return topProducers.top_producers.map((producer, index) => ({
-      name: producer.country_name,
-      value: producer.value,
-      rank: producer.rank,
-      fill: CHART_COLORS[index % CHART_COLORS.length]
+  const elevageChartData = () =>
+    (detail?.elevage || []).map((e, i) => ({
+      name: e.name,
+      value: e.value,
+      fill: COLORS_ELEVAGE[i % COLORS_ELEVAGE.length],
     }));
+
+  const pecheChartData = () => {
+    const p = detail?.peche_aquaculture;
+    if (!p) return [];
+    return [
+      { name: t.capture, value: p.capture_tonnes, fill: COLORS_PECHE[0] },
+      { name: t.aquaculture, value: p.aquaculture_tonnes, fill: COLORS_PECHE[2] },
+    ].filter(x => x.value > 0);
   };
 
+  const evoLines = Object.keys(detail?.evolution || {}).slice(0, 5);
+
+  // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="space-y-6" data-testid="production-agriculture">
+    <div className="space-y-5">
+
       {/* Header */}
-      <Card className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white shadow-xl overflow-hidden">
+      <Card className="bg-gradient-to-r from-green-700 via-emerald-700 to-teal-700 text-white shadow-xl overflow-hidden">
         <CardHeader>
           <div className="flex items-start justify-between flex-wrap gap-4">
             <div>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <Wheat className="w-8 h-8" />
-                {t.title}
+              <CardTitle className="text-2xl font-bold flex items-center gap-3">
+                <Wheat className="w-7 h-7" /> {t.title}
               </CardTitle>
-              <CardDescription className="text-green-100 text-lg mt-2">
-                {t.subtitle}
-              </CardDescription>
+              <CardDescription className="text-green-100 mt-1">{t.subtitle}</CardDescription>
             </div>
-            {faostatStats && (
-              <div className="text-right">
-                <Badge className="bg-white/20 text-white hover:bg-white/30 text-lg px-4 py-2">
-                  {faostatStats.total_african_countries} {t.countries}
+            {faoStats && (
+              <div className="flex flex-col items-end gap-1">
+                <Badge className="bg-white/20 text-white text-sm px-3 py-1">
+                  <Globe className="w-3 h-3 mr-1" /> {faoStats.total_countries} pays
                 </Badge>
-                <p className="text-sm text-green-200 mt-2">
-                  {faostatStats.commodities_with_data} {t.products}
-                </p>
-                <p className="text-xs text-green-300 mt-1">
-                  {faostatStats.years_available?.join(', ')}
-                </p>
+                <span className="text-xs text-green-200">
+                  {faoStats.total_commodities} produits · {faoStats.data_year}
+                </span>
               </div>
             )}
           </div>
         </CardHeader>
       </Card>
 
-      {/* Main Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 bg-green-100 p-1 h-auto">
-          <TabsTrigger value="country" className="data-[state=active]:bg-green-600 data-[state=active]:text-white py-3" data-testid="country-tab">
-            <Globe className="w-4 h-4 mr-2" /> {t.countryTab}
-          </TabsTrigger>
-          <TabsTrigger value="commodity" className="data-[state=active]:bg-green-600 data-[state=active]:text-white py-3" data-testid="commodity-tab">
-            <Wheat className="w-4 h-4 mr-2" /> {t.commodityTab}
-          </TabsTrigger>
-          <TabsTrigger value="compare" className="data-[state=active]:bg-green-600 data-[state=active]:text-white py-3" data-testid="compare-tab">
-            <BarChart3 className="w-4 h-4 mr-2" /> {t.compareTab}
-          </TabsTrigger>
-        </TabsList>
-
-        {/* Country Tab */}
-        <TabsContent value="country" className="space-y-6">
-          {/* Country Selector */}
-          <Card className="border-2 border-green-200 shadow-lg" style={{ overflow: 'visible' }}>
-            <CardContent className="pt-6" style={{ overflow: 'visible' }}>
-              <EnhancedCountrySelector
-                value={selectedCountry}
-                onChange={setSelectedCountry}
-                label={t.selectCountry}
-                variant="prominent"
-                language={language}
-              />
-            </CardContent>
-          </Card>
-
-          {/* Loading State */}
-          {loading && (
-            <Card className="animate-pulse">
-              <CardContent className="flex items-center justify-center h-48">
-                <div className="text-center">
-                  <Loader2 className="w-12 h-12 animate-spin text-green-600 mx-auto" />
-                  <p className="mt-4 text-gray-600">{t.loading}</p>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Country Data */}
-          {!loading && faostatData && (
-            <>
-              {/* Country Header */}
-              <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
-                <CardHeader>
-                  <div className="flex items-center justify-between flex-wrap gap-4">
-                    <div>
-                      <CardTitle className="text-2xl text-green-800 flex items-center gap-3">
-                        <span className="text-4xl">🌍</span>
-                        {faostatData.country_name}
-                      </CardTitle>
-                      <CardDescription className="text-green-700 mt-2">
-                        <Badge variant="outline" className="border-green-500 text-green-700 mr-2">
-                          {faostatData.total_commodities} {t.products}
-                        </Badge>
-                        <Badge variant="outline" className="border-green-500 text-green-700">
-                          {t.data} {faostatData.data_source}
-                        </Badge>
-                      </CardDescription>
-                    </div>
-                    {trends && (
-                      <div className="text-right">
-                        <p className="text-sm text-gray-600">{trends.commodity}</p>
-                        {getTrendBadge(trends.trend)}
-                        <p className="text-xs text-gray-500 mt-1">
-                          {t.change}: {trends.change_percent > 0 ? '+' : ''}{trends.change_percent}%
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </CardHeader>
-              </Card>
-
-              {/* Production Charts */}
-              {faostatData.commodities && Object.keys(faostatData.commodities).length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Bar Chart */}
-                  <Card className="shadow-lg">
-                    <CardHeader>
-                      <CardTitle className="text-lg text-gray-700 flex items-center gap-2">
-                        <BarChart3 className="w-5 h-5 text-green-600" />
-                        {t.countryProduction} 2024
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ResponsiveContainer width="100%" height={350}>
-                        <BarChart data={prepareCountryChartData()} layout="vertical">
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis type="number" tickFormatter={formatNumber} />
-                          <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 12 }} />
-                          <Tooltip 
-                            formatter={(value) => [formatNumber(value) + ' ' + t.tonnes, t.production]}
-                            labelFormatter={(label, payload) => payload?.[0]?.payload?.fullName || label}
-                          />
-                          <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                            {prepareCountryChartData().map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.fill} />
-                            ))}
-                          </Bar>
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </CardContent>
-                  </Card>
-
-                  {/* Pie Chart */}
-                  <Card className="shadow-lg">
-                    <CardHeader>
-                      <CardTitle className="text-lg text-gray-700">{t.productionByYear}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ResponsiveContainer width="100%" height={350}>
-                        <PieChart>
-                          <Pie
-                            data={prepareCountryChartData().slice(0, 6)}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={120}
-                            paddingAngle={2}
-                            dataKey="value"
-                          >
-                            {prepareCountryChartData().slice(0, 6).map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.fill} />
-                            ))}
-                          </Pie>
-                          <Tooltip formatter={(value) => formatNumber(value) + ' ' + t.tonnes} />
-                          <Legend />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </CardContent>
-                  </Card>
-                </div>
-              ) : (
-                <Card className="border-l-4 border-l-amber-500">
-                  <CardContent className="flex items-center gap-4 py-8">
-                    <AlertTriangle className="w-12 h-12 text-amber-500" />
-                    <div>
-                      <h3 className="font-bold text-lg text-gray-800">{t.noData}</h3>
-                      <p className="text-gray-600">{t.noProductionData}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Evolution Chart */}
-              {faostatData.commodities && Object.keys(faostatData.commodities).length > 0 && (
-                <Card className="shadow-lg">
-                  <CardHeader className="bg-gradient-to-r from-green-50 to-teal-50">
-                    <CardTitle className="text-xl text-green-700 flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5" /> {t.evolutionTitle} (2022-2024)
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <ResponsiveContainer width="100%" height={350}>
-                      <LineChart data={prepareEvolutionData()}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="year" />
-                        <YAxis tickFormatter={formatNumber} />
-                        <Tooltip formatter={(value) => formatNumber(value) + ' ' + t.tonnes} />
-                        <Legend />
-                        {Object.keys(faostatData.commodities || {}).slice(0, 5).map((commodity, index) => (
-                          <Line 
-                            key={commodity}
-                            type="monotone" 
-                            dataKey={commodity} 
-                            stroke={CHART_COLORS[index % CHART_COLORS.length]}
-                            strokeWidth={3}
-                            dot={{ r: 5 }}
-                            activeDot={{ r: 8 }}
-                          />
-                        ))}
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Production Details Table */}
-              {faostatData.commodities && Object.keys(faostatData.commodities).length > 0 && (
-                <Card className="shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-lg text-gray-700">{t.countryProduction}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="bg-green-50">
-                            <th className="text-left p-3 font-semibold">{t.products}</th>
-                            <th className="text-center p-3 font-semibold">2022</th>
-                            <th className="text-center p-3 font-semibold">2023</th>
-                            <th className="text-center p-3 font-semibold">2024</th>
-                            <th className="text-center p-3 font-semibold">{t.trend}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {Object.entries(faostatData.commodities).map(([name, data], index) => {
-                            const years = data.years || {};
-                            const values = Object.values(years).filter(v => v > 0);
-                            let trend = 'stable';
-                            if (values.length >= 2) {
-                              const change = (values[values.length - 1] - values[0]) / values[0] * 100;
-                              trend = change > 5 ? 'increasing' : change < -5 ? 'decreasing' : 'stable';
-                            }
-                            
-                            return (
-                              <tr key={name} className="border-b hover:bg-gray-50">
-                                <td className="p-3">
-                                  <div className="flex items-center gap-2">
-                                    <div 
-                                      className="w-3 h-3 rounded-full" 
-                                      style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}
-                                    />
-                                    <span className="font-medium">{name}</span>
-                                  </div>
-                                </td>
-                                <td className="text-center p-3 font-mono">{formatNumber(years[2022] || 0)}</td>
-                                <td className="text-center p-3 font-mono">{formatNumber(years[2023] || 0)}</td>
-                                <td className="text-center p-3 font-mono font-bold text-green-700">{formatNumber(years[2024] || 0)}</td>
-                                <td className="text-center p-3">{getTrendBadge(trend)}</td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </>
-          )}
-        </TabsContent>
-
-        {/* Commodity Tab - Top Producers */}
-        <TabsContent value="commodity" className="space-y-6">
-          {/* Commodity Selector */}
-          <Card className="border-2 border-amber-200 shadow-lg">
-            <CardContent className="pt-6">
-              <div className="flex flex-col md:flex-row gap-4 items-end">
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">{t.selectCommodity}</label>
-                  <Select value={selectedCommodity} onValueChange={setSelectedCommodity}>
-                    <SelectTrigger className="w-full" data-testid="commodity-select">
-                      <SelectValue placeholder={t.selectCommodity} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {commodities.map((commodity) => (
-                        <SelectItem key={commodity.code} value={commodity.code}>
-                          {commodity.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <Button 
-                  onClick={() => fetchTopProducers(selectedCommodity)}
-                  className="bg-amber-500 hover:bg-amber-600"
-                  disabled={loadingTopProducers}
-                >
-                  {loadingTopProducers ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Search className="w-4 h-4 mr-2" />}
-                  {t.viewTopProducers}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Loading */}
-          {loadingTopProducers && (
-            <Card className="animate-pulse">
-              <CardContent className="flex items-center justify-center h-48">
-                <Loader2 className="w-12 h-12 animate-spin text-amber-600" />
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Top Producers Results */}
-          {!loadingTopProducers && topProducers && (
-            <>
-              {/* Header */}
-              <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-amber-800 flex items-center gap-3">
-                    <Award className="w-8 h-8 text-amber-500" />
-                    {t.topProducers}: {topProducers.commodity_name}
-                  </CardTitle>
-                  <CardDescription className="text-amber-700">
-                    {t.year} {topProducers.year} - {topProducers.data_source}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              {/* Top Producers Chart */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-lg text-gray-700">{t.topProducers}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ResponsiveContainer width="100%" height={400}>
-                      <BarChart data={prepareTopProducersData()} layout="vertical">
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis type="number" tickFormatter={formatNumber} />
-                        <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 12 }} />
-                        <Tooltip formatter={(value) => [formatNumber(value) + ' ' + t.tonnes, t.production]} />
-                        <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                          {prepareTopProducersData().map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </CardContent>
-                </Card>
-
-                {/* Rankings Table */}
-                <Card className="shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-lg text-gray-700">{t.topProducers}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {topProducers.top_producers?.map((producer, index) => (
-                        <div 
-                          key={producer.country_iso3}
-                          className={`flex items-center justify-between p-3 rounded-lg ${
-                            index === 0 ? 'bg-gradient-to-r from-amber-100 to-yellow-100 border-2 border-amber-300' :
-                            index === 1 ? 'bg-gray-100 border border-gray-300' :
-                            index === 2 ? 'bg-gradient-to-r from-orange-50 to-amber-50 border border-amber-200' :
-                            'bg-gray-50'
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                              index === 0 ? 'bg-amber-400 text-white' :
-                              index === 1 ? 'bg-gray-400 text-white' :
-                              index === 2 ? 'bg-amber-600 text-white' :
-                              'bg-gray-200 text-gray-700'
-                            }`}>
-                              {producer.rank}
-                            </span>
-                            <span className="font-medium text-gray-800">{producer.country_name}</span>
-                          </div>
-                          <div className="text-right">
-                            <p className="font-bold text-amber-700">{formatNumber(producer.value)}</p>
-                            <p className="text-xs text-gray-500">{producer.unit}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </>
-          )}
-        </TabsContent>
-
-        {/* Compare Tab */}
-        <TabsContent value="compare" className="space-y-6">
-          <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
-            <CardHeader>
-              <CardTitle className="text-2xl text-purple-800 flex items-center gap-3">
-                <BarChart3 className="w-8 h-8 text-purple-600" />
-                {t.radarComparison}
-              </CardTitle>
-              <CardDescription className="text-purple-700">
-                {language === 'fr' 
-                  ? 'Comparez la production de différents produits pour le pays sélectionné'
-                  : 'Compare production of different products for the selected country'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {faostatData?.commodities && Object.keys(faostatData.commodities).length > 0 ? (
-                <ResponsiveContainer width="100%" height={400}>
-                  <RadarChart data={Object.entries(faostatData.commodities).slice(0, 6).map(([name, data]) => ({
-                    product: name.length > 10 ? name.substring(0, 10) + '...' : name,
-                    '2022': data.years?.[2022] || 0,
-                    '2023': data.years?.[2023] || 0,
-                    '2024': data.years?.[2024] || 0
-                  }))}>
-                    <PolarGrid />
-                    <PolarAngleAxis dataKey="product" tick={{ fontSize: 11 }} />
-                    <PolarRadiusAxis tickFormatter={formatNumber} />
-                    <Radar name="2022" dataKey="2022" stroke="#94a3b8" fill="#94a3b8" fillOpacity={0.3} />
-                    <Radar name="2023" dataKey="2023" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.3} />
-                    <Radar name="2024" dataKey="2024" stroke="#10b981" fill="#10b981" fillOpacity={0.5} />
-                    <Legend />
-                    <Tooltip formatter={(value) => formatNumber(value) + ' ' + t.tonnes} />
-                  </RadarChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="text-center py-12 text-gray-500">
-                  <Globe className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                  <p>{t.noProductionData}</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-
-      {/* Source Information */}
-      <Card className="bg-gray-50 border-gray-200">
-        <CardContent className="py-4">
-          <div className="flex items-center gap-3">
-            <Info className="w-5 h-5 text-gray-400" />
-            <p className="text-sm text-gray-600">{t.source}</p>
-          </div>
+      {/* Country Selector */}
+      <Card className="border-2 border-green-200 shadow-lg" style={{ overflow: 'visible' }}>
+        <CardContent className="pt-5" style={{ overflow: 'visible' }}>
+          <EnhancedCountrySelector
+            value={country}
+            onChange={setCountry}
+            label={t.selectCountry}
+            variant="prominent"
+            language={language}
+          />
         </CardContent>
       </Card>
+
+      {/* Loading */}
+      {loading && (
+        <Card>
+          <CardContent className="flex items-center justify-center h-48">
+            <div className="text-center">
+              <Loader2 className="w-10 h-10 animate-spin text-green-600 mx-auto" />
+              <p className="mt-3 text-gray-500">{t.loading}</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Country detail */}
+      {!loading && detail && (
+        <>
+          {/* Country header */}
+          <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+            <CardHeader>
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <div>
+                  <CardTitle className="text-xl text-green-800 flex items-center gap-2">
+                    <span className="text-3xl">🌍</span> {detail.country_name}
+                    <Badge variant="outline" className="border-green-500 text-green-700 text-xs ml-2">
+                      {detail.region}
+                    </Badge>
+                  </CardTitle>
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    <Badge className="bg-green-100 text-green-800 border-green-300">
+                      {detail.cultures?.length || 0} cultures
+                    </Badge>
+                    {detail.has_livestock && (
+                      <Badge className="bg-amber-100 text-amber-800 border-amber-300">
+                        <Beef className="w-3 h-3 mr-1" /> Élevage
+                      </Badge>
+                    )}
+                    {detail.has_fisheries && (
+                      <Badge className="bg-blue-100 text-blue-800 border-blue-300">
+                        <Fish className="w-3 h-3 mr-1" /> Pêche
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-gray-500">{t.source}</p>
+                  <p className="text-xs font-medium text-gray-700">{detail.source}</p>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+
+          {/* Sub-tabs: Cultures / Élevage / Pêche */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
+            <TabsList className="grid w-full grid-cols-3 bg-green-100 p-1 h-auto">
+              <TabsTrigger
+                value="cultures"
+                className="data-[state=active]:bg-green-600 data-[state=active]:text-white py-2.5"
+              >
+                <Wheat className="w-4 h-4 mr-2" /> {t.tabCultures}
+              </TabsTrigger>
+              <TabsTrigger
+                value="elevage"
+                className="data-[state=active]:bg-amber-600 data-[state=active]:text-white py-2.5"
+                disabled={!detail.has_livestock}
+              >
+                <Beef className="w-4 h-4 mr-2" /> {t.tabElevage}
+              </TabsTrigger>
+              <TabsTrigger
+                value="peche"
+                className="data-[state=active]:bg-blue-600 data-[state=active]:text-white py-2.5"
+                disabled={!detail.has_fisheries}
+              >
+                <Fish className="w-4 h-4 mr-2" /> {t.tabPeche}
+              </TabsTrigger>
+            </TabsList>
+
+            {/* ═══════════════════ CULTURES ═══════════════════ */}
+            <TabsContent value="cultures" className="space-y-5">
+              {detail.cultures?.length > 0 ? (
+                <>
+                  {/* Bar chart + Table */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    <Card className="shadow-md">
+                      <CardHeader>
+                        <CardTitle className="text-base text-gray-700 flex items-center gap-2">
+                          <BarChart3 className="w-4 h-4 text-green-600" /> {t.production}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={320}>
+                          <BarChart data={culturesChartData()} layout="vertical" margin={{ left: 10, right: 20 }}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis type="number" tickFormatter={fmt} tick={{ fontSize: 11 }} />
+                            <YAxis type="category" dataKey="name" width={105} tick={{ fontSize: 11 }} />
+                            <Tooltip
+                              formatter={(v, _, p) => [fmtUnit(v, t.tonnes), p?.payload?.fullName || '']}
+                            />
+                            <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                              {culturesChartData().map((e, i) => (
+                                <Cell key={i} fill={e.fill} />
+                              ))}
+                            </Bar>
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+
+                    {/* Detailed table */}
+                    <Card className="shadow-md">
+                      <CardHeader>
+                        <CardTitle className="text-base text-gray-700">{t.cultures}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-0">
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="bg-green-50 border-b">
+                                <th className="text-left px-3 py-2 font-semibold">Produit</th>
+                                <th className="text-right px-3 py-2 font-semibold">{t.production}</th>
+                                <th className="text-right px-3 py-2 font-semibold hidden sm:table-cell">{t.surface}</th>
+                                <th className="text-center px-3 py-2 font-semibold">{t.rankAfrique}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {detail.cultures.map((c, i) => (
+                                <tr key={c.name} className="border-b hover:bg-gray-50">
+                                  <td className="px-3 py-2">
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-3 h-3 rounded-full flex-shrink-0"
+                                        style={{ backgroundColor: COLORS_CULTURES[i % COLORS_CULTURES.length] }} />
+                                      <span className="font-medium">{c.name}</span>
+                                    </div>
+                                  </td>
+                                  <td className="px-3 py-2 text-right font-mono text-green-700 font-bold">
+                                    {fmt(c.value_2023)} t
+                                  </td>
+                                  <td className="px-3 py-2 text-right text-gray-500 hidden sm:table-cell">
+                                    {c.area_ha ? `${fmt(c.area_ha)} ha` : '—'}
+                                  </td>
+                                  <td className="px-3 py-2 text-center">
+                                    {c.rank_africa ? (
+                                      <Badge className={`text-xs ${c.rank_africa <= 3 ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-700'}`}>
+                                        {c.rank_africa <= 3 && <Award className="w-3 h-3 mr-0.5 inline" />}
+                                        #{c.rank_africa}
+                                      </Badge>
+                                    ) : '—'}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Evolution chart */}
+                  {evoLines.length > 0 && (
+                    <Card className="shadow-md">
+                      <CardHeader>
+                        <CardTitle className="text-base text-green-700 flex items-center gap-2">
+                          <TrendingUp className="w-4 h-4" /> {t.evolution}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={280}>
+                          <LineChart data={evolutionChartData()}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="year" />
+                            <YAxis tickFormatter={fmt} />
+                            <Tooltip formatter={(v) => [fmt(v) + ' ' + t.tonnes]} />
+                            <Legend />
+                            {evoLines.map((crop, i) => (
+                              <Line
+                                key={crop}
+                                type="monotone"
+                                dataKey={crop}
+                                stroke={COLORS_CULTURES[i % COLORS_CULTURES.length]}
+                                strokeWidth={2.5}
+                                dot={{ r: 4 }}
+                                activeDot={{ r: 7 }}
+                              />
+                            ))}
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Key indicators */}
+                  {detail.key_indicators && Object.keys(detail.key_indicators).length > 0 && (
+                    <Card className="shadow-md bg-green-50 border-green-200">
+                      <CardHeader>
+                        <CardTitle className="text-base text-green-800 flex items-center gap-2">
+                          <Info className="w-4 h-4" /> {t.indicators}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {detail.key_indicators.agri_gdp_percent && (
+                            <div className="text-center">
+                              <p className="text-2xl font-bold text-green-700">{detail.key_indicators.agri_gdp_percent}%</p>
+                              <p className="text-xs text-gray-600 mt-1">{t.agriGDP}</p>
+                            </div>
+                          )}
+                          {detail.key_indicators.agri_employment_percent && (
+                            <div className="text-center">
+                              <p className="text-2xl font-bold text-green-700">{detail.key_indicators.agri_employment_percent}%</p>
+                              <p className="text-xs text-gray-600 mt-1">{t.agriEmploy}</p>
+                            </div>
+                          )}
+                          {detail.key_indicators.arable_land_ha && (
+                            <div className="text-center">
+                              <p className="text-2xl font-bold text-green-700">{fmt(detail.key_indicators.arable_land_ha)}</p>
+                              <p className="text-xs text-gray-600 mt-1">{t.arable} (ha)</p>
+                            </div>
+                          )}
+                          {detail.key_indicators.irrigated_land_ha && (
+                            <div className="text-center">
+                              <p className="text-2xl font-bold text-blue-700">{fmt(detail.key_indicators.irrigated_land_ha)}</p>
+                              <p className="text-xs text-gray-600 mt-1">{t.irrigated} (ha)</p>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </>
+              ) : (
+                <Card className="border-l-4 border-l-amber-400">
+                  <CardContent className="flex items-center gap-4 py-8">
+                    <AlertTriangle className="w-10 h-10 text-amber-500 flex-shrink-0" />
+                    <p className="text-gray-600">{t.noData}</p>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+
+            {/* ═══════════════════ ÉLEVAGE ═══════════════════ */}
+            <TabsContent value="elevage" className="space-y-5">
+              {detail.has_livestock && detail.elevage?.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    {/* Bar chart élevage */}
+                    <Card className="shadow-md">
+                      <CardHeader>
+                        <CardTitle className="text-base text-amber-800 flex items-center gap-2">
+                          <Beef className="w-4 h-4" /> {t.livestock} 2023
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={280}>
+                          <BarChart data={elevageChartData()} layout="vertical" margin={{ left: 10, right: 20 }}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis type="number" tickFormatter={fmt} tick={{ fontSize: 11 }} />
+                            <YAxis type="category" dataKey="name" width={90} tick={{ fontSize: 11 }} />
+                            <Tooltip formatter={(v) => [fmt(v) + ' ' + t.tetes]} />
+                            <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                              {elevageChartData().map((e, i) => (
+                                <Cell key={i} fill={e.fill} />
+                              ))}
+                            </Bar>
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+
+                    {/* Table élevage */}
+                    <Card className="shadow-md">
+                      <CardHeader>
+                        <CardTitle className="text-base text-amber-800">{t.livestock}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-0">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="bg-amber-50 border-b">
+                              <th className="text-left px-3 py-2 font-semibold">Espèce</th>
+                              <th className="text-right px-3 py-2 font-semibold">Effectif</th>
+                              <th className="text-center px-3 py-2 font-semibold">{t.rankAfrique}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {detail.elevage.map((e, i) => (
+                              <tr key={e.name} className="border-b hover:bg-amber-50/50">
+                                <td className="px-3 py-2.5">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 rounded-full"
+                                      style={{ backgroundColor: COLORS_ELEVAGE[i % COLORS_ELEVAGE.length] }} />
+                                    <span className="font-medium">{e.name}</span>
+                                  </div>
+                                </td>
+                                <td className="px-3 py-2.5 text-right font-mono font-bold text-amber-800">
+                                  {fmt(e.value)} {e.unit}
+                                </td>
+                                <td className="px-3 py-2.5 text-center">
+                                  {e.rank_africa ? (
+                                    <Badge className={`text-xs ${e.rank_africa <= 5 ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-700'}`}>
+                                      #{e.rank_africa}
+                                    </Badge>
+                                  ) : '—'}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Production animale */}
+                  {detail.livestock_production_2023 && Object.keys(detail.livestock_production_2023).length > 0 && (
+                    <Card className="shadow-md bg-amber-50 border-amber-200">
+                      <CardHeader>
+                        <CardTitle className="text-base text-amber-900">{t.livestockProd} 2023</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {Object.entries(detail.livestock_production_2023).map(([name, d]) => (
+                            <div key={name} className="text-center bg-white rounded-xl p-3 border border-amber-100 shadow-sm">
+                              <p className="text-xl font-bold text-amber-700">{fmt(d.value)}</p>
+                              <p className="text-xs text-gray-500 mt-1">{d.unit}</p>
+                              <p className="text-sm font-medium text-gray-700 mt-1">{name}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </>
+              ) : (
+                <Card className="border-l-4 border-l-amber-400">
+                  <CardContent className="flex items-center gap-4 py-8">
+                    <AlertTriangle className="w-10 h-10 text-amber-500 flex-shrink-0" />
+                    <p className="text-gray-600">{t.noLivestock}</p>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+
+            {/* ═══════════════════ PÊCHE & AQUACULTURE ═══════════════════ */}
+            <TabsContent value="peche" className="space-y-5">
+              {detail.has_fisheries ? (
+                <>
+                  {/* KPIs capture + aquaculture */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <Card className="shadow-md border-l-4 border-l-blue-500 bg-blue-50">
+                      <CardContent className="pt-5">
+                        <div className="flex items-center gap-4">
+                          <Fish className="w-10 h-10 text-blue-600 flex-shrink-0" />
+                          <div>
+                            <p className="text-3xl font-bold text-blue-800">
+                              {fmt(detail.peche_aquaculture?.capture_tonnes)} t
+                            </p>
+                            <p className="text-sm text-blue-600 mt-1">{t.capture} 2023</p>
+                            {detail.peche_aquaculture?.capture_rank_africa && (
+                              <Badge className="bg-blue-100 text-blue-800 mt-2 text-xs">
+                                Rang Afrique #{detail.peche_aquaculture.capture_rank_africa}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="shadow-md border-l-4 border-l-teal-500 bg-teal-50">
+                      <CardContent className="pt-5">
+                        <div className="flex items-center gap-4">
+                          <Droplets className="w-10 h-10 text-teal-600 flex-shrink-0" />
+                          <div>
+                            <p className="text-3xl font-bold text-teal-800">
+                              {fmt(detail.peche_aquaculture?.aquaculture_tonnes)} t
+                            </p>
+                            <p className="text-sm text-teal-600 mt-1">{t.aquaculture} 2023</p>
+                            {detail.peche_aquaculture?.aquaculture_rank_africa && (
+                              <Badge className="bg-teal-100 text-teal-800 mt-2 text-xs">
+                                Rang Afrique #{detail.peche_aquaculture.aquaculture_rank_africa}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Pie chart + details */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    <Card className="shadow-md">
+                      <CardHeader>
+                        <CardTitle className="text-base text-blue-800">Répartition de la production halieutique</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={260}>
+                          <PieChart>
+                            <Pie
+                              data={pecheChartData()}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={60}
+                              outerRadius={110}
+                              paddingAngle={4}
+                              dataKey="value"
+                            >
+                              {pecheChartData().map((e, i) => (
+                                <Cell key={i} fill={e.fill} />
+                              ))}
+                            </Pie>
+                            <Tooltip formatter={(v) => [fmt(v) + ' t']} />
+                            <Legend />
+                          </PieChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="shadow-md">
+                      <CardHeader>
+                        <CardTitle className="text-base text-blue-800">Détails pêche & aquaculture</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {detail.peche_aquaculture?.species?.length > 0 && (
+                          <div>
+                            <p className="text-sm font-semibold text-gray-700 mb-2">
+                              <Fish className="w-3.5 h-3.5 inline mr-1 text-blue-500" /> {t.species}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {detail.peche_aquaculture.species.map(s => (
+                                <Badge key={s} className="bg-blue-50 text-blue-700 border-blue-200">{s}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {detail.peche_aquaculture?.main_ports?.length > 0 && (
+                          <div>
+                            <p className="text-sm font-semibold text-gray-700 mb-2">
+                              ⚓ {t.ports}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {detail.peche_aquaculture.main_ports.map(p => (
+                                <Badge key={p} className="bg-gray-100 text-gray-700">{p}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                          <p className="text-xs text-gray-500">Source : FAO FishStat 2023 / Direction des Pêches</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </>
+              ) : (
+                <Card className="border-l-4 border-l-blue-400">
+                  <CardContent className="flex items-center gap-4 py-8">
+                    <AlertTriangle className="w-10 h-10 text-blue-500 flex-shrink-0" />
+                    <p className="text-gray-600">{t.noFisheries}</p>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+          </Tabs>
+        </>
+      )}
+
+      {/* No data fallback */}
+      {!loading && !detail && (
+        <Card className="border-l-4 border-l-amber-400">
+          <CardContent className="flex items-center gap-4 py-8">
+            <AlertTriangle className="w-10 h-10 text-amber-500 flex-shrink-0" />
+            <p className="text-gray-600">{t.noData}</p>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
-
-export default ProductionAgriculture;
