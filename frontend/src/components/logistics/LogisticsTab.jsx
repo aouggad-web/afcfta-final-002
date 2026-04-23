@@ -7,8 +7,9 @@ import MaritimeLogisticsTab from './MaritimeLogisticsTab';
 import AirLogisticsTab from './AirLogisticsTab';
 import LandLogisticsTab from './LandLogisticsTab';
 import FreeZonesTab from './FreeZonesTab';
+import IntervenantsTab from './IntervenantsTab';
 import { PDFExportButton } from '../common/ExportTools';
-import { Ship, Plane, Truck, Building2, Globe, Database } from 'lucide-react';
+import { Ship, Plane, Truck, Building2, Globe, Database, Users } from 'lucide-react';
 
 export default function LogisticsTab({ language = 'fr' }) {
   const { t } = useTranslation();
@@ -44,7 +45,7 @@ export default function LogisticsTab({ language = 'fr' }) {
       <div ref={contentRef}>
         {/* Main Tabs with enhanced styling */}
         <Tabs defaultValue="maritime" className="space-y-5">
-          <TabsList className="tabs-list-boxed cols-4">
+          <TabsList className="tabs-list-boxed cols-5">
             <TabsTrigger 
               value="maritime" 
               className="tab-trigger-enhanced tab-blue"
@@ -77,6 +78,14 @@ export default function LogisticsTab({ language = 'fr' }) {
               <Building2 className="tab-icon" />
               <span>{t('logistics.freeZones')}</span>
             </TabsTrigger>
+            <TabsTrigger 
+              value="intervenants" 
+              className="tab-trigger-enhanced tab-green"
+              data-testid="intervenants-tab-trigger"
+            >
+              <Users className="tab-icon" />
+              <span>Intervenants</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="maritime" className="tab-content-enhanced mt-0">
@@ -93,6 +102,10 @@ export default function LogisticsTab({ language = 'fr' }) {
 
           <TabsContent value="zones" className="tab-content-enhanced mt-0">
             <FreeZonesTab language={language} />
+          </TabsContent>
+
+          <TabsContent value="intervenants" className="tab-content-enhanced mt-0">
+            <IntervenantsTab language={language} />
           </TabsContent>
         </Tabs>
 
