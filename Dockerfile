@@ -12,10 +12,14 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 FROM python:3.11-slim
 
+# Security hardening: run as non-root user
 RUN useradd -m -u 1000 appuser
 
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+# Ensure python logs are sent straight to terminal
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
 COPY --chown=appuser:appuser . /app
@@ -23,8 +27,7 @@ COPY --chown=appuser:appuser . /app
 USER appuser
 EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/api/health')"
+# Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD python -c "import sys, requests; r = requests.get('http://localhost:8000/api/health', timeout=8); sys.exit(0 if r.status_code == 200 else 1)"
 
