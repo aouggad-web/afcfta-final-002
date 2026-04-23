@@ -21,6 +21,11 @@ from services.faostat_service import (
     AFRICAN_COUNTRIES,
     KEY_COMMODITIES
 )
+from etl.faostat_data import (
+    FAOSTAT_AGRICULTURE_DATA,
+    get_faostat_country_data,
+    get_fisheries_rankings
+)
 
 logger = logging.getLogger(__name__)
 
@@ -125,6 +130,117 @@ async def get_country_production(
     except Exception as e:
         logger.error(f"Error fetching production for {country_iso3}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/country-detail/{country_iso3}")
+async def get_country_full_detail(
+    country_iso3: str,
+    language: str = Query(default="fr")
+):
+    """
+    Données FAOSTAT complètes pour un pays : cultures, élevage, pêche/aquaculture.
+    Source: FAOSTAT_AGRICULTURE_DATA (données enrichies 2023).
+    """
+    iso3 = country_iso3.upper()
+    if iso3 not in AFRICAN_COUNTRIES:
+        raise HTTPException(status_code=404, detail=f"Pays {iso3} non trouvé")
+
+    data = get_faostat_country_data(iso3)
+    if not data:
+        raise HTTPException(status_code=404, detail=f"Pas de données FAOSTAT pour {iso3}")
+
+    # --- Cultures: respecte display_order si défini, sinon trié par volume ---
+    production_raw = data.get("production_2023", {})
+    display_order = data.get("display_order", [])
+    cultures_list = [
+        {
+            "name": name,
+            "value_2023": info.get("value", 0),
+            "unit": info.get("unit", "tonnes"),
+            "rank_africa": info.get("rank_africa"),
+            "area_ha": info.get("area_ha"),
+            "yield_kg_ha": info.get("yield_kg_ha"),
+        }
+        for name, info in production_raw.items()
+    ]
+    if display_order:
+        order_map = {name: i for i, name in enumerate(display_order)}
+        cultures_sorted = sorted(
+            cultures_list,
+            key=lambda x: (order_map.get(x["name"], 999), -x["value_2023"])
+        )
+    else:
+        cultures_sorted = sorted(cultures_list, key=lambda x: x["value_2023"], reverse=True)
+
+    # --- Évolution temporelle ---
+    evolution = data.get("evolution", {})
+    evolution_formatted = {}
+    for crop, years_list in evolution.items():
+        evolution_formatted[crop] = {str(e["year"]): e["value"] for e in years_list}
+
+    # --- Élevage ---
+    livestock_raw = data.get("livestock_2023", {})
+    elevage = sorted(
+        [
+            {
+                "name": name,
+                "value": info.get("value", 0),
+                "unit": info.get("unit", "têtes"),
+                "rank_africa": info.get("rank_africa"),
+            }
+            for name, info in livestock_raw.items()
+        ],
+        key=lambda x: x["value"],
+        reverse=True
+    )
+
+    # --- Pêche & Aquaculture ---
+    fish_raw = data.get("fisheries_2023", {})
+    peche = {
+        "capture_tonnes": fish_raw.get("capture", {}).get("value", 0),
+        "aquaculture_tonnes": fish_raw.get("aquaculture", {}).get("value", 0),
+        "capture_rank_africa": fish_raw.get("capture", {}).get("rank_africa"),
+        "aquaculture_rank_africa": fish_raw.get("aquaculture", {}).get("rank_africa"),
+    }
+
+    # --- Indicateurs clés ---
+    indicators = data.get("key_indicators", {})
+
+    # --- Production animale (lait, viande, laine, oeufs) ---
+    livestock_prod_raw = data.get("livestock_production_2023", {})
+    livestock_production = {
+        name: {"value": info.get("value", 0), "unit": info.get("unit", "tonnes")}
+        for name, info in livestock_prod_raw.items()
+    }
+
+    # --- Espèces et ports pêche ---
+    fish_species = fish_raw.get("species", [])
+    fish_ports   = fish_raw.get("main_ports", [])
+    peche["species"]    = fish_species
+    peche["main_ports"] = fish_ports
+
+    return {
+        "country_iso3": iso3,
+        "country_name": data.get("country_name", iso3),
+        "region": data.get("region", ""),
+        "data_year": data.get("data_year", 2023),
+        "source": data.get("source", "FAOSTAT 2023"),
+        "main_crops": data.get("main_crops", []),
+        "cultures": cultures_sorted,
+        "evolution": evolution_formatted,
+        "elevage": elevage,
+        "livestock_production_2023": livestock_production,
+        "peche_aquaculture": peche,
+        "key_indicators": indicators,
+        "has_livestock": len(elevage) > 0,
+        "has_fisheries": (peche["capture_tonnes"] + peche["aquaculture_tonnes"]) > 0,
+    }
+
+
+@router.get("/fisheries/rankings")
+async def get_fisheries_rankings_route():
+    """Classement africain pêche et aquaculture (source: FAO FishStat 2023)."""
+    return get_fisheries_rankings()
 
 
 @router.get("/top-producers/{commodity_code}")
