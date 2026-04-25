@@ -1,2 +1,2 @@
-bloc,country,hs_version,pdf_url,parser,prefix
-EAC,MULTI,HS2022,https://kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf,eac,EA
+Code_ISO,Pays,Region,GDP,Population,Authority,URL
+MAR,Morocco,North Africa,152.0,37.0,ADII,https://www.douane.gov.ma
