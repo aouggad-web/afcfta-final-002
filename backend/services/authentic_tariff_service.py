@@ -3,7 +3,7 @@ import os
 import logging
 from typing import Dict, List, Any, Optional
 
-logger = logging.get_logger(__name__)
+logger = logging.getLogger(__name__)
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
 _tariff_cache = {}
 
@@ -41,7 +41,7 @@ def get_fiscal_advantages(country_iso3, hs_code):
     line = get_tariff_line(country_iso3, hs_code)
     return line.get('fiscal_advantages', []) if line else []
 
-def get_administrative_formalties(country_iso3, hs_code):
+def get_administrative_formalities(country_iso3, hs_code):
     line = get_tariff_line(country_iso3, hs_code)
     return line.get('administrative_formalities', []) if line else []
 

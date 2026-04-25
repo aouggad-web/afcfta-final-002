@@ -11,7 +11,7 @@ Wire the database before first request:
 """
 
 import hashlib
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import Depends, Header, HTTPException, status
 
@@ -45,7 +45,7 @@ def _hash_key(raw_key: str) -> str:
 # ---------------------------------------------------------------------------
 
 async def require_auth(
-    x_api_key: Annotated[str | None, Header()] = None,
+    x_api_key: Annotated[Optional[str], Header()] = None,
 ) -> dict:
     """Validate X-API-Key header; return the key document on success."""
     if _db is None:
