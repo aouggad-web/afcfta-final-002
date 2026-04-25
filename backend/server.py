@@ -50,6 +50,8 @@ logger = logging.getLogger(__name__)
 from routes import register_routes
 from routes.substitution import register_routes as register_substitution_routes
 from routes.calculator import set_database as set_calculator_db
+from routes.admin_keys import router as admin_keys_router
+import auth as _auth_module
 
 from services.tariff_data_service import tariff_service
 from services.crawled_data_service import crawled_service
@@ -234,6 +236,12 @@ async def _setup_database_indexes():
             IndexModel([("hs_code", ASCENDING)]),
             IndexModel([("country_code", ASCENDING), ("hs_code", ASCENDING)]),
         ])
+        # api_keys indexes (auth system)
+        api_keys = db["api_keys"]
+        await api_keys.create_indexes([
+            IndexModel([("key_hash", ASCENDING)], unique=True),
+            IndexModel([("active", ASCENDING), ("tier", ASCENDING)]),
+        ])
         logger.info("MongoDB indexes created successfully")
     except Exception as e:
         logger.warning(f"MongoDB index creation skipped: {e}")
@@ -245,7 +253,8 @@ async def startup_load_tariff_data():
     # Set up database indexes for performance
     await _setup_database_indexes()
 
-    # Set database for calculator routes
+    # Wire database into auth and calculator
+    _auth_module.set_database(db)
     set_calculator_db(db)
     
     # Load crawled data
@@ -293,6 +302,7 @@ async def startup_load_tariff_data():
 
 register_routes(api_router)
 register_substitution_routes(api_router)
+api_router.include_router(admin_keys_router, tags=["Admin: API Keys"])
 
 # Include the router in the main app
 app.include_router(api_router)

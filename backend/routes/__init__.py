@@ -23,8 +23,12 @@ MIGRATION STATUS:
 - calculator.py: COMPLETE (Main tariff calculator - extracted from server.py)
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 import logging
+
+from auth import require_auth
+
+_auth = [Depends(require_auth)]
 
 _logger = logging.getLogger(__name__)
 
@@ -294,81 +298,84 @@ def register_routes(api_router: APIRouter):
     if RULES_OF_ORIGIN_DATA_LOADED:
         init_rules_data(CHAPTER_RULES, ORIGIN_TYPES)
         _logger.info("Rules of Origin data initialized successfully")
-    
+
+    # Health endpoints remain public (no auth required)
     api_router.include_router(health_router, tags=["Health"])
+
+    # All other routers require a valid API key
     if NEWS_AVAILABLE:
-        api_router.include_router(news_router, tags=["News"])
-    api_router.include_router(oec_router, tags=["OEC Trade"])
-    api_router.include_router(hs_codes_router, tags=["HS Codes"])
-    api_router.include_router(production_router, tags=["Production"])
-    api_router.include_router(logistics_router, tags=["Logistics"])
-    api_router.include_router(countries_router, tags=["Countries"])
-    api_router.include_router(tariffs_router, tags=["Tariffs"])
-    api_router.include_router(statistics_router, tags=["Statistics"])
-    api_router.include_router(etl_router, tags=["ETL Administration"])
-    api_router.include_router(substitution_router, tags=["Trade Substitution"])
+        api_router.include_router(news_router, tags=["News"], dependencies=_auth)
+    api_router.include_router(oec_router, tags=["OEC Trade"], dependencies=_auth)
+    api_router.include_router(hs_codes_router, tags=["HS Codes"], dependencies=_auth)
+    api_router.include_router(production_router, tags=["Production"], dependencies=_auth)
+    api_router.include_router(logistics_router, tags=["Logistics"], dependencies=_auth)
+    api_router.include_router(countries_router, tags=["Countries"], dependencies=_auth)
+    api_router.include_router(tariffs_router, tags=["Tariffs"], dependencies=_auth)
+    api_router.include_router(statistics_router, tags=["Statistics"], dependencies=_auth)
+    api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_auth)
+    api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
     if GEMINI_AVAILABLE:
-        api_router.include_router(gemini_router, tags=["AI Analysis"])
-    api_router.include_router(rules_router, tags=["Rules of Origin"])
-    api_router.include_router(hs6_db_router, tags=["HS6 Database"])
-    api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"])
-    api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"])
+        api_router.include_router(gemini_router, tags=["AI Analysis"], dependencies=_auth)
+    api_router.include_router(rules_router, tags=["Rules of Origin"], dependencies=_auth)
+    api_router.include_router(hs6_db_router, tags=["HS6 Database"], dependencies=_auth)
+    api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth)
+    api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"], dependencies=_auth)
     if FAOSTAT_AVAILABLE:
-        api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"])
-    api_router.include_router(calculator_router, tags=["Calculator"])
+        api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth)
+    api_router.include_router(calculator_router, tags=["Calculator"], dependencies=_auth)
     if TRADE_DATA_AVAILABLE:
-        api_router.include_router(trade_data_router, tags=["Trade Data Sources"])
+        api_router.include_router(trade_data_router, tags=["Trade Data Sources"], dependencies=_auth)
     if EXPORT_ROUTER_AVAILABLE:
-        api_router.include_router(export_router, tags=["Export"])
+        api_router.include_router(export_router, tags=["Export"], dependencies=_auth)
     if CRAWL_AVAILABLE:
-        api_router.include_router(crawl_router, tags=["Crawl Orchestration"])
+        api_router.include_router(crawl_router, tags=["Crawl Orchestration"], dependencies=_auth)
     if TARIFF_DATA_AVAILABLE:
-        api_router.include_router(tariff_data_router, tags=["Tariff Data Collection"])
+        api_router.include_router(tariff_data_router, tags=["Tariff Data Collection"], dependencies=_auth)
     if REGULATORY_ENGINE_AVAILABLE:
-        api_router.include_router(regulatory_engine_router, tags=["Regulatory Engine v3"])
+        api_router.include_router(regulatory_engine_router, tags=["Regulatory Engine v3"], dependencies=_auth)
     if SEARCH_AVAILABLE:
-        api_router.include_router(search_router, tags=["Text Search"])
+        api_router.include_router(search_router, tags=["Text Search"], dependencies=_auth)
     if CACHE_ROUTER_AVAILABLE:
-        api_router.include_router(cache_router, tags=["Cache Management"])
+        api_router.include_router(cache_router, tags=["Cache Management"], dependencies=_auth)
     if DZA_CRAWLER_AVAILABLE:
-        api_router.include_router(dza_crawler_router, tags=["DZA Crawler"])
+        api_router.include_router(dza_crawler_router, tags=["DZA Crawler"], dependencies=_auth)
     if ENHANCED_CALCULATOR_AVAILABLE:
-        api_router.include_router(enhanced_calculator_router, tags=["Enhanced Calculator v2"])
+        api_router.include_router(enhanced_calculator_router, tags=["Enhanced Calculator v2"], dependencies=_auth)
     if NORTH_AFRICA_CRAWLERS_AVAILABLE:
-        api_router.include_router(north_africa_crawlers_router, tags=["North Africa Crawlers"])
+        api_router.include_router(north_africa_crawlers_router, tags=["North Africa Crawlers"], dependencies=_auth)
     if CEMAC_CRAWLERS_AVAILABLE:
-        api_router.include_router(cemac_crawlers_router, tags=["CEMAC Crawlers"])
+        api_router.include_router(cemac_crawlers_router, tags=["CEMAC Crawlers"], dependencies=_auth)
     if REGIONAL_DATA_AVAILABLE:
-        api_router.include_router(regional_data_router, tags=["Regional Data Inventory"])
+        api_router.include_router(regional_data_router, tags=["Regional Data Inventory"], dependencies=_auth)
     if REGIONAL_CALCULATOR_AVAILABLE:
-        api_router.include_router(regional_calculator_router, tags=["Regional Calculator"])
+        api_router.include_router(regional_calculator_router, tags=["Regional Calculator"], dependencies=_auth)
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
-        api_router.include_router(investment_intelligence_router, tags=["Investment Intelligence"])
+        api_router.include_router(investment_intelligence_router, tags=["Investment Intelligence"], dependencies=_auth)
     if UMA_REGIONS_AVAILABLE:
-        api_router.include_router(uma_regions_router, tags=["UMA North Africa Regions"])
+        api_router.include_router(uma_regions_router, tags=["UMA North Africa Regions"], dependencies=_auth)
     if API_V2_AVAILABLE:
-        api_router.include_router(api_v2_router, tags=["API v2"])
+        api_router.include_router(api_v2_router, tags=["API v2"], dependencies=_auth)
     if AI_INTELLIGENCE_AVAILABLE:
-        api_router.include_router(ai_intelligence_router, tags=["AI Intelligence"])
+        api_router.include_router(ai_intelligence_router, tags=["AI Intelligence"], dependencies=_auth)
     if ENHANCED_SEARCH_AVAILABLE:
-        api_router.include_router(enhanced_search_router, tags=["Enhanced Search"])
+        api_router.include_router(enhanced_search_router, tags=["Enhanced Search"], dependencies=_auth)
     if SADC_INTELLIGENCE_AVAILABLE:
-        api_router.include_router(sadc_intelligence_router, tags=["SADC Intelligence"])
+        api_router.include_router(sadc_intelligence_router, tags=["SADC Intelligence"], dependencies=_auth)
     if REGIONAL_ANALYTICS_AVAILABLE:
-        api_router.include_router(regional_analytics_router, tags=["Regional Analytics Dashboard"])
+        api_router.include_router(regional_analytics_router, tags=["Regional Analytics Dashboard"], dependencies=_auth)
     if PERFORMANCE_AVAILABLE:
-        api_router.include_router(performance_router, tags=["Performance Monitoring"])
+        api_router.include_router(performance_router, tags=["Performance Monitoring"], dependencies=_auth)
     if BANKING_AVAILABLE:
-        api_router.include_router(banking_router, tags=["Banking System"])
+        api_router.include_router(banking_router, tags=["Banking System"], dependencies=_auth)
     if POSTGRES_TARIFFS_AVAILABLE:
-        api_router.include_router(postgres_tariffs_router, tags=["PostgreSQL Tariffs"])
+        api_router.include_router(postgres_tariffs_router, tags=["PostgreSQL Tariffs"], dependencies=_auth)
     if GRAPHQL_AVAILABLE:
-        api_router.include_router(graphql_router, tags=["GraphQL"])
+        api_router.include_router(graphql_router, tags=["GraphQL"], dependencies=_auth)
     if WEBSOCKET_AVAILABLE:
-        api_router.include_router(websocket_router, tags=["WebSocket Real-time"])
+        api_router.include_router(websocket_router, tags=["WebSocket Real-time"], dependencies=_auth)
     if MOBILE_AVAILABLE:
-        api_router.include_router(mobile_router, tags=["Mobile API"])
+        api_router.include_router(mobile_router, tags=["Mobile API"], dependencies=_auth)
     if CURRENCIES_AVAILABLE:
-        api_router.include_router(currencies_router, tags=["Currencies"])
+        api_router.include_router(currencies_router, tags=["Currencies"], dependencies=_auth)
     if EXCHANGE_RATES_AVAILABLE:
-        api_router.include_router(exchange_rates_router, tags=["Exchange Rates"])
+        api_router.include_router(exchange_rates_router, tags=["Exchange Rates"], dependencies=_auth)
