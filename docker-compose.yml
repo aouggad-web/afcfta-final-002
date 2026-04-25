@@ -7,6 +7,12 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
@@ -25,6 +31,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    logging:
+      driver: "bslog"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   backend:
     build:
@@ -32,44 +43,19 @@ services:
       dockerfile: Dockerfile
     container_name: afcfta-backend
     restart: unless-stopped
+    read_only: true
     security_opt:
       - no-new-privileges:true
+    cap_drop:
+      - ALL
     environment:
       - MONGO_URL=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/
       - DB_NAME=${MONGO_DB:-afcfta}
       - EMAIL_NOTIFICATIONS_ENABLED=${EMAIL_ENABLED:-false}
       - EMAIL_SMTP_HOST=${EMAIL_SMTP_HOST:-smtp.gmail.com}
       - EMAIL_SMTP_PORT=${EMAIL_SMTP_PORT:-587}
-      - EMAIL_SMTP_USER=${EMAIL_SMTP_USER:-}
-      - EMAIL_SMTP_PASSWORD=${EMAIL_SMTP_PASSWORD:-}
-      - EMAIL_FROM=${EMAIL_FROM:-noreply@afcfta.trade}
-      - EMAIL_TO=${EMAIL_TO:-}
-      - SLACK_NOTIFICATIONS_ENABLED=${SLACK_ENABLED:-false}
-      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL:-}
-      - SLACK_CHANNEL=${SLACK_CHANNEL:-#afcfta-monitoring}
-    ports:
-      - "8000:8000"
-    depends_on:
-      mongodb:
-        condition: service_healthy
-    networks:
-      - afcfta-network
-    volumes:
-      - ./worker-logs:/app/worker-logs
-    deploy:
-      resources:
-        limits:
-          memory: 1G
-    healthcheck:
-      test: ["CMD", "python", "-c", "import sys, requests; r = requests.get('http://localhost:8000/api/health', timeout=8); sys.exit(0 if r.status_code == 200 else 1)"]
-      interval: 30s
-      timeout: 10s
-      start_period: 60s
-      retries: 3
-
-networks:
-  afcfta-network:
-    driver: bridge
-
-volumes:
-  mongodb_data:
+      - EMAIL_SMTPUSER=${EMAIL_SSTP_USER:-}
+      - EMAIL_SMTP_PASSWORD=${EMAIL_SMTP_TTÔÕÓÔ‘‹_BˆHSPRSÑ”“ÓOIÑSPRSÑ”“ÓN‹[›Ü™\PY˜ÙK˜Y_BˆHSPRSÕÏIÑSPRSÕÎ‹_BˆHÓPÒ×Ó“ÕQ’PĞUSÓ”×ÑSP“QIÔÓPÒ×ÑSP“Q‹Y˜[Ù_BˆHÓPÒ×ÕÑP’ÓÒ×ÕT“IÔÓPÒ×ÕÑP’ÓÒ×ÕT“‹_BˆHÓPÒ×ĞÒS“‘SIÔÓPÒ×ĞÒS“‘S‹HØY˜ÙK[[Ûš]Üš[™ßBˆÜÎ‚ˆH‚ˆ\[™×ÛÛ‚ˆ[Û™ÛÙ‚ˆÛÛ™][ÛˆÙ\šXÙWÚX[Bˆ™]ÛÜšÜÎ‚ˆHY˜ÙK[™]ÛÜšÂˆ›Û[Y\Î‚ˆH‹İÛÜšÙ\‹[ÙÜÎ‹Ø\İÛÜšÙ\‹[ÙÜÎˆÂ‹H\œÎˆİ\ˆ\ŞN‚ˆ™\Ûİ\˜Ù\Î‚ˆ[Z]Î‚ˆY[[ÜNˆQÂˆX[ÚXÚÎ‚ˆ\İˆÈÓQ‹œ]Ûˆ‹‹XÈ‹š[\ÜŞ\Ë™\]Y\İÎÈˆH™\]Y\İË™Ù]
+	Ú‹ËÛØØ[ÜİØ\KÚX[	Ë[Y[İ]N
+NÈŞ\Ë™^]
+Yˆ‹œİ]\×ØÛÙHOHŒ[ÙHJH—Bˆ[\˜[ˆÌÂˆ[Y[İ]ˆLÂˆİ\Ü\š[ÙˆŒÂˆ™]šY\ÎˆÂˆÙÙÚ[™Î‚ˆš]™\ˆšœÛÛ‹Yš[H‚ˆÜ[ÛœÎ‚ˆX^\Ú^™NˆŒLH‚ˆX^Yš[NˆŒÈ‚‚›™]ÛÜšÜÎ‚ˆY˜ÙK[™]ÛÜšÂˆš]™\ˆœšYÙB‚›Û[Y\Î‚ˆ[Û™ÛÙ—Ù]N
