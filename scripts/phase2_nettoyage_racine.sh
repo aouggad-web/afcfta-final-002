@@ -88,7 +88,7 @@ while IFS= read -r -d '' file; do
     # Fichiers sans extension qui ne sont pas des fichiers connus légitimes
     case "$basename_file" in
         README|LICENSE|CNAME|Makefile|Dockerfile|Procfile|Jenkinsfile) continue ;;
-        *)
+        *) 
             # Si le nom contient des caractères spéciaux (=, :, []) → parasite
             if echo "$basename_file" | grep -qE '[=:\[\]]'; then
                 git rm --cached "$file" 2>/dev/null || true
@@ -155,7 +155,7 @@ for pattern in "${DATA_JSON_PATTERNS[@]}"; do
 done
 
 # Créer un README dans data/
-cat > data/README.md << 'README_EOF'
+cat > data/README.md << 'EOF'
 # Données ZLECAf
 
 Ce dossier contient toutes les données de référence du projet.
@@ -174,7 +174,7 @@ data/
 
 Les données sont mises à jour automatiquement via GitHub Actions (02:00 UTC).
 Sources : World Bank, WTO, OEC, AfDB, IMF.
-README_EOF
+EOF
 
 echo -e "${GREEN}    ✓ Dossier data/ créé et organisé${NC}"
 
@@ -196,7 +196,7 @@ echo -e "\n${YELLOW}[4/4] Mise à jour des imports Python pour le nouveau chemin
 # Chercher et remplacer les chemins dans les fichiers Python du backend
 if find backend/ -name "*.py" 2>/dev/null | head -1 | grep -q .; then
     echo "    Correction des chemins dans backend/..."
-
+    
     # Patterns de remplacement les plus courants
     find backend/ -name "*.py" -exec sed -i \
         -e 's|"airports_africains|"data/json/airports_africains|g' \

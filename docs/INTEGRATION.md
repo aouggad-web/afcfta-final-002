@@ -20,7 +20,7 @@ Add:
 - UPSTASH_REDIS_REST_TOKEN
 
 ## Wire into tRPC
-1) Add middleware requireCsrf() to protectedProcedure in your `server/api/trpc.ts` (or equivalent)
+1) Add middleware requireCsrf() to protected procedure in your `server/api/trpc.ts` (or equivalent)
 2) Use withRateLimit() on endpoints like crawl.create, crawl.stop, tariff.search
 
 ## Client CSRF header

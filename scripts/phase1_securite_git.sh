@@ -36,7 +36,7 @@ PATTERNS=(
     "api_key"
     "access_token"
     "private_key"
-    "password.*=.*['\"][^'\"]{8,}"
+    "password.*=.*['\"][^'"]{8,}"
 )
 
 FOUND_SECRETS=0
@@ -108,7 +108,7 @@ GITIGNORE_ADDITIONS=(
     ".pytest_cache/"
     "*.egg-info/"
     ""
-    "# ── Logs & temp ───────────────────────────────"
+    "# ── Logs & temp ─────────────────────────────"
     "*.log"
     "logs/"
     "tmp/"
@@ -123,7 +123,7 @@ for line in "${GITIGNORE_ADDITIONS[@]}"; do
 done
 echo -e "${GREEN}    ✓ .gitignore mis à jour${NC}"
 
-# ─── 6. Afficher les credentials à révoquer ────────────────
+# ─── 6. Afficher les credentials ────────────────
 echo -e "\n${YELLOW}[6/6] Checklist des credentials à révoquer IMMÉDIATEMENT...${NC}"
 echo -e "${RED}"
 echo "    ┌─────────────────────────────────────────────────────────┐"
@@ -141,6 +141,7 @@ echo "    │                                                          │"
 echo "    │  4. Git push --force sur toutes les branches            │"
 echo "    │     git push origin --force --all                       │"
 echo "    │     git push origin --force --tags                      │"
+echo "    │  (⚠ Force-push nécessite d'informer les collaborateurs) │"
 echo "    └─────────────────────────────────────────────────────────┘"
 echo -e "${NC}"
 
