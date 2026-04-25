@@ -1,4 +1,4 @@
-# EXTRACTION SYSTEMATIQUE - DONNÉES RÉELLES 54 PAYS ZLECAf
+# EXTRACTION SYSTEMATIQUE - DONÉES RÉELLES 54 PAYS ZLECAf
 
 ## MÉTHODOLOGIE
 - **Sources officielles :** PNUD, Banque Mondiale, BAD, FMI, INS nationaux
@@ -7,7 +7,7 @@
 
 ---
 
-## TABLEAU DES DONNÉES EXTRAITES
+## TABLEAU DES DONÉES EXTRAITES
 
 | Pays | Code | PIB 2024 (Mds USD) | Population (M) | PIB/hab (USD) | IDH 2024 | Rang Afrique | Croissance 2024 | Secteurs principaux | Sources |
 |------|------|---------------------|----------------|---------------|----------|--------------|-----------------|-------------------|---------|
@@ -34,7 +34,7 @@
 5. **Instituts nationaux de statistiques** - Données officielles pays
 
 ### CRITÈRES DE VALIDATION :
-- ✅ **Cohérence géographique** : Données compatibles avec la région
+- ✅ **Cohérence géographique** : Données compatibles with the region
 - ✅ **Cohérence temporelle** : Évolution logique par rapport aux années précédentes  
 - ✅ **Croisement sources** : Minimum 2 sources officielles par donnée
 - ✅ **Mise à jour** : Données 2024 ou dernières disponibles

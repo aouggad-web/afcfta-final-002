@@ -17,7 +17,7 @@ echo -e "${YELLOW}[1/5] Suppression du dossier de backup commité...${NC}"
 if [ -d "backup_before_github_merge" ]; then
     echo "    Contenu de backup_before_github_merge/ :"
     find backup_before_github_merge -type f | wc -l | xargs -I{} echo "    {} fichier(s) à supprimer"
-
+    
     # Supprimer du tracking git ET du disque
     git rm -r --cached backup_before_github_merge/ 2>/dev/null || true
     rm -rf backup_before_github_merge/
@@ -31,7 +31,7 @@ echo -e "\n${YELLOW}[2/5] Suppression de src/components/trade/ (doublon)...${NC}
 
 if [ -d "src" ]; then
     echo "    Vérification du contenu de src/ :"
-
+    
     # Comparer avec frontend/src/components avant de supprimer
     if [ -d "frontend/src/components" ]; then
         DIFF_COUNT=$(diff -r src/components/trade frontend/src/components/trade 2>/dev/null | wc -l || echo "N/A")
@@ -42,7 +42,7 @@ if [ -d "src" ]; then
             echo "    Voir: diff -r src/components/trade frontend/src/components"
         fi
     fi
-
+    
     git rm -r --cached src/ 2>/dev/null || true
     rm -rf src/
     echo -e "${GREEN}    ✓ src/ (doublon) supprimé${NC}"
@@ -50,7 +50,7 @@ else
     echo -e "${GREEN}    ✓ src/ déjà absent${NC}"
 fi
 
-# ─── 3. Structure cible propre ─────────────────────────────
+# ─── 3. Structure cible propre ───────────────────────────
 echo -e "\n${YELLOW}[3/5] Vérification et création de la structure cible...${NC}"
 
 # Structure cible recommandée
@@ -83,20 +83,20 @@ for dir in "${!REQUIRED_DIRS[@]}"; do
     fi
 done
 
-# ─── 4. Réorganiser le backend ─────────────────────────────
+# ─── 4. Réorganiser le backend ───────────────────────────
 echo -e "\n${YELLOW}[4/5] Réorganisation du backend FastAPI...${NC}"
 
 # Si le backend a tout dans un seul fichier main.py, créer la structure
 if [ -f "backend/main.py" ] && [ ! -f "backend/routers/__init__.py" ]; then
     echo "    Création de la structure de routeurs FastAPI..."
-
+    
     # Créer les __init__.py nécessaires
     touch backend/__init__.py
     touch backend/routers/__init__.py
     touch backend/services/__init__.py
     touch backend/models/__init__.py
     touch backend/middleware/__init__.py
-
+    
     # Template du middleware CORS sécurisé
     cat > backend/middleware/cors.py << 'CORS_EOF'
 """
@@ -147,7 +147,7 @@ def rate_limit_handler(request: Request, exc: RateLimitExceeded):
 # async def calculate_tariff(request: Request, ...):
 RL_EOF
 
-    echo -e "${GREEN}    ✓ Structure middleware créée${NC}"
+    echo -e "${GREEN}    ✓ Structure middleware créé${NC}"
 fi
 
 # ─── 5. Ajouter les scripts utilitaires au bon endroit ─────

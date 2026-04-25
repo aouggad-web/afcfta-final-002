@@ -14,8 +14,8 @@ This PR successfully implements a **production-ready, comprehensive system** for
 - `backend/notifications/__init__.py` - Module initialization and exports
 - `backend/notifications/base_notifier.py` - Abstract base class with notification types
 - `backend/notifications/email_notifier.py` - SMTP email notifications with HTML templates
-- `backend/notifications/slack_notifier.py` - Slack webhook integration with Block Kit
-- `backend/notifications/notification_manager.py` - Centralized notification management
+- `backend/notifications/slack_notifier.py`  - Slack webhook integration with Block Kit
+- `backend/notifications/notification_manager.py`  - Centralized notification management
 
 **Features:**
 - ✅ Async/await support with concurrent channel delivery
@@ -294,7 +294,7 @@ curl "http://localhost:8000/api/export/comparison/csv?countries=KE,TZ&hs_codes=0
 
 **For Email (Gmail):**
 1. Enable 2-factor authentication on your Gmail account
-2. Generate an App Password: https://support.google.com/accounts/answer/185833
+2. Generate an App Password: https://myaccount.google.com/apppasswords
 3. Set environment variables:
    ```bash
    EMAIL_NOTIFICATIONS_ENABLED=true
@@ -328,7 +328,7 @@ Before deploying to production:
 - [x] Code style checked with flake8
 - [x] No security vulnerabilities introduced
 
-## 📝 Files Changed
+## 🗒 Files Changed
 
 **New Files:**
 - `.env.example` - Environment configuration template
@@ -349,7 +349,7 @@ Before deploying to production:
 - `DEPLOYMENT.md` - Deployment guide exists
 - `NOTIFICATIONS.md` - Notification setup guide exists
 
-## ✨ Production Readiness
+## ✈️ Production Readiness
 
 This implementation is **production-ready** because:
 

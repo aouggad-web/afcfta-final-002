@@ -339,4 +339,3 @@ The system is modular, extensible, and follows best practices for Python develop
   - `_process_page_positions` deduplication logic (skipped when `fitz` is absent)
   - `generate_cache_key`, `cache_get`, `cache_set`, `CACHE_TTL` in `cache_service.py`
 - Tests are isolated (no live server, no external network) and run in < 0.2 s.
-
