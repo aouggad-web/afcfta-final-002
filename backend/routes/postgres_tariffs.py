@@ -72,7 +72,7 @@ async def get_country_info(iso3: str):
 async def get_sub_positions(
     iso3: str, 
     hs6: str, 
-    language: str = Query("fr", regex="^(fr|en)$")
+    language: str = Query("fr", pattern="^(fr|en)$")
 ):
     """Sous-positions nationales pour un code HS6"""
     service = get_service()
@@ -122,7 +122,7 @@ async def search_commodities(
     iso3: str,
     q: str = Query(..., min_length=2, description="Search query"),
     limit: int = Query(50, ge=1, le=200),
-    language: str = Query("fr", regex="^(fr|en)$")
+    language: str = Query("fr", pattern="^(fr|en)$")
 ):
     """Recherche de marchandises par description"""
     service = get_service()
