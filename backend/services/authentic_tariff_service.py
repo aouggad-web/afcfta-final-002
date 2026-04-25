@@ -3,7 +3,7 @@ import os
 import logging
 from typing import Dict, List, Any, Optional
 
-logger = logging.getLogger(__name__)
+logger = logging.get_logger(__name__)
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
 _tariff_cache = {}
 
@@ -17,7 +17,7 @@ def load_country_tariffs(country_iso3):
         _tariff_cache[country_iso3] = data
         return data
     except Exception as e:
-        logger.error(f"Error loading tariffs for {country_iso3}: {e}")
+        logger.error(f'Error loading tariffs for {country_iso3}: {e}')
         return None
 
 def get_tariff_line(country_iso3, hs_code):
@@ -41,7 +41,7 @@ def get_fiscal_advantages(country_iso3, hs_code):
     line = get_tariff_line(country_iso3, hs_code)
     return line.get('fiscal_advantages', []) if line else []
 
-def get_administrative_formalities(country_iso3, hs_code):
+def get_administrative_formalties(country_iso3, hs_code):
     line = get_tariff_line(country_iso3, hs_code)
     return line.get('administrative_formalities', []) if line else []
 
@@ -49,8 +49,10 @@ def search_tariff_lines(country_iso3, query, language='fr', limit=20):
     data = load_country_tariffs(country_iso3)
     results = []
     if not data: return []
+    q = query.lower()
     for line in data.get('tariff_lines', []):
-        if query.lower() in line.get('designation", '').lower():
+        desc = line.get('designation', '')
+        if q in desc.lower():
             results.append(line)
         if len(results) >= limit: break
     return results
@@ -58,11 +60,11 @@ def search_tariff_lines(country_iso3, query, language='fr', limit=20):
 def get_country_summary(country_iso3):
     data = load_country_tariffs(country_iso3)
     if not data: return None
-    return {"total_lines": len(data.get('tariff_lines', []))}
+    return {'total_lines': len(data.get('tariff_lines', []))}
 
 def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False, language='fr'):
     line = get_tariff_line(country_iso3, hs_code)
-    if not line: return {'error': 'Not found'}
+    if not line: return {'error': 'Not Found'}
     return {'hs_code': hs_code, 'total_taxes': 0}
 
 def get_available_countries():
