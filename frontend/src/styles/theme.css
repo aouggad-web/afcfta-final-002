@@ -107,7 +107,7 @@ body::before {
   border-right: 1px solid rgba(200,83,26,0.15);
   display: flex;
   flex-direction: column;
-  z-index: 100;
+  z-index: 201;
   transition: width 0.25s ease;
   overflow: hidden;
 }
