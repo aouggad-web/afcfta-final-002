@@ -1,4 +1,5 @@
 import React from "react";
+import { BarChart3, TrendingUp, Ship, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 const KPI_CONFIG = {
   gdp: {
@@ -58,18 +59,13 @@ export default function KpiRow({ language = "fr", stats }) {
 
   return (
     <div className="stats-strip">
-      {kpis.map((kpi, idx) => {
-        const Icon = KPI_CONFIG[kpi.type]?.icon;
-        return (
-          <div key={idx} className="stat-cell">
-            <div className="stat-value">{kpi.value}</div>
-            <div className="stat-label">{kpi.title}</div>
-            <div style={{ fontSize: 10, color: "rgba(245,237,214,0.22)", marginTop: 3 }}>
-              {kpi.subtext}
-            </div>
-          </div>
-        );
-      })}
+      {kpis.map((kpi, idx) => (
+        <div key={idx} className="stat-cell">
+          <div className="stat-value">{kpi.value}</div>
+          <div className="stat-label">{kpi.title}</div>
+          <div style={{fontSize:10,color:"rgba(245,237,214,0.22)",marginTop:3}}>{kpi.subtext}</div>
+        </div>
+      ))}
     </div>
   );
 }
