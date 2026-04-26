@@ -340,7 +340,7 @@ function App() {
       </aside>
 
       {/* Main content area */}
-      <main className="afcfta-main" id="afcfta-main-content">
+      <main className="afcfta-main" id="afcfta-main-content" style={{ marginLeft: 228 }}>
         <div className="afcfta-shell zellige-najm">
           {/* KPI Row - dashboard uniquement */}
           {activeTab === 'dashboard' && (
