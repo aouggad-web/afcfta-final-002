@@ -75,18 +75,10 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
       </button>
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, overflow: "hidden" }}>
-        <div
-          style={{
-            width: 30, height: 30, flexShrink: 0,
-            background: "linear-gradient(135deg,var(--terra),var(--gold))",
-            borderRadius: 8,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 16,
-          }}
-        >
-          🌍
+        <div className="nav-logo-hex" style={{ width: 30, height: 30, flexShrink: 0 }}>
+          <span style={{ fontSize: 10 }}>{isFrench ? "ZL" : "AF"}</span>
         </div>
-        <span style={{ fontWeight: 800, fontSize: 13, color: "var(--gold)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <span style={{ fontWeight: 800, fontSize: 13, color: "var(--af-gold)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
         </span>
       </div>
@@ -111,7 +103,9 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
     <>
       {/* Logo */}
       <div className="afcfta-sidebar-logo">
-        <div className="afcfta-sidebar-icon">🌍</div>
+        <div className="afcfta-sidebar-icon nav-logo-hex">
+          <span>{isFrench ? "ZL" : "AF"}</span>
+        </div>
         <div className="afcfta-sidebar-title">
           <h1>{isFrench ? "ZLECAf" : "AfCFTA"}</h1>
           <p>{isFrench ? "Intelligence Commerciale" : "Trade Intelligence"}</p>
