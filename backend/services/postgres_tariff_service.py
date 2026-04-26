@@ -13,10 +13,7 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
-DATABASE_URL = os.environ.get(
-    "POSTGRES_URL",
-    "postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory"
-)
+DATABASE_URL = os.environ.get("POSTGRES_URL", "")
 
 # Global engine and session factory
 _engine = None
@@ -26,6 +23,8 @@ def get_engine():
     """Get or create SQLAlchemy engine"""
     global _engine
     if _engine is None:
+        if not DATABASE_URL:
+            raise RuntimeError("POSTGRES_URL environment variable is not set")
         _engine = create_engine(DATABASE_URL, echo=False, pool_pre_ping=True, pool_size=10)
     return _engine
 

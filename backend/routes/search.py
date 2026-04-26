@@ -8,14 +8,13 @@ CACHED: Search results cached for 30 minutes
 from fastapi import APIRouter, Query, HTTPException
 from typing import List, Optional
 import os
+import logging
 
 router = APIRouter(prefix="/commodities")
+logger = logging.getLogger(__name__)
 
 # Configuration base de données
-DATABASE_URL = os.environ.get(
-    "DATABASE_URL",
-    "postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory"
-)
+DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
 # Import cache service
 try:
@@ -41,7 +40,7 @@ try:
         conn.execute(text("SELECT 1"))
     POSTGRES_AVAILABLE = True
 except Exception as e:
-    print(f"PostgreSQL non disponible: {e}")
+    logger.warning(f"PostgreSQL non disponible: {e}")
 
 
 def get_db():
