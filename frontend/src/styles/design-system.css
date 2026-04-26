@@ -1,0 +1,700 @@
+/* ══════════════════════════════════════════════════════════════
+   ZLECAF DESIGN SYSTEM v1.1
+   Motifs culturels intégrés :
+   ◆ Zellige algérien de Tlemcen — étoile Najm, octogones, arabesques
+   ◆ Kente (Ghana) — bandes horizontales pan-africaines
+   ◆ Adinkra (Ashanti) — symboles en filigrane
+   ◆ Girih (art islamique) — carré-losange entrelacé
+
+   Palette : drapeaux des 54 pays AfCFTA
+   Fonts : Cormorant Garamond (titres) + Outfit (corps)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── IMPORT FONTS ──────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── TOKENS FONDAMENTAUX ───────────────────────────────────── */
+:root {
+  /* Palette primaire — extraite des 54 drapeaux africains */
+  --af-gold:        #FCDD09;   /* Ghana · Éthiopie · Sénégal */
+  --af-gold-deep:   #E8890C;   /* Cuivre Bénin · Tuareg amber */
+  --af-gold-pale:   rgba(252,221,9,0.06);
+  --af-red:         #C8102E;   /* Kenya · Maroc · Algérie */
+  --af-red-earth:   #D4522A;   /* Terre sahélienne · Fès */
+  --af-green:       #007A3D;   /* Nigeria · Côte d'Ivoire */
+  --af-green-pale:  #00786A;   /* Cap-Vert · Mauritius */
+  --af-night:       #0D0800;   /* Nuit profonde */
+  --af-night-2:     #160E06;
+  --af-night-3:     #1E140A;
+  --af-sand:        #F5EDD6;   /* Sahara · Sable Maghreb */
+  --af-ivory:       #FAF6EC;
+  --af-kola:        #5C2E0A;   /* Noix de kola */
+  --af-copper:      #B5651D;   /* Bronze du Bénin */
+
+  /* Zellige algérien — Tlemcen */
+  --zellige-blue:   #1B6CA8;
+  --zellige-teal:   #0E8A7A;
+  --zellige-cream:  #F2E8D0;
+
+  /* Opacités motifs */
+  --zellige-opacity-subtle:  0.045;  /* fonds de page */
+  --zellige-opacity-card:    0.06;   /* fonds de cartes */
+  --zellige-opacity-accent:  0.18;   /* ornements de coin */
+  --zellige-opacity-divider: 0.35;   /* séparateurs */
+
+  /* Typographie */
+  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body:    'Outfit', 'Helvetica Neue', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+  /* Spacings — système 4px */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;
+  --sp-4: 16px;  --sp-6: 24px;  --sp-8: 32px;
+  --sp-10: 40px; --sp-16: 64px;
+
+  /* Border radius */
+  --r-sm: 6px;  --r-md: 10px;
+  --r-lg: 16px; --r-xl: 24px; --r-pill: 100px;
+
+  /* Borders */
+  --b-gold:   rgba(252,221,9,0.12);
+  --b-gold2:  rgba(252,221,9,0.22);
+  --b-red:    rgba(200,16,46,0.18);
+  --b-green:  rgba(0,122,61,0.18);
+  --b-earth:  rgba(212,82,42,0.18);
+  --b-subtle: rgba(255,255,255,0.06);
+  --b-teal:   rgba(14,138,122,0.18);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOTIFS ZELLIGE ALGÉRIEN — 4 VARIANTES
+   Usage : classes CSS sur n'importe quel conteneur
+   ══════════════════════════════════════════════════════════════ */
+
+/**
+ * .zellige-najm — Étoile à 8 branches (Najm)
+ * Motif signature de Tlemcen. Usage : hero, page wrapper.
+ * Opacité : 5.5% — à peine perceptible, structurant.
+ */
+.zellige-najm {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='rgba(252%2C221%2C9%2C0.055)' stroke-width='0.6'%3E%3Cpolygon points='30%2C8 34%2C22 48%2C18 38%2C28 52%2C32 38%2C36 48%2C46 34%2C42 30%2C56 26%2C42 12%2C46 22%2C36 8%2C32 22%2C28 12%2C18 26%2C22'/%3E%3Crect x='18' y='18' width='24' height='24' transform='rotate(45 30 30)'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 60px 60px;
+}
+
+/**
+ * .zellige-hex — Hexagones entrelacés
+ * Reminiscent des carreaux de Constantine. Usage : sections intermédiaires.
+ * Opacité : 7% teal — froid et discret.
+ */
+.zellige-hex {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='48'%3E%3Cg fill='none' stroke='rgba(14%2C138%2C122%2C0.07)' stroke-width='0.5'%3E%3Cpolygon points='14%2C0 28%2C8 28%2C24 14%2C32 0%2C24 0%2C8'/%3E%3Cpolygon points='42%2C0 56%2C8 56%2C24 42%2C32 28%2C24 28%2C8'/%3E%3Cpolygon points='28%2C16 42%2C24 42%2C40 28%2C48 14%2C40 14%2C24'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 56px 48px;
+}
+
+/**
+ * .zellige-girih — Carré-losange entrelacé (Girih)
+ * Art islamique, présent dans toute l'Algérie. Usage : panneaux/cards.
+ * Opacité : 4.5% or — extrêmement subtil.
+ */
+.zellige-girih {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg fill='none' stroke='rgba(252%2C221%2C9%2C0.045)' stroke-width='0.5'%3E%3Crect x='5' y='5' width='30' height='30'/%3E%3Crect x='5' y='5' width='30' height='30' transform='rotate(45 20 20)'/%3E%3Ccircle cx='20' cy='20' r='6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 40px 40px;
+}
+
+/**
+ * .zellige-arabesque — Entrelacs floraux (Arabesque)
+ * Signature des mosquées de Tlemcen. Usage : panneaux d'information.
+ * Opacité : 6% bleu zellige.
+ */
+.zellige-arabesque {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='rgba(27%2C108%2C168%2C0.06)' stroke-width='0.6'%3E%3Ccircle cx='40' cy='40' r='16'/%3E%3Ccircle cx='40' cy='40' r='28'/%3E%3Cline x1='40' y1='12' x2='40' y2='68'/%3E%3Cline x1='12' y1='40' x2='68' y2='40'/%3E%3Cline x1='20' y1='20' x2='60' y2='60'/%3E%3Cline x1='60' y1='20' x2='20' y2='60'/%3E%3Ccircle cx='40' cy='12' r='2.5'/%3E%3Ccircle cx='68' cy='40' r='2.5'/%3E%3Ccircle cx='40' cy='68' r='2.5'/%3E%3Ccircle cx='12' cy='40' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ORNEMENTS ZELLIGE SVG — À INJECTER EN HTML
+   ══════════════════════════════════════════════════════════════ */
+
+/**
+ * USAGE HTML — Coin décoratif (héros, cartes larges) :
+ *
+ * <svg class="zellige-corner-emblem" aria-hidden="true"
+ *      width="160" height="160" viewBox="0 0 160 160">
+ *   <use href="#zellige-najm-corner"/>
+ * </svg>
+ *
+ * Positionner en absolute top-right avec opacity:0.12 à 0.20
+ */
+
+/*
+  SVG Étoile Najm — grand format pour coin de héros :
+
+  <svg width="280" height="280" viewBox="0 0 280 280" aria-hidden="true"
+       style="position:absolute;top:-20px;right:-20px;opacity:0.08;pointer-events:none">
+    <g fill="none" stroke="rgba(252,221,9,1)" stroke-width="0.8">
+      <polygon points="140,60 153,100 195,88 167,118 207,130 167,142 195,172 153,160 140,200 127,160 85,172 113,142 73,130 113,118 85,88 127,100"/>
+      <rect x="105" y="105" width="70" height="70" transform="rotate(45 140 140)"/>
+      <circle cx="140" cy="140" r="24"/>
+      <polygon points="50,50 56,68 75,62 63,76 81,80 63,84 75,98 56,92 50,110 44,92 25,98 37,84 19,80 37,76 25,62 44,68" opacity="0.6"/>
+      <polygon points="230,50 236,68 255,62 243,76 261,80 243,84 255,98 236,92 230,110 224,92 205,98 217,84 199,80 217,76 205,62 224,68" opacity="0.6"/>
+      <polygon points="140,90 162,101 170,124 162,146 140,158 118,146 110,124 118,101"/>
+    </g>
+  </svg>
+
+  SVG Najm petit — ornement de coin de carte :
+
+  <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"
+       style="position:absolute;top:10px;right:10px;opacity:0.18;pointer-events:none">
+    <g fill="none" stroke="rgba(252,221,9,1)" stroke-width="0.7">
+      <polygon points="24,4 28,16 40,12 32,20 44,24 32,28 40,36 28,32 24,44 20,32 8,36 16,28 4,24 16,20 8,12 20,16"/>
+      <rect x="14" y="14" width="20" height="20" transform="rotate(45 24 24)"/>
+      <circle cx="24" cy="24" r="6"/>
+    </g>
+  </svg>
+
+  SVG Divider — séparateur de section :
+
+  <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"
+       style="opacity:0.35">
+    <g fill="none" stroke="rgba(252,221,9,1)" stroke-width="0.8">
+      <polygon points="16,3 19,11 27,9 22,15 30,17 22,19 27,25 19,23 16,31 13,23 5,25 10,19 2,17 10,15 5,9 13,11"/>
+      <circle cx="16" cy="17" r="5"/>
+    </g>
+  </svg>
+*/
+
+/* ══════════════════════════════════════════════════════════════
+   KENTE BANDS — Séparateurs pan-africains
+   ══════════════════════════════════════════════════════════════ */
+
+/* .kente-band — 4px, full page top/bottom */
+.kente-band {
+  height: 4px;
+  background: repeating-linear-gradient(90deg,
+    #C8102E  0px,  #C8102E  9px,
+    #FCDD09  9px,  #FCDD09  18px,
+    #007A3D  18px, #007A3D  27px,
+    #0D0800  27px, #0D0800  32px,
+    #E8890C  32px, #E8890C  41px,
+    #0D0800  41px, #0D0800  46px
+  );
+}
+
+/* .kente-divider — 1px, séparateur de section */
+.kente-divider {
+  height: 1px;
+  background: repeating-linear-gradient(90deg,
+    rgba(200,16,46,0.4)  0px,  rgba(200,16,46,0.4)  6px,
+    rgba(252,221,9,0.4)  6px,  rgba(252,221,9,0.4)  12px,
+    rgba(0,122,61,0.4)   12px, rgba(0,122,61,0.4)   18px,
+    rgba(232,137,12,0.4) 18px, rgba(232,137,12,0.4) 24px
+  );
+  margin: var(--sp-10) 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NAVIGATION
+   ══════════════════════════════════════════════════════════════ */
+
+.nav {
+  background: rgba(13,8,0,0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--b-gold);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp-8);
+  position: sticky;
+  top: 4px; /* espace pour la kente-band */
+  z-index: 100;
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: 19px; font-weight: 700;
+  color: var(--af-gold);
+  text-decoration: none; letter-spacing: -0.3px;
+}
+
+/* Hexagone logo — forme géométrique africaine */
+.nav-logo-hex {
+  width: 36px; height: 36px;
+  background: var(--af-gold);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-logo-hex span {
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 900;
+  color: var(--af-night);
+  font-style: italic;
+}
+
+.nav-links { display: flex; gap: 2px; }
+
+.nav-link {
+  padding: 7px 18px;
+  border-radius: var(--r-pill);
+  font-size: 13px; font-weight: 500;
+  color: rgba(245,237,214,0.45);
+  border: none; background: none; cursor: pointer;
+  font-family: var(--font-body); transition: .15s;
+}
+
+.nav-link:hover  { color: var(--af-sand); background: rgba(255,255,255,0.05); }
+.nav-link.active { color: var(--af-gold); background: var(--af-gold-pale); border: 1px solid var(--b-gold); }
+
+.nav-cta {
+  padding: 9px 22px;
+  background: var(--af-gold);
+  color: var(--af-night);
+  border: none; border-radius: var(--r-pill);
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: .15s;
+}
+
+.nav-cta:hover { background: #e8cc00; transform: translateY(-1px); }
+
+/* ══════════════════════════════════════════════════════════════
+   HERO
+   ══════════════════════════════════════════════════════════════ */
+
+.hero {
+  padding: 72px var(--sp-8) 56px;
+  position: relative; overflow: hidden;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--b-gold);
+  background: var(--af-night-2);
+  margin-top: var(--sp-6);
+
+  /* Zellige najm en fond — DISCRET */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='rgba(252%2C221%2C9%2C0.055)' stroke-width='0.6'%3E%3Cpolygon points='30%2C8 34%2C22 48%2C18 38%2C28 52%2C32 38%2C36 48%2C46 34%2C42 30%2C56 26%2C42 12%2C46 22%2C36 8%2C32 22%2C28 12%2C18 26%2C22'/%3E%3Crect x='18' y='18' width='24' height='24' transform='rotate(45 30 30)'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: var(--af-night-2);
+  background-size: 60px 60px;
+}
+
+/* Emblem SVG zellige positionné en coin */
+.hero-zellige-corner {
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 280px; height: 280px;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  color: var(--af-green);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 5px 14px;
+  background: rgba(0,122,61,0.1);
+  border: 1px solid rgba(0,122,61,0.22);
+  border-radius: var(--r-pill);
+  margin-bottom: var(--sp-6);
+}
+
+.hero-live-dot {
+  width: 5px; height: 5px;
+  background: var(--af-green); border-radius: 50%;
+  animation: af-pulse 2s ease-in-out infinite;
+}
+
+@keyframes af-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,122,61,0.5); }
+  50%       { box-shadow: 0 0 0 4px rgba(0,122,61,0); }
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 5.5vw, 66px);
+  font-weight: 700;
+  line-height: 1.05; letter-spacing: -2px;
+  color: #fff; margin-bottom: var(--sp-4);
+}
+
+.hero-title em { font-style: italic; color: var(--af-gold); }
+
+.hero-desc {
+  font-size: 16px; font-weight: 300;
+  color: rgba(245,237,214,0.55);
+  line-height: 1.75; max-width: 500px;
+  margin-bottom: var(--sp-8);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BOUTONS
+   ══════════════════════════════════════════════════════════════ */
+
+.btn-primary {
+  padding: 13px 30px;
+  background: var(--af-gold);
+  color: var(--af-night);
+  border: none; border-radius: var(--r-md);
+  font-family: var(--font-body);
+  font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: .15s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary:hover  { background: #e8cc00; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(252,221,9,0.18); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  padding: 13px 26px;
+  background: transparent;
+  color: rgba(245,237,214,0.65);
+  border: 1px solid rgba(245,237,214,0.14);
+  border-radius: var(--r-md);
+  font-family: var(--font-body);
+  font-size: 15px; font-weight: 500;
+  cursor: pointer; transition: .15s;
+}
+.btn-secondary:hover { border-color: rgba(245,237,214,0.32); color: var(--af-sand); }
+
+/* ══════════════════════════════════════════════════════════════
+   STAT STRIP
+   ══════════════════════════════════════════════════════════════ */
+
+.stats-strip {
+  display: flex; gap: 0;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--b-gold);
+  border-radius: var(--r-lg);
+  overflow: hidden; margin-top: var(--sp-10);
+}
+
+.stats-strip .stat-cell {
+  flex: 1; padding: var(--sp-6) var(--sp-4);
+  text-align: center;
+  border-right: 1px solid var(--b-gold);
+  position: relative;
+}
+.stats-strip .stat-cell:last-child { border-right: none; }
+.stats-strip .stat-cell::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+}
+.stats-strip .stat-cell:nth-child(1)::before { background: var(--af-red); }
+.stats-strip .stat-cell:nth-child(2)::before { background: var(--af-gold); }
+.stats-strip .stat-cell:nth-child(3)::before { background: var(--af-green); }
+.stats-strip .stat-cell:nth-child(4)::before { background: var(--af-gold-deep); }
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 32px; font-weight: 700;
+  color: #fff; letter-spacing: -1.2px; line-height: 1;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 500;
+  color: rgba(245,237,214,0.3);
+  text-transform: uppercase; letter-spacing: 1.2px;
+  margin-top: 5px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CALCULATEUR
+   ══════════════════════════════════════════════════════════════ */
+
+.calc-panel {
+  background: var(--af-night-2);
+  border: 1px solid var(--b-gold);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  position: relative;
+
+  /* Zellige girih très subtil */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg fill='none' stroke='rgba(252%2C221%2C9%2C0.045)' stroke-width='0.5'%3E%3Crect x='5' y='5' width='30' height='30'/%3E%3Crect x='5' y='5' width='30' height='30' transform='rotate(45 20 20)'/%3E%3Ccircle cx='20' cy='20' r='6'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: var(--af-night-2);
+  background-size: 40px 40px;
+}
+
+.calc-top-stripe {
+  height: 3px;
+  background: linear-gradient(90deg, var(--af-red), var(--af-gold), var(--af-green));
+}
+
+.calc-header {
+  padding: var(--sp-4) var(--sp-6) var(--sp-4);
+  border-bottom: 1px solid var(--b-gold);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.calc-title {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  color: var(--af-gold);
+  letter-spacing: 2px; text-transform: uppercase;
+}
+
+.calc-live-badge {
+  display: flex; align-items: center; gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px; color: var(--af-green);
+  padding: 3px 10px;
+  background: rgba(0,122,61,0.08);
+  border: 1px solid rgba(0,122,61,0.2);
+  border-radius: var(--r-pill);
+}
+
+.calc-body { padding: var(--sp-6); }
+
+.field-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); margin-bottom: var(--sp-3); }
+
+.field-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 500;
+  color: rgba(245,237,214,0.3);
+  text-transform: uppercase; letter-spacing: 1.3px;
+  margin-bottom: var(--sp-1);
+}
+
+.field-select,
+.field-input {
+  width: 100%; height: 46px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(252,221,9,0.1);
+  border-radius: var(--r-md);
+  padding: 0 var(--sp-3);
+  color: var(--af-sand);
+  font-family: var(--font-body);
+  font-size: 14px; font-weight: 400;
+  appearance: none; cursor: pointer; transition: .15s;
+}
+
+.field-select:hover, .field-input:hover { border-color: rgba(252,221,9,0.24); }
+.field-select:focus, .field-input:focus {
+  outline: none;
+  border-color: var(--af-gold);
+  box-shadow: 0 0 0 3px rgba(252,221,9,0.08);
+}
+
+.field-hint {
+  font-family: var(--font-mono);
+  font-size: 10px; color: rgba(232,137,12,0.55);
+  margin-top: 4px;
+}
+
+.calc-submit {
+  width: 100%; height: 52px;
+  background: var(--af-gold); color: var(--af-night);
+  border: none; border-radius: var(--r-md);
+  font-family: var(--font-body);
+  font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: .15s;
+  margin-top: var(--sp-2);
+  display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+}
+.calc-submit:hover { background: #e8cc00; transform: translateY(-1px); }
+
+/* ══════════════════════════════════════════════════════════════
+   RESULT CARDS
+   ══════════════════════════════════════════════════════════════ */
+
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.result-card {
+  border-radius: var(--r-md);
+  padding: var(--sp-4) var(--sp-4);
+  position: relative; overflow: hidden;
+}
+
+.result-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+}
+
+.result-card.tariff  { background: rgba(200,16,46,0.07);  border: 1px solid var(--b-red); }
+.result-card.saving  { background: rgba(0,122,61,0.07);   border: 1px solid var(--b-green); }
+.result-card.total   { background: rgba(232,137,12,0.07); border: 1px solid rgba(232,137,12,0.18); }
+.result-card.origin  { background: rgba(14,138,122,0.07); border: 1px solid var(--b-teal); }
+
+.result-card.tariff::before  { background: var(--af-red); }
+.result-card.saving::before  { background: var(--af-green); }
+.result-card.total::before   { background: var(--af-gold-deep); }
+.result-card.origin::before  { background: var(--af-green-pale); }
+
+.result-label {
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1.2px;
+  margin-bottom: var(--sp-1);
+}
+
+.result-card.tariff .result-label  { color: rgba(200,16,46,0.65); }
+.result-card.saving .result-label  { color: rgba(0,122,61,0.65); }
+.result-card.total .result-label   { color: rgba(232,137,12,0.65); }
+.result-card.origin .result-label  { color: rgba(14,138,122,0.65); }
+
+.result-value {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 700;
+  color: #fff; letter-spacing: -1px; line-height: 1;
+}
+
+.result-sub { font-size: 10px; color: rgba(245,237,214,0.3); margin-top: 4px; }
+
+/* ══════════════════════════════════════════════════════════════
+   INFO PANELS (avec arabesque fond)
+   ══════════════════════════════════════════════════════════════ */
+
+.info-panel {
+  background: var(--af-night-2);
+  border: 1px solid var(--b-gold);
+  border-radius: var(--r-lg);
+  padding: var(--sp-6);
+  position: relative; overflow: hidden;
+
+  /* Arabesque fond */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='rgba(27%2C108%2C168%2C0.06)' stroke-width='0.6'%3E%3Ccircle cx='40' cy='40' r='16'/%3E%3Ccircle cx='40' cy='40' r='28'/%3E%3Cline x1='40' y1='12' x2='40' y2='68'/%3E%3Cline x1='12' y1='40' x2='68' y2='40'/%3E%3Cline x1='20' y1='20' x2='60' y2='60'/%3E%3Cline x1='60' y1='20' x2='20' y2='60'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: var(--af-night-2);
+  background-size: 80px 80px;
+}
+
+.info-panel-accent { width: 40px; height: 3px; border-radius: 2px; margin-bottom: var(--sp-3); }
+
+.info-panel-title {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 600;
+  color: #fff; margin-bottom: var(--sp-2);
+}
+
+.info-panel-body {
+  font-size: 13px; color: rgba(245,237,214,0.5); line-height: 1.75;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   COUNTRY CARDS (zellige girih watermark)
+   ══════════════════════════════════════════════════════════════ */
+
+.country-card {
+  background: var(--af-night-2);
+  border: 1px solid var(--b-subtle);
+  border-radius: var(--r-md);
+  padding: var(--sp-4) var(--sp-4);
+  cursor: pointer; transition: .18s;
+  position: relative; overflow: hidden;
+
+  /* Girih watermark */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg fill='none' stroke='rgba(252%2C221%2C9%2C0.03)' stroke-width='0.5'%3E%3Crect x='5' y='5' width='30' height='30'/%3E%3Crect x='5' y='5' width='30' height='30' transform='rotate(45 20 20)'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: var(--af-night-2);
+  background-size: 40px 40px;
+}
+
+.country-card:hover {
+  border-color: rgba(252,221,9,0.22);
+  transform: translateY(-2px);
+}
+
+.country-flag { font-size: 26px; display: block; margin-bottom: var(--sp-2); }
+.country-name { font-size: 12px; font-weight: 600; color: var(--af-sand); margin-bottom: 2px; }
+.country-lpi  {
+  position: absolute; top: 10px; right: 10px;
+  font-family: var(--font-mono); font-size: 10px;
+  color: rgba(252,221,9,0.5);
+  background: rgba(252,221,9,0.06);
+  border: 1px solid rgba(252,221,9,0.1);
+  padding: 2px 6px; border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION HEADERS
+   ══════════════════════════════════════════════════════════════ */
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 500;
+  color: var(--af-gold-deep);
+  text-transform: uppercase; letter-spacing: 3px;
+  margin-bottom: var(--sp-2);
+  display: flex; align-items: center; gap: var(--sp-2);
+}
+.section-label::before { content: ''; width: 16px; height: 1px; background: var(--af-gold-deep); }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700; letter-spacing: -1.2px;
+  color: #fff; line-height: 1.1; margin-bottom: var(--sp-2);
+}
+.section-title em { font-style: italic; color: var(--af-gold); }
+
+.section-desc {
+  font-size: 14px; font-weight: 300;
+  color: rgba(245,237,214,0.45); line-height: 1.75;
+  max-width: 480px; margin-bottom: var(--sp-8);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DATA BADGE — taux tarifaires
+   ══════════════════════════════════════════════════════════════ */
+
+.rate-badge {
+  display: inline-block;
+  padding: 3px 9px; border-radius: 5px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+}
+.rate-badge.pref { background: rgba(0,122,61,0.12);   color: #22c97a; border: 1px solid rgba(0,122,61,0.22); }
+.rate-badge.mid  { background: rgba(232,137,12,0.12); color: #E8890C; border: 1px solid rgba(232,137,12,0.22); }
+.rate-badge.high { background: rgba(200,16,46,0.12);  color: #ff7080; border: 1px solid rgba(200,16,46,0.22); }
+
+/* ══════════════════════════════════════════════════════════════
+   DATA TABLE
+   ══════════════════════════════════════════════════════════════ */
+
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table thead tr { border-bottom: 1px solid var(--b-gold); }
+.data-table th {
+  padding: 10px var(--sp-4);
+  font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  color: rgba(245,237,214,0.28); text-align: left;
+}
+.data-table td {
+  padding: 13px var(--sp-4);
+  font-size: 13px;
+  border-bottom: 1px solid rgba(252,221,9,0.04);
+  color: rgba(245,237,214,0.72); transition: background .12s;
+}
+.data-table tr:hover td { background: rgba(252,221,9,0.02); }
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .hero { padding: 48px var(--sp-4) 40px; }
+  .nav  { padding: 0 var(--sp-4); }
+  .nav-links { display: none; }
+  .hero-zellige-corner { width: 160px; height: 160px; }
+  .stats-strip { flex-direction: column; }
+  .stats-strip .stat-cell { border-right: none; border-bottom: 1px solid var(--b-gold); }
+  .stats-strip .stat-cell:last-child { border-bottom: none; }
+  .field-grid-2 { grid-template-columns: 1fr; }
+  .results-grid { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   USAGE SUMMARY
+
+   Hiérarchie des motifs zellige par intensité :
+
+   PAGE  → .zellige-najm      (0.055 or)  — fond de hero et page wrapper
+   PANEL → .zellige-girih     (0.045 or)  — fond de cartes/calculateur
+   INFO  → .zellige-arabesque (0.06 bleu) — panneaux d'information
+   SEC   → .zellige-hex       (0.07 teal) — sections secondaires
+   COIN  → SVG inline         (0.08–0.18) — ornements de coin décoratifs
+   DIV   → SVG inline         (0.35)      — emblem de séparateur
+
+   La règle : plus le composant est petit, moins le zellige est visible.
+   Le héros peut aller jusqu'à 5.5% — une carte jamais au-dessus de 4.5%.
+   ══════════════════════════════════════════════════════════════ */

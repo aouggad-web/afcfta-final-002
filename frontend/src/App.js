@@ -328,6 +328,9 @@ function App() {
 
   return (
     <div className="afcfta-layout">
+      {/* Pan-African kente stripe — top of every page */}
+      <div className="kente-band" />
+
       <Toaster />
 
       {/* Sidebar navigation */}
@@ -342,7 +345,7 @@ function App() {
 
       {/* Main content area */}
       <main className="afcfta-main" id="afcfta-main-content">
-        <div className="afcfta-shell">
+        <div className="afcfta-shell zellige-najm">
           {/* KPI Row - dashboard uniquement */}
           {activeTab === 'dashboard' && (
             <KpiRow language={language} stats={stats} />

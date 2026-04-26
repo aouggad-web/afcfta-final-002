@@ -1,5 +1,4 @@
 import React from "react";
-import { BarChart3, TrendingUp, Ship, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 const KPI_CONFIG = {
   gdp: {
@@ -58,43 +57,15 @@ export default function KpiRow({ language = "fr", stats }) {
   ];
 
   return (
-    <div className="afcfta-kpiRow">
+    <div className="stats-strip">
       {kpis.map((kpi, idx) => {
         const Icon = KPI_CONFIG[kpi.type]?.icon;
-        const accent = KPI_CONFIG[kpi.type]?.accent || "var(--gold)";
-
         return (
-          <div
-            key={idx}
-            className="afcfta-kpiCard"
-            style={{
-              borderColor: `${accent}35`,
-            }}
-          >
-            <div className="afcfta-kpiCard-top">
-              <div>
-                <div className="afcfta-kpiCard-title">{kpi.title}</div>
-                <div className="afcfta-kpiCard-value">{kpi.value}</div>
-              </div>
-
-              <div
-                className="afcfta-kpiCard-icon"
-                style={{
-                  background: `${accent}18`,
-                  borderColor: `${accent}40`,
-                  color: accent,
-                }}
-              >
-                <Icon className="w-5 h-5" />
-              </div>
-            </div>
-
-            <div className="afcfta-kpiCard-bottom">
-              <div className="afcfta-kpiCard-subvalue">{kpi.subtext}</div>
-              <div className="afcfta-kpiCard-meta">
-                <ArrowUpRight className="w-3.5 h-3.5" />
-                <span>{kpi.meta}</span>
-              </div>
+          <div key={idx} className="stat-cell">
+            <div className="stat-value">{kpi.value}</div>
+            <div className="stat-label">{kpi.title}</div>
+            <div style={{ fontSize: 10, color: "rgba(245,237,214,0.22)", marginTop: 3 }}>
+              {kpi.subtext}
             </div>
           </div>
         );
