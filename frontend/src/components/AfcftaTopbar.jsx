@@ -221,14 +221,15 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
         />
       )}
 
-      {/* Sidebar */}
-      <aside
+      {/* Sidebar content — positioning is handled by the wrapper in App.js */}
+      <div
         className={`afcfta-sidebar ${collapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`}
         role="navigation"
         aria-label={isFrench ? "Menu principal" : "Main menu"}
+        style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
       >
         {sidebarContent}
-      </aside>
+      </div>
     </>
   );
 }

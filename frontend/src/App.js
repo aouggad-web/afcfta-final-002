@@ -328,14 +328,16 @@ function App() {
         <Toaster />
 
       {/* Sidebar navigation */}
-      <AfcftaTopbar
-        active={getTopbarActiveTab()}
-        onTabChange={handleTabChange}
-        language={language}
-        mobileOpen={mobileMenuOpen}
-        onMobileOpen={() => setMobileMenuOpen(true)}
-        onMobileClose={() => setMobileMenuOpen(false)}
-      />
+      <aside style={{position:'fixed',top:0,left:0,height:'100vh',width:228,zIndex:201,background:'linear-gradient(180deg,#0e1620,#0a1018)',borderRight:'1px solid rgba(200,83,26,0.15)',display:'flex',flexDirection:'column',overflowY:'auto',overflowX:'hidden'}}>
+        <AfcftaTopbar
+          active={getTopbarActiveTab()}
+          onTabChange={handleTabChange}
+          language={language}
+          mobileOpen={mobileMenuOpen}
+          onMobileOpen={() => setMobileMenuOpen(true)}
+          onMobileClose={() => setMobileMenuOpen(false)}
+        />
+      </aside>
 
       {/* Main content area */}
       <main className="afcfta-main" id="afcfta-main-content">
