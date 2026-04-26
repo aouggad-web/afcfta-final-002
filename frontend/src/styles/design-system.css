@@ -167,8 +167,11 @@
    KENTE BANDS — Séparateurs pan-africains
    ══════════════════════════════════════════════════════════════ */
 
-/* .kente-band — 4px, full page top/bottom */
+/* .kente-band — 4px, fixed at the very top of the viewport */
 .kente-band {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
   height: 4px;
   background: repeating-linear-gradient(90deg,
     #C8102E  0px,  #C8102E  9px,

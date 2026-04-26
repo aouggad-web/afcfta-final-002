@@ -61,6 +61,7 @@ function App() {
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [backendOnline, setBackendOnline] = useState(null);
 
   const t = texts[language] || texts.fr;
 
@@ -120,16 +121,10 @@ function App() {
         ? data.countries
         : [];
       setCountries(countriesArray);
+      setBackendOnline(true);
     } catch (error) {
       console.error('Error loading countries:', error);
-      toast({
-        title: language === 'fr' ? 'Erreur' : 'Error',
-        description:
-          language === 'fr'
-            ? 'Impossible de charger la liste des pays'
-            : 'Unable to load country list',
-        variant: 'destructive',
-      });
+      setBackendOnline(false);
     }
   };
 
@@ -327,28 +322,44 @@ function App() {
     document.querySelector('.afcfta-sidebar.collapsed') !== null;
 
   return (
-    <div className="afcfta-layout">
-      {/* Pan-African kente stripe — top of every page */}
+    <>
       <div className="kente-band" />
-
-      <Toaster />
+      <div className="afcfta-layout">
+        <Toaster />
 
       {/* Sidebar navigation */}
-      <AfcftaTopbar
-        active={getTopbarActiveTab()}
-        onTabChange={handleTabChange}
-        language={language}
-        mobileOpen={mobileMenuOpen}
-        onMobileOpen={() => setMobileMenuOpen(true)}
-        onMobileClose={() => setMobileMenuOpen(false)}
-      />
+      <aside style={{position:'fixed',top:0,left:0,height:'100vh',width:228,zIndex:201,background:'linear-gradient(180deg,#0e1620,#0a1018)',borderRight:'1px solid rgba(200,83,26,0.15)',display:'flex',flexDirection:'column',overflowY:'auto',overflowX:'hidden'}}>
+        <AfcftaTopbar
+          active={getTopbarActiveTab()}
+          onTabChange={handleTabChange}
+          language={language}
+          mobileOpen={mobileMenuOpen}
+          onMobileOpen={() => setMobileMenuOpen(true)}
+          onMobileClose={() => setMobileMenuOpen(false)}
+        />
+      </aside>
 
       {/* Main content area */}
-      <main className="afcfta-main" id="afcfta-main-content">
+      <main className="afcfta-main" id="afcfta-main-content" style={{ marginLeft: 228 }}>
         <div className="afcfta-shell zellige-najm">
           {/* KPI Row - dashboard uniquement */}
           {activeTab === 'dashboard' && (
             <KpiRow language={language} stats={stats} />
+          )}
+
+          {/* Offline banner — non-dashboard tabs when backend is down */}
+          {backendOnline === false && activeTab !== 'dashboard' && (
+            <div className="info-panel zellige-arabesque" style={{ marginBottom: 20, borderColor: 'rgba(200,16,46,0.25)' }}>
+              <div className="info-panel-accent" style={{ background: 'var(--af-red)' }} />
+              <div className="info-panel-title">
+                {language === 'fr' ? '⚡ Serveur hors ligne' : '⚡ Server offline'}
+              </div>
+              <div className="info-panel-body">
+                {language === 'fr'
+                  ? 'Démarrez le backend (port 8000) pour charger les données de ce module. Les données tarifaires, statistiques et outils nécessitent le serveur API.'
+                  : 'Start the backend server (port 8000) to load data for this module. Tariff data, statistics and tools require the API server.'}
+              </div>
+            </div>
           )}
 
           {/* Contenu principal */}
@@ -356,6 +367,7 @@ function App() {
         </div>
       </main>
     </div>
+    </>
   );
 }
 

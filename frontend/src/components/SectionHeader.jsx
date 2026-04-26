@@ -15,10 +15,7 @@ export default function SectionHeader({
         <div className="afcfta-sectionHead-copy">
           <div className="section-label">
             {eyebrow ? (
-              <>
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>{eyebrow}</span>
-              </>
+              <><Sparkles className="w-3.5 h-3.5" /><span>{eyebrow}</span></>
             ) : (
               <span className={`afcfta-badgeDot ${dotColor}`} />
             )}
@@ -27,7 +24,6 @@ export default function SectionHeader({
           {subtitle ? <p className="section-desc">{subtitle}</p> : null}
         </div>
       </div>
-
       {right ? <div className="afcfta-sectionHead-right">{right}</div> : null}
     </div>
   );
