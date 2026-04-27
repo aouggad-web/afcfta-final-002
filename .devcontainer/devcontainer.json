@@ -10,7 +10,7 @@
       "nodeGypDependencies": true
     }
   },
-  "postCreateCommand": "pip install -r requirements.txt && cd frontend && npm ci --legacy-peer-deps",
+  "postCreateCommand": "pip install -r requirements.txt && cd frontend && npm ci --legacy-peer-deps && cd ..",
   "customizations": {
     "vscode": {
       "extensions": [
