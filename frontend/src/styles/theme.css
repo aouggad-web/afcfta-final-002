@@ -2025,7 +2025,8 @@ body::before {
 
 @media (max-width: 900px) {
   .afcfta-topHeader {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 
   .afcfta-topHeader__nav {
