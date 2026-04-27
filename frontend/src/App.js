@@ -60,7 +60,6 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [backendOnline, setBackendOnline] = useState(null);
 
   const t = texts[language] || texts.fr;
@@ -317,30 +316,21 @@ function App() {
     }
   };
 
-  const sidebarCollapsed =
-    typeof window !== 'undefined' &&
-    document.querySelector('.afcfta-sidebar.collapsed') !== null;
-
   return (
     <>
       <div className="kente-band" />
-      <div className="afcfta-layout">
+      <div className="afcfta-layout-v2">
         <Toaster />
 
-      {/* Sidebar navigation */}
-      <aside style={{position:'fixed',top:0,left:0,height:'100vh',width:228,zIndex:201,background:'linear-gradient(180deg,#0e1620,#0a1018)',borderRight:'1px solid rgba(200,83,26,0.15)',display:'flex',flexDirection:'column',overflowY:'auto',overflowX:'hidden'}}>
+        {/* Horizontal top navigation */}
         <AfcftaTopbar
           active={getTopbarActiveTab()}
           onTabChange={handleTabChange}
           language={language}
-          mobileOpen={mobileMenuOpen}
-          onMobileOpen={() => setMobileMenuOpen(true)}
-          onMobileClose={() => setMobileMenuOpen(false)}
         />
-      </aside>
 
       {/* Main content area */}
-      <main className="afcfta-main" id="afcfta-main-content" style={{ marginLeft: 228 }}>
+      <main className="afcfta-main-v2" id="afcfta-main-content">
         <div className="afcfta-shell zellige-najm">
           {/* KPI Row - dashboard uniquement */}
           {activeTab === 'dashboard' && (
