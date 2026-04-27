@@ -6,7 +6,11 @@ import time
 from pathlib import Path
 from sqlalchemy import create_engine, text
 
-DATABASE_URL = "postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory"
+import os
+
+DATABASE_URL = os.environ.get("POSTGRES_URL", "")
+if not DATABASE_URL:
+    raise RuntimeError("POSTGRES_URL environment variable is not set")
 DATA_DIR = Path("/app/engine/output")
 
 COUNTRIES = {
