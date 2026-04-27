@@ -23,7 +23,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def main():
-    database_url = "postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory"
+    database_url = os.environ.get("POSTGRES_URL", "")
+    if not database_url:
+        raise RuntimeError("POSTGRES_URL environment variable is not set")
     
     logger.info("=" * 60)
     logger.info("MIGRATION COMPLÈTE VERS POSTGRESQL")
