@@ -2018,22 +2018,25 @@ body::before {
   color: var(--gold);
 }
 
+/* Mobile menu button — hidden on desktop, shown on mobile */
+.afcfta-topHeader__menuBtn {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .afcfta-topHeader {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .afcfta-topHeader__nav {
     display: none;
   }
 
-  .afcfta-mobile-topbar {
+  .afcfta-topHeader__menuBtn {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    position: sticky;
-    top: 0;
-    z-index: 60;
-    background: rgba(14,22,32,0.96);
-    border-bottom: 1px solid rgba(212,137,26,0.12);
-    backdrop-filter: blur(10px);
+    justify-content: center;
   }
 
   .afcfta-shell {
