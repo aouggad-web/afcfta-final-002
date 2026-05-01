@@ -55,7 +55,6 @@ class AlgeriaConformeproScraper:
                 headers=HEADERS,
                 timeout=30.0,
                 follow_redirects=True,
-                verify=False,
             )
 
     async def _close_client(self):

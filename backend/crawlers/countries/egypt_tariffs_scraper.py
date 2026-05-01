@@ -27,7 +27,7 @@ import os
 import re
 import logging
 import time
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 from typing import Dict, List, Optional
 from datetime import datetime
 

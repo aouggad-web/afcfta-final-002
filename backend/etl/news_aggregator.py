@@ -257,7 +257,7 @@ def parse_date(date_str: str) -> datetime:
 
 def generate_article_id(title: str, source: str) -> str:
     """Générer un ID unique pour l'article"""
-    return hashlib.md5(f"{title}:{source}".encode()).hexdigest()[:12]
+    return hashlib.md5(f"{title}:{source}".encode(), usedforsecurity=False).hexdigest()[:12]
 
 
 def truncate_text(text: str, max_length: int = 200) -> str:

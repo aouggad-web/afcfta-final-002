@@ -29,7 +29,7 @@ router = APIRouter(prefix="/mobile", tags=["Mobile API"])
 
 def _etag(data: Any) -> str:
     raw = json.dumps(data, sort_keys=True, default=str)
-    return '"' + hashlib.md5(raw.encode()).hexdigest() + '"'
+    return '"' + hashlib.md5(raw.encode(), usedforsecurity=False).hexdigest() + '"'
 
 
 def _check_etag(request: Request, etag: str) -> bool:

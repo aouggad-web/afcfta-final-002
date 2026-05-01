@@ -86,7 +86,7 @@ def generate_cache_key(prefix: str, *args, **kwargs) -> str:
     # Create hash for long keys
     key_str = ":".join(key_parts)
     if len(key_str) > 200:
-        key_hash = hashlib.md5(key_str.encode()).hexdigest()[:16]
+        key_hash = hashlib.md5(key_str.encode(), usedforsecurity=False).hexdigest()[:16]
         key_str = f"{prefix}:{key_hash}"
     
     return f"zlecaf:{key_str}"

@@ -91,8 +91,10 @@ async def search_commodities(
     
     try:
         with engine.connect() as conn:
-            # Déterminer la langue de recherche
-            ts_config = 'french' if lang == 'fr' else 'english'
+            # Déterminer la langue de recherche — only allow known-safe PostgreSQL
+            # text search configurations to prevent SQL injection via f-string interpolation.
+            _VALID_TS_CONFIGS = {"fr": "french", "en": "english"}
+            ts_config = _VALID_TS_CONFIGS.get(lang, "french")
             
             # Pour l'anglais, traduire le terme de recherche si possible
             search_term = q
@@ -107,50 +109,46 @@ async def search_commodities(
             
             # Pour l'anglais, on utilise la traduction + ILIKE
             if lang == 'en':
-                base_query = f"""
-                    SELECT 
-                        c.id,
-                        c.country_iso3,
-                        co.name_fr as country_name,
-                        c.national_code,
-                        c.hs6,
-                        c.description_fr,
-                        c.chapter,
-                        c.total_npf_pct,
-                        c.total_zlecaf_pct,
-                        c.savings_pct,
-                        CASE 
-                            WHEN c.description_fr ILIKE :pattern THEN 1.0
-                            WHEN c.description_fr ILIKE :original_pattern THEN 0.8
-                            ELSE 0.5
-                        END as rank
-                    FROM commodities c
-                    JOIN countries co ON c.country_iso3 = co.iso3
-                    WHERE (
-                        to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :search_term)
-                        OR c.description_fr ILIKE :pattern
-                        OR c.description_fr ILIKE :original_pattern
-                    )
-                """
+                base_query = (
+                    "SELECT "
+                    "c.id, c.country_iso3, co.name_fr as country_name, "
+                    "c.national_code, c.hs6, c.description_fr, c.chapter, "
+                    "c.total_npf_pct, c.total_zlecaf_pct, c.savings_pct, "
+                    "CASE "
+                    "WHEN c.description_fr ILIKE :pattern THEN 1.0 "
+                    "WHEN c.description_fr ILIKE :original_pattern THEN 0.8 "
+                    "ELSE 0.5 "
+                    "END as rank "
+                    "FROM commodities c "
+                    "JOIN countries co ON c.country_iso3 = co.iso3 "
+                    "WHERE ("
+                    "to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :search_term) "
+                    "OR c.description_fr ILIKE :pattern "
+                    "OR c.description_fr ILIKE :original_pattern"
+                    ")"
+                )
+            elif ts_config == "french":
+                base_query = (
+                    "SELECT "
+                    "c.id, c.country_iso3, co.name_fr as country_name, "
+                    "c.national_code, c.hs6, c.description_fr, c.chapter, "
+                    "c.total_npf_pct, c.total_zlecaf_pct, c.savings_pct, "
+                    "ts_rank(to_tsvector('french', c.description_fr), plainto_tsquery('french', :query)) as rank "
+                    "FROM commodities c "
+                    "JOIN countries co ON c.country_iso3 = co.iso3 "
+                    "WHERE to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :query)"
+                )
             else:
-                # Recherche française standard
-                base_query = f"""
-                    SELECT 
-                        c.id,
-                        c.country_iso3,
-                        co.name_fr as country_name,
-                        c.national_code,
-                        c.hs6,
-                        c.description_fr,
-                        c.chapter,
-                        c.total_npf_pct,
-                        c.total_zlecaf_pct,
-                        c.savings_pct,
-                        ts_rank(to_tsvector('{ts_config}', c.description_fr), plainto_tsquery('{ts_config}', :query)) as rank
-                    FROM commodities c
-                    JOIN countries co ON c.country_iso3 = co.iso3
-                    WHERE to_tsvector('{ts_config}', c.description_fr) @@ plainto_tsquery('{ts_config}', :query)
-                """
+                base_query = (
+                    "SELECT "
+                    "c.id, c.country_iso3, co.name_fr as country_name, "
+                    "c.national_code, c.hs6, c.description_fr, c.chapter, "
+                    "c.total_npf_pct, c.total_zlecaf_pct, c.savings_pct, "
+                    "ts_rank(to_tsvector('english', c.description_fr), plainto_tsquery('english', :query)) as rank "
+                    "FROM commodities c "
+                    "JOIN countries co ON c.country_iso3 = co.iso3 "
+                    "WHERE to_tsvector('english', c.description_fr) @@ plainto_tsquery('english', :query)"
+                )
             
             params = {
                 "query": q, 
@@ -174,19 +172,24 @@ async def search_commodities(
             
             # Compter le total (pour la pagination)
             if lang == 'en':
-                count_query = """
-                    SELECT COUNT(*) FROM commodities c
-                    WHERE (
-                        to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :search_term)
-                        OR c.description_fr ILIKE :pattern
-                        OR c.description_fr ILIKE :original_pattern
-                    )
-                """
+                count_query = (
+                    "SELECT COUNT(*) FROM commodities c "
+                    "WHERE ("
+                    "to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :search_term) "
+                    "OR c.description_fr ILIKE :pattern "
+                    "OR c.description_fr ILIKE :original_pattern"
+                    ")"
+                )
+            elif ts_config == "french":
+                count_query = (
+                    "SELECT COUNT(*) FROM commodities c "
+                    "WHERE to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :query)"
+                )
             else:
-                count_query = f"""
-                    SELECT COUNT(*) FROM commodities c
-                    WHERE to_tsvector('{ts_config}', c.description_fr) @@ plainto_tsquery('{ts_config}', :query)
-                """
+                count_query = (
+                    "SELECT COUNT(*) FROM commodities c "
+                    "WHERE to_tsvector('english', c.description_fr) @@ plainto_tsquery('english', :query)"
+                )
             if country:
                 count_query += " AND c.country_iso3 = :country"
             

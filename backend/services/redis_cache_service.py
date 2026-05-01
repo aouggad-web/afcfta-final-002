@@ -73,7 +73,7 @@ class RedisCacheService:
         """Generate a unique cache key based on parameters"""
         # Sort params for consistent hashing
         sorted_params = json.dumps(params, sort_keys=True)
-        param_hash = hashlib.md5(sorted_params.encode()).hexdigest()[:12]
+        param_hash = hashlib.md5(sorted_params.encode(), usedforsecurity=False).hexdigest()[:12]
         return f"zlecaf:{prefix}:{param_hash}"
     
     def get(self, prefix: str, params: Dict[str, Any]) -> Optional[Dict[str, Any]]:

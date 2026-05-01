@@ -28,7 +28,6 @@ class MoroccoDouaneScraper:
     def _new_client(self) -> httpx.AsyncClient:
         return httpx.AsyncClient(
             timeout=60.0,
-            verify=False,
             follow_redirects=True,
             headers={
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",

@@ -98,7 +98,7 @@ def safe_mkdir(path: str) -> None:
 
 
 def stable_filename_from_url(url: str) -> str:
-    h = hashlib.md5(url.encode("utf-8")).hexdigest()
+    h = hashlib.md5(url.encode("utf-8"), usedforsecurity=False).hexdigest()
     return f"{h}.html"
 
 
