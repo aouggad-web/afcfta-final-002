@@ -73,3 +73,12 @@ android-sdk/
 # Backup files
 *.backup
 *.bak
+-e 
+# Environment and credential files
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials

@@ -56,45 +56,6 @@ const translations = {
   },
 };
 
-const KPI_CARDS = (t) => [
-  {
-    key: 'gdp',
-    title: t.totalGdp,
-    value: '$2.7T',
-    subtitle: `54 ${t.countries}`,
-    icon: BarChart3,
-    accent: 'var(--gold)',
-    meta: t.members,
-  },
-  {
-    key: 'trade',
-    title: t.intraAfricanTrade,
-    value: '$235B',
-    subtitle: `${t.growth}: +7.7%`,
-    icon: TrendingUp,
-    accent: '#4f8ef7',
-    meta: '+7.7%',
-  },
-  {
-    key: 'coverage',
-    title: t.dataCoverage,
-    value: '32',
-    subtitle: t.authenticCountries,
-    icon: Database,
-    accent: '#20c997',
-    meta: t.authentic,
-  },
-  {
-    key: 'tariff',
-    title: t.tariffPositions,
-    value: '229K',
-    subtitle: t.authenticPositions,
-    icon: Target,
-    accent: '#d4891a',
-    meta: t.lastLayer,
-  },
-];
-
 const BLOCS = [
   { name: 'CEDEAO', count: 7, accent: '#d4891a' },
   { name: 'CEMAC', count: 5, accent: '#4f8ef7' },
@@ -176,7 +137,58 @@ const DashboardTabNew = ({ language = 'fr' }) => {
     fetchStats();
   }, []);
 
-  const kpis = KPI_CARDS(t);
+  // Build KPIs dynamically with real data from API
+  const kpis = React.useMemo(() => {
+    const authenticCount = stats?.overview?.authentic_countries || 54;
+    const verifiedPositions = stats?.overview?.verified_positions || 229000;
+    
+    // Format verified positions (e.g., 894783 -> "895K")
+    const formatCount = (count) => {
+      if (count >= 1000) {
+        return Math.round(count / 1000) + 'K';
+      }
+      return count.toString();
+    };
+
+    return [
+      {
+        key: 'gdp',
+        title: t.totalGdp,
+        value: '$2.7T',
+        subtitle: `54 ${t.countries}`,
+        icon: BarChart3,
+        accent: 'var(--gold)',
+        meta: t.members,
+      },
+      {
+        key: 'trade',
+        title: t.intraAfricanTrade,
+        value: '$235B',
+        subtitle: `${t.growth}: +7.7%`,
+        icon: TrendingUp,
+        accent: '#4f8ef7',
+        meta: '+7.7%',
+      },
+      {
+        key: 'coverage',
+        title: t.dataCoverage,
+        value: authenticCount.toString(),
+        subtitle: t.authenticCountries,
+        icon: Database,
+        accent: '#20c997',
+        meta: t.authentic,
+      },
+      {
+        key: 'tariff',
+        title: t.tariffPositions,
+        value: formatCount(verifiedPositions),
+        subtitle: t.authenticPositions,
+        icon: Target,
+        accent: '#d4891a',
+        meta: t.lastLayer,
+      },
+    ];
+  }, [stats, t]);
 
   return (
     <div className="space-y-6">
@@ -220,14 +232,20 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                 <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)]">
                   {t.coverage}
                 </div>
-                <div className="mt-1 text-xl font-bold text-[var(--text)]">229K</div>
+                <div className="mt-1 text-xl font-bold text-[var(--text)]">
+                  {stats?.overview?.verified_positions ? 
+                    Math.round(stats.overview.verified_positions / 1000) + 'K' : 
+                    '229K'}
+                </div>
               </div>
 
               <div className="rounded-xl border px-3 py-3 text-center bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.06)]">
                 <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)]">
                   {t.authentic}
                 </div>
-                <div className="mt-1 text-xl font-bold text-[var(--text)]">32</div>
+                <div className="mt-1 text-xl font-bold text-[var(--text)]">
+                  {stats?.overview?.authentic_countries || 54}
+                </div>
               </div>
             </div>
           </div>
