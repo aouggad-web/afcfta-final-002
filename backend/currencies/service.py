@@ -26,7 +26,7 @@ def _load_currencies() -> Tuple[Dict[str, CurrencyInfo], Dict[str, CurrencyInfo]
             raw: List[dict] = json.load(fh)
     except (FileNotFoundError, json.JSONDecodeError) as exc:
         logger.error("Failed to load currencies_african_complete.json: %s", exc)
-        return {}
+        return {}, {}
 
     by_country: Dict[str, CurrencyInfo] = {}
     by_code: Dict[str, CurrencyInfo] = {}
