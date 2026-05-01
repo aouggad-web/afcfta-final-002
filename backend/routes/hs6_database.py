@@ -11,6 +11,95 @@ from search.hs_code_search import get_search_engine
 
 logger = logging.getLogger(__name__)
 
+# ---------------------------------------------------------------------------
+# Module-level constants
+# ---------------------------------------------------------------------------
+
+try:
+    from etl.hs_codes_data import HS_CHAPTERS as _HS_CHAPTERS
+    CHAPTER_NAMES: Dict[str, Dict[str, str]] = {
+        "fr": {ch: names["fr"] for ch, names in _HS_CHAPTERS.items()},
+        "en": {ch: names["en"] for ch, names in _HS_CHAPTERS.items()},
+    }
+except ImportError:
+    CHAPTER_NAMES = {"fr": {}, "en": {}}
+
+# ---------------------------------------------------------------------------
+# Search scoring helpers
+# ---------------------------------------------------------------------------
+
+# Maximum base score awarded for a code prefix match (one point per
+# character remaining keeps shorter prefixes higher-ranked).
+_MAX_CODE_SCORE = 10
+
+# Scores for text-match quality tiers.
+_EXACT_WORD_MATCH_SCORE = 50   # query word matches a full word in description
+_PARTIAL_MATCH_SCORE = 10       # query word appears as a substring
+
+
+def _score_code_match(code: str, query: str) -> int:
+    """Score a numeric code match by prefix overlap.
+
+    Returns a positive integer when *code* starts with *query*, scaled so
+    that shorter prefixes yield higher scores (broader match has priority).
+    Returns 0 when there is no prefix match.
+    """
+    if not code or not query:
+        return 0
+    if code.startswith(query):
+        return max(1, _MAX_CODE_SCORE - len(query))
+    return 0
+
+
+def _score_text_match(description: str, query: str) -> int:
+    """Score text relevance between *description* and *query*.
+
+    Returns >= 50 for exact word matches, > 0 for partial/substring matches,
+    and 0 when there is no overlap at all. Case-insensitive.
+    """
+    if not description or not query:
+        return 0
+    desc_lower = description.lower()
+    query_words = query.lower().split()
+    desc_words = desc_lower.split()
+    total = 0
+    for word in query_words:
+        if word in desc_words:
+            total += _EXACT_WORD_MATCH_SCORE
+        elif word in desc_lower:
+            total += _PARTIAL_MATCH_SCORE
+    return total
+
+
+def _build_search_result(code: str, data: dict, language: str, score: int) -> dict:
+    """Build a standardised search result dictionary.
+
+    Args:
+        code: 6-digit HS code string.
+        data: Code entry dict with ``description_fr`` and/or ``description_en``.
+        language: Requested language (``'fr'`` or ``'en'``).
+        score: Pre-computed relevance score.
+
+    Returns:
+        A dict with keys: code, description, chapter, chapter_name,
+        full_position, position_4, score.
+    """
+    chapter = code[:2]
+    position_4 = code[:4]
+    desc_key = f"description_{language}" if language in ("fr", "en") else "description_fr"
+    description = data.get(desc_key) or data.get("description_fr", "")
+    chapter_name = CHAPTER_NAMES.get(language, CHAPTER_NAMES.get("fr", {})).get(chapter, "")
+    full_position = f"{chapter} - {chapter_name}" if chapter_name else chapter
+    return {
+        "code": code,
+        "description": description,
+        "chapter": chapter,
+        "chapter_name": chapter_name,
+        "full_position": full_position,
+        "position_4": position_4,
+        "score": score,
+    }
+
 router = APIRouter(prefix="/hs6")
 
 
