@@ -127,7 +127,8 @@ async def search_commodities(
                     "OR c.description_fr ILIKE :original_pattern"
                     ")"
                 )
-            elif ts_config == "french":
+            else:
+                # ts_config is always 'french' when lang != 'en' (see whitelist above)
                 base_query = (
                     "SELECT "
                     "c.id, c.country_iso3, co.name_fr as country_name, "
@@ -137,17 +138,6 @@ async def search_commodities(
                     "FROM commodities c "
                     "JOIN countries co ON c.country_iso3 = co.iso3 "
                     "WHERE to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :query)"
-                )
-            else:
-                base_query = (
-                    "SELECT "
-                    "c.id, c.country_iso3, co.name_fr as country_name, "
-                    "c.national_code, c.hs6, c.description_fr, c.chapter, "
-                    "c.total_npf_pct, c.total_zlecaf_pct, c.savings_pct, "
-                    "ts_rank(to_tsvector('english', c.description_fr), plainto_tsquery('english', :query)) as rank "
-                    "FROM commodities c "
-                    "JOIN countries co ON c.country_iso3 = co.iso3 "
-                    "WHERE to_tsvector('english', c.description_fr) @@ plainto_tsquery('english', :query)"
                 )
             
             params = {
@@ -180,15 +170,10 @@ async def search_commodities(
                     "OR c.description_fr ILIKE :original_pattern"
                     ")"
                 )
-            elif ts_config == "french":
-                count_query = (
-                    "SELECT COUNT(*) FROM commodities c "
-                    "WHERE to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :query)"
-                )
             else:
                 count_query = (
                     "SELECT COUNT(*) FROM commodities c "
-                    "WHERE to_tsvector('english', c.description_fr) @@ plainto_tsquery('english', :query)"
+                    "WHERE to_tsvector('french', c.description_fr) @@ plainto_tsquery('french', :query)"
                 )
             if country:
                 count_query += " AND c.country_iso3 = :country"
