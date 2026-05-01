@@ -5,7 +5,7 @@ Uses the TariffSearchEngine to provide complete and accurate tariff data.
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional, List, Dict, Any
 import logging
-from backend.search.hs_code_search import get_search_engine
+from search.hs_code_search import get_search_engine
 
 logger = logging.getLogger(__name__)
 
