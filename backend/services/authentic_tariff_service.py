@@ -123,7 +123,7 @@ def get_sub_positions(country_iso3, hs6):
                     'description_fr': sp.get('description_fr', sp.get('description_en', '')),
                     'description_en': sp.get('description_en', sp.get('description_fr', '')),
                     'dd_rate': sp.get('dd', parent_dd_rate_pct),
-                    'source': sp.get('source', f'Nomenclature nationale {country_iso3}'),
+                    'source': sp.get('source', f'Nomenclature nationale DGD {country_iso3}'),
                 }
 
     # Merge with nomenclature_map – adds positions missing from tariff_lines
@@ -246,6 +246,7 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     hs_code_clean = hs_code.replace('.', '').replace(' ', '')
     hs6 = hs_code_clean[:6]
 
+    country_data = load_country_tariffs(country_iso3)
     line = get_tariff_line(country_iso3, hs6)
     if not line:
         return {'error': f'Tariff line not found for {country_iso3}/{hs6}'}
@@ -313,7 +314,7 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         'description_en': line.get('description_en', ''),
         'country_iso3': country_iso3,
         'cif_value': cif_value,
-        'generated_at': data.get('generated_at', '') if (data := load_country_tariffs(country_iso3)) else '',
+        'generated_at': country_data.get('generated_at', '') if country_data else '',
         'rates': {
             'dd_rate_pct': dd_rate_pct,
             'zlecaf_rate_pct': zlecaf_rate_pct,
