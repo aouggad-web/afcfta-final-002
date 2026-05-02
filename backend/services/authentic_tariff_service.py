@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import logging
 from typing import Dict, List, Any, Optional
 
@@ -7,6 +8,18 @@ logger = logging.getLogger(__name__)
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
 _tariff_cache = {}
 _nomenclature_cache = {}
+_available_countries_cache = None
+
+# Only allow well-formed ISO 2- or 3-letter country codes to prevent path traversal.
+_ISO_CODE_RE = re.compile(r'^[A-Z]{2,3}$')
+
+
+def _validate_iso3(country_iso3: str) -> str:
+    """Normalise to uppercase and reject codes that could traverse the filesystem."""
+    code = country_iso3.upper().strip()
+    if not _ISO_CODE_RE.match(code):
+        raise ValueError(f'Invalid country code: {country_iso3!r}')
+    return code
 
 _COUNTRY_NAMES = {
     'DZA': 'Algérie', 'MAR': 'Maroc', 'TUN': 'Tunisie', 'EGY': 'Égypte',
@@ -28,6 +41,7 @@ _COUNTRY_NAMES = {
 
 def load_country_tariffs(country_iso3):
     global _tariff_cache
+    country_iso3 = _validate_iso3(country_iso3)
     if country_iso3 in _tariff_cache:
         return _tariff_cache[country_iso3]
     file_path = os.path.join(DATA_DIR, f'{country_iso3}_tariffs.json')
@@ -46,6 +60,7 @@ def load_country_tariffs(country_iso3):
 def load_nomenclature_map(country_iso3):
     """Load nomenclature map for countries with extended sub-positions (like DZA)."""
     global _nomenclature_cache
+    country_iso3 = _validate_iso3(country_iso3)
     if country_iso3 in _nomenclature_cache:
         return _nomenclature_cache[country_iso3]
 
@@ -93,7 +108,7 @@ def get_sub_positions(country_iso3, hs6):
     """
     hs6_normalized = hs6[:6]
     line = get_tariff_line(country_iso3, hs6_normalized)
-    parent_dd = line.get('dd_rate', 0) if line else 0
+    parent_dd_rate_pct = line.get('dd_rate', 0) if line else 0
 
     # Build index from tariff_lines sub_positions (have explicit DD rates)
     merged: Dict[str, dict] = {}
@@ -107,7 +122,7 @@ def get_sub_positions(country_iso3, hs6):
                     'digits': sp.get('digits', len(code)),
                     'description_fr': sp.get('description_fr', sp.get('description_en', '')),
                     'description_en': sp.get('description_en', sp.get('description_fr', '')),
-                    'dd_rate': sp.get('dd', parent_dd),
+                    'dd_rate': sp.get('dd', parent_dd_rate_pct),
                     'source': sp.get('source', f'Nomenclature nationale {country_iso3}'),
                 }
 
@@ -125,7 +140,7 @@ def get_sub_positions(country_iso3, hs6):
                     'digits': len(code),
                     'description_fr': description,
                     'description_en': description,
-                    'dd_rate': parent_dd,
+                    'dd_rate': parent_dd_rate_pct,
                     'source': f'Nomenclature DGD {country_iso3}',
                 }
             else:
@@ -298,7 +313,7 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         'description_en': line.get('description_en', ''),
         'country_iso3': country_iso3,
         'cif_value': cif_value,
-        'generated_at': '',
+        'generated_at': data.get('generated_at', '') if (data := load_country_tariffs(country_iso3)) else '',
         'rates': {
             'dd_rate_pct': dd_rate_pct,
             'zlecaf_rate_pct': zlecaf_rate_pct,
@@ -334,7 +349,10 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
 
 
 def get_available_countries():
-    """Return list of countries that have tariff data files available."""
+    """Return list of countries that have tariff data files available (cached)."""
+    global _available_countries_cache
+    if _available_countries_cache is not None:
+        return _available_countries_cache
     countries = []
     try:
         for fname in sorted(os.listdir(DATA_DIR)):
@@ -357,4 +375,5 @@ def get_available_countries():
             })
     except Exception as e:
         logger.error(f'Error listing available countries: {e}')
+    _available_countries_cache = countries
     return countries
