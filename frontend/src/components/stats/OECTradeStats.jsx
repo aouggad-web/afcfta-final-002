@@ -269,7 +269,7 @@ export default function OECTradeStats({ language = 'fr' }) {
   };
 
   // Get digits count for current HS level
-  const hsLevelDigits = { HS2: 2, HS4: 4, HS6: 6 }[hsLevel] || 6;
+  const hsLevelDigits = HS_LEVEL_DIGITS[hsLevel] || 6;
 
   // HS level description text
   const hsLevelDescription = { HS2: t.hs2Description, HS4: t.hs4Description, HS6: t.hs6Description }[hsLevel];
@@ -437,14 +437,14 @@ export default function OECTradeStats({ language = 'fr' }) {
       if (type === 'country') {
         // Pour la vue par pays : afficher les produits au niveau HS sélectionné
         const level = hsLevelParam || 'HS4';
-        name = item[level] || item['HS6'] || item['HS4'] || item['HS2'] || `Produit #${index + 1}`;
+        name = item[level] || `Produit #${index + 1}`;
       } else if (type === 'product') {
         // Pour la vue par produit : afficher les pays
         name = item['Exporter Country'] || item['Importer Country'] || `Pays #${index + 1}`;
       } else if (type === 'bilateral') {
         // Pour le commerce bilatéral : afficher les produits au niveau HS sélectionné
         const level = hsLevelParam || 'HS4';
-        name = item[level] || item['HS6'] || item['HS4'] || item['HS2'] || `Produit #${index + 1}`;
+        name = item[level] || `Produit #${index + 1}`;
       }
       
       return {
