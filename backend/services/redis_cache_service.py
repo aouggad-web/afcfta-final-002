@@ -7,6 +7,7 @@ import redis
 import json
 import hashlib
 import logging
+from urllib.parse import urlparse
 from typing import Optional, Dict, Any
 from datetime import datetime, timezone
 from functools import wraps
@@ -41,11 +42,13 @@ class RedisCacheService:
             try:
                 # Warn when Redis has no password and the app is not in development.
                 app_env = os.environ.get("APP_ENV", "development")
-                if app_env != "development" and "@" not in self.redis_url:
-                    logger.warning(
-                        "Redis URL contains no password — configure a password for "
-                        "production use (set REDIS_URL=redis://:password@host:port)"
-                    )
+                if app_env != "development":
+                    parsed = urlparse(self.redis_url)
+                    if not parsed.password:
+                        logger.warning(
+                            "Redis URL contains no password — configure a password for "
+                            "production use (set REDIS_URL=redis://:password@host:port)"
+                        )
 
                 self._client = redis.from_url(
                     self.redis_url,
