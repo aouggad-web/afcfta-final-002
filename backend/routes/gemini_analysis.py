@@ -118,8 +118,8 @@ async def get_ai_trade_opportunities(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error in AI trade analysis: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error in AI trade analysis: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/profile/{country_name}")
@@ -157,8 +157,8 @@ async def get_ai_country_profile(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error generating country profile: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error generating country profile: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/product/{hs_code}")
@@ -204,8 +204,8 @@ async def get_ai_product_analysis(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error analyzing product: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error analyzing product: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/balance/{country_name}")
@@ -240,8 +240,8 @@ async def get_ai_trade_balance(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error getting trade balance: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error getting trade balance: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/health")
@@ -252,12 +252,11 @@ async def check_ai_service_health():
     import os
     from dotenv import load_dotenv
     load_dotenv()
-    
+
     has_key = bool(os.environ.get("EMERGENT_LLM_KEY"))
-    
+
     return {
         "status": "operational" if has_key else "not_configured",
-        "api_key_configured": has_key,
         "model": "gemini-2.0-flash",
         "provider": "Google Gemini via Emergent LLM"
     }
@@ -290,8 +289,8 @@ async def get_ai_trade_summary(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error generating trade summary: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error generating trade summary: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/value-chains")
@@ -333,8 +332,8 @@ async def get_ai_value_chains(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error generating value chains: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error generating value chains: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/cache/stats")

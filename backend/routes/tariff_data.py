@@ -50,8 +50,8 @@ async def collect_single_country(country_code: str):
         result = await collector.collect_and_save_country(country_code.upper())
         return result
     except Exception as e:
-        logger.error(f"Error collecting tariff data for {country_code}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error collecting tariff data for {country_code}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/countries")
@@ -211,6 +211,9 @@ CHAPTER_GROUPS = [
     ("01", "10"), ("11", "20"), ("21", "30"), ("31", "40"), ("41", "50"),
     ("51", "60"), ("61", "70"), ("71", "80"), ("81", "90"), ("91", "99"),
 ]
+
+# Pre-built set of valid chapter group strings for O(1) lookup in download endpoints.
+_VALID_CHAPTER_GROUPS = {f"{s}-{e}" for s, e in CHAPTER_GROUPS}
 
 CHAPTER_DESCRIPTIONS_FR = {
     "01": "Animaux vivants", "02": "Viandes et abats comestibles",
@@ -477,19 +480,29 @@ async def list_downloads():
 
 @router.get("/download/{country_code}/{chapter_group}")
 async def download_country_csv(country_code: str, chapter_group: str):
-    cc = country_code.upper()
-    csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{chapter_group}.csv")
+    # Validate country code against the known allowlist and extract from it
+    # so the path is built from our own data, not from the raw user input.
+    cc = next((k for k in COUNTRY_NAMES if k == country_code.upper()), None)
+    if cc is None:
+        raise HTTPException(status_code=400, detail="Invalid country code")
+
+    # Validate chapter_group against the known allowlist
+    if chapter_group not in _VALID_CHAPTER_GROUPS:
+        raise HTTPException(status_code=400, detail="Invalid chapter group")
+    cg = chapter_group
+
+    csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{cg}.csv")
 
     if not os.path.exists(csv_path):
         results = _generate_country_csvs(cc)
         if not results:
             raise HTTPException(status_code=404, detail=f"No tariff data for {cc}")
-        csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{chapter_group}.csv")
+        csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{cg}.csv")
         if not os.path.exists(csv_path):
-            raise HTTPException(status_code=404, detail=f"No data for chapters {chapter_group}")
+            raise HTTPException(status_code=404, detail=f"No data for chapters {cg}")
 
     name = COUNTRY_NAMES.get(cc, cc)
-    filename = f"Tarifs_NPF_{name}_{cc}_ch{chapter_group}.csv"
+    filename = f"Tarifs_NPF_{name}_{cc}_ch{cg}.csv"
     return FileResponse(
         csv_path,
         media_type="text/csv",
@@ -500,7 +513,10 @@ async def download_country_csv(country_code: str, chapter_group: str):
 
 @router.get("/download-zip/{country_code}")
 async def download_country_zip(country_code: str):
-    cc = country_code.upper()
+    # Validate country code against the known allowlist
+    cc = next((k for k in COUNTRY_NAMES if k == country_code.upper()), None)
+    if cc is None:
+        raise HTTPException(status_code=400, detail="Invalid country code")
     first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
     if not os.path.exists(first_csv):
         results = _generate_country_csvs(cc)
@@ -530,7 +546,10 @@ def _safe_filename_part(name: str) -> str:
 
 @router.get("/download-json/{country_code}")
 async def download_country_json(country_code: str):
-    cc = country_code.upper()
+    # Validate country code against the known allowlist
+    cc = next((k for k in COUNTRY_NAMES if k == country_code.upper()), None)
+    if cc is None:
+        raise HTTPException(status_code=400, detail="Invalid country code")
     json_path = os.path.join(TARIFFS_DIR, f"{cc}_tariffs.json")
 
     if not os.path.exists(json_path):

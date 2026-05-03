@@ -103,6 +103,11 @@ if NotificationManager:
 # FASTAPI APP SETUP
 # =============================================================================
 
+_app_env = os.environ.get("APP_ENV", "development")
+_docs_url = None if _app_env == "production" else "/docs"
+_redoc_url = None if _app_env == "production" else "/redoc"
+_openapi_url = None if _app_env == "production" else "/openapi.json"
+
 app = FastAPI(
     title="Système Commercial ZLECAf - API Complète",
     version="3.0.0",
@@ -118,6 +123,9 @@ app = FastAPI(
     license_info={
         "name": "MIT",
     },
+    docs_url=_docs_url,
+    redoc_url=_redoc_url,
+    openapi_url=_openapi_url,
     openapi_tags=[
         {"name": "Health", "description": "Health check and status endpoints"},
         {"name": "Calculator", "description": "Tariff calculation endpoints"},
@@ -156,10 +164,17 @@ if _replit_dev_domain:
     if _replit_origin not in _cors_origins:
         _cors_origins.append(_replit_origin)
 
+_replit_app_domain = os.environ.get("REPLIT_APP_DOMAIN", "")
+_allow_origin_regex = None
+if _replit_app_domain:
+    import re as _re
+    _escaped = _re.escape(_replit_app_domain)
+    _allow_origin_regex = rf"https://{_escaped}"
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins,
-    allow_origin_regex=r"https://.*\.replit\.dev|https://.*\.replit\.app",
+    allow_origin_regex=_allow_origin_regex,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],

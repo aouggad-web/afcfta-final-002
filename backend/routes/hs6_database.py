@@ -176,8 +176,8 @@ async def smart_search_hs6(
             "source": "optimized_tariff_engine"
         }
     except Exception as e:
-        logger.error(f"Smart search error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Smart search error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 @router.get("/info/{hs_code}")
 async def get_hs6_info(hs_code: str, language: str = Query(default="fr")):
