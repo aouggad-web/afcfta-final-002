@@ -10,6 +10,8 @@ import json
 import io
 import zipfile
 
+from pathlib import Path
+
 from services.tariff_data_collector import get_collector
 from etl.hs_sections_headings import (
     get_section_for_chapter, get_hs4_heading,
@@ -22,6 +24,14 @@ router = APIRouter(prefix="/tariff-data", tags=["Tariff Data Collection"])
 
 EXPORTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "exports")
 TARIFFS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tariffs")
+
+# Resolved base directories used for path-traversal guards
+_EXPORTS_DIR_RESOLVED = Path(EXPORTS_DIR).resolve()
+_TARIFFS_DIR_RESOLVED = Path(TARIFFS_DIR).resolve()
+
+# Allowlist patterns for URL path parameters used in file-serving endpoints
+_SAFE_COUNTRY_CODE = re.compile(r'^[A-Z]{2,4}$')
+_SAFE_CHAPTER_GROUP = re.compile(r'^\d{2}-\d{2}$')
 
 
 class CollectRequest(BaseModel):
@@ -50,8 +60,8 @@ async def collect_single_country(country_code: str):
         result = await collector.collect_and_save_country(country_code.upper())
         return result
     except Exception as e:
-        logger.error(f"Error collecting tariff data for {country_code}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error collecting tariff data for {country_code}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/countries")
@@ -477,8 +487,16 @@ async def list_downloads():
 
 @router.get("/download/{country_code}/{chapter_group}")
 async def download_country_csv(country_code: str, chapter_group: str):
+    if not _SAFE_COUNTRY_CODE.match(country_code.upper()):
+        raise HTTPException(status_code=400, detail="Invalid country code")
+    if not _SAFE_CHAPTER_GROUP.match(chapter_group):
+        raise HTTPException(status_code=400, detail="Invalid chapter group")
     cc = country_code.upper()
     csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{chapter_group}.csv")
+
+    # Path-traversal guard
+    if not str(Path(csv_path).resolve()).startswith(str(_EXPORTS_DIR_RESOLVED)):
+        raise HTTPException(status_code=400, detail="Invalid path")
 
     if not os.path.exists(csv_path):
         results = _generate_country_csvs(cc)
@@ -500,6 +518,8 @@ async def download_country_csv(country_code: str, chapter_group: str):
 
 @router.get("/download-zip/{country_code}")
 async def download_country_zip(country_code: str):
+    if not _SAFE_COUNTRY_CODE.match(country_code.upper()):
+        raise HTTPException(status_code=400, detail="Invalid country code")
     cc = country_code.upper()
     first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
     if not os.path.exists(first_csv):
@@ -530,8 +550,14 @@ def _safe_filename_part(name: str) -> str:
 
 @router.get("/download-json/{country_code}")
 async def download_country_json(country_code: str):
+    if not _SAFE_COUNTRY_CODE.match(country_code.upper()):
+        raise HTTPException(status_code=400, detail="Invalid country code")
     cc = country_code.upper()
     json_path = os.path.join(TARIFFS_DIR, f"{cc}_tariffs.json")
+
+    # Path-traversal guard
+    if not str(Path(json_path).resolve()).startswith(str(_TARIFFS_DIR_RESOLVED)):
+        raise HTTPException(status_code=400, detail="Invalid path")
 
     if not os.path.exists(json_path):
         collector = get_collector()

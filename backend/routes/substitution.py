@@ -81,8 +81,8 @@ async def get_import_substitution_opportunities(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error finding substitution opportunities: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error finding substitution opportunities: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/opportunities/export/{country_iso3}")
@@ -118,8 +118,8 @@ async def get_export_opportunities(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error finding export opportunities: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error finding export opportunities: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 def register_routes(app_router):

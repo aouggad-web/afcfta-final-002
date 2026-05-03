@@ -13,6 +13,10 @@ import logging
 router = APIRouter(prefix="/commodities")
 logger = logging.getLogger(__name__)
 
+# Allowlist for PostgreSQL text-search configuration names.
+# Only values in this dict may be interpolated into SQL queries.
+TS_CONFIGS = {'fr': 'french', 'en': 'english'}
+
 # Configuration base de données
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
@@ -92,7 +96,9 @@ async def search_commodities(
     try:
         with engine.connect() as conn:
             # Déterminer la langue de recherche
-            ts_config = 'french' if lang == 'fr' else 'english'
+            ts_config = TS_CONFIGS.get(lang, 'french')
+            # Guard: ensure only allowlisted values reach SQL interpolation
+            assert ts_config in TS_CONFIGS.values(), f"Unexpected ts_config: {ts_config}"
             
             # Pour l'anglais, traduire le terme de recherche si possible
             search_term = q
@@ -230,7 +236,8 @@ async def search_commodities(
             return result_data
             
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erreur de recherche: {str(e)}")
+        logger.error(f"Search error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/search/simple")
@@ -288,7 +295,8 @@ async def simple_search(
                 ]
             }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Simple search error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/countries")
@@ -322,7 +330,8 @@ async def get_available_countries():
                 ]
             }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error fetching available countries: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/stats")

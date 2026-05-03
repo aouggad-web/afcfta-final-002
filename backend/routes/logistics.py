@@ -3,6 +3,9 @@ Logistics routes - Ports, Airports, Land corridors, Free Zones
 Multimodal logistics platform for African trade infrastructure
 """
 from fastapi import APIRouter, HTTPException, Query
+import logging
+
+logger = logging.getLogger(__name__)
 from typing import Optional
 
 from logistics_data import (
@@ -80,7 +83,8 @@ async def get_ports(country_iso: Optional[str] = None):
             cache_set(cache_key, result, "countries")
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading ports data: {str(e)}")
+        logger.error(f"Error loading ports data: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 @router.get("/ports/{port_id}")
 async def get_port_details(port_id: str):
@@ -202,7 +206,8 @@ async def get_airports(country_iso: Optional[str] = None):
             "airports": airports
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading airports data: {str(e)}")
+        logger.error(f"Error loading airports data: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 @router.get("/air/airports/{airport_id}")
 async def get_airport_details(airport_id: str):
@@ -288,7 +293,8 @@ async def get_free_zones(country_iso: Optional[str] = None):
             "zones": zones
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading free zones data: {str(e)}")
+        logger.error(f"Error loading free zones data: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 # ==========================================
 # LAND CORRIDORS ENDPOINTS
@@ -422,7 +428,8 @@ async def get_shipping_routes(origin: Optional[str] = None):
             "source": "Drewry Maritime Research, UNCTAD MRTS 2024, Maersk/CMA CGM/MSC published tariffs"
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading shipping fees data: {str(e)}")
+        logger.error(f"Error loading shipping fees data: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/fees/route")

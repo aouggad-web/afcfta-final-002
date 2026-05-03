@@ -2,6 +2,7 @@
 Redis Cache Service for Gemini API calls optimization
 Caches AI responses to reduce API calls and improve performance
 """
+import os
 import redis
 import json
 import hashlib
@@ -28,25 +29,29 @@ class RedisCacheService:
     """
     Redis-based caching service for expensive API calls
     """
-    
-    def __init__(self, host: str = "localhost", port: int = 6379, db: int = 0):
-        self.host = host
-        self.port = port
-        self.db = db
+
+    def __init__(self, redis_url: Optional[str] = None):
+        self.redis_url = redis_url or os.environ.get("REDIS_URL", "redis://localhost:6379")
         self._client: Optional[redis.Redis] = None
         self._connected = False
-    
+
     def _get_client(self) -> Optional[redis.Redis]:
         """Get or create Redis client with lazy initialization"""
         if self._client is None:
             try:
-                self._client = redis.Redis(
-                    host=self.host,
-                    port=self.port,
-                    db=self.db,
+                # Warn when Redis has no password and the app is not in development.
+                app_env = os.environ.get("APP_ENV", "development")
+                if app_env != "development" and "@" not in self.redis_url:
+                    logger.warning(
+                        "Redis URL contains no password — configure a password for "
+                        "production use (set REDIS_URL=redis://:password@host:port)"
+                    )
+
+                self._client = redis.from_url(
+                    self.redis_url,
                     decode_responses=True,
                     socket_connect_timeout=2,
-                    socket_timeout=2
+                    socket_timeout=2,
                 )
                 # Test connection
                 self._client.ping()
