@@ -97,7 +97,9 @@ async def search_commodities(
         with engine.connect() as conn:
             # Déterminer la langue de recherche
             ts_config = TS_CONFIGS.get(lang, 'french')
-            # Guard: only allowlisted values may be interpolated into SQL queries.
+            # ts_config is always a value from TS_CONFIGS by construction, but this
+            # guard makes the safety contract explicit and resilient to future changes
+            # (e.g., if TS_CONFIGS.get default is ever changed to something unsafe).
             if ts_config not in TS_CONFIGS.values():
                 raise HTTPException(status_code=400, detail="Unsupported language")
             

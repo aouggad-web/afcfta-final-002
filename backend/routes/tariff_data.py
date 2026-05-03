@@ -212,6 +212,9 @@ CHAPTER_GROUPS = [
     ("51", "60"), ("61", "70"), ("71", "80"), ("81", "90"), ("91", "99"),
 ]
 
+# Pre-built set of valid chapter group strings for O(1) lookup in download endpoints.
+_VALID_CHAPTER_GROUPS = {f"{s}-{e}" for s, e in CHAPTER_GROUPS}
+
 CHAPTER_DESCRIPTIONS_FR = {
     "01": "Animaux vivants", "02": "Viandes et abats comestibles",
     "03": "Poissons et crustacés", "04": "Lait, oeufs, miel",
@@ -484,9 +487,9 @@ async def download_country_csv(country_code: str, chapter_group: str):
         raise HTTPException(status_code=400, detail="Invalid country code")
 
     # Validate chapter_group against the known allowlist
-    cg = next((f"{s}-{e}" for s, e in CHAPTER_GROUPS if f"{s}-{e}" == chapter_group), None)
-    if cg is None:
+    if chapter_group not in _VALID_CHAPTER_GROUPS:
         raise HTTPException(status_code=400, detail="Invalid chapter group")
+    cg = chapter_group
 
     csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{cg}.csv")
 
