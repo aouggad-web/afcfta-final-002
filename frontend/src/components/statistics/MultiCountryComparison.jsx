@@ -124,9 +124,26 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       try {
         const response = await axios.get(`${API}/countries?lang=${language}`);
         const countries = response.data.countries || response.data || [];
-        setAvailableCountries(countries.sort((a, b) => 
-          (a.name_fr || a.name || '').localeCompare(b.name_fr || b.name || '')
-        ));
+        // Defensive: drop any entry without a proper translated name
+        // (e.g. EH/RASD if include_no_trade_data is ever toggled and the code
+        //  has no translation -> name === code). The backend already filters
+        //  has_trade_data:false by default.
+        const cleaned = countries.filter((c) => {
+          const n = c.name_fr || c.name_en || c.name || '';
+          const code = c.iso3 || c.iso2 || c.code || '';
+          return n && n !== code && n.length > 2;
+        });
+        // Locale-aware alphabetical sort by current-language name
+        const collator = new Intl.Collator(language === 'en' ? 'en' : 'fr', {
+          sensitivity: 'base',
+          ignorePunctuation: true,
+        });
+        cleaned.sort((a, b) => {
+          const an = (language === 'en' ? a.name_en : a.name_fr) || a.name || '';
+          const bn = (language === 'en' ? b.name_en : b.name_fr) || b.name || '';
+          return collator.compare(an, bn);
+        });
+        setAvailableCountries(cleaned);
       } catch (err) {
         console.error('Error fetching countries:', err);
       }

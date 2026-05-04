@@ -23,13 +23,19 @@ from gold_reserves_data import GOLD_RESERVES_GAI_DATA
 router = APIRouter()
 
 @router.get("/countries")
-async def get_countries(lang: str = "fr"):
-    """Récupérer la liste des pays membres de la ZLECAf avec traduction
-    
-    Retourne ISO3 comme code principal, ISO2 conservé pour compatibilité (drapeaux)
+async def get_countries(lang: str = "fr", include_no_trade_data: bool = False):
+    """Récupérer la liste des pays membres de la ZLECAf avec traduction.
+
+    - Retourne ISO3 comme code principal, ISO2 conservé pour compatibilité (drapeaux).
+    - Par défaut, **exclut** les pays marqués `has_trade_data: False`
+      (ex: RASD/Sahara Occidental — pas de statistiques commerciales et statut politique
+      contesté). Passer `include_no_trade_data=true` pour les inclure.
+    - Liste triée par nom traduit (locale-aware).
     """
     countries = []
     for country in AFRICAN_COUNTRIES:
+        if not include_no_trade_data and country.get("has_trade_data") is False:
+            continue
         translated_country = {
             "code": country["iso3"],
             "iso2": country["code"],
@@ -37,9 +43,16 @@ async def get_countries(lang: str = "fr"):
             "name": translate_country_name(country["code"], lang),
             "region": translate_region(country["region"], lang),
             "wb_code": country.get("wb_code", country["iso3"]),
-            "population": country["population"]
+            "population": country["population"],
         }
         countries.append(CountryInfo(**translated_country))
+    # Tri alphabétique (locale-aware) par nom traduit dans la langue demandée.
+    import locale as _loc
+    try:
+        _loc.setlocale(_loc.LC_COLLATE, ("fr_FR.UTF-8" if lang == "fr" else "en_US.UTF-8"))
+    except _loc.Error:
+        pass
+    countries.sort(key=lambda c: _loc.strxfrm((c.name or "").lower()))
     return countries
 
 @router.get("/country-profile/{country_code}")

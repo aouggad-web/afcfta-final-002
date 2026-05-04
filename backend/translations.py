@@ -28,6 +28,7 @@ COUNTRY_TRANSLATIONS = {
     "GM": {"fr": "Gambie", "en": "Gambia"},
     "GH": {"fr": "Ghana", "en": "Ghana"},
     "GN": {"fr": "Guinée", "en": "Guinea"},
+    "EH": {"fr": "RASD (Sahara Occidental)", "en": "SADR (Western Sahara)"},
     "GW": {"fr": "Guinée-Bissau", "en": "Guinea-Bissau"},
     "KE": {"fr": "Kenya", "en": "Kenya"},
     "LS": {"fr": "Lesotho", "en": "Lesotho"},
