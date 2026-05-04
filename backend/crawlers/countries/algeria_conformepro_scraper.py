@@ -465,7 +465,74 @@ async def run_algeria_scraper(max_headings: int = None):
     return await scraper.run(max_headings=max_headings)
 
 
+async def run_algeria_scraper_fast():
+    """
+    Fast mode: collect only national tariff positions with card-level descriptions.
+    Skips detail page requests (no taxes/formalities). ~15x faster than full mode.
+    Output: DZA_tariffs_fast.json
+    """
+    scraper = AlgeriaConformeproScraper()
+    scraper.stats["started_at"] = datetime.utcnow().isoformat()
+    logger.info("=== Algeria Tariff Scraper — FAST MODE (positions + descriptions only) ===")
+
+    try:
+        await scraper.scrape_sections()
+        await scraper.scrape_chapters()
+        await scraper.scrape_headings()
+
+        all_subs = []
+        for i, heading in enumerate(scraper.headings):
+            logger.info(f"  Heading {heading['code']} ({i+1}/{len(scraper.headings)})")
+            subs = await scraper.scrape_sub_positions_for_heading(heading)
+            for sub in subs:
+                all_subs.append({
+                    "raw_code": sub["raw_code"],
+                    "hs_code": sub["raw_code"].replace(".", ""),
+                    "display_code": sub.get("display_code", ""),
+                    "heading": sub["heading"],
+                    "chapter": sub["chapter"],
+                    "section": sub["section"],
+                    "name": sub.get("name", ""),
+                    "description": sub.get("description", ""),
+                    "source": "conformepro.dz",
+                    "source_url": sub["url"],
+                })
+            logger.info(f"    {len(subs)} positions collected (total: {len(all_subs)})")
+
+        scraper.stats["finished_at"] = datetime.utcnow().isoformat()
+        scraper.stats["sub_positions"] = len(all_subs)
+
+        output = {
+            "country": "DZA",
+            "country_name": "Algérie",
+            "source": "conformepro.dz (données douane.gov.dz)",
+            "mode": "fast — positions and descriptions only",
+            "extracted_at": datetime.utcnow().isoformat(),
+            "stats": scraper.stats,
+            "sub_positions": all_subs,
+        }
+        os.makedirs(DATA_DIR, exist_ok=True)
+        out_path = os.path.join(DATA_DIR, "DZA_tariffs_fast.json")
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(output, f, ensure_ascii=False, indent=2)
+        logger.info(f"Saved {len(all_subs)} positions to {out_path}")
+
+    finally:
+        await scraper._close_client()
+
+    return {"success": True, "count": len(all_subs)}
+
+
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--fast", action="store_true", help="Fast mode: positions and descriptions only, no detail pages")
+    parser.add_argument("--max-headings", type=int, default=None)
+    args = parser.parse_args()
+
     logging.basicConfig(level=logging.INFO)
-    result = asyncio.run(run_algeria_scraper(max_headings=5))
+    if args.fast:
+        result = asyncio.run(run_algeria_scraper_fast())
+    else:
+        result = asyncio.run(run_algeria_scraper(max_headings=args.max_headings))
     print(json.dumps(result, indent=2, ensure_ascii=False))
