@@ -100,10 +100,10 @@ export default function NationalPositionsSelector({
           { params: { language } }
         );
       } catch (pgErr) {
-        // Fallback to optimized smart search if PG is missing
+        // Fallback to authentic-tariffs (file-based, always available)
         response = await axios.get(
-          `${API}/hs6/smart-search`,
-          { params: { q: hs6Code.substring(0, 6), country_code: countryCode, include_sub_positions: true } }
+          `${API}/authentic-tariffs/country/${countryCode}/sub-positions/${hs6Code.substring(0, 6)}`,
+          { params: { language } }
         );
       }
       

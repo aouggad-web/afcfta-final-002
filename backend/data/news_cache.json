@@ -1,6 +1,28 @@
 {
-  "last_update": "2026-05-04T10:41:23.761380",
+  "last_update": "2026-05-04T10:47:33.947869",
   "articles": [
+    {
+      "id": "0ea29845d2d3",
+      "title": "Africa: African Countries Up Efforts to Tax High-Income Individuals",
+      "summary": "[IPS] Bulawayo, Zimbabwe -- African countries are exploring ways to tax high-earning individuals as the continent seeks to expand its revenue collection amid what experts say is a growing gulf between rich and poor.",
+      "link": "https://allafrica.com/stories/202605040281.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique Australe",
+      "published_at": "2026-05-04T10:37:11",
+      "fetched_at": "2026-05-04T10:47:33.364201"
+    },
+    {
+      "id": "ddc54c9378dd",
+      "title": "Sénégal: Ourossogui - Un mouvement veut contribuer au développement socio-économique de la ville",
+      "summary": "[APS] Ourossogui -- Un mouvement dénommé, \"Sogui en marche\", lancé samedi, veut contribuer au développement socio-économique de la ville de Ourossogui, à travers une nouvelle dynamique portée par l'engagement collectif, l'espoir et l'action.",
+      "link": "https://fr.allafrica.com/stories/202605040275.html",
+      "source": "AllAfrica (FR)",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-05-04T10:27:44",
+      "fetched_at": "2026-05-04T10:47:33.388034"
+    },
     {
       "id": "259f0d974751",
       "title": "Uganda: DFCU Bank, Rotary Extend Community Health Outreach to Nakivubo Residents",
@@ -10,7 +32,7 @@
       "category": "Finance",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-04T10:24:48",
-      "fetched_at": "2026-05-04T10:41:23.046712"
+      "fetched_at": "2026-05-04T10:47:33.406473"
     },
     {
       "id": "bad86123bd0c",
@@ -21,7 +43,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-05-04T10:15:41",
-      "fetched_at": "2026-05-04T10:41:23.076732"
+      "fetched_at": "2026-05-04T10:47:33.388070"
     },
     {
       "id": "0bcf4962b865",
@@ -32,7 +54,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-05-04T10:09:53",
-      "fetched_at": "2026-05-04T10:41:23.076768"
+      "fetched_at": "2026-05-04T10:47:33.388103"
     },
     {
       "id": "42c0213fe2eb",
@@ -43,7 +65,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-05-04T10:08:18",
-      "fetched_at": "2026-05-04T10:41:23.076806"
+      "fetched_at": "2026-05-04T10:47:33.388134"
     },
     {
       "id": "6ebaca5f9f5f",
@@ -54,7 +76,7 @@
       "category": "Économie",
       "region": "Afrique Centrale",
       "published_at": "2026-05-04T10:07:42",
-      "fetched_at": "2026-05-04T10:41:23.076850"
+      "fetched_at": "2026-05-04T10:47:33.388177"
     },
     {
       "id": "6fcf37b4b405",
@@ -65,7 +87,7 @@
       "category": "Économie",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-05-04T10:06:55",
-      "fetched_at": "2026-05-04T10:41:23.076693"
+      "fetched_at": "2026-05-04T10:47:33.387997"
     },
     {
       "id": "cd6d3859fe42",
@@ -76,18 +98,7 @@
       "category": "Économie",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-04T10:05:41",
-      "fetched_at": "2026-05-04T10:41:23.054832"
-    },
-    {
-      "id": "84d1b813d967",
-      "title": "Tunisie: Tunisie Autoroutes annonce la fermeture de l'échangeur de Hergla",
-      "summary": "[La Presse] La société Tunisie Autoroutes a annoncé la fermeture temporaire de la bretelle de sortie menant à Hergla, du lundi 4 au vendredi 8 mai, de 07h00 à 19h00.",
-      "link": "https://fr.allafrica.com/stories/202605040216.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:01:46",
-      "fetched_at": "2026-05-04T10:41:23.076914"
+      "fetched_at": "2026-05-04T10:47:33.364036"
     },
     {
       "id": "c561725ee5d6",
@@ -98,7 +109,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-04T09:55:37",
-      "fetched_at": "2026-05-04T10:41:23.084531"
+      "fetched_at": "2026-05-04T10:47:33.318854"
     },
     {
       "id": "7c39c009c778",
@@ -109,7 +120,7 @@
       "category": "Économie",
       "region": "Afrique Australe",
       "published_at": "2026-05-04T09:54:49",
-      "fetched_at": "2026-05-04T10:41:23.054997"
+      "fetched_at": "2026-05-04T10:47:33.364238"
     },
     {
       "id": "738b1931c54c",
@@ -120,7 +131,7 @@
       "category": "Économie",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-05-04T09:54:02",
-      "fetched_at": "2026-05-04T10:41:23.054858"
+      "fetched_at": "2026-05-04T10:47:33.364064"
     },
     {
       "id": "2b81aec91cd3",
@@ -131,7 +142,7 @@
       "category": "Économie",
       "region": "Afrique",
       "published_at": "2026-05-04T09:18:59",
-      "fetched_at": "2026-05-04T10:41:23.076487"
+      "fetched_at": "2026-05-04T10:47:33.387810"
     },
     {
       "id": "4cd0301a29d5",
@@ -142,7 +153,7 @@
       "category": "Économie",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-05-04T09:18:18",
-      "fetched_at": "2026-05-04T10:41:23.076541"
+      "fetched_at": "2026-05-04T10:47:33.387861"
     },
     {
       "id": "3de9ab1da4e7",
@@ -153,7 +164,7 @@
       "category": "Économie",
       "region": "Afrique Centrale",
       "published_at": "2026-05-04T08:56:33",
-      "fetched_at": "2026-05-04T10:41:23.076639"
+      "fetched_at": "2026-05-04T10:47:33.387954"
     },
     {
       "id": "e9faae494efa",
@@ -164,7 +175,7 @@
       "category": "Économie",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-04T08:54:34",
-      "fetched_at": "2026-05-04T10:41:23.076590"
+      "fetched_at": "2026-05-04T10:47:33.387907"
     },
     {
       "id": "0a1d550e5c01",
@@ -175,18 +186,7 @@
       "category": "Économie",
       "region": "Afrique Centrale",
       "published_at": "2026-05-04T08:50:35",
-      "fetched_at": "2026-05-04T10:41:23.055031"
-    },
-    {
-      "id": "f9ec83b67ad4",
-      "title": "Kenya: Finance Bill 2026 Ends KQ Tax Relief, Widens Digital Tax Net",
-      "summary": "[Capital FM] Nairobi -- Kenya's proposed Finance Bill 2026 could sharply increase operating costs for Kenya Airways (KQ) while significantly expanding the country's tax reach into digital payments, software, and card transaction ecosystems.",
-      "link": "https://allafrica.com/stories/202605040137.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique Centrale",
-      "published_at": "2026-05-04T07:51:43",
-      "fetched_at": "2026-05-04T10:41:23.055061"
+      "fetched_at": "2026-05-04T10:47:33.364271"
     },
     {
       "id": "f10865a5ed37",
@@ -197,7 +197,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-04T06:53:20",
-      "fetched_at": "2026-05-04T10:41:23.084570"
+      "fetched_at": "2026-05-04T10:47:33.318893"
     },
     {
       "id": "035ec9b4eec8",
@@ -208,7 +208,7 @@
       "category": "Économie",
       "region": "Afrique Australe",
       "published_at": "2026-05-04T06:42:58",
-      "fetched_at": "2026-05-04T10:41:23.557022"
+      "fetched_at": "2026-05-04T10:47:33.695923"
     },
     {
       "id": "874f15664408",
@@ -219,7 +219,7 @@
       "category": "Économie",
       "region": "Afrique Australe",
       "published_at": "2026-05-04T06:41:02",
-      "fetched_at": "2026-05-04T10:41:23.054901"
+      "fetched_at": "2026-05-04T10:47:33.364106"
     },
     {
       "id": "1a344b1a4941",
@@ -230,7 +230,7 @@
       "category": "Économie",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-04T06:41:00",
-      "fetched_at": "2026-05-04T10:41:23.054928"
+      "fetched_at": "2026-05-04T10:47:33.364134"
     },
     {
       "id": "76b88728fe85",
@@ -241,7 +241,7 @@
       "category": "Économie",
       "region": "Afrique",
       "published_at": "2026-05-04T06:40:56",
-      "fetched_at": "2026-05-04T10:41:23.054752"
+      "fetched_at": "2026-05-04T10:47:33.363964"
     },
     {
       "id": "755275f568e6",
@@ -252,7 +252,7 @@
       "category": "Économie",
       "region": "Afrique Australe",
       "published_at": "2026-05-04T05:59:03",
-      "fetched_at": "2026-05-04T10:41:23.054796"
+      "fetched_at": "2026-05-04T10:47:33.364002"
     },
     {
       "id": "b90ec773ca7f",
@@ -263,7 +263,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-04T05:30:24",
-      "fetched_at": "2026-05-04T10:41:23.084603"
+      "fetched_at": "2026-05-04T10:47:33.318927"
     },
     {
       "id": "fc5c871fe85e",
@@ -274,7 +274,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-04T05:17:43",
-      "fetched_at": "2026-05-04T10:41:23.084641"
+      "fetched_at": "2026-05-04T10:47:33.318961"
     },
     {
       "id": "bed311f1b193",
@@ -285,7 +285,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-04T05:08:37",
-      "fetched_at": "2026-05-04T10:41:23.084693"
+      "fetched_at": "2026-05-04T10:47:33.318997"
     },
     {
       "id": "ebae1dcb6d77",
@@ -296,7 +296,7 @@
       "category": "Commerce",
       "region": "Afrique",
       "published_at": "2026-05-04T04:28:47",
-      "fetched_at": "2026-05-04T10:41:23.084732"
+      "fetched_at": "2026-05-04T10:47:33.319036"
     },
     {
       "id": "97b43d7ae1cb",
@@ -307,7 +307,7 @@
       "category": "Mines",
       "region": "Afrique",
       "published_at": "2026-05-04T00:08:48",
-      "fetched_at": "2026-05-04T10:41:23.694258"
+      "fetched_at": "2026-05-04T10:47:33.724113"
     },
     {
       "id": "3682c0a01492",
@@ -318,7 +318,7 @@
       "category": "Économie",
       "region": "Afrique",
       "published_at": "2026-05-03T16:25:19",
-      "fetched_at": "2026-05-04T10:41:23.694368"
+      "fetched_at": "2026-05-04T10:47:33.724220"
     },
     {
       "id": "60a6c73de452",
@@ -329,7 +329,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2026-05-03T11:10:31",
-      "fetched_at": "2026-05-04T10:41:23.557348"
+      "fetched_at": "2026-05-04T10:47:33.696336"
     },
     {
       "id": "02033dbe92ca",
@@ -340,7 +340,7 @@
       "category": "Économie",
       "region": "Afrique Centrale",
       "published_at": "2026-05-03T10:57:41",
-      "fetched_at": "2026-05-04T10:41:23.054960"
+      "fetched_at": "2026-05-04T10:47:33.364166"
     },
     {
       "id": "3374bf2d52e2",
@@ -351,7 +351,7 @@
       "category": "Commerce",
       "region": "Afrique Centrale",
       "published_at": "2026-05-01T10:51:21",
-      "fetched_at": "2026-05-04T10:41:23.084808"
+      "fetched_at": "2026-05-04T10:47:33.319165"
     },
     {
       "id": "a75a40e856f4",
@@ -362,7 +362,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-05-01T10:45:15",
-      "fetched_at": "2026-05-04T10:41:23.084841"
+      "fetched_at": "2026-05-04T10:47:33.319202"
     },
     {
       "id": "28950ecf976f",
@@ -373,7 +373,7 @@
       "category": "Finance",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-05-01T10:33:39",
-      "fetched_at": "2026-05-04T10:41:23.046770"
+      "fetched_at": "2026-05-04T10:47:33.406514"
     },
     {
       "id": "8d6ccbd4a3eb",
@@ -384,7 +384,7 @@
       "category": "Finance",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-05-01T10:25:23",
-      "fetched_at": "2026-05-04T10:41:23.046813"
+      "fetched_at": "2026-05-04T10:47:33.406547"
     },
     {
       "id": "c4877c7a2969",
@@ -395,7 +395,7 @@
       "category": "Finance",
       "region": "Afrique Centrale",
       "published_at": "2026-05-01T10:19:29",
-      "fetched_at": "2026-05-04T10:41:23.046850"
+      "fetched_at": "2026-05-04T10:47:33.406579"
     },
     {
       "id": "985074615455",
@@ -406,7 +406,7 @@
       "category": "Finance",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-05-01T10:03:48",
-      "fetched_at": "2026-05-04T10:41:23.046909"
+      "fetched_at": "2026-05-04T10:47:33.406635"
     },
     {
       "id": "725bdf393013",
@@ -417,7 +417,7 @@
       "category": "Commerce",
       "region": "Afrique",
       "published_at": "2026-05-01T09:04:39",
-      "fetched_at": "2026-05-04T10:41:23.694312"
+      "fetched_at": "2026-05-04T10:47:33.724167"
     },
     {
       "id": "0ad075c0f7a5",
@@ -428,7 +428,7 @@
       "category": "Commerce",
       "region": "Afrique",
       "published_at": "2026-05-01T03:11:13",
-      "fetched_at": "2026-05-04T10:41:23.694550"
+      "fetched_at": "2026-05-04T10:47:33.724401"
     },
     {
       "id": "fa59a4c46796",
@@ -439,7 +439,7 @@
       "category": "Agriculture",
       "region": "Afrique du Nord",
       "published_at": "2026-04-30T22:02:00",
-      "fetched_at": "2026-05-04T10:41:23.694402"
+      "fetched_at": "2026-05-04T10:47:33.724252"
     },
     {
       "id": "b9a0fdbaa15c",
@@ -450,7 +450,7 @@
       "category": "Finance",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-04-30T13:43:47",
-      "fetched_at": "2026-05-04T10:41:23.047039"
+      "fetched_at": "2026-05-04T10:47:33.406772"
     },
     {
       "id": "9dfaf58b074d",
@@ -461,7 +461,7 @@
       "category": "Commerce",
       "region": "Afrique",
       "published_at": "2026-04-30T12:00:42",
-      "fetched_at": "2026-05-04T10:41:23.084777"
+      "fetched_at": "2026-05-04T10:47:33.319076"
     },
     {
       "id": "7e2c64a5c1c2",
@@ -472,7 +472,7 @@
       "category": "Finance",
       "region": "Afrique Australe",
       "published_at": "2026-04-30T06:52:30",
-      "fetched_at": "2026-05-04T10:41:23.046951"
+      "fetched_at": "2026-05-04T10:47:33.406684"
     },
     {
       "id": "30eb892e7c6e",
@@ -483,7 +483,7 @@
       "category": "Finance",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-04-30T05:52:50",
-      "fetched_at": "2026-05-04T10:41:23.046978"
+      "fetched_at": "2026-05-04T10:47:33.406710"
     },
     {
       "id": "fec70879c3ea",
@@ -494,7 +494,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2026-04-29T22:09:00",
-      "fetched_at": "2026-05-04T10:41:23.694631"
+      "fetched_at": "2026-05-04T10:47:33.724483"
     },
     {
       "id": "41b6c932399c",
@@ -505,7 +505,7 @@
       "category": "Finance",
       "region": "Afrique Centrale",
       "published_at": "2026-04-29T11:03:40",
-      "fetched_at": "2026-05-04T10:41:23.047008"
+      "fetched_at": "2026-05-04T10:47:33.406739"
     },
     {
       "id": "b2dff6cee743",
@@ -516,18 +516,7 @@
       "category": "Mines",
       "region": "Afrique",
       "published_at": "2026-04-28T22:05:00",
-      "fetched_at": "2026-05-04T10:41:23.694596"
-    },
-    {
-      "id": "b18a941ab063",
-      "title": "From ‘rising’ to resilient: Managing the transition to African economic sovereignty - The Africa Report",
-      "summary": "From ‘rising’ to resilient: Managing the transition to African economic sovereignty  The Africa Report",
-      "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQMmsxV3JwdTA1MWxNa05GdGxOM1gzVUZPTk5Hc0tycFlTM2IxLS1uMy1NWEtzOGpWMHVzbE9MazFvSTBMenJxV3d5dFdxS0E5aVZBMDJLVDVkaVJxLVFFTjQwSTRyQkdjSXE1MGNRQ1JxbzBQZlYtaW1jcEpPcWZ3NHY5TWVsTWR6OWYyaUdKXzNicUE0SzRKdDFYdUt1bGkteTM0dTk1T3daazdvMXlYbG1ZMVpBYWZ0dHc5Ug?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Mines",
-      "region": "Afrique",
-      "published_at": "2026-04-24T07:00:00",
-      "fetched_at": "2026-05-04T10:41:23.557268"
+      "fetched_at": "2026-05-04T10:47:33.724448"
     },
     {
       "id": "082728d6f1de",
@@ -538,7 +527,7 @@
       "category": "Mines",
       "region": "Afrique",
       "published_at": "2026-04-21T07:00:00",
-      "fetched_at": "2026-05-04T10:41:23.694445"
+      "fetched_at": "2026-05-04T10:47:33.724294"
     },
     {
       "id": "5339a54eacfa",
@@ -549,7 +538,7 @@
       "category": "Finance",
       "region": "Afrique",
       "published_at": "2026-04-16T15:25:24",
-      "fetched_at": "2026-05-04T10:41:23.614207"
+      "fetched_at": "2026-05-04T10:47:33.831829"
     },
     {
       "id": "6690c36b8829",
@@ -560,7 +549,7 @@
       "category": "Finance",
       "region": "Afrique Australe",
       "published_at": "2026-04-15T07:00:00",
-      "fetched_at": "2026-05-04T10:41:23.557121"
+      "fetched_at": "2026-05-04T10:47:33.696022"
     },
     {
       "id": "2d761825d1da",
@@ -571,7 +560,7 @@
       "category": "Finance",
       "region": "Afrique",
       "published_at": "2026-04-10T07:00:00",
-      "fetched_at": "2026-05-04T10:41:23.557215"
+      "fetched_at": "2026-05-04T10:47:33.696117"
     },
     {
       "id": "1beb2fe9225f",
@@ -582,7 +571,7 @@
       "category": "Commerce",
       "region": "Afrique",
       "published_at": "2026-04-08T13:12:09",
-      "fetched_at": "2026-05-04T10:41:23.557079"
+      "fetched_at": "2026-05-04T10:47:33.695980"
     },
     {
       "id": "25d82b505785",
@@ -593,7 +582,18 @@
       "category": "Finance",
       "region": "Afrique Centrale",
       "published_at": "2026-04-01T07:00:00",
-      "fetched_at": "2026-05-04T10:41:23.614280"
+      "fetched_at": "2026-05-04T10:47:33.831868"
+    },
+    {
+      "id": "b0e352d2675d",
+      "title": "Africa’s Global Economic Edge: Advancing Strategic Sectors - Carnegie Endowment for International Peace",
+      "summary": "Africa’s Global Economic Edge: Advancing Strategic Sectors  Carnegie Endowment for International Peace",
+      "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQN0Ztdm83MmxVSXBRTFc0V3hLZnlKRXljMG9lME9zcndXa0FtazYzM3VuNm1zbXRuZnVFVFdCdGI1UUhrVmVCUGZPeTk0Ym1BYUFpMUFZMkpWZnNFZXF5c3lBNnVsQThHQW9acEx0dHA1aDhHaE1kS3ZmTmNZc2YtYjhadXkyeFB0eVVsU3BVMGVmNmM3YlRrdndCTQ?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Mines",
+      "region": "Afrique Centrale",
+      "published_at": "2026-03-30T07:00:00",
+      "fetched_at": "2026-05-04T10:47:33.696164"
     },
     {
       "id": "5f337ce67e34",
@@ -604,7 +604,7 @@
       "category": "Mines",
       "region": "Afrique Centrale",
       "published_at": "2026-03-18T07:00:00",
-      "fetched_at": "2026-05-04T10:41:23.694680"
+      "fetched_at": "2026-05-04T10:47:33.724522"
     },
     {
       "id": "083c8feb0f57",
@@ -615,7 +615,7 @@
       "category": "Mines",
       "region": "Afrique",
       "published_at": "2026-02-19T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.557169"
+      "fetched_at": "2026-05-04T10:47:33.696069"
     },
     {
       "id": "c733d8a960aa",
@@ -626,7 +626,7 @@
       "category": "Économie",
       "region": "Afrique Australe",
       "published_at": "2026-02-19T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.557395"
+      "fetched_at": "2026-05-04T10:47:33.696387"
     },
     {
       "id": "94a878759713",
@@ -637,7 +637,7 @@
       "category": "Finance",
       "region": "Afrique",
       "published_at": "2026-02-19T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.557444"
+      "fetched_at": "2026-05-04T10:47:33.696437"
     },
     {
       "id": "99623405241e",
@@ -648,7 +648,7 @@
       "category": "Économie",
       "region": "Afrique",
       "published_at": "2026-02-09T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.694504"
+      "fetched_at": "2026-05-04T10:47:33.724354"
     },
     {
       "id": "0960d5b3a6e9",
@@ -659,7 +659,7 @@
       "category": "Mines",
       "region": "Afrique",
       "published_at": "2026-01-19T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.557313"
+      "fetched_at": "2026-05-04T10:47:33.696208"
     },
     {
       "id": "dz-project-zone-franche-belloua",
@@ -669,8 +669,8 @@
       "source": "Ministère du Commerce",
       "category": "Commerce",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761141",
-      "fetched_at": "2026-05-04T10:41:23.761142",
+      "published_at": "2026-05-04T10:47:33.947586",
+      "fetched_at": "2026-05-04T10:47:33.947587",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -683,8 +683,8 @@
       "source": "Algerian Qatari Steel (AQS)",
       "category": "Industrie",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761139",
-      "fetched_at": "2026-05-04T10:41:23.761140",
+      "published_at": "2026-05-04T10:47:33.947584",
+      "fetched_at": "2026-05-04T10:47:33.947585",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -697,8 +697,8 @@
       "source": "Sonatrach/NNPC",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761137",
-      "fetched_at": "2026-05-04T10:41:23.761137",
+      "published_at": "2026-05-04T10:47:33.947581",
+      "fetched_at": "2026-05-04T10:47:33.947582",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -711,8 +711,8 @@
       "source": "SKTM/Sonelgaz",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761134",
-      "fetched_at": "2026-05-04T10:41:23.761135",
+      "published_at": "2026-05-04T10:47:33.947579",
+      "fetched_at": "2026-05-04T10:47:33.947579",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -725,8 +725,8 @@
       "source": "Sonatrach",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761131",
-      "fetched_at": "2026-05-04T10:41:23.761132",
+      "published_at": "2026-05-04T10:47:33.947576",
+      "fetched_at": "2026-05-04T10:47:33.947577",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -739,8 +739,8 @@
       "source": "Stellantis Algeria",
       "category": "Industrie",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761128",
-      "fetched_at": "2026-05-04T10:41:23.761128",
+      "published_at": "2026-05-04T10:47:33.947572",
+      "fetched_at": "2026-05-04T10:47:33.947573",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -753,8 +753,8 @@
       "source": "Direction des Travaux Publics",
       "category": "Infrastructure",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761126",
-      "fetched_at": "2026-05-04T10:41:23.761126",
+      "published_at": "2026-05-04T10:47:33.947569",
+      "fetched_at": "2026-05-04T10:47:33.947570",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -767,8 +767,8 @@
       "source": "Ministère des Transports",
       "category": "Infrastructure",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761123",
-      "fetched_at": "2026-05-04T10:41:23.761124",
+      "published_at": "2026-05-04T10:47:33.947567",
+      "fetched_at": "2026-05-04T10:47:33.947567",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -781,8 +781,8 @@
       "source": "ASMIDAL/Sonatrach",
       "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761121",
-      "fetched_at": "2026-05-04T10:41:23.761121",
+      "published_at": "2026-05-04T10:47:33.947563",
+      "fetched_at": "2026-05-04T10:47:33.947564",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -795,8 +795,8 @@
       "source": "Ministère de l'Industrie Algérien",
       "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2026-05-04T10:41:23.761115",
-      "fetched_at": "2026-05-04T10:41:23.761118",
+      "published_at": "2026-05-04T10:47:33.947558",
+      "fetched_at": "2026-05-04T10:47:33.947560",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -810,7 +810,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-05-02T11:58:04",
-      "fetched_at": "2026-05-04T10:41:23.614025"
+      "fetched_at": "2026-05-04T10:47:33.831636"
     },
     {
       "id": "84594c8f83e4",
@@ -821,7 +821,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-04-30T13:18:48",
-      "fetched_at": "2026-05-04T10:41:23.614068"
+      "fetched_at": "2026-05-04T10:47:33.831687"
     },
     {
       "id": "1404ae5ae61f",
@@ -832,7 +832,7 @@
       "category": "Commerce",
       "region": "Afrique du Nord",
       "published_at": "2026-04-30T05:19:18",
-      "fetched_at": "2026-05-04T10:41:23.747245"
+      "fetched_at": "2026-05-04T10:47:33.934785"
     },
     {
       "id": "d44ab78a64cf",
@@ -843,7 +843,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-04-29T05:05:42",
-      "fetched_at": "2026-05-04T10:41:23.747328"
+      "fetched_at": "2026-05-04T10:47:33.934869"
     },
     {
       "id": "72ea6d667880",
@@ -854,7 +854,7 @@
       "category": "Énergie",
       "region": "Afrique du Nord",
       "published_at": "2026-04-23T07:00:00",
-      "fetched_at": "2026-05-04T10:41:23.747284"
+      "fetched_at": "2026-05-04T10:47:33.934826"
     },
     {
       "id": "d17f4009e92f",
@@ -865,7 +865,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2026-03-09T07:00:00",
-      "fetched_at": "2026-05-04T10:41:23.747439"
+      "fetched_at": "2026-05-04T10:47:33.935018"
     },
     {
       "id": "79fe70a69b8c",
@@ -876,7 +876,7 @@
       "category": "Énergie",
       "region": "Afrique du Nord",
       "published_at": "2026-02-23T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.747505"
+      "fetched_at": "2026-05-04T10:47:33.935082"
     },
     {
       "id": "6afd401d54c5",
@@ -887,7 +887,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-02-18T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.614346"
+      "fetched_at": "2026-05-04T10:47:33.831960"
     },
     {
       "id": "4206b3c528a8",
@@ -898,7 +898,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-02-04T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.614162"
+      "fetched_at": "2026-05-04T10:47:33.831784"
     },
     {
       "id": "c5c2ce21b0a6",
@@ -909,7 +909,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-02-04T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.614317"
+      "fetched_at": "2026-05-04T10:47:33.831896"
     },
     {
       "id": "b9b7cf85dbcf",
@@ -920,7 +920,18 @@
       "category": "Commerce",
       "region": "Afrique du Nord",
       "published_at": "2026-02-01T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.747363"
+      "fetched_at": "2026-05-04T10:47:33.934906"
+    },
+    {
+      "id": "3323f6f80b01",
+      "title": "Polypropylene Production Being Developed in Algeria, an Industria... - Industrial Info Resources",
+      "summary": "Polypropylene Production Being Developed in Algeria, an Industria...  Industrial Info Resources",
+      "link": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxNUUxsbGVUczNhU2E0em9wVi0zYTFycEdBR0pOUU5JamZkcmw3ejV5c2c1VUFaUlFqSG5uQktkUzhXYzdwcDBRYmZlUEEwNDlfMFdfcVFUclUwZXJhUHU5dEN0Z1lMeldGT0swcTJnMHBCZ0syWmpNNFhEOV9ReXlMNmU0dUlKVTV4R1l0M1ZKeUhBVVZNNzdIMUZZOUV4c2M2SGE2YUF4akhvMzk0MEc5VXFQVXUxTTZwN283ZVlVS2pLWDczNXJDLVNfOXBrcloyenpPUFhMYkVybktrd3FvbnQtUGNlMFV3clE?oc=5",
+      "source": "Algérie Économie",
+      "category": "Économie",
+      "region": "Afrique du Nord",
+      "published_at": "2026-01-27T13:20:21",
+      "fetched_at": "2026-05-04T10:47:33.934979"
     },
     {
       "id": "68ec83e2862e",
@@ -931,7 +942,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-01-26T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.747399"
+      "fetched_at": "2026-05-04T10:47:33.934941"
     },
     {
       "id": "df2268cc865e",
@@ -942,18 +953,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-01-18T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.614100"
-    },
-    {
-      "id": "12eb9adcf34b",
-      "title": "Economie - L’Algérie renforce sa présence sur la scène internationale - L'Expression",
-      "summary": "Economie - L’Algérie renforce sa présence sur la scène internationale  L'Expression",
-      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQb19rYVZ0TURnZTlaNVItS0trdXUtTFo0OS15dkZPLU90QXhiUWhjSGh3ZlljTkNET2hzVi16R2JiSDRpcjA0aWhqUGZxa1dObTVjWWtESkNyYnhIOWR2c1NoRnJUZnhUeEI3ZFVfZkQ3dnU4aG1ZaHhOMGloV1Y5cmRFdDRxdE55R3pIak5NaFV4bUszZ290NTdCOXhtcWpXNkxpdngzbw?oc=5",
-      "source": "Algérie Économie",
-      "category": "Mines",
-      "region": "Afrique du Nord",
-      "published_at": "2026-01-15T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.614244"
+      "fetched_at": "2026-05-04T10:47:33.831719"
     },
     {
       "id": "9dd708faba78",
@@ -964,7 +964,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-01-09T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.747541"
+      "fetched_at": "2026-05-04T10:47:33.935119"
     },
     {
       "id": "9c610573c49f",
@@ -975,7 +975,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2026-01-04T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.747474"
+      "fetched_at": "2026-05-04T10:47:33.935051"
     },
     {
       "id": "b58f5d057456",
@@ -986,18 +986,18 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2025-12-04T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.614131"
+      "fetched_at": "2026-05-04T10:47:33.831753"
     },
     {
-      "id": "6c071d19d7be",
-      "title": "Algeria and Belarus sign handful of trade agreements - Arabian Gulf Business Insight | AGBI",
-      "summary": "Algeria and Belarus sign handful of trade agreements  Arabian Gulf Business Insight | AGBI",
-      "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPUGlmM0VHZmVXVVVNS3RsRXdJOXFxNUVETUNqVkU0QTlMeUk1aEFCWjF4S1YxaEJudkx1YUc2WVR3aHYzeWMtRDFFQ1BhbWRZcGxXbmduQjJIRGcxdFdNOVhPYTVsS1Z2V1NnYlcxV2tON0VnNTdaUHp5UHpuYUk4TE1qQkpmdlY5U0I0YXRsaE5yYWRYbS1ERXZoaHA?oc=5",
+      "id": "0a51a7ce1056",
+      "title": "Vietnam - Algérie : renforcement de la coopération dans le secteur pétrolier et énergétique - lecourrier.vn",
+      "summary": "Vietnam - Algérie : renforcement de la coopération dans le secteur pétrolier et énergétique  lecourrier.vn",
+      "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQLVlLU0h2Y0Y0V3BuRDZ3NjlrX3MzQXlWTEtUd2E5QUZYeXNZeUtjSFBnMWx3V0RLY0MzVFRZM2o2SlRUUWRFTHMzeWE0TDRkaWk2ekNNSmlMM3RpR1VpR2puRXN0Q0s2U1c4SUdQZXJTSGdYM0NsRFo2RzhhQ0Y0Y0t5aTUyMFhQZHM2V2kwYVZucWxJSVdZc0FjZkUzaFFTQzNmMWlZRVZxYldaM3V1a2Q0QjRDZXFNWkZJUng2UQ?oc=5",
       "source": "Algérie Économie",
-      "category": "Commerce",
+      "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2025-12-02T08:00:00",
-      "fetched_at": "2026-05-04T10:41:23.747569"
+      "published_at": "2025-11-20T08:00:00",
+      "fetched_at": "2026-05-04T10:47:33.831934"
     }
   ]
 }
