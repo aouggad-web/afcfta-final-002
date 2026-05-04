@@ -23,18 +23,24 @@ from gold_reserves_data import GOLD_RESERVES_GAI_DATA
 router = APIRouter()
 
 @router.get("/countries")
-async def get_countries(lang: str = "fr", include_no_trade_data: bool = False):
-    """Récupérer la liste des pays membres de la ZLECAf avec traduction.
+async def get_countries(lang: str = "fr", include_no_trade_data: bool = True):
+    """Récupérer la liste des pays africains (54 ZLECAf + RASD).
 
     - Retourne ISO3 comme code principal, ISO2 conservé pour compatibilité (drapeaux).
-    - Par défaut, **exclut** les pays marqués `has_trade_data: False`
-      (ex: RASD/Sahara Occidental — pas de statistiques commerciales et statut politique
-      contesté). Passer `include_no_trade_data=true` pour les inclure.
-    - Liste triée par nom traduit (locale-aware).
+    - Le **RASD (Sahara Occidental)** est inclus par défaut avec son intitulé ONU
+      complet (« Territoire non autonome » selon la Résolution 1514 (XV) de l'AG-ONU
+      et la liste C-24). Le champ `has_trade_data` permet au frontend de désactiver
+      les analyses commerciales pour ce territoire (aucune statistique douanière
+      souveraine disponible).
+    - Passer `include_no_trade_data=false` pour exclure les territoires sans données
+      commerciales (par exemple pour les flux de calcul tarifaire qui exigent un
+      tarif national publié).
+    - Liste triée par nom traduit (locale-aware, accents normalisés).
     """
     countries = []
     for country in AFRICAN_COUNTRIES:
-        if not include_no_trade_data and country.get("has_trade_data") is False:
+        has_trade_data = country.get("has_trade_data", True)
+        if not include_no_trade_data and has_trade_data is False:
             continue
         translated_country = {
             "code": country["iso3"],
@@ -44,6 +50,10 @@ async def get_countries(lang: str = "fr", include_no_trade_data: bool = False):
             "region": translate_region(country["region"], lang),
             "wb_code": country.get("wb_code", country["iso3"]),
             "population": country["population"],
+            "has_trade_data": has_trade_data,
+            "zlecaf_signatory": country.get("zlecaf_signatory", True),
+            "un_status": country.get("un_status"),
+            "note": country.get("note"),
         }
         countries.append(CountryInfo(**translated_country))
     # Tri alphabétique (locale-aware) par nom traduit dans la langue demandée.

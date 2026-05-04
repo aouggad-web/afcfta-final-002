@@ -44,7 +44,7 @@ AFRICAN_COUNTRIES = [
     {"code": "NE", "name": "Niger", "region": "Afrique de l'Ouest", "iso3": "NER", "wb_code": "NER", "population": 24200000},
     {"code": "NG", "name": "Nigéria", "region": "Afrique de l'Ouest", "iso3": "NGA", "wb_code": "NGA", "population": 218500000},
     {"code": "RW", "name": "Rwanda", "region": "Afrique de l'Est", "iso3": "RWA", "wb_code": "RWA", "population": 13000000},
-    {"code": "EH", "name": "RASD (Sahara Occidental)", "region": "Afrique du Nord", "iso3": "ESH", "wb_code": "ESH", "population": 600000, "has_trade_data": False, "zlecaf_signatory": True, "note": "Membre fondateur UA - Pas de données commerciales"},
+    {"code": "EH", "name": "RASD – Sahara Occidental", "region": "Afrique du Nord", "iso3": "ESH", "wb_code": "ESH", "population": 600000, "has_trade_data": False, "zlecaf_signatory": True, "un_status": "Territoire non autonome (ONU C-24, Rés. 1514 (XV) 1960)", "note": "Membre fondateur UA (1984). Statut ONU : territoire en attente d'un référendum d'autodétermination conformément à la Rés. 690 (1991). Pas de tarif douanier souverain reconnu — analyses commerciales indisponibles."},
     {"code": "ST", "name": "São Tomé-et-Príncipe", "region": "Afrique Centrale", "iso3": "STP", "wb_code": "STP", "population": 220000},
     {"code": "SN", "name": "Sénégal", "region": "Afrique de l'Ouest", "iso3": "SEN", "wb_code": "SEN", "population": 17200000},
     {"code": "SC", "name": "Seychelles", "region": "Afrique de l'Est", "iso3": "SYC", "wb_code": "SYC", "population": 98000},

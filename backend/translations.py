@@ -28,7 +28,12 @@ COUNTRY_TRANSLATIONS = {
     "GM": {"fr": "Gambie", "en": "Gambia"},
     "GH": {"fr": "Ghana", "en": "Ghana"},
     "GN": {"fr": "Guinée", "en": "Guinea"},
-    "EH": {"fr": "RASD (Sahara Occidental)", "en": "SADR (Western Sahara)"},
+    # Sahara Occidental — statut ONU: Territoire non autonome (liste C-24 de l'AG ONU,
+    # Rés. 1514 (XV) 1960 / 2229 (XXI) 1966). Membre fondateur de l'UA sous le nom RASD.
+    "EH": {
+        "fr": "RASD – Sahara Occidental (Territoire non autonome ONU)",
+        "en": "SADR – Western Sahara (UN Non-Self-Governing Territory)",
+    },
     "GW": {"fr": "Guinée-Bissau", "en": "Guinea-Bissau"},
     "KE": {"fr": "Kenya", "en": "Kenya"},
     "LS": {"fr": "Lesotho", "en": "Lesotho"},

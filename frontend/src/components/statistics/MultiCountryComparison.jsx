@@ -124,26 +124,17 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       try {
         const response = await axios.get(`${API}/countries?lang=${language}`);
         const countries = response.data.countries || response.data || [];
-        // Defensive: drop any entry without a proper translated name
-        // (e.g. EH/RASD if include_no_trade_data is ever toggled and the code
-        //  has no translation -> name === code). The backend already filters
-        //  has_trade_data:false by default.
-        const cleaned = countries.filter((c) => {
-          const n = c.name_fr || c.name_en || c.name || '';
-          const code = c.iso3 || c.iso2 || c.code || '';
-          return n && n !== code && n.length > 2;
-        });
         // Locale-aware alphabetical sort by current-language name
         const collator = new Intl.Collator(language === 'en' ? 'en' : 'fr', {
           sensitivity: 'base',
           ignorePunctuation: true,
         });
-        cleaned.sort((a, b) => {
+        const sorted = [...countries].sort((a, b) => {
           const an = (language === 'en' ? a.name_en : a.name_fr) || a.name || '';
           const bn = (language === 'en' ? b.name_en : b.name_fr) || b.name || '';
           return collator.compare(an, bn);
         });
-        setAvailableCountries(cleaned);
+        setAvailableCountries(sorted);
       } catch (err) {
         console.error('Error fetching countries:', err);
       }
@@ -400,20 +391,32 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               
               {selectedCountries.length < MAX_COUNTRIES && (
                 <Select onValueChange={addCountry}>
-                  <SelectTrigger className="w-[200px]" data-testid="add-country-select">
+                  <SelectTrigger className="w-[260px]" data-testid="add-country-select">
                     <SelectValue placeholder={txt.selectCountry} />
                   </SelectTrigger>
                   <SelectContent>
                     {availableCountries
                       .filter(c => !selectedCountries.includes(c.iso3 || c.code))
-                      .map((country) => (
-                        <SelectItem 
-                          key={country.iso3 || country.code} 
-                          value={country.iso3 || country.code}
-                        >
-                          {country.name_fr || country.name}
-                        </SelectItem>
-                      ))}
+                      .map((country) => {
+                        const noData = country.has_trade_data === false;
+                        return (
+                          <SelectItem
+                            key={country.iso3 || country.code}
+                            value={country.iso3 || country.code}
+                            disabled={noData}
+                            title={noData && country.note ? country.note : undefined}
+                          >
+                            <span className="inline-flex items-center gap-2">
+                              <span>{country.name_fr || country.name}</span>
+                              {noData && (
+                                <span className="text-[10px] uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-200 text-amber-900 border border-amber-300">
+                                  {language === 'en' ? 'no trade data' : 'sans données'}
+                                </span>
+                              )}
+                            </span>
+                          </SelectItem>
+                        );
+                      })}
                   </SelectContent>
                 </Select>
               )}

@@ -17,6 +17,10 @@ class CountryInfo(BaseModel):
     region: str
     wb_code: str
     population: int
+    has_trade_data: bool = True
+    zlecaf_signatory: bool = True
+    un_status: Optional[str] = None
+    note: Optional[str] = None
 
 
 class TariffCalculationRequest(BaseModel):
