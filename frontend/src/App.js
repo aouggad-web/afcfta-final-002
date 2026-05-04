@@ -20,6 +20,7 @@ import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
 import BankingInfoPanel from './components/banking/BankingInfoPanel';
+import AdminProjectsPage from './components/admin/AdminProjectsPage';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -55,6 +56,14 @@ const texts = {
 };
 
 function App() {
+  // Admin page route: /?admin=projects or /admin/projects
+  if (typeof window !== 'undefined') {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.get('admin') === 'projects' || window.location.pathname.startsWith('/admin/projects')) {
+      return <AdminProjectsPage />;
+    }
+  }
+
   const { i18n } = useTranslation();
   const [countries, setCountries] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');

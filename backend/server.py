@@ -294,6 +294,24 @@ async def startup_load_tariff_data():
                 upsert=True,
             )
             logger.info("Frontend default API key ensured in api_keys collection")
+
+            # Seed an admin API key (used for /api/admin/* endpoints).
+            _admin_key = os.environ.get("ADMIN_API_KEY", "zlecaf-admin-key")
+            _admin_hash = _hashlib.sha256(_admin_key.encode()).hexdigest()
+            await db["api_keys"].update_one(
+                {"key_hash": _admin_hash},
+                {
+                    "$set": {
+                        "key_hash": _admin_hash,
+                        "active": True,
+                        "tier": "admin",
+                        "label": "admin-default",
+                    },
+                    "$setOnInsert": {"created_at": _dt.now(_tz.utc).isoformat()},
+                },
+                upsert=True,
+            )
+            logger.info("Admin default API key ensured in api_keys collection")
     except Exception as e:
         logger.warning(f"Frontend API key seeding failed: {e}")
 

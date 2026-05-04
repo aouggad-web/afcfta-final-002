@@ -55,6 +55,7 @@ from .rules_of_origin import router as rules_router, init_data as init_rules_dat
 from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
+from .admin_projects import router as admin_projects_router
 
 # Load Rules of Origin data
 try:
@@ -320,6 +321,7 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(hs6_db_router, tags=["HS6 Database"], dependencies=_auth)
     api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth)
     api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"], dependencies=_auth)
+    api_router.include_router(admin_projects_router, tags=["Admin - Structuring Projects"])
     if FAOSTAT_AVAILABLE:
         api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth)
     api_router.include_router(calculator_router, tags=["Calculator"], dependencies=_auth)
