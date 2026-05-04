@@ -290,7 +290,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                   {/* PIB Total */}
-                  {countryProfile.gdp_usd && (
+                  {countryProfile.gdp_usd != null && (
                     <div className="bg-gradient-to-br from-emerald-900/80 to-green-800/60 p-4 rounded-xl border-2 border-emerald-500 shadow-lg shadow-emerald-500/20 text-center transform hover:scale-105 transition-all">
                       <p className="text-xs font-bold text-emerald-300 mb-2 uppercase tracking-wide">💵 {t.totalGdp}</p>
                       <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -301,7 +301,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                   )}
                   
                   {/* PIB par Habitant */}
-                  {countryProfile.gdp_per_capita && (
+                  {countryProfile.gdp_per_capita != null && (
                     <div className="bg-gradient-to-br from-blue-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 text-center transform hover:scale-105 transition-all">
                       <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">👤 {t.gdpPerCapita}</p>
                       <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -348,30 +348,30 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {/* Inflation */}
                   <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
-                    countryProfile.inflation_rate && countryProfile.inflation_rate > 15 
+                    countryProfile.inflation_rate != null && countryProfile.inflation_rate > 15 
                       ? 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20' 
-                      : countryProfile.inflation_rate && countryProfile.inflation_rate > 7 
+                      : countryProfile.inflation_rate != null && countryProfile.inflation_rate > 7 
                         ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
                         : 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20'
                   }`}>
                     <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">📈 Inflation 2024</p>
                     <p className="text-3xl font-extrabold text-white drop-shadow-lg">
-                      {countryProfile.inflation_rate ? `${countryProfile.inflation_rate.toFixed(1)}%` : 'N/A'}
+                      {countryProfile.inflation_rate != null ? `${countryProfile.inflation_rate.toFixed(1)}%` : 'N/A'}
                     </p>
                     <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">FMI/BM</p>
                   </div>
 
                   {/* Chômage */}
                   <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
-                    countryProfile.unemployment_rate && countryProfile.unemployment_rate > 25 
+                    countryProfile.unemployment_rate != null && countryProfile.unemployment_rate > 25 
                       ? 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20' 
-                      : countryProfile.unemployment_rate && countryProfile.unemployment_rate > 15 
+                      : countryProfile.unemployment_rate != null && countryProfile.unemployment_rate > 15 
                         ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
                         : 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20'
                   }`}>
                     <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">👔 {language === 'fr' ? 'Chômage' : 'Unemployment'} 2024</p>
                     <p className="text-3xl font-extrabold text-white drop-shadow-lg">
-                      {countryProfile.unemployment_rate ? `${countryProfile.unemployment_rate.toFixed(1)}%` : 'N/A'}
+                      {countryProfile.unemployment_rate != null ? `${countryProfile.unemployment_rate.toFixed(1)}%` : 'N/A'}
                     </p>
                     <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">OIT/BM</p>
                   </div>
@@ -380,16 +380,16 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                   <div className="bg-gradient-to-br from-cyan-900/80 to-blue-800/60 p-4 rounded-xl border-2 border-cyan-500 shadow-lg shadow-cyan-500/20 text-center transform hover:scale-105 transition-all">
                     <p className="text-xs font-bold text-cyan-300 mb-2 uppercase tracking-wide">👥 Population</p>
                     <p className="text-3xl font-extrabold text-white drop-shadow-lg">
-                      {countryProfile.population_millions ? `${countryProfile.population_millions.toFixed(1)}M` : (countryProfile.population ? formatNumber(countryProfile.population) : 'N/A')}
+                      {countryProfile.population_millions != null ? `${countryProfile.population_millions.toFixed(1)}M` : (countryProfile.population != null ? formatNumber(countryProfile.population) : 'N/A')}
                     </p>
                     <p className="text-xs text-cyan-200 mt-2 bg-cyan-950/50 rounded-full px-2 py-1">2024</p>
                   </div>
 
                   {/* Rang IDH Mondial */}
                   <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
-                    countryProfile.hdi_rank && countryProfile.hdi_rank <= 80 
+                    countryProfile.hdi_rank != null && countryProfile.hdi_rank <= 80 
                       ? 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20' 
-                      : countryProfile.hdi_rank && countryProfile.hdi_rank <= 120 
+                      : countryProfile.hdi_rank != null && countryProfile.hdi_rank <= 120 
                         ? 'bg-gradient-to-br from-amber-900/80 to-yellow-700/60 border-amber-500 shadow-amber-500/20'
                         : 'bg-gradient-to-br from-red-900/80 to-orange-700/60 border-red-500 shadow-red-500/20'
                   }`}>
@@ -403,7 +403,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               </div>
 
               {/* SECTION DETTE PUBLIQUE */}
-              {(countryProfile.total_debt_pct_gdp || countryProfile.external_debt_pct_gdp) && (
+              {(countryProfile.total_debt_pct_gdp != null || countryProfile.external_debt_pct_gdp != null) && (
                 <div className="mb-6">
                   <h3 className="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 border-b border-amber-500/30 pb-2">
                     <span className="text-2xl">💳</span> {language === 'fr' ? 'Dette Publique 2024' : 'Public Debt 2024'}
@@ -422,7 +422,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     }`}>
                       <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">📊 {language === 'fr' ? 'Dette Totale' : 'Total Debt'}</p>
                       <p className="text-3xl font-extrabold text-white drop-shadow-lg">
-                        {countryProfile.total_debt_pct_gdp ? `${countryProfile.total_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
+                        {countryProfile.total_debt_pct_gdp != null ? `${countryProfile.total_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
                       </p>
                       <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
                     </div>
@@ -431,10 +431,10 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     <div className="bg-gradient-to-br from-blue-900/80 to-indigo-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 text-center transform hover:scale-105 transition-all">
                       <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">🌍 {language === 'fr' ? 'Dette Extérieure' : 'External Debt'}</p>
                       <p className="text-3xl font-extrabold text-white drop-shadow-lg">
-                        {countryProfile.external_debt_pct_gdp ? `${countryProfile.external_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
+                        {countryProfile.external_debt_pct_gdp != null ? `${countryProfile.external_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
                       </p>
                       <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
-                      {countryProfile.external_debt_bn_usd && (
+                      {countryProfile.external_debt_bn_usd != null && (
                         <p className="text-lg font-bold text-amber-400 mt-2">
                           ${countryProfile.external_debt_bn_usd.toFixed(1)}B
                         </p>
@@ -445,7 +445,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     <div className="bg-gradient-to-br from-purple-900/80 to-violet-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
                       <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">🏠 {language === 'fr' ? 'Dette Intérieure' : 'Domestic Debt'}</p>
                       <p className="text-3xl font-extrabold text-white drop-shadow-lg">
-                        {countryProfile.domestic_debt_pct_gdp ? `${countryProfile.domestic_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
+                        {countryProfile.domestic_debt_pct_gdp != null ? `${countryProfile.domestic_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
                       </p>
                       <p className="text-xs text-purple-200 mt-2 bg-purple-950/50 rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
                     </div>
@@ -489,7 +489,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               {/* Gold Reserves & GAI 2025 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 {/* Gold Reserves */}
-                {countryProfile.projections?.gold_reserves_tonnes !== undefined && (
+                {countryProfile.projections?.gold_reserves_tonnes != null && (
                   <div className="bg-gradient-to-br from-yellow-50 to-amber-100 p-4 rounded-lg shadow-lg border-2 border-yellow-400">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-2xl">🥇</span>
@@ -512,7 +512,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 )}
 
                 {/* Global Attractiveness Index 2025 */}
-                {countryProfile.projections?.gai_2025_score !== undefined && (
+                {countryProfile.projections?.gai_2025_score != null && (
                   <div className="bg-gradient-to-br from-indigo-50 to-purple-100 p-4 rounded-lg shadow-lg border-2 border-indigo-400">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -640,7 +640,20 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               )}
 
               {/* World Bank Data360 Indicators */}
-              {countryProfile.projections?.life_expectancy_2023 && (
+              {countryProfile.projections && (
+                countryProfile.projections.life_expectancy_2023 != null ||
+                countryProfile.projections.gini_index_2024 != null ||
+                countryProfile.projections.poverty_rate_3usd_2024 != null ||
+                countryProfile.projections.urban_population_pct_2024 != null ||
+                countryProfile.projections.internet_users_pct_2024 != null ||
+                countryProfile.projections.cybersecurity_index_2024 != null ||
+                countryProfile.projections.electricity_access_2022 != null ||
+                countryProfile.projections.mobile_3g_coverage_2024 != null ||
+                countryProfile.projections.female_labor_force_pct_2024 != null ||
+                countryProfile.projections.water_stress_2022 != null ||
+                countryProfile.projections.ghg_emissions_mt_2022 != null ||
+                countryProfile.projections.learning_poverty_2023 != null
+              ) && (
                 <div className="mb-4">
                   <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
                     <CardHeader className="bg-gradient-to-r from-blue-900/50 via-purple-900/30 to-pink-900/30 border-b border-blue-500/30">
@@ -663,12 +676,12 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                           <div className="bg-gradient-to-br from-green-900/80 to-emerald-800/60 p-4 rounded-xl border-2 border-green-500 shadow-lg shadow-green-500/20 transform hover:scale-105 transition-all">
                             <p className="text-xs font-bold text-green-300 mb-2 uppercase tracking-wide">🏥 {t.lifeExpectancy}</p>
                             <p className="text-3xl font-extrabold text-white drop-shadow-lg">
-                              {countryProfile.projections.life_expectancy_2023}
+                              {countryProfile.projections.life_expectancy_2023 != null ? parseFloat(countryProfile.projections.life_expectancy_2023).toFixed(1) : 'N/A'}
                             </p>
                             <p className="text-xs text-green-200 mt-2 bg-green-950/50 rounded-full px-2 py-1">{t.years} (2023)</p>
                           </div>
                           
-                          {countryProfile.projections.gini_index_2024 && (
+                          {countryProfile.projections.gini_index_2024 != null && (
                             <div className="bg-gradient-to-br from-orange-900/80 to-amber-800/60 p-4 rounded-xl border-2 border-orange-500 shadow-lg shadow-orange-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-orange-300 mb-2 uppercase tracking-wide">📊 {t.giniIndex}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -688,7 +701,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             </div>
                           )}
                           
-                          {countryProfile.projections.urban_population_pct_2024 && (
+                          {countryProfile.projections.urban_population_pct_2024 != null && (
                             <div className="bg-gradient-to-br from-purple-900/80 to-indigo-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">🏙️ {t.urbanPopulation}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -707,7 +720,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                           <span>{t.digitalConnectivity}</span>
                         </h4>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                          {countryProfile.projections.internet_users_pct_2024 && (
+                          {countryProfile.projections.internet_users_pct_2024 != null && (
                             <div className="bg-gradient-to-br from-blue-900/80 to-sky-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">🌐 {t.internetAccess}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -717,7 +730,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             </div>
                           )}
                           
-                          {countryProfile.projections.cybersecurity_index_2024 && (
+                          {countryProfile.projections.cybersecurity_index_2024 != null && (
                             <div className="bg-gradient-to-br from-indigo-900/80 to-purple-800/60 p-4 rounded-xl border-2 border-indigo-500 shadow-lg shadow-indigo-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-indigo-300 mb-2 uppercase tracking-wide">🔒 {t.cybersecurity}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -727,7 +740,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             </div>
                           )}
                           
-                          {countryProfile.projections.electricity_access_2022 && (
+                          {countryProfile.projections.electricity_access_2022 != null && (
                             <div className="bg-gradient-to-br from-yellow-900/80 to-amber-800/60 p-4 rounded-xl border-2 border-yellow-500 shadow-lg shadow-yellow-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-yellow-300 mb-2 uppercase tracking-wide">⚡ {t.electricityAccess}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -737,7 +750,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             </div>
                           )}
                           
-                          {countryProfile.projections.mobile_3g_coverage_2024 && (
+                          {countryProfile.projections.mobile_3g_coverage_2024 != null && (
                             <div className="bg-gradient-to-br from-teal-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-teal-500 shadow-lg shadow-teal-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-teal-300 mb-2 uppercase tracking-wide">📱 {t.coverage3g}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -756,7 +769,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                           <span>{t.environmentEquality}</span>
                         </h4>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                          {countryProfile.projections.female_labor_force_pct_2024 && (
+                          {countryProfile.projections.female_labor_force_pct_2024 != null && (
                             <div className="bg-gradient-to-br from-pink-900/80 to-rose-800/60 p-4 rounded-xl border-2 border-pink-500 shadow-lg shadow-pink-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-pink-300 mb-2 uppercase tracking-wide">👩‍💼 {t.workingWomen}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -766,7 +779,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             </div>
                           )}
                           
-                          {countryProfile.projections.water_stress_2022 && (
+                          {countryProfile.projections.water_stress_2022 != null && (
                             <div className="bg-gradient-to-br from-blue-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">💧 {t.waterStress}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -776,7 +789,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             </div>
                           )}
                           
-                          {countryProfile.projections.ghg_emissions_mt_2022 && (
+                          {countryProfile.projections.ghg_emissions_mt_2022 != null && (
                             <div className="bg-gradient-to-br from-gray-900/80 to-slate-800/60 p-4 rounded-xl border-2 border-gray-500 shadow-lg shadow-gray-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-gray-300 mb-2 uppercase tracking-wide">🏭 {t.ghgEmissions}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -786,7 +799,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             </div>
                           )}
                           
-                          {countryProfile.projections.learning_poverty_2023 && (
+                          {countryProfile.projections.learning_poverty_2023 != null && (
                             <div className="bg-gradient-to-br from-violet-900/80 to-purple-800/60 p-4 rounded-xl border-2 border-violet-500 shadow-lg shadow-violet-500/20 transform hover:scale-105 transition-all">
                               <p className="text-xs font-bold text-violet-300 mb-2 uppercase tracking-wide">📚 {t.learningPoverty}</p>
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
@@ -913,7 +926,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               )}
 
               {/* Infrastructure Section (AIDI 2025 & LPI 2023) */}
-              {countryProfile.infrastructure_ranking && (
+              {countryProfile.infrastructure_ranking && Object.keys(countryProfile.infrastructure_ranking).length > 0 && (
                 <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
                   <CardHeader className="bg-gradient-to-r from-orange-900/50 via-amber-900/30 to-yellow-900/30 border-b border-orange-500/30">
                     <CardTitle className="text-xl font-bold text-orange-400 flex items-center gap-2">
