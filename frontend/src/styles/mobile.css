@@ -1,0 +1,373 @@
+/**
+ * AfCFTA Intelligence Platform - Responsive Design System
+ * =========================================================
+ * Mobile-first responsive framework with adaptive spacing, typography,
+ * and component layouts optimised for all device types.
+ *
+ * Breakpoints:
+ *   --mobile:  < 768px  (smartphones)
+ *   --tablet:  768–1023px (tablets)
+ *   --desktop: ≥ 1024px  (desktops / large screens)
+ */
+
+/* ===========================================================================
+   CSS Custom Properties (Design Tokens)
+   =========================================================================== */
+
+:root {
+  /* Breakpoints (reference values – used in JS via getComputedStyle) */
+  --mobile-breakpoint:  768px;
+  --tablet-breakpoint:  1024px;
+  --desktop-breakpoint: 1200px;
+
+  /* Adaptive spacing using clamp() for fluid scaling */
+  --spacing-xs:  clamp(0.25rem, 1vw,   0.5rem);
+  --spacing-sm:  clamp(0.5rem,  2vw,   1rem);
+  --spacing-md:  clamp(1rem,    3vw,   1.5rem);
+  --spacing-lg:  clamp(1.5rem,  4vw,   2.5rem);
+  --spacing-xl:  clamp(2rem,    5vw,   3.5rem);
+
+  /* Fluid typography */
+  --font-size-xs:   clamp(0.65rem, 2vw,   0.75rem);
+  --font-size-sm:   clamp(0.75rem, 2.5vw, 0.875rem);
+  --font-size-base: clamp(0.875rem, 3vw,  1rem);
+  --font-size-lg:   clamp(1rem,    3.5vw, 1.125rem);
+  --font-size-xl:   clamp(1.125rem, 4vw,  1.375rem);
+  --font-size-2xl:  clamp(1.25rem,  5vw,  1.75rem);
+  --font-size-3xl:  clamp(1.5rem,   6vw,  2.25rem);
+
+  /* Touch targets (minimum 44px as per WCAG 2.5.5) */
+  --touch-target: 44px;
+}
+
+/* ===========================================================================
+   Responsive Grid System
+   =========================================================================== */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm);
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: var(--spacing-sm);
+}
+
+.two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .two-col-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================================================================
+   Mobile-Optimised Table → Card Layout
+   =========================================================================== */
+
+@media (max-width: 768px) {
+  .mobile-optimized-table {
+    display: block;
+  }
+
+  .mobile-optimized-table thead {
+    display: none;
+  }
+
+  .mobile-optimized-table tbody {
+    display: block;
+  }
+
+  .mobile-optimized-table tbody tr {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: var(--spacing-sm);
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+
+  .mobile-optimized-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #f7fafc;
+    font-size: var(--font-size-sm);
+  }
+
+  .mobile-optimized-table td:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-optimized-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #4a5568;
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    margin-right: 0.75rem;
+  }
+}
+
+/* ===========================================================================
+   Touch-Optimised Interactive Elements
+   =========================================================================== */
+
+.touch-target {
+  min-width:  var(--touch-target);
+  min-height: var(--touch-target);
+  display:    flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Larger tap areas on mobile */
+@media (max-width: 768px) {
+  button,
+  [role="button"],
+  a.btn,
+  .clickable {
+    min-height: var(--touch-target);
+    padding-left:  max(var(--spacing-sm), 12px);
+    padding-right: max(var(--spacing-sm), 12px);
+  }
+}
+
+/* ===========================================================================
+   Responsive Navigation
+   =========================================================================== */
+
+.nav-tabs {
+  display: flex;
+  gap: var(--spacing-xs);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.nav-tabs::-webkit-scrollbar { display: none; }
+
+.nav-tab {
+  flex-shrink: 0;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 8px;
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.nav-tab.active {
+  background: #1a365d;
+  color: #fff;
+}
+
+/* ===========================================================================
+   Investment Score Badge
+   =========================================================================== */
+
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2em 0.6em;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  min-width: 2.5rem;
+}
+
+.score-badge--a-plus { background: #D1FAE5; color: #065F46; }
+.score-badge--a      { background: #DBEAFE; color: #1E40AF; }
+.score-badge--b-plus { background: #FEF3C7; color: #92400E; }
+.score-badge--b      { background: #FEF9C3; color: #713F12; }
+.score-badge--c      { background: #FEE2E2; color: #991B1B; }
+
+/* ===========================================================================
+   Heatmap Component
+   =========================================================================== */
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(120px, 100%), 1fr));
+  gap: var(--spacing-xs);
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  padding: var(--spacing-xs);
+  text-align: center;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ===========================================================================
+   PWA Install Banner
+   =========================================================================== */
+
+.pwa-install-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1a365d;
+  color: #fff;
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  z-index: 9999;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
+}
+
+.pwa-install-banner p {
+  font-size: var(--font-size-sm);
+  flex: 1;
+}
+
+.pwa-install-banner button {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  min-height: var(--touch-target);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0);    }
+}
+
+/* ===========================================================================
+   Offline Indicator
+   =========================================================================== */
+
+.offline-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #dc2626;
+  color: #fff;
+  text-align: center;
+  padding: 0.4rem 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  z-index: 10000;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0);     }
+}
+
+/* ===========================================================================
+   Real-time Status Indicator
+   =========================================================================== */
+
+.ws-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.ws-status__dot {
+  width:  8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ws-status--connected    .ws-status__dot { background: #10b981; animation: pulse-green 2s infinite; }
+.ws-status--disconnected .ws-status__dot { background: #6b7280; }
+.ws-status--connecting   .ws-status__dot { background: #f59e0b; animation: pulse-amber 1s infinite; }
+.ws-status--error        .ws-status__dot { background: #ef4444; }
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);  }
+}
+
+@keyframes pulse-amber {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0);  }
+}
+
+/* ===========================================================================
+   Chart Container
+   =========================================================================== */
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+}
+
+@media (min-width: 768px) {
+  .chart-container { min-height: 350px; }
+}
+
+@media (min-width: 1024px) {
+  .chart-container { min-height: 420px; }
+}
+
+/* ===========================================================================
+   Print Styles (for PDF export)
+   =========================================================================== */
+
+@media print {
+  .no-print,
+  .pwa-install-banner,
+  .offline-indicator,
+  .nav-tabs { display: none !important; }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  body { font-size: 11pt; }
+}

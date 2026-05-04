@@ -1,0 +1,208 @@
+/* ===========================================
+   TAB COMPONENTS - Enhanced Styling
+   =========================================== */
+
+/* Main tabs container */
+.tabs-enhanced {
+  @apply space-y-4;
+}
+
+/* Tab list - horizontal scrollable on mobile */
+.tabs-list-enhanced {
+  @apply flex gap-1 p-1 bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tabs-list-enhanced::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual tab trigger */
+.tab-trigger-enhanced {
+  @apply flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200;
+  @apply text-gray-600 hover:text-gray-900 hover:bg-gray-50;
+  @apply whitespace-nowrap flex-shrink-0;
+}
+
+.tab-trigger-enhanced[data-state="active"] {
+  @apply bg-blue-600 text-white shadow-md;
+}
+
+/* Tab icon */
+.tab-trigger-enhanced .tab-icon {
+  @apply w-5 h-5 flex-shrink-0;
+}
+
+/* Tab badge/count */
+.tab-badge {
+  @apply ml-1.5 px-1.5 py-0.5 text-xs rounded-full;
+  @apply bg-gray-100 text-gray-600;
+}
+
+.tab-trigger-enhanced[data-state="active"] .tab-badge {
+  @apply bg-white/20 text-white;
+}
+
+/* Tab content panel */
+.tab-content-enhanced {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Variant: Pills style */
+.tabs-list-pills {
+  @apply flex flex-wrap gap-2 p-0 bg-transparent;
+}
+
+.tabs-list-pills .tab-trigger-enhanced {
+  @apply rounded-full border border-gray-200 bg-white;
+}
+
+.tabs-list-pills .tab-trigger-enhanced[data-state="active"] {
+  @apply border-blue-600;
+}
+
+/* Variant: Underline style */
+.tabs-list-underline {
+  @apply flex gap-0 p-0 bg-transparent border-b border-gray-200 rounded-none;
+}
+
+.tabs-list-underline .tab-trigger-enhanced {
+  @apply rounded-none border-b-2 border-transparent -mb-px;
+  @apply hover:bg-transparent hover:border-gray-300;
+}
+
+.tabs-list-underline .tab-trigger-enhanced[data-state="active"] {
+  @apply bg-transparent text-blue-600 border-blue-600;
+}
+
+/* Variant: Boxed style (for logistics/production) */
+.tabs-list-boxed {
+  display: grid !important;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: linear-gradient(to right, rgb(248 250 252), rgb(249 250 251));
+  border-radius: 0.75rem;
+  border: 1px solid rgb(243 244 246);
+  height: auto !important;
+  width: 100% !important;
+}
+
+.tabs-list-boxed.cols-2 { @apply grid-cols-2; }
+.tabs-list-boxed.cols-3 { @apply grid-cols-3; }
+.tabs-list-boxed.cols-4 { @apply grid-cols-4; }
+.tabs-list-boxed.cols-5 { @apply grid-cols-5; }
+
+@media (max-width: 768px) {
+  .tabs-list-boxed.cols-4,
+  .tabs-list-boxed.cols-5 {
+    @apply grid-cols-2;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabs-list-boxed {
+    @apply grid-cols-2;
+  }
+}
+
+.tabs-list-boxed .tab-trigger-enhanced {
+  @apply flex-col gap-1 py-3 text-center;
+}
+
+.tabs-list-boxed .tab-trigger-enhanced .tab-icon {
+  @apply w-6 h-6 mx-auto;
+}
+
+.tabs-list-boxed .tab-trigger-enhanced[data-state="active"] {
+  @apply shadow-lg;
+}
+
+/* Color variants for boxed tabs */
+.tab-trigger-enhanced.tab-blue[data-state="active"] {
+  @apply bg-blue-600 text-white;
+}
+
+.tab-trigger-enhanced.tab-green[data-state="active"] {
+  @apply bg-green-600 text-white;
+}
+
+.tab-trigger-enhanced.tab-orange[data-state="active"] {
+  @apply bg-orange-600 text-white;
+}
+
+.tab-trigger-enhanced.tab-purple[data-state="active"] {
+  @apply bg-purple-600 text-white;
+}
+
+.tab-trigger-enhanced.tab-cyan[data-state="active"] {
+  @apply bg-cyan-600 text-white;
+}
+
+/* Vertical tabs layout */
+.tabs-vertical {
+  @apply flex gap-4;
+}
+
+.tabs-vertical .tabs-list-vertical {
+  @apply flex flex-col gap-1 p-2 bg-white rounded-xl border border-gray-100 w-48 flex-shrink-0;
+}
+
+.tabs-vertical .tabs-list-vertical .tab-trigger-enhanced {
+  @apply justify-start w-full;
+}
+
+.tabs-vertical .tabs-content-vertical {
+  @apply flex-1 min-w-0;
+}
+
+/* Mini tabs for sub-sections */
+.tabs-list-mini {
+  @apply flex gap-1 p-0.5 bg-gray-100 rounded-lg;
+}
+
+.tabs-list-mini .tab-trigger-mini {
+  @apply px-3 py-1.5 text-xs font-medium rounded-md transition-all;
+  @apply text-gray-600 hover:text-gray-900;
+}
+
+.tabs-list-mini .tab-trigger-mini[data-state="active"] {
+  @apply bg-white text-gray-900 shadow-sm;
+}
+
+/* Stats tabs with numbers */
+.tabs-list-stats {
+  @apply flex gap-4 p-0 bg-transparent;
+}
+
+.tab-trigger-stat {
+  @apply flex flex-col items-center p-4 rounded-xl transition-all;
+  @apply bg-white border-2 border-transparent hover:border-gray-200;
+}
+
+.tab-trigger-stat[data-state="active"] {
+  @apply border-blue-500 bg-blue-50;
+}
+
+.tab-trigger-stat .stat-value {
+  @apply text-2xl font-bold text-gray-900;
+}
+
+.tab-trigger-stat .stat-label {
+  @apply text-sm text-gray-500 mt-1;
+}
+
+.tab-trigger-stat[data-state="active"] .stat-value {
+  @apply text-blue-600;
+}

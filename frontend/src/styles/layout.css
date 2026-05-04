@@ -1,0 +1,323 @@
+/* ===========================================
+   UNIFIED LAYOUT STYLES
+   Consistent spacing and responsive grid system
+   =========================================== */
+
+/* Section containers with consistent spacing */
+.section-container {
+  @apply space-y-4;
+}
+
+.section-header {
+  @apply mb-4;
+}
+
+/* Filter bar layouts */
+.filter-bar {
+  @apply flex flex-wrap items-center gap-3 p-4 bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg;
+}
+
+.filter-bar-compact {
+  @apply py-3 px-4;
+}
+
+.filter-group {
+  @apply flex items-center gap-2;
+}
+
+/* Responsive grid layouts */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* Cards grid - 2/3/4 columns responsive */
+.cards-grid {
+  @apply grid gap-4;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 640px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1400px) {
+  .cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Stats cards grid - smaller cards */
+.stats-grid {
+  @apply grid gap-3;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .stats-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Dashboard-style widgets */
+.dashboard-grid {
+  @apply grid gap-4;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Split layout - filters on left, content on right */
+.split-layout {
+  @apply flex flex-col lg:flex-row gap-4;
+}
+
+.split-layout-sidebar {
+  @apply w-full lg:w-80 flex-shrink-0;
+}
+
+.split-layout-content {
+  @apply flex-1 min-w-0;
+}
+
+/* Map + list layout */
+.map-list-layout {
+  @apply grid gap-4;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .map-list-layout {
+    grid-template-columns: 1fr 400px;
+  }
+}
+
+/* Stacked sections */
+.stacked-sections > * + * {
+  @apply mt-4;
+}
+
+/* Card hover effects */
+.card-interactive {
+  @apply transition-all duration-200 cursor-pointer;
+}
+
+.card-interactive:hover {
+  @apply shadow-lg -translate-y-0.5 border-blue-200;
+}
+
+/* Compact card variant */
+.card-compact {
+  @apply p-3;
+}
+
+.card-compact .card-header {
+  @apply py-2;
+}
+
+/* Table container with horizontal scroll */
+.table-container {
+  @apply overflow-x-auto rounded-lg border border-gray-200;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-b-lg;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Smooth animations */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation for grid items */
+.stagger-animation > * {
+  animation: fadeIn 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+.stagger-animation > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-animation > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-animation > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-animation > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-animation > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-animation > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-animation > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-animation > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* Badge styles */
+.badge-dot {
+  @apply inline-flex items-center gap-1.5;
+}
+
+.badge-dot::before {
+  content: '';
+  @apply w-2 h-2 rounded-full;
+}
+
+.badge-dot-green::before { @apply bg-green-500; }
+.badge-dot-orange::before { @apply bg-orange-500; }
+.badge-dot-red::before { @apply bg-red-500; }
+.badge-dot-blue::before { @apply bg-blue-500; }
+
+/* Status indicators */
+.status-indicator {
+  @apply inline-flex items-center gap-1.5 text-sm;
+}
+
+.status-indicator-online {
+  @apply text-green-600;
+}
+
+.status-indicator-online::before {
+  content: '';
+  @apply w-2 h-2 rounded-full bg-green-500 animate-pulse;
+}
+
+/* No results state */
+.no-results {
+  @apply flex flex-col items-center justify-center py-12 text-gray-500;
+}
+
+.no-results-icon {
+  @apply w-16 h-16 text-gray-300 mb-4;
+}
+
+/* Loading skeleton */
+.skeleton {
+  @apply animate-pulse bg-gray-200 rounded;
+}
+
+.skeleton-card {
+  @apply h-48 rounded-lg;
+}
+
+.skeleton-text {
+  @apply h-4 rounded w-3/4;
+}
+
+.skeleton-text-sm {
+  @apply h-3 rounded w-1/2;
+}
+
+/* Select dropdown fix - ensure visibility */
+[data-radix-popper-content-wrapper] {
+  z-index: 100 !important;
+}
+
+/* Improve select trigger on mobile */
+@media (max-width: 640px) {
+  .select-mobile-full {
+    @apply w-full;
+  }
+}
+
+/* Responsive text utilities */
+.text-responsive {
+  @apply text-sm sm:text-base;
+}
+
+.text-responsive-lg {
+  @apply text-base sm:text-lg md:text-xl;
+}
+
+/* Panel layouts */
+.panel-sticky {
+  @apply sticky top-4;
+}
+
+/* Scroll container */
+.scroll-container {
+  @apply overflow-y-auto;
+  max-height: calc(100vh - 200px);
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+/* Utility: Hide scrollbar but allow scrolling */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

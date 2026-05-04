@@ -1,0 +1,340 @@
+{
+  "DZA": [
+    {
+      "titre": "Mine de Fer Gara Djebilet - Production",
+      "secteur": "Mines & Industrie",
+      "statut": "✅ OPÉRATIONNEL (depuis Juillet 2024)",
+      "budget": "6 Milliards USD (Total projet intégré)",
+      "echeance": "Phase 2: 2026-2027",
+      "description": "Exploitation du gisement de fer de Gara Djebilet à Tindouf, l'un des plus grands au monde (3.5 milliards de tonnes). La Phase 1 est opérationnelle depuis juillet 2024 avec les premiers convois de minerai exportés.",
+      "impact": "Production actuelle: 2-3M tonnes/an. Objectif: 50M tonnes/an en Phase 2. Création de 12,000 emplois directs. Revenus estimés: 2-4 Mrd USD/an.",
+      "partenaires": "FERAAL (Algérie), CRCC (Chine), Baowu Steel (Chine)",
+      "source": "Ministère de l'Industrie et des Mines - Janvier 2025"
+    },
+    {
+      "titre": "Ligne Ferroviaire Minière Béchar-Gara Djebilet",
+      "secteur": "Transport Ferroviaire",
+      "statut": "En construction avancée",
+      "budget": "1.5 - 2 Milliards USD",
+      "echeance": "Premier train: Janvier 2026",
+      "description": "Ligne ferroviaire de 950 km reliant le gisement de fer de Gara Djebilet au réseau national à Béchar, puis aux ports d'Arzew et Oran.",
+      "impact": "Capacité: 40-50M tonnes/an de minerai. Désenclavement du Sud-Ouest algérien. Connexion avec la Dorsale Transsaharienne.",
+      "partenaires": "ANESRIF, CRCC (China Railway Construction Corporation)",
+      "source": "ANESRIF / Ministère des Travaux Publics 2025"
+    },
+    {
+      "titre": "Projet Phosphate Intégré (PPI) - Bled El Hadba",
+      "secteur": "Industrie & Mines",
+      "statut": "Études finales / Début Construction",
+      "budget": "7 Milliards USD",
+      "echeance": "2027 (Entrée en production)",
+      "description": "Projet intégré couvrant l'extraction à Tébessa (Bled El Hadba), la transformation à Souk Ahras et la production d'engrais à Skikda/Annaba. Vise à placer l'Algérie dans le Top 3 mondial des exportateurs d'engrais.",
+      "impact": "Production de 6M tonnes d'engrais/an. Revenus d'exportation attendus > 2 Mrd USD/an. 12,000 emplois en phase construction.",
+      "partenaires": "Asmidal, Manal, Partenaires Chinois (Wuhuan) & Allemands",
+      "source": "Sonatrach / Ministère de l'Énergie 2025"
+    },
+    {
+      "titre": "Dorsale Ferroviaire Transsaharienne (Alger-Tamanrasset)",
+      "secteur": "Transport & Logistique",
+      "statut": "Lancement 2025 / Études partielles achevées",
+      "budget": "Multi-milliards USD (747M€ prêt BAD pour section)",
+      "echeance": "2027-2028 (Phasé)",
+      "description": "Ligne ferroviaire nord-sud de plus de 2000 km, reliant Alger à Tamanrasset. Conçue comme un corridor logistique stratégique vers l'Afrique subsaharienne.",
+      "impact": "Désenclavement total du Grand Sud. Support logistique pour le commerce avec le Sahel. Vitesse commerciale 220 km/h sur tronçons nord.",
+      "partenaires": "ANESRIF, BAD (Banque Africaine de Développement)",
+      "source": "Présidence de la République / ANESRIF"
+    },
+    {
+      "titre": "Port en eaux profondes El Hamdania (Cherchell)",
+      "secteur": "Infrastructure Portuaire",
+      "statut": "En construction",
+      "budget": "3.3 Milliards USD",
+      "echeance": "2027-2028 (Phase 1)",
+      "description": "Méga-port commercial et logistique à Cherchell. Hub méditerranéen majeur relié au réseau ferroviaire et autoroutier.",
+      "impact": "Capacité: 6.5 millions de conteneurs EVP/an. Création de 200,000 emplois directs et indirects.",
+      "partenaires": "CSCEC (Chine), COSCO, Ministère des Transports",
+      "source": "Ministère des Transports 2025"
+    },
+    {
+      "titre": "Centrale solaire Tafouk1 (Programme 15 GW)",
+      "secteur": "Énergie Renouvelable",
+      "statut": "✅ Phase 1 OPÉRATIONNELLE",
+      "budget": "Multi-milliards USD",
+      "echeance": "2030 (15 GW total)",
+      "description": "Programme national de développement du solaire photovoltaïque. Première phase de 1 GW à Djanet opérationnelle depuis 2024.",
+      "impact": "Objectif: 15 GW solaire d'ici 2030. Réduction des émissions CO2 et diversification du mix énergétique.",
+      "partenaires": "SKTM, Sonelgaz, Partenaires internationaux",
+      "source": "Ministère de l'Énergie / Sonelgaz 2025"
+    }
+  ],
+  "EGY": [
+    {
+      "titre": "Nouvelle Capitale Administrative",
+      "secteur": "Urbanisme & Infrastructure",
+      "statut": "En construction (Phase 1 opérationnelle)",
+      "budget": "58 Milliards USD",
+      "echeance": "2025-2030 (Phases successives)",
+      "description": "Construction d'une nouvelle ville intelligente à 45km du Caire pour désengorger la capitale. Inclut le plus haut gratte-ciel d'Afrique (Iconic Tower).",
+      "impact": "Centre administratif et économique moderne pour 6.5 millions d'habitants.",
+      "partenaires": "CSCEC (Chine), Gouvernement Égyptien",
+      "source": "ACUD Egypt"
+    },
+    {
+      "titre": "Centrale Nucléaire El Dabaa",
+      "secteur": "Énergie",
+      "statut": "En construction",
+      "budget": "25-30 Milliards USD",
+      "echeance": "2028 (Premier réacteur)",
+      "description": "Première centrale nucléaire d'Égypte composée de 4 réacteurs VVER-1200.",
+      "impact": "4.8 GW de capacité électrique bas-carbone. Diversification du mix énergétique.",
+      "partenaires": "Rosatom (Russie)",
+      "source": "NPPA Egypt"
+    }
+  ],
+  "MAR": [
+    {
+      "titre": "Extension LGV (Kénitra-Marrakech)",
+      "secteur": "Transport",
+      "statut": "Lancement travaux",
+      "budget": "Est. 3 Milliards USD",
+      "echeance": "2029 (Avant Mondial 2030)",
+      "description": "Extension de la ligne à grande vitesse Al Boraq vers le sud pour relier Marrakech.",
+      "impact": "Réduction temps trajet Casablanca-Tanger. Préparation Coupe du Monde 2030.",
+      "partenaires": "ONCF",
+      "source": "ONCF"
+    }
+  ],
+  "NGA": [
+    {
+      "titre": "Ligne Ferroviaire Kano-Maradi",
+      "secteur": "Transport",
+      "statut": "En construction",
+      "budget": "1.9 Milliards USD",
+      "echeance": "2026",
+      "description": "Ligne reliant le nord du Nigéria au Niger (Maradi), facilitant le commerce transfrontalier.",
+      "impact": "Accès à la mer pour le Niger via les ports nigérians. Boost du commerce régional.",
+      "partenaires": "Mota-Engil",
+      "source": "Federal Ministry of Transportation"
+    },
+    {
+      "titre": "Gazoduc Ajaokuta-Kaduna-Kano (AKK)",
+      "secteur": "Énergie",
+      "statut": "En construction (Avancé)",
+      "budget": "2.8 Milliards USD",
+      "echeance": "2025",
+      "description": "Gazoduc de 614 km reliant le sud gazier au nord industriel du Nigéria.",
+      "impact": "Alimentation électrique du Nord, relance industrielle, export vers trans-saharien.",
+      "partenaires": "NNPC",
+      "source": "NNPC"
+    }
+  ],
+  "SEN": [
+    {
+      "titre": "Port du Futur à Ndayane",
+      "secteur": "Logistique Maritime",
+      "statut": "En construction",
+      "budget": "1.1 Milliards USD (Phase 1)",
+      "echeance": "2027",
+      "description": "Nouveau port en eau profonde à 50km de Dakar pour suppléer le port historique saturé.",
+      "impact": "Hub logistique régional. Capacité d'accueil des plus grands porte-conteneurs (Post-Panamax).",
+      "partenaires": "DP World",
+      "source": "Port Autonome de Dakar"
+    }
+  ],
+  "COD": [
+    {
+      "titre": "Port en eaux profondes de Banana",
+      "secteur": "Logistique Maritime",
+      "statut": "En construction",
+      "budget": "1.2 Milliards USD",
+      "echeance": "2027",
+      "description": "Premier port en eau profonde de la RDC, ouvrant un accès direct à l'océan sans transbordement.",
+      "impact": "Indépendance logistique de la RDC. Réduction coûts import/export.",
+      "partenaires": "DP World",
+      "source": "Gouvernement RDC"
+    }
+  ],
+  "KEN": [
+    {
+      "titre": "LAPSSET Corridor (Lamu-Garissa)",
+      "secteur": "Transport & Logistique",
+      "statut": "En construction (Phase 1)",
+      "budget": "2.5 Mrd USD (Est.)",
+      "echeance": "2025 (Route Lamu-Garissa)",
+      "description": "Corridor de transport majeur reliant le nouveau port de Lamu à l'Éthiopie et au Soudan du Sud via Garissa. Inclut routes, pipeline et aéroports.",
+      "impact": "Désenclavement du Nord Kenya. Nouvelle porte d'entrée pour l'Afrique de l'Est.",
+      "partenaires": "LAPSSET Authority, China Communications Construction",
+      "source": "Gouvernement Kenyan / AfDB 2025"
+    },
+    {
+      "titre": "SGR Phase 2B (Naivasha-Kisumu-Malaba)",
+      "secteur": "Transport Ferroviaire",
+      "statut": "Lancement Travaux 2025",
+      "budget": "Est. 3.5 Mrd USD",
+      "echeance": "2027-2028",
+      "description": "Extension de la ligne ferroviaire Standard Gauge Railway (SGR) vers la frontière ougandaise pour compléter le corridor Nord.",
+      "impact": "Connexion ferroviaire directe Mombasa-Kampala-Kigali. Réduction drastique des coûts logistiques régionaux.",
+      "partenaires": "Kenya Railways, Financement Chinois (Potentiel)",
+      "source": "Kenya Railways Corp"
+    }
+  ],
+  "TZA": [
+    {
+      "titre": "SGR Dar es Salaam-Mwanza-Kigali",
+      "secteur": "Transport Ferroviaire",
+      "statut": "En construction (Phases 3-6)",
+      "budget": "7.6 Mrd USD",
+      "echeance": "2026 (Phases principales)",
+      "description": "Ligne ferroviaire électrique à écartement standard reliant le port de Dar es Salaam aux Grands Lacs (Rwanda, Burundi, RDC).",
+      "impact": "Corridor central modernisé. Accès direct à l'océan pour les pays enclavés.",
+      "partenaires": "TRC, Yapi Merkezi, Mota-Engil",
+      "source": "Tanzania Railways Corporation"
+    },
+    {
+      "titre": "Projet Gazier LNG Lindi",
+      "secteur": "Énergie",
+      "statut": "Négociations finales / FID",
+      "budget": "30-40 Mrd USD",
+      "echeance": "2028-2030",
+      "description": "Construction d'un terminal de liquéfaction de gaz naturel à Lindi pour exploiter les immenses réserves offshore.",
+      "impact": "Transformation économique de la Tanzanie. Devises majeures via exportations GNL.",
+      "partenaires": "Equinor, Shell, ExxonMobil",
+      "source": "Tanzania Petroleum Development Corp"
+    }
+  ],
+  "ETH": [
+    {
+      "titre": "Grand Ethiopian Renaissance Dam (GERD)",
+      "secteur": "Énergie",
+      "statut": "Opérationnel (Remplissage final)",
+      "budget": "4.8 Mrd USD",
+      "echeance": "2025 (Pleine capacité)",
+      "description": "Plus grand barrage hydroélectrique d'Afrique (6.4 GW) sur le Nil Bleu.",
+      "impact": "Indépendance énergétique. Exportation d'électricité vers Kenya, Djibouti, Soudan.",
+      "partenaires": "EPP (Ethiopian Electric Power)",
+      "source": "Gouvernement Éthiopien"
+    }
+  ],
+  "ZAF": [
+    {
+      "titre": "Boegoebaai Green Hydrogen Port",
+      "secteur": "Énergie & Portuaire",
+      "statut": "Planification avancée",
+      "budget": "Est. 10 Mrd USD",
+      "echeance": "2028-2030",
+      "description": "Nouveau port en eau profonde et zone économique spéciale dédiés à la production et l'exportation d'hydrogène vert.",
+      "impact": "Hub mondial de l'hydrogène vert. Réindustrialisation du Northern Cape.",
+      "partenaires": "Sasol, Transnet",
+      "source": "Infrastructure South Africa"
+    },
+    {
+      "titre": "Extension Corridor Conteneurs Durban-Gauteng",
+      "secteur": "Logistique",
+      "statut": "En modernisation",
+      "budget": "Est. 5 Mrd USD",
+      "echeance": "2027",
+      "description": "Modernisation de l'axe logistique vital reliant le port de Durban au cœur industriel de Johannesburg (Rail & Route).",
+      "impact": "Décongestion du port de Durban. Compétitivité accrue de l'Afrique du Sud.",
+      "partenaires": "Transnet",
+      "source": "Transnet"
+    }
+  ],
+  "AGO": [
+    {
+      "titre": "Raffinerie de Lobito",
+      "secteur": "Énergie",
+      "statut": "En construction",
+      "budget": "6 Mrd USD",
+      "echeance": "2026",
+      "description": "Construction d'une raffinerie d'une capacité de 200,000 barils/jour.",
+      "impact": "Auto-suffisance en produits raffinés. Exportation régionale vers la Zambie et la RDC.",
+      "partenaires": "Sonangol",
+      "source": "Ministère des Ressources Minérales"
+    },
+    {
+      "titre": "Corridor Ferroviaire de Lobito",
+      "secteur": "Transport",
+      "statut": "Opérationnel / Extension vers Zambie",
+      "budget": "555 M USD (Financement US)",
+      "echeance": "En cours",
+      "description": "Réhabilitation et extension du chemin de fer de Benguela pour relier le port de Lobito aux mines de RDC et Zambie.",
+      "impact": "Route d'exportation la plus rapide pour le cuivre/cobalt de la Copperbelt. Soutien stratégique US/UE.",
+      "partenaires": "Lobito Atlantic Railway, DFC (USA)",
+      "source": "Gouvernement Angolais / USA"
+    }
+  ],
+  "MOZ": [
+    {
+      "titre": "Projet Mozambique LNG (Cabo Delgado)",
+      "secteur": "Énergie",
+      "statut": "Reprise progressive (Post-Force Majeure)",
+      "budget": "20 Mrd USD",
+      "echeance": "2027-2028",
+      "description": "Développement des champs gaziers offshore et usine de liquéfaction à Afungi.",
+      "impact": "Transformation du Mozambique en acteur gazier mondial majeur.",
+      "partenaires": "TotalEnergies",
+      "source": "TotalEnergies / INP"
+    }
+  ],
+  "CIV": [
+    {
+      "titre": "Métro d'Abidjan (Ligne 1)",
+      "secteur": "Transport Urbain",
+      "statut": "En construction",
+      "budget": "1.5 Mrd EUR",
+      "echeance": "2025-2026",
+      "description": "Train urbain de 37km traversant Abidjan du Nord au Sud, reliant l'aéroport.",
+      "impact": "Transport de 500,000 passagers/jour. Révolution de la mobilité à Abidjan.",
+      "partenaires": "Bouygues, Keolis, Alstom",
+      "source": "Gouvernement Ivoirien"
+    },
+    {
+      "titre": "Extension Port d'Abidjan (Terminal TC2)",
+      "secteur": "Logistique Maritime",
+      "statut": "Opérationnel / Phase 2",
+      "budget": "900 M USD",
+      "echeance": "2025 (Optimisation)",
+      "description": "Second terminal à conteneurs capable d'accueillir des navires de 14,000 EVP.",
+      "impact": "Consolidation d'Abidjan comme hub portuaire leader en Afrique de l'Ouest.",
+      "partenaires": "Port Autonome d'Abidjan, Bolloré (MSC)",
+      "source": "PAA"
+    }
+  ],
+  "CMR": [
+    {
+      "titre": "Extension Port en Eau Profonde de Kribi (Phase 2)",
+      "secteur": "Logistique Maritime",
+      "statut": "En construction",
+      "budget": "794 M USD",
+      "echeance": "2025-2026",
+      "description": "Extension des terminaux et zones logistiques pour augmenter la capacité de traitement.",
+      "impact": "Hub de transbordement régional. Débouché pour le fer de Mbalam et le Tchad/RCA.",
+      "partenaires": "CHEC (Chine), Port Autonome de Kribi",
+      "source": "PAK"
+    },
+    {
+      "titre": "Barrage de Nachtigal",
+      "secteur": "Énergie",
+      "statut": "Mise en service partielle",
+      "budget": "1.2 Mrd EUR",
+      "echeance": "2025 (Pleine puissance)",
+      "description": "Barrage hydroélectrique de 420 MW sur la Sanaga.",
+      "impact": "Augmentation de 30% de la capacité électrique du pays. Exportation vers le Tchad.",
+      "partenaires": "EDF, SFI",
+      "source": "NHPC"
+    }
+  ],
+  "TUN": [
+    {
+      "titre": "Interconnexion Électrique ELMED (Tunisie-Italie)",
+      "secteur": "Énergie",
+      "statut": "Approuvé / Financement bouclé",
+      "budget": "850 M EUR",
+      "echeance": "2028",
+      "description": "Câble sous-marin de 200km reliant le réseau électrique tunisien à l'Europe (Sicile).",
+      "impact": "Pont énergétique Afrique-Europe. Exportation d'énergies renouvelables solaires.",
+      "partenaires": "STEG, Terna, UE",
+      "source": "Ministère de l'Industrie"
+    }
+  ]
+}

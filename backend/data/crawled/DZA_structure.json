@@ -1,0 +1,694 @@
+{
+  "country": "DZA",
+  "country_name": "Algérie",
+  "source": "conformepro.dz (données douane.gov.dz)",
+  "extracted_at": "2026-02-11T21:51:34.895638",
+  "stats": {
+    "sections": 21,
+    "chapters": 95,
+    "headings": 1206,
+    "sub_positions": 17115,
+    "errors": 0,
+    "started_at": null,
+    "finished_at": "2026-02-11T21:51:34.895617"
+  },
+  "sections": [
+    {
+      "code": "01",
+      "name": "Section 01Animaux vivants et produits du regne animalCette section regroupe les animaux vivants destinés à l'élevage, à la consommation ou autres usages, ainsi que les produits bruts dérivés (viande, lait, œufs, miel, etc.).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/01/animaux-vivants-et-produits-du-regne-animal"
+    },
+    {
+      "code": "02",
+      "name": "Section 02Produits du regne vegetalCouvre les végétaux, y compris les plantes vivantes, les fleurs coupées, les légumes, les fruits, les graines, les céréales, le café, le thé et les épices.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/02/produits-du-regne-vegetal"
+    },
+    {
+      "code": "03",
+      "name": "Section 03Graisses et huiles animales, vegetales ou d'origine microbienne et produits de leur dissociation, graisses alimentaires elaborees, cires d'origine animale ou vegetale.Cette section concerne toutes les graisses et huiles, qu'elles soient d'origine animale ou végétale (comme l'huile d'olive, de tournesol), ainsi que les cires naturelles et les graisses alimentaires élaborées.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/03/graisses-et-huiles-animales-vegetales-ou-dorigine-microbienne-et-produits-de-leur-dissociation-graisses-alimentaires-elaborees-cires-dorigine-animale-ou-vegetale"
+    },
+    {
+      "code": "04",
+      "name": "Section 04Produits des industries alimentaires, boissons, vinaigresCette section très large couvre les produits alimentaires transformés (conserves, sucres, préparations de céréales), les vinaigres.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/04/produits-des-industries-alimentaires-boissons-vinaigres"
+    },
+    {
+      "code": "05",
+      "name": "Section 05Produits minerauxInclut les combustibles minéraux (charbon, pétrole, gaz), les minerais métallifères, le sel, le soufre, la chaux, le ciment et les produits similaires extraits de la terre.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/05/produits-mineraux"
+    },
+    {
+      "code": "06",
+      "name": "Section 06Produits des industries chimiques ou des industries connexesCouvre une vaste gamme de produits allant des produits pharmaceutiques, aux engrais, en passant par les colorants, les explosifs, les savons, les détergents et autres composés chimiques.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/06/produits-des-industries-chimiques-ou-des-industries-connexes"
+    },
+    {
+      "code": "07",
+      "name": "Section 07Matieres plastiques et ouvrages en ces matieres, caoutchouc et ouvrages en caoutchoucSe rapporte aux polymères, aux matières plastiques primaires, aux films, aux tuyaux, aux emballages en plastique, ainsi qu'au caoutchouc naturel ou synthétique et à ses articles (pneus, gants, etc.).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/07/matieres-plastiques-et-ouvrages-en-ces-matieres-caoutchouc-et-ouvrages-en-caoutchouc"
+    },
+    {
+      "code": "08",
+      "name": "Section 08Peaux, cuirs, pelleteries et ouvrages en ces matieres, articles de bourrellerie ou de sellerie, articles de voyage, sacs a main et contenants similaires, ouvrages en boyauxCette section concerne le traitement et l'utilisation des peaux et des cuirs, des fourrures, ainsi que tous les articles qui en découlent, y compris les sacs, la maroquinerie, les articles de voyage et la sellerie.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/08/peaux-cuirs-pelleteries-et-ouvrages-en-ces-matieres-articles-de-bourrellerie-ou-de-sellerie-articles-de-voyage-sacs-a-main-et-contenants-similaires-ouvrages-en-boyaux"
+    },
+    {
+      "code": "09",
+      "name": "Section 09Bois, charbon de bois et ouvrages en bois, liege et ouvrages en liege, ouvrages de sparterie ou de vannerieRegroupe le bois à l'état brut, le bois scié, le charbon de bois, le liège et ses produits, ainsi que tous les articles fabriqués à partir de ces matières, incluant les ouvrages de vannerie.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/09/bois-charbon-de-bois-et-ouvrages-en-bois-liege-et-ouvrages-en-liege-ouvrages-de-sparterie-ou-de-vannerie"
+    },
+    {
+      "code": "10",
+      "name": "Section 10Pate de bois ou d'autres matieres fibreuses cellulosiques, papier ou carton a recycler (dechet et rebuts ), papier et ses applicationsComprend les pâtes à papier, le papier et le carton, y compris les déchets et rebuts destinés au recyclage, ainsi que tous les ouvrages finis en papier et carton (livres, cahiers, emballages, etc.).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/10/pate-de-bois-ou-dautres-matieres-fibreuses-cellulosiques-papier-ou-carton-a-recycler-dechet-et-rebuts-papier-et-ses-applications"
+    },
+    {
+      "code": "11",
+      "name": "Section 11Matieres textiles et ouvrages en ces matieresConcerne toutes les fibres textiles (coton, laine, soie, synthétique), les fils, les tissus, les tapis, les vêtements, les articles de bonneterie et autres ouvrages textiles finis.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/11/matieres-textiles-et-ouvrages-en-ces-matieres"
+    },
+    {
+      "code": "12",
+      "name": "Section 12Chaussures, coiffures, parapluies, parasols, cannes, fouets, cravaches et leurs parties, plumes appretees et articles en plumes, fleurs artificielles, ouvrages en cheveuxRegroupe les articles d'habillement et accessoires non couverts par la section 11, spécifiquement les chaussures, les chapeaux, les parapluies, les cannes, ainsi que les produits décoratifs en plumes et fleurs artificielles.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/12/chaussures-coiffures-parapluies-parasols-cannes-fouets-cravaches-et-leurs-parties-plumes-appretees-et-articles-en-plumes-fleurs-artificielles-ouvrages-en-cheveux"
+    },
+    {
+      "code": "13",
+      "name": "Section 13Ouvrages en pierres, platre, ciment, amiante, mica ou matieres analogues, produits ceramiques, verre et ouvrages en verreVise les matériaux de construction minéraux (hors métaux), y compris la pierre, le ciment, le plâtre, le verre, la céramique, les briques, les tuiles et autres ouvrages en ces matières.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/13/ouvrages-en-pierres-platre-ciment-amiante-mica-ou-matieres-analogues-produits-ceramiques-verre-et-ouvrages-en-verre"
+    },
+    {
+      "code": "14",
+      "name": "Section 14Perles fines ou de culture, pierres gemmes ou similaires, metaux precieux, plaques ou doubles de metaux precieux et ouvrages en ces matieres, bijouterie de fantaisie, monnaiesCouvre les matières et articles de grande valeur, incluant les perles, les diamants, les métaux précieux (or, argent, platine) sous diverses formes, la bijouterie fine et de fantaisie, et les monnaies.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/14/perles-fines-ou-de-culture-pierres-gemmes-ou-similaires-metaux-precieux-plaques-ou-doubles-de-metaux-precieux-et-ouvrages-en-ces-matieres-bijouterie-de-fantaisie-monnaies"
+    },
+    {
+      "code": "15",
+      "name": "Section 15Metaux communs et ouvrages en ces metauxSe réfère aux métaux non précieux (fer, acier, aluminium, cuivre, etc.) sous forme brute, semi-ouvrée (barres, tôles) ou produits finis (outils, constructions métalliques, câbles, vis, clous).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/15/metaux-communs-et-ouvrages-en-ces-metaux"
+    },
+    {
+      "code": "16",
+      "name": "Section 16Machines et appareils, materiel electrique et leurs parties, appareils d'enregistrement ou de reproduction du son, appareils d'enregistrement ou de reproduction des images et du son en television, et parties et accessoires de ces appareilsSection majeure couvrant l'équipement mécanique et électrique, y compris les moteurs, les machines-outils, les appareils ménagers, les transformateurs, le matériel de télécommunication, ainsi que l'équipement audio et vidéo.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/16/machines-et-appareils-materiel-electrique-et-leurs-parties-appareils-denregistrement-ou-de-reproduction-du-son-appareils-denregistrement-ou-de-reproduction-des-images-et-du-son-en-television-et-parties-et-accessoires-de-ces-appareils"
+    },
+    {
+      "code": "17",
+      "name": "Section 17Materiel de transportComprend tous les types de véhicules (automobiles, camions, trains), les aéronefs (avions, hélicoptères), les navires et bateaux, ainsi que les pièces détachées et accessoires essentiels au transport.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/17/materiel-de-transport"
+    },
+    {
+      "code": "18",
+      "name": "Section 18Instruments et appareils d'optique, de photographie ou de cinematographie, de mesure, de controle ou de precision, instruments et appareils medico-chirurgicaux, horlogerie, instruments de musique, parties et accessoires de ces instruments ou appareilsCouvre l'instrumentation de précision, les équipements scientifiques, les appareils photo/vidéo, les dispositifs médicaux et chirurgicaux, l'horlogerie et les instruments de musique.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/18/instruments-et-appareils-doptique-de-photographie-ou-de-cinematographie-de-mesure-de-controle-ou-de-precision-instruments-et-appareils-medico-chirurgicaux-horlogerie-instruments-de-musique-parties-et-accessoires-de-ces-instruments-ou-appareils"
+    },
+    {
+      "code": "19",
+      "name": "Section 19Armes, munitions et leurs parties et accessoiresSe rapporte aux armes de tous types (armes à feu, armes blanches, munitions, explosifs de guerre) et à leurs composants essentiels. L'importation et l'exportation de ces articles sont strictement réglementées.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/19/armes-munitions-et-leurs-parties-et-accessoires"
+    },
+    {
+      "code": "20",
+      "name": "Section 20Marchandises et produits diversUne section fourre-tout regroupant des produits finis qui ne correspondent pas aux autres sections, tels que les meubles, les luminaires, les jouets, les articles de sport et divers articles manufacturés.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/20/marchandises-et-produits-divers"
+    },
+    {
+      "code": "21",
+      "name": "Section 21Objets d'art, de collection ou d'antiquiteVise les œuvres d'art originales (peintures, sculptures), les objets de collection (timbres, pièces rares) et les antiquités de plus de cent ans.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/section/21/objets-dart-de-collection-ou-dantiquite"
+    }
+  ],
+  "chapters": [
+    {
+      "code": "01",
+      "name": "Chapitre 01Animaux vivantsCe chapitre couvre les animaux vivants de toute espèce, qu'ils soient destinés à l'alimentation, à la reproduction, à l'élevage, ou à tout autre usage, incluant le bétail, la volaille et les animaux de compagnie.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/01/animaux-vivants",
+      "section": "01"
+    },
+    {
+      "code": "02",
+      "name": "Chapitre 02Viandes et abats comestiblesCe chapitre englobe les viandes et abats comestibles, qu'ils soient frais, réfrigérés, congelés, salés, séchés ou fumés. Cela inclut la viande de bœuf، d'agneau، de volaille, et d'autres animaux.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/02/viandes-et-abats-comestibles",
+      "section": "01"
+    },
+    {
+      "code": "03",
+      "name": "Chapitre 03Poissons et crustaces, mollusques et autres invertebres aquatiquesCouvre tous les produits de la mer: poissons (vivants, frais, congelés ou transformés), crustacés (crevettes, crabes), mollusques (calamars, huîtres) et autres invertébrés aquatiques.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/03/poissons-et-crustaces-mollusques-et-autres-invertebres-aquatiques",
+      "section": "01"
+    },
+    {
+      "code": "04",
+      "name": "Chapitre 04Laits et produits de la laiterie, oeufs d'oiseaux, miel naturel, produits comestibles d'origine animale, non denommes ni compris ailleursCe chapitre regroupe le lait sous toutes ses formes (frais, concentré, en poudre), les produits laitiers (beurre, fromages, yaourts), les œufs d'oiseaux, le miel naturel et d'autres produits comestibles d'origine animale non spécifiés ailleurs.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/04/laits-et-produits-de-la-laiterie-oeufs-doiseaux-miel-naturel-produits-comestibles-dorigine-animale-non-denommes-ni-compris-ailleurs",
+      "section": "01"
+    },
+    {
+      "code": "05",
+      "name": "Chapitre 05Autres produits d'origine animale, non denommes ni compris ailleursCouvre divers produits d'origine animale, non comestibles et non spécifiés ailleurs, tels que les cornes, les os, les soies, les boyaux et les produits bruts utilisés dans l'industrie.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/05/autres-produits-dorigine-animale-non-denommes-ni-compris-ailleurs",
+      "section": "01"
+    },
+    {
+      "code": "06",
+      "name": "Chapitre 06Plantes vivantes et produits de la floriculture.Comprend les arbres, arbustes, plants, bulbes, et boutures vivants, ainsi que les fleurs coupées et le feuillage pour bouquets et ornements.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/06/plantes-vivantes-et-produits-de-la-floriculture",
+      "section": "02"
+    },
+    {
+      "code": "07",
+      "name": "Chapitre 07Legumes, plantes, racines et tubercules alimentaires.Ce chapitre concerne tous les légumes frais, réfrigérés, congelés ou séchés, y compris les pommes de terre, les oignons, les tomates, les haricots, et les racines et tubercules comestibles.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/07/legumes-plantes-racines-et-tubercules-alimentaires",
+      "section": "02"
+    },
+    {
+      "code": "08",
+      "name": "Chapitre 08Fruits comestibles, ecorces d'agrumes ou de melons.Comprend les fruits et les noix comestibles, frais ou séchés, tels que les dattes, les bananes, les pommes, les agrumes, ainsi que les écorces de melons et d'agrumes.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/08/fruits-comestibles-ecorces-dagrumes-ou-de-melons",
+      "section": "02"
+    },
+    {
+      "code": "09",
+      "name": "Chapitre 09Cafe, the, mate et epices.Couvre le café, le thé, le maté (thé du Paraguay), ainsi que la grande variété d'épices (poivre, cannelle, clous de girofle, vanille) utilisées pour l'assaisonnement et l'arôme.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/09/cafe-the-mate-et-epices",
+      "section": "02"
+    },
+    {
+      "code": "10",
+      "name": "Chapitre 10Cereales.Regroupe toutes les céréales de base telles que le blé, le riz, l'orge, le maïs et le seigle, utilisées principalement dans l'alimentation humaine et animale.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/10/cereales",
+      "section": "02"
+    },
+    {
+      "code": "11",
+      "name": "Chapitre 11Produits de la minoterie, malt, amidons et fecules, inuline, gluten de froment.Comprend les produits dérivés de la transformation des céréales : farines, semoules, malt, amidons et fécules, ainsi que le gluten de froment et l'inuline.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/11/produits-de-la-minoterie-malt-amidons-et-fecules-inuline-gluten-de-froment",
+      "section": "02"
+    },
+    {
+      "code": "12",
+      "name": "Chapitre 12Graines et fruits oleagineux, graines, semences et fruits divers, plantes industrielles ou medicinales, pailles et fourrages.Ce chapitre couvre les graines et fruits oléagineux (sésame, colza), les graines et semences diverses, les plantes utilisées dans l'industrie ou la médecine, ainsi que la paille et les fourrages pour l'alimentation animale.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/12/graines-et-fruits-oleagineux-graines-semences-et-fruits-divers-plantes-industrielles-ou-medicinales-pailles-et-fourrages",
+      "section": "02"
+    },
+    {
+      "code": "13",
+      "name": "Chapitre 13Gommes, resines et autres sucs et extraits vegetaux.Regroupe les gommes naturelles, les résines, la sève et divers extraits végétaux, souvent utilisés dans la pharmacie, la parfumerie ou l'industrie alimentaire (ex : la gomme arabique).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/13/gommes-resines-et-autres-sucs-et-extraits-vegetaux",
+      "section": "02"
+    },
+    {
+      "code": "14",
+      "name": "Chapitre 14Matieres a tresser et autres produits d'origine vegetale, non denommes ni compris ailleurs.Comprend les matières végétales brutes utilisées pour le tressage (sparterie, vannerie), comme le bambou, le rotin, ainsi que d'autres produits végétaux non spécifiés ailleurs (ex : noyaux, coques, coiffures végétales).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/14/matieres-a-tresser-et-autres-produits-dorigine-vegetale-non-denommes-ni-compris-ailleurs",
+      "section": "02"
+    },
+    {
+      "code": "15",
+      "name": "Chapitre 15Graisses et huiles animales, vegetales ou d?origine microbienne et produits de leur dissociation , graisses alimentaires elaborees , cires d'origine animale ou vegetale.Ce chapitre couvre toutes les graisses et huiles, qu'elles soient animales, végétales ou microbiennes, brutes ou raffinées, utilisées pour l'alimentation ou l'industrie, ainsi que les cires animales ou végétales.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/15/graisses-et-huiles-animales-vegetales-ou-dorigine-microbienne-et-produits-de-leur-dissociation-graisses-alimentaires-elaborees-cires-dorigine-animale-ou-vegetale",
+      "section": "03"
+    },
+    {
+      "code": "16",
+      "name": "Chapitre 16Preparations de viande, de poissons, de crustaces, de mollusques, d?autres invertebres aquatiques ou d?insectes.Désigne les préparations et conserves alimentaires à base de viande, de poisson, de crustacés, de mollusques ou d'insectes. Cela inclut les saucissons, les pâtés, les produits en conserve ou les plats préparés.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/16/preparations-de-viande-de-poissons-de-crustaces-de-mollusques-dautres-invertebres-aquatiques-ou-dinsectes",
+      "section": "04"
+    },
+    {
+      "code": "17",
+      "name": "Chapitre 17Sucres et sucreries.Regroupe les sucres de canne et de betterave, le saccharose, le lactose, le glucose, le fructose, ainsi que les confiseries et produits de boulangerie contenant du sucre.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/17/sucres-et-sucreries",
+      "section": "04"
+    },
+    {
+      "code": "18",
+      "name": "Chapitre 18Cacao et ses preparations.Couvre les fèves de cacao brutes, le beurre, la pâte et la poudre de cacao, ainsi que les produits finis à base de cacao comme le chocolat et les articles de confiserie chocolatés.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/18/cacao-et-ses-preparations",
+      "section": "04"
+    },
+    {
+      "code": "19",
+      "name": "Chapitre 19Preparations a base de cereales, de farines, d'amidons, de fecules ou de lait, patisseries.Ce chapitre traite des produits transformés à base de céréales, de farine, d'amidon ou de lait, incluant le pain, les biscuits, les pâtes alimentaires (couscous, spaghetti), les pâtisseries et les préparations pour nourrissons.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/19/preparations-a-base-de-cereales-de-farines-damidons-de-fecules-ou-de-lait-patisseries",
+      "section": "04"
+    },
+    {
+      "code": "20",
+      "name": "Chapitre 20Preparations de legumes, de fruits ou d'autres parties de plantes.Comprend les conserves de légumes, les fruits préparés (marmelades, confitures, fruits au sirop), les jus de fruits ou de légumes, et les préparations à base d'autres parties de plantes.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/20/preparations-de-legumes-de-fruits-ou-dautres-parties-de-plantes",
+      "section": "04"
+    },
+    {
+      "code": "21",
+      "name": "Chapitre 21Preparations alimentaires diverses.Ce chapitre couvre les produits alimentaires qui ne rentrent pas dans les catégories précédentes, tels que les sauces, les potages, les soupes, les levures, les extraits de café, et les compléments alimentaires.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/21/preparations-alimentaires-diverses",
+      "section": "04"
+    },
+    {
+      "code": "23",
+      "name": "Chapitre 23Residus et dechets des industries alimentaires, aliments prepares pour animaux.Regroupe les résidus et sous-produits issus des industries alimentaires (tourteaux, sons, drêches), ainsi que les aliments préparés et mélangés destinés à l'alimentation animale (bétail, volaille, animaux de compagnie).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/23/residus-et-dechets-des-industries-alimentaires-aliments-prepares-pour-animaux",
+      "section": "04"
+    },
+    {
+      "code": "25",
+      "name": "Chapitre 25Sel, soufre, terres et pierres, platres, chaux et ciments.Ce chapitre concerne les minéraux bruts et non métalliques, notamment le sel, le soufre, les terres, les pierres, les plâtres, la chaux et le ciment Portland, utilisés dans la construction et l'industrie.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/25/sel-soufre-terres-et-pierres-platres-chaux-et-ciments",
+      "section": "05"
+    },
+    {
+      "code": "26",
+      "name": "Chapitre 26Minerais, scories et cendres.Couvre les minerais métalliques (fer, cuivre, aluminium, etc.), les scories et les cendres provenant de la fusion des métaux, souvent utilisés pour l'extraction de métaux ou comme agrégats.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/26/minerais-scories-et-cendres",
+      "section": "05"
+    },
+    {
+      "code": "27",
+      "name": "Chapitre 27Combustibles mineraux, huiles minerales et produits de leurs distillations, matieres bitumineuses, cires minerales.Ce chapitre regroupe le charbon, le pétrole brut, les gaz de pétrole, les huiles minérales (kérosène, essence, gazole) et les produits bitumineux et cires minérales dérivés de la distillation du pétrole.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/27/combustibles-mineraux-huiles-minerales-et-produits-de-leurs-distillations-matieres-bitumineuses-cires-minerales",
+      "section": "05"
+    },
+    {
+      "code": "28",
+      "name": "Chapitre 28Produits chimiques inorganiques, composes inorganiques ou organiques de metaux precieux, d'elements radioactifs, de metaux des terres rares ou d'isotopes.Comprend une large gamme de produits chimiques inorganiques, comme les acides, les bases, les sels, les oxydes, ainsi que les composés de métaux précieux et les isotopes.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/28/produits-chimiques-inorganiques-composes-inorganiques-ou-organiques-de-metaux-precieux-delements-radioactifs-de-metaux-des-terres-rares-ou-disotopes",
+      "section": "06"
+    },
+    {
+      "code": "29",
+      "name": "Chapitre 29Produits chimiques organiques.Ce chapitre couvre les composés chimiques organiques plus complexes, tels que les hydrocarbures, les alcools, les phénols, les acides carboxyliques, les vitamines et les antibiotiques de base.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/29/produits-chimiques-organiques",
+      "section": "06"
+    },
+    {
+      "code": "30",
+      "name": "Chapitre 30Produits pharmaceutiques.Regroupe les médicaments destinés à la médecine humaine ou vétérinaire, les substances pharmaceutiques actives, les pansements et articles de chirurgie préparés, ainsi que les réactifs de diagnostic.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/30/produits-pharmaceutiques",
+      "section": "06"
+    },
+    {
+      "code": "31",
+      "name": "Chapitre 31EngraisCe chapitre couvre les produits utilisés pour enrichir le sol, qu'ils soient minéraux, chimiques ou organiques, fournissant des éléments nutritifs essentiels comme l'azote, le phosphore et le potassium.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/31/engrais",
+      "section": "06"
+    },
+    {
+      "code": "32",
+      "name": "Chapitre 32Extraits tannants ou tinctoriaux, tanins et leurs derives, pigments et autres matieres colorantes, peintures et vernis, mastics, encresComprend les extraits utilisés pour le tannage du cuir, les tanins, les colorants, les pigments, les peintures, les vernis, les mastics et toutes formes d'encres.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/32/extraits-tannants-ou-tinctoriaux-tanins-et-leurs-derives-pigments-et-autres-matieres-colorantes-peintures-et-vernis-mastics-encres",
+      "section": "06"
+    },
+    {
+      "code": "33",
+      "name": "Chapitre 33Huiles essentielles et resinoides, produits de parfumerie ou de toilette prepares et preparations cosmetiques.Regroupe les huiles essentielles, les résinoïdes, les préparations cosmétiques (maquillage, crèmes, lotions, shampooings) et les produits de parfumerie et de toilette finis.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/33/huiles-essentielles-et-resinoides-produits-de-parfumerie-ou-de-toilette-prepares-et-preparations-cosmetiques",
+      "section": "06"
+    },
+    {
+      "code": "34",
+      "name": "Chapitre 34Savons,agents de surface organiques, preparations pour lessives, preparations lubrifiantes, cires artificielles,cires preparees, produits d'entretien,bougies et articles similaires,pates a modeler, et compositions pour l'art dentaire a base de platre.Couvre le savon, les agents de surface organiques, les produits pour lessives et nettoyage (détergents), les préparations lubrifiantes, les cires artificielles et préparées, ainsi que les bougies et les pâtes à modeler.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/34/savonsagents-de-surface-organiques-preparations-pour-lessives-preparations-lubrifiantes-cires-artificiellescires-preparees-produits-dentretienbougies-et-articles-similairespates-a-modeler-et-compositions-pour-lart-dentaire-a-base-de-platre",
+      "section": "06"
+    },
+    {
+      "code": "35",
+      "name": "Chapitre 35Matieres albuminoides, produits a base d'amidons ou de fecules modifies, colles, enzymes.Ce chapitre inclut les matières albuminoïdes (protéines), les gélatines, les colles et adhésifs dérivés de l'amidon ou d'autres substances naturelles, ainsi que les enzymes.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/35/matieres-albuminoides-produits-a-base-damidons-ou-de-fecules-modifies-colles-enzymes",
+      "section": "06"
+    },
+    {
+      "code": "36",
+      "name": "Chapitre 36Poudres et explosifs, articles de pyrotechnie, allumettes, alliages pyrophoriques, matieres inflammables.Désigne les poudres, les explosifs, les articles de pyrotechnie (feux d'artifice), les allumettes, les matières inflammables et les articles conçus pour produire du feu ou une explosion.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/36/poudres-et-explosifs-articles-de-pyrotechnie-allumettes-alliages-pyrophoriques-matieres-inflammables",
+      "section": "06"
+    },
+    {
+      "code": "37",
+      "name": "Chapitre 37Produits photographiques ou cinematographiques.Couvre les pellicules et films photographiques ou cinématographiques, y compris les plaques sensibilisées, le papier et le carton photographiques, ainsi que les produits chimiques utilisés dans le développement.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/37/produits-photographiques-ou-cinematographiques",
+      "section": "06"
+    },
+    {
+      "code": "38",
+      "name": "Chapitre 38Produits divers des industries chimiques.Regroupe les produits chimiques et préparations non classés ailleurs, tels que les désinfectants, les pesticides, les fluides hydrauliques, les catalyseurs et les déchets de l'industrie chimique.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/38/produits-divers-des-industries-chimiques",
+      "section": "06"
+    },
+    {
+      "code": "39",
+      "name": "Chapitre 39Matieres plastiques et ouvrages en ces matieres.Ce chapitre couvre les polymères, les résines, les matières plastiques primaires (granulés, poudres), ainsi que tous les articles fabriqués en plastique (tuyaux, feuilles, emballages, ustensiles).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/39/matieres-plastiques-et-ouvrages-en-ces-matieres",
+      "section": "07"
+    },
+    {
+      "code": "40",
+      "name": "Chapitre 40Caoutchouc et ouvrages en caoutchouc.Comprend le caoutchouc naturel et synthétique sous forme brute ou semi-finie, et tous les ouvrages en caoutchouc, notamment les pneumatiques, les chambres à air, les joints et les articles d'habillement en caoutchouc.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/40/caoutchouc-et-ouvrages-en-caoutchouc",
+      "section": "07"
+    },
+    {
+      "code": "41",
+      "name": "Chapitre 41Peaux (autres que les pelleteries) et cuirs.Ce chapitre concerne les peaux brutes d'animaux (à l'exclusion des peaux à fourrure), les cuirs préparés et tannés, utilisés comme matière première pour la fabrication d'articles en cuir.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/41/peaux-autres-que-les-pelleteries-et-cuirs",
+      "section": "08"
+    },
+    {
+      "code": "42",
+      "name": "Chapitre 42Ouvrages en cuir, articles de bourrellerie ou de sellerie, articles de voyage, sacs a main et contenants similaires, ouvrages en boyaux.Couvre les articles finis en cuir, y compris les sacs à main, les articles de voyage (valises), les ceintures, les articles de bourrellerie et de sellerie, ainsi que les ouvrages en boyaux.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/42/ouvrages-en-cuir-articles-de-bourrellerie-ou-de-sellerie-articles-de-voyage-sacs-a-main-et-contenants-similaires-ouvrages-en-boyaux",
+      "section": "08"
+    },
+    {
+      "code": "43",
+      "name": "Chapitre 43Pelleteries et fourrures, pelleteries facticesDésigne les pelleteries brutes et apprêtées, ainsi que les ouvrages fabriqués à partir de peaux à fourrure naturelle ou de fourrures factices (artificielles).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/43/pelleteries-et-fourrures-pelleteries-factices",
+      "section": "08"
+    },
+    {
+      "code": "44",
+      "name": "Chapitre 44Bois, charbon de bois et ouvrages en bois.Ce chapitre couvre le bois à l'état brut (grumes), le bois scié, le bois ouvré, le contreplaqué, le charbon de bois, ainsi que les objets et articles finis en bois (cadres, ustensiles).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/44/bois-charbon-de-bois-et-ouvrages-en-bois",
+      "section": "09"
+    },
+    {
+      "code": "45",
+      "name": "Chapitre 45Liege et ouvrages en liege.Regroupe le liège naturel, le liège aggloméré, et les articles fabriqués à partir de liège, tels que les bouchons, les revêtements de sol et les joints.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/45/liege-et-ouvrages-en-liege",
+      "section": "09"
+    },
+    {
+      "code": "46",
+      "name": "Chapitre 46Ouvrages de sparterie ou de vannerie.Couvre les produits fabriqués par tressage de matières végétales (paille, osier, rotin, etc.), tels que les nattes, les paniers, les corbeilles et les articles similaires.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/46/ouvrages-de-sparterie-ou-de-vannerie",
+      "section": "09"
+    },
+    {
+      "code": "47",
+      "name": "Chapitre 47Pate de bois ou d'autres matieres fibreuses cellulosiques, papier ou carton a recycler ( dechets et rebuts )Ce chapitre concerne la pâte de bois et les autres pâtes fibreuses cellulosiques utilisées dans la fabrication du papier, ainsi que le papier et le carton destinés au recyclage (déchets et rebuts).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/47/pate-de-bois-ou-dautres-matieres-fibreuses-cellulosiques-papier-ou-carton-a-recycler-dechets-et-rebuts",
+      "section": "10"
+    },
+    {
+      "code": "48",
+      "name": "Chapitre 48Papiers et cartons, ouvrages en pate de cellulose, en papier ou en carton.Regroupe le papier et le carton sous toutes leurs formes (rouleaux, feuilles), le papier d'impression, d'écriture, les boîtes, les emballages, les mouchoirs en papier et autres articles finis en papier.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/48/papiers-et-cartons-ouvrages-en-pate-de-cellulose-en-papier-ou-en-carton",
+      "section": "10"
+    },
+    {
+      "code": "49",
+      "name": "Chapitre 49Produits de l'edition, de la presse ou des autres industries graphiques, textes manuscrits ou dactylographies et plans.Ce chapitre couvre les livres, les journaux, les magazines, les cartes géographiques, les timbres, les calendriers, les affiches, les manuscrits et tous les produits des industries graphiques.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/49/produits-de-ledition-de-la-presse-ou-des-autres-industries-graphiques-textes-manuscrits-ou-dactylographies-et-plans",
+      "section": "10"
+    },
+    {
+      "code": "50",
+      "name": "Chapitre 50SoieComprend le cocon de ver à soie, la soie grège, les fils de soie et les tissus de soie sous toutes leurs formes.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/50/soie",
+      "section": "11"
+    },
+    {
+      "code": "51",
+      "name": "Chapitre 51Laine, poils fins ou grossiers, fils et tissus de crin.Couvre la laine de mouton ou d'agneau, les poils fins ou grossiers d'animaux (cachemire, mohair), ainsi que les fils et tissus fabriqués à partir de crin de cheval.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/51/laine-poils-fins-ou-grossiers-fils-et-tissus-de-crin",
+      "section": "11"
+    },
+    {
+      "code": "52",
+      "name": "Chapitre 52Coton.Regroupe le coton sous toutes ses étapes, du coton brut (non cardé ou peigné) aux fils et tissus de coton tissés ou tricotés.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/52/coton",
+      "section": "11"
+    },
+    {
+      "code": "53",
+      "name": "Chapitre 53Autres fibres textiles vegetales, fils de papier et tissus de fils de papier.Ce chapitre concerne les fibres végétales naturelles autres que le coton (lin, chanvre, jute, ramie), ainsi que les fils de papier et les tissus fabriqués à partir de ces fils.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/53/autres-fibres-textiles-vegetales-fils-de-papier-et-tissus-de-fils-de-papier",
+      "section": "11"
+    },
+    {
+      "code": "54",
+      "name": "Chapitre 54Filaments synthetiques ou artificiels. lames et formes similaires en matieres textiles synthetiques ou artificiellesCouvre les filaments synthétiques ou artificiels continus (polyester, nylon, rayonne) et les bandes similaires, utilisés pour la production de textiles lisses et résistants.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/54/filaments-synthetiques-ou-artificiels-lames-et-formes-similaires-en-matieres-textiles-synthetiques-ou-artificielles",
+      "section": "11"
+    },
+    {
+      "code": "55",
+      "name": "Chapitre 55Fibres synthetiques ou artificielles discontinues.Désigne les fibres synthétiques ou artificielles coupées (discontinues), qui sont transformées en fils par filage, de manière similaire au coton ou à la laine.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/55/fibres-synthetiques-ou-artificielles-discontinues",
+      "section": "11"
+    },
+    {
+      "code": "56",
+      "name": "Chapitre 56Ouates, feutres et nontisses, fils speciaux, ficelles, cordes et cordages, articles de corderie.Ce chapitre regroupe les ouates, les feutres, les nontissés (tissus non tissés), les fils spéciaux, les ficelles, les cordes et les articles de corderie.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/56/ouates-feutres-et-nontisses-fils-speciaux-ficelles-cordes-et-cordages-articles-de-corderie",
+      "section": "11"
+    },
+    {
+      "code": "57",
+      "name": "Chapitre 57Tapis et autres revetements de sol en matieres textiles.Couvre tous les tapis, moquettes et autres revêtements de sol faits de matières textiles, qu'ils soient noués, tissés, tuftés ou floqués.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/57/tapis-et-autres-revetements-de-sol-en-matieres-textiles",
+      "section": "11"
+    },
+    {
+      "code": "58",
+      "name": "Chapitre 58Tissus speciaux, surfaces textiles touffetees, dentelles, tapisseries, passementeries, broderies.Regroupe les tissus spéciaux (velours, bouclés), les dentelles, les tapisseries, les rubans, les galons et autres passementeries, ainsi que les broderies.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/58/tissus-speciaux-surfaces-textiles-touffetees-dentelles-tapisseries-passementeries-broderies",
+      "section": "11"
+    },
+    {
+      "code": "59",
+      "name": "Chapitre 59Tissus impregnes, enduits recouverts ou stratifies, articles techniques en matieres textiles.Désigne les tissus imprégnés, enduits, recouverts ou stratifiés (ex : toile cirée, similicuir), ainsi que les articles textiles à usage technique, comme les tuyaux d'incendie ou les courroies de transmission.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/59/tissus-impregnes-enduits-recouverts-ou-stratifies-articles-techniques-en-matieres-textiles",
+      "section": "11"
+    },
+    {
+      "code": "60",
+      "name": "Chapitre 60Etoffes de bonneterie.Couvre tous les tissus tricotés ou crochetés, utilisés comme matière première pour la confection de vêtements ou autres articles.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/60/etoffes-de-bonneterie",
+      "section": "11"
+    },
+    {
+      "code": "61",
+      "name": "Chapitre 61Vetements et accessoires du vetement, en bonneterie.Ce chapitre concerne les vêtements et accessoires vestimentaires fabriqués par bonneterie (tricot ou crochet), tels que les pulls, chaussettes, collants, T-shirts et gants tricotés.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/61/vetements-et-accessoires-du-vetement-en-bonneterie",
+      "section": "11"
+    },
+    {
+      "code": "62",
+      "name": "Chapitre 62Vetements et accessoires du vetement, autres qu'en bonneterie.Regroupe les vêtements et accessoires vestimentaires fabriqués à partir de tissus tissés (non tricotés), tels que les costumes, chemises, pantalons, manteaux et jupes en tissus.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/62/vetements-et-accessoires-du-vetement-autres-quen-bonneterie",
+      "section": "11"
+    },
+    {
+      "code": "63",
+      "name": "Chapitre 63Autres articles textiles confectionnes, assortiments, friperie et chiffons.Couvre les articles textiles finis non classés ailleurs (sacs, bâches, couvertures), les ensembles et assortiments de textiles, ainsi que les friperies (vêtements usagés) et les chiffons de récupération.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/63/autres-articles-textiles-confectionnes-assortiments-friperie-et-chiffons",
+      "section": "11"
+    },
+    {
+      "code": "64",
+      "name": "Chapitre 64Chaussures, guetres et articles analogues, parties de ces objets.Ce chapitre concerne tous types de chaussures (cuir, caoutchouc, textile), les bottes, les guêtres et articles analogues, ainsi que les parties constitutives de ces articles (semelles, talons).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/64/chaussures-guetres-et-articles-analogues-parties-de-ces-objets",
+      "section": "12"
+    },
+    {
+      "code": "65",
+      "name": "Chapitre 65Coiffures et parties de coiffures.Regroupe les chapeaux, les casquettes, les bérets, les voiles et autres coiffures, ainsi que les garnitures et parties de ces couvre-chefs.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/65/coiffures-et-parties-de-coiffures",
+      "section": "12"
+    },
+    {
+      "code": "66",
+      "name": "Chapitre 66Parapluies, ombrelles, parasols, cannes, cannes-sieges, fouets, cravaches et leurs parties.Couvre les parapluies, ombrelles, parasols, les cannes (y compris cannes-sièges), les fouets et les cravaches, ainsi que leurs pièces détachées.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/66/parapluies-ombrelles-parasols-cannes-cannes-sieges-fouets-cravaches-et-leurs-parties",
+      "section": "12"
+    },
+    {
+      "code": "67",
+      "name": "Chapitre 67Plumes et duvet appretes et articles en plumes ou en duvet, fleurs artificielles, ouvrages en cheveux.Désigne les plumes et le duvet préparés, les articles faits de ces matières (ex: oreillers), les fleurs artificielles, les fruits artificiels, et les ouvrages en cheveux naturels ou artificiels (perruques).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/67/plumes-et-duvet-appretes-et-articles-en-plumes-ou-en-duvet-fleurs-artificielles-ouvrages-en-cheveux",
+      "section": "12"
+    },
+    {
+      "code": "68",
+      "name": "Chapitre 68Ouvrages en pierres, platre, ciment, amiante, mica ou matieres analogues.Ce chapitre concerne les ouvrages fabriqués à partir de pierres, plâtre, ciment, amiante, mica ou de matières minérales similaires (ex: meules, abrasifs, briques, dalles).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/68/ouvrages-en-pierres-platre-ciment-amiante-mica-ou-matieres-analogues",
+      "section": "13"
+    },
+    {
+      "code": "69",
+      "name": "Chapitre 69Produits ceramiques.Regroupe tous les produits céramiques, y compris les briques, les tuiles, les carreaux, la vaisselle, les articles sanitaires et les isolateurs électriques en céramique.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/69/produits-ceramiques",
+      "section": "13"
+    },
+    {
+      "code": "70",
+      "name": "Chapitre 70Verre et ouvrages en verre.Couvre le verre sous toutes ses formes (brut, en feuilles, isolant), le verre travaillé, les miroirs, les bouteilles, les verres de lunettes et la verrerie de laboratoire.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/70/verre-et-ouvrages-en-verre",
+      "section": "13"
+    },
+    {
+      "code": "71",
+      "name": "Chapitre 71Perles fines ou de culture, pierres gemmes ou similaires, metaux precieux, plaques ou doubles de metaux precieux et ouvrages en ces matieres, bijouterie de fantaisie, monnaies.Désigne les perles (fines ou de culture), les pierres gemmes (diamants, rubis), les métaux précieux (or, argent, platine) et leurs ouvrages, la bijouterie de fantaisie, et les monnaies.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/71/perles-fines-ou-de-culture-pierres-gemmes-ou-similaires-metaux-precieux-plaques-ou-doubles-de-metaux-precieux-et-ouvrages-en-ces-matieres-bijouterie-de-fantaisie-monnaies",
+      "section": "14"
+    },
+    {
+      "code": "72",
+      "name": "Chapitre 72Fonte, fer et acier.Ce chapitre concerne les produits de base de la sidérurgie: la fonte brute, le ferro-alliages, et l'acier (y compris l'acier inoxydable) sous forme de lingots, barres, fils ou tôles.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/72/fonte-fer-et-acier",
+      "section": "15"
+    },
+    {
+      "code": "73",
+      "name": "Chapitre 73Ouvrages en fonte, fer ou acier.Couvre les ouvrages finis en fer ou en acier, tels que les tubes, les tuyaux, les réservoirs, les clous, les chaînes, les articles de quincaillerie et les structures métalliques.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/73/ouvrages-en-fonte-fer-ou-acier",
+      "section": "15"
+    },
+    {
+      "code": "74",
+      "name": "Chapitre 74Cuivre et ouvrages en cuivre.Désigne le cuivre sous forme brute, les alliages de cuivre (laiton, bronze), ainsi que tous les ouvrages en cuivre (fils, plaques, tubes, ustensiles de cuisine, pièces de robinetterie).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/74/cuivre-et-ouvrages-en-cuivre",
+      "section": "15"
+    },
+    {
+      "code": "75",
+      "name": "Chapitre 75Nickel et ouvrages en nickel.Regroupe le nickel sous forme brute, ses alliages, et les ouvrages en nickel, utilisés souvent pour le placage, les batteries ou les outils.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/75/nickel-et-ouvrages-en-nickel",
+      "section": "15"
+    },
+    {
+      "code": "76",
+      "name": "Chapitre 76Aluminium et ouvrages en aluminium.Ce chapitre concerne l'aluminium (brut ou allié) et tous les ouvrages fabriqués en aluminium, incluant les profilés, les feuilles (papier d'aluminium), les ustensiles de cuisine et les constructions.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/76/aluminium-et-ouvrages-en-aluminium",
+      "section": "15"
+    },
+    {
+      "code": "78",
+      "name": "Chapitre 78Plomb et ouvrages en plomb.Ce chapitre regroupe le plomb et les ouvrages en plomb, un métal lourd utilisé dans les batteries, les blindages et certains alliages.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/78/plomb-et-ouvrages-en-plomb",
+      "section": "15"
+    },
+    {
+      "code": "79",
+      "name": "Chapitre 79Zinc et ouvrages en zinc.Couvre le zinc et ses ouvrages. Le zinc est principalement utilisé pour galvaniser l'acier (revêtement protecteur) et dans la fabrication d'alliages.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/79/zinc-et-ouvrages-en-zinc",
+      "section": "15"
+    },
+    {
+      "code": "80",
+      "name": "Chapitre 80Etain et ouvrages en etain.Désigne l'étain sous forme brute, ses alliages (y compris la soudure) et les ouvrages en étain, souvent utilisé pour l'étamage et dans la fabrication de bronzes.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/80/etain-et-ouvrages-en-etain",
+      "section": "15"
+    },
+    {
+      "code": "81",
+      "name": "Chapitre 81Autres metaux communs, cermets, ouvrages en ces matieres.Regroupe les métaux communs qui n'ont pas été couverts dans les chapitres 74 à 79 (ex: tungstène, magnésium), les cermets (composés métal-céramique) et les ouvrages fabriqués à partir de ces matériaux.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/81/autres-metaux-communs-cermets-ouvrages-en-ces-matieres",
+      "section": "15"
+    },
+    {
+      "code": "82",
+      "name": "Chapitre 82Outils et outillage, articles de coutellerie et couverts de table, en metaux communs, parties de ces articles, en metaux communs.Ce chapitre couvre les outils à main et l'outillage utilisés dans divers métiers (agriculture, construction), ainsi que la coutellerie et les couverts de table en métaux communs.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/82/outils-et-outillage-articles-de-coutellerie-et-couverts-de-table-en-metaux-communs-parties-de-ces-articles-en-metaux-communs",
+      "section": "15"
+    },
+    {
+      "code": "83",
+      "name": "Chapitre 83Ouvrages divers en metaux communs.Couvre divers ouvrages en métaux communs non spécifiés ailleurs, tels que les serrures, les garnitures, les fermetures, les cadres métalliques, et les plaques signalétiques.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/83/ouvrages-divers-en-metaux-communs",
+      "section": "15"
+    },
+    {
+      "code": "84",
+      "name": "Chapitre 84Reacteurs nucleaires, chaudieres, machines, appareils et engins mecaniques, parties de ces machines ou appareils.Regroupe les chaudières, les réacteurs nucléaires, les moteurs (sauf véhicules), les pompes, les machines-outils, les appareils de chauffage et de réfrigération, et leurs pièces mécaniques.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/84/reacteurs-nucleaires-chaudieres-machines-appareils-et-engins-mecaniques-parties-de-ces-machines-ou-appareils",
+      "section": "16"
+    },
+    {
+      "code": "85",
+      "name": "Chapitre 85Machines, appareils et materiels electriques et leurs parties, appareils d'enregistrement ou de reproduction du son, appareils d'enregistrement ou de reproduction des images et du son en television, et parties et accessoires de ces appareils.Ce chapitre concerne les machines et appareils électriques, y compris les générateurs, les transformateurs, les piles, les câbles, les appareils d'enregistrement et de reproduction du son et de l'image (TV).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/85/machines-appareils-et-materiels-electriques-et-leurs-parties-appareils-denregistrement-ou-de-reproduction-du-son-appareils-denregistrement-ou-de-reproduction-des-images-et-du-son-en-television-et-parties-et-accessoires-de-ces-appareils",
+      "section": "16"
+    },
+    {
+      "code": "86",
+      "name": "Chapitre 86Vehicules et materiel pour voies ferrees ou similaires et leurs parties, appareils mecaniques (y compris electromecaniques) de signalisation pour voies de communication.Couvre les locomotives, le matériel roulant, les wagons de chemin de fer ou de tramway, leurs parties, ainsi que les appareils de signalisation mécaniques ou électromécaniques pour les voies de communication.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/86/vehicules-et-materiel-pour-voies-ferrees-ou-similaires-et-leurs-parties-appareils-mecaniques-y-compris-electromecaniques-de-signalisation-pour-voies-de-communication",
+      "section": "17"
+    },
+    {
+      "code": "87",
+      "name": "Chapitre 87Voitures automobiles, tracteurs, cycles et autres vehicules terrestres, leurs parties et accessoires.Désigne tous les véhicules terrestres : voitures de tourisme, camions, tracteurs, motos, bicyclettes, et leurs parties et accessoires (pièces détachées, carrosseries).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/87/voitures-automobiles-tracteurs-cycles-et-autres-vehicules-terrestres-leurs-parties-et-accessoires",
+      "section": "17"
+    },
+    {
+      "code": "88",
+      "name": "Chapitre 88Navigation aerienne ou spatiale.Regroupe les aéronefs (avions, hélicoptères), les véhicules spatiaux (satellites, fusées), et leurs parties constitutives (moteurs d'avion, trains d'atterrissage).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/88/navigation-aerienne-ou-spatiale",
+      "section": "17"
+    },
+    {
+      "code": "89",
+      "name": "Chapitre 89Navigation maritime ou fluviale.Ce chapitre couvre les navires, bateaux, embarcations de tout type (y compris les bateaux de pêche et de plaisance), ainsi que les structures flottantes (barges, phares flottants).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/89/navigation-maritime-ou-fluviale",
+      "section": "17"
+    },
+    {
+      "code": "90",
+      "name": "Chapitre 90Instruments et appareils d'optique, de photographie ou de cinematographie, de mesure, de controle ou de precision, instruments et appareils medico-chirurgicaux, parties et accessoires de ces instruments ou appareils.Désigne les instruments d'optique (lentilles, télescopes), les appareils de photographie, de mesure, de contrôle (thermostats, compteurs), et les instruments et appareils médico-chirurgicaux (stéthoscopes, scanners).",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/90/instruments-et-appareils-doptique-de-photographie-ou-de-cinematographie-de-mesure-de-controle-ou-de-precision-instruments-et-appareils-medico-chirurgicaux-parties-et-accessoires-de-ces-instruments-ou-appareils",
+      "section": "18"
+    },
+    {
+      "code": "91",
+      "name": "Chapitre 91Horlogerie.Couvre les montres-bracelets, les horloges, les pendules, les mécanismes d'horlogerie et toutes les parties et accessoires associés, y compris les boîtiers et cadrans.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/91/horlogerie",
+      "section": "18"
+    },
+    {
+      "code": "92",
+      "name": "Chapitre 92Instruments de musique, parties et accessoires de ces instruments.Regroupe les instruments de musique (pianos, guitares, violons, instruments à vent), les parties (cordes, mécanismes) et les accessoires de ces instruments.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/92/instruments-de-musique-parties-et-accessoires-de-ces-instruments",
+      "section": "18"
+    },
+    {
+      "code": "93",
+      "name": "Chapitre 93Armes, munitions et leurs parties et accessoires.Ce chapitre concerne les armes de guerre, les armes de chasse et de sport, les armes blanches, les munitions et projectiles, ainsi que toutes les parties et accessoires d'armes.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/93/armes-munitions-et-leurs-parties-et-accessoires",
+      "section": "19"
+    },
+    {
+      "code": "94",
+      "name": "Chapitre 94Meubles, mobilier medico-chirurgical, articles de literie et similaires, luminaires et appareils d?eclairage non denommes ni compris ailleurs, lampes-reclames, enseignes lumineuses, plaques indicatrices lumineuses et articles similaires, constructions prefabriqueesCouvre les meubles de maison et de bureau, le mobilier médico-chirurgical, les articles de literie, les luminaires et appareils d'éclairage (sauf ceux du Chapitre 85), ainsi que les constructions préfabriquées.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/94/meubles-mobilier-medico-chirurgical-articles-de-literie-et-similaires-luminaires-et-appareils-declairage-non-denommes-ni-compris-ailleurs-lampes-reclames-enseignes-lumineuses-plaques-indicatrices-lumineuses-et-articles-similaires-constructions-prefabriquees",
+      "section": "20"
+    },
+    {
+      "code": "95",
+      "name": "Chapitre 95Jouets, jeux, articles pour divertissements ou pour sports, leurs parties et accessoires.Désigne les jouets de tout type (poupées, jeux de construction), les jeux pour adultes et enfants, les articles pour divertissements et pour sports, y compris les équipements de pêche et les articles de camping.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/95/jouets-jeux-articles-pour-divertissements-ou-pour-sports-leurs-parties-et-accessoires",
+      "section": "20"
+    },
+    {
+      "code": "96",
+      "name": "Chapitre 96Ouvrages divers.Regroupe les articles manufacturés qui ne rentrent pas dans les autres chapitres, tels que les balais, les brosses, les boutons, les fermetures à glissière, les stylos, les briquets et les articles funéraires.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/96/ouvrages-divers",
+      "section": "20"
+    },
+    {
+      "code": "97",
+      "name": "Chapitre 97Objets d'arts, de collection ou d'antiquite.Couvre les tableaux, dessins, peintures, sculptures, estampes, timbres de collection et les objets d'antiquité de plus de cent ans.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/97/objets-darts-de-collection-ou-dantiquite",
+      "section": "21"
+    },
+    {
+      "code": "98",
+      "name": "Chapitre 98Effets personnelsCe code est généralement utilisé pour les effets personnels des voyageurs ou des résidents qui reviennent dans le pays, non destinés à la revente, et bénéficiant souvent d'un régime douanier simplifié.",
+      "url": "https://conformepro.dz/resources/tarif-douanier/chapitre/98/effets-personnels",
+      "section": "21"
+    }
+  ]
+}

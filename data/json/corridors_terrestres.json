@@ -1,0 +1,937 @@
+{
+  "corridors": [
+    {
+      "corridor_id": "CORR-ABIDJAN-OUAGA-001",
+      "corridor_name": "Corridor Abidjan-Ouagadougou-Niamey",
+      "corridor_type": "multimodal",
+      "countries_spanned": ["CIV", "BFA", "NER"],
+      "start_node": "Port d'Abidjan",
+      "end_node": "Niamey",
+      "length_km": 1420,
+      "status": "Opérationnel",
+      "infra_details": "Route A3 entièrement pavée (CIV), Rail Sitarail écartement métrique (Abidjan-Ouaga), Route RN3 (BFA-NER)",
+      "importance": "high",
+      "description": "Principal corridor d'exportation du Burkina Faso et du Niger vers l'Atlantique",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [5.3364, -4.0267],
+        [6.5244, -3.0478],
+        [8.9809, -2.1097],
+        [12.3714, -1.5197],
+        [13.5127, 2.1098]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-FERKE-001",
+          "node_name": "Port Sec de Ferkessédougou",
+          "node_type": "dry_port",
+          "country_iso": "CIV",
+          "geo_lat": 9.5980,
+          "geo_lon": -5.1956,
+          "is_osbp": false,
+          "notes": "Terminal intermodal Sitarail, connexion rail-route"
+        },
+        {
+          "node_id": "NODE-OUANGOLO-001",
+          "node_name": "Poste Frontière OSBP Ouangolodougou",
+          "node_type": "border_crossing",
+          "country_iso": "CIV",
+          "geo_lat": 9.9600,
+          "geo_lon": -5.1500,
+          "is_osbp": true,
+          "notes": "One-Stop Border Post Côte d'Ivoire-Burkina Faso"
+        },
+        {
+          "node_id": "NODE-OUAGA-RAIL-001",
+          "node_name": "Terminal Rail de Ouagadougou",
+          "node_type": "rail_terminal",
+          "country_iso": "BFA",
+          "geo_lat": 12.3714,
+          "geo_lon": -1.5197,
+          "is_osbp": false,
+          "notes": "Terminus Sitarail, principal hub logistique Burkina"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 72,
+        "avg_border_crossing_time_hours": 24,
+        "freight_throughput_tons": 2500000,
+        "truck_volumes_daily": 450,
+        "source_org": "Observatoire des pratiques anormales (OPA)",
+        "source_url": "https://www.opabicc.org/"
+      },
+      "operators": [
+        {
+          "operator_name": "Sitarail",
+          "operator_type": "rail_operator",
+          "group": "Bolloré Africa Logistics",
+          "fleet_size": 35,
+          "country_iso": "CIV"
+        },
+        {
+          "operator_name": "Bolloré Transport & Logistics",
+          "operator_type": "trucking_company",
+          "group": "Bolloré Africa Logistics",
+          "fleet_size": 850,
+          "country_iso": "CIV"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-ABIDJAN-LAGOS-002",
+      "corridor_name": "Corridor Abidjan-Lagos (Autoroute Transafricaine)",
+      "corridor_type": "road",
+      "countries_spanned": ["CIV", "GHA", "TGO", "BEN", "NGA"],
+      "start_node": "Abidjan",
+      "end_node": "Lagos",
+      "length_km": 992,
+      "status": "Opérationnel",
+      "infra_details": "Route côtière A1 (CIV), N1 (GHA), RNIE1 (TGO), RNIE1 (BEN), A121 (NGA) - Sections pavées et non pavées",
+      "importance": "high",
+      "description": "Axe vital du commerce intra-CEDEAO, relie les deux principales économies d'Afrique de l'Ouest",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [5.3364, -4.0267],
+        [5.6037, -0.1870],
+        [6.1256, 1.2223],
+        [6.4969, 2.6289],
+        [6.4541, 3.3958]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-ELUBO-001",
+          "node_name": "Poste Frontière Elubo (CIV-GHA)",
+          "node_type": "border_crossing",
+          "country_iso": "CIV",
+          "geo_lat": 5.1372,
+          "geo_lon": -2.8354,
+          "is_osbp": false,
+          "notes": "Point de passage majeur, congestion fréquente"
+        },
+        {
+          "node_id": "NODE-AFLAO-001",
+          "node_name": "Poste Frontière OSBP Aflao (GHA-TGO)",
+          "node_type": "border_crossing",
+          "country_iso": "GHA",
+          "geo_lat": 6.1156,
+          "geo_lon": 1.1934,
+          "is_osbp": true,
+          "notes": "OSBP opérationnel depuis 2019"
+        },
+        {
+          "node_id": "NODE-HILLACONDJI-001",
+          "node_name": "Poste Frontière OSBP Hillacondji (TGO-BEN)",
+          "node_type": "border_crossing",
+          "country_iso": "TGO",
+          "geo_lat": 6.6289,
+          "geo_lon": 1.7786,
+          "is_osbp": true,
+          "notes": "OSBP moderne, réduit délais significativement"
+        },
+        {
+          "node_id": "NODE-SEME-001",
+          "node_name": "Poste Frontière Seme-Krake (BEN-NGA)",
+          "node_type": "border_crossing",
+          "country_iso": "BEN",
+          "geo_lat": 6.3667,
+          "geo_lon": 2.6500,
+          "is_osbp": false,
+          "notes": "Point le plus congestionné, OSBP en construction"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 48,
+        "avg_border_crossing_time_hours": 18,
+        "freight_throughput_tons": 8500000,
+        "truck_volumes_daily": 1850,
+        "source_org": "CEDEAO Commission",
+        "source_url": "https://www.ecowas.int/"
+      },
+      "operators": [
+        {
+          "operator_name": "STMA (Société de Transport Moderne Africain)",
+          "operator_type": "trucking_company",
+          "group": "Regional",
+          "fleet_size": 420,
+          "country_iso": "CIV"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-MOMBASA-NAIROBI-003",
+      "corridor_name": "Northern Corridor (Mombasa-Nairobi-Kampala-Kigali)",
+      "corridor_type": "multimodal",
+      "countries_spanned": ["KEN", "UGA", "RWA", "BDI", "COD", "SSD"],
+      "start_node": "Port de Mombasa",
+      "end_node": "Kampala",
+      "length_km": 1720,
+      "status": "Opérationnel",
+      "infra_details": "Route A109 (KEN), Nouvelle ligne SGR (Standard Gauge Railway) Mombasa-Nairobi opérationnelle, Route A104 (UGA)",
+      "importance": "high",
+      "description": "Principal corridor d'Afrique de l'Est, SGR moderne jusqu'à Nairobi, projet d'extension vers Kampala",
+      "source_org": "PIDA, EAC",
+      "coordinates": [
+        [-4.0435, 39.6682],
+        [-1.2864, 36.8172],
+        [0.3136, 32.5811],
+        [-1.9536, 30.0605]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-NAIROBI-ICD-001",
+          "node_name": "Inland Container Depot Nairobi",
+          "node_type": "dry_port",
+          "country_iso": "KEN",
+          "geo_lat": -1.3195,
+          "geo_lon": 36.9275,
+          "is_osbp": false,
+          "notes": "Principal terminal SGR, hub logistique majeur"
+        },
+        {
+          "node_id": "NODE-MALABA-001",
+          "node_name": "Poste Frontière OSBP Malaba (KEN-UGA)",
+          "node_type": "border_crossing",
+          "country_iso": "KEN",
+          "geo_lat": 0.6333,
+          "geo_lon": 34.2667,
+          "is_osbp": true,
+          "notes": "OSBP moderne, temps de passage réduit à 4h"
+        },
+        {
+          "node_id": "NODE-KAMPALA-ICD-001",
+          "node_name": "Kampala Inland Container Depot",
+          "node_type": "dry_port",
+          "country_iso": "UGA",
+          "geo_lat": 0.3476,
+          "geo_lon": 32.6253,
+          "is_osbp": false,
+          "notes": "Terminal intermodal principal Ouganda"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 36,
+        "avg_border_crossing_time_hours": 6,
+        "freight_throughput_tons": 12500000,
+        "truck_volumes_daily": 2100,
+        "source_org": "Northern Corridor Transit & Transport Coordination Authority",
+        "source_url": "https://www.ttcanc.org/"
+      },
+      "operators": [
+        {
+          "operator_name": "Kenya Railways (SGR)",
+          "operator_type": "rail_operator",
+          "group": "Government of Kenya",
+          "fleet_size": 56,
+          "country_iso": "KEN"
+        },
+        {
+          "operator_name": "Rift Valley Railways",
+          "operator_type": "rail_operator",
+          "group": "Private (suspended)",
+          "fleet_size": 0,
+          "country_iso": "KEN"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-DURBAN-GAUTENG-004",
+      "corridor_name": "Corridor Nord-Sud (Durban-Gauteng-Beitbridge)",
+      "corridor_type": "multimodal",
+      "countries_spanned": ["ZAF", "ZWE", "ZMB", "TZA"],
+      "start_node": "Port de Durban",
+      "end_node": "Dar es Salaam",
+      "length_km": 3200,
+      "status": "Opérationnel",
+      "infra_details": "Route N3 (ZAF), Ligne ferroviaire écartement du Cap 1067mm, Route A6 (ZWE)",
+      "importance": "high",
+      "description": "Épine dorsale logistique de l'Afrique australe, relie le principal port au heartland industriel",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [-29.8587, 31.0218],
+        [-26.2041, 28.0473],
+        [-22.4239, 29.7857],
+        [-15.4167, 28.2833],
+        [-6.7924, 39.2083]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-CITY-DEEP-001",
+          "node_name": "City Deep Container Terminal",
+          "node_type": "intermodal_hub",
+          "country_iso": "ZAF",
+          "geo_lat": -26.2406,
+          "geo_lon": 28.1094,
+          "is_osbp": false,
+          "notes": "Plus grand terminal intermodal d'Afrique, connecté Durban par rail dédié"
+        },
+        {
+          "node_id": "NODE-BEITBRIDGE-001",
+          "node_name": "Poste Frontière Beitbridge (ZAF-ZWE)",
+          "node_type": "border_crossing",
+          "country_iso": "ZAF",
+          "geo_lat": -22.2167,
+          "geo_lon": 29.9833,
+          "is_osbp": false,
+          "notes": "Point le plus fréquenté SADC, congestion chronique, OSBP en projet"
+        },
+        {
+          "node_id": "NODE-CHIRUNDU-001",
+          "node_name": "Poste Frontière OSBP Chirundu (ZWE-ZMB)",
+          "node_type": "border_crossing",
+          "country_iso": "ZWE",
+          "geo_lat": -15.9833,
+          "geo_lon": 28.8500,
+          "is_osbp": true,
+          "notes": "Premier OSBP d'Afrique (2009), modèle de réussite"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 120,
+        "avg_border_crossing_time_hours": 36,
+        "freight_throughput_tons": 75000000,
+        "truck_volumes_daily": 3500,
+        "source_org": "Transnet, SADC",
+        "source_url": "https://www.transnet.net/"
+      },
+      "operators": [
+        {
+          "operator_name": "Transnet Freight Rail",
+          "operator_type": "rail_operator",
+          "group": "South African SOE",
+          "fleet_size": 2100,
+          "country_iso": "ZAF"
+        },
+        {
+          "operator_name": "Super Group",
+          "operator_type": "trucking_company",
+          "group": "Private",
+          "fleet_size": 4200,
+          "country_iso": "ZAF"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-LOBITO-005",
+      "corridor_name": "Corridor de Lobito (Angola-RDC-Zambie)",
+      "corridor_type": "rail",
+      "countries_spanned": ["AGO", "COD", "ZMB"],
+      "start_node": "Port de Lobito",
+      "end_node": "Frontière Zambie",
+      "length_km": 1344,
+      "status": "En réhabilitation",
+      "infra_details": "Ligne Chemin de Fer de Benguela (CFB), écartement 1067mm, en cours de modernisation",
+      "importance": "high",
+      "description": "Corridor historique minier, réhabilitation majeure en cours avec financement USA/UE, alternative au Sud pour l'évacuation du cuivre de la Copper Belt",
+      "source_org": "PIDA, Banque Mondiale",
+      "coordinates": [
+        [-12.3500, 13.5500],
+        [-11.8167, 19.9000],
+        [-12.5333, 27.4667]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-LOBITO-RAIL-001",
+          "node_name": "Terminal Rail de Lobito",
+          "node_type": "rail_terminal",
+          "country_iso": "AGO",
+          "geo_lat": -12.3500,
+          "geo_lon": 13.5500,
+          "is_osbp": false,
+          "notes": "Terminus atlantique du CFB, en modernisation"
+        },
+        {
+          "node_id": "NODE-LUAU-001",
+          "node_name": "Poste Frontière Luau (AGO-COD)",
+          "node_type": "border_crossing",
+          "country_iso": "AGO",
+          "geo_lat": -10.7000,
+          "geo_lon": 22.2333,
+          "is_osbp": false,
+          "notes": "Point de passage rail Benguela"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 168,
+        "freight_throughput_tons": 850000,
+        "source_org": "CFB Angola",
+        "source_url": "https://www.cfbenguela.co.ao/"
+      },
+      "operators": [
+        {
+          "operator_name": "CFB (Chemin de Fer de Benguela)",
+          "operator_type": "rail_operator",
+          "group": "Government of Angola",
+          "fleet_size": 28,
+          "country_iso": "AGO"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-DAKAR-BAMAKO-006",
+      "corridor_name": "Corridor Dakar-Bamako",
+      "corridor_type": "multimodal",
+      "countries_spanned": ["SEN", "MLI"],
+      "start_node": "Port de Dakar",
+      "end_node": "Bamako",
+      "length_km": 1228,
+      "status": "Opérationnel",
+      "infra_details": "Route N1/RN1 (sections pavées et latérite), Rail écartement métrique 1000mm (état dégradé, projet de réhabilitation)",
+      "importance": "medium",
+      "description": "Principal corridor d'évacuation du Mali enclavé, ligne ferroviaire historique nécessitant modernisation",
+      "source_org": "PIDA, UEMOA",
+      "coordinates": [
+        [14.6937, -17.4441],
+        [13.0514, -12.5092],
+        [12.6392, -8.0029]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-KIDIRA-001",
+          "node_name": "Poste Frontière Kidira (SEN-MLI)",
+          "node_type": "border_crossing",
+          "country_iso": "SEN",
+          "geo_lat": 14.4500,
+          "geo_lon": -12.2167,
+          "is_osbp": false,
+          "notes": "Point ferroviaire et routier, projet OSBP"
+        },
+        {
+          "node_id": "NODE-TAMBACOUNDA-RAIL-001",
+          "node_name": "Terminal Rail Tambacounda",
+          "node_type": "rail_terminal",
+          "country_iso": "SEN",
+          "geo_lat": 13.7700,
+          "geo_lon": -13.6672,
+          "is_osbp": false,
+          "notes": "Hub intermédiaire ferroviaire"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 84,
+        "avg_border_crossing_time_hours": 12,
+        "freight_throughput_tons": 1200000,
+        "truck_volumes_daily": 320,
+        "source_org": "Transrail SA",
+        "source_url": "https://www.transrail.sn/"
+      },
+      "operators": [
+        {
+          "operator_name": "Transrail",
+          "operator_type": "rail_operator",
+          "group": "Private (Getma-SNCF)",
+          "fleet_size": 22,
+          "country_iso": "SEN"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-TRANS-MAGHREB-007",
+      "corridor_name": "Trans-Maghreb (Tanger-Tunis-Tripoli-Le Caire)",
+      "corridor_type": "road",
+      "countries_spanned": ["MAR", "DZA", "TUN", "LBY", "EGY"],
+      "start_node": "Tanger",
+      "end_node": "Le Caire",
+      "length_km": 4850,
+      "status": "Partiellement opérationnel",
+      "infra_details": "Autoroute du Maghreb (sections nationales de qualité variable), Libye en reconstruction",
+      "importance": "medium",
+      "description": "Axe autoroutier panmaghrébain, discontinuités dues aux fermetures de frontières politiques (Maroc-Algérie, Libye instable)",
+      "source_org": "PIDA, UMA",
+      "coordinates": [
+        [35.7595, -5.8340],
+        [36.7539, 3.0588],
+        [36.8065, 10.1815],
+        [32.8872, 13.1913],
+        [30.0444, 31.2357]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-MAGHNIA-001",
+          "node_name": "Poste Frontière Maghnia (DZA-MAR)",
+          "node_type": "border_crossing",
+          "country_iso": "DZA",
+          "geo_lat": 34.8667,
+          "geo_lon": -1.7833,
+          "is_osbp": false,
+          "notes": "Frontière fermée depuis 1994"
+        },
+        {
+          "node_id": "NODE-RAS-JEDIR-001",
+          "node_name": "Poste Frontière Ras Jedir (TUN-LBY)",
+          "node_type": "border_crossing",
+          "country_iso": "TUN",
+          "geo_lat": 33.0500,
+          "geo_lon": 11.4667,
+          "is_osbp": false,
+          "notes": "Fluctuations selon situation sécuritaire Libye"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 240,
+        "avg_border_crossing_time_hours": 48,
+        "source_org": "UMA",
+        "source_url": "https://www.maghrebarabe.org/"
+      },
+      "operators": []
+    },
+    {
+      "corridor_id": "CORR-TAZARA-008",
+      "corridor_name": "TAZARA (Tanzanie-Zambie)",
+      "corridor_type": "rail",
+      "countries_spanned": ["TZA", "ZMB"],
+      "start_node": "Dar es Salaam",
+      "end_node": "Kapiri Mposhi",
+      "length_km": 1860,
+      "status": "Opérationnel (dégradé)",
+      "infra_details": "Ligne ferroviaire écartement 1067mm, construite par la Chine (1970s), infrastructure vieillissante",
+      "importance": "medium",
+      "description": "Corridor historique reliant la Zambie à l'océan Indien, alternative au Corridor Nord-Sud, nécessite réhabilitation",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [-6.7924, 39.2083],
+        [-9.3333, 33.6000],
+        [-13.9667, 28.6667]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-TAZARA-DAR-001",
+          "node_name": "Terminal TAZARA Dar es Salaam",
+          "node_type": "rail_terminal",
+          "country_iso": "TZA",
+          "geo_lat": -6.8700,
+          "geo_lon": 39.2700,
+          "is_osbp": false,
+          "notes": "Terminal principal côte Est Afrique"
+        },
+        {
+          "node_id": "NODE-TUNDUMA-001",
+          "node_name": "Poste Frontière Tunduma (TZA-ZMB)",
+          "node_type": "border_crossing",
+          "country_iso": "TZA",
+          "geo_lat": -9.3000,
+          "geo_lon": 32.7667,
+          "is_osbp": true,
+          "notes": "OSBP opérationnel, passage ferroviaire et routier"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 96,
+        "freight_throughput_tons": 580000,
+        "source_org": "TAZARA Authority",
+        "source_url": "https://www.tazarasite.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "TAZARA (Tanzania-Zambia Railway Authority)",
+          "operator_type": "rail_operator",
+          "group": "Bi-national parastatal",
+          "fleet_size": 42,
+          "country_iso": "TZA"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-CENTRAL-009",
+      "corridor_name": "Corridor Central (Dar-Kigali-Bujumbura)",
+      "corridor_type": "road",
+      "countries_spanned": ["TZA", "RWA", "BDI"],
+      "start_node": "Dar es Salaam",
+      "end_node": "Bujumbura",
+      "length_km": 1650,
+      "status": "Opérationnel",
+      "infra_details": "Route pavée A7 (TZA), RN1/RN4 (RWA), sections modernisées récemment",
+      "importance": "medium",
+      "description": "Principal corridor pour le Rwanda et le Burundi enclavés, alternative au Northern Corridor kenyan",
+      "source_org": "PIDA, EAC",
+      "coordinates": [
+        [-6.7924, 39.2083],
+        [-5.0833, 29.6500],
+        [-1.9536, 30.0605],
+        [-3.3822, 29.3644]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-RUSUMO-001",
+          "node_name": "Poste Frontière OSBP Rusumo (TZA-RWA)",
+          "node_type": "border_crossing",
+          "country_iso": "TZA",
+          "geo_lat": -2.3833,
+          "geo_lon": 30.7833,
+          "is_osbp": true,
+          "notes": "OSBP moderne, pont sur rivière Kagera"
+        },
+        {
+          "node_id": "NODE-KAYANZA-001",
+          "node_name": "Terminal Logistique Kayanza",
+          "node_type": "intermodal_hub",
+          "country_iso": "BDI",
+          "geo_lat": -2.9228,
+          "geo_lon": 29.6300,
+          "is_osbp": false,
+          "notes": "Hub café burundais"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 72,
+        "avg_border_crossing_time_hours": 8,
+        "freight_throughput_tons": 1850000,
+        "truck_volumes_daily": 420,
+        "source_org": "Central Corridor Transit Transport Facilitation Agency",
+        "source_url": "https://www.centralcorridor-ttfa.org/"
+      },
+      "operators": []
+    },
+    {
+      "corridor_id": "CORR-BEIRA-010",
+      "corridor_name": "Corridor de Beira (Mozambique-Zimbabwe-Zambie)",
+      "corridor_type": "multimodal",
+      "countries_spanned": ["MOZ", "ZWE", "ZMB"],
+      "start_node": "Port de Beira",
+      "end_node": "Harare",
+      "length_km": 850,
+      "status": "Opérationnel",
+      "infra_details": "Ligne ferroviaire écartement 1067mm, Route EN6 (MOZ), Route A5 (ZWE)",
+      "importance": "medium",
+      "description": "Corridor alternatif pour le Zimbabwe et la Zambie, port de Beira connecté par rail",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [-19.8436, 34.8389],
+        [-18.9750, 32.6689]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-BEIRA-RAIL-001",
+          "node_name": "Terminal Rail de Beira",
+          "node_type": "rail_terminal",
+          "country_iso": "MOZ",
+          "geo_lat": -19.8436,
+          "geo_lon": 34.8389,
+          "is_osbp": false,
+          "notes": "Terminal ferroviaire modernisé"
+        },
+        {
+          "node_id": "NODE-MACHIPANDA-001",
+          "node_name": "Poste Frontière Machipanda (MOZ-ZWE)",
+          "node_type": "border_crossing",
+          "country_iso": "MOZ",
+          "geo_lat": -18.9667,
+          "geo_lon": 32.8833,
+          "is_osbp": false,
+          "notes": "Point ferroviaire et routier stratégique"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 48,
+        "freight_throughput_tons": 3200000,
+        "source_org": "Beira Corridor Group",
+        "source_url": "https://www.beiracorridor.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "CFM (Portos e Caminhos de Ferro de Moçambique)",
+          "operator_type": "rail_operator",
+          "group": "Government of Mozambique",
+          "fleet_size": 68,
+          "country_iso": "MOZ"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-NACALA-011",
+      "corridor_name": "Corridor de Nacala (Mozambique-Malawi-Zambie)",
+      "corridor_type": "multimodal",
+      "countries_spanned": ["MOZ", "MWI", "ZMB"],
+      "start_node": "Port de Nacala",
+      "end_node": "Frontière Zambie",
+      "length_km": 880,
+      "status": "Opérationnel",
+      "infra_details": "Nouvelle ligne ferroviaire construite pour exportation charbon zambien, Route M1 (MWI)",
+      "importance": "medium",
+      "description": "Nouveau corridor stratégique, ligne ferroviaire modernisée pour le charbon de Moatize (Tete)",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [-14.5428, 40.6722],
+        [-13.9833, 33.7833],
+        [-13.6333, 28.1833]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-NACALA-RAIL-001",
+          "node_name": "Terminal Rail de Nacala",
+          "node_type": "rail_terminal",
+          "country_iso": "MOZ",
+          "geo_lat": -14.5428,
+          "geo_lon": 40.6722,
+          "is_osbp": false,
+          "notes": "Port en eau profonde, terminal charbon moderne"
+        },
+        {
+          "node_id": "NODE-ENTRE-LAGOS-001",
+          "node_name": "Poste Frontière Entre-Lagos (MOZ-MWI)",
+          "node_type": "border_crossing",
+          "country_iso": "MOZ",
+          "geo_lat": -14.0167,
+          "geo_lon": 35.2500,
+          "is_osbp": false,
+          "notes": "Point de passage rail et route"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "freight_throughput_tons": 6500000,
+        "source_org": "Vale Moçambique",
+        "source_url": "https://www.vale.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "CDN (Corredor de Desenvolvimento do Norte)",
+          "operator_type": "rail_operator",
+          "group": "Vale Moçambique consortium",
+          "fleet_size": 95,
+          "country_iso": "MOZ"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-MAPUTO-012",
+      "corridor_name": "Corridor de Maputo (Mozambique-Afrique du Sud-Zimbabwe)",
+      "corridor_type": "multimodal",
+      "countries_spanned": ["MOZ", "ZAF", "ZWE"],
+      "start_node": "Port de Maputo",
+      "end_node": "Gauteng",
+      "length_km": 572,
+      "status": "Opérationnel",
+      "infra_details": "Ligne ferroviaire écartement 1067mm, Autoroute N4 (ZAF), connexion Gauteng-Maputo",
+      "importance": "high",
+      "description": "Corridor court et efficace reliant Gauteng au port de Maputo, alternative à Durban pour certains trafics",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [-25.9692, 32.5732],
+        [-25.7479, 28.2293]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-RESSANO-001",
+          "node_name": "Poste Frontière Ressano Garcia (MOZ-ZAF)",
+          "node_type": "border_crossing",
+          "country_iso": "MOZ",
+          "geo_lat": -25.4333,
+          "geo_lon": 31.9833,
+          "is_osbp": false,
+          "notes": "Point très fréquenté, projet OSBP"
+        },
+        {
+          "node_id": "NODE-MATOLA-001",
+          "node_name": "Terminal Rail Matola",
+          "node_type": "rail_terminal",
+          "country_iso": "MOZ",
+          "geo_lat": -25.9628,
+          "geo_lon": 32.4589,
+          "is_osbp": false,
+          "notes": "Hub ferroviaire près du port"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 18,
+        "freight_throughput_tons": 8500000,
+        "source_org": "Maputo Port Development Company",
+        "source_url": "https://www.portmaputo.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "CFM Sul",
+          "operator_type": "rail_operator",
+          "group": "CFM Mozambique",
+          "fleet_size": 120,
+          "country_iso": "MOZ"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-LOME-OUAGA-013",
+      "corridor_name": "Corridor Lomé-Ouagadougou",
+      "corridor_type": "road",
+      "countries_spanned": ["TGO", "BFA"],
+      "start_node": "Port de Lomé",
+      "end_node": "Ouagadougou",
+      "length_km": 985,
+      "status": "Opérationnel",
+      "infra_details": "Route RNIE1/RNIE2 (TGO), RN16 (BFA), entièrement pavée, corridor bien entretenu",
+      "importance": "medium",
+      "description": "Alternative au corridor ivoirien pour le Burkina Faso, Port Autonome de Lomé très compétitif",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [6.1256, 1.2223],
+        [12.3714, -1.5197]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-CINKASSE-001",
+          "node_name": "Poste Frontière OSBP Cinkassé (TGO-BFA)",
+          "node_type": "border_crossing",
+          "country_iso": "TGO",
+          "geo_lat": 10.9333,
+          "geo_lon": 0.3333,
+          "is_osbp": true,
+          "notes": "OSBP moderne, temps de passage réduit"
+        },
+        {
+          "node_id": "NODE-LOME-DRY-001",
+          "node_name": "Plateforme Logistique de Lomé",
+          "node_type": "dry_port",
+          "country_iso": "TGO",
+          "geo_lat": 6.1667,
+          "geo_lon": 1.3500,
+          "is_osbp": false,
+          "notes": "Zone franche industrielle connectée au port"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 48,
+        "avg_border_crossing_time_hours": 6,
+        "freight_throughput_tons": 3200000,
+        "truck_volumes_daily": 680,
+        "source_org": "Port Autonome de Lomé",
+        "source_url": "https://www.palomedock.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "ASKY Logistics",
+          "operator_type": "trucking_company",
+          "group": "Regional",
+          "fleet_size": 180,
+          "country_iso": "TGO"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-TEMA-OUAGA-014",
+      "corridor_name": "Corridor Tema-Ouagadougou-Bamako",
+      "corridor_type": "road",
+      "countries_spanned": ["GHA", "BFA", "MLI"],
+      "start_node": "Port de Tema",
+      "end_node": "Bamako",
+      "length_km": 1680,
+      "status": "Opérationnel",
+      "infra_details": "Route N1 (GHA), RN1 (BFA), sections pavées, corridor majeur pour l'hinterland sahélien",
+      "importance": "high",
+      "description": "Principal corridor pour le Burkina Faso et le Mali, Port de Tema très actif pour les pays enclavés",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [5.6167, -0.0167],
+        [12.3714, -1.5197],
+        [12.6392, -8.0029]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-PAGA-001",
+          "node_name": "Poste Frontière OSBP Paga (GHA-BFA)",
+          "node_type": "border_crossing",
+          "country_iso": "GHA",
+          "geo_lat": 10.9833,
+          "geo_lon": -1.1000,
+          "is_osbp": true,
+          "notes": "OSBP opérationnel, passage facilité"
+        },
+        {
+          "node_id": "NODE-BOBO-HUB-001",
+          "node_name": "Hub Logistique Bobo-Dioulasso",
+          "node_type": "intermodal_hub",
+          "country_iso": "BFA",
+          "geo_lat": 11.1833,
+          "geo_lon": -4.2833,
+          "is_osbp": false,
+          "notes": "Principal hub commercial Burkina, connexion vers Mali"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 96,
+        "avg_border_crossing_time_hours": 8,
+        "freight_throughput_tons": 4500000,
+        "truck_volumes_daily": 820,
+        "source_org": "Ghana Ports and Harbours Authority",
+        "source_url": "https://www.ghanaports.gov.gh/"
+      },
+      "operators": [
+        {
+          "operator_name": "SNTB (Société Nationale des Transports Burkinabè)",
+          "operator_type": "trucking_company",
+          "group": "Government of Burkina Faso",
+          "fleet_size": 250,
+          "country_iso": "BFA"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-COTONOU-NIAMEY-015",
+      "corridor_name": "Corridor Cotonou-Niamey",
+      "corridor_type": "road",
+      "countries_spanned": ["BEN", "NER"],
+      "start_node": "Port de Cotonou",
+      "end_node": "Niamey",
+      "length_km": 1035,
+      "status": "Opérationnel",
+      "infra_details": "Route RNIE2 (BEN), RN1 (NER), entièrement pavée, principal corridor Niger",
+      "importance": "high",
+      "description": "Corridor vital pour le Niger enclavé, 90% des importations nigériennes passent par Cotonou",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [6.3654, 2.4183],
+        [13.5127, 2.1098]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-MALANVILLE-001",
+          "node_name": "Poste Frontière OSBP Malanville (BEN-NER)",
+          "node_type": "border_crossing",
+          "country_iso": "BEN",
+          "geo_lat": 11.8667,
+          "geo_lon": 3.3833,
+          "is_osbp": true,
+          "notes": "OSBP moderne, flux très important"
+        },
+        {
+          "node_id": "NODE-PARAKOU-HUB-001",
+          "node_name": "Plateforme Logistique Parakou",
+          "node_type": "intermodal_hub",
+          "country_iso": "BEN",
+          "geo_lat": 9.3372,
+          "geo_lon": 2.6303,
+          "is_osbp": false,
+          "notes": "Hub de transit principal vers Niger, futur terminal rail"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 60,
+        "avg_border_crossing_time_hours": 10,
+        "freight_throughput_tons": 2800000,
+        "truck_volumes_daily": 520,
+        "source_org": "PAC (Port Autonome de Cotonou)",
+        "source_url": "https://www.portcotonou.bj/"
+      },
+      "operators": [
+        {
+          "operator_name": "SNTV (Société Nigérienne des Transports de Voyageurs)",
+          "operator_type": "trucking_company",
+          "group": "Government of Niger",
+          "fleet_size": 180,
+          "country_iso": "NER"
+        }
+      ]
+    }
+  ]
+}

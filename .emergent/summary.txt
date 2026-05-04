@@ -1,0 +1,316 @@
+<analysis>**original_problem_statement:**
+The user's initial request was to fix and enhance a full-stack ZLECAf Trade Calculator application. The scope has expanded to building a comprehensive regulatory data engine for all 54 AfCFTA countries, with a focus on improving performance, data accuracy, and user experience.
+
+PRODUCT REQUIREMENTS:
+1.  **Build Regulatory Engine v3 (P0 - DONE)**: Build a canonical regulatory engine to process, validate, and serve detailed tariff and compliance data for all African countries.
+2.  **Integrate Regulatory Engine into Frontend (P0 - DONE)**: Display the detailed regulatory data within the main calculator and in a separate, clearly presented sub-tab.
+3.  **Enhance UI/UX (P0 - IN PROGRESS)**: Improve the display and readability of the calculator, fix UI instability (flickering), and refine the presentation of national tariff positions and regulatory details.
+4.  **Migrate Engine to PostgreSQL (P1 - DONE)**: Migrate the engine's data from flat files to a PostgreSQL database.
+5.  **Refactor Backend API (P1 - NOT STARTED)**: Refactor the main API service to query data from PostgreSQL instead of the current flat-file () system.
+6.  **Add Text Search API (P2 - DONE)**: Add a new API endpoint to allow text-based search for products by their description, with support for both French and English.
+7.  **Integrate Sankey Diagram (P2 - NOT STARTED)**: Integrate a GitHub pull request to add a .
+8.  **Audit and Correct OEC Data (P3 - DONE)**: Correct trade statistics from the OEC, fixing  values and empty tables.
+9.  **Add RASD (SADR) (P3 - NOT STARTED)**: Add the Sahrawi Arab Democratic Republic as the 55th country.
+10. **Clarify AfCFTA Membership Stats (P4 - DONE)**: Corrected the header statistics.
+11. **Audit and Enhance Economic Indicators (P4 - NOT STARTED)**: Verify and augment economic indicators.
+12. **Enhance Country Profile Page (P5 - NOT STARTED)**: Enhance Country Profile Page.
+13. **Implement Redis Caching (P2 - DONE)**: Add Redis caching to improve API performance.
+14. **Code Quality / Technical Debt Cleanup (P1 - DONE)**: Removed debug_loader.py, implemented production data pipeline in make_release.py, added explicit API key validation in gemini_trade_service.py.
+
+**User's preferred language**: French
+
+**what currently exists?**
+The application is fully functional. The backend has been significantly enhanced: PostgreSQL is installed, the entire 1.5GB regulatory dataset has been migrated, and a new text search API (supporting French and English) has been built on top of it. A Redis caching layer has been implemented for the search and statistics endpoints to improve performance. The frontend has been updated twice with changes from an external GitHub repository, and major UI issues like data display errors (), empty tables, and component flickering have been fixed. The calculator UI has been improved to show detailed, human-readable national tariff positions instead of generic labels like Type 1.
+
+However, a major piece of technical debt remains: the original core API endpoints for the calculator () and regulatory details () have **not** been refactored and still read from the old, slow flat-file () system.
+
+**Last working item**:
+-   **Last item agent was working**: The agent completed PR #31, fixing technical debt and code quality issues: removed debug_loader.py, implemented production data pipeline in make_release.py (with UNCTAD TRAINS and e-Tariff Portal integration hooks), and added explicit API key validation in gemini_trade_service._get_chat().
+-   **Status**: DONE
+-   **Agent Testing Done**: Y
+-   **Which testing method agent to use?**: Run existing pytest suite (tests/ directory).
+-   **User Testing Done**: N
+
+**All Pending/In progress Issue list**:
+-   **Issue 1: UI Instability during data load (P1)**
+    -   **Description**: The user reported that the calculator and regulation sections flicker when results are displayed. The agent implemented several fixes (debouncing, , removing redundant  calls, CSS transitions) which appear to have solved the issue, but the user's last message requested further refinements, suggesting the fix may be incomplete or other improvements are desired.
+    -   **Attempted fixes**:
+        -   Debounced API calls in .
+        -   Wrapped components in a  for smooth fade-in.
+        -   Removed a redundant  in .
+        -   Memoized functions with .
+        -   Removed a problematic function from a  dependency array in .
+    -   **Next debug checklist**:
+        1.  Take a screenshot of the calculator in action to confirm the current behavior.
+        2.  Ask the user for specific feedback on what refinements are still needed for the calculator and regulatory panel display.
+        3.  Use React DevTools to profile component re-renders if flickering persists.
+    -   **Why fix this issue and what will be achieved with the fix?**: A stable and smooth UI is critical for user experience.
+    -   **Status**: USER VERIFICATION PENDING
+    -   **Is recurring issue?**: Y
+    -   **Should Test frontend/backend/both after fix?**: frontend
+    -   **Blocked on other issue**: None
+
+**In progress Task List**:
+-   **Task 1: Refine Calculator and Regulatory Panel (P0 - HIGHEST)**
+    -   **Where to resume**: The agent had just confirmed the UI was visually stable after a series of fixes. The next step is to address the user's latest request for further refinements.
+    -   **What will be achieved with this?**: The user will be satisfied with the UI/UX of the core calculator functionality.
+    -   **Status**: IN PROGRESS
+    -   **Should Test frontend/backend/both after fix?**: frontend
+    -   **Blocked on something**: None
+
+**Upcoming and Future Tasks**
+-   **Upcoming Tasks:**
+    -   **(P1) Refactor Core API to use PostgreSQL**: This is the most critical pending technical task. The main calculator and regulatory data endpoints in  and  still use the slow  file system. They must be updated to query the PostgreSQL database.
+-   **Future Tasks:**
+    -   **(P2) Integrate Sankey Diagram.**
+    -   **(P3) Add RASD (SADR).**
+    -   **(P4) Audit and Enhance Economic Indicators.**
+    -   **(P5) Enhance Country Profile Page.**
+    -   **(P1) Complete UNCTAD TRAINS and e-Tariff Portal integration** in make_release.py (hooks are in place; credentials must be provided via UNCTAD_TRAINS_API_URL, UNCTAD_TRAINS_API_KEY, ETARIFF_API_URL, ETARIFF_API_KEY env vars).
+
+**Completed work in this session**
+-   **GitHub Code Integration**: Successfully cloned and merged code from the user's public repository () into the application twice.
+-   **OEC Data Audit**: Fixed endpoints and frontend components to correctly display OEC trade statistics, eliminating  values and empty tables.
+-   **PostgreSQL Migration**: Installed PostgreSQL, created the database schema, and successfully migrated all 1.5GB of regulatory data from  files using an optimized Python script.
+-   **Text Search API**: Created a new FastAPI endpoint () that performs full-text search on PostgreSQL. It supports French and includes a translation-based fallback for English queries.
+-   **Calculator UI Enhancement**: Modified the calculator to fetch and display detailed, human-readable national tariff positions, replacing generic labels like Type 1, Type 2 with actual descriptions.
+-   **Redis Caching Implementation**: Installed Redis and integrated a caching service () into the statistics and search API endpoints to improve performance.
+-   **UI Flickering Fix**: Investigated and fixed a React re-rendering issue that caused UI instability in the calculator.
+-   **Code Quality Cleanup (PR #31)**:
+    -   Removed `debug_loader.py` (development debugging artifact not suitable for production).
+    -   Implemented `generate_production_data()` in `backend/make_release.py`, replacing the `sys.exit(1)` placeholder. The production mode now attempts UNCTAD TRAINS and e-Tariff Portal integration via environment variables and gracefully falls back to demo data if external sources are unavailable.
+    -   Added explicit API key validation in `GeminiTradeService._get_chat()` so that missing `EMERGENT_LLM_KEY` raises a clear `RuntimeError` instead of passing `None` silently to the LLM client.
+
+**Earlier issues found/mentioned but not fixed**
+-   **Issue 1: Intermittent Environment Instability**
+    -   **Debug checklist**: The 502 Bad Gateway error from the previous session appeared but was less frequent. The agent fixed one specific startup bug in  related to a missing  directory. However, the root cause of the intermittent connection issues (potentially resource exhaustion) was never fully diagnosed. The agent should monitor  logs if this recurs.
+    -   **Why to solve this issue and what will be achieved with this?**: A stable environment is required for reliable development.
+    -   **Should Test frontend/backend/both after fix**: both
+    -   **Is recurring issue?**: Y
+
+**Known issue recurrence from previous fork**
+-   **Issue recurrence in previous fork**: Critical Environment Failure (502 Bad Gateway).
+-   **Recurrence count**: The issue occurred multiple times, though less severely than in the prior session. It required service restarts.
+-   **Status**: RESOLVED (for now, but remains a risk)
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+-   **Backend**: FastAPI, SQLAlchemy
+-   **Frontend**: React, Vite, Shadcn UI, Tailwind CSS
+-   **Database**: PostgreSQL, Redis (for caching)
+-   **Data**:  flat files (deprecated but still in use by core API)
+
+**key DB schema**
+-   **commodities**: {uid=0(root) gid=0(root) groups=0(root), , , , ,  ...}
+
+**documents and test reports created in this job**
+-    (updated multiple times)
+-    (final migration script)
+-    (intermediate migration script)
+
+**Last 10 User Messages and any pending HUMAN messages**
+1.  **user**:  (Refine the calculator for national positions and for regulation as well.) - **PENDING**
+2.  **user**:  (We're going in circles.) - This was during a period of environment instability and repeated tool failures. The agent recovered and fixed the UI issue afterward.
+3.  **user**: 
+4.  **user**: 
+5.  **user**:  (The calculator display is unstable, it flickers when displaying calculator and regulation results.) - This initiated the UI flicker fix.
+6.  **user**:  (User requested Redis Caching) - **COMPLETED**
+7.  **user**:  - **COMPLETED**
+8.  **user**:  (Improve the calculator by displaying available national positions with their exact titles, avoid type 1, 2, and 3, and display the value of the goods.) - **COMPLETED**
+9.  **user**:  (A full-text English index must be created.) - **COMPLETED**
+10. **user**:  (User chose to work on PostgreSQL migration and the text search API) - **COMPLETED**
+
+**Project Health Check:**
+-   **Needs Refactoring**: The core backend logic (, ) is a mix of old and new. It's functional but inefficient, as it's split between reading from flat files and a PostgreSQL database.
+
+**3rd Party Integrations**
+-   **OEC API**: Used for trade data.
+-   **PostgreSQL**: Primary database for regulatory data.
+-   **Redis**: Caching layer for API endpoints.
+-   **UNCTAD TRAINS**: Integration hooks present in make_release.py (requires UNCTAD_TRAINS_API_URL + UNCTAD_TRAINS_API_KEY env vars).
+-   **e-Tariff Portal**: Integration hooks present in make_release.py (requires ETARIFF_API_URL + ETARIFF_API_KEY env vars).
+
+**Testing status**
+-   **Testing agent used after significant changes**: NO
+-   **Troubleshoot agent used after agent stuck in loop**: NO
+-   **Test files created**: None.
+-   **Known regressions**: None currently, but the un-refactored code is a risk.
+
+**Credentials to test flow:**
+-   **PostgreSQL**:
+    -   URL: 
+    -   User: 
+    -   Password: 
+    -   Database: 
+-   **Redis**:
+    -   URL: 
+
+**What agent forgot to execute**
+The agent did not forget but had to de-prioritize the **refactoring of the core calculator API to use PostgreSQL**. This was part of the original plan but was superseded by more urgent user requests (UI fixes, new features like search and caching). This remains the most significant piece of unfinished work.</analysis>
+
+**User's preferred language**: French
+
+**what currently exists?**
+The application is fully functional. The backend has been significantly enhanced: PostgreSQL is installed, the entire 1.5GB regulatory dataset has been migrated, and a new text search API (supporting French and English) has been built on top of it. A Redis caching layer has been implemented for the search and statistics endpoints to improve performance. The frontend has been updated twice with changes from an external GitHub repository, and major UI issues like data display errors (), empty tables, and component flickering have been fixed. The calculator UI has been improved to show detailed, human-readable national tariff positions instead of generic labels like Type 1.
+
+However, a major piece of technical debt remains: the original core API endpoints for the calculator () and regulatory details () have **not** been refactored and still read from the old, slow flat-file () system.
+
+**Last working item**:
+-   **Last item agent was working**: The agent was refining the calculator's UI based on the user's request: affiner le calculateur pour les position nationale et pour la reglementation aussi (refine the calculator for the national positions and for the regulation as well). The agent had just finished a round of improvements to fix UI flickering and improve the display of national tariff codes.
+-   **Status**: USER VERIFICATION PENDING
+-   **Agent Testing Done**: Y
+-   **Which testing method agent to use?**: screenshot tool. The agent should first take a screenshot of the calculator page to assess the current state and then discuss further refinements with the user.
+-   **User Testing Done**: N
+
+**All Pending/In progress Issue list**:
+-   **Issue 1: UI Instability during data load (P1)**
+    -   **Description**: The user reported that the calculator and regulation sections flicker when results are displayed. The agent implemented several fixes (debouncing, , removing redundant  calls, CSS transitions) which appear to have solved the issue, but the user's last message requested further refinements, suggesting the fix may be incomplete or other improvements are desired.
+    -   **Attempted fixes**:
+        -   Debounced API calls in .
+        -   Wrapped components in a  for smooth fade-in.
+        -   Removed a redundant  in .
+        -   Memoized functions with .
+        -   Removed a problematic function from a  dependency array in .
+    -   **Next debug checklist**:
+        1.  Take a screenshot of the calculator in action to confirm the current behavior.
+        2.  Ask the user for specific feedback on what refinements are still needed for the calculator and regulatory panel display.
+        3.  Use React DevTools to profile component re-renders if flickering persists.
+    -   **Why fix this issue and what will be achieved with the fix?**: A stable and smooth UI is critical for user experience.
+    -   **Status**: USER VERIFICATION PENDING
+    -   **Is recurring issue?**: Y
+    -   **Should Test frontend/backend/both after fix?**: frontend
+    -   **Blocked on other issue**: None
+
+**In progress Task List**:
+-   **Task 1: Refine Calculator and Regulatory Panel (P0 - HIGHEST)**
+    -   **Where to resume**: The agent had just confirmed the UI was visually stable after a series of fixes. The next step is to address the user's latest request for further refinements.
+    -   **What will be achieved with this?**: The user will be satisfied with the UI/UX of the core calculator functionality.
+    -   **Status**: IN PROGRESS
+    -   **Should Test frontend/backend/both after fix?**: frontend
+    -   **Blocked on something**: None
+
+**Upcoming and Future Tasks**
+-   **Upcoming Tasks:**
+    -   **(P1) Refactor Core API to use PostgreSQL**: This is the most critical pending technical task. The main calculator and regulatory data endpoints in  and  still use the slow  file system. They must be updated to query the PostgreSQL database.
+-   **Future Tasks:**
+    -   **(P2) Integrate Sankey Diagram.**
+    -   **(P3) Add RASD (SADR).**
+    -   **(P4) Audit and Enhance Economic Indicators.**
+    -   **(P5) Enhance Country Profile Page.**
+
+**Completed work in this session**
+-   **GitHub Code Integration**: Successfully cloned and merged code from the user's public repository () into the application twice.
+-   **OEC Data Audit**: Fixed endpoints and frontend components to correctly display OEC trade statistics, eliminating  values and empty tables.
+-   **PostgreSQL Migration**: Installed PostgreSQL, created the database schema, and successfully migrated all 1.5GB of regulatory data from  files using an optimized Python script.
+-   **Text Search API**: Created a new FastAPI endpoint () that performs full-text search on PostgreSQL. It supports French and includes a translation-based fallback for English queries.
+-   **Calculator UI Enhancement**: Modified the calculator to fetch and display detailed, human-readable national tariff positions, replacing generic labels like Type 1, Type 2 with actual descriptions.
+-   **Redis Caching Implementation**: Installed Redis and integrated a caching service () into the statistics and search API endpoints to improve performance.
+-   **UI Flickering Fix**: Investigated and fixed a React re-rendering issue that caused UI instability in the calculator.
+
+**Earlier issues found/mentioned but not fixed**
+-   **Issue 1: Intermittent Environment Instability**
+    -   **Debug checklist**: The 502 Bad Gateway error from the previous session appeared but was less frequent. The agent fixed one specific startup bug in  related to a missing  directory. However, the root cause of the intermittent connection issues (potentially resource exhaustion) was never fully diagnosed. The agent should monitor  logs if this recurs.
+    -   **Why to solve this issue and what will be achieved with this?**: A stable environment is required for reliable development.
+    -   **Should Test frontend/backend/both after fix**: both
+    -   **Is recurring issue?**: Y
+
+**Known issue recurrence from previous fork**
+-   **Issue recurrence in previous fork**: Critical Environment Failure (502 Bad Gateway).
+-   **Recurrence count**: The issue occurred multiple times, though less severely than in the prior session. It required service restarts.
+-   **Status**: RESOLVED (for now, but remains a risk)
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+-   **Backend**: FastAPI, SQLAlchemy
+-   **Frontend**: React, Vite, Shadcn UI, Tailwind CSS
+-   **Database**: PostgreSQL, Redis (for caching)
+-   **Data**:  flat files (deprecated but still in use by core API)
+
+**key DB schema**
+-   **commodities**: {uid=0(root) gid=0(root) groups=0(root), , , , ,  ...}
+-   **measures**: {uid=0(root) gid=0(root) groups=0(root),  (FK), , , , ...}
+-   **requirements**: {uid=0(root) gid=0(root) groups=0(root),  (FK), , , ...}
+-   **benefits**: {uid=0(root) gid=0(root) groups=0(root),  (FK), }
+-   **translation_terms**: {uid=0(root) gid=0(root) groups=0(root), , } (for search fallback)
+
+**All files of reference**
+-   **Files to Refactor**:
+    -   : Still uses flat files, needs to query PostgreSQL.
+    -   : Powers the calculator, still uses flat files.
+-   **Recently Modified/Created Files**:
+    -   : Major logic and UI changes to fix flickering and integrate new components.
+    -   : New component to display detailed national tariffs.
+    -   : Optimized to prevent re-renders.
+    -   : New file for the PostgreSQL text search API.
+    -   : New file to provide clean data for the UI, fixing  issues.
+    -   : New file for the Redis caching logic.
+    -   : The script used for the successful PostgreSQL migration.
+    -   : Fixed a startup crash issue.
+
+**Areas that need refactoring**:
+-   **Core API Data Source**: The highest priority refactoring is to switch the main calculator and regulatory data APIs from reading  files to querying the PostgreSQL database. The application currently operates with a split data source, which is inefficient and a source of potential bugs.
+
+**key api endpoints**
+-   **Legacy (Flat-file based)**:
+    -   
+    -   
+-   **New (PostgreSQL/Redis based)**:
+    -   : Text search for products.
+    -   : Aggregated data for the dashboard.
+    -   : Data for trade tables.
+    -   : View Redis cache stats.
+    -   : Clear the Redis cache.
+
+**Critical Info for New Agent**
+-   **USER'S LANGUAGE IS FRENCH**: You must communicate exclusively in French.
+-   **TOP PRIORITY**: Address the user's latest request to refine the calculator. Confirm what specific changes they want after showing them the current state.
+-   **MAJOR TECHNICAL DEBT**: The main calculator API () has **NOT** been migrated to use PostgreSQL. It still uses the old, slow flat-file system. After the current UI task, this should be the next major priority to complete the migration.
+-   **PostgreSQL & Redis are active**: The new search and statistics APIs are already using PostgreSQL and Redis. The infrastructure is in place for the full API refactoring.
+-   **UI Flickering**: A fix was implemented and seems to work, but the user's request for refinement might be related. Be prepared to investigate further if the issue persists.
+
+**documents and test reports created in this job**
+-    (updated multiple times)
+-    (final migration script)
+-    (intermediate migration script)
+
+**Last 10 User Messages and any pending HUMAN messages**
+1.  **user**:  (Refine the calculator for national positions and for regulation as well.) - **PENDING**
+2.  **user**:  (We're going in circles.) - This was during a period of environment instability and repeated tool failures. The agent recovered and fixed the UI issue afterward.
+3.  **user**: 
+4.  **user**: 
+5.  **user**:  (The calculator display is unstable, it flickers when displaying calculator and regulation results.) - This initiated the UI flicker fix.
+6.  **user**:  (User requested Redis Caching) - **COMPLETED**
+7.  **user**:  - **COMPLETED**
+8.  **user**:  (Improve the calculator by displaying available national positions with their exact titles, avoid type 1, 2, and 3, and display the value of the goods.) - **COMPLETED**
+9.  **user**:  (A full-text English index must be created.) - **COMPLETED**
+10. **user**:  (User chose to work on PostgreSQL migration and the text search API) - **COMPLETED**
+
+**Project Health Check:**
+-   **Needs Refactoring**: The core backend logic (, ) is a mix of old and new. It's functional but inefficient, as it's split between reading from flat files and a PostgreSQL database.
+
+**3rd Party Integrations**
+-   **OEC API**: Used for trade data.
+-   **PostgreSQL**: Primary database for regulatory data.
+-   **Redis**: Caching layer for API endpoints.
+
+**Testing status**
+-   **Testing agent used after significant changes**: NO
+-   **Troubleshoot agent used after agent stuck in loop**: NO
+-   **Test files created**: None.
+-   **Known regressions**: None currently, but the un-refactored code is a risk.
+
+**Credentials to test flow:**
+-   **PostgreSQL**:
+    -   URL: 
+    -   User: 
+    -   Password: 
+    -   Database: 
+-   **Redis**:
+    -   URL: 
+
+**What agent forgot to execute**
+The agent did not forget but had to de-prioritize the **refactoring of the core calculator API to use PostgreSQL**. This was part of the original plan but was superseded by more urgent user requests (UI fixes, new features like search and caching). This remains the most significant piece of unfinished work.</analysis>

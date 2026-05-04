@@ -1,0 +1,94 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# IDE and editors
+.idea/
+.vscode/
+
+# Testing
+/coverage
+
+# Production builds
+/build
+dist/
+
+# Environment files — never commit actual secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Secrets
+.github/secrets/
+
+# Generated tariff data (large files)
+backend/data/tariffs/
+
+# === Node.js ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dump.rdb
+*.log
+
+# System files
+.DS_Store
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+.eggs/
+
+# Development tools
+chainlit.md
+.chainlit
+.ipynb_checkpoints/
+
+# === Logs ===
+logs/
+*.log
+*.log.*
+
+# === IDE ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Mobile development
+android-sdk/
+
+# Backup files
+*.backup
+*.bak
+-e 
+# Environment and credential files
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
+-e 
+# Environment and credential files
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
+frontend/node_modules/.cache/default-development/0.pack
