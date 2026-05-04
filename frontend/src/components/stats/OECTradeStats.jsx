@@ -612,7 +612,36 @@ export default function OECTradeStats({ language = 'fr' }) {
           </Card>
 
           {/* Résultats par pays */}
-          {tradeData && (
+          {tradeData && tradeData.no_data && (
+            <Card className="shadow-md border-amber-300" data-testid="no-trade-data-notice">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="text-4xl">⚠️</div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-amber-900 mb-2">
+                      {language === 'en'
+                        ? 'No trade statistics available for this territory'
+                        : 'Aucune statistique commerciale disponible pour ce territoire'}
+                    </h3>
+                    <p className="text-sm text-slate-700 mb-2">
+                      <strong>{tradeData.country?.name_fr || tradeData.country?.name_en || selectedCountry}</strong>
+                      {' — '}
+                      {tradeData.reason || (language === 'en'
+                        ? 'OEC/BACI does not publish bilateral trade aggregates for this territory.'
+                        : 'OEC/BACI ne publie pas de données commerciales pour ce territoire.')}
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      {language === 'en'
+                        ? 'Trade analyses (exports / imports / bilateral flows) are intentionally disabled to avoid displaying unfiltered global aggregates.'
+                        : 'Les analyses commerciales (exportations / importations / flux bilatéraux) sont volontairement désactivées pour éviter d\'afficher des agrégats globaux non filtrés.'}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {tradeData && !tradeData.no_data && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Carte récapitulative avec graphique des produits */}
               <Card className="shadow-lg">
@@ -1062,7 +1091,29 @@ export default function OECTradeStats({ language = 'fr' }) {
           </Card>
 
           {/* Résultats bilatéraux */}
-          {bilateralData && (
+          {bilateralData && bilateralData.no_data && (
+            <Card className="shadow-md border-amber-300" data-testid="bilateral-no-data-notice">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="text-4xl">⚠️</div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-amber-900 mb-2">
+                      {language === 'en'
+                        ? 'No bilateral trade data available'
+                        : 'Aucune donnée commerciale bilatérale disponible'}
+                    </h3>
+                    <p className="text-sm text-slate-700">
+                      {bilateralData.reason || (language === 'en'
+                        ? 'One of the selected territories has no published trade statistics.'
+                        : 'L\'un des territoires sélectionnés ne publie pas de statistiques commerciales.')}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {bilateralData && !bilateralData.no_data && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Carte récapitulative */}
               <Card className="shadow-lg">
