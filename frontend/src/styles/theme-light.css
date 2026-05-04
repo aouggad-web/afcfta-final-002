@@ -1,0 +1,252 @@
+/* ================================================================
+   ZLECAf — Light Theme Overrides
+   Activé via la classe `.theme-light` sur <html> ou <body>.
+   Conserve la palette africaine (terra/gold/green) en accents.
+   ================================================================ */
+
+html.theme-light,
+body.theme-light,
+html.theme-light body {
+  /* ── Fond & surfaces ──────────────────────────────────────── */
+  --bg:           #FAF6EE;   /* parchemin clair */
+  --surface:      #FFFFFF;
+  --afcfta-card:  #FFFFFF;
+  --afcfta-card2: #F5EFE3;
+  --afcfta-border: rgba(200,83,26,0.22);
+
+  /* Accents légèrement assombris pour contraste sur fond clair */
+  --terra:        #B0461A;
+  --gold:         #B8761A;
+  --green:        #156A40;
+  --red:          #B22222;
+  --atlantic:     #155F7A;
+
+  --terrasoft:    rgba(176,70,26,0.10);
+  --goldSoft:     rgba(184,118,26,0.12);
+  --greenSoft:    rgba(21,106,64,0.12);
+
+  /* ── Texte ────────────────────────────────────────────────── */
+  --text:         #1F2A36;   /* gris-bleu profond */
+  --afcfta-muted: #5C6B80;
+
+  /* ── Statuts ──────────────────────────────────────────────── */
+  --success:      #1E8E4E;
+  --info:         #1A6B8A;
+  --violet:       #7849D0;
+  --warning:      #B8761A;
+  --danger:       #B83030;
+
+  /* Ombres adoucies */
+  --shadow:    0 18px 40px rgba(46,30,15,.10);
+  --shadow-sm: 0 6px 18px rgba(46,30,15,.06);
+}
+
+/* Fond + texture en mode clair */
+html.theme-light body,
+body.theme-light {
+  background:
+    radial-gradient(1400px 700px at 15% 5%,  rgba(200,83,26,0.07), transparent 55%),
+    radial-gradient(900px  500px at 90% 20%,  rgba(212,137,26,0.05), transparent 55%),
+    radial-gradient(600px  400px at 50% 90%,  rgba(26,122,74,0.04),  transparent 55%),
+    var(--bg);
+  color: var(--text);
+}
+
+html.theme-light body::before,
+body.theme-light::before {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(200,83,26,0.022) 0px, rgba(200,83,26,0.022) 1px,
+      transparent 1px, transparent 28px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(212,137,26,0.018) 0px, rgba(212,137,26,0.018) 1px,
+      transparent 1px, transparent 28px
+    );
+}
+
+/* Ajustements ciblés pour quelques composants Tailwind/Radix
+   qui utilisent des couleurs hardcodées zinc/slate (admin page,
+   modales, dropdowns ShadCN). */
+html.theme-light .bg-zinc-950 { background-color: var(--bg) !important; }
+html.theme-light .bg-zinc-900 { background-color: var(--afcfta-card) !important; }
+html.theme-light .bg-zinc-800 { background-color: var(--afcfta-card2) !important; }
+html.theme-light .text-zinc-100 { color: var(--text) !important; }
+html.theme-light .text-zinc-300 { color: var(--text) !important; }
+html.theme-light .text-zinc-400 { color: var(--afcfta-muted) !important; }
+html.theme-light .text-zinc-500 { color: var(--afcfta-muted) !important; }
+html.theme-light .border-zinc-700,
+html.theme-light .border-zinc-800 { border-color: var(--afcfta-border) !important; }
+
+/* Inputs / textarea / select en mode clair */
+html.theme-light input,
+html.theme-light textarea,
+html.theme-light select {
+  background-color: #FFFFFF;
+  color: var(--text);
+  border-color: var(--afcfta-border);
+}
+
+html.theme-light input::placeholder,
+html.theme-light textarea::placeholder {
+  color: var(--afcfta-muted);
+}
+
+/* Toggle button visible et thématique */
+.afcfta-themeToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--afcfta-card2);
+  color: var(--text);
+  border: 1px solid var(--afcfta-border);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  margin-right: 8px;
+}
+
+.afcfta-themeToggle:hover {
+  background: var(--terrasoft);
+  color: var(--terra);
+  transform: translateY(-1px);
+}
+
+/* ================================================================
+   Light mode — overrides for hardcoded colors in other CSS files
+   ================================================================ */
+
+/* Topbar */
+html.theme-light .afcfta-topHeader {
+  background: var(--surface);
+  border-bottom-color: rgba(200, 83, 26, 0.18);
+  box-shadow: 0 2px 8px rgba(46, 30, 15, 0.05);
+}
+html.theme-light .afcfta-topHeader__bar {
+  background: rgba(200, 83, 26, 0.04);
+  border-bottom-color: rgba(46, 30, 15, 0.08);
+}
+html.theme-light .afcfta-topHeader__nav {
+  background: rgba(200, 83, 26, 0.025);
+}
+html.theme-light .afcfta-langBtn {
+  background: #FFFFFF;
+  border-color: rgba(46, 30, 15, 0.10);
+  color: var(--afcfta-muted);
+}
+html.theme-light .afcfta-langBtn:hover {
+  background: rgba(212, 137, 26, 0.08);
+  color: var(--text);
+}
+html.theme-light .afcfta-langBtn.active {
+  background: var(--goldSoft);
+  color: var(--gold);
+}
+html.theme-light .afcfta-navTab:hover {
+  background: rgba(46, 30, 15, 0.05);
+}
+
+/* KPI Row stat values */
+html.theme-light .stat-value { color: var(--text); }
+html.theme-light .stat-label { color: var(--afcfta-muted); }
+
+/* Hero cards & shells with hardcoded dark backgrounds */
+html.theme-light .afcfta-shell,
+html.theme-light .afcfta-card,
+html.theme-light .afcfta-card2,
+html.theme-light .afcfta-hero,
+html.theme-light [class*="hero"],
+html.theme-light .zellige-najm {
+  background: var(--surface) !important;
+  color: var(--text);
+}
+
+/* Generic hardcoded #0C... and #11... and #18... backgrounds */
+html.theme-light [style*="background: #0C"],
+html.theme-light [style*="background:#0C"],
+html.theme-light [style*="background: #11"],
+html.theme-light [style*="background:#11"],
+html.theme-light [style*="background: #18"],
+html.theme-light [style*="background:#18"] {
+  background: var(--afcfta-card) !important;
+  color: var(--text) !important;
+}
+
+/* Shell's input/textarea/select overrides need their light variant */
+html.theme-light .afcfta-shell select,
+html.theme-light .afcfta-shell input,
+html.theme-light .afcfta-shell textarea {
+  background: #FFFFFF !important;
+  color: var(--text) !important;
+  border-color: var(--afcfta-border) !important;
+}
+html.theme-light .afcfta-shell select option {
+  background: #FFFFFF !important;
+  color: var(--text) !important;
+}
+
+/* Tab-trigger lists (calculator/profiles tabs use dark fills) */
+html.theme-light .afcfta-shell .tabs-list-enhanced,
+html.theme-light .afcfta-shell .tabs-list-boxed,
+html.theme-light .afcfta-shell .tabs-vertical .tabs-list-vertical,
+html.theme-light .afcfta-shell .tabs-list-mini {
+  background: var(--afcfta-card2) !important;
+  border-color: var(--afcfta-border) !important;
+}
+
+/* Cards forced background */
+html.theme-light .calc-panel,
+html.theme-light .calc-card,
+html.theme-light .stats-strip,
+html.theme-light .stat-cell {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* Dashboard tabnew gradients & blocks — softer in light mode */
+html.theme-light .dashboard-tabnew,
+html.theme-light .dashboard-card,
+html.theme-light .strategic-block,
+html.theme-light .blocs-card {
+  background: var(--surface) !important;
+  color: var(--text);
+  border-color: var(--afcfta-border) !important;
+}
+
+/* Tables in light mode */
+html.theme-light table,
+html.theme-light th,
+html.theme-light td {
+  color: var(--text);
+}
+html.theme-light th {
+  background: var(--afcfta-card2);
+  color: var(--text);
+}
+html.theme-light tr:nth-child(even) td {
+  background: rgba(200, 83, 26, 0.02);
+}
+
+/* Radix popovers / dropdowns (calendar, select, dialog) */
+html.theme-light [data-radix-popper-content-wrapper] > * {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--afcfta-border) !important;
+}
+
+/* Override hero sections that use inline gradient styles */
+html.theme-light .zlecaf-overview-hero {
+  background:
+    radial-gradient(900px 260px at 0% 0%, rgba(212,137,26,0.10), transparent 55%),
+    radial-gradient(700px 220px at 100% 0%, rgba(32,201,151,0.06), transparent 60%),
+    linear-gradient(135deg, #FFFFFF, #FAF6EE) !important;
+  border-color: rgba(200, 83, 26, 0.18) !important;
+  box-shadow: 0 18px 40px rgba(46, 30, 15, 0.08) !important;
+}
+html.theme-light .zlecaf-overview-hero .text-\[rgba\(234\,224\,208\,0\.9\)\] {
+  color: var(--text) !important;
+}

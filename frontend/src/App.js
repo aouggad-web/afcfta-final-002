@@ -5,6 +5,7 @@ import { toast } from './hooks/use-toast';
 import { Toaster } from './components/ui/toaster';
 
 import './styles/theme.css';
+import './styles/theme-light.css';
 
 import AfcftaTopbar from './components/AfcftaTopbar';
 import KpiRow from './components/KpiRow';
@@ -70,6 +71,15 @@ function App() {
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
   const [backendOnline, setBackendOnline] = useState(null);
+  const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
+
+  // Apply theme class on <html>
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'light') root.classList.add('theme-light');
+    else root.classList.remove('theme-light');
+    localStorage.setItem('zlecaf_theme', theme);
+  }, [theme]);
 
   const t = texts[language] || texts.fr;
 
@@ -95,6 +105,8 @@ function App() {
       setActiveTab(tabMapping[value] || value);
     } else if (type === 'language') {
       handleLanguageChange(value);
+    } else if (type === 'theme') {
+      setTheme(value);
     }
   };
 
@@ -336,6 +348,7 @@ function App() {
           active={getTopbarActiveTab()}
           onTabChange={handleTabChange}
           language={language}
+          theme={theme}
         />
 
       {/* Main content area */}
