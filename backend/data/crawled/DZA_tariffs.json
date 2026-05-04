@@ -352657,17 +352657,17 @@
           "code": "7610901000",
           "digits": 10,
           "dd": 15.0,
-          "description_fr": "Autres - Type 1",
-          "description_en": "Aluminium - Type 1",
-          "source": "Nomenclature nationale DZA (type: type)"
+          "description_fr": "Autres ponts et elements de ponts",
+          "description_en": "Other bridges and bridge elements",
+          "source": "Nomenclature nationale DZA (DGD officiel)"
         },
         {
           "code": "7610902000",
           "digits": 10,
           "dd": 15.0,
-          "description_fr": "Autres - Type 2",
-          "description_en": "Aluminium - Type 2",
-          "source": "Nomenclature nationale DZA (type: type)"
+          "description_fr": "Autres tours et pylones",
+          "description_en": "Other towers and pylons",
+          "source": "Nomenclature nationale DZA (DGD officiel)"
         },
         {
           "code": "7610909000",
@@ -352676,10 +352676,18 @@
           "description_fr": "Autres - Autre",
           "description_en": "Aluminium - Other",
           "source": "Nomenclature nationale DZA (type: type)"
+        },
+        {
+          "code": "7610909910",
+          "digits": 10,
+          "dd": 15.0,
+          "description_fr": "Autres autres autres parties preparees en vue de leur utilisation dans la construction",
+          "description_en": "Other parts prepared for use in construction",
+          "source": "Nomenclature nationale DZA (DGD officiel)"
         }
       ],
       "has_sub_positions": true,
-      "sub_position_count": 3
+      "sub_position_count": 4
     },
     {
       "hs6": "761100",
