@@ -49,6 +49,9 @@ const normalizeForRadar = (value, max) => {
   return Math.min(100, (value / max) * 100);
 };
 
+/* High inflation threshold for color-coding (8% as per IMF classification for "high inflation") */
+const HIGH_INFLATION_THRESHOLD = 8;
+
 export default function MultiCountryComparison({ language = 'fr' }) {
   const [availableCountries, setAvailableCountries] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
@@ -369,7 +372,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               <span
                 key={iso}
                 className="stats-country-tag"
-                style={{ background: COUNTRY_COLORS[idx] + '22', borderColor: COUNTRY_COLORS[idx] + '55', color: COUNTRY_COLORS[idx] }}
+                style={{ background: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 13%, transparent)`, borderColor: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 33%, transparent)`, color: COUNTRY_COLORS[idx] }}
               >
                 {getCountryName(iso)}
                 <button onClick={() => removeCountry(iso)}>
@@ -541,7 +544,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   {[
                     { label: `${txt.gdp} (Mrd $)`, render: (d) => d.gdp ? <strong style={{ color: '#fbbf24' }}>${d.gdp.toFixed(1)}B</strong> : '-' },
                     { label: txt.gdpPerCapita, render: (d) => d.gdpPerCapita ? formatValue(d.gdpPerCapita) : '-' },
-                    { label: txt.inflation, render: (d) => d.inflation ? <span className={`stats-chip ${d.inflation > 8 ? 'down' : 'up'}`}>{formatPercent(d.inflation)}</span> : '-' },
+                    { label: txt.inflation, render: (d) => d.inflation ? <span className={`stats-chip ${d.inflation > HIGH_INFLATION_THRESHOLD ? 'down' : 'up'}`}>{formatPercent(d.inflation)}</span> : '-' },
                     { label: txt.unemployment, render: (d) => d.unemployment ? formatPercent(d.unemployment) : '-' },
                     { label: `${txt.population} (M)`, render: (d) => d.population ? `${d.population.toFixed(1)}M` : '-' },
                   ].map((row, ri) => (

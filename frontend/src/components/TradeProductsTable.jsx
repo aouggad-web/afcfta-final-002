@@ -186,7 +186,7 @@ function TradeProductsTable({ language = 'fr' }) {
                 <td>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                     {(isExport ? product.top_exporters : product.top_importers)?.slice(0, 3).map((country, i) => (
-                      <span key={i} style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 100, background: `${accentColor}22`, border: `1px solid ${accentColor}44`, color: 'rgba(234,224,208,0.8)' }}>
+                      <span key={i} style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 100, background: `color-mix(in srgb, ${accentColor} 13%, transparent)`, border: `1px solid color-mix(in srgb, ${accentColor} 27%, transparent)`, color: 'rgba(234,224,208,0.8)' }}>
                         {country}
                       </span>
                     ))}
@@ -230,7 +230,7 @@ function TradeProductsTable({ language = 'fr' }) {
                 { label: t.importIntra,  value: formatValue(summary.top_20_intra_african_imports_total_mln_usd), color: '#a78bfa' },
                 { label: t.exportIntra,  value: formatValue(summary.top_20_intra_african_exports_total_mln_usd), color: '#fb923c' },
               ].map((item, i) => (
-                <div key={i} style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(6px)', borderRadius: 10, padding: '10px 14px', border: `1px solid ${item.color}33` }}>
+                <div key={i} style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(6px)', borderRadius: 10, padding: '10px 14px', border: `1px solid color-mix(in srgb, ${item.color} 20%, transparent)` }}>
                   <p style={{ fontSize: '0.65rem', color: 'rgba(142,155,174,0.8)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: 0 }}>{item.label}</p>
                   <p style={{ fontSize: '1.2rem', fontWeight: 800, color: item.color, margin: '4px 0 0' }}>{item.value}</p>
                 </div>
