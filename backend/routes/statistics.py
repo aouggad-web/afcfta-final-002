@@ -154,17 +154,29 @@ async def get_main_statistics():
             {"name": "Tanzanie", "imports_2024": 20411960514, "share_pct": 2.7}
         ],
         "top_10_gdp_2024": [
-            {"rank": 1, "country": "Nigéria", "gdp_2024_billion": 477.0, "growth_2024": 3.3, "growth_projection_2025": "3.8%"},
-            {"rank": 2, "country": "Égypte", "gdp_2024_billion": 387.0, "growth_2024": 3.5, "growth_projection_2025": "4.2%"},
-            {"rank": 3, "country": "Afrique du Sud", "gdp_2024_billion": 373.0, "growth_2024": 1.3, "growth_projection_2025": "1.8%"},
-            {"rank": 4, "country": "Algérie", "gdp_2024_billion": 224.0, "growth_2024": 3.8, "growth_projection_2025": "3.5%"},
-            {"rank": 5, "country": "Éthiopie", "gdp_2024_billion": 163.0, "growth_2024": 6.2, "growth_projection_2025": "6.5%"},
-            {"rank": 6, "country": "Kenya", "gdp_2024_billion": 115.0, "growth_2024": 5.0, "growth_projection_2025": "5.3%"},
-            {"rank": 7, "country": "Maroc", "gdp_2024_billion": 142.0, "growth_2024": 3.4, "growth_projection_2025": "3.7%"},
-            {"rank": 8, "country": "Angola", "gdp_2024_billion": 117.0, "growth_2024": 2.8, "growth_projection_2025": "3.5%"},
-            {"rank": 9, "country": "Tanzanie", "gdp_2024_billion": 85.0, "growth_2024": 5.4, "growth_projection_2025": "5.8%"},
-            {"rank": 10, "country": "Ghana", "gdp_2024_billion": 76.0, "growth_2024": 2.8, "growth_projection_2025": "4.0%"}
+            # Source: IMF World Economic Outlook (October 2024) cross-checked with
+            # World Bank GDP (current US$) 2024. Reflects the post-2024 Egyptian
+            # pound (EGP) devaluation (March 2024) and the cumulative Nigerian
+            # Naira (NGN) devaluations (2023–2024) which moved South Africa back
+            # to #1 in nominal USD terms.
+            {"rank": 1, "country": "Afrique du Sud", "gdp_2024_billion": 403.0, "growth_2024": 1.1, "growth_projection_2025": "1.5%", "source": "IMF WEO Oct 2024 / World Bank 2024"},
+            {"rank": 2, "country": "Égypte", "gdp_2024_billion": 347.6, "growth_2024": 2.7, "growth_projection_2025": "4.1%", "source": "IMF WEO Oct 2024 (post-EGP devaluation)"},
+            {"rank": 3, "country": "Algérie", "gdp_2024_billion": 263.6, "growth_2024": 3.8, "growth_projection_2025": "3.0%", "source": "IMF WEO Oct 2024 / World Bank 2024"},
+            {"rank": 4, "country": "Nigéria", "gdp_2024_billion": 199.7, "growth_2024": 3.1, "growth_projection_2025": "3.2%", "source": "IMF WEO Oct 2024 (post-NGN devaluations)"},
+            {"rank": 5, "country": "Éthiopie", "gdp_2024_billion": 156.1, "growth_2024": 6.1, "growth_projection_2025": "6.5%", "source": "IMF WEO Oct 2024"},
+            {"rank": 6, "country": "Maroc", "gdp_2024_billion": 152.4, "growth_2024": 3.2, "growth_projection_2025": "3.6%", "source": "IMF WEO Oct 2024 / World Bank 2024"},
+            {"rank": 7, "country": "Kenya", "gdp_2024_billion": 108.0, "growth_2024": 5.0, "growth_projection_2025": "5.3%", "source": "IMF WEO Oct 2024"},
+            {"rank": 8, "country": "Angola", "gdp_2024_billion": 92.1, "growth_2024": 2.4, "growth_projection_2025": "3.0%", "source": "IMF WEO Oct 2024"},
+            {"rank": 9, "country": "Côte d'Ivoire", "gdp_2024_billion": 86.9, "growth_2024": 6.5, "growth_projection_2025": "6.4%", "source": "IMF WEO Oct 2024"},
+            {"rank": 10, "country": "Tanzanie", "gdp_2024_billion": 79.6, "growth_2024": 5.4, "growth_projection_2025": "5.8%", "source": "IMF WEO Oct 2024"}
         ],
+        "top_10_gdp_2024_meta": {
+            "primary_source": "IMF World Economic Outlook Database — October 2024",
+            "secondary_source": "World Bank — GDP (current US$) 2024",
+            "url_imf": "https://www.imf.org/en/Publications/WEO",
+            "url_wb": "https://data.worldbank.org/indicator/NY.GDP.MKTP.CD",
+            "currency_note": "Nominal GDP in current USD. Major rank changes vs 2023 are driven by EGP devaluation (Mar 2024) and cumulative NGN devaluations (2023–2024)."
+        },
         "trade_evolution": {
             "intra_african_trade_2023": 111.8,  # Milliards USD
             "intra_african_trade_2024": 123.5,  # Milliards USD (estimé +10.5%)
@@ -176,9 +188,11 @@ async def get_main_statistics():
             "projected_2030": 188.0
         },
         "top_5_gdp_trade_comparison": [
+            # GDP figures: IMF WEO October 2024 / World Bank 2024
+            # Trade figures: OEC / BACI database (kept unchanged)
             {
                 "country": "Afrique du Sud",
-                "gdp_2024": 373.0,
+                "gdp_2024": 403.0,
                 "exports_world": 151.3,
                 "exports_intra_african": 28.7,
                 "imports_world": 100.9,
@@ -186,17 +200,8 @@ async def get_main_statistics():
                 "intra_african_percentage": 19.0
             },
             {
-                "country": "Nigéria",
-                "gdp_2024": 477.0,
-                "exports_world": 63.6,
-                "exports_intra_african": 8.5,
-                "imports_world": 50.9,
-                "imports_intra_african": 4.1,
-                "intra_african_percentage": 13.4
-            },
-            {
                 "country": "Égypte",
-                "gdp_2024": 387.0,
+                "gdp_2024": 347.6,
                 "exports_world": 53.1,
                 "exports_intra_african": 6.8,
                 "imports_world": 99.5,
@@ -204,22 +209,31 @@ async def get_main_statistics():
                 "intra_african_percentage": 12.8
             },
             {
-                "country": "Maroc",
-                "gdp_2024": 142.0,
-                "exports_world": 63.3,
-                "exports_intra_african": 4.9,
-                "imports_world": 89.2,
-                "imports_intra_african": 2.8,
-                "intra_african_percentage": 7.7
-            },
-            {
                 "country": "Algérie",
-                "gdp_2024": 224.0,
+                "gdp_2024": 263.6,
                 "exports_world": 48.2,
                 "exports_intra_african": 3.2,
                 "imports_world": 43.6,
                 "imports_intra_african": 1.8,
                 "intra_african_percentage": 6.6
+            },
+            {
+                "country": "Nigéria",
+                "gdp_2024": 199.7,
+                "exports_world": 63.6,
+                "exports_intra_african": 8.5,
+                "imports_world": 50.9,
+                "imports_intra_african": 4.1,
+                "intra_african_percentage": 13.4
+            },
+            {
+                "country": "Maroc",
+                "gdp_2024": 152.4,
+                "exports_world": 63.3,
+                "exports_intra_african": 4.9,
+                "imports_world": 89.2,
+                "imports_intra_african": 2.8,
+                "intra_african_percentage": 7.7
             }
         ],
         "sector_performance": {
