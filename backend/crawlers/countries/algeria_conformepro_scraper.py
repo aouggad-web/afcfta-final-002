@@ -84,19 +84,64 @@ class AlgeriaConformeproScraper:
     def _extract_links(self, html: str, pattern: str) -> List[Dict[str, str]]:
         soup = BeautifulSoup(html, "html.parser")
         links = []
+        seen = set()
         for a in soup.find_all("a", href=True):
             href = a["href"]
-            if pattern in href:
-                text = a.get_text(strip=True)
-                if text:
-                    bold = a.find("strong")
-                    title = bold.get_text(strip=True) if bold else ""
-                    links.append({
-                        "url": href,
-                        "text": text,
-                        "title": title,
-                    })
+            if pattern not in href or href in seen:
+                continue
+            seen.add(href)
+            text = a.get_text(" ", strip=True)
+            if text:
+                links.append({"url": href, "text": text})
         return links
+
+    def _parse_rangee_cards(self, html: str, heading: Dict) -> List[Dict]:
+        """
+        Parse sous-position cards from a rangee listing page.
+
+        Real card DOM (confirmed from conformepro.dz):
+          <a href=".../sous-position/01.01.211100/slug">
+            <small class="datagrid-title">Sous-position 2111.00</small>
+            <h3 class="fw-bold mb-1 text-primary">Short title</h3>
+            <p class="text-muted m-0 fs-4">Extended description</p>
+          </a>
+        """
+        soup = BeautifulSoup(html, "html.parser")
+        subs = []
+        seen = set()
+
+        for card in soup.find_all("a", href=lambda h: h and "/sous-position/" in h):
+            href = card.get("href", "")
+            if href in seen:
+                continue
+            seen.add(href)
+
+            url = href if href.startswith("http") else f"https://conformepro.dz{href}"
+            m = re.search(r"/sous-position/([\d.]+)/", url)
+            if not m:
+                continue
+            raw_code = m.group(1)
+
+            small = card.find("small", class_="datagrid-title")
+            h3 = card.find("h3")
+            p = card.find("p")
+
+            display_code = small.get_text(strip=True) if small else ""
+            title = h3.get_text(strip=True) if h3 else ""
+            description = p.get_text(strip=True) if p else title
+
+            subs.append({
+                "raw_code": raw_code,
+                "display_code": display_code,
+                "name": title,
+                "description": description,
+                "url": url,
+                "heading": heading["code"],
+                "chapter": heading["chapter"],
+                "section": heading["section"],
+            })
+
+        return subs
 
     async def scrape_sections(self) -> List[Dict]:
         logger.info("Scraping sections...")
@@ -114,7 +159,7 @@ class AlgeriaConformeproScraper:
             if m:
                 sections.append({
                     "code": m.group(1),
-                    "name": link["title"] or link["text"],
+                    "name": link["text"],
                     "url": url,
                 })
 
@@ -147,7 +192,7 @@ class AlgeriaConformeproScraper:
                 if m:
                     chapters.append({
                         "code": m.group(1),
-                        "name": link["title"] or link["text"],
+                        "name": link["text"],
                         "url": url,
                         "section": section["code"],
                     })
@@ -182,7 +227,7 @@ class AlgeriaConformeproScraper:
                 if m:
                     headings.append({
                         "code": m.group(1),
-                        "name": link["title"] or link["text"],
+                        "name": link["text"],
                         "url": url,
                         "chapter": chapter["code"],
                         "section": chapter["section"],
@@ -203,25 +248,40 @@ class AlgeriaConformeproScraper:
         html = await self._fetch_page(heading["url"])
         if not html:
             return []
+        return self._parse_rangee_cards(html, heading)
 
-        subs = []
-        links = self._extract_links(html, "/resources/tarif-douanier/sous-position/")
-        for link in links:
-            url = link["url"]
-            if not url.startswith("http"):
-                url = f"https://conformepro.dz{url}"
-            m = re.search(r"/sous-position/([\d.]+)/", url)
-            if m:
-                raw_code = m.group(1)
-                subs.append({
-                    "raw_code": raw_code,
-                    "name": link["title"] or link["text"],
-                    "url": url,
-                    "heading": heading["code"],
-                    "chapter": heading["chapter"],
-                    "section": heading["section"],
-                })
-        return subs
+    def _parse_vstack(self, soup: BeautifulSoup, label: str) -> str:
+        """
+        Extract the value from a div.vstack block whose h2 text matches `label`.
+
+        Real detail page DOM (confirmed from conformepro.dz):
+          <div class="vstack ...">
+            <h2>Droit de douane</h2>
+            <p class="fw-bold display-5 m-0">5%</p>
+          </div>
+          <div class="vstack ...">
+            <h2>Désignation complète</h2>
+            <div class="fs-3">Animaux vivants > ...</div>
+          </div>
+          <div class="vstack ...">
+            <h2>Avantages</h2>
+            <div class="fs-3"><ul><li>...</li></ul></div>
+          </div>
+        """
+        for div in soup.find_all("div", class_="vstack"):
+            h2 = div.find("h2")
+            if not h2 or h2.get_text(strip=True) != label:
+                continue
+            p = div.find("p", class_=lambda c: c and "fw-bold" in c)
+            if p:
+                return p.get_text(strip=True)
+            div_fs = div.find("div", class_="fs-3")
+            if div_fs:
+                items = div_fs.find_all("li")
+                if items:
+                    return "; ".join(li.get_text(strip=True) for li in items if li.get_text(strip=True))
+                return div_fs.get_text(strip=True)
+        return ""
 
     async def scrape_sub_position_detail(self, sub: Dict) -> Dict:
         html = await self._fetch_page(sub["url"])
@@ -232,10 +292,13 @@ class AlgeriaConformeproScraper:
 
         result = {
             "raw_code": sub["raw_code"],
+            "hs_code": sub["raw_code"].replace(".", ""),
+            "display_code": sub.get("display_code", ""),
             "heading": sub["heading"],
             "chapter": sub["chapter"],
             "section": sub["section"],
-            "name": sub["name"],
+            "name": sub.get("name", ""),
+            "description": sub.get("description", sub.get("name", "")),
             "taxes": {},
             "advantages": [],
             "formalities": [],
@@ -243,33 +306,13 @@ class AlgeriaConformeproScraper:
             "source_url": sub["url"],
         }
 
-        result["hs_code"] = sub["raw_code"].replace(".", "")
+        # "Désignation complète" is the authoritative full description
+        designation_full = self._parse_vstack(soup, "Désignation complète")
+        if designation_full:
+            result["designation_full"] = designation_full
 
-        h1 = soup.find("h1")
-        if h1:
-            h1_text = h1.get_text(strip=True)
-            prefix = "Le tarif douanier algérien pour"
-            if prefix in h1_text:
-                result["designation"] = h1_text.replace(prefix, "").strip()
-            else:
-                result["designation"] = h1_text
-
-        designation_h2 = soup.find("h2", string=re.compile(r"[Dd]ésignation", re.I))
-        if designation_h2:
-            texts = []
-            for sibling in designation_h2.next_siblings:
-                if sibling.name == "h2":
-                    break
-                if hasattr(sibling, "get_text"):
-                    t = sibling.get_text(strip=True)
-                    if t:
-                        texts.append(t)
-                elif isinstance(sibling, str) and sibling.strip():
-                    texts.append(sibling.strip())
-            if texts:
-                result["designation_full"] = " > ".join(texts)
-
-        tax_names = {
+        # Tax rates — each lives in its own div.vstack block
+        tax_labels = {
             "Droit de douane": "DD",
             "TVA": "TVA",
             "TCS": "TCS",
@@ -277,54 +320,25 @@ class AlgeriaConformeproScraper:
             "DAPS": "DAPS",
             "TIC": "TIC",
         }
+        for label, key in tax_labels.items():
+            raw = self._parse_vstack(soup, label)
+            if raw:
+                rate_match = re.search(r"(\d+(?:[.,]\d+)?)\s*%?", raw)
+                if rate_match:
+                    result["taxes"][key] = {
+                        "name": label,
+                        "rate": float(rate_match.group(1).replace(",", ".")),
+                        "raw": raw,
+                    }
 
-        for label, key in tax_names.items():
-            h2 = soup.find("h2", string=re.compile(rf"^{re.escape(label)}$", re.I))
-            if not h2:
-                h2 = soup.find("h2", string=re.compile(rf"{re.escape(label)}", re.I))
-            if h2:
-                next_el = h2.find_next(["p", "div"])
-                if next_el:
-                    val_text = next_el.get_text(strip=True)
-                    rate_match = re.search(r"(\d+(?:[.,]\d+)?)\s*%?", val_text)
-                    if rate_match:
-                        rate = float(rate_match.group(1).replace(",", "."))
-                        result["taxes"][key] = {
-                            "name": label,
-                            "rate": rate,
-                            "raw": val_text,
-                        }
+        # Advantages and formalities are in div.vstack with <ul> lists
+        advantages_raw = self._parse_vstack(soup, "Avantages")
+        if advantages_raw:
+            result["advantages"] = [s.strip() for s in advantages_raw.split(";") if s.strip()]
 
-        advantages_h2 = soup.find("h2", string=re.compile(r"[Aa]vantages?", re.I))
-        if advantages_h2:
-            ul = advantages_h2.find_next("ul")
-            if ul:
-                for li in ul.find_all("li"):
-                    text = li.get_text(strip=True)
-                    if text and "copies licence invalides" not in text.lower():
-                        result["advantages"].append(text)
-
-        formalities_h2 = soup.find("h2", string=re.compile(r"[Ff]ormalit", re.I))
-        if formalities_h2:
-            ul = formalities_h2.find_next("ul")
-            if ul:
-                for li in ul.find_all("li"):
-                    text = li.get_text(strip=True)
-                    if text:
-                        result["formalities"].append(text)
-            else:
-                texts = []
-                for sib in formalities_h2.next_siblings:
-                    if sib.name == "h2":
-                        break
-                    if hasattr(sib, "get_text"):
-                        t = sib.get_text(strip=True)
-                        if t:
-                            for part in re.split(r"(?<=[a-zé\)])(?=[A-Z])", t):
-                                part = part.strip()
-                                if part:
-                                    texts.append(part)
-                result["formalities"] = texts
+        formalities_raw = self._parse_vstack(soup, "Formalités")
+        if formalities_raw:
+            result["formalities"] = [s.strip() for s in formalities_raw.split(";") if s.strip()]
 
         return result
 
@@ -451,7 +465,74 @@ async def run_algeria_scraper(max_headings: int = None):
     return await scraper.run(max_headings=max_headings)
 
 
+async def run_algeria_scraper_fast():
+    """
+    Fast mode: collect only national tariff positions with card-level descriptions.
+    Skips detail page requests (no taxes/formalities). ~15x faster than full mode.
+    Output: DZA_tariffs_fast.json
+    """
+    scraper = AlgeriaConformeproScraper()
+    scraper.stats["started_at"] = datetime.utcnow().isoformat()
+    logger.info("=== Algeria Tariff Scraper — FAST MODE (positions + descriptions only) ===")
+
+    try:
+        await scraper.scrape_sections()
+        await scraper.scrape_chapters()
+        await scraper.scrape_headings()
+
+        all_subs = []
+        for i, heading in enumerate(scraper.headings):
+            logger.info(f"  Heading {heading['code']} ({i+1}/{len(scraper.headings)})")
+            subs = await scraper.scrape_sub_positions_for_heading(heading)
+            for sub in subs:
+                all_subs.append({
+                    "raw_code": sub["raw_code"],
+                    "hs_code": sub["raw_code"].replace(".", ""),
+                    "display_code": sub.get("display_code", ""),
+                    "heading": sub["heading"],
+                    "chapter": sub["chapter"],
+                    "section": sub["section"],
+                    "name": sub.get("name", ""),
+                    "description": sub.get("description", ""),
+                    "source": "conformepro.dz",
+                    "source_url": sub["url"],
+                })
+            logger.info(f"    {len(subs)} positions collected (total: {len(all_subs)})")
+
+        scraper.stats["finished_at"] = datetime.utcnow().isoformat()
+        scraper.stats["sub_positions"] = len(all_subs)
+
+        output = {
+            "country": "DZA",
+            "country_name": "Algérie",
+            "source": "conformepro.dz (données douane.gov.dz)",
+            "mode": "fast — positions and descriptions only",
+            "extracted_at": datetime.utcnow().isoformat(),
+            "stats": scraper.stats,
+            "sub_positions": all_subs,
+        }
+        os.makedirs(DATA_DIR, exist_ok=True)
+        out_path = os.path.join(DATA_DIR, "DZA_tariffs_fast.json")
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(output, f, ensure_ascii=False, indent=2)
+        logger.info(f"Saved {len(all_subs)} positions to {out_path}")
+
+    finally:
+        await scraper._close_client()
+
+    return {"success": True, "count": len(all_subs)}
+
+
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--fast", action="store_true", help="Fast mode: positions and descriptions only, no detail pages")
+    parser.add_argument("--max-headings", type=int, default=None)
+    args = parser.parse_args()
+
     logging.basicConfig(level=logging.INFO)
-    result = asyncio.run(run_algeria_scraper(max_headings=5))
+    if args.fast:
+        result = asyncio.run(run_algeria_scraper_fast())
+    else:
+        result = asyncio.run(run_algeria_scraper(max_headings=args.max_headings))
     print(json.dumps(result, indent=2, ensure_ascii=False))
