@@ -1,14 +1,3 @@
-"""
-Enhanced Calculator Routes v2 – DZA-aware tariff calculation endpoints.
-
-Endpoints:
-    POST /api/enhanced-calculator/dza        Calculate with DZA-specific features
-    GET  /api/enhanced-calculator/sources    Show data source priority
-
-Priority system:
-    dza_authentic > dza_enriched > tariff_service > etl_fallback
-Each source carries a confidence score read from `config.crawler_config`.
-"""
 from __future__ import annotations
 
 import json
@@ -21,7 +10,6 @@ from pydantic import BaseModel, Field
 
 from config.crawler_config import get_crawler_config, get_integration_config
 from services.enhanced_calculator_service import calculate_detailed_tariff
-from services.tariff_data_service import tariff_service
 
 logger = logging.getLogger(__name__)
 
@@ -65,13 +53,6 @@ def _build_dza_enriched_line(sub: Dict[str, Any], extracted_at: str = "") -> Dic
 
 
 def _load_dza_authentic_line(hs_code: str) -> Tuple[Optional[Dict[str, Any]], str]:
-    """
-    Look up an authentic DZA tariff line.
-
-    Lookup order:
-        1. Latest published authentic dataset (`published/DZA/dza_published_*.json`)
-        2. Enriched crawled fallback (`data/crawled/DZA_tariffs_enriched.json`)
-    """
     cfg = get_crawler_config()
     files = sorted(cfg.published_dir.glob("dza_published_*.json"), reverse=True)
 
@@ -103,14 +84,12 @@ def _load_dza_authentic_line(hs_code: str) -> Tuple[Optional[Dict[str, Any]], st
 
     extracted_at = enriched.get("extracted_at", "")
 
-    # Exact HS10 match first
     for sub in enriched.get("sub_positions", []):
         sub_hs = str(sub.get("hs_code", "")).replace(".", "").replace(" ", "")
         raw_code = str(sub.get("raw_code", "")).replace(".", "").replace(" ", "")
         if sub_hs == hs_clean or raw_code == hs_clean:
             return _build_dza_enriched_line(sub, extracted_at), "dza_enriched"
 
-    # HS6 prefix fallback (lower confidence)
     for sub in enriched.get("sub_positions", []):
         sub_hs = str(sub.get("hs_code", "")).replace(".", "").replace(" ", "")
         if sub_hs.startswith(hs6):
@@ -123,15 +102,6 @@ def _load_dza_authentic_line(hs_code: str) -> Tuple[Optional[Dict[str, Any]], st
 
 @router.post("/dza", summary="Calculate DZA tariff with DZA-specific features")
 async def calculate_dza(request: DZACalculationRequest):
-    """
-    Calculate NPF vs ZLECAf tariff comparison for Algeria (DZA) using
-    the priority data-source system:
-
-    1. **dza_authentic**  – published dataset from douane.gov.dz
-    2. **dza_enriched**   – enriched crawl with HS10 sub-positions
-    3. **tariff_service** – fallback pre-collected JSON files
-    4. **etl_fallback**   – built-in rates from the ETL layer
-    """
     country_iso3 = "DZA"
     hs_code = request.hs_code.replace(".", "").replace(" ", "")
 
@@ -172,76 +142,3 @@ async def calculate_dza(request: DZACalculationRequest):
     result["country_iso3"] = country_iso3
 
     return result
-
-
-@router.get("/sources", summary="Show data source priority configuration")
-async def get_data_sources():
-    """
-    Return the data source priority used by the enhanced calculator,
-    along with each source's availability and confidence score.
-    """
-    int_cfg = get_integration_config()
-    cfg = get_crawler_config()
-
-    # DZA authentic published dataset
-    dza_files = sorted(cfg.published_dir.glob("dza_published_*.json"), reverse=True)
-    dza_authentic_available = len(dza_files) > 0
-    dza_authentic_info: Dict[str, Any] = {"available": dza_authentic_available}
-    if dza_authentic_available:
-        from datetime import datetime, timezone
-        mtime = dza_files[0].stat().st_mtime
-        file_dt = datetime.fromtimestamp(mtime, tz=timezone.utc)
-        age_hours = (datetime.now(timezone.utc) - file_dt).total_seconds() / 3600
-        dza_authentic_info.update({
-            "file": dza_files[0].name,
-            "last_updated": file_dt.isoformat(),
-            "age_hours": round(age_hours, 2),
-            "is_fresh": age_hours < 24,
-        })
-
-    # DZA enriched crawl
-    enriched_path = Path(__file__).resolve().parent.parent / "data" / "crawled" / "DZA_tariffs_enriched.json"
-    dza_enriched_info = {"available": enriched_path.exists()}
-    if enriched_path.exists():
-        from datetime import datetime, timezone
-        mtime = enriched_path.stat().st_mtime
-        file_dt = datetime.fromtimestamp(mtime, tz=timezone.utc)
-        age_hours = (datetime.now(timezone.utc) - file_dt).total_seconds() / 3600
-        dza_enriched_info.update({
-            "file": enriched_path.name,
-            "last_updated": file_dt.isoformat(),
-            "age_hours": round(age_hours, 2),
-            "is_fresh": age_hours < 24,
-        })
-
-    # Tariff service
-    ts_stats = tariff_service.get_stats()
-    tariff_available = ts_stats.get("countries", 0) > 0
-
-    sources = []
-    for priority, source in enumerate(int_cfg.source_priority, start=1):
-        if source == "dza_authentic":
-            extras = dza_authentic_info
-            available = dza_authentic_info["available"]
-        elif source == "dza_enriched":
-            extras = dza_enriched_info
-            available = dza_enriched_info["available"]
-        elif source == "tariff_service":
-            extras = {"countries_loaded": ts_stats.get("countries", 0)}
-            available = tariff_available
-        else:
-            extras = {}
-            available = True  # etl_fallback always available
-
-        sources.append({
-            "priority": priority,
-            "source": source,
-            "confidence_score": int_cfg.confidence_scores.get(source, 0.0),
-            "available": available,
-            **extras,
-        })
-
-    return {
-        "priority_order": int_cfg.source_priority,
-        "sources": sources,
-    }
