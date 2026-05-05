@@ -5,10 +5,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
+import { Card, CardContent } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import { BarChart3, Scale, Globe, TrendingUp, Package } from 'lucide-react';
+import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Cell } from 'recharts';
+import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
 // Sub-components
 import StatisticsZaubaStyle from '../StatisticsZaubaStyle';
@@ -21,6 +21,22 @@ import { PDFExportButton } from '../common/ExportTools';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
+/* ── Custom tooltip pour les barres ──────────────────────────── */
+const AfricaTooltip = ({ active, payload, label, unit }) => {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div className="stats-tooltip" style={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
+      <p style={{ color: '#EAE0D0', fontWeight: 700, marginBottom: 4 }}>{label}</p>
+      {payload.map((p, i) => (
+        <p key={i} style={{ color: p.color, margin: 0 }}>
+          {p.name}: <strong>{`$${(p.value / 1e9).toFixed(1)}B`}</strong>
+        </p>
+      ))}
+      {unit && <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.68rem', marginTop: 4 }}>{unit}</p>}
+    </div>
+  );
+};
+
 export default function StatisticsTab({ language = 'fr' }) {
   const { t } = useTranslation();
   const [statistics, setStatistics] = useState(null);
@@ -30,7 +46,7 @@ export default function StatisticsTab({ language = 'fr' }) {
   const texts = {
     fr: {
       title: "Statistiques Commerciales",
-      subtitle: "Données et analyses du commerce africain",
+      subtitle: "Données et analyses du commerce africain — ZLECAf 2024",
       overview: "Vue d'ensemble",
       products: "Produits",
       trends: "Tendances",
@@ -39,12 +55,12 @@ export default function StatisticsTab({ language = 'fr' }) {
       topImporters: "Top 10 Importateurs",
       exports: "Exportations 2024",
       imports: "Importations 2024",
-      exportsEvolution: "Volume des exportations en milliards USD",
-      importsVolume: "Volume des importations en milliards USD"
+      exportsEvolution: "Volume des exportations (Milliards USD)",
+      importsVolume: "Volume des importations (Milliards USD)"
     },
     en: {
       title: "Trade Statistics",
-      subtitle: "African trade data and analysis",
+      subtitle: "African trade data and analysis — AfCFTA 2024",
       overview: "Overview",
       products: "Products",
       trends: "Trends",
@@ -53,8 +69,8 @@ export default function StatisticsTab({ language = 'fr' }) {
       topImporters: "Top 10 Importers",
       exports: "Exports 2024",
       imports: "Imports 2024",
-      exportsEvolution: "Export volume in billion USD",
-      importsVolume: "Import volume in billion USD"
+      exportsEvolution: "Export volume (Billion USD)",
+      importsVolume: "Import volume (Billion USD)"
     }
   };
 
@@ -73,160 +89,190 @@ export default function StatisticsTab({ language = 'fr' }) {
     }
   };
 
+  const tabItems = [
+    { value: 'overview',   icon: <Globe className="h-4 w-4"    />, label: txt.overview   },
+    { value: 'products',   icon: <Package className="h-4 w-4"  />, label: txt.products   },
+    { value: 'trends',     icon: <TrendingUp className="h-4 w-4"/>, label: txt.trends    },
+    { value: 'comparison', icon: <Scale className="h-4 w-4"    />, label: txt.comparison },
+  ];
+
   return (
     <div className="space-y-6" data-testid="statistics-tab">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            <BarChart3 className="h-7 w-7 text-emerald-600" />
-            {txt.title}
-          </h2>
-          <p className="text-slate-500 mt-1">{txt.subtitle}</p>
+      {/* ── Hero Header ──────────────────────────────────────── */}
+      <div className="stats-hero">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h2 className="stats-hero-title flex items-center gap-2">
+              <BarChart3 className="h-7 w-7" style={{ color: '#D4891A' }} />
+              {txt.title}
+            </h2>
+            <p className="stats-hero-subtitle">{txt.subtitle}</p>
+            <div className="stats-kente-bar" style={{ width: 200, marginTop: 12 }} />
+          </div>
+          <PDFExportButton
+            targetRef={contentRef}
+            filename="statistics"
+            title={txt.title}
+            language={language}
+          />
         </div>
-        <PDFExportButton
-          targetRef={contentRef}
-          filename="statistics"
-          title={txt.title}
-          language={language}
-        />
       </div>
 
-      {/* Sub-tabs Navigation */}
+      {/* ── Sub-tabs Navigation ─────────────────────────────── */}
       <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 max-w-2xl">
-          <TabsTrigger value="overview" className="flex items-center gap-2" data-testid="stats-overview-tab">
-            <Globe className="h-4 w-4" />
-            {txt.overview}
-          </TabsTrigger>
-          <TabsTrigger value="products" className="flex items-center gap-2" data-testid="stats-products-tab">
-            <Package className="h-4 w-4" />
-            {txt.products}
-          </TabsTrigger>
-          <TabsTrigger value="trends" className="flex items-center gap-2" data-testid="stats-trends-tab">
-            <TrendingUp className="h-4 w-4" />
-            {txt.trends}
-          </TabsTrigger>
-          <TabsTrigger value="comparison" className="flex items-center gap-2" data-testid="stats-comparison-tab">
-            <Scale className="h-4 w-4" />
-            {txt.comparison}
-          </TabsTrigger>
+        <TabsList
+          className="inline-flex gap-1 p-1 rounded-xl"
+          style={{
+            background: 'rgba(18,24,32,0.85)',
+            border: '1px solid rgba(212,137,26,0.18)',
+          }}
+        >
+          {tabItems.map(tab => (
+            <TabsTrigger
+              key={tab.value}
+              value={tab.value}
+              data-testid={`stats-${tab.value}-tab`}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              style={{
+                color: activeSubTab === tab.value ? '#EAE0D0' : 'rgba(142,155,174,0.7)',
+                background: activeSubTab === tab.value
+                  ? 'linear-gradient(135deg,rgba(200,83,26,0.85),rgba(160,60,18,0.9))'
+                  : 'transparent',
+                boxShadow: activeSubTab === tab.value ? '0 2px 8px rgba(200,83,26,0.35)' : 'none',
+              }}
+            >
+              {tab.icon}
+              <span className="hidden sm:inline">{tab.label}</span>
+            </TabsTrigger>
+          ))}
         </TabsList>
 
         <div ref={contentRef}>
-          {/* Overview Tab */}
+          {/* ── Overview Tab ─────────────────────────────────── */}
           <TabsContent value="overview" className="space-y-8">
-            {/* OEC Trade Statistics */}
             <OECTradeStats language={language} />
-            
-            {/* Zauba Style Stats */}
             <StatisticsZaubaStyle language={language} />
 
-            {/* Top Exporters/Importers Charts */}
+            {/* Top Exporters / Importers Charts */}
             {statistics && statistics.top_exporters_2024 && statistics.top_importers_2024 && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="shadow-xl" data-testid="top-exporters-chart">
-                  <CardHeader className="afcfta-dark-gradient pb-2" style={{borderBottom:'1px solid rgba(52,211,153,0.2)'}}>
-                    <CardTitle className="text-lg font-bold text-emerald-400 flex items-center gap-2">
+
+                {/* Top Exporters */}
+                <div className="stats-chart-card" data-testid="top-exporters-chart">
+                  <div className="stats-chart-header green">
+                    <div className="stats-chart-title green">
                       <TrendingUp className="h-5 w-5" />
                       {txt.topExporters}
-                    </CardTitle>
-                    <CardDescription className="text-emerald-400 text-xs">
-                      {txt.exportsEvolution}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-4">
-                    <ResponsiveContainer width="100%" height={300}>
+                    </div>
+                    <div className="stats-chart-subtitle">{txt.exportsEvolution}</div>
+                  </div>
+                  <div style={{ padding: '16px 8px' }}>
+                    <ResponsiveContainer width="100%" height={320}>
                       <BarChart
                         data={statistics.top_exporters_2024?.slice(0, 10)}
                         layout="vertical"
-                        margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
+                        margin={{ top: 4, right: 36, left: 80, bottom: 4 }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                        <XAxis 
-                          type="number" 
-                          tickFormatter={(value) => `$${(value / 1e9).toFixed(0)}B`}
-                          tick={{ fontSize: 10 }}
+                        <defs>
+                          <linearGradient id="gradExport" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stopColor="#1A7A4A" />
+                            <stop offset="100%" stopColor="#34d399" />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.06)" />
+                        <XAxis
+                          type="number"
+                          tickFormatter={(v) => `$${(v / 1e9).toFixed(0)}B`}
+                          tick={{ fontSize: 10, fill: 'rgba(142,155,174,0.8)' }}
+                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          tickLine={false}
                         />
-                        <YAxis 
-                          dataKey="name" 
-                          type="category" 
-                          tick={{ fontSize: 11 }}
-                          width={75}
+                        <YAxis
+                          dataKey="name"
+                          type="category"
+                          tick={{ fontSize: 11, fill: '#EAE0D0' }}
+                          width={78}
+                          axisLine={false}
+                          tickLine={false}
                         />
-                        <Tooltip 
-                          formatter={(value) => [`$${(value / 1e9).toFixed(1)}B`, txt.exports]}
-                          contentStyle={{ borderRadius: '8px' }}
-                        />
-                        <Bar 
-                          dataKey="exports_2024" 
-                          fill="#10b981" 
-                          radius={[0, 4, 4, 0]}
-                          barSize={18}
+                        <Tooltip content={<AfricaTooltip unit={txt.exportsEvolution} />} />
+                        <Bar
+                          dataKey="exports_2024"
+                          fill="url(#gradExport)"
+                          radius={[0, 6, 6, 0]}
+                          barSize={16}
+                          name={txt.exports}
                         />
                       </BarChart>
                     </ResponsiveContainer>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
 
-                <Card className="shadow-xl" data-testid="top-importers-chart">
-                  <CardHeader className="afcfta-dark-gradient pb-2" style={{borderBottom:'1px solid rgba(96,165,250,0.2)'}}>
-                    <CardTitle className="text-lg font-bold text-blue-400 flex items-center gap-2">
+                {/* Top Importers */}
+                <div className="stats-chart-card" data-testid="top-importers-chart">
+                  <div className="stats-chart-header blue">
+                    <div className="stats-chart-title blue">
                       <TrendingUp className="h-5 w-5 rotate-180" />
                       {txt.topImporters}
-                    </CardTitle>
-                    <CardDescription className="text-blue-400 text-xs">
-                      {txt.importsVolume}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-4">
-                    <ResponsiveContainer width="100%" height={300}>
+                    </div>
+                    <div className="stats-chart-subtitle">{txt.importsVolume}</div>
+                  </div>
+                  <div style={{ padding: '16px 8px' }}>
+                    <ResponsiveContainer width="100%" height={320}>
                       <BarChart
                         data={statistics.top_importers_2024?.slice(0, 10)}
                         layout="vertical"
-                        margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
+                        margin={{ top: 4, right: 36, left: 80, bottom: 4 }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                        <XAxis 
-                          type="number" 
-                          tickFormatter={(value) => `$${(value / 1e9).toFixed(0)}B`}
-                          tick={{ fontSize: 10 }}
+                        <defs>
+                          <linearGradient id="gradImport" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stopColor="#1A6B8A" />
+                            <stop offset="100%" stopColor="#38bdf8" />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.06)" />
+                        <XAxis
+                          type="number"
+                          tickFormatter={(v) => `$${(v / 1e9).toFixed(0)}B`}
+                          tick={{ fontSize: 10, fill: 'rgba(142,155,174,0.8)' }}
+                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          tickLine={false}
                         />
-                        <YAxis 
-                          dataKey="name" 
-                          type="category" 
-                          tick={{ fontSize: 11 }}
-                          width={75}
+                        <YAxis
+                          dataKey="name"
+                          type="category"
+                          tick={{ fontSize: 11, fill: '#EAE0D0' }}
+                          width={78}
+                          axisLine={false}
+                          tickLine={false}
                         />
-                        <Tooltip 
-                          formatter={(value) => [`$${(value / 1e9).toFixed(1)}B`, txt.imports]}
-                          contentStyle={{ borderRadius: '8px' }}
-                        />
-                        <Bar 
-                          dataKey="imports_2024" 
-                          fill="#3b82f6" 
-                          radius={[0, 4, 4, 0]}
-                          barSize={18}
+                        <Tooltip content={<AfricaTooltip unit={txt.importsVolume} />} />
+                        <Bar
+                          dataKey="imports_2024"
+                          fill="url(#gradImport)"
+                          radius={[0, 6, 6, 0]}
+                          barSize={16}
+                          name={txt.imports}
                         />
                       </BarChart>
                     </ResponsiveContainer>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </div>
             )}
           </TabsContent>
 
-          {/* Products Tab */}
+          {/* ── Products Tab ──────────────────────────────────── */}
           <TabsContent value="products" className="space-y-8">
             <TradeProductsTable language={language} />
           </TabsContent>
 
-          {/* Trends Tab */}
+          {/* ── Trends Tab ────────────────────────────────────── */}
           <TabsContent value="trends" className="space-y-8">
             <TradeComparison language={language} />
           </TabsContent>
 
-          {/* Multi-Country Comparison Tab */}
+          {/* ── Multi-Country Comparison Tab ─────────────────── */}
           <TabsContent value="comparison" className="space-y-8">
             <MultiCountryComparison language={language} />
           </TabsContent>

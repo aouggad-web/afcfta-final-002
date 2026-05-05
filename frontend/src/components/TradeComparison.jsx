@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { BarChart, Bar, LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import { Globe, TrendingUp } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API_URL = BACKEND_URL || '';
@@ -218,246 +219,184 @@ const TradeComparison = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 font-semibold">Chargement des données commerciales...</p>
-        </div>
+      <div className="stats-loading">
+        <div className="stats-spinner" />
+        <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.875rem' }}>Chargement des données commerciales...</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      {/* Note importante sur les données */}
-      <Card className="bg-gradient-to-r from-blue-100 via-cyan-100 to-teal-100 border-l-4 border-l-blue-600 mb-6">
-        <CardContent className="pt-4 pb-4">
-          <div className="flex items-start gap-3">
-            <i className="fas fa-info-circle text-blue-600 text-2xl mt-1"></i>
-            <div>
-              <h4 className="font-bold text-blue-800 mb-1">📊 Données de Commerce INTRA-AFRICAIN</h4>
-              <p className="text-sm text-blue-700">
-                Les données ci-dessous représentent uniquement les <strong>échanges commerciaux entre pays africains</strong>, 
-                basées sur les données officielles de l'<a href="https://oec.world/" target="_blank" rel="noopener noreferrer" className="underline font-bold">OEC (Observatory of Economic Complexity)</a>.
-              </p>
-              <p className="text-xs text-blue-600 mt-2">
-                💡 Note: Le commerce intra-africain représente actuellement environ <strong>15-17%</strong> du commerce extérieur total de l'Afrique. 
-                L'objectif de la ZLECAf est de porter ce chiffre à <strong>25-30% d'ici 2030</strong>.
-              </p>
-            </div>
+      {/* ── Info Note: Intra-African data ──────────────────────── */}
+      <div className="stats-chart-card" style={{ padding: '16px 20px' }}>
+        <div className="flex items-start gap-3">
+          <div style={{ color: '#38bdf8', flexShrink: 0, marginTop: 2 }}>
+            <Globe style={{ width: 18, height: 18 }} />
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Vue d'ensemble Commerce TOTAL AFRICAIN (avec tous les partenaires mondiaux) */}
-      <Card className="bg-gradient-to-r from-amber-50 to-yellow-50 border-l-4 border-l-amber-500 shadow-lg mb-6">
-        <CardContent className="pt-4">
-          <div className="flex items-center gap-3">
-            <i className="fas fa-globe text-amber-600 text-3xl"></i>
-            <div>
-              <h3 className="text-xl font-bold text-amber-800">Commerce Total Africain (Monde Entier)</h3>
-              <p className="text-sm text-amber-700 mt-1">
-                Ces chiffres représentent le <strong>commerce total de l'Afrique avec tous ses partenaires</strong> (Europe, Asie, Amériques, etc.).
-                <br/>Voir ci-dessous pour le commerce <strong>intra-africain</strong> uniquement.
-              </p>
-            </div>
+          <div>
+            <h4 style={{ fontWeight: 700, color: '#38bdf8', marginBottom: 4, fontSize: '0.85rem' }}>
+              Données de Commerce INTRA-AFRICAIN
+            </h4>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(234,224,208,0.75)', margin: 0 }}>
+              Les données ci-dessous représentent uniquement les <strong>échanges commerciaux entre pays africains</strong>,
+              basées sur les données officielles de l'<a href="https://oec.world/" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline' }}>OEC</a>.
+            </p>
+            <p style={{ fontSize: '0.75rem', color: 'rgba(142,155,174,0.65)', marginTop: 6 }}>
+              Le commerce intra-africain représente actuellement environ <strong style={{ color: '#fbbf24' }}>15-17%</strong> du commerce total africain.
+              L'objectif ZLECAf: <strong style={{ color: '#34d399' }}>25-30% d'ici 2030</strong>.
+            </p>
           </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-l-4 border-l-blue-600 shadow-lg">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-gray-600">PIB Total Africain</span>
-              <i className="fas fa-chart-line text-blue-600 text-xl"></i>
-            </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-blue-700">${tradeOverview.totalTrade.value}B</span>
-              <Badge className="bg-green-600 text-white">+{tradeOverview.totalTrade.change}%</Badge>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">Avec tous partenaires</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-l-4 border-l-green-600 shadow-lg">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-gray-600">Exports (Monde)</span>
-              <i className="fas fa-arrow-up text-green-600 text-xl"></i>
-            </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-green-700">${tradeOverview.exports.value}B</span>
-              <Badge className="bg-green-600 text-white">+{tradeOverview.exports.change}%</Badge>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">Vers tous pays</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-orange-50 to-red-50 border-l-4 border-l-orange-600 shadow-lg">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-gray-600">Imports (Monde)</span>
-              <i className="fas fa-arrow-down text-orange-600 text-xl"></i>
-            </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-orange-700">${tradeOverview.imports.value}B</span>
-              <Badge className="bg-orange-600 text-white">+{tradeOverview.imports.change}%</Badge>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">Depuis tous pays</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-purple-50 to-pink-50 border-l-4 border-l-purple-600 shadow-lg">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-gray-600">Solde Commercial</span>
-              <i className="fas fa-balance-scale text-purple-600 text-xl"></i>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-4xl font-bold text-purple-700">+${tradeOverview.balance.value}B</span>
-              <Badge className="bg-purple-600 text-white w-fit mt-2">{tradeOverview.balance.status}</Badge>
-            </div>
-          </CardContent>
-        </Card>
+        </div>
       </div>
 
-      {/* COMMERCE INTRA-AFRICAIN - Vraies données */}
+      {/* ── Commerce Total Africain banner ──────────────────────── */}
+      <div className="stats-chart-card" style={{ padding: '16px 20px', borderLeft: '3px solid #D4891A' }}>
+        <div className="flex items-start gap-3">
+          <div style={{ color: '#fbbf24', flexShrink: 0, marginTop: 2 }}>
+            <Globe style={{ width: 18, height: 18 }} />
+          </div>
+          <div>
+            <h3 style={{ fontWeight: 700, color: '#fbbf24', margin: 0, fontSize: '0.9rem' }}>
+              Commerce Total Africain (Monde Entier)
+            </h3>
+            <p style={{ fontSize: '0.78rem', color: 'rgba(234,224,208,0.65)', marginTop: 4 }}>
+              Ces chiffres représentent le <strong>commerce total de l'Afrique avec tous ses partenaires</strong> (Europe, Asie, Amériques, etc.).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── KPI Cards Grid ──────────────────────────────────────── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="stats-kpi-card atlantic">
+          <p className="stats-kpi-label">PIB Total Africain</p>
+          <p className="stats-kpi-value atlantic">${tradeOverview.totalTrade.value}B</p>
+          <p className="stats-kpi-footer">
+            <span className="stats-chip up">+{tradeOverview.totalTrade.change}%</span>
+            Avec tous partenaires
+          </p>
+        </div>
+        <div className="stats-kpi-card green">
+          <p className="stats-kpi-label">Exports (Monde)</p>
+          <p className="stats-kpi-value green">${tradeOverview.exports.value}B</p>
+          <p className="stats-kpi-footer">
+            <span className="stats-chip up">+{tradeOverview.exports.change}%</span>
+            Vers tous pays
+          </p>
+        </div>
+        <div className="stats-kpi-card terra">
+          <p className="stats-kpi-label">Imports (Monde)</p>
+          <p className="stats-kpi-value terra">${tradeOverview.imports.value}B</p>
+          <p className="stats-kpi-footer">
+            <span className="stats-chip down">+{tradeOverview.imports.change}%</span>
+            Depuis tous pays
+          </p>
+        </div>
+        <div className="stats-kpi-card violet">
+          <p className="stats-kpi-label">Solde Commercial</p>
+          <p className="stats-kpi-value green">+${tradeOverview.balance.value}B</p>
+          <p className="stats-kpi-footer">
+            <span className="stats-chip up">{tradeOverview.balance.status}</span>
+          </p>
+        </div>
+      </div>
+
+      {/* ── Commerce INTRA-AFRICAIN ────────────────────────────── */}
       {statistics && statistics.trade_evolution && (
-        <Card className="shadow-2xl border-t-4 border-t-green-600 mt-8">
-          <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
-            <CardTitle className="text-2xl font-bold text-green-700 flex items-center gap-2">
-              <i className="fas fa-handshake"></i>
-              <span>Commerce INTRA-AFRICAIN (entre pays africains uniquement)</span>
-            </CardTitle>
-            <CardDescription className="text-lg font-semibold">
-              Commerce réalisé uniquement entre les 55 pays africains membres de la ZLECAf
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <Card className="bg-gradient-to-br from-teal-50 to-cyan-100 border-2 border-teal-400 shadow-lg">
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <p className="text-sm font-bold text-teal-700 mb-2">📊 Commerce Intra-Africain 2023</p>
-                    <p className="text-4xl font-extrabold text-teal-600">
-                      ${statistics.trade_evolution.intra_african_trade_2023}B
-                    </p>
-                    <p className="text-xs text-teal-600 mt-1">Milliards USD</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-2 border-green-400 shadow-lg">
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <p className="text-sm font-bold text-green-700 mb-2">📈 Commerce Intra-Africain 2024</p>
-                    <p className="text-4xl font-extrabold text-green-600">
-                      ${statistics.trade_evolution.intra_african_trade_2024}B
-                    </p>
-                    <p className="text-xs text-green-600 mt-1">Milliards USD</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-amber-50 to-yellow-100 border-2 border-amber-400 shadow-lg">
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <p className="text-sm font-bold text-amber-700 mb-2">🚀 Croissance 2023-2024</p>
-                    <p className="text-4xl font-extrabold text-amber-600">
-                      +{statistics.trade_evolution.growth_rate_2023_2024}%
-                    </p>
-                    <p className="text-xs text-amber-600 mt-1">{statistics.trade_evolution.trend}</p>
-                  </div>
-                </CardContent>
-              </Card>
+        <div className="stats-chart-card">
+          <div className="stats-chart-header green">
+            <div className="stats-chart-title green">
+              <Globe style={{ width: 18, height: 18 }} />
+              Commerce INTRA-AFRICAIN (entre pays africains uniquement)
             </div>
+            <div className="stats-chart-subtitle">Commerce réalisé uniquement entre les 55 pays africains membres de la ZLECAf</div>
+          </div>
+          <div style={{ padding: '20px 20px 8px' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                  <div className="stats-kpi-card atlantic">
+                    <p className="stats-kpi-label">Commerce Intra-Africain 2023</p>
+                    <p className="stats-kpi-value atlantic">${statistics.trade_evolution.intra_african_trade_2023}B</p>
+                    <p className="stats-kpi-footer">Milliards USD</p>
+                  </div>
+                  <div className="stats-kpi-card green">
+                    <p className="stats-kpi-label">Commerce Intra-Africain 2024</p>
+                    <p className="stats-kpi-value green">${statistics.trade_evolution.intra_african_trade_2024}B</p>
+                    <p className="stats-kpi-footer">Milliards USD</p>
+                  </div>
+                  <div className="stats-kpi-card gold">
+                    <p className="stats-kpi-label">Croissance 2023-2024</p>
+                    <p className="stats-kpi-value gold">+{statistics.trade_evolution.growth_rate_2023_2024}%</p>
+                    <p className="stats-kpi-footer">{statistics.trade_evolution.trend}</p>
+                  </div>
+                </div>
 
             {/* Graphique évolution commerce intra-africain */}
-            <div style={{ minHeight: '320px' }}>
-              <ResponsiveContainer width="100%" height={300} debounce={300}>
-                <AreaChart 
-                  data={[
-                    { année: '2023', commerce: parseFloat(statistics.trade_evolution.intra_african_trade_2023) },
-                    { année: '2024', commerce: parseFloat(statistics.trade_evolution.intra_african_trade_2024) },
-                    { année: '2025*', commerce: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.12 },
-                    { année: '2030*', commerce: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.52 }
-                  ]}
-                  margin={{ top: 10, right: 30, left: 20, bottom: 10 }}
-                >
-                  <defs>
-                    <linearGradient id="colorCommerce" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0.1}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis 
-                    dataKey="année" 
-                    tick={{ fontSize: 12, fontWeight: 'bold' }}
-                    stroke="#6b7280"
-                  />
-                  <YAxis 
-                    label={{ value: 'Milliards USD', angle: -90, position: 'insideLeft', style: { fontSize: 12, fontWeight: 'bold' } }}
-                    tick={{ fontSize: 11 }}
-                    stroke="#6b7280"
-                  />
-                  <Tooltip 
-                    formatter={(value) => [`$${value.toFixed(1)}B USD`, 'Commerce']}
-                    contentStyle={{ 
-                      backgroundColor: '#f9fafb', 
-                      border: '2px solid #10b981',
-                      borderRadius: '8px',
-                      fontSize: '12px',
-                      fontWeight: 'bold'
-                    }}
-                  />
-                  <Legend 
-                    wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }}
-                    iconType="circle"
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="commerce" 
-                    stroke="#10b981" 
-                    strokeWidth={3}
-                    fill="url(#colorCommerce)" 
-                    name="Commerce Intra-Africain"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+            <ResponsiveContainer width="100%" height={300} debounce={300}>
+              <AreaChart
+                data={[
+                  { année: '2023', commerce: parseFloat(statistics.trade_evolution.intra_african_trade_2023) },
+                  { année: '2024', commerce: parseFloat(statistics.trade_evolution.intra_african_trade_2024) },
+                  { année: '2025*', commerce: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.12 },
+                  { année: '2030*', commerce: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.52 }
+                ]}
+                margin={{ top: 10, right: 30, left: 20, bottom: 10 }}
+              >
+                <defs>
+                  <linearGradient id="colorCommerce" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#1A7A4A" stopOpacity={0.7}/>
+                    <stop offset="95%" stopColor="#1A7A4A" stopOpacity={0.04}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                <XAxis dataKey="année" tick={{ fontSize: 12, fontWeight: 600, fill: '#EAE0D0' }} axisLine={false} tickLine={false} />
+                <YAxis
+                  label={{ value: 'Milliards USD', angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: 'rgba(142,155,174,0.6)' } }}
+                  tick={{ fontSize: 11, fill: 'rgba(142,155,174,0.7)' }}
+                  axisLine={false} tickLine={false}
+                />
+                <Tooltip
+                  formatter={(value) => [`$${value.toFixed(1)}B USD`, 'Commerce Intra-Africain']}
+                  contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                  labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                />
+                <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} iconType="circle" />
+                <Area type="monotone" dataKey="commerce" stroke="#34d399" strokeWidth={2.5} fill="url(#colorCommerce)" name="Commerce Intra-Africain" dot={{ fill: '#34d399', r: 4 }} activeDot={{ r: 6 }} />
+              </AreaChart>
+            </ResponsiveContainer>
 
-            <div className="mt-4 p-4 bg-green-50 rounded-lg border-l-4 border-l-green-600">
-              <p className="text-sm text-green-800">
-                <strong>📌 Note:</strong> Le commerce intra-africain représente actuellement environ <strong>15-17%</strong> du commerce total africain.
-                L'objectif de la ZLECAf est de porter ce chiffre à <strong>25-30% d'ici 2030</strong>.
+            <div style={{ marginTop: 12, padding: '10px 14px', borderRadius: 8, background: 'rgba(26,122,74,0.1)', borderLeft: '3px solid #1A7A4A' }}>
+              <p style={{ fontSize: '0.78rem', color: 'rgba(52,211,153,0.9)' }}>
+                <strong>Note:</strong> Le commerce intra-africain représente actuellement environ <strong>15-17%</strong> du commerce total africain.
+                L'objectif ZLECAf: <strong>25-30% d'ici 2030</strong>.
               </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
-      {/* Graphique Comparaison Tarifs NPF vs ZLECAf */}
-      <Card className="shadow-2xl border-t-4 border-t-indigo-600">
-        <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
-          <CardTitle className="text-2xl font-bold text-indigo-700 flex items-center gap-2">
-            <i className="fas fa-chart-bar"></i>
-            <span>Évolution Tarifaire: NPF vs ZLECAf (2025-2035)</span>
-          </CardTitle>
-          <CardDescription className="text-lg font-semibold">
-            Démantèlement progressif des droits de douane
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6">
+      {/* ── Tariffs Chart: NPF vs ZLECAf ──────────────────────── */}
+      <div className="stats-chart-card">
+        <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(155,110,245,0.2)' }}>
+          <div className="stats-chart-title violet">
+            <TrendingUp style={{ width: 18, height: 18 }} />
+            Évolution Tarifaire: NPF vs ZLECAf (2025-2035)
+          </div>
+          <div className="stats-chart-subtitle">Démantèlement progressif des droits de douane</div>
+        </div>
+        <div style={{ padding: '16px 8px' }}>
           <div style={{ minHeight: '380px' }}>
             <ResponsiveContainer width="100%" height={350} debounce={300}>
               <LineChart data={tariffComparison}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="annee" label={{ value: 'Année', position: 'insideBottom', offset: -5 }} />
-                <YAxis label={{ value: 'Taux Tarifaire (%)', angle: -90, position: 'insideLeft' }} />
-                <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
-                <Legend />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                <XAxis dataKey="annee" tick={{ fontSize: 12, fill: 'rgba(142,155,174,0.8)' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 11, fill: 'rgba(142,155,174,0.7)' }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  formatter={(value) => `${value.toFixed(1)}%`}
+                  contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                  labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                />
+                <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
                 <Line 
                   type="monotone" 
                   dataKey="NPF" 
@@ -469,181 +408,140 @@ const TradeComparison = () => {
                 <Line 
                   type="monotone" 
                   dataKey="ZLECAf" 
-                  stroke="#10b981" 
-                  strokeWidth={3} 
-                  name="Tarif ZLECAf" 
-                  dot={{ r: 6 }} 
+                  stroke="#34d399"
+                  strokeWidth={2.5}
+                  name="Tarif ZLECAf"
+                  dot={{ r: 5, fill: '#34d399' }}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="economie" 
-                  stroke="#3b82f6" 
-                  strokeWidth={2} 
+                <Line
+                  type="monotone"
+                  dataKey="economie"
+                  stroke="#38bdf8"
+                  strokeWidth={2}
                   strokeDasharray="5 5"
-                  name="Économie %" 
-                  dot={{ r: 4 }} 
+                  name="Économie %"
+                  dot={{ r: 4, fill: '#38bdf8' }}
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-4 bg-green-50 p-4 rounded-lg">
-            <p className="text-sm text-green-700 font-semibold">
-              ✅ En 2035, les tarifs ZLECAf atteignent 0% pour les produits non-sensibles, permettant des économies maximales de 15.5% par rapport aux tarifs NPF.
+          <div style={{ marginTop: 12, padding: '10px 14px', borderRadius: 8, background: 'rgba(26,122,74,0.1)', borderLeft: '3px solid #34d399' }}>
+            <p style={{ fontSize: '0.78rem', color: 'rgba(52,211,153,0.9)' }}>
+              En 2035, les tarifs ZLECAf atteignent 0% pour les produits non-sensibles, permettant des économies maximales de 15.5% par rapport aux tarifs NPF.
             </p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* NOUVEAU: DEUX TABLEAUX CÔTE À CÔTE - Commerce Mondial vs Commerce Intra-Africain */}
+      {/* ── Trade Tables: Mondial vs Intra-Africain ─────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* ========== TABLEAU 1: COMMERCE MONDIAL (avec tous les partenaires) ========== */}
-        <Card className="shadow-2xl border-t-4 border-t-amber-600">
-          <CardHeader className="bg-gradient-to-r from-amber-50 to-yellow-50">
-            <CardTitle className="text-xl font-bold text-amber-800 flex items-center gap-2">
-              <i className="fas fa-globe"></i>
-              <span>Commerce MONDIAL</span>
-            </CardTitle>
-            <CardDescription className="text-xs font-semibold text-amber-700">
-              🌍 Tous partenaires • 📚 OEC, BM, FMI
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pt-4">
-            <div className="bg-amber-50 p-2 rounded-lg border-l-2 border-l-amber-600 mb-3">
-              <p className="text-xs text-amber-800 font-semibold">
-                Commerce avec TOUS les pays mondiaux
-              </p>
+        {/* Table 1: Commerce Mondial */}
+        <div className="stats-chart-card">
+          <div className="stats-chart-header gold">
+            <div className="stats-chart-title gold">
+              <Globe style={{ width: 18, height: 18 }} />
+              Commerce MONDIAL
             </div>
+            <div className="stats-chart-subtitle">Tous partenaires — OEC, BM, FMI</div>
+          </div>
+          <div style={{ overflowX: 'auto', maxHeight: 500, overflowY: 'auto' }}>
+            <table className="stats-table">
+              <thead>
+                <tr>
+                  <th style={{ textAlign: 'left' }}>Pays</th>
+                  <th style={{ textAlign: 'right' }}>Exports</th>
+                  <th style={{ textAlign: 'right' }}>Imports</th>
+                  <th style={{ textAlign: 'right' }}>Solde</th>
+                </tr>
+              </thead>
+              <TableBody>
+                {calculationsGlobal.map((item, index) => (
+                  <tr key={item.country}>
+                    <td style={{ fontWeight: 600 }}>{item.name}</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: '#34d399' }}>${item.exports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: '#fb923c' }}>${item.imports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? '#34d399' : '#f87171' }}>
+                      {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
+                    </td>
+                  </tr>
+                ))}
 
-            <div className="overflow-x-auto" style={{ maxHeight: '600px', overflowY: 'auto' }}>
-              <Table>
-                <TableHeader className="sticky top-0 bg-white z-10">
-                  <TableRow className="bg-amber-100">
-                    <TableHead className="font-bold text-xs">Pays</TableHead>
-                    <TableHead className="font-bold text-center text-xs">📤 Exp</TableHead>
-                    <TableHead className="font-bold text-center text-xs">📥 Imp</TableHead>
-                    <TableHead className="font-bold text-center text-xs">⚖️</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {calculationsGlobal.map((item, index) => (
-                    <TableRow key={item.country} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-amber-50`}>
-                      <TableCell className="font-semibold text-xs py-1">{item.name}</TableCell>
-                      <TableCell className="text-center py-1">
-                        <Badge className="bg-green-700 text-white text-xs py-0 px-1">${item.exports.toFixed(1)}B</Badge>
-                      </TableCell>
-                      <TableCell className="text-center py-1">
-                        <Badge className="bg-orange-700 text-white text-xs py-0 px-1">${item.imports.toFixed(1)}B</Badge>
-                      </TableCell>
-                      <TableCell className="text-center py-1">
-                        <Badge className={`${item.balance >= 0 ? 'bg-blue-700' : 'bg-red-700'} text-white text-xs py-0 px-1`}>
-                          {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  
-                  {/* Pays non-signataires */}
-                  <TableRow className="bg-red-100">
-                    <TableCell colSpan={4} className="text-center font-bold text-xs py-2 text-red-800">
-                      🚫 PAYS NON-SIGNATAIRES ZLECAf
-                    </TableCell>
-                  </TableRow>
-                  <TableRow className="bg-red-50">
-                    <TableCell className="font-semibold text-xs py-1">Érythrée</TableCell>
-                    <TableCell className="text-center py-1">
-                      <Badge className="bg-gray-500 text-white text-xs py-0 px-1">N/A</Badge>
-                    </TableCell>
-                    <TableCell className="text-center py-1">
-                      <Badge className="bg-gray-500 text-white text-xs py-0 px-1">N/A</Badge>
-                    </TableCell>
-                    <TableCell className="text-center py-1">
-                      <Badge className="bg-gray-500 text-white text-xs py-0 px-1">N/A</Badge>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </div>
-            <p className="text-xs text-gray-500 mt-2 text-center">Tous les pays africains</p>
-          </CardContent>
-        </Card>
+                {/* Non-signataires */}
+                <tr style={{ background: 'rgba(200,16,46,0.1)', borderTop: '2px solid rgba(200,16,46,0.3)' }}>
+                  <td colSpan={4} style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.72rem', color: '#f87171', padding: '6px 12px' }}>
+                    PAYS NON-SIGNATAIRES ZLECAf
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ fontWeight: 600 }}>Érythrée</td>
+                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
+                </tr>
+              </TableBody>
+            </table>
+          </div>
+          <p className="stats-source-note">Tous les pays africains — OEC, BM, FMI</p>
+        </div>
 
-        {/* ========== TABLEAU 2: COMMERCE INTRA-AFRICAIN (uniquement entre pays africains) ========== */}
-        <Card className="shadow-2xl border-t-4 border-t-green-600">
-          <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
-            <CardTitle className="text-xl font-bold text-green-800 flex items-center gap-2">
-              <i className="fas fa-handshake"></i>
-              <span>Commerce INTRA-AFRICAIN</span>
-            </CardTitle>
-            <CardDescription className="text-xs font-semibold text-green-700">
-              🤝 Entre pays africains • 📚 OEC + UNCTAD/AfDB
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pt-4">
-            <div className="bg-green-50 p-2 rounded-lg border-l-2 border-l-green-600 mb-3">
-              <p className="text-xs text-green-800 font-semibold">
-                Commerce UNIQUEMENT entre africains
-              </p>
+        {/* Table 2: Commerce Intra-Africain */}
+        <div className="stats-chart-card">
+          <div className="stats-chart-header green">
+            <div className="stats-chart-title green">
+              <Globe style={{ width: 18, height: 18 }} />
+              Commerce INTRA-AFRICAIN
             </div>
+            <div className="stats-chart-subtitle">Entre pays africains — OEC, UNCTAD/AfDB</div>
+          </div>
+          <div style={{ padding: '10px 16px 6px', background: 'rgba(26,122,74,0.1)', borderBottom: '1px solid rgba(52,211,153,0.15)' }}>
+            <p style={{ fontSize: '0.72rem', color: 'rgba(52,211,153,0.8)', margin: 0 }}>Commerce UNIQUEMENT entre africains</p>
+          </div>
+          <div style={{ overflowX: 'auto', maxHeight: 500, overflowY: 'auto' }}>
+            <table className="stats-table">
+              <thead>
+                <tr>
+                  <th style={{ textAlign: 'left' }}>Pays</th>
+                  <th style={{ textAlign: 'right' }}>Exports</th>
+                  <th style={{ textAlign: 'right' }}>Imports</th>
+                  <th style={{ textAlign: 'right' }}>Solde</th>
+                  <th style={{ textAlign: 'right' }}>Économie</th>
+                </tr>
+              </thead>
+              <TableBody>
+                {calculationsIntraAfrican.map((item, index) => (
+                  <tr key={item.country}>
+                    <td style={{ fontWeight: 600 }}>{item.name}</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: '#34d399' }}>${item.exports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: '#6ee7b7' }}>${item.imports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? '#34d399' : '#f87171' }}>
+                      {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
+                    </td>
+                    <td style={{ textAlign: 'right' }}>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '1px 6px', borderRadius: 100, background: 'rgba(155,110,245,0.18)', color: '#a78bfa', border: '1px solid rgba(155,110,245,0.25)' }}>
+                        {item.intra_percentage}%
+                      </span>
+                    </td>
+                  </tr>
+                ))}
 
-            <div className="overflow-x-auto" style={{ maxHeight: '600px', overflowY: 'auto' }}>
-              <Table>
-                <TableHeader className="sticky top-0 bg-white z-10">
-                  <TableRow className="bg-green-100">
-                    <TableHead className="font-bold text-xs">Pays</TableHead>
-                    <TableHead className="font-bold text-center text-xs">📤 Exp</TableHead>
-                    <TableHead className="font-bold text-center text-xs">📥 Imp</TableHead>
-                    <TableHead className="font-bold text-center text-xs">⚖️</TableHead>
-                    <TableHead className="font-bold text-center text-xs">%</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {calculationsIntraAfrican.map((item, index) => (
-                    <TableRow key={item.country} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-green-50`}>
-                      <TableCell className="font-semibold text-xs py-1">{item.name}</TableCell>
-                      <TableCell className="text-center py-1">
-                        <Badge className="bg-green-600 text-white text-xs py-0 px-1">${item.exports.toFixed(1)}B</Badge>
-                      </TableCell>
-                      <TableCell className="text-center py-1">
-                        <Badge className="bg-teal-600 text-white text-xs py-0 px-1">${item.imports.toFixed(1)}B</Badge>
-                      </TableCell>
-                      <TableCell className="text-center py-1">
-                        <Badge className={`${item.balance >= 0 ? 'bg-blue-600' : 'bg-red-600'} text-white text-xs py-0 px-1`}>
-                          {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-center py-1">
-                        <Badge className="bg-purple-600 text-white font-bold text-xs py-0 px-1">{item.intra_percentage}%</Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  
-                  {/* Pays non-signataires */}
-                  <TableRow className="bg-red-100">
-                    <TableCell colSpan={5} className="text-center font-bold text-xs py-2 text-red-800">
-                      🚫 PAYS NON-SIGNATAIRES ZLECAf
-                    </TableCell>
-                  </TableRow>
-                  <TableRow className="bg-red-50">
-                    <TableCell className="font-semibold text-xs py-1">Érythrée</TableCell>
-                    <TableCell className="text-center py-1">
-                      <Badge className="bg-gray-500 text-white text-xs py-0 px-1">N/A</Badge>
-                    </TableCell>
-                    <TableCell className="text-center py-1">
-                      <Badge className="bg-gray-500 text-white text-xs py-0 px-1">N/A</Badge>
-                    </TableCell>
-                    <TableCell className="text-center py-1">
-                      <Badge className="bg-gray-500 text-white text-xs py-0 px-1">N/A</Badge>
-                    </TableCell>
-                    <TableCell className="text-center py-1">
-                      <Badge className="bg-gray-500 text-white text-xs py-0 px-1">0%</Badge>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </div>
-            <p className="text-xs text-gray-500 mt-2 text-center">Tous les pays africains</p>
-          </CardContent>
-        </Card>
+                {/* Non-signataires */}
+                <tr style={{ background: 'rgba(200,16,46,0.1)', borderTop: '2px solid rgba(200,16,46,0.3)' }}>
+                  <td colSpan={5} style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.72rem', color: '#f87171', padding: '6px 12px' }}>
+                    PAYS NON-SIGNATAIRES ZLECAf
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ fontWeight: 600 }}>Érythrée</td>
+                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>0%</td>
+                </tr>
+              </TableBody>
+            </table>
+          </div>
+          <p className="stats-source-note">Tous les pays africains — OEC, UNCTAD, AfDB</p>
+        </div>
       </div>
 
       {/* Performance par Pays avec Graphique - ANCIEN CODE SUPPRIMÉ */}
