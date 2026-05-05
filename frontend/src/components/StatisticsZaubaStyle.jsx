@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { Badge } from './ui/badge';
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart } from 'recharts';
+import { TrendingUp, TrendingDown, DollarSign, BarChart3, Globe, Users, ArrowUpRight } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API_URL = BACKEND_URL || '';
@@ -156,273 +157,403 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
   };
 
   if (loading) {
-    return <div className="text-center py-10">{t.loading}</div>;
+    return (
+      <div className="stats-loading">
+        <div className="stats-spinner" />
+        <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.875rem' }}>{t.loading}</p>
+      </div>
+    );
   }
 
   if (!statistics) {
-    return <div className="text-center py-10">{t.noData}</div>;
+    return (
+      <div className="stats-empty-state">
+        <div className="stats-empty-icon">
+          <BarChart3 style={{ width: 28, height: 28, color: '#D4891A' }} />
+        </div>
+        <p>{t.noData}</p>
+      </div>
+    );
   }
 
-  const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
+  /* ── African-themed palette for charts ───────────────────── */
+  const COLORS = ['#1A7A4A', '#1A6B8A', '#D4891A', '#C8531A', '#9B6EF5', '#C8102E', '#0E8A7A', '#D4522A'];
+
+  /* ── Custom tooltip ─────────────────────────────────────── */
+  const AfricaTooltip = ({ active, payload, label }) => {
+    if (!active || !payload?.length) return null;
+    return (
+      <div style={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
+        <p style={{ color: '#EAE0D0', fontWeight: 700, marginBottom: 4 }}>{label}</p>
+        {payload.map((p, i) => (
+          <p key={i} style={{ color: p.color, margin: '2px 0' }}>
+            {p.name}: <strong>{typeof p.value === 'number' ? `$${p.value.toFixed(1)}B` : p.value}</strong>
+          </p>
+        ))}
+      </div>
+    );
+  };
+
+  /* ── Max export value for progress bars ─────────────────── */
+  const maxExport = Math.max(...(statistics.top_exporters_2024?.slice(0, 10).map(e => e.exports_2024 / 1e9) || [1]));
+  const maxImport = Math.max(...(statistics.top_importers_2024?.slice(0, 10).map(i => i.imports_2024 / 1e9) || [1]));
+
+  const getRankClass = (i) => i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-n';
 
   return (
     <div className="space-y-6">
-      {/* Section Résumé - Style Zauba */}
-      <div className="bg-white p-6 rounded-lg shadow-lg border-2 border-gray-200">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">
-          📊 {t.analysisTitle}
-        </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          {/* Valeur Totale */}
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-lg border border-blue-200">
-            <p className="text-xs font-semibold text-gray-600 mb-1">{t.totalTradeValue}</p>
-            <p className="text-3xl font-extrabold text-blue-700">
-              ${statistics.overview?.estimated_combined_gdp ? 
-                (statistics.overview.estimated_combined_gdp / 1000000000).toFixed(0) : '2706'}B
-            </p>
-            <p className="text-xs text-gray-500 mt-1">{t.combinedGDP}</p>
-          </div>
-
-          {/* Volume Total */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
-            <p className="text-xs font-semibold text-gray-600 mb-1">{t.totalExports}</p>
-            <p className="text-3xl font-extrabold text-green-700">
-              ${africaTotals?.exports_billions ? africaTotals.exports_billions.toFixed(0) : '720'}B
-            </p>
-            <p className="text-xs text-gray-500 mt-1">{t.estimated2024}</p>
-          </div>
-
-          {/* Prix Moyen */}
-          <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-4 rounded-lg border border-orange-200">
-            <p className="text-xs font-semibold text-gray-600 mb-1">{t.totalImports}</p>
-            <p className="text-3xl font-extrabold text-orange-700">
-              ${africaTotals?.imports_billions ? africaTotals.imports_billions.toFixed(0) : '761'}B
-            </p>
-            <p className="text-xs text-gray-500 mt-1">{t.estimated2024}</p>
-          </div>
-
-          {/* Nombre de pays */}
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
-            <p className="text-xs font-semibold text-gray-600 mb-1">{t.memberCountries}</p>
-            <p className="text-3xl font-extrabold text-purple-700">
-              {statistics.overview?.african_countries_members || 54}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">AfCFTA</p>
+      {/* ── Section Résumé — KPI Cards ─────────────────────────── */}
+      <div className="stats-chart-card" style={{ padding: '24px' }}>
+        {/* Section title with kente accent */}
+        <div className="flex items-center gap-3 mb-6">
+          <BarChart3 style={{ width: 22, height: 22, color: '#D4891A', flexShrink: 0 }} />
+          <div>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#EAE0D0', margin: 0 }}>
+              {t.analysisTitle}
+            </h2>
+            <div className="stats-kente-bar" style={{ width: 160, marginTop: 6 }} />
           </div>
         </div>
 
-        {/* Top Exportateurs et Importateurs côte à côte */}
+        {/* KPI Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {/* PIB Combiné */}
+          <div className="stats-kpi-card atlantic">
+            <svg className="stats-kpi-ornament" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <polygon points="24,4 28,16 40,12 32,20 44,24 32,28 40,36 28,32 24,44 20,32 8,36 16,28 4,24 16,20 8,12 20,16" stroke="rgba(212,137,26,1)" strokeWidth="0.8"/>
+              <rect x="14" y="14" width="20" height="20" transform="rotate(45 24 24)" stroke="rgba(212,137,26,1)" strokeWidth="0.6"/>
+            </svg>
+            <p className="stats-kpi-label">{t.totalTradeValue}</p>
+            <p className="stats-kpi-value atlantic">
+              ${statistics.overview?.estimated_combined_gdp
+                ? (statistics.overview.estimated_combined_gdp / 1e9).toFixed(0)
+                : '2706'}B
+            </p>
+            <p className="stats-kpi-footer">
+              <DollarSign style={{ width: 12, height: 12 }} />
+              {t.combinedGDP}
+            </p>
+          </div>
+
+          {/* Exportations */}
+          <div className="stats-kpi-card green">
+            <svg className="stats-kpi-ornament" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <polygon points="24,4 28,16 40,12 32,20 44,24 32,28 40,36 28,32 24,44 20,32 8,36 16,28 4,24 16,20 8,12 20,16" stroke="rgba(212,137,26,1)" strokeWidth="0.8"/>
+            </svg>
+            <p className="stats-kpi-label">{t.totalExports}</p>
+            <p className="stats-kpi-value green">
+              ${africaTotals?.exports_billions ? africaTotals.exports_billions.toFixed(0) : '720'}B
+            </p>
+            <p className="stats-kpi-footer">
+              <TrendingUp style={{ width: 12, height: 12 }} />
+              {t.estimated2024}
+            </p>
+          </div>
+
+          {/* Importations */}
+          <div className="stats-kpi-card terra">
+            <svg className="stats-kpi-ornament" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <polygon points="24,4 28,16 40,12 32,20 44,24 32,28 40,36 28,32 24,44 20,32 8,36 16,28 4,24 16,20 8,12 20,16" stroke="rgba(212,137,26,1)" strokeWidth="0.8"/>
+            </svg>
+            <p className="stats-kpi-label">{t.totalImports}</p>
+            <p className="stats-kpi-value terra">
+              ${africaTotals?.imports_billions ? africaTotals.imports_billions.toFixed(0) : '761'}B
+            </p>
+            <p className="stats-kpi-footer">
+              <TrendingDown style={{ width: 12, height: 12 }} />
+              {t.estimated2024}
+            </p>
+          </div>
+
+          {/* Pays Membres */}
+          <div className="stats-kpi-card violet">
+            <svg className="stats-kpi-ornament" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <polygon points="24,4 28,16 40,12 32,20 44,24 32,28 40,36 28,32 24,44 20,32 8,36 16,28 4,24 16,20 8,12 20,16" stroke="rgba(212,137,26,1)" strokeWidth="0.8"/>
+            </svg>
+            <p className="stats-kpi-label">{t.memberCountries}</p>
+            <p className="stats-kpi-value violet">
+              {statistics.overview?.african_countries_members || 54}
+            </p>
+            <p className="stats-kpi-footer">
+              <Globe style={{ width: 12, height: 12 }} />
+              AfCFTA
+            </p>
+          </div>
+        </div>
+
+        {/* Top 10 Exportateurs / Importateurs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Top Exportateurs */}
           <div>
-            <h3 className="text-lg font-bold mb-3 text-green-700 flex items-center gap-2">
-              <span>📤</span>
-              <span>{t.top10Exporters}</span>
-            </h3>
-            <div className="space-y-2">
-              {statistics.top_exporters_2024?.slice(0, 10).map((exporter, index) => (
-                <div key={index} className="flex justify-between items-center p-2 bg-green-50 rounded hover:bg-green-100 transition-colors border-l-4 border-green-500">
-                  <div className="flex items-center gap-2">
-                    <Badge className="bg-green-600 text-white text-xs">{index + 1}</Badge>
-                    <span className="text-sm font-semibold text-gray-800">{translateCountry(exporter.name)}</span>
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingUp style={{ width: 16, height: 16, color: '#34d399' }} />
+              <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#34d399', margin: 0 }}>
+                {t.top10Exporters}
+              </h3>
+            </div>
+            <div className="space-y-1">
+              {statistics.top_exporters_2024?.slice(0, 10).map((exporter, index) => {
+                const val = (exporter.exports_2024 / 1e9).toFixed(1);
+                const pct = Math.min(100, (exporter.exports_2024 / 1e9 / maxExport) * 100);
+                return (
+                  <div key={index} className="stats-rank-item green">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className={`stats-rank-badge ${getRankClass(index)}`}>{index + 1}</span>
+                      <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#EAE0D0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {translateCountry(exporter.name)}
+                      </span>
+                    </div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#34d399', margin: 0 }}>${val}B</p>
+                      <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.7)', margin: 0 }}>{exporter.share_pct}% {t.ofTotal}</p>
+                      <div className="stats-progress-bar" style={{ width: 64 }}>
+                        <div className="stats-progress-fill green" style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-bold text-green-700">${(exporter.exports_2024 / 1000000000).toFixed(1)}B</p>
-                    <p className="text-xs text-gray-500">{exporter.share_pct}% {t.ofTotal}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* Top Importateurs */}
           <div>
-            <h3 className="text-lg font-bold mb-3 text-blue-700 flex items-center gap-2">
-              <span>📥</span>
-              <span>{t.top10Importers}</span>
-            </h3>
-            <div className="space-y-2">
-              {statistics.top_importers_2024?.slice(0, 10).map((importer, index) => (
-                <div key={index} className="flex justify-between items-center p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors border-l-4 border-blue-500">
-                  <div className="flex items-center gap-2">
-                    <Badge className="bg-blue-600 text-white text-xs">{index + 1}</Badge>
-                    <span className="text-sm font-semibold text-gray-800">{translateCountry(importer.name)}</span>
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingDown style={{ width: 16, height: 16, color: '#38bdf8' }} />
+              <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#38bdf8', margin: 0 }}>
+                {t.top10Importers}
+              </h3>
+            </div>
+            <div className="space-y-1">
+              {statistics.top_importers_2024?.slice(0, 10).map((importer, index) => {
+                const val = (importer.imports_2024 / 1e9).toFixed(1);
+                const pct = Math.min(100, (importer.imports_2024 / 1e9 / maxImport) * 100);
+                return (
+                  <div key={index} className="stats-rank-item blue">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className={`stats-rank-badge ${getRankClass(index)}`}>{index + 1}</span>
+                      <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#EAE0D0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {translateCountry(importer.name)}
+                      </span>
+                    </div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#38bdf8', margin: 0 }}>${val}B</p>
+                      <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.7)', margin: 0 }}>{importer.share_pct}% {t.ofTotal}</p>
+                      <div className="stats-progress-bar" style={{ width: 64 }}>
+                        <div className="stats-progress-fill blue" style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-bold text-blue-700">${(importer.imports_2024 / 1000000000).toFixed(1)}B</p>
-                    <p className="text-xs text-gray-500">{importer.share_pct}% {t.ofTotal}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Top 10 PIB Africains 2024 avec Projections 2025 */}
-      <Card className="shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-amber-50 to-yellow-50">
-          <CardTitle className="text-xl font-bold flex items-center gap-2">
-            💰 {language === 'fr' ? 'Top 10 PIB Africains 2024' : 'Top 10 African GDP 2024'}
-          </CardTitle>
-          <CardDescription className="text-sm">
-            {language === 'fr' ? 'Avec projections de croissance 2025 (Source: FMI, Banque Mondiale)' : 'With 2025 growth projections (Source: IMF, World Bank)'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-4">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b-2 border-amber-200 bg-amber-50">
-                  <th className="text-left py-2 px-3 font-bold text-gray-700">#</th>
-                  <th className="text-left py-2 px-3 font-bold text-gray-700">{language === 'fr' ? 'Pays' : 'Country'}</th>
-                  <th className="text-right py-2 px-3 font-bold text-gray-700">{language === 'fr' ? 'PIB 2024' : 'GDP 2024'}</th>
-                  <th className="text-right py-2 px-3 font-bold text-gray-700">{language === 'fr' ? 'Croissance 2024' : 'Growth 2024'}</th>
-                  <th className="text-right py-2 px-3 font-bold text-amber-700">{language === 'fr' ? 'Projection 2025' : 'Projection 2025'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {statistics.top_10_gdp_2024?.map((country, index) => (
-                  <tr key={index} className={`border-b ${index % 2 === 0 ? 'bg-white' : 'bg-amber-50/30'} hover:bg-amber-100/50 transition-colors`}>
-                    <td className="py-2 px-3">
-                      <Badge className={`text-xs ${index < 3 ? 'bg-amber-500' : 'bg-gray-400'} text-white`}>
-                        {country.rank}
-                      </Badge>
-                    </td>
-                    <td className="py-2 px-3 font-semibold text-gray-800">{translateCountry(country.country)}</td>
-                    <td className="py-2 px-3 text-right font-bold text-amber-700">${country.gdp_2024_billion?.toFixed(1)}B</td>
-                    <td className="py-2 px-3 text-right">
-                      <span className={`font-semibold ${parseFloat(country.growth_2024) >= 5 ? 'text-green-600' : parseFloat(country.growth_2024) >= 3 ? 'text-blue-600' : 'text-orange-600'}`}>
-                        {typeof country.growth_2024 === 'number' ? country.growth_2024.toFixed(1) : country.growth_2024}%
-                      </span>
-                    </td>
-                    <td className="py-2 px-3 text-right">
-                      <span className={`font-bold px-2 py-1 rounded ${country.growth_projection_2025 !== 'N/A' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}`}>
-                        {country.growth_projection_2025 || 'N/A'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* ── Top 10 PIB Africains 2024 ──────────────────────────── */}
+      <div className="stats-chart-card">
+        <div className="stats-chart-header gold">
+          <div className="stats-chart-title gold">
+            <DollarSign style={{ width: 18, height: 18 }} />
+            {language === 'fr' ? 'Top 10 PIB Africains 2024' : 'Top 10 African GDP 2024'}
           </div>
-          <p className="text-xs text-gray-500 mt-3 italic">
-            {language === 'fr' 
-              ? '📊 Données officielles FMI WEO Octobre 2025, Banque Mondiale. Certaines valeurs marquées "estimée" sont des extrapolations officielles.' 
-              : '📊 Official IMF WEO October 2025, World Bank data. Values marked "estimated" are official extrapolations.'}
+          <div className="stats-chart-subtitle">
+            {language === 'fr'
+              ? 'Avec projections de croissance 2025 — Source: FMI, Banque Mondiale'
+              : 'With 2025 growth projections — Source: IMF, World Bank'}
+          </div>
+        </div>
+        <div style={{ padding: '0 0 16px', overflowX: 'auto' }}>
+          <table className="stats-table">
+            <thead>
+              <tr>
+                <th style={{ textAlign: 'left' }}>#</th>
+                <th style={{ textAlign: 'left' }}>{language === 'fr' ? 'Pays' : 'Country'}</th>
+                <th style={{ textAlign: 'right' }}>{language === 'fr' ? 'PIB 2024' : 'GDP 2024'}</th>
+                <th style={{ textAlign: 'right' }}>{language === 'fr' ? 'Croissance' : 'Growth'}</th>
+                <th style={{ textAlign: 'right' }}>{language === 'fr' ? 'Proj. 2025' : 'Proj. 2025'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {statistics.top_10_gdp_2024?.map((country, index) => (
+                <tr key={index}>
+                  <td>
+                    <span className={`stats-rank-badge ${getRankClass(index)}`}>{country.rank}</span>
+                  </td>
+                  <td style={{ fontWeight: 600 }}>{translateCountry(country.country)}</td>
+                  <td style={{ textAlign: 'right', fontWeight: 700, color: '#fbbf24' }}>
+                    ${country.gdp_2024_billion?.toFixed(1)}B
+                  </td>
+                  <td style={{ textAlign: 'right' }}>
+                    <span className={`stats-chip ${parseFloat(country.growth_2024) >= 3 ? 'up' : 'down'}`}>
+                      {typeof country.growth_2024 === 'number' ? country.growth_2024.toFixed(1) : country.growth_2024}%
+                    </span>
+                  </td>
+                  <td style={{ textAlign: 'right' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, padding: '2px 8px', borderRadius: 6, background: country.growth_projection_2025 !== 'N/A' ? 'rgba(212,137,26,0.15)' : 'rgba(255,255,255,0.06)', color: country.growth_projection_2025 !== 'N/A' ? '#fbbf24' : 'rgba(142,155,174,0.6)' }}>
+                      {country.growth_projection_2025 || 'N/A'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="stats-source-note">
+            {language === 'fr'
+              ? 'Données officielles FMI WEO Octobre 2025, Banque Mondiale.'
+              : 'Official IMF WEO October 2025, World Bank data.'}
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Graphique Évolution Commerce */}
-      <Card className="shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
-          <CardTitle className="text-xl font-bold">📈 {t.intraAfricanEvolution}</CardTitle>
-          <CardDescription className="text-sm">{t.trend2023_2030}</CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6">
+      {/* ── Évolution du Commerce Intra-Africain ───────────────── */}
+      <div className="stats-chart-card">
+        <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(155,110,245,0.2)' }}>
+          <div className="stats-chart-title violet">
+            <TrendingUp style={{ width: 18, height: 18 }} />
+            {t.intraAfricanEvolution}
+          </div>
+          <div className="stats-chart-subtitle">{t.trend2023_2030}</div>
+        </div>
+        <div style={{ padding: '16px 8px' }}>
           {statistics.trade_evolution && (
-            <div style={{ minHeight: '320px' }}>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={[
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart
+                data={[
                   { année: '2023', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2023) },
                   { année: '2024', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2024) },
-                  { année: '2025', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.12 },
-                  { année: '2030', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.52 }
-                ]} margin={{ left: 60, right: 20, top: 10, bottom: 10 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="année" tick={{ fontSize: 12, fontWeight: 'bold' }} />
-                  <YAxis tick={{ fontSize: 11 }} label={{ value: t.billionUSD, angle: -90, position: 'insideLeft', offset: -10, style: { fontSize: 11 } }} />
-                  <Tooltip formatter={(value) => [`$${value.toFixed(1)}B`, language === 'en' ? 'Trade' : 'Commerce']} />
-                  <Legend />
-                  <Line type="monotone" dataKey="valeur" stroke="#10b981" strokeWidth={3} name={t.intraAfricanTrade} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+                  { année: '2025', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.12, proj: true },
+                  { année: '2027', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.30, proj: true },
+                  { année: '2030', valeur: parseFloat(statistics.trade_evolution.intra_african_trade_2024) * 1.52, proj: true },
+                ]}
+                margin={{ left: 60, right: 20, top: 10, bottom: 10 }}
+              >
+                <defs>
+                  <linearGradient id="gradIntra" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#9B6EF5" stopOpacity={0.4} />
+                    <stop offset="100%" stopColor="#9B6EF5" stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                <XAxis dataKey="année" tick={{ fontSize: 12, fill: 'rgba(142,155,174,0.8)', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                <YAxis
+                  tick={{ fontSize: 11, fill: 'rgba(142,155,174,0.7)' }}
+                  axisLine={false} tickLine={false}
+                  label={{ value: t.billionUSD, angle: -90, position: 'insideLeft', offset: -10, style: { fontSize: 10, fill: 'rgba(142,155,174,0.6)' } }}
+                />
+                <Tooltip content={<AfricaTooltip />} />
+                <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
+                <Area
+                  type="monotone"
+                  dataKey="valeur"
+                  stroke="#9B6EF5"
+                  strokeWidth={2.5}
+                  fill="url(#gradIntra)"
+                  name={t.intraAfricanTrade}
+                  dot={{ fill: '#9B6EF5', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, fill: '#a78bfa' }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* NOUVEAU: Top 5 PIB - Commerce Monde vs Intra-Africain */}
+      {/* ── Top 5 PIB — Commerce Monde vs Intra-Africain ──────── */}
       {statistics.top_5_gdp_trade_comparison && statistics.top_5_gdp_trade_comparison.length > 0 && (
-        <Card className="shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
-            <CardTitle className="text-xl font-bold">💰 {t.top5GDP}</CardTitle>
-            <CardDescription className="text-sm">{t.worldVsIntraAfrican}</CardDescription>
-          </CardHeader>
-          <CardContent className="pt-6">
+        <div className="stats-chart-card">
+          <div className="stats-chart-header blue">
+            <div className="stats-chart-title blue">
+              <Globe style={{ width: 18, height: 18 }} />
+              {t.top5GDP}
+            </div>
+            <div className="stats-chart-subtitle">{t.worldVsIntraAfrican}</div>
+          </div>
+          <div style={{ padding: '16px 8px' }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Graphique Barres Comparatif */}
-              <div style={{ minHeight: '360px' }}>
-                <ResponsiveContainer width="100%" height={340}>
-                  <BarChart 
-                    data={statistics.top_5_gdp_trade_comparison.map(country => ({
-                      pays: translateCountry(country.country),
-                      [t.exportsWorld]: parseFloat(country.exports_world),
-                      [t.exportsIntraAfr]: parseFloat(country.exports_intra_african),
-                      [t.importsWorld]: parseFloat(country.imports_world),
-                      [t.importsIntraAfr]: parseFloat(country.imports_intra_african)
-                    }))}
-                    layout="vertical"
-                    margin={{ left: 10, right: 30, top: 10, bottom: 30 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis 
-                      type="number" 
-                      label={{ value: t.billionUSD, position: 'insideBottom', offset: -10, style: { fontSize: 11, fontWeight: 'bold' } }}
-                      tick={{ fontSize: 11 }}
-                    />
-                    <YAxis 
-                      type="category" 
-                      dataKey="pays" 
-                      width={110} 
-                      tick={{ fontSize: 11, fontWeight: 'bold' }}
-                    />
-                    <Tooltip 
-                      formatter={(value) => `$${value.toFixed(1)}B`}
-                      contentStyle={{ 
-                        backgroundColor: '#f9fafb', 
-                        border: '2px solid #3b82f6',
-                        borderRadius: '8px',
-                        fontSize: '12px'
-                      }}
-                    />
-                    <Legend wrapperStyle={{ fontSize: '11px', fontWeight: 'bold' }} />
-                    <Bar dataKey={t.exportsWorld} fill="#10b981" radius={[0, 4, 4, 0]} />
-                    <Bar dataKey={t.exportsIntraAfr} fill="#6ee7b7" radius={[0, 4, 4, 0]} />
-                    <Bar dataKey={t.importsWorld} fill="#3b82f6" radius={[0, 4, 4, 0]} />
-                    <Bar dataKey={t.importsIntraAfr} fill="#93c5fd" radius={[0, 4, 4, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+              {/* Graphique Barres */}
+              <ResponsiveContainer width="100%" height={340}>
+                <BarChart
+                  data={statistics.top_5_gdp_trade_comparison.map(country => ({
+                    pays: translateCountry(country.country),
+                    [t.exportsWorld]: parseFloat(country.exports_world),
+                    [t.exportsIntraAfr]: parseFloat(country.exports_intra_african),
+                    [t.importsWorld]: parseFloat(country.imports_world),
+                    [t.importsIntraAfr]: parseFloat(country.imports_intra_african)
+                  }))}
+                  layout="vertical"
+                  margin={{ left: 10, right: 30, top: 10, bottom: 10 }}
+                >
+                  <defs>
+                    <linearGradient id="gExpWorld" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#1A7A4A" /><stop offset="100%" stopColor="#34d399" />
+                    </linearGradient>
+                    <linearGradient id="gExpIntra" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#0E8A7A" /><stop offset="100%" stopColor="#6ee7b7" />
+                    </linearGradient>
+                    <linearGradient id="gImpWorld" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#1A6B8A" /><stop offset="100%" stopColor="#38bdf8" />
+                    </linearGradient>
+                    <linearGradient id="gImpIntra" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#1B6CA8" /><stop offset="100%" stopColor="#93c5fd" />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                  <XAxis
+                    type="number"
+                    label={{ value: t.billionUSD, position: 'insideBottom', offset: -8, style: { fontSize: 10, fill: 'rgba(142,155,174,0.6)', fontWeight: 600 } }}
+                    tick={{ fontSize: 10, fill: 'rgba(142,155,174,0.7)' }}
+                    axisLine={false} tickLine={false}
+                  />
+                  <YAxis
+                    type="category" dataKey="pays" width={110}
+                    tick={{ fontSize: 11, fontWeight: 700, fill: '#EAE0D0' }}
+                    axisLine={false} tickLine={false}
+                  />
+                  <Tooltip
+                    formatter={(value) => `$${value.toFixed(1)}B`}
+                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                  />
+                  <Legend wrapperStyle={{ fontSize: '0.72rem', color: 'rgba(142,155,174,0.8)' }} />
+                  <Bar dataKey={t.exportsWorld}    fill="url(#gExpWorld)" radius={[0, 4, 4, 0]} maxBarSize={14} />
+                  <Bar dataKey={t.exportsIntraAfr} fill="url(#gExpIntra)" radius={[0, 4, 4, 0]} maxBarSize={14} />
+                  <Bar dataKey={t.importsWorld}    fill="url(#gImpWorld)" radius={[0, 4, 4, 0]} maxBarSize={14} />
+                  <Bar dataKey={t.importsIntraAfr} fill="url(#gImpIntra)" radius={[0, 4, 4, 0]} maxBarSize={14} />
+                </BarChart>
+              </ResponsiveContainer>
 
               {/* Tableau Détaillé */}
               <div>
-                <h4 className="text-sm font-bold mb-3 text-gray-700">{t.detailByCountry}</h4>
-                <div className="space-y-2">
+                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(142,155,174,0.8)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+                  {t.detailByCountry}
+                </p>
+                <div className="space-y-3">
                   {statistics.top_5_gdp_trade_comparison.map((country, index) => (
-                    <div key={index} className="bg-gray-50 p-3 rounded-lg border-l-4 border-blue-500">
+                    <div key={index} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: '12px 14px', borderLeft: '3px solid #1A6B8A' }}>
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-bold text-gray-800">{translateCountry(country.country)}</span>
-                        <Badge className="bg-purple-600 text-white text-xs">{language === 'en' ? 'GDP' : 'PIB'}: ${country.gdp_2024}B</Badge>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#EAE0D0' }}>{translateCountry(country.country)}</span>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: 'rgba(155,110,245,0.18)', color: '#a78bfa', border: '1px solid rgba(155,110,245,0.25)' }}>
+                          {language === 'en' ? 'GDP' : 'PIB'}: ${country.gdp_2024}B
+                        </span>
                       </div>
-                      <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <p className="text-gray-500">{t.expWorld}:</p>
-                          <p className="font-bold text-green-700">${country.exports_world.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)', margin: 0 }}>{t.expWorld}</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#34d399', margin: 0 }}>${country.exports_world.toFixed(1)}B</p>
                         </div>
                         <div>
-                          <p className="text-gray-500">{t.expIntraAfr}:</p>
-                          <p className="font-bold text-green-600">${country.exports_intra_african.toFixed(1)}B ({country.intra_african_percentage}%)</p>
+                          <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)', margin: 0 }}>{t.expIntraAfr}</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#6ee7b7', margin: 0 }}>${country.exports_intra_african.toFixed(1)}B <span style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)' }}>({country.intra_african_percentage}%)</span></p>
                         </div>
                         <div>
-                          <p className="text-gray-500">{t.impWorld}:</p>
-                          <p className="font-bold text-blue-700">${country.imports_world.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)', margin: 0 }}>{t.impWorld}</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#38bdf8', margin: 0 }}>${country.imports_world.toFixed(1)}B</p>
                         </div>
                         <div>
-                          <p className="text-gray-500">{t.impIntraAfr}:</p>
-                          <p className="font-bold text-blue-600">${country.imports_intra_african.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)', margin: 0 }}>{t.impIntraAfr}</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#93c5fd', margin: 0 }}>${country.imports_intra_african.toFixed(1)}B</p>
                         </div>
                       </div>
                     </div>
@@ -430,85 +561,89 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
-      {/* Répartition par Secteur - Pie Chart */}
+      {/* ── Répartition par Secteur ────────────────────────────── */}
       {statistics.sector_performance && Object.keys(statistics.sector_performance).length > 0 && (
-        <Card className="shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-indigo-50 to-blue-50">
-            <CardTitle className="text-xl font-bold">🏭 {t.sectorPerformance}</CardTitle>
-            <CardDescription className="text-sm">{t.sectorDistribution}</CardDescription>
-          </CardHeader>
-          <CardContent className="pt-6">
+        <div className="stats-chart-card">
+          <div className="stats-chart-header terra">
+            <div className="stats-chart-title terra">
+              <BarChart3 style={{ width: 18, height: 18 }} />
+              {t.sectorPerformance}
+            </div>
+            <div className="stats-chart-subtitle">{t.sectorDistribution}</div>
+          </div>
+          <div style={{ padding: '16px 8px' }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div style={{ minHeight: '300px' }}>
-                <ResponsiveContainer width="100%" height={280}>
-                  <PieChart>
-                    <Pie
-                      data={Object.entries(statistics.sector_performance).slice(0, 8).map(([key, value]) => {
-                        const shareValue = typeof value === 'object' && value.share ? value.share : 
-                                          typeof value === 'object' && value.value_2024 ? value.value_2024 : 
-                                          parseFloat(value) || 10;
-                        return {
-                          name: key.replace(/_/g, ' '),
-                          value: parseFloat(shareValue)
-                        };
-                      })}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {Object.entries(statistics.sector_performance).slice(0, 8).map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
+              <ResponsiveContainer width="100%" height={280}>
+                <PieChart>
+                  <Pie
+                    data={Object.entries(statistics.sector_performance).slice(0, 8).map(([key, value]) => {
+                      const shareValue = typeof value === 'object' && value.share ? value.share
+                                       : typeof value === 'object' && value.value_2024 ? value.value_2024
+                                       : parseFloat(value) || 10;
+                      return { name: key.replace(/_/g, ' '), value: parseFloat(shareValue) };
+                    })}
+                    cx="50%" cy="50%"
+                    outerRadius={100}
+                    innerRadius={36}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {Object.entries(statistics.sector_performance).slice(0, 8).map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0.3)" strokeWidth={1} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value) => [`${parseFloat(value).toFixed(1)}%`, '']}
+                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                  />
+                  <Legend wrapperStyle={{ fontSize: '0.72rem', color: 'rgba(142,155,174,0.8)' }} />
+                </PieChart>
+              </ResponsiveContainer>
 
-              <div className="space-y-2">
-                <h4 className="text-sm font-bold mb-3 text-gray-700">{t.sectorDetails}</h4>
-                {Object.entries(statistics.sector_performance).slice(0, 8).map(([key, value], index) => {
-                  const shareValue = typeof value === 'object' && value.share ? value.share : 
-                                    typeof value === 'object' && value.value_2024 ? value.value_2024 : 
-                                    parseFloat(value) || 10;
-                  const displayName = key.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-                  
-                  return (
-                    <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                      <div className="flex items-center gap-2">
-                        <div 
-                          className="w-3 h-3 rounded" 
-                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                        />
-                        <span className="text-xs font-semibold">{displayName}</span>
+              <div>
+                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(142,155,174,0.8)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+                  {t.sectorDetails}
+                </p>
+                <div className="space-y-2">
+                  {Object.entries(statistics.sector_performance).slice(0, 8).map(([key, value], index) => {
+                    const shareValue = typeof value === 'object' && value.share ? value.share
+                                     : typeof value === 'object' && value.value_2024 ? value.value_2024
+                                     : parseFloat(value) || 10;
+                    const displayName = key.replace(/_/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                    const pct = parseFloat(shareValue).toFixed(1);
+                    return (
+                      <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <div style={{ width: 10, height: 10, borderRadius: 2, background: COLORS[index % COLORS.length], flexShrink: 0 }} />
+                          <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#EAE0D0' }}>{displayName}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="stats-progress-bar" style={{ width: 60 }}>
+                            <div style={{ height: '100%', borderRadius: 2, background: COLORS[index % COLORS.length], width: `${Math.min(100, parseFloat(pct) * 5)}%` }} />
+                          </div>
+                          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: COLORS[index % COLORS.length], minWidth: 32, textAlign: 'right' }}>{pct}%</span>
+                        </div>
                       </div>
-                      <Badge className="text-xs">{parseFloat(shareValue).toFixed(1)}%</Badge>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
-      {/* Source Indicator Footer */}
-      <Card className="bg-gray-50 border-gray-200">
-        <CardContent className="py-3">
-          <p className="text-xs text-gray-500 text-center">
-            {language === 'en' 
-              ? 'Sources: IMF World Economic Outlook 2024 | World Bank WDI | UNCTAD COMTRADE | AfCFTA Secretariat | African Development Bank'
-              : 'Sources: FMI World Economic Outlook 2024 | Banque Mondiale WDI | UNCTAD COMTRADE | Secrétariat ZLECAf | Banque Africaine de Développement'
-            }
-          </p>
-        </CardContent>
-      </Card>
+      {/* ── Source Footer ──────────────────────────────────────── */}
+      <div className="stats-source-note" style={{ background: 'rgba(18,24,32,0.5)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.06)' }}>
+        {language === 'en'
+          ? 'Sources: IMF World Economic Outlook 2024 · World Bank WDI · UNCTAD COMTRADE · AfCFTA Secretariat · African Development Bank'
+          : 'Sources: FMI World Economic Outlook 2024 · Banque Mondiale WDI · UNCTAD COMTRADE · Secrétariat ZLECAf · Banque Africaine de Développement'}
+      </div>
     </div>
   );
 };
