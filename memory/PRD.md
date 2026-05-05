@@ -65,12 +65,21 @@ Import from GitHub repository `aouggad-web/afcfta-final-002`, set it up to run, 
 - Notification channels (Email/Slack) disabled until SMTP/Slack envs configured
 - DZA nomenclature_map.json (17 115 entries) NOT yet integrated as enriched sub-positions in calculator (would require fusion script)
 
+### 2026-05-05 (Day 2)
+1. **DZA enriched data tier activated**: Ran `backend/scripts/enrich_dza_fast_json.py` to generate `backend/data/crawled/DZA_tariffs_enriched.json` (17 115 sub-positions). The cascading priority data source `dza_enriched` (confidence 0.85) is now active in `routes/enhanced_calculator.py`.
+2. **DZA tariff fix for HS 721090 (acier laminé plat)**: Added `"721090": 30.0` to `DZA_DD_OVERRIDES` and `"721090": 60.0` to `DZA_DAPS_RATES` in `etl/country_taxes_algeria.py`. Re-ran enrichment script. Verified via `POST /api/enhanced-calculator/dza` for HS code `7210909910`:
+   - NPF: DD 30%, DAPS 60%, PRCT 2%, TVA 19% → total taxes 15 247.04 USD on FOB 10 000 USD
+   - ZLECAf: DD 0% (exonéré), DAPS 60% conservé, PRCT 2%, TVA 19% → économie 5 826.24 USD (23.08%)
+   - `data_source: dza_enriched`, `data_confidence: 0.85`, `currency: USD` ✅
+   - `authentic_source` includes real customs description (lines 7210901100, 7210901200, etc.)
+
 ## Next Action Items / Backlog
 - Optional: integrate `DZA_nomenclature_map.json` rich descriptions into DZA tariff sub_positions
 - Optional: extend tariff DAPS rates beyond ~150 HS6 currently in `etl/country_taxes_algeria.py`
 - Optional: add admin UI for bulk-edit of tariff rates per country (CSV upload)
 - Optional: configure Gemini key for AI analysis features
 - Optional: add SMTP/Slack settings for notifications
+- Optional: data consistency audit on SSD/SOM/CAF (similar to RASD audit)
 
 ## Test Credentials
 See `/app/memory/test_credentials.md` for the public frontend API key and any test accounts.
