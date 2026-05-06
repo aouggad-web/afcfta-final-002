@@ -24,11 +24,53 @@ import './styles/design-system.css';
 
 // --- Inject X-API-Key on every backend request ----------------------------
 const API_KEY = process.env.REACT_APP_API_KEY || '';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 if (API_KEY) {
-  // axios default header (does NOT touch fetch — components that need the key
-  // on raw fetch() must pass it explicitly via headers).
+  // axios default header
   axios.defaults.headers.common['X-API-Key'] = API_KEY;
+
+  // monkey-patch fetch() so calls hitting the backend also include the key.
+  // Components that pass their own X-API-Key (e.g. admin pages) win — we never
+  // override a header that's already set.
+  const _origFetch = window.fetch.bind(window);
+  window.fetch = (input, init = {}) => {
+    try {
+      const url =
+        typeof input === 'string'
+          ? input
+          : input && input.url
+          ? input.url
+          : '';
+      const isBackend =
+        url.startsWith('/api') ||
+        (BACKEND_URL && url.startsWith(BACKEND_URL));
+      if (isBackend) {
+        // Detect existing X-API-Key (case-insensitive) from raw init.headers.
+        let hasKey = false;
+        const rawHeaders = init.headers;
+        if (rawHeaders) {
+          if (rawHeaders instanceof Headers) {
+            hasKey = rawHeaders.has('X-API-Key');
+          } else if (Array.isArray(rawHeaders)) {
+            hasKey = rawHeaders.some(([k]) => String(k).toLowerCase() === 'x-api-key');
+          } else if (typeof rawHeaders === 'object') {
+            hasKey = Object.keys(rawHeaders).some(
+              (k) => k.toLowerCase() === 'x-api-key'
+            );
+          }
+        }
+        if (!hasKey) {
+          const headers = new Headers(rawHeaders || {});
+          headers.set('X-API-Key', API_KEY);
+          init = { ...init, headers };
+        }
+      }
+    } catch (_) {
+      /* noop */
+    }
+    return _origFetch(input, init);
+  };
 }
 // --------------------------------------------------------------------------
 

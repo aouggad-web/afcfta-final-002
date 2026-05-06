@@ -22,6 +22,7 @@ from etl.unctad_data import (
     get_unctad_lsci,
     get_all_unctad_data
 )
+from country_data import REAL_COUNTRY_DATA
 
 # Import cache service
 try:
@@ -29,6 +30,51 @@ try:
     CACHE_AVAILABLE = True
 except ImportError:
     CACHE_AVAILABLE = False
+
+
+def _parse_growth_pct(value):
+    """Parse a growth value (string '3.5%' or float 3.5) into a numeric percent."""
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    s = str(value).strip().replace('%', '').replace(',', '.')
+    try:
+        return float(s)
+    except (ValueError, TypeError):
+        return None
+
+
+def build_top_10_gdp_2024():
+    """
+    Build the Top 10 African GDP 2024 ranking from the same `REAL_COUNTRY_DATA`
+    used by the country-profile endpoint, ensuring perfect consistency between
+    the dashboard table and individual country pages.
+
+    Source: Banque Mondiale (WDI 2024) — current US$.
+    """
+    rows = []
+    for iso3, info in REAL_COUNTRY_DATA.items():
+        gdp = info.get('gdp_usd_2024')
+        if gdp is None:
+            continue
+        try:
+            gdp_value = float(gdp)
+        except (ValueError, TypeError):
+            continue
+        rows.append({
+            "iso3": iso3,
+            "country": info.get('name', iso3),
+            "gdp_2024_billion": round(gdp_value, 2),
+            "growth_2024": _parse_growth_pct(info.get('growth_forecast_2024')),
+            "growth_projection_2025": info.get('growth_projection_2025') or '',
+            "data_source": info.get('data_source', 'Banque Mondiale (WDI 2024)'),
+        })
+    rows.sort(key=lambda r: r["gdp_2024_billion"], reverse=True)
+    top10 = rows[:10]
+    for idx, r in enumerate(top10, start=1):
+        r["rank"] = idx
+    return top10
 
 
 def count_authentic_countries():
@@ -181,18 +227,8 @@ async def get_main_statistics():
             {"name": "Libye", "imports_2024": 20918075548, "share_pct": 2.7},
             {"name": "Tanzanie", "imports_2024": 20411960514, "share_pct": 2.7}
         ],
-        "top_10_gdp_2024": [
-            {"rank": 1, "country": "Nigéria", "gdp_2024_billion": 477.0, "growth_2024": 3.3, "growth_projection_2025": "3.8%"},
-            {"rank": 2, "country": "Égypte", "gdp_2024_billion": 387.0, "growth_2024": 3.5, "growth_projection_2025": "4.2%"},
-            {"rank": 3, "country": "Afrique du Sud", "gdp_2024_billion": 373.0, "growth_2024": 1.3, "growth_projection_2025": "1.8%"},
-            {"rank": 4, "country": "Algérie", "gdp_2024_billion": 224.0, "growth_2024": 3.8, "growth_projection_2025": "3.5%"},
-            {"rank": 5, "country": "Éthiopie", "gdp_2024_billion": 163.0, "growth_2024": 6.2, "growth_projection_2025": "6.5%"},
-            {"rank": 6, "country": "Kenya", "gdp_2024_billion": 115.0, "growth_2024": 5.0, "growth_projection_2025": "5.3%"},
-            {"rank": 7, "country": "Maroc", "gdp_2024_billion": 142.0, "growth_2024": 3.4, "growth_projection_2025": "3.7%"},
-            {"rank": 8, "country": "Angola", "gdp_2024_billion": 117.0, "growth_2024": 2.8, "growth_projection_2025": "3.5%"},
-            {"rank": 9, "country": "Tanzanie", "gdp_2024_billion": 85.0, "growth_2024": 5.4, "growth_projection_2025": "5.8%"},
-            {"rank": 10, "country": "Ghana", "gdp_2024_billion": 76.0, "growth_2024": 2.8, "growth_projection_2025": "4.0%"}
-        ],
+        "top_10_gdp_2024": build_top_10_gdp_2024(),
+        "top_10_gdp_2024_source": "Banque Mondiale (World Development Indicators 2024) — projections 2025: WB Africa Economic Update Jan 2025",
         "trade_evolution": {
             "intra_african_trade_2023": 111.8,  # Milliards USD
             "intra_african_trade_2024": 123.5,  # Milliards USD (estimé +10.5%)

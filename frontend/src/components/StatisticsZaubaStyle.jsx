@@ -360,8 +360,8 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
           </div>
           <div className="stats-chart-subtitle">
             {language === 'fr'
-              ? 'Avec projections de croissance 2025 — Source: FMI, Banque Mondiale'
-              : 'With 2025 growth projections — Source: IMF, World Bank'}
+              ? 'Avec projections de croissance 2025 — Source : Banque Mondiale (WDI 2024)'
+              : 'With 2025 growth projections — Source: World Bank (WDI 2024)'}
           </div>
         </div>
         <div style={{ padding: '0 0 16px', overflowX: 'auto' }}>
@@ -401,8 +401,8 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
           </table>
           <p className="stats-source-note">
             {language === 'fr'
-              ? 'Données officielles FMI WEO Octobre 2025, Banque Mondiale.'
-              : 'Official IMF WEO October 2025, World Bank data.'}
+              ? 'Source : Banque Mondiale (World Development Indicators 2024) • Projections 2025 : WB Africa Economic Update Jan 2025. Données identiques aux profils pays.'
+              : 'Source: World Bank (World Development Indicators 2024) • 2025 projections: WB Africa Economic Update Jan 2025. Same dataset as country profiles.'}
           </p>
         </div>
       </div>
