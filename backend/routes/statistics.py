@@ -77,6 +77,23 @@ def build_top_10_gdp_2024():
     return top10
 
 
+# ─── Historical GDP series (Banque Mondiale, current US$ billion) ────────────
+# Source: World Bank Open Data — data.worldbank.org/indicator/NY.GDP.MKTP.CD
+# Used by /api/statistics/gdp-history-top10 to power the historical comparison chart.
+GDP_HISTORY_TOP10 = {
+    "ZAF": {"name": "Afrique du Sud", "series": {2019: 387.93, 2020: 337.69, 2021: 419.03, 2022: 405.71, 2023: 380.91, 2024: 401.14}},
+    "EGY": {"name": "Égypte",          "series": {2019: 303.18, 2020: 363.12, 2021: 425.91, 2022: 476.75, 2023: 395.92, 2024: 389.06}},
+    "DZA": {"name": "Algérie",         "series": {2019: 171.76, 2020: 145.16, 2021: 163.04, 2022: 191.91, 2023: 247.99, 2024: 269.31}},
+    "NGA": {"name": "Nigéria",         "series": {2019: 448.12, 2020: 429.42, 2021: 440.85, 2022: 472.62, 2023: 363.85, 2024: 252.26}},
+    "MAR": {"name": "Maroc",           "series": {2019: 128.92, 2020: 121.35, 2021: 142.87, 2022: 130.48, 2023: 144.04, 2024: 160.60}},
+    "ETH": {"name": "Éthiopie",        "series": {2019:  95.91, 2020: 107.66, 2021: 111.27, 2022: 120.37, 2023: 159.75, 2024: 142.07}},
+    "KEN": {"name": "Kenya",           "series": {2019: 100.38, 2020: 100.66, 2021: 110.35, 2022: 113.42, 2023: 107.44, 2024: 119.30}},
+    "AGO": {"name": "Angola",          "series": {2019:  69.31, 2020:  53.61, 2021:  66.51, 2022: 104.40, 2023:  84.71, 2024: 113.79}},
+    "TZA": {"name": "Tanzanie",        "series": {2019:  60.74, 2020:  66.48, 2021:  70.60, 2022:  76.43, 2023:  83.78, 2024:  94.93}},
+    "CIV": {"name": "Côte d'Ivoire",   "series": {2019:  58.79, 2020:  61.13, 2021:  72.37, 2022:  78.34, 2023:  78.95, 2024:  87.11}},
+}
+
+
 def count_authentic_countries():
     """
     Count countries with authentic tariff data by checking:
@@ -309,6 +326,46 @@ async def get_main_statistics():
 # =============================================================================
 # TRADE PRODUCTS ENDPOINTS
 # =============================================================================
+
+@router.get("/gdp-history-top10")
+async def get_gdp_history_top10():
+    """
+    Return the historical GDP series (2019–2024) for the Top 10 African economies.
+    Source: World Bank — Open Data (NY.GDP.MKTP.CD, current US$ billion).
+    """
+    series = []
+    for iso3, info in GDP_HISTORY_TOP10.items():
+        # Order years ascending so Recharts renders left-to-right.
+        ordered = sorted(info["series"].items())
+        series.append({
+            "iso3": iso3,
+            "country": info["name"],
+            "history": [{"year": y, "gdp_billion": v} for y, v in ordered],
+            "gdp_2024_billion": ordered[-1][1] if ordered else None,
+        })
+    # Sort by 2024 GDP descending so the legend matches the Top 10 ranking.
+    series.sort(key=lambda r: r.get("gdp_2024_billion") or 0, reverse=True)
+
+    years = sorted({y for info in GDP_HISTORY_TOP10.values() for y in info["series"]})
+    # Wide-format table for charting libraries that prefer one row per year.
+    chart_rows = []
+    for year in years:
+        row = {"year": year}
+        for entry in series:
+            iso3 = entry["iso3"]
+            year_value = GDP_HISTORY_TOP10[iso3]["series"].get(year)
+            if year_value is not None:
+                row[iso3] = year_value
+        chart_rows.append(row)
+
+    return {
+        "source": "Banque Mondiale — World Development Indicators (NY.GDP.MKTP.CD), current US$ billion",
+        "years": years,
+        "countries": [{"iso3": s["iso3"], "country": s["country"], "gdp_2024_billion": s["gdp_2024_billion"]} for s in series],
+        "series": series,
+        "chart_rows": chart_rows,
+    }
+
 
 @router.get("/trade-products/summary")
 async def get_trade_products_summary():

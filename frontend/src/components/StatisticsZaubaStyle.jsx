@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { Badge } from './ui/badge';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart, LineChart, Line } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, Globe, Users, ArrowUpRight } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
@@ -14,6 +14,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
   const [africaTotals, setAfricaTotals] = useState(null);
   const [selectedYear, setSelectedYear] = useState('2024');
   const [selectedFilter, setSelectedFilter] = useState('all');
+  const [gdpHistory, setGdpHistory] = useState(null);
 
   const texts = {
     fr: {
@@ -132,7 +133,18 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
   useEffect(() => {
     fetchStatistics();
     fetchAfricaTotals();
+    fetchGdpHistory();
   }, []);
+
+  const fetchGdpHistory = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/statistics/gdp-history-top10`);
+      setGdpHistory(response.data || null);
+    } catch (e) {
+      // Silent — chart will be hidden if data is unavailable.
+      setGdpHistory(null);
+    }
+  };
 
   const fetchStatistics = async () => {
     try {
@@ -406,6 +418,76 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
           </p>
         </div>
       </div>
+
+      {/* ── Évolution historique du PIB 2019-2024 ──────────────── */}
+      {gdpHistory && Array.isArray(gdpHistory.chart_rows) && gdpHistory.chart_rows.length > 0 && (
+        <div className="stats-chart-card" data-testid="gdp-history-chart">
+          <div className="stats-chart-header gold">
+            <div className="stats-chart-title gold">
+              <TrendingUp style={{ width: 18, height: 18 }} />
+              {language === 'fr'
+                ? 'Évolution du PIB 2019–2024 — Top 10 économies africaines'
+                : 'GDP Evolution 2019–2024 — Top 10 African economies'}
+            </div>
+            <div className="stats-chart-subtitle">
+              {language === 'fr'
+                ? 'Effet COVID-19 (2020), reprise post-pandémie, dévaluations monétaires (Naira 2023, Livre égyptienne 2024)'
+                : 'COVID-19 impact (2020), post-pandemic recovery, currency devaluations (Naira 2023, EGP 2024)'}
+            </div>
+          </div>
+          <div style={{ padding: '16px 8px 8px' }}>
+            <ResponsiveContainer width="100%" height={420}>
+              <LineChart data={gdpHistory.chart_rows} margin={{ top: 12, right: 24, left: 0, bottom: 8 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(142,155,174,0.15)" />
+                <XAxis dataKey="year" tick={{ fontSize: 12, fill: 'rgba(142,155,174,0.85)', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                <YAxis
+                  tick={{ fontSize: 12, fill: 'rgba(142,155,174,0.85)', fontWeight: 600 }}
+                  axisLine={false}
+                  tickLine={false}
+                  tickFormatter={(v) => `$${v}B`}
+                  width={56}
+                />
+                <Tooltip
+                  contentStyle={{ background: '#1a2332', border: '1px solid rgba(212,137,26,0.4)', borderRadius: 8, color: '#e2e8f0' }}
+                  formatter={(value, name) => {
+                    const country = (gdpHistory.countries || []).find((c) => c.iso3 === name);
+                    return [`$${Number(value).toFixed(2)}B`, translateCountry(country?.country || name)];
+                  }}
+                  labelFormatter={(l) => (language === 'fr' ? `Année ${l}` : `Year ${l}`)}
+                />
+                <Legend
+                  formatter={(name) => {
+                    const country = (gdpHistory.countries || []).find((c) => c.iso3 === name);
+                    return translateCountry(country?.country || name);
+                  }}
+                  wrapperStyle={{ fontSize: '0.78rem', paddingTop: 8 }}
+                />
+                {(gdpHistory.countries || []).map((c, idx) => {
+                  const colors = ['#fbbf24', '#10b981', '#3b82f6', '#ef4444', '#a855f7', '#06b6d4', '#f97316', '#ec4899', '#84cc16', '#f43f5e'];
+                  return (
+                    <Line
+                      key={c.iso3}
+                      type="monotone"
+                      dataKey={c.iso3}
+                      stroke={colors[idx % colors.length]}
+                      strokeWidth={3}
+                      dot={{ r: 3.5, strokeWidth: 0 }}
+                      activeDot={{ r: 6 }}
+                      isAnimationActive={false}
+                      connectNulls
+                    />
+                  );
+                })}
+              </LineChart>
+            </ResponsiveContainer>
+            <p className="stats-source-note" style={{ marginTop: 10 }}>
+              {language === 'fr'
+                ? `Source : ${gdpHistory.source}. Toutes les valeurs en milliards de dollars US courants.`
+                : `Source: ${gdpHistory.source}. All values in current US$ billion.`}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* ── Évolution du Commerce Intra-Africain ───────────────── */}
       <div className="stats-chart-card">
