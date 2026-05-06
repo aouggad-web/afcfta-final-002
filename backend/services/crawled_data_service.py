@@ -19,20 +19,26 @@ class CrawledDataService:
             cls._instance._country_data = {}
             cls._instance._code_index = {}
             cls._instance._hs6_index = {}
+            cls._instance._country_files = {}
+            cls._instance._country_loaded = set()
         return cls._instance
 
     def is_loaded(self) -> bool:
-        return self._loaded and len(self._country_data) > 0
+        return self._loaded
 
     def get_available_countries(self) -> List[str]:
-        return list(self._country_data.keys())
+        return list(self._country_files.keys())
 
     def load(self, force=False):
+        """Scan available country files without loading data (lazy loading per country)."""
         if self._loaded and not force:
             return
+
         self._country_data = {}
         self._code_index = {}
         self._hs6_index = {}
+        self._country_files = {}
+        self._country_loaded = set()
 
         if not CRAWLED_DIR.exists():
             logger.warning(f"Crawled data directory not found: {CRAWLED_DIR}")
@@ -44,60 +50,81 @@ class CrawledDataService:
             return
 
         for f in files:
-            try:
-                country_code = f.stem.replace("_tariffs", "").upper()
-                with open(f, 'r', encoding='utf-8') as fh:
-                    data = json.load(fh)
-
-                # Support both old format (positions/sub_positions) and new format (tariff_lines)
-                data_format = data.get("data_format", "")
-                
-                if "tariff_lines" in data:
-                    # New enhanced format with tariff_lines
-                    positions = self._convert_tariff_lines_to_positions(data, country_code)
-                else:
-                    # Old format
-                    positions_key = "sub_positions" if "sub_positions" in data else "positions"
-                    positions = data.get(positions_key, [])
-
-                if not positions:
-                    continue
-
-                self._country_data[country_code] = {
-                    "source": data.get("source", data.get("data_format", "")),
-                    "extracted_at": data.get("extracted_at", data.get("generated_at", "")),
-                    "stats": data.get("stats", data.get("summary", {})),
-                    "country_name": data.get("country_name", country_code),
-                    "total_positions": len(positions),
-                    "data_format": data_format,
-                }
-
-                code_idx = {}
-                hs6_idx = {}
-
-                for pos in positions:
-                    normalized = self._normalize_position(country_code, pos)
-                    if not normalized:
-                        continue
-
-                    code_clean = normalized["code_clean"]
-                    code_idx[code_clean] = normalized
-
-                    hs6 = code_clean[:6]
-                    if hs6 not in hs6_idx:
-                        hs6_idx[hs6] = []
-                    hs6_idx[hs6].append(normalized)
-
-                self._code_index[country_code] = code_idx
-                self._hs6_index[country_code] = hs6_idx
-                logger.info(f"Crawled data loaded for {country_code}: {len(code_idx)} positions indexed")
-
-            except Exception as e:
-                logger.error(f"Error loading crawled data {f}: {e}")
+            country_code = f.stem.replace("_tariffs", "").upper()
+            self._country_files[country_code] = f
 
         self._loaded = True
-        total = sum(len(idx) for idx in self._code_index.values())
-        logger.info(f"Crawled data loaded: {len(self._country_data)} countries, {total} total positions")
+        logger.info(f"Crawled data service ready: {len(self._country_files)} countries registered (lazy loading)")
+
+    def _load_country(self, country_code: str) -> bool:
+        """Load a single country's tariff data into memory on demand."""
+        if country_code in self._country_loaded:
+            return True
+
+        f = self._country_files.get(country_code)
+        if not f or not f.exists():
+            return False
+
+        try:
+            with open(f, 'r', encoding='utf-8') as fh:
+                data = json.load(fh)
+
+            data_format = data.get("data_format", "")
+
+            if "sub_positions" in data and not data.get("tariff_lines"):
+                # DZA enhanced format with top-level sub_positions
+                positions = data.get("sub_positions", [])
+            elif "tariff_lines" in data:
+                positions = self._convert_tariff_lines_to_positions(data, country_code)
+            else:
+                positions_key = "positions"
+                positions = data.get(positions_key, [])
+
+            if not positions:
+                self._country_loaded.add(country_code)
+                return False
+
+            self._country_data[country_code] = {
+                "source": data.get("source", data.get("data_format", "")),
+                "extracted_at": data.get("extracted_at", data.get("generated_at", "")),
+                "stats": data.get("stats", data.get("summary", {})),
+                "country_name": data.get("country_name", country_code),
+                "total_positions": len(positions),
+                "data_format": data_format,
+            }
+
+            code_idx = {}
+            hs6_idx = {}
+
+            for pos in positions:
+                normalized = self._normalize_position(country_code, pos)
+                if not normalized:
+                    continue
+
+                code_clean = normalized["code_clean"]
+                code_idx[code_clean] = normalized
+
+                hs6 = code_clean[:6]
+                if hs6 not in hs6_idx:
+                    hs6_idx[hs6] = []
+                hs6_idx[hs6].append(normalized)
+
+            self._code_index[country_code] = code_idx
+            self._hs6_index[country_code] = hs6_idx
+            self._country_loaded.add(country_code)
+            logger.info(f"Lazy-loaded {country_code}: {len(code_idx)} positions indexed")
+            return True
+
+        except Exception as e:
+            logger.error(f"Error lazy-loading {country_code}: {e}")
+            self._country_loaded.add(country_code)
+            return False
+
+    def _ensure_country_loaded(self, country_code: str) -> bool:
+        """Ensure a country's data is in memory, loading it if needed."""
+        if country_code not in self._country_loaded:
+            return self._load_country(country_code)
+        return country_code in self._code_index
 
     def _convert_tariff_lines_to_positions(self, data: dict, country_code: str) -> List[dict]:
         """Convert new tariff_lines format to positions format"""
@@ -322,37 +349,81 @@ class CrawledDataService:
 
     def _normalize_dza(self, pos: dict) -> Optional[dict]:
         raw_code = pos.get("raw_code", "")
-        code_clean = raw_code.replace(".", "").replace(" ", "")
+        # Prefer hs_code (already clean 10-digit) over raw_code transformation
+        code_clean = pos.get("hs_code", "") or raw_code.replace(".", "").replace(" ", "")
         if not code_clean:
             return None
 
+        FULL_NAMES = {
+            "DD":   "Droit de Douane",
+            "TVA":  "Taxe sur la Valeur Ajoutée",
+            "TCS":  "Taxe Conjoncturelle de Sauvegarde",
+            "PRCT": "Prélèvement à la Compensation du Transport",
+            "DAPS": "Droit Additionnel Provisoire de Sauvegarde",
+        }
+
         taxes_raw = pos.get("taxes", {})
         taxes = []
-        for tax_code, tax_info in taxes_raw.items():
-            full_names = {
-                "DD": "Droit de Douane",
-                "TVA": "Taxe sur la Valeur Ajoutée",
-                "TCS": "Taxe Conjoncturelle de Sauvegarde",
-                "PRCT": "Prélèvement au titre de la Redevance de Conformité Technique",
-                "DAPS": "Droit Additionnel Provisoire de Sauvegarde",
-            }
-            taxes.append({
+        dd_rate = 0.0
+        daps_rate = 0.0
+        vat_rate = 0.0
+        total_taxes = 0.0
+
+        # Ordering: DAPS → DD → PRCT → TCS → TVA
+        order = ["DAPS", "DD", "PRCT", "TCS", "TVA"]
+        taxes_sorted = {k: taxes_raw[k] for k in order if k in taxes_raw}
+        # Add any extra taxes not in the ordered list
+        for k, v in taxes_raw.items():
+            if k not in taxes_sorted:
+                taxes_sorted[k] = v
+
+        for tax_code, tax_info in taxes_sorted.items():
+            if not isinstance(tax_info, dict):
+                continue
+            rate = float(tax_info.get("rate", 0) or 0)
+            entry = {
                 "code": tax_code,
-                "name": full_names.get(tax_code, tax_info.get("name", tax_code)),
-                "rate_pct": tax_info.get("rate"),
-                "raw_value": tax_info.get("raw", ""),
-                "source": "conformepro.dz",
-            })
+                "name": FULL_NAMES.get(tax_code, tax_info.get("name", tax_code)),
+                "rate_pct": rate,
+                "raw_value": tax_info.get("raw", f"{rate:.0f}%"),
+                "source": tax_info.get("source", "conformepro.dz"),
+            }
+            taxes.append(entry)
+            total_taxes += rate
+            if tax_code == "DD":
+                dd_rate = rate
+            elif tax_code == "DAPS":
+                daps_rate = rate
+            elif tax_code in ("TVA", "VAT"):
+                vat_rate = rate
+
+        # ZLECAf rate (DD = 0% with certificate of origin)
+        zlecaf_rate = 0.0
 
         return {
             "code_raw": raw_code,
             "code_clean": code_clean,
+            "hs_code": code_clean,
+            "hs6": code_clean[:6] if len(code_clean) >= 6 else code_clean,
             "designation": pos.get("name", ""),
+            "description": pos.get("description", ""),
+            "designation_full": pos.get("designation_full", ""),
             "chapter": pos.get("chapter", ""),
+            "heading": pos.get("heading", ""),
+            "section": pos.get("section", ""),
             "taxes": taxes,
+            "taxes_detail": taxes_sorted,
+            "dd_rate": dd_rate,
+            "daps_rate": daps_rate,
+            "vat_rate": vat_rate,
+            "zlecaf_rate": zlecaf_rate,
+            "total_taxes_pct": total_taxes,
+            "zlecaf_total_taxes": total_taxes - dd_rate + zlecaf_rate,
             "fiscal_advantages": pos.get("advantages", []),
             "administrative_formalities": pos.get("formalities", []),
-            "source": "conformepro.dz",
+            "source": pos.get("source", "conformepro.dz"),
+            "source_quality": pos.get("source_quality", ""),
+            "source_url": pos.get("source_url", ""),
             "country": "DZA",
         }
 
@@ -928,6 +999,7 @@ class CrawledDataService:
 
     def lookup(self, country_code: str, hs_code: str) -> Optional[dict]:
         country_code = country_code.upper()
+        self._ensure_country_loaded(country_code)
         hs_code_clean = hs_code.replace(".", "").replace(" ", "")
 
         idx = self._code_index.get(country_code, {})
@@ -940,22 +1012,23 @@ class CrawledDataService:
 
         for length in range(len(hs_code_clean) - 1, 5, -1):
             prefix = hs_code_clean[:length]
-            for code, data in idx.items():
-                if code.startswith(prefix):
-                    return data
             matches = [data for code, data in idx.items() if code.startswith(prefix)]
             if len(matches) == 1:
+                return matches[0]
+            elif matches:
                 return matches[0]
 
         return None
 
     def lookup_by_hs6(self, country_code: str, hs6_code: str) -> List[dict]:
         country_code = country_code.upper()
+        self._ensure_country_loaded(country_code)
         hs6_clean = hs6_code.replace(".", "").replace(" ", "")[:6].zfill(6)
         return self._hs6_index.get(country_code, {}).get(hs6_clean, [])
 
     def search(self, country_code: str, query: str, limit: int = 50) -> List[dict]:
         country_code = country_code.upper()
+        self._ensure_country_loaded(country_code)
         idx = self._code_index.get(country_code, {})
         if not idx:
             return []
@@ -972,7 +1045,8 @@ class CrawledDataService:
     def get_stats(self) -> dict:
         return {
             "loaded": self._loaded,
-            "countries": list(self._country_data.keys()),
+            "countries": list(self._country_files.keys()),
+            "countries_loaded_in_memory": list(self._country_data.keys()),
             "country_details": {
                 code: {
                     "positions": info["total_positions"],

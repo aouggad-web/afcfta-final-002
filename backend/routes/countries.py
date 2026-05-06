@@ -23,25 +23,13 @@ from gold_reserves_data import GOLD_RESERVES_GAI_DATA
 router = APIRouter()
 
 @router.get("/countries")
-async def get_countries(lang: str = "fr", include_no_trade_data: bool = True):
-    """Récupérer la liste des pays africains (54 ZLECAf + RASD).
-
-    - Retourne ISO3 comme code principal, ISO2 conservé pour compatibilité (drapeaux).
-    - Le **RASD (Sahara Occidental)** est inclus par défaut avec son intitulé ONU
-      complet (« Territoire non autonome » selon la Résolution 1514 (XV) de l'AG-ONU
-      et la liste C-24). Le champ `has_trade_data` permet au frontend de désactiver
-      les analyses commerciales pour ce territoire (aucune statistique douanière
-      souveraine disponible).
-    - Passer `include_no_trade_data=false` pour exclure les territoires sans données
-      commerciales (par exemple pour les flux de calcul tarifaire qui exigent un
-      tarif national publié).
-    - Liste triée par nom traduit (locale-aware, accents normalisés).
+async def get_countries(lang: str = "fr"):
+    """Récupérer la liste des pays membres de la ZLECAf avec traduction
+    
+    Retourne ISO3 comme code principal, ISO2 conservé pour compatibilité (drapeaux)
     """
     countries = []
     for country in AFRICAN_COUNTRIES:
-        has_trade_data = country.get("has_trade_data", True)
-        if not include_no_trade_data and has_trade_data is False:
-            continue
         translated_country = {
             "code": country["iso3"],
             "iso2": country["code"],
@@ -49,20 +37,9 @@ async def get_countries(lang: str = "fr", include_no_trade_data: bool = True):
             "name": translate_country_name(country["code"], lang),
             "region": translate_region(country["region"], lang),
             "wb_code": country.get("wb_code", country["iso3"]),
-            "population": country["population"],
-            "has_trade_data": has_trade_data,
-            "zlecaf_signatory": country.get("zlecaf_signatory", True),
-            "un_status": country.get("un_status"),
-            "note": country.get("note"),
+            "population": country["population"]
         }
         countries.append(CountryInfo(**translated_country))
-    # Tri alphabétique (locale-aware) par nom traduit dans la langue demandée.
-    import locale as _loc
-    try:
-        _loc.setlocale(_loc.LC_COLLATE, ("fr_FR.UTF-8" if lang == "fr" else "en_US.UTF-8"))
-    except _loc.Error:
-        pass
-    countries.sort(key=lambda c: _loc.strxfrm((c.name or "").lower()))
     return countries
 
 @router.get("/country-profile/{country_code}")

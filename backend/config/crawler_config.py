@@ -91,15 +91,14 @@ class IntegrationConfig:
 
     # Data source priority order (highest priority first)
     source_priority: list = field(
-        default_factory=lambda: ["dza_authentic", "dza_enriched", "crawled", "tariff_service", "etl_fallback"]
+        default_factory=lambda: ["dza_authentic", "crawled", "tariff_service", "etl_fallback"]
     )
 
     # Confidence scores per data source
     confidence_scores: dict = field(
         default_factory=lambda: {
             "dza_authentic": 0.98,
-            "dza_enriched": 0.85,
-            "crawled": 0.80,
+            "crawled": 0.85,
             "tariff_service": 0.75,
             "etl_fallback": 0.60,
         }

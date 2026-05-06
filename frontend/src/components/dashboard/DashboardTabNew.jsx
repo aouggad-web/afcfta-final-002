@@ -193,7 +193,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
   return (
     <div className="space-y-6">
       <section
-        className="rounded-2xl border overflow-hidden zlecaf-overview-hero"
+        className="rounded-2xl border overflow-hidden"
         style={{
           background:
             'radial-gradient(900px 260px at 0% 0%, rgba(212,137,26,0.10), transparent 55%), radial-gradient(700px 220px at 100% 0%, rgba(32,201,151,0.08), transparent 60%), linear-gradient(135deg, rgba(18,26,40,0.98), rgba(12,18,25,0.98))',

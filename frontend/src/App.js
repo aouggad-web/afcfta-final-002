@@ -5,7 +5,6 @@ import { toast } from './hooks/use-toast';
 import { Toaster } from './components/ui/toaster';
 
 import './styles/theme.css';
-import './styles/theme-light.css';
 
 import AfcftaTopbar from './components/AfcftaTopbar';
 import KpiRow from './components/KpiRow';
@@ -21,7 +20,6 @@ import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
 import BankingInfoPanel from './components/banking/BankingInfoPanel';
-import AdminProjectsPage from './components/admin/AdminProjectsPage';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -57,29 +55,12 @@ const texts = {
 };
 
 function App() {
-  // Admin page route: /?admin=projects or /admin/projects
-  if (typeof window !== 'undefined') {
-    const sp = new URLSearchParams(window.location.search);
-    if (sp.get('admin') === 'projects' || window.location.pathname.startsWith('/admin/projects')) {
-      return <AdminProjectsPage />;
-    }
-  }
-
   const { i18n } = useTranslation();
   const [countries, setCountries] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
   const [backendOnline, setBackendOnline] = useState(null);
-  const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
-
-  // Apply theme class on <html>
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'light') root.classList.add('theme-light');
-    else root.classList.remove('theme-light');
-    localStorage.setItem('zlecaf_theme', theme);
-  }, [theme]);
 
   const t = texts[language] || texts.fr;
 
@@ -105,8 +86,6 @@ function App() {
       setActiveTab(tabMapping[value] || value);
     } else if (type === 'language') {
       handleLanguageChange(value);
-    } else if (type === 'theme') {
-      setTheme(value);
     }
   };
 
@@ -348,7 +327,6 @@ function App() {
           active={getTopbarActiveTab()}
           onTabChange={handleTabChange}
           language={language}
-          theme={theme}
         />
 
       {/* Main content area */}

@@ -271,50 +271,7 @@ async def startup_load_tariff_data():
     # Wire database into auth and calculator
     _auth_module.set_database(db)
     set_calculator_db(db)
-
-    # Seed a default frontend API key so the SPA can call protected endpoints.
-    # The same value is exposed to the frontend via REACT_APP_API_KEY.
-    try:
-        if db is not None:
-            import hashlib as _hashlib
-            from datetime import datetime as _dt, timezone as _tz
-            _frontend_key = os.environ.get("FRONTEND_API_KEY", "zlecaf-frontend-public-key")
-            _key_hash = _hashlib.sha256(_frontend_key.encode()).hexdigest()
-            await db["api_keys"].update_one(
-                {"key_hash": _key_hash},
-                {
-                    "$set": {
-                        "key_hash": _key_hash,
-                        "active": True,
-                        "tier": "public",
-                        "label": "frontend-default",
-                    },
-                    "$setOnInsert": {"created_at": _dt.now(_tz.utc).isoformat()},
-                },
-                upsert=True,
-            )
-            logger.info("Frontend default API key ensured in api_keys collection")
-
-            # Seed an admin API key (used for /api/admin/* endpoints).
-            _admin_key = os.environ.get("ADMIN_API_KEY", "zlecaf-admin-key")
-            _admin_hash = _hashlib.sha256(_admin_key.encode()).hexdigest()
-            await db["api_keys"].update_one(
-                {"key_hash": _admin_hash},
-                {
-                    "$set": {
-                        "key_hash": _admin_hash,
-                        "active": True,
-                        "tier": "admin",
-                        "label": "admin-default",
-                    },
-                    "$setOnInsert": {"created_at": _dt.now(_tz.utc).isoformat()},
-                },
-                upsert=True,
-            )
-            logger.info("Admin default API key ensured in api_keys collection")
-    except Exception as e:
-        logger.warning(f"Frontend API key seeding failed: {e}")
-
+    
     # Load crawled data
     try:
         crawled_service.load()

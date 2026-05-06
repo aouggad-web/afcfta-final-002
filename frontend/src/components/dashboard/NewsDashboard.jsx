@@ -342,7 +342,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
   return (
     <section className="space-y-4">
       <div
-        className="rounded-2xl border overflow-hidden zlecaf-overview-hero"
+        className="rounded-2xl border overflow-hidden"
         style={{
           background:
             'radial-gradient(900px 240px at 0% 0%, rgba(212,137,26,0.10), transparent 55%), radial-gradient(720px 220px at 100% 0%, rgba(79,142,247,0.08), transparent 60%), linear-gradient(135deg, rgba(18,26,40,0.98), rgba(12,18,25,0.98))',

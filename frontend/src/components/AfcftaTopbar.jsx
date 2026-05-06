@@ -12,8 +12,6 @@ import {
   Globe2,
   Menu,
   X,
-  Sun,
-  Moon,
 } from "lucide-react";
 
 /* ─── Flat nav items ─────────────────────────────────────────── */
@@ -31,7 +29,7 @@ const NAV_ITEMS = (isFrench) => [
 ];
 
 /* ─── Horizontal topbar component ───────────────────────────── */
-export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr", theme = "dark" }) {
+export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr" }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isFrench = language === "fr";
   const items = NAV_ITEMS(isFrench);
@@ -66,18 +64,6 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
         </button>
 
         <div className="afcfta-topHeader__lang">
-          <button
-            className="afcfta-themeToggle"
-            onClick={() => onTabChange && onTabChange("theme", theme === "dark" ? "light" : "dark")}
-            aria-label={isFrench ? "Basculer le thème" : "Toggle theme"}
-            title={isFrench
-              ? (theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre")
-              : (theme === "dark" ? "Switch to light mode" : "Switch to dark mode")
-            }
-            data-testid="theme-toggle-btn"
-          >
-            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
           <button
             className={`afcfta-langBtn ${isFrench ? "active" : ""}`}
             onClick={() => onTabChange && onTabChange("language", "fr")}

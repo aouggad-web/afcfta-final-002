@@ -127,17 +127,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       try {
         const response = await axios.get(`${API}/countries?lang=${language}`);
         const countries = response.data.countries || response.data || [];
-        // Locale-aware alphabetical sort by current-language name (FR or EN)
-        const collator = new Intl.Collator(language === 'en' ? 'en' : 'fr', {
-          sensitivity: 'base',
-          ignorePunctuation: true,
-        });
-        const sorted = [...countries].sort((a, b) => {
-          const an = (language === 'en' ? a.name_en : a.name_fr) || a.name || '';
-          const bn = (language === 'en' ? b.name_en : b.name_fr) || b.name || '';
-          return collator.compare(an, bn);
-        });
-        setAvailableCountries(sorted);
+        setAvailableCountries(countries.sort((a, b) => 
+          (a.name_fr || a.name || '').localeCompare(b.name_fr || b.name || '')
+        ));
       } catch (err) {
         console.error('Error fetching countries:', err);
       }
@@ -401,26 +393,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <SelectContent>
                   {availableCountries
                     .filter(c => !selectedCountries.includes(c.iso3 || c.code))
-                    .map((country) => {
-                      const noData = country.has_trade_data === false;
-                      return (
-                        <SelectItem
-                          key={country.iso3 || country.code}
-                          value={country.iso3 || country.code}
-                          disabled={noData}
-                          title={noData && country.note ? country.note : undefined}
-                        >
-                          <span className="inline-flex items-center gap-2">
-                            <span>{(language === 'en' ? country.name_en : country.name_fr) || country.name}</span>
-                            {noData && (
-                              <span className="text-[10px] uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-200 text-amber-900 border border-amber-300">
-                                {language === 'en' ? 'no trade data' : 'sans données'}
-                              </span>
-                            )}
-                          </span>
-                        </SelectItem>
-                      );
-                    })}
+                    .map((country) => (
+                      <SelectItem key={country.iso3 || country.code} value={country.iso3 || country.code}>
+                        {country.name_fr || country.name}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
             )}

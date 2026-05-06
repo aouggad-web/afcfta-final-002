@@ -1,85 +1,94 @@
-# PRD — ZLECAf Trade Calculator (afcfta-final-002)
+# ZLECAf Trade Calculator - PRD
 
 ## Original Problem Statement
-Import from GitHub repository `aouggad-web/afcfta-final-002`, set it up to run, and continue building features / fix bugs.
+Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a full-stack trade calculator application featuring tariff calculations, regulatory compliance, and trade analytics.
 
-## Source
-- Repo: https://github.com/aouggad-web/afcfta-final-002 (public)
-- Imported on: 2026-05-04
+## Core Requirements
+1. **Regulatory Engine**: Process, validate, and serve detailed tariff and compliance data for all African countries
+2. **Trade Calculator**: Calculate import taxes comparing NPF vs ZLECAf regimes with savings display
+3. **Multi-Country Support**: Cover all 54 AfCFTA member states
+4. **Data Accuracy**: Display authentic national tariff positions with exact descriptions
 
 ## Architecture
-- Backend: FastAPI (`/app/backend/server.py`, version 3.0.0) — modular routes under `backend/routes/`, services under `backend/services/`, ETL under `backend/etl/`, crawlers under `backend/crawlers/`
-- Frontend: React 19 + CRA + craco + Tailwind + Radix UI + i18next (`/app/frontend`)
-- Database: MongoDB (`mongodb://localhost:27017`, DB `test_database`)
-- Other: Optional Redis cache, optional PostgreSQL for tariff data, APScheduler for exchange rates
-- Routing: All backend routes prefixed with `/api`; frontend uses `REACT_APP_BACKEND_URL`
+- **Backend**: FastAPI (Python)
+- **Frontend**: React + Vite + Tailwind CSS + Shadcn UI
+- **Database**: MongoDB (primary), PostgreSQL (regulatory data - migration done)
+- **Caching**: Redis
 
-## Imported Capabilities
-- 54 African countries tariff data (`backend/data/*_tariffs.json`)
-- HS6 / HS4 catalog and rules of origin (`backend/data/hs6_database.json`)
-- Calculator (basic + enhanced v2/v3) with country/national positions
-- Country profiles with World Bank Outlook indicators (PIB, IDH, inflation, chômage, dette, etc.)
-- Trade data (WTO, OEC, World Bank, UNCTAD, FAOSTAT, Comtrade)
-- Logistics: ports / airports / land transport, fees, operators
-- Banking system (registry, FX, payments, trade finance, regulatory)
-- Notifications (Email + Slack)
-- Data export (CSV/Excel)
-- Auth via API keys (`X-API-Key` header), admin keys management
-- Crawlers for tariff updates / Scheduler for exchange rates
-- PWA: service worker, offline page, manifest
+## What's Been Implemented
 
-## Sessions / Iterations Done
+### March 15, 2026 - PostgreSQL Migration Complete
+- ✅ Migrated all 54 countries to PostgreSQL (894,783 records)
+- ✅ Created full-text search index for French descriptions
+- ✅ New `/api/postgres-tariffs/*` API endpoints
+- ✅ Frontend updated to use PostgreSQL API with fallback
+- ✅ Real national tariff descriptions (e.g., Kenya: "Café Arabica AA" instead of "Type 1")
+- Note: Some countries (Algeria) use generic labels in their official nomenclature
 
-### 2026-05-04 (Day 1)
-1. **Import & setup**: cloned repo into `/app`, preserved `.git`/`.emergent`/`.env`, ran `pip install -r requirements.txt`, `yarn install` (added missing `craco`), services up.
-2. **Backend connection fix**: All API routes required `X-API-Key`; created seed of default frontend API key in MongoDB on startup (env: `FRONTEND_API_KEY`), injected `X-API-Key` header default in axios + monkey-patched `fetch()` in `index.js` (env: `REACT_APP_API_KEY`).
-3. **Calculator HS6 search fix**: `TariffSearchEngine` was looking in `/app/tariff_engine/normalized/` (empty); added fallback that loads from `/app/backend/data/hs6_database.json` + per-country tariff files. Sanitized NaN values for JSON serialization.
-4. **National positions selector fix**: When PostgreSQL endpoint returns 503, fallback now goes to `/api/authentic-tariffs/...` instead of `/api/hs6/smart-search` (which doesn't return sub-positions).
-5. **Country profile WB data fix**: Restored real economic CSV files (`ZLECAf_ENRICHI_2024_COMMERCE.csv` and `ZLECAF_54_PAYS_DONNEES_COMPLETES.csv`) from commit `7596094` (a later commit had replaced them with empty 2-line stubs).
-6. **Country Profiles Tab regression fix**: Applied PR #79 (`f08cc18`) — replaces `field && ...` with `field != null && ...` to correctly render `0` values.
-7. **Projets Structurants extension**: extended from 15 → 54 countries (full AfCFTA coverage) with verified mega-projects 2025-2030 from first-tier sources.
-8. **Projets Structurants update for 15 existing countries**: refreshed with 2025-2026 verified statuses (sources: APS, AFP, Reuters, World Bank, AfDB, Rosatom, S&P Global, Argus Media, MIGA, Kenya Railways, TRC, Ivanhoe Mines, FOCAC, AMEA Power, PV Magazine, DFC, DBSA, etc.). Notable updates:
-   - Algeria: Béchar-Gara Djebilet ✅ inaugurée 01/02/2026; El Hamdania ❌ abandonné 10/06/2025
-   - Ethiopia: GERD ✅ inauguré 09/09/2025
-   - Tunisia: Kairouan 120 MWp solaire ✅ mis en service 16/12/2025
-   - DRC: Inga III Phase 1 ($250M) ✅ approuvée 03/06/2025; Kamoa-Kakula 388 838 t Cu en 2025
-   - Tanzania: SGR fret ✅ depuis 06/2025; ligne Burundi 1ère pierre 08/2025
-   - Egypt: El Dabaa cuve Unit 1 installée 11/2025
-   - Nigeria: Dangote refinery extension vers 1.4M b/j en 2028
+### March 15, 2026 - Banking System Integration
+- ✅ Added Banking tab with full African banking system data
+- ✅ Integrated `banking_system` module (banks_registry, foreign_exchange, trade_finance, risk_assessment, compliance)
+- ✅ Created `/api/banking/*` endpoints for country banks, regulations, risk assessment
+- ✅ BankingInfoPanel component with tabs: Banks, Forex, Risk, Instruments, Payment Systems, Compliance
 
-## Files Modified Notable
-- `/app/backend/server.py` — seed `api_keys` collection on startup
-- `/app/backend/.env` — `FRONTEND_API_KEY`
-- `/app/frontend/.env` — `REACT_APP_API_KEY`
-- `/app/frontend/src/index.js` — axios + fetch X-API-Key injection
-- `/app/backend/search/hs_code_search.py` — JSON fallback + NaN sanitization
-- `/app/frontend/src/components/NationalPositionsSelector.jsx` — fallback to authentic-tariffs
-- `/app/frontend/src/components/profiles/CountryProfilesTab.jsx` — falsy-zero fix (PR #79)
-- `/app/data/csv/ZLECAf_ENRICHI_2024_COMMERCE.csv` — restored real data (54 rows)
-- `/app/data/csv/ZLECAF_54_PAYS_DONNEES_COMPLETES.csv` — restored real data
-- `/app/data/json/projets_structurants_afrique.json` — 15 → 54 countries with verified projects
+### March 15, 2026 - GitHub Update
+- Added African currencies system (`currencies.py`, `exchange_rates.py`)
+- Added AI intelligence routes (`ai_intelligence.py`, `investment_intelligence.py`)
+- Added regional analytics dashboard
+- Added shipping fees calculator
+- Added comprehensive search component
 
-## Known Notes
-- `EMERGENT_LLM_KEY` not set → Gemini AI analysis routes disabled until configured
-- Some endpoints require admin tier API key (separate from frontend public key)
-- Notification channels (Email/Slack) disabled until SMTP/Slack envs configured
-- DZA nomenclature_map.json (17 115 entries) NOT yet integrated as enriched sub-positions in calculator (would require fusion script)
+### Previous Sessions
+- ✅ Built Regulatory Engine v3
+- ✅ PostgreSQL migration (1.5GB regulatory data)
+- ✅ Text Search API (French/English support)
+- ✅ Redis caching implementation
+- ✅ OEC data audit (fixed NaN values)
+- ✅ UI flickering fix
+- ✅ Calculator UI enhancements
 
-### 2026-05-05 (Day 2)
-1. **DZA enriched data tier activated**: Ran `backend/scripts/enrich_dza_fast_json.py` to generate `backend/data/crawled/DZA_tariffs_enriched.json` (17 115 sub-positions). The cascading priority data source `dza_enriched` (confidence 0.85) is now active in `routes/enhanced_calculator.py`.
-2. **DZA tariff fix for HS 721090 (acier laminé plat)**: Added `"721090": 30.0` to `DZA_DD_OVERRIDES` and `"721090": 60.0` to `DZA_DAPS_RATES` in `etl/country_taxes_algeria.py`. Re-ran enrichment script. Verified via `POST /api/enhanced-calculator/dza` for HS code `7210909910`:
-   - NPF: DD 30%, DAPS 60%, PRCT 2%, TVA 19% → total taxes 15 247.04 USD on FOB 10 000 USD
-   - ZLECAf: DD 0% (exonéré), DAPS 60% conservé, PRCT 2%, TVA 19% → économie 5 826.24 USD (23.08%)
-   - `data_source: dza_enriched`, `data_confidence: 0.85`, `currency: USD` ✅
-   - `authentic_source` includes real customs description (lines 7210901100, 7210901200, etc.)
+## Pending Issues
+1. **P0**: National positions display "Type 1, Type 2" instead of exact descriptions
+2. **P1**: Core API still uses flat files (.jsonl) instead of PostgreSQL
 
-## Next Action Items / Backlog
-- Optional: integrate `DZA_nomenclature_map.json` rich descriptions into DZA tariff sub_positions
-- Optional: extend tariff DAPS rates beyond ~150 HS6 currently in `etl/country_taxes_algeria.py`
-- Optional: add admin UI for bulk-edit of tariff rates per country (CSV upload)
-- Optional: configure Gemini key for AI analysis features
-- Optional: add SMTP/Slack settings for notifications
-- Optional: data consistency audit on SSD/SOM/CAF (similar to RASD audit)
+## Prioritized Backlog
 
-## Test Credentials
-See `/app/memory/test_credentials.md` for the public frontend API key and any test accounts.
+### P0 (Critical)
+- [ ] Fix national position descriptions in calculator
+
+### P1 (High)
+- [ ] Refactor `/api/authentic-tariffs/calculate` to use PostgreSQL
+- [ ] Refactor `/api/regulatory-engine/details` to use PostgreSQL
+
+### P2 (Medium)
+- [ ] Integrate Sankey Diagram (PR pending)
+- [ ] Full API v2 migration
+
+### P3 (Low)
+- [ ] Add RASD (Sahrawi Arab Democratic Republic) as 55th country
+- [ ] Audit economic indicators
+
+### P4 (Enhancement)
+- [ ] Enhanced country profile pages
+- [ ] Mobile API optimization
+
+## API Endpoints
+- `GET /api/health` - Health check
+- `POST /api/authentic-tariffs/calculate` - Tariff calculation
+- `GET /api/authentic-tariffs/country/{iso3}/sub-positions/{hs6}` - Sub-positions
+- `GET /api/commodities/search` - Text search (PostgreSQL)
+- `GET /api/statistics` - Dashboard statistics
+- `GET /api/currencies` - African currencies (NEW)
+- `GET /api/exchange-rates` - Exchange rates (NEW)
+- `GET /api/banking` - Banking information (NEW)
+
+## Credentials
+- **PostgreSQL**: set `POSTGRES_URL` in `.env` (see `.env.example`)
+- **Redis**: set `REDIS_URL` in `.env` (see `.env.example`)
+
+## Tech Stack Versions
+- Python 3.11+
+- React 18
+- FastAPI 0.100+
+- PostgreSQL 15
+- Redis 7

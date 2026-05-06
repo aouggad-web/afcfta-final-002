@@ -4,10 +4,8 @@ Dynamically loads data from the tariff engine and provides high-performance sear
 """
 
 import os
-import json
 import pandas as pd
 import re
-from pathlib import Path
 from typing import List, Dict, Any, Optional
 from difflib import SequenceMatcher
 
@@ -20,90 +18,26 @@ class TariffSearchEngine:
     def load_data(self):
         """
         Loads all normalized tariff CSV files into a central searchable DataFrame.
-        Falls back to /app/backend/data/hs6_database.json + per-country tariffs
-        when the normalized CSV directory is missing/empty.
         """
         all_data = []
-        if os.path.exists(self.data_dir):
-            for file in os.listdir(self.data_dir):
-                if file.endswith(".csv"):
-                    try:
-                        temp_df = pd.read_csv(os.path.join(self.data_dir, file))
-                        all_data.append(temp_df)
-                    except Exception as e:
-                        print(f"Error loading {file}: {e}")
-
-        if all_data:
-            self.df = pd.concat(all_data, ignore_index=True)
-            self.df["description"] = self.df["description"].fillna("").astype(str)
-            print(f"TariffSearchEngine: Loaded {len(self.df)} tariff positions from CSVs.")
+        if not os.path.exists(self.data_dir):
+            # Fallback to a sample if directory is empty (initial setup)
+            self.df = pd.DataFrame(columns=["hs_code", "description", "duty_rate_pct", "country", "bloc"])
             return
 
-        # Fallback: load from JSON sources shipped with the backend.
-        rows = self._load_from_backend_json()
-        if rows:
-            self.df = pd.DataFrame(rows)
-            self.df["description"] = self.df["description"].fillna("").astype(str)
-            print(f"TariffSearchEngine: Loaded {len(self.df)} HS6 entries from backend JSON fallback.")
-        else:
-            self.df = pd.DataFrame(columns=["hs_code", "description", "duty_rate_pct", "country", "bloc"])
-            print("TariffSearchEngine: No data loaded.")
-
-    def _load_from_backend_json(self) -> List[Dict[str, Any]]:
-        """Build a search index from /app/backend/data/hs6_database.json
-        and per-country *_tariffs.json files (FR descriptions preferred).
-        """
-        backend_data_dir = Path(__file__).resolve().parent.parent / "data"
-        rows: List[Dict[str, Any]] = []
-
-        # 1) Generic HS6 database (no country, no duty rate)
-        hs6_db_path = backend_data_dir / "hs6_database.json"
-        if hs6_db_path.exists():
-            try:
-                with open(hs6_db_path, "r", encoding="utf-8") as fh:
-                    hs6_db = json.load(fh)
-                for code, entry in hs6_db.items():
-                    desc = entry.get("description_fr") or entry.get("description_en") or ""
-                    rows.append({
-                        "hs_code": str(code),
-                        "description": desc,
-                        "duty_rate_pct": None,
-                        "country": "",
-                        "bloc": "",
-                    })
-            except Exception as e:
-                print(f"TariffSearchEngine: failed loading hs6_database.json: {e}")
-
-        # 2) Per-country tariff files (used when query targets a specific country)
-        tariffs_dirs = [backend_data_dir / "tariffs", backend_data_dir / "crawled", backend_data_dir]
-        seen = set()
-        for td in tariffs_dirs:
-            if not td.exists():
-                continue
-            for fp in td.glob("*_tariffs.json"):
-                key = fp.name
-                if key in seen:
-                    continue
-                seen.add(key)
-                country = fp.stem.replace("_tariffs", "").upper()
+        for file in os.listdir(self.data_dir):
+            if file.endswith(".csv"):
                 try:
-                    with open(fp, "r", encoding="utf-8") as fh:
-                        data = json.load(fh)
-                    for line in data.get("tariff_lines", []) or []:
-                        hs6 = str(line.get("hs6") or line.get("hs_code") or "")
-                        if not hs6:
-                            continue
-                        desc = line.get("description_fr") or line.get("description_en") or line.get("description") or ""
-                        rows.append({
-                            "hs_code": hs6,
-                            "description": desc,
-                            "duty_rate_pct": line.get("dd_rate"),
-                            "country": country,
-                            "bloc": "",
-                        })
+                    temp_df = pd.read_csv(os.path.join(self.data_dir, file))
+                    all_data.append(temp_df)
                 except Exception as e:
-                    print(f"TariffSearchEngine: failed loading {fp}: {e}")
-        return rows
+                    print(f"Error loading {file}: {e}")
+        
+        if all_data:
+            self.df = pd.concat(all_data, ignore_index=True)
+            # Ensure descriptions are strings for searching
+            self.df["description"] = self.df["description"].fillna("").astype(str)
+            print(f"TariffSearchEngine: Loaded {len(self.df)} tariff positions.")
 
     def search(self, query: str, country: Optional[str] = None, limit: int = 20) -> List[Dict[str, Any]]:
         """
@@ -151,11 +85,7 @@ class TariffSearchEngine:
 
         # Deduplicate and sort by score
         results = results.sort_values(by="score", ascending=False).drop_duplicates(subset=["hs_code", "country"])
-
-        # Replace NaN/inf with None so the result is JSON-serialisable.
-        import numpy as _np
-        results = results.replace({_np.nan: None, _np.inf: None, -_np.inf: None})
-
+        
         return results.head(limit).to_dict(orient="records")
 
 # Singleton for backend use

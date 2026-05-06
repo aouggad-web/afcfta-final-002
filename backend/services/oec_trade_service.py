@@ -239,20 +239,7 @@ class OECTradeService:
         country_info = AFRICAN_COUNTRIES_OEC.get(country_iso3.upper())
         if not country_info:
             return {"error": f"Country {country_iso3} not found", "data": []}
-
-        # Hard guard: countries flagged with `has_trade_data: False` (e.g. ESH/RASD)
-        # have no oec_id and would otherwise leak unfiltered global data.
-        if country_info.get("has_trade_data") is False or not country_info.get("oec_id"):
-            return {
-                "country": country_info,
-                "trade_flow": "exports",
-                "no_data": True,
-                "reason": country_info.get("note", "No trade data available for this territory"),
-                "total_value": 0,
-                "total_quantity": 0,
-                "data": [],
-            }
-
+        
         # 1. D'abord, récupérer le TOTAL GLOBAL des exportations (sans drilldown par produit)
         total_params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
@@ -306,19 +293,7 @@ class OECTradeService:
         country_info = AFRICAN_COUNTRIES_OEC.get(country_iso3.upper())
         if not country_info:
             return {"error": f"Country {country_iso3} not found", "data": []}
-
-        # Hard guard for territories with no oec_id (e.g. ESH/RASD)
-        if country_info.get("has_trade_data") is False or not country_info.get("oec_id"):
-            return {
-                "country": country_info,
-                "trade_flow": "imports",
-                "no_data": True,
-                "reason": country_info.get("note", "No trade data available for this territory"),
-                "total_value": 0,
-                "total_quantity": 0,
-                "data": [],
-            }
-
+        
         # 1. D'abord, récupérer le TOTAL GLOBAL des importations (sans drilldown par produit)
         total_params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
@@ -465,23 +440,6 @@ class OECTradeService:
             return {"error": f"Exporter country {exporter_iso3} not found", "data": []}
         if not importer_info:
             return {"error": f"Importer country {importer_iso3} not found", "data": []}
-
-        # Hard guard: bilateral trade requires both sides to have trade data.
-        # If either side is a territory without oec_id (e.g. ESH/RASD), return clean
-        # no_data response instead of leaking unfiltered global aggregates.
-        if (exporter_info.get("has_trade_data") is False or not exporter_info.get("oec_id")
-                or importer_info.get("has_trade_data") is False or not importer_info.get("oec_id")):
-            missing = (exporter_info if (exporter_info.get("has_trade_data") is False
-                                         or not exporter_info.get("oec_id")) else importer_info)
-            return {
-                "exporter": exporter_info,
-                "importer": importer_info,
-                "no_data": True,
-                "reason": missing.get("note", "No bilateral trade data available — territory excluded by OEC."),
-                "total_value": 0,
-                "total_quantity": 0,
-                "data": [],
-            }
         
         # Récupérer TOUS les produits (500) pour avoir une vue complète
         # incluant les produits énergétiques qui peuvent être loin dans la liste
