@@ -284,19 +284,61 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     other_taxes_pct = line.get('other_taxes_rate', 0)
     zlecaf_rate_pct = line.get('zlecaf_rate', 0) or 0
 
-    # NPF (normal) calculation
-    dd_amount = round(cif_value * dd_rate_pct / 100, 2)
-    vat_base_npf = cif_value + dd_amount
-    vat_amount_npf = round(vat_base_npf * vat_rate_pct / 100, 2)
-    other_taxes_amount_npf = round(cif_value * other_taxes_pct / 100, 2)
-    total_npf = round(cif_value + dd_amount + vat_amount_npf + other_taxes_amount_npf, 2)
+    # Extract DAPS and other individual taxes from taxes_detail dict
+    taxes_detail = line.get('taxes_detail', {})
+    if not isinstance(taxes_detail, dict):
+        taxes_detail = {}
+    daps_rate_pct = 0.0
+    prct_rate_pct = 0.0
+    tcs_rate_pct = 0.0
+    individual_taxes = []
+    for tax_code, tax_info in taxes_detail.items():
+        if not isinstance(tax_info, dict):
+            continue
+        rate = float(tax_info.get('rate', 0) or 0)
+        if rate == 0:
+            continue
+        label = tax_info.get('label', tax_info.get('name', tax_code))
+        individual_taxes.append({'code': tax_code, 'label': label, 'rate_pct': rate})
+        if tax_code == 'DAPS':
+            daps_rate_pct = rate
+        elif tax_code == 'PRCT':
+            prct_rate_pct = rate
+        elif tax_code == 'TCS':
+            tcs_rate_pct = rate
 
-    # ZLECAf calculation (DD reduced / exempted)
+    # If PRCT/TCS are in taxes_detail but not in other_taxes_rate, add them
+    if prct_rate_pct > 0 and other_taxes_pct == 0:
+        other_taxes_pct = prct_rate_pct
+    if tcs_rate_pct > 0:
+        other_taxes_pct = max(other_taxes_pct, tcs_rate_pct)
+
+    # If other_taxes_rate is set but PRCT not in taxes_detail, add it as PRCT
+    if other_taxes_pct > 0 and prct_rate_pct == 0:
+        prct_rate_pct = other_taxes_pct
+        if not any(t['code'] == 'PRCT' for t in individual_taxes):
+            individual_taxes.insert(-1 if individual_taxes else 0, {
+                'code': 'PRCT',
+                'label': 'Prélèvement à la Compensation du Transport',
+                'rate_pct': other_taxes_pct
+            })
+
+    # NPF (normal) calculation — Algerian order: CIF → DAPS → DD → PRCT/TCS → VAT
+    # DAPS base = CIF value
+    daps_amount = round(cif_value * daps_rate_pct / 100, 2)
+    dd_amount = round(cif_value * dd_rate_pct / 100, 2)
+    other_taxes_amount_npf = round(cif_value * other_taxes_pct / 100, 2)
+    # VAT base = CIF + DAPS + DD
+    vat_base_npf = cif_value + daps_amount + dd_amount
+    vat_amount_npf = round(vat_base_npf * vat_rate_pct / 100, 2)
+    total_npf = round(cif_value + daps_amount + dd_amount + other_taxes_amount_npf + vat_amount_npf, 2)
+
+    # ZLECAf calculation (DD=0, DAPS still applies as it's a safeguard measure)
     dd_amount_zlecaf = round(cif_value * zlecaf_rate_pct / 100, 2)
-    vat_base_zlecaf = cif_value + dd_amount_zlecaf
-    vat_amount_zlecaf = round(vat_base_zlecaf * vat_rate_pct / 100, 2)
     other_taxes_amount_zlecaf = round(cif_value * other_taxes_pct / 100, 2)
-    total_zlecaf = round(cif_value + dd_amount_zlecaf + vat_amount_zlecaf + other_taxes_amount_zlecaf, 2)
+    vat_base_zlecaf = cif_value + daps_amount + dd_amount_zlecaf
+    vat_amount_zlecaf = round(vat_base_zlecaf * vat_rate_pct / 100, 2)
+    total_zlecaf = round(cif_value + daps_amount + dd_amount_zlecaf + other_taxes_amount_zlecaf + vat_amount_zlecaf, 2)
 
     savings_amount = round(total_npf - total_zlecaf, 2)
     savings_pct = round(savings_amount / total_npf * 100, 2) if total_npf > 0 else 0
@@ -305,6 +347,8 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
 
     desc_key = 'description_fr' if language == 'fr' else 'description_en'
     description = line.get(desc_key, line.get('description_fr', ''))
+
+    total_rate_pct = daps_rate_pct + dd_rate_pct + other_taxes_pct + vat_rate_pct
 
     return {
         'hs_code': hs_code_clean,
@@ -316,29 +360,35 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         'cif_value': cif_value,
         'generated_at': country_data.get('generated_at', '') if country_data else '',
         'rates': {
+            'daps_rate_pct': daps_rate_pct,
             'dd_rate_pct': dd_rate_pct,
             'zlecaf_rate_pct': zlecaf_rate_pct,
             'vat_rate_pct': vat_rate_pct,
             'other_taxes_pct': other_taxes_pct,
-            'total_rate_pct': dd_rate_pct + vat_rate_pct + other_taxes_pct,
+            'prct_rate_pct': prct_rate_pct,
+            'tcs_rate_pct': tcs_rate_pct,
+            'total_rate_pct': total_rate_pct,
         },
         'npf_calculation': {
+            'daps': {'base': cif_value, 'rate_pct': daps_rate_pct, 'amount': daps_amount},
             'dd': {'base': cif_value, 'rate_pct': dd_rate_pct, 'amount': dd_amount},
-            'vat': {'base': vat_base_npf, 'rate_pct': vat_rate_pct, 'amount': vat_amount_npf},
             'other_taxes': {'base': cif_value, 'rate_pct': other_taxes_pct, 'amount': other_taxes_amount_npf},
+            'vat': {'base': vat_base_npf, 'rate_pct': vat_rate_pct, 'amount': vat_amount_npf},
             'total_to_pay': total_npf,
         },
         'zlecaf_calculation': {
+            'daps': {'base': cif_value, 'rate_pct': daps_rate_pct, 'amount': daps_amount},
             'dd': {'base': cif_value, 'rate_pct': zlecaf_rate_pct, 'amount': dd_amount_zlecaf},
-            'vat': {'base': vat_base_zlecaf, 'rate_pct': vat_rate_pct, 'amount': vat_amount_zlecaf},
             'other_taxes': {'base': cif_value, 'rate_pct': other_taxes_pct, 'amount': other_taxes_amount_zlecaf},
+            'vat': {'base': vat_base_zlecaf, 'rate_pct': vat_rate_pct, 'amount': vat_amount_zlecaf},
             'total_to_pay': total_zlecaf,
         },
         'savings': {
             'amount': savings_amount,
             'percentage': savings_pct,
         },
-        'taxes_detail': line.get('taxes_detail', []),
+        'taxes_detail': taxes_detail,
+        'individual_taxes': individual_taxes,
         'fiscal_advantages': line.get('fiscal_advantages', []),
         'administrative_formalities': line.get('administrative_formalities', []),
         'has_sub_positions': len(all_sub_positions) > 0,
