@@ -70,6 +70,25 @@ def _count_sub_positions(lines: List[Dict], data_format: str) -> int:
     return total
 
 
+def _is_flat_sub_positions_format(data: Dict, lines: List[Dict]) -> bool:
+    """
+    Return True when the file uses the DZA-style flat sub-positions layout:
+    a top-level "sub_positions" list whose records are individual 10-digit
+    leaf entries identified by an "hs_code" string field.
+
+    This format predates enhanced_v2 and has no "data_format" key.
+    """
+    return (
+        data.get("data_format", "old") == "old"
+        and "sub_positions" in data
+        and "tariff_lines" not in data
+        and "positions" not in data
+        and bool(lines)
+        and isinstance(lines[0], dict)
+        and isinstance(lines[0].get("hs_code"), str)
+    )
+
+
 def _build_country_entry(cc: str, data: Dict) -> Dict[str, Any]:
     """Build a standardised inventory entry for one country."""
     data_format = data.get("data_format", "old")
@@ -77,24 +96,16 @@ def _build_country_entry(cc: str, data: Dict) -> Dict[str, Any]:
     summary = data.get("summary", {})
 
     # Detect DZA-style files: no data_format key, top-level "sub_positions" list whose
-    # records are flat 10-digit leaf entries (each carrying an "hs_code" field).
+    # records are flat 10-digit leaf entries (each carrying an "hs_code" string field).
     # These are not old-format positions nor enhanced_v2 tariff_lines — they ARE the
     # sub-positions themselves.  Re-interpret them as enhanced_v2 so the inventory
     # correctly counts tariff_lines (unique hs6) and sub_positions (all records).
-    if (
-        data_format == "old"
-        and "sub_positions" in data
-        and "tariff_lines" not in data
-        and "positions" not in data
-        and lines
-        and isinstance(lines[0], dict)
-        and "hs_code" in lines[0]
-    ):
+    if _is_flat_sub_positions_format(data, lines):
         data_format = "enhanced_v2"
         hs6_set = {
             sp["hs_code"][:6]
             for sp in lines
-            if sp.get("hs_code") and len(sp["hs_code"]) >= 6
+            if isinstance(sp.get("hs_code"), str) and len(sp["hs_code"]) >= 6
         }
         total_lines = len(hs6_set)
         sub_total = len(lines)
