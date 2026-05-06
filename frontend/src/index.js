@@ -3,6 +3,14 @@ import ReactDOM from "react-dom/client";
 import axios from "axios";
 import "./index.css";
 import App from "./App";
+import AdminProjectsPage from "./components/admin/AdminProjectsPage";
+
+// Light/dark theme bootstrap (also applied in App for non-admin routes)
+const _persistedTheme = localStorage.getItem('zlecaf_theme') || 'dark';
+if (_persistedTheme === 'light') {
+  document.documentElement.classList.add('theme-light');
+  document.body.classList.add('theme-light');
+}
 import 'leaflet/dist/leaflet.css';
 
 // Import i18n configuration
@@ -16,35 +24,11 @@ import './styles/design-system.css';
 
 // --- Inject X-API-Key on every backend request ----------------------------
 const API_KEY = process.env.REACT_APP_API_KEY || '';
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 if (API_KEY) {
-  // axios default header
+  // axios default header (does NOT touch fetch — components that need the key
+  // on raw fetch() must pass it explicitly via headers).
   axios.defaults.headers.common['X-API-Key'] = API_KEY;
-
-  // monkey-patch fetch() so calls hitting the backend also include the key
-  const _origFetch = window.fetch.bind(window);
-  window.fetch = (input, init = {}) => {
-    try {
-      const url =
-        typeof input === 'string'
-          ? input
-          : input && input.url
-          ? input.url
-          : '';
-      const isBackend =
-        url.startsWith('/api') ||
-        (BACKEND_URL && url.startsWith(BACKEND_URL));
-      if (isBackend) {
-        const headers = new Headers(init.headers || {});
-        if (!headers.has('X-API-Key')) headers.set('X-API-Key', API_KEY);
-        init = { ...init, headers };
-      }
-    } catch (_) {
-      /* noop */
-    }
-    return _origFetch(input, init);
-  };
 }
 // --------------------------------------------------------------------------
 
@@ -101,8 +85,9 @@ if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const isAdminProjectsRoute = window.location.pathname.startsWith('/admin/projects');
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  isAdminProjectsRoute
+    ? <AdminProjectsPage />
+    : <React.StrictMode><App /></React.StrictMode>
 );

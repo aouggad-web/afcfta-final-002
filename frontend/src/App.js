@@ -5,6 +5,7 @@ import { toast } from './hooks/use-toast';
 import { Toaster } from './components/ui/toaster';
 
 import './styles/theme.css';
+import './styles/theme-light.css';
 
 import AfcftaTopbar from './components/AfcftaTopbar';
 import KpiRow from './components/KpiRow';
@@ -61,6 +62,21 @@ function App() {
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
   const [backendOnline, setBackendOnline] = useState(null);
+
+  // ── Theme management (dark / light) ──
+  const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'light') {
+      root.classList.add('theme-light');
+      document.body.classList.add('theme-light');
+    } else {
+      root.classList.remove('theme-light');
+      document.body.classList.remove('theme-light');
+    }
+    localStorage.setItem('zlecaf_theme', theme);
+  }, [theme]);
+  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   const t = texts[language] || texts.fr;
 
@@ -327,6 +343,8 @@ function App() {
           active={getTopbarActiveTab()}
           onTabChange={handleTabChange}
           language={language}
+          theme={theme}
+          onThemeToggle={toggleTheme}
         />
 
       {/* Main content area */}

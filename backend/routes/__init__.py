@@ -291,6 +291,13 @@ except ImportError:
     exchange_rates_router = None
     EXCHANGE_RATES_AVAILABLE = False
 
+try:
+    from .admin_projects import router as admin_projects_router
+    ADMIN_PROJECTS_AVAILABLE = True
+except ImportError:
+    admin_projects_router = None
+    ADMIN_PROJECTS_AVAILABLE = False
+
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -379,3 +386,6 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(currencies_router, tags=["Currencies"], dependencies=_auth)
     if EXCHANGE_RATES_AVAILABLE:
         api_router.include_router(exchange_rates_router, tags=["Exchange Rates"], dependencies=_auth)
+    # Admin endpoints — uses its own require_admin dependency at route level
+    if ADMIN_PROJECTS_AVAILABLE:
+        api_router.include_router(admin_projects_router, tags=["Admin - Structuring Projects"])

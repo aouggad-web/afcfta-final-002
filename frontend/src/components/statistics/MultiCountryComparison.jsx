@@ -88,7 +88,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       gai: "GAI",
       population: "Population",
       indicator: "Indicateur",
-      source: "Sources: IMF WEO 2024, World Bank, UNDP, OEC"
+      source: "Sources: IMF WEO 2024, World Bank, UNDP, OEC",
+      sourceEconomic: "Source : Banque Mondiale (WB Open Data) + FMI WEO 2024",
+      sourceTrade: "Source : OEC — Observatoire de la Complexité Économique (atlas.cid.harvard.edu)",
+      sourceDevelopment: "Source : PNUD (HDI 2024) + Mo Ibrahim Foundation (GAI 2024)"
     },
     en: {
       title: "Multi-Country Comparison",
@@ -115,7 +118,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       gai: "GAI",
       population: "Population",
       indicator: "Indicator",
-      source: "Sources: IMF WEO 2024, World Bank, UNDP, OEC"
+      source: "Sources: IMF WEO 2024, World Bank, UNDP, OEC",
+      sourceEconomic: "Source: World Bank (WB Open Data) + IMF WEO 2024",
+      sourceTrade: "Source: OEC — Observatory of Economic Complexity (atlas.cid.harvard.edu)",
+      sourceDevelopment: "Source: UNDP (HDI 2024) + Mo Ibrahim Foundation (GAI 2024)"
     }
   };
 
@@ -558,6 +564,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </tbody>
               </table>
             </div>
+            <div style={{ padding: '8px 16px 12px' }}>
+              <p className="stats-source-note" style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(142,155,174,0.7)' }} data-testid="economic-source">
+                {txt.sourceEconomic}
+              </p>
+            </div>
           </div>
 
           {/* Trade Bar Chart */}
@@ -649,6 +660,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </tbody>
               </table>
             </div>
+            <div style={{ padding: '8px 16px 12px' }}>
+              <p className="stats-source-note" style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(142,155,174,0.7)' }} data-testid="trade-source">
+                {txt.sourceTrade}
+              </p>
+            </div>
           </div>
 
           {/* Development Indices */}
@@ -704,6 +720,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div style={{ padding: '8px 16px 12px' }}>
+              <p className="stats-source-note" style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(142,155,174,0.7)' }} data-testid="development-source">
+                {txt.sourceDevelopment}
+              </p>
             </div>
           </div>
 

@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
@@ -46,33 +45,60 @@ export default function AdminProjectsPage() {
   const [editingIdx, setEditingIdx] = useState(null); // null = none, -1 = new, otherwise index
   const [form, setForm] = useState({ ...EMPTY_PROJECT });
 
-  const adminAxios = useMemo(() => axios.create({
-    baseURL: API,
-    headers: adminKey ? { 'X-API-Key': adminKey } : {},
-  }), [adminKey]);
+  // Mount/unmount logger removed (was for debugging)
 
-  // Verify key on load / change
+  const adminFetch = async (path, opts = {}) => {
+    const r = await fetch(`${API}${path}`, {
+      ...opts,
+      headers: {
+        ...(opts.body ? { 'Content-Type': 'application/json' } : {}),
+        ...(opts.headers || {}),
+        'X-API-Key': adminKey,
+      },
+    });
+    if (!r.ok) {
+      let detail = `HTTP ${r.status}`;
+      try { const j = await r.json(); detail = j?.detail || detail; } catch (_) { /* ignore */ }
+      const err = new Error(detail);
+      err.status = r.status;
+      throw err;
+    }
+    return r.json();
+  };
+
+  // Trust the entered key — if invalid, individual admin requests will toast a 403/401.
   useEffect(() => {
-    if (!adminKey) { setAuthed(false); return; }
-    setLoading(true);
-    adminAxios.get('/admin/projects/countries')
-      .then((r) => { setCountries(r.data || []); setAuthed(true); })
-      .catch(() => { setAuthed(false); toast({ title: 'Clé admin invalide', variant: 'destructive' }); })
-      .finally(() => setLoading(false));
-  }, [adminKey, adminAxios]);
+    if (!adminKey) {
+      setAuthed(false);
+      setCountries([]);
+      return;
+    }
+    setAuthed(true);
+    let cancelled = false;
+    const url = `${API}/admin/projects/countries`;
+    fetch(url, { headers: { 'X-API-Key': adminKey } })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => {
+        if (!cancelled) setCountries(Array.isArray(data) ? data : []);
+      })
+      .catch(() => { /* silent */ });
+    return () => { cancelled = true; };
+  }, [adminKey]);
 
   // Load projects when country selected
   useEffect(() => {
     if (!authed || !selected) return;
     setLoading(true);
-    adminAxios.get(`/admin/projects/${selected}`)
-      .then((r) => setProjects(r.data || []))
+    adminFetch(`/admin/projects/${selected}`)
+      .then((data) => setProjects(Array.isArray(data) ? data : []))
       .catch(() => setProjects([]))
       .finally(() => setLoading(false));
-  }, [authed, selected, adminAxios]);
+  }, [authed, selected]);
 
   const refreshCountries = () => {
-    adminAxios.get('/admin/projects/countries').then((r) => setCountries(r.data || []));
+    adminFetch('/admin/projects/countries')
+      .then((data) => setCountries(Array.isArray(data) ? data : []))
+      .catch(() => { /* keep previous */ });
   };
 
   const handleLogin = () => {
@@ -106,19 +132,15 @@ export default function AdminProjectsPage() {
     }
     setLoading(true);
     try {
-      if (editingIdx === -1) {
-        const r = await adminAxios.post(`/admin/projects/${selected}`, form);
-        setProjects(r.data);
-        toast({ title: 'Projet ajouté' });
-      } else {
-        const r = await adminAxios.put(`/admin/projects/${selected}/${editingIdx}`, form);
-        setProjects(r.data);
-        toast({ title: 'Projet mis à jour' });
-      }
+      const data = editingIdx === -1
+        ? await adminFetch(`/admin/projects/${selected}`, { method: 'POST', body: JSON.stringify(form) })
+        : await adminFetch(`/admin/projects/${selected}/${editingIdx}`, { method: 'PUT', body: JSON.stringify(form) });
+      setProjects(Array.isArray(data) ? data : []);
+      toast({ title: editingIdx === -1 ? 'Projet ajouté' : 'Projet mis à jour' });
       cancelEdit();
       refreshCountries();
     } catch (e) {
-      toast({ title: 'Erreur lors de la sauvegarde', description: e?.response?.data?.detail || e.message, variant: 'destructive' });
+      toast({ title: 'Erreur lors de la sauvegarde', description: e.message, variant: 'destructive' });
     } finally { setLoading(false); }
   };
 
@@ -127,12 +149,12 @@ export default function AdminProjectsPage() {
     if (!window.confirm('Supprimer ce projet ?')) return;
     setLoading(true);
     try {
-      const r = await adminAxios.delete(`/admin/projects/${selected}/${idx}`);
-      setProjects(r.data);
+      const data = await adminFetch(`/admin/projects/${selected}/${idx}`, { method: 'DELETE' });
+      setProjects(Array.isArray(data) ? data : []);
       toast({ title: 'Projet supprimé' });
       refreshCountries();
     } catch (e) {
-      toast({ title: 'Erreur', description: e?.response?.data?.detail || e.message, variant: 'destructive' });
+      toast({ title: 'Erreur', description: e.message, variant: 'destructive' });
     } finally { setLoading(false); }
   };
 
