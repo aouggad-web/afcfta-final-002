@@ -187,6 +187,36 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         # Projets structurants
         profile.ongoing_projects = get_country_ongoing_projects(iso3_code)
         profile.infrastructure_ranking = infra_ranking if infra_ranking else {}
+
+        # ── Override GDP/growth fields with latest country_data.py values when available.
+        # The CSV (`ZLECAf_ENRICHI_2024_COMMERCE.csv`) holds rich trade/ratings data but
+        # may carry older FMI WEO snapshots. `country_data.REAL_COUNTRY_DATA` is the
+        # source of truth for headline macroeconomic figures, especially for the Top-10
+        # economies whose values we recently aligned to Banque Mondiale (WDI 2024).
+        if real_data:
+            wb_gdp = real_data.get('gdp_usd_2024')
+            if wb_gdp is not None:
+                profile.gdp_usd = float(wb_gdp) * 1_000_000_000
+            wb_pc = real_data.get('gdp_per_capita_2024')
+            if wb_pc is not None:
+                profile.gdp_per_capita = wb_pc
+            wb_pop = real_data.get('population_2024')
+            if wb_pop is not None:
+                profile.population = int(wb_pop)
+                profile.population_millions = round(float(wb_pop) / 1_000_000, 2)
+            wb_hdi = real_data.get('development_index')
+            if wb_hdi is not None and not profile.hdi:
+                profile.hdi = wb_hdi
+            wb_growth_2024 = real_data.get('growth_forecast_2024')
+            wb_growth_2025 = real_data.get('growth_projection_2025')
+            if wb_growth_2024 or wb_growth_2025:
+                profile.projections = profile.projections or {}
+                if wb_growth_2024:
+                    profile.projections['growth_2024_pct'] = wb_growth_2024
+                if wb_growth_2025:
+                    profile.projections['growth_2025_pct'] = wb_growth_2025
+                if real_data.get('data_source'):
+                    profile.projections['gdp_data_source'] = real_data['data_source']
     else:
         # Fallback to old data
         profile = CountryEconomicProfile(
