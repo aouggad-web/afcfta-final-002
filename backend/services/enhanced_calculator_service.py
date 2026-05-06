@@ -302,12 +302,17 @@ def _compute_regime(
         "ZLECAf": ("Régime ZLECAf (Zone de Libre-Échange)", "AfCFTA Regime (Free Trade Area)"),
     }
 
+    # NOTE: input values are in USD (FOB/freight/insurance), so all computed
+    # tax amounts are in USD too. The local currency code (DZD/MAD/...) is
+    # informational only — kept for reference. The display layer should label
+    # the values as USD.
     currency_map = {
         "DZA": "DZD", "MAR": "MAD", "TUN": "TND", "EGY": "EGP",
         "NGA": "NGN", "GHA": "GHS", "KEN": "KES", "ETH": "ETB",
         "ZAF": "ZAR", "CMR": "XAF", "CIV": "XOF", "SEN": "XOF",
     }
-    currency = currency_map.get(country_iso3, "USD")
+    currency = "USD"
+    local_currency = currency_map.get(country_iso3, "USD")
 
     return CalculationBreakdown(
         regime=regime,
