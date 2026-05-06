@@ -47,12 +47,13 @@ def _hash_key(raw_key: str) -> str:
 async def require_auth(
     x_api_key: Annotated[Optional[str], Header()] = None,
 ) -> dict:
-    """Validate X-API-Key header; return the key document on success."""
+    """Validate X-API-Key header; return the key document on success.
+    
+    When MongoDB is not configured (optional), all requests are allowed through
+    with a public-tier context — tariff data is public information.
+    """
     if _db is None:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Database not available",
-        )
+        return {"tier": "public", "no_db": True}
     if not x_api_key:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
