@@ -56,26 +56,54 @@ def count_authentic_countries():
 
 def count_verified_positions():
     """
-    Count total verified tariff positions across all countries
+    Count total verified national tariff positions across all 54 countries.
+
+    Priority order (the highest reflects what the calculator actually serves):
+      1. Live tariff_data_service stats (HS6 lines + sub-positions)
+      2. Live crawled_data_service stats (authentic positions)
+      3. Disk fallback: engine/output/*_canonical.jsonl line count
+      4. Last-resort estimate from JSON tariff files
     """
+    # 1) Live tariff data service (most comprehensive — combines HS6 + sub-positions)
+    try:
+        from services.tariff_data_service import tariff_service
+        stats = tariff_service.get_stats()
+        total = stats.get("total_positions") or (
+            (stats.get("total_hs6_lines") or 0)
+            + (stats.get("total_sub_positions") or 0)
+        )
+        if total and total > 0:
+            return int(total)
+    except Exception:
+        pass
+
+    # 2) Crawled data service
+    try:
+        from services.crawled_data_service import crawled_service
+        stats = crawled_service.get_stats()
+        total = stats.get("total_positions", 0)
+        if total and total > 0:
+            return int(total)
+    except Exception:
+        pass
+
+    # 3) Disk fallback — engine canonical files
     backend_dir = Path(__file__).parent.parent
     engine_dir = backend_dir.parent / "engine" / "output"
-    
     total_positions = 0
     if engine_dir.exists():
         for canonical_file in engine_dir.glob("*_canonical.jsonl"):
             try:
-                # Count lines in the file (each line is a tariff position)
                 with open(canonical_file, 'r', encoding='utf-8') as f:
                     total_positions += sum(1 for _ in f)
             except Exception:
                 continue
-    
-    # If no canonical files, estimate based on data files
+
+    # 4) Last-resort estimate
     if total_positions == 0:
         data_dir = backend_dir / "data"
-        total_positions = len(list(data_dir.glob("*_tariffs.json"))) * 4200  # Rough estimate
-    
+        total_positions = len(list(data_dir.glob("*_tariffs.json"))) * 4200
+
     return total_positions
 
 def translate_products_list(products: list, language: str = 'fr') -> list:
