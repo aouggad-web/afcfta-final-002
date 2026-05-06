@@ -44,8 +44,8 @@ class TestWTOService:
         }
         mock_retry.return_value = mock_response
         
-        # Call service
-        result = self.service.get_tariff_data("KEN", "wld")
+        # Call service (sync version — async get_tariff_data uses httpx, not make_wto_request_with_retry)
+        result = self.service.get_tariff_data_sync("KEN", "wld")
         
         # Assertions
         assert result is not None
@@ -68,7 +68,7 @@ class TestWTOService:
         }
         mock_retry.return_value = mock_response
         
-        result = self.service.get_tariff_data("KEN", "wld", product_code="080300")
+        result = self.service.get_tariff_data_sync("KEN", "wld", product_code="080300")
         
         assert result is not None
         
@@ -81,7 +81,7 @@ class TestWTOService:
         """Test handling of API errors"""
         mock_retry.side_effect = Exception("API connection failed")
         
-        result = self.service.get_tariff_data("KEN", "wld")
+        result = self.service.get_tariff_data_sync("KEN", "wld")
         
         assert result is None
     
@@ -96,7 +96,7 @@ class TestWTOService:
         }
         mock_retry.return_value = mock_response
         
-        result = self.service.get_tariff_data("KEN", "wld")
+        result = self.service.get_tariff_data_sync("KEN", "wld")
         
         assert result is not None
         assert result["latest_period"] is None
@@ -148,7 +148,7 @@ class TestWTOService:
         }
         mock_retry.return_value = mock_response
         
-        latest_year = self.service.get_latest_available_year("KEN")
+        latest_year = self.service.get_latest_available_year_sync("KEN")
         
         assert latest_year == "2023"
     
@@ -157,7 +157,7 @@ class TestWTOService:
         """Test handling when retry function returns None"""
         mock_retry.return_value = None
         
-        result = self.service.get_tariff_data("KEN", "wld")
+        result = self.service.get_tariff_data_sync("KEN", "wld")
         
         assert result is None
 

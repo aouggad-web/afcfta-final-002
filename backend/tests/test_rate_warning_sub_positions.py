@@ -15,6 +15,12 @@ import os
 
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 
+if not BASE_URL:
+    pytest.skip(
+        "REACT_APP_BACKEND_URL is not set — skipping integration tests that require a live server",
+        allow_module_level=True,
+    )
+
 class TestRateWarningFeature:
     """Tests for rate_warning when sub-positions have varying rates"""
     

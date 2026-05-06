@@ -7,7 +7,13 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://got-it.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
+
+if not BASE_URL:
+    pytest.skip(
+        "REACT_APP_BACKEND_URL is not set — skipping integration tests that require a live server",
+        allow_module_level=True,
+    )
 
 
 class TestRegulatoryEngineCountries:

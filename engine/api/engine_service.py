@@ -25,13 +25,16 @@ from schemas.canonical_model import (
 )
 
 
+_ENGINE_OUTPUT_DEFAULT = str(Path(__file__).parent.parent / "output")
+
+
 class RegulatoryEngineService:
     """
     Service pour interroger les données canoniques du Moteur Réglementaire.
     Utilise les index pré-construits pour des recherches O(1).
     """
     
-    def __init__(self, data_dir: str = "/app/engine/output"):
+    def __init__(self, data_dir: str = _ENGINE_OUTPUT_DEFAULT):
         self.data_dir = Path(data_dir)
         self._indexes = {}
         self._country_files = {}

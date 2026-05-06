@@ -1045,7 +1045,12 @@ class TestAdministrativeFormalities:
         )
         with open(path, encoding="utf-8") as f:
             d = json.load(f)
-        return d["tariff_lines"]
+        return (
+            d.get("tariff_lines")
+            or d.get("positions")
+            or d.get("sub_positions")
+            or []
+        )
 
     def test_mar_data_has_multiple_document_types(self):
         """MAR crawled data must use more than just code 910."""
@@ -1132,7 +1137,11 @@ class TestAdministrativeFormalities:
         """No tariff line should have an empty formalities list."""
         for cc in ("MAR", "TUN", "DZA"):
             lines = self._load(cc)
-            empty = [l["hs6"] for l in lines if not l.get("administrative_formalities")]
+            empty = [
+                l.get("hs6") or l.get("hs_code") or "unknown"
+                for l in lines
+                if not l.get("administrative_formalities")
+            ]
             assert not empty, f"{cc}: {len(empty)} tariff lines have empty formalities: {empty[:5]}"
 
     def test_authentic_tariff_service_returns_formalities_for_mar(self):
@@ -1347,7 +1356,13 @@ class TestAllAfricaFormalities:
             os.path.dirname(__file__), "..", "data", "crawled", f"{cc}_tariffs.json"
         )
         with open(path, encoding="utf-8") as f:
-            return json.load(f)["tariff_lines"]
+            d = json.load(f)
+        return (
+            d.get("tariff_lines")
+            or d.get("positions")
+            or d.get("sub_positions")
+            or []
+        )
 
     def test_every_country_has_multi_doc_formalities(self):
         """Every country must have at least some lines with >1 document (not all single-doc)."""
@@ -1434,8 +1449,11 @@ class TestAllAfricaFormalities:
         ]
         for cc in all_countries:
             lines = self._load(cc)
-            empty = [l["hs6"] for l in lines
-                     if not l.get("administrative_formalities")]
+            empty = [
+                l.get("hs6") or l.get("hs_code") or "unknown"
+                for l in lines
+                if not l.get("administrative_formalities")
+            ]
             assert not empty, \
                 f"{cc}: {len(empty)} tariff lines have empty formalities"
 
@@ -2342,9 +2360,15 @@ class TestNoMockedData:
             pytest.skip(f"{cc}_tariffs.json not found")
         with open(path) as f:
             d = json.load(f)
+        lines = (
+            d.get("tariff_lines")
+            or d.get("positions")
+            or d.get("sub_positions")
+            or []
+        )
         return {
             fm["code"]
-            for line in d.get("tariff_lines", [])
+            for line in lines
             for fm in line.get("administrative_formalities", [])
         }
 

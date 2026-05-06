@@ -76,6 +76,44 @@ def _build_country_entry(cc: str, data: Dict) -> Dict[str, Any]:
     lines = _get_lines(data)
     summary = data.get("summary", {})
 
+    # Detect DZA-style files: no data_format key, top-level "sub_positions" list whose
+    # records are flat 10-digit leaf entries (each carrying an "hs_code" field).
+    # These are not old-format positions nor enhanced_v2 tariff_lines — they ARE the
+    # sub-positions themselves.  Re-interpret them as enhanced_v2 so the inventory
+    # correctly counts tariff_lines (unique hs6) and sub_positions (all records).
+    if (
+        data_format == "old"
+        and "sub_positions" in data
+        and "tariff_lines" not in data
+        and "positions" not in data
+        and lines
+        and isinstance(lines[0], dict)
+        and "hs_code" in lines[0]
+    ):
+        data_format = "enhanced_v2"
+        hs6_set = {
+            sp["hs_code"][:6]
+            for sp in lines
+            if sp.get("hs_code") and len(sp["hs_code"]) >= 6
+        }
+        total_lines = len(hs6_set)
+        sub_total = len(lines)
+        lines_with_sub = total_lines  # every hs6 group has at least one sub-position
+        chapters_set = {hs6[:2] for hs6 in hs6_set if hs6}
+        chapters = len(chapters_set)
+        avg_sub = round(sub_total / total_lines, 2) if total_lines else 0.0
+        return {
+            "iso3": cc,
+            "data_format": data_format,
+            "status": "available" if total_lines > 0 else "empty",
+            "tariff_lines": total_lines,
+            "sub_positions": sub_total,
+            "lines_with_sub_positions": lines_with_sub,
+            "avg_sub_per_line": avg_sub,
+            "chapters_covered": chapters,
+            "generated_at": data.get("generated_at"),
+        }
+
     n_lines = len(lines)
     if n_lines == 0:
         return {

@@ -104,7 +104,7 @@ class DataSourceSelector:
         # Fallback to WTO (mainly for tariff data)
         if self._source_status["WTO"]["available"]:
             try:
-                wto_data = self.wto.get_tariff_data(reporter, partner, hs_code)
+                wto_data = self.wto.get_tariff_data_sync(reporter, partner, hs_code)
 
                 results["sources_checked"].append({
                     "source": "WTO",
@@ -193,7 +193,7 @@ class DataSourceSelector:
         for country in country_codes[:5]:  # Check first 5 to avoid rate limits
             # Check WTO
             try:
-                wto_period = self.wto.get_latest_available_year(country)
+                wto_period = self.wto.get_latest_available_year_sync(country)
                 if "WTO" not in comparison["sources"]:
                     comparison["sources"]["WTO"] = []
                 comparison["sources"]["WTO"].append({

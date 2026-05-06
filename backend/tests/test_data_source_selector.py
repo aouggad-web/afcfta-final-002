@@ -26,7 +26,7 @@ class TestDataSourceSelector:
         """Test selector initializes correctly"""
         assert self.selector.wto is not None
     
-    @patch('services.data_source_selector.wto_service.get_tariff_data')
+    @patch('services.data_source_selector.wto_service.get_tariff_data_sync')
     def test_get_latest_trade_data_wto_success(self, mock_wto):
         """Test that WTO is used when available"""
         mock_wto.return_value = {
@@ -41,7 +41,7 @@ class TestDataSourceSelector:
         assert result["data_period"] == "2023"
         assert len(result["sources_checked"]) >= 1
     
-    @patch('services.data_source_selector.wto_service.get_tariff_data')
+    @patch('services.data_source_selector.wto_service.get_tariff_data_sync')
     def test_get_latest_trade_data_no_sources_available(self, mock_wto):
         """Test when no data sources are available"""
         mock_wto.return_value = None
@@ -51,7 +51,7 @@ class TestDataSourceSelector:
         assert result["source_used"] is None
         assert result["data"] is None
     
-    @patch('services.data_source_selector.wto_service.get_tariff_data')
+    @patch('services.data_source_selector.wto_service.get_tariff_data_sync')
     def test_get_latest_trade_data_with_hs_code(self, mock_wto):
         """Test data retrieval with HS code"""
         mock_wto.return_value = {
@@ -64,7 +64,7 @@ class TestDataSourceSelector:
         
         assert result["hs_code"] == "080300"
     
-    @patch('services.data_source_selector.wto_service.get_tariff_data')
+    @patch('services.data_source_selector.wto_service.get_tariff_data_sync')
     def test_get_latest_trade_data_handles_exceptions(self, mock_wto):
         """Test that exceptions are handled gracefully"""
         mock_wto.side_effect = Exception("Network error")
@@ -75,7 +75,7 @@ class TestDataSourceSelector:
         assert result is not None
         assert result["source_used"] is None
     
-    @patch('services.data_source_selector.wto_service.get_latest_available_year')
+    @patch('services.data_source_selector.wto_service.get_latest_available_year_sync')
     def test_compare_data_sources(self, mock_wto_year):
         """Test data source comparison"""
         mock_wto_year.return_value = "2023"
@@ -92,7 +92,7 @@ class TestDataSourceSelector:
         """Test that comparison limits the number of countries checked"""
         countries = ["KEN", "GHA", "TZA", "NGA", "EGY", "ZAF", "MAR"]
         
-        with patch.object(self.selector.wto, 'get_latest_available_year') as mock:
+        with patch.object(self.selector.wto, 'get_latest_available_year_sync') as mock:
             mock.return_value = "2023"
             result = self.selector.compare_data_sources(countries)
             
