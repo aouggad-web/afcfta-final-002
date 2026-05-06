@@ -42,7 +42,7 @@ async def get_countries():
         }
     except Exception as e:
         logger.error(f"Error getting countries: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/country/{iso3}")
@@ -65,14 +65,14 @@ async def get_country_info(iso3: str):
         raise
     except Exception as e:
         logger.error(f"Error getting country {iso3}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/country/{iso3}/sub-positions/{hs6}")
 async def get_sub_positions(
     iso3: str, 
     hs6: str, 
-    language: str = Query("fr", regex="^(fr|en)$")
+    language: str = Query("fr", pattern="^(fr|en)$")
 ):
     """Sous-positions nationales pour un code HS6"""
     service = get_service()
@@ -91,7 +91,7 @@ async def get_sub_positions(
         }
     except Exception as e:
         logger.error(f"Error getting sub-positions for {iso3}/{hs6}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/country/{iso3}/commodity/{code}")
@@ -114,7 +114,7 @@ async def get_commodity_details(iso3: str, code: str):
         raise
     except Exception as e:
         logger.error(f"Error getting commodity {iso3}/{code}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/country/{iso3}/search")
@@ -122,7 +122,7 @@ async def search_commodities(
     iso3: str,
     q: str = Query(..., min_length=2, description="Search query"),
     limit: int = Query(50, ge=1, le=200),
-    language: str = Query("fr", regex="^(fr|en)$")
+    language: str = Query("fr", pattern="^(fr|en)$")
 ):
     """Recherche de marchandises par description"""
     service = get_service()
@@ -140,7 +140,7 @@ async def search_commodities(
         }
     except Exception as e:
         logger.error(f"Error searching {iso3} for '{q}': {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.post("/calculate")
@@ -159,7 +159,7 @@ async def calculate_tariffs(
         return result
     except Exception as e:
         logger.error(f"Error calculating tariffs: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/regulatory/{iso3}/{hs6}")
@@ -174,7 +174,7 @@ async def get_regulatory_details(iso3: str, hs6: str):
         return details
     except Exception as e:
         logger.error(f"Error getting regulatory details: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/health")

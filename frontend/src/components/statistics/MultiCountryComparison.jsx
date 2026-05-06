@@ -49,6 +49,9 @@ const normalizeForRadar = (value, max) => {
   return Math.min(100, (value / max) * 100);
 };
 
+/* High inflation threshold for color-coding (8% as per IMF classification for "high inflation") */
+const HIGH_INFLATION_THRESHOLD = 8;
+
 export default function MultiCountryComparison({ language = 'fr' }) {
   const [availableCountries, setAvailableCountries] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
@@ -348,145 +351,156 @@ export default function MultiCountryComparison({ language = 'fr' }) {
 
   return (
     <div className="space-y-6" data-testid="multi-country-comparison">
-      {/* Header */}
-      <div className="text-center">
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <Scale className="h-8 w-8 text-purple-600" />
-          <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">
-            {txt.title}
-          </h2>
+      {/* ── Header ─────────────────────────────────────────────── */}
+      <div className="stats-hero">
+        <div className="flex items-center gap-3 mb-2">
+          <Scale style={{ width: 26, height: 26, color: '#D4891A', flexShrink: 0 }} />
+          <div>
+            <h2 className="stats-hero-title">{txt.title}</h2>
+            <p className="stats-hero-subtitle">{txt.subtitle}</p>
+          </div>
         </div>
-        <p className="text-slate-500">{txt.subtitle}</p>
+        <div className="stats-kente-bar" style={{ width: 220, marginTop: 10 }} />
       </div>
 
-      {/* Country Selection */}
-      <Card className="shadow-lg">
-        <CardContent className="p-6">
-          <div className="flex flex-wrap items-center gap-4">
-            {/* Selected Countries */}
-            <div className="flex flex-wrap gap-2 flex-1">
-              {selectedCountries.map((iso, idx) => (
-                <Badge 
-                  key={iso} 
-                  className="px-3 py-2 text-sm font-medium"
-                  style={{ backgroundColor: COUNTRY_COLORS[idx], color: 'white' }}
+      {/* ── Country Selection ──────────────────────────────────── */}
+      <div className="stats-chart-card" style={{ padding: '20px 24px' }}>
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Selected country tags */}
+          <div className="flex flex-wrap gap-2 flex-1 min-w-0">
+            {selectedCountries.map((iso, idx) => (
+              <span
+                key={iso}
+                className="stats-country-tag"
+                style={{ background: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 13%, transparent)`, borderColor: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 33%, transparent)`, color: COUNTRY_COLORS[idx] }}
+              >
+                {getCountryName(iso)}
+                <button onClick={() => removeCountry(iso)}>
+                  <X style={{ width: 13, height: 13 }} />
+                </button>
+              </span>
+            ))}
+
+            {selectedCountries.length < MAX_COUNTRIES && (
+              <Select onValueChange={addCountry}>
+                <SelectTrigger
+                  className="w-[180px] h-8 text-sm"
+                  data-testid="add-country-select"
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,137,26,0.25)', color: '#EAE0D0', borderRadius: 8 }}
                 >
-                  {getCountryName(iso)}
-                  <button 
-                    onClick={() => removeCountry(iso)}
-                    className="ml-2 hover:bg-white/20 rounded-full p-0.5"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </Badge>
-              ))}
-              
-              {selectedCountries.length < MAX_COUNTRIES && (
-                <Select onValueChange={addCountry}>
-                  <SelectTrigger className="w-[200px]" data-testid="add-country-select">
-                    <SelectValue placeholder={txt.selectCountry} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableCountries
-                      .filter(c => !selectedCountries.includes(c.iso3 || c.code))
-                      .map((country) => (
-                        <SelectItem 
-                          key={country.iso3 || country.code} 
-                          value={country.iso3 || country.code}
-                        >
-                          {country.name_fr || country.name}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-              )}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-2">
-              <Button
-                onClick={fetchComparisonData}
-                disabled={selectedCountries.length < 2 || loading}
-                className="bg-purple-600 hover:bg-purple-700"
-                data-testid="compare-btn"
-              >
-                {loading ? (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                ) : (
-                  <BarChart3 className="h-4 w-4 mr-2" />
-                )}
-                {txt.compare}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={resetSelection}
-                disabled={selectedCountries.length === 0}
-              >
-                <RefreshCw className="h-4 w-4 mr-2" />
-                {txt.reset}
-              </Button>
-            </div>
+                  <SelectValue placeholder={txt.selectCountry} />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableCountries
+                    .filter(c => !selectedCountries.includes(c.iso3 || c.code))
+                    .map((country) => (
+                      <SelectItem key={country.iso3 || country.code} value={country.iso3 || country.code}>
+                        {country.name_fr || country.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Loading State */}
+          {/* Action buttons */}
+          <div className="flex gap-2 flex-shrink-0">
+            <Button
+              onClick={fetchComparisonData}
+              disabled={selectedCountries.length < 2 || loading}
+              data-testid="compare-btn"
+              style={{
+                background: selectedCountries.length < 2
+                  ? 'rgba(155,110,245,0.2)'
+                  : 'linear-gradient(135deg,#7c3aed,#9B6EF5)',
+                border: '1px solid rgba(155,110,245,0.4)',
+                color: '#EAE0D0', borderRadius: 8,
+                padding: '6px 14px', fontSize: '0.82rem', fontWeight: 700,
+                opacity: selectedCountries.length < 2 ? 0.5 : 1,
+              }}
+            >
+              {loading ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <BarChart3 className="h-4 w-4 mr-2" />
+              )}
+              {txt.compare}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={resetSelection}
+              disabled={selectedCountries.length === 0}
+              style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(234,224,208,0.7)', borderRadius: 8, padding: '6px 12px', fontSize: '0.82rem' }}
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              {txt.reset}
+            </Button>
+          </div>
+        </div>
+
+        {/* Max countries hint */}
+        <p style={{ fontSize: '0.7rem', color: 'rgba(142,155,174,0.5)', marginTop: 10 }}>
+          {language === 'fr'
+            ? `${selectedCountries.length} / ${MAX_COUNTRIES} pays sélectionnés`
+            : `${selectedCountries.length} / ${MAX_COUNTRIES} countries selected`}
+        </p>
+      </div>
+
+      {/* ── Loading ────────────────────────────────────────────── */}
       {loading && (
-        <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
-          <span className="ml-3 text-slate-600">{txt.loading}</span>
+        <div className="stats-loading">
+          <div className="stats-spinner" />
+          <span style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.875rem' }}>{txt.loading}</span>
         </div>
       )}
 
-      {/* Error State */}
+      {/* ── Error ─────────────────────────────────────────────── */}
       {error && (
-        <Card className="bg-red-50 border-red-200">
-          <CardContent className="py-8 text-center">
-            <AlertCircle className="h-8 w-8 text-red-500 mx-auto mb-2" />
-            <p className="text-red-700">{error}</p>
-          </CardContent>
-        </Card>
+        <div className="stats-chart-card" style={{ padding: '32px 24px', textAlign: 'center' }}>
+          <AlertCircle style={{ width: 32, height: 32, color: '#f87171', margin: '0 auto 12px' }} />
+          <p style={{ color: '#f87171', fontWeight: 600 }}>{error}</p>
+        </div>
       )}
 
-      {/* Empty State */}
+      {/* ── Empty State ────────────────────────────────────────── */}
       {!loading && !error && selectedCountries.length < 2 && (
-        <Card className="bg-slate-50 border-slate-200">
-          <CardContent className="py-16 text-center">
-            <Globe className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-500">{txt.noSelection}</p>
-          </CardContent>
-        </Card>
+        <div className="stats-chart-card">
+          <div className="stats-empty-state">
+            <div className="stats-empty-icon">
+              <Globe style={{ width: 28, height: 28, color: '#D4891A' }} />
+            </div>
+            <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.9rem' }}>{txt.noSelection}</p>
+            <p style={{ color: 'rgba(142,155,174,0.4)', fontSize: '0.78rem', marginTop: 6 }}>
+              {language === 'fr'
+                ? 'Ajoutez au moins 2 pays africains pour commencer la comparaison'
+                : 'Add at least 2 African countries to start the comparison'}
+            </p>
+          </div>
+        </div>
       )}
 
-      {/* Results */}
+      {/* ── Results ────────────────────────────────────────────── */}
       {!loading && !error && hasData && (
         <>
           {/* Radar Chart */}
-          <Card className="shadow-xl">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-purple-600" />
+          <div className="stats-chart-card">
+            <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(155,110,245,0.2)' }}>
+              <div className="stats-chart-title violet">
+                <TrendingUp style={{ width: 18, height: 18 }} />
                 {txt.radarComparison}
-              </CardTitle>
-              <CardDescription>
-                {language === 'fr' 
-                  ? 'Comparaison normalisée des indicateurs clés (0-100)' 
+              </div>
+              <div className="stats-chart-subtitle">
+                {language === 'fr'
+                  ? 'Comparaison normalisée des indicateurs clés (0-100)'
                   : 'Normalized comparison of key indicators (0-100)'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </div>
+            </div>
+            <div style={{ padding: '16px 8px' }}>
               <ResponsiveContainer width="100%" height={400}>
                 <RadarChart data={getRadarData()}>
-                  <PolarGrid stroke="#e2e8f0" />
-                  <PolarAngleAxis 
-                    dataKey="indicator" 
-                    tick={{ fill: '#64748b', fontSize: 12 }}
-                  />
-                  <PolarRadiusAxis 
-                    angle={30} 
-                    domain={[0, 100]}
-                    tick={{ fill: '#94a3b8', fontSize: 10 }}
-                  />
+                  <PolarGrid stroke="rgba(255,255,255,0.08)" />
+                  <PolarAngleAxis dataKey="indicator" tick={{ fill: 'rgba(234,224,208,0.75)', fontSize: 12 }} />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: 'rgba(142,155,174,0.5)', fontSize: 10 }} axisLine={false} />
                   {selectedCountries.map((iso, idx) => (
                     <Radar
                       key={iso}
@@ -494,231 +508,208 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                       dataKey={getCountryName(iso)}
                       stroke={COUNTRY_COLORS[idx]}
                       fill={COUNTRY_COLORS[idx]}
-                      fillOpacity={0.2}
+                      fillOpacity={0.15}
                       strokeWidth={2}
                     />
                   ))}
-                  <Legend />
-                  <Tooltip />
+                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
+                  <Tooltip
+                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                  />
                 </RadarChart>
               </ResponsiveContainer>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Economic Indicators Table */}
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <DollarSign className="h-5 w-5 text-emerald-600" />
+          <div className="stats-chart-card">
+            <div className="stats-chart-header">
+              <div className="stats-chart-title" style={{ color: '#34d399' }}>
+                <DollarSign style={{ width: 18, height: 18 }} />
                 {txt.economicIndicators}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{txt.indicator}</TableHead>
+              </div>
+            </div>
+            <div style={{ overflowX: 'auto' }}>
+              <table className="stats-table">
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
                     {selectedCountries.map((iso, idx) => (
-                      <TableHead key={iso} style={{ color: COUNTRY_COLORS[idx] }}>
-                        {getCountryName(iso)}
-                      </TableHead>
+                      <th key={iso} style={{ textAlign: 'right', color: COUNTRY_COLORS[idx] }}>{getCountryName(iso)}</th>
                     ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.gdp} (Mrd $)</TableCell>
-                    {getEconomicData().map((d, idx) => (
-                      <TableCell key={idx} className="font-bold">
-                        {d.gdp ? `$${d.gdp.toFixed(1)}B` : '-'}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.gdpPerCapita}</TableCell>
-                    {getEconomicData().map((d, idx) => (
-                      <TableCell key={idx}>
-                        {d.gdpPerCapita ? formatValue(d.gdpPerCapita) : '-'}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.inflation}</TableCell>
-                    {getEconomicData().map((d, idx) => (
-                      <TableCell key={idx}>
-                        {d.inflation ? formatPercent(d.inflation) : '-'}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.unemployment}</TableCell>
-                    {getEconomicData().map((d, idx) => (
-                      <TableCell key={idx}>
-                        {d.unemployment ? formatPercent(d.unemployment) : '-'}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.population} (M)</TableCell>
-                    {getEconomicData().map((d, idx) => (
-                      <TableCell key={idx}>
-                        {d.population ? `${d.population.toFixed(1)}M` : '-'}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { label: `${txt.gdp} (Mrd $)`, render: (d) => d.gdp ? <strong style={{ color: '#fbbf24' }}>${d.gdp.toFixed(1)}B</strong> : '-' },
+                    { label: txt.gdpPerCapita, render: (d) => d.gdpPerCapita ? formatValue(d.gdpPerCapita) : '-' },
+                    { label: txt.inflation, render: (d) => d.inflation ? <span className={`stats-chip ${d.inflation > HIGH_INFLATION_THRESHOLD ? 'down' : 'up'}`}>{formatPercent(d.inflation)}</span> : '-' },
+                    { label: txt.unemployment, render: (d) => d.unemployment ? formatPercent(d.unemployment) : '-' },
+                    { label: `${txt.population} (M)`, render: (d) => d.population ? `${d.population.toFixed(1)}M` : '-' },
+                  ].map((row, ri) => (
+                    <tr key={ri}>
+                      <td style={{ fontWeight: 600, color: 'rgba(234,224,208,0.8)' }}>{row.label}</td>
+                      {getEconomicData().map((d, idx) => (
+                        <td key={idx} style={{ textAlign: 'right' }}>{row.render(d)}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
           {/* Trade Bar Chart */}
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Globe className="h-5 w-5 text-blue-600" />
-                {txt.barComparison} - {txt.tradeIndicators}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="stats-chart-card">
+            <div className="stats-chart-header blue">
+              <div className="stats-chart-title blue">
+                <Globe style={{ width: 18, height: 18 }} />
+                {txt.barComparison} — {txt.tradeIndicators}
+              </div>
+            </div>
+            <div style={{ padding: '16px 8px' }}>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={getTradeBarData()}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                  <YAxis tickFormatter={(v) => `$${v}M`} />
-                  <Tooltip 
+                  <defs>
+                    <linearGradient id="mcGradExp" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#1A7A4A" /><stop offset="100%" stopColor="#34d399" />
+                    </linearGradient>
+                    <linearGradient id="mcGradImp" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#1A6B8A" /><stop offset="100%" stopColor="#38bdf8" />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.06)" />
+                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'rgba(234,224,208,0.75)' }} axisLine={false} tickLine={false} />
+                  <YAxis tickFormatter={(v) => `$${v}M`} tick={{ fontSize: 10, fill: 'rgba(142,155,174,0.7)' }} axisLine={false} tickLine={false} />
+                  <Tooltip
                     formatter={(value) => [`$${value.toFixed(0)}M`, '']}
-                    contentStyle={{ borderRadius: '8px' }}
+                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
                   />
-                  <Legend />
-                  <Bar dataKey={txt.exports} fill="#10b981" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey={txt.imports} fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
+                  <Bar dataKey={txt.exports} fill="url(#mcGradExp)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey={txt.imports} fill="url(#mcGradImp)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Trade Indicators Table */}
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Globe className="h-5 w-5 text-blue-600" />
+          <div className="stats-chart-card">
+            <div className="stats-chart-header blue">
+              <div className="stats-chart-title blue">
+                <Globe style={{ width: 18, height: 18 }} />
                 {txt.tradeIndicators}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{txt.indicator}</TableHead>
+              </div>
+            </div>
+            <div style={{ overflowX: 'auto' }}>
+              <table className="stats-table">
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
                     {selectedCountries.map((iso, idx) => (
-                      <TableHead key={iso} style={{ color: COUNTRY_COLORS[idx] }}>
-                        {getCountryName(iso)}
-                      </TableHead>
+                      <th key={iso} style={{ textAlign: 'right', color: COUNTRY_COLORS[idx] }}>{getCountryName(iso)}</th>
                     ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.exports} (M$)</TableCell>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ fontWeight: 600 }}>{txt.exports} (M$)</td>
                     {getTradeData().map((d, idx) => (
-                      <TableCell key={idx} className="text-emerald-600 font-bold">
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: '#34d399' }}>
                         {d.exports ? `$${d.exports.toFixed(0)}M` : '-'}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.imports} (M$)</TableCell>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 600 }}>{txt.imports} (M$)</td>
                     {getTradeData().map((d, idx) => (
-                      <TableCell key={idx} className="text-blue-600 font-bold">
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: '#38bdf8' }}>
                         {d.imports ? `$${d.imports.toFixed(0)}M` : '-'}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.tradeBalance}</TableCell>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 600 }}>{txt.tradeBalance}</td>
                     {getTradeData().map((d, idx) => (
-                      <TableCell 
-                        key={idx} 
-                        className={`font-bold ${d.balance >= 0 ? 'text-emerald-600' : 'text-red-600'}`}
-                      >
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: d.balance >= 0 ? '#34d399' : '#f87171' }}>
                         {d.balance ? `${d.balance >= 0 ? '+' : ''}$${d.balance.toFixed(0)}M` : '-'}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.intraAfrican}</TableCell>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 600 }}>{txt.intraAfrican}</td>
                     {getTradeData().map((d, idx) => (
-                      <TableCell key={idx}>
+                      <td key={idx} style={{ textAlign: 'right' }}>
                         {d.intraAfrican ? formatPercent(d.intraAfrican) : '-'}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
           {/* Development Indices */}
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-purple-600" />
+          <div className="stats-chart-card">
+            <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(155,110,245,0.2)' }}>
+              <div className="stats-chart-title violet">
+                <Users style={{ width: 18, height: 18 }} />
                 {txt.developmentIndices}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{txt.indicator}</TableHead>
+              </div>
+            </div>
+            <div style={{ overflowX: 'auto' }}>
+              <table className="stats-table">
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
                     {selectedCountries.map((iso, idx) => (
-                      <TableHead key={iso} style={{ color: COUNTRY_COLORS[idx] }}>
-                        {getCountryName(iso)}
-                      </TableHead>
+                      <th key={iso} style={{ textAlign: 'right', color: COUNTRY_COLORS[idx] }}>{getCountryName(iso)}</th>
                     ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.hdi} (Score)</TableCell>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ fontWeight: 600 }}>{txt.hdi} (Score)</td>
                     {getDevelopmentData().map((d, idx) => (
-                      <TableCell key={idx} className="font-bold">
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700 }}>
                         {d.hdi ? d.hdi.toFixed(3) : '-'}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.hdi} (Rang)</TableCell>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 600 }}>{txt.hdi} ({language === 'fr' ? 'Rang' : 'Rank'})</td>
                     {getDevelopmentData().map((d, idx) => (
-                      <TableCell key={idx}>
+                      <td key={idx} style={{ textAlign: 'right', color: 'rgba(142,155,174,0.8)' }}>
                         #{d.hdiRank}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.gai} (Score)</TableCell>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 600 }}>{txt.gai} (Score)</td>
                     {getDevelopmentData().map((d, idx) => (
-                      <TableCell key={idx} className="font-bold">
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700 }}>
                         {d.gai ? d.gai.toFixed(1) : '-'}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">{txt.gai} (Rang)</TableCell>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: 600 }}>{txt.gai} ({language === 'fr' ? 'Rang' : 'Rank'})</td>
                     {getDevelopmentData().map((d, idx) => (
-                      <TableCell key={idx}>
+                      <td key={idx} style={{ textAlign: 'right', color: 'rgba(142,155,174,0.8)' }}>
                         #{d.gaiRank}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
           {/* Source Footer */}
           <div className="flex items-center justify-center gap-4 flex-wrap">
-            <p className="text-xs text-slate-400 italic">{txt.source}</p>
+            <p className="stats-source-note" style={{ margin: 0 }}>{txt.source}</p>
             <DataFreshnessIndicator freshness={dataFreshness} language={language} />
           </div>
         </>

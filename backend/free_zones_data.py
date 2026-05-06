@@ -3,7 +3,12 @@ import json
 from pathlib import Path
 from typing import List, Dict
 
+# Determine data file path with fallback
 ROOT_DIR = Path(__file__).parent.parent
+DATA_DIR = ROOT_DIR / "data" / "json"
+FREE_ZONES_FILE = DATA_DIR / "zones_franches_afrique.json"
+if not FREE_ZONES_FILE.exists():
+    FREE_ZONES_FILE = ROOT_DIR / "zones_franches_afrique.json"
 
 def load_free_zones():
     """Charger les zones franches depuis le fichier JSON"""

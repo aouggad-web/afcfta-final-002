@@ -50,6 +50,8 @@ logger = logging.getLogger(__name__)
 from routes import register_routes
 from routes.substitution import register_routes as register_substitution_routes
 from routes.calculator import set_database as set_calculator_db
+from routes.admin_keys import router as admin_keys_router
+import auth as _auth_module
 
 from services.tariff_data_service import tariff_service
 from services.crawled_data_service import crawled_service
@@ -101,6 +103,11 @@ if NotificationManager:
 # FASTAPI APP SETUP
 # =============================================================================
 
+_app_env = os.environ.get("APP_ENV", "development")
+_docs_url = None if _app_env == "production" else "/docs"
+_redoc_url = None if _app_env == "production" else "/redoc"
+_openapi_url = None if _app_env == "production" else "/openapi.json"
+
 app = FastAPI(
     title="Système Commercial ZLECAf - API Complète",
     version="3.0.0",
@@ -116,6 +123,9 @@ app = FastAPI(
     license_info={
         "name": "MIT",
     },
+    docs_url=_docs_url,
+    redoc_url=_redoc_url,
+    openapi_url=_openapi_url,
     openapi_tags=[
         {"name": "Health", "description": "Health check and status endpoints"},
         {"name": "Calculator", "description": "Tariff calculation endpoints"},
@@ -154,13 +164,20 @@ if _replit_dev_domain:
     if _replit_origin not in _cors_origins:
         _cors_origins.append(_replit_origin)
 
+_replit_app_domain = os.environ.get("REPLIT_APP_DOMAIN", "")
+_allow_origin_regex = None
+if _replit_app_domain:
+    import re as _re
+    _escaped = _re.escape(_replit_app_domain)
+    _allow_origin_regex = rf"https://{_escaped}"
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins,
-    allow_origin_regex=r"https://.*\.replit\.dev|https://.*\.replit\.app",
+    allow_origin_regex=_allow_origin_regex,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["*"],
+    allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
 )
 
 # Security middlewares (optional)
@@ -234,6 +251,12 @@ async def _setup_database_indexes():
             IndexModel([("hs_code", ASCENDING)]),
             IndexModel([("country_code", ASCENDING), ("hs_code", ASCENDING)]),
         ])
+        # api_keys indexes (auth system)
+        api_keys = db["api_keys"]
+        await api_keys.create_indexes([
+            IndexModel([("key_hash", ASCENDING)], unique=True),
+            IndexModel([("active", ASCENDING), ("tier", ASCENDING)]),
+        ])
         logger.info("MongoDB indexes created successfully")
     except Exception as e:
         logger.warning(f"MongoDB index creation skipped: {e}")
@@ -245,7 +268,8 @@ async def startup_load_tariff_data():
     # Set up database indexes for performance
     await _setup_database_indexes()
 
-    # Set database for calculator routes
+    # Wire database into auth and calculator
+    _auth_module.set_database(db)
     set_calculator_db(db)
     
     # Load crawled data
@@ -293,6 +317,7 @@ async def startup_load_tariff_data():
 
 register_routes(api_router)
 register_substitution_routes(api_router)
+api_router.include_router(admin_keys_router, tags=["Admin: API Keys"])
 
 # Include the router in the main app
 app.include_router(api_router)
@@ -310,7 +335,9 @@ if build_dir.exists() and (build_dir / "static").exists():
     
     @app.get("/{full_path:path}")
     async def serve_react(full_path: str):
-        file_path = build_dir / full_path
+        file_path = (build_dir / full_path).resolve()
+        if not str(file_path).startswith(str(build_dir.resolve())):
+            return FileResponse(str(build_dir / "index.html"))
         if file_path.exists() and file_path.is_file():
             return FileResponse(str(file_path))
         return FileResponse(str(build_dir / "index.html"))

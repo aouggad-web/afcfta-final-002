@@ -6,12 +6,19 @@ Charge et expose les données de production pour 2021-2024
 import json
 import os
 from typing import List, Dict, Optional
+from pathlib import Path
 
 # Chemin du fichier JSON
 DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'json', 'production_africaine.json')
 
 # Cache global
 _production_data = None
+
+def _normalize_country_iso3(country_iso3: Optional[str]) -> Optional[str]:
+    """Normalise le code ISO3 pays pour les filtres."""
+    if country_iso3 is None:
+        return None
+    return country_iso3.strip().upper()
 
 def load_production_data():
     """Charge les données de production depuis le fichier JSON"""
@@ -61,6 +68,8 @@ def get_value_added(country_iso3: Optional[str] = None,
     data = load_production_data()
     records = data.get('value_added_macro', [])
     
+    country_iso3 = _normalize_country_iso3(country_iso3)
+
     if country_iso3:
         records = [r for r in records if r.get('country_iso3') == country_iso3]
     
@@ -74,6 +83,7 @@ def get_value_added(country_iso3: Optional[str] = None,
 
 def get_value_added_by_country(country_iso3: str) -> Dict:
     """Récupère toutes les séries de valeur ajoutée pour un pays"""
+    country_iso3 = _normalize_country_iso3(country_iso3)
     records = get_value_added(country_iso3=country_iso3)
     
     # Organiser par secteur
@@ -109,6 +119,8 @@ def get_agriculture_production(country_iso3: Optional[str] = None,
     data = load_production_data()
     records = data.get('agri_faostat', [])
     
+    country_iso3 = _normalize_country_iso3(country_iso3)
+
     if country_iso3:
         records = [r for r in records if r.get('country_iso3') == country_iso3]
     
@@ -124,6 +136,7 @@ def get_agriculture_production(country_iso3: Optional[str] = None,
 
 def get_agriculture_by_country(country_iso3: str) -> Dict:
     """Récupère toutes les productions agricoles pour un pays"""
+    country_iso3 = _normalize_country_iso3(country_iso3)
     records = get_agriculture_production(country_iso3=country_iso3)
     
     # Organiser par produit
@@ -159,6 +172,8 @@ def get_manufacturing_production(country_iso3: Optional[str] = None,
     data = load_production_data()
     records = data.get('manufacturing_unido', [])
     
+    country_iso3 = _normalize_country_iso3(country_iso3)
+
     if country_iso3:
         records = [r for r in records if r.get('country_iso3') == country_iso3]
     
@@ -172,6 +187,7 @@ def get_manufacturing_production(country_iso3: Optional[str] = None,
 
 def get_manufacturing_by_country(country_iso3: str) -> Dict:
     """Récupère toutes les productions manufacturières pour un pays"""
+    country_iso3 = _normalize_country_iso3(country_iso3)
     records = get_manufacturing_production(country_iso3=country_iso3)
     
     # Organiser par secteur ISIC
@@ -207,6 +223,8 @@ def get_mining_production(country_iso3: Optional[str] = None,
     data = load_production_data()
     records = data.get('mining_usgs', [])
     
+    country_iso3 = _normalize_country_iso3(country_iso3)
+
     if country_iso3:
         records = [r for r in records if r.get('country_iso3') == country_iso3]
     
@@ -222,6 +240,7 @@ def get_mining_production(country_iso3: Optional[str] = None,
 
 def get_mining_by_country(country_iso3: str) -> Dict:
     """Récupère toutes les productions minières pour un pays"""
+    country_iso3 = _normalize_country_iso3(country_iso3)
     records = get_mining_production(country_iso3=country_iso3)
     
     # Organiser par minerai
@@ -293,6 +312,7 @@ def get_production_statistics() -> Dict:
 
 def get_country_production_overview(country_iso3: str) -> Dict:
     """Vue d'ensemble complète de la production pour un pays"""
+    country_iso3 = _normalize_country_iso3(country_iso3)
     return {
         'country_iso3': country_iso3,
         'value_added': get_value_added_by_country(country_iso3),

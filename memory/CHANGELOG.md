@@ -27,9 +27,4 @@ Tables PostgreSQL créées:
 - `fiscal_advantages` - Avantages fiscaux ZLECAf
 
 ### Credentials
-```
-Database: afcfta_regulatory
-User: afcfta
-Password: afcfta2026
-URL: postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory
-```
+Credentials removed — set `POSTGRES_URL` in `.env` (see `.env.example`).

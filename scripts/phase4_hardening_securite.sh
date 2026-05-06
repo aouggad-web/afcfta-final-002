@@ -11,7 +11,7 @@ echo -e "${GREEN}╔════════════════════
 echo -e "${GREEN}║  PHASE 4 — HARDENING SÉCURITÉ BACKEND       ║${NC}"
 echo -e "${GREEN}╚══════════════════════════════════════════════╝${NC}\n"
 
-# ─── 1. Générer un .env.example propre ────────────────────
+# ─── 1. Générer un .env.example propre ────────────
 echo -e "${YELLOW}[1/5] Génération du .env.example sécurisé...${NC}"
 
 cat > .env.example << 'ENV_EOF'
@@ -21,21 +21,21 @@ cat > .env.example << 'ENV_EOF'
 # Puis remplissez avec vos vraies valeurs
 # ============================================================
 
-# ── Base de données ─────────────────────────────────────────
+# ── Base de données ─────────────────────────────────
 MONGODB_URL=mongodb+srv://USER:PASSWORD@cluster.mongodb.net/zlecaf?retryWrites=true
 MONGODB_DB_NAME=zlecaf
 
-# ── Sécurité API ─────────────────────────────────────────────
+# ── Sécurité API ─────────────────────────────────
 # Générer avec: python -c "import secrets; print(secrets.token_hex(32))"
 SECRET_KEY=CHANGEZ_CE_SECRET_AVEC_UNE_VALEUR_ALEATOIRE_DE_64_CHARS
 API_VERSION=2.0.0
 
-# ── CORS — Domaines autorisés ────────────────────────────────
+# ── CORS — Domaines autorisés ────────────────────────────
 # Séparer par virgule, JAMAIS de * en production
 ALLOWED_ORIGINS=https://votre-domaine.com,http://localhost:3000
 ALLOWED_HOSTS=votre-domaine.com,localhost
 
-# ── Notifications Email (Gmail) ─────────────────────────────
+# ── Notifications Email (Gmail) ───────────────────────────
 EMAIL_NOTIFICATIONS_ENABLED=false
 EMAIL_SMTP_HOST=smtp.gmail.com
 EMAIL_SMTP_PORT=587
@@ -46,13 +46,13 @@ EMAIL_SMTP_PASSWORD=xxxx-xxxx-xxxx-xxxx
 EMAIL_FROM=noreply@afcfta.com
 EMAIL_TO=admin@afcfta.com
 
-# ── Notifications Slack ──────────────────────────────────────
+# ── Notifications Slack ──────────────────────────────
 SLACK_NOTIFICATIONS_ENABLED=false
 # Générer sur https://api.slack.com/messaging/webhooks
 SLACK_WEBHOOK_URL=https://hooks.slack.com/services/XXXXX/YYYYY/ZZZZZ
 SLACK_CHANNEL=#afcfta-monitoring
 
-# ── APIs Externes ────────────────────────────────────────────
+# ── APIs Externes ────────────────────────────────────
 # World Bank — API publique, pas de clé requise
 WORLD_BANK_API_URL=https://api.worldbank.org/v2
 # OEC — optionnel
@@ -60,7 +60,7 @@ OEC_API_KEY=
 # WTO — API publique
 WTO_API_URL=https://api.wto.org
 
-# ── Configuration Docker ─────────────────────────────────────
+# ── Configuration Docker ───────────────────────────────
 BACKEND_PORT=8000
 FRONTEND_PORT=3000
 ENV_EOF
@@ -82,7 +82,7 @@ done
 if [ -n "$MAIN_PY" ]; then
     # Backup avant modification
     cp "$MAIN_PY" "${MAIN_PY}.bak"
-
+    
     # Vérifier si CORS avec allow_origins=["*"] est présent
     if grep -q 'allow_origins.*\[.*"\*"' "$MAIN_PY" 2>/dev/null; then
         echo -e "    ⚠ CORS avec allow_origins=['*'] détecté — correction..."
@@ -204,22 +204,22 @@ from starlette.middleware.base import BaseHTTPMiddleware
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         response = await call_next(request)
-
+        
         # Empêche le navigateur de détecter automatiquement le type MIME
         response.headers["X-Content-Type-Options"] = "nosniff"
-
+        
         # Protection contre le clickjacking
         response.headers["X-Frame-Options"] = "DENY"
-
+        
         # Active le filtre XSS du navigateur
         response.headers["X-XSS-Protection"] = "1; mode=block"
-
+        
         # Force HTTPS pour 1 an (si en production HTTPS)
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-
+        
         # Empêche l'exposition du Referer
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-
+        
         # Content Security Policy restrictive
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
@@ -228,11 +228,11 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             "img-src 'self' data:; "
             "connect-src 'self';"
         )
-
+        
         # Supprimer les headers qui révèlent la stack technique
         response.headers.pop("Server", None)
         response.headers.pop("X-Powered-By", None)
-
+        
         return response
 
 
@@ -290,7 +290,7 @@ CHECK_EOF
 echo -e "${GREEN}    ✓ SECURITY_CHECKLIST.md généré${NC}"
 
 echo ""
-echo -e "${GREEN}╔══════════════════════════════════════════════════════╗${NC}"
+echo -e "${GREEN}╔════════════════════════════════════════════════════════╗${NC}"
 echo -e "${GREEN}║  PHASE 4 TERMINÉE — TOUTES LES PHASES COMPLÈTES    ║${NC}"
 echo -e "${GREEN}║                                                      ║${NC}"
 echo -e "${GREEN}║  Dernier commit :                                    ║${NC}"
@@ -298,6 +298,6 @@ echo -e "${GREEN}║  git add -A                                          ║${N
 echo -e "${GREEN}║  git commit -m 'security: harden backend,           ║${NC}"
 echo -e "${GREEN}║   add validators, security headers'                 ║${NC}"
 echo -e "${GREEN}║  git push origin main                                ║${NC}"
-echo -e "${GREEN}╚══════════════════════════════════════════════════════╝${NC}"
+echo -e "${GREEN}╚════════════════════════════════════════════════════════╝${NC}"
 echo ""
 echo -e "${YELLOW}Consultez SECURITY_CHECKLIST.md pour valider chaque point.${NC}"

@@ -6,9 +6,13 @@ from fastapi.responses import StreamingResponse
 from datetime import datetime, timezone
 import csv
 import io
+import logging
+import re
 import pandas as pd
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/export", tags=["export"])
 
@@ -71,18 +75,19 @@ async def export_tariffs_csv(
             writer.writeheader()
             writer.writerows(rows)
 
-        filename = f"tariffs_{country}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
+        filename = f"tariffs_{re.sub(r'[^A-Za-z0-9_-]', '_', country)}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
 
         return Response(
             content=output.getvalue(),
             media_type="text/csv",
-            headers={"Content-Disposition": f"attachment; filename={filename}"}
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'}
         )
 
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(500, str(e))
+        logger.error(f"Error exporting tariffs CSV: {e}", exc_info=True)
+        raise HTTPException(500, "Internal server error")
 
 
 @router.get("/tariffs/excel")
@@ -124,11 +129,12 @@ async def export_tariffs_excel(
         return StreamingResponse(
             io.BytesIO(output.read()),
             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            headers={"Content-Disposition": f"attachment; filename={filename}"}
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'}
         )
 
     except Exception as e:
-        raise HTTPException(500, str(e))
+        logger.error(f"Error exporting tariffs Excel: {e}", exc_info=True)
+        raise HTTPException(500, "Internal server error")
 
 
 @router.get("/validation-report/json")
@@ -201,7 +207,8 @@ async def export_validation_report_json(
         return validation_report
 
     except Exception as e:
-        raise HTTPException(500, str(e))
+        logger.error(f"Error exporting validation report: {e}", exc_info=True)
+        raise HTTPException(500, "Internal server error")
 
 
 @router.get("/comparison/csv")
@@ -293,10 +300,11 @@ async def export_comparison_csv(
         return Response(
             content=output.getvalue(),
             media_type="text/csv",
-            headers={"Content-Disposition": f"attachment; filename={filename}"}
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'}
         )
 
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(500, str(e))
+        logger.error(f"Error exporting comparison CSV: {e}", exc_info=True)
+        raise HTTPException(500, "Internal server error")

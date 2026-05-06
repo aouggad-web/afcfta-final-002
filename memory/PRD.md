@@ -83,8 +83,8 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 - `GET /api/banking` - Banking information (NEW)
 
 ## Credentials
-- **PostgreSQL**: `postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory`
-- **Redis**: `redis://localhost:6379`
+- **PostgreSQL**: set `POSTGRES_URL` in `.env` (see `.env.example`)
+- **Redis**: set `REDIS_URL` in `.env` (see `.env.example`)
 
 ## Tech Stack Versions
 - Python 3.11+

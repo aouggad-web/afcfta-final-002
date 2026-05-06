@@ -6,6 +6,7 @@ Charge et expose les données des corridors terrestres, nœuds logistiques et op
 import json
 import os
 from typing import List, Dict, Optional
+from pathlib import Path
 
 # Chemin du fichier JSON
 DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'json', 'corridors_terrestres.json')

@@ -183,15 +183,18 @@ def get_total_import_taxes(country_code: str, cif_value: float, customs_duty: fl
     community_rate = COMMUNITY_LEVY.get(iso3, 0.0)
     cemac_rate = CEMAC_LEVY.get(iso3, 0.0)
     
-    # Calcul des montants
-    stat_fee = cif_value * (stat_fee_rate / 100)
-    community_levy = cif_value * (community_rate / 100)
-    cemac_levy = cif_value * (cemac_rate / 100)
-    
-    # Base TVA = CIF + DD + Redevances
+    # Calcul des montants - assiette cumulative
+    # stat_fee: base = CIF + DD
+    stat_fee = (cif_value + customs_duty) * (stat_fee_rate / 100)
+    # community_levy: base = CIF + DD + stat_fee
+    community_levy = (cif_value + customs_duty + stat_fee) * (community_rate / 100)
+    # cemac_levy: base = CIF + DD + stat_fee + community_levy
+    cemac_levy = (cif_value + customs_duty + stat_fee + community_levy) * (cemac_rate / 100)
+
+    # Base TVA = CIF + DD + toutes les taxes précédentes
     vat_base = cif_value + customs_duty + stat_fee + community_levy + cemac_levy
     vat_amount = vat_base * (vat_rate / 100)
-    
+
     total = customs_duty + stat_fee + community_levy + cemac_levy + vat_amount
     
     return {

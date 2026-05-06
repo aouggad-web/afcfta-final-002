@@ -2,12 +2,13 @@
 Enhanced Tariff Calculator Service
 Provides detailed calculation breakdown for NPF vs ZLECAf tariffs
 
-Méthode de calcul (circulaire DGD algérienne + méthodes africaines standards) :
-- DD  = Valeur CIF × taux_DD / 100
-- DAPS = Valeur CIF × taux_DAPS / 100
-- PRCT/TCS/TIC/autres = Valeur CIF × taux / 100  (ad valorem)
+Méthode de calcul (assiette cumulative - circulaire DGD algérienne + méthodes africaines standards) :
+- DD   = Valeur CIF × taux_DD / 100
+- DAPS = (Valeur CIF + DD) × taux_DAPS / 100
+- PRCT = (Valeur CIF + DD + DAPS) × taux_PRCT / 100
 - BASE TVA = CIF + DD + DAPS + PRCT + TCS + TIC + autres taxes (hors TVA)
 - TVA  = BASE_TVA × taux_TVA / 100
+Chaque taxe a pour assiette la valeur CIF + toutes les taxes qui la précèdent.
 
 Source des taux : fichiers JSON pays ({ISO3}_tariffs.json), champ taxes_detail par code SH6.
 """
@@ -235,8 +236,8 @@ def _compute_regime(
     fallback_dd_pct: float = 20.0,
 ) -> CalculationBreakdown:
     """
-    Calcule la ventilation des taxes selon la méthode officielle :
-    - Toutes les taxes sauf TVA : base = CIF
+    Calcule la ventilation des taxes selon la méthode officielle (assiette cumulative) :
+    - Chaque taxe (hors TVA) : base = CIF + somme de toutes les taxes précédentes
     - TVA : base = CIF + somme de TOUTES les taxes qui précèdent
               (sauf les taxes explicitement exclues de la base TVA)
 
@@ -264,9 +265,9 @@ def _compute_regime(
             base_type = "cif_plus_all_taxes"
             amount = _round2(base_value * t["rate"])
         else:
-            # Toutes les autres taxes : base = CIF (ad valorem sur la valeur en douane)
-            base_value = _round2(cif_value)
-            base_type = "cif"
+            # Base = CIF + toutes les taxes précédentes (méthode assiette cumulative)
+            base_value = _round2(cif_value + cumulative_before_tva)
+            base_type = "cif_plus_previous_taxes" if cumulative_before_tva > 0 else "cif"
             amount = _round2(base_value * t["rate"])
             # Accumule dans la base TVA (sauf taxes exclues)
             if not t["exclu_base_tva"]:

@@ -1,0 +1,463 @@
+/* ══════════════════════════════════════════════════════════════
+   STATISTICS MODULE — Styles spécifiques
+   Palette africaine : terre (#C8531A), or (#D4891A), vert (#1A7A4A),
+   atlantique (#1A6B8A), violet (#9B6EF5)
+   Inspirations : zellige algérien, kente ghanéen, motifs africains
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── HERO BANNER ──────────────────────────────────────────────── */
+.stats-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(200, 83, 26, 0.18) 0%,
+    rgba(18, 24, 32, 0.96) 35%,
+    rgba(12, 18, 25, 0.98) 65%,
+    rgba(26, 107, 138, 0.18) 100%
+  );
+  border: 1px solid rgba(212, 137, 26, 0.22);
+  border-radius: 16px;
+  padding: 28px 32px;
+}
+
+/* Motif Najm (étoile 8 branches) en arrière-plan */
+.stats-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='rgba(212%2C137%2C26%2C0.065)' stroke-width='0.7'%3E%3Cpolygon points='30%2C6 34%2C20 48%2C16 38%2C26 52%2C30 38%2C34 48%2C44 34%2C40 30%2C54 26%2C40 12%2C44 22%2C34 8%2C30 22%2C26 12%2C16 26%2C20'/%3E%3Crect x='18' y='18' width='24' height='24' transform='rotate(45 30 30)'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.stats-hero > * { position: relative; z-index: 1; }
+
+.stats-hero-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #D4891A 0%, #EAE0D0 55%, #1A7A4A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stats-hero-subtitle {
+  color: rgba(234, 224, 208, 0.65);
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+/* ── KENTE DIVIDER (bandes pan-africaines) ──────────────────── */
+.stats-kente-bar {
+  height: 3px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    #C8102E  0px,  #C8102E  8px,
+    #FCDD09  8px,  #FCDD09  16px,
+    #007A3D  16px, #007A3D  24px,
+    #0D0800  24px, #0D0800  28px,
+    #E8890C  28px, #E8890C  36px
+  );
+  margin: 8px 0;
+}
+
+/* ── TAB NAVIGATION ───────────────────────────────────────────── */
+.stats-tabs-list {
+  background: rgba(18, 24, 32, 0.85);
+  border: 1px solid rgba(212, 137, 26, 0.18);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.stats-tab-trigger {
+  color: rgba(234, 224, 208, 0.5);
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.8125rem;
+  transition: all 0.2s ease;
+  padding: 8px 16px;
+}
+
+.stats-tab-trigger[data-state="active"] {
+  background: linear-gradient(135deg, rgba(200, 83, 26, 0.85), rgba(160, 60, 18, 0.9));
+  color: #EAE0D0;
+  box-shadow: 0 2px 8px rgba(200, 83, 26, 0.4);
+}
+
+/* ── KPI STAT CARDS ─────────────────────────────────────────── */
+.stats-kpi-card {
+  position: relative;
+  overflow: hidden;
+  background: rgba(24, 32, 48, 0.9);
+  border-radius: 14px;
+  padding: 20px 22px;
+  border: 1px solid rgba(212, 137, 26, 0.15);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.stats-kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212, 137, 26, 0.32);
+}
+
+/* Barre d'accent gauche sur les KPI */
+.stats-kpi-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+  background: var(--kpi-accent, #D4891A);
+}
+
+.stats-kpi-card.gold    { --kpi-accent: #D4891A; }
+.stats-kpi-card.green   { --kpi-accent: #1A7A4A; }
+.stats-kpi-card.terra   { --kpi-accent: #C8531A; }
+.stats-kpi-card.atlantic{ --kpi-accent: #1A6B8A; }
+.stats-kpi-card.violet  { --kpi-accent: #9B6EF5; }
+.stats-kpi-card.red     { --kpi-accent: #C8102E; }
+
+.stats-kpi-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(142, 155, 174, 0.9);
+  margin-bottom: 8px;
+}
+
+.stats-kpi-value {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #EAE0D0;
+  line-height: 1;
+}
+
+.stats-kpi-value.green   { color: #34d399; }
+.stats-kpi-value.terra   { color: #fb923c; }
+.stats-kpi-value.atlantic{ color: #38bdf8; }
+.stats-kpi-value.violet  { color: #a78bfa; }
+.stats-kpi-value.gold    { color: #fbbf24; }
+.stats-kpi-value.red     { color: #f87171; }
+
+.stats-kpi-footer {
+  margin-top: 8px;
+  font-size: 0.7rem;
+  color: rgba(142, 155, 174, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Motif Najm mini décoratif sur les cartes KPI */
+.stats-kpi-ornament {
+  position: absolute;
+  top: 8px; right: 10px;
+  width: 36px; height: 36px;
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+/* ── CHART CARD ─────────────────────────────────────────────── */
+.stats-chart-card {
+  background: rgba(18, 24, 32, 0.92);
+  border: 1px solid rgba(212, 137, 26, 0.14);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.stats-chart-header {
+  padding: 18px 20px 14px;
+  background: linear-gradient(135deg, rgba(24, 32, 48, 0.98), rgba(16, 22, 32, 0.95));
+  border-bottom: 1px solid rgba(212, 137, 26, 0.12);
+}
+
+.stats-chart-header.green {
+  border-bottom-color: rgba(52, 211, 153, 0.2);
+}
+
+.stats-chart-header.blue {
+  border-bottom-color: rgba(96, 165, 250, 0.2);
+}
+
+.stats-chart-header.gold {
+  border-bottom-color: rgba(251, 191, 36, 0.2);
+}
+
+.stats-chart-header.terra {
+  border-bottom-color: rgba(200, 83, 26, 0.2);
+}
+
+.stats-chart-title {
+  font-size: 0.975rem;
+  font-weight: 700;
+  color: #EAE0D0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stats-chart-title.green   { color: #34d399; }
+.stats-chart-title.blue    { color: #60a5fa; }
+.stats-chart-title.gold    { color: #fbbf24; }
+.stats-chart-title.terra   { color: #fb923c; }
+.stats-chart-title.violet  { color: #a78bfa; }
+
+.stats-chart-subtitle {
+  font-size: 0.72rem;
+  color: rgba(142, 155, 174, 0.7);
+  margin-top: 3px;
+}
+
+/* ── RANK BADGE LIST ITEMS ──────────────────────────────────── */
+.stats-rank-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+  transition: background 0.15s ease;
+  gap: 10px;
+}
+
+.stats-rank-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.stats-rank-item.green { border-left-color: #1A7A4A; }
+.stats-rank-item.blue  { border-left-color: #1A6B8A; }
+.stats-rank-item.terra { border-left-color: #C8531A; }
+.stats-rank-item.gold  { border-left-color: #D4891A; }
+
+.stats-rank-badge {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 800;
+  flex-shrink: 0;
+}
+
+.stats-rank-badge.rank-1 { background: #FCDD09; color: #0D0800; }
+.stats-rank-badge.rank-2 { background: #b0b8c0; color: #0D0800; }
+.stats-rank-badge.rank-3 { background: #CD7F32; color: #fff; }
+.stats-rank-badge.rank-n { background: rgba(255,255,255,0.1); color: rgba(234,224,208,0.6); }
+
+/* ── DATA TABLE ─────────────────────────────────────────────── */
+.stats-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.82rem;
+}
+
+.stats-table thead th {
+  background: rgba(24, 32, 48, 0.95);
+  color: rgba(142, 155, 174, 0.9);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 10px 12px;
+  border-bottom: 2px solid rgba(212, 137, 26, 0.2);
+  white-space: nowrap;
+}
+
+.stats-table thead th:first-child { border-radius: 8px 0 0 0; }
+.stats-table thead th:last-child  { border-radius: 0 8px 0 0; }
+
+.stats-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.stats-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.stats-table tbody tr:hover {
+  background: rgba(212, 137, 26, 0.06);
+}
+
+.stats-table tbody td {
+  padding: 9px 12px;
+  color: #EAE0D0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+/* ── CUSTOM RECHARTS TOOLTIP ────────────────────────────────── */
+.stats-tooltip {
+  background: rgba(16, 22, 32, 0.97) !important;
+  border: 1px solid rgba(212, 137, 26, 0.3) !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+  font-size: 0.8rem !important;
+}
+
+/* ── PROGRESS BAR ───────────────────────────────────────────── */
+.stats-progress-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.stats-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.stats-progress-fill.green   { background: linear-gradient(90deg, #1A7A4A, #34d399); }
+.stats-progress-fill.blue    { background: linear-gradient(90deg, #1A6B8A, #38bdf8); }
+.stats-progress-fill.gold    { background: linear-gradient(90deg, #D4891A, #fbbf24); }
+.stats-progress-fill.terra   { background: linear-gradient(90deg, #C8531A, #fb923c); }
+.stats-progress-fill.violet  { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+
+/* ── EMPTY STATE ────────────────────────────────────────────── */
+.stats-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  text-align: center;
+  color: rgba(142, 155, 174, 0.7);
+}
+
+.stats-empty-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: rgba(212, 137, 26, 0.1);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  border: 1px solid rgba(212, 137, 26, 0.2);
+}
+
+/* ── SECTION HEADER BAND ────────────────────────────────────── */
+.stats-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(24, 32, 48, 0.95), rgba(16, 22, 32, 0.95));
+  border-left: 3px solid #D4891A;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 16px;
+}
+
+.stats-section-head .title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #EAE0D0;
+}
+
+.stats-section-head .subtitle {
+  font-size: 0.72rem;
+  color: rgba(142, 155, 174, 0.7);
+}
+
+/* ── BADGE CHIP ─────────────────────────────────────────────── */
+.stats-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.stats-chip.up   { background: rgba(26, 122, 74, 0.2);  color: #34d399; border: 1px solid rgba(52, 211, 153, 0.25); }
+.stats-chip.down { background: rgba(200, 16, 46, 0.2); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.25); }
+.stats-chip.flat { background: rgba(255, 255, 255, 0.07); color: rgba(234, 224, 208, 0.5); border: 1px solid rgba(255,255,255,0.1); }
+
+/* ── COUNTRY SELECTOR ───────────────────────────────────────── */
+.stats-country-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: opacity 0.15s;
+}
+
+.stats-country-tag button {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.stats-country-tag button:hover { opacity: 1; }
+
+/* ── LOADING SPINNER ────────────────────────────────────────── */
+.stats-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  gap: 16px;
+}
+
+.stats-spinner {
+  width: 44px; height: 44px;
+  border: 3px solid rgba(212, 137, 26, 0.15);
+  border-top-color: #D4891A;
+  border-radius: 50%;
+  animation: stats-spin 0.8s linear infinite;
+}
+
+@keyframes stats-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── SOURCE FOOTNOTE ────────────────────────────────────────── */
+.stats-source-note {
+  font-size: 0.7rem;
+  color: rgba(142, 155, 174, 0.6);
+  padding: 10px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .stats-hero {
+    padding: 20px 16px;
+  }
+  .stats-hero-title {
+    font-size: 1.35rem;
+  }
+  .stats-kpi-value {
+    font-size: 1.6rem;
+  }
+  .stats-chart-card .recharts-wrapper {
+    font-size: 10px;
+  }
+  .stats-table {
+    font-size: 0.75rem;
+  }
+  .stats-table thead th,
+  .stats-table tbody td {
+    padding: 7px 8px;
+  }
+}

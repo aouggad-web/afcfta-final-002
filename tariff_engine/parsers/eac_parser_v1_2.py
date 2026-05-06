@@ -7,7 +7,7 @@ warnings.filterwarnings("ignore")
 
 PCT_RE = re.compile(r"(\d+(?:\.\d+)?)\s*%")
 
-# whitelist d'unités courantes (à enrichir)
+# Whitelist of common units
 UNIT_OK = {
     "kg","g","l","hl","m","m2","m3","no","nos","u","unit","pair","prs","pc","pcs","set","doz","ton","t"
 }
@@ -27,7 +27,6 @@ def _find_rate_pct(cells) -> float:
     return None
 
 def _find_unit(cells) -> str:
-    # on cherche une cellule courte alphnum, puis on normalise
     for v in cells:
         u = _clean(v).lower()
         u = u.replace(".", "")
@@ -64,37 +63,39 @@ def parse_pages(pdf_path: str, pages, flavor: str = "stream") -> pd.DataFrame:
                 c2 = cells[2] if len(cells) > 2 else ""
                 c3 = cells[3] if len(cells) > 3 else ""
 
-                # heading contexte (ex 15.17)
+                # Heading context (ex 15.17)
                 if re.fullmatch(r"\d{1,2}\.\d{2}", _clean(c0)) and _clean(c1) == "":
                     current_heading = _clean(c0)
-
-                hs = _to_hs(c1) or _to_hs(c0)
-                if not hs or len(hs) < 6:
                     continue
 
-                # description: concat des colonnes textuelles (on exclut les colonnes qui ressemblent à unit ou rate)
-                desc = " ".join([_clean(c2), _clean(c3)]).strip()
-
-                duty = _find_rate_pct(cells)
-
-                # unité: cherche dans toutes les cellules, mais whitelistée
-                unit = _find_unit(cells)
-
-                out.append({
-                    "hs_code": hs,
-                    "heading_ctx": current_heading,
-                    "description": desc,
-                    "unit": unit,
-                    "duty_rate_pct": duty,
-                    "page": int(p),
-                    "source_pdf": pdf_path
-                })
+                hs = _to_hs(c1) or _to_hs(c0)
+                row_desc = " ".join([_clean(c2), _clean(c3)]).strip()
+                
+                if hs and len(hs) >= 6:
+                    # New HS code line
+                    duty = _find_rate_pct(cells)
+                    unit = _find_unit(cells)
+                    
+                    out.append({
+                        "hs_code": hs,
+                        "heading_ctx": current_heading,
+                        "description": row_desc,
+                        "unit": unit,
+                        "duty_rate_pct": duty,
+                        "page": int(p),
+                        "source_pdf": pdf_path
+                    })
+                elif row_desc and out:
+                    # Continuation of previous description
+                    # Check if it's not just a rate or unit being misidentified as desc
+                    if not _find_rate_pct(cells) and not _find_unit(cells):
+                         out[-1]["description"] = (out[-1]["description"] + " " + row_desc).strip()
 
     df_out = pd.DataFrame(out)
     if df_out.empty:
         return df_out
 
-    # dédoublonnage HS: garder la ligne la plus "riche" (taux présent prioritaire)
+    # HS deduplication: keep the richest line (priority to present rate)
     df_out["has_rate"] = df_out["duty_rate_pct"].notna().astype(int)
     df_out = df_out.sort_values(by=["hs_code","has_rate","page"]).drop_duplicates(subset=["hs_code"], keep="last")
     df_out = df_out.drop(columns=["has_rate"])

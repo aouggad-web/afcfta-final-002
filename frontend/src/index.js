@@ -10,6 +10,9 @@ import './i18n';
 // Import mobile responsive styles
 import './styles/mobile.css';
 
+// ZLECAF Design System v1.1
+import './styles/design-system.css';
+
 // Fix complet pour ResizeObserver errors
 // Supprime complètement les erreurs ResizeObserver
 window.addEventListener('error', e => {

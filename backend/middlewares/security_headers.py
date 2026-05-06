@@ -1,3 +1,4 @@
+import os
 import secrets
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
@@ -14,7 +15,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         csp = "; ".join([
             "default-src 'self'",
             f"script-src 'self' 'nonce-{nonce}' https://cdn.jsdelivr.net",
-            f"style-src 'self' 'nonce-{nonce}' 'unsafe-inline' https://fonts.googleapis.com",
+            f"style-src 'self' 'nonce-{nonce}' https://fonts.googleapis.com",
             "img-src 'self' data: https: blob:",
             "font-src 'self' https://fonts.gstatic.com",
             "connect-src 'self' https://api.worldbank.org https://api-v2.oec.world",
@@ -29,6 +30,10 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Permissions-Policy"] = "geolocation=(), camera=(), microphone=()"
-        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+
+        # Only send HSTS when the app is configured to serve over HTTPS.
+        # Sending HSTS over plain HTTP can break client access.
+        if os.environ.get("HTTPS_ENABLED", "false").lower() == "true":
+            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
 
         return response

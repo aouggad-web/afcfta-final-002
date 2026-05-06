@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   LayoutDashboard,
   Calculator,
@@ -9,87 +9,130 @@ import {
   Landmark,
   Wrench,
   FileCheck,
-  Globe2
+  Globe2,
+  Menu,
+  X,
 } from "lucide-react";
 
-export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr" }) {
-  const isFrench = language === "fr";
+/* ─── Flat nav items ─────────────────────────────────────────── */
+const NAV_ITEMS = (isFrench) => [
+  { id: "dashboard",  label: isFrench ? "Tableau de bord" : "Dashboard",        icon: LayoutDashboard },
+  { id: "calculator", label: isFrench ? "Calculateur"      : "Calculator",       icon: Calculator },
+  { id: "stats",      label: isFrench ? "Statistiques"     : "Statistics",       icon: BarChart3 },
+  { id: "opps",       label: isFrench ? "Opportunités"     : "Opportunities",    icon: Target },
+  { id: "production", label: isFrench ? "Production"       : "Production",       icon: Factory },
+  { id: "logistics",  label: isFrench ? "Logistique"       : "Logistics",        icon: Ship },
+  { id: "banking",    label: isFrench ? "Banque"           : "Banking",          icon: Landmark },
+  { id: "tools",      label: isFrench ? "Outils"           : "Tools",            icon: Wrench },
+  { id: "roo",        label: isFrench ? "Règles d'Origine" : "Rules of Origin",  icon: FileCheck },
+  { id: "profiles",   label: isFrench ? "Profils Pays"     : "Country Profiles", icon: Globe2 },
+];
 
-  const tabs = [
-    { id: "dashboard", label: isFrench ? "Tableau de bord" : "Dashboard", icon: LayoutDashboard },
-    { id: "calculator", label: isFrench ? "Calculateur" : "Calculator", icon: Calculator },
-    { id: "stats", label: isFrench ? "Statistiques" : "Statistics", icon: BarChart3 },
-    { id: "opps", label: isFrench ? "Opportunités" : "Opportunities", icon: Target },
-    { id: "production", label: isFrench ? "Production" : "Production", icon: Factory },
-    { id: "logistics", label: isFrench ? "Logistique" : "Logistics", icon: Ship },
-    { id: "banking", label: isFrench ? "Banque" : "Banking", icon: Landmark },
-    { id: "tools", label: isFrench ? "Outils" : "Tools", icon: Wrench },
-    { id: "roo", label: isFrench ? "Règles d'Origine" : "Rules of Origin", icon: FileCheck },
-    { id: "profiles", label: isFrench ? "Profils pays" : "Country Profiles", icon: Globe2 }
-  ];
+/* ─── Horizontal topbar component ───────────────────────────── */
+export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr" }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const isFrench = language === "fr";
+  const items = NAV_ITEMS(isFrench);
+
+  const handleTab = (id) => {
+    onTabChange && onTabChange("tab", id);
+    setMobileOpen(false);
+  };
 
   return (
-    <div className="afcfta-topbar">
-      <div className="afcfta-topbar-head">
-        <div className="afcfta-brand">
-          <h1 className="afcfta-title">
-            <span className="afcfta-title-icon">🌍</span>
-            {isFrench ? "Accord de la ZLECAf" : "AfCFTA Agreement"}
-          </h1>
-          <div className="afcfta-subtitle">
-            {isFrench
-              ? "Plateforme d'intelligence commerciale africaine — droits, TVA, taxes totales et analyses."
-              : "African trade intelligence platform — duties, VAT, total taxes and analytics."}
-          </div>
-          <div className="afcfta-badges">
-            <span className="afcfta-badge">{isFrench ? "54 signataires ZLECAf" : "54 AfCFTA signatories"}</span>
-            <span className="afcfta-badge">{isFrench ? "1,3 Md+ habitants" : "1.3B+ population"}</span>
-            <span className="afcfta-badge">{isFrench ? "Données actualisées" : "Updated dataset"}</span>
-          </div>
+    <header className="afcfta-topHeader" role="banner">
+      {/* ── Brand + language bar ── */}
+      <div className="afcfta-topHeader__bar">
+        <div className="afcfta-topHeader__brand">
+          <div className="afcfta-topHeader__brandIcon">🌍</div>
+          <span className="afcfta-topHeader__brandName">
+            {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
+          </span>
         </div>
 
-        <div className="afcfta-lang-switch" aria-label={isFrench ? "Choix de la langue" : "Language selector"}>
+        {/* Mobile menu toggle */}
+        <button
+          className="afcfta-btn-sm afcfta-btn-secondary afcfta-topHeader__menuBtn"
+          onClick={() => setMobileOpen((o) => !o)}
+          aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          style={{ padding: "8px", borderRadius: "8px" }}
+          aria-expanded={mobileOpen}
+          aria-controls="afcfta-mobile-nav"
+          id="afcfta-mobile-menu-btn"
+        >
+          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+        </button>
+
+        <div className="afcfta-topHeader__lang">
           <button
-            className={`afcfta-btn-sm ${isFrench ? "afcfta-btn" : "afcfta-btn-secondary"}`}
+            className={`afcfta-langBtn ${isFrench ? "active" : ""}`}
             onClick={() => onTabChange && onTabChange("language", "fr")}
-            style={{ padding: "6px 12px", fontSize: "12px" }}
-            type="button"
             aria-pressed={isFrench}
           >
-            🇫🇷 Français
+            🇫🇷 FR
           </button>
           <button
-            className={`afcfta-btn-sm ${!isFrench ? "afcfta-btn" : "afcfta-btn-secondary"}`}
+            className={`afcfta-langBtn ${!isFrench ? "active" : ""}`}
             onClick={() => onTabChange && onTabChange("language", "en")}
-            style={{ padding: "6px 12px", fontSize: "12px" }}
-            type="button"
             aria-pressed={!isFrench}
           >
-            🇬🇧 English
+            🇬🇧 EN
           </button>
         </div>
       </div>
 
-      <div className="afcfta-tabs" role="tablist" aria-label={isFrench ? "Navigation principale" : "Main navigation"}>
-        {tabs.map((t) => {
-          const Icon = t.icon;
-          const selected = active === t.id;
+      {/* ── Horizontal nav tabs ── */}
+      <nav
+        className="afcfta-topHeader__nav"
+        aria-label={isFrench ? "Navigation principale" : "Main navigation"}
+      >
+        {items.map(({ id, label, icon: Icon }) => (
+          <button
+            key={id}
+            onClick={() => handleTab(id)}
+            className={`afcfta-navTab ${active === id ? "active" : ""}`}
+            role="tab"
+            aria-selected={active === id}
+          >
+            <Icon size={15} />
+            <span>{label}</span>
+          </button>
+        ))}
+      </nav>
 
-          return (
-            <button
-              key={t.id}
-              onClick={() => onTabChange && onTabChange("tab", t.id)}
-              className={`afcfta-tab ${selected ? "active" : ""}`}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-            >
-              <Icon className="icon" size={14} />
-              {t.label}
-            </button>
-          );
-        })}
-      </div>
-    </div>
+      {/* ── Mobile dropdown nav ── */}
+      {mobileOpen && (
+        <>
+          <div
+            className="afcfta-sidebar-overlay"
+            onClick={() => setMobileOpen(false)}
+            style={{
+              position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
+              zIndex: 49, backdropFilter: "blur(2px)",
+            }}
+          />
+          <div
+            id="afcfta-mobile-nav"
+            className="afcfta-mobile-nav-dropdown"
+            style={{ display: "block" }}
+          >
+            <div className="afcfta-mobile-nav-list">
+              {items.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => handleTab(id)}
+                  className={`afcfta-mobile-nav-item ${active === id ? "active" : ""}`}
+                  role="tab"
+                  aria-selected={active === id}
+                >
+                  <Icon size={18} />
+                  <span>{label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </header>
   );
 }

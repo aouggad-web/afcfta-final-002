@@ -1,8 +1,11 @@
+import os
 import secrets
 import logging
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+
+_HTTPS = os.environ.get("HTTPS_ENABLED", "false").lower() == "true"
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +42,7 @@ class CSRFMiddleware(BaseHTTPMiddleware):
                     token,
                     httponly=False,
                     samesite="strict",
-                    secure=False,
+                    secure=_HTTPS,
                     max_age=3600,
                 )
             response.headers[CSRF_HEADER] = token

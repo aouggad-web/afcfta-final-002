@@ -2,7 +2,7 @@
 # ============================================================
 # SCRIPT MAÎTRE — ZLECAf Cleanup & Security
 # Lance les 4 phases dans l'ordre avec confirmation
-#
+# 
 # UTILISATION :
 #   chmod +x run_all_phases.sh
 #   ./run_all_phases.sh
@@ -22,7 +22,7 @@ echo "  ║   4 phases · ~1h30 d'exécution                       ║"
 echo "  ╚═══════════════════════════════════════════════════════╝"
 echo -e "${NC}"
 
-# ─── Vérifications préalables ──────────────────────────────
+# ─── Vérifications préalables ──────────────────────────
 echo -e "${YELLOW}Vérifications préalables...${NC}"
 
 # Vérifier qu'on est dans un repo git
@@ -46,11 +46,11 @@ run_phase() {
     local name="$2"
     local script="$3"
     local color="$4"
-
+    
     echo ""
-    echo -e "${color}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${color}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╜${NC}"
     echo -e "${color}  PHASE $num — $name${NC}"
-    echo -e "${color}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${color}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╜${NC}"
     read -p "  Lancer la phase $num ? (o/N) : " confirm
     if [[ "$confirm" =~ ^[oO]$ ]]; then
         chmod +x "$SCRIPT_DIR/$script"
@@ -72,13 +72,13 @@ run_phase() {
 run_phase 1 "Sécurité Git & secrets"      "phase1_securite_git.sh"      "$RED"
 run_phase 2 "Nettoyage racine du repo"    "phase2_nettoyage_racine.sh"  "$YELLOW"
 run_phase 3 "Structure & doublons"        "phase3_structure_doublons.sh" "$BLUE"
-run_phase 4 "Hardening sécurité backend"  "phase4_hardening_securite.sh" "$GREEN"
+run_phase 4 "Hardening sécurité backend" "phase4_hardening_securite.sh" "$GREEN"
 
-# ─── Push final ────────────────────────────────────────────
+# ─── Push final ────────────────────────────
 echo ""
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╜${NC}"
 echo -e "${GREEN}  TOUTES LES PHASES TERMINÉES${NC}"
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━🚀━━━━━━━━━━━━━━━━━━━━╜${NC}"
 echo ""
 echo -e "${YELLOW}Pour pousser sur GitHub :${NC}"
 echo "  git push origin main"

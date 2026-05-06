@@ -24,6 +24,9 @@ permissions:
   actions: read
   pull-requests: write  # required for PR creation
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   update-data:
     runs-on: ubuntu-latest
