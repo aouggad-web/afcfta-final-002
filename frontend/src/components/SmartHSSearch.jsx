@@ -72,31 +72,30 @@ export default function SmartHSSearch({
   const t = texts[language] || texts.fr;
 
   // Debounce search
-  // Stable debounced search using a ref-persisted timeout (avoids the
-  // `useCallback(debounce(...), [...])` bug where each render creates a fresh
-  // inline closure and the memoized function never fires its setTimeout).
   const searchTimeoutRef = useRef(null);
+  const latestRequestRef = useRef(0);
 
   // Search HS6 codes
   const searchHS6 = useCallback(
     (query) => {
-      // eslint-disable-next-line no-console
-      console.log('[SmartHSSearch] searchHS6 CALLED sync, query=', query, 'existingTimer=', !!searchTimeoutRef.current);
       if (searchTimeoutRef.current) {
         clearTimeout(searchTimeoutRef.current);
       }
-      const newTimer = setTimeout(async () => {
-        // eslint-disable-next-line no-console
-        console.log('[SmartHSSearch] TIMER FIRED for:', query, 'myTimer=', newTimer, 'currentRef=', searchTimeoutRef.current);
-        if (!query || query.length < 2) {
-          setSearchResults([]);
-          return;
-        }
 
-        setLoading(true);
+      if (!query || query.length < 2) {
+        setLoading(false);
+        setSearchResults([]);
+        setShowResults(false);
+        return;
+      }
+
+      setLoading(true);
+      setShowResults(true);
+      const requestId = latestRequestRef.current + 1;
+      latestRequestRef.current = requestId;
+
+      const timer = setTimeout(async () => {
         try {
-          // eslint-disable-next-line no-console
-          console.log('[SmartHSSearch] axios.get calling, country=', destinationCountry);
           const response = await axios.get(`${API}/hs6/smart-search`, {
             params: {
               q: query,
@@ -105,17 +104,24 @@ export default function SmartHSSearch({
               include_sub_positions: true,
             },
           });
-          // eslint-disable-next-line no-console
-          console.log('[SmartHSSearch] response:', response.data?.total, 'results');
-          setSearchResults(response.data.results || []);
-          setShowResults(true);
+          if (requestId === latestRequestRef.current) {
+            setSearchResults(response.data.results || []);
+            setShowResults(true);
+          }
         } catch (error) {
-          console.error('[SmartHSSearch] Search error:', error?.message);
-          setSearchResults([]);
+          if (requestId === latestRequestRef.current) {
+            setSearchResults([]);
+          }
         } finally {
-          setLoading(false);
+          if (searchTimeoutRef.current === timer) {
+            searchTimeoutRef.current = null;
+          }
+          if (requestId === latestRequestRef.current) {
+            setLoading(false);
+          }
         }
       }, 300);
+      searchTimeoutRef.current = timer;
     },
     [destinationCountry, language]
   );
@@ -149,14 +155,16 @@ export default function SmartHSSearch({
   // Handle search input change
   const handleSearchChange = (e) => {
     const query = e.target.value;
-    // eslint-disable-next-line no-console
-    console.log('[SmartHSSearch] handleSearchChange:', query);
     setSearchQuery(query);
     searchHS6(query);
   };
 
   // Handle code selection
   const handleCodeSelect = (code, description) => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+      searchTimeoutRef.current = null;
+    }
     setSearchQuery(code);
     setSelectedCode(code);
     setShowResults(false);
@@ -189,6 +197,13 @@ export default function SmartHSSearch({
       loadSuggestions(selectedCode);
     }
   }, [destinationCountry]);
+
+  useEffect(() => () => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+      searchTimeoutRef.current = null;
+    }
+  }, []);
 
   const getSensitivityColor = (sensitivity) => {
     switch (sensitivity) {

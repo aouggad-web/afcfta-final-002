@@ -4,10 +4,6 @@ node_modules/
 .pnp.js
 .yarn/install-state.gz
 
-# IDE and editors
-.idea/
-.vscode/
-
 # Testing
 /coverage
 
@@ -19,26 +15,29 @@ dist/
 .env
 .env.*
 !.env.example
+*.env
 *.local
+.credentials
+credentials.json
+*.key
+*.pem
 
-# Secrets
-.github/secrets/
-
-# Generated tariff data (large files)
-backend/data/tariffs/
-
-# === Node.js ===
-node_modules/
+# Logs
+logs/
+*.log
+*.log.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 dump.rdb
-*.log
 
-# System files
-.DS_Store
-*.pem
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
 
 # Python
 __pycache__/
@@ -54,174 +53,10 @@ chainlit.md
 .chainlit
 .ipynb_checkpoints/
 
-# === Logs ===
-logs/
-*.log
-*.log.*
-
-# === IDE ===
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
+# System files
 .DS_Store
 
-# Mobile development
+# Misc
 android-sdk/
-
-# Backup files
 *.backup
 *.bak
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
-frontend/node_modules/.cache/default-development/3.pack
-frontend/node_modules/.cache/default-development/8.pack
-frontend/node_modules/.cache/default-development/5.pack
-frontend/node_modules/.cache/default-development/11.pack
-frontend/node_modules/.cache/default-development/15.pack
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
-frontend/node_modules/.cache/default-development/9.pack
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
-frontend/node_modules/.cache/default-development/12.pack
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
-frontend/node_modules/.cache/default-development/14.pack
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
