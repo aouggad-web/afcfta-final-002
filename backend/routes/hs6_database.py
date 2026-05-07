@@ -131,9 +131,7 @@ async def smart_search_hs6(
     Special handling for DZA (Algeria) with nomenclature_map lookup for extended codes.
     """
     try:
-        q_value = q if isinstance(q, str) else None
-        query_value = query if isinstance(query, str) else None
-        search_query = (q_value or query_value or "").strip()
+        search_query = (q or query or "").strip()
         if len(search_query) < 2:
             raise HTTPException(status_code=422, detail="Query must be at least 2 characters long")
 
@@ -189,18 +187,19 @@ async def smart_search_hs6(
             sub_positions = []
             if include_sub_positions and normalized_country:
                 country_sub_positions = get_sub_positions(normalized_country, hs6_code)
-                sub_positions = [
-                    {
-                        "code": sp.get("code") or sp.get("national_code"),
+                for sp in country_sub_positions:
+                    sp_code = sp.get("code") or sp.get("national_code")
+                    if not sp_code:
+                        continue
+                    dd_value = sp.get("dd")
+                    sub_positions.append({
+                        "code": sp_code,
                         "digits": sp.get("digits"),
-                        "dd": sp.get("dd") if sp.get("dd") is not None else sp.get("dd_rate"),
+                        "dd": dd_value if dd_value is not None else sp.get("dd_rate"),
                         "description_fr": sp.get("description_fr"),
                         "description_en": sp.get("description_en"),
                         "source": sp.get("source"),
-                    }
-                    for sp in country_sub_positions
-                    if (sp.get("code") or sp.get("national_code"))
-                ]
+                    })
             results.append({
                 "code": hs6_code,
                 "description": r.get("description", ""),

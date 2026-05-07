@@ -44,6 +44,7 @@ async def test_smart_search_supports_query_alias_and_sub_positions(monkeypatch):
     )
 
     response = await hs6_database.smart_search_hs6(
+        q=None,
         query="70",
         language="fr",
         country_code="sen",
