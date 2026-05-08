@@ -117,6 +117,12 @@
   grid-template-columns: 1fr;
 }
 
+@media (min-width: 768px) {
+  .map-list-layout {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
 @media (min-width: 1024px) {
   .map-list-layout {
     grid-template-columns: 1fr 400px;

@@ -172,12 +172,12 @@ export default function SmartHSSearch({
     loadSuggestions(code);
   };
 
-  // Handle sub-position selection
-  const handleSubPositionSelect = (fullCode, description) => {
+  // Handle sub-position selection — passe code, description ET formalités
+  const handleSubPositionSelect = (fullCode, description, formalities) => {
     setSearchQuery(fullCode);
     onChange(fullCode);
     if (onSubPositionSelect) {
-      onSubPositionSelect(fullCode, description);
+      onSubPositionSelect(fullCode, description, formalities || null);
     }
   };
 
@@ -286,7 +286,11 @@ export default function SmartHSSearch({
                           className="flex items-center justify-between bg-[#15202A] p-2 rounded border border-[rgba(139,92,246,0.25)] hover:border-[#A78BFA] cursor-pointer transition-colors"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleSubPositionSelect(sp.code, sp.description_fr || sp.description_en);
+                            handleSubPositionSelect(
+                              sp.code,
+                              language === 'fr' ? sp.description_fr : (sp.description_en || sp.description_fr),
+                              sp.administrative_formalities || null
+                            );
                           }}
                         >
                           <div className="flex items-center gap-2">
