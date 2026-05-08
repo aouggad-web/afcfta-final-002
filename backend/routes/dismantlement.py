@@ -16,9 +16,9 @@ async def dismantlement_schedule(
     country_iso3: str,
     hs6: str,
     npf_rate: float = Query(..., ge=0.0, le=100.0, description="Taux NPF (droit normal) en %"),
-    category: Optional[str] = Query(None, regex="^[ABCD]$",
+    category: Optional[str] = Query(None, pattern="^[ABCD]$",
                                     description="Catégorie ZLECAf (A/B/C/D). Auto-détectée si absent."),
-    language: str = Query("fr", regex="^(fr|en)$"),
+    language: str = Query("fr", pattern="^(fr|en)$"),
 ):
     """
     Retourne le calendrier officiel de démantèlement tarifaire ZLECAf
