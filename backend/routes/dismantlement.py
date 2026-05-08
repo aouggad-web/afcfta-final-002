@@ -1,7 +1,7 @@
 """
 dismantlement.py
 Endpoint: schéma de démantèlement tarifaire ZLECAf officiel
-GET /api/dismantlement/{country}/{hs6}?npf_rate=X&category=A
+GET /api/dismantlement/{country_iso3}/{hs6}?npf_rate=X&category=A
 """
 
 from fastapi import APIRouter, HTTPException, Query
