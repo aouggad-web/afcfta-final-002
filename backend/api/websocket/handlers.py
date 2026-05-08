@@ -16,10 +16,12 @@ from typing import Any, Dict, List, Optional, Set
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query
 from fastapi.websockets import WebSocketState
+from auth import get_db, _hash_key
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/ws", tags=["WebSocket Real-time"])
+_PUBLIC_MODE_WARNED = False
 
 
 async def _ws_auth(websocket: WebSocket, api_key: Optional[str]) -> bool:
@@ -28,9 +30,12 @@ async def _ws_auth(websocket: WebSocket, api_key: Optional[str]) -> bool:
     FastAPI Depends() doesn't apply to WebSocket routes — explicit check required.
     Returns True if valid, closes connection with 4001 and returns False otherwise.
     """
-    from auth import get_db, _hash_key
+    global _PUBLIC_MODE_WARNED
     db = get_db()
     if db is None:
+        if not _PUBLIC_MODE_WARNED:
+            logger.warning("[WS] No DB configured; WebSocket authentication runs in public mode")
+            _PUBLIC_MODE_WARNED = True
         return True  # No DB configured — public mode
     if not api_key:
         await websocket.close(code=4001, reason="Missing api_key query parameter")
@@ -92,9 +97,9 @@ class ConnectionManager:
         channel: str,
         user_id: Optional[str] = None,
         filters: Optional[Dict[str, Any]] = None,
-        already_accepted: bool = False,
+        skip_accept: bool = False,
     ) -> None:
-        if not already_accepted:
+        if not skip_accept:
             await websocket.accept()
         if channel not in self._channels:
             self._channels[channel] = set()
@@ -180,7 +185,7 @@ async def investment_alerts_ws(
     if not await _ws_auth(websocket, api_key):
         return
     filters = {"sector": sector, "risk_tolerance": risk_tolerance}
-    await manager.connect(websocket, "investment_alerts", user_id=user_id, filters=filters, already_accepted=True)
+    await manager.connect(websocket, "investment_alerts", user_id=user_id, filters=filters, skip_accept=True)
     try:
         while True:
             raw = await websocket.receive_text()
@@ -210,7 +215,7 @@ async def tariff_updates_ws(
         return
     country_list = [c.strip() for c in countries.split(",")] if countries else []
     filters = {"countries": country_list}
-    await manager.connect(websocket, "tariff_updates", filters=filters, already_accepted=True)
+    await manager.connect(websocket, "tariff_updates", filters=filters, skip_accept=True)
     try:
         while True:
             raw = await websocket.receive_text()
@@ -237,7 +242,7 @@ async def calculation_progress_ws(
     await manager.connect(
         websocket, "calculation_progress",
         filters={"operation_id": operation_id},
-        already_accepted=True,
+        skip_accept=True,
     )
     try:
         # Simulate progress streaming (real impl listens to a Redis pub/sub key)
@@ -275,7 +280,7 @@ async def regional_metrics_ws(
     await websocket.accept()
     if not await _ws_auth(websocket, api_key):
         return
-    await manager.connect(websocket, "regional_metrics", filters={"bloc": bloc}, already_accepted=True)
+    await manager.connect(websocket, "regional_metrics", filters={"bloc": bloc}, skip_accept=True)
     try:
         while True:
             try:
@@ -307,7 +312,7 @@ async def system_notifications_ws(
     await websocket.accept()
     if not await _ws_auth(websocket, api_key):
         return
-    await manager.connect(websocket, "system_notifications", user_id=user_id, already_accepted=True)
+    await manager.connect(websocket, "system_notifications", user_id=user_id, skip_accept=True)
     try:
         # Send initial platform status
         await websocket.send_json({

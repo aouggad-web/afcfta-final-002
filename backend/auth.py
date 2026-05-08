@@ -10,7 +10,6 @@ Wire the database before first request:
     set_database(db)
 """
 
-import hashlib
 import hmac
 import os
 from typing import Annotated, Optional
@@ -45,11 +44,10 @@ def get_db():
 def _hash_key(raw_key: str) -> str:
     """HMAC-SHA256 avec SECRET_KEY comme sel.
     Résistant aux rainbow tables contrairement au SHA-256 nu.
-    Si SECRET_KEY absent (dev sans .env), repli sur SHA-256 nu — NE PAS faire en prod.
+    Si SECRET_KEY absent (dev sans .env), utilise une clé de secours non vide.
     """
-    if _HMAC_SECRET:
-        return hmac.new(_HMAC_SECRET, raw_key.encode(), "sha256").hexdigest()
-    return hashlib.sha256(raw_key.encode()).hexdigest()
+    secret = _HMAC_SECRET or b"afcfta-dev-fallback-secret"
+    return hmac.new(secret, raw_key.encode(), "sha256").hexdigest()
 
 
 # ---------------------------------------------------------------------------
