@@ -396,7 +396,6 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(exchange_rates_router, tags=["Exchange Rates"], dependencies=_auth)
     if DISMANTLEMENT_AVAILABLE:
         api_router.include_router(dismantlement_router, tags=["ZLECAf Dismantlement Schedule"], dependencies=_auth)
-
     # Admin endpoints — uses its own require_admin dependency at route level
     if ADMIN_PROJECTS_AVAILABLE:
         api_router.include_router(admin_projects_router, tags=["Admin - Structuring Projects"])
