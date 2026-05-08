@@ -11,9 +11,15 @@ Wire the database before first request:
 """
 
 import hashlib
+import hmac
+import os
 from typing import Annotated, Optional
 
 from fastapi import Depends, Header, HTTPException, status
+
+# HMAC secret — doit être identique à la valeur utilisée lors de la création
+# des clés. Changer cette valeur invalide toutes les clés existantes.
+_HMAC_SECRET = os.environ.get("SECRET_KEY", "").encode()
 
 
 # ---------------------------------------------------------------------------
@@ -37,6 +43,12 @@ def get_db():
 # ---------------------------------------------------------------------------
 
 def _hash_key(raw_key: str) -> str:
+    """HMAC-SHA256 avec SECRET_KEY comme sel.
+    Résistant aux rainbow tables contrairement au SHA-256 nu.
+    Si SECRET_KEY absent (dev sans .env), repli sur SHA-256 nu — NE PAS faire en prod.
+    """
+    if _HMAC_SECRET:
+        return hmac.new(_HMAC_SECRET, raw_key.encode(), "sha256").hexdigest()
     return hashlib.sha256(raw_key.encode()).hexdigest()
 
 
