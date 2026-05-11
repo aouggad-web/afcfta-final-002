@@ -80,14 +80,10 @@ export default function SmartHSSearch({
   // Search HS6 codes
   const searchHS6 = useCallback(
     (query) => {
-      // eslint-disable-next-line no-console
-      console.log('[SmartHSSearch] searchHS6 CALLED sync, query=', query, 'existingTimer=', !!searchTimeoutRef.current);
       if (searchTimeoutRef.current) {
         clearTimeout(searchTimeoutRef.current);
       }
-      const newTimer = setTimeout(async () => {
-        // eslint-disable-next-line no-console
-        console.log('[SmartHSSearch] TIMER FIRED for:', query, 'myTimer=', newTimer, 'currentRef=', searchTimeoutRef.current);
+      searchTimeoutRef.current = setTimeout(async () => {
         if (!query || query.length < 2) {
           setSearchResults([]);
           return;
@@ -95,8 +91,6 @@ export default function SmartHSSearch({
 
         setLoading(true);
         try {
-          // eslint-disable-next-line no-console
-          console.log('[SmartHSSearch] axios.get calling, country=', destinationCountry);
           const response = await axios.get(`${API}/hs6/smart-search`, {
             params: {
               q: query,
@@ -105,8 +99,6 @@ export default function SmartHSSearch({
               include_sub_positions: true,
             },
           });
-          // eslint-disable-next-line no-console
-          console.log('[SmartHSSearch] response:', response.data?.total, 'results');
           setSearchResults(response.data.results || []);
           setShowResults(true);
         } catch (error) {
@@ -149,8 +141,6 @@ export default function SmartHSSearch({
   // Handle search input change
   const handleSearchChange = (e) => {
     const query = e.target.value;
-    // eslint-disable-next-line no-console
-    console.log('[SmartHSSearch] handleSearchChange:', query);
     setSearchQuery(query);
     searchHS6(query);
   };
