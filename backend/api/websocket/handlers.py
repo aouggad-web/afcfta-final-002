@@ -16,29 +16,47 @@ from typing import Any, Dict, List, Optional, Set
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query
 from fastapi.websockets import WebSocketState
+from auth import get_db, _hash_key
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/ws", tags=["WebSocket Real-time"])
+_PUBLIC_MODE_WARNED = False
 
 
 async def _ws_auth(websocket: WebSocket, api_key: Optional[str]) -> bool:
     """
     Validate X-API-Key passed as query param for WebSocket connections.
     FastAPI Depends() doesn't apply to WebSocket routes — explicit check required.
-    Returns True if valid, closes connection with 4001 and returns False otherwise.
+    Returns True if valid (and accepts the socket), closes and returns False otherwise.
     """
-    from auth import get_db, _hash_key
+    global _PUBLIC_MODE_WARNED
     db = get_db()
     if db is None:
+        if not _PUBLIC_MODE_WARNED:
+            logger.warning("[WS] No DB configured; WebSocket authentication runs in public mode")
+            _PUBLIC_MODE_WARNED = True
+        if websocket.client_state == WebSocketState.CONNECTING:
+            await websocket.accept()
         return True  # No DB configured — public mode
     if not api_key:
-        await websocket.close(code=4001, reason="Missing api_key query parameter")
+        if websocket.client_state != WebSocketState.DISCONNECTED:
+            await websocket.close(code=4001, reason="Missing api_key query parameter")
         return False
-    doc = await db["api_keys"].find_one({"key_hash": _hash_key(api_key), "active": True})
+    try:
+        key_hash = _hash_key(api_key)
+    except RuntimeError as exc:
+        logger.error(f"[WS] Authentication misconfigured: {exc}")
+        if websocket.client_state != WebSocketState.DISCONNECTED:
+            await websocket.close(code=1011, reason="Server auth misconfiguration")
+        return False
+    doc = await db["api_keys"].find_one({"key_hash": key_hash, "active": True})
     if not doc:
-        await websocket.close(code=4001, reason="Invalid or inactive API key")
+        if websocket.client_state != WebSocketState.DISCONNECTED:
+            await websocket.close(code=4001, reason="Invalid or inactive API key")
         return False
+    if websocket.client_state == WebSocketState.CONNECTING:
+        await websocket.accept()
     return True
 
 # Channel definitions matching the problem statement
@@ -92,10 +110,7 @@ class ConnectionManager:
         channel: str,
         user_id: Optional[str] = None,
         filters: Optional[Dict[str, Any]] = None,
-        already_accepted: bool = False,
     ) -> None:
-        if not already_accepted:
-            await websocket.accept()
         if channel not in self._channels:
             self._channels[channel] = set()
         self._channels[channel].add(websocket)
@@ -176,11 +191,10 @@ async def investment_alerts_ws(
     Real-time investment opportunity alerts.
     Requires api_key query param. Send {"type": "ping"} to keep alive.
     """
-    await websocket.accept()
     if not await _ws_auth(websocket, api_key):
         return
     filters = {"sector": sector, "risk_tolerance": risk_tolerance}
-    await manager.connect(websocket, "investment_alerts", user_id=user_id, filters=filters, already_accepted=True)
+    await manager.connect(websocket, "investment_alerts", user_id=user_id, filters=filters)
     try:
         while True:
             raw = await websocket.receive_text()
@@ -205,12 +219,11 @@ async def tariff_updates_ws(
     Live tariff change notifications.
     Requires api_key query param. Optional `countries` filter (e.g. ?countries=DZA,MAR).
     """
-    await websocket.accept()
     if not await _ws_auth(websocket, api_key):
         return
     country_list = [c.strip() for c in countries.split(",")] if countries else []
     filters = {"countries": country_list}
-    await manager.connect(websocket, "tariff_updates", filters=filters, already_accepted=True)
+    await manager.connect(websocket, "tariff_updates", filters=filters)
     try:
         while True:
             raw = await websocket.receive_text()
@@ -231,13 +244,11 @@ async def calculation_progress_ws(
     Stream progress updates for a long-running bulk operation.
     Requires api_key query param. Automatically closes at 100%.
     """
-    await websocket.accept()
     if not await _ws_auth(websocket, api_key):
         return
     await manager.connect(
         websocket, "calculation_progress",
         filters={"operation_id": operation_id},
-        already_accepted=True,
     )
     try:
         # Simulate progress streaming (real impl listens to a Redis pub/sub key)
@@ -272,10 +283,9 @@ async def regional_metrics_ws(
     Live regional performance metrics.
     Requires api_key query param. Pushes data every `interval_s` seconds.
     """
-    await websocket.accept()
     if not await _ws_auth(websocket, api_key):
         return
-    await manager.connect(websocket, "regional_metrics", filters={"bloc": bloc}, already_accepted=True)
+    await manager.connect(websocket, "regional_metrics", filters={"bloc": bloc})
     try:
         while True:
             try:
@@ -304,10 +314,9 @@ async def system_notifications_ws(
     user_id: Optional[str] = Query(None),
 ):
     """Platform-wide system notifications. Requires api_key query param."""
-    await websocket.accept()
     if not await _ws_auth(websocket, api_key):
         return
-    await manager.connect(websocket, "system_notifications", user_id=user_id, already_accepted=True)
+    await manager.connect(websocket, "system_notifications", user_id=user_id)
     try:
         # Send initial platform status
         await websocket.send_json({
