@@ -379,15 +379,9 @@ class OECTradeService:
     ) -> Dict:
         """
         Récupère les statistiques commerciales pour un code HS6 spécifique avec valeur et volume.
-        
+
         Utilise le cube HS Rev. 2017 (compatible SH2022) avec des codes HS6
         pour assurer la cohérence des données.
-        
-        Args:
-            hs_code: Code HS (4 ou 6 chiffres - sera converti en HS6)
-            year: Année
-            trade_flow: "exports" ou "imports"
-            limit: Nombre max de résultats
         """
         # Normaliser le code en HS6 (ajouter des zéros si nécessaire)
         hs6_code = hs_code.zfill(6)[:6]
@@ -417,6 +411,98 @@ class OECTradeService:
         
         result = await self._make_request(params)
         return self._format_hs_response(result, hs6_code, year, trade_flow)
+
+    async def get_country_hs6_history(
+        self,
+        country_iso3: str,
+        hs_code: str,
+        n_years: int = 5,
+        end_year: int = DEFAULT_YEAR,
+    ) -> Dict:
+        """
+        Retourne l'historique commercial (exports + imports) d'un pays africain pour un HS6 donné,
+        sur les `n_years` dernières années disponibles (par défaut 5 ans jusqu'à `DEFAULT_YEAR`).
+
+        Source: OEC / BACI (cube HS Rev. 2017).
+        """
+        iso3 = country_iso3.upper()
+        country_info = AFRICAN_COUNTRIES_OEC.get(iso3)
+        if not country_info:
+            return {"error": f"Country {iso3} not found", "country": iso3}
+
+        # Normalize HS to 6 digits
+        hs_clean = "".join(c for c in str(hs_code) if c.isdigit())
+        if not hs_clean:
+            return {"error": "Invalid HS code", "hs_code": hs_code}
+        if len(hs_clean) == 4:
+            hs6_code = hs_clean + "00"
+        else:
+            hs6_code = hs_clean.zfill(6)[:6]
+        oec_hs_id = self._format_oec_hs6_id(hs6_code)
+
+        years = list(range(end_year - n_years + 1, end_year + 1))
+        async def fetch_one(year: int, flow: str):
+            if flow == "exports":
+                drilldowns = ["Year", "Exporter Country", "HS6"]
+                country_dim = "Exporter Country"
+            else:
+                drilldowns = ["Year", "Importer Country", "HS6"]
+                country_dim = "Importer Country"
+            params = self._build_params(
+                cube=OEC_CUBES[DEFAULT_CUBE],
+                drilldowns=drilldowns,
+                measures=["Trade Value", "Quantity"],
+                cuts={
+                    "Year": str(year),
+                    country_dim: country_info["oec_id"],
+                    "HS6": oec_hs_id,
+                },
+                limit=1,
+            )
+            try:
+                resp = await self._make_request(params)
+                rows = resp.get("data") or []
+                if not rows:
+                    return {"year": year, "trade_value": 0, "quantity": 0, "no_data": True}
+                row = rows[0]
+                return {
+                    "year": year,
+                    "trade_value": row.get("Trade Value", 0),
+                    "quantity": row.get("Quantity", 0),
+                }
+            except Exception as exc:  # noqa: BLE001
+                return {"year": year, "trade_value": 0, "quantity": 0, "error": str(exc)[:120]}
+
+        exports_tasks = [fetch_one(y, "exports") for y in years]
+        imports_tasks = [fetch_one(y, "imports") for y in years]
+        exports_data = await asyncio.gather(*exports_tasks)
+        imports_data = await asyncio.gather(*imports_tasks)
+
+        # Build the chart rows (one per year)
+        chart_rows = []
+        for y in years:
+            exp_row = next((e for e in exports_data if e["year"] == y), {})
+            imp_row = next((e for e in imports_data if e["year"] == y), {})
+            export_val = float(exp_row.get("trade_value") or 0)
+            import_val = float(imp_row.get("trade_value") or 0)
+            chart_rows.append({
+                "year": y,
+                "exports": round(export_val, 2),
+                "imports": round(import_val, 2),
+                "balance": round(export_val - import_val, 2),
+            })
+
+        return {
+            "country_iso3": iso3,
+            "country_name": country_info.get("name_fr") or country_info.get("name") or iso3,
+            "hs_code": hs6_code,
+            "years": years,
+            "exports": exports_data,
+            "imports": imports_data,
+            "chart_rows": chart_rows,
+            "source": "OEC / BACI (HS Rev. 2017)",
+            "currency": "USD",
+        }
     
     async def get_bilateral_trade(
         self,

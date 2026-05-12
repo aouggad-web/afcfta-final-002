@@ -16,6 +16,7 @@ import TradeComparison from '../TradeComparison';
 import TradeProductsTable from '../TradeProductsTable';
 import OECTradeStats from '../stats/OECTradeStats';
 import MultiCountryComparison from './MultiCountryComparison';
+import CountryHS6History from './CountryHS6History';
 import { PDFExportButton } from '../common/ExportTools';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
@@ -274,6 +275,7 @@ export default function StatisticsTab({ language = 'fr' }) {
 
           {/* ── Multi-Country Comparison Tab ─────────────────── */}
           <TabsContent value="comparison" className="space-y-8">
+            <CountryHS6History language={language} />
             <MultiCountryComparison language={language} />
           </TabsContent>
         </div>
