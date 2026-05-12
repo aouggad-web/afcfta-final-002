@@ -56,6 +56,14 @@ from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
 
+try:
+    from .dismantlement import router as dismantlement_router
+    DISMANTLEMENT_AVAILABLE = True
+except ImportError as e:
+    dismantlement_router = None
+    DISMANTLEMENT_AVAILABLE = False
+    _logger.warning(f"Dismantlement schedule route unavailable: {e}")
+
 # Load Rules of Origin data
 try:
     import sys
@@ -389,3 +397,5 @@ def register_routes(api_router: APIRouter):
     # Admin endpoints — uses its own require_admin dependency at route level
     if ADMIN_PROJECTS_AVAILABLE:
         api_router.include_router(admin_projects_router, tags=["Admin - Structuring Projects"])
+    if DISMANTLEMENT_AVAILABLE:
+        api_router.include_router(dismantlement_router, tags=["ZLECAf Dismantlement Schedule"], dependencies=_auth)

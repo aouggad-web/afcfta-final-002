@@ -17,6 +17,7 @@ import sys
 import os
 from pathlib import Path
 from datetime import datetime
+from typing import Optional
 
 SCRIPT_DIR = Path(__file__).parent
 BACKEND_DIR = SCRIPT_DIR.parent
@@ -131,7 +132,7 @@ def build_taxes_from_etl(hs6: str) -> tuple:
     return taxes, advantages, formalities
 
 
-def get_designation_full(pos: dict, prog_item: dict | None) -> str:
+def get_designation_full(pos: dict, prog_item: Optional[dict]) -> str:
     """Construit la désignation hiérarchique complète."""
     if prog_item:
         full = prog_item.get("designation_full", "")

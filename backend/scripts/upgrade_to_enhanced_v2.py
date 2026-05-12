@@ -209,6 +209,23 @@ def _build_sub_position(pos: Dict, format_type: str, dd_rate: float, country_cod
     desc_fr = pos.get("designation") or pos.get("hs6_desc") or ""
     desc_en = desc_fr  # Bilingual designation not available in old format
 
+    # Avoid low-quality generic placeholders ("Type 1", "Type 2", etc.)
+    # that make multiple countries look artificially identical.
+    generic_markers = {
+        "type 1", "type 2", "other", "autre", "autres",
+        "première sous-position tarifaire nationale",
+        "deuxième sous-position tarifaire nationale",
+        "first national tariff sub-position",
+        "second national tariff sub-position",
+    }
+
+    desc_fr_l = (desc_fr or "").strip().lower()
+    if not desc_fr_l or any(m in desc_fr_l for m in generic_markers):
+        # Fall back to a deterministic national-code description instead of
+        # keeping generic synthetic labels.
+        desc_fr = f"Sous-position tarifaire nationale [{code10}]"
+        desc_en = f"National tariff sub-heading [{code10}]"
+
     return {
         "code": code10,
         "digits": len(code10),
