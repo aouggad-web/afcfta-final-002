@@ -87,14 +87,14 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
             onClick={() => onTabChange && onTabChange("language", "fr")}
             aria-pressed={isFrench}
           >
-            🇫🇷 FR
+            FR
           </button>
           <button
             className={`afcfta-langBtn ${!isFrench ? "active" : ""}`}
             onClick={() => onTabChange && onTabChange("language", "en")}
             aria-pressed={!isFrench}
           >
-            🇬🇧 EN
+            EN
           </button>
         </div>
       </div>
