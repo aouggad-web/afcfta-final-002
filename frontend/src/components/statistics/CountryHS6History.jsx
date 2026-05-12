@@ -122,7 +122,6 @@ export default function CountryHS6History({ language = 'fr' }) {
   // Auto-run on mount
   useEffect(() => {
     runQuery();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const totals = useMemo(() => {
