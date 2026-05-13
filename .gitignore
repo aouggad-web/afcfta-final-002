@@ -61,3 +61,4 @@ android-sdk/
 *.backup
 *.bak
 frontend/node_modules/.cache/default-development/14.pack
+frontend/node_modules/.cache/default-development/0.pack
