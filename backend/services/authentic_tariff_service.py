@@ -307,11 +307,13 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         elif tax_code == 'TCS':
             tcs_rate_pct = rate
 
-    # If PRCT/TCS are in taxes_detail but not in other_taxes_rate, add them
-    if prct_rate_pct > 0 and other_taxes_pct == 0:
-        other_taxes_pct = prct_rate_pct
-    if tcs_rate_pct > 0:
-        other_taxes_pct = max(other_taxes_pct, tcs_rate_pct)
+    # Compute other_taxes_pct as sum of all paratariff charges (PRCT + TCS)
+    # When both are explicitly in taxes_detail, sum them (not max)
+    if prct_rate_pct > 0 or tcs_rate_pct > 0:
+        other_taxes_pct = prct_rate_pct + tcs_rate_pct
+    elif other_taxes_pct > 0:
+        # Fallback: other_taxes_rate field covers PRCT only (no TCS in taxes_detail)
+        prct_rate_pct = other_taxes_pct
 
     # If other_taxes_rate is set but PRCT not in taxes_detail, add it as PRCT
     if other_taxes_pct > 0 and prct_rate_pct == 0:
