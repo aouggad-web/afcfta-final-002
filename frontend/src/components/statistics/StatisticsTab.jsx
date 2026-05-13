@@ -51,7 +51,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       overview: "Vue d'ensemble",
       products: "Produits",
       trends: "Tendances",
-      paysSH6: "Par Pays & SH6",
+      parPays: "Par Pays & SH6",
       comparison: "Comparaison Pays",
       topExporters: "Top 10 Exportateurs",
       topImporters: "Top 10 Importateurs",
@@ -66,7 +66,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       overview: "Overview",
       products: "Products",
       trends: "Trends",
-      paysSH6: "By Country & HS6",
+      parPays: "By Country & HS6",
       comparison: "Country Comparison",
       topExporters: "Top 10 Exporters",
       topImporters: "Top 10 Importers",
@@ -96,7 +96,7 @@ export default function StatisticsTab({ language = 'fr' }) {
     { value: 'overview',   icon: <Globe className="h-4 w-4"     />, label: txt.overview   },
     { value: 'products',   icon: <Package className="h-4 w-4"   />, label: txt.products   },
     { value: 'trends',     icon: <TrendingUp className="h-4 w-4"/>, label: txt.trends     },
-    { value: 'pays-sh6',   icon: <Search className="h-4 w-4"    />, label: txt.paysSH6   },
+    { value: 'par-pays',   icon: <Search className="h-4 w-4"   />, label: txt.parPays   },
     { value: 'comparison', icon: <Scale className="h-4 w-4"     />, label: txt.comparison },
   ];
 
@@ -277,7 +277,7 @@ export default function StatisticsTab({ language = 'fr' }) {
           </TabsContent>
 
           {/* ── Par Pays & SH6 Tab ───────────────────────────── */}
-          <TabsContent value="pays-sh6" className="space-y-8">
+          <TabsContent value="par-pays" className="space-y-8">
             <CountryHS6History language={language} />
           </TabsContent>
 
