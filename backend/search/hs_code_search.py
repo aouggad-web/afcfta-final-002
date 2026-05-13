@@ -9,11 +9,14 @@ works out of the box.
 import json
 import os
 import re
+import logging
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from difflib import SequenceMatcher
 
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 class TariffSearchEngine:
@@ -37,18 +40,19 @@ class TariffSearchEngine:
                         temp_df = pd.read_csv(os.path.join(self.data_dir, file))
                         all_data.append(temp_df)
                     except Exception as e:
-                        print(f"Error loading {file}: {e}")
+                        logger.warning("Error loading %s: %s", file, e)
 
         if all_data:
             self.df = pd.concat(all_data, ignore_index=True)
             self.df["description"] = self.df["description"].fillna("").astype(str)
-            print(f"TariffSearchEngine: Loaded {len(self.df)} tariff positions from normalized CSVs.")
+            logger.info("TariffSearchEngine: Loaded %s tariff positions from normalized CSVs.", len(self.df))
             return
 
         # ── Fallback: load from per-country tariff JSON files ────────────────
         backend_dir = Path(__file__).resolve().parent.parent
         candidates = [
             backend_dir / "data" / "tariffs",
+            backend_dir.parent / "data" / "tariffs",
             backend_dir.parent / "backend" / "data" / "tariffs",
         ]
         tariffs_dir = next((c for c in candidates if c.exists()), None)
@@ -62,12 +66,13 @@ class TariffSearchEngine:
                 with open(json_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
             except Exception as e:
-                print(f"Error reading {json_path.name}: {e}")
+                logger.warning("Error reading %s: %s", json_path.name, e)
                 continue
             country_code = data.get("country_code") or json_path.stem.split("_")[0]
             lines = data.get("tariff_lines") or []
             for line in lines:
-                hs_code = str(line.get("hs6") or line.get("hs_code") or "").strip()
+                hs_code = str(line.get("hs6") or line.get("hs_code") or line.get("code") or "").strip()
+                hs_code = hs_code.replace(" ", "").replace(".", "")
                 if not hs_code:
                     continue
                 description = (
@@ -108,7 +113,7 @@ class TariffSearchEngine:
         if rows:
             self.df = pd.DataFrame(rows)
             self.df["description"] = self.df["description"].fillna("").astype(str)
-            print(f"TariffSearchEngine: Loaded {len(self.df)} positions from {tariffs_dir} (fallback).")
+            logger.info("TariffSearchEngine: Loaded %s positions from %s (fallback).", len(self.df), tariffs_dir)
         else:
             self.df = pd.DataFrame(columns=["hs_code", "description", "duty_rate_pct", "country", "bloc"])
 
@@ -166,7 +171,7 @@ class TariffSearchEngine:
 
         # Filter by country if specified
         if country:
-            results = results[results["country"].str.upper() == country.upper()]
+            results = results[results["country"].fillna("").astype(str).str.upper() == country.upper()]
 
         # Deduplicate and sort by score
         results = results.sort_values(by="score", ascending=False).drop_duplicates(subset=["hs_code", "country"])

@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Cell } from 'recharts';
-import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight, Search } from 'lucide-react';
 
 // Sub-components
 import StatisticsZaubaStyle from '../StatisticsZaubaStyle';
@@ -51,6 +51,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       overview: "Vue d'ensemble",
       products: "Produits",
       trends: "Tendances",
+      parPays: "Par Pays & SH6",
       comparison: "Comparaison Pays",
       topExporters: "Top 10 Exportateurs",
       topImporters: "Top 10 Importateurs",
@@ -65,6 +66,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       overview: "Overview",
       products: "Products",
       trends: "Trends",
+      parPays: "By Country & HS6",
       comparison: "Country Comparison",
       topExporters: "Top 10 Exporters",
       topImporters: "Top 10 Importers",
@@ -91,10 +93,11 @@ export default function StatisticsTab({ language = 'fr' }) {
   };
 
   const tabItems = [
-    { value: 'overview',   icon: <Globe className="h-4 w-4"    />, label: txt.overview   },
-    { value: 'products',   icon: <Package className="h-4 w-4"  />, label: txt.products   },
-    { value: 'trends',     icon: <TrendingUp className="h-4 w-4"/>, label: txt.trends    },
-    { value: 'comparison', icon: <Scale className="h-4 w-4"    />, label: txt.comparison },
+    { value: 'overview',   icon: <Globe className="h-4 w-4"     />, label: txt.overview   },
+    { value: 'products',   icon: <Package className="h-4 w-4"   />, label: txt.products   },
+    { value: 'trends',     icon: <TrendingUp className="h-4 w-4"/>, label: txt.trends     },
+    { value: 'par-pays',   icon: <Search className="h-4 w-4"   />, label: txt.parPays   },
+    { value: 'comparison', icon: <Scale className="h-4 w-4"     />, label: txt.comparison },
   ];
 
   return (
@@ -273,9 +276,13 @@ export default function StatisticsTab({ language = 'fr' }) {
             <TradeComparison language={language} />
           </TabsContent>
 
+          {/* ── Par Pays & SH6 Tab ───────────────────────────── */}
+          <TabsContent value="par-pays" className="space-y-8">
+            <CountryHS6History language={language} />
+          </TabsContent>
+
           {/* ── Multi-Country Comparison Tab ─────────────────── */}
           <TabsContent value="comparison" className="space-y-8">
-            <CountryHS6History language={language} />
             <MultiCountryComparison language={language} />
           </TabsContent>
         </div>
