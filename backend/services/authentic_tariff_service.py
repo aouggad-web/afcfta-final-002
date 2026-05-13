@@ -6,9 +6,44 @@ from typing import Dict, List, Any, Optional
 
 logger = logging.getLogger(__name__)
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
+CRAWLED_DIR = os.path.join(DATA_DIR, 'crawled')
 _tariff_cache = {}
 _nomenclature_cache = {}
+_crawled_index_cache = {}   # {ISO3: {hs_code_10: sub_position_entry}}
 _available_countries_cache = None
+
+
+def load_crawled_position_index(country_iso3: str) -> dict:
+    """
+    Load and index the crawled DZA_tariffs.json (or similar) by hs_code.
+    Returns {hs_code_10digits: entry_dict} for fast per-position lookup.
+    Cached in memory after first load.
+    """
+    global _crawled_index_cache
+    country_iso3 = _validate_iso3(country_iso3)
+    if country_iso3 in _crawled_index_cache:
+        return _crawled_index_cache[country_iso3]
+
+    file_path = os.path.join(CRAWLED_DIR, f'{country_iso3}_tariffs.json')
+    if not os.path.exists(file_path):
+        _crawled_index_cache[country_iso3] = {}
+        return {}
+
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        index = {}
+        for sp in data.get('sub_positions', []):
+            code = sp.get('hs_code', '').replace('.', '').replace(' ', '')
+            if code:
+                index[code] = sp
+        _crawled_index_cache[country_iso3] = index
+        logger.info(f'Loaded crawled position index for {country_iso3}: {len(index)} entries')
+        return index
+    except Exception as e:
+        logger.error(f'Error loading crawled index for {country_iso3}: {e}')
+        _crawled_index_cache[country_iso3] = {}
+        return {}
 
 # Only allow well-formed ISO 2- or 3-letter country codes to prevent path traversal.
 _ISO_CODE_RE = re.compile(r'^[A-Z]{2,3}$')
@@ -255,18 +290,36 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     dd_rate_pct = line.get('dd_rate', 0)
     sub_position_info = None
 
-    if len(hs_code_clean) > 6:
-        # Look for explicit rate in tariff_lines sub_positions
-        for sp in line.get('sub_positions', []):
-            if sp.get('code') == hs_code_clean:
-                dd_rate_pct = sp.get('dd', dd_rate_pct)
-                break
+    # --- Priority 1: crawled authentic JSON (per-position taxes) ---
+    # For countries that have a crawled/{ISO3}_tariffs.json with per-position
+    # tax rates (source_quality=crawled_authentic), these rates take precedence
+    # over the ETL-computed rates in the main DZA_tariffs.json.
+    crawled_sp_entry = None
+    crawled_index = load_crawled_position_index(country_iso3)
+    if crawled_index and hs_code_clean in crawled_index:
+        crawled_sp_entry = crawled_index[hs_code_clean]
 
-        # Resolve description: check nomenclature_map first (most complete)
-        nomenclature = load_nomenclature_map(country_iso3)
+    if len(hs_code_clean) > 6:
+        if crawled_sp_entry:
+            # Use crawled per-position DD rate (authentic, sourced from douane.gov.dz)
+            crawled_taxes = crawled_sp_entry.get('taxes', {})
+            if 'DD' in crawled_taxes:
+                dd_rate_pct = float(crawled_taxes['DD'].get('rate', dd_rate_pct))
+        else:
+            # Fall back to ETL tariff_lines sub_positions
+            for sp in line.get('sub_positions', []):
+                if sp.get('code') == hs_code_clean:
+                    dd_rate_pct = sp.get('dd', dd_rate_pct)
+                    break
+
+        # Resolve description: crawled name > nomenclature_map > sub_positions
         sp_desc = ''
-        if nomenclature:
-            sp_desc = nomenclature.get(hs_code_clean, '')
+        if crawled_sp_entry:
+            sp_desc = crawled_sp_entry.get('name', '') or crawled_sp_entry.get('description', '')
+        if not sp_desc:
+            nomenclature = load_nomenclature_map(country_iso3)
+            if nomenclature:
+                sp_desc = nomenclature.get(hs_code_clean, '')
         if not sp_desc:
             for sp in line.get('sub_positions', []):
                 if sp.get('code') == hs_code_clean:
@@ -284,8 +337,21 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     other_taxes_pct = line.get('other_taxes_rate', 0)
     zlecaf_rate_pct = line.get('zlecaf_rate', 0) or 0
 
-    # Extract DAPS and other individual taxes from taxes_detail dict
-    taxes_detail = line.get('taxes_detail', {})
+    # Extract DAPS and other individual taxes:
+    # If crawled entry has per-position taxes, use them as primary source;
+    # otherwise fall back to taxes_detail from the ETL line.
+    if crawled_sp_entry and crawled_sp_entry.get('taxes'):
+        crawled_taxes = crawled_sp_entry['taxes']
+        taxes_detail = {
+            k: {'label': v.get('name', k), 'rate': v.get('rate', 0), 'source': v.get('source', 'crawled')}
+            for k, v in crawled_taxes.items() if isinstance(v, dict)
+        }
+        # Inherit VAT and ZLECAf from ETL line (not always in crawled)
+        if 'TVA' in crawled_taxes:
+            vat_rate_pct = float(crawled_taxes['TVA'].get('rate', vat_rate_pct))
+    else:
+        taxes_detail = line.get('taxes_detail', {})
+
     if not isinstance(taxes_detail, dict):
         taxes_detail = {}
     daps_rate_pct = 0.0
