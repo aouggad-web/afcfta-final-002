@@ -474,8 +474,9 @@ class OECTradeService:
         years = list(range(end_year - n_years + 1, end_year + 1))
         start_year = years[0]
 
-        async def fetch_flow(flow: str) -> List[Dict]:
-            """Récupère toutes les années + tous les HS6 pour un pays/flux, filtre client-side."""
+        async def fetch_flow(flow: str) -> tuple:
+            """Récupère toutes les années + tous les HS6 pour un pays/flux, filtre client-side.
+            Retourne (by_year_dict, hs_labels_dict) où hs_labels_dict = {hs6_id: label}."""
             country_dim = "Exporter Country" if flow == "exports" else "Importer Country"
             params = self._build_params(
                 cube=OEC_CUBES[DEFAULT_CUBE],
@@ -492,26 +493,43 @@ class OECTradeService:
                 all_rows = resp.get("data") or []
                 # Filtre client-side par HS avec fallback
                 matched = self._filter_rows_by_hs(all_rows, oec_hs_id)
-                # Agrégation par année (plusieurs HS6 peuvent matcher en fallback HS4/HS2)
+                # Agrégation par année + collecte des libellés HS6
                 by_year: Dict[int, Dict] = {}
+                hs_labels: Dict[str, Dict] = {}  # hs6_id → {label, trade_value}
                 for row in matched:
                     y = row.get("Year")
                     if y not in years:
                         continue
                     if y not in by_year:
                         by_year[y] = {"trade_value": 0.0, "quantity": 0.0}
-                    by_year[y]["trade_value"] += float(row.get("Trade Value") or 0)
+                    tv = float(row.get("Trade Value") or 0)
+                    by_year[y]["trade_value"] += tv
                     by_year[y]["quantity"] += float(row.get("Quantity") or 0)
-                return by_year
+                    # Libellé HS6
+                    hid = str(row.get("HS6 ID", ""))
+                    hlabel = row.get("HS6", "")
+                    if hid and hlabel:
+                        if hid not in hs_labels:
+                            hs_labels[hid] = {"hs6_id": hid, "label": hlabel, "trade_value": 0.0}
+                        hs_labels[hid]["trade_value"] += tv
+                return by_year, hs_labels
             except Exception as exc:
                 logger.error(f"OEC fetch_flow {flow} error: {exc}")
-                return {}
+                return {}, {}
 
         # 2 requêtes en parallèle (exports + imports)
-        exports_by_year, imports_by_year = await asyncio.gather(
+        (exports_by_year, exp_labels), (imports_by_year, imp_labels) = await asyncio.gather(
             fetch_flow("exports"),
             fetch_flow("imports"),
         )
+
+        # Fusionner les libellés exports + imports, trier par valeur décroissante
+        all_labels: Dict[str, Dict] = {}
+        for hid, info in {**imp_labels, **exp_labels}.items():
+            if hid not in all_labels:
+                all_labels[hid] = {"hs6_id": hid, "label": info["label"], "trade_value": 0.0}
+            all_labels[hid]["trade_value"] += info["trade_value"]
+        hs_labels_sorted = sorted(all_labels.values(), key=lambda x: -x["trade_value"])
 
         # Construction des séries temporelles
         exports_data = []
@@ -544,17 +562,32 @@ class OECTradeService:
                 "balance": round(exp_val - imp_val, 2),
             })
 
-        # Détecter le niveau de correspondance utilisé
-        hs4_prefix = oec_hs_id[:5] if len(oec_hs_id) >= 5 else oec_hs_id
-        chapter_prefix = oec_hs_id[:3] if len(oec_hs_id) >= 3 else oec_hs_id
         any_exports = any(e["trade_value"] > 0 for e in exports_data)
         any_imports = any(i["trade_value"] > 0 for i in imports_data)
+
+        # Niveau de correspondance utilisé
+        if hs_labels_sorted:
+            first_id = hs_labels_sorted[0]["hs6_id"]
+            if first_id == oec_hs_id:
+                match_level = "hs6"
+            elif first_id.startswith(oec_hs_id[:5]):
+                match_level = "hs4"
+            else:
+                match_level = "hs2"
+        else:
+            match_level = "none"
+
+        # Code HS4 (4 chiffres significatifs)
+        hs4_code = hs6_code[:4]
 
         return {
             "country_iso3": iso3,
             "country_name": country_info.get("name_fr") or country_info.get("name") or iso3,
             "hs_code": hs6_code,
+            "hs4_code": hs4_code,
             "oec_hs_id": oec_hs_id,
+            "hs_labels": hs_labels_sorted,      # [{hs6_id, label, trade_value}, ...]
+            "match_level": match_level,          # "hs6" | "hs4" | "hs2" | "none"
             "years": years,
             "exports": exports_data,
             "imports": imports_data,
