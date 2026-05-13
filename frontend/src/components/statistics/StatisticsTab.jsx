@@ -93,11 +93,11 @@ export default function StatisticsTab({ language = 'fr' }) {
   };
 
   const tabItems = [
-    { value: 'overview',   icon: <Globe className="h-4 w-4"    />, label: txt.overview   },
-    { value: 'products',   icon: <Package className="h-4 w-4"  />, label: txt.products   },
-    { value: 'trends',     icon: <TrendingUp className="h-4 w-4"/>, label: txt.trends    },
+    { value: 'overview',   icon: <Globe className="h-4 w-4"     />, label: txt.overview   },
+    { value: 'products',   icon: <Package className="h-4 w-4"   />, label: txt.products   },
+    { value: 'trends',     icon: <TrendingUp className="h-4 w-4"/>, label: txt.trends     },
     { value: 'par-pays',   icon: <Search className="h-4 w-4"   />, label: txt.parPays   },
-    { value: 'comparison', icon: <Scale className="h-4 w-4"    />, label: txt.comparison },
+    { value: 'comparison', icon: <Scale className="h-4 w-4"     />, label: txt.comparison },
   ];
 
   return (
