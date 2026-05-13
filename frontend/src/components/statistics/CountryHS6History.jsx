@@ -22,6 +22,11 @@ const fmtUSD = (v) => {
   return `$${v.toFixed(0)}`;
 };
 
+const MATCH_LEVEL_LABEL = {
+  fr: { hs6: 'SH6 exact', hs4: 'Aggrégat SH4', hs2: 'Chapitre SH2', none: 'Aucune correspondance' },
+  en: { hs6: 'Exact HS6', hs4: 'HS4 aggregate', hs2: 'HS2 chapter', none: 'No match' },
+};
+
 const TXT = {
   fr: {
     title: 'Commerce par Pays & HS6 — 5 dernières années',
@@ -44,6 +49,9 @@ const TXT = {
     noData: 'Aucune donnée OEC pour ce code dans ce pays.',
     error: 'Erreur de récupération',
     inputError: 'Saisir un code SH (4 à 6 chiffres) puis cliquer Rechercher.',
+    hs4Label: 'SH4',
+    hs6Label: 'SH6',
+    productsFound: 'sous-positions trouvées',
   },
   en: {
     title: 'Trade by Country & HS6 — Last 5 years',
@@ -66,6 +74,9 @@ const TXT = {
     noData: 'No OEC data for this HS in this country.',
     error: 'Fetch error',
     inputError: 'Enter a 4-6 digit HS code then click Search.',
+    hs4Label: 'HS4',
+    hs6Label: 'HS6',
+    productsFound: 'sub-headings found',
   },
 };
 
@@ -228,6 +239,62 @@ export default function CountryHS6History({ language = 'fr' }) {
 
       {!loading && data && (
         <>
+          {/* ─── Bannière produit HS4 / HS6 ─── */}
+          {data.hs_labels && data.hs_labels.length > 0 && (
+            <div style={{
+              margin: '6px 16px 2px',
+              padding: '10px 14px',
+              borderRadius: 10,
+              background: 'rgba(212,175,55,0.07)',
+              border: '1px solid rgba(212,175,55,0.22)',
+            }}>
+              {/* Ligne HS4 */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: data.hs_labels.length > 1 ? 6 : 0 }}>
+                <span style={{
+                  fontSize: 10, fontWeight: 800, letterSpacing: 0.8,
+                  background: 'rgba(212,175,55,0.18)', color: 'rgba(212,175,55,0.95)',
+                  borderRadius: 5, padding: '2px 6px', flexShrink: 0,
+                }}>
+                  {t.hs4Label} {data.hs4_code}
+                </span>
+                <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text)', lineHeight: 1.3 }}>
+                  {data.hs_labels[0].label}
+                </span>
+                {data.match_level && (
+                  <span style={{
+                    marginLeft: 'auto', fontSize: 10, fontWeight: 700, letterSpacing: 0.5,
+                    color: data.match_level === 'hs6' ? '#10b981' : data.match_level === 'hs4' ? '#fbbf24' : '#f43f5e',
+                    background: data.match_level === 'hs6' ? 'rgba(16,185,129,0.12)' : data.match_level === 'hs4' ? 'rgba(251,191,36,0.12)' : 'rgba(244,63,94,0.12)',
+                    borderRadius: 5, padding: '2px 7px', flexShrink: 0,
+                  }}>
+                    {(MATCH_LEVEL_LABEL[language] || MATCH_LEVEL_LABEL.fr)[data.match_level]}
+                  </span>
+                )}
+              </div>
+
+              {/* Sous-positions HS6 (si plusieurs) */}
+              {data.hs_labels.length > 1 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px 8px', paddingTop: 4, borderTop: '1px solid rgba(212,175,55,0.12)' }}>
+                  {data.hs_labels.map((item) => (
+                    <span key={item.hs6_id} style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 5,
+                      fontSize: 11, color: 'rgba(142,155,174,0.9)',
+                    }}>
+                      <span style={{
+                        fontSize: 9.5, fontWeight: 800, letterSpacing: 0.5,
+                        background: 'rgba(255,255,255,0.07)', borderRadius: 4,
+                        padding: '1px 5px', color: 'rgba(212,175,55,0.75)',
+                      }}>
+                        {t.hs6Label} {item.hs6_id}
+                      </span>
+                      {item.label}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* ─── Stat strip ─── */}
           {totals && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, padding: '8px 16px' }}>
