@@ -9,9 +9,11 @@ Endpoints:
   GET  /banking/trade-finance/recommend
   GET  /banking/payment-systems/regional
   GET  /banking/forex/domiciliation-rules
+  GET  /banking/forex/rates            ← new: taux de change live des devises africaines
+  GET  /banking/forex/convert          ← new: conversion USD → monnaie locale en temps réel
   GET  /banking/compliance/{country_code}
-  GET  /banking/register         ← new: global searchable banks directory
-  GET  /banking/regulations/summary ← new: all-countries regulation overview
+  GET  /banking/register         ← global searchable banks directory
+  GET  /banking/regulations/summary ← all-countries regulation overview
   POST /banking/transaction/validate
 """
 
@@ -26,6 +28,7 @@ from banking_system import (
     get_banks_register,
     get_forex_profile,
     get_domiciliation_rules,
+    get_currency_meta,
     get_trade_finance_instruments,
     recommend_instruments,
     get_payment_systems,
@@ -37,10 +40,66 @@ from banking_system import (
 )
 from banking_system.banks_registry import CENTRAL_BANKS
 from banking_system.foreign_exchange import FOREX_PROFILES
+from banking_system.models import ExchangeRateInfo
+from exchange_rates import get_service as get_rate_service, AFRICAN_CURRENCY_CODES
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/banking")
+
+
+# ---------------------------------------------------------------------------
+# INTERNAL HELPERS
+# ---------------------------------------------------------------------------
+
+def _build_exchange_rate_info(country_code: str) -> Optional[ExchangeRateInfo]:
+    """
+    Fetch live exchange rate for a country's local currency vs USD and EUR.
+
+    Uses the ExchangeRateService provider chain (CurrencyFreaks → Fixer → Frankfurter).
+    Returns None if all providers fail (network error, missing API keys, etc.).
+    """
+    code = country_code.upper()
+    currency_code, currency_name, convertibility = get_currency_meta(code)
+    if not currency_code or currency_code == "USD":
+        return ExchangeRateInfo(
+            currency_code="USD",
+            currency_name="Dollar américain",
+            rate_usd=1.0,
+            rate_eur=None,
+            rate_source="N/A",
+            rate_timestamp=None,
+            convertibility="freely_convertible",
+        )
+    try:
+        svc = get_rate_service()
+        rate_obj = svc.get_rate("USD", currency_code)
+        rate_eur_obj = svc.get_rate("EUR", currency_code)
+        return ExchangeRateInfo(
+            currency_code=currency_code,
+            currency_name=currency_name,
+            rate_usd=rate_obj.rate if rate_obj else None,
+            rate_eur=rate_eur_obj.rate if rate_eur_obj else None,
+            rate_source=rate_obj.source if rate_obj else None,
+            rate_timestamp=(
+                rate_obj.timestamp.isoformat() if rate_obj else None
+            ),
+            convertibility=convertibility,
+        )
+    except Exception as exc:  # pylint: disable=broad-except
+        logger.warning(
+            "Could not fetch live exchange rate for %s (%s): %s",
+            code, currency_code, exc,
+        )
+        return ExchangeRateInfo(
+            currency_code=currency_code,
+            currency_name=currency_name,
+            rate_usd=None,
+            rate_eur=None,
+            rate_source="unavailable",
+            rate_timestamp=None,
+            convertibility=convertibility,
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -124,18 +183,23 @@ async def list_banking_countries():
 
 @router.get(
     "/countries/{country_code}/regulations",
-    summary="Réglementations de change d'un pays",
+    summary="Réglementations de change d'un pays (+ taux de change live)",
     tags=["Banking"],
 )
 async def get_forex_regulations(country_code: str):
     """
     Retourne le profil complet de réglementation des changes pour un pays,
-    incluant les règles de domiciliation, seuils et obligations.
+    incluant les règles de domiciliation, seuils, obligations, références légales
+    et le taux de change live de la monnaie locale vs USD et EUR.
 
     - **country_code**: Code ISO2 du pays (ex: MA, DZ, NG, ET)
     """
-    profile = get_forex_profile(country_code.upper())
-    return profile.model_dump()
+    code = country_code.upper()
+    profile = get_forex_profile(code)
+    # Enrich with live exchange rate info
+    rate_info = _build_exchange_rate_info(code)
+    enriched = profile.model_copy(update={"exchange_rate_info": rate_info})
+    return enriched.model_dump()
 
 
 @router.get(
@@ -158,9 +222,161 @@ async def get_all_domiciliation_rules():
             "threshold_usd": profile.domiciliation.threshold_usd,
             "timeline_days": profile.domiciliation.timeline_days,
             "regulation_level": profile.forex_regulation.regulation_level,
+            "imf_article_status": profile.forex_regulation.imf_article_status,
+            "regulatory_body": profile.forex_regulation.regulatory_body,
         }
         for code, profile in FOREX_PROFILES.items()
     ]
+
+
+# ---------------------------------------------------------------------------
+# LIVE FOREX RATES ENDPOINTS
+# ---------------------------------------------------------------------------
+
+@router.get(
+    "/forex/rates",
+    summary="Taux de change live des devises africaines vs USD",
+    tags=["Banking"],
+)
+async def get_african_forex_rates(
+    base: str = Query(
+        default="USD",
+        description="Devise de base (ISO 4217). Ex: USD, EUR",
+    ),
+):
+    """
+    Retourne les taux de change en temps réel de toutes les devises africaines
+    disponibles par rapport à la devise de base spécifiée (USD par défaut).
+
+    Les taux sont récupérés depuis une chaîne de fournisseurs :
+    CurrencyFreaks → Fixer.io → Frankfurter (ECB).
+
+    Inclut pour chaque devise :
+    - Le code ISO 4217 et le nom de la devise
+    - Le taux de change (1 [base] = X [devise locale])
+    - La source du taux et l'horodatage
+    - La convertibilité de la devise
+    """
+    try:
+        svc = get_rate_service()
+        bundle = svc.get_latest(base.upper())
+        if bundle is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Service de taux de change temporairement indisponible.",
+            )
+        # Filter to African currencies and enrich with metadata
+        from banking_system.foreign_exchange import _CURRENCY_META
+        # Build reverse map: currency_code → list of country codes
+        currency_countries: dict = {}
+        for country_code, meta in _CURRENCY_META.items():
+            ccode, cname, conv = meta
+            if ccode not in currency_countries:
+                currency_countries[ccode] = {"currency_name": cname, "convertibility": conv, "countries": []}
+            currency_countries[ccode]["countries"].append(country_code)
+
+        results = []
+        for currency_code in AFRICAN_CURRENCY_CODES:
+            rate_value = bundle.rates.get(currency_code)
+            if rate_value is None:
+                continue
+            meta_info = currency_countries.get(currency_code, {})
+            results.append({
+                "currency_code": currency_code,
+                "currency_name": meta_info.get("currency_name", currency_code),
+                "convertibility": meta_info.get("convertibility", "unknown"),
+                "countries": meta_info.get("countries", []),
+                f"rate_{base.lower()}": rate_value,
+                "rate_display": f"1 {base.upper()} = {rate_value:,.4f} {currency_code}",
+                "source": bundle.source,
+                "timestamp": bundle.timestamp.isoformat(),
+            })
+
+        results.sort(key=lambda x: x["currency_code"])
+        return {
+            "base_currency": base.upper(),
+            "total": len(results),
+            "source": bundle.source,
+            "timestamp": bundle.timestamp.isoformat(),
+            "rates": results,
+        }
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Erreur lors de la récupération des taux de change: %s", exc)
+        raise HTTPException(
+            status_code=503,
+            detail=f"Service de taux de change indisponible : {exc}",
+        ) from exc
+
+
+@router.get(
+    "/forex/convert",
+    summary="Convertir un montant USD en monnaie locale d'un pays africain",
+    tags=["Banking"],
+)
+async def convert_to_local_currency(
+    country_code: str = Query(..., description="Code ISO2 du pays (ex: MA, NG, KE)"),
+    amount: float = Query(..., gt=0, description="Montant à convertir (doit être > 0)"),
+    from_currency: str = Query(
+        default="USD",
+        description="Devise source (ISO 4217). Ex: USD, EUR, GBP",
+    ),
+):
+    """
+    Convertit un montant en devise source vers la monnaie locale du pays spécifié.
+
+    Le taux de change est récupéré en temps réel depuis une chaîne de fournisseurs
+    (CurrencyFreaks → Fixer.io → Frankfurter/ECB). Aucune donnée mockée n'est utilisée.
+
+    - **country_code**: Code ISO2 du pays (ex: MA, NG, KE, ZA)
+    - **amount**: Montant à convertir
+    - **from_currency**: Devise source (par défaut USD)
+    """
+    code = country_code.upper()
+    currency_code, currency_name, convertibility = get_currency_meta(code)
+
+    # Get country name from registry if available
+    cb = CENTRAL_BANKS.get(code)
+    country_name = cb.country_name if cb else code
+
+    try:
+        svc = get_rate_service()
+        result = svc.convert(from_currency.upper(), currency_code, amount)
+        if result is None:
+            raise HTTPException(
+                status_code=503,
+                detail=(
+                    f"Impossible d'obtenir le taux de change {from_currency.upper()}/{currency_code}. "
+                    "Le service de change est temporairement indisponible."
+                ),
+            )
+        return {
+            "country_code": code,
+            "country_name": country_name,
+            "from_currency": result.from_currency,
+            "to_currency": result.to_currency,
+            "currency_name": currency_name,
+            "convertibility": convertibility,
+            "amount": result.amount,
+            "converted_amount": result.converted_amount,
+            "rate": result.rate,
+            "rate_display": f"1 {result.from_currency} = {result.rate:,.4f} {result.to_currency}",
+            "source": result.source,
+            "timestamp": result.timestamp.isoformat(),
+            "disclaimer": (
+                "Taux indicatif issu de données de marché publiques. "
+                "Consulter votre banque agréée pour les taux commerciaux applicables."
+            ),
+        }
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Erreur conversion %s→%s: %s", from_currency, currency_code, exc)
+        raise HTTPException(
+            status_code=503,
+            detail=f"Service de conversion indisponible : {exc}",
+        ) from exc
 
 
 # ---------------------------------------------------------------------------
@@ -357,12 +573,18 @@ async def get_regulations_summary(
         if regulation_level and level != regulation_level:
             continue
         cb = CENTRAL_BANKS.get(code)
+        currency_code, currency_name, convertibility = get_currency_meta(code)
         summary.append({
             "country_code": code,
             "country_name": profile.country_name,
             "central_bank": profile.central_bank_name,
-            "currency_code": cb.currency_code if cb else "N/A",
+            "currency_code": profile.currency_code or (cb.currency_code if cb else currency_code),
+            "currency_name": profile.currency_name or (cb.currency_name if cb else currency_name),
+            "convertibility": convertibility,
             "regulation_level": level,
+            "imf_article_status": profile.forex_regulation.imf_article_status,
+            "regulatory_body": profile.forex_regulation.regulatory_body,
+            "legal_reference": profile.forex_regulation.legal_reference,
             "domiciliation_required": profile.domiciliation.required,
             "domiciliation_conditional": profile.domiciliation.conditional,
             "threshold_usd": profile.domiciliation.threshold_usd,
