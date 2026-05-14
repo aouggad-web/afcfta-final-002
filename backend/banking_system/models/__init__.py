@@ -11,6 +11,7 @@ from .bank_models import (
 from .regulation_models import (
     DomiciliationRule,
     ForexRegulation,
+    ExchangeRateInfo,
     CountryForexProfile,
 )
 from .finance_models import (
@@ -27,6 +28,7 @@ __all__ = [
     "BankingSystemInfo",
     "DomiciliationRule",
     "ForexRegulation",
+    "ExchangeRateInfo",
     "CountryForexProfile",
     "TradeFinanceInstrument",
     "PaymentSystem",
