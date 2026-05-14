@@ -24,7 +24,7 @@ Statuts FMI (Article VIII / XIV) :
   Source : https://www.imf.org/en/Publications/Annual-Report-on-Exchange-Arrangements
 """
 
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple
 from .models import DomiciliationRule, ForexRegulation, CountryForexProfile
 
 # ---------------------------------------------------------------------------
@@ -927,7 +927,7 @@ _DEFAULT_PROFILE = CountryForexProfile(
 # ---------------------------------------------------------------------------
 
 #: Mapping ISO2 → (currency_code, currency_name, convertibility)
-_CURRENCY_META: Dict[str, tuple] = {
+_CURRENCY_META: Dict[str, Tuple[str, str, str]] = {
     "MA": ("MAD", "Dirham marocain", "partially_convertible"),
     "DZ": ("DZD", "Dinar algérien", "non_convertible"),
     "TN": ("TND", "Dinar tunisien", "partially_convertible"),
@@ -1006,7 +1006,7 @@ def get_domiciliation_rules(country_code: str) -> DomiciliationRule:
     return get_forex_profile(country_code).domiciliation
 
 
-def get_currency_meta(country_code: str) -> tuple:
+def get_currency_meta(country_code: str) -> Tuple[str, str, str]:
     """
     Return (currency_code, currency_name, convertibility) for a country.
 
@@ -1015,6 +1015,9 @@ def get_currency_meta(country_code: str) -> tuple:
     return _CURRENCY_META.get(country_code.upper(), ("USD", "Dollar américain", "freely_convertible"))
 
 
-def get_all_currency_meta() -> Dict[str, tuple]:
-    """Return the full currency metadata mapping (ISO2 → (currency_code, name, convertibility))."""
-    return dict(_CURRENCY_META)
+def get_all_currency_meta() -> Dict[str, Tuple[str, str, str]]:
+    """Return the full currency metadata mapping (ISO2 → (currency_code, name, convertibility)).
+
+    Returns the dictionary directly. Callers must not mutate the returned object.
+    """
+    return _CURRENCY_META

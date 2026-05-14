@@ -18,6 +18,7 @@ Endpoints:
 """
 
 from fastapi import APIRouter, HTTPException, Query
+from collections import defaultdict
 from pydantic import BaseModel, Field
 from typing import Optional
 import logging
@@ -64,13 +65,13 @@ def _build_exchange_rate_info(country_code: str) -> Optional[ExchangeRateInfo]:
     currency_code, currency_name, convertibility = get_currency_meta(code)
     if not currency_code or currency_code == "USD":
         return ExchangeRateInfo(
-            currency_code="USD",
-            currency_name="Dollar américain",
+            currency_code=currency_code or "USD",
+            currency_name=currency_name or "Dollar américain",
             rate_usd=1.0,
             rate_eur=None,
             rate_source="N/A",
             rate_timestamp=None,
-            convertibility="freely_convertible",
+            convertibility=convertibility or "freely_convertible",
         )
     try:
         svc = get_rate_service()
@@ -268,12 +269,11 @@ async def get_african_forex_rates(
             )
         # Filter to African currencies and enrich with metadata
         currency_meta = get_all_currency_meta()
-        # Build reverse map: currency_code → list of country codes
-        currency_countries: dict = {}
-        for country_code, meta in currency_meta.items():
-            ccode, cname, conv = meta
-            if ccode not in currency_countries:
-                currency_countries[ccode] = {"currency_name": cname, "convertibility": conv, "countries": []}
+        # Build reverse map: currency_code → {currency_name, convertibility, countries}
+        currency_countries: dict = defaultdict(lambda: {"currency_name": "", "convertibility": "unknown", "countries": []})
+        for country_code, (ccode, cname, conv) in currency_meta.items():
+            currency_countries[ccode]["currency_name"] = cname
+            currency_countries[ccode]["convertibility"] = conv
             currency_countries[ccode]["countries"].append(country_code)
 
         results = []
