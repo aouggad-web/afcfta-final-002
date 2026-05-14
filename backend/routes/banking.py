@@ -29,6 +29,7 @@ from banking_system import (
     get_forex_profile,
     get_domiciliation_rules,
     get_currency_meta,
+    get_all_currency_meta,
     get_trade_finance_instruments,
     recommend_instruments,
     get_payment_systems,
@@ -266,10 +267,10 @@ async def get_african_forex_rates(
                 detail="Service de taux de change temporairement indisponible.",
             )
         # Filter to African currencies and enrich with metadata
-        from banking_system.foreign_exchange import _CURRENCY_META
+        currency_meta = get_all_currency_meta()
         # Build reverse map: currency_code → list of country codes
         currency_countries: dict = {}
-        for country_code, meta in _CURRENCY_META.items():
+        for country_code, meta in currency_meta.items():
             ccode, cname, conv = meta
             if ccode not in currency_countries:
                 currency_countries[ccode] = {"currency_name": cname, "convertibility": conv, "countries": []}

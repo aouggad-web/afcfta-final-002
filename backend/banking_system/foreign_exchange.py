@@ -955,8 +955,11 @@ _CURRENCY_META: Dict[str, tuple] = {
     "ZM": ("ZMW", "Kwacha zambien", "partially_convertible"),
     "ZW": ("ZWL", "Dollar zimbabwéen", "non_convertible"),
     "BW": ("BWP", "Pula botswanaise", "freely_convertible"),
+    "MW": ("MWK", "Kwacha malawien", "partially_convertible"),
     "MZ": ("MZN", "Metical mozambicain", "partially_convertible"),
     "NA": ("NAD", "Dollar namibien", "freely_convertible"),
+    "LS": ("LSL", "Loti lesothan", "freely_convertible"),
+    "SZ": ("SZL", "Lilangeni swazi", "freely_convertible"),
     "CM": ("XAF", "Franc CFA BEAC", "freely_convertible"),
     "GA": ("XAF", "Franc CFA BEAC", "freely_convertible"),
     "CG": ("XAF", "Franc CFA BEAC", "freely_convertible"),
@@ -970,9 +973,6 @@ _CURRENCY_META: Dict[str, tuple] = {
     "ER": ("ERN", "Nakfa érythréen", "non_convertible"),
     "SS": ("SSP", "Livre sud-soudanaise", "non_convertible"),
     "MG": ("MGA", "Ariary malgache", "partially_convertible"),
-    "TZ": ("TZS", "Shilling tanzanien", "freely_convertible"),
-    "MW": ("MWK", "Kwacha malawien", "partially_convertible"),
-    "ZM": ("ZMW", "Kwacha zambien", "partially_convertible"),
     "MU": ("MUR", "Roupie mauricienne", "freely_convertible"),
     "SC": ("SCR", "Roupie seychelloise", "freely_convertible"),
     "KM": ("KMF", "Franc comorien", "freely_convertible"),
@@ -982,9 +982,6 @@ _CURRENCY_META: Dict[str, tuple] = {
     "LR": ("LRD", "Dollar libérien", "partially_convertible"),
     "ST": ("STN", "Dobra santoméen", "partially_convertible"),
     "BI": ("BIF", "Franc burundais", "partially_convertible"),
-    "LS": ("LSL", "Loti lesothan", "freely_convertible"),
-    "SZ": ("SZL", "Lilangeni swazi", "freely_convertible"),
-    "LY": ("LYD", "Dinar libyen", "non_convertible"),
 }
 
 
@@ -1016,3 +1013,8 @@ def get_currency_meta(country_code: str) -> tuple:
     Falls back to ('USD', 'Dollar américain', 'freely_convertible') if unknown.
     """
     return _CURRENCY_META.get(country_code.upper(), ("USD", "Dollar américain", "freely_convertible"))
+
+
+def get_all_currency_meta() -> Dict[str, tuple]:
+    """Return the full currency metadata mapping (ISO2 → (currency_code, name, convertibility))."""
+    return dict(_CURRENCY_META)
