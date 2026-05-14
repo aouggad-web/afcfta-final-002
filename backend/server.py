@@ -327,12 +327,12 @@ app.include_router(api_router)
 # =============================================================================
 
 from starlette.staticfiles import StaticFiles
-from starlette.responses import FileResponse
+from starlette.responses import FileResponse, RedirectResponse
 
 build_dir = Path(__file__).parent.parent / "frontend" / "build"
 if build_dir.exists() and (build_dir / "static").exists():
     app.mount("/static", StaticFiles(directory=str(build_dir / "static")), name="static")
-    
+
     @app.get("/{full_path:path}")
     async def serve_react(full_path: str):
         file_path = (build_dir / full_path).resolve()
@@ -341,3 +341,13 @@ if build_dir.exists() and (build_dir / "static").exists():
         if file_path.exists() and file_path.is_file():
             return FileResponse(str(file_path))
         return FileResponse(str(build_dir / "index.html"))
+else:
+    # Dev mode: frontend runs separately on port 5000.
+    # Redirect root and non-API paths to the React dev server.
+    @app.get("/")
+    async def redirect_to_frontend():
+        return RedirectResponse(url="http://localhost:5000", status_code=302)
+
+    @app.get("/{full_path:path}")
+    async def redirect_frontend_paths(full_path: str):
+        return RedirectResponse(url=f"http://localhost:5000/{full_path}", status_code=302)

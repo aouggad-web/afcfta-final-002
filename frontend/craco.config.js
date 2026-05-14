@@ -11,6 +11,18 @@ module.exports = {
     host: '0.0.0.0',
     port: process.env.PORT || 3000,
     allowedHosts: 'all',
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/banking': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   webpack: {
     alias: {
