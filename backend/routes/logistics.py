@@ -59,6 +59,29 @@ except ImportError:
 
 router = APIRouter(prefix="/logistics")
 
+
+def _extract_port_data_year(all_ports):
+    """Extract the most recent available port statistics year."""
+    years = [
+        p.get('latest_stats', {}).get('year')
+        for p in all_ports
+        if p.get('latest_stats', {}).get('year')
+    ]
+    return max(years) if years else 2024
+
+
+def _extract_air_data_year(all_airports):
+    """Extract the most recent available airport statistics year."""
+    years = []
+    for airport in all_airports:
+        historical_stats = airport.get('historical_stats') or []
+        for stat in historical_stats:
+            year = stat.get('year')
+            if isinstance(year, int):
+                years.append(year)
+    return max(years) if years else 2024
+
+
 # ==========================================
 # MARITIME PORTS ENDPOINTS
 # ==========================================
@@ -182,7 +205,7 @@ async def get_logistics_statistics():
         "total_cargo_throughput_tons": total_cargo,
         "ports_by_type": port_types,
         "ports_by_country": dict(sorted(ports_by_country.items(), key=lambda x: x[1], reverse=True)),
-        "year": 2024
+        "year": _extract_port_data_year(all_ports)
     }
     if CACHE_AVAILABLE:
         cache_set(cache_key, result, "countries")
@@ -272,7 +295,7 @@ async def get_air_logistics_statistics():
         "total_cargo_throughput_tons": total_cargo,
         "total_mail_throughput_tons": total_mail,
         "airports_by_country": dict(sorted(airports_by_country.items(), key=lambda x: x[1], reverse=True)),
-        "year": 2024
+        "year": _extract_air_data_year(all_airports)
     }
 
 # ==========================================
