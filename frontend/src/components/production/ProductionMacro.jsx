@@ -40,6 +40,7 @@ function ProductionMacro({ language = 'fr' }) {
       selectedCountry: 'Pays',
       source: 'Source',
       dataCoverage: 'Couverture',
+      latestData: 'Dernière donnée',
     },
     en: {
       title: 'Macro Value Added (World Bank / IMF)',
@@ -56,6 +57,7 @@ function ProductionMacro({ language = 'fr' }) {
       selectedCountry: 'Country',
       source: 'Source',
       dataCoverage: 'Coverage',
+      latestData: 'Latest data',
     },
   };
 
@@ -81,11 +83,23 @@ function ProductionMacro({ language = 'fr' }) {
     }
   };
 
-  const chartData = useMemo(() => {
+  const availableYears = useMemo(() => {
+    if (Array.isArray(macroData?.years_covered) && macroData.years_covered.length) {
+      return macroData.years_covered;
+    }
     if (!macroData?.data_by_sector) return [];
+    const years = new Set();
+    Object.values(macroData.data_by_sector).forEach((records) => {
+      records.forEach((record) => {
+        if (Number.isInteger(record?.year)) years.add(record.year);
+      });
+    });
+    return [...years].sort((a, b) => a - b);
+  }, [macroData]);
 
-    const years = [2021, 2022, 2023, 2024];
-    return years.map((year) => {
+  const chartData = useMemo(() => {
+    if (!macroData?.data_by_sector || !availableYears.length) return [];
+    return availableYears.map((year) => {
       const dataPoint = { year };
 
       Object.entries(macroData.data_by_sector).forEach(([sectorName, records]) => {
@@ -97,9 +111,10 @@ function ProductionMacro({ language = 'fr' }) {
 
       return dataPoint;
     });
-  }, [macroData]);
+  }, [macroData, availableYears]);
 
   const sectorNames = macroData?.data_by_sector ? Object.keys(macroData.data_by_sector) : [];
+  const latestYear = macroData?.latest_year || (availableYears.length ? availableYears[availableYears.length - 1] : null);
 
   const seriesColors = ['#9b6ef5', '#4f8ef7', '#20c997', '#d4891a'];
 
@@ -123,8 +138,13 @@ function ProductionMacro({ language = 'fr' }) {
                 {t.source}: World Bank / IMF
               </Badge>
               <Badge className="bg-[rgba(212,137,26,0.12)] text-[var(--gold)] border border-[rgba(212,137,26,0.2)]">
-                2021–2024
+                {availableYears.length ? `${availableYears[0]}–${availableYears[availableYears.length - 1]}` : '—'}
               </Badge>
+              {latestYear && (
+                <Badge className="bg-[rgba(32,201,151,0.12)] text-[#66e0bb] border border-[rgba(32,201,151,0.22)]">
+                  {t.latestData}: {latestYear}
+                </Badge>
+              )}
             </div>
           </div>
         </CardHeader>
@@ -148,6 +168,11 @@ function ProductionMacro({ language = 'fr' }) {
                   <Badge className="bg-[rgba(32,201,151,0.12)] text-[#66e0bb] border border-[rgba(32,201,151,0.22)]">
                     {sectorNames.length} {t.sectors}
                   </Badge>
+                  {!!availableYears.length && (
+                    <Badge className="bg-[rgba(155,110,245,0.12)] text-[#b599ff] border border-[rgba(155,110,245,0.22)]">
+                      {t.dataCoverage}: {availableYears[0]}–{availableYears[availableYears.length - 1]}
+                    </Badge>
+                  )}
                 </div>
               )}
             </div>
@@ -189,6 +214,8 @@ function ProductionMacro({ language = 'fr' }) {
                     }}
                   />
                   <Tooltip
+                    formatter={(value) => [`${value}%`, t.gdpPercent]}
+                    labelFormatter={(label) => `${t.year} ${label}`}
                     contentStyle={{
                       backgroundColor: 'rgba(17,24,39,0.96)',
                       border: '1px solid rgba(212,137,26,0.18)',
@@ -236,6 +263,8 @@ function ProductionMacro({ language = 'fr' }) {
                     }}
                   />
                   <Tooltip
+                    formatter={(value) => [`${value}%`, t.gdpPercent]}
+                    labelFormatter={(label) => `${t.year} ${label}`}
                     contentStyle={{
                       backgroundColor: 'rgba(17,24,39,0.96)',
                       border: '1px solid rgba(212,137,26,0.18)',
