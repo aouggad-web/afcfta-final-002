@@ -32,8 +32,8 @@ def _load_enhanced_port_index():
             pid = port.get('port_id')
             if pid:
                 _enhanced_index[pid] = port
-    except Exception:
-        pass
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"⚠️ Could not load enhanced ports file: {e}")
 
 def load_ports_data():
     """Load African ports data, merging enriched agent/logistics_network fields from enhanced file."""
@@ -58,7 +58,6 @@ def load_ports_data():
                     port['logistics_network'] = enh['logistics_network']
     _ports_cache = ports
     return _ports_cache
-
 def get_all_ports(country_iso: Optional[str] = None) -> List[dict]:
     """
     Get all ports or filter by country ISO code

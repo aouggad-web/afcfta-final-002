@@ -62,6 +62,24 @@ router = APIRouter(prefix="/logistics")
 _WB_LPI_FILE = Path(__file__).parent.parent.parent / "data" / "json" / "wb_logistics_africa.json"
 _wb_lpi_cache = None
 
+_COUNTRY_NAMES = {
+    'DZA': 'Algérie', 'MAR': 'Maroc', 'TUN': 'Tunisie', 'EGY': 'Égypte',
+    'LBY': 'Libye', 'MRT': 'Mauritanie', 'NGA': 'Nigéria', 'GHA': 'Ghana',
+    'CIV': "Côte d'Ivoire", 'SEN': 'Sénégal', 'CMR': 'Cameroun',
+    'BEN': 'Bénin', 'TGO': 'Togo', 'MLI': 'Mali', 'BFA': 'Burkina Faso',
+    'GIN': 'Guinée', 'LBR': 'Libéria', 'SLE': 'Sierra Leone', 'GMB': 'Gambie',
+    'NER': 'Niger', 'ETH': 'Éthiopie', 'KEN': 'Kenya', 'TZA': 'Tanzanie',
+    'UGA': 'Ouganda', 'RWA': 'Rwanda', 'BDI': 'Burundi', 'SDN': 'Soudan',
+    'SSD': 'Soudan du Sud', 'SOM': 'Somalie', 'ERI': 'Érythrée',
+    'DJI': 'Djibouti', 'ZAF': 'Afrique du Sud', 'MOZ': 'Mozambique',
+    'ZMB': 'Zambie', 'ZWE': 'Zimbabwe', 'BWA': 'Botswana', 'NAM': 'Namibie',
+    'MWI': 'Malawi', 'AGO': 'Angola', 'COD': 'RD Congo', 'COG': 'Congo',
+    'GAB': 'Gabon', 'GNQ': 'Guinée Équatoriale', 'CAF': 'Rép. Centrafricaine',
+    'TCD': 'Tchad', 'MDG': 'Madagascar', 'MUS': 'Maurice', 'SYC': 'Seychelles',
+    'COM': 'Comores', 'CPV': 'Cap-Vert', 'STP': 'São Tomé', 'GNB': 'Guinée-Bissau',
+    'LSO': 'Lesotho', 'SWZ': 'Eswatini',
+}
+
 def _load_wb_lpi():
     """Load World Bank LPI data (cached)."""
     global _wb_lpi_cache
@@ -70,30 +88,13 @@ def _load_wb_lpi():
             raw = json.load(f)
         countries = raw.get('countries', {})
         results = []
-        COUNTRY_NAMES = {
-            'DZA': 'Algérie', 'MAR': 'Maroc', 'TUN': 'Tunisie', 'EGY': 'Égypte',
-            'LBY': 'Libye', 'MRT': 'Mauritanie', 'NGA': 'Nigéria', 'GHA': 'Ghana',
-            'CIV': "Côte d'Ivoire", 'SEN': 'Sénégal', 'CMR': 'Cameroun',
-            'BEN': 'Bénin', 'TGO': 'Togo', 'MLI': 'Mali', 'BFA': 'Burkina Faso',
-            'GIN': 'Guinée', 'LBR': 'Libéria', 'SLE': 'Sierra Leone', 'GMB': 'Gambie',
-            'NER': 'Niger', 'ETH': 'Éthiopie', 'KEN': 'Kenya', 'TZA': 'Tanzanie',
-            'UGA': 'Ouganda', 'RWA': 'Rwanda', 'BDI': 'Burundi', 'SDN': 'Soudan',
-            'SSD': 'Soudan du Sud', 'SOM': 'Somalie', 'ERI': 'Érythrée',
-            'DJI': 'Djibouti', 'ZAF': 'Afrique du Sud', 'MOZ': 'Mozambique',
-            'ZMB': 'Zambie', 'ZWE': 'Zimbabwe', 'BWA': 'Botswana', 'NAM': 'Namibie',
-            'MWI': 'Malawi', 'AGO': 'Angola', 'COD': 'RD Congo', 'COG': 'Congo',
-            'GAB': 'Gabon', 'GNQ': 'Guinée Équatoriale', 'CAF': 'Rép. Centrafricaine',
-            'TCD': 'Tchad', 'MDG': 'Madagascar', 'MUS': 'Maurice', 'SYC': 'Seychelles',
-            'COM': 'Comores', 'CPV': 'Cap-Vert', 'STP': 'São Tomé', 'GNB': 'Guinée-Bissau',
-            'LSO': 'Lesotho', 'SWZ': 'Eswatini',
-        }
 
         def _latest_val(indicator_data):
             vals = indicator_data.get('values', [])
             if not vals:
                 return None
-            # sort by year desc and return first non-None value
-            for v in sorted(vals, key=lambda x: x.get('year', '0'), reverse=True):
+            # sort by year desc and return first non-None value (use int year for correct ordering)
+            for v in sorted(vals, key=lambda x: int(x.get('year', 0)) if str(x.get('year', '0')).isdigit() else 0, reverse=True):
                 if v.get('value') is not None:
                     return {'year': v['year'], 'value': round(v['value'], 3)}
             return None
@@ -105,7 +106,7 @@ def _load_wb_lpi():
                 continue
             row = {
                 'country_iso': iso,
-                'country_name': COUNTRY_NAMES.get(iso, iso),
+                'country_name': _COUNTRY_NAMES.get(iso, iso),
                 'lpi_overall': overall,
                 'lpi_customs': _latest_val(ind.get('lpi_customs', {})),
                 'lpi_infrastructure': _latest_val(ind.get('lpi_infrastructure', {})),

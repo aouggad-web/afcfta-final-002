@@ -71,9 +71,9 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
     setError(null);
     axios.get(`${API}/logistics/lpi`)
       .then(res => setData(res.data))
-      .catch(() => setError(t.error))
+      .catch(() => setError(texts[language].error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [language]);
 
   if (loading) return (
     <Card>

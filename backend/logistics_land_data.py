@@ -35,8 +35,8 @@ def load_corridors_data():
                     enh = enh_index.get(cid)
                     if enh and 'logistics_network' in enh:
                         corridor['logistics_network'] = enh['logistics_network']
-            except Exception:
-                pass  # Enhanced file optional
+            except (FileNotFoundError, json.JSONDecodeError) as e:
+                print(f"⚠️ Could not load enhanced corridors file: {e}")  # Enhanced file optional
 
             _corridors_data = corridors
             print(f"✅ Loaded {len(_corridors_data)} land corridors")
