@@ -11,30 +11,40 @@ import ProductionMining from './ProductionMining';
 import { PDFExportButton } from '../common/ExportTools';
 import { TrendingUp, Wheat, Factory, Pickaxe, BarChart3, Database, Globe } from 'lucide-react';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const API = `${BACKEND_URL}/api`;
+
 function ProductionTab({ language = 'fr' }) {
   const { t } = useTranslation();
   const [activeSubTab, setActiveSubTab] = useState('macro');
   const [productionStats, setProductionStats] = useState(null);
   const contentRef = useRef(null);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
-  const API = `${BACKEND_URL}/api`;
 
   useEffect(() => {
     const fetchProductionStats = async () => {
       try {
         const response = await axios.get(`${API}/production/statistics`);
         setProductionStats(response.data || null);
-      } catch (_) {
+      } catch (error) {
+        console.error('Error fetching production statistics:', error);
         setProductionStats(null);
       }
     };
 
     fetchProductionStats();
-  }, [API]);
+  }, []);
 
   const latestYear = productionStats?.years_covered?.length
     ? Math.max(...productionStats.years_covered)
     : 2024;
+  const getLatestSourceYear = (years) => {
+    if (!Array.isArray(years) || !years.length) return latestYear;
+    return [...years].sort((a, b) => a - b)[years.length - 1];
+  };
+  const macroYear = getLatestSourceYear(productionStats?.dimensions?.value_added_macro?.years);
+  const agriYear = getLatestSourceYear(productionStats?.dimensions?.agriculture_faostat?.years);
+  const manufYear = getLatestSourceYear(productionStats?.dimensions?.manufacturing_unido?.years);
+  const miningYear = getLatestSourceYear(productionStats?.dimensions?.mining_usgs?.years);
 
   return (
     <div className="space-y-5">
@@ -126,22 +136,22 @@ function ProductionTab({ language = 'fr' }) {
             <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-gray-500">
               <span className="flex items-center gap-1">
                 <Badge variant="outline" className="h-5 text-[10px] border-purple-300 text-purple-600">Macro</Badge>
-                World Bank • IMF WEO {latestYear}
+                World Bank • IMF WEO {macroYear}
               </span>
               <span className="text-gray-300">|</span>
               <span className="flex items-center gap-1">
                 <Badge variant="outline" className="h-5 text-[10px] border-green-300 text-green-600">Agri</Badge>
-                FAOSTAT {latestYear}
+                FAOSTAT {agriYear}
               </span>
               <span className="text-gray-300">|</span>
               <span className="flex items-center gap-1">
                 <Badge variant="outline" className="h-5 text-[10px] border-blue-300 text-blue-600">Manuf</Badge>
-                UNIDO {latestYear}
+                UNIDO {manufYear}
               </span>
               <span className="text-gray-300">|</span>
               <span className="flex items-center gap-1">
                 <Badge variant="outline" className="h-5 text-[10px] border-orange-300 text-orange-600">Mining</Badge>
-                USGS • AfDB
+                USGS • AfDB {miningYear}
               </span>
             </div>
           </CardContent>
