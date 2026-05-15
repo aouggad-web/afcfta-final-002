@@ -10,11 +10,11 @@
     "port_type": "Maritime Commercial",
     "latest_stats": {
       "year": 2024,
-      "container_throughput_teu": 280000,
+      "container_throughput_teu": 950000,
       "cargo_throughput_tons": 18500000,
       "vessel_calls": 2800,
       "source": "EPAL - Entreprise Portuaire d'Alger",
-      "note": "H1 2024: ~130,000 TEU, projection annuelle ~260-280K TEU"
+      "note": "Trafic annuel consolidé 2024 (estimation portuaire): ~950K TEU"
     },
     "agents": [
       {
@@ -38,8 +38,8 @@
         "group": "International",
         "address": "Zone Portuaire, Port d'Alger",
         "website": "www.maersk.com",
-        "contact": "+45 3363 3363",
-        "email": "contact@maersk.com"
+        "contact": "+213 21 42 30 00",
+        "email": "algeria.customer@maersk.com"
       }
     ],
     "services": [
@@ -437,8 +437,8 @@
         "group": "International (France)",
         "address": "Zone Portuaire, Casablanca",
         "website": "www.cma-cgm.com",
-        "contact": "+33 4 88 91 90 00",
-        "email": "customerservice@cma-cgm.com"
+        "contact": "+212 522 430 000",
+        "email": "casablanca@cmacgm.com"
       },
       {
         "agent_name": "MSC Morocco",
@@ -953,8 +953,8 @@
         "group": "International",
         "address": "Zone Portuaire, Port d'Agadir",
         "website": "www.cma-cgm.com",
-        "contact": "+33 4 88 91 90 00",
-        "email": "customerservice@cma-cgm.com"
+        "contact": "+212 522 430 000",
+        "email": "casablanca@cmacgm.com"
       },
       {
         "agent_name": "Hull Blyth Maroc",
@@ -2276,8 +2276,8 @@
         "group": "International (France)",
         "address": "Zone Portuaire, Port d'Abidjan",
         "website": "www.cma-cgm.com",
-        "contact": "+33 4 88 91 90 00",
-        "email": "customerservice@cma-cgm.com"
+        "contact": "+225 27 20 31 1700",
+        "email": "abidjan@cmacgm.com"
       },
       {
         "agent_name": "Maersk Line Côte d'Ivoire",
