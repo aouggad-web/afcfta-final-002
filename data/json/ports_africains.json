@@ -14,7 +14,7 @@
       "cargo_throughput_tons": 18500000,
       "vessel_calls": 2800,
       "source": "EPAL - Entreprise Portuaire d'Alger",
-      "note": "Trafic annuel consolidé 2024 (estimation portuaire): ~950K TEU"
+      "note": "Correction de sous-estimation précédente; trafic annuel consolidé 2024 (estimation portuaire): ~950K TEU"
     },
     "agents": [
       {
@@ -437,8 +437,8 @@
         "group": "International (France)",
         "address": "Zone Portuaire, Casablanca",
         "website": "www.cma-cgm.com",
-        "contact": "+212 522 430 000",
-        "email": "casablanca@cmacgm.com"
+        "contact": "+33 4 88 91 90 00",
+        "email": "customerservice@cma-cgm.com"
       },
       {
         "agent_name": "MSC Morocco",
@@ -953,8 +953,8 @@
         "group": "International",
         "address": "Zone Portuaire, Port d'Agadir",
         "website": "www.cma-cgm.com",
-        "contact": "+212 522 430 000",
-        "email": "casablanca@cmacgm.com"
+        "contact": "+33 4 88 91 90 00",
+        "email": "customerservice@cma-cgm.com"
       },
       {
         "agent_name": "Hull Blyth Maroc",
@@ -2276,7 +2276,7 @@
         "group": "International (France)",
         "address": "Zone Portuaire, Port d'Abidjan",
         "website": "www.cma-cgm.com",
-        "contact": "+225 27 20 31 1700",
+        "contact": "+225 27 20 31 17 00",
         "email": "abidjan@cmacgm.com"
       },
       {
