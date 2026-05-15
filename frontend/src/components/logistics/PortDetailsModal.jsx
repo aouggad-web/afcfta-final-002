@@ -207,25 +207,65 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
 
           <TabsContent value="agents" className="mt-4">
             {agents.length > 0 ? (
-              <div className="space-y-2 max-h-96 overflow-y-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {agents.map((agent, index) => (
                   <div
                     key={index}
-                    className="p-3 bg-gray-50 rounded-lg border-l-4 border-blue-500 hover:bg-gray-100 transition-colors"
+                    className="p-3 bg-gray-50 rounded-lg border-l-4 border-blue-500 hover:bg-blue-50 transition-colors flex flex-col gap-1"
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-blue-600 font-bold">✓</span>
-                        <div>
-                          <p className="font-bold text-gray-900">{agent.agent_name}</p>
-                          {agent.group && (
-                            <Badge variant="outline" className="text-xs mt-1">
-                              {agent.group}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="font-bold text-gray-900 text-sm leading-tight">{agent.agent_name}</p>
+                      {agent.group && (
+                        <Badge variant="outline" className="text-xs shrink-0">
+                          {agent.group}
+                        </Badge>
+                      )}
                     </div>
+                    {agent.role && (
+                      <p className="text-xs text-blue-700 font-medium">{agent.role}</p>
+                    )}
+                    {agent.contact && (
+                      <p className="text-xs text-gray-600 flex items-center gap-1">
+                        <span>📞</span> {agent.contact}
+                      </p>
+                    )}
+                    {agent.email && (
+                      <p className="text-xs text-gray-500 flex items-center gap-1 truncate">
+                        <span>✉️</span>
+                        <span className="truncate">{agent.email}</span>
+                      </p>
+                    )}
+                    {agent.services && agent.services.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {agent.services.map((s, i) => (
+                          <span key={i} className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {agent.cargo_types && agent.cargo_types.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {agent.cargo_types.map((c, i) => (
+                          <span key={i} className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">
+                            {c}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {agent.operating_hours && (
+                      <p className="text-xs text-gray-400">🕐 {agent.operating_hours}</p>
+                    )}
+                    {agent.website && agent.website !== 'Non disponible' && (
+                      <a
+                        href={agent.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-blue-500 hover:underline truncate"
+                      >
+                        🌐 {agent.website.replace('https://','').replace('http://','').split('/')[0]}
+                      </a>
+                    )}
                   </div>
                 ))}
               </div>
