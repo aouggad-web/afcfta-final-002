@@ -2,6 +2,8 @@
 Logistics routes - Ports, Airports, Land corridors, Free Zones
 Multimodal logistics platform for African trade infrastructure
 """
+import json
+from pathlib import Path
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
 
@@ -55,6 +57,70 @@ except ImportError:
     CACHE_AVAILABLE = False
 
 router = APIRouter(prefix="/logistics")
+
+# WB LPI data path
+_WB_LPI_FILE = Path(__file__).parent.parent.parent / "data" / "json" / "wb_logistics_africa.json"
+_wb_lpi_cache = None
+
+def _load_wb_lpi():
+    """Load World Bank LPI data (cached)."""
+    global _wb_lpi_cache
+    if _wb_lpi_cache is None and _WB_LPI_FILE.exists():
+        with open(_WB_LPI_FILE, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        countries = raw.get('countries', {})
+        results = []
+        COUNTRY_NAMES = {
+            'DZA': 'Algérie', 'MAR': 'Maroc', 'TUN': 'Tunisie', 'EGY': 'Égypte',
+            'LBY': 'Libye', 'MRT': 'Mauritanie', 'NGA': 'Nigéria', 'GHA': 'Ghana',
+            'CIV': "Côte d'Ivoire", 'SEN': 'Sénégal', 'CMR': 'Cameroun',
+            'BEN': 'Bénin', 'TGO': 'Togo', 'MLI': 'Mali', 'BFA': 'Burkina Faso',
+            'GIN': 'Guinée', 'LBR': 'Libéria', 'SLE': 'Sierra Leone', 'GMB': 'Gambie',
+            'NER': 'Niger', 'ETH': 'Éthiopie', 'KEN': 'Kenya', 'TZA': 'Tanzanie',
+            'UGA': 'Ouganda', 'RWA': 'Rwanda', 'BDI': 'Burundi', 'SDN': 'Soudan',
+            'SSD': 'Soudan du Sud', 'SOM': 'Somalie', 'ERI': 'Érythrée',
+            'DJI': 'Djibouti', 'ZAF': 'Afrique du Sud', 'MOZ': 'Mozambique',
+            'ZMB': 'Zambie', 'ZWE': 'Zimbabwe', 'BWA': 'Botswana', 'NAM': 'Namibie',
+            'MWI': 'Malawi', 'AGO': 'Angola', 'COD': 'RD Congo', 'COG': 'Congo',
+            'GAB': 'Gabon', 'GNQ': 'Guinée Équatoriale', 'CAF': 'Rép. Centrafricaine',
+            'TCD': 'Tchad', 'MDG': 'Madagascar', 'MUS': 'Maurice', 'SYC': 'Seychelles',
+            'COM': 'Comores', 'CPV': 'Cap-Vert', 'STP': 'São Tomé', 'GNB': 'Guinée-Bissau',
+            'LSO': 'Lesotho', 'SWZ': 'Eswatini',
+        }
+
+        def _latest_val(indicator_data):
+            vals = indicator_data.get('values', [])
+            if not vals:
+                return None
+            # sort by year desc and return first non-None value
+            for v in sorted(vals, key=lambda x: x.get('year', '0'), reverse=True):
+                if v.get('value') is not None:
+                    return {'year': v['year'], 'value': round(v['value'], 3)}
+            return None
+
+        for iso, cdata in countries.items():
+            ind = cdata.get('indicators', {})
+            overall = _latest_val(ind.get('lpi_overall', {}))
+            if overall is None:
+                continue
+            row = {
+                'country_iso': iso,
+                'country_name': COUNTRY_NAMES.get(iso, iso),
+                'lpi_overall': overall,
+                'lpi_customs': _latest_val(ind.get('lpi_customs', {})),
+                'lpi_infrastructure': _latest_val(ind.get('lpi_infrastructure', {})),
+                'lpi_logistics_quality': _latest_val(ind.get('lpi_logistics_quality', {})),
+                'lpi_tracking': _latest_val(ind.get('lpi_tracking', {})),
+                'lpi_timeliness': _latest_val(ind.get('lpi_timeliness', {})),
+            }
+            results.append(row)
+        # Sort by lpi_overall desc
+        results.sort(key=lambda x: x['lpi_overall']['value'] if x['lpi_overall'] else 0, reverse=True)
+        # Add rank
+        for i, r in enumerate(results, 1):
+            r['rank_africa'] = i
+        _wb_lpi_cache = results
+    return _wb_lpi_cache or []
 
 
 def _extract_port_data_year(all_ports):
@@ -596,3 +662,41 @@ async def get_single_operator(operator_id: str):
     if not operator:
         raise HTTPException(status_code=404, detail=f"Opérateur '{operator_id}' non trouvé.")
     return operator
+
+
+# =============================================================================
+# WORLD BANK LOGISTICS PERFORMANCE INDEX (LPI)
+# =============================================================================
+
+@router.get("/lpi")
+async def get_lpi_rankings(country_iso: Optional[str] = None):
+    """
+    Indice de Performance Logistique (LPI) de la Banque Mondiale pour 54 pays africains.
+
+    Inclut : score global, douanes, infrastructure, qualité logistique,
+    traçabilité & suivi, ponctualité, expéditions internationales.
+
+    Query params:
+    - country_iso: ISO-3 code for a single country (ex: MAR, NGA, ZAF)
+    """
+    try:
+        data = _load_wb_lpi()
+        if country_iso:
+            iso = country_iso.upper()
+            match = next((c for c in data if c['country_iso'] == iso), None)
+            if not match:
+                raise HTTPException(status_code=404, detail=f"LPI data not found for {iso}")
+            return match
+        return {
+            "count": len(data),
+            "source": "World Bank Logistics Performance Index (LPI) 2022/2023",
+            "dimensions": [
+                "lpi_overall", "lpi_customs", "lpi_infrastructure",
+                "lpi_logistics_quality", "lpi_tracking", "lpi_timeliness"
+            ],
+            "countries": data
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading LPI data: {str(e)}")
