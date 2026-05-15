@@ -1667,8 +1667,8 @@ body::before {
 .afcfta-topHeader__nav {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 28px;
+  gap: 3px;
+  padding: 6px 16px;
   overflow-x: auto;
   scrollbar-width: none;
   background: rgba(0, 0, 0, 0.18);
@@ -1683,21 +1683,22 @@ body::before {
 .afcfta-navTab {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 10px 16px;
-  border-radius: 10px;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
   border: 1px solid rgba(212, 175, 55, 0.22);
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.1px;
   cursor: pointer;
   transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
   white-space: nowrap;
   flex-shrink: 0;
   line-height: 1;
-  min-height: 38px;
+  min-height: 34px;
 }
 
 .afcfta-navTab:hover {
@@ -1740,18 +1741,28 @@ body::before {
   padding: 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
   .afcfta-topHeader__bar {
     padding: 8px 16px;
   }
 
   .afcfta-topHeader__nav {
-    padding: 8px 16px;
+    padding: 5px 12px;
+    gap: 2px;
   }
 
   .afcfta-navTab {
-    padding: 8px 12px;
-    font-size: 12px;
+    padding: 7px 8px;
+    font-size: 11px;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .afcfta-navTab {
+    padding: 6px 7px;
+    font-size: 11px;
+    gap: 4px;
   }
 }
 

@@ -18,16 +18,16 @@ import {
 
 /* ─── Flat nav items ─────────────────────────────────────────── */
 const NAV_ITEMS = (isFrench) => [
-  { id: "dashboard",  label: isFrench ? "Tableau de bord" : "Dashboard",        icon: LayoutDashboard },
-  { id: "calculator", label: isFrench ? "Calculateur"      : "Calculator",       icon: Calculator },
-  { id: "stats",      label: isFrench ? "Statistiques"     : "Statistics",       icon: BarChart3 },
-  { id: "opps",       label: isFrench ? "Opportunités"     : "Opportunities",    icon: Target },
-  { id: "production", label: isFrench ? "Production"       : "Production",       icon: Factory },
-  { id: "logistics",  label: isFrench ? "Logistique"       : "Logistics",        icon: Ship },
-  { id: "banking",    label: isFrench ? "Banque"           : "Banking",          icon: Landmark },
-  { id: "tools",      label: isFrench ? "Outils"           : "Tools",            icon: Wrench },
-  { id: "roo",        label: isFrench ? "Règles d'Origine" : "Rules of Origin",  icon: FileCheck },
-  { id: "profiles",   label: isFrench ? "Profils Pays"     : "Country Profiles", icon: Globe2 },
+  { id: "dashboard",  label: isFrench ? "Tableau de bord" : "Dashboard",      icon: LayoutDashboard },
+  { id: "calculator", label: isFrench ? "Calculateur"     : "Calculator",     icon: Calculator },
+  { id: "stats",      label: isFrench ? "Statistiques"    : "Statistics",     icon: BarChart3 },
+  { id: "opps",       label: isFrench ? "Opportunités"    : "Opportunities",  icon: Target },
+  { id: "production", label: isFrench ? "Production"      : "Production",     icon: Factory },
+  { id: "logistics",  label: isFrench ? "Logistique"      : "Logistics",      icon: Ship },
+  { id: "banking",    label: isFrench ? "Banque"          : "Banking",        icon: Landmark },
+  { id: "tools",      label: isFrench ? "Outils"          : "Tools",          icon: Wrench },
+  { id: "roo",        label: isFrench ? "R. d'Origine"    : "Rules of Origin",icon: FileCheck },
+  { id: "profiles",   label: isFrench ? "Profils"         : "Profiles",       icon: Globe2 },
 ];
 
 /* ─── Horizontal topbar component ───────────────────────────── */
