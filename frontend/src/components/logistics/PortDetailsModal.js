@@ -166,7 +166,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                     {port.port_name}
                   </DialogTitle>
                   <DialogDescription className="text-blue-100 mt-1 text-lg flex items-center gap-2">
-                    <span>📍 {port.city}, {port.country_name}</span>
+                    <span>📍 {port.port_authority?.address || port.country_name}</span>
                     {port.un_locode && <Badge variant="outline" className="text-white border-white/30 text-xs">{port.un_locode}</Badge>}
                   </DialogDescription>
                 </div>
@@ -656,42 +656,46 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                 <CardHeader className="bg-gray-50 border-b">
                   <CardTitle className="text-lg flex items-center gap-2">
                     🏢 {language === 'en' ? 'Maritime Agents' : 'Agents Maritimes'}
+                    <Badge variant="secondary" className="ml-1 text-xs">
+                      {(port.agents || port.connectivity?.shipping_agents || []).length}
+                    </Badge>
                   </CardTitle>
                   <CardDescription>
                     {language === 'en' ? 'Local representatives and contacts' : 'Représentants et contacts locaux'}
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="pt-4 max-h-[500px] overflow-y-auto">
-                  <ul className="space-y-3">
+                <CardContent className="pt-4">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
                     {(port.agents || port.connectivity?.shipping_agents || []).map((agent, idx) => (
-                      <li key={idx} className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-sm transition-shadow">
+                      <div key={idx} className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-sm hover:border-blue-300 transition-all flex flex-col gap-1">
                         {typeof agent === 'object' ? (
-                          <div>
-                            <div className="flex justify-between items-start">
-                              <span className="font-bold text-gray-800">{agent.agent_name}</span>
-                              {agent.group && <Badge variant="outline" className="text-xs text-gray-500">{agent.group}</Badge>}
+                          <>
+                            <div className="flex justify-between items-start gap-2">
+                              <span className="font-bold text-gray-800 text-sm leading-tight">{agent.agent_name}</span>
+                              {agent.group && <Badge variant="outline" className="text-xs text-gray-500 shrink-0">{agent.group}</Badge>}
                             </div>
-                            
+                            {agent.role && (
+                              <p className="text-xs text-blue-700 font-medium">{agent.role}</p>
+                            )}
                             {agent.address && (
-                              <div className="flex items-start gap-2 mt-2 text-xs text-gray-600">
-                                <span>📍</span>
-                                <span>{agent.address}</span>
+                              <div className="flex items-start gap-1 text-xs text-gray-500">
+                                <span className="shrink-0">📍</span>
+                                <span className="line-clamp-2">{agent.address}</span>
                               </div>
-                            )}}
-                            
-                            <div className="flex flex-wrap gap-3 mt-3">
+                            )}
+                            <div className="flex flex-wrap gap-2 mt-1">
                               {agent.website && agent.website !== 'Non disponible' && agent.website !== 'N/A' && (
-                                <a 
+                                <a
                                   href={agent.website.startsWith('http') ? agent.website : `https://${agent.website}`}
-                                  target="_blank" 
-                                  rel="noopener noreferrer" 
-                                  className="text-xs text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1 bg-blue-50 px-2 py-1 rounded"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded"
                                 >
                                   🌐 Site Web
                                 </a>
                               )}
                               {agent.contact && agent.contact !== 'N/A' && (
-                                <a 
+                                <a
                                   href={`tel:${agent.contact.replace(/\s/g, '')}`}
                                   className="text-xs text-green-600 hover:text-green-800 flex items-center gap-1 bg-green-50 px-2 py-1 rounded"
                                 >
@@ -699,7 +703,7 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                                 </a>
                               )}
                               {agent.email && (
-                                <a 
+                                <a
                                   href={`mailto:${agent.email}`}
                                   className="text-xs text-orange-600 hover:text-orange-800 flex items-center gap-1 bg-orange-50 px-2 py-1 rounded"
                                 >
@@ -707,16 +711,28 @@ function PortDetailsModal({ isOpen, onClose, port, language = 'fr' }) {
                                 </a>
                               )}
                             </div>
-                          </div>
+                            {agent.services && agent.services.length > 0 && (
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {agent.services.map((s, i) => (
+                                  <span key={i} className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">{s}</span>
+                                ))}
+                              </div>
+                            )}
+                          </>
                         ) : (
                           <div className="flex items-center gap-2">
                             <span className="text-green-500">●</span>
-                            <span className="font-medium text-gray-700">{agent}</span>
+                            <span className="font-medium text-gray-700 text-sm">{agent}</span>
                           </div>
                         )}
-                      </li>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
+                  {(port.agents || port.connectivity?.shipping_agents || []).length === 0 && (
+                    <p className="text-gray-500 italic text-center py-6">
+                      {language === 'en' ? 'No maritime agents listed.' : 'Aucun agent maritime répertorié.'}
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             </div>
