@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -26,7 +26,8 @@ function ProductionMining({ language = 'fr' }) {
       comparisonTitle: "Production par Minerai et Année",
       detailsTitle: "Données Détaillées par Minerai",
       production: "Production",
-      year: "Année"
+      year: "Année",
+      latestData: "Dernière donnée"
     },
     en: {
       title: "Mining Production (USGS)",
@@ -39,7 +40,8 @@ function ProductionMining({ language = 'fr' }) {
       comparisonTitle: "Production by Mineral and Year",
       detailsTitle: "Detailed Data by Mineral",
       production: "Production",
-      year: "Year"
+      year: "Year",
+      latestData: "Latest data"
     }
   };
   const t = texts[language] || texts.fr;
@@ -63,11 +65,26 @@ function ProductionMining({ language = 'fr' }) {
     }
   };
 
-  const prepareChartData = () => {
-    if (!miningData || !miningData.data_by_commodity) return [];
+  const availableYears = useMemo(() => {
+    if (Array.isArray(miningData?.years_covered) && miningData.years_covered.length) {
+      return miningData.years_covered;
+    }
+    if (!miningData?.data_by_commodity) return [];
+    const years = new Set();
+    Object.values(miningData.data_by_commodity).forEach((records) => {
+      records.forEach((record) => {
+        if (Number.isInteger(record?.year)) years.add(record.year);
+      });
+    });
+    return [...years].sort((a, b) => a - b);
+  }, [miningData]);
 
-    const years = [2021, 2022, 2023, 2024];
-    return years.map(year => {
+  const latestYear = miningData?.latest_year || (availableYears.length ? availableYears[availableYears.length - 1] : null);
+
+  const prepareChartData = () => {
+    if (!miningData?.data_by_commodity || !availableYears.length) return [];
+
+    return availableYears.map(year => {
       const dataPoint = { year };
       
       Object.entries(miningData.data_by_commodity).forEach(([commodity, records]) => {
@@ -116,6 +133,11 @@ function ProductionMining({ language = 'fr' }) {
               <Badge variant="outline" className="text-sm">
                 {miningData.total_records} {t.records} • {Object.keys(miningData.data_by_commodity).length} {t.minerals}
               </Badge>
+              {latestYear && (
+                <Badge variant="outline" className="text-sm ml-2">
+                  {t.latestData}: {latestYear}
+                </Badge>
+              )}
             </div>
           )}
         </CardContent>
@@ -154,6 +176,7 @@ function ProductionMining({ language = 'fr' }) {
                       const unit = Object.values(miningData.data_by_commodity)[0]?.[0]?.unit || '';
                       return `${value.toLocaleString()} ${unit}`;
                     }}
+                    labelFormatter={(label) => `${t.year} ${label}`}
                   />
                   <Legend />
                   {Object.keys(miningData.data_by_commodity).map((commodity, index) => (
@@ -192,6 +215,7 @@ function ProductionMining({ language = 'fr' }) {
                       const unit = Object.values(miningData.data_by_commodity)[0]?.[0]?.unit || '';
                       return `${value.toLocaleString()} ${unit}`;
                     }}
+                    labelFormatter={(label) => `${t.year} ${label}`}
                   />
                   <Legend />
                   {Object.keys(miningData.data_by_commodity).map((commodity, index) => (

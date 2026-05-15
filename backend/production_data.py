@@ -20,6 +20,10 @@ def _normalize_country_iso3(country_iso3: Optional[str]) -> Optional[str]:
         return None
     return country_iso3.strip().upper()
 
+def _extract_years(records: List[Dict]) -> List[int]:
+    """Extrait et trie les années disponibles depuis une liste d'enregistrements."""
+    return sorted({r.get('year') for r in records if isinstance(r.get('year'), int)})
+
 def load_production_data():
     """Charge les données de production depuis le fichier JSON"""
     global _production_data
@@ -93,12 +97,16 @@ def get_value_added_by_country(country_iso3: str) -> Dict:
         if sector not in by_sector:
             by_sector[sector] = []
         by_sector[sector].append(record)
+
+    years_covered = _extract_years(records)
     
     return {
         'country_iso3': country_iso3,
         'country_name': records[0].get('country_name') if records else None,
         'data_by_sector': by_sector,
-        'total_records': len(records)
+        'total_records': len(records),
+        'years_covered': years_covered,
+        'latest_year': years_covered[-1] if years_covered else None,
     }
 
 # ==========================================
@@ -146,12 +154,16 @@ def get_agriculture_by_country(country_iso3: str) -> Dict:
         if commodity not in by_commodity:
             by_commodity[commodity] = []
         by_commodity[commodity].append(record)
+
+    years_covered = _extract_years(records)
     
     return {
         'country_iso3': country_iso3,
         'country_name': records[0].get('country_name') if records else None,
         'data_by_commodity': by_commodity,
-        'total_records': len(records)
+        'total_records': len(records),
+        'years_covered': years_covered,
+        'latest_year': years_covered[-1] if years_covered else None,
     }
 
 # ==========================================
@@ -197,12 +209,16 @@ def get_manufacturing_by_country(country_iso3: str) -> Dict:
         if isic not in by_isic:
             by_isic[isic] = []
         by_isic[isic].append(record)
+
+    years_covered = _extract_years(records)
     
     return {
         'country_iso3': country_iso3,
         'country_name': records[0].get('country_name') if records else None,
         'data_by_isic': by_isic,
-        'total_records': len(records)
+        'total_records': len(records),
+        'years_covered': years_covered,
+        'latest_year': years_covered[-1] if years_covered else None,
     }
 
 # ==========================================
@@ -250,12 +266,16 @@ def get_mining_by_country(country_iso3: str) -> Dict:
         if commodity not in by_commodity:
             by_commodity[commodity] = []
         by_commodity[commodity].append(record)
+
+    years_covered = _extract_years(records)
     
     return {
         'country_iso3': country_iso3,
         'country_name': records[0].get('country_name') if records else None,
         'data_by_commodity': by_commodity,
-        'total_records': len(records)
+        'total_records': len(records),
+        'years_covered': years_covered,
+        'latest_year': years_covered[-1] if years_covered else None,
     }
 
 # ==========================================
