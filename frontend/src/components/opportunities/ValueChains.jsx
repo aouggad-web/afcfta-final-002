@@ -486,7 +486,7 @@ export default function ValueChains({ language = 'fr' }) {
                     ))
                   ) : (
                     <>
-                      <li>• Réduction des tarifs douaniers jusqu'à 90% d'ici 2034</li>
+                      <li>• Réduction des tarifs douaniers jusqu'à 90% d'ici 2024</li>
                       <li>• Règles d'origine favorisant la transformation locale</li>
                       <li>• Harmonisation des normes et standards</li>
                       <li>• Facilitation du commerce et réduction des délais aux frontières</li>
