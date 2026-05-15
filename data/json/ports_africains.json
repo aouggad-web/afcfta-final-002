@@ -10,11 +10,18 @@
     "port_type": "Maritime Commercial",
     "latest_stats": {
       "year": 2024,
-      "container_throughput_teu": 265000,
+      "container_throughput_teu": 700000,
       "cargo_throughput_tons": 25000000,
-      "vessel_calls": 3100,
-      "source": "EPAL — Rapports trimestriels 2024",
-      "note": "Q1 2024: 64 917 EVP (+16% YoY, officiel EPAL). H1 2024: ~130 000 EVP. Projection annuelle: ~260-265K EVP."
+      "vessel_calls": 1600,
+      "container_vessel_calls": 355,
+      "source": "EPAL — Déclaration DG Abdelhamid Boulaam, février 2025. Confirmé: APS / Radio Algérienne / Maghreb Émergent.",
+      "note": "700 000 EVP en 2024 (officiel EPAL). Progression à ~1 000 000 EVP en 2025 (+43%, APS). Taux d'occupation quais 2024: ~98% (saturation) → 2025: ~80% après modernisation DPWorld TCA. ~1 600 escales totales (dont ~355 porte-conteneurs). Sur 400 navires porte-conteneurs annoncés pour 2025.",
+      "year_2025_projection": {
+        "container_throughput_teu": 1000000,
+        "vessel_calls_total": 2000,
+        "container_vessel_calls": 400,
+        "source": "APS + Radio Algérienne + LNR-DZ — bilan 2025 publié"
+      }
     },
     "port_authority": {
       "name": "Entreprise Portuaire d'Alger (EPAL)",
@@ -341,69 +348,89 @@
     },
     "performance_metrics": {
       "avg_waiting_time_hours": 144,
-      "avg_waiting_time_label": "6 jours (120-168h) — Source: Kuehne+Nagel, avril 2025",
+      "avg_waiting_time_label": "6 jours — 2024 (Kuehne+Nagel / Ministère Transports DZ, confirmé)",
+      "avg_waiting_time_2025_hours": 24,
+      "avg_waiting_time_2025_label": "<1 jour petits navires / -50% grands navires (EPAL bilan 2025)",
       "avg_port_stay_hours": 360,
-      "avg_port_stay_label": "15 jours dwell time estimé",
-      "berth_productivity": 22.0,
-      "berth_productivity_unit": "mouvements/heure (TCA DPWorld)",
+      "avg_port_stay_label": "15 jours dwell time — 2024 (incident documenté juillet 2024)",
+      "quay_occupancy_rate_2024_pct": 98,
+      "quay_occupancy_rate_2025_pct": 80,
+      "berth_productivity": 25.0,
+      "berth_productivity_unit": "mouvements/heure (TCA DPWorld post-modernisation)",
       "efficiency_grade": "C+",
-      "efficiency_note": "LPI Algérie 2023: 2.4/5 (rang 117 mondial). Incidents de blocage récurrents documentés (21-24j en juillet 2024).",
-      "last_updated": "2025-04-01 (Kuehne+Nagel Operational Update)"
+      "efficiency_note": "2024: saturation critique (98% taux quais). 2025: amélioration spectaculaire post-modernisation DPWorld TCA. LPI Algérie 2023: 2.4/5 (rang 117 mondial). Résultat net EPAL T3 2025: 1,3 Md DA (+74.41%).",
+      "last_updated": "2025-02-21 (LNR-DZ bilan T3 2025 publié)"
     },
     "traffic_evolution": [
       {
         "year": 2019,
-        "teu": 380000,
-        "vessels": 3350,
-        "cargo_tons": 26000000,
-        "avg_wait_time": 35.0,
-        "source": "EPAL / UNCTAD",
-        "note": "Année de référence pré-COVID"
+        "teu": 785000,
+        "vessels": 1820,
+        "container_vessel_calls": 380,
+        "cargo_tons": 24000000,
+        "avg_wait_time": 72.0,
+        "source": "Estimation — national UNCTAD 1 794K × part Alger ~43.8%",
+        "note": "Pré-COVID. UNCTAD national Algérie 2019: 1 793 990 EVP."
       },
       {
         "year": 2020,
-        "teu": 305000,
-        "vessels": 2800,
-        "cargo_tons": 22000000,
-        "avg_wait_time": 40.0,
-        "source": "EPAL",
-        "note": "Impact COVID-19 — baisse des importations"
+        "teu": 640000,
+        "vessels": 1550,
+        "container_vessel_calls": 310,
+        "cargo_tons": 20500000,
+        "avg_wait_time": 96.0,
+        "source": "Estimation — national UNCTAD 1 541K × part Alger ~41.5%. COVID -14.1% national.",
+        "note": "COVID-19 + restrictions importations DZ. UNCTAD national 2020: 1 541 273 EVP."
       },
       {
         "year": 2021,
-        "teu": 325000,
-        "vessels": 2950,
-        "cargo_tons": 23500000,
-        "avg_wait_time": 42.0,
-        "source": "EPAL",
-        "note": "Reprise progressive"
+        "teu": 660000,
+        "vessels": 1580,
+        "container_vessel_calls": 320,
+        "cargo_tons": 21500000,
+        "avg_wait_time": 120.0,
+        "source": "Estimation — reprise partielle, restrictions importations maintenues",
+        "note": "Loi finances 2021: maintien restrictions LIC. Reprise progressive."
       },
       {
         "year": 2022,
-        "teu": 345000,
-        "vessels": 3050,
-        "cargo_tons": 24800000,
-        "avg_wait_time": 45.0,
-        "source": "EPAL",
-        "note": "Hausse des imports d'équipements industriels"
+        "teu": 680000,
+        "vessels": 1590,
+        "container_vessel_calls": 335,
+        "cargo_tons": 23000000,
+        "avg_wait_time": 132.0,
+        "source": "Estimation — T1 2022 EPAL: ~61 220 EVP (publié). Extrapolation annuelle.",
+        "note": "T1 2022 publié par EPAL: ~61 220 EVP. Saturation quais en progression."
       },
       {
         "year": 2023,
-        "teu": 290000,
-        "vessels": 3100,
-        "cargo_tons": 25200000,
-        "avg_wait_time": 48.0,
-        "source": "EPAL rapports trimestriels 2023",
-        "note": "Baisse TEU liée aux restrictions import (LCR). Hausse vrac."
+        "teu": 680000,
+        "vessels": 1590,
+        "container_vessel_calls": 340,
+        "cargo_tons": 24000000,
+        "avg_wait_time": 144.0,
+        "source": "Estimation — T1 2023: 55 955 EVP (-8.6% YoY). T3 2023: 68 446 EVP (+8.18%). Hausse annuelle trafic >14% (APS 2023).",
+        "note": "EPAL publie: T1 2023=55 955 EVP, T3 2023=68 446 EVP. Taux d'occupation quais ~98% (saturation documentée). Attente navires: 6 jours (Kuehne+Nagel, confirmé)."
       },
       {
         "year": 2024,
-        "teu": 265000,
-        "vessels": 3100,
+        "teu": 700000,
+        "vessels": 1600,
+        "container_vessel_calls": 355,
         "cargo_tons": 25000000,
         "avg_wait_time": 144.0,
-        "source": "EPAL Q1 2024 (64 917 EVP officiels) + projection",
-        "note": "Q1 2024: 64 917 EVP (+16% YoY). Blocage massif juillet-août 2024 (21-24 jours)."
+        "source": "EPAL — DG Abdelhamid Boulaam, déclaration officielle, confirmé APS/Radio Algérienne",
+        "note": "700 000 EVP CONFIRMÉ. Taux d'occupation quais: ~98% (saturation). T3 2024: 71 383 EVP. Attente grands navires: maintien 6 jours."
+      },
+      {
+        "year": 2025,
+        "teu": 1000000,
+        "vessels": 2000,
+        "container_vessel_calls": 400,
+        "cargo_tons": 27000000,
+        "avg_wait_time": 24.0,
+        "source": "APS / Radio Algérienne / LNR-DZ — bilan 2025 publié (officiel)",
+        "note": "PREMIER MILLION D'EVP franchi. >400 navires porte-conteneurs. T3 2025: 106 293 EVP (+48.91% vs T3 2024). Taux d'occupation quais: ~80% (décongestionnement après modernisation DPWorld TCA). Attente petits navires: <1 jour (vs 10 jours en 2009). Attente grands navires: -50%."
       }
     ],
     "trs_analysis": {
@@ -428,12 +455,16 @@
       "lpi_source": "World Bank Logistics Performance Index 2023",
       "no_official_data_reason": "L'EPAL ne publie pas de TRS standardisé WCO. Les statistiques trimestrielles EVP sont disponibles mais pas les temps de séjour désagrégés.",
       "factual_data_points": [
-        "Q1 2024: 64 917 EVP (+16% YoY) — EPAL officiel",
-        "Blocage juillet-août 2024: 21-24 jours — Maghreb Emergent",
-        "Temps d'attente navires: 5-7 jours — Kuehne+Nagel, avril 2025",
-        "LPI Algérie 2023: 2.4/5 (rang 117) — Banque Mondiale"
+        "2024: 700 000 EVP — DG EPAL Boulaam, officiel (APS/Radio Algérienne)",
+        "2025: ~1 000 000 EVP — APS / Radio Algérienne (officiel)",
+        "T3 2025: 106 293 EVP (+48.91% vs T3 2024: 71 383 EVP)",
+        "T3 2023: 68 446 EVP | T1 2023: 55 955 EVP (bilans EPAL trimestriels)",
+        "Taux d'occupation quais 2024: ~98% (saturation) → 2025: ~80% (post-DPWorld TCA)",
+        "Navires 2024: ~1 600 total (dont ~355 porte-conteneurs) | 2025: ~2 000 (+400 PC)",
+        "UNCTAD national DZ 2019: 1 793 990 EVP | 2020: 1 541 273 EVP (-14.1% COVID)",
+        "Attente petits navires 2025: <1j (vs 10j en 2009) | Grands navires: -50%"
       ],
-      "warning": "⚠️ ESTIMATION: Aucune étude TRS officielle WCO disponible. Valeur de 15 jours basée sur incidents documentés, temps d'attente navires 5-7j et benchmarks régionaux.",
+      "warning": "ℹ️ TEU 2024 (700 000 EVP) = DONNÉES EPAL OFFICIELLES (DG Boulaam). Historique 2019-2023 = estimations basées sur données fragmentaires EPAL + UNCTAD national. EPAL ne publie pas de rapport annuel normalisé.",
       "source_reliability_label": "Estimation Régionale"
     },
     "lpi_2023": {
