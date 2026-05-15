@@ -209,29 +209,67 @@ def get_administrative_formalities(country_iso3, hs_code):
 def search_tariff_lines(country_iso3, query, language='fr', limit=20):
     """Search tariff lines by HS code prefix or description keyword.
 
-    Also searches the nomenclature map so that extended national codes
-    (e.g. 7610909910) are discoverable by both code and description.
+    Priority order:
+    1. Crawled authentic sub-positions (10-digit, e.g. DZA 17 114 positions from CSV)
+    2. ETL tariff_lines (HS6-level)
+    3. Nomenclature map (extended national codes)
     """
-    data = load_country_tariffs(country_iso3)
-    if not data:
-        return []
     q = query.lower().strip()
-    desc_key = 'description_fr' if language == 'fr' else 'description_en'
     results = []
-    for line in data.get('tariff_lines', []):
-        hs6 = line.get('hs6', '')
-        desc = line.get(desc_key, line.get('description_fr', line.get('designation', '')))
-        if hs6.startswith(q) or q in desc.lower():
-            results.append(line)
-        if len(results) >= limit:
-            break
+    seen_codes = set()
 
-    # Also search the nomenclature map for extended national codes
+    # ── 1. Crawled sub-positions (authentic, 10-digit) ──────────────────────
+    crawled_index = load_crawled_position_index(country_iso3)
+    if crawled_index:
+        for code, sp in crawled_index.items():
+            name = (sp.get('name') or sp.get('description') or sp.get('designation') or '').lower()
+            if code.startswith(q) or q in name:
+                taxes = sp.get('taxes', {})
+                dd = taxes.get('DD', {}).get('rate', 0)
+                tva = taxes.get('TVA', {}).get('rate', 0)
+                tcs = taxes.get('TCS', {}).get('rate', 0)
+                prct = taxes.get('PRCT', {}).get('rate', 0)
+                daps = taxes.get('DAPS', {}).get('rate', 0)
+                results.append({
+                    'hs6': code[:6],
+                    'national_code': code,
+                    'description_fr': sp.get('name') or sp.get('description') or '',
+                    'description_en': sp.get('name') or sp.get('description') or '',
+                    'designation': sp.get('designation') or sp.get('name') or '',
+                    'dd_rate': dd,
+                    'tva_rate': tva,
+                    'tcs_rate': tcs,
+                    'prct_rate': prct,
+                    'daps_rate': daps,
+                    'total_rate': round(dd + tva + tcs + prct + daps, 1),
+                    'advantages': sp.get('advantages', []),
+                    'source': 'douane.gov.dz',
+                    'source_quality': 'crawled_authentic',
+                })
+                seen_codes.add(code)
+                if len(results) >= limit:
+                    return results
+
+    # ── 2. ETL tariff_lines (HS6-level) ─────────────────────────────────────
+    if len(results) < limit:
+        data = load_country_tariffs(country_iso3)
+        if data:
+            desc_key = 'description_fr' if language == 'fr' else 'description_en'
+            for line in data.get('tariff_lines', []):
+                hs6 = line.get('hs6', '')
+                desc = line.get(desc_key, line.get('description_fr', line.get('designation', '')))
+                if hs6 not in seen_codes and (hs6.startswith(q) or q in desc.lower()):
+                    results.append(line)
+                    seen_codes.add(hs6)
+                    if len(results) >= limit:
+                        return results
+
+    # ── 3. Nomenclature map (extended national codes) ────────────────────────
     if len(results) < limit:
         nomenclature = load_nomenclature_map(country_iso3)
         if nomenclature:
             for code, description in nomenclature.items():
-                if code.startswith(q) or q in description.lower():
+                if code not in seen_codes and (code.startswith(q) or q in description.lower()):
                     results.append({
                         'hs6': code[:6],
                         'national_code': code,
@@ -239,8 +277,10 @@ def search_tariff_lines(country_iso3, query, language='fr', limit=20):
                         'description_en': description,
                         'source': f'Nomenclature DGD {country_iso3}',
                     })
+                    seen_codes.add(code)
                     if len(results) >= limit:
                         break
+
     return results
 
 

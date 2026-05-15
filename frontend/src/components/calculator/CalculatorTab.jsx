@@ -21,6 +21,7 @@ import MultiCountryComparison from './MultiCountryComparison';
 import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
+import ProductKeywordSearch from './ProductKeywordSearch';
 import './calculator.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
@@ -738,7 +739,28 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 {useSmartSearch ? 'Mode simple' : 'Recherche intelligente'}
               </Button>
             </div>
-            
+
+            {/* ── Recherche par mot-clé ── */}
+            <ProductKeywordSearch
+              destinationCountry={destinationCountry}
+              language={language}
+              onSelect={(code, desc) => {
+                if (code) {
+                  setHsCode(code);
+                  setSelectedSubPositionDesc(desc);
+                }
+              }}
+            />
+
+            {/* ── Séparateur ou code HS direct ── */}
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-px bg-slate-700" />
+              <span className="text-xs text-slate-600 shrink-0">
+                {language === 'fr' ? 'ou saisir directement' : 'or enter directly'}
+              </span>
+              <div className="flex-1 h-px bg-slate-700" />
+            </div>
+
             {useSmartSearch ? (
               <SmartHSSearch
                 value={hsCode}
@@ -762,6 +784,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   data-testid="hs-code-simple-input"
                 />
                 <p className="text-slate-500 text-xs">{t.hsCodeHint}</p>
+              </div>
+            )}
+
+            {/* Code sélectionné via recherche */}
+            {hsCode && selectedSubPositionDesc && (
+              <div className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-lg px-3 py-2">
+                <span className="font-mono text-purple-300 text-sm font-bold shrink-0">{hsCode}</span>
+                <span className="text-slate-400 text-xs line-clamp-1">{selectedSubPositionDesc}</span>
               </div>
             )}
             
