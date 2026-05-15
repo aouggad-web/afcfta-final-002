@@ -367,9 +367,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           normal_total_cost: npfCalc.total_to_pay || 0,
           zlecaf_total_cost: zlecafCalc.total_to_pay || 0,
           
-          // Totaux en pourcentage (pour l'affichage)
-          total_taxes_npf: rates.total_rate_pct || (rates.dd_rate_pct || 0) + (rates.vat_rate_pct || 0) + (rates.other_taxes_pct || 0),
-          total_taxes_zlecaf: (rates.vat_rate_pct || 0) + (rates.other_taxes_pct || 0), // DD exonéré sous ZLECAf
+          // Taux effectif = total_taxes / CIF × 100 (cascade réelle, PAS somme de taux)
+          total_taxes_npf: rates.effective_rate_pct || rates.total_rate_pct || 0,
+          total_taxes_zlecaf: authenticResult.calculation_steps_zlecaf
+            ? Math.round(authenticResult.calculation_steps_zlecaf.reduce((s, t) => s + t.amount, 0) / parseFloat(value) * 10000) / 100
+            : (rates.vat_rate_pct || 0) + (rates.other_taxes_pct || 0),
           
           // Économies
           savings: savings.amount || 0,
@@ -402,19 +404,51 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             regional_content: 40
           },
           
-          // Journal de calcul NPF
-          normal_calculation_journal: [
-            { step: 1, component: 'Valeur CIF', base: parseFloat(value), rate: '-', amount: parseFloat(value), cumulative: parseFloat(value), legal_ref: 'Incoterms 2020' },
-            { step: 2, component: 'Droits de Douane (DD)', base: parseFloat(value), rate: `${rates.dd_rate_pct || 0}%`, amount: npfCalc.dd?.amount || 0, cumulative: parseFloat(value) + (npfCalc.dd?.amount || 0), legal_ref: `Tarif ${destISO3}` },
-            { step: 3, component: 'TVA', base: npfCalc.vat?.base || parseFloat(value), rate: `${rates.vat_rate_pct || 0}%`, amount: npfCalc.vat?.amount || 0, cumulative: npfCalc.total_to_pay || 0, legal_ref: `CGI ${destISO3}` }
-          ],
+          // Journal de calcul NPF — généré par le moteur cascade (vraies bases par pays)
+          normal_calculation_journal: (() => {
+            const cif = parseFloat(value);
+            const steps = authenticResult.calculation_steps || [];
+            const legalSource = authenticResult.cascade_legal_source || `Tarif officiel ${destISO3}`;
+            const journal = [
+              { step: 1, component: 'Valeur CIF', base: cif, rate: '-', amount: cif, cumulative: cif, legal_ref: 'Incoterms 2020' }
+            ];
+            steps.forEach((s, i) => {
+              journal.push({
+                step: i + 2,
+                component: s.label || s.code,
+                base: s.base_value,
+                base_formula: s.base_formula,
+                rate: `${s.rate_pct}%`,
+                amount: s.amount,
+                cumulative: s.cumulative,
+                legal_ref: legalSource,
+              });
+            });
+            return journal;
+          })(),
           
-          // Journal de calcul ZLECAf
-          zlecaf_calculation_journal: [
-            { step: 1, component: 'Valeur CIF', base: parseFloat(value), rate: '-', amount: parseFloat(value), cumulative: parseFloat(value), legal_ref: 'Incoterms 2020' },
-            { step: 2, component: 'Droits de Douane ZLECAf', base: parseFloat(value), rate: '0%', amount: 0, cumulative: parseFloat(value), legal_ref: 'AfCFTA Art. 8 - Exonération DD' },
-            { step: 3, component: 'TVA', base: zlecafCalc.vat?.base || parseFloat(value), rate: `${rates.vat_rate_pct || 0}%`, amount: zlecafCalc.vat?.amount || 0, cumulative: zlecafCalc.total_to_pay || 0, legal_ref: `CGI ${destISO3}` }
-          ],
+          // Journal de calcul ZLECAf — moteur cascade avec DD préférentiel
+          zlecaf_calculation_journal: (() => {
+            const cif = parseFloat(value);
+            const steps = authenticResult.calculation_steps_zlecaf || [];
+            const legalSource = authenticResult.cascade_legal_source || `Tarif ZLECAf ${destISO3}`;
+            const journal = [
+              { step: 1, component: 'Valeur CIF', base: cif, rate: '-', amount: cif, cumulative: cif, legal_ref: 'Incoterms 2020' }
+            ];
+            steps.forEach((s, i) => {
+              journal.push({
+                step: i + 2,
+                component: s.label || s.code,
+                base: s.base_value,
+                base_formula: s.base_formula,
+                rate: `${s.rate_pct}%`,
+                amount: s.amount,
+                cumulative: s.cumulative,
+                legal_ref: s.code === 'DD' ? `ZLECAf — ${legalSource}` : legalSource,
+              });
+            });
+            return journal;
+          })(),
           
           computation_order_ref: `Données tarifaires officielles ${destISO3} - Format enhanced_v2`,
           last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',

@@ -56,6 +56,307 @@ def _validate_iso3(country_iso3: str) -> str:
         raise ValueError(f'Invalid country code: {country_iso3!r}')
     return code
 
+# ── Per-country tax cascade profiles ──────────────────────────────────────────
+# Each entry defines:
+#   taxes_order: order in which taxes are applied
+#   tax_bases:   {tax_code: ('BASE_FORMULA', [codes_already_computed_to_add])}
+#     BASE_FORMULA = 'CIF'        → base = CIF value
+#                   'DD_AMOUNT'   → base = the DD amount already computed (e.g. CAC)
+#   source: official legal reference
+#
+# Rules are sourced from official customs legislation per country.
+# ──────────────────────────────────────────────────────────────────────────────
+_ECOWAS_UEMOA = {   # shared base profile for UEMOA/CEDEAO members
+    'taxes_order': ['DD', 'RS', 'PCS', 'TVA'],
+    'tax_bases': {
+        'DD':  ('CIF', []),
+        'RS':  ('CIF', []),    # Redevance Statistique: base CIF (UEMOA)
+        'PCS': ('CIF', []),    # Prélèvement Communautaire de Solidarité: base CIF
+        'TVA': ('CIF', ['DD']),  # TVA base = CIF + DD (OHADA/UEMOA practice)
+    },
+    'source': 'TEC CEDEAO / Code CGI UEMOA — TVA base = CIF+DD',
+}
+_CEMAC = {           # shared base profile for CEMAC members
+    'taxes_order': ['DD', 'TCI', 'CAC', 'TVA'],
+    'tax_bases': {
+        'DD':  ('CIF', []),
+        'TCI': ('CIF', []),        # Taxe Communautaire d'Intégration: base CIF
+        'CAC': ('DD_AMOUNT', []),  # Centimes Additionnels Communaux: % of DD amount
+        'TVA': ('CIF', ['DD', 'TCI']),  # Directive TVA CEMAC: base = CIF+DD+TCI
+    },
+    'source': 'Tarif Extérieur Commun CEMAC — Directive TVA CEMAC art. 9',
+}
+_EAC = {             # EAC common profile (Kenya, Tanzania, Uganda, Rwanda, Burundi)
+    'taxes_order': ['DD', 'IDF', 'TVA'],
+    'tax_bases': {
+        'DD':  ('CIF', []),
+        'IDF': ('CIF', []),        # Import Declaration Fee: base CIF
+        'TVA': ('CIF', ['DD']),    # EAC Customs Management Act: base = CIF+DD
+    },
+    'source': 'EAC Customs Management Act — VAT base = CIF+DD',
+}
+
+COUNTRY_TAX_PROFILES = {
+    # ── Algérie — DGD (douane.gov.dz / conformepro.dz) ───────────────────────
+    # DAPS, DD, PRCT, TCS : base = CIF
+    # TVA : base = CIF + DAPS + DD  (art. 21 CTCA)
+    'DZA': {
+        'taxes_order': ['DAPS', 'DD', 'PRCT', 'TCS', 'TVA'],
+        'tax_bases': {
+            'DAPS': ('CIF', []),
+            'DD':   ('CIF', []),
+            'PRCT': ('CIF', []),
+            'TCS':  ('CIF', []),
+            'TVA':  ('CIF', ['DAPS', 'DD']),  # art. 21 CTCA
+        },
+        'source': 'douane.gov.dz — art. 21 CTCA (TVA base = CIF+DAPS+DD)',
+    },
+    # ── Maroc — ADII (douane.gov.ma) ──────────────────────────────────────────
+    # DD, TPI : base = CIF
+    # TVA : base = CIF + DD + TPI  (CGI Maroc art. 96)
+    'MAR': {
+        'taxes_order': ['DD', 'TPI', 'TVA'],
+        'tax_bases': {
+            'DD':  ('CIF', []),
+            'TPI': ('CIF', []),
+            'TVA': ('CIF', ['DD', 'TPI']),  # CGI Maroc art. 96
+        },
+        'source': 'douane.gov.ma — CGI Maroc art. 96 (TVA base = CIF+DD+TPI)',
+    },
+    # ── Ghana — UNIPASS/ICUMS (external.unipassghana.com) ────────────────────
+    # DD, ECOWAS Levy : base = CIF
+    # GETFUND, NHIL, VAT : base = CIF + DD + ECOWAS  (VAT Act 870)
+    'GHA': {
+        'taxes_order': ['DD', 'CEDEAO', 'TVA', 'NHIL', 'GETFUND'],
+        'tax_bases': {
+            'DD':      ('CIF', []),
+            'CEDEAO':  ('CIF', []),
+            'TVA':     ('CIF', ['DD', 'CEDEAO']),   # VAT Act 870 s.7
+            'NHIL':    ('CIF', ['DD', 'CEDEAO']),   # NHIL Act
+            'GETFUND': ('CIF', ['DD', 'CEDEAO']),   # GETFUND Act
+        },
+        'source': 'UNIPASS Ghana — VAT Act 870 (VAT/NHIL/GETFUND base = CIF+DD+ECOWAS)',
+    },
+    # ── Nigeria — NCS (customs.gov.ng, ECOWAS CET) ───────────────────────────
+    # DD, ECOWAS, CISS : base = CIF
+    # VAT : base = CIF + DD  (VAITA Nigeria s.2)
+    'NGA': {
+        'taxes_order': ['DD', 'CEDEAO', 'CISS', 'TVA'],
+        'tax_bases': {
+            'DD':     ('CIF', []),
+            'CEDEAO': ('CIF', []),
+            'CISS':   ('CIF', []),
+            'TVA':    ('CIF', ['DD']),  # VAITA s.2
+        },
+        'source': 'customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)',
+    },
+    # ── Afrique du Sud — SARS (sars.gov.za) ──────────────────────────────────
+    # VAT : base = CIF + DD  (VAT Act s.13(2))
+    'ZAF': {
+        'taxes_order': ['DD', 'TVA'],
+        'tax_bases': {
+            'DD':  ('CIF', []),
+            'TVA': ('CIF', ['DD']),  # VAT Act s.13(2)
+        },
+        'source': 'sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)',
+    },
+    # ── Kenya / EAC — KRA (kra.go.ke) ────────────────────────────────────────
+    # IDF (3.5%): base CIF  (Finance Act 2022)
+    # VAT (16%): base = CIF + DD  (VAT Act Cap 476)
+    'KEN': {**_EAC, 'source': 'kra.go.ke — VAT Act Cap 476 / Finance Act 2022'},
+    # ── Tanzanie / EAC — TRA ──────────────────────────────────────────────────
+    'TZA': {**_EAC, 'source': 'TRA Tanzania — VAT Act Cap 148'},
+    # ── Ouganda / EAC — URA ───────────────────────────────────────────────────
+    'UGA': {**_EAC, 'source': 'URA Uganda — VAT Act Cap 349'},
+    # ── Rwanda / EAC — RRA ────────────────────────────────────────────────────
+    'RWA': {**_EAC, 'source': 'RRA Rwanda — VAT Act Cap 349'},
+    # ── Burundi / EAC — OBR ───────────────────────────────────────────────────
+    'BDI': {**_EAC, 'source': 'OBR Burundi — EAC CMA'},
+    # ── Égypte — ECA (egyptariffs.com) ───────────────────────────────────────
+    # TVA : base = CIF uniquement  (Loi n°67/2016 art. 29)
+    'EGY': {
+        'taxes_order': ['DD', 'TVA'],
+        'tax_bases': {
+            'DD':  ('CIF', []),
+            'TVA': ('CIF', []),  # Loi 67/2016 art. 29: TVA base = CIF (pas CIF+DD)
+        },
+        'source': 'egyptariffs.com — Loi TVA n°67/2016 art. 29 (TVA base = CIF)',
+    },
+    # ── Éthiopie — ECC (customs.erca.gov.et) ─────────────────────────────────
+    # SUR (Excise): base = CIF + DD
+    # TVA (15%): base = CIF + DD + SUR  (Ethiopian Customs/Tax Authority)
+    'ETH': {
+        'taxes_order': ['DD', 'SUR', 'TVA'],
+        'tax_bases': {
+            'DD':  ('CIF', []),
+            'SUR': ('CIF', ['DD']),         # Excise base = CIF + DD
+            'TVA': ('CIF', ['DD', 'SUR']),  # VAT base = CIF + DD + Excise
+        },
+        'source': 'customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)',
+    },
+    # ── Tunisie — DGD (douane.gov.tn) ────────────────────────────────────────
+    # TCL : base CIF
+    # TVA : base = CIF + DD  (CTVA Tunisie art. 6)
+    'TUN': {
+        'taxes_order': ['DD', 'TCL', 'TVA'],
+        'tax_bases': {
+            'DD':  ('CIF', []),
+            'TCL': ('CIF', []),
+            'TVA': ('CIF', ['DD']),  # CTVA art. 6
+        },
+        'source': 'douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)',
+    },
+    # ── UEMOA / CEDEAO members ────────────────────────────────────────────────
+    'SEN': {**_ECOWAS_UEMOA, 'source': 'douanes.sn / TEC CEDEAO — CGI Sénégal'},
+    'CIV': {**_ECOWAS_UEMOA, 'source': 'guce.gouv.ci / TEC CEDEAO — CGI Côte d\'Ivoire'},
+    'BEN': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO — CGI Bénin'},
+    'BFA': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO — CGI Burkina Faso'},
+    'MLI': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO — CGI Mali'},
+    'NER': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO — CGI Niger'},
+    'TGO': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO — CGI Togo'},
+    'GIN': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO — CGI Guinée'},
+    'GNB': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO — CGI Guinée-Bissau'},
+    'GMB': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO'},
+    'SLE': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO'},
+    'LBR': {**_ECOWAS_UEMOA, 'source': 'TEC CEDEAO'},
+    # ── CEMAC members ─────────────────────────────────────────────────────────
+    'CMR': {**_CEMAC, 'source': 'douanes.cm — Directive TVA CEMAC art. 9'},
+    'GAB': {**_CEMAC, 'source': 'CEMAC Tarif des Douanes'},
+    'COG': {**_CEMAC, 'source': 'CEMAC Tarif des Douanes'},
+    'CAF': {**_CEMAC, 'source': 'CEMAC Tarif des Douanes'},
+    'GNQ': {**_CEMAC, 'source': 'CEMAC Tarif des Douanes'},
+    'TCD': {**_CEMAC, 'source': 'CEMAC Tarif des Douanes'},
+}
+
+# Human-readable labels for each tax code
+_TAX_LABELS = {
+    'DD':      'Droits de Douane',
+    'DAPS':    'Droit Additionnel Provisoire de Sauvegarde',
+    'PRCT':    'Prélèvement à la Compensation du Transport',
+    'TCS':     'Taxe Complémentaire de Sauvegarde',
+    'TVA':     'Taxe sur la Valeur Ajoutée',
+    'TPI':     "Taxe Parafiscale à l'Importation",
+    'CEDEAO':  'Prélèvement Communautaire CEDEAO',
+    'GETFUND': 'Ghana Education Trust Fund Levy',
+    'NHIL':    'National Health Insurance Levy',
+    'CISS':    'Comprehensive Import Supervision Scheme',
+    'IDF':     'Import Declaration Fee',
+    'TCI':     "Taxe Communautaire d'Intégration",
+    'CAC':     'Centimes Additionnels Communaux',
+    'RS':      'Redevance Statistique',
+    'PCS':     'Prélèvement Communautaire de Solidarité',
+    'SUR':     'Taxe Additionnelle / Accises',
+    'TCL':     'Taxe de Compensation des Licences',
+    'D.D':     'Droits de Douane',
+    'T.V.A':   'Taxe sur la Valeur Ajoutée',
+}
+
+def _normalize_tax_code(code: str) -> str:
+    """Normalise 'D.D' → 'DD', 'T.V.A' → 'TVA', etc."""
+    return code.replace('.', '').replace(' ', '').upper()
+
+
+def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) -> dict:
+    """
+    Compute import taxes using the official cascade method for each country.
+
+    Args:
+        cif_value:    CIF value of the goods
+        taxes_rates:  {normalized_code: rate_pct}  e.g. {'DD': 30, 'DAPS': 60, 'TVA': 19}
+        country_iso3: ISO-3 country code
+
+    Returns a dict with:
+        steps:          list of per-tax calculation steps (base, rate, amount)
+        total_taxes:    total tax amount (excluding CIF)
+        total_to_pay:   CIF + total_taxes
+        effective_rate_pct:  (total_taxes / cif_value) × 100
+        legal_source:   official legal reference used
+    """
+    profile = COUNTRY_TAX_PROFILES.get(country_iso3)
+
+    # ── Default profile for unmapped countries ────────────────────────────────
+    # All taxes on CIF; TVA on CIF+DD (most common pattern)
+    if not profile:
+        ordered_codes = list(taxes_rates.keys())
+        bases = {c: ('CIF', []) for c in ordered_codes}
+        # If TVA or T.V.A present, apply on CIF+DD
+        for vat_alias in ('TVA', 'T.V.A'):
+            if vat_alias in bases:
+                bases[vat_alias] = ('CIF', ['DD'] if 'DD' in bases else [])
+        profile = {'taxes_order': ordered_codes, 'tax_bases': bases,
+                   'source': f'Profil par défaut (TVA base = CIF+DD)'}
+
+    taxes_order = profile['taxes_order']
+    tax_bases   = profile['tax_bases']
+    legal_source = profile.get('source', '')
+
+    # Build a normalized lookup: norm_code → rate
+    norm_rates = {_normalize_tax_code(k): v for k, v in taxes_rates.items()}
+
+    # Add any taxes present in the data but not in the profile (apply on CIF)
+    for code in list(norm_rates.keys()):
+        if code not in [_normalize_tax_code(c) for c in taxes_order]:
+            taxes_order = list(taxes_order) + [code]
+            tax_bases[code] = ('CIF', [])
+
+    # Compute amounts in order, tracking each computed amount for cascade reuse
+    computed_amounts: dict = {}   # norm_code → amount
+    steps = []
+    cumulative = cif_value
+
+    for raw_code in taxes_order:
+        norm_code = _normalize_tax_code(raw_code)
+        rate = norm_rates.get(norm_code, 0.0)
+        if rate == 0:
+            continue
+
+        base_formula, add_codes = tax_bases.get(raw_code, tax_bases.get(norm_code, ('CIF', [])))
+
+        # Compute the base value
+        if base_formula == 'DD_AMOUNT':
+            # e.g. CAC = % of DD_amount
+            base_value = computed_amounts.get('DD', 0.0)
+        else:
+            # 'CIF' + optional already-computed amounts
+            base_value = cif_value
+            for dep_code in add_codes:
+                base_value += computed_amounts.get(_normalize_tax_code(dep_code), 0.0)
+
+        amount = round(base_value * rate / 100, 2)
+        computed_amounts[norm_code] = amount
+        cumulative = round(cumulative + amount, 2)
+
+        label = _TAX_LABELS.get(norm_code, _TAX_LABELS.get(raw_code, raw_code))
+        if base_formula == 'DD_AMOUNT':
+            base_desc = 'DD_montant'
+        elif add_codes:
+            base_desc = 'CIF + ' + ' + '.join(add_codes)
+        else:
+            base_desc = 'CIF'
+
+        steps.append({
+            'code':         norm_code,
+            'label':        label,
+            'rate_pct':     rate,
+            'base_formula': base_desc,
+            'base_value':   round(base_value, 2),
+            'amount':       amount,
+            'cumulative':   cumulative,
+        })
+
+    total_taxes = round(sum(s['amount'] for s in steps), 2)
+    total_to_pay = round(cif_value + total_taxes, 2)
+    effective_rate_pct = round(total_taxes / cif_value * 100, 2) if cif_value > 0 else 0.0
+
+    return {
+        'steps':               steps,
+        'total_taxes':         total_taxes,
+        'total_to_pay':        total_to_pay,
+        'effective_rate_pct':  effective_rate_pct,
+        'legal_source':        legal_source,
+    }
+
+
 _COUNTRY_NAMES = {
     'DZA': 'Algérie', 'MAR': 'Maroc', 'TUN': 'Tunisie', 'EGY': 'Égypte',
     'LBY': 'Libye', 'NGA': 'Nigeria', 'ZAF': 'Afrique du Sud', 'KEN': 'Kenya',
@@ -230,6 +531,12 @@ def search_tariff_lines(country_iso3, query, language='fr', limit=20):
                 tcs = taxes.get('TCS', {}).get('rate', 0)
                 prct = taxes.get('PRCT', {}).get('rate', 0)
                 daps = taxes.get('DAPS', {}).get('rate', 0)
+                # Effective rate = total_taxes / CIF×100 (cascade, not sum of rates)
+                ref_cascade = compute_tax_cascade(
+                    100.0,
+                    {c: r for c, r in [('DD', dd), ('DAPS', daps), ('PRCT', prct), ('TCS', tcs), ('TVA', tva)] if r > 0},
+                    country_iso3
+                )
                 results.append({
                     'hs6': code[:6],
                     'national_code': code,
@@ -241,7 +548,8 @@ def search_tariff_lines(country_iso3, query, language='fr', limit=20):
                     'tcs_rate': tcs,
                     'prct_rate': prct,
                     'daps_rate': daps,
-                    'total_rate': round(dd + tva + tcs + prct + daps, 1),
+                    'effective_rate': ref_cascade['effective_rate_pct'],
+                    'total_rate': ref_cascade['effective_rate_pct'],  # kept for compat
                     'advantages': sp.get('advantages', []),
                     'source': 'douane.gov.dz',
                     'source_quality': 'crawled_authentic',
@@ -392,118 +700,165 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     else:
         taxes_detail = line.get('taxes_detail', {})
 
-    if not isinstance(taxes_detail, dict):
+    # ── Normalise taxes_detail: accept both dict and list formats ─────────────
+    # Dict format (crawled DZA): {'DD': {'rate': 30, 'name': '...'}, ...}
+    # List format (ETL):         [{'tax': 'D.D', 'rate': 20, 'observation': '...'}, ...]
+    if isinstance(taxes_detail, list):
+        taxes_detail = {
+            _normalize_tax_code(item.get('tax', item.get('code', ''))): {
+                'rate':  float(item.get('rate', 0) or 0),
+                'label': item.get('observation', item.get('label', item.get('tax', ''))),
+                'source': 'etl',
+            }
+            for item in taxes_detail
+            if item.get('tax') or item.get('code')
+        }
+    elif not isinstance(taxes_detail, dict):
         taxes_detail = {}
+
     daps_rate_pct = 0.0
     prct_rate_pct = 0.0
-    tcs_rate_pct = 0.0
+    tcs_rate_pct  = 0.0
     individual_taxes = []
     for tax_code, tax_info in taxes_detail.items():
         if not isinstance(tax_info, dict):
             continue
+        norm = _normalize_tax_code(tax_code)
         rate = float(tax_info.get('rate', 0) or 0)
         if rate == 0:
             continue
-        label = tax_info.get('label', tax_info.get('name', tax_code))
-        individual_taxes.append({'code': tax_code, 'label': label, 'rate_pct': rate})
-        if tax_code == 'DAPS':
+        label = tax_info.get('label', tax_info.get('name', _TAX_LABELS.get(norm, tax_code)))
+        individual_taxes.append({'code': norm, 'label': label, 'rate_pct': rate})
+        if norm == 'DAPS':
             daps_rate_pct = rate
-        elif tax_code == 'PRCT':
+        elif norm == 'PRCT':
             prct_rate_pct = rate
-        elif tax_code == 'TCS':
-            tcs_rate_pct = rate
+        elif norm == 'TCS':
+            tcs_rate_pct  = rate
+        # Capture VAT from taxes_detail when not already set from crawled source
+        elif norm in ('TVA', 'TVAI') and vat_rate_pct == 0:
+            vat_rate_pct = rate
 
-    # Compute other_taxes_pct as sum of all paratariff charges (PRCT + TCS)
-    # When both are explicitly in taxes_detail, sum them (not max)
-    if prct_rate_pct > 0 or tcs_rate_pct > 0:
-        other_taxes_pct = prct_rate_pct + tcs_rate_pct
-    elif other_taxes_pct > 0:
-        # Fallback: other_taxes_rate field covers PRCT only (no TCS in taxes_detail)
-        prct_rate_pct = other_taxes_pct
-
-    # If other_taxes_rate is set but PRCT not in taxes_detail, add it as PRCT
-    if other_taxes_pct > 0 and prct_rate_pct == 0:
+    # ── Resolve PRCT / TCS when not explicitly in taxes_detail ───────────────
+    # Only add PRCT fallback if other_taxes_pct is not already covered by an
+    # explicit individual tax (e.g. TPI for MAR already covers the 0.25%).
+    _covered_other = sum(
+        t['rate_pct'] for t in individual_taxes
+        if t['code'] not in ('DD', 'TVA', 'DAPS')
+    )
+    if prct_rate_pct == 0 and other_taxes_pct > 0 and round(_covered_other, 4) < round(other_taxes_pct, 4):
         prct_rate_pct = other_taxes_pct
         if not any(t['code'] == 'PRCT' for t in individual_taxes):
-            individual_taxes.insert(-1 if individual_taxes else 0, {
+            individual_taxes.insert(0, {
                 'code': 'PRCT',
                 'label': 'Prélèvement à la Compensation du Transport',
                 'rate_pct': other_taxes_pct
             })
 
-    # NPF (normal) calculation — Algerian order: CIF → DAPS → DD → PRCT/TCS → VAT
-    # DAPS base = CIF value
-    daps_amount = round(cif_value * daps_rate_pct / 100, 2)
-    dd_amount = round(cif_value * dd_rate_pct / 100, 2)
-    other_taxes_amount_npf = round(cif_value * other_taxes_pct / 100, 2)
-    # VAT base = CIF + DAPS + DD
-    vat_base_npf = cif_value + daps_amount + dd_amount
-    vat_amount_npf = round(vat_base_npf * vat_rate_pct / 100, 2)
-    total_npf = round(cif_value + daps_amount + dd_amount + other_taxes_amount_npf + vat_amount_npf, 2)
+    # ── Build rates dict for cascade engine ──────────────────────────────────
+    # Normalised code → rate_pct  (only non-zero taxes)
+    taxes_for_cascade: dict = {}
+    if daps_rate_pct > 0:
+        taxes_for_cascade['DAPS'] = daps_rate_pct
+    if dd_rate_pct > 0:
+        taxes_for_cascade['DD'] = dd_rate_pct
+    if prct_rate_pct > 0:
+        taxes_for_cascade['PRCT'] = prct_rate_pct
+    if tcs_rate_pct > 0:
+        taxes_for_cascade['TCS'] = tcs_rate_pct
+    if vat_rate_pct > 0:
+        taxes_for_cascade['TVA'] = vat_rate_pct
+    # Add any other taxes from individual_taxes not yet covered
+    for t in individual_taxes:
+        c = _normalize_tax_code(t['code'])
+        if c not in taxes_for_cascade and t.get('rate_pct', 0) > 0:
+            taxes_for_cascade[c] = t['rate_pct']
 
-    # ZLECAf calculation (DD=0, DAPS still applies as it's a safeguard measure)
-    dd_amount_zlecaf = round(cif_value * zlecaf_rate_pct / 100, 2)
-    other_taxes_amount_zlecaf = round(cif_value * other_taxes_pct / 100, 2)
-    vat_base_zlecaf = cif_value + daps_amount + dd_amount_zlecaf
-    vat_amount_zlecaf = round(vat_base_zlecaf * vat_rate_pct / 100, 2)
-    total_zlecaf = round(cif_value + daps_amount + dd_amount_zlecaf + other_taxes_amount_zlecaf + vat_amount_zlecaf, 2)
+    # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
+    npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3)
 
-    savings_amount = round(total_npf - total_zlecaf, 2)
-    savings_pct = round(savings_amount / total_npf * 100, 2) if total_npf > 0 else 0
+    # ── ZLECAf cascade (DD replaced by ZLECAf preferential rate) ─────────────
+    zlecaf_taxes = dict(taxes_for_cascade)
+    if zlecaf_rate_pct is not None and zlecaf_rate_pct < dd_rate_pct:
+        if zlecaf_rate_pct == 0:
+            zlecaf_taxes.pop('DD', None)
+        else:
+            zlecaf_taxes['DD'] = zlecaf_rate_pct
+    zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3)
+
+    savings_amount = round(npf_cascade['total_to_pay'] - zlecaf_cascade['total_to_pay'], 2)
+    savings_pct = round(savings_amount / npf_cascade['total_to_pay'] * 100, 2) if npf_cascade['total_to_pay'] > 0 else 0
 
     all_sub_positions = get_sub_positions(country_iso3, hs6)
-
     desc_key = 'description_fr' if language == 'fr' else 'description_en'
     description = line.get(desc_key, line.get('description_fr', ''))
 
-    total_rate_pct = daps_rate_pct + dd_rate_pct + other_taxes_pct + vat_rate_pct
+    # ── Build backward-compatible npf_calculation / zlecaf_calculation dicts ─
+    def _steps_to_legacy(steps, cif):
+        """Convert cascade steps to legacy {daps/dd/vat/other_taxes} dict."""
+        out = {'total_to_pay': round(cif + sum(s['amount'] for s in steps), 2)}
+        for s in steps:
+            c = s['code']
+            entry = {'base': s['base_value'], 'rate_pct': s['rate_pct'], 'amount': s['amount']}
+            if c == 'DD':
+                out['dd'] = entry
+            elif c == 'DAPS':
+                out['daps'] = entry
+            elif c in ('TVA', 'T.V.A'):
+                out['vat'] = entry
+            else:
+                # Accumulate other taxes
+                ot = out.get('other_taxes', {'base': cif, 'rate_pct': 0, 'amount': 0})
+                ot['amount'] = round(ot['amount'] + s['amount'], 2)
+                ot['rate_pct'] = round(ot['rate_pct'] + s['rate_pct'], 4)
+                out['other_taxes'] = ot
+        return out
+
+    npf_legacy   = _steps_to_legacy(npf_cascade['steps'],    cif_value)
+    zlecaf_legacy = _steps_to_legacy(zlecaf_cascade['steps'], cif_value)
 
     return {
-        'hs_code': hs_code_clean,
-        'hs6': hs6,
-        'description': description,
+        'hs_code':        hs_code_clean,
+        'hs6':            hs6,
+        'description':    description,
         'description_fr': line.get('description_fr', ''),
         'description_en': line.get('description_en', ''),
-        'country_iso3': country_iso3,
-        'cif_value': cif_value,
-        'generated_at': country_data.get('generated_at', '') if country_data else '',
+        'country_iso3':   country_iso3,
+        'cif_value':      cif_value,
+        'generated_at':   country_data.get('generated_at', '') if country_data else '',
         'rates': {
-            'daps_rate_pct': daps_rate_pct,
-            'dd_rate_pct': dd_rate_pct,
-            'zlecaf_rate_pct': zlecaf_rate_pct,
-            'vat_rate_pct': vat_rate_pct,
-            'other_taxes_pct': other_taxes_pct,
-            'prct_rate_pct': prct_rate_pct,
-            'tcs_rate_pct': tcs_rate_pct,
-            'total_rate_pct': total_rate_pct,
+            'daps_rate_pct':       daps_rate_pct,
+            'dd_rate_pct':         dd_rate_pct,
+            'zlecaf_rate_pct':     zlecaf_rate_pct,
+            'vat_rate_pct':        vat_rate_pct,
+            'other_taxes_pct':     other_taxes_pct,
+            'prct_rate_pct':       prct_rate_pct,
+            'tcs_rate_pct':        tcs_rate_pct,
+            # effective_rate_pct = total_taxes / CIF × 100 (NOT a sum of rates)
+            'effective_rate_pct':  npf_cascade['effective_rate_pct'],
+            # Kept for legacy compatibility but labelled clearly
+            'sum_of_rates_pct':    round(sum(taxes_for_cascade.values()), 2),
         },
-        'npf_calculation': {
-            'daps': {'base': cif_value, 'rate_pct': daps_rate_pct, 'amount': daps_amount},
-            'dd': {'base': cif_value, 'rate_pct': dd_rate_pct, 'amount': dd_amount},
-            'other_taxes': {'base': cif_value, 'rate_pct': other_taxes_pct, 'amount': other_taxes_amount_npf},
-            'vat': {'base': vat_base_npf, 'rate_pct': vat_rate_pct, 'amount': vat_amount_npf},
-            'total_to_pay': total_npf,
-        },
-        'zlecaf_calculation': {
-            'daps': {'base': cif_value, 'rate_pct': daps_rate_pct, 'amount': daps_amount},
-            'dd': {'base': cif_value, 'rate_pct': zlecaf_rate_pct, 'amount': dd_amount_zlecaf},
-            'other_taxes': {'base': cif_value, 'rate_pct': other_taxes_pct, 'amount': other_taxes_amount_zlecaf},
-            'vat': {'base': vat_base_zlecaf, 'rate_pct': vat_rate_pct, 'amount': vat_amount_zlecaf},
-            'total_to_pay': total_zlecaf,
-        },
+        # Step-by-step cascade — ready for frontend display
+        'calculation_steps':        npf_cascade['steps'],
+        'calculation_steps_zlecaf': zlecaf_cascade['steps'],
+        'cascade_legal_source':     npf_cascade['legal_source'],
+        # Legacy keys kept for backward compatibility with existing frontend code
+        'npf_calculation':    npf_legacy,
+        'zlecaf_calculation': zlecaf_legacy,
         'savings': {
-            'amount': savings_amount,
+            'amount':     savings_amount,
             'percentage': savings_pct,
         },
-        'taxes_detail': taxes_detail,
-        'individual_taxes': individual_taxes,
-        'fiscal_advantages': line.get('fiscal_advantages', []),
+        'taxes_detail':               taxes_detail,
+        'individual_taxes':           individual_taxes,
+        'fiscal_advantages':          line.get('fiscal_advantages', []),
         'administrative_formalities': line.get('administrative_formalities', []),
-        'has_sub_positions': len(all_sub_positions) > 0,
-        'sub_position_count': len(all_sub_positions),
-        'sub_position': sub_position_info,
-        'data_source': 'authentic_tariff',
-        'data_format': 'enhanced_v2',
+        'has_sub_positions':          len(all_sub_positions) > 0,
+        'sub_position_count':         len(all_sub_positions),
+        'sub_position':               sub_position_info,
+        'data_source':                'authentic_tariff',
+        'data_format':                'enhanced_v2',
     }
 
 
