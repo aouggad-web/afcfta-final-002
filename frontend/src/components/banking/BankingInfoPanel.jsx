@@ -7,6 +7,19 @@ import { Button } from '../ui/button';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
+// ── Country flags (ISO2 → emoji) ─────────────────────────────────────────────
+const COUNTRY_FLAGS = {
+  DZ:'🇩🇿', MA:'🇲🇦', TN:'🇹🇳', EG:'🇪🇬', LY:'🇱🇾', MR:'🇲🇷', SD:'🇸🇩',
+  NG:'🇳🇬', GH:'🇬🇭', CI:'🇨🇮', SN:'🇸🇳', ML:'🇲🇱', BF:'🇧🇫', NE:'🇳🇪',
+  TG:'🇹🇬', BJ:'🇧🇯', GN:'🇬🇳', GM:'🇬🇲', GW:'🇬🇼', LR:'🇱🇷', SL:'🇸🇱',
+  CV:'🇨🇻', KE:'🇰🇪', TZ:'🇹🇿', UG:'🇺🇬', RW:'🇷🇼', BI:'🇧🇮', SO:'🇸🇴',
+  DJ:'🇩🇯', ER:'🇪🇷', ET:'🇪🇹', SS:'🇸🇸', ZA:'🇿🇦', ZW:'🇿🇼', ZM:'🇿🇲',
+  MZ:'🇲🇿', MW:'🇲🇼', BW:'🇧🇼', NA:'🇳🇦', LS:'🇱🇸', SZ:'🇸🇿', MG:'🇲🇬',
+  MU:'🇲🇺', SC:'🇸🇨', KM:'🇰🇲', AO:'🇦🇴', CG:'🇨🇬', CD:'🇨🇩', CF:'🇨🇫',
+  CM:'🇨🇲', GA:'🇬🇦', GQ:'🇬🇶', ST:'🇸🇹', TD:'🇹🇩',
+};
+
+// ── i18n texts ────────────────────────────────────────────────────────────────
 const texts = {
   fr: {
     title: '🏦 Système Bancaire Africain – ZLECAf',
@@ -17,7 +30,7 @@ const texts = {
     centralBank: 'Banque Centrale',
     commercialBanks: 'Banques Commerciales',
     regionalBanks: 'Banques Régionales',
-    forex: 'Change & Domiciliation',
+    forex: 'Change',
     domiciliationRequired: 'Domiciliation Obligatoire',
     domiciliationConditional: 'Domiciliation Conditionnelle',
     domiciliationFree: 'Non Requise',
@@ -40,10 +53,10 @@ const texts = {
     exposureWarning: '⚠ Montant dépasse l\'exposition recommandée',
     priorAuthRequired: '⚠ Autorisation préalable requise',
     penalties: 'Sanctions',
-    instruments: 'Instruments Recommandés',
+    instruments: 'Instruments',
     coverage: 'Couverture',
-    paymentSystems: 'Systèmes de Paiement',
-    compliance: 'Conformité (KYC/AML)',
+    paymentSystems: 'Paiements',
+    compliance: 'Conformité',
     amlFramework: 'Cadre AML',
     kycRequired: 'KYC requis',
     sanctionsScreening: 'Contrôle des sanctions',
@@ -105,6 +118,25 @@ const texts = {
     memberCountries: 'Pays membres',
     focusAreas: 'Domaines',
     contact: 'Contact',
+    // Converter
+    converterTitle: 'Convertisseur de devises',
+    amount: 'Montant',
+    from: 'De',
+    to: 'Vers',
+    convert: 'Convertir',
+    result: 'Résultat',
+    rate: 'Taux',
+    // Simulator
+    simulatorTitle: 'Simulateur d\'instrument',
+    txAmount: 'Montant transaction (USD)',
+    txType: 'Type',
+    txImport: 'Importation',
+    txExport: 'Exportation',
+    simulate: 'Recommander',
+    recommendedFor: 'Instrument recommandé pour',
+    // Regulations summary
+    regSummary: 'Résumé par niveau',
+    countries: 'pays',
   },
   en: {
     title: '🏦 African Banking System – AfCFTA',
@@ -115,7 +147,7 @@ const texts = {
     centralBank: 'Central Bank',
     commercialBanks: 'Commercial Banks',
     regionalBanks: 'Regional Banks',
-    forex: 'Forex & Domiciliation',
+    forex: 'Forex',
     domiciliationRequired: 'Domiciliation Required',
     domiciliationConditional: 'Conditional Domiciliation',
     domiciliationFree: 'Not Required',
@@ -138,10 +170,10 @@ const texts = {
     exposureWarning: '⚠ Amount exceeds recommended exposure',
     priorAuthRequired: '⚠ Prior authorization required',
     penalties: 'Penalties',
-    instruments: 'Recommended Instruments',
+    instruments: 'Instruments',
     coverage: 'Coverage',
-    paymentSystems: 'Payment Systems',
-    compliance: 'Compliance (KYC/AML)',
+    paymentSystems: 'Payments',
+    compliance: 'Compliance',
     amlFramework: 'AML Framework',
     kycRequired: 'KYC required',
     sanctionsScreening: 'Sanctions screening',
@@ -203,24 +235,65 @@ const texts = {
     memberCountries: 'Member countries',
     focusAreas: 'Focus areas',
     contact: 'Contact',
+    converterTitle: 'Currency Converter',
+    amount: 'Amount',
+    from: 'From',
+    to: 'To',
+    convert: 'Convert',
+    result: 'Result',
+    rate: 'Rate',
+    simulatorTitle: 'Instrument Simulator',
+    txAmount: 'Transaction Amount (USD)',
+    txType: 'Type',
+    txImport: 'Import',
+    txExport: 'Export',
+    simulate: 'Recommend',
+    recommendedFor: 'Recommended instrument for',
+    regSummary: 'Summary by level',
+    countries: 'countries',
   },
 };
 
 // ── Small helpers ────────────────────────────────────────────────────────────
 
 function AlertBadge({ level }) {
-  const colorMap = { green: 'bg-green-100 text-green-800', orange: 'bg-orange-100 text-orange-800', red: 'bg-red-100 text-red-800' };
-  return <span className={`px-2 py-1 rounded text-xs font-semibold ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>{level?.toUpperCase()}</span>;
+  const colorMap = {
+    green: 'bg-green-100 text-green-800',
+    orange: 'bg-orange-100 text-orange-800',
+    red: 'bg-red-100 text-red-800',
+  };
+  return (
+    <span className={`px-2 py-1 rounded text-xs font-semibold ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>
+      {level?.toUpperCase()}
+    </span>
+  );
 }
 
 function RiskBadge({ level }) {
-  const colorMap = { low: 'bg-green-100 text-green-800', moderate: 'bg-yellow-100 text-yellow-800', high: 'bg-orange-100 text-orange-800', very_high: 'bg-red-100 text-red-800' };
-  return <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>{level?.replace('_', ' ').toUpperCase()}</span>;
+  const colorMap = {
+    low: 'bg-green-100 text-green-800',
+    moderate: 'bg-yellow-100 text-yellow-800',
+    high: 'bg-orange-100 text-orange-800',
+    very_high: 'bg-red-100 text-red-800',
+  };
+  return (
+    <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>
+      {level?.replace('_', ' ').toUpperCase()}
+    </span>
+  );
 }
 
 function RegulationBadge({ level }) {
-  const colorMap = { strict: 'bg-red-100 text-red-800', moderate: 'bg-yellow-100 text-yellow-800', liberal: 'bg-green-100 text-green-800' };
-  return <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>{level?.toUpperCase()}</span>;
+  const colorMap = {
+    strict: 'bg-red-100 text-red-800',
+    moderate: 'bg-yellow-100 text-yellow-800',
+    liberal: 'bg-green-100 text-green-800',
+  };
+  return (
+    <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>
+      {level?.toUpperCase()}
+    </span>
+  );
 }
 
 function ContactBlock({ contact, t }) {
@@ -243,11 +316,93 @@ function ContactBlock({ contact, t }) {
   );
 }
 
+// ── Quick Stats Bar (shown when a country is selected) ────────────────────────
+
+function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
+  const flag = COUNTRY_FLAGS[countryCode] || '🌍';
+  const cb = bankData?.central_bank;
+  const regLevel = cb?.forex_regulation || forexData?.forex_regulation?.regulation_level;
+  const regColors = { strict: 'text-red-700 bg-red-50', moderate: 'text-yellow-700 bg-yellow-50', liberal: 'text-green-700 bg-green-50' };
+  const alertColors = { green: 'text-green-700 bg-green-50', orange: 'text-orange-700 bg-orange-50', red: 'text-red-700 bg-red-50' };
+
+  return (
+    <div className="flex flex-wrap gap-2 px-3 py-2 bg-white border rounded-lg shadow-sm">
+      {/* Flag + country */}
+      <div className="flex items-center gap-2 min-w-0">
+        <span className="text-2xl">{flag}</span>
+        <div className="min-w-0">
+          <div className="font-semibold text-sm text-gray-900 truncate">{bankData?.country_name || forexData?.country_name || countryCode}</div>
+          {cb?.name && <div className="text-xs text-gray-500 truncate">{cb.name}</div>}
+        </div>
+      </div>
+
+      <div className="h-auto w-px bg-gray-200 self-stretch hidden sm:block" />
+
+      {/* Currency */}
+      {cb?.currency_code && (
+        <div className="flex flex-col items-center justify-center px-2">
+          <span className="text-xs text-gray-400 uppercase tracking-wide">Devise</span>
+          <span className="font-mono font-bold text-gray-800">{cb.currency_code}</span>
+        </div>
+      )}
+
+      {/* Regulation */}
+      {regLevel && (
+        <div className="flex flex-col items-center justify-center px-2">
+          <span className="text-xs text-gray-400 uppercase tracking-wide">Réglementation</span>
+          <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${regColors[regLevel] || 'bg-gray-100 text-gray-700'}`}>
+            {regLevel.toUpperCase()}
+          </span>
+        </div>
+      )}
+
+      {/* Risk rating */}
+      {riskData?.overall_risk_rating && (
+        <div className="flex flex-col items-center justify-center px-2">
+          <span className="text-xs text-gray-400 uppercase tracking-wide">Note risque</span>
+          <span className="font-bold text-lg text-gray-800">{riskData.overall_risk_rating}</span>
+        </div>
+      )}
+
+      {/* Alert level */}
+      {riskData?.alert_level && (
+        <div className="flex flex-col items-center justify-center px-2">
+          <span className="text-xs text-gray-400 uppercase tracking-wide">Alerte</span>
+          <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${alertColors[riskData.alert_level] || 'bg-gray-100 text-gray-700'}`}>
+            {riskData.alert_level.toUpperCase()}
+          </span>
+        </div>
+      )}
+
+      {/* Domiciliation required */}
+      {forexData?.domiciliation && (
+        <div className="flex flex-col items-center justify-center px-2">
+          <span className="text-xs text-gray-400 uppercase tracking-wide">Domiciliation</span>
+          <span className={`text-xs font-semibold mt-0.5 ${forexData.domiciliation.required ? 'text-red-600' : forexData.domiciliation.conditional ? 'text-yellow-600' : 'text-green-600'}`}>
+            {forexData.domiciliation.required ? 'OBLIGATOIRE' : forexData.domiciliation.conditional ? 'CONDITIONNELLE' : 'LIBRE'}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Tab navigation ────────────────────────────────────────────────────────────
 
 const COUNTRY_TABS = ['banks', 'forex', 'risk', 'instruments', 'paymentSystems', 'compliance'];
 const GLOBAL_TABS = ['register', 'regulations'];
 const ALL_TABS = [...COUNTRY_TABS, ...GLOBAL_TABS];
+
+const TAB_ICONS = {
+  banks: '🏛️',
+  forex: '💱',
+  risk: '⚠️',
+  instruments: '📋',
+  paymentSystems: '💳',
+  compliance: '🔒',
+  register: '📂',
+  regulations: '📊',
+};
 
 function TabBar({ activeTab, onChange, t }) {
   return (
@@ -258,13 +413,14 @@ function TabBar({ activeTab, onChange, t }) {
           <button
             key={tab}
             onClick={() => onChange(tab)}
-            className={`px-3 py-1.5 text-sm font-medium rounded-t transition-colors ${
+            className={`px-3 py-1.5 text-sm font-medium rounded-t transition-colors flex items-center gap-1 ${
               activeTab === tab
                 ? 'bg-white border-b-2 border-blue-600 text-blue-700'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            {t[tab]}
+            <span>{TAB_ICONS[tab]}</span>
+            <span>{t[tab]}</span>
           </button>
         ))}
       </div>
@@ -274,13 +430,14 @@ function TabBar({ activeTab, onChange, t }) {
           <button
             key={tab}
             onClick={() => onChange(tab)}
-            className={`px-3 py-1.5 text-sm font-medium rounded-t transition-colors ${
+            className={`px-3 py-1.5 text-sm font-medium rounded-t transition-colors flex items-center gap-1 ${
               activeTab === tab
                 ? 'bg-white border-b-2 border-emerald-600 text-emerald-700'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            {t[tab]}
+            <span>{TAB_ICONS[tab]}</span>
+            <span>{t[tab]}</span>
           </button>
         ))}
       </div>
@@ -319,9 +476,7 @@ function BanksTab({ data, t }) {
               {central_bank.website}
             </a>
           )}
-          {central_bank?.contact && (
-            <ContactBlock contact={central_bank.contact} t={t} />
-          )}
+          {central_bank?.contact && <ContactBlock contact={central_bank.contact} t={t} />}
         </CardContent>
       </Card>
 
@@ -397,11 +552,117 @@ function BanksTab({ data, t }) {
   );
 }
 
+// ── Forex Converter ────────────────────────────────────────────────────────────
+
+function ForexConverter({ countryCurrencyCode, t }) {
+  const [amount, setAmount] = useState('1000');
+  const [fromCurrency, setFromCurrency] = useState(countryCurrencyCode || 'USD');
+  const [toCurrency, setToCurrency] = useState(countryCurrencyCode ? 'USD' : 'EUR');
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const COMMON_CURRENCIES = ['USD', 'EUR', 'GBP', 'CNY', 'DZD', 'MAD', 'TND', 'EGP', 'ZAR', 'NGN', 'KES', 'GHS', 'XOF', 'XAF', 'ETB', 'TZS', 'UGX', 'AOA', 'ZMW', 'MZN'];
+
+  const swap = () => {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+    setResult(null);
+  };
+
+  const doConvert = async () => {
+    if (!amount || isNaN(parseFloat(amount))) return;
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      const res = await axios.get(`${API}/banking/forex/convert`, {
+        params: { from_currency: fromCurrency, to_currency: toCurrency, amount: parseFloat(amount) },
+      });
+      setResult(res.data);
+    } catch (e) {
+      setError('Conversion non disponible pour cette paire de devises');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Card className="border-blue-200 bg-blue-50/30">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm flex items-center gap-2">
+          <span>💱</span> {t.converterTitle}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-2 items-end">
+          <div className="flex-1 min-w-[100px]">
+            <label className="text-xs text-gray-500 block mb-1">{t.amount}</label>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="border rounded px-3 py-1.5 text-sm bg-white w-full"
+              min="0"
+            />
+          </div>
+          <div className="min-w-[90px]">
+            <label className="text-xs text-gray-500 block mb-1">{t.from}</label>
+            <select value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value)} className="border rounded px-2 py-1.5 text-sm bg-white w-full">
+              {COMMON_CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+          <button
+            onClick={swap}
+            className="mb-0.5 px-2 py-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors text-lg"
+            title="Inverser"
+          >
+            ⇄
+          </button>
+          <div className="min-w-[90px]">
+            <label className="text-xs text-gray-500 block mb-1">{t.to}</label>
+            <select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)} className="border rounded px-2 py-1.5 text-sm bg-white w-full">
+              {COMMON_CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+          <button
+            onClick={doConvert}
+            disabled={loading}
+            className="px-4 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          >
+            {loading ? '…' : t.convert}
+          </button>
+        </div>
+
+        {error && <p className="text-xs text-red-600 bg-red-50 px-3 py-2 rounded">{error}</p>}
+
+        {result && (
+          <div className="bg-white border border-blue-200 rounded px-4 py-3 flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <div className="text-xl font-bold text-blue-800">
+                {result.converted_amount?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })} <span className="text-base">{toCurrency}</span>
+              </div>
+              <div className="text-xs text-gray-500 mt-0.5">
+                {parseFloat(amount).toLocaleString()} {fromCurrency}
+              </div>
+            </div>
+            <div className="text-xs text-gray-500 text-right">
+              {result.rate && <div>{t.rate}: <strong>1 {fromCurrency} = {result.rate?.toLocaleString(undefined, { maximumFractionDigits: 6 })} {toCurrency}</strong></div>}
+              {result.source && <div className="text-gray-400">Source: {result.source}</div>}
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 // ── Forex Tab ─────────────────────────────────────────────────────────────────
 
 function ForexTab({ data, t }) {
   if (!data) return <p className="text-gray-500 text-sm">{t.noData}</p>;
   const { domiciliation, forex_regulation } = data;
+  const currencyCode = data.currency_code || data.central_bank?.currency_code;
 
   const domLabel = domiciliation?.required
     ? t.domiciliationRequired
@@ -417,6 +678,9 @@ function ForexTab({ data, t }) {
 
   return (
     <div className="space-y-4">
+      {/* Converter */}
+      <ForexConverter countryCurrencyCode={currencyCode} t={t} />
+
       <Card className={`border-2 ${domColor}`}>
         <CardHeader>
           <CardTitle className="text-base">{domLabel}</CardTitle>
@@ -470,46 +734,188 @@ function ForexTab({ data, t }) {
   );
 }
 
+// ── Risk Gauge ────────────────────────────────────────────────────────────────
+
+function RiskGauge({ score, maxScore = 10 }) {
+  const pct = Math.min(100, Math.round((score / maxScore) * 100));
+  const color = score <= 3 ? '#22c55e' : score <= 5 ? '#eab308' : score <= 7 ? '#f97316' : '#ef4444';
+  const trackColor = score <= 3 ? 'bg-green-100' : score <= 5 ? 'bg-yellow-100' : score <= 7 ? 'bg-orange-100' : 'bg-red-100';
+
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center justify-between text-xs text-gray-500">
+        <span>Score risque</span>
+        <span className="font-bold text-base" style={{ color }}>{score}/{maxScore}</span>
+      </div>
+      <div className={`h-3 rounded-full ${trackColor} overflow-hidden`}>
+        <div
+          className="h-full rounded-full transition-all duration-700"
+          style={{ width: `${pct}%`, backgroundColor: color }}
+        />
+      </div>
+      <div className="flex justify-between text-xs text-gray-300">
+        <span>Faible</span>
+        <span>Élevé</span>
+      </div>
+    </div>
+  );
+}
+
 // ── Risk Tab ──────────────────────────────────────────────────────────────────
 
 function RiskTab({ data, t }) {
   if (!data) return <p className="text-gray-500 text-sm">{t.noData}</p>;
 
+  const riskRows = [
+    { label: t.forexRisk, value: data.forex_risk },
+    { label: t.politicalRisk, value: data.political_risk },
+    { label: t.transferRisk, value: data.transfer_risk },
+  ];
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">{t.risk} – {data.country_name}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm">
-        <div className="flex items-center gap-3">
-          <span className="font-semibold text-2xl">{data.overall_risk_rating}</span>
-          <AlertBadge level={data.alert_level} />
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <div><span className="text-gray-500">{t.forexRisk} :</span> <RiskBadge level={data.forex_risk} /></div>
-          <div><span className="text-gray-500">{t.politicalRisk} :</span> <RiskBadge level={data.political_risk} /></div>
-          <div><span className="text-gray-500">{t.transferRisk} :</span> <RiskBadge level={data.transfer_risk} /></div>
-          <div><span className="text-gray-500">{t.riskScore} :</span> <strong>{data.risk_score}/10</strong></div>
-        </div>
-        {data.max_recommended_exposure_usd && (
-          <p className="text-xs text-gray-600">
-            {t.maxExposure} : <strong>{data.max_recommended_exposure_usd.toLocaleString()} USD</strong>
-          </p>
-        )}
-        {data.exposure_warning && (
-          <p className="text-xs text-red-700 bg-red-50 p-2 rounded">{t.exposureWarning}</p>
-        )}
-        {data.recommended_instruments?.length > 0 && (
-          <div>
-            <p className="text-xs text-gray-500 mb-1">{t.instruments} :</p>
-            <div className="flex flex-wrap gap-1">
-              {data.recommended_instruments.map((code) => (
-                <span key={code} className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">{code}</span>
-              ))}
+    <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">{t.risk} – {data.country_name}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm">
+          {/* Rating + alert */}
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex flex-col items-center justify-center bg-gray-50 border rounded-lg px-6 py-3">
+              <span className="text-xs text-gray-400 uppercase tracking-wide mb-1">Notation</span>
+              <span className="font-bold text-3xl text-gray-800">{data.overall_risk_rating}</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500 text-xs">Alerte :</span>
+                <AlertBadge level={data.alert_level} />
+              </div>
+              {data.credit_insurance_available !== undefined && (
+                <div className="text-xs text-gray-600">
+                  Assurance crédit : {data.credit_insurance_available
+                    ? <span className="text-green-600 font-medium">Disponible ✓</span>
+                    : <span className="text-red-600 font-medium">Non disponible</span>}
+                </div>
+              )}
             </div>
           </div>
+
+          {/* Gauge */}
+          {data.risk_score != null && (
+            <div className="bg-gray-50 rounded-lg p-3">
+              <RiskGauge score={data.risk_score} />
+            </div>
+          )}
+
+          {/* Risk breakdown */}
+          <div className="grid grid-cols-1 gap-2">
+            {riskRows.map(({ label, value }) => value && (
+              <div key={label} className="flex items-center justify-between py-1 border-b last:border-b-0">
+                <span className="text-gray-600 text-xs">{label}</span>
+                <RiskBadge level={value} />
+              </div>
+            ))}
+          </div>
+
+          {data.max_recommended_exposure_usd && (
+            <div className="bg-blue-50 border border-blue-100 rounded p-2 text-xs text-blue-700">
+              {t.maxExposure} : <strong>{data.max_recommended_exposure_usd.toLocaleString()} USD</strong>
+            </div>
+          )}
+          {data.exposure_warning && (
+            <p className="text-xs text-red-700 bg-red-50 p-2 rounded">{t.exposureWarning}</p>
+          )}
+          {data.recommended_instruments?.length > 0 && (
+            <div>
+              <p className="text-xs text-gray-500 mb-1">{t.instruments} :</p>
+              <div className="flex flex-wrap gap-1">
+                {data.recommended_instruments.map((code) => (
+                  <span key={code} className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">{code}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          {data.notes && <p className="text-gray-600 text-xs italic border-t pt-2">{data.notes}</p>}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// ── Instrument Simulator ──────────────────────────────────────────────────────
+
+function InstrumentSimulator({ countryCode, t }) {
+  const [txAmount, setTxAmount] = useState('50000');
+  const [txType, setTxType] = useState('import');
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const simulate = async () => {
+    if (!countryCode) return;
+    setLoading(true);
+    setResult(null);
+    try {
+      const res = await axios.get(`${API}/banking/trade-finance/recommend`, {
+        params: { country_code: countryCode, amount: parseFloat(txAmount) || 50000, transaction_type: txType },
+      });
+      setResult(res.data);
+    } catch {
+      setResult(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Card className="border-emerald-200 bg-emerald-50/20">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm flex items-center gap-2">
+          <span>🎯</span> {t.simulatorTitle}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-2 items-end">
+          <div className="flex-1 min-w-[120px]">
+            <label className="text-xs text-gray-500 block mb-1">{t.txAmount}</label>
+            <input
+              type="number"
+              value={txAmount}
+              onChange={(e) => setTxAmount(e.target.value)}
+              className="border rounded px-3 py-1.5 text-sm bg-white w-full"
+              min="0"
+            />
+          </div>
+          <div className="min-w-[120px]">
+            <label className="text-xs text-gray-500 block mb-1">{t.txType}</label>
+            <select value={txType} onChange={(e) => setTxType(e.target.value)} className="border rounded px-3 py-1.5 text-sm bg-white w-full">
+              <option value="import">{t.txImport}</option>
+              <option value="export">{t.txExport}</option>
+            </select>
+          </div>
+          <button
+            onClick={simulate}
+            disabled={loading || !countryCode}
+            className="px-4 py-1.5 bg-emerald-600 text-white text-sm rounded hover:bg-emerald-700 disabled:opacity-50 transition-colors"
+          >
+            {loading ? '…' : t.simulate}
+          </button>
+        </div>
+
+        {result?.recommended_instruments?.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-gray-600">
+              {t.recommendedFor} {parseFloat(txAmount).toLocaleString()} USD ({txType}) :
+            </p>
+            <div className="flex flex-wrap gap-1">
+              {result.recommended_instruments.map((inst) => (
+                <span key={typeof inst === 'string' ? inst : inst.code} className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded text-xs font-medium">
+                  {typeof inst === 'string' ? inst : (inst.name_fr || inst.name)}
+                </span>
+              ))}
+            </div>
+            {result.notes && <p className="text-xs text-gray-500 italic">{result.notes}</p>}
+          </div>
         )}
-        {data.notes && <p className="text-gray-600 text-xs italic">{data.notes}</p>}
       </CardContent>
     </Card>
   );
@@ -517,27 +923,36 @@ function RiskTab({ data, t }) {
 
 // ── Instruments Tab ───────────────────────────────────────────────────────────
 
-function InstrumentsTab({ instruments, t }) {
+function InstrumentsTab({ instruments, countryCode, t }) {
   if (!instruments?.length) return <p className="text-gray-500 text-sm">{t.noData}</p>;
 
   return (
-    <div className="space-y-3">
-      {instruments.map((inst) => (
-        <Card key={inst.code}>
-          <CardHeader className="pb-1">
-            <div className="flex items-center gap-2 flex-wrap">
-              <CardTitle className="text-sm">{inst.name_fr}</CardTitle>
-              <span className={`px-2 py-0.5 rounded text-xs font-medium ${inst.risk_coverage === 'full' ? 'bg-green-100 text-green-800' : inst.risk_coverage === 'partial' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-700'}`}>
-                {t.coverage} : {inst.risk_coverage}
-              </span>
-              {inst.typical_cost_pct != null && (
-                <span className="text-xs text-gray-500">~{inst.typical_cost_pct}%</span>
-              )}
-            </div>
-          </CardHeader>
-          <CardContent className="text-xs text-gray-600">{inst.description}</CardContent>
-        </Card>
-      ))}
+    <div className="space-y-4">
+      {/* Simulator */}
+      <InstrumentSimulator countryCode={countryCode} t={t} />
+
+      <div className="space-y-3">
+        {instruments.map((inst) => (
+          <Card key={inst.code}>
+            <CardHeader className="pb-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <CardTitle className="text-sm">{inst.name_fr}</CardTitle>
+                <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                  inst.risk_coverage === 'full' ? 'bg-green-100 text-green-800'
+                  : inst.risk_coverage === 'partial' ? 'bg-yellow-100 text-yellow-800'
+                  : 'bg-gray-100 text-gray-700'
+                }`}>
+                  {t.coverage} : {inst.risk_coverage}
+                </span>
+                {inst.typical_cost_pct != null && (
+                  <span className="text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded border">~{inst.typical_cost_pct}%</span>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="text-xs text-gray-600">{inst.description}</CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
@@ -752,7 +1167,7 @@ function RegisterTab({ t, countries }) {
                       )}
                     </div>
                     <span className={`text-xs px-2 py-0.5 rounded font-medium ${TYPE_COLORS[bank.type]}`}>
-                      {bank.country_code ? `${bank.country_name} · ${bank.country_code}` : bank.country_name}
+                      {bank.country_code ? `${COUNTRY_FLAGS[bank.country_code] || ''} ${bank.country_name} · ${bank.country_code}` : bank.country_name}
                     </span>
                     {bank.trade_finance && (
                       <span className="bg-green-50 text-green-700 text-xs px-1.5 py-0.5 rounded">Trade ✓</span>
@@ -813,7 +1228,6 @@ function RegisterTab({ t, countries }) {
                       </div>
                     )}
 
-                    {/* Contact block */}
                     {(bank.contact?.address || bank.contact?.phone || bank.contact?.email || bank.website) && (
                       <div className="border-t pt-2 space-y-0.5 text-xs text-gray-600">
                         <div className="font-medium text-gray-700 mb-1">{t.contact}</div>
@@ -854,6 +1268,48 @@ function RegisterTab({ t, countries }) {
   );
 }
 
+// ── Regulations Summary Bar ────────────────────────────────────────────────────
+
+function RegSummaryBar({ data, t }) {
+  if (!data.length) return null;
+  const counts = data.reduce((acc, r) => {
+    const k = r.regulation_level || 'unknown';
+    acc[k] = (acc[k] || 0) + 1;
+    return acc;
+  }, {});
+  const total = data.length;
+  const levels = [
+    { key: 'strict', label: t.strict, color: 'bg-red-400', textColor: 'text-red-700' },
+    { key: 'moderate', label: t.moderate, color: 'bg-yellow-400', textColor: 'text-yellow-700' },
+    { key: 'liberal', label: t.liberal, color: 'bg-green-400', textColor: 'text-green-700' },
+  ];
+
+  return (
+    <div className="bg-gray-50 border rounded-lg p-3 space-y-2">
+      <p className="text-xs font-medium text-gray-600">{t.regSummary}</p>
+      {/* Bar */}
+      <div className="h-4 rounded-full overflow-hidden flex">
+        {levels.map(({ key, color }) => {
+          const pct = Math.round(((counts[key] || 0) / total) * 100);
+          return pct > 0 ? (
+            <div key={key} className={`${color} h-full`} style={{ width: `${pct}%` }} title={`${key}: ${counts[key] || 0}`} />
+          ) : null;
+        })}
+      </div>
+      {/* Legend */}
+      <div className="flex flex-wrap gap-3">
+        {levels.map(({ key, label, color, textColor }) => (
+          <div key={key} className="flex items-center gap-1.5 text-xs">
+            <span className={`inline-block w-3 h-3 rounded-sm ${color}`} />
+            <span className={`font-medium ${textColor}`}>{label}</span>
+            <span className="text-gray-500">{counts[key] || 0} {t.countries}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── Regulations Tab ───────────────────────────────────────────────────────────
 
 const REG_COLORS = { strict: 'bg-red-100 text-red-800', moderate: 'bg-yellow-100 text-yellow-800', liberal: 'bg-green-100 text-green-800' };
@@ -881,6 +1337,9 @@ function RegulationsTab({ t }) {
         <h3 className="font-semibold text-gray-800">{t.regulationsTitle}</h3>
         <p className="text-xs text-gray-500">{t.regulationsSubtitle}</p>
       </div>
+
+      {/* Summary bar */}
+      {data.length > 0 && <RegSummaryBar data={data} t={t} />}
 
       <div className="flex flex-wrap gap-2 items-center">
         <select
@@ -922,6 +1381,7 @@ function RegulationsTab({ t }) {
                   ? t.conditional
                   : t.free;
                 const domKey = row.domiciliation_required ? 'required' : row.domiciliation_conditional ? 'conditional' : 'free';
+                const flag = COUNTRY_FLAGS[row.country_code] || '';
 
                 return (
                   <React.Fragment key={i}>
@@ -931,6 +1391,7 @@ function RegulationsTab({ t }) {
                     >
                       <td className="border px-2 py-1.5 font-medium">
                         <span className="mr-1">{isOpen ? '▼' : '▶'}</span>
+                        {flag && <span className="mr-1">{flag}</span>}
                         {row.country_name}
                         <span className="ml-1 text-gray-400">({row.country_code})</span>
                       </td>
@@ -1041,13 +1502,12 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
 
   const isGlobalTab = GLOBAL_TABS.includes(activeTab);
 
-  // Load country list once
+  // Load country list + instruments once
   useEffect(() => {
     axios.get(`${API}/banking/countries`)
       .then((r) => setCountries(r.data || []))
       .catch(() => setCountries([]));
 
-    // Load instruments (independent of country)
     axios.get(`${API}/banking/trade-finance/instruments`)
       .then((r) => setInstruments(r.data || []))
       .catch(() => setInstruments([]));
@@ -1105,11 +1565,21 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
           <option value="">{t.selectCountry}</option>
           {countries.map((c) => (
             <option key={c.country_code} value={c.country_code}>
-              {c.country_name} ({c.country_code})
+              {COUNTRY_FLAGS[c.country_code] || ''} {c.country_name} ({c.country_code})
             </option>
           ))}
         </select>
       </div>
+
+      {/* Quick stats banner — shown when country selected */}
+      {selectedCountry && !loading && (bankData || riskData || forexData) && (
+        <QuickStatsBar
+          bankData={bankData}
+          riskData={riskData}
+          forexData={forexData}
+          countryCode={selectedCountry}
+        />
+      )}
 
       {/* Tab bar - always visible */}
       <TabBar activeTab={activeTab} onChange={setActiveTab} t={t} />
@@ -1140,7 +1610,9 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
               {activeTab === 'banks' && <BanksTab data={bankData} t={t} />}
               {activeTab === 'forex' && <ForexTab data={forexData} t={t} />}
               {activeTab === 'risk' && <RiskTab data={riskData} t={t} />}
-              {activeTab === 'instruments' && <InstrumentsTab instruments={instruments} t={t} />}
+              {activeTab === 'instruments' && (
+                <InstrumentsTab instruments={instruments} countryCode={selectedCountry} t={t} />
+              )}
               {activeTab === 'paymentSystems' && <PaymentSystemsTab systems={paymentSystems} t={t} />}
               {activeTab === 'compliance' && <ComplianceTab data={complianceData} t={t} />}
             </>
