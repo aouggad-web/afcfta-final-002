@@ -133,9 +133,9 @@ export default function OpportunitySummary({ language = 'fr' }) {
         } else {
           // Fallback to combined API data
           const [tradePerf, countries, hsStats] = await Promise.all([
-            axios.get(`${API}/trade-performance`).catch(() => ({ data: null })),
+            axios.get(`${API}/statistics/trade-performance`).catch(() => ({ data: null })),
             axios.get(`${API}/countries`).catch(() => ({ data: [] })),
-            axios.get(`${API}/hs6/statistics`).catch(() => ({ data: null }))
+            axios.get(`${API}/hs-codes/statistics`).catch(() => ({ data: null }))
           ]);
 
           const countriesData = countries.data || [];
