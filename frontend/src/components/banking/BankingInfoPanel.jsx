@@ -554,34 +554,43 @@ function BanksTab({ data, t }) {
 
 // ── Forex Converter ────────────────────────────────────────────────────────────
 
-function ForexConverter({ countryCurrencyCode, t }) {
+const SOURCE_CURRENCIES = ['USD', 'EUR', 'GBP', 'CNY', 'AED', 'SAR', 'CHF', 'JPY'];
+
+function ForexConverter({ countryCode, countryCurrencyCode, countryName, t }) {
   const [amount, setAmount] = useState('1000');
-  const [fromCurrency, setFromCurrency] = useState(countryCurrencyCode || 'USD');
-  const [toCurrency, setToCurrency] = useState(countryCurrencyCode ? 'USD' : 'EUR');
+  const [fromCurrency, setFromCurrency] = useState('USD');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const COMMON_CURRENCIES = ['USD', 'EUR', 'GBP', 'CNY', 'DZD', 'MAD', 'TND', 'EGP', 'ZAR', 'NGN', 'KES', 'GHS', 'XOF', 'XAF', 'ETB', 'TZS', 'UGX', 'AOA', 'ZMW', 'MZN'];
-
-  const swap = () => {
-    setFromCurrency(toCurrency);
-    setToCurrency(fromCurrency);
+  // Reset when country changes
+  useEffect(() => {
     setResult(null);
-  };
+    setError(null);
+  }, [countryCode]);
 
   const doConvert = async () => {
-    if (!amount || isNaN(parseFloat(amount))) return;
+    const parsed = parseFloat(amount);
+    if (!parsed || parsed <= 0 || !countryCode) return;
     setLoading(true);
     setError(null);
     setResult(null);
     try {
       const res = await axios.get(`${API}/banking/forex/convert`, {
-        params: { from_currency: fromCurrency, to_currency: toCurrency, amount: parseFloat(amount) },
+        params: {
+          country_code: countryCode,
+          from_currency: fromCurrency,
+          amount: parsed,
+        },
       });
       setResult(res.data);
     } catch (e) {
-      setError('Conversion non disponible pour cette paire de devises');
+      const detail = e.response?.data?.detail;
+      if (typeof detail === 'string' && detail.includes('indisponible')) {
+        setError(`Taux non disponible pour ${countryCurrencyCode || 'cette devise'} (non cotée sur les marchés internationaux accessibles)`);
+      } else {
+        setError('Conversion indisponible pour cette paire de devises');
+      }
     } finally {
       setLoading(false);
     }
@@ -592,6 +601,9 @@ function ForexConverter({ countryCurrencyCode, t }) {
       <CardHeader className="pb-2">
         <CardTitle className="text-sm flex items-center gap-2">
           <span>💱</span> {t.converterTitle}
+          {countryCurrencyCode && (
+            <span className="text-xs font-normal text-gray-500 ml-1">→ {countryCurrencyCode}</span>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -601,54 +613,59 @@ function ForexConverter({ countryCurrencyCode, t }) {
             <input
               type="number"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => { setAmount(e.target.value); setResult(null); }}
+              onKeyDown={(e) => e.key === 'Enter' && doConvert()}
               className="border rounded px-3 py-1.5 text-sm bg-white w-full"
               min="0"
             />
           </div>
           <div className="min-w-[90px]">
             <label className="text-xs text-gray-500 block mb-1">{t.from}</label>
-            <select value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value)} className="border rounded px-2 py-1.5 text-sm bg-white w-full">
-              {COMMON_CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            <select
+              value={fromCurrency}
+              onChange={(e) => { setFromCurrency(e.target.value); setResult(null); }}
+              className="border rounded px-2 py-1.5 text-sm bg-white w-full"
+            >
+              {SOURCE_CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
-          <button
-            onClick={swap}
-            className="mb-0.5 px-2 py-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors text-lg"
-            title="Inverser"
-          >
-            ⇄
-          </button>
-          <div className="min-w-[90px]">
+          <div className="flex items-end pb-1.5 text-gray-400 text-sm">→</div>
+          <div className="min-w-[90px] flex flex-col justify-end">
             <label className="text-xs text-gray-500 block mb-1">{t.to}</label>
-            <select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)} className="border rounded px-2 py-1.5 text-sm bg-white w-full">
-              {COMMON_CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
+            <div className="border rounded px-3 py-1.5 text-sm bg-gray-50 font-mono font-semibold text-gray-700">
+              {countryCurrencyCode || '—'}
+            </div>
           </div>
           <button
             onClick={doConvert}
-            disabled={loading}
+            disabled={loading || !countryCode}
             className="px-4 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50 transition-colors"
           >
             {loading ? '…' : t.convert}
           </button>
         </div>
 
-        {error && <p className="text-xs text-red-600 bg-red-50 px-3 py-2 rounded">{error}</p>}
+        {error && (
+          <p className="text-xs text-orange-700 bg-orange-50 border border-orange-200 px-3 py-2 rounded">
+            ⚠ {error}
+          </p>
+        )}
 
         {result && (
           <div className="bg-white border border-blue-200 rounded px-4 py-3 flex items-center justify-between flex-wrap gap-2">
             <div>
               <div className="text-xl font-bold text-blue-800">
-                {result.converted_amount?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })} <span className="text-base">{toCurrency}</span>
+                {result.converted_amount?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}{' '}
+                <span className="text-base font-normal">{result.to_currency}</span>
               </div>
               <div className="text-xs text-gray-500 mt-0.5">
-                {parseFloat(amount).toLocaleString()} {fromCurrency}
+                {parseFloat(amount).toLocaleString()} {fromCurrency} → {result.currency_name || result.to_currency}
               </div>
             </div>
-            <div className="text-xs text-gray-500 text-right">
-              {result.rate && <div>{t.rate}: <strong>1 {fromCurrency} = {result.rate?.toLocaleString(undefined, { maximumFractionDigits: 6 })} {toCurrency}</strong></div>}
-              {result.source && <div className="text-gray-400">Source: {result.source}</div>}
+            <div className="text-xs text-gray-500 text-right space-y-0.5">
+              {result.rate_display && <div className="font-medium text-gray-700">{result.rate_display}</div>}
+              {result.source && <div className="text-gray-400">Source : {result.source}</div>}
+              {result.disclaimer && <div className="text-gray-400 max-w-[180px] italic">{result.disclaimer}</div>}
             </div>
           </div>
         )}
@@ -659,7 +676,7 @@ function ForexConverter({ countryCurrencyCode, t }) {
 
 // ── Forex Tab ─────────────────────────────────────────────────────────────────
 
-function ForexTab({ data, t }) {
+function ForexTab({ data, countryCode, t }) {
   if (!data) return <p className="text-gray-500 text-sm">{t.noData}</p>;
   const { domiciliation, forex_regulation } = data;
   const currencyCode = data.currency_code || data.central_bank?.currency_code;
@@ -679,7 +696,7 @@ function ForexTab({ data, t }) {
   return (
     <div className="space-y-4">
       {/* Converter */}
-      <ForexConverter countryCurrencyCode={currencyCode} t={t} />
+      <ForexConverter countryCode={countryCode} countryCurrencyCode={currencyCode} countryName={data.country_name} t={t} />
 
       <Card className={`border-2 ${domColor}`}>
         <CardHeader>
@@ -1608,7 +1625,7 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
           {selectedCountry && !loading && (
             <>
               {activeTab === 'banks' && <BanksTab data={bankData} t={t} />}
-              {activeTab === 'forex' && <ForexTab data={forexData} t={t} />}
+              {activeTab === 'forex' && <ForexTab data={forexData} countryCode={selectedCountry} t={t} />}
               {activeTab === 'risk' && <RiskTab data={riskData} t={t} />}
               {activeTab === 'instruments' && (
                 <InstrumentsTab instruments={instruments} countryCode={selectedCountry} t={t} />
