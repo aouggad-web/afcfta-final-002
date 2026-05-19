@@ -319,6 +319,25 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
         "notes": "Congestion surcharge (PSS) +$200/TEU may apply at Lagos"
     },
     {
+        "route_id": "MACAS-SNDKR",
+        "origin_locode": "MACAS",
+        "destination_locode": "SNDKR",
+        "origin_port": "Casablanca",
+        "destination_port": "Dakar",
+        "origin_country": "MAR",
+        "destination_country": "SEN",
+        "distance_nm": 1520,
+        "transit_days_min": 5,
+        "transit_days_max": 8,
+        "teu_usd": 510,
+        "feu_usd": 760,
+        "feu_hc_usd": 820,
+        "carriers": ["CMA CGM", "MSC", "Grimaldi"],
+        "frequency": "Weekly",
+        "source": "CMA CGM Maroc–Afrique de l'Ouest 2024; Drewry West Africa short-sea benchmark 2024",
+        "notes": "Direct Morocco–Senegal short-sea service with stable weekly rotations"
+    },
+    {
         "route_id": "MACAS-CIABJ",
         "origin_locode": "MACAS",
         "destination_locode": "CIABJ",
@@ -336,6 +355,25 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
         "frequency": "Bi-weekly",
         "source": "CMA CGM Maroc–Afrique de l'Ouest 2024; ANP Morocco Statistics",
         "notes": "ECOWAS destination; COO certificate may reduce duties"
+    },
+    {
+        "route_id": "MACAS-GHTEM",
+        "origin_locode": "MACAS",
+        "destination_locode": "GHTEM",
+        "origin_port": "Casablanca",
+        "destination_port": "Tema",
+        "origin_country": "MAR",
+        "destination_country": "GHA",
+        "distance_nm": 3500,
+        "transit_days_min": 10,
+        "transit_days_max": 14,
+        "teu_usd": 835,
+        "feu_usd": 1245,
+        "feu_hc_usd": 1340,
+        "carriers": ["CMA CGM", "MSC", "Maersk"],
+        "frequency": "Weekly",
+        "source": "MSC West Africa rate bulletin 2024; Drewry Container Insight Q4-2024",
+        "notes": "Often routed via Dakar or Abidjan with competitive Morocco–Ghana transit times"
     },
     {
         "route_id": "MACAS-NGAPP",
@@ -358,6 +396,44 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
     },
 
     # ===== NORTH AFRICA ↔ EAST / SOUTH AFRICA =====
+    {
+        "route_id": "EGALY-KEMBA",
+        "origin_locode": "EGALY",
+        "destination_locode": "KEMBA",
+        "origin_port": "Alexandrie",
+        "destination_port": "Mombasa",
+        "origin_country": "EGY",
+        "destination_country": "KEN",
+        "distance_nm": 3180,
+        "transit_days_min": 9,
+        "transit_days_max": 13,
+        "teu_usd": 745,
+        "feu_usd": 1100,
+        "feu_hc_usd": 1185,
+        "carriers": ["MSC", "Maersk", "CMA CGM"],
+        "frequency": "Weekly",
+        "source": "Maersk East Africa Rate Guide 2024; Alexandria Port Authority shipping bulletin",
+        "notes": "Alexandria competes with Port Saïd as a North Africa gateway into East Africa"
+    },
+    {
+        "route_id": "EGALY-TZDAR",
+        "origin_locode": "EGALY",
+        "destination_locode": "TZDAR",
+        "origin_port": "Alexandrie",
+        "destination_port": "Dar es Salaam",
+        "origin_country": "EGY",
+        "destination_country": "TZA",
+        "distance_nm": 3430,
+        "transit_days_min": 10,
+        "transit_days_max": 14,
+        "teu_usd": 820,
+        "feu_usd": 1215,
+        "feu_hc_usd": 1310,
+        "carriers": ["MSC", "CMA CGM", "Maersk"],
+        "frequency": "Weekly",
+        "source": "MSC East Africa rate bulletin 2024; UNCTAD MRTS 2024",
+        "notes": "North Africa–Tanzania lane usually routed through Suez and East Africa coastal loops"
+    },
     {
         "route_id": "EGPSD-KEMBA",
         "origin_locode": "EGPSD",
@@ -513,6 +589,25 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
         "notes": "Congestion surcharge at Apapa may add $100-200/TEU"
     },
     {
+        "route_id": "SNDKR-CMDLA",
+        "origin_locode": "SNDKR",
+        "destination_locode": "CMDLA",
+        "origin_port": "Dakar",
+        "destination_port": "Douala",
+        "origin_country": "SEN",
+        "destination_country": "CMR",
+        "distance_nm": 1840,
+        "transit_days_min": 5,
+        "transit_days_max": 8,
+        "teu_usd": 560,
+        "feu_usd": 840,
+        "feu_hc_usd": 905,
+        "carriers": ["CMA CGM", "MSC", "Delmas"],
+        "frequency": "Weekly",
+        "source": "CMA CGM Gulf of Guinea rate card 2024; Drewry Central Africa coastal benchmark 2024",
+        "notes": "Useful West-to-Central Africa feeder alternative to long-haul road corridors"
+    },
+    {
         "route_id": "CIABJ-GHTEM",
         "origin_locode": "CIABJ",
         "destination_locode": "GHTEM",
@@ -532,6 +627,25 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
         "notes": "Very short feeder leg; highest frequency in West Africa coastal"
     },
     {
+        "route_id": "CIABJ-CMDLA",
+        "origin_locode": "CIABJ",
+        "destination_locode": "CMDLA",
+        "origin_port": "Abidjan",
+        "destination_port": "Douala",
+        "origin_country": "CIV",
+        "destination_country": "CMR",
+        "distance_nm": 920,
+        "transit_days_min": 3,
+        "transit_days_max": 6,
+        "teu_usd": 405,
+        "feu_usd": 610,
+        "feu_hc_usd": 658,
+        "carriers": ["MSC", "CMA CGM", "Maersk"],
+        "frequency": "Weekly",
+        "source": "MSC West & Central Africa rate bulletin 2024; UNCTAD short-sea survey",
+        "notes": "Frequently quoted as a feeder via Tema or direct Gulf of Guinea string"
+    },
+    {
         "route_id": "CIABJ-NGAPP",
         "origin_locode": "CIABJ",
         "destination_locode": "NGAPP",
@@ -549,6 +663,25 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
         "frequency": "Weekly",
         "source": "MSC Nigeria rate bulletin 2024; Drewry West Africa Q3-2024",
         "notes": "Congestion surcharge at Lagos may apply (+$150-250/TEU)"
+    },
+    {
+        "route_id": "GHTEM-CMDLA",
+        "origin_locode": "GHTEM",
+        "destination_locode": "CMDLA",
+        "origin_port": "Tema",
+        "destination_port": "Douala",
+        "origin_country": "GHA",
+        "destination_country": "CMR",
+        "distance_nm": 780,
+        "transit_days_min": 3,
+        "transit_days_max": 5,
+        "teu_usd": 350,
+        "feu_usd": 525,
+        "feu_hc_usd": 566,
+        "carriers": ["MSC", "CMA CGM", "Grimaldi"],
+        "frequency": "Weekly",
+        "source": "Ghana Ports regional shipping bulletin 2024; Drewry Gulf of Guinea benchmark 2024",
+        "notes": "Well-used Tema–Cameroon coastal corridor for consumer goods and project cargo"
     },
     {
         "route_id": "GHTEM-NGAPP",
@@ -608,6 +741,25 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
         "notes": "Central Africa short-sea feeder"
     },
     {
+        "route_id": "CMDLA-AOLAD",
+        "origin_locode": "CMDLA",
+        "destination_locode": "AOLAD",
+        "origin_port": "Douala",
+        "destination_port": "Luanda",
+        "origin_country": "CMR",
+        "destination_country": "AGO",
+        "distance_nm": 1240,
+        "transit_days_min": 4,
+        "transit_days_max": 7,
+        "teu_usd": 470,
+        "feu_usd": 705,
+        "feu_hc_usd": 761,
+        "carriers": ["CMA CGM", "MSC", "Bolloré"],
+        "frequency": "Weekly",
+        "source": "CMA CGM Central Africa coastal tariff 2024; Angola corridor shipping benchmark 2024",
+        "notes": "Central Africa corridor with regular calls linking Cameroon and Angola"
+    },
+    {
         "route_id": "CGPNR-AOLAD",
         "origin_locode": "CGPNR",
         "destination_locode": "AOLAD",
@@ -648,6 +800,25 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
         "notes": "Horn of Africa–East Africa corridor; Djibouti is key hub"
     },
     {
+        "route_id": "DJJIB-TZDAR",
+        "origin_locode": "DJJIB",
+        "destination_locode": "TZDAR",
+        "origin_port": "Djibouti",
+        "destination_port": "Dar es Salaam",
+        "origin_country": "DJI",
+        "destination_country": "TZA",
+        "distance_nm": 1520,
+        "transit_days_min": 5,
+        "transit_days_max": 8,
+        "teu_usd": 430,
+        "feu_usd": 645,
+        "feu_hc_usd": 697,
+        "carriers": ["MSC", "Maersk", "CMA CGM"],
+        "frequency": "Weekly",
+        "source": "Maersk East Africa feeder guide 2024; Tanzania Ports Authority coastal survey",
+        "notes": "Horn of Africa to Tanzania feeder frequently used for transshipment from Asia-Europe loops"
+    },
+    {
         "route_id": "KEMBA-TZDAR",
         "origin_locode": "KEMBA",
         "destination_locode": "TZDAR",
@@ -665,6 +836,25 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
         "frequency": "Weekly",
         "source": "Tanzania Ports Authority — Short-sea survey 2024; Drewry East Africa Q3-2024",
         "notes": "East Africa coastal feeder; Mombasa–Dar common short-sea lane"
+    },
+    {
+        "route_id": "TZDAR-ZADUR",
+        "origin_locode": "TZDAR",
+        "destination_locode": "ZADUR",
+        "origin_port": "Dar es Salaam",
+        "destination_port": "Durban",
+        "origin_country": "TZA",
+        "destination_country": "ZAF",
+        "distance_nm": 1680,
+        "transit_days_min": 5,
+        "transit_days_max": 8,
+        "teu_usd": 560,
+        "feu_usd": 840,
+        "feu_hc_usd": 907,
+        "carriers": ["MSC", "Maersk", "CMA CGM", "Hapag-Lloyd"],
+        "frequency": "Weekly",
+        "source": "Drewry East-Southern Africa benchmark 2024; Maersk South Africa trade guide",
+        "notes": "Important East–Southern Africa lane for manufactured imports and reefer exports"
     },
     {
         "route_id": "TZDAR-MZMPM",
@@ -706,6 +896,44 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
     },
 
     # ===== SOUTHERN AFRICA INTRA-REGIONAL =====
+    {
+        "route_id": "MZMPM-ZACPT",
+        "origin_locode": "MZMPM",
+        "destination_locode": "ZACPT",
+        "origin_port": "Maputo",
+        "destination_port": "Cape Town",
+        "origin_country": "MOZ",
+        "destination_country": "ZAF",
+        "distance_nm": 1320,
+        "transit_days_min": 4,
+        "transit_days_max": 7,
+        "teu_usd": 430,
+        "feu_usd": 645,
+        "feu_hc_usd": 697,
+        "carriers": ["Safmarine", "MSC", "CMA CGM"],
+        "frequency": "Weekly",
+        "source": "Transnet TNPA coastal guide 2024; MPDC Maputo shipping circular 2024",
+        "notes": "Southern Africa coastal connection between Mozambique and Western Cape distribution hubs"
+    },
+    {
+        "route_id": "MUPLU-ZADUR",
+        "origin_locode": "MUPLU",
+        "destination_locode": "ZADUR",
+        "origin_port": "Port Louis",
+        "destination_port": "Durban",
+        "origin_country": "MUS",
+        "destination_country": "ZAF",
+        "distance_nm": 1540,
+        "transit_days_min": 5,
+        "transit_days_max": 8,
+        "teu_usd": 470,
+        "feu_usd": 705,
+        "feu_hc_usd": 761,
+        "carriers": ["MSC", "CMA CGM", "Maersk", "X-Press Feeders"],
+        "frequency": "Weekly",
+        "source": "MSC Indian Ocean rate card 2024; Mauritius Port Authority shipping statistics",
+        "notes": "Strong Indian Ocean connection linking Mauritius with South Africa distribution centers"
+    },
     {
         "route_id": "ZADUR-ZACPT",
         "origin_locode": "ZADUR",
@@ -863,6 +1091,20 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
 ]
 
 
+def _build_reverse_route(route: Dict[str, Any]) -> Dict[str, Any]:
+    """Return a reversed route entry using symmetric pricing assumptions."""
+    rev = dict(route)
+    rev["origin_locode"] = route["destination_locode"]
+    rev["destination_locode"] = route["origin_locode"]
+    rev["origin_port"] = route["destination_port"]
+    rev["destination_port"] = route["origin_port"]
+    rev["origin_country"] = route["destination_country"]
+    rev["destination_country"] = route["origin_country"]
+    rev["route_id"] = route["route_id"] + "_REV"
+    rev["notes"] = (route.get("notes", "") + " [Reverse direction — rates symmetric]").strip()
+    return rev
+
+
 def get_all_shipping_routes() -> List[Dict[str, Any]]:
     """Return all port-to-port shipping routes with fees."""
     return SHIPPING_ROUTES
@@ -874,17 +1116,7 @@ def get_routes_from_port(origin_locode: str) -> List[Dict[str, Any]]:
     routes = [r for r in SHIPPING_ROUTES if r["origin_locode"] == origin_locode]
     # Also add reverse direction from destination→origin routes
     reverse = [r for r in SHIPPING_ROUTES if r["destination_locode"] == origin_locode]
-    for r in reverse:
-        rev = dict(r)
-        rev["origin_locode"] = r["destination_locode"]
-        rev["destination_locode"] = r["origin_locode"]
-        rev["origin_port"] = r["destination_port"]
-        rev["destination_port"] = r["origin_port"]
-        rev["origin_country"] = r["destination_country"]
-        rev["destination_country"] = r["origin_country"]
-        rev["route_id"] = r["route_id"] + "_REV"
-        rev["notes"] = (r.get("notes", "") + " [Reverse direction — rates symmetric]").strip()
-        routes.append(rev)
+    routes.extend(_build_reverse_route(r) for r in reverse)
     return routes
 
 
@@ -901,16 +1133,7 @@ def get_route_between(origin_locode: str, destination_locode: str) -> Optional[D
     # Reverse match
     for r in SHIPPING_ROUTES:
         if r["origin_locode"] == destination_locode and r["destination_locode"] == origin_locode:
-            rev = dict(r)
-            rev["origin_locode"] = r["destination_locode"]
-            rev["destination_locode"] = r["origin_locode"]
-            rev["origin_port"] = r["destination_port"]
-            rev["destination_port"] = r["origin_port"]
-            rev["origin_country"] = r["destination_country"]
-            rev["destination_country"] = r["origin_country"]
-            rev["route_id"] = r["route_id"] + "_REV"
-            rev["notes"] = (r.get("notes", "") + " [Reverse direction — rates symmetric]").strip()
-            return rev
+            return _build_reverse_route(r)
 
     return None
 
