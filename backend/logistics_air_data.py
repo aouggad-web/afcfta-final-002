@@ -207,7 +207,7 @@ def calculate_air_freight_cost(
     )
     base_rate = _distance_rate(distance_km)
 
-    volumetric_weight_kg = volume_m3 * VOLUMETRIC_FACTOR_AIR_KG_PER_M3 if volume_m3 else 0.0
+    volumetric_weight_kg = volume_m3 * VOLUMETRIC_FACTOR_AIR_KG_PER_M3 if volume_m3 is not None else 0.0
     chargeable_weight_kg = max(weight_kg, volumetric_weight_kg)
 
     service_multiplier = AIR_SERVICE_MULTIPLIERS[service_key]

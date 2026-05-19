@@ -44,8 +44,8 @@ def test_calculate_air_freight_cost_uses_volumetric_weight_when_higher():
         cargo_type="general",
     )
 
-    assert result["volumetric_weight_kg"] == 334
-    assert result["chargeable_weight_kg"] == 334
+    assert result["volumetric_weight_kg"] == 334.0
+    assert result["chargeable_weight_kg"] == 334.0
 
 
 def test_calculate_air_freight_cost_rejects_invalid_service_level():
