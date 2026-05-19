@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Download, Loader2, ZoomIn, ZoomOut, Image } from 'lucide-react';
 import { exportToPDF } from '../../utils/pdfExport';
-import html2canvas from 'html2canvas';
 
 /**
  * PDFExportButton - Bouton d'export PDF réutilisable
@@ -90,6 +89,7 @@ export function ChartExportButton({
     
     setExporting(true);
     try {
+      const { default: html2canvas } = await import('html2canvas');
       const canvas = await html2canvas(chartRef.current, {
         scale: 2,
         backgroundColor: '#ffffff'

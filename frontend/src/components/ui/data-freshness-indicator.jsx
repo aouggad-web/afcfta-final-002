@@ -7,31 +7,12 @@ import { Clock, Database, Zap } from 'lucide-react';
 import { Badge } from './badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
 
-/**
- * Data freshness information from the API
- */
-interface DataFreshness {
-  is_fresh: boolean;
-  from_cache: boolean;
-  age_seconds: number;
-  age_human: string;
-  age_human_en?: string;
-  cached_at?: string;
-}
-
-interface DataFreshnessIndicatorProps {
-  freshness?: DataFreshness | null;
-  language?: 'fr' | 'en';
-  className?: string;
-  showTooltip?: boolean;
-}
-
 export function DataFreshnessIndicator({
   freshness,
   language = 'fr',
   className = '',
   showTooltip = true
-}: DataFreshnessIndicatorProps) {
+}) {
   // If no freshness data, show live indicator
   if (!freshness) {
     return (
@@ -122,9 +103,6 @@ export function DataFreshnessIndicator({
 export function DataFreshnessCompact({
   freshness,
   language = 'fr'
-}: {
-  freshness?: DataFreshness | null;
-  language?: 'fr' | 'en';
 }) {
   if (!freshness || !freshness.from_cache) {
     return null;
