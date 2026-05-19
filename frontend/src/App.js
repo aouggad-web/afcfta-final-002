@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast } from './hooks/use-toast';
@@ -11,16 +11,16 @@ import AfcftaTopbar from './components/AfcftaTopbar';
 import KpiRow from './components/KpiRow';
 import SectionHeader from './components/SectionHeader';
 
-import CalculatorTab from './components/calculator/CalculatorTab';
-import StatisticsTab from './components/statistics/StatisticsTab';
-import ProductionTab from './components/production/ProductionTab';
-import LogisticsTab from './components/logistics/LogisticsTab';
-import ToolsTab from './components/tools/ToolsTab';
-import RulesTab from './components/rules/RulesTab';
-import CountryProfilesTab from './components/profiles/CountryProfilesTab';
-import DashboardTabNew from './components/dashboard/DashboardTabNew';
-import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
-import BankingInfoPanel from './components/banking/BankingInfoPanel';
+const CalculatorTab = lazy(() => import('./components/calculator/CalculatorTab'));
+const StatisticsTab = lazy(() => import('./components/statistics/StatisticsTab'));
+const ProductionTab = lazy(() => import('./components/production/ProductionTab'));
+const LogisticsTab = lazy(() => import('./components/logistics/LogisticsTab'));
+const ToolsTab = lazy(() => import('./components/tools/ToolsTab'));
+const RulesTab = lazy(() => import('./components/rules/RulesTab'));
+const CountryProfilesTab = lazy(() => import('./components/profiles/CountryProfilesTab'));
+const DashboardTabNew = lazy(() => import('./components/dashboard/DashboardTabNew'));
+const OpportunitiesTab = lazy(() => import('./components/opportunities/OpportunitiesTab'));
+const BankingInfoPanel = lazy(() => import('./components/banking/BankingInfoPanel'));
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -371,7 +371,9 @@ function App() {
           )}
 
           {/* Contenu principal */}
-          {renderContent()}
+          <Suspense fallback={<div className="stats-loading" style={{ padding: '2rem', textAlign: 'center' }}>Chargement…</div>}>
+            {renderContent()}
+          </Suspense>
         </div>
       </main>
     </div>
