@@ -18,7 +18,8 @@ from logistics_air_data import (
     get_all_airports,
     get_airport_by_id,
     get_top_airports_by_cargo,
-    search_airports
+    search_airports,
+    calculate_air_freight_cost
 )
 from free_zones_data import get_free_zones_by_country
 from logistics_fees_data import (
@@ -359,6 +360,40 @@ async def get_air_logistics_statistics():
         "airports_by_country": dict(sorted(airports_by_country.items(), key=lambda x: x[1], reverse=True)),
         "year": _extract_air_data_year(all_airports)
     }
+
+@router.get("/air/fees/cost")
+async def get_air_freight_cost(
+    origin_airport_id: str,
+    destination_airport_id: str,
+    weight_kg: float = Query(..., gt=0),
+    service_level: str = "standard",
+    cargo_type: str = "general",
+    volume_m3: Optional[float] = Query(None, gt=0)
+):
+    """
+    Calculate all-in air freight cost between two airports.
+
+    Query params:
+    - origin_airport_id: Airport ID (e.g., ZAF-JNB-001)
+    - destination_airport_id: Airport ID (e.g., KEN-NBO-001)
+    - weight_kg: Physical cargo weight in kg
+    - service_level: 'standard', 'express', 'priority'
+    - cargo_type: 'general', 'perishable', 'pharma', 'dangerous'
+    - volume_m3: Optional shipment volume in m³ (used for volumetric weight)
+    """
+    try:
+        return calculate_air_freight_cost(
+            origin_airport_id=origin_airport_id,
+            destination_airport_id=destination_airport_id,
+            weight_kg=weight_kg,
+            service_level=service_level,
+            cargo_type=cargo_type,
+            volume_m3=volume_m3
+        )
+    except ValueError as e:
+        detail = str(e)
+        status_code = 404 if "not found" in detail.lower() else 400
+        raise HTTPException(status_code=status_code, detail=detail)
 
 # ==========================================
 # FREE ZONES ENDPOINTS
