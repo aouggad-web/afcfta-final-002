@@ -1,0 +1,4 @@
+- [Statistics route stubs](stats-missing-functions.md) — GDP_HISTORY_TOP10 dict et build_top_10_gdp_2024() doivent être définis dans statistics.py, non importés.
+- [Logistics data module](logistics-data-init.md) — logistics_data.py nécessite _ports_cache=None, _enhanced_index={} et _load_enhanced_port_index() au niveau module avant load_ports_data().
+- [Google Gemini quota](gemini-quota.md) — GOOGLE_API_KEY sur plan gratuit peut avoir quota 0 (limit=0 dans l'erreur 429); basculer vers gemini-2.0-flash-lite; activer la facturation Google Cloud pour lever la limite.
+- [Post-merge script](post-merge-setup.md) — scripts/post-merge.sh configuré comme script post-merge (setPostMergeConfig); doit créer backend/data/ai_cache/ et installer pip requirements.
