@@ -13,6 +13,29 @@ AIRPORTS_FILE = DATA_DIR / "airports_africains.json"
 if not AIRPORTS_FILE.exists():
     AIRPORTS_FILE = ROOT_DIR / "airports_africains.json"
 
+_airports_cache = None
+_enhanced_airport_index = {}
+
+def _load_enhanced_airport_index():
+    """Load enhanced airport logistics data into _enhanced_airport_index (best-effort)."""
+    global _enhanced_airport_index
+    if _enhanced_airport_index:
+        return
+    try:
+        enhanced_file = ROOT_DIR / "data" / "json" / "airports_enhanced.json"
+        if not enhanced_file.exists():
+            enhanced_file = ROOT_DIR / "airports_enhanced.json"
+        if enhanced_file.exists():
+            with open(enhanced_file, "r", encoding="utf-8") as f:
+                import json as _json
+                data = _json.load(f)
+                if isinstance(data, list):
+                    _enhanced_airport_index = {a["airport_id"]: a for a in data if "airport_id" in a}
+                elif isinstance(data, dict):
+                    _enhanced_airport_index = data
+    except Exception:
+        pass
+
 def load_airports_data():
     """Load African airports data, merging enhanced aviation logistics fields when available."""
     global _airports_cache

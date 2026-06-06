@@ -180,6 +180,58 @@ async def smart_search_hs6(
         logger.error(f"Smart search error: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Internal server error")
 
+@router.get("/search")
+async def search_hs6(
+    q: Optional[str] = Query(default=None, min_length=2),
+    query: Optional[str] = Query(default=None, min_length=2),
+    language: str = Query(default="fr"),
+    country_code: Optional[str] = Query(default=None),
+    limit: int = Query(default=20),
+):
+    """Alias /hs6/search → /hs6/smart-search"""
+    search_term = q or query
+    if not search_term:
+        raise HTTPException(status_code=422, detail="Paramètre 'q' ou 'query' requis.")
+    engine = get_search_engine()
+    raw_results = engine.search(query=search_term, country=country_code, limit=limit)
+    results = [
+        {
+            "code": str(r.get("hs_code", "")),
+            "description": r.get("description", ""),
+            "country": r.get("country", ""),
+            "duty_rate_pct": r.get("duty_rate_pct"),
+            "unit": r.get("unit", ""),
+            "chapter": str(r.get("hs_code", ""))[:2],
+            "match_type": "hybrid",
+        }
+        for r in raw_results
+    ]
+    return {"query": search_term, "results": results, "total": len(results), "source": "tariff_engine"}
+
+
+@router.get("/suggestions/{query}")
+async def get_hs6_suggestions(
+    query: str,
+    language: str = Query(default="fr"),
+    country_code: Optional[str] = Query(default=None),
+    limit: int = Query(default=10),
+):
+    """Autocomplete suggestions for HS codes"""
+    if len(query) < 2:
+        raise HTTPException(status_code=422, detail="Requête trop courte (min 2 caractères).")
+    engine = get_search_engine()
+    raw_results = engine.search(query=query, country=country_code, limit=limit)
+    suggestions = [
+        {
+            "code": str(r.get("hs_code", "")),
+            "description": r.get("description", ""),
+            "duty_rate_pct": r.get("duty_rate_pct"),
+        }
+        for r in raw_results
+    ]
+    return {"query": query, "suggestions": suggestions, "total": len(suggestions)}
+
+
 @router.get("/info/{hs_code}")
 async def get_hs6_info(hs_code: str, language: str = Query(default="fr")):
     """Get detailed info for a specific HS code using the optimized engine."""

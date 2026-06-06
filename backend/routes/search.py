@@ -88,10 +88,45 @@ async def search_commodities(
             return cached
     
     if not POSTGRES_AVAILABLE:
-        raise HTTPException(
-            status_code=503,
-            detail="Base de données PostgreSQL non disponible. Migration en cours."
-        )
+        try:
+            from search.hs_code_search import get_search_engine
+            _engine = get_search_engine()
+            raw = _engine.search(query=q, country=country, limit=limit)
+            results = [
+                {
+                    "id": None,
+                    "country_iso3": r.get("country", country or ""),
+                    "country_name": r.get("country", ""),
+                    "national_code": str(r.get("hs_code", "")),
+                    "hs6": str(r.get("hs_code", "")),
+                    "description": r.get("description", ""),
+                    "chapter": str(r.get("hs_code", ""))[:2],
+                    "tariffs": {
+                        "npf_rate": r.get("duty_rate_pct"),
+                        "zlecaf_rate": None,
+                        "savings_pct": None,
+                    },
+                    "relevance_score": r.get("score", 0),
+                }
+                for r in raw
+            ]
+            return {
+                "query": q,
+                "language": lang,
+                "country_filter": country,
+                "total_results": len(results),
+                "limit": limit,
+                "offset": offset,
+                "results": results,
+                "from_cache": False,
+                "data_source": "tariff_engine_fallback",
+            }
+        except Exception as fe:
+            logger.warning(f"Commodities fallback failed: {fe}")
+            raise HTTPException(
+                status_code=503,
+                detail="Base de données PostgreSQL non disponible et moteur de recherche de secours inaccessible."
+            )
     
     try:
         with engine.connect() as conn:

@@ -296,10 +296,17 @@ async def get_country_hs6_tariff_endpoint(
     
     tariff = get_country_hs6_tariff(iso3, hs6_code)
     if not tariff:
-        raise HTTPException(
-            status_code=404, 
-            detail=f"Tarif SH6 {hs6_code} non trouvé pour {iso3}"
-        )
+        dd_result = get_tariff_rate_for_country(iso3, hs6_code)
+        dd_rate = dd_result[0] if isinstance(dd_result, tuple) else dd_result
+        vat_result = get_vat_rate_for_country(iso3)
+        vat_rate = vat_result[0] if isinstance(vat_result, tuple) else vat_result
+        tariff = {
+            "hs6_code": hs6_code,
+            "dd_rate": dd_rate,
+            "vat_rate": vat_rate,
+            "data_source": "chapter_fallback",
+            "available": False
+        }
     
     return {
         "country_code": iso3,
