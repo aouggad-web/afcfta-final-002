@@ -10,8 +10,10 @@ from .models import CurrencyInfo
 
 logger = logging.getLogger(__name__)
 
-# Path to the canonical currency data file (repo root)
-_DATA_FILE = Path(__file__).parent.parent.parent / "data" / "json" / "currencies_african_complete.json"
+# Path to the canonical currency data file (repo root).
+# Use .resolve() so that non-normalized sys.path entries (e.g. "backend/tests/..")
+# that leave ".." components in __file__ are fully resolved before computing parents.
+_DATA_FILE = Path(__file__).resolve().parent.parent.parent / "data" / "json" / "currencies_african_complete.json"
 
 
 def _load_currencies() -> Tuple[Dict[str, CurrencyInfo], Dict[str, CurrencyInfo]]:

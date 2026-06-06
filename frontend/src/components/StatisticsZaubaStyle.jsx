@@ -14,6 +14,8 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
   const [africaTotals, setAfricaTotals] = useState(null);
   const [selectedYear, setSelectedYear] = useState('2024');
   const [selectedFilter, setSelectedFilter] = useState('all');
+  const [gdpHistory, setGdpHistory] = useState(null);
+  const [gdpChartMode, setGdpChartMode] = useState('absolute'); // 'absolute' | 'index'
 
   const texts = {
     fr: {
@@ -132,7 +134,18 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
   useEffect(() => {
     fetchStatistics();
     fetchAfricaTotals();
+    fetchGdpHistory();
   }, []);
+
+  const fetchGdpHistory = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/statistics/gdp-history-top10`);
+      setGdpHistory(response.data || null);
+    } catch (e) {
+      // Silent — chart will be hidden if data is unavailable.
+      setGdpHistory(null);
+    }
+  };
 
   const fetchStatistics = async () => {
     try {

@@ -2,6 +2,8 @@
 Logistics routes - Ports, Airports, Land corridors, Free Zones
 Multimodal logistics platform for African trade infrastructure
 """
+import json
+from pathlib import Path
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
 
@@ -16,7 +18,8 @@ from logistics_air_data import (
     get_all_airports,
     get_airport_by_id,
     get_top_airports_by_cargo,
-    search_airports
+    search_airports,
+    calculate_air_freight_cost
 )
 from free_zones_data import get_free_zones_by_country
 from logistics_fees_data import (
@@ -55,6 +58,94 @@ except ImportError:
     CACHE_AVAILABLE = False
 
 router = APIRouter(prefix="/logistics")
+
+# WB LPI data path
+_WB_LPI_FILE = Path(__file__).parent.parent.parent / "data" / "json" / "wb_logistics_africa.json"
+_wb_lpi_cache = None
+
+_COUNTRY_NAMES = {
+    'DZA': 'Algérie', 'MAR': 'Maroc', 'TUN': 'Tunisie', 'EGY': 'Égypte',
+    'LBY': 'Libye', 'MRT': 'Mauritanie', 'NGA': 'Nigéria', 'GHA': 'Ghana',
+    'CIV': "Côte d'Ivoire", 'SEN': 'Sénégal', 'CMR': 'Cameroun',
+    'BEN': 'Bénin', 'TGO': 'Togo', 'MLI': 'Mali', 'BFA': 'Burkina Faso',
+    'GIN': 'Guinée', 'LBR': 'Libéria', 'SLE': 'Sierra Leone', 'GMB': 'Gambie',
+    'NER': 'Niger', 'ETH': 'Éthiopie', 'KEN': 'Kenya', 'TZA': 'Tanzanie',
+    'UGA': 'Ouganda', 'RWA': 'Rwanda', 'BDI': 'Burundi', 'SDN': 'Soudan',
+    'SSD': 'Soudan du Sud', 'SOM': 'Somalie', 'ERI': 'Érythrée',
+    'DJI': 'Djibouti', 'ZAF': 'Afrique du Sud', 'MOZ': 'Mozambique',
+    'ZMB': 'Zambie', 'ZWE': 'Zimbabwe', 'BWA': 'Botswana', 'NAM': 'Namibie',
+    'MWI': 'Malawi', 'AGO': 'Angola', 'COD': 'RD Congo', 'COG': 'Congo',
+    'GAB': 'Gabon', 'GNQ': 'Guinée Équatoriale', 'CAF': 'Rép. Centrafricaine',
+    'TCD': 'Tchad', 'MDG': 'Madagascar', 'MUS': 'Maurice', 'SYC': 'Seychelles',
+    'COM': 'Comores', 'CPV': 'Cap-Vert', 'STP': 'São Tomé', 'GNB': 'Guinée-Bissau',
+    'LSO': 'Lesotho', 'SWZ': 'Eswatini',
+}
+
+def _load_wb_lpi():
+    """Load World Bank LPI data (cached)."""
+    global _wb_lpi_cache
+    if _wb_lpi_cache is None and _WB_LPI_FILE.exists():
+        with open(_WB_LPI_FILE, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        countries = raw.get('countries', {})
+        results = []
+
+        def _latest_val(indicator_data):
+            vals = indicator_data.get('values', [])
+            if not vals:
+                return None
+            # sort by year desc and return first non-None value (use int year for correct ordering)
+            for v in sorted(vals, key=lambda x: int(x.get('year', 0)) if str(x.get('year', '0')).isdigit() else 0, reverse=True):
+                if v.get('value') is not None:
+                    return {'year': v['year'], 'value': round(v['value'], 3)}
+            return None
+
+        for iso, cdata in countries.items():
+            ind = cdata.get('indicators', {})
+            overall = _latest_val(ind.get('lpi_overall', {}))
+            if overall is None:
+                continue
+            row = {
+                'country_iso': iso,
+                'country_name': _COUNTRY_NAMES.get(iso, iso),
+                'lpi_overall': overall,
+                'lpi_customs': _latest_val(ind.get('lpi_customs', {})),
+                'lpi_infrastructure': _latest_val(ind.get('lpi_infrastructure', {})),
+                'lpi_logistics_quality': _latest_val(ind.get('lpi_logistics_quality', {})),
+                'lpi_tracking': _latest_val(ind.get('lpi_tracking', {})),
+                'lpi_timeliness': _latest_val(ind.get('lpi_timeliness', {})),
+            }
+            results.append(row)
+        # Sort by lpi_overall desc
+        results.sort(key=lambda x: x['lpi_overall']['value'] if x['lpi_overall'] else 0, reverse=True)
+        # Add rank
+        for i, r in enumerate(results, 1):
+            r['rank_africa'] = i
+        _wb_lpi_cache = results
+    return _wb_lpi_cache or []
+
+
+def _extract_port_data_year(all_ports):
+    """Extract the most recent available port statistics year."""
+    years = [
+        p.get('latest_stats', {}).get('year')
+        for p in all_ports
+        if p.get('latest_stats', {}).get('year')
+    ]
+    return max(years) if years else 2024
+
+
+def _extract_air_data_year(all_airports):
+    """Extract the most recent available airport statistics year."""
+    years = []
+    for airport in all_airports:
+        historical_stats = airport.get('historical_stats') or []
+        for stat in historical_stats:
+            year = stat.get('year')
+            if isinstance(year, int):
+                years.append(year)
+    return max(years) if years else 2024
+
 
 # ==========================================
 # MARITIME PORTS ENDPOINTS
@@ -178,7 +269,7 @@ async def get_logistics_statistics():
         "total_cargo_throughput_tons": total_cargo,
         "ports_by_type": port_types,
         "ports_by_country": dict(sorted(ports_by_country.items(), key=lambda x: x[1], reverse=True)),
-        "year": 2024
+        "year": _extract_port_data_year(all_ports)
     }
     if CACHE_AVAILABLE:
         cache_set(cache_key, result, "countries")
@@ -267,8 +358,42 @@ async def get_air_logistics_statistics():
         "total_cargo_throughput_tons": total_cargo,
         "total_mail_throughput_tons": total_mail,
         "airports_by_country": dict(sorted(airports_by_country.items(), key=lambda x: x[1], reverse=True)),
-        "year": 2024
+        "year": _extract_air_data_year(all_airports)
     }
+
+@router.get("/air/fees/cost")
+async def get_air_freight_cost(
+    origin_airport_id: str,
+    destination_airport_id: str,
+    weight_kg: float = Query(..., gt=0),
+    service_level: str = "standard",
+    cargo_type: str = "general",
+    volume_m3: Optional[float] = Query(None, gt=0)
+):
+    """
+    Calculate all-in air freight cost between two airports.
+
+    Query params:
+    - origin_airport_id: Airport ID (e.g., ZAF-JNB-001)
+    - destination_airport_id: Airport ID (e.g., KEN-NBO-001)
+    - weight_kg: Physical cargo weight in kg
+    - service_level: 'standard', 'express', 'priority'
+    - cargo_type: 'general', 'perishable', 'pharma', 'dangerous'
+    - volume_m3: Optional shipment volume in m³ (used for volumetric weight)
+    """
+    try:
+        return calculate_air_freight_cost(
+            origin_airport_id=origin_airport_id,
+            destination_airport_id=destination_airport_id,
+            weight_kg=weight_kg,
+            service_level=service_level,
+            cargo_type=cargo_type,
+            volume_m3=volume_m3
+        )
+    except ValueError as e:
+        detail = str(e)
+        status_code = 404 if "not found" in detail.lower() else 400
+        raise HTTPException(status_code=status_code, detail=detail)
 
 # ==========================================
 # FREE ZONES ENDPOINTS

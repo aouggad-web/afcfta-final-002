@@ -22,6 +22,7 @@ from etl.unctad_data import (
     get_unctad_lsci,
     get_all_unctad_data
 )
+from country_data import REAL_COUNTRY_DATA
 
 # Import cache service
 try:
@@ -153,18 +154,8 @@ async def get_main_statistics():
             {"name": "Libye", "imports_2024": 20918075548, "share_pct": 2.7},
             {"name": "Tanzanie", "imports_2024": 20411960514, "share_pct": 2.7}
         ],
-        "top_10_gdp_2024": [
-            {"rank": 1, "country": "Nigéria", "gdp_2024_billion": 477.0, "growth_2024": 3.3, "growth_projection_2025": "3.8%"},
-            {"rank": 2, "country": "Égypte", "gdp_2024_billion": 387.0, "growth_2024": 3.5, "growth_projection_2025": "4.2%"},
-            {"rank": 3, "country": "Afrique du Sud", "gdp_2024_billion": 373.0, "growth_2024": 1.3, "growth_projection_2025": "1.8%"},
-            {"rank": 4, "country": "Algérie", "gdp_2024_billion": 224.0, "growth_2024": 3.8, "growth_projection_2025": "3.5%"},
-            {"rank": 5, "country": "Éthiopie", "gdp_2024_billion": 163.0, "growth_2024": 6.2, "growth_projection_2025": "6.5%"},
-            {"rank": 6, "country": "Kenya", "gdp_2024_billion": 115.0, "growth_2024": 5.0, "growth_projection_2025": "5.3%"},
-            {"rank": 7, "country": "Maroc", "gdp_2024_billion": 142.0, "growth_2024": 3.4, "growth_projection_2025": "3.7%"},
-            {"rank": 8, "country": "Angola", "gdp_2024_billion": 117.0, "growth_2024": 2.8, "growth_projection_2025": "3.5%"},
-            {"rank": 9, "country": "Tanzanie", "gdp_2024_billion": 85.0, "growth_2024": 5.4, "growth_projection_2025": "5.8%"},
-            {"rank": 10, "country": "Ghana", "gdp_2024_billion": 76.0, "growth_2024": 2.8, "growth_projection_2025": "4.0%"}
-        ],
+        "top_10_gdp_2024": build_top_10_gdp_2024(),
+        "top_10_gdp_2024_source": "Banque Mondiale (World Development Indicators 2024) — projections 2025: WB Africa Economic Update Jan 2025",
         "trade_evolution": {
             "intra_african_trade_2023": 111.8,  # Milliards USD
             "intra_african_trade_2024": 123.5,  # Milliards USD (estimé +10.5%)
@@ -245,6 +236,46 @@ async def get_main_statistics():
 # =============================================================================
 # TRADE PRODUCTS ENDPOINTS
 # =============================================================================
+
+@router.get("/gdp-history-top10")
+async def get_gdp_history_top10():
+    """
+    Return the historical GDP series (2019–2024) for the Top 10 African economies.
+    Source: World Bank — Open Data (NY.GDP.MKTP.CD, current US$ billion).
+    """
+    series = []
+    for iso3, info in GDP_HISTORY_TOP10.items():
+        # Order years ascending so Recharts renders left-to-right.
+        ordered = sorted(info["series"].items())
+        series.append({
+            "iso3": iso3,
+            "country": info["name"],
+            "history": [{"year": y, "gdp_billion": v} for y, v in ordered],
+            "gdp_2024_billion": ordered[-1][1] if ordered else None,
+        })
+    # Sort by 2024 GDP descending so the legend matches the Top 10 ranking.
+    series.sort(key=lambda r: r.get("gdp_2024_billion") or 0, reverse=True)
+
+    years = sorted({y for info in GDP_HISTORY_TOP10.values() for y in info["series"]})
+    # Wide-format table for charting libraries that prefer one row per year.
+    chart_rows = []
+    for year in years:
+        row = {"year": year}
+        for entry in series:
+            iso3 = entry["iso3"]
+            year_value = GDP_HISTORY_TOP10[iso3]["series"].get(year)
+            if year_value is not None:
+                row[iso3] = year_value
+        chart_rows.append(row)
+
+    return {
+        "source": "Banque Mondiale — World Development Indicators (NY.GDP.MKTP.CD), current US$ billion",
+        "years": years,
+        "countries": [{"iso3": s["iso3"], "country": s["country"], "gdp_2024_billion": s["gdp_2024_billion"]} for s in series],
+        "series": series,
+        "chart_rows": chart_rows,
+    }
+
 
 @router.get("/trade-products/summary")
 async def get_trade_products_summary():

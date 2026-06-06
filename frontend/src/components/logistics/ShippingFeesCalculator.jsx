@@ -158,6 +158,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
   const [allRoutes, setAllRoutes] = useState([]);
   const [showAllRoutes, setShowAllRoutes] = useState(false);
   const [availableDestinations, setAvailableDestinations] = useState([]);
+  const [availableOrigins, setAvailableOrigins] = useState(FEE_PORTS);
 
   // Load all routes on mount to populate destination options based on origin
   useEffect(() => {
@@ -165,6 +166,21 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
       .then(res => setAllRoutes(res.data.routes || []))
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!allRoutes.length) {
+      setAvailableOrigins(FEE_PORTS);
+      return;
+    }
+
+    const routePorts = new Set();
+    allRoutes.forEach(r => {
+      routePorts.add(r.origin_locode);
+      routePorts.add(r.destination_locode);
+    });
+
+    setAvailableOrigins(FEE_PORTS.filter(p => routePorts.has(p.locode)));
+  }, [allRoutes]);
 
   // Update available destinations when origin changes
   useEffect(() => {
@@ -246,7 +262,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                 className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="">— {t.origin} —</option>
-                {FEE_PORTS.map(p => (
+                {availableOrigins.map(p => (
                   <option key={p.locode} value={p.locode}>
                     {p.flag} {p.name} ({p.country})
                   </option>

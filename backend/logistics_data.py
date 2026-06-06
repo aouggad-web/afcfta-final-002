@@ -14,11 +14,28 @@ if not PORTS_FILE.exists():
     PORTS_FILE = ROOT_DIR / "ports_africains.json"
 
 def load_ports_data():
-    """Load African ports data from JSON file"""
+    """Load African ports data, merging enriched agent/logistics_network fields from enhanced file."""
+    global _ports_cache
+    if _ports_cache is not None:
+        return _ports_cache
     ports_path = ROOT_DIR / "data" / "json" / "ports_africains.json"
     with open(ports_path, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
+        ports = json.load(f)
+    # Merge enhanced data if available
+    _load_enhanced_port_index()
+    if _enhanced_index:
+        for port in ports:
+            pid = port.get('port_id')
+            enh = _enhanced_index.get(pid)
+            if enh:
+                # Merge enriched agents (services, certifications, cargo_types, operating_hours)
+                if 'agents' in enh:
+                    port['agents'] = enh['agents']
+                # Merge logistics_network if present
+                if 'logistics_network' in enh:
+                    port['logistics_network'] = enh['logistics_network']
+    _ports_cache = ports
+    return _ports_cache
 def get_all_ports(country_iso: Optional[str] = None) -> List[dict]:
     """
     Get all ports or filter by country ISO code

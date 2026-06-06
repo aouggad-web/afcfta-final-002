@@ -13,7 +13,22 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  check-conflict-markers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fail fast on unresolved merge conflict markers
+        run: |
+          if git ls-files | xargs grep -rlP '^(<{7} |={7}\r?$|>{7} )' -- 2>/dev/null; then
+            echo "ERROR: Unresolved merge conflict markers found in the tracked files above." >&2
+            exit 1
+          fi
+          echo "No conflict markers found."
+
   backend-tests:
+    needs: check-conflict-markers
     runs-on: ubuntu-latest
 
     steps:
@@ -43,6 +58,7 @@ jobs:
         continue-on-error: true
 
   frontend-build:
+    needs: check-conflict-markers
     runs-on: ubuntu-latest
 
     steps:

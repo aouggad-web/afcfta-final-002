@@ -18,6 +18,7 @@ import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calcula
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
+import DismantlementSchedule from './DismantlementSchedule';
 import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
@@ -72,6 +73,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [useSmartSearch, setUseSmartSearch] = useState(true);
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
+  const [selectedSubPositionFormalities, setSelectedSubPositionFormalities] = useState(null);
   const [countryTariffProfile, setCountryTariffProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
@@ -617,7 +619,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         
         <CardContent className="relative space-y-6">
           {/* Sélection des pays */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Pays d'origine */}
             <div className="space-y-2">
               <Label className="text-slate-300 font-medium flex items-center gap-2">
@@ -801,9 +803,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 onChange={setHsCode}
                 destinationCountry={destinationCountry}
                 language={language}
-                onSubPositionSelect={(code, desc) => {
+                onSubPositionSelect={(code, desc, formalities) => {
                   setHsCode(code);
                   setSelectedSubPositionDesc(desc);
+                  setSelectedSubPositionFormalities(formalities || null);
                 }}
                 onRuleOfOriginLoad={setRuleOfOrigin}
               />
@@ -1002,7 +1005,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </div>
 
               {/* Grille de synthèse économique */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
                 {/* Total NPF */}
                 <div className="bg-red-500/10 rounded-xl p-4 border border-red-500/20">
                   <p className="text-red-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
@@ -1037,6 +1040,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </div>
             </CardContent>
           </Card>
+
+          {/* Schéma de démantèlement ZLECAf */}
+          {result && destinationCountry && hsCode && (
+            <DismantlementSchedule
+              countryIso3={destinationCountry}
+              hs6={hsCode.replace(/[.\s]/g, '').slice(0, 6)}
+              npfRate={result.customs_duty_rate ?? result.dd_rate_pct ?? result.tariff_rate ?? 0}
+              language={language}
+            />
+          )}
 
           {/* Détail des taxes */}
           {result.taxes_detail && result.taxes_detail.length > 0 && (
@@ -1091,41 +1104,162 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </Card>
           )}
 
-          {/* Documents requis */}
-          {result.administrative_formalities && result.administrative_formalities.length > 0 && (
+          {/* Sous-positions nationales disponibles */}
+          {subPositions && subPositions.sub_positions && subPositions.sub_positions.length > 0 && (
             <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
-                    <FileCheck className="w-5 h-5 text-amber-400" />
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                      <Scale className="w-5 h-5 text-purple-400" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg text-white">
+                        {language === 'fr' ? 'Positions Nationales' : 'National Positions'}
+                      </CardTitle>
+                      <CardDescription className="text-slate-400">
+                        {subPositions.sub_positions.length} {language === 'fr' ? 'positions (10 chiffres)' : 'positions (10 digits)'}
+                        {subPositions.note && <span className="ml-2 text-purple-400/70 text-xs">— {subPositions.note}</span>}
+                      </CardDescription>
+                    </div>
                   </div>
-                  <div>
-                    <CardTitle className="text-lg text-white">{language === 'fr' ? 'Documents Requis' : 'Required Documents'}</CardTitle>
-                    <CardDescription className="text-slate-400">
-                      {result.administrative_formalities.length} {language === 'fr' ? 'formalités' : 'formalities'}
-                    </CardDescription>
-                  </div>
+                  {selectedSubPositionDesc && (
+                    <Badge className="bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs">
+                      {hsCode.replace(/[.\s]/g, '').slice(0, 10)} {language === 'fr' ? 'sélectionnée' : 'selected'}
+                    </Badge>
+                  )}
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {result.administrative_formalities.map((form, idx) => (
-                    <div 
-                      key={idx}
-                      className="p-3 bg-slate-700/30 rounded-lg border border-slate-700"
-                    >
-                      <div className="flex items-start gap-2">
-                        <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 border font-mono shrink-0">
-                          {form.code}
-                        </Badge>
-                        <p className="text-slate-300 text-sm">{form.document_fr || form.document_en}</p>
+                <div className="space-y-2">
+                  {subPositions.sub_positions.map((sp, idx) => {
+                    const code = sp.code || sp.national_code || '';
+                    const isSelected = hsCode.replace(/[.\s]/g, '').startsWith(code.slice(0, 10));
+                    const ddRate = sp.dd ?? sp.dd_rate ?? sp.rate;
+                    const desc = language === 'fr' ? (sp.description_fr || sp.description_en) : (sp.description_en || sp.description_fr);
+                    const spFormalities = sp.administrative_formalities || null;
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          setHsCode(code);
+                          setSelectedSubPositionDesc(desc);
+                          setSelectedSubPositionFormalities(spFormalities);
+                        }}
+                        className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${
+                          isSelected
+                            ? 'bg-purple-500/20 border-purple-500/50'
+                            : 'bg-slate-700/30 border-slate-700 hover:border-purple-500/30 hover:bg-slate-700/50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span className="font-mono text-sm font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded shrink-0">
+                            {code}
+                          </span>
+                          <p className="text-slate-300 text-sm truncate">{desc}</p>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0 ml-3">
+                          {ddRate !== undefined && ddRate !== null && (
+                            <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-mono">
+                              DD {ddRate}%
+                            </Badge>
+                          )}
+                          {spFormalities && spFormalities.length > 0 && (
+                            <Badge className="bg-slate-600/50 text-slate-300 border border-slate-600 text-xs">
+                              {spFormalities.length} {language === 'fr' ? 'docs' : 'docs'}
+                            </Badge>
+                          )}
+                          {isSelected && <CheckCircle className="w-4 h-4 text-purple-400" />}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
+                <p className="text-xs text-slate-500 mt-3 border-t border-slate-700 pt-2">
+                  {language === 'fr'
+                    ? 'Cliquez sur une position pour appliquer son taux et ses formalités spécifiques.'
+                    : 'Click a position to apply its specific rate and formalities.'}
+                </p>
               </CardContent>
             </Card>
           )}
+
+          {/* Documents requis — niveau position nationale si sélectionnée, sinon HS6 */}
+          {(() => {
+            const formalities = selectedSubPositionFormalities || result.administrative_formalities;
+            const isPositionLevel = !!selectedSubPositionFormalities;
+            const positionCode = isPositionLevel ? hsCode.replace(/[.\s]/g, '') : null;
+            if (!formalities || formalities.length === 0) return null;
+            return (
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                        <FileCheck className="w-5 h-5 text-amber-400" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-lg text-white">
+                          {language === 'fr' ? 'Documents Requis' : 'Required Documents'}
+                        </CardTitle>
+                        <CardDescription className="text-slate-400">
+                          {formalities.length} {language === 'fr' ? 'formalités' : 'formalities'}
+                          {isPositionLevel && (
+                            <span className="ml-2 text-amber-400 text-xs font-mono">
+                              — position {positionCode}
+                            </span>
+                          )}
+                        </CardDescription>
+                      </div>
+                    </div>
+                    {isPositionLevel && (
+                      <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs">
+                        {language === 'fr' ? 'Position nationale' : 'National position'}
+                      </Badge>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {formalities.map((form, idx) => (
+                      <div
+                        key={idx}
+                        className={`p-3 rounded-lg border ${form.is_mandatory === false ? 'bg-slate-700/20 border-slate-700' : 'bg-slate-700/30 border-slate-700'}`}
+                      >
+                        <div className="flex items-start gap-2">
+                          <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 border font-mono shrink-0 text-xs">
+                            {form.code}
+                          </Badge>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-slate-300 text-sm">
+                              {language === 'fr' ? (form.document_fr || form.document_en) : (form.document_en || form.document_fr)}
+                            </p>
+                            {(form.authority_fr || form.authority_en) && (
+                              <p className="text-slate-500 text-xs mt-1">
+                                {language === 'fr' ? form.authority_fr : form.authority_en}
+                              </p>
+                            )}
+                            {form.is_mandatory === false && (
+                              <span className="text-xs text-slate-500 italic">
+                                {language === 'fr' ? 'Optionnel' : 'Optional'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {!isPositionLevel && (
+                    <p className="text-xs text-slate-500 mt-3 border-t border-slate-700 pt-2">
+                      {language === 'fr'
+                        ? 'Formalités au niveau HS6. Sélectionnez une sous-position nationale pour les formalités spécifiques à la position (10 chiffres).'
+                        : 'Formalities at HS6 level. Select a national sub-position for position-specific formalities (10 digits).'}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })()}
 
           {/* Avantages ZLECAf */}
           {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (

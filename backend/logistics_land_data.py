@@ -8,21 +8,38 @@ import os
 from typing import List, Dict, Optional
 from pathlib import Path
 
-# Chemin du fichier JSON
-DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'json', 'corridors_terrestres.json')
+# Data file paths
+_BASE = os.path.join(os.path.dirname(__file__), '..', 'data', 'json')
+DATA_FILE = os.path.join(_BASE, 'corridors_terrestres.json')
+ENHANCED_FILE = os.path.join(_BASE, 'corridors_terrestres_enhanced_logistics.json')
 
 # Cache global
 _corridors_data = None
 
 def load_corridors_data():
-    """Charge les données des corridors depuis le fichier JSON"""
+    """Charge les données des corridors, en fusionnant les données enrichies si disponibles."""
     global _corridors_data
     if _corridors_data is None:
         try:
             with open(DATA_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                _corridors_data = data.get('corridors', [])
-            print(f"✅ Loaded {len(_corridors_data)} land corridors from {DATA_FILE}")
+                corridors = data.get('corridors', [])
+
+            # Merge enhanced logistics_network data when available
+            try:
+                with open(ENHANCED_FILE, 'r', encoding='utf-8') as f:
+                    enh_data = json.load(f)
+                enh_index = {c['corridor_id']: c for c in enh_data.get('enhanced_corridors', []) if 'corridor_id' in c}
+                for corridor in corridors:
+                    cid = corridor.get('corridor_id')
+                    enh = enh_index.get(cid)
+                    if enh and 'logistics_network' in enh:
+                        corridor['logistics_network'] = enh['logistics_network']
+            except (FileNotFoundError, json.JSONDecodeError) as e:
+                print(f"⚠️ Could not load enhanced corridors file: {e}")  # Enhanced file optional
+
+            _corridors_data = corridors
+            print(f"✅ Loaded {len(_corridors_data)} land corridors")
         except FileNotFoundError:
             print(f"❌ File not found: {DATA_FILE}")
             _corridors_data = []

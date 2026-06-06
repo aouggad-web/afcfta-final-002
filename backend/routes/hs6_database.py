@@ -117,7 +117,8 @@ def load_algeria_nomenclature():
 
 @router.get("/smart-search")
 async def smart_search_hs6(
-    q: str = Query(..., min_length=2),
+    q: Optional[str] = Query(default=None, min_length=2),
+    query: Optional[str] = Query(default=None, min_length=2),
     language: str = Query(default="fr"),
     country_code: Optional[str] = Query(default=None),
     include_sub_positions: bool = Query(default=False),

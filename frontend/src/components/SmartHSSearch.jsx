@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
@@ -72,41 +72,57 @@ export default function SmartHSSearch({
   const t = texts[language] || texts.fr;
 
   // Debounce search
-  const debounce = (func, wait) => {
-    let timeout;
-    return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func(...args), wait);
-    };
-  };
+  const searchTimeoutRef = useRef(null);
+  const latestRequestRef = useRef(0);
 
   // Search HS6 codes
   const searchHS6 = useCallback(
-    debounce(async (query) => {
+    (query) => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+
       if (!query || query.length < 2) {
+        setLoading(false);
         setSearchResults([]);
+        setShowResults(false);
         return;
       }
 
       setLoading(true);
-      try {
-        const response = await axios.get(`${API}/hs6/smart-search`, {
-          params: {
-            q: query,
-            country_code: destinationCountry || undefined,
-            language,
-            include_sub_positions: true
+      setShowResults(true);
+      const requestId = latestRequestRef.current + 1;
+      latestRequestRef.current = requestId;
+
+      const timer = setTimeout(async () => {
+        try {
+          const response = await axios.get(`${API}/hs6/smart-search`, {
+            params: {
+              q: query,
+              country_code: destinationCountry || undefined,
+              language,
+              include_sub_positions: true,
+            },
+          });
+          if (requestId === latestRequestRef.current) {
+            setSearchResults(response.data.results || []);
+            setShowResults(true);
           }
-        });
-        setSearchResults(response.data.results || []);
-        setShowResults(true);
-      } catch (error) {
-        console.error('Search error:', error);
-        setSearchResults([]);
-      } finally {
-        setLoading(false);
-      }
-    }, 300),
+        } catch (error) {
+          if (requestId === latestRequestRef.current) {
+            setSearchResults([]);
+          }
+        } finally {
+          if (searchTimeoutRef.current === timer) {
+            searchTimeoutRef.current = null;
+          }
+          if (requestId === latestRequestRef.current) {
+            setLoading(false);
+          }
+        }
+      }, 300);
+      searchTimeoutRef.current = timer;
+    },
     [destinationCountry, language]
   );
 
@@ -145,6 +161,10 @@ export default function SmartHSSearch({
 
   // Handle code selection
   const handleCodeSelect = (code, description) => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+      searchTimeoutRef.current = null;
+    }
     setSearchQuery(code);
     setSelectedCode(code);
     setShowResults(false);
@@ -152,12 +172,12 @@ export default function SmartHSSearch({
     loadSuggestions(code);
   };
 
-  // Handle sub-position selection
-  const handleSubPositionSelect = (fullCode, description) => {
+  // Handle sub-position selection — passe code, description ET formalités
+  const handleSubPositionSelect = (fullCode, description, formalities) => {
     setSearchQuery(fullCode);
     onChange(fullCode);
     if (onSubPositionSelect) {
-      onSubPositionSelect(fullCode, description);
+      onSubPositionSelect(fullCode, description, formalities || null);
     }
   };
 
@@ -177,6 +197,13 @@ export default function SmartHSSearch({
       loadSuggestions(selectedCode);
     }
   }, [destinationCountry]);
+
+  useEffect(() => () => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+      searchTimeoutRef.current = null;
+    }
+  }, []);
 
   const getSensitivityColor = (sensitivity) => {
     switch (sensitivity) {
@@ -259,7 +286,11 @@ export default function SmartHSSearch({
                           className="flex items-center justify-between bg-[#15202A] p-2 rounded border border-[rgba(139,92,246,0.25)] hover:border-[#A78BFA] cursor-pointer transition-colors"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleSubPositionSelect(sp.code, sp.description_fr || sp.description_en);
+                            handleSubPositionSelect(
+                              sp.code,
+                              language === 'fr' ? sp.description_fr : (sp.description_en || sp.description_fr),
+                              sp.administrative_formalities || null
+                            );
                           }}
                         >
                           <div className="flex items-center gap-2">

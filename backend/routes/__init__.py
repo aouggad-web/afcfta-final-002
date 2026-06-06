@@ -71,6 +71,28 @@ except Exception as e:
     _logger.warning(f"Failed to load rules of origin data: {e}")
 
 try:
+    from .dismantlement import router as dismantlement_router
+    DISMANTLEMENT_AVAILABLE = True
+except ImportError as e:
+    dismantlement_router = None
+    DISMANTLEMENT_AVAILABLE = False
+    _logger.warning(f"Dismantlement schedule route unavailable: {e}")
+
+# Load Rules of Origin data
+try:
+    import sys
+    import os
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+    from etl.afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES
+    RULES_OF_ORIGIN_DATA_LOADED = True
+    _logger.info(f"Loaded {len(CHAPTER_RULES)} chapter rules of origin")
+except Exception as e:
+    CHAPTER_RULES = {}
+    ORIGIN_TYPES = {}
+    RULES_OF_ORIGIN_DATA_LOADED = False
+    _logger.warning(f"Failed to load rules of origin data: {e}")
+
+try:
     from .faostat import router as faostat_router
     FAOSTAT_AVAILABLE = True
 except ImportError:
@@ -290,6 +312,13 @@ try:
 except ImportError:
     exchange_rates_router = None
     EXCHANGE_RATES_AVAILABLE = False
+
+try:
+    from .admin_projects import router as admin_projects_router
+    ADMIN_PROJECTS_AVAILABLE = True
+except ImportError:
+    admin_projects_router = None
+    ADMIN_PROJECTS_AVAILABLE = False
 
 
 def register_routes(api_router: APIRouter):

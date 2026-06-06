@@ -253,12 +253,12 @@ async def check_ai_service_health():
     from dotenv import load_dotenv
     load_dotenv()
 
-    has_key = bool(os.environ.get("EMERGENT_LLM_KEY"))
+    has_key = bool(os.environ.get("GOOGLE_API_KEY"))
 
     return {
         "status": "operational" if has_key else "not_configured",
         "model": "gemini-2.0-flash",
-        "provider": "Google Gemini via Emergent LLM"
+        "provider": "Google Gemini 2.0 Flash"
     }
 
 
