@@ -13,6 +13,26 @@ PORTS_FILE = DATA_DIR / "ports_africains.json"
 if not PORTS_FILE.exists():
     PORTS_FILE = ROOT_DIR / "ports_africains.json"
 
+_ports_cache = None
+_enhanced_index = {}
+
+def _load_enhanced_port_index():
+    """Load enhanced port data file into _enhanced_index (keyed by port_id)."""
+    global _enhanced_index
+    if _enhanced_index:
+        return
+    enhanced_path = ROOT_DIR / "data" / "json" / "ports_africains_enhanced.json"
+    if not enhanced_path.exists():
+        return
+    try:
+        with open(enhanced_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        ports = data if isinstance(data, list) else data.get('ports', [])
+        _enhanced_index = {p['port_id']: p for p in ports if p.get('port_id')}
+    except Exception:
+        _enhanced_index = {}
+
+
 def load_ports_data():
     """Load African ports data, merging enriched agent/logistics_network fields from enhanced file."""
     global _ports_cache

@@ -275,6 +275,23 @@ async def get_logistics_statistics():
         cache_set(cache_key, result, "countries")
     return result
 
+
+@router.get("/lpi")
+async def get_lpi_data(limit: Optional[int] = None):
+    """
+    Get World Bank Logistics Performance Index (LPI) data for African countries.
+    Source: World Bank LPI 2023.
+    """
+    data = _load_wb_lpi()
+    if limit:
+        data = data[:limit]
+    return {
+        "source": "Banque Mondiale — Logistics Performance Index (LPI) 2023",
+        "count": len(data),
+        "countries": data
+    }
+
+
 # ==========================================
 # AIR CARGO ENDPOINTS
 # ==========================================
