@@ -90,7 +90,7 @@ class GeminiTradeService:
             )
         client = genai.Client(api_key=self.api_key)
         response = await client.aio.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-2.0-flash-lite",
             contents=prompt,
             config=genai_types.GenerateContentConfig(
                 system_instruction=TRADE_SYSTEM_INSTRUCTION,

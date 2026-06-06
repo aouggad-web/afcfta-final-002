@@ -257,8 +257,8 @@ async def check_ai_service_health():
 
     return {
         "status": "operational" if has_key else "not_configured",
-        "model": "gemini-2.0-flash",
-        "provider": "Google Gemini 2.0 Flash"
+        "model": "gemini-2.0-flash-lite",
+        "provider": "Google Gemini 2.0 Flash Lite"
     }
 
 
