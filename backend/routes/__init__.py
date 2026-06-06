@@ -78,42 +78,6 @@ except ImportError as e:
     DISMANTLEMENT_AVAILABLE = False
     _logger.warning(f"Dismantlement schedule route unavailable: {e}")
 
-# Load Rules of Origin data
-try:
-    import sys
-    import os
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    from etl.afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES
-    RULES_OF_ORIGIN_DATA_LOADED = True
-    _logger.info(f"Loaded {len(CHAPTER_RULES)} chapter rules of origin")
-except Exception as e:
-    CHAPTER_RULES = {}
-    ORIGIN_TYPES = {}
-    RULES_OF_ORIGIN_DATA_LOADED = False
-    _logger.warning(f"Failed to load rules of origin data: {e}")
-
-try:
-    from .dismantlement import router as dismantlement_router
-    DISMANTLEMENT_AVAILABLE = True
-except ImportError as e:
-    dismantlement_router = None
-    DISMANTLEMENT_AVAILABLE = False
-    _logger.warning(f"Dismantlement schedule route unavailable: {e}")
-
-# Load Rules of Origin data
-try:
-    import sys
-    import os
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    from etl.afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES
-    RULES_OF_ORIGIN_DATA_LOADED = True
-    _logger.info(f"Loaded {len(CHAPTER_RULES)} chapter rules of origin")
-except Exception as e:
-    CHAPTER_RULES = {}
-    ORIGIN_TYPES = {}
-    RULES_OF_ORIGIN_DATA_LOADED = False
-    _logger.warning(f"Failed to load rules of origin data: {e}")
-
 try:
     from .faostat import router as faostat_router
     FAOSTAT_AVAILABLE = True
@@ -371,6 +335,8 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(hs6_db_router, tags=["HS6 Database"], dependencies=_auth)
     api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth)
     api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"], dependencies=_auth)
+    if DISMANTLEMENT_AVAILABLE:
+        api_router.include_router(dismantlement_router, tags=["ZLECAf Dismantlement Schedule"], dependencies=_auth)
     if FAOSTAT_AVAILABLE:
         api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth)
     api_router.include_router(calculator_router, tags=["Calculator"], dependencies=_auth)

@@ -362,11 +362,34 @@ async def get_detailed_tariff_endpoint(
     
     result = get_detailed_tariff(iso3, hs_code)
     if not result:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Tarif non trouvé pour {iso3}/{hs_code}"
-        )
-    
+        # Fallback: build response from chapter/country-level rate data
+        clean_hs = hs_code.replace(".", "").replace(" ", "")
+        hs6 = clean_hs[:6]
+        chapter = clean_hs[:2]
+        hs6_info = get_hs6_tariff(hs6) or {}
+        dd_rate_tuple = get_tariff_rate_for_country(iso3, hs6)
+        vat_rate_tuple = get_vat_rate_for_country(iso3)
+        dd_rate = dd_rate_tuple[0] if isinstance(dd_rate_tuple, tuple) else dd_rate_tuple
+        vat_rate = vat_rate_tuple[0] if isinstance(vat_rate_tuple, tuple) else vat_rate_tuple
+        desc_fr = hs6_info.get("description_fr") or f"Code SH {hs6}"
+        desc_en = hs6_info.get("description_en") or f"HS Code {hs6}"
+        result = {
+            "country_code": iso3,
+            "hs_code": clean_hs,
+            "hs6_code": hs6,
+            "chapter": chapter,
+            "description_fr": desc_fr,
+            "description_en": desc_en,
+            "dd_rate": dd_rate,
+            "dd_rate_pct": f"{dd_rate * 100:.1f}%" if dd_rate is not None else "N/A",
+            "vat_rate": vat_rate,
+            "vat_rate_pct": f"{vat_rate * 100:.1f}%" if vat_rate is not None else "N/A",
+            "sub_positions": [],
+            "has_sub_positions": False,
+            "data_source": "chapter_fallback",
+            "available": False
+        }
+
     return result
 
 @router.get("/tariffs/sub-position/{country_code}/{full_code}")
