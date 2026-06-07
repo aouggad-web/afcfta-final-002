@@ -1,2 +1,3 @@
 - [Endpoint audit patterns](endpoint-audit-patterns.md) — recurring hard-404/500 patterns found in full audit; fixes to apply for similar bugs
 - [Nigeria GDP devaluation fix](nga-gdp-fix.md) — NGA GDP 2023/2024 was 477B (pre-devaluation); correct values ~363B after June 2023 naira collapse
+- [GDP platform alignment](gdp-alignment.md) — country_data.py is source of truth for profiles; statistics.py uses IMF WEO Oct 2024 (slight vintage difference for ETH/MAR)
