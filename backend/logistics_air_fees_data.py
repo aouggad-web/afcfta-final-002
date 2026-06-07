@@ -10,7 +10,7 @@ Le calcul suit la méthodologie standard du fret aérien :
 Sources / calibrage :
 - IATA TACT (The Air Cargo Tariff) 2024 — barèmes généraux de fret aérien
 - Tarifs cargo publiés des compagnies africaines (Ethiopian Cargo, Kenya Airways Cargo,
-  EgyptAir Cargo, Royal Air Maroc Cargo, ASKY, TAAG, South African Airways Cargo)
+  EgyptAir Cargo, ASKY, TAAG, South African Airways Cargo)
 - IATA Air Cargo Market Analysis 2024 ; AFRAA Annual Report 2024
 
 Les taux sont ESTIMÉS par un modèle distance-coût calibré ; les tarifs réels varient
@@ -92,8 +92,8 @@ _HUBS = {"ADD", "NBO", "JNB", "CAI", "CMN", "LOS", "DSS", "KGL", "MRU"}
 
 # Compagnies cargo par région
 _REGION_CARRIERS = {
-    "Afrique du Nord": ["Royal Air Maroc Cargo", "EgyptAir Cargo", "Air Algérie", "Tunisair"],
-    "Afrique de l'Ouest": ["ASKY", "Air Côte d'Ivoire", "Ethiopian Cargo", "Royal Air Maroc Cargo"],
+    "Afrique du Nord": ["EgyptAir Cargo", "Air Algérie", "Tunisair", "Ethiopian Cargo"],
+    "Afrique de l'Ouest": ["ASKY", "Air Côte d'Ivoire", "Ethiopian Cargo", "Kenya Airways Cargo"],
     "Afrique Centrale": ["ASKY", "Ethiopian Cargo", "Kenya Airways Cargo"],
     "Afrique de l'Est": ["Ethiopian Cargo", "Kenya Airways Cargo", "RwandAir", "Astral Aviation"],
     "Afrique Australe": ["South African Airways Cargo", "Ethiopian Cargo", "Airlink"],
