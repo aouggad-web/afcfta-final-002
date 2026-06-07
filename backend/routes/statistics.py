@@ -96,7 +96,7 @@ def translate_products_list(products: list, language: str = 'fr') -> list:
     return translated
 
 GDP_HISTORY_TOP10 = {
-    "NGA": {"name": "Nigéria",       "series": {2019: 448.1, 2020: 432.3, 2021: 441.5, 2022: 472.6, 2023: 477.0, 2024: 477.0}},
+    "NGA": {"name": "Nigéria",       "series": {2019: 448.1, 2020: 432.3, 2021: 440.8, 2022: 477.4, 2023: 362.8, 2024: 363.0}},
     "EGY": {"name": "Égypte",         "series": {2019: 303.1, 2020: 361.9, 2021: 394.3, 2022: 476.7, 2023: 387.0, 2024: 387.0}},
     "ZAF": {"name": "Afrique du Sud", "series": {2019: 381.3, 2020: 335.4, 2021: 419.0, 2022: 405.7, 2023: 377.8, 2024: 373.0}},
     "DZA": {"name": "Algérie",        "series": {2019: 171.0, 2020: 145.0, 2021: 167.6, 2022: 191.9, 2023: 239.9, 2024: 266.0}},
@@ -112,16 +112,16 @@ GDP_HISTORY_TOP10 = {
 def build_top_10_gdp_2024():
     """Top 10 African economies by GDP 2024 (World Bank WDI)"""
     return [
-        {"rank": 1,  "country": "Nigéria",       "iso3": "NGA", "gdp_2024_musd": 477000, "gdp_per_capita": 2248},
-        {"rank": 2,  "country": "Égypte",         "iso3": "EGY", "gdp_2024_musd": 387000, "gdp_per_capita": 3443},
-        {"rank": 3,  "country": "Afrique du Sud", "iso3": "ZAF", "gdp_2024_musd": 373000, "gdp_per_capita": 6176},
+        {"rank": 1,  "country": "Égypte",         "iso3": "EGY", "gdp_2024_musd": 387000, "gdp_per_capita": 3443},
+        {"rank": 2,  "country": "Afrique du Sud", "iso3": "ZAF", "gdp_2024_musd": 373000, "gdp_per_capita": 6176},
+        {"rank": 3,  "country": "Nigéria",        "iso3": "NGA", "gdp_2024_musd": 363000, "gdp_per_capita": 1711},
         {"rank": 4,  "country": "Algérie",        "iso3": "DZA", "gdp_2024_musd": 266000, "gdp_per_capita": 5949},
         {"rank": 5,  "country": "Éthiopie",       "iso3": "ETH", "gdp_2024_musd": 205000, "gdp_per_capita": 1634},
-        {"rank": 6,  "country": "Kenya",          "iso3": "KEN", "gdp_2024_musd": 116000, "gdp_per_capita": 2146},
-        {"rank": 7,  "country": "Tanzanie",       "iso3": "TZA", "gdp_2024_musd": 85000,  "gdp_per_capita": 1329},
-        {"rank": 8,  "country": "Ghana",          "iso3": "GHA", "gdp_2024_musd": 77000,  "gdp_per_capita": 2296},
-        {"rank": 9,  "country": "Angola",         "iso3": "AGO", "gdp_2024_musd": 76000,  "gdp_per_capita": 2155},
-        {"rank": 10, "country": "Maroc",          "iso3": "MAR", "gdp_2024_musd": 142000, "gdp_per_capita": 3758},
+        {"rank": 6,  "country": "Maroc",          "iso3": "MAR", "gdp_2024_musd": 142000, "gdp_per_capita": 3758},
+        {"rank": 7,  "country": "Kenya",          "iso3": "KEN", "gdp_2024_musd": 116000, "gdp_per_capita": 2146},
+        {"rank": 8,  "country": "Tanzanie",       "iso3": "TZA", "gdp_2024_musd": 85000,  "gdp_per_capita": 1329},
+        {"rank": 9,  "country": "Ghana",          "iso3": "GHA", "gdp_2024_musd": 77000,  "gdp_per_capita": 2296},
+        {"rank": 10, "country": "Angola",         "iso3": "AGO", "gdp_2024_musd": 76000,  "gdp_per_capita": 2155},
     ]
 
 
@@ -208,7 +208,7 @@ async def get_main_statistics():
             },
             {
                 "country": "Nigéria",
-                "gdp_2024": 477.0,
+                "gdp_2024": 363.0,
                 "exports_world": 63.6,
                 "exports_intra_african": 8.5,
                 "imports_world": 50.9,
