@@ -17,6 +17,14 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### June 7, 2026 — Calculateur de fret terrestre (Logistique → Terrestre)
+- Calculateur de fret routier/ferroviaire sur les **15 corridors PIDA** africains (longueur réelle, postes-frontières, OSBP, opérateurs).
+- Modèle : transport ($/tonne-km × tonnage × distance × coef. marchandise) + franchissement frontières (réduit pour OSBP) + documentation ; choix du mode (route/rail selon corridor) ; délais selon vitesse + attentes frontières.
+- Calibré Banque Mondiale SSATP / UNECA / AfDB 2024. Endpoints : `GET /api/logistics/land/fees/{corridors|cargo-types|cost}`.
+- Frontend : `LandFreightCalculator.jsx` intégré dans l'onglet « Terrestre (Corridors) ».
+- Testé : curl + screenshot (Abidjan-Lagos route 30 t = 4 080 $, 0,1371 $/tonne-km).
+
+
 ### June 7, 2026 — Calculateur de fret aérien (Logistique → Aérien)
 - Nouveau calculateur de fret aérien couvrant les **64 aéroports cargo** africains (registre `logistics_air_data`).
 - Méthodologie IATA TACT : poids taxable = max(poids réel, poids volumétrique à 167 kg/m³), + FSC (carburant), SSC (sûreté), manutention/LTA, charge minimale ; coefficients par nature de marchandise (général, périssable, pharma, DGR, valeur, animaux vivants).

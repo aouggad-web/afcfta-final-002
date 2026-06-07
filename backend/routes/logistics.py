@@ -45,6 +45,11 @@ from logistics_land_data import (
     search_corridors,
     get_corridors_statistics
 )
+from logistics_land_fees_data import (
+    get_land_corridors_list,
+    get_cargo_types as get_land_cargo_types,
+    get_land_freight_cost,
+)
 from logistics_operators_data import (
     get_all_operators_with_contacts,
     get_operator_by_id,
@@ -440,6 +445,52 @@ async def search_land_corridors(q: str):
 async def get_land_logistics_statistics():
     """Get global statistics about African land corridors"""
     return get_corridors_statistics()
+
+
+# ==========================================
+# LAND FREIGHT CALCULATOR ENDPOINTS
+# ==========================================
+
+@router.get("/land/fees/corridors")
+async def get_land_freight_corridors():
+    """Liste des corridors terrestres sélectionnables dans le calculateur de fret."""
+    corridors = get_land_corridors_list()
+    return {
+        "count": len(corridors),
+        "corridors": corridors,
+        "data_year": 2024,
+        "source": "PIDA, Banque Mondiale SSATP, UNECA — corridors africains 2024",
+    }
+
+
+@router.get("/land/fees/cargo-types")
+async def get_land_freight_cargo_types():
+    """Types de marchandise et coefficients pour le fret terrestre."""
+    return {"cargo_types": get_land_cargo_types()}
+
+
+@router.get("/land/fees/cost")
+async def get_land_freight_cost_endpoint(
+    corridor_id: str,
+    mode: str = "road",
+    weight_tons: float = 30.0,
+    cargo_type: str = "general",
+):
+    """
+    Calcule le coût de fret terrestre (route/rail) sur un corridor africain.
+
+    Query params :
+    - corridor_id : identifiant du corridor (ex: CORR-ABIDJAN-LAGOS-002)
+    - mode : 'road' ou 'rail' (selon disponibilité du corridor)
+    - weight_tons : tonnage transporté (tonnes, défaut 30 = un camion)
+    - cargo_type : general | container | perishable | dangerous | bulk
+    """
+    if weight_tons <= 0:
+        raise HTTPException(status_code=400, detail="weight_tons doit être supérieur à 0")
+    result = get_land_freight_cost(corridor_id, mode, weight_tons, cargo_type)
+    if not result:
+        raise HTTPException(status_code=404, detail=f"Corridor '{corridor_id}' introuvable.")
+    return result
 
 
 # ==========================================
