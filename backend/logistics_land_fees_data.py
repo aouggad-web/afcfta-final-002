@@ -43,6 +43,13 @@ _SPEED_KM_DAY = {"road": 300, "rail": 400}
 _BORDER_DELAY_OSBP = 0.5
 _BORDER_DELAY_STD = 1.5
 
+# Paramètres multimodal (rail + route)
+_RAIL_SHARE = 0.65          # part de la distance par rail (tronçon principal)
+_ROAD_SHARE = 0.35          # part par camion (premier/dernier km + tronçons sans rail)
+_TRANSSHIP_PER_TON = 7.0    # coût de transbordement par tonne et par rupture de charge
+_TRANSSHIPMENTS = 2         # nombre de ruptures de charge (rail↔route)
+_TRANSSHIP_DELAY = 0.75     # délai par rupture de charge (jours)
+
 # Coefficients par nature de marchandise
 CARGO_FACTORS = {
     "general": {"factor": 1.0, "label_fr": "Marchandise générale", "label_en": "General cargo"},
@@ -65,7 +72,7 @@ def _modes_for(corridor_type: str) -> List[str]:
         return ["road"]
     if corridor_type == "rail":
         return ["rail"]
-    return ["road", "rail"]  # multimodal
+    return ["multimodal", "rail", "road"]  # multimodal : combiné par défaut
 
 
 @lru_cache(maxsize=1)
@@ -139,23 +146,57 @@ def get_land_freight_cost(
 
     cargo = CARGO_FACTORS.get(cargo_type, CARGO_FACTORS["general"])
     length = corridor["length_km"]
-    rate = _RATE_TON_KM[mode]
+    factor = cargo["factor"]
 
-    transport = rate * weight_tons * length * cargo["factor"]
+    if mode == "multimodal":
+        rail_km = length * _RAIL_SHARE
+        road_km = length * _ROAD_SHARE
+        transport = (
+            _RATE_TON_KM["rail"] * weight_tons * rail_km * factor
+            + _RATE_TON_KM["road"] * weight_tons * road_km * factor
+        )
+        transshipment = _TRANSSHIP_PER_TON * weight_tons * _TRANSSHIPMENTS
+        travel_days = rail_km / _SPEED_KM_DAY["rail"] + road_km / _SPEED_KM_DAY["road"]
+        travel_days += _TRANSSHIP_DELAY * _TRANSSHIPMENTS
+        rate_display = round((transport / weight_tons / length), 4) if length else 0
+    else:
+        rail_km = length if mode == "rail" else 0
+        road_km = length if mode == "road" else 0
+        transport = _RATE_TON_KM[mode] * weight_tons * length * factor
+        transshipment = 0.0
+        travel_days = length / _SPEED_KM_DAY[mode]
+        rate_display = _RATE_TON_KM[mode]
+
     border_cost = corridor["osbp"] * _BORDER_COST_OSBP + (corridor["borders"] - corridor["osbp"]) * _BORDER_COST_STD
-    subtotal = transport + border_cost + _HANDLING_USD
+    subtotal = transport + transshipment + border_cost + _HANDLING_USD
     total = max(subtotal, _MIN_CHARGE_USD)
 
     # Délais
-    travel_days = length / _SPEED_KM_DAY[mode]
     border_days = corridor["osbp"] * _BORDER_DELAY_OSBP + (corridor["borders"] - corridor["osbp"]) * _BORDER_DELAY_STD
     transit_min = max(1, int(round(travel_days + border_days)))
     transit_max = transit_min + max(1, corridor["borders"]) + 1
 
     # Opérateurs pertinents pour le mode choisi
-    op_type = "rail_operator" if mode == "rail" else "trucking_company"
-    operators = [o["name"] for o in corridor["operators"] if o["type"] == op_type] or \
-                [o["name"] for o in corridor["operators"]]
+    if mode == "rail":
+        operators = [o["name"] for o in corridor["operators"] if o["type"] == "rail_operator"]
+    elif mode == "road":
+        operators = [o["name"] for o in corridor["operators"] if o["type"] == "trucking_company"]
+    else:  # multimodal : rail + route
+        operators = [o["name"] for o in corridor["operators"]]
+    if not operators:
+        operators = [o["name"] for o in corridor["operators"]]
+
+    if mode == "multimodal":
+        notes = (
+            f"Estimation multimodale A→B : tronçon principal par rail (~{round(rail_km)} km) + "
+            f"acheminement/desserte par camion (~{round(road_km)} km) + {_TRANSSHIPMENTS} ruptures de "
+            "charge (transbordement rail↔route). Coûts et délais combinés."
+        )
+    else:
+        notes = (
+            "Coût = transport ($/tonne-km × tonnage × distance) + franchissement frontières "
+            "(réduit pour les postes OSBP) + documentation."
+        )
 
     return {
         "corridor_id": corridor_id,
@@ -168,10 +209,13 @@ def get_land_freight_cost(
         "cargo_type": cargo_type,
         "cargo_label": cargo["label_fr"],
         "cargo_factor": cargo["factor"],
-        "rate_per_ton_km_usd": rate,
+        "rate_per_ton_km_usd": rate_display,
+        "rail_km": round(rail_km),
+        "road_km": round(road_km),
         "border_crossings": corridor["borders"],
         "osbp_crossings": corridor["osbp"],
         "transport_cost_usd": round(transport),
+        "transshipment_cost_usd": round(transshipment),
         "border_cost_usd": round(border_cost),
         "handling_usd": round(_HANDLING_USD),
         "total_cost_usd": round(total),
@@ -184,10 +228,7 @@ def get_land_freight_cost(
         "data_year": 2024,
         "is_modeled": True,
         "source": "Modèle distance-coût calibré — Banque Mondiale SSATP / UNECA / AfDB (coûts corridors africains 2024)",
-        "notes": (
-            "Coût = transport ($/tonne-km × tonnage × distance) + franchissement frontières "
-            "(réduit pour les postes OSBP) + documentation. Mode : route ou rail."
-        ),
+        "notes": notes,
         "disclaimer": (
             "Tarif ESTIMÉ par modèle calibré. Les coûts réels varient ±20-30 % selon l'état des "
             "infrastructures, les temps d'attente aux frontières, le carburant et les pratiques locales. "

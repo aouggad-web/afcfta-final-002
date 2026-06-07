@@ -20,23 +20,25 @@ const texts = {
   fr: {
     title: 'Calculateur de fret terrestre',
     subtitle: 'Estimation 2024 — modèle calibré Banque Mondiale SSATP / UNECA / AfDB (corridors africains)',
-    corridor: 'Corridor', mode: 'Mode', road: 'Route', rail: 'Rail',
+    corridor: 'Corridor', mode: 'Mode', road: 'Route', rail: 'Rail', multimodal: 'Rail + Route (multimodal)',
     weight: 'Tonnage (tonnes)', cargo: 'Nature de la marchandise',
     calculate: 'Calculer le fret', loading: 'Calcul en cours…', result: 'Décomposition des coûts',
-    totalCost: 'Coût total estimé', transport: 'Transport', border: 'Passages frontières', handling: 'Documentation',
+    totalCost: 'Coût total estimé', transport: 'Transport', transship: 'Transbordement (rail↔route)',
+    border: 'Passages frontières', handling: 'Documentation',
     distance: 'Distance', transit: 'Délai de transit', operators: 'Opérateurs', days: 'jours', km: 'km',
-    perTon: '/tonne', perTonKm: '$/tonne-km', borders: 'frontières', osbp: 'OSBP',
+    perTon: '/tonne', perTonKm: '$/tonne-km', borders: 'frontières', osbp: 'OSBP', split: 'Rail / Route',
     source: 'Source', disclaimer: 'Avertissement', selectAll: 'Sélectionnez un corridor et le tonnage.',
   },
   en: {
     title: 'Land Freight Calculator',
     subtitle: '2024 estimate — World Bank SSATP / UNECA / AfDB calibrated model (African corridors)',
-    corridor: 'Corridor', mode: 'Mode', road: 'Road', rail: 'Rail',
+    corridor: 'Corridor', mode: 'Mode', road: 'Road', rail: 'Rail', multimodal: 'Rail + Road (multimodal)',
     weight: 'Weight (tonnes)', cargo: 'Commodity type',
     calculate: 'Calculate freight', loading: 'Calculating…', result: 'Cost breakdown',
-    totalCost: 'Total estimated cost', transport: 'Transport', border: 'Border crossings', handling: 'Documentation',
+    totalCost: 'Total estimated cost', transport: 'Transport', transship: 'Transshipment (rail↔road)',
+    border: 'Border crossings', handling: 'Documentation',
     distance: 'Distance', transit: 'Transit time', operators: 'Operators', days: 'days', km: 'km',
-    perTon: '/tonne', perTonKm: '$/tonne-km', borders: 'borders', osbp: 'OSBP',
+    perTon: '/tonne', perTonKm: '$/tonne-km', borders: 'borders', osbp: 'OSBP', split: 'Rail / Road',
     source: 'Source', disclaimer: 'Disclaimer', selectAll: 'Select a corridor and tonnage.',
   },
 };
@@ -108,6 +110,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
   };
 
   const cargoLabel = (c) => (language === 'fr' ? c.label_fr : c.label_en);
+  const modeLabel = (m) => (m === 'rail' ? `🚂 ${t.rail}` : m === 'multimodal' ? `🚂🛣️ ${t.multimodal}` : `🛣️ ${t.road}`);
 
   return (
     <div className="space-y-4" data-testid="land-freight-calculator">
@@ -154,7 +157,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
                 data-testid="land-mode-select"
               >
                 {availableModes.map(m => (
-                  <option key={m} value={m}>{m === 'rail' ? `🚂 ${t.rail}` : `🛣️ ${t.road}`}</option>
+                  <option key={m} value={m}>{modeLabel(m)}</option>
                 ))}
               </select>
             </div>
@@ -207,7 +210,10 @@ export default function LandFreightCalculator({ language = 'fr' }) {
             </div>
             <div className="flex flex-wrap gap-2 mt-1">
               <Badge variant="outline" className="text-xs"><MapPin className="w-3 h-3 mr-1" />{result.length_km.toLocaleString()} {t.km}</Badge>
-              <Badge variant="outline" className="text-xs">{result.mode === 'rail' ? `🚂 ${t.rail}` : `🛣️ ${t.road}`}</Badge>
+              <Badge variant="outline" className="text-xs">{modeLabel(result.mode)}</Badge>
+              {result.mode === 'multimodal' && (
+                <Badge variant="outline" className="text-xs">{t.split}: {result.rail_km.toLocaleString()} / {result.road_km.toLocaleString()} {t.km}</Badge>
+              )}
               <Badge variant="outline" className="text-xs"><Clock className="w-3 h-3 mr-1" />{result.transit_days_min}–{result.transit_days_max} {t.days}</Badge>
               <Badge variant="outline" className="text-xs"><Flag className="w-3 h-3 mr-1" />{result.border_crossings} {t.borders} ({result.osbp_crossings} {t.osbp})</Badge>
               <Badge variant="outline" className="text-xs"><Package className="w-3 h-3 mr-1" />{result.cargo_label}</Badge>
@@ -224,6 +230,9 @@ export default function LandFreightCalculator({ language = 'fr' }) {
 
             <div className="space-y-3">
               <CostBar label={t.transport} value={result.transport_cost_usd} total={result.total_cost_usd} color="bg-amber-500" />
+              {result.transshipment_cost_usd > 0 && (
+                <CostBar label={t.transship} value={result.transshipment_cost_usd} total={result.total_cost_usd} color="bg-blue-400" />
+              )}
               <CostBar label={t.border} value={result.border_cost_usd} total={result.total_cost_usd} color="bg-red-400" />
               <CostBar label={t.handling} value={result.handling_usd} total={result.total_cost_usd} color="bg-emerald-400" />
             </div>
