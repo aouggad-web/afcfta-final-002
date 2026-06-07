@@ -2,7 +2,7 @@
 Logistics routes - Ports, Airports, Land corridors, Free Zones
 Multimodal logistics platform for African trade infrastructure
 """
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 from typing import Optional
 
 from logistics_data import (
@@ -17,6 +17,11 @@ from logistics_air_data import (
     get_airport_by_id,
     get_top_airports_by_cargo,
     search_airports
+)
+from logistics_air_fees_data import (
+    get_air_fee_airports,
+    get_commodity_types,
+    get_air_freight_cost,
 )
 from free_zones_data import get_free_zones_by_country
 from logistics_fees_data import (
@@ -270,6 +275,58 @@ async def get_air_logistics_statistics():
         "airports_by_country": dict(sorted(airports_by_country.items(), key=lambda x: x[1], reverse=True)),
         "year": 2024
     }
+
+# ==========================================
+# AIR FREIGHT CALCULATOR ENDPOINTS
+# ==========================================
+
+@router.get("/air/fees/airports")
+async def get_air_freight_airports():
+    """Liste des aéroports africains sélectionnables dans le calculateur de fret aérien."""
+    airports = get_air_fee_airports()
+    return {
+        "count": len(airports),
+        "airports": airports,
+        "data_year": 2024,
+        "source": "IATA TACT 2024, registre cargo panafricain (64 aéroports)",
+    }
+
+
+@router.get("/air/fees/commodities")
+async def get_air_freight_commodities():
+    """Types de marchandise et leurs coefficients de tarification."""
+    return {"commodities": get_commodity_types()}
+
+
+@router.get("/air/fees/cost")
+async def get_air_freight_cost_endpoint(
+    origin: str,
+    destination: str,
+    weight_kg: float,
+    volume_m3: Optional[float] = None,
+    commodity: str = "general",
+):
+    """
+    Calcule le coût de fret aérien (poids taxable + surcharges) entre deux aéroports.
+
+    Query params :
+    - origin / destination : codes IATA (ex: NBO, LOS)
+    - weight_kg : poids brut réel (kg)
+    - volume_m3 : volume total (m³, optionnel) — pour le poids volumétrique (167 kg/m³)
+    - commodity : general | perishable | pharma | dangerous | valuable | live
+    """
+    if weight_kg <= 0:
+        raise HTTPException(status_code=400, detail="weight_kg doit être supérieur à 0")
+    result = get_air_freight_cost(
+        origin.upper(), destination.upper(), weight_kg, volume_m3, commodity
+    )
+    if not result:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Aéroports invalides ou identiques ({origin.upper()} → {destination.upper()}).",
+        )
+    return result
+
 
 # ==========================================
 # FREE ZONES ENDPOINTS

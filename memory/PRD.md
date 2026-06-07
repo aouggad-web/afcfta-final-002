@@ -17,6 +17,15 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### June 7, 2026 — Calculateur de fret aérien (Logistique → Aérien)
+- Nouveau calculateur de fret aérien couvrant les **64 aéroports cargo** africains (registre `logistics_air_data`).
+- Méthodologie IATA TACT : poids taxable = max(poids réel, poids volumétrique à 167 kg/m³), + FSC (carburant), SSC (sûreté), manutention/LTA, charge minimale ; coefficients par nature de marchandise (général, périssable, pharma, DGR, valeur, animaux vivants).
+- Modèle distance-coût calibré (IATA TACT 2024 + tarifs cargo compagnies africaines) ; sélection des compagnies par région ; délais selon connectivité hub.
+- Endpoints : `GET /api/logistics/air/fees/airports`, `/air/fees/commodities`, `/air/fees/cost`.
+- Frontend : `AirFreightCalculator.jsx` intégré dans l'onglet « Aérien (Fret) », sélecteurs groupés par région, décomposition des coûts + poids taxable.
+- Testé via curl + screenshot (Nairobi→Lagos 1000 kg/4 m³ périssable = 4 590 $).
+
+
 ### June 7, 2026 — Expansion du calculateur de fret maritime (Logistique)
 - Couverture portuaire passée de **21 → 55 ports** africains à conteneurs (5 façades : Méditerranée, Atlantique, Mer Rouge, Océan Indien, îles).
 - Matrice de routes complète : **1 485 paires** (32 routes "benchmark" tarifs armateurs publiés + 1 453 routes modélisées).
