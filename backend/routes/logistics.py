@@ -26,6 +26,7 @@ from logistics_fees_data import (
     get_port_thc,
     get_all_port_thc,
     get_total_cost,
+    get_fee_ports,
 )
 from logistics_land_data import (
     get_all_corridors,
@@ -387,6 +388,21 @@ async def get_land_logistics_statistics():
 # ==========================================
 # PORT-TO-PORT SHIPPING FEES ENDPOINTS
 # ==========================================
+
+@router.get("/fees/ports")
+async def get_fee_calculator_ports():
+    """
+    Liste des ports africains sélectionnables dans le calculateur de fret maritime.
+    Retourne locode, nom, pays, drapeau et région pour chaque port couvert.
+    """
+    ports = get_fee_ports()
+    return {
+        "count": len(ports),
+        "ports": ports,
+        "data_year": 2024,
+        "source": "Drewry Maritime Research 2024, UNCTAD MRTS 2024, barèmes portuaires officiels",
+    }
+
 
 @router.get("/fees/routes")
 async def get_shipping_routes(origin: Optional[str] = None):

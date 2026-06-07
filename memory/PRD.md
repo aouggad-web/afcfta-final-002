@@ -17,6 +17,16 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### June 7, 2026 — Expansion du calculateur de fret maritime (Logistique)
+- Couverture portuaire passée de **21 → 55 ports** africains à conteneurs (5 façades : Méditerranée, Atlantique, Mer Rouge, Océan Indien, îles).
+- Matrice de routes complète : **1 485 paires** (32 routes "benchmark" tarifs armateurs publiés + 1 453 routes modélisées).
+- Modèle distance-coût calibré (Drewry 2024 / UNCTAD MRTS 2024) avec distances maritimes réalistes via points de passage (Gibraltar, Suez, Bab-el-Mandeb, Cap de Bonne-Espérance).
+- Nouvel endpoint `GET /api/logistics/fees/ports` ; frontend charge les ports dynamiquement, sélecteurs groupés par région, badge provenance "Publié/Estimé", tableau plafonné à 250 lignes.
+- Fichiers : `backend/logistics_fees_data.py` (réécrit), `backend/routes/logistics.py`, `frontend/src/components/logistics/ShippingFeesCalculator.jsx`.
+- Testé via curl (endpoints) + screenshot (UI Lomé→Mombasa OK).
+- ⚠️ Disque `/app` était plein à 100% — caches nettoyés (~1,9 Go libres). Sauvegarde locale pré-pull GitHub dans `/app/.local_backups/`.
+
+
 ### March 15, 2026 - PostgreSQL Migration Complete
 - ✅ Migrated all 54 countries to PostgreSQL (894,783 records)
 - ✅ Created full-text search index for French descriptions
