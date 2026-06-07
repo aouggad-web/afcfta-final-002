@@ -21,6 +21,74 @@ from etl.hs6_database import (
 
 router = APIRouter(prefix="/hs-codes")
 
+# Intitulés des positions SH4 (anglais) — chargés une seule fois
+_HS4_HEADINGS = {}
+try:
+    import json as _json
+    import os as _os
+    _hs4_path = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "data", "hs4_headings_en.json")
+    with open(_hs4_path, "r", encoding="utf-8") as _f:
+        _HS4_HEADINGS = _json.load(_f)
+except Exception:
+    _HS4_HEADINGS = {}
+
+
+@router.get("/label/{hs_code}")
+async def get_hs_label(hs_code: str):
+    """
+    Retourne l'intitulé officiel d'un code SH selon son niveau :
+    - 2 chiffres → chapitre SH2 (FR + EN)
+    - 4 chiffres → position SH4 (EN, contexte chapitre FR)
+    - 6 chiffres → sous-position SH6 (FR + EN)
+    """
+    code = "".join(c for c in hs_code if c.isdigit())
+    chapters = get_hs_chapters()
+
+    if len(code) == 2:
+        ch = chapters.get(code)
+        if not ch:
+            raise HTTPException(status_code=404, detail=f"Chapitre {code} introuvable")
+        return {
+            "code": code, "level": "hs2",
+            "label_fr": ch.get("fr", ""), "label_en": ch.get("en", ""),
+            "label_lang": "both",
+            "chapter": code, "chapter_name_fr": ch.get("fr", ""), "chapter_name_en": ch.get("en", ""),
+            "source": "OMD — Système Harmonisé 2022",
+        }
+
+    if len(code) == 4:
+        chapter = code[:2]
+        ch = chapters.get(chapter, {})
+        en = _HS4_HEADINGS.get(code, "")
+        if not en and not ch:
+            raise HTTPException(status_code=404, detail=f"Position {code} introuvable")
+        return {
+            "code": code, "level": "hs4",
+            "label_fr": en, "label_en": en,
+            "label_lang": "en",
+            "chapter": chapter, "chapter_name_fr": ch.get("fr", ""), "chapter_name_en": ch.get("en", ""),
+            "source": "OMD — Système Harmonisé 2022",
+        }
+
+    if len(code) == 6:
+        chapter = code[:2]
+        ch = chapters.get(chapter, {})
+        data = HS6_DATABASE.get(code)
+        if not data:
+            raise HTTPException(status_code=404, detail=f"Sous-position {code} introuvable")
+        return {
+            "code": code, "level": "hs6",
+            "label_fr": data.get("description_fr", ""), "label_en": data.get("description_en", ""),
+            "label_lang": "both",
+            "chapter": chapter, "chapter_name_fr": ch.get("fr", ""), "chapter_name_en": ch.get("en", ""),
+            "heading": code[:4], "heading_name_en": _HS4_HEADINGS.get(code[:4], ""),
+            "category": data.get("category", ""), "sensitivity": data.get("sensitivity", "normal"),
+            "source": "OMD — Système Harmonisé 2022 + Base AfCFTA",
+        }
+
+    raise HTTPException(status_code=400, detail="Le code SH doit comporter 2, 4 ou 6 chiffres.")
+
+
 @router.get("/chapters")
 async def get_all_hs_chapters():
     """

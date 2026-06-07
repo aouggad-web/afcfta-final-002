@@ -17,6 +17,13 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### June 7, 2026 — Recherche SH2/SH4/SH6 + Intitulé (Statistiques → Par Pays & SH6)
+- Sous-module « Par Pays & SH6 » : recherche en **onglets séparés Chapitre (SH2) / Position (SH4) / Sous-position (SH6)**, chacun avec agrégation correcte (SH2 = tout le chapitre, SH4 = toute la position, SH6 = sous-position exacte).
+- Nouvel **onglet « Intitulé »** affichant le libellé officiel OMD du code SH sélectionné (FR/EN, chapitre, position, catégorie).
+- Backend : param `level` (hs2/hs4/hs6) sur `/api/oec/country/{iso3}/hs6/{code}/history` (filtrage explicite par niveau via les 6 derniers chiffres de l'ID OEC) ; nouvel endpoint `/api/hs-codes/label/{code}`.
+- Le changement d'onglet relance automatiquement la requête au bon niveau. Testé via curl + screenshots (Algérie ch.27 = 205,6 Md$ cumulés).
+
+
 ### June 7, 2026 — Calculateur de fret terrestre (Logistique → Terrestre)
 - Calculateur de fret routier/ferroviaire sur les **15 corridors PIDA** africains (longueur réelle, postes-frontières, OSBP, opérateurs).
 - Modèle : transport ($/tonne-km × tonnage × distance × coef. marchandise) + franchissement frontières (réduit pour OSBP) + documentation ; choix du mode (route/rail selon corridor) ; délais selon vitesse + attentes frontières.
