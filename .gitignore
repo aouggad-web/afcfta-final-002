@@ -73,4 +73,4 @@ android-sdk/
 # Backup files
 *.backup
 *.bak
-/frontend/nbproject/private/
+/frontend/nbproject/
