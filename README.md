@@ -260,6 +260,13 @@ Priority order: **OEC** → **World Bank** → **WTO**
 
 Data is automatically updated daily at 2:00 AM UTC via GitHub Actions. See [docs/AUTO_UPDATE_DATA.md](docs/AUTO_UPDATE_DATA.md) for details.
 
+### Tariff Runtime Architecture (PostgreSQL-First)
+
+- The tariff runtime now uses the **authentic tariff service as the single facade** for tariff endpoints.
+- The facade checks **PostgreSQL first** for countries, tariff lines, sub-positions, taxes, and calculation inputs.
+- Legacy ETL dictionaries remain available as a **fallback path only** when PostgreSQL data is missing.
+- Fallback usage is logged (`Tariff ETL fallback activated`) to make migration gaps observable.
+
 ## 🌍 Coverage
 
 - **54 African Countries**

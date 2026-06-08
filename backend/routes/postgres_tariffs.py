@@ -4,41 +4,33 @@ Remplace les anciennes routes basées sur les fichiers JSONL
 """
 
 from fastapi import APIRouter, HTTPException, Query
-from typing import Optional
 import logging
+
+from services.authentic_tariff_service import (
+    get_available_countries,
+    get_country_summary,
+    get_sub_positions as get_facade_sub_positions,
+    get_tariff_line,
+    search_tariff_lines,
+    calculate_import_taxes,
+    get_taxes_detail,
+    get_administrative_formalities,
+)
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/postgres-tariffs", tags=["PostgreSQL Tariffs"])
 
-# Lazy import to avoid startup issues if PostgreSQL not ready
-_service = None
-
-def get_service():
-    global _service
-    if _service is None:
-        try:
-            from services.postgres_tariff_service import get_postgres_tariff_service
-            _service = get_postgres_tariff_service()
-        except Exception as e:
-            logger.warning(f"PostgreSQL service not available: {e}")
-            return None
-    return _service
-
-
 @router.get("/countries")
 async def get_countries():
-    """Liste des pays avec données PostgreSQL"""
-    service = get_service()
-    if not service:
-        raise HTTPException(status_code=503, detail="PostgreSQL service not available")
-    
+    """Liste des pays via le facade tarifaire (PostgreSQL-first)."""
     try:
-        countries = service.get_countries()
+        countries = get_available_countries()
         return {
             "success": True,
             "total": len(countries),
-            "countries": countries
+            "countries": countries,
+            "source": "tariff_facade_postgres_first",
         }
     except Exception as e:
         logger.error(f"Error getting countries: {e}")
@@ -47,16 +39,11 @@ async def get_countries():
 
 @router.get("/country/{iso3}")
 async def get_country_info(iso3: str):
-    """Informations sur un pays"""
-    service = get_service()
-    if not service:
-        raise HTTPException(status_code=503, detail="PostgreSQL service not available")
-    
+    """Informations sur un pays via le facade tarifaire."""
     try:
-        country = service.get_country_info(iso3)
+        country = get_country_summary(iso3)
         if not country:
             raise HTTPException(status_code=404, detail=f"Country {iso3} not found")
-        
         return {
             "success": True,
             "country": country
@@ -74,13 +61,9 @@ async def get_sub_positions(
     hs6: str, 
     language: str = Query("fr", pattern="^(fr|en)$")
 ):
-    """Sous-positions nationales pour un code HS6"""
-    service = get_service()
-    if not service:
-        raise HTTPException(status_code=503, detail="PostgreSQL service not available")
-    
+    """Sous-positions nationales via le facade tarifaire."""
     try:
-        positions = service.get_sub_positions(iso3, hs6, language)
+        positions = get_facade_sub_positions(iso3, hs6)
         return {
             "success": True,
             "country_iso3": iso3.upper(),
@@ -97,18 +80,13 @@ async def get_sub_positions(
 @router.get("/country/{iso3}/commodity/{code}")
 async def get_commodity_details(iso3: str, code: str):
     """Détails complets d'une marchandise"""
-    service = get_service()
-    if not service:
-        raise HTTPException(status_code=503, detail="PostgreSQL service not available")
-    
     try:
-        details = service.get_commodity_details(iso3, code)
+        details = get_tariff_line(iso3, code)
         if not details:
             raise HTTPException(status_code=404, detail=f"Commodity {code} not found")
-        
         return {
             "success": True,
-            **details
+            "commodity": details
         }
     except HTTPException:
         raise
@@ -125,12 +103,8 @@ async def search_commodities(
     language: str = Query("fr", pattern="^(fr|en)$")
 ):
     """Recherche de marchandises par description"""
-    service = get_service()
-    if not service:
-        raise HTTPException(status_code=503, detail="PostgreSQL service not available")
-    
     try:
-        results = service.search_commodities(iso3, q, limit, language)
+        results = search_tariff_lines(iso3, q, language=language, limit=limit)
         return {
             "success": True,
             "query": q,
@@ -150,12 +124,8 @@ async def calculate_tariffs(
     value: float = Query(1000, ge=0, description="Goods value")
 ):
     """Calculer les tarifs pour un code HS6"""
-    service = get_service()
-    if not service:
-        raise HTTPException(status_code=503, detail="PostgreSQL service not available")
-    
     try:
-        result = service.calculate_tariffs(country_iso3, hs6, value)
+        result = calculate_import_taxes(country_iso3, hs6, value)
         return result
     except Exception as e:
         logger.error(f"Error calculating tariffs: {e}")
@@ -164,14 +134,16 @@ async def calculate_tariffs(
 
 @router.get("/regulatory/{iso3}/{hs6}")
 async def get_regulatory_details(iso3: str, hs6: str):
-    """Détails réglementaires pour un code HS6"""
-    service = get_service()
-    if not service:
-        raise HTTPException(status_code=503, detail="PostgreSQL service not available")
-    
+    """Détails réglementaires via le facade tarifaire."""
     try:
-        details = service.get_regulatory_details(iso3, hs6)
-        return details
+        return {
+            "success": True,
+            "country_iso3": iso3.upper(),
+            "hs6": hs6,
+            "taxes": get_taxes_detail(iso3, hs6),
+            "requirements": get_administrative_formalities(iso3, hs6),
+            "source": "tariff_facade_postgres_first",
+        }
     except Exception as e:
         logger.error(f"Error getting regulatory details: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -179,20 +151,13 @@ async def get_regulatory_details(iso3: str, hs6: str):
 
 @router.get("/health")
 async def postgres_health():
-    """Vérifier la santé de PostgreSQL"""
-    service = get_service()
-    if not service:
-        return {
-            "status": "unavailable",
-            "message": "PostgreSQL service not initialized"
-        }
-    
+    """Vérifier la disponibilité du facade tarifaire PostgreSQL-first."""
     try:
-        countries = service.get_countries()
+        countries = get_available_countries()
         return {
             "status": "healthy",
             "countries_loaded": len(countries),
-            "message": "PostgreSQL connection active"
+            "message": "Tariff facade active (PostgreSQL-first with ETL fallback)"
         }
     except Exception as e:
         return {
