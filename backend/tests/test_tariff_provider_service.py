@@ -58,7 +58,10 @@ def test_provider_falls_back_when_postgres_unavailable(monkeypatch):
         lambda: fallback,
     )
 
-    service = TariffProviderService(postgres_factory=lambda: (_ for _ in ()).throw(RuntimeError("no db")))
+    def _raise_no_db():
+        raise RuntimeError("no db")
+
+    service = TariffProviderService(postgres_factory=_raise_no_db)
     countries = service.get_available_countries()
 
     assert countries == fallback

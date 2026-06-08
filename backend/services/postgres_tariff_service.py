@@ -301,6 +301,8 @@ class PostgresTariffService:
             {
                 'code': r['national_code'],
                 'hs6': r['hs6'],
+                'description_fr': r['description_fr'],
+                'description_en': r['description_en'] or r['description_fr'],
                 'description': r['description_fr'] if language == 'fr' else (r['description_en'] or r['description_fr']),
                 'dd_rate': r['total_npf_pct'],
                 'zlecaf_rate': r['total_zlecaf_pct'],

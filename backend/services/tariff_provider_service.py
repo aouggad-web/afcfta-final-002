@@ -111,8 +111,8 @@ class TariffProviderService:
                     {
                         "hs6": row.get("hs6"),
                         "national_code": row.get("code"),
-                        "description_fr": row.get("description"),
-                        "description_en": row.get("description"),
+                        "description_fr": row.get("description_fr") or row.get("description"),
+                        "description_en": row.get("description_en") or row.get("description"),
                         "dd_rate": row.get("dd_rate"),
                         "zlecaf_rate": row.get("zlecaf_rate"),
                         "savings": row.get("savings"),
