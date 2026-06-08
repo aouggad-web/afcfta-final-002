@@ -396,7 +396,7 @@ class WTOService:
             "timestamp": datetime.utcnow().isoformat()
         }
     
-    async def get_latest_available_year(self, country_code: str) -> Optional[str]:
+    def get_latest_available_year(self, country_code: str) -> Optional[str]:
         """
         Get the latest year with available tariff data
         
