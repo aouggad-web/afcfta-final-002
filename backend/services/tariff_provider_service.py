@@ -47,6 +47,8 @@ class TariffProviderService:
                 return [
                     {
                         "iso3": row.get("iso3"),
+                        "name_fr": row.get("name_fr"),
+                        "name_en": row.get("name_en"),
                         "name": row.get("name_fr") or row.get("name_en") or row.get("iso3"),
                         "total_lines": row.get("total_positions") or 0,
                         "total_positions": row.get("total_positions") or 0,
@@ -85,13 +87,13 @@ class TariffProviderService:
             if sub_positions:
                 return [
                     {
+                        "dd": sp.get("dd", sp.get("dd_rate", 0)),
                         "code": sp.get("code"),
                         "national_code": sp.get("code"),
                         "digits": sp.get("digits"),
                         "description_fr": sp.get("description_fr"),
                         "description_en": sp.get("description_en"),
-                        "dd": sp.get("dd", 0),
-                        "dd_rate": sp.get("dd", 0),
+                        "dd_rate": sp.get("dd", sp.get("dd_rate", 0)),
                         "zlecaf_rate": sp.get("zlecaf_rate", 0),
                         "savings": sp.get("savings", 0),
                         "unit": sp.get("unit"),
