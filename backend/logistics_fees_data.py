@@ -237,6 +237,21 @@ BENCHMARK_ROUTES: List[Dict[str, Any]] = [
     {"route_id": "TNRAD-KEMBA", "origin_locode": "TNRAD", "destination_locode": "KEMBA", "distance_nm": 3800, "transit_days_min": 11, "transit_days_max": 16, "teu_usd": 980, "feu_usd": 1450, "feu_hc_usd": 1565, "carriers": ["CMA CGM", "MSC", "Maersk"], "frequency": "Bimensuelle", "source": "OMMP Tunisia port statistics 2024; UNCTAD MRTS 2024", "notes": "Via hub de transbordement Port Saïd"},
 ]
 
+BENCHMARK_ROUTES.extend([
+    {"route_id": "MACAS-SNDKR", "origin_locode": "MACAS", "destination_locode": "SNDKR", "distance_nm": 1520, "transit_days_min": 5, "transit_days_max": 8, "teu_usd": 510, "feu_usd": 760, "feu_hc_usd": 820, "carriers": ["CMA CGM", "MSC", "Grimaldi"], "frequency": "Weekly", "source": "CMA CGM Maroc–Afrique de l'Ouest 2024; Drewry West Africa short-sea benchmark 2024", "notes": "Direct Morocco–Senegal short-sea service with stable weekly rotations"},
+    {"route_id": "MACAS-GHTEM", "origin_locode": "MACAS", "destination_locode": "GHTEM", "distance_nm": 3500, "transit_days_min": 10, "transit_days_max": 14, "teu_usd": 835, "feu_usd": 1245, "feu_hc_usd": 1340, "carriers": ["CMA CGM", "MSC", "Maersk"], "frequency": "Weekly", "source": "MSC West Africa rate bulletin 2024; Drewry Container Insight Q4-2024", "notes": "Often routed via Dakar or Abidjan with competitive Morocco–Ghana transit times"},
+    {"route_id": "EGALY-KEMBA", "origin_locode": "EGALY", "destination_locode": "KEMBA", "distance_nm": 3180, "transit_days_min": 9, "transit_days_max": 13, "teu_usd": 745, "feu_usd": 1100, "feu_hc_usd": 1185, "carriers": ["MSC", "Maersk", "CMA CGM"], "frequency": "Weekly", "source": "Maersk East Africa Rate Guide 2024; Alexandria Port Authority shipping bulletin", "notes": "Alexandria competes with Port Saïd as a North Africa gateway into East Africa"},
+    {"route_id": "EGALY-TZDAR", "origin_locode": "EGALY", "destination_locode": "TZDAR", "distance_nm": 3430, "transit_days_min": 10, "transit_days_max": 14, "teu_usd": 820, "feu_usd": 1215, "feu_hc_usd": 1310, "carriers": ["MSC", "CMA CGM", "Maersk"], "frequency": "Weekly", "source": "MSC East Africa rate bulletin 2024; UNCTAD MRTS 2024", "notes": "North Africa–Tanzania lane usually routed through Suez and East Africa coastal loops"},
+    {"route_id": "SNDKR-CMDLA", "origin_locode": "SNDKR", "destination_locode": "CMDLA", "distance_nm": 1840, "transit_days_min": 5, "transit_days_max": 8, "teu_usd": 560, "feu_usd": 840, "feu_hc_usd": 905, "carriers": ["CMA CGM", "MSC", "Delmas"], "frequency": "Weekly", "source": "CMA CGM Gulf of Guinea rate card 2024; Drewry Central Africa coastal benchmark 2024", "notes": "Useful West-to-Central Africa feeder alternative to long-haul road corridors"},
+    {"route_id": "CIABJ-CMDLA", "origin_locode": "CIABJ", "destination_locode": "CMDLA", "distance_nm": 920, "transit_days_min": 3, "transit_days_max": 6, "teu_usd": 405, "feu_usd": 610, "feu_hc_usd": 658, "carriers": ["MSC", "CMA CGM", "Maersk"], "frequency": "Weekly", "source": "MSC West & Central Africa rate bulletin 2024; UNCTAD short-sea survey", "notes": "Frequently quoted as a feeder via Tema or direct Gulf of Guinea string"},
+    {"route_id": "GHTEM-CMDLA", "origin_locode": "GHTEM", "destination_locode": "CMDLA", "distance_nm": 780, "transit_days_min": 3, "transit_days_max": 5, "teu_usd": 350, "feu_usd": 525, "feu_hc_usd": 566, "carriers": ["MSC", "CMA CGM", "Grimaldi"], "frequency": "Weekly", "source": "Ghana Ports regional shipping bulletin 2024; Drewry Gulf of Guinea benchmark 2024", "notes": "Well-used Tema–Cameroon coastal corridor for consumer goods and project cargo"},
+    {"route_id": "CMDLA-AOLAD", "origin_locode": "CMDLA", "destination_locode": "AOLAD", "distance_nm": 1240, "transit_days_min": 4, "transit_days_max": 7, "teu_usd": 470, "feu_usd": 705, "feu_hc_usd": 761, "carriers": ["CMA CGM", "MSC", "Bolloré"], "frequency": "Weekly", "source": "CMA CGM Central Africa coastal tariff 2024; Angola corridor shipping benchmark 2024", "notes": "Central Africa corridor with regular calls linking Cameroon and Angola"},
+    {"route_id": "DJJIB-TZDAR", "origin_locode": "DJJIB", "destination_locode": "TZDAR", "distance_nm": 1520, "transit_days_min": 5, "transit_days_max": 8, "teu_usd": 430, "feu_usd": 645, "feu_hc_usd": 697, "carriers": ["MSC", "Maersk", "CMA CGM"], "frequency": "Weekly", "source": "Maersk East Africa feeder guide 2024; Tanzania Ports Authority coastal survey", "notes": "Horn of Africa to Tanzania feeder frequently used for transshipment from Asia-Europe loops"},
+    {"route_id": "TZDAR-ZADUR", "origin_locode": "TZDAR", "destination_locode": "ZADUR", "distance_nm": 1680, "transit_days_min": 5, "transit_days_max": 8, "teu_usd": 560, "feu_usd": 840, "feu_hc_usd": 907, "carriers": ["MSC", "Maersk", "CMA CGM", "Hapag-Lloyd"], "frequency": "Weekly", "source": "Drewry East-Southern Africa benchmark 2024; Maersk South Africa trade guide", "notes": "Important East–Southern Africa lane for manufactured imports and reefer exports"},
+    {"route_id": "MZMPM-ZACPT", "origin_locode": "MZMPM", "destination_locode": "ZACPT", "distance_nm": 1320, "transit_days_min": 4, "transit_days_max": 7, "teu_usd": 430, "feu_usd": 645, "feu_hc_usd": 697, "carriers": ["Safmarine", "MSC", "CMA CGM"], "frequency": "Weekly", "source": "Transnet TNPA coastal guide 2024; MPDC Maputo shipping circular 2024", "notes": "Southern Africa coastal connection between Mozambique and Western Cape distribution hubs"},
+    {"route_id": "MUPLU-ZADUR", "origin_locode": "MUPLU", "destination_locode": "ZADUR", "distance_nm": 1540, "transit_days_min": 5, "transit_days_max": 8, "teu_usd": 470, "feu_usd": 705, "feu_hc_usd": 761, "carriers": ["MSC", "CMA CGM", "Maersk", "X-Press Feeders"], "frequency": "Weekly", "source": "MSC Indian Ocean rate card 2024; Mauritius Port Authority shipping statistics", "notes": "Strong Indian Ocean connection linking Mauritius with South Africa distribution centers"},
+])
+
 
 def _enrich_benchmark(r: Dict[str, Any]) -> Dict[str, Any]:
     """Complète une route benchmark avec les libellés/pays/régions du registre."""
@@ -275,6 +290,7 @@ def _build_route_matrix():
 
 
 _ALL_ROUTES, _ROUTE_INDEX = _build_route_matrix()
+SHIPPING_ROUTES = BENCHMARK_ROUTES
 
 
 def _orient(route: Dict[str, Any], origin: str) -> Dict[str, Any]:
@@ -286,7 +302,7 @@ def _orient(route: Dict[str, Any], origin: str) -> Dict[str, Any]:
     rev["origin_port"], rev["destination_port"] = route["destination_port"], route["origin_port"]
     rev["origin_country"], rev["destination_country"] = route["destination_country"], route["origin_country"]
     rev["origin_region"], rev["destination_region"] = route["destination_region"], route["origin_region"]
-    rev["route_id"] = f'{route["destination_locode"]}-{route["origin_locode"]}'
+    rev["route_id"] = f'{route["origin_locode"]}-{route["destination_locode"]}_REV'
     return rev
 
 
@@ -345,6 +361,9 @@ def get_port_thc(locode: str) -> Optional[Dict[str, Any]]:
 def get_all_port_thc() -> Dict[str, Dict[str, Any]]:
     """Retourne les THC de tous les ports."""
     return _port_thc_map()
+
+
+PORT_THC = _port_thc_map()
 
 
 def get_fee_ports() -> List[Dict[str, Any]]:
