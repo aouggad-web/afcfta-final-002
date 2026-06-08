@@ -13,13 +13,13 @@
   - `CORS_ORIGINS=*`
   - `FRONTEND_API_KEY=zlecaf-frontend-public-key`
 - `/app/frontend/.env`
-  - `REACT_APP_BACKEND_URL=https://github-import-74.preview.emergentagent.com`
+  - `REACT_APP_BACKEND_URL=https://zlecaf-trade-ops.preview.emergentagent.com`
   - `REACT_APP_API_KEY=zlecaf-frontend-public-key`
 
 ## How to use the API key with curl
 ```bash
 curl -H "X-API-Key: zlecaf-frontend-public-key" \
-     https://github-import-74.preview.emergentagent.com/api/countries
+     https://zlecaf-trade-ops.preview.emergentagent.com/api/countries
 ```
 
 ## Admin endpoints

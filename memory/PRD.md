@@ -17,6 +17,40 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### June 7, 2026 — Recherche SH2/SH4/SH6 + Intitulé (Statistiques → Par Pays & SH6)
+- Sous-module « Par Pays & SH6 » : recherche en **onglets séparés Chapitre (SH2) / Position (SH4) / Sous-position (SH6)**, chacun avec agrégation correcte (SH2 = tout le chapitre, SH4 = toute la position, SH6 = sous-position exacte).
+- Nouvel **onglet « Intitulé »** affichant le libellé officiel OMD du code SH sélectionné (FR/EN, chapitre, position, catégorie).
+- Backend : param `level` (hs2/hs4/hs6) sur `/api/oec/country/{iso3}/hs6/{code}/history` (filtrage explicite par niveau via les 6 derniers chiffres de l'ID OEC) ; nouvel endpoint `/api/hs-codes/label/{code}`.
+- Le changement d'onglet relance automatiquement la requête au bon niveau. Testé via curl + screenshots (Algérie ch.27 = 205,6 Md$ cumulés).
+
+
+### June 7, 2026 — Calculateur de fret terrestre (Logistique → Terrestre)
+- Calculateur de fret routier/ferroviaire sur les **15 corridors PIDA** africains (longueur réelle, postes-frontières, OSBP, opérateurs).
+- Modèle : transport ($/tonne-km × tonnage × distance × coef. marchandise) + franchissement frontières (réduit pour OSBP) + documentation ; choix du mode (route/rail selon corridor) ; délais selon vitesse + attentes frontières.
+- Calibré Banque Mondiale SSATP / UNECA / AfDB 2024. Endpoints : `GET /api/logistics/land/fees/{corridors|cargo-types|cost}`.
+- Frontend : `LandFreightCalculator.jsx` intégré dans l'onglet « Terrestre (Corridors) ».
+- Testé : curl + screenshot (Abidjan-Lagos route 30 t = 4 080 $, 0,1371 $/tonne-km).
+
+
+### June 7, 2026 — Calculateur de fret aérien (Logistique → Aérien)
+- Nouveau calculateur de fret aérien couvrant les **64 aéroports cargo** africains (registre `logistics_air_data`).
+- Méthodologie IATA TACT : poids taxable = max(poids réel, poids volumétrique à 167 kg/m³), + FSC (carburant), SSC (sûreté), manutention/LTA, charge minimale ; coefficients par nature de marchandise (général, périssable, pharma, DGR, valeur, animaux vivants).
+- Modèle distance-coût calibré (IATA TACT 2024 + tarifs cargo compagnies africaines) ; sélection des compagnies par région ; délais selon connectivité hub.
+- Endpoints : `GET /api/logistics/air/fees/airports`, `/air/fees/commodities`, `/air/fees/cost`.
+- Frontend : `AirFreightCalculator.jsx` intégré dans l'onglet « Aérien (Fret) », sélecteurs groupés par région, décomposition des coûts + poids taxable.
+- Testé via curl + screenshot (Nairobi→Lagos 1000 kg/4 m³ périssable = 4 590 $).
+
+
+### June 7, 2026 — Expansion du calculateur de fret maritime (Logistique)
+- Couverture portuaire passée de **21 → 55 ports** africains à conteneurs (5 façades : Méditerranée, Atlantique, Mer Rouge, Océan Indien, îles).
+- Matrice de routes complète : **1 485 paires** (32 routes "benchmark" tarifs armateurs publiés + 1 453 routes modélisées).
+- Modèle distance-coût calibré (Drewry 2024 / UNCTAD MRTS 2024) avec distances maritimes réalistes via points de passage (Gibraltar, Suez, Bab-el-Mandeb, Cap de Bonne-Espérance).
+- Nouvel endpoint `GET /api/logistics/fees/ports` ; frontend charge les ports dynamiquement, sélecteurs groupés par région, badge provenance "Publié/Estimé", tableau plafonné à 250 lignes.
+- Fichiers : `backend/logistics_fees_data.py` (réécrit), `backend/routes/logistics.py`, `frontend/src/components/logistics/ShippingFeesCalculator.jsx`.
+- Testé via curl (endpoints) + screenshot (UI Lomé→Mombasa OK).
+- ⚠️ Disque `/app` était plein à 100% — caches nettoyés (~1,9 Go libres). Sauvegarde locale pré-pull GitHub dans `/app/.local_backups/`.
+
+
 ### March 15, 2026 - PostgreSQL Migration Complete
 - ✅ Migrated all 54 countries to PostgreSQL (894,783 records)
 - ✅ Created full-text search index for French descriptions

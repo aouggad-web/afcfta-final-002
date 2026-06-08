@@ -412,6 +412,23 @@ class OECTradeService:
         result = await self._make_request(params)
         return self._format_hs_response(result, hs6_code, year, trade_flow)
 
+    def _filter_rows_by_level(self, rows: List[Dict], code_digits: str, level: str) -> List[Dict]:
+        """
+        Filtre les lignes OEC par niveau SH (agrégation explicite, sans fallback) :
+        - hs2 : tout le chapitre (2 chiffres)
+        - hs4 : toute la position (4 chiffres)
+        - hs6 : la sous-position exacte (6 chiffres)
+        L'ID OEC vaut {prefixe}{6 chiffres} → les 6 derniers caractères sont le vrai code HS6.
+        """
+        ndig = {"hs2": 2, "hs4": 4, "hs6": 6}.get(level, 6)
+        target = code_digits[:ndig]
+        out = []
+        for r in rows:
+            real_hs6 = str(r.get("HS6 ID", ""))[-6:]
+            if real_hs6[:ndig] == target:
+                out.append(r)
+        return out
+
     def _filter_rows_by_hs(self, rows: List[Dict], oec_hs_id: str) -> List[Dict]:
         """
         Filtre les lignes OEC par code HS avec fallback progressif.
@@ -439,6 +456,7 @@ class OECTradeService:
         hs_code: str,
         n_years: int = 5,
         end_year: int = DEFAULT_YEAR,
+        level: str = None,
     ) -> Dict:
         """
         Retourne l'historique commercial (exports + imports) d'un pays africain pour un HS6 donné,
@@ -461,14 +479,17 @@ class OECTradeService:
         if not oec_id:
             return {"error": f"No OEC trade data for {iso3}", "country": iso3}
 
-        # Normalize HS to 6 digits
+        # Normalize HS + déterminer le niveau (sh2 / sh4 / sh6)
         hs_clean = "".join(c for c in str(hs_code) if c.isdigit())
         if not hs_clean:
             return {"error": "Invalid HS code", "hs_code": hs_code}
-        if len(hs_clean) == 4:
-            hs6_code = hs_clean + "00"
-        else:
-            hs6_code = hs_clean.zfill(6)[:6]
+        lvl = (level or "").lower()
+        if lvl not in ("hs2", "hs4", "hs6"):
+            lvl = {2: "hs2", 4: "hs4"}.get(len(hs_clean), "hs6")
+        ndig = {"hs2": 2, "hs4": 4, "hs6": 6}[lvl]
+        code_digits = hs_clean[:ndig].zfill(ndig)
+        # Code HS6 d'affichage (complété par des zéros) + ID OEC (préfixe de section)
+        hs6_code = (code_digits + "0000")[:6]
         oec_hs_id = self._format_oec_hs6_id(hs6_code)
 
         years = list(range(end_year - n_years + 1, end_year + 1))
@@ -491,8 +512,8 @@ class OECTradeService:
             try:
                 resp = await self._make_request(params)
                 all_rows = resp.get("data") or []
-                # Filtre client-side par HS avec fallback
-                matched = self._filter_rows_by_hs(all_rows, oec_hs_id)
+                # Filtre client-side par niveau SH (sh2 chapitre / sh4 position / sh6 sous-position)
+                matched = self._filter_rows_by_level(all_rows, code_digits, lvl)
                 # Agrégation par année + collecte des libellés HS6
                 by_year: Dict[int, Dict] = {}
                 hs_labels: Dict[str, Dict] = {}  # hs6_id → {label, trade_value}
@@ -565,17 +586,8 @@ class OECTradeService:
         any_exports = any(e["trade_value"] > 0 for e in exports_data)
         any_imports = any(i["trade_value"] > 0 for i in imports_data)
 
-        # Niveau de correspondance utilisé
-        if hs_labels_sorted:
-            first_id = hs_labels_sorted[0]["hs6_id"]
-            if first_id == oec_hs_id:
-                match_level = "hs6"
-            elif first_id.startswith(oec_hs_id[:5]):
-                match_level = "hs4"
-            else:
-                match_level = "hs2"
-        else:
-            match_level = "none"
+        # Niveau de correspondance = niveau demandé (filtrage explicite)
+        match_level = lvl if hs_labels_sorted else "none"
 
         # Code HS4 (4 chiffres significatifs)
         hs4_code = hs6_code[:4]
@@ -584,6 +596,8 @@ class OECTradeService:
             "country_iso3": iso3,
             "country_name": country_info.get("name_fr") or country_info.get("name") or iso3,
             "hs_code": hs6_code,
+            "hs_query": code_digits,
+            "level": lvl,
             "hs4_code": hs4_code,
             "oec_hs_id": oec_hs_id,
             "hs_labels": hs_labels_sorted,      # [{hs6_id, label, trade_value}, ...]

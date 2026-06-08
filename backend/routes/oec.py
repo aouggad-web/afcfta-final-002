@@ -104,16 +104,18 @@ async def get_country_hs6_history(
     hs_code: str,
     years: int = Query(5, ge=2, le=10, description="Nombre d'années (2 à 10)"),
     end_year: int = Query(DEFAULT_YEAR, description="Dernière année (par défaut: dernière disponible)"),
+    level: str = Query(None, description="Niveau SH: hs2 | hs4 | hs6 (auto si non fourni)"),
 ):
     """
-    Historique commercial (exports + imports) d'un pays africain pour un code HS6
-    sur les N dernières années (5 par défaut).
+    Historique commercial (exports + imports) d'un pays africain pour un code SH
+    (chapitre SH2, position SH4 ou sous-position SH6) sur les N dernières années.
     """
     result = await oec_service.get_country_hs6_history(
         country_iso3=country_iso3,
         hs_code=hs_code,
         n_years=years,
         end_year=end_year,
+        level=level,
     )
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])

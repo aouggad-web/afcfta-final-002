@@ -27,6 +27,9 @@ const MATCH_LEVEL_LABEL = {
   en: { hs6: 'Exact HS6', hs4: 'HS4 aggregate', hs2: 'HS2 chapter', none: 'No match' },
 };
 
+const LEVEL_LEN = { hs2: 2, hs4: 4, hs6: 6 };
+const LEVEL_EXAMPLE = { hs2: '27', hs4: '2710', hs6: '270900' };
+
 const TXT = {
   fr: {
     title: 'Commerce par Pays & HS6 — 5 dernières années',
@@ -48,10 +51,15 @@ const TXT = {
     avgGrowth: 'Croissance moy.',
     noData: 'Aucune donnée OEC pour ce code dans ce pays.',
     error: 'Erreur de récupération',
-    inputError: 'Saisir un code SH (4 à 6 chiffres) puis cliquer Rechercher.',
+    inputError: 'Saisir un code SH valide puis cliquer Rechercher.',
     hs4Label: 'SH4',
     hs6Label: 'SH6',
     productsFound: 'sous-positions trouvées',
+    tabHs2: 'Chapitre (SH2)', tabHs4: 'Position (SH4)', tabHs6: 'Sous-position (SH6)', tabLabel: 'Intitulé',
+    labelTitle: 'Intitulé du code SH sélectionné', chapterLbl: 'Chapitre', headingLbl: 'Position', subheadingLbl: 'Sous-position',
+    categoryLbl: 'Catégorie', sensitivityLbl: 'Sensibilité', noLabel: 'Aucun intitulé trouvé pour ce code.', enOnly: 'EN',
+    hintByLevel: { hs2: '2 chiffres (ex: 27)', hs4: '4 chiffres (ex: 2710)', hs6: '6 chiffres (ex: 270900)' },
+    selectCodePrompt: 'Sélectionnez un code dans un onglet SH2 / SH4 / SH6 pour voir son intitulé.',
   },
   en: {
     title: 'Trade by Country & HS6 — Last 5 years',
@@ -73,10 +81,15 @@ const TXT = {
     avgGrowth: 'Avg growth',
     noData: 'No OEC data for this HS in this country.',
     error: 'Fetch error',
-    inputError: 'Enter a 4-6 digit HS code then click Search.',
+    inputError: 'Enter a valid HS code then click Search.',
     hs4Label: 'HS4',
     hs6Label: 'HS6',
     productsFound: 'sub-headings found',
+    tabHs2: 'Chapter (HS2)', tabHs4: 'Heading (HS4)', tabHs6: 'Sub-heading (HS6)', tabLabel: 'Title',
+    labelTitle: 'Title of the selected HS code', chapterLbl: 'Chapter', headingLbl: 'Heading', subheadingLbl: 'Sub-heading',
+    categoryLbl: 'Category', sensitivityLbl: 'Sensitivity', noLabel: 'No title found for this code.', enOnly: 'EN',
+    hintByLevel: { hs2: '2 digits (e.g. 27)', hs4: '4 digits (e.g. 2710)', hs6: '6 digits (e.g. 270900)' },
+    selectCodePrompt: 'Select a code in an HS2 / HS4 / HS6 tab to view its title.',
   },
 };
 
@@ -84,11 +97,15 @@ export default function CountryHS6History({ language = 'fr' }) {
   const t = TXT[language] || TXT.fr;
   const [countries, setCountries] = useState([]);
   const [iso3, setIso3] = useState('DZA');
-  const [hsCode, setHsCode] = useState('271019');
+  const [searchLevel, setSearchLevel] = useState('hs6');     // 'hs2' | 'hs4' | 'hs6'
+  const [view, setView] = useState('search');                // 'search' | 'label'
+  const [hsCode, setHsCode] = useState('270900');
   const [years, setYears] = useState(5);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
+  const [labelData, setLabelData] = useState(null);
+  const [labelLoading, setLabelLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -109,9 +126,10 @@ export default function CountryHS6History({ language = 'fr' }) {
     return () => { cancelled = true; };
   }, []);
 
-  const runQuery = async () => {
-    const cleanHs = String(hsCode).replace(/\D/g, '').slice(0, 6);
-    if (!cleanHs || cleanHs.length < 4) {
+  const runQuery = async (lvl = searchLevel, codeStr = hsCode) => {
+    const need = LEVEL_LEN[lvl];
+    const cleanHs = String(codeStr).replace(/\D/g, '').slice(0, need);
+    if (cleanHs.length !== need) {
       setError(t.inputError);
       return;
     }
@@ -120,7 +138,7 @@ export default function CountryHS6History({ language = 'fr' }) {
     setData(null);
     try {
       const r = await axios.get(`${API}/oec/country/${iso3}/hs6/${cleanHs}/history`, {
-        params: { years },
+        params: { years, level: lvl },
       });
       setData(r.data);
     } catch (e) {
@@ -130,9 +148,43 @@ export default function CountryHS6History({ language = 'fr' }) {
     }
   };
 
-  // Auto-run on mount
+  const fetchLabel = async (lvl = searchLevel, codeStr = hsCode) => {
+    const need = LEVEL_LEN[lvl];
+    const cleanHs = String(codeStr).replace(/\D/g, '').slice(0, need);
+    if (cleanHs.length !== need) { setLabelData(null); return; }
+    setLabelLoading(true);
+    try {
+      const r = await axios.get(`${API}/hs-codes/label/${cleanHs}`);
+      setLabelData(r.data);
+    } catch {
+      setLabelData(null);
+    } finally {
+      setLabelLoading(false);
+    }
+  };
+
+  // Switch search level: truncate/seed the code and run the query for that level
+  const switchLevel = (lvl) => {
+    const need = LEVEL_LEN[lvl];
+    let next = String(hsCode).replace(/\D/g, '').slice(0, need);
+    if (next.length < need) next = LEVEL_EXAMPLE[lvl];
+    setHsCode(next);
+    setSearchLevel(lvl);
+    setView('search');
+    runQuery(lvl, next);
+  };
+
+  const openLabelTab = () => {
+    setView('label');
+    fetchLabel();
+  };
+
+  const submit = () => (view === 'label' ? fetchLabel() : runQuery());
+
+  // Auto-run on mount (deferred to avoid synchronous setState in effect)
   useEffect(() => {
-    runQuery();
+    const id = setTimeout(() => runQuery(), 0);
+    return () => clearTimeout(id);
   }, []);
 
   const totals = useMemo(() => {
@@ -158,6 +210,23 @@ export default function CountryHS6History({ language = 'fr' }) {
         <div className="stats-chart-subtitle">{t.subtitle}</div>
       </div>
 
+      {/* Onglets niveau SH (SH2 / SH4 / SH6) + Intitulé */}
+      <div style={{ display: 'flex', gap: 6, padding: '12px 16px 0', flexWrap: 'wrap' }} data-testid="hs-level-tabs">
+        {[['hs2', t.tabHs2], ['hs4', t.tabHs4], ['hs6', t.tabHs6]].map(([lvl, lbl]) => (
+          <button
+            key={lvl}
+            data-testid={`hs-tab-${lvl}`}
+            onClick={() => switchLevel(lvl)}
+            style={tabStyle(view === 'search' && searchLevel === lvl)}
+          >
+            {lbl}
+          </button>
+        ))}
+        <button data-testid="hs-tab-label" onClick={openLabelTab} style={tabStyle(view === 'label')}>
+          {t.tabLabel}
+        </button>
+      </div>
+
       <div style={{ padding: '14px 16px 6px', display: 'grid', gridTemplateColumns: '1.5fr 1.2fr 0.8fr auto', gap: 10, alignItems: 'end' }}>
         <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 700, letterSpacing: 0.4 }}>{t.country}</span>
@@ -176,15 +245,17 @@ export default function CountryHS6History({ language = 'fr' }) {
           </select>
         </label>
         <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 700, letterSpacing: 0.4 }}>{t.hsCode}</span>
+          <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 700, letterSpacing: 0.4 }}>
+            {`Code SH${LEVEL_LEN[searchLevel]}`}
+          </span>
           <input
             data-testid="hs6-code-input"
             value={hsCode}
             onChange={(e) => setHsCode(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && runQuery()}
-            placeholder={t.hsPlaceholder}
+            onKeyDown={(e) => e.key === 'Enter' && submit()}
+            placeholder={t.hintByLevel[searchLevel]}
             inputMode="numeric"
-            maxLength={6}
+            maxLength={LEVEL_LEN[searchLevel]}
             style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.22)', color: 'var(--text)', fontSize: 13, fontWeight: 600, letterSpacing: 1.2 }}
           />
         </label>
@@ -203,8 +274,8 @@ export default function CountryHS6History({ language = 'fr' }) {
         </label>
         <button
           data-testid="hs6-search-btn"
-          onClick={runQuery}
-          disabled={loading}
+          onClick={submit}
+          disabled={loading || labelLoading}
           style={{
             padding: '8px 16px',
             borderRadius: 8,
@@ -219,7 +290,7 @@ export default function CountryHS6History({ language = 'fr' }) {
             gap: 6,
           }}
         >
-          {loading ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
+          {(loading || labelLoading) ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
           {t.fetch}
         </button>
       </div>
@@ -237,7 +308,50 @@ export default function CountryHS6History({ language = 'fr' }) {
         </div>
       )}
 
-      {!loading && data && (
+      {/* ─── Onglet INTITULÉ ─── */}
+      {view === 'label' && (
+        <div style={{ padding: '6px 16px 16px' }} data-testid="hs-label-panel">
+          {labelLoading ? (
+            <div style={{ padding: 24, textAlign: 'center', color: 'rgba(142,155,174,0.85)' }}>
+              <Loader2 className="animate-spin" style={{ display: 'inline', marginRight: 8 }} />
+              {t.loading}
+            </div>
+          ) : labelData ? (
+            <div style={{ padding: '14px 16px', borderRadius: 10, background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.22)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: 0.8, background: 'rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.95)', borderRadius: 6, padding: '4px 9px' }}>
+                  SH{LEVEL_LEN[labelData.level]} · {labelData.code}
+                </span>
+                <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 600 }}>{t.labelTitle}</span>
+              </div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', lineHeight: 1.4, marginBottom: 4 }} data-testid="hs-label-fr">
+                {labelData.label_fr || labelData.label_en || '—'}
+                {labelData.label_lang === 'en' && (
+                  <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, color: 'rgba(142,155,174,0.7)', border: '1px solid rgba(142,155,174,0.35)', borderRadius: 4, padding: '1px 5px' }}>{t.enOnly}</span>
+                )}
+              </div>
+              {labelData.label_en && labelData.label_lang === 'both' && labelData.label_en !== labelData.label_fr && (
+                <div style={{ fontSize: 12.5, color: 'rgba(142,155,174,0.9)', fontStyle: 'italic', marginBottom: 8 }}>
+                  {labelData.label_en}
+                </div>
+              )}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', paddingTop: 10, borderTop: '1px solid rgba(212,175,55,0.15)', marginTop: 8 }}>
+                <LabelMeta k={t.chapterLbl} v={`${labelData.chapter} — ${language === 'fr' ? labelData.chapter_name_fr : labelData.chapter_name_en}`} />
+                {labelData.heading && <LabelMeta k={t.headingLbl} v={`${labelData.heading}${labelData.heading_name_en ? ' — ' + labelData.heading_name_en : ''}`} />}
+                {labelData.category && <LabelMeta k={t.categoryLbl} v={labelData.category} />}
+                {labelData.sensitivity && <LabelMeta k={t.sensitivityLbl} v={labelData.sensitivity} />}
+              </div>
+              <p className="stats-source-note" style={{ margin: '10px 0 0' }}>{labelData.source}</p>
+            </div>
+          ) : (
+            <div style={{ padding: 24, textAlign: 'center', color: 'rgba(142,155,174,0.85)' }} data-testid="hs-label-empty">
+              {t.selectCodePrompt}
+            </div>
+          )}
+        </div>
+      )}
+
+      {view === 'search' && !loading && data && (
         <>
           {/* ─── Bannière produit HS4 / HS6 ─── */}
           {data.hs_labels && data.hs_labels.length > 0 && (
@@ -255,7 +369,7 @@ export default function CountryHS6History({ language = 'fr' }) {
                   background: 'rgba(212,175,55,0.18)', color: 'rgba(212,175,55,0.95)',
                   borderRadius: 5, padding: '2px 6px', flexShrink: 0,
                 }}>
-                  {t.hs4Label} {data.hs4_code}
+                  SH{LEVEL_LEN[data.level] || 6} {data.hs_query || data.hs4_code}
                 </span>
                 <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text)', lineHeight: 1.3 }}>
                   {data.hs_labels[0].label}
@@ -275,7 +389,7 @@ export default function CountryHS6History({ language = 'fr' }) {
               {/* Sous-positions HS6 (si plusieurs) */}
               {data.hs_labels.length > 1 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px 8px', paddingTop: 4, borderTop: '1px solid rgba(212,175,55,0.12)' }}>
-                  {data.hs_labels.map((item) => (
+                  {data.hs_labels.slice(0, 12).map((item) => (
                     <span key={item.hs6_id} style={{
                       display: 'inline-flex', alignItems: 'center', gap: 5,
                       fontSize: 11, color: 'rgba(142,155,174,0.9)',
@@ -285,11 +399,16 @@ export default function CountryHS6History({ language = 'fr' }) {
                         background: 'rgba(255,255,255,0.07)', borderRadius: 4,
                         padding: '1px 5px', color: 'rgba(212,175,55,0.75)',
                       }}>
-                        {t.hs6Label} {item.hs6_id}
+                        {t.hs6Label} {String(item.hs6_id).slice(-6)}
                       </span>
                       {item.label}
                     </span>
                   ))}
+                  {data.hs_labels.length > 12 && (
+                    <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.7)', fontWeight: 700 }}>
+                      +{data.hs_labels.length - 12} {t.productsFound}
+                    </span>
+                  )}
                 </div>
               )}
             </div>
@@ -364,6 +483,31 @@ export default function CountryHS6History({ language = 'fr' }) {
         </>
       )}
     </div>
+  );
+}
+
+function tabStyle(active) {
+  return {
+    padding: '7px 14px',
+    borderRadius: '8px 8px 0 0',
+    border: '1px solid rgba(212,175,55,0.28)',
+    borderBottom: active ? '2px solid rgba(212,175,55,0.95)' : '1px solid rgba(212,175,55,0.12)',
+    background: active ? 'rgba(212,175,55,0.16)' : 'rgba(255,255,255,0.03)',
+    color: active ? 'rgba(212,175,55,0.98)' : 'rgba(142,155,174,0.9)',
+    fontWeight: 700,
+    fontSize: 12.5,
+    letterSpacing: 0.3,
+    cursor: 'pointer',
+    transition: 'background-color 0.2s, color 0.2s',
+  };
+}
+
+function LabelMeta({ k, v }) {
+  return (
+    <span style={{ fontSize: 12, color: 'rgba(142,155,174,0.95)' }}>
+      <span style={{ fontWeight: 800, color: 'rgba(212,175,55,0.8)', textTransform: 'uppercase', fontSize: 10, letterSpacing: 0.5, marginRight: 5 }}>{k}</span>
+      {v}
+    </span>
   );
 }
 
