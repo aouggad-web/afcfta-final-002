@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # Configuration de l'API OEC
-OEC_BASE_URL = "https://api-v2.oec.world/tesseract/data.jsonrecords"
+OEC_BASE_URL = "https://api.oec.world/tesseract/data.jsonrecords"
 
 # Cubes disponibles (datasets)
 # On utilise HS Rev. 2017 car c'est le plus proche de SH2022 et couvre les données récentes
@@ -379,15 +379,9 @@ class OECTradeService:
     ) -> Dict:
         """
         Récupère les statistiques commerciales pour un code HS6 spécifique avec valeur et volume.
-        
+
         Utilise le cube HS Rev. 2017 (compatible SH2022) avec des codes HS6
         pour assurer la cohérence des données.
-        
-        Args:
-            hs_code: Code HS (4 ou 6 chiffres - sera converti en HS6)
-            year: Année
-            trade_flow: "exports" ou "imports"
-            limit: Nombre max de résultats
         """
         # Normaliser le code en HS6 (ajouter des zéros si nécessaire)
         hs6_code = hs_code.zfill(6)[:6]
@@ -417,6 +411,205 @@ class OECTradeService:
         
         result = await self._make_request(params)
         return self._format_hs_response(result, hs6_code, year, trade_flow)
+
+    def _filter_rows_by_level(self, rows: List[Dict], code_digits: str, level: str) -> List[Dict]:
+        """
+        Filtre les lignes OEC par niveau SH (agrégation explicite, sans fallback) :
+        - hs2 : tout le chapitre (2 chiffres)
+        - hs4 : toute la position (4 chiffres)
+        - hs6 : la sous-position exacte (6 chiffres)
+        L'ID OEC vaut {prefixe}{6 chiffres} → les 6 derniers caractères sont le vrai code HS6.
+        """
+        ndig = {"hs2": 2, "hs4": 4, "hs6": 6}.get(level, 6)
+        target = code_digits[:ndig]
+        out = []
+        for r in rows:
+            real_hs6 = str(r.get("HS6 ID", ""))[-6:]
+            if real_hs6[:ndig] == target:
+                out.append(r)
+        return out
+
+    def _filter_rows_by_hs(self, rows: List[Dict], oec_hs_id: str) -> List[Dict]:
+        """
+        Filtre les lignes OEC par code HS avec fallback progressif.
+        L'API OEC ne supporte pas le filtrage par HS6 ID côté serveur —
+        on filtre côté client avec dégradation HS6 → HS4 → HS2.
+        """
+        # Tentative 1 : correspondance exacte HS6 (ex: 5271019)
+        exact = [r for r in rows if str(r.get("HS6 ID", "")) == oec_hs_id]
+        if exact:
+            return exact
+
+        # Tentative 2 : préfixe HS4 (ex: 52710 pour 5271019)
+        hs4_prefix = oec_hs_id[:5] if len(oec_hs_id) >= 5 else oec_hs_id
+        hs4_match = [r for r in rows if str(r.get("HS6 ID", "")).startswith(hs4_prefix)]
+        if hs4_match:
+            return hs4_match
+
+        # Tentative 3 : préfixe HS2 / chapitre (ex: 527 pour ch27)
+        chapter_prefix = oec_hs_id[:3] if len(oec_hs_id) >= 3 else oec_hs_id
+        return [r for r in rows if str(r.get("HS6 ID", "")).startswith(chapter_prefix)]
+
+    async def get_country_hs6_history(
+        self,
+        country_iso3: str,
+        hs_code: str,
+        n_years: int = 5,
+        end_year: int = DEFAULT_YEAR,
+        level: str = None,
+    ) -> Dict:
+        """
+        Retourne l'historique commercial (exports + imports) d'un pays africain pour un HS6 donné,
+        sur les `n_years` dernières années disponibles (par défaut 5 ans jusqu'à `DEFAULT_YEAR`).
+
+        Stratégie :
+        - 2 requêtes seulement (exports + imports) sans filtre HS6 côté API
+          (l'API OEC Tesseract ne supporte pas le filtre HS6 ID en paramètre GET)
+        - Filtrage client-side par HS6 ID avec fallback HS4 → HS2
+        - Agrégation par année
+
+        Source: OEC / BACI (cube HS Rev. 2017).
+        """
+        iso3 = country_iso3.upper()
+        country_info = AFRICAN_COUNTRIES_OEC.get(iso3)
+        if not country_info:
+            return {"error": f"Country {iso3} not found", "country": iso3}
+
+        oec_id = country_info.get("oec_id")
+        if not oec_id:
+            return {"error": f"No OEC trade data for {iso3}", "country": iso3}
+
+        # Normalize HS + déterminer le niveau (sh2 / sh4 / sh6)
+        hs_clean = "".join(c for c in str(hs_code) if c.isdigit())
+        if not hs_clean:
+            return {"error": "Invalid HS code", "hs_code": hs_code}
+        lvl = (level or "").lower()
+        if lvl not in ("hs2", "hs4", "hs6"):
+            lvl = {2: "hs2", 4: "hs4"}.get(len(hs_clean), "hs6")
+        ndig = {"hs2": 2, "hs4": 4, "hs6": 6}[lvl]
+        code_digits = hs_clean[:ndig].zfill(ndig)
+        # Code HS6 d'affichage (complété par des zéros) + ID OEC (préfixe de section)
+        hs6_code = (code_digits + "0000")[:6]
+        oec_hs_id = self._format_oec_hs6_id(hs6_code)
+
+        years = list(range(end_year - n_years + 1, end_year + 1))
+        start_year = years[0]
+
+        async def fetch_flow(flow: str) -> tuple:
+            """Récupère toutes les années + tous les HS6 pour un pays/flux, filtre client-side.
+            Retourne (by_year_dict, hs_labels_dict) où hs_labels_dict = {hs6_id: label}."""
+            country_dim = "Exporter Country" if flow == "exports" else "Importer Country"
+            params = self._build_params(
+                cube=OEC_CUBES[DEFAULT_CUBE],
+                drilldowns=["Year", "HS6"],
+                measures=["Trade Value", "Quantity"],
+                cuts={
+                    country_dim: oec_id,
+                    "Year": ",".join(str(y) for y in years),
+                },
+                limit=50000,
+            )
+            try:
+                resp = await self._make_request(params)
+                all_rows = resp.get("data") or []
+                # Filtre client-side par niveau SH (sh2 chapitre / sh4 position / sh6 sous-position)
+                matched = self._filter_rows_by_level(all_rows, code_digits, lvl)
+                # Agrégation par année + collecte des libellés HS6
+                by_year: Dict[int, Dict] = {}
+                hs_labels: Dict[str, Dict] = {}  # hs6_id → {label, trade_value}
+                for row in matched:
+                    y = row.get("Year")
+                    if y not in years:
+                        continue
+                    if y not in by_year:
+                        by_year[y] = {"trade_value": 0.0, "quantity": 0.0}
+                    tv = float(row.get("Trade Value") or 0)
+                    by_year[y]["trade_value"] += tv
+                    by_year[y]["quantity"] += float(row.get("Quantity") or 0)
+                    # Libellé HS6
+                    hid = str(row.get("HS6 ID", ""))
+                    hlabel = row.get("HS6", "")
+                    if hid and hlabel:
+                        if hid not in hs_labels:
+                            hs_labels[hid] = {"hs6_id": hid, "label": hlabel, "trade_value": 0.0}
+                        hs_labels[hid]["trade_value"] += tv
+                return by_year, hs_labels
+            except Exception as exc:
+                logger.error(f"OEC fetch_flow {flow} error: {exc}")
+                return {}, {}
+
+        # 2 requêtes en parallèle (exports + imports)
+        (exports_by_year, exp_labels), (imports_by_year, imp_labels) = await asyncio.gather(
+            fetch_flow("exports"),
+            fetch_flow("imports"),
+        )
+
+        # Fusionner les libellés exports + imports, trier par valeur décroissante
+        all_labels: Dict[str, Dict] = {}
+        for hid, info in {**imp_labels, **exp_labels}.items():
+            if hid not in all_labels:
+                all_labels[hid] = {"hs6_id": hid, "label": info["label"], "trade_value": 0.0}
+            all_labels[hid]["trade_value"] += info["trade_value"]
+        hs_labels_sorted = sorted(all_labels.values(), key=lambda x: -x["trade_value"])
+
+        # Construction des séries temporelles
+        exports_data = []
+        imports_data = []
+        chart_rows = []
+        for y in years:
+            exp = exports_by_year.get(y)
+            imp = imports_by_year.get(y)
+            exp_val = round(exp["trade_value"], 2) if exp else 0
+            exp_qty = round(exp["quantity"], 2) if exp else 0
+            imp_val = round(imp["trade_value"], 2) if imp else 0
+            imp_qty = round(imp["quantity"], 2) if imp else 0
+
+            exports_data.append({
+                "year": y,
+                "trade_value": exp_val,
+                "quantity": exp_qty,
+                **({"no_data": True} if not exp else {}),
+            })
+            imports_data.append({
+                "year": y,
+                "trade_value": imp_val,
+                "quantity": imp_qty,
+                **({"no_data": True} if not imp else {}),
+            })
+            chart_rows.append({
+                "year": y,
+                "exports": exp_val,
+                "imports": imp_val,
+                "balance": round(exp_val - imp_val, 2),
+            })
+
+        any_exports = any(e["trade_value"] > 0 for e in exports_data)
+        any_imports = any(i["trade_value"] > 0 for i in imports_data)
+
+        # Niveau de correspondance = niveau demandé (filtrage explicite)
+        match_level = lvl if hs_labels_sorted else "none"
+
+        # Code HS4 (4 chiffres significatifs)
+        hs4_code = hs6_code[:4]
+
+        return {
+            "country_iso3": iso3,
+            "country_name": country_info.get("name_fr") or country_info.get("name") or iso3,
+            "hs_code": hs6_code,
+            "hs_query": code_digits,
+            "level": lvl,
+            "hs4_code": hs4_code,
+            "oec_hs_id": oec_hs_id,
+            "hs_labels": hs_labels_sorted,      # [{hs6_id, label, trade_value}, ...]
+            "match_level": match_level,          # "hs6" | "hs4" | "hs2" | "none"
+            "years": years,
+            "exports": exports_data,
+            "imports": imports_data,
+            "chart_rows": chart_rows,
+            "source": "OEC / BACI (HS Rev. 2017)",
+            "currency": "USD",
+            "has_data": any_exports or any_imports,
+        }
     
     async def get_bilateral_trade(
         self,

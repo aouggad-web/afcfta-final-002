@@ -1,24 +1,25 @@
 """
 Gemini Trade Analysis Service
-Uses Google Gemini via Emergent LLM Key for intelligent trade analysis
+Uses Google Gemini 2.0 Flash via google-genai SDK
 IMPROVED: Based on AI Studio app prompts for better data quality
 NOW WITH REDIS CACHING for optimized performance
 """
 import os
 import json
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Dict, Optional
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 try:
-    from emergentintegrations.llm.chat import LlmChat, UserMessage
-    EMERGENT_AVAILABLE = True
+    from google import genai
+    from google.genai import types as genai_types
+    GENAI_AVAILABLE = True
 except ImportError:
-    LlmChat = None
-    UserMessage = None
-    EMERGENT_AVAILABLE = False
-    logging.warning("emergentintegrations not installed; AI features will be disabled")
+    genai = None
+    genai_types = None
+    GENAI_AVAILABLE = False
+    logging.warning("google-genai not installed; AI features will be disabled")
 
 from services.redis_cache_service import cache_service, get_data_freshness
 
@@ -68,69 +69,59 @@ Always respond in the language requested (French or English).
 
 class GeminiTradeService:
     """
-    Service for AI-powered trade analysis using Gemini
-    IMPROVED with AI Studio-quality prompts
+    Service for AI-powered trade analysis using Google Gemini 2.0 Flash
     """
-    
+
     def __init__(self):
-        self.api_key = os.environ.get("EMERGENT_LLM_KEY")
+        self.api_key = os.environ.get("GOOGLE_API_KEY")
         if not self.api_key:
-            logger.warning("EMERGENT_LLM_KEY not found in environment")
-        if not EMERGENT_AVAILABLE:
-            logger.warning("emergentintegrations not installed; AI features disabled")
-        self._session_counter = 0
-    
-    def _get_chat(self, session_suffix: str = ""):
-        """Create a new chat instance with Gemini"""
-        if not EMERGENT_AVAILABLE or LlmChat is None:
-            raise RuntimeError("emergentintegrations package is not installed")
+            logger.warning("GOOGLE_API_KEY not found in environment; AI features disabled")
+        if not GENAI_AVAILABLE:
+            logger.warning("google-genai not installed; AI features disabled")
+
+    async def _call_gemini(self, prompt: str) -> str:
+        """Call Gemini API and return the text response."""
+        if not GENAI_AVAILABLE or genai is None:
+            raise RuntimeError("google-genai package is not installed")
         if not self.api_key:
             raise RuntimeError(
-                "EMERGENT_LLM_KEY is not configured. "
-                "Set the EMERGENT_LLM_KEY environment variable to enable AI features."
+                "GOOGLE_API_KEY is not configured. "
+                "Set the GOOGLE_API_KEY environment variable to enable AI features."
             )
-        self._session_counter += 1
-        session_id = f"trade-analysis-{self._session_counter}-{session_suffix}"
-        
-        chat = LlmChat(
-            api_key=self.api_key,
-            session_id=session_id,
-            system_message=TRADE_SYSTEM_INSTRUCTION
+        client = genai.Client(api_key=self.api_key)
+        response = await client.aio.models.generate_content(
+            model="gemini-2.0-flash-lite",
+            contents=prompt,
+            config=genai_types.GenerateContentConfig(
+                system_instruction=TRADE_SYSTEM_INSTRUCTION,
+                temperature=0.2,
+            ),
         )
-        chat.with_model("gemini", "gemini-2.0-flash")
-        return chat
-    
+        return response.text
+
     async def analyze_trade_opportunities(
         self,
         country_name: str,
-        mode: str = "export",  # export, import, industrial
+        mode: str = "export",
         lang: str = "fr"
     ) -> Dict:
         """
         Analyze trade opportunities for a country using AI
-        IMPROVED prompts based on AI Studio app
-        NOW WITH CACHING for performance optimization
         """
-        if not EMERGENT_AVAILABLE:
-            return {"error": "emergentintegrations not installed", "opportunities": []}
-        if not self.api_key:
+        if not GENAI_AVAILABLE or not self.api_key:
             return {"error": "API key not configured", "opportunities": []}
-        
-        # Check cache first
+
         cache_params = {"country": country_name, "mode": mode, "lang": lang}
         cached_result = cache_service.get("gemini_analysis", cache_params)
         if cached_result:
             logger.info(f"Cache HIT for {country_name} {mode} analysis")
-            # Add freshness info
             cached_at = cached_result.get("_cache_metadata", {}).get("cached_at")
             cached_result["data_freshness"] = get_data_freshness(cached_at)
             return cached_result
-        
+
         try:
-            chat = self._get_chat(f"{country_name}-{mode}")
-            
             lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
-            
+
             if mode == "export":
                 prompt = f"""
 {lang_instruction}
@@ -284,28 +275,24 @@ IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats atte
   "analysis_date": "..."
 }}
 """
-            
-            message = UserMessage(text=prompt)
-            response = await chat.send_message(message)
-            
-            # Parse JSON response
-            result = self._parse_json_response(response)
+
+            response_text = await self._call_gemini(prompt)
+            result = self._parse_json_response(response_text)
             result["country"] = country_name
             result["mode"] = mode
             result["generated_by"] = "Gemini AI"
             result["generated_at"] = datetime.now(timezone.utc).isoformat()
-            result["data_freshness"] = get_data_freshness(None)  # Fresh data
-            
-            # Cache the result
+            result["data_freshness"] = get_data_freshness(None)
+
             cache_service.set("gemini_analysis", cache_params, result, "gemini_analysis")
             logger.info(f"Cached analysis for {country_name} {mode}")
-            
+
             return result
-            
+
         except Exception as e:
             logger.error(f"Error in trade opportunity analysis: {str(e)}")
             return {"error": str(e), "opportunities": []}
-    
+
     async def get_country_economic_profile(
         self,
         country_name: str,
@@ -313,13 +300,10 @@ IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats atte
     ) -> Dict:
         """
         Generate comprehensive economic profile for a country
-        IMPROVED with parallel requests like AI Studio
-        NOW WITH CACHING (24h TTL)
         """
-        if not self.api_key:
+        if not GENAI_AVAILABLE or not self.api_key:
             return {"error": "API key not configured"}
-        
-        # Check cache first (longer TTL for profiles)
+
         cache_params = {"country": country_name, "lang": lang, "type": "profile"}
         cached_result = cache_service.get("gemini_profile", cache_params)
         if cached_result:
@@ -327,12 +311,10 @@ IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats atte
             cached_at = cached_result.get("_cache_metadata", {}).get("cached_at")
             cached_result["data_freshness"] = get_data_freshness(cached_at)
             return cached_result
-        
+
         try:
-            chat = self._get_chat(f"profile-{country_name}")
-            
             lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
-            
+
             prompt = f"""
 {lang_instruction}
 
@@ -387,31 +369,28 @@ DONNÉES REQUISES (structure JSON exacte):
     "comparative_advantages": ["Avantage 1", "Avantage 2", "Avantage 3"]
   }},
   "sources": ["IMF WEO Oct 2024", "World Bank", "UNCTAD"],
-  "data_verification": "VERIFIED" ou "CONTAINS_ESTIMATIONS"
+  "data_verification": "VERIFIED"
 }}
 
 Réponds en JSON valide uniquement.
 """
-            
-            message = UserMessage(text=prompt)
-            response = await chat.send_message(message)
-            
-            result = self._parse_json_response(response)
+
+            response_text = await self._call_gemini(prompt)
+            result = self._parse_json_response(response_text)
             result["country"] = country_name
             result["generated_by"] = "Gemini AI"
             result["generated_at"] = datetime.now(timezone.utc).isoformat()
             result["data_freshness"] = get_data_freshness(None)
-            
-            # Cache with longer TTL for profiles
+
             cache_service.set("gemini_profile", cache_params, result, "gemini_profile")
             logger.info(f"Cached profile for {country_name}")
-            
+
             return result
-            
+
         except Exception as e:
             logger.error(f"Error generating country profile: {str(e)}")
             return {"error": str(e)}
-    
+
     async def analyze_product_by_hs_code(
         self,
         hs_code: str,
@@ -419,16 +398,13 @@ Réponds en JSON valide uniquement.
     ) -> Dict:
         """
         Analyze a product by HS code for African trade
-        IMPROVED with AI Studio structure
         """
-        if not self.api_key:
+        if not GENAI_AVAILABLE or not self.api_key:
             return {"error": "API key not configured"}
-        
+
         try:
-            chat = self._get_chat(f"product-{hs_code}")
-            
             lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
-            
+
             prompt = f"""
 {lang_instruction}
 
@@ -454,6 +430,7 @@ Structure JSON requise:
   "top_african_exporters": [
     {{
       "country": "Pays",
+      "iso3": "XXX",
       "export_value_musd": 0.0,
       "world_share_percent": 0.0,
       "historical_data": [
@@ -466,6 +443,7 @@ Structure JSON requise:
   "top_african_importers": [
     {{
       "country": "Pays",
+      "iso3": "XXX",
       "import_value_musd": 0.0,
       "main_sources": ["Source 1", "Source 2"],
       "historical_data": [
@@ -478,6 +456,7 @@ Structure JSON requise:
   "production_capacities": [
     {{
       "country": "Pays",
+      "iso3": "XXX",
       "capacity": 0.0,
       "unit": "tonnes/units",
       "source": "FAOSTAT/UNIDO/USGS"
@@ -498,21 +477,19 @@ Structure JSON requise:
 
 Réponds en JSON valide uniquement.
 """
-            
-            message = UserMessage(text=prompt)
-            response = await chat.send_message(message)
-            
-            result = self._parse_json_response(response)
+
+            response_text = await self._call_gemini(prompt)
+            result = self._parse_json_response(response_text)
             result["hs_code"] = hs_code
             result["generated_by"] = "Gemini AI"
             result["generation_date"] = datetime.utcnow().isoformat()
-            
+
             return result
-            
+
         except Exception as e:
             logger.error(f"Error analyzing product {hs_code}: {str(e)}")
             return {"error": str(e)}
-    
+
     async def get_trade_balance_analysis(
         self,
         country_name: str,
@@ -520,16 +497,13 @@ Réponds en JSON valide uniquement.
     ) -> Dict:
         """
         Get trade balance history and analysis for a country
-        IMPROVED with AI Studio approach
         """
-        if not self.api_key:
+        if not GENAI_AVAILABLE or not self.api_key:
             return {"error": "API key not configured"}
-        
+
         try:
-            chat = self._get_chat(f"balance-{country_name}")
-            
             lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
-            
+
             prompt = f"""
 {lang_instruction}
 
@@ -566,36 +540,39 @@ Structure JSON:
 
 Réponds en JSON valide uniquement.
 """
-            
-            message = UserMessage(text=prompt)
-            response = await chat.send_message(message)
-            
-            result = self._parse_json_response(response)
+
+            response_text = await self._call_gemini(prompt)
+            result = self._parse_json_response(response_text)
             result["country"] = country_name
             result["generated_by"] = "Gemini AI"
-            
+
             return result
-            
+
         except Exception as e:
             logger.error(f"Error getting trade balance: {str(e)}")
             return {"error": str(e)}
-    
+
     async def get_trade_summary(
         self,
         lang: str = "fr"
     ) -> Dict:
         """
         Generate a comprehensive African trade summary for the "Vue d'ensemble" tab
-        Returns aggregate stats across all African countries
         """
-        if not self.api_key:
+        if not GENAI_AVAILABLE or not self.api_key:
             return {"error": "API key not configured"}
-        
+
+        cache_params = {"lang": lang, "type": "summary"}
+        cached_result = cache_service.get("gemini_summary", cache_params)
+        if cached_result:
+            logger.info("Cache HIT for trade summary")
+            cached_at = cached_result.get("_cache_metadata", {}).get("cached_at")
+            cached_result["data_freshness"] = get_data_freshness(cached_at)
+            return cached_result
+
         try:
-            chat = self._get_chat("summary-overview")
-            
             lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
-            
+
             prompt = f"""
 {lang_instruction}
 
@@ -637,20 +614,20 @@ Structure JSON requise:
 
 Réponds en JSON valide uniquement.
 """
-            
-            message = UserMessage(text=prompt)
-            response = await chat.send_message(message)
-            
-            result = self._parse_json_response(response)
+
+            response_text = await self._call_gemini(prompt)
+            result = self._parse_json_response(response_text)
             result["generated_by"] = "Gemini AI"
             result["generation_date"] = datetime.utcnow().isoformat()
-            
+
+            cache_service.set("gemini_summary", cache_params, result, "gemini_summary")
+
             return result
-            
+
         except Exception as e:
             logger.error(f"Error generating trade summary: {str(e)}")
             return {"error": str(e)}
-    
+
     async def get_value_chains_analysis(
         self,
         sector: str = None,
@@ -658,18 +635,22 @@ Réponds en JSON valide uniquement.
     ) -> Dict:
         """
         Generate value chain analysis for African sectors
-        Used for "Chaînes de Valeur" tab
         """
-        if not self.api_key:
+        if not GENAI_AVAILABLE or not self.api_key:
             return {"error": "API key not configured"}
-        
+
+        cache_params = {"sector": sector or "all", "lang": lang, "type": "value_chains"}
+        cached_result = cache_service.get("gemini_value_chains", cache_params)
+        if cached_result:
+            logger.info("Cache HIT for value chains")
+            cached_at = cached_result.get("_cache_metadata", {}).get("cached_at")
+            cached_result["data_freshness"] = get_data_freshness(cached_at)
+            return cached_result
+
         try:
-            chat = self._get_chat(f"value-chains-{sector or 'all'}")
-            
             lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
-            
             sector_filter = f"Concentre-toi sur le secteur {sector}." if sector else "Analyse les 6 principales chaînes de valeur africaines."
-            
+
             prompt = f"""
 {lang_instruction}
 
@@ -732,42 +713,38 @@ Structure JSON requise:
 
 Réponds en JSON valide uniquement.
 """
-            
-            message = UserMessage(text=prompt)
-            response = await chat.send_message(message)
-            
-            result = self._parse_json_response(response)
+
+            response_text = await self._call_gemini(prompt)
+            result = self._parse_json_response(response_text)
             result["generated_by"] = "Gemini AI"
             result["generation_date"] = datetime.utcnow().isoformat()
-            
+
+            cache_service.set("gemini_value_chains", cache_params, result, "gemini_value_chains")
+
             return result
-            
+
         except Exception as e:
             logger.error(f"Error generating value chains: {str(e)}")
             return {"error": str(e)}
-    
+
     def _parse_json_response(self, response: str) -> Dict:
         """Parse JSON from AI response, handling markdown code blocks"""
         try:
-            # Clean response
             cleaned = response.strip()
-            
-            # Remove markdown code blocks
+
             if cleaned.startswith("```json"):
                 cleaned = cleaned.replace("```json", "", 1)
             if cleaned.startswith("```"):
                 cleaned = cleaned.replace("```", "", 1)
             if cleaned.endswith("```"):
                 cleaned = cleaned[:-3]
-            
+
             cleaned = cleaned.strip()
-            
-            # Find JSON object or array
+
             json_match = None
             for start_char, end_char in [('{', '}'), ('[', ']')]:
                 start_idx = cleaned.find(start_char)
                 if start_idx != -1:
-                    # Find matching end
                     depth = 0
                     for i, char in enumerate(cleaned[start_idx:]):
                         if char == start_char:
@@ -779,13 +756,12 @@ Réponds en JSON valide uniquement.
                                 break
                     if json_match:
                         break
-            
+
             if json_match:
                 return json.loads(json_match)
-            
-            # Try parsing entire response
+
             return json.loads(cleaned)
-            
+
         except json.JSONDecodeError as e:
             logger.warning(f"Failed to parse JSON response: {e}")
             return {

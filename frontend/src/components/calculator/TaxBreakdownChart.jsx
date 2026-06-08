@@ -57,10 +57,10 @@ const formatCurrency = (value) => {
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div style={{ background: '#1B232C', padding: '12px', borderRadius: '8px', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}>
-        <p style={{ fontWeight: '600', color: '#F5F5F5', marginBottom: '8px' }}>{label}</p>
+      <div style={{ background: '#1B232C', padding: '10px', borderRadius: '8px', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', maxWidth: '220px', minWidth: '140px' }}>
+        <p style={{ fontWeight: '600', color: '#F5F5F5', marginBottom: '6px', fontSize: '13px' }}>{label}</p>
         {payload.map((entry, index) => (
-          <p key={index} style={{ fontSize: '14px', color: entry.color }}>
+          <p key={index} style={{ fontSize: '13px', color: entry.color, wordBreak: 'break-word' }}>
             {entry.name}: {formatCurrency(entry.value)}
           </p>
         ))}
@@ -75,9 +75,9 @@ const PieTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div style={{ background: '#1B232C', padding: '12px', borderRadius: '8px', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}>
-        <p style={{ fontWeight: '600', color: '#F5F5F5' }}>{data.name}</p>
-        <p style={{ fontSize: '14px', color: '#A0AAB4' }}>{data.fullName}</p>
+      <div style={{ background: '#1B232C', padding: '10px', borderRadius: '8px', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)', maxWidth: '220px', minWidth: '140px' }}>
+        <p style={{ fontWeight: '600', color: '#F5F5F5', fontSize: '13px' }}>{data.name}</p>
+        <p style={{ fontSize: '12px', color: '#A0AAB4', wordBreak: 'break-word' }}>{data.fullName}</p>
         <p style={{ fontWeight: 'bold', marginTop: '4px', color: data.fill }}>
           {formatCurrency(data.value)} ({data.percentage}%)
         </p>

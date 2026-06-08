@@ -12,23 +12,18 @@ export default function SectionHeader({
   return (
     <div className={`afcfta-sectionHead ${compact ? "compact" : ""}`}>
       <div className="left">
-        <div className="afcfta-sectionHead-mark">
-          <span className={`afcfta-badgeDot ${dotColor}`} />
-        </div>
-
         <div className="afcfta-sectionHead-copy">
-          {eyebrow ? (
-            <div className="afcfta-sectionHead-eyebrow">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{eyebrow}</span>
-            </div>
-          ) : null}
-
-          <h2>{title}</h2>
-          {subtitle ? <p>{subtitle}</p> : null}
+          <div className="section-label">
+            {eyebrow ? (
+              <><Sparkles className="w-3.5 h-3.5" /><span>{eyebrow}</span></>
+            ) : (
+              <span className={`afcfta-badgeDot ${dotColor}`} />
+            )}
+          </div>
+          <h2 className="section-title">{title}</h2>
+          {subtitle ? <p className="section-desc">{subtitle}</p> : null}
         </div>
       </div>
-
       {right ? <div className="afcfta-sectionHead-right">{right}</div> : null}
     </div>
   );

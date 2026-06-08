@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -8,30 +8,27 @@ import { Ship, DollarSign, Clock, Anchor, BarChart3, Info, ExternalLink } from '
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-// All ports that appear in the fee dataset (origin or destination side)
-const FEE_PORTS = [
-  { locode: 'MAPTM', name: 'Tanger Med', country: 'Maroc', flag: '🇲🇦' },
-  { locode: 'MACAS', name: 'Casablanca', country: 'Maroc', flag: '🇲🇦' },
-  { locode: 'EGPSD', name: 'Port Saïd', country: 'Égypte', flag: '🇪🇬' },
-  { locode: 'EGALY', name: 'Alexandrie', country: 'Égypte', flag: '🇪🇬' },
-  { locode: 'DZALG', name: 'Alger', country: 'Algérie', flag: '🇩🇿' },
-  { locode: 'TNRAD', name: 'Radès', country: 'Tunisie', flag: '🇹🇳' },
-  { locode: 'SNDKR', name: 'Dakar', country: 'Sénégal', flag: '🇸🇳' },
-  { locode: 'CIABJ', name: 'Abidjan', country: "Côte d'Ivoire", flag: '🇨🇮' },
-  { locode: 'GHTEM', name: 'Tema', country: 'Ghana', flag: '🇬🇭' },
-  { locode: 'NGAPP', name: 'Lagos (Apapa)', country: 'Nigeria', flag: '🇳🇬' },
-  { locode: 'CMDLA', name: 'Douala', country: 'Cameroun', flag: '🇨🇲' },
-  { locode: 'CGPNR', name: 'Pointe-Noire', country: 'Congo', flag: '🇨🇬' },
-  { locode: 'AOLAD', name: 'Luanda', country: 'Angola', flag: '🇦🇴' },
-  { locode: 'KEMBA', name: 'Mombasa', country: 'Kenya', flag: '🇰🇪' },
-  { locode: 'TZDAR', name: 'Dar es Salaam', country: 'Tanzanie', flag: '🇹🇿' },
-  { locode: 'DJJIB', name: 'Djibouti', country: 'Djibouti', flag: '🇩🇯' },
-  { locode: 'ZADUR', name: 'Durban', country: 'Afrique du Sud', flag: '🇿🇦' },
-  { locode: 'ZACPT', name: 'Cape Town', country: 'Afrique du Sud', flag: '🇿🇦' },
-  { locode: 'MZMPM', name: 'Maputo', country: 'Mozambique', flag: '🇲🇿' },
-  { locode: 'NAWVB', name: 'Walvis Bay', country: 'Namibie', flag: '🇳🇦' },
-  { locode: 'MUPLU', name: 'Port Louis', country: 'Maurice', flag: '🇲🇺' },
+// Fallback list used only if the /fees/ports endpoint is unavailable.
+const FALLBACK_PORTS = [
+  { locode: 'MAPTM', name: 'Tanger Med', country: 'Maroc', flag: '🇲🇦', region: 'Afrique du Nord' },
+  { locode: 'SNDKR', name: 'Dakar', country: 'Sénégal', flag: '🇸🇳', region: "Afrique de l'Ouest" },
+  { locode: 'NGAPP', name: 'Lagos (Apapa)', country: 'Nigeria', flag: '🇳🇬', region: "Afrique de l'Ouest" },
+  { locode: 'KEMBA', name: 'Mombasa', country: 'Kenya', flag: '🇰🇪', region: "Afrique de l'Est" },
+  { locode: 'ZADUR', name: 'Durban', country: 'Afrique du Sud', flag: '🇿🇦', region: 'Afrique Australe' },
 ];
+
+const MAX_TABLE_ROWS = 250;
+
+// Group a port list by region for optgroup rendering.
+function groupByRegion(list) {
+  const groups = {};
+  list.forEach((p) => {
+    const key = p.region || 'Ports';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(p);
+  });
+  return groups;
+}
 
 const CONTAINER_TYPES = [
   { value: 'teu', label: '20\' Standard (TEU)', labelEn: "20' Standard (TEU)" },
@@ -141,7 +138,16 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
   const [error, setError] = useState('');
   const [allRoutes, setAllRoutes] = useState([]);
   const [showAllRoutes, setShowAllRoutes] = useState(false);
-  const [availableDestinations, setAvailableDestinations] = useState([]);
+  const [ports, setPorts] = useState(FALLBACK_PORTS);
+
+  // Load the full African port list (≈55 ports) for the selectors
+  useEffect(() => {
+    axios.get(`${API}/logistics/fees/ports`)
+      .then(res => {
+        if (res.data?.ports?.length) setPorts(res.data.ports);
+      })
+      .catch(() => {});
+  }, []);
 
   // Load all routes on mount to populate destination options based on origin
   useEffect(() => {
@@ -150,25 +156,23 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
       .catch(() => {});
   }, []);
 
-  // Update available destinations when origin changes
-  useEffect(() => {
-    if (!origin) {
-      setAvailableDestinations([]);
-      setDestination('');
-      setResult(null);
-      return;
-    }
+  // Destinations reachable from the selected origin (derived, no effect)
+  const availableDestinations = useMemo(() => {
+    if (!origin) return [];
     const dests = new Set();
     allRoutes.forEach(r => {
       if (r.origin_locode === origin) dests.add(r.destination_locode);
       if (r.destination_locode === origin) dests.add(r.origin_locode);
     });
-    const destPorts = FEE_PORTS.filter(p => dests.has(p.locode) && p.locode !== origin);
-    setAvailableDestinations(destPorts);
+    return ports.filter(p => dests.has(p.locode) && p.locode !== origin);
+  }, [origin, allRoutes, ports]);
+
+  const handleOriginChange = (value) => {
+    setOrigin(value);
     setDestination('');
     setResult(null);
     setError('');
-  }, [origin, allRoutes]);
+  };
 
   const handleCalculate = async () => {
     if (!origin || !destination) {
@@ -226,14 +230,19 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               <label className="block text-xs font-medium text-gray-700 mb-1">{t.origin}</label>
               <select
                 value={origin}
-                onChange={e => setOrigin(e.target.value)}
+                onChange={e => handleOriginChange(e.target.value)}
                 className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                data-testid="fees-origin-select"
               >
                 <option value="">— {t.origin} —</option>
-                {FEE_PORTS.map(p => (
-                  <option key={p.locode} value={p.locode}>
-                    {p.flag} {p.name} ({p.country})
-                  </option>
+                {Object.entries(groupByRegion(ports)).map(([region, list]) => (
+                  <optgroup key={region} label={region}>
+                    {list.map(p => (
+                      <option key={p.locode} value={p.locode}>
+                        {p.flag} {p.name} ({p.country})
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
               </select>
             </div>
@@ -246,14 +255,19 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                 onChange={e => setDestination(e.target.value)}
                 disabled={!origin}
                 className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
+                data-testid="fees-destination-select"
               >
                 <option value="">
                   {origin ? `— ${t.destination} —` : t.selectOriginFirst}
                 </option>
-                {availableDestinations.map(p => (
-                  <option key={p.locode} value={p.locode}>
-                    {p.flag} {p.name} ({p.country})
-                  </option>
+                {Object.entries(groupByRegion(availableDestinations)).map(([region, list]) => (
+                  <optgroup key={region} label={region}>
+                    {list.map(p => (
+                      <option key={p.locode} value={p.locode}>
+                        {p.flag} {p.name} ({p.country})
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
               </select>
             </div>
@@ -279,6 +293,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
             onClick={handleCalculate}
             disabled={loading || !origin || !destination}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium w-full md:w-auto"
+            data-testid="fees-calculate-btn"
           >
             <Ship className="w-4 h-4 mr-2" />
             {loading ? t.loading : t.calculate}
@@ -438,11 +453,12 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                     <th className="text-right p-2 font-semibold text-gray-600">FEU (USD)</th>
                     <th className="text-right p-2 font-semibold text-gray-600">Distance (nm)</th>
                     <th className="text-right p-2 font-semibold text-gray-600">Transit</th>
+                    <th className="text-left p-2 font-semibold text-gray-600">Type</th>
                     <th className="text-left p-2 font-semibold text-gray-600">Armateurs</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {allRoutes.map(r => (
+                  {allRoutes.slice(0, MAX_TABLE_ROWS).map(r => (
                     <tr key={r.route_id} className="border-b hover:bg-gray-50 transition-colors">
                       <td className="p-2 font-medium text-gray-800">{r.origin_port}</td>
                       <td className="p-2 text-gray-700">{r.destination_port}</td>
@@ -457,6 +473,14 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                       </td>
                       <td className="p-2 text-right text-gray-600">
                         {r.transit_days_min}–{r.transit_days_max}j
+                      </td>
+                      <td className="p-2">
+                        <Badge
+                          variant="outline"
+                          className={`text-[10px] py-0 ${r.is_modeled ? 'text-amber-700 border-amber-300' : 'text-green-700 border-green-300'}`}
+                        >
+                          {r.is_modeled ? (language === 'fr' ? 'Estimé' : 'Modeled') : (language === 'fr' ? 'Publié' : 'Published')}
+                        </Badge>
                       </td>
                       <td className="p-2">
                         <div className="flex flex-wrap gap-1">
@@ -474,9 +498,16 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
               </table>
             </div>
             <p className="mt-3 text-xs text-gray-400 italic">
+              {allRoutes.length > MAX_TABLE_ROWS && (
+                <span className="block not-italic text-gray-500 mb-1">
+                  {language === 'fr'
+                    ? `Affichage des ${MAX_TABLE_ROWS} premières routes sur ${allRoutes.length}. Utilisez le calculateur ci-dessus pour une paire précise.`
+                    : `Showing first ${MAX_TABLE_ROWS} of ${allRoutes.length} routes. Use the calculator above for a specific pair.`}
+                </span>
+              )}
               {language === 'fr'
-                ? 'Sources : Drewry Maritime Research 2024, UNCTAD MRTS 2024, tarifs publiés CMA CGM / Maersk / MSC / Hapag-Lloyd'
-                : 'Sources: Drewry Maritime Research 2024, UNCTAD MRTS 2024, published CMA CGM / Maersk / MSC / Hapag-Lloyd tariffs'}
+                ? 'Sources : Drewry Maritime Research 2024, UNCTAD MRTS 2024, tarifs publiés CMA CGM / Maersk / MSC / Hapag-Lloyd. « Publié » = tarif armateur publié ; « Estimé » = modèle distance-coût calibré.'
+                : 'Sources: Drewry Maritime Research 2024, UNCTAD MRTS 2024, published CMA CGM / Maersk / MSC / Hapag-Lloyd tariffs. "Published" = carrier-published rate; "Modeled" = calibrated distance-cost model.'}
             </p>
           </CardContent>
         )}

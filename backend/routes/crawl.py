@@ -38,8 +38,8 @@ async def start_crawl(request: CrawlStartRequest):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        logger.error(f"Failed to start crawl: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Failed to start crawl: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/jobs")

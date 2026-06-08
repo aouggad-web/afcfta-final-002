@@ -23,12 +23,15 @@ from banking_system.banks_registry import (
     REGIONAL_BANKS,
     get_central_bank,
     get_country_banks,
+    get_banks_register,
     get_regional_banks,
 )
 from banking_system.foreign_exchange import (
     FOREX_PROFILES,
     get_forex_profile,
     get_domiciliation_rules,
+    get_currency_meta,
+    get_all_currency_meta,
 )
 from banking_system.trade_finance import (
     TRADE_FINANCE_INSTRUMENTS,
@@ -120,6 +123,13 @@ class TestCentralBanks:
         info = get_country_banks("KE")
         assert len(info.regional_banks) > 0, "Kenya should have regional bank memberships"
 
+    def test_get_country_banks_unknown_returns_default_payload(self):
+        info = get_country_banks("XX")
+        assert info.country_code == "XX"
+        assert info.country_name == "Unknown"
+        assert info.central_bank.name == "Unknown"
+        assert info.central_bank.forex_regulation == "unknown"
+
     def test_get_regional_banks_all(self):
         banks = get_regional_banks()
         assert len(banks) >= 5, "Should have at least 5 regional banks"
@@ -210,6 +220,17 @@ class TestForexProfiles:
                 f"No mandatory documents for strict country {code}"
             )
 
+    def test_unknown_currency_meta_uses_usd_defaults(self):
+        code, name, convertibility = get_currency_meta("XX")
+        assert code == "USD"
+        assert name == "Dollar américain"
+        assert convertibility == "freely_convertible"
+
+    def test_all_currency_meta_contains_known_country(self):
+        all_meta = get_all_currency_meta()
+        assert "MA" in all_meta
+        assert all_meta["MA"][0] == "MAD"
+
 
 # ===========================================================================
 # TRADE FINANCE TESTS
@@ -262,6 +283,10 @@ class TestTradeFinance:
         for inst in export_recs:
             assert "export" in inst.applicable_to
 
+    def test_high_value_transaction_prefers_irrevocable_lc(self):
+        recs = recommend_instruments("KE", "import", 100_000)
+        assert recs[0].code == "LC_IRREVOCABLE"
+
 
 # ===========================================================================
 # PAYMENT SYSTEMS TESTS
@@ -297,6 +322,14 @@ class TestPaymentSystems:
         west = get_regional_systems("West Africa")
         for ps in west:
             assert "West" in ps.region or "UEMOA" in ps.region or "WAMZ" in ps.region
+
+    def test_get_payment_systems_without_country_returns_catalogue(self):
+        assert get_payment_systems() == PAYMENT_SYSTEMS
+
+    def test_get_regional_systems_without_region_only_returns_regional_systems(self):
+        systems = get_regional_systems()
+        assert len(systems) > 0
+        assert all(ps.type == "regional" for ps in systems)
 
     def test_payment_system_model_fields(self):
         swift = next(ps for ps in PAYMENT_SYSTEMS if ps.code == "SWIFT")
@@ -403,6 +436,10 @@ class TestRiskAssessment:
         result = assess_transaction_risk("KE", 50_000, "export")
         assert result["alert_level"] == "green"
 
+    def test_medium_risk_country_gets_orange_alert(self):
+        result = assess_transaction_risk("MA", 50_000, "export")
+        assert result["alert_level"] == "orange"
+
     def test_exposure_warning_triggered_above_limit(self):
         """A transaction above the recommended exposure limit should trigger a warning."""
         profile = get_country_risk("ZW")
@@ -460,3 +497,33 @@ class TestPydanticModels:
         )
         assert ps.code == "TEST"
         assert ps.member_countries == []
+
+
+class TestBanksRegister:
+    """Tests for the flat banking register helper."""
+
+    def test_register_can_filter_central_banks_by_country(self):
+        results = get_banks_register(country_code="MA", bank_type="central")
+        assert len(results) == 1
+        assert results[0]["type"] == "central"
+        assert results[0]["country_code"] == "MA"
+
+    def test_register_search_matches_regional_bank(self):
+        results = get_banks_register(search="Afreximbank", bank_type="regional")
+        assert len(results) == 1
+        assert results[0]["abbreviation"] == "Afreximbank"
+
+    def test_register_trade_finance_only_excludes_non_trade_finance_banks(self):
+        results = get_banks_register(country_code="ER", bank_type="commercial", trade_finance_only=True)
+        assert len(results) > 0
+        assert all(result["trade_finance"] for result in results)
+        assert all(result["name"] != "Housing and Commerce Bank of Eritrea" for result in results)
+
+    def test_register_search_without_match_returns_empty_results(self):
+        assert get_banks_register(search="__no_match__", bank_type="central") == []
+        assert get_banks_register(search="__no_match__", bank_type="commercial") == []
+
+    def test_register_regional_filter_keeps_only_member_banks(self):
+        results = get_banks_register(country_code="MA", bank_type="regional")
+        assert len(results) > 0
+        assert all("MA" in result["member_countries"] for result in results)

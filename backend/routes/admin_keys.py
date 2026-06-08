@@ -12,11 +12,18 @@ from datetime import datetime, timezone
 from typing import Annotated
 
 from bson import ObjectId
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 
 from auth import get_db, require_admin, require_auth
 
 router = APIRouter(prefix="/admin/keys", tags=["Admin: API Keys"])
+
+
+class CreateKeyRequest(BaseModel):
+    name: str
+    owner: str
+    tier: str = "standard"
 
 
 def _hash_key(raw_key: str) -> str:
@@ -48,13 +55,11 @@ async def list_keys(key_doc: Annotated[dict, Depends(require_admin)]):
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_key(
-    name: str = Query(..., description="Label for the key"),
-    owner: str = Query(..., description="Owner name or email"),
-    tier: str = Query("standard", description="'standard' or 'admin'"),
+    body: CreateKeyRequest,
     key_doc: dict = Depends(require_admin),
 ):
     """Create a new API key. The raw key is returned once; store it safely."""
-    if tier not in ("standard", "admin"):
+    if body.tier not in ("standard", "admin"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="tier must be 'standard' or 'admin'",
@@ -64,18 +69,18 @@ async def create_key(
     await db["api_keys"].insert_one(
         {
             "key_hash": _hash_key(raw_key),
-            "name": name,
-            "owner": owner,
-            "tier": tier,
+            "name": body.name,
+            "owner": body.owner,
+            "tier": body.tier,
             "active": True,
             "created_at": datetime.now(timezone.utc).isoformat(),
         }
     )
     return {
         "raw_key": raw_key,
-        "name": name,
-        "owner": owner,
-        "tier": tier,
+        "name": body.name,
+        "owner": body.owner,
+        "tier": body.tier,
         "note": "Store this key securely — it will not be shown again.",
     }
 

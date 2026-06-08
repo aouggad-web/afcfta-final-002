@@ -59,6 +59,9 @@ class TariffDataService:
                             "description_fr": sp.get("description_fr", ""),
                             "description_en": sp.get("description_en", ""),
                             "source": sp.get("source", ""),
+                            "taxes_detail": sp.get("taxes_detail"),
+                            "fiscal_advantages": sp.get("fiscal_advantages"),
+                            "administrative_formalities": sp.get("administrative_formalities"),
                             "parent_hs6": hs6,
                             "parent_line": line,
                         }
@@ -121,6 +124,7 @@ class TariffDataService:
             sub_data = self._sub_position_index.get(country_code, {}).get(hs_code)
             if sub_data and sub_data.get("parent_line"):
                 line = sub_data["parent_line"]
+                sub_taxes = sub_data.get("taxes_detail")
                 return {
                     "hs_code": hs_code,
                     "parent_hs6": hs6,
@@ -128,10 +132,10 @@ class TariffDataService:
                     "description_en": sub_data.get("description_en", ""),
                     "dd_rate": sub_data.get("dd", line.get("dd_rate", 0)),
                     "vat_rate": line.get("vat_rate", 0),
-                    "taxes_detail": line.get("taxes_detail", []),
+                    "taxes_detail": sub_taxes if sub_taxes is not None else line.get("taxes_detail", []),
                     "total_taxes_pct": line.get("total_taxes_pct", 0),
-                    "fiscal_advantages": line.get("fiscal_advantages", []),
-                    "administrative_formalities": line.get("administrative_formalities", []),
+                    "fiscal_advantages": sub_data.get("fiscal_advantages") or line.get("fiscal_advantages", []),
+                    "administrative_formalities": sub_data.get("administrative_formalities") or line.get("administrative_formalities", []),
                     "unit": line.get("unit", "KG"),
                     "category": line.get("category", ""),
                     "precision": "sub_position",
@@ -186,9 +190,11 @@ class TariffDataService:
             rate, desc, source = self.get_sub_position_rate(country_code, hs_code_clean)
             if rate is not None:
                 line = self.get_tariff_line(country_code, hs6)
-                taxes_detail = line.get("taxes_detail", []) if line else []
-                fiscal_advantages = line.get("fiscal_advantages", []) if line else []
-                admin_formalities = line.get("administrative_formalities", []) if line else []
+                sub_data = self._sub_position_index.get(country_code, {}).get(hs_code_clean) or {}
+                # Prefer sub-position level taxes_detail when defined; fall back to parent HS6.
+                taxes_detail = sub_data.get("taxes_detail") or (line.get("taxes_detail", []) if line else [])
+                fiscal_advantages = sub_data.get("fiscal_advantages") or (line.get("fiscal_advantages", []) if line else [])
+                admin_formalities = sub_data.get("administrative_formalities") or (line.get("administrative_formalities", []) if line else [])
                 return {
                     "rate": rate,
                     "source": source,

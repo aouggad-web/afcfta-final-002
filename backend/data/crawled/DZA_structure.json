@@ -2,15 +2,15 @@
   "country": "DZA",
   "country_name": "Algérie",
   "source": "conformepro.dz (données douane.gov.dz)",
-  "extracted_at": "2026-02-11T21:51:34.895638",
+  "extracted_at": "2026-05-04T19:05:22.792217",
   "stats": {
     "sections": 21,
     "chapters": 95,
     "headings": 1206,
-    "sub_positions": 17115,
+    "sub_positions": 127,
     "errors": 0,
-    "started_at": null,
-    "finished_at": "2026-02-11T21:51:34.895617"
+    "started_at": "2026-05-04T18:56:29.301659",
+    "finished_at": "2026-05-04T19:05:22.792206"
   },
   "sections": [
     {

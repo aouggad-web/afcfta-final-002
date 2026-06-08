@@ -8,14 +8,17 @@ CACHED: Search results cached for 30 minutes
 from fastapi import APIRouter, Query, HTTPException
 from typing import List, Optional
 import os
+import logging
 
 router = APIRouter(prefix="/commodities")
+logger = logging.getLogger(__name__)
+
+# Allowlist for PostgreSQL text-search configuration names.
+# Only values in this dict may be interpolated into SQL queries.
+TS_CONFIGS = {'fr': 'french', 'en': 'english'}
 
 # Configuration base de données
-DATABASE_URL = os.environ.get(
-    "DATABASE_URL",
-    "postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory"
-)
+DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
 # Import cache service
 try:
@@ -41,7 +44,7 @@ try:
         conn.execute(text("SELECT 1"))
     POSTGRES_AVAILABLE = True
 except Exception as e:
-    print(f"PostgreSQL non disponible: {e}")
+    logger.warning(f"PostgreSQL non disponible: {e}")
 
 
 def get_db():
@@ -93,7 +96,12 @@ async def search_commodities(
     try:
         with engine.connect() as conn:
             # Déterminer la langue de recherche
-            ts_config = 'french' if lang == 'fr' else 'english'
+            ts_config = TS_CONFIGS.get(lang, 'french')
+            # ts_config is always a value from TS_CONFIGS by construction, but this
+            # guard makes the safety contract explicit and resilient to future changes
+            # (e.g., if TS_CONFIGS.get default is ever changed to something unsafe).
+            if ts_config not in TS_CONFIGS.values():
+                raise HTTPException(status_code=400, detail="Unsupported language")
             
             # Pour l'anglais, traduire le terme de recherche si possible
             search_term = q
@@ -231,7 +239,8 @@ async def search_commodities(
             return result_data
             
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erreur de recherche: {str(e)}")
+        logger.error(f"Search error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/search/simple")
@@ -289,7 +298,8 @@ async def simple_search(
                 ]
             }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Simple search error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/countries")
@@ -323,7 +333,8 @@ async def get_available_countries():
                 ]
             }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error fetching available countries: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/stats")

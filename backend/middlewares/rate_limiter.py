@@ -26,7 +26,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     def _get_client_ip(self, request: Request) -> str:
         forwarded = request.headers.get("x-forwarded-for")
         if forwarded:
-            return forwarded.split(",")[0].strip()
+            # Use the rightmost IP, which is set by the trusted upstream proxy.
+            # The leftmost IP is client-supplied and must not be trusted.
+            return forwarded.split(",")[-1].strip()
         if request.client:
             return request.client.host
         return "unknown"
