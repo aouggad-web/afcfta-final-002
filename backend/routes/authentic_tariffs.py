@@ -9,20 +9,20 @@ from typing import Optional
 import logging
 
 from services.authentic_tariff_service import (
-    get_available_countries,
-    get_tariff_line,
-    get_sub_positions,
     get_taxes_detail,
     get_fiscal_advantages,
     get_administrative_formalities,
     calculate_import_taxes,
-    search_tariff_lines,
-    get_country_summary
 )
+from services.tariff_provider_service import get_tariff_provider_service
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/authentic-tariffs", tags=["Authentic Tariffs"])
+
+
+def get_provider():
+    return get_tariff_provider_service()
 
 
 @router.get("/countries")
@@ -33,13 +33,13 @@ async def list_available_countries():
     Returns:
         Liste des pays et leurs statistiques tarifaires
     """
-    countries = get_available_countries()
+    countries = get_provider().get_available_countries()
     return {
         "success": True,
         "total": len(countries),
         "countries": countries,
-        "data_format": "enhanced_v2",
-        "source": "Official African Customs Tariffs"
+        "data_format": "hybrid_postgres_first",
+        "source": "Tariff Provider (postgres-first)"
     }
 
 
@@ -54,7 +54,7 @@ async def get_tariff_summary(country_iso3: str):
     Returns:
         Statistiques et résumé des tarifs
     """
-    summary = get_country_summary(country_iso3.upper())
+    summary = get_provider().get_country_summary(country_iso3.upper())
     
     if not summary:
         raise HTTPException(
@@ -86,7 +86,7 @@ async def get_tariff_line_endpoint(
     Returns:
         Ligne tarifaire complète avec taxes, avantages, formalités
     """
-    tariff = get_tariff_line(country_iso3.upper(), hs_code)
+    tariff = get_provider().get_tariff_line(country_iso3.upper(), hs_code)
     
     if not tariff:
         raise HTTPException(
@@ -118,7 +118,7 @@ async def get_sub_positions_endpoint(
     Returns:
         Liste des sous-positions avec leurs taux DD spécifiques
     """
-    sub_positions = get_sub_positions(country_iso3.upper(), hs6[:6])
+    sub_positions = get_provider().get_sub_positions(country_iso3.upper(), hs6[:6])
     
     return {
         "success": True,
@@ -283,7 +283,7 @@ async def search_tariffs_endpoint(
     Returns:
         Liste des lignes tarifaires correspondantes
     """
-    results = search_tariff_lines(
+    results = get_provider().search_tariff_lines(
         country_iso3=country_iso3.upper(),
         query=q,
         language=language,

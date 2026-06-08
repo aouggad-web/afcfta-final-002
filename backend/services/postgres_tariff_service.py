@@ -70,6 +70,27 @@ class PostgresTariffService:
             WHERE iso3 = :iso3
         """, {'iso3': iso3.upper()})
         return results[0] if results else None
+
+    def get_country_summary(self, iso3: str) -> Optional[Dict]:
+        """Get country summary formatted for app-facing tariff APIs"""
+        country = self.get_country_info(iso3)
+        if not country:
+            return None
+
+        total_positions = country.get('total_positions') or 0
+        return {
+            'country_iso3': country.get('iso3', iso3.upper()),
+            'total_tariff_lines': total_positions,
+            'total_lines': total_positions,
+            'total_sub_positions': total_positions,
+            'total_national_positions': total_positions,
+            'chapters_covered': country.get('chapters_covered') or 0,
+            'vat_rate_pct': country.get('vat_rate') or 0,
+            'dd_rate_range': {},
+            'generated_at': country.get('last_updated'),
+            'data_format': 'postgres_v1',
+            'source': 'postgres',
+        }
     
     def get_sub_positions(self, country_iso3: str, hs6: str, language: str = 'fr') -> List[Dict]:
         """Get national sub-positions for a HS6 code"""
@@ -105,6 +126,66 @@ class PostgresTariffService:
             })
         
         return formatted
+
+    def get_tariff_line(self, country_iso3: str, hs_code: str) -> Optional[Dict]:
+        """Get a tariff line (HS6 aggregate or national code)"""
+        code = (hs_code or '').replace('.', '').replace(' ', '')
+        if not code:
+            return None
+
+        # National code lookup when full code is provided
+        if len(code) > 6:
+            details = self.get_commodity_details(country_iso3, code)
+            if details:
+                commodity = details.get('commodity', {})
+                taxes = details.get('taxes', {})
+                return {
+                    'hs6': commodity.get('hs6', code[:6]),
+                    'code': commodity.get('national_code', code),
+                    'national_code': commodity.get('national_code', code),
+                    'description_fr': commodity.get('description_fr', ''),
+                    'description_en': commodity.get('description_en', commodity.get('description_fr', '')),
+                    'dd_rate': taxes.get('total_npf', 0) or 0,
+                    'zlecaf_rate': taxes.get('total_zlecaf', 0) or 0,
+                    'savings_pct': taxes.get('savings', 0) or 0,
+                    'sub_positions': [],
+                    'has_sub_positions': False,
+                    'source': 'postgres',
+                }
+
+        hs6 = code[:6]
+        line_rows = self._execute_query("""
+            SELECT 
+                hs6,
+                MIN(description_fr) AS description_fr,
+                MIN(description_en) AS description_en,
+                AVG(total_npf_pct) AS dd_rate,
+                AVG(total_zlecaf_pct) AS zlecaf_rate,
+                AVG(savings_pct) AS savings_pct,
+                COUNT(*) AS sub_position_count
+            FROM commodities
+            WHERE country_iso3 = :iso3 AND hs6 = :hs6
+            GROUP BY hs6
+        """, {'iso3': country_iso3.upper(), 'hs6': hs6})
+
+        if not line_rows:
+            return None
+
+        line = line_rows[0]
+        sub_positions = self.get_sub_positions(country_iso3, hs6)
+        return {
+            'hs6': hs6,
+            'code': hs6,
+            'description_fr': line.get('description_fr', ''),
+            'description_en': line.get('description_en') or line.get('description_fr', ''),
+            'dd_rate': float(line.get('dd_rate') or 0),
+            'zlecaf_rate': float(line.get('zlecaf_rate') or 0),
+            'savings_pct': float(line.get('savings_pct') or 0),
+            'sub_positions': sub_positions,
+            'sub_position_count': int(line.get('sub_position_count') or len(sub_positions)),
+            'has_sub_positions': len(sub_positions) > 0,
+            'source': 'postgres',
+        }
     
     def get_commodity_details(self, country_iso3: str, national_code: str) -> Optional[Dict]:
         """Get full commodity details including measures and requirements"""
@@ -220,6 +301,8 @@ class PostgresTariffService:
             {
                 'code': r['national_code'],
                 'hs6': r['hs6'],
+                'description_fr': r['description_fr'],
+                'description_en': r['description_en'] or r['description_fr'],
                 'description': r['description_fr'] if language == 'fr' else (r['description_en'] or r['description_fr']),
                 'dd_rate': r['total_npf_pct'],
                 'zlecaf_rate': r['total_zlecaf_pct'],

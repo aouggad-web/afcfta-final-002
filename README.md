@@ -18,6 +18,16 @@ A comprehensive tariff calculator and trade information system for the African C
 - **Data Export**: Export tariff data in CSV and Excel formats (NEW)
 - **Notifications**: Email and Slack notifications for system events (NEW)
 
+## 🧭 Tariff Data Flow (PostgreSQL-First)
+
+The app-facing tariff layer now follows this provider priority:
+
+1. **PostgreSQL** (`backend/services/postgres_tariff_service.py`) as canonical runtime source
+2. **Authentic tariff service** (`backend/services/tariff_provider_service.py` + `backend/routes/authentic_tariffs.py`) as orchestration layer
+3. **Legacy ETL/JSON dictionaries** (`backend/services/authentic_tariff_service.py`) as fallback for migration/backward compatibility
+
+In this first migration phase, key authentic tariff endpoints (countries, country summary, tariff line, sub-positions, search) use the provider facade and prefer PostgreSQL data when available, then automatically fall back to legacy data paths.
+
 ## 📊 API Endpoints
 
 ### Health & Observability
