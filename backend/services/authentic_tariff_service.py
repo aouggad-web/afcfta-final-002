@@ -11,6 +11,7 @@ _tariff_cache = {}
 _nomenclature_cache = {}
 _crawled_index_cache = {}   # {ISO3: {hs_code_10: sub_position_entry}}
 _available_countries_cache = None
+_postgres_provider_cache = None
 
 
 def load_crawled_position_index(country_iso3: str) -> dict:
@@ -55,6 +56,32 @@ def _validate_iso3(country_iso3: str) -> str:
     if not _ISO_CODE_RE.match(code):
         raise ValueError(f'Invalid country code: {country_iso3!r}')
     return code
+
+
+def _get_postgres_provider():
+    """Return PostgreSQL tariff provider when available, else None."""
+    global _postgres_provider_cache
+    if _postgres_provider_cache is False:
+        return None
+    if _postgres_provider_cache is not None:
+        return _postgres_provider_cache
+    try:
+        from services.postgres_tariff_service import get_postgres_tariff_service
+        _postgres_provider_cache = get_postgres_tariff_service()
+        return _postgres_provider_cache
+    except Exception as e:
+        logger.info(f'PostgreSQL tariff provider unavailable, using ETL fallback: {e}')
+        _postgres_provider_cache = False
+        return None
+
+
+def _log_etl_fallback(operation: str, country_iso3: str, hs_code: str = '', reason: str = ''):
+    context = f'{operation} {country_iso3}'
+    if hs_code:
+        context += f'/{hs_code}'
+    if reason:
+        context += f' ({reason})'
+    logger.warning(f'Tariff ETL fallback activated: {context}')
 
 # ── Per-country tax cascade profiles ──────────────────────────────────────────
 # Each entry defines:
@@ -416,17 +443,85 @@ def load_nomenclature_map(country_iso3):
 
 
 def get_tariff_line(country_iso3, hs_code):
+    country_iso3 = _validate_iso3(country_iso3)
+    hs_code_clean = hs_code.replace('.', '').replace(' ', '')
+    hs6 = hs_code_clean[:6]
+
+    provider = _get_postgres_provider()
+    if provider:
+        try:
+            regulatory = provider.get_regulatory_details(country_iso3, hs6)
+            country_info = provider.get_country_info(country_iso3) or {}
+            if regulatory and regulatory.get('success'):
+                measures = regulatory.get('measures', []) or []
+                requirements = regulatory.get('requirements', []) or []
+                taxes_detail = [
+                    {
+                        'tax': _normalize_tax_code(str(m.get('code') or m.get('type') or '')),
+                        'rate': float(m.get('rate', 0) or 0),
+                        'observation': m.get('name', m.get('type', '')),
+                        'source': 'postgres',
+                    }
+                    for m in measures
+                    if (m.get('code') or m.get('type'))
+                ]
+                other_taxes_rate = round(sum(
+                    t['rate'] for t in taxes_detail
+                    if t['tax'] not in ('DD', 'TVA')
+                ), 4)
+                sub_positions = provider.get_sub_positions(country_iso3, hs6, 'fr') or []
+                normalized_sub_positions = [
+                    {
+                        'code': sp.get('code'),
+                        'digits': sp.get('digits', len(sp.get('code', ''))),
+                        'description_fr': sp.get('description_fr', sp.get('description_en', '')),
+                        'description_en': sp.get('description_en', sp.get('description_fr', '')),
+                        'dd': float(sp.get('dd', 0) or 0),
+                        'source': 'postgres',
+                    }
+                    for sp in sub_positions
+                    if sp.get('code')
+                ]
+                fiscal_advantages = [
+                    {
+                        'tax_code': m.get('code'),
+                        'condition_fr': f"ZLECAF applicable: {m.get('name', m.get('type', ''))}",
+                        'condition_en': f"AfCFTA applicable: {m.get('name', m.get('type', ''))}",
+                        'reduced_rate_pct': m.get('zlecaf_rate'),
+                    }
+                    for m in measures
+                    if m.get('zlecaf_applicable') and m.get('zlecaf_rate') is not None
+                ]
+                return {
+                    'hs6': hs6,
+                    'code': hs_code_clean,
+                    'description_fr': regulatory.get('description', ''),
+                    'description_en': regulatory.get('description', ''),
+                    'dd_rate': float(regulatory.get('taxes', {}).get('dd_rate', 0) or 0),
+                    'zlecaf_rate': float(regulatory.get('taxes', {}).get('zlecaf_rate', 0) or 0),
+                    'vat_rate': float(country_info.get('vat_rate', 0) or 0),
+                    'other_taxes_rate': other_taxes_rate,
+                    'taxes_detail': taxes_detail,
+                    'fiscal_advantages': fiscal_advantages,
+                    'administrative_formalities': requirements,
+                    'sub_positions': normalized_sub_positions,
+                    'source': 'postgres',
+                    'data_source': 'postgres',
+                }
+            _log_etl_fallback('get_tariff_line', country_iso3, hs6, 'postgres-miss')
+        except Exception as e:
+            _log_etl_fallback('get_tariff_line', country_iso3, hs6, f'postgres-error: {e}')
+
     data = load_country_tariffs(country_iso3)
     if not data:
         return None
-    hs6 = hs_code[:6]
     for line in data.get('tariff_lines', []):
-        if line.get('hs6') == hs6 or line.get('code') == hs_code:
+        if line.get('hs6') == hs6 or line.get('code') == hs_code_clean:
             return line
     return None
 
 
-def get_sub_positions(country_iso3, hs6):
+def get_sub_positions(country_iso3, hs6, language='fr'):
     """
     Return all national sub-positions for a given HS6 code.
 
@@ -442,7 +537,31 @@ def get_sub_positions(country_iso3, hs6):
     The parent DD rate is used as the fallback rate for positions that only
     appear in the nomenclature map.
     """
-    hs6_normalized = hs6[:6]
+    country_iso3 = _validate_iso3(country_iso3)
+    hs6_normalized = hs6.replace('.', '').replace(' ', '')[:6]
+
+    provider = _get_postgres_provider()
+    if provider:
+        try:
+            postgres_positions = provider.get_sub_positions(country_iso3, hs6_normalized, language) or []
+            if postgres_positions:
+                return [
+                    {
+                        'code': sp.get('code'),
+                        'national_code': sp.get('code'),
+                        'digits': sp.get('digits', len(sp.get('code', ''))),
+                        'description_fr': sp.get('description_fr', sp.get('description_en', '')),
+                        'description_en': sp.get('description_en', sp.get('description_fr', '')),
+                        'dd_rate': float(sp.get('dd', 0) or 0),
+                        'source': 'postgres',
+                    }
+                    for sp in postgres_positions
+                    if sp.get('code')
+                ]
+            _log_etl_fallback('get_sub_positions', country_iso3, hs6_normalized, 'postgres-miss')
+        except Exception as e:
+            _log_etl_fallback('get_sub_positions', country_iso3, hs6_normalized, f'postgres-error: {e}')
+
     line = get_tariff_line(country_iso3, hs6_normalized)
     parent_dd_rate_pct = line.get('dd_rate', 0) if line else 0
 
@@ -515,9 +634,31 @@ def search_tariff_lines(country_iso3, query, language='fr', limit=20):
     2. ETL tariff_lines (HS6-level)
     3. Nomenclature map (extended national codes)
     """
+    country_iso3 = _validate_iso3(country_iso3)
     q = query.lower().strip()
     results = []
     seen_codes = set()
+
+    provider = _get_postgres_provider()
+    if provider:
+        try:
+            pg_results = provider.search_commodities(country_iso3, query, limit=limit, language=language) or []
+            if pg_results:
+                return [
+                    {
+                        'hs6': r.get('hs6', ''),
+                        'national_code': r.get('code', r.get('hs6', '')),
+                        'description_fr': r.get('description', ''),
+                        'description_en': r.get('description', ''),
+                        'dd_rate': r.get('dd_rate', 0),
+                        'zlecaf_rate': r.get('zlecaf_rate', 0),
+                        'source': 'postgres',
+                    }
+                    for r in pg_results
+                ]
+            _log_etl_fallback('search_tariff_lines', country_iso3, reason='postgres-miss')
+        except Exception as e:
+            _log_etl_fallback('search_tariff_lines', country_iso3, reason=f'postgres-error: {e}')
 
     # ── 1. Crawled sub-positions (authentic, 10-digit) ──────────────────────
     crawled_index = load_crawled_position_index(country_iso3)
@@ -593,6 +734,27 @@ def search_tariff_lines(country_iso3, query, language='fr', limit=20):
 
 
 def get_country_summary(country_iso3):
+    country_iso3 = _validate_iso3(country_iso3)
+    provider = _get_postgres_provider()
+    if provider:
+        try:
+            country = provider.get_country_info(country_iso3)
+            if country:
+                return {
+                    'country_iso3': country_iso3,
+                    'total_lines': int(country.get('total_positions', 0) or 0),
+                    'total_sub_positions': int(country.get('total_positions', 0) or 0),
+                    'total_national_positions': int(country.get('total_positions', 0) or 0),
+                    'chapters_covered': country.get('chapters_covered', 0),
+                    'vat_rate_pct': float(country.get('vat_rate', 0) or 0),
+                    'dd_rate_range': {},
+                    'generated_at': country.get('last_updated', ''),
+                    'data_format': 'postgres',
+                }
+            _log_etl_fallback('get_country_summary', country_iso3, reason='postgres-miss')
+        except Exception as e:
+            _log_etl_fallback('get_country_summary', country_iso3, reason=f'postgres-error: {e}')
+
     data = load_country_tariffs(country_iso3)
     if not data:
         return None
@@ -633,6 +795,7 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     line = get_tariff_line(country_iso3, hs6)
     if not line:
         return {'error': f'Tariff line not found for {country_iso3}/{hs6}'}
+    is_postgres_line = line.get('data_source') == 'postgres' or line.get('source') == 'postgres'
 
     # Resolve DD rate: prefer sub-position specific rate when available
     dd_rate_pct = line.get('dd_rate', 0)
@@ -643,9 +806,10 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     # tax rates (source_quality=crawled_authentic), these rates take precedence
     # over the ETL-computed rates in the main DZA_tariffs.json.
     crawled_sp_entry = None
-    crawled_index = load_crawled_position_index(country_iso3)
-    if crawled_index and hs_code_clean in crawled_index:
-        crawled_sp_entry = crawled_index[hs_code_clean]
+    if not is_postgres_line:
+        crawled_index = load_crawled_position_index(country_iso3)
+        if crawled_index and hs_code_clean in crawled_index:
+            crawled_sp_entry = crawled_index[hs_code_clean]
 
     if len(hs_code_clean) > 6:
         if crawled_sp_entry:
@@ -688,7 +852,7 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     # Extract DAPS and other individual taxes:
     # If crawled entry has per-position taxes, use them as primary source;
     # otherwise fall back to taxes_detail from the ETL line.
-    if crawled_sp_entry and crawled_sp_entry.get('taxes'):
+    if (not is_postgres_line) and crawled_sp_entry and crawled_sp_entry.get('taxes'):
         crawled_taxes = crawled_sp_entry['taxes']
         taxes_detail = {
             k: {'label': v.get('name', k), 'rate': v.get('rate', 0), 'source': v.get('source', 'crawled')}
@@ -868,6 +1032,28 @@ def get_available_countries():
     if _available_countries_cache is not None:
         return _available_countries_cache
     countries = []
+    provider = _get_postgres_provider()
+    if provider:
+        try:
+            pg_countries = provider.get_countries() or []
+            if pg_countries:
+                countries = [
+                    {
+                        'iso3': c.get('iso3', ''),
+                        'name': _COUNTRY_NAMES.get(c.get('iso3', ''), c.get('name_fr', c.get('iso3', ''))),
+                        'total_lines': int(c.get('total_positions', 0) or 0),
+                        'total_positions': int(c.get('total_positions', 0) or 0),
+                        'chapters_covered': c.get('chapters_covered', 0),
+                        'has_nomenclature_map': False,
+                    }
+                    for c in pg_countries
+                ]
+                _available_countries_cache = countries
+                return countries
+            _log_etl_fallback('get_available_countries', 'ALL', reason='postgres-miss')
+        except Exception as e:
+            _log_etl_fallback('get_available_countries', 'ALL', reason=f'postgres-error: {e}')
+
     try:
         for fname in sorted(os.listdir(DATA_DIR)):
             if not fname.endswith('_tariffs.json') or fname.startswith('.'):
