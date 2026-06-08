@@ -35,6 +35,18 @@ class CentralBank(BaseModel):
     established_year: Optional[int] = None
     banking_act: Optional[str] = None
     contact: Optional[BankContact] = None
+    # ── Champs enrichis ───────────────────────────────────────────────────
+    imf_article_status: Optional[str] = Field(
+        default=None,
+        description=(
+            "Statut FMI : 'Article VIII' (compte courant libéré) ou "
+            "'Article XIV' (régime transitoire)"
+        ),
+    )
+    total_assets_usd_bn: Optional[float] = Field(
+        default=None,
+        description="Total des actifs de la banque centrale (milliards USD, dernière publication)",
+    )
 
 
 class CommercialBank(BaseModel):

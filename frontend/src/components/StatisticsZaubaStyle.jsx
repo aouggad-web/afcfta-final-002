@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { Badge } from './ui/badge';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart, LineChart, Line } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, Globe, Users, ArrowUpRight } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
@@ -373,8 +373,8 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
           </div>
           <div className="stats-chart-subtitle">
             {language === 'fr'
-              ? 'Avec projections de croissance 2025 — Source : Banque Mondiale (WDI 2024)'
-              : 'With 2025 growth projections — Source: World Bank (WDI 2024)'}
+              ? 'Avec projections de croissance 2025 — Source: FMI, Banque Mondiale'
+              : 'With 2025 growth projections — Source: IMF, World Bank'}
           </div>
         </div>
         <div style={{ padding: '0 0 16px', overflowX: 'auto' }}>
@@ -414,168 +414,11 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
           </table>
           <p className="stats-source-note">
             {language === 'fr'
-              ? 'Source : Banque Mondiale (World Development Indicators 2024) • Projections 2025 : WB Africa Economic Update Jan 2025. Données identiques aux profils pays.'
-              : 'Source: World Bank (World Development Indicators 2024) • 2025 projections: WB Africa Economic Update Jan 2025. Same dataset as country profiles.'}
+              ? 'Données officielles FMI WEO Octobre 2025, Banque Mondiale.'
+              : 'Official IMF WEO October 2025, World Bank data.'}
           </p>
         </div>
       </div>
-
-      {/* ── Évolution historique du PIB 2019-2024 ──────────────── */}
-      {gdpHistory && Array.isArray(gdpHistory.chart_rows) && gdpHistory.chart_rows.length > 0 && (() => {
-        // Build index-100 (base 2019) view on the fly when the user toggles it.
-        const baseRow = gdpHistory.chart_rows[0] || {};
-        const indexRows = gdpHistory.chart_rows.map((row) => {
-          const out = { year: row.year };
-          (gdpHistory.countries || []).forEach((c) => {
-            const base = baseRow[c.iso3];
-            const val = row[c.iso3];
-            if (typeof base === 'number' && base > 0 && typeof val === 'number') {
-              out[c.iso3] = +(val / base * 100).toFixed(2);
-            }
-          });
-          return out;
-        });
-        const isIndex = gdpChartMode === 'index';
-        const data = isIndex ? indexRows : gdpHistory.chart_rows;
-        const yTickFmt = (v) => (isIndex ? `${v}` : `$${v}B`);
-        const tooltipFmt = (value, name) => {
-          const country = (gdpHistory.countries || []).find((c) => c.iso3 === name);
-          const label = translateCountry(country?.country || name);
-          return [
-            isIndex ? `${Number(value).toFixed(1)} (base 100)` : `$${Number(value).toFixed(2)}B`,
-            label,
-          ];
-        };
-        return (
-          <div className="stats-chart-card" data-testid="gdp-history-chart">
-            <div className="stats-chart-header gold" style={{ flexWrap: 'wrap', gap: 12 }}>
-              <div style={{ flex: '1 1 auto', minWidth: 240 }}>
-                <div className="stats-chart-title gold">
-                  <TrendingUp style={{ width: 18, height: 18 }} />
-                  {language === 'fr'
-                    ? 'Évolution du PIB 2019–2024 — Top 10 économies africaines'
-                    : 'GDP Evolution 2019–2024 — Top 10 African economies'}
-                </div>
-                <div className="stats-chart-subtitle">
-                  {isIndex
-                    ? (language === 'fr'
-                        ? 'Indice 100 (base 2019) — taux de croissance cumulés'
-                        : 'Index 100 (2019 base) — cumulative growth rates')
-                    : (language === 'fr'
-                        ? 'Effet COVID-19 (2020), reprise post-pandémie, dévaluations monétaires (Naira 2023, Livre égyptienne 2024)'
-                        : 'COVID-19 impact (2020), post-pandemic recovery, currency devaluations (Naira 2023, EGP 2024)')}
-                </div>
-              </div>
-              <div
-                className="stats-segmented"
-                role="group"
-                aria-label="GDP chart mode"
-                style={{
-                  display: 'inline-flex',
-                  gap: 4,
-                  padding: 4,
-                  borderRadius: 999,
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(212,137,26,0.25)',
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setGdpChartMode('absolute')}
-                  data-testid="gdp-mode-absolute"
-                  style={{
-                    padding: '6px 14px',
-                    borderRadius: 999,
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    border: 'none',
-                    background: !isIndex ? 'rgba(212,137,26,0.85)' : 'transparent',
-                    color: !isIndex ? '#0b0f1a' : 'rgba(226,232,240,0.7)',
-                    transition: 'background 0.18s',
-                  }}
-                >
-                  {language === 'fr' ? 'Linéaire ($B)' : 'Absolute ($B)'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setGdpChartMode('index')}
-                  data-testid="gdp-mode-index"
-                  style={{
-                    padding: '6px 14px',
-                    borderRadius: 999,
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    border: 'none',
-                    background: isIndex ? 'rgba(212,137,26,0.85)' : 'transparent',
-                    color: isIndex ? '#0b0f1a' : 'rgba(226,232,240,0.7)',
-                    transition: 'background 0.18s',
-                  }}
-                >
-                  {language === 'fr' ? 'Indice 100 (base 2019)' : 'Index 100 (2019 base)'}
-                </button>
-              </div>
-            </div>
-            <div style={{ padding: '16px 8px 8px' }}>
-              <ResponsiveContainer width="100%" height={420}>
-                <LineChart data={data} margin={{ top: 12, right: 24, left: 0, bottom: 8 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(142,155,174,0.15)" />
-                  <XAxis dataKey="year" tick={{ fontSize: 12, fill: 'rgba(142,155,174,0.85)', fontWeight: 600 }} axisLine={false} tickLine={false} />
-                  <YAxis
-                    tick={{ fontSize: 12, fill: 'rgba(142,155,174,0.85)', fontWeight: 600 }}
-                    axisLine={false}
-                    tickLine={false}
-                    tickFormatter={yTickFmt}
-                    width={56}
-                    domain={isIndex ? [50, 'auto'] : ['auto', 'auto']}
-                  />
-                  <Tooltip
-                    contentStyle={{ background: '#1a2332', border: '1px solid rgba(212,137,26,0.4)', borderRadius: 8, color: '#e2e8f0' }}
-                    formatter={tooltipFmt}
-                    labelFormatter={(l) => (language === 'fr' ? `Année ${l}` : `Year ${l}`)}
-                  />
-                  <Legend
-                    formatter={(name) => {
-                      const country = (gdpHistory.countries || []).find((c) => c.iso3 === name);
-                      return translateCountry(country?.country || name);
-                    }}
-                    wrapperStyle={{ fontSize: '0.78rem', paddingTop: 8 }}
-                  />
-                  {isIndex && (
-                    <Line type="monotone" dataKey={() => 100} stroke="rgba(255,255,255,0.18)" strokeWidth={1} strokeDasharray="4 4" dot={false} legendType="none" isAnimationActive={false} />
-                  )}
-                  {(gdpHistory.countries || []).map((c, idx) => {
-                    const colors = ['#fbbf24', '#10b981', '#3b82f6', '#ef4444', '#a855f7', '#06b6d4', '#f97316', '#ec4899', '#84cc16', '#f43f5e'];
-                    return (
-                      <Line
-                        key={c.iso3}
-                        type="monotone"
-                        dataKey={c.iso3}
-                        stroke={colors[idx % colors.length]}
-                        strokeWidth={3}
-                        dot={{ r: 3.5, strokeWidth: 0 }}
-                        activeDot={{ r: 6 }}
-                        isAnimationActive={false}
-                        connectNulls
-                      />
-                    );
-                  })}
-                </LineChart>
-              </ResponsiveContainer>
-              <p className="stats-source-note" style={{ marginTop: 10 }}>
-                {language === 'fr'
-                  ? `Source : ${gdpHistory.source}. ${isIndex
-                      ? 'Mode indice : chaque pays = 100 en 2019 → permet de comparer les taux de croissance cumulés.'
-                      : 'Toutes les valeurs en milliards de dollars US courants.'}`
-                  : `Source: ${gdpHistory.source}. ${isIndex
-                      ? 'Index mode: each country = 100 in 2019 → compares cumulative growth rates.'
-                      : 'All values in current US$ billion.'}`}
-              </p>
-            </div>
-          </div>
-        );
-      })()}
 
       {/* ── Évolution du Commerce Intra-Africain ───────────────── */}
       <div className="stats-chart-card">

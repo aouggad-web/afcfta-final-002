@@ -22,6 +22,7 @@ import DismantlementSchedule from './DismantlementSchedule';
 import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
+import ProductKeywordSearch from './ProductKeywordSearch';
 import './calculator.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
@@ -368,9 +369,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           normal_total_cost: npfCalc.total_to_pay || 0,
           zlecaf_total_cost: zlecafCalc.total_to_pay || 0,
           
-          // Totaux en pourcentage (pour l'affichage)
-          total_taxes_npf: rates.total_rate_pct || (rates.dd_rate_pct || 0) + (rates.vat_rate_pct || 0) + (rates.other_taxes_pct || 0),
-          total_taxes_zlecaf: (rates.vat_rate_pct || 0) + (rates.other_taxes_pct || 0), // DD exonéré sous ZLECAf
+          // Taux effectif = total_taxes / CIF × 100 (cascade réelle, PAS somme de taux)
+          total_taxes_npf: rates.effective_rate_pct || rates.total_rate_pct || 0,
+          total_taxes_zlecaf: authenticResult.calculation_steps_zlecaf
+            ? Math.round(authenticResult.calculation_steps_zlecaf.reduce((s, t) => s + t.amount, 0) / parseFloat(value) * 10000) / 100
+            : (rates.vat_rate_pct || 0) + (rates.other_taxes_pct || 0),
           
           // Économies
           savings: savings.amount || 0,
@@ -403,19 +406,51 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             regional_content: 40
           },
           
-          // Journal de calcul NPF
-          normal_calculation_journal: [
-            { step: 1, component: 'Valeur CIF', base: parseFloat(value), rate: '-', amount: parseFloat(value), cumulative: parseFloat(value), legal_ref: 'Incoterms 2020' },
-            { step: 2, component: 'Droits de Douane (DD)', base: parseFloat(value), rate: `${rates.dd_rate_pct || 0}%`, amount: npfCalc.dd?.amount || 0, cumulative: parseFloat(value) + (npfCalc.dd?.amount || 0), legal_ref: `Tarif ${destISO3}` },
-            { step: 3, component: 'TVA', base: npfCalc.vat?.base || parseFloat(value), rate: `${rates.vat_rate_pct || 0}%`, amount: npfCalc.vat?.amount || 0, cumulative: npfCalc.total_to_pay || 0, legal_ref: `CGI ${destISO3}` }
-          ],
+          // Journal de calcul NPF — généré par le moteur cascade (vraies bases par pays)
+          normal_calculation_journal: (() => {
+            const cif = parseFloat(value);
+            const steps = authenticResult.calculation_steps || [];
+            const legalSource = authenticResult.cascade_legal_source || `Tarif officiel ${destISO3}`;
+            const journal = [
+              { step: 1, component: 'Valeur CIF', base: cif, rate: '-', amount: cif, cumulative: cif, legal_ref: 'Incoterms 2020' }
+            ];
+            steps.forEach((s, i) => {
+              journal.push({
+                step: i + 2,
+                component: s.label || s.code,
+                base: s.base_value,
+                base_formula: s.base_formula,
+                rate: `${s.rate_pct}%`,
+                amount: s.amount,
+                cumulative: s.cumulative,
+                legal_ref: legalSource,
+              });
+            });
+            return journal;
+          })(),
           
-          // Journal de calcul ZLECAf
-          zlecaf_calculation_journal: [
-            { step: 1, component: 'Valeur CIF', base: parseFloat(value), rate: '-', amount: parseFloat(value), cumulative: parseFloat(value), legal_ref: 'Incoterms 2020' },
-            { step: 2, component: 'Droits de Douane ZLECAf', base: parseFloat(value), rate: '0%', amount: 0, cumulative: parseFloat(value), legal_ref: 'AfCFTA Art. 8 - Exonération DD' },
-            { step: 3, component: 'TVA', base: zlecafCalc.vat?.base || parseFloat(value), rate: `${rates.vat_rate_pct || 0}%`, amount: zlecafCalc.vat?.amount || 0, cumulative: zlecafCalc.total_to_pay || 0, legal_ref: `CGI ${destISO3}` }
-          ],
+          // Journal de calcul ZLECAf — moteur cascade avec DD préférentiel
+          zlecaf_calculation_journal: (() => {
+            const cif = parseFloat(value);
+            const steps = authenticResult.calculation_steps_zlecaf || [];
+            const legalSource = authenticResult.cascade_legal_source || `Tarif ZLECAf ${destISO3}`;
+            const journal = [
+              { step: 1, component: 'Valeur CIF', base: cif, rate: '-', amount: cif, cumulative: cif, legal_ref: 'Incoterms 2020' }
+            ];
+            steps.forEach((s, i) => {
+              journal.push({
+                step: i + 2,
+                component: s.label || s.code,
+                base: s.base_value,
+                base_formula: s.base_formula,
+                rate: `${s.rate_pct}%`,
+                amount: s.amount,
+                cumulative: s.cumulative,
+                legal_ref: s.code === 'DD' ? `ZLECAf — ${legalSource}` : legalSource,
+              });
+            });
+            return journal;
+          })(),
           
           computation_order_ref: `Données tarifaires officielles ${destISO3} - Format enhanced_v2`,
           last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',
@@ -740,7 +775,28 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 {useSmartSearch ? 'Mode simple' : 'Recherche intelligente'}
               </Button>
             </div>
-            
+
+            {/* ── Recherche par mot-clé ── */}
+            <ProductKeywordSearch
+              destinationCountry={destinationCountry}
+              language={language}
+              onSelect={(code, desc) => {
+                if (code) {
+                  setHsCode(code);
+                  setSelectedSubPositionDesc(desc);
+                }
+              }}
+            />
+
+            {/* ── Séparateur ou code HS direct ── */}
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-px bg-slate-700" />
+              <span className="text-xs text-slate-600 shrink-0">
+                {language === 'fr' ? 'ou saisir directement' : 'or enter directly'}
+              </span>
+              <div className="flex-1 h-px bg-slate-700" />
+            </div>
+
             {useSmartSearch ? (
               <SmartHSSearch
                 value={hsCode}
@@ -765,6 +821,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   data-testid="hs-code-simple-input"
                 />
                 <p className="text-slate-500 text-xs">{t.hsCodeHint}</p>
+              </div>
+            )}
+
+            {/* Code sélectionné via recherche */}
+            {hsCode && selectedSubPositionDesc && (
+              <div className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-lg px-3 py-2">
+                <span className="font-mono text-purple-300 text-sm font-bold shrink-0">{hsCode}</span>
+                <span className="text-slate-400 text-xs line-clamp-1">{selectedSubPositionDesc}</span>
               </div>
             )}
             

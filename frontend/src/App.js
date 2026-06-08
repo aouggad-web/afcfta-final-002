@@ -63,7 +63,7 @@ function App() {
   const [stats, setStats] = useState(null);
   const [backendOnline, setBackendOnline] = useState(null);
 
-  // ── Theme management (dark / light) ──
+  // ── Gestion du thème (sombre / clair) ──
   const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
   useEffect(() => {
     const root = document.documentElement;

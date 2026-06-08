@@ -56,6 +56,42 @@ from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
 
+# Load Rules of Origin data
+try:
+    import sys
+    import os
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+    from etl.afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES
+    RULES_OF_ORIGIN_DATA_LOADED = True
+    _logger.info(f"Loaded {len(CHAPTER_RULES)} chapter rules of origin")
+except Exception as e:
+    CHAPTER_RULES = {}
+    ORIGIN_TYPES = {}
+    RULES_OF_ORIGIN_DATA_LOADED = False
+    _logger.warning(f"Failed to load rules of origin data: {e}")
+
+try:
+    from .dismantlement import router as dismantlement_router
+    DISMANTLEMENT_AVAILABLE = True
+except ImportError as e:
+    dismantlement_router = None
+    DISMANTLEMENT_AVAILABLE = False
+    _logger.warning(f"Dismantlement schedule route unavailable: {e}")
+
+# Load Rules of Origin data
+try:
+    import sys
+    import os
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+    from etl.afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES
+    RULES_OF_ORIGIN_DATA_LOADED = True
+    _logger.info(f"Loaded {len(CHAPTER_RULES)} chapter rules of origin")
+except Exception as e:
+    CHAPTER_RULES = {}
+    ORIGIN_TYPES = {}
+    RULES_OF_ORIGIN_DATA_LOADED = False
+    _logger.warning(f"Failed to load rules of origin data: {e}")
+
 try:
     from .dismantlement import router as dismantlement_router
     DISMANTLEMENT_AVAILABLE = True
@@ -394,8 +430,3 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(currencies_router, tags=["Currencies"], dependencies=_auth)
     if EXCHANGE_RATES_AVAILABLE:
         api_router.include_router(exchange_rates_router, tags=["Exchange Rates"], dependencies=_auth)
-    # Admin endpoints — uses its own require_admin dependency at route level
-    if ADMIN_PROJECTS_AVAILABLE:
-        api_router.include_router(admin_projects_router, tags=["Admin - Structuring Projects"])
-    if DISMANTLEMENT_AVAILABLE:
-        api_router.include_router(dismantlement_router, tags=["ZLECAf Dismantlement Schedule"], dependencies=_auth)

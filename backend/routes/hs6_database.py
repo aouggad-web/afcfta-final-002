@@ -8,7 +8,6 @@ import logging
 import json
 import os
 from search.hs_code_search import get_search_engine
-from services.authentic_tariff_service import get_sub_positions, get_tariff_line
 
 logger = logging.getLogger(__name__)
 
@@ -131,108 +130,52 @@ async def smart_search_hs6(
     Special handling for DZA (Algeria) with nomenclature_map lookup for extended codes.
     """
     try:
-        search_query = (q or query or "").strip()
-        if len(search_query) < 2:
-            raise HTTPException(status_code=422, detail="Query must be at least 2 characters long")
-
-        normalized_country = country_code.upper() if country_code else None
-
         # Special case for long numeric codes (potentially Algeria extended sub-positions)
         # Check Algeria nomenclature if query is a long numeric code (8+ digits)
-        if search_query.isdigit() and len(search_query) >= 8:
+        if q.isdigit() and len(q) >= 8:
             dza_nomenclature = load_algeria_nomenclature()
-            if dza_nomenclature and search_query in dza_nomenclature:
+            if dza_nomenclature and q in dza_nomenclature:
                 # Found exact match in Algeria nomenclature
-                logger.info(f"Found {search_query} in Algeria nomenclature_map")
+                logger.info(f"Found {q} in Algeria nomenclature_map")
                 return {
-                    "query": search_query,
+                    "query": q,
                     "results": [{
-                        "code": search_query,
-                        "description": dza_nomenclature[search_query],
+                        "code": q,
+                        "description": dza_nomenclature[q],
                         "country": "DZA",
                         "duty_rate_pct": 0.0,
                         "unit": "",
-                        "chapter": search_query[:2],
+                        "chapter": q[:2],
                         "match_type": "exact_nomenclature",
                         "source": "algeria_nomenclature_map"
                     }],
                     "total": 1,
-                    "count": 1,
                     "source": "algeria_nomenclature_map"
                 }
         
         engine = get_search_engine()
         # The new engine provides a unified search method
-        raw_results = engine.search(query=search_query, country=normalized_country, limit=limit)
+        raw_results = engine.search(query=q, country=country_code, limit=limit)
         
         # Map results to the format expected by the frontend
         results = []
-        seen_codes = set()
         for r in raw_results:
-            code = str(r.get("hs_code") or r.get("code") or "").replace(".", "").replace(" ", "")
-            if not code:
-                continue
-            hs6_code = code[:6]
-            if include_sub_positions and len(code) > 6:
-                # Keep parent HS6 entries as top-level rows when sub-positions are requested.
-                continue
-            dedupe_key = (hs6_code, str(r.get("country", "")).upper())
-            if dedupe_key in seen_codes:
-                continue
-            seen_codes.add(dedupe_key)
-
-            chapter = hs6_code[:2]
-            chapter_name = CHAPTER_NAMES.get(language, CHAPTER_NAMES.get("fr", {})).get(chapter, "")
-            tariff_line = get_tariff_line(normalized_country, hs6_code) if normalized_country else None
-            sub_positions = []
-            if include_sub_positions and normalized_country:
-                country_sub_positions = get_sub_positions(normalized_country, hs6_code)
-                for sp in country_sub_positions:
-                    sp_code = sp.get("code") or sp.get("national_code")
-                    if not sp_code:
-                        continue
-                    dd_value = sp.get("dd")
-                    sub_positions.append({
-                        "code": sp_code,
-                        "digits": sp.get("digits"),
-                        "dd": dd_value if dd_value is not None else sp.get("dd_rate"),
-                        "description_fr": sp.get("description_fr"),
-                        "description_en": sp.get("description_en"),
-                        "source": sp.get("source"),
-                    })
             results.append({
-                "code": hs6_code,
+                "code": str(r.get("hs_code", "")),
                 "description": r.get("description", ""),
-                "country": normalized_country or r.get("country", ""),
+                "country": r.get("country", ""),
                 "duty_rate_pct": r.get("duty_rate_pct"),
-                "dd_rate": r.get("duty_rate_pct"),
                 "unit": r.get("unit", ""),
-                "chapter": chapter,
-                "chapter_name": chapter_name,
-                "full_position": f"{chapter} - {chapter_name}" if chapter_name else chapter,
-                "position_4": hs6_code[:4],
-                "from_authentic": tariff_line is not None if normalized_country else False,
-                "sub_positions": sub_positions,
-                "match_type": "hybrid",
+                "chapter": str(r.get("hs_code", ""))[:2],
+                "match_type": "hybrid"
             })
 
-        chapter_info = None
-        if search_query.isdigit() and len(search_query) >= 2:
-            chapter = search_query[:2]
-            chapter_name = CHAPTER_NAMES.get(language, CHAPTER_NAMES.get("fr", {})).get(chapter, "")
-            if chapter_name:
-                chapter_info = {"chapter": chapter, "name": chapter_name}
-
         return {
-            "query": search_query,
+            "query": q,
             "results": results,
             "total": len(results),
-            "count": len(results),
-            "chapter_info": chapter_info,
             "source": "optimized_tariff_engine"
         }
-    except HTTPException:
-        raise
     except Exception as e:
         logger.error(f"Smart search error: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Internal server error")

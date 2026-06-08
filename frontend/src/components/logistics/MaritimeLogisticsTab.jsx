@@ -9,6 +9,7 @@ import PortCard from './PortCard';
 import PortDetailsModal from './PortDetailsModal';
 import UNCTADDataPanel from './UNCTADDataPanel';
 import ShippingFeesCalculator from './ShippingFeesCalculator';
+import WBLogisticsPanel from './WBLogisticsPanel';
 import { 
   FilterBar, 
   SearchFilter, 
@@ -278,6 +279,9 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
 
       {/* UNCTAD Data Panel */}
       <UNCTADDataPanel language={language} />
+
+      {/* World Bank LPI Panel */}
+      <WBLogisticsPanel language={language} />
 
       {/* Shipping Fees Calculator */}
       <ShippingFeesCalculator language={language} />

@@ -1,9 +1,9 @@
 """
 Gemini AI Trade Analysis Routes
 API endpoints for AI-powered trade analysis using Google Gemini
-NOW WITH REDIS CACHING for optimized performance
+NOW WITH HYBRID CACHING (Redis → JSON file fallback) for optimized performance
 """
-from fastapi import APIRouter, Query, HTTPException
+from fastapi import APIRouter, Query, HTTPException, Body
 from typing import Optional
 import logging
 
@@ -253,12 +253,12 @@ async def check_ai_service_health():
     from dotenv import load_dotenv
     load_dotenv()
 
-    has_key = bool(os.environ.get("EMERGENT_LLM_KEY"))
+    has_key = bool(os.environ.get("GOOGLE_API_KEY"))
 
     return {
         "status": "operational" if has_key else "not_configured",
-        "model": "gemini-2.0-flash",
-        "provider": "Google Gemini via Emergent LLM"
+        "model": "gemini-2.0-flash-lite",
+        "provider": "Google Gemini 2.0 Flash Lite"
     }
 
 
@@ -339,12 +339,61 @@ async def get_ai_value_chains(
 @router.get("/cache/stats")
 async def get_cache_statistics():
     """
-    Get Redis cache statistics
+    Get cache statistics (Redis + JSON file fallback)
     
     Returns:
-        Cache status, hit rate, and key count
+        Cache status, active backend, hit rate, and entry count
     """
     return cache_service.get_stats()
+
+
+@router.post("/cache/invalidate")
+async def invalidate_cache(
+    pattern: str = Query(default=None, description="Cache type pattern to invalidate (e.g., 'gemini_summary', 'gemini_value_chains'). Leave empty to invalidate all."),
+    country: str = Query(default=None, description="Country name to invalidate specific country cache entries."),
+    lang: str = Query(default=None, description="Language filter for invalidation (fr/en).")
+):
+    """
+    Invalidate cache entries (admin endpoint)
+
+    Allows targeted invalidation by:
+    - pattern: cache type prefix (e.g., gemini_summary, gemini_value_chains, gemini_analysis)
+    - country + optional lang: invalidate specific country-mode combinations
+    - No parameters: invalidate all AI cache entries
+
+    Returns:
+        Number of invalidated entries and details
+    """
+    invalidated = 0
+    details = []
+
+    if country:
+        for mode in ["export", "import", "industrial"]:
+            for l in ([lang] if lang else ["fr", "en"]):
+                params = {"country": country, "mode": mode, "lang": l}
+                if cache_service.invalidate("gemini_analysis", params):
+                    invalidated += 1
+                    details.append(f"gemini_analysis:{country}:{mode}:{l}")
+        for l in ([lang] if lang else ["fr", "en"]):
+            for profile_params in [
+                {"country": country, "lang": l, "type": "profile"},
+            ]:
+                if cache_service.invalidate("gemini_profile", profile_params):
+                    invalidated += 1
+                    details.append(f"gemini_profile:{country}:{l}")
+    elif pattern:
+        invalidated = cache_service.invalidate_pattern(pattern)
+        details.append(f"pattern:{pattern}")
+    else:
+        invalidated = cache_service.clear_all()
+        details.append("all")
+
+    return {
+        "status": "ok",
+        "invalidated_entries": invalidated,
+        "details": details,
+        "message": f"{invalidated} entrée(s) de cache invalidée(s)"
+    }
 
 
 @router.delete("/cache/clear")

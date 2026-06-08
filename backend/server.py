@@ -337,7 +337,7 @@ from starlette.responses import FileResponse
 build_dir = Path(__file__).parent.parent / "frontend" / "build"
 if build_dir.exists() and (build_dir / "static").exists():
     app.mount("/static", StaticFiles(directory=str(build_dir / "static")), name="static")
-    
+
     @app.get("/{full_path:path}")
     async def serve_react(full_path: str):
         file_path = (build_dir / full_path).resolve()

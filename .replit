@@ -31,13 +31,13 @@ args = "Start application"
 name = "Start application"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "webview"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "bash /home/runner/workspace/start.sh"
 waitForPort = 5000
-
-[workflows.workflow.metadata]
-outputType = "webview"
 
 [[ports]]
 localPort = 5000
@@ -55,3 +55,7 @@ externalPort = 8000
 deploymentTarget = "vm"
 run = ["bash", "-c", "cd backend && python -m uvicorn server:app --host 0.0.0.0 --port 5000"]
 build = ["bash", "-c", "cd frontend && npm install --legacy-peer-deps && npm run build"]
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 120000

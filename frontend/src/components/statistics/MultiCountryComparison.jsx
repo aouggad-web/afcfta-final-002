@@ -564,11 +564,6 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </tbody>
               </table>
             </div>
-            <div style={{ padding: '8px 16px 12px' }}>
-              <p className="stats-source-note" style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(142,155,174,0.7)' }} data-testid="economic-source">
-                {txt.sourceEconomic}
-              </p>
-            </div>
           </div>
 
           {/* Trade Bar Chart */}
@@ -660,11 +655,6 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </tbody>
               </table>
             </div>
-            <div style={{ padding: '8px 16px 12px' }}>
-              <p className="stats-source-note" style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(142,155,174,0.7)' }} data-testid="trade-source">
-                {txt.sourceTrade}
-              </p>
-            </div>
           </div>
 
           {/* Development Indices */}
@@ -720,11 +710,6 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   </tr>
                 </tbody>
               </table>
-            </div>
-            <div style={{ padding: '8px 16px 12px' }}>
-              <p className="stats-source-note" style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(142,155,174,0.7)' }} data-testid="development-source">
-                {txt.sourceDevelopment}
-              </p>
             </div>
           </div>
 

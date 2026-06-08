@@ -138,21 +138,18 @@ const DashboardTabNew = ({ language = 'fr' }) => {
   }, []);
 
   // Build KPIs dynamically with real data from API
-  const authenticCount = stats?.overview?.authentic_countries || 54;
-  const verifiedPositions = stats?.overview?.verified_positions || 229000;
-
-  // Format verified positions (e.g., 1186439 -> "1.19M" / 894783 -> "895K")
-  const formatCount = (count) => {
-    if (count >= 1000000) {
-      return (count / 1000000).toFixed(2).replace(/\.?0+$/, '') + 'M';
-    }
-    if (count >= 1000) {
-      return Math.round(count / 1000) + 'K';
-    }
-    return count.toString();
-  };
-
   const kpis = React.useMemo(() => {
+    const authenticCount = stats?.overview?.authentic_countries || 54;
+    const verifiedPositions = stats?.overview?.verified_positions || 229000;
+    
+    // Format verified positions (e.g., 894783 -> "895K")
+    const formatCount = (count) => {
+      if (count >= 1000) {
+        return Math.round(count / 1000) + 'K';
+      }
+      return count.toString();
+    };
+
     return [
       {
         key: 'gdp',
@@ -191,7 +188,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
         meta: t.lastLayer,
       },
     ];
-  }, [stats, t, authenticCount, verifiedPositions]);
+  }, [stats, t]);
 
   return (
     <div className="space-y-6">
@@ -236,7 +233,9 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                   {t.coverage}
                 </div>
                 <div className="mt-1 text-xl font-bold text-[var(--text)]">
-                  {formatCount(verifiedPositions)}
+                  {stats?.overview?.verified_positions ? 
+                    Math.round(stats.overview.verified_positions / 1000) + 'K' : 
+                    '229K'}
                 </div>
               </div>
 

@@ -305,7 +305,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           console.warn('AI product analysis not available:', err.message);
           return { data: null };
         }),
-        axios.get(`${API}/hs-codes/${hsCode}`).catch(() => ({ data: null }))
+        axios.get(`${API}/hs-codes/code/${hsCode}`).catch(() => ({ data: null }))
       ]);
 
       const chapter = hsCode.substring(0, 2);

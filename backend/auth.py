@@ -10,15 +10,10 @@ Wire the database before first request:
     set_database(db)
 """
 
-import hmac
-import os
+import hashlib
 from typing import Annotated, Optional
 
 from fastapi import Depends, Header, HTTPException, status
-
-# HMAC secret — doit être identique à la valeur utilisée lors de la création
-# des clés. Changer cette valeur invalide toutes les clés existantes.
-_HMAC_SECRET = os.environ.get("SECRET_KEY", "").encode()
 
 
 # ---------------------------------------------------------------------------
@@ -42,13 +37,7 @@ def get_db():
 # ---------------------------------------------------------------------------
 
 def _hash_key(raw_key: str) -> str:
-    """HMAC-SHA256 avec SECRET_KEY comme sel.
-    Résistant aux rainbow tables contrairement au SHA-256 nu.
-    SECRET_KEY est requis dès qu'une base d'API keys est utilisée.
-    """
-    if not _HMAC_SECRET:
-        raise RuntimeError("SECRET_KEY must be configured for API key hashing")
-    return hmac.new(_HMAC_SECRET, raw_key.encode(), "sha256").hexdigest()
+    return hashlib.sha256(raw_key.encode()).hexdigest()
 
 
 # ---------------------------------------------------------------------------
@@ -71,15 +60,8 @@ async def require_auth(
             detail="Missing X-API-Key header",
             headers={"WWW-Authenticate": "ApiKey"},
         )
-    try:
-        key_hash = _hash_key(x_api_key)
-    except RuntimeError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(exc),
-        ) from exc
     doc = await _db["api_keys"].find_one(
-        {"key_hash": key_hash, "active": True}
+        {"key_hash": _hash_key(x_api_key), "active": True}
     )
     if not doc:
         raise HTTPException(

@@ -32,68 +32,6 @@ except ImportError:
     CACHE_AVAILABLE = False
 
 
-def _parse_growth_pct(value):
-    """Parse a growth value (string '3.5%' or float 3.5) into a numeric percent."""
-    if value is None:
-        return None
-    if isinstance(value, (int, float)):
-        return float(value)
-    s = str(value).strip().replace('%', '').replace(',', '.')
-    try:
-        return float(s)
-    except (ValueError, TypeError):
-        return None
-
-
-def build_top_10_gdp_2024():
-    """
-    Build the Top 10 African GDP 2024 ranking from the same `REAL_COUNTRY_DATA`
-    used by the country-profile endpoint, ensuring perfect consistency between
-    the dashboard table and individual country pages.
-
-    Source: Banque Mondiale (WDI 2024) — current US$.
-    """
-    rows = []
-    for iso3, info in REAL_COUNTRY_DATA.items():
-        gdp = info.get('gdp_usd_2024')
-        if gdp is None:
-            continue
-        try:
-            gdp_value = float(gdp)
-        except (ValueError, TypeError):
-            continue
-        rows.append({
-            "iso3": iso3,
-            "country": info.get('name', iso3),
-            "gdp_2024_billion": round(gdp_value, 2),
-            "growth_2024": _parse_growth_pct(info.get('growth_forecast_2024')),
-            "growth_projection_2025": info.get('growth_projection_2025') or '',
-            "data_source": info.get('data_source', 'Banque Mondiale (WDI 2024)'),
-        })
-    rows.sort(key=lambda r: r["gdp_2024_billion"], reverse=True)
-    top10 = rows[:10]
-    for idx, r in enumerate(top10, start=1):
-        r["rank"] = idx
-    return top10
-
-
-# ─── Historical GDP series (Banque Mondiale, current US$ billion) ────────────
-# Source: World Bank Open Data — data.worldbank.org/indicator/NY.GDP.MKTP.CD
-# Used by /api/statistics/gdp-history-top10 to power the historical comparison chart.
-GDP_HISTORY_TOP10 = {
-    "ZAF": {"name": "Afrique du Sud", "series": {2019: 387.93, 2020: 337.69, 2021: 419.03, 2022: 405.71, 2023: 380.91, 2024: 401.14}},
-    "EGY": {"name": "Égypte",          "series": {2019: 303.18, 2020: 363.12, 2021: 425.91, 2022: 476.75, 2023: 395.92, 2024: 389.06}},
-    "DZA": {"name": "Algérie",         "series": {2019: 171.76, 2020: 145.16, 2021: 163.04, 2022: 191.91, 2023: 247.99, 2024: 269.31}},
-    "NGA": {"name": "Nigéria",         "series": {2019: 448.12, 2020: 429.42, 2021: 440.85, 2022: 472.62, 2023: 363.85, 2024: 252.26}},
-    "MAR": {"name": "Maroc",           "series": {2019: 128.92, 2020: 121.35, 2021: 142.87, 2022: 130.48, 2023: 144.04, 2024: 160.60}},
-    "ETH": {"name": "Éthiopie",        "series": {2019:  95.91, 2020: 107.66, 2021: 111.27, 2022: 120.37, 2023: 159.75, 2024: 142.07}},
-    "KEN": {"name": "Kenya",           "series": {2019: 100.38, 2020: 100.66, 2021: 110.35, 2022: 113.42, 2023: 107.44, 2024: 119.30}},
-    "AGO": {"name": "Angola",          "series": {2019:  69.31, 2020:  53.61, 2021:  66.51, 2022: 104.40, 2023:  84.71, 2024: 113.79}},
-    "TZA": {"name": "Tanzanie",        "series": {2019:  60.74, 2020:  66.48, 2021:  70.60, 2022:  76.43, 2023:  83.78, 2024:  94.93}},
-    "CIV": {"name": "Côte d'Ivoire",   "series": {2019:  58.79, 2020:  61.13, 2021:  72.37, 2022:  78.34, 2023:  78.95, 2024:  87.11}},
-}
-
-
 def count_authentic_countries():
     """
     Count countries with authentic tariff data by checking:
@@ -119,54 +57,26 @@ def count_authentic_countries():
 
 def count_verified_positions():
     """
-    Count total verified national tariff positions across all 54 countries.
-
-    Priority order (the highest reflects what the calculator actually serves):
-      1. Live tariff_data_service stats (HS6 lines + sub-positions)
-      2. Live crawled_data_service stats (authentic positions)
-      3. Disk fallback: engine/output/*_canonical.jsonl line count
-      4. Last-resort estimate from JSON tariff files
+    Count total verified tariff positions across all countries
     """
-    # 1) Live tariff data service (most comprehensive — combines HS6 + sub-positions)
-    try:
-        from services.tariff_data_service import tariff_service
-        stats = tariff_service.get_stats()
-        total = stats.get("total_positions") or (
-            (stats.get("total_hs6_lines") or 0)
-            + (stats.get("total_sub_positions") or 0)
-        )
-        if total and total > 0:
-            return int(total)
-    except Exception:
-        pass
-
-    # 2) Crawled data service
-    try:
-        from services.crawled_data_service import crawled_service
-        stats = crawled_service.get_stats()
-        total = stats.get("total_positions", 0)
-        if total and total > 0:
-            return int(total)
-    except Exception:
-        pass
-
-    # 3) Disk fallback — engine canonical files
     backend_dir = Path(__file__).parent.parent
     engine_dir = backend_dir.parent / "engine" / "output"
+    
     total_positions = 0
     if engine_dir.exists():
         for canonical_file in engine_dir.glob("*_canonical.jsonl"):
             try:
+                # Count lines in the file (each line is a tariff position)
                 with open(canonical_file, 'r', encoding='utf-8') as f:
                     total_positions += sum(1 for _ in f)
             except Exception:
                 continue
-
-    # 4) Last-resort estimate
+    
+    # If no canonical files, estimate based on data files
     if total_positions == 0:
         data_dir = backend_dir / "data"
-        total_positions = len(list(data_dir.glob("*_tariffs.json"))) * 4200
-
+        total_positions = len(list(data_dir.glob("*_tariffs.json"))) * 4200  # Rough estimate
+    
     return total_positions
 
 def translate_products_list(products: list, language: str = 'fr') -> list:
@@ -184,6 +94,36 @@ def translate_products_list(products: list, language: str = 'fr') -> list:
             translated_product['top_exporters'] = translate_country_list(product['top_exporters'], language)
         translated.append(translated_product)
     return translated
+
+GDP_HISTORY_TOP10 = {
+    "NGA": {"name": "Nigéria",       "series": {2019: 448.1, 2020: 432.3, 2021: 441.5, 2022: 472.6, 2023: 477.0, 2024: 477.0}},
+    "EGY": {"name": "Égypte",         "series": {2019: 303.1, 2020: 361.9, 2021: 394.3, 2022: 476.7, 2023: 387.0, 2024: 387.0}},
+    "ZAF": {"name": "Afrique du Sud", "series": {2019: 381.3, 2020: 335.4, 2021: 419.0, 2022: 405.7, 2023: 377.8, 2024: 373.0}},
+    "DZA": {"name": "Algérie",        "series": {2019: 171.0, 2020: 145.0, 2021: 167.6, 2022: 191.9, 2023: 239.9, 2024: 266.0}},
+    "ETH": {"name": "Éthiopie",       "series": {2019: 96.1,  2020: 107.6, 2021: 111.3, 2022: 126.8, 2023: 163.7, 2024: 205.0}},
+    "MAR": {"name": "Maroc",          "series": {2019: 119.7, 2020: 114.7, 2021: 132.7, 2022: 130.9, 2023: 141.1, 2024: 142.0}},
+    "KEN": {"name": "Kenya",          "series": {2019: 95.5,  2020: 98.8,  2021: 110.3, 2022: 113.4, 2023: 107.4, 2024: 116.0}},
+    "AGO": {"name": "Angola",         "series": {2019: 88.8,  2020: 72.4,  2021: 72.4,  2022: 92.3,  2023: 84.9,  2024: 76.0}},
+    "TZA": {"name": "Tanzanie",       "series": {2019: 60.8,  2020: 63.2,  2021: 67.9,  2022: 75.5,  2023: 79.2,  2024: 85.0}},
+    "GHA": {"name": "Ghana",          "series": {2019: 66.9,  2020: 68.3,  2021: 77.6,  2022: 72.8,  2023: 76.4,  2024: 77.0}},
+}
+
+
+def build_top_10_gdp_2024():
+    """Top 10 African economies by GDP 2024 (World Bank WDI)"""
+    return [
+        {"rank": 1,  "country": "Nigéria",       "iso3": "NGA", "gdp_2024_musd": 477000, "gdp_per_capita": 2248},
+        {"rank": 2,  "country": "Égypte",         "iso3": "EGY", "gdp_2024_musd": 387000, "gdp_per_capita": 3443},
+        {"rank": 3,  "country": "Afrique du Sud", "iso3": "ZAF", "gdp_2024_musd": 373000, "gdp_per_capita": 6176},
+        {"rank": 4,  "country": "Algérie",        "iso3": "DZA", "gdp_2024_musd": 266000, "gdp_per_capita": 5949},
+        {"rank": 5,  "country": "Éthiopie",       "iso3": "ETH", "gdp_2024_musd": 205000, "gdp_per_capita": 1634},
+        {"rank": 6,  "country": "Kenya",          "iso3": "KEN", "gdp_2024_musd": 116000, "gdp_per_capita": 2146},
+        {"rank": 7,  "country": "Tanzanie",       "iso3": "TZA", "gdp_2024_musd": 85000,  "gdp_per_capita": 1329},
+        {"rank": 8,  "country": "Ghana",          "iso3": "GHA", "gdp_2024_musd": 77000,  "gdp_per_capita": 2296},
+        {"rank": 9,  "country": "Angola",         "iso3": "AGO", "gdp_2024_musd": 76000,  "gdp_per_capita": 2155},
+        {"rank": 10, "country": "Maroc",          "iso3": "MAR", "gdp_2024_musd": 142000, "gdp_per_capita": 3758},
+    ]
+
 
 router = APIRouter(prefix="/statistics")
 
