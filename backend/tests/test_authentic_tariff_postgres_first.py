@@ -1,6 +1,8 @@
 import os
 import sys
 
+import pytest
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from services import authentic_tariff_service as svc
@@ -45,12 +47,13 @@ class _PostgresProviderMiss:
         return []
 
 
-def setup_function():
+@pytest.fixture(autouse=True)
+def reset_postgres_provider_cache():
     svc._postgres_provider_cache = None
 
 
 def test_get_tariff_line_prefers_postgres(monkeypatch):
-    monkeypatch.setattr(svc, "_postgres_provider_cache", _PostgresProviderSuccess())
+    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: _PostgresProviderSuccess())
     monkeypatch.setattr(
         svc,
         "load_country_tariffs",
@@ -66,7 +69,7 @@ def test_get_tariff_line_prefers_postgres(monkeypatch):
 
 
 def test_get_tariff_line_falls_back_to_etl(monkeypatch):
-    monkeypatch.setattr(svc, "_postgres_provider_cache", _PostgresProviderMiss())
+    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: _PostgresProviderMiss())
     etl_line = {"hs6": "180100", "dd_rate": 25.0, "description_fr": "ETL line"}
     monkeypatch.setattr(svc, "load_country_tariffs", lambda iso3: {"tariff_lines": [etl_line]})
 
@@ -77,7 +80,7 @@ def test_get_tariff_line_falls_back_to_etl(monkeypatch):
 
 
 def test_get_sub_positions_prefers_postgres(monkeypatch):
-    monkeypatch.setattr(svc, "_postgres_provider_cache", _PostgresProviderSuccess())
+    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: _PostgresProviderSuccess())
 
     positions = svc.get_sub_positions("MAR", "180100")
 
@@ -86,8 +89,8 @@ def test_get_sub_positions_prefers_postgres(monkeypatch):
     assert positions[0]["dd_rate"] == 5.0
 
 
-def test_calculate_import_taxes_uses_postgres_data_over_crawled(monkeypatch):
-    monkeypatch.setattr(svc, "_postgres_provider_cache", _PostgresProviderSuccess())
+def test_calculate_import_taxes_uses_postgres_when_etl_unavailable(monkeypatch):
+    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: _PostgresProviderSuccess())
     monkeypatch.setattr(svc, "load_country_tariffs", lambda iso3: None)
     monkeypatch.setattr(
         svc,

@@ -23,7 +23,7 @@ router = APIRouter(prefix="/postgres-tariffs", tags=["PostgreSQL Tariffs"])
 
 @router.get("/countries")
 async def get_countries():
-    """Liste des pays via le facade tarifaire (PostgreSQL-first)."""
+    """Liste des pays via la facade tarifaire (PostgreSQL-first)."""
     try:
         countries = get_available_countries()
         return {
@@ -39,7 +39,7 @@ async def get_countries():
 
 @router.get("/country/{iso3}")
 async def get_country_info(iso3: str):
-    """Informations sur un pays via le facade tarifaire."""
+    """Informations sur un pays via la facade tarifaire."""
     try:
         country = get_country_summary(iso3)
         if not country:
@@ -61,9 +61,9 @@ async def get_sub_positions(
     hs6: str, 
     language: str = Query("fr", pattern="^(fr|en)$")
 ):
-    """Sous-positions nationales via le facade tarifaire."""
+    """Sous-positions nationales via la facade tarifaire."""
     try:
-        positions = get_facade_sub_positions(iso3, hs6)
+        positions = get_facade_sub_positions(iso3, hs6, language=language)
         return {
             "success": True,
             "country_iso3": iso3.upper(),
@@ -104,7 +104,7 @@ async def search_commodities(
 ):
     """Recherche de marchandises par description"""
     try:
-        results = search_tariff_lines(iso3, q, language=language, limit=limit)
+        results = search_tariff_lines(iso3, q, limit=limit, language=language)
         return {
             "success": True,
             "query": q,
@@ -134,7 +134,7 @@ async def calculate_tariffs(
 
 @router.get("/regulatory/{iso3}/{hs6}")
 async def get_regulatory_details(iso3: str, hs6: str):
-    """Détails réglementaires via le facade tarifaire."""
+    """Détails réglementaires via la facade tarifaire."""
     try:
         return {
             "success": True,

@@ -485,7 +485,7 @@ def get_tariff_line(country_iso3, hs_code):
                 fiscal_advantages = [
                     {
                         'tax_code': m.get('code'),
-                        'condition_fr': f"ZLECAf applicable: {m.get('name', m.get('type', ''))}",
+                        'condition_fr': f"ZLECAF applicable: {m.get('name', m.get('type', ''))}",
                         'condition_en': f"AfCFTA applicable: {m.get('name', m.get('type', ''))}",
                         'reduced_rate_pct': m.get('zlecaf_rate'),
                     }
@@ -521,7 +521,7 @@ def get_tariff_line(country_iso3, hs_code):
     return None
 
 
-def get_sub_positions(country_iso3, hs6):
+def get_sub_positions(country_iso3, hs6, language='fr'):
     """
     Return all national sub-positions for a given HS6 code.
 
@@ -538,12 +538,12 @@ def get_sub_positions(country_iso3, hs6):
     appear in the nomenclature map.
     """
     country_iso3 = _validate_iso3(country_iso3)
-    hs6_normalized = hs6[:6]
+    hs6_normalized = hs6.replace('.', '').replace(' ', '')[:6]
 
     provider = _get_postgres_provider()
     if provider:
         try:
-            postgres_positions = provider.get_sub_positions(country_iso3, hs6_normalized, 'fr') or []
+            postgres_positions = provider.get_sub_positions(country_iso3, hs6_normalized, language) or []
             if postgres_positions:
                 return [
                     {
@@ -806,7 +806,6 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     # tax rates (source_quality=crawled_authentic), these rates take precedence
     # over the ETL-computed rates in the main DZA_tariffs.json.
     crawled_sp_entry = None
-    crawled_index = {}
     if not is_postgres_line:
         crawled_index = load_crawled_position_index(country_iso3)
         if crawled_index and hs_code_clean in crawled_index:
