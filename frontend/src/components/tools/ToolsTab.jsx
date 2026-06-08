@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import MonitoringDashboard from './MonitoringDashboard';
 import TariffDownloads from './TariffDownloads';
+import BusinessAtlasModule from './BusinessAtlasModule';
 
 export default function ToolsTab({ language = 'fr' }) {
   const texts = {
@@ -116,6 +117,8 @@ export default function ToolsTab({ language = 'fr' }) {
       </Card>
 
       <TariffDownloads language={language} />
+
+      <BusinessAtlasModule language={language} />
 
       {/* Widgets des outils */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
