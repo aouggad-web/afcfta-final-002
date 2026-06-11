@@ -22,7 +22,7 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
       subtitle: "Données officielles - UNCTAD Maritime Transport Review 2024",
       portStats: "Trafic Portuaire Africain",
       totalThroughput: "Trafic Total",
-      growth: "Croissance 2022-2023",
+      growth: "Croissance 2023-2024",
       globalShare: "Part du Commerce Mondial",
       topPorts: "Top Ports Africains (TEU)",
       algerianPorts: "Ports Algériens",
@@ -41,7 +41,7 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
       subtitle: "Official data - UNCTAD Maritime Transport Review 2024",
       portStats: "African Port Traffic",
       totalThroughput: "Total Throughput",
-      growth: "Growth 2022-2023",
+      growth: "Growth 2023-2024",
       globalShare: "Global Trade Share",
       topPorts: "Top African Ports (TEU)",
       algerianPorts: "Algerian Ports",
@@ -155,12 +155,12 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
                 <div>
                   <p className="text-blue-100 text-sm">{t.totalThroughput}</p>
                   <p className="text-3xl font-bold">
-                    {(portData.total_african_port_throughput_teu_2023 / 1000000).toFixed(1)} {t.mTeu}
+                    {(portData.total_african_port_throughput_teu_2024 / 1000000).toFixed(1)} {t.mTeu}
                   </p>
                 </div>
                 <Ship className="w-10 h-10 text-blue-200" />
               </div>
-              <p className="text-xs text-blue-200 mt-2">2023</p>
+              <p className="text-xs text-blue-200 mt-2">2024</p>
             </CardContent>
           </Card>
 
@@ -169,7 +169,7 @@ export default function UNCTADDataPanel({ language = 'fr' }) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-emerald-100 text-sm">{t.growth}</p>
-                  <p className="text-3xl font-bold">+{portData.growth_rate_2022_2023}%</p>
+                  <p className="text-3xl font-bold">+{portData.growth_rate_2023_2024}%</p>
                 </div>
                 <TrendingUp className="w-10 h-10 text-emerald-200" />
               </div>

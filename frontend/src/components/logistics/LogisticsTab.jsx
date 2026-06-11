@@ -31,7 +31,7 @@ export default function LogisticsTab({ language = 'fr' }) {
         <div className="flex items-center gap-3">
           <Badge className="bg-white/20 text-white hidden md:flex">
             <Database className="w-3 h-3 mr-1" />
-            68 ports • 120+ aéroports • 15 corridors
+            68 ports • 64+ aéroports • 15 corridors • LPI 54 pays
           </Badge>
           <PDFExportButton
             targetRef={contentRef}

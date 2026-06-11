@@ -94,11 +94,12 @@ class WTOService:
         entry = self._cache[key]
         return (datetime.utcnow() - entry["timestamp"]).seconds < self._cache_ttl
     
-    async def get_tariff_data(
+    def get_tariff_data(
         self,
         reporter: str,
         partner: str = None,
-        hs_code: Optional[str] = None
+        hs_code: Optional[str] = None,
+        product_code: Optional[str] = None
     ) -> Optional[Dict]:
         """
         Get tariff data for a country
@@ -107,71 +108,64 @@ class WTOService:
             reporter: ISO3 country code
             partner: Optional ISO3 partner country code
             hs_code: Optional HS product code
+            product_code: Alias for hs_code kept for backward compatibility
             
         Returns:
             Tariff data dictionary
         """
+        hs_code = hs_code or product_code
         cache_key = self._get_cache_key("tariff", reporter, partner or "all", hs_code or "all")
         if self._is_cache_valid(cache_key):
             return self._cache[cache_key]["data"]
         
-        # Build indicator code for MFN tariffs
-        indicator = "HS_M_0010"  # MFN Applied Duties
-        
+        endpoint = f"{self.BASE_URL}/data"
+
+        # Keep the legacy sync/retry request path used by the test suite.
         params = {
-            "i": indicator,
+            "i": "IDB_MFN_SMPL",
             "r": reporter,
-            "ps": "last",  # Latest available
-            "max": 500
+            "p": partner,
+            "fmt": "json"
         }
-        
-        if partner:
-            params["p"] = partner
+
         if hs_code:
             params["pc"] = hs_code
-        
-        headers = {}
-        if self.api_key:
-            headers["Ocp-Apim-Subscription-Key"] = self.api_key
             
         try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                response = await client.get(
-                    f"{self.BASE_URL}/data",
-                    params=params,
-                    headers=headers
-                )
-                
-                if response.status_code == 200:
-                    data = response.json()
-                    
-                    result = {
-                        "source": "WTO",
-                        "data": data.get("Dataset", []),
-                        "metadata": {
-                            "reporter": reporter,
-                            "partner": partner,
-                            "hs_code": hs_code,
-                            "indicator": indicator
-                        },
-                        "timestamp": datetime.utcnow().isoformat(),
-                        "latest_period": self._extract_latest_period(data.get("Dataset", []))
-                    }
-                    
-                    self._cache[cache_key] = {
-                        "data": result,
-                        "timestamp": datetime.utcnow()
-                    }
-                    
-                    return result
-                    
-                elif response.status_code == 401:
-                    logger.warning("WTO API: Unauthorized - API key may be required")
-                    return None
-                else:
-                    logger.error(f"WTO API error: {response.status_code}")
-                    return None
-                    
+            response = make_wto_request_with_retry(endpoint, params=params, max_retries=5)
+            
+            if response is None:
+                return None
+            
+            data = response.json()
+            dataset = data.get("Dataset", {})
+            series = dataset.get("Series", [])
+
+            latest_year = None
+            if series:
+                observations = series[0].get("Obs", [])
+                if observations:
+                    latest_year = observations[-1].get("Time")
+
+            result = {
+                "source": "WTO",
+                "data": data,
+                "metadata": {
+                    "reporter": reporter,
+                    "partner": partner,
+                    "hs_code": hs_code,
+                    "indicator": "IDB_MFN_SMPL"
+                },
+                "timestamp": datetime.utcnow().isoformat(),
+                "latest_period": latest_year
+            }
+
+            self._cache[cache_key] = {
+                "data": result,
+                "timestamp": datetime.utcnow()
+            }
+
+            return result
         except Exception as e:
             logger.error(f"WTO tariff data error: {str(e)}")
             return None
@@ -368,16 +362,21 @@ class WTOService:
         Returns:
             Comparison showing tariff reduction potential
         """
-        mfn_data = await self.get_tariff_data(country_code, hs_code=hs_code)
+        mfn_data = self.get_tariff_data(country_code, hs_code=hs_code)
         
         if not mfn_data or not mfn_data.get("data"):
             return None
             
         # Extract MFN rate
         mfn_rate = None
-        for record in mfn_data["data"]:
-            if record.get("Value"):
-                mfn_rate = float(record["Value"])
+        dataset = mfn_data["data"].get("Dataset", {})
+        series = dataset.get("Series", [])
+        for entry in series:
+            for record in entry.get("Obs", []):
+                if record.get("Value") is not None:
+                    mfn_rate = float(record["Value"])
+                    break
+            if mfn_rate is not None:
                 break
         
         if mfn_rate is None:
@@ -397,7 +396,7 @@ class WTOService:
             "timestamp": datetime.utcnow().isoformat()
         }
     
-    async def get_latest_available_year(self, country_code: str) -> Optional[str]:
+    def get_latest_available_year(self, country_code: str) -> Optional[str]:
         """
         Get the latest year with available tariff data
         
@@ -407,7 +406,7 @@ class WTOService:
         Returns:
             Latest year as string (e.g., "2023")
         """
-        data = await self.get_tariff_data(country_code)
+        data = self.get_tariff_data(country_code)
         
         if data and data.get("latest_period"):
             return data["latest_period"]

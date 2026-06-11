@@ -17,7 +17,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 # Database URL
-DATABASE_URL = "postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory"
+DATABASE_URL = os.environ.get("POSTGRES_URL", "")
+if not DATABASE_URL:
+    raise RuntimeError("POSTGRES_URL environment variable is not set")
 JSONL_DIR = "/app/engine/output"
 BATCH_SIZE = 5000
 
