@@ -23,10 +23,16 @@ credentials.json
 *.key
 *.pem
 
-# Logs
-logs/
-*.log
-*.log.*
+# Secrets
+.github/secrets/
+
+# Generated tariff data (large files — regenerate with engine/migrate_all.py)
+backend/data/tariffs/
+engine/output/*.jsonl
+engine/output/indexes/
+
+# === Node.js ===
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
