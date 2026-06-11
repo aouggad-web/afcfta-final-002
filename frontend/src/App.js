@@ -5,6 +5,7 @@ import { toast } from './hooks/use-toast';
 import { Toaster } from './components/ui/toaster';
 
 import './styles/theme.css';
+import './styles/theme-light.css';
 
 import AfcftaTopbar from './components/AfcftaTopbar';
 import KpiRow from './components/KpiRow';
@@ -60,7 +61,22 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [backendOnline, setBackendOnline] = useState(null);
+
+  // ── Gestion du thème (sombre / clair) ──
+  const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'light') {
+      root.classList.add('theme-light');
+      document.body.classList.add('theme-light');
+    } else {
+      root.classList.remove('theme-light');
+      document.body.classList.remove('theme-light');
+    }
+    localStorage.setItem('zlecaf_theme', theme);
+  }, [theme]);
+  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   const t = texts[language] || texts.fr;
 
@@ -120,16 +136,10 @@ function App() {
         ? data.countries
         : [];
       setCountries(countriesArray);
+      setBackendOnline(true);
     } catch (error) {
       console.error('Error loading countries:', error);
-      toast({
-        title: language === 'fr' ? 'Erreur' : 'Error',
-        description:
-          language === 'fr'
-            ? 'Impossible de charger la liste des pays'
-            : 'Unable to load country list',
-        variant: 'destructive',
-      });
+      setBackendOnline(false);
     }
   };
 
@@ -322,30 +332,42 @@ function App() {
     }
   };
 
-  const sidebarCollapsed =
-    typeof window !== 'undefined' &&
-    document.querySelector('.afcfta-sidebar.collapsed') !== null;
-
   return (
-    <div className="afcfta-layout">
-      <Toaster />
+    <>
+      <div className="kente-band" />
+      <div className="afcfta-layout-v2">
+        <Toaster />
 
-      {/* Sidebar navigation */}
-      <AfcftaTopbar
-        active={getTopbarActiveTab()}
-        onTabChange={handleTabChange}
-        language={language}
-        mobileOpen={mobileMenuOpen}
-        onMobileOpen={() => setMobileMenuOpen(true)}
-        onMobileClose={() => setMobileMenuOpen(false)}
-      />
+        {/* Horizontal top navigation */}
+        <AfcftaTopbar
+          active={getTopbarActiveTab()}
+          onTabChange={handleTabChange}
+          language={language}
+          theme={theme}
+          onThemeToggle={toggleTheme}
+        />
 
       {/* Main content area */}
-      <main className="afcfta-main" id="afcfta-main-content">
-        <div className="afcfta-shell">
+      <main className="afcfta-main-v2" id="afcfta-main-content">
+        <div className="afcfta-shell zellige-najm">
           {/* KPI Row - dashboard uniquement */}
           {activeTab === 'dashboard' && (
             <KpiRow language={language} stats={stats} />
+          )}
+
+          {/* Offline banner — non-dashboard tabs when backend is down */}
+          {backendOnline === false && activeTab !== 'dashboard' && (
+            <div className="info-panel zellige-arabesque" style={{ marginBottom: 20, borderColor: 'rgba(200,16,46,0.25)' }}>
+              <div className="info-panel-accent" style={{ background: 'var(--af-red)' }} />
+              <div className="info-panel-title">
+                {language === 'fr' ? '⚡ Serveur hors ligne' : '⚡ Server offline'}
+              </div>
+              <div className="info-panel-body">
+                {language === 'fr'
+                  ? 'Démarrez le backend (port 8000) pour charger les données de ce module. Les données tarifaires, statistiques et outils nécessitent le serveur API.'
+                  : 'Start the backend server (port 8000) to load data for this module. Tariff data, statistics and tools require the API server.'}
+              </div>
+            </div>
           )}
 
           {/* Contenu principal */}
@@ -353,6 +375,7 @@ function App() {
         </div>
       </main>
     </div>
+    </>
   );
 }
 

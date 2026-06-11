@@ -10,6 +10,7 @@ import logging
 from logistics_data import get_all_ports
 
 router = APIRouter(prefix="/etl")
+logger = logging.getLogger(__name__)
 
 ROOT_DIR = Path(__file__).parent.parent
 
@@ -39,7 +40,8 @@ async def run_etl_pipeline():
             "details": result
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erreur ETL: {str(e)}")
+        logger.error(f"ETL pipeline error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/status")
@@ -79,7 +81,8 @@ async def get_etl_status():
                 "message": "Aucun pipeline ETL exécuté"
             }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}")
+        logger.error(f"ETL route error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/trs-coverage")
@@ -126,4 +129,5 @@ async def get_trs_coverage():
             "note": "Seules les données TRS officielles (WCO, autorités portuaires) sont incluses. Aucune estimation."
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}")
+        logger.error(f"ETL route error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")

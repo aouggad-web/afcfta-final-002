@@ -121,7 +121,7 @@ async def list_cache_keys(pattern: str = "*", limit: int = 100):
             "keys": keys_with_ttl
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/config")

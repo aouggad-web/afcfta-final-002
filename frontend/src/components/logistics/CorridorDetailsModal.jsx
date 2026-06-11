@@ -44,7 +44,19 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
       transportOperatorsTitle: "Opérateurs de Transport",
       noOperators: "Aucun opérateur enregistré",
       locomotives: "locomotives",
-      trucks: "camions"
+      trucks: "camions",
+      network: "Réseau Logistique",
+      global3pl: "3PL Mondiaux",
+      regionalTrucking: "Transport Routier Régional",
+      railOperators: "Opérateurs Ferroviaires",
+      corridorBodies: "Organismes de Gestion",
+      localAgents: "Agents Locaux",
+      serviceProviders: "Prestataires",
+      noNetwork: "Réseau logistique non disponible",
+      city: "Ville",
+      phone: "Tél",
+      certifications: "Certifications",
+      openingHours: "Horaires",
     },
     en: {
       pidaPriority: "PIDA Priority",
@@ -69,7 +81,19 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
       transportOperatorsTitle: "Transport Operators",
       noOperators: "No operators registered",
       locomotives: "locomotives",
-      trucks: "trucks"
+      trucks: "trucks",
+      network: "Logistics Network",
+      global3pl: "Global 3PL",
+      regionalTrucking: "Regional Trucking",
+      railOperators: "Rail Operators",
+      corridorBodies: "Management Bodies",
+      localAgents: "Local Agents",
+      serviceProviders: "Service Providers",
+      noNetwork: "Logistics network data not available",
+      city: "City",
+      phone: "Phone",
+      certifications: "Certifications",
+      openingHours: "Opening Hours",
     }
   };
 
@@ -88,6 +112,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
   const nodes = corridor.nodes || [];
   const operators = corridor.operators || [];
   const osbpNodes = nodes.filter(n => n.is_osbp);
+  const logisticsNetwork = corridor.logistics_network || null;
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -190,11 +215,12 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
           </CardContent>
         </Card>
 
-        {/* Tabs for Nodes, Operators */}
+        {/* Tabs for Nodes, Operators, Network */}
         <Tabs defaultValue="nodes" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="nodes">🚧 {t.logisticsNodes} ({nodes.length})</TabsTrigger>
             <TabsTrigger value="operators">🚛 {t.transportOperators} ({operators.length})</TabsTrigger>
+            <TabsTrigger value="network">🔗 {t.network}</TabsTrigger>
           </TabsList>
 
           {/* Nodes Tab */}
@@ -289,6 +315,140 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Logistics Network Tab */}
+          <TabsContent value="network" className="mt-4">
+            {logisticsNetwork ? (
+              <div className="space-y-4">
+                {logisticsNetwork.global_3pl_present?.length > 0 && (
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-semibold text-blue-700">🌐 {t.global3pl}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex flex-wrap gap-2">
+                        {logisticsNetwork.global_3pl_present.map((c, i) => (
+                          <Badge key={i} className="bg-blue-100 text-blue-800">{c}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+                {logisticsNetwork.regional_trucking_operators?.length > 0 && (
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-semibold text-orange-700">🚛 {t.regionalTrucking}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex flex-wrap gap-2">
+                        {logisticsNetwork.regional_trucking_operators.map((c, i) => (
+                          <Badge key={i} className="bg-orange-100 text-orange-800">{c}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+                {logisticsNetwork.rail_operators_present?.length > 0 && (
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-semibold text-red-700">🚂 {t.railOperators}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex flex-wrap gap-2">
+                        {logisticsNetwork.rail_operators_present.map((c, i) => (
+                          <Badge key={i} className="bg-red-100 text-red-800">{c}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+                {logisticsNetwork.corridor_management_bodies?.length > 0 && (
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-semibold text-purple-700">🏛️ {t.corridorBodies}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="space-y-1">
+                        {logisticsNetwork.corridor_management_bodies.map((c, i) => (
+                          <p key={i} className="text-sm text-gray-700 flex items-start gap-2">
+                            <span className="text-purple-400">▸</span>{c}
+                          </p>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+                {logisticsNetwork.local_agents_by_country && Object.keys(logisticsNetwork.local_agents_by_country).length > 0 && (
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-semibold text-green-700">👥 {t.localAgents}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="space-y-4 max-h-80 overflow-y-auto">
+                        {Object.entries(logisticsNetwork.local_agents_by_country).map(([country, agents]) => (
+                          <div key={country}>
+                            <p className="text-xs font-bold text-gray-500 uppercase mb-2 border-b pb-1">{country}</p>
+                            <div className="space-y-2">
+                              {agents.map((agent, i) => (
+                                <div key={i} className="p-2 bg-green-50 rounded border-l-2 border-green-400">
+                                  <p className="font-semibold text-sm text-green-900">{agent.company_name}</p>
+                                  {agent.city && <p className="text-xs text-gray-500">📍 {agent.city}{agent.address ? ` – ${agent.address}` : ''}</p>}
+                                  <div className="flex flex-wrap gap-2 mt-1">
+                                    {agent.phone && (
+                                      <a href={`tel:${agent.phone}`} className="text-xs text-blue-600 hover:underline">📞 {agent.phone}</a>
+                                    )}
+                                    {agent.email && (
+                                      <a href={`mailto:${agent.email}`} className="text-xs text-blue-600 hover:underline">✉️ {agent.email}</a>
+                                    )}
+                                    {agent.website && (
+                                      <a href={agent.website} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline">🌐 {agent.website.replace(/^https?:\/\//, '')}</a>
+                                    )}
+                                  </div>
+                                  {agent.operating_hours && <p className="text-xs text-gray-500 mt-1">🕐 {agent.operating_hours}</p>}
+                                  {agent.services?.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                      {agent.services.map((s, si) => (
+                                        <Badge key={si} variant="secondary" className="text-xs bg-green-100 text-green-800">{s}</Badge>
+                                      ))}
+                                    </div>
+                                  )}
+                                  {agent.certifications?.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                      {agent.certifications.map((c, ci) => (
+                                        <Badge key={ci} className="text-xs bg-blue-100 text-blue-700">{c}</Badge>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+                {logisticsNetwork.service_providers_available?.length > 0 && (
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-semibold text-gray-700">⚙️ {t.serviceProviders}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex flex-wrap gap-2">
+                        {logisticsNetwork.service_providers_available.map((s, i) => (
+                          <Badge key={i} variant="outline">{s}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            ) : (
+              <div className="text-center p-8 text-gray-400">
+                <p>{t.noNetwork}</p>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
 

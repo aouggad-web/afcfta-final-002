@@ -120,84 +120,75 @@ function TradeProductsTable({ language = 'fr' }) {
   const renderGrowthBadge = (growth) => {
     if (growth > 0) {
       return (
-        <Badge className="bg-green-100 text-green-700 font-mono">
-          <TrendingUp className="w-3 h-3 mr-1" />
+        <span className="stats-chip up">
+          <TrendingUp className="w-3 h-3" />
           +{growth}%
-        </Badge>
+        </span>
       );
     } else if (growth < 0) {
       return (
-        <Badge className="bg-red-100 text-red-700 font-mono">
-          <TrendingDown className="w-3 h-3 mr-1" />
+        <span className="stats-chip down">
+          <TrendingDown className="w-3 h-3" />
           {growth}%
-        </Badge>
+        </span>
       );
     }
-    return <Badge className="bg-gray-100 text-gray-700">0%</Badge>;
+    return <span className="stats-chip flat">0%</span>;
   };
 
   const renderProductTable = (data, type) => {
     if (!data || !data.products) return null;
-    
+
     const isExport = type.includes('export');
     const isIntra = type.includes('intra');
-    
+    const accentColor = isIntra ? '#9B6EF5' : isExport ? '#1A7A4A' : '#1A6B8A';
+    const valueColor  = isIntra ? '#a78bfa'  : isExport ? '#34d399'  : '#38bdf8';
+
     return (
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      <div style={{ overflowX: 'auto' }}>
+        <table className="stats-table">
           <thead>
-            <tr className={`${isIntra ? 'bg-purple-50' : isExport ? 'bg-green-50' : 'bg-blue-50'}`}>
-              <th className="px-3 py-3 text-left font-bold text-gray-700 w-12">#</th>
-              <th className="px-3 py-3 text-left font-bold text-gray-700">{t.product}</th>
-              <th className="px-3 py-3 text-left font-bold text-gray-700 w-20">{t.hsCode}</th>
-              <th className="px-3 py-3 text-right font-bold text-gray-700 w-28">{t.value}</th>
-              <th className="px-3 py-3 text-right font-bold text-gray-700 w-20">{t.share}</th>
-              <th className="px-3 py-3 text-center font-bold text-gray-700 w-28">{t.growth}</th>
-              <th className="px-3 py-3 text-left font-bold text-gray-700">{isExport ? t.topExporters : t.topImporters}</th>
+            <tr style={{ borderLeft: `3px solid ${accentColor}` }}>
+              <th style={{ textAlign: 'left', width: 42 }}>#</th>
+              <th style={{ textAlign: 'left' }}>{t.product}</th>
+              <th style={{ textAlign: 'left', width: 80 }}>{t.hsCode}</th>
+              <th style={{ textAlign: 'right', width: 110 }}>{t.value}</th>
+              <th style={{ textAlign: 'right', width: 72 }}>{t.share}</th>
+              <th style={{ textAlign: 'center', width: 100 }}>{t.growth}</th>
+              <th style={{ textAlign: 'left' }}>{isExport ? t.topExporters : t.topImporters}</th>
             </tr>
           </thead>
           <tbody>
             {data.products.map((product, index) => (
-              <tr 
-                key={product.rank} 
-                className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${index < 3 ? 'bg-yellow-50/30' : ''}`}
-              >
-                <td className="px-3 py-3">
-                  <span className={`
-                    inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold
-                    ${index === 0 ? 'bg-yellow-400 text-white' : 
-                      index === 1 ? 'bg-gray-300 text-gray-700' : 
-                      index === 2 ? 'bg-amber-600 text-white' : 
-                      'bg-gray-100 text-gray-600'}
-                  `}>
+              <tr key={product.rank}>
+                <td>
+                  <span className={`stats-rank-badge ${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : 'rank-n'}`}>
                     {product.rank}
                   </span>
                 </td>
-                <td className="px-3 py-3">
-                  <div className="font-medium text-gray-800">{product.product}</div>
-                </td>
-                <td className="px-3 py-3">
-                  <Badge variant="outline" className="font-mono text-xs">
+                <td style={{ fontWeight: 600, color: '#EAE0D0' }}>{product.product}</td>
+                <td>
+                  <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', padding: '2px 6px', borderRadius: 4, background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(234,224,208,0.7)' }}>
                     {product.hs_code}
-                  </Badge>
+                  </span>
                 </td>
-                <td className="px-3 py-3 text-right">
-                  <span className={`font-bold ${isExport ? 'text-green-600' : 'text-blue-600'}`}>
+                <td style={{ textAlign: 'right' }}>
+                  <span style={{ fontWeight: 700, color: valueColor }}>
                     {formatValue(product.value_mln_usd)}
                   </span>
                 </td>
-                <td className="px-3 py-3 text-right">
-                  <span className="text-gray-600">{product.share_percent}%</span>
+                <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.8)' }}>
+                  {product.share_percent}%
                 </td>
-                <td className="px-3 py-3 text-center">
+                <td style={{ textAlign: 'center' }}>
                   {renderGrowthBadge(product.growth_2023_2024)}
                 </td>
-                <td className="px-3 py-3">
-                  <div className="flex flex-wrap gap-1">
+                <td>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                     {(isExport ? product.top_exporters : product.top_importers)?.slice(0, 3).map((country, i) => (
-                      <Badge key={i} variant="outline" className="text-xs bg-white">
+                      <span key={i} style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 100, background: `color-mix(in srgb, ${accentColor} 13%, transparent)`, border: `1px solid color-mix(in srgb, ${accentColor} 27%, transparent)`, color: 'rgba(234,224,208,0.8)' }}>
                         {country}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
                 </td>
@@ -211,176 +202,156 @@ function TradeProductsTable({ language = 'fr' }) {
 
   if (loading) {
     return (
-      <Card className="shadow-xl">
-        <CardContent className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto" />
-            <p className="mt-4 text-gray-600">{t.loading}</p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="stats-loading">
+        <div className="stats-spinner" />
+        <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.875rem' }}>{t.loading}</p>
+      </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      {/* Header Card */}
-      <Card className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold flex items-center gap-3">
-            <Package className="w-8 h-8" />
-            {t.title}
-          </CardTitle>
-          <CardDescription className="text-indigo-100 text-base">
-            {t.subtitle}
-          </CardDescription>
-        </CardHeader>
-        {summary && (
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                <p className="text-indigo-200 text-xs uppercase">{t.importWorld}</p>
-                <p className="text-2xl font-bold">{formatValue(summary.top_20_imports_world_total_mln_usd)}</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                <p className="text-indigo-200 text-xs uppercase">{t.exportWorld}</p>
-                <p className="text-2xl font-bold">{formatValue(summary.top_20_exports_world_total_mln_usd)}</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                <p className="text-indigo-200 text-xs uppercase">{t.importIntra}</p>
-                <p className="text-2xl font-bold">{formatValue(summary.top_20_intra_african_imports_total_mln_usd)}</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                <p className="text-indigo-200 text-xs uppercase">{t.exportIntra}</p>
-                <p className="text-2xl font-bold">{formatValue(summary.top_20_intra_african_exports_total_mln_usd)}</p>
-              </div>
+      {/* ── Header ─────────────────────────────────────────────── */}
+      <div className="stats-hero">
+        <div className="flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <h2 className="stats-hero-title flex items-center gap-2">
+              <Package style={{ width: 26, height: 26, color: '#D4891A', flexShrink: 0 }} />
+              {t.title}
+            </h2>
+            <p className="stats-hero-subtitle">{t.subtitle}</p>
+            <div className="stats-kente-bar" style={{ width: 180, marginTop: 10 }} />
+          </div>
+          {summary && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 flex-1 min-w-0" style={{ maxWidth: 540 }}>
+              {[
+                { label: t.importWorld,  value: formatValue(summary.top_20_imports_world_total_mln_usd),  color: '#38bdf8' },
+                { label: t.exportWorld,  value: formatValue(summary.top_20_exports_world_total_mln_usd),  color: '#34d399' },
+                { label: t.importIntra,  value: formatValue(summary.top_20_intra_african_imports_total_mln_usd), color: '#a78bfa' },
+                { label: t.exportIntra,  value: formatValue(summary.top_20_intra_african_exports_total_mln_usd), color: '#fb923c' },
+              ].map((item, i) => (
+                <div key={i} style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(6px)', borderRadius: 10, padding: '10px 14px', border: `1px solid color-mix(in srgb, ${item.color} 20%, transparent)` }}>
+                  <p style={{ fontSize: '0.65rem', color: 'rgba(142,155,174,0.8)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: 0 }}>{item.label}</p>
+                  <p style={{ fontSize: '1.2rem', fontWeight: 800, color: item.color, margin: '4px 0 0' }}>{item.value}</p>
+                </div>
+              ))}
             </div>
-          </CardContent>
-        )}
-      </Card>
+          )}
+        </div>
+      </div>
 
-      {/* Tabs for different tables */}
+      {/* ── Sub-tabs ───────────────────────────────────────────── */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-gray-100 p-1 h-auto gap-1">
-          <TabsTrigger 
-            value="imports-world" 
-            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white py-3 flex items-center gap-2"
-          >
-            <ArrowDownToLine className="w-4 h-4" />
-            {t.tabImportWorld}
-          </TabsTrigger>
-          <TabsTrigger 
-            value="exports-world" 
-            className="data-[state=active]:bg-green-600 data-[state=active]:text-white py-3 flex items-center gap-2"
-          >
-            <ArrowUpFromLine className="w-4 h-4" />
-            {t.tabExportWorld}
-          </TabsTrigger>
-          <TabsTrigger 
-            value="intra-imports" 
-            className="data-[state=active]:bg-purple-600 data-[state=active]:text-white py-3 flex items-center gap-2"
-          >
-            <Handshake className="w-4 h-4" />
-            {t.tabImportIntra}
-          </TabsTrigger>
-          <TabsTrigger 
-            value="intra-exports" 
-            className="data-[state=active]:bg-pink-600 data-[state=active]:text-white py-3 flex items-center gap-2"
-          >
-            <Globe className="w-4 h-4" />
-            {t.tabExportIntra}
-          </TabsTrigger>
+        <TabsList
+          className="inline-flex gap-1 p-1 rounded-xl w-full sm:w-auto"
+          style={{ background: 'rgba(18,24,32,0.85)', border: '1px solid rgba(212,137,26,0.18)' }}
+        >
+          {[
+            { value: 'imports-world', icon: <ArrowDownToLine className="w-4 h-4" />, label: t.tabImportWorld,  color: '#1A6B8A', active: '#38bdf8' },
+            { value: 'exports-world', icon: <ArrowUpFromLine className="w-4 h-4" />, label: t.tabExportWorld,  color: '#1A7A4A', active: '#34d399' },
+            { value: 'intra-imports', icon: <Handshake className="w-4 h-4" />,       label: t.tabImportIntra, color: '#7c3aed', active: '#a78bfa' },
+            { value: 'intra-exports', icon: <Globe className="w-4 h-4" />,           label: t.tabExportIntra, color: '#C8531A', active: '#fb923c' },
+          ].map(tab => (
+            <TabsTrigger
+              key={tab.value}
+              value={tab.value}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all"
+              style={{
+                background: activeTab === tab.value ? `${tab.color}cc` : 'transparent',
+                color: activeTab === tab.value ? '#EAE0D0' : 'rgba(142,155,174,0.65)',
+                boxShadow: activeTab === tab.value ? `0 2px 8px ${tab.color}55` : 'none',
+              }}
+            >
+              {tab.icon}
+              <span className="hidden sm:inline">{tab.label}</span>
+            </TabsTrigger>
+          ))}
         </TabsList>
 
         {/* Imports from World */}
         <TabsContent value="imports-world">
-          <Card className="shadow-lg border-t-4 border-t-blue-500">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
-              <CardTitle className="text-xl text-blue-700 flex items-center gap-2">
-                <ArrowDownToLine className="w-6 h-6" />
+          <div className="stats-chart-card">
+            <div className="stats-chart-header blue">
+              <div className="stats-chart-title blue">
+                <ArrowDownToLine className="w-5 h-5" />
                 {language === 'en' ? t.titleImportWorld : importsWorld?.title}
-              </CardTitle>
-              <CardDescription className="flex items-center gap-2">
-                <Info className="w-4 h-4" />
+              </div>
+              <div className="stats-chart-subtitle">
+                <Info className="w-3 h-3 inline mr-1" />
                 {t.source}: {importsWorld?.source} | {t.year}: {importsWorld?.year}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
+              </div>
+            </div>
+            <div style={{ padding: 0 }}>
               {renderProductTable(importsWorld, 'imports-world')}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </TabsContent>
 
         {/* Exports to World */}
         <TabsContent value="exports-world">
-          <Card className="shadow-lg border-t-4 border-t-green-500">
-            <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
-              <CardTitle className="text-xl text-green-700 flex items-center gap-2">
-                <ArrowUpFromLine className="w-6 h-6" />
+          <div className="stats-chart-card">
+            <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(52,211,153,0.2)' }}>
+              <div className="stats-chart-title" style={{ color: '#34d399' }}>
+                <ArrowUpFromLine className="w-5 h-5" />
                 {language === 'en' ? t.titleExportWorld : exportsWorld?.title}
-              </CardTitle>
-              <CardDescription className="flex items-center gap-2">
-                <Info className="w-4 h-4" />
+              </div>
+              <div className="stats-chart-subtitle">
+                <Info className="w-3 h-3 inline mr-1" />
                 {t.source}: {exportsWorld?.source} | {t.year}: {exportsWorld?.year}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
+              </div>
+            </div>
+            <div style={{ padding: 0 }}>
               {renderProductTable(exportsWorld, 'exports-world')}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </TabsContent>
 
         {/* Intra-African Imports */}
         <TabsContent value="intra-imports">
-          <Card className="shadow-lg border-t-4 border-t-purple-500">
-            <CardHeader className="bg-gradient-to-r from-purple-50 to-violet-50">
-              <CardTitle className="text-xl text-purple-700 flex items-center gap-2">
-                <Handshake className="w-6 h-6" />
+          <div className="stats-chart-card">
+            <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(167,139,250,0.2)' }}>
+              <div className="stats-chart-title violet">
+                <Handshake className="w-5 h-5" />
                 {language === 'en' ? t.titleImportIntra : intraImports?.title}
-              </CardTitle>
-              <CardDescription className="flex items-center gap-2">
-                <Info className="w-4 h-4" />
+              </div>
+              <div className="stats-chart-subtitle">
+                <Info className="w-3 h-3 inline mr-1" />
                 {t.source}: {intraImports?.source} | {t.year}: {intraImports?.year}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
+              </div>
+            </div>
+            <div style={{ padding: 0 }}>
               {renderProductTable(intraImports, 'intra-imports')}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </TabsContent>
 
         {/* Intra-African Exports */}
         <TabsContent value="intra-exports">
-          <Card className="shadow-lg border-t-4 border-t-pink-500">
-            <CardHeader className="bg-gradient-to-r from-pink-50 to-rose-50">
-              <CardTitle className="text-xl text-pink-700 flex items-center gap-2">
-                <Globe className="w-6 h-6" />
+          <div className="stats-chart-card">
+            <div className="stats-chart-header terra">
+              <div className="stats-chart-title terra">
+                <Globe className="w-5 h-5" />
                 {language === 'en' ? t.titleExportIntra : intraExports?.title}
-              </CardTitle>
-              <CardDescription className="flex items-center gap-2">
-                <Info className="w-4 h-4" />
+              </div>
+              <div className="stats-chart-subtitle">
+                <Info className="w-3 h-3 inline mr-1" />
                 {t.source}: {intraExports?.source} | {t.year}: {intraExports?.year}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
+              </div>
+            </div>
+            <div style={{ padding: 0 }}>
               {renderProductTable(intraExports, 'intra-exports')}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
 
       {/* Footer Info */}
-      <Card className="bg-gray-50 border-gray-200">
-        <CardContent className="py-4">
-          <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-gray-400 mt-0.5" />
-            <div className="text-sm text-gray-600">
-              <p><strong>{language === 'en' ? 'Sources' : 'Sources'}:</strong> {t.footerSources}</p>
-              <p className="mt-1">{t.footerNote}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="stats-source-note" style={{ background: 'rgba(18,24,32,0.5)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.06)' }}>
+        <Info className="w-4 h-4 inline mr-1 opacity-60" />
+        <strong>{language === 'en' ? 'Sources' : 'Sources'}:</strong> {t.footerSources}
+        <br />
+        <span style={{ opacity: 0.8 }}>{t.footerNote}</span>
+      </div>
     </div>
   );
 }

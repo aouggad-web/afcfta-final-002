@@ -100,7 +100,7 @@ async def get_production(
         }
     except Exception as e:
         logger.error(f"Error fetching FAOSTAT production data: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/production/{country_iso3}")
@@ -129,7 +129,7 @@ async def get_country_production(
         return data
     except Exception as e:
         logger.error(f"Error fetching production for {country_iso3}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/country-detail/{country_iso3}")
@@ -281,7 +281,7 @@ async def get_commodity_top_producers(
         }
     except Exception as e:
         logger.error(f"Error fetching top producers for {commodity_code}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/trends/{country_iso3}/{commodity_code}")
@@ -318,7 +318,7 @@ async def get_commodity_trends(
         return data
     except Exception as e:
         logger.error(f"Error fetching trends for {country_iso3}/{commodity_code}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/countries")
@@ -402,4 +402,4 @@ async def compare_countries(
         }
     except Exception as e:
         logger.error(f"Error comparing countries: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")

@@ -19,10 +19,9 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 # Configuration
-DATABASE_URL = os.environ.get(
-    "DATABASE_URL",
-    "postgresql://afcfta:afcfta2026@localhost:5432/afcfta_regulatory"
-)
+DATABASE_URL = os.environ.get("POSTGRES_URL") or os.environ.get("DATABASE_URL", "")
+if not DATABASE_URL:
+    raise RuntimeError("Set POSTGRES_URL (or DATABASE_URL) environment variable")
 DATA_DIR = Path("/app/engine/output")
 
 # Tous les pays africains avec leurs infos

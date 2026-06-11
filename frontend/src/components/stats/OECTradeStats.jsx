@@ -56,6 +56,9 @@ const HS_LEVELS = [
 // Available HS revisions
 const HS_REVISIONS = ['2022', '2017', '2012'];
 
+// HS level digits lookup
+const HS_LEVEL_DIGITS = { HS2: 2, HS4: 4, HS6: 6 };
+
 // Popular HS codes by level and language
 const POPULAR_HS_CODES = {
   HS2: {
@@ -131,9 +134,13 @@ export default function OECTradeStats({ language = 'fr' }) {
   const [hsCodeName, setHsCodeName] = useState(''); // Dénomination du code HS
   const [secondCountry, setSecondCountry] = useState('');
 
-  // Classification HS
+  // Classification HS (product tab)
   const [hsLevel, setHsLevel] = useState('HS6'); // HS2 / HS4 / HS6
   const [hsRevision, setHsRevision] = useState('2022'); // 2022 / 2017 / 2012
+
+  // Classification HS for country and bilateral tabs
+  const [countryHsLevel, setCountryHsLevel] = useState('HS4'); // HS2 / HS4 / HS6
+  const [bilateralHsLevel, setBilateralHsLevel] = useState('HS4'); // HS2 / HS4 / HS6
   
   // Résultats
   const [tradeData, setTradeData] = useState(null);
@@ -262,7 +269,7 @@ export default function OECTradeStats({ language = 'fr' }) {
   };
 
   // Get digits count for current HS level
-  const hsLevelDigits = { HS2: 2, HS4: 4, HS6: 6 }[hsLevel] || 6;
+  const hsLevelDigits = HS_LEVEL_DIGITS[hsLevel] || 6;
 
   // HS level description text
   const hsLevelDescription = { HS2: t.hs2Description, HS4: t.hs4Description, HS6: t.hs6Description }[hsLevel];
@@ -344,7 +351,7 @@ export default function OECTradeStats({ language = 'fr' }) {
         : `${API}/oec/imports/${selectedCountry}`;
       
       const response = await axios.get(endpoint, {
-        params: { year: selectedYear, limit: 20 }
+        params: { year: selectedYear, limit: 20, hs_level: countryHsLevel }
       });
       
       setTradeData(response.data);
@@ -354,7 +361,7 @@ export default function OECTradeStats({ language = 'fr' }) {
     } finally {
       setLoading(false);
     }
-  }, [selectedCountry, selectedYear, selectedFlow]);
+  }, [selectedCountry, selectedYear, selectedFlow, countryHsLevel]);
 
   // Recherche par produit
   const searchByProduct = useCallback(async () => {
@@ -385,7 +392,7 @@ export default function OECTradeStats({ language = 'fr' }) {
     try {
       const response = await axios.get(
         `${API}/oec/bilateral/${selectedCountry}/${secondCountry}`,
-        { params: { year: selectedYear, limit: 20 } }
+        { params: { year: selectedYear, limit: 20, hs_level: bilateralHsLevel } }
       );
       
       setBilateralData(response.data);
@@ -395,7 +402,20 @@ export default function OECTradeStats({ language = 'fr' }) {
     } finally {
       setLoading(false);
     }
-  }, [selectedCountry, secondCountry, selectedYear]);
+  }, [selectedCountry, secondCountry, selectedYear, bilateralHsLevel]);
+
+  // Stable HS level click handlers to avoid inline function creation in map
+  const handleCountryHsLevelClick = useCallback((e) => {
+    const level = e.currentTarget.dataset.level;
+    setCountryHsLevel(level);
+    setTradeData(null);
+  }, []);
+
+  const handleBilateralHsLevelClick = useCallback((e) => {
+    const level = e.currentTarget.dataset.level;
+    setBilateralHsLevel(level);
+    setBilateralData(null);
+  }, []);
 
   // Mapping des noms de pays OEC vers ISO3 pour les drapeaux
   // Uses the mapping dynamically loaded from the backend endpoint to avoid hardcoding country name variations in the frontend
@@ -408,21 +428,23 @@ export default function OECTradeStats({ language = 'fr' }) {
   };
 
   // Chart data preparation - adapté selon le contexte
-  const prepareChartData = (data, type = 'country', limit = 10) => {
+  const prepareChartData = (data, type = 'country', limit = 10, hsLevelParam = null) => {
     if (!data || !data.data) return [];
     
     return data.data.slice(0, limit).map((item, index) => {
       let name = '';
       
       if (type === 'country') {
-        // Pour la vue par pays : afficher les produits (HS6)
-        name = item['HS6'] || item['HS4'] || `Produit #${index + 1}`;
+        // Pour la vue par pays : afficher les produits au niveau HS sélectionné
+        const level = hsLevelParam || 'HS4';
+        name = item[level] || `Produit #${index + 1}`;
       } else if (type === 'product') {
         // Pour la vue par produit : afficher les pays
         name = item['Exporter Country'] || item['Importer Country'] || `Pays #${index + 1}`;
       } else if (type === 'bilateral') {
-        // Pour le commerce bilatéral : afficher les produits
-        name = item['HS6'] || item['HS4'] || `Produit #${index + 1}`;
+        // Pour le commerce bilatéral : afficher les produits au niveau HS sélectionné
+        const level = hsLevelParam || 'HS4';
+        name = item[level] || `Produit #${index + 1}`;
       }
       
       return {
@@ -491,7 +513,8 @@ export default function OECTradeStats({ language = 'fr' }) {
         <TabsContent value="country" className="space-y-6 mt-6">
           <Card className="shadow-lg border-slate-200">
             <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-slate-700">{t.selectCountry}</Label>
                   <Select value={selectedCountry} onValueChange={setSelectedCountry}>
@@ -537,8 +560,38 @@ export default function OECTradeStats({ language = 'fr' }) {
                     </SelectContent>
                   </Select>
                 </div>
+                </div>
 
-                <div className="flex items-end">
+                <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4">
+                  <div className="space-y-2 flex-1">
+                    <Label className="text-sm font-medium text-slate-700">{t.hsLevel}</Label>
+                    <div className="flex gap-2">
+                      {HS_LEVELS.map((level) => {
+                        const colors = HS_LEVEL_COLORS[level.value];
+                        const isActive = countryHsLevel === level.value;
+                        return (
+                          <button
+                            key={level.value}
+                            onClick={handleCountryHsLevelClick}
+                            data-level={level.value}
+                            data-testid={`country-hs-level-${level.value.toLowerCase()}`}
+                            className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold border-2 transition-all ${
+                              isActive
+                                ? `${colors.badge} border-current`
+                                : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-slate-300'
+                            }`}
+                          >
+                            {level.value}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      {t[`hs${countryHsLevel.slice(2)}Description`] || t.hs4Description}
+                    </p>
+                  </div>
+
+                  <div className="w-full sm:w-40">
                   <Button 
                     onClick={searchByCountry}
                     disabled={!selectedCountry || loading}
@@ -552,6 +605,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                     )}
                     {loading ? t.loading : t.search}
                   </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -589,7 +643,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   {/* Chart - Produits principaux */}
                   <div className="h-56">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={prepareChartData(tradeData, 'country')} layout="vertical">
+                      <BarChart data={prepareChartData(tradeData, 'country', 10, countryHsLevel)} layout="vertical">
                         <XAxis type="number" tickFormatter={(v) => formatValue(v)} />
                         <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 10 }} />
                         <Tooltip 
@@ -624,25 +678,29 @@ export default function OECTradeStats({ language = 'fr' }) {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {tradeData.data?.slice(0, 15).map((item, idx) => (
-                          <TableRow key={idx} className="hover:bg-slate-50">
-                            <TableCell className="font-medium text-slate-500">{idx + 1}</TableCell>
-                            <TableCell>
-                              <div className="flex items-start gap-2">
-                                <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 font-mono text-xs px-1.5 py-0.5 shrink-0">
-                                  {extractHSCode(item['HS6 ID'] || item['HS4 ID'], item['HS6 ID'] ? 'HS6' : 'HS4')}
-                                </Badge>
-                                <span className="font-medium text-sm">{item['HS6'] || item['HS4'] || '-'}</span>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right font-semibold text-emerald-700">
-                              {formatValue(item['Trade Value'] || 0)}
-                            </TableCell>
-                            <TableCell className="text-right text-sm text-blue-600">
-                              {formatQuantity(item['Quantity'] || 0)} t
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                        {tradeData.data?.slice(0, 15).map((item, idx) => {
+                            const hsIdKey = `${countryHsLevel} ID`;
+                            const hsNameKey = countryHsLevel;
+                            return (
+                            <TableRow key={idx} className="hover:bg-slate-50">
+                              <TableCell className="font-medium text-slate-500">{idx + 1}</TableCell>
+                              <TableCell>
+                                <div className="flex items-start gap-2">
+                                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 font-mono text-xs px-1.5 py-0.5 shrink-0">
+                                    {extractHSCode(item[hsIdKey], countryHsLevel)}
+                                  </Badge>
+                                  <span className="font-medium text-sm">{item[hsNameKey] || '-'}</span>
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-right font-semibold text-emerald-700">
+                                {formatValue(item['Trade Value'] || 0)}
+                              </TableCell>
+                              <TableCell className="text-right text-sm text-blue-600">
+                                {formatQuantity(item['Quantity'] || 0)} t
+                              </TableCell>
+                            </TableRow>
+                            );
+                          })}
                       </TableBody>
                     </Table>
                   </div>
@@ -899,7 +957,8 @@ export default function OECTradeStats({ language = 'fr' }) {
         <TabsContent value="bilateral" className="space-y-6 mt-6">
           <Card className="shadow-lg border-slate-200">
             <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-slate-700">{t.exporter}</Label>
                   <Select value={selectedCountry} onValueChange={setSelectedCountry}>
@@ -951,8 +1010,38 @@ export default function OECTradeStats({ language = 'fr' }) {
                     </SelectContent>
                   </Select>
                 </div>
+                </div>
 
-                <div className="flex items-end">
+                <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4">
+                  <div className="space-y-2 flex-1">
+                    <Label className="text-sm font-medium text-slate-700">{t.hsLevel}</Label>
+                    <div className="flex gap-2">
+                      {HS_LEVELS.map((level) => {
+                        const colors = HS_LEVEL_COLORS[level.value];
+                        const isActive = bilateralHsLevel === level.value;
+                        return (
+                          <button
+                            key={level.value}
+                            onClick={handleBilateralHsLevelClick}
+                            data-level={level.value}
+                            data-testid={`bilateral-hs-level-${level.value.toLowerCase()}`}
+                            className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold border-2 transition-all ${
+                              isActive
+                                ? `${colors.badge} border-current`
+                                : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-slate-300'
+                            }`}
+                          >
+                            {level.value}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      {t[`hs${bilateralHsLevel.slice(2)}Description`] || t.hs4Description}
+                    </p>
+                  </div>
+
+                  <div className="w-full sm:w-40">
                   <Button 
                     onClick={searchBilateral}
                     disabled={!selectedCountry || !secondCountry || loading}
@@ -966,6 +1055,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                     )}
                     {loading ? t.loading : t.search}
                   </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -1012,7 +1102,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   {/* Bar Chart - Produits échangés */}
                   <div className="h-56">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={prepareChartData(bilateralData, 'bilateral', 8)}>
+                      <BarChart data={prepareChartData(bilateralData, 'bilateral', 8, bilateralHsLevel)}>
                         <XAxis dataKey="name" tick={{ fontSize: 9 }} angle={-45} textAnchor="end" height={70} />
                         <YAxis tickFormatter={(v) => formatValue(v)} />
                         <Tooltip 
@@ -1020,7 +1110,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                           labelFormatter={(label, payload) => payload?.[0]?.payload?.fullName || label}
                         />
                         <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                          {prepareChartData(bilateralData, 'bilateral', 8).map((entry, index) => (
+                          {prepareChartData(bilateralData, 'bilateral', 8, bilateralHsLevel).map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.fill} />
                           ))}
                         </Bar>
@@ -1047,15 +1137,18 @@ export default function OECTradeStats({ language = 'fr' }) {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {bilateralData.data?.slice(0, 15).map((item, idx) => (
+                        {bilateralData.data?.slice(0, 15).map((item, idx) => {
+                          const hsIdKey = `${bilateralHsLevel} ID`;
+                          const hsNameKey = bilateralHsLevel;
+                          return (
                           <TableRow key={idx} className="hover:bg-slate-50">
                             <TableCell className="font-medium text-slate-500">{idx + 1}</TableCell>
                             <TableCell>
                               <div className="flex items-start gap-2">
                                 <Badge variant="secondary" className="bg-orange-100 text-orange-700 font-mono text-xs px-1.5 py-0.5 shrink-0">
-                                  {extractHSCode(item['HS6 ID'] || item['HS4 ID'], item['HS6 ID'] ? 'HS6' : 'HS4')}
+                                  {extractHSCode(item[hsIdKey], bilateralHsLevel)}
                                 </Badge>
-                                <span className="font-medium text-sm">{item['HS6'] || item['HS4'] || '-'}</span>
+                                <span className="font-medium text-sm">{item[hsNameKey] || '-'}</span>
                               </div>
                             </TableCell>
                             <TableCell className="text-right font-semibold text-orange-700">
@@ -1065,7 +1158,8 @@ export default function OECTradeStats({ language = 'fr' }) {
                               {formatQuantity(item['Quantity'] || 0)} t
                             </TableCell>
                           </TableRow>
-                        ))}
+                          );
+                        })}
                       </TableBody>
                     </Table>
                   </div>

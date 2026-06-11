@@ -4,6 +4,7 @@ Complete tariff data for 54 African countries with ZLECAf rates
 """
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
+import logging
 
 from constants import AFRICAN_COUNTRIES
 from etl.hs_codes_data import get_hs_chapters, get_hs6_code
@@ -41,6 +42,7 @@ from etl.country_hs6_detailed import (
 )
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 # =============================================================================
 # HS6 TARIFFS ENDPOINTS
@@ -479,7 +481,8 @@ async def calculate_detailed_tariff_endpoint(
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Tariff calculation error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/calculate/detailed/{country_code}/{hs_code}")

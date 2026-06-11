@@ -2,7 +2,7 @@
 Logistics routes - Ports, Airports, Land corridors, Free Zones
 Multimodal logistics platform for African trade infrastructure
 """
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 from typing import Optional
 
 from logistics_data import (
@@ -18,6 +18,11 @@ from logistics_air_data import (
     get_top_airports_by_cargo,
     search_airports
 )
+from logistics_air_fees_data import (
+    get_air_fee_airports,
+    get_commodity_types,
+    get_air_freight_cost,
+)
 from free_zones_data import get_free_zones_by_country
 from logistics_fees_data import (
     get_all_shipping_routes,
@@ -26,6 +31,7 @@ from logistics_fees_data import (
     get_port_thc,
     get_all_port_thc,
     get_total_cost,
+    get_fee_ports,
 )
 from logistics_land_data import (
     get_all_corridors,
@@ -38,6 +44,11 @@ from logistics_land_data import (
     get_operators_by_type,
     search_corridors,
     get_corridors_statistics
+)
+from logistics_land_fees_data import (
+    get_land_corridors_list,
+    get_cargo_types as get_land_cargo_types,
+    get_land_freight_cost,
 )
 from logistics_operators_data import (
     get_all_operators_with_contacts,
@@ -271,6 +282,58 @@ async def get_air_logistics_statistics():
     }
 
 # ==========================================
+# AIR FREIGHT CALCULATOR ENDPOINTS
+# ==========================================
+
+@router.get("/air/fees/airports")
+async def get_air_freight_airports():
+    """Liste des aéroports africains sélectionnables dans le calculateur de fret aérien."""
+    airports = get_air_fee_airports()
+    return {
+        "count": len(airports),
+        "airports": airports,
+        "data_year": 2024,
+        "source": "IATA TACT 2024, registre cargo panafricain (64 aéroports)",
+    }
+
+
+@router.get("/air/fees/commodities")
+async def get_air_freight_commodities():
+    """Types de marchandise et leurs coefficients de tarification."""
+    return {"commodities": get_commodity_types()}
+
+
+@router.get("/air/fees/cost")
+async def get_air_freight_cost_endpoint(
+    origin: str,
+    destination: str,
+    weight_kg: float,
+    volume_m3: Optional[float] = None,
+    commodity: str = "general",
+):
+    """
+    Calcule le coût de fret aérien (poids taxable + surcharges) entre deux aéroports.
+
+    Query params :
+    - origin / destination : codes IATA (ex: NBO, LOS)
+    - weight_kg : poids brut réel (kg)
+    - volume_m3 : volume total (m³, optionnel) — pour le poids volumétrique (167 kg/m³)
+    - commodity : general | perishable | pharma | dangerous | valuable | live
+    """
+    if weight_kg <= 0:
+        raise HTTPException(status_code=400, detail="weight_kg doit être supérieur à 0")
+    result = get_air_freight_cost(
+        origin.upper(), destination.upper(), weight_kg, volume_m3, commodity
+    )
+    if not result:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Aéroports invalides ou identiques ({origin.upper()} → {destination.upper()}).",
+        )
+    return result
+
+
+# ==========================================
 # FREE ZONES ENDPOINTS
 # ==========================================
 
@@ -385,8 +448,69 @@ async def get_land_logistics_statistics():
 
 
 # ==========================================
+# LAND FREIGHT CALCULATOR ENDPOINTS
+# ==========================================
+
+@router.get("/land/fees/corridors")
+async def get_land_freight_corridors():
+    """Liste des corridors terrestres sélectionnables dans le calculateur de fret."""
+    corridors = get_land_corridors_list()
+    return {
+        "count": len(corridors),
+        "corridors": corridors,
+        "data_year": 2024,
+        "source": "PIDA, Banque Mondiale SSATP, UNECA — corridors africains 2024",
+    }
+
+
+@router.get("/land/fees/cargo-types")
+async def get_land_freight_cargo_types():
+    """Types de marchandise et coefficients pour le fret terrestre."""
+    return {"cargo_types": get_land_cargo_types()}
+
+
+@router.get("/land/fees/cost")
+async def get_land_freight_cost_endpoint(
+    corridor_id: str,
+    mode: str = "road",
+    weight_tons: float = 30.0,
+    cargo_type: str = "general",
+):
+    """
+    Calcule le coût de fret terrestre (route/rail) sur un corridor africain.
+
+    Query params :
+    - corridor_id : identifiant du corridor (ex: CORR-ABIDJAN-LAGOS-002)
+    - mode : 'road' ou 'rail' (selon disponibilité du corridor)
+    - weight_tons : tonnage transporté (tonnes, défaut 30 = un camion)
+    - cargo_type : general | container | perishable | dangerous | bulk
+    """
+    if weight_tons <= 0:
+        raise HTTPException(status_code=400, detail="weight_tons doit être supérieur à 0")
+    result = get_land_freight_cost(corridor_id, mode, weight_tons, cargo_type)
+    if not result:
+        raise HTTPException(status_code=404, detail=f"Corridor '{corridor_id}' introuvable.")
+    return result
+
+
+# ==========================================
 # PORT-TO-PORT SHIPPING FEES ENDPOINTS
 # ==========================================
+
+@router.get("/fees/ports")
+async def get_fee_calculator_ports():
+    """
+    Liste des ports africains sélectionnables dans le calculateur de fret maritime.
+    Retourne locode, nom, pays, drapeau et région pour chaque port couvert.
+    """
+    ports = get_fee_ports()
+    return {
+        "count": len(ports),
+        "ports": ports,
+        "data_year": 2024,
+        "source": "Drewry Maritime Research 2024, UNCTAD MRTS 2024, barèmes portuaires officiels",
+    }
+
 
 @router.get("/fees/routes")
 async def get_shipping_routes(origin: Optional[str] = None):
