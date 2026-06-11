@@ -15,9 +15,21 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from schemas.canonical_model import (
     CommodityCode, Measure, Requirement, FiscalAdvantage,
-    CanonicalTariffLine, MeasureType, RequirementType
+    CanonicalTariffLine, MeasureType, RequirementType,
+    Provenance, DataStatus, ReliabilityGrade, SCHEMA_VERSION,
 )
 from adapters.base_adapter import BaseAdapter
+
+_SYNTHETIC_PROVENANCE = Provenance(
+    data_status=DataStatus.SYNTHETIC,
+    reliability=ReliabilityGrade.D,
+    source_name="Données synthétiques générées par template (generic_adapter)",
+    notes=(
+        "Ces données sont générées par template à partir de la nomenclature "
+        "SH6 mondiale. Les taux, formalités et codes nationaux ne correspondent "
+        "pas à des sources officielles vérifiées."
+    ),
+)
 
 
 # Configuration spécifique par pays
@@ -185,9 +197,11 @@ class GenericAdapter(BaseAdapter):
             total_zlecaf_pct=total_zlecaf,
             savings_pct=savings,
             source_file=str(self.source_path),
-            last_updated=datetime.now()
+            last_updated=datetime.now(),
+            schema_version=SCHEMA_VERSION,
+            provenance=_SYNTHETIC_PROVENANCE,
         )
-    
+
     def _transform_hs6_line(self, line: Dict) -> CanonicalTariffLine:
         """Transforme une ligne HS6 sans sous-position"""
         hs6 = line.get("hs6", "")
@@ -220,9 +234,11 @@ class GenericAdapter(BaseAdapter):
             total_zlecaf_pct=total_zlecaf,
             savings_pct=savings,
             source_file=str(self.source_path),
-            last_updated=datetime.now()
+            last_updated=datetime.now(),
+            schema_version=SCHEMA_VERSION,
+            provenance=_SYNTHETIC_PROVENANCE,
         )
-    
+
     def _extract_measures(self, parent: Dict, sub: Dict = None) -> list:
         """Extrait les mesures tarifaires"""
         measures = []

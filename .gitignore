@@ -24,8 +24,10 @@ dist/
 # Secrets
 .github/secrets/
 
-# Generated tariff data (large files)
+# Generated tariff data (large files — regenerate with engine/migrate_all.py)
 backend/data/tariffs/
+engine/output/*.jsonl
+engine/output/indexes/
 
 # === Node.js ===
 node_modules/
