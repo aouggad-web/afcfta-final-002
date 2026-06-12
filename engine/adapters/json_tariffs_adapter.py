@@ -1,32 +1,41 @@
 """
-Adaptateur générique — fichiers JSON tarifaires multi-pays
-===========================================================
+Adaptateur générique — fichiers JSON tarifaires officiels multi-pays
+====================================================================
 
-Ingère les fichiers {ISO3}_tariffs.json produits par le pipeline de collecte
-(format ``national_positions_*``). Compatible avec tous les blocs régionaux
-identifiés : TEC CEDEAO, CET EAC, TEC CEMAC, et tarifs nationaux.
+**POLITIQUE DE DONNÉES : données réelles et vérifiables uniquement.**
 
-Règles de provenance appliquées par couche :
-  DD (bandes CET)            → PARTIAL / B  (bandes correctes, erreurs ponctuelles)
-  Prélèvements communautaires → PARTIAL / B
-  Accises / DA / EXCISE      → PARTIAL / B
-  TVA / GST (flat, sans exo) → SYNTHETIC / D  (aucune exonération modélisée)
-  zlecaf_rate                → ignoré  (= 10 % × DD, formula, pas de vrai calendrier)
+Ce module refuse d'ingérer des fichiers générés automatiquement sans
+référence à un document officiel vérifiable. Tout fichier sans
+``source_document`` (référence à une publication officielle) est
+automatiquement classé SYNTHETIC/D et rejeté si le mode strict est actif.
 
-Entrée  : un ou plusieurs fichiers {ISO3}_tariffs.json
-Sortie  : un JSONL canonique v4 par pays ({ISO3}_canonical.jsonl)
+Champs obligatoires dans le JSON source pour obtenir PARTIAL/B ou mieux :
+  source_document  : référence précise (titre + URL + date de publication)
+  source_url       : URL de téléchargement direct du document
+  data_source      : identifiant de la source (ex. "rra_tariff_2024")
+
+Règles de provenance :
+  DD avec source_document vérifié  → PARTIAL / B
+  Prélèvements communautaires       → PARTIAL / B si documentés
+  TVA sans exonérations modélisées  → SYNTHETIC / D (flag dans observation)
+  zlecaf_rate calculé par formule   → ignoré (non ingéré)
+  Fichier sans source_document      → SYNTHETIC / D (ou REFUS si strict)
 
 Usage :
+    # Mode strict (recommandé en production)
     python engine/adapters/json_tariffs_adapter.py \\
         engine/sources/RWA_tariffs.json \\
-        engine/sources/LBR_tariffs.json \\
-        engine/sources/CMR_tariffs.json \\
-        engine/output/
+        engine/output/ --strict
+
+    # Mode permissif (ingestion avec statut SYNTHETIC si pas de source_document)
+    python engine/adapters/json_tariffs_adapter.py \\
+        engine/sources/RWA_tariffs.json \\
+        engine/output/ --allow-synthetic
 """
 
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -39,40 +48,87 @@ from schemas.canonical_model import (
 )
 
 # ----------------------------------------------------------------------
+# Validation de la source
+# ----------------------------------------------------------------------
+
+class SourceNotVerifiedException(ValueError):
+    """Levée quand un fichier ne contient pas de référence documentaire vérifiable."""
+
+
+def _validate_source(data: dict, strict: bool = True) -> tuple[DataStatus, ReliabilityGrade, str]:
+    """
+    Vérifie si le fichier JSON a une provenance vérifiable.
+
+    Retourne (data_status, reliability, warning_message).
+
+    Un fichier est considéré non-vérifiable si :
+    - il n'a pas de champ ``source_document``
+    - il a été généré aujourd'hui (même jour UTC → pipeline automatique)
+    - son ``data_source`` contient 'authentic' auto-déclaré sans document
+    """
+    source_doc = data.get("source_document", "").strip()
+    generated_at = data.get("generated_at", "")
+    country = data.get("country_code", "?")
+
+    # Détection fichier généré automatiquement : même jour UTC que maintenant
+    auto_generated = False
+    if generated_at:
+        try:
+            gen_date = datetime.fromisoformat(
+                generated_at.replace("Z", "+00:00")).date()
+            today = datetime.now(timezone.utc).date()
+            if gen_date == today:
+                auto_generated = True
+        except ValueError:
+            pass
+
+    # Un fichier qui se déclare 'authentic' sans source_document est suspect
+    auto_claimed = (data.get("data_source", "").endswith("_authentic")
+                    and not source_doc)
+
+    has_real_source = bool(source_doc) and not auto_generated
+
+    if has_real_source:
+        return DataStatus.PARTIAL, ReliabilityGrade.B, ""
+
+    # Pas de source vérifiable
+    reasons = []
+    if auto_generated:
+        reasons.append(f"généré automatiquement le {generated_at[:10]}")
+    if not source_doc:
+        reasons.append("aucun champ 'source_document' (référence officielle manquante)")
+    if auto_claimed:
+        reasons.append("'data_source' se termine par '_authentic' sans document justificatif")
+
+    msg = (f"[{country}] Source non vérifiable : {' ; '.join(reasons)}. "
+           f"Ajoutez un champ 'source_document' pointant vers le document officiel "
+           f"(JO, gazette, publication de l'administration douanière).")
+
+    if strict:
+        raise SourceNotVerifiedException(msg)
+
+    return DataStatus.SYNTHETIC, ReliabilityGrade.D, msg
+
+
+# ----------------------------------------------------------------------
 # Mapping codes de taxes → types canoniques
 # ----------------------------------------------------------------------
 
-_DUTY_CODES = {
-    "D.D", "DD", "CUSTOMS", "CUSTOMS_DUTY",
-}
-_VAT_CODES = {
-    "T.V.A", "TVA", "VAT", "IVA", "IGV", "GST",
-}
-_EXCISE_CODES = {
-    "EXCISE", "DA", "EXCISE_DUTY", "DRE", "ACCISE",
-}
-_LEVY_CODES = {
+_DUTY_CODES = {"D.D", "DD", "CUSTOMS", "CUSTOMS_DUTY"}
+_VAT_CODES   = {"T.V.A", "TVA", "VAT", "IVA", "IGV", "GST"}
+_EXCISE_CODES = {"EXCISE", "DA", "EXCISE_DUTY", "DRE", "ACCISE"}
+_LEVY_CODES  = {
     "TCI", "TS", "PCC", "PCS", "PUA", "RST", "PC-CEDEAO", "PCS-UEMOA",
     "CISS", "NHIL", "GETFUND", "CRF", "IDL", "RDL",
 }
 
-# Taxes que l'on marque SYNTHETIC (flat sans exonérations)
-_SYNTHETIC_CODES = _VAT_CODES
-
-_VERIFY_NOTE = ("Taux issu du pipeline de collecte — à confirmer "
-                "contre la loi de finances nationale en vigueur")
-
 
 def _map_type(code: str) -> MeasureType:
     c = code.upper()
-    if c in _DUTY_CODES:
-        return MeasureType.CUSTOMS_DUTY
-    if c in _VAT_CODES:
-        return MeasureType.VAT
-    if c in _EXCISE_CODES:
-        return MeasureType.EXCISE
-    if c in _LEVY_CODES:
-        return MeasureType.LEVY
+    if c in _DUTY_CODES:   return MeasureType.CUSTOMS_DUTY
+    if c in _VAT_CODES:    return MeasureType.VAT
+    if c in _EXCISE_CODES: return MeasureType.EXCISE
+    if c in _LEVY_CODES:   return MeasureType.LEVY
     return MeasureType.OTHER_TAX
 
 
@@ -86,16 +142,13 @@ def _map_basis(base_str: str) -> DutyBasis:
 
 
 def _is_fictitious(line: dict) -> bool:
-    """Filtre la position tarifaire fictive 000001 (chapitre 00)."""
     return line.get("chapter", "") == "00" or line.get("hs6", "").startswith("00")
 
 
 def _dedup_taxes(taxes: list[dict]) -> list[dict]:
     """
     Supprime les doublons sémantiques.
-    - même code + même taux → doublon exact
-    - deux codes du même groupe (ex. GST + T.V.A) → garder le premier
-      (LBR liste GST et T.V.A qui désignent le même impôt)
+    Ex. LBR : GST et T.V.A désignent le même impôt → on garde le premier.
     """
     seen_key: set[tuple] = set()
     seen_group: set[str] = set()
@@ -104,7 +157,6 @@ def _dedup_taxes(taxes: list[dict]) -> list[dict]:
         code = t["tax"].upper()
         rate = t.get("rate")
         exact_key = (code, rate)
-        # Groupe sémantique (tous les codes VAT → même groupe)
         if code in {c.upper() for c in _VAT_CODES}:
             group = "VAT"
         elif code in {c.upper() for c in _EXCISE_CODES}:
@@ -124,7 +176,8 @@ def _dedup_taxes(taxes: list[dict]) -> list[dict]:
 # ----------------------------------------------------------------------
 
 def _build_measures(country_iso3: str, hs6: str,
-                    taxes: list[dict]) -> list[Measure]:
+                    taxes: list[dict],
+                    is_synthetic: bool = False) -> list[Measure]:
     taxes = _dedup_taxes(taxes)
     measures: list[Measure] = []
     seq = 10
@@ -133,14 +186,19 @@ def _build_measures(country_iso3: str, hs6: str,
         rate = float(t.get("rate") or 0)
         basis = _map_basis(t.get("base", "CIF"))
         mtype = _map_type(code)
-        is_synth = code.upper() in {c.upper() for c in _SYNTHETIC_CODES}
+        is_vat = code.upper() in {c.upper() for c in _VAT_CODES}
 
-        # Upstream codes pour l'assiette TVA (CIF_PLUS_INCLUDED)
         basis_includes: list[str] = []
         if basis == DutyBasis.CIF_PLUS_INCLUDED:
             basis_includes = [m.code for m in measures
                               if m.basis in (DutyBasis.CIF,
                                              DutyBasis.CIF_PLUS_INCLUDED)]
+
+        obs_parts = [t.get("observation", code)]
+        if is_synthetic:
+            obs_parts.append("SYNTHETIC — source non vérifiée")
+        if is_vat and not is_synthetic:
+            obs_parts.append("TVA plate — exonérations non modélisées, à vérifier")
 
         m = Measure(
             country_iso3=country_iso3,
@@ -155,10 +213,7 @@ def _build_measures(country_iso3: str, hs6: str,
             basis_includes=basis_includes if basis_includes else [],
             sequence=seq,
             is_zlecaf_applicable=(mtype == MeasureType.CUSTOMS_DUTY),
-            observation=(
-                (_VERIFY_NOTE + " ; TVA plate (exonérations non modélisées)")
-                if is_synth else _VERIFY_NOTE
-            ),
+            observation=" ; ".join(obs_parts),
         )
         measures.append(m)
         seq += 10
@@ -186,21 +241,25 @@ def _build_advantages(country_iso3: str, hs6: str,
 # Provenance
 # ----------------------------------------------------------------------
 
-def _provenance(source_name: str, source_url: str,
-                generated_at: str) -> Provenance:
+def _build_provenance(data: dict, status: DataStatus,
+                      reliability: ReliabilityGrade,
+                      warning: str) -> Provenance:
+    notes = data.get("notes", [])
+    if isinstance(notes, list):
+        notes = " | ".join(notes)
+    if warning:
+        notes = f"AVERTISSEMENT : {warning} | {notes}"
+
     return Provenance(
-        data_status=DataStatus.PARTIAL,
-        reliability=ReliabilityGrade.B,
-        source_name=source_name,
-        source_url=source_url,
+        data_status=status,
+        reliability=reliability,
+        source_name=(f"{data.get('country_name', data['country_code'])} — "
+                     f"{data.get('data_source', 'inconnu')}"),
+        source_url=data.get("source_url", ""),
+        source_document=data.get("source_document") or None,
         version_date=None,
-        retrieved_at=generated_at,
-        notes=(
-            "Données issues du pipeline de collecte tarifaire. Bandes DD du "
-            "TEC régional majoritairement correctes. TVA flat sans exonérations "
-            "— à recouper avec la loi de finances nationale. Taux ZLECAf "
-            "calculés par formule (10 % × DD) — non ingérés comme taux réels."
-        ),
+        retrieved_at=data.get("generated_at", datetime.now().isoformat()),
+        notes=notes or None,
     )
 
 
@@ -209,7 +268,8 @@ def _provenance(source_name: str, source_url: str,
 # ----------------------------------------------------------------------
 
 def _convert_line(country_iso3: str, line: dict,
-                  prov: Provenance) -> CanonicalTariffLine:
+                  prov: Provenance,
+                  is_synthetic: bool) -> CanonicalTariffLine:
     hs6 = line["hs6"]
     commodity = CommodityCode(
         country_iso3=country_iso3,
@@ -224,7 +284,7 @@ def _convert_line(country_iso3: str, line: dict,
     )
 
     measures = _build_measures(
-        country_iso3, hs6, line.get("taxes_detail", []))
+        country_iso3, hs6, line.get("taxes_detail", []), is_synthetic)
     advantages = _build_advantages(
         country_iso3, hs6, line.get("fiscal_advantages", []))
     total_npf = sum(m.rate_pct or 0 for m in measures
@@ -245,49 +305,57 @@ def _convert_line(country_iso3: str, line: dict,
 # Point d'entrée
 # ----------------------------------------------------------------------
 
-def process_file(json_path: str, output_dir: str) -> dict:
+def process_file(json_path: str, output_dir: str,
+                 strict: bool = True) -> dict:
+    """
+    Ingère un fichier JSON tarifaire.
+
+    En mode strict (défaut), lève SourceNotVerifiedException si le fichier
+    ne contient pas de référence à un document officiel vérifiable.
+    En mode permissif (strict=False), ingère avec statut SYNTHETIC/D.
+    """
     path = Path(json_path)
     data = json.loads(path.read_text(encoding="utf-8"))
-
     country = data["country_code"].upper()
-    source_name = (f"{data.get('country_name', country)} — "
-                   f"{data.get('data_source', 'tariff_pipeline')}")
-    prov = _provenance(
-        source_name=source_name,
-        source_url=data.get("source_url", ""),
-        generated_at=data.get("generated_at", datetime.now().isoformat()),
-    )
+
+    status, reliability, warning = _validate_source(data, strict=strict)
+    is_synthetic = (status == DataStatus.SYNTHETIC)
+
+    if warning:
+        print(f"  ⚠  {warning}")
+
+    prov = _build_provenance(data, status, reliability, warning)
 
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{country}_canonical.jsonl"
 
-    lines_written = 0
-    lines_skipped = 0
-
+    lines_written = lines_skipped = 0
     with out_path.open("w", encoding="utf-8") as f:
         for line in data.get("tariff_lines", []):
             if _is_fictitious(line):
                 lines_skipped += 1
                 continue
-            record = _convert_line(country, line, prov)
+            record = _convert_line(country, line, prov, is_synthetic)
             f.write(record.model_dump_json() + "\n")
             lines_written += 1
 
-    print(f"  {country}: {lines_written} lignes → {out_path.name} "
-          f"({lines_skipped} fictives filtrées)")
+    status_label = f"{status.value}/{reliability.value}"
+    print(f"  {country}: {lines_written} lignes [{status_label}] → {out_path.name}")
     return {
         "country": country,
         "lines_written": lines_written,
         "lines_skipped": lines_skipped,
+        "data_status": status.value,
         "output": str(out_path),
     }
 
 
-def run(json_paths: list[str], output_dir: str) -> dict:
+def run(json_paths: list[str], output_dir: str,
+        strict: bool = True) -> dict:
     results = {}
     for p in json_paths:
-        r = process_file(p, output_dir)
+        r = process_file(p, output_dir, strict=strict)
         results[r["country"]] = r
     return {"countries": results}
 
@@ -295,12 +363,19 @@ def run(json_paths: list[str], output_dir: str) -> dict:
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser(
-        description="Ingère les JSON tarifaires multi-pays → JSONL canoniques v4")
-    ap.add_argument("json_files", nargs="+", help="Fichiers {ISO3}_tariffs.json")
-    ap.add_argument("output_dir", help="Répertoire de sortie des JSONL")
+        description="Ingère les JSON tarifaires officiels → JSONL canoniques v4")
+    ap.add_argument("json_files", nargs="+",
+                    help="Fichiers {ISO3}_tariffs.json (dernier argument = output_dir)")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--strict", action="store_true", default=True,
+                      help="Refuse les fichiers sans source_document (défaut)")
+    mode.add_argument("--allow-synthetic", action="store_true",
+                      help="Accepte les fichiers non-vérifiés avec statut SYNTHETIC/D")
     args = ap.parse_args()
 
-    print("Ingestion des fichiers JSON tarifaires...")
-    result = run(args.json_files[:-1], args.json_files[-1])
+    strict = not args.allow_synthetic
+    print(f"Mode : {'STRICT (source_document requis)' if strict else 'PERMISSIF (SYNTHETIC/D si non-vérifié)'}")
+
+    result = run(args.json_files[:-1], args.json_files[-1], strict=strict)
     total = sum(r["lines_written"] for r in result["countries"].values())
     print(f"\nTotal : {len(result['countries'])} pays — {total} lignes")
