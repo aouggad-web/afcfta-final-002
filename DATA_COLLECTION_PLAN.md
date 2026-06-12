@@ -301,7 +301,7 @@ Les tarifs régionaux et internationaux couvrent les **droits de douane**. Les �
 ```
 engine/
 ├── adapters/
-│   ├── cedeao_tec_adapter.py        # Vague 1 — TEC 15 pays
+│   ├── cedeao_tec_adapter.py ✅     # Vague 1 — TEC 15 pays (code prêt, en attente du CSV officiel)
 │   ├── eac_cet_adapter.py           # Vague 1 — CET 8 pays (base KRA)
 │   ├── sacu_sars_adapter.py         # Vague 1 — SACU 5 pays
 │   ├── egy_customs_adapter.py       # Vague 1 — Égypte
@@ -316,13 +316,13 @@ engine/
 │   ├── run_migration_wave.py        # runner par vague avec rapport
 │   └── validate_adapter_output.py  # contrôles qualité post-migration
 ├── sources/
-│   ├── cedeao_tec_2017.xlsx         # fichier source (non versionné — .gitignore)
+│   ├── cedeao_tec_2022.csv          # fichier source (non versionné — .gitignore)
 │   ├── eac_cet_2022.xlsx
-│   └── README_sources.md           # SHA256 + URL de chaque fichier source
+│   └── README_sources.md ✅        # SHA256 + URL de chaque fichier source
 └── tests/
     ├── test_dza_conformepro_adapter.py ✅
     ├── test_calculation_dza.py ✅
-    ├── test_cedeao_tec_adapter.py   # à créer
+    ├── test_cedeao_tec_adapter.py ✅
     └── test_sacu_sars_adapter.py    # à créer
 ```
 

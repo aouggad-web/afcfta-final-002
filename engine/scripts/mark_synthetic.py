@@ -48,6 +48,8 @@ def _mark_file(path: Path, dry_run: bool) -> dict:
     lines_total = 0
     lines_marked = 0
     lines_skipped = 0
+    lines_verified = 0
+    lines_partial = 0
 
     out_lines = []
     with path.open(encoding="utf-8") as f:
@@ -66,6 +68,10 @@ def _mark_file(path: Path, dry_run: bool) -> dict:
             status = prov.get("data_status", "")
             if status in PROTECTED:
                 lines_skipped += 1
+                if status == "VERIFIED":
+                    lines_verified += 1
+                else:
+                    lines_partial += 1
                 out_lines.append(raw)
                 continue
 
@@ -79,24 +85,38 @@ def _mark_file(path: Path, dry_run: bool) -> dict:
         with path.open("w", encoding="utf-8") as f:
             f.write("\n".join(out_lines) + "\n")
 
-    return {"total": lines_total, "marked": lines_marked, "skipped": lines_skipped}
+    return {"total": lines_total, "marked": lines_marked, "skipped": lines_skipped,
+            "verified": lines_verified, "partial": lines_partial}
 
 
-def run(dry_run: bool = False) -> dict:
-    jsonl_files = sorted(OUTPUT_DIR.glob("*_canonical.jsonl"))
+def _country_status(stats: dict) -> tuple:
+    """Statut pays = pire statut présent dans le fichier."""
+    has_synthetic = stats["marked"] > 0 or \
+        stats["total"] > stats["verified"] + stats["partial"]
+    if has_synthetic:
+        return ("SYNTHETIC", "D") if stats["skipped"] == 0 else ("PARTIAL", "B")
+    if stats["partial"] > 0:
+        return ("PARTIAL", "B")
+    return ("VERIFIED", "A")
+
+
+def run(dry_run: bool = False, output_dir: Path = None) -> dict:
+    out_dir = Path(output_dir) if output_dir else OUTPUT_DIR
+    jsonl_files = sorted(out_dir.glob("*_canonical.jsonl"))
     registry = {}
     grand_total = grand_marked = grand_skipped = 0
 
     for path in jsonl_files:
         country = path.stem.replace("_canonical", "")
         stats = _mark_file(path, dry_run)
+        status, reliability = _country_status(stats)
         registry[country] = {
-            "data_status": "SYNTHETIC",
-            "reliability": "D",
+            "data_status": status,
+            "reliability": reliability,
             "lines_total": stats["total"],
             "lines_marked": stats["marked"],
             "lines_skipped_protected": stats["skipped"],
-            "disclaimer": DISCLAIMER,
+            "disclaimer": DISCLAIMER if status == "SYNTHETIC" else None,
         }
         grand_total += stats["total"]
         grand_marked += stats["marked"]
@@ -119,7 +139,7 @@ def run(dry_run: bool = False) -> dict:
         "countries": registry,
     }
 
-    out_path = OUTPUT_DIR / "DATA_STATUS.json"
+    out_path = out_dir / "DATA_STATUS.json"
     if not dry_run:
         out_path.write_text(json.dumps(status_doc, ensure_ascii=False, indent=2))
         print(f"\nRegistre écrit → {out_path}")
@@ -130,11 +150,13 @@ def run(dry_run: bool = False) -> dict:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Marque les données synthétiques v4")
     ap.add_argument("--dry-run", action="store_true", help="Simulation sans écriture")
+    ap.add_argument("--output-dir", default=None,
+                    help="Répertoire des *_canonical.jsonl (défaut: engine/output)")
     args = ap.parse_args()
 
     prefix = "[DRY-RUN] " if args.dry_run else ""
     print(f"{prefix}Marquage des données synthétiques...")
-    result = run(dry_run=args.dry_run)
+    result = run(dry_run=args.dry_run, output_dir=args.output_dir)
     s = result["summary"]
     print(
         f"\n{prefix}Total : {s['lines_total']} lignes | "
