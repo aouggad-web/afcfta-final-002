@@ -210,6 +210,16 @@ def test_strict_rejects_file_generated_today(tmp_path):
         process_file(f, str(tmp_path), strict=True)
 
 
+def test_rejects_invalid_country_code(tmp_path):
+    """country_code non-ISO3 (ex. traversée de chemin) → ValueError."""
+    f = _make_file(tmp_path, "TST", [SIMPLE_LINE])
+    data = json.loads(Path(f).read_text())
+    data["country_code"] = "../../EVIL"
+    Path(f).write_text(json.dumps(data), encoding="utf-8")
+    with pytest.raises(ValueError, match="country_code invalide"):
+        process_file(f, str(tmp_path), strict=False)
+
+
 def test_permissive_accepts_unverified_as_synthetic(tmp_path):
     """Mode permissif : fichier non-vérifiable → SYNTHETIC/D accepté."""
     f = _make_file(tmp_path, "TST", [SIMPLE_LINE])

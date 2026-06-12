@@ -34,6 +34,7 @@ Usage :
 """
 
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -317,6 +318,10 @@ def process_file(json_path: str, output_dir: str,
     path = Path(json_path)
     data = json.loads(path.read_text(encoding="utf-8"))
     country = data["country_code"].upper()
+    if not re.fullmatch(r"[A-Z]{3}", country):
+        raise ValueError(
+            f"country_code invalide : {data['country_code']!r} "
+            "(code ISO3 attendu, ex. 'RWA')")
 
     status, reliability, warning = _validate_source(data, strict=strict)
     is_synthetic = (status == DataStatus.SYNTHETIC)
