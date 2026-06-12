@@ -1,0 +1,41 @@
+## Analyse — `RWA_tariffs.json` (Rwanda, 12,7 Mo)
+
+**Verdict global : structure excellente, mais contenu mixte — le DD est largement authentique (CET EAC), le reste est généré par formule.**
+
+### Points forts
+
+| Aspect | Constat |
+|---|---|
+| Structure | JSON propre, prêt pour ingestion : 5 831 lignes SH6 + 5 891 sous-positions SH8, descriptions FR/EN, formalités administratives par produit |
+| Droits de douane | Distribution conforme aux bandes CET EAC 2022 (0/10/25/35 % + liste sensible 50-75 %). Le riz à 75 % est exact ✅ |
+| Accises | 46 lignes (boissons, tabac à 30-36 %) — plausibles |
+| Formalités | IMPDEC/VETCERT/FOODCERT avec autorités rwandaises réelles (RRA, RAB, RFDA) ✅ |
+
+### Signaux d'alerte — données générées, pas collectées
+
+1. **`zlecaf_rate` = exactement 10 % du DD sur les 5 831 lignes** (25→2,5, 35→3,5, 75→7,5). C'est une **formule**, pas le calendrier de concessions ZLECAf réel du Rwanda (PMA : démantèlement linéaire sur 10 ans, catégories A/B/C). → SYNTHETIC.
+
+2. **TVA = 18 % partout, zéro exonération.** Le Rwanda exonère pourtant les denrées de base, intrants agricoles, produits médicaux… Le fichier CIV que vous avez fourni montrait justement l'importance des TVA multi-taux (0/9/18). → approximation.
+
+3. **Erreurs de DD sur des lignes de référence** : voitures `870321` à 0 % (CET EAC réel : 25 %), sucre `170199` à 50 % (liste sensible EAC : 100 %), friperie `630900` à 25 % (CET : 35 % + minimum spécifique USD/kg).
+
+4. **Prélèvements nationaux rwandais absents** : Infrastructure Development Levy 1,5 % CAF, prélèvement UA 0,2 %, retenue à la source 5 % à l'import — aucun n'apparaît.
+
+5. **Cascade TVA incorrecte sur les lignes à accise** : assiette `CIF + DD` alors qu'elle devrait être `CIF + DD + EXCISE`.
+
+6. `"data_quality": "authentic"` est **auto-déclaré**, et `generated_at` = aujourd'hui 14h53 UTC → c'est la sortie d'un script de génération, pas un export des douanes.
+
+### Score proposé pour l'ingestion
+
+| Couche | Statut |
+|---|---|
+| DD (bandes CET EAC) | **PARTIAL/B** — majoritairement juste, mais erreurs détectées → à recouper avec la gazette officielle EAC |
+| Accises, formalités | PARTIAL/B |
+| `zlecaf_rate` | **SYNTHETIC/D** — à ne **pas** ingérer comme taux réel |
+| TVA uniforme, prélèvements manquants | approximation à corriger |
+
+### Question clé avant d'aller plus loin
+
+Ce fichier a été **généré aujourd'hui** par un outil. D'où vient-il — un script de votre pipeline précédent qui combine CET EAC + hypothèses ? Et les JSON des autres pays sont-ils générés de la même façon ?
+
+C'est important car : si tous suivent ce format, je peux écrire **un seul adaptateur générique** (`json_tariffs_adapter.py`) qui les ingère tous en marquant correctement chaque couche (DD → PARTIAL/B, zlecaf → ignoré/SYNTHETIC), plutôt qu'un adaptateur par pays. Envoyez-moi 1 ou 2 autres exemples (idéalement un pays hors EAC) pour confirmer que le schéma est identique.

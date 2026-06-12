@@ -87,14 +87,22 @@ EAC_COUNTRIES = {
     "RWA": {
         "name": "Rwanda", "currency": "RWF",
         "tva_rate": 18.0, "tva_name": "Value Added Tax (VAT)",
-        "tva_base": "CIF + DD",
+        "tva_base": "CIF + DD + IDL",
         "source": "Rwanda Revenue Authority (RRA) + EAC CET 2022",
         "source_url": "https://www.rra.gov.rw/",
-        "national_taxes": [],
+        "national_taxes": [
+            {"code": "IDL",  "name": "Infrastructure Development Levy", "rate": 1.5, "base": "CIF",
+             "authority": "RRA — Loi de finances 2021 — applicable à toutes importations"},
+            {"code": "AU",   "name": "Prélèvement Union Africaine",     "rate": 0.2, "base": "CIF",
+             "authority": "Union Africaine — Décision Assembly/AU/Dec.578(XXV)"},
+        ],
         "excise_by_chapter": {
             "22": 30.0, "24": 36.0,
         },
-        "notes": ["EAC CET 2022 + VAT 18% — RRA"]
+        "notes": [
+            "EAC CET 2022 + IDL 1.5% (CIF) + AU 0.2% (CIF) + VAT 18% — RRA",
+            "TVA: exonérations légales sur denrées de base, intrants agricoles, médicaments — non modélisées",
+        ]
     },
     "BDI": {
         "name": "Burundi", "currency": "BIF",
@@ -102,9 +110,12 @@ EAC_COUNTRIES = {
         "tva_base": "CIF + DD",
         "source": "Office Burundais des Recettes (OBR) + EAC CET 2022",
         "source_url": "https://www.obr.gov.bi/",
-        "national_taxes": [],
-        "excise_by_chapter": {},
-        "notes": ["EAC CET 2022 + TVA 18% — OBR"]
+        "national_taxes": [
+            {"code": "AU",   "name": "Prélèvement Union Africaine",     "rate": 0.2, "base": "CIF",
+             "authority": "Union Africaine — Décision Assembly/AU/Dec.578(XXV)"},
+        ],
+        "excise_by_chapter": {"22": 30.0, "24": 30.0},
+        "notes": ["EAC CET 2022 + AU 0.2% + TVA 18% — OBR"]
     },
     "SSD": {
         "name": "Soudan du Sud", "currency": "SSP",
@@ -112,9 +123,12 @@ EAC_COUNTRIES = {
         "tva_base": "CIF + DD",
         "source": "South Sudan Customs + EAC CET 2022",
         "source_url": "https://mof.gov.ss/",
-        "national_taxes": [],
+        "national_taxes": [
+            {"code": "AU",   "name": "African Union Levy",              "rate": 0.2, "base": "CIF",
+             "authority": "African Union — Assembly/AU/Dec.578(XXV)"},
+        ],
         "excise_by_chapter": {},
-        "notes": ["EAC CET 2022 + VAT 18% (estimation)"]
+        "notes": ["EAC CET 2022 + AU 0.2% + VAT 18% (estimation — données officielles SSD limitées)"]
     },
     "COD": {
         "name": "RD Congo", "currency": "CDF",
@@ -140,8 +154,33 @@ EAC_BAND_LABELS = {
     10.0: "EAC CET Bande 10% — Intrants intermédiaires",
     25.0: "EAC CET Bande 25% — Biens de consommation finale",
     35.0: "EAC CET Bande 35% — Produits sensibles / protection industrie locale",
-    50.0: "EAC CET Bande 50% — Taux spécial (seconde main/véhicules)",
+    50.0: "EAC CET Bande 50% — Liste sensible EAC (riz, céréales)",
     60.0: "EAC CET Bande 60% — Taux spécial élevé",
+    75.0: "EAC CET Bande 75% — Liste sensible EAC (riz, taux max)",
+    100.0:"EAC CET Bande 100% — Liste sensible EAC (sucre raffiné)",
+}
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Corrections liste sensible EAC — produits mal extraits du PDF
+# Sources: EAC CET 2022 Gazette officielle + Kenya Legal Notice No.60/2023
+# Ces taux surchargent le DD extrait du PDF quand celui-ci est erroné.
+# ──────────────────────────────────────────────────────────────────────────────
+SENSITIVE_LIST_DD_CORRECTIONS = {
+    # Sucre raffiné — liste sensible EAC : 100% (pas 50%)
+    "170111": 100.0, "170112": 100.0, "170191": 100.0, "170199": 100.0,
+    # Vêtements usagés / friperie — 35% (pas 25%)
+    "630900": 35.0,
+    # Farine de blé — 60% liste sensible EAC
+    "110100": 60.0,
+    # Maïs — 50% liste sensible
+    "100590": 50.0, "100510": 50.0,
+    # Lait en poudre — 60% liste sensible
+    "040210": 60.0, "040221": 60.0, "040229": 60.0,
+    # Huile de cuisson / palme raffinée — 35%
+    "151110": 35.0, "151190": 35.0, "151211": 35.0, "151219": 35.0,
+    # Voitures particulières — 25% (le PDF peut extraire 0% pour certains SH8)
+    "870321": 25.0, "870322": 25.0, "870323": 25.0, "870324": 25.0,
+    "870331": 25.0, "870332": 25.0, "870333": 25.0,
 }
 
 UNIT_WORDS = {
@@ -359,30 +398,41 @@ def generate_country_file(iso3: str, country_cfg: Dict,
             dd_rate = existing.get("dd_rate", 25.0)
             hs6_without += 1
 
-        taxes = build_taxes_detail(country_cfg, dd_rate, chapter)
+        # Apply sensitive list corrections (override PDF extraction errors)
+        if hs6 in SENSITIVE_LIST_DD_CORRECTIONS:
+            dd_rate = SENSITIVE_LIST_DD_CORRECTIONS[hs6]
+
         nat_taxes_sum = sum(t["rate"] for t in country_cfg["national_taxes"])
         excise_rate = country_cfg.get("excise_by_chapter", {}).get(chapter.lstrip("0") or "0", 0)
+        # TVA cascade: assiette = CIF + DD + taxes nat + accise (pas seulement CIF+DD)
         total_before_tva = dd_rate + nat_taxes_sum + excise_rate
-        tva_amount = total_before_tva * (country_cfg["tva_rate"] / 100)
+        tva_base_multiplier = 1.0 + (dd_rate + nat_taxes_sum + excise_rate) / 100
+        tva_amount = round(100 * tva_base_multiplier * country_cfg["tva_rate"] / 100, 4)
         full_total = round(total_before_tva + tva_amount, 2)
+
+        taxes = build_taxes_detail(country_cfg, dd_rate, chapter)
 
         # Build sub-positions (real HS8 from EAC CET)
         sub_positions_out = []
         for p in nat_positions:
-            p_taxes = build_taxes_detail(country_cfg, p["rate"], chapter)
-            p_other = nat_taxes_sum + country_cfg.get("excise_by_chapter", {}).get(chapter.lstrip("0") or "0", 0)
-            p_total = p["rate"] + p_other
-            p_tva = p_total * (country_cfg["tva_rate"] / 100)
+            # Apply sensitive list corrections at sub-position level too
+            p_dd = SENSITIVE_LIST_DD_CORRECTIONS.get(hs6, p["rate"])
+            p_taxes = build_taxes_detail(country_cfg, p_dd, chapter)
+            p_excise = country_cfg.get("excise_by_chapter", {}).get(chapter.lstrip("0") or "0", 0)
+            p_other = nat_taxes_sum + p_excise
+            # Correct cascade: TVA assiette = CIF*(1 + DD + levies + excise)/100 * TVA%
+            p_tva_base_mult = 1.0 + (p_dd + p_other) / 100
+            p_tva = round(100 * p_tva_base_mult * country_cfg["tva_rate"] / 100, 4)
             sub_positions_out.append({
                 "code":           p["code"],
                 "national_code":  p["code"],
                 "digits":         8,
                 "description_fr": p["desc"],
                 "description_en": p["desc"],
-                "dd_rate":        p["rate"],
-                "dd_source":      EAC_BAND_LABELS.get(p["rate"], f"EAC CET {p['rate']}%"),
+                "dd_rate":        p_dd,
+                "dd_source":      EAC_BAND_LABELS.get(p_dd, f"EAC CET {p_dd}%"),
                 "taxes_detail":   p_taxes,
-                "total_taxes":    round(p_total + p_tva, 2),
+                "total_taxes":    round(p_dd + p_other + p_tva, 2),
                 "source":         f"EAC CET 2022 — KRA — {country_cfg['source']}",
             })
             total_positions += 1
@@ -396,12 +446,16 @@ def generate_country_file(iso3: str, country_cfg: Dict,
             "description_en":         existing.get("description_en", ""),
             "category":               existing.get("category") or _infer_category(ch_int),
             "unit":                   existing.get("unit", "KG"),
-            "sensitivity":            "sensitive" if dd_rate >= 25 else "normal",
+            "sensitivity":            "sensitive" if dd_rate >= 50 else ("elevated" if dd_rate >= 25 else "normal"),
             "dd_rate":                dd_rate,
             "dd_source":              f"EAC CET 2022 — {country_cfg['source']}",
-            "zlecaf_rate":            round(dd_rate * 0.1, 1),
-            "zlecaf_source":          "ZLECAf — réduction tarifaire en vigueur",
+            # zlecaf_rate: non disponible — le calendrier de démantèlement ZLECAf officiel
+            # (catégories A/B/C, PMA) n'est pas encore publié par pays.
+            # Ne pas utiliser cette valeur comme taux réel.
+            "zlecaf_rate":            None,
+            "zlecaf_rate_note":       "Non disponible — calendrier ZLECAf officiel requis (cat. A/B/C PMA)",
             "vat_rate":               country_cfg["tva_rate"],
+            "vat_note":               "Taux standard. Exonérations légales (denrées de base, médicaments, intrants agricoles) non modélisées.",
             "other_taxes_rate":       nat_taxes_sum,
             "taxes_detail":           taxes,
             "total_taxes_pct":        full_total,
@@ -409,18 +463,19 @@ def generate_country_file(iso3: str, country_cfg: Dict,
                 {
                     "tax": "D.D",
                     "rate": 0.0,
-                    "condition_fr": "Certificat d'Origine ZLECAf — Exonération DD",
-                    "condition_en": "AfCFTA Certificate of Origin — DD Exemption",
+                    "condition_fr": "Certificat d'Origine ZLECAf — Exonération DD (taux réel selon calendrier officiel)",
+                    "condition_en": "AfCFTA Certificate of Origin — DD Exemption (actual rate per official schedule)",
                 }
             ]),
             "administrative_formalities": formalities,
             "total_import_taxes":     full_total,
-            "zlecaf_total_taxes":     round(full_total - dd_rate * 0.9, 2),
             "sub_positions":          sub_positions_out,
             "has_sub_positions":      len(sub_positions_out) > 0,
             "sub_position_count":     len(sub_positions_out),
             "data_source":            "eac_cet_2022_authentic",
-            "data_quality":           "authentic",
+            # partial: DD authentique (CET EAC 2022), taxes nat. documentées;
+            # TVA uniforme (exonérations non modélisées), zlecaf non disponible.
+            "data_quality":           "partial",
         }
         tariff_lines.append(line)
 
