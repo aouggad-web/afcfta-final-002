@@ -15,6 +15,16 @@ vérifier la même version.
 | Fichier | Source | URL | Téléchargé le | SHA256 |
 |---------|--------|-----|---------------|--------|
 | `civ_tec_cedeao_enrichi_27032026.md` | Douanes CIV — TEC CEDEAO 2022 enrichi des droits et taxes nationaux (SYDAM WORLD, MAJ 27/03/2026) | https://www.douanes.ci/info/tec | 2026-06-12 | `0ccc5e078c84b56d551ee604f424a317ef9ad1b2515f06faaa1f92eb5dc05b8a` |
+| `eac_cet_2022_30juin.md` | EAC CET 2022 Version (30 juin) — Annexe 1 au Protocole d'Union Douanière, EAC Gazette (PDF officiel KRA converti en Markdown) | https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf | 2026-06-12 | `c9ec3b461fbf49171ed1393019fb0a8706247c0878d641beb0dc925259599227` |
+| `eac_cet_2022.csv` | Dérivé : sortie de `eac_cet_md_to_csv.py` sur le fichier ci-dessus — 5 943 lignes SH8 (Schedule 1 + Schedule 2 sensibles) | — (généré localement) | 2026-06-12 | `61c5adad2b3aaf36553c5871e768aee9c8617b429ab9d2414b3ea70446607be5` |
+
+### Lacunes connues du fichier EAC CET (artefacts de conversion PDF→MD)
+
+3 positions sur 5 946 ont leurs cellules description/taux vides dans le
+Markdown source (perdues à la conversion, présentes dans le PDF original) :
+`5302.10.00`, `6403.51.00`, `8103.91.00`. Conformément à la politique
+« pas d'extrapolation », elles sont **exclues** — à compléter en relisant
+le PDF officiel.
 
 ## TEC CEDEAO — préparation du fichier
 
