@@ -11,6 +11,43 @@ _tariff_cache = {}
 _nomenclature_cache = {}
 _crawled_index_cache = {}   # {ISO3: {hs_code_10: sub_position_entry}}
 _available_countries_cache = None
+_summary_cache = {}  # {iso3: summary_dict} — lightweight header only
+
+
+def _load_country_header(iso3: str) -> dict:
+    """Read only the JSON header (country metadata + summary) without loading tariff_lines.
+    Much faster than load_country_tariffs() for list endpoints."""
+    if iso3 in _summary_cache:
+        return _summary_cache[iso3]
+    crawled_path = os.path.join(CRAWLED_DIR, f'{iso3}_tariffs.json')
+    root_path = os.path.join(DATA_DIR, f'{iso3}_tariffs.json')
+    file_path = crawled_path if os.path.exists(crawled_path) else root_path
+    if not os.path.exists(file_path):
+        return {}
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            # Read enough bytes to capture the header before tariff_lines
+            buf = f.read(8192)
+        # Trim after the start of tariff_lines array to make valid JSON
+        cut = buf.find('"tariff_lines"')
+        if cut > 0:
+            # Build minimal valid JSON object ending before tariff_lines
+            fragment = buf[:cut].rstrip().rstrip(',')
+            try:
+                result = json.loads(fragment + '}')
+            except Exception:
+                result = {}
+        else:
+            # Small file — parse normally
+            try:
+                result = json.loads(buf)
+            except Exception:
+                result = {}
+        _summary_cache[iso3] = result
+        return result
+    except Exception as e:
+        logger.error(f'Error reading header for {iso3}: {e}')
+        return {}
 
 
 def load_crawled_position_index(country_iso3: str) -> dict:
@@ -380,7 +417,10 @@ def load_country_tariffs(country_iso3):
     country_iso3 = _validate_iso3(country_iso3)
     if country_iso3 in _tariff_cache:
         return _tariff_cache[country_iso3]
-    file_path = os.path.join(DATA_DIR, f'{country_iso3}_tariffs.json')
+    # Prefer crawled/ (authentic national positions) over root data dir (legacy)
+    crawled_path = os.path.join(CRAWLED_DIR, f'{country_iso3}_tariffs.json')
+    root_path = os.path.join(DATA_DIR, f'{country_iso3}_tariffs.json')
+    file_path = crawled_path if os.path.exists(crawled_path) else root_path
     if not os.path.exists(file_path):
         return None
     try:
@@ -458,7 +498,7 @@ def get_sub_positions(country_iso3, hs6):
                     'digits': sp.get('digits', len(code)),
                     'description_fr': sp.get('description_fr', sp.get('description_en', '')),
                     'description_en': sp.get('description_en', sp.get('description_fr', '')),
-                    'dd_rate': sp.get('dd', parent_dd_rate_pct),
+                    'dd_rate': sp.get('dd_rate', sp.get('dd', parent_dd_rate_pct)),
                     'source': sp.get('source', f'Nomenclature nationale DGD {country_iso3}'),
                 }
 
@@ -868,24 +908,53 @@ def get_available_countries():
     if _available_countries_cache is not None:
         return _available_countries_cache
     countries = []
+    seen = set()
     try:
-        for fname in sorted(os.listdir(DATA_DIR)):
-            if not fname.endswith('_tariffs.json') or fname.startswith('.'):
+        # Collect ISO3 codes from both CRAWLED_DIR (priority) and DATA_DIR
+        all_files = {}
+        for d in [DATA_DIR, CRAWLED_DIR]:
+            if os.path.isdir(d):
+                for fname in sorted(os.listdir(d)):
+                    if fname.endswith('_tariffs.json') and not fname.startswith('.'):
+                        iso3 = fname.replace('_tariffs.json', '').upper()
+                        all_files.setdefault(iso3, None)
+
+        for iso3 in sorted(all_files.keys()):
+            if iso3 in seen:
                 continue
-            iso3 = fname.replace('_tariffs.json', '').upper()
-            data = load_country_tariffs(iso3)
-            if not data:
+            seen.add(iso3)
+            # Use fast header read — avoids loading 15-20 MB tariff_lines per country
+            header = _load_country_header(iso3)
+            if not header:
                 continue
-            summary = data.get('summary', {})
+            summary = header.get('summary', {})
+            # Support both old (total_positions) and new (total_national_positions) field names
+            total_pos = (
+                summary.get('total_national_positions')
+                or summary.get('total_sub_positions')
+                or summary.get('total_positions')
+                or 0
+            )
+            chapters = (
+                summary.get('chapters_covered')
+                or summary.get('total_chapters')
+                or 0
+            )
+            total_lines = (
+                summary.get('total_tariff_lines')
+                or summary.get('total_lines')
+                or 0
+            )
             countries.append({
                 'iso3': iso3,
                 'name': _COUNTRY_NAMES.get(iso3, iso3),
-                'total_lines': len(data.get('tariff_lines', [])),
-                'total_positions': summary.get('total_positions', 0),
-                'chapters_covered': summary.get('chapters_covered', 0),
+                'total_lines': total_lines,
+                'total_positions': total_pos,
+                'chapters_covered': chapters,
                 'has_nomenclature_map': os.path.exists(
                     os.path.join(DATA_DIR, f'{iso3}_nomenclature_map.json')
                 ),
+                'data_source': header.get('data_source', 'legacy'),
             })
     except Exception as e:
         logger.error(f'Error listing available countries: {e}')

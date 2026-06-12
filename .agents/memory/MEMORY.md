@@ -1,3 +1,6 @@
 - [Endpoint audit patterns](endpoint-audit-patterns.md) — recurring hard-404/500 patterns found in full audit; fixes to apply for similar bugs
 - [Nigeria GDP devaluation fix](nga-gdp-fix.md) — NGA GDP 2023/2024 was 477B (pre-devaluation); correct values ~363B after June 2023 naira collapse
 - [GDP platform alignment](gdp-alignment.md) — country_data.py is source of truth for profiles; statistics.py uses IMF WEO Oct 2024 (slight vintage difference for ETH/MAR)
+- [Tariff data routing](tariff-data-routing.md) — crawled/ files take priority over data/ root; authentic_tariff_service must check CRAWLED_DIR first
+- [New tariff JSON format](new-tariff-format.md) — new files use `total_national_positions` / `dd_rate` (not legacy `total_positions` / `dd`); countries list uses fast header read (8KB) to avoid OOM
+- [National positions coverage](national-positions-coverage.md) — 28 countries have authentic positions; 25 legacy; DZA must NOT be regenerated (17,115 conformepro.dz positions)
