@@ -45,6 +45,46 @@ vérifier la même version.
    cp engine/output/DATA_STATUS.json frontend/public/data/
    ```
 
+## Quarantaine — fichiers non vérifiables
+
+Le sous-répertoire `quarantine_non_verifie/` contient les fichiers refusés par
+le contrôle de provenance (`json_tariffs_adapter._validate_source`) : générés
+automatiquement, sans `source_document` officiel, ou aux données démontrées
+erronées. **Ils ne doivent jamais être ingérés** tant qu'ils n'ont pas été
+remplacés par un document officiel vérifié.
+
+| Fichier en quarantaine | Motif de rejet |
+|------------------------|----------------|
+| `RWA_tariffs.json` | Généré le jour même par script ; `zlecaf_rate` = formule 10%×DD sur toutes les lignes ; erreurs factuelles (véhicules à 0 % vs CET EAC 25 %) |
+| `LBR_tariffs.json` | Idem ; doublon GST/T.V.A (même impôt compté deux fois) |
+| `CMR_tariffs.json` | Idem ; aucune exonération TVA modélisée |
+
+## Sources officielles à obtenir (données réelles uniquement)
+
+Les téléchargements directs sont bloqués depuis cet environnement (allowlist
+réseau) : déposer les fichiers ici manuellement, puis compléter le tableau
+des hashes.
+
+### EAC CET 2022 (RWA, KEN, TZA, UGA, BDI, SSD, COD, SOM)
+- PDF officiel 558 p. (KRA) : https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf
+- Répertoire officiel EAC : https://www.eac.int/documents/category/eac-common-external-tariff
+- Repository EAC (Annex 1 au Protocole d'Union Douanière) : https://repository.eac.int/handle/11671/24409
+- Version consolidée juin 2025 (EABC) : https://eabc-online.com/download/eac-common-external-tariff-version-2022-as-updated-june-2025/
+- Bandes : 0 / 10 / 25 / 35 % (4ᵉ bande 35 % en vigueur depuis le 01/07/2022)
+
+### TEC CEEAC-CEMAC (CMR, GAB, TCD, CAF, COG, GNQ)
+- **Attention** : le nouveau TEC CEEAC-CEMAC (approuvé le 18/10/2024, bandes
+  0–40 %) s'applique au Cameroun depuis le **1ᵉʳ janvier 2026** — l'ancien
+  tarif CEMAC 2007 est obsolète pour les taux courants.
+- Cameroon Trade Portal (nomenclature) : https://www.cameroontradeportal.cm/
+- Douanes Gabon (tarif CEMAC) : https://douanes.ga/
+- Secrétariat CEMAC : https://www.cemac.int/
+
+### LBR (Libéria)
+- Membre CEDEAO → les taux DD sont déjà couverts par le TEC CEDEAO
+  (`cedeao_tec_adapter.py`). Seules les taxes nationales LRA (GST 10 %, etc.)
+  restent à documenter : https://revenue.lra.gov.lr/
+
 ## Échantillon de validation
 
 `engine/tests/fixtures/cedeao_tec_sample.csv` est un échantillon synthétique
