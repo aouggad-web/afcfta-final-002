@@ -31,6 +31,7 @@ Séquence de calcul implémentée (harmonisation UEMOA/CEDEAO) :
   20  R.S        Redevance Statistique (UEMOA, 1 %)     → sur valeur CAF
   25  PC-CEDEAO  Prélèvement Communautaire CEDEAO 0,5 % → sur valeur CAF
   26  PCS-UEMOA  Prélèvement Communautaire de Solidarité → sur valeur CAF
+  27  PUA        Prélèvement Union Africaine 0,2 % (UA) → sur valeur CAF
   30+ taxes nationales spécifiques (NGA, GHA…)          → voir registre
   90  TVA/VAT    → sur CAF + droits et taxes en amont (hors TVA)
 """
@@ -98,12 +99,6 @@ EXTRA_NATIONAL: Dict[str, List[dict]] = {
              name_en="Comprehensive Import Supervision Scheme",
              rate_pct=1.0, basis=DutyBasis.FOB, sequence=30,
              observation=VERIFY_NOTE + " (assiette FOB)"),
-        dict(measure_type=MeasureType.LEVY, code="PUA",
-             name_fr="Prélèvement Union Africaine",
-             name_en="African Union Import Levy",
-             rate_pct=0.2, basis=DutyBasis.CIF, sequence=32,
-             legal_reference="Décision UA Kigali 2016",
-             observation=VERIFY_NOTE),
     ],
     "GHA": [
         dict(measure_type=MeasureType.LEVY, code="NHIL",
@@ -117,12 +112,6 @@ EXTRA_NATIONAL: Dict[str, List[dict]] = {
              name_en="Ghana Education Trust Fund Levy",
              rate_pct=2.5, basis=DutyBasis.CIF_PLUS_INCLUDED,
              basis_includes=["D.D"], sequence=31,
-             observation=VERIFY_NOTE),
-        dict(measure_type=MeasureType.LEVY, code="PUA",
-             name_fr="Prélèvement Union Africaine",
-             name_en="African Union Import Levy",
-             rate_pct=0.2, basis=DutyBasis.CIF, sequence=32,
-             legal_reference="Décision UA Kigali 2016",
              observation=VERIFY_NOTE),
     ],
 }
@@ -147,6 +136,10 @@ COLUMN_ALIASES = {
              "droitdedouane", "ddpct", "rate"},
     "unit": {"unite", "unit", "su", "uniteStatistique".lower(), "us",
              "statisticalunit"},
+    # Colonnes optionnelles — CSV enrichi (douanes.ci)
+    "tva": {"tva", "vat", "taxevaleurajoutee"},
+    "tsb": {"tsb", "taxespecifique", "specifictax"},
+    "psv": {"psv"},
 }
 
 
@@ -245,12 +238,24 @@ class CedeaoTecAdapter:
             if category is not None and CET_BANDS.get(category) not in (None, rate):
                 self.stats["band_mismatch"] += 1
 
+            def _opt_float(col_key: str) -> Optional[float]:
+                if col_key not in cols:
+                    return None
+                val = row.get(cols[col_key], "").replace(",", ".").rstrip("% ")
+                try:
+                    return float(val) if val else None
+                except ValueError:
+                    return None
+
             rows.append({
                 "code": code,
                 "description": row.get(cols["description"], ""),
                 "category": category,
                 "rate": rate,
                 "unit": row.get(cols["unit"], "") if "unit" in cols else None,
+                "tva_override": _opt_float("tva"),
+                "tsb": _opt_float("tsb"),
+                "psv": _opt_float("psv"),
             })
             self.stats["source_lines"] += 1
 
@@ -282,7 +287,10 @@ class CedeaoTecAdapter:
             hs_version=self.hs_version,
         )
 
-        measures = self._measures(country, code, row["rate"])
+        measures = self._measures(country, code, row["rate"],
+                                  tva_override=row.get("tva_override"),
+                                  tsb=row.get("tsb"),
+                                  psv=row.get("psv"))
         advantages = self._advantages(country, code)
         total_npf = sum(m.rate_pct or 0 for m in measures)
 
@@ -298,7 +306,10 @@ class CedeaoTecAdapter:
         )
 
     # ------------------------------------------------------------------
-    def _measures(self, country: str, code: str, dd_rate: float) -> List[Measure]:
+    def _measures(self, country: str, code: str, dd_rate: float,
+                  tva_override: Optional[float] = None,
+                  tsb: Optional[float] = None,
+                  psv: Optional[float] = None) -> List[Measure]:
         measures: List[Measure] = []
 
         def add(**kw):
@@ -346,12 +357,42 @@ class CedeaoTecAdapter:
                                 "0,5 % à 0,8 % en 2017)",
                 observation=VERIFY_NOTE)
 
+        # 27 — Prélèvement Union Africaine (tous membres, Décision UA Kigali 2016)
+        add(measure_type=MeasureType.LEVY, code="PUA",
+            name_fr="Prélèvement Union Africaine",
+            name_en="African Union Import Levy",
+            rate_pct=0.2, sequence=27,
+            legal_reference="Décision UA Kigali 2016 — financement de l'UA",
+            observation=VERIFY_NOTE)
+
+        # 30+ — droits spécifiques documentés dans le CSV enrichi
+        if tsb is not None:
+            measures.append(Measure(
+                country_iso3=country, national_code=code,
+                measure_type=MeasureType.OTHER_TAX, code="TSB",
+                name_fr="Taxe Spécifique sur les Boissons",
+                name_en="Specific Tax on Beverages",
+                rate_type=RateType.SPECIFIC, specific_amount=tsb,
+                basis=DutyBasis.CIF, sequence=35,
+                observation=VERIFY_NOTE + " (montant FCFA/unité)"))
+        if psv is not None:
+            measures.append(Measure(
+                country_iso3=country, national_code=code,
+                measure_type=MeasureType.OTHER_TAX, code="PSV",
+                name_fr="Prélèvement Spécifique (viandes/volailles)",
+                name_en="Specific Levy on Meat/Poultry",
+                rate_type=RateType.SPECIFIC, specific_amount=psv,
+                basis=DutyBasis.CIF, sequence=36,
+                observation=VERIFY_NOTE + " (montant FCFA/unité)"))
+
         # 30+ — taxes nationales spécifiques documentées
         for extra in EXTRA_NATIONAL.get(country, []):
             add(**extra)
 
         # 90 — TVA / taxe générale sur la consommation
         vat_code, vat_fr, vat_en, vat_rate = VAT_BY_COUNTRY[country]
+        if tva_override is not None:
+            vat_rate = tva_override
         upstream = [m.code for m in measures
                     if m.basis in (DutyBasis.CIF, DutyBasis.CIF_PLUS_INCLUDED)]
         add(measure_type=MeasureType.VAT, code=vat_code,
