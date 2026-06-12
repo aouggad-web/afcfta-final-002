@@ -6,3 +6,9 @@ id = "hocP95NznwardP6o3A118"
 uri = "file://backend/scripts/RECRAWL_PLAN.md"
 type = "text"
 title = "Plan de Re-Crawl Tarifaire — 54 Pays AfCFTA"
+
+[[outputs]]
+id = "81sx86E082JSpQ8xsHapx"
+uri = "file://african_tariffs_crawled.zip"
+type = "unspecified"
+title = "Tarifs douaniers africains — 54 pays (JSON)"
