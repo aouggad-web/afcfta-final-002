@@ -288,7 +288,7 @@ def _convert_line(country_iso3: str, line: dict,
     advantages = _build_advantages(
         country_iso3, hs6, line.get("fiscal_advantages", []))
     total_npf = sum(m.rate_pct or 0 for m in measures
-                    if m.basis == DutyBasis.CIF)
+                    if m.basis in (DutyBasis.CIF, DutyBasis.CIF_PLUS_INCLUDED))
 
     return CanonicalTariffLine(
         commodity=commodity,

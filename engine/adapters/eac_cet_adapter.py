@@ -321,11 +321,11 @@ class EacCetAdapter:
                      legal_reference="EAC CET 2022 — Legal Notice, en vigueur "
                                      "au 01/07/2022 (EAC Gazette)")
         if row["specific"] is not None:
-            dd_kw.update(rate_type=RateType.MIXED,
+            dd_kw.update(rate_type=RateType.ALTERNATIVE,
                          specific_amount=row["specific"],
                          specific_unit=row["specific_unit"],
-                         observation=f"Taux mixte : le plus élevé des deux "
-                                     f"s'applique — « {row['raw']} »")
+                         observation=f"Taux alternatif : appliquer le plus élevé "
+                                     f"des deux — « {row['raw']} »")
         elif row["sensitive"]:
             dd_kw.update(observation="Produit sensible (Schedule 2 du CET)")
         add(**dd_kw)

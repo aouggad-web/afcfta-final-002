@@ -162,6 +162,16 @@ def test_vat_basis_includes_upstream():
     assert vat.code not in vat.basis_includes
 
 
+def test_total_npf_includes_vat(tmp_path):
+    """total_npf_pct doit inclure la TVA (CIF_PLUS_INCLUDED), pas seulement CIF."""
+    f = _make_verified_file(tmp_path, "RWA", [SIMPLE_LINE])
+    process_file(f, str(tmp_path))
+    record = json.loads(
+        (tmp_path / "RWA_canonical.jsonl").read_text().splitlines()[0])
+    # D.D 25% (CIF) + T.V.A 18% (CIF_PLUS_INCLUDED) = 43.0
+    assert record["total_npf_pct"] == pytest.approx(43.0)
+
+
 def test_cmr_vat_includes_tci_ts():
     measures = _build_measures("CMR", "100630", CMR_LINE["taxes_detail"])
     vat = next(m for m in measures if m.measure_type == MeasureType.VAT)

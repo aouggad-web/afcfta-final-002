@@ -73,7 +73,9 @@ class RateType(str, Enum):
     """Nature du taux"""
     AD_VALOREM = "AD_VALOREM"  # % de l'assiette
     SPECIFIC = "SPECIFIC"      # montant par unité (ex. 50 DZD/kg)
-    MIXED = "MIXED"            # combinaison (ex. 10% + 5 EGP/unité)
+    MIXED = "MIXED"            # additif : % + montant/unité (ex. 10% + 5 EGP/unité)
+    ALTERNATIVE = "ALTERNATIVE"  # le plus élevé des deux : % OU montant/unité
+                                 # (ex. EAC Schedule 2 : «75% or $345/MT whichever is higher»)
     EXEMPT = "EXEMPT"          # exonéré
 
 

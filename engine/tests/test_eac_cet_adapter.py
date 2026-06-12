@@ -107,11 +107,12 @@ def test_dd_bands(adapter):
     assert rates["63090000"] == 35.0
 
 
-def test_sensitive_item_mixed_rate(adapter):
+def test_sensitive_item_alternative_rate(adapter):
+    """Taux alternatif (le plus élevé) — NON additif : Schedule 2 EAC."""
     lines = {l.commodity.national_code: l for l in adapter.transform("KEN")}
     rice = lines["10061000"]
     dd = next(m for m in rice.measures if m.code == "D.D")
-    assert dd.rate_type == RateType.MIXED
+    assert dd.rate_type == RateType.ALTERNATIVE   # pas MIXED (additif)
     assert dd.rate_pct == 75.0
     assert dd.specific_amount == 345.0
     assert dd.specific_unit == "USD/MT"
