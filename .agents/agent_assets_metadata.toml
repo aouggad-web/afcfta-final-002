@@ -12,3 +12,9 @@ id = "81sx86E082JSpQ8xsHapx"
 uri = "file://african_tariffs_crawled.zip"
 type = "unspecified"
 title = "Tarifs douaniers africains — 54 pays (JSON)"
+
+[[outputs]]
+id = "_vThEu5EDUilWbows8WmS"
+uri = "file://african_tariffs_authentic_28.zip"
+type = "unspecified"
+title = "Tarifs authentiques — 28 pays (ECOWAS + EAC + CEMAC + DZA)"
