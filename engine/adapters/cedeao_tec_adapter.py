@@ -182,7 +182,7 @@ class CedeaoTecAdapter:
     """Parse le TEC CEDEAO (CSV) et émet les lignes canoniques v4 par pays."""
 
     SOURCE_NAME = "TEC CEDEAO — Tarif Extérieur Commun (Commission CEDEAO)"
-    SOURCE_URL = "https://www.ecowas.int/trade/"
+    SOURCE_URL = "https://www.douanes.ci/info/tec"
 
     def __init__(self, source_path: str, version_date: Optional[date] = None,
                  hs_version: str = "HS2022"):

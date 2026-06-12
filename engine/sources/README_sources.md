@@ -14,12 +14,16 @@ vérifier la même version.
 
 | Fichier | Source | URL | Téléchargé le | SHA256 |
 |---------|--------|-----|---------------|--------|
-| `cedeao_tec_2022.csv` | Commission CEDEAO — TEC SH 2022 | https://www.ecowas.int/trade/ | — | — |
+| `civ_tec_cedeao_enrichi_27032026.md` | Douanes CIV — TEC CEDEAO 2022 enrichi des droits et taxes nationaux (SYDAM WORLD, MAJ 27/03/2026) | https://www.douanes.ci/info/tec | 2026-06-12 | `0ccc5e078c84b56d551ee604f424a317ef9ad1b2515f06faaa1f92eb5dc05b8a` |
 
 ## TEC CEDEAO — préparation du fichier
 
-1. Télécharger le TEC officiel (Excel) depuis le site de la Commission CEDEAO
-   (ou auprès d'une administration douanière membre, ex. DGD Sénégal).
+1. Télécharger le TEC officiel depuis le portail TEC des douanes ivoiriennes
+   (https://www.douanes.ci/info/tec — 6 381 lignes SH10, droits + taxes
+   nationales) ou auprès d'une autre source officielle :
+   - ECOTIS — Commission CEDEAO : https://ecotis.projects.ecowas.int
+   - DGD Sénégal : https://www.douanes.sn/ndn723/
+   - DGD Bénin : https://douanes.gouv.bj/tarif-exterieur-commun-tec-cedeao-2022/
 2. Exporter la feuille principale en CSV (UTF-8, délimiteur `;` ou `,`).
    Colonnes minimales attendues par `cedeao_tec_adapter.py` :
    - **Code** (`Code_SH` / `HS Code` / `NTS`) — 8 ou 10 chiffres, points tolérés
