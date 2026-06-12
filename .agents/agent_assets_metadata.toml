@@ -18,3 +18,9 @@ id = "_vThEu5EDUilWbows8WmS"
 uri = "file://african_tariffs_authentic_28.zip"
 type = "unspecified"
 title = "Tarifs authentiques — 28 pays (ECOWAS + EAC + CEMAC + DZA)"
+
+[[outputs]]
+id = "RCBYDaMyy6UTfOm7fcYIB"
+uri = "file://crawlers_phase1.zip"
+type = "unspecified"
+title = "Scripts crawlers Phase 1 — ZAF, MAR, EGY, ETH, MUS"
