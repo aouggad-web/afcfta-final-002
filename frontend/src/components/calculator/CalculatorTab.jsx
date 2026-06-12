@@ -18,6 +18,7 @@ import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calcula
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
+import DataStatusBanner from '../common/DataStatusBanner';
 import DismantlementSchedule from './DismantlementSchedule';
 import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
@@ -580,6 +581,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
   return (
     <div className="space-y-6">
+      {/* Bandeau statut des données — par pays importateur si sélectionné */}
+      <DataStatusBanner countryIso3={destinationCountry || undefined} />
+
       {/* Onglets Principal */}
       <Tabs defaultValue="calculator" className="w-full">
         <TabsList className="grid w-full grid-cols-3 mb-4">
