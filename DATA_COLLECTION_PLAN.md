@@ -79,7 +79,8 @@ Chaque adaptateur doit implémenter cette logique nationale (`basis_includes[]` 
 
 **Source principale** : Commission CEDEAO — Tarif Extérieur Commun (TEC)  
 Format : Excel/PDF, nomenclature SH2017 à 8 chiffres  
-URL : https://www.ecowas.int/trade/ → "Common External Tariff"  
+URL : https://www.douanes.ci/info/tec (portail TEC des douanes ivoiriennes — 6 381 lignes SH10, droits + taxes)  
+Alternatives : https://ecotis.projects.ecowas.int (ECOTIS — Commission CEDEAO) · https://www.douanes.sn/ndn723/ (DGD Sénégal) · https://douanes.gouv.bj/tarif-exterieur-commun-tec-cedeao-2022/ (DGD Bénin)  
 Fiabilité cible : **PARTIAL/B** (Commission officielle mais pas douanes nationales)  
 À compléter par : grilles taxes nationales NGA, GHA, CIV (lois de finances)
 
@@ -219,7 +220,7 @@ DZA déjà en PARTIAL/B (✅)
 ```python
 class CedeaoTecAdapter(BaseAdapter):
     SOURCE_NAME   = "TEC CEDEAO 2017 — Commission CEDEAO"
-    SOURCE_URL    = "https://www.ecowas.int/trade/cet/"
+    SOURCE_URL    = "https://www.douanes.ci/info/tec"
     DATA_STATUS   = "PARTIAL"   # Commission officielle ≠ douanes nationales
     RELIABILITY   = "B"
     SCHEMA_VERSION = "4.0"
@@ -259,7 +260,7 @@ VERIFIED   → jamais écrasé (sauf version_date plus récente)
     "data_status": "PARTIAL",
     "reliability": "B",
     "source_name": "TEC CEDEAO 2017 — Commission CEDEAO",
-    "source_url": "https://www.ecowas.int/...",
+    "source_url": "https://www.douanes.ci/info/tec",
     "version_date": "2017-01-01",
     "retrieved_at": "2026-07-01"
   },

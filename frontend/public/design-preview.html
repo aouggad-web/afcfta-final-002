@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZLECAf — Propositions UX/UI</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens ── */
+:root {
+  --bg:        #0C1219;
+  --surface:   #111820;
+  --card:      #182030;
+  --card2:     #1E2A3A;
+  --border:    rgba(255,255,255,0.07);
+  --gold:      #D4AF37;
+  --gold-dim:  rgba(212,175,55,0.18);
+  --terra:     #C8531A;
+  --terra-dim: rgba(200,83,26,0.15);
+  --text:      #EAE0D0;
+  --muted:     #8E9BAE;
+  --muted2:    #6B7A8D;
+  --green:     #2E8B57;
+  --font-d:    'Cormorant Garamond', Georgia, serif;
+  --font-b:    'Outfit', 'Helvetica Neue', sans-serif;
+  --font-m:    'JetBrains Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-family: var(--font-b); background: #060B10; color: var(--text); }
+body { min-height: 100vh; }
+
+/* ── Layout ── */
+.preview-page { max-width: 1300px; margin: 0 auto; padding: 48px 32px 100px; }
+h1.page-title {
+  font-family: var(--font-d);
+  font-size: 42px; font-weight: 700;
+  color: var(--gold); letter-spacing: .01em;
+  margin-bottom: 8px;
+}
+.page-sub { color: var(--muted); font-size: 15px; margin-bottom: 64px; }
+
+/* ── Section ── */
+.section { margin-bottom: 80px; }
+.section-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--terra-dim); border: 1px solid rgba(200,83,26,.3);
+  color: #E07840; font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; padding: 4px 12px; border-radius: 100px;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: var(--font-d);
+  font-size: 30px; font-weight: 700; color: var(--text);
+  margin-bottom: 8px;
+}
+.section-desc { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 32px; max-width: 680px; }
+
+/* ── Comparison grid ── */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.compare-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.compare-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  padding: 10px 16px; border-bottom: 1px solid var(--border);
+}
+.compare-label.before { color: var(--muted2); background: rgba(0,0,0,.2); }
+.compare-label.after  { color: var(--gold);   background: var(--gold-dim); }
+.compare-inner { padding: 20px; }
+
+/* ════════════════════════════════════════════════
+   P1 — SIDEBAR NAVIGATION (remplace topbar 10 tabs)
+   ════════════════════════════════════════════════ */
+
+/* BEFORE — topbar trop chargé */
+.topbar-before {
+  background: #111820; border: 1px solid var(--border);
+  border-radius: 10px; padding: 0 16px;
+  display: flex; align-items: center; gap: 0;
+  height: 52px; overflow: hidden;
+}
+.topbar-before .brand { font-size: 13px; font-weight: 700; color: var(--gold); padding-right: 16px; white-space: nowrap; border-right: 1px solid var(--border); margin-right: 8px; }
+.topbar-before .tab {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--muted2); padding: 0 8px; height: 52px;
+  border-bottom: 2px solid transparent; white-space: nowrap; cursor: pointer;
+}
+.topbar-before .tab.active { color: var(--gold); border-color: var(--gold); }
+.topbar-before .tab svg { width: 13px; height: 13px; }
+
+/* AFTER — sidebar élégante */
+.sidebar-after {
+  display: flex; gap: 0;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--border); height: 340px;
+}
+.sidebar-rail {
+  width: 220px; background: #0E1520;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  padding: 16px 10px;
+  flex-shrink: 0;
+}
+.sidebar-logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 8px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.sidebar-logo .orb {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, #C8531A, #D4AF37);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.sidebar-logo .name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.2; }
+.sidebar-logo .sub  { font-size: 10px; color: var(--muted); }
+
+.nav-group-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted2);
+  padding: 8px 10px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 8px; cursor: pointer;
+  font-size: 13px; color: var(--muted); transition: all .15s;
+  margin-bottom: 1px;
+}
+.nav-item:hover { background: rgba(255,255,255,.04); color: var(--text); }
+.nav-item.active {
+  background: var(--gold-dim); color: var(--gold);
+  font-weight: 600;
+  border-left: 3px solid var(--gold);
+  padding-left: 7px;
+}
+.nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+.nav-bottom {
+  margin-top: auto; padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.nav-bottom .nav-item { font-size: 12px; }
+
+.sidebar-content {
+  flex: 1; background: var(--bg); padding: 20px;
+  overflow: hidden;
+}
+.content-title { font-family: var(--font-d); font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.content-sub   { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.kpi-mini { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px; }
+.kpi-mini-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px;
+}
+.kpi-mini-card .kpi-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.kpi-mini-card .kpi-val { font-family: var(--font-d); font-size: 26px; font-weight: 700; color: var(--gold); }
+.kpi-mini-card .kpi-unit { font-size: 11px; color: var(--muted); }
+.chart-placeholder {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; height: 90px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted2); font-size: 12px;
+}
+
+/* ════════════════════════════════════════════════
+   P2 — TYPOGRAPHIE
+   ════════════════════════════════════════════════ */
+.typo-before { padding: 20px; }
+.typo-before .t-h1 { font-size: 20px; font-weight: 600; color: #D4AF37; margin-bottom: 4px; }
+.typo-before .t-h2 { font-size: 14px; font-weight: 600; color: #EAE0D0; margin-bottom: 8px; }
+.typo-before .t-body { font-size: 12px; color: #8E9BAE; line-height: 1.4; margin-bottom: 8px; }
+.typo-before .t-label { font-size: 10px; color: #6B7A8D; text-transform: uppercase; letter-spacing: .1em; }
+.typo-before .t-data  { font-family: monospace; font-size: 11px; color: #EAE0D0; }
+
+.typo-after { padding: 20px; }
+.typo-after .t-h1 {
+  font-family: var(--font-d);
+  font-size: 28px; font-weight: 700; color: #D4AF37;
+  letter-spacing: .01em; margin-bottom: 4px;
+}
+.typo-after .t-h2 { font-size: 17px; font-weight: 600; color: #EAE0D0; margin-bottom: 10px; }
+.typo-after .t-body { font-size: 15px; color: #A8B5C4; line-height: 1.65; margin-bottom: 10px; }
+.typo-after .t-label {
+  font-size: 11px; color: #8E9BAE; text-transform: uppercase;
+  letter-spacing: .12em; font-weight: 600;
+}
+.typo-after .t-data  {
+  font-family: var(--font-m); font-size: 14px; color: #EAE0D0; letter-spacing: .02em;
+}
+
+/* ════════════════════════════════════════════════
+   P3 — TABLEAU DE DONNÉES
+   ════════════════════════════════════════════════ */
+.tbl { width: 100%; border-collapse: collapse; font-size: inherit; }
+.tbl th {
+  text-align: left; border-bottom: 1px solid var(--border);
+  color: var(--muted); font-weight: 600;
+}
+.tbl td { border-bottom: 1px solid rgba(255,255,255,.03); }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: rgba(255,255,255,.025); }
+
+/* BEFORE */
+.tbl-before th { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; padding: 6px 8px; }
+.tbl-before td { font-size: 11px; padding: 5px 8px; color: var(--text); }
+.tbl-before .badge { font-size: 9px; padding: 1px 5px; border-radius: 4px; background: var(--gold-dim); color: var(--gold); }
+.tbl-before .mono  { font-family: monospace; color: var(--muted); }
+
+/* AFTER */
+.tbl-after th { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 10px 14px; }
+.tbl-after td { font-size: 14px; padding: 12px 14px; color: var(--text); }
+.tbl-after .badge { font-size: 11px; padding: 3px 10px; border-radius: 6px; background: var(--gold-dim); color: var(--gold); font-weight: 600; }
+.tbl-after .mono  { font-family: var(--font-m); font-size: 13px; color: var(--muted); }
+.tbl-after .rate  { font-family: var(--font-d); font-size: 18px; font-weight: 700; color: var(--gold); }
+.tbl-after tr.highlight td { background: rgba(212,175,55,.04); }
+
+/* ════════════════════════════════════════════════
+   P4 — CARTES KPI
+   ════════════════════════════════════════════════ */
+.kpi-before { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.kpi-before-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px;
+}
+.kpi-before-card .k-label { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+.kpi-before-card .k-val   { font-size: 18px; font-weight: 700; color: var(--text); }
+.kpi-before-card .k-sub   { font-size: 10px; color: var(--muted2); }
+
+.kpi-after { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+.kpi-after-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid transparent;
+  border-radius: 14px; padding: 22px 24px;
+  position: relative; overflow: hidden;
+}
+.kpi-after-card.gold-accent { border-top-color: var(--gold); }
+.kpi-after-card.terra-accent { border-top-color: var(--terra); }
+.kpi-after-card.green-accent { border-top-color: #2E8B57; }
+.kpi-after-card.blue-accent { border-top-color: #4A9EBF; }
+.kpi-after-card .k-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--gold-dim); display: flex; align-items: center;
+  justify-content: center; font-size: 18px; margin-bottom: 16px;
+}
+.kpi-after-card.terra-accent .k-icon { background: var(--terra-dim); }
+.kpi-after-card.green-accent .k-icon { background: rgba(46,139,87,.15); }
+.kpi-after-card.blue-accent  .k-icon { background: rgba(74,158,191,.12); }
+.kpi-after-card .k-label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.kpi-after-card .k-val {
+  font-family: var(--font-d); font-size: 44px; font-weight: 700;
+  color: var(--text); line-height: 1; margin-bottom: 6px;
+}
+.kpi-after-card .k-unit { font-size: 15px; color: var(--muted); font-weight: 400; }
+.kpi-after-card .k-trend {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12px; font-weight: 600; margin-top: 8px;
+  padding: 3px 10px; border-radius: 100px;
+}
+.kpi-after-card .k-trend.up { background: rgba(46,139,87,.15); color: #4CAF50; }
+.kpi-after-card .k-trend.down { background: rgba(200,83,26,.12); color: #E07840; }
+
+/* ════════════════════════════════════════════════
+   P5 — CARDS + SPACING
+   ════════════════════════════════════════════════ */
+.cards-before { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.card-before {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px;
+}
+.card-before .c-flag { font-size: 18px; margin-bottom: 6px; }
+.card-before .c-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.card-before .c-code { font-size: 10px; color: var(--muted); margin-bottom: 8px; }
+.card-before .c-stat { font-size: 10px; color: var(--muted2); }
+.card-before .c-val  { font-size: 14px; font-weight: 700; color: var(--gold); }
+
+.cards-after { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.card-after {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 22px 20px;
+  transition: border-color .2s, transform .2s;
+  cursor: pointer;
+}
+.card-after:hover { border-color: rgba(212,175,55,.3); transform: translateY(-2px); }
+.card-after .c-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.card-after .c-flag { font-size: 26px; }
+.card-after .c-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  padding: 3px 8px; border-radius: 100px;
+  background: rgba(46,139,87,.15); color: #4CAF50;
+}
+.card-after .c-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.card-after .c-code { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+.card-after .c-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 16px; }
+.card-after .c-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.card-after .c-metric-label { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+.card-after .c-metric-val   { font-family: var(--font-d); font-size: 20px; font-weight: 700; color: var(--gold); }
+.card-after .c-metric-unit  { font-size: 11px; color: var(--muted); font-weight: 400; }
+
+/* ════════════════════════════════════════════════
+   SÉLECTEUR DE PROPOSITIONS
+   ════════════════════════════════════════════════ */
+.prop-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(6,11,16,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 0 0 0; margin: 0 -32px 64px; padding: 0 32px;
+  display: flex; align-items: center; gap: 0;
+  overflow-x: auto;
+}
+.prop-nav a {
+  display: flex; align-items: center; gap: 7px;
+  padding: 14px 16px; color: var(--muted);
+  font-size: 13px; font-weight: 500; white-space: nowrap;
+  text-decoration: none; border-bottom: 2px solid transparent;
+  transition: all .15s;
+}
+.prop-nav a:hover { color: var(--text); }
+.prop-nav a.active, .prop-nav a:focus { color: var(--gold); border-bottom-color: var(--gold); }
+.prop-nav .pn-num {
+  width: 20px; height: 20px; border-radius: 6px;
+  background: var(--card); font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted2);
+}
+.prop-nav a.active .pn-num { background: var(--gold-dim); color: var(--gold); }
+
+/* ── Note footer ── */
+.note {
+  background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--gold);
+  border-radius: 8px; padding: 16px 20px; font-size: 13px; color: var(--muted);
+  line-height: 1.6; margin-top: 32px;
+}
+.note strong { color: var(--text); }
+
+/* ── Score table ── */
+.score-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.score-table th { text-align: left; padding: 10px 14px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); }
+.score-table td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.04); color: var(--text); }
+.score-table tr:last-child td { border: none; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+.dot.high { background: #2E8B57; }
+.dot.med  { background: #D4AF37; }
+.dot.low  { background: #E07840; }
+.effort { font-size: 11px; padding: 3px 10px; border-radius: 100px; font-weight: 600; }
+.effort.low    { background: rgba(46,139,87,.15); color: #4CAF50; }
+.effort.medium { background: var(--gold-dim); color: var(--gold); }
+.effort.high   { background: var(--terra-dim); color: #E07840; }
+
+</style>
+</head>
+<body>
+<div class="preview-page">
+
+  <h1 class="page-title">Propositions UX/UI — ZLECAf Intelligence</h1>
+  <p class="page-sub">5 axes d'amélioration · Preview interactif · Design basé sur le système existant</p>
+
+  <nav class="prop-nav">
+    <a href="#p1"><span class="pn-num">1</span> Sidebar</a>
+    <a href="#p2"><span class="pn-num">2</span> Typographie</a>
+    <a href="#p3"><span class="pn-num">3</span> Tableaux</a>
+    <a href="#p4"><span class="pn-num">4</span> KPI Cards</a>
+    <a href="#p5"><span class="pn-num">5</span> Cartes pays</a>
+    <a href="#p6"><span class="pn-num">∑</span> Résumé</a>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════════════
+       P1 — SIDEBAR
+       ══════════════════════════════════════════════ -->
+  <section class="section" id="p1">
+    <div class="section-badge">Proposition 1 — Navigation</div>
+    <h2 class="section-title">Topbar 10 onglets → Sidebar persistante</h2>
+    <p class="section-desc">
+      10 onglets dans une barre horizontale de 52 px crée une densité extrême, des libellés tronqués, et ne laisse
+      aucune place aux sous-sections. Une sidebar gauche de 220 px libère toute la largeur pour le contenu,
+      groupe les modules par famille, et s'affiche en icônes seules au-dessous de 900 px.
+    </p>
+
+    <div class="compare">
+      <div class="compare-box">
+        <div class="compare-label before">● Avant — Topbar 10 onglets (52 px de hauteur)</div>
+        <div class="compare-inner">
+          <div class="topbar-before">
+            <span class="brand">🌍 ZLECAf</span>
+            <span class="tab active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              Tableau
+            </span>
+            <span class="tab">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="6" height="18" rx="1"/><path d="M12 8l4 4-4 4"/><path d="M12 12h8"/></svg>
+              Calcul.
+            </span>
+            <span class="tab">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Stats
+            </span>
+            <span class="tab">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83"/></svg>
+              Opport.
+            </span>
+            <span class="tab">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              Prod.
+            </span>
+            <span class="tab">⚓ Logi.</span>
+            <span class="tab">🏦 Banque</span>
+            <span class="tab">🔧 Outils</span>
+            <span class="tab">📋 R.O</span>
+            <span class="tab">🌐 Profils</span>
+          </div>
+          <p style="margin-top:12px;font-size:11px;color:#6B7A8D;">→ Onglets tronqués, illisibles sur écran &lt; 1400 px, aucune hiérarchie.</p>
+        </div>
+      </div>
+
+      <div class="compare-box">
+        <div class="compare-label after">✦ Après — Sidebar 220 px + contenu pleine largeur</div>
+        <div class="compare-inner">
+          <div class="sidebar-after">
+            <!-- sidebar -->
+            <nav class="sidebar-rail">
+              <div class="sidebar-logo">
+                <div class="orb">🌍</div>
+                <div>
+                  <div class="name">ZLECAf</div>
+                  <div class="sub">Intelligence</div>
+                </div>
+              </div>
+              <div class="nav-group-label">Analyse</div>
+              <div class="nav-item active">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Tableau de bord
+              </div>
+              <div class="nav-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Statistiques
+              </div>
+              <div class="nav-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4"/></svg>
+                Opportunités
+              </div>
+              <div class="nav-group-label" style="margin-top:8px;">Commerce</div>
+              <div class="nav-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                Calculateur
+              </div>
+              <div class="nav-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                Production
+              </div>
+              <div class="nav-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                Logistique
+              </div>
+              <div class="nav-bottom">
+                <div class="nav-item">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41"/></svg>
+                  Paramètres
+                </div>
+              </div>
+            </nav>
+            <!-- content -->
+            <div class="sidebar-content">
+              <div class="content-title">Tableau de bord</div>
+              <div class="content-sub">Aperçu ZLECAf · 54 pays · Mise à jour 13 juin 2026</div>
+              <div class="kpi-mini">
+                <div class="kpi-mini-card">
+                  <div class="kpi-label">PIB cumulé</div>
+                  <div class="kpi-val">3,4 <span class="kpi-unit">Bn $</span></div>
+                </div>
+                <div class="kpi-mini-card">
+                  <div class="kpi-label">Commerce intra-africain</div>
+                  <div class="kpi-val">16,1 <span class="kpi-unit">%</span></div>
+                </div>
+                <div class="kpi-mini-card">
+                  <div class="kpi-label">Avancement ZLECAf</div>
+                  <div class="kpi-val">57 <span class="kpi-unit">%</span></div>
+                </div>
+              </div>
+              <div class="chart-placeholder">[ Graphique régional · Recharts ]</div>
+            </div>
+          </div>
+          <p style="margin-top:12px;font-size:11px;color:#8E9BAE;">→ Hiérarchie claire, libellés complets, plus de contenu visible, extensible.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       P2 — TYPOGRAPHIE
+       ══════════════════════════════════════════════ -->
+  <section class="section" id="p2">
+    <div class="section-badge">Proposition 2 — Typographie</div>
+    <h2 class="section-title">Augmenter l'échelle typographique de 25–30 %</h2>
+    <p class="section-desc">
+      Le corps de texte actuel (12–14 px) est sous le seuil de confort de lecture pour des données tarifaires
+      denses. Passer body → 15–16 px, labels → 13 px, titres de section → 22–28 px améliore la lisibilité
+      sans sacrifier la densité d'information. Utiliser davantage <em>Cormorant Garamond</em> pour les grands
+      nombres (déjà disponible dans le design system).
+    </p>
+    <div class="compare">
+      <div class="compare-box">
+        <div class="compare-label before">● Avant</div>
+        <div class="typo-before">
+          <div class="t-h1">Taux DD Égypte — Chapitre 87</div>
+          <div class="t-h2">Véhicules automobiles</div>
+          <div class="t-body">Données issues de la Moslaha El Gamareg (customs.gov.eg). Les taux s'appliquent sur base CIF + droits de douane pour la TVA.</div>
+          <div class="t-label" style="margin-bottom:4px;">Code HS</div>
+          <div class="t-data">8703.10.00.10 — Voitures de tourisme</div>
+        </div>
+      </div>
+      <div class="compare-box">
+        <div class="compare-label after">✦ Après</div>
+        <div class="typo-after">
+          <div class="t-h1">Taux DD Égypte — Chapitre 87</div>
+          <div class="t-h2">Véhicules automobiles</div>
+          <div class="t-body">Données issues de la Moslaha El Gamareg (customs.gov.eg). Les taux s'appliquent sur base CIF + droits de douane pour la TVA.</div>
+          <div class="t-label" style="margin-bottom:5px;">Code HS</div>
+          <div class="t-data">8703.10.00.10 — Voitures de tourisme</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       P3 — TABLEAUX
+       ══════════════════════════════════════════════ -->
+  <section class="section" id="p3">
+    <div class="section-badge">Proposition 3 — Tableaux de données</div>
+    <h2 class="section-title">Lignes plus respirantes, données plus lisibles</h2>
+    <p class="section-desc">
+      Les lignes de tableau actuelles (5–6 px de padding vertical, 11 px de texte) imposent un effort
+      visuel inutile. Passer à 12 px de padding vertical, 14 px de texte, et utiliser
+      <em>Cormorant Garamond</em> pour les taux numériques (les rend immédiatement repérables dans le scan).
+    </p>
+    <div class="compare">
+      <div class="compare-box">
+        <div class="compare-label before">● Avant — lignes 28 px, texte 11 px</div>
+        <div class="compare-inner" style="padding:0;">
+          <table class="tbl tbl-before" style="font-size:11px;">
+            <thead>
+              <tr>
+                <th>Code SH</th><th>Description</th><th>DD</th><th>TVA</th><th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">8703100010</td><td>Véhicules électriques</td><td>5%</td><td>14%</td><td><span class="badge">PARTIAL</span></td></tr>
+              <tr><td class="mono">8703211010</td><td>Cyl. &lt;1000 cm³</td><td>40%</td><td>14%</td><td><span class="badge">PARTIAL</span></td></tr>
+              <tr><td class="mono">8703221010</td><td>Cyl. 1000–1500 cm³</td><td>60%</td><td>14%</td><td><span class="badge">PARTIAL</span></td></tr>
+              <tr><td class="mono">8703231010</td><td>Cyl. 1500–3000 cm³</td><td>80%</td><td>14%</td><td><span class="badge">PARTIAL</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="compare-box">
+        <div class="compare-label after">✦ Après — lignes 48 px, texte 14 px + grands chiffres</div>
+        <div class="compare-inner" style="padding:0;">
+          <table class="tbl tbl-after">
+            <thead>
+              <tr>
+                <th>Code SH</th><th>Description</th><th>DD</th><th>TVA</th><th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">8703.10.00.10</td><td>Véhicules électriques</td><td class="rate">5 %</td><td>14 %</td><td><span class="badge">PARTIAL/B</span></td></tr>
+              <tr class="highlight"><td class="mono">8703.21.10.10</td><td>Cyl. &lt;1 000 cm³</td><td class="rate">40 %</td><td>14 %</td><td><span class="badge">PARTIAL/B</span></td></tr>
+              <tr><td class="mono">8703.22.10.10</td><td>Cyl. 1 000–1 500 cm³</td><td class="rate">60 %</td><td>14 %</td><td><span class="badge">PARTIAL/B</span></td></tr>
+              <tr><td class="mono">8703.23.10.10</td><td>Cyl. 1 500–3 000 cm³</td><td class="rate">80 %</td><td>14 %</td><td><span class="badge">PARTIAL/B</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       P4 — KPI CARDS
+       ══════════════════════════════════════════════ -->
+  <section class="section" id="p4">
+    <div class="section-badge">Proposition 4 — Cartes KPI</div>
+    <h2 class="section-title">Chiffres clés en grand — impact immédiat</h2>
+    <p class="section-desc">
+      Les KPI actuels (18–20 px) ne s'imposent pas visuellement. Passer à 44 px en Cormorant Garamond
+      pour les valeurs principales, avec une barre de couleur en haut et une tendance (delta)
+      crée une hiérarchie claire et un dashboard de type "executive".
+    </p>
+    <div class="compare">
+      <div class="compare-box">
+        <div class="compare-label before">● Avant — chiffres 18 px, cartes 8 px radius</div>
+        <div class="compare-inner">
+          <div class="kpi-before">
+            <div class="kpi-before-card">
+              <div class="k-label">PIB cumulé</div>
+              <div class="k-val">$3.4T</div>
+              <div class="k-sub">54 pays</div>
+            </div>
+            <div class="kpi-before-card">
+              <div class="k-label">Commerce intra-AF</div>
+              <div class="k-val">16.1%</div>
+              <div class="k-sub">vs 64% UE</div>
+            </div>
+            <div class="kpi-before-card">
+              <div class="k-label">Ports majeurs</div>
+              <div class="k-val">68</div>
+              <div class="k-sub">infrastructure</div>
+            </div>
+            <div class="kpi-before-card">
+              <div class="k-label">Avancement ZLECAf</div>
+              <div class="k-val">57%</div>
+              <div class="k-sub">ratification</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="compare-box">
+        <div class="compare-label after">✦ Après — Cormorant Garamond 44 px + tendance</div>
+        <div class="compare-inner">
+          <div class="kpi-after">
+            <div class="kpi-after-card gold-accent">
+              <div class="k-icon">📊</div>
+              <div class="k-label">PIB cumulé</div>
+              <div class="k-val">3,4 <span class="k-unit">Bn $</span></div>
+              <div class="k-trend up">▲ +2,1 % sur 1 an</div>
+            </div>
+            <div class="kpi-after-card terra-accent">
+              <div class="k-icon">🔄</div>
+              <div class="k-label">Commerce intra-africain</div>
+              <div class="k-val">16,1 <span class="k-unit">%</span></div>
+              <div class="k-trend up">▲ +0,8 pt vs 2023</div>
+            </div>
+            <div class="kpi-after-card blue-accent">
+              <div class="k-icon">⚓</div>
+              <div class="k-label">Ports majeurs</div>
+              <div class="k-val">68</div>
+              <div class="k-trend up">▲ +3 nouveaux</div>
+            </div>
+            <div class="kpi-after-card green-accent">
+              <div class="k-icon">✓</div>
+              <div class="k-label">Avancement ZLECAf</div>
+              <div class="k-val">57 <span class="k-unit">%</span></div>
+              <div class="k-trend down">▼ 23 pays restants</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       P5 — CARTES PAYS
+       ══════════════════════════════════════════════ -->
+  <section class="section" id="p5">
+    <div class="section-badge">Proposition 5 — Cartes pays</div>
+    <h2 class="section-title">Cartes pays — de la densité à la clarté</h2>
+    <p class="section-desc">
+      Les cartes pays actuelles (padding 12 px, texte 10–12 px) s'utilisent en grille très serrée.
+      Augmenter le padding à 22 px, la police à 14–20 px, ajouter un séparateur et grouper les métriques
+      en 2×2 rend chaque carte autonome et lisible d'un coup d'œil.
+    </p>
+    <div class="compare">
+      <div class="compare-box">
+        <div class="compare-label before">● Avant — padding 12 px, texte 10 px</div>
+        <div class="compare-inner">
+          <div class="cards-before">
+            <div class="card-before">
+              <div class="c-flag">🇷🇼</div>
+              <div class="c-name">Rwanda</div>
+              <div class="c-code">RWA · EAC</div>
+              <div class="c-stat">DD moy.</div>
+              <div class="c-val">15,2%</div>
+            </div>
+            <div class="card-before">
+              <div class="c-flag">🇨🇮</div>
+              <div class="c-name">Côte d'Ivoire</div>
+              <div class="c-code">CIV · CEDEAO</div>
+              <div class="c-stat">DD moy.</div>
+              <div class="c-val">12,4%</div>
+            </div>
+            <div class="card-before">
+              <div class="c-flag">🇪🇬</div>
+              <div class="c-name">Égypte</div>
+              <div class="c-code">EGY · ComESA</div>
+              <div class="c-stat">DD moy.</div>
+              <div class="c-val">19,8%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="compare-box">
+        <div class="compare-label after">✦ Après — padding 22 px, métriques 2×2</div>
+        <div class="compare-inner">
+          <div class="cards-after">
+            <div class="card-after">
+              <div class="c-top">
+                <div class="c-flag">🇷🇼</div>
+                <span class="c-badge">EAC</span>
+              </div>
+              <div class="c-name">Rwanda</div>
+              <div class="c-code">RWA · Kigali</div>
+              <hr class="c-divider">
+              <div class="c-metrics">
+                <div>
+                  <div class="c-metric-label">DD moyen</div>
+                  <div class="c-metric-val">15,2 <span class="c-metric-unit">%</span></div>
+                </div>
+                <div>
+                  <div class="c-metric-label">ZLECAf</div>
+                  <div class="c-metric-val">0 <span class="c-metric-unit">%</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-after">
+              <div class="c-top">
+                <div class="c-flag">🇨🇮</div>
+                <span class="c-badge">CEDEAO</span>
+              </div>
+              <div class="c-name">Côte d'Ivoire</div>
+              <div class="c-code">CIV · Abidjan</div>
+              <hr class="c-divider">
+              <div class="c-metrics">
+                <div>
+                  <div class="c-metric-label">DD moyen</div>
+                  <div class="c-metric-val">12,4 <span class="c-metric-unit">%</span></div>
+                </div>
+                <div>
+                  <div class="c-metric-label">ZLECAf</div>
+                  <div class="c-metric-val">0 <span class="c-metric-unit">%</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-after">
+              <div class="c-top">
+                <div class="c-flag">🇪🇬</div>
+                <span class="c-badge" style="background:rgba(212,175,55,.15);color:#D4AF37;">ComESA</span>
+              </div>
+              <div class="c-name">Égypte</div>
+              <div class="c-code">EGY · Le Caire</div>
+              <hr class="c-divider">
+              <div class="c-metrics">
+                <div>
+                  <div class="c-metric-label">DD moyen</div>
+                  <div class="c-metric-val">19,8 <span class="c-metric-unit">%</span></div>
+                </div>
+                <div>
+                  <div class="c-metric-label">ZLECAf</div>
+                  <div class="c-metric-val">— <span class="c-metric-unit"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       P6 — RÉSUMÉ
+       ══════════════════════════════════════════════ -->
+  <section class="section" id="p6">
+    <div class="section-badge">Résumé</div>
+    <h2 class="section-title">Priorisation et effort estimé</h2>
+    <p class="section-desc">Toutes les propositions utilisent les tokens et composants existants — pas de refonte de l'architecture React.</p>
+
+    <div class="compare-box" style="overflow:visible;">
+      <div class="compare-label after">Plan d'action recommandé</div>
+      <div class="compare-inner" style="padding:0;">
+        <table class="score-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Proposition</th>
+              <th>Impact UX</th>
+              <th>Effort</th>
+              <th>Fichiers principaux</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1</strong></td>
+              <td>Sidebar navigation</td>
+              <td><span class="dot high"></span>Très élevé</td>
+              <td><span class="effort medium">Moyen — 2–3 h</span></td>
+              <td style="font-size:12px;color:#8E9BAE;">AfcftaTopbar.jsx → AfcftaSidebar.jsx · App.js layout</td>
+            </tr>
+            <tr>
+              <td><strong>2</strong></td>
+              <td>Typographie +25–30 %</td>
+              <td><span class="dot high"></span>Élevé</td>
+              <td><span class="effort low">Faible — 30 min</span></td>
+              <td style="font-size:12px;color:#8E9BAE;">design-system.css · theme.css · index.css</td>
+            </tr>
+            <tr>
+              <td><strong>3</strong></td>
+              <td>Tableaux respirants</td>
+              <td><span class="dot high"></span>Élevé</td>
+              <td><span class="effort low">Faible — 30 min</span></td>
+              <td style="font-size:12px;color:#8E9BAE;">ui/table.jsx · layout.css</td>
+            </tr>
+            <tr>
+              <td><strong>4</strong></td>
+              <td>KPI cards Cormorant</td>
+              <td><span class="dot med"></span>Moyen</td>
+              <td><span class="effort low">Faible — 45 min</span></td>
+              <td style="font-size:12px;color:#8E9BAE;">KpiRow.jsx · design-system.css</td>
+            </tr>
+            <tr>
+              <td><strong>5</strong></td>
+              <td>Cartes pays 22 px</td>
+              <td><span class="dot med"></span>Moyen</td>
+              <td><span class="effort low">Faible — 30 min</span></td>
+              <td style="font-size:12px;color:#8E9BAE;">layout.css · composants cards existants</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:24px;">
+      <strong>Ordre conseillé :</strong> commencer par 2 + 3 (impact immédiat, 0 risque de régression) →
+      puis 4 + 5 (visual polish) → finir par 1 (sidebar, seul changement structurel).
+      Chaque étape est indépendante et réversible. Le design system (CSS variables) permet
+      de déployer les changements de police et d'espacement sans toucher aux composants React.
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

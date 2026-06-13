@@ -69,20 +69,33 @@ function DashboardMetricCard({ item }) {
 
   return (
     <div
-      className="rounded-2xl border p-4 md:p-5"
+      className="rounded-2xl border p-5 md:p-6"
       style={{
-        background: 'linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015))',
-        borderColor: 'rgba(255,255,255,0.06)',
-        boxShadow: '0 14px 30px rgba(0,0,0,0.16)',
+        background: 'linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015))',
+        borderColor: 'rgba(255,255,255,0.07)',
+        boxShadow: '0 16px 36px rgba(0,0,0,0.18)',
+        minHeight: 160,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
       }}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] font-semibold">
+          <p className="text-[11px] uppercase tracking-[0.8px] text-[var(--afcfta-muted)] font-bold">
             {item.title}
           </p>
-          <p className="mt-2 text-3xl font-bold text-[var(--text)]">{item.value}</p>
-          <p className="mt-1 text-sm text-[var(--afcfta-muted)]">{item.subtitle}</p>
+          <p
+            className="mt-3 font-bold text-[var(--text)]"
+            style={{
+              fontSize: 'clamp(30px, 3vw, 44px)',
+              fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)",
+              lineHeight: 1,
+            }}
+          >
+            {item.value}
+          </p>
+          <p className="mt-2 text-[13px] text-[var(--afcfta-muted)]">{item.subtitle}</p>
         </div>
 
         <div
@@ -101,7 +114,7 @@ function DashboardMetricCard({ item }) {
         <span
           className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold"
           style={{
-            background: 'rgba(255,255,255,0.05)',
+            background: 'rgba(255,255,255,0.06)',
             color: 'var(--text)',
           }}
         >
@@ -221,32 +234,25 @@ const DashboardTabNew = ({ language = 'fr' }) => {
             </div>
 
             <div className="grid grid-cols-3 gap-2 md:gap-3 min-w-full lg:min-w-[320px] lg:max-w-[340px]">
-              <div className="rounded-xl border px-3 py-3 text-center bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.06)]">
-                <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)]">
-                  {t.members}
+              {[
+                { label: t.members, value: '54' },
+                { label: t.coverage, value: stats?.overview?.verified_positions ? Math.round(stats.overview.verified_positions / 1000) + 'K' : '229K' },
+                { label: t.authentic, value: String(stats?.overview?.authentic_countries || 54) },
+              ].map(({ label, value }) => (
+                <div key={label} className="rounded-xl border px-3 py-4 text-center bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.07)]">
+                  <div className="text-[10px] uppercase tracking-[0.8px] text-[var(--afcfta-muted)] font-bold">{label}</div>
+                  <div
+                    className="mt-2 font-bold text-[var(--text)]"
+                    style={{
+                      fontSize: 'clamp(22px, 2.4vw, 32px)',
+                      fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {value}
+                  </div>
                 </div>
-                <div className="mt-1 text-xl font-bold text-[var(--text)]">54</div>
-              </div>
-
-              <div className="rounded-xl border px-3 py-3 text-center bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.06)]">
-                <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)]">
-                  {t.coverage}
-                </div>
-                <div className="mt-1 text-xl font-bold text-[var(--text)]">
-                  {stats?.overview?.verified_positions ? 
-                    Math.round(stats.overview.verified_positions / 1000) + 'K' : 
-                    '229K'}
-                </div>
-              </div>
-
-              <div className="rounded-xl border px-3 py-3 text-center bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.06)]">
-                <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)]">
-                  {t.authentic}
-                </div>
-                <div className="mt-1 text-xl font-bold text-[var(--text)]">
-                  {stats?.overview?.authentic_countries || 54}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -277,24 +283,35 @@ const DashboardTabNew = ({ language = 'fr' }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
           {BLOCS.map((bloc) => (
             <div
               key={bloc.name}
-              className="rounded-xl border p-4"
+              className="rounded-xl border p-5"
               style={{
-                background: 'linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015))',
-                borderColor: `${bloc.accent}55`,
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))',
+                borderColor: `${bloc.accent}44`,
+                borderLeftWidth: 3,
+                borderLeftColor: bloc.accent,
               }}
             >
               <div
-                className="text-sm font-bold uppercase tracking-wide"
+                className="text-[11px] font-bold uppercase tracking-[1px]"
                 style={{ color: bloc.accent }}
               >
                 {bloc.name}
               </div>
-              <div className="mt-2 text-2xl font-bold text-[var(--text)]">{bloc.count}</div>
-              <div className="mt-1 text-xs text-[var(--afcfta-muted)]">
+              <div
+                className="mt-2 font-bold text-[var(--text)]"
+                style={{
+                  fontSize: 'clamp(32px, 3.5vw, 48px)',
+                  fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)",
+                  lineHeight: 1,
+                }}
+              >
+                {bloc.count}
+              </div>
+              <div className="mt-2 text-[12px] text-[var(--afcfta-muted)]">
                 {bloc.count} {t.blocCountries}
               </div>
             </div>

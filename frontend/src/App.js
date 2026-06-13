@@ -8,6 +8,7 @@ import './styles/theme.css';
 import './styles/theme-light.css';
 
 import AfcftaTopbar from './components/AfcftaTopbar';
+import AfcftaSidebar from './components/AfcftaSidebar';
 import KpiRow from './components/KpiRow';
 import SectionHeader from './components/SectionHeader';
 
@@ -177,7 +178,7 @@ function App() {
               }
               dotColor="copper"
             />
-            <div style={{ height: 14 }} />
+            <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <CalculatorTab countries={countries} language={language} />
             </div>
@@ -192,7 +193,7 @@ function App() {
               subtitle={language === 'fr' ? 'Données OEC, COMTRADE, UNCTAD' : 'OEC, COMTRADE, UNCTAD Data'}
               dotColor="info"
             />
-            <div style={{ height: 14 }} />
+            <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <StatisticsTab language={language} />
             </div>
@@ -211,7 +212,7 @@ function App() {
               }
               dotColor="success"
             />
-            <div style={{ height: 14 }} />
+            <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <OpportunitiesTab language={language} />
             </div>
@@ -230,7 +231,7 @@ function App() {
               }
               dotColor="warning"
             />
-            <div style={{ height: 14 }} />
+            <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <ProductionTab language={language} />
             </div>
@@ -249,7 +250,7 @@ function App() {
               }
               dotColor="info"
             />
-            <div style={{ height: 14 }} />
+            <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <LogisticsTab language={language} />
             </div>
@@ -268,7 +269,7 @@ function App() {
               }
               dotColor="info"
             />
-            <div style={{ height: 14 }} />
+            <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <BankingInfoPanel language={language} countries={countries} />
             </div>
@@ -282,7 +283,7 @@ function App() {
               title={language === 'fr' ? "Outils d'Analyse" : 'Analysis Tools'}
               subtitle={language === 'fr' ? 'Convertisseurs, recherche HS, IA' : 'Converters, HS search, AI'}
             />
-            <div style={{ height: 14 }} />
+            <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <ToolsTab language={language} />
             </div>
@@ -301,7 +302,7 @@ function App() {
               }
               dotColor="copper"
             />
-            <div style={{ height: 14 }} />
+            <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <RulesTab language={language} />
             </div>
@@ -320,7 +321,7 @@ function App() {
               }
               dotColor="success"
             />
-            <div style={{ height: 14 }} />
+            <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <CountryProfilesTab language={language} />
             </div>
@@ -338,7 +339,16 @@ function App() {
       <div className="afcfta-layout-v2">
         <Toaster />
 
-        {/* Horizontal top navigation */}
+        {/* Desktop sidebar — hidden on mobile via CSS */}
+        <AfcftaSidebar
+          active={getTopbarActiveTab()}
+          onTabChange={handleTabChange}
+          language={language}
+          theme={theme}
+          onThemeToggle={toggleTheme}
+        />
+
+        {/* Horizontal top navigation (mobile + tablet) */}
         <AfcftaTopbar
           active={getTopbarActiveTab()}
           onTabChange={handleTabChange}
@@ -357,16 +367,28 @@ function App() {
 
           {/* Offline banner — non-dashboard tabs when backend is down */}
           {backendOnline === false && activeTab !== 'dashboard' && (
-            <div className="info-panel zellige-arabesque" style={{ marginBottom: 20, borderColor: 'rgba(200,16,46,0.25)' }}>
-              <div className="info-panel-accent" style={{ background: 'var(--af-red)' }} />
-              <div className="info-panel-title">
-                {language === 'fr' ? '⚡ Serveur hors ligne' : '⚡ Server offline'}
-              </div>
-              <div className="info-panel-body">
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              padding: '10px 16px',
+              marginBottom: 18,
+              borderRadius: 10,
+              background: 'rgba(200,16,46,0.08)',
+              border: '1px solid rgba(200,16,46,0.20)',
+              fontSize: 13,
+              color: 'var(--afcfta-muted)',
+            }}>
+              <span style={{ fontSize: 15 }}>⚡</span>
+              <span>
+                <strong style={{ color: '#e05070' }}>
+                  {language === 'fr' ? 'Serveur hors ligne' : 'Server offline'}
+                </strong>
+                {' — '}
                 {language === 'fr'
-                  ? 'Démarrez le backend (port 8000) pour charger les données de ce module. Les données tarifaires, statistiques et outils nécessitent le serveur API.'
-                  : 'Start the backend server (port 8000) to load data for this module. Tariff data, statistics and tools require the API server.'}
-              </div>
+                  ? 'Démarrez le backend (port 8000) pour accéder aux données.'
+                  : 'Start the backend (port 8000) to access data.'}
+              </span>
             </div>
           )}
 

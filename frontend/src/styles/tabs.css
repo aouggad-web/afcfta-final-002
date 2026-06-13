@@ -20,9 +20,10 @@
 
 /* Individual tab trigger */
 .tab-trigger-enhanced {
-  @apply flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200;
+  @apply flex items-center gap-2 px-5 py-3 font-medium rounded-lg transition-all duration-200;
   @apply text-gray-600 hover:text-gray-900 hover:bg-gray-50;
   @apply whitespace-nowrap flex-shrink-0;
+  font-size: 14px;
 }
 
 .tab-trigger-enhanced[data-state="active"] {
@@ -169,12 +170,13 @@
 
 /* Mini tabs for sub-sections */
 .tabs-list-mini {
-  @apply flex gap-1 p-0.5 bg-gray-100 rounded-lg;
+  @apply flex gap-1 p-1 bg-gray-100 rounded-lg;
 }
 
 .tabs-list-mini .tab-trigger-mini {
-  @apply px-3 py-1.5 text-xs font-medium rounded-md transition-all;
+  @apply px-4 py-2 font-medium rounded-md transition-all;
   @apply text-gray-600 hover:text-gray-900;
+  font-size: 13px;
 }
 
 .tabs-list-mini .tab-trigger-mini[data-state="active"] {

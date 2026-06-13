@@ -85,13 +85,14 @@ def test_provenance_partial_b(adapter):
 def test_uemoa_member_has_community_levies(adapter):
     line = next(adapter.transform("SEN"))           # SEN ∈ UEMOA
     codes = {m.code for m in line.measures}
-    assert {"D.D", "R.S", "PC-CEDEAO", "PCS-UEMOA", "T.V.A"} <= codes
+    assert {"D.D", "R.S", "PC-CEDEAO", "PCS-UEMOA", "PUA", "T.V.A"} <= codes
 
 
 def test_non_uemoa_member_has_no_uemoa_levies(adapter):
     line = next(adapter.transform("GHA"))           # GHA ∉ UEMOA
     codes = {m.code for m in line.measures}
     assert "PC-CEDEAO" in codes
+    assert "PUA" in codes           # AU levy s'applique à tous les membres
     assert "R.S" not in codes
     assert "PCS-UEMOA" not in codes
     # taxes nationales ghanéennes documentées
@@ -157,3 +158,46 @@ def test_referentials_consistency():
     assert UEMOA <= set(COUNTRIES)
     assert len(UEMOA) == 8
     assert CET_BANDS == {0: 0.0, 1: 5.0, 2: 10.0, 3: 20.0, 4: 35.0}
+
+
+# ----------------------------------------------------------------------
+# CSV enrichi — colonnes TVA, TSB, PUA universelle
+# ----------------------------------------------------------------------
+
+def test_pua_applies_to_all_members(adapter):
+    for iso3 in ["SEN", "GHA", "NGA", "LBR"]:   # UEMOA, non-UEMOA, Anglophone
+        line = next(adapter.transform(iso3))
+        codes = {m.code for m in line.measures}
+        assert "PUA" in codes, f"PUA absent pour {iso3}"
+
+
+def test_tva_override_from_enriched_csv(tmp_path):
+    src = tmp_path / "tec_enrichi.csv"
+    src.write_text(
+        "Code_SH;Designation;DD;TVA\n"
+        "0201100000;Viande bovine fraîche;20;9\n"
+        "0101210000;Chevaux reproducteurs;5;0\n",
+        encoding="utf-8",
+    )
+    adapter = CedeaoTecAdapter(str(src))
+    lines = {l.commodity.national_code: l for l in adapter.transform("CIV")}
+    vat_beef = next(m for m in lines["0201100000"].measures if m.sequence == 90)
+    vat_horse = next(m for m in lines["0101210000"].measures if m.sequence == 90)
+    assert vat_beef.rate_pct == 9.0
+    assert vat_horse.rate_pct == 0.0
+    assert vat_horse.rate_type.value == "EXEMPT"
+
+
+def test_tsb_specific_duty_from_enriched_csv(tmp_path):
+    src = tmp_path / "tec_tsb.csv"
+    src.write_text(
+        "Code_SH;Designation;DD;TVA;TSB\n"
+        "2203001000;Bières de malt en récipient ≤10 L;20;18;17\n",
+        encoding="utf-8",
+    )
+    adapter = CedeaoTecAdapter(str(src))
+    line = next(adapter.transform("CIV"))
+    tsb = next((m for m in line.measures if m.code == "TSB"), None)
+    assert tsb is not None
+    assert tsb.rate_type.value == "SPECIFIC"
+    assert tsb.specific_amount == 17.0
