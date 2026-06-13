@@ -270,13 +270,76 @@ class ClaudeTradeService:
     def _resolve_iso3(name: str) -> Optional[str]:
         if not name:
             return None
-        return COUNTRY_NAME_TO_ISO3.get(name.lower().strip())
+        token = name.strip()
+        # Already an ISO3 code? (e.g. Claude returns "NGA" or "CHN")
+        if re.fullmatch(r"[A-Za-z]{3}", token):
+            upper = token.upper()
+            # Return the code itself so African-only / self-loop guards can act on it,
+            # whether it is African (in AFRICAN_ISO3) or extra-African (e.g. CHN).
+            if upper in AFRICAN_ISO3 or upper in COUNTRY_NAME_TO_ISO3.values():
+                return upper
+            return upper
+        return COUNTRY_NAME_TO_ISO3.get(token.lower())
+
+    @staticmethod
+    def _add_legacy_aliases(opp: dict, mode: str) -> None:
+        """
+        Emit snake_case aliases alongside the camelCase schema so downstream
+        consumers (TradeSankeyDiagram, ProductAnalysisView, integration tests)
+        that read legacy field names keep working. Mutates opp in place.
+        """
+        product = opp.get("product") or {}
+        opp.setdefault("product_name", product.get("name"))
+        opp.setdefault("hs_code", product.get("hs6Code") or product.get("hs4Code"))
+
+        # Common value/field aliases (only set when source value exists)
+        def alias(dst, *src_keys):
+            if opp.get(dst) is not None:
+                return
+            for k in src_keys:
+                if opp.get(k) is not None:
+                    opp[dst] = opp[k]
+                    return
+
+        alias("potential_partner", "potentialPartner")
+        alias("potential_supplier", "potentialSupplier")
+        alias("current_source", "currentSource")
+        alias("tariff_reduction", "tariffReductionPotential")
+        alias("rules_of_origin", "rulesOfOrigin")
+        alias("lead_time_savings", "leadTimeSavings")
+        alias("price_competitiveness", "priceCompetitiveness")
+
+        if mode == "export":
+            alias("potential_value_musd", "potentialTradeValue")
+            alias("current_value_musd", "currentTradeValue")
+        elif mode == "import":
+            alias("substitution_potential_musd", "substitutionPotential")
+            alias("import_value_musd", "currentImportValue")
+        elif mode == "industrial":
+            # Sankey reads target_markets (array) and estimated_output (string with a number)
+            markets = opp.get("targetMarkets") or opp.get("target_markets")
+            if markets is not None:
+                opp.setdefault("target_markets", markets)
+            opp.setdefault("output_product", product.get("name"))
+            opp.setdefault("potential_value_musd", opp.get("potentialTradeValue"))
+            pv = opp.get("potentialTradeValue")
+            if pv is not None and opp.get("estimated_output") is None:
+                # Carry the trade value so the Sankey extracts a meaningful flow magnitude
+                opp["estimated_output"] = f"{pv} MUSD"
+            ind = opp.get("industrialInput") or opp.get("industrial_input")
+            if isinstance(ind, dict):
+                opp.setdefault("industrial_input", {
+                    "name": ind.get("name"),
+                    "hs_code": ind.get("hs6Code") or ind.get("hs_code"),
+                    "import_volume": ind.get("importVolume") or ind.get("import_volume"),
+                })
 
     def _post_process_opportunities(
         self, opportunities: list, analyzed_country: str, mode: str
     ) -> list:
         """
-        Apply anti-self-loop, directional forcing, and African-only filter.
+        Apply anti-self-loop, directional forcing, and African-only filter,
+        then emit legacy snake_case aliases for downstream consumers.
         """
         analyzed_iso3 = self._resolve_iso3(analyzed_country)
         cleaned = []
@@ -315,6 +378,7 @@ class ClaudeTradeService:
                         continue
                 opp["importing_country"] = analyzed_country
 
+            self._add_legacy_aliases(opp, mode)
             cleaned.append(opp)
 
         return cleaned
@@ -604,11 +668,11 @@ Return this EXACT JSON structure:
     "gai_africa_rank": null,
     "gai_note": "GAI 2025 — The European House Ambrosetti"
   }},
-  "trade_profile": {{
+  "trade_summary": {{
     "total_exports_musd": 0.0,
     "total_imports_musd": 0.0,
     "trade_balance_musd": 0.0,
-    "intra_african_share_percent": 0.0,
+    "intra_african_trade_percent": 0.0,
     "top_exports": [
       {{"product": "", "hs6Code": "", "value_musd": 0.0, "main_destination": ""}}
     ],
@@ -633,6 +697,14 @@ Return this EXACT JSON structure:
             result = self._extract_json(raw)
             if not result:
                 return {"error": "Failed to parse response", "raw": raw[:500]}
+
+            # Normalize trade summary contract for MultiCountryComparison.jsx
+            # (reads data.trade_summary) — accept legacy "trade_profile" too.
+            ts = result.get("trade_summary") or result.pop("trade_profile", None)
+            if isinstance(ts, dict):
+                if "intra_african_trade_percent" not in ts and "intra_african_share_percent" in ts:
+                    ts["intra_african_trade_percent"] = ts["intra_african_share_percent"]
+                result["trade_summary"] = ts
 
             result["generated_by"] = f"Claude AI ({self.MODEL})"
             result["data_freshness"] = get_data_freshness(None)
@@ -716,6 +788,22 @@ Return this EXACT JSON structure:
             result = self._extract_json(raw)
             if not result:
                 return {"error": "Failed to parse response"}
+
+            # Normalize field names for ProductAnalysisView.jsx:
+            # exporters → export_value_musd, importers → import_value_musd,
+            # product → snake_case hs2_code/hs2_name/hs4_code/hs4_name.
+            for exp in result.get("top_african_exporters", []) or []:
+                if isinstance(exp, dict) and "export_value_musd" not in exp:
+                    exp["export_value_musd"] = exp.get("value_musd", 0)
+            for imp in result.get("top_african_importers", []) or []:
+                if isinstance(imp, dict) and "import_value_musd" not in imp:
+                    imp["import_value_musd"] = imp.get("value_musd", 0)
+            prod = result.get("product")
+            if isinstance(prod, dict):
+                prod.setdefault("hs2_code", prod.get("hs2Code"))
+                prod.setdefault("hs2_name", prod.get("hs2Name"))
+                prod.setdefault("hs4_code", prod.get("hs4Code"))
+                prod.setdefault("hs4_name", prod.get("hs4Name"))
 
             result["generated_by"] = f"Claude AI ({self.MODEL})"
             result["data_freshness"] = get_data_freshness(None)
