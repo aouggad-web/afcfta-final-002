@@ -8,6 +8,7 @@ import './styles/theme.css';
 import './styles/theme-light.css';
 
 import AfcftaTopbar from './components/AfcftaTopbar';
+import AfcftaSidebar from './components/AfcftaSidebar';
 import KpiRow from './components/KpiRow';
 import SectionHeader from './components/SectionHeader';
 
@@ -338,7 +339,16 @@ function App() {
       <div className="afcfta-layout-v2">
         <Toaster />
 
-        {/* Horizontal top navigation */}
+        {/* Desktop sidebar — hidden on mobile via CSS */}
+        <AfcftaSidebar
+          active={getTopbarActiveTab()}
+          onTabChange={handleTabChange}
+          language={language}
+          theme={theme}
+          onThemeToggle={toggleTheme}
+        />
+
+        {/* Horizontal top navigation (mobile + tablet) */}
         <AfcftaTopbar
           active={getTopbarActiveTab()}
           onTabChange={handleTabChange}
