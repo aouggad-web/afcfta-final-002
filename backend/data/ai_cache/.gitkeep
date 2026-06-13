@@ -1,0 +1,4 @@
+# This directory holds pre-seeded Claude AI analysis JSON files.
+# Files named claude_*.json are committed to git so Emergent deployment
+# serves them directly (zero API cost for pre-generated analyses).
+# Run: cd backend/scripts && python3 seed_ai_cache.py --dry-run

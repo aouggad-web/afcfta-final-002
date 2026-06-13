@@ -201,9 +201,24 @@ class ClaudeTradeService:
     Service for AI-powered trade analysis using Anthropic Claude API.
     Replaces GeminiTradeService with full SH2/SH4/SH6 hierarchy,
     corrected GAI anchors, and richer TradeOpportunity schema.
+
+    Cost optimisation:
+    - BULK_MODEL (Haiku) used for seed/pre-generation (~10× cheaper, same data quality for structured JSON)
+    - QUALITY_MODEL (Sonnet) used for live interactive requests when CLAUDE_QUALITY_MODE=true
+    - Set env var CLAUDE_BULK_MODE=true to force Haiku regardless (for seeding)
     """
 
-    MODEL = "claude-sonnet-4-6"
+    # claude-haiku-4-5: $0.80/MTok input, $4/MTok output  (~10× cheaper than Sonnet)
+    # claude-sonnet-4-6: $3/MTok input, $15/MTok output
+    BULK_MODEL    = "claude-haiku-4-5-20251001"
+    QUALITY_MODEL = "claude-sonnet-4-6"
+
+    @property
+    def MODEL(self) -> str:
+        import os
+        if os.environ.get("CLAUDE_BULK_MODE", "").lower() in ("1", "true", "yes"):
+            return self.BULK_MODEL
+        return self.QUALITY_MODEL
 
     def __init__(self):
         self.api_key = os.environ.get("ANTHROPIC_API_KEY")
