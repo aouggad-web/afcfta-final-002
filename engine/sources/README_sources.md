@@ -55,6 +55,46 @@ le PDF officiel.
    cp engine/output/DATA_STATUS.json frontend/public/data/
    ```
 
+## Égypte (EGY) — crawl brut customs.gov.eg
+
+| Fichier | Source | URL | Crawlé le | SHA256 |
+|---------|--------|-----|-----------|--------|
+| `egy_raw.json` | Moslaha El Gamareg — Tarif officiel customs.gov.eg (SH10, 8 274 positions, 95 chapitres) | https://customs.gov.eg/Services/Tarif | 2026-06-13 | `ef1d5c5ef68138a4ae89d2a70318b949d694b605f97079119973ffdafcdfc933` |
+
+### ⚠ Défaut de mapping de colonne — NON INGESTIBLE en l'état
+
+**73,6 % des taux DD sont erronés** (6 091 / 8 274 positions) : le crawler a
+capturé la colonne TVA (`ض.ق.م`) à la place de la colonne droits de douane
+(`الرسم الجمركي`). Les valeurs du type `'14% (من القيمة + ر.ض.جمركية)'`
+signifient **"14 % sur (CIF + droits douane)"** — c'est la formule d'assiette
+de la TVA égyptienne (Loi 67/2016), pas un taux DD.
+
+Validation croisée confirmée :
+- Ch.87 véhicules : fichier = 14 %, réel = 40–135 % → **faux**
+- 7213 (fil machine acier) : fichier = 14 %, réel = 2 % → **faux**
+- 0101 (chevaux) : fichier = 5 %, réel = 5 % → ✅ correct (cas des purs %)
+
+**Action requise** : re-crawler customs.gov.eg avec mapping corrigé :
+`الرسم الجمركي` → `dd_rate_raw` et `ض.ق.م` → `vat_rate_raw`.
+
+### ✅ Données formalités exploitables (instructions غ / ق)
+
+Le fichier contient 95 447 instructions par position, réparties en 3 types :
+
+| Préfixe | Type | Occurrences |
+|---------|------|-------------|
+| ر | Notes tarifaires (accords, préférences, quotas) | 65 912 |
+| غ | Conditions non-tarifaires — 60 codes uniques (autorisations préalables, certifications) | 4 047 |
+| ق | Restrictions/interdictions (CITES, prohibitions, règles par pays) | 25 488 |
+
+Les codes **غ** couvrent : quarantaine vétérinaire, autorisation Agence du
+Médicament Égyptienne (EDA), contrôle phytosanitaire, certification OGM,
+contrôle radiologique (Japon/Fukushima), anti-dumping.
+Les codes **ق** couvrent : CITES, protocoles bilatéraux (Soudan, Syrie,
+URSS-ex), prohibitions absolues à l'exportation.
+Les codes **ر** incluent les taux de démantèlement ZLECAf (groupes A et B).
+Ces données alimenteront le champ `requirements` du modèle canonique.
+
 ## Quarantaine — fichiers non vérifiables
 
 Le sous-répertoire `quarantine_non_verifie/` contient les fichiers refusés par
