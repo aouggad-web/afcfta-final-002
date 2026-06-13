@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast } from './hooks/use-toast';
@@ -58,10 +58,29 @@ const texts = {
 function App() {
   const { i18n } = useTranslation();
   const [countries, setCountries] = useState([]);
-  const [activeTab, setActiveTab] = useState('dashboard');
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
   const [backendOnline, setBackendOnline] = useState(null);
+
+  // ── Navigation par URL ──────────────────────────────────────────
+  const URL_TO_TAB = {
+    '/': 'dashboard', '/dashboard': 'dashboard',
+    '/calculator': 'calculator', '/statistics': 'statistics',
+    '/opportunities': 'opportunities', '/production': 'production',
+    '/logistics': 'logistics', '/banking': 'banking',
+    '/tools': 'tools', '/rules': 'rules', '/profiles': 'profiles',
+  };
+  const TAB_TO_URL = {
+    dashboard: '/', calculator: '/calculator', statistics: '/statistics',
+    opportunities: '/opportunities', production: '/production',
+    logistics: '/logistics', banking: '/banking', tools: '/tools',
+    rules: '/rules', profiles: '/profiles',
+  };
+  const getInitialTab = () => {
+    const path = window.location.pathname;
+    return URL_TO_TAB[path] || 'dashboard';
+  };
+  const [activeTab, setActiveTab] = useState(getInitialTab);
 
   // ── Gestion du thème (sombre / clair) ──
   const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
@@ -85,6 +104,25 @@ function App() {
     i18n.changeLanguage(newLang);
   };
 
+  // Sync URL ← tab changes
+  const navigateToTab = useCallback((tab) => {
+    const url = TAB_TO_URL[tab] || '/';
+    if (window.location.pathname !== url) {
+      window.history.pushState({ tab }, '', url);
+    }
+    setActiveTab(tab);
+  }, [TAB_TO_URL]);
+
+  // Browser back/forward support
+  useEffect(() => {
+    const handler = (e) => {
+      const tab = e.state?.tab || URL_TO_TAB[window.location.pathname] || 'dashboard';
+      setActiveTab(tab);
+    };
+    window.addEventListener('popstate', handler);
+    return () => window.removeEventListener('popstate', handler);
+  }, [URL_TO_TAB]);
+
   const handleTabChange = (type, value) => {
     if (type === 'tab') {
       const tabMapping = {
@@ -99,7 +137,7 @@ function App() {
         roo: 'rules',
         profiles: 'profiles',
       };
-      setActiveTab(tabMapping[value] || value);
+      navigateToTab(tabMapping[value] || value);
     } else if (type === 'language') {
       handleLanguageChange(value);
     }
@@ -345,6 +383,7 @@ function App() {
           language={language}
           theme={theme}
           onThemeToggle={toggleTheme}
+          countries={countries}
         />
 
       {/* Main content area */}
