@@ -389,14 +389,14 @@ body::before {
   background: rgba(24,32,48,0.85);
   border: 1px solid var(--afcfta-border);
   border-radius: var(--r-md);
-  padding: 18px;
+  padding: 22px 24px;
   box-shadow: 0 12px 28px rgba(0,0,0,.28);
   backdrop-filter: blur(10px);
 }
 
 .afcfta-card h3 {
-  margin: 0 0 6px 0;
-  font-size: 13px;
+  margin: 0 0 8px 0;
+  font-size: 14px;
   color: var(--afcfta-muted);
   font-weight: 600;
 }
@@ -409,7 +409,7 @@ body::before {
 
 .afcfta-card .subvalue {
   color: var(--afcfta-muted);
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 6px;
 }
 
@@ -478,7 +478,7 @@ body::before {
 /* ================================================================
    Section header
    ================================================================ */
-.afcfta-section { margin-top: 20px; }
+.afcfta-section { margin-top: 28px; }
 
 .afcfta-sectionHead {
   display: flex;
