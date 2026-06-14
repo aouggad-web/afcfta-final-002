@@ -124,3 +124,11 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 - Kubernetes ingress hard timeout: 60 s → first call to a new country pair returns 502 from gateway, but the request completes server-side and populates the file cache; subsequent calls return instantly (< 100 ms).
 - Mitigation deployed: `CLAUDE_BULK_MODE=true` uses Haiku model (faster, ~10× cheaper).
 - For full smooth demo: pre-warm the cache for common pairs (e.g. Morocco/Algeria already cached).
+
+
+## June 14, 2026 — Visual refresh applied (Props 2 + 3)
+- ✅ **Proposition 2 (Typographie)** : `styles/theme.css` — police body Outfit, body 15 px lh 1.65, KPI cards titres 18 px Cormorant Garamond, hero numbers 24-34 px, sections espacées 28 px, padding 22 px sur cards
+- ✅ **Proposition 3 (Tableaux)** : `components/ui/table.jsx` — headers `h-12` (vs h-10), cells `py-[13px] px-4` (vs p-2), texte 15 px → lignes plus respirantes, données plus lisibles
+- ✅ **Onglets** (`styles/tabs.css`) : padding `px-5 py-3` (vs px-4 py-2.5), nested tabs `px-4 py-2`
+- ✅ **Aucune logique métier touchée** — 3 fichiers CSS/Tailwind uniquement, 0 risque de régression
+- 🎨 Validé visuellement sur Dashboard : grands chiffres ($2.7T, $235B, 68, 57%) en Cormorant Garamond impactants
