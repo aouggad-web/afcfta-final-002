@@ -148,3 +148,24 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 - ✅ **Frontend** : `AirLogisticsTab.jsx` + `LandLogisticsTab.jsx` mis à jour pour intégrer les nouveaux calculateurs en bas de chaque onglet
 - ✅ **Validation** : tous les endpoints répondent 200 ; preview UI testée Logistique → Aérien (Fret) et Logistique → Terrestre (Corridors)
 - ⚠️ **Clarification** : ces calculateurs **n'avaient jamais existé en local** — ce n'était pas une régression mais une nouvelle fonctionnalité du repo distant
+
+
+## June 14, 2026 — Multimodal Freight Comparator (NEW feature, custom built)
+- 🆕 **Backend** : `services/multimodal_freight_service.py` (404 lignes)
+  - Compare 4 types d'options : Maritime direct, Aérien direct, Terrestre direct, **Maritime + Terrestre via port-gateway** (pour pays enclavés)
+  - 16 pays africains enclavés mappés à leurs ports-gateways canoniques (Mali↔Dakar/Abidjan, Burkina↔Abidjan/Tema, Niger↔Lagos/Tema, Rwanda↔Mombasa/Dar-es-Salaam, Zambie↔Dar/Durban, Zimbabwe↔Durban/Maputo, Botswana/Lesotho/Eswatini↔Durban, etc.)
+  - Facteurs CO₂ (g CO₂/t·km) : Maritime 10, Rail 22, Route 62, Aérien 602 — source IPCC AR6, IEA Transport 2023, GLEC v3
+  - Badges automatiques : 💰 Le moins cher, ⚡ Le plus rapide, 🌿 Le plus vert
+- 🆕 **Backend** : 2 nouveaux endpoints dans `routes/logistics.py`
+  - `GET /api/logistics/multimodal/countries` : liste pays côtiers / enclavés / aériens uniquement + mapping gateways
+  - `GET /api/logistics/multimodal/compare` : ranking complet avec segments détaillés
+- 🆕 **Frontend** : `components/logistics/MultimodalComparator.jsx` (367 lignes)
+  - Formulaire 8 champs (origin/dest/poids/volume/conteneur/commodité air/cargo land)
+  - Badge dynamique « Enclavé » sur les destinations enclavées
+  - Cards comparatives 2 colonnes avec coût/délai/CO₂ en typo display Cormorant Garamond
+  - Affichage des segments multimodaux (port maritime → corridor terrestre)
+- 🆕 **UI** : nouveau sous-onglet « Multimodal » dans `LogisticsTab.jsx` (icône Layers violet)
+- ✅ **Cas test validé** Maroc → Mali (enclavé) :
+  - Aérien direct : $66 840, 1-3j, 29,6 t CO₂ (⚡)
+  - Maritime + Terrestre via Dakar : **$3 622**, 11-16j, **2,1 t CO₂** (💰 🌿)
+  - Demo argument : 18× moins cher, 14× moins polluant pour 8-13j de plus → valorise les corridors ZLECAf

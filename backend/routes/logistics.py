@@ -697,3 +697,79 @@ async def get_single_operator(operator_id: str):
     if not operator:
         raise HTTPException(status_code=404, detail=f"Opérateur '{operator_id}' non trouvé.")
     return operator
+
+
+
+# ============================================================================
+# Multimodal Freight Comparator (added 2026-06-14)
+# Compares Sea / Air / Land / Sea+Land combo for a country-to-country shipment.
+# ============================================================================
+from services.multimodal_freight_service import (
+    compare_multimodal,
+    LANDLOCKED_AFRICA,
+    LANDLOCKED_GATEWAYS,
+    COUNTRY_DEFAULT_PORT,
+    COUNTRY_DEFAULT_AIRPORT,
+)
+
+
+@router.get("/multimodal/countries")
+async def get_multimodal_supported_countries():
+    """
+    Return the list of African countries supported by the multimodal comparator,
+    indicating which ones are landlocked (sea+corridor combinations available).
+    """
+    coastal = sorted(COUNTRY_DEFAULT_PORT.keys())
+    air_only = sorted(set(COUNTRY_DEFAULT_AIRPORT.keys()) - set(coastal) - LANDLOCKED_AFRICA)
+    landlocked = sorted(LANDLOCKED_AFRICA)
+    return {
+        "coastal_countries": coastal,
+        "landlocked_countries": landlocked,
+        "air_only_countries": air_only,
+        "all_supported": sorted(
+            set(COUNTRY_DEFAULT_AIRPORT.keys())
+            | set(COUNTRY_DEFAULT_PORT.keys())
+            | LANDLOCKED_AFRICA
+        ),
+        "landlocked_gateways": LANDLOCKED_GATEWAYS,
+    }
+
+
+@router.get("/multimodal/compare")
+async def compare_freight_modes(
+    origin: str,
+    destination: str,
+    weight_kg: float = 1000.0,
+    volume_m3: float = 0.0,
+    container_type: str = "teu",
+    air_commodity: str = "general",
+    land_cargo_type: str = "container",
+):
+    """
+    Compare freight options (sea, air, land, sea+land combo) between two countries.
+
+    Parameters
+    ----------
+    origin           : ISO3 of origin country (e.g. MAR, EGY, ZAF)
+    destination      : ISO3 of destination country (e.g. NGA, MLI, RWA)
+    weight_kg        : shipment weight (default 1000 kg)
+    volume_m3        : optional volume for volumetric weight in air
+    container_type   : "teu" (20'), "feu" (40'), "feu_hc" (40' HC)
+    air_commodity    : "general", "perishable", "pharma", "dangerous", "valuable"
+    land_cargo_type  : "general", "container", "perishable", "dangerous", "bulk"
+
+    Returns ranked options with cost, transit days, CO2 emissions and route segments.
+    """
+    if weight_kg <= 0:
+        raise HTTPException(status_code=400, detail="weight_kg must be > 0")
+    if origin.upper() == destination.upper():
+        raise HTTPException(status_code=400, detail="origin and destination must differ")
+    return compare_multimodal(
+        origin_country=origin,
+        destination_country=destination,
+        weight_kg=weight_kg,
+        volume_m3=volume_m3,
+        container_type=container_type,
+        air_commodity=air_commodity,
+        land_cargo_type=land_cargo_type,
+    )
