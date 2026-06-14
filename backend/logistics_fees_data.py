@@ -989,3 +989,51 @@ def get_total_cost(
             "Excludes: inland haulage, customs duties, insurance, and documentation fees."
         ),
     }
+
+
+# ---------------------------------------------------------------------------
+# get_fee_ports() : helper used by /api/logistics/sea/fees/ports and the
+# Maritime Calculator UI. Derives a clean port list from PORT_THC so we don't
+# duplicate data. Added 2026-06-14 for AirFreight + LandFreight calculators
+# integration (the maritime calculator already used PORT_THC directly).
+# ---------------------------------------------------------------------------
+_COUNTRY_META: Dict[str, Dict[str, str]] = {
+    "Maroc":            {"iso": "MAR", "flag": "🇲🇦", "region": "Afrique du Nord"},
+    "Algérie":          {"iso": "DZA", "flag": "🇩🇿", "region": "Afrique du Nord"},
+    "Tunisie":          {"iso": "TUN", "flag": "🇹🇳", "region": "Afrique du Nord"},
+    "Égypte":           {"iso": "EGY", "flag": "🇪🇬", "region": "Afrique du Nord"},
+    "Libye":            {"iso": "LBY", "flag": "🇱🇾", "region": "Afrique du Nord"},
+    "Sénégal":          {"iso": "SEN", "flag": "🇸🇳", "region": "Afrique de l'Ouest"},
+    "Côte d'Ivoire":    {"iso": "CIV", "flag": "🇨🇮", "region": "Afrique de l'Ouest"},
+    "Ghana":            {"iso": "GHA", "flag": "🇬🇭", "region": "Afrique de l'Ouest"},
+    "Nigeria":          {"iso": "NGA", "flag": "🇳🇬", "region": "Afrique de l'Ouest"},
+    "Togo":             {"iso": "TGO", "flag": "🇹🇬", "region": "Afrique de l'Ouest"},
+    "Bénin":            {"iso": "BEN", "flag": "🇧🇯", "region": "Afrique de l'Ouest"},
+    "Cameroun":         {"iso": "CMR", "flag": "🇨🇲", "region": "Afrique Centrale"},
+    "Angola":           {"iso": "AGO", "flag": "🇦🇴", "region": "Afrique Centrale"},
+    "Congo":            {"iso": "COG", "flag": "🇨🇬", "region": "Afrique Centrale"},
+    "RD Congo":         {"iso": "COD", "flag": "🇨🇩", "region": "Afrique Centrale"},
+    "Afrique du Sud":   {"iso": "ZAF", "flag": "🇿🇦", "region": "Afrique Australe"},
+    "Mozambique":       {"iso": "MOZ", "flag": "🇲🇿", "region": "Afrique Australe"},
+    "Namibie":          {"iso": "NAM", "flag": "🇳🇦", "region": "Afrique Australe"},
+    "Kenya":            {"iso": "KEN", "flag": "🇰🇪", "region": "Afrique de l'Est"},
+    "Tanzanie":         {"iso": "TZA", "flag": "🇹🇿", "region": "Afrique de l'Est"},
+    "Djibouti":         {"iso": "DJI", "flag": "🇩🇯", "region": "Afrique de l'Est"},
+}
+
+
+def get_fee_ports() -> List[Dict[str, Any]]:
+    """Liste des ports sélectionnables dans le calculateur maritime."""
+    ports: List[Dict[str, Any]] = []
+    for locode, p in PORT_THC.items():
+        country = p.get("country", "")
+        meta = _COUNTRY_META.get(country, {"iso": "", "flag": "", "region": ""})
+        ports.append({
+            "locode": locode,
+            "name": p.get("port_name", locode),
+            "country": country,
+            "iso": meta["iso"],
+            "flag": meta["flag"],
+            "region": meta["region"],
+        })
+    return sorted(ports, key=lambda x: (x["region"], x["name"]))

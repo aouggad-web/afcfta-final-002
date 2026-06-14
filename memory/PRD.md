@@ -132,3 +132,19 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 - ✅ **Onglets** (`styles/tabs.css`) : padding `px-5 py-3` (vs px-4 py-2.5), nested tabs `px-4 py-2`
 - ✅ **Aucune logique métier touchée** — 3 fichiers CSS/Tailwind uniquement, 0 risque de régression
 - 🎨 Validé visuellement sur Dashboard : grands chiffres ($2.7T, $235B, 68, 57%) en Cormorant Garamond impactants
+
+
+## June 14, 2026 — Air & Land Freight Calculators imported from GitHub
+- ✅ **Backend** : 2 nouveaux modules de données
+  - `backend/logistics_air_fees_data.py` : 64 aéroports africains, modèle IATA TACT, 5 commodités (general/perishable/pharma/dangerous/valuable)
+  - `backend/logistics_land_fees_data.py` : 15 corridors, calibration Banque Mondiale SSATP / UNECA / AfDB, 5 types de cargo (general/container/perishable/dangerous/bulk)
+- ✅ **Backend** : `backend/routes/logistics.py` mis à jour avec 6 nouveaux endpoints
+  - `GET /api/logistics/air/fees/airports`, `/air/fees/commodities`, `/air/fees/cost`
+  - `GET /api/logistics/land/fees/corridors`, `/land/fees/cargo-types`, `/land/fees/cost`
+- ✅ **Backend** : ajout d'un wrapper `get_fee_ports()` dans `logistics_fees_data.py` (n'écrase pas les données locales — dérive depuis `PORT_THC` + métadonnées pays)
+- ✅ **Frontend** : 2 nouveaux composants
+  - `frontend/src/components/logistics/AirFreightCalculator.jsx` : Calculateur fret aérien avec aéroports IATA
+  - `frontend/src/components/logistics/LandFreightCalculator.jsx` : Calculateur fret terrestre par corridor
+- ✅ **Frontend** : `AirLogisticsTab.jsx` + `LandLogisticsTab.jsx` mis à jour pour intégrer les nouveaux calculateurs en bas de chaque onglet
+- ✅ **Validation** : tous les endpoints répondent 200 ; preview UI testée Logistique → Aérien (Fret) et Logistique → Terrestre (Corridors)
+- ⚠️ **Clarification** : ces calculateurs **n'avaient jamais existé en local** — ce n'était pas une régression mais une nouvelle fonctionnalité du repo distant

@@ -7,6 +7,7 @@ import { toast } from '../../hooks/use-toast';
 import CorridorMap from './CorridorMap';
 import CorridorCard from './CorridorCard';
 import CorridorDetailsModal from './CorridorDetailsModal';
+import LandFreightCalculator from './LandFreightCalculator';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -111,6 +112,9 @@ export default function LandLogisticsTab({ language = 'fr' }) {
           </CardDescription>
         </CardHeader>
       </Card>
+
+      {/* Land Freight Calculator */}
+      <LandFreightCalculator language={language} />
 
       {/* Controls Section */}
       <Card>
