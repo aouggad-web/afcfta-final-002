@@ -175,13 +175,7 @@ async def get_ports(country_iso: Optional[str] = None):
 
 @router.get("/ports/{port_id}")
 async def get_port_details(port_id: str):
-    """Get detailed information for a specific port, or all ports for a country ISO3 code."""
-    import re as _re
-    if _re.fullmatch(r"[A-Za-z]{2,3}", port_id):
-        country_iso = port_id.upper()
-        all_ports = get_all_ports()
-        ports = [p for p in all_ports if p.get("country_iso", "").upper() == country_iso]
-        return {"country_iso": country_iso, "count": len(ports), "ports": ports}
+    """Get detailed information for a specific port"""
     port = get_port_by_id(port_id)
     if not port:
         raise HTTPException(status_code=404, detail=f"Port {port_id} not found")

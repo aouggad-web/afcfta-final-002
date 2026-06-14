@@ -335,8 +335,6 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(hs6_db_router, tags=["HS6 Database"], dependencies=_auth)
     api_router.include_router(authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth)
     api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"], dependencies=_auth)
-    if DISMANTLEMENT_AVAILABLE:
-        api_router.include_router(dismantlement_router, tags=["ZLECAf Dismantlement Schedule"], dependencies=_auth)
     if FAOSTAT_AVAILABLE:
         api_router.include_router(faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth)
     api_router.include_router(calculator_router, tags=["Calculator"], dependencies=_auth)

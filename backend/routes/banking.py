@@ -134,28 +134,13 @@ async def get_banks_by_country(country_code: str):
     Retourne les informations bancaires complètes d'un pays africain :
     banque centrale, banques commerciales agréées, banques régionales.
 
-    - **country_code**: Code ISO2 ou ISO3 du pays (ex: MA, DZ, NG ou MAR, DZA, NGA)
+    - **country_code**: Code ISO2 du pays (ex: MA, NG, KE, ZA)
     """
     code = country_code.upper()
-    _ISO3_TO_ISO2 = {
-        "DZA": "DZ", "MAR": "MA", "TUN": "TN", "EGY": "EG", "LBY": "LY",
-        "SDN": "SD", "NGA": "NG", "GHA": "GH", "CIV": "CI", "SEN": "SN",
-        "CMR": "CM", "ETH": "ET", "KEN": "KE", "TZA": "TZ", "UGA": "UG",
-        "ZAF": "ZA", "AGO": "AO", "MOZ": "MZ", "ZMB": "ZM", "ZWE": "ZW",
-        "MDG": "MG", "MUS": "MU", "NAM": "NA", "BWA": "BW", "SWZ": "SZ",
-        "LSO": "LS", "MWI": "MW", "RWA": "RW", "BDI": "BI", "SOM": "SO",
-        "DJI": "DJ", "ERI": "ER", "COD": "CD", "COG": "CG", "GAB": "GA",
-        "GNQ": "GQ", "CAF": "CF", "TCD": "TD", "NER": "NE", "MLI": "ML",
-        "BFA": "BF", "GIN": "GN", "SLE": "SL", "LBR": "LR", "MRT": "MR",
-        "GMB": "GM", "GNB": "GW", "CPV": "CV", "STP": "ST", "COM": "KM",
-        "SYC": "SC", "TGO": "TG", "BEN": "BJ",
-    }
-    if len(code) == 3:
-        code = _ISO3_TO_ISO2.get(code, code)
     if code not in CENTRAL_BANKS:
         raise HTTPException(
             status_code=404,
-            detail=f"Pays '{country_code.upper()}' non trouvé dans le registre bancaire africain.",
+            detail=f"Pays '{code}' non trouvé dans le registre bancaire africain.",
         )
     info = get_country_banks(code)
     return info.model_dump()

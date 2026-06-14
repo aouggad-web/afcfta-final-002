@@ -15,7 +15,6 @@ from data_loader import (
     get_country_commerce_profile,
     get_country_customs_info,
 )
-from social_indicators_data import get_social_indicators
 from projects_data import get_country_ongoing_projects
 from models import CountryInfo, CountryEconomicProfile
 from translations import translate_country_name, translate_region
@@ -219,24 +218,17 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
                 if real_data.get('data_source'):
                     profile.projections['gdp_data_source'] = real_data['data_source']
     else:
-        # Fallback: use country_data.py as sole source
-        pop_2024 = real_data.get('population_2024', country['population'])
+        # Fallback to old data
         profile = CountryEconomicProfile(
-            country_code=iso3_code,
-            country_name=real_data.get('name', country['name']),
-            population=pop_2024,
+            country_code=country['code'],
+            country_name=country['name'],
+            population=real_data.get('population_2024', country['population']),
             region=country['region']
         )
 
-        social = get_social_indicators(iso3_code)
-        gdp_b = real_data.get('gdp_usd_2024')
-        profile.gdp_usd = float(gdp_b) * 1_000_000_000 if gdp_b is not None else None
+        profile.gdp_usd = real_data.get('gdp_usd_2024')
         profile.gdp_per_capita = real_data.get('gdp_per_capita_2024')
-        profile.population_millions = round(pop_2024 / 1_000_000, 2) if pop_2024 else None
-        profile.hdi = real_data.get('development_index')
-        profile.hdi_rank = social.get('hdi_rank')
-        profile.inflation_rate = social.get('inflation_rate')
-        profile.unemployment_rate = social.get('unemployment_rate')
+        profile.inflation_rate = None
 
         profile.projections = {
             "gdp_growth_forecast_2024": real_data.get('growth_forecast_2024', '3.0%'),
