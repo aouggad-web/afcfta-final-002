@@ -169,3 +169,27 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
   - Aérien direct : $66 840, 1-3j, 29,6 t CO₂ (⚡)
   - Maritime + Terrestre via Dakar : **$3 622**, 11-16j, **2,1 t CO₂** (💰 🌿)
   - Demo argument : 18× moins cher, 14× moins polluant pour 8-13j de plus → valorise les corridors ZLECAf
+
+
+## June 14, 2026 — Future / planned routes (Transsaharienne · Rail Alger-Tamanrasset · Lagos-Calabar)
+- 🆕 **Données** : 5 nouveaux corridors ajoutés à `/app/data/json/corridors_terrestres.json` (statut : Partiellement opérationnel / Planifié / En construction / Étude de faisabilité)
+  - **Transsaharienne Alger-Lagos (TAH 2)** — 4 504 km — Partiellement opérationnel (tronçon DZA pavé, NER-NGA en achèvement, PIDA Phase 2)
+  - **Dérivation Transsaharienne Tamanrasset-Bamako** — 2 270 km — Planifié (étude PIDA 2023, désenclave le Mali par le Nord)
+  - **Dérivation Transsaharienne Agadez-N'Djamena** — 4 800 km — Étude de faisabilité (désenclave le Tchad)
+  - **Chemin de fer Alger-Tamanrasset (Trans-Saharien Rail)** — 1 900 km — En construction (SNTF / ANESRIF, phase 1 Alger-Hassi Messaoud opérationnelle, phase 2 livraison 2030)
+  - **Rail côtier Lagos-Calabar** — 1 400 km — En construction (Nigerian Railway Corp / CCECC, livraison 2027-2028)
+- 🆕 **Backend** : `logistics_land_fees_data.py` étend l'index avec `status`, `infra_details`, `source_org`
+- 🆕 **Backend** : `services/multimodal_freight_service.py`
+  - `_find_all_corridors_for_pair()` retourne tous les corridors matchants (opérationnels + futurs)
+  - `_corridor_phase()` normalise le statut → `operational` / `under_construction` / `planned` / `study`
+  - `_land_option()` retourne maintenant une **liste** (un par corridor matchant) au lieu d'un seul
+  - `_sea_then_land_option()` essaie tous les corridors gateway → destination, y compris les futurs
+  - Sea + Rail combo (ex : Maritime + Train Alger-Tam) automatiquement détecté quand un corridor de type `rail` matche
+  - Badges « Le moins cher / Le plus rapide / Le plus vert » **uniquement parmi options opérationnelles**
+  - Nouveaux badges « Futur · le moins cher » et « Futur · le plus vert » parmi les routes futures
+- 🆕 **Frontend** : `MultimodalComparator.jsx`
+  - Sections séparées « X options opérationnelles » et « Routes futures — Transsaharienne · Train Alger-Tamanrasset · Lagos-Calabar »
+  - Bordure pointillée bleu ciel sur les cartes futures
+  - Badge de phase coloré sur chaque carte future (Planifié / En construction / Étude de faisabilité)
+  - Icône `Train` pour les corridors rail (Lagos-Calabar, Alger-Tamanrasset)
+- ✅ **Validation** : DZA→MLI affiche bien Aérien opérationnel + Transsaharienne planifiée à $4 202 (18× moins cher). DZA→NGA affiche TAH 2 partiellement opérationnelle dans la section principale.

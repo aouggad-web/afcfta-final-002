@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Ship, Plane, Truck, Loader2, Layers, Award, Zap, Leaf } from 'lucide-react';
+import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -26,7 +26,16 @@ const MODE_META = {
   sea:        { icon: Ship,  color: 'text-blue-400',    bg: 'bg-blue-500/10',    label: 'Maritime' },
   air:        { icon: Plane, color: 'text-cyan-400',    bg: 'bg-cyan-500/10',    label: 'Aérien' },
   land:       { icon: Truck, color: 'text-orange-400',  bg: 'bg-orange-500/10',  label: 'Terrestre' },
+  road:       { icon: Truck, color: 'text-orange-400',  bg: 'bg-orange-500/10',  label: 'Route' },
+  rail:       { icon: Train, color: 'text-emerald-400', bg: 'bg-emerald-500/10', label: 'Rail' },
   multimodal: { icon: Layers, color: 'text-purple-400', bg: 'bg-purple-500/10',  label: 'Multimodal' },
+};
+
+const PHASE_META = {
+  operational:         { label: 'Opérationnel',          cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' },
+  under_construction:  { label: 'En construction',       cls: 'bg-amber-500/15  text-amber-300  border-amber-500/40'  },
+  planned:             { label: 'Planifié',              cls: 'bg-sky-500/15    text-sky-300    border-sky-500/40'    },
+  study:               { label: "Étude de faisabilité", cls: 'bg-purple-500/15 text-purple-300 border-purple-500/40' },
 };
 
 function fmtUsd(v) {
@@ -47,16 +56,25 @@ function fmtDays(min, max) {
 }
 
 function OptionCard({ opt }) {
-  const meta = MODE_META[opt.mode] || MODE_META.sea;
+  // Pick icon by corridor mode when available (so rail uses Train, not Truck)
+  const iconKey = opt.corridor_mode || opt.mode;
+  const meta = MODE_META[iconKey] || MODE_META[opt.mode] || MODE_META.sea;
   const Icon = meta.icon;
+  const phaseMeta = PHASE_META[opt.phase] || PHASE_META.operational;
 
   const badges = [];
   if (opt.is_cheapest) badges.push({ icon: Award, label: 'Le moins cher', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' });
   if (opt.is_fastest)  badges.push({ icon: Zap,    label: 'Le plus rapide', cls: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30' });
   if (opt.is_greenest) badges.push({ icon: Leaf,   label: 'Le plus vert',   cls: 'bg-lime-500/15 text-lime-300 border-lime-500/30' });
+  if (opt.is_future_cheapest)  badges.push({ icon: Sparkles, label: 'Futur · le moins cher', cls: 'bg-sky-500/15 text-sky-300 border-sky-500/40' });
+  if (opt.is_future_greenest)  badges.push({ icon: Sparkles, label: 'Futur · le plus vert', cls: 'bg-sky-500/15 text-sky-300 border-sky-500/40' });
+
+  const cardBorder = opt.is_future
+    ? 'border border-dashed border-sky-500/40 bg-[#1B232C]/70'
+    : 'border border-white/10 bg-[#1B232C]';
 
   return (
-    <Card className="border border-white/10 bg-[#1B232C]" data-testid={`multimodal-option-${opt.mode}`}>
+    <Card className={cardBorder} data-testid={`multimodal-option-${opt.mode}`}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
@@ -64,7 +82,14 @@ function OptionCard({ opt }) {
               <Icon className={`w-5 h-5 ${meta.color}`} />
             </div>
             <div>
-              <CardTitle className="text-base text-white">{opt.label}</CardTitle>
+              <CardTitle className="text-base text-white flex items-center gap-2 flex-wrap">
+                {opt.label}
+                {opt.is_future && (
+                  <Badge variant="outline" className={`text-[10px] ${phaseMeta.cls}`}>
+                    <Construction className="w-3 h-3 mr-1" />{phaseMeta.label}
+                  </Badge>
+                )}
+              </CardTitle>
               {opt.via_port && (
                 <CardDescription className="text-xs mt-1 text-gray-400">
                   Transit via <span className="text-white">{opt.via_port}</span>
@@ -337,9 +362,14 @@ export default function MultimodalComparator({ language = 'fr' }) {
 
       {result && result.options_count > 0 && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap gap-2">
             <h3 className="text-lg font-display text-white">
-              {result.options_count} option{result.options_count > 1 ? 's' : ''} de fret disponibles
+              {result.operational_count} option{result.operational_count > 1 ? 's' : ''} opérationnelle{result.operational_count > 1 ? 's' : ''}
+              {result.future_count > 0 && (
+                <span className="text-sky-300 text-base ml-2">
+                  · {result.future_count} option{result.future_count > 1 ? 's' : ''} future{result.future_count > 1 ? 's' : ''} (planifiées / en construction)
+                </span>
+              )}
             </h3>
             {result.is_destination_landlocked && (
               <Badge className="bg-amber-500/15 text-amber-300 border-amber-500/40">
@@ -347,11 +377,43 @@ export default function MultimodalComparator({ language = 'fr' }) {
               </Badge>
             )}
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {result.options.map((opt, i) => (
-              <OptionCard key={i} opt={opt} />
-            ))}
-          </div>
+
+          {/* Operational routes */}
+          {result.options.filter(o => !o.is_future).length > 0 && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {result.options.filter(o => !o.is_future).map((opt, i) => (
+                <OptionCard key={`op-${i}`} opt={opt} />
+              ))}
+            </div>
+          )}
+
+          {/* Future routes section */}
+          {result.options.filter(o => o.is_future).length > 0 && (
+            <>
+              <div className="border-t border-dashed border-sky-500/30 pt-4 mt-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-lg bg-sky-500/15 flex items-center justify-center">
+                    <Construction className="w-4 h-4 text-sky-300" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-display text-white">
+                      Routes futures — Transsaharienne · Train Alger-Tamanrasset · Lagos-Calabar
+                    </h3>
+                    <p className="text-xs text-gray-400">
+                      Infrastructures planifiées ou en construction (PIDA / BAD / SNTF / CCECC).
+                      Coûts modélisés pour anticiper l&apos;impact sur vos chaînes logistiques.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {result.options.filter(o => o.is_future).map((opt, i) => (
+                  <OptionCard key={`fut-${i}`} opt={opt} />
+                ))}
+              </div>
+            </>
+          )}
+
           <div className="text-xs text-gray-500 text-center pt-2">
             Facteurs CO₂ (g/t·km) : Maritime {result.co2_methodology?.factors_g_per_tkm?.sea} ·
             Rail {result.co2_methodology?.factors_g_per_tkm?.rail} ·

@@ -4,7 +4,11 @@
       "corridor_id": "CORR-ABIDJAN-OUAGA-001",
       "corridor_name": "Corridor Abidjan-Ouagadougou-Niamey",
       "corridor_type": "multimodal",
-      "countries_spanned": ["CIV", "BFA", "NER"],
+      "countries_spanned": [
+        "CIV",
+        "BFA",
+        "NER"
+      ],
       "start_node": "Port d'Abidjan",
       "end_node": "Niamey",
       "length_km": 1420,
@@ -14,11 +18,26 @@
       "description": "Principal corridor d'exportation du Burkina Faso et du Niger vers l'Atlantique",
       "source_org": "PIDA, CEDEAO",
       "coordinates": [
-        [5.3364, -4.0267],
-        [6.5244, -3.0478],
-        [8.9809, -2.1097],
-        [12.3714, -1.5197],
-        [13.5127, 2.1098]
+        [
+          5.3364,
+          -4.0267
+        ],
+        [
+          6.5244,
+          -3.0478
+        ],
+        [
+          8.9809,
+          -2.1097
+        ],
+        [
+          12.3714,
+          -1.5197
+        ],
+        [
+          13.5127,
+          2.1098
+        ]
       ],
       "nodes": [
         {
@@ -26,7 +45,7 @@
           "node_name": "Port Sec de Ferkessédougou",
           "node_type": "dry_port",
           "country_iso": "CIV",
-          "geo_lat": 9.5980,
+          "geo_lat": 9.598,
           "geo_lon": -5.1956,
           "is_osbp": false,
           "notes": "Terminal intermodal Sitarail, connexion rail-route"
@@ -36,8 +55,8 @@
           "node_name": "Poste Frontière OSBP Ouangolodougou",
           "node_type": "border_crossing",
           "country_iso": "CIV",
-          "geo_lat": 9.9600,
-          "geo_lon": -5.1500,
+          "geo_lat": 9.96,
+          "geo_lon": -5.15,
           "is_osbp": true,
           "notes": "One-Stop Border Post Côte d'Ivoire-Burkina Faso"
         },
@@ -82,7 +101,13 @@
       "corridor_id": "CORR-ABIDJAN-LAGOS-002",
       "corridor_name": "Corridor Abidjan-Lagos (Autoroute Transafricaine)",
       "corridor_type": "road",
-      "countries_spanned": ["CIV", "GHA", "TGO", "BEN", "NGA"],
+      "countries_spanned": [
+        "CIV",
+        "GHA",
+        "TGO",
+        "BEN",
+        "NGA"
+      ],
       "start_node": "Abidjan",
       "end_node": "Lagos",
       "length_km": 992,
@@ -92,11 +117,26 @@
       "description": "Axe vital du commerce intra-CEDEAO, relie les deux principales économies d'Afrique de l'Ouest",
       "source_org": "PIDA, CEDEAO",
       "coordinates": [
-        [5.3364, -4.0267],
-        [5.6037, -0.1870],
-        [6.1256, 1.2223],
-        [6.4969, 2.6289],
-        [6.4541, 3.3958]
+        [
+          5.3364,
+          -4.0267
+        ],
+        [
+          5.6037,
+          -0.187
+        ],
+        [
+          6.1256,
+          1.2223
+        ],
+        [
+          6.4969,
+          2.6289
+        ],
+        [
+          6.4541,
+          3.3958
+        ]
       ],
       "nodes": [
         {
@@ -135,7 +175,7 @@
           "node_type": "border_crossing",
           "country_iso": "BEN",
           "geo_lat": 6.3667,
-          "geo_lon": 2.6500,
+          "geo_lon": 2.65,
           "is_osbp": false,
           "notes": "Point le plus congestionné, OSBP en construction"
         }
@@ -163,7 +203,14 @@
       "corridor_id": "CORR-MOMBASA-NAIROBI-003",
       "corridor_name": "Northern Corridor (Mombasa-Nairobi-Kampala-Kigali)",
       "corridor_type": "multimodal",
-      "countries_spanned": ["KEN", "UGA", "RWA", "BDI", "COD", "SSD"],
+      "countries_spanned": [
+        "KEN",
+        "UGA",
+        "RWA",
+        "BDI",
+        "COD",
+        "SSD"
+      ],
       "start_node": "Port de Mombasa",
       "end_node": "Kampala",
       "length_km": 1720,
@@ -173,10 +220,22 @@
       "description": "Principal corridor d'Afrique de l'Est, SGR moderne jusqu'à Nairobi, projet d'extension vers Kampala",
       "source_org": "PIDA, EAC",
       "coordinates": [
-        [-4.0435, 39.6682],
-        [-1.2864, 36.8172],
-        [0.3136, 32.5811],
-        [-1.9536, 30.0605]
+        [
+          -4.0435,
+          39.6682
+        ],
+        [
+          -1.2864,
+          36.8172
+        ],
+        [
+          0.3136,
+          32.5811
+        ],
+        [
+          -1.9536,
+          30.0605
+        ]
       ],
       "nodes": [
         {
@@ -240,7 +299,12 @@
       "corridor_id": "CORR-DURBAN-GAUTENG-004",
       "corridor_name": "Corridor Nord-Sud (Durban-Gauteng-Beitbridge)",
       "corridor_type": "multimodal",
-      "countries_spanned": ["ZAF", "ZWE", "ZMB", "TZA"],
+      "countries_spanned": [
+        "ZAF",
+        "ZWE",
+        "ZMB",
+        "TZA"
+      ],
       "start_node": "Port de Durban",
       "end_node": "Dar es Salaam",
       "length_km": 3200,
@@ -250,11 +314,26 @@
       "description": "Épine dorsale logistique de l'Afrique australe, relie le principal port au heartland industriel",
       "source_org": "PIDA, SADC",
       "coordinates": [
-        [-29.8587, 31.0218],
-        [-26.2041, 28.0473],
-        [-22.4239, 29.7857],
-        [-15.4167, 28.2833],
-        [-6.7924, 39.2083]
+        [
+          -29.8587,
+          31.0218
+        ],
+        [
+          -26.2041,
+          28.0473
+        ],
+        [
+          -22.4239,
+          29.7857
+        ],
+        [
+          -15.4167,
+          28.2833
+        ],
+        [
+          -6.7924,
+          39.2083
+        ]
       ],
       "nodes": [
         {
@@ -283,7 +362,7 @@
           "node_type": "border_crossing",
           "country_iso": "ZWE",
           "geo_lat": -15.9833,
-          "geo_lon": 28.8500,
+          "geo_lon": 28.85,
           "is_osbp": true,
           "notes": "Premier OSBP d'Afrique (2009), modèle de réussite"
         }
@@ -318,7 +397,11 @@
       "corridor_id": "CORR-LOBITO-005",
       "corridor_name": "Corridor de Lobito (Angola-RDC-Zambie)",
       "corridor_type": "rail",
-      "countries_spanned": ["AGO", "COD", "ZMB"],
+      "countries_spanned": [
+        "AGO",
+        "COD",
+        "ZMB"
+      ],
       "start_node": "Port de Lobito",
       "end_node": "Frontière Zambie",
       "length_km": 1344,
@@ -328,9 +411,18 @@
       "description": "Corridor historique minier, réhabilitation majeure en cours avec financement USA/UE, alternative au Sud pour l'évacuation du cuivre de la Copper Belt",
       "source_org": "PIDA, Banque Mondiale",
       "coordinates": [
-        [-12.3500, 13.5500],
-        [-11.8167, 19.9000],
-        [-12.5333, 27.4667]
+        [
+          -12.35,
+          13.55
+        ],
+        [
+          -11.8167,
+          19.9
+        ],
+        [
+          -12.5333,
+          27.4667
+        ]
       ],
       "nodes": [
         {
@@ -338,8 +430,8 @@
           "node_name": "Terminal Rail de Lobito",
           "node_type": "rail_terminal",
           "country_iso": "AGO",
-          "geo_lat": -12.3500,
-          "geo_lon": 13.5500,
+          "geo_lat": -12.35,
+          "geo_lon": 13.55,
           "is_osbp": false,
           "notes": "Terminus atlantique du CFB, en modernisation"
         },
@@ -348,7 +440,7 @@
           "node_name": "Poste Frontière Luau (AGO-COD)",
           "node_type": "border_crossing",
           "country_iso": "AGO",
-          "geo_lat": -10.7000,
+          "geo_lat": -10.7,
           "geo_lon": 22.2333,
           "is_osbp": false,
           "notes": "Point de passage rail Benguela"
@@ -375,7 +467,10 @@
       "corridor_id": "CORR-DAKAR-BAMAKO-006",
       "corridor_name": "Corridor Dakar-Bamako",
       "corridor_type": "multimodal",
-      "countries_spanned": ["SEN", "MLI"],
+      "countries_spanned": [
+        "SEN",
+        "MLI"
+      ],
       "start_node": "Port de Dakar",
       "end_node": "Bamako",
       "length_km": 1228,
@@ -385,9 +480,18 @@
       "description": "Principal corridor d'évacuation du Mali enclavé, ligne ferroviaire historique nécessitant modernisation",
       "source_org": "PIDA, UEMOA",
       "coordinates": [
-        [14.6937, -17.4441],
-        [13.0514, -12.5092],
-        [12.6392, -8.0029]
+        [
+          14.6937,
+          -17.4441
+        ],
+        [
+          13.0514,
+          -12.5092
+        ],
+        [
+          12.6392,
+          -8.0029
+        ]
       ],
       "nodes": [
         {
@@ -395,7 +499,7 @@
           "node_name": "Poste Frontière Kidira (SEN-MLI)",
           "node_type": "border_crossing",
           "country_iso": "SEN",
-          "geo_lat": 14.4500,
+          "geo_lat": 14.45,
           "geo_lon": -12.2167,
           "is_osbp": false,
           "notes": "Point ferroviaire et routier, projet OSBP"
@@ -405,7 +509,7 @@
           "node_name": "Terminal Rail Tambacounda",
           "node_type": "rail_terminal",
           "country_iso": "SEN",
-          "geo_lat": 13.7700,
+          "geo_lat": 13.77,
           "geo_lon": -13.6672,
           "is_osbp": false,
           "notes": "Hub intermédiaire ferroviaire"
@@ -434,7 +538,13 @@
       "corridor_id": "CORR-TRANS-MAGHREB-007",
       "corridor_name": "Trans-Maghreb (Tanger-Tunis-Tripoli-Le Caire)",
       "corridor_type": "road",
-      "countries_spanned": ["MAR", "DZA", "TUN", "LBY", "EGY"],
+      "countries_spanned": [
+        "MAR",
+        "DZA",
+        "TUN",
+        "LBY",
+        "EGY"
+      ],
       "start_node": "Tanger",
       "end_node": "Le Caire",
       "length_km": 4850,
@@ -444,11 +554,26 @@
       "description": "Axe autoroutier panmaghrébain, discontinuités dues aux fermetures de frontières politiques (Maroc-Algérie, Libye instable)",
       "source_org": "PIDA, UMA",
       "coordinates": [
-        [35.7595, -5.8340],
-        [36.7539, 3.0588],
-        [36.8065, 10.1815],
-        [32.8872, 13.1913],
-        [30.0444, 31.2357]
+        [
+          35.7595,
+          -5.834
+        ],
+        [
+          36.7539,
+          3.0588
+        ],
+        [
+          36.8065,
+          10.1815
+        ],
+        [
+          32.8872,
+          13.1913
+        ],
+        [
+          30.0444,
+          31.2357
+        ]
       ],
       "nodes": [
         {
@@ -466,7 +591,7 @@
           "node_name": "Poste Frontière Ras Jedir (TUN-LBY)",
           "node_type": "border_crossing",
           "country_iso": "TUN",
-          "geo_lat": 33.0500,
+          "geo_lat": 33.05,
           "geo_lon": 11.4667,
           "is_osbp": false,
           "notes": "Fluctuations selon situation sécuritaire Libye"
@@ -485,7 +610,10 @@
       "corridor_id": "CORR-TAZARA-008",
       "corridor_name": "TAZARA (Tanzanie-Zambie)",
       "corridor_type": "rail",
-      "countries_spanned": ["TZA", "ZMB"],
+      "countries_spanned": [
+        "TZA",
+        "ZMB"
+      ],
       "start_node": "Dar es Salaam",
       "end_node": "Kapiri Mposhi",
       "length_km": 1860,
@@ -495,9 +623,18 @@
       "description": "Corridor historique reliant la Zambie à l'océan Indien, alternative au Corridor Nord-Sud, nécessite réhabilitation",
       "source_org": "PIDA, SADC",
       "coordinates": [
-        [-6.7924, 39.2083],
-        [-9.3333, 33.6000],
-        [-13.9667, 28.6667]
+        [
+          -6.7924,
+          39.2083
+        ],
+        [
+          -9.3333,
+          33.6
+        ],
+        [
+          -13.9667,
+          28.6667
+        ]
       ],
       "nodes": [
         {
@@ -505,8 +642,8 @@
           "node_name": "Terminal TAZARA Dar es Salaam",
           "node_type": "rail_terminal",
           "country_iso": "TZA",
-          "geo_lat": -6.8700,
-          "geo_lon": 39.2700,
+          "geo_lat": -6.87,
+          "geo_lon": 39.27,
           "is_osbp": false,
           "notes": "Terminal principal côte Est Afrique"
         },
@@ -515,7 +652,7 @@
           "node_name": "Poste Frontière Tunduma (TZA-ZMB)",
           "node_type": "border_crossing",
           "country_iso": "TZA",
-          "geo_lat": -9.3000,
+          "geo_lat": -9.3,
           "geo_lon": 32.7667,
           "is_osbp": true,
           "notes": "OSBP opérationnel, passage ferroviaire et routier"
@@ -542,7 +679,11 @@
       "corridor_id": "CORR-CENTRAL-009",
       "corridor_name": "Corridor Central (Dar-Kigali-Bujumbura)",
       "corridor_type": "road",
-      "countries_spanned": ["TZA", "RWA", "BDI"],
+      "countries_spanned": [
+        "TZA",
+        "RWA",
+        "BDI"
+      ],
       "start_node": "Dar es Salaam",
       "end_node": "Bujumbura",
       "length_km": 1650,
@@ -552,10 +693,22 @@
       "description": "Principal corridor pour le Rwanda et le Burundi enclavés, alternative au Northern Corridor kenyan",
       "source_org": "PIDA, EAC",
       "coordinates": [
-        [-6.7924, 39.2083],
-        [-5.0833, 29.6500],
-        [-1.9536, 30.0605],
-        [-3.3822, 29.3644]
+        [
+          -6.7924,
+          39.2083
+        ],
+        [
+          -5.0833,
+          29.65
+        ],
+        [
+          -1.9536,
+          30.0605
+        ],
+        [
+          -3.3822,
+          29.3644
+        ]
       ],
       "nodes": [
         {
@@ -574,7 +727,7 @@
           "node_type": "intermodal_hub",
           "country_iso": "BDI",
           "geo_lat": -2.9228,
-          "geo_lon": 29.6300,
+          "geo_lon": 29.63,
           "is_osbp": false,
           "notes": "Hub café burundais"
         }
@@ -594,7 +747,11 @@
       "corridor_id": "CORR-BEIRA-010",
       "corridor_name": "Corridor de Beira (Mozambique-Zimbabwe-Zambie)",
       "corridor_type": "multimodal",
-      "countries_spanned": ["MOZ", "ZWE", "ZMB"],
+      "countries_spanned": [
+        "MOZ",
+        "ZWE",
+        "ZMB"
+      ],
       "start_node": "Port de Beira",
       "end_node": "Harare",
       "length_km": 850,
@@ -604,8 +761,14 @@
       "description": "Corridor alternatif pour le Zimbabwe et la Zambie, port de Beira connecté par rail",
       "source_org": "PIDA, SADC",
       "coordinates": [
-        [-19.8436, 34.8389],
-        [-18.9750, 32.6689]
+        [
+          -19.8436,
+          34.8389
+        ],
+        [
+          -18.975,
+          32.6689
+        ]
       ],
       "nodes": [
         {
@@ -650,7 +813,11 @@
       "corridor_id": "CORR-NACALA-011",
       "corridor_name": "Corridor de Nacala (Mozambique-Malawi-Zambie)",
       "corridor_type": "multimodal",
-      "countries_spanned": ["MOZ", "MWI", "ZMB"],
+      "countries_spanned": [
+        "MOZ",
+        "MWI",
+        "ZMB"
+      ],
       "start_node": "Port de Nacala",
       "end_node": "Frontière Zambie",
       "length_km": 880,
@@ -660,9 +827,18 @@
       "description": "Nouveau corridor stratégique, ligne ferroviaire modernisée pour le charbon de Moatize (Tete)",
       "source_org": "PIDA, SADC",
       "coordinates": [
-        [-14.5428, 40.6722],
-        [-13.9833, 33.7833],
-        [-13.6333, 28.1833]
+        [
+          -14.5428,
+          40.6722
+        ],
+        [
+          -13.9833,
+          33.7833
+        ],
+        [
+          -13.6333,
+          28.1833
+        ]
       ],
       "nodes": [
         {
@@ -681,7 +857,7 @@
           "node_type": "border_crossing",
           "country_iso": "MOZ",
           "geo_lat": -14.0167,
-          "geo_lon": 35.2500,
+          "geo_lon": 35.25,
           "is_osbp": false,
           "notes": "Point de passage rail et route"
         }
@@ -706,7 +882,11 @@
       "corridor_id": "CORR-MAPUTO-012",
       "corridor_name": "Corridor de Maputo (Mozambique-Afrique du Sud-Zimbabwe)",
       "corridor_type": "multimodal",
-      "countries_spanned": ["MOZ", "ZAF", "ZWE"],
+      "countries_spanned": [
+        "MOZ",
+        "ZAF",
+        "ZWE"
+      ],
       "start_node": "Port de Maputo",
       "end_node": "Gauteng",
       "length_km": 572,
@@ -716,8 +896,14 @@
       "description": "Corridor court et efficace reliant Gauteng au port de Maputo, alternative à Durban pour certains trafics",
       "source_org": "PIDA, SADC",
       "coordinates": [
-        [-25.9692, 32.5732],
-        [-25.7479, 28.2293]
+        [
+          -25.9692,
+          32.5732
+        ],
+        [
+          -25.7479,
+          28.2293
+        ]
       ],
       "nodes": [
         {
@@ -762,7 +948,10 @@
       "corridor_id": "CORR-LOME-OUAGA-013",
       "corridor_name": "Corridor Lomé-Ouagadougou",
       "corridor_type": "road",
-      "countries_spanned": ["TGO", "BFA"],
+      "countries_spanned": [
+        "TGO",
+        "BFA"
+      ],
       "start_node": "Port de Lomé",
       "end_node": "Ouagadougou",
       "length_km": 985,
@@ -772,8 +961,14 @@
       "description": "Alternative au corridor ivoirien pour le Burkina Faso, Port Autonome de Lomé très compétitif",
       "source_org": "PIDA, CEDEAO",
       "coordinates": [
-        [6.1256, 1.2223],
-        [12.3714, -1.5197]
+        [
+          6.1256,
+          1.2223
+        ],
+        [
+          12.3714,
+          -1.5197
+        ]
       ],
       "nodes": [
         {
@@ -792,7 +987,7 @@
           "node_type": "dry_port",
           "country_iso": "TGO",
           "geo_lat": 6.1667,
-          "geo_lon": 1.3500,
+          "geo_lon": 1.35,
           "is_osbp": false,
           "notes": "Zone franche industrielle connectée au port"
         }
@@ -820,7 +1015,11 @@
       "corridor_id": "CORR-TEMA-OUAGA-014",
       "corridor_name": "Corridor Tema-Ouagadougou-Bamako",
       "corridor_type": "road",
-      "countries_spanned": ["GHA", "BFA", "MLI"],
+      "countries_spanned": [
+        "GHA",
+        "BFA",
+        "MLI"
+      ],
       "start_node": "Port de Tema",
       "end_node": "Bamako",
       "length_km": 1680,
@@ -830,9 +1029,18 @@
       "description": "Principal corridor pour le Burkina Faso et le Mali, Port de Tema très actif pour les pays enclavés",
       "source_org": "PIDA, CEDEAO",
       "coordinates": [
-        [5.6167, -0.0167],
-        [12.3714, -1.5197],
-        [12.6392, -8.0029]
+        [
+          5.6167,
+          -0.0167
+        ],
+        [
+          12.3714,
+          -1.5197
+        ],
+        [
+          12.6392,
+          -8.0029
+        ]
       ],
       "nodes": [
         {
@@ -841,7 +1049,7 @@
           "node_type": "border_crossing",
           "country_iso": "GHA",
           "geo_lat": 10.9833,
-          "geo_lon": -1.1000,
+          "geo_lon": -1.1,
           "is_osbp": true,
           "notes": "OSBP opérationnel, passage facilité"
         },
@@ -879,7 +1087,10 @@
       "corridor_id": "CORR-COTONOU-NIAMEY-015",
       "corridor_name": "Corridor Cotonou-Niamey",
       "corridor_type": "road",
-      "countries_spanned": ["BEN", "NER"],
+      "countries_spanned": [
+        "BEN",
+        "NER"
+      ],
       "start_node": "Port de Cotonou",
       "end_node": "Niamey",
       "length_km": 1035,
@@ -889,8 +1100,14 @@
       "description": "Corridor vital pour le Niger enclavé, 90% des importations nigériennes passent par Cotonou",
       "source_org": "PIDA, CEDEAO",
       "coordinates": [
-        [6.3654, 2.4183],
-        [13.5127, 2.1098]
+        [
+          6.3654,
+          2.4183
+        ],
+        [
+          13.5127,
+          2.1098
+        ]
       ],
       "nodes": [
         {
@@ -930,6 +1147,341 @@
           "group": "Government of Niger",
           "fleet_size": 180,
           "country_iso": "NER"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-TRANSSAHARIENNE-016",
+      "corridor_name": "Transsaharienne Alger-Lagos (TAH 2)",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "DZA",
+        "NER",
+        "NGA"
+      ],
+      "start_node": "Alger",
+      "end_node": "Lagos",
+      "length_km": 4504,
+      "status": "Partiellement opérationnel",
+      "infra_details": "Axe routier transsaharien Alger → In Salah → Tamanrasset → In Guezzam → Agadez → Zinder → Kano → Lagos. Tronçon algérien (~2400 km) pavé. Tronçon NER-NGA en cours d'achèvement (PIDA Phase 2, financement BAD).",
+      "importance": "high",
+      "description": "Corridor stratégique reliant la Méditerranée à l'Atlantique via le Sahara. Pilier de l'intégration AfCFTA Nord-Ouest-Afrique.",
+      "source_org": "UNECA TAH Network · CLRT (Comité de Liaison de la Route Transsaharienne) · BAD",
+      "coordinates": [
+        [
+          36.7538,
+          3.0588
+        ],
+        [
+          27.1969,
+          2.466
+        ],
+        [
+          22.7833,
+          5.5167
+        ],
+        [
+          19.5667,
+          5.7833
+        ],
+        [
+          16.9714,
+          7.9911
+        ],
+        [
+          13.8003,
+          8.9881
+        ],
+        [
+          12.0022,
+          8.5919
+        ],
+        [
+          6.5244,
+          3.3792
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-TAMANRASSET-001",
+          "node_name": "Tamanrasset (DZA)",
+          "node_type": "logistics_hub",
+          "country_iso": "DZA",
+          "geo_lat": 22.7833,
+          "geo_lon": 5.5167,
+          "is_osbp": false,
+          "notes": "Port sec saharien, terminus phase 1 du rail Alger-Tamanrasset"
+        },
+        {
+          "node_id": "NODE-INGUEZZAM-001",
+          "node_name": "In Guezzam (DZA-NER)",
+          "node_type": "border_post",
+          "country_iso": "DZA",
+          "geo_lat": 19.5667,
+          "geo_lon": 5.7833,
+          "is_osbp": true,
+          "notes": "Poste-frontière DZA-NER, OSBP en projet"
+        },
+        {
+          "node_id": "NODE-AGADEZ-001",
+          "node_name": "Agadez (NER)",
+          "node_type": "logistics_hub",
+          "country_iso": "NER",
+          "geo_lat": 16.9714,
+          "geo_lon": 7.9911,
+          "is_osbp": false,
+          "notes": "Carrefour sahélien"
+        },
+        {
+          "node_id": "NODE-KANO-001",
+          "node_name": "Kano (NGA)",
+          "node_type": "dry_port",
+          "country_iso": "NGA",
+          "geo_lat": 12.0022,
+          "geo_lon": 8.5919,
+          "is_osbp": false,
+          "notes": "Hub commercial Nord-Nigéria"
+        }
+      ],
+      "operators": [
+        {
+          "operator_name": "CLRT (Comité de Liaison de la Route Transsaharienne)",
+          "operator_type": "trans_national_authority"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-TRANSSAH-BAMAKO-017",
+      "corridor_name": "Dérivation Transsaharienne : Tamanrasset-Bamako",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "DZA",
+        "MLI"
+      ],
+      "start_node": "Tamanrasset",
+      "end_node": "Bamako",
+      "length_km": 2270,
+      "status": "Planifié",
+      "infra_details": "Embranchement sud-ouest de la Transsaharienne via Bordj Mokhtar (frontière DZA-MLI) → Kidal → Gao → Sévaré → Bamako. Étude de faisabilité achevée 2023 (PIDA).",
+      "importance": "high",
+      "description": "Désenclavement du Mali par le Nord, alternative au corridor Dakar-Bamako sur l'axe Alger-Bamako (3 800 km depuis Alger).",
+      "source_org": "PIDA Phase 2 · UEMOA · BAD",
+      "coordinates": [
+        [
+          22.7833,
+          5.5167
+        ],
+        [
+          21.3284,
+          0.9544
+        ],
+        [
+          18.4411,
+          1.4078
+        ],
+        [
+          16.2719,
+          -0.0408
+        ],
+        [
+          14.5039,
+          -4.1869
+        ],
+        [
+          12.6392,
+          -8.0029
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-BORDJ-MOKHTAR-001",
+          "node_name": "Bordj Mokhtar (DZA-MLI)",
+          "node_type": "border_post",
+          "country_iso": "DZA",
+          "geo_lat": 21.3284,
+          "geo_lon": 0.9544,
+          "is_osbp": true,
+          "notes": "Poste-frontière en projet (planifié)"
+        },
+        {
+          "node_id": "NODE-GAO-001",
+          "node_name": "Gao (MLI)",
+          "node_type": "logistics_hub",
+          "country_iso": "MLI",
+          "geo_lat": 16.2719,
+          "geo_lon": -0.0408,
+          "is_osbp": false,
+          "notes": "Hub sahélien sur le Niger"
+        }
+      ],
+      "operators": []
+    },
+    {
+      "corridor_id": "CORR-TRANSSAH-NDJAMENA-018",
+      "corridor_name": "Dérivation Transsaharienne : Agadez-N'Djamena",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "DZA",
+        "NER",
+        "TCD"
+      ],
+      "start_node": "Alger",
+      "end_node": "N'Djamena",
+      "length_km": 4800,
+      "status": "Étude de faisabilité",
+      "infra_details": "Embranchement sud-est depuis Zinder vers Maïdouguri (NGA) puis N'Djamena. Vise à désenclaver le Tchad par la Méditerranée.",
+      "importance": "medium",
+      "description": "Désenclavement du Tchad via la Transsaharienne. Alternative au corridor Douala-N'Djamena.",
+      "source_org": "PIDA · CEN-SAD · CEMAC",
+      "coordinates": [
+        [
+          36.7538,
+          3.0588
+        ],
+        [
+          22.7833,
+          5.5167
+        ],
+        [
+          16.9714,
+          7.9911
+        ],
+        [
+          13.8003,
+          8.9881
+        ],
+        [
+          11.8311,
+          13.151
+        ],
+        [
+          12.1348,
+          15.0557
+        ]
+      ],
+      "nodes": [],
+      "operators": []
+    },
+    {
+      "corridor_id": "CORR-RAIL-ALGER-TAM-019",
+      "corridor_name": "Chemin de fer Alger-Tamanrasset (Trans-Saharien Rail)",
+      "corridor_type": "rail",
+      "countries_spanned": [
+        "DZA"
+      ],
+      "start_node": "Alger",
+      "end_node": "Tamanrasset",
+      "length_km": 1900,
+      "status": "En construction",
+      "infra_details": "Phase 1 Alger-Hassi Messaoud (~900 km) opérationnelle (SNTF). Phase 2 Hassi Messaoud-Tamanrasset (~1000 km) en construction, livraison prévue 2030. Écartement standard, électrification partielle. Connectera à terme avec la dérivation Tam-Bamako pour un corridor rail intra-africain Nord-Ouest.",
+      "importance": "high",
+      "description": "Première ligne ferroviaire transsaharienne. Réduit drastiquement les délais et coûts d'acheminement vers le Sahel.",
+      "source_org": "SNTF · ANESRIF (Agence Nationale d'Études et de Suivi de la Réalisation des Investissements Ferroviaires)",
+      "coordinates": [
+        [
+          36.7538,
+          3.0588
+        ],
+        [
+          35.6976,
+          4.7458
+        ],
+        [
+          34.9,
+          5.4
+        ],
+        [
+          32.49,
+          3.68
+        ],
+        [
+          31.6731,
+          6.0608
+        ],
+        [
+          27.1969,
+          2.466
+        ],
+        [
+          22.7833,
+          5.5167
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-HASSI-MESS-001",
+          "node_name": "Hassi Messaoud (DZA)",
+          "node_type": "rail_terminus",
+          "country_iso": "DZA",
+          "geo_lat": 31.6731,
+          "geo_lon": 6.0608,
+          "is_osbp": false,
+          "notes": "Terminus de la phase 1 opérationnelle"
+        },
+        {
+          "node_id": "NODE-IN-SALAH-001",
+          "node_name": "In Salah (DZA)",
+          "node_type": "rail_station",
+          "country_iso": "DZA",
+          "geo_lat": 27.1969,
+          "geo_lon": 2.466,
+          "is_osbp": false,
+          "notes": "Gare intermédiaire phase 2"
+        }
+      ],
+      "operators": [
+        {
+          "operator_name": "SNTF (Société Nationale des Transports Ferroviaires)",
+          "operator_type": "rail_operator"
+        },
+        {
+          "operator_name": "ANESRIF",
+          "operator_type": "infrastructure_authority"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-RAIL-LAGOS-CALABAR-020",
+      "corridor_name": "Rail côtier Lagos-Calabar",
+      "corridor_type": "rail",
+      "countries_spanned": [
+        "NGA"
+      ],
+      "start_node": "Lagos",
+      "end_node": "Calabar",
+      "length_km": 1400,
+      "status": "En construction",
+      "infra_details": "Ligne ferroviaire à écartement standard (1435 mm) reliant Lagos à Calabar via Warri, Yenagoa, Port Harcourt. Financement CCECC / China EXIM Bank. Livraison prévue 2027-2028.",
+      "importance": "high",
+      "description": "Connecte les ports atlantiques du Nigeria à un réseau rail standard. Multiplie la capacité du corridor Lagos-Abidjan une fois interconnecté.",
+      "source_org": "Nigerian Railway Corporation (NRC) · CCECC",
+      "coordinates": [
+        [
+          6.5244,
+          3.3792
+        ],
+        [
+          6.337,
+          5.6037
+        ],
+        [
+          4.774,
+          6.227
+        ],
+        [
+          4.9281,
+          6.8425
+        ],
+        [
+          4.959,
+          8.327
+        ]
+      ],
+      "nodes": [],
+      "operators": [
+        {
+          "operator_name": "Nigerian Railway Corporation (NRC)",
+          "operator_type": "rail_operator"
         }
       ]
     }

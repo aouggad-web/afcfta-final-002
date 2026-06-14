@@ -744,21 +744,14 @@ async def compare_freight_modes(
     container_type: str = "teu",
     air_commodity: str = "general",
     land_cargo_type: str = "container",
+    include_future: bool = True,
 ):
     """
     Compare freight options (sea, air, land, sea+land combo) between two countries.
 
-    Parameters
-    ----------
-    origin           : ISO3 of origin country (e.g. MAR, EGY, ZAF)
-    destination      : ISO3 of destination country (e.g. NGA, MLI, RWA)
-    weight_kg        : shipment weight (default 1000 kg)
-    volume_m3        : optional volume for volumetric weight in air
-    container_type   : "teu" (20'), "feu" (40'), "feu_hc" (40' HC)
-    air_commodity    : "general", "perishable", "pharma", "dangerous", "valuable"
-    land_cargo_type  : "general", "container", "perishable", "dangerous", "bulk"
-
-    Returns ranked options with cost, transit days, CO2 emissions and route segments.
+    Returns operational routes ranked by cost, plus planned / under-construction
+    future corridors (Transsaharienne, Train Alger-Tamanrasset, Lagos-Calabar rail…)
+    annotated with their status when ``include_future=True``.
     """
     if weight_kg <= 0:
         raise HTTPException(status_code=400, detail="weight_kg must be > 0")
@@ -772,4 +765,5 @@ async def compare_freight_modes(
         container_type=container_type,
         air_commodity=air_commodity,
         land_cargo_type=land_cargo_type,
+        include_future=include_future,
     )
