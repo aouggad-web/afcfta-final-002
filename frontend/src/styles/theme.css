@@ -2107,19 +2107,23 @@ body::before {
   .afcfta-sidebar { display: none !important; }
 }
 
-@media (min-width: 1025px) {
-  /* Sidebar handles all nav on desktop — hide topbar entirely */
-  .afcfta-topHeader { display: none !important; }
-  /* Shift main content right of the expanded sidebar */
-  .afcfta-main-v2 {
-    margin-left: var(--sidebar-w);
-    transition: margin-left 0.25s ease;
-  }
-  /* Shift when sidebar is collapsed */
-  .afcfta-sidebar.collapsed ~ .afcfta-main-v2 {
-    margin-left: var(--sidebar-collapsed);
-  }
-}
+/* NOTE 2026-06-14: The AfcftaSidebar component has not been imported yet
+ * (it's planned as part of the design refresh roadmap). Until it is, we MUST
+ * keep the topbar visible on all viewport sizes — otherwise large screens
+ * (≥1025px) end up with no navigation at all. Re-enable the rules below once
+ * the sidebar is imported into App.js.
+ *
+ * @media (min-width: 1025px) {
+ *   .afcfta-topHeader { display: none !important; }
+ *   .afcfta-main-v2 {
+ *     margin-left: var(--sidebar-w);
+ *     transition: margin-left 0.25s ease;
+ *   }
+ *   .afcfta-sidebar.collapsed ~ .afcfta-main-v2 {
+ *     margin-left: var(--sidebar-collapsed);
+ *   }
+ * }
+ */
 
 .afcfta-main {
   margin-left: 0;
