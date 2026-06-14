@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -6,7 +6,8 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles } from 'lucide-react';
+import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles, TrendingUp } from 'lucide-react';
+import { PDFExportButton } from '../common/ExportTools';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -179,11 +180,15 @@ export default function MultimodalComparator({ language = 'fr' }) {
   const [containerType, setContainerType] = useState('teu');
   const [airCommodity, setAirCommodity] = useState('general');
   const [landCargoType, setLandCargoType] = useState('container');
+  const [teuPerYear, setTeuPerYear] = useState(100);
 
   const [supportedCountries, setSupportedCountries] = useState({ all_supported: [], landlocked_countries: [] });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Ref for PDF export — wraps the entire results area
+  const reportRef = useRef(null);
 
   useEffect(() => {
     axios.get(`${API}/api/logistics/multimodal/countries`)
@@ -361,7 +366,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
       )}
 
       {result && result.options_count > 0 && (
-        <div className="space-y-4">
+        <div ref={reportRef} className="space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <h3 className="text-lg font-display text-white">
               {result.operational_count} option{result.operational_count > 1 ? 's' : ''} opérationnelle{result.operational_count > 1 ? 's' : ''}
@@ -371,12 +376,137 @@ export default function MultimodalComparator({ language = 'fr' }) {
                 </span>
               )}
             </h3>
-            {result.is_destination_landlocked && (
-              <Badge className="bg-amber-500/15 text-amber-300 border-amber-500/40">
-                Destination enclavée — combinaisons port + corridor proposées
-              </Badge>
-            )}
+            <div className="flex items-center gap-2 flex-wrap">
+              {result.is_destination_landlocked && (
+                <Badge className="bg-amber-500/15 text-amber-300 border-amber-500/40">
+                  Destination enclavée — combinaisons port + corridor proposées
+                </Badge>
+              )}
+              <PDFExportButton
+                targetRef={reportRef}
+                filename={`comparaison_multimodale_${origin}_${destination}`}
+                title={`Comparaison multimodale ${origin} → ${destination}`}
+                subtitle={`${weightKg/1000} t · ${containerType.toUpperCase()} · ZLECAf Analytics`}
+                language={language}
+                data-testid="multimodal-pdf-btn"
+              />
+            </div>
           </div>
+
+          {/* ROI Infrastructure card */}
+          {result.roi_infrastructure && (
+            <Card className="border border-sky-500/40 bg-gradient-to-br from-sky-500/10 to-purple-500/10">
+              <CardHeader className="pb-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-sky-500/20 flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-5 h-5 text-sky-300" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="text-base text-white">
+                      ROI Infrastructure — projection si les routes planifiées étaient opérationnelles
+                    </CardTitle>
+                    <CardDescription className="text-xs mt-1 text-gray-300">
+                      Compare la meilleure option opérationnelle d&apos;aujourd&apos;hui avec la meilleure route future.
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="rounded-lg bg-white/5 p-3 border border-white/10">
+                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">Aujourd&apos;hui</div>
+                    <div className="text-sm text-gray-200 mb-2">
+                      {result.roi_infrastructure.reference_operational.label}
+                    </div>
+                    <div className="grid grid-cols-3 gap-2">
+                      <div><span className="text-gray-400 text-[10px]">Coût</span><div className="font-display text-base text-white">${result.roi_infrastructure.reference_operational.cost_usd?.toLocaleString('en-US')}</div></div>
+                      <div><span className="text-gray-400 text-[10px]">Délai</span><div className="font-display text-base text-white">{result.roi_infrastructure.reference_operational.transit_days_avg} j</div></div>
+                      <div><span className="text-gray-400 text-[10px]">CO₂</span><div className="font-display text-base text-white">{(result.roi_infrastructure.reference_operational.co2_kg / 1000).toFixed(1)} t</div></div>
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-sky-500/10 p-3 border border-dashed border-sky-500/40">
+                    <div className="text-[10px] uppercase tracking-wide text-sky-300 mb-1">
+                      🚧 Futur · {result.roi_infrastructure.best_future_cost.status}
+                    </div>
+                    <div className="text-sm text-gray-200 mb-2">
+                      {result.roi_infrastructure.best_future_cost.label}
+                    </div>
+                    <div className="grid grid-cols-3 gap-2">
+                      <div><span className="text-gray-400 text-[10px]">Coût</span><div className="font-display text-base text-sky-200">${result.roi_infrastructure.best_future_cost.cost_usd?.toLocaleString('en-US')}</div></div>
+                      <div><span className="text-gray-400 text-[10px]">Délai</span><div className="font-display text-base text-sky-200">{result.roi_infrastructure.best_future_cost.transit_days_avg} j</div></div>
+                      <div><span className="text-gray-400 text-[10px]">CO₂</span><div className="font-display text-base text-sky-200">{(result.roi_infrastructure.best_future_cost.co2_kg / 1000).toFixed(1)} t</div></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-white/10">
+                  <div className="text-center">
+                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">Économie par expédition</div>
+                    <div className="font-display text-2xl text-emerald-300">
+                      ${result.roi_infrastructure.per_shipment.cost_savings_usd?.toLocaleString('en-US')}
+                    </div>
+                    <div className="text-[11px] text-emerald-400">{result.roi_infrastructure.per_shipment.cost_savings_pct}%</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">CO₂ évité</div>
+                    <div className="font-display text-2xl text-lime-300">
+                      {result.roi_infrastructure.per_shipment.co2_savings_kg?.toLocaleString('en-US')} kg
+                    </div>
+                    <div className="text-[11px] text-lime-400">{result.roi_infrastructure.per_shipment.co2_savings_pct}%</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">Temps gagné</div>
+                    <div className="font-display text-2xl text-yellow-300">
+                      {result.roi_infrastructure.per_shipment.time_savings_days} j
+                    </div>
+                    <div className="text-[11px] text-yellow-400">/ expédition</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">vs Aérien</div>
+                    <div className="font-display text-2xl text-purple-300">
+                      ${result.roi_infrastructure.per_shipment.cost_savings_vs_air_usd?.toLocaleString('en-US') || '—'}
+                    </div>
+                    <div className="text-[11px] text-purple-400">économisés {result.roi_infrastructure.per_shipment.cost_savings_vs_air_pct}%</div>
+                  </div>
+                </div>
+
+                <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 flex items-start gap-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[11px] uppercase tracking-wide text-emerald-300">Projection annuelle</span>
+                      <Label htmlFor="teu-yr" className="text-[10px] text-gray-400 ml-2">TEU/an :</Label>
+                      <Input
+                        id="teu-yr"
+                        type="number" min={1}
+                        value={teuPerYear}
+                        onChange={e => setTeuPerYear(Math.max(1, Number(e.target.value) || 100))}
+                        className="h-7 w-20 text-xs"
+                        data-testid="roi-teu-input"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <div className="text-[10px] text-gray-400">Économie annuelle</div>
+                        <div className="font-display text-2xl text-emerald-200">
+                          ${((result.roi_infrastructure.per_shipment.cost_savings_usd || 0) * teuPerYear).toLocaleString('en-US')}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] text-gray-400">CO₂ évité annuel</div>
+                        <div className="font-display text-2xl text-lime-200">
+                          {(((result.roi_infrastructure.per_shipment.co2_savings_kg || 0) * teuPerYear) / 1000).toFixed(1)} t
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-xs text-gray-300 italic border-t border-white/5 pt-2">
+                  {result.roi_infrastructure.interpretation}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Operational routes */}
           {result.options.filter(o => !o.is_future).length > 0 && (

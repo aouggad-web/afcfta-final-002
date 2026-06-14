@@ -706,6 +706,106 @@ def compare_multimodal(
         options[future_cheapest]["is_future_cheapest"] = True
         options[future_greenest]["is_future_greenest"] = True
 
+    # ROI Infrastructure: compute BEFORE the final sort so indices stay valid.
+    roi = None
+    if operational_idxs and future_idxs:
+        # Get the cheapest operational (excluding air for fair comparison) and the cheapest future
+        non_air_ops = [i for i in operational_idxs if options[i].get("mode") != "air"]
+        ref_idx = non_air_ops[0] if non_air_ops else None
+        if ref_idx is None:
+            # Fallback: best operational including air
+            ref_idx = min(operational_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
+        ref = options[ref_idx]
+        # Also keep the air-direct option for "vs air" comparison
+        air_idx = next((i for i in operational_idxs if options[i].get("mode") == "air"), None)
+        air_ref = options[air_idx] if air_idx is not None else None
+
+        # Best future by cost
+        best_future_cost = min(future_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
+        best_future_co2 = min(future_idxs, key=lambda i: options[i].get("co2_kg") or float("inf"))
+        best_future_time = min(future_idxs, key=lambda i: options[i].get("transit_days_avg") or float("inf"))
+
+        bf_cost = options[best_future_cost]
+        bf_co2 = options[best_future_co2]
+        bf_time = options[best_future_time]
+
+        # Computed savings per TEU
+        cost_saving_per_teu = (ref.get("total_cost_usd") or 0) - (bf_cost.get("total_cost_usd") or 0)
+        co2_saving_per_teu = (ref.get("co2_kg") or 0) - (bf_co2.get("co2_kg") or 0)
+        time_saving_days = ((ref.get("transit_days_avg") or 0) - (bf_time.get("transit_days_avg") or 0))
+
+        # vs Air
+        cost_saving_vs_air = None
+        co2_saving_vs_air = None
+        time_loss_vs_air = None
+        if air_ref:
+            cost_saving_vs_air = (air_ref.get("total_cost_usd") or 0) - (bf_cost.get("total_cost_usd") or 0)
+            co2_saving_vs_air = (air_ref.get("co2_kg") or 0) - (bf_co2.get("co2_kg") or 0)
+            time_loss_vs_air = (bf_time.get("transit_days_avg") or 0) - (air_ref.get("transit_days_avg") or 0)
+
+        # Annual projection (assume 100 TEU/year typical SME flow — conservative)
+        teu_per_year_default = 100
+        annual_cost_savings = round(cost_saving_per_teu * teu_per_year_default)
+        annual_co2_savings_tonnes = round((co2_saving_per_teu * teu_per_year_default) / 1000.0, 1)
+
+        roi = {
+            "reference_operational": {
+                "label": ref.get("label"),
+                "mode": ref.get("mode"),
+                "cost_usd": ref.get("total_cost_usd"),
+                "transit_days_avg": ref.get("transit_days_avg"),
+                "co2_kg": ref.get("co2_kg"),
+            },
+            "best_future_cost": {
+                "label": bf_cost.get("label"),
+                "status": bf_cost.get("status"),
+                "cost_usd": bf_cost.get("total_cost_usd"),
+                "transit_days_avg": bf_cost.get("transit_days_avg"),
+                "co2_kg": bf_cost.get("co2_kg"),
+            },
+            "best_future_co2": {
+                "label": bf_co2.get("label"),
+                "status": bf_co2.get("status"),
+                "co2_kg": bf_co2.get("co2_kg"),
+            },
+            "best_future_time": {
+                "label": bf_time.get("label"),
+                "status": bf_time.get("status"),
+                "transit_days_avg": bf_time.get("transit_days_avg"),
+            },
+            "per_shipment": {
+                "cost_savings_usd": round(cost_saving_per_teu),
+                "cost_savings_pct": (
+                    round((cost_saving_per_teu / ref["total_cost_usd"]) * 100, 1)
+                    if ref.get("total_cost_usd") else None
+                ),
+                "co2_savings_kg": round(co2_saving_per_teu),
+                "co2_savings_pct": (
+                    round((co2_saving_per_teu / ref["co2_kg"]) * 100, 1)
+                    if ref.get("co2_kg") else None
+                ),
+                "time_savings_days": round(time_saving_days, 1),
+                "cost_savings_vs_air_usd": round(cost_saving_vs_air) if cost_saving_vs_air is not None else None,
+                "cost_savings_vs_air_pct": (
+                    round((cost_saving_vs_air / air_ref["total_cost_usd"]) * 100, 1)
+                    if air_ref and air_ref.get("total_cost_usd") else None
+                ),
+                "co2_savings_vs_air_kg": round(co2_saving_vs_air) if co2_saving_vs_air is not None else None,
+                "time_loss_vs_air_days": round(time_loss_vs_air, 1) if time_loss_vs_air is not None else None,
+            },
+            "annual_projection": {
+                "teu_per_year_assumption": teu_per_year_default,
+                "annual_cost_savings_usd": annual_cost_savings,
+                "annual_co2_savings_tonnes": annual_co2_savings_tonnes,
+            },
+            "interpretation": (
+                f"Si la route « {bf_cost.get('label')} » devient opérationnelle, "
+                f"chaque expédition de {weight_kg/1000:.0f} t économisera "
+                f"${round(cost_saving_per_teu):,} USD et {round(co2_saving_per_teu):,} kg CO₂ "
+                f"vs la meilleure option actuelle ({ref.get('label')})."
+            ),
+        }
+
     # Sort: operational first (by cost), then future
     options.sort(key=lambda o: (
         1 if o.get("is_future") else 0,
@@ -723,6 +823,7 @@ def compare_multimodal(
         "options_count": len(options),
         "operational_count": sum(1 for o in options if not o.get("is_future")),
         "future_count": sum(1 for o in options if o.get("is_future")),
+        "roi_infrastructure": roi,
         "co2_methodology": {
             "factors_g_per_tkm": CO2_FACTORS_G_PER_TKM,
             "source": "IPCC AR6, IEA Transport 2023, GLEC Framework v3",

@@ -214,3 +214,24 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
   - Aérien direct : $73 240, 2-4j (⚡), 39,0 t CO₂
   - 🚧 Transsaharienne Tam-Niamey-Ouaga planifiée : **$3 988**, 7-9j, 2,7 t CO₂ (Futur · le moins cher · le plus vert)
   - 🚧 Rail + Route via Tamanrasset planifié : $5 933, 12-16j, 3,5 t CO₂ (Train Alger-Tam + Route Tam-Ouaga)
+
+
+## June 14, 2026 — ROI Infrastructure + Export PDF
+- 🆕 **Backend** : `services/multimodal_freight_service.py` calcule maintenant `roi_infrastructure` dans chaque réponse
+  - Référence opérationnelle : meilleure option actuelle (hors aérien, plus comparable)
+  - Meilleur futur (coût, CO₂, délai) parmi les options planifiées/en construction
+  - **Par expédition** : économies USD/CO₂/jours en valeur absolue + pourcentage
+  - **vs Aérien** : économies par rapport à l'option Aérien (souvent +90%)
+  - **Projection annuelle** avec hypothèse 100 TEU/an (paramétrable côté UI)
+  - Interprétation automatique en français
+- 🆕 **Frontend** : `MultimodalComparator.jsx`
+  - **Carte ROI Infrastructure** en haut des résultats (gradient sky→purple)
+  - Bloc comparaison « Aujourd'hui » vs « 🚧 Futur · Planifié » côte à côte
+  - 4 KPI grand format Cormorant Garamond : Économie/expédition, CO₂ évité, Temps gagné, vs Aérien
+  - **Projection annuelle** interactive avec input numérique TEU/an
+  - Interprétation auto en italique
+- 🆕 **Frontend** : **Bouton "Exporter PDF"** intégré dans l'en-tête des résultats
+  - Réutilise le composant existant `PDFExportButton` (html2canvas + jspdf)
+  - Capture l'ensemble : carte ROI + options opérationnelles + section futures
+  - Filename auto : `comparaison_multimodale_{ORIGIN}_{DEST}_{YYYY-MM-DD}.pdf`
+- ✅ **Validation Alger→Ouaga** : ROI affiche $377 économisés/expédition (8,6%), $69 252 vs aérien (94,6%), 46,5 t CO₂/an projeté pour 100 TEU/an
