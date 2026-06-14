@@ -860,6 +860,62 @@ SHIPPING_ROUTES: List[Dict[str, Any]] = [
         "source": "OMMP Tunisia port statistics 2024; UNCTAD MRTS 2024",
         "notes": "Via Port Said transshipment hub"
     },
+    # ============================================================================
+    # ALGÉRIE ↔ AFRIQUE DE L'OUEST (Med-WAF pendulum services)
+    # Added 2026-06-14 to support multimodal Alger→Ouagadougou via Abidjan.
+    # ============================================================================
+    {
+        "route_id": "DZALG-CIABJ",
+        "origin_locode": "DZALG", "destination_locode": "CIABJ",
+        "origin_port": "Alger", "destination_port": "Abidjan",
+        "origin_country": "DZA", "destination_country": "CIV",
+        "distance_nm": 3700,
+        "transit_days_min": 12, "transit_days_max": 16,
+        "teu_usd": 1100, "feu_usd": 1620, "feu_hc_usd": 1750,
+        "carriers": ["CMA CGM", "MSC"],
+        "frequency": "Weekly",
+        "source": "CMA CGM Med-West Africa pendulum service rate card 2024",
+        "notes": "Pendulum service via Tanger Med transshipment hub"
+    },
+    {
+        "route_id": "DZALG-SNDKR",
+        "origin_locode": "DZALG", "destination_locode": "SNDKR",
+        "origin_port": "Alger", "destination_port": "Dakar",
+        "origin_country": "DZA", "destination_country": "SEN",
+        "distance_nm": 3050,
+        "transit_days_min": 10, "transit_days_max": 14,
+        "teu_usd": 950, "feu_usd": 1400, "feu_hc_usd": 1510,
+        "carriers": ["CMA CGM", "MSC"],
+        "frequency": "Weekly",
+        "source": "CMA CGM West Africa Rate Card Q4-2024",
+        "notes": "Direct call on Dakar via Med pendulum"
+    },
+    {
+        "route_id": "DZALG-GHTEM",
+        "origin_locode": "DZALG", "destination_locode": "GHTEM",
+        "origin_port": "Alger", "destination_port": "Tema",
+        "origin_country": "DZA", "destination_country": "GHA",
+        "distance_nm": 4200,
+        "transit_days_min": 13, "transit_days_max": 18,
+        "teu_usd": 1180, "feu_usd": 1740, "feu_hc_usd": 1880,
+        "carriers": ["CMA CGM", "MSC", "Maersk"],
+        "frequency": "Bi-weekly",
+        "source": "MSC West Africa Rate Bulletin 2024",
+        "notes": "Via Tanger Med transshipment"
+    },
+    {
+        "route_id": "DZALG-CMDLA",
+        "origin_locode": "DZALG", "destination_locode": "CMDLA",
+        "origin_port": "Alger", "destination_port": "Douala",
+        "origin_country": "DZA", "destination_country": "CMR",
+        "distance_nm": 5100,
+        "transit_days_min": 16, "transit_days_max": 22,
+        "teu_usd": 1450, "feu_usd": 2150, "feu_hc_usd": 2320,
+        "carriers": ["CMA CGM", "Maersk"],
+        "frequency": "Bi-weekly",
+        "source": "CMA CGM Central Africa rate card 2024",
+        "notes": "Via Tanger Med or Lomé transshipment"
+    },
 ]
 
 

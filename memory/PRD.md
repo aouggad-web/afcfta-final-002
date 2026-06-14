@@ -193,3 +193,24 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
   - Badge de phase coloré sur chaque carte future (Planifié / En construction / Étude de faisabilité)
   - Icône `Train` pour les corridors rail (Lagos-Calabar, Alger-Tamanrasset)
 - ✅ **Validation** : DZA→MLI affiche bien Aérien opérationnel + Transsaharienne planifiée à $4 202 (18× moins cher). DZA→NGA affiche TAH 2 partiellement opérationnelle dans la section principale.
+
+
+## June 14, 2026 — Multi-hop chaining (Rail+Road) + continental infrastructure
+- 🆕 **Routes maritimes manquantes** : ajout de 4 routes DZALG ↔ CIABJ, SNDKR, GHTEM, CMDLA (services CMA CGM Med-WAF pendulum réels) — permet enfin de calculer Alger → Abidjan → Ouaga par voie maritime
+- 🆕 **6 nouveaux corridors continentaux**
+  - `CORR-TRANSSAH-OUAGA-021` Dérivation Transsaharienne Tamanrasset-Niamey-Ouagadougou (DZA-NER-BFA, 2 150 km, Planifié, PIDA)
+  - `CORR-RAIL-CAPE-CAIRO-022` Train Le Cap-Le Caire TAH 4 rail (9 pays, 10 000 km, Planifié, Union Africaine)
+  - `CORR-LOBITO-EXT-023` Extension Corridor de Lobito (AGO-COD-ZMB, 1 730 km, En construction, Lobito Atlantic Railway / US-EU PGII)
+  - `CORR-RAIL-SGR-EAC-024` SGR Mombasa-Kampala-Kigali (KEN-UGA-RWA, 1 620 km, Partiellement opérationnel, Kenya Railways / CRBC)
+  - `CORR-RAIL-MAGHREB-025` Trans-Maghreb TGV Casablanca-Tripoli (MAR-DZA-TUN-LBY, 2 400 km, Planifié, UMA / ONCF / SNTF)
+  - `CORR-TAH5-DKR-NDJ-026` Transafricaine Dakar-N'Djamena TAH 5 (SEN-MLI-BFA-NER-TCD, 4 500 km, Partiellement opérationnel)
+- 🆕 **Backend** : `services/multimodal_freight_service.py` nouvelle fonction `_rail_then_road_option()`
+  - Trouve un corridor rail démarrant dans le pays d'origine
+  - Cherche un corridor route démarrant au terminus du rail et atteignant la destination
+  - Chaîne les 2 segments avec coûts/délais/CO₂ cumulés (rail = 22 g CO₂/t·km, route = 62)
+- ✅ **Validation Alger → Ouagadougou** (20 t conteneur) :
+  - Maritime+Route via Abidjan : **$4 365**, 17-23j, 3,1 t CO₂ (💰 🌿) ⬅ meilleure option actuelle
+  - Maritime+Route via Tema : $4 902, 19-26j, 3,6 t CO₂
+  - Aérien direct : $73 240, 2-4j (⚡), 39,0 t CO₂
+  - 🚧 Transsaharienne Tam-Niamey-Ouaga planifiée : **$3 988**, 7-9j, 2,7 t CO₂ (Futur · le moins cher · le plus vert)
+  - 🚧 Rail + Route via Tamanrasset planifié : $5 933, 12-16j, 3,5 t CO₂ (Train Alger-Tam + Route Tam-Ouaga)

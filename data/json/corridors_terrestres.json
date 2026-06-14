@@ -1484,6 +1484,302 @@
           "operator_type": "rail_operator"
         }
       ]
+    },
+    {
+      "corridor_id": "CORR-TRANSSAH-OUAGA-021",
+      "corridor_name": "Dérivation Transsaharienne : Tamanrasset-Niamey-Ouagadougou",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "DZA",
+        "NER",
+        "BFA"
+      ],
+      "start_node": "Tamanrasset",
+      "end_node": "Ouagadougou",
+      "length_km": 2150,
+      "status": "Planifié",
+      "infra_details": "Branche sud-ouest reliant Tamanrasset (terminus rail) à Ouagadougou via Agadez, Tahoua, Niamey, Fada N'Gourma. Permet la connexion Train Alger-Tam + Route Tam-Ouaga.",
+      "importance": "high",
+      "description": "Désenclavement du Burkina Faso via la Transsaharienne. Complémentaire au futur train Alger-Tamanrasset.",
+      "source_org": "PIDA Phase 2 · UEMOA · CEN-SAD",
+      "coordinates": [
+        [
+          22.7833,
+          5.5167
+        ],
+        [
+          16.9714,
+          7.9911
+        ],
+        [
+          14.8888,
+          5.2692
+        ],
+        [
+          13.5127,
+          2.1098
+        ],
+        [
+          12.0613,
+          0.3686
+        ],
+        [
+          12.3686,
+          -1.5275
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-NIAMEY-001",
+          "node_name": "Niamey (NER)",
+          "node_type": "logistics_hub",
+          "country_iso": "NER",
+          "geo_lat": 13.5127,
+          "geo_lon": 2.1098,
+          "is_osbp": false,
+          "notes": "Hub sahélien"
+        },
+        {
+          "node_id": "NODE-FADA-001",
+          "node_name": "Fada N'Gourma (BFA)",
+          "node_type": "border_post",
+          "country_iso": "BFA",
+          "geo_lat": 12.0613,
+          "geo_lon": 0.3686,
+          "is_osbp": true,
+          "notes": "Poste-frontière NER-BFA"
+        }
+      ],
+      "operators": []
+    },
+    {
+      "corridor_id": "CORR-RAIL-CAPE-CAIRO-022",
+      "corridor_name": "Chemin de fer Le Cap-Le Caire (TAH 4 rail)",
+      "corridor_type": "rail",
+      "countries_spanned": [
+        "ZAF",
+        "BWA",
+        "ZWE",
+        "ZMB",
+        "TZA",
+        "KEN",
+        "ETH",
+        "SDN",
+        "EGY"
+      ],
+      "start_node": "Le Cap",
+      "end_node": "Le Caire",
+      "length_km": 10000,
+      "status": "Planifié",
+      "infra_details": "Projet panafricain de ligne ferroviaire continue Le Cap → Le Caire. Tronçons opérationnels au Sud (ZAF-BWA-ZWE-ZMB), partiellement opérationnels (TAZARA), planifiés au Nord (Kenya-Éthiopie-Soudan-Égypte). Écartements à harmoniser.",
+      "importance": "high",
+      "description": "Vision panafricaine de la connectivité ferroviaire Nord-Sud, élément phare du PIDA.",
+      "source_org": "PIDA · Union Africaine · CER (CEA Comité Routes Africaines)",
+      "coordinates": [
+        [
+          -33.9249,
+          18.4241
+        ],
+        [
+          -22.5597,
+          17.0832
+        ],
+        [
+          -17.8252,
+          31.0335
+        ],
+        [
+          -15.4067,
+          28.2871
+        ],
+        [
+          -6.7924,
+          39.2083
+        ],
+        [
+          -1.2921,
+          36.8219
+        ],
+        [
+          9.145,
+          38.7613
+        ],
+        [
+          15.5007,
+          32.5599
+        ],
+        [
+          30.0444,
+          31.2357
+        ]
+      ],
+      "nodes": [],
+      "operators": []
+    },
+    {
+      "corridor_id": "CORR-LOBITO-EXT-023",
+      "corridor_name": "Extension Corridor de Lobito (Angola-RDC-Zambie)",
+      "corridor_type": "rail",
+      "countries_spanned": [
+        "AGO",
+        "COD",
+        "ZMB"
+      ],
+      "start_node": "Port de Lobito",
+      "end_node": "Copperbelt (Lubumbashi / Solwezi)",
+      "length_km": 1730,
+      "status": "En construction",
+      "infra_details": "Réhabilitation du Benguela Railway (AGO) + extension nouvelle vers la Copperbelt (RDC-ZMB). Concession Lobito Atlantic Railway (LAR) consortium Trafigura/Mota-Engil/Vecturis. Premiers trains 2025, capacité cible 2027.",
+      "importance": "high",
+      "description": "Évacuation du cobalt et cuivre congolais/zambiens vers l'Atlantique en 36-72h vs 30 jours par Durban.",
+      "source_org": "Lobito Atlantic Railway · US-EU PGII · BAD",
+      "coordinates": [
+        [
+          -12.3644,
+          13.5456
+        ],
+        [
+          -12.5763,
+          27.4979
+        ],
+        [
+          -12.3,
+          26.4
+        ]
+      ],
+      "nodes": [],
+      "operators": [
+        {
+          "operator_name": "Lobito Atlantic Railway (LAR)",
+          "operator_type": "rail_operator"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-RAIL-SGR-EAC-024",
+      "corridor_name": "Standard Gauge Railway EAC (Mombasa-Kampala-Kigali)",
+      "corridor_type": "rail",
+      "countries_spanned": [
+        "KEN",
+        "UGA",
+        "RWA"
+      ],
+      "start_node": "Port de Mombasa",
+      "end_node": "Kigali",
+      "length_km": 1620,
+      "status": "Partiellement opérationnel",
+      "infra_details": "Phase 1 Mombasa-Nairobi (472 km) opérationnelle depuis 2017. Phase 2 Nairobi-Naivasha opérationnelle. Phase 2B Naivasha-Malaba-Kampala-Kigali en construction. Cofinancement Chinois (China Road & Bridge) et EAC.",
+      "importance": "high",
+      "description": "Épine dorsale du corridor Nord (Northern Corridor) entre Mombasa et le Burundi.",
+      "source_org": "Kenya Railways · EAC SGR Master Plan · CRBC",
+      "coordinates": [
+        [
+          -4.0435,
+          39.6682
+        ],
+        [
+          -1.2921,
+          36.8219
+        ],
+        [
+          0.3476,
+          32.5825
+        ],
+        [
+          -1.9577,
+          30.1127
+        ]
+      ],
+      "nodes": [],
+      "operators": [
+        {
+          "operator_name": "Kenya Railways Corporation (KRC)",
+          "operator_type": "rail_operator"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-RAIL-MAGHREB-025",
+      "corridor_name": "Trans-Maghreb à grande vitesse (Casablanca-Tripoli)",
+      "corridor_type": "rail",
+      "countries_spanned": [
+        "MAR",
+        "DZA",
+        "TUN",
+        "LBY"
+      ],
+      "start_node": "Casablanca",
+      "end_node": "Tripoli",
+      "length_km": 2400,
+      "status": "Planifié",
+      "infra_details": "Vision UMA-AfCFTA d'un corridor TGV Maghrébin. Tronçon MAR Tanger-Kenitra opérationnel (Al Boraq, 320 km/h). Tronçons DZA-TUN-LBY planifiés. Écartement standard.",
+      "importance": "medium",
+      "description": "Intégration Maghreb par le rail à grande vitesse.",
+      "source_org": "UMA · ONCF · SNTF · SNCFT",
+      "coordinates": [
+        [
+          33.5731,
+          -7.5898
+        ],
+        [
+          36.7538,
+          3.0588
+        ],
+        [
+          36.8065,
+          10.1815
+        ],
+        [
+          32.8872,
+          13.1913
+        ]
+      ],
+      "nodes": [],
+      "operators": []
+    },
+    {
+      "corridor_id": "CORR-TAH5-DKR-NDJ-026",
+      "corridor_name": "Transafricaine Dakar-N'Djamena (TAH 5)",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "SEN",
+        "MLI",
+        "BFA",
+        "NER",
+        "TCD"
+      ],
+      "start_node": "Dakar",
+      "end_node": "N'Djamena",
+      "length_km": 4500,
+      "status": "Partiellement opérationnel",
+      "infra_details": "Axe routier sahélien Dakar → Bamako → Ouagadougou → Niamey → N'Djamena. Tronçons SEN-MLI et BFA-NER pavés. MLI-BFA et NER-TCD en réhabilitation.",
+      "importance": "high",
+      "description": "Colonne vertébrale routière du Sahel.",
+      "source_org": "UNECA TAH Network · CEDEAO · CILSS",
+      "coordinates": [
+        [
+          14.6928,
+          -17.4467
+        ],
+        [
+          12.6392,
+          -8.0029
+        ],
+        [
+          12.3686,
+          -1.5275
+        ],
+        [
+          13.5127,
+          2.1098
+        ],
+        [
+          12.1348,
+          15.0557
+        ]
+      ],
+      "nodes": [],
+      "operators": []
     }
   ]
 }

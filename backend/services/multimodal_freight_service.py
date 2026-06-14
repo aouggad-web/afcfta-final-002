@@ -224,6 +224,140 @@ def _corridor_phase(c: Dict[str, Any]) -> str:
     return "operational"
 
 
+def _rail_then_road_option(
+    origin_country: str, destination_country: str,
+    weight_tonnes: float, cargo_type: str = "container",
+) -> List[Dict[str, Any]]:
+    """Rail-then-road chaining.
+
+    Useful for scenarios like Alger→Ouagadougou:
+      Leg 1: Rail Alger → Tamanrasset (corridor CORR-RAIL-ALGER-TAM-019)
+      Leg 2: Road Tamanrasset → Ouagadougou via Niamey (corridor CORR-TRANSSAH-OUAGA-021)
+
+    Logic:
+      1. Find rail corridor(s) that start in origin country.
+      2. For each rail terminus (start_node + country), look for road corridors
+         that start at the same node/country and contain destination country.
+    """
+    corridors = get_land_corridors_list()
+    origin = origin_country.upper()
+    dest = destination_country.upper()
+    options: List[Dict[str, Any]] = []
+
+    rail_corridors = [
+        c for c in corridors
+        if (c.get("type") or "").lower() == "rail"
+        and origin in [x.upper() for x in c.get("countries", [])]
+        and c.get("start_node") and c.get("end_node")
+    ]
+
+    for rail in rail_corridors:
+        rail_end_node = rail["end_node"]
+        # Compute rail leg cost
+        rail_data = get_land_freight_cost(
+            rail["corridor_id"], "rail", weight_tonnes, cargo_type,
+        )
+        if not rail_data:
+            continue
+        rail_dist = rail_data.get("length_km") or rail.get("length_km", 0)
+        rail_co2 = _co2_kg(weight_tonnes, rail_dist, "rail")
+
+        # Find road corridors that start at the rail terminus and reach destination
+        for road in corridors:
+            if (road.get("type") or "").lower() != "road":
+                continue
+            road_countries = [x.upper() for x in road.get("countries", [])]
+            if dest not in road_countries:
+                continue
+            # Match by start_node (e.g., "Tamanrasset" == "Tamanrasset")
+            if road.get("start_node") != rail_end_node:
+                continue
+            road_data = get_land_freight_cost(
+                road["corridor_id"], "road", weight_tonnes, cargo_type,
+            )
+            if not road_data:
+                continue
+            road_dist = road_data.get("length_km") or road.get("length_km", 0)
+            road_co2 = _co2_kg(weight_tonnes, road_dist, "road")
+
+            total_cost = round((rail_data.get("total_cost_usd") or 0) + (road_data.get("total_cost_usd") or 0))
+            tmin = (rail_data.get("transit_days_min") or 0) + (road_data.get("transit_days_min") or 0)
+            tmax = (rail_data.get("transit_days_max") or 0) + (road_data.get("transit_days_max") or 0)
+            total_dist = rail_dist + road_dist
+            total_co2 = round(rail_co2 + road_co2, 1)
+
+            rail_phase = _corridor_phase(rail)
+            road_phase = _corridor_phase(road)
+            phase = (
+                "operational" if rail_phase == road_phase == "operational"
+                else "planned" if "planned" in (rail_phase, road_phase) or "study" in (rail_phase, road_phase)
+                else "under_construction"
+            )
+            is_future = phase != "operational"
+
+            options.append({
+                "mode": "multimodal",
+                "corridor_mode": "rail_road",
+                "label": f"Rail + Route — via {rail_end_node}",
+                "label_en": f"Rail + Road — via {rail_end_node}",
+                "icon": "rail-truck",
+                "via_node": rail_end_node,
+                "corridor_name": f"{rail['name']} → {road['name']}",
+                "phase": phase,
+                "status": rail.get("status") if is_future else "Opérationnel",
+                "is_future": is_future,
+                "segments": [
+                    {
+                        "mode": "rail",
+                        "leg": 1,
+                        "from": rail.get("start_node"),
+                        "to": rail.get("end_node"),
+                        "corridor_id": rail["corridor_id"],
+                        "corridor_name": rail["name"],
+                        "countries": rail.get("countries", []),
+                        "distance_km": rail_dist,
+                        "transit_days_min": rail_data.get("transit_days_min"),
+                        "transit_days_max": rail_data.get("transit_days_max"),
+                        "cost_usd": rail_data.get("total_cost_usd"),
+                        "co2_kg": rail_co2,
+                        "status": rail.get("status"),
+                    },
+                    {
+                        "mode": "road",
+                        "leg": 2,
+                        "from": road.get("start_node"),
+                        "to": road.get("end_node"),
+                        "corridor_id": road["corridor_id"],
+                        "corridor_name": road["name"],
+                        "countries": road.get("countries", []),
+                        "distance_km": road_dist,
+                        "transit_days_min": road_data.get("transit_days_min"),
+                        "transit_days_max": road_data.get("transit_days_max"),
+                        "cost_usd": road_data.get("total_cost_usd"),
+                        "co2_kg": road_co2,
+                        "status": road.get("status"),
+                    },
+                ],
+                "total_cost_usd": total_cost,
+                "transit_days_min": tmin,
+                "transit_days_max": tmax,
+                "co2_kg": total_co2,
+                "distance_km": total_dist,
+                "available": not is_future,
+                "feasibility": "high" if not is_future else "future",
+                "notes": (
+                    f"Rail {rail['name']} ({rail_dist} km) puis route "
+                    f"{road['name']} ({road_dist} km). Économise 60-80% des émissions vs Aérien."
+                ),
+                "source": (
+                    f"Rail: {rail.get('source_org') or 'PIDA'} · "
+                    f"Route: {road.get('source_org') or 'Banque Mondiale SSATP'}"
+                ),
+            })
+
+    return options
+
+
 def _sea_option(
     origin_country: str, destination_country: str,
     weight_kg: float, container_type: str = "teu",
@@ -526,6 +660,12 @@ def compare_multimodal(
         origin_country, destination_country, weight_tonnes, land_cargo_type,
     )
     options.extend(land_opts)
+
+    # Rail-then-road chaining (e.g. Train Alger-Tamanrasset + Route Tam-Ouagadougou)
+    rail_road_opts = _rail_then_road_option(
+        origin_country, destination_country, weight_tonnes, land_cargo_type,
+    )
+    options.extend(rail_road_opts)
 
     multimodal_opts = _sea_then_land_option(
         origin_country, destination_country, weight_kg, container_type,
