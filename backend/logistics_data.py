@@ -13,6 +13,45 @@ PORTS_FILE = DATA_DIR / "ports_africains.json"
 if not PORTS_FILE.exists():
     PORTS_FILE = ROOT_DIR / "ports_africains.json"
 
+
+# Region mapping for the 54 African countries (ISO3 → region label).
+# Used to group ports/airports by region in the UI (Afrique du Nord, de l'Ouest, etc.).
+REGION_BY_ISO = {
+    # Afrique du Nord
+    "DZA": "Afrique du Nord", "EGY": "Afrique du Nord", "LBY": "Afrique du Nord",
+    "MAR": "Afrique du Nord", "TUN": "Afrique du Nord", "SDN": "Afrique du Nord",
+    "ESH": "Afrique du Nord", "MRT": "Afrique du Nord",
+    # Afrique de l'Ouest
+    "BEN": "Afrique de l'Ouest", "BFA": "Afrique de l'Ouest", "CIV": "Afrique de l'Ouest",
+    "CPV": "Afrique de l'Ouest", "GMB": "Afrique de l'Ouest", "GHA": "Afrique de l'Ouest",
+    "GIN": "Afrique de l'Ouest", "GNB": "Afrique de l'Ouest", "LBR": "Afrique de l'Ouest",
+    "MLI": "Afrique de l'Ouest", "NER": "Afrique de l'Ouest", "NGA": "Afrique de l'Ouest",
+    "SEN": "Afrique de l'Ouest", "SLE": "Afrique de l'Ouest", "TGO": "Afrique de l'Ouest",
+    # Afrique Centrale
+    "AGO": "Afrique Centrale", "CMR": "Afrique Centrale", "CAF": "Afrique Centrale",
+    "TCD": "Afrique Centrale", "COG": "Afrique Centrale", "COD": "Afrique Centrale",
+    "GNQ": "Afrique Centrale", "GAB": "Afrique Centrale", "STP": "Afrique Centrale",
+    # Afrique de l'Est
+    "BDI": "Afrique de l'Est", "COM": "Afrique de l'Est", "DJI": "Afrique de l'Est",
+    "ERI": "Afrique de l'Est", "ETH": "Afrique de l'Est", "KEN": "Afrique de l'Est",
+    "MDG": "Afrique de l'Est", "MWI": "Afrique de l'Est", "MUS": "Afrique de l'Est",
+    "MOZ": "Afrique de l'Est", "RWA": "Afrique de l'Est", "SYC": "Afrique de l'Est",
+    "SOM": "Afrique de l'Est", "SSD": "Afrique de l'Est", "TZA": "Afrique de l'Est",
+    "UGA": "Afrique de l'Est", "ZMB": "Afrique de l'Est", "ZWE": "Afrique de l'Est",
+    # Afrique Australe
+    "BWA": "Afrique Australe", "ZAF": "Afrique Australe", "LSO": "Afrique Australe",
+    "NAM": "Afrique Australe", "SWZ": "Afrique Australe",
+}
+
+
+def _enrich_port(port: dict) -> dict:
+    """Annotate a port dict with derived fields (region) for the UI."""
+    iso = (port.get("country_iso") or "").upper()
+    if iso and not port.get("region"):
+        port["region"] = REGION_BY_ISO.get(iso, "Autre")
+    return port
+
+
 def load_ports_data():
     """Load African ports data from JSON file"""
     ports_path = ROOT_DIR / "data" / "json" / "ports_africains.json"
@@ -24,12 +63,10 @@ def get_all_ports(country_iso: Optional[str] = None) -> List[dict]:
     Get all ports or filter by country ISO code
     """
     ports = load_ports_data()
-    
     if country_iso:
         country_iso = country_iso.upper()
         ports = [p for p in ports if p['country_iso'] == country_iso]
-    
-    return ports
+    return [_enrich_port(p) for p in ports]
 
 def get_port_by_id(port_id: str) -> Optional[dict]:
     """

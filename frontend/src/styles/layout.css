@@ -129,6 +129,19 @@
   }
 }
 
+/* Large viewports: give the list more breathing room (avoids vertical-text squeeze) */
+@media (min-width: 1440px) {
+  .map-list-layout {
+    grid-template-columns: 1fr 540px;
+  }
+}
+
+@media (min-width: 1700px) {
+  .map-list-layout {
+    grid-template-columns: 1fr 640px;
+  }
+}
+
 /* Stacked sections */
 .stacked-sections > * + * {
   @apply mt-4;

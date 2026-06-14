@@ -235,30 +235,65 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
                 {language === 'fr' ? 'Liste des ports' : 'Port list'}
+                <Badge variant="outline" className="ml-auto text-xs">{filteredPorts.length}</Badge>
               </CardTitle>
             </CardHeader>
-            <div className="scroll-container" style={{ maxHeight: '450px' }}>
-              <div className="p-2 space-y-2">
-                {filteredPorts.slice(0, 20).map((port) => (
-                  <div
-                    key={port.port_id}
-                    className="p-3 rounded-lg border border-gray-100 hover:border-blue-200 hover:bg-blue-50/50 cursor-pointer transition-all"
-                    onClick={() => handlePortClick(port)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-sm">{port.port_name}</p>
-                        <p className="text-xs text-gray-500">{port.country_name}</p>
+            <div className="scroll-container" style={{ maxHeight: '650px', overflowY: 'auto' }}>
+              <div className="p-3 space-y-4">
+                {(() => {
+                  // Group ports by region (Afrique du Nord / Ouest / Centrale / Est / Australe)
+                  const REGION_ORDER = [
+                    "Afrique du Nord",
+                    "Afrique de l'Ouest",
+                    "Afrique Centrale",
+                    "Afrique de l'Est",
+                    "Afrique Australe",
+                    "Autre",
+                  ];
+                  const groups = {};
+                  filteredPorts.forEach(p => {
+                    const r = p.region || 'Autre';
+                    if (!groups[r]) groups[r] = [];
+                    groups[r].push(p);
+                  });
+                  return REGION_ORDER
+                    .filter(r => groups[r] && groups[r].length > 0)
+                    .map(region => (
+                      <div key={region}>
+                        <div className="sticky top-0 z-10 bg-[#1B232C]/95 backdrop-blur px-2 py-1.5 border-b border-white/10 flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wide font-semibold text-amber-300">
+                            {region}
+                          </span>
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+                            {groups[region].length}
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-2 mt-2">
+                          {groups[region].map(port => (
+                            <div
+                              key={port.port_id}
+                              className="p-2.5 rounded-lg border border-white/10 hover:border-amber-400/40 hover:bg-amber-500/5 cursor-pointer transition-all"
+                              onClick={() => handlePortClick(port)}
+                              data-testid={`port-card-${port.port_id}`}
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="min-w-0 flex-1">
+                                  <p className="font-medium text-sm text-white truncate">{port.port_name}</p>
+                                  <p className="text-xs text-gray-400 truncate">{port.country_name}</p>
+                                </div>
+                                {port.trs_analysis?.container_dwell_time_days && 
+                                 port.trs_analysis.container_dwell_time_days !== 'NA' && (
+                                  <Badge variant="secondary" className="text-xs flex-shrink-0">
+                                    {port.trs_analysis.container_dwell_time_days}j
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      {port.trs_analysis?.container_dwell_time_days && 
-                       port.trs_analysis.container_dwell_time_days !== 'NA' && (
-                        <Badge variant="secondary" className="text-xs">
-                          {port.trs_analysis.container_dwell_time_days}j
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                    ));
+                })()}
               </div>
             </div>
           </Card>
