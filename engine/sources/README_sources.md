@@ -173,6 +173,23 @@ Ajouter un pays = déposer son crawl officiel + ajouter un `TaxProfile` dans
   - Complet : `python backend/scripts/crawl_mar_to_raw.py --out engine/sources/mar_raw.json`
   - Ingestion : `python engine/adapters/raw_crawl_adapter.py MAR engine/sources/mar_raw.json engine/output/`
 
+### TUN — Tunisie (Douane — tarifweb / douane.gov.tn)
+- **Source** : DGD Tunisie — tarifweb — https://www.douane.gov.tn/tarifweb2025/
+- **Nomenclature** : NDP HS11
+- **Profil** : `raw_crawl_adapter.py` → PROFILES["TUN"]
+- **Structure fiscale** (ordre d'application) :
+  - DD (Droit de Douane) : % CIF — du crawl (bandes 0/10/20/30/36)
+  - DC (Droit de Consommation) : % CIF — du crawl (accise)
+  - FODEC (Fonds Dév. Compétitivité) : % — du crawl (≈ 1 %)
+  - TCL (Taxe Collectivités Locales) : % — du crawl
+  - TVA : % de (CIF + DD + DC + FODEC + TCL) — 19 % std, 7/13 réduits — du crawl
+- **Crawl** : `backend/scripts/crawl_tun_to_raw.py` (runner autonome, contourne
+  le bug `motor` de VSCode — cf. MAR)
+  - `pip install httpx beautifulsoup4`
+  - `python backend/scripts/crawl_tun_to_raw.py --sample`
+  - `python backend/scripts/crawl_tun_to_raw.py --out engine/sources/tun_raw.json`
+  - `python engine/adapters/raw_crawl_adapter.py TUN engine/sources/tun_raw.json engine/output/`
+
 ### SACU — Union douanière d'Afrique australe (ZAF, NAM, BWA, LSO, SWZ)
 - **Source** : SARS — Schedule No. 1 Part 1 (Customs Tariff, General Rate), ch. 1–99
 - **URL** : https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-schedule-no-1-part-1-chapters-1-to-99/

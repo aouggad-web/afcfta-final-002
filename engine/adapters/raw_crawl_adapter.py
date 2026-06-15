@@ -627,6 +627,57 @@ register(TaxProfile(
 ))
 
 
+# ── TUN — Tunisie (Douane — tarifweb / douane.gov.tn) ───────────────────────
+# Nomenclature NDP HS11. Structure fiscale (ordre d'application) :
+#   DD    (Droit de Douane)        : % CIF — du crawl (bandes 0/10/20/30/36)
+#   DC    (Droit de Consommation)  : % CIF — du crawl (accise, si présent)
+#   FODEC (Fonds Dév. Compétitivité): % — du crawl (≈ 1 %, si présent)
+#   TCL   (Taxe Collectivités Loc.) : % — du crawl (si présent)
+#   TVA   (Taxe Valeur Ajoutée)    : % de (CIF + DD + DC + FODEC + TCL) — 19 % std
+# Tous les taux proviennent du crawl tarifweb (aucun inventé).
+register(TaxProfile(
+    country_iso3="TUN",
+    source_name="Douane Tunisienne — tarifweb (douane.gov.tn)",
+    source_url="https://www.douane.gov.tn/tarifwebnew/getresultat.php",
+    source_document=(
+        "Direction Générale des Douanes (Tunisie) — tarifweb, Nomenclature "
+        "Douanière de Produits (NDP, HS11) — https://www.douane.gov.tn/tarifweb2025/"
+    ),
+    notes=(
+        "Crawl du portail tarifweb (douane.gov.tn). Taux DD/DC/FODEC/TCL/TVA lus "
+        "en direct. Accords préférentiels (UE, GAFTA, Agadir, AELE, Turquie) non "
+        "modélisés ici. Droits spécifiques (DT/unité) éventuels non réduits en %."
+    ),
+    components=[
+        TaxComponent("D.D", "Droit de Douane", "Customs Duty",
+                     MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
+                     rate_field="dd_rate", raw_field="dd_rate_raw",
+                     emit_when="always", is_customs_duty=True,
+                     legal_reference="Tarif des droits de douane à l'importation"),
+        TaxComponent("DC", "Droit de Consommation", "Consumption Tax",
+                     MeasureType.EXCISE, DutyBasis.CIF,
+                     rate_field="dc_rate", emit_when="positive",
+                     legal_reference="Code du Droit de Consommation"),
+        TaxComponent("FODEC", "Fonds de Développement de la Compétitivité",
+                     "Competitiveness Development Fund",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     rate_field="fodec_rate", emit_when="positive",
+                     legal_reference="Loi de finances — FODEC"),
+        TaxComponent("TCL", "Taxe au profit des Collectivités Locales",
+                     "Local Authorities Tax",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     rate_field="tcl_rate", emit_when="positive",
+                     legal_reference="Code de la fiscalité locale — TCL"),
+        TaxComponent("T.V.A", "Taxe sur la Valeur Ajoutée (TVA)", "Value Added Tax",
+                     MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED,
+                     rate_field="vat_rate",
+                     includes_codes=["D.D", "DC", "FODEC", "TCL"],
+                     emit_when="positive",
+                     legal_reference="Code de la TVA"),
+    ],
+))
+
+
 # ============================================================================
 # CLI
 # ============================================================================
