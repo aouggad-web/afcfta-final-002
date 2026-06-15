@@ -294,10 +294,20 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
         for r in year_recs[:5]
     ]
 
+    # Unité & source réelles de l'enregistrement (le pétrole/gaz ont leurs propres
+    # unités/sources qui diffèrent du défaut du dataset).
+    ref_rec = latest_rec or (year_recs[0] if year_recs else None)
+    actual_unit = (ref_rec.get("unit") if ref_rec else None) or meta["unit"]
+    actual_source = {
+        "institution": (ref_rec.get("source_institution") if ref_rec else None) or meta["institution"],
+        "dataset": (ref_rec.get("source_dataset") if ref_rec else None) or meta["dataset"],
+        "url": (ref_rec.get("source_url") if ref_rec else None) or meta["url"],
+    }
+
     scenarios = {}
     if latest_val:
         scenarios = _build_scenarios(
-            latest_val, cagr_pct, meta["unit"], country_share,
+            latest_val, cagr_pct, actual_unit, country_share,
             leader["value"] if leader else None,
         )
 
@@ -308,12 +318,8 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
         "commodity": label,
         "dimension": dataset,
         "measure": meta["measure"],
-        "unit": meta["unit"],
-        "source": {
-            "institution": meta["institution"],
-            "dataset": meta["dataset"],
-            "url": meta["url"],
-        },
+        "unit": actual_unit,
+        "source": actual_source,
         "country_iso3": iso3,
         "latest_value": latest_val,
         "latest_year": latest_year,
@@ -356,6 +362,13 @@ def get_continental_producers(hs_code: str) -> Dict:
         key=lambda r: r["value"], reverse=True,
     )
     total = sum(r["value"] for r in year_recs)
+    ref_rec = year_recs[0] if year_recs else None
+    actual_unit = (ref_rec.get("unit") if ref_rec else None) or meta["unit"]
+    actual_source = {
+        "institution": (ref_rec.get("source_institution") if ref_rec else None) or meta["institution"],
+        "dataset": (ref_rec.get("source_dataset") if ref_rec else None) or meta["dataset"],
+        "url": (ref_rec.get("source_url") if ref_rec else None) or meta["url"],
+    }
     return {
         "available": True,
         "hs_code": hs_code,
@@ -363,8 +376,8 @@ def get_continental_producers(hs_code: str) -> Dict:
         "commodity": label,
         "dimension": dataset,
         "measure": meta["measure"],
-        "unit": meta["unit"],
-        "source": {"institution": meta["institution"], "dataset": meta["dataset"], "url": meta["url"]},
+        "unit": actual_unit,
+        "source": actual_source,
         "year": latest_year,
         "continental_total": round(total, 1) if total else None,
         "top_producers": [

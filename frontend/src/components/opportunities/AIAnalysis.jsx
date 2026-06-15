@@ -246,10 +246,13 @@ const fmtBig = (v, unit) => {
     if (v >= 1e6) return `$${(v / 1e6).toFixed(1)} M`;
     return `$${Number(v).toLocaleString()}`;
   }
-  // tonnes
-  if (v >= 1e6) return `${(v / 1e6).toFixed(2)} Mt`;
-  if (v >= 1e3) return `${(v / 1e3).toFixed(1)} kt`;
-  return `${Number(v).toLocaleString()} t`;
+  if (unit === 'tonnes') {
+    if (v >= 1e6) return `${(v / 1e6).toFixed(2)} Mt`;
+    if (v >= 1e3) return `${(v / 1e3).toFixed(1)} kt`;
+    return `${Number(v).toLocaleString()} t`;
+  }
+  // Unités naturelles (1000 b/d, bcm, carats, têtes…) : afficher tel quel
+  return `${Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 })} ${unit || ''}`.trim();
 };
 
 const SOURCE_BADGE = {

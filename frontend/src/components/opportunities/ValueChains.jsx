@@ -244,9 +244,12 @@ const HS6SearchResult = ({ result, language, onClear }) => {
   const fmtProd = (v, unit) => {
     if (v == null) return '—';
     if (unit === 'USD') return v >= 1e9 ? `$${(v / 1e9).toFixed(2)} Md` : `$${(v / 1e6).toFixed(1)} M`;
-    if (v >= 1e6) return `${(v / 1e6).toFixed(2)} Mt`;
-    if (v >= 1e3) return `${(v / 1e3).toFixed(1)} kt`;
-    return `${Number(v).toLocaleString()} t`;
+    if (unit === 'tonnes') {
+      if (v >= 1e6) return `${(v / 1e6).toFixed(2)} Mt`;
+      if (v >= 1e3) return `${(v / 1e3).toFixed(1)} kt`;
+      return `${Number(v).toLocaleString()} t`;
+    }
+    return `${Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 })} ${unit || ''}`.trim();
   };
 
   const score = trends.afcfta_opportunity_score || 0;
