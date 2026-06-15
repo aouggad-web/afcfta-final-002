@@ -11,8 +11,9 @@ import { Badge } from '../ui/badge';
 import { 
   ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip
 } from 'recharts';
-import { 
-  ArrowRight, TrendingUp, Loader2, ChevronRight, Layers, Sparkles, AlertCircle
+import {
+  ArrowRight, TrendingUp, Loader2, ChevronRight, Layers, Sparkles, AlertCircle,
+  Search, X, PackageSearch, BarChart3, Globe, Award, ShieldCheck
 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
@@ -229,6 +230,243 @@ const StageFlow = ({ stages, language, color }) => {
   );
 };
 
+// HS6 Search Result Panel
+const HS6SearchResult = ({ result, language, onClear }) => {
+  const product = result.product || {};
+  const summary = result.african_trade_summary || {};
+  const exporters = result.top_african_exporters || [];
+  const importers = result.top_african_importers || [];
+  const capacities = result.production_capacities || [];
+  const trends = result.market_share_trends || {};
+  const specs = result.technical_specs || {};
+
+  const score = trends.afcfta_opportunity_score || 0;
+  const scoreColor = score >= 7 ? '#059669' : score >= 4 ? '#d97706' : '#dc2626';
+
+  const trendIcon = (t) => t === 'growing' ? '↑' : t === 'declining' ? '↓' : '→';
+  const trendColor = (t) => t === 'growing' ? 'text-emerald-600' : t === 'declining' ? 'text-red-500' : 'text-slate-500';
+
+  const titles = {
+    fr: {
+      product: 'Produit analysé',
+      exports: 'Export africain total',
+      imports: 'Import africain total',
+      intra: 'Commerce intra-africain',
+      exporters: 'Principaux exportateurs africains',
+      importers: 'Principaux importateurs africains',
+      capacities: 'Capacités de production',
+      score: 'Score opportunité ZLECAf',
+      fastGrow: 'Croissance la plus rapide',
+      dependency: 'Dépendance import principale',
+      certs: 'Certifications requises',
+      notes: 'Analyse',
+      close: 'Fermer la recherche',
+      substitutes: 'Produits liés',
+    },
+    en: {
+      product: 'Analyzed product',
+      exports: 'Total African exports',
+      imports: 'Total African imports',
+      intra: 'Intra-African trade',
+      exporters: 'Top African exporters',
+      importers: 'Top African importers',
+      capacities: 'Production capacities',
+      score: 'AfCFTA opportunity score',
+      fastGrow: 'Fastest growing',
+      dependency: 'Main import dependency',
+      certs: 'Required certifications',
+      notes: 'Analysis',
+      close: 'Close search',
+      substitutes: 'Related products',
+    },
+  };
+  const t = titles[language] || titles.fr;
+
+  return (
+    <div className="border-2 border-emerald-400 rounded-2xl overflow-hidden shadow-xl bg-white">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-emerald-700 to-emerald-500 px-6 py-4 flex items-center justify-between text-white">
+        <div className="flex items-center gap-3">
+          <PackageSearch className="h-6 w-6" />
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-200">{t.product}</p>
+            <h3 className="font-black text-lg leading-tight">
+              {product.hs6Name || product.description || `HS ${product.hs6Code}`}
+            </h3>
+            <p className="text-xs text-emerald-200 mt-0.5">
+              HS {product.hs6Code} · {product.hs4Name} · {product.hs2Name}
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={onClear}
+          className="p-2 rounded-full hover:bg-white/20 transition-colors"
+          title={t.close}
+        >
+          <X className="h-5 w-5" />
+        </button>
+      </div>
+
+      <div className="p-6 space-y-6">
+        {/* Trade summary stats */}
+        <div className="grid grid-cols-3 gap-4">
+          {[
+            { label: t.exports, value: summary.total_african_exports_musd, icon: Globe, color: 'text-emerald-600' },
+            { label: t.imports, value: summary.total_african_imports_musd, icon: BarChart3, color: 'text-blue-600' },
+            { label: t.intra, value: summary.intra_african_trade_musd, icon: ArrowRight, color: 'text-purple-600' },
+          ].map(({ label, value, icon: Icon, color }) => (
+            <div key={label} className="text-center p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <Icon className={`h-5 w-5 mx-auto mb-1 ${color}`} />
+              <p className="text-xs text-slate-500 leading-tight">{label}</p>
+              <p className="font-black text-lg text-slate-800">${(value || 0).toLocaleString()}M</p>
+              <p className="text-xs text-slate-400">{summary.year || 2023}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* AfCFTA score */}
+        {score > 0 && (
+          <div className="flex items-center gap-4 p-3 rounded-xl border" style={{ borderColor: scoreColor + '44', backgroundColor: scoreColor + '11' }}>
+            <div
+              className="w-14 h-14 rounded-full flex items-center justify-center text-white font-black text-xl flex-shrink-0"
+              style={{ backgroundColor: scoreColor }}
+            >
+              {score.toFixed(1)}
+            </div>
+            <div className="flex-1">
+              <p className="font-bold text-slate-800">{t.score} <span className="font-normal text-slate-500">/ 10</span></p>
+              {trends.notes && <p className="text-sm text-slate-600 mt-0.5">{trends.notes}</p>}
+              <div className="flex flex-wrap gap-3 mt-1 text-xs">
+                {trends.fastest_growing_exporter && (
+                  <span className="text-emerald-700">↑ {trends.fastest_growing_exporter}</span>
+                )}
+                {trends.largest_import_dependency && (
+                  <span className="text-amber-700">⚠ {trends.largest_import_dependency}</span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Exporters & Importers */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {exporters.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t.exporters}</h4>
+              <div className="space-y-2">
+                {exporters.slice(0, 5).map((exp, i) => (
+                  <div key={exp.iso3 || i} className="flex items-center gap-2">
+                    <span className="text-xs font-black text-slate-300 w-4">{i + 1}</span>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-center mb-0.5">
+                        <span className="text-sm font-medium text-slate-700">{exp.country}</span>
+                        <span className={`text-xs font-semibold ${trendColor(exp.trend)}`}>
+                          {trendIcon(exp.trend)} {exp.share_percent || 0}%
+                        </span>
+                      </div>
+                      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-emerald-500 rounded-full"
+                          style={{ width: `${Math.min(exp.share_percent || 0, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {importers.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t.importers}</h4>
+              <div className="space-y-2">
+                {importers.slice(0, 5).map((imp, i) => (
+                  <div key={imp.iso3 || i} className="flex items-center gap-2">
+                    <span className="text-xs font-black text-slate-300 w-4">{i + 1}</span>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-center mb-0.5">
+                        <span className="text-sm font-medium text-slate-700">{imp.country}</span>
+                        <span className="text-xs text-slate-500">{imp.share_percent || 0}%</span>
+                      </div>
+                      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-blue-400 rounded-full"
+                          style={{ width: `${Math.min(imp.share_percent || 0, 100)}%` }}
+                        />
+                      </div>
+                      {imp.main_source && (
+                        <p className="text-[10px] text-slate-400">Source: {imp.main_source}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Production capacities */}
+        {capacities.length > 0 && (
+          <div>
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t.capacities}</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {capacities.slice(0, 6).map((cap, i) => (
+                <div key={cap.iso3 || i} className="p-2 bg-slate-50 rounded-lg border border-slate-200">
+                  <p className="font-semibold text-sm text-slate-800">{cap.country} <span className="text-slate-400 text-xs">({cap.iso3})</span></p>
+                  <p className="text-xs text-slate-600 mt-0.5">{cap.capacity}</p>
+                  {cap.notes && <p className="text-[10px] text-slate-400 mt-0.5">{cap.notes}</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Certifications */}
+        {(specs.key_certifications?.length > 0 || specs.quality_standards?.length > 0) && (
+          <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl">
+            <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1 mb-2">
+              <Award className="h-3 w-3" /> {t.certs}
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {[...(specs.key_certifications || []), ...(specs.quality_standards || [])].map((c, i) => (
+                <Badge key={i} className="text-xs bg-blue-100 text-blue-700 border-blue-300">{c}</Badge>
+              ))}
+            </div>
+            {specs.phytosanitary_requirements && (
+              <p className="text-xs text-blue-600 mt-2 flex items-center gap-1">
+                <ShieldCheck className="h-3 w-3 flex-shrink-0" /> {specs.phytosanitary_requirements}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Related products */}
+        {(result.substitutes || []).length > 0 && (
+          <div>
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.substitutes}</h4>
+            <div className="flex flex-wrap gap-2">
+              {(result.substitutes || []).map((s, i) => (
+                <Badge key={i} variant="outline" className="text-xs">
+                  HS {s.hs6Code} · {s.name}
+                  <span className="ml-1 text-slate-400">({s.relationship})</span>
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Sources */}
+        {(result.sources || []).length > 0 && (
+          <p className="text-xs text-slate-400 italic">
+            Sources: {result.sources.join(' · ')}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default function ValueChains({ language = 'fr' }) {
   const { t } = useTranslation();
   const [selectedChain, setSelectedChain] = useState('coffee');
@@ -236,6 +474,12 @@ export default function ValueChains({ language = 'fr' }) {
   const [error, setError] = useState(null);
   const [valueChains, setValueChains] = useState(DEFAULT_VALUE_CHAINS);
   const [isAiGenerated, setIsAiGenerated] = useState(false);
+
+  // HS6 search state
+  const [hsQuery, setHsQuery] = useState('');
+  const [hsSearchResult, setHsSearchResult] = useState(null);
+  const [hsSearchLoading, setHsSearchLoading] = useState(false);
+  const [hsSearchError, setHsSearchError] = useState(null);
 
   // Fetch value chains data from AI API
   useEffect(() => {
@@ -296,6 +540,31 @@ export default function ValueChains({ language = 'fr' }) {
     fetchData();
   }, [language]);
 
+  const handleHsSearch = async (e) => {
+    e.preventDefault();
+    const code = hsQuery.trim().replace(/\D/g, '');
+    if (!code || ![2, 4, 6].includes(code.length)) {
+      setHsSearchError(language === 'fr'
+        ? 'Entrez un code SH valide (2, 4 ou 6 chiffres)'
+        : 'Enter a valid HS code (2, 4 or 6 digits)');
+      return;
+    }
+    setHsSearchError(null);
+    setHsSearchResult(null);
+    setHsSearchLoading(true);
+    try {
+      const resp = await axios.get(`${API}/ai/product/${code}?lang=${language}`);
+      setHsSearchResult(resp.data);
+    } catch (err) {
+      setHsSearchError(
+        err.response?.data?.detail ||
+        (language === 'fr' ? 'Erreur lors de l\'analyse du produit' : 'Error analyzing product')
+      );
+    } finally {
+      setHsSearchLoading(false);
+    }
+  };
+
   const texts = {
     fr: {
       title: "Chaînes de Valeur Africaines",
@@ -310,7 +579,11 @@ export default function ValueChains({ language = 'fr' }) {
       share: "Part (%)",
       opportunities: "Opportunités ZLECAf",
       aiGenerated: "Données enrichies par IA",
-      source: "Sources: FAOSTAT 2024, UNCTAD 2024, ITC Trade Map, Données sectorielles"
+      source: "Sources: FAOSTAT 2024, UNCTAD 2024, ITC Trade Map, Données sectorielles",
+      searchPlaceholder: "Entrez un code SH (ex: 090111, 1801, 72)",
+      searchBtn: "Analyser",
+      searchTitle: "Recherche par code SH",
+      searchSub: "Analysez n'importe quel produit : chaîne de valeur, opportunités ZLECAf, marchés africains"
     },
     en: {
       title: "African Value Chains",
@@ -325,7 +598,11 @@ export default function ValueChains({ language = 'fr' }) {
       share: "Share (%)",
       opportunities: "AfCFTA Opportunities",
       aiGenerated: "AI-enhanced data",
-      source: "Sources: FAOSTAT 2024, UNCTAD 2024, ITC Trade Map, Sector data"
+      source: "Sources: FAOSTAT 2024, UNCTAD 2024, ITC Trade Map, Sector data",
+      searchPlaceholder: "Enter HS code (e.g. 090111, 1801, 72)",
+      searchBtn: "Analyze",
+      searchTitle: "Search by HS code",
+      searchSub: "Analyze any product: value chain, AfCFTA opportunities, African markets"
     }
   };
 
@@ -359,6 +636,76 @@ export default function ValueChains({ language = 'fr' }) {
           </Badge>
         )}
       </div>
+
+      {/* HS6 Code Search */}
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl">
+        <div className="flex items-center gap-2 mb-1">
+          <Search className="h-5 w-5 text-emerald-400" />
+          <h3 className="font-bold text-white">{txt.searchTitle}</h3>
+        </div>
+        <p className="text-slate-400 text-sm mb-4">{txt.searchSub}</p>
+        <form onSubmit={handleHsSearch} className="flex gap-2">
+          <input
+            type="text"
+            value={hsQuery}
+            onChange={(e) => { setHsQuery(e.target.value); setHsSearchError(null); }}
+            placeholder={txt.searchPlaceholder}
+            maxLength={8}
+            className="flex-1 px-4 py-2.5 rounded-xl bg-slate-700 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm font-mono tracking-widest"
+          />
+          <button
+            type="submit"
+            disabled={hsSearchLoading}
+            className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold rounded-xl transition-colors flex items-center gap-2 text-sm"
+          >
+            {hsSearchLoading
+              ? <Loader2 className="h-4 w-4 animate-spin" />
+              : <Search className="h-4 w-4" />
+            }
+            {txt.searchBtn}
+          </button>
+        </form>
+        {hsSearchError && (
+          <p className="mt-2 text-red-400 text-xs flex items-center gap-1">
+            <AlertCircle className="h-3 w-3" /> {hsSearchError}
+          </p>
+        )}
+        {/* Preset shortcut chips */}
+        <div className="flex flex-wrap gap-2 mt-3">
+          {[
+            { code: '090111', label: '090111 · Café Arabica' },
+            { code: '180100', label: '180100 · Cacao' },
+            { code: '520100', label: '520100 · Coton' },
+            { code: '270900', label: '270900 · Pétrole brut' },
+            { code: '720100', label: '720100 · Fer & Acier' },
+            { code: '870322', label: '870322 · Véhicules' },
+          ].map(({ code, label }) => (
+            <button
+              key={code}
+              type="button"
+              onClick={() => { setHsQuery(code); setHsSearchError(null); setHsSearchResult(null); }}
+              className="text-xs px-2.5 py-1 rounded-full bg-slate-700 hover:bg-emerald-700 text-slate-300 hover:text-white transition-colors font-mono"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* HS6 Search Result */}
+      {hsSearchLoading && (
+        <div className="flex items-center justify-center py-12 gap-3 text-slate-500">
+          <Loader2 className="h-6 w-6 animate-spin text-emerald-500" />
+          <span>{language === 'fr' ? 'Analyse en cours...' : 'Analyzing...'}</span>
+        </div>
+      )}
+      {hsSearchResult && !hsSearchLoading && (
+        <HS6SearchResult
+          result={hsSearchResult}
+          language={language}
+          onClear={() => { setHsSearchResult(null); setHsQuery(''); }}
+        />
+      )}
 
       {/* Value Chain Selection Grid */}
       <div>
