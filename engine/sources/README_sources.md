@@ -130,6 +130,34 @@ des hashes.
 - Douanes Gabon (tarif CEMAC) : https://douanes.ga/
 - Secrétariat CEMAC : https://www.cemac.int/
 
+### ETH — Éthiopie (Ethiopian Customs Commission)
+- **Source** : Ethiopian Customs Commission (ECC)
+- **URL** : https://customs.erca.gov.et/trade/customs-division/tariff
+- **Crawl** : 15 juin 2026 — 2 063 positions, 11 digits, 96 chapitres
+- **Adaptateur** : `engine/adapters/eth_tariff_adapter.py`
+- **Output** : `engine/output/ETH_canonical.jsonl`
+- **Provenance** : VERIFIED / A
+- **Structure fiscale** :
+  - D.D (Customs Duty) : 0 / 5 / 15 / 25 / 35 % du CIF
+  - ER (Excise Duty)   : 0 / 10 / 15 / 20 / 25 / 30 / 40 / 80 / 100 % du CIF
+  - SR (Surtax)        : 10 % fixe de (CIF + DD + Excise) — Proclamation 312/2002
+  - T.V.A              : 15 % fixe de (CIF + DD + Excise + SR) — Proc. 285/2002
+  - WHR (Withholding)  : 3 % du CIF — Income Tax Proc. 979/2016
+
+### MUS — Maurice (Mauritius Revenue Authority)
+- **Source** : MRA Integrated Tariff Schedule HS2022 (as at 01 April 2026)
+- **URL** : https://www.mra.mu/download/TariffInfo010426.pdf
+- **Crawl** : 15 juin 2026 — 6 073 positions, 8 digits, 90 chapitres
+- **Adaptateur** : `engine/adapters/mus_tariff_adapter.py`
+- **Output** : `engine/output/MUS_canonical.jsonl`
+- **Provenance** : VERIFIED / A
+- **Structure fiscale** :
+  - D.D (MFN Duty)     : 0 / 10 / 15 / 30 / 100 % du CIF
+  - Excise Duty        : 0–230 % du CIF (tabac : 230 %, alcool fort : 45-50 %)
+  - T.V.A              : 0 % (1 415 positions exonérées — biens essentiels)
+                         ou 15 % de (CIF + DD + Excise) — Value Added Tax Act 1998
+  - Taxe environnement (EPL) : non incluse dans ce dataset
+
 ### LBR (Libéria)
 - Membre CEDEAO → les taux DD sont déjà couverts par le TEC CEDEAO
   (`cedeao_tec_adapter.py`). Seules les taxes nationales LRA (GST 10 %, etc.)
