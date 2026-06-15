@@ -582,6 +582,51 @@ register(_sacu_profile("SWZ", "Eswatini", 15.0,
                        "Value Added Tax Act No. 12 of 2011", is_crawl_origin=False))
 
 
+# ── MAR — Maroc (Douane / ADII — portail ADIL) ──────────────────────────────
+# Nomenclature NTS HS10. Structure fiscale (ordre d'application) :
+#   DD  (Droit d'Importation)     : % du CIF — varie par produit (du crawl)
+#   TPI (Taxe Parafiscale Import.) : % du CIF — généralement 0,25 % (du crawl)
+#   TIC (Taxe Intérieure Consom.)  : % du CIF (ad valorem) — du crawl si présent
+#   TVA (Taxe Valeur Ajoutée)      : % de (CIF + DD + TPI + TIC) — 20 % std (du crawl)
+# Tous les taux proviennent du crawl ADIL (aucun taux inventé). La TIC spécifique
+# (exprimée en DH/unité) n'est pas réduite en % : à traiter à part si présente.
+register(TaxProfile(
+    country_iso3="MAR",
+    source_name="Douane Maroc (ADII) — portail ADIL",
+    source_url="https://www.douane.gov.ma/adil/",
+    source_document=(
+        "Administration des Douanes et Impôts Indirects (ADII) — portail ADIL, "
+        "Nomenclature Tarifaire et Statistique (NTS, HS10) — "
+        "https://www.douane.gov.ma/adil/"
+    ),
+    notes=(
+        "Crawl du portail ADIL (douane.gov.ma). Taux DD/TPI/TIC/TVA lus en direct. "
+        "Accords préférentiels (UE, AELE, Agadir, Turquie) non modélisés ici. "
+        "TIC spécifique (DH/unité) éventuelle non réduite en %."
+    ),
+    components=[
+        TaxComponent("D.D", "Droit d'Importation (DI)", "Import Duty",
+                     MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
+                     rate_field="dd_rate", raw_field="dd_rate_raw",
+                     emit_when="always", is_customs_duty=True,
+                     legal_reference="Code des Douanes — Tarif des droits d'importation"),
+        TaxComponent("TPI", "Taxe Parafiscale à l'Importation", "Parafiscal Import Tax",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     rate_field="tpi_rate", emit_when="positive",
+                     legal_reference="Loi de finances — TPI"),
+        TaxComponent("TIC", "Taxe Intérieure de Consommation", "Domestic Consumption Tax",
+                     MeasureType.EXCISE, DutyBasis.CIF,
+                     rate_field="tic_rate", emit_when="positive",
+                     legal_reference="Code des Impôts — TIC"),
+        TaxComponent("T.V.A", "Taxe sur la Valeur Ajoutée (TVA)", "Value Added Tax",
+                     MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED,
+                     rate_field="vat_rate", includes_codes=["D.D", "TPI", "TIC"],
+                     emit_when="positive",
+                     legal_reference="Code Général des Impôts — TVA"),
+    ],
+))
+
+
 # ============================================================================
 # CLI
 # ============================================================================

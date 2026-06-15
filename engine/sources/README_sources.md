@@ -155,6 +155,24 @@ fausses sont rejetées et que les crawls réels (ETH, MUS) passent.
 Ajouter un pays = déposer son crawl officiel + ajouter un `TaxProfile` dans
 `PROFILES`. Aucune donnée n'est jamais inventée par le moteur.
 
+### MAR — Maroc (Douane / ADII — portail ADIL)
+- **Source** : ADII portail ADIL — https://www.douane.gov.ma/adil/
+- **Nomenclature** : NTS HS10
+- **Profil** : `raw_crawl_adapter.py` → PROFILES["MAR"]
+- **Structure fiscale** (ordre d'application) :
+  - DD (Droit d'Importation) : % CIF — du crawl (bandes 2,5/10/17,5/25/32,5/40)
+  - TPI (Taxe Parafiscale Import.) : % CIF — du crawl (≈ 0,25 %)
+  - TIC (Taxe Intérieure Consom.) : % CIF — du crawl si présent
+  - TVA : % de (CIF + DD + TPI + TIC) — 20 % std, 7/10/14 réduits — du crawl
+- **Crawl** : `backend/scripts/crawl_mar_to_raw.py`
+  - ⚠ Le crawler intégré échoue sur VSCode car `crawlers/__init__.py` importe
+    `motor` (MongoDB). Ce runner autonome **contourne** ce blocage (chargement
+    direct du scraper), vérifie les dépendances, et écrit `mar_raw.json`.
+  - Dépendances : `pip install httpx beautifulsoup4`
+  - Échantillon : `python backend/scripts/crawl_mar_to_raw.py --sample`
+  - Complet : `python backend/scripts/crawl_mar_to_raw.py --out engine/sources/mar_raw.json`
+  - Ingestion : `python engine/adapters/raw_crawl_adapter.py MAR engine/sources/mar_raw.json engine/output/`
+
 ### SACU — Union douanière d'Afrique australe (ZAF, NAM, BWA, LSO, SWZ)
 - **Source** : SARS — Schedule No. 1 Part 1 (Customs Tariff, General Rate), ch. 1–99
 - **URL** : https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-schedule-no-1-part-1-chapters-1-to-99/
