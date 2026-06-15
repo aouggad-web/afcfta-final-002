@@ -130,6 +130,31 @@ des hashes.
 - Douanes Gabon (tarif CEMAC) : https://douanes.ga/
 - Secrétariat CEMAC : https://www.cemac.int/
 
+### Moteur générique `raw_crawl_adapter.py` — garde-fous anti-données-génériques
+
+Pour ingérer efficacement un maximum de pays sans réécrire un adaptateur à
+chaque fois, le moteur `engine/adapters/raw_crawl_adapter.py` convertit
+n'importe quel crawl douanier « plat » via un **TaxProfile** déclaratif.
+
+**Pour ne JAMAIS reproduire l'erreur des données génériques estampillées
+réelles, trois verrous durs bloquent toute donnée non traçable :**
+
+1. **Profil** : le droit de douane (qui varie par produit) DOIT lire son taux
+   dans un champ du crawl (`rate_field`), jamais via un taux fixe codé en dur.
+   Toute taxe statutaire à taux fixe (TVA, surtaxe…) DOIT citer sa base légale.
+2. **Crawl** : refus si `source`/`source_url` manquants, si `data_type` est
+   marqué synthétique/généré/template, si le champ de droit est absent d'une
+   partie des positions (interdit de combler par 0), ou s'il n'y a qu'une seule
+   bande tarifaire (signature d'un remplissage par template).
+3. **Réalisme** : refus si tous les droits sont à 0 % ; avertissement si moins
+   de 500 positions (tarif national probablement incomplet).
+
+Tests : `engine/tests/test_raw_crawl_guardrails.py` PROUVENT que les données
+fausses sont rejetées et que les crawls réels (ETH, MUS) passent.
+
+Ajouter un pays = déposer son crawl officiel + ajouter un `TaxProfile` dans
+`PROFILES`. Aucune donnée n'est jamais inventée par le moteur.
+
 ### ETH — Éthiopie (Ethiopian Customs Commission)
 - **Source** : Ethiopian Customs Commission (ECC)
 - **URL** : https://customs.erca.gov.et/trade/customs-division/tariff
