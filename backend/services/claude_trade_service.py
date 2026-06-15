@@ -397,6 +397,15 @@ class ClaudeTradeService:
             return {"error": "ANTHROPIC_API_KEY not configured", "opportunities": []}
 
         cache_params = {"country": country_name, "mode": mode, "lang": lang}
+        # Stamp de version des données de production : pour les modes enrichis
+        # (export/industrial), tout rebuild de production_africaine.json change
+        # ce stamp et invalide automatiquement les analyses en cache.
+        if mode in ("export", "industrial"):
+            try:
+                from production_data import get_production_data_version
+                cache_params["pdv"] = get_production_data_version()
+            except Exception as e:
+                logger.debug(f"production data version unavailable: {e}")
         cached = cache_service.get("claude_analysis", cache_params)
         if cached:
             logger.info(f"Cache HIT claude_analysis {country_name}/{mode}")
