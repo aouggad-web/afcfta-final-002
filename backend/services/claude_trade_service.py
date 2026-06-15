@@ -20,6 +20,7 @@ except ImportError:
     logging.warning("anthropic package not installed; AI features will be disabled")
 
 from services.redis_cache_service import cache_service, get_data_freshness
+from services.oec_data_service import oec_data_service
 
 load_dotenv()
 
@@ -609,6 +610,16 @@ Wrap ALL 15 in this envelope:
             result["opportunities"] = self._post_process_opportunities(
                 result.get("opportunities", []), country_name, mode
             )
+
+            # Enrich with OEC trade data for validation & real numbers
+            try:
+                result["opportunities"] = await oec_data_service.enrich_opportunities(
+                    result.get("opportunities", []), year=2023
+                )
+                result["oec_enrichment"] = True
+            except Exception as e:
+                logger.warning(f"OEC enrichment failed: {e}")
+                result["oec_enrichment"] = False
 
             result["country"] = country_name
             result["mode"] = mode
