@@ -21,6 +21,7 @@ except ImportError:
 
 from services.redis_cache_service import cache_service, get_data_freshness
 from services.oec_data_service import oec_data_service
+from services import production_capacity_service
 
 load_dotenv()
 
@@ -641,6 +642,23 @@ Wrap ALL 15 in this envelope:
             except Exception as e:
                 logger.warning(f"OEC enrichment failed: {e}")
                 result["oec_enrichment"] = False
+
+            # Enrich with real production capacities (FAO / USGS / UNIDO) for the
+            # analyzed country — grounds each opportunity in verifiable output data
+            # and African-integration scenarios. Relevant in export & industrial
+            # modes where the analyzed country is the producer.
+            try:
+                analyzed_iso3 = self._resolve_iso3(country_name)
+                if analyzed_iso3 and mode in ("export", "industrial"):
+                    result["opportunities"] = production_capacity_service.enrich_opportunities(
+                        result.get("opportunities", []), analyzed_iso3
+                    )
+                    result["production_enrichment"] = True
+                else:
+                    result["production_enrichment"] = False
+            except Exception as e:
+                logger.warning(f"Production capacity enrichment failed: {e}")
+                result["production_enrichment"] = False
 
             result["country"] = country_name
             result["mode"] = mode

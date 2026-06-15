@@ -239,6 +239,15 @@ const HS6SearchResult = ({ result, language, onClear }) => {
   const capacities = result.production_capacities || [];
   const trends = result.market_share_trends || {};
   const specs = result.technical_specs || {};
+  const prod = result.production_data || null;
+
+  const fmtProd = (v, unit) => {
+    if (v == null) return '—';
+    if (unit === 'USD') return v >= 1e9 ? `$${(v / 1e9).toFixed(2)} Md` : `$${(v / 1e6).toFixed(1)} M`;
+    if (v >= 1e6) return `${(v / 1e6).toFixed(2)} Mt`;
+    if (v >= 1e3) return `${(v / 1e3).toFixed(1)} kt`;
+    return `${Number(v).toLocaleString()} t`;
+  };
 
   const score = trends.afcfta_opportunity_score || 0;
   const scoreColor = score >= 7 ? '#059669' : score >= 4 ? '#d97706' : '#dc2626';
@@ -406,6 +415,34 @@ const HS6SearchResult = ({ result, language, onClear }) => {
           )}
         </div>
 
+        {/* Real production data (FAO / USGS / UNIDO) */}
+        {prod && prod.top_producers?.length > 0 && (
+          <div className="border border-emerald-300 bg-emerald-50 rounded-xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1">
+                <BarChart3 className="h-3 w-3" />
+                {language === 'fr' ? 'Production réelle' : 'Real production'} · {prod.commodity}
+              </h4>
+              <Badge className="text-[10px] bg-emerald-700 text-white">
+                {prod.source?.institution} {prod.year}
+              </Badge>
+            </div>
+            <div className="space-y-1.5">
+              {prod.top_producers.slice(0, 6).map((p, i) => (
+                <div key={p.country_iso3 || i} className="flex items-center gap-2">
+                  <span className="text-xs font-black text-emerald-300 w-4">{i + 1}</span>
+                  <span className="flex-1 text-sm text-slate-700 font-medium">{p.country_name}</span>
+                  <span className="text-xs text-slate-500">{fmtProd(p.value, prod.unit)}</span>
+                  <span className="text-xs font-bold text-emerald-700 w-12 text-right">{p.share_pct}%</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-[10px] text-emerald-600 mt-2 italic">
+              {prod.source?.dataset} · {language === 'fr' ? 'Total Afrique' : 'Africa total'}: {fmtProd(prod.continental_total, prod.unit)}
+            </p>
+          </div>
+        )}
+
         {/* Production capacities */}
         {capacities.length > 0 && (
           <div>
@@ -553,8 +590,16 @@ export default function ValueChains({ language = 'fr' }) {
     setHsSearchResult(null);
     setHsSearchLoading(true);
     try {
-      const resp = await axios.get(`${API}/ai/product/${code}?lang=${language}`);
-      setHsSearchResult(resp.data);
+      // Fetch AI analysis + real production data (FAO/USGS) in parallel
+      const [aiResp, prodResp] = await Promise.all([
+        axios.get(`${API}/ai/product/${code}?lang=${language}`),
+        axios.get(`${API}/production/capacity/${code}`).catch(() => ({ data: null })),
+      ]);
+      const merged = { ...aiResp.data };
+      if (prodResp.data && prodResp.data.available) {
+        merged.production_data = prodResp.data;
+      }
+      setHsSearchResult(merged);
     } catch (err) {
       setHsSearchError(
         err.response?.data?.detail ||

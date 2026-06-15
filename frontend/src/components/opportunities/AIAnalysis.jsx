@@ -238,6 +238,142 @@ const EntryStrategy = ({ strategy, lang }) => {
   );
 };
 
+// ── Production Capacity Section (FAO / USGS / UNIDO) ──────────────────────────
+const fmtBig = (v, unit) => {
+  if (v == null || isNaN(v)) return '—';
+  if (unit === 'USD') {
+    if (v >= 1e9) return `$${(v / 1e9).toFixed(2)} Md`;
+    if (v >= 1e6) return `$${(v / 1e6).toFixed(1)} M`;
+    return `$${Number(v).toLocaleString()}`;
+  }
+  // tonnes
+  if (v >= 1e6) return `${(v / 1e6).toFixed(2)} Mt`;
+  if (v >= 1e3) return `${(v / 1e3).toFixed(1)} kt`;
+  return `${Number(v).toLocaleString()} t`;
+};
+
+const SOURCE_BADGE = {
+  agri: { label: 'FAO · FAOSTAT', color: 'var(--green)', bg: 'rgba(26,122,74,0.10)' },
+  mining: { label: 'USGS · MCS', color: '#c84b1a', bg: 'rgba(200,75,26,0.10)' },
+  manufacturing: { label: 'UNIDO · INDSTAT4', color: '#4f8ef7', bg: 'rgba(79,142,247,0.10)' },
+};
+
+const ProductionCapacity = ({ capacity, lang }) => {
+  if (!capacity || !capacity.available) return null;
+  const fr = lang === 'fr';
+  const { commodity, unit, dimension, latest_value, latest_year, cagr_pct,
+          continental = {}, integration_scenarios = {}, source = {} } = capacity;
+  const badge = SOURCE_BADGE[dimension] || SOURCE_BADGE.agri;
+  const rank = continental.rank;
+  const share = continental.country_share_pct;
+  const scenarioList = Object.values(integration_scenarios).filter(s => s.annual_growth_pct != null);
+  const trendUp = (cagr_pct || 0) >= 0;
+
+  return (
+    <div style={{ marginTop: 14, borderTop: '2px solid rgba(26,122,74,0.20)', paddingTop: 14 }}>
+      {/* Header */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 7,
+        fontSize: 12, fontWeight: 800, color: 'var(--green)',
+        marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em',
+      }}>
+        <Factory style={{ width: 14, height: 14 }} />
+        {fr ? 'Capacité de production' : 'Production capacity'}
+        <span style={{
+          marginLeft: 'auto', fontSize: 9, fontWeight: 700,
+          background: badge.bg, color: badge.color,
+          padding: '2px 7px', borderRadius: 8,
+        }}>
+          {badge.label}
+        </span>
+      </div>
+
+      {/* Headline metrics */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
+        <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
+          <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
+            {commodity} · {latest_year}
+          </div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
+            {fmtBig(latest_value, unit)}
+          </div>
+        </div>
+        {cagr_pct != null && (
+          <div style={{ flex: '1 1 90px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
+              {fr ? 'Tendance' : 'Trend'} 21–{String(latest_year).slice(2)}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: trendUp ? 'var(--green)' : '#e05070', display: 'flex', alignItems: 'center', gap: 4 }}>
+              {trendUp ? <TrendingUp style={{ width: 14, height: 14 }} /> : <TrendingDown style={{ width: 14, height: 14 }} />}
+              {cagr_pct > 0 ? '+' : ''}{cagr_pct}%
+            </div>
+          </div>
+        )}
+        {rank != null && (
+          <div style={{ flex: '1 1 90px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
+              {fr ? 'Rang africain' : 'African rank'}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--gold)' }}>
+              {rank}<span style={{ fontSize: 11, color: 'var(--afcfta-muted)' }}>/{continental.total_countries}</span>
+              {share != null && <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--afcfta-muted)', marginLeft: 6 }}>{share}%</span>}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Continental context */}
+      {continental.leader && (
+        <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginBottom: 10, lineHeight: 1.4 }}>
+          <Globe style={{ width: 11, height: 11, display: 'inline', marginRight: 4, color: 'var(--green)' }} />
+          {fr ? 'Leader continental' : 'Continental leader'}: <strong style={{ color: 'var(--text)' }}>{continental.leader.country_name}</strong>
+          {' '}({fmtBig(continental.leader.value, unit)})
+          {continental.continental_total != null && (
+            <> · {fr ? 'Total Afrique' : 'Africa total'}: {fmtBig(continental.continental_total, unit)}</>
+          )}
+        </div>
+      )}
+
+      {/* Integration scenarios */}
+      {scenarioList.length > 0 && (
+        <div>
+          <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--green)', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+            <BarChart2 style={{ width: 10, height: 10 }} />
+            {fr ? "Scénarios d'intégration africaine — horizon 2030" : 'African integration scenarios — 2030 horizon'}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+            {scenarioList.map((s, i) => (
+              <div key={i} title={s.hypothesis} style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                background: i === 2 ? 'rgba(26,122,74,0.08)' : 'var(--afcfta-bg)',
+                borderRadius: 6, padding: '6px 9px',
+                border: i === 2 ? '1px solid rgba(26,122,74,0.20)' : '1px solid var(--afcfta-border)',
+              }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {s.label}
+                  </div>
+                </div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--gold)', whiteSpace: 'nowrap' }}>
+                  +{s.annual_growth_pct}%/an
+                </div>
+                <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--green)', whiteSpace: 'nowrap', minWidth: 64, textAlign: 'right' }}>
+                  {fmtBig(s.horizon_2030, unit)}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ fontSize: 9, color: 'var(--afcfta-muted)', marginTop: 6, fontStyle: 'italic', lineHeight: 1.4 }}>
+            {fr
+              ? `Projections dérivées du CAGR réel observé. Production: ${source.institution}. Scénarios ≠ prévisions.`
+              : `Projections derived from observed real CAGR. Production: ${source.institution}. Scenarios ≠ forecasts.`}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ── Opportunity Card ──────────────────────────────────────────────────────────
 const OpportunityCard = ({ opp, mode, lang, index }) => {
   const [expanded, setExpanded] = useState(false);
@@ -271,6 +407,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
   const roo = opp.rulesOfOrigin || opp.rules_of_origin;
   const entryStrategy = opp.entryStrategy || opp.entry_strategy;
   const oecData = opp.oec_data;
+  const productionCapacity = opp.production_capacity || opp.productionCapacity;
 
   // Industrial input
   const input = opp.industrialInput || opp.industrial_input || {};
@@ -455,6 +592,9 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
         rulesOfOrigin={roo}
         lang={lang}
       />
+
+      {/* Production Capacity — données réelles FAO/USGS/UNIDO + scénarios */}
+      <ProductionCapacity capacity={productionCapacity} lang={lang} />
 
       {/* Entry Strategy — section clé manquante */}
       <EntryStrategy strategy={entryStrategy} lang={lang} />
