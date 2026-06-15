@@ -436,7 +436,14 @@ For EACH opportunity return this EXACT JSON structure:
   "leadTimeSavings": 0,
   "priceCompetitiveness": 0.0,
   "rulesOfOrigin": "Specific AfCFTA RoO for this HS chapter",
-  "sourceUrl": "OEC or UNCTAD reference URL or data citation"
+  "sourceUrl": "OEC or UNCTAD reference URL or data citation",
+  "entryStrategy": {{
+    "quickWins": ["Concrete action 1 (3–6 months)", "Concrete action 2"],
+    "keyBarriers": ["Main barrier 1", "Main barrier 2"],
+    "certifications": ["Required certification or standard"],
+    "priorityActions": ["Strategic step 1", "Strategic step 2", "Strategic step 3"],
+    "timelineMonths": 18
+  }}
 }}
 
 Wrap ALL 15 in this envelope:
@@ -496,7 +503,14 @@ For EACH opportunity return this EXACT JSON structure:
   "leadTimeSavings": 0,
   "priceCompetitiveness": 0.0,
   "rulesOfOrigin": "Specific AfCFTA RoO for this HS chapter",
-  "sourceUrl": "OEC or UNCTAD reference"
+  "sourceUrl": "OEC or UNCTAD reference",
+  "entryStrategy": {{
+    "quickWins": ["Immediate sourcing action 1 (0–3 months)", "Pilot procurement action 2"],
+    "keyBarriers": ["Supply chain barrier 1", "Quality standard barrier 2"],
+    "certifications": ["Required certification for import"],
+    "priorityActions": ["Strategic sourcing step 1", "Step 2", "Step 3"],
+    "timelineMonths": 12
+  }}
 }}
 
 Wrap ALL 15 in this envelope:
@@ -561,7 +575,14 @@ For EACH opportunity return this EXACT JSON structure:
   "leadTimeSavings": 0,
   "priceCompetitiveness": 0.0,
   "rulesOfOrigin": "Specific AfCFTA RoO (value addition threshold or process rule)",
-  "sourceUrl": "UNCTAD/UNIDO reference"
+  "sourceUrl": "UNCTAD/UNIDO reference",
+  "entryStrategy": {{
+    "quickWins": ["Pilot production line action (0–6 months)", "First export contract action"],
+    "keyBarriers": ["Industrial capacity barrier", "Quality certification barrier"],
+    "certifications": ["ISO standard or sector-specific certification required"],
+    "priorityActions": ["Investment step 1", "Capacity building step 2", "Market entry step 3"],
+    "timelineMonths": 24
+  }}
 }}
 
 Wrap ALL 15 in this envelope:

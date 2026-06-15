@@ -15,7 +15,8 @@ import {
   Sparkles, Globe, TrendingUp, TrendingDown, Factory,
   Loader2, AlertCircle, Target, DollarSign, ArrowRight,
   ChevronDown, ChevronUp, Info, CheckCircle, AlertTriangle,
-  Zap, Clock, Tag, ShieldCheck, BarChart2,
+  Zap, Clock, Tag, ShieldCheck, BarChart2, Lightbulb,
+  XCircle, Award, ListChecks, BadgeCheck, Database,
 } from 'lucide-react';
 
 import TradeSankeyDiagram from './TradeSankeyDiagram';
@@ -106,6 +107,137 @@ const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin
   );
 };
 
+// ── OEC Data Badge ────────────────────────────────────────────────────────────
+const OECBadge = ({ oecData, lang }) => {
+  if (!oecData) return null;
+  const verified = oecData.data_quality === 'verified';
+  const score = oecData.confidence_score;
+  return (
+    <div style={{
+      display: 'inline-flex', alignItems: 'center', gap: 5,
+      fontSize: 10, fontWeight: 700,
+      padding: '2px 8px', borderRadius: 12,
+      background: verified ? 'rgba(26,122,74,0.10)' : 'rgba(212,137,26,0.10)',
+      color: verified ? 'var(--green)' : 'var(--gold)',
+      border: `1px solid ${verified ? 'rgba(26,122,74,0.22)' : 'rgba(212,137,26,0.22)'}`,
+    }}>
+      <Database style={{ width: 9, height: 9 }} />
+      {verified
+        ? `OEC ✓ ${oecData.verified_trade_value != null ? fmtMUSD(oecData.verified_trade_value) : ''}`
+        : (lang === 'fr' ? 'Estimation' : 'Estimate')}
+      {!verified && score && ` ${Math.round(score * 100)}%`}
+    </div>
+  );
+};
+
+// ── Entry Strategy Section ────────────────────────────────────────────────────
+const EntryStrategy = ({ strategy, lang }) => {
+  if (!strategy) return null;
+  const { quickWins = [], keyBarriers = [], certifications = [], priorityActions = [], timelineMonths } = strategy;
+  if (!quickWins.length && !keyBarriers.length && !priorityActions.length) return null;
+
+  return (
+    <div style={{
+      marginTop: 14,
+      borderTop: '2px solid rgba(212,137,26,0.20)',
+      paddingTop: 14,
+    }}>
+      {/* Header */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 7,
+        fontSize: 12, fontWeight: 800,
+        color: 'var(--gold)',
+        marginBottom: 12,
+        textTransform: 'uppercase',
+        letterSpacing: '0.06em',
+      }}>
+        <Lightbulb style={{ width: 14, height: 14 }} />
+        {lang === 'fr' ? "Stratégie d'entrée" : 'Entry Strategy'}
+        {timelineMonths && (
+          <span style={{
+            marginLeft: 'auto', fontSize: 10, fontWeight: 600,
+            background: 'rgba(212,137,26,0.12)',
+            padding: '1px 7px', borderRadius: 8,
+            color: 'var(--gold)',
+          }}>
+            ~{timelineMonths} {lang === 'fr' ? 'mois' : 'mo.'}
+          </span>
+        )}
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+
+        {/* Quick wins */}
+        {quickWins.length > 0 && (
+          <div>
+            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--green)', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
+              <Zap style={{ width: 10, height: 10 }} />
+              {lang === 'fr' ? 'Actions rapides' : 'Quick Wins'}
+            </div>
+            {quickWins.map((w, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 12, color: 'var(--text)', marginBottom: 3 }}>
+                <CheckCircle style={{ width: 11, height: 11, color: 'var(--green)', flexShrink: 0, marginTop: 2 }} />
+                <span style={{ lineHeight: 1.45 }}>{w}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Priority actions */}
+        {priorityActions.length > 0 && (
+          <div>
+            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--terra, #c84b1a)', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
+              <ListChecks style={{ width: 10, height: 10 }} />
+              {lang === 'fr' ? 'Actions prioritaires' : 'Priority Actions'}
+            </div>
+            {priorityActions.map((a, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 12, color: 'var(--text)', marginBottom: 3 }}>
+                <span style={{
+                  minWidth: 16, height: 16, borderRadius: '50%',
+                  background: 'rgba(200,75,26,0.12)',
+                  color: 'var(--terra, #c84b1a)',
+                  fontSize: 9, fontWeight: 800,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0, marginTop: 1,
+                }}>{i + 1}</span>
+                <span style={{ lineHeight: 1.45 }}>{a}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Barriers + certifications */}
+        {(keyBarriers.length > 0 || certifications.length > 0) && (
+          <div style={{ display: 'grid', gridTemplateColumns: keyBarriers.length && certifications.length ? '1fr 1fr' : '1fr', gap: 8 }}>
+            {keyBarriers.length > 0 && (
+              <div style={{ background: 'rgba(200,16,46,0.06)', borderRadius: 6, padding: '8px 10px' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: '#e05070', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <XCircle style={{ width: 10, height: 10 }} />
+                  {lang === 'fr' ? 'Obstacles' : 'Barriers'}
+                </div>
+                {keyBarriers.map((b, i) => (
+                  <div key={i} style={{ fontSize: 11, color: 'var(--text)', marginBottom: 2, lineHeight: 1.4 }}>• {b}</div>
+                ))}
+              </div>
+            )}
+            {certifications.length > 0 && (
+              <div style={{ background: 'rgba(79,142,247,0.07)', borderRadius: 6, padding: '8px 10px' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: '#4f8ef7', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <Award style={{ width: 10, height: 10 }} />
+                  {lang === 'fr' ? 'Certifications' : 'Certifications'}
+                </div>
+                {certifications.map((c, i) => (
+                  <div key={i} style={{ fontSize: 11, color: 'var(--text)', marginBottom: 2, lineHeight: 1.4 }}>• {c}</div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ── Opportunity Card ──────────────────────────────────────────────────────────
 const OpportunityCard = ({ opp, mode, lang, index }) => {
   const [expanded, setExpanded] = useState(false);
@@ -137,6 +269,8 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
   const leadTimeSavings = opp.leadTimeSavings || opp.lead_time_savings;
   const priceComp = opp.priceCompetitiveness || opp.price_competitiveness;
   const roo = opp.rulesOfOrigin || opp.rules_of_origin;
+  const entryStrategy = opp.entryStrategy || opp.entry_strategy;
+  const oecData = opp.oec_data;
 
   // Industrial input
   const input = opp.industrialInput || opp.industrial_input || {};
@@ -145,12 +279,15 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
 
   return (
     <div className="afcfta-card" style={{ padding: '18px 20px', borderLeft: '3px solid var(--gold)' }}>
-      {/* Rank + HS code header */}
+      {/* Rank + HS code header + OEC badge */}
       <div className="flex items-start justify-between mb-3">
         <HSBadge product={product} />
-        <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700, marginLeft: 8 }}>
-          #{index + 1}
-        </span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+          <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700 }}>
+            #{index + 1}
+          </span>
+          <OECBadge oecData={oecData} lang={lang} />
+        </div>
       </div>
 
       {/* Product name */}
@@ -318,6 +455,9 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
         rulesOfOrigin={roo}
         lang={lang}
       />
+
+      {/* Entry Strategy — section clé manquante */}
+      <EntryStrategy strategy={entryStrategy} lang={lang} />
     </div>
   );
 };
