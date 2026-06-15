@@ -199,7 +199,7 @@ COUNTRY_TAX_PROFILES = {
     'RWA': {**_EAC, 'source': 'RRA Rwanda — VAT Act Cap 349'},
     # ── Burundi / EAC — OBR ───────────────────────────────────────────────────
     'BDI': {**_EAC, 'source': 'OBR Burundi — EAC CMA'},
-    # ── Égypte — ECA (egyptariffs.com) ───────────────────────────────────────
+    # ── Égypte — ECA (customs.gov.eg/Services/Tarif) ───────────────────────────
     # TVA : base = CIF uniquement  (Loi n°67/2016 art. 29)
     'EGY': {
         'taxes_order': ['DD', 'TVA'],
@@ -207,7 +207,7 @@ COUNTRY_TAX_PROFILES = {
             'DD':  ('CIF', []),
             'TVA': ('CIF', []),  # Loi 67/2016 art. 29: TVA base = CIF (pas CIF+DD)
         },
-        'source': 'egyptariffs.com — Loi TVA n°67/2016 art. 29 (TVA base = CIF)',
+        'source': 'Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)',
     },
     # ── Éthiopie — ECC (customs.erca.gov.et) ─────────────────────────────────
     # SUR (Excise): base = CIF + DD

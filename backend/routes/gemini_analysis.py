@@ -404,9 +404,17 @@ async def invalidate_cache(
     details = []
 
     if country:
+        # Stamp de version des données de production (modes enrichis export/industrial)
+        try:
+            from production_data import get_production_data_version
+            pdv = get_production_data_version()
+        except Exception:
+            pdv = None
         for mode in ["export", "import", "industrial"]:
             for l in ([lang] if lang else ["fr", "en"]):
                 params = {"country": country, "mode": mode, "lang": l}
+                if pdv and mode in ("export", "industrial"):
+                    params["pdv"] = pdv
                 if cache_service.invalidate("claude_analysis", params):
                     invalidated += 1
                     details.append(f"claude_analysis:{country}:{mode}:{l}")

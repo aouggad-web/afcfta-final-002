@@ -78,3 +78,5 @@ frontend/node_modules/.cache/default-development/1.pack
 # Fichiers sources tarifaires bruts (tracés dans engine/sources/README_sources.md)
 engine/sources/*
 !engine/sources/README_sources.md
+# Données sources brutes FAOSTAT/USGS (téléchargées par build_production_faostat_usgs.py)
+backend/engine/sources/*

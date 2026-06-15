@@ -365,6 +365,125 @@ class OECDataService:
 
         return snapshot
 
+    async def validate_opportunity(
+        self, opp: Dict, year: int = 2023
+    ) -> Dict:
+        """
+        Enrich an AI-generated opportunity with OEC real trade data.
+
+        Input opp:
+          {
+            "product": {"hs6Code": "020120", ...},
+            "exportingCountry": "DZA",
+            "potentialPartner": "KEN",
+            "potentialTradeValue": 1234.0,  (AI estimate)
+            ...
+          }
+
+        Output: opp + {
+          "oec_data": {
+            "verified_trade_value": float (from OEC if exists),
+            "confidence_score": 0.0–1.0,
+            "data_quality": "verified|mixed|estimated",
+            "source": "OEC BACI HS92",
+          }
+        }
+        """
+        hs6 = opp.get("product", {}).get("hs6Code", "").strip()
+        exporter = opp.get("exportingCountry", "").strip().upper()[:3]
+        importer = opp.get("potentialPartner", "").strip().upper()[:3]
+
+        if not (hs6 and exporter and importer):
+            return opp | {
+                "oec_data": {
+                    "verified_trade_value": None,
+                    "confidence_score": 0.3,
+                    "data_quality": "estimated",
+                    "reason": "Missing HS6, exporter, or importer",
+                }
+            }
+
+        # Try to find OEC trade flow
+        try:
+            # Build cache key for this bilateral flow
+            cache_key = f"oec_flow_{exporter}_{importer}_{hs6}_{year}"
+            cached = cache_service.get("oec_data", {"key": cache_key})
+            if cached:
+                return opp | {"oec_data": cached}
+
+            # Query OEC API for this specific flow
+            params = {
+                "cube": "trade_i_baci_a_hs92",
+                "drilldowns": "Year",
+                "measures": "Trade Value",
+                "filters": f"Exporter Country.iso3={exporter},Importer Country.iso3={importer},HS6.hs6={hs6},Year.Year={year}",
+                "format": "jsonrecords",
+            }
+
+            async with httpx.AsyncClient(timeout=8.0) as client:
+                resp = await client.get(
+                    "https://oec.world/api/olap-proxy/data",
+                    params=params,
+                    headers={"User-Agent": "AfCFTA-analyzer/1.0"},
+                )
+                resp.raise_for_status()
+                data = resp.json()
+
+                if data.get("data") and len(data["data"]) > 0:
+                    trade_value = float(data["data"][0].get("Trade Value", 0) or 0)
+                    value_musd = trade_value / 1_000_000
+                    oec_result = {
+                        "verified_trade_value": value_musd,
+                        "confidence_score": 1.0,
+                        "data_quality": "verified",
+                        "source": "OEC BACI HS92",
+                    }
+                    cache_service.set("oec_data", {"key": cache_key}, oec_result, "oec_data")
+                    return opp | {"oec_data": oec_result}
+                else:
+                    # No data in OEC for this flow (exploratory opportunity)
+                    oec_result = {
+                        "verified_trade_value": None,
+                        "confidence_score": 0.5,
+                        "data_quality": "estimated",
+                        "reason": f"No OEC data for {exporter}→{importer} HS{hs6}",
+                        "source": "AI analysis (OEC lookup failed)",
+                    }
+                    cache_service.set("oec_data", {"key": cache_key}, oec_result, "oec_data")
+                    return opp | {"oec_data": oec_result}
+
+        except httpx.TimeoutException:
+            logger.warning(f"OEC timeout: {exporter}→{importer} HS{hs6}")
+            return opp | {
+                "oec_data": {
+                    "verified_trade_value": None,
+                    "confidence_score": 0.4,
+                    "data_quality": "estimated",
+                    "reason": "OEC API timeout",
+                }
+            }
+        except Exception as e:
+            logger.warning(f"OEC lookup failed ({exporter}→{importer}): {e}")
+            return opp | {
+                "oec_data": {
+                    "verified_trade_value": None,
+                    "confidence_score": 0.4,
+                    "data_quality": "estimated",
+                    "reason": f"OEC error: {str(e)[:50]}",
+                }
+            }
+
+    async def enrich_opportunities(
+        self, opportunities: List[Dict], year: int = 2023
+    ) -> List[Dict]:
+        """
+        Batch enrich AI opportunities with OEC data in parallel.
+        Returns opportunities with oec_data field added to each.
+        """
+        tasks = [self.validate_opportunity(opp, year) for opp in opportunities]
+        enriched = await asyncio.gather(*tasks)
+        return enriched
+
 
 # Singleton
 oec_data_service = OECDataService()

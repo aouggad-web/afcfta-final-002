@@ -20,6 +20,8 @@ except ImportError:
     logging.warning("anthropic package not installed; AI features will be disabled")
 
 from services.redis_cache_service import cache_service, get_data_freshness
+from services.oec_data_service import oec_data_service
+from services import production_capacity_service
 
 load_dotenv()
 
@@ -395,6 +397,15 @@ class ClaudeTradeService:
             return {"error": "ANTHROPIC_API_KEY not configured", "opportunities": []}
 
         cache_params = {"country": country_name, "mode": mode, "lang": lang}
+        # Stamp de version des données de production : pour les modes enrichis
+        # (export/industrial), tout rebuild de production_africaine.json change
+        # ce stamp et invalide automatiquement les analyses en cache.
+        if mode in ("export", "industrial"):
+            try:
+                from production_data import get_production_data_version
+                cache_params["pdv"] = get_production_data_version()
+            except Exception as e:
+                logger.debug(f"production data version unavailable: {e}")
         cached = cache_service.get("claude_analysis", cache_params)
         if cached:
             logger.info(f"Cache HIT claude_analysis {country_name}/{mode}")
@@ -435,7 +446,14 @@ For EACH opportunity return this EXACT JSON structure:
   "leadTimeSavings": 0,
   "priceCompetitiveness": 0.0,
   "rulesOfOrigin": "Specific AfCFTA RoO for this HS chapter",
-  "sourceUrl": "OEC or UNCTAD reference URL or data citation"
+  "sourceUrl": "OEC or UNCTAD reference URL or data citation",
+  "entryStrategy": {{
+    "quickWins": ["Concrete action 1 (3–6 months)", "Concrete action 2"],
+    "keyBarriers": ["Main barrier 1", "Main barrier 2"],
+    "certifications": ["Required certification or standard"],
+    "priorityActions": ["Strategic step 1", "Strategic step 2", "Strategic step 3"],
+    "timelineMonths": 18
+  }}
 }}
 
 Wrap ALL 15 in this envelope:
@@ -495,7 +513,14 @@ For EACH opportunity return this EXACT JSON structure:
   "leadTimeSavings": 0,
   "priceCompetitiveness": 0.0,
   "rulesOfOrigin": "Specific AfCFTA RoO for this HS chapter",
-  "sourceUrl": "OEC or UNCTAD reference"
+  "sourceUrl": "OEC or UNCTAD reference",
+  "entryStrategy": {{
+    "quickWins": ["Immediate sourcing action 1 (0–3 months)", "Pilot procurement action 2"],
+    "keyBarriers": ["Supply chain barrier 1", "Quality standard barrier 2"],
+    "certifications": ["Required certification for import"],
+    "priorityActions": ["Strategic sourcing step 1", "Step 2", "Step 3"],
+    "timelineMonths": 12
+  }}
 }}
 
 Wrap ALL 15 in this envelope:
@@ -560,7 +585,14 @@ For EACH opportunity return this EXACT JSON structure:
   "leadTimeSavings": 0,
   "priceCompetitiveness": 0.0,
   "rulesOfOrigin": "Specific AfCFTA RoO (value addition threshold or process rule)",
-  "sourceUrl": "UNCTAD/UNIDO reference"
+  "sourceUrl": "UNCTAD/UNIDO reference",
+  "entryStrategy": {{
+    "quickWins": ["Pilot production line action (0–6 months)", "First export contract action"],
+    "keyBarriers": ["Industrial capacity barrier", "Quality certification barrier"],
+    "certifications": ["ISO standard or sector-specific certification required"],
+    "priorityActions": ["Investment step 1", "Capacity building step 2", "Market entry step 3"],
+    "timelineMonths": 24
+  }}
 }}
 
 Wrap ALL 15 in this envelope:
@@ -609,6 +641,33 @@ Wrap ALL 15 in this envelope:
             result["opportunities"] = self._post_process_opportunities(
                 result.get("opportunities", []), country_name, mode
             )
+
+            # Enrich with OEC trade data for validation & real numbers
+            try:
+                result["opportunities"] = await oec_data_service.enrich_opportunities(
+                    result.get("opportunities", []), year=2023
+                )
+                result["oec_enrichment"] = True
+            except Exception as e:
+                logger.warning(f"OEC enrichment failed: {e}")
+                result["oec_enrichment"] = False
+
+            # Enrich with real production capacities (FAO / USGS / UNIDO) for the
+            # analyzed country — grounds each opportunity in verifiable output data
+            # and African-integration scenarios. Relevant in export & industrial
+            # modes where the analyzed country is the producer.
+            try:
+                analyzed_iso3 = self._resolve_iso3(country_name)
+                if analyzed_iso3 and mode in ("export", "industrial"):
+                    result["opportunities"] = production_capacity_service.enrich_opportunities(
+                        result.get("opportunities", []), analyzed_iso3
+                    )
+                    result["production_enrichment"] = True
+                else:
+                    result["production_enrichment"] = False
+            except Exception as e:
+                logger.warning(f"Production capacity enrichment failed: {e}")
+                result["production_enrichment"] = False
 
             result["country"] = country_name
             result["mode"] = mode
