@@ -67,6 +67,7 @@ class TaxComponent:
     measure_type: MeasureType
     basis: DutyBasis
     rate_field: Optional[str] = None   # champ du crawl (ex. "dd_rate")
+    raw_field: Optional[str] = None    # champ brut (ex. "dd_rate_raw") pour droits spécifiques/composés
     fixed_rate: Optional[float] = None # taux légal fixe (ex. 10.0 pour surtaxe)
     includes_codes: list[str] = field(default_factory=list)  # pour CIF_PLUS_INCLUDED
     emit_when: str = "always"          # "always" | "positive"
@@ -80,6 +81,30 @@ class TaxComponent:
         if self.rate_field:
             return float(pos.get(self.rate_field) or 0)
         return 0.0
+
+
+import re as _re
+
+# Expressions brutes signifiant « exonéré » (droit nul réel)
+_FREE_TOKENS = {"free", "", "0", "0.0", "rebate", "nil"}
+# Droit spécifique : « 5,5c/kg », « 450c/kg », « 12c/u »…
+_SPECIFIC_RE = _re.compile(r"^([\d]+(?:[.,]\d+)?)\s*c\s*/\s*(kg|u|l|m2|m3|carat|litre)\b",
+                           _re.IGNORECASE)
+
+
+def _parse_specific_duty(raw: str) -> Optional[tuple[float, str]]:
+    """
+    Tente d'extraire un droit spécifique d'une expression brute SARS.
+    Retourne (montant_cents, unité) ou None si non reconnu.
+    """
+    if not raw:
+        return None
+    m = _SPECIFIC_RE.match(raw.strip())
+    if not m:
+        return None
+    amount = float(m.group(1).replace(",", "."))
+    unit = f"c/{m.group(2).lower()}"
+    return amount, unit
 
 
 def _default_sensitivity(dd: float, excise: float) -> str:
@@ -137,12 +162,62 @@ def _convert_position(pos: dict, profile: TaxProfile,
     emitted_codes: list[str] = []
     dd_rate = 0.0
     excise_rate = 0.0
+    rate_unresolved = False  # droit composé non réductible en % → ligne PARTIAL
 
     # Séquence FIXE par position dans le profil (idx 0 → 10, idx 1 → 20, …),
     # indépendante des composantes effectivement émises : la séquence d'une
     # taxe reste stable même si une composante amont est absente (ex. accise).
     for idx, comp in enumerate(profile.components):
-        rate = comp.resolve_rate(pos)
+        seq = (idx + 1) * 10
+
+        # ── Cas spécial : droit de douane avec valeur numérique absente ──────
+        # (droit spécifique « Nc/kg » ou expression composée non parsée).
+        # On NE met JAMAIS un faux 0 % : soit droit spécifique explicite,
+        # soit droit non résolu (rate_pct=None) + ligne marquée PARTIAL.
+        numeric_missing = (comp.rate_field is not None
+                           and pos.get(comp.rate_field) is None)
+        if comp.is_customs_duty and comp.raw_field and numeric_missing:
+            raw = str(pos.get(comp.raw_field, "")).strip()
+            spec = _parse_specific_duty(raw)
+            if spec:
+                amount, unit = spec
+                measures.append(Measure(
+                    country_iso3=iso, national_code=code,
+                    measure_type=comp.measure_type, code=comp.code,
+                    name_fr=comp.name_fr, name_en=comp.name_en,
+                    rate_pct=None,
+                    rate_type=RateType.SPECIFIC,
+                    specific_amount=amount, specific_unit=unit,
+                    basis=DutyBasis.QUANTITY,
+                    sequence=seq, is_zlecaf_applicable=True,
+                    legal_reference=comp.legal_reference,
+                    observation=f"Droit spécifique {raw} — {profile.source_name}",
+                ))
+                emitted_codes.append(comp.code)
+                continue
+            elif raw.lower() in _FREE_TOKENS:
+                rate = 0.0  # « free » = exonéré réel → traité en ad valorem 0 ci-dessous
+            else:
+                # Expression composée non résolue (ex. « 20% or 5c/kg ») :
+                # on ne devine pas. Droit non résolu, ligne dégradée en PARTIAL.
+                rate_unresolved = True
+                measures.append(Measure(
+                    country_iso3=iso, national_code=code,
+                    measure_type=comp.measure_type, code=comp.code,
+                    name_fr=comp.name_fr, name_en=comp.name_en,
+                    rate_pct=None,
+                    rate_type=RateType.MIXED,
+                    basis=comp.basis,
+                    sequence=seq, is_zlecaf_applicable=True,
+                    legal_reference=comp.legal_reference,
+                    observation=(f"Droit composé non résolu : « {raw} » — "
+                                 f"à vérifier auprès de {profile.source_name}"),
+                ))
+                emitted_codes.append(comp.code)
+                continue
+        else:
+            rate = comp.resolve_rate(pos)
+
         if comp.emit_when == "positive" and rate <= 0:
             continue
 
@@ -162,7 +237,7 @@ def _convert_position(pos: dict, profile: TaxProfile,
             rate_type=RateType.EXEMPT if rate == 0 else RateType.AD_VALOREM,
             basis=comp.basis,
             basis_includes=basis_includes,
-            sequence=(idx + 1) * 10,
+            sequence=seq,
             is_zlecaf_applicable=comp.is_customs_duty,
             legal_reference=comp.legal_reference,
             observation=comp.observation or f"{comp.code} — {profile.source_name}",
@@ -174,7 +249,9 @@ def _convert_position(pos: dict, profile: TaxProfile,
         elif comp.measure_type == MeasureType.EXCISE:
             excise_rate = max(excise_rate, rate)
 
-    total_npf = round(sum(m.rate_pct or 0 for m in measures), 4)
+    # total_npf : somme des seuls taux ad valorem connus (rate_pct non None).
+    # Les droits spécifiques/non résolus n'y figurent pas (ils ne sont pas un %).
+    total_npf = round(sum(m.rate_pct for m in measures if m.rate_pct is not None), 4)
     total_zlecaf = round(total_npf - dd_rate, 4)
 
     commodity = CommodityCode(
@@ -190,6 +267,20 @@ def _convert_position(pos: dict, profile: TaxProfile,
         sensitivity=profile.sensitivity_fn(dd_rate, excise_rate),
     )
 
+    # Provenance : ligne dégradée en PARTIAL/B si le droit n'a pas pu être résolu
+    # (on garde la source, mais on signale que le taux exige vérification).
+    line_prov = prov
+    if rate_unresolved:
+        line_prov = Provenance(
+            data_status=DataStatus.PARTIAL,
+            reliability=ReliabilityGrade.B,
+            source_name=prov.source_name, source_url=prov.source_url,
+            source_document=prov.source_document, version_date=prov.version_date,
+            retrieved_at=prov.retrieved_at,
+            notes=("Droit de douane composé non réductible en % par le crawl — "
+                   "à vérifier dans le tarif officiel. " + (prov.notes or "")),
+        )
+
     return CanonicalTariffLine(
         commodity=commodity,
         measures=measures,
@@ -198,7 +289,7 @@ def _convert_position(pos: dict, profile: TaxProfile,
         savings_pct=round(dd_rate, 4),
         last_updated=datetime.now(timezone.utc),
         schema_version=SCHEMA_VERSION,
-        provenance=prov,
+        provenance=line_prov,
     )
 
 
@@ -425,6 +516,70 @@ register(TaxProfile(
                      legal_reference="Value Added Tax Act 1998 (as amended)"),
     ],
 ))
+
+
+# ── SACU — Union douanière d'Afrique australe ───────────────────────────────
+# Les 5 membres (ZAF, NAM, BWA, LSO, SWZ) appliquent le MÊME Tarif Extérieur
+# Commun SACU (Schedule 1 Part 1, administré par SARS). Le crawl de référence
+# est celui de SARS (zaf_raw.json) ; le droit de douane est identique pour les
+# 5 membres (cf. note du crawl + Accord SACU 2002, art. 31). Seule la TVA
+# domestique diffère d'un membre à l'autre (taux statutaire national).
+_SACU_CET_SOURCE_URL = (
+    "https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-"
+    "schedule-no-1-part-1-chapters-1-to-99/")
+
+
+def _sacu_profile(iso3: str, country_fr: str, vat_rate: float,
+                  vat_legal_ref: str, is_crawl_origin: bool) -> TaxProfile:
+    """Construit le profil SACU d'un membre : TEC commun + TVA domestique."""
+    if is_crawl_origin:
+        src_doc = ("SARS — Schedule No. 1 Part 1 (Customs Tariff, General Rate), "
+                   "chapitres 1–99. PDF officiel SARS. TEC SACU.")
+        notes = ("Crawl direct du PDF officiel SARS (TEC SACU). Droits spécifiques "
+                 "(c/kg) préservés en tant que tels ; droits composés non résolus "
+                 "marqués PARTIAL. TVA 15 % — Value-Added Tax Act 89/1991.")
+    else:
+        src_doc = (f"TEC SACU (Schedule No. 1 Part 1, administré par SARS) appliqué "
+                   f"à {country_fr} en vertu de l'Accord SACU 2002 (art. 31). "
+                   f"Droit de douane = TEC SACU ; TVA = taux statutaire national.")
+        notes = (f"Droit de douane = TEC SACU commun (source SARS), identique aux 5 "
+                 f"membres. TVA {vat_rate:g} % propre à {country_fr} ({vat_legal_ref}). "
+                 f"Droits spécifiques/composés traités comme pour le crawl SARS.")
+    return TaxProfile(
+        country_iso3=iso3,
+        source_name=f"SACU Common External Tariff (SARS) — {country_fr}",
+        source_url=_SACU_CET_SOURCE_URL,
+        source_document=src_doc,
+        notes=notes,
+        version_date=date(2026, 5, 29),
+        components=[
+            TaxComponent("D.D", "Droit de Douane (TEC SACU)",
+                         "Customs Duty (SACU CET)",
+                         MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
+                         rate_field="dd_rate", raw_field="dd_rate_raw",
+                         emit_when="always", is_customs_duty=True,
+                         legal_reference="SACU Common External Tariff — Schedule 1 Part 1"),
+            TaxComponent("T.V.A", f"Taxe sur la Valeur Ajoutée (VAT) — {vat_rate:g} %",
+                         "Value Added Tax (VAT)",
+                         MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED,
+                         fixed_rate=vat_rate, includes_codes=["D.D"],
+                         emit_when="always", legal_reference=vat_legal_ref),
+        ],
+    )
+
+
+# Taux de TVA domestiques (statutaires) des membres SACU + base légale
+register(_sacu_profile("ZAF", "Afrique du Sud", 15.0,
+                       "Value-Added Tax Act No. 89 of 1991", is_crawl_origin=True))
+register(_sacu_profile("NAM", "Namibie", 15.0,
+                       "Value-Added Tax Act No. 10 of 2000", is_crawl_origin=False))
+register(_sacu_profile("BWA", "Botswana", 14.0,
+                       "Value Added Tax Act, 2001 (taux 14 % depuis 2021)",
+                       is_crawl_origin=False))
+register(_sacu_profile("LSO", "Lesotho", 15.0,
+                       "Value Added Tax Act No. 9 of 2001", is_crawl_origin=False))
+register(_sacu_profile("SWZ", "Eswatini", 15.0,
+                       "Value Added Tax Act No. 12 of 2011", is_crawl_origin=False))
 
 
 # ============================================================================

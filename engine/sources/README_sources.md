@@ -155,6 +155,27 @@ fausses sont rejetées et que les crawls réels (ETH, MUS) passent.
 Ajouter un pays = déposer son crawl officiel + ajouter un `TaxProfile` dans
 `PROFILES`. Aucune donnée n'est jamais inventée par le moteur.
 
+### SACU — Union douanière d'Afrique australe (ZAF, NAM, BWA, LSO, SWZ)
+- **Source** : SARS — Schedule No. 1 Part 1 (Customs Tariff, General Rate), ch. 1–99
+- **URL** : https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-schedule-no-1-part-1-chapters-1-to-99/
+- **Crawl** : 12 juin 2026 (PDF SARS maj 2026-05-29) — 8 592 positions, 6/8 digits, 98 chapitres
+- **Profils** : `raw_crawl_adapter.py` → PROFILES["ZAF"/"NAM"/"BWA"/"LSO"/"SWZ"]
+- **Output** : `engine/output/{ZAF,NAM,BWA,LSO,SWZ}_canonical.jsonl` (8 592 lignes chacun)
+- **Provenance** : VERIFIED/A (lignes au droit résolu) · PARTIAL/B (droits composés non réduits)
+- **Structure fiscale** :
+  - D.D = **TEC SACU commun** (identique aux 5 membres — Accord SACU 2002, art. 31) :
+    34 bandes de 0 à 82 % + droits spécifiques (c/kg) + composés
+  - T.V.A = taux **domestique** de chaque membre (statutaire) :
+    - ZAF 15 % — Value-Added Tax Act No. 89 of 1991
+    - NAM 15 % — Value-Added Tax Act No. 10 of 2000
+    - BWA **14 %** — Value Added Tax Act, 2001 (14 % depuis 2021)
+    - LSO 15 % — Value Added Tax Act No. 9 of 2001
+    - SWZ 15 % — Value Added Tax Act No. 12 of 2011
+- **Traitement honnête des droits non ad valorem** (anti-faux-0 %) :
+  - droit spécifique « Nc/kg » → `RateType.SPECIFIC` (montant + unité préservés), VERIFIED
+  - droit composé non résolu (ex. « 20% or 5c/kg » fragmenté) → `RateType.MIXED`,
+    `rate_pct=None`, ligne **PARTIAL/B** marquée « à vérifier » — jamais un faux 0 %
+
 ### ETH — Éthiopie (Ethiopian Customs Commission)
 - **Source** : Ethiopian Customs Commission (ECC)
 - **URL** : https://customs.erca.gov.et/trade/customs-division/tariff
