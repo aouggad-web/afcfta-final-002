@@ -1,0 +1,13 @@
+{
+  "country_code": "COM",
+  "country_name": "Comores",
+  "source": "Agence Nationale des Douanes des Comores (AGID)",
+  "source_url": "https://www.douanes.km/",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.douanes.km/ non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:13.951068",
+  "notes": "Comores — TVA 10%. Membre COMESA. Régime insulaire avec exonérations.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.douanes.km/ pour obtenir les taux réels. Méthode prévue : html_scrape. Ne pas utiliser de données générées par IA/template."
+}

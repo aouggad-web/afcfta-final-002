@@ -1,0 +1,13 @@
+{
+  "country_code": "STP",
+  "country_name": "São Tomé-et-Príncipe",
+  "source": "Direcção das Alfândegas — São Tomé-et-Príncipe",
+  "source_url": "https://www.alfandegas.st/",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.alfandegas.st/ non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:23.114501",
+  "notes": "STP — IVA 15%. Membre CEEAC (CEMAC étendu). Petit État insulaire — données limitées.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.alfandegas.st/ pour obtenir les taux réels. Méthode prévue : pending. Ne pas utiliser de données générées par IA/template."
+}

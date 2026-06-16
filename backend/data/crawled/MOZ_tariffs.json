@@ -1,0 +1,13 @@
+{
+  "country_code": "MOZ",
+  "country_name": "Mozambique",
+  "source": "Autoridade Tributária de Moçambique (AT)",
+  "source_url": "https://www.at.gov.mz/index.php/aduanas/pauta-aduaneira",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.at.gov.mz/index.php/aduanas/pauta-aduaneira non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:19.057601",
+  "notes": "Mozambique — IVA 17%. Membre SADC. Bandes 0/2.5/5/7.5/20/25%.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.at.gov.mz/index.php/aduanas/pauta-aduaneira pour obtenir les taux réels. Méthode prévue : pdf_download. Ne pas utiliser de données générées par IA/template."
+}

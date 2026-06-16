@@ -1,0 +1,13 @@
+{
+  "country_code": "MWI",
+  "country_name": "Malawi",
+  "source": "Malawi Revenue Authority (MRA)",
+  "source_url": "https://www.mra.mw/customs-excise/tariff",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.mra.mw/customs-excise/tariff non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:22.113313",
+  "notes": "Malawi — VAT 16.5%. Membre COMESA + SADC. Bandes 0/5/10/15/25%.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.mra.mw/customs-excise/tariff pour obtenir les taux réels. Méthode prévue : api_json. Ne pas utiliser de données générées par IA/template."
+}

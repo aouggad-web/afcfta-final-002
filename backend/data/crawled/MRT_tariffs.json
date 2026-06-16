@@ -1,0 +1,13 @@
+{
+  "country_code": "MRT",
+  "country_name": "Mauritanie",
+  "source": "Direction Générale des Douanes — Mauritanie",
+  "source_url": "https://www.douanesmauritanie.gov.mr/tarif/",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.douanesmauritanie.gov.mr/tarif/ non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:20.243593",
+  "notes": "Mauritanie — TVA 16%. Ancienne membre CEDEAO (sortie 2000). Membre UMA. Bandes DD 0/5/13/20%.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.douanesmauritanie.gov.mr/tarif/ pour obtenir les taux réels. Méthode prévue : html_scrape. Ne pas utiliser de données générées par IA/template."
+}

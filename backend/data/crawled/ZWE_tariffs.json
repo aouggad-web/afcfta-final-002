@@ -1,0 +1,13 @@
+{
+  "country_code": "ZWE",
+  "country_name": "Zimbabwe",
+  "source": "Zimbabwe Revenue Authority (ZIMRA)",
+  "source_url": "https://www.zimra.co.zw/customs/tariff-schedule",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.zimra.co.zw/customs/tariff-schedule non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:25.771680",
+  "notes": "Zimbabwe — VAT 15%. Membre COMESA + SADC. Bandes 0/5/10/15/20/25/40%.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.zimra.co.zw/customs/tariff-schedule pour obtenir les taux réels. Méthode prévue : html_scrape. Ne pas utiliser de données générées par IA/template."
+}

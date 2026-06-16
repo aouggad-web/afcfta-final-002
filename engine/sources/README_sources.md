@@ -303,6 +303,57 @@ Ajouter un pays = déposer son crawl officiel + ajouter un `TaxProfile` dans
   (`cedeao_tec_adapter.py`). Seules les taxes nationales LRA (GST 10 %, etc.)
   restent à documenter : https://revenue.lra.gov.lr/
 
+## Convertisseurs pays-spécifiques (`engine/converters/`) — extension AfCFTA
+
+Pour couvrir les 47 pays ayant déposé leurs instruments de ratification de la
+ZLECAf sans retomber dans la production de données génériques, le moteur
+`engine/converters/` (un module par bloc douanier, zéro normalisation des
+libellés officiels) a été étendu en 3 groupes :
+
+### Groupe 1 — CEDEAO dérivés (TEC CEDEAO commun + taxes nationales documentées)
+
+6 pays membres CEDEAO sans crawl direct, mais soumis au même TEC CEDEAO que les
+8 pays crawlés (BEN, BFA, CIV, GIN, MLI, NER, SEN, TGO). Le droit de douane
+(DD) est dérivé du fichier `BEN_tariffs.json` (TEC CEDEAO commun, varie par
+ligne HS) ; les taxes nationales (TVA/GST/IVA, prélèvements communautaires)
+sont ajoutées depuis des taux statutaires documentés — **jamais une valeur
+fixe pour le DD**.
+
+| Pays | Taxes nationales ajoutées | Provenance |
+|------|---------------------------|------------|
+| CPV (Cabo Verde) | IVA 15 % | PARTIAL/B |
+| GHA (Ghana) | VAT 15 %, NHIL 2,5 %, GETFL 2,5 % | PARTIAL/B |
+| GMB (Gambie) | GST 15 % | PARTIAL/B |
+| GNB (Guinée-Bissau) | RS 1 %, PCS 1 %, PCC 0,5 %, PUA 0,2 %, TVA 15 % (UEMOA) | PARTIAL/B |
+| LBR (Liberia) | GST 10 % | PARTIAL/B |
+| SLE (Sierra Leone) | GST 15 % | PARTIAL/B |
+
+Module : `engine/converters/ecowas_converter.py` — `ECOWAS_DERIVED`,
+`_NATIONAL_TAXES`, `_build_derived_measures()`.
+
+### Groupe 2 — CEMAC dérivé (TEC CEMAC commun via CMR)
+
+GNQ (Guinée Équatoriale) : DD dérivé de `CMR_tariffs.json` (TEC CEMAC commun
+aux 6 membres) ; taxes nationales ajoutées : TCI 1 %, ISTE 0,1 %, TVA 15 %
+(sans CAC camerounais — Loi de Finances GNQ). Provenance PARTIAL/B.
+
+Module : `engine/converters/cemac_converter.py` — `CEMAC_DERIVED`,
+`_GNQ_NATIONAL`.
+
+### Groupe 3 — Pays sans données réelles disponibles (stubs PENDING)
+
+11 pays ratificateurs sans crawl exploitable et sans TEC commun dérivable
+(hors blocs déjà couverts) : AGO, COM, DJI, ERI, MDG, MOZ, MRT, MWI, STP, ZMB,
+ZWE. Module `backend/crawlers/countries/comesa_sadc_scraper.py` — tente un
+accès réel à chaque portail officiel (SGA Angola, ZRA Zambie, ZIMRA Zimbabwe,
+DGD Mauritanie, etc.) ; **si l'accès échoue (réseau ou 403), écrit un stub
+explicite `data_status: "PENDING"` avec `positions: []`** — jamais de données
+générées. Exécuté dans cet environnement (accès réseau restreint) :
+**11/11 PENDING** (DNS bloqué ou 403 sur tous les portails testés). À
+ré-exécuter depuis un environnement avec accès réseau complet, ou à compléter
+manuellement par dépôt de fichier officiel + hash SHA256 (cf. convention en
+tête de ce document).
+
 ## Échantillon de validation
 
 `engine/tests/fixtures/cedeao_tec_sample.csv` est un échantillon synthétique
