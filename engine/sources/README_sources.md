@@ -130,6 +130,147 @@ des hashes.
 - Douanes Gabon (tarif CEMAC) : https://douanes.ga/
 - Secrétariat CEMAC : https://www.cemac.int/
 
+### Moteur générique `raw_crawl_adapter.py` — garde-fous anti-données-génériques
+
+Pour ingérer efficacement un maximum de pays sans réécrire un adaptateur à
+chaque fois, le moteur `engine/adapters/raw_crawl_adapter.py` convertit
+n'importe quel crawl douanier « plat » via un **TaxProfile** déclaratif.
+
+**Pour ne JAMAIS reproduire l'erreur des données génériques estampillées
+réelles, trois verrous durs bloquent toute donnée non traçable :**
+
+1. **Profil** : le droit de douane (qui varie par produit) DOIT lire son taux
+   dans un champ du crawl (`rate_field`), jamais via un taux fixe codé en dur.
+   Toute taxe statutaire à taux fixe (TVA, surtaxe…) DOIT citer sa base légale.
+2. **Crawl** : refus si `source`/`source_url` manquants, si `data_type` est
+   marqué synthétique/généré/template, si le champ de droit est absent d'une
+   partie des positions (interdit de combler par 0), ou s'il n'y a qu'une seule
+   bande tarifaire (signature d'un remplissage par template).
+3. **Réalisme** : refus si tous les droits sont à 0 % ; avertissement si moins
+   de 500 positions (tarif national probablement incomplet).
+
+Tests : `engine/tests/test_raw_crawl_guardrails.py` PROUVENT que les données
+fausses sont rejetées et que les crawls réels (ETH, MUS) passent.
+
+Ajouter un pays = déposer son crawl officiel + ajouter un `TaxProfile` dans
+`PROFILES`. Aucune donnée n'est jamais inventée par le moteur.
+
+### MAR — Maroc (Douane / ADII — portail ADIL)
+- **Source** : ADII portail ADIL — https://www.douane.gov.ma/adil/
+- **Nomenclature** : NTS HS10
+- **Profil** : `raw_crawl_adapter.py` → PROFILES["MAR"]
+- **Structure fiscale** (ordre d'application) :
+  - DD (Droit d'Importation) : % CIF — du crawl (bandes 2,5/10/17,5/25/32,5/40)
+  - TPI (Taxe Parafiscale Import.) : % CIF — du crawl (≈ 0,25 %)
+  - TIC (Taxe Intérieure Consom.) : % CIF — du crawl si présent
+  - TVA : % de (CIF + DD + TPI + TIC) — 20 % std, 7/10/14 réduits — du crawl
+- **Crawl** : `backend/scripts/crawl_mar_to_raw.py`
+  - ⚠ Le crawler intégré échoue sur VSCode car `crawlers/__init__.py` importe
+    `motor` (MongoDB). Ce runner autonome **contourne** ce blocage (chargement
+    direct du scraper), vérifie les dépendances, et écrit `mar_raw.json`.
+  - Dépendances : `pip install httpx beautifulsoup4`
+  - Échantillon : `python backend/scripts/crawl_mar_to_raw.py --sample`
+  - Complet : `python backend/scripts/crawl_mar_to_raw.py --out engine/sources/mar_raw.json`
+  - Ingestion : `python engine/adapters/raw_crawl_adapter.py MAR engine/sources/mar_raw.json engine/output/`
+
+### TUN — Tunisie (Douane — tarifweb / douane.gov.tn)
+- **Source** : DGD Tunisie — tarifweb — https://www.douane.gov.tn/tarifweb2025/
+- **Nomenclature** : NDP HS11
+- **Profil** : `raw_crawl_adapter.py` → PROFILES["TUN"]
+- **Structure fiscale** (ordre d'application) :
+  - **Côté import** :
+    - DD (Droit de Douane) : % CIF — du crawl (bandes 0/10/20/30/36)
+    - DC (Droit de Consommation) : % CIF — du crawl (accise)
+    - FODEC (Fonds Dév. Compétitivité) : % — du crawl (≈ 1 %)
+    - TCL (Taxe Collectivités Locales) : % — du crawl
+    - TVA : % de (CIF + DD + DC + FODEC + TCL) — 19 % std, 7/13 réduits — du crawl
+  - **Côté export** (si présent) :
+    - Prélèvement à l'Export : % — du crawl (si applicable)
+- **Crawl** : `backend/scripts/crawl_tun_to_raw.py` (runner autonome, contourne
+  le bug `motor` de VSCode — cf. MAR)
+  - Supporte **côté import ET export** (taxes_import / taxes_export du scraper)
+  - `pip install httpx beautifulsoup4`
+  - `python backend/scripts/crawl_tun_to_raw.py --sample`
+  - `python backend/scripts/crawl_tun_to_raw.py --out engine/sources/tun_raw.json`
+  - `python engine/adapters/raw_crawl_adapter.py TUN engine/sources/tun_raw.json engine/output/`
+
+### CEMAC — Communauté Économique et Monétaire de l'Afrique Centrale
+#### (CMR, GAB, TCD, CAF, COG, GNQ)
+- **Source** : Secrétariat CEMAC — https://www.cemac.int/ + douanes nationales
+- **TEC CEEAC** : nouveau TEC approuvé 18/10/2024, applicable depuis 2026-01-01
+- **Nomenclature** : HS2022 (international)
+- **Profils** : `raw_crawl_adapter.py` → PROFILES["CMR"/"GAB"/"TCD"/"CAF"/"COG"/"GNQ"]
+- **Structure fiscale** :
+  - **Côté import** (TEC commun à tous les 6 membres) :
+    - DD (Droit de Douane) : % CIF — du crawl (bandes 0/5/10/20/30/40)
+  - **Côté export** (spécifique par membre) :
+    - Réduction intra-CEMAC : 0 % fixe (accord commercial CEMAC)
+    - Prélèvement à l'Export : % national — du crawl (si applicable)
+  - **Remarques** :
+    - Toutes les mesures import/export ont une traçabilité (rate_field ou legal_reference)
+    - Pas de taux fictifs ; les droits export manquants → crawl incomplet, pas un faux 0 %
+    - Accords préférentiels intra-CEMAC modélisés (réduction à 0 %)
+- **Crawl** : `backend/scripts/crawl_cemac_to_raw.py` (à créer)
+  - Même pattern que MAR/TUN : charge `CemacDoubleScraper` directement
+  - Futures sources : portails nationaux (CMR douanes, Gabon douanes, etc.)
+  - Support complet des taxes import/export pour tous les 6 membres
+  - `pip install httpx beautifulsoup4`
+  - `python backend/scripts/crawl_cemac_to_raw.py --sample`
+  - `python engine/adapters/raw_crawl_adapter.py CMR engine/sources/cemac_raw.json engine/output/`
+- **Tests** : 15 cas (`engine/tests/test_cemac_profiles.py`) valident :
+  - séparation import (seq 10-50) vs export (seq 60+)
+  - TEC commun appliqué identiquement aux 6 membres
+  - Traçabilité complète des taux (aucun inventé)
+
+### SACU — Union douanière d'Afrique australe (ZAF, NAM, BWA, LSO, SWZ)
+- **Source** : SARS — Schedule No. 1 Part 1 (Customs Tariff, General Rate), ch. 1–99
+- **URL** : https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-schedule-no-1-part-1-chapters-1-to-99/
+- **Crawl** : 12 juin 2026 (PDF SARS maj 2026-05-29) — 8 592 positions, 6/8 digits, 98 chapitres
+- **Profils** : `raw_crawl_adapter.py` → PROFILES["ZAF"/"NAM"/"BWA"/"LSO"/"SWZ"]
+- **Output** : `engine/output/{ZAF,NAM,BWA,LSO,SWZ}_canonical.jsonl` (8 592 lignes chacun)
+- **Provenance** : VERIFIED/A (lignes au droit résolu) · PARTIAL/B (droits composés non réduits)
+- **Structure fiscale** :
+  - D.D = **TEC SACU commun** (identique aux 5 membres — Accord SACU 2002, art. 31) :
+    34 bandes de 0 à 82 % + droits spécifiques (c/kg) + composés
+  - T.V.A = taux **domestique** de chaque membre (statutaire) :
+    - ZAF 15 % — Value-Added Tax Act No. 89 of 1991
+    - NAM 15 % — Value-Added Tax Act No. 10 of 2000
+    - BWA **14 %** — Value Added Tax Act, 2001 (14 % depuis 2021)
+    - LSO 15 % — Value Added Tax Act No. 9 of 2001
+    - SWZ 15 % — Value Added Tax Act No. 12 of 2011
+- **Traitement honnête des droits non ad valorem** (anti-faux-0 %) :
+  - droit spécifique « Nc/kg » → `RateType.SPECIFIC` (montant + unité préservés), VERIFIED
+  - droit composé non résolu (ex. « 20% or 5c/kg » fragmenté) → `RateType.MIXED`,
+    `rate_pct=None`, ligne **PARTIAL/B** marquée « à vérifier » — jamais un faux 0 %
+
+### ETH — Éthiopie (Ethiopian Customs Commission)
+- **Source** : Ethiopian Customs Commission (ECC)
+- **URL** : https://customs.erca.gov.et/trade/customs-division/tariff
+- **Crawl** : 15 juin 2026 — 2 063 positions, 11 digits, 96 chapitres
+- **Adaptateur** : `engine/adapters/eth_tariff_adapter.py`
+- **Output** : `engine/output/ETH_canonical.jsonl`
+- **Provenance** : VERIFIED / A
+- **Structure fiscale** :
+  - D.D (Customs Duty) : 0 / 5 / 15 / 25 / 35 % du CIF
+  - ER (Excise Duty)   : 0 / 10 / 15 / 20 / 25 / 30 / 40 / 80 / 100 % du CIF
+  - SR (Surtax)        : 10 % fixe de (CIF + DD + Excise) — Proclamation 312/2002
+  - T.V.A              : 15 % fixe de (CIF + DD + Excise + SR) — Proc. 285/2002
+  - WHR (Withholding)  : 3 % du CIF — Income Tax Proc. 979/2016
+
+### MUS — Maurice (Mauritius Revenue Authority)
+- **Source** : MRA Integrated Tariff Schedule HS2022 (as at 01 April 2026)
+- **URL** : https://www.mra.mu/download/TariffInfo010426.pdf
+- **Crawl** : 15 juin 2026 — 6 073 positions, 8 digits, 90 chapitres
+- **Adaptateur** : `engine/adapters/mus_tariff_adapter.py`
+- **Output** : `engine/output/MUS_canonical.jsonl`
+- **Provenance** : VERIFIED / A
+- **Structure fiscale** :
+  - D.D (MFN Duty)     : 0 / 10 / 15 / 30 / 100 % du CIF
+  - Excise Duty        : 0–230 % du CIF (tabac : 230 %, alcool fort : 45-50 %)
+  - T.V.A              : 0 % (1 415 positions exonérées — biens essentiels)
+                         ou 15 % de (CIF + DD + Excise) — Value Added Tax Act 1998
+  - Taxe environnement (EPL) : non incluse dans ce dataset
+
 ### LBR (Libéria)
 - Membre CEDEAO → les taux DD sont déjà couverts par le TEC CEDEAO
   (`cedeao_tec_adapter.py`). Seules les taxes nationales LRA (GST 10 %, etc.)
