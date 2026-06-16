@@ -1,0 +1,13 @@
+{
+  "country_code": "MDG",
+  "country_name": "Madagascar",
+  "source": "Douanes Madagascar — DGD",
+  "source_url": "https://www.douanes.mg/tarif/",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.douanes.mg/tarif/ non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:18.056335",
+  "notes": "Madagascar — TVA 20%. Membre COMESA + SADC. Bandes DD 0/5/10/20%.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.douanes.mg/tarif/ pour obtenir les taux réels. Méthode prévue : html_scrape. Ne pas utiliser de données générées par IA/template."
+}

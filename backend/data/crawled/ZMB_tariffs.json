@@ -1,0 +1,13 @@
+{
+  "country_code": "ZMB",
+  "country_name": "Zambie",
+  "source": "Zambia Revenue Authority (ZRA)",
+  "source_url": "https://www.zra.org.zm/customs/trade-tariff",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.zra.org.zm/customs/trade-tariff non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:24.560374",
+  "notes": "Zambie — VAT 16%. Membre COMESA + SADC. Bandes 0/5/15/25%. IDF 0.5% CIF.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.zra.org.zm/customs/trade-tariff pour obtenir les taux réels. Méthode prévue : api_json. Ne pas utiliser de données générées par IA/template."
+}

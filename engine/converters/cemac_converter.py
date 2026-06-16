@@ -37,6 +37,17 @@ from converters.base import (
 )
 
 CEMAC_CRAWLED = ["CMR", "CAF", "COG", "GAB", "TCD"]
+CEMAC_DERIVED = ["GNQ"]  # Guinée Équatoriale — même TEC CEMAC, pas de crawl direct
+CEMAC_ALL     = CEMAC_CRAWLED + CEMAC_DERIVED
+
+# Taxes nationales GNQ (dérivé CMR, TVA différente — pas de CAC)
+_GNQ_NATIONAL: list[tuple] = [
+    # code, name, rate, basis, sequence
+    ("DD",   "Droit de Douane (TEC CEMAC)",                            None,  DutyBasis.CIF, 10),
+    ("TCI",  "Taxe Communautaire d'Intégration (CEMAC)",                1.0,  DutyBasis.CIF, 20),
+    ("ISTE", "Impôt Statistique sur le Commerce Extérieur",             0.1,  DutyBasis.CIF, 25),
+    ("TVA",  "Impuesto sobre el Valor Añadido / Taxe sur la VA (GNQ)", 15.0, DutyBasis.CIF_PLUS_INCLUDED, 90),
+]
 
 _SOURCES: dict[str, tuple[str, str]] = {
     "CMR": ("CEMAC Tarif des Douanes (DGD Cameroun)",  "https://www.douanescameroun.com"),
@@ -120,11 +131,27 @@ def _build_measures(taxes_detail: list, code_nat: str, country: str) -> list[Mea
 
 
 def convert_country(country: str, output_path: Optional[Path] = None) -> int:
-    if country not in CEMAC_CRAWLED:
-        raise ValueError(f"{country} : pas de crawl CEMAC disponible")
+    if country not in CEMAC_ALL:
+        raise ValueError(f"{country} : pas de données CEMAC disponibles")
 
+    derived = (country == "GNQ")
     prov = _provenance(country)
-    data = load_crawled(country)
+    if derived:
+        import json
+        from converters.base import CRAWLED_DIR
+        with open(CRAWLED_DIR / "CMR_tariffs.json", encoding="utf-8") as fh:
+            data = json.load(fh)
+        prov = Provenance(
+            data_status=DataStatus.PARTIAL,
+            reliability=ReliabilityGrade.B,
+            source_name="Direction Nationale des Douanes — Guinée Équatoriale (dérivé TEC CEMAC)",
+            source_url="https://hacienda.gob.gq/",
+            source_document="TEC CEMAC 2022 — dérivé depuis CMR (même TEC commun)",
+            version_date=date(2022, 1, 1),
+            notes="Taux DD dérivés du fichier CMR crawlé (TEC CEMAC commun). TVA GNQ=15% (sans CAC camerounais). À confirmer contre LF GNQ en vigueur.",
+        )
+    else:
+        data = load_crawled(country)
     positions = data.get("positions", [])
     now  = datetime.utcnow()
 
@@ -149,7 +176,32 @@ def convert_country(country: str, output_path: Optional[Path] = None) -> int:
         )
 
         taxes_detail = pos.get("taxes_detail") or []
-        measures = _build_measures(taxes_detail, code_nat, country)
+        if derived:
+            # Pour GNQ : garder le DD du TEC, remplacer les taxes nationales CMR
+            dd_only = [t for t in taxes_detail if t.get("tax_code") == "DD"]
+            measures = _build_measures(dd_only, code_nat, country)
+            dd_rate = next((m.rate_pct for m in measures
+                            if m.measure_type == MeasureType.CUSTOMS_DUTY), None)
+            for tax_code, name_fr, rate, basis, seq in _GNQ_NATIONAL:
+                if tax_code == "DD":
+                    continue
+                actual_rate = rate
+                measures.append(Measure(
+                    country_iso3=country,
+                    national_code=code_nat,
+                    measure_type=MeasureType.VAT if seq == 90 else MeasureType.LEVY,
+                    code=tax_code,
+                    name_fr=name_fr,
+                    rate_pct=actual_rate,
+                    rate_type=RateType.AD_VALOREM if actual_rate and actual_rate > 0 else RateType.EXEMPT,
+                    basis=basis,
+                    basis_includes=["DD", "TCI"] if basis == DutyBasis.CIF_PLUS_INCLUDED else [],
+                    sequence=seq,
+                    observation="Taxe nationale GNQ — à confirmer contre LF en vigueur",
+                ))
+            measures.sort(key=lambda m: m.sequence)
+        else:
+            measures = _build_measures(taxes_detail, code_nat, country)
 
         total_npf = sum(m.rate_pct for m in measures if m.rate_pct is not None)
 
@@ -175,7 +227,7 @@ def convert_country(country: str, output_path: Optional[Path] = None) -> int:
 
 def convert_all(output_dir: Optional[Path] = None) -> dict[str, int]:
     results = {}
-    for country in CEMAC_CRAWLED:
+    for country in CEMAC_ALL:
         out = (output_dir / f"{country}_canonical.jsonl") if output_dir else None
         results[country] = convert_country(country, out)
     return results

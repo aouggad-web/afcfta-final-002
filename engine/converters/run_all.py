@@ -51,12 +51,21 @@ _REGISTRY: dict[str, tuple] = {
     "NER": (lambda: ecowas_converter.convert_country("NER"), "Niger — impots.gouv.ne",    "6 129 pos."),
     "SEN": (lambda: ecowas_converter.convert_country("SEN"), "Sénégal — douanes.sn",      "6 129 pos."),
     "TGO": (lambda: ecowas_converter.convert_country("TGO"), "Togo — otr.tg",             "6 129 pos."),
+    # CEDEAO — dérivés (TEC CEDEAO commun, taxes nationales documentées)
+    "CPV": (lambda: ecowas_converter.convert_country("CPV"), "Cabo Verde — dérivé TEC CEDEAO", "6 129 pos."),
+    "GHA": (lambda: ecowas_converter.convert_country("GHA"), "Ghana — dérivé TEC CEDEAO",       "6 129 pos."),
+    "GMB": (lambda: ecowas_converter.convert_country("GMB"), "Gambie — dérivé TEC CEDEAO",      "6 129 pos."),
+    "GNB": (lambda: ecowas_converter.convert_country("GNB"), "Guinée-Bissau — dérivé TEC CEDEAO", "6 129 pos."),
+    "LBR": (lambda: ecowas_converter.convert_country("LBR"), "Liberia — dérivé TEC CEDEAO",     "6 129 pos."),
+    "SLE": (lambda: ecowas_converter.convert_country("SLE"), "Sierra Leone — dérivé TEC CEDEAO", "6 129 pos."),
     # CEMAC
     "CMR": (lambda: cemac_converter.convert_country("CMR"), "Cameroun — DGD",    "5 239 pos."),
     "CAF": (lambda: cemac_converter.convert_country("CAF"), "Centrafrique — CEMAC", "5 239 pos."),
     "COG": (lambda: cemac_converter.convert_country("COG"), "Congo — CEMAC",     "5 239 pos."),
     "GAB": (lambda: cemac_converter.convert_country("GAB"), "Gabon — CEMAC",     "5 239 pos."),
     "TCD": (lambda: cemac_converter.convert_country("TCD"), "Tchad — CEMAC",     "5 239 pos."),
+    # CEMAC — dérivé (TEC CEMAC commun via CMR)
+    "GNQ": (lambda: cemac_converter.convert_country("GNQ"), "Guinée Équatoriale — dérivé TEC CEMAC", "5 239 pos."),
     # Afrique de l'Ouest
     "NGA": (nga_converter.convert, "Nigeria — customs.gov.ng", "6 363 pos."),
 }

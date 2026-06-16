@@ -1,0 +1,13 @@
+{
+  "country_code": "AGO",
+  "country_name": "Angola",
+  "source": "SGA Alfândegas de Angola",
+  "source_url": "https://www.sga.gov.ao/tarifa/pesquisa",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.sga.gov.ao/tarifa/pesquisa non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:12.321545",
+  "notes": "Angola applique l'IVA 14%. Accord de Luanda 2021.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.sga.gov.ao/tarifa/pesquisa pour obtenir les taux réels. Méthode prévue : api_json. Ne pas utiliser de données générées par IA/template."
+}
