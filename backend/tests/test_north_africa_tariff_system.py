@@ -1135,6 +1135,14 @@ class TestAdministrativeFormalities:
             empty = [l["hs6"] for l in lines if not l.get("administrative_formalities")]
             assert not empty, f"{cc}: {len(empty)} tariff lines have empty formalities: {empty[:5]}"
 
+    @pytest.mark.skip(reason=(
+        "backend/data/{tariffs/}MAR_tariffs.json est désormais publié depuis "
+        "engine/output/MAR_canonical.jsonl (données réelles converties). Ce HS6 "
+        "n'a pas de code officiel 'C01' vérifié dans la source — le code était "
+        "fabriqué dans l'ancien jeu de données. Décision utilisateur explicite : "
+        "laisser sans code plutôt que d'en inventer un ; les libellés en texte "
+        "libre des formalités restent présents."
+    ))
     def test_authentic_tariff_service_returns_formalities_for_mar(self):
         """get_administrative_formalities() must return enriched docs for MAR."""
         from services.authentic_tariff_service import get_administrative_formalities
@@ -1148,6 +1156,14 @@ class TestAdministrativeFormalities:
         codes = {f["code"] for f in forms}
         assert "C01" in codes, f"MAR/010110: expected C01, got {sorted(codes)}"
 
+    @pytest.mark.skip(reason=(
+        "backend/data/{tariffs/}TUN_tariffs.json est désormais publié depuis "
+        "engine/output/TUN_canonical.jsonl (données réelles converties). Ce HS6 "
+        "n'a pas de code officiel '103' vérifié dans la source — le code était "
+        "fabriqué dans l'ancien jeu de données. Décision utilisateur explicite : "
+        "laisser sans code plutôt que d'en inventer un ; les libellés en texte "
+        "libre des formalités restent présents."
+    ))
     def test_authentic_tariff_service_returns_formalities_for_tun(self):
         """get_administrative_formalities() must return enriched docs for TUN."""
         from services.authentic_tariff_service import get_administrative_formalities
@@ -2466,6 +2482,13 @@ class TestNoMockedData:
 
     # ── data/tariffs/ stale files: must now use real codes ───────────────
 
+    @pytest.mark.skip(reason=(
+        "backend/data/tariffs/ETH_tariffs.json est désormais publié depuis "
+        "engine/output/ETH_canonical.jsonl (données réelles converties). 'IMPDEC' "
+        "était un code fonctionnel non vérifié dans la source réelle ; les "
+        "formalités sont conservées en texte libre sans code tant qu'aucun code "
+        "officiel n'est confirmé."
+    ))
     def test_eth_tariffs_dir_uses_real_codes(self):
         """data/tariffs/ETH must use real functional codes (not just 910)."""
         codes = self._tariffs_codes("ETH")
@@ -2478,6 +2501,13 @@ class TestNoMockedData:
         assert "910" not in codes, f"SDN (data/tariffs) still has mocked 910"
         assert "IMPDEC" in codes
 
+    @pytest.mark.skip(reason=(
+        "backend/data/tariffs/SOM_tariffs.json est désormais publié depuis "
+        "engine/output/SOM_canonical.jsonl (données réelles converties). 'IMPDEC' "
+        "était un code fonctionnel non vérifié dans la source réelle ; les "
+        "formalités sont conservées en texte libre sans code tant qu'aucun code "
+        "officiel n'est confirmé."
+    ))
     def test_som_tariffs_dir_uses_real_codes(self):
         """data/tariffs/SOM must use real functional codes."""
         codes = self._tariffs_codes("SOM")

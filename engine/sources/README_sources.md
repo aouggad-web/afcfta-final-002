@@ -100,6 +100,31 @@ Statut PARTIAL/B : source privée, à recouper avec le tarif officiel DGD/Journa
 Adaptateur existant : `engine/adapters/dza_conformepro_adapter.py` (lit CSV
 conformepro — à adapter pour lire le JSON `sub_positions` si besoin).
 
+### Codes de formalités officiels DZA — "Liste des documents F,A,P" (DGD)
+
+Liste officielle des codes "FAP" (Formalités Administratives Préalables) de la
+Direction Générale des Douanes algérienne, fournie directement par l'utilisateur
+(`DOCUMENTS_FAP.pdf`). Rapprochement appliqué dans
+`engine/converters/dza_converter.py::_FAP_CODES` par correspondance exacte de
+libellé normalisé (accents/casse/ponctuation ignorés) — **aucun code n'est
+deviné** pour les libellés sans correspondance vérifiée ; ceux-ci restent sans
+code (`code=""`) avec leur description en texte libre intacte.
+
+| Code FAP | Libellé source (formalities[]) | Base légale |
+|----------|--------------------------------|--------------|
+| 100 | Autorisation Spéciale du Ministère de la Défense Nationale | DE n° 98/96 du 18/06/98 |
+| 109 | Autorisation préalable à l'import/export de stupéfiants et substances psychotropes | Convention ONU contre le trafic illicite de stupéfiants |
+| 113 | Autorisation technique préalable d'importation des produits phytosanitaires à usage agricole | DE 99-165 du 20/07/99 |
+| 140 | Acquit du service des alcools (titres de régie) | Article 73 du Code des Impôts Indirects |
+| 160 | Visa de contrôle sanitaire vétérinaire | DE 91.452 du 16/11/1991 |
+| 180 | Dérogation sanitaire vétérinaire | DE 91.452 du 16/11/1991 |
+| 215 | Certificat phytosanitaire du pays d'origine | DE 93.286 du 23/11/93 |
+| 242 | Autorisation d'import/export de sources radioactives (ASRI) | DP 05-117 du 11/04/2005 |
+
+Les autres codes de la liste F,A,P (102, 103, 104, 106, 110, 112, 114, 115, 150,
+191, 192, 210, 211, 220, 231, 240, 902) n'ont pas de libellé correspondant dans
+`backend/data/crawled/DZA_tariffs.json` à ce jour et ne sont donc pas appliqués.
+
 ---
 
 ## Quarantaine — fichiers non vérifiables
