@@ -426,27 +426,58 @@ class AlgeriaConformeproScraper:
         with open(os.path.join(DATA_DIR, "DZA_structure.json"), "w", encoding="utf-8") as f:
             json.dump(structure, f, ensure_ascii=False, indent=2)
 
+        # Fusionne avec un DZA_tariffs.json existant (ex. re-crawl ciblé d'un
+        # sous-ensemble de chapitres) : les positions nouvellement re-crawlées
+        # remplacent les anciennes par hs_code, le reste est conservé tel quel.
+        existing_path = os.path.join(DATA_DIR, "DZA_tariffs.json")
+        merged_by_code: dict[str, dict] = {}
+        if os.path.exists(existing_path):
+            try:
+                with open(existing_path, "r", encoding="utf-8") as f:
+                    prev = json.load(f)
+                for p in prev.get("sub_positions", []):
+                    merged_by_code[p.get("hs_code") or p.get("raw_code")] = p
+                logger.info(f"Fusion : {len(merged_by_code)} positions existantes chargées")
+            except Exception as e:
+                logger.warning(f"Impossible de charger {existing_path} pour fusion : {e}")
+
+        for p in self.sub_positions:
+            merged_by_code[p.get("hs_code") or p.get("raw_code")] = p
+
+        all_positions = list(merged_by_code.values())
+
         tariff_data = {
             "country": "DZA",
             "country_name": "Algérie",
             "source": "conformepro.dz (données douane.gov.dz)",
             "extracted_at": datetime.utcnow().isoformat(),
             "stats": self.stats,
-            "sub_positions": self.sub_positions,
+            "sub_positions": all_positions,
         }
-        with open(os.path.join(DATA_DIR, "DZA_tariffs.json"), "w", encoding="utf-8") as f:
+        with open(existing_path, "w", encoding="utf-8") as f:
             json.dump(tariff_data, f, ensure_ascii=False, indent=2)
 
-        logger.info(f"Final data saved: {len(self.sub_positions)} sub-positions")
+        logger.info(f"Final data saved: {len(self.sub_positions)} positions re-crawlées, "
+                    f"{len(all_positions)} positions au total dans {existing_path}")
         logger.info(f"Stats: {json.dumps(self.stats, indent=2)}")
 
-    async def run(self, max_headings: int = None):
+    async def run(self, max_headings: int = None, chapters: set[str] | None = None):
+        """
+        chapters: si fourni, ne scrape que les chapitres SH listés (ex. {"29", "30", ...}).
+        Permet de cibler un re-crawl correctif sans refaire les chapitres déjà
+        authentiquement crawlés.
+        """
         self.stats["started_at"] = datetime.utcnow().isoformat()
         logger.info("=== Algeria Tariff Scraper (conformepro.dz) ===")
 
         try:
             await self.scrape_sections()
             await self.scrape_chapters()
+            if chapters:
+                before = len(self.chapters)
+                self.chapters = [c for c in self.chapters if c["code"] in chapters]
+                logger.info(f"Filtre chapitres : {before} -> {len(self.chapters)} "
+                            f"({sorted(c['code'] for c in self.chapters)})")
             await self.scrape_headings()
             await self.scrape_all_sub_positions(max_headings=max_headings)
             self.save_final()
@@ -460,9 +491,9 @@ class AlgeriaConformeproScraper:
         }
 
 
-async def run_algeria_scraper(max_headings: int = None):
+async def run_algeria_scraper(max_headings: int = None, chapters: set[str] | None = None):
     scraper = AlgeriaConformeproScraper()
-    return await scraper.run(max_headings=max_headings)
+    return await scraper.run(max_headings=max_headings, chapters=chapters)
 
 
 async def run_algeria_scraper_fast():
@@ -528,11 +559,26 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--fast", action="store_true", help="Fast mode: positions and descriptions only, no detail pages")
     parser.add_argument("--max-headings", type=int, default=None)
+    parser.add_argument("--chapters", type=str, default=None,
+                         help="Liste de chapitres SH à recrawler, séparés par des virgules "
+                              "ou plages (ex. '29-76,78-98'). Sans cet argument, scrape tous les chapitres.")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO)
+
+    chapters_filter = None
+    if args.chapters:
+        chapters_filter = set()
+        for part in args.chapters.split(","):
+            part = part.strip()
+            if "-" in part:
+                lo, hi = part.split("-")
+                chapters_filter.update(f"{i:02d}" for i in range(int(lo), int(hi) + 1))
+            elif part:
+                chapters_filter.add(f"{int(part):02d}")
+
     if args.fast:
         result = asyncio.run(run_algeria_scraper_fast())
     else:
-        result = asyncio.run(run_algeria_scraper(max_headings=args.max_headings))
+        result = asyncio.run(run_algeria_scraper(max_headings=args.max_headings, chapters=chapters_filter))
     print(json.dumps(result, indent=2, ensure_ascii=False))
