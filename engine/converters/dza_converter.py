@@ -17,7 +17,9 @@ Les formalités sont copiées telles quelles dans document_fr.
 
 from __future__ import annotations
 
+import re
 import sys
+import unicodedata
 from datetime import date, datetime
 from pathlib import Path
 from typing import Optional
@@ -122,6 +124,60 @@ def _build_measures(taxes: dict, code_nat: str) -> list[Measure]:
     return measures
 
 
+def _normalize_fap_text(text: str) -> str:
+    """Normalise un libellé pour le rapprochement avec la liste officielle FAP
+    (insensible aux accents/casse/ponctuation/espaces)."""
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(c for c in text if not unicodedata.combining(c))
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9]+", " ", text).strip()
+    return text
+
+
+# Liste officielle des codes "FAP" (Formalités Administratives Préalables) de la
+# Direction Générale des Douanes algérienne — "LISTE DES DOCUMENTS F,A,P" fournie
+# par l'utilisateur (PDF DOCUMENTS_FAP). Rapprochement par libellé exact normalisé
+# uniquement : aucun code n'est deviné pour les libellés sans correspondance —
+# ceux-ci restent sans code (code="") en attendant une correspondance vérifiée.
+_FAP_CODES: dict[str, tuple[str, str]] = {
+    # libellé normalisé → (code FAP, base légale / Doccar)
+    _normalize_fap_text("Autorisation Spéciale du Ministère de la Défense Nationale"):
+        ("100", "DE n° 98/96 du 18/06/98 relatif aux armes et munitions."),
+    _normalize_fap_text(
+        "Autorisation prealable a l'import et/ou l'export de stupefiants et "
+        "substances psychotropes(m.sante)"):
+        ("109", "Convention des Nations Unies contre le trafic illicite des "
+                "stupéfiants et des substances psychotropes."),
+    _normalize_fap_text(
+        "Autorisation technique prealable d'importation des produits "
+        "phytosanitaires a usage agricole"):
+        ("113", "DE 99-165 du 20/07/99 modifiant et complétant le DE 95-405 du "
+                "02/12/95 relatif au contrôle des produits phytosanitaires à "
+                "usage agricole."),
+    _normalize_fap_text(
+        "Acquit du service des alcools, titres de regie "
+        "(passavant,acquit-@-caution)."):
+        ("140", "Article 73 du Code des Impôts Indirects."),
+    _normalize_fap_text("Visa de controle sanitaire veterinaire (m. agriculture)"):
+        ("160", "DE 91.452 du 16/11/1991 relatif aux inspections vétérinaires "
+                "des postes frontières (en application de la loi 88.08 du "
+                "26/01/1988)."),
+    _normalize_fap_text("Derogation sanitaire veterinaire (m. agriculture)"):
+        ("180", "DE 91.452 du 16/11/1991 relatif aux inspections vétérinaires "
+                "des postes frontières (en application de la loi 88.08 du "
+                "26/01/1988)."),
+    _normalize_fap_text("Certificat Phytosanitaire du Pays d'Origine"):
+        ("215", "DE 93.286 du 23/11/93 relatif à la protection phytosanitaire "
+                "aux frontières (en application de la loi 87.17 du "
+                "01/08/1987)."),
+    _normalize_fap_text(
+        "Autorisation d'importation et d'exportation des produits sources de "
+        "rayonnements ionisants (asri)"):
+        ("242", "DP 05-117 du 11/04/2005 relatif aux mesures de protection "
+                "contre les rayonnements ionisants."),
+}
+
+
 def _build_requirements(formalities: list, code_nat: str) -> list[Requirement]:
     reqs = []
     for idx, item in enumerate(formalities, 1):
@@ -130,16 +186,20 @@ def _build_requirements(formalities: list, code_nat: str) -> list[Requirement]:
             continue
         req_type = classify_requirement(text)
         authority, auth_code = extract_authority(text)
+        fap_match = _FAP_CODES.get(_normalize_fap_text(text))
+        code = fap_match[0] if fap_match else ""
+        legal_ref = fap_match[1] if fap_match else None
         reqs.append(Requirement(
             country_iso3=COUNTRY,
             national_code=code_nat,
             requirement_type=req_type,
-            code=f"DZA_{idx:03d}",
+            code=code,
             document_fr=text,
             is_mandatory=True,
             issuing_authority=authority,
             issuing_authority_code=auth_code,
             applies_to="IMPORT",
+            legal_reference=legal_ref,
         ))
     return reqs
 
