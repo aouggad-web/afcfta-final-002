@@ -1,445 +1,333 @@
 {
-  "generated_at": "2026-06-12T00:09:19.747193",
+  "generated_at": "2026-06-16T22:28:01.085550",
   "schema_version": "4.0",
   "dry_run": false,
   "summary": {
-    "countries": 54,
-    "lines_total": 894783,
-    "lines_marked": 894783,
-    "lines_skipped_protected": 0
+    "countries": 40,
+    "lines_total": 279002,
+    "lines_marked": 0,
+    "lines_skipped_protected": 279002
   },
   "countries": {
-    "AGO": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16571,
-      "lines_marked": 16571,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
     "BDI": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
     },
     "BEN": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16571,
-      "lines_marked": 16571,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "BFA": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "BWA": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
     },
     "CAF": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16568,
-      "lines_marked": 16568,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
     },
     "CIV": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16567,
-      "lines_marked": 16567,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "CMR": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16572,
-      "lines_marked": 16572,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
     },
     "COD": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
     },
     "COG": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "COM": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
     },
     "CPV": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "DJI": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "DZA": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 17115,
+      "lines_marked": 0,
+      "lines_skipped_protected": 17115,
+      "disclaimer": null
     },
     "EGY": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "ERI": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 8746,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8746,
+      "disclaimer": null
     },
     "ETH": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16572,
-      "lines_marked": 16572,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 2063,
+      "lines_marked": 0,
+      "lines_skipped_protected": 2063,
+      "disclaimer": null
     },
     "GAB": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
     },
     "GHA": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16572,
-      "lines_marked": 16572,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "GIN": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "GMB": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "GNB": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "GNQ": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
     },
     "KEN": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16572,
-      "lines_marked": 16572,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
     },
     "LBR": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "LBY": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16573,
-      "lines_marked": 16573,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "LSO": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
     },
     "MAR": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16575,
-      "lines_marked": 16575,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "MDG": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 13114,
+      "lines_marked": 0,
+      "lines_skipped_protected": 13114,
+      "disclaimer": null
     },
     "MLI": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "MOZ": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16567,
-      "lines_marked": 16567,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "MRT": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "MUS": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "MWI": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 6073,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6073,
+      "disclaimer": null
     },
     "NAM": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16572,
-      "lines_marked": 16572,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
     },
     "NER": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16568,
-      "lines_marked": 16568,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "NGA": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16577,
-      "lines_marked": 16577,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6363,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6363,
+      "disclaimer": null
     },
     "RWA": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16571,
-      "lines_marked": 16571,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "SDN": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
     },
     "SEN": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "SLE": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "SOM": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16571,
-      "lines_marked": 16571,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5943,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5943,
+      "disclaimer": null
     },
     "SSD": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16572,
-      "lines_marked": 16572,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "STP": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
     },
     "SWZ": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "SYC": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
     },
     "TCD": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
     },
     "TGO": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
     },
     "TUN": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16570,
-      "lines_marked": 16570,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 17512,
+      "lines_marked": 0,
+      "lines_skipped_protected": 17512,
+      "disclaimer": null
     },
     "TZA": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
     },
     "UGA": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
     },
     "ZAF": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16568,
-      "lines_marked": 16568,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "ZMB": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16569,
-      "lines_marked": 16569,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
-    },
-    "ZWE": {
-      "data_status": "SYNTHETIC",
-      "reliability": "D",
-      "lines_total": 16571,
-      "lines_marked": 16571,
-      "lines_skipped_protected": 0,
-      "disclaimer": "Ces données sont synthétiques et non vérifiées. Consultez les tarifs douaniers officiels avant toute opération commerciale."
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
     }
   }
 }
