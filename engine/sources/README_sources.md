@@ -57,57 +57,84 @@ le PDF officiel.
 
 ## Égypte (EGY) — crawl brut customs.gov.eg
 
-| Fichier | Source | URL | Crawlé le | SHA256 |
+| Fichier | Source | URL | Crawlé le | Statut |
 |---------|--------|-----|-----------|--------|
-| `egy_raw.json` | Moslaha El Gamareg — Tarif officiel customs.gov.eg (SH10, 8 274 positions, 95 chapitres) | https://customs.gov.eg/Services/Tarif | 2026-06-13 | `ef1d5c5ef68138a4ae89d2a70318b949d694b605f97079119973ffdafcdfc933` |
+| `backend/data/crawled/EGY_tariffs.json` | Moslaha El Gamareg — Tarif officiel customs.gov.eg (SH10, 8 746 sous-positions) | https://customs.gov.eg/Services/Tarif | 2026-06-13 | ✅ RÉEL |
 
-### ⚠ Défaut de mapping de colonne — NON INGESTIBLE en l'état
+### ✅ Données réelles — re-crawl avec mapping corrigé (2026-06-13)
 
-**73,6 % des taux DD sont erronés** (6 091 / 8 274 positions) : le crawler a
-capturé la colonne TVA (`ض.ق.م`) à la place de la colonne droits de douane
-(`الرسم الجمركي`). Les valeurs du type `'14% (من القيمة + ر.ض.جمركية)'`
-signifient **"14 % sur (CIF + droits douane)"** — c'est la formule d'assiette
-de la TVA égyptienne (Loi 67/2016), pas un taux DD.
+Le fichier `EGY_tariffs.json` (dans `backend/data/crawled/`) contient **8 746
+sous-positions HS10** avec DD et TVA correctement mappés depuis customs.gov.eg.
 
-Validation croisée confirmée :
-- Ch.87 véhicules : fichier = 14 %, réel = 40–135 % → **faux**
-- 7213 (fil machine acier) : fichier = 14 %, réel = 2 % → **faux**
-- 0101 (chevaux) : fichier = 5 %, réel = 5 % → ✅ correct (cas des purs %)
+**Validation croisée réussie** :
+- 8703 voitures : DD = 5–135 % selon cylindrée → ✅ conforme tarif EGY réel
+- Alcools (ch.22) : DD = 600–3000 % → ✅ politique douanière EGY (pays à haute taxation alcool)
+- Acier ch.72 : DD = 2 % → ✅ conforme au tarif EGY
+- TVA = 14 % standard sur 7 612/8 746 positions → ✅ Loi 67/2016
 
-**Action requise** : re-crawler customs.gov.eg avec mapping corrigé :
-`الرسم الجمركي` → `dd_rate_raw` et `ض.ق.م` → `vat_rate_raw`.
+Les données sont dans la clé `sub_positions` (pas `tariff_lines`) — adapter
+le converter si besoin (`backend/scripts/egy_crawled_to_raw.py` à créer).
 
 ### ✅ Données formalités exploitables (instructions غ / ق)
 
-Le fichier contient 95 447 instructions par position, réparties en 3 types :
+Le fichier contient également des instructions réglementaires par position :
 
-| Préfixe | Type | Occurrences |
+| Préfixe | Type | Description |
 |---------|------|-------------|
-| ر | Notes tarifaires (accords, préférences, quotas) | 65 912 |
-| غ | Conditions non-tarifaires — 60 codes uniques (autorisations préalables, certifications) | 4 047 |
-| ق | Restrictions/interdictions (CITES, prohibitions, règles par pays) | 25 488 |
+| ر | Notes tarifaires | Accords, préférences, quotas, démantèlement ZLECAf |
+| غ | Conditions NTB | 60 codes uniques (autorisations, certifications, quarantaine) |
+| ق | Restrictions | CITES, prohibitions, règles par pays |
 
-Les codes **غ** couvrent : quarantaine vétérinaire, autorisation Agence du
-Médicament Égyptienne (EDA), contrôle phytosanitaire, certification OGM,
-contrôle radiologique (Japon/Fukushima), anti-dumping.
-Les codes **ق** couvrent : CITES, protocoles bilatéraux (Soudan, Syrie,
-URSS-ex), prohibitions absolues à l'exportation.
-Les codes **ر** incluent les taux de démantèlement ZLECAf (groupes A et B).
 Ces données alimenteront le champ `requirements` du modèle canonique.
+
+## Algérie (DZA) — crawl brut conformepro.dz
+
+| Fichier | Source | URL | Crawlé le | Statut |
+|---------|--------|-----|-----------|--------|
+| `backend/data/crawled/DZA_tariffs.json` | conformepro.dz — Tarif intégré algérien (17 115 sous-positions HS10) | https://conformepro.dz/ | 2026-06-12 | ✅ RÉEL (PARTIAL/B) |
+
+**17 115 sous-positions HS10** depuis conformepro.dz (agrégateur privé du tarif
+DGD). Données dans la clé `sub_positions`. Taxes présentes : DD, TVA, TCS, PRCT.
+Statut PARTIAL/B : source privée, à recouper avec le tarif officiel DGD/Journal Officiel.
+
+Adaptateur existant : `engine/adapters/dza_conformepro_adapter.py` (lit CSV
+conformepro — à adapter pour lire le JSON `sub_positions` si besoin).
+
+---
 
 ## Quarantaine — fichiers non vérifiables
 
-Le sous-répertoire `quarantine_non_verifie/` contient les fichiers refusés par
-le contrôle de provenance (`json_tariffs_adapter._validate_source`) : générés
-automatiquement, sans `source_document` officiel, ou aux données démontrées
-erronées. **Ils ne doivent jamais être ingérés** tant qu'ils n'ont pas été
-remplacés par un document officiel vérifié.
+### `engine/sources/quarantine_non_verifie/`
+
+Fichiers refusés par le contrôle de provenance (`json_tariffs_adapter._validate_source`) :
+générés automatiquement, sans `source_document` officiel, ou aux données démontrées
+erronées. **Jamais ingérer** tant qu'ils n'ont pas été remplacés par un document officiel.
 
 | Fichier en quarantaine | Motif de rejet |
 |------------------------|----------------|
 | `RWA_tariffs.json` | Généré le jour même par script ; `zlecaf_rate` = formule 10%×DD sur toutes les lignes ; erreurs factuelles (véhicules à 0 % vs CET EAC 25 %) |
 | `LBR_tariffs.json` | Idem ; doublon GST/T.V.A (même impôt compté deux fois) |
 | `CMR_tariffs.json` | Idem ; aucune exonération TVA modélisée |
+
+### `backend/data/crawled/QUARANTINE_SYNTHETIC/`
+
+**46 fichiers `*_tariffs.json`** déplacés ici le 2026-06-16 après audit complet.
+
+**Diagnostic** : tous générés en 2 minutes (2026-03-06, 03:53–03:55) avec
+exactement 5 831 codes HS6 identiques au TEC CEMAC (Cameroun). Ce sont des
+**templates CEMAC avec taux nationaux appliqués mécaniquement** — pas des crawls
+de tarifs nationaux réels.
+
+Pays synthétiques (46) : AGO BDI BEN BFA BWA CIV COD COM CPV DJI ERI ETH GHA
+GIN GMB GNB KEN LBR LBY LSO MAR MDG MLI MOZ MRT MUS MWI NAM NER NGA RWA SDN
+SEN SLE SOM SSD STP SWZ SYC TGO TUN TZA UGA ZAF ZMB ZWE
+
+**Sources réelles à utiliser à la place** :
+- CEDEAO (BEN BFA CIV GHA GIN GNB GMB LBR MLI MRT NER NGA SEN SLE TGO) → CSV TEC CEDEAO officiel
+- EAC (BDI KEN RWA TZA UGA COD SSD SOM) → `engine/sources/eac_cet_2022.csv`
+- SACU (ZAF NAM BWA LSO SWZ) → PDF SARS Schedule 1
+- ETH MUS MAR TUN → adaptateurs et crawlers dédiés (réseau requis)
+- AGO MOZ MDG DJI ERI SDN LBY STP SYC COM CPV → **pas de source réelle disponible — ne pas ingérer**
 
 ## Sources officielles à obtenir (données réelles uniquement)
 

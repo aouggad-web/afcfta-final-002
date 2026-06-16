@@ -1,9 +1,17 @@
 """
 Tests — Profils tarifaires CEMAC (Communauté Économique et Monétaire)
 =====================================================================
-Vérifie la structure CEMAC TEC (Tarif Extérieur Commun) avec support export.
-Les 6 membres appliquent le TEC commun côté import ; côté export, réductions
-intra-CEMAC (0 %) + prélèvements nationaux à l'export.
+Vérifie la structure CEMAC TEC (Tarif Extérieur Commun) avec support export
+ET les taxes locales de chaque membre (TCI, RI, CIA, TS, PUA, RS, OHADA, TVA).
+
+Structure vérifiée par pays :
+  CMR : DD + TCI(1%) + RI(0.45%) + TVA(19.25%)
+  GAB : DD + TCI(1%) + CIA(0.2%) + TVA(18%)
+  TCD : DD + TCI(1%) + TS(2%) + PUA(0.2%) + TVA(18%)
+  CAF : DD + TCI(1%) + RS(1%) + TVA(19%)
+  COG : DD + TCI(1%) + TS(0.2%) + OHADA(0.05%) + TVA(18%)
+  GNQ : DD + TCI(1%) + TVA(15%)
+  Export (tous) : PRÉLEV(crawl) + RED.INTRA(0%)
 """
 import sys
 from pathlib import Path
@@ -23,7 +31,7 @@ from schemas.canonical_model import DutyBasis, MeasureType
 CEMAC_MEMBERS = ["CMR", "GAB", "TCD", "CAF", "COG", "GNQ"]
 
 
-def _crawl(country: str, positions):
+def _crawl(country: str, positions, vat_rate: float = 19.0):
     """Crée un crawl CEMAC avec côté import et export."""
     return {
         "country_code": country,
@@ -33,9 +41,9 @@ def _crawl(country: str, positions):
         "crawled_at": "2026-01-01T12:00:00+00:00",
         "data_type": "raw_crawl",
         "positions": positions + [
-            # Positions de remplissage pour bandes tarifaires
             {"code": f"99{i:08d}", "description_en": f"x{i}",
              "dd_rate": [0.0, 5.0, 10.0, 20.0, 30.0, 40.0][i % 6],
+             "vat_rate": vat_rate if i % 5 != 0 else 0.0,  # 20% de positions exonérées
              "export_levy_rate": None,
              "chapter": "99", "digits": 10}
             for i in range(600)
@@ -180,6 +188,7 @@ def test_all_members_emit_same_dd_for_same_code():
         "code": "0206290000",
         "description_en": "Beef",
         "dd_rate": 15.0,
+        "vat_rate": 19.0,
         "chapter": "02",
         "digits": 10,
     }
@@ -193,3 +202,195 @@ def test_all_members_emit_same_dd_for_same_code():
     # Tous doivent avoir le même DD du crawl
     assert len(set(dd_rates.values())) == 1
     assert 15.0 in dd_rates.values()
+
+
+# ============================================================================
+# Tests des taxes locales par pays
+# ============================================================================
+
+def _pos(dd: float, vat: float, export_levy: float = None) -> dict:
+    return {
+        "code": "0206290000", "description_en": "Beef",
+        "dd_rate": dd, "dd_rate_raw": f"{dd} %",
+        "vat_rate": vat, "export_levy_rate": export_levy,
+        "chapter": "02", "digits": 10,
+    }
+
+
+class TestCmrLocalTaxes:
+    """CMR : DD + TCI(1%) + RI(0.45%) + TVA(19.25%)."""
+
+    def setup_method(self):
+        recs = convert_with_profile(_crawl("CMR", [_pos(20.0, 19.25)], 19.25),
+                                    PROFILES["CMR"])
+        self.r = recs[0]
+        self.m = {x.code: x for x in self.r.measures if x.sequence < 60}
+
+    def test_tci_present(self):
+        assert "TCI" in self.m
+        assert self.m["TCI"].rate_pct == 1.0
+        assert self.m["TCI"].measure_type == MeasureType.LEVY
+
+    def test_ri_present(self):
+        assert "RI" in self.m
+        assert self.m["RI"].rate_pct == 0.45
+        assert self.m["RI"].measure_type == MeasureType.LEVY
+
+    def test_vat_present_at_correct_rate(self):
+        assert "T.V.A" in self.m
+        assert self.m["T.V.A"].rate_pct == 19.25
+
+    def test_total_import_without_exemption(self):
+        # DD(20) + TCI(1) + RI(0.45) + TVA(19.25) = 40.7
+        assert self.r.total_npf_pct == pytest.approx(40.70, abs=0.01)
+
+    def test_tci_has_legal_reference(self):
+        assert self.m["TCI"].legal_reference and "CEMAC" in self.m["TCI"].legal_reference
+
+    def test_ri_has_observation_about_cap(self):
+        """RI est plafonnée — l'observation doit le mentionner."""
+        assert "plafonn" in (self.m["RI"].observation or "").lower()
+
+
+class TestGabLocalTaxes:
+    """GAB : DD + TCI(1%) + CIA(0.2%) + TVA(18%)."""
+
+    def setup_method(self):
+        recs = convert_with_profile(_crawl("GAB", [_pos(10.0, 18.0)], 18.0),
+                                    PROFILES["GAB"])
+        self.r = recs[0]
+        self.m = {x.code: x for x in self.r.measures if x.sequence < 60}
+
+    def test_tci_present(self):
+        assert self.m["TCI"].rate_pct == 1.0
+
+    def test_cia_present(self):
+        assert "CIA" in self.m
+        assert self.m["CIA"].rate_pct == 0.2
+
+    def test_vat_18(self):
+        assert self.m["T.V.A"].rate_pct == 18.0
+
+    def test_total_gab(self):
+        # DD(10) + TCI(1) + CIA(0.2) + TVA(18) = 29.2
+        assert self.r.total_npf_pct == pytest.approx(29.2, abs=0.01)
+
+
+class TestTcdLocalTaxes:
+    """TCD : DD + TCI(1%) + TS(2%) + PUA(0.2%) + TVA(18%)."""
+
+    def setup_method(self):
+        recs = convert_with_profile(_crawl("TCD", [_pos(20.0, 18.0)], 18.0),
+                                    PROFILES["TCD"])
+        self.r = recs[0]
+        self.m = {x.code: x for x in self.r.measures if x.sequence < 60}
+
+    def test_ts_present(self):
+        assert "TS" in self.m
+        assert self.m["TS"].rate_pct == 2.0
+
+    def test_pua_present(self):
+        assert "PUA" in self.m
+        assert self.m["PUA"].rate_pct == 0.2
+
+    def test_vat_18_not_1925(self):
+        """TVA Tchad = 18% (Loi 2024), PAS 19.25% du scraper CMR."""
+        assert self.m["T.V.A"].rate_pct == 18.0
+
+    def test_total_tcd(self):
+        # DD(20) + TCI(1) + TS(2) + PUA(0.2) + TVA(18) = 41.2
+        assert self.r.total_npf_pct == pytest.approx(41.2, abs=0.01)
+
+
+class TestCafLocalTaxes:
+    """CAF : DD + TCI(1%) + RS(1%) + TVA(19%)."""
+
+    def setup_method(self):
+        recs = convert_with_profile(_crawl("CAF", [_pos(10.0, 19.0)], 19.0),
+                                    PROFILES["CAF"])
+        self.r = recs[0]
+        self.m = {x.code: x for x in self.r.measures if x.sequence < 60}
+
+    def test_rs_present(self):
+        assert "RS" in self.m
+        assert self.m["RS"].rate_pct == 1.0
+
+    def test_vat_19(self):
+        assert self.m["T.V.A"].rate_pct == 19.0
+
+    def test_total_caf(self):
+        # DD(10) + TCI(1) + RS(1) + TVA(19) = 31.0
+        assert self.r.total_npf_pct == pytest.approx(31.0, abs=0.01)
+
+
+class TestCogLocalTaxes:
+    """COG : DD + TCI(1%) + TS(0.2%) + OHADA(0.05%) + TVA(18%)."""
+
+    def setup_method(self):
+        recs = convert_with_profile(_crawl("COG", [_pos(20.0, 18.0)], 18.0),
+                                    PROFILES["COG"])
+        self.r = recs[0]
+        self.m = {x.code: x for x in self.r.measures if x.sequence < 60}
+
+    def test_ts_present(self):
+        assert "TS" in self.m
+        assert self.m["TS"].rate_pct == 0.2
+
+    def test_ohada_present(self):
+        assert "OHADA" in self.m
+        assert self.m["OHADA"].rate_pct == 0.05
+
+    def test_vat_18(self):
+        assert self.m["T.V.A"].rate_pct == 18.0
+
+    def test_total_cog(self):
+        # DD(20) + TCI(1) + TS(0.2) + OHADA(0.05) + TVA(18) = 39.25
+        assert self.r.total_npf_pct == pytest.approx(39.25, abs=0.01)
+
+
+def test_vat_exempt_products_skip_tva():
+    """Produit exonéré TVA : T.V.A ne doit pas être émise."""
+    member = "CMR"
+    recs = convert_with_profile(
+        _crawl(member, [_pos(5.0, 0.0)], 19.25),  # vat_rate=0 → exonéré
+        PROFILES[member]
+    )
+    m = {x.code: x for x in recs[0].measures if x.sequence < 60}
+    assert "T.V.A" not in m  # emit_when="positive" → 0% non émis
+    assert "D.D" in m
+    assert "TCI" in m
+
+
+def test_export_levy_emitted_when_positive():
+    """Prélèvement export à 3% doit être émis avec séquence ≥ 60."""
+    member = "GAB"
+    recs = convert_with_profile(
+        _crawl(member, [_pos(10.0, 18.0, export_levy=3.0)], 18.0),
+        PROFILES[member]
+    )
+    export_m = [m for m in recs[0].measures if m.sequence >= 60]
+    prelev = next((m for m in export_m if "PRÉLEV" in m.code), None)
+    assert prelev is not None
+    assert prelev.rate_pct == 3.0
+    assert prelev.is_zlecaf_applicable is False
+
+
+def test_tci_has_legal_reference_all_members():
+    """TCI doit avoir legal_reference pour tous les membres."""
+    for member in CEMAC_MEMBERS:
+        profile = PROFILES[member]
+        tci = next((c for c in profile.components if c.code == "TCI"), None)
+        assert tci is not None, f"{member}: TCI absent du profil"
+        assert tci.legal_reference, f"{member}: TCI sans legal_reference"
+
+
+def test_national_taxes_have_legal_reference():
+    """Toutes les taxes à taux fixe doivent avoir une legal_reference."""
+    for member in CEMAC_MEMBERS:
+        profile = PROFILES[member]
+        for comp in profile.components:
+            if comp.fixed_rate is not None:
+                assert comp.legal_reference, (
+                    f"{member}/{comp.code}: taux fixe {comp.fixed_rate}% "
+                    f"sans legal_reference — interdit par les garde-fous"
+                )

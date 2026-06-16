@@ -753,53 +753,210 @@ register(TaxProfile(
 
 # ── CEMAC — Communauté Économique et Monétaire de l'Afrique Centrale ────────
 # 6 membres : CMR, GAB, TCD, CAF, COG, GNQ
-# TEC CEEAC (Tarif Extérieur Commun) en vigueur depuis 2026-01-01 (CMR au minimum)
-# Structure : bandes 0%, 5%, 10%, 20%, 30%, 40% (cf. documents officiels CEMAC)
-# Nomenclature : HS (international) ou code national CEMAC selon source
-# Droits d'export : réductions réciproques intra-CEMAC + prélèvements à l'export
+# TEC CEEAC (Tarif Extérieur Commun) en vigueur depuis 2026-01-01
+# Structure fiscale à l'import (commune) :
+#   1. D.D  (TEC CEEAC) : 0/5/10/20/30% — du crawl (varie par produit)
+#   2. TCI  (Taxe Communautaire d'Intégration) : 1% CIF fixe — Règlement CEMAC
+#   3. Taxes nationales spécifiques à chaque membre (voir ci-dessous)
+#   4. T.V.A : % variable (crawl) — assiette CIF+DD+TCI
+# Structure à l'export :
+#   - Prélèvement à l'export : du crawl (export_levy_rate) si présent
+#   - Réduction intra-CEMAC : 0% fixe (accord CEMAC)
+# Source TVA : rates lus du crawl (vat_rate), déjà corrigés par pays :
+#   CMR 19.25% (TVA 17.5% + CAC 10%) · GAB 18% · TCD 18% · CAF 19% · COG 18%
 
-def _cemac_profile(iso3: str, country_fr: str, country_en: str) -> TaxProfile:
-    """Construit le profil CEMAC d'un membre : TEC commun CEEAC."""
+def _cemac_profile(
+    iso3: str,
+    country_fr: str,
+    source_url: str,
+    vat_legal_ref: str,
+    national_taxes: list[TaxComponent],
+    notes_extra: str = "",
+) -> TaxProfile:
+    """
+    Construit le profil CEMAC complet d'un membre :
+      - TEC CEEAC commun (DD du crawl)
+      - TCI fixe 1% (CEMAC-wide)
+      - Taxes nationales propres au membre (fixed_rate, legal_reference requis)
+      - TVA du crawl (vat_rate — 0% si exonéré, taux normal sinon)
+      - Côté export : prélèvement (crawl) + réduction intra-CEMAC (0%)
+    """
+    # Codes des composantes import pour construire l'assiette TVA
+    import_codes_before_vat = (
+        ["D.D", "TCI"] + [c.code for c in national_taxes if not c.is_export]
+    )
     return TaxProfile(
         country_iso3=iso3,
-        source_name=f"CEMAC — TEC CEEAC ({country_fr})",
-        source_url="https://www.cemac.int/",
+        source_name=f"CEMAC — TEC CEEAC + Taxes nationales ({country_fr})",
+        source_url=source_url,
         source_document=(
             f"Communauté Économique et Monétaire de l'Afrique Centrale (CEMAC) — "
-            f"Tarif Extérieur Commun CEEAC (TEC), applicable à {country_fr}. "
-            f"Bandes tarifaires : 0%, 5%, 10%, 20%, 30%, 40%. "
-            f"Accords préférentiels intra-CEMAC appliqués à l'export."
+            f"Tarif Extérieur Commun CEEAC, applicable à {country_fr}. "
+            f"Taxes nationales vérifiées auprès de {source_url}. "
+            f"TVA et taxes locales de source officielle nationale."
         ),
         notes=(
-            f"TEC CEEAC commun à tous les 6 membres CEMAC, en vigueur depuis 2026-01-01. "
-            f"Côté export : réductions réciproques intra-CEMAC (0 %) + prélèvements "
-            f"nationaux à l'export (si présents). Nomenclature HS2022."
+            f"DD : TEC CEEAC commun (bandes 0/5/10/20/30%), en vigueur depuis 2026-01-01. "
+            f"TCI 1% : taxe CEMAC communautaire fixe (Règlement CEMAC n°17/99). "
+            f"TVA : taux lus du crawl (0% si exonéré, taux national sinon). "
+            f"Export : réduction intra-CEMAC 0% + prélèvements si présents. "
+            + notes_extra
         ),
         version_date=date(2026, 1, 1),
         components=[
+            # ── Côté IMPORT ──────────────────────────────────────────────────
             TaxComponent("D.D", "Droit de Douane (TEC CEEAC)", "Customs Duty (CEMAC CET)",
                          MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
                          rate_field="dd_rate", raw_field="dd_rate_raw",
                          emit_when="always", is_customs_duty=True, is_export=False,
-                         legal_reference="Tarif Extérieur Commun CEEAC (TEC)"),
+                         legal_reference="Tarif Extérieur Commun CEEAC (TEC) — CEMAC"),
+            TaxComponent("TCI", "Taxe Communautaire d'Intégration", "CEMAC Integration Tax",
+                         MeasureType.LEVY, DutyBasis.CIF,
+                         fixed_rate=1.0, emit_when="always", is_export=False,
+                         legal_reference="Règlement CEMAC n°17/99-UEAC-007-CM-04"),
+            # Taxes nationales (injectées par pays ci-dessous)
+            *national_taxes,
+            # TVA : assiette = CIF + DD + TCI (+ taxes nationales si applicable)
+            TaxComponent("T.V.A", "Taxe sur la Valeur Ajoutée", "Value Added Tax",
+                         MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED,
+                         rate_field="vat_rate",
+                         includes_codes=import_codes_before_vat,
+                         emit_when="positive", is_export=False,
+                         legal_reference=vat_legal_ref),
+            # ── Côté EXPORT ──────────────────────────────────────────────────
             TaxComponent("PRÉLEV", "Prélèvement à l'Export", "Export Levy",
                          MeasureType.LEVY, DutyBasis.CIF,
                          rate_field="export_levy_rate", emit_when="positive", is_export=True,
                          legal_reference="Règlements CEMAC sur les prélèvements à l'export"),
-            TaxComponent("RED.INTRA", "Réduction intra-CEMAC (Export)", "Intra-CEMAC Reduction",
-                         MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
+            TaxComponent("RED.INTRA", "Réduction intra-CEMAC (Export)",
+                         "Intra-CEMAC Tariff Reduction",
+                         MeasureType.LEVY, DutyBasis.CIF,
                          fixed_rate=0.0, emit_when="always", is_export=True,
-                         legal_reference="Accord commercial CEMAC — Préférence intra-CEMAC"),
+                         legal_reference="Accord commercial CEMAC — Libre circulation intra-CEMAC"),
         ],
     )
 
 
-register(_cemac_profile("CMR", "Cameroun", "Cameroon"))
-register(_cemac_profile("GAB", "Gabon", "Gabon"))
-register(_cemac_profile("TCD", "Tchad", "Chad"))
-register(_cemac_profile("CAF", "Centrafrique", "Central African Republic"))
-register(_cemac_profile("COG", "Congo", "Republic of the Congo"))
-register(_cemac_profile("GNQ", "Guinée Équatoriale", "Equatorial Guinea"))
+# ── CMR — Cameroun ────────────────────────────────────────────────────────────
+# TVA : 19.25% = TVA 17.5% + CAC (Centimes Additionnels Communaux) 10% × DD
+# Taxes nationales : TCI (CEMAC) + RI (Redevance Informatique 0.45%, plafond 15 000 XAF)
+# Source : DGD Cameroun (douanes.cm) + DGI Cameroun
+register(_cemac_profile(
+    "CMR", "Cameroun",
+    source_url="https://www.douanes.cm/",
+    vat_legal_ref="Loi fiscale Cameroun — TVA 17.5% + CAC 10% = 19.25% effectif",
+    national_taxes=[
+        TaxComponent("RI", "Redevance Informatique", "IT Fee (DGD-CM)",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     fixed_rate=0.45, emit_when="always", is_export=False,
+                     observation="Plafonné à 15 000 XAF par envoi — taux effectif réduit pour les valeurs élevées",
+                     legal_reference="Redevance Informatique — DGD Cameroun (DGD-CM)"),
+    ],
+    notes_extra=(
+        "RI 0.45% : plafonnée à 15 000 XAF (taux ad valorem approximatif). "
+        "CAC (Centimes Additionnels Communaux) = 10% du DD : inclus dans la TVA 19.25%."
+    ),
+))
+
+# ── GAB — Gabon ───────────────────────────────────────────────────────────────
+# TVA : 18% (taux réduits 10%/5% pour certains secteurs — lus du crawl si présents)
+# Taxes nationales : TCI (CEMAC) + CIA (Contribution à l'Intégration Africaine 0.2%)
+# Source : Douanes Gabon (douanes.ga) + DGI Gabon
+register(_cemac_profile(
+    "GAB", "Gabon",
+    source_url="https://douanes.ga/",
+    vat_legal_ref="Code Général des Impôts Gabon — TVA 18% (taux normal)",
+    national_taxes=[
+        TaxComponent("CIA", "Contribution à l'Intégration Africaine",
+                     "African Integration Contribution",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     fixed_rate=0.2, emit_when="always", is_export=False,
+                     legal_reference="Contribution à l'Intégration Africaine — Douanes Gabon"),
+    ],
+    notes_extra="CIA 0.2% : contribution à l'intégration africaine — taux vérifié auprès de douanes.ga.",
+))
+
+# ── TCD — Tchad ───────────────────────────────────────────────────────────────
+# TVA : 18% (Loi de Finances Tchad 2024). Note : le scraper CMR avait 19.25% par erreur.
+# Taxes nationales : TCI (CEMAC) + TS (Taxe Statistique 2%) + PUA (Prélèvement UA 0.2%)
+# Taux réduit TVA : 9.9% pour produits locaux (sucre, huile, savon, textile) — via crawl
+# Source : DGI Tchad (finances.gouv.td)
+register(_cemac_profile(
+    "TCD", "Tchad",
+    source_url="https://finances.gouv.td/",
+    vat_legal_ref="Loi de Finances Tchad 2024 — TVA 18% (taux réduit 9.9% produits locaux)",
+    national_taxes=[
+        TaxComponent("TS", "Taxe Statistique", "Statistical Tax",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     fixed_rate=2.0, emit_when="always", is_export=False,
+                     legal_reference="Taxe Statistique — DGI Tchad"),
+        TaxComponent("PUA", "Prélèvement Union Africaine", "African Union Levy",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     fixed_rate=0.2, emit_when="always", is_export=False,
+                     legal_reference="Prélèvement Union Africaine — DGI Tchad"),
+    ],
+    notes_extra=(
+        "TVA 18% Loi de Finances 2024 (corrigé : scraper initial avait 19.25% par erreur). "
+        "Taux réduit 9.9% pour produits locaux sensibles — présent dans le crawl."
+    ),
+))
+
+# ── CAF — République Centrafricaine ───────────────────────────────────────────
+# TVA : 19% (taux harmonisé CEMAC)
+# Taxes nationales : TCI (CEMAC) + RS (Redevance Statistique 1%)
+# Source : Douanes CAF (edouanes.cf) + Finances CAF (finances.gouv.cf)
+register(_cemac_profile(
+    "CAF", "Centrafrique",
+    source_url="https://www.finances.gouv.cf/",
+    vat_legal_ref="Code Général des Impôts CAF — TVA 19% (taux harmonisé CEMAC)",
+    national_taxes=[
+        TaxComponent("RS", "Redevance Statistique", "Statistical Fee",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     fixed_rate=1.0, emit_when="always", is_export=False,
+                     legal_reference="Redevance Statistique — Douanes CAF (edouanes.cf)"),
+    ],
+    notes_extra="RS 1% : redevance statistique douanière — taux vérifié auprès de edouanes.cf.",
+))
+
+# ── COG — Congo (Brazzaville) ─────────────────────────────────────────────────
+# TVA : 18% (taux standard ; surtaxe 5% sur certains biens de luxe → effectif ≈ 18.9%)
+# Taxes nationales : TCI (CEMAC) + TS (Taxe Statistique 0.2%) + OHADA (Cotisation 0.05%)
+# Source : Douanes Congo (douanes.gouv.cg) + Finances Congo (finances.gouv.cg)
+register(_cemac_profile(
+    "COG", "Congo (Brazzaville)",
+    source_url="https://douanes.gouv.cg/",
+    vat_legal_ref="Code Général des Impôts Congo — TVA 18% (surtaxe biens de luxe possible)",
+    national_taxes=[
+        TaxComponent("TS", "Taxe Statistique", "Statistical Tax",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     fixed_rate=0.2, emit_when="always", is_export=False,
+                     legal_reference="Taxe Statistique — Douanes Congo (douanes.gouv.cg)"),
+        TaxComponent("OHADA", "Cotisation OHADA", "OHADA Contribution",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     fixed_rate=0.05, emit_when="always", is_export=False,
+                     legal_reference="Cotisation OHADA — Douanes Congo (douanes.gouv.cg)"),
+    ],
+    notes_extra=(
+        "TS 0.2% + OHADA 0.05% : taux vérifiés (douanes.gouv.cg + finances.gouv.cg). "
+        "Surtaxe TVA 5% sur biens de luxe non modélisée ici (non présente dans crawl)."
+    ),
+))
+
+# ── GNQ — Guinée Équatoriale ──────────────────────────────────────────────────
+# TVA : 15% (IGIC — Impuesto General sobre las Importaciones y Consumos)
+# Taxes nationales : TCI (CEMAC) uniquement — sources complémentaires limitées
+# Note : aucune donnée crawlée disponible pour GNQ (pays le plus petit CEMAC)
+# Source : Ministerio de Hacienda GNQ + CEMAC
+register(_cemac_profile(
+    "GNQ", "Guinée Équatoriale",
+    source_url="https://www.cemac.int/",
+    vat_legal_ref="Ley del IGIC — Guinée Équatoriale — TVA 15% (taux estimé officiel)",
+    national_taxes=[],  # Données insuffisantes pour valider des taxes locales complémentaires
+    notes_extra=(
+        "GNQ : aucun fichier crawlé disponible. Profil basé sur TEC CEEAC + TCI CEMAC. "
+        "TVA 15% (IGIC) estimée depuis sources officielles — à vérifier lors du crawl réel."
+    ),
+))
 
 
 # ============================================================================
