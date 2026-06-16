@@ -62,15 +62,24 @@ def _load_scraper():
     return mod.TunisiaDouaneScraper
 
 
-# ── Conversion taxes_import → champs plats ──────────────────────────────────
+# ── Conversion taxes_import/taxes_export → champs plats ────────────────────
 
-# Mappe un code de taxe du portail tarifweb vers un champ plat (taux ad valorem)
-_TAX_FIELD = {
+# Mappe un code de taxe du portail tarifweb vers un champ plat (import)
+_TAX_FIELD_IMPORT = {
     "DD": "dd_rate",
     "DC": "dc_rate",
     "FODEC": "fodec_rate",
     "TCL": "tcl_rate",
     "TVA": "vat_rate",
+}
+
+# Mappe un code de taxe du portail tarifweb vers un champ plat (export)
+_TAX_FIELD_EXPORT = {
+    "DD": "export_dd_rate",
+    "DC": "export_dc_rate",
+    "PRÉLEV": "export_levy_rate",
+    "LEVY": "export_levy_rate",
+    "TVA": "export_vat_rate",
 }
 
 
@@ -81,15 +90,20 @@ def _convert_position(p: dict) -> dict:
         "description_en": p.get("designation", ""),
         "chapter": p.get("chapter") or (code[:2] if len(code) >= 2 else ""),
         "digits": len(code),
+        # Côté import
         "dd_rate": None, "dd_rate_raw": "",
         "dc_rate": None, "fodec_rate": None, "tcl_rate": None, "vat_rate": None,
+        # Côté export
+        "export_dd_rate": None, "export_dc_rate": None, "export_levy_rate": None,
+        "export_vat_rate": None,
         "formalities": p.get("reglementation_import", []),
     }
+
+    # Traitement côté import
     for tax in p.get("taxes_import", []) or []:
         tcode = str(tax.get("code", "")).upper().strip()
-        # Normalise (le portail peut renvoyer "DD", "T.V.A", "FODEC", etc.)
         key = None
-        for known, field_name in _TAX_FIELD.items():
+        for known, field_name in _TAX_FIELD_IMPORT.items():
             if known.replace(".", "") in tcode.replace(".", ""):
                 key = field_name
                 break
@@ -100,6 +114,20 @@ def _convert_position(p: dict) -> dict:
         if key == "dd_rate":
             flat["dd_rate_raw"] = tax.get("raw_value", "") or (
                 f"{rate} %" if rate is not None else "")
+
+    # Traitement côté export
+    for tax in p.get("taxes_export", []) or []:
+        tcode = str(tax.get("code", "")).upper().strip()
+        key = None
+        for known, field_name in _TAX_FIELD_EXPORT.items():
+            if known.replace(".", "") in tcode.replace(".", ""):
+                key = field_name
+                break
+        if not key:
+            continue
+        rate = tax.get("rate_pct")
+        flat[key] = float(rate) if rate is not None else None
+
     return flat
 
 
@@ -113,7 +141,8 @@ def _assemble(positions: list[dict]) -> dict:
         "data_type": "raw_crawl",
         "notes": [
             "Nomenclature NDP HS11",
-            "Taxes : DD, DC (Droit de Consommation), FODEC, TCL, TVA (19% std)",
+            "Taxes import : DD, DC (Droit de Consommation), FODEC, TCL, TVA (19% std)",
+            "Taxes export : prélèvements à l'export (si présents)",
             "Source: tarifweb douane.gov.tn",
         ],
         "positions": [_convert_position(p) for p in positions],

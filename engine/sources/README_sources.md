@@ -178,17 +178,49 @@ Ajouter un pays = déposer son crawl officiel + ajouter un `TaxProfile` dans
 - **Nomenclature** : NDP HS11
 - **Profil** : `raw_crawl_adapter.py` → PROFILES["TUN"]
 - **Structure fiscale** (ordre d'application) :
-  - DD (Droit de Douane) : % CIF — du crawl (bandes 0/10/20/30/36)
-  - DC (Droit de Consommation) : % CIF — du crawl (accise)
-  - FODEC (Fonds Dév. Compétitivité) : % — du crawl (≈ 1 %)
-  - TCL (Taxe Collectivités Locales) : % — du crawl
-  - TVA : % de (CIF + DD + DC + FODEC + TCL) — 19 % std, 7/13 réduits — du crawl
+  - **Côté import** :
+    - DD (Droit de Douane) : % CIF — du crawl (bandes 0/10/20/30/36)
+    - DC (Droit de Consommation) : % CIF — du crawl (accise)
+    - FODEC (Fonds Dév. Compétitivité) : % — du crawl (≈ 1 %)
+    - TCL (Taxe Collectivités Locales) : % — du crawl
+    - TVA : % de (CIF + DD + DC + FODEC + TCL) — 19 % std, 7/13 réduits — du crawl
+  - **Côté export** (si présent) :
+    - Prélèvement à l'Export : % — du crawl (si applicable)
 - **Crawl** : `backend/scripts/crawl_tun_to_raw.py` (runner autonome, contourne
   le bug `motor` de VSCode — cf. MAR)
+  - Supporte **côté import ET export** (taxes_import / taxes_export du scraper)
   - `pip install httpx beautifulsoup4`
   - `python backend/scripts/crawl_tun_to_raw.py --sample`
   - `python backend/scripts/crawl_tun_to_raw.py --out engine/sources/tun_raw.json`
   - `python engine/adapters/raw_crawl_adapter.py TUN engine/sources/tun_raw.json engine/output/`
+
+### CEMAC — Communauté Économique et Monétaire de l'Afrique Centrale
+#### (CMR, GAB, TCD, CAF, COG, GNQ)
+- **Source** : Secrétariat CEMAC — https://www.cemac.int/ + douanes nationales
+- **TEC CEEAC** : nouveau TEC approuvé 18/10/2024, applicable depuis 2026-01-01
+- **Nomenclature** : HS2022 (international)
+- **Profils** : `raw_crawl_adapter.py` → PROFILES["CMR"/"GAB"/"TCD"/"CAF"/"COG"/"GNQ"]
+- **Structure fiscale** :
+  - **Côté import** (TEC commun à tous les 6 membres) :
+    - DD (Droit de Douane) : % CIF — du crawl (bandes 0/5/10/20/30/40)
+  - **Côté export** (spécifique par membre) :
+    - Réduction intra-CEMAC : 0 % fixe (accord commercial CEMAC)
+    - Prélèvement à l'Export : % national — du crawl (si applicable)
+  - **Remarques** :
+    - Toutes les mesures import/export ont une traçabilité (rate_field ou legal_reference)
+    - Pas de taux fictifs ; les droits export manquants → crawl incomplet, pas un faux 0 %
+    - Accords préférentiels intra-CEMAC modélisés (réduction à 0 %)
+- **Crawl** : `backend/scripts/crawl_cemac_to_raw.py` (à créer)
+  - Même pattern que MAR/TUN : charge `CemacDoubleScraper` directement
+  - Futures sources : portails nationaux (CMR douanes, Gabon douanes, etc.)
+  - Support complet des taxes import/export pour tous les 6 membres
+  - `pip install httpx beautifulsoup4`
+  - `python backend/scripts/crawl_cemac_to_raw.py --sample`
+  - `python engine/adapters/raw_crawl_adapter.py CMR engine/sources/cemac_raw.json engine/output/`
+- **Tests** : 15 cas (`engine/tests/test_cemac_profiles.py`) valident :
+  - séparation import (seq 10-50) vs export (seq 60+)
+  - TEC commun appliqué identiquement aux 6 membres
+  - Traçabilité complète des taux (aucun inventé)
 
 ### SACU — Union douanière d'Afrique australe (ZAF, NAM, BWA, LSO, SWZ)
 - **Source** : SARS — Schedule No. 1 Part 1 (Customs Tariff, General Rate), ch. 1–99

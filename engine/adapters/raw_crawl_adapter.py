@@ -72,6 +72,7 @@ class TaxComponent:
     includes_codes: list[str] = field(default_factory=list)  # pour CIF_PLUS_INCLUDED
     emit_when: str = "always"          # "always" | "positive"
     is_customs_duty: bool = False      # → is_zlecaf_applicable + savings_pct
+    is_export: bool = False            # True = composante côté export (taxes_export)
     legal_reference: Optional[str] = None
     observation: Optional[str] = None
 
@@ -159,21 +160,21 @@ def _convert_position(pos: dict, profile: TaxProfile,
     iso = profile.country_iso3
 
     measures: list[Measure] = []
-    emitted_codes: list[str] = []
+    emitted_codes_import: list[str] = []
+    emitted_codes_export: list[str] = []
     dd_rate = 0.0
     excise_rate = 0.0
     rate_unresolved = False  # droit composé non réductible en % → ligne PARTIAL
 
-    # Séquence FIXE par position dans le profil (idx 0 → 10, idx 1 → 20, …),
-    # indépendante des composantes effectivement émises : la séquence d'une
-    # taxe reste stable même si une composante amont est absente (ex. accise).
-    for idx, comp in enumerate(profile.components):
+    # Séparation des composantes import vs export
+    import_comps = [(idx, c) for idx, c in enumerate(profile.components) if not c.is_export]
+    export_comps = [(idx, c) for idx, c in enumerate(profile.components) if c.is_export]
+
+    # ── Traitement côté IMPORT : séquence 10, 20, 30, … ──────────────────────
+    for idx, comp in import_comps:
         seq = (idx + 1) * 10
 
-        # ── Cas spécial : droit de douane avec valeur numérique absente ──────
-        # (droit spécifique « Nc/kg » ou expression composée non parsée).
-        # On NE met JAMAIS un faux 0 % : soit droit spécifique explicite,
-        # soit droit non résolu (rate_pct=None) + ligne marquée PARTIAL.
+        # Cas spécial : droit de douane avec valeur numérique absente
         numeric_missing = (comp.rate_field is not None
                            and pos.get(comp.rate_field) is None)
         if comp.is_customs_duty and comp.raw_field and numeric_missing:
@@ -193,13 +194,11 @@ def _convert_position(pos: dict, profile: TaxProfile,
                     legal_reference=comp.legal_reference,
                     observation=f"Droit spécifique {raw} — {profile.source_name}",
                 ))
-                emitted_codes.append(comp.code)
+                emitted_codes_import.append(comp.code)
                 continue
             elif raw.lower() in _FREE_TOKENS:
-                rate = 0.0  # « free » = exonéré réel → traité en ad valorem 0 ci-dessous
+                rate = 0.0
             else:
-                # Expression composée non résolue (ex. « 20% or 5c/kg ») :
-                # on ne devine pas. Droit non résolu, ligne dégradée en PARTIAL.
                 rate_unresolved = True
                 measures.append(Measure(
                     country_iso3=iso, national_code=code,
@@ -213,7 +212,7 @@ def _convert_position(pos: dict, profile: TaxProfile,
                     observation=(f"Droit composé non résolu : « {raw} » — "
                                  f"à vérifier auprès de {profile.source_name}"),
                 ))
-                emitted_codes.append(comp.code)
+                emitted_codes_import.append(comp.code)
                 continue
         else:
             rate = comp.resolve_rate(pos)
@@ -221,10 +220,9 @@ def _convert_position(pos: dict, profile: TaxProfile,
         if comp.emit_when == "positive" and rate <= 0:
             continue
 
-        # Assiette : ne retenir dans includes que les composantes réellement émises
         basis_includes: list[str] = []
         if comp.basis == DutyBasis.CIF_PLUS_INCLUDED:
-            basis_includes = [c for c in comp.includes_codes if c in emitted_codes]
+            basis_includes = [c for c in comp.includes_codes if c in emitted_codes_import]
 
         measures.append(Measure(
             country_iso3=iso,
@@ -242,16 +240,87 @@ def _convert_position(pos: dict, profile: TaxProfile,
             legal_reference=comp.legal_reference,
             observation=comp.observation or f"{comp.code} — {profile.source_name}",
         ))
-        emitted_codes.append(comp.code)
+        emitted_codes_import.append(comp.code)
 
         if comp.is_customs_duty:
             dd_rate = rate
         elif comp.measure_type == MeasureType.EXCISE:
             excise_rate = max(excise_rate, rate)
 
-    # total_npf : somme des seuls taux ad valorem connus (rate_pct non None).
-    # Les droits spécifiques/non résolus n'y figurent pas (ils ne sont pas un %).
-    total_npf = round(sum(m.rate_pct for m in measures if m.rate_pct is not None), 4)
+    # ── Traitement côté EXPORT : séquence 60, 70, 80, … ──────────────────────
+    for idx, comp in export_comps:
+        seq = 60 + (idx * 10)
+
+        numeric_missing = (comp.rate_field is not None
+                           and pos.get(comp.rate_field) is None)
+        if comp.is_customs_duty and comp.raw_field and numeric_missing:
+            raw = str(pos.get(comp.raw_field, "")).strip()
+            spec = _parse_specific_duty(raw)
+            if spec:
+                amount, unit = spec
+                measures.append(Measure(
+                    country_iso3=iso, national_code=code,
+                    measure_type=comp.measure_type, code=comp.code,
+                    name_fr=comp.name_fr, name_en=comp.name_en,
+                    rate_pct=None,
+                    rate_type=RateType.SPECIFIC,
+                    specific_amount=amount, specific_unit=unit,
+                    basis=DutyBasis.QUANTITY,
+                    sequence=seq, is_zlecaf_applicable=False,
+                    legal_reference=comp.legal_reference,
+                    observation=f"Droit spécifique export {raw} — {profile.source_name}",
+                ))
+                emitted_codes_export.append(comp.code)
+                continue
+            elif raw.lower() in _FREE_TOKENS:
+                rate = 0.0
+            else:
+                rate_unresolved = True
+                measures.append(Measure(
+                    country_iso3=iso, national_code=code,
+                    measure_type=comp.measure_type, code=comp.code,
+                    name_fr=comp.name_fr, name_en=comp.name_en,
+                    rate_pct=None,
+                    rate_type=RateType.MIXED,
+                    basis=comp.basis,
+                    sequence=seq, is_zlecaf_applicable=False,
+                    legal_reference=comp.legal_reference,
+                    observation=(f"Droit export composé non résolu : « {raw} » — "
+                                 f"à vérifier auprès de {profile.source_name}"),
+                ))
+                emitted_codes_export.append(comp.code)
+                continue
+        else:
+            rate = comp.resolve_rate(pos)
+
+        if comp.emit_when == "positive" and rate <= 0:
+            continue
+
+        basis_includes: list[str] = []
+        if comp.basis == DutyBasis.CIF_PLUS_INCLUDED:
+            basis_includes = [c for c in comp.includes_codes if c in emitted_codes_export]
+
+        measures.append(Measure(
+            country_iso3=iso,
+            national_code=code,
+            measure_type=comp.measure_type,
+            code=comp.code,
+            name_fr=comp.name_fr,
+            name_en=comp.name_en,
+            rate_pct=rate,
+            rate_type=RateType.EXEMPT if rate == 0 else RateType.AD_VALOREM,
+            basis=comp.basis,
+            basis_includes=basis_includes,
+            sequence=seq,
+            is_zlecaf_applicable=False,
+            legal_reference=comp.legal_reference,
+            observation=comp.observation or f"{comp.code} (export) — {profile.source_name}",
+        ))
+        emitted_codes_export.append(comp.code)
+
+    # total_npf : somme des seuls taux ad valorem de CÔTÉ IMPORT
+    import_measures = [m for m in measures if m.sequence < 60]
+    total_npf = round(sum(m.rate_pct for m in import_measures if m.rate_pct is not None), 4)
     total_zlecaf = round(total_npf - dd_rate, 4)
 
     commodity = CommodityCode(
@@ -267,8 +336,6 @@ def _convert_position(pos: dict, profile: TaxProfile,
         sensitivity=profile.sensitivity_fn(dd_rate, excise_rate),
     )
 
-    # Provenance : ligne dégradée en PARTIAL/B si le droit n'a pas pu être résolu
-    # (on garde la source, mais on signale que le taux exige vérification).
     line_prov = prov
     if rate_unresolved:
         line_prov = Provenance(
@@ -277,7 +344,7 @@ def _convert_position(pos: dict, profile: TaxProfile,
             source_name=prov.source_name, source_url=prov.source_url,
             source_document=prov.source_document, version_date=prov.version_date,
             retrieved_at=prov.retrieved_at,
-            notes=("Droit de douane composé non réductible en % par le crawl — "
+            notes=("Droit composé non réductible en % par le crawl — "
                    "à vérifier dans le tarif officiel. " + (prov.notes or "")),
         )
 
@@ -463,25 +530,25 @@ register(TaxProfile(
     components=[
         TaxComponent("D.D", "Droit de Douane (DD)", "Customs Duty",
                      MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
-                     rate_field="dd_rate", emit_when="always", is_customs_duty=True),
+                     rate_field="dd_rate", emit_when="always", is_customs_duty=True, is_export=False),
         TaxComponent("ER", "Excise Duty (ER)", "Excise Duty",
                      MeasureType.EXCISE, DutyBasis.CIF,
-                     rate_field="excise_rate", emit_when="positive"),
+                     rate_field="excise_rate", emit_when="positive", is_export=False),
         TaxComponent("SR", "Surtax (SR) — 10 % de (CIF + DD + Excise)", "Surtax",
                      MeasureType.LEVY, DutyBasis.CIF_PLUS_INCLUDED,
                      fixed_rate=10.0, includes_codes=["D.D", "ER"],
-                     emit_when="always", legal_reference="Proclamation 312/2002"),
+                     emit_when="always", legal_reference="Proclamation 312/2002", is_export=False),
         TaxComponent("T.V.A", "Taxe sur la Valeur Ajoutée (TVA) — 15 %",
                      "Value Added Tax (VAT)",
                      MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED,
                      fixed_rate=15.0, includes_codes=["D.D", "ER", "SR"],
                      emit_when="always",
-                     legal_reference="Value Added Tax Proclamation 285/2002"),
+                     legal_reference="Value Added Tax Proclamation 285/2002", is_export=False),
         TaxComponent("WHR", "Retenue à la source (WHR) — 3 % du CIF",
                      "Withholding Tax at Import",
                      MeasureType.OTHER_TAX, DutyBasis.CIF,
                      fixed_rate=3.0, emit_when="always",
-                     legal_reference="Income Tax Proclamation 979/2016"),
+                     legal_reference="Income Tax Proclamation 979/2016", is_export=False),
     ],
 ))
 
@@ -504,16 +571,16 @@ register(TaxProfile(
         TaxComponent("D.D", "Droit de Douane général (NPF)",
                      "General (MFN) Customs Duty",
                      MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
-                     rate_field="dd_rate", emit_when="always", is_customs_duty=True),
+                     rate_field="dd_rate", emit_when="always", is_customs_duty=True, is_export=False),
         TaxComponent("EXCISE", "Excise Duty", "Excise Duty",
                      MeasureType.EXCISE, DutyBasis.CIF,
-                     rate_field="excise_rate", emit_when="positive"),
+                     rate_field="excise_rate", emit_when="positive", is_export=False),
         TaxComponent("T.V.A", "Taxe sur la Valeur Ajoutée (VAT) — 15 %",
                      "Value Added Tax (VAT)",
                      MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED,
                      rate_field="vat_rate", includes_codes=["D.D", "EXCISE"],
                      emit_when="positive",
-                     legal_reference="Value Added Tax Act 1998 (as amended)"),
+                     legal_reference="Value Added Tax Act 1998 (as amended)", is_export=False),
     ],
 ))
 
@@ -557,13 +624,13 @@ def _sacu_profile(iso3: str, country_fr: str, vat_rate: float,
                          "Customs Duty (SACU CET)",
                          MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
                          rate_field="dd_rate", raw_field="dd_rate_raw",
-                         emit_when="always", is_customs_duty=True,
+                         emit_when="always", is_customs_duty=True, is_export=False,
                          legal_reference="SACU Common External Tariff — Schedule 1 Part 1"),
             TaxComponent("T.V.A", f"Taxe sur la Valeur Ajoutée (VAT) — {vat_rate:g} %",
                          "Value Added Tax (VAT)",
                          MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED,
                          fixed_rate=vat_rate, includes_codes=["D.D"],
-                         emit_when="always", legal_reference=vat_legal_ref),
+                         emit_when="always", legal_reference=vat_legal_ref, is_export=False),
         ],
     )
 
@@ -608,20 +675,20 @@ register(TaxProfile(
         TaxComponent("D.D", "Droit d'Importation (DI)", "Import Duty",
                      MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
                      rate_field="dd_rate", raw_field="dd_rate_raw",
-                     emit_when="always", is_customs_duty=True,
+                     emit_when="always", is_customs_duty=True, is_export=False,
                      legal_reference="Code des Douanes — Tarif des droits d'importation"),
         TaxComponent("TPI", "Taxe Parafiscale à l'Importation", "Parafiscal Import Tax",
                      MeasureType.LEVY, DutyBasis.CIF,
-                     rate_field="tpi_rate", emit_when="positive",
+                     rate_field="tpi_rate", emit_when="positive", is_export=False,
                      legal_reference="Loi de finances — TPI"),
         TaxComponent("TIC", "Taxe Intérieure de Consommation", "Domestic Consumption Tax",
                      MeasureType.EXCISE, DutyBasis.CIF,
-                     rate_field="tic_rate", emit_when="positive",
+                     rate_field="tic_rate", emit_when="positive", is_export=False,
                      legal_reference="Code des Impôts — TIC"),
         TaxComponent("T.V.A", "Taxe sur la Valeur Ajoutée (TVA)", "Value Added Tax",
                      MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED,
                      rate_field="vat_rate", includes_codes=["D.D", "TPI", "TIC"],
-                     emit_when="positive",
+                     emit_when="positive", is_export=False,
                      legal_reference="Code Général des Impôts — TVA"),
     ],
 ))
@@ -649,33 +716,90 @@ register(TaxProfile(
         "modélisés ici. Droits spécifiques (DT/unité) éventuels non réduits en %."
     ),
     components=[
+        # Côté import
         TaxComponent("D.D", "Droit de Douane", "Customs Duty",
                      MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
                      rate_field="dd_rate", raw_field="dd_rate_raw",
-                     emit_when="always", is_customs_duty=True,
+                     emit_when="always", is_customs_duty=True, is_export=False,
                      legal_reference="Tarif des droits de douane à l'importation"),
         TaxComponent("DC", "Droit de Consommation", "Consumption Tax",
                      MeasureType.EXCISE, DutyBasis.CIF,
-                     rate_field="dc_rate", emit_when="positive",
+                     rate_field="dc_rate", emit_when="positive", is_export=False,
                      legal_reference="Code du Droit de Consommation"),
         TaxComponent("FODEC", "Fonds de Développement de la Compétitivité",
                      "Competitiveness Development Fund",
                      MeasureType.LEVY, DutyBasis.CIF,
-                     rate_field="fodec_rate", emit_when="positive",
+                     rate_field="fodec_rate", emit_when="positive", is_export=False,
                      legal_reference="Loi de finances — FODEC"),
         TaxComponent("TCL", "Taxe au profit des Collectivités Locales",
                      "Local Authorities Tax",
                      MeasureType.LEVY, DutyBasis.CIF,
-                     rate_field="tcl_rate", emit_when="positive",
+                     rate_field="tcl_rate", emit_when="positive", is_export=False,
                      legal_reference="Code de la fiscalité locale — TCL"),
         TaxComponent("T.V.A", "Taxe sur la Valeur Ajoutée (TVA)", "Value Added Tax",
                      MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED,
                      rate_field="vat_rate",
                      includes_codes=["D.D", "DC", "FODEC", "TCL"],
-                     emit_when="positive",
+                     emit_when="positive", is_export=False,
                      legal_reference="Code de la TVA"),
+        # Côté export
+        TaxComponent("EXPORT.LEVY", "Prélèvement à l'Export", "Export Levy",
+                     MeasureType.LEVY, DutyBasis.CIF,
+                     rate_field="export_levy_rate", emit_when="positive", is_export=True,
+                     legal_reference="Régulations sur les prélèvements à l'export"),
     ],
 ))
+
+
+# ── CEMAC — Communauté Économique et Monétaire de l'Afrique Centrale ────────
+# 6 membres : CMR, GAB, TCD, CAF, COG, GNQ
+# TEC CEEAC (Tarif Extérieur Commun) en vigueur depuis 2026-01-01 (CMR au minimum)
+# Structure : bandes 0%, 5%, 10%, 20%, 30%, 40% (cf. documents officiels CEMAC)
+# Nomenclature : HS (international) ou code national CEMAC selon source
+# Droits d'export : réductions réciproques intra-CEMAC + prélèvements à l'export
+
+def _cemac_profile(iso3: str, country_fr: str, country_en: str) -> TaxProfile:
+    """Construit le profil CEMAC d'un membre : TEC commun CEEAC."""
+    return TaxProfile(
+        country_iso3=iso3,
+        source_name=f"CEMAC — TEC CEEAC ({country_fr})",
+        source_url="https://www.cemac.int/",
+        source_document=(
+            f"Communauté Économique et Monétaire de l'Afrique Centrale (CEMAC) — "
+            f"Tarif Extérieur Commun CEEAC (TEC), applicable à {country_fr}. "
+            f"Bandes tarifaires : 0%, 5%, 10%, 20%, 30%, 40%. "
+            f"Accords préférentiels intra-CEMAC appliqués à l'export."
+        ),
+        notes=(
+            f"TEC CEEAC commun à tous les 6 membres CEMAC, en vigueur depuis 2026-01-01. "
+            f"Côté export : réductions réciproques intra-CEMAC (0 %) + prélèvements "
+            f"nationaux à l'export (si présents). Nomenclature HS2022."
+        ),
+        version_date=date(2026, 1, 1),
+        components=[
+            TaxComponent("D.D", "Droit de Douane (TEC CEEAC)", "Customs Duty (CEMAC CET)",
+                         MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
+                         rate_field="dd_rate", raw_field="dd_rate_raw",
+                         emit_when="always", is_customs_duty=True, is_export=False,
+                         legal_reference="Tarif Extérieur Commun CEEAC (TEC)"),
+            TaxComponent("PRÉLEV", "Prélèvement à l'Export", "Export Levy",
+                         MeasureType.LEVY, DutyBasis.CIF,
+                         rate_field="export_levy_rate", emit_when="positive", is_export=True,
+                         legal_reference="Règlements CEMAC sur les prélèvements à l'export"),
+            TaxComponent("RED.INTRA", "Réduction intra-CEMAC (Export)", "Intra-CEMAC Reduction",
+                         MeasureType.CUSTOMS_DUTY, DutyBasis.CIF,
+                         fixed_rate=0.0, emit_when="always", is_export=True,
+                         legal_reference="Accord commercial CEMAC — Préférence intra-CEMAC"),
+        ],
+    )
+
+
+register(_cemac_profile("CMR", "Cameroun", "Cameroon"))
+register(_cemac_profile("GAB", "Gabon", "Gabon"))
+register(_cemac_profile("TCD", "Tchad", "Chad"))
+register(_cemac_profile("CAF", "Centrafrique", "Central African Republic"))
+register(_cemac_profile("COG", "Congo", "Republic of the Congo"))
+register(_cemac_profile("GNQ", "Guinée Équatoriale", "Equatorial Guinea"))
 
 
 # ============================================================================
