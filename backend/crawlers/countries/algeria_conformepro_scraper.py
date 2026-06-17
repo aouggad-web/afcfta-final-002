@@ -410,7 +410,7 @@ class AlgeriaConformeproScraper:
             }, f, ensure_ascii=False, indent=2)
         logger.info(f"Saved {len(data)} records to {filepath}")
 
-    def save_final(self):
+    def save_final(self, chapters: set = None):
         os.makedirs(DATA_DIR, exist_ok=True)
         self.stats["finished_at"] = datetime.utcnow().isoformat()
 
@@ -426,30 +426,77 @@ class AlgeriaConformeproScraper:
         with open(os.path.join(DATA_DIR, "DZA_structure.json"), "w", encoding="utf-8") as f:
             json.dump(structure, f, ensure_ascii=False, indent=2)
 
-        tariff_data = {
-            "country": "DZA",
-            "country_name": "Algérie",
-            "source": "conformepro.dz (données douane.gov.dz)",
-            "extracted_at": datetime.utcnow().isoformat(),
-            "stats": self.stats,
-            "sub_positions": self.sub_positions,
-        }
+        if chapters:
+            # Partial scrape: merge new positions into existing DZA_tariffs.json
+            # Keep existing positions for chapters NOT in the requested set
+            existing_path = os.path.join(DATA_DIR, "DZA_tariffs.json")
+            existing_positions = []
+            if os.path.exists(existing_path):
+                try:
+                    with open(existing_path, "r", encoding="utf-8") as f:
+                        existing = json.load(f)
+                    existing_positions = [
+                        p for p in existing.get("sub_positions", [])
+                        if int(p.get("chapter", "0")) not in chapters
+                    ]
+                    logger.info(f"Kept {len(existing_positions)} existing positions from chapters outside filter")
+                except Exception as e:
+                    logger.warning(f"Could not load existing DZA_tariffs.json for merge: {e}")
+
+            merged = existing_positions + self.sub_positions
+            merged.sort(key=lambda p: p.get("hs_code", ""))
+            logger.info(f"Merged total: {len(merged)} positions ({len(existing_positions)} existing + {len(self.sub_positions)} new)")
+
+            tariff_data = {
+                "country": "DZA",
+                "country_name": "Algérie",
+                "source": "conformepro.dz (données douane.gov.dz)",
+                "extracted_at": datetime.utcnow().isoformat(),
+                "stats": {
+                    **self.stats,
+                    "total_positions": len(merged),
+                    "new_positions": len(self.sub_positions),
+                    "chapters_scraped": sorted(chapters),
+                },
+                "sub_positions": merged,
+            }
+        else:
+            tariff_data = {
+                "country": "DZA",
+                "country_name": "Algérie",
+                "source": "conformepro.dz (données douane.gov.dz)",
+                "extracted_at": datetime.utcnow().isoformat(),
+                "stats": self.stats,
+                "sub_positions": self.sub_positions,
+            }
+
         with open(os.path.join(DATA_DIR, "DZA_tariffs.json"), "w", encoding="utf-8") as f:
             json.dump(tariff_data, f, ensure_ascii=False, indent=2)
 
-        logger.info(f"Final data saved: {len(self.sub_positions)} sub-positions")
+        logger.info(f"Final data saved: {len(tariff_data['sub_positions'])} sub-positions total")
         logger.info(f"Stats: {json.dumps(self.stats, indent=2)}")
 
-    async def run(self, max_headings: int = None):
+    async def run(self, max_headings: int = None, chapters: set = None):
         self.stats["started_at"] = datetime.utcnow().isoformat()
         logger.info("=== Algeria Tariff Scraper (conformepro.dz) ===")
+        if chapters:
+            logger.info(f"Chapter filter: {sorted(chapters)}")
 
         try:
             await self.scrape_sections()
             await self.scrape_chapters()
+
+            if chapters:
+                before = len(self.chapters)
+                self.chapters = [
+                    c for c in self.chapters
+                    if int(c["code"]) in chapters
+                ]
+                logger.info(f"Filtered chapters: {before} → {len(self.chapters)} (requested: {sorted(chapters)})")
+
             await self.scrape_headings()
             await self.scrape_all_sub_positions(max_headings=max_headings)
-            self.save_final()
+            self.save_final(chapters=chapters)
         finally:
             await self._close_client()
 
@@ -460,9 +507,25 @@ class AlgeriaConformeproScraper:
         }
 
 
-async def run_algeria_scraper(max_headings: int = None):
+def parse_chapters_arg(chapters_str: str) -> set:
+    """
+    Parse a chapters argument like '29-76,78-98' into a set of int chapter numbers.
+    Supports individual numbers ('29'), ranges ('29-76'), and comma-separated combos.
+    """
+    result = set()
+    for part in chapters_str.split(","):
+        part = part.strip()
+        if "-" in part:
+            lo, hi = part.split("-", 1)
+            result.update(range(int(lo), int(hi) + 1))
+        elif part.isdigit():
+            result.add(int(part))
+    return result
+
+
+async def run_algeria_scraper(max_headings: int = None, chapters: set = None):
     scraper = AlgeriaConformeproScraper()
-    return await scraper.run(max_headings=max_headings)
+    return await scraper.run(max_headings=max_headings, chapters=chapters)
 
 
 async def run_algeria_scraper_fast():
@@ -525,14 +588,26 @@ async def run_algeria_scraper_fast():
 
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--fast", action="store_true", help="Fast mode: positions and descriptions only, no detail pages")
-    parser.add_argument("--max-headings", type=int, default=None)
+    parser = argparse.ArgumentParser(
+        description="Scraper Algeria conformepro.dz — positions tarifaires nationales (DD, TVA, TCS, PRCT, DAPS)"
+    )
+    parser.add_argument("--fast", action="store_true",
+                        help="Mode rapide : positions + descriptions seulement, sans pages de détail")
+    parser.add_argument("--max-headings", type=int, default=None,
+                        help="Limiter le nombre de rangées traitées (debug)")
+    parser.add_argument("--chapters", type=str, default=None,
+                        help="Chapitres à scraper, ex: '29-76,78-98'. Si omis, scrape tous les chapitres.")
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+
+    chapters_set = None
+    if args.chapters:
+        chapters_set = parse_chapters_arg(args.chapters)
+        print(f"Chapitres demandés: {sorted(chapters_set)} ({len(chapters_set)} chapitres)")
+
     if args.fast:
         result = asyncio.run(run_algeria_scraper_fast())
     else:
-        result = asyncio.run(run_algeria_scraper(max_headings=args.max_headings))
+        result = asyncio.run(run_algeria_scraper(max_headings=args.max_headings, chapters=chapters_set))
     print(json.dumps(result, indent=2, ensure_ascii=False))
