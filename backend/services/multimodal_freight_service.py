@@ -758,6 +758,7 @@ def compare_multimodal(
         if ref_idx is None:
             # Fallback: best operational including air
             ref_idx = min(operational_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
+        ref = options[ref_idx]
         # Also keep the air-direct option for "vs air" comparison
         air_idx = next((i for i in operational_idxs if options[i].get("mode") == "air"), None)
         air_ref = options[air_idx] if air_idx is not None else None
