@@ -750,13 +750,14 @@ def compare_multimodal(
     # ROI Infrastructure: compute BEFORE the final sort so indices stay valid.
     roi = None
     if operational_idxs and future_idxs:
-        # Get the cheapest operational (excluding air for fair comparison) and the cheapest future
         non_air_ops = [i for i in operational_idxs if options[i].get("mode") != "air"]
-        ref_idx = non_air_ops[0] if non_air_ops else None
+        ref_idx = (
+            min(non_air_ops, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
+            if non_air_ops else None
+        )
         if ref_idx is None:
             # Fallback: best operational including air
             ref_idx = min(operational_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
-        ref = options[ref_idx]
         # Also keep the air-direct option for "vs air" comparison
         air_idx = next((i for i in operational_idxs if options[i].get("mode") == "air"), None)
         air_ref = options[air_idx] if air_idx is not None else None
