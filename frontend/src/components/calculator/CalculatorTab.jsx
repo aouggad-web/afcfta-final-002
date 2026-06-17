@@ -16,8 +16,11 @@ import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
 import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield, DollarSign } from 'lucide-react';
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
+import TaxBreakdownDual from './TaxBreakdownDual';
+import CalculationJournal from './CalculationJournal';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
+import DataStatusBanner from '../common/DataStatusBanner';
 import DismantlementSchedule from './DismantlementSchedule';
 import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
@@ -580,6 +583,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
   return (
     <div className="space-y-6">
+      {/* Bandeau statut des données — par pays importateur si sélectionné */}
+      <DataStatusBanner countryIso3={destinationCountry || undefined} />
+
       {/* Onglets Principal */}
       <Tabs defaultValue="calculator" className="w-full">
         <TabsList className="grid w-full grid-cols-3 mb-4">
@@ -1102,6 +1108,26 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               </CardContent>
             </Card>
+          )}
+
+          {/* Détail complet NPF vs ZLECAf, base par base + bi-devise */}
+          {result.taxes_breakdown && result.taxes_breakdown.length > 0 && (
+            <TaxBreakdownDual
+              breakdown={result.taxes_breakdown}
+              summary={result.taxes_summary}
+              currency={result.currency}
+              language={language}
+            />
+          )}
+
+          {/* Journal de calcul pas-à-pas (NPF / ZLECAf) avec références légales */}
+          {((result.normal_calculation_journal && result.normal_calculation_journal.length > 0) ||
+            (result.zlecaf_calculation_journal && result.zlecaf_calculation_journal.length > 0)) && (
+            <CalculationJournal
+              normalJournal={result.normal_calculation_journal}
+              zlecafJournal={result.zlecaf_calculation_journal}
+              language={language}
+            />
           )}
 
           {/* Sous-positions nationales disponibles */}
