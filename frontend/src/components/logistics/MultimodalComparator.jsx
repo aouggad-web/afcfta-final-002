@@ -173,8 +173,8 @@ function OptionCard({ opt }) {
 }
 
 export default function MultimodalComparator({ language = 'fr' }) {
-  const [origin, setOrigin] = useState('MAR');
-  const [destination, setDestination] = useState('MLI');
+  const [origin, setOrigin] = useState('DZA');
+  const [destination, setDestination] = useState('NGA');
   const [weightKg, setWeightKg] = useState(20000);
   const [volumeM3, setVolumeM3] = useState(0);
   const [containerType, setContainerType] = useState('teu');

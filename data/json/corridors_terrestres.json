@@ -1155,17 +1155,18 @@
       "corridor_name": "Transsaharienne Alger-Lagos (TAH 2)",
       "corridor_type": "road",
       "countries_spanned": [
+        "MAR",
         "DZA",
         "NER",
         "NGA"
       ],
-      "start_node": "Alger",
+      "start_node": "Tanger",
       "end_node": "Lagos",
-      "length_km": 4504,
+      "length_km": 5200,
       "status": "Partiellement opérationnel",
-      "infra_details": "Axe routier transsaharien Alger → In Salah → Tamanrasset → In Guezzam → Agadez → Zinder → Kano → Lagos. Tronçon algérien (~2400 km) pavé. Tronçon NER-NGA en cours d'achèvement (PIDA Phase 2, financement BAD).",
+      "infra_details": "Axe routier transsaharien Tanger (MAR) → Alger → In Salah → Tamanrasset → In Guezzam → Agadez → Zinder → Kano → Lagos. Tronçon MAR-DZA (~700 km) opérationnel (autoroute A2 + RN1). Tronçon algérien (~2400 km) pavé. Tronçon NER-NGA en cours d'achèvement (PIDA Phase 2, financement BAD).",
       "importance": "high",
-      "description": "Corridor stratégique reliant la Méditerranée à l'Atlantique via le Sahara. Pilier de l'intégration AfCFTA Nord-Ouest-Afrique.",
+      "description": "Corridor stratégique reliant l'Atlantique (Tanger) à l'Afrique de l'Ouest via le Sahara. Pilier de l'intégration AfCFTA Nord-Afrique.",
       "source_org": "UNECA TAH Network · CLRT (Comité de Liaison de la Route Transsaharienne) · BAD",
       "coordinates": [
         [
