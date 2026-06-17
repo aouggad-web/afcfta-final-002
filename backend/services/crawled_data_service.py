@@ -1024,13 +1024,22 @@ class CrawledDataService:
         if result:
             return result
 
+        # Query longer than indexed codes (e.g. 12-digit input vs 10-digit national line):
+        # truncate progressively until a national position prefix matches.
         for length in range(len(hs_code_clean) - 1, 5, -1):
             prefix = hs_code_clean[:length]
             matches = [data for code, data in idx.items() if code.startswith(prefix)]
-            if len(matches) == 1:
+            if matches:
                 return matches[0]
-            elif matches:
-                return matches[0]
+
+        # Query at or below HS6 granularity (e.g. a 6-digit HS6 code, the most common input):
+        # national positions are stored at 8-12 digits, so no exact hit is possible and the
+        # downward loop above never runs. Expand via the HS6 index to return a representative
+        # authentic national position rather than falling through to estimated data.
+        if len(hs_code_clean) <= 6:
+            hs6_matches = self._hs6_index.get(country_code, {}).get(hs_code_clean.zfill(6))
+            if hs6_matches:
+                return hs6_matches[0]
 
         return None
 
