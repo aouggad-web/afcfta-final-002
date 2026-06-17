@@ -321,72 +321,51 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     transition_period = transition_periods.get(sector_code, 'immediate')
     
     # ============================================================
-    # AMOUNT CALCULATIONS - Assiette cumulative (cascading base)
-    # Each tax base = CIF + sum of all preceding taxes
+    # DÉTAIL COMPLET des droits et taxes — MOTEUR UNIQUE (NPF vs ZLECAf)
+    # Chaque taxe est calculée sur SA base déclarée (assiette propre au pays) ;
+    # à défaut, méthode nationale par défaut. Source unique de vérité : tous les
+    # montants agrégés, le détail par taxe et les journaux en dérivent.
     # ============================================================
+    from services.tax_computation import compute_dual_breakdown, build_journal
 
-    # 1. Customs duties (always on CIF)
-    normal_customs = request.value * normal_rate
-    zlecaf_customs = request.value * zlecaf_rate
-
-    # 2. Other taxes applied cumulatively after DD
-    normal_running = normal_customs    # accumulated taxes so far (normal regime)
-    zlecaf_running = zlecaf_customs    # accumulated taxes so far (ZLECAf regime)
-    other_taxes_amount = 0.0
-    zlecaf_other_amount = 0.0
-    _normal_tax_amounts: dict = {}    # key -> amount (for individual fee fields)
-    _zlecaf_tax_amounts: dict = {}
-
-    _dd_names = {"D.D", "DD", "DI", "DDDROIT", "Droit d'Importation (DI)"}
-    _vat_names = {"T.V.A", "TVA", "VAT"}
-
-    if collected_taxes_detail:
-        for tax in collected_taxes_detail:
-            tname = tax["tax"]
-            is_dd = tname in _dd_names or "Import Duty" in tname or "Customs Duty" in tname
-            is_vat = tname in _vat_names or "TVA" in tname.upper() or "VAT" in tname.upper()
-            if is_dd or is_vat:
+    _engine_lines: List[Dict[str, Any]] = []
+    if crawled_raw_taxes:
+        for t in crawled_raw_taxes:
+            if t.get("rate_pct") is None:
                 continue
-            rate = tax["rate"] / 100.0
-            n_amount = round((request.value + normal_running) * rate, 2)
-            z_amount = round((request.value + zlecaf_running) * rate, 2)
-            other_taxes_amount += n_amount
-            zlecaf_other_amount += z_amount
-            normal_running += n_amount
-            zlecaf_running += z_amount
-            key = tname.lower().replace(".", "").replace(" ", "")
-            _normal_tax_amounts[key] = n_amount
-            _zlecaf_tax_amounts[key] = z_amount
+            _engine_lines.append({
+                "code": t.get("code", ""),
+                "name": t.get("name", t.get("code", "")),
+                "rate_pct": t["rate_pct"],
+                "base": t.get("base", ""),
+                "source": t.get("source", npf_source),
+            })
+    elif collected_taxes_detail:
+        for t in collected_taxes_detail:
+            if t.get("rate") is None:
+                continue
+            _engine_lines.append({
+                "code": t.get("tax", ""),
+                "name": t.get("tax", ""),
+                "rate_pct": t["rate"],
+                "base": "",
+                "source": t.get("observation", npf_source),
+            })
     else:
-        for key, rate_pct in other_taxes_detail.items():
-            if key == "other" or not isinstance(rate_pct, (int, float)) or rate_pct == 0:
+        _engine_lines.append({"code": "DD", "name": "Droit de douane",
+                              "rate_pct": round(normal_rate * 100, 4), "base": "CIF", "source": npf_source})
+        for _k, _rp in (other_taxes_detail or {}).items():
+            if _k == "other" or not isinstance(_rp, (int, float)) or _rp == 0:
                 continue
-            rate = rate_pct / 100.0
-            n_amount = round((request.value + normal_running) * rate, 2)
-            z_amount = round((request.value + zlecaf_running) * rate, 2)
-            other_taxes_amount += n_amount
-            zlecaf_other_amount += z_amount
-            normal_running += n_amount
-            zlecaf_running += z_amount
-            _normal_tax_amounts[key] = n_amount
-            _zlecaf_tax_amounts[key] = z_amount
+            _engine_lines.append({"code": _k.upper(), "name": _k.upper(),
+                                  "rate_pct": _rp, "base": "CIF", "source": npf_source})
+        _engine_lines.append({"code": "TVA", "name": "Taxe sur la valeur ajoutée",
+                              "rate_pct": round(vat_rate * 100, 4), "base": "", "source": vat_source})
 
-    # 3. VAT (last, base = CIF + all preceding taxes)
-    normal_vat_base = request.value + normal_running
-    zlecaf_vat_base = request.value + zlecaf_running
-    normal_vat_amount = normal_vat_base * vat_rate
-    zlecaf_vat_amount = zlecaf_vat_base * vat_rate
+    if not _engine_lines:
+        _engine_lines.append({"code": "DD", "name": "Droit de douane",
+                              "rate_pct": round(normal_rate * 100, 4), "base": "CIF", "source": npf_source})
 
-    # 4. Totals
-    normal_total = request.value + normal_customs + other_taxes_amount + normal_vat_amount
-    zlecaf_total = request.value + zlecaf_customs + zlecaf_other_amount + zlecaf_vat_amount
-
-    # Savings
-    savings = normal_customs - zlecaf_customs
-    savings_percentage = (savings / normal_customs) * 100 if normal_customs > 0 else 0
-    total_savings_with_taxes = normal_total - zlecaf_total
-    total_savings_percentage = (total_savings_with_taxes / normal_total) * 100 if normal_total > 0 else 0
-    
     legal_refs = {
         "cif": {"ref": "Incoterms 2020 - CIF", "url": "https://iccwbo.org/resources-for-business/incoterms-rules/incoterms-2020/"},
         "dd": {"ref": f"Tarif douanier {dest_iso3}", "url": None},
@@ -401,93 +380,116 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         "tcs": {"ref": f"Réglementation sanitaire {dest_iso3}", "url": None},
     }
 
-    normal_journal = [
-        {"step": 1, "component": "Valeur CIF", "base": request.value, "rate": "-", "amount": request.value, "cumulative": request.value, "legal_ref": legal_refs["cif"]["ref"], "legal_ref_url": legal_refs["cif"]["url"]},
-    ]
-    step = 2
-    cumulative = request.value
+    # Taux de change (USD -> devise locale) — récupéré ici car requis AUSSI pour
+    # les plafonds spécifiques exprimés en devise locale (ex. RI CEMAC ≤ 15 000 XAF).
+    from currencies.service import get_by_country as _get_currency
+    from exchange_rates import get_service as _get_fx_service
+    from services.tax_computation import parse_cap as _parse_cap
 
-    if collected_taxes_detail:
-        journal_running = 0.0  # taxes accumulated so far
-        for tax_item in collected_taxes_detail:
-            tax_name = tax_item["tax"]
-            tax_rate_pct = tax_item["rate"]
-            tax_rate_dec = tax_rate_pct / 100.0
+    _ccy = _get_currency(dest_country.get("code", ""))
+    _rate_obj = None
+    if _ccy:
+        try:
+            _rate_obj = _get_fx_service().get_rate("USD", _ccy.currency_code)
+        except Exception as _fx_err:  # réseau/provider indisponible
+            logger.warning(f"Taux de change indisponible ({_ccy.currency_code}): {_fx_err}")
+    _fx_rate = _rate_obj.rate if (_rate_obj and _rate_obj.rate) else None
 
-            is_vat = tax_name in _vat_names or "TVA" in tax_name.upper() or "VAT" in tax_name.upper()
-            if is_vat:
-                tax_base = round(normal_vat_base, 2)
-                tax_amount = round(normal_vat_amount, 2)
-                cumulative = round(normal_total, 2)
-            else:
-                tax_base = round(request.value + journal_running, 2)
-                tax_amount = round(tax_base * tax_rate_dec, 2)
-                journal_running += tax_amount
-                cumulative = round(request.value + journal_running, 2)
+    # Plafonds spécifiques convertis dans la devise du calcul (USD) : 1 USD =
+    # _fx_rate <devise locale> => plafond_usd = plafond_local / _fx_rate.
+    _caps: Dict[str, float] = {}
+    if _fx_rate:
+        for _ln in _engine_lines:
+            _cap = _parse_cap(_ln.get("base"))
+            if _cap and _ccy and _cap["currency"] == _ccy.currency_code:
+                _caps[str(_ln.get("code", "")).upper()] = round(_cap["amount"] / _fx_rate, 2)
 
-            ref_key = tax_name.lower().replace(".", "").replace(" ", "")
-            ref = legal_refs.get(ref_key, {"ref": tax_item.get("observation", ""), "url": None})
+    _dual = compute_dual_breakdown(
+        request.value, _engine_lines,
+        npf_dd_rate_pct=round(normal_rate * 100, 4),
+        zlecaf_dd_rate_pct=round(zlecaf_rate * 100, 4),
+        caps=_caps,
+    )
+    taxes_breakdown = _dual["breakdown"]
+    taxes_summary = _dual["summary"]
+    _npf = taxes_summary["npf"]
+    _zlc = taxes_summary["zlecaf"]
 
-            normal_journal.append({
-                "step": step,
-                "component": f"{tax_name} ({tax_item.get('observation', '')})" if tax_item.get("observation") else tax_name,
-                "base": tax_base,
-                "rate": f"{tax_rate_pct:.1f}%",
-                "amount": tax_amount,
-                "cumulative": round(cumulative, 2),
-                "legal_ref": ref["ref"],
-                "legal_ref_url": ref.get("url"),
-            })
-            step += 1
-    else:
-        normal_journal.append({"step": step, "component": "Droits de douane (DD)", "base": request.value, "rate": f"{normal_rate*100:.1f}%", "amount": round(normal_customs, 2), "cumulative": round(request.value + normal_customs, 2), "legal_ref": legal_refs["dd"]["ref"], "legal_ref_url": legal_refs["dd"]["url"]})
-        step = 3
-        journal_running = normal_customs  # track cumulative taxes for cascading base
+    # --- Champs agrégés dérivés du moteur (cohérence garantie) ---
+    normal_customs = _npf["droit_douane"]
+    zlecaf_customs = _zlc["droit_douane"]
+    other_taxes_amount = _npf["autres_taxes"]
+    zlecaf_other_amount = _zlc["autres_taxes"]
+    normal_vat_amount = _npf["tva"]
+    zlecaf_vat_amount = _zlc["tva"]
+    normal_total = _npf["cout_total"]
+    zlecaf_total = _zlc["cout_total"]
 
-        rs_rate = other_taxes_detail.get('rs', 0) / 100 if other_taxes_detail.get('rs') else 0
-        pcs_rate = other_taxes_detail.get('pcs', 0) / 100 if other_taxes_detail.get('pcs') else 0
-        cedeao_rate = other_taxes_detail.get('cedeao', 0) / 100 if other_taxes_detail.get('cedeao') else 0
-        tci_rate = other_taxes_detail.get('tci', 0) / 100 if other_taxes_detail.get('tci') else 0
+    savings = taxes_summary["economie_droits"]
+    savings_percentage = (savings / normal_customs) * 100 if normal_customs > 0 else 0
+    total_savings_with_taxes = taxes_summary["economie_totale"]
+    total_savings_percentage = (total_savings_with_taxes / normal_total) * 100 if normal_total > 0 else 0
 
-        if rs_rate > 0:
-            rs_base = round(request.value + journal_running, 2)
-            rs_amount = round(rs_base * rs_rate, 2)
-            journal_running += rs_amount
-            normal_journal.append({"step": step, "component": "Redevance statistique (RS)", "base": rs_base, "rate": f"{rs_rate*100:.1f}%", "amount": rs_amount, "cumulative": round(request.value + journal_running, 2), "legal_ref": legal_refs["rs"]["ref"], "legal_ref_url": legal_refs["rs"]["url"]})
-            step += 1
-        if pcs_rate > 0:
-            pcs_base = round(request.value + journal_running, 2)
-            pcs_amount = round(pcs_base * pcs_rate, 2)
-            journal_running += pcs_amount
-            normal_journal.append({"step": step, "component": "PCS UEMOA", "base": pcs_base, "rate": f"{pcs_rate*100:.1f}%", "amount": pcs_amount, "cumulative": round(request.value + journal_running, 2), "legal_ref": legal_refs["pcs"]["ref"], "legal_ref_url": legal_refs["pcs"]["url"]})
-            step += 1
-        if cedeao_rate > 0:
-            cedeao_base = round(request.value + journal_running, 2)
-            cedeao_amount = round(cedeao_base * cedeao_rate, 2)
-            journal_running += cedeao_amount
-            normal_journal.append({"step": step, "component": "Prélèvement CEDEAO (PC)", "base": cedeao_base, "rate": f"{cedeao_rate*100:.1f}%", "amount": cedeao_amount, "cumulative": round(request.value + journal_running, 2), "legal_ref": legal_refs["cedeao"]["ref"], "legal_ref_url": legal_refs["cedeao"]["url"]})
-            step += 1
-        if tci_rate > 0:
-            tci_base = round(request.value + journal_running, 2)
-            tci_amount = round(tci_base * tci_rate, 2)
-            journal_running += tci_amount
-            normal_journal.append({"step": step, "component": "TCI CEMAC", "base": tci_base, "rate": f"{tci_rate*100:.1f}%", "amount": tci_amount, "cumulative": round(request.value + journal_running, 2), "legal_ref": legal_refs["tci"]["ref"], "legal_ref_url": legal_refs["tci"]["url"]})
-            step += 1
-        normal_journal.append({"step": step, "component": "TVA", "base": round(normal_vat_base, 2), "rate": f"{vat_rate*100:.1f}%", "amount": round(normal_vat_amount, 2), "cumulative": round(normal_total, 2), "legal_ref": legal_refs["vat"]["ref"], "legal_ref_url": legal_refs["vat"]["url"]})
-    
-    # Create detailed calculation journal for ZLECAf with legal references
-    zlecaf_journal = [
-        {"step": 1, "component": "Valeur CIF", "base": request.value, "rate": "-", "amount": request.value, "cumulative": request.value, "legal_ref": legal_refs["cif"]["ref"], "legal_ref_url": legal_refs["cif"]["url"]},
-        {"step": 2, "component": "Droits de douane ZLECAf (DD)", "base": request.value, "rate": f"{zlecaf_rate*100:.1f}%", "amount": round(zlecaf_customs, 2), "cumulative": round(request.value + zlecaf_customs, 2), "legal_ref": legal_refs["zlecaf"]["ref"], "legal_ref_url": legal_refs["zlecaf"]["url"]},
-    ]
-    step = 3
-    zlecaf_cumulative = request.value + zlecaf_customs
-    if zlecaf_other_amount > 0:
-        zlecaf_cumulative += zlecaf_other_amount
-        zlecaf_journal.append({"step": step, "component": "Autres taxes", "base": request.value + zlecaf_customs, "rate": "-", "amount": round(zlecaf_other_amount, 2), "cumulative": round(zlecaf_cumulative, 2), "legal_ref": "Taxes communautaires", "legal_ref_url": None})
-        step += 1
-    zlecaf_journal.append({"step": step, "component": "TVA", "base": round(zlecaf_vat_base, 2), "rate": f"{vat_rate*100:.1f}%", "amount": round(zlecaf_vat_amount, 2), "cumulative": round(zlecaf_total, 2), "legal_ref": legal_refs["vat"]["ref"], "legal_ref_url": legal_refs["vat"]["url"]})
-    
+    # Montants par prélèvement (champs dédiés de la réponse).
+    def _sum_codes(regime_key: str, codes: set) -> float:
+        return round(sum(
+            b[f"amount_{regime_key}"] for b in taxes_breakdown
+            if str(b["code"]).upper() in codes
+        ), 2)
+    _normal_tax_amounts = {
+        "rs": _sum_codes("npf", {"RS"}),
+        "pcs": _sum_codes("npf", {"PCS"}),
+        "cedeao": _sum_codes("npf", {"PCC", "PC"}),
+        "tci": _sum_codes("npf", {"TCI"}),
+    }
+    _zlecaf_tax_amounts = {
+        "rs": _sum_codes("zlecaf", {"RS"}),
+        "pcs": _sum_codes("zlecaf", {"PCS"}),
+        "cedeao": _sum_codes("zlecaf", {"PCC", "PC"}),
+        "tci": _sum_codes("zlecaf", {"TCI"}),
+    }
+
+    # Journaux dérivés du même détail → parfaitement cohérents avec les totaux.
+    normal_journal = build_journal(request.value, taxes_breakdown, "npf", legal_refs)
+    zlecaf_journal = build_journal(request.value, taxes_breakdown, "zlecaf", legal_refs)
+
+    # ============================================================
+    # Bi-devise : montants en USD (valeur du calcul) ET en monnaie locale du
+    # pays de destination, via le sous-module de change (banque). Dégradation
+    # propre si le taux est indisponible (montants en USD uniquement).
+    # ============================================================
+    from services.tax_computation import localize_breakdown
+
+    currency_block: Optional[Dict[str, Any]] = None
+    if _ccy:
+        if _fx_rate:
+            _r = _fx_rate
+            # _dual a été recalculé plafonds inclus ; on localise le détail courant.
+            _loc = localize_breakdown({"breakdown": taxes_breakdown, "summary": taxes_summary}, _r)
+            taxes_breakdown = _loc["breakdown"]  # enrichi des montants locaux
+            currency_block = {
+                "local_code": _ccy.currency_code,
+                "local_name": _ccy.currency_name_fr,
+                "local_symbol": _ccy.currency_symbol,
+                "usd_to_local_rate": round(_r, 6),
+                "rate_source": _rate_obj.source,
+                "rate_as_of": _rate_obj.timestamp.isoformat(),
+                "available": True,
+                "value_usd": round(request.value, 2),
+                "value_local": round(request.value * _r, 2),
+                "summary_local": _loc["summary_local"],
+            }
+        else:
+            currency_block = {
+                "local_code": _ccy.currency_code,
+                "local_name": _ccy.currency_name_fr,
+                "local_symbol": _ccy.currency_symbol,
+                "usd_to_local_rate": None,
+                "available": False,
+                "note": "Taux de change indisponible — montants en USD uniquement.",
+                "value_usd": round(request.value, 2),
+            }
+
     # Rules of origin - Use official AfCFTA Annex II rules
     from etl.afcfta_rules_of_origin import get_rule_of_origin
     roo_data = get_rule_of_origin(hs6_code, "fr")
@@ -626,6 +628,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         rate_warning=rate_warning,
         sub_positions_details=sub_positions_details,
         taxes_detail=collected_taxes_detail if collected_taxes_detail else None,
+        taxes_breakdown=taxes_breakdown,
+        taxes_summary=taxes_summary,
+        currency=currency_block,
         fiscal_advantages=collected_fiscal_advantages if collected_fiscal_advantages else None,
         administrative_formalities=collected_admin_formalities if collected_admin_formalities else None,
         data_source=data_source,
