@@ -7,7 +7,14 @@ CEDEAO, CEMAC, EAC et la méthode nationale par défaut (base absente).
 """
 import pytest
 
-from services.tax_computation import compute_dual_breakdown, classify
+from services.tax_computation import compute_dual_breakdown, classify, build_journal
+
+_LEGAL = {
+    "cif": {"ref": "CIF", "url": None}, "zlecaf": {"ref": "ZLECAf", "url": None},
+    "vat": {"ref": "CGI", "url": None}, "rs": {"ref": "RS", "url": None},
+    "pcs": {"ref": "PCS", "url": None}, "cedeao": {"ref": "CEDEAO", "url": None},
+    "dd": {"ref": "DD", "url": None}, "tci": {"ref": "TCI", "url": None},
+}
 
 
 def test_classify():
@@ -99,6 +106,30 @@ def test_default_method_vat_on_cif_plus_dd():
     tva = next(b for b in r["breakdown"] if b["code"] == "TVA")
     assert tva["base_value_npf"] == 105_000.0    # CIF + DD
     assert tva["base_value_zlecaf"] == 100_000.0  # DD=0 sous ZLECAf
+
+
+def test_journal_reconciles_with_totals():
+    """Le cumul final du journal doit égaler le coût total de chaque régime
+    (cohérence montants agrégés <-> détail <-> journal)."""
+    r = compute_dual_breakdown(100_000, _ben_lines(), 10.0, 0.0)
+    for regime in ("npf", "zlecaf"):
+        journal = build_journal(100_000, r["breakdown"], regime, _LEGAL)
+        assert journal[0]["component"] == "Valeur CIF"
+        assert journal[-1]["cumulative"] == pytest.approx(
+            r["summary"][regime]["cout_total"], abs=0.01
+        )
+        # total taxes = somme des montants des étapes (hors CIF)
+        somme = sum(s["amount"] for s in journal[1:])
+        assert somme == pytest.approx(r["summary"][regime]["total_taxes_et_droits"], abs=0.01)
+
+
+def test_journal_uses_real_declared_base_for_vat():
+    """La base TVA du journal reflète l'assiette déclarée (CIF+DD+RS+PCS), pas
+    le cumul de toutes les taxes précédentes."""
+    r = compute_dual_breakdown(100_000, _ben_lines(), 10.0, 0.0)
+    journal = build_journal(100_000, r["breakdown"], "npf", _LEGAL)
+    tva_step = next(s for s in journal if s["component"].upper().startswith("TVA"))
+    assert tva_step["base"] == 112_000.0  # CIF+DD+RS+PCS (PCC/PUA exclus)
 
 
 def test_summary_savings():

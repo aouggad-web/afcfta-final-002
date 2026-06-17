@@ -207,3 +207,57 @@ def compute_dual_breakdown(
             "economie_totale": round(npf_sum["cout_total"] - zlc_sum["cout_total"], 2),
         },
     }
+
+
+# Mappage code de taxe -> clé de référence légale (pour les journaux).
+JOURNAL_LEGAL_KEY = {
+    "DD": "dd", "DI": "dd", "ID": "dd", "GENERAL": "dd", "DDDROIT": "dd",
+    "RS": "rs", "PCS": "pcs", "PCC": "cedeao", "PC": "cedeao", "PUA": "cedeao",
+    "TCI": "tci", "RI": "tci",
+    "TVA": "vat", "VAT": "vat",
+    "DAPS": "daps", "PRCT": "prct", "TCS": "tcs",
+}
+
+_CATEGORY_ORDER = {"droit_douane": 0, "autre_taxe": 1, "tva": 2}
+
+
+def build_journal(value: float, breakdown: List[Dict[str, Any]], regime: str,
+                  legal_refs: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Construit le journal de calcul (étapes) pour un régime à partir du détail.
+
+    Cohérent avec compute_dual_breakdown : chaque étape porte la base RÉELLE de
+    la taxe (assiette déclarée) et un cumul = valeur + somme des montants. Le
+    cumul final égale le coût total du régime.
+    """
+    amt_k = f"amount_{regime}"
+    base_k = f"base_value_{regime}"
+    rate_k = f"rate_{regime}_pct"
+
+    ordered = sorted(breakdown, key=lambda b: _CATEGORY_ORDER.get(b["category"], 1))
+    journal = [{
+        "step": 1, "component": "Valeur CIF", "base": round(value, 2), "rate": "-",
+        "amount": round(value, 2), "cumulative": round(value, 2),
+        "legal_ref": legal_refs.get("cif", {}).get("ref", "Incoterms 2020 - CIF"),
+        "legal_ref_url": legal_refs.get("cif", {}).get("url"),
+    }]
+    running = value
+    step = 2
+    for b in ordered:
+        running += b[amt_k]
+        if b["category"] == "droit_douane" and regime == "zlecaf":
+            ref = legal_refs.get("zlecaf", {"ref": "Accord ZLECAf", "url": None})
+        else:
+            key = JOURNAL_LEGAL_KEY.get(str(b["code"]).upper())
+            ref = legal_refs.get(key, {"ref": b.get("source", ""), "url": None})
+        journal.append({
+            "step": step,
+            "component": b["name"],
+            "base": b[base_k],
+            "rate": f"{b[rate_k]:.1f}%",
+            "amount": round(b[amt_k], 2),
+            "cumulative": round(running, 2),
+            "legal_ref": ref.get("ref", ""),
+            "legal_ref_url": ref.get("url"),
+        })
+        step += 1
+    return journal
