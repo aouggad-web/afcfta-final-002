@@ -83,14 +83,20 @@ def _base_components(base_expr: Optional[str], category: str,
 
 
 def _resolve_amounts(value: float, lines: List[Dict[str, Any]],
-                     dd_code: str, dd_rate_pct: float) -> Dict[str, float]:
+                     dd_code: str, dd_rate_pct: float,
+                     caps: Optional[Dict[str, float]] = None) -> Dict[str, float]:
     """Calcule le montant de chaque taxe en respectant les dépendances de base.
 
     `dd_rate_pct` permet d'imposer le taux du droit de douane (NPF ou ZLECAf) ;
     les bases qui référencent le droit de douane sont recalculées en conséquence.
     Résolution itérative : on calcule d'abord les lignes dont tous les composants
     sont connus, puis les lignes composites (ex. TVA), jusqu'à convergence.
+
+    `caps` (optionnel) : plafond de MONTANT par code de taxe, exprimé dans la même
+    devise que `value` (ex. RI CEMAC plafonné à 15 000 XAF converti en USD). Le
+    montant calculé est alors écrêté : min(ad valorem, plafond).
     """
+    caps = caps or {}
     cats = {l["code"]: classify(l) for l in lines}
     other_codes = [l["code"] for l in lines if cats[l["code"]] == "autre"]
     deps = {
@@ -113,12 +119,18 @@ def _resolve_amounts(value: float, lines: List[Dict[str, Any]],
             if deps[code] - set(amounts.keys()):
                 continue  # dépendances pas encore toutes calculées
             base_value = value + sum(amounts[c] for c in deps[code] if c in amounts)
-            amounts[code] = round(base_value * rate_of[code] / 100.0, 2)
+            amt = round(base_value * rate_of[code] / 100.0, 2)
+            if code in caps:
+                amt = round(min(amt, caps[code]), 2)  # écrêtage au plafond
+            amounts[code] = amt
             remaining.remove(code)
             progress = True
     # Cycle/dépendance manquante : repli sur CIF pour les lignes restantes.
     for code in remaining:
-        amounts[code] = round(value * rate_of[code] / 100.0, 2)
+        amt = round(value * rate_of[code] / 100.0, 2)
+        if code in caps:
+            amt = round(min(amt, caps[code]), 2)
+        amounts[code] = amt
     return amounts
 
 
@@ -131,17 +143,39 @@ def _base_value_of(value: float, code: str, lines: List[Dict[str, Any]],
     return round(value + sum(amounts.get(c, 0.0) for c in comps), 2)
 
 
+def parse_cap(base_expr: Optional[str]) -> Optional[Dict[str, Any]]:
+    """Extrait un plafond de l'expression de base (ex. « CIF (plafond 15 000 XAF) »).
+
+    Retourne {"amount": 15000.0, "currency": "XAF"} ou None si pas de plafond.
+    """
+    if not base_expr:
+        return None
+    m = re.search(r"plafond\s*([\d\s.,]+?)\s*([A-Z]{3})", base_expr, re.IGNORECASE)
+    if not m:
+        return None
+    raw = m.group(1).replace(" ", "").replace(" ", "").replace(",", ".")
+    try:
+        amount = float(raw)
+    except ValueError:
+        return None
+    return {"amount": amount, "currency": m.group(2).upper()}
+
+
 def compute_dual_breakdown(
     value: float,
     lines: List[Dict[str, Any]],
     npf_dd_rate_pct: float,
     zlecaf_dd_rate_pct: float,
+    caps: Optional[Dict[str, float]] = None,
 ) -> Dict[str, Any]:
     """Ventilation complète NPF vs ZLECAf, taxe par taxe, base par base.
 
     `lines` : [{code, name, rate_pct, base?, source?}] — TOUTES les taxes du
     régime (droit de douane inclus). Les doublons de code sont préfixés pour
     rester distincts.
+
+    `caps` (optionnel) : {code: plafond_montant} dans la devise de `value`
+    (ex. RI CEMAC plafonné à 15 000 XAF converti en USD). Écrête le montant.
     """
     # Dé-duplication des codes (certaines sources répètent un code).
     seen: Dict[str, int] = {}
@@ -155,8 +189,8 @@ def compute_dual_breakdown(
 
     dd_code = next((l["code"] for l in norm_lines if classify(l) == "dd"), None)
 
-    npf_amounts = _resolve_amounts(value, norm_lines, dd_code, npf_dd_rate_pct)
-    zlc_amounts = _resolve_amounts(value, norm_lines, dd_code, zlecaf_dd_rate_pct)
+    npf_amounts = _resolve_amounts(value, norm_lines, dd_code, npf_dd_rate_pct, caps)
+    zlc_amounts = _resolve_amounts(value, norm_lines, dd_code, zlecaf_dd_rate_pct, caps)
 
     breakdown: List[Dict[str, Any]] = []
     tot = {"npf": {"dd": 0.0, "tva": 0.0, "autre": 0.0},
@@ -167,7 +201,7 @@ def compute_dual_breakdown(
         cat = classify(l)
         is_dd = (code == dd_code)
         rate = float(l.get("rate_pct") or 0.0)
-        breakdown.append({
+        entry = {
             "code": code.split("#")[0],
             "name": l.get("name", code),
             "category": {"dd": "droit_douane", "tva": "tva", "autre": "autre_taxe"}[cat],
@@ -180,7 +214,12 @@ def compute_dual_breakdown(
             "amount_zlecaf": zlc_amounts[code],
             "affected_by_zlecaf": is_dd,
             "source": l.get("source", ""),
-        })
+        }
+        _cap = parse_cap(l.get("base"))
+        if _cap:
+            entry["cap"] = _cap  # plafond déclaré (montant + devise)
+            entry["capped_npf"] = (code in (caps or {})) and npf_amounts[code] >= (caps or {}).get(code, float("inf")) - 0.01
+        breakdown.append(entry)
         tot["npf"][cat] += npf_amounts[code]
         tot["zlecaf"][cat] += zlc_amounts[code]
 

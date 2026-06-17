@@ -8,8 +8,42 @@ CEDEAO, CEMAC, EAC et la méthode nationale par défaut (base absente).
 import pytest
 
 from services.tax_computation import (
-    compute_dual_breakdown, classify, build_journal, localize_breakdown,
+    compute_dual_breakdown, classify, build_journal, localize_breakdown, parse_cap,
 )
+
+
+def test_parse_cap():
+    assert parse_cap("CIF (plafond 15 000 XAF)") == {"amount": 15000.0, "currency": "XAF"}
+    assert parse_cap("CIF") is None
+    assert parse_cap(None) is None
+
+
+def test_specific_cap_applied():
+    """RI CEMAC 0,45% plafonné à 15 000 XAF : écrêté quand l'ad valorem dépasse."""
+    lines = [
+        {"code": "DD", "name": "Droit de Douane", "rate_pct": 30.0, "base": "CIF"},
+        {"code": "RI", "name": "Redevance Informatique", "rate_pct": 0.45,
+         "base": "CIF (plafond 15 000 XAF)"},
+    ]
+    # 1 USD = 600 XAF -> plafond = 25 USD ; ad valorem = 0.45% de 100000 = 450
+    capped = compute_dual_breakdown(100_000, lines, 30.0, 0.0, caps={"RI": 25.0})
+    ri = next(b for b in capped["breakdown"] if b["code"] == "RI")
+    assert ri["amount_npf"] == 25.0
+    assert ri["cap"] == {"amount": 15000.0, "currency": "XAF"}
+    assert ri["capped_npf"] is True
+    # sans plafond fourni (taux indisponible) -> ad valorem complet
+    uncapped = compute_dual_breakdown(100_000, lines, 30.0, 0.0)
+    ri2 = next(b for b in uncapped["breakdown"] if b["code"] == "RI")
+    assert ri2["amount_npf"] == 450.0
+
+
+def test_cap_not_applied_when_below_ceiling():
+    """Petite valeur : l'ad valorem reste sous le plafond, pas d'écrêtage."""
+    lines = [{"code": "RI", "name": "RI", "rate_pct": 0.45, "base": "CIF (plafond 15 000 XAF)"}]
+    r = compute_dual_breakdown(1_000, lines, 0.0, 0.0, caps={"RI": 25.0})
+    ri = next(b for b in r["breakdown"] if b["code"] == "RI")
+    assert ri["amount_npf"] == 4.5            # 0.45% de 1000, sous le plafond
+    assert ri["capped_npf"] is False
 
 _LEGAL = {
     "cif": {"ref": "CIF", "url": None}, "zlecaf": {"ref": "ZLECAf", "url": None},

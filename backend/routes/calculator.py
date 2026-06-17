@@ -380,10 +380,35 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         "tcs": {"ref": f"Réglementation sanitaire {dest_iso3}", "url": None},
     }
 
+    # Taux de change (USD -> devise locale) — récupéré ici car requis AUSSI pour
+    # les plafonds spécifiques exprimés en devise locale (ex. RI CEMAC ≤ 15 000 XAF).
+    from currencies.service import get_by_country as _get_currency
+    from exchange_rates import get_service as _get_fx_service
+    from services.tax_computation import parse_cap as _parse_cap
+
+    _ccy = _get_currency(dest_country.get("code", ""))
+    _rate_obj = None
+    if _ccy:
+        try:
+            _rate_obj = _get_fx_service().get_rate("USD", _ccy.currency_code)
+        except Exception as _fx_err:  # réseau/provider indisponible
+            logger.warning(f"Taux de change indisponible ({_ccy.currency_code}): {_fx_err}")
+    _fx_rate = _rate_obj.rate if (_rate_obj and _rate_obj.rate) else None
+
+    # Plafonds spécifiques convertis dans la devise du calcul (USD) : 1 USD =
+    # _fx_rate <devise locale> => plafond_usd = plafond_local / _fx_rate.
+    _caps: Dict[str, float] = {}
+    if _fx_rate:
+        for _ln in _engine_lines:
+            _cap = _parse_cap(_ln.get("base"))
+            if _cap and _ccy and _cap["currency"] == _ccy.currency_code:
+                _caps[str(_ln.get("code", "")).upper()] = round(_cap["amount"] / _fx_rate, 2)
+
     _dual = compute_dual_breakdown(
         request.value, _engine_lines,
         npf_dd_rate_pct=round(normal_rate * 100, 4),
         zlecaf_dd_rate_pct=round(zlecaf_rate * 100, 4),
+        caps=_caps,
     )
     taxes_breakdown = _dual["breakdown"]
     taxes_summary = _dual["summary"]
@@ -434,20 +459,13 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # propre si le taux est indisponible (montants en USD uniquement).
     # ============================================================
     from services.tax_computation import localize_breakdown
-    from currencies.service import get_by_country as _get_currency
-    from exchange_rates import get_service as _get_fx_service
 
     currency_block: Optional[Dict[str, Any]] = None
-    _ccy = _get_currency(dest_country.get("code", ""))
     if _ccy:
-        _rate_obj = None
-        try:
-            _rate_obj = _get_fx_service().get_rate("USD", _ccy.currency_code)
-        except Exception as _fx_err:  # réseau/provider indisponible
-            logger.warning(f"Taux de change indisponible ({_ccy.currency_code}): {_fx_err}")
-        if _rate_obj and _rate_obj.rate:
-            _r = _rate_obj.rate
-            _loc = localize_breakdown(_dual, _r)
+        if _fx_rate:
+            _r = _fx_rate
+            # _dual a été recalculé plafonds inclus ; on localise le détail courant.
+            _loc = localize_breakdown({"breakdown": taxes_breakdown, "summary": taxes_summary}, _r)
             taxes_breakdown = _loc["breakdown"]  # enrichi des montants locaux
             currency_block = {
                 "local_code": _ccy.currency_code,
