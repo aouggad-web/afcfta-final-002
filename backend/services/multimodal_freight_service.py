@@ -465,7 +465,7 @@ def _land_option(
         # For planned/under-construction corridors, still compute the modeled cost
         # so the user sees the projected economics.
         land = get_land_freight_cost(
-            corridor["corridor_id"], "road", weight_tonnes, cargo_type,
+            corridor["corridor_id"], corridor.get("type", "road"), weight_tonnes, cargo_type,
         )
         if not land:
             continue
