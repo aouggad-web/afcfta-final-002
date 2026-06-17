@@ -632,6 +632,47 @@ def _sea_then_land_option(
     return options
 
 
+def _roi_interpretation(
+    future_label: str,
+    ref_label: str,
+    weight_kg: float,
+    cost_saving: float,
+    co2_saving: float,
+    time_saving_days: float,
+) -> str:
+    """Phrase la comparaison route future vs route actuelle, en gérant le cas où
+    la route future est en fait plus chère/plus polluante (mauvaise alternative
+    de coût mais potentiellement plus rapide ou plus fiable)."""
+    tons = f"{weight_kg / 1000:.0f}"
+    if cost_saving >= 0 and co2_saving >= 0:
+        return (
+            f"Si la route « {future_label} » devient opérationnelle, "
+            f"chaque expédition de {tons} t économisera "
+            f"${round(cost_saving):,} USD et {round(co2_saving):,} kg CO₂ "
+            f"vs la meilleure option actuelle ({ref_label})."
+        )
+    parts = []
+    if cost_saving >= 0:
+        parts.append(f"économisera ${round(cost_saving):,} USD")
+    else:
+        parts.append(f"coûtera ${round(-cost_saving):,} USD de plus")
+    if co2_saving >= 0:
+        parts.append(f"évitera {round(co2_saving):,} kg CO₂")
+    else:
+        parts.append(f"émettra {round(-co2_saving):,} kg CO₂ de plus")
+    time_note = ""
+    if time_saving_days > 0:
+        time_note = f" Délai réduit de {time_saving_days:.1f} j."
+    elif time_saving_days < 0:
+        time_note = f" Délai allongé de {-time_saving_days:.1f} j."
+    return (
+        f"La route « {future_label} » {' et '.join(parts)} par expédition de {tons} t "
+        f"vs la meilleure option actuelle ({ref_label}).{time_note} "
+        "Cette route future peut néanmoins présenter d'autres avantages (fiabilité, "
+        "diversification des itinéraires, désenclavement) non capturés par ce seul calcul de coût."
+    )
+
+
 def compare_multimodal(
     origin_country: str,
     destination_country: str,
@@ -798,11 +839,9 @@ def compare_multimodal(
                 "annual_cost_savings_usd": annual_cost_savings,
                 "annual_co2_savings_tonnes": annual_co2_savings_tonnes,
             },
-            "interpretation": (
-                f"Si la route « {bf_cost.get('label')} » devient opérationnelle, "
-                f"chaque expédition de {weight_kg/1000:.0f} t économisera "
-                f"${round(cost_saving_per_teu):,} USD et {round(co2_saving_per_teu):,} kg CO₂ "
-                f"vs la meilleure option actuelle ({ref.get('label')})."
+            "interpretation": _roi_interpretation(
+                bf_cost.get("label"), ref.get("label"), weight_kg,
+                cost_saving_per_teu, co2_saving_per_teu, time_saving_days,
             ),
         }
 

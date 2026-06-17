@@ -439,67 +439,88 @@ export default function MultimodalComparator({ language = 'fr' }) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-white/10">
-                  <div className="text-center">
-                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">Économie par expédition</div>
-                    <div className="font-display text-2xl text-emerald-300">
-                      ${result.roi_infrastructure.per_shipment.cost_savings_usd?.toLocaleString('en-US')}
-                    </div>
-                    <div className="text-[11px] text-emerald-400">{result.roi_infrastructure.per_shipment.cost_savings_pct}%</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">CO₂ évité</div>
-                    <div className="font-display text-2xl text-lime-300">
-                      {result.roi_infrastructure.per_shipment.co2_savings_kg?.toLocaleString('en-US')} kg
-                    </div>
-                    <div className="text-[11px] text-lime-400">{result.roi_infrastructure.per_shipment.co2_savings_pct}%</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">Temps gagné</div>
-                    <div className="font-display text-2xl text-yellow-300">
-                      {result.roi_infrastructure.per_shipment.time_savings_days} j
-                    </div>
-                    <div className="text-[11px] text-yellow-400">/ expédition</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">vs Aérien</div>
-                    <div className="font-display text-2xl text-purple-300">
-                      ${result.roi_infrastructure.per_shipment.cost_savings_vs_air_usd?.toLocaleString('en-US') || '—'}
-                    </div>
-                    <div className="text-[11px] text-purple-400">économisés {result.roi_infrastructure.per_shipment.cost_savings_vs_air_pct}%</div>
-                  </div>
-                </div>
+                {(() => {
+                  const ps = result.roi_infrastructure.per_shipment;
+                  const costPositive = (ps.cost_savings_usd ?? 0) >= 0;
+                  const co2Positive = (ps.co2_savings_kg ?? 0) >= 0;
+                  const annualCost = (ps.cost_savings_usd || 0) * teuPerYear;
+                  const annualCo2 = ((ps.co2_savings_kg || 0) * teuPerYear) / 1000;
+                  return (
+                    <>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-white/10">
+                        <div className="text-center">
+                          <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">
+                            {costPositive ? 'Économie par expédition' : 'Surcoût par expédition'}
+                          </div>
+                          <div className={`font-display text-2xl ${costPositive ? 'text-emerald-300' : 'text-red-300'}`}>
+                            {costPositive ? '$' : '+$'}{Math.abs(ps.cost_savings_usd ?? 0).toLocaleString('en-US')}
+                          </div>
+                          <div className={`text-[11px] ${costPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+                            {Math.abs(ps.cost_savings_pct ?? 0)}%
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">
+                            {co2Positive ? 'CO₂ évité' : 'CO₂ supplémentaire'}
+                          </div>
+                          <div className={`font-display text-2xl ${co2Positive ? 'text-lime-300' : 'text-red-300'}`}>
+                            {Math.abs(ps.co2_savings_kg ?? 0).toLocaleString('en-US')} kg
+                          </div>
+                          <div className={`text-[11px] ${co2Positive ? 'text-lime-400' : 'text-red-400'}`}>
+                            {Math.abs(ps.co2_savings_pct ?? 0)}%
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">
+                            {ps.time_savings_days >= 0 ? 'Temps gagné' : 'Délai allongé'}
+                          </div>
+                          <div className="font-display text-2xl text-yellow-300">
+                            {Math.abs(ps.time_savings_days ?? 0)} j
+                          </div>
+                          <div className="text-[11px] text-yellow-400">/ expédition</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">vs Aérien</div>
+                          <div className="font-display text-2xl text-purple-300">
+                            ${ps.cost_savings_vs_air_usd?.toLocaleString('en-US') ?? '—'}
+                          </div>
+                          <div className="text-[11px] text-purple-400">économisés {ps.cost_savings_vs_air_pct}%</div>
+                        </div>
+                      </div>
 
-                <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 flex items-start gap-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-[11px] uppercase tracking-wide text-emerald-300">Projection annuelle</span>
-                      <Label htmlFor="teu-yr" className="text-[10px] text-gray-400 ml-2">TEU/an :</Label>
-                      <Input
-                        id="teu-yr"
-                        type="number" min={1}
-                        value={teuPerYear}
-                        onChange={e => setTeuPerYear(Math.max(1, Number(e.target.value) || 100))}
-                        className="h-7 w-20 text-xs"
-                        data-testid="roi-teu-input"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <div className="text-[10px] text-gray-400">Économie annuelle</div>
-                        <div className="font-display text-2xl text-emerald-200">
-                          ${((result.roi_infrastructure.per_shipment.cost_savings_usd || 0) * teuPerYear).toLocaleString('en-US')}
+                      <div className={`border rounded-lg p-3 flex items-start gap-3 ${costPositive ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className={`text-[11px] uppercase tracking-wide ${costPositive ? 'text-emerald-300' : 'text-red-300'}`}>Projection annuelle</span>
+                            <Label htmlFor="teu-yr" className="text-[10px] text-gray-400 ml-2">TEU/an :</Label>
+                            <Input
+                              id="teu-yr"
+                              type="number" min={1}
+                              value={teuPerYear}
+                              onChange={e => setTeuPerYear(Math.max(1, Number(e.target.value) || 100))}
+                              className="h-7 w-20 text-xs"
+                              data-testid="roi-teu-input"
+                            />
+                          </div>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <div className="text-[10px] text-gray-400">{costPositive ? 'Économie annuelle' : 'Surcoût annuel'}</div>
+                              <div className={`font-display text-2xl ${costPositive ? 'text-emerald-200' : 'text-red-200'}`}>
+                                ${Math.abs(annualCost).toLocaleString('en-US')}
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-[10px] text-gray-400">{co2Positive ? 'CO₂ évité annuel' : 'CO₂ supplémentaire annuel'}</div>
+                              <div className={`font-display text-2xl ${co2Positive ? 'text-lime-200' : 'text-red-200'}`}>
+                                {Math.abs(annualCo2).toFixed(1)} t
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div>
-                        <div className="text-[10px] text-gray-400">CO₂ évité annuel</div>
-                        <div className="font-display text-2xl text-lime-200">
-                          {(((result.roi_infrastructure.per_shipment.co2_savings_kg || 0) * teuPerYear) / 1000).toFixed(1)} t
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                    </>
+                  );
+                })()}
 
                 <div className="text-xs text-gray-300 italic border-t border-white/5 pt-2">
                   {result.roi_infrastructure.interpretation}
