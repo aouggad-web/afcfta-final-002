@@ -905,6 +905,7 @@ class CrawledDataService:
                 "name": td.get("tax_name", tax_code),
                 "rate_pct": rate,
                 "raw_value": f"{rate}%",
+                "base": td.get("base", ""),
                 "source": source,
             })
 
@@ -918,6 +919,7 @@ class CrawledDataService:
                             "name": code,
                             "rate_pct": rate,
                             "raw_value": f"{rate}%",
+                            "base": "",
                             "source": source,
                         })
 
@@ -969,6 +971,7 @@ class CrawledDataService:
                     "name": td.get("tax_name", tax_code),
                     "rate_pct": rate,
                     "raw_value": f"{rate}%",
+                    "base": td.get("base", ""),
                     "source": source,
                 })
 
@@ -982,6 +985,7 @@ class CrawledDataService:
                             "name": code,
                             "rate_pct": rate,
                             "raw_value": f"{rate}%",
+                            "base": "",
                             "source": source,
                         })
 

@@ -95,6 +95,16 @@ class TariffCalculationResponse(BaseModel):
     sub_positions_details: Optional[List[Dict[str, Any]]] = None
     # Taxes détaillées par produit (format enrichi)
     taxes_detail: Optional[List[Dict[str, Any]]] = None
+    # Ventilation complète NPF vs ZLECAf, taxe par taxe, calculée sur la base
+    # (assiette) déclarée propre à chaque pays. Chaque entrée : code, name,
+    # category (droit_douane|tva|autre_taxe), base_expr, rate_npf_pct,
+    # rate_zlecaf_pct, base_value_npf, base_value_zlecaf, amount_npf,
+    # amount_zlecaf, affected_by_zlecaf, source.
+    taxes_breakdown: Optional[List[Dict[str, Any]]] = None
+    # Récapitulatif par régime : {npf:{droit_douane, autres_taxes, tva,
+    # total_taxes_et_droits, cout_total}, zlecaf:{...}, economie_droits,
+    # economie_totale}.
+    taxes_summary: Optional[Dict[str, Any]] = None
     fiscal_advantages: Optional[List[Dict[str, Any]]] = None
     administrative_formalities: Optional[List[Dict[str, Any]]] = None
     data_source: Optional[str] = None

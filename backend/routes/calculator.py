@@ -386,7 +386,62 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     savings_percentage = (savings / normal_customs) * 100 if normal_customs > 0 else 0
     total_savings_with_taxes = normal_total - zlecaf_total
     total_savings_percentage = (total_savings_with_taxes / normal_total) * 100 if normal_total > 0 else 0
-    
+
+    # ============================================================
+    # DÉTAIL COMPLET des droits et taxes — ventilation NPF vs ZLECAf
+    # Chaque taxe est calculée sur SA base déclarée (assiette propre au pays,
+    # ex. TVA CEDEAO = CIF+DD+RS+PCS ; TVA CEMAC = CIF+DD+TCI) ; à défaut,
+    # méthode nationale par défaut. Le droit de douane est le seul droit réduit
+    # par ZLECAf ; les taxes dont la base l'inclut (TVA) baissent en conséquence.
+    # Intègre TOUTES les taxes (droit de douane + prélèvements + TVA).
+    # ============================================================
+    from services.tax_computation import compute_dual_breakdown
+
+    _engine_lines: List[Dict[str, Any]] = []
+    if crawled_raw_taxes:
+        for t in crawled_raw_taxes:
+            if t.get("rate_pct") is None:
+                continue
+            _engine_lines.append({
+                "code": t.get("code", ""),
+                "name": t.get("name", t.get("code", "")),
+                "rate_pct": t["rate_pct"],
+                "base": t.get("base", ""),
+                "source": t.get("source", npf_source),
+            })
+    elif collected_taxes_detail:
+        for t in collected_taxes_detail:
+            if t.get("rate") is None:
+                continue
+            _engine_lines.append({
+                "code": t.get("tax", ""),
+                "name": t.get("tax", ""),
+                "rate_pct": t["rate"],
+                "base": "",
+                "source": t.get("observation", npf_source),
+            })
+    else:
+        _engine_lines.append({"code": "DD", "name": "Droit de douane",
+                              "rate_pct": round(normal_rate * 100, 4), "base": "CIF", "source": npf_source})
+        for _k, _rp in (other_taxes_detail or {}).items():
+            if _k == "other" or not isinstance(_rp, (int, float)) or _rp == 0:
+                continue
+            _engine_lines.append({"code": _k.upper(), "name": _k.upper(),
+                                  "rate_pct": _rp, "base": "CIF", "source": npf_source})
+        _engine_lines.append({"code": "TVA", "name": "Taxe sur la valeur ajoutée",
+                              "rate_pct": round(vat_rate * 100, 4), "base": "", "source": vat_source})
+
+    taxes_breakdown = None
+    taxes_summary = None
+    if _engine_lines:
+        _dual = compute_dual_breakdown(
+            request.value, _engine_lines,
+            npf_dd_rate_pct=round(normal_rate * 100, 4),
+            zlecaf_dd_rate_pct=round(zlecaf_rate * 100, 4),
+        )
+        taxes_breakdown = _dual["breakdown"]
+        taxes_summary = _dual["summary"]
+
     legal_refs = {
         "cif": {"ref": "Incoterms 2020 - CIF", "url": "https://iccwbo.org/resources-for-business/incoterms-rules/incoterms-2020/"},
         "dd": {"ref": f"Tarif douanier {dest_iso3}", "url": None},
@@ -626,6 +681,8 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         rate_warning=rate_warning,
         sub_positions_details=sub_positions_details,
         taxes_detail=collected_taxes_detail if collected_taxes_detail else None,
+        taxes_breakdown=taxes_breakdown,
+        taxes_summary=taxes_summary,
         fiscal_advantages=collected_fiscal_advantages if collected_fiscal_advantages else None,
         administrative_formalities=collected_admin_formalities if collected_admin_formalities else None,
         data_source=data_source,
