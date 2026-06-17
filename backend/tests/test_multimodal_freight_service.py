@@ -75,6 +75,20 @@ def test_compare_multimodal_tags_options_and_computes_roi(monkeypatch):
 
     roi = result["roi_infrastructure"]
     assert roi["reference_operational"]["label"] == "Land Operational"
+    assert (
+        roi["per_shipment"]["cost_savings_usd"]
+        == roi["reference_operational"]["cost_usd"] - roi["best_future_cost"]["cost_usd"]
+    )
+    assert (
+        roi["per_shipment"]["co2_savings_kg"]
+        == roi["reference_operational"]["co2_kg"] - roi["best_future_co2"]["co2_kg"]
+    )
+    assert (
+        roi["per_shipment"]["time_savings_days"]
+        == round(
+            roi["reference_operational"]["transit_days_avg"] - roi["best_future_time"]["transit_days_avg"], 1,
+        )
+    )
     assert roi["per_shipment"]["cost_savings_usd"] == 150
     assert roi["per_shipment"]["co2_savings_kg"] == 40
     assert roi["per_shipment"]["time_savings_days"] == 3.5
