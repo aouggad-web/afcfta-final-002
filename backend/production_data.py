@@ -3,6 +3,7 @@ Production Africaine - Gestion des données de production (Agriculture, Industri
 Charge et expose les données de production pour 2021-2024
 """
 
+import hashlib
 import json
 import os
 from typing import List, Dict, Optional
@@ -13,17 +14,14 @@ DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'json', 'produ
 
 # Cache global
 _production_data = None
+# Version courte du dataset (stamp d'invalidation de cache)
+_production_data_version = None
 
 def _normalize_country_iso3(country_iso3: Optional[str]) -> Optional[str]:
     """Normalise le code ISO3 pays pour les filtres."""
     if country_iso3 is None:
         return None
     return country_iso3.strip().upper()
-
-def _extract_years(records: List[Dict]) -> List[int]:
-    """Extrait la liste triée des années uniques présentes dans les enregistrements."""
-    years = sorted({r.get('year') for r in records if r.get('year') is not None})
-    return years
 
 def load_production_data():
     """Charge les données de production depuis le fichier JSON"""
@@ -54,6 +52,33 @@ def load_production_data():
                 "mining_usgs": []
             }
     return _production_data
+
+
+def get_production_data_version() -> str:
+    """
+    Retourne une version courte (8 hex) du dataset de production.
+
+    Dérivée de metadata.last_updated + nombre d'enregistrements par section.
+    Sert de stamp d'invalidation de cache : lorsqu'on reconstruit
+    production_africaine.json (build_production_real.py /
+    build_production_faostat_usgs.py), cette version change, ce qui rend les
+    analyses Claude en cache inaccessibles (elles expirent ensuite par TTL).
+    Ainsi les analyses servies après une mise à jour des données portent
+    toujours les capacités de production à jour, sans purge manuelle.
+    """
+    global _production_data_version
+    if _production_data_version is None:
+        data = load_production_data()
+        meta = data.get("metadata", {}) if isinstance(data, dict) else {}
+        signature = "|".join([
+            str(meta.get("last_updated", "")),
+            str(len(data.get("agri_faostat", []))),
+            str(len(data.get("manufacturing_unido", []))),
+            str(len(data.get("mining_usgs", []))),
+            str(len(data.get("value_added_macro", []))),
+        ])
+        _production_data_version = hashlib.md5(signature.encode()).hexdigest()[:8]
+    return _production_data_version
 
 # ==========================================
 # VALUE ADDED MACRO (WDI/WEO)

@@ -1,8 +1,22 @@
 #!/usr/bin/env python3
 """
-Script pour générer des données de production complètes pour tous les pays africains
-Basé sur des profils économiques réalistes pour chaque pays
+⛔ DÉPRÉCIÉ — NE PAS UTILISER ⛔
+=================================================================
+Ce script générait production_africaine.json avec des valeurs ALÉATOIRES
+(random.uniform / random.randint) tout en les étiquetant « FAO/USGS/UNIDO ».
+Les données produites n'étaient PAS réelles ni vérifiables.
+
+➡️  Remplacé par : backend/scripts/build_production_real.py
+    (sources réelles : FAO FAOSTAT, UNIDO INDSTAT4, USGS MCS, EIA/OPEC)
+
+Conservé pour référence historique uniquement. Exécution bloquée.
 """
+
+import sys
+
+print(__doc__)
+print("⛔ Script désactivé. Utilisez: python3 backend/scripts/build_production_real.py")
+sys.exit(1)
 
 import json
 import random
