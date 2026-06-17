@@ -1291,10 +1291,7 @@
       ],
       "nodes": [
         {
-          "node_id": "NODE-BORDJ-MOKHTAR-001",
-          "node_name": "Bordj Mokhtar (DZA-MLI)",
-          "node_type": "border_post",
-          "country_iso": "DZA",
+          "node_type": "border_crossing",
           "geo_lat": 21.3284,
           "geo_lon": 0.9544,
           "is_osbp": true,
