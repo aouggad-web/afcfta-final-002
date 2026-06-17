@@ -118,13 +118,45 @@ def cmd_validate_file(iso3: str) -> int:
     print(f"Fichier   : {path}")
     print(f"Positions : {len(positions)}")
     print(f"Qualité   : {dict(quals)}")
-    if ok:
-        print("✓ AUTHENTIQUE — le fichier passe la validation, servable.")
+
+    # Contrôle d'INGESTION : crawled_data_service indexe-t-il réellement ces
+    # positions ? Détecte le bug « fichier plein mais lu vide » (schéma sans
+    # normaliseur correspondant — cas EGY/GHA), invisible à la seule validation
+    # d'authenticité.
+    indexed = _indexed_count(iso3)
+    print(f"Indexées  : {indexed} / {len(positions)} (via crawled_data_service)")
+    ingestion_ok = True
+    if positions and indexed == 0:
+        ingestion_ok = False
+        print(f"✗ INGESTION CASSÉE — 0 position indexée alors que le fichier en contient "
+              f"{len(positions)}. Le schéma ne correspond à aucun normaliseur : ajouter un "
+              f"_normalize_{iso3.lower()} dans services/crawled_data_service.py, ou émettre "
+              f"le schéma canonique (code_raw/code_clean + taxes en liste).")
+    elif positions and indexed < len(positions) * 0.5:
+        print(f"⚠ INGESTION PARTIELLE — seulement {indexed}/{len(positions)} positions indexées ; "
+              f"vérifier le normaliseur.")
+
+    if ok and ingestion_ok:
+        print("✓ AUTHENTIQUE & INGESTIBLE — le fichier passe la validation et est servable.")
         return 0
-    print("✗ REJETÉ — problèmes d'authenticité :")
-    for i in issues:
-        print(f"   - {i}")
+    if not ok:
+        print("✗ REJETÉ — problèmes d'authenticité :")
+        for i in issues:
+            print(f"   - {i}")
     return 1
+
+
+def _indexed_count(iso3: str) -> int:
+    """Nombre de positions effectivement indexées par crawled_data_service."""
+    try:
+        from services.crawled_data_service import CrawledDataService
+        svc = CrawledDataService()
+        svc.load(force=True)
+        svc._ensure_country_loaded(iso3)
+        return len(svc._code_index.get(iso3, {}))
+    except Exception as e:  # ne bloque pas la validation d'authenticité
+        print(f"  (contrôle d'ingestion indisponible : {e})")
+        return -1
 
 
 def main(argv: list[str] | None = None) -> int:

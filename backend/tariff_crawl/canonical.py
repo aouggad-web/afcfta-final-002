@@ -170,8 +170,13 @@ def validate_authenticity(doc: Dict[str, Any]) -> Tuple[bool, List[str]]:
             estimated += 1
         if not (p.get("code_clean") or p.get("code") or p.get("hs_code")):
             no_code += 1
-        taxes = p.get("taxes")
-        has_tax = bool(taxes) if isinstance(taxes, (list, dict)) else False
+        # Les crawlers réels emploient des noms de champ variés pour les taxes
+        # (taxes / taxes_detail / taxes_import). On considère qu'une position
+        # porte une taxe dès que l'un d'eux est non vide.
+        has_tax = any(
+            bool(p.get(field)) and isinstance(p.get(field), (list, dict))
+            for field in ("taxes", "taxes_detail", "taxes_import")
+        )
         if not has_tax:
             no_tax += 1
 
