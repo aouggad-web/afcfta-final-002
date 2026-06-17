@@ -101,10 +101,27 @@ def test_validator_rejects_empty():
 
 def test_validator_rejects_missing_source():
     doc = _good_doc()
-    doc["source_url"] = ""
+    doc["source"] = ""
     ok, issues = validate_authenticity(doc)
     assert not ok
-    assert any("source_url" in i for i in issues)
+    assert any("source" in i for i in issues)
+
+
+def test_validator_missing_source_url_is_not_blocking():
+    doc = _good_doc()
+    doc.pop("source_url", None)
+    ok, issues = validate_authenticity(doc)
+    assert ok, issues
+
+
+def test_validator_infers_provenance_from_position_tags():
+    """Un crawl réel taggué seulement au niveau position (ex. DZA
+    'crawled_authentic') doit être reconnu comme national_crawl."""
+    doc = _good_doc()
+    doc["source_quality"] = None
+    doc["sub_positions"][0]["source_quality"] = "crawled_authentic"
+    ok, issues = validate_authenticity(doc)
+    assert ok, issues
 
 
 def test_validator_rejects_estimated_positions():

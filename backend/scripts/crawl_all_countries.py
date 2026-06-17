@@ -101,12 +101,42 @@ def cmd_run(countries: list[str] | None) -> int:
     return 0 if ok_count or not targets else 1
 
 
+def cmd_validate_file(iso3: str) -> int:
+    """Valide l'authenticité d'un fichier data/crawled/{ISO3}_tariffs.json déjà produit."""
+    iso3 = iso3.upper()
+    path = CRAWLED_DIR / f"{iso3}_tariffs.json"
+    if not path.exists():
+        print(f"✗ Fichier introuvable : {path}")
+        return 2
+
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    positions = doc.get("sub_positions") or doc.get("positions") or doc.get("tariff_lines") or []
+    from collections import Counter
+    quals = Counter(p.get("source_quality") or p.get("quality") for p in positions)
+
+    ok, issues = validate_authenticity(doc)
+    print(f"Fichier   : {path}")
+    print(f"Positions : {len(positions)}")
+    print(f"Qualité   : {dict(quals)}")
+    if ok:
+        print("✓ AUTHENTIQUE — le fichier passe la validation, servable.")
+        return 0
+    print("✗ REJETÉ — problèmes d'authenticité :")
+    for i in issues:
+        print(f"   - {i}")
+    return 1
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Pipeline de collecte tarifaire authentique (54 pays).")
     ap.add_argument("--run", action="store_true", help="Collecte réelle (réseau + secrets requis).")
     ap.add_argument("--country", action="append", help="Limiter à un/des pays (ISO3). Répétable.")
+    ap.add_argument("--validate-file", metavar="ISO3",
+                    help="Valide l'authenticité de data/crawled/{ISO3}_tariffs.json déjà produit.")
     args = ap.parse_args(argv)
 
+    if args.validate_file:
+        return cmd_validate_file(args.validate_file)
     if args.run:
         return cmd_run(args.country)
     return cmd_dry_run(args.country)

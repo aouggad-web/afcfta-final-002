@@ -22,6 +22,23 @@ NON_AUTHENTIC_QUALITY_TAGS = frozenset({
     "etl_computed", "estimated", "synthetic", "generated", "chapter_replicated",
 })
 
+# Synonymes employés par les crawlers réels → provenance canonique.
+PROVENANCE_SYNONYMS = {
+    "crawled_authentic": Provenance.NATIONAL_CRAWL.value,
+    "authentic_national": Provenance.NATIONAL_CRAWL.value,
+    "national": Provenance.NATIONAL_CRAWL.value,
+    "regional_cet": Provenance.REGIONAL_CET.value,
+    "cet": Provenance.REGIONAL_CET.value,
+    "wto_mfn": Provenance.WTO_MFN_HS6.value,
+}
+
+
+def _canonical_provenance(value: str | None) -> str | None:
+    """Ramène un tag de provenance (éventuel synonyme) à la valeur canonique."""
+    if value in AUTHENTIC_PROVENANCES:
+        return value
+    return PROVENANCE_SYNONYMS.get(value)
+
 SCHEMA_VERSION = "tariff_crawl/1.0"
 
 
@@ -118,19 +135,28 @@ def validate_authenticity(doc: Dict[str, Any]) -> Tuple[bool, List[str]]:
     """
     issues: List[str] = []
 
-    provenance = doc.get("source_quality")
+    positions = doc.get("sub_positions") or doc.get("positions") or doc.get("tariff_lines") or []
+
+    # Provenance au niveau fichier, sinon inférée des positions (crawlers réels
+    # qui ne taguent qu'au niveau position, ex. DZA: 'crawled_authentic').
+    provenance = _canonical_provenance(doc.get("source_quality"))
+    if provenance is None and positions:
+        pos_tags = {p.get("source_quality") or p.get("quality") for p in positions}
+        canon = {_canonical_provenance(t) for t in pos_tags} - {None}
+        non_auth = pos_tags & NON_AUTHENTIC_QUALITY_TAGS
+        if canon and not non_auth:
+            provenance = sorted(canon)[0]
     if provenance not in AUTHENTIC_PROVENANCES:
         issues.append(
-            f"provenance non authentique ou absente: {provenance!r} "
-            f"(attendu l'un de {sorted(AUTHENTIC_PROVENANCES)})"
+            f"provenance non authentique ou absente: {doc.get('source_quality')!r} "
+            f"(attendu l'un de {sorted(AUTHENTIC_PROVENANCES)} ou synonyme reconnu)"
         )
 
+    # L'attribution 'source' est obligatoire (principe « avec source »).
+    # 'source_url' est recommandé mais non bloquant.
     if not doc.get("source"):
         issues.append("champ 'source' manquant")
-    if not doc.get("source_url"):
-        issues.append("champ 'source_url' manquant")
 
-    positions = doc.get("sub_positions") or doc.get("positions") or doc.get("tariff_lines") or []
     if not positions:
         issues.append("aucune position tarifaire (fichier vide)")
 
