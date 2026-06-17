@@ -489,7 +489,7 @@ def _land_option(
             "is_future": is_future,
             "segments": [
                 {
-                    "mode": "rail" if mode_mode == "rail" else "road",
+                    "mode": "rail" if mode_mode == "rail" else ("multimodal" if mode_mode == "multimodal" else "road"),
                     "from": corridor.get("start_node"),
                     "to": corridor.get("end_node"),
                     "corridor_id": corridor["corridor_id"],
