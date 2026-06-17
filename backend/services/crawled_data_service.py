@@ -548,10 +548,12 @@ class CrawledDataService:
         }
 
     def _normalize_egy(self, pos: dict) -> Optional[dict]:
-        code_clean = pos.get("code_clean", "")
-        if not code_clean:
-            code_raw = pos.get("code", "")
-            code_clean = code_raw.replace(".", "").replace(" ", "")
+        # Real crawl schema (customs.gov.eg, see backend/data/crawled/EGY_tariffs.json):
+        # {"hs_code": "...", "designation"/"description"/"name": "...",
+        #  "taxes": {"DD": {"name", "rate", "raw", "source"}, "TVA": {...}, "TJ": {...}},
+        #  "official_instructions": [...]}
+        code_clean = pos.get("code_clean", "") or pos.get("hs_code", "") or pos.get("code", "")
+        code_clean = code_clean.replace(".", "").replace(" ", "")
         if not code_clean:
             return None
 
@@ -564,35 +566,47 @@ class CrawledDataService:
                 "name": td.get("tax_name", tax_code),
                 "rate_pct": td.get("rate"),
                 "raw_value": f"{td.get('rate')}%" if td.get('rate') is not None else "",
-                "source": "egyptariffs.com",
+                "source": "customs.gov.eg",
             })
 
         if not taxes_detail:
             raw_taxes = pos.get("taxes", {})
             if isinstance(raw_taxes, dict):
-                tax_names = {
-                    "ID": "Import Duty (ضريبة الوارد)",
-                    "VAT": "VAT (ضريبة القيمة المضافة)",
-                }
-                for code, rate in raw_taxes.items():
-                    taxes.append({
-                        "code": code,
-                        "name": tax_names.get(code, code),
-                        "rate_pct": rate,
-                        "raw_value": f"{rate}%",
-                        "source": "egyptariffs.com",
-                    })
+                for code, info in raw_taxes.items():
+                    if isinstance(info, dict):
+                        rate = info.get("rate")
+                        taxes.append({
+                            "code": code,
+                            "name": info.get("name", code),
+                            "rate_pct": rate,
+                            "raw_value": info.get("raw", f"{rate}%" if rate is not None else ""),
+                            "source": info.get("source", "customs.gov.eg"),
+                        })
+                    else:
+                        # legacy flat {code: rate} shape
+                        taxes.append({
+                            "code": code,
+                            "name": code,
+                            "rate_pct": info,
+                            "raw_value": f"{info}%" if info is not None else "",
+                            "source": "customs.gov.eg",
+                        })
+
+        designation = pos.get("designation") or pos.get("description") or pos.get("name", "")
+        official_instructions = pos.get("official_instructions", []) or []
 
         return {
-            "code_raw": pos.get("code", code_clean),
+            "code_raw": pos.get("hs_code", pos.get("code", code_clean)),
             "code_clean": code_clean,
-            "designation": pos.get("designation", ""),
+            "designation": designation,
             "designation_en": pos.get("designation_en", ""),
-            "chapter": code_clean[:2] if len(code_clean) >= 2 else "",
+            "chapter": pos.get("chapter") or (code_clean[:2] if len(code_clean) >= 2 else ""),
             "taxes": taxes,
             "fiscal_advantages": [],
-            "administrative_formalities": pos.get("administrative_formalities", []),
-            "source": "egyptariffs.com",
+            "administrative_formalities": [
+                {"description": instr, "source": "customs.gov.eg"} for instr in official_instructions
+            ],
+            "source": "customs.gov.eg",
             "country": "EGY",
         }
 
