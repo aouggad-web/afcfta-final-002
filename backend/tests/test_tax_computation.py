@@ -7,7 +7,9 @@ CEDEAO, CEMAC, EAC et la méthode nationale par défaut (base absente).
 """
 import pytest
 
-from services.tax_computation import compute_dual_breakdown, classify, build_journal
+from services.tax_computation import (
+    compute_dual_breakdown, classify, build_journal, localize_breakdown,
+)
 
 _LEGAL = {
     "cif": {"ref": "CIF", "url": None}, "zlecaf": {"ref": "ZLECAf", "url": None},
@@ -130,6 +132,33 @@ def test_journal_uses_real_declared_base_for_vat():
     journal = build_journal(100_000, r["breakdown"], "npf", _LEGAL)
     tva_step = next(s for s in journal if s["component"].upper().startswith("TVA"))
     assert tva_step["base"] == 112_000.0  # CIF+DD+RS+PCS (PCC/PUA exclus)
+
+
+def test_localize_breakdown_dual_currency():
+    """Les montants sont convertis en monnaie locale (1 USD = rate) ; les taux
+    en % restent inchangés."""
+    d = compute_dual_breakdown(1_000, _ben_lines(), 10.0, 0.0)
+    loc = localize_breakdown(d, 600.0)  # 1 USD = 600 XOF
+    dd = next(b for b in loc["breakdown"] if b["code"] == "DD")
+    assert dd["amount_npf_local"] == round(dd["amount_npf"] * 600, 2)
+    assert dd["rate_npf_pct"] == 10.0  # taux inchangé
+    assert loc["summary_local"]["npf"]["cout_total"] == round(
+        d["summary"]["npf"]["cout_total"] * 600, 2
+    )
+    assert loc["summary_local"]["economie_totale"] == round(
+        d["summary"]["economie_totale"] * 600, 2
+    )
+
+
+def test_currency_mapping_and_offline_rate():
+    """Le mapping pays->devise marche hors-ligne ; le taux est None sans réseau
+    (le calculateur dégrade alors proprement en USD)."""
+    from currencies.service import get_by_country
+    from exchange_rates import get_service
+    assert get_by_country("CI").currency_code == "XOF"
+    assert get_by_country("CM").currency_code == "XAF"
+    # Hors réseau, get_rate renvoie None (pas d'exception) -> dégradation USD.
+    assert get_service().get_rate("USD", "XOF") is None
 
 
 def test_summary_savings():

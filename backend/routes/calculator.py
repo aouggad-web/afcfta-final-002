@@ -427,7 +427,51 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # Journaux dérivés du même détail → parfaitement cohérents avec les totaux.
     normal_journal = build_journal(request.value, taxes_breakdown, "npf", legal_refs)
     zlecaf_journal = build_journal(request.value, taxes_breakdown, "zlecaf", legal_refs)
-    
+
+    # ============================================================
+    # Bi-devise : montants en USD (valeur du calcul) ET en monnaie locale du
+    # pays de destination, via le sous-module de change (banque). Dégradation
+    # propre si le taux est indisponible (montants en USD uniquement).
+    # ============================================================
+    from services.tax_computation import localize_breakdown
+    from currencies.service import get_by_country as _get_currency
+    from exchange_rates import get_service as _get_fx_service
+
+    currency_block: Optional[Dict[str, Any]] = None
+    _ccy = _get_currency(dest_country.get("code", ""))
+    if _ccy:
+        _rate_obj = None
+        try:
+            _rate_obj = _get_fx_service().get_rate("USD", _ccy.currency_code)
+        except Exception as _fx_err:  # réseau/provider indisponible
+            logger.warning(f"Taux de change indisponible ({_ccy.currency_code}): {_fx_err}")
+        if _rate_obj and _rate_obj.rate:
+            _r = _rate_obj.rate
+            _loc = localize_breakdown(_dual, _r)
+            taxes_breakdown = _loc["breakdown"]  # enrichi des montants locaux
+            currency_block = {
+                "local_code": _ccy.currency_code,
+                "local_name": _ccy.currency_name_fr,
+                "local_symbol": _ccy.currency_symbol,
+                "usd_to_local_rate": round(_r, 6),
+                "rate_source": _rate_obj.source,
+                "rate_as_of": _rate_obj.timestamp.isoformat(),
+                "available": True,
+                "value_usd": round(request.value, 2),
+                "value_local": round(request.value * _r, 2),
+                "summary_local": _loc["summary_local"],
+            }
+        else:
+            currency_block = {
+                "local_code": _ccy.currency_code,
+                "local_name": _ccy.currency_name_fr,
+                "local_symbol": _ccy.currency_symbol,
+                "usd_to_local_rate": None,
+                "available": False,
+                "note": "Taux de change indisponible — montants en USD uniquement.",
+                "value_usd": round(request.value, 2),
+            }
+
     # Rules of origin - Use official AfCFTA Annex II rules
     from etl.afcfta_rules_of_origin import get_rule_of_origin
     roo_data = get_rule_of_origin(hs6_code, "fr")
@@ -568,6 +612,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         taxes_detail=collected_taxes_detail if collected_taxes_detail else None,
         taxes_breakdown=taxes_breakdown,
         taxes_summary=taxes_summary,
+        currency=currency_block,
         fiscal_advantages=collected_fiscal_advantages if collected_fiscal_advantages else None,
         administrative_formalities=collected_admin_formalities if collected_admin_formalities else None,
         data_source=data_source,

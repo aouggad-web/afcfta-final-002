@@ -105,6 +105,13 @@ class TariffCalculationResponse(BaseModel):
     # total_taxes_et_droits, cout_total}, zlecaf:{...}, economie_droits,
     # economie_totale}.
     taxes_summary: Optional[Dict[str, Any]] = None
+    # Conversion bi-devise (USD <-> monnaie locale du pays de destination) via le
+    # sous-module de change. {local_code, local_name, local_symbol,
+    # usd_to_local_rate, rate_source, rate_as_of, available, value_usd,
+    # value_local, summary_local{npf,zlecaf,...}}. Quand le taux est indisponible,
+    # available=False et les montants restent en USD (taxes_breakdown porte aussi
+    # amount_*_local quand disponible).
+    currency: Optional[Dict[str, Any]] = None
     fiscal_advantages: Optional[List[Dict[str, Any]]] = None
     administrative_formalities: Optional[List[Dict[str, Any]]] = None
     data_source: Optional[str] = None

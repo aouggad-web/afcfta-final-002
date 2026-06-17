@@ -209,6 +209,36 @@ def compute_dual_breakdown(
     }
 
 
+def localize_breakdown(dual: Dict[str, Any], usd_to_local_rate: float) -> Dict[str, Any]:
+    """Ajoute les montants en monnaie locale (1 USD = `usd_to_local_rate` locale).
+
+    Pur et sans état : retourne un nouveau détail enrichi de `amount_npf_local`
+    et `amount_zlecaf_local` par taxe, plus un récapitulatif en monnaie locale.
+    Les MONTANTS deviennent bi-devises ; les TAUX (en %) restent inchangés.
+    """
+    r = float(usd_to_local_rate)
+
+    breakdown_local = []
+    for b in dual["breakdown"]:
+        breakdown_local.append({
+            **b,
+            "amount_npf_local": round(b["amount_npf"] * r, 2),
+            "amount_zlecaf_local": round(b["amount_zlecaf"] * r, 2),
+        })
+
+    def _loc(summary: Dict[str, float]) -> Dict[str, float]:
+        return {k: round(v * r, 2) for k, v in summary.items()}
+
+    summary = dual["summary"]
+    summary_local = {
+        "npf": _loc(summary["npf"]),
+        "zlecaf": _loc(summary["zlecaf"]),
+        "economie_droits": round(summary["economie_droits"] * r, 2),
+        "economie_totale": round(summary["economie_totale"] * r, 2),
+    }
+    return {"breakdown": breakdown_local, "summary_local": summary_local}
+
+
 # Mappage code de taxe -> clé de référence légale (pour les journaux).
 JOURNAL_LEGAL_KEY = {
     "DD": "dd", "DI": "dd", "ID": "dd", "GENERAL": "dd", "DDDROIT": "dd",
