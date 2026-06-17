@@ -1534,10 +1534,7 @@
           "notes": "Hub sahélien"
         },
         {
-          "node_id": "NODE-FADA-001",
-          "node_name": "Fada N'Gourma (BFA)",
-          "node_type": "border_post",
-          "country_iso": "BFA",
+          "node_type": "border_crossing",
           "geo_lat": 12.0613,
           "geo_lon": 0.3686,
           "is_osbp": true,
