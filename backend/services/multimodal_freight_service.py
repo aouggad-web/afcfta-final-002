@@ -547,7 +547,7 @@ def _sea_then_land_option(
         corridors = _find_all_corridors_for_pair(gw_country, dest)
         for corridor in corridors:
             land = get_land_freight_cost(
-                corridor["corridor_id"], "road", weight_tonnes, cargo_type,
+                corridor["corridor_id"], corridor.get("type", "road"), weight_tonnes, cargo_type,
             )
             if not land:
                 continue
