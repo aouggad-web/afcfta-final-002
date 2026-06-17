@@ -16,6 +16,7 @@ import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
 import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield, DollarSign } from 'lucide-react';
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
+import TaxBreakdownDual from './TaxBreakdownDual';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
 import DataStatusBanner from '../common/DataStatusBanner';
@@ -1106,6 +1107,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               </CardContent>
             </Card>
+          )}
+
+          {/* Détail complet NPF vs ZLECAf, base par base + bi-devise */}
+          {result.taxes_breakdown && result.taxes_breakdown.length > 0 && (
+            <TaxBreakdownDual
+              breakdown={result.taxes_breakdown}
+              summary={result.taxes_summary}
+              currency={result.currency}
+              language={language}
+            />
           )}
 
           {/* Sous-positions nationales disponibles */}
