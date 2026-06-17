@@ -21,28 +21,14 @@ from functools import wraps
 logger = logging.getLogger(__name__)
 
 # Cache TTL configurations (in seconds)
-_90_DAYS = 90 * 24 * 60 * 60
-_30_DAYS = 30 * 24 * 60 * 60
-_7_DAYS  =  7 * 24 * 60 * 60
-
 CACHE_TTL = {
-    # Claude AI analyses — long TTL: trade data changes slowly, API is paid
-    "claude_analysis":     _90_DAYS,   # 90 days: export/import/industrial opportunities
-    "claude_profile":      _90_DAYS,   # 90 days: country economic profiles
-    "claude_summary":      _30_DAYS,   # 30 days: AfCFTA overview
-    "claude_value_chains": _30_DAYS,   # 30 days: value chain analyses
-    "claude_product":      _30_DAYS,   # 30 days: product analysis by HS code
-    "claude_balance":      _30_DAYS,   # 30 days: trade balance history
-    "claude_comparison":   _30_DAYS,   # 30 days: country comparisons
-    # Legacy Gemini keys (kept for backwards-compat; Gemini disabled)
-    "gemini_analysis":     _7_DAYS,
-    "gemini_profile":      _7_DAYS,
-    "gemini_summary":      _7_DAYS,
-    "gemini_value_chains": _7_DAYS,
-    "gemini_product":      _7_DAYS,
-    # External data sources
-    "oec_data":            _7_DAYS,    # 7 days for OEC API responses
-    "default":             _7_DAYS,
+    "gemini_analysis": 6 * 60 * 60,       # 6 hours for trade analysis
+    "gemini_profile": 24 * 60 * 60,        # 24 hours for country profiles
+    "gemini_summary": 24 * 60 * 60,        # 24 hours for summaries
+    "gemini_value_chains": 12 * 60 * 60,   # 12 hours for value chains
+    "gemini_product": 12 * 60 * 60,        # 12 hours for product analysis
+    "oec_data": 24 * 60 * 60,              # 24 hours for OEC data
+    "default": 6 * 60 * 60                 # 6 hours default
 }
 
 # Default directory for JSON file cache

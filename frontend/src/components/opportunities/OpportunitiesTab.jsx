@@ -1,100 +1,133 @@
 /**
- * Opportunities Tab — main container
- * 5 sub-tabs: Analyse IA · Substitution · Chaînes de Valeur · Par Produit · Comparaison
+ * Opportunities Tab Component
+ * Main tab containing AI Analysis, Substitution, Value Chains, and By Product analysis
  */
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Card, CardContent } from '../ui/card';
+import { 
+  TrendingUp, Layers, Package, BarChart3, ArrowLeftRight, Sparkles
+} from 'lucide-react';
 
-import AIAnalysis from './AIAnalysis';
-import SubstitutionAnalysis from './SubstitutionAnalysis';
+import OpportunitySummary from './OpportunitySummary';
 import ValueChains from './ValueChains';
 import ProductAnalysisView from './ProductAnalysisView';
-import CountryComparison from './CountryComparison';
-import OpportunitySummary from './OpportunitySummary';
-
-const TABS = {
-  fr: [
-    { id: 'ai',           label: 'Analyse IA',         icon: Sparkles },
-    { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
-    { id: 'summary',      label: "Vue d'ensemble",      icon: BarChart3 },
-    { id: 'valueChains',  label: 'Chaînes de Valeur',   icon: Layers },
-    { id: 'byProduct',    label: 'Par Produit',          icon: Package },
-    { id: 'comparison',   label: 'Comparaison',          icon: Scale },
-  ],
-  en: [
-    { id: 'ai',           label: 'AI Analysis',         icon: Sparkles },
-    { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
-    { id: 'summary',      label: 'Overview',             icon: BarChart3 },
-    { id: 'valueChains',  label: 'Value Chains',         icon: Layers },
-    { id: 'byProduct',    label: 'By Product',           icon: Package },
-    { id: 'comparison',   label: 'Comparison',           icon: Scale },
-  ],
-};
+import SubstitutionAnalysis from './SubstitutionAnalysis';
+import AIAnalysis from './AIAnalysis';
 
 export default function OpportunitiesTab({ language = 'fr' }) {
-  const { i18n } = useTranslation();
-  const lang = i18n.language || language;
-  const [active, setActive] = useState('ai');
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language || language;
 
-  const tabs = TABS[lang] || TABS.fr;
-
-  const renderContent = () => {
-    switch (active) {
-      case 'ai':           return <AIAnalysis language={lang} />;
-      case 'substitution': return <SubstitutionAnalysis language={lang} />;
-      case 'summary':      return <OpportunitySummary language={lang} />;
-      case 'valueChains':  return <ValueChains language={lang} />;
-      case 'byProduct':    return <ProductAnalysisView language={lang} />;
-      case 'comparison':   return <CountryComparison language={lang} />;
-      default:             return null;
+  const texts = {
+    fr: {
+      title: "Opportunités Commerciales",
+      subtitle: "Découvrez les opportunités d'échanges intra-africains sous la ZLECAf",
+      tabs: {
+        ai: "Analyse IA",
+        substitution: "Substitution",
+        summary: "Vue d'ensemble",
+        valueChains: "Chaînes de Valeur",
+        byProduct: "Par Produit"
+      }
+    },
+    en: {
+      title: "Trade Opportunities",
+      subtitle: "Discover intra-African trade opportunities under AfCFTA",
+      tabs: {
+        ai: "AI Analysis",
+        substitution: "Substitution",
+        summary: "Overview",
+        valueChains: "Value Chains",
+        byProduct: "By Product"
+      }
     }
   };
 
+  const txt = texts[currentLang] || texts.fr;
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }} data-testid="opportunities-tab">
-      {/* Sub-tab navigation */}
-      <div style={{
-        display: 'flex',
-        gap: 4,
-        padding: '4px',
-        background: 'var(--afcfta-bg)',
-        borderRadius: 12,
-        border: '1px solid var(--afcfta-border)',
-        flexWrap: 'wrap',
-      }}>
-        {tabs.map(({ id, label, icon: Icon }) => (
-          <button
-            key={id}
-            onClick={() => setActive(id)}
-            data-testid={`opportunities-${id}-tab`}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '8px 14px',
-              borderRadius: 9,
-              fontSize: 13,
-              fontWeight: active === id ? 700 : 500,
-              border: 'none',
-              cursor: 'pointer',
-              background: active === id ? 'var(--afcfta-card)' : 'transparent',
-              color: active === id ? 'var(--text)' : 'var(--afcfta-muted)',
-              boxShadow: active === id ? '0 1px 4px rgba(0,0,0,0.12)' : 'none',
-              transition: 'all 0.15s',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            <Icon style={{ width: 14, height: 14, flexShrink: 0, color: active === id ? 'var(--gold)' : 'inherit' }} />
-            <span className="hidden sm:inline">{label}</span>
-          </button>
-        ))}
+    <div className="space-y-6" data-testid="opportunities-tab">
+      {/* Header */}
+      <div className="text-center pb-4 border-b border-slate-100">
+        <h1 className="text-2xl font-bold text-slate-900 flex items-center justify-center gap-3">
+          <TrendingUp className="h-7 w-7 text-emerald-600" />
+          {txt.title}
+        </h1>
+        <p className="text-slate-500 mt-1">{txt.subtitle}</p>
       </div>
 
-      {/* Content */}
-      <div key={active} className="afcfta-fadeIn">
-        {renderContent()}
-      </div>
+      {/* Sub-tabs */}
+      <Tabs defaultValue="ai" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-5 max-w-3xl mx-auto">
+          <TabsTrigger 
+            value="ai" 
+            className="flex items-center gap-2"
+            data-testid="opportunities-ai-tab"
+          >
+            <Sparkles className="h-4 w-4" />
+            <span className="hidden sm:inline">{txt.tabs.ai}</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="substitution" 
+            className="flex items-center gap-2"
+            data-testid="opportunities-substitution-tab"
+          >
+            <ArrowLeftRight className="h-4 w-4" />
+            <span className="hidden sm:inline">{txt.tabs.substitution}</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="summary" 
+            className="flex items-center gap-2"
+            data-testid="opportunities-summary-tab"
+          >
+            <BarChart3 className="h-4 w-4" />
+            <span className="hidden sm:inline">{txt.tabs.summary}</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="valueChains" 
+            className="flex items-center gap-2"
+            data-testid="opportunities-valuechains-tab"
+          >
+            <Layers className="h-4 w-4" />
+            <span className="hidden sm:inline">{txt.tabs.valueChains}</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="byProduct" 
+            className="flex items-center gap-2"
+            data-testid="opportunities-byproduct-tab"
+          >
+            <Package className="h-4 w-4" />
+            <span className="hidden sm:inline">{txt.tabs.byProduct}</span>
+          </TabsTrigger>
+        </TabsList>
+
+        {/* AI Analysis Tab (NEW - Default) */}
+        <TabsContent value="ai" className="mt-6">
+          <AIAnalysis language={currentLang} />
+        </TabsContent>
+
+        {/* Substitution Analysis Tab */}
+        <TabsContent value="substitution" className="mt-6">
+          <SubstitutionAnalysis language={currentLang} />
+        </TabsContent>
+
+        {/* Summary Tab */}
+        <TabsContent value="summary" className="mt-6">
+          <OpportunitySummary language={currentLang} />
+        </TabsContent>
+
+        {/* Value Chains Tab */}
+        <TabsContent value="valueChains" className="mt-6">
+          <ValueChains language={currentLang} />
+        </TabsContent>
+
+        {/* By Product Tab */}
+        <TabsContent value="byProduct" className="mt-6">
+          <ProductAnalysisView language={currentLang} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

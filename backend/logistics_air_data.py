@@ -7,56 +7,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 # Determine data file path with fallback
-ROOT_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).parent.parent
 DATA_DIR = ROOT_DIR / "data" / "json"
 AIRPORTS_FILE = DATA_DIR / "airports_africains.json"
 if not AIRPORTS_FILE.exists():
     AIRPORTS_FILE = ROOT_DIR / "airports_africains.json"
-ENHANCED_AIRPORTS_FILE = DATA_DIR / "airports_africains_enhanced_aviation_logistics.json"
-
-_airports_cache: Optional[List[dict]] = None
-_enhanced_airport_index: Dict[str, Dict[str, Any]] = {}
-
-AIR_DISTANCE_BANDS = [
-    {"max_km": 1000, "rate_usd_per_kg": 2.8},
-    {"max_km": 2500, "rate_usd_per_kg": 2.35},
-    {"max_km": 5000, "rate_usd_per_kg": 2.05},
-    {"max_km": 1000000, "rate_usd_per_kg": 1.85},
-]
-AIR_SERVICE_MULTIPLIERS = {
-    "economy": 0.9,
-    "standard": 1.0,
-    "express": 1.25,
-}
-AIR_CARGO_MULTIPLIERS = {
-    "general": 1.0,
-    "perishable": 1.15,
-    "pharma": 1.35,
-    "dangerous": 1.45,
-}
-VOLUMETRIC_FACTOR_AIR_KG_PER_M3 = 167.0
-FUEL_SURCHARGE_RATE = 0.18
-SECURITY_FEE_USD_PER_KG = 0.12
-TERMINAL_HANDLING_USD_PER_KG = 0.09
-TERMINAL_HANDLING_MIN_USD = 35.0
-DOCUMENTATION_FEE_USD = 40.0
-
-
-def _load_enhanced_airport_index() -> None:
-    """Build an index of enhanced airport records when the enrichment file exists."""
-    global _enhanced_airport_index
-    if _enhanced_airport_index or not ENHANCED_AIRPORTS_FILE.exists():
-        return
-
-    with open(ENHANCED_AIRPORTS_FILE, 'r', encoding='utf-8') as f:
-        enhanced_data = json.load(f)
-
-    locations = enhanced_data.get("enhanced_locations", [])
-    _enhanced_airport_index = {
-        airport["airport_id"]: airport
-        for airport in locations
-        if airport.get("airport_id")
-    }
 
 def load_airports_data():
     """Load African airports data, merging enhanced aviation logistics fields when available."""

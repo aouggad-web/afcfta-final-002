@@ -1,13 +1,13 @@
 """
-AI Trade Analysis Routes — powered by Anthropic Claude
-API endpoints for AI-powered trade analysis (replaces Google Gemini)
-WITH HYBRID CACHING (Redis → JSON file fallback)
+Gemini AI Trade Analysis Routes
+API endpoints for AI-powered trade analysis using Google Gemini
+NOW WITH HYBRID CACHING (Redis → JSON file fallback) for optimized performance
 """
 from fastapi import APIRouter, Query, HTTPException, Body
 from typing import Optional
 import logging
 
-from services.claude_trade_service import claude_trade_service
+from services.gemini_trade_service import gemini_trade_service
 from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
 from services.redis_cache_service import cache_service
 
@@ -104,7 +104,7 @@ async def get_ai_trade_opportunities(
         }
     
     try:
-        result = await claude_trade_service.analyze_trade_opportunities(
+        result = await gemini_trade_service.analyze_trade_opportunities(
             country_name=country_name,
             mode=mode,
             lang=lang
@@ -144,7 +144,7 @@ async def get_ai_country_profile(
         Comprehensive country profile with economic and trade data
     """
     try:
-        result = await claude_trade_service.get_country_economic_profile(
+        result = await gemini_trade_service.get_country_economic_profile(
             country_name=country_name,
             lang=lang
         )
@@ -191,7 +191,7 @@ async def get_ai_product_analysis(
         )
     
     try:
-        result = await claude_trade_service.analyze_product_by_hs_code(
+        result = await gemini_trade_service.analyze_product_by_hs_code(
             hs_code=hs_code,
             lang=lang
         )
@@ -227,7 +227,7 @@ async def get_ai_trade_balance(
         Trade balance history with analysis
     """
     try:
-        result = await claude_trade_service.get_trade_balance_analysis(
+        result = await gemini_trade_service.get_trade_balance_analysis(
             country_name=country_name,
             lang=lang
         )
@@ -246,56 +246,20 @@ async def get_ai_trade_balance(
 
 @router.get("/health")
 async def check_ai_service_health():
-    """Check if the AI service (Claude) is properly configured and operational."""
+    """
+    Check if the AI service is properly configured and operational
+    """
     import os
     from dotenv import load_dotenv
     load_dotenv()
 
-    has_key = bool(os.environ.get("ANTHROPIC_API_KEY"))
-    try:
-        import anthropic
-        sdk_available = True
-    except ImportError:
-        sdk_available = False
+    has_key = bool(os.environ.get("GOOGLE_API_KEY"))
 
     return {
-        "status": "operational" if (has_key and sdk_available) else "not_configured",
-        "model": "claude-sonnet-4-6",
-        "provider": "Anthropic Claude",
-        "sdk_available": sdk_available,
-        "api_key_set": has_key,
+        "status": "operational" if has_key else "not_configured",
+        "model": "gemini-2.0-flash-lite",
+        "provider": "Google Gemini 2.0 Flash Lite"
     }
-
-
-@router.get("/compare")
-async def compare_two_countries(
-    country_a: str = Query(..., description="First African country name"),
-    country_b: str = Query(..., description="Second African country name"),
-    lang: str = Query(default="fr", description="Language (fr/en)")
-):
-    """
-    Compare two African countries as potential AfCFTA trade partners.
-    Returns bilateral trade data, economic comparison, and trade complementarity analysis.
-    """
-    if not country_a or not country_b:
-        raise HTTPException(status_code=400, detail="Both country_a and country_b are required")
-    if country_a.lower() == country_b.lower():
-        raise HTTPException(status_code=400, detail="The two countries must be different")
-
-    try:
-        result = await claude_trade_service.compare_countries(
-            country_a=country_a,
-            country_b=country_b,
-            lang=lang,
-        )
-        if "error" in result and len(result) <= 2:
-            raise HTTPException(status_code=500, detail=result["error"])
-        return result
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error comparing countries: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/summary")
@@ -315,7 +279,7 @@ async def get_ai_trade_summary(
         Trade summary with top countries, sectors, and growth metrics
     """
     try:
-        result = await claude_trade_service.get_trade_summary(lang=lang)
+        result = await gemini_trade_service.get_trade_summary(lang=lang)
         
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
@@ -355,7 +319,7 @@ async def get_ai_value_chains(
         )
     
     try:
-        result = await claude_trade_service.get_value_chains_analysis(
+        result = await gemini_trade_service.get_value_chains_analysis(
             sector=sector,
             lang=lang
         )
@@ -404,27 +368,19 @@ async def invalidate_cache(
     details = []
 
     if country:
-        # Stamp de version des données de production (modes enrichis export/industrial)
-        try:
-            from production_data import get_production_data_version
-            pdv = get_production_data_version()
-        except Exception:
-            pdv = None
         for mode in ["export", "import", "industrial"]:
             for l in ([lang] if lang else ["fr", "en"]):
                 params = {"country": country, "mode": mode, "lang": l}
-                if pdv and mode in ("export", "industrial"):
-                    params["pdv"] = pdv
-                if cache_service.invalidate("claude_analysis", params):
+                if cache_service.invalidate("gemini_analysis", params):
                     invalidated += 1
-                    details.append(f"claude_analysis:{country}:{mode}:{l}")
+                    details.append(f"gemini_analysis:{country}:{mode}:{l}")
         for l in ([lang] if lang else ["fr", "en"]):
             for profile_params in [
                 {"country": country, "lang": l, "type": "profile"},
             ]:
-                if cache_service.invalidate("claude_profile", profile_params):
+                if cache_service.invalidate("gemini_profile", profile_params):
                     invalidated += 1
-                    details.append(f"claude_profile:{country}:{l}")
+                    details.append(f"gemini_profile:{country}:{l}")
     elif pattern:
         invalidated = cache_service.invalidate_pattern(pattern)
         details.append(f"pattern:{pattern}")

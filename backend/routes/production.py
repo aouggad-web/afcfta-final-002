@@ -17,7 +17,6 @@ from production_data import (
     get_production_statistics,
     get_country_production_overview
 )
-from services import production_capacity_service
 
 try:
     from etl.unido_data import UNIDO_INDUSTRY_DATA
@@ -142,31 +141,6 @@ async def get_country_production_full_overview(country_iso3: str):
     Includes all 4 dimensions: macro, agriculture, manufacturing, mining
     """
     return get_country_production_overview(country_iso3)
-
-# =============================================================================
-# CAPACITÉ DE PRODUCTION ↔ OPPORTUNITÉS (croisement par code HS)
-# Relie un produit (HS) aux données de production réelles FAO/USGS/UNIDO
-# et génère des scénarios d'intégration africaine.
-# =============================================================================
-
-@router.get("/capacity/{country_iso3}/{hs_code}")
-async def get_production_capacity(country_iso3: str, hs_code: str):
-    """
-    Capacité de production réelle d'un pays pour un produit (code HS).
-
-    Retourne : commodité associée, série 2021-2024, CAGR, rang continental,
-    part africaine, top producteurs et scénarios d'intégration ZLECAf.
-    Sources : FAO (FAOSTAT), USGS (MCS), UNIDO (INDSTAT4).
-    """
-    return production_capacity_service.get_capacity(country_iso3, hs_code)
-
-@router.get("/capacity/{hs_code}")
-async def get_continental_capacity(hs_code: str):
-    """
-    Vue continentale : top producteurs africains réels pour un code HS
-    (dernière année disponible). Utilisé par la recherche HS6 des chaînes de valeur.
-    """
-    return production_capacity_service.get_continental_producers(hs_code)
 
 # =============================================================================
 # UNIDO INDSTAT4 - Routes spécifiques UNIDO

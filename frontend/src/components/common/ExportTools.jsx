@@ -13,8 +13,7 @@ export function PDFExportButton({
   title = '', 
   subtitle = '',
   language = 'fr',
-  className = '',
-  ...buttonProps
+  className = ''
 }) {
   const [exporting, setExporting] = useState(false);
 
@@ -31,7 +30,7 @@ export function PDFExportButton({
     try {
       const result = await exportToPDF(targetRef.current, `${filename}_${new Date().toISOString().split('T')[0]}.pdf`, {
         title,
-        subtitle: subtitle || (language === 'fr' ? 'Rapport ZLECAf Analytics' : 'AfCFTA Analytics Report'),
+        subtitle: language === 'fr' ? 'Rapport ZLECAf Analytics' : 'AfCFTA Analytics Report',
         language,
         showDate: true
       });
@@ -53,7 +52,6 @@ export function PDFExportButton({
       variant="outline"
       size="sm"
       className={`gap-2 ${className}`}
-      {...buttonProps}
     >
       {exporting ? (
         <>

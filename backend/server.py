@@ -22,11 +22,6 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import logging
 import logging.config
 
-# ── Load .env BEFORE importing modules that read env vars at import time
-# (auth.py reads SECRET_KEY in module scope to build the HMAC secret).
-_ROOT_DIR_FOR_DOTENV = Path(__file__).parent
-load_dotenv(_ROOT_DIR_FOR_DOTENV / '.env')
-
 # Configure structured logging
 logging.config.dictConfig({
     "version": 1,

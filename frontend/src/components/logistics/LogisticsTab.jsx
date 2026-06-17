@@ -8,9 +8,8 @@ import AirLogisticsTab from './AirLogisticsTab';
 import LandLogisticsTab from './LandLogisticsTab';
 import FreeZonesTab from './FreeZonesTab';
 import IntervenantsTab from './IntervenantsTab';
-import MultimodalComparator from './MultimodalComparator';
 import { PDFExportButton } from '../common/ExportTools';
-import { Ship, Plane, Truck, Building2, Globe, Database, Users, Layers } from 'lucide-react';
+import { Ship, Plane, Truck, Building2, Globe, Database, Users } from 'lucide-react';
 
 export default function LogisticsTab({ language = 'fr' }) {
   const { t } = useTranslation();
@@ -46,7 +45,7 @@ export default function LogisticsTab({ language = 'fr' }) {
       <div ref={contentRef}>
         {/* Main Tabs with enhanced styling */}
         <Tabs defaultValue="maritime" className="space-y-5">
-          <TabsList className="tabs-list-boxed cols-6">
+          <TabsList className="tabs-list-boxed cols-5">
             <TabsTrigger 
               value="maritime" 
               className="tab-trigger-enhanced tab-blue"
@@ -71,16 +70,8 @@ export default function LogisticsTab({ language = 'fr' }) {
               <Truck className="tab-icon" />
               <span>{t('logistics.land')}</span>
             </TabsTrigger>
-            <TabsTrigger
-              value="multimodal"
-              className="tab-trigger-enhanced tab-purple"
-              data-testid="multimodal-tab-trigger"
-            >
-              <Layers className="tab-icon" />
-              <span>Multimodal</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="zones"
+            <TabsTrigger 
+              value="zones" 
               className="tab-trigger-enhanced tab-purple"
               data-testid="zones-tab-trigger"
             >
@@ -107,10 +98,6 @@ export default function LogisticsTab({ language = 'fr' }) {
 
           <TabsContent value="land" className="tab-content-enhanced mt-0">
             <LandLogisticsTab language={language} />
-          </TabsContent>
-
-          <TabsContent value="multimodal" className="tab-content-enhanced mt-0">
-            <MultimodalComparator language={language} />
           </TabsContent>
 
           <TabsContent value="zones" className="tab-content-enhanced mt-0">

@@ -112,7 +112,7 @@ GDP_HISTORY_TOP10 = {
 def build_top_10_gdp_2024():
     """Top 10 African economies by GDP 2024 (World Bank WDI)"""
     return [
-        {"rank": 1,  "country": "Nigéria",        "iso3": "NGA", "gdp_2024_musd": 477000, "gdp_per_capita": 2248},
+        {"rank": 1,  "country": "Nigéria",       "iso3": "NGA", "gdp_2024_musd": 477000, "gdp_per_capita": 2248},
         {"rank": 2,  "country": "Égypte",         "iso3": "EGY", "gdp_2024_musd": 387000, "gdp_per_capita": 3443},
         {"rank": 3,  "country": "Afrique du Sud", "iso3": "ZAF", "gdp_2024_musd": 373000, "gdp_per_capita": 6176},
         {"rank": 4,  "country": "Algérie",        "iso3": "DZA", "gdp_2024_musd": 266000, "gdp_per_capita": 5949},

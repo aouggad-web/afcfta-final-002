@@ -10,7 +10,6 @@ import unicodedata
 from pathlib import Path
 
 from country_data import get_country_data, REAL_COUNTRY_DATA
-from macro_indicators import get_macro
 from constants import AFRICAN_COUNTRIES
 from data_loader import (
     get_country_commerce_profile,
@@ -68,9 +67,6 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     # Récupérer les données réelles du pays (fallback)
     real_data = get_country_data(iso3_code)
     
-    # Indicateurs macro complémentaires (FMI WEO 2024 + PNUD HDR 2024)
-    macro = get_macro(iso3_code)
-    
     # Helper function for name normalization
     def normalize_name(s):
         s = s.replace('\u2019', "'").replace('\u2018', "'")
@@ -89,17 +85,17 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         # Données économiques 2024
         profile.gdp_usd = commerce_data['gdp_2024_billion_usd'] * 1000000000 if commerce_data['gdp_2024_billion_usd'] else None
         profile.gdp_per_capita = commerce_data['gdp_per_capita_2024']
-        profile.inflation_rate = commerce_data.get('inflation_2024') or macro.get('inflation_2024')
-        profile.unemployment_rate = commerce_data.get('unemployment_2024') or macro.get('unemployment_2024')
-        profile.hdi = commerce_data.get('hdi_2024') or macro.get('hdi_2024')
-        profile.hdi_rank = commerce_data.get('hdi_rank_2024') or macro.get('hdi_rank_2024')
+        profile.inflation_rate = commerce_data.get('inflation_2024')
+        profile.unemployment_rate = commerce_data.get('unemployment_2024')
+        profile.hdi = commerce_data.get('hdi_2024')
+        profile.hdi_rank = commerce_data.get('hdi_rank_2024')
         profile.population_millions = commerce_data.get('population_2024_million')
         
         # Données de dette publique 2024
-        profile.total_debt_pct_gdp = commerce_data.get('total_debt_pct_gdp') or macro.get('total_debt_pct_gdp')
-        profile.external_debt_bn_usd = commerce_data.get('external_debt_bn_usd') or macro.get('external_debt_bn_usd')
-        profile.external_debt_pct_gdp = commerce_data.get('external_debt_pct_gdp') or macro.get('external_debt_pct_gdp')
-        profile.domestic_debt_pct_gdp = commerce_data.get('domestic_debt_pct_gdp') or macro.get('domestic_debt_pct_gdp')
+        profile.total_debt_pct_gdp = commerce_data.get('total_debt_pct_gdp')
+        profile.external_debt_bn_usd = commerce_data.get('external_debt_bn_usd')
+        profile.external_debt_pct_gdp = commerce_data.get('external_debt_pct_gdp')
+        profile.domestic_debt_pct_gdp = commerce_data.get('domestic_debt_pct_gdp')
         
         # Projections enrichies avec données commerce
         profile.projections = {
@@ -229,58 +225,20 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
             population=real_data.get('population_2024', country['population']),
             region=country['region']
         )
-
+        
         profile.gdp_usd = real_data.get('gdp_usd_2024')
-        if profile.gdp_usd:
-            profile.gdp_usd = float(profile.gdp_usd) * 1_000_000_000
         profile.gdp_per_capita = real_data.get('gdp_per_capita_2024')
-        profile.population_millions = round(real_data.get('population_2024', country['population']) / 1_000_000, 2)
-
-        # Indicateurs macro (FMI/PNUD 2024)
-        profile.inflation_rate = macro.get('inflation_2024')
-        profile.unemployment_rate = macro.get('unemployment_2024')
-        profile.hdi = real_data.get('development_index') or macro.get('hdi_2024')
-        profile.hdi_rank = macro.get('hdi_rank_2024')
-        profile.total_debt_pct_gdp = macro.get('total_debt_pct_gdp')
-        profile.external_debt_bn_usd = macro.get('external_debt_bn_usd')
-        profile.external_debt_pct_gdp = macro.get('external_debt_pct_gdp')
-        profile.domestic_debt_pct_gdp = macro.get('domestic_debt_pct_gdp')
-        profile.risk_ratings = real_data.get('risk_ratings', {})
-
+        profile.inflation_rate = None
+        
         profile.projections = {
             "gdp_growth_forecast_2024": real_data.get('growth_forecast_2024', '3.0%'),
             "gdp_growth_projection_2025": real_data.get('growth_projection_2025', '3.2%'),
             "gdp_growth_projection_2026": real_data.get('growth_projection_2026', '3.5%'),
             "development_index": real_data.get('development_index', 0.500),
             "africa_rank": real_data.get('africa_rank', 25),
-            "key_sectors": [
-                f"{s['name']} ({s['pib_share']}% PIB): {s['description']}"
-                for s in real_data.get('key_sectors', [])
-            ],
-            "zlecaf_potential_level": real_data.get('zlecaf_potential', {}).get('level', 'Modéré'),
-            "zlecaf_potential_description": real_data.get('zlecaf_potential', {}).get('description', ''),
-            "zlecaf_opportunities": real_data.get('zlecaf_potential', {}).get('key_opportunities', []),
-            "main_exports": real_data.get('main_exports', []),
-            "main_imports": real_data.get('main_imports', []),
-            "gdp_data_source": real_data.get('data_source', 'FMI WEO 2024'),
         }
-
-        # Gold reserves
-        gold_data = GOLD_RESERVES_GAI_DATA['gold_reserves'].get(iso3_code, {})
-        if gold_data:
-            profile.projections['gold_reserves_tonnes'] = gold_data.get('tonnes', 0.0)
-            profile.projections['gold_reserves_rank_africa'] = gold_data.get('rank_africa')
-            profile.projections['gold_reserves_rank_global'] = gold_data.get('rank_global')
-
-        # GAI 2025
-        gai_data = GOLD_RESERVES_GAI_DATA['global_attractiveness_index_2025'].get(iso3_code, {})
-        if gai_data:
-            profile.projections['gai_2025_score'] = gai_data.get('score')
-            profile.projections['gai_2025_rank_africa'] = gai_data.get('rank_africa')
-            profile.projections['gai_2025_rank_global'] = gai_data.get('rank_global')
-            profile.projections['gai_2025_rating'] = gai_data.get('rating')
-            profile.projections['gai_2025_trend'] = gai_data.get('trend')
-
+        
+        profile.risk_ratings = {}
         profile.customs = {}
         profile.ongoing_projects = get_country_ongoing_projects(iso3_code)
         profile.infrastructure_ranking = {}

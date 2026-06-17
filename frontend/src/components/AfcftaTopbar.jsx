@@ -15,7 +15,6 @@ import {
   Sun,
   X,
 } from "lucide-react";
-import GlobalSearch from "./GlobalSearch";
 
 /* ─── Flat nav items ─────────────────────────────────────────── */
 const NAV_ITEMS = (isFrench) => [
@@ -32,7 +31,7 @@ const NAV_ITEMS = (isFrench) => [
 ];
 
 /* ─── Horizontal topbar component ───────────────────────────── */
-export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr", theme = "dark", onThemeToggle, countries = [] }) {
+export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr", theme = "dark", onThemeToggle }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isFrench = language === "fr";
   const isLight = theme === "light";
@@ -45,18 +44,13 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
 
   return (
     <header className="afcfta-topHeader" role="banner">
-      {/* ── Brand + search + language bar ── */}
+      {/* ── Brand + language bar ── */}
       <div className="afcfta-topHeader__bar">
         <div className="afcfta-topHeader__brand">
           <div className="afcfta-topHeader__brandIcon">🌍</div>
           <span className="afcfta-topHeader__brandName">
             {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
           </span>
-        </div>
-
-        {/* Global search — centre */}
-        <div className="afcfta-topHeader__search">
-          <GlobalSearch language={language} countries={countries} onTabChange={onTabChange} />
         </div>
 
         {/* Mobile menu toggle */}

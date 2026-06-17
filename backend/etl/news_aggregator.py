@@ -189,7 +189,7 @@ CATEGORY_KEYWORDS = {
 }
 
 # Cache des actualités
-NEWS_CACHE_FILE = "/app/backend/data/news_cache.json"
+NEWS_CACHE_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'news_cache.json')
 NEWS_CACHE: Dict = {"last_update": None, "articles": []}
 
 

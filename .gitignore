@@ -23,16 +23,10 @@ credentials.json
 *.key
 *.pem
 
-# Secrets
-.github/secrets/
-
-# Generated tariff data (large files — regenerate with engine/migrate_all.py)
-backend/data/tariffs/
-engine/output/*.jsonl
-engine/output/indexes/
-
-# === Node.js ===
-node_modules/
+# Logs
+logs/
+*.log
+*.log.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -67,16 +61,3 @@ chainlit.md
 android-sdk/
 *.backup
 *.bak
-frontend/node_modules/.cache/default-development/14.pack
-frontend/node_modules/.cache/default-development/0.pack
-frontend/node_modules/.cache/default-development/3.pack
-frontend/node_modules/.cache/default-development/4.pack
-frontend/node_modules/.cache/default-development/5.pack
-frontend/node_modules/.cache/default-development/6.pack
-frontend/node_modules/.cache/default-development/1.pack
-
-# Fichiers sources tarifaires bruts (tracés dans engine/sources/README_sources.md)
-engine/sources/*
-!engine/sources/README_sources.md
-# Données sources brutes FAOSTAT/USGS (téléchargées par build_production_faostat_usgs.py)
-backend/engine/sources/*

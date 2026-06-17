@@ -355,10 +355,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           zlecaf_tariff_rate: 0, // DD exempt under ZLECAf
           zlecaf_tariff_amount: zlecafCalc.dd?.amount || 0,
           
-          // Exposition du taux DD en % pour DismantlementSchedule
-          dd_rate_pct: rates.dd_rate_pct || 0,
-          customs_duty_rate: rates.dd_rate_pct || 0,
-          
           // TVA
           normal_vat_rate: (rates.vat_rate_pct || 0) / 100,
           normal_vat_amount: npfCalc.vat?.amount || 0,

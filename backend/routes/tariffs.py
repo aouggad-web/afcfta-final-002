@@ -297,7 +297,7 @@ async def get_country_hs6_tariff_endpoint(
     tariff = get_country_hs6_tariff(iso3, hs6_code)
     if not tariff:
         raise HTTPException(
-            status_code=404,
+            status_code=404, 
             detail=f"Tarif SH6 {hs6_code} non trouvé pour {iso3}"
         )
     
@@ -364,9 +364,9 @@ async def get_detailed_tariff_endpoint(
     if not result:
         raise HTTPException(
             status_code=404,
-            detail=f"Tarif détaillé {hs_code} non trouvé pour {iso3}"
+            detail=f"Tarif non trouvé pour {iso3}/{hs_code}"
         )
-
+    
     return result
 
 @router.get("/tariffs/sub-position/{country_code}/{full_code}")
