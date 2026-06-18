@@ -246,6 +246,105 @@ async def calculate_taxes_endpoint(
     return result
 
 
+def _enrich_with_dual_breakdown(result: dict, value: float, country_iso3: str) -> None:
+    """Enrichit in-place le résultat authentic avec taxes_breakdown, taxes_summary et currency.
+
+    - taxes_breakdown : ventilation taxe par taxe NPF vs ZLECAf (bi-devise si taux dispo)
+    - taxes_summary   : totaux par régime (droit_douane, tva, autres_taxes, cout_total)
+    - currency        : bloc devise locale + taux de change USD→local
+    """
+    from services.tax_computation import compute_dual_breakdown, localize_breakdown
+    from currencies.service import get_by_country as _get_currency
+    from exchange_rates import get_service as _get_fx_service
+
+    rates = result.get("rates", {})
+    dd_rate_pct = float(rates.get("dd_rate_pct", 0) or 0)
+    zlecaf_rate_pct = float(rates.get("zlecaf_rate_pct", 0) or 0)
+
+    # Construire les engine_lines depuis individual_taxes
+    individual_taxes = result.get("individual_taxes", [])
+    engine_lines = [
+        {
+            "code": t["code"],
+            "name": t.get("label", t["code"]),
+            "rate_pct": float(t.get("rate_pct", 0) or 0),
+        }
+        for t in individual_taxes
+        if float(t.get("rate_pct", 0) or 0) > 0
+    ]
+    # Garantir que DD est présent si dd_rate_pct > 0
+    if dd_rate_pct > 0 and not any(l["code"] == "DD" for l in engine_lines):
+        engine_lines.insert(0, {"code": "DD", "name": "Droit de douane", "rate_pct": dd_rate_pct})
+
+    if not engine_lines:
+        result["taxes_breakdown"] = []
+        result["taxes_summary"] = {}
+        result["currency"] = None
+        return
+
+    _dual = compute_dual_breakdown(
+        value, engine_lines,
+        npf_dd_rate_pct=dd_rate_pct,
+        zlecaf_dd_rate_pct=zlecaf_rate_pct,
+    )
+    taxes_breakdown = _dual["breakdown"]
+    taxes_summary = _dual["summary"]
+
+    # Devise locale + taux de change
+    # Le fichier currencies_african_complete.json est indexé en ISO2 (DZ, MA, NG…)
+    _ISO3_TO_ISO2 = {
+        "DZA":"DZ","AGO":"AO","BEN":"BJ","BWA":"BW","BFA":"BF","BDI":"BI",
+        "CMR":"CM","CPV":"CV","CAF":"CF","TCD":"TD","COM":"KM","COG":"CG",
+        "COD":"CD","CIV":"CI","DJI":"DJ","EGY":"EG","GNQ":"GQ","ERI":"ER",
+        "SWZ":"SZ","ETH":"ET","GAB":"GA","GMB":"GM","GHA":"GH","GIN":"GN",
+        "GNB":"GW","KEN":"KE","LSO":"LS","LBR":"LR","LBY":"LY","MDG":"MG",
+        "MWI":"MW","MLI":"ML","MRT":"MR","MUS":"MU","MAR":"MA","MOZ":"MZ",
+        "NAM":"NA","NER":"NE","NGA":"NG","RWA":"RW","STP":"ST","SEN":"SN",
+        "SYC":"SC","SLE":"SL","SOM":"SO","ZAF":"ZA","SSD":"SS","SDN":"SD",
+        "TZA":"TZ","TGO":"TG","TUN":"TN","UGA":"UG","ZMB":"ZM","ZWE":"ZW",
+    }
+    _iso2 = _ISO3_TO_ISO2.get(country_iso3, country_iso3[:2])
+    _ccy = _get_currency(_iso2)
+    currency_block = None
+    if _ccy:
+        _rate_obj = None
+        try:
+            _rate_obj = _get_fx_service().get_rate("USD", _ccy.currency_code)
+        except Exception as _fx_err:
+            logger.warning("Taux de change indisponible (%s): %s", _ccy.currency_code, _fx_err)
+
+        if _rate_obj and _rate_obj.rate:
+            _r = _rate_obj.rate
+            _loc = localize_breakdown({"breakdown": taxes_breakdown, "summary": taxes_summary}, _r)
+            taxes_breakdown = _loc["breakdown"]
+            currency_block = {
+                "local_code":        _ccy.currency_code,
+                "local_name":        _ccy.currency_name_fr,
+                "local_symbol":      _ccy.currency_symbol,
+                "usd_to_local_rate": round(_r, 6),
+                "rate_source":       _rate_obj.source,
+                "rate_as_of":        _rate_obj.timestamp.isoformat(),
+                "available":         True,
+                "value_usd":         round(value, 2),
+                "value_local":       round(value * _r, 2),
+                "summary_local":     _loc["summary_local"],
+            }
+        else:
+            currency_block = {
+                "local_code":        _ccy.currency_code,
+                "local_name":        _ccy.currency_name_fr,
+                "local_symbol":      _ccy.currency_symbol,
+                "usd_to_local_rate": None,
+                "available":         False,
+                "note":              "Taux de change indisponible — montants en USD uniquement.",
+                "value_usd":         round(value, 2),
+            }
+
+    result["taxes_breakdown"] = taxes_breakdown
+    result["taxes_summary"]   = taxes_summary
+    result["currency"]        = currency_block
+
+
 @router.get("/calculate/{country_iso3}/{hs_code}")
 async def calculate_taxes_get_endpoint(
     country_iso3: str,
@@ -253,15 +352,15 @@ async def calculate_taxes_get_endpoint(
     value: float = Query(10000, description="CIF value in USD"),
     language: str = Query("fr", description="Language: fr or en")
 ):
-    """
-    Version GET du calculateur (pour tests rapides)
-    """
-    return await calculate_taxes_endpoint(
+    """Version GET du calculateur avec ventilation bi-devise NPF vs ZLECAf."""
+    result = await calculate_taxes_endpoint(
         country_iso3=country_iso3,
         hs_code=hs_code,
         cif_value=value,
         language=language
     )
+    _enrich_with_dual_breakdown(result, value, country_iso3.upper())
+    return result
 
 
 @router.get("/search/{country_iso3}")

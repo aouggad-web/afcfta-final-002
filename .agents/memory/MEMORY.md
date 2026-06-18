@@ -4,3 +4,4 @@
 - [Tariff data routing](tariff-data-routing.md) — crawled/ files take priority over data/ root; authentic_tariff_service must check CRAWLED_DIR first
 - [New tariff JSON format](new-tariff-format.md) — new files use `total_national_positions` / `dd_rate` (not legacy `total_positions` / `dd`); countries list uses fast header read (8KB) to avoid OOM
 - [National positions coverage](national-positions-coverage.md) — 28 countries have authentic positions; 25 legacy; DZA must NOT be regenerated (17,115 conformepro.dz positions)
+- [Currencies JSON ISO2 key](currencies-iso2-key.md) — currencies_african_complete.json indexes by ISO2 (country_code: "DZ"), NOT ISO3; always convert ISO3→ISO2 before get_by_country()

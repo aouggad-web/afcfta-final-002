@@ -391,6 +391,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // Détails des taxes
           taxes_detail: authenticResult.taxes_detail || [],
           
+          // Ventilation bi-devise NPF vs ZLECAf (compute_dual_breakdown)
+          taxes_breakdown: authenticResult.taxes_breakdown || [],
+          taxes_summary: authenticResult.taxes_summary || null,
+          currency: authenticResult.currency || null,
+          
           // Avantages fiscaux
           fiscal_advantages: authenticResult.fiscal_advantages || [],
           
@@ -1039,7 +1044,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
                   <p className="text-blue-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Montant Économisé' : 'Amount Saved'}</p>
                   <p className="text-2xl font-bold text-blue-400 mt-1">
-                    {((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)) / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} €
+                    {formatCurrency((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)) / 100)}
+                    {result.currency && result.currency.available && result.currency.usd_to_local_rate && (
+                      <span className="text-base text-blue-300/70 ml-2 font-normal">
+                        ≈ {Math.round((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)) / 100 * result.currency.usd_to_local_rate).toLocaleString('fr-FR')} {result.currency.local_symbol || result.currency.local_code}
+                      </span>
+                    )}
                   </p>
                   <p className="text-blue-400/60 text-xs mt-1">{language === 'fr' ? 'Sur votre valeur' : 'On your value'}</p>
                 </div>
