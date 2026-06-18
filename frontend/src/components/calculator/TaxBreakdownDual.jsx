@@ -21,20 +21,28 @@ const CATEGORY_LABEL = {
 export default function TaxBreakdownDual({ breakdown, summary, currency, language = 'fr' }) {
   const fr = language === 'fr';
   const hasLocal = !!(currency && currency.available && currency.usd_to_local_rate);
-  const [mode, setMode] = useState('USD'); // 'USD' | 'LOCAL'
-  const useLocal = mode === 'LOCAL' && hasLocal;
+  const localSym = hasLocal ? (currency.local_symbol || currency.local_code) : '';
+  // Toggle swaps which currency is PRIMARY (larger/bolder); both are ALWAYS visible.
+  const [localFirst, setLocalFirst] = useState(false);
 
   if (!breakdown || breakdown.length === 0) return null;
 
-  const fmt = (amountUsd, amountLocal) => {
-    if (useLocal) {
-      const v = (amountLocal !== undefined && amountLocal !== null) ? amountLocal : null;
-      if (v === null) return '—';
-      const n = v.toLocaleString('fr-FR', { maximumFractionDigits: 0 });
-      return `${n} ${currency.local_symbol || currency.local_code}`;
+  const fmtUsd = (v) => {
+    if (v === undefined || v === null) return '—';
+    return `$${Number(v).toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`;
+  };
+  const fmtLocal = (v) => {
+    if (!hasLocal || v === undefined || v === null) return null;
+    return `${Number(v).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${localSym}`;
+  };
+  /** Returns {primary, secondary} — both always rendered, toggle only swaps order. */
+  const dual = (amountUsd, amountLocal) => {
+    const usd = fmtUsd(amountUsd);
+    const loc = fmtLocal(amountLocal);
+    if (hasLocal && loc) {
+      return localFirst ? { primary: loc, secondary: usd } : { primary: usd, secondary: loc };
     }
-    if (amountUsd === undefined || amountUsd === null) return '—';
-    return `$${amountUsd.toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`;
+    return { primary: usd, secondary: null };
   };
 
   const s = summary || {};
@@ -74,11 +82,12 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
           {hasLocal && (
             <button
               type="button"
-              onClick={() => setMode(useLocal ? 'USD' : 'LOCAL')}
+              onClick={() => setLocalFirst(!localFirst)}
               className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-600 bg-slate-700/40 text-slate-200 text-sm hover:border-indigo-500/40 transition-colors"
+              title={fr ? 'Inverser l\'ordre devise principale' : 'Swap primary currency'}
             >
               <ArrowLeftRight className="w-4 h-4" />
-              {useLocal ? (currency.local_code) : 'USD'}
+              {localFirst ? `${localSym} · USD` : `USD · ${localSym}`}
             </button>
           )}
         </div>
@@ -96,10 +105,12 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
           {breakdown.map((b, idx) => {
             const cat = CATEGORY_LABEL[b.category] || { fr: b.category, en: b.category };
             const reduced = b.affected_by_zlecaf && b.amount_zlecaf < b.amount_npf;
+            const dNpf = dual(b.amount_npf, b.amount_npf_local);
+            const dZlc = dual(b.amount_zlecaf, b.amount_zlecaf_local);
             return (
               <div
                 key={idx}
-                className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center p-3 bg-slate-700/30 rounded-lg border border-slate-700"
+                className="grid grid-cols-1 md:grid-cols-12 gap-2 items-start p-3 bg-slate-700/30 rounded-lg border border-slate-700"
               >
                 <div className="md:col-span-5">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -118,21 +129,30 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
                   </p>
                 </div>
 
-                <div className="md:col-span-3 flex md:block items-center justify-between md:text-right">
-                  <span className="md:hidden text-xs text-slate-500">{fr ? 'NPF' : 'MFN'}</span>
+                {/* NPF — primary bold + secondary muted, both always shown */}
+                <div className="md:col-span-3 flex md:block items-start justify-between md:text-right">
+                  <span className="md:hidden text-xs text-slate-500 mt-0.5">{fr ? 'NPF' : 'MFN'}</span>
                   <div>
-                    <span className="text-white font-bold">{fmt(b.amount_npf, b.amount_npf_local)}</span>
-                    <span className="text-slate-500 text-xs ml-1">({b.rate_npf_pct}%)</span>
+                    <div className="text-white font-bold leading-tight">{dNpf.primary}</div>
+                    {dNpf.secondary && (
+                      <div className="text-slate-500 text-xs leading-tight">{dNpf.secondary}</div>
+                    )}
+                    <span className="text-slate-600 text-xs">({b.rate_npf_pct}%)</span>
                   </div>
                 </div>
 
-                <div className="md:col-span-4 flex md:block items-center justify-between md:text-right">
-                  <span className="md:hidden text-xs text-slate-500">ZLECAf</span>
+                {/* ZLECAf — primary bold + secondary muted, both always shown */}
+                <div className="md:col-span-4 flex md:block items-start justify-between md:text-right">
+                  <span className="md:hidden text-xs text-slate-500 mt-0.5">ZLECAf</span>
                   <div>
-                    <span className={`font-bold ${reduced ? 'text-emerald-400' : 'text-slate-200'}`}>
-                      {fmt(b.amount_zlecaf, b.amount_zlecaf_local)}
-                    </span>
-                    <span className="text-slate-500 text-xs ml-1">({b.rate_zlecaf_pct}%)</span>
+                    <div className={`font-bold leading-tight ${reduced ? 'text-emerald-400' : 'text-slate-200'}`}>
+                      {dZlc.primary}
+                    </div>
+                    {dZlc.secondary && (
+                      <div className="text-slate-500 text-xs leading-tight">{dZlc.secondary}</div>
+                    )}
+                    <span className="text-slate-600 text-xs">({b.rate_zlecaf_pct}%)</span>
+                    {reduced && <span className="text-emerald-500 text-xs ml-1">✓</span>}
                   </div>
                 </div>
               </div>
@@ -147,8 +167,9 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
               title={fr ? 'Total NPF' : 'Total MFN'}
               s={npf}
               sLocal={slNpf}
-              useLocal={useLocal}
-              currency={currency}
+              hasLocal={hasLocal}
+              localSym={localSym}
+              localFirst={localFirst}
               language={language}
               tone="red"
             />
@@ -156,8 +177,9 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
               title={fr ? 'Total ZLECAf' : 'Total AfCFTA'}
               s={zlc}
               sLocal={slZlc}
-              useLocal={useLocal}
-              currency={currency}
+              hasLocal={hasLocal}
+              localSym={localSym}
+              localFirst={localFirst}
               language={language}
               tone="emerald"
             />
@@ -170,11 +192,24 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
               <TrendingDown className="w-4 h-4" />
               <span className="font-semibold">{fr ? 'Économie totale ZLECAf' : 'Total AfCFTA savings'}</span>
             </div>
-            <span className="text-emerald-400 font-bold text-lg">
-              {useLocal
-                ? `${(sl.economie_totale ?? 0).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${currency.local_symbol || currency.local_code}`
-                : `$${(s.economie_totale ?? 0).toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`}
-            </span>
+            <div className="text-right">
+              {/* Primary amount */}
+              <div className="text-emerald-400 font-bold text-lg">
+                {hasLocal && localFirst && sl.economie_totale !== undefined
+                  ? `${Number(sl.economie_totale).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${localSym}`
+                  : `$${(s.economie_totale ?? 0).toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`}
+              </div>
+              {/* Secondary amount — always shown when local available */}
+              {hasLocal && (
+                <div className="text-emerald-500/70 text-xs">
+                  {localFirst
+                    ? `$${(s.economie_totale ?? 0).toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`
+                    : sl.economie_totale !== undefined
+                      ? `${Number(sl.economie_totale).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${localSym}`
+                      : null}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </CardContent>
@@ -182,25 +217,33 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
   );
 }
 
-function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
+/** SummaryCard: each row shows BOTH USD and local always (primary + secondary). */
+function SummaryCard({ title, s, sLocal, hasLocal, localSym, localFirst, language, tone }) {
   const fr = language === 'fr';
   const color = tone === 'emerald' ? 'text-emerald-400' : 'text-red-400';
-  const val = (k) => {
-    if (useLocal) {
-      const v = sLocal[k];
-      if (v === undefined || v === null) return '—';
-      return `${v.toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${currency.local_symbol || currency.local_code}`;
-    }
-    const v = s[k];
-    if (v === undefined || v === null) return '—';
-    return `$${v.toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`;
+
+  const Row = ({ label, k }) => {
+    const usd = (s[k] !== undefined && s[k] !== null)
+      ? `$${Number(s[k]).toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`
+      : '—';
+    const loc = (hasLocal && sLocal[k] !== undefined && sLocal[k] !== null)
+      ? `${Number(sLocal[k]).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${localSym}`
+      : null;
+    const primary = (hasLocal && loc && localFirst) ? loc : usd;
+    const secondary = (hasLocal && loc) ? (localFirst ? usd : loc) : null;
+    return (
+      <div className="flex items-start justify-between text-sm">
+        <span className="text-slate-400">{label}</span>
+        <div className="text-right">
+          <div className="text-slate-100 font-mono leading-tight">{primary}</div>
+          {secondary && (
+            <div className="text-slate-500 font-mono text-xs leading-tight">{secondary}</div>
+          )}
+        </div>
+      </div>
+    );
   };
-  const Row = ({ label, k }) => (
-    <div className="flex items-center justify-between text-sm">
-      <span className="text-slate-400">{label}</span>
-      <span className="text-slate-100 font-mono">{val(k)}</span>
-    </div>
-  );
+
   return (
     <div className="p-3 rounded-lg bg-slate-700/30 border border-slate-700 space-y-1.5">
       <p className={`font-semibold ${color}`}>{title}</p>
@@ -208,7 +251,7 @@ function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
       <Row label={fr ? 'Autres taxes' : 'Other levies'} k="autres_taxes" />
       <Row label="TVA" k="tva" />
       <div className="border-t border-slate-600 my-1" />
-      <Row label={fr ? 'Coût total' : 'Total cost'} k="cout_total" />
+      <Row label={fr ? 'Coût total import' : 'Total import cost'} k="cout_total" />
     </div>
   );
 }

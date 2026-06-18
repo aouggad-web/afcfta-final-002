@@ -1016,44 +1016,78 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </div>
 
               {/* Grille de synthèse économique */}
-              <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-                {/* Total NPF */}
-                <div className="bg-red-500/10 rounded-xl p-4 border border-red-500/20">
-                  <p className="text-red-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
-                  <p className="text-3xl font-bold text-red-400 mt-1">{(result.total_taxes_npf || 0).toFixed(1)}%</p>
-                  <p className="text-red-400/60 text-xs mt-1">{language === 'fr' ? 'Sans accord' : 'No agreement'}</p>
-                </div>
-                
-                {/* Total ZLECAf */}
-                <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
-                  <p className="text-emerald-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
-                  <p className="text-3xl font-bold text-emerald-400 mt-1">{(result.total_taxes_zlecaf || 0).toFixed(1)}%</p>
-                  <p className="text-emerald-400/60 text-xs mt-1">{language === 'fr' ? 'Avec accord' : 'With agreement'}</p>
-                </div>
-                
-                {/* Économie */}
-                <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
-                  <p className="text-amber-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
-                  <p className="text-3xl font-bold text-amber-400 mt-1">
-                    -{((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)).toFixed(1)}%
-                  </p>
-                  <p className="text-amber-400/60 text-xs mt-1">{language === 'fr' ? 'Certificat Origine' : 'Origin Certificate'}</p>
-                </div>
-                
-                {/* Montant économisé */}
-                <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
-                  <p className="text-blue-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Montant Économisé' : 'Amount Saved'}</p>
-                  <p className="text-2xl font-bold text-blue-400 mt-1">
-                    {formatCurrency((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)) / 100)}
-                    {result.currency && result.currency.available && result.currency.usd_to_local_rate && (
-                      <span className="text-base text-blue-300/70 ml-2 font-normal">
-                        ≈ {Math.round((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)) / 100 * result.currency.usd_to_local_rate).toLocaleString('fr-FR')} {result.currency.local_symbol || result.currency.local_code}
-                      </span>
-                    )}
-                  </p>
-                  <p className="text-blue-400/60 text-xs mt-1">{language === 'fr' ? 'Sur votre valeur' : 'On your value'}</p>
-                </div>
-              </div>
+              {(() => {
+                const ts = result.taxes_summary || {};
+                const sl = (result.currency && result.currency.summary_local) || {};
+                const hasLocalRate = !!(result.currency && result.currency.available && result.currency.usd_to_local_rate);
+                const localSym = hasLocalRate ? (result.currency.local_symbol || result.currency.local_code) : '';
+                const fmtMoney = (usd) => usd !== undefined && usd !== null ? `$${Number(usd).toLocaleString('fr-FR', { maximumFractionDigits: 0 })}` : null;
+                const fmtLocal = (v) => (hasLocalRate && v !== undefined && v !== null) ? `${Number(v).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${localSym}` : null;
+                return (
+                  <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                    {/* Total NPF */}
+                    <div className="bg-red-500/10 rounded-xl p-4 border border-red-500/20">
+                      <p className="text-red-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
+                      <p className="text-3xl font-bold text-red-400 mt-1">{(result.total_taxes_npf || 0).toFixed(1)}%</p>
+                      {fmtMoney(ts.npf && ts.npf.total_taxes_et_droits) && (
+                        <p className="text-red-400 font-semibold text-sm mt-0.5">{fmtMoney(ts.npf.total_taxes_et_droits)}</p>
+                      )}
+                      {fmtLocal(sl.npf && sl.npf.total_taxes_et_droits) && (
+                        <p className="text-red-400/60 text-xs mt-0.5">{fmtLocal(sl.npf.total_taxes_et_droits)}</p>
+                      )}
+                      {!fmtMoney(ts.npf && ts.npf.total_taxes_et_droits) && (
+                        <p className="text-red-400/60 text-xs mt-1">{language === 'fr' ? 'Sans accord' : 'No agreement'}</p>
+                      )}
+                    </div>
+
+                    {/* Total ZLECAf */}
+                    <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
+                      <p className="text-emerald-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
+                      <p className="text-3xl font-bold text-emerald-400 mt-1">{(result.total_taxes_zlecaf || 0).toFixed(1)}%</p>
+                      {fmtMoney(ts.zlecaf && ts.zlecaf.total_taxes_et_droits) && (
+                        <p className="text-emerald-400 font-semibold text-sm mt-0.5">{fmtMoney(ts.zlecaf.total_taxes_et_droits)}</p>
+                      )}
+                      {fmtLocal(sl.zlecaf && sl.zlecaf.total_taxes_et_droits) && (
+                        <p className="text-emerald-400/60 text-xs mt-0.5">{fmtLocal(sl.zlecaf.total_taxes_et_droits)}</p>
+                      )}
+                      {!fmtMoney(ts.zlecaf && ts.zlecaf.total_taxes_et_droits) && (
+                        <p className="text-emerald-400/60 text-xs mt-1">{language === 'fr' ? 'Avec accord' : 'With agreement'}</p>
+                      )}
+                    </div>
+
+                    {/* Économie en % */}
+                    <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
+                      <p className="text-amber-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
+                      <p className="text-3xl font-bold text-amber-400 mt-1">
+                        -{((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)).toFixed(1)}%
+                      </p>
+                      {fmtMoney(ts.economie_totale) && (
+                        <p className="text-amber-400 font-semibold text-sm mt-0.5">{fmtMoney(ts.economie_totale)}</p>
+                      )}
+                      {fmtLocal(sl.economie_totale) && (
+                        <p className="text-amber-400/60 text-xs mt-0.5">{fmtLocal(sl.economie_totale)}</p>
+                      )}
+                      {!fmtMoney(ts.economie_totale) && (
+                        <p className="text-amber-400/60 text-xs mt-1">{language === 'fr' ? 'Certificat Origine' : 'Origin Certificate'}</p>
+                      )}
+                    </div>
+
+                    {/* Montant économisé estimé */}
+                    <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
+                      <p className="text-blue-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Montant Économisé' : 'Amount Saved'}</p>
+                      <p className="text-2xl font-bold text-blue-400 mt-1">
+                        {formatCurrency((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)) / 100)}
+                      </p>
+                      {hasLocalRate && (
+                        <p className="text-blue-400/60 text-xs mt-0.5">
+                          ≈ {Math.round((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)) / 100 * result.currency.usd_to_local_rate).toLocaleString('fr-FR')} {localSym}
+                        </p>
+                      )}
+                      <p className="text-blue-400/60 text-xs mt-0.5">{language === 'fr' ? 'Sur votre valeur' : 'On your value'}</p>
+                    </div>
+                  </div>
+                );
+              })()}
             </CardContent>
           </Card>
 
