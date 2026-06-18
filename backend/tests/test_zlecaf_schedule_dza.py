@@ -7,7 +7,7 @@ réduction des deux calendriers (standard vs réciprocité) à des dates clés.
 import datetime
 
 from services.zlecaf_schedule_dza import (
-    compute_dza_zlecaf_rate, tariff_list, is_frozen,
+    compute_dza_zlecaf_rate, tariff_list, is_frozen, daps_exempt,
     ACTIVE_PARTNERS, RECIPROCITY_PARTNERS, LIST_B_CODES,
 )
 
@@ -96,6 +96,18 @@ def test_non_frozen_heading_outside_ranges():
 
 def test_unknown_code_defaults_to_list_a():
     assert tariff_list("9999999999") == "A"
+
+
+def test_daps_exempt_for_list_a_active_partner():
+    assert daps_exempt("2901101000", "TUN") is True
+
+
+def test_daps_not_exempt_for_inactive_partner():
+    assert daps_exempt("2901101000", "NGA") is False
+
+
+def test_daps_not_exempt_for_frozen_heading():
+    assert daps_exempt("5111100000", "TUN") is False
 
 
 def test_active_partners_count():

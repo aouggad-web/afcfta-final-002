@@ -221,16 +221,16 @@ Tableau à 3 colonnes : (1) chapitre/position/sous-position SH, (2) désignation
 
 ## 7. Démantèlement tarifaire ZLECAf — cas Algérie (déjà livré)
 
-Module : `backend/services/zlecaf_schedule_dza.py` (+ tests `backend/tests/test_zlecaf_schedule_dza.py`, 14 tests). Source : **circulaire DGD n°482/DGD/SP/D.042/24 du 22/10/2024** et ses listes de concessions (A/B/C).
+Module : `backend/services/zlecaf_schedule_dza.py` (+ tests `backend/tests/test_zlecaf_schedule_dza.py`, 17 tests). Source : **circulaire DGD n°482/DGD/SP/D.042/24 du 22/10/2024** et ses listes de concessions (A/B/C) — texte intégral vérifié (OCR).
 
 Points clés (corrige le facteur générique, faux pour l'Algérie) :
 - **9 pays partenaires actifs** seulement (ZAF, CMR, EGY, GHA, KEN, MUS, RWA, TZA, TUN) ont déclenché l'application effective ; les autres restent au **droit commun (NPF)** à l'import en Algérie.
 - **Listes de produits** : (A) ~90% des lignes, démantelée d'ici 2025/2030 ; (B) 1 163 codes HS10, grâce puis démantèlement ; (C) 456 codes, **exclus** (toujours au droit commun).
 - **Deux calendriers** : standard, ou **principe de réciprocité** (13 pays non-PMA appliquant le calendrier PMA) — réduction pluriannuelle plus longue.
 - **Positions gelées** (textiles, véhicules) tant que les règles d'origine ne sont pas finalisées → droit commun maintenu.
-- **DAPS** (droit additionnel provisoire de sauvegarde) n'est **pas** couvert par ce calendrier de démantèlement : il reste dû dans tous les cas, quel que soit le partenaire ou la liste (correction du commit `a82eab63`, qui a retiré l'exonération DAPS introduite par erreur en `4e70d4ea`).
+- **DAPS** (droit additionnel provisoire de sauvegarde) exonéré pour les produits des listes (A)/(B) non gelées importés depuis un partenaire actif (circulaire 482/2024, partie II-2, citant l'art. 2 de la loi de finances complémentaire 2018) — provision distincte du calendrier de démantèlement du DD lui-même.
 
-Intégration : override dans `routes/calculator.py` lorsque `dest_iso3 == "DZA"`. **Committé** sur la branche `claude/setup-github-cli-EngUf` (commit `98e0cdc1`, correction DAPS en `a82eab63`).
+Intégration : override dans `routes/calculator.py` lorsque `dest_iso3 == "DZA"`. **Committé** sur la branche `claude/setup-github-cli-EngUf` (commit `98e0cdc1`).
 
 ---
 
@@ -274,7 +274,7 @@ Intégration : override dans `routes/calculator.py` lorsque `dest_iso3 == "DZA"`
 ## 9. Tests & qualité
 
 - Suite : `backend/tests/` (~36 modules). Lancement : `cd backend && python3 -m pytest tests/`.
-- **Tests purs (unitaires, sans I/O), au vert** : `test_tax_computation.py`, `test_zlecaf_schedule_dza.py` (14), `test_tariff_crawl_pipeline.py`, `test_crawled_lookup_hs6.py`, etc.
+- **Tests purs (unitaires, sans I/O), au vert** : `test_tax_computation.py`, `test_zlecaf_schedule_dza.py` (17), `test_tariff_crawl_pipeline.py`, `test_crawled_lookup_hs6.py`, etc.
 - **Échecs/erreurs pré-existants connus** (indépendants des travaux récents) :
   - `test_export.py` : **échoue à l'import** (motor/pymongo `_QUERY_OPTIONS`). ⚠️ *(L'agent de doc backend l'a indiqué « PASS » par erreur ; vérification directe : il ne collecte pas.)*
   - `test_rules_of_origin.py`, `test_smart_search_chapters.py` : **tests d'intégration nécessitant un serveur live** (impossible ici car `server.py` ne démarre pas — voir §4.1).
@@ -287,7 +287,7 @@ Intégration : override dans `routes/calculator.py` lorsque `dest_iso3 == "DZA"`
 
 ### Livré et committé (branche `claude/setup-github-cli-EngUf`)
 - **Crawl national DZA complet** : `DZA_tariffs.json` fusionné, 17 061 positions authentiques (chap. 01–98 sauf 22, 24 absents à la source, et 77 réservé), validé `✓ AUTHENTIQUE & INGESTIBLE` (commit `a8c88ab2`).
-- **Calendrier ZLECAf Algérie** (circulaire DGD 482/2024) : `zlecaf_schedule_dza.py` + override calculateur + 14 tests (commit `98e0cdc1`, correction DAPS en `a82eab63`).
+- **Calendrier ZLECAf Algérie** (circulaire DGD 482/2024) : `zlecaf_schedule_dza.py` + override calculateur + 17 tests (commit `98e0cdc1`).
 
 ### En cours / non finalisé (changements non committés dans le working tree)
 - **Reconstruction du moteur de règles d'origine** : un fichier `backend/data/zlecaf_rules_of_origin.json` (96 ch. / 101 pos. / 12 sous-pos.) a été produit depuis l'Appendice IV, et `routes/rules_of_origin.py` / `constants.py` / `etl/afcfta_rules_of_origin.py` / `routes/__init__.py` modifiés. **Incohérences à corriger avant commit** :

@@ -156,3 +156,21 @@ def compute_dza_zlecaf_rate(
     rate = round(normal_rate * factor, 6)
     schedule_label = "réciprocité" if reciprocity else "standard"
     return rate, f"ZLECAf DZA — liste ({lst}), calendrier {schedule_label}, {year}"
+
+
+def daps_exempt(hs_code: str, origin_iso3: str) -> bool:
+    """DAPS (Droit Additionnel Provisoire de Sauvegarde) exonéré pour les
+    produits des listes (A) et (B) importés dans le cadre de la ZLECAf
+    (circulaire 482/2024, partie II-2 : « Les produits objet de ces deux
+    listes (A) et (B), importés dans le cadre de la ZLECAf, sont exonérés
+    du [DAPS], conformément à l'article 2 de la loi de finances
+    complémentaire pour 2018 »). Cette exonération est distincte du
+    calendrier de démantèlement du DD (qui ne couvre que le taux DD) :
+    elle ne s'applique qu'aux produits effectivement admis sous régime
+    ZLECAf, donc à un partenaire actif et à une position non gelée."""
+    if not origin_iso3 or origin_iso3.upper() not in ACTIVE_PARTNERS:
+        return False
+    hs_clean = (hs_code or "").replace(".", "").replace(" ", "")
+    if not hs_clean or is_frozen(hs_clean):
+        return False
+    return tariff_list(hs_clean) in ("A", "B")

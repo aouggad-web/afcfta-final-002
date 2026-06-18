@@ -381,6 +381,16 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         _engine_lines.append({"code": "DD", "name": "Droit de douane",
                               "rate_pct": round(normal_rate * 100, 4), "base": "CIF", "source": npf_source})
 
+    # DZA : le DAPS est exonéré pour les listes (A)/(B) non gelées avec un
+    # partenaire ZLECAf actif (circulaire 482/2024, partie II-2 + art. 2 de
+    # la loi de finances complémentaire 2018) — provision distincte du
+    # calendrier de démantèlement du DD, donc le DAPS doit être retiré du
+    # détail envoyé au moteur fiscal, pas seulement du taux DD affiché.
+    if dest_iso3 == "DZA":
+        from services.zlecaf_schedule_dza import daps_exempt
+        if daps_exempt(hs_code_clean, origin_country.get("iso3", "") if origin_country else ""):
+            _engine_lines = [ln for ln in _engine_lines if str(ln.get("code", "")).upper() != "DAPS"]
+
     legal_refs = {
         "cif": {"ref": "Incoterms 2020 - CIF", "url": "https://iccwbo.org/resources-for-business/incoterms-rules/incoterms-2020/"},
         "dd": {"ref": f"Tarif douanier {dest_iso3}", "url": None},
