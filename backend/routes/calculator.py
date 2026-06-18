@@ -311,7 +311,22 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
 
         vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
         other_taxes_rate, other_taxes_detail = get_other_taxes_for_country(dest_iso3)
-    
+
+    # ============================================================
+    # DZA : calendrier de démantèlement ZLECAf authentique (circulaire DGD
+    # 482/2024) — remplace le facteur générique : dépend de la liste (A/B/C)
+    # du produit ET du régime appliqué au pays partenaire (seuls 9 pays ont
+    # déclenché l'application effective avec l'Algérie à ce jour).
+    # ============================================================
+    if dest_iso3 == "DZA":
+        from services.zlecaf_schedule_dza import compute_dza_zlecaf_rate
+        _dza_rate, _dza_source = compute_dza_zlecaf_rate(
+            hs_code_clean, origin_country.get("iso3", ""), normal_rate
+        )
+        if _dza_rate is not None:
+            zlecaf_rate = _dza_rate
+            zlecaf_source = _dza_source
+
     # Source for display
     rate_source = f"Tarif officiel {dest_iso3} - {npf_source}"
     
