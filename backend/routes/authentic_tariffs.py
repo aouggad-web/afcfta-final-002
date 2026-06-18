@@ -243,6 +243,7 @@ async def calculate_taxes_endpoint(
     if 'error' in result:
         raise HTTPException(status_code=404, detail=result['error'])
     
+    _enrich_with_dual_breakdown(result, cif_value, country_iso3.upper())
     return result
 
 
