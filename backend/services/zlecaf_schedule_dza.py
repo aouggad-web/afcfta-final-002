@@ -156,15 +156,3 @@ def compute_dza_zlecaf_rate(
     rate = round(normal_rate * factor, 6)
     schedule_label = "réciprocité" if reciprocity else "standard"
     return rate, f"ZLECAf DZA — liste ({lst}), calendrier {schedule_label}, {year}"
-
-
-def daps_exempt(hs_code: str, origin_iso3: str) -> bool:
-    """DAPS exonéré pour les listes (A) et (B) non gelées, partenaires actifs
-    (circulaire 482/2024, partie II-2-1 : « les produits objet de ces deux
-    listes (A) et (B)...sont exonérés du DAPS »)."""
-    if not origin_iso3 or origin_iso3.upper() not in ACTIVE_PARTNERS:
-        return False
-    hs_clean = (hs_code or "").replace(".", "").replace(" ", "")
-    if not hs_clean or is_frozen(hs_clean):
-        return False
-    return tariff_list(hs_clean) in ("A", "B")
