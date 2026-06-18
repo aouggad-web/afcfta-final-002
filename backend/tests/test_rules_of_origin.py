@@ -11,7 +11,12 @@ Test Cases:
 - Wheat (100110) = WO (Wholly Obtained / Entièrement Obtenu)
 - Coffee (090111) = WO (Wholly Obtained / Entièrement Obtenu)
 - Machines (850440) = CTH/VA60 (Change of Tariff Heading / Max 60% non-originating)
-- Clothing (620311) = YARN (Manufacture from yarn / Fabrication à partir de fils)
+- Clothing (620311) = CTH (Change of Tariff Heading). Subheadings 6203.11/31/41
+  (wool/fine-hair men's suits, jackets, blazers, trousers) carry their own
+  explicit CTH rule in Appendice IV, overriding chapter 62's YARN default
+  (Appendice IV, position 62.03: "Fabrication à partir de matières de toute
+  position autre que celle du produit, sous réserve d'un réexamen au bout de
+  cinq ans"). Other chapter-62 subheadings still fall back to YARN.
 - Vehicles (870310) = YTB (Yet to be agreed / En cours de négociation)
 """
 
@@ -174,28 +179,32 @@ class TestRulesOfOriginMachines:
 
 
 class TestRulesOfOriginClothing:
-    """Tests for Clothing (HS 620311) - Should be YARN (Manufacture from yarn)"""
-    
+    """Tests for Clothing (HS 620311) - Should be CTH.
+
+    Subheadings 6203.11/6203.31/6203.41 (wool/fine-hair men's suits,
+    jackets, blazers, trousers) have their own explicit CTH rule in
+    Appendice IV (position 62.03), overriding chapter 62's YARN default.
+    """
+
     def test_clothing_returns_200(self):
         """Clothing HS code should return 200"""
         response = requests.get(f"{BASE_URL}/api/rules-of-origin/620311")
         assert response.status_code == 200
         print(f"✅ Clothing (620311) returns 200")
-        
-    def test_clothing_rule_is_yarn(self):
-        """Clothing should have YARN rule"""
+
+    def test_clothing_rule_is_cth(self):
+        """Clothing (620311) should have the position-62.03-specific CTH rule"""
         response = requests.get(f"{BASE_URL}/api/rules-of-origin/620311")
         assert response.status_code == 200
         data = response.json()
-        
+
         rules = data.get("rules", {})
         primary_rule = rules.get("primary_rule", {})
         rule_code = primary_rule.get("code", "")
         rule_name = primary_rule.get("name", "").lower()
-        
-        # Should be YARN or contain "yarn" or "fils"
-        assert rule_code == "YARN" or "yarn" in rule_name or "fils" in rule_name, \
-            f"Expected YARN rule for clothing, got: {rule_code} - {primary_rule.get('name', '')}"
+
+        assert rule_code == "CTH" or "tariff heading" in rule_name or "position tarifaire" in rule_name, \
+            f"Expected CTH rule for clothing 620311, got: {rule_code} - {primary_rule.get('name', '')}"
         print(f"✅ Clothing rule: {rule_code} - {primary_rule.get('name', '')}")
         
     def test_clothing_chapter_is_62(self):
@@ -415,8 +424,8 @@ class TestCalculateTariffIncludesRulesOfOrigin:
             f"Coffee should have WO rule, got: {rule_code} - {rule}"
         print(f"✅ Coffee tariff calculation has WO rule: {rule_code} - {rule}")
         
-    def test_calculate_tariff_clothing_has_yarn_rule(self):
-        """Calculate tariff for clothing should have YARN rule"""
+    def test_calculate_tariff_clothing_has_cth_rule(self):
+        """Calculate tariff for clothing 620311 should have the position-62.03 CTH rule"""
         payload = {
             "origin_country": "MAR",
             "destination_country": "TUN",
@@ -426,15 +435,14 @@ class TestCalculateTariffIncludesRulesOfOrigin:
         response = requests.post(f"{BASE_URL}/api/calculate-tariff", json=payload)
         assert response.status_code == 200
         data = response.json()
-        
+
         rules = data.get("rules_of_origin", {})
         rule = rules.get("rule", "")
         rule_code = rules.get("rule_code", "")
-        
-        # Should be YARN or contain "yarn" / "fils"
-        assert rule_code == "YARN" or "yarn" in rule.lower() or "fils" in rule.lower(), \
-            f"Clothing should have YARN rule, got: {rule_code} - {rule}"
-        print(f"✅ Clothing tariff calculation has YARN rule: {rule_code} - {rule}")
+
+        assert rule_code == "CTH" or "tariff heading" in rule.lower() or "position tarifaire" in rule.lower(), \
+            f"Clothing 620311 should have CTH rule, got: {rule_code} - {rule}"
+        print(f"✅ Clothing tariff calculation has CTH rule: {rule_code} - {rule}")
 
 
 class TestRulesOfOriginEdgeCases:

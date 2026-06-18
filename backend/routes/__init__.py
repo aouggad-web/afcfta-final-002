@@ -56,16 +56,21 @@ from .hs6_database import router as hs6_db_router
 from .authentic_tariffs import router as authentic_tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
 
-# Load Rules of Origin data
+# Load Rules of Origin data from the authentic Appendix IV PSR JSON dataset
 try:
-    import sys
+    import json
     import os
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    from etl.afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES
+    _roo_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'zlecaf_rules_of_origin.json')
+    with open(_roo_path, 'r', encoding='utf-8') as _roo_f:
+        RULES_OF_ORIGIN_DATA = json.load(_roo_f)
+    ORIGIN_TYPES = RULES_OF_ORIGIN_DATA.get('origin_types', {})
     RULES_OF_ORIGIN_DATA_LOADED = True
-    _logger.info(f"Loaded {len(CHAPTER_RULES)} chapter rules of origin")
+    _logger.info(
+        f"Loaded rules of origin data: {len(RULES_OF_ORIGIN_DATA.get('chapters', {}))} chapters, "
+        f"{len(RULES_OF_ORIGIN_DATA.get('headings', {}))} headings"
+    )
 except Exception as e:
-    CHAPTER_RULES = {}
+    RULES_OF_ORIGIN_DATA = {}
     ORIGIN_TYPES = {}
     RULES_OF_ORIGIN_DATA_LOADED = False
     _logger.warning(f"Failed to load rules of origin data: {e}")
@@ -77,42 +82,6 @@ except ImportError as e:
     dismantlement_router = None
     DISMANTLEMENT_AVAILABLE = False
     _logger.warning(f"Dismantlement schedule route unavailable: {e}")
-
-# Load Rules of Origin data
-try:
-    import sys
-    import os
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    from etl.afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES
-    RULES_OF_ORIGIN_DATA_LOADED = True
-    _logger.info(f"Loaded {len(CHAPTER_RULES)} chapter rules of origin")
-except Exception as e:
-    CHAPTER_RULES = {}
-    ORIGIN_TYPES = {}
-    RULES_OF_ORIGIN_DATA_LOADED = False
-    _logger.warning(f"Failed to load rules of origin data: {e}")
-
-try:
-    from .dismantlement import router as dismantlement_router
-    DISMANTLEMENT_AVAILABLE = True
-except ImportError as e:
-    dismantlement_router = None
-    DISMANTLEMENT_AVAILABLE = False
-    _logger.warning(f"Dismantlement schedule route unavailable: {e}")
-
-# Load Rules of Origin data
-try:
-    import sys
-    import os
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    from etl.afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES
-    RULES_OF_ORIGIN_DATA_LOADED = True
-    _logger.info(f"Loaded {len(CHAPTER_RULES)} chapter rules of origin")
-except Exception as e:
-    CHAPTER_RULES = {}
-    ORIGIN_TYPES = {}
-    RULES_OF_ORIGIN_DATA_LOADED = False
-    _logger.warning(f"Failed to load rules of origin data: {e}")
 
 try:
     from .faostat import router as faostat_router
@@ -347,7 +316,7 @@ def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
     # Initialize Rules of Origin with official data
     if RULES_OF_ORIGIN_DATA_LOADED:
-        init_rules_data(CHAPTER_RULES, ORIGIN_TYPES)
+        init_rules_data(RULES_OF_ORIGIN_DATA, ORIGIN_TYPES)
         _logger.info("Rules of Origin data initialized successfully")
 
     # Health endpoints remain public (no auth required)

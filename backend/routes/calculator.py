@@ -311,7 +311,22 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
 
         vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
         other_taxes_rate, other_taxes_detail = get_other_taxes_for_country(dest_iso3)
-    
+
+    # ============================================================
+    # DZA : calendrier de démantèlement ZLECAf authentique (circulaire DGD
+    # 482/2024) — remplace le facteur générique : dépend de la liste (A/B/C)
+    # du produit ET du régime appliqué au pays partenaire (seuls 9 pays ont
+    # déclenché l'application effective avec l'Algérie à ce jour).
+    # ============================================================
+    if dest_iso3 == "DZA":
+        from services.zlecaf_schedule_dza import compute_dza_zlecaf_rate
+        _dza_rate, _dza_source = compute_dza_zlecaf_rate(
+            hs_code_clean, origin_country.get("iso3", ""), normal_rate
+        )
+        if _dza_rate is not None:
+            zlecaf_rate = _dza_rate
+            zlecaf_source = _dza_source
+
     # Source for display
     rate_source = f"Tarif officiel {dest_iso3} - {npf_source}"
     
@@ -365,6 +380,16 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     if not _engine_lines:
         _engine_lines.append({"code": "DD", "name": "Droit de douane",
                               "rate_pct": round(normal_rate * 100, 4), "base": "CIF", "source": npf_source})
+
+    # DZA : le DAPS est exonéré pour les listes (A)/(B) non gelées avec un
+    # partenaire ZLECAf actif (circulaire 482/2024, partie II-2 + art. 2 de
+    # la loi de finances complémentaire 2018) — provision distincte du
+    # calendrier de démantèlement du DD, donc le DAPS doit être retiré du
+    # détail envoyé au moteur fiscal, pas seulement du taux DD affiché.
+    if dest_iso3 == "DZA":
+        from services.zlecaf_schedule_dza import daps_exempt
+        if daps_exempt(hs_code_clean, origin_country.get("iso3", "") if origin_country else ""):
+            _engine_lines = [ln for ln in _engine_lines if str(ln.get("code", "")).upper() != "DAPS"]
 
     legal_refs = {
         "cif": {"ref": "Incoterms 2020 - CIF", "url": "https://iccwbo.org/resources-for-business/incoterms-rules/incoterms-2020/"},

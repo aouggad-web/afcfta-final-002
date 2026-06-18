@@ -1289,6 +1289,56 @@ YTB_HEADINGS = [
     "8701", "8703", "8704", "8705", "8706", "8707", "8708", "8710", "8711", "8712",  # Vehicles
 ]
 
+# ============================================================================
+# Single source of truth: backend/data/zlecaf_rules_of_origin.json
+#
+# The dicts above (CHAPTER_RULES / HEADING_RULES / YTB_HEADINGS / ORIGIN_TYPES)
+# were used to derive that JSON file. To keep this module and the dedicated
+# /api/rules-of-origin endpoint (routes/rules_of_origin.py) from drifting
+# apart, we reload the same JSON here and overwrite the in-memory dicts with
+# its contents (field names: code/alt_code/threshold/raw_fr, NOT the legacy
+# primary/alt/max_non_orig names used by the hardcoded dicts above). If the
+# JSON file is unavailable for any reason, the hardcoded dicts above remain
+# in effect as a fallback.
+# ============================================================================
+SUBHEADING_RULES: dict = {}
+
+try:
+    import json as _json
+    import os as _os
+
+    _roo_json_path = _os.path.join(_os.path.dirname(__file__), '..', 'data', 'zlecaf_rules_of_origin.json')
+    with open(_roo_json_path, 'r', encoding='utf-8') as _f:
+        _roo_json = _json.load(_f)
+
+    def _to_legacy_chapter(entry):
+        return {
+            "primary": entry.get("code"),
+            "alt": entry.get("alt_code"),
+            "max_non_orig": entry.get("threshold") or 0,
+            "status": entry.get("status", "AGREED"),
+            "description_en": entry.get("name_en", ""),
+            "description_fr": entry.get("description_fr", ""),
+            "rule_text_en": entry.get("raw_fr", ""),
+            "rule_text_fr": entry.get("raw_fr", ""),
+        }
+
+    if _roo_json.get("chapters"):
+        CHAPTER_RULES = {k: _to_legacy_chapter(v) for k, v in _roo_json["chapters"].items()}
+    if _roo_json.get("headings"):
+        HEADING_RULES = {
+            k: _to_legacy_chapter(v) for k, v in _roo_json["headings"].items()
+            if v.get("status") != "YTB"
+        }
+        YTB_HEADINGS = [k for k, v in _roo_json["headings"].items() if v.get("status") == "YTB"]
+    if _roo_json.get("subheadings"):
+        SUBHEADING_RULES = {k: _to_legacy_chapter(v) for k, v in _roo_json["subheadings"].items()}
+    if _roo_json.get("origin_types"):
+        ORIGIN_TYPES = _roo_json["origin_types"]
+except Exception as _e:
+    import logging as _logging
+    _logging.getLogger(__name__).warning(f"Falling back to hardcoded rules of origin data: {_e}")
+
 
 def get_chapter_rule(chapter: str, lang: str = "fr") -> dict:
     """Get default rule for a chapter"""
@@ -1298,6 +1348,33 @@ def get_chapter_rule(chapter: str, lang: str = "fr") -> dict:
         desc_key = f"description_{lang}"
         rule_text_key = f"rule_text_{lang}"
         return {
+            "primary_code": rule["primary"],
+            "primary_name": ORIGIN_TYPES.get(rule["primary"], {}).get(lang, rule["primary"]),
+            "alt_code": rule.get("alt"),
+            "alt_name": ORIGIN_TYPES.get(rule.get("alt"), {}).get(lang, "") if rule.get("alt") else None,
+            "max_non_originating": rule.get("max_non_orig", 0),
+            "status": rule.get("status", "AGREED"),
+            "description": rule.get(desc_key, ""),
+            "rule_text": rule.get(rule_text_key, "")
+        }
+    return None
+
+
+def get_subheading_rule(subheading: str, lang: str = "fr") -> dict:
+    """Get rule for a specific subheading (6 digits), if one exists.
+
+    Some headings carry a chapter-level default rule that is overridden for
+    specific subheadings only (e.g. heading 62.03 defaults to the chapter 62
+    YARN rule, but subheadings 6203.11/6203.31/6203.41 - wool/fine-hair
+    suits - have their own explicit CTH rule in Appendice IV).
+    """
+    subheading = subheading.replace(".", "")[:6]
+    if subheading in SUBHEADING_RULES:
+        rule = SUBHEADING_RULES[subheading]
+        desc_key = f"description_{lang}"
+        rule_text_key = f"rule_text_{lang}"
+        return {
+            "subheading": subheading,
             "primary_code": rule["primary"],
             "primary_name": ORIGIN_TYPES.get(rule["primary"], {}).get(lang, rule["primary"]),
             "alt_code": rule.get("alt"),
@@ -1340,18 +1417,51 @@ def is_ytb(hs_code: str) -> bool:
 def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
     """
     Get rules of origin for an HS code.
-    
+
     Priority order:
-    1. Heading-specific rule (4-digit)
-    2. Chapter-level rule (2-digit)
-    
+    1. Subheading-specific rule (6-digit)
+    2. Heading-specific rule (4-digit)
+    3. Chapter-level rule (2-digit)
+
     Returns a complete rule structure with all metadata.
     """
     hs_clean = hs_code.replace(".", "").replace(" ", "")
     hs6 = hs_clean[:6].ljust(6, '0') if len(hs_clean) >= 6 else hs_clean.ljust(6, '0')
     heading = hs_clean[:4]
     chapter = hs_clean[:2].zfill(2)
-    
+
+    # Try subheading-specific rule first (most specific match wins)
+    subheading_rule = get_subheading_rule(hs6, lang)
+    if subheading_rule:
+        primary_code = subheading_rule["primary_code"]
+        alt_code = subheading_rule.get("alt_code")
+        max_non_orig = subheading_rule.get("max_non_originating", 0)
+        regional_content = 100 - max_non_orig
+
+        return {
+            "hs6_code": hs6,
+            "heading": heading,
+            "chapter": chapter,
+            "chapter_description": CHAPTER_RULES.get(chapter, {}).get(f"description_{lang}", ""),
+            "status": subheading_rule.get("status", "AGREED"),
+            "primary_rule": {
+                "code": primary_code,
+                "type": primary_code,
+                "name": subheading_rule["primary_name"],
+                "description": subheading_rule.get("rule_text", subheading_rule["primary_name"])
+            },
+            "alternative_rule": {
+                "code": alt_code,
+                "type": alt_code,
+                "name": subheading_rule["alt_name"],
+                "description": ORIGIN_TYPES.get(alt_code, {}).get(lang, alt_code) if alt_code else None
+            } if alt_code else None,
+            "regional_content": regional_content,
+            "notes": subheading_rule.get("description", ""),
+            "source": "SUBHEADING",
+            "source_detail": f"AfCFTA Annex II Appendix IV - Subheading {hs6}"
+        }
+
     # Check if heading is yet to be agreed
     if is_ytb(hs_code):
         return {
