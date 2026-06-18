@@ -1209,7 +1209,7 @@
     "85": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Electrical machinery and equipment and parts thereof",
@@ -1239,7 +1239,7 @@
     "87": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60% du prix départ usine du produit, règle devant faire l'objet d'un réexamen après 5 ans",
       "name_en": "Vehicles other than railway or tramway rolling-stock, and parts and accessories thereof",
@@ -1340,7 +1340,7 @@
     "94": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Furniture; bedding, mattresses; lamps and lighting fittings; prefabricated buildings",
@@ -1414,7 +1414,7 @@
     "0403": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 5 ans, après quoi la fabrication dans laquelle les matières des sous-positions 04.01 et 04.02 utilisées doivent être entièrement obtenues",
       "name_en": "Buttermilk, curdled milk, yogurt, kephir",
@@ -1428,7 +1428,7 @@
     "0406": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 5 ans, après quoi la fabrication dans laquelle les matières des sous-positions 04.01 et 04.02 utilisées doivent être entièrement obtenues",
       "name_en": "Cheese and curd",
@@ -1554,7 +1554,7 @@
     "1504": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi la fabrication dans laquelle les matières utilisées doivent être entièrement obtenues doit faire l'objet d'un examen objectif",
       "name_en": "Fats and oils of fish or marine mammals",
@@ -1596,7 +1596,7 @@
     "1507": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi la fabrication dans laquelle les matières utilisées doivent être entièrement obtenues doit faire l'objet d'un examen objectif",
       "name_en": "Soya-bean oil and its fractions",
@@ -1610,7 +1610,7 @@
     "1511": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi la fabrication dans laquelle les matières utilisées doivent être entièrement obtenues doit faire l'objet d'un examen objectif",
       "name_en": "Palm oil and its fractions",
@@ -1624,7 +1624,7 @@
     "1512": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": true,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi la fabrication dans laquelle les matières utilisées doivent être entièrement obtenues doit faire l'objet d'un examen objectif",
       "name_en": "Sunflower-seed, safflower oil and fractions",
@@ -1638,7 +1638,7 @@
     "1514": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi la fabrication dans laquelle les matières utilisées doivent être entièrement obtenues doit faire l'objet d'un examen objectif",
       "name_en": "Rape, colza or mustard oil and fractions",
@@ -1652,7 +1652,7 @@
     "1516": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi la fabrication dans laquelle les matières utilisées doivent être entièrement obtenues doit faire l'objet d'un examen objectif",
       "name_en": "Animal/vegetable fats and oils, hydrogenated etc.",
@@ -1680,7 +1680,7 @@
     "1518": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi la fabrication dans laquelle les matières utilisées doivent être entièrement obtenues doit faire l'objet d'un examen objectif",
       "name_en": "Animal/vegetable fats and oils, boiled, oxidised, dehydrated etc.",
@@ -1708,7 +1708,7 @@
     "1521": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi la fabrication dans laquelle les matières utilisées doivent être entièrement obtenues doit faire l'objet d'un examen objectif",
       "name_en": "Vegetable waxes, beeswax, other insect waxes and spermaceti",
@@ -1722,7 +1722,7 @@
     "1604": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 5 ans, après quoi les matières du chapitre 3 doivent être entièrement obtenues. Fabrication dans laquelle les matières du chapitre 3 doivent être entièrement obtenues",
       "name_en": "Prepared or preserved fish; caviar",
@@ -1736,7 +1736,7 @@
     "1605": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 5 ans, après quoi les matières du chapitre 3 doivent être entièrement obtenues. Fabrication dans laquelle les matières du chapitre 3 doivent être entièrement obtenues",
       "name_en": "Crustaceans, molluscs prepared or preserved",
@@ -1750,7 +1750,7 @@
     "1702": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit. Cette règle fera l'objet d'un réexamen après 5 ans, conformément au mécanisme de révision convenu par le Conseil des ministres.",
       "name_en": "Other sugars; sugar syrups; artificial honey; caramel",
@@ -1764,7 +1764,7 @@
     "1704": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit. Cette règle fera l'objet d'un réexamen après 5 ans, conformément au mécanisme de révision convenu par le Conseil des ministres.",
       "name_en": "Sugar confectionery, not containing cocoa",
@@ -1834,7 +1834,7 @@
     "2102": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication à partir de matières dans laquelle la valeur des matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Yeasts; other single-cell micro-organisms, dead; prepared baking powders",
@@ -1974,7 +1974,7 @@
     "2301": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur des matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi les matières des chapitres 2, 3, 4, 10, 11, 12 et 17 du SH doivent être considérées comme originaires",
       "name_en": "Flours, meals and pellets of meat, offal, fish, unfit for human consumption",
@@ -1988,7 +1988,7 @@
     "2309": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur des matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 3 ans, après quoi les matières des chapitres 2, 3, 4, 10, 11, 12 et 17 du SH doivent être considérées comme originaires",
       "name_en": "Preparations of a kind used in animal feeding",
@@ -2002,7 +2002,7 @@
     "2402": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit, à condition que le poids des matières non originaires de la position 2401 utilisées n'excède pas 30% du poids du tabac utilisé dans le produit.",
       "name_en": "Cigars, cheroots, cigarillos and cigarettes",
@@ -2018,7 +2018,7 @@
     "2403": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit, à condition que le poids des matières non originaires de la position 2401 utilisées n'excède pas 30% du poids du tabac utilisé dans le produit.",
       "name_en": "Other manufactured tobacco; homogenised or reconstituted tobacco; tobacco extracts",
@@ -2034,7 +2034,7 @@
     "2701": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication à partir de matières de toute position autre que celle du produit Ou Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Coal; briquettes, ovoids and similar solid fuels manufactured from coal",
@@ -2048,7 +2048,7 @@
     "2707": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication à partir de matières de toute position autre que celle du produit Ou Fabrication dans laquelle la valeur des matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Oils and other products of the distillation of high temperature coal tar",
@@ -2148,7 +2148,7 @@
     "2805": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Alkali or alkaline-earth metals; rare-earth metals; mercury",
@@ -2490,7 +2490,7 @@
     "6307": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Other made up articles, including dress patterns",
@@ -2788,7 +2788,7 @@
     "8702": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Motor vehicles for the transport of ten or more persons, including the driver",
@@ -2802,7 +2802,7 @@
     "8709": {
       "code": "VA65",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 65,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 65% du prix départ usine du produit",
       "name_en": "Works trucks; tractors used on railway station platforms",
@@ -2816,7 +2816,7 @@
     "8714": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Parts and accessories of vehicles of headings 87.11 to 87.13",
@@ -2830,7 +2830,7 @@
     "8715": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 60% du prix départ usine du produit",
       "name_en": "Baby carriages and parts thereof",
@@ -2844,7 +2844,7 @@
     "8716": {
       "code": "VA65",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 65,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées n'excède pas 65% du prix départ usine du produit",
       "name_en": "Trailers and semi-trailers; other vehicles, not mechanically propelled; parts thereof",
@@ -2860,7 +2860,7 @@
     "040630": {
       "code": "VA40",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 40,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières utilisées ne doit pas excéder 40% du prix départ usine du produit",
       "name_en": "Processed cheese, not grated or powdered",
@@ -2874,7 +2874,7 @@
     "030569": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur de toutes les matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 5 ans après quoi les matières du chapitre 3 du SH utilisées doivent être entièrement obtenues",
       "name_en": "Salted snoek",
@@ -2944,7 +2944,7 @@
     "200981": {
       "code": "VA60",
       "alt_code": null,
-      "threshold": null,
+      "threshold": 60,
       "ex": false,
       "raw_fr": "Fabrication dans laquelle la valeur des matières non originaires utilisées ne doit pas excéder 60% du prix départ usine du produit pendant 5 ans, après quoi la fabrication dans laquelle tous les légumes, fruits, noix ou autres parties de plantes utilisées doivent être entièrement obtenus",
       "name_en": "Cranberry juice",

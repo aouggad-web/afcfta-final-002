@@ -62,6 +62,8 @@ def _entry_to_response(hs_code: str, entry: dict, match_type: str, matched_code:
 
     threshold = entry.get("threshold")
     regional_content = 100 - threshold if threshold is not None else None
+    is_wholly_obtained = primary_code == "WO"
+    rule_text = entry.get(f"description_{lang}") or entry.get("raw_fr") or ""
 
     return {
         "hs_code": hs_code,
@@ -76,6 +78,19 @@ def _entry_to_response(hs_code: str, entry: dict, match_type: str, matched_code:
             "applicable_notes": entry.get("notes", []),
             "rule_text_fr": entry.get("raw_fr", ""),
             "rule_text_en": entry.get("description_en") or entry.get("name_en", ""),
+        },
+        # Legacy shape kept for frontend/src/components/rules/RulesTab.jsx,
+        # which reads rule.psr / rule.value_added_threshold directly.
+        "rule": {
+            "psr": rule_text,
+            "wholly_obtained": is_wholly_obtained,
+            "value_added_threshold": regional_content if regional_content is not None else (threshold or 60),
+            "category": primary_rule.get("name", ""),
+            "primary_rule": primary_code,
+            "alternative_rule": alt_code,
+            "max_non_originating": threshold,
+            "notes": rule_text,
+            "status": entry.get("status", "AGREED"),
         },
         "match_type": match_type,
         "matched_code": matched_code,
@@ -172,6 +187,10 @@ async def get_rules_of_origin(
             "rule_text_fr": "",
             "rule_text_en": "",
         },
+        # No fabricated default here (that was the original P0 bug): leave
+        # "rule" absent so RulesTab.jsx's `rulesOfOrigin.rule &&` guard simply
+        # renders nothing instead of showing an invented generic rule.
+        "rule": None,
         "match_type": "none",
         "matched_code": None,
         "source": DEFAULT_SOURCE,
