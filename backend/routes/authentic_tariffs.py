@@ -249,49 +249,89 @@ async def calculate_taxes_endpoint(
 def _enrich_with_dual_breakdown(result: dict, value: float, country_iso3: str) -> None:
     """Enrichit in-place le résultat authentic avec taxes_breakdown, taxes_summary et currency.
 
-    - taxes_breakdown : ventilation taxe par taxe NPF vs ZLECAf (bi-devise si taux dispo)
-    - taxes_summary   : totaux par régime (droit_douane, tva, autres_taxes, cout_total)
-    - currency        : bloc devise locale + taux de change USD→local
+    Stratégie :
+    - taxes_breakdown : mappé DIRECTEMENT depuis calculation_steps (NPF) +
+      calculation_steps_zlecaf (ZLECAf) — vrais montants calculés, aucune
+      re-dérivation depuis les taux. La conversion devise est une multiplication pure.
+    - taxes_summary   : mappé depuis npf_calculation / zlecaf_calculation (totaux
+      dd / other_taxes / vat / total_to_pay déjà calculés par le moteur authentic).
+    - currency        : bloc devise locale (ISO2) + taux USD→local.
     """
-    from services.tax_computation import compute_dual_breakdown, localize_breakdown
     from currencies.service import get_by_country as _get_currency
     from exchange_rates import get_service as _get_fx_service
 
-    rates = result.get("rates", {})
-    dd_rate_pct = float(rates.get("dd_rate_pct", 0) or 0)
-    zlecaf_rate_pct = float(rates.get("zlecaf_rate_pct", 0) or 0)
+    steps_npf = result.get("calculation_steps", [])
+    steps_zlc = result.get("calculation_steps_zlecaf", [])
+    npf_calc  = result.get("npf_calculation", {})
+    zlc_calc  = result.get("zlecaf_calculation", {})
 
-    # Construire les engine_lines depuis individual_taxes
-    individual_taxes = result.get("individual_taxes", [])
-    engine_lines = [
-        {
-            "code": t["code"],
-            "name": t.get("label", t["code"]),
-            "rate_pct": float(t.get("rate_pct", 0) or 0),
-        }
-        for t in individual_taxes
-        if float(t.get("rate_pct", 0) or 0) > 0
-    ]
-    # Garantir que DD est présent si dd_rate_pct > 0
-    if dd_rate_pct > 0 and not any(l["code"] == "DD" for l in engine_lines):
-        engine_lines.insert(0, {"code": "DD", "name": "Droit de douane", "rate_pct": dd_rate_pct})
-
-    if not engine_lines:
+    if not steps_npf:
         result["taxes_breakdown"] = []
-        result["taxes_summary"] = {}
-        result["currency"] = None
+        result["taxes_summary"]   = {}
+        result["currency"]        = None
         return
 
-    _dual = compute_dual_breakdown(
-        value, engine_lines,
-        npf_dd_rate_pct=dd_rate_pct,
-        zlecaf_dd_rate_pct=zlecaf_rate_pct,
-    )
-    taxes_breakdown = _dual["breakdown"]
-    taxes_summary = _dual["summary"]
+    # ── Lookup ZLECAf steps par code ─────────────────────────────────────────
+    zlc_by_code = {s["code"]: s for s in steps_zlc}
 
-    # Devise locale + taux de change
-    # Le fichier currencies_african_complete.json est indexé en ISO2 (DZ, MA, NG…)
+    # ── Catégorisation simplifiée ─────────────────────────────────────────────
+    def _cat(code: str) -> str:
+        if code == "DD":
+            return "droit_douane"
+        if code in ("TVA", "VAT", "TPS", "GST"):
+            return "tva"
+        return "autre_taxe"
+
+    # ── taxes_breakdown — mapping direct depuis calculation_steps ─────────────
+    breakdown = []
+    for step in steps_npf:
+        code     = step["code"]
+        zlc_step = zlc_by_code.get(code, {})
+        amt_npf  = float(step.get("amount", 0) or 0)
+        amt_zlc  = float(zlc_step.get("amount", amt_npf) if zlc_step else amt_npf)
+        rate_npf = float(step.get("rate_pct", 0) or 0)
+        rate_zlc = float(zlc_step.get("rate_pct", rate_npf) if zlc_step else rate_npf)
+        breakdown.append({
+            "code":              code,
+            "name":              step.get("label", code),
+            "category":          _cat(code),
+            "base_expr":         step.get("base_formula", "CIF"),
+            "rate_npf_pct":      rate_npf,
+            "rate_zlecaf_pct":   rate_zlc,
+            "amount_npf":        round(amt_npf, 2),
+            "amount_zlecaf":     round(amt_zlc, 2),
+            "affected_by_zlecaf": rate_zlc != rate_npf,
+        })
+
+    # ── taxes_summary — depuis npf_calculation / zlecaf_calculation ──────────
+    def _g(calc: dict, key: str) -> float:
+        v = calc.get(key, {})
+        return float(v.get("amount", 0) if isinstance(v, dict) else (v or 0))
+
+    def _summarize(calc: dict) -> dict:
+        dd    = _g(calc, "dd")
+        other = _g(calc, "other_taxes")
+        vat   = _g(calc, "vat")
+        total = dd + other + vat
+        cost  = float(calc.get("total_to_pay", value + total) or (value + total))
+        return {
+            "droit_douane":          round(dd, 2),
+            "autres_taxes":          round(other, 2),
+            "tva":                   round(vat, 2),
+            "total_taxes_et_droits": round(total, 2),
+            "cout_total":            round(cost, 2),
+        }
+
+    npf_s = _summarize(npf_calc)
+    zlc_s = _summarize(zlc_calc)
+    taxes_summary = {
+        "npf":             npf_s,
+        "zlecaf":          zlc_s,
+        "economie_droits": round(npf_s["total_taxes_et_droits"] - zlc_s["total_taxes_et_droits"], 2),
+        "economie_totale": round(npf_s["cout_total"] - zlc_s["cout_total"], 2),
+    }
+
+    # ── Devise locale : conversion = multiplication pure ──────────────────────
     _ISO3_TO_ISO2 = {
         "DZA":"DZ","AGO":"AO","BEN":"BJ","BWA":"BW","BFA":"BF","BDI":"BI",
         "CMR":"CM","CPV":"CV","CAF":"CF","TCD":"TD","COM":"KM","COG":"CG",
@@ -304,8 +344,9 @@ def _enrich_with_dual_breakdown(result: dict, value: float, country_iso3: str) -
         "TZA":"TZ","TGO":"TG","TUN":"TN","UGA":"UG","ZMB":"ZM","ZWE":"ZW",
     }
     _iso2 = _ISO3_TO_ISO2.get(country_iso3, country_iso3[:2])
-    _ccy = _get_currency(_iso2)
+    _ccy  = _get_currency(_iso2)
     currency_block = None
+
     if _ccy:
         _rate_obj = None
         try:
@@ -315,8 +356,19 @@ def _enrich_with_dual_breakdown(result: dict, value: float, country_iso3: str) -
 
         if _rate_obj and _rate_obj.rate:
             _r = _rate_obj.rate
-            _loc = localize_breakdown({"breakdown": taxes_breakdown, "summary": taxes_summary}, _r)
-            taxes_breakdown = _loc["breakdown"]
+            # Enrichir chaque ligne breakdown avec le montant local
+            for entry in breakdown:
+                entry["amount_npf_local"]    = round(entry["amount_npf"] * _r, 2)
+                entry["amount_zlecaf_local"] = round(entry["amount_zlecaf"] * _r, 2)
+            # Convertir summary_local (multiplication pure)
+            def _localize_summary(s: dict) -> dict:
+                return {k: round(v * _r, 2) for k, v in s.items()}
+            summary_local = {
+                "npf":             _localize_summary(npf_s),
+                "zlecaf":          _localize_summary(zlc_s),
+                "economie_droits": round(taxes_summary["economie_droits"] * _r, 2),
+                "economie_totale": round(taxes_summary["economie_totale"] * _r, 2),
+            }
             currency_block = {
                 "local_code":        _ccy.currency_code,
                 "local_name":        _ccy.currency_name_fr,
@@ -327,7 +379,7 @@ def _enrich_with_dual_breakdown(result: dict, value: float, country_iso3: str) -
                 "available":         True,
                 "value_usd":         round(value, 2),
                 "value_local":       round(value * _r, 2),
-                "summary_local":     _loc["summary_local"],
+                "summary_local":     summary_local,
             }
         else:
             currency_block = {
@@ -340,7 +392,7 @@ def _enrich_with_dual_breakdown(result: dict, value: float, country_iso3: str) -
                 "value_usd":         round(value, 2),
             }
 
-    result["taxes_breakdown"] = taxes_breakdown
+    result["taxes_breakdown"] = breakdown
     result["taxes_summary"]   = taxes_summary
     result["currency"]        = currency_block
 
