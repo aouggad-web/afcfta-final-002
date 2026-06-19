@@ -11,7 +11,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 const WS_BASE = (() => {
-  const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
   if (!backendUrl) {
     const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     return `${proto}//${window.location.host}`;

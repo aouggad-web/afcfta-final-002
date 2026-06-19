@@ -9,7 +9,7 @@ import AirportCard from './AirportCard';
 import AirportDetailsModal from './AirportDetailsModal';
 import AirFreightCalculator from './AirFreightCalculator';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 export default function AirLogisticsTab({ language = 'fr' }) {

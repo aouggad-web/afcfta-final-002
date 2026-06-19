@@ -20,7 +20,7 @@ for i in $(seq 1 30); do
     sleep 2
 done
 
-cd "$FRONTEND_DIR" && PORT=5000 BROWSER=none npx craco start &
+cd "$FRONTEND_DIR" && npm run start &
 FRONTEND_PID=$!
 
 wait $BACKEND_PID $FRONTEND_PID

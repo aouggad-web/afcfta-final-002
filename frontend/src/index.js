@@ -61,7 +61,7 @@ window.ResizeObserver = class ResizeObserver extends _ {
 };
 
 // Register PWA Service Worker
-if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/service-worker.js', { scope: '/' })

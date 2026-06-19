@@ -1,0 +1,1 @@
+- [Vite migration from CRA](vite-migration.md) — react-scripts blocked by Replit security policy (shell-quote CVE); migrated to Vite with JSX loader for .js files, .cjs config files

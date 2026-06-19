@@ -9,7 +9,7 @@ import CorridorCard from './CorridorCard';
 import CorridorDetailsModal from './CorridorDetailsModal';
 import LandFreightCalculator from './LandFreightCalculator';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 export default function LandLogisticsTab({ language = 'fr' }) {

@@ -4,11 +4,14 @@ import L from 'leaflet';
 import axios from 'axios';
 
 // Fix for Leaflet default marker icons in React
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
 });
 
 // Fonction pour calculer le rayon du cercle en fonction du trafic TEU
@@ -104,7 +107,7 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
       setError(null);
       
       try {
-        const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+        const API_URL = import.meta.env.VITE_BACKEND_URL || '';
         const url = selectedCountry && selectedCountry !== 'ALL'
           ? `${API_URL}/api/logistics/ports?country_iso=${selectedCountry}`
           : `${API_URL}/api/logistics/ports`;

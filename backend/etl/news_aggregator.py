@@ -8,6 +8,7 @@ import feedparser
 import asyncio
 import aiohttp
 from datetime import datetime, timedelta
+from pathlib import Path
 from typing import List, Dict, Optional
 import json
 import os
@@ -189,7 +190,7 @@ CATEGORY_KEYWORDS = {
 }
 
 # Cache des actualités
-NEWS_CACHE_FILE = "/app/backend/data/news_cache.json"
+NEWS_CACHE_FILE = str(Path(__file__).parent.parent / "data" / "news_cache.json")
 NEWS_CACHE: Dict = {"last_update": None, "articles": []}
 
 
