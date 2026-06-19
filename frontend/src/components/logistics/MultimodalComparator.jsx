@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles, TrendingUp } from 'lucide-react';
+import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles, TrendingUp, Building2 } from 'lucide-react';
 import { PDFExportButton } from '../common/ExportTools';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -158,6 +158,19 @@ function OptionCard({ opt }) {
                         {seg.cost_usd != null && <span> · {fmtUsd(seg.cost_usd)}</span>}
                         {seg.corridor_name && <span> · {seg.corridor_name}</span>}
                       </div>
+                      {seg.carriers && seg.carriers.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1 mt-1">
+                          <Building2 className="w-3 h-3 text-gray-500 flex-shrink-0" />
+                          {seg.carriers.map((c, ci) => (
+                            <span
+                              key={ci}
+                              className="text-[10px] px-1.5 py-0.5 rounded bg-white/5 text-gray-300 border border-white/10"
+                            >
+                              {c}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 );

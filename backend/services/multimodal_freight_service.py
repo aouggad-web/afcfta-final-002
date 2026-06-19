@@ -33,6 +33,7 @@ from logistics_land_fees_data import (
     get_land_corridors_list,
     get_land_freight_cost,
 )
+from logistics_operators_data import LOGISTICS_OPERATORS
 
 logger = logging.getLogger(__name__)
 
@@ -251,6 +252,51 @@ def _corridor_phase(c: Dict[str, Any]) -> str:
     return "operational"
 
 
+def _land_carriers(countries: List[str], corridor_mode: str) -> List[str]:
+    """Transport companies able to operate a land/rail corridor.
+
+    For rail corridors we match national rail operators by `country_iso`;
+    for road / multimodal corridors we match pan-African trucking companies
+    whose `africa_presence` intersects the corridor's countries.
+    Returns de-duplicated company names (max 5). Empty when none are known.
+    """
+    cset = {str(c).upper() for c in (countries or []) if c}
+    if not cset:
+        return []
+    names: List[str] = []
+    if corridor_mode == "rail":
+        for op in LOGISTICS_OPERATORS.get("rail_operators", []):
+            op_countries = {str(op.get("country_iso") or "").upper()}
+            op_countries |= {str(c).upper() for c in (op.get("countries") or [])}
+            op_countries.discard("")
+            if op_countries & cset:
+                names.append(op["name"])
+    else:  # road / multimodal
+        for op in LOGISTICS_OPERATORS.get("trucking_companies", []):
+            presence = {str(p).upper() for p in op.get("africa_presence", [])}
+            if presence & cset:
+                names.append(op["name"])
+    seen: set = set()
+    out: List[str] = []
+    for n in names:
+        if n not in seen:
+            seen.add(n)
+            out.append(n)
+    return out[:5]
+
+
+def _union_carriers(*lists: List[str]) -> List[str]:
+    """De-duplicated union of several carrier-name lists, order preserved."""
+    seen: set = set()
+    out: List[str] = []
+    for lst in lists:
+        for n in (lst or []):
+            if n not in seen:
+                seen.add(n)
+                out.append(n)
+    return out
+
+
 def _rail_then_road_option(
     origin_country: str, destination_country: str,
     weight_tonnes: float, cargo_type: str = "container",
@@ -307,6 +353,9 @@ def _rail_then_road_option(
             road_dist = road_data.get("length_km") or road.get("length_km", 0)
             road_co2 = _co2_kg(weight_tonnes, road_dist, "road")
 
+            rail_carriers = rail_data.get("operators") or _land_carriers(rail.get("countries", []), "rail")
+            road_carriers = road_data.get("operators") or _land_carriers(road.get("countries", []), "road")
+
             total_cost = round((rail_data.get("total_cost_usd") or 0) + (road_data.get("total_cost_usd") or 0))
             tmin = (rail_data.get("transit_days_min") or 0) + (road_data.get("transit_days_min") or 0)
             tmax = (rail_data.get("transit_days_max") or 0) + (road_data.get("transit_days_max") or 0)
@@ -348,6 +397,7 @@ def _rail_then_road_option(
                         "cost_usd": rail_data.get("total_cost_usd"),
                         "co2_kg": rail_co2,
                         "status": rail.get("status"),
+                        "carriers": rail_carriers,
                     },
                     {
                         "mode": "road",
@@ -363,8 +413,10 @@ def _rail_then_road_option(
                         "cost_usd": road_data.get("total_cost_usd"),
                         "co2_kg": road_co2,
                         "status": road.get("status"),
+                        "carriers": road_carriers,
                     },
                 ],
+                "carriers": _union_carriers(rail_carriers, road_carriers),
                 "total_cost_usd": total_cost,
                 "transit_days_min": tmin,
                 "transit_days_max": tmax,
@@ -419,6 +471,7 @@ def _format_sea_option(
                 "carriers": sea.get("carriers", []),
             }
         ],
+        "carriers": sea.get("carriers", []),
         "total_cost_usd": sea["total_cost_usd"],
         "container_type": str(sea.get("container_type", "teu")).lower(),
         "transit_days_min": sea["transit_days_min"],
@@ -523,6 +576,7 @@ def _air_option(
                 "carriers": air.get("carriers", []),
             }
         ],
+        "carriers": air.get("carriers", []),
         "total_cost_usd": air["total_cost_usd"],
         "transit_days_min": air["transit_days_min"],
         "transit_days_max": air["transit_days_max"],
@@ -554,6 +608,7 @@ def _land_option(
         co2 = _co2_kg(weight_tonnes, dist_km, "road")
         phase = _corridor_phase(corridor)
         mode_mode = corridor.get("type", "road")  # road / rail / multimodal
+        land_carriers = land.get("operators") or _land_carriers(corridor.get("countries", []), mode_mode)
         # Rail uses lower CO2 factor
         if mode_mode == "rail":
             co2 = _co2_kg(weight_tonnes, dist_km, "rail")
@@ -580,8 +635,10 @@ def _land_option(
                     "transit_days_min": land.get("transit_days_min"),
                     "transit_days_max": land.get("transit_days_max"),
                     "cost_usd": land.get("total_cost_usd"),
+                    "carriers": land_carriers,
                 }
             ],
+            "carriers": land_carriers,
             "total_cost_usd": land.get("total_cost_usd"),
             "transit_days_min": land.get("transit_days_min"),
             "transit_days_max": land.get("transit_days_max"),
@@ -651,6 +708,7 @@ def _sea_then_land_option(
 
             phase = _corridor_phase(corridor)
             is_future = phase != "operational"
+            land_carriers = land.get("operators") or _land_carriers(corridor.get("countries", []), land_mode)
 
             options.append({
                 "mode": "multimodal",
@@ -696,8 +754,10 @@ def _sea_then_land_option(
                         "transit_days_max": land.get("transit_days_max"),
                         "cost_usd": land.get("total_cost_usd"),
                         "co2_kg": land_co2,
+                        "carriers": land_carriers,
                     },
                 ],
+                "carriers": _union_carriers(sea.get("carriers", []), land_carriers),
                 "total_cost_usd": total_cost,
                 "container_type": container_type.lower(),
                 "transit_days_min": tmin,

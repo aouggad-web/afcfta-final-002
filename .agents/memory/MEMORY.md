@@ -1,1 +1,2 @@
 - [Maritime route matrix](maritime-route-matrix.md) — sea ports/routes live in logistics_fees_data.PORTS; derive country→ports from p["iso"], never keep a parallel hard-coded port list.
+- [Multimodal carrier sourcing](multimodal-carriers.md) — land legs must use exact corridor operators from get_land_freight_cost()["operators"]; country-presence matching is fallback only.
