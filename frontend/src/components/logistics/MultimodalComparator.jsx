@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles, TrendingUp } from 'lucide-react';
 import { PDFExportButton } from '../common/ExportTools';
 
-const API = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
+const API = `${BACKEND_URL}/api`;
 
 const COUNTRY_NAMES_FR = {
   AGO:'Angola', BDI:'Burundi', BEN:'Bénin', BFA:'Burkina Faso', BWA:'Botswana',
@@ -191,7 +192,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
   const reportRef = useRef(null);
 
   useEffect(() => {
-    axios.get(`${API}/api/logistics/multimodal/countries`)
+    axios.get(`${API}/logistics/multimodal/countries`)
       .then(res => setSupportedCountries(res.data))
       .catch(err => console.error('Failed to load supported countries', err));
   }, []);
@@ -206,7 +207,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
     setError(null);
     setResult(null);
     try {
-      const res = await axios.get(`${API}/api/logistics/multimodal/compare`, {
+      const res = await axios.get(`${API}/logistics/multimodal/compare`, {
         params: {
           origin, destination,
           weight_kg: weightKg,
