@@ -94,7 +94,15 @@ const COUNTRY_LABELS = {
   TZA: '🇹🇿 Tanzanie', CIV: "🇨🇮 Côte d'Ivoire", GHA: '🇬🇭 Ghana',
   SEN: '🇸🇳 Sénégal', CMR: '🇨🇲 Cameroun', ETH: '🇪🇹 Éthiopie',
   DJI: '🇩🇯 Djibouti', MOZ: '🇲🇿 Mozambique', AGO: '🇦🇴 Angola',
-  TUN: '🇹🇳 Tunisie',
+  TUN: '🇹🇳 Tunisie', LBY: '🇱🇾 Libye', SDN: '🇸🇩 Soudan',
+  SSD: '🇸🇸 Soudan du Sud', COD: '🇨🇩 RD Congo', COG: '🇨🇬 Congo',
+  GAB: '🇬🇦 Gabon', TCD: '🇹🇩 Tchad', CAF: '🇨🇫 Centrafrique',
+  TGO: '🇹🇬 Togo', BEN: '🇧🇯 Bénin', BFA: '🇧🇫 Burkina Faso',
+  MLI: '🇲🇱 Mali', NER: '🇳🇪 Niger', GIN: '🇬🇳 Guinée',
+  MRT: '🇲🇷 Mauritanie', UGA: '🇺🇬 Ouganda', RWA: '🇷🇼 Rwanda',
+  SOM: '🇸🇴 Somalie', ZMB: '🇿🇲 Zambie', ZWE: '🇿🇼 Zimbabwe',
+  MWI: '🇲🇼 Malawi', NAM: '🇳🇦 Namibie', BWA: '🇧🇼 Botswana',
+  SWZ: '🇸🇿 Eswatini', MDG: '🇲🇬 Madagascar', MUS: '🇲🇺 Maurice',
 };
 
 function ContactChip({ icon: Icon, value, href, color = 'gray' }) {
@@ -121,10 +129,49 @@ function CountryBadge({ iso }) {
   );
 }
 
+const isUrl = (v) => typeof v === 'string' && /^https?:\/\//i.test(v);
+const isEmail = (v) => typeof v === 'string' && v.includes('@') && !v.includes(' ');
+const isPhone = (v) => typeof v === 'string' && /^[+0-9][0-9\s()\-./]{5,}$/.test(v);
+const GENERIC_CONTACT_KEYS = new Set(['phone', 'email', 'address', 'fax']);
+
+function WebLinkChip({ href, label }) {
+  return (
+    <a href={href} target="_blank" rel="noreferrer">
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs
+        bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:text-blue-300 transition-colors">
+        <ExternalLink className="w-3 h-3 flex-shrink-0" />
+        <span className="truncate max-w-[180px]">{label}</span>
+      </span>
+    </a>
+  );
+}
+
+function FlatContact({ contactKey, value }) {
+  const label = contactKey.replace(/_/g, ' ');
+  let chip;
+  if (isUrl(value)) {
+    chip = <WebLinkChip href={value} label={value.replace(/^https?:\/\//i, '')} />;
+  } else if (isEmail(value)) {
+    chip = <ContactChip icon={Mail} value={value} href={`mailto:${value}`} />;
+  } else if (isPhone(value)) {
+    chip = <ContactChip icon={Phone} value={value} href={`tel:${value.replace(/\s/g, '')}`} />;
+  } else {
+    chip = <ContactChip icon={MapPin} value={value} />;
+  }
+  if (GENERIC_CONTACT_KEYS.has(contactKey)) return chip;
+  return (
+    <span className="inline-flex items-center gap-1">
+      <span className="text-[10px] text-gray-500 uppercase tracking-wide">{label}</span>
+      {chip}
+    </span>
+  );
+}
+
 function ContactsBlock({ contacts }) {
   if (!contacts || Object.keys(contacts).length === 0) return null;
-  const skip = ['website', 'portail', 'cargo_tracking', 'tracking'];
-  const officeEntries = Object.entries(contacts).filter(([k]) => !skip.includes(k));
+  const entries = Object.entries(contacts);
+  const flatEntries = entries.filter(([k, v]) => k !== 'website' && typeof v === 'string' && v);
+  const officeEntries = entries.filter(([, v]) => v && typeof v === 'object');
 
   return (
     <div className="space-y-2 mt-3">
@@ -135,18 +182,26 @@ function ContactsBlock({ contacts }) {
           {contacts.website.replace('https://', '').replace('http://', '')}
         </a>
       )}
+      {flatEntries.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {flatEntries.map(([key, val]) => (
+            <FlatContact key={key} contactKey={key} value={val} />
+          ))}
+        </div>
+      )}
       <div className="flex flex-wrap gap-1.5">
         {officeEntries.map(([key, val]) => {
-          if (!val || typeof val !== 'object') return null;
-          const { phone, email, address } = val;
+          const { phone, email, address, website } = val;
+          if (!phone && !email && !address && !website) return null;
           const label = key.replace(/_/g, ' ');
           return (
             <div key={key} className="flex-1 min-w-[200px] p-2 rounded-lg bg-white/3 border border-white/8">
               <div className="text-[10px] text-gray-500 uppercase tracking-wide mb-1 font-medium">{label}</div>
               <div className="flex flex-col gap-1">
-                {phone && <ContactChip icon={Phone} value={phone} href={`tel:${phone}`} />}
+                {phone && <ContactChip icon={Phone} value={phone} href={`tel:${phone.replace(/\s/g, '')}`} />}
                 {email && <ContactChip icon={Mail} value={email} href={`mailto:${email}`} />}
                 {address && <ContactChip icon={MapPin} value={address} />}
+                {website && <WebLinkChip href={website} label={website.replace(/^https?:\/\//i, '')} />}
               </div>
             </div>
           );

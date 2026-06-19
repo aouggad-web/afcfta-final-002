@@ -662,8 +662,8 @@ async def get_logistics_operators(category: Optional[str] = None):
     return {
         "operators": data,
         "summary": summary,
-        "data_source": "Sites officiels, Lloyd's List, IATA, BIMCO, UNCTAD 2024",
-        "last_updated": "Avril 2025",
+        "data_source": "Sites officiels des opérateurs (HQ vérifiés), Lloyd's List, IATA, BIMCO, UNCTAD 2025",
+        "last_updated": "Juin 2026",
     }
 
 
