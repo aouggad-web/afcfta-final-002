@@ -13,6 +13,8 @@ from .regulation_models import (
     ForexRegulation,
     ExchangeRateInfo,
     CountryForexProfile,
+    ImportFormalities,
+    ExportFormalities,
 )
 from .finance_models import (
     TradeFinanceInstrument,
@@ -30,6 +32,8 @@ __all__ = [
     "ForexRegulation",
     "ExchangeRateInfo",
     "CountryForexProfile",
+    "ImportFormalities",
+    "ExportFormalities",
     "TradeFinanceInstrument",
     "PaymentSystem",
     "CountryRiskProfile",

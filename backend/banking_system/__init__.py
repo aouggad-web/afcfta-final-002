@@ -10,7 +10,15 @@ Provides data and logic for:
 """
 
 from .banks_registry import get_central_bank, get_country_banks, get_regional_banks, get_banks_register, CENTRAL_BANKS
-from .foreign_exchange import get_forex_profile, get_domiciliation_rules, get_currency_meta, get_all_currency_meta, FOREX_PROFILES
+from .foreign_exchange import (
+    get_forex_profile,
+    get_domiciliation_rules,
+    get_import_formalities,
+    get_export_formalities,
+    get_currency_meta,
+    get_all_currency_meta,
+    FOREX_PROFILES,
+)
 from .trade_finance import get_trade_finance_instruments, recommend_instruments
 from .payment_systems import get_payment_systems, get_regional_systems
 from .regulatory_compliance import get_country_compliance, check_compliance
@@ -26,6 +34,8 @@ __all__ = [
     # Forex / domiciliation
     "get_forex_profile",
     "get_domiciliation_rules",
+    "get_import_formalities",
+    "get_export_formalities",
     "get_currency_meta",
     "get_all_currency_meta",
     "FOREX_PROFILES",

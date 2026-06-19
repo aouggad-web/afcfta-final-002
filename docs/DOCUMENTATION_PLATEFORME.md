@@ -114,6 +114,40 @@ Tous les routers sont montés sous le préfixe **`/api`**. `/api/health` est pub
 | `oec.py` | `/oec` | Statistiques commerciales OEC |
 | `production.py`, `logistics.py`, `banking.py`, `substitution.py`, `ai_intelligence.py`, `regional_analytics.py`, `news.py`, `exchange_rates.py`, `currencies.py`, `etl.py`, `crawl.py`, `tariff_data.py`… | divers | Production, logistique multimodale, banque/finance, substitution aux imports, IA, analytique régionale, actualités, devises/FX, administration ETL/crawl. (~40 routers au total, beaucoup montés conditionnellement selon les imports disponibles.) |
 
+### 4.2bis Module banque (`backend/banking_system/`, `routes/banking.py`) — division import / export
+
+Le profil de change par pays (`CountryForexProfile`, dans
+`banking_system/models/regulation_models.py`) reste construit autour de deux
+blocs réglementaires unifiés `domiciliation` (`DomiciliationRule`) et
+`forex_regulation` (`ForexRegulation`), sources authentiques par pays
+(Office des Changes, BCT, CBE, CBN, BoG, BCEAO/UEMOA, etc. — cf. docstring
+de `foreign_exchange.py`).
+
+Une division explicite **import / export** est dérivée automatiquement de
+ces deux blocs (validator Pydantic `model_validator(mode="after")`, sans
+introduire de nouvelle donnée non sourcée) :
+
+- **`import_formalities`** (`ImportFormalities`) — formalités de change à
+  l'**importation** : domiciliation, documents obligatoires, formalités de
+  paiement des factures fournisseurs (`payment_formalities`, repris des
+  notes sources). `transfer_deadline_days` reste `None` lorsqu'aucune source
+  ne prévoit de délai réglementaire de transfert distinct du délai de
+  rapatriement export (cas de tous les pays couverts à ce jour).
+- **`export_formalities`** (`ExportFormalities`) — formalités de change à
+  l'**exportation** : domiciliation, documents obligatoires, et
+  `repatriation_deadline_days` (délai de rapatriement des devises —
+  identique à `forex_regulation.repatriation_deadline_days`).
+
+Endpoints dédiés :
+- `GET /banking/countries/{country_code}/regulations/import`
+- `GET /banking/countries/{country_code}/regulations/export`
+
+Le profil complet (`GET /banking/countries/{country_code}/regulations`)
+inclut également ces deux blocs. Le frontend (`BankingInfoPanel.jsx`,
+onglet « Change ») affiche désormais deux cartes côte à côte (Import /
+Export) en plus de la carte de réglementation générale (niveau de
+contrôle, sanctions, devises autorisées).
+
 ### 4.3 Pipeline de calcul tarifaire — `POST /api/calculate-tariff`
 
 Fichier central : `backend/routes/calculator.py`. Déroulé :
