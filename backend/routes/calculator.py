@@ -327,6 +327,40 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             zlecaf_rate = _dza_rate
             zlecaf_source = _dza_source
 
+    # ============================================================
+    # ZAF : partenaires ayant effectivement déclenché l'échange de
+    # préférences ZLECAf à l'importation en Afrique du Sud (hors SACU, qui
+    # relève d'un autre régime) — newsletter dtic/SARS, mars 2026.
+    # ============================================================
+    if dest_iso3 == "ZAF":
+        from services.zlecaf_schedule_zaf import zaf_partner_active
+        if not zaf_partner_active(origin_country.get("iso3", "")):
+            zlecaf_rate = normal_rate
+            zlecaf_source = (
+                f"ZLECAf ratifié mais échanges préférentiels pas encore activés "
+                f"avec l'Afrique du Sud (newsletter AfCFTA dtic/SARS, mars 2026) "
+                f"— taux NPF appliqué"
+            )
+
+    # ============================================================
+    # Statut de ratification continental (newsletter dtic/SARS, mars 2026) :
+    # un pays n'ayant pas ratifié l'Accord ZLECAf ne peut bénéficier d'aucune
+    # préférence, quel que soit le calendrier/facteur générique par ailleurs
+    # appliqué pour sa destination.
+    # ============================================================
+    from services.zlecaf_membership_status import ratification_status, STATUS_RATIFIED
+    _origin_status = ratification_status(origin_country.get("iso3", ""))
+    _dest_status = ratification_status(dest_country.get("iso3", ""))
+    if _origin_status != STATUS_RATIFIED or _dest_status != STATUS_RATIFIED:
+        _non_ratified_iso3 = origin_country.get("iso3", "") if _origin_status != STATUS_RATIFIED else dest_country.get("iso3", "")
+        _non_ratified_status = _origin_status if _origin_status != STATUS_RATIFIED else _dest_status
+        zlecaf_rate = normal_rate
+        zlecaf_source = (
+            f"ZLECAf non applicable : {_non_ratified_iso3} "
+            f"({'non signataire' if _non_ratified_status == 'NOT_SIGNED' else 'signataire, non encore ratifié'}) "
+            f"— taux NPF appliqué"
+        )
+
     # Source for display
     rate_source = f"Tarif officiel {dest_iso3} - {npf_source}"
     
