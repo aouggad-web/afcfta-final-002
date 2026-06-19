@@ -108,15 +108,17 @@ const COUNTRY_LABELS = {
 function ContactChip({ icon: Icon, value, href, color = 'gray' }) {
   if (!value) return null;
   const content = (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono max-w-full min-w-0
       bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white
       transition-colors cursor-pointer group`}
     >
       <Icon className="w-3 h-3 flex-shrink-0 text-gray-400 group-hover:text-white" />
-      <span className="truncate max-w-[180px]">{value}</span>
+      <span className="truncate min-w-0">{value}</span>
     </span>
   );
-  return href ? <a href={href} target="_blank" rel="noreferrer">{content}</a> : content;
+  return href ? (
+    <a href={href} target="_blank" rel="noreferrer" className="inline-flex max-w-full min-w-0">{content}</a>
+  ) : content;
 }
 
 function CountryBadge({ iso }) {
@@ -134,37 +136,40 @@ const isEmail = (v) => typeof v === 'string' && v.includes('@') && !v.includes('
 const isPhone = (v) => typeof v === 'string' && /^[+0-9][0-9\s()\-./]{5,}$/.test(v);
 const GENERIC_CONTACT_KEYS = new Set(['phone', 'email', 'address', 'fax']);
 
-function WebLinkChip({ href, label }) {
+function ContactRow({ icon: Icon, label, value, href, mono = false }) {
+  if (!value) return null;
+  const textClass = `min-w-0 flex-1 ${mono ? 'font-mono' : ''}`;
+  const anywhere = { overflowWrap: 'anywhere', wordBreak: 'break-word' };
   return (
-    <a href={href} target="_blank" rel="noreferrer">
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs
-        bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:text-blue-300 transition-colors">
-        <ExternalLink className="w-3 h-3 flex-shrink-0" />
-        <span className="truncate max-w-[180px]">{label}</span>
-      </span>
-    </a>
+    <div className="flex items-start gap-1.5 text-xs text-gray-300 min-w-0">
+      <Icon className="w-3 h-3 flex-shrink-0 mt-0.5 text-gray-400" />
+      <div className={textClass} style={anywhere}>
+        {label && <span className="text-gray-500 mr-1">{label} :</span>}
+        {href ? (
+          <a href={href} target="_blank" rel="noreferrer"
+            className="text-gray-300 hover:text-white underline-offset-2 hover:underline">
+            {value}
+          </a>
+        ) : (
+          <span>{value}</span>
+        )}
+      </div>
+    </div>
   );
 }
 
-function FlatContact({ contactKey, value }) {
-  const label = contactKey.replace(/_/g, ' ');
-  let chip;
+function FlatContactRow({ contactKey, value }) {
+  const label = GENERIC_CONTACT_KEYS.has(contactKey) ? null : contactKey.replace(/_/g, ' ');
   if (isUrl(value)) {
-    chip = <WebLinkChip href={value} label={value.replace(/^https?:\/\//i, '')} />;
-  } else if (isEmail(value)) {
-    chip = <ContactChip icon={Mail} value={value} href={`mailto:${value}`} />;
-  } else if (isPhone(value)) {
-    chip = <ContactChip icon={Phone} value={value} href={`tel:${value.replace(/\s/g, '')}`} />;
-  } else {
-    chip = <ContactChip icon={MapPin} value={value} />;
+    return <ContactRow icon={ExternalLink} label={label} value={value.replace(/^https?:\/\//i, '')} href={value} />;
   }
-  if (GENERIC_CONTACT_KEYS.has(contactKey)) return chip;
-  return (
-    <span className="inline-flex items-center gap-1">
-      <span className="text-[10px] text-gray-500 uppercase tracking-wide">{label}</span>
-      {chip}
-    </span>
-  );
+  if (isEmail(value)) {
+    return <ContactRow icon={Mail} label={label} value={value} href={`mailto:${value}`} mono />;
+  }
+  if (isPhone(value)) {
+    return <ContactRow icon={Phone} label={label} value={value} href={`tel:${value.replace(/\s/g, '')}`} mono />;
+  }
+  return <ContactRow icon={MapPin} label={label} value={value} />;
 }
 
 function ContactsBlock({ contacts }) {
@@ -174,39 +179,42 @@ function ContactsBlock({ contacts }) {
   const officeEntries = entries.filter(([, v]) => v && typeof v === 'object');
 
   return (
-    <div className="space-y-2 mt-3">
+    <div className="space-y-2 mt-3 min-w-0">
       {contacts.website && (
-        <a href={contacts.website} target="_blank" rel="noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 underline underline-offset-2">
-          <ExternalLink className="w-3 h-3" />
-          {contacts.website.replace('https://', '').replace('http://', '')}
-        </a>
+        <ContactRow
+          icon={ExternalLink}
+          value={contacts.website.replace(/^https?:\/\//i, '')}
+          href={contacts.website}
+        />
       )}
       {flatEntries.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="space-y-1">
           {flatEntries.map(([key, val]) => (
-            <FlatContact key={key} contactKey={key} value={val} />
+            <FlatContactRow key={key} contactKey={key} value={val} />
           ))}
         </div>
       )}
-      <div className="flex flex-wrap gap-1.5">
-        {officeEntries.map(([key, val]) => {
-          const { phone, email, address, website } = val;
-          if (!phone && !email && !address && !website) return null;
-          const label = key.replace(/_/g, ' ');
-          return (
-            <div key={key} className="flex-1 min-w-[200px] p-2 rounded-lg bg-white/3 border border-white/8">
-              <div className="text-[10px] text-gray-500 uppercase tracking-wide mb-1 font-medium">{label}</div>
-              <div className="flex flex-col gap-1">
-                {phone && <ContactChip icon={Phone} value={phone} href={`tel:${phone.replace(/\s/g, '')}`} />}
-                {email && <ContactChip icon={Mail} value={email} href={`mailto:${email}`} />}
-                {address && <ContactChip icon={MapPin} value={address} />}
-                {website && <WebLinkChip href={website} label={website.replace(/^https?:\/\//i, '')} />}
+      {officeEntries.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {officeEntries.map(([key, val]) => {
+            const { phone, email, address, website } = val;
+            if (!phone && !email && !address && !website) return null;
+            const label = key.replace(/_/g, ' ');
+            return (
+              <div key={key} className="p-2 rounded-lg bg-white/3 border border-white/8 min-w-0">
+                <div className="text-[10px] text-gray-500 uppercase tracking-wide mb-1 font-medium"
+                  style={{ overflowWrap: 'anywhere' }}>{label}</div>
+                <div className="space-y-1">
+                  <ContactRow icon={Phone} value={phone} href={phone ? `tel:${phone.replace(/\s/g, '')}` : null} mono />
+                  <ContactRow icon={Mail} value={email} href={email ? `mailto:${email}` : null} mono />
+                  <ContactRow icon={MapPin} value={address} />
+                  <ContactRow icon={ExternalLink} value={website ? website.replace(/^https?:\/\//i, '') : null} href={website} />
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
