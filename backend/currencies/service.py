@@ -70,19 +70,27 @@ _ISO3_TO_ISO2: Dict[str, str] = {
     "KEN": "KE", "LSO": "LS", "LBR": "LR", "LBY": "LY", "MDG": "MG",
     "MWI": "MW", "MLI": "ML", "MRT": "MR", "MUS": "MU", "MAR": "MA",
     "MOZ": "MZ", "NAM": "NA", "NER": "NE", "NGA": "NG", "RWA": "RW",
-    "STP": "ST", "SEN": "SN", "SLE": "SL", "SOM": "SO", "ZAF": "ZA",
-    "SSD": "SS", "SDN": "SD", "TZA": "TZ", "TGO": "TG", "TUN": "TN",
-    "UGA": "UG", "ZMB": "ZM", "ZWE": "ZW",
+    "STP": "ST", "SEN": "SN", "SYC": "SC", "SLE": "SL", "SOM": "SO",
+    "ZAF": "ZA", "SSD": "SS", "SDN": "SD", "TZA": "TZ", "TGO": "TG",
+    "TUN": "TN", "UGA": "UG", "ZMB": "ZM", "ZWE": "ZW",
 }
+
+
+def to_iso2(country_code: str) -> str:
+    """Normalize a country code to ISO 3166-1 alpha-2.
+
+    Accepts ISO2 (returned unchanged) or ISO3 (converted via the African
+    mapping). Unknown codes are returned uppercased as-is.
+    """
+    code = (country_code or "").upper()
+    if len(code) == 3:
+        return _ISO3_TO_ISO2.get(code, code)
+    return code
 
 
 def get_by_country(country_code: str) -> Optional[CurrencyInfo]:
     """Return the currency info for a given ISO 3166-1 alpha-2 or alpha-3 country code."""
-    code = country_code.upper()
-    # If ISO3 (3 chars), convert to ISO2 first
-    if len(code) == 3:
-        code = _ISO3_TO_ISO2.get(code, code)
-    return _BY_COUNTRY.get(code)
+    return _BY_COUNTRY.get(to_iso2(country_code))
 
 
 def get_by_code(currency_code: str) -> Optional[CurrencyInfo]:

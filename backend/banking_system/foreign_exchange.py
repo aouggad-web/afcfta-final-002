@@ -989,14 +989,24 @@ _CURRENCY_META: Dict[str, Tuple[str, str, str]] = {
 # PUBLIC HELPERS
 # ---------------------------------------------------------------------------
 
+def _normalize_iso2(country_code: str) -> str:
+    """Normalize an ISO2/ISO3 country code to ISO2 for forex lookups."""
+    try:
+        from currencies.service import to_iso2
+        return to_iso2(country_code)
+    except Exception:
+        return (country_code or "").upper()
+
+
 def get_forex_profile(country_code: str) -> CountryForexProfile:
-    """Return forex profile for a country (ISO2). Falls back to default profile."""
-    profile = FOREX_PROFILES.get(country_code.upper())
+    """Return forex profile for a country (ISO2 or ISO3). Falls back to default profile."""
+    code = _normalize_iso2(country_code)
+    profile = FOREX_PROFILES.get(code)
     if profile is not None:
         return profile
     # Return a copy of the default profile with the correct country code
     default = _DEFAULT_PROFILE.model_copy(
-        update={"country_code": country_code.upper()}
+        update={"country_code": code}
     )
     return default
 
@@ -1012,7 +1022,7 @@ def get_currency_meta(country_code: str) -> Tuple[str, str, str]:
 
     Falls back to ('USD', 'Dollar américain', 'freely_convertible') if unknown.
     """
-    return _CURRENCY_META.get(country_code.upper(), ("USD", "Dollar américain", "freely_convertible"))
+    return _CURRENCY_META.get(_normalize_iso2(country_code), ("USD", "Dollar américain", "freely_convertible"))
 
 
 def get_all_currency_meta() -> Dict[str, Tuple[str, str, str]]:
