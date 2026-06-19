@@ -22,6 +22,9 @@ const COUNTRY_NAMES_FR = {
   RWA:'Rwanda', SEN:'Sénégal', SSD:'Soudan du Sud', SWZ:'Eswatini',
   TCD:'Tchad', TGO:'Togo', TUN:'Tunisie', TZA:'Tanzanie', UGA:'Ouganda',
   ZAF:'Afrique du Sud', ZMB:'Zambie', ZWE:'Zimbabwe',
+  COM:'Comores', GIN:'Guinée', GMB:'Gambie', GNB:'Guinée-Bissau',
+  GNQ:'Guinée équatoriale', LBR:'Liberia', MRT:'Mauritanie', SDN:'Soudan',
+  SLE:'Sierra Leone', SOM:'Somalie', SYC:'Seychelles',
 };
 
 const MODE_META = {

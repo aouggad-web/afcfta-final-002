@@ -1,3 +1,1 @@
-- [Vite migration from CRA](vite-migration.md) — react-scripts blocked by Replit security policy (shell-quote CVE); migrated to Vite with JSX loader for .js files, .cjs config files
-- [Country code conventions](country-code-conventions.md) — codebase mixes ISO2 (currency/banking data) and ISO3 (calculator); normalize via currencies.service.to_iso2 or lookups silently fall back
-- [Logistics operators data](logistics-operators-data.md) — hand-curated operators in backend/logistics_operators_data.py; no fabricated contacts, renderer must handle flat+nested contacts, add new ISO3 to COUNTRY_LABELS
+- [Maritime route matrix](maritime-route-matrix.md) — sea ports/routes live in logistics_fees_data.PORTS; derive country→ports from p["iso"], never keep a parallel hard-coded port list.

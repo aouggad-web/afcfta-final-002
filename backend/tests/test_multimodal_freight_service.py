@@ -10,14 +10,14 @@ from services import multimodal_freight_service as service
 
 
 def test_compare_multimodal_tags_options_and_computes_roi(monkeypatch):
-    monkeypatch.setattr(service, "_sea_option", lambda *args, **kwargs: {
+    monkeypatch.setattr(service, "_sea_options", lambda *args, **kwargs: [{
         "label": "Sea Direct",
         "mode": "sea",
         "total_cost_usd": 500,
         "co2_kg": 100,
         "transit_days_min": 8,
         "transit_days_max": 10,
-    })
+    }])
     monkeypatch.setattr(service, "_air_option", lambda *args, **kwargs: {
         "label": "Air Direct",
         "mode": "air",
@@ -96,14 +96,14 @@ def test_compare_multimodal_tags_options_and_computes_roi(monkeypatch):
 
 
 def test_compare_multimodal_excludes_future_when_requested(monkeypatch):
-    monkeypatch.setattr(service, "_sea_option", lambda *args, **kwargs: {
+    monkeypatch.setattr(service, "_sea_options", lambda *args, **kwargs: [{
         "label": "Sea Direct",
         "mode": "sea",
         "total_cost_usd": 500,
         "co2_kg": 100,
         "transit_days_min": 8,
         "transit_days_max": 10,
-    })
+    }])
     monkeypatch.setattr(service, "_air_option", lambda *args, **kwargs: None)
     monkeypatch.setattr(service, "_land_option", lambda *args, **kwargs: [{
         "label": "Land Future",
@@ -126,3 +126,23 @@ def test_compare_multimodal_excludes_future_when_requested(monkeypatch):
     assert result["future_count"] == 0
     assert result["roi_infrastructure"] is None
     assert all(not option.get("is_future") for option in result["options"])
+
+
+def test_country_ports_derived_from_maritime_registry():
+    for iso in ["TGO", "BEN", "GAB", "COD", "MDG", "MRT", "GIN", "SLE", "LBR", "GNQ", "COM", "SYC"]:
+        assert service.COUNTRY_PORTS.get(iso), f"{iso} should map to at least one port"
+
+    assert service.COUNTRY_DEFAULT_PORT["LBY"].startswith("LY")
+
+    assert set(service.COUNTRY_DEFAULT_PORT) == set(service.COUNTRY_PORTS)
+    for iso, ports in service.COUNTRY_PORTS.items():
+        assert service.COUNTRY_DEFAULT_PORT[iso] == ports[0]
+
+
+def test_sea_options_returns_list_for_coastal_pair():
+    opts = service._sea_options("TGO", "NGA", weight_kg=20_000, container_type="teu")
+    assert isinstance(opts, list) and len(opts) >= 1
+    assert all(o["mode"] == "sea" for o in opts)
+    assert all(o.get("origin_locode") and o.get("destination_locode") for o in opts)
+
+    assert service._sea_options("MAR", "MLI", weight_kg=20_000, container_type="teu") == []
