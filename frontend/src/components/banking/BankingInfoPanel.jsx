@@ -39,6 +39,15 @@ const texts = {
     timeline: 'Délai rapatriement',
     days: 'jours',
     regulation: 'Réglementation',
+    importFormalities: '📥 Formalités à l\'IMPORTATION',
+    importFormalitiesDesc: 'Paiement des factures fournisseurs, délai de transfert',
+    exportFormalities: '📤 Formalités à l\'EXPORTATION',
+    exportFormalitiesDesc: 'Rapatriement des devises',
+    transferDeadline: 'Délai de transfert (importation)',
+    repatriationDeadline: 'Délai de rapatriement (exportation)',
+    noTransferDeadline: 'Aucun délai distinct prévu par la source pour l\'importation',
+    paymentFormalitiesNotes: 'Formalités de paiement',
+    repatriationFormalitiesNotes: 'Formalités de rapatriement',
     strict: 'Stricte',
     moderate: 'Modérée',
     liberal: 'Libérale',
@@ -156,6 +165,15 @@ const texts = {
     timeline: 'Repatriation deadline',
     days: 'days',
     regulation: 'Regulation',
+    importFormalities: '📥 IMPORT Formalities',
+    importFormalitiesDesc: 'Supplier invoice payment, transfer deadline',
+    exportFormalities: '📤 EXPORT Formalities',
+    exportFormalitiesDesc: 'Currency repatriation',
+    transferDeadline: 'Transfer deadline (import)',
+    repatriationDeadline: 'Repatriation deadline (export)',
+    noTransferDeadline: 'No distinct deadline specified by the source for imports',
+    paymentFormalitiesNotes: 'Payment formalities',
+    repatriationFormalitiesNotes: 'Repatriation formalities',
     strict: 'Strict',
     moderate: 'Moderate',
     liberal: 'Liberal',
@@ -889,49 +907,85 @@ function ForexConverter({ countryCode, countryCurrencyCode, countryName, t }) {
 
 function ForexTab({ data, countryCode, t }) {
   if (!data) return <p className="text-gray-500 text-sm">{t.noData}</p>;
-  const { domiciliation, forex_regulation } = data;
+  const { forex_regulation, import_formalities, export_formalities } = data;
   const currencyCode = data.currency_code || data.central_bank?.currency_code;
 
-  const domLabel = domiciliation?.required
-    ? t.domiciliationRequired
-    : domiciliation?.conditional
-    ? t.domiciliationConditional
-    : t.domiciliationFree;
-
-  const domColor = domiciliation?.required
+  const domColorFor = (f) => f?.domiciliation_required
     ? 'bg-red-50 border-red-200'
-    : domiciliation?.conditional
+    : f?.domiciliation_conditional
     ? 'bg-yellow-50 border-yellow-200'
     : 'bg-green-50 border-green-200';
+
+  const domLabelFor = (f) => f?.domiciliation_required
+    ? t.domiciliationRequired
+    : f?.domiciliation_conditional
+    ? t.domiciliationConditional
+    : t.domiciliationFree;
 
   return (
     <div className="space-y-4">
       {/* Converter */}
       <ForexConverter countryCode={countryCode} countryCurrencyCode={currencyCode} countryName={data.country_name} t={t} />
 
-      <Card className={`border-2 ${domColor}`}>
-        <CardHeader>
-          <CardTitle className="text-base">{domLabel}</CardTitle>
-          <CardDescription>{data.country_name} – {data.central_bank_name}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          {domiciliation?.threshold_usd != null && (
-            <p><strong>{t.threshold} :</strong> {domiciliation.threshold_usd === 0 ? t.allOperations : `${domiciliation.threshold_usd.toLocaleString()} USD`}</p>
-          )}
-          {domiciliation?.timeline_days && (
-            <p><strong>{t.timeline} :</strong> {domiciliation.timeline_days} {t.days}</p>
-          )}
-          {domiciliation?.mandatory_documents?.length > 0 && (
-            <div>
-              <strong>{t.mandatory_documents} :</strong>
-              <ul className="list-disc ml-4 mt-1 text-xs text-gray-700">
-                {domiciliation.mandatory_documents.map((d) => <li key={d}>{d.replace(/_/g, ' ')}</li>)}
-              </ul>
-            </div>
-          )}
-          {domiciliation?.notes && <p className="text-gray-600 text-xs italic">{domiciliation.notes}</p>}
-        </CardContent>
-      </Card>
+      {/* Division IMPORT / EXPORT */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Card className={`border-2 ${domColorFor(import_formalities)}`}>
+          <CardHeader>
+            <CardTitle className="text-base">{t.importFormalities}</CardTitle>
+            <CardDescription>{t.importFormalitiesDesc}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm">
+            <p className="text-xs font-semibold">{domLabelFor(import_formalities)}</p>
+            {import_formalities?.domiciliation_threshold_usd != null && (
+              <p><strong>{t.threshold} :</strong> {import_formalities.domiciliation_threshold_usd === 0 ? t.allOperations : `${import_formalities.domiciliation_threshold_usd.toLocaleString()} USD`}</p>
+            )}
+            <p>
+              <strong>{t.transferDeadline} :</strong>{' '}
+              {import_formalities?.transfer_deadline_days
+                ? `${import_formalities.transfer_deadline_days} ${t.days}`
+                : <span className="text-gray-500 italic">{t.noTransferDeadline}</span>}
+            </p>
+            {import_formalities?.mandatory_documents?.length > 0 && (
+              <div>
+                <strong>{t.mandatory_documents} :</strong>
+                <ul className="list-disc ml-4 mt-1 text-xs text-gray-700">
+                  {import_formalities.mandatory_documents.map((d) => <li key={d}>{d.replace(/_/g, ' ')}</li>)}
+                </ul>
+              </div>
+            )}
+            {import_formalities?.payment_formalities && (
+              <p className="text-gray-600 text-xs italic"><strong>{t.paymentFormalitiesNotes} :</strong> {import_formalities.payment_formalities}</p>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className={`border-2 ${domColorFor(export_formalities)}`}>
+          <CardHeader>
+            <CardTitle className="text-base">{t.exportFormalities}</CardTitle>
+            <CardDescription>{t.exportFormalitiesDesc}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm">
+            <p className="text-xs font-semibold">{domLabelFor(export_formalities)}</p>
+            {export_formalities?.domiciliation_threshold_usd != null && (
+              <p><strong>{t.threshold} :</strong> {export_formalities.domiciliation_threshold_usd === 0 ? t.allOperations : `${export_formalities.domiciliation_threshold_usd.toLocaleString()} USD`}</p>
+            )}
+            {export_formalities?.repatriation_deadline_days && (
+              <p><strong>{t.repatriationDeadline} :</strong> {export_formalities.repatriation_deadline_days} {t.days}</p>
+            )}
+            {export_formalities?.mandatory_documents?.length > 0 && (
+              <div>
+                <strong>{t.mandatory_documents} :</strong>
+                <ul className="list-disc ml-4 mt-1 text-xs text-gray-700">
+                  {export_formalities.mandatory_documents.map((d) => <li key={d}>{d.replace(/_/g, ' ')}</li>)}
+                </ul>
+              </div>
+            )}
+            {export_formalities?.repatriation_formalities && (
+              <p className="text-gray-600 text-xs italic"><strong>{t.repatriationFormalitiesNotes} :</strong> {export_formalities.repatriation_formalities}</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
 
       <Card>
         <CardHeader>
@@ -944,9 +998,6 @@ function ForexTab({ data, countryCode, t }) {
               <span className="text-xs text-red-600">{t.priorAuthRequired}</span>
             )}
           </div>
-          {forex_regulation?.repatriation_deadline_days && (
-            <p><strong>{t.timeline} :</strong> {forex_regulation.repatriation_deadline_days} {t.days}</p>
-          )}
           {forex_regulation?.penalties && (
             <p className="text-xs text-red-700 bg-red-50 p-2 rounded"><strong>{t.penalties} :</strong> {forex_regulation.penalties}</p>
           )}

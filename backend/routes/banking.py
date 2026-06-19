@@ -29,6 +29,8 @@ from banking_system import (
     get_banks_register,
     get_forex_profile,
     get_domiciliation_rules,
+    get_import_formalities,
+    get_export_formalities,
     get_currency_meta,
     get_all_currency_meta,
     get_trade_finance_instruments,
@@ -203,6 +205,41 @@ async def get_forex_regulations(country_code: str):
     rate_info = _build_exchange_rate_info(code)
     enriched = profile.model_copy(update={"exchange_rate_info": rate_info})
     return enriched.model_dump()
+
+
+@router.get(
+    "/countries/{country_code}/regulations/import",
+    summary="Formalités de change à l'IMPORTATION (paiement des factures, délai de transfert)",
+    tags=["Banking"],
+)
+async def get_import_regulations(country_code: str):
+    """
+    Retourne les formalités de change applicables aux opérations
+    d'IMPORTATION pour un pays : domiciliation bancaire, documents
+    obligatoires, formalités de paiement des factures fournisseurs et
+    délai réglementaire de transfert (si prévu par la source).
+
+    - **country_code**: Code ISO2 du pays (ex: MA, DZ, NG, ET)
+    """
+    code = country_code.upper()
+    return get_import_formalities(code).model_dump()
+
+
+@router.get(
+    "/countries/{country_code}/regulations/export",
+    summary="Formalités de change à l'EXPORTATION (rapatriement des devises)",
+    tags=["Banking"],
+)
+async def get_export_regulations(country_code: str):
+    """
+    Retourne les formalités de change applicables aux opérations
+    d'EXPORTATION pour un pays : domiciliation bancaire, documents
+    obligatoires et délai réglementaire de rapatriement des devises.
+
+    - **country_code**: Code ISO2 du pays (ex: MA, DZ, NG, ET)
+    """
+    code = country_code.upper()
+    return get_export_formalities(code).model_dump()
 
 
 @router.get(
