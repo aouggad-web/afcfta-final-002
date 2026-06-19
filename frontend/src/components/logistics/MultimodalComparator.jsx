@@ -229,21 +229,17 @@ export default function MultimodalComparator({ language = 'fr' }) {
   return (
     <div className="space-y-5" data-testid="multimodal-comparator">
       {/* Header */}
-      <Card className="border border-purple-500/30 bg-gradient-to-r from-[#1B232C] to-[#0F1419]">
-        <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-purple-500/15 flex items-center justify-center">
-              <Layers className="w-6 h-6 text-purple-400" />
-            </div>
-            <div>
-              <CardTitle className="text-xl text-white">Comparateur Multimodal</CardTitle>
-              <CardDescription className="text-gray-400 mt-1">
-                Compare maritime · aérien · terrestre · combinaisons port+corridor pour les pays enclavés
-              </CardDescription>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
+      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+          <Layers className="w-5 h-5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold">Comparateur Multimodal</h2>
+          <p className="text-blue-100 text-sm">
+            Compare maritime · aérien · terrestre · combinaisons port+corridor pour les pays enclavés
+          </p>
+        </div>
+      </div>
 
       {/* Form */}
       <Card className="border border-white/10 bg-[#1B232C]">

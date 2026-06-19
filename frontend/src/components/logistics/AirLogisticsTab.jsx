@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
+import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { toast } from '../../hooks/use-toast';
+import { Plane } from 'lucide-react';
 import AirLogisticsMap from './AirLogisticsMap';
 import AirportCard from './AirportCard';
 import AirportDetailsModal from './AirportDetailsModal';
@@ -244,17 +245,15 @@ export default function AirLogisticsTab({ language = 'fr' }) {
   return (
     <div className="space-y-4">
       {/* Header Section - Compact */}
-      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-white shadow-lg">
-        <CardHeader className="py-3">
-          <CardTitle className="text-lg font-bold flex items-center gap-2">
-            <span>✈️</span>
-            <span>{t.title}</span>
-          </CardTitle>
-          <CardDescription className="text-blue-100 text-sm">
-            {t.subtitle}
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+          <Plane className="w-5 h-5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold">{t.title}</h2>
+          <p className="text-blue-100 text-sm">{t.subtitle}</p>
+        </div>
+      </div>
 
       {/* Air Freight Calculator */}
       <AirFreightCalculator language={language} />

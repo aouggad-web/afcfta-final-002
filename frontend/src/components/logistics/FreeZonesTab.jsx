@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { toast } from '../../hooks/use-toast';
+import { Building2 } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -104,17 +105,15 @@ export default function FreeZonesTab({ language = 'fr' }) {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-white shadow-lg">
-        <CardHeader className="py-3">
-          <CardTitle className="text-lg font-bold flex items-center gap-2">
-            <span>🏭</span>
-            <span>{t.title}</span>
-          </CardTitle>
-          <CardDescription className="text-orange-100 text-sm">
-            {t.description}
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+          <Building2 className="w-5 h-5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold">{t.title}</h2>
+          <p className="text-blue-100 text-sm">{t.description}</p>
+        </div>
+      </div>
 
       <Card>
         <CardContent className="pt-6">

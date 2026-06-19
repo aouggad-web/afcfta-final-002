@@ -435,6 +435,23 @@ export default function IntervenantsTab({ language = 'fr' }) {
 
   return (
     <div className="space-y-5">
+      {/* Header Section - Compact */}
+      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+          <Users className="w-5 h-5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold">
+            {language === 'en' ? 'Logistics Operators' : 'Intervenants logistiques'}
+          </h2>
+          <p className="text-blue-100 text-sm">
+            {language === 'en'
+              ? 'Operators and stakeholders of the African logistics chain'
+              : 'Opérateurs et acteurs de la chaîne logistique africaine'}
+          </p>
+        </div>
+      </div>
+
       {/* Summary banner */}
       {summary && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
