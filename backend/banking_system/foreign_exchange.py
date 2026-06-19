@@ -25,7 +25,13 @@ Statuts FMI (Article VIII / XIV) :
 """
 
 from typing import Dict, Optional, Tuple
-from .models import DomiciliationRule, ForexRegulation, CountryForexProfile
+from .models import (
+    DomiciliationRule,
+    ForexRegulation,
+    CountryForexProfile,
+    ImportFormalities,
+    ExportFormalities,
+)
 
 # ---------------------------------------------------------------------------
 # FOREX PROFILES – Phase-1 priority countries (detailed)
@@ -1004,6 +1010,16 @@ def get_forex_profile(country_code: str) -> CountryForexProfile:
 def get_domiciliation_rules(country_code: str) -> DomiciliationRule:
     """Return domiciliation rules for a country (ISO2)."""
     return get_forex_profile(country_code).domiciliation
+
+
+def get_import_formalities(country_code: str) -> ImportFormalities:
+    """Return import-side forex formalities (paiement des factures, délai de transfert)."""
+    return get_forex_profile(country_code).import_formalities
+
+
+def get_export_formalities(country_code: str) -> ExportFormalities:
+    """Return export-side forex formalities (rapatriement des devises)."""
+    return get_forex_profile(country_code).export_formalities
 
 
 def get_currency_meta(country_code: str) -> Tuple[str, str, str]:

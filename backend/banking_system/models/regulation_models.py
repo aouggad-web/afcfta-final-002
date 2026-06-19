@@ -1,7 +1,7 @@
 """
 Pydantic models for foreign-exchange regulations and domiciliation
 """
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from typing import List, Optional
 
 
@@ -54,6 +54,57 @@ class ForexRegulation(BaseModel):
     )
 
 
+class ImportFormalities(BaseModel):
+    """
+    Formalités de change applicables aux opérations d'IMPORTATION :
+    domiciliation bancaire, paiement des factures fournisseurs, délai de transfert.
+
+    Dérivé automatiquement de `DomiciliationRule` / `ForexRegulation` (mêmes
+    données sources, restructurées par sens de flux). `transfer_deadline_days`
+    reste `None` lorsque la source ne précise pas de délai réglementaire de
+    transfert propre à l'importation, distinct du délai de rapatriement export.
+    """
+    domiciliation_required: bool = False
+    domiciliation_conditional: bool = False
+    domiciliation_threshold_usd: Optional[float] = None
+    mandatory_documents: List[str] = Field(default_factory=list)
+    transfer_deadline_days: Optional[int] = Field(
+        default=None,
+        description=(
+            "Délai réglementaire de transfert pour le paiement des factures "
+            "d'importation (jours), si explicitement prévu par la source "
+            "(distinct du délai de rapatriement à l'exportation)."
+        ),
+    )
+    payment_formalities: Optional[str] = Field(
+        default=None,
+        description="Formalités de change applicables au paiement des factures d'importation.",
+    )
+    legal_reference: Optional[str] = None
+    regulatory_body: Optional[str] = None
+
+
+class ExportFormalities(BaseModel):
+    """
+    Formalités de change applicables aux opérations d'EXPORTATION :
+    domiciliation bancaire, rapatriement des devises.
+
+    Dérivé automatiquement de `DomiciliationRule` / `ForexRegulation` (mêmes
+    données sources, restructurées par sens de flux).
+    """
+    domiciliation_required: bool = False
+    domiciliation_conditional: bool = False
+    domiciliation_threshold_usd: Optional[float] = None
+    mandatory_documents: List[str] = Field(default_factory=list)
+    repatriation_deadline_days: Optional[int] = None
+    repatriation_formalities: Optional[str] = Field(
+        default=None,
+        description="Formalités de change applicables au rapatriement des devises d'exportation.",
+    )
+    legal_reference: Optional[str] = None
+    regulatory_body: Optional[str] = None
+
+
 class ExchangeRateInfo(BaseModel):
     """Informations sur le taux de change d'une devise locale par rapport au USD"""
     currency_code: str = Field(..., description="Code ISO 4217 de la devise locale")
@@ -104,3 +155,40 @@ class CountryForexProfile(BaseModel):
             "enrichi dynamiquement via le service de change"
         ),
     )
+    # ── Division import / export ──────────────────────────────────────────
+    import_formalities: Optional[ImportFormalities] = Field(
+        default=None,
+        description="Formalités de change à l'importation (paiement des factures, délai de transfert).",
+    )
+    export_formalities: Optional[ExportFormalities] = Field(
+        default=None,
+        description="Formalités de change à l'exportation (rapatriement des devises).",
+    )
+
+    @model_validator(mode="after")
+    def _derive_import_export_formalities(self) -> "CountryForexProfile":
+        """Dérive import_formalities/export_formalities depuis domiciliation/forex_regulation
+        si non fournis explicitement, sans introduire de nouvelle donnée non sourcée."""
+        if self.import_formalities is None:
+            self.import_formalities = ImportFormalities(
+                domiciliation_required=self.domiciliation.required,
+                domiciliation_conditional=self.domiciliation.conditional,
+                domiciliation_threshold_usd=self.domiciliation.threshold_usd,
+                mandatory_documents=list(self.domiciliation.mandatory_documents),
+                transfer_deadline_days=None,
+                payment_formalities=self.domiciliation.notes,
+                legal_reference=self.forex_regulation.legal_reference,
+                regulatory_body=self.forex_regulation.regulatory_body,
+            )
+        if self.export_formalities is None:
+            self.export_formalities = ExportFormalities(
+                domiciliation_required=self.domiciliation.required,
+                domiciliation_conditional=self.domiciliation.conditional,
+                domiciliation_threshold_usd=self.domiciliation.threshold_usd,
+                mandatory_documents=list(self.domiciliation.mandatory_documents),
+                repatriation_deadline_days=self.forex_regulation.repatriation_deadline_days,
+                repatriation_formalities=self.forex_regulation.notes,
+                legal_reference=self.forex_regulation.legal_reference,
+                regulatory_body=self.forex_regulation.regulatory_body,
+            )
+        return self
