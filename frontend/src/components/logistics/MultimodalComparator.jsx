@@ -6,10 +6,11 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles, TrendingUp } from 'lucide-react';
+import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles, TrendingUp, Building2 } from 'lucide-react';
 import { PDFExportButton } from '../common/ExportTools';
 
-const API = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
+const API = `${BACKEND_URL}/api`;
 
 const COUNTRY_NAMES_FR = {
   AGO:'Angola', BDI:'Burundi', BEN:'Bénin', BFA:'Burkina Faso', BWA:'Botswana',
@@ -21,6 +22,9 @@ const COUNTRY_NAMES_FR = {
   RWA:'Rwanda', SEN:'Sénégal', SSD:'Soudan du Sud', SWZ:'Eswatini',
   TCD:'Tchad', TGO:'Togo', TUN:'Tunisie', TZA:'Tanzanie', UGA:'Ouganda',
   ZAF:'Afrique du Sud', ZMB:'Zambie', ZWE:'Zimbabwe',
+  COM:'Comores', GIN:'Guinée', GMB:'Gambie', GNB:'Guinée-Bissau',
+  GNQ:'Guinée équatoriale', LBR:'Liberia', MRT:'Mauritanie', SDN:'Soudan',
+  SLE:'Sierra Leone', SOM:'Somalie', SYC:'Seychelles',
 };
 
 const MODE_META = {
@@ -154,6 +158,19 @@ function OptionCard({ opt }) {
                         {seg.cost_usd != null && <span> · {fmtUsd(seg.cost_usd)}</span>}
                         {seg.corridor_name && <span> · {seg.corridor_name}</span>}
                       </div>
+                      {seg.carriers && seg.carriers.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1 mt-1">
+                          <Building2 className="w-3 h-3 text-gray-500 flex-shrink-0" />
+                          {seg.carriers.map((c, ci) => (
+                            <span
+                              key={ci}
+                              className="text-[10px] px-1.5 py-0.5 rounded bg-white/5 text-gray-300 border border-white/10"
+                            >
+                              {c}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -191,7 +208,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
   const reportRef = useRef(null);
 
   useEffect(() => {
-    axios.get(`${API}/api/logistics/multimodal/countries`)
+    axios.get(`${API}/logistics/multimodal/countries`)
       .then(res => setSupportedCountries(res.data))
       .catch(err => console.error('Failed to load supported countries', err));
   }, []);
@@ -206,7 +223,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
     setError(null);
     setResult(null);
     try {
-      const res = await axios.get(`${API}/api/logistics/multimodal/compare`, {
+      const res = await axios.get(`${API}/logistics/multimodal/compare`, {
         params: {
           origin, destination,
           weight_kg: weightKg,
@@ -229,21 +246,17 @@ export default function MultimodalComparator({ language = 'fr' }) {
   return (
     <div className="space-y-5" data-testid="multimodal-comparator">
       {/* Header */}
-      <Card className="border border-purple-500/30 bg-gradient-to-r from-[#1B232C] to-[#0F1419]">
-        <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-purple-500/15 flex items-center justify-center">
-              <Layers className="w-6 h-6 text-purple-400" />
-            </div>
-            <div>
-              <CardTitle className="text-xl text-white">Comparateur Multimodal</CardTitle>
-              <CardDescription className="text-gray-400 mt-1">
-                Compare maritime · aérien · terrestre · combinaisons port+corridor pour les pays enclavés
-              </CardDescription>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
+      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+          <Layers className="w-5 h-5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold">Comparateur Multimodal</h2>
+          <p className="text-blue-100 text-sm">
+            Compare maritime · aérien · terrestre · combinaisons port+corridor pour les pays enclavés
+          </p>
+        </div>
+      </div>
 
       {/* Form */}
       <Card className="border border-white/10 bg-[#1B232C]">

@@ -48,6 +48,7 @@ from banking_system.banks_registry import CENTRAL_BANKS
 from banking_system.foreign_exchange import FOREX_PROFILES
 from banking_system.models import ExchangeRateInfo
 from exchange_rates import get_service as get_rate_service, AFRICAN_CURRENCY_CODES
+from currencies.service import to_iso2
 
 logger = logging.getLogger(__name__)
 
@@ -373,7 +374,7 @@ async def convert_to_local_currency(
     - **amount**: Montant à convertir
     - **from_currency**: Devise source (par défaut USD)
     """
-    code = country_code.upper()
+    code = to_iso2(country_code)
     currency_code, currency_name, convertibility = get_currency_meta(code)
 
     # Get country name from registry if available

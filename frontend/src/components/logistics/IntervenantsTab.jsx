@@ -9,7 +9,7 @@ import {
   ChevronUp, Anchor, Package, ShieldCheck, Star
 } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 const CATEGORY_META = {
@@ -94,21 +94,31 @@ const COUNTRY_LABELS = {
   TZA: '🇹🇿 Tanzanie', CIV: "🇨🇮 Côte d'Ivoire", GHA: '🇬🇭 Ghana',
   SEN: '🇸🇳 Sénégal', CMR: '🇨🇲 Cameroun', ETH: '🇪🇹 Éthiopie',
   DJI: '🇩🇯 Djibouti', MOZ: '🇲🇿 Mozambique', AGO: '🇦🇴 Angola',
-  TUN: '🇹🇳 Tunisie',
+  TUN: '🇹🇳 Tunisie', LBY: '🇱🇾 Libye', SDN: '🇸🇩 Soudan',
+  SSD: '🇸🇸 Soudan du Sud', COD: '🇨🇩 RD Congo', COG: '🇨🇬 Congo',
+  GAB: '🇬🇦 Gabon', TCD: '🇹🇩 Tchad', CAF: '🇨🇫 Centrafrique',
+  TGO: '🇹🇬 Togo', BEN: '🇧🇯 Bénin', BFA: '🇧🇫 Burkina Faso',
+  MLI: '🇲🇱 Mali', NER: '🇳🇪 Niger', GIN: '🇬🇳 Guinée',
+  MRT: '🇲🇷 Mauritanie', UGA: '🇺🇬 Ouganda', RWA: '🇷🇼 Rwanda',
+  SOM: '🇸🇴 Somalie', ZMB: '🇿🇲 Zambie', ZWE: '🇿🇼 Zimbabwe',
+  MWI: '🇲🇼 Malawi', NAM: '🇳🇦 Namibie', BWA: '🇧🇼 Botswana',
+  SWZ: '🇸🇿 Eswatini', MDG: '🇲🇬 Madagascar', MUS: '🇲🇺 Maurice',
 };
 
 function ContactChip({ icon: Icon, value, href, color = 'gray' }) {
   if (!value) return null;
   const content = (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono max-w-full min-w-0
       bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white
       transition-colors cursor-pointer group`}
     >
       <Icon className="w-3 h-3 flex-shrink-0 text-gray-400 group-hover:text-white" />
-      <span className="truncate max-w-[180px]">{value}</span>
+      <span className="truncate min-w-0">{value}</span>
     </span>
   );
-  return href ? <a href={href} target="_blank" rel="noreferrer">{content}</a> : content;
+  return href ? (
+    <a href={href} target="_blank" rel="noreferrer" className="inline-flex max-w-full min-w-0">{content}</a>
+  ) : content;
 }
 
 function CountryBadge({ iso }) {
@@ -121,37 +131,90 @@ function CountryBadge({ iso }) {
   );
 }
 
+const isUrl = (v) => typeof v === 'string' && /^https?:\/\//i.test(v);
+const isEmail = (v) => typeof v === 'string' && v.includes('@') && !v.includes(' ');
+const isPhone = (v) => typeof v === 'string' && /^[+0-9][0-9\s()\-./]{5,}$/.test(v);
+const GENERIC_CONTACT_KEYS = new Set(['phone', 'email', 'address', 'fax']);
+
+function ContactRow({ icon: Icon, label, value, href, mono = false }) {
+  if (!value) return null;
+  const textClass = `min-w-0 flex-1 ${mono ? 'font-mono' : ''}`;
+  const anywhere = { overflowWrap: 'anywhere', wordBreak: 'break-word' };
+  return (
+    <div className="flex items-start gap-1.5 text-xs text-gray-300 min-w-0">
+      <Icon className="w-3 h-3 flex-shrink-0 mt-0.5 text-gray-400" />
+      <div className={textClass} style={anywhere}>
+        {label && <span className="text-gray-500 mr-1">{label} :</span>}
+        {href ? (
+          <a href={href} target="_blank" rel="noreferrer"
+            className="text-gray-300 hover:text-white underline-offset-2 hover:underline">
+            {value}
+          </a>
+        ) : (
+          <span>{value}</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function FlatContactRow({ contactKey, value }) {
+  const label = GENERIC_CONTACT_KEYS.has(contactKey) ? null : contactKey.replace(/_/g, ' ');
+  if (isUrl(value)) {
+    return <ContactRow icon={ExternalLink} label={label} value={value.replace(/^https?:\/\//i, '')} href={value} />;
+  }
+  if (isEmail(value)) {
+    return <ContactRow icon={Mail} label={label} value={value} href={`mailto:${value}`} mono />;
+  }
+  if (isPhone(value)) {
+    return <ContactRow icon={Phone} label={label} value={value} href={`tel:${value.replace(/\s/g, '')}`} mono />;
+  }
+  return <ContactRow icon={MapPin} label={label} value={value} />;
+}
+
 function ContactsBlock({ contacts }) {
   if (!contacts || Object.keys(contacts).length === 0) return null;
-  const skip = ['website', 'portail', 'cargo_tracking', 'tracking'];
-  const officeEntries = Object.entries(contacts).filter(([k]) => !skip.includes(k));
+  const entries = Object.entries(contacts);
+  const flatEntries = entries.filter(([k, v]) => k !== 'website' && typeof v === 'string' && v);
+  const officeEntries = entries.filter(([, v]) => v && typeof v === 'object');
 
   return (
-    <div className="space-y-2 mt-3">
+    <div className="space-y-2 mt-3 min-w-0">
       {contacts.website && (
-        <a href={contacts.website} target="_blank" rel="noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 underline underline-offset-2">
-          <ExternalLink className="w-3 h-3" />
-          {contacts.website.replace('https://', '').replace('http://', '')}
-        </a>
+        <ContactRow
+          icon={ExternalLink}
+          value={contacts.website.replace(/^https?:\/\//i, '')}
+          href={contacts.website}
+        />
       )}
-      <div className="flex flex-wrap gap-1.5">
-        {officeEntries.map(([key, val]) => {
-          if (!val || typeof val !== 'object') return null;
-          const { phone, email, address } = val;
-          const label = key.replace(/_/g, ' ');
-          return (
-            <div key={key} className="flex-1 min-w-[200px] p-2 rounded-lg bg-white/3 border border-white/8">
-              <div className="text-[10px] text-gray-500 uppercase tracking-wide mb-1 font-medium">{label}</div>
-              <div className="flex flex-col gap-1">
-                {phone && <ContactChip icon={Phone} value={phone} href={`tel:${phone}`} />}
-                {email && <ContactChip icon={Mail} value={email} href={`mailto:${email}`} />}
-                {address && <ContactChip icon={MapPin} value={address} />}
+      {flatEntries.length > 0 && (
+        <div className="space-y-1">
+          {flatEntries.map(([key, val]) => (
+            <FlatContactRow key={key} contactKey={key} value={val} />
+          ))}
+        </div>
+      )}
+      {officeEntries.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {officeEntries.map(([key, val]) => {
+            const { phone, email, address, website } = val;
+            if (!phone && !email && !address && !website) return null;
+            const label = key.replace(/_/g, ' ');
+            return (
+              <div key={key} className="p-2 rounded-lg bg-white/3 border border-white/8 min-w-0">
+                <div className="text-[10px] text-gray-500 uppercase tracking-wide mb-1 font-medium"
+                  style={{ overflowWrap: 'anywhere' }}>{label}</div>
+                <div className="space-y-1">
+                  <ContactRow icon={Phone} value={phone} href={phone ? `tel:${phone.replace(/\s/g, '')}` : null} mono />
+                  <ContactRow icon={Mail} value={email} href={email ? `mailto:${email}` : null} mono />
+                  <ContactRow icon={MapPin} value={address} />
+                  <ContactRow icon={ExternalLink} value={website ? website.replace(/^https?:\/\//i, '') : null} href={website} />
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -435,6 +498,23 @@ export default function IntervenantsTab({ language = 'fr' }) {
 
   return (
     <div className="space-y-5">
+      {/* Header Section - Compact */}
+      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+          <Users className="w-5 h-5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold">
+            {language === 'en' ? 'Logistics Operators' : 'Intervenants logistiques'}
+          </h2>
+          <p className="text-blue-100 text-sm">
+            {language === 'en'
+              ? 'Operators and stakeholders of the African logistics chain'
+              : 'Opérateurs et acteurs de la chaîne logistique africaine'}
+          </p>
+        </div>
+      </div>
+
       {/* Summary banner */}
       {summary && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

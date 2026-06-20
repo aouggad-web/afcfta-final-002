@@ -125,18 +125,21 @@ _EAC = {             # EAC common profile (Kenya, Tanzania, Uganda, Rwanda, Buru
 
 COUNTRY_TAX_PROFILES = {
     # ── Algérie — DGD (douane.gov.dz / conformepro.dz) ───────────────────────
-    # DAPS, DD, PRCT, TCS : base = CIF
+    # DAPS, DD : droits de douane (base CIF) — réduits sous ZLECAf
+    # TCS : base CIF
     # TVA : base = CIF + DAPS + DD  (art. 21 CTCA)
+    # PRCT (Précompte 2%) : calculé APRÈS la TVA, sur la valeur globale de la
+    #   marchandise TVA incluse mais HORS DAPS = CIF + DD + TCS + TVA
     'DZA': {
-        'taxes_order': ['DAPS', 'DD', 'PRCT', 'TCS', 'TVA'],
+        'taxes_order': ['DAPS', 'DD', 'TCS', 'TVA', 'PRCT'],
         'tax_bases': {
             'DAPS': ('CIF', []),
             'DD':   ('CIF', []),
-            'PRCT': ('CIF', []),
             'TCS':  ('CIF', []),
-            'TVA':  ('CIF', ['DAPS', 'DD']),  # art. 21 CTCA
+            'TVA':  ('CIF', ['DAPS', 'DD']),          # art. 21 CTCA
+            'PRCT': ('CIF', ['DD', 'TCS', 'TVA']),    # Précompte : valeur globale TVA incluse, hors DAPS
         },
-        'source': 'douane.gov.dz — art. 21 CTCA (TVA base = CIF+DAPS+DD)',
+        'source': 'douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS',
     },
     # ── Maroc — ADII (douane.gov.ma) ──────────────────────────────────────────
     # DD, TPI : base = CIF
@@ -259,7 +262,7 @@ COUNTRY_TAX_PROFILES = {
 _TAX_LABELS = {
     'DD':      'Droits de Douane',
     'DAPS':    'Droit Additionnel Provisoire de Sauvegarde',
-    'PRCT':    'Prélèvement à la Compensation du Transport',
+    'PRCT':    'Précompte (PRCT)',
     'TCS':     'Taxe Complémentaire de Sauvegarde',
     'TVA':     'Taxe sur la Valeur Ajoutée',
     'TPI':     "Taxe Parafiscale à l'Importation",
@@ -778,7 +781,170 @@ def get_country_summary(country_iso3):
     }
 
 
-def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False, language='fr'):
+def _resolve_zlecaf_context(dest_iso3, origin_iso3, hs_code_clean, dd_rate_pct, line_zlecaf_rate_pct):
+    """Détermine le régime commercial préférentiel applicable à la paire
+    origine/destination et le taux DD effectif qui en découle.
+
+    Préséance (du plus spécifique au plus général) :
+      0. UNION DOUANIÈRE (SACU, EAC, CEMAC, UEMOA) : libre circulation, droit
+         de douane intra-bloc 0 %. Définitionnelle (TEC + marché unique), donc
+         PRIORITAIRE sur la ZLECAf et indépendante de la ratification ZLECAf.
+      1. ZLECAf : ratification continentale (origine ET destination) + activation
+         bilatérale (Algérie : partenaires actifs DGD 482/2024 ; Afrique du Sud :
+         partenaires actifs hors SACU/SADC ; autres : taux générique de la ligne).
+      2. ZLE conditionnelle (CEDEAO/ECOWAS, SADC, COMESA) : signalée lorsqu'aucun
+         régime ci-dessus ne s'applique mais que les deux pays partagent une zone
+         de libre-échange — INFORMATIONNELLE, sans recalcul (règles d'origine).
+      3. NPF par défaut.
+
+    Source unique de vérité : réutilise exactement les mêmes modules que
+    routes/calculator.py (zlecaf_membership_status, zlecaf_schedule_dza,
+    zlecaf_schedule_zaf) + regional_blocs — aucune duplication de liste.
+
+    Retourne un dict :
+      - preferential (bool)        : un régime réduit effectivement le droit de
+                                     douane → déclenche la cascade préférentielle ;
+      - preference_applied (bool)  : une préférence réduit les droits sur CE produit ;
+      - dd_rate_pct (float)        : taux DD préférentiel effectif (en pourcentage) ;
+      - daps_exempt (bool)         : DAPS exonéré (Algérie, listes A/B) ;
+      - trade_regime (str)         : CUSTOMS_UNION | ZLECAF | FTA_CONDITIONAL | NPF ;
+      - trade_regime_code (str|None): code du bloc (SACU, UEMOA, ECOWAS…) ou ZLECAF ;
+      - trade_regime_note (str|None): explication du régime appliqué ;
+      - zlecaf_eligible (bool)     : éligibilité STRICTE à la ZLECAf ;
+      - zlecaf_note (str|None)     : note spécifique ZLECAf (rétro-compatibilité).
+    """
+    dest = (dest_iso3 or "").upper()
+    origin = (origin_iso3 or "").strip().upper()
+
+    def _result(*, preferential, preference_applied, dd, daps,
+                regime, code, note, zlecaf_eligible, zlecaf_note):
+        return {
+            "preferential": preferential,
+            "preference_applied": preference_applied,
+            "dd_rate_pct": dd,
+            "daps_exempt": daps,
+            "trade_regime": regime,
+            "trade_regime_code": code,
+            "trade_regime_note": note,
+            "zlecaf_eligible": zlecaf_eligible,
+            "zlecaf_note": zlecaf_note,
+        }
+
+    # Origine renseignée ? Toute préférence suppose un pays d'origine connu
+    # (certificat d'origine). Validation ISO légère.
+    if not re.fullmatch(r"[A-Z]{2,3}", origin):
+        note = ("Origine non renseignée — aucun régime préférentiel applicable "
+                "(certificat d'origine requis, taux NPF appliqué)")
+        return _result(
+            preferential=False, preference_applied=False, dd=dd_rate_pct, daps=False,
+            regime="NPF", code=None, note=note, zlecaf_eligible=False, zlecaf_note=note,
+        )
+
+    from services.regional_blocs import (
+        same_customs_union, shared_free_trade_areas,
+        CUSTOMS_UNION_NAMES, FTA_NAMES,
+    )
+
+    # 0. UNION DOUANIÈRE : libre circulation (0 %), prioritaire sur la ZLECAf.
+    cu = same_customs_union(origin, dest)
+    if cu:
+        label = CUSTOMS_UNION_NAMES.get(cu, cu)
+        note = (f"Échanges intra-{cu} : libre circulation sous le régime de "
+                f"l'union douanière — {label}. Droit de douane 0 % (hors ZLECAf).")
+        return _result(
+            preferential=True,
+            preference_applied=(dd_rate_pct or 0) > 0,
+            dd=0.0, daps=False,
+            regime="CUSTOMS_UNION", code=cu, note=note,
+            zlecaf_eligible=False, zlecaf_note=note,
+        )
+
+    from services.zlecaf_membership_status import (
+        ratification_status, STATUS_RATIFIED, STATUS_NOT_SIGNED,
+    )
+
+    ftas = shared_free_trade_areas(origin, dest)
+
+    def _no_preference(base_note):
+        """Aucun régime ZLECAf/union douanière : signaler une ZLE conditionnelle
+        si les deux pays en partagent une, sinon NPF strict. Aucun recalcul."""
+        if ftas:
+            code = ftas[0]
+            label = FTA_NAMES.get(code, code)
+            fta_note = (f"Régime {code} potentiellement applicable — {label} : "
+                        f"franchise réservée aux produits originaires (règles "
+                        f"d'origine du bloc), non appliquée automatiquement ; "
+                        f"taux NPF affiché.")
+            return _result(
+                preferential=False, preference_applied=False, dd=dd_rate_pct, daps=False,
+                regime="FTA_CONDITIONAL", code=code, note=fta_note,
+                zlecaf_eligible=False, zlecaf_note=base_note,
+            )
+        return _result(
+            preferential=False, preference_applied=False, dd=dd_rate_pct, daps=False,
+            regime="NPF", code=None, note=base_note,
+            zlecaf_eligible=False, zlecaf_note=base_note,
+        )
+
+    # 1. Ratification continentale ZLECAf (origine ET destination).
+    o_status = ratification_status(origin)
+    d_status = ratification_status(dest)
+    if o_status != STATUS_RATIFIED or d_status != STATUS_RATIFIED:
+        nonrat, st = (origin, o_status) if o_status != STATUS_RATIFIED else (dest, d_status)
+        reason = "non signataire" if st == STATUS_NOT_SIGNED else "signataire, non encore ratifié"
+        return _no_preference(
+            f"ZLECAf non applicable : {nonrat} ({reason}) — taux NPF appliqué"
+        )
+
+    # 2. Algérie : partenaires actifs (DGD 482/2024) + calendrier de démantèlement.
+    if dest == "DZA":
+        from services.zlecaf_schedule_dza import (
+            compute_dza_zlecaf_rate, daps_exempt, ACTIVE_PARTNERS,
+        )
+        if origin not in ACTIVE_PARTNERS:
+            return _no_preference(
+                f"ZLECAf non encore activé pour {origin} à l'import en Algérie "
+                f"(circulaire DGD 482/2024) — taux NPF appliqué"
+            )
+        _r, _src = compute_dza_zlecaf_rate(hs_code_clean, origin, (dd_rate_pct or 0) / 100.0)
+        eff_dd = round(_r * 100.0, 6) if _r is not None else dd_rate_pct
+        _daps = daps_exempt(hs_code_clean, origin)
+        applied = (eff_dd is not None and eff_dd < (dd_rate_pct or 0)) or _daps
+        return _result(
+            preferential=True, preference_applied=applied, dd=eff_dd, daps=_daps,
+            regime="ZLECAF", code="ZLECAF", note=_src,
+            zlecaf_eligible=True, zlecaf_note=_src,
+        )
+
+    # 3. Afrique du Sud : activation bilatérale (hors SACU/SADC, traités en 0) ;
+    #    pas de calendrier détaillé → taux ZLECAf générique de la ligne.
+    if dest == "ZAF":
+        from services.zlecaf_schedule_zaf import zaf_partner_active
+        if not zaf_partner_active(origin):
+            return _no_preference(
+                "ZLECAf ratifié mais échanges préférentiels pas encore activés "
+                "avec l'Afrique du Sud (newsletter AfCFTA dtic/SARS, mars 2026) "
+                "— taux NPF appliqué"
+            )
+        eff_dd = line_zlecaf_rate_pct
+        applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
+        return _result(
+            preferential=True, preference_applied=applied, dd=eff_dd, daps=False,
+            regime="ZLECAF", code="ZLECAF", note=None,
+            zlecaf_eligible=True, zlecaf_note=None,
+        )
+
+    # 4. Autres pays ratifiés des deux côtés : taux ZLECAf générique de la ligne.
+    eff_dd = line_zlecaf_rate_pct
+    applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
+    return _result(
+        preferential=True, preference_applied=applied, dd=eff_dd, daps=False,
+        regime="ZLECAF", code="ZLECAF", note=None,
+        zlecaf_eligible=True, zlecaf_note=None,
+    )
+
+
+def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False, language='fr', origin_country=None):
     """Calculate import taxes for a country/HS code/CIF value combination.
 
     Supports both HS6 codes and extended national sub-position codes (8-12
@@ -798,7 +964,8 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     is_postgres_line = line.get('data_source') == 'postgres' or line.get('source') == 'postgres'
 
     # Resolve DD rate: prefer sub-position specific rate when available
-    dd_rate_pct = line.get('dd_rate', 0)
+    # (`or 0` : une valeur explicitement nulle dans la donnée → 0, jamais None).
+    dd_rate_pct = line.get('dd_rate', 0) or 0
     sub_position_info = None
 
     # --- Priority 1: crawled authentic JSON (per-position taxes) ---
@@ -845,8 +1012,11 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
             'description_en': sp_desc,
         }
 
-    vat_rate_pct = line.get('vat_rate', 0)
-    other_taxes_pct = line.get('other_taxes_rate', 0)
+    # `or 0` : une valeur explicitement nulle dans la donnée source ne doit
+    # jamais propager None (sinon crash sur `> 0` et le repli TVA via
+    # taxes_detail ci-dessous, gardé par `vat_rate_pct == 0`, est désactivé).
+    vat_rate_pct = line.get('vat_rate', 0) or 0
+    other_taxes_pct = line.get('other_taxes_rate', 0) or 0
     zlecaf_rate_pct = line.get('zlecaf_rate', 0) or 0
 
     # Extract DAPS and other individual taxes:
@@ -862,7 +1032,11 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         if 'TVA' in crawled_taxes:
             vat_rate_pct = float(crawled_taxes['TVA'].get('rate', vat_rate_pct))
     else:
-        taxes_detail = line.get('taxes_detail', {})
+        # Copie défensive : on ne mute jamais l'objet de ligne (potentiellement
+        # mis en cache) lors de la normalisation des libellés. Le format liste
+        # (ETL) est conservé tel quel puis normalisé en dict plus bas.
+        _raw_taxes_detail = line.get('taxes_detail', {})
+        taxes_detail = dict(_raw_taxes_detail) if isinstance(_raw_taxes_detail, dict) else _raw_taxes_detail
 
     # ── Normalise taxes_detail: accept both dict and list formats ─────────────
     # Dict format (crawled DZA): {'DD': {'rate': 30, 'name': '...'}, ...}
@@ -892,6 +1066,11 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         if rate == 0:
             continue
         label = tax_info.get('label', tax_info.get('name', _TAX_LABELS.get(norm, tax_code)))
+        # PRCT : intitulé officiel fixe (« Précompte (PRCT) ») — on ignore les
+        # libellés hérités des données crawled (ex. « Prélèvement à la
+        # Compensation du Transport »).
+        if norm == 'PRCT':
+            label = _TAX_LABELS['PRCT']
         individual_taxes.append({'code': norm, 'label': label, 'rate_pct': rate})
         if norm == 'DAPS':
             daps_rate_pct = rate
@@ -902,6 +1081,16 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         # Capture VAT from taxes_detail when not already set from crawled source
         elif norm in ('TVA', 'TVAI') and vat_rate_pct == 0:
             vat_rate_pct = rate
+
+    # Normaliser l'intitulé officiel du PRCT dans le dict taxes_detail renvoyé
+    # (entrée recréée, jamais de mutation des objets de ligne mis en cache).
+    for _k in list(taxes_detail.keys()):
+        if _normalize_tax_code(_k) == 'PRCT' and isinstance(taxes_detail.get(_k), dict):
+            _entry = dict(taxes_detail[_k])
+            for _lk in ('label', 'name'):
+                if _lk in _entry:
+                    _entry[_lk] = _TAX_LABELS['PRCT']
+            taxes_detail[_k] = _entry
 
     # ── Resolve PRCT / TCS when not explicitly in taxes_detail ───────────────
     # Only add PRCT fallback if other_taxes_pct is not already covered by an
@@ -915,7 +1104,7 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         if not any(t['code'] == 'PRCT' for t in individual_taxes):
             individual_taxes.insert(0, {
                 'code': 'PRCT',
-                'label': 'Prélèvement à la Compensation du Transport',
+                'label': 'Précompte (PRCT)',
                 'rate_pct': other_taxes_pct
             })
 
@@ -941,13 +1130,40 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
     npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3)
 
-    # ── ZLECAf cascade (DD replaced by ZLECAf preferential rate) ─────────────
+    # ── ZLECAf : éligibilité bilatérale + taux préférentiel selon l'origine ──
+    # L'avantage ZLECAf n'est accordé que si la paire origine/destination y est
+    # éligible : ratification continentale (origine ET destination) + réciprocité
+    # bilatérale (Algérie : 9 partenaires actifs ; Afrique du Sud : 14 partenaires
+    # actifs, SACU exclue). Source unique de vérité : _resolve_zlecaf_context, qui
+    # réutilise les mêmes modules que routes/calculator.py.
+    # Le DAPS est un droit de douane, exonéré de façon BINAIRE pour les listes (A)
+    # et (B) algériennes (circulaire 482/2024), indépendamment du facteur de
+    # démantèlement du DD.
+    _zctx = _resolve_zlecaf_context(
+        country_iso3, origin_country, hs_code_clean, dd_rate_pct, zlecaf_rate_pct
+    )
+    _preferential = _zctx['preferential']
+    trade_regime = _zctx['trade_regime']
+    trade_regime_code = _zctx['trade_regime_code']
+    trade_regime_note = _zctx['trade_regime_note']
+    preferential_regime_applied = _zctx['preference_applied']
+    zlecaf_eligible = _zctx['zlecaf_eligible']
+    zlecaf_preference_applied = _zctx['preference_applied'] and trade_regime == 'ZLECAF'
+    zlecaf_note = _zctx['zlecaf_note']
+
     zlecaf_taxes = dict(taxes_for_cascade)
-    if zlecaf_rate_pct is not None and zlecaf_rate_pct < dd_rate_pct:
-        if zlecaf_rate_pct == 0:
-            zlecaf_taxes.pop('DD', None)
-        else:
-            zlecaf_taxes['DD'] = zlecaf_rate_pct
+    if _preferential:
+        _eff_dd = _zctx['dd_rate_pct']
+        # DD : remplacé par le taux préférentiel ZLECAf (uniquement s'il réduit).
+        if _eff_dd is not None and _eff_dd < dd_rate_pct:
+            if _eff_dd == 0:
+                zlecaf_taxes.pop('DD', None)
+            else:
+                zlecaf_taxes['DD'] = _eff_dd
+        # DAPS (droit de douane) : exonération binaire selon les listes (A)/(B).
+        if 'DAPS' in zlecaf_taxes and daps_rate_pct > 0 and _zctx['daps_exempt']:
+            zlecaf_taxes.pop('DAPS', None)
+    # Non éligible : zlecaf_taxes == NPF → aucune préférence, économies = 0.
     zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3)
 
     savings_amount = round(npf_cascade['total_to_pay'] - zlecaf_cascade['total_to_pay'], 2)
@@ -981,6 +1197,121 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     npf_legacy   = _steps_to_legacy(npf_cascade['steps'],    cif_value)
     zlecaf_legacy = _steps_to_legacy(zlecaf_cascade['steps'], cif_value)
 
+    # ── Ventilation NPF vs ZLECAf, taxe par taxe (pour TaxBreakdownDual) ──────
+    # Construite DIRECTEMENT à partir des étapes cascade déjà calculées afin de
+    # garantir la cohérence parfaite avec le journal de calcul affiché.
+    def _breakdown_category(code: str) -> str:
+        # DAPS (Droit Additionnel Provisoire de Sauvegarde) est traité comme un
+        # droit de douane (réduit sous ZLECAf au même titre que le DD).
+        if code in ('DD', 'DAPS'):
+            return 'droit_douane'
+        if code in ('TVA', 'TVAI', 'T.V.A', 'VAT'):
+            return 'tva'
+        return 'autre_taxe'
+
+    _npf_by_code = {s['code']: s for s in npf_cascade['steps']}
+    _zlc_by_code = {s['code']: s for s in zlecaf_cascade['steps']}
+    _all_codes = list(dict.fromkeys(
+        [s['code'] for s in npf_cascade['steps']] +
+        [s['code'] for s in zlecaf_cascade['steps']]
+    ))
+
+    taxes_breakdown: list = []
+    _tot = {'npf':    {'droit_douane': 0.0, 'tva': 0.0, 'autre_taxe': 0.0},
+            'zlecaf': {'droit_douane': 0.0, 'tva': 0.0, 'autre_taxe': 0.0}}
+    for code in _all_codes:
+        npf_s = _npf_by_code.get(code)
+        zlc_s = _zlc_by_code.get(code)
+        ref = npf_s or zlc_s
+        cat = _breakdown_category(code)
+        amount_npf    = npf_s['amount'] if npf_s else 0.0
+        amount_zlecaf = zlc_s['amount'] if zlc_s else 0.0
+        rate_npf      = npf_s['rate_pct'] if npf_s else 0.0
+        rate_zlecaf   = zlc_s['rate_pct'] if zlc_s else 0.0
+        taxes_breakdown.append({
+            'code':              code,
+            'name':              ref.get('label', code),
+            'category':          cat,
+            'base_expr':         ref.get('base_formula', 'CIF'),
+            'rate_npf_pct':      round(rate_npf, 4),
+            'rate_zlecaf_pct':   round(rate_zlecaf, 4),
+            'base_value_npf':    npf_s['base_value'] if npf_s else (zlc_s['base_value'] if zlc_s else cif_value),
+            'base_value_zlecaf': zlc_s['base_value'] if zlc_s else (npf_s['base_value'] if npf_s else cif_value),
+            'amount_npf':        amount_npf,
+            'amount_zlecaf':     amount_zlecaf,
+            # Une taxe est « affectée » par la ZLECAf si son montant change
+            # (DD préférentiel, ou TVA recalculée sur une base sans DD).
+            'affected_by_zlecaf': round(amount_npf, 2) != round(amount_zlecaf, 2),
+        })
+        _tot['npf'][cat]    += amount_npf
+        _tot['zlecaf'][cat] += amount_zlecaf
+
+    def _breakdown_summary(regime: str) -> dict:
+        t = _tot[regime]
+        total = round(t['droit_douane'] + t['tva'] + t['autre_taxe'], 2)
+        return {
+            'droit_douane':          round(t['droit_douane'], 2),
+            'autres_taxes':          round(t['autre_taxe'], 2),
+            'tva':                   round(t['tva'], 2),
+            'total_taxes_et_droits': total,
+            'cout_total':            round(cif_value + total, 2),
+        }
+
+    _npf_sum = _breakdown_summary('npf')
+    _zlc_sum = _breakdown_summary('zlecaf')
+    taxes_summary = {
+        'npf':             _npf_sum,
+        'zlecaf':          _zlc_sum,
+        'economie_droits': round(_npf_sum['droit_douane'] - _zlc_sum['droit_douane'], 2),
+        'economie_totale': round(_npf_sum['cout_total'] - _zlc_sum['cout_total'], 2),
+    }
+
+    # ── Bi-devise : montants en monnaie locale du pays de destination ────────
+    # Dégradation propre si le taux de change est indisponible (USD uniquement).
+    currency_block = None
+    try:
+        from currencies.service import get_by_country as _get_currency
+        from exchange_rates import get_service as _get_fx_service
+        from services.tax_computation import localize_breakdown
+
+        _ccy = _get_currency(country_iso3)
+        if _ccy:
+            _rate_obj = None
+            try:
+                _rate_obj = _get_fx_service().get_rate("USD", _ccy.currency_code)
+            except Exception as _fx_err:
+                logger.warning(f"Taux de change indisponible ({_ccy.currency_code}): {_fx_err}")
+            _fx_rate = _rate_obj.rate if (_rate_obj and _rate_obj.rate) else None
+            if _fx_rate:
+                _loc = localize_breakdown(
+                    {"breakdown": taxes_breakdown, "summary": taxes_summary}, _fx_rate
+                )
+                taxes_breakdown = _loc["breakdown"]
+                currency_block = {
+                    "local_code":        _ccy.currency_code,
+                    "local_name":        _ccy.currency_name_fr,
+                    "local_symbol":      _ccy.currency_symbol,
+                    "usd_to_local_rate": round(_fx_rate, 6),
+                    "rate_source":       _rate_obj.source,
+                    "rate_as_of":        _rate_obj.timestamp.isoformat(),
+                    "available":         True,
+                    "value_usd":         round(cif_value, 2),
+                    "value_local":       round(cif_value * _fx_rate, 2),
+                    "summary_local":     _loc["summary_local"],
+                }
+            else:
+                currency_block = {
+                    "local_code":        _ccy.currency_code,
+                    "local_name":        _ccy.currency_name_fr,
+                    "local_symbol":      _ccy.currency_symbol,
+                    "usd_to_local_rate": None,
+                    "available":         False,
+                    "note":              "Taux de change indisponible — montants en USD uniquement.",
+                    "value_usd":         round(cif_value, 2),
+                }
+    except Exception as _ccy_err:
+        logger.warning(f"Bloc devise indisponible pour {country_iso3}: {_ccy_err}")
+
     return {
         'hs_code':        hs_code_clean,
         'hs6':            hs6,
@@ -988,6 +1319,14 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         'description_fr': line.get('description_fr', ''),
         'description_en': line.get('description_en', ''),
         'country_iso3':   country_iso3,
+        'origin_country': (origin_country or '').strip().upper() or None,
+        'trade_regime':              trade_regime,
+        'trade_regime_code':         trade_regime_code,
+        'trade_regime_note':         trade_regime_note,
+        'preferential_regime_applied': preferential_regime_applied,
+        'zlecaf_eligible':          zlecaf_eligible,
+        'zlecaf_preference_applied': zlecaf_preference_applied,
+        'zlecaf_note':              zlecaf_note,
         'cif_value':      cif_value,
         'generated_at':   country_data.get('generated_at', '') if country_data else '',
         'rates': {
@@ -1023,6 +1362,10 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         'sub_position':               sub_position_info,
         'data_source':                'authentic_tariff',
         'data_format':                'enhanced_v2',
+        # Ventilation bi-régime + bi-devise (consommée par TaxBreakdownDual)
+        'taxes_breakdown':            taxes_breakdown,
+        'taxes_summary':              taxes_summary,
+        'currency':                   currency_block,
     }
 
 

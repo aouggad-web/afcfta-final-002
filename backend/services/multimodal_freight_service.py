@@ -21,6 +21,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from logistics_fees_data import (
     PORT_THC,
+    PORTS,
     get_total_cost as sea_get_total_cost,
     SHIPPING_ROUTES,
 )
@@ -32,6 +33,7 @@ from logistics_land_fees_data import (
     get_land_corridors_list,
     get_land_freight_cost,
 )
+from logistics_operators_data import LOGISTICS_OPERATORS
 
 logger = logging.getLogger(__name__)
 
@@ -141,14 +143,40 @@ COUNTRY_DEFAULT_AIRPORT: Dict[str, str] = {
     "LSO": "MSU", "SWZ": "MTS", "MUS": "MRU", "MDG": "TNR", "SSD": "JUB",
 }
 
-# Map country ISO3 to default sea port LOCODE
-COUNTRY_DEFAULT_PORT: Dict[str, str] = {
+# Preferred "main" container port per country. Used only to order each country's
+# ports (preferred first). Countries not listed fall back to alphabetical order.
+_PREFERRED_PORT: Dict[str, str] = {
     "MAR": "MAPTM", "DZA": "DZALG", "TUN": "TNRAD", "EGY": "EGPSD",
-    "LBY": "EGALY",  # fallback (Libyan ports not in dataset)
-    "SEN": "SNDKR", "CIV": "CIABJ", "GHA": "GHTEM", "NGA": "NGAPP",
-    "CMR": "CMDLA", "COG": "CGPNR", "AGO": "AOLAD",
-    "KEN": "KEMBA", "TZA": "TZDAR", "DJI": "DJJIB",
-    "ZAF": "ZADUR", "MOZ": "MZMPM", "MUS": "MUPLU", "NAM": "NAWVB",
+    "LBY": "LYTIP", "SEN": "SNDKR", "CIV": "CIABJ", "GHA": "GHTEM",
+    "NGA": "NGAPP", "CMR": "CMDLA", "COG": "CGPNR", "AGO": "AOLAD",
+    "KEN": "KEMBA", "TZA": "TZDAR", "DJI": "DJJIB", "ZAF": "ZADUR",
+    "MOZ": "MZMPM", "MUS": "MUPLU", "NAM": "NAWVB",
+}
+
+
+def _build_country_ports() -> Dict[str, List[str]]:
+    """Map each ISO3 country to its container ports, derived from the maritime
+    module's authoritative PORTS registry (no hard-coding). The preferred main
+    port (when known) is ordered first so it is treated as the representative."""
+    out: Dict[str, List[str]] = {}
+    for locode, p in PORTS.items():
+        iso = (p.get("iso") or "").upper()
+        if not iso:
+            continue
+        out.setdefault(iso, []).append(locode)
+    for iso, locodes in out.items():
+        pref = _PREFERRED_PORT.get(iso)
+        locodes.sort(key=lambda lc: (lc != pref, lc))
+    return out
+
+
+# Country ISO3 → list of all port LOCODEs (preferred port first).
+COUNTRY_PORTS: Dict[str, List[str]] = _build_country_ports()
+
+# Country ISO3 → single representative sea port. Derived from COUNTRY_PORTS so it
+# stays in sync with the maritime registry. Kept for backward compatibility.
+COUNTRY_DEFAULT_PORT: Dict[str, str] = {
+    iso: locodes[0] for iso, locodes in COUNTRY_PORTS.items() if locodes
 }
 
 
@@ -224,6 +252,51 @@ def _corridor_phase(c: Dict[str, Any]) -> str:
     return "operational"
 
 
+def _land_carriers(countries: List[str], corridor_mode: str) -> List[str]:
+    """Transport companies able to operate a land/rail corridor.
+
+    For rail corridors we match national rail operators by `country_iso`;
+    for road / multimodal corridors we match pan-African trucking companies
+    whose `africa_presence` intersects the corridor's countries.
+    Returns de-duplicated company names (max 5). Empty when none are known.
+    """
+    cset = {str(c).upper() for c in (countries or []) if c}
+    if not cset:
+        return []
+    names: List[str] = []
+    if corridor_mode == "rail":
+        for op in LOGISTICS_OPERATORS.get("rail_operators", []):
+            op_countries = {str(op.get("country_iso") or "").upper()}
+            op_countries |= {str(c).upper() for c in (op.get("countries") or [])}
+            op_countries.discard("")
+            if op_countries & cset:
+                names.append(op["name"])
+    else:  # road / multimodal
+        for op in LOGISTICS_OPERATORS.get("trucking_companies", []):
+            presence = {str(p).upper() for p in op.get("africa_presence", [])}
+            if presence & cset:
+                names.append(op["name"])
+    seen: set = set()
+    out: List[str] = []
+    for n in names:
+        if n not in seen:
+            seen.add(n)
+            out.append(n)
+    return out[:5]
+
+
+def _union_carriers(*lists: List[str]) -> List[str]:
+    """De-duplicated union of several carrier-name lists, order preserved."""
+    seen: set = set()
+    out: List[str] = []
+    for lst in lists:
+        for n in (lst or []):
+            if n not in seen:
+                seen.add(n)
+                out.append(n)
+    return out
+
+
 def _rail_then_road_option(
     origin_country: str, destination_country: str,
     weight_tonnes: float, cargo_type: str = "container",
@@ -280,6 +353,9 @@ def _rail_then_road_option(
             road_dist = road_data.get("length_km") or road.get("length_km", 0)
             road_co2 = _co2_kg(weight_tonnes, road_dist, "road")
 
+            rail_carriers = rail_data.get("operators") or _land_carriers(rail.get("countries", []), "rail")
+            road_carriers = road_data.get("operators") or _land_carriers(road.get("countries", []), "road")
+
             total_cost = round((rail_data.get("total_cost_usd") or 0) + (road_data.get("total_cost_usd") or 0))
             tmin = (rail_data.get("transit_days_min") or 0) + (road_data.get("transit_days_min") or 0)
             tmax = (rail_data.get("transit_days_max") or 0) + (road_data.get("transit_days_max") or 0)
@@ -321,6 +397,7 @@ def _rail_then_road_option(
                         "cost_usd": rail_data.get("total_cost_usd"),
                         "co2_kg": rail_co2,
                         "status": rail.get("status"),
+                        "carriers": rail_carriers,
                     },
                     {
                         "mode": "road",
@@ -336,8 +413,10 @@ def _rail_then_road_option(
                         "cost_usd": road_data.get("total_cost_usd"),
                         "co2_kg": road_co2,
                         "status": road.get("status"),
+                        "carriers": road_carriers,
                     },
                 ],
+                "carriers": _union_carriers(rail_carriers, road_carriers),
                 "total_cost_usd": total_cost,
                 "transit_days_min": tmin,
                 "transit_days_max": tmax,
@@ -358,26 +437,26 @@ def _rail_then_road_option(
     return options
 
 
-def _sea_option(
-    origin_country: str, destination_country: str,
-    weight_kg: float, container_type: str = "teu",
-) -> Optional[Dict[str, Any]]:
-    """Sea-only option (port to port)."""
-    o_port = COUNTRY_DEFAULT_PORT.get(origin_country.upper())
-    d_port = COUNTRY_DEFAULT_PORT.get(destination_country.upper())
-    if not o_port or not d_port or o_port == d_port:
-        return None
-    sea = sea_get_total_cost(o_port, d_port, container_type.lower())
-    if not sea:
-        return None
-    weight_tonnes = weight_kg / 1000.0
+def _format_sea_option(
+    sea: Dict[str, Any], weight_tonnes: float,
+    label: str, label_en: str,
+) -> Dict[str, Any]:
+    """Build a multimodal 'sea direct' option dict from a maritime-module cost
+    result (output of logistics_fees_data.get_total_cost)."""
     dist_km = sea["distance_nm"] * NM_TO_KM
     co2 = _co2_kg(weight_tonnes, dist_km, "sea")
+    notes = sea.get("notes", "") or ""
+    if sea.get("is_modeled"):
+        notes = (notes + " " if notes else "") + "Tarif maritime estimé (modèle calibré ±15-20 %)."
     return {
         "mode": "sea",
-        "label": "Maritime direct",
-        "label_en": "Sea direct",
+        "label": label,
+        "label_en": label_en,
         "icon": "ship",
+        "origin_locode": sea["origin_locode"],
+        "destination_locode": sea["destination_locode"],
+        "is_modeled": sea.get("is_modeled", False),
+        "frequency": sea.get("frequency"),
         "segments": [
             {
                 "mode": "sea",
@@ -392,17 +471,72 @@ def _sea_option(
                 "carriers": sea.get("carriers", []),
             }
         ],
+        "carriers": sea.get("carriers", []),
         "total_cost_usd": sea["total_cost_usd"],
-        "container_type": container_type.lower(),
+        "container_type": str(sea.get("container_type", "teu")).lower(),
         "transit_days_min": sea["transit_days_min"],
         "transit_days_max": sea["transit_days_max"],
         "co2_kg": co2,
         "distance_km": round(dist_km),
         "available": True,
         "feasibility": "high",
-        "notes": sea.get("notes", ""),
+        "notes": notes,
         "source": sea.get("source", "Maritime — Drewry / CMA CGM / MSC rate cards 2024"),
     }
+
+
+def _sea_options(
+    origin_country: str, destination_country: str,
+    weight_kg: float, container_type: str = "teu",
+) -> List[Dict[str, Any]]:
+    """Direct sea options (port → port) drawn from the maritime module's full
+    route matrix. Enumerates every origin-country port × destination-country port
+    pair, then surfaces the cheapest route plus — only when it uses a different
+    port pair and is meaningfully faster — a second 'fastest' alternative."""
+    o_ports = COUNTRY_PORTS.get(origin_country.upper(), [])
+    d_ports = COUNTRY_PORTS.get(destination_country.upper(), [])
+    if not o_ports or not d_ports:
+        return []
+    weight_tonnes = weight_kg / 1000.0
+
+    candidates: List[Dict[str, Any]] = []
+    for o_port in o_ports:
+        for d_port in d_ports:
+            if o_port == d_port:
+                continue
+            sea = sea_get_total_cost(o_port, d_port, container_type.lower())
+            if sea:
+                candidates.append(sea)
+    if not candidates:
+        return []
+
+    def _avg_days(s: Dict[str, Any]) -> float:
+        return ((s.get("transit_days_min") or 0) + (s.get("transit_days_max") or 0)) / 2.0
+
+    cheapest = min(candidates, key=lambda s: s.get("total_cost_usd") or float("inf"))
+    fastest = min(candidates, key=_avg_days)
+
+    cheapest_pair = (cheapest["origin_locode"], cheapest["destination_locode"])
+    fastest_pair = (fastest["origin_locode"], fastest["destination_locode"])
+
+    ch_days, fa_days = _avg_days(cheapest), _avg_days(fastest)
+    meaningfully_faster = (
+        fastest_pair != cheapest_pair
+        and ((ch_days - fa_days) >= 2 or (ch_days and (ch_days - fa_days) / ch_days >= 0.15))
+    )
+    if not meaningfully_faster:
+        return [_format_sea_option(cheapest, weight_tonnes, "Maritime direct", "Sea direct")]
+
+    return [
+        _format_sea_option(
+            cheapest, weight_tonnes,
+            "Maritime direct — option économique", "Sea direct — cheapest",
+        ),
+        _format_sea_option(
+            fastest, weight_tonnes,
+            "Maritime direct — option rapide", "Sea direct — fastest",
+        ),
+    ]
 
 
 def _air_option(
@@ -442,6 +576,7 @@ def _air_option(
                 "carriers": air.get("carriers", []),
             }
         ],
+        "carriers": air.get("carriers", []),
         "total_cost_usd": air["total_cost_usd"],
         "transit_days_min": air["transit_days_min"],
         "transit_days_max": air["transit_days_max"],
@@ -473,6 +608,7 @@ def _land_option(
         co2 = _co2_kg(weight_tonnes, dist_km, "road")
         phase = _corridor_phase(corridor)
         mode_mode = corridor.get("type", "road")  # road / rail / multimodal
+        land_carriers = land.get("operators") or _land_carriers(corridor.get("countries", []), mode_mode)
         # Rail uses lower CO2 factor
         if mode_mode == "rail":
             co2 = _co2_kg(weight_tonnes, dist_km, "rail")
@@ -499,8 +635,10 @@ def _land_option(
                     "transit_days_min": land.get("transit_days_min"),
                     "transit_days_max": land.get("transit_days_max"),
                     "cost_usd": land.get("total_cost_usd"),
+                    "carriers": land_carriers,
                 }
             ],
+            "carriers": land_carriers,
             "total_cost_usd": land.get("total_cost_usd"),
             "transit_days_min": land.get("transit_days_min"),
             "transit_days_max": land.get("transit_days_max"),
@@ -527,21 +665,26 @@ def _sea_then_land_option(
     gateways = LANDLOCKED_GATEWAYS.get(dest, [])
     if not gateways:
         return []
-    origin_port = COUNTRY_DEFAULT_PORT.get(origin_country.upper())
-    if not origin_port:
+    origin_ports = COUNTRY_PORTS.get(origin_country.upper(), [])
+    if not origin_ports:
         return []
 
     options: List[Dict[str, Any]] = []
     for gw in gateways:
         gw_port = gw["port"]
         gw_country = gw["port_country"]
-        if origin_port == gw_port:
-            continue
 
-        # Leg 1: sea
-        sea = sea_get_total_cost(origin_port, gw_port, container_type.lower())
-        if not sea:
+        # Leg 1: cheapest sea leg from any origin-country port to the gateway port
+        sea_candidates = []
+        for o_port in origin_ports:
+            if o_port == gw_port:
+                continue
+            s = sea_get_total_cost(o_port, gw_port, container_type.lower())
+            if s:
+                sea_candidates.append(s)
+        if not sea_candidates:
             continue
+        sea = min(sea_candidates, key=lambda s: s.get("total_cost_usd") or float("inf"))
 
         # Leg 2: each corridor from gateway country to landlocked country
         corridors = _find_all_corridors_for_pair(gw_country, dest)
@@ -565,6 +708,7 @@ def _sea_then_land_option(
 
             phase = _corridor_phase(corridor)
             is_future = phase != "operational"
+            land_carriers = land.get("operators") or _land_carriers(corridor.get("countries", []), land_mode)
 
             options.append({
                 "mode": "multimodal",
@@ -610,8 +754,10 @@ def _sea_then_land_option(
                         "transit_days_max": land.get("transit_days_max"),
                         "cost_usd": land.get("total_cost_usd"),
                         "co2_kg": land_co2,
+                        "carriers": land_carriers,
                     },
                 ],
+                "carriers": _union_carriers(sea.get("carriers", []), land_carriers),
                 "total_cost_usd": total_cost,
                 "container_type": container_type.lower(),
                 "transit_days_min": tmin,
@@ -687,9 +833,8 @@ def compare_multimodal(
     options: List[Dict[str, Any]] = []
     weight_tonnes = max(weight_kg / 1000.0, 0.0)
 
-    sea_opt = _sea_option(origin_country, destination_country, weight_kg, container_type)
-    if sea_opt:
-        options.append(sea_opt)
+    sea_opts = _sea_options(origin_country, destination_country, weight_kg, container_type)
+    options.extend(sea_opts)
 
     air_opt = _air_option(
         origin_country, destination_country, weight_kg, air_commodity, volume_m3,

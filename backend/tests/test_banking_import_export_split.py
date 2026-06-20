@@ -45,8 +45,26 @@ def test_export_formalities_repatriation_deadline_matches_forex_regulation():
 
 def test_algeria_export_repatriation_deadline():
     profile = get_forex_profile("DZ")
-    assert profile.export_formalities.repatriation_deadline_days == 180
+    # Délai de rapatriement export porté à 360 jours (Instruction BA n° 07-2021).
+    assert profile.export_formalities.repatriation_deadline_days == 360
+    # Côté importation : domiciliation systématique dès le premier dinar.
     assert profile.import_formalities.domiciliation_threshold_usd == 0
+
+
+def test_algeria_export_formalities_are_explicit_authentic():
+    """L'Algérie fournit des formalités EXPORT explicites (régimes de
+    domiciliation distincts par produit), non dérivées du bloc importation."""
+    export = get_export_formalities("DZ")
+    assert export.domiciliation_required is True
+    assert export.domiciliation_conditional is True
+    # Pas de seuil USD : le seuil officiel (100 000 DZD) est décrit en clair.
+    assert export.domiciliation_threshold_usd is None
+    assert "100 000 DZD" in export.repatriation_formalities
+    assert "07-2021" in export.legal_reference
+    assert "2016-04" in export.legal_reference
+    # Documents propres à l'exportation (et non au titre d'importation).
+    assert "declaration_exportation" in export.mandatory_documents
+    assert "titre_importation" not in export.mandatory_documents
 
 
 def test_import_export_share_domiciliation_trigger():

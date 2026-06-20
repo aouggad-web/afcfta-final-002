@@ -13,7 +13,7 @@ import {
   Globe, BarChart3, Droplets, Award, Info
 } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 const COLORS_CULTURES  = ['#16a34a','#15803d','#22c55e','#84cc16','#f59e0b','#ea580c','#dc2626','#10b981','#059669'];

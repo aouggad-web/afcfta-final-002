@@ -113,7 +113,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "domiciliation_bancaire",
                 "certificat_conformite_produits",
             ],
-            timeline_days=180,
+            timeline_days=360,
             notes=(
                 "Toute importation doit être domiciliée auprès d'une banque "
                 "primaire agréée. Pas de seuil minimal : la domiciliation est "
@@ -127,7 +127,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
             prior_authorization_required=True,
             authorization_threshold_usd=0,
             declaration_threshold_usd=1_000,
-            repatriation_deadline_days=180,
+            repatriation_deadline_days=360,
             penalties=(
                 "Infractions au code pénal algérien (Art. 429 à 442) : "
                 "amende de 2 à 5 fois la valeur de l'infraction + emprisonnement "
@@ -163,6 +163,51 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
             "crypto_transactions", "open_account_payment",
         ],
         special_regimes=["zones_franches_exportation", "offshore_banking_units"],
+        # Formalités de change à l'EXPORTATION fournies explicitement (données
+        # authentiques DGD/Banque d'Algérie) : régimes de domiciliation distincts
+        # selon le type de produit et délai de rapatriement porté à 360 jours.
+        export_formalities=ExportFormalities(
+            domiciliation_required=True,
+            domiciliation_conditional=True,
+            domiciliation_threshold_usd=None,
+            mandatory_documents=[
+                "ouverture_dossier_domiciliation",
+                "numero_domiciliation",
+                "facture_commerciale",
+                "declaration_exportation",
+                "autorisations_FAP_si_applicable",
+                "preuve_origine_si_avantages_fiscaux",
+            ],
+            repatriation_deadline_days=360,
+            repatriation_formalities=(
+                "Délai de rapatriement des recettes d'exportation hors "
+                "hydrocarbures : 360 jours maximum à compter de la date "
+                "d'expédition. Deux régimes de domiciliation selon le produit : "
+                "(1) Produits frais, périssables et/ou dangereux — domiciliation "
+                "a posteriori autorisée : la facture commerciale peut être "
+                "domiciliée dans les 05 jours ouvrables suivant l'expédition "
+                "(Instruction Banque d'Algérie n° 07-2021 du 29 juin 2021, "
+                "règle générale 360 jours) ; "
+                "(2) Biens de consommation courants — domiciliation a priori "
+                "obligatoire avant expédition, sauf dérogation "
+                "(Règlement Banque d'Algérie n° 2016-04 du 17 novembre 2016, "
+                "360 jours maximum). "
+                "Aucune domiciliation requise pour les exportations de "
+                "marchandises ou d'échantillons d'une valeur inférieure ou "
+                "égale à 100 000 DZD."
+            ),
+            legal_reference=(
+                "Instruction de la Banque d'Algérie n° 07-2021 du 29 juin 2021 "
+                "(produits frais et périssables – domiciliation a posteriori) ; "
+                "Règlement de la Banque d'Algérie n° 2016-04 du 17 novembre 2016 "
+                "(biens de consommation courants – domiciliation a priori) ; "
+                "Guide de l'exportateur 2017 – Direction Générale des Douanes"
+            ),
+            regulatory_body=(
+                "Banque d'Algérie – Direction Générale des Opérations Bancaires "
+                "et des Changes (DGOBC) ; Direction Générale des Douanes (DGD)"
+            ),
+        ),
     ),
 
     # ── TUNISIE ───────────────────────────────────────────────────────────────
@@ -995,14 +1040,24 @@ _CURRENCY_META: Dict[str, Tuple[str, str, str]] = {
 # PUBLIC HELPERS
 # ---------------------------------------------------------------------------
 
+def _normalize_iso2(country_code: str) -> str:
+    """Normalize an ISO2/ISO3 country code to ISO2 for forex lookups."""
+    try:
+        from currencies.service import to_iso2
+        return to_iso2(country_code)
+    except Exception:
+        return (country_code or "").upper()
+
+
 def get_forex_profile(country_code: str) -> CountryForexProfile:
-    """Return forex profile for a country (ISO2). Falls back to default profile."""
-    profile = FOREX_PROFILES.get(country_code.upper())
+    """Return forex profile for a country (ISO2 or ISO3). Falls back to default profile."""
+    code = _normalize_iso2(country_code)
+    profile = FOREX_PROFILES.get(code)
     if profile is not None:
         return profile
     # Return a copy of the default profile with the correct country code
     default = _DEFAULT_PROFILE.model_copy(
-        update={"country_code": country_code.upper()}
+        update={"country_code": code}
     )
     return default
 
@@ -1028,7 +1083,7 @@ def get_currency_meta(country_code: str) -> Tuple[str, str, str]:
 
     Falls back to ('USD', 'Dollar américain', 'freely_convertible') if unknown.
     """
-    return _CURRENCY_META.get(country_code.upper(), ("USD", "Dollar américain", "freely_convertible"))
+    return _CURRENCY_META.get(_normalize_iso2(country_code), ("USD", "Dollar américain", "freely_convertible"))
 
 
 def get_all_currency_meta() -> Dict[str, Tuple[str, str, str]]:

@@ -28,7 +28,7 @@ import NationalPositionsSelector from '../NationalPositionsSelector';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import './calculator.css';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 // Drapeaux par code ISO2
@@ -328,7 +328,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       
       try {
         const authenticResponse = await axios.get(
-          `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}`
+          `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}&origin=${originISO3}`
         );
         authenticResult = authenticResponse.data;
         useAuthenticData = true;
@@ -387,6 +387,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // Précision et source
           tariff_precision: 'authentic_data',
           data_source: 'authentic_tariff',
+
+          // Régime commercial applicable (union douanière, ZLECAf, ZLE conditionnelle, NPF)
+          trade_regime: authenticResult.trade_regime || null,
+          trade_regime_code: authenticResult.trade_regime_code || null,
+          trade_regime_note: authenticResult.trade_regime_note || null,
+          preferential_regime_applied: authenticResult.preferential_regime_applied !== false,
+          // Éligibilité ZLECAf (réciprocité bilatérale + ratification continentale)
+          zlecaf_eligible: authenticResult.zlecaf_eligible !== false,
+          zlecaf_preference_applied: authenticResult.zlecaf_preference_applied !== false,
+          zlecaf_note: authenticResult.zlecaf_note || null,
+          
+          // Ventilation complète NPF vs ZLECAf + bi-devise (TaxBreakdownDual)
+          taxes_breakdown: authenticResult.taxes_breakdown || [],
+          taxes_summary: authenticResult.taxes_summary || null,
+          currency: authenticResult.currency || null,
           
           // Détails des taxes
           taxes_detail: authenticResult.taxes_detail || [],
@@ -968,6 +983,51 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </CardHeader>
             
             <CardContent className="relative">
+              {/* Bandeau régime commercial applicable :
+                  - CUSTOMS_UNION  → libre circulation intra-union (positif, vert)
+                  - FTA_CONDITIONAL → régime du bloc possible sous conditions (ambre)
+                  - NPF             → aucune préférence (avertissement, ambre)
+                  - ZLECAF          → pas de bandeau (la colonne préférentielle suffit) */}
+              {result.trade_regime === 'CUSTOMS_UNION' && (
+                <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-start gap-3">
+                  <Shield className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-emerald-300 font-semibold text-sm">
+                      {language === 'fr'
+                        ? `Union douanière ${result.trade_regime_code || ''} — libre circulation`
+                        : `${result.trade_regime_code || ''} customs union — free circulation`}
+                    </p>
+                    <p className="text-emerald-200/80 text-sm mt-1">{result.trade_regime_note}</p>
+                  </div>
+                </div>
+              )}
+
+              {result.trade_regime === 'FTA_CONDITIONAL' && (
+                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
+                  <Info className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-amber-300 font-semibold text-sm">
+                      {language === 'fr'
+                        ? `Régime ${result.trade_regime_code || 'du bloc'} applicable sous conditions`
+                        : `${result.trade_regime_code || 'Bloc'} regime applies under conditions`}
+                    </p>
+                    <p className="text-amber-200/80 text-sm mt-1">{result.trade_regime_note}</p>
+                  </div>
+                </div>
+              )}
+
+              {result.trade_regime === 'NPF' && result.zlecaf_note && (
+                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-amber-300 font-semibold text-sm">
+                      {language === 'fr' ? 'Préférence ZLECAf non appliquée' : 'AfCFTA preference not applied'}
+                    </p>
+                    <p className="text-amber-200/80 text-sm mt-1">{result.zlecaf_note}</p>
+                  </div>
+                </div>
+              )}
+
               {/* Bandeau Valeur CIF + Code HS sélectionné */}
               <div className="mb-6 p-4 bg-gradient-to-r from-slate-700/50 to-slate-800/50 rounded-xl border border-slate-600/50">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

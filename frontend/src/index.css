@@ -1,11 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Import custom layout styles */
+/* Import custom layout styles - must come before @tailwind directives */
 @import './styles/layout.css';
 @import './styles/tabs.css';
 @import './styles/statistics.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
     margin: 0;

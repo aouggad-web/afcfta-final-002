@@ -61,7 +61,7 @@ from services.multimodal_freight_service import (
     compare_multimodal,
     LANDLOCKED_AFRICA,
     LANDLOCKED_GATEWAYS,
-    COUNTRY_DEFAULT_PORT,
+    COUNTRY_PORTS,
     COUNTRY_DEFAULT_AIRPORT,
 )
 
@@ -662,8 +662,8 @@ async def get_logistics_operators(category: Optional[str] = None):
     return {
         "operators": data,
         "summary": summary,
-        "data_source": "Sites officiels, Lloyd's List, IATA, BIMCO, UNCTAD 2024",
-        "last_updated": "Avril 2025",
+        "data_source": "Sites officiels des opérateurs (HQ vérifiés), Lloyd's List, IATA, BIMCO, UNCTAD 2025",
+        "last_updated": "Juin 2026",
     }
 
 
@@ -716,7 +716,7 @@ async def get_multimodal_supported_countries():
     Return the list of African countries supported by the multimodal comparator,
     indicating which ones are landlocked (sea+corridor combinations available).
     """
-    coastal = sorted(COUNTRY_DEFAULT_PORT.keys())
+    coastal = sorted(COUNTRY_PORTS.keys())
     air_only = sorted(set(COUNTRY_DEFAULT_AIRPORT.keys()) - set(coastal) - LANDLOCKED_AFRICA)
     landlocked = sorted(LANDLOCKED_AFRICA)
     return {
@@ -725,7 +725,7 @@ async def get_multimodal_supported_countries():
         "air_only_countries": air_only,
         "all_supported": sorted(
             set(COUNTRY_DEFAULT_AIRPORT.keys())
-            | set(COUNTRY_DEFAULT_PORT.keys())
+            | set(COUNTRY_PORTS.keys())
             | LANDLOCKED_AFRICA
         ),
         "landlocked_gateways": LANDLOCKED_GATEWAYS,

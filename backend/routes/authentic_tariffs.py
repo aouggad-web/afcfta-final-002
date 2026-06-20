@@ -214,7 +214,8 @@ async def calculate_taxes_endpoint(
     country_iso3: str = Query(..., description="ISO3 country code"),
     hs_code: str = Query(..., description="HS code (6-12 digits)"),
     cif_value: float = Query(..., description="CIF value in USD"),
-    language: str = Query("fr", description="Language: fr or en")
+    language: str = Query("fr", description="Language: fr or en"),
+    origin: str = Query(None, description="Origin country ISO3 (gates ZLECAf eligibility)")
 ):
     """
     Calculer les taxes d'importation avec données authentiques
@@ -237,7 +238,8 @@ async def calculate_taxes_endpoint(
         country_iso3=country_iso3.upper(),
         hs_code=hs_code,
         cif_value=cif_value,
-        language=language
+        language=language,
+        origin_country=origin
     )
     
     if 'error' in result:
@@ -251,7 +253,8 @@ async def calculate_taxes_get_endpoint(
     country_iso3: str,
     hs_code: str,
     value: float = Query(10000, description="CIF value in USD"),
-    language: str = Query("fr", description="Language: fr or en")
+    language: str = Query("fr", description="Language: fr or en"),
+    origin: str = Query(None, description="Origin country ISO3 (gates ZLECAf eligibility)")
 ):
     """
     Version GET du calculateur (pour tests rapides)
@@ -260,7 +263,8 @@ async def calculate_taxes_get_endpoint(
         country_iso3=country_iso3,
         hs_code=hs_code,
         cif_value=value,
-        language=language
+        language=language,
+        origin=origin
     )
 
 
