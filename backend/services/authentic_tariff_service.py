@@ -125,18 +125,21 @@ _EAC = {             # EAC common profile (Kenya, Tanzania, Uganda, Rwanda, Buru
 
 COUNTRY_TAX_PROFILES = {
     # ── Algérie — DGD (douane.gov.dz / conformepro.dz) ───────────────────────
-    # DAPS, DD, PRCT, TCS : base = CIF
+    # DAPS, DD : droits de douane (base CIF) — réduits sous ZLECAf
+    # TCS : base CIF
     # TVA : base = CIF + DAPS + DD  (art. 21 CTCA)
+    # PRCT (Précompte 2%) : calculé APRÈS la TVA, sur la valeur globale de la
+    #   marchandise TVA incluse mais HORS DAPS = CIF + DD + TCS + TVA
     'DZA': {
-        'taxes_order': ['DAPS', 'DD', 'PRCT', 'TCS', 'TVA'],
+        'taxes_order': ['DAPS', 'DD', 'TCS', 'TVA', 'PRCT'],
         'tax_bases': {
             'DAPS': ('CIF', []),
             'DD':   ('CIF', []),
-            'PRCT': ('CIF', []),
             'TCS':  ('CIF', []),
-            'TVA':  ('CIF', ['DAPS', 'DD']),  # art. 21 CTCA
+            'TVA':  ('CIF', ['DAPS', 'DD']),          # art. 21 CTCA
+            'PRCT': ('CIF', ['DD', 'TCS', 'TVA']),    # Précompte : valeur globale TVA incluse, hors DAPS
         },
-        'source': 'douane.gov.dz — art. 21 CTCA (TVA base = CIF+DAPS+DD)',
+        'source': 'douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS',
     },
     # ── Maroc — ADII (douane.gov.ma) ──────────────────────────────────────────
     # DD, TPI : base = CIF
@@ -259,7 +262,7 @@ COUNTRY_TAX_PROFILES = {
 _TAX_LABELS = {
     'DD':      'Droits de Douane',
     'DAPS':    'Droit Additionnel Provisoire de Sauvegarde',
-    'PRCT':    'Prélèvement à la Compensation du Transport',
+    'PRCT':    'Précompte (PRCT)',
     'TCS':     'Taxe Complémentaire de Sauvegarde',
     'TVA':     'Taxe sur la Valeur Ajoutée',
     'TPI':     "Taxe Parafiscale à l'Importation",
@@ -862,7 +865,11 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         if 'TVA' in crawled_taxes:
             vat_rate_pct = float(crawled_taxes['TVA'].get('rate', vat_rate_pct))
     else:
-        taxes_detail = line.get('taxes_detail', {})
+        # Copie défensive : on ne mute jamais l'objet de ligne (potentiellement
+        # mis en cache) lors de la normalisation des libellés. Le format liste
+        # (ETL) est conservé tel quel puis normalisé en dict plus bas.
+        _raw_taxes_detail = line.get('taxes_detail', {})
+        taxes_detail = dict(_raw_taxes_detail) if isinstance(_raw_taxes_detail, dict) else _raw_taxes_detail
 
     # ── Normalise taxes_detail: accept both dict and list formats ─────────────
     # Dict format (crawled DZA): {'DD': {'rate': 30, 'name': '...'}, ...}
@@ -892,6 +899,11 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         if rate == 0:
             continue
         label = tax_info.get('label', tax_info.get('name', _TAX_LABELS.get(norm, tax_code)))
+        # PRCT : intitulé officiel fixe (« Précompte (PRCT) ») — on ignore les
+        # libellés hérités des données crawled (ex. « Prélèvement à la
+        # Compensation du Transport »).
+        if norm == 'PRCT':
+            label = _TAX_LABELS['PRCT']
         individual_taxes.append({'code': norm, 'label': label, 'rate_pct': rate})
         if norm == 'DAPS':
             daps_rate_pct = rate
@@ -902,6 +914,16 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         # Capture VAT from taxes_detail when not already set from crawled source
         elif norm in ('TVA', 'TVAI') and vat_rate_pct == 0:
             vat_rate_pct = rate
+
+    # Normaliser l'intitulé officiel du PRCT dans le dict taxes_detail renvoyé
+    # (entrée recréée, jamais de mutation des objets de ligne mis en cache).
+    for _k in list(taxes_detail.keys()):
+        if _normalize_tax_code(_k) == 'PRCT' and isinstance(taxes_detail.get(_k), dict):
+            _entry = dict(taxes_detail[_k])
+            for _lk in ('label', 'name'):
+                if _lk in _entry:
+                    _entry[_lk] = _TAX_LABELS['PRCT']
+            taxes_detail[_k] = _entry
 
     # ── Resolve PRCT / TCS when not explicitly in taxes_detail ───────────────
     # Only add PRCT fallback if other_taxes_pct is not already covered by an
@@ -915,7 +937,7 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         if not any(t['code'] == 'PRCT' for t in individual_taxes):
             individual_taxes.insert(0, {
                 'code': 'PRCT',
-                'label': 'Prélèvement à la Compensation du Transport',
+                'label': 'Précompte (PRCT)',
                 'rate_pct': other_taxes_pct
             })
 
@@ -941,13 +963,32 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
     npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3)
 
-    # ── ZLECAf cascade (DD replaced by ZLECAf preferential rate) ─────────────
+    # ── ZLECAf cascade (DD + DAPS réduits selon la préférence ZLECAf) ────────
+    # Le DAPS est traité comme un droit de douane : il subit la MÊME réduction
+    # ZLECAf que le DD (même facteur de démantèlement).
     zlecaf_taxes = dict(taxes_for_cascade)
-    if zlecaf_rate_pct is not None and zlecaf_rate_pct < dd_rate_pct:
-        if zlecaf_rate_pct == 0:
-            zlecaf_taxes.pop('DD', None)
+    if zlecaf_rate_pct is not None:
+        # Facteur de démantèlement ZLECAf dérivé du DD.
+        if dd_rate_pct > 0:
+            _zlecaf_factor = zlecaf_rate_pct / dd_rate_pct
         else:
-            zlecaf_taxes['DD'] = zlecaf_rate_pct
+            # Aucun DD de référence : un taux préférentiel ZLECAf à 0 % exonère
+            # le DAPS au même titre (facteur 0) ; sinon aucune réduction.
+            _zlecaf_factor = 0.0 if zlecaf_rate_pct == 0 else 1.0
+        # DD : remplacé par le taux préférentiel ZLECAf (uniquement s'il réduit).
+        if zlecaf_rate_pct < dd_rate_pct:
+            if zlecaf_rate_pct == 0:
+                zlecaf_taxes.pop('DD', None)
+            else:
+                zlecaf_taxes['DD'] = zlecaf_rate_pct
+        # DAPS (droit de douane) : même facteur de réduction que le DD, y compris
+        # lorsque le DD est nul (DAPS exonéré si la préférence ZLECAf s'applique).
+        if 'DAPS' in zlecaf_taxes and daps_rate_pct > 0 and _zlecaf_factor < 1.0:
+            _daps_zlecaf = round(daps_rate_pct * _zlecaf_factor, 4)
+            if _daps_zlecaf == 0:
+                zlecaf_taxes.pop('DAPS', None)
+            else:
+                zlecaf_taxes['DAPS'] = _daps_zlecaf
     zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3)
 
     savings_amount = round(npf_cascade['total_to_pay'] - zlecaf_cascade['total_to_pay'], 2)
@@ -985,7 +1026,9 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     # Construite DIRECTEMENT à partir des étapes cascade déjà calculées afin de
     # garantir la cohérence parfaite avec le journal de calcul affiché.
     def _breakdown_category(code: str) -> str:
-        if code == 'DD':
+        # DAPS (Droit Additionnel Provisoire de Sauvegarde) est traité comme un
+        # droit de douane (réduit sous ZLECAf au même titre que le DD).
+        if code in ('DD', 'DAPS'):
             return 'droit_douane'
         if code in ('TVA', 'TVAI', 'T.V.A', 'VAT'):
             return 'tva'
