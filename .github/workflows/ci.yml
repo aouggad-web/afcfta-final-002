@@ -78,8 +78,11 @@ jobs:
       - name: Install frontend dependencies
         working-directory: frontend
         run: |
+          npm config set fetch-retries 5
+          npm config set fetch-retry-mintimeout 20000
+          npm config set fetch-timeout 600000
           for attempt in 1 2 3; do
-            npm ci --legacy-peer-deps && exit 0
+            npm ci --legacy-peer-deps --no-audit --no-fund --prefer-offline && exit 0
             echo "npm ci failed (attempt $attempt); retrying..." >&2
             sleep 5
           done
