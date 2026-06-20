@@ -4,3 +4,4 @@
 - [Calculator dual computation path](calculator-dual-path.md) — frontend prefers /api/authentic-tariffs/calculate (no currency/breakdown) over /api/calculate-tariff; DZA UI hides local currency + any calculator.py-only fiscal logic.
 - [Trade regime precedence](trade-regime-precedence.md) — customs unions (SACU/EAC/CEMAC/UEMOA) recalc 0% and PRECEDE the ZLECAf gate; FTAs (ECOWAS/SADC/COMESA) are conditional metadata only, never auto-0%.
 - [Tariff line null rate fields](tariff-line-null-rates.md) — real lines can carry JSON null for vat_rate/dd_rate/etc; always `or 0` or you crash on `>` AND silently kill the taxes_detail TVA fallback (`==0`).
+- [Pushing repl to new GitHub repo](github-push.md) — local git is shallow w/ missing history; plain push fails (`did not receive expected object`). Push a parent-less `commit-tree` snapshot; strip `.github/workflows` (OAuth lacks `workflow` scope).
