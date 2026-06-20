@@ -981,6 +981,119 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     npf_legacy   = _steps_to_legacy(npf_cascade['steps'],    cif_value)
     zlecaf_legacy = _steps_to_legacy(zlecaf_cascade['steps'], cif_value)
 
+    # ── Ventilation NPF vs ZLECAf, taxe par taxe (pour TaxBreakdownDual) ──────
+    # Construite DIRECTEMENT à partir des étapes cascade déjà calculées afin de
+    # garantir la cohérence parfaite avec le journal de calcul affiché.
+    def _breakdown_category(code: str) -> str:
+        if code == 'DD':
+            return 'droit_douane'
+        if code in ('TVA', 'TVAI', 'T.V.A', 'VAT'):
+            return 'tva'
+        return 'autre_taxe'
+
+    _npf_by_code = {s['code']: s for s in npf_cascade['steps']}
+    _zlc_by_code = {s['code']: s for s in zlecaf_cascade['steps']}
+    _all_codes = list(dict.fromkeys(
+        [s['code'] for s in npf_cascade['steps']] +
+        [s['code'] for s in zlecaf_cascade['steps']]
+    ))
+
+    taxes_breakdown: list = []
+    _tot = {'npf':    {'droit_douane': 0.0, 'tva': 0.0, 'autre_taxe': 0.0},
+            'zlecaf': {'droit_douane': 0.0, 'tva': 0.0, 'autre_taxe': 0.0}}
+    for code in _all_codes:
+        npf_s = _npf_by_code.get(code)
+        zlc_s = _zlc_by_code.get(code)
+        ref = npf_s or zlc_s
+        cat = _breakdown_category(code)
+        amount_npf    = npf_s['amount'] if npf_s else 0.0
+        amount_zlecaf = zlc_s['amount'] if zlc_s else 0.0
+        rate_npf      = npf_s['rate_pct'] if npf_s else 0.0
+        rate_zlecaf   = zlc_s['rate_pct'] if zlc_s else 0.0
+        taxes_breakdown.append({
+            'code':              code,
+            'name':              ref.get('label', code),
+            'category':          cat,
+            'base_expr':         ref.get('base_formula', 'CIF'),
+            'rate_npf_pct':      round(rate_npf, 4),
+            'rate_zlecaf_pct':   round(rate_zlecaf, 4),
+            'base_value_npf':    npf_s['base_value'] if npf_s else (zlc_s['base_value'] if zlc_s else cif_value),
+            'base_value_zlecaf': zlc_s['base_value'] if zlc_s else (npf_s['base_value'] if npf_s else cif_value),
+            'amount_npf':        amount_npf,
+            'amount_zlecaf':     amount_zlecaf,
+            # Une taxe est « affectée » par la ZLECAf si son montant change
+            # (DD préférentiel, ou TVA recalculée sur une base sans DD).
+            'affected_by_zlecaf': round(amount_npf, 2) != round(amount_zlecaf, 2),
+        })
+        _tot['npf'][cat]    += amount_npf
+        _tot['zlecaf'][cat] += amount_zlecaf
+
+    def _breakdown_summary(regime: str) -> dict:
+        t = _tot[regime]
+        total = round(t['droit_douane'] + t['tva'] + t['autre_taxe'], 2)
+        return {
+            'droit_douane':          round(t['droit_douane'], 2),
+            'autres_taxes':          round(t['autre_taxe'], 2),
+            'tva':                   round(t['tva'], 2),
+            'total_taxes_et_droits': total,
+            'cout_total':            round(cif_value + total, 2),
+        }
+
+    _npf_sum = _breakdown_summary('npf')
+    _zlc_sum = _breakdown_summary('zlecaf')
+    taxes_summary = {
+        'npf':             _npf_sum,
+        'zlecaf':          _zlc_sum,
+        'economie_droits': round(_npf_sum['droit_douane'] - _zlc_sum['droit_douane'], 2),
+        'economie_totale': round(_npf_sum['cout_total'] - _zlc_sum['cout_total'], 2),
+    }
+
+    # ── Bi-devise : montants en monnaie locale du pays de destination ────────
+    # Dégradation propre si le taux de change est indisponible (USD uniquement).
+    currency_block = None
+    try:
+        from currencies.service import get_by_country as _get_currency
+        from exchange_rates import get_service as _get_fx_service
+        from services.tax_computation import localize_breakdown
+
+        _ccy = _get_currency(country_iso3)
+        if _ccy:
+            _rate_obj = None
+            try:
+                _rate_obj = _get_fx_service().get_rate("USD", _ccy.currency_code)
+            except Exception as _fx_err:
+                logger.warning(f"Taux de change indisponible ({_ccy.currency_code}): {_fx_err}")
+            _fx_rate = _rate_obj.rate if (_rate_obj and _rate_obj.rate) else None
+            if _fx_rate:
+                _loc = localize_breakdown(
+                    {"breakdown": taxes_breakdown, "summary": taxes_summary}, _fx_rate
+                )
+                taxes_breakdown = _loc["breakdown"]
+                currency_block = {
+                    "local_code":        _ccy.currency_code,
+                    "local_name":        _ccy.currency_name_fr,
+                    "local_symbol":      _ccy.currency_symbol,
+                    "usd_to_local_rate": round(_fx_rate, 6),
+                    "rate_source":       _rate_obj.source,
+                    "rate_as_of":        _rate_obj.timestamp.isoformat(),
+                    "available":         True,
+                    "value_usd":         round(cif_value, 2),
+                    "value_local":       round(cif_value * _fx_rate, 2),
+                    "summary_local":     _loc["summary_local"],
+                }
+            else:
+                currency_block = {
+                    "local_code":        _ccy.currency_code,
+                    "local_name":        _ccy.currency_name_fr,
+                    "local_symbol":      _ccy.currency_symbol,
+                    "usd_to_local_rate": None,
+                    "available":         False,
+                    "note":              "Taux de change indisponible — montants en USD uniquement.",
+                    "value_usd":         round(cif_value, 2),
+                }
+    except Exception as _ccy_err:
+        logger.warning(f"Bloc devise indisponible pour {country_iso3}: {_ccy_err}")
+
     return {
         'hs_code':        hs_code_clean,
         'hs6':            hs6,
@@ -1023,6 +1136,10 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         'sub_position':               sub_position_info,
         'data_source':                'authentic_tariff',
         'data_format':                'enhanced_v2',
+        # Ventilation bi-régime + bi-devise (consommée par TaxBreakdownDual)
+        'taxes_breakdown':            taxes_breakdown,
+        'taxes_summary':              taxes_summary,
+        'currency':                   currency_block,
     }
 
 

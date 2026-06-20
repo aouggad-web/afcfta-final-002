@@ -388,6 +388,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           tariff_precision: 'authentic_data',
           data_source: 'authentic_tariff',
           
+          // Ventilation complète NPF vs ZLECAf + bi-devise (TaxBreakdownDual)
+          taxes_breakdown: authenticResult.taxes_breakdown || [],
+          taxes_summary: authenticResult.taxes_summary || null,
+          currency: authenticResult.currency || null,
+          
           // Détails des taxes
           taxes_detail: authenticResult.taxes_detail || [],
           
