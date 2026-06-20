@@ -138,6 +138,19 @@ introduire de nouvelle donnée non sourcée) :
   `repatriation_deadline_days` (délai de rapatriement des devises —
   identique à `forex_regulation.repatriation_deadline_days`).
 
+Un pays peut **fournir explicitement** son `import_formalities` ou son
+`export_formalities` dans `foreign_exchange.py` ; le validator ne dérive
+alors que le bloc manquant. C'est le cas de l'**Algérie (DZ)** à
+l'exportation : formalités fournies en propre (données authentiques
+DGD / Banque d'Algérie) avec deux régimes de domiciliation selon le
+produit — produits frais/périssables : domiciliation **a posteriori**
+(facture domiciliable sous 05 jours ouvrables après expédition,
+Instruction BA n° 07-2021 du 29 juin 2021) ; biens de consommation
+courants : domiciliation **a priori** obligatoire avant expédition
+(Règlement BA n° 2016-04 du 17 novembre 2016) — délai de rapatriement
+porté à **360 jours** et exemption de domiciliation en dessous de
+100 000 DZD.
+
 Endpoints dédiés :
 - `GET /banking/countries/{country_code}/regulations/import`
 - `GET /banking/countries/{country_code}/regulations/export`
