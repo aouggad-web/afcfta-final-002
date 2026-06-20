@@ -328,7 +328,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       
       try {
         const authenticResponse = await axios.get(
-          `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}`
+          `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}&origin=${originISO3}`
         );
         authenticResult = authenticResponse.data;
         useAuthenticData = true;
@@ -387,6 +387,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // Précision et source
           tariff_precision: 'authentic_data',
           data_source: 'authentic_tariff',
+
+          // Éligibilité ZLECAf (réciprocité bilatérale + ratification continentale)
+          zlecaf_eligible: authenticResult.zlecaf_eligible !== false,
+          zlecaf_preference_applied: authenticResult.zlecaf_preference_applied !== false,
+          zlecaf_note: authenticResult.zlecaf_note || null,
           
           // Ventilation complète NPF vs ZLECAf + bi-devise (TaxBreakdownDual)
           taxes_breakdown: authenticResult.taxes_breakdown || [],
@@ -973,6 +978,20 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </CardHeader>
             
             <CardContent className="relative">
+              {/* Bandeau éligibilité ZLECAf (origine/destination non éligible
+                  ou aucune préférence sur ce produit → message explicite) */}
+              {result.zlecaf_note && (result.zlecaf_eligible === false || result.zlecaf_preference_applied === false) && (
+                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-amber-300 font-semibold text-sm">
+                      {language === 'fr' ? 'Préférence ZLECAf non appliquée' : 'AfCFTA preference not applied'}
+                    </p>
+                    <p className="text-amber-200/80 text-sm mt-1">{result.zlecaf_note}</p>
+                  </div>
+                </div>
+              )}
+
               {/* Bandeau Valeur CIF + Code HS sélectionné */}
               <div className="mb-6 p-4 bg-gradient-to-r from-slate-700/50 to-slate-800/50 rounded-xl border border-slate-600/50">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

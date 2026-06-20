@@ -781,7 +781,122 @@ def get_country_summary(country_iso3):
     }
 
 
-def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False, language='fr'):
+def _resolve_zlecaf_context(dest_iso3, origin_iso3, hs_code_clean, dd_rate_pct, line_zlecaf_rate_pct):
+    """Détermine l'éligibilité ZLECAf et le taux DD préférentiel effectif selon
+    le pays d'ORIGINE (réciprocité bilatérale) et la ratification continentale.
+
+    Source unique de vérité : réutilise exactement les mêmes modules que
+    routes/calculator.py (zlecaf_membership_status, zlecaf_schedule_dza,
+    zlecaf_schedule_zaf) — aucune duplication de liste.
+
+    Retourne un dict :
+      - eligible (bool)            : la paire origine/destination peut bénéficier
+                                     d'un régime ZLECAf ;
+      - preference_applied (bool)  : une préférence réduit effectivement les
+                                     droits sur CE produit ;
+      - dd_rate_pct (float)        : taux DD ZLECAf effectif (en pourcentage) ;
+      - daps_exempt (bool)         : DAPS exonéré (Algérie, listes A/B) ;
+      - note (str|None)            : motif de non-application ou libellé du
+                                     calendrier appliqué.
+    """
+    dest = (dest_iso3 or "").upper()
+    origin = (origin_iso3 or "").strip().upper()
+
+    # Origine renseignée ? Toute préférence ZLECAf suppose un certificat
+    # d'origine (donc un pays d'origine connu). Validation ISO légère.
+    if not re.fullmatch(r"[A-Z]{2,3}", origin):
+        return {
+            "eligible": False,
+            "preference_applied": False,
+            "dd_rate_pct": dd_rate_pct,
+            "daps_exempt": False,
+            "note": "Origine non renseignée — certificat d'origine ZLECAf requis "
+                    "(taux NPF appliqué)",
+        }
+
+    from services.zlecaf_membership_status import (
+        ratification_status, STATUS_RATIFIED, STATUS_NOT_SIGNED,
+    )
+
+    # 1. Ratification continentale (origine ET destination doivent avoir ratifié).
+    o_status = ratification_status(origin)
+    d_status = ratification_status(dest)
+    if o_status != STATUS_RATIFIED or d_status != STATUS_RATIFIED:
+        nonrat, st = (origin, o_status) if o_status != STATUS_RATIFIED else (dest, d_status)
+        reason = "non signataire" if st == STATUS_NOT_SIGNED else "signataire, non encore ratifié"
+        return {
+            "eligible": False,
+            "preference_applied": False,
+            "dd_rate_pct": dd_rate_pct,
+            "daps_exempt": False,
+            "note": f"ZLECAf non applicable : {nonrat} ({reason}) — taux NPF appliqué",
+        }
+
+    # 2. Algérie : seuls les partenaires actifs (liste de réciprocité, 9 pays)
+    #    déclenchent la ZLECAf ; le taux suit le calendrier de démantèlement
+    #    (circulaire DGD 482/2024).
+    if dest == "DZA":
+        from services.zlecaf_schedule_dza import (
+            compute_dza_zlecaf_rate, daps_exempt, ACTIVE_PARTNERS,
+        )
+        if origin not in ACTIVE_PARTNERS:
+            return {
+                "eligible": False,
+                "preference_applied": False,
+                "dd_rate_pct": dd_rate_pct,
+                "daps_exempt": False,
+                "note": f"ZLECAf non encore activé pour {origin} à l'import en "
+                        f"Algérie (circulaire DGD 482/2024) — taux NPF appliqué",
+            }
+        _r, _src = compute_dza_zlecaf_rate(hs_code_clean, origin, (dd_rate_pct or 0) / 100.0)
+        eff_dd = round(_r * 100.0, 6) if _r is not None else dd_rate_pct
+        _daps = daps_exempt(hs_code_clean, origin)
+        applied = (eff_dd is not None and eff_dd < (dd_rate_pct or 0)) or _daps
+        return {
+            "eligible": True,
+            "preference_applied": applied,
+            "dd_rate_pct": eff_dd,
+            "daps_exempt": _daps,
+            "note": _src,
+        }
+
+    # 3. Afrique du Sud : éligibilité bilatérale (14 partenaires actifs, SACU
+    #    exclue) ; pas de calendrier détaillé → taux ZLECAf générique de la ligne.
+    if dest == "ZAF":
+        from services.zlecaf_schedule_zaf import zaf_partner_active
+        if not zaf_partner_active(origin):
+            return {
+                "eligible": False,
+                "preference_applied": False,
+                "dd_rate_pct": dd_rate_pct,
+                "daps_exempt": False,
+                "note": "ZLECAf ratifié mais échanges préférentiels pas encore "
+                        "activés avec l'Afrique du Sud (newsletter AfCFTA "
+                        "dtic/SARS, mars 2026) — taux NPF appliqué",
+            }
+        eff_dd = line_zlecaf_rate_pct
+        applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
+        return {
+            "eligible": True,
+            "preference_applied": applied,
+            "dd_rate_pct": eff_dd,
+            "daps_exempt": False,
+            "note": None,
+        }
+
+    # 4. Autres pays, ratifiés des deux côtés : taux ZLECAf générique de la ligne.
+    eff_dd = line_zlecaf_rate_pct
+    applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
+    return {
+        "eligible": True,
+        "preference_applied": applied,
+        "dd_rate_pct": eff_dd,
+        "daps_exempt": False,
+        "note": None,
+    }
+
+
+def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False, language='fr', origin_country=None):
     """Calculate import taxes for a country/HS code/CIF value combination.
 
     Supports both HS6 codes and extended national sub-position codes (8-12
@@ -963,32 +1078,35 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
     npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3)
 
-    # ── ZLECAf cascade (DD + DAPS réduits selon la préférence ZLECAf) ────────
-    # Le DAPS est traité comme un droit de douane : il subit la MÊME réduction
-    # ZLECAf que le DD (même facteur de démantèlement).
+    # ── ZLECAf : éligibilité bilatérale + taux préférentiel selon l'origine ──
+    # L'avantage ZLECAf n'est accordé que si la paire origine/destination y est
+    # éligible : ratification continentale (origine ET destination) + réciprocité
+    # bilatérale (Algérie : 9 partenaires actifs ; Afrique du Sud : 14 partenaires
+    # actifs, SACU exclue). Source unique de vérité : _resolve_zlecaf_context, qui
+    # réutilise les mêmes modules que routes/calculator.py.
+    # Le DAPS est un droit de douane, exonéré de façon BINAIRE pour les listes (A)
+    # et (B) algériennes (circulaire 482/2024), indépendamment du facteur de
+    # démantèlement du DD.
+    _zctx = _resolve_zlecaf_context(
+        country_iso3, origin_country, hs_code_clean, dd_rate_pct, zlecaf_rate_pct
+    )
+    zlecaf_eligible = _zctx['eligible']
+    zlecaf_preference_applied = _zctx['preference_applied']
+    zlecaf_note = _zctx['note']
+
     zlecaf_taxes = dict(taxes_for_cascade)
-    if zlecaf_rate_pct is not None:
-        # Facteur de démantèlement ZLECAf dérivé du DD.
-        if dd_rate_pct > 0:
-            _zlecaf_factor = zlecaf_rate_pct / dd_rate_pct
-        else:
-            # Aucun DD de référence : un taux préférentiel ZLECAf à 0 % exonère
-            # le DAPS au même titre (facteur 0) ; sinon aucune réduction.
-            _zlecaf_factor = 0.0 if zlecaf_rate_pct == 0 else 1.0
+    if zlecaf_eligible:
+        _eff_dd = _zctx['dd_rate_pct']
         # DD : remplacé par le taux préférentiel ZLECAf (uniquement s'il réduit).
-        if zlecaf_rate_pct < dd_rate_pct:
-            if zlecaf_rate_pct == 0:
+        if _eff_dd is not None and _eff_dd < dd_rate_pct:
+            if _eff_dd == 0:
                 zlecaf_taxes.pop('DD', None)
             else:
-                zlecaf_taxes['DD'] = zlecaf_rate_pct
-        # DAPS (droit de douane) : même facteur de réduction que le DD, y compris
-        # lorsque le DD est nul (DAPS exonéré si la préférence ZLECAf s'applique).
-        if 'DAPS' in zlecaf_taxes and daps_rate_pct > 0 and _zlecaf_factor < 1.0:
-            _daps_zlecaf = round(daps_rate_pct * _zlecaf_factor, 4)
-            if _daps_zlecaf == 0:
-                zlecaf_taxes.pop('DAPS', None)
-            else:
-                zlecaf_taxes['DAPS'] = _daps_zlecaf
+                zlecaf_taxes['DD'] = _eff_dd
+        # DAPS (droit de douane) : exonération binaire selon les listes (A)/(B).
+        if 'DAPS' in zlecaf_taxes and daps_rate_pct > 0 and _zctx['daps_exempt']:
+            zlecaf_taxes.pop('DAPS', None)
+    # Non éligible : zlecaf_taxes == NPF → aucune préférence, économies = 0.
     zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3)
 
     savings_amount = round(npf_cascade['total_to_pay'] - zlecaf_cascade['total_to_pay'], 2)
@@ -1144,6 +1262,10 @@ def calculate_import_taxes(country_iso3, hs_code, cif_value, apply_zlecaf=False,
         'description_fr': line.get('description_fr', ''),
         'description_en': line.get('description_en', ''),
         'country_iso3':   country_iso3,
+        'origin_country': (origin_country or '').strip().upper() or None,
+        'zlecaf_eligible':          zlecaf_eligible,
+        'zlecaf_preference_applied': zlecaf_preference_applied,
+        'zlecaf_note':              zlecaf_note,
         'cif_value':      cif_value,
         'generated_at':   country_data.get('generated_at', '') if country_data else '',
         'rates': {
