@@ -35,6 +35,19 @@ with open(DATA_DIR / "list_b_codes.json", encoding="utf-8") as f:
 with open(DATA_DIR / "list_c_codes.json", encoding="utf-8") as f:
     LIST_C_CODES = frozenset(json.load(f))
 
+# Taux DD de base 2019 (figé à l'entrée en vigueur de l'Accord, art. 23),
+# par code SH10 de la liste (B) — source : tableau détaillé « Liste (B) :
+# produits concernés par le démantèlement tarifaire pendant 13 ans dans le
+# cadre de l'application du principe de réciprocité ». Ce taux de base est
+# une propriété du produit (indépendante du calendrier standard/réciprocité
+# appliqué au partenaire) et peut différer du taux DD courant figurant dans
+# la nomenclature tarifaire générale (ex. : 0201101100 — viande de veau —
+# taux de base ZLECAf 30%, taux DD courant 5% suite à une réduction
+# postérieure à 2019) : il prévaut donc sur tout taux normal transmis par
+# l'appelant pour les positions qu'il couvre.
+with open(DATA_DIR / "list_b_base_rates.json", encoding="utf-8") as f:
+    LIST_B_BASE_RATES_2019 = {k: v / 100.0 for k, v in json.load(f).items()}
+
 # Pays ayant déclenché l'application effective et réciproque de la ZLECAf
 # avec l'Algérie (circulaire 482/2024, partie I).
 ACTIVE_PARTNERS = frozenset({"ZAF", "CMR", "EGY", "GHA", "KEN", "MUS", "RWA", "TZA", "TUN"})
@@ -151,11 +164,15 @@ def compute_dza_zlecaf_rate(
     if is_frozen(hs_clean):
         return normal_rate, f"Liste ({lst}) gelée — règles d'origine non finalisées (droit commun)"
 
+    code10 = hs_clean.ljust(10, "0")[:10]
+    base_rate = LIST_B_BASE_RATES_2019.get(code10, normal_rate) if lst == "B" else normal_rate
+    base_label = " (taux de base 2019)" if lst == "B" and code10 in LIST_B_BASE_RATES_2019 else ""
+
     reciprocity = origin in RECIPROCITY_PARTNERS
     factor = _factor_reciprocity(lst, year) if reciprocity else _factor_standard(lst, year)
-    rate = round(normal_rate * factor, 6)
+    rate = round(base_rate * factor, 6)
     schedule_label = "réciprocité" if reciprocity else "standard"
-    return rate, f"ZLECAf DZA — liste ({lst}), calendrier {schedule_label}, {year}"
+    return rate, f"ZLECAf DZA — liste ({lst}){base_label}, calendrier {schedule_label}, {year}"
 
 
 def daps_exempt(hs_code: str, origin_iso3: str) -> bool:

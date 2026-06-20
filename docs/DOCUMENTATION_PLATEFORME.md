@@ -268,16 +268,27 @@ Tableau à 3 colonnes : (1) chapitre/position/sous-position SH, (2) désignation
 
 ## 7. Démantèlement tarifaire ZLECAf — cas Algérie (déjà livré)
 
-Module : `backend/services/zlecaf_schedule_dza.py` (+ tests `backend/tests/test_zlecaf_schedule_dza.py`, 17 tests). Source : **circulaire DGD n°482/DGD/SP/D.042/24 du 22/10/2024** et ses listes de concessions (A/B/C) — texte intégral vérifié (OCR).
+Module : `backend/services/zlecaf_schedule_dza.py` (+ tests `backend/tests/test_zlecaf_schedule_dza.py`, 19 tests). Source : **circulaire DGD n°482/DGD/SP/D.042/24 du 22/10/2024** et ses listes de concessions (A/B/C) — texte intégral vérifié (OCR), plus le tableau détaillé par code SH10 « Liste (B) : démantèlement 13 ans — principe de réciprocité ».
 
 Points clés (corrige le facteur générique, faux pour l'Algérie) :
 - **9 pays partenaires actifs** seulement (ZAF, CMR, EGY, GHA, KEN, MUS, RWA, TZA, TUN) ont déclenché l'application effective ; les autres restent au **droit commun (NPF)** à l'import en Algérie.
 - **Listes de produits** : (A) ~90% des lignes, démantelée d'ici 2025/2030 ; (B) 1 163 codes HS10, grâce puis démantèlement ; (C) 456 codes, **exclus** (toujours au droit commun).
-- **Deux calendriers** : standard, ou **principe de réciprocité** (13 pays non-PMA appliquant le calendrier PMA) — réduction pluriannuelle plus longue.
+- **Deux calendriers** : standard, ou **principe de réciprocité** (13 pays non-PMA appliquant le calendrier PMA, intersectés avec les 9 partenaires actifs : ZAF, CMR, GHA, KEN) — réduction pluriannuelle plus longue.
+- **Taux de base 2019 figé pour la liste (B)** (`backend/data/zlecaf_dza/list_b_base_rates.json`, 1 163 codes SH10) : extrait du tableau détaillé officiel et **prioritaire sur le taux normal transmis par l'appelant**, qui peut refléter une réduction tarifaire postérieure à 2019 hors ZLECAf (ex. 0201.10.11.00 — viande de veau — base ZLECAf 30% vs taux courant 5%). Validé ligne à ligne : 1163/1163 codes et 1159/1159 séquences de facteurs annuels concordent exactement avec les facteurs `_RECIP_B` déjà codés.
 - **Positions gelées** (textiles, véhicules) tant que les règles d'origine ne sont pas finalisées → droit commun maintenu.
 - **DAPS** (droit additionnel provisoire de sauvegarde) exonéré pour les produits des listes (A)/(B) non gelées importés depuis un partenaire actif (circulaire 482/2024, partie II-2, citant l'art. 2 de la loi de finances complémentaire 2018) — provision distincte du calendrier de démantèlement du DD lui-même.
 
 Intégration : override dans `routes/calculator.py` lorsque `dest_iso3 == "DZA"`. **Committé** sur la branche `claude/setup-github-cli-EngUf` (commit `98e0cdc1`).
+
+### 7bis. Statut d'adhésion ZLECAf continental + partenaires actifs Afrique du Sud
+
+Deux nouveaux modules généralisent, hors Algérie, la distinction « ratifié » vs « échanges préférentiels effectivement activés » que demande l'architecture ZLECAf (l'adhésion est continentale, l'activation des préférences est bilatérale) :
+
+- `backend/services/zlecaf_membership_status.py` (+ tests, 4) : statut de ratification par pays (ISO3), source **« Update on the AfCFTA » — newsletter the dtic/SARS, mars 2026** : Érythrée seule non signataire ; Bénin, Libye, Soudan du Sud, Soudan signataires non encore ratifiés ; tous les autres pays classés ratifiés. La source ne donne que des compteurs agrégés (50 ratifications, 48 offres tarifaires vérifiées, 25 pays en application active) sans liste nominative complète pour ces deux derniers niveaux : **aucune liste n'a donc été fabriquée** au-delà des pays explicitement cités.
+- `backend/services/zlecaf_schedule_zaf.py` (+ tests, 4) : 14 partenaires ayant effectivement déclenché l'échange de préférences ZLECAf à l'import en Afrique du Sud (Ghana, Nigeria, Sierra Leone, Gambie, Éthiopie, Cameroun, Tunisie, Algérie, Égypte, Maroc, Kenya, Rwanda, Ouganda, Burundi — même source), à l'exclusion explicite des membres de la SACU (Botswana, Lesotho, Namibie, Eswatini) qui échangent avec l'Afrique du Sud sous le régime SACU et non sous la ZLECAf (FAQ du document).
+
+Intégration dans `routes/calculator.py` : (1) si `dest_iso3 == "ZAF"` et le partenaire n'est pas dans la liste active → taux NPF ; (2) quel que soit le pays destination, si l'origine ou la destination n'a pas ratifié l'Accord → taux NPF (la non-ratification prime sur tout facteur générique ZLECAf).
+
 
 ---
 
@@ -321,7 +332,7 @@ Intégration : override dans `routes/calculator.py` lorsque `dest_iso3 == "DZA"`
 ## 9. Tests & qualité
 
 - Suite : `backend/tests/` (~36 modules). Lancement : `cd backend && python3 -m pytest tests/`.
-- **Tests purs (unitaires, sans I/O), au vert** : `test_tax_computation.py`, `test_zlecaf_schedule_dza.py` (17), `test_tariff_crawl_pipeline.py`, `test_crawled_lookup_hs6.py`, etc.
+- **Tests purs (unitaires, sans I/O), au vert** : `test_tax_computation.py`, `test_zlecaf_schedule_dza.py` (19), `test_tariff_crawl_pipeline.py`, `test_crawled_lookup_hs6.py`, etc.
 - **Échecs/erreurs pré-existants connus** (indépendants des travaux récents) :
   - `test_export.py` : **échoue à l'import** (motor/pymongo `_QUERY_OPTIONS`). ⚠️ *(L'agent de doc backend l'a indiqué « PASS » par erreur ; vérification directe : il ne collecte pas.)*
   - `test_rules_of_origin.py`, `test_smart_search_chapters.py` : **tests d'intégration nécessitant un serveur live** (impossible ici car `server.py` ne démarre pas — voir §4.1).
@@ -334,7 +345,7 @@ Intégration : override dans `routes/calculator.py` lorsque `dest_iso3 == "DZA"`
 
 ### Livré et committé (branche `claude/setup-github-cli-EngUf`)
 - **Crawl national DZA complet** : `DZA_tariffs.json` fusionné, 17 061 positions authentiques (chap. 01–98 sauf 22, 24 absents à la source, et 77 réservé), validé `✓ AUTHENTIQUE & INGESTIBLE` (commit `a8c88ab2`).
-- **Calendrier ZLECAf Algérie** (circulaire DGD 482/2024) : `zlecaf_schedule_dza.py` + override calculateur + 17 tests (commit `98e0cdc1`).
+- **Calendrier ZLECAf Algérie** (circulaire DGD 482/2024) : `zlecaf_schedule_dza.py` + override calculateur + taux de base 2019 par code SH10 liste (B) + 19 tests.
 
 ### En cours / non finalisé (changements non committés dans le working tree)
 - **Reconstruction du moteur de règles d'origine** : un fichier `backend/data/zlecaf_rules_of_origin.json` (96 ch. / 101 pos. / 12 sous-pos.) a été produit depuis l'Appendice IV, et `routes/rules_of_origin.py` / `constants.py` / `etl/afcfta_rules_of_origin.py` / `routes/__init__.py` modifiés. **Incohérences à corriger avant commit** :

@@ -1,3 +1,4 @@
 - [Maritime route matrix](maritime-route-matrix.md) — sea ports/routes live in logistics_fees_data.PORTS; derive country→ports from p["iso"], never keep a parallel hard-coded port list.
 - [Multimodal carrier sourcing](multimodal-carriers.md) — land legs must use exact corridor operators from get_land_freight_cost()["operators"]; country-presence matching is fallback only.
 - [Importing a GitHub PR](importing-github-prs.md) — local main diverged from GitHub; git apply/merge blocked → fetch PR diff via public API and apply hunks manually with edit/write.
+- [Calculator dual computation path](calculator-dual-path.md) — frontend prefers /api/authentic-tariffs/calculate (no currency/breakdown) over /api/calculate-tariff; DZA UI hides local currency + any calculator.py-only fiscal logic.
