@@ -39,3 +39,9 @@ auto-zero-rate).
 - Bloc rosters are hardcoded — treat membership edge cases (e.g. EAC/Somalia,
   transitional accessions) as needing source verification before relying on them
   for regulatory output.
+- **User rule (decision):** a country gets customs-union 0 % treatment ONLY when
+  its membership is *officially confirmed AND ratified*. For any pending /
+  unratified / transitional accession, leave the roster as-is (do NOT add it to a
+  customs union) and let it fall through to ZLECAf-if-eligible. Roster details to
+  be verified later — stay conservative until then. This is already how the
+  precedence chain behaves: non-customs-union members flow to the ZLECAf path.
