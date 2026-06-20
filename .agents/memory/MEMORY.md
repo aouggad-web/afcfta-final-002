@@ -2,3 +2,5 @@
 - [Multimodal carrier sourcing](multimodal-carriers.md) — land legs must use exact corridor operators from get_land_freight_cost()["operators"]; country-presence matching is fallback only.
 - [Importing a GitHub PR](importing-github-prs.md) — local main diverged from GitHub; git apply/merge blocked → fetch PR diff via public API and apply hunks manually with edit/write.
 - [Calculator dual computation path](calculator-dual-path.md) — frontend prefers /api/authentic-tariffs/calculate (no currency/breakdown) over /api/calculate-tariff; DZA UI hides local currency + any calculator.py-only fiscal logic.
+- [Trade regime precedence](trade-regime-precedence.md) — customs unions (SACU/EAC/CEMAC/UEMOA) recalc 0% and PRECEDE the ZLECAf gate; FTAs (ECOWAS/SADC/COMESA) are conditional metadata only, never auto-0%.
+- [Tariff line null rate fields](tariff-line-null-rates.md) — real lines can carry JSON null for vat_rate/dd_rate/etc; always `or 0` or you crash on `>` AND silently kill the taxes_detail TVA fallback (`==0`).

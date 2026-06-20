@@ -68,7 +68,7 @@ def synthetic_calc(monkeypatch):
 def test_breakdown_and_currency_present_when_fx_available(synthetic_calc):
     synthetic_calc.setattr(exchange_rates_module, "get_service", lambda: _FakeFxService(rate=100.0))
 
-    result = svc.calculate_import_taxes("KEN", "100190", 1000.0)
+    result = svc.calculate_import_taxes("KEN", "100190", 1000.0, origin_country="GHA")
 
     assert "error" not in result
     assert {"taxes_breakdown", "taxes_summary", "currency"} <= set(result)
@@ -100,7 +100,7 @@ def test_breakdown_and_currency_present_when_fx_available(synthetic_calc):
 def test_currency_degrades_to_usd_when_fx_unavailable(synthetic_calc):
     synthetic_calc.setattr(exchange_rates_module, "get_service", lambda: _FakeFxService(raise_exc=True))
 
-    result = svc.calculate_import_taxes("KEN", "100190", 1000.0)
+    result = svc.calculate_import_taxes("KEN", "100190", 1000.0, origin_country="GHA")
 
     # Le détail reste présent (USD uniquement) ; pas de plantage.
     assert result["taxes_breakdown"]
@@ -144,7 +144,7 @@ def dza_calc(monkeypatch):
 
 def test_dza_daps_treated_as_customs_duty_and_reduced_under_zlecaf(dza_calc):
     """DAPS = droit de douane, réduit sous ZLECAf comme le DD (mêmes 0% ici)."""
-    result = svc.calculate_import_taxes("DZA", "020110", 10000.0)
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
 
     assert by_code["DAPS"]["category"] == "droit_douane"
@@ -164,7 +164,7 @@ def test_dza_daps_treated_as_customs_duty_and_reduced_under_zlecaf(dza_calc):
 def test_dza_precompte_label_base_and_order(dza_calc):
     """PRCT = « Précompte (PRCT) », 2%, calculé après la TVA sur la valeur
     globale TVA incluse mais HORS DAPS = CIF + DD + TCS + TVA."""
-    result = svc.calculate_import_taxes("DZA", "020110", 10000.0)
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
 
     prct = by_code["PRCT"]
@@ -183,7 +183,7 @@ def test_dza_precompte_label_base_and_order(dza_calc):
 
 def test_dza_tcs_kept_at_3_percent_unaffected_by_zlecaf(dza_calc):
     """TCS conservée à 3% (base CIF), non affectée par la ZLECAf."""
-    result = svc.calculate_import_taxes("DZA", "020110", 10000.0)
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
 
     tcs = by_code["TCS"]
@@ -212,7 +212,7 @@ def test_dza_daps_exempt_under_zlecaf_even_when_dd_is_zero(monkeypatch):
     monkeypatch.setattr(svc, "get_sub_positions", lambda *a, **k: [])
     monkeypatch.setattr(currency_service, "get_by_country", lambda code: None)
 
-    result = svc.calculate_import_taxes("DZA", "020110", 10000.0)
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
 
     assert by_code["DAPS"]["amount_npf"] == 3000.0
@@ -245,12 +245,51 @@ def test_etl_list_format_taxes_detail_does_not_crash(monkeypatch):
     monkeypatch.setattr(svc, "get_sub_positions", lambda *a, **k: [])
     monkeypatch.setattr(currency_service, "get_by_country", lambda code: None)
 
-    result = svc.calculate_import_taxes("KEN", "100190", 1000.0)
+    result = svc.calculate_import_taxes("KEN", "100190", 1000.0, origin_country="GHA")
 
     assert "error" not in result
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
     assert by_code["DD"]["amount_npf"] == 200.0
     assert by_code["DD"]["amount_zlecaf"] == 0.0
+
+
+def test_null_rates_do_not_crash_and_vat_falls_back_to_taxes_detail(monkeypatch):
+    """Régression données réelles : une ligne dont `vat_rate`/`dd_rate`/
+    `other_taxes_rate` valent explicitement None (JSON null) ne doit pas planter
+    (`None > 0`) et doit récupérer la TVA depuis `taxes_detail` — le repli est
+    gardé par `vat_rate_pct == 0`, désactivé si None se propage."""
+    line = {
+        "dd_rate": None,
+        "vat_rate": None,
+        "zlecaf_rate": None,
+        "other_taxes_rate": None,
+        "taxes_detail": {
+            "DD":  {"rate": 30.0, "label": "Droit de douane"},
+            "TVA": {"rate": 19.0, "label": "Taxe sur la Valeur Ajoutée"},
+        },
+        "description_fr": "Ligne réelle à taux nuls",
+        "description_en": "Real line with null rates",
+        "fiscal_advantages": [],
+        "administrative_formalities": [],
+    }
+    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: None)
+    monkeypatch.setattr(svc, "load_country_tariffs", lambda iso3: {"generated_at": "2025-01-01"})
+    monkeypatch.setattr(svc, "get_tariff_line", lambda iso3, hs6: dict(line))
+    monkeypatch.setattr(svc, "load_crawled_position_index", lambda iso3: None)
+    monkeypatch.setattr(svc, "get_sub_positions", lambda *a, **k: [])
+    monkeypatch.setattr(currency_service, "get_by_country", lambda code: None)
+
+    # origin NGA → DZA : hors partenaires actifs, aucun bloc commun → NPF (pas
+    # de préférence), on isole donc la robustesse aux valeurs nulles.
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="NGA")
+
+    assert "error" not in result
+    by_code = {b["code"]: b for b in result["taxes_breakdown"]}
+    # TVA récupérée depuis taxes_detail malgré vat_rate=None.
+    assert by_code["TVA"]["rate_npf_pct"] == 19.0
+    assert by_code["TVA"]["amount_npf"] > 0
+    # DD (depuis taxes_detail) appliqué normalement, aucune propagation de None.
+    assert by_code["DD"]["amount_npf"] == 3000.0
 
 
 def test_dza_precompte_label_normalized_in_legacy_fields(dza_calc):
@@ -261,7 +300,7 @@ def test_dza_precompte_label_normalized_in_legacy_fields(dza_calc):
     line["taxes_detail"]["PRCT"] = {"rate": 2.0, "label": "Prélèvement à la Compensation du Transport"}
     dza_calc.setattr(svc, "get_tariff_line", lambda iso3, hs6: dict(line))
 
-    result = svc.calculate_import_taxes("DZA", "020110", 10000.0)
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
 
     assert result["taxes_detail"]["PRCT"]["label"] == "Précompte (PRCT)"
     prct_ind = next(t for t in result["individual_taxes"] if t["code"] == "PRCT")
@@ -271,7 +310,7 @@ def test_dza_precompte_label_normalized_in_legacy_fields(dza_calc):
 def test_summary_totals_match_breakdown_rows(synthetic_calc):
     synthetic_calc.setattr(exchange_rates_module, "get_service", lambda: _FakeFxService(rate=100.0))
 
-    result = svc.calculate_import_taxes("KEN", "100190", 1000.0)
+    result = svc.calculate_import_taxes("KEN", "100190", 1000.0, origin_country="GHA")
     breakdown = result["taxes_breakdown"]
     summary = result["taxes_summary"]
 
@@ -290,3 +329,94 @@ def test_summary_totals_match_breakdown_rows(synthetic_calc):
     assert summary["economie_totale"] == round(
         summary["npf"]["cout_total"] - summary["zlecaf"]["cout_total"], 2
     )
+
+
+# ──────────────────────────────────────────────────────────────────────────
+# Régimes commerciaux : éligibilité ZLECAf, unions douanières, ZLE conditionnelles
+# ──────────────────────────────────────────────────────────────────────────
+
+def test_no_origin_yields_npf_no_preference(synthetic_calc):
+    """Sans pays d'origine, aucun régime préférentiel : taux NPF, DD non réduit."""
+    synthetic_calc.setattr(currency_service, "get_by_country", lambda code: None)
+    result = svc.calculate_import_taxes("KEN", "100190", 1000.0)
+    by_code = {b["code"]: b for b in result["taxes_breakdown"]}
+    assert result["trade_regime"] == "NPF"
+    assert result["zlecaf_eligible"] is False
+    assert by_code["DD"]["amount_zlecaf"] == 200.0
+    assert by_code["DD"]["affected_by_zlecaf"] is False
+    assert result["taxes_summary"]["economie_droits"] == 0.0
+
+
+def test_generic_zlecaf_partner_gets_preference(synthetic_calc):
+    """Deux pays ratifiés sans bloc commun (KEN←GHA) : ZLECAf générique, DD→0."""
+    synthetic_calc.setattr(currency_service, "get_by_country", lambda code: None)
+    result = svc.calculate_import_taxes("KEN", "100190", 1000.0, origin_country="GHA")
+    by_code = {b["code"]: b for b in result["taxes_breakdown"]}
+    assert result["trade_regime"] == "ZLECAF"
+    assert result["zlecaf_eligible"] is True
+    assert by_code["DD"]["amount_zlecaf"] == 0.0
+
+
+def test_uemoa_customs_union_overrides_zlecaf_ratification(synthetic_calc):
+    """BEN (signataire NON ratifié ZLECAf) → SEN : l'union douanière UEMOA
+    prévaut sur la passerelle ZLECAf — DD intra-bloc = 0%."""
+    synthetic_calc.setattr(currency_service, "get_by_country", lambda code: None)
+    result = svc.calculate_import_taxes("SEN", "100190", 1000.0, origin_country="BEN")
+    by_code = {b["code"]: b for b in result["taxes_breakdown"]}
+    assert result["trade_regime"] == "CUSTOMS_UNION"
+    assert result["trade_regime_code"] == "UEMOA"
+    assert result["zlecaf_eligible"] is False
+    assert result["preferential_regime_applied"] is True
+    assert by_code["DD"]["amount_zlecaf"] == 0.0
+    assert by_code["DD"]["affected_by_zlecaf"] is True
+
+
+def test_sacu_customs_union_applies_for_non_zlecaf_member(synthetic_calc):
+    """BWA (non-membre ZLECAf) → ZAF : SACU prévaut, libre circulation 0%."""
+    synthetic_calc.setattr(currency_service, "get_by_country", lambda code: None)
+    result = svc.calculate_import_taxes("ZAF", "100190", 1000.0, origin_country="BWA")
+    by_code = {b["code"]: b for b in result["taxes_breakdown"]}
+    assert result["trade_regime"] == "CUSTOMS_UNION"
+    assert result["trade_regime_code"] == "SACU"
+    assert by_code["DD"]["amount_zlecaf"] == 0.0
+
+
+def test_comesa_partner_not_auto_zero_rated(synthetic_calc):
+    """ERI (non-signataire ZLECAf) → EGY : COMESA est une ZLE conditionnelle,
+    PAS une union douanière → aucune exonération automatique (taux NPF), mais
+    le régime conditionnel est signalé."""
+    synthetic_calc.setattr(currency_service, "get_by_country", lambda code: None)
+    result = svc.calculate_import_taxes("EGY", "100190", 1000.0, origin_country="ERI")
+    by_code = {b["code"]: b for b in result["taxes_breakdown"]}
+    assert result["trade_regime"] == "FTA_CONDITIONAL"
+    assert result["trade_regime_code"] == "COMESA"
+    assert result["preferential_regime_applied"] is False
+    assert by_code["DD"]["amount_zlecaf"] == 200.0
+    assert by_code["DD"]["affected_by_zlecaf"] is False
+    assert result["taxes_summary"]["economie_droits"] == 0.0
+
+
+def test_dza_unchanged_full_exemption_with_active_partner(dza_calc):
+    """L'Algérie n'appartient à aucune union douanière sub-saharienne : son
+    calendrier ZLECAf authentique reste inchangé (EGY actif → exonération)."""
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
+    assert result["trade_regime"] == "ZLECAF"
+    assert result["zlecaf_eligible"] is True
+    assert result["taxes_summary"]["economie_droits"] == 6000.0
+
+
+def test_dza_non_active_ratified_partner_npf(dza_calc):
+    """NGA (ratifié ZLECAf mais hors partenaires actifs DZA, aucun bloc commun
+    avec l'Algérie) : NPF, aucune préférence."""
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="NGA")
+    assert result["trade_regime"] == "NPF"
+    assert result["zlecaf_eligible"] is False
+    assert result["taxes_summary"]["economie_droits"] == 0.0
+
+
+def test_eritrea_into_dza_not_signed_npf(dza_calc):
+    """ERI (non-signataire) → DZA (hors bloc commun) : NPF, motif explicite."""
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="ERI")
+    assert result["trade_regime"] == "NPF"
+    assert "ERI" in (result["zlecaf_note"] or "")
+    assert result["taxes_summary"]["economie_droits"] == 0.0

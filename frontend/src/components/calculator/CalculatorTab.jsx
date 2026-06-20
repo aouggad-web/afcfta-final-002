@@ -388,6 +388,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           tariff_precision: 'authentic_data',
           data_source: 'authentic_tariff',
 
+          // Régime commercial applicable (union douanière, ZLECAf, ZLE conditionnelle, NPF)
+          trade_regime: authenticResult.trade_regime || null,
+          trade_regime_code: authenticResult.trade_regime_code || null,
+          trade_regime_note: authenticResult.trade_regime_note || null,
+          preferential_regime_applied: authenticResult.preferential_regime_applied !== false,
           // Éligibilité ZLECAf (réciprocité bilatérale + ratification continentale)
           zlecaf_eligible: authenticResult.zlecaf_eligible !== false,
           zlecaf_preference_applied: authenticResult.zlecaf_preference_applied !== false,
@@ -978,9 +983,40 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </CardHeader>
             
             <CardContent className="relative">
-              {/* Bandeau éligibilité ZLECAf (origine/destination non éligible
-                  ou aucune préférence sur ce produit → message explicite) */}
-              {result.zlecaf_note && (result.zlecaf_eligible === false || result.zlecaf_preference_applied === false) && (
+              {/* Bandeau régime commercial applicable :
+                  - CUSTOMS_UNION  → libre circulation intra-union (positif, vert)
+                  - FTA_CONDITIONAL → régime du bloc possible sous conditions (ambre)
+                  - NPF             → aucune préférence (avertissement, ambre)
+                  - ZLECAF          → pas de bandeau (la colonne préférentielle suffit) */}
+              {result.trade_regime === 'CUSTOMS_UNION' && (
+                <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-start gap-3">
+                  <Shield className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-emerald-300 font-semibold text-sm">
+                      {language === 'fr'
+                        ? `Union douanière ${result.trade_regime_code || ''} — libre circulation`
+                        : `${result.trade_regime_code || ''} customs union — free circulation`}
+                    </p>
+                    <p className="text-emerald-200/80 text-sm mt-1">{result.trade_regime_note}</p>
+                  </div>
+                </div>
+              )}
+
+              {result.trade_regime === 'FTA_CONDITIONAL' && (
+                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
+                  <Info className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-amber-300 font-semibold text-sm">
+                      {language === 'fr'
+                        ? `Régime ${result.trade_regime_code || 'du bloc'} applicable sous conditions`
+                        : `${result.trade_regime_code || 'Bloc'} regime applies under conditions`}
+                    </p>
+                    <p className="text-amber-200/80 text-sm mt-1">{result.trade_regime_note}</p>
+                  </div>
+                </div>
+              )}
+
+              {result.trade_regime === 'NPF' && result.zlecaf_note && (
                 <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
                   <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
                   <div>
