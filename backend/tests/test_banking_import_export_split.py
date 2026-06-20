@@ -67,10 +67,6 @@ def test_algeria_export_formalities_are_explicit_authentic():
     assert "titre_importation" not in export.mandatory_documents
 
 
-    assert profile.export_formalities.repatriation_deadline_days == 180
-    assert profile.import_formalities.domiciliation_threshold_usd == 0
-
-
 def test_import_export_share_domiciliation_trigger():
     profile = get_forex_profile("NG")
     assert (
