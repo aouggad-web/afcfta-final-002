@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Link2, RefreshCw, ArrowRight } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
+import { CSVExportButton } from '../common/ExportTools';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -219,7 +220,21 @@ export default function TradeComplementarity({ language = 'fr' }) {
             {/* ── Opportunités ──────────────────────────────────── */}
             {rows.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-slate-700 mb-2">{txt.opportunities}</h4>
+                <div className="flex items-center justify-between gap-3 flex-wrap mb-2">
+                  <h4 className="text-sm font-semibold text-slate-700">{txt.opportunities}</h4>
+                  <CSVExportButton
+                    rows={rows}
+                    columns={[
+                      { key: 'hs_code', label: txt.code },
+                      { key: 'product', label: txt.product },
+                      { key: 'exporter_export_share', label: txt.expShare },
+                      { key: 'importer_import_share', label: txt.impShare },
+                      { key: 'match_score', label: txt.match },
+                    ]}
+                    filename={`tci_${exporter}_${importer}_${year}_${hsLevel}`}
+                    language={language}
+                  />
+                </div>
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>

@@ -18,6 +18,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Cell } from 'recharts';
 import { Percent, RefreshCw } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
+import { CSVExportButton } from '../common/ExportTools';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -219,7 +220,19 @@ export default function PreferenceMargin({ language = 'fr' }) {
             {/* ── Top secteurs ────────────────────────────────── */}
             {sectorChart.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-slate-700 mb-2">{txt.topSectors}</h4>
+                <div className="flex items-center justify-between gap-3 flex-wrap mb-2">
+                  <h4 className="text-sm font-semibold text-slate-700">{txt.topSectors}</h4>
+                  <CSVExportButton
+                    rows={data.top_sectors_by_margin || []}
+                    columns={[
+                      { key: 'sector', label: txt.sector },
+                      { key: 'count', label: txt.count },
+                      { key: 'avg_preference_margin', label: txt.margin },
+                    ]}
+                    filename={`preference_${country}`}
+                    language={language}
+                  />
+                </div>
                 <div style={{ width: '100%', height: 320 }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={sectorChart} layout="vertical" margin={{ top: 4, right: 30, left: 8, bottom: 4 }}>
