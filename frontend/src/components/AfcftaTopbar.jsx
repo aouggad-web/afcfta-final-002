@@ -56,8 +56,11 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
               {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
             </span>
             {appLastChange && (
-              <span className="afcfta-appLastChange">
-                {lastUpdateLabel} {appLastChange}
+              <span
+                className="afcfta-appLastChange"
+                aria-label={isFrench ? "Dernière mise à jour de l’application" : "Application last update"}
+              >
+                {lastUpdateLabel} <time>{appLastChange}</time>
               </span>
             )}
           </div>

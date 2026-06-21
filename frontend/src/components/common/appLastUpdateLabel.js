@@ -1,3 +1,5 @@
 export function getAppLastUpdateLabel(language) {
-  return language === 'fr' ? 'Dernière mise à jour :' : 'Last update:';
+  if (language === 'fr') return 'Dernière mise à jour :';
+  if (language === 'en') return 'Last update:';
+  return 'Last update:';
 }
