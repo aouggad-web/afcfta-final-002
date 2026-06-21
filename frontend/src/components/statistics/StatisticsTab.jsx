@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Cell } from 'recharts';
-import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight, Search, LayoutGrid, Map as MapIcon, Award, Link2 } from 'lucide-react';
+import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight, Search, LayoutGrid, Map as MapIcon, Award, Link2, Percent } from 'lucide-react';
 
 // Sub-components
 import StatisticsZaubaStyle from '../StatisticsZaubaStyle';
@@ -21,6 +21,7 @@ import ProductTreemap from './ProductTreemap';
 import AfricaTradeMap from './AfricaTradeMap';
 import RcaAnalysis from './RcaAnalysis';
 import TradeComplementarity from './TradeComplementarity';
+import PreferenceMargin from './PreferenceMargin';
 import { PDFExportButton } from '../common/ExportTools';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -58,6 +59,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       map: "Carte",
       rca: "RCA",
       complementarity: "Complémentarité",
+      preference: "Préférences ZLECAf",
       trends: "Tendances",
       parPays: "Par Pays & SH6",
       comparison: "Comparaison Pays",
@@ -77,6 +79,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       map: "Map",
       rca: "RCA",
       complementarity: "Complementarity",
+      preference: "AfCFTA Preferences",
       trends: "Trends",
       parPays: "By Country & HS6",
       comparison: "Country Comparison",
@@ -111,6 +114,7 @@ export default function StatisticsTab({ language = 'fr' }) {
     { value: 'map',        icon: <MapIcon className="h-4 w-4"   />, label: txt.map        },
     { value: 'rca',        icon: <Award className="h-4 w-4"     />, label: txt.rca        },
     { value: 'complementarity', icon: <Link2 className="h-4 w-4" />, label: txt.complementarity },
+    { value: 'preference', icon: <Percent className="h-4 w-4"   />, label: txt.preference  },
     { value: 'trends',     icon: <TrendingUp className="h-4 w-4"/>, label: txt.trends     },
     { value: 'par-pays',   icon: <Search className="h-4 w-4"   />, label: txt.parPays   },
     { value: 'comparison', icon: <Scale className="h-4 w-4"     />, label: txt.comparison },
@@ -305,6 +309,11 @@ export default function StatisticsTab({ language = 'fr' }) {
           {/* ── Complementarity Tab ───────────────────────────── */}
           <TabsContent value="complementarity" className="space-y-8">
             <TradeComplementarity language={language} />
+          </TabsContent>
+
+          {/* ── Preference Margin Tab ─────────────────────────── */}
+          <TabsContent value="preference" className="space-y-8">
+            <PreferenceMargin language={language} />
           </TabsContent>
 
           {/* ── Trends Tab ────────────────────────────────────── */}
