@@ -1,5 +1,11 @@
 export function getAppLastUpdateLabel(language) {
-  if (language === 'fr') return 'Dernière mise à jour :';
-  if (language === 'en') return 'Last update:';
-  return 'Last update:';
+  return language === 'fr' ? 'Dernière mise à jour :' : 'Last update:';
+}
+
+export function getLastUpdateDateTime(lastUpdateValue) {
+  const parsed = Date.parse(lastUpdateValue);
+  if (Number.isNaN(parsed)) {
+    return undefined;
+  }
+  return new Date(parsed).toISOString();
 }

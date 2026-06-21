@@ -15,7 +15,7 @@ import {
   Sun,
   X,
 } from "lucide-react";
-import { getAppLastUpdateLabel } from "./common/appLastUpdateLabel";
+import { getAppLastUpdateLabel, getLastUpdateDateTime } from "./common/appLastUpdateLabel";
 
 /* ─── Flat nav items ─────────────────────────────────────────── */
 const NAV_ITEMS = (isFrench) => [
@@ -38,6 +38,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
   const isLight = theme === "light";
   const appLastChange = import.meta.env.VITE_APP_LAST_CHANGE;
   const lastUpdateLabel = getAppLastUpdateLabel(language);
+  const lastUpdateDateTime = getLastUpdateDateTime(appLastChange);
   const items = NAV_ITEMS(isFrench);
 
   const handleTab = (id) => {
@@ -57,7 +58,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
             </span>
             {appLastChange && (
               <span className="afcfta-appLastChange">
-                {lastUpdateLabel} <time dateTime={appLastChange}>{appLastChange}</time>
+                {lastUpdateLabel} <time dateTime={lastUpdateDateTime}>{appLastChange}</time>
               </span>
             )}
           </div>
