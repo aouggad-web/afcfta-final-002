@@ -49,12 +49,12 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
       <div className="afcfta-topHeader__bar">
         <div className="afcfta-topHeader__brand">
           <div className="afcfta-topHeader__brandIcon">🌍</div>
-          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+          <div className="afcfta-topHeader__brandText">
             <span className="afcfta-topHeader__brandName">
               {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
             </span>
             {appLastChange && (
-              <span style={{ fontSize: 11, opacity: 0.72 }}>
+              <span className="afcfta-appLastChange">
                 {isFrench ? "Dernier changement :" : "Last change:"} {appLastChange}
               </span>
             )}

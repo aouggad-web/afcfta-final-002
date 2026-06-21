@@ -1596,6 +1596,12 @@ body::before {
   gap: 10px;
 }
 
+.afcfta-topHeader__brandText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
 .afcfta-topHeader__brandIcon {
   width: 32px;
   height: 32px;
@@ -1613,6 +1619,12 @@ body::before {
   font-weight: 800;
   color: var(--text);
   letter-spacing: 0.3px;
+}
+
+.afcfta-appLastChange {
+  margin-top: 2px;
+  font-size: 11px;
+  opacity: 0.72;
 }
 
 .afcfta-topHeader__lang {
@@ -2204,4 +2216,3 @@ body::before {
     flex: 1;
   }
 }
-
