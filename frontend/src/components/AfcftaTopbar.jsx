@@ -58,7 +58,12 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
             </span>
             {appLastChange && (
               <span className="afcfta-appLastChange">
-                {lastUpdateLabel} <time dateTime={lastUpdateDateTime}>{appLastChange}</time>
+                {lastUpdateLabel}{' '}
+                {lastUpdateDateTime ? (
+                  <time dateTime={lastUpdateDateTime}>{appLastChange}</time>
+                ) : (
+                  <time>{appLastChange}</time>
+                )}
               </span>
             )}
           </div>

@@ -48,7 +48,12 @@ export default function AfcftaSidebar({
           <p>{isFrench ? "Intelligence commerciale" : "Trade Intelligence"}</p>
           {appLastChange && (
             <p className="afcfta-appLastChange">
-              {lastUpdateLabel} <time dateTime={lastUpdateDateTime}>{appLastChange}</time>
+              {lastUpdateLabel}{' '}
+              {lastUpdateDateTime ? (
+                <time dateTime={lastUpdateDateTime}>{appLastChange}</time>
+              ) : (
+                <time>{appLastChange}</time>
+              )}
             </p>
           )}
         </div>
