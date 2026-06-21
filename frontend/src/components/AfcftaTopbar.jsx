@@ -55,7 +55,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
             </span>
             {appLastChange && (
               <span className="afcfta-appLastChange">
-                {isFrench ? "Dernière mise à jour :" : "Last change:"} {appLastChange}
+                {isFrench ? "Dernière mise à jour :" : "Last update:"} {appLastChange}
               </span>
             )}
           </div>
