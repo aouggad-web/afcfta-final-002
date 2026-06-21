@@ -50,7 +50,7 @@ export default function AfcftaSidebar({
               className="afcfta-appLastChange"
               aria-label={isFrench ? "Dernière mise à jour de l’application" : "Application last update"}
             >
-              {lastUpdateLabel} <time>{appLastChange}</time>
+              {lastUpdateLabel} <time dateTime={appLastChange}>{appLastChange}</time>
             </p>
           )}
         </div>

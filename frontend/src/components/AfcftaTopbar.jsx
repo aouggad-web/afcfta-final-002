@@ -60,7 +60,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
                 className="afcfta-appLastChange"
                 aria-label={isFrench ? "Dernière mise à jour de l’application" : "Application last update"}
               >
-                {lastUpdateLabel} <time>{appLastChange}</time>
+                {lastUpdateLabel} <time dateTime={appLastChange}>{appLastChange}</time>
               </span>
             )}
           </div>
