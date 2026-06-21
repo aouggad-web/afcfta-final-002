@@ -35,6 +35,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
   const [mobileOpen, setMobileOpen] = useState(false);
   const isFrench = language === "fr";
   const isLight = theme === "light";
+  const appLastChange = import.meta.env.VITE_APP_LAST_CHANGE;
   const items = NAV_ITEMS(isFrench);
 
   const handleTab = (id) => {
@@ -48,9 +49,16 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
       <div className="afcfta-topHeader__bar">
         <div className="afcfta-topHeader__brand">
           <div className="afcfta-topHeader__brandIcon">🌍</div>
-          <span className="afcfta-topHeader__brandName">
-            {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
-          </span>
+          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+            <span className="afcfta-topHeader__brandName">
+              {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
+            </span>
+            {appLastChange && (
+              <span style={{ fontSize: 11, opacity: 0.72 }}>
+                {isFrench ? "Dernier changement :" : "Last change:"} {appLastChange}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Mobile menu toggle */}

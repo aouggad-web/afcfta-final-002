@@ -28,6 +28,7 @@ export default function AfcftaSidebar({
   const [collapsed, setCollapsed] = useState(false);
   const isFrench = language === "fr";
   const isLight = theme === "light";
+  const appLastChange = import.meta.env.VITE_APP_LAST_CHANGE;
   const items = NAV_ITEMS(isFrench);
 
   const handleTab = (id) => {
@@ -42,6 +43,11 @@ export default function AfcftaSidebar({
         <div className="afcfta-sidebar-title">
           <h1>{isFrench ? "ZLECAf" : "AfCFTA"}</h1>
           <p>{isFrench ? "Intelligence commerciale" : "Trade Intelligence"}</p>
+          {appLastChange && (
+            <p style={{ fontSize: 11, opacity: 0.72, marginTop: 2 }}>
+              {isFrench ? "Dernier changement :" : "Last change:"} {appLastChange}
+            </p>
+          )}
         </div>
       </div>
 
