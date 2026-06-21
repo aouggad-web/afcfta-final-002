@@ -5,3 +5,4 @@
 - [Trade regime precedence](trade-regime-precedence.md) — customs unions (SACU/EAC/CEMAC/UEMOA) recalc 0% and PRECEDE the ZLECAf gate; FTAs (ECOWAS/SADC/COMESA) are conditional metadata only, never auto-0%.
 - [Tariff line null rate fields](tariff-line-null-rates.md) — real lines can carry JSON null for vat_rate/dd_rate/etc; always `or 0` or you crash on `>` AND silently kill the taxes_detail TVA fallback (`==0`).
 - [Pushing repl to new GitHub repo](github-push.md) — local git is shallow w/ missing history; plain push fails (`did not receive expected object`). Push a parent-less `commit-tree` snapshot; strip `.github/workflows` (OAuth lacks `workflow` scope).
+- [CI npm "Exit handler never called!"](ci-npm-exit-handler.md) — on GH Actions `npm ci` crashes but exits 0 (empty node_modules → `vite: not found`); pinning npm doesn't help, switch frontend job to yarn.
