@@ -807,6 +807,110 @@ class OECTradeService:
             "retrieved_at": datetime.utcnow().isoformat()
         }
 
+    async def get_revealed_comparative_advantage(
+        self,
+        country_iso3: str,
+        year: int,
+        hs_level: str = "HS4",
+        limit: int = 30,
+    ) -> Dict:
+        """
+        Calcule l'avantage comparatif révélé (RCA, indice de Balassa) d'un pays
+        pour chaque produit, à un niveau SH choisi (HS2, HS4 ou HS6).
+
+        RCA = (X_cp / X_c) / (X_wp / X_w)
+          X_cp = exportations du produit p par le pays c
+          X_c  = exportations totales du pays c
+          X_wp = exportations mondiales du produit p
+          X_w  = exportations mondiales totales
+
+        RCA > 1 ⇒ le pays est relativement spécialisé (avantage révélé) dans p.
+
+        2 appels API: exports du pays par produit + exports mondiaux par produit
+        (même niveau SH), tous deux mis en cache.
+        """
+        if hs_level not in ("HS2", "HS4", "HS6"):
+            return {"error": f"Invalid hs_level '{hs_level}' (HS2, HS4, HS6)"}
+
+        country_info = AFRICAN_COUNTRIES_OEC.get(country_iso3.upper())
+        if not country_info:
+            return {"error": f"Country {country_iso3} not found", "data": []}
+
+        # 1) Exports du pays par produit (X_cp) + total pays (X_c)
+        country_resp = await self.get_exports_by_product(
+            country_iso3, year, hs_level=hs_level, limit=5000
+        )
+        if "error" in country_resp:
+            return {"error": country_resp["error"], "data": []}
+        country_rows = country_resp.get("data", [])
+        x_c = country_resp.get("total_value", 0) or sum(r.get("Trade Value", 0) for r in country_rows)
+        if not x_c or not country_rows:
+            return {"error": "No export data for this country/year", "data": []}
+
+        # 2) Exports mondiaux par produit (X_wp) + total monde (X_w)
+        world_params = self._build_params(
+            cube=OEC_CUBES[DEFAULT_CUBE],
+            drilldowns=["Year", hs_level],
+            measures=["Trade Value"],
+            cuts={"Year": str(year)},
+            limit=10000,
+        )
+        world_result = await self._make_request(world_params)
+        if "error" in world_result:
+            return {"error": world_result["error"], "data": []}
+        world_rows = world_result.get("data", [])
+        id_field = f"{hs_level} ID"
+        world_by_id = {}
+        x_w = 0
+        for r in world_rows:
+            val = r.get("Trade Value", 0) or 0
+            x_w += val
+            wid = r.get(id_field)
+            if wid is not None:
+                world_by_id[wid] = world_by_id.get(wid, 0) + val
+        if not x_w:
+            return {"error": "No world export data for this year", "data": []}
+
+        # 3) Calcul du RCA par produit
+        results = []
+        for r in country_rows:
+            x_cp = r.get("Trade Value", 0) or 0
+            if x_cp <= 0:
+                continue
+            pid = r.get(id_field)
+            x_wp = world_by_id.get(pid, 0)
+            if x_wp <= 0:
+                continue
+            rca = (x_cp / x_c) / (x_wp / x_w)
+            results.append({
+                "hs_code": str(pid)[-int(hs_level[2:]):] if pid is not None else "",
+                "product": r.get(hs_level, ""),
+                "country_value": x_cp,
+                "country_share": (x_cp / x_c) * 100,
+                "world_share": (x_wp / x_w) * 100,
+                "rca": round(rca, 3),
+                "has_advantage": rca >= 1,
+            })
+
+        # Trier par RCA décroissant (produits les plus spécialisés en premier)
+        results.sort(key=lambda x: x["rca"], reverse=True)
+        advantage_count = sum(1 for r in results if r["has_advantage"])
+
+        return {
+            "country": country_info,
+            "year": year,
+            "hs_level": hs_level,
+            "total_exports": x_c,
+            "world_exports": x_w,
+            "total_products": len(results),
+            "products_with_advantage": advantage_count,
+            "currency": "USD",
+            "data": results[:limit],
+            "methodology": "Balassa RCA = (Xcp/Xc)/(Xwp/Xw); RCA>1 = avantage comparatif révélé",
+            "source": "OEC/BACI",
+            "retrieved_at": datetime.utcnow().isoformat(),
+        }
+
     async def get_africa_totals(self, year: int) -> Dict:
         """
         Récupère les totaux d'exportations et d'importations pour toute l'Afrique.
