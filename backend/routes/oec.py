@@ -156,6 +156,27 @@ async def get_oec_rca(
     return result
 
 
+@router.get("/complementarity/{exporter_iso3}/{importer_iso3}")
+async def get_oec_trade_complementarity(
+    exporter_iso3: str,
+    importer_iso3: str,
+    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    hs_level: str = Query("HS4", description="Niveau SH: HS2, HS4 ou HS6"),
+    limit: int = Query(20, description="Nombre d'opportunités à retourner"),
+):
+    """
+    Indice de complémentarité commerciale (TCI) entre un exportateur et un
+    importateur africains, par niveau SH (HS2/HS4/HS6). Renvoie aussi les
+    produits où l'offre de l'exportateur recoupe la demande de l'importateur.
+    """
+    result = await oec_service.get_trade_complementarity(
+        exporter_iso3, importer_iso3, year, hs_level=hs_level, limit=limit
+    )
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+    return result
+
+
 @router.get("/africa/totals")
 async def get_oec_africa_totals(
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)")
