@@ -4,6 +4,7 @@ import {
   Landmark, Wrench, FileCheck, Globe2, ChevronLeft, ChevronRight,
   Moon, Sun,
 } from "lucide-react";
+import { getAppLastUpdateLabel } from "./common/appLastUpdateLabel";
 
 const NAV_ITEMS = (isFrench) => [
   { id: "dashboard",  label: isFrench ? "Tableau de bord" : "Dashboard",       icon: LayoutDashboard },
@@ -29,6 +30,7 @@ export default function AfcftaSidebar({
   const isFrench = language === "fr";
   const isLight = theme === "light";
   const appLastChange = import.meta.env.VITE_APP_LAST_CHANGE;
+  const lastUpdateLabel = getAppLastUpdateLabel(language);
   const items = NAV_ITEMS(isFrench);
 
   const handleTab = (id) => {
@@ -45,7 +47,7 @@ export default function AfcftaSidebar({
           <p>{isFrench ? "Intelligence commerciale" : "Trade Intelligence"}</p>
           {appLastChange && (
             <p className="afcfta-appLastChange">
-              {isFrench ? "Dernière mise à jour :" : "Last update:"} {appLastChange}
+              {lastUpdateLabel} {appLastChange}
             </p>
           )}
         </div>
