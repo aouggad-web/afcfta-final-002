@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Cell } from 'recharts';
-import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight, Search, LayoutGrid } from 'lucide-react';
+import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight, Search, LayoutGrid, Map as MapIcon } from 'lucide-react';
 
 // Sub-components
 import StatisticsZaubaStyle from '../StatisticsZaubaStyle';
@@ -18,6 +18,7 @@ import OECTradeStats from '../stats/OECTradeStats';
 import MultiCountryComparison from './MultiCountryComparison';
 import CountryHS6History from './CountryHS6History';
 import ProductTreemap from './ProductTreemap';
+import AfricaTradeMap from './AfricaTradeMap';
 import { PDFExportButton } from '../common/ExportTools';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -52,6 +53,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       overview: "Vue d'ensemble",
       products: "Produits",
       treemap: "Cartographie",
+      map: "Carte",
       trends: "Tendances",
       parPays: "Par Pays & SH6",
       comparison: "Comparaison Pays",
@@ -68,6 +70,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       overview: "Overview",
       products: "Products",
       treemap: "Product Map",
+      map: "Map",
       trends: "Trends",
       parPays: "By Country & HS6",
       comparison: "Country Comparison",
@@ -99,6 +102,7 @@ export default function StatisticsTab({ language = 'fr' }) {
     { value: 'overview',   icon: <Globe className="h-4 w-4"     />, label: txt.overview   },
     { value: 'products',   icon: <Package className="h-4 w-4"   />, label: txt.products   },
     { value: 'treemap',    icon: <LayoutGrid className="h-4 w-4"/>, label: txt.treemap    },
+    { value: 'map',        icon: <MapIcon className="h-4 w-4"   />, label: txt.map        },
     { value: 'trends',     icon: <TrendingUp className="h-4 w-4"/>, label: txt.trends     },
     { value: 'par-pays',   icon: <Search className="h-4 w-4"   />, label: txt.parPays   },
     { value: 'comparison', icon: <Scale className="h-4 w-4"     />, label: txt.comparison },
@@ -278,6 +282,11 @@ export default function StatisticsTab({ language = 'fr' }) {
           {/* ── Treemap Tab ───────────────────────────────────── */}
           <TabsContent value="treemap" className="space-y-8">
             <ProductTreemap language={language} />
+          </TabsContent>
+
+          {/* ── Map Tab ───────────────────────────────────────── */}
+          <TabsContent value="map" className="space-y-8">
+            <AfricaTradeMap language={language} />
           </TabsContent>
 
           {/* ── Trends Tab ────────────────────────────────────── */}
