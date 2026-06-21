@@ -399,3 +399,5 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(currencies_router, tags=["Currencies"], dependencies=_auth)
     if EXCHANGE_RATES_AVAILABLE:
         api_router.include_router(exchange_rates_router, tags=["Exchange Rates"], dependencies=_auth)
+    if DISMANTLEMENT_AVAILABLE:
+        api_router.include_router(dismantlement_router, tags=["ZLECAf Dismantlement Schedule"], dependencies=_auth)

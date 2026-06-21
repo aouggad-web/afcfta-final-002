@@ -7,8 +7,25 @@ GET /api/dismantlement/{country_iso3}/{hs6}?npf_rate=X&category=A
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
 from etl.afcfta_schedule import get_dismantlement_schedule, LDC_COUNTRIES, CAT_A, CAT_B, CAT_C, CAT_D
+from services.preference_profile_service import get_preference_profile
 
 router = APIRouter(prefix="/dismantlement", tags=["ZLECAf Dismantlement Schedule"])
+
+
+@router.get("/preference-profile/{country_iso3}")
+async def preference_profile(country_iso3: str):
+    """
+    Profil de marge préférentielle ZLECAf d'un pays, agrégé depuis son fichier
+    tarifaire national: marge moyenne NPF−ZLECAf, part des lignes bénéficiant
+    d'une préférence, ventilation par sensibilité et secteurs à plus forte marge.
+    """
+    country = country_iso3.strip().upper()
+    if len(country) != 3:
+        raise HTTPException(400, detail="country_iso3 doit être un code ISO3 à 3 lettres")
+    result = get_preference_profile(country)
+    if "error" in result:
+        raise HTTPException(404, detail=result["error"])
+    return result
 
 
 @router.get("/{country_iso3}/{hs6}")
