@@ -137,6 +137,25 @@ async def get_oec_bilateral_trade(
     return result
 
 
+@router.get("/rca/{country_iso3}")
+async def get_oec_rca(
+    country_iso3: str,
+    year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)"),
+    hs_level: str = Query("HS4", description="Niveau SH: HS2, HS4 ou HS6"),
+    limit: int = Query(30, description="Nombre de produits à retourner"),
+):
+    """
+    Avantage comparatif révélé (RCA, indice de Balassa) d'un pays africain,
+    par produit, au niveau SH2, SH4 ou SH6. RCA > 1 ⇒ avantage révélé.
+    """
+    result = await oec_service.get_revealed_comparative_advantage(
+        country_iso3, year, hs_level=hs_level, limit=limit
+    )
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+    return result
+
+
 @router.get("/africa/totals")
 async def get_oec_africa_totals(
     year: int = Query(DEFAULT_YEAR, description="Année (2024 par défaut)")
