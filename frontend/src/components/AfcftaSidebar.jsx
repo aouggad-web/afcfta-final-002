@@ -46,10 +46,7 @@ export default function AfcftaSidebar({
           <h1>{isFrench ? "ZLECAf" : "AfCFTA"}</h1>
           <p>{isFrench ? "Intelligence commerciale" : "Trade Intelligence"}</p>
           {appLastChange && (
-            <p
-              className="afcfta-appLastChange"
-              aria-label={isFrench ? "Dernière mise à jour de l’application" : "Application last update"}
-            >
+            <p className="afcfta-appLastChange">
               {lastUpdateLabel} <time dateTime={appLastChange}>{appLastChange}</time>
             </p>
           )}
