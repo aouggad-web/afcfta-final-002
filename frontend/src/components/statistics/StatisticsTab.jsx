@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Cell } from 'recharts';
-import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight, Search } from 'lucide-react';
+import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight, Search, LayoutGrid } from 'lucide-react';
 
 // Sub-components
 import StatisticsZaubaStyle from '../StatisticsZaubaStyle';
@@ -17,6 +17,7 @@ import TradeProductsTable from '../TradeProductsTable';
 import OECTradeStats from '../stats/OECTradeStats';
 import MultiCountryComparison from './MultiCountryComparison';
 import CountryHS6History from './CountryHS6History';
+import ProductTreemap from './ProductTreemap';
 import { PDFExportButton } from '../common/ExportTools';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -50,6 +51,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       subtitle: "Données et analyses du commerce africain — ZLECAf 2024",
       overview: "Vue d'ensemble",
       products: "Produits",
+      treemap: "Cartographie",
       trends: "Tendances",
       parPays: "Par Pays & SH6",
       comparison: "Comparaison Pays",
@@ -65,6 +67,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       subtitle: "African trade data and analysis — AfCFTA 2024",
       overview: "Overview",
       products: "Products",
+      treemap: "Product Map",
       trends: "Trends",
       parPays: "By Country & HS6",
       comparison: "Country Comparison",
@@ -95,6 +98,7 @@ export default function StatisticsTab({ language = 'fr' }) {
   const tabItems = [
     { value: 'overview',   icon: <Globe className="h-4 w-4"     />, label: txt.overview   },
     { value: 'products',   icon: <Package className="h-4 w-4"   />, label: txt.products   },
+    { value: 'treemap',    icon: <LayoutGrid className="h-4 w-4"/>, label: txt.treemap    },
     { value: 'trends',     icon: <TrendingUp className="h-4 w-4"/>, label: txt.trends     },
     { value: 'par-pays',   icon: <Search className="h-4 w-4"   />, label: txt.parPays   },
     { value: 'comparison', icon: <Scale className="h-4 w-4"     />, label: txt.comparison },
@@ -269,6 +273,11 @@ export default function StatisticsTab({ language = 'fr' }) {
           {/* ── Products Tab ──────────────────────────────────── */}
           <TabsContent value="products" className="space-y-8">
             <TradeProductsTable language={language} />
+          </TabsContent>
+
+          {/* ── Treemap Tab ───────────────────────────────────── */}
+          <TabsContent value="treemap" className="space-y-8">
+            <ProductTreemap language={language} />
           </TabsContent>
 
           {/* ── Trends Tab ────────────────────────────────────── */}
