@@ -71,6 +71,70 @@ export function PDFExportButton({
 }
 
 /**
+ * CSVExportButton - Export client-side d'un tableau de données en CSV
+ * (ouvrable dans Excel, sans dépendance externe).
+ *
+ * Props:
+ *   - rows: tableau d'objets
+ *   - columns: [{ key, label }] (ordre + en-têtes des colonnes)
+ *   - filename: nom de base du fichier (sans extension)
+ *   - language: 'fr' | 'en'
+ */
+export function CSVExportButton({
+  rows = [],
+  columns = [],
+  filename = 'export',
+  language = 'fr',
+  className = '',
+  ...buttonProps
+}) {
+  const texts = {
+    fr: { export: 'Exporter CSV' },
+    en: { export: 'Export CSV' },
+  };
+  const t = texts[language] || texts.fr;
+
+  const escapeCell = (val) => {
+    if (val == null) return '';
+    const s = String(val);
+    return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+
+  const handleExport = () => {
+    if (!rows.length || !columns.length) return;
+    const header = columns.map((c) => escapeCell(c.label ?? c.key)).join(',');
+    const body = rows
+      .map((r) => columns.map((c) => escapeCell(r[c.key])).join(','))
+      .join('\n');
+    // BOM pour qu'Excel reconnaisse l'UTF-8 (accents)
+    const csv = `﻿${header}\n${body}`;
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename}_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <Button
+      onClick={handleExport}
+      disabled={!rows.length || !columns.length}
+      variant="outline"
+      size="sm"
+      className={`gap-2 ${className}`}
+      {...buttonProps}
+    >
+      <Download className="w-4 h-4" />
+      {t.export}
+    </Button>
+  );
+}
+
+/**
  * ChartExportButton - Bouton pour exporter un graphique en image
  */
 export function ChartExportButton({ 
@@ -221,4 +285,4 @@ export function ExportToolbar({
   );
 }
 
-export default { PDFExportButton, ChartExportButton, ZoomableChart, ExportToolbar };
+export default { PDFExportButton, CSVExportButton, ChartExportButton, ZoomableChart, ExportToolbar };

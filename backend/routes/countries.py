@@ -42,6 +42,49 @@ async def get_countries(lang: str = "fr"):
         countries.append(CountryInfo(**translated_country))
     return countries
 
+@router.get("/countries/economic-indicators")
+async def get_countries_economic_indicators(lang: str = "fr"):
+    """Indicateurs économiques 2024 pour les 54 pays africains.
+
+    Renvoie un tableau compact (code ISO3, PIB, PIB/habitant, population,
+    indice de développement, croissance) destiné aux visualisations
+    cartographiques et comparatives. Source: Banque Mondiale (WDI 2024).
+    """
+    def _growth_to_float(g):
+        if g is None:
+            return None
+        try:
+            return float(str(g).replace("%", "").strip())
+        except (ValueError, TypeError):
+            return None
+
+    # COUNTRY_TRANSLATIONS is keyed by ISO2; build an ISO3 -> ISO2 map for EN names
+    iso3_to_iso2 = {c["iso3"]: c["code"] for c in AFRICAN_COUNTRIES}
+
+    countries = []
+    for iso3, d in REAL_COUNTRY_DATA.items():
+        name = d.get("name")
+        if lang == "en":
+            name = translate_country_name(iso3_to_iso2.get(iso3, ""), "en") or name
+        countries.append({
+            "iso3": iso3,
+            "name": name,
+            "gdp_2024_billion_usd": d.get("gdp_usd_2024"),
+            "gdp_per_capita_2024_usd": d.get("gdp_per_capita_2024"),
+            "population_2024": d.get("population_2024"),
+            "development_index": d.get("development_index"),
+            "africa_rank": d.get("africa_rank"),
+            "growth_forecast_2024_pct": _growth_to_float(d.get("growth_forecast_2024")),
+        })
+
+    return {
+        "success": True,
+        "total": len(countries),
+        "year": 2024,
+        "source": "Banque Mondiale (WDI 2024)",
+        "countries": countries,
+    }
+
 @router.get("/country-profile/{country_code}")
 async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     """Récupérer le profil économique complet d'un pays avec données réelles et commerce 2024

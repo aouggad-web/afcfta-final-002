@@ -807,6 +807,201 @@ class OECTradeService:
             "retrieved_at": datetime.utcnow().isoformat()
         }
 
+    async def get_revealed_comparative_advantage(
+        self,
+        country_iso3: str,
+        year: int,
+        hs_level: str = "HS4",
+        limit: int = 30,
+    ) -> Dict:
+        """
+        Calcule l'avantage comparatif révélé (RCA, indice de Balassa) d'un pays
+        pour chaque produit, à un niveau SH choisi (HS2, HS4 ou HS6).
+
+        RCA = (X_cp / X_c) / (X_wp / X_w)
+          X_cp = exportations du produit p par le pays c
+          X_c  = exportations totales du pays c
+          X_wp = exportations mondiales du produit p
+          X_w  = exportations mondiales totales
+
+        RCA > 1 ⇒ le pays est relativement spécialisé (avantage révélé) dans p.
+
+        2 appels API: exports du pays par produit + exports mondiaux par produit
+        (même niveau SH), tous deux mis en cache.
+        """
+        if hs_level not in ("HS2", "HS4", "HS6"):
+            return {"error": f"Invalid hs_level '{hs_level}' (HS2, HS4, HS6)"}
+
+        country_info = AFRICAN_COUNTRIES_OEC.get(country_iso3.upper())
+        if not country_info:
+            return {"error": f"Country {country_iso3} not found", "data": []}
+
+        # 1) Exports du pays par produit (X_cp) + total pays (X_c)
+        country_resp = await self.get_exports_by_product(
+            country_iso3, year, hs_level=hs_level, limit=5000
+        )
+        if "error" in country_resp:
+            return {"error": country_resp["error"], "data": []}
+        country_rows = country_resp.get("data", [])
+        x_c = country_resp.get("total_value", 0) or sum(r.get("Trade Value", 0) for r in country_rows)
+        if not x_c or not country_rows:
+            return {"error": "No export data for this country/year", "data": []}
+
+        # 2) Exports mondiaux par produit (X_wp) + total monde (X_w)
+        world_params = self._build_params(
+            cube=OEC_CUBES[DEFAULT_CUBE],
+            drilldowns=["Year", hs_level],
+            measures=["Trade Value"],
+            cuts={"Year": str(year)},
+            limit=10000,
+        )
+        world_result = await self._make_request(world_params)
+        if "error" in world_result:
+            return {"error": world_result["error"], "data": []}
+        world_rows = world_result.get("data", [])
+        id_field = f"{hs_level} ID"
+        world_by_id = {}
+        x_w = 0
+        for r in world_rows:
+            val = r.get("Trade Value", 0) or 0
+            x_w += val
+            wid = r.get(id_field)
+            if wid is not None:
+                world_by_id[wid] = world_by_id.get(wid, 0) + val
+        if not x_w:
+            return {"error": "No world export data for this year", "data": []}
+
+        # 3) Calcul du RCA par produit
+        results = []
+        for r in country_rows:
+            x_cp = r.get("Trade Value", 0) or 0
+            if x_cp <= 0:
+                continue
+            pid = r.get(id_field)
+            x_wp = world_by_id.get(pid, 0)
+            if x_wp <= 0:
+                continue
+            rca = (x_cp / x_c) / (x_wp / x_w)
+            results.append({
+                "hs_code": str(pid)[-int(hs_level[2:]):] if pid is not None else "",
+                "product": r.get(hs_level, ""),
+                "country_value": x_cp,
+                "country_share": (x_cp / x_c) * 100,
+                "world_share": (x_wp / x_w) * 100,
+                "rca": round(rca, 3),
+                "has_advantage": rca >= 1,
+            })
+
+        # Trier par RCA décroissant (produits les plus spécialisés en premier)
+        results.sort(key=lambda x: x["rca"], reverse=True)
+        advantage_count = sum(1 for r in results if r["has_advantage"])
+
+        return {
+            "country": country_info,
+            "year": year,
+            "hs_level": hs_level,
+            "total_exports": x_c,
+            "world_exports": x_w,
+            "total_products": len(results),
+            "products_with_advantage": advantage_count,
+            "currency": "USD",
+            "data": results[:limit],
+            "methodology": "Balassa RCA = (Xcp/Xc)/(Xwp/Xw); RCA>1 = avantage comparatif révélé",
+            "source": "OEC/BACI",
+            "retrieved_at": datetime.utcnow().isoformat(),
+        }
+
+    async def get_trade_complementarity(
+        self,
+        exporter_iso3: str,
+        importer_iso3: str,
+        year: int,
+        hs_level: str = "HS4",
+        limit: int = 20,
+    ) -> Dict:
+        """
+        Indice de complémentarité commerciale (TCI) entre un exportateur i et un
+        importateur j, à un niveau SH choisi (HS2, HS4 ou HS6).
+
+        TCI_ij = 100 * (1 - Σ_k |m_jk - x_ik| / 2)
+          x_ik = part du produit k dans les exportations de i
+          m_jk = part du produit k dans les importations de j
+
+        TCI ∈ [0, 100]. Plus il est élevé, plus le profil d'export de i
+        correspond au profil d'import de j ⇒ fort potentiel d'échange (utile
+        pour évaluer le potentiel commercial intra-ZLECAf).
+
+        2 appels API mis en cache : exports de i + imports de j (même niveau SH).
+        """
+        if hs_level not in ("HS2", "HS4", "HS6"):
+            return {"error": f"Invalid hs_level '{hs_level}' (HS2, HS4, HS6)"}
+
+        exp_info = AFRICAN_COUNTRIES_OEC.get(exporter_iso3.upper())
+        imp_info = AFRICAN_COUNTRIES_OEC.get(importer_iso3.upper())
+        if not exp_info:
+            return {"error": f"Exporter country {exporter_iso3} not found"}
+        if not imp_info:
+            return {"error": f"Importer country {importer_iso3} not found"}
+
+        exp_resp = await self.get_exports_by_product(exporter_iso3, year, hs_level=hs_level, limit=5000)
+        if "error" in exp_resp:
+            return {"error": exp_resp["error"]}
+        imp_resp = await self.get_imports_by_product(importer_iso3, year, hs_level=hs_level, limit=5000)
+        if "error" in imp_resp:
+            return {"error": imp_resp["error"]}
+
+        id_field = f"{hs_level} ID"
+        x_total = exp_resp.get("total_value", 0) or sum(r.get("Trade Value", 0) for r in exp_resp.get("data", []))
+        m_total = imp_resp.get("total_value", 0) or sum(r.get("Trade Value", 0) for r in imp_resp.get("data", []))
+        if not x_total or not m_total:
+            return {"error": "Insufficient export/import data for this selection"}
+
+        # Parts par produit + libellés
+        x_share, m_share, labels = {}, {}, {}
+        for r in exp_resp.get("data", []):
+            pid = r.get(id_field)
+            if pid is None:
+                continue
+            x_share[pid] = x_share.get(pid, 0) + (r.get("Trade Value", 0) or 0) / x_total
+            labels.setdefault(pid, r.get(hs_level, ""))
+        for r in imp_resp.get("data", []):
+            pid = r.get(id_field)
+            if pid is None:
+                continue
+            m_share[pid] = m_share.get(pid, 0) + (r.get("Trade Value", 0) or 0) / m_total
+            labels.setdefault(pid, r.get(hs_level, ""))
+
+        # TCI
+        all_ids = set(x_share) | set(m_share)
+        disparity = sum(abs(m_share.get(k, 0) - x_share.get(k, 0)) for k in all_ids)
+        tci = 100 * (1 - disparity / 2)
+
+        # Opportunités : produits où i exporte ET j importe (recouvrement offre/demande)
+        opportunities = []
+        for k in set(x_share) & set(m_share):
+            xs, ms = x_share[k], m_share[k]
+            opportunities.append({
+                "hs_code": str(k)[-int(hs_level[2:]):],
+                "product": labels.get(k, ""),
+                "exporter_export_share": round(xs * 100, 2),
+                "importer_import_share": round(ms * 100, 2),
+                "match_score": round(min(xs, ms) * 100, 2),
+            })
+        opportunities.sort(key=lambda o: o["match_score"], reverse=True)
+
+        return {
+            "exporter": exp_info,
+            "importer": imp_info,
+            "year": year,
+            "hs_level": hs_level,
+            "tci": round(tci, 1),
+            "matching_products": len(opportunities),
+            "top_opportunities": opportunities[:limit],
+            "methodology": "TCI = 100·(1 − Σ|m_jk − x_ik|/2). TCI élevé ⇒ profil d'export de i compatible avec le profil d'import de j.",
+            "source": "OEC/BACI",
+            "retrieved_at": datetime.utcnow().isoformat(),
+        }
+
     async def get_africa_totals(self, year: int) -> Dict:
         """
         Récupère les totaux d'exportations et d'importations pour toute l'Afrique.

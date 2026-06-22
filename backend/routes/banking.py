@@ -4,6 +4,8 @@ Banking system API routes – ZLECAf
 Endpoints:
   GET  /banking/countries/{country_code}/banks
   GET  /banking/countries/{country_code}/regulations
+  GET  /banking/countries/{country_code}/regulations/import  ← formalités de change à l'importation
+  GET  /banking/countries/{country_code}/regulations/export  ← formalités de change à l'exportation
   GET  /banking/countries/{country_code}/risk-assessment
   GET  /banking/trade-finance/instruments
   GET  /banking/trade-finance/recommend
