@@ -1,1 +1,2 @@
 - [Replit dev preview debugging](replit-dev-preview-debugging.md) — $REPLIT_DEV_DOMAIN returns empty to curl; use localhost:5000 for ground truth, and a colored-element screenshot to inspect real rendered geometry.
+- [Canvas preview width & stats-table responsiveness](canvas-iframe-and-responsive.md) — canvas embeds the app in a fixed 1920px iframe so media queries never fire there; "tiny/tangled table" = zoom, not CSS. Stats tables sit in a shrink-to-fit ancestor so table→card CSS collapses cells.
