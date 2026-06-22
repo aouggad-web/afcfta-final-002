@@ -143,7 +143,9 @@ function TradeProductsTable({ language = 'fr' }) {
     const valueColor  = isIntra ? '#a78bfa'  : isExport ? '#34d399'  : '#38bdf8';
 
     return (
-      <div style={{ overflowX: 'auto' }}>
+      <>
+      {/* Desktop / tablet (≥768px): full data table */}
+      <div className="hidden md:block" style={{ overflowX: 'auto' }}>
         <table className="stats-table" style={{ tableLayout: 'fixed', width: '100%', minWidth: 760 }}>
           <colgroup>
             <col style={{ width: '44px' }} />
@@ -204,6 +206,48 @@ function TradeProductsTable({ language = 'fr' }) {
           </tbody>
         </table>
       </div>
+
+      {/* Mobile (<768px): stacked, fully legible cards */}
+      <div className="md:hidden stats-product-cards">
+        {data.products.map((product, index) => (
+          <div
+            key={product.rank}
+            className="stats-product-card"
+            style={{ borderLeftColor: accentColor }}
+          >
+            <div className="spc-top">
+              <span className={`stats-rank-badge ${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : 'rank-n'}`}>
+                {product.rank}
+              </span>
+              <span className="spc-hs">{product.hs_code}</span>
+            </div>
+            <div className="spc-name">{product.product}</div>
+            <div className="spc-metrics">
+              <div className="spc-metric">
+                <span className="spc-label">{t.value}</span>
+                <span className="spc-value" style={{ color: valueColor }}>{formatValue(product.value_mln_usd)}</span>
+              </div>
+              <div className="spc-metric">
+                <span className="spc-label">{t.share}</span>
+                <span className="spc-value">{product.share_percent}%</span>
+              </div>
+              <div className="spc-metric">
+                <span className="spc-label">{t.growth}</span>
+                {renderGrowthBadge(product.growth_2023_2024)}
+              </div>
+            </div>
+            <div className="spc-countries">
+              <span className="spc-label">{isExport ? t.topExporters : t.topImporters}</span>
+              <div className="spc-chips">
+                {(isExport ? product.top_exporters : product.top_importers)?.slice(0, 3).map((country, i) => (
+                  <span key={i} className="spc-chip">{country}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      </>
     );
   };
 

@@ -1,6 +1,6 @@
 ---
-name: Canvas preview width & stats-table responsiveness
-description: Why "tiny/tangled table" complaints about the Replit canvas preview are usually zoom, not CSS — and why responsive table→card CSS collapses here.
+name: Canvas preview width & mobile stats tables
+description: Why "tiny/tangled table" canvas complaints are zoom not CSS, and the working mobile pattern for stats tables (separate JSX cards toggled via Tailwind md:hidden, not CSS table→block).
 ---
 
 # Canvas preview renders at a fixed 1920px width
@@ -23,22 +23,27 @@ overlap bug.
   to view full-size, or zoom in on the canvas. Do not keep shipping invisible CSS.
 - Artifact iframes can't be freely resized, so you can't force a narrow render.
 
-# .stats-table sits in a shrink-to-fit ancestor — table→card CSS collapses
+# Mobile layout for stats tables: separate JSX cards, NOT CSS table→block
 
-The statistics tables (`.stats-table`, e.g. TradeProductsTable "Produits") live
-inside an ancestor that is **shrink-to-fit**. A normal `display:table` element
-shrink-wraps to its content (so it renders full/fine). But the standard responsive
-pattern of converting the table to cards via
-`table/tbody/tr/td { display:block; width:100% }` makes the cells **collapse to
-~min-content (≈1 char wide)** — labels and product names then wrap one letter per
-line. Adding `display:block; width:100%; box-sizing:border-box` to all of
-table+tbody+tr+td did **not** fix it; the collapse comes from the shrink-to-fit
-ancestor, not the table element.
+The statistics data tables (`.stats-table`, e.g. TradeProductsTable "Produits") are
+unreadable on phones — the wide fixed-layout table just shrinks/scrolls. The
+**working** mobile pattern here:
 
-**Why:** in a shrink-to-fit container, `width:100%` on a block child is circular
-and resolves to min-content; a `display:table` child instead shrink-wraps wide.
+- Render the existing `<table>` AND a **separate JSX card list** built from the same
+  data array; toggle with Tailwind — table = `hidden md:block`, cards = `md:hidden`
+  (breakpoint 768px, matching `mobile.css`). Cards are plain flex/grid divs styled
+  in `statistics.css` (dark-theme tokens). This is the pattern to reuse for the
+  other stats tables.
+- Do **NOT** use a CSS table→block conversion (the `.mobile-optimized-table`
+  `td{display:flex}` pattern in `mobile.css`) for these tables — it's fragile and
+  uses light-theme colors.
 
-**How to apply:** don't attempt CSS table→block card conversion for `.stats-table`
-without first giving the wrapper a definite width. And remember (above) it wouldn't
-help the canvas view anyway. The baseline (table with `overflowX:auto` +
-`minWidth:760`) already scrolls cleanly at narrow real widths.
+**Why:** an earlier attempt to collapse `.stats-table` into cards via CSS looked
+like a "shrink-to-fit ancestor" bug, but that was an artifact of a temp debug
+wrapper — the real table sits in a full-width `.stats-chart-card`. Separate JSX
+cards sidestep the whole question and style cleanly for the dark theme.
+
+**How to verify mobile (<768px):** neither `app_preview` (~1280px) nor the canvas
+(1920px) can show the mobile breakpoint, and Playwright isn't installed. To see the
+cards, temporarily flip the Tailwind toggles to force them visible at desktop width
+(and temp-hide `.stats-hero` to bring them above the fold), screenshot, then revert.
