@@ -144,15 +144,24 @@ function TradeProductsTable({ language = 'fr' }) {
 
     return (
       <div style={{ overflowX: 'auto' }}>
-        <table className="stats-table">
+        <table className="stats-table" style={{ tableLayout: 'fixed', width: '100%', minWidth: 760 }}>
+          <colgroup>
+            <col style={{ width: '44px' }} />
+            <col style={{ width: '26%' }} />
+            <col style={{ width: '94px' }} />
+            <col style={{ width: '124px' }} />
+            <col style={{ width: '70px' }} />
+            <col style={{ width: '104px' }} />
+            <col />
+          </colgroup>
           <thead>
             <tr style={{ borderLeft: `3px solid ${accentColor}` }}>
-              <th style={{ textAlign: 'left', width: 42 }}>#</th>
+              <th style={{ textAlign: 'left' }}>#</th>
               <th style={{ textAlign: 'left' }}>{t.product}</th>
-              <th style={{ textAlign: 'left', width: 80 }}>{t.hsCode}</th>
-              <th style={{ textAlign: 'right', width: 110 }}>{t.value}</th>
-              <th style={{ textAlign: 'right', width: 72 }}>{t.share}</th>
-              <th style={{ textAlign: 'center', width: 100 }}>{t.growth}</th>
+              <th style={{ textAlign: 'left' }}>{t.hsCode}</th>
+              <th style={{ textAlign: 'right' }}>{t.value}</th>
+              <th style={{ textAlign: 'right' }}>{t.share}</th>
+              <th style={{ textAlign: 'center' }}>{t.growth}</th>
               <th style={{ textAlign: 'left' }}>{isExport ? t.topExporters : t.topImporters}</th>
             </tr>
           </thead>
@@ -164,7 +173,7 @@ function TradeProductsTable({ language = 'fr' }) {
                     {product.rank}
                   </span>
                 </td>
-                <td style={{ fontWeight: 600, color: '#EAE0D0' }}>{product.product}</td>
+                <td style={{ fontWeight: 600, color: '#EAE0D0', whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{product.product}</td>
                 <td>
                   <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', padding: '2px 6px', borderRadius: 4, background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(234,224,208,0.7)' }}>
                     {product.hs_code}
@@ -221,7 +230,7 @@ function TradeProductsTable({ language = 'fr' }) {
             <div className="stats-kente-bar" style={{ width: 180, marginTop: 10 }} />
           </div>
           {summary && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 flex-1 min-w-0" style={{ maxWidth: 540 }}>
+            <div className="grid grid-cols-2 gap-3 flex-1 min-w-0" style={{ maxWidth: 420 }}>
               {[
                 { label: t.importWorld,  value: formatValue(summary.top_20_imports_world_total_mln_usd),  color: '#38bdf8' },
                 { label: t.exportWorld,  value: formatValue(summary.top_20_exports_world_total_mln_usd),  color: '#34d399' },
@@ -230,7 +239,7 @@ function TradeProductsTable({ language = 'fr' }) {
               ].map((item, i) => (
                 <div key={i} style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(6px)', borderRadius: 10, padding: '10px 14px', border: `1px solid color-mix(in srgb, ${item.color} 20%, transparent)` }}>
                   <p style={{ fontSize: '0.65rem', color: 'rgba(142,155,174,0.8)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: 0 }}>{item.label}</p>
-                  <p style={{ fontSize: '1.2rem', fontWeight: 800, color: item.color, margin: '4px 0 0' }}>{item.value}</p>
+                  <p style={{ fontSize: '1.2rem', fontWeight: 800, color: item.color, margin: '4px 0 0', whiteSpace: 'nowrap' }}>{item.value}</p>
                 </div>
               ))}
             </div>

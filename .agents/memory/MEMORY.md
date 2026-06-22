@@ -1,8 +1,1 @@
-- [Maritime route matrix](maritime-route-matrix.md) — sea ports/routes live in logistics_fees_data.PORTS; derive country→ports from p["iso"], never keep a parallel hard-coded port list.
-- [Multimodal carrier sourcing](multimodal-carriers.md) — land legs must use exact corridor operators from get_land_freight_cost()["operators"]; country-presence matching is fallback only.
-- [Importing a GitHub PR](importing-github-prs.md) — local main diverged from GitHub; git apply/merge blocked → fetch PR diff via public API and apply hunks manually with edit/write.
-- [Calculator dual computation path](calculator-dual-path.md) — frontend prefers /api/authentic-tariffs/calculate (no currency/breakdown) over /api/calculate-tariff; DZA UI hides local currency + any calculator.py-only fiscal logic.
-- [Trade regime precedence](trade-regime-precedence.md) — customs unions (SACU/EAC/CEMAC/UEMOA) recalc 0% and PRECEDE the ZLECAf gate; FTAs (ECOWAS/SADC/COMESA) are conditional metadata only, never auto-0%.
-- [Tariff line null rate fields](tariff-line-null-rates.md) — real lines can carry JSON null for vat_rate/dd_rate/etc; always `or 0` or you crash on `>` AND silently kill the taxes_detail TVA fallback (`==0`).
-- [Pushing repl to new GitHub repo](github-push.md) — local git is shallow w/ missing history; plain push fails (`did not receive expected object`). Push a parent-less `commit-tree` snapshot; strip `.github/workflows` (OAuth lacks `workflow` scope).
-- [CI npm "Exit handler never called!"](ci-npm-exit-handler.md) — on GH Actions `npm ci` crashes but exits 0 (empty node_modules → `vite: not found`); pinning npm doesn't help, switch frontend job to yarn.
+- [Replit dev preview debugging](replit-dev-preview-debugging.md) — $REPLIT_DEV_DOMAIN returns empty to curl; use localhost:5000 for ground truth, and a colored-element screenshot to inspect real rendered geometry.
