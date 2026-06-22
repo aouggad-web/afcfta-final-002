@@ -266,7 +266,11 @@
   letter-spacing: 0.07em;
   padding: 10px 12px;
   border-bottom: 2px solid rgba(212, 137, 26, 0.2);
-  white-space: nowrap;
+  /* Allow header labels to wrap onto multiple lines instead of overflowing and
+     overlapping neighbouring columns when the table is squeezed. */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  vertical-align: bottom;
 }
 
 .stats-table thead th:first-child { border-radius: 8px 0 0 0; }
