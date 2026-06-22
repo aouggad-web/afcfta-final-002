@@ -154,10 +154,22 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
             s = s.replace('\u2019', "'").replace('\u2018', "'")
             return unicodedata.normalize('NFD', s.lower()).encode('ascii', 'ignore').decode('ascii')
 
+        # Exact (accent/case-insensitive) match only. Substring/fuzzy matching
+        # is deliberately avoided here: country names that contain another
+        # country's name (e.g. "République démocratique du Congo" vs "Congo",
+        # "Niger" vs "Nigeria", "Guinée-Bissau" vs "Guinée") would otherwise
+        # silently publish the wrong infrastructure_ranking. The few country
+        # names that don't match the dataset verbatim are handled via an
+        # explicit alias; any country absent from the dataset simply gets no
+        # ranking rather than an incorrect one.
+        INFRA_NAME_ALIASES = {
+            # AFRICAN_COUNTRIES name (normalized) -> dataset 'pays' (normalized)
+            'republique du congo': 'congo',
+        }
         search_name = normalize_name(country['name'])
+        target_name = INFRA_NAME_ALIASES.get(search_name, search_name)
         for entry in infra_data:
-            entry_name = normalize_name(entry['pays'])
-            if entry_name == search_name or search_name in entry_name or entry_name in search_name:
+            if normalize_name(entry['pays']) == target_name:
                 infra_ranking = {
                     'africa_rank': entry['rang_afrique'],
                     'lpi_infrastructure_score': entry['score_infrastructure_ipl'],
