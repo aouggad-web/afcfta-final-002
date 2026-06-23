@@ -1,181 +1,324 @@
 {
-  "last_update": "2026-06-22T09:25:44.784887",
+  "last_update": "2026-06-23T05:48:49.879580",
   "articles": [
     {
-      "id": "36aae380446d",
-      "title": "Sénégal: TER, gare de Sébikotane et usine textile - Le chef de l'Etat mise sur une économie de transformation locale",
-      "summary": "[Le Soleil] Le président de la République, Bassirou Diomaye Faye, a effectué ce samedi une tournée marquée par trois séquences fortes, illustrant la volonté des autorités de promouvoir une économie fondée sur la production locale, la transformation...",
-      "link": "https://fr.allafrica.com/stories/202606220256.html",
+      "id": "abc66f19a524",
+      "title": "Rwanda: Over 1,200 Households to Be Compensated for Ruzizi III Power Project",
+      "summary": "[New Times] At least 1,232 households in Rusizi District in the Western Province will be eligible for compensation to pave the way for land acquisition for the Ruzizi III power plant on the Rwandan side.",
+      "link": "https://allafrica.com/stories/202606230012.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-06-23T05:24:34",
+      "fetched_at": "2026-06-23T05:48:49.226950"
+    },
+    {
+      "id": "74878f08c0a3",
+      "title": "South Africa: Funding Boosts Postgraduate Student Success - South African Study Measures How",
+      "summary": "[The Conversation Africa] Postgraduate education is good for a country. Thriving economies need people with advanced academic degrees to enhance research productivity. Research and innovation capability have a positive impact on the competitiveness...",
+      "link": "https://allafrica.com/stories/202606230008.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique Australe",
+      "published_at": "2026-06-23T05:14:58",
+      "fetched_at": "2026-06-23T05:48:49.226989"
+    },
+    {
+      "id": "06329090775a",
+      "title": "Influencer economy becomes serious business for South African brands - EWN",
+      "summary": "Influencer economy becomes serious business for South African brands  EWN",
+      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNUVlDVVRTNVRNaXJYLVd3anpRa29rSENuQTZLYkRGUU1DWS1LR2dfRF8zaEtoa3dySzFwMnZ0dUhPZWthZ0Y5UkpzZGZzaG10c1NyN0hMOXgwS2k3a2NoUGRmaHVYaEZudy1lYUhjUWtnMEJQUjBKc2t1QkVMbmZWRU1Jb3dkRDlscmFEd1VicDVCSlpqdHc?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Mines",
+      "region": "Afrique Australe",
+      "published_at": "2026-06-23T00:04:25",
+      "fetched_at": "2026-06-23T05:48:49.595371"
+    },
+    {
+      "id": "b1b11894a588",
+      "title": "Afrique économie - Madagascar: les aliments thérapeutiques de Tanjaka Food pour lutter contre la malnutrition infantile - RFI",
+      "summary": "Afrique économie - Madagascar: les aliments thérapeutiques de Tanjaka Food pour lutter contre la malnutrition infantile  RFI",
+      "link": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxNTTVGM2hpdDYtUjZMSkhLaEo4NUwxY2Vza25YdWdpX0FiT1pmOUZTRVU5bXZqZm1qQW84ZlpVN1ExV3V1bWZJWFFiN0ZGVkcwN3BNTHplaTBidXNwdVZxTEd2T3JpUUNFQW5TYUFQbjgwczBlNDJFamNBWFp6b2piX3M1VEZGS1lfY0ZDNWV3Mlp5UmlEMnZ6RGM2Y2ljZjlMcTlKZmhlUVRFeS1rRDZ3dTBZN2Y0QmlOUVBUajJfR21GWk1KZDBKbERBRDJRU21zd0x2NVMxNUthVnpHV0ZsZTFJRm51dU5aR25jaHBpYlAyTDJ0MmNhdW5B?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Énergie",
+      "region": "Afrique Centrale",
+      "published_at": "2026-06-22T22:51:00",
+      "fetched_at": "2026-06-23T05:48:49.483196"
+    },
+    {
+      "id": "ccd5851fc365",
+      "title": "Namibia: A Step Towards Inclusion",
+      "summary": "[Namibian] The Bank of Namibia and its partners deserve credit for launching a digital payment platform designed to make transferring money easier for Namibians.",
+      "link": "https://allafrica.com/stories/202606220921.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique Australe",
+      "published_at": "2026-06-22T18:04:49",
+      "fetched_at": "2026-06-23T05:48:49.205529"
+    },
+    {
+      "id": "ec04c8abcd63",
+      "title": "Sénégal: Kédougou - La campagne agricole lancée dans toutes les zones de production de la région (DRDR)",
+      "summary": "[APS] Kédougou -- La campagne agricole a été lancée dans toutes les zones de production de la région de Kédougou (sud-est), a appris l'APS du rapport hebdomadaire de la direction régionale du développement rural (DRDR).",
+      "link": "https://fr.allafrica.com/stories/202606220908.html",
       "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-22T09:03:04",
-      "fetched_at": "2026-06-22T09:25:43.790410"
+      "published_at": "2026-06-22T17:46:55",
+      "fetched_at": "2026-06-23T05:48:49.217907"
     },
     {
-      "id": "6c5da548d56b",
-      "title": "Cote d'Ivoire: Ports à conteneurs - San Pedro intègre le Top 10 des plateformes africaines les plus performantes en 2025",
-      "summary": "[Fratmat.info] Le Port autonome de San Pedro confirme sa montée en puissance sur l'échiquier maritime africain. Selon l'édition 2025 de l'Indice de performance des ports à conteneurs (Cppi), publié le 10 juin 2026, par la Banque mondiale et S&P...",
-      "link": "https://fr.allafrica.com/stories/202606220254.html",
+      "id": "fee4b83bfbe9",
+      "title": "Cote d'Ivoire: Bafing/Journées promotionnelles des entreprises - Les potentialités et les opportunités d'investissement présentées au cours de la deuxième édition",
+      "summary": "[Fratmat.info] Les lampions se sont éteints sur la deuxième édition des journées promotionnelles des entreprises du Bafing (Jpe-Bafing 2), le samedi 20 juin 2026, à la salle Bamba Vamoussa de la mairie de Touba. Durant trois jours (18-20 juin),...",
+      "link": "https://fr.allafrica.com/stories/202606220903.html",
       "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique",
-      "published_at": "2026-06-22T09:02:45",
-      "fetched_at": "2026-06-22T09:25:43.789637"
+      "published_at": "2026-06-22T17:42:50",
+      "fetched_at": "2026-06-23T05:48:49.217964"
     },
     {
-      "id": "afde8f3e23cb",
-      "title": "Namibia: Namibia's Digital Economy Needs Cybersecurity As Much As It Needs Connectivity",
-      "summary": "[Namibian] ON 6 MARCH, something quietly broke inside the Namibia Airports Company.",
-      "link": "https://allafrica.com/stories/202606220252.html",
+      "id": "37ffd3df4b28",
+      "title": "Nigeria: Oil Prices May Drop to $60/B By Q1, 2027 - Citi Bank",
+      "summary": "[Leadership] Global investment Bank and financial services, Citi has forecast that oil prices to trend lower over the next six to 12 months, to $60 to $65 per barrel by the first quarter of 2027 as flows through the Strait of Hormuz normalize...",
+      "link": "https://allafrica.com/stories/202606220891.html",
+      "source": "AllAfrica",
+      "category": "Finance",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-06-22T17:33:57",
+      "fetched_at": "2026-06-23T05:48:49.205564"
+    },
+    {
+      "id": "129c2e6d6844",
+      "title": "Mauritius: Dr. Shekhar Ramjutun - 'In Digital Healthcare, Trust Is Everything'",
+      "summary": "[L'Express] What if visiting a doctor were as simple as walking into your local pharmacy? That was the vision Dr. Shekhar Ramjutun had when he co-founded Doc2Us, turning it into a platform that connects 1,700 pharmacies to virtual doctors across...",
+      "link": "https://allafrica.com/stories/202606220837.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique Centrale",
+      "published_at": "2026-06-22T16:55:55",
+      "fetched_at": "2026-06-23T05:48:49.227035"
+    },
+    {
+      "id": "24252bbc0813",
+      "title": "Uganda: Parents, Teachers Protest Survey Amid Threat of School Demolition in Buikwe",
+      "summary": "[Nile Post] Parents and teachers in Sugu Village, Ssi-Bukunja Sub-county, Buikwe District, are living in fear that their community school could be demolished at any time due to an ongoing land dispute affecting local residents.",
+      "link": "https://allafrica.com/stories/202606220836.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-06-22T16:54:32",
+      "fetched_at": "2026-06-23T05:48:49.227067"
+    },
+    {
+      "id": "c6d9079f2b2f",
+      "title": "Guinée: Le pays bannit l'exportation de l'or brut pour imposer le raffinage local",
+      "summary": "[allAfrica] Conakry franchit un cap décisif dans la reprise en main de ses richesses souterraines. Lors d'une réunion stratégique avec les industriels du secteur minier, le président guinéen, le général Mamadi Doumbouya, a acté l'interdiction...",
+      "link": "https://fr.allafrica.com/stories/202606220823.html",
+      "source": "AllAfrica (FR)",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-06-22T16:46:50",
+      "fetched_at": "2026-06-23T05:48:49.217500"
+    },
+    {
+      "id": "da5fc4e1edb9",
+      "title": "South Africa: 500 Malawians Stranded in Joburg After Repatriation Buses Lacked Permits",
+      "summary": "[GroundUp] Seven buses from Cape Town and Durban dropped passengers at the Malawian consulate in Sandton instead of taking them home",
+      "link": "https://allafrica.com/stories/202606220821.html",
       "source": "AllAfrica",
       "category": "Économie",
       "region": "Afrique Australe",
-      "published_at": "2026-06-22T09:02:11",
-      "fetched_at": "2026-06-22T09:25:43.856748"
+      "published_at": "2026-06-22T16:45:50",
+      "fetched_at": "2026-06-23T05:48:49.227097"
     },
     {
-      "id": "45eb808a46e9",
-      "title": "Ile Maurice: Une réforme axée sur la sécurité, le solaire et le digital",
-      "summary": "[L'Express] Deux initiatives pour moderniser les transports publics et simplifier la possession d'un véhicule. L'objectif : rendre les déplacements plus sûrs, plus propres et plus faciles, tout en réduisant les formalités administratives et en...",
-      "link": "https://fr.allafrica.com/stories/202606220246.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-22T09:00:31",
-      "fetched_at": "2026-06-22T09:25:43.790454"
-    },
-    {
-      "id": "c3586b1c7811",
-      "title": "Sénégal: Érection de la gare mulimodale de Sébikotane - Une vieille revendication populaire satisfaite",
-      "summary": "[Le Soleil] Le Président de la République, Bassirou Diomaye Faye, a officiellement procédé au lancement des travaux de la gare de Sébikotane et de la passerelle de Sébikotane. Selon lui, cet acte vise à corriger ce manquement avant la mise en...",
-      "link": "https://fr.allafrica.com/stories/202606220230.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-22T08:51:54",
-      "fetched_at": "2026-06-22T09:25:43.790153"
-    },
-    {
-      "id": "3eadab085b56",
-      "title": "Sénégal: Inauguration de l'usine AVCI Global - Le pays amorce la « renaissance » de son industrie textile",
-      "summary": "[Le Soleil] En inaugurant, samedi 20 juin 2026, l'usine textile turque Avci Global au sein de la Zone économique spéciale (Zes), notamment dans la Plateforme industrielle intégrée de Diamniadio, le Président Bassirou Diomaye Faye a affiché son...",
-      "link": "https://fr.allafrica.com/stories/202606220229.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-22T08:51:26",
-      "fetched_at": "2026-06-22T09:25:43.790290"
-    },
-    {
-      "id": "52b6f71ec9fd",
-      "title": "Sénégal: Finances publiques et secteur privé - La dette que l'État ne nomme pas",
-      "summary": "[Lejecos.com] Derrière la dette publique sénégalaise (eurobonds, bons du Trésor, emprunts bancaires), méticuleusement chiffrée et commentée par les agences de notation, une dette intérieure que le FMI (Fonds Monétaire International) chiffre à...",
-      "link": "https://fr.allafrica.com/stories/202606220228.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-22T08:50:32",
-      "fetched_at": "2026-06-22T09:25:43.790355"
-    },
-    {
-      "id": "83fb471e3a85",
-      "title": "Afrique: La Tunisie accueillera en 2028, le plus grand rendez-vous mondial consacré au blé",
-      "summary": "[La Presse] La Tunisie accueillera en 2028, pour la première fois en Afrique et dans le monde arabe, le cinquième Congrès international du blé (International Wheat Congress-IWC), l'un des plus importants rendez-vous scientifiques mondiaux consacrés...",
-      "link": "https://fr.allafrica.com/stories/202606220217.html",
-      "source": "AllAfrica (FR)",
+      "id": "065714f31515",
+      "title": "Egypt, South Africa seek cooperation in pharmaceutical, automotive manufacturing - Economy - Business - Ahram Online",
+      "summary": "Egypt, South Africa seek cooperation in pharmaceutical, automotive manufacturing - Economy - Business  Ahram Online",
+      "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxON0phbE5HY0IwZ2I0QTVWb3hSZ0ZGMERBRS05cXdlRG16S2ladTdJa3lIaHFYclREUS1OR3FXZ1BGNlFFUFpYZWdsNkpSRWJnS2E2WDVESmNibjgxNVFJR0s1N3NWbVpjcDFwd0hDY2puRU90VnllaXdWaTE5WWw5YWFzeUhvazVtdHdzNjZRSUR6MDgwVVFhUGJNSHFkWTZsN1JpN0xFMzFTUnpNZU1qalFnZGJ6QQ?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
       "category": "Économie",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T08:43:17",
-      "fetched_at": "2026-06-22T09:25:43.789718"
+      "published_at": "2026-06-22T16:07:44",
+      "fetched_at": "2026-06-23T05:48:49.595509"
     },
     {
-      "id": "ecdf23c6af78",
-      "title": "Tunisie: L'agriculture et l'agroalimentaire, locomotives du commerce extérieur",
-      "summary": "[La Presse] Le commerce extérieur connaît, actuellement, un sérieux redressement avec un bon excédent de près de quatre vingt-dix millions de dinars à fin mai 2026, ce qui constitue une belle éclaircie par rapport à la même période de l'année...",
-      "link": "https://fr.allafrica.com/stories/202606220212.html",
-      "source": "AllAfrica (FR)",
+      "id": "134ae327656a",
+      "title": "Malawi: Malawi's Digital Clampdown Intensifies With New Arrest",
+      "summary": "[Nyasa Times] Malawi's tightening grip on online speech has come under fresh scrutiny after the arrest of political activist Fredrick Billy Malata in Lilongwe on Monday -- the latest sign of authorities turning the screws on social media users.",
+      "link": "https://allafrica.com/stories/202606220721.html",
+      "source": "AllAfrica",
       "category": "Économie",
-      "region": "Afrique du Nord",
-      "published_at": "2026-06-22T08:38:53",
-      "fetched_at": "2026-06-22T09:25:43.789539"
+      "region": "Afrique Australe",
+      "published_at": "2026-06-22T15:45:11",
+      "fetched_at": "2026-06-23T05:48:49.226873"
     },
     {
-      "id": "7c3c1509636b",
-      "title": "Sénégal: Dette cachée, dette odieuse, dette illégitime - Comprendre les notions pour en finir avec le débat",
-      "summary": "[Le Soleil] La récente interview accordée par l'ancien Premier Ministre et nouveau Président de l'Assemblée nationale a remis au goût du jour le débat sur l'existence d'une « dette cachée ». Pour autant, aussi crucial soit-il, ce débat s'obscurcit...",
-      "link": "https://fr.allafrica.com/stories/202606220211.html",
+      "id": "a6b81caa7e42",
+      "title": "South Africa: 'Municipality Is Hiring' Advert Just Another Job Scam - Visit Verified Platforms for Legit Opportunities",
+      "summary": "[Africa Check] IN SHORT: According to Facebook posts in South Africa, \"municipality is hiring\". But these posts are a scam. There is no evidence of this advert on official government websites or social media platforms.",
+      "link": "https://allafrica.com/stories/202606220696.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique Australe",
+      "published_at": "2026-06-22T14:04:47",
+      "fetched_at": "2026-06-23T05:48:49.227130"
+    },
+    {
+      "id": "cd7ed75c3030",
+      "title": "South Africa: SARS Says R40 Billion Went Back to South Africans Last Year",
+      "summary": "[Scrolla] SARS paid R40 billion in tax refunds last filing season, more than it collected from taxpayers during the same period.   SARS says tax refunds back in South African hands drive the economy and SARS wants to pay them fast.",
+      "link": "https://allafrica.com/stories/202606220693.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique Australe",
+      "published_at": "2026-06-22T14:04:11",
+      "fetched_at": "2026-06-23T05:48:49.226918"
+    },
+    {
+      "id": "a2c4ffcde599",
+      "title": "Tanzania: This Is How Taxes Build Tanzania, Says Ministry",
+      "summary": "[Daily News] Dodoma -- THE Ministry of Finance has intensified public education on taxation, economic affairs, and financial policies to improve citizens' understanding of how taxes contribute to financing public services and national development.",
+      "link": "https://allafrica.com/stories/202606220686.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-06-22T14:00:58",
+      "fetched_at": "2026-06-23T05:48:49.227161"
+    },
+    {
+      "id": "9843a5642e60",
+      "title": "Tanzania: Tanzania, Namibia Seal New Economic Ties After Landmark State Visit",
+      "summary": "[Daily News] Dar es Salaam -- PRESIDENT Samia Suluhu Hassan has bid farewell to visiting President of Namibia Netumbo Nandi Ndaitwah at State House in Dar es Salaam, bringing to a close a four day state visit that blended history, diplomacy and a...",
+      "link": "https://allafrica.com/stories/202606220681.html",
+      "source": "AllAfrica",
+      "category": "Économie",
+      "region": "Afrique de l'Est",
+      "published_at": "2026-06-22T13:58:53",
+      "fetched_at": "2026-06-23T05:48:49.227194"
+    },
+    {
+      "id": "150aabcf4801",
+      "title": "Inside the business of CS2 case battles: The format powering a skin economy - Business Insider Africa",
+      "summary": "Inside the business of CS2 case battles: The format powering a skin economy  Business Insider Africa",
+      "link": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNbjFqSzBxaTlwQVBhRHdUbGU0X2hLbFQ5cDkwWjR6OFYtamt3SkowWjJ0UUpWenlvemRIU3VUMVRUZnVfVlEyXzdVX0pMWjlfSklEUk4wSHZ0ZTRYTmhlbWpiazByeE1GMFdEd2tLdmM2UTd0UWxRR1pRS0lseXp0VHZMMHF4dVJkTmpoaXljWjFib0tfRUlmUlhJUjlNV2dZUE02QUExUW10eU9oand0dmhPbEdBWGc4SUJiMFhBWVQ5VjNMRUhyLVZ2QQ?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Mines",
+      "region": "Afrique",
+      "published_at": "2026-06-22T13:51:17",
+      "fetched_at": "2026-06-23T05:48:49.595285"
+    },
+    {
+      "id": "38b7f0703ec6",
+      "title": "West Africa: Nigeria's Long Journey to Single Digit Inflation",
+      "summary": "[This Day] The Monetary Policy Committee (MPC) of the Central Bank of Nigeria (CBN) recently released the communique of its 305th meeting and third sitting this year.",
+      "link": "https://allafrica.com/stories/202606220585.html",
+      "source": "AllAfrica",
+      "category": "Commerce",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-06-22T13:05:32",
+      "fetched_at": "2026-06-23T05:48:49.258324"
+    },
+    {
+      "id": "bd7d5f807ac6",
+      "title": "Sénégal: Diplomatie économique - Diomaye en quête de capitaux allemands",
+      "summary": "[Sud Quotidien] Le président de la République Bassirou Diomaye Faye a entamé depuis, hier dimanche 21 juin 2026 une visite officielle de trois jours en Allemagne avec un objectif clairement affiché : mobiliser des investissements, renforcer les...",
+      "link": "https://fr.allafrica.com/stories/202606220572.html",
       "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-22T08:38:02",
-      "fetched_at": "2026-06-22T09:25:43.789781"
+      "published_at": "2026-06-22T13:00:59",
+      "fetched_at": "2026-06-23T05:48:49.217548"
     },
     {
-      "id": "2ecb103009d5",
-      "title": "Nigeria: FRSC Officers in Overseas Course Sit for Promotion Exams Remotely",
-      "summary": "[Vanguard] Officers of the Federal Road Safety Corps, FRSC, pursuing academic and professional programmes abroad were allowed to participate in the Corps' 2026 promotion exercise remotely, in what the agency described as a major step towards...",
-      "link": "https://allafrica.com/stories/202606220203.html",
-      "source": "AllAfrica",
+      "id": "3edf7e15308b",
+      "title": "Sénégal: Aménagement du territoire et industrialisation - Sébikotane et Diamniadio, vitrines du Sénégal productif",
+      "summary": "[Sud Quotidien] Le président Bassirou Diomaye Faye a présidé, en juin 2025, deux inaugurations majeures illustrant la nouvelle stratégie de développement du Sénégal : le lancement de la gare multimodale de Sébikotane, maillon essentiel de...",
+      "link": "https://fr.allafrica.com/stories/202606220569.html",
+      "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-22T07:09:08",
-      "fetched_at": "2026-06-22T09:25:43.856630"
+      "published_at": "2026-06-22T13:00:57",
+      "fetched_at": "2026-06-23T05:48:49.217590"
     },
     {
-      "id": "c79d201efe02",
-      "title": "South Africa: US Farmer Faces Legal Pushback for Paying White SA Workers Higher Wages",
-      "summary": "[Daily Maverick] Five black American workers are taking a Mississippi farmer to court because they allege he is favouring and paying white South African guest workers higher wages.",
-      "link": "https://allafrica.com/stories/202606220195.html",
-      "source": "AllAfrica",
+      "id": "7d57232aa29b",
+      "title": "Sénégal: Deuxième phase du train express régional (TER) - La  mise en service prévue dès septembre",
+      "summary": "[Le Soleil] Dans la dynamique de renforcement de la mobilité à quelques mois des Jeux olympiques de la jeunesse (Joj) Dakar 2026, le Président de la République, Bassirou Diomaye Faye, a effectué, samedi dernier, une visite du tronçon du Train...",
+      "link": "https://fr.allafrica.com/stories/202606220560.html",
+      "source": "AllAfrica (FR)",
       "category": "Économie",
-      "region": "Afrique Australe",
-      "published_at": "2026-06-22T06:54:04",
-      "fetched_at": "2026-06-22T09:25:43.856391"
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-06-22T12:57:12",
+      "fetched_at": "2026-06-23T05:48:49.217630"
     },
     {
-      "id": "1ca5bb207aee",
-      "title": "South Africa: SA Farmers and Agribusinesses Are in a Pensive Mood",
-      "summary": "[Daily Maverick] South Africa's agricultural sector boasts impressive export figures and job growth, yet farmers fear global instability, disease outbreaks and rising input costs.",
-      "link": "https://allafrica.com/stories/202606220194.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique Australe",
-      "published_at": "2026-06-22T06:52:28",
-      "fetched_at": "2026-06-22T09:25:43.856903"
-    },
-    {
-      "id": "83d8fa553430",
-      "title": "South Africa: Madlanga Commission Reopens Ekurhuleni Corruption Probe - South African News Briefs - June 22, 2026",
-      "summary": "[allAfrica]",
-      "link": "https://allafrica.com/stories/202606220189.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique Australe",
-      "published_at": "2026-06-22T05:43:22",
-      "fetched_at": "2026-06-22T09:25:43.856281"
-    },
-    {
-      "id": "f8012b32d9e4",
-      "title": "South Africa: Retail Giant to Shut More Than 100 Stores",
-      "summary": "[Scrolla] · TFG says weak consumer spending, poor overseas sales and excess stock pushed profits down by 33.5% in the past year.",
-      "link": "https://allafrica.com/stories/202606220172.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique Australe",
-      "published_at": "2026-06-22T04:09:26",
-      "fetched_at": "2026-06-22T09:25:43.856974"
-    },
-    {
-      "id": "8987bd3257eb",
-      "title": "Africa: I Want to Be Remembered for Industrialising Africa - Aliko Dangote",
-      "summary": "[This Day] Africa's richest man and President of the Dangote Group, Aliko Dangote, has said that he would rather be remembered for helping to industrialise Africa than for the size of his fortune, suggesting that his actual wealth may be...",
-      "link": "https://allafrica.com/stories/202606220163.html",
-      "source": "AllAfrica",
+      "id": "9c3adbd0eb4c",
+      "title": "Afrique de l'Ouest: Travail forcé dans les « académies » de cybercriminalité - Comment la peur piège les jeunes hommes",
+      "summary": "[The Conversation Africa] Quand on parle de travail forcé, on pense souvent aux centres d'escroquerie (scam centers). De plus en plus de travaux universitaires, d'articles journalistiques et d'attention politique ont renforcé ce stéréotype. Les...",
+      "link": "https://fr.allafrica.com/stories/202606220535.html",
+      "source": "AllAfrica (FR)",
       "category": "Économie",
       "region": "Afrique",
-      "published_at": "2026-06-22T04:09:20",
-      "fetched_at": "2026-06-22T09:25:43.857044"
+      "published_at": "2026-06-22T12:30:52",
+      "fetched_at": "2026-06-23T05:48:49.217688"
+    },
+    {
+      "id": "3b76cd02e0f7",
+      "title": "The Lagos opportunity - African Business",
+      "summary": "The Lagos opportunity  African Business",
+      "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9GcXFWZC1GckF6RG1ITHZlbWRLUmY4R2NXMlVGbmQtMUFDRVh4RGtCSW1UMWRLRklGdTB3eG9BWXlWNmM5QTZ4SkJHYk91a2dJZzFYc25la0IwRnpTcDQ1UEVsbmliNExubzBlTTF0b1doWEJiWFZENkZR?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Mines",
+      "region": "Afrique",
+      "published_at": "2026-06-22T12:07:52",
+      "fetched_at": "2026-06-23T05:48:49.595330"
+    },
+    {
+      "id": "1d8bfc6a1970",
+      "title": "Congo-Kinshasa: La Cour des comptes épingle la redistribution de la redevance minière",
+      "summary": "[RFI] En République démocratique du Congo (RDC), le rapport annuel de la Cour des comptes épingle la gestion de la redistribution de la redevance minière, cette taxe versée par les sociétés d'exploitation. Explications.",
+      "link": "https://fr.allafrica.com/stories/202606220508.html",
+      "source": "AllAfrica (FR)",
+      "category": "Économie",
+      "region": "Afrique Centrale",
+      "published_at": "2026-06-22T12:05:36",
+      "fetched_at": "2026-06-23T05:48:49.217779"
+    },
+    {
+      "id": "5923b7b0ca9c",
+      "title": "Sénégal: La ministre de la Jeunesse et des Sports cyberharcelée depuis la défaite des Lions face à la France",
+      "summary": "[RFI] Au Sénégal, plusieurs voix s'élèvent pour soutenir la ministre de la Jeunesse et des Sports. Tout juste nommée dans le nouveau gouvernement le 1er juin 2026, Djireye Clotilde Coly est la cible ces derniers jours d'attaques... sur sa coiffure !...",
+      "link": "https://fr.allafrica.com/stories/202606220407.html",
+      "source": "AllAfrica (FR)",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-06-22T11:07:15",
+      "fetched_at": "2026-06-23T05:48:49.217828"
+    },
+    {
+      "id": "13a05afea09b",
+      "title": "Gabon: Olam, société productrice d'huile de palme, souffre face aux ravages causés par les éléphants",
+      "summary": "[RFI] Au Gabon, le conflit humain-éléphant s'aggrave. Les éléphants ne s'attaquent plus seulement aux plantations des paysans. La société agro-industrielle Olam Gabon, spécialisée dans la production d'huile de palme, a récemment annoncé la...",
+      "link": "https://fr.allafrica.com/stories/202606220405.html",
+      "source": "AllAfrica (FR)",
+      "category": "Économie",
+      "region": "Afrique Centrale",
+      "published_at": "2026-06-22T11:07:14",
+      "fetched_at": "2026-06-23T05:48:49.217873"
+    },
+    {
+      "id": "3be50d6a35c4",
+      "title": "Refugees, displaced persons generate $27 billion economy in East Africa - thecitizen.co.tz",
+      "summary": "Refugees, displaced persons generate $27 billion economy in East Africa  thecitizen.co.tz",
+      "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQR05oZ29LMDQ5SjB4Qm1ENlZweGR0Nl93LVQtdzVwWHFLcDVxbjNCU2tXSFVHUFdIOEdVb1VvUDBNRjdQczVSclpSd2lDd2hndkxnMEt5Q2lwOXlfSDB3dGhJRzFEU3FmSzlodTFKdjdQZkZFS1NBc0kxcEZYdk44amhtWlphWngwVU15SzljLWhfTlZqNElUX2JyZ3hQcTRJZHlwRGhhRkNMczNYbFVKSmIweDgtNjJ0ZWZxM3M3LTI2aGZ6NlNaYQ?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique",
+      "published_at": "2026-06-22T10:18:31",
+      "fetched_at": "2026-06-23T05:48:49.595555"
     },
     {
       "id": "3da998e287c0",
@@ -186,51 +329,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-06-22T03:56:38",
-      "fetched_at": "2026-06-22T09:25:43.877963"
-    },
-    {
-      "id": "5add3f2536de",
-      "title": "Zimbabwe: Zimbabwean Economy Doing Very Well, Capable of Absorbing All Citizens Being Chased Out of South Africa - Says Mutsvangwa",
-      "summary": "[New Zimbabwe] THE Zimbabwean economy is doing very well and now able to absorb all its citizens who are being hounded out of South Africa for being there illegally, Zanu PF spokesperson Christopher Mutsvangwa has said.",
-      "link": "https://allafrica.com/stories/202606220108.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique Australe",
-      "published_at": "2026-06-22T03:49:43",
-      "fetched_at": "2026-06-22T09:25:43.856340"
-    },
-    {
-      "id": "8cf624c478c8",
-      "title": "Rwanda: Fish Production Expands 66 Percent in First Quarter",
-      "summary": "[New Times] Rwanda's fishing sector grew by 66 per cent in the first quarter of 2026, up from 22 per cent in the corresponding period of 2025, according to the latest data from the National Institute of Statistics Rwanda (NISR).",
-      "link": "https://allafrica.com/stories/202606220091.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique de l'Est",
-      "published_at": "2026-06-22T03:39:30",
-      "fetched_at": "2026-06-22T09:25:43.856695"
-    },
-    {
-      "id": "42e1236de314",
-      "title": "Africa: Middle East War Drives Up Bitumen Costs for African Road Builders",
-      "summary": "[RFI] War in the Middle East is pushing up the price of bitumen, the material used to make asphalt and road surfaces - and the effects are being felt across Africa, where few countries produce their own. Higher costs and longer delivery times are...",
-      "link": "https://allafrica.com/stories/202606220089.html",
-      "source": "AllAfrica",
-      "category": "Économie",
-      "region": "Afrique",
-      "published_at": "2026-06-22T03:35:44",
-      "fetched_at": "2026-06-22T09:25:43.856579"
-    },
-    {
-      "id": "b537ef9b64e6",
-      "title": "Afrique de l'Ouest: Electrification rurale en Afrique de l'Ouest - Les parlementaires invités à transformer les recommandations en actions concrètes",
-      "summary": "[Sud Quotidien] La réunion délocalisée de la Commission mixte Énergie et Mines, Infrastructures, Agriculture, Environnement et Ressources naturelles du Parlement de la CEDEAO a pris fin, hier vendredi, à Dakar, après six jours d'intenses échanges...",
-      "link": "https://fr.allafrica.com/stories/202606210093.html",
-      "source": "AllAfrica (FR)",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-21T23:58:23",
-      "fetched_at": "2026-06-22T09:25:43.789851"
+      "fetched_at": "2026-06-23T05:48:49.258290"
     },
     {
       "id": "3796f9185525",
@@ -241,29 +340,7 @@
       "category": "Économie",
       "region": "Afrique",
       "published_at": "2026-06-21T22:04:00",
-      "fetched_at": "2026-06-22T09:25:44.136260"
-    },
-    {
-      "id": "3d32cdeda9f4",
-      "title": "South Africa firms in Sh413bn swoop on Kenya blue-chips - Business Daily",
-      "summary": "South Africa firms in Sh413bn swoop on Kenya blue-chips  Business Daily",
-      "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQRXV6cGFyQ25vU1hPZGk1bWxob0NhV2tIT000dE10VzB4dXZPbm9JOFlta2lOd1JaeVFIWnlhLXEwSlcyWGxoUWotSFpWUXZlQ2lOWERCeU1PY19nY0pKWnFHNDZkdV9hS25Pb0l4LTJNUGNLbjJ1RzNWZUNPYS1PUmVYNXpXNG9YamlEYlRRZHdRaXdEaFNQa3N5QXh0M184SzVMWHdPSzZCbVp1Ykt1amFDYW1neDRVdWFxeWI3NA?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Économie",
-      "region": "Afrique de l'Est",
-      "published_at": "2026-06-21T20:30:00",
-      "fetched_at": "2026-06-22T09:25:44.655629"
-    },
-    {
-      "id": "6489a9e3add1",
-      "title": "Afrique – Forum des Bâtisseurs de l’Économie : investir pour 1,58 milliard d’habitants - Africa24 TV",
-      "summary": "Afrique – Forum des Bâtisseurs de l’Économie : investir pour 1,58 milliard d’habitants  Africa24 TV",
-      "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNbnFLS1BGRXAxbjhEMHVZbllFaW1Lc19TVTFGQmRTcmhoaVB1SEJHaER0ZDJ0Q1I5ZEV5X0laaTVmbXVhM1k4VjR3ekpSU19BSUJzNXFXMkJFTlFfZ1Z4bUs2d19RZDIzaDk0SXFEMi1lWFFCU0pCZzdLV0lPTll3MUJ6dFp3OWlIZW12Nnp6c3BPdWhPOUhJWlF6eUthSl9iSndnZzlR?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Mines",
-      "region": "Afrique",
-      "published_at": "2026-06-19T13:18:00",
-      "fetched_at": "2026-06-22T09:25:44.136388"
+      "fetched_at": "2026-06-23T05:48:49.483299"
     },
     {
       "id": "37e4d0b00f84",
@@ -274,18 +351,7 @@
       "category": "Finance",
       "region": "Afrique de l'Est",
       "published_at": "2026-06-19T11:24:50",
-      "fetched_at": "2026-06-22T09:25:43.825120"
-    },
-    {
-      "id": "a17fbcdc5a34",
-      "title": "Afrique économie - Reprise très partielle de l'activité d'Eramet Grande Côte au Sénégal - RFI",
-      "summary": "Afrique économie - Reprise très partielle de l'activité d'Eramet Grande Côte au Sénégal  RFI",
-      "link": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxOZEliSmVFNzhTR01BZFVuUF85X0U5dDBNVko0TVR3QVJ1THV3Mk8tMWpFSk1TUXQ2WDluaDVrRkE3LXp2M3NZV1BobEgzOTVDRUhwdV9FOEVabHctTHZBOEltSEtOa0FiZHZWOVpuVFpCQmhEM3ViZEZBb3hpTGJiNWF6Q1U1ZDF2NXl5R045d1F4akNnV0NFc2liODA4ZFhhY1VyWkpCSEY4ZEJHY0oweUpSbnFxamZ6LUhWdFJneC14bmh6ckd6Mi1lUktKNW1lb2hYZTM1MWxGc2VqcUlTeUV4dEM3d3UwQXVJ?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-18T22:02:00",
-      "fetched_at": "2026-06-22T09:25:44.137683"
+      "fetched_at": "2026-06-23T05:48:49.205615"
     },
     {
       "id": "a815babe5c2d",
@@ -296,7 +362,7 @@
       "category": "Finance",
       "region": "Afrique Australe",
       "published_at": "2026-06-18T18:11:07",
-      "fetched_at": "2026-06-22T09:25:43.825563"
+      "fetched_at": "2026-06-23T05:48:49.205967"
     },
     {
       "id": "6f4e4b83dac1",
@@ -307,7 +373,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-06-18T18:08:59",
-      "fetched_at": "2026-06-22T09:25:43.878404"
+      "fetched_at": "2026-06-23T05:48:49.258484"
     },
     {
       "id": "b91979a329ed",
@@ -318,7 +384,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-06-18T17:57:22",
-      "fetched_at": "2026-06-22T09:25:43.878474"
+      "fetched_at": "2026-06-23T05:48:49.258520"
     },
     {
       "id": "bb3432accae3",
@@ -329,7 +395,7 @@
       "category": "Commerce",
       "region": "Afrique Australe",
       "published_at": "2026-06-18T16:36:38",
-      "fetched_at": "2026-06-22T09:25:43.878541"
+      "fetched_at": "2026-06-23T05:48:49.258551"
     },
     {
       "id": "09e5ce7f0f82",
@@ -340,7 +406,7 @@
       "category": "Finance",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-06-18T16:16:11",
-      "fetched_at": "2026-06-22T09:25:43.825246"
+      "fetched_at": "2026-06-23T05:48:49.205642"
     },
     {
       "id": "704905c83fae",
@@ -351,7 +417,7 @@
       "category": "Finance",
       "region": "Afrique Australe",
       "published_at": "2026-06-18T16:05:12",
-      "fetched_at": "2026-06-22T09:25:43.825319"
+      "fetched_at": "2026-06-23T05:48:49.205680"
     },
     {
       "id": "e6f5e711265e",
@@ -362,7 +428,7 @@
       "category": "Finance",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-06-18T15:03:05",
-      "fetched_at": "2026-06-22T09:25:43.825604"
+      "fetched_at": "2026-06-23T05:48:49.206020"
     },
     {
       "id": "3f713a1214ff",
@@ -373,7 +439,7 @@
       "category": "Finance",
       "region": "Afrique Australe",
       "published_at": "2026-06-18T11:58:46",
-      "fetched_at": "2026-06-22T09:25:43.825389"
+      "fetched_at": "2026-06-23T05:48:49.205792"
     },
     {
       "id": "6188df9cafb6",
@@ -384,7 +450,7 @@
       "category": "Commerce",
       "region": "Afrique Australe",
       "published_at": "2026-06-18T11:53:49",
-      "fetched_at": "2026-06-22T09:25:43.878034"
+      "fetched_at": "2026-06-23T05:48:49.258358"
     },
     {
       "id": "3f017d6d772d",
@@ -395,7 +461,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-06-18T11:41:28",
-      "fetched_at": "2026-06-22T09:25:43.878112"
+      "fetched_at": "2026-06-23T05:48:49.258391"
     },
     {
       "id": "48c7cbc78604",
@@ -406,18 +472,7 @@
       "category": "Finance",
       "region": "Afrique de l'Est",
       "published_at": "2026-06-18T10:49:42",
-      "fetched_at": "2026-06-22T09:25:43.825444"
-    },
-    {
-      "id": "3c78f4abfc8d",
-      "title": "Afrique économie - La Tunisie mise sur les influenceurs chinois pour faire venir les touristes - RFI",
-      "summary": "Afrique économie - La Tunisie mise sur les influenceurs chinois pour faire venir les touristes  RFI",
-      "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQNGc5LVVwQmNHNm9YNUhYMWZRYnVEWk1YMHBVWFhZNlpVc1RxY1JyekhGVjYxcWQ1T3hWQ2xXWGNaX1h4bGlBa1E4SW93bDFVR2dhc1BLYUsyZ2owb09aT0ZpdHRTUERfRV96cUw4cXM5SEtZZXNfYzhHSXh5TEh2a1pMYVRjV1FtM29Na2tQZEhTdk12b0FiZXJXT0R3N0xMQ2NBaXpibVRZRGpMTjlXUDNITlhqQURpbmRDOGZORnpnTmVnX3lJY2Z1aElOTjd1Mlpj?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Économie",
-      "region": "Afrique du Nord",
-      "published_at": "2026-06-17T22:01:00",
-      "fetched_at": "2026-06-22T09:25:44.137522"
+      "fetched_at": "2026-06-23T05:48:49.205926"
     },
     {
       "id": "7c9fdc516b78",
@@ -428,7 +483,7 @@
       "category": "Commerce",
       "region": "Afrique Australe",
       "published_at": "2026-06-17T18:20:17",
-      "fetched_at": "2026-06-22T09:25:43.878655"
+      "fetched_at": "2026-06-23T05:48:49.258585"
     },
     {
       "id": "07b61cefd432",
@@ -439,7 +494,7 @@
       "category": "Finance",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-06-17T11:14:51",
-      "fetched_at": "2026-06-22T09:25:43.825489"
+      "fetched_at": "2026-06-23T05:48:49.205993"
     },
     {
       "id": "a50a96cf5ece",
@@ -450,7 +505,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Est",
       "published_at": "2026-06-17T10:52:57",
-      "fetched_at": "2026-06-22T09:25:43.878292"
+      "fetched_at": "2026-06-23T05:48:49.258426"
     },
     {
       "id": "c1f81ce3e32d",
@@ -461,7 +516,7 @@
       "category": "Commerce",
       "region": "Afrique de l'Ouest",
       "published_at": "2026-06-17T08:58:20",
-      "fetched_at": "2026-06-22T09:25:43.878339"
+      "fetched_at": "2026-06-23T05:48:49.258450"
     },
     {
       "id": "c24f61f4684e",
@@ -472,40 +527,7 @@
       "category": "Télécoms",
       "region": "Afrique",
       "published_at": "2026-06-17T08:49:17",
-      "fetched_at": "2026-06-22T09:25:44.655444"
-    },
-    {
-      "id": "ae8d1bc0419e",
-      "title": "Malawi: NBM PLC, Press Trust Commit K1.2 Billion for Girl's Hostel Project",
-      "summary": "[Nyasa Times] National Bank of Malawi (NBM) plc, Press Trust and Malawi Government have jointly committed K1.2 billion towards the construction of a girls' hostel and supporting staff housing at Njerenje Community Day Secondary School (CDSS) in...",
-      "link": "https://allafrica.com/stories/202606160123.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique Australe",
-      "published_at": "2026-06-16T10:08:31",
-      "fetched_at": "2026-06-22T09:25:43.825671"
-    },
-    {
-      "id": "b88707712beb",
-      "title": "Nigeria: Cardoso Launches Nigeria Overnight Financing Rate to Boost Confidence, Price Discovery, Market Stability",
-      "summary": "[This Day] Abuja -- Governor of the Central Bank of Nigeria (CBN), Mr. Olayemi Cardoso, yesterday launched the Nigeria Overnight Financing Rate (NOFR) to significantly deepen Foreign Exchange (FX) market stability, strengthen price discovery, and...",
-      "link": "https://allafrica.com/stories/202606160035.html",
-      "source": "AllAfrica",
-      "category": "Finance",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-16T08:35:44",
-      "fetched_at": "2026-06-22T09:25:43.825717"
-    },
-    {
-      "id": "21b5b2945089",
-      "title": "Nigeria: Customs Foils Illegal Wildlife Trade, Recovers N126m Elephant Tusks",
-      "summary": "[Leadership] The Nigeria Customs Service (NCS), Federal Operations Unit (FOU) Zone A, Lagos, has recorded a major breakthrough in the fight against wildlife trafficking with the interception of 22 pieces of elephant tusks valued at N126.39 million...",
-      "link": "https://allafrica.com/stories/202606150540.html",
-      "source": "AllAfrica",
-      "category": "Commerce",
-      "region": "Afrique de l'Ouest",
-      "published_at": "2026-06-15T15:31:05",
-      "fetched_at": "2026-06-22T09:25:43.878597"
+      "fetched_at": "2026-06-23T05:48:49.595470"
     },
     {
       "id": "6b1f8f4c2299",
@@ -516,7 +538,7 @@
       "category": "Économie",
       "region": "Afrique",
       "published_at": "2026-06-04T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.655546"
+      "fetched_at": "2026-06-23T05:48:49.595797"
     },
     {
       "id": "017fdc3428df",
@@ -527,7 +549,7 @@
       "category": "Économie",
       "region": "Afrique",
       "published_at": "2026-06-03T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.137585"
+      "fetched_at": "2026-06-23T05:48:49.483533"
     },
     {
       "id": "788f6db90a95",
@@ -538,18 +560,7 @@
       "category": "Mines",
       "region": "Afrique",
       "published_at": "2026-06-02T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.655716"
-    },
-    {
-      "id": "3dd25e29f7d8",
-      "title": "Classement 2026 : quels sont les 20 pays les plus performants d’Afrique ? - Jeune Afrique",
-      "summary": "Classement 2026 : quels sont les 20 pays les plus performants d’Afrique ?  Jeune Afrique",
-      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOZG13Q2JoekFHR0tXak5EUVBFVEdSTDZIZHFRc05FcTgzQjZSdXJPOUIzNzFXRV9KSmMzZ01obkJmcGFWeHc2eWE1dzQzZUI4YWxNZVlaY1p3NWE3bW5nSnd5WlZwR1VNMkxydXQtei1MN092Q1Vaa2QxX0hQcU9PbUtJUWlqTzItb0lycUpwa0tvekJyMG5XRFVRelhxeTRUaVBRbFFOQ1hPQ1psU3RpalI2M0ZoQTM1NzBOX04ybGhZRGhLYUE?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Mines",
-      "region": "Afrique",
-      "published_at": "2026-06-02T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.136489"
+      "fetched_at": "2026-06-23T05:48:49.595415"
     },
     {
       "id": "ba39743604ee",
@@ -560,7 +571,7 @@
       "category": "Télécoms",
       "region": "Afrique",
       "published_at": "2026-06-01T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.137448"
+      "fetched_at": "2026-06-23T05:48:49.483451"
     },
     {
       "id": "662d9072e26d",
@@ -571,18 +582,7 @@
       "category": "Économie",
       "region": "Afrique",
       "published_at": "2026-05-29T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.137767"
-    },
-    {
-      "id": "871add5402e5",
-      "title": "Africa’s Economic Growth Slows in 2026 but Rebound Expected, AfDB Says - The Voice of Africa",
-      "summary": "Africa’s Economic Growth Slows in 2026 but Rebound Expected, AfDB Says  The Voice of Africa",
-      "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOeVBzcUl3U0FxMVVwaHhQVnBzbHQxX0dvY25wR1NvZGVaS2oyRVVpWUhfVkZQY0VJMHFoSV9DVzc3bnZFYlVZenZxR0lLTGlJb0JMb1ZROXpsaDJEOXRLYU53VVdxeWJxaXM0T1I5XzNpeWdFbkw5bzc5enZUS1MxUXY2M2RRckJBVHNqaVQ2UlBlWW1DY1Y1aC0xMlcyUU83M19ZRXhvYy1DY0NQR3c?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Économie",
-      "region": "Afrique",
-      "published_at": "2026-05-28T13:40:48",
-      "fetched_at": "2026-06-22T09:25:44.656100"
+      "fetched_at": "2026-06-23T05:48:49.483630"
     },
     {
       "id": "eeb92166f398",
@@ -593,40 +593,7 @@
       "category": "Finance",
       "region": "Afrique",
       "published_at": "2026-05-27T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.137635"
-    },
-    {
-      "id": "ce62cfb5b5f9",
-      "title": "Morocco: diaspora remittance boost economy {Business Africa} - africanews.com",
-      "summary": "Morocco: diaspora remittance boost economy {Business Africa}  africanews.com",
-      "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNVVJBQlRiY1dfYXNoQTdaV0trVGN0RjVjdnJycExhcHl6NHlLTlBQaGdfRXE2VnVNQXptRFUwQXJhXzJlZVE5WG4wZWxKSXpSMmJOeG1PS19tQUE1SnowV2FZYm10SjVYTnlua01iRk1NaFE5eVFWRmc2dm1XM25ST3JIQVYtcHhxUlg5eXhaeUowTTllZnpzeUkxalTSAaIBQVVfeXFMTU42UWlraFE3NVBORjNLV0x6blJDb1BsZW05TWVFWERCRkh5c01mZG9oRWM2WmxBamdHcDFiSWVOd0h0NllmaS0tR1Bxc2dGMXFnaWdPbjRnNmpzaHE2WTlRY1djMHAwd25razg2WkZxRlZ6dXZaWndrS1NkRnBvR3BjVEdsTVFCOEpCV2xmZlVKelhfUnVKS0xlY0RfbW1USWxB?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Mines",
-      "region": "Afrique du Nord",
-      "published_at": "2026-05-26T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.655929"
-    },
-    {
-      "id": "7eb444a3410e",
-      "title": "Africa’s business capital is on the brink of financial collapse - The Japan Times",
-      "summary": "Africa’s business capital is on the brink of financial collapse  The Japan Times",
-      "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOMUtoaml1MV9jeTlrS3NiUGZJUko1LWlBNFhoN3lYeWFtVktjSE9USzYwZUJuT05jdEJLaVNFVGVONHJiTzlWSERqNm5wNGZwdXB5SzhwSFhwTWo4djd0TVM0ZGExOFZxRE9xMFo1MUUzbkNSNzhwTkJJc29fd3A1NUZ5c1p0ZlBSRWx2X0hyZVAzVEFZYUtvVU9uR2U2Z2J2OVVVbFlwUml4UQ?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Économie",
-      "region": "Afrique",
-      "published_at": "2026-05-25T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.656011"
-    },
-    {
-      "id": "6a2fa4aca30c",
-      "title": "Afrique économie - Face aux crises mondiales, les défis du développement du commerce intra-africain - RFI",
-      "summary": "Afrique économie - Face aux crises mondiales, les défis du développement du commerce intra-africain  RFI",
-      "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxPQWNiS1FkZ1dzckRjVlNSd01xcDRkOVE4VVZPZDJWTjVBSjJRVlRvOGdWZVB5VklTTFhJR2E5aDlMVlAxVW1kWFB1MWptOS0wV2x4djN2b0stZm9vNDlWWGR6MnZia0xhQjZjU3JRWU9YcFFpeTZfQ1R2MHhmWGtpVE1VVk9nS0FrY1B5UHdNNERCSmhyNWhOU0JvV01TU2RxUkRjbEZ4QkxaVDNXNjhNbi1SMmhGRDFDR0ZxaUYyazBueWZQY2xnLUFNQkhOUFRZZmFhRGxCRmRWd0VaMHBkX21adlVZdw?oc=5",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Commerce",
-      "region": "Afrique",
-      "published_at": "2026-05-25T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.137818"
+      "fetched_at": "2026-06-23T05:48:49.483490"
     },
     {
       "id": "d90e6db44b80",
@@ -637,7 +604,7 @@
       "category": "Finance",
       "region": "Afrique",
       "published_at": "2026-05-10T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.767663"
+      "fetched_at": "2026-06-23T05:48:49.716337"
     },
     {
       "id": "1beb2fe9225f",
@@ -648,7 +615,18 @@
       "category": "Commerce",
       "region": "Afrique",
       "published_at": "2026-04-08T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.655797"
+      "fetched_at": "2026-06-23T05:48:49.595597"
+    },
+    {
+      "id": "962297032e57",
+      "title": "Afrique économie - Minerais stratégiques: l’Afrique face au défi des contrats équitables - RFI",
+      "summary": "Afrique économie - Minerais stratégiques: l’Afrique face au défi des contrats équitables  RFI",
+      "link": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQdmFES2FPV0pUZVoyVWNEYUh1OE5nVDFIZzRTRGtZTGNBbHNITktTbDJvMTlzOG9aQU5hVG9ZRTZISmRyVm5qWG1XMklUaUhrZHc5dHYxdWZENHlDYTdUVU9CeHdNZENrMGlFYXJlTTlKMmczSU56MXdhRGJ6VW1mM2RKTE0wanVYNk5kc2ExeDFLekNVejgyNFc0MzVFSWRMYUhTbWdNVTBRbGZvMlYtb2hTRU1RTEx5eDdWV2FNUnFqY1dNS1hpWF9rQzUwdURhcjd6QWttdk1rUjlPa0E?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique",
+      "published_at": "2026-02-23T08:00:00",
+      "fetched_at": "2026-06-23T05:48:49.483583"
     },
     {
       "id": "083c8feb0f57",
@@ -659,29 +637,40 @@
       "category": "Mines",
       "region": "Afrique",
       "published_at": "2026-02-19T17:07:27",
-      "fetched_at": "2026-06-22T09:25:44.655875"
+      "fetched_at": "2026-06-23T05:48:49.595686"
     },
     {
-      "id": "57c3eb0f9cb2",
-      "title": "Nationale - L’éloge du FMI - L'Expression",
-      "summary": "Nationale - L’éloge du FMI  L'Expression",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9reTVmTzZ3aS0ydFJLZE9lb2tKLVlrUlF1MGFCMnFTSDg2QXVOWmFPUWliQTRaV1RlMG5oZlNSR2RVdkl5TmlLUDRHRVVpZ05lTmNaeU5ITHR3WXlRSDB1YURvMmZOTS1KaklZODdB?oc=5",
-      "source": "Algérie Économie",
-      "category": "Finance",
-      "region": "Afrique",
-      "published_at": "2026-02-05T08:00:00",
-      "fetched_at": "2026-06-22T09:25:44.767831"
+      "id": "257e3137386a",
+      "title": "Afrique économie - Guinée: pourquoi la pénurie de liquidités perdure? - RFI",
+      "summary": "Afrique économie - Guinée: pourquoi la pénurie de liquidités perdure?  RFI",
+      "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOVjItQ3hnTFdUWGN0ejZqSTZxR05LejcwQ0lzaVZSUWV6dXZNQnhKUnZRenlqY0dkTWl4elVvMTJoSjllYUNmbXhneDNqZVFGMzloZnRQaE1mTVhxUEZGeGhnc3RmV25NTlJ6Y254TVliaEhfeUZ2WXhPRG1fNkFtcklKWkNaS0xkMXRRX3U2ZHRqSTQ3emQ4X3N3UzlHRmE3Q29kd2dMLVVvNTZ0cXBhVGVmd0E5MFNIMHg1UDNCbXRTRGM?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "published_at": "2026-02-09T08:00:00",
+      "fetched_at": "2026-06-23T05:48:49.483407"
     },
     {
-      "id": "0960d5b3a6e9",
-      "title": "Want to invest in Africa? It's time to think smaller and smarter - The World Economic Forum",
-      "summary": "Want to invest in Africa? It's time to think smaller and smarter  The World Economic Forum",
-      "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTE83N0sxM0toRjRBVnJUeE1MV05MU3BwS3l3RjJzMnVFUkZMYlhsMjB2MEdzX3pWRUxaaHNTYU1vdU1MMkxDby1INjJOUlROMm5fZ0ZCTVRhRFZ4VlR4N19VdWIyeXZQbjVzYkVacFFYaUk0LTFXU1pLbzJ3?oc=5",
+      "id": "aaad58a32e1b",
+      "title": "Publication de L’Économie africaine 2026 par l’Agence française de développement : investir, coopérer et transformer dans un monde en recomposition - AFD - Agence Française de Développement",
+      "summary": "Publication de L’Économie africaine 2026 par l’Agence française de développement : investir, coopérer et transformer dans un monde en recomposition  AFD - Agence Française de Développement",
+      "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNcENsMWVhM19Jb0YtZEc1TURWM29qc0poc280VUUzSkxxUkJzazhCaTdMN0g4ZjRFUnRud1ZiUzlLUm10U1ppYlJIUUNyS21sdndqSmE0d0ZON0g2NVF3eTRGakZoQl9ianBYVXd5VU5MVkx4M1U3VjFteTRQNWlVQnFucnJMUlMyV1VZMWU2OFFXV25ycTA4blFpcFVyZEtYOGVpOWpHeU1jREUyckE?oc=5",
       "source": "Google News (Reuters, AFP, etc.)",
       "category": "Mines",
       "region": "Afrique",
-      "published_at": "2026-01-19T08:00:00",
-      "fetched_at": "2026-06-22T09:25:44.656234"
+      "published_at": "2026-01-22T08:00:00",
+      "fetched_at": "2026-06-23T05:48:49.483369"
+    },
+    {
+      "id": "a552294d3e8d",
+      "title": "L'économie africaine 2025 - AFD - Agence Française de Développement",
+      "summary": "L'économie africaine 2025  AFD - Agence Française de Développement",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBNcnB0b0NJUFEtaEFlM053SW84RjR5VkgzUTBFUmREV29CaHVoX1dRRVpqX1ZqYzBlbHFNbW1waExaOENxcGxudkp4R3VHS2NfbzdqaTBuRFpvZGJ6NWc1aTNCMzNobTZ0?oc=5",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique",
+      "published_at": "2026-01-14T08:00:00",
+      "fetched_at": "2026-06-23T05:48:49.483253"
     },
     {
       "id": "dz-project-zone-franche-belloua",
@@ -691,8 +680,8 @@
       "source": "Ministère du Commerce",
       "category": "Commerce",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784642",
-      "fetched_at": "2026-06-22T09:25:44.784643",
+      "published_at": "2026-06-23T05:48:49.879401",
+      "fetched_at": "2026-06-23T05:48:49.879401",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -705,8 +694,8 @@
       "source": "Algerian Qatari Steel (AQS)",
       "category": "Industrie",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784639",
-      "fetched_at": "2026-06-22T09:25:44.784640",
+      "published_at": "2026-06-23T05:48:49.879399",
+      "fetched_at": "2026-06-23T05:48:49.879399",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -719,8 +708,8 @@
       "source": "Sonatrach/NNPC",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784636",
-      "fetched_at": "2026-06-22T09:25:44.784637",
+      "published_at": "2026-06-23T05:48:49.879396",
+      "fetched_at": "2026-06-23T05:48:49.879397",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -733,8 +722,8 @@
       "source": "SKTM/Sonelgaz",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784632",
-      "fetched_at": "2026-06-22T09:25:44.784633",
+      "published_at": "2026-06-23T05:48:49.879394",
+      "fetched_at": "2026-06-23T05:48:49.879395",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -747,8 +736,8 @@
       "source": "Sonatrach",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784629",
-      "fetched_at": "2026-06-22T09:25:44.784630",
+      "published_at": "2026-06-23T05:48:49.879391",
+      "fetched_at": "2026-06-23T05:48:49.879392",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -761,8 +750,8 @@
       "source": "Stellantis Algeria",
       "category": "Industrie",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784625",
-      "fetched_at": "2026-06-22T09:25:44.784626",
+      "published_at": "2026-06-23T05:48:49.879389",
+      "fetched_at": "2026-06-23T05:48:49.879390",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -775,8 +764,8 @@
       "source": "Direction des Travaux Publics",
       "category": "Infrastructure",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784622",
-      "fetched_at": "2026-06-22T09:25:44.784623",
+      "published_at": "2026-06-23T05:48:49.879387",
+      "fetched_at": "2026-06-23T05:48:49.879387",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -789,8 +778,8 @@
       "source": "Ministère des Transports",
       "category": "Infrastructure",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784618",
-      "fetched_at": "2026-06-22T09:25:44.784619",
+      "published_at": "2026-06-23T05:48:49.879384",
+      "fetched_at": "2026-06-23T05:48:49.879385",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -803,8 +792,8 @@
       "source": "ASMIDAL/Sonatrach",
       "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784615",
-      "fetched_at": "2026-06-22T09:25:44.784616",
+      "published_at": "2026-06-23T05:48:49.879382",
+      "fetched_at": "2026-06-23T05:48:49.879382",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
@@ -817,22 +806,22 @@
       "source": "Ministère de l'Industrie Algérien",
       "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-22T09:25:44.784605",
-      "fetched_at": "2026-06-22T09:25:44.784611",
+      "published_at": "2026-06-23T05:48:49.879373",
+      "fetched_at": "2026-06-23T05:48:49.879379",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true
     },
     {
-      "id": "6e648c96fec1",
-      "title": "Skechers brings its know-how to the \"Made in Algeria\" - horizons.dz",
-      "summary": "Skechers brings its know-how to the \"Made in Algeria\"  horizons.dz",
-      "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOTWZ4VGhqMHVEZVBOcVlOQmdJU3ZaY0htLTZxTE5rbGFCWWc3MnhncXBVN0pmUFRyb2dxQTFfUTFKNDgydllvdzNFWFp5R3FhRVN0V3FpS29kQ0Y4a3ZaVjhxOVRoV1A0WFFlbzJ0TUhUY2FPUjF2bVY4SG11YmZHYTJHOG92ellZb2VBMXZBRDNWQU9pdC05MWU4TFc?oc=5",
+      "id": "6b6379d2dfe0",
+      "title": "Algeria and Kenya Discuss Enhancing Cooperation and Partnership in Pharmaceutical Production - الإذاعة الجزائرية |",
+      "summary": "Algeria and Kenya Discuss Enhancing Cooperation and Partnership in Pharmaceutical Production  الإذاعة الجزائرية |",
+      "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5ENFhaOGU3MVFGS1JJaDUwTEp5VEt6eHdwUUtPSW52X0N0WTJickxfSUVHR0tlTmxkNEZscjZjc1MxTnkzX2x2dzFQSHJSUUs4V2p3?oc=5",
       "source": "Algérie Économie",
-      "category": "Mines",
+      "category": "Économie",
       "region": "Afrique du Nord",
-      "published_at": "2026-06-21T12:29:57",
-      "fetched_at": "2026-06-22T09:25:44.415034"
+      "published_at": "2026-06-22T20:53:03",
+      "fetched_at": "2026-06-23T05:48:49.867899"
     },
     {
       "id": "05df597bf829",
@@ -843,7 +832,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-06-20T23:11:46",
-      "fetched_at": "2026-06-22T09:25:44.767531"
+      "fetched_at": "2026-06-23T05:48:49.716183"
     },
     {
       "id": "160ae2c81fb8",
@@ -854,7 +843,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2026-06-19T15:35:40",
-      "fetched_at": "2026-06-22T09:25:44.767597"
+      "fetched_at": "2026-06-23T05:48:49.716281"
     },
     {
       "id": "9c491c5ddca0",
@@ -865,7 +854,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-06-18T17:22:00",
-      "fetched_at": "2026-06-22T09:25:44.415236"
+      "fetched_at": "2026-06-23T05:48:49.868066"
     },
     {
       "id": "71db4284d3a7",
@@ -876,18 +865,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-06-18T09:21:43",
-      "fetched_at": "2026-06-22T09:25:44.414977"
-    },
-    {
-      "id": "72ea6d667880",
-      "title": "Algeria - Mining, Oil, Gas - Britannica",
-      "summary": "Algeria - Mining, Oil, Gas  Britannica",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBoQmpSYWZ2dUF6eWJjR1o3OXc0RHZxNjZtXzZBM2tVc3drUnN6S3BKT1FES3lQRkhWcTl0cGtQYUZLaHlqOWgxcG5penUzTFllTkNCakxmUHhTVzQ?oc=5",
-      "source": "Algérie Économie",
-      "category": "Énergie",
-      "region": "Afrique du Nord",
-      "published_at": "2026-06-17T05:00:00",
-      "fetched_at": "2026-06-22T09:25:44.414885"
+      "fetched_at": "2026-06-23T05:48:49.867845"
     },
     {
       "id": "68bda21451cd",
@@ -898,7 +876,7 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-06-15T11:07:18",
-      "fetched_at": "2026-06-22T09:25:44.415100"
+      "fetched_at": "2026-06-23T05:48:49.868001"
     },
     {
       "id": "064d2f24d975",
@@ -909,40 +887,40 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-05-26T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.415286"
+      "fetched_at": "2026-06-23T05:48:49.868027"
     },
     {
-      "id": "5f61eb4df076",
-      "title": "Selon l’Agence allemande du commerce et de l’investissement : l’Algérie franchit le cap de la transition - EL Moudjahid",
-      "summary": "Selon l’Agence allemande du commerce et de l’investissement : l’Algérie franchit le cap de la transition  EL Moudjahid",
+      "id": "84aef0f81ff6",
+      "title": "Selon l’Agence allemande du commerce et de l’investissement : l’Algérie franchit le cap de la transition - El Moudjahid",
+      "summary": "Selon l’Agence allemande du commerce et de l’investissement : l’Algérie franchit le cap de la transition  El Moudjahid",
       "link": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxOZkE2amtTdHozclZpVUl6d2xwWkU4ek00a213OUl5bmVaR2plZm1uaEJMNl9TWnBTeUVadmw2ZTFOS2xnUG1YWUR3c0dGVGcydUNaN1AwTm1COE0xcjFrblpzZVhodVZLWXBlV3djWXEzQmVBa3k3aVFzUE0xLUVWU3BsZ3RTazFrd3p3U3VpSDNTaFJQMklwYURhY2ROZXVEUzE4NjNoUDBUY2ozTWYwRjJoWDU4ODJFMFRDNVl2S3JWV2kzZzdEeWtGN1B6Z2xGMWx4dGMyNjJQRkkxeGJHcVpn?oc=5",
       "source": "Algérie Économie",
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-05-23T00:19:33",
-      "fetched_at": "2026-06-22T09:25:44.767899"
+      "fetched_at": "2026-06-23T05:48:49.716367"
     },
     {
-      "id": "bdeb76a4d698",
-      "title": "Une délégation économique algérienne prend part au SelectUSA investment Summit - aps.dz",
-      "summary": "Une délégation économique algérienne prend part au SelectUSA investment Summit  aps.dz",
-      "link": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQREdIa3lOMXlPcENLMnZCUFYtbU1wazBMR1k3YnV0VE9xNXNWYndKWHZ3Sngzc3htU3NHa25DeDRkbGwxMHlhSTJYaVlxdHJOd0FXSXNKbDNxNHBRTVJoRWxqMFNseDdOX2tIeUx1OWp5Y1NCVUZtOFA4Y2tTUDhUOEI1NnluRHVScG5PSDlRa2R0eDNfVlhrYklIM3BuTGh3Q3V2SmtZamROLWRQQ1BuY2ppZjNwYmR2S1Q5S3ROWnF6MjcyOFRkck9ldnR4RUN1M3B4Tw?oc=5",
-      "source": "Algérie Économie",
-      "category": "Finance",
-      "region": "Afrique du Nord",
-      "published_at": "2026-05-05T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.767764"
-    },
-    {
-      "id": "d44ab78a64cf",
-      "title": "Algeria Launches Auto Plastics Plant in Tissemsilt to Boost Local Production - AL24 News",
-      "summary": "Algeria Launches Auto Plastics Plant in Tissemsilt to Boost Local Production  AL24 News",
-      "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPcWh2ekxsWlllR1pRUDNSWFc3SmcxM3prLW1iRjBRbE1pS092a0lmYVZFd0VHbXBIOW1Ma0Rnbnd4TTk4ZjZfRi1zUU5XeXFLQ2VzcG1wdk4xMmFmWjg1VkJUWW9JZW9WRkhiS0JyMllWRjU4enZQaWtjZ21VYnJOLVJESmREU1NpaTZaRWJITkM0eXpmdHpGQlM2Z2JxRFFPblE?oc=5",
+      "id": "9fc6d32df710",
+      "title": "Algérie Presse Service - aps.dz",
+      "summary": "Algérie Presse Service  aps.dz",
+      "link": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNXzZBenZuT2tINUx3UHI3TTNNODNLZXloSy1nTUd0c3VzYmhYOEZHSTNpcWlacU9RYnpCc2J2aFpHR3M1S0NiaXFMSkNBWGZGeGNGOVdDdTFTWktQa0F5TU5EY3A2eVhtWlBnTjFkWGtwT3hTUGd1ckVuWVZvZEp6NG9MRnZQaXVyb2EtaUMzUXhGNmdQSFB4T0c1STNBRnpXZGU4WUNBRUVsTC05NzJneEYtZTBXVm9YLXNPWjc3Vjh4WGVfMEdLLTFSRi13NVpLT3diaWxMYV8tNm1mTGRiOGxn?oc=5",
       "source": "Algérie Économie",
       "category": "Économie",
       "region": "Afrique du Nord",
-      "published_at": "2026-04-29T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.415530"
+      "published_at": "2026-05-09T07:00:00",
+      "fetched_at": "2026-06-23T05:48:49.716399"
+    },
+    {
+      "id": "5e0812b4442c",
+      "title": "Algérie–États-Unis : un programme d’action commun pour booster les échanges et l’investissement - AL24 News",
+      "summary": "Algérie–États-Unis : un programme d’action commun pour booster les échanges et l’investissement  AL24 News",
+      "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPTjc4QWltZHEtMEx3bzlLS2FtUUlXTWMyazEyelB1akRQWnFoZ0h3TDVBa0tnSjFEQUFoYjE4NUl4NGxaVEZmeGlKNHNNZzlMLU5NeWhRZFRNdll4bFRHN3RRcVE2OEF5aDhITkVkZ3k3TUgzZEltZWlWQkdUWk5yRHR6NDlMRUZCMVR5TXhkWHpTaE11MmlHaVlXdGNVVFF3aVJmQm5pUmpCdFhXUWZaNXZCUG5vQQ?oc=5",
+      "source": "Algérie Économie",
+      "category": "Finance",
+      "region": "Afrique du Nord",
+      "published_at": "2026-05-08T07:00:00",
+      "fetched_at": "2026-06-23T05:48:49.716494"
     },
     {
       "id": "7a9a44b2b338",
@@ -953,7 +931,7 @@
       "category": "Énergie",
       "region": "Afrique du Nord",
       "published_at": "2026-04-22T11:42:47",
-      "fetched_at": "2026-06-22T09:25:44.415346"
+      "fetched_at": "2026-06-23T05:48:49.867961"
     },
     {
       "id": "8d518524b9e4",
@@ -964,7 +942,7 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-04-15T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.767793"
+      "fetched_at": "2026-06-23T05:48:49.716448"
     },
     {
       "id": "c2ff8f95b7d6",
@@ -975,29 +953,29 @@
       "category": "Économie",
       "region": "Afrique du Nord",
       "published_at": "2026-04-10T07:00:00",
-      "fetched_at": "2026-06-22T09:25:44.415470"
+      "fetched_at": "2026-06-23T05:48:49.868124"
     },
     {
-      "id": "4206b3c528a8",
-      "title": "l’Algérie enregistre des progrès en matière d’investissement, d’exportations hors hydrocarbures, de numérisation… : c’est le FMI qui le dit ! - Actualité - EL Moudjahid",
-      "summary": "l’Algérie enregistre des progrès en matière d’investissement, d’exportations hors hydrocarbures, de numérisation… : c’est le FMI qui le dit ! - Actualité  EL Moudjahid",
+      "id": "24ba1470146f",
+      "title": "Plus de 1 600 entreprises turques en Algérie et 16,5 milliards de dollars d’investissements - Economie - El Moudjahid",
+      "summary": "Plus de 1 600 entreprises turques en Algérie et 16,5 milliards de dollars d’investissements - Economie  El Moudjahid",
+      "link": "https://news.google.com/rss/articles/CBMipgJBVV95cUxQY0ZPZzRQSEFCNU15R3VMMVVkUGhNVUJXckdUeE42VjFhTElsZG1LenpEUjdBMWpqLUpFeUhjdkVUM0pUZVNjT3VHM19JTHA3bk9VM0RMVzZYdFpLc3JmYlRIc1dDdFZiVE1lZkFoX1dIQlVaNWFmUHlkYzJhb1BaaHFQR1dsa3AzTENXSkZ0VUFTajBSdWUwMzQzUDkzLVUwaUZNZkp4MDZFbWJXZWlDd2duRHpBWWlVcF9tSEMwR1ROb0duQW9UaE5WbDJSYk80V2xTQ0RlNUtHYVN2T3BBbFFDMDUxZXJDRUp3bzNSMG1URmcyaGFjbU1FcnFXcndoOXNCRXYwNnA5UUZnOTNkT0lmdEVTYUF5Y3VwZ3ZyamVWZWxZU0E?oc=5",
+      "source": "Algérie Économie",
+      "category": "Finance",
+      "region": "Afrique du Nord",
+      "published_at": "2026-02-11T12:52:30",
+      "fetched_at": "2026-06-23T05:48:49.716472"
+    },
+    {
+      "id": "c8f354f798d5",
+      "title": "l’Algérie enregistre des progrès en matière d’investissement, d’exportations hors hydrocarbures, de numérisation… : c’est le FMI qui le dit ! - Actualité - El Moudjahid",
+      "summary": "l’Algérie enregistre des progrès en matière d’investissement, d’exportations hors hydrocarbures, de numérisation… : c’est le FMI qui le dit ! - Actualité  El Moudjahid",
       "link": "https://news.google.com/rss/articles/CBMijwJBVV95cUxPVG1JVW5YWHl6djlsQUc3MUlWRVl4WVlqSTRCdzRKZ1dEZFdyeW53UHJhT3IzUVI5aWNQX2ZVaGVvZm5Pc1otZ011V1l4cjN6UEtaUUFKcC1FT0R2NkNlQXZMb3Jlcm1TbEZvVktwNnhVeFR1ZkNaSU1jWnVTSGtfUlJzNWw5amM3bWQ3cWxsRWtabU1aX183eUlWei1DcV9XNlpWQ051SERWcUktdDB1Xzdyc0tPZ0N5d2ZZbWd3UHpFS0RONThKUlpCbkdRRU01SW5FY2RWeXV0bU4wTmtVOGRVOGZYcE81dkFocHlGYkVpcGk2TEp6aE0tUG54aVQza1lEV09mRHgwc1NkTzh3?oc=5",
       "source": "Algérie Économie",
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-02-04T21:24:37",
-      "fetched_at": "2026-06-22T09:25:44.767699"
-    },
-    {
-      "id": "b9b7cf85dbcf",
-      "title": "Gara Djebilet: Algeria’s Strategic Shift From Raw Resource Exporter To Industrial Value Creator – OpEd - Eurasia Review",
-      "summary": "Gara Djebilet: Algeria’s Strategic Shift From Raw Resource Exporter To Industrial Value Creator – OpEd  Eurasia Review",
-      "link": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxNNTZLQTFYS1A2RE05U1FHZjd3WEp1UDhwZGE5Vmd0Z1daX0s5U011RkkyVHdhX2hFU0hLTnRYendiMHpJd24wbDlPeFRVMjhheGdQV3hranlNWTdHR1luOFNvUlhWQkdNcUhRbUxaV1Vhdk44ODEtU1FWQzVxM0hPcnBNVDNyYVB1UTF0VXJHbVVBd0E0TE96Sy1scGdVLTRtbVFLd2xJU29uRDR2WS1CN1c1NTZCWmxhYklOQmN2dnJCY2UtZjVYT1UxeFR5WElOM1NaUg?oc=5",
-      "source": "Algérie Économie",
-      "category": "Commerce",
-      "region": "Afrique du Nord",
-      "published_at": "2026-02-01T08:00:00",
-      "fetched_at": "2026-06-22T09:25:44.415401"
+      "fetched_at": "2026-06-23T05:48:49.716522"
     },
     {
       "id": "df2268cc865e",
@@ -1008,18 +986,40 @@
       "category": "Finance",
       "region": "Afrique du Nord",
       "published_at": "2026-01-18T08:00:00",
-      "fetched_at": "2026-06-22T09:25:44.767731"
+      "fetched_at": "2026-06-23T05:48:49.716426"
     },
     {
-      "id": "0a51a7ce1056",
-      "title": "Vietnam - Algérie : renforcement de la coopération dans le secteur pétrolier et énergétique - lecourrier.vn",
-      "summary": "Vietnam - Algérie : renforcement de la coopération dans le secteur pétrolier et énergétique  lecourrier.vn",
-      "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQLVlLU0h2Y0Y0V3BuRDZ3NjlrX3MzQXlWTEtUd2E5QUZYeXNZeUtjSFBnMWx3V0RLY0MzVFRZM2o2SlRUUWRFTHMzeWE0TDRkaWk2ekNNSmlMM3RpR1VpR2puRXN0Q0s2U1c4SUdQZXJTSGdYM0NsRFo2RzhhQ0Y0Y0t5aTUyMFhQZHM2V2kwYVZucWxJSVdZc0FjZkUzaFFTQzNmMWlZRVZxYldaM3V1a2Q0QjRDZXFNWkZJUng2UQ?oc=5",
+      "id": "9c610573c49f",
+      "title": "Algeria’s Condor enters Egyptian market, plans local manufacturing - Dailynewsegypt",
+      "summary": "Algeria’s Condor enters Egyptian market, plans local manufacturing  Dailynewsegypt",
+      "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPOWtkNm51dzVwVVNlcVM1SVVieGxTVTh2SldmS0NMTmFDX0lUTWg5empQOEdNYmV3VWJtaG9LU0Z6UkVXVWZ2YmdTWWt2UkpKUGZwREZad0R3X3F3STBtM3UxbThhTHdOR1A1MWdQNmRSTFg3b2dvNDRMbmh5N19NS1Nod1lhVTd6Mkw4WWgxeHRWckI0RFJ0M253cVl1MzRQTjZicXJwOURaM3M?oc=5",
       "source": "Algérie Économie",
       "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2025-11-20T08:00:00",
-      "fetched_at": "2026-06-22T09:25:44.767870"
+      "published_at": "2026-01-04T08:00:00",
+      "fetched_at": "2026-06-23T05:48:49.868156"
+    },
+    {
+      "id": "1e9da89ab157",
+      "title": "Algeria–Germany: Several Investment Projects, Memorandums Signed in Algiers - AL24 News",
+      "summary": "Algeria–Germany: Several Investment Projects, Memorandums Signed in Algiers  AL24 News",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQZzFXT2hCb1hLc1N6UTkteEJZNjcwWU1qaGxxVjRTdFZuNkZEWEs4eFJUSloyMV90am1qVm1PS1ZQemxkLXlLV1JJZnoyLWZkNGZmWEE3bXd2ajhiNmF4TGhBdE04cEUwTVI5eFBsSV9VMm9JMDFXRkRuOGhHVk1VSXBVZWRJeHVNdUdxRzYzeG5mN3VIRnJqVEhkYXdWdw?oc=5",
+      "source": "Algérie Économie",
+      "category": "Finance",
+      "region": "Afrique du Nord",
+      "published_at": "2025-12-10T08:00:00",
+      "fetched_at": "2026-06-23T05:48:49.868090"
+    },
+    {
+      "id": "6ab14a506c1b",
+      "title": "Algeria–China Industrial Era: Strategic Investments Set To Reshape National Economy – OpEd - Eurasia Review",
+      "summary": "Algeria–China Industrial Era: Strategic Investments Set To Reshape National Economy – OpEd  Eurasia Review",
+      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNMEJ2Wk55NExzT1p1LVZSZHBXWXdxNV9sNDhlUW4tclhDaWY4X1k3YzZGb210UmJBZlRlNWdFN3c1SmVyc0NOT1NpSXd0c1hBaWZxRGtkRTdjcFlfbVFTdmJ5TnpQd2RZWTMzS3JPMGtoSGxyZFlMX3laTWtua09aOVQwNVNuamFNUmFxcnJzRlUxejE4eTZRdmVsc2U3Qk9sNm51NUo1ejlrVjZ5WWRSbTV5Z2ZndXliNkJMbHdtTlFJeHdMU3c?oc=5",
+      "source": "Algérie Économie",
+      "category": "Finance",
+      "region": "Afrique du Nord",
+      "published_at": "2025-12-02T08:00:00",
+      "fetched_at": "2026-06-23T05:48:49.867930"
     }
   ]
 }
