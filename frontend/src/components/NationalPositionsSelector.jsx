@@ -133,23 +133,12 @@ export default function NationalPositionsSelector({
     }
   }, [countryCode, hs6Code, fetchPositions]);
 
-  const formatCurrency = useCallback((amount) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  }, []);
-
-  const calculateEstimatedDuties = useCallback((position) => {
-    const value = parseFloat(cifValue) || 0;
-    const ddRate = position.dd || position.duty_rate_pct || 0;
-    return value * ddRate / 100;
-  }, [cifValue]);
-
   const sortedPositions = useMemo(() => {
-    return [...positions].sort((a, b) => (a.dd || a.duty_rate_pct || 0) - (b.dd || b.duty_rate_pct || 0));
+    return [...positions].sort((a, b) => {
+      const ca = (a.code || a.hs_code || '').replace(/\./g, '');
+      const cb = (b.code || b.hs_code || '').replace(/\./g, '');
+      return ca.localeCompare(cb);
+    });
   }, [positions]);
 
   const handleSelect = useCallback((position) => {
@@ -193,24 +182,6 @@ export default function NationalPositionsSelector({
 
       {expanded && (
         <CardContent className="pt-0 space-y-4">
-          {cifValue && (
-            <div className="p-4 bg-gradient-to-r from-emerald-500/10 to-emerald-600/5 rounded-xl border border-emerald-500/20">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-emerald-500/20 rounded-lg">
-                    < DollarSign className="w-5 h-5 text-emerald-400" />
-                  </div>
-                  <div>
-                    <p className="text-slate-400 text-xs uppercase tracking-wide">{t.cifValue}</p>
-                    <p className="text-2xl font-bold text-emerald-400">
-                      {formatCurrency(parseFloat(cifValue) || 0)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
           {apiNote && (
             <div className="flex items-start gap-2 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
               <Info className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
@@ -246,7 +217,6 @@ export default function NationalPositionsSelector({
               {sortedPositions.map((position, idx) => {
                 const currentCode = position.code || position.hs_code || '';
                 const isSelected = selectedPosition === currentCode;
-                const estimatedDuties = calculateEstimatedDuties(position);
                 const desc = language === 'fr' ? (position.description_fr || position.description) : (position.description_en || position.description);
                 const isLongDesc = desc && desc.length > 150;
                 const isDescExpanded = expandedDescriptions[idx];
@@ -299,25 +269,6 @@ export default function NationalPositionsSelector({
                               </button>
                             )}
                           </div>
-                        </div>
-
-                        <div className="flex-shrink-0 text-right space-y-2">
-                          <div>
-                            <p className="text-xs text-slate-500 uppercase">{t.ddRate}</p>
-                            <p className={`text-2xl font-bold ${
-                              (position.dd || position.duty_rate_pct) === 0 ? 'text-emerald-400' : 'text-amber-400'
-                            }`}>
-                              {position.dd || position.duty_rate_pct || 0}%
-                            </p>
-                          </div>
-                          {cifValue && (
-                            <div className="pt-2 border-t border-slate-700">
-                              <p className="text-xs text-slate-500 uppercase">{t.estimatedDuties}</p>
-                              <p className="text-xl font-bold text-amber-400">
-                                {formatCurrency(estimatedDuties)}
-                              </p>
-                            </div>
-                          )}
                         </div>
                       </div>
                     </div>
