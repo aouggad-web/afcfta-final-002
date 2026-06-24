@@ -172,6 +172,9 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
         </div>
       </div>
 
+      {/* Shipping Fees Calculator */}
+      <ShippingFeesCalculator language={language} />
+
       {/* Unified Filter Bar */}
       <FilterBar>
         <SearchFilter
@@ -282,9 +285,6 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
 
       {/* World Bank LPI Panel */}
       <WBLogisticsPanel language={language} />
-
-      {/* Shipping Fees Calculator */}
-      <ShippingFeesCalculator language={language} />
 
       {/* Port Details Modal */}
       <PortDetailsModal
