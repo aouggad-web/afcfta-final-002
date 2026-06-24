@@ -9,7 +9,6 @@ import PortCard from './PortCard';
 import PortDetailsModal from './PortDetailsModal';
 import UNCTADDataPanel from './UNCTADDataPanel';
 import ShippingFeesCalculator from './ShippingFeesCalculator';
-import WBLogisticsPanel from './WBLogisticsPanel';
 import { 
   FilterBar, 
   SearchFilter, 
@@ -273,7 +272,7 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
             <PortCard
               key={port.port_id}
               port={port}
-              onClick={() => handlePortClick(port)}
+              onOpenDetails={handlePortClick}
               language={language}
             />
           ))}
@@ -282,9 +281,6 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
 
       {/* UNCTAD Data Panel */}
       <UNCTADDataPanel language={language} />
-
-      {/* World Bank LPI Panel */}
-      <WBLogisticsPanel language={language} />
 
       {/* Port Details Modal */}
       <PortDetailsModal
