@@ -117,7 +117,7 @@ const TEXTS = {
 const TradeComparison = ({ language = 'fr' }) => {
   const t = TEXTS[language] || TEXTS.fr;
 
-  const selectedYear = '2024';
+  const [selectedYear] = useState('2024');
   const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState(null);
   const [calculationsGlobal, setCalculationsGlobal] = useState([]);
