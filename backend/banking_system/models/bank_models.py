@@ -1,12 +1,15 @@
 """
 Pydantic models for African banks
 """
-from pydantic import BaseModel, Field
+
 from typing import List, Optional
+
+from pydantic import BaseModel, Field
 
 
 class BankContact(BaseModel):
     """Contact information for a bank"""
+
     address: Optional[str] = None
     phone: Optional[str] = None
     email: Optional[str] = None
@@ -17,6 +20,7 @@ class BankContact(BaseModel):
 
 class CentralBank(BaseModel):
     """Modèle d'une banque centrale africaine"""
+
     country_code: str = Field(..., description="Code ISO2 du pays")
     country_name: str
     name: str = Field(..., description="Nom de la banque centrale")
@@ -51,6 +55,7 @@ class CentralBank(BaseModel):
 
 class CommercialBank(BaseModel):
     """Banque commerciale autorisée au commerce extérieur"""
+
     name: str
     abbreviation: Optional[str] = None
     country_code: str
@@ -68,6 +73,7 @@ class CommercialBank(BaseModel):
 
 class RegionalBank(BaseModel):
     """Banque régionale ou de développement africaine"""
+
     name: str
     abbreviation: str
     region: str
@@ -82,6 +88,7 @@ class RegionalBank(BaseModel):
 
 class BankingSystemInfo(BaseModel):
     """Informations bancaires complètes pour un pays"""
+
     country_code: str
     country_name: str
     central_bank: CentralBank

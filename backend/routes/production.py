@@ -2,20 +2,23 @@
 Production routes - FAOSTAT, UNIDO, USGS, World Bank data
 Covers all 4 dimensions: Macro, Agriculture, Manufacturing, Mining
 """
-from fastapi import APIRouter, Query, HTTPException
+
 from typing import Optional
 
+from fastapi import APIRouter, HTTPException, Query
 from production_data import (
+    get_agriculture_by_country,
+    get_agriculture_production,
+    get_country_production_overview,
+    get_manufacturing_by_country,
+    get_manufacturing_production,
+)
+from production_data import get_mining_by_country as get_mining_by_country_data
+from production_data import (
+    get_mining_production,
+    get_production_statistics,
     get_value_added,
     get_value_added_by_country,
-    get_agriculture_production,
-    get_agriculture_by_country,
-    get_manufacturing_production,
-    get_manufacturing_by_country,
-    get_mining_production,
-    get_mining_by_country as get_mining_by_country_data,
-    get_production_statistics,
-    get_country_production_overview
 )
 from services import production_capacity_service
 
@@ -23,13 +26,16 @@ try:
     from etl.unido_data import UNIDO_INDUSTRY_DATA
 except ImportError:
     try:
-        import sys, os
+        import os
+        import sys
+
         sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
         from etl.unido_data import UNIDO_INDUSTRY_DATA
     except ImportError:
         UNIDO_INDUSTRY_DATA = {}
 
 router = APIRouter(prefix="/production")
+
 
 @router.get("/statistics")
 async def get_production_stats():
@@ -39,21 +45,21 @@ async def get_production_stats():
     """
     return get_production_statistics()
 
+
 @router.get("/macro")
 async def get_macro_value_added(
-    country_iso3: Optional[str] = None,
-    year: Optional[int] = None,
-    sector: Optional[str] = None
+    country_iso3: Optional[str] = None, year: Optional[int] = None, sector: Optional[str] = None
 ):
     """
     Get macro-level value added data (World Bank/IMF)
-    
+
     Query parameters:
     - country_iso3: ISO3 country code (e.g., 'ZAF')
     - year: Year (2021-2024)
     - sector: ISIC section ('A', 'B-F', 'C')
     """
     return get_value_added(country_iso3=country_iso3, year=year, sector=sector)
+
 
 @router.get("/macro/{country_iso3}")
 async def get_macro_by_country(country_iso3: str):
@@ -63,21 +69,21 @@ async def get_macro_by_country(country_iso3: str):
     """
     return get_value_added_by_country(country_iso3)
 
+
 @router.get("/agriculture")
 async def get_agri_production(
-    country_iso3: Optional[str] = None,
-    year: Optional[int] = None,
-    commodity: Optional[str] = None
+    country_iso3: Optional[str] = None, year: Optional[int] = None, commodity: Optional[str] = None
 ):
     """
     Get agricultural production data (FAOSTAT)
-    
+
     Query parameters:
     - country_iso3: ISO3 country code
     - year: Year (2021-2024)
     - commodity: Commodity name or code (e.g., 'Maize', '0015')
     """
     return get_agriculture_production(country_iso3=country_iso3, year=year, commodity=commodity)
+
 
 @router.get("/agriculture/{country_iso3}")
 async def get_agri_by_country(country_iso3: str):
@@ -87,21 +93,21 @@ async def get_agri_by_country(country_iso3: str):
     """
     return get_agriculture_by_country(country_iso3)
 
+
 @router.get("/manufacturing")
 async def get_manuf_production(
-    country_iso3: Optional[str] = None,
-    year: Optional[int] = None,
-    isic_code: Optional[str] = None
+    country_iso3: Optional[str] = None, year: Optional[int] = None, isic_code: Optional[str] = None
 ):
     """
     Get manufacturing production data (UNIDO)
-    
+
     Query parameters:
     - country_iso3: ISO3 country code
     - year: Year (2021-2024)
     - isic_code: ISIC Rev.4 code (e.g., '10', '11')
     """
     return get_manufacturing_production(country_iso3=country_iso3, year=year, isic_code=isic_code)
+
 
 @router.get("/manufacturing/{country_iso3}")
 async def get_manuf_by_country(country_iso3: str):
@@ -111,21 +117,21 @@ async def get_manuf_by_country(country_iso3: str):
     """
     return get_manufacturing_by_country(country_iso3)
 
+
 @router.get("/mining")
 async def get_mining_prod(
-    country_iso3: Optional[str] = None,
-    year: Optional[int] = None,
-    commodity: Optional[str] = None
+    country_iso3: Optional[str] = None, year: Optional[int] = None, commodity: Optional[str] = None
 ):
     """
     Get mining production data (USGS)
-    
+
     Query parameters:
     - country_iso3: ISO3 country code
     - year: Year (2021-2024)
     - commodity: Mineral name or code (e.g., 'Gold', 'AU')
     """
     return get_mining_production(country_iso3=country_iso3, year=year, commodity=commodity)
+
 
 @router.get("/mining/{country_iso3}")
 async def get_mining_by_country(country_iso3: str):
@@ -135,6 +141,7 @@ async def get_mining_by_country(country_iso3: str):
     """
     return get_mining_by_country_data(country_iso3)
 
+
 @router.get("/overview/{country_iso3}")
 async def get_country_production_full_overview(country_iso3: str):
     """
@@ -143,11 +150,13 @@ async def get_country_production_full_overview(country_iso3: str):
     """
     return get_country_production_overview(country_iso3)
 
+
 # =============================================================================
 # CAPACITÉ DE PRODUCTION ↔ OPPORTUNITÉS (croisement par code HS)
 # Relie un produit (HS) aux données de production réelles FAO/USGS/UNIDO
 # et génère des scénarios d'intégration africaine.
 # =============================================================================
+
 
 @router.get("/capacity/{country_iso3}/{hs_code}")
 async def get_production_capacity(country_iso3: str, hs_code: str):
@@ -160,6 +169,7 @@ async def get_production_capacity(country_iso3: str, hs_code: str):
     """
     return production_capacity_service.get_capacity(country_iso3, hs_code)
 
+
 @router.get("/capacity/{hs_code}")
 async def get_continental_capacity(hs_code: str):
     """
@@ -168,10 +178,12 @@ async def get_continental_capacity(hs_code: str):
     """
     return production_capacity_service.get_continental_producers(hs_code)
 
+
 # =============================================================================
 # UNIDO INDSTAT4 - Routes spécifiques UNIDO
 # Source: UNIDO INDUSTRY_DATA (54 pays africains)
 # =============================================================================
+
 
 @router.get("/unido/statistics")
 async def get_unido_statistics():
@@ -195,8 +207,9 @@ async def get_unido_statistics():
         "source": "UNIDO INDSTAT4 2024 — International Yearbook of Industrial Statistics",
         "data_year": 2023,
         "coverage": "54 pays membres AfCFTA",
-        "classification": "ISIC Rev.4"
+        "classification": "ISIC Rev.4",
     }
+
 
 @router.get("/unido/ranking")
 async def get_unido_ranking():
@@ -208,16 +221,18 @@ async def get_unido_ranking():
 
     ranking = []
     for iso3, data in UNIDO_INDUSTRY_DATA.items():
-        ranking.append({
-            "country_iso3": iso3,
-            "country_name": data.get("country_name", iso3),
-            "region": data.get("region", ""),
-            "mva_2023_mln_usd": data.get("mva_2023_mln_usd", 0),
-            "mva_gdp_percent": data.get("mva_gdp_percent", 0),
-            "mva_per_capita_usd": data.get("mva_per_capita_usd", 0),
-            "growth_rate_2023": data.get("growth_rate_2023", 0),
-            "cip_index_rank": data.get("cip_index_rank"),
-        })
+        ranking.append(
+            {
+                "country_iso3": iso3,
+                "country_name": data.get("country_name", iso3),
+                "region": data.get("region", ""),
+                "mva_2023_mln_usd": data.get("mva_2023_mln_usd", 0),
+                "mva_gdp_percent": data.get("mva_gdp_percent", 0),
+                "mva_per_capita_usd": data.get("mva_per_capita_usd", 0),
+                "growth_rate_2023": data.get("growth_rate_2023", 0),
+                "cip_index_rank": data.get("cip_index_rank"),
+            }
+        )
 
     ranking.sort(key=lambda x: x["mva_2023_mln_usd"], reverse=True)
 
@@ -225,8 +240,9 @@ async def get_unido_ranking():
         "ranking": ranking,
         "total": len(ranking),
         "source": "UNIDO INDSTAT4 2024",
-        "data_year": 2023
+        "data_year": 2023,
     }
+
 
 @router.get("/unido/{country_iso3}")
 async def get_unido_country_data(country_iso3: str):
@@ -239,7 +255,7 @@ async def get_unido_country_data(country_iso3: str):
     if iso3_upper not in UNIDO_INDUSTRY_DATA:
         raise HTTPException(
             status_code=404,
-            detail=f"Aucune donnée UNIDO disponible pour {iso3_upper}. Pays couverts: {len(UNIDO_INDUSTRY_DATA)}"
+            detail=f"Aucune donnée UNIDO disponible pour {iso3_upper}. Pays couverts: {len(UNIDO_INDUSTRY_DATA)}",
         )
 
     data = UNIDO_INDUSTRY_DATA[iso3_upper].copy()

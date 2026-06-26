@@ -3,7 +3,7 @@ Harmonized System (HS) Codes Database
 ======================================
 Source: World Customs Organization (WCO) HS 2022
         African Union Tariff Schedule
-        
+
 Codes SH6 - Système Harmonisé à 6 chiffres
 Format: XXYYZZ où XX=Chapitre, YY=Position, ZZ=Sous-position
 
@@ -21,101 +21,189 @@ HS_CHAPTERS = {
     "01": {"fr": "Animaux vivants", "en": "Live animals"},
     "02": {"fr": "Viandes et abats comestibles", "en": "Meat and edible offal"},
     "03": {"fr": "Poissons, crustacés, mollusques", "en": "Fish, crustaceans, molluscs"},
-    "04": {"fr": "Lait, œufs, miel, produits comestibles d'origine animale", "en": "Dairy, eggs, honey, edible animal products"},
+    "04": {
+        "fr": "Lait, œufs, miel, produits comestibles d'origine animale",
+        "en": "Dairy, eggs, honey, edible animal products",
+    },
     "05": {"fr": "Autres produits d'origine animale", "en": "Other animal products"},
-    
     # SECTION II - PRODUITS DU RÈGNE VÉGÉTAL
-    "06": {"fr": "Plantes vivantes et produits de la floriculture", "en": "Live plants and floriculture products"},
-    "07": {"fr": "Légumes, plantes, racines et tubercules alimentaires", "en": "Vegetables, plants, roots and tubers"},
-    "08": {"fr": "Fruits comestibles, écorces d'agrumes ou de melons", "en": "Edible fruits, citrus peel or melon"},
+    "06": {
+        "fr": "Plantes vivantes et produits de la floriculture",
+        "en": "Live plants and floriculture products",
+    },
+    "07": {
+        "fr": "Légumes, plantes, racines et tubercules alimentaires",
+        "en": "Vegetables, plants, roots and tubers",
+    },
+    "08": {
+        "fr": "Fruits comestibles, écorces d'agrumes ou de melons",
+        "en": "Edible fruits, citrus peel or melon",
+    },
     "09": {"fr": "Café, thé, maté et épices", "en": "Coffee, tea, mate and spices"},
     "10": {"fr": "Céréales", "en": "Cereals"},
-    "11": {"fr": "Produits de la minoterie, malt, amidons", "en": "Milling products, malt, starches"},
+    "11": {
+        "fr": "Produits de la minoterie, malt, amidons",
+        "en": "Milling products, malt, starches",
+    },
     "12": {"fr": "Graines et fruits oléagineux", "en": "Oil seeds and oleaginous fruits"},
-    "13": {"fr": "Gommes, résines et autres sucs végétaux", "en": "Gums, resins and vegetable saps"},
-    "14": {"fr": "Matières à tresser et autres produits végétaux", "en": "Vegetable plaiting materials"},
-    
+    "13": {
+        "fr": "Gommes, résines et autres sucs végétaux",
+        "en": "Gums, resins and vegetable saps",
+    },
+    "14": {
+        "fr": "Matières à tresser et autres produits végétaux",
+        "en": "Vegetable plaiting materials",
+    },
     # SECTION III - GRAISSES ET HUILES
-    "15": {"fr": "Graisses et huiles animales ou végétales", "en": "Animal or vegetable fats and oils"},
-    
+    "15": {
+        "fr": "Graisses et huiles animales ou végétales",
+        "en": "Animal or vegetable fats and oils",
+    },
     # SECTION IV - PRODUITS ALIMENTAIRES
-    "16": {"fr": "Préparations de viandes, poissons ou crustacés", "en": "Preparations of meat, fish or crustaceans"},
+    "16": {
+        "fr": "Préparations de viandes, poissons ou crustacés",
+        "en": "Preparations of meat, fish or crustaceans",
+    },
     "17": {"fr": "Sucres et sucreries", "en": "Sugars and sugar confectionery"},
     "18": {"fr": "Cacao et ses préparations", "en": "Cocoa and cocoa preparations"},
-    "19": {"fr": "Préparations à base de céréales, farines", "en": "Preparations of cereals, flour"},
-    "20": {"fr": "Préparations de légumes, fruits, noix", "en": "Preparations of vegetables, fruits, nuts"},
+    "19": {
+        "fr": "Préparations à base de céréales, farines",
+        "en": "Preparations of cereals, flour",
+    },
+    "20": {
+        "fr": "Préparations de légumes, fruits, noix",
+        "en": "Preparations of vegetables, fruits, nuts",
+    },
     "21": {"fr": "Préparations alimentaires diverses", "en": "Miscellaneous edible preparations"},
-    "22": {"fr": "Boissons, liquides alcooliques et vinaigres", "en": "Beverages, spirits and vinegar"},
-    "23": {"fr": "Résidus des industries alimentaires, aliments pour animaux", "en": "Food industry residues, animal feed"},
-    "24": {"fr": "Tabacs et succédanés de tabac fabriqués", "en": "Tobacco and manufactured tobacco substitutes"},
-    
+    "22": {
+        "fr": "Boissons, liquides alcooliques et vinaigres",
+        "en": "Beverages, spirits and vinegar",
+    },
+    "23": {
+        "fr": "Résidus des industries alimentaires, aliments pour animaux",
+        "en": "Food industry residues, animal feed",
+    },
+    "24": {
+        "fr": "Tabacs et succédanés de tabac fabriqués",
+        "en": "Tobacco and manufactured tobacco substitutes",
+    },
     # SECTION V - PRODUITS MINÉRAUX
-    "25": {"fr": "Sel, soufre, terres et pierres, plâtres, chaux et ciments", "en": "Salt, sulphur, earths, stone, plasters, lime, cement"},
+    "25": {
+        "fr": "Sel, soufre, terres et pierres, plâtres, chaux et ciments",
+        "en": "Salt, sulphur, earths, stone, plasters, lime, cement",
+    },
     "26": {"fr": "Minerais, scories et cendres", "en": "Ores, slag and ash"},
     "27": {"fr": "Combustibles minéraux, huiles minérales", "en": "Mineral fuels, mineral oils"},
-    
     # SECTION VI - PRODUITS CHIMIQUES
     "28": {"fr": "Produits chimiques inorganiques", "en": "Inorganic chemicals"},
     "29": {"fr": "Produits chimiques organiques", "en": "Organic chemicals"},
     "30": {"fr": "Produits pharmaceutiques", "en": "Pharmaceutical products"},
     "31": {"fr": "Engrais", "en": "Fertilizers"},
-    "32": {"fr": "Extraits tannants, matières colorantes, peintures", "en": "Tanning extracts, dyes, paints"},
-    "33": {"fr": "Huiles essentielles, parfumerie, cosmétiques", "en": "Essential oils, perfumery, cosmetics"},
-    "34": {"fr": "Savons, agents de surface organiques, cires", "en": "Soap, organic surfactants, waxes"},
-    "35": {"fr": "Matières albuminoïdes, colles, enzymes", "en": "Albuminoidal substances, glues, enzymes"},
+    "32": {
+        "fr": "Extraits tannants, matières colorantes, peintures",
+        "en": "Tanning extracts, dyes, paints",
+    },
+    "33": {
+        "fr": "Huiles essentielles, parfumerie, cosmétiques",
+        "en": "Essential oils, perfumery, cosmetics",
+    },
+    "34": {
+        "fr": "Savons, agents de surface organiques, cires",
+        "en": "Soap, organic surfactants, waxes",
+    },
+    "35": {
+        "fr": "Matières albuminoïdes, colles, enzymes",
+        "en": "Albuminoidal substances, glues, enzymes",
+    },
     "36": {"fr": "Poudres et explosifs, allumettes", "en": "Explosives, pyrotechnics, matches"},
-    "37": {"fr": "Produits photographiques ou cinématographiques", "en": "Photographic or cinematographic goods"},
-    "38": {"fr": "Produits divers des industries chimiques", "en": "Miscellaneous chemical products"},
-    
+    "37": {
+        "fr": "Produits photographiques ou cinématographiques",
+        "en": "Photographic or cinematographic goods",
+    },
+    "38": {
+        "fr": "Produits divers des industries chimiques",
+        "en": "Miscellaneous chemical products",
+    },
     # SECTION VII - MATIÈRES PLASTIQUES ET CAOUTCHOUC
-    "39": {"fr": "Matières plastiques et ouvrages en ces matières", "en": "Plastics and articles thereof"},
+    "39": {
+        "fr": "Matières plastiques et ouvrages en ces matières",
+        "en": "Plastics and articles thereof",
+    },
     "40": {"fr": "Caoutchouc et ouvrages en caoutchouc", "en": "Rubber and articles thereof"},
-    
     # SECTION VIII - PEAUX, CUIRS, PELLETERIES
-    "41": {"fr": "Peaux (autres que les pelleteries) et cuirs", "en": "Raw hides, skins and leather"},
+    "41": {
+        "fr": "Peaux (autres que les pelleteries) et cuirs",
+        "en": "Raw hides, skins and leather",
+    },
     "42": {"fr": "Ouvrages en cuir, articles de sellerie", "en": "Articles of leather, saddlery"},
     "43": {"fr": "Pelleteries et fourrures", "en": "Furskins and artificial fur"},
-    
     # SECTION IX - BOIS ET OUVRAGES EN BOIS
-    "44": {"fr": "Bois, charbon de bois et ouvrages en bois", "en": "Wood, charcoal and articles of wood"},
+    "44": {
+        "fr": "Bois, charbon de bois et ouvrages en bois",
+        "en": "Wood, charcoal and articles of wood",
+    },
     "45": {"fr": "Liège et ouvrages en liège", "en": "Cork and articles of cork"},
     "46": {"fr": "Ouvrages de sparterie ou de vannerie", "en": "Manufactures of straw, basketware"},
-    
     # SECTION X - PÂTES DE BOIS, PAPIER
-    "47": {"fr": "Pâtes de bois ou d'autres matières fibreuses", "en": "Pulp of wood or other fibrous material"},
+    "47": {
+        "fr": "Pâtes de bois ou d'autres matières fibreuses",
+        "en": "Pulp of wood or other fibrous material",
+    },
     "48": {"fr": "Papiers et cartons", "en": "Paper and paperboard"},
     "49": {"fr": "Produits de l'édition, de la presse", "en": "Printed books, newspapers"},
-    
     # SECTION XI - MATIÈRES TEXTILES
     "50": {"fr": "Soie", "en": "Silk"},
     "51": {"fr": "Laine, poils fins ou grossiers", "en": "Wool, fine or coarse animal hair"},
     "52": {"fr": "Coton", "en": "Cotton"},
     "53": {"fr": "Autres fibres textiles végétales", "en": "Other vegetable textile fibres"},
     "54": {"fr": "Filaments synthétiques ou artificiels", "en": "Man-made filaments"},
-    "55": {"fr": "Fibres synthétiques ou artificielles discontinues", "en": "Man-made staple fibres"},
+    "55": {
+        "fr": "Fibres synthétiques ou artificielles discontinues",
+        "en": "Man-made staple fibres",
+    },
     "56": {"fr": "Ouates, feutres, non-tissés", "en": "Wadding, felt, nonwovens"},
-    "57": {"fr": "Tapis et autres revêtements de sol en matières textiles", "en": "Carpets and other textile floor coverings"},
-    "58": {"fr": "Tissus spéciaux, surfaces textiles touffetées", "en": "Special woven fabrics, tufted fabrics"},
-    "59": {"fr": "Tissus imprégnés, enduits, recouverts", "en": "Impregnated, coated, covered textiles"},
+    "57": {
+        "fr": "Tapis et autres revêtements de sol en matières textiles",
+        "en": "Carpets and other textile floor coverings",
+    },
+    "58": {
+        "fr": "Tissus spéciaux, surfaces textiles touffetées",
+        "en": "Special woven fabrics, tufted fabrics",
+    },
+    "59": {
+        "fr": "Tissus imprégnés, enduits, recouverts",
+        "en": "Impregnated, coated, covered textiles",
+    },
     "60": {"fr": "Étoffes de bonneterie", "en": "Knitted or crocheted fabrics"},
     "61": {"fr": "Vêtements et accessoires en bonneterie", "en": "Knitted or crocheted apparel"},
-    "62": {"fr": "Vêtements et accessoires autres qu'en bonneterie", "en": "Apparel not knitted or crocheted"},
+    "62": {
+        "fr": "Vêtements et accessoires autres qu'en bonneterie",
+        "en": "Apparel not knitted or crocheted",
+    },
     "63": {"fr": "Autres articles textiles confectionnés", "en": "Other made up textile articles"},
-    
     # SECTION XII - CHAUSSURES, COIFFURES
-    "64": {"fr": "Chaussures, guêtres et articles analogues", "en": "Footwear, gaiters and the like"},
+    "64": {
+        "fr": "Chaussures, guêtres et articles analogues",
+        "en": "Footwear, gaiters and the like",
+    },
     "65": {"fr": "Coiffures et parties de coiffures", "en": "Headgear and parts thereof"},
     "66": {"fr": "Parapluies, cannes, fouets", "en": "Umbrellas, walking-sticks, whips"},
-    "67": {"fr": "Plumes et duvet apprêtés, fleurs artificielles", "en": "Prepared feathers, artificial flowers"},
-    
+    "67": {
+        "fr": "Plumes et duvet apprêtés, fleurs artificielles",
+        "en": "Prepared feathers, artificial flowers",
+    },
     # SECTION XIII - OUVRAGES EN PIERRES, CÉRAMIQUES, VERRE
-    "68": {"fr": "Ouvrages en pierres, plâtre, ciment, amiante", "en": "Articles of stone, plaster, cement, asbestos"},
+    "68": {
+        "fr": "Ouvrages en pierres, plâtre, ciment, amiante",
+        "en": "Articles of stone, plaster, cement, asbestos",
+    },
     "69": {"fr": "Produits céramiques", "en": "Ceramic products"},
     "70": {"fr": "Verre et ouvrages en verre", "en": "Glass and glassware"},
-    
     # SECTION XIV - PERLES, PIERRES PRÉCIEUSES, MÉTAUX PRÉCIEUX
-    "71": {"fr": "Perles, pierres précieuses, métaux précieux", "en": "Pearls, precious stones, precious metals"},
-    
+    "71": {
+        "fr": "Perles, pierres précieuses, métaux précieux",
+        "en": "Pearls, precious stones, precious metals",
+    },
     # SECTION XV - MÉTAUX COMMUNS
     "72": {"fr": "Fonte, fer et acier", "en": "Iron and steel"},
     "73": {"fr": "Ouvrages en fonte, fer ou acier", "en": "Articles of iron or steel"},
@@ -128,33 +216,45 @@ HS_CHAPTERS = {
     "81": {"fr": "Autres métaux communs, cermets", "en": "Other base metals, cermets"},
     "82": {"fr": "Outils et outillage, coutellerie", "en": "Tools, cutlery of base metal"},
     "83": {"fr": "Ouvrages divers en métaux communs", "en": "Miscellaneous articles of base metal"},
-    
     # SECTION XVI - MACHINES ET APPAREILS
-    "84": {"fr": "Réacteurs nucléaires, chaudières, machines", "en": "Nuclear reactors, boilers, machinery"},
+    "84": {
+        "fr": "Réacteurs nucléaires, chaudières, machines",
+        "en": "Nuclear reactors, boilers, machinery",
+    },
     "85": {"fr": "Machines et appareils électriques", "en": "Electrical machinery and equipment"},
-    
     # SECTION XVII - MATÉRIEL DE TRANSPORT
-    "86": {"fr": "Véhicules et matériel pour voies ferrées", "en": "Railway locomotives, rolling stock"},
+    "86": {
+        "fr": "Véhicules et matériel pour voies ferrées",
+        "en": "Railway locomotives, rolling stock",
+    },
     "87": {"fr": "Voitures automobiles, tracteurs, cycles", "en": "Vehicles other than railway"},
     "88": {"fr": "Navigation aérienne ou spatiale", "en": "Aircraft, spacecraft"},
     "89": {"fr": "Navigation maritime ou fluviale", "en": "Ships, boats"},
-    
     # SECTION XVIII - INSTRUMENTS ET APPAREILS
-    "90": {"fr": "Instruments et appareils d'optique, de mesure", "en": "Optical, measuring, medical instruments"},
+    "90": {
+        "fr": "Instruments et appareils d'optique, de mesure",
+        "en": "Optical, measuring, medical instruments",
+    },
     "91": {"fr": "Horlogerie", "en": "Clocks and watches"},
     "92": {"fr": "Instruments de musique", "en": "Musical instruments"},
-    
     # SECTION XIX - ARMES ET MUNITIONS
     "93": {"fr": "Armes, munitions et leurs parties", "en": "Arms and ammunition"},
-    
     # SECTION XX - MARCHANDISES ET PRODUITS DIVERS
-    "94": {"fr": "Meubles, mobilier médico-chirurgical, literie", "en": "Furniture, bedding, lamps"},
-    "95": {"fr": "Jouets, jeux, articles pour divertissements, sports", "en": "Toys, games, sports requisites"},
+    "94": {
+        "fr": "Meubles, mobilier médico-chirurgical, literie",
+        "en": "Furniture, bedding, lamps",
+    },
+    "95": {
+        "fr": "Jouets, jeux, articles pour divertissements, sports",
+        "en": "Toys, games, sports requisites",
+    },
     "96": {"fr": "Ouvrages divers", "en": "Miscellaneous manufactured articles"},
-    
     # SECTION XXI - OBJETS D'ART, DE COLLECTION
-    "97": {"fr": "Objets d'art, de collection ou d'antiquité", "en": "Works of art, collectors' pieces, antiques"},
-    "99": {"fr": "Transactions spéciales", "en": "Special transactions"}
+    "97": {
+        "fr": "Objets d'art, de collection ou d'antiquité",
+        "en": "Works of art, collectors' pieces, antiques",
+    },
+    "99": {"fr": "Transactions spéciales", "en": "Special transactions"},
 }
 
 # =============================================================================
@@ -164,7 +264,10 @@ HS_CHAPTERS = {
 HS6_CODES = {
     # CHAPITRE 01 - ANIMAUX VIVANTS
     "010110": {"fr": "Chevaux reproducteurs de race pure", "en": "Pure-bred breeding horses"},
-    "010121": {"fr": "Chevaux vivants (autres que reproducteurs)", "en": "Live horses (non-breeding)"},
+    "010121": {
+        "fr": "Chevaux vivants (autres que reproducteurs)",
+        "en": "Live horses (non-breeding)",
+    },
     "010290": {"fr": "Autres bovins vivants", "en": "Other live bovine animals"},
     "010310": {"fr": "Porcins reproducteurs de race pure", "en": "Pure-bred breeding swine"},
     "010410": {"fr": "Ovins vivants", "en": "Live sheep"},
@@ -173,9 +276,11 @@ HS6_CODES = {
     "010512": {"fr": "Dindes vivantes ≤185g", "en": "Live turkeys ≤185g"},
     "010594": {"fr": "Autres volailles vivantes", "en": "Other live poultry"},
     "010611": {"fr": "Primates vivants", "en": "Live primates"},
-    
     # CHAPITRE 02 - VIANDES
-    "020110": {"fr": "Carcasses de bovins, fraîches ou réfrigérées", "en": "Bovine carcasses, fresh or chilled"},
+    "020110": {
+        "fr": "Carcasses de bovins, fraîches ou réfrigérées",
+        "en": "Bovine carcasses, fresh or chilled",
+    },
     "020120": {"fr": "Autres morceaux de bovins non désossés", "en": "Other bovine cuts, bone-in"},
     "020130": {"fr": "Viande de bovins désossée, fraîche", "en": "Bovine meat, boneless, fresh"},
     "020210": {"fr": "Carcasses de bovins congelées", "en": "Bovine carcasses, frozen"},
@@ -194,7 +299,6 @@ HS6_CODES = {
     "020712": {"fr": "Coqs et poules entiers congelés", "en": "Whole fowls, frozen"},
     "020713": {"fr": "Morceaux de volailles frais", "en": "Poultry cuts, fresh"},
     "020714": {"fr": "Morceaux de volailles congelés", "en": "Poultry cuts, frozen"},
-    
     # CHAPITRE 03 - POISSONS
     "030110": {"fr": "Poissons d'ornement vivants", "en": "Live ornamental fish"},
     "030191": {"fr": "Truites vivantes", "en": "Live trout"},
@@ -251,16 +355,21 @@ HS6_CODES = {
     "030751": {"fr": "Poulpes vivants", "en": "Live octopus"},
     "030759": {"fr": "Poulpes congelés", "en": "Frozen octopus"},
     "030791": {"fr": "Autres mollusques vivants", "en": "Other live molluscs"},
-    
     # CHAPITRE 04 - PRODUITS LAITIERS
     "040110": {"fr": "Lait non concentré ≤1% mat.grasses", "en": "Milk, not concentrated, ≤1% fat"},
-    "040120": {"fr": "Lait non concentré 1-6% mat.grasses", "en": "Milk, not concentrated, 1-6% fat"},
+    "040120": {
+        "fr": "Lait non concentré 1-6% mat.grasses",
+        "en": "Milk, not concentrated, 1-6% fat",
+    },
     "040130": {"fr": "Lait non concentré >6% mat.grasses", "en": "Milk, not concentrated, >6% fat"},
     "040140": {"fr": "Lait non concentré >6% sucré", "en": "Milk, not concentrated, >6% sweetened"},
     "040210": {"fr": "Lait en poudre ≤1.5% mat.grasses", "en": "Milk powder, ≤1.5% fat"},
     "040221": {"fr": "Lait en poudre >1.5% non sucré", "en": "Milk powder, >1.5% unsweetened"},
     "040229": {"fr": "Lait en poudre >1.5% sucré", "en": "Milk powder, >1.5% sweetened"},
-    "040291": {"fr": "Autres laits concentrés non sucrés", "en": "Other concentrated milk, unsweetened"},
+    "040291": {
+        "fr": "Autres laits concentrés non sucrés",
+        "en": "Other concentrated milk, unsweetened",
+    },
     "040299": {"fr": "Autres laits concentrés sucrés", "en": "Other concentrated milk, sweetened"},
     "040310": {"fr": "Yaourt", "en": "Yogurt"},
     "040390": {"fr": "Autres laits fermentés", "en": "Other fermented milk"},
@@ -280,7 +389,6 @@ HS6_CODES = {
     "040891": {"fr": "Œufs séchés sans coquilles", "en": "Dried eggs, not in shell"},
     "040899": {"fr": "Autres œufs sans coquilles", "en": "Other eggs, not in shell"},
     "040900": {"fr": "Miel naturel", "en": "Natural honey"},
-    
     # CHAPITRE 07 - LÉGUMES
     "070110": {"fr": "Pommes de terre de semence", "en": "Seed potatoes"},
     "070190": {"fr": "Autres pommes de terre fraîches", "en": "Other fresh potatoes"},
@@ -311,7 +419,6 @@ HS6_CODES = {
     "070991": {"fr": "Artichauts frais", "en": "Fresh artichokes"},
     "070993": {"fr": "Courges fraîches", "en": "Fresh pumpkins"},
     "070999": {"fr": "Autres légumes frais", "en": "Other fresh vegetables"},
-    
     # CHAPITRE 08 - FRUITS
     "080111": {"fr": "Noix de coco desséchées", "en": "Desiccated coconuts"},
     "080112": {"fr": "Noix de coco fraîches", "en": "Fresh coconuts"},
@@ -377,14 +484,19 @@ HS6_CODES = {
     "081340": {"fr": "Autres fruits séchés", "en": "Other dried fruit"},
     "081350": {"fr": "Mélanges de fruits secs", "en": "Mixtures of dried fruit"},
     "081400": {"fr": "Écorces d'agrumes ou de melons", "en": "Peel of citrus or melons"},
-    
     # CHAPITRE 09 - CAFÉ, THÉ, ÉPICES
-    "090111": {"fr": "Café non torréfié, non décaféiné", "en": "Coffee, not roasted, not decaffeinated"},
+    "090111": {
+        "fr": "Café non torréfié, non décaféiné",
+        "en": "Coffee, not roasted, not decaffeinated",
+    },
     "090112": {"fr": "Café non torréfié, décaféiné", "en": "Coffee, not roasted, decaffeinated"},
     "090121": {"fr": "Café torréfié, non décaféiné", "en": "Coffee, roasted, not decaffeinated"},
     "090122": {"fr": "Café torréfié, décaféiné", "en": "Coffee, roasted, decaffeinated"},
     "090130": {"fr": "Coques et pellicules de café", "en": "Coffee husks and skins"},
-    "090190": {"fr": "Succédanés de café contenant du café", "en": "Coffee substitutes containing coffee"},
+    "090190": {
+        "fr": "Succédanés de café contenant du café",
+        "en": "Coffee substitutes containing coffee",
+    },
     "090210": {"fr": "Thé vert non fermenté ≤3kg", "en": "Green tea, not fermented, ≤3kg"},
     "090220": {"fr": "Autres thés verts ≤3kg", "en": "Other green tea, ≤3kg"},
     "090230": {"fr": "Thé noir fermenté ≤3kg", "en": "Black tea, fermented, ≤3kg"},
@@ -413,7 +525,6 @@ HS6_CODES = {
     "091030": {"fr": "Curcuma", "en": "Turmeric"},
     "091091": {"fr": "Mélanges d'épices", "en": "Mixtures of spices"},
     "091099": {"fr": "Autres épices", "en": "Other spices"},
-    
     # CHAPITRE 10 - CÉRÉALES
     "100110": {"fr": "Froment dur", "en": "Durum wheat"},
     "100190": {"fr": "Autres froments et méteil", "en": "Other wheat and meslin"},
@@ -435,7 +546,6 @@ HS6_CODES = {
     "100850": {"fr": "Quinoa", "en": "Quinoa"},
     "100860": {"fr": "Triticale", "en": "Triticale"},
     "100890": {"fr": "Autres céréales", "en": "Other cereals"},
-    
     # CHAPITRE 15 - HUILES
     "150710": {"fr": "Huile de soja brute", "en": "Crude soybean oil"},
     "150790": {"fr": "Autres huiles de soja", "en": "Other soybean oil"},
@@ -453,8 +563,14 @@ HS6_CODES = {
     "151319": {"fr": "Autres huiles de coco", "en": "Other coconut oil"},
     "151321": {"fr": "Huile de palmiste brute", "en": "Crude palm kernel oil"},
     "151329": {"fr": "Autres huiles de palmiste", "en": "Other palm kernel oil"},
-    "151411": {"fr": "Huile de colza brute à faible teneur", "en": "Crude low erucic acid rape oil"},
-    "151419": {"fr": "Autres huiles de colza à faible teneur", "en": "Other low erucic acid rape oil"},
+    "151411": {
+        "fr": "Huile de colza brute à faible teneur",
+        "en": "Crude low erucic acid rape oil",
+    },
+    "151419": {
+        "fr": "Autres huiles de colza à faible teneur",
+        "en": "Other low erucic acid rape oil",
+    },
     "151491": {"fr": "Huile de colza brute", "en": "Crude rape oil"},
     "151499": {"fr": "Autres huiles de colza", "en": "Other rape oil"},
     "151511": {"fr": "Huile de lin brute", "en": "Crude linseed oil"},
@@ -469,11 +585,13 @@ HS6_CODES = {
     "151620": {"fr": "Graisses végétales hydrogénées", "en": "Hydrogenated vegetable fats"},
     "151710": {"fr": "Margarine", "en": "Margarine"},
     "151790": {"fr": "Autres mélanges de graisses", "en": "Other edible mixtures of fats"},
-    
     # CHAPITRE 17 - SUCRES
     "170111": {"fr": "Sucre de canne brut", "en": "Raw cane sugar"},
     "170112": {"fr": "Sucre de betterave brut", "en": "Raw beet sugar"},
-    "170113": {"fr": "Sucre de canne mentionné dans la note 2", "en": "Cane sugar as specified in note 2"},
+    "170113": {
+        "fr": "Sucre de canne mentionné dans la note 2",
+        "en": "Cane sugar as specified in note 2",
+    },
     "170114": {"fr": "Autres sucres de canne", "en": "Other cane sugar"},
     "170191": {"fr": "Sucre raffiné avec aromatisants", "en": "Refined sugar with flavoring"},
     "170199": {"fr": "Autres sucres raffinés", "en": "Other refined sugar"},
@@ -489,7 +607,6 @@ HS6_CODES = {
     "170390": {"fr": "Autres mélasses", "en": "Other molasses"},
     "170410": {"fr": "Gommes à mâcher", "en": "Chewing gum"},
     "170490": {"fr": "Autres sucreries sans cacao", "en": "Other sugar confectionery"},
-    
     # CHAPITRE 18 - CACAO
     "180100": {"fr": "Cacao en fèves", "en": "Cocoa beans"},
     "180200": {"fr": "Coques et pellicules de cacao", "en": "Cocoa shells and husks"},
@@ -502,7 +619,6 @@ HS6_CODES = {
     "180631": {"fr": "Chocolat fourré en tablettes", "en": "Filled chocolate in blocks"},
     "180632": {"fr": "Chocolat non fourré en tablettes", "en": "Unfilled chocolate in blocks"},
     "180690": {"fr": "Autres chocolats et préparations", "en": "Other chocolate and preparations"},
-    
     # CHAPITRE 22 - BOISSONS
     "220110": {"fr": "Eaux minérales gazeuses", "en": "Sparkling mineral water"},
     "220190": {"fr": "Autres eaux minérales", "en": "Other mineral water"},
@@ -528,7 +644,6 @@ HS6_CODES = {
     "220870": {"fr": "Liqueurs", "en": "Liqueurs"},
     "220890": {"fr": "Autres alcools", "en": "Other spirits"},
     "220900": {"fr": "Vinaigres", "en": "Vinegar"},
-    
     # CHAPITRE 24 - TABACS
     "240110": {"fr": "Tabacs bruts non écôtés", "en": "Tobacco, not stemmed"},
     "240120": {"fr": "Tabacs bruts écôtés", "en": "Tobacco, stemmed"},
@@ -540,7 +655,6 @@ HS6_CODES = {
     "240319": {"fr": "Autres tabacs à fumer", "en": "Other smoking tobacco"},
     "240391": {"fr": "Tabacs homogénéisés", "en": "Homogenized tobacco"},
     "240399": {"fr": "Autres tabacs transformés", "en": "Other processed tobacco"},
-    
     # CHAPITRE 27 - COMBUSTIBLES MINÉRAUX
     "270111": {"fr": "Anthracite", "en": "Anthracite"},
     "270112": {"fr": "Houille bitumineuse", "en": "Bituminous coal"},
@@ -585,7 +699,6 @@ HS6_CODES = {
     "271490": {"fr": "Autres bitumes", "en": "Other bitumen"},
     "271500": {"fr": "Mélanges bitumineux", "en": "Bituminous mixtures"},
     "271600": {"fr": "Énergie électrique", "en": "Electrical energy"},
-    
     # CHAPITRE 72 - FONTE, FER ET ACIER
     "720110": {"fr": "Fontes brutes non alliées", "en": "Non-alloy pig iron"},
     "720120": {"fr": "Fontes brutes alliées", "en": "Alloy pig iron"},
@@ -605,7 +718,10 @@ HS6_CODES = {
     "720292": {"fr": "Ferrovanadium", "en": "Ferrovanadium"},
     "720293": {"fr": "Ferroniobium", "en": "Ferroniobium"},
     "720299": {"fr": "Autres ferro-alliages", "en": "Other ferro-alloys"},
-    "720310": {"fr": "Produits ferreux obtenus par réduction directe", "en": "Ferrous products from direct reduction"},
+    "720310": {
+        "fr": "Produits ferreux obtenus par réduction directe",
+        "en": "Ferrous products from direct reduction",
+    },
     "720390": {"fr": "Autres produits ferreux spongieux", "en": "Other spongy ferrous products"},
     "720410": {"fr": "Déchets de fonte", "en": "Waste of cast iron"},
     "720421": {"fr": "Déchets d'aciers inoxydables", "en": "Waste of stainless steel"},
@@ -619,28 +735,54 @@ HS6_CODES = {
     "720529": {"fr": "Autres poudres de fer ou acier", "en": "Other iron or steel powders"},
     "720610": {"fr": "Lingots de fer ou d'acier non allié", "en": "Non-alloy iron or steel ingots"},
     "720690": {"fr": "Autres fers et aciers non alliés", "en": "Other non-alloy iron and steel"},
-    "720711": {"fr": "Demi-produits en fer <0.25% carbone", "en": "Iron semi-products <0.25% carbon"},
+    "720711": {
+        "fr": "Demi-produits en fer <0.25% carbone",
+        "en": "Iron semi-products <0.25% carbon",
+    },
     "720712": {"fr": "Autres demi-produits en fer", "en": "Other iron semi-products"},
     "720719": {"fr": "Demi-produits en fer autres", "en": "Other iron semi-finished products"},
-    "720720": {"fr": "Demi-produits en fer >0.25% carbone", "en": "Iron semi-products >0.25% carbon"},
+    "720720": {
+        "fr": "Demi-produits en fer >0.25% carbone",
+        "en": "Iron semi-products >0.25% carbon",
+    },
     "720810": {"fr": "Produits laminés à chaud en rouleaux", "en": "Hot-rolled products in coils"},
-    "720825": {"fr": "Produits laminés à chaud épaisseur ≥4.75mm", "en": "Hot-rolled products thickness ≥4.75mm"},
-    "720826": {"fr": "Produits laminés à chaud épaisseur 3-4.75mm", "en": "Hot-rolled products thickness 3-4.75mm"},
-    "720827": {"fr": "Produits laminés à chaud épaisseur <3mm", "en": "Hot-rolled products thickness <3mm"},
+    "720825": {
+        "fr": "Produits laminés à chaud épaisseur ≥4.75mm",
+        "en": "Hot-rolled products thickness ≥4.75mm",
+    },
+    "720826": {
+        "fr": "Produits laminés à chaud épaisseur 3-4.75mm",
+        "en": "Hot-rolled products thickness 3-4.75mm",
+    },
+    "720827": {
+        "fr": "Produits laminés à chaud épaisseur <3mm",
+        "en": "Hot-rolled products thickness <3mm",
+    },
     "720836": {"fr": "Autres produits laminés à chaud", "en": "Other hot-rolled products"},
-    "720837": {"fr": "Produits laminés à chaud épaisseur 4.75-10mm", "en": "Hot-rolled products thickness 4.75-10mm"},
-    "720838": {"fr": "Produits laminés à chaud épaisseur 3-4.75mm", "en": "Hot-rolled products 3-4.75mm"},
+    "720837": {
+        "fr": "Produits laminés à chaud épaisseur 4.75-10mm",
+        "en": "Hot-rolled products thickness 4.75-10mm",
+    },
+    "720838": {
+        "fr": "Produits laminés à chaud épaisseur 3-4.75mm",
+        "en": "Hot-rolled products 3-4.75mm",
+    },
     "720839": {"fr": "Produits laminés à chaud <3mm", "en": "Hot-rolled products <3mm"},
-    "720840": {"fr": "Produits laminés à chaud avec motifs", "en": "Hot-rolled products with patterns"},
+    "720840": {
+        "fr": "Produits laminés à chaud avec motifs",
+        "en": "Hot-rolled products with patterns",
+    },
     "720851": {"fr": "Produits laminés à froid >3mm", "en": "Cold-rolled products >3mm"},
     "720852": {"fr": "Produits laminés à froid 1-3mm", "en": "Cold-rolled products 1-3mm"},
     "720853": {"fr": "Produits laminés à froid 0.5-1mm", "en": "Cold-rolled products 0.5-1mm"},
     "720854": {"fr": "Produits laminés à froid <0.5mm", "en": "Cold-rolled products <0.5mm"},
     "720890": {"fr": "Autres produits laminés plats", "en": "Other flat-rolled products"},
-    
     # CHAPITRE 84 - MACHINES
     "840110": {"fr": "Réacteurs nucléaires", "en": "Nuclear reactors"},
-    "840120": {"fr": "Machines pour la séparation isotopique", "en": "Isotope separation machinery"},
+    "840120": {
+        "fr": "Machines pour la séparation isotopique",
+        "en": "Isotope separation machinery",
+    },
     "840130": {"fr": "Éléments combustibles non irradiés", "en": "Fuel elements, non-irradiated"},
     "840140": {"fr": "Parties de réacteurs nucléaires", "en": "Parts of nuclear reactors"},
     "840211": {"fr": "Chaudières à vapeur >45t/h", "en": "Water tube boilers >45t/h"},
@@ -649,19 +791,28 @@ HS6_CODES = {
     "840220": {"fr": "Chaudières à eau surchauffée", "en": "Super-heated water boilers"},
     "840290": {"fr": "Parties de chaudières à vapeur", "en": "Parts of steam boilers"},
     "840310": {"fr": "Chaudières pour chauffage central", "en": "Central heating boilers"},
-    "840390": {"fr": "Parties de chaudières de chauffage", "en": "Parts of central heating boilers"},
+    "840390": {
+        "fr": "Parties de chaudières de chauffage",
+        "en": "Parts of central heating boilers",
+    },
     "840410": {"fr": "Appareils auxiliaires pour chaudières", "en": "Auxiliary plant for boilers"},
     "840420": {"fr": "Condenseurs pour machines à vapeur", "en": "Condensers for steam engines"},
     "840490": {"fr": "Parties d'appareils auxiliaires", "en": "Parts of auxiliary plant"},
     "840510": {"fr": "Générateurs de gaz", "en": "Producer gas generators"},
     "840590": {"fr": "Parties de générateurs de gaz", "en": "Parts of gas generators"},
-    "840610": {"fr": "Turbines à vapeur pour propulsion marine", "en": "Steam turbines for marine propulsion"},
+    "840610": {
+        "fr": "Turbines à vapeur pour propulsion marine",
+        "en": "Steam turbines for marine propulsion",
+    },
     "840681": {"fr": "Autres turbines à vapeur >40MW", "en": "Other steam turbines >40MW"},
     "840682": {"fr": "Autres turbines à vapeur ≤40MW", "en": "Other steam turbines ≤40MW"},
     "840690": {"fr": "Parties de turbines à vapeur", "en": "Parts of steam turbines"},
     "840710": {"fr": "Moteurs d'avions", "en": "Aircraft engines"},
     "840721": {"fr": "Moteurs hors-bord", "en": "Outboard motors"},
-    "840729": {"fr": "Autres moteurs pour propulsion marine", "en": "Other marine propulsion engines"},
+    "840729": {
+        "fr": "Autres moteurs pour propulsion marine",
+        "en": "Other marine propulsion engines",
+    },
     "840731": {"fr": "Moteurs à piston ≤50cc", "en": "Spark-ignition engines ≤50cc"},
     "840732": {"fr": "Moteurs à piston 50-250cc", "en": "Spark-ignition engines 50-250cc"},
     "840733": {"fr": "Moteurs à piston 250-1000cc", "en": "Spark-ignition engines 250-1000cc"},
@@ -706,20 +857,40 @@ HS6_CODES = {
     "841392": {"fr": "Parties d'élévateurs à liquides", "en": "Parts of liquid elevators"},
     "841410": {"fr": "Pompes à vide", "en": "Vacuum pumps"},
     "841420": {"fr": "Pompes à air à main ou à pédale", "en": "Hand or foot-operated air pumps"},
-    "841430": {"fr": "Compresseurs pour équipements frigorifiques", "en": "Compressors for refrigerating equipment"},
-    "841440": {"fr": "Compresseurs d'air montés sur châssis", "en": "Air compressors mounted on wheeled chassis"},
+    "841430": {
+        "fr": "Compresseurs pour équipements frigorifiques",
+        "en": "Compressors for refrigerating equipment",
+    },
+    "841440": {
+        "fr": "Compresseurs d'air montés sur châssis",
+        "en": "Air compressors mounted on wheeled chassis",
+    },
     "841451": {"fr": "Ventilateurs de table ≤125W", "en": "Table fans ≤125W"},
     "841459": {"fr": "Autres ventilateurs", "en": "Other fans"},
     "841460": {"fr": "Hottes aspirantes ≤120cm", "en": "Hoods ≤120cm"},
-    "841480": {"fr": "Autres pompes à air et compresseurs", "en": "Other air pumps and compressors"},
+    "841480": {
+        "fr": "Autres pompes à air et compresseurs",
+        "en": "Other air pumps and compressors",
+    },
     "841490": {"fr": "Parties de pompes et compresseurs", "en": "Parts of pumps and compressors"},
     "841510": {"fr": "Machines pour climatisation murales", "en": "Wall-mounted air conditioners"},
-    "841520": {"fr": "Machines pour climatisation de véhicules", "en": "Air conditioners for vehicles"},
-    "841581": {"fr": "Autres machines pour climatisation avec groupe frigorifique", "en": "Other air conditioners with refrigeration unit"},
+    "841520": {
+        "fr": "Machines pour climatisation de véhicules",
+        "en": "Air conditioners for vehicles",
+    },
+    "841581": {
+        "fr": "Autres machines pour climatisation avec groupe frigorifique",
+        "en": "Other air conditioners with refrigeration unit",
+    },
     "841582": {"fr": "Autres machines pour climatisation", "en": "Other air conditioning machines"},
-    "841583": {"fr": "Machines pour climatisation sans groupe frigorifique", "en": "Air conditioners without refrigeration"},
-    "841590": {"fr": "Parties de machines pour climatisation", "en": "Parts of air conditioning machines"},
-    
+    "841583": {
+        "fr": "Machines pour climatisation sans groupe frigorifique",
+        "en": "Air conditioners without refrigeration",
+    },
+    "841590": {
+        "fr": "Parties de machines pour climatisation",
+        "en": "Parts of air conditioning machines",
+    },
     # CHAPITRE 85 - MACHINES ÉLECTRIQUES
     "850110": {"fr": "Moteurs électriques ≤37.5W", "en": "Electric motors ≤37.5W"},
     "850120": {"fr": "Moteurs universels >37.5W", "en": "Universal motors >37.5W"},
@@ -736,16 +907,25 @@ HS6_CODES = {
     "850163": {"fr": "Générateurs AC 375-750kVA", "en": "AC generators 375-750kVA"},
     "850164": {"fr": "Générateurs AC >750kVA", "en": "AC generators >750kVA"},
     "850211": {"fr": "Groupes électrogènes diesel ≤75kVA", "en": "Diesel generating sets ≤75kVA"},
-    "850212": {"fr": "Groupes électrogènes diesel 75-375kVA", "en": "Diesel generating sets 75-375kVA"},
+    "850212": {
+        "fr": "Groupes électrogènes diesel 75-375kVA",
+        "en": "Diesel generating sets 75-375kVA",
+    },
     "850213": {"fr": "Groupes électrogènes diesel >375kVA", "en": "Diesel generating sets >375kVA"},
-    "850220": {"fr": "Groupes électrogènes à essence", "en": "Generating sets with spark-ignition engines"},
+    "850220": {
+        "fr": "Groupes électrogènes à essence",
+        "en": "Generating sets with spark-ignition engines",
+    },
     "850231": {"fr": "Groupes électrogènes éoliens", "en": "Wind-powered generating sets"},
     "850239": {"fr": "Autres groupes électrogènes", "en": "Other generating sets"},
     "850240": {"fr": "Convertisseurs rotatifs électriques", "en": "Electric rotary converters"},
     "850300": {"fr": "Parties de moteurs et générateurs", "en": "Parts of motors and generators"},
     "850410": {"fr": "Ballasts pour lampes", "en": "Ballasts for discharge lamps"},
     "850421": {"fr": "Transformateurs ≤650kVA", "en": "Liquid dielectric transformers ≤650kVA"},
-    "850422": {"fr": "Transformateurs 650kVA-10MVA", "en": "Liquid dielectric transformers 650kVA-10MVA"},
+    "850422": {
+        "fr": "Transformateurs 650kVA-10MVA",
+        "en": "Liquid dielectric transformers 650kVA-10MVA",
+    },
     "850423": {"fr": "Transformateurs >10MVA", "en": "Liquid dielectric transformers >10MVA"},
     "850431": {"fr": "Autres transformateurs ≤1kVA", "en": "Other transformers ≤1kVA"},
     "850432": {"fr": "Autres transformateurs 1-16kVA", "en": "Other transformers 1-16kVA"},
@@ -766,7 +946,10 @@ HS6_CODES = {
     "850660": {"fr": "Piles zinc-air", "en": "Air-zinc primary cells"},
     "850680": {"fr": "Autres piles", "en": "Other primary cells"},
     "850690": {"fr": "Parties de piles", "en": "Parts of primary cells"},
-    "850710": {"fr": "Accumulateurs au plomb pour démarrage", "en": "Lead-acid accumulators for starting"},
+    "850710": {
+        "fr": "Accumulateurs au plomb pour démarrage",
+        "en": "Lead-acid accumulators for starting",
+    },
     "850720": {"fr": "Autres accumulateurs au plomb", "en": "Other lead-acid accumulators"},
     "850730": {"fr": "Accumulateurs au nickel-cadmium", "en": "Nickel-cadmium accumulators"},
     "850740": {"fr": "Accumulateurs au nickel-fer", "en": "Nickel-iron accumulators"},
@@ -774,17 +957,38 @@ HS6_CODES = {
     "850760": {"fr": "Accumulateurs lithium-ion", "en": "Lithium-ion accumulators"},
     "850780": {"fr": "Autres accumulateurs électriques", "en": "Other electric accumulators"},
     "850790": {"fr": "Parties d'accumulateurs", "en": "Parts of accumulators"},
-    "851711": {"fr": "Téléphones filaires à combiné sans fil", "en": "Line telephones with cordless handset"},
-    "851712": {"fr": "Téléphones pour réseaux cellulaires", "en": "Telephones for cellular networks"},
+    "851711": {
+        "fr": "Téléphones filaires à combiné sans fil",
+        "en": "Line telephones with cordless handset",
+    },
+    "851712": {
+        "fr": "Téléphones pour réseaux cellulaires",
+        "en": "Telephones for cellular networks",
+    },
     "851713": {"fr": "Smartphones", "en": "Smartphones"},
-    "851714": {"fr": "Autres téléphones pour réseaux sans fil", "en": "Other wireless network telephones"},
+    "851714": {
+        "fr": "Autres téléphones pour réseaux sans fil",
+        "en": "Other wireless network telephones",
+    },
     "851718": {"fr": "Autres téléphones", "en": "Other telephones"},
     "851761": {"fr": "Stations de base", "en": "Base stations"},
-    "851762": {"fr": "Machines pour la réception/transmission", "en": "Reception/transmission machines"},
+    "851762": {
+        "fr": "Machines pour la réception/transmission",
+        "en": "Reception/transmission machines",
+    },
     "851769": {"fr": "Autres appareils de transmission", "en": "Other transmission apparatus"},
-    "851770": {"fr": "Parties de téléphones et appareils", "en": "Parts of telephones and apparatus"},
-    "852110": {"fr": "Appareils d'enregistrement vidéo à bande", "en": "Video recording apparatus, magnetic tape"},
-    "852190": {"fr": "Autres appareils d'enregistrement vidéo", "en": "Other video recording apparatus"},
+    "851770": {
+        "fr": "Parties de téléphones et appareils",
+        "en": "Parts of telephones and apparatus",
+    },
+    "852110": {
+        "fr": "Appareils d'enregistrement vidéo à bande",
+        "en": "Video recording apparatus, magnetic tape",
+    },
+    "852190": {
+        "fr": "Autres appareils d'enregistrement vidéo",
+        "en": "Other video recording apparatus",
+    },
     "852210": {"fr": "Têtes de lecture", "en": "Pick-up cartridges"},
     "852290": {"fr": "Autres parties d'appareils", "en": "Other parts of apparatus"},
     "852311": {"fr": "Cartes avec bande magnétique", "en": "Cards with magnetic stripe"},
@@ -819,7 +1023,10 @@ HS6_CODES = {
     "852713": {"fr": "Autres récepteurs radio", "en": "Other radio receivers"},
     "852719": {"fr": "Autres appareils radio", "en": "Other radio apparatus"},
     "852721": {"fr": "Récepteurs radio pour véhicules", "en": "Radio receivers for motor vehicles"},
-    "852729": {"fr": "Autres récepteurs radio pour véhicules", "en": "Other radio receivers for vehicles"},
+    "852729": {
+        "fr": "Autres récepteurs radio pour véhicules",
+        "en": "Other radio receivers for vehicles",
+    },
     "852791": {"fr": "Appareils audio combinés", "en": "Combined audio apparatus"},
     "852792": {"fr": "Autres appareils non combinés", "en": "Other non-combined apparatus"},
     "852799": {"fr": "Autres appareils audio", "en": "Other audio apparatus"},
@@ -827,10 +1034,19 @@ HS6_CODES = {
     "852821": {"fr": "Moniteurs couleur à tube cathodique", "en": "Colour CRT monitors"},
     "852829": {"fr": "Autres moniteurs à tube cathodique", "en": "Other CRT monitors"},
     "852841": {"fr": "Moniteurs à tube cathodique", "en": "CRT monitors"},
-    "852842": {"fr": "Appareils avec LCD pouvant recevoir TV", "en": "LCD apparatus capable of receiving TV"},
-    "852843": {"fr": "Appareils avec LCD ne pouvant recevoir TV", "en": "LCD apparatus not capable of receiving TV"},
+    "852842": {
+        "fr": "Appareils avec LCD pouvant recevoir TV",
+        "en": "LCD apparatus capable of receiving TV",
+    },
+    "852843": {
+        "fr": "Appareils avec LCD ne pouvant recevoir TV",
+        "en": "LCD apparatus not capable of receiving TV",
+    },
     "852849": {"fr": "Autres moniteurs LCD", "en": "Other LCD monitors"},
-    "852851": {"fr": "Autres moniteurs ne pouvant recevoir TV", "en": "Other monitors not capable of TV"},
+    "852851": {
+        "fr": "Autres moniteurs ne pouvant recevoir TV",
+        "en": "Other monitors not capable of TV",
+    },
     "852852": {"fr": "Autres appareils pouvant recevoir TV", "en": "Other apparatus capable of TV"},
     "852859": {"fr": "Autres moniteurs et projecteurs", "en": "Other monitors and projectors"},
     "852861": {"fr": "Projecteurs à tube cathodique", "en": "CRT projectors"},
@@ -840,17 +1056,34 @@ HS6_CODES = {
     "852872": {"fr": "Autres appareils TV couleur", "en": "Other colour TV apparatus"},
     "852873": {"fr": "Autres appareils TV noir et blanc", "en": "Other monochrome TV apparatus"},
     "852910": {"fr": "Antennes", "en": "Aerials and antennas"},
-    "852990": {"fr": "Parties d'appareils de télécommunication", "en": "Parts of telecommunication apparatus"},
-    
+    "852990": {
+        "fr": "Parties d'appareils de télécommunication",
+        "en": "Parts of telecommunication apparatus",
+    },
     # CHAPITRE 87 - VÉHICULES
     "870110": {"fr": "Motoculteurs", "en": "Pedestrian controlled tractors"},
-    "870120": {"fr": "Tracteurs routiers pour semi-remorques", "en": "Road tractors for semi-trailers"},
+    "870120": {
+        "fr": "Tracteurs routiers pour semi-remorques",
+        "en": "Road tractors for semi-trailers",
+    },
     "870130": {"fr": "Tracteurs à chenilles", "en": "Track-laying tractors"},
     "870190": {"fr": "Autres tracteurs", "en": "Other tractors"},
-    "870210": {"fr": "Véhicules pour ≥10 personnes diesel", "en": "Diesel vehicles for ≥10 persons"},
-    "870220": {"fr": "Véhicules pour ≥10 personnes diesel + électrique", "en": "Diesel-electric vehicles for ≥10 persons"},
-    "870230": {"fr": "Véhicules pour ≥10 personnes essence", "en": "Spark-ignition vehicles for ≥10 persons"},
-    "870240": {"fr": "Véhicules pour ≥10 personnes électriques", "en": "Electric vehicles for ≥10 persons"},
+    "870210": {
+        "fr": "Véhicules pour ≥10 personnes diesel",
+        "en": "Diesel vehicles for ≥10 persons",
+    },
+    "870220": {
+        "fr": "Véhicules pour ≥10 personnes diesel + électrique",
+        "en": "Diesel-electric vehicles for ≥10 persons",
+    },
+    "870230": {
+        "fr": "Véhicules pour ≥10 personnes essence",
+        "en": "Spark-ignition vehicles for ≥10 persons",
+    },
+    "870240": {
+        "fr": "Véhicules pour ≥10 personnes électriques",
+        "en": "Electric vehicles for ≥10 persons",
+    },
     "870290": {"fr": "Autres véhicules pour ≥10 personnes", "en": "Other vehicles for ≥10 persons"},
     "870310": {"fr": "Véhicules spécialement conçus pour neige", "en": "Vehicles for snow"},
     "870321": {"fr": "Voitures essence ≤1000cc", "en": "Spark-ignition cars ≤1000cc"},
@@ -860,11 +1093,20 @@ HS6_CODES = {
     "870331": {"fr": "Voitures diesel ≤1500cc", "en": "Diesel cars ≤1500cc"},
     "870332": {"fr": "Voitures diesel 1500-2500cc", "en": "Diesel cars 1500-2500cc"},
     "870333": {"fr": "Voitures diesel >2500cc", "en": "Diesel cars >2500cc"},
-    "870340": {"fr": "Véhicules hybrides essence-électrique", "en": "Spark-ignition hybrid vehicles"},
-    "870350": {"fr": "Véhicules hybrides diesel-électrique", "en": "Diesel-electric hybrid vehicles"},
+    "870340": {
+        "fr": "Véhicules hybrides essence-électrique",
+        "en": "Spark-ignition hybrid vehicles",
+    },
+    "870350": {
+        "fr": "Véhicules hybrides diesel-électrique",
+        "en": "Diesel-electric hybrid vehicles",
+    },
     "870360": {"fr": "Véhicules électriques", "en": "Electric vehicles"},
     "870370": {"fr": "Autres véhicules", "en": "Other vehicles"},
-    "870380": {"fr": "Véhicules à propulsion électrique uniquement", "en": "Vehicles with only electric motor"},
+    "870380": {
+        "fr": "Véhicules à propulsion électrique uniquement",
+        "en": "Vehicles with only electric motor",
+    },
     "870390": {"fr": "Autres voitures", "en": "Other motor cars"},
     "870410": {"fr": "Tombereaux pour utilisation hors-route", "en": "Dumpers for off-highway use"},
     "870421": {"fr": "Véhicules diesel ≤5t", "en": "Diesel vehicles ≤5t"},
@@ -872,7 +1114,10 @@ HS6_CODES = {
     "870423": {"fr": "Véhicules diesel >20t", "en": "Diesel vehicles >20t"},
     "870431": {"fr": "Véhicules essence ≤5t", "en": "Spark-ignition vehicles ≤5t"},
     "870432": {"fr": "Véhicules essence >5t", "en": "Spark-ignition vehicles >5t"},
-    "870490": {"fr": "Autres véhicules pour transport de marchandises", "en": "Other goods transport vehicles"},
+    "870490": {
+        "fr": "Autres véhicules pour transport de marchandises",
+        "en": "Other goods transport vehicles",
+    },
     "870510": {"fr": "Camions-grues", "en": "Mobile cranes"},
     "870520": {"fr": "Derricks automobiles pour sondage", "en": "Mobile drilling derricks"},
     "870530": {"fr": "Voitures de lutte contre l'incendie", "en": "Fire fighting vehicles"},
@@ -893,7 +1138,10 @@ HS6_CODES = {
     "870891": {"fr": "Radiateurs", "en": "Radiators"},
     "870892": {"fr": "Silencieux et tuyaux d'échappement", "en": "Silencers and exhaust pipes"},
     "870893": {"fr": "Embrayages et leurs parties", "en": "Clutches and parts"},
-    "870894": {"fr": "Volants, colonnes et boîtiers de direction", "en": "Steering wheels and columns"},
+    "870894": {
+        "fr": "Volants, colonnes et boîtiers de direction",
+        "en": "Steering wheels and columns",
+    },
     "870895": {"fr": "Coussins gonflables de sécurité", "en": "Safety airbags"},
     "870899": {"fr": "Autres parties et accessoires", "en": "Other parts and accessories"},
     "870911": {"fr": "Chariots électriques", "en": "Works trucks, electric"},
@@ -922,77 +1170,92 @@ HS6_CODES = {
     "871499": {"fr": "Autres parties de cycles", "en": "Other cycle parts"},
     "871500": {"fr": "Landaus, poussettes", "en": "Baby carriages"},
     "871610": {"fr": "Remorques pour l'habitation", "en": "Trailers for housing"},
-    "871620": {"fr": "Remorques autochargeuses pour l'agriculture", "en": "Self-loading trailers for agriculture"},
+    "871620": {
+        "fr": "Remorques autochargeuses pour l'agriculture",
+        "en": "Self-loading trailers for agriculture",
+    },
     "871631": {"fr": "Remorques-citernes", "en": "Tanker trailers"},
-    "871639": {"fr": "Autres remorques pour transport de marchandises", "en": "Other goods transport trailers"},
+    "871639": {
+        "fr": "Autres remorques pour transport de marchandises",
+        "en": "Other goods transport trailers",
+    },
     "871640": {"fr": "Autres remorques", "en": "Other trailers"},
     "871680": {"fr": "Autres véhicules non automobiles", "en": "Other non-motorized vehicles"},
-    "871690": {"fr": "Parties de remorques", "en": "Parts of trailers"}
+    "871690": {"fr": "Parties de remorques", "en": "Parts of trailers"},
 }
 
 # =============================================================================
 # HELPER FUNCTIONS
 # =============================================================================
 
+
 def get_hs_chapters() -> Dict:
     """Get all HS chapters (2-digit codes)"""
     return HS_CHAPTERS
+
 
 def get_hs6_codes() -> Dict:
     """Get all HS6 codes with labels"""
     return HS6_CODES
 
-def get_hs6_code(code: str, language: str = 'fr') -> Optional[Dict]:
+
+def get_hs6_code(code: str, language: str = "fr") -> Optional[Dict]:
     """Get a specific HS6 code with its label"""
     if code in HS6_CODES:
         return {
             "code": code,
-            "label": HS6_CODES[code].get(language, HS6_CODES[code].get('fr')),
+            "label": HS6_CODES[code].get(language, HS6_CODES[code].get("fr")),
             "chapter": code[:2],
-            "chapter_name": HS_CHAPTERS.get(code[:2], {}).get(language, '')
+            "chapter_name": HS_CHAPTERS.get(code[:2], {}).get(language, ""),
         }
     return None
+
 
 def normalize_accent(text: str) -> str:
     """Remove accents from text for search matching"""
     import unicodedata
-    return ''.join(
-        c for c in unicodedata.normalize('NFD', text)
-        if unicodedata.category(c) != 'Mn'
-    )
 
-def search_hs_codes(query: str, language: str = 'fr', limit: int = 20) -> List[Dict]:
+    return "".join(c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn")
+
+
+def search_hs_codes(query: str, language: str = "fr", limit: int = 20) -> List[Dict]:
     """Search HS codes by keyword (accent-insensitive)"""
     query_normalized = normalize_accent(query.lower())
     results = []
-    
+
     for code, labels in HS6_CODES.items():
-        label = labels.get(language, labels.get('fr', ''))
+        label = labels.get(language, labels.get("fr", ""))
         label_normalized = normalize_accent(label.lower())
         if query_normalized in label_normalized or query_normalized in code:
-            results.append({
-                "code": code,
-                "label": label,
-                "chapter": code[:2],
-                "chapter_name": HS_CHAPTERS.get(code[:2], {}).get(language, '')
-            })
+            results.append(
+                {
+                    "code": code,
+                    "label": label,
+                    "chapter": code[:2],
+                    "chapter_name": HS_CHAPTERS.get(code[:2], {}).get(language, ""),
+                }
+            )
             if len(results) >= limit:
                 break
-    
+
     return results
 
-def get_codes_by_chapter(chapter: str, language: str = 'fr') -> List[Dict]:
+
+def get_codes_by_chapter(chapter: str, language: str = "fr") -> List[Dict]:
     """Get all HS6 codes for a given chapter"""
     results = []
     for code, labels in HS6_CODES.items():
         if code.startswith(chapter):
-            results.append({
-                "code": code,
-                "label": labels.get(language, labels.get('fr', '')),
-                "chapter": chapter,
-                "chapter_name": HS_CHAPTERS.get(chapter, {}).get(language, '')
-            })
+            results.append(
+                {
+                    "code": code,
+                    "label": labels.get(language, labels.get("fr", "")),
+                    "chapter": chapter,
+                    "chapter_name": HS_CHAPTERS.get(chapter, {}).get(language, ""),
+                }
+            )
     return results
+
 
 def get_all_hs_data() -> Dict:
     """Get all HS code data"""
@@ -1002,5 +1265,5 @@ def get_all_hs_data() -> Dict:
         "total_chapters": len(HS_CHAPTERS),
         "total_codes": len(HS6_CODES),
         "source": "World Customs Organization (WCO) HS 2022",
-        "last_updated": "2025-01-12"
+        "last_updated": "2025-01-12",
     }

@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 try:
     from ai.recommendation_engine import PersonalizedRecommendationEngine  # type: ignore
+
     _RECOMMENDATION_ENGINE: Any = PersonalizedRecommendationEngine()
     _REC_AVAILABLE = True
 except Exception:
@@ -26,14 +27,15 @@ except Exception:
 
 try:
     from ai.scoring_algorithms import InvestmentScoringEngine  # type: ignore
+
     _SCORER: Any = InvestmentScoringEngine()
     _SCORING_AVAILABLE = True
 except Exception:
     _SCORER = None
     _SCORING_AVAILABLE = False
 
-from analytics.regional_intelligence import RegionalAnalyticsEngine  # type: ignore
 from analytics.dashboard_generator import DashboardGenerator  # type: ignore
+from analytics.regional_intelligence import RegionalAnalyticsEngine  # type: ignore
 from search.hs_code_search import AdvancedHSCodeSearch  # type: ignore
 from search.investment_search import InvestmentOpportunitySearch  # type: ignore
 
@@ -160,13 +162,24 @@ async def comprehensive_search(request: ComprehensiveSearchRequest) -> dict[str,
     if request.filters.sectors:
         inv_criteria["sectoral"] = {"primary": request.filters.sectors[0]}
 
-    investment_opportunities = _inv_search.search(inv_criteria) if inv_criteria else _inv_search.search({})
+    investment_opportunities = (
+        _inv_search.search(inv_criteria) if inv_criteria else _inv_search.search({})
+    )
 
     # Country matches (simple substring on query)
     country_matches = [
-        c for c in [
-            "Nigeria", "Kenya", "South Africa", "Ethiopia", "Egypt",
-            "Ghana", "Morocco", "Tanzania", "Senegal", "Côte d'Ivoire",
+        c
+        for c in [
+            "Nigeria",
+            "Kenya",
+            "South Africa",
+            "Ethiopia",
+            "Egypt",
+            "Ghana",
+            "Morocco",
+            "Tanzania",
+            "Senegal",
+            "Côte d'Ivoire",
         ]
         if request.query.lower() in c.lower()
     ]
@@ -175,7 +188,7 @@ async def comprehensive_search(request: ComprehensiveSearchRequest) -> dict[str,
     page = request.pagination.page
     limit = request.pagination.limit
     offset = (page - 1) * limit
-    paginated_products = products[offset: offset + limit]
+    paginated_products = products[offset : offset + limit]
 
     elapsed_ms = round((time.perf_counter() - start) * 1000, 2)
     return {
@@ -238,7 +251,13 @@ async def bulk_investment_analysis(request: BulkInvestmentRequest) -> dict[str, 
             roi = match.get("roi_pct", 0)
             # Simple composite score: roi_weight=0.6, risk_penalty=0.4
             score = round(roi * 0.6 - risk_val * 0.4 * 2, 2)
-            scored.append({**match, "composite_score": score, "meets_criteria": risk_val <= max_risk and roi >= request.criteria.min_roi})
+            scored.append(
+                {
+                    **match,
+                    "composite_score": score,
+                    "meets_criteria": risk_val <= max_risk and roi >= request.criteria.min_roi,
+                }
+            )
 
     scored.sort(key=lambda x: x["composite_score"], reverse=True)
     return {

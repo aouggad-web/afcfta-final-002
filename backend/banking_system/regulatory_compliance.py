@@ -5,8 +5,7 @@ Provides structured compliance information for cross-border commercial operation
 covering AML/KYC requirements, sanctions screening, and sector-specific restrictions.
 """
 
-from typing import Dict, List, Optional, Any
-
+from typing import Any, Dict, List, Optional
 
 # ---------------------------------------------------------------------------
 # COMPLIANCE DATA BY COUNTRY
@@ -228,6 +227,7 @@ _DEFAULT_COMPLIANCE: Dict[str, Any] = {
 # PUBLIC HELPERS
 # ---------------------------------------------------------------------------
 
+
 def get_country_compliance(country_code: str) -> Dict[str, Any]:
     """Return compliance data for a country (ISO2)."""
     code = country_code.upper()
@@ -271,9 +271,7 @@ def check_compliance(
     if sector:
         restricted = compliance.get("restricted_sectors", [])
         if any(sector.lower() in r.lower() for r in restricted):
-            warnings.append(
-                f"Secteur '{sector}' potentiellement restreint dans ce pays."
-            )
+            warnings.append(f"Secteur '{sector}' potentiellement restreint dans ce pays.")
             required_actions.append("sector_authorization_required")
 
     # KYC reminder

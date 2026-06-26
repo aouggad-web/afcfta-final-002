@@ -10,8 +10,8 @@ import json
 import logging
 import os
 import re
-from typing import Dict, List, Optional
 from datetime import datetime
+from typing import Dict, List, Optional
 
 import fitz
 import httpx
@@ -39,10 +39,10 @@ TAX_COLUMNS = [
     {"code": "AfCFTA", "name": "AfCFTA Preferential Rate", "col_idx": 10},
 ]
 
-HS_CODE_PATTERN = re.compile(r'^(\d{4}\.\d{2}(?:\.\d{2})?)$')
-HEADING_PATTERN = re.compile(r'^(\d{2}\.\d{2})$')
-RATE_PCT_PATTERN = re.compile(r'(\d+(?:[.,]\d+)?)\s*%')
-RATE_SPECIFIC_PATTERN = re.compile(r'(\d+(?:[.,]\d+)?)\s*c/(?:kg|li|la|unit|u)')
+HS_CODE_PATTERN = re.compile(r"^(\d{4}\.\d{2}(?:\.\d{2})?)$")
+HEADING_PATTERN = re.compile(r"^(\d{2}\.\d{2})$")
+RATE_PCT_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*%")
+RATE_SPECIFIC_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*c/(?:kg|li|la|unit|u)")
 
 
 class SouthAfricaSARSScraper:
@@ -67,8 +67,9 @@ class SouthAfricaSARSScraper:
 
         try:
             logger.info("Downloading SARS tariff PDF...")
-            resp = httpx.get(PDF_URL, timeout=120.0, follow_redirects=True,
-                           headers={"User-Agent": "Mozilla/5.0"})
+            resp = httpx.get(
+                PDF_URL, timeout=120.0, follow_redirects=True, headers={"User-Agent": "Mozilla/5.0"}
+            )
             if resp.status_code == 200 and len(resp.content) > 100000:
                 with open(filepath, "wb") as f:
                     f.write(resp.content)
@@ -168,20 +169,20 @@ class SouthAfricaSARSScraper:
                             current_heading_desc = desc
                             continue
 
-                        if col0 and re.match(r'^\d{4}\.\d', col0):
+                        if col0 and re.match(r"^\d{4}\.\d", col0):
                             if not stat_unit and not col1:
-                                if not re.match(r'^\d{4}\.\d{2}\.\d{2}', col0):
+                                if not re.match(r"^\d{4}\.\d{2}\.\d{2}", col0):
                                     continue
 
                         code = col0
                         if not code:
                             continue
 
-                        if not re.match(r'^\d{4}\.\d{2}', code):
+                        if not re.match(r"^\d{4}\.\d{2}", code):
                             continue
 
                         if not stat_unit and not col1:
-                            if not re.match(r'^\d{4}\.\d{2}\.\d{2}', code):
+                            if not re.match(r"^\d{4}\.\d{2}\.\d{2}", code):
                                 current_heading = code[:5] if len(code) >= 5 else code
                                 current_heading_desc = desc
                                 continue
@@ -193,11 +194,13 @@ class SouthAfricaSARSScraper:
                             idx = tax_col["col_idx"]
                             raw = (row[idx] or "").strip() if len(row) > idx else ""
                             rate_info = self._parse_rate(raw)
-                            taxes.append({
-                                "code": tax_col["code"],
-                                "name": tax_col["name"],
-                                **rate_info,
-                            })
+                            taxes.append(
+                                {
+                                    "code": tax_col["code"],
+                                    "name": tax_col["name"],
+                                    **rate_info,
+                                }
+                            )
 
                         chapter = self._get_chapter_from_code(code)
 
@@ -220,7 +223,9 @@ class SouthAfricaSARSScraper:
                 self.stats["pages_processed"] = page_idx + 1
 
                 if (page_idx + 1) % 100 == 0:
-                    logger.info(f"Page {page_idx+1}/{doc.page_count}: {len(self.positions)} positions")
+                    logger.info(
+                        f"Page {page_idx+1}/{doc.page_count}: {len(self.positions)} positions"
+                    )
 
             doc.close()
 

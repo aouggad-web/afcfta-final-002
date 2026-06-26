@@ -23,34 +23,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Hydrocarbures",
-                "pib_share": 35.0,
-                "description": "Pétrole et gaz naturel"
-            },
-            {
-                "name": "Services",
-                "pib_share": 40.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Hydrocarbures", "pib_share": 35.0, "description": "Pétrole et gaz naturel"},
+            {"name": "Services", "pib_share": 40.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "main_exports": [
             "Hydrocarbures (85%)",
             "Produits chimiques (5%)",
-            "Produits alimentaires (4%)"
+            "Produits alimentaires (4%)",
         ],
         "main_imports": [
             "Machines et équipements (25%)",
             "Produits alimentaires (20%)",
-            "Produits chimiques (15%)"
+            "Produits chimiques (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -58,9 +46,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "AGO": {
         "name": "Angola",
@@ -78,34 +66,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B-",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Pétrole",
-                "pib_share": 50.0,
-                "description": "Industrie pétrolière"
-            },
-            {
-                "name": "Services",
-                "pib_share": 30.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 20.0,
-                "description": "Secteur primaire"
-            }
+            {"name": "Pétrole", "pib_share": 50.0, "description": "Industrie pétrolière"},
+            {"name": "Services", "pib_share": 30.0, "description": "Secteur tertiaire"},
+            {"name": "Agriculture", "pib_share": 20.0, "description": "Secteur primaire"},
         ],
         "main_exports": [
             "Pétrole brut (92%)",
             "Diamants (4%)",
-            "Produits pétroliers raffinés (2%)"
+            "Produits pétroliers raffinés (2%)",
         ],
         "main_imports": [
             "Machines et équipements (30%)",
             "Véhicules (15%)",
-            "Produits alimentaires (20%)"
+            "Produits alimentaires (20%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -113,9 +89,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "BEN": {
         "name": "Bénin",
@@ -132,34 +108,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B1",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 45.0,
-                "description": "Coton, produits vivriers"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 20.0,
-                "description": "Transformation agricole"
-            }
+            {"name": "Agriculture", "pib_share": 45.0, "description": "Coton, produits vivriers"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
+            {"name": "Industrie", "pib_share": 20.0, "description": "Transformation agricole"},
         ],
-        "main_exports": [
-            "Coton (45%)",
-            "Noix de cajou (25%)",
-            "Produits pétroliers (15%)"
-        ],
+        "main_exports": ["Coton (45%)", "Noix de cajou (25%)", "Produits pétroliers (15%)"],
         "main_imports": [
             "Produits pétroliers (25%)",
             "Machines (20%)",
-            "Produits alimentaires (18%)"
+            "Produits alimentaires (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -167,9 +127,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "BWA": {
         "name": "Botswana",
@@ -186,34 +146,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "A2",
             "fitch": "A-",
             "scope": "A-",
-            "global_risk": "Faible"
+            "global_risk": "Faible",
         },
         "key_sectors": [
-            {
-                "name": "Diamants",
-                "pib_share": 25.0,
-                "description": "Extraction diamantaire"
-            },
+            {"name": "Diamants", "pib_share": 25.0, "description": "Extraction diamantaire"},
             {
                 "name": "Services",
                 "pib_share": 50.0,
-                "description": "Services financiers et publics"
+                "description": "Services financiers et publics",
             },
-            {
-                "name": "Agriculture",
-                "pib_share": 25.0,
-                "description": "Élevage bovin"
-            }
+            {"name": "Agriculture", "pib_share": 25.0, "description": "Élevage bovin"},
         ],
-        "main_exports": [
-            "Diamants (85%)",
-            "Cuivre-nickel (7%)",
-            "Viande bovine (4%)"
-        ],
+        "main_exports": ["Diamants (85%)", "Cuivre-nickel (7%)", "Viande bovine (4%)"],
         "main_imports": [
             "Produits alimentaires (22%)",
             "Machines et équipements (20%)",
-            "Véhicules (15%)"
+            "Véhicules (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -221,9 +169,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "BFA": {
         "name": "Burkina Faso",
@@ -240,34 +188,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B",
             "scope": "B",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 35.0,
-                "description": "Coton, céréales"
-            },
-            {
-                "name": "Services",
-                "pib_share": 40.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Mines",
-                "pib_share": 25.0,
-                "description": "Or et autres minerais"
-            }
+            {"name": "Agriculture", "pib_share": 35.0, "description": "Coton, céréales"},
+            {"name": "Services", "pib_share": 40.0, "description": "Commerce et services"},
+            {"name": "Mines", "pib_share": 25.0, "description": "Or et autres minerais"},
         ],
-        "main_exports": [
-            "Or (75%)",
-            "Coton (15%)",
-            "Animaux vivants (5%)"
-        ],
+        "main_exports": ["Or (75%)", "Coton (15%)", "Animaux vivants (5%)"],
         "main_imports": [
             "Produits pétroliers (20%)",
             "Machines (18%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -275,9 +207,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "BDI": {
         "name": "Burundi",
@@ -294,44 +226,28 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B-",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
             {
                 "name": "Agriculture",
                 "pib_share": 60.0,
-                "description": "Café, thé, cultures vivrières"
+                "description": "Café, thé, cultures vivrières",
             },
-            {
-                "name": "Services",
-                "pib_share": 25.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 15.0,
-                "description": "Transformation agricole"
-            }
+            {"name": "Services", "pib_share": 25.0, "description": "Commerce et services"},
+            {"name": "Industrie", "pib_share": 15.0, "description": "Transformation agricole"},
         ],
-        "main_exports": [
-            "Café (60%)",
-            "Thé (15%)",
-            "Or (10%)"
-        ],
-        "main_imports": [
-            "Produits pétroliers (25%)",
-            "Machines (20%)",
-            "Véhicules (15%)"
-        ],
+        "main_exports": ["Café (60%)", "Thé (15%)", "Or (10%)"],
+        "main_imports": ["Produits pétroliers (25%)", "Machines (20%)", "Véhicules (15%)"],
         "zlecaf_potential": {
             "level": "Modéré",
             "description": "Potentiel commercial avec ratification ZLECAf",
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "CMR": {
         "name": "Cameroun",
@@ -348,34 +264,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B",
             "scope": "B",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 35.0,
-                "description": "Cacao, café, coton"
-            },
-            {
-                "name": "Pétrole",
-                "pib_share": 25.0,
-                "description": "Extraction pétrolière"
-            },
-            {
-                "name": "Services",
-                "pib_share": 40.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Agriculture", "pib_share": 35.0, "description": "Cacao, café, coton"},
+            {"name": "Pétrole", "pib_share": 25.0, "description": "Extraction pétrolière"},
+            {"name": "Services", "pib_share": 40.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Pétrole brut (40%)",
-            "Cacao (15%)",
-            "Bois (12%)"
-        ],
+        "main_exports": ["Pétrole brut (40%)", "Cacao (15%)", "Bois (12%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Produits pétroliers (18%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -383,9 +283,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "CPV": {
         "name": "Cap-Vert",
@@ -402,34 +302,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B1",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 70.0,
-                "description": "Tourisme, transport maritime"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 20.0,
-                "description": "Transformation alimentaire"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 10.0,
-                "description": "Pêche, agriculture"
-            }
+            {"name": "Services", "pib_share": 70.0, "description": "Tourisme, transport maritime"},
+            {"name": "Industrie", "pib_share": 20.0, "description": "Transformation alimentaire"},
+            {"name": "Agriculture", "pib_share": 10.0, "description": "Pêche, agriculture"},
         ],
-        "main_exports": [
-            "Poissons et crustacés (85%)",
-            "Chaussures (8%)",
-            "Vêtements (4%)"
-        ],
+        "main_exports": ["Poissons et crustacés (85%)", "Chaussures (8%)", "Vêtements (4%)"],
         "main_imports": [
             "Produits alimentaires (25%)",
             "Machines et équipements (20%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -437,9 +321,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "CAF": {
         "name": "République Centrafricaine",
@@ -456,34 +340,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "Caa2",
             "fitch": "CCC+",
             "scope": "CCC+",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 50.0,
-                "description": "Cultures vivrières"
-            },
-            {
-                "name": "Mines",
-                "pib_share": 30.0,
-                "description": "Diamants, or"
-            },
-            {
-                "name": "Services",
-                "pib_share": 20.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Agriculture", "pib_share": 50.0, "description": "Cultures vivrières"},
+            {"name": "Mines", "pib_share": 30.0, "description": "Diamants, or"},
+            {"name": "Services", "pib_share": 20.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Diamants (50%)",
-            "Bois (25%)",
-            "Café (10%)"
-        ],
+        "main_exports": ["Diamants (50%)", "Bois (25%)", "Café (10%)"],
         "main_imports": [
             "Produits pétroliers (30%)",
             "Machines (20%)",
-            "Produits alimentaires (18%)"
+            "Produits alimentaires (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -491,9 +359,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "TCD": {
         "name": "Tchad",
@@ -510,34 +378,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "Caa3",
             "fitch": "CCC",
             "scope": "CCC",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Pétrole",
-                "pib_share": 40.0,
-                "description": "Extraction pétrolière"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 35.0,
-                "description": "Coton, élevage"
-            },
-            {
-                "name": "Services",
-                "pib_share": 25.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Pétrole", "pib_share": 40.0, "description": "Extraction pétrolière"},
+            {"name": "Agriculture", "pib_share": 35.0, "description": "Coton, élevage"},
+            {"name": "Services", "pib_share": 25.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Pétrole brut (85%)",
-            "Coton (8%)",
-            "Animaux vivants (4%)"
-        ],
+        "main_exports": ["Pétrole brut (85%)", "Coton (8%)", "Animaux vivants (4%)"],
         "main_imports": [
             "Machines et équipements (30%)",
             "Produits alimentaires (20%)",
-            "Véhicules (15%)"
+            "Véhicules (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -545,9 +397,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "COM": {
         "name": "Comores",
@@ -564,34 +416,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "NR",
             "fitch": "NR",
             "scope": "B-",
-            "global_risk": "Non évalué"
+            "global_risk": "Non évalué",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 45.0,
-                "description": "Vanille, ylang-ylang"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 20.0,
-                "description": "Transformation agricole"
-            }
+            {"name": "Agriculture", "pib_share": 45.0, "description": "Vanille, ylang-ylang"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
+            {"name": "Industrie", "pib_share": 20.0, "description": "Transformation agricole"},
         ],
-        "main_exports": [
-            "Vanille (40%)",
-            "Clous de girofle (25%)",
-            "Ylang-ylang (15%)"
-        ],
+        "main_exports": ["Vanille (40%)", "Clous de girofle (25%)", "Ylang-ylang (15%)"],
         "main_imports": [
             "Produits alimentaires (35%)",
             "Machines et équipements (20%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -599,9 +435,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "COG": {
         "name": "République du Congo",
@@ -618,34 +454,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B-",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Pétrole",
-                "pib_share": 50.0,
-                "description": "Extraction pétrolière"
-            },
-            {
-                "name": "Services",
-                "pib_share": 30.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 20.0,
-                "description": "Cultures vivrières, bois"
-            }
+            {"name": "Pétrole", "pib_share": 50.0, "description": "Extraction pétrolière"},
+            {"name": "Services", "pib_share": 30.0, "description": "Commerce et services"},
+            {"name": "Agriculture", "pib_share": 20.0, "description": "Cultures vivrières, bois"},
         ],
-        "main_exports": [
-            "Pétrole brut (75%)",
-            "Bois (15%)",
-            "Minerais de potasse (5%)"
-        ],
+        "main_exports": ["Pétrole brut (75%)", "Bois (15%)", "Minerais de potasse (5%)"],
         "main_imports": [
             "Machines et équipements (30%)",
             "Produits alimentaires (25%)",
-            "Véhicules (15%)"
+            "Véhicules (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -653,9 +473,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "COD": {
         "name": "République Démocratique du Congo",
@@ -672,34 +492,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "Caa1",
             "fitch": "CCC+",
             "scope": "CCC+",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Mines",
-                "pib_share": 45.0,
-                "description": "Cuivre, cobalt, diamants"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Cultures vivrières"
-            },
-            {
-                "name": "Services",
-                "pib_share": 25.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Mines", "pib_share": 45.0, "description": "Cuivre, cobalt, diamants"},
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Cultures vivrières"},
+            {"name": "Services", "pib_share": 25.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Cuivre (45%)",
-            "Cobalt (25%)",
-            "Diamants (15%)"
-        ],
+        "main_exports": ["Cuivre (45%)", "Cobalt (25%)", "Diamants (15%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Produits alimentaires (20%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -707,9 +511,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "CIV": {
         "name": "Côte d'Ivoire",
@@ -727,34 +531,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "Ba3",
             "fitch": "BB-",
             "scope": "BB-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 35.0,
-                "description": "Cacao, café, coton"
-            },
-            {
-                "name": "Services",
-                "pib_share": 40.0,
-                "description": "Commerce et services"
-            },
+            {"name": "Agriculture", "pib_share": 35.0, "description": "Cacao, café, coton"},
+            {"name": "Services", "pib_share": 40.0, "description": "Commerce et services"},
             {
                 "name": "Industrie",
                 "pib_share": 25.0,
-                "description": "Transformation agricole, pétrole"
-            }
+                "description": "Transformation agricole, pétrole",
+            },
         ],
-        "main_exports": [
-            "Cacao (35%)",
-            "Pétrole raffiné (20%)",
-            "Or (12%)"
-        ],
+        "main_exports": ["Cacao (35%)", "Pétrole raffiné (20%)", "Or (12%)"],
         "main_imports": [
             "Pétrole brut (20%)",
             "Machines et équipements (18%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -762,9 +554,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "DJI": {
         "name": "Djibouti",
@@ -781,34 +573,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
             {
                 "name": "Services",
                 "pib_share": 70.0,
-                "description": "Transport, logistique portuaire"
+                "description": "Transport, logistique portuaire",
             },
-            {
-                "name": "Industrie",
-                "pib_share": 20.0,
-                "description": "Transformation alimentaire"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 10.0,
-                "description": "Élevage pastoral"
-            }
+            {"name": "Industrie", "pib_share": 20.0, "description": "Transformation alimentaire"},
+            {"name": "Agriculture", "pib_share": 10.0, "description": "Élevage pastoral"},
         ],
-        "main_exports": [
-            "Services de transit (60%)",
-            "Sel (15%)",
-            "Peaux et cuirs (10%)"
-        ],
+        "main_exports": ["Services de transit (60%)", "Sel (15%)", "Peaux et cuirs (10%)"],
         "main_imports": [
             "Produits alimentaires (30%)",
             "Machines et équipements (20%)",
-            "Carburants (18%)"
+            "Carburants (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -816,9 +596,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "EGY": {
         "name": "Égypte",
@@ -836,34 +616,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B",
             "scope": "B",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 50.0,
-                "description": "Tourisme, canal de Suez"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 33.0,
-                "description": "Textile, chimie, pétrole"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 17.0,
-                "description": "Coton, riz, canne à sucre"
-            }
+            {"name": "Services", "pib_share": 50.0, "description": "Tourisme, canal de Suez"},
+            {"name": "Industrie", "pib_share": 33.0, "description": "Textile, chimie, pétrole"},
+            {"name": "Agriculture", "pib_share": 17.0, "description": "Coton, riz, canne à sucre"},
         ],
         "main_exports": [
             "Pétrole et gaz naturel (25%)",
             "Produits chimiques (15%)",
-            "Textiles (12%)"
+            "Textiles (12%)",
         ],
         "main_imports": [
             "Machines et équipements (20%)",
             "Produits alimentaires (18%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -871,9 +639,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "GNQ": {
         "name": "Guinée Équatoriale",
@@ -890,34 +658,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "Caa1",
             "fitch": "CCC+",
             "scope": "CCC+",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
             {
                 "name": "Pétrole",
                 "pib_share": 80.0,
-                "description": "Extraction pétrolière et gazière"
+                "description": "Extraction pétrolière et gazière",
             },
-            {
-                "name": "Services",
-                "pib_share": 15.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 5.0,
-                "description": "Cacao, café"
-            }
+            {"name": "Services", "pib_share": 15.0, "description": "Commerce et services"},
+            {"name": "Agriculture", "pib_share": 5.0, "description": "Cacao, café"},
         ],
-        "main_exports": [
-            "Pétrole brut (85%)",
-            "Gaz naturel (10%)",
-            "Bois (3%)"
-        ],
+        "main_exports": ["Pétrole brut (85%)", "Gaz naturel (10%)", "Bois (3%)"],
         "main_imports": [
             "Machines et équipements (35%)",
             "Produits alimentaires (25%)",
-            "Véhicules (15%)"
+            "Véhicules (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -925,9 +681,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "ERI": {
         "name": "Érythrée",
@@ -944,34 +700,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "NR",
             "fitch": "NR",
             "scope": "CCC",
-            "global_risk": "Non évalué"
+            "global_risk": "Non évalué",
         },
         "key_sectors": [
             {
                 "name": "Agriculture",
                 "pib_share": 40.0,
-                "description": "Cultures vivrières, élevage"
+                "description": "Cultures vivrières, élevage",
             },
-            {
-                "name": "Mines",
-                "pib_share": 35.0,
-                "description": "Or, autres minerais"
-            },
-            {
-                "name": "Services",
-                "pib_share": 25.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Mines", "pib_share": 35.0, "description": "Or, autres minerais"},
+            {"name": "Services", "pib_share": 25.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Or (70%)",
-            "Autres minerais (15%)",
-            "Animaux vivants (8%)"
-        ],
+        "main_exports": ["Or (70%)", "Autres minerais (15%)", "Animaux vivants (8%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Produits alimentaires (20%)",
-            "Carburants (18%)"
+            "Carburants (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -979,9 +723,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "SWZ": {
         "name": "Eswatini",
@@ -998,34 +742,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "B1",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 35.0,
-                "description": "Sucre, agrumes"
-            },
+            {"name": "Agriculture", "pib_share": 35.0, "description": "Sucre, agrumes"},
             {
                 "name": "Industrie",
                 "pib_share": 40.0,
-                "description": "Textile, transformation alimentaire"
+                "description": "Textile, transformation alimentaire",
             },
-            {
-                "name": "Services",
-                "pib_share": 25.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Services", "pib_share": 25.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Sucre (25%)",
-            "Textiles (20%)",
-            "Pâte de bois (15%)"
-        ],
+        "main_exports": ["Sucre (25%)", "Textiles (20%)", "Pâte de bois (15%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Véhicules (18%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1033,9 +765,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "ETH": {
         "name": "Éthiopie",
@@ -1054,44 +786,28 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B",
             "scope": "B",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 50.0,
-                "description": "Café, céréales, élevage"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
+            {"name": "Agriculture", "pib_share": 50.0, "description": "Café, céréales, élevage"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
             {
                 "name": "Industrie",
                 "pib_share": 15.0,
-                "description": "Transformation agricole, textile"
-            }
+                "description": "Transformation agricole, textile",
+            },
         ],
-        "main_exports": [
-            "Café (30%)",
-            "Or (15%)",
-            "Graines oléagineuses (12%)"
-        ],
-        "main_imports": [
-            "Machines et équipements (20%)",
-            "Carburants (18%)",
-            "Véhicules (15%)"
-        ],
+        "main_exports": ["Café (30%)", "Or (15%)", "Graines oléagineuses (12%)"],
+        "main_imports": ["Machines et équipements (20%)", "Carburants (18%)", "Véhicules (15%)"],
         "zlecaf_potential": {
             "level": "Modéré",
             "description": "Potentiel commercial avec ratification ZLECAf",
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "GAB": {
         "name": "Gabon",
@@ -1108,34 +824,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B1",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Pétrole",
-                "pib_share": 45.0,
-                "description": "Extraction pétrolière"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Mines",
-                "pib_share": 20.0,
-                "description": "Manganèse, bois"
-            }
+            {"name": "Pétrole", "pib_share": 45.0, "description": "Extraction pétrolière"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
+            {"name": "Mines", "pib_share": 20.0, "description": "Manganèse, bois"},
         ],
-        "main_exports": [
-            "Pétrole brut (70%)",
-            "Bois (15%)",
-            "Manganèse (10%)"
-        ],
+        "main_exports": ["Pétrole brut (70%)", "Bois (15%)", "Manganèse (10%)"],
         "main_imports": [
             "Machines et équipements (30%)",
             "Produits alimentaires (25%)",
-            "Véhicules (15%)"
+            "Véhicules (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1143,9 +843,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "GMB": {
         "name": "Gambie",
@@ -1162,34 +862,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B",
             "scope": "B",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 50.0,
-                "description": "Arachides, riz, millet"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Tourisme, commerce"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 15.0,
-                "description": "Transformation alimentaire"
-            }
+            {"name": "Agriculture", "pib_share": 50.0, "description": "Arachides, riz, millet"},
+            {"name": "Services", "pib_share": 35.0, "description": "Tourisme, commerce"},
+            {"name": "Industrie", "pib_share": 15.0, "description": "Transformation alimentaire"},
         ],
-        "main_exports": [
-            "Noix de cajou (40%)",
-            "Poissons (25%)",
-            "Arachides (15%)"
-        ],
+        "main_exports": ["Noix de cajou (40%)", "Poissons (25%)", "Arachides (15%)"],
         "main_imports": [
             "Produits alimentaires (30%)",
             "Machines et équipements (20%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1197,9 +881,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "GHA": {
         "name": "Ghana",
@@ -1217,34 +901,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "Caa2",
             "fitch": "CCC",
             "scope": "CCC+",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 47.0,
-                "description": "Commerce, services financiers"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 25.0,
-                "description": "Cacao, café, noix de cajou"
-            },
-            {
-                "name": "Mines",
-                "pib_share": 28.0,
-                "description": "Or, pétrole, bauxite"
-            }
+            {"name": "Services", "pib_share": 47.0, "description": "Commerce, services financiers"},
+            {"name": "Agriculture", "pib_share": 25.0, "description": "Cacao, café, noix de cajou"},
+            {"name": "Mines", "pib_share": 28.0, "description": "Or, pétrole, bauxite"},
         ],
-        "main_exports": [
-            "Or (45%)",
-            "Cacao (20%)",
-            "Pétrole (15%)"
-        ],
+        "main_exports": ["Or (45%)", "Cacao (20%)", "Pétrole (15%)"],
         "main_imports": [
             "Machines et équipements (20%)",
             "Produits pétroliers (18%)",
-            "Véhicules (15%)"
+            "Véhicules (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1252,9 +920,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "GIN": {
         "name": "Guinée",
@@ -1271,34 +939,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B-",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Mines",
-                "pib_share": 45.0,
-                "description": "Bauxite, or, diamants"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 35.0,
-                "description": "Riz, café, fruits"
-            },
-            {
-                "name": "Services",
-                "pib_share": 20.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Mines", "pib_share": 45.0, "description": "Bauxite, or, diamants"},
+            {"name": "Agriculture", "pib_share": 35.0, "description": "Riz, café, fruits"},
+            {"name": "Services", "pib_share": 20.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Bauxite (55%)",
-            "Or (25%)",
-            "Diamants (8%)"
-        ],
+        "main_exports": ["Bauxite (55%)", "Or (25%)", "Diamants (8%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Produits pétroliers (20%)",
-            "Produits alimentaires (18%)"
+            "Produits alimentaires (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1306,9 +958,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "GNB": {
         "name": "Guinée-Bissau",
@@ -1325,34 +977,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "NR",
             "fitch": "NR",
             "scope": "CCC",
-            "global_risk": "Non évalué"
+            "global_risk": "Non évalué",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 60.0,
-                "description": "Noix de cajou, riz"
-            },
-            {
-                "name": "Services",
-                "pib_share": 25.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 15.0,
-                "description": "Transformation alimentaire"
-            }
+            {"name": "Agriculture", "pib_share": 60.0, "description": "Noix de cajou, riz"},
+            {"name": "Services", "pib_share": 25.0, "description": "Commerce et services"},
+            {"name": "Industrie", "pib_share": 15.0, "description": "Transformation alimentaire"},
         ],
-        "main_exports": [
-            "Noix de cajou (85%)",
-            "Poissons (8%)",
-            "Bois (4%)"
-        ],
+        "main_exports": ["Noix de cajou (85%)", "Poissons (8%)", "Bois (4%)"],
         "main_imports": [
             "Produits alimentaires (35%)",
             "Machines et équipements (20%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1360,9 +996,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "KEN": {
         "name": "Kenya",
@@ -1380,34 +1016,26 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
             {
                 "name": "Services",
                 "pib_share": 47.0,
-                "description": "Services financiers, télécommunications"
+                "description": "Services financiers, télécommunications",
             },
-            {
-                "name": "Agriculture",
-                "pib_share": 35.0,
-                "description": "Thé, café, fleurs"
-            },
+            {"name": "Agriculture", "pib_share": 35.0, "description": "Thé, café, fleurs"},
             {
                 "name": "Industrie",
                 "pib_share": 18.0,
-                "description": "Transformation alimentaire, textile"
-            }
+                "description": "Transformation alimentaire, textile",
+            },
         ],
-        "main_exports": [
-            "Thé (22%)",
-            "Fleurs coupées (15%)",
-            "Café (8%)"
-        ],
+        "main_exports": ["Thé (22%)", "Fleurs coupées (15%)", "Café (8%)"],
         "main_imports": [
             "Machines et équipements (20%)",
             "Produits pétroliers (18%)",
-            "Véhicules (12%)"
+            "Véhicules (12%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1415,9 +1043,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "LSO": {
         "name": "Lesotho",
@@ -1434,34 +1062,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B1",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Commerce, services publics"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 35.0,
-                "description": "Textile, diamants"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 20.0,
-                "description": "Élevage, céréales"
-            }
+            {"name": "Services", "pib_share": 45.0, "description": "Commerce, services publics"},
+            {"name": "Industrie", "pib_share": 35.0, "description": "Textile, diamants"},
+            {"name": "Agriculture", "pib_share": 20.0, "description": "Élevage, céréales"},
         ],
-        "main_exports": [
-            "Textiles (75%)",
-            "Diamants (15%)",
-            "Laine (5%)"
-        ],
+        "main_exports": ["Textiles (75%)", "Diamants (15%)", "Laine (5%)"],
         "main_imports": [
             "Produits alimentaires (30%)",
             "Machines et équipements (20%)",
-            "Véhicules (15%)"
+            "Véhicules (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1469,9 +1081,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "LBR": {
         "name": "Libéria",
@@ -1488,34 +1100,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B-",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 40.0,
-                "description": "Caoutchouc, café, cacao"
-            },
-            {
-                "name": "Mines",
-                "pib_share": 35.0,
-                "description": "Minerai de fer, or"
-            },
-            {
-                "name": "Services",
-                "pib_share": 25.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Agriculture", "pib_share": 40.0, "description": "Caoutchouc, café, cacao"},
+            {"name": "Mines", "pib_share": 35.0, "description": "Minerai de fer, or"},
+            {"name": "Services", "pib_share": 25.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Minerai de fer (35%)",
-            "Caoutchouc (25%)",
-            "Or (15%)"
-        ],
+        "main_exports": ["Minerai de fer (35%)", "Caoutchouc (25%)", "Or (15%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Produits alimentaires (20%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1523,9 +1119,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "LBY": {
         "name": "Libye",
@@ -1542,34 +1138,26 @@ REAL_COUNTRY_DATA = {
             "moodys": "NR",
             "fitch": "NR",
             "scope": "CCC",
-            "global_risk": "Non évalué"
+            "global_risk": "Non évalué",
         },
         "key_sectors": [
             {
                 "name": "Pétrole",
                 "pib_share": 80.0,
-                "description": "Extraction pétrolière et gazière"
+                "description": "Extraction pétrolière et gazière",
             },
-            {
-                "name": "Services",
-                "pib_share": 15.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 5.0,
-                "description": "Céréales, élevage"
-            }
+            {"name": "Services", "pib_share": 15.0, "description": "Commerce et services"},
+            {"name": "Agriculture", "pib_share": 5.0, "description": "Céréales, élevage"},
         ],
         "main_exports": [
             "Pétrole brut (95%)",
             "Produits pétroliers raffinés (3%)",
-            "Gaz naturel (1%)"
+            "Gaz naturel (1%)",
         ],
         "main_imports": [
             "Machines et équipements (25%)",
             "Produits alimentaires (20%)",
-            "Véhicules (15%)"
+            "Véhicules (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1577,9 +1165,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "MDG": {
         "name": "Madagascar",
@@ -1596,34 +1184,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B-",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 45.0,
-                "description": "Riz, vanille, café"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
+            {"name": "Agriculture", "pib_share": 45.0, "description": "Riz, vanille, café"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
             {
                 "name": "Industrie",
                 "pib_share": 20.0,
-                "description": "Textile, transformation alimentaire"
-            }
+                "description": "Textile, transformation alimentaire",
+            },
         ],
-        "main_exports": [
-            "Nickel (25%)",
-            "Textiles (20%)",
-            "Vanille (15%)"
-        ],
+        "main_exports": ["Nickel (25%)", "Textiles (20%)", "Vanille (15%)"],
         "main_imports": [
             "Machines et équipements (20%)",
             "Carburants (18%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1631,9 +1207,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "MWI": {
         "name": "Malawi",
@@ -1650,34 +1226,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B-",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 55.0,
-                "description": "Tabac, thé, sucre"
-            },
-            {
-                "name": "Services",
-                "pib_share": 30.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 15.0,
-                "description": "Transformation agricole"
-            }
+            {"name": "Agriculture", "pib_share": 55.0, "description": "Tabac, thé, sucre"},
+            {"name": "Services", "pib_share": 30.0, "description": "Commerce et services"},
+            {"name": "Industrie", "pib_share": 15.0, "description": "Transformation agricole"},
         ],
-        "main_exports": [
-            "Tabac (55%)",
-            "Thé (15%)",
-            "Sucre (8%)"
-        ],
+        "main_exports": ["Tabac (55%)", "Thé (15%)", "Sucre (8%)"],
         "main_imports": [
             "Carburants (20%)",
             "Machines et équipements (18%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1685,9 +1245,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "MLI": {
         "name": "Mali",
@@ -1704,34 +1264,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "Caa2",
             "fitch": "CCC+",
             "scope": "CCC+",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 38.0,
-                "description": "Coton, céréales, élevage"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Mines",
-                "pib_share": 27.0,
-                "description": "Or, autres minerais"
-            }
+            {"name": "Agriculture", "pib_share": 38.0, "description": "Coton, céréales, élevage"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
+            {"name": "Mines", "pib_share": 27.0, "description": "Or, autres minerais"},
         ],
-        "main_exports": [
-            "Or (75%)",
-            "Coton (15%)",
-            "Animaux vivants (5%)"
-        ],
+        "main_exports": ["Or (75%)", "Coton (15%)", "Animaux vivants (5%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Carburants (20%)",
-            "Produits alimentaires (18%)"
+            "Produits alimentaires (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1739,9 +1283,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "MRT": {
         "name": "Mauritanie",
@@ -1758,34 +1302,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B1",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Mines",
-                "pib_share": 40.0,
-                "description": "Minerai de fer, or, cuivre"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 25.0,
-                "description": "Élevage, pêche"
-            }
+            {"name": "Mines", "pib_share": 40.0, "description": "Minerai de fer, or, cuivre"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
+            {"name": "Agriculture", "pib_share": 25.0, "description": "Élevage, pêche"},
         ],
-        "main_exports": [
-            "Minerai de fer (40%)",
-            "Or (25%)",
-            "Cuivre (15%)"
-        ],
+        "main_exports": ["Minerai de fer (40%)", "Or (25%)", "Cuivre (15%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Produits alimentaires (20%)",
-            "Carburants (18%)"
+            "Carburants (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1793,9 +1321,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "MUS": {
         "name": "Maurice",
@@ -1812,34 +1340,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "Baa2",
             "fitch": "BBB+",
             "scope": "BBB+",
-            "global_risk": "Modéré"
+            "global_risk": "Modéré",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 70.0,
-                "description": "Services financiers, tourisme"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Textile, sucre"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 5.0,
-                "description": "Canne à sucre"
-            }
+            {"name": "Services", "pib_share": 70.0, "description": "Services financiers, tourisme"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Textile, sucre"},
+            {"name": "Agriculture", "pib_share": 5.0, "description": "Canne à sucre"},
         ],
-        "main_exports": [
-            "Textiles (35%)",
-            "Sucre (20%)",
-            "Poissons (15%)"
-        ],
+        "main_exports": ["Textiles (35%)", "Sucre (20%)", "Poissons (15%)"],
         "main_imports": [
             "Machines et équipements (20%)",
             "Produits pétroliers (15%)",
-            "Produits alimentaires (18%)"
+            "Produits alimentaires (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1847,9 +1359,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "MAR": {
         "name": "Maroc",
@@ -1867,34 +1379,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "Ba1",
             "fitch": "BBB-",
             "scope": "BBB-",
-            "global_risk": "Modéré"
+            "global_risk": "Modéré",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 50.0,
-                "description": "Tourisme, services financiers"
-            },
+            {"name": "Services", "pib_share": 50.0, "description": "Tourisme, services financiers"},
             {
                 "name": "Industrie",
                 "pib_share": 33.0,
-                "description": "Textile, automobile, phosphates"
+                "description": "Textile, automobile, phosphates",
             },
-            {
-                "name": "Agriculture",
-                "pib_share": 17.0,
-                "description": "Agrumes, céréales"
-            }
+            {"name": "Agriculture", "pib_share": 17.0, "description": "Agrumes, céréales"},
         ],
-        "main_exports": [
-            "Phosphates (18%)",
-            "Textiles (16%)",
-            "Produits alimentaires (14%)"
-        ],
+        "main_exports": ["Phosphates (18%)", "Textiles (16%)", "Produits alimentaires (14%)"],
         "main_imports": [
             "Machines et équipements (20%)",
             "Carburants (15%)",
-            "Produits alimentaires (12%)"
+            "Produits alimentaires (12%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1902,9 +1402,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "MOZ": {
         "name": "Mozambique",
@@ -1921,34 +1421,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "Caa2",
             "fitch": "CCC+",
             "scope": "CCC+",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
             {
                 "name": "Agriculture",
                 "pib_share": 45.0,
-                "description": "Canne à sucre, coton, noix de cajou"
+                "description": "Canne à sucre, coton, noix de cajou",
             },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 20.0,
-                "description": "Aluminium, gaz naturel"
-            }
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
+            {"name": "Industrie", "pib_share": 20.0, "description": "Aluminium, gaz naturel"},
         ],
-        "main_exports": [
-            "Gaz naturel (25%)",
-            "Aluminium (20%)",
-            "Charbon (15%)"
-        ],
+        "main_exports": ["Gaz naturel (25%)", "Aluminium (20%)", "Charbon (15%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Carburants (18%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -1956,9 +1444,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "NAM": {
         "name": "Namibie",
@@ -1975,34 +1463,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "Ba3",
             "fitch": "BB-",
             "scope": "BB-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Mines",
-                "pib_share": 45.0,
-                "description": "Diamants, uranium, zinc"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 20.0,
-                "description": "Élevage, pêche"
-            }
+            {"name": "Mines", "pib_share": 45.0, "description": "Diamants, uranium, zinc"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
+            {"name": "Agriculture", "pib_share": 20.0, "description": "Élevage, pêche"},
         ],
-        "main_exports": [
-            "Diamants (40%)",
-            "Uranium (25%)",
-            "Zinc (10%)"
-        ],
+        "main_exports": ["Diamants (40%)", "Uranium (25%)", "Zinc (10%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Carburants (15%)",
-            "Produits alimentaires (18%)"
+            "Produits alimentaires (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2010,9 +1482,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "NER": {
         "name": "Niger",
@@ -2029,34 +1501,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B",
             "scope": "B",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 50.0,
-                "description": "Céréales, élevage"
-            },
-            {
-                "name": "Mines",
-                "pib_share": 30.0,
-                "description": "Uranium, or"
-            },
-            {
-                "name": "Services",
-                "pib_share": 20.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Agriculture", "pib_share": 50.0, "description": "Céréales, élevage"},
+            {"name": "Mines", "pib_share": 30.0, "description": "Uranium, or"},
+            {"name": "Services", "pib_share": 20.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Uranium (75%)",
-            "Or (12%)",
-            "Animaux vivants (8%)"
-        ],
+        "main_exports": ["Uranium (75%)", "Or (12%)", "Animaux vivants (8%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Carburants (20%)",
-            "Produits alimentaires (18%)"
+            "Produits alimentaires (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2064,9 +1520,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "NGA": {
         "name": "Nigéria",
@@ -2084,34 +1540,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Pétrole",
-                "pib_share": 30.0,
-                "description": "Extraction pétrolière"
-            },
+            {"name": "Pétrole", "pib_share": 30.0, "description": "Extraction pétrolière"},
             {
                 "name": "Services",
                 "pib_share": 45.0,
-                "description": "Télécommunications, services financiers"
+                "description": "Télécommunications, services financiers",
             },
-            {
-                "name": "Agriculture",
-                "pib_share": 25.0,
-                "description": "Cacao, café, coton"
-            }
+            {"name": "Agriculture", "pib_share": 25.0, "description": "Cacao, café, coton"},
         ],
-        "main_exports": [
-            "Pétrole brut (85%)",
-            "Cacao (4%)",
-            "Caoutchouc (3%)"
-        ],
+        "main_exports": ["Pétrole brut (85%)", "Cacao (4%)", "Caoutchouc (3%)"],
         "main_imports": [
             "Machines et équipements (20%)",
             "Produits chimiques (15%)",
-            "Véhicules (12%)"
+            "Véhicules (12%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2119,9 +1563,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "RWA": {
         "name": "Rwanda",
@@ -2138,34 +1582,30 @@ REAL_COUNTRY_DATA = {
             "moodys": "B1",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
             {
                 "name": "Agriculture",
                 "pib_share": 40.0,
-                "description": "Café, thé, cultures vivrières"
+                "description": "Café, thé, cultures vivrières",
             },
             {
                 "name": "Services",
                 "pib_share": 35.0,
-                "description": "Services financiers, télécommunications"
+                "description": "Services financiers, télécommunications",
             },
             {
                 "name": "Industrie",
                 "pib_share": 25.0,
-                "description": "Mines, transformation alimentaire"
-            }
+                "description": "Mines, transformation alimentaire",
+            },
         ],
-        "main_exports": [
-            "Café (24%)",
-            "Thé (18%)",
-            "Minerais de tungstène (15%)"
-        ],
+        "main_exports": ["Café (24%)", "Thé (18%)", "Minerais de tungstène (15%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Carburants (18%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2173,9 +1613,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "STP": {
         "name": "São Tomé-et-Príncipe",
@@ -2192,34 +1632,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 50.0,
-                "description": "Cacao, café, coprah"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Tourisme, commerce"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 15.0,
-                "description": "Transformation alimentaire"
-            }
+            {"name": "Agriculture", "pib_share": 50.0, "description": "Cacao, café, coprah"},
+            {"name": "Services", "pib_share": 35.0, "description": "Tourisme, commerce"},
+            {"name": "Industrie", "pib_share": 15.0, "description": "Transformation alimentaire"},
         ],
-        "main_exports": [
-            "Cacao (75%)",
-            "Café (15%)",
-            "Coprah (5%)"
-        ],
+        "main_exports": ["Cacao (75%)", "Café (15%)", "Coprah (5%)"],
         "main_imports": [
             "Produits alimentaires (40%)",
             "Machines et équipements (20%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2227,9 +1651,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "SEN": {
         "name": "Sénégal",
@@ -2246,34 +1670,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "Ba3",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Commerce, services financiers"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Arachides, mil, sorgho"
-            },
+            {"name": "Services", "pib_share": 45.0, "description": "Commerce, services financiers"},
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Arachides, mil, sorgho"},
             {
                 "name": "Industrie",
                 "pib_share": 25.0,
-                "description": "Transformation alimentaire, mines"
-            }
+                "description": "Transformation alimentaire, mines",
+            },
         ],
-        "main_exports": [
-            "Or (25%)",
-            "Poissons (20%)",
-            "Phosphates (15%)"
-        ],
+        "main_exports": ["Or (25%)", "Poissons (20%)", "Phosphates (15%)"],
         "main_imports": [
             "Produits pétroliers (20%)",
             "Machines et équipements (18%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2281,9 +1693,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "SYC": {
         "name": "Seychelles",
@@ -2300,34 +1712,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "B1",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 80.0,
-                "description": "Tourisme, services financiers"
-            },
+            {"name": "Services", "pib_share": 80.0, "description": "Tourisme, services financiers"},
             {
                 "name": "Industrie",
                 "pib_share": 15.0,
-                "description": "Pêche, transformation alimentaire"
+                "description": "Pêche, transformation alimentaire",
             },
-            {
-                "name": "Agriculture",
-                "pib_share": 5.0,
-                "description": "Vanille, cannelle"
-            }
+            {"name": "Agriculture", "pib_share": 5.0, "description": "Vanille, cannelle"},
         ],
-        "main_exports": [
-            "Poissons (85%)",
-            "Cannelle (8%)",
-            "Coprah (4%)"
-        ],
+        "main_exports": ["Poissons (85%)", "Cannelle (8%)", "Coprah (4%)"],
         "main_imports": [
             "Produits alimentaires (25%)",
             "Machines et équipements (20%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2335,9 +1735,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "SLE": {
         "name": "Sierra Leone",
@@ -2354,34 +1754,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B-",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 50.0,
-                "description": "Riz, café, cacao"
-            },
-            {
-                "name": "Mines",
-                "pib_share": 30.0,
-                "description": "Minerai de fer, diamants, rutile"
-            },
-            {
-                "name": "Services",
-                "pib_share": 20.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Agriculture", "pib_share": 50.0, "description": "Riz, café, cacao"},
+            {"name": "Mines", "pib_share": 30.0, "description": "Minerai de fer, diamants, rutile"},
+            {"name": "Services", "pib_share": 20.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Minerai de fer (45%)",
-            "Diamants (25%)",
-            "Rutile (12%)"
-        ],
+        "main_exports": ["Minerai de fer (45%)", "Diamants (25%)", "Rutile (12%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Carburants (18%)",
-            "Produits alimentaires (20%)"
+            "Produits alimentaires (20%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2389,9 +1773,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "SOM": {
         "name": "Somalie",
@@ -2408,34 +1792,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "NR",
             "fitch": "NR",
             "scope": "CCC",
-            "global_risk": "Non évalué"
+            "global_risk": "Non évalué",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 65.0,
-                "description": "Élevage, bananes"
-            },
-            {
-                "name": "Services",
-                "pib_share": 25.0,
-                "description": "Commerce, télécommunications"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 10.0,
-                "description": "Transformation alimentaire"
-            }
+            {"name": "Agriculture", "pib_share": 65.0, "description": "Élevage, bananes"},
+            {"name": "Services", "pib_share": 25.0, "description": "Commerce, télécommunications"},
+            {"name": "Industrie", "pib_share": 10.0, "description": "Transformation alimentaire"},
         ],
-        "main_exports": [
-            "Animaux vivants (65%)",
-            "Bananes (15%)",
-            "Poissons (8%)"
-        ],
+        "main_exports": ["Animaux vivants (65%)", "Bananes (15%)", "Poissons (8%)"],
         "main_imports": [
             "Produits alimentaires (35%)",
             "Carburants (20%)",
-            "Machines et équipements (15%)"
+            "Machines et équipements (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2443,9 +1811,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "ZAF": {
         "name": "Afrique du Sud",
@@ -2463,44 +1831,24 @@ REAL_COUNTRY_DATA = {
             "moodys": "Ba2",
             "fitch": "BB-",
             "scope": "BB-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 67.0,
-                "description": "Services financiers, commerce"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 28.0,
-                "description": "Mines, automobile"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 5.0,
-                "description": "Maïs, fruits, vin"
-            }
+            {"name": "Services", "pib_share": 67.0, "description": "Services financiers, commerce"},
+            {"name": "Industrie", "pib_share": 28.0, "description": "Mines, automobile"},
+            {"name": "Agriculture", "pib_share": 5.0, "description": "Maïs, fruits, vin"},
         ],
-        "main_exports": [
-            "Platine (12%)",
-            "Or (10%)",
-            "Charbon (9%)"
-        ],
-        "main_imports": [
-            "Pétrole brut (12%)",
-            "Machines et équipements (25%)",
-            "Véhicules (10%)"
-        ],
+        "main_exports": ["Platine (12%)", "Or (10%)", "Charbon (9%)"],
+        "main_imports": ["Pétrole brut (12%)", "Machines et équipements (25%)", "Véhicules (10%)"],
         "zlecaf_potential": {
             "level": "Modéré",
             "description": "Potentiel commercial avec ratification ZLECAf",
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "SSD": {
         "name": "Soudan du Sud",
@@ -2517,34 +1865,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "NR",
             "fitch": "NR",
             "scope": "CCC",
-            "global_risk": "Non évalué"
+            "global_risk": "Non évalué",
         },
         "key_sectors": [
-            {
-                "name": "Pétrole",
-                "pib_share": 80.0,
-                "description": "Extraction pétrolière"
-            },
+            {"name": "Pétrole", "pib_share": 80.0, "description": "Extraction pétrolière"},
             {
                 "name": "Agriculture",
                 "pib_share": 15.0,
-                "description": "Élevage, cultures vivrières"
+                "description": "Élevage, cultures vivrières",
             },
-            {
-                "name": "Services",
-                "pib_share": 5.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Services", "pib_share": 5.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Pétrole brut (98%)",
-            "Animaux vivants (1%)",
-            "Or (0.5%)"
-        ],
+        "main_exports": ["Pétrole brut (98%)", "Animaux vivants (1%)", "Or (0.5%)"],
         "main_imports": [
             "Produits alimentaires (40%)",
             "Machines et équipements (20%)",
-            "Véhicules (15%)"
+            "Véhicules (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2552,9 +1888,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "SDN": {
         "name": "Soudan",
@@ -2571,34 +1907,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "Caa3",
             "fitch": "CCC-",
             "scope": "CCC-",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 45.0,
-                "description": "Coton, gomme arabique"
-            },
-            {
-                "name": "Services",
-                "pib_share": 30.0,
-                "description": "Commerce et services"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Pétrole, mines"
-            }
+            {"name": "Agriculture", "pib_share": 45.0, "description": "Coton, gomme arabique"},
+            {"name": "Services", "pib_share": 30.0, "description": "Commerce et services"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Pétrole, mines"},
         ],
-        "main_exports": [
-            "Or (65%)",
-            "Pétrole brut (15%)",
-            "Animaux vivants (8%)"
-        ],
+        "main_exports": ["Or (65%)", "Pétrole brut (15%)", "Animaux vivants (8%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Produits alimentaires (20%)",
-            "Carburants (15%)"
+            "Carburants (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2606,9 +1926,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "TZA": {
         "name": "Tanzanie",
@@ -2626,44 +1946,28 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 40.0,
-                "description": "Café, coton, noix de cajou"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce, tourisme"
-            },
+            {"name": "Agriculture", "pib_share": 40.0, "description": "Café, coton, noix de cajou"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce, tourisme"},
             {
                 "name": "Industrie",
                 "pib_share": 25.0,
-                "description": "Mines, transformation alimentaire"
-            }
+                "description": "Mines, transformation alimentaire",
+            },
         ],
-        "main_exports": [
-            "Or (40%)",
-            "Café (8%)",
-            "Noix de cajou (7%)"
-        ],
-        "main_imports": [
-            "Machines et équipements (20%)",
-            "Carburants (18%)",
-            "Véhicules (12%)"
-        ],
+        "main_exports": ["Or (40%)", "Café (8%)", "Noix de cajou (7%)"],
+        "main_imports": ["Machines et équipements (20%)", "Carburants (18%)", "Véhicules (12%)"],
         "zlecaf_potential": {
             "level": "Modéré",
             "description": "Potentiel commercial avec ratification ZLECAf",
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "TGO": {
         "name": "Togo",
@@ -2680,34 +1984,22 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B",
             "scope": "B",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 45.0,
-                "description": "Coton, café, cacao"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
+            {"name": "Agriculture", "pib_share": 45.0, "description": "Coton, café, cacao"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
             {
                 "name": "Industrie",
                 "pib_share": 20.0,
-                "description": "Phosphates, transformation alimentaire"
-            }
+                "description": "Phosphates, transformation alimentaire",
+            },
         ],
-        "main_exports": [
-            "Phosphates (30%)",
-            "Coton (25%)",
-            "Cacao (15%)"
-        ],
+        "main_exports": ["Phosphates (30%)", "Coton (25%)", "Cacao (15%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Carburants (20%)",
-            "Produits alimentaires (15%)"
+            "Produits alimentaires (15%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2715,9 +2007,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "TUN": {
         "name": "Tunisie",
@@ -2734,44 +2026,28 @@ REAL_COUNTRY_DATA = {
             "moodys": "B3",
             "fitch": "B-",
             "scope": "B-",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Services",
-                "pib_share": 60.0,
-                "description": "Tourisme, services financiers"
-            },
+            {"name": "Services", "pib_share": 60.0, "description": "Tourisme, services financiers"},
             {
                 "name": "Industrie",
                 "pib_share": 28.0,
-                "description": "Textile, automobile, phosphates"
+                "description": "Textile, automobile, phosphates",
             },
-            {
-                "name": "Agriculture",
-                "pib_share": 12.0,
-                "description": "Olives, céréales, agrumes"
-            }
+            {"name": "Agriculture", "pib_share": 12.0, "description": "Olives, céréales, agrumes"},
         ],
-        "main_exports": [
-            "Textiles (19%)",
-            "Machines électriques (15%)",
-            "Huile d'olive (8%)"
-        ],
-        "main_imports": [
-            "Machines et équipements (20%)",
-            "Textiles (15%)",
-            "Carburants (12%)"
-        ],
+        "main_exports": ["Textiles (19%)", "Machines électriques (15%)", "Huile d'olive (8%)"],
+        "main_imports": ["Machines et équipements (20%)", "Textiles (15%)", "Carburants (12%)"],
         "zlecaf_potential": {
             "level": "Modéré",
             "description": "Potentiel commercial avec ratification ZLECAf",
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "UGA": {
         "name": "Ouganda",
@@ -2788,44 +2064,28 @@ REAL_COUNTRY_DATA = {
             "moodys": "B2",
             "fitch": "B+",
             "scope": "B+",
-            "global_risk": "Élevé"
+            "global_risk": "Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 45.0,
-                "description": "Café, coton, thé"
-            },
-            {
-                "name": "Services",
-                "pib_share": 35.0,
-                "description": "Commerce et services"
-            },
+            {"name": "Agriculture", "pib_share": 45.0, "description": "Café, coton, thé"},
+            {"name": "Services", "pib_share": 35.0, "description": "Commerce et services"},
             {
                 "name": "Industrie",
                 "pib_share": 20.0,
-                "description": "Transformation alimentaire, textile"
-            }
+                "description": "Transformation alimentaire, textile",
+            },
         ],
-        "main_exports": [
-            "Café (22%)",
-            "Or (18%)",
-            "Thé (8%)"
-        ],
-        "main_imports": [
-            "Machines et équipements (20%)",
-            "Carburants (18%)",
-            "Véhicules (12%)"
-        ],
+        "main_exports": ["Café (22%)", "Or (18%)", "Thé (8%)"],
+        "main_imports": ["Machines et équipements (20%)", "Carburants (18%)", "Véhicules (12%)"],
         "zlecaf_potential": {
             "level": "Modéré",
             "description": "Potentiel commercial avec ratification ZLECAf",
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "ZMB": {
         "name": "Zambie",
@@ -2842,34 +2102,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "Caa2",
             "fitch": "CCC+",
             "scope": "CCC+",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Mines",
-                "pib_share": 70.0,
-                "description": "Cuivre, cobalt"
-            },
-            {
-                "name": "Agriculture",
-                "pib_share": 15.0,
-                "description": "Maïs, tabac, sucre"
-            },
-            {
-                "name": "Services",
-                "pib_share": 15.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Mines", "pib_share": 70.0, "description": "Cuivre, cobalt"},
+            {"name": "Agriculture", "pib_share": 15.0, "description": "Maïs, tabac, sucre"},
+            {"name": "Services", "pib_share": 15.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Cuivre (70%)",
-            "Cobalt (10%)",
-            "Or (5%)"
-        ],
+        "main_exports": ["Cuivre (70%)", "Cobalt (10%)", "Or (5%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Carburants (15%)",
-            "Produits alimentaires (12%)"
+            "Produits alimentaires (12%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2877,9 +2121,9 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
+                "Réduction tarifaire",
+            ],
+        },
     },
     "ZWE": {
         "name": "Zimbabwe",
@@ -2896,34 +2140,18 @@ REAL_COUNTRY_DATA = {
             "moodys": "C",
             "fitch": "CC",
             "scope": "CC",
-            "global_risk": "Très Élevé"
+            "global_risk": "Très Élevé",
         },
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 40.0,
-                "description": "Tabac, maïs, coton"
-            },
-            {
-                "name": "Mines",
-                "pib_share": 35.0,
-                "description": "Or, platine, diamants"
-            },
-            {
-                "name": "Services",
-                "pib_share": 25.0,
-                "description": "Commerce et services"
-            }
+            {"name": "Agriculture", "pib_share": 40.0, "description": "Tabac, maïs, coton"},
+            {"name": "Mines", "pib_share": 35.0, "description": "Or, platine, diamants"},
+            {"name": "Services", "pib_share": 25.0, "description": "Commerce et services"},
         ],
-        "main_exports": [
-            "Or (45%)",
-            "Tabac (15%)",
-            "Platine (12%)"
-        ],
+        "main_exports": ["Or (45%)", "Tabac (15%)", "Platine (12%)"],
         "main_imports": [
             "Machines et équipements (25%)",
             "Carburants (15%)",
-            "Produits alimentaires (18%)"
+            "Produits alimentaires (18%)",
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -2931,29 +2159,43 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
-        }
-    }
+                "Réduction tarifaire",
+            ],
+        },
+    },
 }
+
 
 def get_country_data(country_code):
     """Retourne les données économiques réelles d'un pays ou des données par défaut"""
-    return REAL_COUNTRY_DATA.get(country_code, {
-        'name': f'Pays {country_code}',
-        'gdp_usd_2024': 10.0,
-        'gdp_per_capita_2024': 1000,
-        'population_2024': 10000000,
-        'development_index': 0.500,
-        'africa_rank': 25,
-        'growth_forecast_2024': '3.0%',
-        'risk_ratings': {'sp': 'NR', 'moodys': 'NR', 'fitch': 'NR', 'scope': 'NR', 'global_risk': 'Non évalué'},
-        'key_sectors': [
-            {'name': 'Agriculture', 'pib_share': 30.0, 'description': 'Secteur primaire'},
-            {'name': 'Services', 'pib_share': 45.0, 'description': 'Secteur tertiaire'},
-            {'name': 'Industrie', 'pib_share': 25.0, 'description': 'Secteur secondaire'}
-        ],
-        'zlecaf_potential': {'level': 'Modéré', 'description': 'Potentiel commercial ZLECAf', 'key_opportunities': ['Commerce intra-africain']},
-        'main_exports': ['Données à compléter'],
-        'main_imports': ['Données à compléter']
-    })
+    return REAL_COUNTRY_DATA.get(
+        country_code,
+        {
+            "name": f"Pays {country_code}",
+            "gdp_usd_2024": 10.0,
+            "gdp_per_capita_2024": 1000,
+            "population_2024": 10000000,
+            "development_index": 0.500,
+            "africa_rank": 25,
+            "growth_forecast_2024": "3.0%",
+            "risk_ratings": {
+                "sp": "NR",
+                "moodys": "NR",
+                "fitch": "NR",
+                "scope": "NR",
+                "global_risk": "Non évalué",
+            },
+            "key_sectors": [
+                {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+                {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+                {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
+            ],
+            "zlecaf_potential": {
+                "level": "Modéré",
+                "description": "Potentiel commercial ZLECAf",
+                "key_opportunities": ["Commerce intra-africain"],
+            },
+            "main_exports": ["Données à compléter"],
+            "main_imports": ["Données à compléter"],
+        },
+    )

@@ -26,7 +26,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["breeding_slaughter"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "010121": {
         "chapter": "01",
@@ -36,7 +41,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["use"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "010221": {
         "chapter": "01",
@@ -46,7 +56,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["breeding_slaughter"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "010310": {
         "chapter": "01",
@@ -56,7 +71,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["breeding_slaughter"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "010391": {
         "chapter": "01",
@@ -66,7 +86,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "010511": {
         "chapter": "01",
@@ -76,7 +101,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["use"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "010512": {
         "chapter": "01",
@@ -86,7 +116,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "010594": {
         "chapter": "01",
@@ -96,7 +131,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["use"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "010611": {
         "chapter": "01",
@@ -106,9 +146,13 @@ HS6_EXTENDED = {
         "sensitivity": "excluded",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "CITES applicable", "requirement_en": "CITES applicable", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "CITES applicable",
+            "requirement_en": "CITES applicable",
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 02 - VIANDES (Compléments)
     # =========================================================================
@@ -120,7 +164,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["quality_grade"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020120": {
         "chapter": "02",
@@ -130,7 +179,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["cut_type", "quality_grade"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020210": {
         "chapter": "02",
@@ -140,7 +194,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["quality_grade"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020220": {
         "chapter": "02",
@@ -150,7 +209,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["cut_type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020311": {
         "chapter": "02",
@@ -160,7 +224,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020319": {
         "chapter": "02",
@@ -170,7 +239,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["cut_type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020410": {
         "chapter": "02",
@@ -180,7 +254,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020421": {
         "chapter": "02",
@@ -190,7 +269,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["quality_grade"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020422": {
         "chapter": "02",
@@ -200,7 +284,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["cut_type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020423": {
         "chapter": "02",
@@ -210,7 +299,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["cut_type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020450": {
         "chapter": "02",
@@ -220,7 +314,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["cut_type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020500": {
         "chapter": "02",
@@ -230,7 +329,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020610": {
         "chapter": "02",
@@ -240,7 +344,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020711": {
         "chapter": "02",
@@ -250,7 +359,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020712": {
         "chapter": "02",
@@ -260,7 +374,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020713": {
         "chapter": "02",
@@ -270,7 +389,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["cut_type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020727": {
         "chapter": "02",
@@ -280,7 +404,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["cut_type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020810": {
         "chapter": "02",
@@ -290,7 +419,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020830": {
         "chapter": "02",
@@ -300,7 +434,12 @@ HS6_EXTENDED = {
         "sensitivity": "excluded",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "CITES - Interdit", "requirement_en": "CITES - Prohibited", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "CITES - Interdit",
+            "requirement_en": "CITES - Prohibited",
+            "regional_content": 100,
+        },
     },
     "020890": {
         "chapter": "02",
@@ -310,7 +449,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "020900": {
         "chapter": "02",
@@ -320,9 +464,13 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 03 - POISSONS (Compléments)
     # =========================================================================
@@ -334,7 +482,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "030119": {
         "chapter": "03",
@@ -344,7 +497,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "030191": {
         "chapter": "03",
@@ -354,7 +512,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["farmed_wild"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "030192": {
         "chapter": "03",
@@ -364,7 +527,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["farmed_wild"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "030193": {
         "chapter": "03",
@@ -374,7 +542,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["farmed_wild"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "030194": {
         "chapter": "03",
@@ -384,7 +557,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "030199": {
         "chapter": "03",
@@ -394,7 +572,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "030211": {
         "chapter": "03",
@@ -404,7 +587,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["farmed_wild"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030213": {
         "chapter": "03",
@@ -414,7 +602,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030214": {
         "chapter": "03",
@@ -424,7 +617,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["farmed_wild"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché ou élevé en Afrique", "requirement_en": "Caught or farmed in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché ou élevé en Afrique",
+            "requirement_en": "Caught or farmed in Africa",
+            "regional_content": 100,
+        },
     },
     "030221": {
         "chapter": "03",
@@ -434,7 +632,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030222": {
         "chapter": "03",
@@ -444,7 +647,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030223": {
         "chapter": "03",
@@ -454,7 +662,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030231": {
         "chapter": "03",
@@ -464,7 +677,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["farmed_wild"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché ou élevé en Afrique", "requirement_en": "Caught or farmed in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché ou élevé en Afrique",
+            "requirement_en": "Caught or farmed in Africa",
+            "regional_content": 100,
+        },
     },
     "030232": {
         "chapter": "03",
@@ -474,7 +692,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["farmed_wild"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché ou élevé en Afrique", "requirement_en": "Caught or farmed in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché ou élevé en Afrique",
+            "requirement_en": "Caught or farmed in Africa",
+            "regional_content": 100,
+        },
     },
     "030233": {
         "chapter": "03",
@@ -484,7 +707,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["farmed_wild"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030241": {
         "chapter": "03",
@@ -494,7 +722,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030242": {
         "chapter": "03",
@@ -504,7 +737,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030243": {
         "chapter": "03",
@@ -514,7 +752,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030244": {
         "chapter": "03",
@@ -524,7 +767,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030251": {
         "chapter": "03",
@@ -534,7 +782,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030254": {
         "chapter": "03",
@@ -544,7 +797,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Pêché en eaux africaines", "requirement_en": "Caught in African waters", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Pêché en eaux africaines",
+            "requirement_en": "Caught in African waters",
+            "regional_content": 100,
+        },
     },
     "030271": {
         "chapter": "03",
@@ -554,9 +812,13 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["farmed_wild"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Élevé en Afrique", "requirement_en": "Farmed in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Élevé en Afrique",
+            "requirement_en": "Farmed in Africa",
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 04 - PRODUITS LAITIERS, OEUFS
     # =========================================================================
@@ -568,7 +830,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["local_imported"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040120": {
         "chapter": "04",
@@ -578,7 +845,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["local_imported"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040130": {
         "chapter": "04",
@@ -588,7 +860,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040140": {
         "chapter": "04",
@@ -598,7 +875,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040150": {
         "chapter": "04",
@@ -608,7 +890,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040210": {
         "chapter": "04",
@@ -618,7 +905,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["local_imported"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040221": {
         "chapter": "04",
@@ -628,7 +920,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["local_imported"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040229": {
         "chapter": "04",
@@ -638,7 +935,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["local_imported"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040310": {
         "chapter": "04",
@@ -648,7 +950,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040390": {
         "chapter": "04",
@@ -658,7 +965,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040410": {
         "chapter": "04",
@@ -668,7 +980,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
     "040490": {
         "chapter": "04",
@@ -678,7 +995,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
     "040510": {
         "chapter": "04",
@@ -688,7 +1010,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["local_imported"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040520": {
         "chapter": "04",
@@ -698,7 +1025,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique", "requirement_en": "Manufactured in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique",
+            "requirement_en": "Manufactured in Africa",
+            "regional_content": 40,
+        },
     },
     "040590": {
         "chapter": "04",
@@ -708,7 +1040,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
     "040610": {
         "chapter": "04",
@@ -718,7 +1055,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040620": {
         "chapter": "04",
@@ -728,7 +1070,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique", "requirement_en": "Manufactured in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique",
+            "requirement_en": "Manufactured in Africa",
+            "regional_content": 40,
+        },
     },
     "040630": {
         "chapter": "04",
@@ -738,7 +1085,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040640": {
         "chapter": "04",
@@ -748,7 +1100,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique", "requirement_en": "Manufactured in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique",
+            "requirement_en": "Manufactured in Africa",
+            "regional_content": 40,
+        },
     },
     "040690": {
         "chapter": "04",
@@ -758,7 +1115,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "040700": {
         "chapter": "04",
@@ -768,7 +1130,12 @@ HS6_EXTENDED = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["use", "species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "040811": {
         "chapter": "04",
@@ -778,7 +1145,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
     "040819": {
         "chapter": "04",
@@ -788,7 +1160,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
     "040891": {
         "chapter": "04",
@@ -798,7 +1175,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
     "040899": {
         "chapter": "04",
@@ -808,7 +1190,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
     "040900": {
         "chapter": "04",
@@ -818,9 +1205,13 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "origin"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu - récolté en Afrique", "requirement_en": "Wholly obtained - harvested in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu - récolté en Afrique",
+            "requirement_en": "Wholly obtained - harvested in Africa",
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 05 - PRODUITS ANIMAUX AUTRES
     # =========================================================================
@@ -832,7 +1223,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "050510": {
         "chapter": "05",
@@ -842,7 +1238,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "050590": {
         "chapter": "05",
@@ -852,7 +1253,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "050610": {
         "chapter": "05",
@@ -862,7 +1268,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
     "050690": {
         "chapter": "05",
@@ -872,7 +1283,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "050710": {
         "chapter": "05",
@@ -882,7 +1298,12 @@ HS6_EXTENDED = {
         "sensitivity": "excluded",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "CITES - Commerce interdit", "requirement_en": "CITES - Trade prohibited", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "CITES - Commerce interdit",
+            "requirement_en": "CITES - Trade prohibited",
+            "regional_content": 100,
+        },
     },
     "050790": {
         "chapter": "05",
@@ -892,7 +1313,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "050800": {
         "chapter": "05",
@@ -902,7 +1328,12 @@ HS6_EXTENDED = {
         "sensitivity": "excluded",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "CITES applicable", "requirement_en": "CITES applicable", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "CITES applicable",
+            "requirement_en": "CITES applicable",
+            "regional_content": 100,
+        },
     },
     "050900": {
         "chapter": "05",
@@ -912,7 +1343,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "051000": {
         "chapter": "05",
@@ -922,7 +1358,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "051110": {
         "chapter": "05",
@@ -932,7 +1373,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "051191": {
         "chapter": "05",
@@ -942,7 +1388,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "051199": {
         "chapter": "05",
@@ -952,9 +1403,13 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 06 - PLANTES VIVANTES
     # =========================================================================
@@ -966,7 +1421,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "060120": {
         "chapter": "06",
@@ -976,7 +1436,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "060210": {
         "chapter": "06",
@@ -986,7 +1451,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "060220": {
         "chapter": "06",
@@ -996,7 +1466,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "060230": {
         "chapter": "06",
@@ -1006,7 +1481,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "060240": {
         "chapter": "06",
@@ -1016,7 +1496,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "060290": {
         "chapter": "06",
@@ -1026,7 +1511,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "060319": {
         "chapter": "06",
@@ -1036,7 +1526,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu - cultivé en Afrique", "requirement_en": "Wholly obtained - grown in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
+            "requirement_en": "Wholly obtained - grown in Africa",
+            "regional_content": 100,
+        },
     },
     "060312": {
         "chapter": "06",
@@ -1046,7 +1541,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["quality_grade"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu - cultivé en Afrique", "requirement_en": "Wholly obtained - grown in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
+            "requirement_en": "Wholly obtained - grown in Africa",
+            "regional_content": 100,
+        },
     },
     "060313": {
         "chapter": "06",
@@ -1056,7 +1556,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["quality_grade"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu - cultivé en Afrique", "requirement_en": "Wholly obtained - grown in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
+            "requirement_en": "Wholly obtained - grown in Africa",
+            "regional_content": 100,
+        },
     },
     "060314": {
         "chapter": "06",
@@ -1066,7 +1571,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["quality_grade"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu - cultivé en Afrique", "requirement_en": "Wholly obtained - grown in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
+            "requirement_en": "Wholly obtained - grown in Africa",
+            "regional_content": 100,
+        },
     },
     "060315": {
         "chapter": "06",
@@ -1076,7 +1586,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["quality_grade"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu - cultivé en Afrique", "requirement_en": "Wholly obtained - grown in Africa", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
+            "requirement_en": "Wholly obtained - grown in Africa",
+            "regional_content": 100,
+        },
     },
     "060390": {
         "chapter": "06",
@@ -1086,7 +1601,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
     "060410": {
         "chapter": "06",
@@ -1096,7 +1616,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "060420": {
         "chapter": "06",
@@ -1106,7 +1631,12 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["species"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "060490": {
         "chapter": "06",
@@ -1116,6 +1646,11 @@ HS6_EXTENDED = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique", "requirement_en": "Processed in Africa", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique",
+            "requirement_en": "Processed in Africa",
+            "regional_content": 40,
+        },
     },
 }

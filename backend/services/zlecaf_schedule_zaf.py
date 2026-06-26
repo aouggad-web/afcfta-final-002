@@ -23,11 +23,27 @@ calendrier tarifaire détaillé par produit (listes A/B/C sud-africaines)
 n'est disponible dans cette source : ce module ne fournit qu'un statut
 d'éligibilité, pas un taux.
 """
+
 from __future__ import annotations
 
-ACTIVE_PARTNERS_ZAF = frozenset({
-    "GHA", "NGA", "SLE", "GMB", "ETH", "CMR", "TUN", "DZA", "EGY", "MAR", "KEN", "RWA", "UGA", "BDI",
-})
+ACTIVE_PARTNERS_ZAF = frozenset(
+    {
+        "GHA",
+        "NGA",
+        "SLE",
+        "GMB",
+        "ETH",
+        "CMR",
+        "TUN",
+        "DZA",
+        "EGY",
+        "MAR",
+        "KEN",
+        "RWA",
+        "UGA",
+        "BDI",
+    }
+)
 
 
 def zaf_partner_active(origin_iso3: str) -> bool:

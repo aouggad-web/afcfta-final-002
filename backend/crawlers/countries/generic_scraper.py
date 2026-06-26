@@ -1,8 +1,9 @@
 """
 Scraper générique pour pays avec données limitées
 """
-from typing import Dict, Any, List
+
 import logging
+from typing import Any, Dict, List
 
 from backend.crawlers.base_scraper import BaseScraper, ScraperResult
 
@@ -112,19 +113,21 @@ class GenericScraper(BaseScraper):
             hs_code = f"{chapter:02d}0000"
             rate = self._get_tec_rate(chapter)
 
-            tariff_lines.append({
-                "hs_code": hs_code,
-                "description": f"Chapter {chapter:02d} products",
-                "customs_duty": f"{rate * 100:.1f}%",
-                "vat": f"{self.vat_rate * 100:.1f}%",
-                "unit": "KG",
-                "source": "TEC CEDEAO"
-            })
+            tariff_lines.append(
+                {
+                    "hs_code": hs_code,
+                    "description": f"Chapter {chapter:02d} products",
+                    "customs_duty": f"{rate * 100:.1f}%",
+                    "vat": f"{self.vat_rate * 100:.1f}%",
+                    "unit": "KG",
+                    "source": "TEC CEDEAO",
+                }
+            )
 
         return {
             "tariff_lines": tariff_lines,
             "note": "Using ECOWAS CET (Common External Tariff)",
-            "tariff_structure": "TEC CEDEAO - 5 categories (0%, 5%, 10%, 20%, 35%)"
+            "tariff_structure": "TEC CEDEAO - 5 categories (0%, 5%, 10%, 20%, 35%)",
         }
 
     def _get_tec_rate(self, chapter: int) -> float:
@@ -157,19 +160,21 @@ class GenericScraper(BaseScraper):
             else:
                 rate = 0.25  # Final goods
 
-            tariff_lines.append({
-                "hs_code": hs_code,
-                "description": f"Chapter {chapter:02d} products",
-                "customs_duty": f"{rate * 100:.1f}%",
-                "vat": f"{self.vat_rate * 100:.1f}%",
-                "unit": "KG",
-                "source": "EAC CET"
-            })
+            tariff_lines.append(
+                {
+                    "hs_code": hs_code,
+                    "description": f"Chapter {chapter:02d} products",
+                    "customs_duty": f"{rate * 100:.1f}%",
+                    "vat": f"{self.vat_rate * 100:.1f}%",
+                    "unit": "KG",
+                    "source": "EAC CET",
+                }
+            )
 
         return {
             "tariff_lines": tariff_lines,
             "note": "Using EAC Common External Tariff",
-            "tariff_structure": "EAC CET - 3 bands (0%, 10%, 25%)"
+            "tariff_structure": "EAC CET - 3 bands (0%, 10%, 25%)",
         }
 
     def _get_cemac_tariff(self) -> Dict[str, Any]:
@@ -189,19 +194,21 @@ class GenericScraper(BaseScraper):
             else:
                 rate = 0.30
 
-            tariff_lines.append({
-                "hs_code": hs_code,
-                "description": f"Chapter {chapter:02d} products",
-                "customs_duty": f"{rate * 100:.1f}%",
-                "vat": f"{self.vat_rate * 100:.1f}%",
-                "unit": "KG",
-                "source": "CEMAC TDC"
-            })
+            tariff_lines.append(
+                {
+                    "hs_code": hs_code,
+                    "description": f"Chapter {chapter:02d} products",
+                    "customs_duty": f"{rate * 100:.1f}%",
+                    "vat": f"{self.vat_rate * 100:.1f}%",
+                    "unit": "KG",
+                    "source": "CEMAC TDC",
+                }
+            )
 
         return {
             "tariff_lines": tariff_lines,
             "note": "Using CEMAC Common External Tariff (TDC)",
-            "tariff_structure": "CEMAC TDC - 4 categories (5%, 10%, 20%, 30%)"
+            "tariff_structure": "CEMAC TDC - 4 categories (5%, 10%, 20%, 30%)",
         }
 
     def _get_sacu_tariff(self) -> Dict[str, Any]:
@@ -219,19 +226,21 @@ class GenericScraper(BaseScraper):
             else:
                 rate = 0.20  # Other goods
 
-            tariff_lines.append({
-                "hs_code": hs_code,
-                "description": f"Chapter {chapter:02d} products",
-                "customs_duty": f"{rate * 100:.1f}%",
-                "vat": f"{self.vat_rate * 100:.1f}%",
-                "unit": "KG",
-                "source": "SACU Common Tariff"
-            })
+            tariff_lines.append(
+                {
+                    "hs_code": hs_code,
+                    "description": f"Chapter {chapter:02d} products",
+                    "customs_duty": f"{rate * 100:.1f}%",
+                    "vat": f"{self.vat_rate * 100:.1f}%",
+                    "unit": "KG",
+                    "source": "SACU Common Tariff",
+                }
+            )
 
         return {
             "tariff_lines": tariff_lines,
             "note": "Using SACU Common Tariff Schedule",
-            "tariff_structure": "SACU Common Tariff"
+            "tariff_structure": "SACU Common Tariff",
         }
 
     def _get_generic_tariff(self) -> Dict[str, Any]:
@@ -244,19 +253,21 @@ class GenericScraper(BaseScraper):
             # Generic simplified structure
             rate = 0.15  # 15% flat rate
 
-            tariff_lines.append({
-                "hs_code": hs_code,
-                "description": f"Chapter {chapter:02d} products",
-                "customs_duty": f"{rate * 100:.1f}%",
-                "vat": f"{self.vat_rate * 100:.1f}%",
-                "unit": "KG",
-                "source": "Generic Tariff"
-            })
+            tariff_lines.append(
+                {
+                    "hs_code": hs_code,
+                    "description": f"Chapter {chapter:02d} products",
+                    "customs_duty": f"{rate * 100:.1f}%",
+                    "vat": f"{self.vat_rate * 100:.1f}%",
+                    "unit": "KG",
+                    "source": "Generic Tariff",
+                }
+            )
 
         return {
             "tariff_lines": tariff_lines,
             "note": "Using generic tariff structure (15% flat rate)",
-            "tariff_structure": "Generic simplified tariff"
+            "tariff_structure": "Generic simplified tariff",
         }
 
     async def scrape_regulations(self) -> Dict[str, Any]:
@@ -268,23 +279,23 @@ class GenericScraper(BaseScraper):
                 "Packing List",
                 "Certificate of Origin",
                 "Import Declaration",
-                "Insurance Certificate"
+                "Insurance Certificate",
             ],
             "prohibited_items": [
                 "Narcotics and illegal drugs",
                 "Counterfeit goods",
-                "Weapons and ammunition (without license)"
+                "Weapons and ammunition (without license)",
             ],
             "restricted_items": [
                 "Pharmaceuticals (requires health authorization)",
                 "Food products (requires sanitary certificate)",
-                "Plants and animals (requires phytosanitary certificate)"
+                "Plants and animals (requires phytosanitary certificate)",
             ],
             "customs_procedures": {
                 "clearance_time": "3-7 days",
                 "payment_methods": ["Bank transfer", "Cash", "Customs bond"],
-                "inspection_rate": "Random or risk-based"
-            }
+                "inspection_rate": "Random or risk-based",
+            },
         }
 
     async def validate(self, data: Dict[str, Any]) -> tuple[bool, List[str]]:

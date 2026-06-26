@@ -10,17 +10,24 @@ REJETTE les fichiers vides, sans source, ou contenant des positions estimées
 (etl_computed / synthétiques). Un fichier qui ne passe pas la validation ne doit
 pas être servi à l'utilisateur.
 """
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Dict, List, Any, Tuple
+from typing import Any, Dict, List, Tuple
 
 from .manifest import AUTHENTIC_PROVENANCES, Provenance
 
 # Marqueurs de données NON authentiques à rejeter explicitement.
-NON_AUTHENTIC_QUALITY_TAGS = frozenset({
-    "etl_computed", "estimated", "synthetic", "generated", "chapter_replicated",
-})
+NON_AUTHENTIC_QUALITY_TAGS = frozenset(
+    {
+        "etl_computed",
+        "estimated",
+        "synthetic",
+        "generated",
+        "chapter_replicated",
+    }
+)
 
 # Synonymes employés par les crawlers réels → provenance canonique.
 PROVENANCE_SYNONYMS = {
@@ -38,6 +45,7 @@ def _canonical_provenance(value: str | None) -> str | None:
     if value in AUTHENTIC_PROVENANCES:
         return value
     return PROVENANCE_SYNONYMS.get(value)
+
 
 SCHEMA_VERSION = "tariff_crawl/1.0"
 
@@ -60,28 +68,36 @@ def normalize_position(raw: Dict[str, Any], *, source: str) -> Dict[str, Any]:
         # forme {label: "10 %"} ou {code: {name, rate, raw}}
         for key, val in taxes_in.items():
             if isinstance(val, dict):
-                taxes.append({
-                    "code": val.get("code", key),
-                    "name": val.get("name", key),
-                    "rate_pct": val.get("rate", val.get("rate_pct")),
-                    "raw_value": val.get("raw", val.get("raw_value", "")),
-                    "source": val.get("source", source),
-                })
+                taxes.append(
+                    {
+                        "code": val.get("code", key),
+                        "name": val.get("name", key),
+                        "rate_pct": val.get("rate", val.get("rate_pct")),
+                        "raw_value": val.get("raw", val.get("raw_value", "")),
+                        "source": val.get("source", source),
+                    }
+                )
             else:
-                taxes.append({
-                    "code": key, "name": key,
-                    "rate_pct": _parse_pct(val), "raw_value": str(val),
-                    "source": source,
-                })
+                taxes.append(
+                    {
+                        "code": key,
+                        "name": key,
+                        "rate_pct": _parse_pct(val),
+                        "raw_value": str(val),
+                        "source": source,
+                    }
+                )
     elif isinstance(taxes_in, list):
         for t in taxes_in:
-            taxes.append({
-                "code": t.get("code", ""),
-                "name": t.get("name", t.get("code", "")),
-                "rate_pct": t.get("rate_pct", t.get("rate")),
-                "raw_value": t.get("raw_value", ""),
-                "source": t.get("source", source),
-            })
+            taxes.append(
+                {
+                    "code": t.get("code", ""),
+                    "name": t.get("name", t.get("code", "")),
+                    "rate_pct": t.get("rate_pct", t.get("rate")),
+                    "raw_value": t.get("raw_value", ""),
+                    "source": t.get("source", source),
+                }
+            )
 
     return {
         "code_raw": code_raw,

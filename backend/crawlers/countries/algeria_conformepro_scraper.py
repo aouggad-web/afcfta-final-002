@@ -11,8 +11,8 @@ import logging
 import os
 import re
 import time
-from typing import Dict, List, Optional, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 import httpx
 from bs4 import BeautifulSoup
@@ -130,16 +130,18 @@ class AlgeriaConformeproScraper:
             title = h3.get_text(strip=True) if h3 else ""
             description = p.get_text(strip=True) if p else title
 
-            subs.append({
-                "raw_code": raw_code,
-                "display_code": display_code,
-                "name": title,
-                "description": description,
-                "url": url,
-                "heading": heading["code"],
-                "chapter": heading["chapter"],
-                "section": heading["section"],
-            })
+            subs.append(
+                {
+                    "raw_code": raw_code,
+                    "display_code": display_code,
+                    "name": title,
+                    "description": description,
+                    "url": url,
+                    "heading": heading["code"],
+                    "chapter": heading["chapter"],
+                    "section": heading["section"],
+                }
+            )
 
         return subs
 
@@ -157,11 +159,13 @@ class AlgeriaConformeproScraper:
                 url = f"https://conformepro.dz{url}"
             m = re.search(r"/section/(\d+)/", url)
             if m:
-                sections.append({
-                    "code": m.group(1),
-                    "name": link["text"],
-                    "url": url,
-                })
+                sections.append(
+                    {
+                        "code": m.group(1),
+                        "name": link["text"],
+                        "url": url,
+                    }
+                )
 
         seen = set()
         unique = []
@@ -190,12 +194,14 @@ class AlgeriaConformeproScraper:
                     url = f"https://conformepro.dz{url}"
                 m = re.search(r"/chapitre/(\d+)/", url)
                 if m:
-                    chapters.append({
-                        "code": m.group(1),
-                        "name": link["text"],
-                        "url": url,
-                        "section": section["code"],
-                    })
+                    chapters.append(
+                        {
+                            "code": m.group(1),
+                            "name": link["text"],
+                            "url": url,
+                            "section": section["code"],
+                        }
+                    )
 
         seen = set()
         unique = []
@@ -225,13 +231,15 @@ class AlgeriaConformeproScraper:
                     url = f"https://conformepro.dz{url}"
                 m = re.search(r"/rangee/([\d.]+)/", url)
                 if m:
-                    headings.append({
-                        "code": m.group(1),
-                        "name": link["text"],
-                        "url": url,
-                        "chapter": chapter["code"],
-                        "section": chapter["section"],
-                    })
+                    headings.append(
+                        {
+                            "code": m.group(1),
+                            "name": link["text"],
+                            "url": url,
+                            "chapter": chapter["code"],
+                            "section": chapter["section"],
+                        }
+                    )
 
         seen = set()
         unique = []
@@ -279,7 +287,9 @@ class AlgeriaConformeproScraper:
             if div_fs:
                 items = div_fs.find_all("li")
                 if items:
-                    return "; ".join(li.get_text(strip=True) for li in items if li.get_text(strip=True))
+                    return "; ".join(
+                        li.get_text(strip=True) for li in items if li.get_text(strip=True)
+                    )
                 return div_fs.get_text(strip=True)
         return ""
 
@@ -344,9 +354,12 @@ class AlgeriaConformeproScraper:
 
     def _load_last_progress(self):
         import glob as globmod
+
         progress_files = sorted(
             globmod.glob(os.path.join(DATA_DIR, "DZA_progress_*.json")),
-            key=lambda p: int(os.path.basename(p).replace("DZA_progress_", "").replace(".json", ""))
+            key=lambda p: int(
+                os.path.basename(p).replace("DZA_progress_", "").replace(".json", "")
+            ),
         )
         if progress_files:
             last_file = progress_files[-1]
@@ -354,14 +367,20 @@ class AlgeriaConformeproScraper:
                 with open(last_file, "r", encoding="utf-8") as f:
                     prev = json.load(f)
                 data = prev.get("data", [])
-                heading_idx = int(os.path.basename(last_file).replace("DZA_progress_", "").replace(".json", ""))
-                logger.info(f"Resume: loaded {len(data)} sub-positions from {os.path.basename(last_file)}, resuming from heading {heading_idx}")
+                heading_idx = int(
+                    os.path.basename(last_file).replace("DZA_progress_", "").replace(".json", "")
+                )
+                logger.info(
+                    f"Resume: loaded {len(data)} sub-positions from {os.path.basename(last_file)}, resuming from heading {heading_idx}"
+                )
                 return data, heading_idx
             except Exception as e:
                 logger.warning(f"Could not load progress: {e}")
         return [], 0
 
-    async def scrape_all_sub_positions(self, start_heading_idx: int = 0, max_headings: int = None, resume: bool = True):
+    async def scrape_all_sub_positions(
+        self, start_heading_idx: int = 0, max_headings: int = None, resume: bool = True
+    ):
         logger.info(f"Scraping sub-positions from {len(self.headings)} headings...")
         all_subs = []
         actual_start = start_heading_idx
@@ -371,9 +390,15 @@ class AlgeriaConformeproScraper:
             if prev_data:
                 all_subs = prev_data
                 actual_start = prev_idx
-                logger.info(f"Resuming from heading {actual_start} with {len(all_subs)} sub-positions already collected")
+                logger.info(
+                    f"Resuming from heading {actual_start} with {len(all_subs)} sub-positions already collected"
+                )
 
-        end_idx = len(self.headings) if max_headings is None else min(actual_start + max_headings, len(self.headings))
+        end_idx = (
+            len(self.headings)
+            if max_headings is None
+            else min(actual_start + max_headings, len(self.headings))
+        )
 
         for i in range(actual_start, end_idx):
             heading = self.headings[i]
@@ -401,13 +426,18 @@ class AlgeriaConformeproScraper:
         os.makedirs(DATA_DIR, exist_ok=True)
         filepath = os.path.join(DATA_DIR, f"{filename}.json")
         with open(filepath, "w", encoding="utf-8") as f:
-            json.dump({
-                "country": "DZA",
-                "source": "conformepro.dz",
-                "extracted_at": datetime.utcnow().isoformat(),
-                "count": len(data),
-                "data": data,
-            }, f, ensure_ascii=False, indent=2)
+            json.dump(
+                {
+                    "country": "DZA",
+                    "source": "conformepro.dz",
+                    "extracted_at": datetime.utcnow().isoformat(),
+                    "count": len(data),
+                    "data": data,
+                },
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
         logger.info(f"Saved {len(data)} records to {filepath}")
 
     def save_final(self):
@@ -457,8 +487,10 @@ class AlgeriaConformeproScraper:
         with open(existing_path, "w", encoding="utf-8") as f:
             json.dump(tariff_data, f, ensure_ascii=False, indent=2)
 
-        logger.info(f"Final data saved: {len(self.sub_positions)} positions re-crawlées, "
-                    f"{len(all_positions)} positions au total dans {existing_path}")
+        logger.info(
+            f"Final data saved: {len(self.sub_positions)} positions re-crawlées, "
+            f"{len(all_positions)} positions au total dans {existing_path}"
+        )
         logger.info(f"Stats: {json.dumps(self.stats, indent=2)}")
 
     async def run(self, max_headings: int = None, chapters: set[str] | None = None):
@@ -476,8 +508,10 @@ class AlgeriaConformeproScraper:
             if chapters:
                 before = len(self.chapters)
                 self.chapters = [c for c in self.chapters if c["code"] in chapters]
-                logger.info(f"Filtre chapitres : {before} -> {len(self.chapters)} "
-                            f"({sorted(c['code'] for c in self.chapters)})")
+                logger.info(
+                    f"Filtre chapitres : {before} -> {len(self.chapters)} "
+                    f"({sorted(c['code'] for c in self.chapters)})"
+                )
             await self.scrape_headings()
             await self.scrape_all_sub_positions(max_headings=max_headings)
             self.save_final()
@@ -516,18 +550,20 @@ async def run_algeria_scraper_fast():
             logger.info(f"  Heading {heading['code']} ({i+1}/{len(scraper.headings)})")
             subs = await scraper.scrape_sub_positions_for_heading(heading)
             for sub in subs:
-                all_subs.append({
-                    "raw_code": sub["raw_code"],
-                    "hs_code": sub["raw_code"].replace(".", ""),
-                    "display_code": sub.get("display_code", ""),
-                    "heading": sub["heading"],
-                    "chapter": sub["chapter"],
-                    "section": sub["section"],
-                    "name": sub.get("name", ""),
-                    "description": sub.get("description", ""),
-                    "source": "conformepro.dz",
-                    "source_url": sub["url"],
-                })
+                all_subs.append(
+                    {
+                        "raw_code": sub["raw_code"],
+                        "hs_code": sub["raw_code"].replace(".", ""),
+                        "display_code": sub.get("display_code", ""),
+                        "heading": sub["heading"],
+                        "chapter": sub["chapter"],
+                        "section": sub["section"],
+                        "name": sub.get("name", ""),
+                        "description": sub.get("description", ""),
+                        "source": "conformepro.dz",
+                        "source_url": sub["url"],
+                    }
+                )
             logger.info(f"    {len(subs)} positions collected (total: {len(all_subs)})")
 
         scraper.stats["finished_at"] = datetime.utcnow().isoformat()
@@ -556,12 +592,21 @@ async def run_algeria_scraper_fast():
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("--fast", action="store_true", help="Fast mode: positions and descriptions only, no detail pages")
+    parser.add_argument(
+        "--fast",
+        action="store_true",
+        help="Fast mode: positions and descriptions only, no detail pages",
+    )
     parser.add_argument("--max-headings", type=int, default=None)
-    parser.add_argument("--chapters", type=str, default=None,
-                         help="Liste de chapitres SH à recrawler, séparés par des virgules "
-                              "ou plages (ex. '29-76,78-98'). Sans cet argument, scrape tous les chapitres.")
+    parser.add_argument(
+        "--chapters",
+        type=str,
+        default=None,
+        help="Liste de chapitres SH à recrawler, séparés par des virgules "
+        "ou plages (ex. '29-76,78-98'). Sans cet argument, scrape tous les chapitres.",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO)
@@ -580,5 +625,7 @@ if __name__ == "__main__":
     if args.fast:
         result = asyncio.run(run_algeria_scraper_fast())
     else:
-        result = asyncio.run(run_algeria_scraper(max_headings=args.max_headings, chapters=chapters_filter))
+        result = asyncio.run(
+            run_algeria_scraper(max_headings=args.max_headings, chapters=chapters_filter)
+        )
     print(json.dumps(result, indent=2, ensure_ascii=False))

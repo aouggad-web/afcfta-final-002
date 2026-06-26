@@ -16,8 +16,24 @@ logger = logging.getLogger(__name__)
 REGIONAL_BLOCS: Dict[str, Dict[str, Any]] = {
     "ECOWAS": {
         "full_name": "Economic Community of West African States",
-        "countries": ["BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB", "LBR", "MLI",
-                      "MRT", "NER", "NGA", "SEN", "SLE", "TGO"],
+        "countries": [
+            "BEN",
+            "BFA",
+            "CPV",
+            "CIV",
+            "GMB",
+            "GHA",
+            "GIN",
+            "GNB",
+            "LBR",
+            "MLI",
+            "MRT",
+            "NER",
+            "NGA",
+            "SEN",
+            "SLE",
+            "TGO",
+        ],
         "headquarters": "Abuja, Nigeria",
         "established": 1975,
         "gdp_bn_usd": 700,
@@ -44,8 +60,24 @@ REGIONAL_BLOCS: Dict[str, Dict[str, Any]] = {
     },
     "SADC": {
         "full_name": "Southern African Development Community",
-        "countries": ["AGO", "BWA", "COM", "COD", "LSO", "MDG", "MWI", "MUS", "MOZ", "NAM",
-                      "SYC", "ZAF", "SWZ", "TZA", "ZMB", "ZWE"],
+        "countries": [
+            "AGO",
+            "BWA",
+            "COM",
+            "COD",
+            "LSO",
+            "MDG",
+            "MWI",
+            "MUS",
+            "MOZ",
+            "NAM",
+            "SYC",
+            "ZAF",
+            "SWZ",
+            "TZA",
+            "ZMB",
+            "ZWE",
+        ],
         "headquarters": "Gaborone, Botswana",
         "established": 1980,
         "gdp_bn_usd": 640,
@@ -63,8 +95,28 @@ REGIONAL_BLOCS: Dict[str, Dict[str, Any]] = {
     },
     "COMESA": {
         "full_name": "Common Market for Eastern and Southern Africa",
-        "countries": ["BDI", "COM", "COD", "DJI", "EGY", "ERI", "ETH", "KEN", "LBA", "MDG",
-                      "MWI", "MUS", "RWA", "SOM", "SDN", "SWZ", "TUN", "UGA", "ZMB", "ZWE"],
+        "countries": [
+            "BDI",
+            "COM",
+            "COD",
+            "DJI",
+            "EGY",
+            "ERI",
+            "ETH",
+            "KEN",
+            "LBA",
+            "MDG",
+            "MWI",
+            "MUS",
+            "RWA",
+            "SOM",
+            "SDN",
+            "SWZ",
+            "TUN",
+            "UGA",
+            "ZMB",
+            "ZWE",
+        ],
         "headquarters": "Lusaka, Zambia",
         "established": 1994,
         "gdp_bn_usd": 820,
@@ -84,13 +136,48 @@ REGIONAL_BLOCS: Dict[str, Dict[str, Any]] = {
 
 # Metric benchmarks for comparative analysis
 REGIONAL_BENCHMARKS: Dict[str, Dict[str, float]] = {
-    "SADC":   {"tariff_avg": 8.2,  "investment_score": 0.65, "infrastructure": 0.68, "trade_integration": 17.8},
-    "EAC":    {"tariff_avg": 12.5, "investment_score": 0.61, "infrastructure": 0.60, "trade_integration": 11.2},
-    "ECOWAS": {"tariff_avg": 15.3, "investment_score": 0.56, "infrastructure": 0.52, "trade_integration": 9.5},
-    "COMESA": {"tariff_avg": 11.8, "investment_score": 0.59, "infrastructure": 0.58, "trade_integration": 8.5},
-    "IGAD":   {"tariff_avg": 18.2, "investment_score": 0.50, "infrastructure": 0.48, "trade_integration": 7.2},
-    "UMA":    {"tariff_avg": 14.5, "investment_score": 0.62, "infrastructure": 0.65, "trade_integration": 3.0},
-    "CEMAC":  {"tariff_avg": 19.5, "investment_score": 0.48, "infrastructure": 0.46, "trade_integration": 3.2},
+    "SADC": {
+        "tariff_avg": 8.2,
+        "investment_score": 0.65,
+        "infrastructure": 0.68,
+        "trade_integration": 17.8,
+    },
+    "EAC": {
+        "tariff_avg": 12.5,
+        "investment_score": 0.61,
+        "infrastructure": 0.60,
+        "trade_integration": 11.2,
+    },
+    "ECOWAS": {
+        "tariff_avg": 15.3,
+        "investment_score": 0.56,
+        "infrastructure": 0.52,
+        "trade_integration": 9.5,
+    },
+    "COMESA": {
+        "tariff_avg": 11.8,
+        "investment_score": 0.59,
+        "infrastructure": 0.58,
+        "trade_integration": 8.5,
+    },
+    "IGAD": {
+        "tariff_avg": 18.2,
+        "investment_score": 0.50,
+        "infrastructure": 0.48,
+        "trade_integration": 7.2,
+    },
+    "UMA": {
+        "tariff_avg": 14.5,
+        "investment_score": 0.62,
+        "infrastructure": 0.65,
+        "trade_integration": 3.0,
+    },
+    "CEMAC": {
+        "tariff_avg": 19.5,
+        "investment_score": 0.48,
+        "infrastructure": 0.46,
+        "trade_integration": 3.2,
+    },
 }
 
 
@@ -103,6 +190,7 @@ class RegionalAnalyticsEngine:
     def __init__(self) -> None:
         try:
             from performance.caching.cache_layers import get_cache
+
             self._cache = get_cache()
         except Exception:
             self._cache = None
@@ -160,9 +248,7 @@ class RegionalAnalyticsEngine:
 
         for bloc in blocs:
             benchmarks = REGIONAL_BENCHMARKS.get(bloc, {})
-            comparison["blocs"][bloc] = {
-                m: benchmarks.get(m, "N/A") for m in metrics
-            }
+            comparison["blocs"][bloc] = {m: benchmarks.get(m, "N/A") for m in metrics}
 
         # Rankings per metric
         for metric in metrics:
@@ -172,8 +258,7 @@ class RegionalAnalyticsEngine:
                 reverse=(metric not in ["tariff_avg"]),  # lower tariff = better
             )
             comparison["rankings"][metric] = [
-                {"rank": i + 1, "bloc": b, "value": v}
-                for i, (b, v) in enumerate(sorted_blocs)
+                {"rank": i + 1, "bloc": b, "value": v} for i, (b, v) in enumerate(sorted_blocs)
             ]
             if sorted_blocs:
                 comparison["best_performer"][metric] = sorted_blocs[0][0]
@@ -195,9 +280,9 @@ class RegionalAnalyticsEngine:
                     "country_count": len(info["countries"]),
                     "gdp_bn_usd": info["gdp_bn_usd"],
                     "opportunity_tier": (
-                        "tier1" if benchmarks.get("investment_score", 0) >= 0.63
-                        else "tier2" if benchmarks.get("investment_score", 0) >= 0.55
-                        else "tier3"
+                        "tier1"
+                        if benchmarks.get("investment_score", 0) >= 0.63
+                        else "tier2" if benchmarks.get("investment_score", 0) >= 0.55 else "tier3"
                     ),
                 }
             )
@@ -213,32 +298,42 @@ class RegionalAnalyticsEngine:
         """
         corridors = [
             {
-                "origin": "EAC", "destination": "SADC",
-                "trade_value_bn": 18.2, "growth_pct": 12.5,
+                "origin": "EAC",
+                "destination": "SADC",
+                "trade_value_bn": 18.2,
+                "growth_pct": 12.5,
                 "key_products": ["Coffee", "Tea", "Minerals"],
                 "main_route": "Dar es Salaam - Beit Bridge",
             },
             {
-                "origin": "ECOWAS", "destination": "UMA",
-                "trade_value_bn": 8.6, "growth_pct": 8.2,
+                "origin": "ECOWAS",
+                "destination": "UMA",
+                "trade_value_bn": 8.6,
+                "growth_pct": 8.2,
                 "key_products": ["Cotton", "Cocoa", "Oil"],
                 "main_route": "Trans-Saharan Highway",
             },
             {
-                "origin": "SADC", "destination": "COMESA",
-                "trade_value_bn": 22.4, "growth_pct": 15.3,
+                "origin": "SADC",
+                "destination": "COMESA",
+                "trade_value_bn": 22.4,
+                "growth_pct": 15.3,
                 "key_products": ["Gold", "Copper", "Manufactures"],
                 "main_route": "North-South Corridor",
             },
             {
-                "origin": "UMA", "destination": "ECOWAS",
-                "trade_value_bn": 5.8, "growth_pct": 6.8,
+                "origin": "UMA",
+                "destination": "ECOWAS",
+                "trade_value_bn": 5.8,
+                "growth_pct": 6.8,
                 "key_products": ["Phosphates", "Fish", "Electronics"],
                 "main_route": "Trans-African Highway",
             },
             {
-                "origin": "CEMAC", "destination": "EAC",
-                "trade_value_bn": 3.2, "growth_pct": 9.5,
+                "origin": "CEMAC",
+                "destination": "EAC",
+                "trade_value_bn": 3.2,
+                "growth_pct": 9.5,
                 "key_products": ["Timber", "Oil", "Cocoa"],
                 "main_route": "Central Corridor",
             },

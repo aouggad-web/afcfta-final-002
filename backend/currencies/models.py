@@ -1,7 +1,9 @@
 """
 Currency data models for African currencies.
 """
+
 from typing import Optional
+
 from pydantic import BaseModel, Field
 
 

@@ -29,6 +29,7 @@ ALL_SUPPORTED_COUNTRIES = NORTH_AFRICA_COUNTRIES + CEMAC_COUNTRIES
 
 # ==================== Request Models ====================
 
+
 class RegionalRouteRequest(BaseModel):
     hs_code: str = Field(..., description="HS tariff code (6-10 digits)")
     cif_value: float = Field(..., gt=0, description="CIF value in USD")
@@ -69,12 +70,15 @@ class PreferentialRequest(BaseModel):
 
 # ==================== Helper ====================
 
+
 def _get_calculator():
     from services.enhanced_calculator_v3 import get_enhanced_calculator
+
     return get_enhanced_calculator()
 
 
 # ==================== Endpoints ====================
+
 
 @router.post("/regional-route")
 async def find_best_route(request: RegionalRouteRequest):
@@ -144,6 +148,7 @@ async def get_investment_map():
     """
     try:
         from services.regional_intelligence_service import get_regional_intelligence
+
         intel = get_regional_intelligence()
         return intel.build_investment_map()
     except Exception as exc:

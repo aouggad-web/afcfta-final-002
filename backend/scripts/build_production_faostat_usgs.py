@@ -60,46 +60,121 @@ YEARS_RANGE = set(range(2019, 2025))  # 2019–2024
 
 # ── Mapping : nom anglais FAOSTAT → ISO-3166-1 alpha-3 ───────────────────────
 FAO_NAME_TO_ISO3: dict[str, str] = {
-    "Algeria": "DZA", "Angola": "AGO", "Benin": "BEN", "Botswana": "BWA",
-    "Burkina Faso": "BFA", "Burundi": "BDI", "Cabo Verde": "CPV",
-    "Cameroon": "CMR", "Central African Republic": "CAF", "Chad": "TCD",
-    "Comoros": "COM", "Congo": "COG", "Côte d'Ivoire": "CIV",
+    "Algeria": "DZA",
+    "Angola": "AGO",
+    "Benin": "BEN",
+    "Botswana": "BWA",
+    "Burkina Faso": "BFA",
+    "Burundi": "BDI",
+    "Cabo Verde": "CPV",
+    "Cameroon": "CMR",
+    "Central African Republic": "CAF",
+    "Chad": "TCD",
+    "Comoros": "COM",
+    "Congo": "COG",
+    "Côte d'Ivoire": "CIV",
     "Cote d'Ivoire": "CIV",
-    "Democratic Republic of the Congo": "COD", "Djibouti": "DJI",
-    "Egypt": "EGY", "Equatorial Guinea": "GNQ", "Eritrea": "ERI",
-    "Eswatini": "SWZ", "Ethiopia": "ETH", "Gabon": "GAB", "Gambia": "GMB",
-    "Ghana": "GHA", "Guinea": "GIN", "Guinea-Bissau": "GNB", "Kenya": "KEN",
-    "Lesotho": "LSO", "Liberia": "LBR", "Libya": "LBY", "Madagascar": "MDG",
-    "Malawi": "MWI", "Mali": "MLI", "Mauritania": "MRT", "Mauritius": "MUS",
-    "Morocco": "MAR", "Mozambique": "MOZ", "Namibia": "NAM", "Niger": "NER",
-    "Nigeria": "NGA", "Rwanda": "RWA", "Sao Tome and Principe": "STP",
-    "Senegal": "SEN", "Seychelles": "SYC", "Sierra Leone": "SLE",
-    "Somalia": "SOM", "South Africa": "ZAF", "South Sudan": "SSD",
-    "Sudan": "SDN", "Sudan (former)": "SDN",
-    "Tanzania": "TZA", "United Republic of Tanzania": "TZA",
-    "Togo": "TGO", "Tunisia": "TUN", "Uganda": "UGA", "Zambia": "ZMB",
+    "Democratic Republic of the Congo": "COD",
+    "Djibouti": "DJI",
+    "Egypt": "EGY",
+    "Equatorial Guinea": "GNQ",
+    "Eritrea": "ERI",
+    "Eswatini": "SWZ",
+    "Ethiopia": "ETH",
+    "Gabon": "GAB",
+    "Gambia": "GMB",
+    "Ghana": "GHA",
+    "Guinea": "GIN",
+    "Guinea-Bissau": "GNB",
+    "Kenya": "KEN",
+    "Lesotho": "LSO",
+    "Liberia": "LBR",
+    "Libya": "LBY",
+    "Madagascar": "MDG",
+    "Malawi": "MWI",
+    "Mali": "MLI",
+    "Mauritania": "MRT",
+    "Mauritius": "MUS",
+    "Morocco": "MAR",
+    "Mozambique": "MOZ",
+    "Namibia": "NAM",
+    "Niger": "NER",
+    "Nigeria": "NGA",
+    "Rwanda": "RWA",
+    "Sao Tome and Principe": "STP",
+    "Senegal": "SEN",
+    "Seychelles": "SYC",
+    "Sierra Leone": "SLE",
+    "Somalia": "SOM",
+    "South Africa": "ZAF",
+    "South Sudan": "SSD",
+    "Sudan": "SDN",
+    "Sudan (former)": "SDN",
+    "Tanzania": "TZA",
+    "United Republic of Tanzania": "TZA",
+    "Togo": "TGO",
+    "Tunisia": "TUN",
+    "Uganda": "UGA",
+    "Zambia": "ZMB",
     "Zimbabwe": "ZWE",
 }
 
 # Nom FR par ISO3 (pour affichage)
 ISO3_FR_NAME: dict[str, str] = {
-    "DZA": "Algérie", "AGO": "Angola", "BEN": "Bénin", "BWA": "Botswana",
-    "BFA": "Burkina Faso", "BDI": "Burundi", "CPV": "Cap-Vert",
-    "CMR": "Cameroun", "CAF": "République centrafricaine", "TCD": "Tchad",
-    "COM": "Comores", "COG": "Congo", "CIV": "Côte d'Ivoire",
-    "COD": "RD Congo", "DJI": "Djibouti", "EGY": "Égypte",
-    "GNQ": "Guinée équatoriale", "ERI": "Érythrée", "SWZ": "Eswatini",
-    "ETH": "Éthiopie", "GAB": "Gabon", "GMB": "Gambie", "GHA": "Ghana",
-    "GIN": "Guinée", "GNB": "Guinée-Bissau", "KEN": "Kenya",
-    "LSO": "Lesotho", "LBR": "Libéria", "LBY": "Libye",
-    "MDG": "Madagascar", "MWI": "Malawi", "MLI": "Mali",
-    "MRT": "Mauritanie", "MUS": "Maurice", "MAR": "Maroc",
-    "MOZ": "Mozambique", "NAM": "Namibie", "NER": "Niger",
-    "NGA": "Nigéria", "RWA": "Rwanda", "STP": "Sao Tomé-et-Príncipe",
-    "SEN": "Sénégal", "SYC": "Seychelles", "SLE": "Sierra Leone",
-    "SOM": "Somalie", "ZAF": "Afrique du Sud", "SSD": "Soudan du Sud",
-    "SDN": "Soudan", "TZA": "Tanzanie", "TGO": "Togo",
-    "TUN": "Tunisie", "UGA": "Ouganda", "ZMB": "Zambie", "ZWE": "Zimbabwe",
+    "DZA": "Algérie",
+    "AGO": "Angola",
+    "BEN": "Bénin",
+    "BWA": "Botswana",
+    "BFA": "Burkina Faso",
+    "BDI": "Burundi",
+    "CPV": "Cap-Vert",
+    "CMR": "Cameroun",
+    "CAF": "République centrafricaine",
+    "TCD": "Tchad",
+    "COM": "Comores",
+    "COG": "Congo",
+    "CIV": "Côte d'Ivoire",
+    "COD": "RD Congo",
+    "DJI": "Djibouti",
+    "EGY": "Égypte",
+    "GNQ": "Guinée équatoriale",
+    "ERI": "Érythrée",
+    "SWZ": "Eswatini",
+    "ETH": "Éthiopie",
+    "GAB": "Gabon",
+    "GMB": "Gambie",
+    "GHA": "Ghana",
+    "GIN": "Guinée",
+    "GNB": "Guinée-Bissau",
+    "KEN": "Kenya",
+    "LSO": "Lesotho",
+    "LBR": "Libéria",
+    "LBY": "Libye",
+    "MDG": "Madagascar",
+    "MWI": "Malawi",
+    "MLI": "Mali",
+    "MRT": "Mauritanie",
+    "MUS": "Maurice",
+    "MAR": "Maroc",
+    "MOZ": "Mozambique",
+    "NAM": "Namibie",
+    "NER": "Niger",
+    "NGA": "Nigéria",
+    "RWA": "Rwanda",
+    "STP": "Sao Tomé-et-Príncipe",
+    "SEN": "Sénégal",
+    "SYC": "Seychelles",
+    "SLE": "Sierra Leone",
+    "SOM": "Somalie",
+    "ZAF": "Afrique du Sud",
+    "SSD": "Soudan du Sud",
+    "SDN": "Soudan",
+    "TZA": "Tanzanie",
+    "TGO": "Togo",
+    "TUN": "Tunisie",
+    "UGA": "Ouganda",
+    "ZMB": "Zambie",
+    "ZWE": "Zimbabwe",
 }
 
 # ── Mapping : libellé item FAOSTAT (CSV) → commodity_label normalisé ──────────
@@ -164,17 +239,39 @@ FAOSTAT_ITEM_TO_COMMODITY: dict[str, str] = {
 
 # Codes FAOSTAT par commodity (pour traçabilité)
 COMMODITY_CODES: dict[str, str] = {
-    "Maize (corn)": "0056", "Cassava": "0125", "Rice": "0027",
-    "Sorghum": "0083", "Bananas": "0486", "Millet": "0079",
-    "Wheat": "0015", "Coffee": "0656", "Sugarcane": "0156",
-    "Seed cotton": "0328", "Cocoa beans": "0661", "Groundnuts": "0242",
-    "Tea": "0667", "Olives": "0260", "Cashew nuts": "0217",
-    "Oil palm": "0254", "Barley": "0044", "Dates": "0577",
-    "Tomatoes": "0388", "Yam": "0137", "Plantain": "0489",
-    "Soybeans": "0236", "Rubber": "0836", "Vanilla": "0692",
-    "Tobacco": "0826", "Potatoes": "0116", "Cowpeas": "0195",
-    "Onions": "0403", "Pineapples": "0574", "Teff": "0094",
-    "Sesame": "0289", "Coconuts": "0249", "Sunflower seed": "0267",
+    "Maize (corn)": "0056",
+    "Cassava": "0125",
+    "Rice": "0027",
+    "Sorghum": "0083",
+    "Bananas": "0486",
+    "Millet": "0079",
+    "Wheat": "0015",
+    "Coffee": "0656",
+    "Sugarcane": "0156",
+    "Seed cotton": "0328",
+    "Cocoa beans": "0661",
+    "Groundnuts": "0242",
+    "Tea": "0667",
+    "Olives": "0260",
+    "Cashew nuts": "0217",
+    "Oil palm": "0254",
+    "Barley": "0044",
+    "Dates": "0577",
+    "Tomatoes": "0388",
+    "Yam": "0137",
+    "Plantain": "0489",
+    "Soybeans": "0236",
+    "Rubber": "0836",
+    "Vanilla": "0692",
+    "Tobacco": "0826",
+    "Potatoes": "0116",
+    "Cowpeas": "0195",
+    "Onions": "0403",
+    "Pineapples": "0574",
+    "Teff": "0094",
+    "Sesame": "0289",
+    "Coconuts": "0249",
+    "Sunflower seed": "0267",
     "Beans": "0176",
 }
 
@@ -200,20 +297,20 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
             "GHA": {2022: 127.0, 2023: 130.0},
-            "MLI": {2022:  72.0, 2023: 105.0},
+            "MLI": {2022: 72.0, 2023: 105.0},
             "ZAF": {2022: 120.0, 2023: 100.0},
-            "BFA": {2022:  60.0, 2023:  96.0},
-            "SDN": {2022:  60.0, 2023:  64.0},
-            "GIN": {2022:  50.0, 2023:  60.0},
-            "TZA": {2022:  48.0, 2023:  53.0},
-            "CIV": {2022:  35.0, 2023:  51.0},
-            "COD": {2022:  40.0, 2023:  44.0},
-            "ZWE": {2022:  35.0, 2023:  30.0},
-            "EGY": {2022:  14.0, 2023:  16.0},
-            "SEN": {2022:  14.0, 2023:  16.0},
-            "ERI": {2022:  10.0, 2023:  14.0},
-            "MRT": {2022:  14.0, 2023:  14.0},
-            "NER": {2022:  10.0, 2023:  12.0},
+            "BFA": {2022: 60.0, 2023: 96.0},
+            "SDN": {2022: 60.0, 2023: 64.0},
+            "GIN": {2022: 50.0, 2023: 60.0},
+            "TZA": {2022: 48.0, 2023: 53.0},
+            "CIV": {2022: 35.0, 2023: 51.0},
+            "COD": {2022: 40.0, 2023: 44.0},
+            "ZWE": {2022: 35.0, 2023: 30.0},
+            "EGY": {2022: 14.0, 2023: 16.0},
+            "SEN": {2022: 14.0, 2023: 16.0},
+            "ERI": {2022: 10.0, 2023: 14.0},
+            "MRT": {2022: 14.0, 2023: 14.0},
+            "NER": {2022: 10.0, 2023: 12.0},
         },
     ),
     "Crude oil": (
@@ -226,17 +323,17 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
             "LBY": {2022: 1110.0, 2023: 1180.0},
             "AGO": {2022: 1130.0, 2023: 1110.0},
             "DZA": {2022: 1030.0, 2023: 1000.0},
-            "EGY": {2022:  590.0, 2023:  560.0},
-            "COG": {2022:  270.0, 2023:  270.0},
-            "GAB": {2022:  215.0, 2023:  200.0},
-            "GHA": {2022:  148.0, 2023:  150.0},
-            "SSD": {2022:  130.0, 2023:  140.0},
-            "TCD": {2022:  110.0, 2023:  110.0},
-            "GNQ": {2022:   88.0, 2023:   90.0},
-            "SDN": {2022:   55.0, 2023:   60.0},
-            "CMR": {2022:   58.0, 2023:   60.0},
-            "TUN": {2022:   38.0, 2023:   40.0},
-            "CIV": {2022:   28.0, 2023:   30.0},
+            "EGY": {2022: 590.0, 2023: 560.0},
+            "COG": {2022: 270.0, 2023: 270.0},
+            "GAB": {2022: 215.0, 2023: 200.0},
+            "GHA": {2022: 148.0, 2023: 150.0},
+            "SSD": {2022: 130.0, 2023: 140.0},
+            "TCD": {2022: 110.0, 2023: 110.0},
+            "GNQ": {2022: 88.0, 2023: 90.0},
+            "SDN": {2022: 55.0, 2023: 60.0},
+            "CMR": {2022: 58.0, 2023: 60.0},
+            "TUN": {2022: 38.0, 2023: 40.0},
+            "CIV": {2022: 28.0, 2023: 30.0},
         },
     ),
     "Natural gas": (
@@ -246,15 +343,15 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "https://www.eia.gov/international/data/world",
         {
             "DZA": {2022: 100.0, 2023: 100.0},
-            "EGY": {2022:  62.0, 2023:  64.0},
-            "NGA": {2022:  47.0, 2023:  40.0},
-            "LBY": {2022:  11.0, 2023:  12.0},
-            "MOZ": {2022:   6.0, 2023:   6.0},
-            "GNQ": {2022:   5.0, 2023:   5.0},
-            "AGO": {2022:   5.0, 2023:   5.0},
-            "CIV": {2022:   2.3, 2023:   2.5},
-            "TUN": {2022:   1.5, 2023:   1.5},
-            "GHA": {2022:   1.1, 2023:   1.2},
+            "EGY": {2022: 62.0, 2023: 64.0},
+            "NGA": {2022: 47.0, 2023: 40.0},
+            "LBY": {2022: 11.0, 2023: 12.0},
+            "MOZ": {2022: 6.0, 2023: 6.0},
+            "GNQ": {2022: 5.0, 2023: 5.0},
+            "AGO": {2022: 5.0, 2023: 5.0},
+            "CIV": {2022: 2.3, 2023: 2.5},
+            "TUN": {2022: 1.5, 2023: 1.5},
+            "GHA": {2022: 1.1, 2023: 1.2},
         },
     ),
     "Copper": (
@@ -264,10 +361,10 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
             "COD": {2022: 2300000.0, 2023: 2800000.0},
-            "ZMB": {2022:  763000.0, 2023:  760000.0},
-            "ZAF": {2022:   64000.0, 2023:   70000.0},
-            "NAM": {2022:   24000.0, 2023:   26000.0},
-            "BWA": {2022:   20000.0, 2023:   22000.0},
+            "ZMB": {2022: 763000.0, 2023: 760000.0},
+            "ZAF": {2022: 64000.0, 2023: 70000.0},
+            "NAM": {2022: 24000.0, 2023: 26000.0},
+            "BWA": {2022: 20000.0, 2023: 22000.0},
         },
     ),
     "Cobalt": (
@@ -277,8 +374,8 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
             "COD": {2022: 147000.0, 2023: 170000.0},
-            "MDG": {2022:   2800.0, 2023:   3000.0},
-            "MAR": {2022:   2200.0, 2023:   2300.0},
+            "MDG": {2022: 2800.0, 2023: 3000.0},
+            "MAR": {2022: 2200.0, 2023: 2300.0},
         },
     ),
     "Diamonds": (
@@ -288,13 +385,13 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
             "BWA": {2022: 24200000.0, 2023: 25100000.0},
-            "AGO": {2022:  8900000.0, 2023:  9700000.0},
-            "ZAF": {2022:  6200000.0, 2023:  5900000.0},
-            "ZWE": {2022:  4500000.0, 2023:  4900000.0},
-            "NAM": {2022:  2100000.0, 2023:  2400000.0},
-            "COD": {2022:  2400000.0, 2023:  2300000.0},
-            "LSO": {2022:   670000.0, 2023:   730000.0},
-            "SLE": {2022:   640000.0, 2023:   690000.0},
+            "AGO": {2022: 8900000.0, 2023: 9700000.0},
+            "ZAF": {2022: 6200000.0, 2023: 5900000.0},
+            "ZWE": {2022: 4500000.0, 2023: 4900000.0},
+            "NAM": {2022: 2100000.0, 2023: 2400000.0},
+            "COD": {2022: 2400000.0, 2023: 2300000.0},
+            "LSO": {2022: 670000.0, 2023: 730000.0},
+            "SLE": {2022: 640000.0, 2023: 690000.0},
         },
     ),
     "Phosphate": (
@@ -304,12 +401,12 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
             "MAR": {2022: 37000000.0, 2023: 35000000.0},
-            "EGY": {2022:  5000000.0, 2023:  5000000.0},
-            "TUN": {2022:  3500000.0, 2023:  3800000.0},
-            "SEN": {2022:  2800000.0, 2023:  2800000.0},
-            "ZAF": {2022:  2000000.0, 2023:  2000000.0},
-            "TGO": {2022:  1300000.0, 2023:  1500000.0},
-            "DZA": {2022:  1200000.0, 2023:  1300000.0},
+            "EGY": {2022: 5000000.0, 2023: 5000000.0},
+            "TUN": {2022: 3500000.0, 2023: 3800000.0},
+            "SEN": {2022: 2800000.0, 2023: 2800000.0},
+            "ZAF": {2022: 2000000.0, 2023: 2000000.0},
+            "TGO": {2022: 1300000.0, 2023: 1500000.0},
+            "DZA": {2022: 1200000.0, 2023: 1300000.0},
         },
     ),
     "Bauxite": (
@@ -319,8 +416,8 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
             "GIN": {2022: 95000000.0, 2023: 97000000.0},
-            "SLE": {2022:  1700000.0, 2023:  1800000.0},
-            "GHA": {2022:  1100000.0, 2023:  1150000.0},
+            "SLE": {2022: 1700000.0, 2023: 1800000.0},
+            "GHA": {2022: 1100000.0, 2023: 1150000.0},
         },
     ),
     "Uranium": (
@@ -331,7 +428,7 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         {
             "NAM": {2022: 5700.0, 2023: 5600.0},
             "NER": {2022: 2020.0, 2023: 2000.0},
-            "ZAF": {2022:  220.0, 2023:  200.0},
+            "ZAF": {2022: 220.0, 2023: 200.0},
         },
     ),
     "Iron ore": (
@@ -342,8 +439,8 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         {
             "ZAF": {2022: 62000000.0, 2023: 62000000.0},
             "MRT": {2022: 12000000.0, 2023: 12000000.0},
-            "SLE": {2022:  3000000.0, 2023:  3000000.0},
-            "LBR": {2022:  2400000.0, 2023:  2500000.0},
+            "SLE": {2022: 3000000.0, 2023: 3000000.0},
+            "LBR": {2022: 2400000.0, 2023: 2500000.0},
         },
     ),
     "Manganese": (
@@ -354,7 +451,7 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         {
             "ZAF": {2022: 6900000.0, 2023: 7200000.0},
             "GAB": {2022: 4500000.0, 2023: 4600000.0},
-            "GHA": {2022:  700000.0, 2023:  800000.0},
+            "GHA": {2022: 700000.0, 2023: 800000.0},
             "CIV": {2022: 1300000.0, 2023: 1300000.0},
         },
     ),
@@ -365,7 +462,7 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
         {
             "ZAF": {2022: 120.0, 2023: 120.0},
-            "ZWE": {2022:  18.0, 2023:  19.0},
+            "ZWE": {2022: 18.0, 2023: 19.0},
         },
     ),
     "Coal": (
@@ -375,9 +472,9 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
         "https://www.iea.org/reports/coal-2023",
         {
             "ZAF": {2022: 237000000.0, 2023: 230000000.0},
-            "MOZ": {2022:   9500000.0, 2023:   9000000.0},
-            "ZWE": {2022:   3200000.0, 2023:   3000000.0},
-            "NGA": {2022:    600000.0, 2023:    600000.0},
+            "MOZ": {2022: 9500000.0, 2023: 9000000.0},
+            "ZWE": {2022: 3200000.0, 2023: 3000000.0},
+            "NGA": {2022: 600000.0, 2023: 600000.0},
         },
     ),
 }
@@ -386,10 +483,12 @@ USGS_MULTI_YEAR: dict[str, tuple] = {
 # FONCTIONS UTILITAIRES
 # =============================================================================
 
+
 def _download(url: str, dest: Path, timeout: int = 180) -> bool:
     """Télécharge url → dest. Retourne True si succès."""
-    import urllib.request
     import urllib.error
+    import urllib.request
+
     dest.parent.mkdir(parents=True, exist_ok=True)
     print(f"   ↓  {url}")
     print(f"      → {dest}")
@@ -429,6 +528,7 @@ def _resolve_fao_country(row: dict) -> Optional[str]:
 # 1. FAOSTAT BULK FETCH & PARSE
 # =============================================================================
 
+
 def fetch_faostat_bulk(
     force_download: bool = False,
 ) -> Optional[list[dict]]:
@@ -465,9 +565,7 @@ def fetch_faostat_bulk(
         if raw_bytes.startswith(b"\xef\xbb\xbf"):
             raw_bytes = raw_bytes[3:]
 
-        reader = csv.DictReader(
-            io.StringIO(raw_bytes.decode("utf-8", errors="replace"))
-        )
+        reader = csv.DictReader(io.StringIO(raw_bytes.decode("utf-8", errors="replace")))
 
         total_rows = 0
         matched_rows = 0
@@ -518,31 +616,33 @@ def fetch_faostat_bulk(
 
             item_code = row.get("Item Code", row.get("Item code", "")).strip()
 
-            records.append({
-                "country_name": ISO3_FR_NAME.get(iso3, iso3),
-                "country_iso3": iso3,
-                "year": year,
-                "sector_isic_section": "A",
-                "sector_detail": "Crops",
-                "indicator_code": "QCL_PROD",
-                "indicator_label": "Production",
-                "value": val,
-                "unit": unit,
-                "currency": None,
-                "price_base_year": None,
-                "source_institution": "FAO",
-                "source_dataset": "FAOSTAT — Production (QCL) bulk Africa",
-                "source_url": "https://www.fao.org/faostat/en/#data/QCL",
-                "faostat_domain": "QCL",
-                "commodity_code": item_code or COMMODITY_CODES.get(commodity, ""),
-                "commodity_label": commodity,
-                "element_code": "5510",
-                "element_label": "Production",
-                "area_ha": None,
-                "yield_kg_ha": None,
-                "rank_africa": None,
-                "_ingested_from": "FAOSTAT_BULK",
-            })
+            records.append(
+                {
+                    "country_name": ISO3_FR_NAME.get(iso3, iso3),
+                    "country_iso3": iso3,
+                    "year": year,
+                    "sector_isic_section": "A",
+                    "sector_detail": "Crops",
+                    "indicator_code": "QCL_PROD",
+                    "indicator_label": "Production",
+                    "value": val,
+                    "unit": unit,
+                    "currency": None,
+                    "price_base_year": None,
+                    "source_institution": "FAO",
+                    "source_dataset": "FAOSTAT — Production (QCL) bulk Africa",
+                    "source_url": "https://www.fao.org/faostat/en/#data/QCL",
+                    "faostat_domain": "QCL",
+                    "commodity_code": item_code or COMMODITY_CODES.get(commodity, ""),
+                    "commodity_label": commodity,
+                    "element_code": "5510",
+                    "element_label": "Production",
+                    "area_ha": None,
+                    "yield_kg_ha": None,
+                    "rank_africa": None,
+                    "_ingested_from": "FAOSTAT_BULK",
+                }
+            )
             matched_rows += 1
 
         print(f"      {total_rows:,} lignes lues → {matched_rows:,} retenues")
@@ -561,6 +661,7 @@ def fetch_faostat_bulk(
     except Exception as exc:
         print(f"   ✗ Erreur parsing : {exc}")
         import traceback
+
         traceback.print_exc()
         return None
 
@@ -581,6 +682,7 @@ def _merge_agri_duplicates(records: list[dict]) -> list[dict]:
 # 2. USGS MULTI-YEAR — données curées USGS MCS 2024 (2022 + 2023)
 # =============================================================================
 
+
 def build_usgs_multi_year() -> list[dict]:
     """
     Produit les enregistrements miniers multi-années (2022 + 2023)
@@ -593,27 +695,29 @@ def build_usgs_multi_year() -> list[dict]:
         for iso3, year_vals in by_country.items():
             country_name = ISO3_FR_NAME.get(iso3, iso3)
             for year, value in sorted(year_vals.items()):
-                records.append({
-                    "country_name": country_name,
-                    "country_iso3": iso3,
-                    "year": year,
-                    "sector_isic_section": "B",
-                    "sector_detail": (
-                        "Energy — extraction" if is_energy else "Mining and quarrying"
-                    ),
-                    "indicator_code": "EIA_PROD" if is_energy else "USGS_PROD",
-                    "indicator_label": "Production",
-                    "value": value,
-                    "unit": unit,
-                    "currency": None,
-                    "price_base_year": None,
-                    "source_institution": inst,
-                    "source_dataset": dataset,
-                    "source_url": url,
-                    "commodity_code": commodity[:2].upper(),
-                    "commodity_label": commodity,
-                    "usgs_table_name": f"{commodity} production {year}",
-                })
+                records.append(
+                    {
+                        "country_name": country_name,
+                        "country_iso3": iso3,
+                        "year": year,
+                        "sector_isic_section": "B",
+                        "sector_detail": (
+                            "Energy — extraction" if is_energy else "Mining and quarrying"
+                        ),
+                        "indicator_code": "EIA_PROD" if is_energy else "USGS_PROD",
+                        "indicator_label": "Production",
+                        "value": value,
+                        "unit": unit,
+                        "currency": None,
+                        "price_base_year": None,
+                        "source_institution": inst,
+                        "source_dataset": dataset,
+                        "source_url": url,
+                        "commodity_code": commodity[:2].upper(),
+                        "commodity_label": commodity,
+                        "usgs_table_name": f"{commodity} production {year}",
+                    }
+                )
     return records
 
 
@@ -643,9 +747,11 @@ def parse_usgs_excel(excel_path: Path) -> list[dict]:
 
 sys.path.insert(0, str(SCRIPT_DIR))
 
+
 def _load_curated_builders():
     """Importe les builders de build_production_real.py."""
     import importlib.util
+
     spec = importlib.util.spec_from_file_location(
         "build_production_real",
         SCRIPT_DIR / "build_production_real.py",
@@ -659,24 +765,24 @@ def _load_curated_builders():
 # 4. ASSEMBLAGE & ÉCRITURE
 # =============================================================================
 
+
 def _sanity_check(agri: list, mining: list) -> None:
     """Vérifie quelques valeurs pivot pour détecter des régressions."""
     checks = [
-        ("ETH", "Coffee",     500_000, "tonnes", 0.20),
+        ("ETH", "Coffee", 500_000, "tonnes", 0.20),
         ("CIV", "Cocoa beans", 2_200_000, "tonnes", 0.25),
-        ("NGA", "Crude oil",   1_350, "1000 b/d", 0.20),
-        ("ZAF", "Gold",        100, "tonnes", 0.30),
-        ("COD", "Cobalt",      170_000, "tonnes", 0.30),
-        ("MAR", "Phosphate",   35_000_000, "tonnes", 0.20),
+        ("NGA", "Crude oil", 1_350, "1000 b/d", 0.20),
+        ("ZAF", "Gold", 100, "tonnes", 0.30),
+        ("COD", "Cobalt", 170_000, "tonnes", 0.30),
+        ("MAR", "Phosphate", 35_000_000, "tonnes", 0.20),
     ]
     print("\n   Contrôle valeurs pivot (2023) :")
     all_recs = agri + mining
     for iso3, comm, expected, unit, tol in checks:
         recs = [
-            r for r in all_recs
-            if r["country_iso3"] == iso3
-            and r["commodity_label"] == comm
-            and r["year"] == 2023
+            r
+            for r in all_recs
+            if r["country_iso3"] == iso3 and r["commodity_label"] == comm and r["year"] == 2023
         ]
         if not recs:
             print(f"     ⚠  {iso3} {comm:18s} — ABSENT")
@@ -701,10 +807,7 @@ def assemble_and_write(
     mfg = curated_mod.build_manufacturing()
     macro = curated_mod.build_value_added_macro()
 
-    countries = sorted(set(
-        r["country_iso3"]
-        for r in agri_records + mfg + mining_records + macro
-    ))
+    countries = sorted(set(r["country_iso3"] for r in agri_records + mfg + mining_records + macro))
 
     _sanity_check(agri_records, mining_records)
 
@@ -764,16 +867,28 @@ def assemble_and_write(
 # 5. POINT D'ENTRÉE
 # =============================================================================
 
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--dry-run", action="store_true",
-                    help="Affiche les statistiques sans écrire le fichier")
-    ap.add_argument("--force-download", action="store_true",
-                    help="Ignore le cache et retélécharge le zip FAOSTAT")
-    ap.add_argument("--faostat-only", action="store_true",
-                    help="Ne met à jour que la section agriculture (FAOSTAT)")
-    ap.add_argument("--usgs-path", type=Path, default=None,
-                    help="Chemin local vers l'Excel USGS MCS (optionnel)")
+    ap.add_argument(
+        "--dry-run", action="store_true", help="Affiche les statistiques sans écrire le fichier"
+    )
+    ap.add_argument(
+        "--force-download",
+        action="store_true",
+        help="Ignore le cache et retélécharge le zip FAOSTAT",
+    )
+    ap.add_argument(
+        "--faostat-only",
+        action="store_true",
+        help="Ne met à jour que la section agriculture (FAOSTAT)",
+    )
+    ap.add_argument(
+        "--usgs-path",
+        type=Path,
+        default=None,
+        help="Chemin local vers l'Excel USGS MCS (optionnel)",
+    )
     args = ap.parse_args()
 
     print("=" * 70)
@@ -796,8 +911,10 @@ def main() -> None:
             if fao_records is None:
                 print("   Réseau indisponible — fallback sur données curées FAO.")
             else:
-                print(f"   Données bulk insuffisantes ({len(fao_records)} lignes) — "
-                      "fallback sur données curées FAO.")
+                print(
+                    f"   Données bulk insuffisantes ({len(fao_records)} lignes) — "
+                    "fallback sur données curées FAO."
+                )
             agri_final = curated.build_agriculture()
             print(f"   → {len(agri_final)} enregistrements agri (curé FAO)")
 

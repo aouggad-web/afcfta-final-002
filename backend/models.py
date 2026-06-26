@@ -1,18 +1,21 @@
 """
 Pydantic models for ZLECAf API
 """
-from pydantic import BaseModel, Field, field_validator
-from typing import List, Optional, Dict, Any
-from datetime import datetime
-import uuid
+
 import re
+import uuid
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field, field_validator
 
 
 class CountryInfo(BaseModel):
     """Country information model"""
+
     code: str  # ISO3 (code principal)
     iso2: str = ""  # ISO2 (pour les drapeaux)
-    iso3: str  # ISO3 
+    iso3: str  # ISO3
     name: str
     region: str
     wb_code: str
@@ -21,8 +24,13 @@ class CountryInfo(BaseModel):
 
 class TariffCalculationRequest(BaseModel):
     """Request model for tariff calculation"""
-    origin_country: str = Field(..., description="ISO2 or ISO3 country code for origin", min_length=2, max_length=3)
-    destination_country: str = Field(..., description="ISO2 or ISO3 country code for destination", min_length=2, max_length=3)
+
+    origin_country: str = Field(
+        ..., description="ISO2 or ISO3 country code for origin", min_length=2, max_length=3
+    )
+    destination_country: str = Field(
+        ..., description="ISO2 or ISO3 country code for destination", min_length=2, max_length=3
+    )
     hs_code: str = Field(..., description="HS code (2-12 digits)", min_length=2, max_length=12)
     value: float = Field(..., description="Customs value in USD", gt=0)
 
@@ -30,7 +38,7 @@ class TariffCalculationRequest(BaseModel):
     @classmethod
     def validate_country_code(cls, v: str) -> str:
         v = v.strip().upper()
-        if not re.match(r'^[A-Z]{2,3}$', v):
+        if not re.match(r"^[A-Z]{2,3}$", v):
             raise ValueError("Country code must be 2-3 uppercase letters")
         return v
 
@@ -38,13 +46,14 @@ class TariffCalculationRequest(BaseModel):
     @classmethod
     def validate_hs_code(cls, v: str) -> str:
         v = v.strip()
-        if not re.match(r'^\d{2,12}$', v):
+        if not re.match(r"^\d{2,12}$", v):
             raise ValueError("HS code must contain 2-12 digits only")
         return v
 
 
 class TariffCalculationResponse(BaseModel):
     """Response model for tariff calculation"""
+
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     origin_country: str
     destination_country: str
@@ -127,6 +136,7 @@ class TariffCalculationResponse(BaseModel):
 
 class CountryEconomicProfile(BaseModel):
     """Economic profile for a country"""
+
     country_code: str
     country_name: str
     population: Optional[int] = None
@@ -153,7 +163,7 @@ class CountryEconomicProfile(BaseModel):
 
 class TradeDataSource(BaseModel):
     """Model for trade data from various sources"""
-    
+
     source: str = Field(..., description="Data source name (WTO, OEC, etc.)")
     reporter_country: str = Field(..., description="ISO3 reporter country code")
     partner_country: str = Field(..., description="ISO3 partner country code")
@@ -163,7 +173,7 @@ class TradeDataSource(BaseModel):
     trade_flow: Optional[str] = Field(None, description="Import or Export")
     data: Dict = Field(..., description="Raw data from source")
     fetched_at: datetime = Field(default_factory=datetime.utcnow)
-    
+
     class Config:
         json_schema_extra = {
             "example": {
@@ -175,25 +185,25 @@ class TradeDataSource(BaseModel):
                 "trade_value": 1500000.50,
                 "trade_flow": "Export",
                 "data": {},
-                "fetched_at": "2026-02-01T10:00:00"
+                "fetched_at": "2026-02-01T10:00:00",
             }
         }
 
 
 class DataSourceComparison(BaseModel):
     """Model for data source comparison results"""
-    
+
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     sources_compared: List[str]
     recommended_source: str
     details: Dict
-    
+
     class Config:
         json_schema_extra = {
             "example": {
                 "timestamp": "2026-02-01T10:00:00",
                 "sources_compared": ["WTO", "OEC"],
                 "recommended_source": "OEC",
-                "details": {}
+                "details": {},
             }
         }

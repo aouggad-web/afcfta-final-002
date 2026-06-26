@@ -91,10 +91,16 @@ def _convert_position(p: dict) -> dict:
         "chapter": p.get("chapter") or (code[:2] if len(code) >= 2 else ""),
         "digits": len(code),
         # Côté import
-        "dd_rate": None, "dd_rate_raw": "",
-        "dc_rate": None, "fodec_rate": None, "tcl_rate": None, "vat_rate": None,
+        "dd_rate": None,
+        "dd_rate_raw": "",
+        "dc_rate": None,
+        "fodec_rate": None,
+        "tcl_rate": None,
+        "vat_rate": None,
         # Côté export
-        "export_dd_rate": None, "export_dc_rate": None, "export_levy_rate": None,
+        "export_dd_rate": None,
+        "export_dc_rate": None,
+        "export_levy_rate": None,
         "export_vat_rate": None,
         "formalities": p.get("reglementation_import", []),
     }
@@ -113,7 +119,8 @@ def _convert_position(p: dict) -> dict:
         flat[key] = float(rate) if rate is not None else None
         if key == "dd_rate":
             flat["dd_rate_raw"] = tax.get("raw_value", "") or (
-                f"{rate} %" if rate is not None else "")
+                f"{rate} %" if rate is not None else ""
+            )
 
     # Traitement côté export
     for tax in p.get("taxes_export", []) or []:
@@ -149,8 +156,7 @@ def _assemble(positions: list[dict]) -> dict:
     }
 
 
-async def _run(sample: bool, chapters: list[str] | None,
-               max_per_chapter: int) -> list[dict]:
+async def _run(sample: bool, chapters: list[str] | None, max_per_chapter: int) -> list[dict]:
     Scraper = _load_scraper()
     scraper = Scraper()
     if sample:

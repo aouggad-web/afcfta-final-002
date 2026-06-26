@@ -15,7 +15,6 @@ from typing import Annotated, Optional
 
 from fastapi import Depends, Header, HTTPException, status
 
-
 # ---------------------------------------------------------------------------
 # Database handle (injected at startup via set_database)
 # ---------------------------------------------------------------------------
@@ -36,6 +35,7 @@ def get_db():
 # Internal helpers
 # ---------------------------------------------------------------------------
 
+
 def _hash_key(raw_key: str) -> str:
     return hashlib.sha256(raw_key.encode()).hexdigest()
 
@@ -44,11 +44,12 @@ def _hash_key(raw_key: str) -> str:
 # Dependencies
 # ---------------------------------------------------------------------------
 
+
 async def require_auth(
     x_api_key: Annotated[Optional[str], Header()] = None,
 ) -> dict:
     """Validate X-API-Key header; return the key document on success.
-    
+
     When MongoDB is not configured (optional), all requests are allowed through
     with a public-tier context — tariff data is public information.
     """
@@ -60,9 +61,7 @@ async def require_auth(
             detail="Missing X-API-Key header",
             headers={"WWW-Authenticate": "ApiKey"},
         )
-    doc = await _db["api_keys"].find_one(
-        {"key_hash": _hash_key(x_api_key), "active": True}
-    )
+    doc = await _db["api_keys"].find_one({"key_hash": _hash_key(x_api_key), "active": True})
     if not doc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

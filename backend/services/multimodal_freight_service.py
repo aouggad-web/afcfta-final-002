@@ -14,21 +14,22 @@ CO2 emission factors (g CO2-eq per ton-km, well-to-wheel):
   - Air freight (long-haul cargo): 602
   Source: IPCC AR6, IEA Transport 2023, GLEC Framework v3
 """
+
 from __future__ import annotations
 
 import logging
 from typing import Any, Dict, List, Optional, Tuple
 
+from logistics_air_fees_data import _airport_registry as air_registry
+from logistics_air_fees_data import (
+    get_air_freight_cost,
+)
 from logistics_fees_data import (
     PORT_THC,
     PORTS,
-    get_total_cost as sea_get_total_cost,
     SHIPPING_ROUTES,
 )
-from logistics_air_fees_data import (
-    _airport_registry as air_registry,
-    get_air_freight_cost,
-)
+from logistics_fees_data import get_total_cost as sea_get_total_cost
 from logistics_land_fees_data import (
     get_land_corridors_list,
     get_land_freight_cost,
@@ -133,24 +134,70 @@ LANDLOCKED_GATEWAYS: Dict[str, List[Dict[str, str]]] = {
 
 # Map country ISO3 to default IATA airport for the main city
 COUNTRY_DEFAULT_AIRPORT: Dict[str, str] = {
-    "DZA": "ALG", "EGY": "CAI", "MAR": "CMN", "TUN": "TUN", "LBY": "TIP",
-    "SEN": "DKR", "CIV": "ABJ", "GHA": "ACC", "NGA": "LOS", "MLI": "BKO",
-    "BFA": "OUA", "NER": "NIM", "BEN": "COO", "TGO": "LFW", "CMR": "DLA",
-    "GAB": "LBV", "COG": "BZV", "COD": "FIH", "AGO": "LAD", "TCD": "NDJ",
-    "CAF": "BGF", "KEN": "NBO", "TZA": "DAR", "UGA": "EBB", "RWA": "KGL",
-    "BDI": "BJM", "ETH": "ADD", "DJI": "JIB", "ZAF": "JNB", "BWA": "GBE",
-    "NAM": "WDH", "ZMB": "LUN", "ZWE": "HRE", "MOZ": "MPM", "MWI": "LLW",
-    "LSO": "MSU", "SWZ": "MTS", "MUS": "MRU", "MDG": "TNR", "SSD": "JUB",
+    "DZA": "ALG",
+    "EGY": "CAI",
+    "MAR": "CMN",
+    "TUN": "TUN",
+    "LBY": "TIP",
+    "SEN": "DKR",
+    "CIV": "ABJ",
+    "GHA": "ACC",
+    "NGA": "LOS",
+    "MLI": "BKO",
+    "BFA": "OUA",
+    "NER": "NIM",
+    "BEN": "COO",
+    "TGO": "LFW",
+    "CMR": "DLA",
+    "GAB": "LBV",
+    "COG": "BZV",
+    "COD": "FIH",
+    "AGO": "LAD",
+    "TCD": "NDJ",
+    "CAF": "BGF",
+    "KEN": "NBO",
+    "TZA": "DAR",
+    "UGA": "EBB",
+    "RWA": "KGL",
+    "BDI": "BJM",
+    "ETH": "ADD",
+    "DJI": "JIB",
+    "ZAF": "JNB",
+    "BWA": "GBE",
+    "NAM": "WDH",
+    "ZMB": "LUN",
+    "ZWE": "HRE",
+    "MOZ": "MPM",
+    "MWI": "LLW",
+    "LSO": "MSU",
+    "SWZ": "MTS",
+    "MUS": "MRU",
+    "MDG": "TNR",
+    "SSD": "JUB",
 }
 
 # Preferred "main" container port per country. Used only to order each country's
 # ports (preferred first). Countries not listed fall back to alphabetical order.
 _PREFERRED_PORT: Dict[str, str] = {
-    "MAR": "MAPTM", "DZA": "DZALG", "TUN": "TNRAD", "EGY": "EGPSD",
-    "LBY": "LYTIP", "SEN": "SNDKR", "CIV": "CIABJ", "GHA": "GHTEM",
-    "NGA": "NGAPP", "CMR": "CMDLA", "COG": "CGPNR", "AGO": "AOLAD",
-    "KEN": "KEMBA", "TZA": "TZDAR", "DJI": "DJJIB", "ZAF": "ZADUR",
-    "MOZ": "MZMPM", "MUS": "MUPLU", "NAM": "NAWVB",
+    "MAR": "MAPTM",
+    "DZA": "DZALG",
+    "TUN": "TNRAD",
+    "EGY": "EGPSD",
+    "LBY": "LYTIP",
+    "SEN": "SNDKR",
+    "CIV": "CIABJ",
+    "GHA": "GHTEM",
+    "NGA": "NGAPP",
+    "CMR": "CMDLA",
+    "COG": "CGPNR",
+    "AGO": "AOLAD",
+    "KEN": "KEMBA",
+    "TZA": "TZDAR",
+    "DJI": "DJJIB",
+    "ZAF": "ZADUR",
+    "MOZ": "MZMPM",
+    "MUS": "MUPLU",
+    "NAM": "NAWVB",
 }
 
 
@@ -290,7 +337,7 @@ def _union_carriers(*lists: List[str]) -> List[str]:
     seen: set = set()
     out: List[str] = []
     for lst in lists:
-        for n in (lst or []):
+        for n in lst or []:
             if n not in seen:
                 seen.add(n)
                 out.append(n)
@@ -298,8 +345,10 @@ def _union_carriers(*lists: List[str]) -> List[str]:
 
 
 def _rail_then_road_option(
-    origin_country: str, destination_country: str,
-    weight_tonnes: float, cargo_type: str = "container",
+    origin_country: str,
+    destination_country: str,
+    weight_tonnes: float,
+    cargo_type: str = "container",
 ) -> List[Dict[str, Any]]:
     """Rail-then-road chaining.
 
@@ -318,17 +367,22 @@ def _rail_then_road_option(
     options: List[Dict[str, Any]] = []
 
     rail_corridors = [
-        c for c in corridors
+        c
+        for c in corridors
         if (c.get("type") or "").lower() == "rail"
         and origin in [x.upper() for x in c.get("countries", [])]
-        and c.get("start_node") and c.get("end_node")
+        and c.get("start_node")
+        and c.get("end_node")
     ]
 
     for rail in rail_corridors:
         rail_end_node = rail["end_node"]
         # Compute rail leg cost
         rail_data = get_land_freight_cost(
-            rail["corridor_id"], "rail", weight_tonnes, cargo_type,
+            rail["corridor_id"],
+            "rail",
+            weight_tonnes,
+            cargo_type,
         )
         if not rail_data:
             continue
@@ -346,100 +400,121 @@ def _rail_then_road_option(
             if road.get("start_node") != rail_end_node:
                 continue
             road_data = get_land_freight_cost(
-                road["corridor_id"], "road", weight_tonnes, cargo_type,
+                road["corridor_id"],
+                "road",
+                weight_tonnes,
+                cargo_type,
             )
             if not road_data:
                 continue
             road_dist = road_data.get("length_km") or road.get("length_km", 0)
             road_co2 = _co2_kg(weight_tonnes, road_dist, "road")
 
-            rail_carriers = rail_data.get("operators") or _land_carriers(rail.get("countries", []), "rail")
-            road_carriers = road_data.get("operators") or _land_carriers(road.get("countries", []), "road")
+            rail_carriers = rail_data.get("operators") or _land_carriers(
+                rail.get("countries", []), "rail"
+            )
+            road_carriers = road_data.get("operators") or _land_carriers(
+                road.get("countries", []), "road"
+            )
 
-            total_cost = round((rail_data.get("total_cost_usd") or 0) + (road_data.get("total_cost_usd") or 0))
-            tmin = (rail_data.get("transit_days_min") or 0) + (road_data.get("transit_days_min") or 0)
-            tmax = (rail_data.get("transit_days_max") or 0) + (road_data.get("transit_days_max") or 0)
+            total_cost = round(
+                (rail_data.get("total_cost_usd") or 0) + (road_data.get("total_cost_usd") or 0)
+            )
+            tmin = (rail_data.get("transit_days_min") or 0) + (
+                road_data.get("transit_days_min") or 0
+            )
+            tmax = (rail_data.get("transit_days_max") or 0) + (
+                road_data.get("transit_days_max") or 0
+            )
             total_dist = rail_dist + road_dist
             total_co2 = round(rail_co2 + road_co2, 1)
 
             rail_phase = _corridor_phase(rail)
             road_phase = _corridor_phase(road)
             phase = (
-                "operational" if rail_phase == road_phase == "operational"
-                else "planned" if "planned" in (rail_phase, road_phase) or "study" in (rail_phase, road_phase)
-                else "under_construction"
+                "operational"
+                if rail_phase == road_phase == "operational"
+                else (
+                    "planned"
+                    if "planned" in (rail_phase, road_phase) or "study" in (rail_phase, road_phase)
+                    else "under_construction"
+                )
             )
             is_future = phase != "operational"
 
-            options.append({
-                "mode": "multimodal",
-                "corridor_mode": "rail_road",
-                "label": f"Rail + Route — via {rail_end_node}",
-                "label_en": f"Rail + Road — via {rail_end_node}",
-                "icon": "rail-truck",
-                "via_node": rail_end_node,
-                "corridor_name": f"{rail['name']} → {road['name']}",
-                "phase": phase,
-                "status": rail.get("status") if is_future else "Opérationnel",
-                "is_future": is_future,
-                "segments": [
-                    {
-                        "mode": "rail",
-                        "leg": 1,
-                        "from": rail.get("start_node"),
-                        "to": rail.get("end_node"),
-                        "corridor_id": rail["corridor_id"],
-                        "corridor_name": rail["name"],
-                        "countries": rail.get("countries", []),
-                        "distance_km": rail_dist,
-                        "transit_days_min": rail_data.get("transit_days_min"),
-                        "transit_days_max": rail_data.get("transit_days_max"),
-                        "cost_usd": rail_data.get("total_cost_usd"),
-                        "co2_kg": rail_co2,
-                        "status": rail.get("status"),
-                        "carriers": rail_carriers,
-                    },
-                    {
-                        "mode": "road",
-                        "leg": 2,
-                        "from": road.get("start_node"),
-                        "to": road.get("end_node"),
-                        "corridor_id": road["corridor_id"],
-                        "corridor_name": road["name"],
-                        "countries": road.get("countries", []),
-                        "distance_km": road_dist,
-                        "transit_days_min": road_data.get("transit_days_min"),
-                        "transit_days_max": road_data.get("transit_days_max"),
-                        "cost_usd": road_data.get("total_cost_usd"),
-                        "co2_kg": road_co2,
-                        "status": road.get("status"),
-                        "carriers": road_carriers,
-                    },
-                ],
-                "carriers": _union_carriers(rail_carriers, road_carriers),
-                "total_cost_usd": total_cost,
-                "transit_days_min": tmin,
-                "transit_days_max": tmax,
-                "co2_kg": total_co2,
-                "distance_km": total_dist,
-                "available": not is_future,
-                "feasibility": "high" if not is_future else "future",
-                "notes": (
-                    f"Rail {rail['name']} ({rail_dist} km) puis route "
-                    f"{road['name']} ({road_dist} km). Économise 60-80% des émissions vs Aérien."
-                ),
-                "source": (
-                    f"Rail: {rail.get('source_org') or 'PIDA'} · "
-                    f"Route: {road.get('source_org') or 'Banque Mondiale SSATP'}"
-                ),
-            })
+            options.append(
+                {
+                    "mode": "multimodal",
+                    "corridor_mode": "rail_road",
+                    "label": f"Rail + Route — via {rail_end_node}",
+                    "label_en": f"Rail + Road — via {rail_end_node}",
+                    "icon": "rail-truck",
+                    "via_node": rail_end_node,
+                    "corridor_name": f"{rail['name']} → {road['name']}",
+                    "phase": phase,
+                    "status": rail.get("status") if is_future else "Opérationnel",
+                    "is_future": is_future,
+                    "segments": [
+                        {
+                            "mode": "rail",
+                            "leg": 1,
+                            "from": rail.get("start_node"),
+                            "to": rail.get("end_node"),
+                            "corridor_id": rail["corridor_id"],
+                            "corridor_name": rail["name"],
+                            "countries": rail.get("countries", []),
+                            "distance_km": rail_dist,
+                            "transit_days_min": rail_data.get("transit_days_min"),
+                            "transit_days_max": rail_data.get("transit_days_max"),
+                            "cost_usd": rail_data.get("total_cost_usd"),
+                            "co2_kg": rail_co2,
+                            "status": rail.get("status"),
+                            "carriers": rail_carriers,
+                        },
+                        {
+                            "mode": "road",
+                            "leg": 2,
+                            "from": road.get("start_node"),
+                            "to": road.get("end_node"),
+                            "corridor_id": road["corridor_id"],
+                            "corridor_name": road["name"],
+                            "countries": road.get("countries", []),
+                            "distance_km": road_dist,
+                            "transit_days_min": road_data.get("transit_days_min"),
+                            "transit_days_max": road_data.get("transit_days_max"),
+                            "cost_usd": road_data.get("total_cost_usd"),
+                            "co2_kg": road_co2,
+                            "status": road.get("status"),
+                            "carriers": road_carriers,
+                        },
+                    ],
+                    "carriers": _union_carriers(rail_carriers, road_carriers),
+                    "total_cost_usd": total_cost,
+                    "transit_days_min": tmin,
+                    "transit_days_max": tmax,
+                    "co2_kg": total_co2,
+                    "distance_km": total_dist,
+                    "available": not is_future,
+                    "feasibility": "high" if not is_future else "future",
+                    "notes": (
+                        f"Rail {rail['name']} ({rail_dist} km) puis route "
+                        f"{road['name']} ({road_dist} km). Économise 60-80% des émissions vs Aérien."
+                    ),
+                    "source": (
+                        f"Rail: {rail.get('source_org') or 'PIDA'} · "
+                        f"Route: {road.get('source_org') or 'Banque Mondiale SSATP'}"
+                    ),
+                }
+            )
 
     return options
 
 
 def _format_sea_option(
-    sea: Dict[str, Any], weight_tonnes: float,
-    label: str, label_en: str,
+    sea: Dict[str, Any],
+    weight_tonnes: float,
+    label: str,
+    label_en: str,
 ) -> Dict[str, Any]:
     """Build a multimodal 'sea direct' option dict from a maritime-module cost
     result (output of logistics_fees_data.get_total_cost)."""
@@ -486,8 +561,10 @@ def _format_sea_option(
 
 
 def _sea_options(
-    origin_country: str, destination_country: str,
-    weight_kg: float, container_type: str = "teu",
+    origin_country: str,
+    destination_country: str,
+    weight_kg: float,
+    container_type: str = "teu",
 ) -> List[Dict[str, Any]]:
     """Direct sea options (port → port) drawn from the maritime module's full
     route matrix. Enumerates every origin-country port × destination-country port
@@ -520,28 +597,33 @@ def _sea_options(
     fastest_pair = (fastest["origin_locode"], fastest["destination_locode"])
 
     ch_days, fa_days = _avg_days(cheapest), _avg_days(fastest)
-    meaningfully_faster = (
-        fastest_pair != cheapest_pair
-        and ((ch_days - fa_days) >= 2 or (ch_days and (ch_days - fa_days) / ch_days >= 0.15))
+    meaningfully_faster = fastest_pair != cheapest_pair and (
+        (ch_days - fa_days) >= 2 or (ch_days and (ch_days - fa_days) / ch_days >= 0.15)
     )
     if not meaningfully_faster:
         return [_format_sea_option(cheapest, weight_tonnes, "Maritime direct", "Sea direct")]
 
     return [
         _format_sea_option(
-            cheapest, weight_tonnes,
-            "Maritime direct — option économique", "Sea direct — cheapest",
+            cheapest,
+            weight_tonnes,
+            "Maritime direct — option économique",
+            "Sea direct — cheapest",
         ),
         _format_sea_option(
-            fastest, weight_tonnes,
-            "Maritime direct — option rapide", "Sea direct — fastest",
+            fastest,
+            weight_tonnes,
+            "Maritime direct — option rapide",
+            "Sea direct — fastest",
         ),
     ]
 
 
 def _air_option(
-    origin_country: str, destination_country: str,
-    weight_kg: float, commodity: str = "general",
+    origin_country: str,
+    destination_country: str,
+    weight_kg: float,
+    commodity: str = "general",
     volume_m3: float = 0.0,
 ) -> Optional[Dict[str, Any]]:
     """Air-only option (airport to airport)."""
@@ -550,8 +632,11 @@ def _air_option(
     if not o_iata or not d_iata or o_iata == d_iata:
         return None
     air = get_air_freight_cost(
-        origin_iata=o_iata, destination_iata=d_iata,
-        weight_kg=weight_kg, volume_m3=volume_m3, commodity=commodity,
+        origin_iata=o_iata,
+        destination_iata=d_iata,
+        weight_kg=weight_kg,
+        volume_m3=volume_m3,
+        commodity=commodity,
     )
     if not air:
         return None
@@ -590,8 +675,10 @@ def _air_option(
 
 
 def _land_option(
-    origin_country: str, destination_country: str,
-    weight_tonnes: float, cargo_type: str = "general",
+    origin_country: str,
+    destination_country: str,
+    weight_tonnes: float,
+    cargo_type: str = "general",
 ) -> List[Dict[str, Any]]:
     """Land-only options. Returns one per matching corridor, ordered by status."""
     corridors = _find_all_corridors_for_pair(origin_country, destination_country)
@@ -600,7 +687,10 @@ def _land_option(
         # For planned/under-construction corridors, still compute the modeled cost
         # so the user sees the projected economics.
         land = get_land_freight_cost(
-            corridor["corridor_id"], corridor.get("type", "road"), weight_tonnes, cargo_type,
+            corridor["corridor_id"],
+            corridor.get("type", "road"),
+            weight_tonnes,
+            cargo_type,
         )
         if not land:
             continue
@@ -608,57 +698,68 @@ def _land_option(
         co2 = _co2_kg(weight_tonnes, dist_km, "road")
         phase = _corridor_phase(corridor)
         mode_mode = corridor.get("type", "road")  # road / rail / multimodal
-        land_carriers = land.get("operators") or _land_carriers(corridor.get("countries", []), mode_mode)
+        land_carriers = land.get("operators") or _land_carriers(
+            corridor.get("countries", []), mode_mode
+        )
         # Rail uses lower CO2 factor
         if mode_mode == "rail":
             co2 = _co2_kg(weight_tonnes, dist_km, "rail")
         is_future = phase != "operational"
 
-        options.append({
-            "mode": "land",
-            "corridor_mode": mode_mode,
-            "label": f"Terrestre — {corridor['name']}",
-            "label_en": f"Land — {corridor['name']}",
-            "icon": "rail" if mode_mode == "rail" else "truck",
-            "phase": phase,
-            "status": corridor.get("status"),
-            "is_future": is_future,
-            "segments": [
-                {
-                    "mode": "rail" if mode_mode == "rail" else ("multimodal" if mode_mode == "multimodal" else "road"),
-                    "from": corridor.get("start_node"),
-                    "to": corridor.get("end_node"),
-                    "corridor_id": corridor["corridor_id"],
-                    "corridor_name": corridor["name"],
-                    "countries": corridor.get("countries", []),
-                    "distance_km": dist_km,
-                    "transit_days_min": land.get("transit_days_min"),
-                    "transit_days_max": land.get("transit_days_max"),
-                    "cost_usd": land.get("total_cost_usd"),
-                    "carriers": land_carriers,
-                }
-            ],
-            "carriers": land_carriers,
-            "total_cost_usd": land.get("total_cost_usd"),
-            "transit_days_min": land.get("transit_days_min"),
-            "transit_days_max": land.get("transit_days_max"),
-            "co2_kg": co2,
-            "distance_km": dist_km,
-            "available": not is_future,
-            "feasibility": "medium" if not is_future else "future",
-            "notes": (
-                corridor.get("infra_details") or
-                "Corridor terrestre direct — convient pour pays voisins."
-            ),
-            "source": corridor.get("source_org") or "Banque Mondiale SSATP / UNECA / AfDB",
-        })
+        options.append(
+            {
+                "mode": "land",
+                "corridor_mode": mode_mode,
+                "label": f"Terrestre — {corridor['name']}",
+                "label_en": f"Land — {corridor['name']}",
+                "icon": "rail" if mode_mode == "rail" else "truck",
+                "phase": phase,
+                "status": corridor.get("status"),
+                "is_future": is_future,
+                "segments": [
+                    {
+                        "mode": (
+                            "rail"
+                            if mode_mode == "rail"
+                            else ("multimodal" if mode_mode == "multimodal" else "road")
+                        ),
+                        "from": corridor.get("start_node"),
+                        "to": corridor.get("end_node"),
+                        "corridor_id": corridor["corridor_id"],
+                        "corridor_name": corridor["name"],
+                        "countries": corridor.get("countries", []),
+                        "distance_km": dist_km,
+                        "transit_days_min": land.get("transit_days_min"),
+                        "transit_days_max": land.get("transit_days_max"),
+                        "cost_usd": land.get("total_cost_usd"),
+                        "carriers": land_carriers,
+                    }
+                ],
+                "carriers": land_carriers,
+                "total_cost_usd": land.get("total_cost_usd"),
+                "transit_days_min": land.get("transit_days_min"),
+                "transit_days_max": land.get("transit_days_max"),
+                "co2_kg": co2,
+                "distance_km": dist_km,
+                "available": not is_future,
+                "feasibility": "medium" if not is_future else "future",
+                "notes": (
+                    corridor.get("infra_details")
+                    or "Corridor terrestre direct — convient pour pays voisins."
+                ),
+                "source": corridor.get("source_org") or "Banque Mondiale SSATP / UNECA / AfDB",
+            }
+        )
     return options
 
 
 def _sea_then_land_option(
-    origin_country: str, destination_country: str,
-    weight_kg: float, container_type: str,
-    weight_tonnes: float, cargo_type: str = "container",
+    origin_country: str,
+    destination_country: str,
+    weight_kg: float,
+    container_type: str,
+    weight_tonnes: float,
+    cargo_type: str = "container",
 ) -> List[Dict[str, Any]]:
     """For landlocked destinations: sea (origin port -> gateway port) + land (gateway -> destination)."""
     dest = destination_country.upper()
@@ -690,7 +791,10 @@ def _sea_then_land_option(
         corridors = _find_all_corridors_for_pair(gw_country, dest)
         for corridor in corridors:
             land = get_land_freight_cost(
-                corridor["corridor_id"], corridor.get("type", "road"), weight_tonnes, cargo_type,
+                corridor["corridor_id"],
+                corridor.get("type", "road"),
+                weight_tonnes,
+                cargo_type,
             )
             if not land:
                 continue
@@ -708,73 +812,77 @@ def _sea_then_land_option(
 
             phase = _corridor_phase(corridor)
             is_future = phase != "operational"
-            land_carriers = land.get("operators") or _land_carriers(corridor.get("countries", []), land_mode)
+            land_carriers = land.get("operators") or _land_carriers(
+                corridor.get("countries", []), land_mode
+            )
 
-            options.append({
-                "mode": "multimodal",
-                "corridor_mode": land_mode,
-                "label": (
-                    f"Maritime + {'Rail' if land_mode == 'rail' else 'Terrestre'} — "
-                    f"via {sea['destination_port']} → {corridor['name']}"
-                ),
-                "label_en": f"Sea + {'Rail' if land_mode == 'rail' else 'Land'} — via {sea['destination_port']}",
-                "icon": "ship-rail" if land_mode == "rail" else "ship-truck",
-                "via_port": sea["destination_port"],
-                "via_port_locode": gw_port,
-                "via_country": gw_country,
-                "corridor_name": corridor["name"],
-                "phase": phase,
-                "status": corridor.get("status"),
-                "is_future": is_future,
-                "segments": [
-                    {
-                        "mode": "sea",
-                        "leg": 1,
-                        "from": sea["origin_port"],
-                        "from_locode": sea["origin_locode"],
-                        "to": sea["destination_port"],
-                        "to_locode": sea["destination_locode"],
-                        "distance_km": round(sea_dist_km),
-                        "transit_days_min": sea["transit_days_min"],
-                        "transit_days_max": sea["transit_days_max"],
-                        "cost_usd": sea["total_cost_usd"],
-                        "carriers": sea.get("carriers", []),
-                        "co2_kg": sea_co2,
-                    },
-                    {
-                        "mode": co2_mode,
-                        "leg": 2,
-                        "from": corridor.get("start_node"),
-                        "to": corridor.get("end_node"),
-                        "corridor_id": corridor["corridor_id"],
-                        "corridor_name": corridor["name"],
-                        "countries": corridor.get("countries", []),
-                        "distance_km": land_dist_km,
-                        "transit_days_min": land.get("transit_days_min"),
-                        "transit_days_max": land.get("transit_days_max"),
-                        "cost_usd": land.get("total_cost_usd"),
-                        "co2_kg": land_co2,
-                        "carriers": land_carriers,
-                    },
-                ],
-                "carriers": _union_carriers(sea.get("carriers", []), land_carriers),
-                "total_cost_usd": total_cost,
-                "container_type": container_type.lower(),
-                "transit_days_min": tmin,
-                "transit_days_max": tmax,
-                "co2_kg": round(sea_co2 + land_co2, 1),
-                "distance_km": round(sea_dist_km + land_dist_km),
-                "available": not is_future,
-                "feasibility": "high" if not is_future else "future",
-                "notes": (
-                    f"Trajet maritime de {sea['origin_port']} à {sea['destination_port']} "
-                    f"puis corridor « {corridor['name']} » jusqu'à destination."
-                ),
-                "source": (
-                    "Maritime: Drewry/CMA CGM/MSC 2024 · "
-                    f"Terrestre: {corridor.get('source_org') or 'Banque Mondiale SSATP / UNECA / AfDB'}"
-                ),
-            })
+            options.append(
+                {
+                    "mode": "multimodal",
+                    "corridor_mode": land_mode,
+                    "label": (
+                        f"Maritime + {'Rail' if land_mode == 'rail' else 'Terrestre'} — "
+                        f"via {sea['destination_port']} → {corridor['name']}"
+                    ),
+                    "label_en": f"Sea + {'Rail' if land_mode == 'rail' else 'Land'} — via {sea['destination_port']}",
+                    "icon": "ship-rail" if land_mode == "rail" else "ship-truck",
+                    "via_port": sea["destination_port"],
+                    "via_port_locode": gw_port,
+                    "via_country": gw_country,
+                    "corridor_name": corridor["name"],
+                    "phase": phase,
+                    "status": corridor.get("status"),
+                    "is_future": is_future,
+                    "segments": [
+                        {
+                            "mode": "sea",
+                            "leg": 1,
+                            "from": sea["origin_port"],
+                            "from_locode": sea["origin_locode"],
+                            "to": sea["destination_port"],
+                            "to_locode": sea["destination_locode"],
+                            "distance_km": round(sea_dist_km),
+                            "transit_days_min": sea["transit_days_min"],
+                            "transit_days_max": sea["transit_days_max"],
+                            "cost_usd": sea["total_cost_usd"],
+                            "carriers": sea.get("carriers", []),
+                            "co2_kg": sea_co2,
+                        },
+                        {
+                            "mode": co2_mode,
+                            "leg": 2,
+                            "from": corridor.get("start_node"),
+                            "to": corridor.get("end_node"),
+                            "corridor_id": corridor["corridor_id"],
+                            "corridor_name": corridor["name"],
+                            "countries": corridor.get("countries", []),
+                            "distance_km": land_dist_km,
+                            "transit_days_min": land.get("transit_days_min"),
+                            "transit_days_max": land.get("transit_days_max"),
+                            "cost_usd": land.get("total_cost_usd"),
+                            "co2_kg": land_co2,
+                            "carriers": land_carriers,
+                        },
+                    ],
+                    "carriers": _union_carriers(sea.get("carriers", []), land_carriers),
+                    "total_cost_usd": total_cost,
+                    "container_type": container_type.lower(),
+                    "transit_days_min": tmin,
+                    "transit_days_max": tmax,
+                    "co2_kg": round(sea_co2 + land_co2, 1),
+                    "distance_km": round(sea_dist_km + land_dist_km),
+                    "available": not is_future,
+                    "feasibility": "high" if not is_future else "future",
+                    "notes": (
+                        f"Trajet maritime de {sea['origin_port']} à {sea['destination_port']} "
+                        f"puis corridor « {corridor['name']} » jusqu'à destination."
+                    ),
+                    "source": (
+                        "Maritime: Drewry/CMA CGM/MSC 2024 · "
+                        f"Terrestre: {corridor.get('source_org') or 'Banque Mondiale SSATP / UNECA / AfDB'}"
+                    ),
+                }
+            )
     return options
 
 
@@ -837,25 +945,39 @@ def compare_multimodal(
     options.extend(sea_opts)
 
     air_opt = _air_option(
-        origin_country, destination_country, weight_kg, air_commodity, volume_m3,
+        origin_country,
+        destination_country,
+        weight_kg,
+        air_commodity,
+        volume_m3,
     )
     if air_opt:
         options.append(air_opt)
 
     land_opts = _land_option(
-        origin_country, destination_country, weight_tonnes, land_cargo_type,
+        origin_country,
+        destination_country,
+        weight_tonnes,
+        land_cargo_type,
     )
     options.extend(land_opts)
 
     # Rail-then-road chaining (e.g. Train Alger-Tamanrasset + Route Tam-Ouagadougou)
     rail_road_opts = _rail_then_road_option(
-        origin_country, destination_country, weight_tonnes, land_cargo_type,
+        origin_country,
+        destination_country,
+        weight_tonnes,
+        land_cargo_type,
     )
     options.extend(rail_road_opts)
 
     multimodal_opts = _sea_then_land_option(
-        origin_country, destination_country, weight_kg, container_type,
-        weight_tonnes, land_cargo_type,
+        origin_country,
+        destination_country,
+        weight_kg,
+        container_type,
+        weight_tonnes,
+        land_cargo_type,
     )
     options.extend(multimodal_opts)
 
@@ -866,7 +988,8 @@ def compare_multimodal(
     # Annotate each
     for o in options:
         o["transit_days_avg"] = _avg_transit(
-            o.get("transit_days_min"), o.get("transit_days_max"),
+            o.get("transit_days_min"),
+            o.get("transit_days_max"),
         )
         # Default values for badges so frontend can read consistently
         o.setdefault("phase", "operational")
@@ -877,8 +1000,12 @@ def compare_multimodal(
     # a planned/under-construction route as "the cheapest right now".
     operational_idxs = [i for i, o in enumerate(options) if not o.get("is_future")]
     if operational_idxs:
-        cheapest = min(operational_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
-        fastest = min(operational_idxs, key=lambda i: options[i].get("transit_days_avg") or float("inf"))
+        cheapest = min(
+            operational_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf")
+        )
+        fastest = min(
+            operational_idxs, key=lambda i: options[i].get("transit_days_avg") or float("inf")
+        )
         greenest = min(operational_idxs, key=lambda i: options[i].get("co2_kg") or float("inf"))
         options[cheapest]["is_cheapest"] = True
         options[fastest]["is_fastest"] = True
@@ -887,7 +1014,9 @@ def compare_multimodal(
     # Among future options, surface savings opportunities (best future cost / CO2)
     future_idxs = [i for i, o in enumerate(options) if o.get("is_future")]
     if future_idxs:
-        future_cheapest = min(future_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
+        future_cheapest = min(
+            future_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf")
+        )
         future_greenest = min(future_idxs, key=lambda i: options[i].get("co2_kg") or float("inf"))
         options[future_cheapest]["is_future_cheapest"] = True
         options[future_greenest]["is_future_greenest"] = True
@@ -898,38 +1027,53 @@ def compare_multimodal(
         non_air_ops = [i for i in operational_idxs if options[i].get("mode") != "air"]
         ref_idx = (
             min(non_air_ops, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
-            if non_air_ops else None
+            if non_air_ops
+            else None
         )
         if ref_idx is None:
             # Fallback: best operational including air
-            ref_idx = min(operational_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
+            ref_idx = min(
+                operational_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf")
+            )
         ref = options[ref_idx]
         # Also keep the air-direct option for "vs air" comparison
         air_idx = next((i for i in operational_idxs if options[i].get("mode") == "air"), None)
         air_ref = options[air_idx] if air_idx is not None else None
 
         # Best future by cost
-        best_future_cost = min(future_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf"))
+        best_future_cost = min(
+            future_idxs, key=lambda i: options[i].get("total_cost_usd") or float("inf")
+        )
         best_future_co2 = min(future_idxs, key=lambda i: options[i].get("co2_kg") or float("inf"))
-        best_future_time = min(future_idxs, key=lambda i: options[i].get("transit_days_avg") or float("inf"))
+        best_future_time = min(
+            future_idxs, key=lambda i: options[i].get("transit_days_avg") or float("inf")
+        )
 
         bf_cost = options[best_future_cost]
         bf_co2 = options[best_future_co2]
         bf_time = options[best_future_time]
 
         # Computed savings per TEU
-        cost_saving_per_teu = (ref.get("total_cost_usd") or 0) - (bf_cost.get("total_cost_usd") or 0)
+        cost_saving_per_teu = (ref.get("total_cost_usd") or 0) - (
+            bf_cost.get("total_cost_usd") or 0
+        )
         co2_saving_per_teu = (ref.get("co2_kg") or 0) - (bf_co2.get("co2_kg") or 0)
-        time_saving_days = ((ref.get("transit_days_avg") or 0) - (bf_time.get("transit_days_avg") or 0))
+        time_saving_days = (ref.get("transit_days_avg") or 0) - (
+            bf_time.get("transit_days_avg") or 0
+        )
 
         # vs Air
         cost_saving_vs_air = None
         co2_saving_vs_air = None
         time_loss_vs_air = None
         if air_ref:
-            cost_saving_vs_air = (air_ref.get("total_cost_usd") or 0) - (bf_cost.get("total_cost_usd") or 0)
+            cost_saving_vs_air = (air_ref.get("total_cost_usd") or 0) - (
+                bf_cost.get("total_cost_usd") or 0
+            )
             co2_saving_vs_air = (air_ref.get("co2_kg") or 0) - (bf_co2.get("co2_kg") or 0)
-            time_loss_vs_air = (bf_time.get("transit_days_avg") or 0) - (air_ref.get("transit_days_avg") or 0)
+            time_loss_vs_air = (bf_time.get("transit_days_avg") or 0) - (
+                air_ref.get("transit_days_avg") or 0
+            )
 
         # Annual projection (assume 100 TEU/year typical SME flow — conservative)
         teu_per_year_default = 100
@@ -965,21 +1109,30 @@ def compare_multimodal(
                 "cost_savings_usd": round(cost_saving_per_teu),
                 "cost_savings_pct": (
                     round((cost_saving_per_teu / ref["total_cost_usd"]) * 100, 1)
-                    if ref.get("total_cost_usd") else None
+                    if ref.get("total_cost_usd")
+                    else None
                 ),
                 "co2_savings_kg": round(co2_saving_per_teu),
                 "co2_savings_pct": (
                     round((co2_saving_per_teu / ref["co2_kg"]) * 100, 1)
-                    if ref.get("co2_kg") else None
+                    if ref.get("co2_kg")
+                    else None
                 ),
                 "time_savings_days": round(time_saving_days, 1),
-                "cost_savings_vs_air_usd": round(cost_saving_vs_air) if cost_saving_vs_air is not None else None,
+                "cost_savings_vs_air_usd": (
+                    round(cost_saving_vs_air) if cost_saving_vs_air is not None else None
+                ),
                 "cost_savings_vs_air_pct": (
                     round((cost_saving_vs_air / air_ref["total_cost_usd"]) * 100, 1)
-                    if air_ref and air_ref.get("total_cost_usd") else None
+                    if air_ref and air_ref.get("total_cost_usd")
+                    else None
                 ),
-                "co2_savings_vs_air_kg": round(co2_saving_vs_air) if co2_saving_vs_air is not None else None,
-                "time_loss_vs_air_days": round(time_loss_vs_air, 1) if time_loss_vs_air is not None else None,
+                "co2_savings_vs_air_kg": (
+                    round(co2_saving_vs_air) if co2_saving_vs_air is not None else None
+                ),
+                "time_loss_vs_air_days": (
+                    round(time_loss_vs_air, 1) if time_loss_vs_air is not None else None
+                ),
             },
             "annual_projection": {
                 "teu_per_year_assumption": teu_per_year_default,
@@ -987,16 +1140,22 @@ def compare_multimodal(
                 "annual_co2_savings_tonnes": annual_co2_savings_tonnes,
             },
             "interpretation": _roi_interpretation(
-                bf_cost.get("label"), ref.get("label"), weight_kg,
-                cost_saving_per_teu, co2_saving_per_teu, time_saving_days,
+                bf_cost.get("label"),
+                ref.get("label"),
+                weight_kg,
+                cost_saving_per_teu,
+                co2_saving_per_teu,
+                time_saving_days,
             ),
         }
 
     # Sort: operational first (by cost), then future
-    options.sort(key=lambda o: (
-        1 if o.get("is_future") else 0,
-        o.get("total_cost_usd") or float("inf"),
-    ))
+    options.sort(
+        key=lambda o: (
+            1 if o.get("is_future") else 0,
+            o.get("total_cost_usd") or float("inf"),
+        )
+    )
 
     return {
         "origin_country": origin_country.upper(),

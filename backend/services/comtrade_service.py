@@ -7,8 +7,9 @@ Handles API key rotation and rate limiting.
 
 import os
 import time
+from datetime import date, datetime
+
 import requests
-from datetime import datetime, date
 
 
 class ComtradeService:
@@ -83,7 +84,7 @@ class ComtradeService:
                     return data.get("data") or []
 
                 if response.status_code == 429:
-                    wait = 2 ** attempt
+                    wait = 2**attempt
                     time.sleep(wait)
                     if attempt == max_retries - 1:
                         self.rotate_to_secondary()

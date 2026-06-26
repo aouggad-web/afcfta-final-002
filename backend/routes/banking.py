@@ -19,36 +19,37 @@ Endpoints:
   POST /banking/transaction/validate
 """
 
-from fastapi import APIRouter, HTTPException, Query
-from collections import defaultdict
-from pydantic import BaseModel, Field
-from typing import Optional
 import logging
+from collections import defaultdict
+from typing import Optional
 
 from banking_system import (
-    get_country_banks,
-    get_regional_banks,
-    get_banks_register,
-    get_forex_profile,
-    get_domiciliation_rules,
-    get_import_formalities,
-    get_export_formalities,
-    get_currency_meta,
+    assess_transaction_risk,
+    check_compliance,
     get_all_currency_meta,
+    get_banks_register,
+    get_country_banks,
+    get_country_compliance,
+    get_country_risk,
+    get_currency_meta,
+    get_domiciliation_rules,
+    get_export_formalities,
+    get_forex_profile,
+    get_import_formalities,
+    get_payment_systems,
+    get_regional_banks,
+    get_regional_systems,
     get_trade_finance_instruments,
     recommend_instruments,
-    get_payment_systems,
-    get_regional_systems,
-    get_country_compliance,
-    check_compliance,
-    get_country_risk,
-    assess_transaction_risk,
 )
 from banking_system.banks_registry import CENTRAL_BANKS
 from banking_system.foreign_exchange import FOREX_PROFILES
 from banking_system.models import ExchangeRateInfo
-from exchange_rates import get_service as get_rate_service, AFRICAN_CURRENCY_CODES
 from currencies.service import to_iso2
+from exchange_rates import AFRICAN_CURRENCY_CODES
+from exchange_rates import get_service as get_rate_service
+from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +59,7 @@ router = APIRouter(prefix="/banking")
 # ---------------------------------------------------------------------------
 # INTERNAL HELPERS
 # ---------------------------------------------------------------------------
+
 
 def _build_exchange_rate_info(country_code: str) -> Optional[ExchangeRateInfo]:
     """
@@ -88,15 +90,15 @@ def _build_exchange_rate_info(country_code: str) -> Optional[ExchangeRateInfo]:
             rate_usd=rate_obj.rate if rate_obj else None,
             rate_eur=rate_eur_obj.rate if rate_eur_obj else None,
             rate_source=rate_obj.source if rate_obj else None,
-            rate_timestamp=(
-                rate_obj.timestamp.isoformat() if rate_obj else None
-            ),
+            rate_timestamp=(rate_obj.timestamp.isoformat() if rate_obj else None),
             convertibility=convertibility,
         )
     except Exception as exc:  # pylint: disable=broad-except
         logger.warning(
             "Could not fetch live exchange rate for %s (%s): %s",
-            code, currency_code, exc,
+            code,
+            currency_code,
+            exc,
         )
         return ExchangeRateInfo(
             currency_code=currency_code,
@@ -113,8 +115,10 @@ def _build_exchange_rate_info(country_code: str) -> Optional[ExchangeRateInfo]:
 # REQUEST / RESPONSE SCHEMAS
 # ---------------------------------------------------------------------------
 
+
 class TransactionValidationRequest(BaseModel):
     """Request body for transaction validation"""
+
     origin_country: str = Field(..., description="ISO2 code du pays exportateur")
     destination_country: str = Field(..., description="ISO2 code du pays importateur")
     amount_usd: float = Field(..., gt=0, description="Montant de la transaction en USD")
@@ -128,6 +132,7 @@ class TransactionValidationRequest(BaseModel):
 # ---------------------------------------------------------------------------
 # BANKS ENDPOINTS
 # ---------------------------------------------------------------------------
+
 
 @router.get(
     "/countries/{country_code}/banks",
@@ -156,7 +161,9 @@ async def get_banks_by_country(country_code: str):
     summary="Banques régionales et de développement africaines",
     tags=["Banking"],
 )
-async def get_all_regional_banks(region: Optional[str] = Query(default=None, description="Filtrer par région")):
+async def get_all_regional_banks(
+    region: Optional[str] = Query(default=None, description="Filtrer par région")
+):
     """
     Retourne les banques régionales et de développement africaines
     (AfDB, Afreximbank, BOAD, EADB, DBSA, etc.).
@@ -187,6 +194,7 @@ async def list_banking_countries():
 # ---------------------------------------------------------------------------
 # FOREX / DOMICILIATION ENDPOINTS
 # ---------------------------------------------------------------------------
+
 
 @router.get(
     "/countries/{country_code}/regulations",
@@ -255,6 +263,7 @@ async def get_all_domiciliation_rules():
     Indique si la domiciliation est obligatoire, conditionnelle ou non requise.
     """
     from banking_system.foreign_exchange import FOREX_PROFILES
+
     return [
         {
             "country_code": code,
@@ -274,6 +283,7 @@ async def get_all_domiciliation_rules():
 # ---------------------------------------------------------------------------
 # LIVE FOREX RATES ENDPOINTS
 # ---------------------------------------------------------------------------
+
 
 @router.get(
     "/forex/rates",
@@ -310,7 +320,9 @@ async def get_african_forex_rates(
         # Filter to African currencies and enrich with metadata
         currency_meta = get_all_currency_meta()
         # Build reverse map: currency_code → {currency_name, convertibility, countries}
-        currency_countries: dict = defaultdict(lambda: {"currency_name": "", "convertibility": "unknown", "countries": []})
+        currency_countries: dict = defaultdict(
+            lambda: {"currency_name": "", "convertibility": "unknown", "countries": []}
+        )
         for country_code, (ccode, cname, conv) in currency_meta.items():
             currency_countries[ccode]["currency_name"] = cname
             currency_countries[ccode]["convertibility"] = conv
@@ -322,16 +334,18 @@ async def get_african_forex_rates(
             if rate_value is None:
                 continue
             meta_info = currency_countries.get(currency_code, {})
-            results.append({
-                "currency_code": currency_code,
-                "currency_name": meta_info.get("currency_name", currency_code),
-                "convertibility": meta_info.get("convertibility", "unknown"),
-                "countries": meta_info.get("countries", []),
-                f"rate_{base.lower()}": rate_value,
-                "rate_display": f"1 {base.upper()} = {rate_value:,.4f} {currency_code}",
-                "source": bundle.source,
-                "timestamp": bundle.timestamp.isoformat(),
-            })
+            results.append(
+                {
+                    "currency_code": currency_code,
+                    "currency_name": meta_info.get("currency_name", currency_code),
+                    "convertibility": meta_info.get("convertibility", "unknown"),
+                    "countries": meta_info.get("countries", []),
+                    f"rate_{base.lower()}": rate_value,
+                    "rate_display": f"1 {base.upper()} = {rate_value:,.4f} {currency_code}",
+                    "source": bundle.source,
+                    "timestamp": bundle.timestamp.isoformat(),
+                }
+            )
 
         results.sort(key=lambda x: x["currency_code"])
         return {
@@ -424,6 +438,7 @@ async def convert_to_local_currency(
 # TRADE FINANCE ENDPOINTS
 # ---------------------------------------------------------------------------
 
+
 @router.get(
     "/trade-finance/instruments",
     summary="Catalogue des instruments de financement du commerce",
@@ -471,6 +486,7 @@ async def recommend_trade_finance(
 # PAYMENT SYSTEMS ENDPOINTS
 # ---------------------------------------------------------------------------
 
+
 @router.get(
     "/payment-systems/regional",
     summary="Systèmes de paiement régionaux africains",
@@ -493,9 +509,7 @@ async def get_regional_payment_systems(
     tags=["Banking"],
 )
 async def get_all_payment_systems(
-    country_code: Optional[str] = Query(
-        default=None, description="Filtrer par pays (ISO2)"
-    ),
+    country_code: Optional[str] = Query(default=None, description="Filtrer par pays (ISO2)"),
 ):
     """
     Retourne tous les systèmes de paiement disponibles, avec filtrage optionnel
@@ -510,6 +524,7 @@ async def get_all_payment_systems(
 # RISK ASSESSMENT ENDPOINTS
 # ---------------------------------------------------------------------------
 
+
 @router.get(
     "/countries/{country_code}/risk-assessment",
     summary="Évaluation du risque pays",
@@ -517,7 +532,9 @@ async def get_all_payment_systems(
 )
 async def get_risk_assessment(
     country_code: str,
-    amount_usd: float = Query(default=100_000.0, ge=0, description="Montant de la transaction en USD"),
+    amount_usd: float = Query(
+        default=100_000.0, ge=0, description="Montant de la transaction en USD"
+    ),
     transaction_type: str = Query(default="export", description="export | import"),
 ):
     """
@@ -540,6 +557,7 @@ async def get_risk_assessment(
 # COMPLIANCE ENDPOINTS
 # ---------------------------------------------------------------------------
 
+
 @router.get(
     "/compliance/{country_code}",
     summary="Exigences de conformité (KYC/AML) d'un pays",
@@ -560,16 +578,23 @@ async def get_compliance_requirements(country_code: str):
 # BANKS REGISTER ENDPOINT
 # ---------------------------------------------------------------------------
 
+
 @router.get(
     "/register",
     summary="Registre global et consultable de toutes les banques africaines",
     tags=["Banking"],
 )
 async def get_banks_register_endpoint(
-    search: Optional[str] = Query(default=None, description="Recherche textuelle (nom, sigle, pays)"),
+    search: Optional[str] = Query(
+        default=None, description="Recherche textuelle (nom, sigle, pays)"
+    ),
     country_code: Optional[str] = Query(default=None, description="Filtrer par code ISO2 du pays"),
-    bank_type: Optional[str] = Query(default=None, description="Type de banque: central | commercial | regional"),
-    trade_finance_only: bool = Query(default=False, description="Seulement les banques avec services trade finance"),
+    bank_type: Optional[str] = Query(
+        default=None, description="Type de banque: central | commercial | regional"
+    ),
+    trade_finance_only: bool = Query(
+        default=False, description="Seulement les banques avec services trade finance"
+    ),
 ):
     """
     Retourne le registre global de toutes les banques africaines (centrales, commerciales, régionales)
@@ -589,6 +614,7 @@ async def get_banks_register_endpoint(
 # ---------------------------------------------------------------------------
 # REGULATIONS SUMMARY ENDPOINT
 # ---------------------------------------------------------------------------
+
 
 @router.get(
     "/regulations/summary",
@@ -615,30 +641,34 @@ async def get_regulations_summary(
             continue
         cb = CENTRAL_BANKS.get(code)
         currency_code, currency_name, convertibility = get_currency_meta(code)
-        summary.append({
-            "country_code": code,
-            "country_name": profile.country_name,
-            "central_bank": profile.central_bank_name,
-            "currency_code": profile.currency_code or (cb.currency_code if cb else currency_code),
-            "currency_name": profile.currency_name or (cb.currency_name if cb else currency_name),
-            "convertibility": convertibility,
-            "regulation_level": level,
-            "imf_article_status": profile.forex_regulation.imf_article_status,
-            "regulatory_body": profile.forex_regulation.regulatory_body,
-            "legal_reference": profile.forex_regulation.legal_reference,
-            "domiciliation_required": profile.domiciliation.required,
-            "domiciliation_conditional": profile.domiciliation.conditional,
-            "threshold_usd": profile.domiciliation.threshold_usd,
-            "repatriation_days": profile.forex_regulation.repatriation_deadline_days,
-            "prior_authorization": profile.forex_regulation.prior_authorization_required,
-            "authorization_threshold_usd": profile.forex_regulation.authorization_threshold_usd,
-            "declaration_threshold_usd": profile.forex_regulation.declaration_threshold_usd,
-            "penalties": profile.forex_regulation.penalties,
-            "banking_act": cb.banking_act if cb else None,
-            "central_bank_website": cb.website if cb else None,
-            "central_bank_phone": cb.phone if cb else None,
-            "central_bank_email": cb.email if cb else None,
-        })
+        summary.append(
+            {
+                "country_code": code,
+                "country_name": profile.country_name,
+                "central_bank": profile.central_bank_name,
+                "currency_code": profile.currency_code
+                or (cb.currency_code if cb else currency_code),
+                "currency_name": profile.currency_name
+                or (cb.currency_name if cb else currency_name),
+                "convertibility": convertibility,
+                "regulation_level": level,
+                "imf_article_status": profile.forex_regulation.imf_article_status,
+                "regulatory_body": profile.forex_regulation.regulatory_body,
+                "legal_reference": profile.forex_regulation.legal_reference,
+                "domiciliation_required": profile.domiciliation.required,
+                "domiciliation_conditional": profile.domiciliation.conditional,
+                "threshold_usd": profile.domiciliation.threshold_usd,
+                "repatriation_days": profile.forex_regulation.repatriation_deadline_days,
+                "prior_authorization": profile.forex_regulation.prior_authorization_required,
+                "authorization_threshold_usd": profile.forex_regulation.authorization_threshold_usd,
+                "declaration_threshold_usd": profile.forex_regulation.declaration_threshold_usd,
+                "penalties": profile.forex_regulation.penalties,
+                "banking_act": cb.banking_act if cb else None,
+                "central_bank_website": cb.website if cb else None,
+                "central_bank_phone": cb.phone if cb else None,
+                "central_bank_email": cb.email if cb else None,
+            }
+        )
 
     summary.sort(key=lambda x: x["country_name"])
     return {"total": len(summary), "results": summary}
@@ -647,6 +677,7 @@ async def get_regulations_summary(
 # ---------------------------------------------------------------------------
 # TRANSACTION VALIDATION ENDPOINT
 # ---------------------------------------------------------------------------
+
 
 @router.post(
     "/transaction/validate",

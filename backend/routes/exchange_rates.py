@@ -9,14 +9,14 @@ GET  /api/exchange-rates/alerts              – Rate change alerts
 POST /api/exchange-rates/convert             – Currency conversion
 POST /api/exchange-rates/refresh             – Force refresh rates from providers
 """
+
 import logging
 from datetime import datetime, timezone
 from typing import Dict, Optional
 
-from fastapi import APIRouter, HTTPException, Query
-
 from exchange_rates import ConversionRequest, ConversionResult, RateBundle, get_service
 from exchange_rates.models import RateAlert
+from fastapi import APIRouter, HTTPException, Query
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/exchange-rates")
@@ -57,7 +57,9 @@ def get_african_rates(base: str = Query("USD", description="Base currency code (
     bundle = svc.get_latest(base)
     return {
         "base": base.upper(),
-        "timestamp": bundle.timestamp.isoformat() if bundle else datetime.now(timezone.utc).isoformat(),
+        "timestamp": (
+            bundle.timestamp.isoformat() if bundle else datetime.now(timezone.utc).isoformat()
+        ),
         "source": bundle.source if bundle else "cache",
         "rates": rates,
     }

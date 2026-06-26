@@ -33,80 +33,152 @@ DATA_DIR = Path(__file__).parent.parent / "data"
 # pour les positions qui ont des exigences spécifiques différentes.
 # ---------------------------------------------------------------------------
 POSITION_OVERRIDES: Dict[str, List[Dict]] = {
-
     # -----------------------------------------------------------------------
     # NIGERIA — NCS / NAFDAC / SON
     # Form M obligatoire pour toutes positions commerciales
     # Positions pharmaceutiques: autorisation NAFDAC spécifique
     # -----------------------------------------------------------------------
-    "NGA3004901000": [   # Médicaments contenant pénicilline — usage hospitalier
-        {"code": "IMPDEC", "document_fr": "Single Goods Declaration (SGD) — NICIS II",
-         "document_en": "Single Goods Declaration (SGD) — NICIS II", "is_mandatory": True},
-        {"code": "FORMM", "document_fr": "Form M — Autorisation d'Importation (CBN)",
-         "document_en": "Form M — Pre-Import Authorization (CBN)", "is_mandatory": True},
-        {"code": "PHARMAUTH", "document_fr": "Autorisation d'importation NAFDAC — Produits pharmaceutiques contrôlés",
-         "document_en": "NAFDAC Import Authorization — Controlled pharmaceutical products", "is_mandatory": True},
+    "NGA3004901000": [  # Médicaments contenant pénicilline — usage hospitalier
+        {
+            "code": "IMPDEC",
+            "document_fr": "Single Goods Declaration (SGD) — NICIS II",
+            "document_en": "Single Goods Declaration (SGD) — NICIS II",
+            "is_mandatory": True,
+        },
+        {
+            "code": "FORMM",
+            "document_fr": "Form M — Autorisation d'Importation (CBN)",
+            "document_en": "Form M — Pre-Import Authorization (CBN)",
+            "is_mandatory": True,
+        },
+        {
+            "code": "PHARMAUTH",
+            "document_fr": "Autorisation d'importation NAFDAC — Produits pharmaceutiques contrôlés",
+            "document_en": "NAFDAC Import Authorization — Controlled pharmaceutical products",
+            "is_mandatory": True,
+        },
     ],
-    "NGA8703231000": [   # Véhicules 1500-3000cc usage particulier — taxe CISS
-        {"code": "IMPDEC", "document_fr": "Single Goods Declaration (SGD) — NICIS II",
-         "document_en": "Single Goods Declaration (SGD) — NICIS II", "is_mandatory": True},
-        {"code": "FORMM", "document_fr": "Form M — Autorisation d'Importation (CBN)",
-         "document_en": "Form M — Pre-Import Authorization (CBN)", "is_mandatory": True},
-        {"code": "STDCERT", "document_fr": "Certificat de conformité SON (Standards Organisation of Nigeria)",
-         "document_en": "SON Conformity Assessment Certificate", "is_mandatory": True},
-        {"code": "CISS", "document_fr": "Redevance CISS — 1% CIF (Cotecna / Webb Fontaine)",
-         "document_en": "CISS Levy — 1% CIF (Cotecna / Webb Fontaine)", "is_mandatory": True},
+    "NGA8703231000": [  # Véhicules 1500-3000cc usage particulier — taxe CISS
+        {
+            "code": "IMPDEC",
+            "document_fr": "Single Goods Declaration (SGD) — NICIS II",
+            "document_en": "Single Goods Declaration (SGD) — NICIS II",
+            "is_mandatory": True,
+        },
+        {
+            "code": "FORMM",
+            "document_fr": "Form M — Autorisation d'Importation (CBN)",
+            "document_en": "Form M — Pre-Import Authorization (CBN)",
+            "is_mandatory": True,
+        },
+        {
+            "code": "STDCERT",
+            "document_fr": "Certificat de conformité SON (Standards Organisation of Nigeria)",
+            "document_en": "SON Conformity Assessment Certificate",
+            "is_mandatory": True,
+        },
+        {
+            "code": "CISS",
+            "document_fr": "Redevance CISS — 1% CIF (Cotecna / Webb Fontaine)",
+            "document_en": "CISS Levy — 1% CIF (Cotecna / Webb Fontaine)",
+            "is_mandatory": True,
+        },
     ],
-
     # -----------------------------------------------------------------------
     # ÉGYPTE — GOEIC obligatoire pour produits manufacturés (Ch 25-96 sauf 50-63)
     # Positions agricoles/alimentaires: exemptées du GOEIC
     # Positions manufacturées: GOEIC obligatoire (Décret 991/2015)
     # -----------------------------------------------------------------------
-    "EGY8471300000": [   # Ordinateurs portables
-        {"code": "IMPDEC", "document_fr": "Déclaration en douane — Egyptian Customs Authority (ECA)",
-         "document_en": "Customs Declaration — Egyptian Customs Authority (ECA)", "is_mandatory": True},
-        {"code": "GOEIC", "document_fr": "Certificat d'inspection GOEIC — Produits industriels (Décret 991/2015)",
-         "document_en": "GOEIC Inspection Certificate — Industrial goods (Decree 991/2015)", "is_mandatory": True},
+    "EGY8471300000": [  # Ordinateurs portables
+        {
+            "code": "IMPDEC",
+            "document_fr": "Déclaration en douane — Egyptian Customs Authority (ECA)",
+            "document_en": "Customs Declaration — Egyptian Customs Authority (ECA)",
+            "is_mandatory": True,
+        },
+        {
+            "code": "GOEIC",
+            "document_fr": "Certificat d'inspection GOEIC — Produits industriels (Décret 991/2015)",
+            "document_en": "GOEIC Inspection Certificate — Industrial goods (Decree 991/2015)",
+            "is_mandatory": True,
+        },
     ],
-    "EGY8517120000": [   # Téléphones portables
-        {"code": "IMPDEC", "document_fr": "Déclaration en douane — Egyptian Customs Authority (ECA)",
-         "document_en": "Customs Declaration — Egyptian Customs Authority (ECA)", "is_mandatory": True},
-        {"code": "GOEIC", "document_fr": "Certificat d'inspection GOEIC — Appareils de télécommunication",
-         "document_en": "GOEIC Inspection Certificate — Telecommunications equipment", "is_mandatory": True},
-        {"code": "STDCERT", "document_fr": "Approbation de type NTRA — Équipements radiofréquence",
-         "document_en": "NTRA Type Approval — Radio frequency equipment", "is_mandatory": True},
+    "EGY8517120000": [  # Téléphones portables
+        {
+            "code": "IMPDEC",
+            "document_fr": "Déclaration en douane — Egyptian Customs Authority (ECA)",
+            "document_en": "Customs Declaration — Egyptian Customs Authority (ECA)",
+            "is_mandatory": True,
+        },
+        {
+            "code": "GOEIC",
+            "document_fr": "Certificat d'inspection GOEIC — Appareils de télécommunication",
+            "document_en": "GOEIC Inspection Certificate — Telecommunications equipment",
+            "is_mandatory": True,
+        },
+        {
+            "code": "STDCERT",
+            "document_fr": "Approbation de type NTRA — Équipements radiofréquence",
+            "document_en": "NTRA Type Approval — Radio frequency equipment",
+            "is_mandatory": True,
+        },
     ],
-
     # -----------------------------------------------------------------------
     # AFRIQUE DU SUD — SARS / ITAC / SAHPRA / NRCS
     # Positions textiles Ch 61-62: permis ITAC obligatoire
     # Positions pharmaceutiques: enregistrement SAHPRA
     # -----------------------------------------------------------------------
-    "ZAF6109100010": [   # T-shirts coton — permis ITAC (quota textile)
-        {"code": "IMPDEC", "document_fr": "Bill of Entry (DA 306) — SARS / SAPS",
-         "document_en": "Bill of Entry (DA 306) — SARS / SAPS", "is_mandatory": True},
-        {"code": "ITACPERM", "document_fr": "Permis d'importation ITAC — Textiles et vêtements (R3665/2011)",
-         "document_en": "ITAC Import Permit — Textiles and clothing (R3665/2011)", "is_mandatory": True},
+    "ZAF6109100010": [  # T-shirts coton — permis ITAC (quota textile)
+        {
+            "code": "IMPDEC",
+            "document_fr": "Bill of Entry (DA 306) — SARS / SAPS",
+            "document_en": "Bill of Entry (DA 306) — SARS / SAPS",
+            "is_mandatory": True,
+        },
+        {
+            "code": "ITACPERM",
+            "document_fr": "Permis d'importation ITAC — Textiles et vêtements (R3665/2011)",
+            "document_en": "ITAC Import Permit — Textiles and clothing (R3665/2011)",
+            "is_mandatory": True,
+        },
     ],
-    "ZAF3004500010": [   # Médicaments — enregistrement SAHPRA
-        {"code": "IMPDEC", "document_fr": "Bill of Entry (DA 306) — SARS",
-         "document_en": "Bill of Entry (DA 306) — SARS", "is_mandatory": True},
-        {"code": "PHARMAUTH", "document_fr": "Enregistrement SAHPRA — Medicine Control Council Act 101/1965",
-         "document_en": "SAHPRA Registration — Medicine Control Council Act 101/1965", "is_mandatory": True},
+    "ZAF3004500010": [  # Médicaments — enregistrement SAHPRA
+        {
+            "code": "IMPDEC",
+            "document_fr": "Bill of Entry (DA 306) — SARS",
+            "document_en": "Bill of Entry (DA 306) — SARS",
+            "is_mandatory": True,
+        },
+        {
+            "code": "PHARMAUTH",
+            "document_fr": "Enregistrement SAHPRA — Medicine Control Council Act 101/1965",
+            "document_en": "SAHPRA Registration — Medicine Control Council Act 101/1965",
+            "is_mandatory": True,
+        },
     ],
-
     # -----------------------------------------------------------------------
     # MAROC — ADII / ONSSA / IMANOR
     # Positions agroalimentaires: contrôle ONSSA obligatoire (Loi 25-08)
     # -----------------------------------------------------------------------
-    "MAR0207140000": [   # Morceaux de volaille congelés
-        {"code": "910", "document_fr": "Déclaration Unique de Marchandises (DUM) — ADII",
-         "document_en": "Single Goods Declaration (DUM) — ADII", "is_mandatory": True},
-        {"code": "C01", "document_fr": "Certificat sanitaire vétérinaire — ONSSA (Loi 25-08)",
-         "document_en": "Veterinary sanitary certificate — ONSSA (Law 25-08)", "is_mandatory": True},
-        {"code": "C04", "document_fr": "Autorisation d'importation — ONSSA (quota abattoir agréé)",
-         "document_en": "Import authorization — ONSSA (approved slaughterhouse quota)", "is_mandatory": True},
+    "MAR0207140000": [  # Morceaux de volaille congelés
+        {
+            "code": "910",
+            "document_fr": "Déclaration Unique de Marchandises (DUM) — ADII",
+            "document_en": "Single Goods Declaration (DUM) — ADII",
+            "is_mandatory": True,
+        },
+        {
+            "code": "C01",
+            "document_fr": "Certificat sanitaire vétérinaire — ONSSA (Loi 25-08)",
+            "document_en": "Veterinary sanitary certificate — ONSSA (Law 25-08)",
+            "is_mandatory": True,
+        },
+        {
+            "code": "C04",
+            "document_fr": "Autorisation d'importation — ONSSA (quota abattoir agréé)",
+            "document_en": "Import authorization — ONSSA (approved slaughterhouse quota)",
+            "is_mandatory": True,
+        },
     ],
 }
 
@@ -140,14 +212,16 @@ def _apply_conditional_rules(
             codes_present = {f["code"] for f in parent_formalities}
             if "GOEIC" not in codes_present:
                 result = deepcopy(parent_formalities)
-                result.append({
-                    "code": "GOEIC",
-                    "document_fr": "Certificat d'inspection GOEIC — Produits industriels (Décret 991/2015, Loi 118/1975)",
-                    "document_en": "GOEIC Inspection Certificate — Industrial goods (Decree 991/2015, Law 118/1975)",
-                    "is_mandatory": True,
-                    "authority_fr": "Organisme Général d'Exportation et d'Importation (GOEIC)",
-                    "authority_en": "General Organization for Export and Import Control (GOEIC)",
-                })
+                result.append(
+                    {
+                        "code": "GOEIC",
+                        "document_fr": "Certificat d'inspection GOEIC — Produits industriels (Décret 991/2015, Loi 118/1975)",
+                        "document_en": "GOEIC Inspection Certificate — Industrial goods (Decree 991/2015, Law 118/1975)",
+                        "is_mandatory": True,
+                        "authority_fr": "Organisme Général d'Exportation et d'Importation (GOEIC)",
+                        "authority_en": "General Organization for Export and Import Control (GOEIC)",
+                    }
+                )
                 return result
 
     # NGA — usage industriel vs usage personnel (certaines positions)
@@ -155,27 +229,33 @@ def _apply_conditional_rules(
         codes_present = {f["code"] for f in parent_formalities}
         if "STDCERT" not in codes_present:
             result = deepcopy(parent_formalities)
-            result.append({
-                "code": "STDCERT",
-                "document_fr": "Certificat de conformité SON — Usage industriel",
-                "document_en": "SON Conformity Certificate — Industrial use",
-                "is_mandatory": True,
-            })
+            result.append(
+                {
+                    "code": "STDCERT",
+                    "document_fr": "Certificat de conformité SON — Usage industriel",
+                    "document_en": "SON Conformity Certificate — Industrial use",
+                    "is_mandatory": True,
+                }
+            )
             return result
 
     # ETH — permis d'importation pour produits de consommation
     if country == "ETH":
-        consumer_chapters = set(str(c).zfill(2) for c in list(range(61, 64)) + list(range(84, 86)) + [87])
+        consumer_chapters = set(
+            str(c).zfill(2) for c in list(range(61, 64)) + list(range(84, 86)) + [87]
+        )
         if chapter in consumer_chapters:
             codes_present = {f["code"] for f in parent_formalities}
             if "ETHPERMIT" not in codes_present:
                 result = deepcopy(parent_formalities)
-                result.append({
-                    "code": "ETHPERMIT",
-                    "document_fr": "Permis d'importation — Ethiopian Trade Competition and Consumer Protection Authority (Proclamation 980/2016)",
-                    "document_en": "Import Trade Permit — Ethiopian Trade Competition and Consumer Protection Authority (Proclamation 980/2016)",
-                    "is_mandatory": True,
-                })
+                result.append(
+                    {
+                        "code": "ETHPERMIT",
+                        "document_fr": "Permis d'importation — Ethiopian Trade Competition and Consumer Protection Authority (Proclamation 980/2016)",
+                        "document_en": "Import Trade Permit — Ethiopian Trade Competition and Consumer Protection Authority (Proclamation 980/2016)",
+                        "is_mandatory": True,
+                    }
+                )
                 return result
 
     return None  # Hériter du parent
@@ -257,10 +337,7 @@ def main():
         countries = [a.upper() for a in args]
     else:
         # Tous les pays disponibles
-        countries = sorted(
-            p.stem.replace("_tariffs", "")
-            for p in DATA_DIR.glob("*_tariffs.json")
-        )
+        countries = sorted(p.stem.replace("_tariffs", "") for p in DATA_DIR.glob("*_tariffs.json"))
 
     print(f"{'DRY RUN — ' if dry_run else ''}Enrichissement de {len(countries)} pays")
     print("-" * 60)
@@ -277,7 +354,9 @@ def main():
         print(f"  {cc:4s}  {status:10s}  {sp:6d} positions nationales  {ov} overrides")
 
     print("-" * 60)
-    print(f"Total: {total_sp:,} positions nationales enrichies, {total_overrides} overrides appliqués")
+    print(
+        f"Total: {total_sp:,} positions nationales enrichies, {total_overrides} overrides appliqués"
+    )
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
-import logging
 import json
+import logging
 import os
-from typing import Dict, List, Optional, Any, Tuple
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +54,9 @@ class CrawledDataService:
             self._country_files[country_code] = f
 
         self._loaded = True
-        logger.info(f"Crawled data service ready: {len(self._country_files)} countries registered (lazy loading)")
+        logger.info(
+            f"Crawled data service ready: {len(self._country_files)} countries registered (lazy loading)"
+        )
 
     def _load_country(self, country_code: str) -> bool:
         """Load a single country's tariff data into memory on demand."""
@@ -66,7 +68,7 @@ class CrawledDataService:
             return False
 
         try:
-            with open(f, 'r', encoding='utf-8') as fh:
+            with open(f, "r", encoding="utf-8") as fh:
                 data = json.load(fh)
 
             data_format = data.get("data_format", "")
@@ -130,49 +132,42 @@ class CrawledDataService:
         """Convert new tariff_lines format to positions format"""
         positions = []
         tariff_lines = data.get("tariff_lines", [])
-        
+
         for line in tariff_lines:
             hs6 = line.get("hs6", "")
             if not hs6:
                 continue
-            
+
             # Build taxes list from taxes_detail
             taxes = []
             taxes_detail = line.get("taxes_detail", {})
             if isinstance(taxes_detail, dict):
                 for tax_code, tax_info in taxes_detail.items():
                     if isinstance(tax_info, dict):
-                        taxes.append({
-                            "code": tax_code,
-                            "name": tax_info.get("label", tax_code),
-                            "rate": tax_info.get("rate", 0),
-                            "is_preferential": tax_code.upper() in ("ZLECAF", "AFCFTA", "CEDEAO", "EAC", "SADC", "CEMAC")
-                        })
+                        taxes.append(
+                            {
+                                "code": tax_code,
+                                "name": tax_info.get("label", tax_code),
+                                "rate": tax_info.get("rate", 0),
+                                "is_preferential": tax_code.upper()
+                                in ("ZLECAF", "AFCFTA", "CEDEAO", "EAC", "SADC", "CEMAC"),
+                            }
+                        )
                     elif isinstance(tax_info, (int, float)):
-                        taxes.append({
-                            "code": tax_code,
-                            "name": tax_code,
-                            "rate": tax_info
-                        })
-            
+                        taxes.append({"code": tax_code, "name": tax_code, "rate": tax_info})
+
             # Add DD (customs duty) if present
             dd_rate = line.get("dd_rate", 0)
             if dd_rate and not any(t.get("code") == "DD" for t in taxes):
-                taxes.insert(0, {
-                    "code": "DD",
-                    "name": "Droit de Douane",
-                    "rate": dd_rate
-                })
-            
+                taxes.insert(0, {"code": "DD", "name": "Droit de Douane", "rate": dd_rate})
+
             # Add VAT if present
             vat_rate = line.get("vat_rate", 0)
             if vat_rate and not any(t.get("code") in ("TVA", "VAT") for t in taxes):
-                taxes.append({
-                    "code": "TVA",
-                    "name": "Taxe sur la Valeur Ajoutée",
-                    "rate": vat_rate
-                })
-            
+                taxes.append(
+                    {"code": "TVA", "name": "Taxe sur la Valeur Ajoutée", "rate": vat_rate}
+                )
+
             # Create main position for HS6
             main_position = {
                 "code_raw": hs6,
@@ -196,29 +191,23 @@ class CrawledDataService:
                 "is_enhanced_format": True,
             }
             positions.append(main_position)
-            
+
             # Add sub-positions if available
             sub_positions = line.get("sub_positions", [])
             for sp in sub_positions:
                 sp_code = sp.get("code", "")
                 if not sp_code:
                     continue
-                
+
                 sp_taxes = []
                 sp_dd = sp.get("dd", dd_rate)
                 if sp_dd:
-                    sp_taxes.append({
-                        "code": "DD",
-                        "name": "Droit de Douane",
-                        "rate": sp_dd
-                    })
+                    sp_taxes.append({"code": "DD", "name": "Droit de Douane", "rate": sp_dd})
                 if vat_rate:
-                    sp_taxes.append({
-                        "code": "TVA", 
-                        "name": "Taxe sur la Valeur Ajoutée",
-                        "rate": vat_rate
-                    })
-                
+                    sp_taxes.append(
+                        {"code": "TVA", "name": "Taxe sur la Valeur Ajoutée", "rate": vat_rate}
+                    )
+
                 sub_position = {
                     "code_raw": sp_code,
                     "code_clean": sp_code.replace(".", "").replace(" ", ""),
@@ -240,22 +229,55 @@ class CrawledDataService:
                     "is_enhanced_format": True,
                 }
                 positions.append(sub_position)
-        
+
         return positions
 
     # All 54 African countries supported
     EAC_COUNTRIES = {"KEN", "TZA", "UGA", "RWA", "BDI", "SSD", "COD"}
-    ECOWAS_TEC_COUNTRIES = {"BEN", "BFA", "MLI", "NER", "TGO", "GIN", "SEN", "CIV", "GHA", "NGA", "GMB", "GNB", "LBR", "SLE", "CPV"}
+    ECOWAS_TEC_COUNTRIES = {
+        "BEN",
+        "BFA",
+        "MLI",
+        "NER",
+        "TGO",
+        "GIN",
+        "SEN",
+        "CIV",
+        "GHA",
+        "NGA",
+        "GMB",
+        "GNB",
+        "LBR",
+        "SLE",
+        "CPV",
+    }
     CEMAC_TEC_COUNTRIES = {"GAB", "COG", "TCD", "CAF", "CMR", "GNQ"}
     SACU_COUNTRIES = {"ZAF", "BWA", "LSO", "SWZ", "NAM"}
     NORTH_AFRICA = {"DZA", "TUN", "MAR", "EGY", "LBY"}
-    COMESA_OTHER = {"ETH", "ERI", "DJI", "SOM", "SDN", "MWI", "ZMB", "ZWE", "MUS", "SYC", "COM", "MDG", "MOZ", "AGO", "MRT", "STP"}
+    COMESA_OTHER = {
+        "ETH",
+        "ERI",
+        "DJI",
+        "SOM",
+        "SDN",
+        "MWI",
+        "ZMB",
+        "ZWE",
+        "MUS",
+        "SYC",
+        "COM",
+        "MDG",
+        "MOZ",
+        "AGO",
+        "MRT",
+        "STP",
+    }
 
     def _normalize_position(self, country_code: str, pos: dict) -> Optional[dict]:
         # Check if it's already in enhanced format (from tariff_lines conversion)
         if pos.get("is_enhanced_format"):
             return self._normalize_enhanced_format(pos, country_code)
-        
+
         # Original normalization logic for old formats
         if country_code == "DZA":
             return self._normalize_dza(pos)
@@ -293,7 +315,7 @@ class CrawledDataService:
         code_clean = pos.get("code_clean", "")
         if not code_clean:
             return None
-        
+
         return {
             "code_raw": pos.get("code_raw", code_clean),
             "code_clean": code_clean,
@@ -355,9 +377,9 @@ class CrawledDataService:
             return None
 
         FULL_NAMES = {
-            "DD":   "Droit de Douane",
-            "TVA":  "Taxe sur la Valeur Ajoutée",
-            "TCS":  "Taxe Conjoncturelle de Sauvegarde",
+            "DD": "Droit de Douane",
+            "TVA": "Taxe sur la Valeur Ajoutée",
+            "TCS": "Taxe Conjoncturelle de Sauvegarde",
             "PRCT": "Prélèvement à la Compensation du Transport",
             "DAPS": "Droit Additionnel Provisoire de Sauvegarde",
         }
@@ -443,15 +465,17 @@ class CrawledDataService:
                 "FODEC/IMFODEC": "Fonds de Développement de la Compétitivité Industrielle",
             }
             tax_code = tax.get("code", "")
-            taxes.append({
-                "code": tax_code,
-                "name": full_names.get(tax_code, tax.get("name", tax_code)),
-                "rate_pct": tax.get("rate_pct"),
-                "raw_value": tax.get("raw_value", ""),
-                "specific_value": tax.get("specific_value", ""),
-                "assiette": tax.get("assiette", ""),
-                "source": "douane.gov.tn",
-            })
+            taxes.append(
+                {
+                    "code": tax_code,
+                    "name": full_names.get(tax_code, tax.get("name", tax_code)),
+                    "rate_pct": tax.get("rate_pct"),
+                    "raw_value": tax.get("raw_value", ""),
+                    "specific_value": tax.get("specific_value", ""),
+                    "assiette": tax.get("assiette", ""),
+                    "source": "douane.gov.tn",
+                }
+            )
 
         regulations = pos.get("regulations", [])
         formalities = []
@@ -481,13 +505,15 @@ class CrawledDataService:
 
         taxes = []
         for tax_name, tax_value in pos.get("taxes", {}).items():
-            taxes.append({
-                "code": tax_name.split("(")[-1].rstrip(")") if "(" in tax_name else tax_name,
-                "name": tax_name,
-                "rate_pct": self._parse_rate(tax_value),
-                "raw_value": tax_value,
-                "source": "douane.gov.ma/adil",
-            })
+            taxes.append(
+                {
+                    "code": tax_name.split("(")[-1].rstrip(")") if "(" in tax_name else tax_name,
+                    "name": tax_name,
+                    "rate_pct": self._parse_rate(tax_value),
+                    "raw_value": tax_value,
+                    "source": "douane.gov.ma/adil",
+                }
+            )
 
         return {
             "code_raw": raw_code,
@@ -523,15 +549,20 @@ class CrawledDataService:
         for td in taxes_detail:
             tax_name = td.get("tax_name", "")
             rate = td.get("rate")
-            tax_code = self.EAC_GHA_TAX_CODES.get(tax_name, tax_name.split("(")[-1].rstrip(")").strip() if "(" in tax_name else tax_name)
-            taxes.append({
-                "code": tax_code,
-                "name": tax_name,
-                "rate_pct": rate,
-                "raw_value": f"{rate}%" if rate is not None else "",
-                "base": td.get("base", ""),
-                "source": pos.get("source", ""),
-            })
+            tax_code = self.EAC_GHA_TAX_CODES.get(
+                tax_name,
+                tax_name.split("(")[-1].rstrip(")").strip() if "(" in tax_name else tax_name,
+            )
+            taxes.append(
+                {
+                    "code": tax_code,
+                    "name": tax_name,
+                    "rate_pct": rate,
+                    "raw_value": f"{rate}%" if rate is not None else "",
+                    "base": td.get("base", ""),
+                    "source": pos.get("source", ""),
+                }
+            )
 
         return {
             "code_raw": pos.get("hs_code_display", pos.get("hs_code", "")),
@@ -561,13 +592,15 @@ class CrawledDataService:
         taxes_detail = pos.get("taxes_detail", [])
         for td in taxes_detail:
             tax_code = td.get("tax_code", "")
-            taxes.append({
-                "code": tax_code,
-                "name": td.get("tax_name", tax_code),
-                "rate_pct": td.get("rate"),
-                "raw_value": f"{td.get('rate')}%" if td.get('rate') is not None else "",
-                "source": "customs.gov.eg",
-            })
+            taxes.append(
+                {
+                    "code": tax_code,
+                    "name": td.get("tax_name", tax_code),
+                    "rate_pct": td.get("rate"),
+                    "raw_value": f"{td.get('rate')}%" if td.get("rate") is not None else "",
+                    "source": "customs.gov.eg",
+                }
+            )
 
         if not taxes_detail:
             raw_taxes = pos.get("taxes", {})
@@ -575,22 +608,28 @@ class CrawledDataService:
                 for code, info in raw_taxes.items():
                     if isinstance(info, dict):
                         rate = info.get("rate")
-                        taxes.append({
-                            "code": code,
-                            "name": info.get("name", code),
-                            "rate_pct": rate,
-                            "raw_value": info.get("raw", f"{rate}%" if rate is not None else ""),
-                            "source": info.get("source", "customs.gov.eg"),
-                        })
+                        taxes.append(
+                            {
+                                "code": code,
+                                "name": info.get("name", code),
+                                "rate_pct": rate,
+                                "raw_value": info.get(
+                                    "raw", f"{rate}%" if rate is not None else ""
+                                ),
+                                "source": info.get("source", "customs.gov.eg"),
+                            }
+                        )
                     else:
                         # legacy flat {code: rate} shape
-                        taxes.append({
-                            "code": code,
-                            "name": code,
-                            "rate_pct": info,
-                            "raw_value": f"{info}%" if info is not None else "",
-                            "source": "customs.gov.eg",
-                        })
+                        taxes.append(
+                            {
+                                "code": code,
+                                "name": code,
+                                "rate_pct": info,
+                                "raw_value": f"{info}%" if info is not None else "",
+                                "source": "customs.gov.eg",
+                            }
+                        )
 
         designation = pos.get("designation") or pos.get("description") or pos.get("name", "")
         official_instructions = pos.get("official_instructions", []) or []
@@ -604,7 +643,8 @@ class CrawledDataService:
             "taxes": taxes,
             "fiscal_advantages": [],
             "administrative_formalities": [
-                {"description": instr, "source": "customs.gov.eg"} for instr in official_instructions
+                {"description": instr, "source": "customs.gov.eg"}
+                for instr in official_instructions
             ],
             "source": "customs.gov.eg",
             "country": "EGY",
@@ -622,13 +662,15 @@ class CrawledDataService:
         taxes_detail = pos.get("taxes_detail", [])
         for td in taxes_detail:
             tax_code = td.get("tax_code", "")
-            taxes.append({
-                "code": tax_code,
-                "name": td.get("tax_name", tax_code),
-                "rate_pct": td.get("rate"),
-                "raw_value": f"{td.get('rate')}%" if td.get('rate') is not None else "",
-                "source": "customs.erca.gov.et",
-            })
+            taxes.append(
+                {
+                    "code": tax_code,
+                    "name": td.get("tax_name", tax_code),
+                    "rate_pct": td.get("rate"),
+                    "raw_value": f"{td.get('rate')}%" if td.get("rate") is not None else "",
+                    "source": "customs.erca.gov.et",
+                }
+            )
 
         if not taxes_detail:
             raw_taxes = pos.get("taxes", {})
@@ -646,22 +688,26 @@ class CrawledDataService:
                 }
                 for code, rate in raw_taxes.items():
                     if rate and rate > 0:
-                        taxes.append({
-                            "code": code,
-                            "name": eth_tax_names.get(code, code),
-                            "rate_pct": rate,
-                            "raw_value": f"{rate}%",
-                            "source": "customs.erca.gov.et",
-                        })
+                        taxes.append(
+                            {
+                                "code": code,
+                                "name": eth_tax_names.get(code, code),
+                                "rate_pct": rate,
+                                "raw_value": f"{rate}%",
+                                "source": "customs.erca.gov.et",
+                            }
+                        )
 
         comesa_duty = pos.get("comesa_duty")
         fiscal_advantages = []
         if comesa_duty is not None and comesa_duty >= 0:
-            fiscal_advantages.append({
-                "name": "COMESA Preferential Rate",
-                "rate_pct": comesa_duty,
-                "description": f"Reduced duty rate of {comesa_duty}% for COMESA member countries"
-            })
+            fiscal_advantages.append(
+                {
+                    "name": "COMESA Preferential Rate",
+                    "rate_pct": comesa_duty,
+                    "description": f"Reduced duty rate of {comesa_duty}% for COMESA member countries",
+                }
+            )
 
         return {
             "code_raw": pos.get("code", code_clean),
@@ -692,13 +738,17 @@ class CrawledDataService:
             rate = td.get("rate")
             if rate is None:
                 continue
-            taxes.append({
-                "code": tax_code,
-                "name": td.get("tax_name", tax_code),
-                "rate_pct": rate,
-                "raw_value": f"{rate}%" if td.get("rate_type") == "ad_valorem" else f"{rate} FCFA",
-                "source": "guce.gouv.ci",
-            })
+            taxes.append(
+                {
+                    "code": tax_code,
+                    "name": td.get("tax_name", tax_code),
+                    "rate_pct": rate,
+                    "raw_value": (
+                        f"{rate}%" if td.get("rate_type") == "ad_valorem" else f"{rate} FCFA"
+                    ),
+                    "source": "guce.gouv.ci",
+                }
+            )
 
         if not taxes:
             raw_taxes = pos.get("taxes", {})
@@ -715,13 +765,15 @@ class CrawledDataService:
                 }
                 for code, rate in raw_taxes.items():
                     if rate is not None:
-                        taxes.append({
-                            "code": code,
-                            "name": civ_tax_names.get(code, code),
-                            "rate_pct": rate,
-                            "raw_value": f"{rate}%",
-                            "source": "guce.gouv.ci",
-                        })
+                        taxes.append(
+                            {
+                                "code": code,
+                                "name": civ_tax_names.get(code, code),
+                                "rate_pct": rate,
+                                "raw_value": f"{rate}%",
+                                "source": "guce.gouv.ci",
+                            }
+                        )
 
         fiscal_advantages = []
         notes = [
@@ -759,13 +811,15 @@ class CrawledDataService:
             rate = td.get("rate")
             if rate is None:
                 continue
-            taxes.append({
-                "code": tax_code,
-                "name": td.get("tax_name", tax_code),
-                "rate_pct": rate,
-                "raw_value": f"{rate}%",
-                "source": "douanes.sn + TEC CEDEAO",
-            })
+            taxes.append(
+                {
+                    "code": tax_code,
+                    "name": td.get("tax_name", tax_code),
+                    "rate_pct": rate,
+                    "raw_value": f"{rate}%",
+                    "source": "douanes.sn + TEC CEDEAO",
+                }
+            )
 
         if not taxes:
             raw_taxes = pos.get("taxes", {})
@@ -780,13 +834,15 @@ class CrawledDataService:
                 }
                 for code, rate in raw_taxes.items():
                     if rate is not None:
-                        taxes.append({
-                            "code": code,
-                            "name": sen_tax_names.get(code, code),
-                            "rate_pct": rate,
-                            "raw_value": f"{rate}%",
-                            "source": "douanes.sn",
-                        })
+                        taxes.append(
+                            {
+                                "code": code,
+                                "name": sen_tax_names.get(code, code),
+                                "rate_pct": rate,
+                                "raw_value": f"{rate}%",
+                                "source": "douanes.sn",
+                            }
+                        )
 
         return {
             "code_raw": pos.get("code", code_clean),
@@ -821,22 +877,26 @@ class CrawledDataService:
             if rate is None:
                 continue
             if tax_code == "DA" and rate == -1:
-                taxes.append({
-                    "code": "DA",
-                    "name": td.get("tax_name", "Droit d'Accise"),
-                    "rate_pct": None,
-                    "raw_value": "variable (5-50%)",
-                    "source": "CEMAC Tarif des Douanes",
-                    "note": td.get("note", ""),
-                })
+                taxes.append(
+                    {
+                        "code": "DA",
+                        "name": td.get("tax_name", "Droit d'Accise"),
+                        "rate_pct": None,
+                        "raw_value": "variable (5-50%)",
+                        "source": "CEMAC Tarif des Douanes",
+                        "note": td.get("note", ""),
+                    }
+                )
             else:
-                taxes.append({
-                    "code": tax_code,
-                    "name": td.get("tax_name", tax_code),
-                    "rate_pct": rate,
-                    "raw_value": f"{rate}%",
-                    "source": "CEMAC Tarif des Douanes",
-                })
+                taxes.append(
+                    {
+                        "code": tax_code,
+                        "name": td.get("tax_name", tax_code),
+                        "rate_pct": rate,
+                        "raw_value": f"{rate}%",
+                        "source": "CEMAC Tarif des Douanes",
+                    }
+                )
 
         if not taxes:
             raw_taxes = pos.get("taxes", {})
@@ -850,13 +910,15 @@ class CrawledDataService:
                 }
                 for code, rate in raw_taxes.items():
                     if rate is not None and rate != "variable":
-                        taxes.append({
-                            "code": code,
-                            "name": cmr_tax_names.get(code, code),
-                            "rate_pct": rate,
-                            "raw_value": f"{rate}%",
-                            "source": "CEMAC Tarif des Douanes",
-                        })
+                        taxes.append(
+                            {
+                                "code": code,
+                                "name": cmr_tax_names.get(code, code),
+                                "rate_pct": rate,
+                                "raw_value": f"{rate}%",
+                                "source": "CEMAC Tarif des Douanes",
+                            }
+                        )
 
         return {
             "code_raw": pos.get("code", code_clean),
@@ -876,12 +938,18 @@ class CrawledDataService:
         }
 
     ECOWAS_COUNTRY_NAMES = {
-        "BEN": "Bénin", "BFA": "Burkina Faso", "MLI": "Mali",
-        "NER": "Niger", "TGO": "Togo", "GIN": "Guinée",
+        "BEN": "Bénin",
+        "BFA": "Burkina Faso",
+        "MLI": "Mali",
+        "NER": "Niger",
+        "TGO": "Togo",
+        "GIN": "Guinée",
     }
     CEMAC_COUNTRY_NAMES = {
-        "GAB": "Gabon", "COG": "Congo (Brazzaville)",
-        "TCD": "Tchad", "CAF": "République Centrafricaine",
+        "GAB": "Gabon",
+        "COG": "Congo (Brazzaville)",
+        "TCD": "Tchad",
+        "CAF": "République Centrafricaine",
     }
 
     def _normalize_ecowas_member(self, pos: dict, country_code: str) -> Optional[dict]:
@@ -900,28 +968,32 @@ class CrawledDataService:
             rate = td.get("rate")
             if rate is None:
                 continue
-            taxes.append({
-                "code": tax_code,
-                "name": td.get("tax_name", tax_code),
-                "rate_pct": rate,
-                "raw_value": f"{rate}%",
-                "base": td.get("base", ""),
-                "source": source,
-            })
+            taxes.append(
+                {
+                    "code": tax_code,
+                    "name": td.get("tax_name", tax_code),
+                    "rate_pct": rate,
+                    "raw_value": f"{rate}%",
+                    "base": td.get("base", ""),
+                    "source": source,
+                }
+            )
 
         if not taxes:
             raw_taxes = pos.get("taxes", {})
             if isinstance(raw_taxes, dict):
                 for code, rate in raw_taxes.items():
                     if rate is not None:
-                        taxes.append({
-                            "code": code,
-                            "name": code,
-                            "rate_pct": rate,
-                            "raw_value": f"{rate}%",
-                            "base": "",
-                            "source": source,
-                        })
+                        taxes.append(
+                            {
+                                "code": code,
+                                "name": code,
+                                "rate_pct": rate,
+                                "raw_value": f"{rate}%",
+                                "base": "",
+                                "source": source,
+                            }
+                        )
 
         return {
             "code_raw": pos.get("code", code_clean),
@@ -957,37 +1029,43 @@ class CrawledDataService:
             if rate is None:
                 continue
             if tax_code == "DA" and rate == -1:
-                taxes.append({
-                    "code": "DA",
-                    "name": td.get("tax_name", "Droit d'Accise"),
-                    "rate_pct": None,
-                    "raw_value": "variable (5-50%)",
-                    "source": source,
-                    "note": td.get("note", ""),
-                })
+                taxes.append(
+                    {
+                        "code": "DA",
+                        "name": td.get("tax_name", "Droit d'Accise"),
+                        "rate_pct": None,
+                        "raw_value": "variable (5-50%)",
+                        "source": source,
+                        "note": td.get("note", ""),
+                    }
+                )
             else:
-                taxes.append({
-                    "code": tax_code,
-                    "name": td.get("tax_name", tax_code),
-                    "rate_pct": rate,
-                    "raw_value": f"{rate}%",
-                    "base": td.get("base", ""),
-                    "source": source,
-                })
+                taxes.append(
+                    {
+                        "code": tax_code,
+                        "name": td.get("tax_name", tax_code),
+                        "rate_pct": rate,
+                        "raw_value": f"{rate}%",
+                        "base": td.get("base", ""),
+                        "source": source,
+                    }
+                )
 
         if not taxes:
             raw_taxes = pos.get("taxes", {})
             if isinstance(raw_taxes, dict):
                 for code, rate in raw_taxes.items():
                     if rate is not None and rate != -1:
-                        taxes.append({
-                            "code": code,
-                            "name": code,
-                            "rate_pct": rate,
-                            "raw_value": f"{rate}%",
-                            "base": "",
-                            "source": source,
-                        })
+                        taxes.append(
+                            {
+                                "code": code,
+                                "name": code,
+                                "rate_pct": rate,
+                                "raw_value": f"{rate}%",
+                                "base": "",
+                                "source": source,
+                            }
+                        )
 
         return {
             "code_raw": pos.get("code", code_clean),

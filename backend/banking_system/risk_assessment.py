@@ -14,6 +14,7 @@ Forex risk, political risk and transfer risk use: low | moderate | high | very_h
 """
 
 from typing import Dict, List, Optional
+
 from .models import CountryRiskProfile
 
 # ---------------------------------------------------------------------------
@@ -21,15 +22,19 @@ from .models import CountryRiskProfile
 # ---------------------------------------------------------------------------
 
 RISK_PROFILES: Dict[str, CountryRiskProfile] = {
-
     # ── NORTH AFRICA ──────────────────────────────────────────────────────────
     "MA": CountryRiskProfile(
-        country_code="MA", country_name="Maroc",
+        country_code="MA",
+        country_name="Maroc",
         country_risk_rating="A4",
         forex_risk="moderate",
         political_risk="low",
         transfer_risk="moderate",
-        recommended_instruments=["LC_IRREVOCABLE", "DOC_COLLECTION_DP", "BANK_GUARANTEE_PERFORMANCE"],
+        recommended_instruments=[
+            "LC_IRREVOCABLE",
+            "DOC_COLLECTION_DP",
+            "BANK_GUARANTEE_PERFORMANCE",
+        ],
         credit_insurance_available=True,
         max_exposure_usd=5_000_000,
         notes=(
@@ -38,7 +43,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "DZ": CountryRiskProfile(
-        country_code="DZ", country_name="Algérie",
+        country_code="DZ",
+        country_name="Algérie",
         country_risk_rating="B",
         forex_risk="high",
         political_risk="moderate",
@@ -52,7 +58,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "TN": CountryRiskProfile(
-        country_code="TN", country_name="Tunisie",
+        country_code="TN",
+        country_name="Tunisie",
         country_risk_rating="B",
         forex_risk="moderate",
         political_risk="moderate",
@@ -66,7 +73,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "EG": CountryRiskProfile(
-        country_code="EG", country_name="Égypte",
+        country_code="EG",
+        country_name="Égypte",
         country_risk_rating="B",
         forex_risk="moderate",
         political_risk="moderate",
@@ -80,7 +88,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "LY": CountryRiskProfile(
-        country_code="LY", country_name="Libye",
+        country_code="LY",
+        country_name="Libye",
         country_risk_rating="D",
         forex_risk="very_high",
         political_risk="very_high",
@@ -90,10 +99,10 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         max_exposure_usd=500_000,
         notes="Situation politique instable. Risque très élevé. Éviter les transactions importantes.",
     ),
-
     # ── WEST AFRICA ──────────────────────────────────────────────────────────
     "NG": CountryRiskProfile(
-        country_code="NG", country_name="Nigeria",
+        country_code="NG",
+        country_name="Nigeria",
         country_risk_rating="C",
         forex_risk="high",
         political_risk="moderate",
@@ -108,7 +117,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "GH": CountryRiskProfile(
-        country_code="GH", country_name="Ghana",
+        country_code="GH",
+        country_name="Ghana",
         country_risk_rating="B",
         forex_risk="moderate",
         political_risk="low",
@@ -122,7 +132,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "CI": CountryRiskProfile(
-        country_code="CI", country_name="Côte d'Ivoire",
+        country_code="CI",
+        country_name="Côte d'Ivoire",
         country_risk_rating="B",
         forex_risk="low",
         political_risk="moderate",
@@ -136,7 +147,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "SN": CountryRiskProfile(
-        country_code="SN", country_name="Sénégal",
+        country_code="SN",
+        country_name="Sénégal",
         country_risk_rating="B",
         forex_risk="low",
         political_risk="low",
@@ -150,7 +162,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "ML": CountryRiskProfile(
-        country_code="ML", country_name="Mali",
+        country_code="ML",
+        country_name="Mali",
         country_risk_rating="C",
         forex_risk="low",
         political_risk="high",
@@ -161,7 +174,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         notes="Instabilité politique post-coup (2021). Risque élevé malgré franc CFA stable.",
     ),
     "BF": CountryRiskProfile(
-        country_code="BF", country_name="Burkina Faso",
+        country_code="BF",
+        country_name="Burkina Faso",
         country_risk_rating="C",
         forex_risk="low",
         political_risk="high",
@@ -171,10 +185,10 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         max_exposure_usd=300_000,
         notes="Instabilité sécuritaire et politique. Risque pays élevé.",
     ),
-
     # ── EAST AFRICA ──────────────────────────────────────────────────────────
     "KE": CountryRiskProfile(
-        country_code="KE", country_name="Kenya",
+        country_code="KE",
+        country_name="Kenya",
         country_risk_rating="A4",
         forex_risk="moderate",
         political_risk="low",
@@ -188,7 +202,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "ET": CountryRiskProfile(
-        country_code="ET", country_name="Éthiopie",
+        country_code="ET",
+        country_name="Éthiopie",
         country_risk_rating="C",
         forex_risk="very_high",
         political_risk="high",
@@ -202,7 +217,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "TZ": CountryRiskProfile(
-        country_code="TZ", country_name="Tanzanie",
+        country_code="TZ",
+        country_name="Tanzanie",
         country_risk_rating="B",
         forex_risk="moderate",
         political_risk="low",
@@ -212,10 +228,10 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         max_exposure_usd=3_000_000,
         notes="Pays stable. Économie en croissance. Risque modéré.",
     ),
-
     # ── SOUTHERN AFRICA ──────────────────────────────────────────────────────
     "ZA": CountryRiskProfile(
-        country_code="ZA", country_name="Afrique du Sud",
+        country_code="ZA",
+        country_name="Afrique du Sud",
         country_risk_rating="A4",
         forex_risk="moderate",
         political_risk="moderate",
@@ -230,7 +246,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "AO": CountryRiskProfile(
-        country_code="AO", country_name="Angola",
+        country_code="AO",
+        country_name="Angola",
         country_risk_rating="C",
         forex_risk="very_high",
         political_risk="moderate",
@@ -244,7 +261,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         ),
     ),
     "ZM": CountryRiskProfile(
-        country_code="ZM", country_name="Zambie",
+        country_code="ZM",
+        country_name="Zambie",
         country_risk_rating="C",
         forex_risk="high",
         political_risk="moderate",
@@ -253,12 +271,12 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
         credit_insurance_available=True,
         max_exposure_usd=1_000_000,
         notes=(
-            "Restructuration de la dette en cours (2021-2023). "
-            "Risque élevé. Kwacha volatile."
+            "Restructuration de la dette en cours (2021-2023). " "Risque élevé. Kwacha volatile."
         ),
     ),
     "ZW": CountryRiskProfile(
-        country_code="ZW", country_name="Zimbabwe",
+        country_code="ZW",
+        country_name="Zimbabwe",
         country_risk_rating="D",
         forex_risk="very_high",
         political_risk="high",
@@ -274,7 +292,8 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
 }
 
 _DEFAULT_RISK = CountryRiskProfile(
-    country_code="XX", country_name="Unknown",
+    country_code="XX",
+    country_name="Unknown",
     country_risk_rating="B",
     forex_risk="moderate",
     political_risk="moderate",
@@ -288,6 +307,7 @@ _DEFAULT_RISK = CountryRiskProfile(
 # ---------------------------------------------------------------------------
 # PUBLIC HELPERS
 # ---------------------------------------------------------------------------
+
 
 def get_country_risk(country_code: str) -> CountryRiskProfile:
     """Return risk profile for a country (ISO2). Falls back to default."""
@@ -336,9 +356,7 @@ def assess_transaction_risk(
         "recommended_instruments": profile.recommended_instruments,
         "credit_insurance_available": profile.credit_insurance_available,
         "max_recommended_exposure_usd": profile.max_exposure_usd,
-        "exposure_warning": (
-            amount_usd > (profile.max_exposure_usd or float("inf"))
-        ),
+        "exposure_warning": (amount_usd > (profile.max_exposure_usd or float("inf"))),
         "notes": profile.notes,
     }
 
@@ -346,7 +364,13 @@ def assess_transaction_risk(
 def _compute_risk_score(profile: CountryRiskProfile, amount_usd: float) -> int:
     """Compute a simple 0-10 risk score from the profile."""
     rating_score = {
-        "A1": 1, "A2": 2, "A3": 3, "A4": 4, "B": 5, "C": 7, "D": 9,
+        "A1": 1,
+        "A2": 2,
+        "A3": 3,
+        "A4": 4,
+        "B": 5,
+        "C": 7,
+        "D": 9,
     }
     level_score = {"low": 0, "moderate": 1, "high": 2, "very_high": 3}
 

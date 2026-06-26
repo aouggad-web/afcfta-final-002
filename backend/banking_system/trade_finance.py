@@ -3,6 +3,7 @@ Trade finance instruments available for AfCFTA commercial operations.
 """
 
 from typing import List, Optional
+
 from .models import TradeFinanceInstrument
 
 # ---------------------------------------------------------------------------
@@ -224,6 +225,7 @@ LC_CONFIRMATION_RECOMMENDED = {"NG", "ET", "AO", "ZW", "SD", "LY", "SS", "BI", "
 # PUBLIC HELPERS
 # ---------------------------------------------------------------------------
 
+
 def get_trade_finance_instruments() -> List[TradeFinanceInstrument]:
     """Return the full catalogue of trade finance instruments."""
     return TRADE_FINANCE_INSTRUMENTS
@@ -251,10 +253,7 @@ def recommend_instruments(
     recommendations: List[TradeFinanceInstrument] = []
 
     # Filter by applicable_to
-    applicable = [
-        inst for inst in TRADE_FINANCE_INSTRUMENTS
-        if t_type in inst.applicable_to
-    ]
+    applicable = [inst for inst in TRADE_FINANCE_INSTRUMENTS if t_type in inst.applicable_to]
 
     if code in LC_MANDATORY_COUNTRIES:
         # LC is mandatory – put confirmed LC first

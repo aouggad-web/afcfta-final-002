@@ -13,9 +13,10 @@ Important : ce module ne doit PAS importer `motor`/MongoDB ni le package
 machine de crawl ordinaire. Les scrapers réseau réels sont chargés en import
 tardif à l'intérieur de leur fonction enregistrée.
 """
+
 from __future__ import annotations
 
-from typing import Callable, Dict, Any
+from typing import Any, Callable, Dict
 
 # iso3 -> callable() -> document canonique (dict)
 AUTHENTIC_CRAWLERS: Dict[str, Callable[[], Dict[str, Any]]] = {}
@@ -23,9 +24,11 @@ AUTHENTIC_CRAWLERS: Dict[str, Callable[[], Dict[str, Any]]] = {}
 
 def register(iso3: str) -> Callable[[Callable[[], Dict[str, Any]]], Callable[[], Dict[str, Any]]]:
     """Décorateur d'enregistrement d'un crawler authentique pour un pays."""
+
     def _wrap(fn: Callable[[], Dict[str, Any]]) -> Callable[[], Dict[str, Any]]:
         AUTHENTIC_CRAWLERS[iso3.upper()] = fn
         return fn
+
     return _wrap
 
 

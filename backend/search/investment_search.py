@@ -193,11 +193,20 @@ class InvestmentOpportunitySearch:
                 continue
             if sec.get("primary") and opp["sector"].lower() != sec["primary"].lower():
                 continue
-            if sec.get("secondary") and sec["secondary"].lower() not in opp.get("sub_sector", "").lower():
+            if (
+                sec.get("secondary")
+                and sec["secondary"].lower() not in opp.get("sub_sector", "").lower()
+            ):
                 continue
-            if fin.get("investment_size_min") and opp["investment_size_usd"] < fin["investment_size_min"]:
+            if (
+                fin.get("investment_size_min")
+                and opp["investment_size_usd"] < fin["investment_size_min"]
+            ):
                 continue
-            if fin.get("investment_size_max") and opp["investment_size_usd"] > fin["investment_size_max"]:
+            if (
+                fin.get("investment_size_max")
+                and opp["investment_size_usd"] > fin["investment_size_max"]
+            ):
                 continue
             if fin.get("roi_min") and opp["roi_pct"] < fin["roi_min"]:
                 continue

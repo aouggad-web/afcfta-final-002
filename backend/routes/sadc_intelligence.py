@@ -45,8 +45,11 @@ router = APIRouter(tags=["SADC Intelligence"])
 # Request / response models
 # ---------------------------------------------------------------------------
 
+
 class InvestmentRecommendationRequest(BaseModel):
-    sector: str = Field(..., description="Target industry sector (e.g. mining, textiles, financial_services)")
+    sector: str = Field(
+        ..., description="Target industry sector (e.g. mining, textiles, financial_services)"
+    )
     priority: str = Field(
         default="infrastructure",
         description="Ranking priority: infrastructure | tax_incentives | market_access | stability",
@@ -64,19 +67,23 @@ class SACUImportCostRequest(BaseModel):
 # Service accessor (lazy import)
 # ---------------------------------------------------------------------------
 
+
 def _get_sadc():
     from services.sadc_intelligence_service import get_sadc_intelligence
+
     return get_sadc_intelligence()
 
 
 def _get_mining():
     from services.mining_sector_service import get_mining_service
+
     return get_mining_service()
 
 
 # ---------------------------------------------------------------------------
 # Regional overview endpoints
 # ---------------------------------------------------------------------------
+
 
 @router.get("/regions/sadc/overview")
 async def get_sadc_overview():
@@ -100,6 +107,7 @@ async def get_sadc_countries():
     """
     try:
         from crawlers.countries.sadc.sadc_constants import SADC_COUNTRIES
+
         return {"countries": SADC_COUNTRIES, "total": len(SADC_COUNTRIES)}
     except Exception as exc:
         logger.error(f"SADC countries failed: {exc}")
@@ -147,7 +155,9 @@ async def get_sadc_data_freshness():
 
 @router.get("/regions/sadc/protocols")
 async def get_sadc_trade_protocols(
-    protocol: Optional[str] = Query(None, description="Specific protocol key (e.g. sadc_trade_protocol)")
+    protocol: Optional[str] = Query(
+        None, description="Specific protocol key (e.g. sadc_trade_protocol)"
+    )
 ):
     """Return SADC trade agreements and protocols."""
     try:
@@ -160,6 +170,7 @@ async def get_sadc_trade_protocols(
 # ---------------------------------------------------------------------------
 # SACU endpoints
 # ---------------------------------------------------------------------------
+
 
 @router.get("/regions/sacu/customs-union")
 async def get_sacu_framework():
@@ -211,6 +222,7 @@ async def calculate_sacu_import_cost(request: SACUImportCostRequest):
 # Country-specific endpoints
 # ---------------------------------------------------------------------------
 
+
 @router.get("/countries/sadc/{country_code}/tariffs")
 async def get_sadc_country_tariffs(country_code: str):
     """
@@ -248,7 +260,12 @@ async def get_sadc_country_investment(country_code: str):
 @router.get("/countries/sadc/{country_code}/sectors")
 async def get_sadc_country_sectors(country_code: str):
     """Return sector strengths for a specific SADC country."""
-    from services.sadc_intelligence_service import SECTOR_STRENGTHS, COUNTRY_NAMES, SADC_COUNTRY_LIST
+    from services.sadc_intelligence_service import (
+        COUNTRY_NAMES,
+        SADC_COUNTRY_LIST,
+        SECTOR_STRENGTHS,
+    )
+
     code = country_code.upper()
     if code not in SADC_COUNTRY_LIST:
         raise HTTPException(status_code=404, detail=f"{code} is not a SADC member state")
@@ -272,6 +289,7 @@ async def get_sadc_country_mining(country_code: str):
 # ---------------------------------------------------------------------------
 # Mining sector endpoints
 # ---------------------------------------------------------------------------
+
 
 @router.get("/mining/sadc/overview")
 async def get_sadc_mining_overview():
@@ -347,6 +365,7 @@ async def get_sadc_mineral_export_routes(country_code: str):
 # Transport corridor endpoints
 # ---------------------------------------------------------------------------
 
+
 @router.get("/trade-corridors/sadc")
 async def get_sadc_corridors():
     """Return all SADC transport corridors and major port data."""
@@ -371,6 +390,7 @@ async def get_sadc_country_corridors(country_code: str):
 # Cross-regional analysis endpoints
 # ---------------------------------------------------------------------------
 
+
 @router.get("/analysis/sadc-vs-eac")
 async def get_sadc_vs_eac():
     """Compare SADC and EAC regional blocs (structure, trade, dual-members)."""
@@ -394,6 +414,7 @@ async def get_sadc_vs_cemac():
 # ---------------------------------------------------------------------------
 # Investment recommendation endpoint
 # ---------------------------------------------------------------------------
+
 
 @router.post("/regions/sadc/investment-recommendation")
 async def get_investment_recommendation(request: InvestmentRecommendationRequest):

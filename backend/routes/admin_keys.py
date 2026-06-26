@@ -11,11 +11,10 @@ import secrets
 from datetime import datetime, timezone
 from typing import Annotated
 
+from auth import get_db, require_admin, require_auth
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
-
-from auth import get_db, require_admin, require_auth
 
 router = APIRouter(prefix="/admin/keys", tags=["Admin: API Keys"])
 
@@ -99,10 +98,6 @@ async def revoke_key(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Invalid key_id format",
         )
-    result = await db["api_keys"].update_one(
-        {"_id": oid}, {"$set": {"active": False}}
-    )
+    result = await db["api_keys"].update_one({"_id": oid}, {"$set": {"active": False}})
     if result.matched_count == 0:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Key not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Key not found")

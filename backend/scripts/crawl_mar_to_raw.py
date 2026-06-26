@@ -87,6 +87,7 @@ def _pct(value: str | None) -> tuple[float | None, str]:
 def _convert_position(p: dict) -> dict:
     """Mappe {code, designation, taxes:{...}} → champs plats raw_crawl."""
     taxes = p.get("taxes", {}) or {}
+
     # Récupère par sous-chaîne de clé (robuste aux variations de libellé)
     def find(key_part: str) -> str | None:
         for k, v in taxes.items():
@@ -132,8 +133,7 @@ def _assemble(positions: list[dict]) -> dict:
     }
 
 
-async def _run(sample: bool, chapters: list[str] | None,
-               max_per_chapter: int) -> list[dict]:
+async def _run(sample: bool, chapters: list[str] | None, max_per_chapter: int) -> list[dict]:
     Scraper = _load_scraper()
     scraper = Scraper()
     if sample:
@@ -155,12 +155,13 @@ async def _run(sample: bool, chapters: list[str] | None,
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--out", default="engine/sources/mar_raw.json",
-                    help="Fichier de sortie raw_crawl")
-    ap.add_argument("--sample", action="store_true",
-                    help="Crawl d'échantillon rapide (validation de la chaîne)")
-    ap.add_argument("--chapters", nargs="*", default=None,
-                    help="Liste de chapitres (ex. 01 27 84)")
+    ap.add_argument(
+        "--out", default="engine/sources/mar_raw.json", help="Fichier de sortie raw_crawl"
+    )
+    ap.add_argument(
+        "--sample", action="store_true", help="Crawl d'échantillon rapide (validation de la chaîne)"
+    )
+    ap.add_argument("--chapters", nargs="*", default=None, help="Liste de chapitres (ex. 01 27 84)")
     ap.add_argument("--max-per-chapter", type=int, default=5)
     args = ap.parse_args()
 

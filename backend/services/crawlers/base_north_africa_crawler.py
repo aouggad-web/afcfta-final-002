@@ -189,9 +189,7 @@ class NorthAfricaCrawlerBase(BaseScraper):
         Returns:
             Canonical tariff record dict
         """
-        normalized_taxes = {
-            k: self.normalize_rate(v) for k, v in taxes.items()
-        }
+        normalized_taxes = {k: self.normalize_rate(v) for k, v in taxes.items()}
         total = sum(v for v in normalized_taxes.values() if v is not None)
 
         record = {

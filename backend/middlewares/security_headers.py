@@ -1,5 +1,6 @@
 import os
 import secrets
+
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
@@ -12,17 +13,19 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
         response: Response = await call_next(request)
 
-        csp = "; ".join([
-            "default-src 'self'",
-            f"script-src 'self' 'nonce-{nonce}' https://cdn.jsdelivr.net",
-            f"style-src 'self' 'nonce-{nonce}' https://fonts.googleapis.com",
-            "img-src 'self' data: https: blob:",
-            "font-src 'self' https://fonts.gstatic.com",
-            "connect-src 'self' https://api.worldbank.org https://api-v2.oec.world",
-            "frame-ancestors 'self'",
-            "base-uri 'self'",
-            "form-action 'self'",
-        ])
+        csp = "; ".join(
+            [
+                "default-src 'self'",
+                f"script-src 'self' 'nonce-{nonce}' https://cdn.jsdelivr.net",
+                f"style-src 'self' 'nonce-{nonce}' https://fonts.googleapis.com",
+                "img-src 'self' data: https: blob:",
+                "font-src 'self' https://fonts.gstatic.com",
+                "connect-src 'self' https://api.worldbank.org https://api-v2.oec.world",
+                "frame-ancestors 'self'",
+                "base-uri 'self'",
+                "form-action 'self'",
+            ]
+        )
 
         response.headers["Content-Security-Policy"] = csp
         response.headers["X-Content-Type-Options"] = "nosniff"

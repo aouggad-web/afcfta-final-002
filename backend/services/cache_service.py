@@ -11,15 +11,16 @@ Cache TTLs:
 - Regulatory details: 1 hour
 """
 
-import os
-import json
 import hashlib
-from typing import Optional, Any, Union
+import json
+import os
 from datetime import timedelta
 from functools import wraps
+from typing import Any, Optional, Union
 
 try:
     import redis
+
     REDIS_AVAILABLE = True
 except ImportError:
     REDIS_AVAILABLE = False
@@ -31,12 +32,12 @@ CACHE_ENABLED = os.environ.get("CACHE_ENABLED", "true").lower() == "true"
 
 # Cache TTLs in seconds
 CACHE_TTL = {
-    "statistics": 3600,        # 1 hour
-    "countries": 7200,         # 2 hours
-    "search": 1800,            # 30 minutes
-    "calculation": 900,        # 15 minutes
-    "regulatory": 3600,        # 1 hour
-    "default": 600             # 10 minutes
+    "statistics": 3600,  # 1 hour
+    "countries": 7200,  # 2 hours
+    "search": 1800,  # 30 minutes
+    "calculation": 900,  # 15 minutes
+    "regulatory": 3600,  # 1 hour
+    "default": 600,  # 10 minutes
 }
 
 # Global Redis client (type hinted with a forward reference so it is safe
@@ -47,17 +48,14 @@ _redis_client: "Optional[Any]" = None
 def get_redis_client() -> "Optional[Any]":
     """Get or create Redis client singleton."""
     global _redis_client
-    
+
     if not REDIS_AVAILABLE or not CACHE_ENABLED:
         return None
-    
+
     if _redis_client is None:
         try:
             _redis_client = redis.from_url(
-                REDIS_URL,
-                decode_responses=True,
-                socket_connect_timeout=2,
-                socket_timeout=2
+                REDIS_URL, decode_responses=True, socket_connect_timeout=2, socket_timeout=2
             )
             # Test connection
             _redis_client.ping()
@@ -65,30 +63,30 @@ def get_redis_client() -> "Optional[Any]":
         except Exception as e:
             print(f"⚠ Redis connection failed: {e}")
             _redis_client = None
-    
+
     return _redis_client
 
 
 def generate_cache_key(prefix: str, *args, **kwargs) -> str:
     """Generate a unique cache key from prefix and arguments."""
     key_parts = [prefix]
-    
+
     # Add positional args
     for arg in args:
         if arg is not None:
             key_parts.append(str(arg))
-    
+
     # Add keyword args (sorted for consistency)
     for k, v in sorted(kwargs.items()):
         if v is not None:
             key_parts.append(f"{k}:{v}")
-    
+
     # Create hash for long keys
     key_str = ":".join(key_parts)
     if len(key_str) > 200:
         key_hash = hashlib.md5(key_str.encode()).hexdigest()[:16]
         key_str = f"{prefix}:{key_hash}"
-    
+
     return f"zlecaf:{key_str}"
 
 
@@ -97,14 +95,14 @@ def cache_get(key: str) -> Optional[Any]:
     client = get_redis_client()
     if not client:
         return None
-    
+
     try:
         value = client.get(key)
         if value:
             return json.loads(value)
     except Exception as e:
         print(f"Cache get error: {e}")
-    
+
     return None
 
 
@@ -113,7 +111,7 @@ def cache_set(key: str, value: Any, ttl_type: str = "default") -> bool:
     client = get_redis_client()
     if not client:
         return False
-    
+
     try:
         ttl = CACHE_TTL.get(ttl_type, CACHE_TTL["default"])
         client.setex(key, ttl, json.dumps(value, default=str))
@@ -128,7 +126,7 @@ def cache_delete(key: str) -> bool:
     client = get_redis_client()
     if not client:
         return False
-    
+
     try:
         client.delete(key)
         return True
@@ -142,14 +140,14 @@ def cache_delete_pattern(pattern: str) -> int:
     client = get_redis_client()
     if not client:
         return 0
-    
+
     try:
         keys = client.keys(f"zlecaf:{pattern}")
         if keys:
             return client.delete(*keys)
     except Exception as e:
         print(f"Cache delete pattern error: {e}")
-    
+
     return 0
 
 
@@ -158,18 +156,18 @@ def cache_stats() -> dict:
     client = get_redis_client()
     if not client:
         return {"status": "unavailable", "enabled": CACHE_ENABLED}
-    
+
     try:
         info = client.info("memory")
         keys_count = client.dbsize()
-        
+
         return {
             "status": "connected",
             "enabled": CACHE_ENABLED,
             "keys_count": keys_count,
             "used_memory": info.get("used_memory_human", "N/A"),
             "used_memory_peak": info.get("used_memory_peak_human", "N/A"),
-            "ttl_config": CACHE_TTL
+            "ttl_config": CACHE_TTL,
         }
     except Exception as e:
         return {"status": "error", "error": str(e)}
@@ -178,59 +176,61 @@ def cache_stats() -> dict:
 def cached(ttl_type: str = "default", key_prefix: str = None):
     """
     Decorator to cache function results.
-    
+
     Usage:
         @cached(ttl_type="statistics", key_prefix="stats")
         async def get_statistics():
             ...
     """
+
     def decorator(func):
         @wraps(func)
         async def async_wrapper(*args, **kwargs):
             # Generate cache key
             prefix = key_prefix or func.__name__
             cache_key = generate_cache_key(prefix, *args, **kwargs)
-            
+
             # Try to get from cache
             cached_value = cache_get(cache_key)
             if cached_value is not None:
                 return cached_value
-            
+
             # Call the function
             result = await func(*args, **kwargs)
-            
+
             # Store in cache
             if result is not None:
                 cache_set(cache_key, result, ttl_type)
-            
+
             return result
-        
+
         @wraps(func)
         def sync_wrapper(*args, **kwargs):
             # Generate cache key
             prefix = key_prefix or func.__name__
             cache_key = generate_cache_key(prefix, *args, **kwargs)
-            
+
             # Try to get from cache
             cached_value = cache_get(cache_key)
             if cached_value is not None:
                 return cached_value
-            
+
             # Call the function
             result = func(*args, **kwargs)
-            
+
             # Store in cache
             if result is not None:
                 cache_set(cache_key, result, ttl_type)
-            
+
             return result
-        
+
         # Return appropriate wrapper based on function type
         import asyncio
+
         if asyncio.iscoroutinefunction(func):
             return async_wrapper
         return sync_wrapper
-    
+
     return decorator
 
 

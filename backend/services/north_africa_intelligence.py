@@ -288,23 +288,25 @@ class NorthAfricaIntelligenceService:
         )
         countries_list = []
         for rank, (code, prof) in enumerate(ranked, start=1):
-            countries_list.append({
-                "rank": rank,
-                "iso3": code,
-                "country_name": prof["country_name"],
-                "gdp_bn_usd": prof["gdp_bn_usd"],
-                "population_m": prof["population_m"],
-                "investment_score": prof["investment_score"],
-                "afcfta_readiness": prof["afcfta_readiness"],
-                "eu_access": prof["eu_access"],
-                "us_access": prof["us_access"],
-                "comesa_member": prof["comesa_member"],
-                "key_sectors": prof["key_sectors"],
-                "special_zones_count": len(prof["special_zones"]),
-                "vat_rate": prof["vat_rate"],
-                "dd_avg_pct": prof["dd_avg_pct"],
-                "notes": prof["notes"],
-            })
+            countries_list.append(
+                {
+                    "rank": rank,
+                    "iso3": code,
+                    "country_name": prof["country_name"],
+                    "gdp_bn_usd": prof["gdp_bn_usd"],
+                    "population_m": prof["population_m"],
+                    "investment_score": prof["investment_score"],
+                    "afcfta_readiness": prof["afcfta_readiness"],
+                    "eu_access": prof["eu_access"],
+                    "us_access": prof["us_access"],
+                    "comesa_member": prof["comesa_member"],
+                    "key_sectors": prof["key_sectors"],
+                    "special_zones_count": len(prof["special_zones"]),
+                    "vat_rate": prof["vat_rate"],
+                    "dd_avg_pct": prof["dd_avg_pct"],
+                    "notes": prof["notes"],
+                }
+            )
 
         return {
             "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -399,38 +401,71 @@ class NorthAfricaIntelligenceService:
 
     _SECTOR_SCORES: Dict[str, Dict[str, float]] = {
         "automotive": {
-            "MAR": 9.0, "TUN": 7.5, "EGY": 6.5, "DZA": 5.0,
-            "MRT": 2.0, "LBY": 2.0, "SDN": 2.0,
+            "MAR": 9.0,
+            "TUN": 7.5,
+            "EGY": 6.5,
+            "DZA": 5.0,
+            "MRT": 2.0,
+            "LBY": 2.0,
+            "SDN": 2.0,
         },
         "textile": {
-            "EGY": 9.0, "MAR": 8.0, "TUN": 8.0, "DZA": 5.0,
-            "MRT": 3.0, "LBY": 2.0, "SDN": 3.0,
+            "EGY": 9.0,
+            "MAR": 8.0,
+            "TUN": 8.0,
+            "DZA": 5.0,
+            "MRT": 3.0,
+            "LBY": 2.0,
+            "SDN": 3.0,
         },
         "agriculture": {
-            "MAR": 8.5, "TUN": 7.0, "EGY": 7.5, "SDN": 7.0,
-            "DZA": 6.0, "MRT": 5.5, "LBY": 3.0,
+            "MAR": 8.5,
+            "TUN": 7.0,
+            "EGY": 7.5,
+            "SDN": 7.0,
+            "DZA": 6.0,
+            "MRT": 5.5,
+            "LBY": 3.0,
         },
         "renewable_energy": {
-            "MAR": 9.5, "EGY": 8.0, "TUN": 7.5, "DZA": 7.0,
-            "MRT": 6.0, "LBY": 5.0, "SDN": 4.0,
+            "MAR": 9.5,
+            "EGY": 8.0,
+            "TUN": 7.5,
+            "DZA": 7.0,
+            "MRT": 6.0,
+            "LBY": 5.0,
+            "SDN": 4.0,
         },
         "ict": {
-            "MAR": 8.0, "TUN": 8.5, "EGY": 7.5, "DZA": 5.5,
-            "MRT": 3.0, "LBY": 2.5, "SDN": 3.5,
+            "MAR": 8.0,
+            "TUN": 8.5,
+            "EGY": 7.5,
+            "DZA": 5.5,
+            "MRT": 3.0,
+            "LBY": 2.5,
+            "SDN": 3.5,
         },
         "hydrocarbons": {
-            "DZA": 9.5, "LBY": 9.0, "EGY": 8.0, "SDN": 6.0,
-            "MAR": 3.0, "TUN": 4.0, "MRT": 6.5,
+            "DZA": 9.5,
+            "LBY": 9.0,
+            "EGY": 8.0,
+            "SDN": 6.0,
+            "MAR": 3.0,
+            "TUN": 4.0,
+            "MRT": 6.5,
         },
         "mining": {
-            "MRT": 9.0, "MAR": 7.0, "DZA": 7.5, "SDN": 6.5,
-            "EGY": 5.0, "TUN": 4.0, "LBY": 5.5,
+            "MRT": 9.0,
+            "MAR": 7.0,
+            "DZA": 7.5,
+            "SDN": 6.5,
+            "EGY": 5.0,
+            "TUN": 4.0,
+            "LBY": 5.5,
         },
     }
 
-    def get_sector_opportunity_map(
-        self, sectors: Optional[List[str]] = None
-    ) -> Dict[str, Any]:
+    def get_sector_opportunity_map(self, sectors: Optional[List[str]] = None) -> Dict[str, Any]:
         """
         Return sector-level opportunity scores for UMA countries.
 
@@ -490,16 +525,51 @@ class NorthAfricaIntelligenceService:
             dict with route options ranked by access + cost score.
         """
         market_scores: Dict[str, Dict[str, float]] = {
-            "EU":     {"MAR": 9.0, "TUN": 8.5, "EGY": 7.5, "DZA": 4.0,
-                       "LBY": 3.0, "SDN": 2.0, "MRT": 3.5},
-            "US":     {"MAR": 9.0, "EGY": 8.0, "TUN": 5.0, "DZA": 3.0,
-                       "LBY": 2.0, "SDN": 2.0, "MRT": 2.5},
-            "AFRICA": {"MAR": 8.0, "EGY": 8.5, "SDN": 7.0, "TUN": 6.0,
-                       "DZA": 6.5, "MRT": 6.0, "LBY": 4.5},
-            "MENA":   {"EGY": 9.0, "MAR": 7.0, "TUN": 7.5, "LBY": 6.0,
-                       "DZA": 6.5, "SDN": 5.5, "MRT": 4.0},
-            "COMESA": {"EGY": 9.0, "SDN": 8.0, "LBY": 7.0, "TUN": 4.0,
-                       "MAR": 3.0, "DZA": 3.5, "MRT": 3.0},
+            "EU": {
+                "MAR": 9.0,
+                "TUN": 8.5,
+                "EGY": 7.5,
+                "DZA": 4.0,
+                "LBY": 3.0,
+                "SDN": 2.0,
+                "MRT": 3.5,
+            },
+            "US": {
+                "MAR": 9.0,
+                "EGY": 8.0,
+                "TUN": 5.0,
+                "DZA": 3.0,
+                "LBY": 2.0,
+                "SDN": 2.0,
+                "MRT": 2.5,
+            },
+            "AFRICA": {
+                "MAR": 8.0,
+                "EGY": 8.5,
+                "SDN": 7.0,
+                "TUN": 6.0,
+                "DZA": 6.5,
+                "MRT": 6.0,
+                "LBY": 4.5,
+            },
+            "MENA": {
+                "EGY": 9.0,
+                "MAR": 7.0,
+                "TUN": 7.5,
+                "LBY": 6.0,
+                "DZA": 6.5,
+                "SDN": 5.5,
+                "MRT": 4.0,
+            },
+            "COMESA": {
+                "EGY": 9.0,
+                "SDN": 8.0,
+                "LBY": 7.0,
+                "TUN": 4.0,
+                "MAR": 3.0,
+                "DZA": 3.5,
+                "MRT": 3.0,
+            },
         }
 
         dest = destination_market.upper()
@@ -509,17 +579,19 @@ class NorthAfricaIntelligenceService:
         routes = []
         for rank, (code, score) in enumerate(ranked, start=1):
             prof = self._profiles.get(code, {})
-            routes.append({
-                "rank": rank,
-                "iso3": code,
-                "country_name": prof.get("country_name", code),
-                "access_score": score,
-                "ports": prof.get("ports", []),
-                "eu_access": prof.get("eu_access", False),
-                "us_access": prof.get("us_access", False),
-                "comesa_member": prof.get("comesa_member", False),
-                "special_zones": prof.get("special_zones", []),
-            })
+            routes.append(
+                {
+                    "rank": rank,
+                    "iso3": code,
+                    "country_name": prof.get("country_name", code),
+                    "access_score": score,
+                    "ports": prof.get("ports", []),
+                    "eu_access": prof.get("eu_access", False),
+                    "us_access": prof.get("us_access", False),
+                    "comesa_member": prof.get("comesa_member", False),
+                    "special_zones": prof.get("special_zones", []),
+                }
+            )
 
         return {
             "generated_at": datetime.now(timezone.utc).isoformat(),

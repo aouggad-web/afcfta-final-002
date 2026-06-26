@@ -29,16 +29,36 @@ HOT_HS_PREFIXES: List[str] = [
 
 # Frequently queried countries
 HOT_COUNTRIES: List[str] = [
-    "DZA", "MAR", "EGY", "TUN",  # North Africa
-    "NGA", "GHA", "CIV", "SEN",  # West Africa
-    "KEN", "ETH", "TZA", "UGA",  # East Africa
-    "ZAF", "BWA", "ZMB", "MOZ",  # Southern Africa
-    "CMR", "COD", "AGO",         # Central Africa
+    "DZA",
+    "MAR",
+    "EGY",
+    "TUN",  # North Africa
+    "NGA",
+    "GHA",
+    "CIV",
+    "SEN",  # West Africa
+    "KEN",
+    "ETH",
+    "TZA",
+    "UGA",  # East Africa
+    "ZAF",
+    "BWA",
+    "ZMB",
+    "MOZ",  # Southern Africa
+    "CMR",
+    "COD",
+    "AGO",  # Central Africa
 ]
 
 # Regional blocs for L2 warming
 REGIONAL_BLOCS: List[str] = [
-    "ECOWAS", "CEMAC", "EAC", "SADC", "UMA", "COMESA", "IGAD",
+    "ECOWAS",
+    "CEMAC",
+    "EAC",
+    "SADC",
+    "UMA",
+    "COMESA",
+    "IGAD",
 ]
 
 
@@ -61,6 +81,7 @@ class CacheWarmingService:
         warmed = 0
         try:
             from backend.routes.countries import _get_all_countries  # type: ignore
+
             countries = await _get_all_countries()
         except Exception:
             # Graceful degradation: country endpoint may not be available
@@ -126,9 +147,9 @@ class CacheWarmingService:
 
         summary = {
             "countries_warmed": results[0] if not isinstance(results[0], Exception) else 0,
-            "hs_codes_warmed":  results[1] if not isinstance(results[1], Exception) else 0,
-            "regions_warmed":   results[2] if not isinstance(results[2], Exception) else 0,
-            "cache_stats":      self._cache.all_stats(),
+            "hs_codes_warmed": results[1] if not isinstance(results[1], Exception) else 0,
+            "regions_warmed": results[2] if not isinstance(results[2], Exception) else 0,
+            "cache_stats": self._cache.all_stats(),
         }
         logger.info(f"[CacheWarming] Warm-up complete: {summary}")
         return summary

@@ -14,9 +14,9 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query
+from auth import _hash_key, get_db
+from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
 from fastapi.websockets import WebSocketState
-from auth import get_db, _hash_key
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +59,7 @@ async def _ws_auth(websocket: WebSocket, api_key: Optional[str]) -> bool:
         await websocket.accept()
     return True
 
+
 # Channel definitions matching the problem statement
 WEBSOCKET_CHANNELS: Dict[str, Dict[str, Any]] = {
     "investment_alerts": {
@@ -93,6 +94,7 @@ WEBSOCKET_CHANNELS: Dict[str, Dict[str, Any]] = {
 # Connection Manager
 # =============================================================================
 
+
 class ConnectionManager:
     """
     Manages active WebSocket connections with channel-based pub/sub.
@@ -122,12 +124,15 @@ class ConnectionManager:
             "connection_id": str(uuid.uuid4()),
         }
         logger.info(f"[WS] Client connected to '{channel}' (user={user_id})")
-        await self._send(websocket, {
-            "type": "connection_ack",
-            "channel": channel,
-            "connection_id": self._meta[websocket]["connection_id"],
-            "message": f"Connected to {channel}",
-        })
+        await self._send(
+            websocket,
+            {
+                "type": "connection_ack",
+                "channel": channel,
+                "connection_id": self._meta[websocket]["connection_id"],
+                "message": f"Connected to {channel}",
+            },
+        )
 
     def disconnect(self, websocket: WebSocket) -> None:
         meta = self._meta.pop(websocket, {})
@@ -178,6 +183,7 @@ def _now() -> str:
 # =============================================================================
 # WebSocket endpoints
 # =============================================================================
+
 
 @router.websocket("/investment-alerts")
 async def investment_alerts_ws(
@@ -247,7 +253,8 @@ async def calculation_progress_ws(
     if not await _ws_auth(websocket, api_key):
         return
     await manager.connect(
-        websocket, "calculation_progress",
+        websocket,
+        "calculation_progress",
         filters={"operation_id": operation_id},
     )
     try:
@@ -290,16 +297,19 @@ async def regional_metrics_ws(
         while True:
             try:
                 from intelligence.analytics.regional_analytics import get_regional_analytics
+
                 analytics = get_regional_analytics()
                 if bloc:
                     data = analytics.get_bloc_summary(bloc.upper())
                 else:
                     data = {"blocs": analytics.get_all_blocs()}
-                await websocket.send_json({
-                    "type": "metrics_update",
-                    "timestamp": _now(),
-                    "data": data,
-                })
+                await websocket.send_json(
+                    {
+                        "type": "metrics_update",
+                        "timestamp": _now(),
+                        "data": data,
+                    }
+                )
             except Exception as exc:
                 logger.warning(f"[WS] Regional metrics error: {exc}")
             await asyncio.sleep(interval_s)
@@ -319,22 +329,26 @@ async def system_notifications_ws(
     await manager.connect(websocket, "system_notifications", user_id=user_id)
     try:
         # Send initial platform status
-        await websocket.send_json({
-            "type": "system_status",
-            "status": "operational",
-            "version": "3.0.0",
-            "timestamp": _now(),
-            "active_connections": manager.total_connections(),
-        })
+        await websocket.send_json(
+            {
+                "type": "system_status",
+                "status": "operational",
+                "version": "3.0.0",
+                "timestamp": _now(),
+                "active_connections": manager.total_connections(),
+            }
+        )
         while True:
             raw = await websocket.receive_text()
             msg = json.loads(raw)
             if msg.get("type") == "ping":
-                await websocket.send_json({
-                    "type": "pong",
-                    "timestamp": _now(),
-                    "active_connections": manager.total_connections(),
-                })
+                await websocket.send_json(
+                    {
+                        "type": "pong",
+                        "timestamp": _now(),
+                        "active_connections": manager.total_connections(),
+                    }
+                )
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 
@@ -342,6 +356,7 @@ async def system_notifications_ws(
 # =============================================================================
 # HTTP status endpoint for the WebSocket manager
 # =============================================================================
+
 
 @router.get("/status")
 async def websocket_status():

@@ -68,7 +68,6 @@ SADC_MINING_INTELLIGENCE = {
         "key_buyers": ["De Beers", "Alrosa", "Rio Tinto", "Lucara Diamond Corp"],
         "trade_routes": ["Antwerp (Belgium)", "Dubai", "Mumbai", "Hong Kong"],
     },
-
     # -----------------------------------------------------------------------
     # Platinum Group Metals (PGMs)
     # -----------------------------------------------------------------------
@@ -84,7 +83,12 @@ SADC_MINING_INTELLIGENCE = {
                     "Bushveld Igneous Complex – Rustenburg, Bafokeng, Marikana",
                     "Waterberg Project (Mokopane)",
                 ],
-                "major_companies": ["Anglo American Platinum (Amplats)", "Sibanye-Stillwater", "Northam Platinum", "Impala Platinum"],
+                "major_companies": [
+                    "Anglo American Platinum (Amplats)",
+                    "Sibanye-Stillwater",
+                    "Northam Platinum",
+                    "Impala Platinum",
+                ],
                 "annual_production_tonnes": 130,
             },
             {
@@ -107,7 +111,6 @@ SADC_MINING_INTELLIGENCE = {
             "sadc_initiatives": "South Africa Hydrogen Society Roadmap (2021)",
         },
     },
-
     # -----------------------------------------------------------------------
     # Copper Belt
     # -----------------------------------------------------------------------
@@ -177,7 +180,6 @@ SADC_MINING_INTELLIGENCE = {
             },
         ],
     },
-
     # -----------------------------------------------------------------------
     # Coal
     # -----------------------------------------------------------------------
@@ -217,7 +219,6 @@ SADC_MINING_INTELLIGENCE = {
             "role": "Regional electricity trading and interconnection",
         },
     },
-
     # -----------------------------------------------------------------------
     # Critical / Emerging Minerals
     # -----------------------------------------------------------------------

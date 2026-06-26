@@ -106,10 +106,15 @@ def _convert_position(p: dict) -> dict:
         "chapter": p.get("chapter") or (code[:2] if len(code) >= 2 else ""),
         "digits": len(code),
         # Côté import
-        "dd_rate": None, "dd_rate_raw": "",
-        "tpi_rate": None, "tic_rate": None, "vat_rate": None,
+        "dd_rate": None,
+        "dd_rate_raw": "",
+        "tpi_rate": None,
+        "tic_rate": None,
+        "vat_rate": None,
         # Côté export
-        "export_dd_rate": None, "export_levy_rate": None, "export_vat_rate": None,
+        "export_dd_rate": None,
+        "export_levy_rate": None,
+        "export_vat_rate": None,
         "formalities": p.get("reglementation_import", []),
     }
 
@@ -127,7 +132,8 @@ def _convert_position(p: dict) -> dict:
         flat[key] = float(rate) if rate is not None else None
         if key == "dd_rate":
             flat["dd_rate_raw"] = tax.get("raw_value", "") or (
-                f"{rate} %" if rate is not None else "")
+                f"{rate} %" if rate is not None else ""
+            )
 
     # Traitement côté export
     for tax in p.get("taxes_export", []) or []:
@@ -165,8 +171,7 @@ def _assemble(member: str, positions: list[dict]) -> dict:
     }
 
 
-async def _run(sample: bool, countries: list[str] | None,
-               max_per_chapter: int) -> dict[str, list]:
+async def _run(sample: bool, countries: list[str] | None, max_per_chapter: int) -> dict[str, list]:
     """Crawle les pays CEMAC demandés."""
     try:
         Scraper = _load_scraper()
@@ -190,7 +195,8 @@ async def _run(sample: bool, countries: list[str] | None,
                 chs = ["01", "10", "27", "39", "72", "84", "87"]
                 print(f"    Échantillon : chapitres {chs} (max {max_per_chapter}/chap)")
                 positions = await scraper.scrape_sample(
-                    chapters=chs, max_per_chapter=max_per_chapter)
+                    chapters=chs, max_per_chapter=max_per_chapter
+                )
             else:
                 all_pos: list[dict] = []
                 chs = [f"{i:02d}" for i in range(1, 98) if i != 77]
@@ -218,8 +224,13 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="engine/sources/cemac_raw.json")
     ap.add_argument("--sample", action="store_true")
-    ap.add_argument("--countries", nargs="+", choices=list(CEMAC_MEMBERS.keys()),
-                    default=None, help="Membres CEMAC à crawler (défaut : tous)")
+    ap.add_argument(
+        "--countries",
+        nargs="+",
+        choices=list(CEMAC_MEMBERS.keys()),
+        default=None,
+        help="Membres CEMAC à crawler (défaut : tous)",
+    )
     ap.add_argument("--max-per-chapter", type=int, default=5)
     args = ap.parse_args()
 
@@ -248,8 +259,7 @@ def main() -> None:
         else:
             out_path = out_dir / f"{member}_raw.json"
 
-        out_path.write_text(json.dumps(out_data, ensure_ascii=False, indent=2),
-                            encoding="utf-8")
+        out_path.write_text(json.dumps(out_data, ensure_ascii=False, indent=2), encoding="utf-8")
 
         dd_present = sum(1 for p in out_data["positions"] if p["dd_rate"] is not None)
         print(f"\n✅ {member}: {len(out_data['positions'])} positions écrites → {out_path}")
@@ -261,7 +271,9 @@ def main() -> None:
             crawl_path = Path(args.out)
         else:
             crawl_path = out_dir / f"{member}_raw.json"
-        print(f"     python engine/adapters/raw_crawl_adapter.py {member} {crawl_path} engine/output/")
+        print(
+            f"     python engine/adapters/raw_crawl_adapter.py {member} {crawl_path} engine/output/"
+        )
 
 
 if __name__ == "__main__":

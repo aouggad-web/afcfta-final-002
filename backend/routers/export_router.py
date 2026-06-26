@@ -1,16 +1,18 @@
 """
 API endpoints pour exporter les données
 """
-from fastapi import APIRouter, HTTPException, Query, Response
-from fastapi.responses import StreamingResponse
-from datetime import datetime, timezone
+
 import csv
 import io
 import logging
-import re
-import pandas as pd
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
+import re
+from datetime import datetime, timezone
+
+import pandas as pd
+from fastapi import APIRouter, HTTPException, Query, Response
+from fastapi.responses import StreamingResponse
+from motor.motor_asyncio import AsyncIOMotorClient
 
 logger = logging.getLogger(__name__)
 
@@ -30,16 +32,16 @@ def get_db():
     """Get database instance"""
     if _db is None:
         # Fallback: create connection if not initialized
-        mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017/')
+        mongo_url = os.environ.get("MONGO_URL", "mongodb://localhost:27017/")
         client = AsyncIOMotorClient(mongo_url)
-        return client[os.environ.get('DB_NAME', 'afcfta')]
+        return client[os.environ.get("DB_NAME", "afcfta")]
     return _db
 
 
 @router.get("/tariffs/csv")
 async def export_tariffs_csv(
     country: str = Query(..., description="Country code"),
-    latest: bool = Query(True, description="Latest only")
+    latest: bool = Query(True, description="Latest only"),
 ):
     """Export tariffs as CSV"""
     try:
@@ -58,16 +60,18 @@ async def export_tariffs_csv(
         rows = []
         for data in data_list:
             for line in data.get("tariffs", {}).get("tariff_lines", []):
-                rows.append({
-                    "country": data.get("country_code"),
-                    "hs_code": line.get("hs_code", ""),
-                    "description": line.get("description", ""),
-                    "unit": line.get("unit", ""),
-                    "customs_duty": line.get("customs_duty", ""),
-                    "vat": line.get("vat", ""),
-                    "source": line.get("source", ""),
-                    "date": data.get("imported_at", "")
-                })
+                rows.append(
+                    {
+                        "country": data.get("country_code"),
+                        "hs_code": line.get("hs_code", ""),
+                        "description": line.get("description", ""),
+                        "unit": line.get("unit", ""),
+                        "customs_duty": line.get("customs_duty", ""),
+                        "vat": line.get("vat", ""),
+                        "source": line.get("source", ""),
+                        "date": data.get("imported_at", ""),
+                    }
+                )
 
         output = io.StringIO()
         if rows:
@@ -80,7 +84,7 @@ async def export_tariffs_csv(
         return Response(
             content=output.getvalue(),
             media_type="text/csv",
-            headers={"Content-Disposition": f'attachment; filename="{filename}"'}
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
         )
 
     except HTTPException:
@@ -93,7 +97,7 @@ async def export_tariffs_csv(
 @router.get("/tariffs/excel")
 async def export_tariffs_excel(
     countries: str = Query(..., description="Comma-separated country codes"),
-    latest: bool = Query(True)
+    latest: bool = Query(True),
 ):
     """Export tariffs as Excel (multi-sheet)"""
     try:
@@ -101,7 +105,7 @@ async def export_tariffs_excel(
         country_list = [c.strip() for c in countries.split(",")]
         output = io.BytesIO()
 
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        with pd.ExcelWriter(output, engine="openpyxl") as writer:
             for country in country_list:
                 query = {"country_code": country}
                 data = await db["customs_data"].find_one(query, sort=[("imported_at", -1)])
@@ -111,17 +115,21 @@ async def export_tariffs_excel(
 
                 rows = []
                 for line in data.get("tariffs", {}).get("tariff_lines", []):
-                    rows.append({
-                        "HS Code": line.get("hs_code"),
-                        "Description": line.get("description"),
-                        "Unit": line.get("unit"),
-                        "Customs Duty": line.get("customs_duty"),
-                        "VAT": line.get("vat")
-                    })
+                    rows.append(
+                        {
+                            "HS Code": line.get("hs_code"),
+                            "Description": line.get("description"),
+                            "Unit": line.get("unit"),
+                            "Customs Duty": line.get("customs_duty"),
+                            "VAT": line.get("vat"),
+                        }
+                    )
 
                 if rows:
                     df = pd.DataFrame(rows)
-                    df.to_excel(writer, sheet_name=country[:31], index=False)  # Excel sheet name limit is 31 chars
+                    df.to_excel(
+                        writer, sheet_name=country[:31], index=False
+                    )  # Excel sheet name limit is 31 chars
 
         output.seek(0)
         filename = f"tariffs_{datetime.now(timezone.utc).strftime('%Y%m%d')}.xlsx"
@@ -129,7 +137,7 @@ async def export_tariffs_excel(
         return StreamingResponse(
             io.BytesIO(output.read()),
             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            headers={"Content-Disposition": f'attachment; filename="{filename}"'}
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
         )
 
     except Exception as e:
@@ -140,7 +148,7 @@ async def export_tariffs_excel(
 @router.get("/validation-report/json")
 async def export_validation_report_json(
     country: str = Query(None, description="Optional country code filter"),
-    min_score: float = Query(0.0, description="Minimum validation score")
+    min_score: float = Query(0.0, description="Minimum validation score"),
 ):
     """Export validation report as JSON"""
     try:
@@ -156,17 +164,14 @@ async def export_validation_report_json(
 
         validation_report = {
             "generated_at": datetime.now(timezone.utc).isoformat(),
-            "filters": {
-                "country": country,
-                "min_score": min_score
-            },
+            "filters": {"country": country, "min_score": min_score},
             "summary": {
                 "total_records": 0,
                 "validated_records": 0,
                 "failed_validations": 0,
-                "average_score": 0.0
+                "average_score": 0.0,
             },
-            "records": []
+            "records": [],
         }
 
         total_score = 0.0
@@ -185,18 +190,20 @@ async def export_validation_report_json(
             else:
                 validation_report["summary"]["failed_validations"] += 1
 
-            validation_report["records"].append({
-                "country_code": data.get("country_code"),
-                "imported_at": data.get("imported_at"),
-                "validation": {
-                    "is_valid": validation_info.get("is_valid", False),
-                    "score": score,
-                    "issues": validation_info.get("issues", []),
-                    "warnings": validation_info.get("warnings", [])
-                },
-                "tariff_count": len(data.get("tariffs", {}).get("tariff_lines", [])),
-                "regulation_count": len(data.get("regulations", []))
-            })
+            validation_report["records"].append(
+                {
+                    "country_code": data.get("country_code"),
+                    "imported_at": data.get("imported_at"),
+                    "validation": {
+                        "is_valid": validation_info.get("is_valid", False),
+                        "score": score,
+                        "issues": validation_info.get("issues", []),
+                        "warnings": validation_info.get("warnings", []),
+                    },
+                    "tariff_count": len(data.get("tariffs", {}).get("tariff_lines", [])),
+                    "regulation_count": len(data.get("regulations", [])),
+                }
+            )
 
         # Calculate average score
         if validation_report["summary"]["total_records"] > 0:
@@ -214,7 +221,7 @@ async def export_validation_report_json(
 @router.get("/comparison/csv")
 async def export_comparison_csv(
     countries: str = Query(..., description="Comma-separated country codes (2+ required)"),
-    hs_codes: str = Query(None, description="Optional: Comma-separated HS codes to compare")
+    hs_codes: str = Query(None, description="Optional: Comma-separated HS codes to compare"),
 ):
     """Compare tariffs between countries as CSV"""
     try:
@@ -233,8 +240,7 @@ async def export_comparison_csv(
         country_data = {}
         for country in country_list:
             data = await db["customs_data"].find_one(
-                {"country_code": country},
-                sort=[("imported_at", -1)]
+                {"country_code": country}, sort=[("imported_at", -1)]
             )
             if data:
                 country_data[country] = data
@@ -258,10 +264,7 @@ async def export_comparison_csv(
             if hs_code_filter and hs_code not in hs_code_filter:
                 continue
 
-            row = {
-                "hs_code": hs_code,
-                "description": tariff.get("description", "")
-            }
+            row = {"hs_code": hs_code, "description": tariff.get("description", "")}
 
             # Add data for each country
             for country in country_list:
@@ -273,8 +276,7 @@ async def export_comparison_csv(
                 # Find matching HS code in this country's data
                 country_tariffs = country_data[country].get("tariffs", {}).get("tariff_lines", [])
                 matching_tariff = next(
-                    (t for t in country_tariffs if t.get("hs_code") == hs_code),
-                    None
+                    (t for t in country_tariffs if t.get("hs_code") == hs_code), None
                 )
 
                 if matching_tariff:
@@ -300,7 +302,7 @@ async def export_comparison_csv(
         return Response(
             content=output.getvalue(),
             media_type="text/csv",
-            headers={"Content-Disposition": f'attachment; filename="{filename}"'}
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
         )
 
     except HTTPException:

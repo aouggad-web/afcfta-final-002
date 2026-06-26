@@ -27,7 +27,7 @@ from typing import Dict, List
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'crawled')
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data", "crawled")
 
 # ---------------------------------------------------------------------------
 # Tariff structure constants
@@ -65,26 +65,86 @@ HS_CHAPTER_RATES: Dict[str, Dict] = {
     "07": {"description": "Edible vegetables", "rate": 0.0, "category": "raw_materials"},
     "08": {"description": "Edible fruit and nuts", "rate": 10.0, "category": "agricultural"},
     "10": {"description": "Cereals", "rate": 20.0, "category": "agricultural"},
-    "11": {"description": "Products of the milling industry", "rate": 20.0, "category": "agricultural"},
-    "15": {"description": "Animal or vegetable fats and oils", "rate": 20.0, "category": "agricultural"},
+    "11": {
+        "description": "Products of the milling industry",
+        "rate": 20.0,
+        "category": "agricultural",
+    },
+    "15": {
+        "description": "Animal or vegetable fats and oils",
+        "rate": 20.0,
+        "category": "agricultural",
+    },
     "16": {"description": "Preparations of meat, fish", "rate": 15.0, "category": "final_goods"},
-    "17": {"description": "Sugars and sugar confectionery", "rate": 20.0, "category": "agricultural"},
-    "19": {"description": "Preparations of cereals, flour", "rate": 20.0, "category": "agricultural"},
-    "22": {"description": "Beverages, spirits and vinegar", "rate": 25.0, "category": "luxury_goods"},
-    "24": {"description": "Tobacco and manufactured tobacco substitutes", "rate": 30.0, "category": "luxury_goods"},
-    "25": {"description": "Salt; sulphur; earths and stone", "rate": 0.0, "category": "raw_materials"},
+    "17": {
+        "description": "Sugars and sugar confectionery",
+        "rate": 20.0,
+        "category": "agricultural",
+    },
+    "19": {
+        "description": "Preparations of cereals, flour",
+        "rate": 20.0,
+        "category": "agricultural",
+    },
+    "22": {
+        "description": "Beverages, spirits and vinegar",
+        "rate": 25.0,
+        "category": "luxury_goods",
+    },
+    "24": {
+        "description": "Tobacco and manufactured tobacco substitutes",
+        "rate": 30.0,
+        "category": "luxury_goods",
+    },
+    "25": {
+        "description": "Salt; sulphur; earths and stone",
+        "rate": 0.0,
+        "category": "raw_materials",
+    },
     "26": {"description": "Ores, slag and ash", "rate": 0.0, "category": "raw_materials"},
-    "27": {"description": "Mineral fuels; mineral oils", "rate": 2.0, "category": "intermediate_goods"},
+    "27": {
+        "description": "Mineral fuels; mineral oils",
+        "rate": 2.0,
+        "category": "intermediate_goods",
+    },
     "28": {"description": "Inorganic chemicals", "rate": 0.0, "category": "raw_materials"},
     "29": {"description": "Organic chemicals", "rate": 0.0, "category": "raw_materials"},
     "30": {"description": "Pharmaceutical products", "rate": 0.0, "category": "raw_materials"},
-    "32": {"description": "Tanning and dyeing extracts; pigments", "rate": 5.0, "category": "intermediate_goods"},
-    "33": {"description": "Essential oils; perfumery, cosmetics", "rate": 15.0, "category": "final_goods"},
-    "39": {"description": "Plastics and articles thereof", "rate": 10.0, "category": "intermediate_goods"},
-    "40": {"description": "Rubber and articles thereof", "rate": 5.0, "category": "intermediate_goods"},
-    "41": {"description": "Raw hides and skins (not furskins)", "rate": 0.0, "category": "raw_materials"},
-    "42": {"description": "Articles of leather; travel goods", "rate": 30.0, "category": "luxury_goods"},
-    "44": {"description": "Wood and articles of wood", "rate": 10.0, "category": "intermediate_goods"},
+    "32": {
+        "description": "Tanning and dyeing extracts; pigments",
+        "rate": 5.0,
+        "category": "intermediate_goods",
+    },
+    "33": {
+        "description": "Essential oils; perfumery, cosmetics",
+        "rate": 15.0,
+        "category": "final_goods",
+    },
+    "39": {
+        "description": "Plastics and articles thereof",
+        "rate": 10.0,
+        "category": "intermediate_goods",
+    },
+    "40": {
+        "description": "Rubber and articles thereof",
+        "rate": 5.0,
+        "category": "intermediate_goods",
+    },
+    "41": {
+        "description": "Raw hides and skins (not furskins)",
+        "rate": 0.0,
+        "category": "raw_materials",
+    },
+    "42": {
+        "description": "Articles of leather; travel goods",
+        "rate": 30.0,
+        "category": "luxury_goods",
+    },
+    "44": {
+        "description": "Wood and articles of wood",
+        "rate": 10.0,
+        "category": "intermediate_goods",
+    },
     "48": {"description": "Paper and paperboard", "rate": 5.0, "category": "intermediate_goods"},
     "50": {"description": "Silk", "rate": 22.0, "category": "textiles"},
     "51": {"description": "Wool and fine animal hair", "rate": 22.0, "category": "textiles"},
@@ -93,28 +153,92 @@ HS_CHAPTER_RATES: Dict[str, Dict] = {
     "54": {"description": "Man-made filaments", "rate": 22.0, "category": "textiles"},
     "55": {"description": "Man-made staple fibres", "rate": 22.0, "category": "textiles"},
     "56": {"description": "Wadding, felt and nonwovens", "rate": 22.0, "category": "textiles"},
-    "57": {"description": "Carpets and other textile floor coverings", "rate": 22.0, "category": "textiles"},
+    "57": {
+        "description": "Carpets and other textile floor coverings",
+        "rate": 22.0,
+        "category": "textiles",
+    },
     "58": {"description": "Special woven fabrics", "rate": 22.0, "category": "textiles"},
-    "61": {"description": "Articles of apparel and clothing (knitted)", "rate": 22.0, "category": "textiles"},
-    "62": {"description": "Articles of apparel and clothing (woven)", "rate": 22.0, "category": "textiles"},
+    "61": {
+        "description": "Articles of apparel and clothing (knitted)",
+        "rate": 22.0,
+        "category": "textiles",
+    },
+    "62": {
+        "description": "Articles of apparel and clothing (woven)",
+        "rate": 22.0,
+        "category": "textiles",
+    },
     "63": {"description": "Other made-up textile articles", "rate": 22.0, "category": "textiles"},
     "64": {"description": "Footwear", "rate": 30.0, "category": "luxury_goods"},
-    "71": {"description": "Natural or cultured pearls; precious stones", "rate": 0.0, "category": "raw_materials"},
+    "71": {
+        "description": "Natural or cultured pearls; precious stones",
+        "rate": 0.0,
+        "category": "raw_materials",
+    },
     "72": {"description": "Iron and steel", "rate": 5.0, "category": "intermediate_goods"},
     "73": {"description": "Articles of iron or steel", "rate": 15.0, "category": "final_goods"},
-    "74": {"description": "Copper and articles thereof", "rate": 5.0, "category": "intermediate_goods"},
-    "75": {"description": "Nickel and articles thereof", "rate": 5.0, "category": "intermediate_goods"},
-    "76": {"description": "Aluminium and articles thereof", "rate": 5.0, "category": "intermediate_goods"},
-    "84": {"description": "Nuclear reactors, boilers, machinery", "rate": 0.0, "category": "raw_materials"},
-    "85": {"description": "Electrical machinery and equipment", "rate": 0.0, "category": "raw_materials"},
-    "86": {"description": "Railway or tramway locomotives", "rate": 0.0, "category": "raw_materials"},
-    "87": {"description": "Vehicles (excl. railway rolling stock)", "rate": 25.0, "category": "automotive"},
+    "74": {
+        "description": "Copper and articles thereof",
+        "rate": 5.0,
+        "category": "intermediate_goods",
+    },
+    "75": {
+        "description": "Nickel and articles thereof",
+        "rate": 5.0,
+        "category": "intermediate_goods",
+    },
+    "76": {
+        "description": "Aluminium and articles thereof",
+        "rate": 5.0,
+        "category": "intermediate_goods",
+    },
+    "84": {
+        "description": "Nuclear reactors, boilers, machinery",
+        "rate": 0.0,
+        "category": "raw_materials",
+    },
+    "85": {
+        "description": "Electrical machinery and equipment",
+        "rate": 0.0,
+        "category": "raw_materials",
+    },
+    "86": {
+        "description": "Railway or tramway locomotives",
+        "rate": 0.0,
+        "category": "raw_materials",
+    },
+    "87": {
+        "description": "Vehicles (excl. railway rolling stock)",
+        "rate": 25.0,
+        "category": "automotive",
+    },
     "88": {"description": "Aircraft, spacecraft", "rate": 0.0, "category": "raw_materials"},
-    "89": {"description": "Ships, boats and floating structures", "rate": 0.0, "category": "raw_materials"},
-    "90": {"description": "Optical, photographic, medical instruments", "rate": 0.0, "category": "raw_materials"},
-    "94": {"description": "Furniture; bedding, mattresses", "rate": 20.0, "category": "final_goods"},
-    "95": {"description": "Toys, games and sports requisites", "rate": 15.0, "category": "final_goods"},
-    "96": {"description": "Miscellaneous manufactured articles", "rate": 15.0, "category": "final_goods"},
+    "89": {
+        "description": "Ships, boats and floating structures",
+        "rate": 0.0,
+        "category": "raw_materials",
+    },
+    "90": {
+        "description": "Optical, photographic, medical instruments",
+        "rate": 0.0,
+        "category": "raw_materials",
+    },
+    "94": {
+        "description": "Furniture; bedding, mattresses",
+        "rate": 20.0,
+        "category": "final_goods",
+    },
+    "95": {
+        "description": "Toys, games and sports requisites",
+        "rate": 15.0,
+        "category": "final_goods",
+    },
+    "96": {
+        "description": "Miscellaneous manufactured articles",
+        "rate": 15.0,
+        "category": "final_goods",
+    },
 }
 
 
@@ -126,7 +250,9 @@ def build_positions() -> List[Dict]:
         category = info["category"]
 
         # SADC preference (15% reduction for intra-SADC)
-        sadc_rate = round(rate * SOUTH_AFRICA_SADC_TARIFFS["sadc_preferences"]["intra_sadc_reduction"], 2)
+        sadc_rate = round(
+            rate * SOUTH_AFRICA_SADC_TARIFFS["sadc_preferences"]["intra_sadc_reduction"], 2
+        )
 
         position = {
             "code": f"{chapter}.00.00.00",
@@ -222,8 +348,8 @@ def run_scraper() -> Dict:
         },
     }
 
-    output_path = os.path.join(OUTPUT_DIR, 'ZAF_tariffs.json')
-    with open(output_path, 'w', encoding='utf-8') as f:
+    output_path = os.path.join(OUTPUT_DIR, "ZAF_tariffs.json")
+    with open(output_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
     logger.info(f"ZAF tariff data saved to {output_path} ({len(positions)} positions)")

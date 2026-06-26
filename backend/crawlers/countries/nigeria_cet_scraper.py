@@ -10,8 +10,8 @@ import logging
 import os
 import re
 import time
-from typing import Dict, List, Optional, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 import fitz
 import httpx
@@ -38,7 +38,7 @@ TAX_FULL_NAMES = {
     "EXC": "Excise Duty",
 }
 
-HS_CODE_PATTERN = re.compile(r'(\d{4}\.\d{2}\.\d{2}\.\d{2})')
+HS_CODE_PATTERN = re.compile(r"(\d{4}\.\d{2}\.\d{2}\.\d{2})")
 
 
 class NigeriaCETScraper:
@@ -208,7 +208,9 @@ class NigeriaCETScraper:
                 self.stats["chapters_processed"] += 1
                 self.stats["positions_extracted"] = len(self.positions)
 
-                logger.info(f"Chapter {ch}: {len(positions)} positions (total: {len(self.positions)})")
+                logger.info(
+                    f"Chapter {ch}: {len(positions)} positions (total: {len(self.positions)})"
+                )
 
                 if save_progress and self.stats["chapters_processed"] % 10 == 0:
                     self._save_progress()

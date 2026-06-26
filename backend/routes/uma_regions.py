@@ -37,18 +37,20 @@ router = APIRouter()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+
 def _constants():
     from crawlers.countries.north_africa.uma_constants import (
         COUNTRY_METADATA,
+        MULTILANG_NAMES,
+        UMA_CORPORATE_TAX_RATES,
         UMA_COUNTRIES,
+        UMA_DATA_SOURCES,
+        UMA_INVESTMENT_LAWS,
+        UMA_SECTOR_STRENGTHS,
         UMA_TRADE_BLOCS,
         UMA_VAT_RATES,
-        UMA_CORPORATE_TAX_RATES,
-        UMA_INVESTMENT_LAWS,
-        UMA_DATA_SOURCES,
-        UMA_SECTOR_STRENGTHS,
-        MULTILANG_NAMES,
     )
+
     return {
         "metadata": COUNTRY_METADATA,
         "countries": UMA_COUNTRIES,
@@ -64,11 +66,12 @@ def _constants():
 
 def _tariff_structures():
     from crawlers.countries.north_africa.tariff_structures import (
-        get_country_tariff_profile,
-        get_all_profiles,
-        get_regional_tariff_comparison,
         MOROCCO_TARIFFS,
+        get_all_profiles,
+        get_country_tariff_profile,
+        get_regional_tariff_comparison,
     )
+
     return {
         "get_profile": get_country_tariff_profile,
         "get_all": get_all_profiles,
@@ -79,10 +82,11 @@ def _tariff_structures():
 
 def _investment_zones():
     from crawlers.countries.north_africa.investment_zones import (
-        get_investment_zones,
         get_all_sez_data,
+        get_investment_zones,
         get_zone_summary,
     )
+
     return {
         "get_zones": get_investment_zones,
         "get_all": get_all_sez_data,
@@ -91,6 +95,7 @@ def _investment_zones():
 
 
 # ── /api/regions/north-africa/countries ──────────────────────────────────────
+
 
 @regions_router.get("/north-africa/countries")
 async def get_north_africa_countries(
@@ -123,32 +128,34 @@ async def get_north_africa_countries(
 
             name = ml.get(language, ml.get("en", meta.get("name_en", code)))
 
-            countries.append({
-                "iso3": code,
-                "name": name,
-                "name_en": meta.get("name_en", ""),
-                "name_fr": meta.get("name_fr", ""),
-                "name_ar": meta.get("name_ar", ""),
-                "capital": meta.get("capital", ""),
-                "currency": meta.get("currency", ""),
-                "currency_name": meta.get("currency_name", ""),
-                "population_m": meta.get("population_m"),
-                "gdp_bn_usd": meta.get("gdp_bn_usd"),
-                "languages": meta.get("languages", []),
-                "uma_member": meta.get("uma_member", False),
-                "wto_member": meta.get("wto_member", False),
-                "afcfta_ratified": meta.get("afcfta_ratified", False),
-                "trade_blocs": c["trade_blocs"].get(code, []),
-                "vat_rate": c["vat_rates"].get(code),
-                "corporate_tax_rate": c["cit_rates"].get(code),
-                "investment_law": c["investment_laws"].get(code, ""),
-                "sector_strengths": c["sector_strengths"].get(code, []),
-                "customs_authority": meta.get("customs_authority", ""),
-                "customs_url": meta.get("customs_url", ""),
-                "investment_agency": meta.get("investment_agency", ""),
-                "investment_url": meta.get("investment_url", ""),
-                "data_reliability": meta.get("data_reliability", "unknown"),
-            })
+            countries.append(
+                {
+                    "iso3": code,
+                    "name": name,
+                    "name_en": meta.get("name_en", ""),
+                    "name_fr": meta.get("name_fr", ""),
+                    "name_ar": meta.get("name_ar", ""),
+                    "capital": meta.get("capital", ""),
+                    "currency": meta.get("currency", ""),
+                    "currency_name": meta.get("currency_name", ""),
+                    "population_m": meta.get("population_m"),
+                    "gdp_bn_usd": meta.get("gdp_bn_usd"),
+                    "languages": meta.get("languages", []),
+                    "uma_member": meta.get("uma_member", False),
+                    "wto_member": meta.get("wto_member", False),
+                    "afcfta_ratified": meta.get("afcfta_ratified", False),
+                    "trade_blocs": c["trade_blocs"].get(code, []),
+                    "vat_rate": c["vat_rates"].get(code),
+                    "corporate_tax_rate": c["cit_rates"].get(code),
+                    "investment_law": c["investment_laws"].get(code, ""),
+                    "sector_strengths": c["sector_strengths"].get(code, []),
+                    "customs_authority": meta.get("customs_authority", ""),
+                    "customs_url": meta.get("customs_url", ""),
+                    "investment_agency": meta.get("investment_agency", ""),
+                    "investment_url": meta.get("investment_url", ""),
+                    "data_reliability": meta.get("data_reliability", "unknown"),
+                }
+            )
 
         return {
             "region": "North Africa",
@@ -163,6 +170,7 @@ async def get_north_africa_countries(
 
 
 # ── /api/regions/uma/intelligence ────────────────────────────────────────────
+
 
 @regions_router.get("/uma/intelligence")
 async def get_uma_intelligence():
@@ -206,12 +214,10 @@ async def get_uma_intelligence():
             }
 
         total_gdp = sum(
-            c["metadata"].get(cc, {}).get("gdp_bn_usd", 0) or 0
-            for cc in c["countries"]
+            c["metadata"].get(cc, {}).get("gdp_bn_usd", 0) or 0 for cc in c["countries"]
         )
         total_pop = sum(
-            c["metadata"].get(cc, {}).get("population_m", 0) or 0
-            for cc in c["countries"]
+            c["metadata"].get(cc, {}).get("population_m", 0) or 0 for cc in c["countries"]
         )
 
         return {
@@ -222,9 +228,7 @@ async def get_uma_intelligence():
             "total_countries": len(c["countries"]),
             "combined_gdp_bn_usd": total_gdp,
             "combined_population_m": total_pop,
-            "common_agreements": [
-                "AfCFTA", "GAFTA", "UMA/AMU Framework", "Agadir Agreement"
-            ],
+            "common_agreements": ["AfCFTA", "GAFTA", "UMA/AMU Framework", "Agadir Agreement"],
             "investment_zones": zone_summary,
             "country_intelligence": intelligence,
             "strategic_corridors": {
@@ -263,6 +267,7 @@ async def get_uma_intelligence():
 
 # ── /api/regions/north-africa/summary ────────────────────────────────────────
 
+
 @regions_router.get("/north-africa/summary")
 async def get_regional_summary():
     """Get a concise regional overview for dashboards."""
@@ -272,12 +277,10 @@ async def get_regional_summary():
 
         zone_summary = iz["summary"]()
         total_gdp = sum(
-            c["metadata"].get(cc, {}).get("gdp_bn_usd", 0) or 0
-            for cc in c["countries"]
+            c["metadata"].get(cc, {}).get("gdp_bn_usd", 0) or 0 for cc in c["countries"]
         )
         total_pop = sum(
-            c["metadata"].get(cc, {}).get("population_m", 0) or 0
-            for cc in c["countries"]
+            c["metadata"].get(cc, {}).get("population_m", 0) or 0 for cc in c["countries"]
         )
 
         return {
@@ -298,6 +301,7 @@ async def get_regional_summary():
 
 
 # ── /api/regions/north-africa/compare ────────────────────────────────────────
+
 
 @regions_router.get("/north-africa/compare")
 async def compare_countries(
@@ -321,9 +325,7 @@ async def compare_countries(
         ts = _tariff_structures()
 
         target_codes = (
-            [cc.strip().upper() for cc in countries.split(",")]
-            if countries
-            else c["countries"]
+            [cc.strip().upper() for cc in countries.split(",")] if countries else c["countries"]
         )
 
         comparison = {}
@@ -342,6 +344,7 @@ async def compare_countries(
             }
             if chapter is not None:
                 from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
+
                 comparison[code]["indicative_dd_rate_chapter"] = get_chapter_rate(code, chapter)
 
         return {
@@ -355,6 +358,7 @@ async def compare_countries(
 
 
 # ── /api/tariffs/north-africa/{country_code} ─────────────────────────────────
+
 
 @tariffs_router.get("/north-africa/{country_code}")
 async def get_country_tariff_profile(country_code: str):
@@ -406,6 +410,7 @@ async def get_all_north_africa_tariffs():
 
 
 # ── /api/investment/north-africa/zones ───────────────────────────────────────
+
 
 @investment_router.get("/north-africa/zones")
 async def get_all_investment_zones(
@@ -483,6 +488,7 @@ async def get_country_investment_zones(country_code: str):
 
 
 # ── /api/trade/north-africa/agreements ───────────────────────────────────────
+
 
 @trade_router.get("/north-africa/agreements")
 async def get_trade_agreements(

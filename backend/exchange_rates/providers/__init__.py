@@ -1,12 +1,13 @@
 """
 Exchange rate providers package.
 """
+
 from .base import BaseRateProvider
-from .frankfurter import FrankfurterProvider
+from .central_banks import AfricanCentralBanksProvider
 from .currencyfreaks import CurrencyFreaksProvider
 from .fixer import FixerProvider
+from .frankfurter import FrankfurterProvider
 from .open_er_api import OpenERApiProvider
-from .central_banks import AfricanCentralBanksProvider
 
 __all__ = [
     "BaseRateProvider",

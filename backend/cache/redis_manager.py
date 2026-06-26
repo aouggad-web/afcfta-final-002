@@ -9,8 +9,8 @@ L4 – Persistent    (TTL: 7 days)  – reference data, HS catalogue
 Gracefully falls back to an in-process dict cache when Redis is unavailable.
 """
 
-import json
 import hashlib
+import json
 import logging
 import time
 from datetime import datetime, timezone
@@ -45,7 +45,7 @@ class _InMemoryFallback:
         return value
 
     def set(self, key: str, value: str, ex: int = 0) -> None:
-        expires_at = time.time() + ex if ex else float('inf')
+        expires_at = time.time() + ex if ex else float("inf")
         self._store[key] = (value, expires_at)
 
     def delete_pattern(self, pattern: str) -> int:
@@ -105,7 +105,9 @@ class RedisManager:
             client.ping()
             self._client = client
             self._use_redis = True
-            logger.info("RedisManager: connected to Redis at %s:%s db=%s", self._host, self._port, self._db)
+            logger.info(
+                "RedisManager: connected to Redis at %s:%s db=%s", self._host, self._port, self._db
+            )
         except Exception as exc:
             logger.warning("RedisManager: Redis unavailable (%s). Using in-memory fallback.", exc)
             self._use_redis = False

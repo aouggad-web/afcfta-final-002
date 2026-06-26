@@ -6,15 +6,16 @@ data/crawled/*.json (et non selon ce qu'on aimerait avoir). Sert de tableau de
 bord honnête : qui a de l'authentique, qui repose sur de l'estimé à re-crawler,
 qui n'a rien.
 """
+
 from __future__ import annotations
 
 import json
 from collections import Counter
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
-from .manifest import build_manifest, Provenance
 from .canonical import NON_AUTHENTIC_QUALITY_TAGS
+from .manifest import Provenance, build_manifest
 
 CRAWLED_DIR = Path(__file__).resolve().parent.parent / "data" / "crawled"
 
@@ -52,14 +53,10 @@ def classify_file(iso3: str) -> Dict[str, Any]:
         return result
 
     # Provenance déclarée au niveau position (échantillon raisonnable).
-    pos_quals = Counter(
-        (p.get("source_quality") or p.get("quality")) for p in positions
-    )
+    pos_quals = Counter((p.get("source_quality") or p.get("quality")) for p in positions)
     estimated_count = sum(pos_quals.get(t, 0) for t in NON_AUTHENTIC_QUALITY_TAGS)
 
-    authentic_pos = sum(
-        pos_quals.get(t, 0) for t in ("crawled_authentic", "authentic_national")
-    )
+    authentic_pos = sum(pos_quals.get(t, 0) for t in ("crawled_authentic", "authentic_national"))
 
     if (
         file_quality in (Provenance.NATIONAL_CRAWL.value, "crawled_authentic", "authentic_national")
@@ -95,9 +92,13 @@ def build_coverage_report() -> Dict[str, Any]:
 
     summary = Counter(c["effective_provenance"] for c in countries)
     authentic = sum(
-        1 for c in countries
-        if c["effective_provenance"] in (
-            Provenance.NATIONAL_CRAWL.value, Provenance.REGIONAL_CET.value, Provenance.WTO_MFN_HS6.value
+        1
+        for c in countries
+        if c["effective_provenance"]
+        in (
+            Provenance.NATIONAL_CRAWL.value,
+            Provenance.REGIONAL_CET.value,
+            Provenance.WTO_MFN_HS6.value,
         )
     )
     return {

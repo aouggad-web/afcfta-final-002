@@ -43,9 +43,25 @@ CRAWLED_DIR = Path(__file__).parent.parent / "data" / "crawled"
 
 # Countries that need upgrading (old-format, non-empty data)
 OLD_COUNTRIES = [
-    "BEN", "BFA", "BWA", "CAF", "CIV", "CMR", "COG",
-    "GAB", "GIN", "LSO", "MLI", "NAM", "NER", "NGA",
-    "SEN", "SWZ", "TCD", "TGO", "ZAF",
+    "BEN",
+    "BFA",
+    "BWA",
+    "CAF",
+    "CIV",
+    "CMR",
+    "COG",
+    "GAB",
+    "GIN",
+    "LSO",
+    "MLI",
+    "NAM",
+    "NER",
+    "NGA",
+    "SEN",
+    "SWZ",
+    "TCD",
+    "TGO",
+    "ZAF",
 ]
 
 # Empty countries — upgrade format but keep tariff_lines empty
@@ -57,6 +73,7 @@ ALL_OLD = OLD_COUNTRIES + EMPTY_COUNTRIES
 # ================================================================
 # Tax extraction helpers
 # ================================================================
+
 
 def _to_float(val: Any) -> float:
     """Convert a tax rate value to float, returning 0.0 for non-numeric values."""
@@ -96,6 +113,7 @@ def _total_rate(taxes: Any) -> float:
 # Format detection
 # ================================================================
 
+
 def _detect_format(data: Dict) -> str:
     """
     Detect old-format sub-type from data structure.
@@ -116,7 +134,7 @@ def _detect_format(data: Dict) -> str:
         if cc_len == 10:
             return "nga10"
         else:
-            return "sadc_mixed"   # 6 or mix of 6/8
+            return "sadc_mixed"  # 6 or mix of 6/8
     else:
         # CEMAC (8 digit) or ECOWAS (10 digit) — taxes are a dict
         if cc_len <= 8:
@@ -127,6 +145,7 @@ def _detect_format(data: Dict) -> str:
 # ================================================================
 # HS6 extraction
 # ================================================================
+
 
 def _hs6_of(pos: Dict) -> str:
     """Return the clean 6-digit hs6 code for a position."""
@@ -145,16 +164,16 @@ def _hs6_of(pos: Dict) -> str:
 # ================================================================
 
 _TAX_LABELS: Dict[str, Tuple[str, str]] = {
-    "DD":  ("D.D",   "Droit de Douane"),
+    "DD": ("D.D", "Droit de Douane"),
     "TVA": ("T.V.A", "Taxe sur la Valeur Ajoutée"),
-    "TCI": ("TCI",   "Taxe Communautaire d'Intégration"),
-    "RI":  ("RI",    "Redevance Informatique"),
-    "RS":  ("RS",    "Redevance Statistique"),
-    "TS":  ("TS",    "Taxe Statistique"),
-    "PCS": ("PCS",   "Prélèvement Communautaire de Solidarité"),
-    "PCC": ("PCC",   "Prélèvement Communautaire CEDEAO"),
-    "PUA": ("PUA",   "Prélèvement Union Africaine"),
-    "SUR": ("SUR",   "Taxe Complémentaire (Surtaxe)"),
+    "TCI": ("TCI", "Taxe Communautaire d'Intégration"),
+    "RI": ("RI", "Redevance Informatique"),
+    "RS": ("RS", "Redevance Statistique"),
+    "TS": ("TS", "Taxe Statistique"),
+    "PCS": ("PCS", "Prélèvement Communautaire de Solidarité"),
+    "PCC": ("PCC", "Prélèvement Communautaire CEDEAO"),
+    "PUA": ("PUA", "Prélèvement Union Africaine"),
+    "SUR": ("SUR", "Taxe Complémentaire (Surtaxe)"),
 }
 
 
@@ -190,6 +209,7 @@ def _build_taxes_detail(taxes: Any) -> List[Dict]:
 # Sub-position builder
 # ================================================================
 
+
 def _build_sub_position(pos: Dict, format_type: str, dd_rate: float, country_code: str) -> Dict:
     """Build one sub_position entry from an old-format position."""
     code_clean = pos.get("code_clean", "")
@@ -212,7 +232,11 @@ def _build_sub_position(pos: Dict, format_type: str, dd_rate: float, country_cod
     # Avoid low-quality generic placeholders ("Type 1", "Type 2", etc.)
     # that make multiple countries look artificially identical.
     generic_markers = {
-        "type 1", "type 2", "other", "autre", "autres",
+        "type 1",
+        "type 2",
+        "other",
+        "autre",
+        "autres",
         "première sous-position tarifaire nationale",
         "deuxième sous-position tarifaire nationale",
         "first national tariff sub-position",
@@ -240,6 +264,7 @@ def _build_sub_position(pos: Dict, format_type: str, dd_rate: float, country_cod
 # Default fiscal structures
 # ================================================================
 
+
 def _default_fiscal_advantage(dd_rate: float) -> List[Dict]:
     return [
         {
@@ -263,6 +288,7 @@ _DEFAULT_ADMIN = [
 # ================================================================
 # Core migration per position group
 # ================================================================
+
 
 def _group_positions(positions: List[Dict]) -> Dict[str, List[Dict]]:
     """Group positions by their 6-digit hs6 code."""
@@ -355,6 +381,7 @@ def _build_tariff_line(
 # Top-level migration
 # ================================================================
 
+
 def _migrate_country(data: Dict, country_code: str) -> Dict:
     """Convert an old-format dict to enhanced_v2."""
     positions = data.get("positions", [])
@@ -441,6 +468,7 @@ def _migrate_country(data: Dict, country_code: str) -> Dict:
 # ================================================================
 # File I/O
 # ================================================================
+
 
 def upgrade_country(country_code: str) -> bool:
     """Read, migrate, and overwrite one country's tariff data file."""

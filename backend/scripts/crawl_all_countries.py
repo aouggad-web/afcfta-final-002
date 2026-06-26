@@ -36,9 +36,9 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from tariff_crawl.manifest import build_manifest  # noqa: E402
-from tariff_crawl.coverage import build_coverage_report, format_report, CRAWLED_DIR  # noqa: E402
 from tariff_crawl.canonical import validate_authenticity  # noqa: E402
+from tariff_crawl.coverage import CRAWLED_DIR, build_coverage_report, format_report  # noqa: E402
+from tariff_crawl.manifest import build_manifest  # noqa: E402
 
 
 def cmd_dry_run(countries: list[str] | None) -> int:
@@ -54,9 +54,13 @@ def cmd_dry_run(countries: list[str] | None) -> int:
 
     # Lacunes : pays sans source authentique prête (à implémenter / sans données).
     to_implement = [
-        iso for iso, d in manifest.items()
-        if all(s.get("status") != "ready" for s in d["sources_chain"]
-               if s["provenance"] == "national_crawl")
+        iso
+        for iso, d in manifest.items()
+        if all(
+            s.get("status") != "ready"
+            for s in d["sources_chain"]
+            if s["provenance"] == "national_crawl"
+        )
     ]
     print(f"Pays avec crawl national encore à implémenter : {len(to_implement)}")
 
@@ -112,6 +116,7 @@ def cmd_validate_file(iso3: str) -> int:
     doc = json.loads(path.read_text(encoding="utf-8"))
     positions = doc.get("sub_positions") or doc.get("positions") or doc.get("tariff_lines") or []
     from collections import Counter
+
     quals = Counter(p.get("source_quality") or p.get("quality") for p in positions)
 
     ok, issues = validate_authenticity(doc)
@@ -128,13 +133,17 @@ def cmd_validate_file(iso3: str) -> int:
     ingestion_ok = True
     if positions and indexed == 0:
         ingestion_ok = False
-        print(f"✗ INGESTION CASSÉE — 0 position indexée alors que le fichier en contient "
-              f"{len(positions)}. Le schéma ne correspond à aucun normaliseur : ajouter un "
-              f"_normalize_{iso3.lower()} dans services/crawled_data_service.py, ou émettre "
-              f"le schéma canonique (code_raw/code_clean + taxes en liste).")
+        print(
+            f"✗ INGESTION CASSÉE — 0 position indexée alors que le fichier en contient "
+            f"{len(positions)}. Le schéma ne correspond à aucun normaliseur : ajouter un "
+            f"_normalize_{iso3.lower()} dans services/crawled_data_service.py, ou émettre "
+            f"le schéma canonique (code_raw/code_clean + taxes en liste)."
+        )
     elif positions and indexed < len(positions) * 0.5:
-        print(f"⚠ INGESTION PARTIELLE — seulement {indexed}/{len(positions)} positions indexées ; "
-              f"vérifier le normaliseur.")
+        print(
+            f"⚠ INGESTION PARTIELLE — seulement {indexed}/{len(positions)} positions indexées ; "
+            f"vérifier le normaliseur."
+        )
 
     if ok and ingestion_ok:
         print("✓ AUTHENTIQUE & INGESTIBLE — le fichier passe la validation et est servable.")
@@ -150,6 +159,7 @@ def _indexed_count(iso3: str) -> int:
     """Nombre de positions effectivement indexées par crawled_data_service."""
     try:
         from services.crawled_data_service import CrawledDataService
+
         svc = CrawledDataService()
         svc.load(force=True)
         svc._ensure_country_loaded(iso3)
@@ -160,11 +170,16 @@ def _indexed_count(iso3: str) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Pipeline de collecte tarifaire authentique (54 pays).")
+    ap = argparse.ArgumentParser(
+        description="Pipeline de collecte tarifaire authentique (54 pays)."
+    )
     ap.add_argument("--run", action="store_true", help="Collecte réelle (réseau + secrets requis).")
     ap.add_argument("--country", action="append", help="Limiter à un/des pays (ISO3). Répétable.")
-    ap.add_argument("--validate-file", metavar="ISO3",
-                    help="Valide l'authenticité de data/crawled/{ISO3}_tariffs.json déjà produit.")
+    ap.add_argument(
+        "--validate-file",
+        metavar="ISO3",
+        help="Valide l'authenticité de data/crawled/{ISO3}_tariffs.json déjà produit.",
+    )
     args = ap.parse_args(argv)
 
     if args.validate_file:

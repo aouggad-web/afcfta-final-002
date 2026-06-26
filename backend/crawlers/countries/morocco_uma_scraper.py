@@ -170,6 +170,7 @@ MOROCCO_SEZ = [
     },
 ]
 
+
 # ── Chapter-to-band mapping ───────────────────────────────────────────────────
 def _get_band(chapter: int) -> str:
     if 1 <= chapter <= 24:
@@ -197,10 +198,10 @@ def _get_dd_rate(chapter: int) -> float:
 def _get_tva_rate(chapter: int) -> float:
     """Return standard TVA rate; 7% for basic foods, 14% for selected goods."""
     if 1 <= chapter <= 24:
-        return 7.0   # reduced rate for food
+        return 7.0  # reduced rate for food
     elif chapter in (27, 30):
         return 14.0  # fuels and pharma
-    return 20.0      # standard rate
+    return 20.0  # standard rate
 
 
 def build_uma_position(

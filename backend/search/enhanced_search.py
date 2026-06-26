@@ -10,8 +10,8 @@ built-in Python so the module works out of the box.
 
 from __future__ import annotations
 
-import re
 import logging
+import re
 from difflib import SequenceMatcher, get_close_matches
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -57,15 +57,20 @@ HS_CATALOGUE: Dict[str, Dict[str, str]] = {
     "63": {"en": "Other made-up textile articles", "fr": "Autres articles textiles"},
     "64": {"en": "Footwear", "fr": "Chaussures"},
     "70": {"en": "Glass and glassware", "fr": "Verre et ouvrages en verre"},
-    "71": {"en": "Natural or cultured pearls, precious stones, precious metals",
-           "fr": "Perles, pierres gemmes, métaux précieux"},
+    "71": {
+        "en": "Natural or cultured pearls, precious stones, precious metals",
+        "fr": "Perles, pierres gemmes, métaux précieux",
+    },
     "72": {"en": "Iron and steel", "fr": "Fonte, fer et acier"},
     "73": {"en": "Articles of iron or steel", "fr": "Ouvrages en fonte, fer ou acier"},
     "74": {"en": "Copper and articles thereof", "fr": "Cuivre et ouvrages en cuivre"},
     "76": {"en": "Aluminium and articles thereof", "fr": "Aluminium et ouvrages en aluminium"},
     "84": {"en": "Nuclear reactors, boilers, machinery", "fr": "Réacteurs nucléaires, chaudières"},
     "85": {"en": "Electrical machinery and equipment", "fr": "Machines électriques"},
-    "86": {"en": "Railway locomotives and rolling stock", "fr": "Locomotives et matériel ferroviaire"},
+    "86": {
+        "en": "Railway locomotives and rolling stock",
+        "fr": "Locomotives et matériel ferroviaire",
+    },
     "87": {"en": "Vehicles other than railway", "fr": "Voitures automobiles"},
     "88": {"en": "Aircraft, spacecraft", "fr": "Aéronefs, engins spatiaux"},
     "89": {"en": "Ships, boats and floating structures", "fr": "Bateaux et engins flottants"},
@@ -78,12 +83,15 @@ HS_CATALOGUE: Dict[str, Dict[str, str]] = {
     "2601": {"en": "Iron ores and concentrates", "fr": "Minerais de fer et concentrés"},
     "2709": {"en": "Petroleum oils, crude", "fr": "Huiles brutes de pétrole"},
     "7108": {"en": "Gold (incl. gold plated with platinum)", "fr": "Or"},
-    "8471": {"en": "Automatic data-processing machines (computers)",
-             "fr": "Machines automatiques de traitement de l'information"},
-    "8517": {"en": "Telephone sets, smartphones",
-             "fr": "Appareils téléphoniques, smartphones"},
-    "6109": {"en": "T-shirts, singlets and other vests, knitted",
-             "fr": "T-shirts et maillots de corps en maille"},
+    "8471": {
+        "en": "Automatic data-processing machines (computers)",
+        "fr": "Machines automatiques de traitement de l'information",
+    },
+    "8517": {"en": "Telephone sets, smartphones", "fr": "Appareils téléphoniques, smartphones"},
+    "6109": {
+        "en": "T-shirts, singlets and other vests, knitted",
+        "fr": "T-shirts et maillots de corps en maille",
+    },
     "4011": {"en": "New pneumatic tyres, of rubber", "fr": "Pneumatiques neufs, en caoutchouc"},
 }
 
@@ -101,9 +109,7 @@ class FuzzyMatcher:
 
         for code, descriptions in HS_CATALOGUE.items():
             description = descriptions.get(lang, descriptions["en"])
-            ratio = SequenceMatcher(
-                None, query_lower, description.lower()
-            ).ratio()
+            ratio = SequenceMatcher(None, query_lower, description.lower()).ratio()
             if ratio >= self.threshold:
                 results.append(
                     {
@@ -245,8 +251,9 @@ class EnhancedSearchEngine:
         results["semantic_matches"] = self._semantic.find_similar(query)
 
         # Category suggestions based on top result
-        top_codes = [r["hs_code"] for r in results["exact_matches"][:1]] + \
-                    [r["hs_code"] for r in results["semantic_matches"][:2]]
+        top_codes = [r["hs_code"] for r in results["exact_matches"][:1]] + [
+            r["hs_code"] for r in results["semantic_matches"][:2]
+        ]
         chapters = {c[:2] for c in top_codes if len(c) >= 4}
         for chapter in chapters:
             desc = HS_CATALOGUE.get(chapter, {})
@@ -283,8 +290,8 @@ class EnhancedSearchEngine:
         """
         try:
             from intelligence.ai_engine.investment_scoring import (
-                get_intelligence_engine,
                 COUNTRY_INDICATORS,
+                get_intelligence_engine,
             )
         except ImportError:
             return {"error": "Intelligence engine not available", "opportunities": []}
@@ -306,8 +313,7 @@ class EnhancedSearchEngine:
         for country in countries:
             for sector in sectors:
                 score = engine.calculate_investment_score(
-                    country, sector, investment_size,
-                    {"risk_tolerance": risk_tolerance}
+                    country, sector, investment_size, {"risk_tolerance": risk_tolerance}
                 )
 
                 if score.overall_score < min_score:

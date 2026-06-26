@@ -34,37 +34,33 @@ _REQUIREMENTS_FILE = os.path.join(_backend_dir, "requirements.txt")
 # rather than installing the entire requirements.txt to keep the install fast.
 _REQUIRED_PACKAGES: list[tuple[str, str]] = [
     # (importable_name, pip_install_spec)
-    ("httpx",           "httpx==0.28.1"),
-    ("motor",           "motor==3.3.1"),
-    ("pydantic",        "pydantic==2.12.0"),
-    ("pytest_asyncio",  "pytest-asyncio==1.3.0"),
-    ("fastapi",         "fastapi[standard]==0.115.12"),
-    ("pandas",          "pandas>=2.0"),
-    ("openpyxl",        "openpyxl>=3.1"),
+    ("httpx", "httpx==0.28.1"),
+    ("motor", "motor==3.3.1"),
+    ("pydantic", "pydantic==2.12.0"),
+    ("pytest_asyncio", "pytest-asyncio==1.3.0"),
+    ("fastapi", "fastapi[standard]==0.115.12"),
+    ("pandas", "pandas>=2.0"),
+    ("openpyxl", "openpyxl>=3.1"),
 ]
 
 
 def _package_available(import_name: str) -> bool:
     """Return True if `import import_name` would succeed."""
     import importlib.util
+
     return importlib.util.find_spec(import_name) is not None
 
 
 def _ensure_packages() -> None:
     """Install any missing packages from _REQUIRED_PACKAGES."""
-    missing = [
-        spec for name, spec in _REQUIRED_PACKAGES
-        if not _package_available(name)
-    ]
+    missing = [spec for name, spec in _REQUIRED_PACKAGES if not _package_available(name)]
     if not missing:
         return
     print(
         f"\n[conftest] Installing missing test dependencies: {missing}",
         file=sys.stderr,
     )
-    subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", "--quiet"] + missing
-    )
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--quiet"] + missing)
     print("[conftest] Done.", file=sys.stderr)
 
 

@@ -23,12 +23,14 @@ logger = logging.getLogger(__name__)
 # Import mining data (with graceful fallback)
 # ---------------------------------------------------------------------------
 
+
 def _load_mining_data() -> Dict[str, Any]:
     try:
         from crawlers.countries.sadc.mining_intelligence import (
-            SADC_MINING_INTELLIGENCE,
             MINING_REGULATORY_OVERVIEW,
+            SADC_MINING_INTELLIGENCE,
         )
+
         return {
             "intelligence": SADC_MINING_INTELLIGENCE,
             "regulatory": MINING_REGULATORY_OVERVIEW,
@@ -220,33 +222,108 @@ class MiningSectorService:
         """
         EXPORT_ROUTES: Dict[str, List[Dict]] = {
             "ZMB": [
-                {"route": "North-South Corridor", "port": "Durban (ZAF)", "mode": "road/rail", "priority": 1},
-                {"route": "Dar-es-Salaam Corridor", "port": "Dar-es-Salaam (TZA)", "mode": "road/TAZARA", "priority": 2},
-                {"route": "Walvis Bay Corridor", "port": "Walvis Bay (NAM)", "mode": "road", "priority": 3},
-                {"route": "Lobito Corridor", "port": "Lobito (AGO)", "mode": "rail (rehabilitating)", "priority": 4},
+                {
+                    "route": "North-South Corridor",
+                    "port": "Durban (ZAF)",
+                    "mode": "road/rail",
+                    "priority": 1,
+                },
+                {
+                    "route": "Dar-es-Salaam Corridor",
+                    "port": "Dar-es-Salaam (TZA)",
+                    "mode": "road/TAZARA",
+                    "priority": 2,
+                },
+                {
+                    "route": "Walvis Bay Corridor",
+                    "port": "Walvis Bay (NAM)",
+                    "mode": "road",
+                    "priority": 3,
+                },
+                {
+                    "route": "Lobito Corridor",
+                    "port": "Lobito (AGO)",
+                    "mode": "rail (rehabilitating)",
+                    "priority": 4,
+                },
             ],
             "COD": [
-                {"route": "Dar-es-Salaam Corridor", "port": "Dar-es-Salaam (TZA)", "mode": "road/rail", "priority": 1},
-                {"route": "Lobito Corridor", "port": "Lobito (AGO)", "mode": "rail (Benguela)", "priority": 2},
-                {"route": "North-South Corridor", "port": "Durban (ZAF)", "mode": "road/rail (indirect)", "priority": 3},
+                {
+                    "route": "Dar-es-Salaam Corridor",
+                    "port": "Dar-es-Salaam (TZA)",
+                    "mode": "road/rail",
+                    "priority": 1,
+                },
+                {
+                    "route": "Lobito Corridor",
+                    "port": "Lobito (AGO)",
+                    "mode": "rail (Benguela)",
+                    "priority": 2,
+                },
+                {
+                    "route": "North-South Corridor",
+                    "port": "Durban (ZAF)",
+                    "mode": "road/rail (indirect)",
+                    "priority": 3,
+                },
             ],
             "ZWE": [
-                {"route": "North-South Corridor", "port": "Durban (ZAF)", "mode": "road/rail", "priority": 1},
-                {"route": "Beira Corridor", "port": "Beira (MOZ)", "mode": "road/rail", "priority": 2},
+                {
+                    "route": "North-South Corridor",
+                    "port": "Durban (ZAF)",
+                    "mode": "road/rail",
+                    "priority": 1,
+                },
+                {
+                    "route": "Beira Corridor",
+                    "port": "Beira (MOZ)",
+                    "mode": "road/rail",
+                    "priority": 2,
+                },
             ],
             "MOZ": [
-                {"route": "Nacala Corridor", "port": "Nacala (MOZ)", "mode": "rail/road", "priority": 1},
-                {"route": "Beira Corridor", "port": "Beira (MOZ)", "mode": "road/rail", "priority": 2},
+                {
+                    "route": "Nacala Corridor",
+                    "port": "Nacala (MOZ)",
+                    "mode": "rail/road",
+                    "priority": 1,
+                },
+                {
+                    "route": "Beira Corridor",
+                    "port": "Beira (MOZ)",
+                    "mode": "road/rail",
+                    "priority": 2,
+                },
             ],
             "ZAF": [
-                {"route": "Direct", "port": "Durban / Richards Bay / Cape Town (ZAF)", "mode": "road/rail", "priority": 1},
+                {
+                    "route": "Direct",
+                    "port": "Durban / Richards Bay / Cape Town (ZAF)",
+                    "mode": "road/rail",
+                    "priority": 1,
+                },
             ],
             "BWA": [
-                {"route": "North-South Corridor", "port": "Durban (ZAF)", "mode": "road/rail", "priority": 1},
-                {"route": "Trans-Kalahari Corridor", "port": "Walvis Bay (NAM)", "mode": "road", "priority": 2},
+                {
+                    "route": "North-South Corridor",
+                    "port": "Durban (ZAF)",
+                    "mode": "road/rail",
+                    "priority": 1,
+                },
+                {
+                    "route": "Trans-Kalahari Corridor",
+                    "port": "Walvis Bay (NAM)",
+                    "mode": "road",
+                    "priority": 2,
+                },
             ],
             "TZA": [
-                {"route": "Direct", "port": "Dar-es-Salaam (TZA)", "mode": "road/rail", "priority": 1},
+                {
+                    "route": "Direct",
+                    "port": "Dar-es-Salaam (TZA)",
+                    "mode": "road/rail",
+                    "priority": 1,
+                },
             ],
         }
 

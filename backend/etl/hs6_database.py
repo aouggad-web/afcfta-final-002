@@ -14,37 +14,35 @@ Sources:
 Dernière mise à jour: Janvier 2025
 """
 
-from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
+from typing import Dict, List, Optional, Tuple
+
+# Import des règles d'origine ZLECAf officielles
+from .afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES, get_chapter_status_summary
+from .afcfta_rules_of_origin import get_rule_of_origin as get_afcfta_rule
+
+# Import de la base CSV complète (5762 codes SH2022)
+from .hs6_csv_database import HS6_CSV_DATABASE
 
 # Import des extensions de la base HS6
 from .hs6_extended_ch01_06 import HS6_EXTENDED as HS6_EXTENDED_CH01_06
 from .hs6_extended_ch07_15 import HS6_EXTENDED_CH07_15
 from .hs6_extended_ch16_24 import HS6_EXTENDED_CH16_24
 from .hs6_extended_ch25_40 import HS6_EXTENDED_CH25_40
-from .hs6_extended_ch41_63 import HS6_EXTENDED_CH41_63
-from .hs6_extended_ch72_89 import HS6_EXTENDED_CH72_89
 from .hs6_extended_ch32_38 import HS6_EXTENDED_CH32_38
+from .hs6_extended_ch41_63 import HS6_EXTENDED_CH41_63
 from .hs6_extended_ch42_49 import HS6_EXTENDED_CH42_49
-
-# Import de la base CSV complète (5762 codes SH2022)
-from .hs6_csv_database import HS6_CSV_DATABASE
-
-# Import des règles d'origine ZLECAf officielles
-from .afcfta_rules_of_origin import (
-    get_rule_of_origin as get_afcfta_rule,
-    get_chapter_status_summary,
-    CHAPTER_RULES,
-    ORIGIN_TYPES
-)
+from .hs6_extended_ch72_89 import HS6_EXTENDED_CH72_89
 
 # =============================================================================
 # STRUCTURE DE BASE HS6
 # =============================================================================
 
+
 @dataclass
 class HS6Code:
     """Structure d'un code HS6 avec métadonnées"""
+
     code: str
     chapter: str
     description_fr: str
@@ -53,6 +51,7 @@ class HS6Code:
     sensitivity: str  # normal, sensitive, excluded (pour ZLECAf)
     has_sub_positions: bool
     typical_sub_position_types: List[str]  # new_used, quality_grade, origin, etc.
+
 
 # =============================================================================
 # BASE HS6 COMPLÈTE - PRODUITS CLÉS AFRIQUE
@@ -74,8 +73,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - 100% africain",
             "requirement_en": "Wholly obtained - 100% African",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "010410": {
         "chapter": "01",
@@ -89,8 +88,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - 100% africain",
             "requirement_en": "Wholly obtained - 100% African",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "010420": {
         "chapter": "01",
@@ -104,10 +103,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - 100% africain",
             "requirement_en": "Wholly obtained - 100% African",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 02 - VIANDES
     # =========================================================================
@@ -123,8 +121,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - animal né et élevé en Afrique",
             "requirement_en": "Wholly obtained - animal born and raised in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "020230": {
         "chapter": "02",
@@ -138,8 +136,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - animal né et élevé en Afrique",
             "requirement_en": "Wholly obtained - animal born and raised in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "020714": {
         "chapter": "02",
@@ -153,10 +151,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 03 - POISSONS
     # =========================================================================
@@ -172,8 +169,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Pêché dans les eaux africaines",
             "requirement_en": "Caught in African waters",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "030342": {
         "chapter": "03",
@@ -187,8 +184,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Pêché dans les eaux africaines",
             "requirement_en": "Caught in African waters",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "030389": {
         "chapter": "03",
@@ -202,8 +199,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Pêché dans les eaux africaines",
             "requirement_en": "Caught in African waters",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "030617": {
         "chapter": "03",
@@ -217,10 +214,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Pêché ou élevé en Afrique",
             "requirement_en": "Caught or farmed in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 07-08 - FRUITS ET LÉGUMES
     # =========================================================================
@@ -236,8 +232,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
             "requirement_en": "Wholly obtained - grown in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "070310": {
         "chapter": "07",
@@ -251,8 +247,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "080131": {
         "chapter": "08",
@@ -266,8 +262,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "080132": {
         "chapter": "08",
@@ -281,8 +277,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Transformation substantielle en Afrique",
             "requirement_en": "Substantial transformation in Africa",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "080390": {
         "chapter": "08",
@@ -296,8 +292,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "080410": {
         "chapter": "08",
@@ -311,8 +307,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "080510": {
         "chapter": "08",
@@ -326,8 +322,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "080520": {
         "chapter": "08",
@@ -341,10 +337,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 09 - CAFÉ, THÉ, ÉPICES
     # =========================================================================
@@ -360,8 +355,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
             "requirement_en": "Wholly obtained - grown in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "090121": {
         "chapter": "09",
@@ -375,8 +370,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Torréfaction en Afrique, 35% valeur ajoutée",
             "requirement_en": "Roasted in Africa, 35% value added",
-            "regional_content": 35
-        }
+            "regional_content": 35,
+        },
     },
     "090230": {
         "chapter": "09",
@@ -390,8 +385,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
             "requirement_en": "Wholly obtained - grown in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "090510": {
         "chapter": "09",
@@ -405,8 +400,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "090710": {
         "chapter": "09",
@@ -420,10 +415,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 10 - CÉRÉALES
     # =========================================================================
@@ -439,8 +433,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "100590": {
         "chapter": "10",
@@ -454,8 +448,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "100610": {
         "chapter": "10",
@@ -469,8 +463,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "100620": {
         "chapter": "10",
@@ -484,8 +478,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Transformation substantielle - 35% valeur ajoutée",
             "requirement_en": "Substantial transformation - 35% value added",
-            "regional_content": 35
-        }
+            "regional_content": 35,
+        },
     },
     "100630": {
         "chapter": "10",
@@ -499,10 +493,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Transformation substantielle - 35% valeur ajoutée",
             "requirement_en": "Substantial transformation - 35% value added",
-            "regional_content": 35
-        }
+            "regional_content": 35,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 12 - OLÉAGINEUX
     # =========================================================================
@@ -518,8 +511,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "120740": {
         "chapter": "12",
@@ -533,10 +526,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 13 - GOMMES ET RÉSINES
     # =========================================================================
@@ -552,8 +544,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "130190": {
         "chapter": "13",
@@ -567,10 +559,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 15 - HUILES
     # =========================================================================
@@ -586,8 +577,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Olives cultivées et pressées en Afrique",
             "requirement_en": "Olives grown and pressed in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "151110": {
         "chapter": "15",
@@ -601,10 +592,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 17 - SUCRES
     # =========================================================================
@@ -620,8 +610,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Canne cultivée et transformée en Afrique",
             "requirement_en": "Cane grown and processed in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "170199": {
         "chapter": "17",
@@ -635,10 +625,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Raffinage en Afrique - 40% valeur ajoutée",
             "requirement_en": "Refined in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 18 - CACAO
     # =========================================================================
@@ -654,8 +643,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
             "requirement_en": "Wholly obtained - grown in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "180310": {
         "chapter": "18",
@@ -669,8 +658,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Transformation en Afrique - 35% valeur ajoutée",
             "requirement_en": "Processed in Africa - 35% value added",
-            "regional_content": 35
-        }
+            "regional_content": 35,
+        },
     },
     "180400": {
         "chapter": "18",
@@ -684,10 +673,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Transformation en Afrique - 35% valeur ajoutée",
             "requirement_en": "Processed in Africa - 35% value added",
-            "regional_content": 35
-        }
+            "regional_content": 35,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 24 - TABAC
     # =========================================================================
@@ -703,10 +691,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
             "requirement_en": "Wholly obtained - grown in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 25 - PRODUITS MINÉRAUX
     # =========================================================================
@@ -722,8 +709,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "252329": {
         "chapter": "25",
@@ -737,8 +724,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fabriqué en Afrique - 40% valeur ajoutée",
             "requirement_en": "Manufactured in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "253110": {
         "chapter": "25",
@@ -752,10 +739,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 26 - MINERAIS
     # =========================================================================
@@ -771,8 +757,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - extrait en Afrique",
             "requirement_en": "Wholly obtained - mined in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "260200": {
         "chapter": "26",
@@ -786,8 +772,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "260300": {
         "chapter": "26",
@@ -801,8 +787,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - extrait en Afrique",
             "requirement_en": "Wholly obtained - mined in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "260600": {
         "chapter": "26",
@@ -816,8 +802,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "260800": {
         "chapter": "26",
@@ -831,8 +817,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "261000": {
         "chapter": "26",
@@ -846,8 +832,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "261100": {
         "chapter": "26",
@@ -861,8 +847,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "261210": {
         "chapter": "26",
@@ -876,8 +862,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "261590": {
         "chapter": "26",
@@ -891,10 +877,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - certification ITSCI",
             "requirement_en": "Wholly obtained - ITSCI certified",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 27 - COMBUSTIBLES
     # =========================================================================
@@ -910,8 +895,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - extrait en Afrique",
             "requirement_en": "Wholly obtained - extracted in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "271019": {
         "chapter": "27",
@@ -925,8 +910,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Raffiné en Afrique - 40% valeur ajoutée",
             "requirement_en": "Refined in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "271111": {
         "chapter": "27",
@@ -940,8 +925,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "271121": {
         "chapter": "27",
@@ -955,8 +940,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "270112": {
         "chapter": "27",
@@ -970,10 +955,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 31 - ENGRAIS
     # =========================================================================
@@ -989,8 +973,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fabriqué en Afrique - 40% valeur ajoutée",
             "requirement_en": "Manufactured in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "310420": {
         "chapter": "31",
@@ -1004,8 +988,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "310520": {
         "chapter": "31",
@@ -1019,10 +1003,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fabriqué en Afrique - 40% valeur ajoutée",
             "requirement_en": "Manufactured in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 33 - HUILES ESSENTIELLES
     # =========================================================================
@@ -1038,10 +1021,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 40 - CAOUTCHOUC
     # =========================================================================
@@ -1057,8 +1039,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "400122": {
         "chapter": "40",
@@ -1072,10 +1054,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Transformation en Afrique - 40% valeur ajoutée",
             "requirement_en": "Processed in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 44 - BOIS
     # =========================================================================
@@ -1091,8 +1072,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "440341": {
         "chapter": "44",
@@ -1106,10 +1087,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 52 - COTON
     # =========================================================================
@@ -1125,8 +1105,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - cultivé en Afrique",
             "requirement_en": "Wholly obtained - grown in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "520512": {
         "chapter": "52",
@@ -1140,10 +1120,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Filé en Afrique - coton africain ou 40% VA",
             "requirement_en": "Spun in Africa - African cotton or 40% VA",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 61-62 - VÊTEMENTS
     # =========================================================================
@@ -1159,8 +1138,8 @@ HS6_DATABASE = {
             "type": "double_transformation",
             "requirement_fr": "Double transformation - tissu et confection en Afrique",
             "requirement_en": "Double transformation - fabric and assembly in Africa",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "620342": {
         "chapter": "62",
@@ -1174,10 +1153,9 @@ HS6_DATABASE = {
             "type": "double_transformation",
             "requirement_fr": "Double transformation - tissu et confection en Afrique",
             "requirement_en": "Double transformation - fabric and assembly in Africa",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 71 - MÉTAUX PRÉCIEUX
     # =========================================================================
@@ -1193,8 +1171,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - certification Kimberley",
             "requirement_en": "Wholly obtained - Kimberley certified",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "710812": {
         "chapter": "71",
@@ -1208,8 +1186,8 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu - extrait en Afrique",
             "requirement_en": "Wholly obtained - mined in Africa",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
     "711011": {
         "chapter": "71",
@@ -1223,10 +1201,9 @@ HS6_DATABASE = {
             "type": "wholly_obtained",
             "requirement_fr": "Entièrement obtenu",
             "requirement_en": "Wholly obtained",
-            "regional_content": 100
-        }
+            "regional_content": 100,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 74-76 - MÉTAUX NON FERREUX
     # =========================================================================
@@ -1242,8 +1219,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Raffiné en Afrique - 40% valeur ajoutée",
             "requirement_en": "Refined in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "750110": {
         "chapter": "75",
@@ -1257,8 +1234,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Raffiné en Afrique - 40% valeur ajoutée",
             "requirement_en": "Refined in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "760110": {
         "chapter": "76",
@@ -1272,10 +1249,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fondu en Afrique - 40% valeur ajoutée",
             "requirement_en": "Smelted in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 81 - AUTRES MÉTAUX
     # =========================================================================
@@ -1291,10 +1267,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Transformé en Afrique - 40% valeur ajoutée",
             "requirement_en": "Processed in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 84 - MACHINES
     # =========================================================================
@@ -1310,8 +1285,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Assemblé en Afrique - 40% valeur ajoutée",
             "requirement_en": "Assembled in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "843351": {
         "chapter": "84",
@@ -1325,8 +1300,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Assemblé en Afrique - 40% valeur ajoutée",
             "requirement_en": "Assembled in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "847130": {
         "chapter": "84",
@@ -1340,8 +1315,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Assemblé en Afrique - 40% valeur ajoutée",
             "requirement_en": "Assembled in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "847490": {
         "chapter": "84",
@@ -1355,10 +1330,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fabriqué en Afrique - 40% valeur ajoutée",
             "requirement_en": "Manufactured in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 85 - ÉQUIPEMENTS ÉLECTRIQUES
     # =========================================================================
@@ -1374,10 +1348,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fabriqué en Afrique - 40% valeur ajoutée",
             "requirement_en": "Manufactured in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 87 - VÉHICULES
     # =========================================================================
@@ -1393,8 +1366,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Assemblé en Afrique - 40% contenu régional",
             "requirement_en": "Assembled in Africa - 40% regional content",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "870322": {
         "chapter": "87",
@@ -1408,8 +1381,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Assemblé en Afrique - 40% contenu régional",
             "requirement_en": "Assembled in Africa - 40% regional content",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "870323": {
         "chapter": "87",
@@ -1423,8 +1396,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Assemblé en Afrique - 40% contenu régional",
             "requirement_en": "Assembled in Africa - 40% regional content",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "870324": {
         "chapter": "87",
@@ -1438,8 +1411,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Assemblé en Afrique - 40% contenu régional",
             "requirement_en": "Assembled in Africa - 40% regional content",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "870332": {
         "chapter": "87",
@@ -1453,8 +1426,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Assemblé en Afrique - 40% contenu régional",
             "requirement_en": "Assembled in Africa - 40% regional content",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "870340": {
         "chapter": "87",
@@ -1468,10 +1441,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Assemblé en Afrique - 35% contenu régional (incitation)",
             "requirement_en": "Assembled in Africa - 35% regional content (incentive)",
-            "regional_content": 35
-        }
+            "regional_content": 35,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 94 - MEUBLES
     # =========================================================================
@@ -1487,8 +1459,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fabriqué en Afrique - 40% valeur ajoutée",
             "requirement_en": "Manufactured in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
     "940390": {
         "chapter": "94",
@@ -1502,10 +1474,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fabriqué en Afrique - 40% valeur ajoutée",
             "requirement_en": "Manufactured in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CONSERVES ET PRÉPARATIONS
     # =========================================================================
@@ -1521,8 +1492,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Transformé en Afrique - poisson africain ou 35% VA",
             "requirement_en": "Processed in Africa - African fish or 35% VA",
-            "regional_content": 35
-        }
+            "regional_content": 35,
+        },
     },
     "200990": {
         "chapter": "20",
@@ -1536,10 +1507,9 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Transformé en Afrique - fruits africains ou 40% VA",
             "requirement_en": "Processed in Africa - African fruits or 40% VA",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 30 - MÉDICAMENTS
     # =========================================================================
@@ -1555,8 +1525,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fabriqué en Afrique - 30% valeur ajoutée",
             "requirement_en": "Manufactured in Africa - 30% value added",
-            "regional_content": 30
-        }
+            "regional_content": 30,
+        },
     },
     "300490": {
         "chapter": "30",
@@ -1570,8 +1540,8 @@ HS6_DATABASE = {
             "type": "substantial_transformation",
             "requirement_fr": "Fabriqué en Afrique - 40% valeur ajoutée",
             "requirement_en": "Manufactured in Africa - 40% value added",
-            "regional_content": 40
-        }
+            "regional_content": 40,
+        },
     },
 }
 
@@ -1587,7 +1557,7 @@ SUB_POSITION_TYPES = {
         "options": [
             {"code_suffix": "1000", "fr": "Neuf", "en": "New"},
             {"code_suffix": "9000", "fr": "Occasion", "en": "Used"},
-        ]
+        ],
     },
     "age": {
         "fr": "Âge du véhicule",
@@ -1596,7 +1566,7 @@ SUB_POSITION_TYPES = {
             {"code_suffix": "9200", "fr": "< 5 ans", "en": "< 5 years"},
             {"code_suffix": "9100", "fr": "5-10 ans", "en": "5-10 years"},
             {"code_suffix": "9000", "fr": "> 10 ans", "en": "> 10 years"},
-        ]
+        ],
     },
     "assembly": {
         "fr": "Type d'assemblage",
@@ -1604,7 +1574,7 @@ SUB_POSITION_TYPES = {
         "options": [
             {"code_suffix": "1000", "fr": "CKD (montage local)", "en": "CKD (local assembly)"},
             {"code_suffix": "2000", "fr": "CBU (complet)", "en": "CBU (complete)"},
-        ]
+        ],
     },
     "quality_grade": {
         "fr": "Grade de qualité",
@@ -1613,7 +1583,7 @@ SUB_POSITION_TYPES = {
             {"code_suffix": "1000", "fr": "Grade 1 / Premium", "en": "Grade 1 / Premium"},
             {"code_suffix": "2000", "fr": "Grade 2 / Standard", "en": "Grade 2 / Standard"},
             {"code_suffix": "9000", "fr": "Autre", "en": "Other"},
-        ]
+        ],
     },
     "variety": {
         "fr": "Variété",
@@ -1622,7 +1592,7 @@ SUB_POSITION_TYPES = {
             {"code_suffix": "1000", "fr": "Variété 1", "en": "Variety 1"},
             {"code_suffix": "2000", "fr": "Variété 2", "en": "Variety 2"},
             {"code_suffix": "9000", "fr": "Autre", "en": "Other"},
-        ]
+        ],
     },
     "breeding_slaughter": {
         "fr": "Usage",
@@ -1630,7 +1600,7 @@ SUB_POSITION_TYPES = {
         "options": [
             {"code_suffix": "1000", "fr": "Reproduction", "en": "Breeding"},
             {"code_suffix": "9000", "fr": "Boucherie", "en": "Slaughter"},
-        ]
+        ],
     },
     "farmed_wild": {
         "fr": "Origine",
@@ -1638,7 +1608,7 @@ SUB_POSITION_TYPES = {
         "options": [
             {"code_suffix": "1000", "fr": "Élevage", "en": "Farmed"},
             {"code_suffix": "9000", "fr": "Sauvage", "en": "Wild"},
-        ]
+        ],
     },
     "local_imported": {
         "fr": "Provenance",
@@ -1646,7 +1616,7 @@ SUB_POSITION_TYPES = {
         "options": [
             {"code_suffix": "1000", "fr": "Production locale", "en": "Local production"},
             {"code_suffix": "9000", "fr": "Importé", "en": "Imported"},
-        ]
+        ],
     },
     "certification": {
         "fr": "Certification",
@@ -1654,7 +1624,7 @@ SUB_POSITION_TYPES = {
         "options": [
             {"code_suffix": "1000", "fr": "Certifié", "en": "Certified"},
             {"code_suffix": "9000", "fr": "Non certifié", "en": "Not certified"},
-        ]
+        ],
     },
     "use": {
         "fr": "Utilisation",
@@ -1662,7 +1632,7 @@ SUB_POSITION_TYPES = {
         "options": [
             {"code_suffix": "0010", "fr": "Usage spécifique", "en": "Specific use"},
             {"code_suffix": "0090", "fr": "Autre usage", "en": "Other use"},
-        ]
+        ],
     },
     "type": {
         "fr": "Type",
@@ -1671,7 +1641,7 @@ SUB_POSITION_TYPES = {
             {"code_suffix": "1000", "fr": "Type 1", "en": "Type 1"},
             {"code_suffix": "2000", "fr": "Type 2", "en": "Type 2"},
             {"code_suffix": "9000", "fr": "Autre", "en": "Other"},
-        ]
+        ],
     },
     "origin": {
         "fr": "Origine géographique",
@@ -1679,7 +1649,7 @@ SUB_POSITION_TYPES = {
         "options": [
             {"code_suffix": "0010", "fr": "Origine spécifique", "en": "Specific origin"},
             {"code_suffix": "0090", "fr": "Autre origine", "en": "Other origin"},
-        ]
+        ],
     },
     "organic": {
         "fr": "Agriculture",
@@ -1687,7 +1657,7 @@ SUB_POSITION_TYPES = {
         "options": [
             {"code_suffix": "1000", "fr": "Biologique", "en": "Organic"},
             {"code_suffix": "2000", "fr": "Conventionnel", "en": "Conventional"},
-        ]
+        ],
     },
     "species": {
         "fr": "Espèce",
@@ -1696,7 +1666,7 @@ SUB_POSITION_TYPES = {
             {"code_suffix": "1000", "fr": "Espèce 1", "en": "Species 1"},
             {"code_suffix": "2000", "fr": "Espèce 2", "en": "Species 2"},
             {"code_suffix": "9000", "fr": "Autre espèce", "en": "Other species"},
-        ]
+        ],
     },
 }
 
@@ -1723,16 +1693,17 @@ HS6_DATABASE.update(HS6_EXTENDED_CH42_49)
 # FONCTIONS D'ACCÈS À LA BASE HS6
 # =============================================================================
 
+
 def get_hs6_info(hs6_code: str, language: str = "fr") -> Optional[Dict]:
     """Obtenir les informations complètes d'un code HS6 avec règles d'origine ZLECAf"""
     hs6 = hs6_code[:6].zfill(6)
     info = HS6_DATABASE.get(hs6)
     if info:
         desc_key = f"description_{language}"
-        
+
         # Récupérer la règle d'origine ZLECAf officielle
         afcfta_rule = get_afcfta_rule(hs6, language)
-        
+
         return {
             "code": hs6,
             "description": info.get(desc_key, info.get("description_fr")),
@@ -1741,7 +1712,7 @@ def get_hs6_info(hs6_code: str, language: str = "fr") -> Optional[Dict]:
             "sensitivity": info["sensitivity"],
             "has_sub_positions": info["has_sub_positions"],
             "sub_position_types": info.get("typical_sub_position_types", []),
-            "rule_of_origin": afcfta_rule
+            "rule_of_origin": afcfta_rule,
         }
     return None
 
@@ -1753,27 +1724,29 @@ def get_sub_position_suggestions(hs6_code: str, language: str = "fr") -> List[Di
     """
     hs6 = hs6_code[:6].zfill(6)
     info = HS6_DATABASE.get(hs6)
-    
+
     if not info or not info.get("has_sub_positions"):
         return []
-    
+
     suggestions = []
     for sp_type in info.get("typical_sub_position_types", []):
         type_info = SUB_POSITION_TYPES.get(sp_type)
         if type_info:
-            suggestions.append({
-                "type": sp_type,
-                "label": type_info.get(language, type_info["fr"]),
-                "options": [
-                    {
-                        "code_suffix": opt["code_suffix"],
-                        "label": opt.get(language, opt["fr"]),
-                        "full_code": hs6 + opt["code_suffix"]
-                    }
-                    for opt in type_info["options"]
-                ]
-            })
-    
+            suggestions.append(
+                {
+                    "type": sp_type,
+                    "label": type_info.get(language, type_info["fr"]),
+                    "options": [
+                        {
+                            "code_suffix": opt["code_suffix"],
+                            "label": opt.get(language, opt["fr"]),
+                            "full_code": hs6 + opt["code_suffix"],
+                        }
+                        for opt in type_info["options"]
+                    ],
+                }
+            )
+
     return suggestions
 
 
@@ -1781,7 +1754,7 @@ def get_rule_of_origin(hs6_code: str, language: str = "fr") -> Optional[Dict]:
     """Obtenir la règle d'origine ZLECAf pour un code HS6"""
     hs6 = hs6_code[:6].zfill(6)
     info = HS6_DATABASE.get(hs6)
-    
+
     if info and "rule_of_origin" in info:
         rule = info["rule_of_origin"]
         req_key = f"requirement_{language}"
@@ -1789,7 +1762,7 @@ def get_rule_of_origin(hs6_code: str, language: str = "fr") -> Optional[Dict]:
             "hs6_code": hs6,
             "type": rule["type"],
             "requirement": rule.get(req_key, rule.get("requirement_fr")),
-            "regional_content": rule["regional_content"]
+            "regional_content": rule["regional_content"],
         }
     return None
 
@@ -1797,35 +1770,41 @@ def get_rule_of_origin(hs6_code: str, language: str = "fr") -> Optional[Dict]:
 def search_hs6_codes(query: str, language: str = "fr", limit: int = 20) -> List[Dict]:
     """Rechercher des codes HS6 par mot-clé (avec support des accents)"""
     import unicodedata
-    
+
     def normalize(text: str) -> str:
         """Normalise le texte en retirant les accents"""
-        return ''.join(
-            c for c in unicodedata.normalize('NFD', text.lower())
-            if unicodedata.category(c) != 'Mn'
+        return "".join(
+            c for c in unicodedata.normalize("NFD", text.lower()) if unicodedata.category(c) != "Mn"
         )
-    
+
     query_normalized = normalize(query)
     results = []
-    
+
     for code, info in HS6_DATABASE.items():
         desc_fr = normalize(info.get("description_fr", ""))
         desc_en = normalize(info.get("description_en", ""))
         category = normalize(info.get("category", ""))
-        
-        if query_normalized in code or query_normalized in desc_fr or query_normalized in desc_en or query_normalized in category:
+
+        if (
+            query_normalized in code
+            or query_normalized in desc_fr
+            or query_normalized in desc_en
+            or query_normalized in category
+        ):
             desc_key = f"description_{language}"
-            results.append({
-                "code": code,
-                "description": info.get(desc_key, info.get("description_fr")),
-                "category": info["category"],
-                "sensitivity": info["sensitivity"],
-                "has_sub_positions": info["has_sub_positions"]
-            })
-        
+            results.append(
+                {
+                    "code": code,
+                    "description": info.get(desc_key, info.get("description_fr")),
+                    "category": info["category"],
+                    "sensitivity": info["sensitivity"],
+                    "has_sub_positions": info["has_sub_positions"],
+                }
+            )
+
         if len(results) >= limit:
             break
-    
+
     return results
 
 
@@ -1843,12 +1822,14 @@ def get_codes_by_category(category: str, language: str = "fr") -> List[Dict]:
     for code, info in HS6_DATABASE.items():
         if info["category"] == category:
             desc_key = f"description_{language}"
-            results.append({
-                "code": code,
-                "description": info.get(desc_key, info.get("description_fr")),
-                "sensitivity": info["sensitivity"],
-                "has_sub_positions": info["has_sub_positions"]
-            })
+            results.append(
+                {
+                    "code": code,
+                    "description": info.get(desc_key, info.get("description_fr")),
+                    "sensitivity": info["sensitivity"],
+                    "has_sub_positions": info["has_sub_positions"],
+                }
+            )
     return sorted(results, key=lambda x: x["code"])
 
 
@@ -1857,17 +1838,17 @@ def get_database_stats() -> Dict:
     categories = {}
     sensitivities = {"normal": 0, "sensitive": 0, "excluded": 0}
     with_sub_positions = 0
-    
+
     for info in HS6_DATABASE.values():
         cat = info["category"]
         categories[cat] = categories.get(cat, 0) + 1
         sensitivities[info["sensitivity"]] += 1
         if info["has_sub_positions"]:
             with_sub_positions += 1
-    
+
     return {
         "total_codes": len(HS6_DATABASE),
         "with_sub_positions": with_sub_positions,
         "categories": categories,
-        "sensitivities": sensitivities
+        "sensitivities": sensitivities,
     }
