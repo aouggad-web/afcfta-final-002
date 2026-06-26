@@ -30,9 +30,9 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from etl.africa_formalities import get_formalities_for_line
+from etl.country_taxes_algeria import get_dza_taxes_for_hs6  # DZA stays as-is
 from etl.country_taxes_morocco import get_mar_formalities_for_line
 from etl.country_taxes_tunisia import get_tun_formalities_for_line
-from etl.country_taxes_algeria import get_dza_taxes_for_hs6  # DZA stays as-is
 
 BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BACKEND_DIR, "data")
@@ -89,9 +89,7 @@ def _enrich_country(
     elif country_code == "DZA":
         # DZA already has correct formalities from country_taxes_algeria ETL;
         # verify presence and skip re-enrichment.
-        have = sum(
-            1 for l in tariff_lines if l.get("administrative_formalities")
-        )
+        have = sum(1 for l in tariff_lines if l.get("administrative_formalities"))
         print(f"[DZA] Already enriched — {have}/{len(tariff_lines)} lines have formalities.")
         return data
     else:
@@ -127,13 +125,17 @@ def _write(data: dict, path: str, country_code: str) -> None:
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     size_kb = os.path.getsize(path) / 1024
-    print(f"[{country_code}] Written → {os.path.relpath(path, BACKEND_DIR)} ({size_kb:,.0f} KB)", flush=True)
+    print(
+        f"[{country_code}] Written → {os.path.relpath(path, BACKEND_DIR)} ({size_kb:,.0f} KB)",
+        flush=True,
+    )
 
 
 def main() -> None:
     # Collect all country codes from data/*.json
     json_files = sorted(
-        fn for fn in os.listdir(DATA_DIR)
+        fn
+        for fn in os.listdir(DATA_DIR)
         if fn.endswith("_tariffs.json") and os.path.isfile(os.path.join(DATA_DIR, fn))
     )
 

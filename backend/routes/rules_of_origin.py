@@ -10,9 +10,11 @@ Matching priority: 6-digit subheading -> 4-digit heading -> 2-digit chapter.
 No fabricated/placeholder data: any rule the source leaves bracketed /
 "À déterminer" is tagged status="YTB" and never assigned a numeric threshold.
 """
-from fastapi import APIRouter, Query
-from typing import Optional
+
 import logging
+from typing import Optional
+
+from fastapi import APIRouter, Query
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +52,9 @@ def _build_rule_obj(code: Optional[str], lang: str) -> Optional[dict]:
     }
 
 
-def _entry_to_response(hs_code: str, entry: dict, match_type: str, matched_code: str, chapter: str, lang: str) -> dict:
+def _entry_to_response(
+    hs_code: str, entry: dict, match_type: str, matched_code: str, chapter: str, lang: str
+) -> dict:
     primary_code = entry.get("code")
     alt_code = entry.get("alt_code")
 
@@ -84,7 +88,9 @@ def _entry_to_response(hs_code: str, entry: dict, match_type: str, matched_code:
         "rule": {
             "psr": rule_text,
             "wholly_obtained": is_wholly_obtained,
-            "value_added_threshold": regional_content if regional_content is not None else (threshold or 60),
+            "value_added_threshold": (
+                regional_content if regional_content is not None else (threshold or 60)
+            ),
             "category": primary_rule.get("name", ""),
             "primary_rule": primary_code,
             "alternative_rule": alt_code,
@@ -133,8 +139,7 @@ async def get_rules_of_origin_statistics():
 
 @router.get("/{hs_code}")
 async def get_rules_of_origin(
-    hs_code: str,
-    lang: str = Query(default="fr", description="Language for response (fr/en)")
+    hs_code: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
     Get AfCFTA Rules of Origin for a specific HS code.
@@ -160,13 +165,17 @@ async def get_rules_of_origin(
     if len(hs_clean) >= 6:
         subheading6 = hs_clean[:6]
         if subheading6 in subheadings:
-            return _entry_to_response(hs_code, subheadings[subheading6], "subheading", subheading6, chapter, lang)
+            return _entry_to_response(
+                hs_code, subheadings[subheading6], "subheading", subheading6, chapter, lang
+            )
 
     # 2) Heading-level match (4-digit)
     if len(hs_clean) >= 4:
         heading4 = hs_clean[:4]
         if heading4 in headings:
-            return _entry_to_response(hs_code, headings[heading4], "heading", heading4, chapter, lang)
+            return _entry_to_response(
+                hs_code, headings[heading4], "heading", heading4, chapter, lang
+            )
 
     # 3) Chapter-level match
     if chapter in chapters:

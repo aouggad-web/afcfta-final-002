@@ -2,9 +2,13 @@
 Tests du statut de ratification continental de l'Accord ZLECAf (newsletter
 AfCFTA, the dtic/SARS, mars 2026).
 """
+
 from services.zlecaf_membership_status import (
-    ratification_status, is_party_to_agreement,
-    STATUS_NOT_SIGNED, STATUS_SIGNED_NOT_RATIFIED, STATUS_RATIFIED,
+    STATUS_NOT_SIGNED,
+    STATUS_RATIFIED,
+    STATUS_SIGNED_NOT_RATIFIED,
+    is_party_to_agreement,
+    ratification_status,
 )
 
 

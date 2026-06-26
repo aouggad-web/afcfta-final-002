@@ -19,38 +19,68 @@ Modalités officielles:
 """
 
 from __future__ import annotations
-from typing import Dict, List, Optional
+
 from datetime import date
+from typing import Dict, List, Optional
 
 # ---------------------------------------------------------------------------
 # Constantes officielles
 # ---------------------------------------------------------------------------
-AFCFTA_EIF_YEAR = 2021          # Année 1 du calendrier ZLECAf
+AFCFTA_EIF_YEAR = 2021  # Année 1 du calendrier ZLECAf
 CURRENT_YEAR = date.today().year
 CURRENT_IMPLEMENTATION_YEAR = max(1, CURRENT_YEAR - AFCFTA_EIF_YEAR + 1)
 
 # Catégories officielles (Annexe 1, Article 4)
-CAT_A = "A"   # 90% des lignes — libéralisation normale
-CAT_B = "B"   # 7% des lignes — produits sensibles
-CAT_C = "C"   # 3% des lignes — produits exclus (pas de réduction)
-CAT_D = "D"   # Lignes déjà à 0% — consolidées immédiatement
+CAT_A = "A"  # 90% des lignes — libéralisation normale
+CAT_B = "B"  # 7% des lignes — produits sensibles
+CAT_C = "C"  # 3% des lignes — produits exclus (pas de réduction)
+CAT_D = "D"  # Lignes déjà à 0% — consolidées immédiatement
 
 # Durées de réduction (en années) — Annexe 1, Article 6
 REDUCTION_YEARS: Dict[str, Dict[str, int]] = {
-    "non_ldc": {CAT_A: 5,  CAT_B: 10, CAT_C: 0, CAT_D: 0},
-    "ldc":     {CAT_A: 10, CAT_B: 13, CAT_C: 0, CAT_D: 0},
+    "non_ldc": {CAT_A: 5, CAT_B: 10, CAT_C: 0, CAT_D: 0},
+    "ldc": {CAT_A: 10, CAT_B: 13, CAT_C: 0, CAT_D: 0},
 }
 
 # ---------------------------------------------------------------------------
 # PMA africains (LDC) — liste officielle UA/CNUCED 2024
 # ---------------------------------------------------------------------------
-LDC_COUNTRIES: frozenset = frozenset({
-    "BEN", "BFA", "BDI", "CAF", "TCD", "COM", "COD",
-    "DJI", "ERI", "ETH", "GMB", "GIN", "GNB", "LSO",
-    "LBR", "MDG", "MWI", "MLI", "MRT", "MOZ", "NER",
-    "RWA", "STP", "SEN", "SLE", "SOM", "SSD", "SDN",
-    "TZA", "TGO", "UGA", "ZMB",
-})
+LDC_COUNTRIES: frozenset = frozenset(
+    {
+        "BEN",
+        "BFA",
+        "BDI",
+        "CAF",
+        "TCD",
+        "COM",
+        "COD",
+        "DJI",
+        "ERI",
+        "ETH",
+        "GMB",
+        "GIN",
+        "GNB",
+        "LSO",
+        "LBR",
+        "MDG",
+        "MWI",
+        "MLI",
+        "MRT",
+        "MOZ",
+        "NER",
+        "RWA",
+        "STP",
+        "SEN",
+        "SLE",
+        "SOM",
+        "SSD",
+        "SDN",
+        "TZA",
+        "TGO",
+        "UGA",
+        "ZMB",
+    }
+)
 
 # ---------------------------------------------------------------------------
 # Classification des chapitres HS par catégorie ZLECAf
@@ -59,29 +89,46 @@ LDC_COUNTRIES: frozenset = frozenset({
 # Catégorie C = produits exclus déclarés par au moins 60% des membres
 # ---------------------------------------------------------------------------
 # Catégorie B — Sensibles (réduction allongée)
-_SENSITIVE_CHAPTERS = frozenset({
-    "01", "02", "03", "04",       # Animaux vivants, viandes, poissons, produits laitiers
-    "10", "11",                    # Céréales, farines
-    "17",                          # Sucres
-    "22", "24",                    # Boissons, tabac
-    "27",                          # Combustibles/pétrole (sensible pour pays producteurs)
-    "50", "51", "52", "53",        # Textiles naturels
-    "61", "62",                    # Vêtements confectionnés
-    "64",                          # Chaussures
-    "72", "73",                    # Acier
-    "87",                          # Véhicules automobiles
-})
+_SENSITIVE_CHAPTERS = frozenset(
+    {
+        "01",
+        "02",
+        "03",
+        "04",  # Animaux vivants, viandes, poissons, produits laitiers
+        "10",
+        "11",  # Céréales, farines
+        "17",  # Sucres
+        "22",
+        "24",  # Boissons, tabac
+        "27",  # Combustibles/pétrole (sensible pour pays producteurs)
+        "50",
+        "51",
+        "52",
+        "53",  # Textiles naturels
+        "61",
+        "62",  # Vêtements confectionnés
+        "64",  # Chaussures
+        "72",
+        "73",  # Acier
+        "87",  # Véhicules automobiles
+    }
+)
 
 # Catégorie C — Exclus (aucune réduction)
-_EXCLUDED_CHAPTERS = frozenset({
-    "93",   # Armes et munitions
-    "30",   # Médicaments essentiels (souveraineté sanitaire, certains pays)
-})
+_EXCLUDED_CHAPTERS = frozenset(
+    {
+        "93",  # Armes et munitions
+        "30",  # Médicaments essentiels (souveraineté sanitaire, certains pays)
+    }
+)
 
 # Catégorie D — Déjà à 0% NPF (consolidés)
-_ZERO_RATE_CHAPTERS = frozenset({
-    "84", "85",   # Machines et équipements électriques (souvent 0% pour certains pays)
-})
+_ZERO_RATE_CHAPTERS = frozenset(
+    {
+        "84",
+        "85",  # Machines et équipements électriques (souvent 0% pour certains pays)
+    }
+)
 
 
 def classify_hs6(country_iso3: str, hs6: str, npf_rate: float) -> str:
@@ -132,20 +179,29 @@ def compute_annual_schedule(
 
     # Catégorie D ou NPF déjà nul: immédiatement à 0%
     if category == CAT_D or npf_rate == 0.0:
-        return [{"year": 0, "calendar_year": AFCFTA_EIF_YEAR,
-                 "rate": 0.0, "reduction_pct": 100.0, "category": category}]
+        return [
+            {
+                "year": 0,
+                "calendar_year": AFCFTA_EIF_YEAR,
+                "rate": 0.0,
+                "reduction_pct": 100.0,
+                "category": category,
+            }
+        ]
 
     # Catégorie C: aucune réduction
     if category == CAT_C or years == 0:
         schedule = []
         for y in range(0, 16):
-            schedule.append({
-                "year": y,
-                "calendar_year": AFCFTA_EIF_YEAR + y,
-                "rate": round(npf_rate, 2),
-                "reduction_pct": 0.0,
-                "category": category,
-            })
+            schedule.append(
+                {
+                    "year": y,
+                    "calendar_year": AFCFTA_EIF_YEAR + y,
+                    "rate": round(npf_rate, 2),
+                    "reduction_pct": 0.0,
+                    "category": category,
+                }
+            )
         return schedule
 
     # Catégories A et B: réductions linéaires annuelles
@@ -153,34 +209,42 @@ def compute_annual_schedule(
     schedule = []
 
     # Année 0 = taux NPF (avant ZLECAf ou année d'entrée en vigueur)
-    schedule.append({
-        "year": 0,
-        "calendar_year": AFCFTA_EIF_YEAR - 1,   # 2020 = avant EIV
-        "rate": round(npf_rate, 2),
-        "reduction_pct": 0.0,
-        "category": category,
-    })
+    schedule.append(
+        {
+            "year": 0,
+            "calendar_year": AFCFTA_EIF_YEAR - 1,  # 2020 = avant EIV
+            "rate": round(npf_rate, 2),
+            "reduction_pct": 0.0,
+            "category": category,
+        }
+    )
 
     for y in range(1, years + 1):
         rate = max(0.0, npf_rate - annual_reduction * y)
-        schedule.append({
-            "year": y,
-            "calendar_year": AFCFTA_EIF_YEAR + y - 1,
-            "rate": round(rate, 2),
-            "reduction_pct": round((npf_rate - rate) / npf_rate * 100, 1) if npf_rate > 0 else 100.0,
-            "category": category,
-        })
+        schedule.append(
+            {
+                "year": y,
+                "calendar_year": AFCFTA_EIF_YEAR + y - 1,
+                "rate": round(rate, 2),
+                "reduction_pct": (
+                    round((npf_rate - rate) / npf_rate * 100, 1) if npf_rate > 0 else 100.0
+                ),
+                "category": category,
+            }
+        )
 
     # Années après la fin du calendrier: taux = 0%
     last_year = years
     for y in range(last_year + 1, 16):
-        schedule.append({
-            "year": y,
-            "calendar_year": AFCFTA_EIF_YEAR + y - 1,
-            "rate": 0.0,
-            "reduction_pct": 100.0,
-            "category": category,
-        })
+        schedule.append(
+            {
+                "year": y,
+                "calendar_year": AFCFTA_EIF_YEAR + y - 1,
+                "rate": 0.0,
+                "reduction_pct": 100.0,
+                "category": category,
+            }
+        )
 
     return schedule
 
@@ -232,10 +296,7 @@ def get_dismantlement_schedule(
     schedule = compute_annual_schedule(npf_rate, cat, is_ldc)
 
     current_year = CURRENT_IMPLEMENTATION_YEAR
-    current_entry = next(
-        (e for e in schedule if e["year"] == current_year),
-        schedule[-1]
-    )
+    current_entry = next((e for e in schedule if e["year"] == current_year), schedule[-1])
 
     group = "ldc" if is_ldc else "non_ldc"
     total_years = REDUCTION_YEARS[group].get(cat, 0)
@@ -263,13 +324,21 @@ def get_dismantlement_schedule(
 
 def _category_label(cat: str, lang: str) -> str:
     labels = {
-        CAT_A: {"fr": "Catégorie A — Libéralisation normale (90% des lignes)",
-                "en": "Category A — Standard liberalization (90% of lines)"},
-        CAT_B: {"fr": "Catégorie B — Produits sensibles (7% des lignes)",
-                "en": "Category B — Sensitive products (7% of lines)"},
-        CAT_C: {"fr": "Catégorie C — Produits exclus (3% des lignes)",
-                "en": "Category C — Excluded products (3% of lines)"},
-        CAT_D: {"fr": "Catégorie D — Déjà en franchise (0% NPF)",
-                "en": "Category D — Already duty-free (0% MFN)"},
+        CAT_A: {
+            "fr": "Catégorie A — Libéralisation normale (90% des lignes)",
+            "en": "Category A — Standard liberalization (90% of lines)",
+        },
+        CAT_B: {
+            "fr": "Catégorie B — Produits sensibles (7% des lignes)",
+            "en": "Category B — Sensitive products (7% of lines)",
+        },
+        CAT_C: {
+            "fr": "Catégorie C — Produits exclus (3% des lignes)",
+            "en": "Category C — Excluded products (3% of lines)",
+        },
+        CAT_D: {
+            "fr": "Catégorie D — Déjà en franchise (0% NPF)",
+            "en": "Category D — Already duty-free (0% MFN)",
+        },
     }
     return labels.get(cat, {}).get(lang, cat)

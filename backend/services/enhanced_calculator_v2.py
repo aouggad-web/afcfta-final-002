@@ -20,17 +20,17 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from config.crawler_config import get_crawler_config, get_integration_config
+
 # Re-export from the original service so existing callers are unaffected
 from services.enhanced_calculator_service import (  # noqa: F401
-    EnhancedTariffCalculator,
-    calculate_detailed_tariff,
-    ComparisonResult,
-    CalculationBreakdown,
-    TaxLine,
     COUNTRY_TAX_CONFIG,
+    CalculationBreakdown,
+    ComparisonResult,
+    EnhancedTariffCalculator,
+    TaxLine,
+    calculate_detailed_tariff,
 )
-
-from config.crawler_config import get_crawler_config, get_integration_config
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +38,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # DZA-specific helpers
 # ---------------------------------------------------------------------------
+
 
 def _get_latest_published_file() -> Optional[Path]:
     cfg = get_crawler_config()
@@ -111,6 +112,7 @@ def get_dza_data_source_info() -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 # v2 Extended Calculator
 # ---------------------------------------------------------------------------
+
 
 class EnhancedTariffCalculatorV2(EnhancedTariffCalculator):
     """

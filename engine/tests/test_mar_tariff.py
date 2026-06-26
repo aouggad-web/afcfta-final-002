@@ -6,6 +6,7 @@ Vérifie le profil fiscal marocain (DD / TPI / TIC / TVA) du moteur générique 
   - tous les taux proviennent du crawl (aucun fixe inventé) → garde-fous OK
   - HS6 extrait des 10 digits NTS
 """
+
 import sys
 from pathlib import Path
 
@@ -14,22 +15,34 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from adapters.raw_crawl_adapter import (
-    convert_with_profile, _validate_profile, PROFILES,
+    PROFILES,
+    _validate_profile,
+    convert_with_profile,
 )
 from schemas.canonical_model import DutyBasis, MeasureType, RateType
 
 
 def _crawl(positions):
     return {
-        "country_code": "MAR", "country_name": "Morocco",
+        "country_code": "MAR",
+        "country_name": "Morocco",
         "source": "Douane Maroc (ADII) — portail ADIL",
         "source_url": "https://www.douane.gov.ma/adil/",
-        "crawled_at": "2026-06-15T12:00:00+00:00", "data_type": "raw_crawl",
-        "positions": positions + [
-            {"code": f"99{i:08d}", "description_en": f"x{i}",
-             "dd_rate": [2.5, 10.0, 25.0, 40.0][i % 4], "dd_rate_raw": "x",
-             "tpi_rate": 0.25, "vat_rate": 20.0, "tic_rate": None,
-             "chapter": "99", "digits": 10}
+        "crawled_at": "2026-06-15T12:00:00+00:00",
+        "data_type": "raw_crawl",
+        "positions": positions
+        + [
+            {
+                "code": f"99{i:08d}",
+                "description_en": f"x{i}",
+                "dd_rate": [2.5, 10.0, 25.0, 40.0][i % 4],
+                "dd_rate_raw": "x",
+                "tpi_rate": 0.25,
+                "vat_rate": 20.0,
+                "tic_rate": None,
+                "chapter": "99",
+                "digits": 10,
+            }
             for i in range(600)
         ],
     }
@@ -48,11 +61,24 @@ def test_profile_customs_duty_from_crawl():
 
 class TestMarStandard:
     def setup_method(self):
-        recs = convert_with_profile(_crawl([
-            {"code": "0101210000", "description_en": "Chevaux reproducteurs",
-             "dd_rate": 2.5, "dd_rate_raw": "2.5 %", "tpi_rate": 0.25,
-             "vat_rate": 20.0, "tic_rate": None, "chapter": "01", "digits": 10},
-        ]), PROFILES["MAR"])
+        recs = convert_with_profile(
+            _crawl(
+                [
+                    {
+                        "code": "0101210000",
+                        "description_en": "Chevaux reproducteurs",
+                        "dd_rate": 2.5,
+                        "dd_rate_raw": "2.5 %",
+                        "tpi_rate": 0.25,
+                        "vat_rate": 20.0,
+                        "tic_rate": None,
+                        "chapter": "01",
+                        "digits": 10,
+                    },
+                ]
+            ),
+            PROFILES["MAR"],
+        )
         self.r = recs[0]
         self.m = {x.code: x for x in self.r.measures}
 
@@ -86,11 +112,24 @@ class TestMarStandard:
 
 class TestMarWithTIC:
     def setup_method(self):
-        recs = convert_with_profile(_crawl([
-            {"code": "2208300000", "description_en": "Whiskies",
-             "dd_rate": 17.5, "dd_rate_raw": "17.5 %", "tpi_rate": 0.25,
-             "vat_rate": 20.0, "tic_rate": 15.0, "chapter": "22", "digits": 10},
-        ]), PROFILES["MAR"])
+        recs = convert_with_profile(
+            _crawl(
+                [
+                    {
+                        "code": "2208300000",
+                        "description_en": "Whiskies",
+                        "dd_rate": 17.5,
+                        "dd_rate_raw": "17.5 %",
+                        "tpi_rate": 0.25,
+                        "vat_rate": 20.0,
+                        "tic_rate": 15.0,
+                        "chapter": "22",
+                        "digits": 10,
+                    },
+                ]
+            ),
+            PROFILES["MAR"],
+        )
         self.r = recs[0]
         self.m = {x.code: x for x in self.r.measures}
 
@@ -112,10 +151,23 @@ class TestMarWithTIC:
 
 def test_reduced_vat_rate_preserved():
     """TVA réduite (10 %) lue telle quelle depuis le crawl."""
-    recs = convert_with_profile(_crawl([
-        {"code": "1006300000", "description_en": "Riz", "dd_rate": 40.0,
-         "dd_rate_raw": "40 %", "tpi_rate": 0.25, "vat_rate": 10.0,
-         "tic_rate": None, "chapter": "10", "digits": 10},
-    ]), PROFILES["MAR"])
+    recs = convert_with_profile(
+        _crawl(
+            [
+                {
+                    "code": "1006300000",
+                    "description_en": "Riz",
+                    "dd_rate": 40.0,
+                    "dd_rate_raw": "40 %",
+                    "tpi_rate": 0.25,
+                    "vat_rate": 10.0,
+                    "tic_rate": None,
+                    "chapter": "10",
+                    "digits": 10,
+                },
+            ]
+        ),
+        PROFILES["MAR"],
+    )
     vat = next(m for m in recs[0].measures if m.code == "T.V.A")
     assert vat.rate_pct == 10.0

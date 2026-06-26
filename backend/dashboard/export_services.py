@@ -18,19 +18,19 @@ logger = logging.getLogger(__name__)
 
 try:
     import openpyxl
-    from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
+    from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
     from openpyxl.utils import get_column_letter
+
     OPENPYXL_AVAILABLE = True
 except ImportError:
     OPENPYXL_AVAILABLE = False
 
 try:
-    from reportlab.lib.pagesizes import A4
     from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4
     from reportlab.lib.styles import getSampleStyleSheet
-    from reportlab.platypus import (
-        SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-    )
+    from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+
     REPORTLAB_AVAILABLE = True
 except ImportError:
     REPORTLAB_AVAILABLE = False
@@ -66,8 +66,10 @@ class ExportService:
         header_fill = PatternFill("solid", fgColor="1A365D")
         header_align = Alignment(horizontal="center", vertical="center")
         thin_border = Border(
-            left=Side(style="thin"), right=Side(style="thin"),
-            top=Side(style="thin"), bottom=Side(style="thin"),
+            left=Side(style="thin"),
+            right=Side(style="thin"),
+            top=Side(style="thin"),
+            bottom=Side(style="thin"),
         )
 
         # Title
@@ -122,7 +124,14 @@ class ExportService:
 
         try:
             from intelligence.analytics.regional_analytics import REGIONAL_BENCHMARKS
-            reg_headers = ["Bloc", "Avg Tariff (%)", "Investment Score", "Infrastructure", "Trade Integration (%)"]
+
+            reg_headers = [
+                "Bloc",
+                "Avg Tariff (%)",
+                "Investment Score",
+                "Infrastructure",
+                "Trade Integration (%)",
+            ]
             for col, h in enumerate(reg_headers, start=1):
                 cell = ws_regional.cell(row=3, column=col, value=h)
                 cell.font = Font(bold=True, color="FFFFFF")
@@ -132,8 +141,12 @@ class ExportService:
             for row_idx, (bloc, metrics) in enumerate(REGIONAL_BENCHMARKS.items(), start=4):
                 ws_regional.cell(row=row_idx, column=1, value=bloc)
                 ws_regional.cell(row=row_idx, column=2, value=metrics.get("tariff_avg", ""))
-                ws_regional.cell(row=row_idx, column=3, value=round(metrics.get("investment_score", 0) * 100, 1))
-                ws_regional.cell(row=row_idx, column=4, value=round(metrics.get("infrastructure", 0) * 100, 1))
+                ws_regional.cell(
+                    row=row_idx, column=3, value=round(metrics.get("investment_score", 0) * 100, 1)
+                )
+                ws_regional.cell(
+                    row=row_idx, column=4, value=round(metrics.get("infrastructure", 0) * 100, 1)
+                )
                 ws_regional.cell(row=row_idx, column=5, value=metrics.get("trade_integration", ""))
 
             for col in range(1, len(reg_headers) + 1):
@@ -169,22 +182,26 @@ class ExportService:
         # Title
         title_style = styles["Title"]
         story.append(Paragraph("AfCFTA Investment Intelligence Report", title_style))
-        story.append(Paragraph(
-            f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
-            styles["Normal"]
-        ))
+        story.append(
+            Paragraph(
+                f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
+                styles["Normal"],
+            )
+        )
         story.append(Spacer(1, 20))
 
         # Executive Summary
         story.append(Paragraph("Executive Summary", styles["Heading1"]))
         opp_count = analysis_data.get("total_count", len(analysis_data.get("opportunities", [])))
-        story.append(Paragraph(
-            f"This report analysed {opp_count} investment opportunities across African markets "
-            "using the AfCFTA AI Investment Intelligence Engine. Opportunities are ranked by "
-            "composite investment score incorporating market access, investment climate, "
-            "infrastructure quality, incentive packages, market potential, and cost competitiveness.",
-            styles["Normal"]
-        ))
+        story.append(
+            Paragraph(
+                f"This report analysed {opp_count} investment opportunities across African markets "
+                "using the AfCFTA AI Investment Intelligence Engine. Opportunities are ranked by "
+                "composite investment score incorporating market access, investment climate, "
+                "infrastructure quality, incentive packages, market potential, and cost competitiveness.",
+                styles["Normal"],
+            )
+        )
         story.append(Spacer(1, 12))
 
         # Top opportunities table
@@ -193,23 +210,34 @@ class ExportService:
 
         table_data = [["#", "Country", "Sector", "Score", "Grade"]]
         for i, opp in enumerate(opportunities, start=1):
-            table_data.append([
-                str(i),
-                opp.get("country", ""),
-                opp.get("sector", "general").title(),
-                f"{float(opp.get('investment_score', 0)) * 100:.1f}%",
-                opp.get("grade", ""),
-            ])
+            table_data.append(
+                [
+                    str(i),
+                    opp.get("country", ""),
+                    opp.get("sector", "general").title(),
+                    f"{float(opp.get('investment_score', 0)) * 100:.1f}%",
+                    opp.get("grade", ""),
+                ]
+            )
 
         table = Table(table_data, colWidths=[30, 80, 100, 60, 40])
-        table.setStyle(TableStyle([
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1A365D")),
-            ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-            ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-            ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
-            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F7FAFC")]),
-        ]))
+        table.setStyle(
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1A365D")),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                    ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+                    (
+                        "ROWBACKGROUNDS",
+                        (0, 1),
+                        (-1, -1),
+                        [colors.white, colors.HexColor("#F7FAFC")],
+                    ),
+                ]
+            )
+        )
         story.append(table)
 
         doc.build(story)

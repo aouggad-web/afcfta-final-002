@@ -3,6 +3,7 @@
 All endpoints require an admin-tier API key (X-API-Key header).
 File is read/written atomically; an in-memory lock prevents concurrent writes.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -12,10 +13,9 @@ import shutil
 from pathlib import Path
 from typing import List, Optional
 
+from auth import require_admin
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
-
-from auth import require_admin
 
 router = APIRouter(prefix="/admin/projects", tags=["Admin - Structuring Projects"])
 

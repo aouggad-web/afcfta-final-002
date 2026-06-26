@@ -50,12 +50,15 @@ OPTIONAL_PREFIXES = ["claude_product", "claude_value_chains"]
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--all", action="store_true",
-                    help="Inclure aussi claude_product et claude_value_chains")
-    ap.add_argument("--dry-run", action="store_true",
-                    help="Afficher ce qui serait invalidé sans rien supprimer")
-    ap.add_argument("--stats", action="store_true",
-                    help="Afficher les statistiques de cache et quitter")
+    ap.add_argument(
+        "--all", action="store_true", help="Inclure aussi claude_product et claude_value_chains"
+    )
+    ap.add_argument(
+        "--dry-run", action="store_true", help="Afficher ce qui serait invalidé sans rien supprimer"
+    )
+    ap.add_argument(
+        "--stats", action="store_true", help="Afficher les statistiques de cache et quitter"
+    )
     args = ap.parse_args()
 
     print("=" * 64)
@@ -65,6 +68,7 @@ def main() -> int:
     # Version courante du dataset (informatif)
     try:
         from production_data import get_production_data_version
+
         print(f"\n  Version dataset production (pdv) : {get_production_data_version()}")
     except Exception as e:
         print(f"\n  ⚠ Version dataset indisponible : {e}")
@@ -77,8 +81,10 @@ def main() -> int:
         print(f"  Redis  : {redis_stats.get('total_zlecaf_keys', 0)} clés zlecaf")
     else:
         print(f"  Redis  : {redis_stats.get('status', 'n/a')}")
-    print(f"  Fichier: {file_stats.get('total_files', 0)} fichiers "
-          f"({file_stats.get('active_entries', 0)} actifs)")
+    print(
+        f"  Fichier: {file_stats.get('total_files', 0)} fichiers "
+        f"({file_stats.get('active_entries', 0)} actifs)"
+    )
 
     if args.stats:
         return 0
@@ -97,8 +103,10 @@ def main() -> int:
         total += n
 
     print(f"\n✅ {total} entrée(s) de cache invalidée(s).")
-    print("   Les prochaines requêtes régénéreront les analyses avec les "
-          "capacités de production à jour.")
+    print(
+        "   Les prochaines requêtes régénéreront les analyses avec les "
+        "capacités de production à jour."
+    )
     return 0
 
 

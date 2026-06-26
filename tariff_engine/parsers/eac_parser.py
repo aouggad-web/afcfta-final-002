@@ -1,6 +1,7 @@
 import camelot
 import pandas as pd
 
+
 def parse(pdf_path: str, out_csv: str) -> str:
     tables = camelot.read_pdf(pdf_path, pages="1-end", flavor="stream")
     frames = []

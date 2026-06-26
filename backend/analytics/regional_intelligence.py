@@ -14,9 +14,21 @@ _REGIONAL_DATA: dict[str, dict[str, Any]] = {
     "ECOWAS": {
         "full_name": "Economic Community of West African States",
         "members": [
-            "Benin", "Burkina Faso", "Cabo Verde", "Côte d'Ivoire", "Gambia",
-            "Ghana", "Guinea", "Guinea-Bissau", "Liberia", "Mali",
-            "Niger", "Nigeria", "Senegal", "Sierra Leone", "Togo",
+            "Benin",
+            "Burkina Faso",
+            "Cabo Verde",
+            "Côte d'Ivoire",
+            "Gambia",
+            "Ghana",
+            "Guinea",
+            "Guinea-Bissau",
+            "Liberia",
+            "Mali",
+            "Niger",
+            "Nigeria",
+            "Senegal",
+            "Sierra Leone",
+            "Togo",
         ],
         "population_m": 424,
         "gdp_usd_bn": 794,
@@ -48,9 +60,22 @@ _REGIONAL_DATA: dict[str, dict[str, Any]] = {
     "SADC": {
         "full_name": "Southern African Development Community",
         "members": [
-            "Angola", "Botswana", "Comoros", "DRC", "Eswatini", "Lesotho",
-            "Madagascar", "Malawi", "Mauritius", "Mozambique", "Namibia",
-            "Seychelles", "South Africa", "Tanzania", "Zambia", "Zimbabwe",
+            "Angola",
+            "Botswana",
+            "Comoros",
+            "DRC",
+            "Eswatini",
+            "Lesotho",
+            "Madagascar",
+            "Malawi",
+            "Mauritius",
+            "Mozambique",
+            "Namibia",
+            "Seychelles",
+            "South Africa",
+            "Tanzania",
+            "Zambia",
+            "Zimbabwe",
         ],
         "population_m": 368,
         "gdp_usd_bn": 725,
@@ -82,8 +107,14 @@ _REGIONAL_DATA: dict[str, dict[str, Any]] = {
     "EAC": {
         "full_name": "East African Community",
         "members": [
-            "Burundi", "DRC", "Kenya", "Rwanda", "Somalia",
-            "South Sudan", "Tanzania", "Uganda",
+            "Burundi",
+            "DRC",
+            "Kenya",
+            "Rwanda",
+            "Somalia",
+            "South Sudan",
+            "Tanzania",
+            "Uganda",
         ],
         "population_m": 305,
         "gdp_usd_bn": 312,
@@ -145,8 +176,17 @@ _REGIONAL_DATA: dict[str, dict[str, Any]] = {
     "ECCAS": {
         "full_name": "Economic Community of Central African States",
         "members": [
-            "Angola", "Burundi", "Cameroon", "CAR", "Chad",
-            "DRC", "Equatorial Guinea", "Gabon", "Republic of Congo", "Rwanda", "São Tomé and Príncipe",
+            "Angola",
+            "Burundi",
+            "Cameroon",
+            "CAR",
+            "Chad",
+            "DRC",
+            "Equatorial Guinea",
+            "Gabon",
+            "Republic of Congo",
+            "Rwanda",
+            "São Tomé and Príncipe",
         ],
         "population_m": 210,
         "gdp_usd_bn": 248,
@@ -240,18 +280,24 @@ class RegionalAnalyticsEngine:
             region1.upper(): _summary(r1, region1),
             region2.upper(): _summary(r2, region2),
             "winner": {
-                "trade": region1.upper()
-                if (r1 or {}).get("trade_performance", {}).get("intra_regional_trade_pct", 0) >=
-                   (r2 or {}).get("trade_performance", {}).get("intra_regional_trade_pct", 0)
-                else region2.upper(),
-                "investment": region1.upper()
-                if (r1 or {}).get("investment_attractiveness", {}).get("score", 0) >=
-                   (r2 or {}).get("investment_attractiveness", {}).get("score", 0)
-                else region2.upper(),
-                "integration": region1.upper()
-                if (r1 or {}).get("integration_progress", {}).get("integration_score_pct", 0) >=
-                   (r2 or {}).get("integration_progress", {}).get("integration_score_pct", 0)
-                else region2.upper(),
+                "trade": (
+                    region1.upper()
+                    if (r1 or {}).get("trade_performance", {}).get("intra_regional_trade_pct", 0)
+                    >= (r2 or {}).get("trade_performance", {}).get("intra_regional_trade_pct", 0)
+                    else region2.upper()
+                ),
+                "investment": (
+                    region1.upper()
+                    if (r1 or {}).get("investment_attractiveness", {}).get("score", 0)
+                    >= (r2 or {}).get("investment_attractiveness", {}).get("score", 0)
+                    else region2.upper()
+                ),
+                "integration": (
+                    region1.upper()
+                    if (r1 or {}).get("integration_progress", {}).get("integration_score_pct", 0)
+                    >= (r2 or {}).get("integration_progress", {}).get("integration_score_pct", 0)
+                    else region2.upper()
+                ),
             },
             "compared_at": datetime.now(timezone.utc).isoformat(),
         }

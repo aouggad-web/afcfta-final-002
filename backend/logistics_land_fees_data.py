@@ -20,8 +20,9 @@ Calibrage / sources :
 Les taux sont ESTIMÉS par un modèle calibré ; les coûts réels varient fortement
 (±20-30 %) selon l'état des routes, les temps d'attente aux frontières et les pratiques.
 """
-from typing import Optional, List, Dict, Any
+
 from functools import lru_cache
+from typing import Any, Dict, List, Optional
 
 import logistics_land_data
 
@@ -32,9 +33,9 @@ _RATE_TON_KM = {
 }
 
 # Coût de franchissement par poste-frontière et par envoi ($)
-_BORDER_COST_OSBP = 250.0      # poste OSBP (guichet unique, plus rapide)
-_BORDER_COST_STD = 450.0       # poste-frontière classique
-_HANDLING_USD = 150.0          # documentation + manutention
+_BORDER_COST_OSBP = 250.0  # poste OSBP (guichet unique, plus rapide)
+_BORDER_COST_STD = 450.0  # poste-frontière classique
+_HANDLING_USD = 150.0  # documentation + manutention
 _MIN_CHARGE_USD = 150.0
 
 # Vitesse effective (km/jour) incluant arrêts
@@ -44,18 +45,26 @@ _BORDER_DELAY_OSBP = 0.5
 _BORDER_DELAY_STD = 1.5
 
 # Paramètres multimodal (rail + route)
-_RAIL_SHARE = 0.65          # part de la distance par rail (tronçon principal)
-_ROAD_SHARE = 0.35          # part par camion (premier/dernier km + tronçons sans rail)
-_TRANSSHIP_PER_TON = 7.0    # coût de transbordement par tonne et par rupture de charge
-_TRANSSHIPMENTS = 2         # nombre de ruptures de charge (rail↔route)
-_TRANSSHIP_DELAY = 0.75     # délai par rupture de charge (jours)
+_RAIL_SHARE = 0.65  # part de la distance par rail (tronçon principal)
+_ROAD_SHARE = 0.35  # part par camion (premier/dernier km + tronçons sans rail)
+_TRANSSHIP_PER_TON = 7.0  # coût de transbordement par tonne et par rupture de charge
+_TRANSSHIPMENTS = 2  # nombre de ruptures de charge (rail↔route)
+_TRANSSHIP_DELAY = 0.75  # délai par rupture de charge (jours)
 
 # Coefficients par nature de marchandise
 CARGO_FACTORS = {
     "general": {"factor": 1.0, "label_fr": "Marchandise générale", "label_en": "General cargo"},
     "container": {"factor": 1.05, "label_fr": "Conteneurisé", "label_en": "Containerised"},
-    "perishable": {"factor": 1.25, "label_fr": "Périssable (camion frigo)", "label_en": "Perishable (reefer)"},
-    "dangerous": {"factor": 1.30, "label_fr": "Marchandise dangereuse (ADR)", "label_en": "Dangerous goods (ADR)"},
+    "perishable": {
+        "factor": 1.25,
+        "label_fr": "Périssable (camion frigo)",
+        "label_en": "Perishable (reefer)",
+    },
+    "dangerous": {
+        "factor": 1.30,
+        "label_fr": "Marchandise dangereuse (ADR)",
+        "label_en": "Dangerous goods (ADR)",
+    },
     "bulk": {"factor": 0.90, "label_fr": "Vrac", "label_en": "Bulk"},
 }
 
@@ -170,12 +179,18 @@ def get_land_freight_cost(
         travel_days = length / _SPEED_KM_DAY[mode]
         rate_display = _RATE_TON_KM[mode]
 
-    border_cost = corridor["osbp"] * _BORDER_COST_OSBP + (corridor["borders"] - corridor["osbp"]) * _BORDER_COST_STD
+    border_cost = (
+        corridor["osbp"] * _BORDER_COST_OSBP
+        + (corridor["borders"] - corridor["osbp"]) * _BORDER_COST_STD
+    )
     subtotal = transport + transshipment + border_cost + _HANDLING_USD
     total = max(subtotal, _MIN_CHARGE_USD)
 
     # Délais
-    border_days = corridor["osbp"] * _BORDER_DELAY_OSBP + (corridor["borders"] - corridor["osbp"]) * _BORDER_DELAY_STD
+    border_days = (
+        corridor["osbp"] * _BORDER_DELAY_OSBP
+        + (corridor["borders"] - corridor["osbp"]) * _BORDER_DELAY_STD
+    )
     transit_min = max(1, int(round(travel_days + border_days)))
     transit_max = transit_min + max(1, corridor["borders"]) + 1
 

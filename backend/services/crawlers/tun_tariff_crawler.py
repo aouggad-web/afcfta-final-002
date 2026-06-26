@@ -16,8 +16,9 @@ import asyncio
 import logging
 from typing import Any, Dict, List, Optional
 
-from .base_north_africa_crawler import NorthAfricaCrawlerBase
 from config.crawler_configs.tun_config import TUN_CONFIG
+
+from .base_north_africa_crawler import NorthAfricaCrawlerBase
 
 logger = logging.getLogger(__name__)
 
@@ -37,8 +38,13 @@ class TUNTariffCrawler(NorthAfricaCrawlerBase):
 
     _country_code = "TUN"
 
-    def __init__(self, *args, chapters: Optional[List[str]] = None,
-                 max_per_chapter: Optional[int] = None, **kwargs):
+    def __init__(
+        self,
+        *args,
+        chapters: Optional[List[str]] = None,
+        max_per_chapter: Optional[int] = None,
+        **kwargs,
+    ):
         super().__init__(*args, **kwargs)
         self.chapters = chapters
         self.max_per_chapter = max_per_chapter
@@ -83,9 +89,7 @@ class TUNTariffCrawler(NorthAfricaCrawlerBase):
                         taxes=import_taxes,
                         source=self.config["primary_source"],
                         chapter=pos.get("chapter", ""),
-                        taxes_export=[
-                            t for t in pos.get("taxes_export", [])
-                        ],
+                        taxes_export=[t for t in pos.get("taxes_export", [])],
                         preferences=pos.get("preferences", []),
                         import_status=pos.get("import_status", ""),
                         export_status=pos.get("export_status", ""),
@@ -109,6 +113,7 @@ class TUNTariffCrawler(NorthAfricaCrawlerBase):
     async def parse_taxes(self, html: str, country_config: Dict) -> List[Dict]:
         """Parse Tunisia-specific tax structure from HTML."""
         import re
+
         from bs4 import BeautifulSoup
 
         soup = BeautifulSoup(html, "html.parser")
@@ -144,8 +149,7 @@ class TUNTariffCrawler(NorthAfricaCrawlerBase):
             return False
 
         valid_count = sum(
-            1 for line in tariff_lines
-            if line.get("hs_code") and line.get("designation")
+            1 for line in tariff_lines if line.get("hs_code") and line.get("designation")
         )
         coverage = valid_count / len(tariff_lines) if tariff_lines else 0
         logger.info(f"TUN: Validation coverage {coverage:.1%} ({valid_count}/{len(tariff_lines)})")

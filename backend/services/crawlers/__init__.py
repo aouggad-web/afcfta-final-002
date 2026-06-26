@@ -12,12 +12,12 @@ Provides BaseScraper-compatible adapters and orchestration for:
 """
 
 from .base_north_africa_crawler import NorthAfricaCrawlerBase
-from .dza_tariff_connector import DZATariffConnector
-from .mar_tariff_crawler import MARTariffCrawler
-from .egy_tariff_crawler import EGYTariffCrawler
-from .tun_tariff_crawler import TUNTariffCrawler
-from .regional_orchestrator import NorthAfricaOrchestrator, get_north_africa_orchestrator
 from .cross_validator import NorthAfricaCrossValidator
+from .dza_tariff_connector import DZATariffConnector
+from .egy_tariff_crawler import EGYTariffCrawler
+from .mar_tariff_crawler import MARTariffCrawler
+from .regional_orchestrator import NorthAfricaOrchestrator, get_north_africa_orchestrator
+from .tun_tariff_crawler import TUNTariffCrawler
 
 __all__ = [
     "NorthAfricaCrawlerBase",

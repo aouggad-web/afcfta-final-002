@@ -1,12 +1,13 @@
 import asyncio
-import httpx
-import json
 import csv
-import re
+import json
 import logging
+import re
 from pathlib import Path
-from bs4 import BeautifulSoup
 from typing import Optional
+
+import httpx
+from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +40,7 @@ class TunisiaDouaneScraper:
                     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                     "Accept-Language": "fr-FR,fr;q=0.9",
                     "Referer": f"{BASE_URL}/tarifweb2025/",
-                }
+                },
             )
 
     async def _close_client(self):
@@ -88,12 +89,14 @@ class TunisiaDouaneScraper:
                 designation = text
 
             seen.add(code)
-            positions.append({
-                "code": code,
-                "designation": designation,
-                "choix": choix,
-                "chapter": chap,
-            })
+            positions.append(
+                {
+                    "code": code,
+                    "designation": designation,
+                    "choix": choix,
+                    "chapter": chap,
+                }
+            )
 
         return positions
 
@@ -142,7 +145,9 @@ class TunisiaDouaneScraper:
                         result["groupe_utilisation"] = texts[2]
                         result["mode_paiement"] = texts[3]
 
-            elif "IMPORT" in header_text and "EXPORT" in header_text and "DROITS" not in header_text:
+            elif (
+                "IMPORT" in header_text and "EXPORT" in header_text and "DROITS" not in header_text
+            ):
                 if len(rows) > 1:
                     data_cells = rows[1].find_all(["td", "th"])
                     texts = [c.get_text(strip=True) for c in data_cells]
@@ -162,7 +167,7 @@ class TunisiaDouaneScraper:
 
                         code_match = re.match(r"^([A-Z/_]+)", tax_raw)
                         tax_code = code_match.group(1) if code_match else tax_raw[:10]
-                        tax_name = tax_raw[len(tax_code):].strip() if code_match else tax_raw
+                        tax_name = tax_raw[len(tax_code) :].strip() if code_match else tax_raw
 
                         rate_match = re.search(r"([\d.,]+)\s*%", value_raw)
                         rate = float(rate_match.group(1).replace(",", ".")) if rate_match else None
@@ -192,11 +197,13 @@ class TunisiaDouaneScraper:
                     cells = row.find_all(["td", "th"])
                     texts = [c.get_text(strip=True) for c in cells]
                     if len(texts) >= 3:
-                        result["preferences"].append({
-                            "country_code": texts[0],
-                            "country_name": texts[1],
-                            "rate": texts[2],
-                        })
+                        result["preferences"].append(
+                            {
+                                "country_code": texts[0],
+                                "country_name": texts[1],
+                                "rate": texts[2],
+                            }
+                        )
 
             elif "CODE" in header_text and "DESCRIPTION" in header_text:
                 for row in rows[1:]:
@@ -283,13 +290,22 @@ class TunisiaDouaneScraper:
     def save_csv(self, results: list, output_path: str):
         with open(output_path, "w", encoding="utf-8-sig", newline="") as f:
             writer = csv.writer(f, delimiter=";")
-            writer.writerow([
-                "Chapitre", "Code_NDP_11_chiffres", "Designation",
-                "Regime_Import", "Regime_Export",
-                "Droits_Taxes_Import", "Droits_Taxes_Export",
-                "Preferences_Tarifaires", "Reglementation",
-                "Groupe_Utilisation", "Mode_Paiement", "Source"
-            ])
+            writer.writerow(
+                [
+                    "Chapitre",
+                    "Code_NDP_11_chiffres",
+                    "Designation",
+                    "Regime_Import",
+                    "Regime_Export",
+                    "Droits_Taxes_Import",
+                    "Droits_Taxes_Export",
+                    "Preferences_Tarifaires",
+                    "Reglementation",
+                    "Groupe_Utilisation",
+                    "Mode_Paiement",
+                    "Source",
+                ]
+            )
 
             for r in results:
                 import_taxes = []
@@ -312,17 +328,19 @@ class TunisiaDouaneScraper:
                 for reg in r.get("reglementation_import", []) + r.get("reglementation_export", []):
                     regs.append(reg.get("description", ""))
 
-                writer.writerow([
-                    r.get("chapter", ""),
-                    r.get("hs_code", ""),
-                    r.get("designation", ""),
-                    r.get("import_status", ""),
-                    r.get("export_status", ""),
-                    " | ".join(import_taxes),
-                    " | ".join(export_taxes),
-                    " | ".join(prefs),
-                    " | ".join(regs),
-                    r.get("groupe_utilisation", ""),
-                    r.get("mode_paiement", ""),
-                    self.source,
-                ])
+                writer.writerow(
+                    [
+                        r.get("chapter", ""),
+                        r.get("hs_code", ""),
+                        r.get("designation", ""),
+                        r.get("import_status", ""),
+                        r.get("export_status", ""),
+                        " | ".join(import_taxes),
+                        " | ".join(export_taxes),
+                        " | ".join(prefs),
+                        " | ".join(regs),
+                        r.get("groupe_utilisation", ""),
+                        r.get("mode_paiement", ""),
+                        self.source,
+                    ]
+                )

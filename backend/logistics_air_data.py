@@ -1,6 +1,7 @@
 """
 Logistics Air Cargo data loader for African airports
 """
+
 import json
 import math
 from pathlib import Path
@@ -48,15 +49,14 @@ def _load_enhanced_airport_index() -> None:
     if _enhanced_airport_index or not ENHANCED_AIRPORTS_FILE.exists():
         return
 
-    with open(ENHANCED_AIRPORTS_FILE, 'r', encoding='utf-8') as f:
+    with open(ENHANCED_AIRPORTS_FILE, "r", encoding="utf-8") as f:
         enhanced_data = json.load(f)
 
     locations = enhanced_data.get("enhanced_locations", [])
     _enhanced_airport_index = {
-        airport["airport_id"]: airport
-        for airport in locations
-        if airport.get("airport_id")
+        airport["airport_id"]: airport for airport in locations if airport.get("airport_id")
     }
+
 
 def load_airports_data():
     """Load African airports data, merging enhanced aviation logistics fields when available."""
@@ -64,13 +64,13 @@ def load_airports_data():
     if _airports_cache is not None:
         return _airports_cache
 
-    with open(AIRPORTS_FILE, 'r', encoding='utf-8') as f:
+    with open(AIRPORTS_FILE, "r", encoding="utf-8") as f:
         airports = json.load(f)
 
     _load_enhanced_airport_index()
     if _enhanced_airport_index:
         for airport in airports:
-            airport_id = airport.get('airport_id')
+            airport_id = airport.get("airport_id")
             enhanced = _enhanced_airport_index.get(airport_id)
             if not enhanced:
                 continue
@@ -81,49 +81,52 @@ def load_airports_data():
     _airports_cache = airports
     return _airports_cache
 
+
 def get_all_airports(country_iso: Optional[str] = None) -> List[dict]:
     """
     Get all airports or filter by country ISO code
     """
     airports = load_airports_data()
-    
+
     if country_iso:
         country_iso = country_iso.upper()
-        airports = [a for a in airports if a['country_iso'] == country_iso]
-    
+        airports = [a for a in airports if a["country_iso"] == country_iso]
+
     return airports
+
 
 def get_airport_by_id(airport_id: str) -> Optional[dict]:
     """
     Get detailed airport information by airport ID
     """
     airports = load_airports_data()
-    
+
     for airport in airports:
-        if airport['airport_id'] == airport_id:
+        if airport["airport_id"] == airport_id:
             return airport
-    
+
     return None
+
 
 def get_top_airports_by_cargo(limit: int = 20) -> List[dict]:
     """
     Get top airports by cargo throughput (tons)
     """
     airports = load_airports_data()
-    
+
     # Filter airports with cargo data and sort by cargo descending
     airports_with_cargo = [
-        a for a in airports 
-        if a.get('historical_stats') and len(a['historical_stats']) > 0
+        a for a in airports if a.get("historical_stats") and len(a["historical_stats"]) > 0
     ]
-    
+
     sorted_airports = sorted(
         airports_with_cargo,
-        key=lambda x: x['historical_stats'][0].get('cargo_throughput_tons', 0),
-        reverse=True
+        key=lambda x: x["historical_stats"][0].get("cargo_throughput_tons", 0),
+        reverse=True,
     )
-    
+
     return sorted_airports[:limit]
+
 
 def search_airports(query: str) -> List[dict]:
     """
@@ -131,15 +134,17 @@ def search_airports(query: str) -> List[dict]:
     """
     airports = load_airports_data()
     query_lower = query.lower()
-    
+
     results = [
-        a for a in airports 
-        if query_lower in a['airport_name'].lower() 
-        or query_lower in a.get('iata_code', '').lower()
-        or query_lower in a['country_name'].lower()
+        a
+        for a in airports
+        if query_lower in a["airport_name"].lower()
+        or query_lower in a.get("iata_code", "").lower()
+        or query_lower in a["country_name"].lower()
     ]
-    
+
     return results
+
 
 def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     """Compute distance between two coordinates in kilometers."""
@@ -152,6 +157,7 @@ def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     return r * c
 
+
 def _distance_rate(distance_km: float) -> float:
     """Get USD/kg base rate from distance tiers."""
     for band in AIR_DISTANCE_BANDS:
@@ -159,13 +165,14 @@ def _distance_rate(distance_km: float) -> float:
             return band["rate_usd_per_kg"]
     return AIR_DISTANCE_BANDS[-1]["rate_usd_per_kg"]
 
+
 def calculate_air_freight_cost(
     origin_airport_id: str,
     destination_airport_id: str,
     weight_kg: float,
     service_level: str = "standard",
     cargo_type: str = "general",
-    volume_m3: Optional[float] = None
+    volume_m3: Optional[float] = None,
 ) -> Optional[Dict[str, Any]]:
     """
     Calculate all-in air freight cost between two airports.
@@ -178,11 +185,15 @@ def calculate_air_freight_cost(
 
     service_key = service_level.lower()
     if service_key not in AIR_SERVICE_MULTIPLIERS:
-        raise ValueError(f"Invalid service_level '{service_level}'. Valid values: {', '.join(AIR_SERVICE_MULTIPLIERS.keys())}")
+        raise ValueError(
+            f"Invalid service_level '{service_level}'. Valid values: {', '.join(AIR_SERVICE_MULTIPLIERS.keys())}"
+        )
 
     cargo_key = cargo_type.lower()
     if cargo_key not in AIR_CARGO_MULTIPLIERS:
-        raise ValueError(f"Invalid cargo_type '{cargo_type}'. Valid values: {', '.join(AIR_CARGO_MULTIPLIERS.keys())}")
+        raise ValueError(
+            f"Invalid cargo_type '{cargo_type}'. Valid values: {', '.join(AIR_CARGO_MULTIPLIERS.keys())}"
+        )
 
     origin = get_airport_by_id(origin_airport_id)
     destination = get_airport_by_id(destination_airport_id)
@@ -198,11 +209,13 @@ def calculate_air_freight_cost(
         float(origin["geo_lat"]),
         float(origin["geo_lon"]),
         float(destination["geo_lat"]),
-        float(destination["geo_lon"])
+        float(destination["geo_lon"]),
     )
     base_rate = _distance_rate(distance_km)
 
-    volumetric_weight_kg = volume_m3 * VOLUMETRIC_FACTOR_AIR_KG_PER_M3 if volume_m3 is not None else 0.0
+    volumetric_weight_kg = (
+        volume_m3 * VOLUMETRIC_FACTOR_AIR_KG_PER_M3 if volume_m3 is not None else 0.0
+    )
     chargeable_weight_kg = max(weight_kg, volumetric_weight_kg)
 
     service_multiplier = AIR_SERVICE_MULTIPLIERS[service_key]
@@ -211,8 +224,12 @@ def calculate_air_freight_cost(
     freight_base_usd = chargeable_weight_kg * base_rate * service_multiplier * cargo_multiplier
     fuel_surcharge_usd = freight_base_usd * FUEL_SURCHARGE_RATE
     security_fee_usd = chargeable_weight_kg * SECURITY_FEE_USD_PER_KG
-    origin_terminal_usd = max(TERMINAL_HANDLING_MIN_USD, chargeable_weight_kg * TERMINAL_HANDLING_USD_PER_KG)
-    destination_terminal_usd = max(TERMINAL_HANDLING_MIN_USD, chargeable_weight_kg * TERMINAL_HANDLING_USD_PER_KG)
+    origin_terminal_usd = max(
+        TERMINAL_HANDLING_MIN_USD, chargeable_weight_kg * TERMINAL_HANDLING_USD_PER_KG
+    )
+    destination_terminal_usd = max(
+        TERMINAL_HANDLING_MIN_USD, chargeable_weight_kg * TERMINAL_HANDLING_USD_PER_KG
+    )
 
     total_cost_usd = (
         freight_base_usd

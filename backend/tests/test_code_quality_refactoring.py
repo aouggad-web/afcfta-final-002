@@ -11,9 +11,10 @@ These tests run entirely in-process and do not require a live server.
 """
 
 import importlib
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 # Ensure backend/ is on the path (mirrors conftest.py behaviour)
 _backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,11 +36,16 @@ _hs6_db = _ilu.module_from_spec(_hs6_db_spec)
 # then restore the original state after exec_module() so other test files that
 # do `from fastapi.testclient import TestClient` are not affected.
 import types as _types
+
 _fastapi_stub = _types.ModuleType("fastapi")
-_fastapi_stub.APIRouter = type("APIRouter", (), {
-    "__init__": lambda self, *a, **kw: None,
-    "get": lambda self, *a, **kw: (lambda f: f),
-})
+_fastapi_stub.APIRouter = type(
+    "APIRouter",
+    (),
+    {
+        "__init__": lambda self, *a, **kw: None,
+        "get": lambda self, *a, **kw: (lambda f: f),
+    },
+)
 _fastapi_stub.HTTPException = type("HTTPException", (Exception,), {})
 _fastapi_stub.Query = lambda *a, **kw: None
 _fastapi_original = sys.modules.get("fastapi", None)
@@ -67,6 +73,7 @@ _fitz_available = importlib.util.find_spec("fitz") is not None
 # =============================================================================
 # hs6_database – CHAPTER_NAMES & scoring helpers
 # =============================================================================
+
 
 class TestChapterNames:
     """CHAPTER_NAMES module-level constant in routes.hs6_database."""
@@ -151,7 +158,15 @@ class TestBuildSearchResult:
 
     def test_result_contains_required_fields(self):
         result = _build_search_result("760110", self._sample_data(), "fr", score=55)
-        for field in ("code", "description", "chapter", "chapter_name", "full_position", "position_4", "score"):
+        for field in (
+            "code",
+            "description",
+            "chapter",
+            "chapter_name",
+            "full_position",
+            "position_4",
+            "score",
+        ):
             assert field in result, f"Missing field: {field}"
 
     def test_result_code_matches_input(self):
@@ -185,57 +200,69 @@ class TestBuildSearchResult:
 # upgrade_to_enhanced_v2 – helper utilities
 # =============================================================================
 
+
 class TestUpgradeHelpers:
     """Helper functions in scripts.upgrade_to_enhanced_v2."""
 
     def test_to_float_with_int(self):
         from scripts.upgrade_to_enhanced_v2 import _to_float
+
         assert _to_float(5) == 5.0
 
     def test_to_float_with_str_number(self):
         from scripts.upgrade_to_enhanced_v2 import _to_float
+
         assert _to_float("12.5") == 12.5
 
     def test_to_float_with_non_numeric_str(self):
         from scripts.upgrade_to_enhanced_v2 import _to_float
+
         assert _to_float("variable") == 0.0
 
     def test_to_float_with_none(self):
         from scripts.upgrade_to_enhanced_v2 import _to_float
+
         assert _to_float(None) == 0.0
 
     def test_tax_rate_from_dict(self):
         from scripts.upgrade_to_enhanced_v2 import _tax_rate
+
         taxes = {"DD": 5.0, "TVA": 19.25}
         assert _tax_rate(taxes, "DD") == 5.0
         assert _tax_rate(taxes, "TVA") == 19.25
 
     def test_tax_rate_from_dict_missing_key_uses_default(self):
         from scripts.upgrade_to_enhanced_v2 import _tax_rate
+
         taxes = {"DD": 5.0}
         assert _tax_rate(taxes, "TVA", default=0.0) == 0.0
 
     def test_tax_rate_from_list(self):
         from scripts.upgrade_to_enhanced_v2 import _tax_rate
+
         taxes = [{"code": "DD", "rate_pct": 10.0}, {"code": "TVA", "rate_pct": 19.25}]
         assert _tax_rate(taxes, "TVA") == 19.25
 
     def test_total_rate_dict(self):
         from scripts.upgrade_to_enhanced_v2 import _total_rate
+
         taxes = {"DD": 5.0, "TVA": 19.25}
         assert _total_rate(taxes) == pytest.approx(24.25, rel=1e-3)
 
     def test_total_rate_list(self):
         from scripts.upgrade_to_enhanced_v2 import _total_rate
+
         taxes = [{"code": "DD", "rate_pct": 5.0}, {"code": "TVA", "rate_pct": 19.25}]
         assert _total_rate(taxes) == pytest.approx(24.25, rel=1e-3)
 
     def test_total_rate_empty_dict(self):
         from scripts.upgrade_to_enhanced_v2 import _total_rate
+
         assert _total_rate({}) == 0.0
 
     def test_group_positions_groups_by_hs6(self):
         from scripts.upgrade_to_enhanced_v2 import _group_positions
+
         positions = [
             {"hs6": "010110", "code_clean": "01011000", "taxes": {}},
             {"hs6": "010110", "code_clean": "01011010", "taxes": {}},
@@ -249,6 +276,7 @@ class TestUpgradeHelpers:
 
     def test_migrate_country_empty_positions(self):
         from scripts.upgrade_to_enhanced_v2 import _migrate_country
+
         data = {"country_name": "Test", "positions": []}
         result = _migrate_country(data, "TST")
         assert result["data_format"] == "enhanced_v2"
@@ -259,6 +287,7 @@ class TestUpgradeHelpers:
 # =============================================================================
 # cameroon_cemac_scraper – _process_page_positions
 # =============================================================================
+
 
 @pytest.mark.skipif(not _fitz_available, reason="PyMuPDF (fitz) not installed")
 class TestProcessPagePositions:
@@ -283,6 +312,7 @@ class TestProcessPagePositions:
 
     def test_new_positions_are_added(self):
         from crawlers.countries.cameroon_cemac_scraper import _process_page_positions
+
         results = [self._make_result("01011000"), self._make_result("01011010")]
         seen: set = set()
         stats = self._empty_stats()
@@ -292,6 +322,7 @@ class TestProcessPagePositions:
 
     def test_duplicate_codes_are_skipped(self):
         from crawlers.countries.cameroon_cemac_scraper import _process_page_positions
+
         results = [self._make_result("01011000"), self._make_result("01011000")]
         seen: set = set()
         stats = self._empty_stats()
@@ -301,6 +332,7 @@ class TestProcessPagePositions:
 
     def test_already_seen_codes_are_skipped(self):
         from crawlers.countries.cameroon_cemac_scraper import _process_page_positions
+
         results = [self._make_result("01011000")]
         seen: set = {"01011000"}
         stats = self._empty_stats()
@@ -310,18 +342,29 @@ class TestProcessPagePositions:
 
     def test_position_contains_expected_fields(self):
         from crawlers.countries.cameroon_cemac_scraper import _process_page_positions
+
         results = [self._make_result("76011000", dd_rate=10.0)]
         seen: set = set()
         stats = self._empty_stats()
         positions = _process_page_positions(results, seen, stats)
         assert len(positions) == 1
         pos = positions[0]
-        for field in ("code", "code_clean", "designation", "chapter", "hs6", "taxes", "taxes_detail", "source"):
+        for field in (
+            "code",
+            "code_clean",
+            "designation",
+            "chapter",
+            "hs6",
+            "taxes",
+            "taxes_detail",
+            "source",
+        ):
             assert field in pos, f"Missing field: {field}"
         assert pos["chapter"] == "76"
 
     def test_chapter_is_recorded_in_stats(self):
         from crawlers.countries.cameroon_cemac_scraper import _process_page_positions
+
         results = [self._make_result("76011000")]
         seen: set = set()
         stats = self._empty_stats()
@@ -330,6 +373,7 @@ class TestProcessPagePositions:
 
     def test_trailing_dot_stripped_from_code(self):
         from crawlers.countries.cameroon_cemac_scraper import _process_page_positions
+
         # Raw code has a trailing dot (common in PDF extraction)
         result = self._make_result("76011000.")
         seen: set = set()
@@ -343,40 +387,54 @@ class TestProcessPagePositions:
 # cache_service – utility functions
 # =============================================================================
 
+
 class TestCacheServiceUtilities:
     """Unit tests for services.cache_service utility functions."""
 
     def test_generate_cache_key_returns_string(self):
         from services.cache_service import generate_cache_key
+
         key = generate_cache_key("test", "arg1", "arg2")
         assert isinstance(key, str)
 
     def test_generate_cache_key_starts_with_prefix(self):
         from services.cache_service import generate_cache_key
+
         key = generate_cache_key("statistics", "main")
         assert key.startswith("zlecaf:")
 
     def test_generate_cache_key_deterministic(self):
         from services.cache_service import generate_cache_key
+
         key1 = generate_cache_key("test", "arg1")
         key2 = generate_cache_key("test", "arg1")
         assert key1 == key2
 
     def test_generate_cache_key_different_args_differ(self):
         from services.cache_service import generate_cache_key
+
         key1 = generate_cache_key("test", "arg1")
         key2 = generate_cache_key("test", "arg2")
         assert key1 != key2
 
     def test_cache_ttl_has_required_categories(self):
         from services.cache_service import CACHE_TTL
-        for category in ("statistics", "countries", "search", "calculation", "regulatory", "default"):
+
+        for category in (
+            "statistics",
+            "countries",
+            "search",
+            "calculation",
+            "regulatory",
+            "default",
+        ):
             assert category in CACHE_TTL, f"Missing TTL category: {category}"
             assert CACHE_TTL[category] > 0
 
     def test_cache_get_returns_none_when_no_redis(self):
         """cache_get must return None (not raise) when Redis is unavailable."""
         from services.cache_service import cache_get
+
         # In a test environment without Redis, this should return None gracefully
         result = cache_get("zlecaf:non_existent_key_xyz")
         assert result is None
@@ -384,7 +442,7 @@ class TestCacheServiceUtilities:
     def test_cache_set_returns_false_when_no_redis(self):
         """cache_set must return False (not raise) when Redis is unavailable."""
         from services.cache_service import cache_set
+
         result = cache_set("zlecaf:non_existent_key_xyz", {"data": 1}, "default")
         # Either True (Redis connected) or False (no Redis) – must not raise
         assert isinstance(result, bool)
-

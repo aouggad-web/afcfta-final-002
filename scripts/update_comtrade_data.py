@@ -11,17 +11,18 @@ import json
 import os
 import sys
 import time
-import requests
 from datetime import datetime
 from pathlib import Path
+
+import requests
 
 # UN M49 numeric codes for all 54 AfCFTA member countries
 # These numeric codes are required by the COMTRADE API (alpha-3 codes are NOT accepted)
 AFRICAN_COUNTRY_CODES = {
-    "DZA": 12,   # Algeria
-    "AGO": 24,   # Angola
+    "DZA": 12,  # Algeria
+    "AGO": 24,  # Angola
     "BEN": 204,  # Benin
-    "BWA": 72,   # Botswana
+    "BWA": 72,  # Botswana
     "BFA": 854,  # Burkina Faso
     "BDI": 108,  # Burundi
     "CMR": 120,  # Cameroon
@@ -156,7 +157,9 @@ class ComtradeUpdater:
                         break
 
                     elif response.status_code == 429:
-                        print(f"⚠️ Rate limit hit on {self.active_key} key (attempt {attempt}/{MAX_RETRIES})")
+                        print(
+                            f"⚠️ Rate limit hit on {self.active_key} key (attempt {attempt}/{MAX_RETRIES})"
+                        )
                         if attempt < MAX_RETRIES:
                             time.sleep(RETRY_DELAY * attempt)
                             if attempt == MAX_RETRIES - 1:
@@ -170,7 +173,9 @@ class ComtradeUpdater:
                         error_detail = response.json() if response.content else {}
                         print(f"❌ Bad request for {iso3_code}: {response.status_code}")
                         print(f"   URL: {COMTRADE_BASE_URL}")
-                        print(f"   Params: {{'reporterCode': {reporter_code}, 'partnerCode': '0', 'period': '{year}'}}")
+                        print(
+                            f"   Params: {{'reporterCode': {reporter_code}, 'partnerCode': '0', 'period': '{year}'}}"
+                        )
                         print(f"   Error details: {error_detail}")
                         # 400 means bad parameters - no point retrying with same params
                         return None
@@ -182,12 +187,16 @@ class ComtradeUpdater:
                         api_key = self._get_active_api_key()
 
                     else:
-                        print(f"⚠️ HTTP {response.status_code} for {iso3_code} year {year} (attempt {attempt}/{MAX_RETRIES})")
+                        print(
+                            f"⚠️ HTTP {response.status_code} for {iso3_code} year {year} (attempt {attempt}/{MAX_RETRIES})"
+                        )
                         if attempt < MAX_RETRIES:
                             time.sleep(RETRY_DELAY)
 
                 except requests.exceptions.Timeout:
-                    print(f"⚠️ Timeout for {iso3_code} year {year} (attempt {attempt}/{MAX_RETRIES})")
+                    print(
+                        f"⚠️ Timeout for {iso3_code} year {year} (attempt {attempt}/{MAX_RETRIES})"
+                    )
                     if attempt < MAX_RETRIES:
                         time.sleep(RETRY_DELAY)
                 except requests.exceptions.RequestException as e:
@@ -215,7 +224,9 @@ class ComtradeUpdater:
         try:
             response = requests.get(WTO_BASE_URL, params=params, timeout=20)
             if response.status_code == 401:
-                print(f"⚠️ Unauthorized (401) for URL: {WTO_BASE_URL}. Check API credentials. Skipping...")
+                print(
+                    f"⚠️ Unauthorized (401) for URL: {WTO_BASE_URL}. Check API credentials. Skipping..."
+                )
                 return None
             if response.status_code == 200:
                 data = response.json()

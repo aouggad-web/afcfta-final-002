@@ -12,9 +12,9 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT_DIR = Path(os.environ.get('APP_ROOT', Path(__file__).parent))
-INPUT_FILE = ROOT_DIR / 'airports_africains.json'
-OUTPUT_FILE = ROOT_DIR / 'airports_africains_enhanced_aviation_logistics.json'
+ROOT_DIR = Path(os.environ.get("APP_ROOT", Path(__file__).parent))
+INPUT_FILE = ROOT_DIR / "airports_africains.json"
+OUTPUT_FILE = ROOT_DIR / "airports_africains_enhanced_aviation_logistics.json"
 
 # ---------------------------------------------------------------------------
 # Comprehensive aviation agent database
@@ -36,7 +36,7 @@ AGENTS_DATABASE = {
                 "Dangerous goods",
                 "Valuable cargo",
                 "Live animals",
-                "Express cargo"
+                "Express cargo",
             ],
             "local_offices": {
                 "ZAF": {
@@ -47,7 +47,7 @@ AGENTS_DATABASE = {
                         "manager": "Emirates SkyCargo JNB Manager",
                         "services": ["General cargo", "Pharmaceuticals", "Perishables", "Express"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh", "TAPA"]
+                        "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh", "TAPA"],
                     }
                 },
                 "KEN": {
@@ -58,7 +58,7 @@ AGENTS_DATABASE = {
                         "manager": "Emirates SkyCargo NBO Manager",
                         "services": ["Fresh produce", "General cargo", "Pharmaceuticals"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh"]
+                        "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh"],
                     }
                 },
                 "NGA": {
@@ -69,7 +69,7 @@ AGENTS_DATABASE = {
                         "manager": "Emirates SkyCargo LOS Manager",
                         "services": ["General cargo", "Pharmaceuticals", "Perishables"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma"]
+                        "certifications": ["GDP", "CEIV Pharma"],
                     }
                 },
                 "EGY": {
@@ -80,7 +80,7 @@ AGENTS_DATABASE = {
                         "manager": "Emirates SkyCargo CAI Manager",
                         "services": ["General cargo", "Dangerous goods", "Pharmaceuticals"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma", "TAPA"]
+                        "certifications": ["GDP", "CEIV Pharma", "TAPA"],
                     }
                 },
                 "ETH": {
@@ -91,7 +91,7 @@ AGENTS_DATABASE = {
                         "manager": "Emirates SkyCargo ADD Manager",
                         "services": ["General cargo", "Perishables", "Express"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "IATA CEIV Fresh"]
+                        "certifications": ["GDP", "IATA CEIV Fresh"],
                     }
                 },
                 "MAR": {
@@ -102,10 +102,10 @@ AGENTS_DATABASE = {
                         "manager": "Emirates SkyCargo CMN Manager",
                         "services": ["General cargo", "Pharmaceuticals", "Perishables"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma"]
+                        "certifications": ["GDP", "CEIV Pharma"],
                     }
-                }
-            }
+                },
+            },
         },
         "qatar_airways_cargo": {
             "company_name": "Qatar Airways Cargo",
@@ -121,7 +121,7 @@ AGENTS_DATABASE = {
                 "QR Express",
                 "QR Valuables",
                 "QR Dangerous Goods",
-                "General cargo"
+                "General cargo",
             ],
             "local_offices": {
                 "ZAF": {
@@ -132,7 +132,7 @@ AGENTS_DATABASE = {
                         "manager": "QR Cargo JNB Station Manager",
                         "services": ["QR Pharma", "QR Fresh", "General cargo", "Express"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh", "TAPA A"]
+                        "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh", "TAPA A"],
                     }
                 },
                 "KEN": {
@@ -143,7 +143,7 @@ AGENTS_DATABASE = {
                         "manager": "QR Cargo NBO Station Manager",
                         "services": ["QR Fresh", "QR Pharma", "General cargo"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "IATA CEIV Fresh"]
+                        "certifications": ["GDP", "IATA CEIV Fresh"],
                     }
                 },
                 "NGA": {
@@ -154,7 +154,7 @@ AGENTS_DATABASE = {
                         "manager": "QR Cargo LOS Station Manager",
                         "services": ["QR Pharma", "General cargo", "Express"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma"]
+                        "certifications": ["GDP", "CEIV Pharma"],
                     }
                 },
                 "EGY": {
@@ -165,10 +165,10 @@ AGENTS_DATABASE = {
                         "manager": "QR Cargo CAI Station Manager",
                         "services": ["QR Pharma", "QR Fresh", "Dangerous goods", "General cargo"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma", "TAPA"]
+                        "certifications": ["GDP", "CEIV Pharma", "TAPA"],
                     }
-                }
-            }
+                },
+            },
         },
         "turkish_cargo": {
             "company_name": "Turkish Cargo",
@@ -184,7 +184,7 @@ AGENTS_DATABASE = {
                 "LIVE PLUS (live animals)",
                 "TRANSFER PLUS",
                 "General cargo",
-                "Express cargo"
+                "Express cargo",
             ],
             "local_offices": {
                 "ZAF": {
@@ -195,7 +195,7 @@ AGENTS_DATABASE = {
                         "manager": "Turkish Cargo JNB Station Manager",
                         "services": ["PHARMA PLUS", "FRESH PLUS", "General cargo"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh"]
+                        "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh"],
                     }
                 },
                 "ETH": {
@@ -206,7 +206,7 @@ AGENTS_DATABASE = {
                         "manager": "Turkish Cargo ADD Station Manager",
                         "services": ["FRESH PLUS", "General cargo", "Transit cargo"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "IATA CEIV Fresh"]
+                        "certifications": ["GDP", "IATA CEIV Fresh"],
                     }
                 },
                 "EGY": {
@@ -217,7 +217,7 @@ AGENTS_DATABASE = {
                         "manager": "Turkish Cargo CAI Station Manager",
                         "services": ["PHARMA PLUS", "General cargo", "TD MED"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma"]
+                        "certifications": ["GDP", "CEIV Pharma"],
                     }
                 },
                 "NGA": {
@@ -228,7 +228,7 @@ AGENTS_DATABASE = {
                         "manager": "Turkish Cargo LOS Station Manager",
                         "services": ["General cargo", "PHARMA PLUS"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma"]
+                        "certifications": ["GDP", "CEIV Pharma"],
                     }
                 },
                 "MAR": {
@@ -239,10 +239,10 @@ AGENTS_DATABASE = {
                         "manager": "Turkish Cargo CMN Station Manager",
                         "services": ["PHARMA PLUS", "FRESH PLUS", "General cargo"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma"]
+                        "certifications": ["GDP", "CEIV Pharma"],
                     }
-                }
-            }
+                },
+            },
         },
         "ethiopian_cargo": {
             "company_name": "Ethiopian Airlines Cargo & Logistics Service",
@@ -259,7 +259,7 @@ AGENTS_DATABASE = {
                 "Live animals",
                 "Dangerous goods",
                 "Human remains",
-                "Temperature controlled"
+                "Temperature controlled",
             ],
             "local_offices": {
                 "ETH": {
@@ -268,9 +268,14 @@ AGENTS_DATABASE = {
                         "phone": "+251 11 661 7000",
                         "email": "add.cargo@ethiopianairlines.com",
                         "manager": "ET Cargo Hub Director",
-                        "services": ["All cargo services", "Hub operations", "Perishables", "Pharma"],
+                        "services": [
+                            "All cargo services",
+                            "Hub operations",
+                            "Perishables",
+                            "Pharma",
+                        ],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "IATA CEIV Fresh", "TAPA", "ISO 9001"]
+                        "certifications": ["GDP", "IATA CEIV Fresh", "TAPA", "ISO 9001"],
                     }
                 },
                 "ZAF": {
@@ -281,7 +286,7 @@ AGENTS_DATABASE = {
                         "manager": "ET Cargo JNB Manager",
                         "services": ["General cargo", "Perishables", "Express"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "IATA CEIV Fresh"]
+                        "certifications": ["GDP", "IATA CEIV Fresh"],
                     }
                 },
                 "KEN": {
@@ -292,7 +297,7 @@ AGENTS_DATABASE = {
                         "manager": "ET Cargo NBO Station Manager",
                         "services": ["Fresh flowers", "General cargo", "Express"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "IATA CEIV Fresh"]
+                        "certifications": ["GDP", "IATA CEIV Fresh"],
                     }
                 },
                 "NGA": {
@@ -303,10 +308,10 @@ AGENTS_DATABASE = {
                         "manager": "ET Cargo LOS Manager",
                         "services": ["General cargo", "Express", "Pharmaceuticals"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP"]
+                        "certifications": ["GDP"],
                     }
-                }
-            }
+                },
+            },
         },
         "cargolux": {
             "company_name": "Cargolux Airlines International S.A.",
@@ -322,7 +327,7 @@ AGENTS_DATABASE = {
                 "Dangerous goods",
                 "Project cargo",
                 "Valuable cargo",
-                "E-commerce"
+                "E-commerce",
             ],
             "local_offices": {
                 "ZAF": {
@@ -333,7 +338,7 @@ AGENTS_DATABASE = {
                         "manager": "Cargolux JNB Station Manager",
                         "services": ["All-freighter cargo", "Pharmaceuticals", "Project cargo"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma", "TAPA", "AEO"]
+                        "certifications": ["GDP", "CEIV Pharma", "TAPA", "AEO"],
                     }
                 },
                 "NGA": {
@@ -344,11 +349,11 @@ AGENTS_DATABASE = {
                         "manager": "Cargolux LOS Station Manager",
                         "services": ["All-freighter cargo", "Dangerous goods", "General cargo"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "CEIV Pharma"]
+                        "certifications": ["GDP", "CEIV Pharma"],
                     }
-                }
-            }
-        }
+                },
+            },
+        },
     },
     "integrators": {
         "dhl_aviation": {
@@ -363,7 +368,7 @@ AGENTS_DATABASE = {
                 "Medical express",
                 "Temperature controlled",
                 "Dangerous goods express",
-                "On-demand delivery"
+                "On-demand delivery",
             ],
             "local_offices": {
                 "ZAF": {
@@ -374,7 +379,7 @@ AGENTS_DATABASE = {
                         "manager": "DHL Express SA Country Manager",
                         "services": ["Express", "Medical express", "Temperature controlled"],
                         "operating_hours": "Lun-Ven 07h-19h, Sam 07h-15h",
-                        "certifications": ["GDP", "CEIV Pharma", "TAPA", "AEO", "ISO 9001"]
+                        "certifications": ["GDP", "CEIV Pharma", "TAPA", "AEO", "ISO 9001"],
                     }
                 },
                 "KEN": {
@@ -385,7 +390,7 @@ AGENTS_DATABASE = {
                         "manager": "DHL Express Kenya GM",
                         "services": ["Express", "Temperature controlled", "Dangerous goods"],
                         "operating_hours": "Lun-Ven 07h-19h, Sam 07h-15h",
-                        "certifications": ["GDP", "CEIV Pharma", "AEO", "ISO 9001"]
+                        "certifications": ["GDP", "CEIV Pharma", "AEO", "ISO 9001"],
                     }
                 },
                 "NGA": {
@@ -396,7 +401,7 @@ AGENTS_DATABASE = {
                         "manager": "DHL Express Nigeria GM",
                         "services": ["Express", "Medical express", "General"],
                         "operating_hours": "Lun-Ven 07h-19h, Sam 07h-15h",
-                        "certifications": ["GDP", "ISO 9001"]
+                        "certifications": ["GDP", "ISO 9001"],
                     }
                 },
                 "EGY": {
@@ -407,7 +412,7 @@ AGENTS_DATABASE = {
                         "manager": "DHL Express Egypt GM",
                         "services": ["Express", "Medical", "Temperature controlled"],
                         "operating_hours": "Sun-Thu 07h-19h",
-                        "certifications": ["GDP", "CEIV Pharma", "ISO 9001", "AEO"]
+                        "certifications": ["GDP", "CEIV Pharma", "ISO 9001", "AEO"],
                     }
                 },
                 "MAR": {
@@ -418,10 +423,10 @@ AGENTS_DATABASE = {
                         "manager": "DHL Express Maroc GM",
                         "services": ["Express", "Medical express", "Temperature controlled"],
                         "operating_hours": "Lun-Ven 07h-19h, Sam 07h-15h",
-                        "certifications": ["GDP", "CEIV Pharma", "AEO", "ISO 9001"]
+                        "certifications": ["GDP", "CEIV Pharma", "AEO", "ISO 9001"],
                     }
-                }
-            }
+                },
+            },
         },
         "fedex_express": {
             "company_name": "FedEx Express",
@@ -436,7 +441,7 @@ AGENTS_DATABASE = {
                 "International Economy Freight",
                 "FedEx Healthcare Packaging",
                 "Dangerous goods",
-                "Customs brokerage"
+                "Customs brokerage",
             ],
             "local_offices": {
                 "ZAF": {
@@ -447,7 +452,7 @@ AGENTS_DATABASE = {
                         "manager": "FedEx South Africa MD",
                         "services": ["IP", "IE", "IP Freight", "Healthcare", "Customs"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "TAPA", "ISO 9001", "C-TPAT"]
+                        "certifications": ["GDP", "TAPA", "ISO 9001", "C-TPAT"],
                     }
                 },
                 "KEN": {
@@ -458,7 +463,7 @@ AGENTS_DATABASE = {
                         "manager": "FedEx Kenya Country Manager",
                         "services": ["IP", "IE", "IP Freight", "Healthcare"],
                         "operating_hours": "Lun-Ven 08h-18h",
-                        "certifications": ["GDP", "ISO 9001"]
+                        "certifications": ["GDP", "ISO 9001"],
                     }
                 },
                 "NGA": {
@@ -469,7 +474,7 @@ AGENTS_DATABASE = {
                         "manager": "FedEx Nigeria Country Manager",
                         "services": ["IP", "IE", "General cargo"],
                         "operating_hours": "Lun-Ven 08h-18h",
-                        "certifications": ["GDP", "ISO 9001"]
+                        "certifications": ["GDP", "ISO 9001"],
                     }
                 },
                 "EGY": {
@@ -480,10 +485,10 @@ AGENTS_DATABASE = {
                         "manager": "FedEx Egypt Country Manager",
                         "services": ["IP", "IE", "IP Freight", "Healthcare", "Customs"],
                         "operating_hours": "Sun-Thu 08h-17h",
-                        "certifications": ["GDP", "CEIV Pharma", "ISO 9001", "AEO"]
+                        "certifications": ["GDP", "CEIV Pharma", "ISO 9001", "AEO"],
                     }
-                }
-            }
+                },
+            },
         },
         "ups_airlines": {
             "company_name": "UPS Airlines",
@@ -498,7 +503,7 @@ AGENTS_DATABASE = {
                 "UPS Temperature True",
                 "UPS Proactive Response",
                 "Supply chain solutions",
-                "Customs brokerage"
+                "Customs brokerage",
             ],
             "local_offices": {
                 "ZAF": {
@@ -509,7 +514,7 @@ AGENTS_DATABASE = {
                         "manager": "UPS South Africa GM",
                         "services": ["Express", "Expedited", "Temperature True", "Supply chain"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["GDP", "C-TPAT", "ISO 9001", "TAPA"]
+                        "certifications": ["GDP", "C-TPAT", "ISO 9001", "TAPA"],
                     }
                 },
                 "NGA": {
@@ -520,7 +525,7 @@ AGENTS_DATABASE = {
                         "manager": "UPS Nigeria Country Manager",
                         "services": ["Express", "Expedited", "General cargo"],
                         "operating_hours": "Lun-Ven 08h-17h",
-                        "certifications": ["GDP", "ISO 9001"]
+                        "certifications": ["GDP", "ISO 9001"],
                     }
                 },
                 "EGY": {
@@ -531,11 +536,11 @@ AGENTS_DATABASE = {
                         "manager": "UPS Egypt Country Manager",
                         "services": ["Express", "Expedited", "Healthcare", "Customs"],
                         "operating_hours": "Sun-Thu 08h-17h",
-                        "certifications": ["GDP", "ISO 9001", "AEO"]
+                        "certifications": ["GDP", "ISO 9001", "AEO"],
                     }
-                }
-            }
-        }
+                },
+            },
+        },
     },
     "ground_handlers": {
         "swissport": {
@@ -551,7 +556,7 @@ AGENTS_DATABASE = {
                 "Aircraft cleaning",
                 "Lounge services",
                 "Cargo warehouse operations",
-                "Perishable cargo centres"
+                "Perishable cargo centres",
             ],
             "local_offices": {
                 "ZAF": {
@@ -562,7 +567,7 @@ AGENTS_DATABASE = {
                         "manager": "Swissport SA Managing Director",
                         "services": ["Ground handling", "Cargo", "Perishables centre", "Fuelling"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISO 14001", "ISAGO", "GDP", "CEIV Pharma"]
+                        "certifications": ["ISO 9001", "ISO 14001", "ISAGO", "GDP", "CEIV Pharma"],
                     }
                 },
                 "KEN": {
@@ -573,7 +578,7 @@ AGENTS_DATABASE = {
                         "manager": "Swissport Kenya GM",
                         "services": ["Ground handling", "Cargo", "Fresh produce centre"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISAGO", "GDP", "IATA CEIV Fresh"]
+                        "certifications": ["ISO 9001", "ISAGO", "GDP", "IATA CEIV Fresh"],
                     }
                 },
                 "NGA": {
@@ -584,7 +589,7 @@ AGENTS_DATABASE = {
                         "manager": "Swissport Nigeria MD",
                         "services": ["Ground handling", "Cargo handling", "Ramp services"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISAGO", "GDP"]
+                        "certifications": ["ISO 9001", "ISAGO", "GDP"],
                     }
                 },
                 "EGY": {
@@ -595,7 +600,7 @@ AGENTS_DATABASE = {
                         "manager": "Swissport Egypt Director",
                         "services": ["Ground handling", "Cargo", "Lounge", "Fuelling"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISAGO", "GDP", "AEO"]
+                        "certifications": ["ISO 9001", "ISAGO", "GDP", "AEO"],
                     }
                 },
                 "GHA": {
@@ -606,10 +611,10 @@ AGENTS_DATABASE = {
                         "manager": "Swissport Ghana Country Manager",
                         "services": ["Ground handling", "Cargo", "Ramp services"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISAGO", "GDP"]
+                        "certifications": ["ISO 9001", "ISAGO", "GDP"],
                     }
-                }
-            }
+                },
+            },
         },
         "menzies_aviation": {
             "company_name": "Menzies Aviation",
@@ -623,7 +628,7 @@ AGENTS_DATABASE = {
                 "Fuelling",
                 "Lounge services",
                 "Airport services",
-                "De-icing"
+                "De-icing",
             ],
             "local_offices": {
                 "ZAF": {
@@ -634,7 +639,7 @@ AGENTS_DATABASE = {
                         "manager": "Menzies SA Country Manager",
                         "services": ["Ground handling", "Cargo", "Ramp", "Fuelling"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISAGO", "GDP"]
+                        "certifications": ["ISO 9001", "ISAGO", "GDP"],
                     }
                 },
                 "KEN": {
@@ -645,7 +650,7 @@ AGENTS_DATABASE = {
                         "manager": "Menzies Kenya GM",
                         "services": ["Ground handling", "Cargo", "Ramp"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISAGO"]
+                        "certifications": ["ISO 9001", "ISAGO"],
                     }
                 },
                 "MAR": {
@@ -656,66 +661,92 @@ AGENTS_DATABASE = {
                         "manager": "Menzies Maroc Director",
                         "services": ["Ground handling", "Cargo", "Lounge"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISAGO", "AEO"]
+                        "certifications": ["ISO 9001", "ISAGO", "AEO"],
                     }
-                }
-            }
-        }
+                },
+            },
+        },
     },
     "service_providers": {
         "customs_brokers_air": [
             {
                 "company_name": "Globe Air Cargo Handling (GACH)",
                 "countries": ["ZAF", "KEN", "NGA", "EGY", "GHA", "ETH"],
-                "services": ["Air cargo customs clearance", "IATA certified forwarder", "Express customs"],
+                "services": [
+                    "Air cargo customs clearance",
+                    "IATA certified forwarder",
+                    "Express customs",
+                ],
                 "headquarters": "Johannesburg, Afrique du Sud",
                 "contact": "+27 11 978 6000",
                 "email": "customs@gach.co.za",
                 "website": "https://www.gach.co.za",
-                "certifications": ["IATA", "AEO", "TAPA"]
+                "certifications": ["IATA", "AEO", "TAPA"],
             },
             {
                 "company_name": "Peregrine Air Services",
                 "countries": ["KEN", "TZA", "UGA", "RWA", "ETH"],
-                "services": ["Air cargo customs", "Perishable cargo clearance", "Express clearance"],
+                "services": [
+                    "Air cargo customs",
+                    "Perishable cargo clearance",
+                    "Express clearance",
+                ],
                 "headquarters": "Nairobi, Kenya",
                 "contact": "+254 20 822 7000",
                 "email": "customs@peregrineair.co.ke",
                 "website": "https://www.peregrineair.co.ke",
-                "certifications": ["IATA", "KAA approved", "GDP"]
-            }
+                "certifications": ["IATA", "KAA approved", "GDP"],
+            },
         ],
         "freight_forwarders_air": [
             {
                 "company_name": "Kuehne+Nagel Air Logistics Africa",
                 "countries": ["ZAF", "KEN", "NGA", "EGY", "MAR", "GHA", "ETH"],
-                "services": ["Air freight", "Express forwarding", "Pharma logistics", "Perishables", "Charter"],
+                "services": [
+                    "Air freight",
+                    "Express forwarding",
+                    "Pharma logistics",
+                    "Perishables",
+                    "Charter",
+                ],
                 "headquarters": "Johannesburg, Afrique du Sud",
                 "contact": "+27 11 570 5050",
                 "email": "africa.air@kuehne-nagel.com",
                 "website": "https://home.kuehne-nagel.com",
-                "certifications": ["IATA CASS", "GDP", "CEIV Pharma", "TAPA", "ISO 9001"]
+                "certifications": ["IATA CASS", "GDP", "CEIV Pharma", "TAPA", "ISO 9001"],
             },
             {
                 "company_name": "DB Schenker Air Freight Africa",
                 "countries": ["ZAF", "KEN", "NGA", "EGY", "GHA", "ETH", "MAR"],
-                "services": ["Air freight", "Charter", "Pharmaceutical logistics", "Express", "Project"],
+                "services": [
+                    "Air freight",
+                    "Charter",
+                    "Pharmaceutical logistics",
+                    "Express",
+                    "Project",
+                ],
                 "headquarters": "Johannesburg, Afrique du Sud",
                 "contact": "+27 11 978 5050",
                 "email": "africa.air@dbschenker.com",
                 "website": "https://www.dbschenker.com/africa",
-                "certifications": ["IATA CASS", "GDP", "CEIV Pharma", "ISO 9001"]
+                "certifications": ["IATA CASS", "GDP", "CEIV Pharma", "ISO 9001"],
             },
             {
                 "company_name": "Expeditors Africa",
                 "countries": ["ZAF", "KEN", "NGA", "EGY", "GHA", "ETH"],
-                "services": ["Air freight", "Ocean freight", "Customs", "Warehousing", "Distribution"],
+                "services": [
+                    "Air freight",
+                    "Ocean freight",
+                    "Customs",
+                    "Warehousing",
+                    "Distribution",
+                ],
                 "headquarters": "Johannesburg, Afrique du Sud",
                 "contact": "+27 11 978 7000",
                 "email": "africa@expeditors.com",
                 "website": "https://www.expeditors.com",
-                "certifications": ["IATA CASS", "GDP", "C-TPAT", "ISO 9001", "TAPA"]
-            }
+                "certifications": ["IATA CASS", "GDP", "C-TPAT", "ISO 9001", "TAPA"],
+            },
         ],
         "aircraft_support": [
             {
@@ -726,7 +757,7 @@ AGENTS_DATABASE = {
                 "contact": "+44 1753 655000",
                 "email": "africa@airbp.com",
                 "website": "https://www.bp.com/aviation",
-                "certifications": ["ISO 9001", "ISO 14001", "IATA"]
+                "certifications": ["ISO 9001", "ISO 14001", "IATA"],
             },
             {
                 "company_name": "HAECO (African Operations)",
@@ -736,19 +767,23 @@ AGENTS_DATABASE = {
                 "contact": "+852 2747 5000",
                 "email": "africa@haeco.com",
                 "website": "https://www.haeco.com",
-                "certifications": ["EASA Part 145", "FAA A&P", "SACAA AMO", "KCAA AMO"]
-            }
+                "certifications": ["EASA Part 145", "FAA A&P", "SACAA AMO", "KCAA AMO"],
+            },
         ],
         "cargo_warehouse_operators": [
             {
                 "company_name": "WFS (Worldwide Flight Services) Africa",
                 "countries": ["ZAF", "KEN", "NGA", "EGY", "MAR"],
-                "services": ["Cargo warehouse operations", "Perishable handling centre", "Express handling"],
+                "services": [
+                    "Cargo warehouse operations",
+                    "Perishable handling centre",
+                    "Express handling",
+                ],
                 "headquarters": "Paris, France",
                 "contact": "+33 1 48 16 50 00",
                 "email": "africa@wfs.aero",
                 "website": "https://www.wfs.aero",
-                "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh", "TAPA", "ISO 9001"]
+                "certifications": ["GDP", "CEIV Pharma", "IATA CEIV Fresh", "TAPA", "ISO 9001"],
             },
             {
                 "company_name": "dnata Africa",
@@ -758,10 +793,10 @@ AGENTS_DATABASE = {
                 "contact": "+971 4 316 6888",
                 "email": "africa@dnata.com",
                 "website": "https://www.dnata.com",
-                "certifications": ["ISO 9001", "ISAGO", "GDP", "AEO"]
-            }
-        ]
-    }
+                "certifications": ["ISO 9001", "ISAGO", "GDP", "AEO"],
+            },
+        ],
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -772,39 +807,44 @@ AIRPORT_AUTHORITY_DEPARTMENTS = {
     "air_traffic_control": {
         "department": "Contrôle de la Circulation Aérienne",
         "responsibilities": ["Aircraft movement", "Airspace management", "Safety"],
-        "24h_emergency": True
+        "24h_emergency": True,
     },
     "customs_office": {
         "department": "Douanes Aéroportuaires",
         "responsibilities": ["Cargo declarations", "Passenger clearance", "Duty collection"],
-        "24h_emergency": False
+        "24h_emergency": False,
     },
     "cargo_operations": {
         "department": "Direction des Opérations Cargo",
-        "responsibilities": ["Cargo terminal management", "Handler coordination", "Capacity planning"],
-        "24h_emergency": True
+        "responsibilities": [
+            "Cargo terminal management",
+            "Handler coordination",
+            "Capacity planning",
+        ],
+        "24h_emergency": True,
     },
     "security_department": {
         "department": "Sûreté Aéroportuaire",
         "responsibilities": ["Airport security", "Cargo screening", "Access control"],
-        "24h_emergency": True
+        "24h_emergency": True,
     },
     "commercial_department": {
         "department": "Direction Commerciale",
         "responsibilities": ["Airline relations", "Slot allocation", "Business development"],
-        "24h_emergency": False
+        "24h_emergency": False,
     },
     "veterinary_phytosanitary": {
         "department": "Services Vétérinaires et Phytosanitaires",
         "responsibilities": ["Live animals inspection", "Plant quarantine", "Health certificates"],
-        "24h_emergency": False
-    }
+        "24h_emergency": False,
+    },
 }
 
 
 # ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
+
 
 def build_enhanced_actor(original_actor: dict) -> dict:
     """Merge original actor entry with enriched contact template fields."""
@@ -826,10 +866,10 @@ def enrich_airport_authority(airport: dict) -> dict:
             dept_key: {
                 **dept_info,
                 "contact_phone": "Voir direction aéroportuaire",
-                "contact_email": f"{iata.lower()}.{dept_key}@airport.aero"
+                "contact_email": f"{iata.lower()}.{dept_key}@airport.aero",
             }
             for dept_key, dept_info in AIRPORT_AUTHORITY_DEPARTMENTS.items()
-        }
+        },
     }
     return authority
 
@@ -854,8 +894,8 @@ def enhance_airport(airport: dict) -> dict:
             "Customs brokers (air)",
             "Freight forwarders (air)",
             "Aircraft support services",
-            "Cargo warehouse operators"
-        ]
+            "Cargo warehouse operators",
+        ],
     }
 
     return enhanced
@@ -889,6 +929,7 @@ def _handlers_for_country(iso: str) -> list:
 # Main
 # ---------------------------------------------------------------------------
 
+
 def main():
     with open(INPUT_FILE, encoding="utf-8") as fh:
         original_airports = json.load(fh)
@@ -904,7 +945,7 @@ def main():
                 "IATA World Air Transport Statistics 2024",
                 "ACI Africa airport directory",
                 "TIACA (The International Air Cargo Association)",
-                "African Development Bank logistics data"
+                "African Development Bank logistics data",
             ],
             "coverage": {
                 "total_enhanced": len(enhanced_airports),
@@ -914,12 +955,12 @@ def main():
                     "Ground handler profiles with certification details",
                     "Airport authority departmental contacts",
                     "Aviation service provider network database",
-                    "Logistics network cross-reference per airport"
-                ]
-            }
+                    "Logistics network cross-reference per airport",
+                ],
+            },
         },
         "agents_database": AGENTS_DATABASE,
-        "enhanced_locations": enhanced_airports
+        "enhanced_locations": enhanced_airports,
     }
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as fh:

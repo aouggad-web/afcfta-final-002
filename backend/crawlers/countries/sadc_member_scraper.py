@@ -25,7 +25,7 @@ from typing import Dict, List, Optional
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'crawled')
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data", "crawled")
 
 # ---------------------------------------------------------------------------
 # Country configurations (inline – mirrors cemac_member_scraper.py structure)
@@ -374,7 +374,11 @@ SACU_BASE_POSITIONS = [
     {"chapter": "10", "description": "Cereals", "cet_rate": 20.0},
     {"chapter": "17", "description": "Sugars and sugar confectionery", "cet_rate": 20.0},
     {"chapter": "22", "description": "Beverages, spirits and vinegar", "cet_rate": 25.0},
-    {"chapter": "24", "description": "Tobacco and manufactured tobacco substitutes", "cet_rate": 30.0},
+    {
+        "chapter": "24",
+        "description": "Tobacco and manufactured tobacco substitutes",
+        "cet_rate": 30.0,
+    },
     {"chapter": "27", "description": "Mineral fuels; oils", "cet_rate": 2.0},
     {"chapter": "29", "description": "Organic chemicals", "cet_rate": 0.0},
     {"chapter": "30", "description": "Pharmaceutical products", "cet_rate": 0.0},
@@ -416,6 +420,7 @@ NON_SACU_DEFAULT_POSITIONS = [
 # ---------------------------------------------------------------------------
 # Builder functions
 # ---------------------------------------------------------------------------
+
 
 def _build_sacu_country_positions(config: Dict) -> List[Dict]:
     """Build tariff positions for a SACU member (reusing SACU CET base)."""
@@ -473,7 +478,11 @@ def _build_non_sacu_positions(config: Dict) -> List[Dict]:
             "taxes": taxes,
             "fiscal_advantages": {
                 "sadc_preference": f"{round(rate * 0.85, 2)}% for SADC members",
-                "ldc_preference": f"{round(rate * 0.70, 2)}% for AfCFTA LDC preferences" if config.get("is_ldc") else "N/A",
+                "ldc_preference": (
+                    f"{round(rate * 0.70, 2)}% for AfCFTA LDC preferences"
+                    if config.get("is_ldc")
+                    else "N/A"
+                ),
             },
             "source_url": config["source_url"],
         }
@@ -516,7 +525,9 @@ def build_country_data(country_code: str) -> Optional[Dict]:
     }
 
 
-def run_all(countries: Optional[List[str]] = None, output_dir: Optional[str] = None) -> Dict[str, bool]:
+def run_all(
+    countries: Optional[List[str]] = None, output_dir: Optional[str] = None
+) -> Dict[str, bool]:
     """
     Generate tariff JSON files for all (or specified) SADC countries.
 
@@ -545,7 +556,7 @@ def run_all(countries: Optional[List[str]] = None, output_dir: Optional[str] = N
                 continue
 
             path = os.path.join(target_dir, f"{code}_tariffs.json")
-            with open(path, 'w', encoding='utf-8') as f:
+            with open(path, "w", encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
 
             logger.info(f"{code}: saved {len(data['positions'])} positions → {path}")

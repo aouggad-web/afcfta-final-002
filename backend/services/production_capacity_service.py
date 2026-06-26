@@ -14,6 +14,7 @@ dans data/json/production_africaine.json (2021-2024, 54 pays). Les *scénarios*
 d'intégration africaine sont des projections clairement étiquetées, calculées à
 partir du CAGR réel observé et de l'écart au leader continental — jamais inventées.
 """
+
 from __future__ import annotations
 
 import json
@@ -181,8 +182,13 @@ def _match_commodity(hs_code: str) -> Optional[Tuple[str, str, str]]:
 def _records_for(dataset: str, label: str) -> List[Dict]:
     data = load_production_data()
     key = DATASET_KEY[dataset]
-    return [r for r in data.get(key, []) if r.get("commodity_label") == label
-            or r.get("isic_label") == label or r.get("sector_detail") == label]
+    return [
+        r
+        for r in data.get(key, [])
+        if r.get("commodity_label") == label
+        or r.get("isic_label") == label
+        or r.get("sector_detail") == label
+    ]
 
 
 def _cagr(first_val: float, last_val: float, years: int) -> Optional[float]:
@@ -191,8 +197,13 @@ def _cagr(first_val: float, last_val: float, years: int) -> Optional[float]:
     return ((last_val / first_val) ** (1.0 / years) - 1.0) * 100.0
 
 
-def _build_scenarios(latest: float, cagr_pct: Optional[float], unit: str,
-                     country_share_pct: Optional[float], leader_value: Optional[float]) -> Dict:
+def _build_scenarios(
+    latest: float,
+    cagr_pct: Optional[float],
+    unit: str,
+    country_share_pct: Optional[float],
+    leader_value: Optional[float],
+) -> Dict:
     """
     Projections d'intégration africaine — explicitement étiquetées comme scénarios.
     Calculées à partir du CAGR réel et de l'écart au leader continental ; aucun chiffre
@@ -219,14 +230,14 @@ def _build_scenarios(latest: float, cagr_pct: Optional[float], unit: str,
             "annual_growth_pct": round(base_cagr + 3.0, 2),
             "horizon_2030": project(base_cagr + 3.0, 6),
             "hypothesis": "Démantèlement tarifaire intra-africain (+3 pts de croissance via "
-                          "débouchés régionaux et réduction des barrières).",
+            "débouchés régionaux et réduction des barrières).",
         },
         "transformation_locale": {
             "label": "Transformation locale + ZLECAf",
             "annual_growth_pct": round(base_cagr + 6.0, 2),
             "horizon_2030": project(base_cagr + 6.0, 6),
             "hypothesis": "Montée en gamme industrielle (règles d'origine favorisant la "
-                          "valeur ajoutée locale) cumulée à l'accès marché ZLECAf.",
+            "valeur ajoutée locale) cumulée à l'accès marché ZLECAf.",
         },
     }
     # Écart au leader : potentiel de rattrapage tangible
@@ -236,7 +247,7 @@ def _build_scenarios(latest: float, cagr_pct: Optional[float], unit: str,
             "leader_production": round(leader_value, 1),
             "gap_pct": round((leader_value - latest) / leader_value * 100.0, 1),
             "hypothesis": f"Production additionnelle mobilisable si alignement sur le leader "
-                          f"continental ({unit}).",
+            f"continental ({unit}).",
         }
     return scenarios
 
@@ -262,8 +273,10 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
         [r for r in all_recs if r.get("country_iso3") == iso3],
         key=lambda r: r.get("year", 0),
     )
-    timeseries = [{"year": r["year"], "value": r["value"], "unit": r.get("unit", meta["unit"])}
-                  for r in country_recs]
+    timeseries = [
+        {"year": r["year"], "value": r["value"], "unit": r.get("unit", meta["unit"])}
+        for r in country_recs
+    ]
 
     latest_rec = country_recs[-1] if country_recs else None
     latest_val = latest_rec["value"] if latest_rec else None
@@ -271,8 +284,11 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
 
     cagr_pct = None
     if len(country_recs) >= 2:
-        cagr_pct = _cagr(country_recs[0]["value"], country_recs[-1]["value"],
-                         country_recs[-1]["year"] - country_recs[0]["year"])
+        cagr_pct = _cagr(
+            country_recs[0]["value"],
+            country_recs[-1]["value"],
+            country_recs[-1]["year"] - country_recs[0]["year"],
+        )
 
     # Classement continental sur la dernière année commune
     ranking_year = latest_year
@@ -281,15 +297,20 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
     continental_total = sum(r["value"] for r in year_recs)
     rank = next((i + 1 for i, r in enumerate(year_recs) if r.get("country_iso3") == iso3), None)
     leader = year_recs[0] if year_recs else None
-    country_share = (round(latest_val / continental_total * 100.0, 2)
-                     if latest_val and continental_total else None)
+    country_share = (
+        round(latest_val / continental_total * 100.0, 2)
+        if latest_val and continental_total
+        else None
+    )
 
     top_producers = [
         {
             "country_iso3": r["country_iso3"],
             "country_name": r.get("country_name", r["country_iso3"]),
             "value": r["value"],
-            "share_pct": round(r["value"] / continental_total * 100.0, 1) if continental_total else None,
+            "share_pct": (
+                round(r["value"] / continental_total * 100.0, 1) if continental_total else None
+            ),
         }
         for r in year_recs[:5]
     ]
@@ -299,7 +320,8 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
     ref_rec = latest_rec or (year_recs[0] if year_recs else None)
     actual_unit = (ref_rec.get("unit") if ref_rec else None) or meta["unit"]
     actual_source = {
-        "institution": (ref_rec.get("source_institution") if ref_rec else None) or meta["institution"],
+        "institution": (ref_rec.get("source_institution") if ref_rec else None)
+        or meta["institution"],
         "dataset": (ref_rec.get("source_dataset") if ref_rec else None) or meta["dataset"],
         "url": (ref_rec.get("source_url") if ref_rec else None) or meta["url"],
     }
@@ -307,7 +329,10 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
     scenarios = {}
     if latest_val:
         scenarios = _build_scenarios(
-            latest_val, cagr_pct, actual_unit, country_share,
+            latest_val,
+            cagr_pct,
+            actual_unit,
+            country_share,
             leader["value"] if leader else None,
         )
 
@@ -331,11 +356,15 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
             "total_countries": len(year_recs),
             "continental_total": round(continental_total, 1) if continental_total else None,
             "country_share_pct": country_share,
-            "leader": {
-                "country_iso3": leader["country_iso3"],
-                "country_name": leader.get("country_name"),
-                "value": leader["value"],
-            } if leader else None,
+            "leader": (
+                {
+                    "country_iso3": leader["country_iso3"],
+                    "country_name": leader.get("country_name"),
+                    "value": leader["value"],
+                }
+                if leader
+                else None
+            ),
             "top_producers": top_producers,
         },
         "integration_scenarios": scenarios,
@@ -359,13 +388,15 @@ def get_continental_producers(hs_code: str) -> Dict:
     latest_year = max(r["year"] for r in all_recs)
     year_recs = sorted(
         [r for r in all_recs if r.get("year") == latest_year and r.get("value")],
-        key=lambda r: r["value"], reverse=True,
+        key=lambda r: r["value"],
+        reverse=True,
     )
     total = sum(r["value"] for r in year_recs)
     ref_rec = year_recs[0] if year_recs else None
     actual_unit = (ref_rec.get("unit") if ref_rec else None) or meta["unit"]
     actual_source = {
-        "institution": (ref_rec.get("source_institution") if ref_rec else None) or meta["institution"],
+        "institution": (ref_rec.get("source_institution") if ref_rec else None)
+        or meta["institution"],
         "dataset": (ref_rec.get("source_dataset") if ref_rec else None) or meta["dataset"],
         "url": (ref_rec.get("source_url") if ref_rec else None) or meta["url"],
     }
@@ -401,8 +432,12 @@ def enrich_opportunities(opportunities: List[Dict], country_iso3: str) -> List[D
         return opportunities
     for opp in opportunities:
         product = opp.get("product") or {}
-        hs = (product.get("hs6Code") or product.get("hs_code")
-              or opp.get("hs6Code") or opp.get("hs_code"))
+        hs = (
+            product.get("hs6Code")
+            or product.get("hs_code")
+            or opp.get("hs6Code")
+            or opp.get("hs_code")
+        )
         if not hs:
             continue
         cap = get_capacity(country_iso3, hs)

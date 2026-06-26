@@ -16,13 +16,13 @@ Source des taux : fichiers JSON pays ({ISO3}_tariffs.json), champ taxes_detail p
 import json
 import logging
 import os
-from typing import Dict, List, Any, Optional
-from dataclasses import dataclass, asdict
-from decimal import Decimal, ROUND_HALF_UP
+from dataclasses import asdict, dataclass
+from decimal import ROUND_HALF_UP, Decimal
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 # Mapping des codes de taxes JSON → codes canoniques internes
 TAX_CODE_MAP = {
@@ -43,19 +43,34 @@ TAX_CODE_MAP = {
 
 # Informations descriptives par code canonique
 TAX_META = {
-    "DD":     {"name_fr": "Droit de Douane (DD)",                          "name_en": "Customs Duty (CD)"},
-    "DAPS":   {"name_fr": "Droit Additionnel Provisoire de Sauvegarde",     "name_en": "Provisional Safeguard Duty"},
-    "TVA":    {"name_fr": "TVA (Taxe sur la Valeur Ajoutée)",               "name_en": "VAT (Value Added Tax)"},
-    "TCS":    {"name_fr": "Taxe de Contribution de Solidarité",             "name_en": "Solidarity Contribution Tax"},
-    "PRCT":   {"name_fr": "Prélèvement Réglementation Commerce",            "name_en": "Trade Regulation Levy"},
-    "TIC":    {"name_fr": "Taxe Intérieure de Consommation",                "name_en": "Excise Tax (TIC)"},
-    "TPP":    {"name_fr": "Taxe sur les Produits Pétroliers",               "name_en": "Tax on Petroleum Products"},
-    "TPI":    {"name_fr": "Prélèvement Fiscal Import",                      "name_en": "Import Fiscal Levy"},
-    "CEDEAO": {"name_fr": "Prélèvement Communautaire CEDEAO",               "name_en": "ECOWAS Community Levy"},
-    "CISS":   {"name_fr": "CISS (Supervision Import Globale)",              "name_en": "Comprehensive Import Supervision Scheme"},
-    "NAC":    {"name_fr": "Conseil Automobile Nigérian",                    "name_en": "Nigerian Automotive Council Levy"},
-    "ETLS":   {"name_fr": "Schéma de Libéralisation CEDEAO",               "name_en": "ECOWAS Trade Liberalization Scheme"},
-    "LEVY":   {"name_fr": "Prélèvement Import",                             "name_en": "Import Levy"},
+    "DD": {"name_fr": "Droit de Douane (DD)", "name_en": "Customs Duty (CD)"},
+    "DAPS": {
+        "name_fr": "Droit Additionnel Provisoire de Sauvegarde",
+        "name_en": "Provisional Safeguard Duty",
+    },
+    "TVA": {"name_fr": "TVA (Taxe sur la Valeur Ajoutée)", "name_en": "VAT (Value Added Tax)"},
+    "TCS": {
+        "name_fr": "Taxe de Contribution de Solidarité",
+        "name_en": "Solidarity Contribution Tax",
+    },
+    "PRCT": {"name_fr": "Prélèvement Réglementation Commerce", "name_en": "Trade Regulation Levy"},
+    "TIC": {"name_fr": "Taxe Intérieure de Consommation", "name_en": "Excise Tax (TIC)"},
+    "TPP": {"name_fr": "Taxe sur les Produits Pétroliers", "name_en": "Tax on Petroleum Products"},
+    "TPI": {"name_fr": "Prélèvement Fiscal Import", "name_en": "Import Fiscal Levy"},
+    "CEDEAO": {"name_fr": "Prélèvement Communautaire CEDEAO", "name_en": "ECOWAS Community Levy"},
+    "CISS": {
+        "name_fr": "CISS (Supervision Import Globale)",
+        "name_en": "Comprehensive Import Supervision Scheme",
+    },
+    "NAC": {
+        "name_fr": "Conseil Automobile Nigérian",
+        "name_en": "Nigerian Automotive Council Levy",
+    },
+    "ETLS": {
+        "name_fr": "Schéma de Libéralisation CEDEAO",
+        "name_en": "ECOWAS Trade Liberalization Scheme",
+    },
+    "LEVY": {"name_fr": "Prélèvement Import", "name_en": "Import Levy"},
 }
 
 # Taxes dont le montant est EXCLU de la base TVA (circulaire DGD)
@@ -63,11 +78,25 @@ TVA_EXCLUDED_CODES = {"TAPT", "DPE", "TSV", "TSP", "T.PNEUS", "T.HUILES"}
 
 # Fallback VAT rates par pays (si JSON non disponible)
 FALLBACK_VAT = {
-    "DZA": 0.19, "MAR": 0.20, "TUN": 0.19, "EGY": 0.14,
-    "NGA": 0.075, "GHA": 0.125, "KEN": 0.16, "ETH": 0.15,
-    "ZAF": 0.15, "CMR": 0.1925, "CIV": 0.18, "SEN": 0.18,
-    "TZA": 0.18, "UGA": 0.18, "RWA": 0.18, "ANG": 0.14,
-    "MOZ": 0.17, "ZMB": 0.16, "DEFAULT": 0.18,
+    "DZA": 0.19,
+    "MAR": 0.20,
+    "TUN": 0.19,
+    "EGY": 0.14,
+    "NGA": 0.075,
+    "GHA": 0.125,
+    "KEN": 0.16,
+    "ETH": 0.15,
+    "ZAF": 0.15,
+    "CMR": 0.1925,
+    "CIV": 0.18,
+    "SEN": 0.18,
+    "TZA": 0.18,
+    "UGA": 0.18,
+    "RWA": 0.18,
+    "ANG": 0.14,
+    "MOZ": 0.17,
+    "ZMB": 0.16,
+    "DEFAULT": 0.18,
 }
 
 # Cache JSON chargé en mémoire par pays
@@ -134,23 +163,33 @@ def _build_tax_list_from_json(tariff_line: Dict, zlecaf: bool = False) -> List[D
         if zlecaf and code in fiscal_adv:
             rate_pct = fiscal_adv[code]
 
-        meta = TAX_META.get(code, {"name_fr": entry.get("observation", raw_name), "name_en": entry.get("observation", raw_name)})
+        meta = TAX_META.get(
+            code,
+            {
+                "name_fr": entry.get("observation", raw_name),
+                "name_en": entry.get("observation", raw_name),
+            },
+        )
 
-        result.append({
-            "code": code,
-            "raw_name": raw_name,
-            "name_fr": meta["name_fr"],
-            "name_en": meta["name_en"],
-            "rate": rate_pct / 100.0,
-            "rate_pct": rate_pct,
-            "observation": entry.get("observation", ""),
-            "is_tva": code == "TVA",
-            "exclu_base_tva": code in TVA_EXCLUDED_CODES,
-        })
+        result.append(
+            {
+                "code": code,
+                "raw_name": raw_name,
+                "name_fr": meta["name_fr"],
+                "name_en": meta["name_en"],
+                "rate": rate_pct / 100.0,
+                "rate_pct": rate_pct,
+                "observation": entry.get("observation", ""),
+                "is_tva": code == "TVA",
+                "exclu_base_tva": code in TVA_EXCLUDED_CODES,
+            }
+        )
     return result
 
 
-def _build_fallback_tax_list(country_iso3: str, dd_rate_pct: float, zlecaf: bool = False) -> List[Dict]:
+def _build_fallback_tax_list(
+    country_iso3: str, dd_rate_pct: float, zlecaf: bool = False
+) -> List[Dict]:
     """
     Construit une liste de taxes minimale (DD + TVA) si le JSON du pays est absent.
     """
@@ -158,16 +197,26 @@ def _build_fallback_tax_list(country_iso3: str, dd_rate_pct: float, zlecaf: bool
     effective_dd = 0.0 if zlecaf else dd_rate_pct / 100.0
     return [
         {
-            "code": "DD", "raw_name": "D.D",
-            "name_fr": "Droit de Douane (DD)", "name_en": "Customs Duty",
-            "rate": effective_dd, "rate_pct": effective_dd * 100,
-            "observation": "Droit de Douane", "is_tva": False, "exclu_base_tva": False,
+            "code": "DD",
+            "raw_name": "D.D",
+            "name_fr": "Droit de Douane (DD)",
+            "name_en": "Customs Duty",
+            "rate": effective_dd,
+            "rate_pct": effective_dd * 100,
+            "observation": "Droit de Douane",
+            "is_tva": False,
+            "exclu_base_tva": False,
         },
         {
-            "code": "TVA", "raw_name": "T.V.A",
-            "name_fr": "TVA", "name_en": "VAT",
-            "rate": vat_rate, "rate_pct": vat_rate * 100,
-            "observation": "Taxe sur la Valeur Ajoutée", "is_tva": True, "exclu_base_tva": False,
+            "code": "TVA",
+            "raw_name": "T.V.A",
+            "name_fr": "TVA",
+            "name_en": "VAT",
+            "rate": vat_rate,
+            "rate_pct": vat_rate * 100,
+            "observation": "Taxe sur la Valeur Ajoutée",
+            "is_tva": True,
+            "exclu_base_tva": False,
         },
     ]
 
@@ -175,6 +224,7 @@ def _build_fallback_tax_list(country_iso3: str, dd_rate_pct: float, zlecaf: bool
 @dataclass
 class TaxLine:
     """Ligne de taxe dans la ventilation de calcul"""
+
     code: str
     name_fr: str
     name_en: str
@@ -190,6 +240,7 @@ class TaxLine:
 @dataclass
 class CalculationBreakdown:
     """Ventilation complète du calcul (NPF ou ZLECAf)"""
+
     regime: str
     regime_name_fr: str
     regime_name_en: str
@@ -206,6 +257,7 @@ class CalculationBreakdown:
 @dataclass
 class ComparisonResult:
     """Comparaison NPF vs ZLECAf"""
+
     hs_code: str
     hs_code_description_fr: str
     hs_code_description_en: str
@@ -281,31 +333,42 @@ def _compute_regime(
             else:
                 notes = f"ZLECAf taux réduit {t['rate_pct']:.1f}%"
 
-        tax_lines.append(TaxLine(
-            code=t["code"],
-            name_fr=t["name_fr"],
-            name_en=t["name_en"],
-            rate=t["rate"],
-            rate_pct=f"{t['rate_pct']:.2f}%",
-            base_type=base_type,
-            base_value=base_value,
-            amount=amount,
-            is_zlecaf_exempt=is_exempt,
-            notes=notes,
-        ))
+        tax_lines.append(
+            TaxLine(
+                code=t["code"],
+                name_fr=t["name_fr"],
+                name_en=t["name_en"],
+                rate=t["rate"],
+                rate_pct=f"{t['rate_pct']:.2f}%",
+                base_type=base_type,
+                base_value=base_value,
+                amount=amount,
+                is_zlecaf_exempt=is_exempt,
+                notes=notes,
+            )
+        )
 
     total_taxes = _round2(sum(tl.amount for tl in tax_lines))
     total_to_pay = _round2(cif_value + total_taxes)
 
     regime_names = {
-        "NPF":    ("Régime NPF (Nation la Plus Favorisée)", "MFN Regime (Most Favored Nation)"),
+        "NPF": ("Régime NPF (Nation la Plus Favorisée)", "MFN Regime (Most Favored Nation)"),
         "ZLECAf": ("Régime ZLECAf (Zone de Libre-Échange)", "AfCFTA Regime (Free Trade Area)"),
     }
 
     currency_map = {
-        "DZA": "DZD", "MAR": "MAD", "TUN": "TND", "EGY": "EGP",
-        "NGA": "NGN", "GHA": "GHS", "KEN": "KES", "ETH": "ETB",
-        "ZAF": "ZAR", "CMR": "XAF", "CIV": "XOF", "SEN": "XOF",
+        "DZA": "DZD",
+        "MAR": "MAD",
+        "TUN": "TND",
+        "EGY": "EGP",
+        "NGA": "NGN",
+        "GHA": "GHS",
+        "KEN": "KES",
+        "ETH": "ETB",
+        "ZAF": "ZAR",
+        "CMR": "XAF",
+        "CIV": "XOF",
+        "SEN": "XOF",
     }
     currency = currency_map.get(country_iso3, "USD")
 
@@ -333,12 +396,14 @@ class EnhancedTariffCalculator:
     def __init__(self):
         try:
             from etl.hs6_database import get_hs6_info
+
             self.get_hs6_info = get_hs6_info
         except Exception:
             self.get_hs6_info = lambda hs6, lang="fr": {}
 
         try:
             from etl.country_hs6_detailed import get_all_sub_positions
+
             self.get_sub_positions = get_all_sub_positions
         except Exception:
             self.get_sub_positions = lambda *a, **kw: []
@@ -346,17 +411,28 @@ class EnhancedTariffCalculator:
     def _get_country_names(self, country_iso3: str) -> tuple:
         data = _load_country_json(country_iso3)
         name_map = {
-            "DZA": ("Algérie", "Algeria"),           "MAR": ("Maroc", "Morocco"),
-            "TUN": ("Tunisie", "Tunisia"),            "EGY": ("Égypte", "Egypt"),
-            "LBY": ("Libye", "Libya"),                "MRT": ("Mauritanie", "Mauritania"),
-            "NGA": ("Nigéria", "Nigeria"),            "GHA": ("Ghana", "Ghana"),
-            "CIV": ("Côte d'Ivoire", "Ivory Coast"), "SEN": ("Sénégal", "Senegal"),
-            "CMR": ("Cameroun", "Cameroon"),          "GAB": ("Gabon", "Gabon"),
-            "KEN": ("Kenya", "Kenya"),                "ETH": ("Éthiopie", "Ethiopia"),
-            "TZA": ("Tanzanie", "Tanzania"),          "UGA": ("Ouganda", "Uganda"),
-            "RWA": ("Rwanda", "Rwanda"),              "ZAF": ("Afrique du Sud", "South Africa"),
-            "ANG": ("Angola", "Angola"),              "MOZ": ("Mozambique", "Mozambique"),
-            "ZMB": ("Zambie", "Zambia"),              "ZWE": ("Zimbabwe", "Zimbabwe"),
+            "DZA": ("Algérie", "Algeria"),
+            "MAR": ("Maroc", "Morocco"),
+            "TUN": ("Tunisie", "Tunisia"),
+            "EGY": ("Égypte", "Egypt"),
+            "LBY": ("Libye", "Libya"),
+            "MRT": ("Mauritanie", "Mauritania"),
+            "NGA": ("Nigéria", "Nigeria"),
+            "GHA": ("Ghana", "Ghana"),
+            "CIV": ("Côte d'Ivoire", "Ivory Coast"),
+            "SEN": ("Sénégal", "Senegal"),
+            "CMR": ("Cameroun", "Cameroon"),
+            "GAB": ("Gabon", "Gabon"),
+            "KEN": ("Kenya", "Kenya"),
+            "ETH": ("Éthiopie", "Ethiopia"),
+            "TZA": ("Tanzanie", "Tanzania"),
+            "UGA": ("Ouganda", "Uganda"),
+            "RWA": ("Rwanda", "Rwanda"),
+            "ZAF": ("Afrique du Sud", "South Africa"),
+            "ANG": ("Angola", "Angola"),
+            "MOZ": ("Mozambique", "Mozambique"),
+            "ZMB": ("Zambie", "Zambia"),
+            "ZWE": ("Zimbabwe", "Zimbabwe"),
         }
         fr, en = name_map.get(country_iso3, (country_iso3, country_iso3))
         return fr, en
@@ -413,7 +489,9 @@ class EnhancedTariffCalculator:
         )
 
         savings = _round2(npf_calc.total_to_pay - zlecaf_calc.total_to_pay)
-        savings_pct = _round2((savings / npf_calc.total_to_pay * 100) if npf_calc.total_to_pay > 0 else 0)
+        savings_pct = _round2(
+            (savings / npf_calc.total_to_pay * 100) if npf_calc.total_to_pay > 0 else 0
+        )
 
         sub_positions = []
         try:
@@ -446,6 +524,7 @@ class EnhancedTariffCalculator:
             elif isinstance(obj, list):
                 return [convert(item) for item in obj]
             return obj
+
         return convert(result)
 
 

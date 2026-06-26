@@ -15,15 +15,15 @@ Tariff band sources:
   MRT: Direction Générale des Douanes de Mauritanie
 """
 
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 # ── Morocco reference tariff bands ─────────────────────────────────────────
 MOROCCO_TARIFFS: Dict[str, float] = {
-    "raw_materials": 2.5,       # Industrial inputs (Chapter 25, 26, 28 …)
+    "raw_materials": 2.5,  # Industrial inputs (Chapter 25, 26, 28 …)
     "intermediate_goods": 10.0,  # Semi-finished products (Chapter 39, 72 …)
-    "final_goods": 25.0,         # Consumer products (Chapter 61, 62, 64 …)
-    "agricultural": 40.0,        # Food products (Chapter 01-24) – protection
-    "luxury_goods": 45.0,        # High-value items (Chapter 71, 97 …)
+    "final_goods": 25.0,  # Consumer products (Chapter 61, 62, 64 …)
+    "agricultural": 40.0,  # Food products (Chapter 01-24) – protection
+    "luxury_goods": 45.0,  # High-value items (Chapter 71, 97 …)
 }
 
 # ── Country-specific tariff profiles ───────────────────────────────────────
@@ -50,7 +50,10 @@ _TARIFF_PROFILES: Dict[str, Dict[str, Any]] = {
         },
         "additional_taxes": {
             "PI": {"name": "Taxe Parafiscale à l'Importation", "rate_range": "0.25–1.0%"},
-            "TIC": {"name": "Taxe Intérieure de Consommation", "applies_to": "fuel, tobacco, beverages"},
+            "TIC": {
+                "name": "Taxe Intérieure de Consommation",
+                "applies_to": "fuel, tobacco, beverages",
+            },
             "TPCE": {"name": "Taxe Protection Environnement", "applies_to": "packaging"},
         },
         "preferential_zero_rate": ["EU goods under AA", "US goods under FTA", "EFTA goods"],
@@ -78,7 +81,7 @@ _TARIFF_PROFILES: Dict[str, Dict[str, Any]] = {
             "raw_materials": 2.0,
             "intermediate_goods": 12.0,
             "final_goods": 30.0,
-            "agricultural": 20.0,   # lower than MAR – food security policy
+            "agricultural": 20.0,  # lower than MAR – food security policy
             "luxury_goods": 40.0,
         },
         "vat": {
@@ -118,7 +121,7 @@ _TARIFF_PROFILES: Dict[str, Dict[str, Any]] = {
         "nomenclature": "Nomenclature Tarifaire Tunisienne HS10",
         "trade_bloc": "UMA + EU-DCFTA + GAFTA + Agadir",
         "bands": {
-            "raw_materials": 0.0,    # most industrial raw materials duty-free under EU AA
+            "raw_materials": 0.0,  # most industrial raw materials duty-free under EU AA
             "intermediate_goods": 8.0,
             "final_goods": 22.0,
             "agricultural": 36.0,
@@ -160,11 +163,11 @@ _TARIFF_PROFILES: Dict[str, Dict[str, Any]] = {
         "nomenclature": "Tarif Douanier Algérien HS10",
         "trade_bloc": "UMA + EU-Association + GAFTA",
         "bands": {
-            "raw_materials": 5.0,     # higher than MAR – import substitution policy
+            "raw_materials": 5.0,  # higher than MAR – import substitution policy
             "intermediate_goods": 15.0,
             "final_goods": 30.0,
             "agricultural": 30.0,
-            "luxury_goods": 60.0,    # luxury goods tax (additional 30% excise)
+            "luxury_goods": 60.0,  # luxury goods tax (additional 30% excise)
         },
         "vat": {
             "standard": 19.0,
@@ -200,14 +203,14 @@ _TARIFF_PROFILES: Dict[str, Dict[str, Any]] = {
         "nomenclature": "Libyan Customs Tariff HS8 (2010 schedule)",
         "trade_bloc": "UMA + GAFTA",
         "bands": {
-            "raw_materials": 0.0,    # reconstruction incentives – waived
+            "raw_materials": 0.0,  # reconstruction incentives – waived
             "intermediate_goods": 5.0,
             "final_goods": 15.0,
             "agricultural": 10.0,
             "luxury_goods": 20.0,
         },
         "vat": {
-            "standard": 0.0,   # no VAT; sales tax applies
+            "standard": 0.0,  # no VAT; sales tax applies
             "notes": "Sales tax ~4%; no formal VAT system",
         },
         "additional_taxes": {
@@ -242,12 +245,12 @@ _TARIFF_PROFILES: Dict[str, Dict[str, Any]] = {
             "raw_materials": 0.0,
             "intermediate_goods": 10.0,
             "final_goods": 25.0,
-            "agricultural": 15.0,   # food security focus – moderate protection
+            "agricultural": 15.0,  # food security focus – moderate protection
             "luxury_goods": 40.0,
         },
         "vat": {
             "standard": 17.0,
-            "reduced": [0.0],   # basic foods exempt
+            "reduced": [0.0],  # basic foods exempt
         },
         "additional_taxes": {
             "Service_Tax": {"name": "Service Tax", "rate": 17.0},
@@ -386,7 +389,4 @@ def get_regional_tariff_comparison(chapter: int) -> Dict[str, float]:
     Returns:
         Dict mapping country codes to indicative duty rates.
     """
-    return {
-        cc: get_chapter_rate(cc, chapter)
-        for cc in _TARIFF_PROFILES
-    }
+    return {cc: get_chapter_rate(cc, chapter) for cc in _TARIFF_PROFILES}

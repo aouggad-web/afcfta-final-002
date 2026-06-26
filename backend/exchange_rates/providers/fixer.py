@@ -3,6 +3,7 @@ Fixer.io provider – enterprise reliability backup.
 Requires FIXER_API_KEY environment variable.
 Note: The free Fixer plan uses EUR as base only.
 """
+
 import logging
 import os
 from typing import Dict, Optional

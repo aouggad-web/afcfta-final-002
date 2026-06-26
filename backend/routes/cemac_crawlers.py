@@ -108,6 +108,7 @@ DATA_DIR = Path(__file__).parent.parent / "data" / "crawled"
 
 # ==================== Helpers ====================
 
+
 def _load_country_file(country_code: str) -> Optional[Dict]:
     """Load a CEMAC country tariff JSON file. Returns None if not found."""
     path = DATA_DIR / f"{country_code}_tariffs.json"
@@ -179,7 +180,7 @@ def _country_data_summary(country_code: str) -> Dict[str, Any]:
         total_lines = len(lines)
         chapters_set = {p.get("chapter", "") for p in lines if p.get("chapter")}
         chapters = len(chapters_set)
-        sub_positions = 0   # old-format positions are already leaf-level HS8 codes
+        sub_positions = 0  # old-format positions are already leaf-level HS8 codes
         lines_with_sub = 0
         dd_rates = [p.get("taxes", {}).get("DD", 0) for p in lines if "DD" in p.get("taxes", {})]
         dd_range = {
@@ -203,19 +204,41 @@ def _country_data_summary(country_code: str) -> Dict[str, Any]:
         "vat_rate": cfg.get("tva_rate"),
         "national_taxes": list(cfg.get("national_taxes", {}).keys()),
         "preferential_agreements": cfg.get("preferential_agreements", []),
-        "fields_available": [
-            "hs6", "chapter", "description_fr", "description_en",
-            "dd_rate", "vat_rate", "other_taxes_rate", "total_taxes_pct",
-            "zlecaf_rate", "zlecaf_total_taxes", "taxes_detail",
-            "fiscal_advantages", "administrative_formalities", "sub_positions",
-        ] if data_format == "enhanced_v2" else [
-            "code", "code_clean", "designation", "chapter", "hs6",
-            "taxes", "taxes_detail", "source", "data_type",
-        ],
+        "fields_available": (
+            [
+                "hs6",
+                "chapter",
+                "description_fr",
+                "description_en",
+                "dd_rate",
+                "vat_rate",
+                "other_taxes_rate",
+                "total_taxes_pct",
+                "zlecaf_rate",
+                "zlecaf_total_taxes",
+                "taxes_detail",
+                "fiscal_advantages",
+                "administrative_formalities",
+                "sub_positions",
+            ]
+            if data_format == "enhanced_v2"
+            else [
+                "code",
+                "code_clean",
+                "designation",
+                "chapter",
+                "hs6",
+                "taxes",
+                "taxes_detail",
+                "source",
+                "data_type",
+            ]
+        ),
     }
 
 
 # ==================== Endpoints ====================
+
 
 @router.get("/countries")
 def get_cemac_countries():
@@ -371,16 +394,18 @@ def get_cemac_sub_positions():
     for cc, cfg in CEMAC_COUNTRIES.items():
         data = _load_country_file(cc)
         if data is None:
-            rows.append({
-                "iso3": cc,
-                "country_name": cfg["country_name_en"],
-                "data_format": None,
-                "tariff_lines": 0,
-                "sub_positions": 0,
-                "lines_with_sub_positions": 0,
-                "avg_sub_per_line": 0.0,
-                "status": "no_data",
-            })
+            rows.append(
+                {
+                    "iso3": cc,
+                    "country_name": cfg["country_name_en"],
+                    "data_format": None,
+                    "tariff_lines": 0,
+                    "sub_positions": 0,
+                    "lines_with_sub_positions": 0,
+                    "avg_sub_per_line": 0.0,
+                    "status": "no_data",
+                }
+            )
             continue
 
         data_format = data.get("data_format", "old")
@@ -400,22 +425,22 @@ def get_cemac_sub_positions():
         regional_lines += n_lines
         regional_lines_with_sub += lines_with_sub
 
-        rows.append({
-            "iso3": cc,
-            "country_name": cfg["country_name_en"],
-            "data_format": data_format,
-            "tariff_lines": n_lines,
-            "sub_positions": sub_total,
-            "lines_with_sub_positions": lines_with_sub,
-            "avg_sub_per_line": avg,
-            "status": "available",
-        })
+        rows.append(
+            {
+                "iso3": cc,
+                "country_name": cfg["country_name_en"],
+                "data_format": data_format,
+                "tariff_lines": n_lines,
+                "sub_positions": sub_total,
+                "lines_with_sub_positions": lines_with_sub,
+                "avg_sub_per_line": avg,
+                "status": "available",
+            }
+        )
 
     rows.sort(key=lambda r: r["sub_positions"], reverse=True)
 
-    regional_avg = (
-        round(regional_sub / regional_lines, 2) if regional_lines else 0.0
-    )
+    regional_avg = round(regional_sub / regional_lines, 2) if regional_lines else 0.0
 
     return {
         "region": "CEMAC",

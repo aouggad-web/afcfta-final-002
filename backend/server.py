@@ -5,8 +5,8 @@ Refactored: Routes extracted to /routes/ modules
 Version: 3.0.0
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
 
 # Ensure the backend directory is on sys.path so that subpackages
@@ -15,51 +15,54 @@ _backend_dir = Path(__file__).parent
 if str(_backend_dir) not in sys.path:
     sys.path.insert(0, str(_backend_dir))
 
-from fastapi import FastAPI, APIRouter
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 import logging
 import logging.config
+
+from dotenv import load_dotenv
+from fastapi import APIRouter, FastAPI
+from motor.motor_asyncio import AsyncIOMotorClient
+from starlette.middleware.cors import CORSMiddleware
 
 # ── Load .env BEFORE importing modules that read env vars at import time
 # (auth.py reads SECRET_KEY in module scope to build the HMAC secret).
 _ROOT_DIR_FOR_DOTENV = Path(__file__).parent
-load_dotenv(_ROOT_DIR_FOR_DOTENV / '.env')
+load_dotenv(_ROOT_DIR_FOR_DOTENV / ".env")
 
 # Configure structured logging
-logging.config.dictConfig({
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "default": {
-            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-            "datefmt": "%Y-%m-%dT%H:%M:%S",
+logging.config.dictConfig(
+    {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "default": {
+                "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+                "datefmt": "%Y-%m-%dT%H:%M:%S",
+            },
         },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "default",
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "formatter": "default",
+            },
         },
-    },
-    "root": {
-        "level": os.environ.get("LOG_LEVEL", "INFO"),
-        "handlers": ["console"],
-    },
-})
+        "root": {
+            "level": os.environ.get("LOG_LEVEL", "INFO"),
+            "handlers": ["console"],
+        },
+    }
+)
 
 logger = logging.getLogger(__name__)
 
-# Import routes module for modular endpoint registration
-from routes import register_routes
-from routes.substitution import register_routes as register_substitution_routes
-from routes.calculator import set_database as set_calculator_db
-from routes.admin_keys import router as admin_keys_router
 import auth as _auth_module
 
-from services.tariff_data_service import tariff_service
+# Import routes module for modular endpoint registration
+from routes import register_routes
+from routes.admin_keys import router as admin_keys_router
+from routes.calculator import set_database as set_calculator_db
+from routes.substitution import register_routes as register_substitution_routes
 from services.crawled_data_service import crawled_service
+from services.tariff_data_service import tariff_service
 
 try:
     from notifications import NotificationManager
@@ -71,10 +74,10 @@ except ImportError:
 # =============================================================================
 
 ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
+load_dotenv(ROOT_DIR / ".env")
 
 # MongoDB Connection
-mongo_url = os.environ.get('MONGO_URL', '')
+mongo_url = os.environ.get("MONGO_URL", "")
 db = None
 client = None
 if mongo_url:
@@ -87,7 +90,7 @@ if mongo_url:
             connectTimeoutMS=20000,
             serverSelectionTimeoutMS=5000,
         )
-        db = client[os.environ.get('DB_NAME', 'afcfta')]
+        db = client[os.environ.get("DB_NAME", "afcfta")]
         logger.info("MongoDB connected successfully")
     except Exception as e:
         logger.warning(f"MongoDB connection failed: {e}. Running without database.")
@@ -100,7 +103,9 @@ notification_manager = None
 if NotificationManager:
     try:
         notification_manager = NotificationManager()
-        logger.info(f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}")
+        logger.info(
+            f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}"
+        )
     except Exception as e:
         logger.warning(f"Notification manager initialization failed: {e}")
 
@@ -173,6 +178,7 @@ _replit_app_domain = os.environ.get("REPLIT_APP_DOMAIN", "")
 _allow_origin_regex = None
 if _replit_app_domain:
     import re as _re
+
     _escaped = _re.escape(_replit_app_domain)
     _allow_origin_regex = rf"https://{_escaped}"
 
@@ -187,15 +193,22 @@ app.add_middleware(
 
 # Security middlewares (optional)
 try:
-    from middlewares import SecurityHeadersMiddleware, CSRFMiddleware, RateLimitMiddleware
+    from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
+
     app.add_middleware(SecurityHeadersMiddleware)
-    app.add_middleware(CSRFMiddleware, exempt_paths=[
-        "/api/docs", "/api/openapi.json", "/api/redoc",
-        "/api/health", "/api/",
-        "/api/tariff-data/collect",
-        "/api/crawl",
-        "/api/crawl/start",
-    ])
+    app.add_middleware(
+        CSRFMiddleware,
+        exempt_paths=[
+            "/api/docs",
+            "/api/openapi.json",
+            "/api/redoc",
+            "/api/health",
+            "/api/",
+            "/api/tariff-data/collect",
+            "/api/crawl",
+            "/api/crawl/start",
+        ],
+    )
     app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)
     logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
 except ImportError as e:
@@ -204,10 +217,12 @@ except ImportError as e:
 # API Router with /api prefix
 api_router = APIRouter(prefix="/api")
 
+
 # Root endpoint
 @api_router.get("/")
 async def root():
     return {"message": "Système Commercial ZLECAf API - Version 3.0"}
+
 
 # =============================================================================
 # EXTERNAL SERVICE INITIALIZATION
@@ -216,6 +231,7 @@ async def root():
 # Initialize export router DB
 try:
     from routers.export_router import init_db as init_export_db
+
     init_export_db(db)
 except ImportError:
     pass
@@ -223,6 +239,7 @@ except ImportError:
 # Initialize crawl orchestrator
 try:
     from services.crawl_orchestrator import init_orchestrator
+
     init_orchestrator(
         db_client=client,
         notification_manager=notification_manager,
@@ -236,35 +253,44 @@ except Exception as e:
 # STARTUP EVENTS
 # =============================================================================
 
+
 async def _setup_database_indexes():
     """Create MongoDB indexes for optimal query performance."""
     if db is None:
         return
     try:
         from pymongo import ASCENDING, DESCENDING, IndexModel
+
         # customs_data collection indexes
         customs_data = db["customs_data"]
-        await customs_data.create_indexes([
-            IndexModel([("country_code", ASCENDING)]),
-            IndexModel([("imported_at", DESCENDING)]),
-            IndexModel([("country_code", ASCENDING), ("imported_at", DESCENDING)]),
-        ])
+        await customs_data.create_indexes(
+            [
+                IndexModel([("country_code", ASCENDING)]),
+                IndexModel([("imported_at", DESCENDING)]),
+                IndexModel([("country_code", ASCENDING), ("imported_at", DESCENDING)]),
+            ]
+        )
         # tariff_lines indexes (if collection exists)
         tariff_lines = db["tariff_lines"]
-        await tariff_lines.create_indexes([
-            IndexModel([("country_code", ASCENDING)]),
-            IndexModel([("hs_code", ASCENDING)]),
-            IndexModel([("country_code", ASCENDING), ("hs_code", ASCENDING)]),
-        ])
+        await tariff_lines.create_indexes(
+            [
+                IndexModel([("country_code", ASCENDING)]),
+                IndexModel([("hs_code", ASCENDING)]),
+                IndexModel([("country_code", ASCENDING), ("hs_code", ASCENDING)]),
+            ]
+        )
         # api_keys indexes (auth system)
         api_keys = db["api_keys"]
-        await api_keys.create_indexes([
-            IndexModel([("key_hash", ASCENDING)], unique=True),
-            IndexModel([("active", ASCENDING), ("tier", ASCENDING)]),
-        ])
+        await api_keys.create_indexes(
+            [
+                IndexModel([("key_hash", ASCENDING)], unique=True),
+                IndexModel([("active", ASCENDING), ("tier", ASCENDING)]),
+            ]
+        )
         logger.info("MongoDB indexes created successfully")
     except Exception as e:
         logger.warning(f"MongoDB index creation skipped: {e}")
+
 
 @app.on_event("startup")
 async def startup_load_tariff_data():
@@ -276,14 +302,16 @@ async def startup_load_tariff_data():
     # Wire database into auth and calculator
     _auth_module.set_database(db)
     set_calculator_db(db)
-    
+
     # Load crawled data
     try:
         crawled_service.load()
         crawled_stats = crawled_service.get_stats()
         if crawled_stats["total_positions"] > 0:
-            logger.info(f"Crawled data service ready: {crawled_stats['countries']} countries, "
-                        f"{crawled_stats['total_positions']:,} authentic positions")
+            logger.info(
+                f"Crawled data service ready: {crawled_stats['countries']} countries, "
+                f"{crawled_stats['total_positions']:,} authentic positions"
+            )
         else:
             logger.info("No crawled data found yet.")
     except Exception as e:
@@ -294,27 +322,36 @@ async def startup_load_tariff_data():
         tariff_service.load()
         stats = tariff_service.get_stats()
         if stats["countries"] > 0:
-            logger.info(f"Tariff data service ready: {stats['countries']} countries, "
-                        f"{stats['total_positions']:,} positions loaded")
+            logger.info(
+                f"Tariff data service ready: {stats['countries']} countries, "
+                f"{stats['total_positions']:,} positions loaded"
+            )
         else:
             logger.info("No pre-collected tariff data found. Running initial collection...")
             from services.tariff_data_collector import TariffDataCollector
+
             collector = TariffDataCollector()
             result = collector.collect_all_countries()
-            logger.info(f"Initial collection complete: {result['total_tariff_lines']} lines for {result['countries_processed']} countries")
+            logger.info(
+                f"Initial collection complete: {result['total_tariff_lines']} lines for {result['countries_processed']} countries"
+            )
             tariff_service.load(force=True)
             stats = tariff_service.get_stats()
-            logger.info(f"Tariff data service ready after collection: {stats['countries']} countries")
+            logger.info(
+                f"Tariff data service ready after collection: {stats['countries']} countries"
+            )
     except Exception as e:
         logger.warning(f"Tariff data service startup: {e}. Calculator will use ETL fallback.")
 
     # Start the exchange rate scheduler (updates every 4 hours, first run immediate)
     try:
         from tasks.scheduler import start_scheduler
+
         start_scheduler(interval_hours=4)
         logger.info("Exchange rate scheduler started (interval=4h)")
     except Exception as e:
         logger.warning(f"Exchange rate scheduler startup failed: {e}")
+
 
 # =============================================================================
 # REGISTER ALL ROUTES
@@ -331,8 +368,8 @@ app.include_router(api_router)
 # STATIC FILES (Frontend)
 # =============================================================================
 
-from starlette.staticfiles import StaticFiles
 from starlette.responses import FileResponse
+from starlette.staticfiles import StaticFiles
 
 build_dir = Path(__file__).parent.parent / "frontend" / "build"
 if build_dir.exists() and (build_dir / "static").exists():

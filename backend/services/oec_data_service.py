@@ -16,16 +16,15 @@ Usage:
     trade_balance = await svc.get_trade_balance_series("DZA", start=2019, end=2023)
 """
 
-import os
+import asyncio
 import json
 import logging
-import asyncio
-from pathlib import Path
-from typing import Dict, List, Optional, Any
+import os
 from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 import httpx
-
 from services.redis_cache_service import cache_service
 
 logger = logging.getLogger(__name__)
@@ -37,17 +36,59 @@ logger = logging.getLogger(__name__)
 
 # ── Mapping: ISO3 → OEC profile slug ──────────────────────────────────────────
 ISO3_TO_OEC_SLUG = {
-    "DZA": "dza", "AGO": "ago", "BEN": "ben", "BWA": "bwa", "BFA": "bfa",
-    "BDI": "bdi", "CMR": "cmr", "CPV": "cpv", "CAF": "caf", "TCD": "tcd",
-    "COM": "com", "COG": "cog", "COD": "cod", "DJI": "dji", "EGY": "egy",
-    "GNQ": "gnq", "ERI": "eri", "SWZ": "swz", "ETH": "eth", "GAB": "gab",
-    "GMB": "gmb", "GHA": "gha", "GIN": "gin", "GNB": "gnb", "CIV": "civ",
-    "KEN": "ken", "LSO": "lso", "LBR": "lbr", "LBY": "lby", "MDG": "mdg",
-    "MWI": "mwi", "MLI": "mli", "MRT": "mrt", "MUS": "mus", "MAR": "mar",
-    "MOZ": "moz", "NAM": "nam", "NER": "ner", "NGA": "nga", "RWA": "rwa",
-    "STP": "stp", "SEN": "sen", "SLE": "sle", "SOM": "som", "ZAF": "zaf",
-    "SSD": "ssd", "SDN": "sdn", "TZA": "tza", "TGO": "tgo", "TUN": "tun",
-    "UGA": "uga", "ZMB": "zmb", "ZWE": "zwe",
+    "DZA": "dza",
+    "AGO": "ago",
+    "BEN": "ben",
+    "BWA": "bwa",
+    "BFA": "bfa",
+    "BDI": "bdi",
+    "CMR": "cmr",
+    "CPV": "cpv",
+    "CAF": "caf",
+    "TCD": "tcd",
+    "COM": "com",
+    "COG": "cog",
+    "COD": "cod",
+    "DJI": "dji",
+    "EGY": "egy",
+    "GNQ": "gnq",
+    "ERI": "eri",
+    "SWZ": "swz",
+    "ETH": "eth",
+    "GAB": "gab",
+    "GMB": "gmb",
+    "GHA": "gha",
+    "GIN": "gin",
+    "GNB": "gnb",
+    "CIV": "civ",
+    "KEN": "ken",
+    "LSO": "lso",
+    "LBR": "lbr",
+    "LBY": "lby",
+    "MDG": "mdg",
+    "MWI": "mwi",
+    "MLI": "mli",
+    "MRT": "mrt",
+    "MUS": "mus",
+    "MAR": "mar",
+    "MOZ": "moz",
+    "NAM": "nam",
+    "NER": "ner",
+    "NGA": "nga",
+    "RWA": "rwa",
+    "STP": "stp",
+    "SEN": "sen",
+    "SLE": "sle",
+    "SOM": "som",
+    "ZAF": "zaf",
+    "SSD": "ssd",
+    "SDN": "sdn",
+    "TZA": "tza",
+    "TGO": "tgo",
+    "TUN": "tun",
+    "UGA": "uga",
+    "ZMB": "zmb",
+    "ZWE": "zwe",
 }
 
 # ── HS6 lookup (loaded once from backend/data/hs6_database.json if present) ───
@@ -129,9 +170,7 @@ class OECDataService:
 
     # ── Public methods ─────────────────────────────────────────────────────────
 
-    async def get_top_exports(
-        self, iso3: str, year: int = 2022, n: int = 15
-    ) -> List[Dict]:
+    async def get_top_exports(self, iso3: str, year: int = 2022, n: int = 15) -> List[Dict]:
         """Top N exported products for a country, with value in MUSD."""
         cache_key = f"oec_exports_{iso3}_{year}"
         cached = cache_service.get("oec_data", {"key": cache_key})
@@ -160,25 +199,25 @@ class OECDataService:
             code = str(row.get("HS6 ID", row.get("HS6", ""))).replace("HS", "").zfill(6)
             value_musd = round(row.get("Trade Value", 0) / 1_000_000, 2)
             hs2, hs4, hs6, hs2_name, hs4_name = self._hs2_from_hs6(code)
-            result.append({
-                "hs6Code": hs6,
-                "hs6Name": self._hs6_name(code),
-                "hs4Code": hs4,
-                "hs4Name": hs4_name,
-                "hs2Code": hs2,
-                "hs2Name": hs2_name,
-                "value_musd": value_musd,
-                "year": year,
-                "source": "OEC / UN Comtrade",
-            })
+            result.append(
+                {
+                    "hs6Code": hs6,
+                    "hs6Name": self._hs6_name(code),
+                    "hs4Code": hs4,
+                    "hs4Name": hs4_name,
+                    "hs2Code": hs2,
+                    "hs2Name": hs2_name,
+                    "value_musd": value_musd,
+                    "year": year,
+                    "source": "OEC / UN Comtrade",
+                }
+            )
 
         if result:
             cache_service.set("oec_data", {"key": cache_key}, result, "oec_data")
         return result
 
-    async def get_top_imports(
-        self, iso3: str, year: int = 2022, n: int = 15
-    ) -> List[Dict]:
+    async def get_top_imports(self, iso3: str, year: int = 2022, n: int = 15) -> List[Dict]:
         """Top N imported products for a country, with value in MUSD."""
         cache_key = f"oec_imports_{iso3}_{year}"
         cached = cache_service.get("oec_data", {"key": cache_key})
@@ -206,17 +245,19 @@ class OECDataService:
             code = str(row.get("HS6 ID", row.get("HS6", ""))).replace("HS", "").zfill(6)
             value_musd = round(row.get("Trade Value", 0) / 1_000_000, 2)
             hs2, hs4, hs6, hs2_name, hs4_name = self._hs2_from_hs6(code)
-            result.append({
-                "hs6Code": hs6,
-                "hs6Name": self._hs6_name(code),
-                "hs4Code": hs4,
-                "hs4Name": hs4_name,
-                "hs2Code": hs2,
-                "hs2Name": hs2_name,
-                "value_musd": value_musd,
-                "year": year,
-                "source": "OEC / UN Comtrade",
-            })
+            result.append(
+                {
+                    "hs6Code": hs6,
+                    "hs6Name": self._hs6_name(code),
+                    "hs4Code": hs4,
+                    "hs4Name": hs4_name,
+                    "hs2Code": hs2,
+                    "hs2Name": hs2_name,
+                    "value_musd": value_musd,
+                    "year": year,
+                    "source": "OEC / UN Comtrade",
+                }
+            )
 
         if result:
             cache_service.set("oec_data", {"key": cache_key}, result, "oec_data")
@@ -237,7 +278,10 @@ class OECDataService:
 
         # Fetch exports and imports separately then combine
         tasks = []
-        for direction, param_key in [("exports", "Exporter Country"), ("imports", "Importer Country")]:
+        for direction, param_key in [
+            ("exports", "Exporter Country"),
+            ("imports", "Importer Country"),
+        ]:
             params = {
                 "cube": "trade_i_baci_a_92",
                 "drilldowns": "Year",
@@ -268,13 +312,15 @@ class OECDataService:
         for y in years:
             exp = year_exports.get(y, 0.0)
             imp = year_imports.get(y, 0.0)
-            result.append({
-                "year": y,
-                "exports_musd": exp,
-                "imports_musd": imp,
-                "balance_musd": round(exp - imp, 1),
-                "source": "OEC / UN Comtrade (BACI)",
-            })
+            result.append(
+                {
+                    "year": y,
+                    "exports_musd": exp,
+                    "imports_musd": imp,
+                    "balance_musd": round(exp - imp, 1),
+                    "source": "OEC / UN Comtrade (BACI)",
+                }
+            )
 
         if result:
             cache_service.set("oec_data", {"key": cache_key}, result, "oec_data")
@@ -316,21 +362,21 @@ class OECDataService:
             value_musd = round(row.get("Trade Value", 0) / 1_000_000, 1)
             partner_field = "Importer Country" if direction == "export" else "Exporter Country"
             partner = row.get(partner_field, "")
-            result.append({
-                "country": partner,
-                "value_musd": value_musd,
-                "share_percent": round(row.get("Trade Value", 0) / total * 100, 1),
-                "year": year,
-                "source": "OEC / UN Comtrade",
-            })
+            result.append(
+                {
+                    "country": partner,
+                    "value_musd": value_musd,
+                    "share_percent": round(row.get("Trade Value", 0) / total * 100, 1),
+                    "year": year,
+                    "source": "OEC / UN Comtrade",
+                }
+            )
 
         if result:
             cache_service.set("oec_data", {"key": cache_key}, result, "oec_data")
         return result
 
-    async def get_country_snapshot(
-        self, iso3: str, year: int = 2022
-    ) -> Dict[str, Any]:
+    async def get_country_snapshot(self, iso3: str, year: int = 2022) -> Dict[str, Any]:
         """
         Combined snapshot: top exports, top imports, trade balance series, top partners.
         Used to ground Claude AI analysis in real data.
@@ -365,9 +411,7 @@ class OECDataService:
 
         return snapshot
 
-    async def validate_opportunity(
-        self, opp: Dict, year: int = 2023
-    ) -> Dict:
+    async def validate_opportunity(self, opp: Dict, year: int = 2023) -> Dict:
         """
         Enrich an AI-generated opportunity with OEC real trade data.
 
@@ -473,9 +517,7 @@ class OECDataService:
                 }
             }
 
-    async def enrich_opportunities(
-        self, opportunities: List[Dict], year: int = 2023
-    ) -> List[Dict]:
+    async def enrich_opportunities(self, opportunities: List[Dict], year: int = 2023) -> List[Dict]:
         """
         Batch enrich AI opportunities with OEC data in parallel.
         Returns opportunities with oec_data field added to each.

@@ -10,11 +10,12 @@ Tests for services/mining_sector_service.py covering:
   - Beneficiation opportunities
 """
 
-import sys
 import os
+import sys
+
 import pytest
 
-BACKEND_DIR = os.path.join(os.path.dirname(__file__), '..', 'backend')
+BACKEND_DIR = os.path.join(os.path.dirname(__file__), "..", "backend")
 sys.path.insert(0, BACKEND_DIR)
 
 
@@ -22,14 +23,17 @@ sys.path.insert(0, BACKEND_DIR)
 # Service instantiation
 # ===========================================================================
 
+
 class TestMiningSectorServiceInit:
     def test_import(self):
         from services.mining_sector_service import MiningSectorService
+
         svc = MiningSectorService()
         assert svc is not None
 
     def test_singleton(self):
         from services.mining_sector_service import get_mining_service
+
         s1 = get_mining_service()
         s2 = get_mining_service()
         assert s1 is s2
@@ -39,9 +43,11 @@ class TestMiningSectorServiceInit:
 # Mineral profiles
 # ===========================================================================
 
+
 class TestMineralProfiles:
     def setup_method(self):
         from services.mining_sector_service import MiningSectorService
+
         self.svc = MiningSectorService()
 
     def test_list_minerals(self):
@@ -66,7 +72,10 @@ class TestMineralProfiles:
 
     def test_diamond_key_producers(self):
         from services.mining_sector_service import MINERAL_PROFILES
-        producers = MINERAL_PROFILES["diamond"].get("keyProducers") or MINERAL_PROFILES["diamond"].get("key_producers", [])
+
+        producers = MINERAL_PROFILES["diamond"].get("keyProducers") or MINERAL_PROFILES[
+            "diamond"
+        ].get("key_producers", [])
         assert "BWA" in producers
         assert "ZAF" in producers
         assert "NAM" in producers
@@ -94,9 +103,11 @@ class TestMineralProfiles:
 # Country mining profiles
 # ===========================================================================
 
+
 class TestCountryMiningProfiles:
     def setup_method(self):
         from services.mining_sector_service import MiningSectorService
+
         self.svc = MiningSectorService()
 
     def test_south_africa_profile(self):
@@ -129,9 +140,11 @@ class TestCountryMiningProfiles:
 # Value-chain analysis
 # ===========================================================================
 
+
 class TestMiningValueChain:
     def setup_method(self):
         from services.mining_sector_service import MiningSectorService
+
         self.svc = MiningSectorService()
 
     def test_diamond_value_chain(self):
@@ -161,9 +174,11 @@ class TestMiningValueChain:
 # Export routes
 # ===========================================================================
 
+
 class TestMineralExportRoutes:
     def setup_method(self):
         from services.mining_sector_service import MiningSectorService
+
         self.svc = MiningSectorService()
 
     def test_zambia_routes(self):
@@ -195,9 +210,11 @@ class TestMineralExportRoutes:
 # Beneficiation opportunities
 # ===========================================================================
 
+
 class TestBeneficiationOpportunities:
     def setup_method(self):
         from services.mining_sector_service import MiningSectorService
+
         self.svc = MiningSectorService()
 
     def test_returns_list(self):
@@ -230,36 +247,57 @@ class TestBeneficiationOpportunities:
 # MINERAL_PROFILES constants
 # ===========================================================================
 
+
 class TestMineralProfileConstants:
     def test_import(self):
         from services.mining_sector_service import MINERAL_PROFILES
+
         assert MINERAL_PROFILES is not None
 
     def test_diamond_hs_code(self):
         from services.mining_sector_service import MINERAL_PROFILES
-        code = MINERAL_PROFILES["diamond"].get("hsCodePrefix") or MINERAL_PROFILES["diamond"].get("hs_code_prefix")
+
+        code = MINERAL_PROFILES["diamond"].get("hsCodePrefix") or MINERAL_PROFILES["diamond"].get(
+            "hs_code_prefix"
+        )
         assert code == "7102"
 
     def test_platinum_hs_code(self):
         from services.mining_sector_service import MINERAL_PROFILES
-        code = MINERAL_PROFILES["platinum"].get("hsCodePrefix") or MINERAL_PROFILES["platinum"].get("hs_code_prefix")
+
+        code = MINERAL_PROFILES["platinum"].get("hsCodePrefix") or MINERAL_PROFILES["platinum"].get(
+            "hs_code_prefix"
+        )
         assert code == "7110"
 
     def test_copper_hs_code(self):
         from services.mining_sector_service import MINERAL_PROFILES
-        code = MINERAL_PROFILES["copper"].get("hsCodePrefix") or MINERAL_PROFILES["copper"].get("hs_code_prefix")
+
+        code = MINERAL_PROFILES["copper"].get("hsCodePrefix") or MINERAL_PROFILES["copper"].get(
+            "hs_code_prefix"
+        )
         assert code == "7403"
 
     def test_cobalt_hs_code(self):
         from services.mining_sector_service import MINERAL_PROFILES
-        code = MINERAL_PROFILES["cobalt"].get("hsCodePrefix") or MINERAL_PROFILES["cobalt"].get("hs_code_prefix")
+
+        code = MINERAL_PROFILES["cobalt"].get("hsCodePrefix") or MINERAL_PROFILES["cobalt"].get(
+            "hs_code_prefix"
+        )
         assert code == "8105"
 
     def test_sadc_share_realistic(self):
         from services.mining_sector_service import MINERAL_PROFILES
-        diamond_share = MINERAL_PROFILES["diamond"].get("sadcGlobalSharePct") or MINERAL_PROFILES["diamond"].get("sadc_global_share_pct")
-        platinum_share = MINERAL_PROFILES["platinum"].get("sadcGlobalSharePct") or MINERAL_PROFILES["platinum"].get("sadc_global_share_pct")
-        cobalt_share = MINERAL_PROFILES["cobalt"].get("sadcGlobalSharePct") or MINERAL_PROFILES["cobalt"].get("sadc_global_share_pct")
+
+        diamond_share = MINERAL_PROFILES["diamond"].get("sadcGlobalSharePct") or MINERAL_PROFILES[
+            "diamond"
+        ].get("sadc_global_share_pct")
+        platinum_share = MINERAL_PROFILES["platinum"].get("sadcGlobalSharePct") or MINERAL_PROFILES[
+            "platinum"
+        ].get("sadc_global_share_pct")
+        cobalt_share = MINERAL_PROFILES["cobalt"].get("sadcGlobalSharePct") or MINERAL_PROFILES[
+            "cobalt"
+        ].get("sadc_global_share_pct")
         assert diamond_share == 60
         assert platinum_share == 80
         assert cobalt_share == 70

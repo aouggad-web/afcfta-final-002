@@ -85,14 +85,18 @@ def _mark_file(path: Path, dry_run: bool) -> dict:
         with path.open("w", encoding="utf-8") as f:
             f.write("\n".join(out_lines) + "\n")
 
-    return {"total": lines_total, "marked": lines_marked, "skipped": lines_skipped,
-            "verified": lines_verified, "partial": lines_partial}
+    return {
+        "total": lines_total,
+        "marked": lines_marked,
+        "skipped": lines_skipped,
+        "verified": lines_verified,
+        "partial": lines_partial,
+    }
 
 
 def _country_status(stats: dict) -> tuple:
     """Statut pays = pire statut présent dans le fichier."""
-    has_synthetic = stats["marked"] > 0 or \
-        stats["total"] > stats["verified"] + stats["partial"]
+    has_synthetic = stats["marked"] > 0 or stats["total"] > stats["verified"] + stats["partial"]
     if has_synthetic:
         return ("SYNTHETIC", "D") if stats["skipped"] == 0 else ("PARTIAL", "B")
     if stats["partial"] > 0:
@@ -150,8 +154,11 @@ def run(dry_run: bool = False, output_dir: Path = None) -> dict:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Marque les données synthétiques v4")
     ap.add_argument("--dry-run", action="store_true", help="Simulation sans écriture")
-    ap.add_argument("--output-dir", default=None,
-                    help="Répertoire des *_canonical.jsonl (défaut: engine/output)")
+    ap.add_argument(
+        "--output-dir",
+        default=None,
+        help="Répertoire des *_canonical.jsonl (défaut: engine/output)",
+    )
     args = ap.parse_args()
 
     prefix = "[DRY-RUN] " if args.dry_run else ""

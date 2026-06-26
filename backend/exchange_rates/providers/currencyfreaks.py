@@ -2,6 +2,7 @@
 CurrencyFreaks provider – broad African currency coverage.
 Requires CURRENCYFREAKS_API_KEY environment variable.
 """
+
 import logging
 import os
 from typing import Dict, Optional

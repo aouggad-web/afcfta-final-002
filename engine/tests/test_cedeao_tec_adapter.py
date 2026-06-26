@@ -12,9 +12,13 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from adapters.cedeao_tec_adapter import (
-    CedeaoTecAdapter, COUNTRIES, UEMOA, CET_BANDS, run,
+    CET_BANDS,
+    COUNTRIES,
+    UEMOA,
+    CedeaoTecAdapter,
+    run,
 )
-from schemas.canonical_model import DataStatus, ReliabilityGrade, DutyBasis
+from schemas.canonical_model import DataStatus, DutyBasis, ReliabilityGrade
 
 FIXTURE = Path(__file__).parent / "fixtures" / "cedeao_tec_sample.csv"
 
@@ -28,6 +32,7 @@ def adapter():
 # Parsing source
 # ----------------------------------------------------------------------
 
+
 def test_parse_source_counts(adapter):
     rows = adapter.parse_source()
     # 6 lignes valides (dont une avec points dans le code), 1 parasite ignorée
@@ -37,11 +42,11 @@ def test_parse_source_counts(adapter):
 
 def test_band_to_rate_mapping(adapter):
     rates = {r["code"]: r["rate"] for r in adapter.parse_source()}
-    assert rates["0101210000"] == 0.0    # catégorie 0
-    assert rates["0201100000"] == 5.0    # catégorie 1
-    assert rates["2523210000"] == 10.0   # catégorie 2
-    assert rates["6309000000"] == 20.0   # catégorie 3
-    assert rates["2402202000"] == 35.0   # catégorie 4
+    assert rates["0101210000"] == 0.0  # catégorie 0
+    assert rates["0201100000"] == 5.0  # catégorie 1
+    assert rates["2523210000"] == 10.0  # catégorie 2
+    assert rates["6309000000"] == 20.0  # catégorie 3
+    assert rates["2402202000"] == 35.0  # catégorie 4
 
 
 def test_code_normalisation(adapter):
@@ -52,9 +57,12 @@ def test_code_normalisation(adapter):
 
 def test_rate_column_takes_precedence(tmp_path):
     src = tmp_path / "tec.csv"
-    src.write_text("HS Code,Description,Category,Duty Rate\n"
-                   "0101210000,Pure-bred breeding horses,1,5\n"
-                   "9999999999,Special line,3,35\n", encoding="utf-8")
+    src.write_text(
+        "HS Code,Description,Category,Duty Rate\n"
+        "0101210000,Pure-bred breeding horses,1,5\n"
+        "9999999999,Special line,3,35\n",
+        encoding="utf-8",
+    )
     adapter = CedeaoTecAdapter(str(src))
     rows = adapter.parse_source()
     assert rows[0]["rate"] == 5.0
@@ -74,6 +82,7 @@ def test_missing_columns_raise(tmp_path):
 # Transformation canonique
 # ----------------------------------------------------------------------
 
+
 def test_provenance_partial_b(adapter):
     line = next(adapter.transform("SEN"))
     assert line.provenance.data_status == DataStatus.PARTIAL
@@ -83,16 +92,16 @@ def test_provenance_partial_b(adapter):
 
 
 def test_uemoa_member_has_community_levies(adapter):
-    line = next(adapter.transform("SEN"))           # SEN ∈ UEMOA
+    line = next(adapter.transform("SEN"))  # SEN ∈ UEMOA
     codes = {m.code for m in line.measures}
     assert {"D.D", "R.S", "PC-CEDEAO", "PCS-UEMOA", "PUA", "T.V.A"} <= codes
 
 
 def test_non_uemoa_member_has_no_uemoa_levies(adapter):
-    line = next(adapter.transform("GHA"))           # GHA ∉ UEMOA
+    line = next(adapter.transform("GHA"))  # GHA ∉ UEMOA
     codes = {m.code for m in line.measures}
     assert "PC-CEDEAO" in codes
-    assert "PUA" in codes           # AU levy s'applique à tous les membres
+    assert "PUA" in codes  # AU levy s'applique à tous les membres
     assert "R.S" not in codes
     assert "PCS-UEMOA" not in codes
     # taxes nationales ghanéennes documentées
@@ -104,7 +113,7 @@ def test_vat_basis_includes_upstream(adapter):
     vat = next(m for m in line.measures if m.sequence == 90)
     assert vat.basis == DutyBasis.CIF_PLUS_INCLUDED
     assert "D.D" in vat.basis_includes
-    assert vat.code not in vat.basis_includes      # jamais auto-référente
+    assert vat.code not in vat.basis_includes  # jamais auto-référente
 
 
 def test_vat_rate_per_country(adapter):
@@ -122,7 +131,7 @@ def test_zlecaf_and_etls_advantages(adapter):
 
 
 def test_duty_free_line_is_exempt(adapter):
-    line = next(adapter.transform("MLI"))           # cat 0 → DD 0 %
+    line = next(adapter.transform("MLI"))  # cat 0 → DD 0 %
     dd = next(m for m in line.measures if m.code == "D.D")
     assert dd.rate_pct == 0.0
     assert dd.rate_type.value == "EXEMPT"
@@ -137,12 +146,12 @@ def test_rejects_non_member():
 # Émission par pays (run)
 # ----------------------------------------------------------------------
 
+
 def test_run_emits_all_15_countries(tmp_path):
     stats = run(str(FIXTURE), str(tmp_path))
     assert set(stats["countries"]) == set(COUNTRIES)
     assert all(n == 6 for n in stats["countries"].values())
-    sample = json.loads(
-        (tmp_path / "NGA_canonical.jsonl").read_text().splitlines()[0])
+    sample = json.loads((tmp_path / "NGA_canonical.jsonl").read_text().splitlines()[0])
     assert sample["provenance"]["data_status"] == "PARTIAL"
     assert sample["commodity"]["country_iso3"] == "NGA"
 
@@ -164,8 +173,9 @@ def test_referentials_consistency():
 # CSV enrichi — colonnes TVA, TSB, PUA universelle
 # ----------------------------------------------------------------------
 
+
 def test_pua_applies_to_all_members(adapter):
-    for iso3 in ["SEN", "GHA", "NGA", "LBR"]:   # UEMOA, non-UEMOA, Anglophone
+    for iso3 in ["SEN", "GHA", "NGA", "LBR"]:  # UEMOA, non-UEMOA, Anglophone
         line = next(adapter.transform(iso3))
         codes = {m.code for m in line.measures}
         assert "PUA" in codes, f"PUA absent pour {iso3}"

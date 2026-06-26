@@ -33,15 +33,28 @@ _CODE_RE = re.compile(r"^\d{4}\.\d{2}\.\d{2}$")
 _TR_RE = re.compile(r"<tr[^>]*>(.*?)</tr>", re.DOTALL)
 _TD_RE = re.compile(r"<td[^>]*>(.*?)</td>", re.DOTALL)
 # « 75% or $345/MT whichever is higher » / « 35% or USD 0.40/kg … »
-_MIXED_RE = re.compile(
-    r"([\d.]+)\s*%\s*or\s*(?:\$|USD?)\s*([\d.]+)\s*/\s*(\w+)", re.IGNORECASE)
+_MIXED_RE = re.compile(r"([\d.]+)\s*%\s*or\s*(?:\$|USD?)\s*([\d.]+)\s*/\s*(\w+)", re.IGNORECASE)
 _PCT_RE = re.compile(r"([\d.]+)\s*%")
 
 SCHEDULE2_MARKER = "SENSITIVE ITEMS"
 
 # Unités statistiques rencontrées dans le document
-_KNOWN_UNITS = {"u", "kg", "mt", "carat", "m2", "m3", "l", "m", "pa",
-                "2u", "1000u", "g", "ct", "no"}
+_KNOWN_UNITS = {
+    "u",
+    "kg",
+    "mt",
+    "carat",
+    "m2",
+    "m3",
+    "l",
+    "m",
+    "pa",
+    "2u",
+    "1000u",
+    "g",
+    "ct",
+    "no",
+}
 
 
 def _strip(cell: str) -> str:
@@ -58,7 +71,7 @@ def parse_rate(raw: str) -> dict:
         out["specific"] = m.group(2)
         out["specific_unit"] = f"USD/{m.group(3)}"
         return out
-    m = _PCT_RE.search(raw)          # gère aussi « kg 25% » et « 25%25% »
+    m = _PCT_RE.search(raw)  # gère aussi « kg 25% » et « 25%25% »
     if m:
         out["pct"] = m.group(1)
     return out
@@ -72,7 +85,7 @@ def _parse_row(cells: list[str], in_schedule2: bool) -> dict | None:
 
     code = cells[code_idx].replace(".", "")
     description = cells[code_idx + 1]
-    rest = cells[code_idx + 2:]
+    rest = cells[code_idx + 2 :]
 
     unit, rate_raw = "", ""
     for c in rest:
@@ -138,8 +151,16 @@ def parse(md_path: Path) -> tuple[list[dict], dict]:
     return final, stats
 
 
-FIELDNAMES = ["Code_SH", "Designation", "Unite", "DD", "DD_specifique",
-              "DD_unite_specifique", "Sensible", "Taux_brut"]
+FIELDNAMES = [
+    "Code_SH",
+    "Designation",
+    "Unite",
+    "DD",
+    "DD_specifique",
+    "DD_unite_specifique",
+    "Sensible",
+    "Taux_brut",
+]
 
 
 def write_csv(rows: list[dict], out_path: Path) -> None:
@@ -161,6 +182,8 @@ if __name__ == "__main__":
     ap.add_argument("csv_path", help="Fichier CSV de sortie")
     args = ap.parse_args()
     r = run(args.md_path, args.csv_path)
-    print(f"{r['lines']} lignes → {r['out']} "
-          f"(Schedule 1: {r['schedule1']}, écrasées par Schedule 2: "
-          f"{r['schedule2_overrides']}, SI non résolues: {r['si_unresolved']})")
+    print(
+        f"{r['lines']} lignes → {r['out']} "
+        f"(Schedule 1: {r['schedule1']}, écrasées par Schedule 2: "
+        f"{r['schedule2_overrides']}, SI non résolues: {r['si_unresolved']})"
+    )

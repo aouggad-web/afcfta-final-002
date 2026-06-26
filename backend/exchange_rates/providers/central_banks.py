@@ -23,6 +23,7 @@ Stratégie :
   3. Seules les devises réellement récupérées sont incluses dans le résultat
      (pas de données inventées).
 """
+
 import logging
 import re
 from typing import Dict, Optional
@@ -66,6 +67,7 @@ def _safe_float(text: str) -> Optional[float]:
 # ---------------------------------------------------------------------------
 # Banque d'Algérie – DZD
 # ---------------------------------------------------------------------------
+
 
 def _fetch_dzd(eur_usd_rate: Optional[float] = None) -> Optional[float]:
     """
@@ -121,6 +123,7 @@ def _fetch_dzd(eur_usd_rate: Optional[float] = None) -> Optional[float]:
 # ---------------------------------------------------------------------------
 # Bank Al-Maghrib – MAD
 # ---------------------------------------------------------------------------
+
 
 def _fetch_mad() -> Optional[float]:
     """
@@ -180,6 +183,7 @@ def _fetch_mad() -> Optional[float]:
 # Banque Centrale de Tunisie – TND
 # ---------------------------------------------------------------------------
 
+
 def _fetch_tnd() -> Optional[float]:
     """
     Fetch official USD/TND rate from BCT.
@@ -212,6 +216,7 @@ def _fetch_tnd() -> Optional[float]:
 # Central Bank of Egypt – EGP
 # ---------------------------------------------------------------------------
 
+
 def _fetch_egp() -> Optional[float]:
     """Fetch EGP/USD from CBE. Returns EGP per 1 USD."""
     urls = [
@@ -240,6 +245,7 @@ def _fetch_egp() -> Optional[float]:
 # Central Bank of Kenya – KES
 # ---------------------------------------------------------------------------
 
+
 def _fetch_kes() -> Optional[float]:
     """Fetch KES/USD from CBK. Returns KES per 1 USD."""
     try:
@@ -264,6 +270,7 @@ def _fetch_kes() -> Optional[float]:
 # ---------------------------------------------------------------------------
 # National Bank of Ethiopia – ETB
 # ---------------------------------------------------------------------------
+
 
 def _fetch_etb() -> Optional[float]:
     """Fetch ETB/USD from NBE. Returns ETB per 1 USD."""
@@ -290,6 +297,7 @@ def _fetch_etb() -> Optional[float]:
 # BCEAO – XOF (parité fixe EUR)
 # ---------------------------------------------------------------------------
 
+
 def _compute_xof_from_eur(eur_usd_rate: float) -> float:
     """
     XOF (CFA Franc BCEAO) is pegged to EUR at a fixed rate:
@@ -311,6 +319,7 @@ def _compute_xaf_from_eur(eur_usd_rate: float) -> float:
 # ---------------------------------------------------------------------------
 # Main provider
 # ---------------------------------------------------------------------------
+
 
 class AfricanCentralBanksProvider(BaseRateProvider):
     """
@@ -354,7 +363,9 @@ class AfricanCentralBanksProvider(BaseRateProvider):
                 rates["XAF"] = round(_compute_xaf_from_eur(eur_usd_rate), 4)
                 logger.info(
                     "CFA peg: 1 USD = %.4f XOF / %.4f XAF (EUR/USD=%.6f)",
-                    rates["XOF"], rates["XAF"], eur_usd_rate,
+                    rates["XOF"],
+                    rates["XAF"],
+                    eur_usd_rate,
                 )
             except ZeroDivisionError:
                 pass
@@ -391,7 +402,8 @@ class AfricanCentralBanksProvider(BaseRateProvider):
 
         logger.info(
             "AfricanCentralBanks: fetched %d currencies: %s",
-            len(rates), list(rates.keys()),
+            len(rates),
+            list(rates.keys()),
         )
         return rates if rates else None
 

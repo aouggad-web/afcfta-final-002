@@ -16,8 +16,9 @@ import asyncio
 import logging
 from typing import Any, Dict, List, Optional
 
-from .base_north_africa_crawler import NorthAfricaCrawlerBase
 from config.crawler_configs.mar_config import MAR_CONFIG
+
+from .base_north_africa_crawler import NorthAfricaCrawlerBase
 
 logger = logging.getLogger(__name__)
 
@@ -36,8 +37,13 @@ class MARTariffCrawler(NorthAfricaCrawlerBase):
 
     _country_code = "MAR"
 
-    def __init__(self, *args, chapters: Optional[List[str]] = None,
-                 max_per_chapter: Optional[int] = None, **kwargs):
+    def __init__(
+        self,
+        *args,
+        chapters: Optional[List[str]] = None,
+        max_per_chapter: Optional[int] = None,
+        **kwargs,
+    ):
         super().__init__(*args, **kwargs)
         self.chapters = chapters
         self.max_per_chapter = max_per_chapter
@@ -95,6 +101,7 @@ class MARTariffCrawler(NorthAfricaCrawlerBase):
     async def parse_taxes(self, html: str, country_config: Dict) -> List[Dict]:
         """Parse Morocco-specific tax structure from HTML."""
         import re
+
         from bs4 import BeautifulSoup
 
         soup = BeautifulSoup(html, "html.parser")
@@ -115,9 +122,7 @@ class MARTariffCrawler(NorthAfricaCrawlerBase):
             if tva_match:
                 taxes["TVA"] = self.normalize_rate(tva_match.group(1))
 
-            tpi_match = re.search(
-                r"Taxe\s+Parafiscale.*?\(\s*TPI\s*\)\s*:\s*([\d,\.]+)\s*%", text
-            )
+            tpi_match = re.search(r"Taxe\s+Parafiscale.*?\(\s*TPI\s*\)\s*:\s*([\d,\.]+)\s*%", text)
             if tpi_match:
                 taxes["PI"] = self.normalize_rate(tpi_match.group(1))
 
@@ -136,8 +141,7 @@ class MARTariffCrawler(NorthAfricaCrawlerBase):
             return False
 
         valid_count = sum(
-            1 for line in tariff_lines
-            if line.get("hs_code") and line.get("designation")
+            1 for line in tariff_lines if line.get("hs_code") and line.get("designation")
         )
         coverage = valid_count / len(tariff_lines) if tariff_lines else 0
         logger.info(f"MAR: Validation coverage {coverage:.1%} ({valid_count}/{len(tariff_lines)})")

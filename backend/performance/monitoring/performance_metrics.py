@@ -4,12 +4,12 @@ AfCFTA Platform - Performance Monitoring Service
 Tracks query times, cache hit/miss rates, and slow-query alerts.
 """
 
-import time
-import logging
 import functools
-from typing import Any, Callable, Dict, Optional
-from datetime import datetime, timezone
+import logging
+import time
 from collections import defaultdict, deque
+from datetime import datetime, timezone
+from typing import Any, Callable, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +78,9 @@ class PerformanceMetrics:
     # ------------------------------------------------------------------
 
     def summary(self) -> Dict[str, Any]:
-        ops = set(list(self._hits.keys()) + list(self._misses.keys()) + list(self._latencies.keys()))
+        ops = set(
+            list(self._hits.keys()) + list(self._misses.keys()) + list(self._latencies.keys())
+        )
         op_stats = {}
         for op in ops:
             op_stats[op] = {
@@ -116,6 +118,7 @@ def get_metrics() -> PerformanceMetrics:
 # Decorator
 # ------------------------------------------------------------------
 
+
 def track_performance(operation: str):
     """
     Decorator that records latency for any sync or async function.
@@ -126,8 +129,10 @@ def track_performance(operation: str):
         async def get_tariff(country, hs_code):
             ...
     """
+
     def decorator(func: Callable) -> Callable:
         if _is_coroutine(func):
+
             @functools.wraps(func)
             async def async_wrapper(*args, **kwargs):
                 start = time.perf_counter()
@@ -135,8 +140,10 @@ def track_performance(operation: str):
                     return await func(*args, **kwargs)
                 finally:
                     get_metrics().record_latency(operation, time.perf_counter() - start)
+
             return async_wrapper
         else:
+
             @functools.wraps(func)
             def sync_wrapper(*args, **kwargs):
                 start = time.perf_counter()
@@ -144,10 +151,13 @@ def track_performance(operation: str):
                     return func(*args, **kwargs)
                 finally:
                     get_metrics().record_latency(operation, time.perf_counter() - start)
+
             return sync_wrapper
+
     return decorator
 
 
 def _is_coroutine(func: Callable) -> bool:
     import asyncio
+
     return asyncio.iscoroutinefunction(func)

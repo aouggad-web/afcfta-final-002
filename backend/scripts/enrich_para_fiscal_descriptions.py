@@ -34,8 +34,10 @@ CRAWLED_DIR = os.path.join(DATA_DIR, "crawled")
 
 # Tax codes that are NOT para-fiscal levies (skip for other_taxes_rate computation)
 _SKIP_CODES = {
-    "D.D", "DD",           # customs duty
-    "T.V.A", "TVA",        # VAT
+    "D.D",
+    "DD",  # customs duty
+    "T.V.A",
+    "TVA",  # VAT
 }
 
 # Display names that map to DD or VAT (some files use "Droit de Douane" as code)
@@ -133,15 +135,11 @@ def main(target_countries: list = None) -> None:
         target_countries: list of ISO3 codes, or None to process all files
     """
     if target_countries:
-        files = [
-            (cc, os.path.join(CRAWLED_DIR, f"{cc}_tariffs.json"))
-            for cc in target_countries
-        ]
+        files = [(cc, os.path.join(CRAWLED_DIR, f"{cc}_tariffs.json")) for cc in target_countries]
     else:
         files = sorted(
             [
-                (fn.replace("_tariffs.json", ""),
-                 os.path.join(CRAWLED_DIR, fn))
+                (fn.replace("_tariffs.json", ""), os.path.join(CRAWLED_DIR, fn))
                 for fn in os.listdir(CRAWLED_DIR)
                 if fn.endswith("_tariffs.json")
             ],

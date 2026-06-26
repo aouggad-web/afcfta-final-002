@@ -5,7 +5,7 @@ Covers all 7 North African countries: MAR, EGY, TUN, DZA, LBY, SDN, MRT.
 Data sourced from official investment agencies and publicly available databases.
 """
 
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 
 # ── Special Economic Zone definitions ──────────────────────────────────────
 
@@ -58,7 +58,12 @@ _SEZ_DATA: Dict[str, List[Dict[str, Any]]] = {
                 "Free profit repatriation",
                 "Single-window administrative services",
             ],
-            "target_sectors": ["financial_services", "insurance", "consulting", "holding_companies"],
+            "target_sectors": [
+                "financial_services",
+                "insurance",
+                "consulting",
+                "holding_companies",
+            ],
             "major_tenants": ["Aon", "Sanlam", "Société Générale", "BNP Paribas"],
             "employment": 35000,
             "certifications": ["GFCI Top 20 Africa"],
@@ -107,7 +112,6 @@ _SEZ_DATA: Dict[str, List[Dict[str, Any]]] = {
             "contact_url": "https://www.medz.ma",
         },
     ],
-
     "EGY": [
         {
             "name": "Suez Canal Economic Zone (SCZONE)",
@@ -128,7 +132,13 @@ _SEZ_DATA: Dict[str, List[Dict[str, Any]]] = {
                 "Single-window clearance (48 hours)",
                 "Profit repatriation guarantee",
             ],
-            "target_sectors": ["logistics", "manufacturing", "petrochemicals", "textiles", "electronics"],
+            "target_sectors": [
+                "logistics",
+                "manufacturing",
+                "petrochemicals",
+                "textiles",
+                "electronics",
+            ],
             "major_tenants": ["Cosco Shipping", "Tianjin Economic Zone", "Samsung"],
             "employment": 120000,
             "annual_trade_bn_usd": 12.0,
@@ -175,7 +185,6 @@ _SEZ_DATA: Dict[str, List[Dict[str, Any]]] = {
             "contact_url": "https://www.acud.com.eg",
         },
     ],
-
     "TUN": [
         {
             "name": "Bizerte Economic Development Zone",
@@ -238,7 +247,6 @@ _SEZ_DATA: Dict[str, List[Dict[str, Any]]] = {
             "contact_url": "https://www.elghazala.tn",
         },
     ],
-
     "DZA": [
         {
             "name": "Bellara Steel Industrial Zone",
@@ -282,7 +290,6 @@ _SEZ_DATA: Dict[str, List[Dict[str, Any]]] = {
             "notes": "Under development as of 2024; not yet operational",
         },
     ],
-
     "LBY": [
         {
             "name": "Misrata Free Zone",
@@ -326,7 +333,6 @@ _SEZ_DATA: Dict[str, List[Dict[str, Any]]] = {
             "notes": "Framework under development; stability-dependent",
         },
     ],
-
     "SDN": [
         {
             "name": "Khartoum Free Trade Zone",
@@ -368,7 +374,6 @@ _SEZ_DATA: Dict[str, List[Dict[str, Any]]] = {
             "contact_url": "https://www.customs.gov.sd",
         },
     ],
-
     "MRT": [
         {
             "name": "Nouakchott Free Zone",
@@ -450,9 +455,7 @@ def get_zone_summary() -> Dict[str, Any]:
 
     for country, zones in _SEZ_DATA.items():
         country_total = len(zones)
-        country_operational = sum(
-            1 for z in zones if z.get("operational_since") is not None
-        )
+        country_operational = sum(1 for z in zones if z.get("operational_since") is not None)
         country_port = sum(1 for z in zones if z.get("port_connected", False))
         types = list({z["type"] for z in zones})
 

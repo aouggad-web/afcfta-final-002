@@ -5,10 +5,9 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
+from config.crawler_config import get_crawler_config, get_integration_config
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-
-from config.crawler_config import get_crawler_config, get_integration_config
 from services.enhanced_calculator_service import calculate_detailed_tariff
 
 logger = logging.getLogger(__name__)
@@ -72,7 +71,9 @@ def _load_dza_authentic_line(hs_code: str) -> Tuple[Optional[Dict[str, Any]], st
             logger.warning(f"Could not load DZA authentic data: {exc}")
 
     # 2) Enriched crawled fallback
-    enriched_path = Path(__file__).resolve().parent.parent / "data" / "crawled" / "DZA_tariffs_enriched.json"
+    enriched_path = (
+        Path(__file__).resolve().parent.parent / "data" / "crawled" / "DZA_tariffs_enriched.json"
+    )
     if not enriched_path.exists():
         return None, "etl_fallback"
 

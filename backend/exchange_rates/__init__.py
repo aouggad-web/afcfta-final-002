@@ -1,14 +1,15 @@
 """
 Exchange rates module.
 """
+
 from .models import (
-    ExchangeRate,
-    RateBundle,
-    ConversionResult,
-    RateAlert,
     ConversionRequest,
+    ConversionResult,
+    ExchangeRate,
+    RateAlert,
+    RateBundle,
 )
-from .service import ExchangeRateService, get_service, AFRICAN_CURRENCY_CODES
+from .service import AFRICAN_CURRENCY_CODES, ExchangeRateService, get_service
 
 __all__ = [
     "ExchangeRate",

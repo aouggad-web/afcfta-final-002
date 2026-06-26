@@ -80,7 +80,7 @@ PRODUCT_TRANSLATIONS = {
     "Sucre": "Sugar",
     "Produits alimentaires transformés": "Processed food products",
     "Boissons": "Beverages",
-    "Céréales": "Cereals"
+    "Céréales": "Cereals",
 }
 
 COUNTRY_TRANSLATIONS = {
@@ -153,21 +153,24 @@ COUNTRY_TRANSLATIONS = {
     "Australie": "Australia",
     "Paraguay": "Paraguay",
     "Guatemala": "Guatemala",
-    "Émirats arabes unis": "United Arab Emirates"
+    "Émirats arabes unis": "United Arab Emirates",
 }
 
-def translate_product(product_name: str, language: str = 'fr') -> str:
+
+def translate_product(product_name: str, language: str = "fr") -> str:
     """Translate product name to specified language"""
-    if language == 'en' and product_name in PRODUCT_TRANSLATIONS:
+    if language == "en" and product_name in PRODUCT_TRANSLATIONS:
         return PRODUCT_TRANSLATIONS[product_name]
     return product_name
 
-def translate_country(country_name: str, language: str = 'fr') -> str:
+
+def translate_country(country_name: str, language: str = "fr") -> str:
     """Translate country name to specified language"""
-    if language == 'en' and country_name in COUNTRY_TRANSLATIONS:
+    if language == "en" and country_name in COUNTRY_TRANSLATIONS:
         return COUNTRY_TRANSLATIONS[country_name]
     return country_name
 
-def translate_country_list(countries: list, language: str = 'fr') -> list:
+
+def translate_country_list(countries: list, language: str = "fr") -> list:
     """Translate a list of country names"""
     return [translate_country(c, language) for c in countries]

@@ -13,7 +13,6 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
-
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 TARIFFS_DIR = BACKEND_DIR / "data" / "tariffs"
 DZA_FAST = BACKEND_DIR / "data" / "crawled" / "DZA_tariffs_fast.json"
@@ -47,16 +46,18 @@ def load_dza_authentic() -> dict:
         if not code or len(code) < 6:
             continue
         hs6 = code[:6]
-        grouped[hs6].append({
-            "hs_code": code,
-            "code": code,
-            "description_fr": sp.get("description") or sp.get("name") or "",
-            "description": sp.get("description") or sp.get("name") or "",
-            "name": sp.get("name") or "",
-            "raw_code": sp.get("raw_code"),
-            "source": sp.get("source", "conformepro.dz"),
-            "source_url": sp.get("source_url"),
-        })
+        grouped[hs6].append(
+            {
+                "hs_code": code,
+                "code": code,
+                "description_fr": sp.get("description") or sp.get("name") or "",
+                "description": sp.get("description") or sp.get("name") or "",
+                "name": sp.get("name") or "",
+                "raw_code": sp.get("raw_code"),
+                "source": sp.get("source", "conformepro.dz"),
+                "source_url": sp.get("source_url"),
+            }
+        )
     return dict(grouped)
 
 
@@ -83,7 +84,8 @@ def clean_country_file(path: Path, dza_authentic: dict) -> dict:
             # Strip generic / hallucinated entries
             originals = line.get("sub_positions") or []
             filtered = [
-                sp for sp in originals
+                sp
+                for sp in originals
                 if not is_generic_description(
                     sp.get("description_fr") or sp.get("description") or ""
                 )

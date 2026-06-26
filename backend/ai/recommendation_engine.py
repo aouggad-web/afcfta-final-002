@@ -355,6 +355,7 @@ _OPPORTUNITY_INDEX: dict[str, dict[str, Any]] = {
 # Matching utilities
 # ---------------------------------------------------------------------------
 
+
 def _risk_compat(opp_risk: str, tolerance: str) -> float:
     """Return 0–1 compatibility score between opportunity risk and user tolerance."""
     _order = {"low": 0, "medium": 1, "high": 2}
@@ -397,6 +398,7 @@ def _geo_preference_score(opp: dict[str, Any], geo_prefs: list[str]) -> float:
 # Recommendation dataclass
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class InvestmentOpportunity:
     opportunity_id: str
@@ -436,6 +438,7 @@ class InvestmentOpportunity:
 # ---------------------------------------------------------------------------
 # Main engine
 # ---------------------------------------------------------------------------
+
 
 class PersonalizedRecommendationEngine:
     """Match investor profiles to curated AfCFTA investment opportunities."""
@@ -480,12 +483,7 @@ class PersonalizedRecommendationEngine:
             geo_s = _geo_preference_score(opp, geo_prefs)
 
             # Weighted combination
-            match_score = (
-                risk_s * 0.30
-                + sector_s * 0.35
-                + size_s * 0.20
-                + geo_s * 0.15
-            )
+            match_score = risk_s * 0.30 + sector_s * 0.35 + size_s * 0.20 + geo_s * 0.15
 
             # Blend with base confidence
             confidence = opp["base_confidence"] * 0.6 + match_score * 0.4

@@ -12,7 +12,7 @@ Language codes:
   tzm = Tamazight/Berber (cultural recognition: MAR, DZA)
 """
 
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 # ── Core UMA member states ──────────────────────────────────────────────────
 UMA_CORE_MEMBERS: List[str] = ["MAR", "DZA", "TUN", "LBY", "MRT"]
@@ -201,7 +201,7 @@ UMA_VAT_RATES: Dict[str, float] = {
     "EGY": 14.0,
     "TUN": 19.0,
     "DZA": 19.0,
-    "LBY": 0.0,   # no VAT; sales tax ~4%
+    "LBY": 0.0,  # no VAT; sales tax ~4%
     "SDN": 17.0,
     "MRT": 16.0,
 }
@@ -210,7 +210,7 @@ UMA_VAT_RATES: Dict[str, float] = {
 UMA_CORPORATE_TAX_RATES: Dict[str, float] = {
     "MAR": 26.0,
     "EGY": 22.5,
-    "TUN": 15.0,   # standard; higher rates for banking/insurance
+    "TUN": 15.0,  # standard; higher rates for banking/insurance
     "DZA": 26.0,
     "LBY": 20.0,
     "SDN": 35.0,

@@ -1,9 +1,11 @@
 """
 Logistics API endpoints for African maritime ports
 """
+
 import json
 from pathlib import Path
 from typing import List, Optional
+
 from fastapi import HTTPException
 
 # Determine data file path with fallback
@@ -16,6 +18,7 @@ if not PORTS_FILE.exists():
 _ports_cache = None
 _enhanced_index = {}
 
+
 def _load_enhanced_port_index():
     """Load enhanced port data file into _enhanced_index (keyed by port_id)."""
     global _enhanced_index
@@ -25,10 +28,10 @@ def _load_enhanced_port_index():
     if not enhanced_path.exists():
         return
     try:
-        with open(enhanced_path, 'r', encoding='utf-8') as f:
+        with open(enhanced_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        ports = data if isinstance(data, list) else data.get('ports', [])
-        _enhanced_index = {p['port_id']: p for p in ports if p.get('port_id')}
+        ports = data if isinstance(data, list) else data.get("ports", [])
+        _enhanced_index = {p["port_id"]: p for p in ports if p.get("port_id")}
     except Exception:
         _enhanced_index = {}
 
@@ -39,73 +42,74 @@ def load_ports_data():
     if _ports_cache is not None:
         return _ports_cache
     ports_path = ROOT_DIR / "data" / "json" / "ports_africains.json"
-    with open(ports_path, 'r', encoding='utf-8') as f:
+    with open(ports_path, "r", encoding="utf-8") as f:
         ports = json.load(f)
     # Merge enhanced data if available
     _load_enhanced_port_index()
     if _enhanced_index:
         for port in ports:
-            pid = port.get('port_id')
+            pid = port.get("port_id")
             enh = _enhanced_index.get(pid)
             if enh:
                 # Merge enriched agents (services, certifications, cargo_types, operating_hours)
-                if 'agents' in enh:
-                    port['agents'] = enh['agents']
+                if "agents" in enh:
+                    port["agents"] = enh["agents"]
                 # Merge logistics_network if present
-                if 'logistics_network' in enh:
-                    port['logistics_network'] = enh['logistics_network']
+                if "logistics_network" in enh:
+                    port["logistics_network"] = enh["logistics_network"]
     _ports_cache = ports
     return _ports_cache
+
+
 def get_all_ports(country_iso: Optional[str] = None) -> List[dict]:
     """
     Get all ports or filter by country ISO code
     """
     ports = load_ports_data()
-    
+
     if country_iso:
         country_iso = country_iso.upper()
-        ports = [p for p in ports if p['country_iso'] == country_iso]
-    
+        ports = [p for p in ports if p["country_iso"] == country_iso]
+
     return ports
+
 
 def get_port_by_id(port_id: str) -> Optional[dict]:
     """
     Get detailed port information by port ID
     """
     ports = load_ports_data()
-    
+
     for port in ports:
-        if port['port_id'] == port_id:
+        if port["port_id"] == port_id:
             return port
-    
+
     return None
+
 
 def get_ports_by_type(port_type: str) -> List[dict]:
     """
     Get ports filtered by type (Hub Transhipment, Hub Regional, Maritime Commercial)
     """
     ports = load_ports_data()
-    return [p for p in ports if p.get('port_type', '').lower() == port_type.lower()]
+    return [p for p in ports if p.get("port_type", "").lower() == port_type.lower()]
+
 
 def get_top_ports_by_teu(limit: int = 20) -> List[dict]:
     """
     Get top ports by container throughput (TEU)
     """
     ports = load_ports_data()
-    
+
     # Filter ports with TEU data and sort by TEU descending
-    ports_with_teu = [
-        p for p in ports 
-        if p.get('latest_stats', {}).get('container_throughput_teu')
-    ]
-    
+    ports_with_teu = [p for p in ports if p.get("latest_stats", {}).get("container_throughput_teu")]
+
     sorted_ports = sorted(
-        ports_with_teu, 
-        key=lambda x: x['latest_stats']['container_throughput_teu'],
-        reverse=True
+        ports_with_teu, key=lambda x: x["latest_stats"]["container_throughput_teu"], reverse=True
     )
-    
+
     return sorted_ports[:limit]
+
 
 def search_ports(query: str) -> List[dict]:
     """
@@ -113,12 +117,13 @@ def search_ports(query: str) -> List[dict]:
     """
     ports = load_ports_data()
     query_lower = query.lower()
-    
+
     results = [
-        p for p in ports 
-        if query_lower in p['port_name'].lower() 
-        or query_lower in p.get('un_locode', '').lower()
-        or query_lower in p['country_name'].lower()
+        p
+        for p in ports
+        if query_lower in p["port_name"].lower()
+        or query_lower in p.get("un_locode", "").lower()
+        or query_lower in p["country_name"].lower()
     ]
-    
+
     return results

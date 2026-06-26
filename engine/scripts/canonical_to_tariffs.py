@@ -58,8 +58,9 @@ def _advantage_to_fiscal(a: dict) -> dict:
 
 def _build_sub_position(line: dict) -> dict:
     commodity = line["commodity"]
-    dd = next((m["rate_pct"] for m in line["measures"]
-               if m["measure_type"] == "CUSTOMS_DUTY"), None)
+    dd = next(
+        (m["rate_pct"] for m in line["measures"] if m["measure_type"] == "CUSTOMS_DUTY"), None
+    )
     return {
         "code": commodity["national_code"],
         "digits": commodity["digits"],
@@ -93,14 +94,21 @@ def convert_country(country: str) -> dict:
         rep = group[0]
         commodity = rep["commodity"]
 
-        dd_rate = next((m["rate_pct"] for m in rep["measures"]
-                         if m["measure_type"] == "CUSTOMS_DUTY"), None)
-        vat_rate = next((m["rate_pct"] for m in rep["measures"]
-                          if m["measure_type"] == "VAT"), None)
-        other_total = round(sum(
-            m["rate_pct"] for m in rep["measures"]
-            if m["measure_type"] not in ("CUSTOMS_DUTY", "VAT") and m.get("rate_pct") is not None
-        ), 4)
+        dd_rate = next(
+            (m["rate_pct"] for m in rep["measures"] if m["measure_type"] == "CUSTOMS_DUTY"), None
+        )
+        vat_rate = next(
+            (m["rate_pct"] for m in rep["measures"] if m["measure_type"] == "VAT"), None
+        )
+        other_total = round(
+            sum(
+                m["rate_pct"]
+                for m in rep["measures"]
+                if m["measure_type"] not in ("CUSTOMS_DUTY", "VAT")
+                and m.get("rate_pct") is not None
+            ),
+            4,
+        )
 
         if dd_rate is not None:
             dd_rates.append(dd_rate)
@@ -108,11 +116,21 @@ def convert_country(country: str) -> dict:
             vat_rates.append(vat_rate)
         other_rates.append(other_total)
 
-        zlecaf_measure = next((m for m in rep["measures"]
-                                if m["measure_type"] == "CUSTOMS_DUTY" and m.get("zlecaf_rate_pct") is not None), None)
-        zlecaf_rate = zlecaf_measure["zlecaf_rate_pct"] if zlecaf_measure else rep.get("total_zlecaf_pct")
+        zlecaf_measure = next(
+            (
+                m
+                for m in rep["measures"]
+                if m["measure_type"] == "CUSTOMS_DUTY" and m.get("zlecaf_rate_pct") is not None
+            ),
+            None,
+        )
+        zlecaf_rate = (
+            zlecaf_measure["zlecaf_rate_pct"] if zlecaf_measure else rep.get("total_zlecaf_pct")
+        )
 
-        sub_positions = [_build_sub_position(l) for l in group if l["commodity"]["national_code"] != hs6]
+        sub_positions = [
+            _build_sub_position(l) for l in group if l["commodity"]["national_code"] != hs6
+        ]
 
         fiscal_advantages = []
         seen_advantages = set()
@@ -132,28 +150,32 @@ def convert_country(country: str) -> dict:
                     seen_formalities.add(key)
                     administrative_formalities.append(_requirement_to_formality(r))
 
-        tariff_lines.append({
-            "hs6": hs6,
-            "chapter": commodity.get("chapter") or hs6[:2],
-            "description_fr": commodity.get("description_fr") or "",
-            "description_en": commodity.get("description_en") or commodity.get("description_fr") or "",
-            "category": commodity.get("category"),
-            "unit": commodity.get("unit"),
-            "sensitivity": commodity.get("sensitivity") or "normal",
-            "dd_rate": dd_rate,
-            "dd_source": rep["provenance"]["source_name"],
-            "zlecaf_rate": zlecaf_rate,
-            "zlecaf_source": "ZLECAf" if zlecaf_rate is not None else None,
-            "vat_rate": vat_rate,
-            "other_taxes_rate": other_total,
-            "taxes_detail": [_measure_to_tax_detail(m) for m in rep["measures"]],
-            "total_taxes_pct": round(sum(
-                m["rate_pct"] for m in rep["measures"] if m.get("rate_pct") is not None
-            ), 4),
-            "fiscal_advantages": fiscal_advantages,
-            "administrative_formalities": administrative_formalities,
-            "sub_positions": sub_positions,
-        })
+        tariff_lines.append(
+            {
+                "hs6": hs6,
+                "chapter": commodity.get("chapter") or hs6[:2],
+                "description_fr": commodity.get("description_fr") or "",
+                "description_en": commodity.get("description_en")
+                or commodity.get("description_fr")
+                or "",
+                "category": commodity.get("category"),
+                "unit": commodity.get("unit"),
+                "sensitivity": commodity.get("sensitivity") or "normal",
+                "dd_rate": dd_rate,
+                "dd_source": rep["provenance"]["source_name"],
+                "zlecaf_rate": zlecaf_rate,
+                "zlecaf_source": "ZLECAf" if zlecaf_rate is not None else None,
+                "vat_rate": vat_rate,
+                "other_taxes_rate": other_total,
+                "taxes_detail": [_measure_to_tax_detail(m) for m in rep["measures"]],
+                "total_taxes_pct": round(
+                    sum(m["rate_pct"] for m in rep["measures"] if m.get("rate_pct") is not None), 4
+                ),
+                "fiscal_advantages": fiscal_advantages,
+                "administrative_formalities": administrative_formalities,
+                "sub_positions": sub_positions,
+            }
+        )
 
     summary = {
         "total_tariff_lines": len(tariff_lines),
@@ -189,12 +211,16 @@ def convert_country(country: str) -> dict:
     secondary_path = TARIFFS_DIR / f"{country}_tariffs.json"
     primary_path.write_text(payload, encoding="utf-8")
     secondary_path.write_text(payload, encoding="utf-8")
-    print(f"[{country}] {len(tariff_lines)} HS6 ({len(lines)} positions) → {primary_path} + {secondary_path}")
+    print(
+        f"[{country}] {len(tariff_lines)} HS6 ({len(lines)} positions) → {primary_path} + {secondary_path}"
+    )
     return doc
 
 
 def convert_all(countries: list[str] | None = None) -> None:
-    targets = countries or sorted(p.stem.replace("_canonical", "") for p in OUTPUT_DIR.glob("*_canonical.jsonl"))
+    targets = countries or sorted(
+        p.stem.replace("_canonical", "") for p in OUTPUT_DIR.glob("*_canonical.jsonl")
+    )
     ok, failed = 0, []
     for country in targets:
         try:

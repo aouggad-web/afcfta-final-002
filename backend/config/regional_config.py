@@ -63,7 +63,7 @@ REGIONAL_CONFIG = {
         "max_retries": 3,
     },
     "multilanguage": {
-        "primary": "ar",        # Arabic – official across all countries
+        "primary": "ar",  # Arabic – official across all countries
         "secondary": ["fr", "en"],
         "tamazight": ["MAR", "DZA"],  # Tamazight cultural recognition
     },
@@ -75,7 +75,7 @@ NORTH_AFRICA_VAT_RATES = {
     "MAR": 20.0,
     "EGY": 14.0,
     "TUN": 19.0,
-    "LBY": 0.0,    # no VAT; sales tax ~4%
+    "LBY": 0.0,  # no VAT; sales tax ~4%
     "SDN": 17.0,
     "MRT": 16.0,
 }
@@ -130,12 +130,12 @@ CEMAC_CONFIG = {
 # CEMAC country VAT rates
 # CEMAC uses a harmonized external tariff (TEC) with a standard VAT of 19.25%
 CEMAC_VAT_RATES = {
-    "CMR": 19.25,   # Cameroon
-    "CAF": 19.0,    # Central African Republic
-    "TCD": 18.0,    # Chad
-    "COG": 18.0,    # Republic of the Congo
-    "GNQ": 15.0,    # Equatorial Guinea
-    "GAB": 18.0,    # Gabon
+    "CMR": 19.25,  # Cameroon
+    "CAF": 19.0,  # Central African Republic
+    "TCD": 18.0,  # Chad
+    "COG": 18.0,  # Republic of the Congo
+    "GNQ": 15.0,  # Equatorial Guinea
+    "GAB": 18.0,  # Gabon
 }
 
 # Country-specific preferential agreements for cross-validation

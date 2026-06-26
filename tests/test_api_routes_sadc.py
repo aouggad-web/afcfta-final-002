@@ -7,11 +7,12 @@ backend/routes/sadc_intelligence.py.
 These tests use FastAPI's TestClient and exercise the full route stack.
 """
 
-import sys
 import os
+import sys
+
 import pytest
 
-BACKEND_DIR = os.path.join(os.path.dirname(__file__), '..', 'backend')
+BACKEND_DIR = os.path.join(os.path.dirname(__file__), "..", "backend")
 sys.path.insert(0, BACKEND_DIR)
 
 
@@ -21,8 +22,9 @@ sys.path.insert(0, BACKEND_DIR)
 
 try:
     import importlib.util
+
+    from fastapi import APIRouter, FastAPI
     from fastapi.testclient import TestClient
-    from fastapi import FastAPI, APIRouter
 
     # Import only the SADC route module directly (avoids loading routes/__init__.py
     # which pulls in Redis/database dependencies not available in the test environment)
@@ -53,6 +55,7 @@ pytestmark = pytest.mark.skipif(
 # ===========================================================================
 # Regional overview endpoints
 # ===========================================================================
+
 
 class TestSADCOverviewEndpoint:
     def test_sadc_overview_200(self):
@@ -116,6 +119,7 @@ class TestSADCFreshnessEndpoint:
 # SACU endpoints
 # ===========================================================================
 
+
 class TestSACUCustomsUnionEndpoint:
     def test_customs_union_200(self):
         resp = client.get("/api/regions/sacu/customs-union")
@@ -167,6 +171,7 @@ class TestSACUImportCostEndpoint:
 # Country-specific endpoints
 # ===========================================================================
 
+
 class TestSADCCountryTariffsEndpoint:
     def test_valid_country_returns_200_or_404(self):
         resp = client.get("/api/countries/sadc/ZAF/tariffs")
@@ -215,6 +220,7 @@ class TestSADCCountryMiningEndpoint:
 # ===========================================================================
 # Mining endpoints
 # ===========================================================================
+
 
 class TestMiningOverviewEndpoint:
     def test_mining_overview_200(self):
@@ -294,6 +300,7 @@ class TestExportRoutesEndpoint:
 # Transport corridors
 # ===========================================================================
 
+
 class TestTransportCorridorsEndpoint:
     def test_corridors_200(self):
         resp = client.get("/api/trade-corridors/sadc")
@@ -312,6 +319,7 @@ class TestTransportCorridorsEndpoint:
 # ===========================================================================
 # Cross-regional analysis
 # ===========================================================================
+
 
 class TestCrossRegionalAnalysis:
     def test_sadc_vs_eac_200(self):
@@ -336,6 +344,7 @@ class TestCrossRegionalAnalysis:
 # ===========================================================================
 # Investment recommendation endpoint
 # ===========================================================================
+
 
 class TestInvestmentRecommendationEndpoint:
     def test_investment_recommendation_200(self):
@@ -365,6 +374,7 @@ class TestInvestmentRecommendationEndpoint:
 # ===========================================================================
 # Trade protocols
 # ===========================================================================
+
 
 class TestTradeProtocolsEndpoint:
     def test_protocols_200(self):

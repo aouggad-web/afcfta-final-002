@@ -1,6 +1,7 @@
-import time
 import logging
+import time
 from collections import defaultdict
+
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
@@ -57,9 +58,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         client_ip = self._get_client_ip(request)
         bucket_key = f"{client_ip}:{path.split('/')[2] if len(path.split('/')) > 2 else 'root'}"
 
-        self._buckets[bucket_key] = [
-            t for t in self._buckets[bucket_key] if t > now - 60
-        ]
+        self._buckets[bucket_key] = [t for t in self._buckets[bucket_key] if t > now - 60]
 
         if len(self._buckets[bucket_key]) >= self.requests_per_minute:
             retry_after = int(60 - (now - self._buckets[bucket_key][0]))

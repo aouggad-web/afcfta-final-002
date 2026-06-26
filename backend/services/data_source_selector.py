@@ -10,9 +10,9 @@ Priority order:
 2. WTO - Tariff-focused, annual updates
 """
 
-from typing import Dict, Optional, List
-from datetime import datetime
 import logging
+from datetime import datetime
+from typing import Dict, List, Optional
 
 from .wto_service import wto_service
 
@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 # Try to import OEC service if available
 try:
     from .oec_trade_service import OECTradeService
+
     oec_service = OECTradeService()
     HAS_OEC = True
 except ImportError:
@@ -40,14 +41,11 @@ class DataSourceSelector:
         self.oec = oec_service if HAS_OEC else None
         self._source_status = {
             "OEC": {"available": HAS_OEC, "last_check": None, "error_count": 0},
-            "WTO": {"available": True, "last_check": None, "error_count": 0}
+            "WTO": {"available": True, "last_check": None, "error_count": 0},
         }
 
     def get_latest_trade_data(
-        self,
-        reporter: str,
-        partner: str,
-        hs_code: Optional[str] = None
+        self, reporter: str, partner: str, hs_code: Optional[str] = None
     ) -> Dict:
         """
         Get the latest available trade data from the best source
@@ -72,7 +70,7 @@ class DataSourceSelector:
             "data": None,
             "source_used": None,
             "data_period": None,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
         # Try OEC first if available
@@ -80,10 +78,9 @@ class DataSourceSelector:
             try:
                 oec_data = self._get_oec_data(reporter, partner, hs_code)
 
-                results["sources_checked"].append({
-                    "source": "OEC",
-                    "status": "success" if oec_data else "no_data"
-                })
+                results["sources_checked"].append(
+                    {"source": "OEC", "status": "success" if oec_data else "no_data"}
+                )
 
                 if oec_data:
                     results["data"] = oec_data
@@ -95,22 +92,22 @@ class DataSourceSelector:
             except Exception as e:
                 logger.error(f"OEC error: {str(e)}")
                 self._update_source_status("OEC", success=False)
-                results["sources_checked"].append({
-                    "source": "OEC",
-                    "status": "error",
-                    "error": str(e)
-                })
+                results["sources_checked"].append(
+                    {"source": "OEC", "status": "error", "error": str(e)}
+                )
 
         # Fallback to WTO (mainly for tariff data)
         if self._source_status["WTO"]["available"]:
             try:
                 wto_data = self.wto.get_tariff_data(reporter, partner, hs_code)
 
-                results["sources_checked"].append({
-                    "source": "WTO",
-                    "status": "success" if wto_data else "no_data",
-                    "period": wto_data.get("latest_period") if wto_data else None
-                })
+                results["sources_checked"].append(
+                    {
+                        "source": "WTO",
+                        "status": "success" if wto_data else "no_data",
+                        "period": wto_data.get("latest_period") if wto_data else None,
+                    }
+                )
 
                 if wto_data and wto_data.get("data"):
                     results["data"] = wto_data["data"]
@@ -122,19 +119,14 @@ class DataSourceSelector:
             except Exception as e:
                 logger.error(f"WTO error: {str(e)}")
                 self._update_source_status("WTO", success=False)
-                results["sources_checked"].append({
-                    "source": "WTO",
-                    "status": "error",
-                    "error": str(e)
-                })
+                results["sources_checked"].append(
+                    {"source": "WTO", "status": "error", "error": str(e)}
+                )
 
         return results
 
     def get_trade_with_source_info(
-        self,
-        reporter: str,
-        partner: str = None,
-        hs_code: Optional[str] = None
+        self, reporter: str, partner: str = None, hs_code: Optional[str] = None
     ) -> Dict:
         """
         Get trade data with detailed source information
@@ -147,7 +139,7 @@ class DataSourceSelector:
             "source": result.get("source_used"),
             "freshness": self._get_freshness_label(result.get("data_period")),
             "reliability": self._get_source_reliability(result.get("source_used")),
-            "coverage": "partial" if hs_code else "comprehensive"
+            "coverage": "partial" if hs_code else "comprehensive",
         }
 
         return result
@@ -171,13 +163,10 @@ class DataSourceSelector:
         return {
             "sources": self._source_status,
             "recommended": self._get_recommended_source(),
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
-    def compare_data_sources(
-        self,
-        country_codes: List[str]
-    ) -> Dict:
+    def compare_data_sources(self, country_codes: List[str]) -> Dict:
         """
         Compare all data sources to determine which has the latest data
 
@@ -187,7 +176,7 @@ class DataSourceSelector:
         comparison = {
             "timestamp": datetime.utcnow().isoformat(),
             "countries_checked": country_codes,
-            "sources": {}
+            "sources": {},
         }
 
         for country in country_codes[:5]:  # Check first 5 to avoid rate limits
@@ -196,10 +185,9 @@ class DataSourceSelector:
                 wto_period = self.wto.get_latest_available_year(country)
                 if "WTO" not in comparison["sources"]:
                     comparison["sources"]["WTO"] = []
-                comparison["sources"]["WTO"].append({
-                    "country": country,
-                    "latest_period": wto_period
-                })
+                comparison["sources"]["WTO"].append(
+                    {"country": country, "latest_period": wto_period}
+                )
             except Exception as e:
                 logger.error(f"Error checking WTO for {country}: {str(e)}")
 
@@ -224,11 +212,7 @@ class DataSourceSelector:
         try:
             exports = self.oec.get_country_exports(reporter, 2022, limit=50)
             if exports:
-                return {
-                    "type": "exports",
-                    "data": exports,
-                    "source": "OEC"
-                }
+                return {"type": "exports", "data": exports, "source": "OEC"}
         except Exception as e:
             logger.warning(f"OEC data fetch failed: {e}")
 
@@ -267,10 +251,7 @@ class DataSourceSelector:
 
     def _get_source_reliability(self, source: str) -> str:
         """Get reliability rating for a source"""
-        reliability = {
-            "OEC": "high",
-            "WTO": "high"
-        }
+        reliability = {"OEC": "high", "WTO": "high"}
         return reliability.get(source, "unknown")
 
     def _get_recommended_source(self) -> str:
@@ -283,4 +264,3 @@ class DataSourceSelector:
 
 # Global selector instance
 data_source_selector = DataSourceSelector()
-

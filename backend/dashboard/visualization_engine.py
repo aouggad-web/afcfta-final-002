@@ -29,12 +29,12 @@ class VisualizationEngine:
     # Colour palette for regional blocs
     BLOC_COLORS: Dict[str, str] = {
         "ECOWAS": "#F59E0B",
-        "CEMAC":  "#EF4444",
-        "EAC":    "#10B981",
-        "SADC":   "#3B82F6",
-        "UMA":    "#8B5CF6",
+        "CEMAC": "#EF4444",
+        "EAC": "#10B981",
+        "SADC": "#3B82F6",
+        "UMA": "#8B5CF6",
         "COMESA": "#EC4899",
-        "IGAD":   "#6366F1",
+        "IGAD": "#6366F1",
     }
 
     def radar_chart_data(
@@ -48,9 +48,10 @@ class VisualizationEngine:
                     incentives, market_potential, cost_competitiveness
         """
         from intelligence.ai_engine.investment_scoring import (
-            get_intelligence_engine,
             SCORING_ALGORITHM,
+            get_intelligence_engine,
         )
+
         engine = get_intelligence_engine()
         dimensions = list(SCORING_ALGORITHM.keys())
         labels = [d.replace("_", " ").title() for d in dimensions]
@@ -60,14 +61,16 @@ class VisualizationEngine:
             score = engine.calculate_investment_score(country, sector)
             values = [c.raw_score for c in score.component_scores]
             color = self._country_color(country)
-            datasets.append({
-                "label": country,
-                "data": [round(v * 100, 1) for v in values],
-                "backgroundColor": color + "33",
-                "borderColor": color,
-                "pointBackgroundColor": color,
-                "borderWidth": 2,
-            })
+            datasets.append(
+                {
+                    "label": country,
+                    "data": [round(v * 100, 1) for v in values],
+                    "backgroundColor": color + "33",
+                    "borderColor": color,
+                    "pointBackgroundColor": color,
+                    "borderWidth": 2,
+                }
+            )
 
         return {
             "type": "radar",
@@ -96,9 +99,10 @@ class VisualizationEngine:
     ) -> Dict[str, Any]:
         """Build a Chart.js bar dataset for regional bloc comparison."""
         from intelligence.analytics.regional_analytics import (
-            get_regional_analytics,
             REGIONAL_BENCHMARKS,
+            get_regional_analytics,
         )
+
         analytics = get_regional_analytics()
         if blocs is None:
             blocs = analytics.get_all_blocs()
@@ -119,17 +123,17 @@ class VisualizationEngine:
             "type": "bar",
             "data": {
                 "labels": labels,
-                "datasets": [{
-                    "label": metric_label,
-                    "data": values,
-                    "backgroundColor": colors,
-                    "borderRadius": 6,
-                }],
+                "datasets": [
+                    {
+                        "label": metric_label,
+                        "data": values,
+                        "backgroundColor": colors,
+                        "borderRadius": 6,
+                    }
+                ],
             },
             "options": {
-                "plugins": {
-                    "title": {"display": True, "text": f"Regional {metric_label}"}
-                },
+                "plugins": {"title": {"display": True, "text": f"Regional {metric_label}"}},
                 "scales": {"y": {"beginAtZero": True}},
             },
         }
@@ -140,32 +144,35 @@ class VisualizationEngine:
         Returns a structure suitable for choropleth / tile-based heatmaps.
         """
         from intelligence.ai_engine.investment_scoring import (
-            get_intelligence_engine,
             COUNTRY_INDICATORS,
+            get_intelligence_engine,
         )
+
         engine = get_intelligence_engine()
         heatmap = []
         for country in COUNTRY_INDICATORS:
             score = engine.calculate_investment_score(country)
-            heatmap.append({
-                "country": country,
-                "score": score.overall_score,
-                "grade": score.grade,
-                "color": self._score_color(score.overall_score),
-                "tooltip": (
-                    f"{country}: {score.overall_score:.0%} ({score.grade}) — "
-                    f"{score.recommendation_strength.replace('_', ' ')}"
-                ),
-            })
+            heatmap.append(
+                {
+                    "country": country,
+                    "score": score.overall_score,
+                    "grade": score.grade,
+                    "color": self._score_color(score.overall_score),
+                    "tooltip": (
+                        f"{country}: {score.overall_score:.0%} ({score.grade}) — "
+                        f"{score.recommendation_strength.replace('_', ' ')}"
+                    ),
+                }
+            )
         heatmap.sort(key=lambda x: x["score"], reverse=True)
         return {
             "type": "heatmap",
             "entries": heatmap,
             "legend": [
                 {"label": "Excellent (80%+)", "color": "#10B981"},
-                {"label": "Good (64-80%)",    "color": "#3B82F6"},
-                {"label": "Fair (50-64%)",    "color": "#F59E0B"},
-                {"label": "Poor (<50%)",      "color": "#EF4444"},
+                {"label": "Good (64-80%)", "color": "#3B82F6"},
+                {"label": "Fair (50-64%)", "color": "#F59E0B"},
+                {"label": "Poor (<50%)", "color": "#EF4444"},
             ],
         }
 
@@ -175,6 +182,7 @@ class VisualizationEngine:
         Compatible with Chart.js sankey plugin or D3.
         """
         from intelligence.analytics.regional_analytics import get_regional_analytics
+
         corridors = get_regional_analytics().get_trade_corridor_analysis()
 
         nodes: Dict[str, int] = {}
@@ -185,12 +193,14 @@ class VisualizationEngine:
                 if bloc not in nodes:
                     nodes[bloc] = len(nodes)
 
-            links.append({
-                "source": nodes[corridor["origin"]],
-                "target": nodes[corridor["destination"]],
-                "value": corridor.get("trade_value_bn", 1),
-                "label": ", ".join(corridor.get("key_products", [])[:2]),
-            })
+            links.append(
+                {
+                    "source": nodes[corridor["origin"]],
+                    "target": nodes[corridor["destination"]],
+                    "value": corridor.get("trade_value_bn", 1),
+                    "label": ", ".join(corridor.get("key_products", [])[:2]),
+                }
+            )
 
         return {
             "type": "sankey",
@@ -209,21 +219,25 @@ class VisualizationEngine:
         In production this queries the time-series database.
         """
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         current_score = engine.calculate_investment_score(country).overall_score
 
         # Simulate historical data with slight variation
         import random
+
         random.seed(hash(country + metric))
         current_year = 2024
         history = []
         for i in range(years, 0, -1):
             year = current_year - i
             variation = random.uniform(-0.05, 0.05)
-            history.append({
-                "year": year,
-                "value": round(max(0, min(1, current_score + variation - 0.01 * i)) * 100, 1),
-            })
+            history.append(
+                {
+                    "year": year,
+                    "value": round(max(0, min(1, current_score + variation - 0.01 * i)) * 100, 1),
+                }
+            )
         history.append({"year": current_year, "value": round(current_score * 100, 1)})
 
         labels = [str(h["year"]) for h in history]
@@ -234,14 +248,16 @@ class VisualizationEngine:
             "type": "line",
             "data": {
                 "labels": labels,
-                "datasets": [{
-                    "label": f"{country} – {metric.replace('_', ' ').title()}",
-                    "data": values,
-                    "borderColor": color,
-                    "backgroundColor": color + "22",
-                    "fill": True,
-                    "tension": 0.4,
-                }],
+                "datasets": [
+                    {
+                        "label": f"{country} – {metric.replace('_', ' ').title()}",
+                        "data": values,
+                        "borderColor": color,
+                        "backgroundColor": color + "22",
+                        "fill": True,
+                        "tension": 0.4,
+                    }
+                ],
             },
             "options": {
                 "scales": {"y": {"min": 0, "max": 100, "title": {"display": True, "text": "%"}}},
@@ -266,8 +282,14 @@ class VisualizationEngine:
     @staticmethod
     def _country_color(country: str) -> str:
         palette = [
-            "#3B82F6", "#10B981", "#F59E0B", "#EF4444",
-            "#8B5CF6", "#EC4899", "#6366F1", "#14B8A6",
+            "#3B82F6",
+            "#10B981",
+            "#F59E0B",
+            "#EF4444",
+            "#8B5CF6",
+            "#EC4899",
+            "#6366F1",
+            "#14B8A6",
         ]
         return palette[hash(country) % len(palette)]
 

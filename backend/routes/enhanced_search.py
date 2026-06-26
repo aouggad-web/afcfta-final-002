@@ -11,10 +11,9 @@ import logging
 import unicodedata
 from typing import Dict, List
 
-from fastapi import APIRouter, Query
-
 from etl.hs6_database import HS6_DATABASE
 from etl.hs_codes_data import get_hs_chapters
+from fastapi import APIRouter, Query
 
 logger = logging.getLogger(__name__)
 
@@ -23,12 +22,11 @@ router = APIRouter(prefix="/enhanced-search", tags=["Enhanced Search"])
 
 # ==================== Normalisation helpers ====================
 
+
 def _normalize(text: str) -> str:
     """Lower-case and strip Unicode combining marks (accents)."""
     return "".join(
-        c
-        for c in unicodedata.normalize("NFD", text.lower())
-        if unicodedata.category(c) != "Mn"
+        c for c in unicodedata.normalize("NFD", text.lower()) if unicodedata.category(c) != "Mn"
     )
 
 
@@ -107,6 +105,7 @@ def _get_synonyms(query_norm: str) -> List[str]:
 
 # ==================== Search strategies ====================
 
+
 def _build_entry(code: str, data: dict, language: str, chapters: dict, match_type: str) -> dict:
     desc_key = f"description_{language}"
     chapter = code[:2]
@@ -135,7 +134,9 @@ def _exact_matches(query_norm: str, language: str, chapters: dict, limit: int) -
     return results
 
 
-def _fuzzy_matches(query_norm: str, language: str, chapters: dict, limit: int, exact_codes: set) -> List[dict]:
+def _fuzzy_matches(
+    query_norm: str, language: str, chapters: dict, limit: int, exact_codes: set
+) -> List[dict]:
     """Entries whose description contains the query as a substring (not already exact)."""
     results = []
     for code, data in HS6_DATABASE.items():
@@ -180,6 +181,7 @@ def _semantic_matches(
 
 # ==================== Endpoints ====================
 
+
 @router.get("/hs-codes")
 async def enhanced_hs_code_search(
     q: str = Query(..., min_length=2, description="Search query (product name or HS code)"),
@@ -220,6 +222,8 @@ async def enhanced_hs_code_search(
         "semantic_matches": semantic,
         "total_results": len(exact) + len(fuzzy) + len(semantic),
     }
+
+
 """
 AfCFTA Platform - Enhanced Search API Routes
 Intelligent HS code search and advanced investment opportunity filtering.
@@ -240,6 +244,7 @@ router = APIRouter(prefix="/enhanced-search", tags=["Enhanced Search & Filtering
 # Request Models
 # ---------------------------------------------------------------------------
 
+
 class InvestmentSearchRequest(BaseModel):
     countries: Optional[List[str]] = None
     regions: Optional[List[str]] = None
@@ -256,14 +261,17 @@ class InvestmentSearchRequest(BaseModel):
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _search_engine():
     from search.enhanced_search import get_search_engine
+
     return get_search_engine()
 
 
 # ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
+
 
 @router.get("/hs-codes")
 async def search_hs_codes(
@@ -345,24 +353,32 @@ async def autocomplete(
         engine = _search_engine()
         hs_results = engine.intelligent_hs_search(q)
         for match in (
-            hs_results.get("exact_matches", [])[:3]
-            + hs_results.get("semantic_matches", [])[:3]
+            hs_results.get("exact_matches", [])[:3] + hs_results.get("semantic_matches", [])[:3]
         ):
-            suggestions.append({
-                "type": "hs_code",
-                "value": match.get("hs_code", ""),
-                "label": match.get("description") or match.get("description_en", ""),
-            })
+            suggestions.append(
+                {
+                    "type": "hs_code",
+                    "value": match.get("hs_code", ""),
+                    "label": match.get("description") or match.get("description_en", ""),
+                }
+            )
 
     if type in ("all", "sector"):
         sectors = [
-            "agriculture", "manufacturing", "ict", "energy",
-            "finance", "tourism", "logistics", "mining", "textiles", "automotive",
+            "agriculture",
+            "manufacturing",
+            "ict",
+            "energy",
+            "finance",
+            "tourism",
+            "logistics",
+            "mining",
+            "textiles",
+            "automotive",
         ]
         q_lower = q.lower()
         suggestions += [
-            {"type": "sector", "value": s, "label": s.title()}
-            for s in sectors if q_lower in s
+            {"type": "sector", "value": s, "label": s.title()} for s in sectors if q_lower in s
         ]
 
     return {"query": q, "suggestions": suggestions[:limit]}
@@ -371,8 +387,8 @@ async def autocomplete(
 @router.get("/filters/options")
 async def get_filter_options():
     """Return all available filter options for the search UI."""
-    from intelligence.analytics.regional_analytics import REGIONAL_BLOCS
     from intelligence.ai_engine.investment_scoring import COUNTRY_INDICATORS
+    from intelligence.analytics.regional_analytics import REGIONAL_BLOCS
 
     return {
         "geographic_filters": {
@@ -383,8 +399,16 @@ async def get_filter_options():
             "investment_sizes": ["sme", "medium", "large"],
             "risk_tolerances": ["low", "medium", "high"],
             "sectors": [
-                "agriculture", "manufacturing", "ict", "energy",
-                "finance", "tourism", "logistics", "mining", "textiles", "automotive",
+                "agriculture",
+                "manufacturing",
+                "ict",
+                "energy",
+                "finance",
+                "tourism",
+                "logistics",
+                "mining",
+                "textiles",
+                "automotive",
             ],
         },
         "score_range": {"min": 0.0, "max": 1.0, "step": 0.05},

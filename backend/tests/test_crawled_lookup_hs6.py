@@ -14,7 +14,6 @@ Guards against two bugs found in the authentic-data path:
 """
 
 import pytest
-
 from services.crawled_data_service import crawled_service
 
 # Countries with genuine national crawled tariff data.
@@ -64,6 +63,6 @@ def test_egy_taxes_are_parsed():
     sample_hs6 = next(iter(hs6_index.keys()))
     result = crawled_service.lookup("EGY", sample_hs6)
     assert result["taxes"], "EGY position has no taxes parsed"
-    assert any(t["code"] == "DD" for t in result["taxes"]), (
-        "EGY position is missing the Droit de Douane (DD) line"
-    )
+    assert any(
+        t["code"] == "DD" for t in result["taxes"]
+    ), "EGY position is missing the Droit de Douane (DD) line"

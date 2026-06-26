@@ -1,5 +1,6 @@
 import re
 import warnings
+
 import camelot
 import pandas as pd
 
@@ -9,15 +10,36 @@ PCT_RE = re.compile(r"(\d+(?:\.\d+)?)\s*%")
 
 # Whitelist of common units
 UNIT_OK = {
-    "kg","g","l","hl","m","m2","m3","no","nos","u","unit","pair","prs","pc","pcs","set","doz","ton","t"
+    "kg",
+    "g",
+    "l",
+    "hl",
+    "m",
+    "m2",
+    "m3",
+    "no",
+    "nos",
+    "u",
+    "unit",
+    "pair",
+    "prs",
+    "pc",
+    "pcs",
+    "set",
+    "doz",
+    "ton",
+    "t",
 }
+
 
 def _clean(x: str) -> str:
     return str(x).replace("\n", " ").replace("\r", " ").strip()
 
+
 def _to_hs(code: str) -> str:
     c = _clean(code).replace(".", "")
     return c if c.isdigit() else ""
+
 
 def _find_rate_pct(cells) -> float:
     for v in cells:
@@ -25,6 +47,7 @@ def _find_rate_pct(cells) -> float:
         if m:
             return float(m.group(1))
     return None
+
 
 def _find_unit(cells) -> str:
     for v in cells:
@@ -36,6 +59,7 @@ def _find_unit(cells) -> str:
             if u in UNIT_OK:
                 return u
     return ""
+
 
 def parse_pages(pdf_path: str, pages, flavor: str = "stream") -> pd.DataFrame:
     out = []
@@ -70,26 +94,28 @@ def parse_pages(pdf_path: str, pages, flavor: str = "stream") -> pd.DataFrame:
 
                 hs = _to_hs(c1) or _to_hs(c0)
                 row_desc = " ".join([_clean(c2), _clean(c3)]).strip()
-                
+
                 if hs and len(hs) >= 6:
                     # New HS code line
                     duty = _find_rate_pct(cells)
                     unit = _find_unit(cells)
-                    
-                    out.append({
-                        "hs_code": hs,
-                        "heading_ctx": current_heading,
-                        "description": row_desc,
-                        "unit": unit,
-                        "duty_rate_pct": duty,
-                        "page": int(p),
-                        "source_pdf": pdf_path
-                    })
+
+                    out.append(
+                        {
+                            "hs_code": hs,
+                            "heading_ctx": current_heading,
+                            "description": row_desc,
+                            "unit": unit,
+                            "duty_rate_pct": duty,
+                            "page": int(p),
+                            "source_pdf": pdf_path,
+                        }
+                    )
                 elif row_desc and out:
                     # Continuation of previous description
                     # Check if it's not just a rate or unit being misidentified as desc
                     if not _find_rate_pct(cells) and not _find_unit(cells):
-                         out[-1]["description"] = (out[-1]["description"] + " " + row_desc).strip()
+                        out[-1]["description"] = (out[-1]["description"] + " " + row_desc).strip()
 
     df_out = pd.DataFrame(out)
     if df_out.empty:
@@ -97,9 +123,12 @@ def parse_pages(pdf_path: str, pages, flavor: str = "stream") -> pd.DataFrame:
 
     # HS deduplication: keep the richest line (priority to present rate)
     df_out["has_rate"] = df_out["duty_rate_pct"].notna().astype(int)
-    df_out = df_out.sort_values(by=["hs_code","has_rate","page"]).drop_duplicates(subset=["hs_code"], keep="last")
+    df_out = df_out.sort_values(by=["hs_code", "has_rate", "page"]).drop_duplicates(
+        subset=["hs_code"], keep="last"
+    )
     df_out = df_out.drop(columns=["has_rate"])
     return df_out
+
 
 def run_to_csv(pdf_path: str, out_csv: str, pages, flavor: str = "stream") -> str:
     df = parse_pages(pdf_path, pages=pages, flavor=flavor)

@@ -15,7 +15,7 @@ INTÉGRITÉ DES DONNÉES:
 - "NA" utilisé uniquement si aucune estimation fiable possible
 """
 
-from typing import Dict, Any
+from typing import Any, Dict
 
 # =============================================================================
 # NIVEAUX DE FIABILITÉ DES SOURCES
@@ -26,92 +26,91 @@ SOURCE_RELIABILITY = {
         "label": "Officiel WCO",
         "description": "Étude Time Release Study officielle de l'Organisation Mondiale des Douanes",
         "warning": None,
-        "color": "green"
+        "color": "green",
     },
     "NATIONAL_TRS": {
         "level": 2,
         "label": "TRS National",
         "description": "Étude Time Release Study conduite par l'autorité douanière nationale",
         "warning": None,
-        "color": "blue"
+        "color": "blue",
     },
     "PORT_AUTHORITY": {
         "level": 2,
         "label": "Autorité Portuaire",
         "description": "Données officielles de l'autorité portuaire nationale",
         "warning": None,
-        "color": "blue"
+        "color": "blue",
     },
     "WORLD_BANK_LPI": {
         "level": 2,
         "label": "World Bank LPI",
         "description": "Logistics Performance Index - Données supply chain tracking",
         "warning": None,
-        "color": "blue"
+        "color": "blue",
     },
     "WORLD_BANK_CPPI": {
         "level": 2,
         "label": "World Bank CPPI",
         "description": "Container Port Performance Index - Banque Mondiale",
         "warning": None,
-        "color": "blue"
+        "color": "blue",
     },
     "CORRIDOR_OBSERVATORY": {
         "level": 2,
         "label": "Observatoire Corridor",
         "description": "Données d'observatoire régional de transport (ex: CCTTFA, NCTTCA)",
         "warning": None,
-        "color": "blue"
+        "color": "blue",
     },
     "INDUSTRY_REPORT": {
         "level": 3,
         "label": "Rapport Industriel",
         "description": "Rapport de source industrielle vérifiée (shipping lines, terminaux)",
         "warning": "⚠️ Source industrielle: Données de rapports professionnels. Non issues d'études officielles.",
-        "color": "yellow"
+        "color": "yellow",
     },
     "ACADEMIC_STUDY": {
         "level": 3,
         "label": "Étude Académique",
         "description": "Publication académique ou étude de recherche",
         "warning": "⚠️ Source académique: Données de recherche. Vérification indépendante recommandée.",
-        "color": "yellow"
+        "color": "yellow",
     },
     "MEDIA_REPORT": {
         "level": 4,
         "label": "Rapport Média",
         "description": "Données issues de reportages médiatiques ou articles de presse",
         "warning": "⚠️ Source média: Données journalistiques. Fiabilité variable, à utiliser avec précaution.",
-        "color": "orange"
+        "color": "orange",
     },
     "ESTIMATION_REGIONAL": {
         "level": 5,
         "label": "Estimation Régionale",
         "description": "Estimation basée sur données régionales et benchmarks comparatifs",
         "warning": "⚠️ ESTIMATION: Aucune donnée officielle disponible. Valeur estimée selon méthodologie ci-dessous.",
-        "color": "red"
+        "color": "red",
     },
     "ESTIMATION_MODEL": {
         "level": 5,
         "label": "Estimation Modélisée",
         "description": "Estimation basée sur modélisation et corrélations LPI/CPPI",
         "warning": "⚠️ ESTIMATION MODÉLISÉE: Basée sur corrélations statistiques. Non validée par mesure terrain.",
-        "color": "red"
+        "color": "red",
     },
     "NO_DATA": {
         "level": 99,
         "label": "NA",
         "description": "Aucune donnée disponible, estimation non fiable",
         "warning": None,
-        "color": "gray"
-    }
+        "color": "gray",
+    },
 }
 
 # =============================================================================
 # DONNÉES TRS PAR PORT - COMPLÈTES
 # =============================================================================
 TRS_OFFICIAL_DATA: Dict[str, Dict[str, Any]] = {
-    
     # =========================================================================
     # ALGÉRIE - DONNÉES LIMITÉES, ESTIMATIONS MÉTHODOLOGIQUES
     # =========================================================================
@@ -154,7 +153,7 @@ Aucune donnée TRS WCO n'existe pour ce port.
         "factual_data_points": [
             "Blocage 21-24 jours (juillet-août 2024)",
             "Temps attente navires: 5-7 jours",
-            "Q1 2024: 64,917 EVP (+16%)"
+            "Q1 2024: 64,917 EVP (+16%)",
         ],
         "vessel_waiting_days": "5-7",
         "vessel_waiting_source": "Kuehne+Nagel Operational Update, Avril 2025",
@@ -166,7 +165,7 @@ Aucune donnée TRS WCO n'existe pour ce port.
         "lpi_score": 2.4,
         "lpi_year": 2023,
         "warning": "⚠️ ESTIMATION: Aucune étude TRS officielle disponible pour ce port. Valeur estimée (15 jours) basée sur: incidents documentés (21-24j en juil.2024), temps d'attente navires (5-7j), et benchmarks régionaux. Méthodologie détaillée ci-dessous.",
-        "no_official_data_reason": "L'Algérie n'a pas conduit d'étude TRS WCO. Les autorités portuaires ne publient pas de statistiques de dwell time."
+        "no_official_data_reason": "L'Algérie n'a pas conduit d'étude TRS WCO. Les autorités portuaires ne publient pas de statistiques de dwell time.",
     },
     "DZA-ORA-001": {  # Oran
         "container_dwell_time_days": 12,
@@ -203,7 +202,7 @@ ATTENTION: Estimation sans validation terrain.
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Aucune donnée officielle. Estimation (12 jours) basée sur temps d'attente navires (3j) et comparaison avec Alger.",
-        "no_official_data_reason": "Aucune étude TRS publiée. Données EPAL non disponibles publiquement."
+        "no_official_data_reason": "Aucune étude TRS publiée. Données EPAL non disponibles publiquement.",
     },
     "DZA-BEJ-001": {  # Béjaïa
         "container_dwell_time_days": 13,
@@ -230,9 +229,8 @@ MÉTHODOLOGIE D'ESTIMATION - PORT DE BÉJAÏA:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Valeur estimée (13 jours) par analogie avec autres ports algériens.",
-        "no_official_data_reason": "Aucune donnée TRS ou statistique officielle publiée."
+        "no_official_data_reason": "Aucune donnée TRS ou statistique officielle publiée.",
     },
-    
     # =========================================================================
     # MAROC - DONNÉES PARTIELLES
     # =========================================================================
@@ -250,7 +248,7 @@ MÉTHODOLOGIE D'ESTIMATION - PORT DE BÉJAÏA:
         "cppi_year": 2023,
         "teu_throughput_2024": 10241392,
         "warning": "⚠️ Source industrielle (Beacon). Performance exceptionnelle pour hub de transbordement.",
-        "source_url": "https://www.beacon.com"
+        "source_url": "https://www.beacon.com",
     },
     "MAR-CAS-001": {  # Casablanca
         "container_dwell_time_days": 8.4,
@@ -264,7 +262,7 @@ MÉTHODOLOGIE D'ESTIMATION - PORT DE BÉJAÏA:
         "customs_clearance_hours": "NA",
         "cppi_rank": "NA",
         "cppi_year": "NA",
-        "warning": None
+        "warning": None,
     },
     "MAR-AGD-001": {  # Agadir
         "container_dwell_time_days": 9,
@@ -286,9 +284,8 @@ MÉTHODOLOGIE - PORT D'AGADIR:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Basée sur analogie avec Casablanca. Port spécialisé.",
-        "no_official_data_reason": "Pas de données TRS publiées. Port secondaire pour conteneurs."
+        "no_official_data_reason": "Pas de données TRS publiées. Port secondaire pour conteneurs.",
     },
-    
     # =========================================================================
     # TUNISIE - ESTIMATIONS
     # =========================================================================
@@ -325,7 +322,7 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "lpi_score": 2.4,
         "lpi_year": 2023,
         "warning": "⚠️ ESTIMATION MODÉLISÉE: Basée sur corrélation LPI-dwell time. Score LPI Tunisie: 2.4. Aucune étude TRS officielle.",
-        "no_official_data_reason": "Tunisie n'a pas publié d'étude TRS. OMMP ne publie pas de statistiques dwell time."
+        "no_official_data_reason": "Tunisie n'a pas publié d'étude TRS. OMMP ne publie pas de statistiques dwell time.",
     },
     "TUN-SFX-001": {  # Sfax
         "container_dwell_time_days": 11,
@@ -340,9 +337,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Port secondaire. Basée sur Radès (+1 jour).",
-        "no_official_data_reason": "Aucune donnée publiée."
+        "no_official_data_reason": "Aucune donnée publiée.",
     },
-    
     # =========================================================================
     # ÉGYPTE - DONNÉES TRS OFFICIELLES NATIONALES
     # =========================================================================
@@ -363,7 +359,7 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "source_url": "https://assets.mof.gov.eg/files/d06136d0-b7aa-11ef-9d21-798cef5fccf4.pdf",
-        "warning": None
+        "warning": None,
     },
     "EGY-DAM-001": {  # Damiette
         "container_dwell_time_days": 8.09,
@@ -378,7 +374,7 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "source_url": "https://assets.mof.gov.eg/files/d06136d0-b7aa-11ef-9d21-798cef5fccf4.pdf",
-        "warning": None
+        "warning": None,
     },
     "EGY-PSD-001": {  # Port Saïd
         "container_dwell_time_days": "NA",
@@ -393,9 +389,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": None,
-        "no_official_data_reason": "Hub de transbordement - dwell time import non pertinent."
+        "no_official_data_reason": "Hub de transbordement - dwell time import non pertinent.",
     },
-    
     # =========================================================================
     # LIBYE - DONNÉES LIMITÉES
     # =========================================================================
@@ -412,9 +407,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": None,
-        "no_official_data_reason": "Instabilité politique. Aucune statistique fiable disponible depuis 2011."
+        "no_official_data_reason": "Instabilité politique. Aucune statistique fiable disponible depuis 2011.",
     },
-    
     # =========================================================================
     # AFRIQUE DU SUD - DONNÉES OFFICIELLES
     # =========================================================================
@@ -431,7 +425,7 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "customs_clearance_hours": "NA",
         "cppi_rank": "NA",
         "cppi_year": 2023,
-        "warning": None
+        "warning": None,
     },
     "ZAF-CPT-001": {  # Cape Town
         "container_dwell_time_days": 5.3,
@@ -451,9 +445,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_rank": 405,
         "cppi_improvement_points": 237.9,
         "cppi_year": 2024,
-        "warning": "⚠️ Donnée nationale LPI appliquée au port. Dwell time spécifique Cape Town non publié."
+        "warning": "⚠️ Donnée nationale LPI appliquée au port. Dwell time spécifique Cape Town non publié.",
     },
-    
     # =========================================================================
     # NAMIBIE - DONNÉES WCO OFFICIELLES
     # =========================================================================
@@ -472,9 +465,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": None,
-        "no_official_data_reason": "Étude TRS WCO conduite mais temps total non publié de manière synthétique."
+        "no_official_data_reason": "Étude TRS WCO conduite mais temps total non publié de manière synthétique.",
     },
-    
     # =========================================================================
     # KENYA - DONNÉES OFFICIELLES KPA
     # =========================================================================
@@ -493,9 +485,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "best_performance_date": "2024-04",
         "cppi_rank": 335,
         "cppi_year": 2023,
-        "warning": None
+        "warning": None,
     },
-    
     # =========================================================================
     # TANZANIE - DONNÉES OBSERVATOIRE CORRIDOR
     # =========================================================================
@@ -517,9 +508,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "source_url": "https://www.tasac.go.tz/uploads/documents/sw-1712132995-TASAC%20ANNUAL%20STATISTICAL%20BULLETIN%202023.pdf",
-        "warning": None
+        "warning": None,
     },
-    
     # =========================================================================
     # NIGÉRIA - DONNÉES MULTIPLES
     # =========================================================================
@@ -540,7 +530,7 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "customs_clearance_hours": "NA",
         "cppi_rank": "NA",
         "cppi_year": "NA",
-        "warning": None
+        "warning": None,
     },
     "NGA-TIN-001": {  # Tin Can Island
         "container_dwell_time_days": "NA",
@@ -555,7 +545,7 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "wco_trs_in_progress": True,
         "cppi_rank": "NA",
         "cppi_year": "NA",
-        "warning": None
+        "warning": None,
     },
     "NGA-LEK-001": {  # Lekki Deep Sea Port
         "container_dwell_time_days": 16,
@@ -573,9 +563,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_year": "NA",
         "teu_throughput_2024": 54000,
         "teu_projection_2025": 500000,
-        "warning": "⚠️ Port nouveau (2023). Performance en évolution rapide."
+        "warning": "⚠️ Port nouveau (2023). Performance en évolution rapide.",
     },
-    
     # =========================================================================
     # CÔTE D'IVOIRE - DONNÉES PAA
     # =========================================================================
@@ -596,9 +585,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "source_url": "https://www.portabidjan.ci/sites/default/files/paa_infos_magazine_ndeg112_-_juillet_et_aout_2023.pdf",
-        "warning": None
+        "warning": None,
     },
-    
     # =========================================================================
     # SÉNÉGAL
     # =========================================================================
@@ -617,9 +605,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_score_improvement": 104.7,
         "cppi_year": 2024,
         "monthly_throughput_teu_2024": 77680,
-        "warning": "⚠️ Donnée 2018. Performance CPPI 2024 (#1 SSA) suggère amélioration significative."
+        "warning": "⚠️ Donnée 2018. Performance CPPI 2024 (#1 SSA) suggère amélioration significative.",
     },
-    
     # =========================================================================
     # GHANA
     # =========================================================================
@@ -637,9 +624,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_year": "NA",
         "teu_throughput_2024": 1668688,
         "percent_ghana_traffic": 95,
-        "warning": "⚠️ Fourchette indicative (6-12 jours). Non issue d'étude TRS officielle."
+        "warning": "⚠️ Fourchette indicative (6-12 jours). Non issue d'étude TRS officielle.",
     },
-    
     # =========================================================================
     # TOGO - DONNÉES RÉCENTES
     # =========================================================================
@@ -658,9 +644,8 @@ MÉTHODOLOGIE - PORT DE RADÈS:
         "cppi_year": "NA",
         "teu_throughput_annual": 2000000,
         "source_url": "https://www.ecofinagency.com/news/1509-48695-lome-port-helps-togo-overtaking-south-africa-as-nigeria-s-main-african-trade-gateway-on-q2",
-        "warning": "⚠️ Source industrielle (Ecofinagency 2025). Performance exceptionnelle pour hub transbordement."
+        "warning": "⚠️ Source industrielle (Ecofinagency 2025). Performance exceptionnelle pour hub transbordement.",
     },
-    
     # =========================================================================
     # BÉNIN
     # =========================================================================
@@ -695,9 +680,8 @@ MÉTHODOLOGIE - PORT DE COTONOU:
         "cppi_improvement_points": 226.7,
         "cppi_year": 2024,
         "warning": "⚠️ ESTIMATION: Basée sur amélioration CPPI significative et benchmarks régionaux.",
-        "no_official_data_reason": "Aucune étude TRS publiée."
+        "no_official_data_reason": "Aucune étude TRS publiée.",
     },
-    
     # =========================================================================
     # CAMEROUN
     # =========================================================================
@@ -732,7 +716,7 @@ MÉTHODOLOGIE - PORT DE DOUALA:
         "cppi_year": "NA",
         "lsci_improvement_2024_percent": 54,
         "warning": "⚠️ ESTIMATION: Basée sur free time (10j) × facteur 1.2. Amélioration LSCI +54%.",
-        "no_official_data_reason": "PAD ne publie pas de statistiques dwell time."
+        "no_official_data_reason": "PAD ne publie pas de statistiques dwell time.",
     },
     "CMR-KRI-001": {  # Kribi
         "container_dwell_time_days": 8,
@@ -747,9 +731,8 @@ MÉTHODOLOGIE - PORT DE DOUALA:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Port moderne, performance attendue meilleure que Douala.",
-        "no_official_data_reason": "Port récent, peu de données publiées."
+        "no_official_data_reason": "Port récent, peu de données publiées.",
     },
-    
     # =========================================================================
     # DJIBOUTI
     # =========================================================================
@@ -787,9 +770,8 @@ MÉTHODOLOGIE - PORT DE DJIBOUTI:
         "cppi_2022_rank": 26,
         "cppi_year": 2023,
         "warning": "⚠️ ESTIMATION: Basée sur efficacité opérationnelle. Rang CPPI controversé.",
-        "no_official_data_reason": "DPFZA ne publie pas de dwell time cargo. Controverse CPPI 2023."
+        "no_official_data_reason": "DPFZA ne publie pas de dwell time cargo. Controverse CPPI 2023.",
     },
-    
     # =========================================================================
     # GABON
     # =========================================================================
@@ -806,9 +788,8 @@ MÉTHODOLOGIE - PORT DE DJIBOUTI:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Moyenne régionale. Aucune donnée spécifique.",
-        "no_official_data_reason": "GPM ne publie pas de statistiques."
+        "no_official_data_reason": "GPM ne publie pas de statistiques.",
     },
-    
     # =========================================================================
     # CONGO
     # =========================================================================
@@ -826,9 +807,8 @@ MÉTHODOLOGIE - PORT DE DJIBOUTI:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Basée sur temps attente navires et contexte régional.",
-        "no_official_data_reason": "PAPN ne publie pas de statistiques dwell."
+        "no_official_data_reason": "PAPN ne publie pas de statistiques dwell.",
     },
-    
     # =========================================================================
     # ANGOLA
     # =========================================================================
@@ -845,9 +825,8 @@ MÉTHODOLOGIE - PORT DE DJIBOUTI:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Contexte économique et congestion historique.",
-        "no_official_data_reason": "Entreprise Portuária de Luanda ne publie pas de données."
+        "no_official_data_reason": "Entreprise Portuária de Luanda ne publie pas de données.",
     },
-    
     # =========================================================================
     # MOZAMBIQUE
     # =========================================================================
@@ -865,9 +844,8 @@ MÉTHODOLOGIE - PORT DE DJIBOUTI:
         "cppi_year": 2023,
         "expansion_target_teu": 530000,
         "warning": "⚠️ ESTIMATION: Basée sur rang CPPI et benchmarks régionaux.",
-        "no_official_data_reason": "MPDC ne publie pas de dwell time."
+        "no_official_data_reason": "MPDC ne publie pas de dwell time.",
     },
-    
     # =========================================================================
     # MAURICE
     # =========================================================================
@@ -884,9 +862,8 @@ MÉTHODOLOGIE - PORT DE DJIBOUTI:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Hub freeport, efficacité attendue élevée.",
-        "no_official_data_reason": "MPA ne publie pas de statistiques dwell."
+        "no_official_data_reason": "MPA ne publie pas de statistiques dwell.",
     },
-    
     # =========================================================================
     # MADAGASCAR
     # =========================================================================
@@ -903,7 +880,7 @@ MÉTHODOLOGIE - PORT DE DJIBOUTI:
         "cppi_rank": "NA",
         "cppi_year": "NA",
         "warning": "⚠️ ESTIMATION: Moyenne régionale appliquée.",
-        "no_official_data_reason": "SPAT ne publie pas de statistiques."
+        "no_official_data_reason": "SPAT ne publie pas de statistiques.",
     },
 }
 
@@ -912,26 +889,35 @@ MÉTHODOLOGIE - PORT DE DJIBOUTI:
 # =============================================================================
 LPI_2023_DATA = {
     "ZAF": {
-        "overall": 3.7, "customs": 3.3, "timeliness": 3.8, "rank": 19,
-        "import_dwell_mean": 5.3, "import_dwell_median": 3.7, "observations": 41097
+        "overall": 3.7,
+        "customs": 3.3,
+        "timeliness": 3.8,
+        "rank": 19,
+        "import_dwell_mean": 5.3,
+        "import_dwell_median": 3.7,
+        "observations": 41097,
     },
     "NGA": {
-        "overall": 2.6, "customs": 2.4, "timeliness": 3.1, "rank": 88,
-        "import_dwell_mean": 16.2, "import_dwell_median": 12.5, "observations": 26953
+        "overall": 2.6,
+        "customs": 2.4,
+        "timeliness": 3.1,
+        "rank": 88,
+        "import_dwell_mean": 16.2,
+        "import_dwell_median": 12.5,
+        "observations": 26953,
     },
     "TGO": {
-        "overall": 2.5, "customs": 2.2, "timeliness": 2.9, "rank": 105,
-        "import_dwell_mean": 8.1, "import_dwell_median": 4.6, "observations": 7118
+        "overall": 2.5,
+        "customs": 2.2,
+        "timeliness": 2.9,
+        "rank": 105,
+        "import_dwell_mean": 8.1,
+        "import_dwell_median": 4.6,
+        "observations": 7118,
     },
-    "SOM": {
-        "import_dwell_mean": 7.3, "import_dwell_median": 5.0, "observations": 3767
-    },
-    "NER": {
-        "import_dwell_mean": 16.6, "import_dwell_median": 15.3, "observations": 33
-    },
-    "ZWE": {
-        "import_dwell_mean": 12.8, "import_dwell_median": 11.8, "observations": 176
-    },
+    "SOM": {"import_dwell_mean": 7.3, "import_dwell_median": 5.0, "observations": 3767},
+    "NER": {"import_dwell_mean": 16.6, "import_dwell_median": 15.3, "observations": 33},
+    "ZWE": {"import_dwell_mean": 12.8, "import_dwell_median": 11.8, "observations": 176},
     "CIV": {"overall": 2.8, "customs": 2.4, "timeliness": 3.2, "rank": 79},
     "RWA": {"overall": 2.8, "customs": 2.5, "timeliness": 3.1, "rank": 73},
     "KEN": {"overall": 2.8, "customs": 2.6, "timeliness": 3.3, "rank": 68},
@@ -956,7 +942,7 @@ GLOBAL_BENCHMARKS = {
     "container_dwell_time_days_afdb_note": "Moyenne continentale indicative. Performance très variable selon les ports (2.7 à 20+ jours).",
     "container_handling_time_seconds_2023": 36,
     "global_benchmark_efficient_port_days": 4,
-    "source": "UNCTAD Review of Maritime Transport 2024 / African Development Bank / World Bank"
+    "source": "UNCTAD Review of Maritime Transport 2024 / African Development Bank / World Bank",
 }
 
 # =============================================================================
@@ -993,14 +979,17 @@ Pour les ports sans données:
 
 def get_trs_data(port_id: str) -> dict:
     """Récupère les données TRS pour un port."""
-    return TRS_OFFICIAL_DATA.get(port_id, {
-        "container_dwell_time_days": "NA",
-        "source": "NA",
-        "source_type": "NO_DATA",
-        "data_year": "NA",
-        "notes": "Aucune donnée TRS disponible pour ce port.",
-        "no_official_data_reason": "Port non répertorié dans la base de données."
-    })
+    return TRS_OFFICIAL_DATA.get(
+        port_id,
+        {
+            "container_dwell_time_days": "NA",
+            "source": "NA",
+            "source_type": "NO_DATA",
+            "data_year": "NA",
+            "notes": "Aucune donnée TRS disponible pour ce port.",
+            "no_official_data_reason": "Port non répertorié dans la base de données.",
+        },
+    )
 
 
 def get_source_reliability(source_type: str) -> dict:

@@ -15,16 +15,21 @@ cascade uniforme, et produit la ventilation complète sous les deux régimes :
 
 Module pur (aucune dépendance réseau/Mongo), donc entièrement testable.
 """
+
 from __future__ import annotations
 
 import re
-from typing import List, Dict, Any, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 
 # Codes/intitulés identifiant le droit de douane (le seul droit réduit par ZLECAf).
 DD_CODES = {"DD", "DI", "ID", "DDDROIT", "GENERAL", "DDDROIT"}
 DD_NAME_HINTS = (
-    "import duty", "customs duty", "droit de douane", "droit d'importation",
-    "cet import duty", "general customs",
+    "import duty",
+    "customs duty",
+    "droit de douane",
+    "droit d'importation",
+    "cet import duty",
+    "general customs",
 )
 # Codes/intitulés identifiant la TVA (impôt intérieur, inchangé par ZLECAf).
 VAT_CODES = {"TVA", "VAT", "TVA/APTAXE"}
@@ -50,8 +55,9 @@ def _strip_cap(base: str) -> str:
     return re.sub(r"\(.*?\)", "", base or "").strip()
 
 
-def _base_components(base_expr: Optional[str], category: str,
-                     dd_code: str, other_codes: List[str]) -> Set[str]:
+def _base_components(
+    base_expr: Optional[str], category: str, dd_code: str, other_codes: List[str]
+) -> Set[str]:
     """Résout l'expression de base en un ensemble de codes contribuant à l'assiette.
 
     Retourne les codes (hors CIF) à additionner à la valeur. Un ensemble vide
@@ -82,9 +88,13 @@ def _base_components(base_expr: Optional[str], category: str,
     return comps
 
 
-def _resolve_amounts(value: float, lines: List[Dict[str, Any]],
-                     dd_code: str, dd_rate_pct: float,
-                     caps: Optional[Dict[str, float]] = None) -> Dict[str, float]:
+def _resolve_amounts(
+    value: float,
+    lines: List[Dict[str, Any]],
+    dd_code: str,
+    dd_rate_pct: float,
+    caps: Optional[Dict[str, float]] = None,
+) -> Dict[str, float]:
     """Calcule le montant de chaque taxe en respectant les dépendances de base.
 
     `dd_rate_pct` permet d'imposer le taux du droit de douane (NPF ou ZLECAf) ;
@@ -134,8 +144,9 @@ def _resolve_amounts(value: float, lines: List[Dict[str, Any]],
     return amounts
 
 
-def _base_value_of(value: float, code: str, lines: List[Dict[str, Any]],
-                   amounts: Dict[str, float], dd_code: str) -> float:
+def _base_value_of(
+    value: float, code: str, lines: List[Dict[str, Any]], amounts: Dict[str, float], dd_code: str
+) -> float:
     cats = {l["code"]: classify(l) for l in lines}
     other_codes = [l["code"] for l in lines if cats[l["code"]] == "autre"]
     line = next(l for l in lines if l["code"] == code)
@@ -193,19 +204,22 @@ def compute_dual_breakdown(
     zlc_amounts = _resolve_amounts(value, norm_lines, dd_code, zlecaf_dd_rate_pct, caps)
 
     breakdown: List[Dict[str, Any]] = []
-    tot = {"npf": {"dd": 0.0, "tva": 0.0, "autre": 0.0},
-           "zlecaf": {"dd": 0.0, "tva": 0.0, "autre": 0.0}}
+    tot = {
+        "npf": {"dd": 0.0, "tva": 0.0, "autre": 0.0},
+        "zlecaf": {"dd": 0.0, "tva": 0.0, "autre": 0.0},
+    }
 
     for l in norm_lines:
         code = l["code"]
         cat = classify(l)
-        is_dd = (code == dd_code)
+        is_dd = code == dd_code
         rate = float(l.get("rate_pct") or 0.0)
         entry = {
             "code": code.split("#")[0],
             "name": l.get("name", code),
             "category": {"dd": "droit_douane", "tva": "tva", "autre": "autre_taxe"}[cat],
-            "base_expr": l.get("base") or ("CIF + droit + taxes (méthode nationale)" if cat == "tva" else "CIF"),
+            "base_expr": l.get("base")
+            or ("CIF + droit + taxes (méthode nationale)" if cat == "tva" else "CIF"),
             "rate_npf_pct": round(npf_dd_rate_pct if is_dd else rate, 4),
             "rate_zlecaf_pct": round(zlecaf_dd_rate_pct if is_dd else rate, 4),
             "base_value_npf": _base_value_of(value, code, norm_lines, npf_amounts, dd_code),
@@ -218,7 +232,9 @@ def compute_dual_breakdown(
         _cap = parse_cap(l.get("base"))
         if _cap:
             entry["cap"] = _cap  # plafond déclaré (montant + devise)
-            entry["capped_npf"] = (code in (caps or {})) and npf_amounts[code] >= (caps or {}).get(code, float("inf")) - 0.01
+            entry["capped_npf"] = (code in (caps or {})) and npf_amounts[code] >= (caps or {}).get(
+                code, float("inf")
+            ) - 0.01
         breakdown.append(entry)
         tot["npf"][cat] += npf_amounts[code]
         tot["zlecaf"][cat] += zlc_amounts[code]
@@ -259,11 +275,13 @@ def localize_breakdown(dual: Dict[str, Any], usd_to_local_rate: float) -> Dict[s
 
     breakdown_local = []
     for b in dual["breakdown"]:
-        breakdown_local.append({
-            **b,
-            "amount_npf_local": round(b["amount_npf"] * r, 2),
-            "amount_zlecaf_local": round(b["amount_zlecaf"] * r, 2),
-        })
+        breakdown_local.append(
+            {
+                **b,
+                "amount_npf_local": round(b["amount_npf"] * r, 2),
+                "amount_zlecaf_local": round(b["amount_zlecaf"] * r, 2),
+            }
+        )
 
     def _loc(summary: Dict[str, float]) -> Dict[str, float]:
         return {k: round(v * r, 2) for k, v in summary.items()}
@@ -280,18 +298,34 @@ def localize_breakdown(dual: Dict[str, Any], usd_to_local_rate: float) -> Dict[s
 
 # Mappage code de taxe -> clé de référence légale (pour les journaux).
 JOURNAL_LEGAL_KEY = {
-    "DD": "dd", "DI": "dd", "ID": "dd", "GENERAL": "dd", "DDDROIT": "dd",
-    "RS": "rs", "PCS": "pcs", "PCC": "cedeao", "PC": "cedeao", "PUA": "cedeao",
-    "TCI": "tci", "RI": "tci",
-    "TVA": "vat", "VAT": "vat",
-    "DAPS": "daps", "PRCT": "prct", "TCS": "tcs",
+    "DD": "dd",
+    "DI": "dd",
+    "ID": "dd",
+    "GENERAL": "dd",
+    "DDDROIT": "dd",
+    "RS": "rs",
+    "PCS": "pcs",
+    "PCC": "cedeao",
+    "PC": "cedeao",
+    "PUA": "cedeao",
+    "TCI": "tci",
+    "RI": "tci",
+    "TVA": "vat",
+    "VAT": "vat",
+    "DAPS": "daps",
+    "PRCT": "prct",
+    "TCS": "tcs",
 }
 
 _CATEGORY_ORDER = {"droit_douane": 0, "autre_taxe": 1, "tva": 2}
 
 
-def build_journal(value: float, breakdown: List[Dict[str, Any]], regime: str,
-                  legal_refs: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
+def build_journal(
+    value: float,
+    breakdown: List[Dict[str, Any]],
+    regime: str,
+    legal_refs: Dict[str, Dict[str, Any]],
+) -> List[Dict[str, Any]]:
     """Construit le journal de calcul (étapes) pour un régime à partir du détail.
 
     Cohérent avec compute_dual_breakdown : chaque étape porte la base RÉELLE de
@@ -303,12 +337,18 @@ def build_journal(value: float, breakdown: List[Dict[str, Any]], regime: str,
     rate_k = f"rate_{regime}_pct"
 
     ordered = sorted(breakdown, key=lambda b: _CATEGORY_ORDER.get(b["category"], 1))
-    journal = [{
-        "step": 1, "component": "Valeur CIF", "base": round(value, 2), "rate": "-",
-        "amount": round(value, 2), "cumulative": round(value, 2),
-        "legal_ref": legal_refs.get("cif", {}).get("ref", "Incoterms 2020 - CIF"),
-        "legal_ref_url": legal_refs.get("cif", {}).get("url"),
-    }]
+    journal = [
+        {
+            "step": 1,
+            "component": "Valeur CIF",
+            "base": round(value, 2),
+            "rate": "-",
+            "amount": round(value, 2),
+            "cumulative": round(value, 2),
+            "legal_ref": legal_refs.get("cif", {}).get("ref", "Incoterms 2020 - CIF"),
+            "legal_ref_url": legal_refs.get("cif", {}).get("url"),
+        }
+    ]
     running = value
     step = 2
     for b in ordered:
@@ -318,15 +358,17 @@ def build_journal(value: float, breakdown: List[Dict[str, Any]], regime: str,
         else:
             key = JOURNAL_LEGAL_KEY.get(str(b["code"]).upper())
             ref = legal_refs.get(key, {"ref": b.get("source", ""), "url": None})
-        journal.append({
-            "step": step,
-            "component": b["name"],
-            "base": b[base_k],
-            "rate": f"{b[rate_k]:.1f}%",
-            "amount": round(b[amt_k], 2),
-            "cumulative": round(running, 2),
-            "legal_ref": ref.get("ref", ""),
-            "legal_ref_url": ref.get("url"),
-        })
+        journal.append(
+            {
+                "step": step,
+                "component": b["name"],
+                "base": b[base_k],
+                "rate": f"{b[rate_k]:.1f}%",
+                "amount": round(b[amt_k], 2),
+                "cumulative": round(running, 2),
+                "legal_ref": ref.get("ref", ""),
+                "legal_ref_url": ref.get("url"),
+            }
+        )
         step += 1
     return journal

@@ -78,12 +78,8 @@ class RegionalCrawlJob:
 
     @property
     def summary(self) -> Dict[str, Any]:
-        succeeded = sum(
-            1 for s in self.country_statuses.values() if s.status == "completed"
-        )
-        failed = sum(
-            1 for s in self.country_statuses.values() if s.status == "failed"
-        )
+        succeeded = sum(1 for s in self.country_statuses.values() if s.status == "completed")
+        failed = sum(1 for s in self.country_statuses.values() if s.status == "failed")
         total_records = sum(s.records_scraped for s in self.country_statuses.values())
 
         return {
@@ -100,8 +96,7 @@ class RegionalCrawlJob:
             "duration_seconds": round(self.duration_seconds, 2) if self.duration_seconds else None,
             "error": self.error,
             "country_statuses": {
-                code: status.to_dict()
-                for code, status in self.country_statuses.items()
+                code: status.to_dict() for code, status in self.country_statuses.items()
             },
         }
 
@@ -128,8 +123,8 @@ class NorthAfricaOrchestrator:
     def _get_crawler(self, country_code: str, options: Dict) -> Any:
         """Instantiate the appropriate crawler for a country."""
         from .dza_tariff_connector import DZATariffConnector
-        from .mar_tariff_crawler import MARTariffCrawler
         from .egy_tariff_crawler import EGYTariffCrawler
+        from .mar_tariff_crawler import MARTariffCrawler
         from .tun_tariff_crawler import TUNTariffCrawler
 
         crawler_map = {
@@ -186,8 +181,7 @@ class NorthAfricaOrchestrator:
         invalid = [c for c in countries if c not in self.SUPPORTED_COUNTRIES]
         if invalid:
             raise ValueError(
-                f"Unsupported countries: {invalid}. "
-                f"Supported: {self.SUPPORTED_COUNTRIES}"
+                f"Unsupported countries: {invalid}. " f"Supported: {self.SUPPORTED_COUNTRIES}"
             )
 
         job_id = str(uuid.uuid4())[:8]
@@ -241,9 +235,7 @@ class NorthAfricaOrchestrator:
             tasks = [crawl_country(c) for c in job.countries]
             await asyncio.gather(*tasks, return_exceptions=True)
 
-            succeeded = sum(
-                1 for s in job.country_statuses.values() if s.status == "completed"
-            )
+            succeeded = sum(1 for s in job.country_statuses.values() if s.status == "completed")
             total = len(job.countries)
 
             if succeeded == total:
@@ -273,9 +265,7 @@ class NorthAfricaOrchestrator:
 
     def list_jobs(self, limit: int = 20) -> List[Dict[str, Any]]:
         """List recent jobs, newest first."""
-        jobs = sorted(
-            self.jobs.values(), key=lambda j: j.created_at, reverse=True
-        )
+        jobs = sorted(self.jobs.values(), key=lambda j: j.created_at, reverse=True)
         return [j.summary for j in jobs[:limit]]
 
     def get_regional_status(self) -> Dict[str, Any]:

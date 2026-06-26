@@ -1,6 +1,5 @@
 import pytest
 from fastapi import HTTPException
-
 from routes import hs6_database
 
 

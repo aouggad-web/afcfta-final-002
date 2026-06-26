@@ -11,6 +11,7 @@ import logging
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
+
 """
 AfCFTA Platform - AI Investment Intelligence API Routes
 Exposes the InvestmentIntelligenceEngine via REST endpoints.
@@ -33,61 +34,446 @@ router = APIRouter(prefix="/ai-intelligence", tags=["AI Intelligence"])
 # Scores in [0, 1]: ease_of_doing_business, infrastructure, market_size,
 # political_stability, afcfta_ratification
 _COUNTRY_PROFILES = {
-    "DZA": {"ease": 0.45, "infra": 0.55, "market": 0.72, "stability": 0.50, "afcfta": 1.0, "region": "North Africa"},
-    "AGO": {"ease": 0.38, "infra": 0.42, "market": 0.60, "stability": 0.45, "afcfta": 1.0, "region": "Southern Africa"},
-    "BEN": {"ease": 0.55, "infra": 0.40, "market": 0.35, "stability": 0.65, "afcfta": 1.0, "region": "West Africa"},
-    "BWA": {"ease": 0.72, "infra": 0.68, "market": 0.38, "stability": 0.80, "afcfta": 1.0, "region": "Southern Africa"},
-    "BFA": {"ease": 0.42, "infra": 0.35, "market": 0.32, "stability": 0.30, "afcfta": 1.0, "region": "West Africa"},
-    "BDI": {"ease": 0.30, "infra": 0.28, "market": 0.25, "stability": 0.25, "afcfta": 1.0, "region": "East Africa"},
-    "CPV": {"ease": 0.60, "infra": 0.55, "market": 0.20, "stability": 0.85, "afcfta": 1.0, "region": "West Africa"},
-    "CMR": {"ease": 0.48, "infra": 0.45, "market": 0.55, "stability": 0.55, "afcfta": 1.0, "region": "Central Africa"},
-    "CAF": {"ease": 0.22, "infra": 0.18, "market": 0.20, "stability": 0.15, "afcfta": 1.0, "region": "Central Africa"},
-    "TCD": {"ease": 0.25, "infra": 0.22, "market": 0.28, "stability": 0.20, "afcfta": 1.0, "region": "Central Africa"},
-    "COM": {"ease": 0.42, "infra": 0.38, "market": 0.15, "stability": 0.45, "afcfta": 1.0, "region": "East Africa"},
-    "COG": {"ease": 0.38, "infra": 0.40, "market": 0.30, "stability": 0.45, "afcfta": 1.0, "region": "Central Africa"},
-    "COD": {"ease": 0.28, "infra": 0.25, "market": 0.65, "stability": 0.25, "afcfta": 1.0, "region": "Central Africa"},
-    "CIV": {"ease": 0.58, "infra": 0.52, "market": 0.52, "stability": 0.60, "afcfta": 1.0, "region": "West Africa"},
-    "DJI": {"ease": 0.50, "infra": 0.62, "market": 0.20, "stability": 0.55, "afcfta": 1.0, "region": "East Africa"},
-    "EGY": {"ease": 0.60, "infra": 0.65, "market": 0.80, "stability": 0.55, "afcfta": 1.0, "region": "North Africa"},
-    "GNQ": {"ease": 0.35, "infra": 0.45, "market": 0.22, "stability": 0.40, "afcfta": 1.0, "region": "Central Africa"},
-    "ERI": {"ease": 0.20, "infra": 0.25, "market": 0.18, "stability": 0.20, "afcfta": 0.0, "region": "East Africa"},
-    "SWZ": {"ease": 0.55, "infra": 0.55, "market": 0.22, "stability": 0.65, "afcfta": 1.0, "region": "Southern Africa"},
-    "ETH": {"ease": 0.48, "infra": 0.45, "market": 0.72, "stability": 0.42, "afcfta": 1.0, "region": "East Africa"},
-    "GAB": {"ease": 0.45, "infra": 0.52, "market": 0.30, "stability": 0.55, "afcfta": 1.0, "region": "Central Africa"},
-    "GMB": {"ease": 0.52, "infra": 0.38, "market": 0.22, "stability": 0.60, "afcfta": 1.0, "region": "West Africa"},
-    "GHA": {"ease": 0.65, "infra": 0.58, "market": 0.58, "stability": 0.72, "afcfta": 1.0, "region": "West Africa"},
-    "GIN": {"ease": 0.35, "infra": 0.32, "market": 0.32, "stability": 0.40, "afcfta": 1.0, "region": "West Africa"},
-    "GNB": {"ease": 0.30, "infra": 0.28, "market": 0.18, "stability": 0.30, "afcfta": 1.0, "region": "West Africa"},
-    "KEN": {"ease": 0.62, "infra": 0.60, "market": 0.65, "stability": 0.58, "afcfta": 1.0, "region": "East Africa"},
-    "LSO": {"ease": 0.48, "infra": 0.42, "market": 0.18, "stability": 0.65, "afcfta": 1.0, "region": "Southern Africa"},
-    "LBR": {"ease": 0.38, "infra": 0.30, "market": 0.22, "stability": 0.45, "afcfta": 1.0, "region": "West Africa"},
-    "LBY": {"ease": 0.25, "infra": 0.45, "market": 0.45, "stability": 0.15, "afcfta": 1.0, "region": "North Africa"},
-    "MDG": {"ease": 0.45, "infra": 0.35, "market": 0.38, "stability": 0.42, "afcfta": 1.0, "region": "East Africa"},
-    "MWI": {"ease": 0.50, "infra": 0.35, "market": 0.28, "stability": 0.60, "afcfta": 1.0, "region": "Southern Africa"},
-    "MLI": {"ease": 0.38, "infra": 0.32, "market": 0.38, "stability": 0.28, "afcfta": 1.0, "region": "West Africa"},
-    "MRT": {"ease": 0.42, "infra": 0.38, "market": 0.28, "stability": 0.45, "afcfta": 1.0, "region": "West Africa"},
-    "MUS": {"ease": 0.80, "infra": 0.75, "market": 0.28, "stability": 0.88, "afcfta": 1.0, "region": "East Africa"},
-    "MAR": {"ease": 0.68, "infra": 0.70, "market": 0.68, "stability": 0.72, "afcfta": 1.0, "region": "North Africa"},
-    "MOZ": {"ease": 0.42, "infra": 0.38, "market": 0.40, "stability": 0.48, "afcfta": 1.0, "region": "Southern Africa"},
-    "NAM": {"ease": 0.62, "infra": 0.62, "market": 0.32, "stability": 0.78, "afcfta": 1.0, "region": "Southern Africa"},
-    "NER": {"ease": 0.35, "infra": 0.28, "market": 0.32, "stability": 0.30, "afcfta": 1.0, "region": "West Africa"},
-    "NGA": {"ease": 0.52, "infra": 0.48, "market": 0.88, "stability": 0.38, "afcfta": 1.0, "region": "West Africa"},
-    "RWA": {"ease": 0.72, "infra": 0.62, "market": 0.30, "stability": 0.78, "afcfta": 1.0, "region": "East Africa"},
-    "STP": {"ease": 0.48, "infra": 0.40, "market": 0.15, "stability": 0.65, "afcfta": 1.0, "region": "Central Africa"},
-    "SEN": {"ease": 0.60, "infra": 0.52, "market": 0.45, "stability": 0.72, "afcfta": 1.0, "region": "West Africa"},
-    "SYC": {"ease": 0.68, "infra": 0.68, "market": 0.18, "stability": 0.80, "afcfta": 1.0, "region": "East Africa"},
-    "SLE": {"ease": 0.35, "infra": 0.28, "market": 0.25, "stability": 0.45, "afcfta": 1.0, "region": "West Africa"},
-    "SOM": {"ease": 0.15, "infra": 0.15, "market": 0.28, "stability": 0.10, "afcfta": 1.0, "region": "East Africa"},
-    "ZAF": {"ease": 0.68, "infra": 0.72, "market": 0.82, "stability": 0.62, "afcfta": 1.0, "region": "Southern Africa"},
-    "SSD": {"ease": 0.18, "infra": 0.15, "market": 0.22, "stability": 0.10, "afcfta": 1.0, "region": "East Africa"},
-    "SDN": {"ease": 0.25, "infra": 0.30, "market": 0.45, "stability": 0.22, "afcfta": 0.0, "region": "North Africa"},
-    "TZA": {"ease": 0.55, "infra": 0.50, "market": 0.55, "stability": 0.65, "afcfta": 1.0, "region": "East Africa"},
-    "TGO": {"ease": 0.55, "infra": 0.48, "market": 0.32, "stability": 0.58, "afcfta": 1.0, "region": "West Africa"},
-    "TUN": {"ease": 0.62, "infra": 0.65, "market": 0.55, "stability": 0.60, "afcfta": 1.0, "region": "North Africa"},
-    "UGA": {"ease": 0.55, "infra": 0.45, "market": 0.45, "stability": 0.55, "afcfta": 1.0, "region": "East Africa"},
-    "ZMB": {"ease": 0.52, "infra": 0.45, "market": 0.40, "stability": 0.62, "afcfta": 1.0, "region": "Southern Africa"},
-    "ZWE": {"ease": 0.40, "infra": 0.42, "market": 0.42, "stability": 0.38, "afcfta": 1.0, "region": "Southern Africa"},
-    "ESH": {"ease": 0.10, "infra": 0.20, "market": 0.08, "stability": 0.10, "afcfta": 1.0, "region": "North Africa"},
+    "DZA": {
+        "ease": 0.45,
+        "infra": 0.55,
+        "market": 0.72,
+        "stability": 0.50,
+        "afcfta": 1.0,
+        "region": "North Africa",
+    },
+    "AGO": {
+        "ease": 0.38,
+        "infra": 0.42,
+        "market": 0.60,
+        "stability": 0.45,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "BEN": {
+        "ease": 0.55,
+        "infra": 0.40,
+        "market": 0.35,
+        "stability": 0.65,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "BWA": {
+        "ease": 0.72,
+        "infra": 0.68,
+        "market": 0.38,
+        "stability": 0.80,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "BFA": {
+        "ease": 0.42,
+        "infra": 0.35,
+        "market": 0.32,
+        "stability": 0.30,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "BDI": {
+        "ease": 0.30,
+        "infra": 0.28,
+        "market": 0.25,
+        "stability": 0.25,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "CPV": {
+        "ease": 0.60,
+        "infra": 0.55,
+        "market": 0.20,
+        "stability": 0.85,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "CMR": {
+        "ease": 0.48,
+        "infra": 0.45,
+        "market": 0.55,
+        "stability": 0.55,
+        "afcfta": 1.0,
+        "region": "Central Africa",
+    },
+    "CAF": {
+        "ease": 0.22,
+        "infra": 0.18,
+        "market": 0.20,
+        "stability": 0.15,
+        "afcfta": 1.0,
+        "region": "Central Africa",
+    },
+    "TCD": {
+        "ease": 0.25,
+        "infra": 0.22,
+        "market": 0.28,
+        "stability": 0.20,
+        "afcfta": 1.0,
+        "region": "Central Africa",
+    },
+    "COM": {
+        "ease": 0.42,
+        "infra": 0.38,
+        "market": 0.15,
+        "stability": 0.45,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "COG": {
+        "ease": 0.38,
+        "infra": 0.40,
+        "market": 0.30,
+        "stability": 0.45,
+        "afcfta": 1.0,
+        "region": "Central Africa",
+    },
+    "COD": {
+        "ease": 0.28,
+        "infra": 0.25,
+        "market": 0.65,
+        "stability": 0.25,
+        "afcfta": 1.0,
+        "region": "Central Africa",
+    },
+    "CIV": {
+        "ease": 0.58,
+        "infra": 0.52,
+        "market": 0.52,
+        "stability": 0.60,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "DJI": {
+        "ease": 0.50,
+        "infra": 0.62,
+        "market": 0.20,
+        "stability": 0.55,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "EGY": {
+        "ease": 0.60,
+        "infra": 0.65,
+        "market": 0.80,
+        "stability": 0.55,
+        "afcfta": 1.0,
+        "region": "North Africa",
+    },
+    "GNQ": {
+        "ease": 0.35,
+        "infra": 0.45,
+        "market": 0.22,
+        "stability": 0.40,
+        "afcfta": 1.0,
+        "region": "Central Africa",
+    },
+    "ERI": {
+        "ease": 0.20,
+        "infra": 0.25,
+        "market": 0.18,
+        "stability": 0.20,
+        "afcfta": 0.0,
+        "region": "East Africa",
+    },
+    "SWZ": {
+        "ease": 0.55,
+        "infra": 0.55,
+        "market": 0.22,
+        "stability": 0.65,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "ETH": {
+        "ease": 0.48,
+        "infra": 0.45,
+        "market": 0.72,
+        "stability": 0.42,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "GAB": {
+        "ease": 0.45,
+        "infra": 0.52,
+        "market": 0.30,
+        "stability": 0.55,
+        "afcfta": 1.0,
+        "region": "Central Africa",
+    },
+    "GMB": {
+        "ease": 0.52,
+        "infra": 0.38,
+        "market": 0.22,
+        "stability": 0.60,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "GHA": {
+        "ease": 0.65,
+        "infra": 0.58,
+        "market": 0.58,
+        "stability": 0.72,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "GIN": {
+        "ease": 0.35,
+        "infra": 0.32,
+        "market": 0.32,
+        "stability": 0.40,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "GNB": {
+        "ease": 0.30,
+        "infra": 0.28,
+        "market": 0.18,
+        "stability": 0.30,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "KEN": {
+        "ease": 0.62,
+        "infra": 0.60,
+        "market": 0.65,
+        "stability": 0.58,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "LSO": {
+        "ease": 0.48,
+        "infra": 0.42,
+        "market": 0.18,
+        "stability": 0.65,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "LBR": {
+        "ease": 0.38,
+        "infra": 0.30,
+        "market": 0.22,
+        "stability": 0.45,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "LBY": {
+        "ease": 0.25,
+        "infra": 0.45,
+        "market": 0.45,
+        "stability": 0.15,
+        "afcfta": 1.0,
+        "region": "North Africa",
+    },
+    "MDG": {
+        "ease": 0.45,
+        "infra": 0.35,
+        "market": 0.38,
+        "stability": 0.42,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "MWI": {
+        "ease": 0.50,
+        "infra": 0.35,
+        "market": 0.28,
+        "stability": 0.60,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "MLI": {
+        "ease": 0.38,
+        "infra": 0.32,
+        "market": 0.38,
+        "stability": 0.28,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "MRT": {
+        "ease": 0.42,
+        "infra": 0.38,
+        "market": 0.28,
+        "stability": 0.45,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "MUS": {
+        "ease": 0.80,
+        "infra": 0.75,
+        "market": 0.28,
+        "stability": 0.88,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "MAR": {
+        "ease": 0.68,
+        "infra": 0.70,
+        "market": 0.68,
+        "stability": 0.72,
+        "afcfta": 1.0,
+        "region": "North Africa",
+    },
+    "MOZ": {
+        "ease": 0.42,
+        "infra": 0.38,
+        "market": 0.40,
+        "stability": 0.48,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "NAM": {
+        "ease": 0.62,
+        "infra": 0.62,
+        "market": 0.32,
+        "stability": 0.78,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "NER": {
+        "ease": 0.35,
+        "infra": 0.28,
+        "market": 0.32,
+        "stability": 0.30,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "NGA": {
+        "ease": 0.52,
+        "infra": 0.48,
+        "market": 0.88,
+        "stability": 0.38,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "RWA": {
+        "ease": 0.72,
+        "infra": 0.62,
+        "market": 0.30,
+        "stability": 0.78,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "STP": {
+        "ease": 0.48,
+        "infra": 0.40,
+        "market": 0.15,
+        "stability": 0.65,
+        "afcfta": 1.0,
+        "region": "Central Africa",
+    },
+    "SEN": {
+        "ease": 0.60,
+        "infra": 0.52,
+        "market": 0.45,
+        "stability": 0.72,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "SYC": {
+        "ease": 0.68,
+        "infra": 0.68,
+        "market": 0.18,
+        "stability": 0.80,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "SLE": {
+        "ease": 0.35,
+        "infra": 0.28,
+        "market": 0.25,
+        "stability": 0.45,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "SOM": {
+        "ease": 0.15,
+        "infra": 0.15,
+        "market": 0.28,
+        "stability": 0.10,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "ZAF": {
+        "ease": 0.68,
+        "infra": 0.72,
+        "market": 0.82,
+        "stability": 0.62,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "SSD": {
+        "ease": 0.18,
+        "infra": 0.15,
+        "market": 0.22,
+        "stability": 0.10,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "SDN": {
+        "ease": 0.25,
+        "infra": 0.30,
+        "market": 0.45,
+        "stability": 0.22,
+        "afcfta": 0.0,
+        "region": "North Africa",
+    },
+    "TZA": {
+        "ease": 0.55,
+        "infra": 0.50,
+        "market": 0.55,
+        "stability": 0.65,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "TGO": {
+        "ease": 0.55,
+        "infra": 0.48,
+        "market": 0.32,
+        "stability": 0.58,
+        "afcfta": 1.0,
+        "region": "West Africa",
+    },
+    "TUN": {
+        "ease": 0.62,
+        "infra": 0.65,
+        "market": 0.55,
+        "stability": 0.60,
+        "afcfta": 1.0,
+        "region": "North Africa",
+    },
+    "UGA": {
+        "ease": 0.55,
+        "infra": 0.45,
+        "market": 0.45,
+        "stability": 0.55,
+        "afcfta": 1.0,
+        "region": "East Africa",
+    },
+    "ZMB": {
+        "ease": 0.52,
+        "infra": 0.45,
+        "market": 0.40,
+        "stability": 0.62,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "ZWE": {
+        "ease": 0.40,
+        "infra": 0.42,
+        "market": 0.42,
+        "stability": 0.38,
+        "afcfta": 1.0,
+        "region": "Southern Africa",
+    },
+    "ESH": {
+        "ease": 0.10,
+        "infra": 0.20,
+        "market": 0.08,
+        "stability": 0.10,
+        "afcfta": 1.0,
+        "region": "North Africa",
+    },
 }
 
 # Sector multipliers: how well a country's profile translates for each sector
@@ -251,11 +637,7 @@ def _compute_score(country: str, sector: str, investment_size: str) -> dict:
         "afcfta_integration": round(profile["afcfta"], 2),
     }
 
-    risk_level = (
-        "low" if overall_score >= 0.70
-        else "medium" if overall_score >= 0.50
-        else "high"
-    )
+    risk_level = "low" if overall_score >= 0.70 else "medium" if overall_score >= 0.50 else "high"
 
     return {
         "country": country_upper,
@@ -278,6 +660,7 @@ def _compute_score(country: str, sector: str, investment_size: str) -> dict:
 
 # ==================== Request / Response Models ====================
 
+
 class InvestmentScoreRequest(BaseModel):
     country: str = Field(..., description="ISO 3166-1 alpha-3 country code (e.g. KEN, NGA, ZAF)")
     sector: str = Field(
@@ -291,6 +674,7 @@ class InvestmentScoreRequest(BaseModel):
 
 
 # ==================== Endpoints ====================
+
 
 @router.post("/score")
 async def get_investment_score(request: InvestmentScoreRequest):
@@ -318,12 +702,15 @@ async def get_investment_score(request: InvestmentScoreRequest):
     except Exception as exc:
         logger.error(f"Investment score computation failed: {exc}")
         raise HTTPException(status_code=500, detail=str(exc))
+
+
 router = APIRouter(prefix="/ai-intelligence", tags=["AI Investment Intelligence"])
 
 
 # ---------------------------------------------------------------------------
 # Request Models
 # ---------------------------------------------------------------------------
+
 
 class InvestmentScoreRequest(BaseModel):
     country: str = Field(..., description="ISO 3-letter country code (e.g. MAR)")
@@ -357,14 +744,17 @@ class BulkScoreRequest(BaseModel):
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _engine():
     from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
     return get_intelligence_engine()
 
 
 # ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
+
 
 @router.post("/score")
 async def get_investment_score(request: InvestmentScoreRequest):
@@ -480,6 +870,7 @@ async def bulk_investment_score(request: BulkScoreRequest):
 async def get_scoring_algorithm():
     """Return the scoring algorithm weights and component definitions."""
     from intelligence.ai_engine.investment_scoring import SCORING_ALGORITHM
+
     return {
         "algorithm": SCORING_ALGORITHM,
         "description": (

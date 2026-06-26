@@ -7,20 +7,20 @@ Provides notification capabilities for the crawling system through multiple chan
 
 Usage:
     from backend.notifications import NotificationManager
-    
+
     manager = NotificationManager()
     await manager.notify_crawl_success(job_id="...", country_code="KE", stats={...})
 """
 
 from .base_notifier import (
-    BaseNotifier, 
-    NotificationType, 
-    NotificationSeverity,
+    BaseNotifier,
     NotificationData,
+    NotificationSeverity,
+    NotificationType,
 )
 from .email_notifier import EmailNotifier
-from .slack_notifier import SlackNotifier
 from .notification_manager import NotificationManager
+from .slack_notifier import SlackNotifier
 
 __all__ = [
     "BaseNotifier",

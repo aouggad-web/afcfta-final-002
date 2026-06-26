@@ -3,6 +3,7 @@ Regional and international payment systems covering Africa.
 """
 
 from typing import List, Optional
+
 from .models import PaymentSystem
 
 # ---------------------------------------------------------------------------
@@ -10,7 +11,6 @@ from .models import PaymentSystem
 # ---------------------------------------------------------------------------
 
 PAYMENT_SYSTEMS: List[PaymentSystem] = [
-
     # ── INTERNATIONAL ────────────────────────────────────────────────────────
     PaymentSystem(
         code="SWIFT",
@@ -26,7 +26,6 @@ PAYMENT_SYSTEMS: List[PaymentSystem] = [
             "Tous les pays africains membres SWIFT."
         ),
     ),
-
     # ── WEST AFRICA ──────────────────────────────────────────────────────────
     PaymentSystem(
         code="WAMZ_RTGS",
@@ -64,7 +63,6 @@ PAYMENT_SYSTEMS: List[PaymentSystem] = [
         operator="BCEAO",
         notes="RTGS de la zone UEMOA pour les règlements de gros montants. Règlement immédiat.",
     ),
-
     # ── CENTRAL AFRICA ───────────────────────────────────────────────────────
     PaymentSystem(
         code="GIMAC",
@@ -90,7 +88,6 @@ PAYMENT_SYSTEMS: List[PaymentSystem] = [
         operator="BEAC",
         notes="RTGS de la zone CEMAC pour les paiements de gros montants.",
     ),
-
     # ── EAST AFRICA ──────────────────────────────────────────────────────────
     PaymentSystem(
         code="EAPS",
@@ -125,7 +122,6 @@ PAYMENT_SYSTEMS: List[PaymentSystem] = [
         operator="Bank of Tanzania",
         notes="RTGS de la Tanzanie.",
     ),
-
     # ── SOUTHERN AFRICA ──────────────────────────────────────────────────────
     PaymentSystem(
         code="SADC_RTGS",
@@ -133,8 +129,18 @@ PAYMENT_SYSTEMS: List[PaymentSystem] = [
         type="regional",
         region="Southern Africa (SADC)",
         member_countries=[
-            "ZA", "BW", "LS", "NA", "SZ", "MZ", "ZM", "ZW",
-            "MG", "MU", "TZ", "MW",
+            "ZA",
+            "BW",
+            "LS",
+            "NA",
+            "SZ",
+            "MZ",
+            "ZM",
+            "ZW",
+            "MG",
+            "MU",
+            "TZ",
+            "MW",
         ],
         currency="ZAR",
         operator="South African Reserve Bank (SARB) – settlement in ZAR",
@@ -154,7 +160,6 @@ PAYMENT_SYSTEMS: List[PaymentSystem] = [
         operator="South African Reserve Bank",
         notes="RTGS de l'Afrique du Sud. Principal hub de la zone SADC.",
     ),
-
     # ── NORTH AFRICA ─────────────────────────────────────────────────────────
     PaymentSystem(
         code="MAGHREB_PAYMENT",
@@ -169,15 +174,15 @@ PAYMENT_SYSTEMS: List[PaymentSystem] = [
             "En cours de développement – les échanges restent via SWIFT."
         ),
     ),
-
     # ── PAN-AFRICAN ───────────────────────────────────────────────────────────
     PaymentSystem(
         code="PAPSS",
         name="Pan-African Payment and Settlement System",
         type="regional",
         region="Pan-African (AfCFTA)",
-        member_countries=list({"MA", "DZ", "TN", "EG", "NG", "GH", "CI", "SN",
-                               "KE", "ET", "TZ", "ZA", "AO", "ZM"}),
+        member_countries=list(
+            {"MA", "DZ", "TN", "EG", "NG", "GH", "CI", "SN", "KE", "ET", "TZ", "ZA", "AO", "ZM"}
+        ),
         currency="Multiple",
         operator="Afreximbank / African Union",
         notes=(
@@ -187,7 +192,6 @@ PAYMENT_SYSTEMS: List[PaymentSystem] = [
             "Objectif : réduire les coûts de transaction de 80%."
         ),
     ),
-
     # ── MOBILE MONEY ─────────────────────────────────────────────────────────
     PaymentSystem(
         code="MPESA",
@@ -239,7 +243,6 @@ PAYMENT_SYSTEMS: List[PaymentSystem] = [
             "Fort développement en zone UEMOA depuis 2020."
         ),
     ),
-
     # ── DIGITAL PLATFORMS ────────────────────────────────────────────────────
     PaymentSystem(
         code="FLUTTERWAVE",
@@ -275,6 +278,7 @@ _SYSTEMS_BY_CODE = {ps.code: ps for ps in PAYMENT_SYSTEMS}
 # PUBLIC HELPERS
 # ---------------------------------------------------------------------------
 
+
 def get_payment_systems(country_code: Optional[str] = None) -> List[PaymentSystem]:
     """
     Return payment systems. If country_code is provided (ISO2),
@@ -284,8 +288,7 @@ def get_payment_systems(country_code: Optional[str] = None) -> List[PaymentSyste
         return PAYMENT_SYSTEMS
     code = country_code.upper()
     return [
-        ps for ps in PAYMENT_SYSTEMS
-        if code in ps.member_countries or "ALL" in ps.member_countries
+        ps for ps in PAYMENT_SYSTEMS if code in ps.member_countries or "ALL" in ps.member_countries
     ]
 
 
@@ -295,6 +298,5 @@ def get_regional_systems(region: Optional[str] = None) -> List[PaymentSystem]:
         return [ps for ps in PAYMENT_SYSTEMS if ps.type == "regional"]
     region_lower = region.lower()
     return [
-        ps for ps in PAYMENT_SYSTEMS
-        if ps.type == "regional" and region_lower in ps.region.lower()
+        ps for ps in PAYMENT_SYSTEMS if ps.type == "regional" and region_lower in ps.region.lower()
     ]

@@ -23,6 +23,7 @@ async def get_cache_stats():
     """
     try:
         from performance.caching.cache_layers import get_cache
+
         return get_cache().all_stats()
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
@@ -36,8 +37,10 @@ async def warm_cache():
     regional analytics into L2.
     """
     try:
-        from performance.caching.cache_warming import get_warming_service
         import asyncio
+
+        from performance.caching.cache_warming import get_warming_service
+
         service = get_warming_service()
         summary = await service.warm_all()
         return {"status": "completed", "summary": summary}
@@ -54,6 +57,7 @@ async def invalidate_country_cache(country_code: str):
     """
     try:
         from performance.caching.cache_layers import get_cache
+
         result = get_cache().invalidate_country(country_code.upper())
         return {"invalidated": result, "country": country_code.upper()}
     except Exception as exc:
@@ -68,6 +72,7 @@ async def invalidate_region_cache(bloc: str):
     """
     try:
         from performance.caching.cache_layers import get_cache
+
         result = get_cache().invalidate_region(bloc.upper())
         return {"invalidated": result, "bloc": bloc.upper()}
     except Exception as exc:
@@ -84,6 +89,7 @@ async def get_performance_metrics():
     """
     try:
         from performance.monitoring.performance_metrics import get_metrics
+
         return get_metrics().summary()
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
@@ -94,6 +100,7 @@ async def get_slow_queries():
     """Return the 200 most recent slow queries (> 500ms)."""
     try:
         from performance.monitoring.performance_metrics import get_metrics
+
         return {"slow_queries": get_metrics().slow_queries()}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))

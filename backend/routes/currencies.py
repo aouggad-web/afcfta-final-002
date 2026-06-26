@@ -6,10 +6,9 @@ GET /api/currencies/unique         – Unique ISO 4217 currency codes
 GET /api/currencies/{code}/info    – Currency details by code or country code
 GET /api/currencies/union/{name}   – Currencies by monetary union
 """
+
 import logging
 from typing import List, Optional
-
-from fastapi import APIRouter, HTTPException, Query
 
 from currencies import (
     CurrencyInfo,
@@ -20,6 +19,7 @@ from currencies import (
     get_unique_currencies,
     list_currencies,
 )
+from fastapi import APIRouter, HTTPException, Query
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/currencies")

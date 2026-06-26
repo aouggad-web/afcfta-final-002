@@ -22,10 +22,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from config.crawler_config import get_crawler_config
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Query
 from pydantic import BaseModel
-
-from config.crawler_config import get_crawler_config
 from services.crawlers.crawler_manager import get_crawler_manager
 from services.crawlers.data_validator import DataValidator
 
@@ -42,6 +41,7 @@ router = APIRouter(tags=["DZA Crawler"])
 # Request / Response models
 # ---------------------------------------------------------------------------
 
+
 class StartCrawlRequest(BaseModel):
     max_workers: Optional[int] = None
     rate_limit_delay: Optional[float] = None
@@ -55,6 +55,7 @@ class RefreshRequest(BaseModel):
 # ---------------------------------------------------------------------------
 # Helper
 # ---------------------------------------------------------------------------
+
 
 def _latest_published_file() -> Optional[Path]:
     cfg = get_crawler_config()
@@ -77,6 +78,7 @@ def _load_published_lines() -> List[Dict[str, Any]]:
 # ---------------------------------------------------------------------------
 # Crawler management endpoints
 # ---------------------------------------------------------------------------
+
 
 @router.post("/dza-crawler/start", summary="Start DZA tariff crawl session")
 async def start_dza_crawl(request: StartCrawlRequest, background_tasks: BackgroundTasks):
@@ -154,6 +156,7 @@ async def stop_dza_crawl(session_id: Optional[str] = Query(None)):
 # Data management endpoints
 # ---------------------------------------------------------------------------
 
+
 @router.get("/dza-data/freshness", summary="Check data age")
 async def dza_data_freshness():
     """Return the age and metadata of the most recent published DZA dataset."""
@@ -225,9 +228,18 @@ async def dza_data_export(
         output = io.StringIO()
         if lines:
             fieldnames = [
-                "hs10_code", "hs6_code", "description_fr",
-                "unit", "dd", "tva", "prct", "tcs", "daps", "tic",
-                "confidence_score", "source_url",
+                "hs10_code",
+                "hs6_code",
+                "description_fr",
+                "unit",
+                "dd",
+                "tva",
+                "prct",
+                "tcs",
+                "daps",
+                "tic",
+                "confidence_score",
+                "source_url",
             ]
             writer = csv.DictWriter(output, fieldnames=fieldnames, extrasaction="ignore")
             writer.writeheader()
@@ -250,6 +262,7 @@ async def dza_data_export(
                 writer.writerow(flat)
 
         from fastapi.responses import Response
+
         return Response(
             content=output.getvalue(),
             media_type="text/csv",
@@ -277,6 +290,7 @@ async def dza_data_validate():
         )
 
     from config.crawler_config import get_quality_config
+
     qcfg = get_quality_config()
     validator = DataValidator(
         min_confidence_score=qcfg.min_confidence_score,

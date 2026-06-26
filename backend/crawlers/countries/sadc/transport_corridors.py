@@ -49,7 +49,6 @@ SADC_TRANSPORT_CORRIDORS = {
             "North-South Corridor fibre optic backbone",
         ],
     },
-
     # -----------------------------------------------------------------------
     # Beira Corridor
     # -----------------------------------------------------------------------
@@ -75,7 +74,6 @@ SADC_TRANSPORT_CORRIDORS = {
             "Sena rail line rehabilitation (Moatize coal)",
         ],
     },
-
     # -----------------------------------------------------------------------
     # Nacala Corridor
     # -----------------------------------------------------------------------
@@ -107,7 +105,6 @@ SADC_TRANSPORT_CORRIDORS = {
             "Nacala port container terminal expansion",
         ],
     },
-
     # -----------------------------------------------------------------------
     # Dar-es-Salaam Corridor
     # -----------------------------------------------------------------------
@@ -130,7 +127,6 @@ SADC_TRANSPORT_CORRIDORS = {
         "annual_trade_volume_usd_billion": 18,
         "notes": "Critical for DRC mineral exports; TAZARA rail under-utilised vs road",
     },
-
     # -----------------------------------------------------------------------
     # Lobito Corridor
     # -----------------------------------------------------------------------
@@ -158,7 +154,6 @@ SADC_TRANSPORT_CORRIDORS = {
             "Extension towards DRC Kamoa-Kakula mining area",
         ],
     },
-
     # -----------------------------------------------------------------------
     # Walvis Bay Corridor
     # -----------------------------------------------------------------------
@@ -194,7 +189,6 @@ SADC_TRANSPORT_CORRIDORS = {
         "commodities": ["copper", "minerals", "general_cargo", "vehicles"],
         "advantage": "Shorter sea route to Americas compared to Durban (saves ~30 transit days)",
     },
-
     # -----------------------------------------------------------------------
     # One-Stop Border Posts (OSBP) overview
     # -----------------------------------------------------------------------
@@ -205,7 +199,12 @@ SADC_TRANSPORT_CORRIDORS = {
             {"name": "Chirundu", "countries": ["ZWE", "ZMB"], "since": 2009},
             {"name": "Beitbridge", "countries": ["ZAF", "ZWE"], "since": 2021},
             {"name": "Kasumbalesa", "countries": ["ZMB", "COD"], "since": 2013},
-            {"name": "Kazungula", "countries": ["ZMB", "BWA", "ZWE", "NAM"], "since": 2021, "note": "4-nation border – world's first multi-country OSBP"},
+            {
+                "name": "Kazungula",
+                "countries": ["ZMB", "BWA", "ZWE", "NAM"],
+                "since": 2021,
+                "note": "4-nation border – world's first multi-country OSBP",
+            },
         ],
         "planned_osbps": [
             {"name": "Nakonde/Tunduma", "countries": ["ZMB", "TZA"]},

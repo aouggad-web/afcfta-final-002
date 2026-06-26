@@ -109,6 +109,7 @@ class IntegrationConfig:
 # Module-level singletons (override via environment variables if needed)
 # ---------------------------------------------------------------------------
 
+
 def get_crawler_config() -> CrawlerConfig:
     """Return a CrawlerConfig populated from environment variables."""
     return CrawlerConfig(

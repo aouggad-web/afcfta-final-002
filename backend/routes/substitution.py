@@ -3,8 +3,10 @@ Trade Substitution Analysis Routes
 API endpoints for analyzing intra-African trade substitution opportunities
 Uses REAL data from OEC API
 """
-from fastapi import APIRouter, Query, HTTPException
+
 import logging
+
+from fastapi import APIRouter, HTTPException, Query
 
 # Import real services only (OEC data)
 from services.real_substitution_service import real_substitution_service
@@ -29,22 +31,22 @@ async def get_available_countries(
             "iso3": iso3,
             "name": info.get(f"name_{lang}", info.get("name_en", iso3)),
             "oec_id": info.get("oec", ""),
-            "has_trade_data": info.get("has_trade_data", True)
+            "has_trade_data": info.get("has_trade_data", True),
         }
-        
+
         # Add note for countries without data
         if not info.get("has_trade_data", True):
             country_data["note"] = info.get("note", "Données non disponibles")
-        
+
         countries.append(country_data)
-    
+
     countries.sort(key=lambda x: x["name"])
-    
+
     return {
         "total": len(countries),
         "with_trade_data": len([c for c in countries if c["has_trade_data"]]),
         "without_trade_data": len([c for c in countries if not c["has_trade_data"]]),
-        "countries": countries
+        "countries": countries,
     }
 
 
@@ -54,30 +56,30 @@ async def get_import_substitution_opportunities(
     year: int = Query(default=2022, description="Year for trade data"),
     min_value: int = Query(default=5000000, description="Minimum import value to consider (USD)"),
     lang: str = Query(default="fr", description="Language for names (fr/en)"),
-    use_real_data: bool = Query(default=True, description="Use real OEC data (always true)")
+    use_real_data: bool = Query(default=True, description="Use real OEC data (always true)"),
 ):
     """
     Find import substitution opportunities for a specific African country
-    
-    This endpoint identifies products that the country currently imports 
+
+    This endpoint identifies products that the country currently imports
     from outside Africa that could be sourced from other AfCFTA countries.
-    
+
     Uses REAL data from OEC (Observatory of Economic Complexity) API.
     """
     try:
         result = await real_substitution_service.find_import_substitution_opportunities(
             country_iso3, year=year, min_value=min_value, lang=lang
         )
-        
+
         # Handle "no_data" response (e.g., RASD - occupied territory)
         if result.get("no_data"):
             return result
-        
+
         if result.get("error") and not result.get("opportunities"):
             raise HTTPException(status_code=404, detail=result["error"])
-        
+
         return result
-    
+
     except HTTPException:
         raise
     except Exception as e:
@@ -89,32 +91,34 @@ async def get_import_substitution_opportunities(
 async def get_export_opportunities(
     country_iso3: str,
     year: int = Query(default=2022, description="Year for trade data"),
-    min_market_size: int = Query(default=5000000, description="Minimum market size to consider (USD)"),
+    min_market_size: int = Query(
+        default=5000000, description="Minimum market size to consider (USD)"
+    ),
     lang: str = Query(default="fr", description="Language for names (fr/en)"),
-    use_real_data: bool = Query(default=True, description="Use real OEC data (always true)")
+    use_real_data: bool = Query(default=True, description="Use real OEC data (always true)"),
 ):
     """
     Find export opportunities for a specific African country
-    
+
     This endpoint identifies products that the country produces and could export
     to other AfCFTA countries that currently import from outside Africa.
-    
+
     Uses REAL data from OEC (Observatory of Economic Complexity) API.
     """
     try:
         result = await real_substitution_service.find_export_opportunities(
             country_iso3, year=year, min_market_size=min_market_size, lang=lang
         )
-        
+
         # Handle "no_data" response (e.g., RASD - occupied territory)
         if result.get("no_data"):
             return result
-        
+
         if result.get("error") and not result.get("opportunities"):
             raise HTTPException(status_code=404, detail=result["error"])
-        
+
         return result
-    
+
     except HTTPException:
         raise
     except Exception as e:

@@ -58,32 +58,75 @@ TPI_RATE = 0.25
 # Moroccan DI (Droit d'Importation) bands: rate% -> list of HS chapters
 MOROCCO_DI_BANDS: Dict[str, List[str]] = {
     "40": ["22", "24"],
-    "25": ["04", "16", "17", "18", "19", "20", "21", "33", "61",
-           "62", "63", "64", "94", "95"],
-    "17.5": ["01", "02", "03", "07", "08", "09", "15", "39", "40",
-             "42", "44", "48", "69", "70", "72", "73", "76", "82", "83"],
+    "25": ["04", "16", "17", "18", "19", "20", "21", "33", "61", "62", "63", "64", "94", "95"],
+    "17.5": [
+        "01",
+        "02",
+        "03",
+        "07",
+        "08",
+        "09",
+        "15",
+        "39",
+        "40",
+        "42",
+        "44",
+        "48",
+        "69",
+        "70",
+        "72",
+        "73",
+        "76",
+        "82",
+        "83",
+    ],
     "10": ["06", "10", "11", "12", "23", "57"],
-    "2.5": ["28", "29", "32", "35", "38", "47", "50", "51", "52",
-            "53", "54", "55", "56", "58", "59", "60", "68", "74",
-            "75", "84", "85", "86", "87", "88", "89", "90"],
+    "2.5": [
+        "28",
+        "29",
+        "32",
+        "35",
+        "38",
+        "47",
+        "50",
+        "51",
+        "52",
+        "53",
+        "54",
+        "55",
+        "56",
+        "58",
+        "59",
+        "60",
+        "68",
+        "74",
+        "75",
+        "84",
+        "85",
+        "86",
+        "87",
+        "88",
+        "89",
+        "90",
+    ],
     "0": ["25", "26", "27", "30", "31"],
 }
 
 # TVA reduced rates by chapter
 TVA_REDUCED: Dict[str, float] = {
-    "30": 7.0,    # Pharmaceuticals
-    "01": 10.0,   # Live animals
-    "02": 10.0,   # Meat
-    "03": 10.0,   # Fish
-    "04": 14.0,   # Dairy
-    "06": 10.0,   # Plants
-    "07": 10.0,   # Vegetables
-    "08": 10.0,   # Fruit
-    "10": 7.0,    # Cereals
-    "11": 7.0,    # Milling industry
-    "23": 7.0,    # Feed
-    "27": 10.0,   # Mineral fuels
-    "86": 14.0,   # Railway
+    "30": 7.0,  # Pharmaceuticals
+    "01": 10.0,  # Live animals
+    "02": 10.0,  # Meat
+    "03": 10.0,  # Fish
+    "04": 14.0,  # Dairy
+    "06": 10.0,  # Plants
+    "07": 10.0,  # Vegetables
+    "08": 10.0,  # Fruit
+    "10": 7.0,  # Cereals
+    "11": 7.0,  # Milling industry
+    "23": 7.0,  # Feed
+    "27": 10.0,  # Mineral fuels
+    "86": 14.0,  # Railway
 }
 
 # Product descriptions by chapter for reference
@@ -191,6 +234,7 @@ CHAPTER_DESCRIPTIONS: Dict[str, str] = {
 # Helper functions
 # ---------------------------------------------------------------------------
 
+
 def _build_chapter_map() -> Dict[str, Tuple[float, str]]:
     """Return {chapter: (di_rate_pct, di_display)} for every chapter."""
     chapter_to_rate: Dict[str, Tuple[float, str]] = {}
@@ -244,59 +288,68 @@ def _make_hs_positions(chapter: str, di_rate: float) -> List[Dict]:
 
     if is_tva_exempt:
         taxes["TVA"] = 0.0
-        taxes_detail.append({
-            "tax_code": "TVA",
-            "tax_name": "Taxe sur la Valeur Ajoutée (exonérée)",
-            "rate": 0.0,
-            "rate_type": "ad_valorem",
-            "base": "CIF + DI + TPI",
-        })
+        taxes_detail.append(
+            {
+                "tax_code": "TVA",
+                "tax_name": "Taxe sur la Valeur Ajoutée (exonérée)",
+                "rate": 0.0,
+                "rate_type": "ad_valorem",
+                "base": "CIF + DI + TPI",
+            }
+        )
     else:
         taxes["TVA"] = tva
-        taxes_detail.append({
-            "tax_code": "TVA",
-            "tax_name": "Taxe sur la Valeur Ajoutée",
-            "rate": tva,
-            "rate_type": "ad_valorem",
-            "base": "CIF + DI + TPI",
-        })
+        taxes_detail.append(
+            {
+                "tax_code": "TVA",
+                "tax_name": "Taxe sur la Valeur Ajoutée",
+                "rate": tva,
+                "rate_type": "ad_valorem",
+                "base": "CIF + DI + TPI",
+            }
+        )
 
     if has_accise:
         taxes["TIC"] = -1
-        taxes_detail.append({
-            "tax_code": "TIC",
-            "tax_name": "Taxe Intérieure de Consommation",
-            "rate": -1,
-            "rate_type": "variable",
-            "base": "CIF + DI",
-            "note": "Taux variable selon produit – consulter ADII",
-        })
+        taxes_detail.append(
+            {
+                "tax_code": "TIC",
+                "tax_name": "Taxe Intérieure de Consommation",
+                "rate": -1,
+                "rate_type": "variable",
+                "base": "CIF + DI",
+                "note": "Taux variable selon produit – consulter ADII",
+            }
+        )
 
     # Generate representative positions (HS4 / HS6 / HS8 sub-codes)
     positions = []
     # Chapter-level entry
     code_clean = f"{chapter}0000"
-    positions.append({
-        "code": f"{chapter}.00.00",
-        "code_clean": code_clean,
-        "code_length": 6,
-        "designation": desc,
-        "chapter": chapter,
-        "unit": "kg",
-        "taxes": taxes,
-        "taxes_detail": taxes_detail,
-        "source": "ADII Maroc – Tarif douanier 2024",
-        "data_type": "national_tariff",
-        "trade_bloc": "UMA",
-        "source_verified": "https://www.douane.gov.ma",
-        "languages": ["fr", "ar"],
-    })
+    positions.append(
+        {
+            "code": f"{chapter}.00.00",
+            "code_clean": code_clean,
+            "code_length": 6,
+            "designation": desc,
+            "chapter": chapter,
+            "unit": "kg",
+            "taxes": taxes,
+            "taxes_detail": taxes_detail,
+            "source": "ADII Maroc – Tarif douanier 2024",
+            "data_type": "national_tariff",
+            "trade_bloc": "UMA",
+            "source_verified": "https://www.douane.gov.ma",
+            "languages": ["fr", "ar"],
+        }
+    )
     return positions
 
 
 # ---------------------------------------------------------------------------
 # Main scraper class
 # ---------------------------------------------------------------------------
+
 
 class NorthAfricaScraper:
     """
@@ -379,13 +432,15 @@ class NorthAfricaScraper:
                         rate_m = rate_pattern.search(line)
                         di_rate = float(rate_m.group(1).replace(",", ".")) if rate_m else 17.5
                         chapter = code.replace(".", "")[:2]
-                        extracted.append({
-                            "code": code,
-                            "code_clean": code.replace(".", ""),
-                            "designation": desc,
-                            "chapter": chapter,
-                            "di_rate": di_rate,
-                        })
+                        extracted.append(
+                            {
+                                "code": code,
+                                "code_clean": code.replace(".", ""),
+                                "designation": desc,
+                                "chapter": chapter,
+                                "di_rate": di_rate,
+                            }
+                        )
 
         doc.close()
         if extracted:
@@ -397,28 +452,45 @@ class NorthAfricaScraper:
                 di = item["di_rate"]
                 taxes = {"DI": di, "TPI": TPI_RATE, "TVA": tva}
                 taxes_detail = [
-                    {"tax_code": "DI", "tax_name": "Droit d'Importation", "rate": di,
-                     "rate_type": "ad_valorem", "base": "CIF"},
-                    {"tax_code": "TPI", "tax_name": "Taxe Parafiscale à l'Importation",
-                     "rate": TPI_RATE, "rate_type": "ad_valorem", "base": "CIF"},
-                    {"tax_code": "TVA", "tax_name": "Taxe sur la Valeur Ajoutée",
-                     "rate": tva, "rate_type": "ad_valorem", "base": "CIF + DI + TPI"},
+                    {
+                        "tax_code": "DI",
+                        "tax_name": "Droit d'Importation",
+                        "rate": di,
+                        "rate_type": "ad_valorem",
+                        "base": "CIF",
+                    },
+                    {
+                        "tax_code": "TPI",
+                        "tax_name": "Taxe Parafiscale à l'Importation",
+                        "rate": TPI_RATE,
+                        "rate_type": "ad_valorem",
+                        "base": "CIF",
+                    },
+                    {
+                        "tax_code": "TVA",
+                        "tax_name": "Taxe sur la Valeur Ajoutée",
+                        "rate": tva,
+                        "rate_type": "ad_valorem",
+                        "base": "CIF + DI + TPI",
+                    },
                 ]
-                self.positions.append({
-                    "code": item["code"],
-                    "code_clean": item["code_clean"],
-                    "code_length": len(item["code_clean"]),
-                    "designation": item["designation"],
-                    "chapter": chapter,
-                    "unit": "kg",
-                    "taxes": taxes,
-                    "taxes_detail": taxes_detail,
-                    "source": "ADII PDF – Tarif douanier Maroc",
-                    "data_type": "national_tariff",
-                    "trade_bloc": "UMA",
-                    "source_verified": self.SOURCE_URL,
-                    "languages": ["fr", "ar"],
-                })
+                self.positions.append(
+                    {
+                        "code": item["code"],
+                        "code_clean": item["code_clean"],
+                        "code_length": len(item["code_clean"]),
+                        "designation": item["designation"],
+                        "chapter": chapter,
+                        "unit": "kg",
+                        "taxes": taxes,
+                        "taxes_detail": taxes_detail,
+                        "source": "ADII PDF – Tarif douanier Maroc",
+                        "data_type": "national_tariff",
+                        "trade_bloc": "UMA",
+                        "source_verified": self.SOURCE_URL,
+                        "languages": ["fr", "ar"],
+                    }
+                )
             return True
         return False
 
@@ -441,20 +513,14 @@ class NorthAfricaScraper:
 
     def _update_stats(self) -> None:
         self.stats["total_positions"] = len(self.positions)
-        self.stats["chapters_processed"] = len(
-            {p["chapter"] for p in self.positions}
-        )
+        self.stats["chapters_processed"] = len({p["chapter"] for p in self.positions})
         self.stats["tva_exempt_count"] = sum(
             1 for p in self.positions if p.get("taxes", {}).get("TVA") == 0.0
         )
-        self.stats["accise_count"] = sum(
-            1 for p in self.positions if "TIC" in p.get("taxes", {})
-        )
+        self.stats["accise_count"] = sum(1 for p in self.positions if "TIC" in p.get("taxes", {}))
         for p in self.positions:
             di = str(p.get("taxes", {}).get("DI", "N/A"))
-            self.stats["di_distribution"][di] = (
-                self.stats["di_distribution"].get(di, 0) + 1
-            )
+            self.stats["di_distribution"][di] = self.stats["di_distribution"].get(di, 0) + 1
 
     def save_results(self, output_dir: Optional[str] = None) -> str:
         if output_dir is None:

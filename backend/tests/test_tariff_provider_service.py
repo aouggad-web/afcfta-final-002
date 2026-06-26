@@ -70,7 +70,13 @@ def test_provider_falls_back_when_postgres_unavailable(monkeypatch):
 def test_provider_prefers_postgres_sub_positions(monkeypatch):
     postgres = _StubPostgres()
     postgres._sub_positions = [
-        {"code": "18010010", "digits": 8, "description_fr": "Test", "description_en": "Test", "dd": 10}
+        {
+            "code": "18010010",
+            "digits": 8,
+            "description_fr": "Test",
+            "description_en": "Test",
+            "dd": 10,
+        }
     ]
     monkeypatch.setattr(
         "services.tariff_provider_service.authentic_service.get_sub_positions",
@@ -103,7 +109,14 @@ def test_provider_falls_back_for_tariff_line(monkeypatch):
 def test_provider_search_uses_postgres_first(monkeypatch):
     postgres = _StubPostgres()
     postgres._search = [
-        {"hs6": "180100", "code": "18010010", "description": "Cacao", "dd_rate": 20, "zlecaf_rate": 0, "savings": 20}
+        {
+            "hs6": "180100",
+            "code": "18010010",
+            "description": "Cacao",
+            "dd_rate": 20,
+            "zlecaf_rate": 0,
+            "savings": 20,
+        }
     ]
     monkeypatch.setattr(
         "services.tariff_provider_service.authentic_service.search_tariff_lines",

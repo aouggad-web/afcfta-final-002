@@ -21,6 +21,7 @@ l'Algérie) :
   - Certaines positions (textiles, véhicules) sont gelées tant que leurs
     règles d'origine détaillées ne sont pas arrêtées : droit commun.
 """
+
 from __future__ import annotations
 
 import datetime
@@ -55,27 +56,65 @@ ACTIVE_PARTNERS = frozenset({"ZAF", "CMR", "EGY", "GHA", "KEN", "MUS", "RWA", "T
 # Pays en développement (non-PMA) membres de CER appliquant le calendrier
 # PMA : l'Algérie leur applique le "principe de réciprocité" (calendrier
 # plus long, partie II-3 de la circulaire).
-RECIPROCITY_PARTNERS = frozenset({
-    "ZAF", "BWA", "CMR", "CPV", "COG", "CIV", "SWZ", "GAB", "GHA", "GNQ", "KEN", "NGA", "NAM",
-})
+RECIPROCITY_PARTNERS = frozenset(
+    {
+        "ZAF",
+        "BWA",
+        "CMR",
+        "CPV",
+        "COG",
+        "CIV",
+        "SWZ",
+        "GAB",
+        "GHA",
+        "GNQ",
+        "KEN",
+        "NGA",
+        "NAM",
+    }
+)
 
 # Positions dont les règles d'origine détaillées ne sont pas encore
 # arrêtées : admises au droit commun (circulaire, partie III-1).
 FROZEN_HEADINGS = (
-    ("5111", "5113"), ("5204", "5212"), ("5309", "5309"), ("5407", "5408"),
-    ("5512", "5516"), ("5801", "5804"), ("5806", "5806"), ("5810", "5810"),
+    ("5111", "5113"),
+    ("5204", "5212"),
+    ("5309", "5309"),
+    ("5407", "5408"),
+    ("5512", "5516"),
+    ("5801", "5804"),
+    ("5806", "5806"),
+    ("5810", "5810"),
     ("6001", "6017"),  # chapitre 60 (bonneterie) entier
     ("6301", "6306"),
-    ("8701", "8701"), ("8703", "8708"), ("8710", "8712"),
+    ("8701", "8701"),
+    ("8703", "8708"),
+    ("8710", "8712"),
 )
 
 # Facteur = part du droit de base encore appliquée (0.0 = exonération totale).
-_STANDARD_A = {2021: 0.8, 2022: 0.6, 2023: 0.4, 2024: 0.2}          # >=2025 -> 0.0
-_STANDARD_B = {2026: 0.8, 2027: 0.6, 2028: 0.4, 2029: 0.2}          # 2021-25 -> 1.0 ; >=2030 -> 0.0
-_RECIP_A = {2021: 0.9, 2022: 0.8, 2023: 0.7, 2024: 0.6, 2025: 0.5,
-            2026: 0.4, 2027: 0.3, 2028: 0.2, 2029: 0.1}            # >=2030 -> 0.0
-_RECIP_B = {2026: 0.875, 2027: 0.75, 2028: 0.625, 2029: 0.5,
-            2030: 0.375, 2031: 0.25, 2032: 0.125}                  # 2021-25 -> 1.0 ; >=2033 -> 0.0
+_STANDARD_A = {2021: 0.8, 2022: 0.6, 2023: 0.4, 2024: 0.2}  # >=2025 -> 0.0
+_STANDARD_B = {2026: 0.8, 2027: 0.6, 2028: 0.4, 2029: 0.2}  # 2021-25 -> 1.0 ; >=2030 -> 0.0
+_RECIP_A = {
+    2021: 0.9,
+    2022: 0.8,
+    2023: 0.7,
+    2024: 0.6,
+    2025: 0.5,
+    2026: 0.4,
+    2027: 0.3,
+    2028: 0.2,
+    2029: 0.1,
+}  # >=2030 -> 0.0
+_RECIP_B = {
+    2026: 0.875,
+    2027: 0.75,
+    2028: 0.625,
+    2029: 0.5,
+    2030: 0.375,
+    2031: 0.25,
+    2032: 0.125,
+}  # 2021-25 -> 1.0 ; >=2033 -> 0.0
 
 
 def _heading(hs_code_clean: str) -> str:

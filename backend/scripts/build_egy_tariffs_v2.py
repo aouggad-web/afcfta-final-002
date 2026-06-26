@@ -38,10 +38,10 @@ OLD_EGY = os.path.join(DATA_DIR, "EGY_tariffs.json")
 OUT_FILE = os.path.join(DATA_DIR, "EGY_tariffs.json")
 
 # ── AfCFTA instruction codes (official Egyptian tariff notes) ───────────────────
-AFCFTA_A_100 = "ر6790"   # Group A — 100% DD reduction
-AFCFTA_B_60 = "ر6791"    # Group B —  60% DD reduction
-AFCFTA_A_CAT = "ر6792"   # Group A — category-based rate
-AFCFTA_B_CAT = "ر6793"   # Group B — category-based rate
+AFCFTA_A_100 = "ر6790"  # Group A — 100% DD reduction
+AFCFTA_B_60 = "ر6791"  # Group B —  60% DD reduction
+AFCFTA_A_CAT = "ر6792"  # Group A — category-based rate
+AFCFTA_B_CAT = "ر6793"  # Group B — category-based rate
 
 
 def _has(instructions, code):
@@ -79,32 +79,38 @@ def afcfta_advantages(dd_rate, instructions):
     bcat = _has(instructions, AFCFTA_B_CAT)
 
     if a100:
-        advantages.append({
-            "tax": "D.D",
-            "rate": 0.0,
-            "regime": "ZLECAf — Groupe A",
-            "condition_fr": "Démantèlement tarifaire ZLECAf Groupe A : réduction 100% du Droit de Douane (Certificat d'Origine ZLECAf requis)",
-            "condition_en": "AfCFTA Group A tariff dismantling: 100% Customs Duty reduction (AfCFTA Certificate of Origin required)",
-            "legal_ref": "Tarif douanier égyptien — note ر6790 ; AfCFTA Protocol on Trade in Goods",
-        })
+        advantages.append(
+            {
+                "tax": "D.D",
+                "rate": 0.0,
+                "regime": "ZLECAf — Groupe A",
+                "condition_fr": "Démantèlement tarifaire ZLECAf Groupe A : réduction 100% du Droit de Douane (Certificat d'Origine ZLECAf requis)",
+                "condition_en": "AfCFTA Group A tariff dismantling: 100% Customs Duty reduction (AfCFTA Certificate of Origin required)",
+                "legal_ref": "Tarif douanier égyptien — note ر6790 ; AfCFTA Protocol on Trade in Goods",
+            }
+        )
     if b60 and dd_rate is not None:
-        advantages.append({
-            "tax": "D.D",
-            "rate": round(dd_rate * 0.4, 3),
-            "regime": "ZLECAf — Groupe B",
-            "condition_fr": "Démantèlement tarifaire ZLECAf Groupe B : réduction 60% du Droit de Douane (Certificat d'Origine ZLECAf requis)",
-            "condition_en": "AfCFTA Group B tariff dismantling: 60% Customs Duty reduction (AfCFTA Certificate of Origin required)",
-            "legal_ref": "Tarif douanier égyptien — note ر6791 ; AfCFTA Protocol on Trade in Goods",
-        })
+        advantages.append(
+            {
+                "tax": "D.D",
+                "rate": round(dd_rate * 0.4, 3),
+                "regime": "ZLECAf — Groupe B",
+                "condition_fr": "Démantèlement tarifaire ZLECAf Groupe B : réduction 60% du Droit de Douane (Certificat d'Origine ZLECAf requis)",
+                "condition_en": "AfCFTA Group B tariff dismantling: 60% Customs Duty reduction (AfCFTA Certificate of Origin required)",
+                "legal_ref": "Tarif douanier égyptien — note ر6791 ; AfCFTA Protocol on Trade in Goods",
+            }
+        )
     if acat or bcat:
-        advantages.append({
-            "tax": "D.D",
-            "rate": dd_rate,
-            "regime": "ZLECAf — taux par catégorie",
-            "condition_fr": "Droit de Douane ZLECAf perçu selon les catégories indiquées en regard du bloc tarifaire",
-            "condition_en": "AfCFTA Customs Duty levied according to the categories shown against the tariff line",
-            "legal_ref": "Tarif douanier égyptien — notes ر6792 / ر6793",
-        })
+        advantages.append(
+            {
+                "tax": "D.D",
+                "rate": dd_rate,
+                "regime": "ZLECAf — taux par catégorie",
+                "condition_fr": "Droit de Douane ZLECAf perçu selon les catégories indiquées en regard du bloc tarifaire",
+                "condition_en": "AfCFTA Customs Duty levied according to the categories shown against the tariff line",
+                "legal_ref": "Tarif douanier égyptien — notes ر6792 / ر6793",
+            }
+        )
 
     # Headline ZLECAf rate (best available preferential = AfCFTA end-state)
     if a100:
@@ -120,14 +126,25 @@ def afcfta_advantages(dd_rate, instructions):
 def build_taxes_detail(dd_rate, vat_rate, table_tax_rate):
     detail = []
     if dd_rate is not None:
-        detail.append({"tax": "D.D", "rate": dd_rate,
-                       "observation": "Droit de Douane (ضريبة الوارد)"})
+        detail.append(
+            {"tax": "D.D", "rate": dd_rate, "observation": "Droit de Douane (ضريبة الوارد)"}
+        )
     if vat_rate is not None:
-        detail.append({"tax": "T.V.A", "rate": vat_rate,
-                       "observation": "Taxe sur la Valeur Ajoutée (ضريبة القيمة المضافة)"})
+        detail.append(
+            {
+                "tax": "T.V.A",
+                "rate": vat_rate,
+                "observation": "Taxe sur la Valeur Ajoutée (ضريبة القيمة المضافة)",
+            }
+        )
     if table_tax_rate:
-        detail.append({"tax": "T.J", "rate": table_tax_rate,
-                       "observation": "Taxe de Table / Droit de consommation (ضريبة الجدول)"})
+        detail.append(
+            {
+                "tax": "T.J",
+                "rate": table_tax_rate,
+                "observation": "Taxe de Table / Droit de consommation (ضريبة الجدول)",
+            }
+        )
     return detail
 
 
@@ -183,7 +200,9 @@ def main():
             afcfta_lines += 1
 
         # Arabic designation: take the shortest non-empty (HS6 parent-ish)
-        ar_descs = [c.get("description_ar", "").strip() for c in children if c.get("description_ar")]
+        ar_descs = [
+            c.get("description_ar", "").strip() for c in children if c.get("description_ar")
+        ]
         description_ar = min(ar_descs, key=len) if ar_descs else ""
 
         taxes_detail = build_taxes_detail(dd_rate, vat_rate, table_tax_rate)
@@ -200,47 +219,51 @@ def main():
             # captured in zlecaf_rate / fiscal_advantages. The verbatim official
             # Arabic instructions (source evidence) are preserved once, in the
             # crawled evidence file (data/crawled/EGY_tariffs.json).
-            sub_positions.append({
-                "code": c["code"],
-                "digits": 10,
-                "dd": c_dd if c_dd is not None else dd_rate,
-                "zlecaf_rate": c_zlecaf,
-                "vat_rate": c.get("vat_rate"),
-                "table_tax_rate": c.get("table_tax_rate"),
-                "description_ar": c.get("description_ar", ""),
-                "dd_rate_raw": c.get("dd_rate_raw", ""),
-                "vat_rate_raw": c.get("vat_rate_raw", ""),
-                "source": "Egyptian Customs Authority (customs.gov.eg) — Tarif officiel",
-            })
+            sub_positions.append(
+                {
+                    "code": c["code"],
+                    "digits": 10,
+                    "dd": c_dd if c_dd is not None else dd_rate,
+                    "zlecaf_rate": c_zlecaf,
+                    "vat_rate": c.get("vat_rate"),
+                    "table_tax_rate": c.get("table_tax_rate"),
+                    "description_ar": c.get("description_ar", ""),
+                    "dd_rate_raw": c.get("dd_rate_raw", ""),
+                    "vat_rate_raw": c.get("vat_rate_raw", ""),
+                    "source": "Egyptian Customs Authority (customs.gov.eg) — Tarif officiel",
+                }
+            )
         total_sub += len(sub_positions)
 
         sensitivity = "sensible" if (not advantages or zlecaf_rate > 0) else "normal"
 
-        tariff_lines.append({
-            "hs6": hs6,
-            "chapter": chapter,
-            "description_fr": meta.get("description_fr", ""),
-            "description_en": meta.get("description_en", ""),
-            "description_ar": description_ar,
-            "category": meta.get("category", "general"),
-            "unit": meta.get("unit", "KG"),
-            "sensitivity": sensitivity,
-            "dd_rate": dd_rate,
-            "dd_source": "Tarif douanier officiel EGY (customs.gov.eg)",
-            "zlecaf_rate": zlecaf_rate,
-            "zlecaf_source": zlecaf_source,
-            "vat_rate": vat_rate,
-            "other_taxes_rate": table_tax_rate,
-            "taxes_detail": taxes_detail,
-            "total_taxes_pct": total_taxes_pct,
-            "fiscal_advantages": advantages,
-            "administrative_formalities": meta.get("administrative_formalities", []),
-            "total_import_taxes": total_taxes_pct,
-            "zlecaf_total_taxes": zlecaf_total,
-            "sub_positions": sub_positions,
-            "has_sub_positions": len(sub_positions) > 0,
-            "sub_position_count": len(sub_positions),
-        })
+        tariff_lines.append(
+            {
+                "hs6": hs6,
+                "chapter": chapter,
+                "description_fr": meta.get("description_fr", ""),
+                "description_en": meta.get("description_en", ""),
+                "description_ar": description_ar,
+                "category": meta.get("category", "general"),
+                "unit": meta.get("unit", "KG"),
+                "sensitivity": sensitivity,
+                "dd_rate": dd_rate,
+                "dd_source": "Tarif douanier officiel EGY (customs.gov.eg)",
+                "zlecaf_rate": zlecaf_rate,
+                "zlecaf_source": zlecaf_source,
+                "vat_rate": vat_rate,
+                "other_taxes_rate": table_tax_rate,
+                "taxes_detail": taxes_detail,
+                "total_taxes_pct": total_taxes_pct,
+                "fiscal_advantages": advantages,
+                "administrative_formalities": meta.get("administrative_formalities", []),
+                "total_import_taxes": total_taxes_pct,
+                "zlecaf_total_taxes": zlecaf_total,
+                "sub_positions": sub_positions,
+                "has_sub_positions": len(sub_positions) > 0,
+                "sub_position_count": len(sub_positions),
+            }
+        )
 
     dd_arr = [d for d in dd_all if d is not None]
     out = {
@@ -302,26 +325,41 @@ def main():
         c_dd = p.get("dd_rate")
         c_instr = p.get("instructions", [])
         c_zlecaf, _, _ = afcfta_advantages(c_dd, c_instr)
-        taxes = {"DD": {"name": "Droit de Douane", "rate": c_dd if c_dd is not None else 0.0,
-                        "raw": p.get("dd_rate_raw", ""), "source": "customs.gov.eg"}}
+        taxes = {
+            "DD": {
+                "name": "Droit de Douane",
+                "rate": c_dd if c_dd is not None else 0.0,
+                "raw": p.get("dd_rate_raw", ""),
+                "source": "customs.gov.eg",
+            }
+        }
         if p.get("vat_rate") is not None:
-            taxes["TVA"] = {"name": "TVA", "rate": p["vat_rate"],
-                            "raw": p.get("vat_rate_raw", ""), "source": "customs.gov.eg"}
+            taxes["TVA"] = {
+                "name": "TVA",
+                "rate": p["vat_rate"],
+                "raw": p.get("vat_rate_raw", ""),
+                "source": "customs.gov.eg",
+            }
         if p.get("table_tax_rate"):
-            taxes["TJ"] = {"name": "Taxe de Table (ضريبة الجدول)",
-                           "rate": p["table_tax_rate"], "source": "customs.gov.eg"}
-        crawled_subs.append({
-            "hs_code": code,
-            "chapter": hs6[:2],
-            "heading": hs6[:4],
-            "name": meta.get("description_fr", ""),
-            "description": meta.get("description_fr", ""),
-            "name_ar": p.get("description_ar", ""),
-            "taxes": taxes,
-            "zlecaf_rate": c_zlecaf,
-            "official_instructions": c_instr,
-            "source": "customs.gov.eg",
-        })
+            taxes["TJ"] = {
+                "name": "Taxe de Table (ضريبة الجدول)",
+                "rate": p["table_tax_rate"],
+                "source": "customs.gov.eg",
+            }
+        crawled_subs.append(
+            {
+                "hs_code": code,
+                "chapter": hs6[:2],
+                "heading": hs6[:4],
+                "name": meta.get("description_fr", ""),
+                "description": meta.get("description_fr", ""),
+                "name_ar": p.get("description_ar", ""),
+                "taxes": taxes,
+                "zlecaf_rate": c_zlecaf,
+                "official_instructions": c_instr,
+                "source": "customs.gov.eg",
+            }
+        )
     crawled_out = os.path.join(DATA_DIR, "crawled", "EGY_tariffs.json")
     crawled_doc = {
         "country": "EGY",

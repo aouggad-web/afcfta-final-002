@@ -24,6 +24,7 @@ router = APIRouter(prefix="/investment/north-africa", tags=["Investment Intellig
 
 # ==================== Request Models ====================
 
+
 class MarketEntryRequest(BaseModel):
     sector: str = Field(..., description="Industry sector (automotive, textiles, ict, etc.)")
     origin_country: str = Field(default="INTL", description="Investor's home country")
@@ -39,12 +40,15 @@ class MarketEntryRequest(BaseModel):
 
 # ==================== Helper ====================
 
+
 def _get_intel():
     from services.regional_intelligence_service import get_regional_intelligence
+
     return get_regional_intelligence()
 
 
 # ==================== Endpoints ====================
+
 
 @router.get("/freshness")
 async def get_data_freshness():

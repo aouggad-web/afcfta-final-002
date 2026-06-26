@@ -12,25 +12,25 @@ Main Components:
 
 Usage:
     from backend.crawlers import ScraperFactory
-    
+
     scraper = ScraperFactory.get_scraper("GHA")
     data = await scraper.scrape()
 """
 
-from .base_scraper import BaseScraper, ScraperConfig, ScraperResult
-from .scraper_factory import ScraperFactory, GenericScraper
 from .all_countries_registry import (
     AFRICAN_COUNTRIES_REGISTRY,
     REGIONAL_BLOCKS,
+    Priority,
     Region,
     RegionalBlock,
-    Priority,
-    get_country_config,
-    get_countries_by_region,
     get_countries_by_block,
+    get_countries_by_region,
+    get_country_config,
     get_priority_countries,
     validate_registry,
 )
+from .base_scraper import BaseScraper, ScraperConfig, ScraperResult
+from .scraper_factory import GenericScraper, ScraperFactory
 
 __all__ = [
     "BaseScraper",

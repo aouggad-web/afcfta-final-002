@@ -29,6 +29,7 @@ Rosters réutilisés du dépôt (aucune liste fabriquée) :
   - UEMOA : les 8 membres de l'Union économique et monétaire ouest-africaine
             (sous-ensemble douanier francophone + GNB de la CEDEAO).
 """
+
 from __future__ import annotations
 
 # ── Unions douanières : libre circulation, droit de douane intra-bloc = 0 % ──
@@ -52,13 +53,69 @@ CUSTOMS_UNION_NAMES = {
 }
 
 # ── Zones de libre-échange : franchise CONDITIONNELLE (règles d'origine) ─────
-ECOWAS = frozenset({"BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB",
-                    "LBR", "MLI", "NER", "NGA", "SEN", "SLE", "TGO"})
-SADC = frozenset({"AGO", "BWA", "COM", "COD", "LSO", "MDG", "MWI", "MUS",
-                  "MOZ", "NAM", "SYC", "ZAF", "SWZ", "TZA", "ZMB", "ZWE"})
-COMESA = frozenset({"BDI", "COM", "COD", "DJI", "EGY", "ERI", "ETH", "KEN",
-                    "LBY", "MDG", "MWI", "MUS", "RWA", "SOM", "SDN", "SWZ",
-                    "TUN", "UGA", "ZMB", "ZWE"})
+ECOWAS = frozenset(
+    {
+        "BEN",
+        "BFA",
+        "CPV",
+        "CIV",
+        "GMB",
+        "GHA",
+        "GIN",
+        "GNB",
+        "LBR",
+        "MLI",
+        "NER",
+        "NGA",
+        "SEN",
+        "SLE",
+        "TGO",
+    }
+)
+SADC = frozenset(
+    {
+        "AGO",
+        "BWA",
+        "COM",
+        "COD",
+        "LSO",
+        "MDG",
+        "MWI",
+        "MUS",
+        "MOZ",
+        "NAM",
+        "SYC",
+        "ZAF",
+        "SWZ",
+        "TZA",
+        "ZMB",
+        "ZWE",
+    }
+)
+COMESA = frozenset(
+    {
+        "BDI",
+        "COM",
+        "COD",
+        "DJI",
+        "EGY",
+        "ERI",
+        "ETH",
+        "KEN",
+        "LBY",
+        "MDG",
+        "MWI",
+        "MUS",
+        "RWA",
+        "SOM",
+        "SDN",
+        "SWZ",
+        "TUN",
+        "UGA",
+        "ZMB",
+        "ZWE",
+    }
+)
 
 FREE_TRADE_AREAS = {
     "ECOWAS": ECOWAS,
@@ -102,5 +159,4 @@ def shared_free_trade_areas(origin_iso3, dest_iso3):
     o, d = _norm(origin_iso3), _norm(dest_iso3)
     if not o or not d or o == d:
         return []
-    return [code for code, members in FREE_TRADE_AREAS.items()
-            if o in members and d in members]
+    return [code for code, members in FREE_TRADE_AREAS.items() if o in members and d in members]

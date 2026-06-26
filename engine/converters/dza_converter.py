@@ -26,31 +26,47 @@ from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from schemas.canonical_model import (
-    CanonicalTariffLine, CommodityCode, DataStatus, DutyBasis,
-    FiscalAdvantage, Measure, MeasureType, Provenance, RateType,
-    ReliabilityGrade, Requirement, SCHEMA_VERSION,
-)
 from converters.base import (
-    OUTPUT_DIR, classify_measure, classify_requirement, clean_hs,
-    digits_from_code, extract_authority, hs6_from_code, load_crawled,
-    parse_duty_value, write_jsonl,
+    OUTPUT_DIR,
+    classify_measure,
+    classify_requirement,
+    clean_hs,
+    digits_from_code,
+    extract_authority,
+    hs6_from_code,
+    load_crawled,
+    parse_duty_value,
+    write_jsonl,
+)
+from schemas.canonical_model import (
+    SCHEMA_VERSION,
+    CanonicalTariffLine,
+    CommodityCode,
+    DataStatus,
+    DutyBasis,
+    FiscalAdvantage,
+    Measure,
+    MeasureType,
+    Provenance,
+    RateType,
+    ReliabilityGrade,
+    Requirement,
 )
 
-COUNTRY      = "DZA"
-SOURCE_NAME  = "Direction Générale des Douanes — Algérie (DGD)"
-SOURCE_URL   = "https://www.douane.gov.dz"
-SOURCE_DOC   = "Tarif Intégré National (TIN) 2025 — conformepro.dz/douane.gov.dz"
+COUNTRY = "DZA"
+SOURCE_NAME = "Direction Générale des Douanes — Algérie (DGD)"
+SOURCE_URL = "https://www.douane.gov.dz"
+SOURCE_DOC = "Tarif Intégré National (TIN) 2025 — conformepro.dz/douane.gov.dz"
 VERSION_DATE = date(2025, 1, 1)
 
 # Séquence et type par code de taxe DZA
 _DZA_TAXES: dict[str, tuple[int, MeasureType, DutyBasis, list]] = {
     # code  → (séquence, type, assiette, basis_includes)
-    "DD":   (10, MeasureType.CUSTOMS_DUTY, DutyBasis.CIF, []),
-    "TCS":  (20, MeasureType.OTHER_TAX,   DutyBasis.CIF, []),
-    "PRCT": (30, MeasureType.OTHER_TAX,   DutyBasis.CIF, []),
-    "DAPS": (15, MeasureType.SAFEGUARD,   DutyBasis.CIF, []),
-    "TVA":  (90, MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED, ["DD", "TCS", "PRCT"]),
+    "DD": (10, MeasureType.CUSTOMS_DUTY, DutyBasis.CIF, []),
+    "TCS": (20, MeasureType.OTHER_TAX, DutyBasis.CIF, []),
+    "PRCT": (30, MeasureType.OTHER_TAX, DutyBasis.CIF, []),
+    "DAPS": (15, MeasureType.SAFEGUARD, DutyBasis.CIF, []),
+    "TVA": (90, MeasureType.VAT, DutyBasis.CIF_PLUS_INCLUDED, ["DD", "TCS", "PRCT"]),
 }
 
 # Mots-clés préférentiels dans advantages[] → accord
@@ -83,42 +99,49 @@ def _build_measures(taxes: dict, code_nat: str) -> list[Measure]:
     for tax_code, tax_info in taxes.items():
         if not isinstance(tax_info, dict):
             continue
-        name_fr  = (tax_info.get("name") or tax_code).strip()
+        name_fr = (tax_info.get("name") or tax_code).strip()
         rate_pct = tax_info.get("rate")
-        raw_val  = (tax_info.get("raw") or "").strip()
+        raw_val = (tax_info.get("raw") or "").strip()
 
         config = _DZA_TAXES.get(tax_code.upper())
         if config:
             seq, mtype, basis, basis_inc = config
         else:
-            seq, mtype, basis, basis_inc = 50, classify_measure(tax_code, name_fr), DutyBasis.CIF, []
+            seq, mtype, basis, basis_inc = (
+                50,
+                classify_measure(tax_code, name_fr),
+                DutyBasis.CIF,
+                [],
+            )
 
         if rate_pct is None:
             duty = parse_duty_value(raw_val)
             rate_pct = duty["rate_pct"]
             rate_type = duty["rate_type"]
             specific_amount = duty["specific_amount"]
-            specific_unit   = duty["specific_unit"]
+            specific_unit = duty["specific_unit"]
         else:
             rate_type = RateType.EXEMPT if rate_pct == 0.0 else RateType.AD_VALOREM
             specific_amount = None
-            specific_unit   = None
+            specific_unit = None
 
-        measures.append(Measure(
-            country_iso3=COUNTRY,
-            national_code=code_nat,
-            measure_type=mtype,
-            code=tax_code,
-            name_fr=name_fr,
-            rate_pct=rate_pct,
-            rate_type=rate_type,
-            specific_amount=specific_amount,
-            specific_unit=specific_unit,
-            basis=basis,
-            basis_includes=basis_inc,
-            sequence=seq,
-            legal_reference="LF 2025 — Code des Douanes DZA",
-        ))
+        measures.append(
+            Measure(
+                country_iso3=COUNTRY,
+                national_code=code_nat,
+                measure_type=mtype,
+                code=tax_code,
+                name_fr=name_fr,
+                rate_pct=rate_pct,
+                rate_type=rate_type,
+                specific_amount=specific_amount,
+                specific_unit=specific_unit,
+                basis=basis,
+                basis_includes=basis_inc,
+                sequence=seq,
+                legal_reference="LF 2025 — Code des Douanes DZA",
+            )
+        )
 
     measures.sort(key=lambda m: m.sequence)
     return measures
@@ -141,40 +164,56 @@ def _normalize_fap_text(text: str) -> str:
 # ceux-ci restent sans code (code="") en attendant une correspondance vérifiée.
 _FAP_CODES: dict[str, tuple[str, str]] = {
     # libellé normalisé → (code FAP, base légale / Doccar)
-    _normalize_fap_text("Autorisation Spéciale du Ministère de la Défense Nationale"):
-        ("100", "DE n° 98/96 du 18/06/98 relatif aux armes et munitions."),
+    _normalize_fap_text("Autorisation Spéciale du Ministère de la Défense Nationale"): (
+        "100",
+        "DE n° 98/96 du 18/06/98 relatif aux armes et munitions.",
+    ),
     _normalize_fap_text(
         "Autorisation prealable a l'import et/ou l'export de stupefiants et "
-        "substances psychotropes(m.sante)"):
-        ("109", "Convention des Nations Unies contre le trafic illicite des "
-                "stupéfiants et des substances psychotropes."),
+        "substances psychotropes(m.sante)"
+    ): (
+        "109",
+        "Convention des Nations Unies contre le trafic illicite des "
+        "stupéfiants et des substances psychotropes.",
+    ),
     _normalize_fap_text(
         "Autorisation technique prealable d'importation des produits "
-        "phytosanitaires a usage agricole"):
-        ("113", "DE 99-165 du 20/07/99 modifiant et complétant le DE 95-405 du "
-                "02/12/95 relatif au contrôle des produits phytosanitaires à "
-                "usage agricole."),
+        "phytosanitaires a usage agricole"
+    ): (
+        "113",
+        "DE 99-165 du 20/07/99 modifiant et complétant le DE 95-405 du "
+        "02/12/95 relatif au contrôle des produits phytosanitaires à "
+        "usage agricole.",
+    ),
     _normalize_fap_text(
-        "Acquit du service des alcools, titres de regie "
-        "(passavant,acquit-@-caution)."):
-        ("140", "Article 73 du Code des Impôts Indirects."),
-    _normalize_fap_text("Visa de controle sanitaire veterinaire (m. agriculture)"):
-        ("160", "DE 91.452 du 16/11/1991 relatif aux inspections vétérinaires "
-                "des postes frontières (en application de la loi 88.08 du "
-                "26/01/1988)."),
-    _normalize_fap_text("Derogation sanitaire veterinaire (m. agriculture)"):
-        ("180", "DE 91.452 du 16/11/1991 relatif aux inspections vétérinaires "
-                "des postes frontières (en application de la loi 88.08 du "
-                "26/01/1988)."),
-    _normalize_fap_text("Certificat Phytosanitaire du Pays d'Origine"):
-        ("215", "DE 93.286 du 23/11/93 relatif à la protection phytosanitaire "
-                "aux frontières (en application de la loi 87.17 du "
-                "01/08/1987)."),
+        "Acquit du service des alcools, titres de regie " "(passavant,acquit-@-caution)."
+    ): ("140", "Article 73 du Code des Impôts Indirects."),
+    _normalize_fap_text("Visa de controle sanitaire veterinaire (m. agriculture)"): (
+        "160",
+        "DE 91.452 du 16/11/1991 relatif aux inspections vétérinaires "
+        "des postes frontières (en application de la loi 88.08 du "
+        "26/01/1988).",
+    ),
+    _normalize_fap_text("Derogation sanitaire veterinaire (m. agriculture)"): (
+        "180",
+        "DE 91.452 du 16/11/1991 relatif aux inspections vétérinaires "
+        "des postes frontières (en application de la loi 88.08 du "
+        "26/01/1988).",
+    ),
+    _normalize_fap_text("Certificat Phytosanitaire du Pays d'Origine"): (
+        "215",
+        "DE 93.286 du 23/11/93 relatif à la protection phytosanitaire "
+        "aux frontières (en application de la loi 87.17 du "
+        "01/08/1987).",
+    ),
     _normalize_fap_text(
         "Autorisation d'importation et d'exportation des produits sources de "
-        "rayonnements ionisants (asri)"):
-        ("242", "DP 05-117 du 11/04/2005 relatif aux mesures de protection "
-                "contre les rayonnements ionisants."),
+        "rayonnements ionisants (asri)"
+    ): (
+        "242",
+        "DP 05-117 du 11/04/2005 relatif aux mesures de protection "
+        "contre les rayonnements ionisants.",
+    ),
 }
 
 
@@ -189,18 +228,20 @@ def _build_requirements(formalities: list, code_nat: str) -> list[Requirement]:
         fap_match = _FAP_CODES.get(_normalize_fap_text(text))
         code = fap_match[0] if fap_match else ""
         legal_ref = fap_match[1] if fap_match else None
-        reqs.append(Requirement(
-            country_iso3=COUNTRY,
-            national_code=code_nat,
-            requirement_type=req_type,
-            code=code,
-            document_fr=text,
-            is_mandatory=True,
-            issuing_authority=authority,
-            issuing_authority_code=auth_code,
-            applies_to="IMPORT",
-            legal_reference=legal_ref,
-        ))
+        reqs.append(
+            Requirement(
+                country_iso3=COUNTRY,
+                national_code=code_nat,
+                requirement_type=req_type,
+                code=code,
+                document_fr=text,
+                is_mandatory=True,
+                issuing_authority=authority,
+                issuing_authority_code=auth_code,
+                applies_to="IMPORT",
+                legal_reference=legal_ref,
+            )
+        )
     return reqs
 
 
@@ -213,31 +254,28 @@ def _build_advantages(advantages: list, code_nat: str) -> list[FiscalAdvantage]:
             if keyword in text:
                 agreement = name
                 break
-        fas.append(FiscalAdvantage(
-            country_iso3=COUNTRY,
-            national_code=code_nat,
-            tax_code="DD",
-            reduced_rate_pct=0.0,   # taux souvent "exonération" sans % précis
-            condition_fr=str(item).strip(),
-            agreement=agreement,
-            required_document="Certificat d'origine",
-        ))
+        fas.append(
+            FiscalAdvantage(
+                country_iso3=COUNTRY,
+                national_code=code_nat,
+                tax_code="DD",
+                reduced_rate_pct=0.0,  # taux souvent "exonération" sans % précis
+                condition_fr=str(item).strip(),
+                agreement=agreement,
+                required_document="Certificat d'origine",
+            )
+        )
     return fas
 
 
 def convert_position(pos: dict, now: datetime) -> CanonicalTariffLine:
     code_raw = str(pos.get("hs_code") or pos.get("raw_code") or "").strip()
     code_nat = clean_hs(code_raw)
-    hs6      = hs6_from_code(code_nat)
-    chapter  = (pos.get("chapter") or hs6[:2]).zfill(2)
+    hs6 = hs6_from_code(code_nat)
+    chapter = (pos.get("chapter") or hs6[:2]).zfill(2)
 
     # Prend le libellé le plus complet disponible
-    desc = (
-        pos.get("designation_full")
-        or pos.get("designation")
-        or pos.get("name")
-        or ""
-    ).strip()
+    desc = (pos.get("designation_full") or pos.get("designation") or pos.get("name") or "").strip()
 
     commodity = CommodityCode(
         country_iso3=COUNTRY,
@@ -250,13 +288,13 @@ def convert_position(pos: dict, now: datetime) -> CanonicalTariffLine:
         hs_version="HS2022",
     )
 
-    taxes      = pos.get("taxes") or {}
+    taxes = pos.get("taxes") or {}
     formalities = pos.get("formalities") or []
-    advantages  = pos.get("advantages") or []
+    advantages = pos.get("advantages") or []
 
-    measures     = _build_measures(taxes, code_nat)
+    measures = _build_measures(taxes, code_nat)
     requirements = _build_requirements(formalities, code_nat)
-    fiscal_adv   = _build_advantages(advantages, code_nat)
+    fiscal_adv = _build_advantages(advantages, code_nat)
 
     ad_val = [m.rate_pct for m in measures if m.rate_pct is not None and m.sequence < 90]
     total_npf = sum(ad_val)

@@ -1,20 +1,22 @@
-from fastapi import APIRouter, HTTPException, Query
-from fastapi.responses import FileResponse, StreamingResponse
-from typing import Optional, List
-from pydantic import BaseModel
+import csv
+import io
+import json
 import logging
 import os
 import re
-import csv
-import json
-import io
 import zipfile
+from typing import List, Optional
 
-from services.tariff_data_collector import get_collector
 from etl.hs_sections_headings import (
-    get_section_for_chapter, get_hs4_heading,
-    get_utilization_group, get_rangee_number,
+    get_hs4_heading,
+    get_rangee_number,
+    get_section_for_chapter,
+    get_utilization_group,
 )
+from fastapi import APIRouter, HTTPException, Query
+from fastapi.responses import FileResponse, StreamingResponse
+from pydantic import BaseModel
+from services.tariff_data_collector import get_collector
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +40,9 @@ async def collect_tariff_data(request: CollectRequest):
     elif request.country_codes:
         result = await collector.collect_all_countries(country_codes=request.country_codes)
     else:
-        raise HTTPException(status_code=400, detail="Provide country_codes or set all_countries=true")
+        raise HTTPException(
+            status_code=400, detail="Provide country_codes or set all_countries=true"
+        )
 
     return result
 
@@ -115,7 +119,12 @@ async def get_country_tariff_data(
 async def get_monitoring_stats():
     collector = get_collector()
     available = collector.get_available_countries()
-    stats = {"countries": [], "total_tariff_lines": 0, "total_sub_positions": 0, "total_positions": 0}
+    stats = {
+        "countries": [],
+        "total_tariff_lines": 0,
+        "total_sub_positions": 0,
+        "total_positions": 0,
+    }
     for cc in sorted(available):
         data = collector.load_country_tariffs(cc)
         if data:
@@ -123,17 +132,19 @@ async def get_monitoring_stats():
             tl = summary.get("total_tariff_lines", 0)
             sp = summary.get("total_sub_positions", 0)
             tp = summary.get("total_positions", tl + sp)
-            stats["countries"].append({
-                "code": cc,
-                "tariff_lines": tl,
-                "sub_positions": sp,
-                "total_positions": tp,
-                "lines_with_sub_positions": summary.get("lines_with_sub_positions", 0),
-                "vat_rate": summary.get("vat_rate_pct", 0),
-                "dd_avg": summary.get("dd_rate_range", {}).get("avg", 0),
-                "chapters": summary.get("chapters_covered", 0),
-                "generated_at": data.get("generated_at", ""),
-            })
+            stats["countries"].append(
+                {
+                    "code": cc,
+                    "tariff_lines": tl,
+                    "sub_positions": sp,
+                    "total_positions": tp,
+                    "lines_with_sub_positions": summary.get("lines_with_sub_positions", 0),
+                    "vat_rate": summary.get("vat_rate_pct", 0),
+                    "dd_avg": summary.get("dd_rate_range", {}).get("avg", 0),
+                    "chapters": summary.get("chapters_covered", 0),
+                    "generated_at": data.get("generated_at", ""),
+                }
+            )
             stats["total_tariff_lines"] += tl
             stats["total_sub_positions"] += sp
             stats["total_positions"] += tp
@@ -180,90 +191,228 @@ async def get_country_tariff_summary(country_code: str):
 
 
 COUNTRY_NAMES = {
-    "DZA": "Algerie", "EGY": "Egypte", "LBY": "Libye", "MAR": "Maroc",
-    "TUN": "Tunisie", "SDN": "Soudan", "MRT": "Mauritanie",
-    "BEN": "Benin", "BFA": "Burkina_Faso", "CPV": "Cap_Vert", "CIV": "Cote_Ivoire",
-    "GMB": "Gambie", "GHA": "Ghana", "GIN": "Guinee", "GNB": "Guinee_Bissau",
-    "LBR": "Liberia", "MLI": "Mali", "NER": "Niger", "NGA": "Nigeria",
-    "SEN": "Senegal", "SLE": "Sierra_Leone", "TGO": "Togo",
-    "CMR": "Cameroun", "CAF": "Centrafrique", "TCD": "Tchad", "COG": "Congo",
-    "GAB": "Gabon", "GNQ": "Guinee_Equatoriale", "COD": "RD_Congo", "STP": "Sao_Tome",
-    "KEN": "Kenya", "TZA": "Tanzanie", "UGA": "Ouganda", "RWA": "Rwanda",
-    "BDI": "Burundi", "SSD": "Soudan_Sud",
-    "ZAF": "Afrique_Sud", "BWA": "Botswana", "NAM": "Namibie", "LSO": "Lesotho",
-    "SWZ": "Eswatini", "MWI": "Malawi", "ZMB": "Zambie", "ZWE": "Zimbabwe",
-    "MOZ": "Mozambique", "AGO": "Angola", "MDG": "Madagascar", "MUS": "Maurice",
-    "COM": "Comores", "SYC": "Seychelles",
-    "ETH": "Ethiopie", "ERI": "Erythree", "DJI": "Djibouti", "SOM": "Somalie",
+    "DZA": "Algerie",
+    "EGY": "Egypte",
+    "LBY": "Libye",
+    "MAR": "Maroc",
+    "TUN": "Tunisie",
+    "SDN": "Soudan",
+    "MRT": "Mauritanie",
+    "BEN": "Benin",
+    "BFA": "Burkina_Faso",
+    "CPV": "Cap_Vert",
+    "CIV": "Cote_Ivoire",
+    "GMB": "Gambie",
+    "GHA": "Ghana",
+    "GIN": "Guinee",
+    "GNB": "Guinee_Bissau",
+    "LBR": "Liberia",
+    "MLI": "Mali",
+    "NER": "Niger",
+    "NGA": "Nigeria",
+    "SEN": "Senegal",
+    "SLE": "Sierra_Leone",
+    "TGO": "Togo",
+    "CMR": "Cameroun",
+    "CAF": "Centrafrique",
+    "TCD": "Tchad",
+    "COG": "Congo",
+    "GAB": "Gabon",
+    "GNQ": "Guinee_Equatoriale",
+    "COD": "RD_Congo",
+    "STP": "Sao_Tome",
+    "KEN": "Kenya",
+    "TZA": "Tanzanie",
+    "UGA": "Ouganda",
+    "RWA": "Rwanda",
+    "BDI": "Burundi",
+    "SSD": "Soudan_Sud",
+    "ZAF": "Afrique_Sud",
+    "BWA": "Botswana",
+    "NAM": "Namibie",
+    "LSO": "Lesotho",
+    "SWZ": "Eswatini",
+    "MWI": "Malawi",
+    "ZMB": "Zambie",
+    "ZWE": "Zimbabwe",
+    "MOZ": "Mozambique",
+    "AGO": "Angola",
+    "MDG": "Madagascar",
+    "MUS": "Maurice",
+    "COM": "Comores",
+    "SYC": "Seychelles",
+    "ETH": "Ethiopie",
+    "ERI": "Erythree",
+    "DJI": "Djibouti",
+    "SOM": "Somalie",
 }
 
 REGIONS = {
-    "afrique_nord": {"name": "Afrique du Nord / UMA", "countries": ["DZA", "EGY", "LBY", "MAR", "TUN", "SDN", "MRT"]},
-    "cedeao": {"name": "CEDEAO / ECOWAS", "countries": ["BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", "NGA", "SEN", "SLE", "TGO"]},
-    "cemac": {"name": "CEMAC + RDC + STP", "countries": ["CMR", "CAF", "TCD", "COG", "GAB", "GNQ", "COD", "STP"]},
+    "afrique_nord": {
+        "name": "Afrique du Nord / UMA",
+        "countries": ["DZA", "EGY", "LBY", "MAR", "TUN", "SDN", "MRT"],
+    },
+    "cedeao": {
+        "name": "CEDEAO / ECOWAS",
+        "countries": [
+            "BEN",
+            "BFA",
+            "CPV",
+            "CIV",
+            "GMB",
+            "GHA",
+            "GIN",
+            "GNB",
+            "LBR",
+            "MLI",
+            "NER",
+            "NGA",
+            "SEN",
+            "SLE",
+            "TGO",
+        ],
+    },
+    "cemac": {
+        "name": "CEMAC + RDC + STP",
+        "countries": ["CMR", "CAF", "TCD", "COG", "GAB", "GNQ", "COD", "STP"],
+    },
     "eac": {"name": "EAC", "countries": ["KEN", "TZA", "UGA", "RWA", "BDI", "SSD"]},
-    "sadc": {"name": "SADC / SACU", "countries": ["ZAF", "BWA", "NAM", "LSO", "SWZ", "MWI", "ZMB", "ZWE", "MOZ", "AGO", "MDG", "MUS", "COM", "SYC"]},
+    "sadc": {
+        "name": "SADC / SACU",
+        "countries": [
+            "ZAF",
+            "BWA",
+            "NAM",
+            "LSO",
+            "SWZ",
+            "MWI",
+            "ZMB",
+            "ZWE",
+            "MOZ",
+            "AGO",
+            "MDG",
+            "MUS",
+            "COM",
+            "SYC",
+        ],
+    },
     "igad": {"name": "IGAD / Corne de l'Afrique", "countries": ["ETH", "ERI", "DJI", "SOM"]},
 }
 
 
 CHAPTER_GROUPS = [
-    ("01", "10"), ("11", "20"), ("21", "30"), ("31", "40"), ("41", "50"),
-    ("51", "60"), ("61", "70"), ("71", "80"), ("81", "90"), ("91", "99"),
+    ("01", "10"),
+    ("11", "20"),
+    ("21", "30"),
+    ("31", "40"),
+    ("41", "50"),
+    ("51", "60"),
+    ("61", "70"),
+    ("71", "80"),
+    ("81", "90"),
+    ("91", "99"),
 ]
 
 # Pre-built set of valid chapter group strings for O(1) lookup in download endpoints.
 _VALID_CHAPTER_GROUPS = {f"{s}-{e}" for s, e in CHAPTER_GROUPS}
 
 CHAPTER_DESCRIPTIONS_FR = {
-    "01": "Animaux vivants", "02": "Viandes et abats comestibles",
-    "03": "Poissons et crustacés", "04": "Lait, oeufs, miel",
-    "05": "Autres produits d'origine animale", "06": "Plantes vivantes et fleurs",
-    "07": "Légumes, plantes, racines", "08": "Fruits comestibles, agrumes",
-    "09": "Café, thé, épices", "10": "Céréales",
-    "11": "Produits de la minoterie", "12": "Graines et fruits oléagineux",
-    "13": "Gommes, résines", "14": "Matières à tresser",
-    "15": "Graisses et huiles", "16": "Préparations de viandes/poissons",
-    "17": "Sucres et sucreries", "18": "Cacao et préparations",
-    "19": "Préparations de céréales", "20": "Préparations de légumes/fruits",
-    "21": "Préparations alimentaires diverses", "22": "Boissons, liquides alcooliques",
-    "23": "Résidus des industries alimentaires", "24": "Tabacs",
-    "25": "Sel, soufre, terres, pierres", "26": "Minerais, scories, cendres",
-    "27": "Combustibles minéraux, huiles", "28": "Produits chimiques inorganiques",
-    "29": "Produits chimiques organiques", "30": "Produits pharmaceutiques",
-    "31": "Engrais", "32": "Extraits tannants, peintures",
-    "33": "Huiles essentielles, parfumerie", "34": "Savons, cires, bougies",
-    "35": "Matières albuminoïdes, colles", "36": "Poudres, explosifs, allumettes",
-    "37": "Produits photographiques", "38": "Produits chimiques divers",
-    "39": "Matières plastiques", "40": "Caoutchouc",
-    "41": "Peaux et cuirs", "42": "Ouvrages en cuir",
-    "43": "Pelleteries et fourrures", "44": "Bois et ouvrages en bois",
-    "45": "Liège", "46": "Ouvrages de sparterie/vannerie",
-    "47": "Pâtes de bois, papier recyclé", "48": "Papiers et cartons",
-    "49": "Produits de l'édition, presse", "50": "Soie",
-    "51": "Laine, poils fins", "52": "Coton",
-    "53": "Autres fibres textiles végétales", "54": "Filaments synthétiques",
-    "55": "Fibres synthétiques discontinues", "56": "Ouates, feutres, cordages",
-    "57": "Tapis et revêtements de sol", "58": "Tissus spéciaux, broderies",
-    "59": "Tissus imprégnés, enduits", "60": "Étoffes de bonneterie",
-    "61": "Vêtements en bonneterie", "62": "Vêtements (hors bonneterie)",
-    "63": "Autres articles textiles confectionnés", "64": "Chaussures, guêtres",
-    "65": "Coiffures", "66": "Parapluies, cannes",
-    "67": "Plumes, fleurs artificielles", "68": "Ouvrages en pierres, ciment",
-    "69": "Produits céramiques", "70": "Verre et ouvrages en verre",
+    "01": "Animaux vivants",
+    "02": "Viandes et abats comestibles",
+    "03": "Poissons et crustacés",
+    "04": "Lait, oeufs, miel",
+    "05": "Autres produits d'origine animale",
+    "06": "Plantes vivantes et fleurs",
+    "07": "Légumes, plantes, racines",
+    "08": "Fruits comestibles, agrumes",
+    "09": "Café, thé, épices",
+    "10": "Céréales",
+    "11": "Produits de la minoterie",
+    "12": "Graines et fruits oléagineux",
+    "13": "Gommes, résines",
+    "14": "Matières à tresser",
+    "15": "Graisses et huiles",
+    "16": "Préparations de viandes/poissons",
+    "17": "Sucres et sucreries",
+    "18": "Cacao et préparations",
+    "19": "Préparations de céréales",
+    "20": "Préparations de légumes/fruits",
+    "21": "Préparations alimentaires diverses",
+    "22": "Boissons, liquides alcooliques",
+    "23": "Résidus des industries alimentaires",
+    "24": "Tabacs",
+    "25": "Sel, soufre, terres, pierres",
+    "26": "Minerais, scories, cendres",
+    "27": "Combustibles minéraux, huiles",
+    "28": "Produits chimiques inorganiques",
+    "29": "Produits chimiques organiques",
+    "30": "Produits pharmaceutiques",
+    "31": "Engrais",
+    "32": "Extraits tannants, peintures",
+    "33": "Huiles essentielles, parfumerie",
+    "34": "Savons, cires, bougies",
+    "35": "Matières albuminoïdes, colles",
+    "36": "Poudres, explosifs, allumettes",
+    "37": "Produits photographiques",
+    "38": "Produits chimiques divers",
+    "39": "Matières plastiques",
+    "40": "Caoutchouc",
+    "41": "Peaux et cuirs",
+    "42": "Ouvrages en cuir",
+    "43": "Pelleteries et fourrures",
+    "44": "Bois et ouvrages en bois",
+    "45": "Liège",
+    "46": "Ouvrages de sparterie/vannerie",
+    "47": "Pâtes de bois, papier recyclé",
+    "48": "Papiers et cartons",
+    "49": "Produits de l'édition, presse",
+    "50": "Soie",
+    "51": "Laine, poils fins",
+    "52": "Coton",
+    "53": "Autres fibres textiles végétales",
+    "54": "Filaments synthétiques",
+    "55": "Fibres synthétiques discontinues",
+    "56": "Ouates, feutres, cordages",
+    "57": "Tapis et revêtements de sol",
+    "58": "Tissus spéciaux, broderies",
+    "59": "Tissus imprégnés, enduits",
+    "60": "Étoffes de bonneterie",
+    "61": "Vêtements en bonneterie",
+    "62": "Vêtements (hors bonneterie)",
+    "63": "Autres articles textiles confectionnés",
+    "64": "Chaussures, guêtres",
+    "65": "Coiffures",
+    "66": "Parapluies, cannes",
+    "67": "Plumes, fleurs artificielles",
+    "68": "Ouvrages en pierres, ciment",
+    "69": "Produits céramiques",
+    "70": "Verre et ouvrages en verre",
     "71": "Perles, pierres précieuses, métaux précieux",
-    "72": "Fonte, fer et acier", "73": "Ouvrages en fonte, fer, acier",
-    "74": "Cuivre", "75": "Nickel", "76": "Aluminium",
-    "78": "Plomb", "79": "Zinc", "80": "Étain",
-    "81": "Autres métaux communs", "82": "Outils, coutellerie",
+    "72": "Fonte, fer et acier",
+    "73": "Ouvrages en fonte, fer, acier",
+    "74": "Cuivre",
+    "75": "Nickel",
+    "76": "Aluminium",
+    "78": "Plomb",
+    "79": "Zinc",
+    "80": "Étain",
+    "81": "Autres métaux communs",
+    "82": "Outils, coutellerie",
     "83": "Ouvrages divers en métaux communs",
-    "84": "Machines, appareils mécaniques", "85": "Machines, appareils électriques",
-    "86": "Véhicules ferroviaires", "87": "Voitures automobiles, tracteurs",
-    "88": "Navigation aérienne", "89": "Navigation maritime",
-    "90": "Instruments d'optique, médecine", "91": "Horlogerie",
-    "92": "Instruments de musique", "93": "Armes et munitions",
-    "94": "Meubles, literie, éclairage", "95": "Jouets, jeux, articles de sport",
-    "96": "Ouvrages divers", "97": "Objets d'art, antiquités",
+    "84": "Machines, appareils mécaniques",
+    "85": "Machines, appareils électriques",
+    "86": "Véhicules ferroviaires",
+    "87": "Voitures automobiles, tracteurs",
+    "88": "Navigation aérienne",
+    "89": "Navigation maritime",
+    "90": "Instruments d'optique, médecine",
+    "91": "Horlogerie",
+    "92": "Instruments de musique",
+    "93": "Armes et munitions",
+    "94": "Meubles, literie, éclairage",
+    "95": "Jouets, jeux, articles de sport",
+    "96": "Ouvrages divers",
+    "97": "Objets d'art, antiquités",
     "99": "Codes spéciaux",
 }
 
@@ -330,14 +479,13 @@ def _generate_country_csvs(country_code: str):
                 sec_num = sec.get("number", "")
                 if sec_num and sec_num not in emitted_sections:
                     emitted_sections.add(sec_num)
-                    writer.writerow([
-                        f"SECTION {sec_num}", "SECTION", sec["fr"], sec["en"], ""
-                    ] + empty_row_suffix)
+                    writer.writerow(
+                        [f"SECTION {sec_num}", "SECTION", sec["fr"], sec["en"], ""]
+                        + empty_row_suffix
+                    )
 
                 ch_desc = CHAPTER_DESCRIPTIONS_FR.get(ch, "")
-                writer.writerow([
-                    f"CHAPITRE {ch}", "CHAPITRE", ch_desc, "", ""
-                ] + empty_row_suffix)
+                writer.writerow([f"CHAPITRE {ch}", "CHAPITRE", ch_desc, "", ""] + empty_row_suffix)
 
                 emitted_hs4 = set()
                 prev_formalites = ""
@@ -350,15 +498,21 @@ def _generate_country_csvs(country_code: str):
                         emitted_hs4.add(hs4)
                         h4 = get_hs4_heading(hs6)
                         rangee_num = get_rangee_number(hs4)
-                        writer.writerow([
-                            hs4, f"RANGEE {rangee_num}",
-                            h4.get("en", ""), "", ""
-                        ] + empty_row_suffix)
+                        writer.writerow(
+                            [hs4, f"RANGEE {rangee_num}", h4.get("en", ""), "", ""]
+                            + empty_row_suffix
+                        )
 
-                    writer.writerow([
-                        hs6, "HS6",
-                        line.get("description_fr", ""), line.get("description_en", ""), ""
-                    ] + empty_row_suffix)
+                    writer.writerow(
+                        [
+                            hs6,
+                            "HS6",
+                            line.get("description_fr", ""),
+                            line.get("description_en", ""),
+                            "",
+                        ]
+                        + empty_row_suffix
+                    )
 
                     parent_td = line.get("taxes_detail", [])
                     td_map = {}
@@ -366,7 +520,11 @@ def _generate_country_csvs(country_code: str):
                         td_map[t.get("tax", "")] = t.get("rate", 0)
 
                     parent_af = line.get("administrative_formalities", [])
-                    parent_af_str = " | ".join([f"{fi['code']} {fi['document_fr']}" for fi in parent_af]) if parent_af else ""
+                    parent_af_str = (
+                        " | ".join([f"{fi['code']} {fi['document_fr']}" for fi in parent_af])
+                        if parent_af
+                        else ""
+                    )
 
                     util_group = get_utilization_group(ch)
 
@@ -390,11 +548,17 @@ def _generate_country_csvs(country_code: str):
                             show_form = parent_af_str if parent_af_str != prev_formalites else "="
                             prev_formalites = parent_af_str
 
-                            writer.writerow([
-                                sp.get("code", ""), f"HS{digits}",
-                                sp.get("description_fr", ""), sp.get("description_en", ""),
-                                util_group,
-                            ] + tax_values + [show_form, round(sp_total, 2)])
+                            writer.writerow(
+                                [
+                                    sp.get("code", ""),
+                                    f"HS{digits}",
+                                    sp.get("description_fr", ""),
+                                    sp.get("description_en", ""),
+                                    util_group,
+                                ]
+                                + tax_values
+                                + [show_form, round(sp_total, 2)]
+                            )
                     else:
                         dd_r = line.get("dd_rate", 0)
                         direct_td_map = dict(td_map)
@@ -411,19 +575,28 @@ def _generate_country_csvs(country_code: str):
                         show_form = parent_af_str if parent_af_str != prev_formalites else "="
                         prev_formalites = parent_af_str
 
-                        writer.writerow([
-                            hs6, "HS6-DIRECT",
-                            line.get("description_fr", ""), line.get("description_en", ""),
-                            util_group,
-                        ] + tax_values + [show_form, round(total_r, 2)])
+                        writer.writerow(
+                            [
+                                hs6,
+                                "HS6-DIRECT",
+                                line.get("description_fr", ""),
+                                line.get("description_en", ""),
+                                util_group,
+                            ]
+                            + tax_values
+                            + [show_form, round(total_r, 2)]
+                        )
 
-        generated.append({
-            "group": f"{ch_start}-{ch_end}",
-            "file": csv_name,
-            "path": csv_path,
-            "hs6_count": len(group_lines),
-            "total_lines": len(group_lines) + sum(len(l.get("sub_positions", [])) for l in group_lines),
-        })
+        generated.append(
+            {
+                "group": f"{ch_start}-{ch_end}",
+                "file": csv_name,
+                "path": csv_path,
+                "hs6_count": len(group_lines),
+                "total_lines": len(group_lines)
+                + sum(len(l.get("sub_positions", [])) for l in group_lines),
+            }
+        )
 
     return generated
 
@@ -437,10 +610,17 @@ async def list_downloads():
         json_path = os.path.join(TARIFFS_DIR, f"{cc}_tariffs.json")
         has_data = os.path.exists(json_path)
         if not has_data:
-            countries.append({
-                "code": cc, "name": COUNTRY_NAMES.get(cc, cc),
-                "csv_ready": False, "json_ready": False, "files": [], "file_count": 0, "total_size_kb": 0,
-            })
+            countries.append(
+                {
+                    "code": cc,
+                    "name": COUNTRY_NAMES.get(cc, cc),
+                    "csv_ready": False,
+                    "json_ready": False,
+                    "files": [],
+                    "file_count": 0,
+                    "total_size_kb": 0,
+                }
+            )
             continue
         first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
         if not os.path.exists(first_csv):
@@ -453,24 +633,28 @@ async def list_downloads():
                 size_kb = round(os.path.getsize(csv_path) / 1024)
             else:
                 size_kb = 0
-            files.append({
-                "group": f"{ch_start}-{ch_end}",
-                "size_kb": size_kb,
-                "download_url": f"/tariff-data/download/{cc}/{ch_start}-{ch_end}",
-            })
+            files.append(
+                {
+                    "group": f"{ch_start}-{ch_end}",
+                    "size_kb": size_kb,
+                    "download_url": f"/tariff-data/download/{cc}/{ch_start}-{ch_end}",
+                }
+            )
             total_size += size_kb
         json_size_kb = round(os.path.getsize(json_path) / 1024)
-        countries.append({
-            "code": cc,
-            "name": COUNTRY_NAMES.get(cc, cc),
-            "csv_ready": True,
-            "json_ready": True,
-            "json_size_kb": json_size_kb,
-            "json_download_url": f"/tariff-data/download-json/{cc}",
-            "files": files,
-            "file_count": len(files),
-            "total_size_kb": total_size,
-        })
+        countries.append(
+            {
+                "code": cc,
+                "name": COUNTRY_NAMES.get(cc, cc),
+                "csv_ready": True,
+                "json_ready": True,
+                "json_size_kb": json_size_kb,
+                "json_download_url": f"/tariff-data/download-json/{cc}",
+                "files": files,
+                "file_count": len(files),
+                "total_size_kb": total_size,
+            }
+        )
     return {
         "countries": countries,
         "count": len(countries),

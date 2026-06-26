@@ -32,16 +32,15 @@ ENGINE_SOURCES = REPO_ROOT / "engine" / "sources"
 
 # Membres CEMAC avec fichier crawlé existant
 CEMAC_AVAILABLE = {
-    "CMR": ("Cameroun",     "DGD Cameroun (douanes.cm) + TEC CEMAC PDF",
-            "https://www.douanes.cm/"),
-    "GAB": ("Gabon",        "Douanes Gabon + TEC CEMAC PDF",
-            "https://douanes.ga/"),
-    "TCD": ("Tchad",        "DGI Tchad (finances.gouv.td) + TEC CEMAC PDF",
-            "https://finances.gouv.td/"),
-    "CAF": ("Centrafrique", "Douanes CAF (edouanes.cf) + TEC CEMAC PDF",
-            "https://www.finances.gouv.cf/"),
-    "COG": ("Congo",        "Douanes Congo (douanes.gouv.cg) + TEC CEMAC PDF",
-            "https://douanes.gouv.cg/"),
+    "CMR": ("Cameroun", "DGD Cameroun (douanes.cm) + TEC CEMAC PDF", "https://www.douanes.cm/"),
+    "GAB": ("Gabon", "Douanes Gabon + TEC CEMAC PDF", "https://douanes.ga/"),
+    "TCD": ("Tchad", "DGI Tchad (finances.gouv.td) + TEC CEMAC PDF", "https://finances.gouv.td/"),
+    "CAF": (
+        "Centrafrique",
+        "Douanes CAF (edouanes.cf) + TEC CEMAC PDF",
+        "https://www.finances.gouv.cf/",
+    ),
+    "COG": ("Congo", "Douanes Congo (douanes.gouv.cg) + TEC CEMAC PDF", "https://douanes.gouv.cg/"),
 }
 
 
@@ -78,31 +77,37 @@ def _convert_line(line: dict, member: str, hs6_only: bool) -> list[dict]:
             # Hérite du DD HS6 si le sous-produit n'en a pas
             if sub_dd is None:
                 sub_dd = dd_rate
-            result.append({
-                "code": code,
-                "description_en": sub.get("description_en") or sub.get("description_fr") or desc_en,
-                "chapter": chapter,
-                "digits": digits,
-                "dd_rate": float(sub_dd) if sub_dd is not None else None,
-                "dd_rate_raw": f"{sub_dd} %" if sub_dd is not None else "",
-                "vat_rate": float(vat_rate) if vat_rate is not None else None,
-                "export_levy_rate": None,
-            })
+            result.append(
+                {
+                    "code": code,
+                    "description_en": sub.get("description_en")
+                    or sub.get("description_fr")
+                    or desc_en,
+                    "chapter": chapter,
+                    "digits": digits,
+                    "dd_rate": float(sub_dd) if sub_dd is not None else None,
+                    "dd_rate_raw": f"{sub_dd} %" if sub_dd is not None else "",
+                    "vat_rate": float(vat_rate) if vat_rate is not None else None,
+                    "export_levy_rate": None,
+                }
+            )
         return result
 
     # Repli HS6
     if not hs6 or len(hs6) < 6:
         return []
-    return [{
-        "code": hs6,
-        "description_en": desc_en,
-        "chapter": chapter,
-        "digits": 6,
-        "dd_rate": float(dd_rate) if dd_rate is not None else None,
-        "dd_rate_raw": f"{dd_rate} %" if dd_rate is not None else "",
-        "vat_rate": float(vat_rate) if vat_rate is not None else None,
-        "export_levy_rate": None,
-    }]
+    return [
+        {
+            "code": hs6,
+            "description_en": desc_en,
+            "chapter": chapter,
+            "digits": 6,
+            "dd_rate": float(dd_rate) if dd_rate is not None else None,
+            "dd_rate_raw": f"{dd_rate} %" if dd_rate is not None else "",
+            "vat_rate": float(vat_rate) if vat_rate is not None else None,
+            "export_levy_rate": None,
+        }
+    ]
 
 
 def _assemble(member: str, data: dict, hs6_only: bool) -> dict:
@@ -120,8 +125,8 @@ def _assemble(member: str, data: dict, hs6_only: bool) -> dict:
     # Conserver la date originale de crawl (source de provenance)
     try:
         from datetime import timezone as tz
-        crawled_at = datetime.fromisoformat(
-            generated_at.replace("Z", "+00:00")).isoformat()
+
+        crawled_at = datetime.fromisoformat(generated_at.replace("Z", "+00:00")).isoformat()
     except (ValueError, AttributeError):
         crawled_at = datetime.now(timezone.utc).isoformat()
 
@@ -145,15 +150,24 @@ def _assemble(member: str, data: dict, hs6_only: bool) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--countries", nargs="+", choices=list(CEMAC_AVAILABLE),
-                    default=list(CEMAC_AVAILABLE),
-                    help="Membres CEMAC à convertir (défaut : tous disponibles)")
-    ap.add_argument("--out-dir", default=str(ENGINE_SOURCES),
-                    help="Répertoire de sortie (défaut : engine/sources/)")
-    ap.add_argument("--hs6-only", action="store_true",
-                    help="Utiliser uniquement les lignes HS6 (5 831 par pays)")
-    ap.add_argument("--dry-run", action="store_true",
-                    help="Simuler sans écrire de fichier")
+    ap.add_argument(
+        "--countries",
+        nargs="+",
+        choices=list(CEMAC_AVAILABLE),
+        default=list(CEMAC_AVAILABLE),
+        help="Membres CEMAC à convertir (défaut : tous disponibles)",
+    )
+    ap.add_argument(
+        "--out-dir",
+        default=str(ENGINE_SOURCES),
+        help="Répertoire de sortie (défaut : engine/sources/)",
+    )
+    ap.add_argument(
+        "--hs6-only",
+        action="store_true",
+        help="Utiliser uniquement les lignes HS6 (5 831 par pays)",
+    )
+    ap.add_argument("--dry-run", action="store_true", help="Simuler sans écrire de fichier")
     args = ap.parse_args()
 
     out_dir = Path(args.out_dir)
@@ -176,16 +190,16 @@ def main() -> None:
 
         out = _assemble(member, raw, args.hs6_only)
         n = len(out["positions"])
-        dd_vals = sorted({float(p["dd_rate"]) for p in out["positions"]
-                          if p.get("dd_rate") is not None})
+        dd_vals = sorted(
+            {float(p["dd_rate"]) for p in out["positions"] if p.get("dd_rate") is not None}
+        )
         print(f"    {n:,} positions | bandes DD : {dd_vals}")
 
         if args.dry_run:
             print("    (--dry-run) fichier NON écrit")
         else:
             out_path = out_dir / f"{member}_raw.json"
-            out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2),
-                                encoding="utf-8")
+            out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
             print(f"    → {out_path}")
 
         ok += 1
@@ -197,8 +211,9 @@ def main() -> None:
         for m in args.countries:
             path = out_dir / f"{m}_raw.json"
             if (CRAWLED_DIR / f"{m}_tariffs.json").exists():
-                print(f"    python engine/adapters/raw_crawl_adapter.py "
-                      f"{m} {path} engine/output/")
+                print(
+                    f"    python engine/adapters/raw_crawl_adapter.py " f"{m} {path} engine/output/"
+                )
 
 
 if __name__ == "__main__":

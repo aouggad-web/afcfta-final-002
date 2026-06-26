@@ -115,7 +115,6 @@ Last updated: 2025
 
 from typing import Dict, Optional, Tuple
 
-
 # =============================================================================
 # LEVY DESCRIPTION LOOKUP
 # Maps short tax code → (name_fr, name_en)
@@ -124,96 +123,127 @@ from typing import Dict, Optional, Tuple
 
 LEVY_DESCRIPTIONS: Dict[str, Tuple[str, str]] = {
     # ── ECOWAS / UEMOA / AES community levies ─────────────────────────────
-    "CEDEAO":   ("Prélèvement Communautaire CEDEAO",
-                 "ECOWAS Community Levy (0.5% CIF)"),
-    "PCC":      ("Prélèvement Communautaire CEDEAO",
-                 "ECOWAS Community Levy (0.5% CIF)"),
-    "ETLS":     ("ECOWAS Trade Liberalization Scheme (CEDEAO)",
-                 "ECOWAS Trade Liberalization Scheme (0.5% CIF)"),
-    "RS":       ("Redevance Statistique UEMOA/CEDEAO (1% CIF)",
-                 "Statistical Levy UEMOA/ECOWAS (1% of CIF)"),
-    "PCS":      ("Prélèvement Communautaire de Solidarité UEMOA (1% CIF)",
-                 "UEMOA Community Solidarity Levy (1% of CIF)"),
-    "PUA":      ("Prélèvement Union Africaine (0.2% CIF)",
-                 "African Union Levy (0.2% of CIF)"),
-    "PC_AES":   ("Prélèvement Confédéral AES (0.5% CIF) — remplace PCC depuis 2025",
-                 "AES Confederal Levy (0.5% CIF) — replaces ECOWAS levy since 2025"),
-    "PC-AES":   ("Prélèvement Confédéral AES (0.5% CIF) — remplace PCC depuis 2025",
-                 "AES Confederal Levy (0.5% CIF) — replaces ECOWAS levy since 2025"),
-
+    "CEDEAO": ("Prélèvement Communautaire CEDEAO", "ECOWAS Community Levy (0.5% CIF)"),
+    "PCC": ("Prélèvement Communautaire CEDEAO", "ECOWAS Community Levy (0.5% CIF)"),
+    "ETLS": (
+        "ECOWAS Trade Liberalization Scheme (CEDEAO)",
+        "ECOWAS Trade Liberalization Scheme (0.5% CIF)",
+    ),
+    "RS": (
+        "Redevance Statistique UEMOA/CEDEAO (1% CIF)",
+        "Statistical Levy UEMOA/ECOWAS (1% of CIF)",
+    ),
+    "PCS": (
+        "Prélèvement Communautaire de Solidarité UEMOA (1% CIF)",
+        "UEMOA Community Solidarity Levy (1% of CIF)",
+    ),
+    "PUA": ("Prélèvement Union Africaine (0.2% CIF)", "African Union Levy (0.2% of CIF)"),
+    "PC_AES": (
+        "Prélèvement Confédéral AES (0.5% CIF) — remplace PCC depuis 2025",
+        "AES Confederal Levy (0.5% CIF) — replaces ECOWAS levy since 2025",
+    ),
+    "PC-AES": (
+        "Prélèvement Confédéral AES (0.5% CIF) — remplace PCC depuis 2025",
+        "AES Confederal Levy (0.5% CIF) — replaces ECOWAS levy since 2025",
+    ),
     # ── Nigeria-specific levies ────────────────────────────────────────────
-    "CISS":     ("Prélèvement CISS Nigeria — Comprehensive Import Supervision Scheme (1% CIF)",
-                 "Nigeria CISS — Comprehensive Import Supervision Scheme (1% of CIF value); "
-                 "Finance (Misc. Provisions) Act 2003 — collected by NCS via authorized dealer banks"),
-    "NAC":      ("Taxe Nigeria Automotive Council (véhicules)",
-                 "Nigerian Automotive Council Levy (motor vehicles)"),
-
+    "CISS": (
+        "Prélèvement CISS Nigeria — Comprehensive Import Supervision Scheme (1% CIF)",
+        "Nigeria CISS — Comprehensive Import Supervision Scheme (1% of CIF value); "
+        "Finance (Misc. Provisions) Act 2003 — collected by NCS via authorized dealer banks",
+    ),
+    "NAC": (
+        "Taxe Nigeria Automotive Council (véhicules)",
+        "Nigerian Automotive Council Levy (motor vehicles)",
+    ),
     # ── Ghana-specific levies ──────────────────────────────────────────────
-    "GETFUND":  ("Ghana Education Trust Fund Levy — GETFund (2.5%)",
-                 "Ghana Education Trust Fund Levy (2.5%); GETFund Act 581/1997 — GRA"),
-    "NHIL":     ("National Health Insurance Levy Ghana (2.5%)",
-                 "Ghana National Health Insurance Levy (2.5%); NHIA Act 650/2003 — GRA"),
-    "CPL":      ("COVID-19 Levy Ghana (1%)",
-                 "Ghana COVID-19 Health Recovery Levy (1%); COVID-19 Health Recovery Levy Act 2021"),
-    "ECOWAS":   ("Prélèvement Communautaire CEDEAO",
-                 "ECOWAS Community Levy (0.5% CIF)"),
-
+    "GETFUND": (
+        "Ghana Education Trust Fund Levy — GETFund (2.5%)",
+        "Ghana Education Trust Fund Levy (2.5%); GETFund Act 581/1997 — GRA",
+    ),
+    "NHIL": (
+        "National Health Insurance Levy Ghana (2.5%)",
+        "Ghana National Health Insurance Levy (2.5%); NHIA Act 650/2003 — GRA",
+    ),
+    "CPL": (
+        "COVID-19 Levy Ghana (1%)",
+        "Ghana COVID-19 Health Recovery Levy (1%); COVID-19 Health Recovery Levy Act 2021",
+    ),
+    "ECOWAS": ("Prélèvement Communautaire CEDEAO", "ECOWAS Community Levy (0.5% CIF)"),
     # ── EAC / Kenya / Uganda / Tanzania levies ───────────────────────────
-    "IDF":      ("Import Declaration Fee Kenya — IDF (3,5% CIF)",
-                 "Kenya Import Declaration Fee (3.5% of CIF); Kenya Finance Act 2022 — KRA"),
-    "RDL":      ("Railway Development Levy Kenya — RDL (2% CIF)",
-                 "Kenya Railway Development Levy (2% of CIF); KRA / Kenya Railways Corporation"),
-    "INFRALVY": ("Infrastructure Levy Uganda (1,5% CIF)",
-                 "Uganda Infrastructure Levy (1.5% of CIF); Uganda Finance Act 2020 — URA"),
-    "PDL":      ("Port Development Levy Tanzanie — PDL (1% CIF)",
-                 "Tanzania Port Development Levy (1.0% of CIF); Tanzania Ports Authority (TPA) — Finance Act 2023"),
-
+    "IDF": (
+        "Import Declaration Fee Kenya — IDF (3,5% CIF)",
+        "Kenya Import Declaration Fee (3.5% of CIF); Kenya Finance Act 2022 — KRA",
+    ),
+    "RDL": (
+        "Railway Development Levy Kenya — RDL (2% CIF)",
+        "Kenya Railway Development Levy (2% of CIF); KRA / Kenya Railways Corporation",
+    ),
+    "INFRALVY": (
+        "Infrastructure Levy Uganda (1,5% CIF)",
+        "Uganda Infrastructure Levy (1.5% of CIF); Uganda Finance Act 2020 — URA",
+    ),
+    "PDL": (
+        "Port Development Levy Tanzanie — PDL (1% CIF)",
+        "Tanzania Port Development Levy (1.0% of CIF); Tanzania Ports Authority (TPA) — Finance Act 2023",
+    ),
     # ── Ethiopia-specific levies ───────────────────────────────────────────
-    "SUR":      ("Taxe Complémentaire Éthiopie / Surtaxe (10% du DD)",
-                 "Ethiopia Complementary Tax / Surcharge (10% of customs duty value); "
-                 "Ethiopian Customs Proclamation 859/2014 — Ethiopian Customs Commission"),
-    "EXC":      ("Taxe d'Accise Éthiopie (taux variable)",
-                 "Ethiopia Excise Tax (variable rates)"),
-
+    "SUR": (
+        "Taxe Complémentaire Éthiopie / Surtaxe (10% du DD)",
+        "Ethiopia Complementary Tax / Surcharge (10% of customs duty value); "
+        "Ethiopian Customs Proclamation 859/2014 — Ethiopian Customs Commission",
+    ),
+    "EXC": ("Taxe d'Accise Éthiopie (taux variable)", "Ethiopia Excise Tax (variable rates)"),
     # ── CEMAC / Cameroon levies ────────────────────────────────────────────
-    "TCI":      ("Taxe Communautaire d'Intégration CEMAC (1% CIF)",
-                 "CEMAC Community Integration Tax (1% of CIF); Règlement CEMAC n°17/99"),
-    "RI":       ("Redevance Informatique CEMAC (0,45% CIF)",
-                 "CEMAC IT User Fee (0.45% of CIF)"),
-    "CAC":      ("Centimes Additionnels Communaux Cameroun (10% du DD)",
-                 "Cameroon Municipal Additional Centimes (10% of customs duty); DGD-CM"),
-    "CCI":      ("Contribution Communautaire d'Intégration CEEAC",
-                 "ECCAS Community Integration Contribution"),
-
+    "TCI": (
+        "Taxe Communautaire d'Intégration CEMAC (1% CIF)",
+        "CEMAC Community Integration Tax (1% of CIF); Règlement CEMAC n°17/99",
+    ),
+    "RI": ("Redevance Informatique CEMAC (0,45% CIF)", "CEMAC IT User Fee (0.45% of CIF)"),
+    "CAC": (
+        "Centimes Additionnels Communaux Cameroun (10% du DD)",
+        "Cameroon Municipal Additional Centimes (10% of customs duty); DGD-CM",
+    ),
+    "CCI": (
+        "Contribution Communautaire d'Intégration CEEAC",
+        "ECCAS Community Integration Contribution",
+    ),
     # ── Algeria-specific levies ────────────────────────────────────────────
-    "PRCT":     ("Prélèvement à la Compensation du Transport Algérie (2% CIF)",
-                 "Algeria Transport Compensation Levy (2% of CIF); Loi de Finances Algeria"),
-    "TCS":      ("Taxe de Contribution de Solidarité Algérie (1-3%)",
-                 "Algeria Solidarity Contribution Tax (1–3%); DGD Algeria"),
-    "DAPS":     ("Droit Additionnel Provisoire de Sauvegarde Algérie (30–200%)",
-                 "Algeria Provisional Safeguard Additional Duty (30–200%); DGD Algeria"),
-    "T.C.S":    ("Taxe de Contribution de Solidarité Algérie (1-3%)",
-                 "Algeria Solidarity Contribution Tax (1–3%); DGD Algeria"),
-
+    "PRCT": (
+        "Prélèvement à la Compensation du Transport Algérie (2% CIF)",
+        "Algeria Transport Compensation Levy (2% of CIF); Loi de Finances Algeria",
+    ),
+    "TCS": (
+        "Taxe de Contribution de Solidarité Algérie (1-3%)",
+        "Algeria Solidarity Contribution Tax (1–3%); DGD Algeria",
+    ),
+    "DAPS": (
+        "Droit Additionnel Provisoire de Sauvegarde Algérie (30–200%)",
+        "Algeria Provisional Safeguard Additional Duty (30–200%); DGD Algeria",
+    ),
+    "T.C.S": (
+        "Taxe de Contribution de Solidarité Algérie (1-3%)",
+        "Algeria Solidarity Contribution Tax (1–3%); DGD Algeria",
+    ),
     # ── Morocco-specific levies ────────────────────────────────────────────
-    "TPI":      ("Taxe Parafiscale sur les Importations Maroc",
-                 "Morocco Para-fiscal Import Tax (TPI); ADII — Circulaire 6050/2024"),
-
+    "TPI": (
+        "Taxe Parafiscale sur les Importations Maroc",
+        "Morocco Para-fiscal Import Tax (TPI); ADII — Circulaire 6050/2024",
+    ),
     # ── Angola-specific levies ─────────────────────────────────────────────
-    "IE":       ("Imposto Especial de Consumo Angola (taux variable)",
-                 "Angola Special Consumption Tax / Excise (variable rates); AGT Angola"),
-
+    "IE": (
+        "Imposto Especial de Consumo Angola (taux variable)",
+        "Angola Special Consumption Tax / Excise (variable rates); AGT Angola",
+    ),
     # ── Mozambique-specific levies ─────────────────────────────────────────
-    "TRA":      ("Taxa de Regularização Aduaneira Mozambique (0,5% CIF)",
-                 "Mozambique Customs Regularization Fee (0.5% of CIF); AT-MZ"),
-
+    "TRA": (
+        "Taxa de Regularização Aduaneira Mozambique (0,5% CIF)",
+        "Mozambique Customs Regularization Fee (0.5% of CIF); AT-MZ",
+    ),
     # ── SADC / other levies ────────────────────────────────────────────────
-    "LEVY":     ("Prélèvement / Taxe additionnelle",
-                 "Additional Import Levy"),
-    "WHT":      ("Retenue à la Source sur Importations",
-                 "Withholding Tax on Imports"),
-    "DEV":      ("Taxe de Développement",
-                 "Development Levy"),
+    "LEVY": ("Prélèvement / Taxe additionnelle", "Additional Import Levy"),
+    "WHT": ("Retenue à la Source sur Importations", "Withholding Tax on Imports"),
+    "DEV": ("Taxe de Développement", "Development Levy"),
 }
 
 
@@ -225,7 +255,6 @@ LEVY_DESCRIPTIONS: Dict[str, Tuple[str, str]] = {
 # =============================================================================
 
 COUNTRY_PARA_FISCAL_FORMALITIES: Dict[str, list] = {
-
     # ------------------------------------------------------------------
     # NIGERIA (NGA) — Form M (pre-import authorization)
     # The Central Bank of Nigeria (CBN) requires every commercial importer
@@ -254,7 +283,6 @@ COUNTRY_PARA_FISCAL_FORMALITIES: Dict[str, list] = {
             "is_mandatory": True,
         },
     ],
-
     # ------------------------------------------------------------------
     # EGYPT (EGY) — GOEIC mandatory import inspection
     # The General Organization for Export & Import Control (GOEIC) under
@@ -285,17 +313,14 @@ COUNTRY_PARA_FISCAL_FORMALITIES: Dict[str, list] = {
             "is_mandatory": True,
         },
     ],
-
     # ------------------------------------------------------------------
     # KENYA (KEN) — IDF + RDL are collected at customs (no separate doc)
     # KEBS Certificate of Conformity (CoC) is already captured as STDCERT.
     # ------------------------------------------------------------------
-
     # ------------------------------------------------------------------
     # GHANA (GHA) — GETFUND + NHIL are collected by GRA at customs
     # GSA CoC is already captured as STDCERT.
     # ------------------------------------------------------------------
-
     # ------------------------------------------------------------------
     # ETHIOPIA (ETH) — Import Trade Permit
     # Ethiopia's Ministry of Trade & Industry requires Import Trade Permits
@@ -323,7 +348,6 @@ COUNTRY_PARA_FISCAL_FORMALITIES: Dict[str, list] = {
             "is_mandatory": True,
         },
     ],
-
     # ------------------------------------------------------------------
     # CAMEROON / CEMAC — ECTN (Electronic Cargo Tracking Note)
     # The CNCC (Conseil National des Chargeurs du Cameroun) and similar
@@ -413,15 +437,23 @@ EGY_GOEIC_BUCKETS = {
     "general",
     "vehicles_machinery",
     "chemicals",
-    "food_agriculture",   # processed food (ch16-24)
+    "food_agriculture",  # processed food (ch16-24)
     "pharmaceuticals",
 }
 # Buckets where GOEIC does NOT apply (raw products mostly):
 EGY_GOEIC_EXEMPT_CHAPTERS = {
-    "01", "02", "03", "04", "05",  # live animals, fresh meat, fish, eggs
-    "06", "07", "08", "09", "10",  # fresh plants, vegetables, fruits, cereals
-    "27",                           # crude oil / gas (handled by EGPC/energy)
-    "93",                           # arms (controlled separately)
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",  # live animals, fresh meat, fish, eggs
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",  # fresh plants, vegetables, fruits, cereals
+    "27",  # crude oil / gas (handled by EGPC/energy)
+    "93",  # arms (controlled separately)
 }
 
 # CEMAC ECTN countries
@@ -431,6 +463,7 @@ ECTN_COUNTRIES = {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"}
 # =============================================================================
 # PUBLIC API
 # =============================================================================
+
 
 def enrich_observation(tax_code: str) -> str:
     """
@@ -483,9 +516,20 @@ def get_para_fiscal_formalities(
         # Filter only by chapter (not bucket) because ch16 is animal_products bucket
         # but IS a processed product requiring the import trade permit.
         _eth_raw_chapters = {
-            "01", "02", "03", "04", "05",  # live animals / fresh animal products
-            "06", "07", "08", "09", "10",  # live plants / fresh vegetables/fruits/cereals
-            "11", "12", "13", "14",        # milling, oil seeds, lac/gums, vegetable materials
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",  # live animals / fresh animal products
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",  # live plants / fresh vegetables/fruits/cereals
+            "11",
+            "12",
+            "13",
+            "14",  # milling, oil seeds, lac/gums, vegetable materials
         }
         if ch not in _eth_raw_chapters:
             extras.extend(COUNTRY_PARA_FISCAL_FORMALITIES["ETH"])

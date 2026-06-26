@@ -15,6 +15,7 @@ from etl.country_taxes_algeria import get_dza_taxes_for_hs6
 INPUT_PATH = BACKEND_DIR / "data" / "crawled" / "DZA_tariffs_fast.json"
 OUTPUT_PATH = BACKEND_DIR / "data" / "crawled" / "DZA_tariffs_enriched.json"
 
+
 def enrich_sub_position(sub_position: dict) -> dict:
     hs_code = str(sub_position.get("hs_code", "")).replace(".", "").replace(" ", "")
     hs6_code = hs_code[:6]
@@ -23,18 +24,21 @@ def enrich_sub_position(sub_position: dict) -> dict:
 
     etl_data = get_dza_taxes_for_hs6(hs6_code)
     enriched = dict(sub_position)
-    enriched.update({
-        "dd_rate": etl_data.get("dd_rate", 0.0),
-        "daps_rate": etl_data.get("daps_rate", 0.0),
-        "prct_rate": etl_data.get("prct_rate", 0.0),
-        "tcs_rate": etl_data.get("tcs_rate", 0.0),
-        "tva_rate": etl_data.get("tva_rate", 0.0),
-        "taxes_detail": etl_data.get("taxes_detail", []),
-        "total_taxes_pct": etl_data.get("total_taxes_pct", 0.0),
-        "fiscal_advantages": etl_data.get("fiscal_advantages", []),
-        "administrative_formalities": etl_data.get("administrative_formalities", []),
-    })
+    enriched.update(
+        {
+            "dd_rate": etl_data.get("dd_rate", 0.0),
+            "daps_rate": etl_data.get("daps_rate", 0.0),
+            "prct_rate": etl_data.get("prct_rate", 0.0),
+            "tcs_rate": etl_data.get("tcs_rate", 0.0),
+            "tva_rate": etl_data.get("tva_rate", 0.0),
+            "taxes_detail": etl_data.get("taxes_detail", []),
+            "total_taxes_pct": etl_data.get("total_taxes_pct", 0.0),
+            "fiscal_advantages": etl_data.get("fiscal_advantages", []),
+            "administrative_formalities": etl_data.get("administrative_formalities", []),
+        }
+    )
     return enriched
+
 
 def main() -> int:
     if not INPUT_PATH.exists():

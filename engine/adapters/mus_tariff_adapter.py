@@ -25,29 +25,37 @@ Usage :
     python engine/adapters/mus_tariff_adapter.py \\
         /path/to/mus_raw.json engine/output/ --dry-run
 """
+
 from __future__ import annotations
 
 import argparse
 import json
 import sys
-from datetime import datetime, date, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from schemas.canonical_model import (
-    CanonicalTariffLine, CommodityCode, Measure, Provenance,
-    MeasureType, DataStatus, ReliabilityGrade, RateType, DutyBasis,
     SCHEMA_VERSION,
+    CanonicalTariffLine,
+    CommodityCode,
+    DataStatus,
+    DutyBasis,
+    Measure,
+    MeasureType,
+    Provenance,
+    RateType,
+    ReliabilityGrade,
 )
 
-_SOURCE_NAME    = "MRA Integrated Tariff Schedule HS2022 (Maurice)"
-_SOURCE_URL     = "https://www.mra.mu/download/TariffInfo010426.pdf"
+_SOURCE_NAME = "MRA Integrated Tariff Schedule HS2022 (Maurice)"
+_SOURCE_URL = "https://www.mra.mu/download/TariffInfo010426.pdf"
 _SOURCE_DOCUMENT = (
     "Mauritius Revenue Authority — Integrated Tariff Schedule HS2022 "
     "as at 01 April 2026 — https://www.mra.mu/download/TariffInfo010426.pdf"
 )
-_VERSION_DATE   = date(2026, 4, 1)
+_VERSION_DATE = date(2026, 4, 1)
 
 
 def _build_provenance(crawled_at: str) -> Provenance:
@@ -58,8 +66,7 @@ def _build_provenance(crawled_at: str) -> Provenance:
         source_url=_SOURCE_URL,
         source_document=_SOURCE_DOCUMENT,
         version_date=_VERSION_DATE,
-        retrieved_at=datetime.fromisoformat(
-            crawled_at.replace("Z", "+00:00")),
+        retrieved_at=datetime.fromisoformat(crawled_at.replace("Z", "+00:00")),
         notes=(
             "Crawl du PDF officiel MRA Integrated Tariff HS2022 (01/04/2026). "
             "Taux de droit général (NPF). Excise très élevé sur tabac/alcool (jusqu'à 230 %). "
@@ -70,49 +77,53 @@ def _build_provenance(crawled_at: str) -> Provenance:
 
 
 def _build_measures(pos: dict) -> list[Measure]:
-    dd     = float(pos.get("dd_rate") or 0)
+    dd = float(pos.get("dd_rate") or 0)
     excise = float(pos.get("excise_rate") or 0)
-    vat    = float(pos.get("vat_rate") or 0)
-    code   = pos["code"].strip()
+    vat = float(pos.get("vat_rate") or 0)
+    code = pos["code"].strip()
     measures: list[Measure] = []
 
     # ── 10 : D.D — General (MFN) Duty ──────────────────────────────────────
-    measures.append(Measure(
-        country_iso3="MUS",
-        national_code=code,
-        measure_type=MeasureType.CUSTOMS_DUTY,
-        code="D.D",
-        name_fr="Droit de Douane général (NPF)",
-        name_en="General (MFN) Customs Duty",
-        rate_pct=dd,
-        rate_type=RateType.EXEMPT if dd == 0 else RateType.AD_VALOREM,
-        basis=DutyBasis.CIF,
-        sequence=10,
-        is_zlecaf_applicable=True,
-        observation=f"MRA Tariff Schedule HS2022 — code {code}",
-    ))
+    measures.append(
+        Measure(
+            country_iso3="MUS",
+            national_code=code,
+            measure_type=MeasureType.CUSTOMS_DUTY,
+            code="D.D",
+            name_fr="Droit de Douane général (NPF)",
+            name_en="General (MFN) Customs Duty",
+            rate_pct=dd,
+            rate_type=RateType.EXEMPT if dd == 0 else RateType.AD_VALOREM,
+            basis=DutyBasis.CIF,
+            sequence=10,
+            is_zlecaf_applicable=True,
+            observation=f"MRA Tariff Schedule HS2022 — code {code}",
+        )
+    )
 
     # ── 20 : EXCISE — Excise Duty (si applicable) ──────────────────────────
     if excise > 0:
         # L'excise très élevée (>100 %) concerne le tabac (ch. 24) et certains
         # alcools. Le raw_rate est % ad valorem dans ce dataset (pas de spécifique).
-        measures.append(Measure(
-            country_iso3="MUS",
-            national_code=code,
-            measure_type=MeasureType.EXCISE,
-            code="EXCISE",
-            name_fr="Excise Duty",
-            name_en="Excise Duty",
-            rate_pct=excise,
-            rate_type=RateType.AD_VALOREM,
-            basis=DutyBasis.CIF,
-            sequence=20,
-            is_zlecaf_applicable=False,
-            observation=(
-                f"Excise {excise:.0f}% — MRA Tariff Schedule HS2022"
-                + (" [taux élevé tabac/alcool]" if excise >= 100 else "")
-            ),
-        ))
+        measures.append(
+            Measure(
+                country_iso3="MUS",
+                national_code=code,
+                measure_type=MeasureType.EXCISE,
+                code="EXCISE",
+                name_fr="Excise Duty",
+                name_en="Excise Duty",
+                rate_pct=excise,
+                rate_type=RateType.AD_VALOREM,
+                basis=DutyBasis.CIF,
+                sequence=20,
+                is_zlecaf_applicable=False,
+                observation=(
+                    f"Excise {excise:.0f}% — MRA Tariff Schedule HS2022"
+                    + (" [taux élevé tabac/alcool]" if excise >= 100 else "")
+                ),
+            )
+        )
 
     # ── 30 : T.V.A — VAT 15 % (ou 0 % si exonéré) ─────────────────────────
     # Assiette : CIF + DD + Excise
@@ -121,22 +132,24 @@ def _build_measures(pos: dict) -> list[Measure]:
         vat_includes.append("EXCISE")
 
     if vat > 0:
-        measures.append(Measure(
-            country_iso3="MUS",
-            national_code=code,
-            measure_type=MeasureType.VAT,
-            code="T.V.A",
-            name_fr="Taxe sur la Valeur Ajoutée (VAT) — 15 %",
-            name_en="Value Added Tax (VAT)",
-            rate_pct=vat,
-            rate_type=RateType.AD_VALOREM,
-            basis=DutyBasis.CIF_PLUS_INCLUDED,
-            basis_includes=vat_includes,
-            sequence=30,
-            is_zlecaf_applicable=False,
-            legal_reference="Value Added Tax Act 1998 (as amended)",
-            observation="VAT 15 % — assiette : CIF + DD + Excise",
-        ))
+        measures.append(
+            Measure(
+                country_iso3="MUS",
+                national_code=code,
+                measure_type=MeasureType.VAT,
+                code="T.V.A",
+                name_fr="Taxe sur la Valeur Ajoutée (VAT) — 15 %",
+                name_en="Value Added Tax (VAT)",
+                rate_pct=vat,
+                rate_type=RateType.AD_VALOREM,
+                basis=DutyBasis.CIF_PLUS_INCLUDED,
+                basis_includes=vat_includes,
+                sequence=30,
+                is_zlecaf_applicable=False,
+                legal_reference="Value Added Tax Act 1998 (as amended)",
+                observation="VAT 15 % — assiette : CIF + DD + Excise",
+            )
+        )
     # Si vat == 0 : position exonérée — on n'émet pas de mesure VAT
     # (l'absence de mesure VAT dans la liste est déjà explicite)
 
@@ -144,11 +157,11 @@ def _build_measures(pos: dict) -> list[Measure]:
 
 
 def _convert_position(pos: dict, prov: Provenance) -> CanonicalTariffLine:
-    code   = pos["code"].strip()
-    hs6    = code[:6]
-    dd     = float(pos.get("dd_rate") or 0)
+    code = pos["code"].strip()
+    hs6 = code[:6]
+    dd = float(pos.get("dd_rate") or 0)
     excise = float(pos.get("excise_rate") or 0)
-    vat    = float(pos.get("vat_rate") or 0)
+    vat = float(pos.get("vat_rate") or 0)
 
     measures = _build_measures(pos)
 
@@ -167,9 +180,9 @@ def _convert_position(pos: dict, prov: Provenance) -> CanonicalTariffLine:
         unit=pos.get("unit"),
         hs_version="HS2022",
         sensitivity=(
-            "sensible" if dd >= 30 or excise >= 100 else
-            "élevé"   if dd >= 15 or excise >= 30   else
-            "normal"
+            "sensible"
+            if dd >= 30 or excise >= 100
+            else "élevé" if dd >= 15 or excise >= 30 else "normal"
         ),
     )
 
@@ -187,10 +200,10 @@ def _convert_position(pos: dict, prov: Provenance) -> CanonicalTariffLine:
 
 # ── API Python ─────────────────────────────────────────────────────────────────
 
+
 def convert(data: dict) -> list[CanonicalTariffLine]:
     """Convertit un dict raw_crawl MUS en liste de CanonicalTariffLine."""
-    prov = _build_provenance(
-        data.get("crawled_at", datetime.now(timezone.utc).isoformat()))
+    prov = _build_provenance(data.get("crawled_at", datetime.now(timezone.utc).isoformat()))
     return [_convert_position(p, prov) for p in data.get("positions", [])]
 
 
@@ -201,8 +214,8 @@ def convert_file(json_path: str | Path) -> list[CanonicalTariffLine]:
 
 # ── CLI ────────────────────────────────────────────────────────────────────────
 
-def process_file(json_path: str | Path, output_dir: str | Path,
-                 dry_run: bool = False) -> dict:
+
+def process_file(json_path: str | Path, output_dir: str | Path, dry_run: bool = False) -> dict:
     """
     Ingère mus_raw.json et écrit MUS_canonical.jsonl dans output_dir.
     Retourne un dict résumé.
@@ -212,7 +225,7 @@ def process_file(json_path: str | Path, output_dir: str | Path,
     records = convert(data)
 
     chapters_seen: set[str] = set()
-    dd_dist:  dict[float, int] = {}
+    dd_dist: dict[float, int] = {}
     vat_dist: dict[float, int] = {}
     excise_hi: int = 0
     for r in records:
@@ -225,9 +238,9 @@ def process_file(json_path: str | Path, output_dir: str | Path,
         if exc >= 100:
             excise_hi += 1
 
-    print(f"  MUS : {len(records):,} positions / "
-          f"{len(chapters_seen)} chapitres / "
-          f"VERIFIED/A")
+    print(
+        f"  MUS : {len(records):,} positions / " f"{len(chapters_seen)} chapitres / " f"VERIFIED/A"
+    )
     print(f"    DD bands  : {dict(sorted(dd_dist.items()))}")
     print(f"    VAT bands : {dict(sorted(vat_dist.items()))}")
     print(f"    Excise ≥100 % (tabac/alcool) : {excise_hi} positions")
@@ -248,10 +261,11 @@ def process_file(json_path: str | Path, output_dir: str | Path,
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("input",  help="Chemin vers mus_raw.json")
+    ap.add_argument("input", help="Chemin vers mus_raw.json")
     ap.add_argument("output", help="Répertoire de sortie")
-    ap.add_argument("--dry-run", action="store_true",
-                    help="Afficher les stats sans écrire le fichier")
+    ap.add_argument(
+        "--dry-run", action="store_true", help="Afficher les stats sans écrire le fichier"
+    )
     args = ap.parse_args()
     process_file(args.input, args.output, dry_run=args.dry_run)
 

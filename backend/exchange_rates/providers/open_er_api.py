@@ -6,6 +6,7 @@ Covers ~160+ currencies including most African currencies
 Endpoint: https://open.er-api.com/v6/latest/{base}
 Documentation: https://www.exchangerate-api.com/docs/free
 """
+
 import logging
 from typing import Dict, Optional
 

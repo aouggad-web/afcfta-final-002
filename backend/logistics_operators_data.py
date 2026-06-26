@@ -7,10 +7,9 @@ Sources : Sites officiels des opérateurs, Lloyd's List, BIMCO, Drewry,
 Mise à jour : Juin 2026
 """
 
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
 LOGISTICS_OPERATORS = {
-
     # =========================================================================
     # 1. ARMATEURS / COMPAGNIES MARITIMES
     # =========================================================================
@@ -24,18 +23,70 @@ LOGISTICS_OPERATORS = {
             "founded": 1970,
             "fleet_teu": 5700000,
             "fleet_vessels": 790,
-            "africa_presence": ["MAR", "EGY", "ZAF", "NGA", "KEN", "TZA", "DZA", "TUN", "SEN", "GHA", "CIV", "CMR", "ETH", "DJI", "MOZ", "AGO"],
-            "africa_services": ["MSC AFRICA XPRESS", "SHOGUN", "ARABELLA", "WAFMAX", "SAFAX", "ORCA"],
+            "africa_presence": [
+                "MAR",
+                "EGY",
+                "ZAF",
+                "NGA",
+                "KEN",
+                "TZA",
+                "DZA",
+                "TUN",
+                "SEN",
+                "GHA",
+                "CIV",
+                "CMR",
+                "ETH",
+                "DJI",
+                "MOZ",
+                "AGO",
+            ],
+            "africa_services": [
+                "MSC AFRICA XPRESS",
+                "SHOGUN",
+                "ARABELLA",
+                "WAFMAX",
+                "SAFAX",
+                "ORCA",
+            ],
             "contacts": {
                 "website": "https://www.msc.com",
                 "africa_hub": "MSC Africa — Durban & Le Caire",
-                "south_africa": {"phone": "+27 31 360 7600", "email": "durban@msc.com", "address": "8th Floor, Portside, Cape Town 8001"},
-                "egypt": {"phone": "+20 2 2580 0444", "email": "msc@mscegypt.com", "address": "1191 Corniche El Nil, Cairo"},
-                "nigeria": {"phone": "+234 1 448 4884", "email": "lagos@msc.com", "address": "16 Ozumba Mbadiwe Street, Victoria Island, Lagos"},
-                "morocco": {"phone": "+212 522 542 222", "email": "casablanca@msc.com", "address": "Tour Casablanca, Bd. Massira, Casablanca"},
-                "algeria": {"phone": "+213 21 73 64 00", "email": "algiers@msc.com", "address": "18 Rue Didouche Mourad, Alger"},
-                "kenya": {"phone": "+254 20 434 0900", "email": "nairobi@msc.com", "address": "Lonrho House, Standard Street, Nairobi"},
-                "senegal": {"phone": "+221 33 889 11 00", "email": "dakar@msc.com", "address": "Port de Dakar, Sénégal"},
+                "south_africa": {
+                    "phone": "+27 31 360 7600",
+                    "email": "durban@msc.com",
+                    "address": "8th Floor, Portside, Cape Town 8001",
+                },
+                "egypt": {
+                    "phone": "+20 2 2580 0444",
+                    "email": "msc@mscegypt.com",
+                    "address": "1191 Corniche El Nil, Cairo",
+                },
+                "nigeria": {
+                    "phone": "+234 1 448 4884",
+                    "email": "lagos@msc.com",
+                    "address": "16 Ozumba Mbadiwe Street, Victoria Island, Lagos",
+                },
+                "morocco": {
+                    "phone": "+212 522 542 222",
+                    "email": "casablanca@msc.com",
+                    "address": "Tour Casablanca, Bd. Massira, Casablanca",
+                },
+                "algeria": {
+                    "phone": "+213 21 73 64 00",
+                    "email": "algiers@msc.com",
+                    "address": "18 Rue Didouche Mourad, Alger",
+                },
+                "kenya": {
+                    "phone": "+254 20 434 0900",
+                    "email": "nairobi@msc.com",
+                    "address": "Lonrho House, Standard Street, Nairobi",
+                },
+                "senegal": {
+                    "phone": "+221 33 889 11 00",
+                    "email": "dakar@msc.com",
+                    "address": "Port de Dakar, Sénégal",
+                },
             },
             "africa_offices_count": 30,
             "market_share_africa_pct": 28,
@@ -51,18 +102,65 @@ LOGISTICS_OPERATORS = {
             "founded": 1904,
             "fleet_teu": 4300000,
             "fleet_vessels": 730,
-            "africa_presence": ["MAR", "EGY", "ZAF", "NGA", "KEN", "TZA", "DZA", "TUN", "SEN", "GHA", "CIV", "CMR", "ETH", "DJI", "MOZ", "AGO", "SDN", "MDG"],
+            "africa_presence": [
+                "MAR",
+                "EGY",
+                "ZAF",
+                "NGA",
+                "KEN",
+                "TZA",
+                "DZA",
+                "TUN",
+                "SEN",
+                "GHA",
+                "CIV",
+                "CMR",
+                "ETH",
+                "DJI",
+                "MOZ",
+                "AGO",
+                "SDN",
+                "MDG",
+            ],
             "africa_services": ["SAECS", "WACCA", "NAMO", "ARICA", "EAFMAX"],
             "contacts": {
                 "website": "https://www.maersk.com",
                 "africa_hq": "Maersk Africa Logistics Hub — Durban",
-                "south_africa": {"phone": "+27 31 366 9900", "email": "maerskzaf@maersk.com", "address": "3 Bowen Way, Umgeni Business Park, Durban 4051"},
-                "egypt": {"phone": "+20 2 2580 0444", "email": "maeegypty@maersk.com", "address": "Smart Village, Building B2, Cairo-Alex Desert Road"},
-                "nigeria": {"phone": "+234 1 280 8700", "email": "maenga@maersk.com", "address": "5 Military Street, Onikan, Lagos"},
-                "morocco": {"phone": "+212 522 949 600", "email": "maemary@maersk.com", "address": "Casanearshore, Shore 11, Bd Sidi Mohamed Ben Abdellah, Casablanca"},
-                "kenya": {"phone": "+254 20 360 0100", "email": "maeken@maersk.com", "address": "6th Floor, Nation House, Tom Mboya Street, Nairobi"},
-                "senegal": {"phone": "+221 33 839 2800", "email": "maesen@maersk.com", "address": "8, Allée Robert Délmas, Dakar"},
-                "ethiopia": {"phone": "+251 11 515 7766", "email": "maeeth@maersk.com", "address": "Meskel Square, Addis-Abeba"},
+                "south_africa": {
+                    "phone": "+27 31 366 9900",
+                    "email": "maerskzaf@maersk.com",
+                    "address": "3 Bowen Way, Umgeni Business Park, Durban 4051",
+                },
+                "egypt": {
+                    "phone": "+20 2 2580 0444",
+                    "email": "maeegypty@maersk.com",
+                    "address": "Smart Village, Building B2, Cairo-Alex Desert Road",
+                },
+                "nigeria": {
+                    "phone": "+234 1 280 8700",
+                    "email": "maenga@maersk.com",
+                    "address": "5 Military Street, Onikan, Lagos",
+                },
+                "morocco": {
+                    "phone": "+212 522 949 600",
+                    "email": "maemary@maersk.com",
+                    "address": "Casanearshore, Shore 11, Bd Sidi Mohamed Ben Abdellah, Casablanca",
+                },
+                "kenya": {
+                    "phone": "+254 20 360 0100",
+                    "email": "maeken@maersk.com",
+                    "address": "6th Floor, Nation House, Tom Mboya Street, Nairobi",
+                },
+                "senegal": {
+                    "phone": "+221 33 839 2800",
+                    "email": "maesen@maersk.com",
+                    "address": "8, Allée Robert Délmas, Dakar",
+                },
+                "ethiopia": {
+                    "phone": "+251 11 515 7766",
+                    "email": "maeeth@maersk.com",
+                    "address": "Meskel Square, Addis-Abeba",
+                },
             },
             "africa_offices_count": 46,
             "market_share_africa_pct": 19,
@@ -78,18 +176,66 @@ LOGISTICS_OPERATORS = {
             "founded": 1978,
             "fleet_teu": 3600000,
             "fleet_vessels": 620,
-            "africa_presence": ["MAR", "EGY", "ZAF", "NGA", "SEN", "CIV", "GHA", "CMR", "DJI", "MOZ", "KEN", "AGO", "TUN", "DZA"],
-            "africa_services": ["WAFEX", "AFRICA FEEDER", "EAST AFRICA EXPRESS", "NILE RIVER SERVICE"],
+            "africa_presence": [
+                "MAR",
+                "EGY",
+                "ZAF",
+                "NGA",
+                "SEN",
+                "CIV",
+                "GHA",
+                "CMR",
+                "DJI",
+                "MOZ",
+                "KEN",
+                "AGO",
+                "TUN",
+                "DZA",
+            ],
+            "africa_services": [
+                "WAFEX",
+                "AFRICA FEEDER",
+                "EAST AFRICA EXPRESS",
+                "NILE RIVER SERVICE",
+            ],
             "contacts": {
                 "website": "https://www.cmacgm-group.com",
                 "africa_hq": "ANL Africa — Marseille",
-                "south_africa": {"phone": "+27 21 405 5000", "email": "capetown@cmacgm.com", "address": "16th Floor, 22 Bree Street, Cape Town 8001"},
-                "egypt": {"phone": "+20 2 2418 2000", "email": "cairo@cmacgm.com", "address": "35 Sherif Street, Cairo"},
-                "nigeria": {"phone": "+234 1 260 4321", "email": "lagos@cmacgm.com", "address": "5 Broad Street, Lagos Island"},
-                "senegal": {"phone": "+221 33 849 7900", "email": "dakar@cmacgm.com", "address": "1 Place de l'Indépendance, Dakar"},
-                "ivory_coast": {"phone": "+225 27 20 31 1700", "email": "abidjan@cmacgm.com", "address": "Tour BHCI, Avenue Botreau Roussel, Abidjan"},
-                "djibouti": {"phone": "+253 21 35 45 40", "email": "djibouti@cmacgm.com", "address": "Port de Djibouti, Djibouti"},
-                "morocco": {"phone": "+212 522 430 000", "email": "casablanca@cmacgm.com", "address": "Tour CFC, Rond-Point Hassan II, Casablanca"},
+                "south_africa": {
+                    "phone": "+27 21 405 5000",
+                    "email": "capetown@cmacgm.com",
+                    "address": "16th Floor, 22 Bree Street, Cape Town 8001",
+                },
+                "egypt": {
+                    "phone": "+20 2 2418 2000",
+                    "email": "cairo@cmacgm.com",
+                    "address": "35 Sherif Street, Cairo",
+                },
+                "nigeria": {
+                    "phone": "+234 1 260 4321",
+                    "email": "lagos@cmacgm.com",
+                    "address": "5 Broad Street, Lagos Island",
+                },
+                "senegal": {
+                    "phone": "+221 33 849 7900",
+                    "email": "dakar@cmacgm.com",
+                    "address": "1 Place de l'Indépendance, Dakar",
+                },
+                "ivory_coast": {
+                    "phone": "+225 27 20 31 1700",
+                    "email": "abidjan@cmacgm.com",
+                    "address": "Tour BHCI, Avenue Botreau Roussel, Abidjan",
+                },
+                "djibouti": {
+                    "phone": "+253 21 35 45 40",
+                    "email": "djibouti@cmacgm.com",
+                    "address": "Port de Djibouti, Djibouti",
+                },
+                "morocco": {
+                    "phone": "+212 522 430 000",
+                    "email": "casablanca@cmacgm.com",
+                    "address": "Tour CFC, Rond-Point Hassan II, Casablanca",
+                },
             },
             "africa_offices_count": 38,
             "market_share_africa_pct": 15,
@@ -108,11 +254,31 @@ LOGISTICS_OPERATORS = {
             "africa_services": ["WAX", "SAECS", "EAX"],
             "contacts": {
                 "website": "https://www.hapag-lloyd.com",
-                "south_africa": {"phone": "+27 31 360 0900", "email": "durban@hlag.com", "address": "3rd Floor, The Marine, 22 Gardiner Street, Durban 4001"},
-                "nigeria": {"phone": "+234 1 461 5310", "email": "lagos@hlag.com", "address": "10 Bishop Aboyade Cole Street, Victoria Island, Lagos"},
-                "egypt": {"phone": "+20 2 2418 3100", "email": "cairo@hlag.com", "address": "31 Sherif Street, Alexandria"},
-                "kenya": {"phone": "+254 20 422 8800", "email": "nairobi@hlag.com", "address": "Woodlands Road, Westlands, Nairobi"},
-                "ghana": {"phone": "+233 302 664 999", "email": "accra@hlag.com", "address": "Westcom Business Plaza, Ring Road Central, Accra"},
+                "south_africa": {
+                    "phone": "+27 31 360 0900",
+                    "email": "durban@hlag.com",
+                    "address": "3rd Floor, The Marine, 22 Gardiner Street, Durban 4001",
+                },
+                "nigeria": {
+                    "phone": "+234 1 461 5310",
+                    "email": "lagos@hlag.com",
+                    "address": "10 Bishop Aboyade Cole Street, Victoria Island, Lagos",
+                },
+                "egypt": {
+                    "phone": "+20 2 2418 3100",
+                    "email": "cairo@hlag.com",
+                    "address": "31 Sherif Street, Alexandria",
+                },
+                "kenya": {
+                    "phone": "+254 20 422 8800",
+                    "email": "nairobi@hlag.com",
+                    "address": "Woodlands Road, Westlands, Nairobi",
+                },
+                "ghana": {
+                    "phone": "+233 302 664 999",
+                    "email": "accra@hlag.com",
+                    "address": "Westcom Business Plaza, Ring Road Central, Accra",
+                },
             },
             "africa_offices_count": 18,
             "market_share_africa_pct": 9,
@@ -131,10 +297,26 @@ LOGISTICS_OPERATORS = {
             "africa_services": ["FAX", "SAEX"],
             "contacts": {
                 "website": "https://www.evergreen-line.com",
-                "south_africa": {"phone": "+27 31 305 3555", "email": "durban@evergreen.com.tw", "address": "10 Torquay Road, Windermere, Durban"},
-                "nigeria": {"phone": "+234 1 262 1700", "email": "lagos@evergreen-line.com", "address": "17 Adetokunbo Ademola Street, Victoria Island, Lagos"},
-                "egypt": {"phone": "+20 3 487 5252", "email": "alexandria@evergreen-line.com", "address": "Corniche, Alexandria"},
-                "kenya": {"phone": "+254 20 226 0100", "email": "nairobi@evergreen-line.com", "address": "IPS Building, Kimathi Street, Nairobi"},
+                "south_africa": {
+                    "phone": "+27 31 305 3555",
+                    "email": "durban@evergreen.com.tw",
+                    "address": "10 Torquay Road, Windermere, Durban",
+                },
+                "nigeria": {
+                    "phone": "+234 1 262 1700",
+                    "email": "lagos@evergreen-line.com",
+                    "address": "17 Adetokunbo Ademola Street, Victoria Island, Lagos",
+                },
+                "egypt": {
+                    "phone": "+20 3 487 5252",
+                    "email": "alexandria@evergreen-line.com",
+                    "address": "Corniche, Alexandria",
+                },
+                "kenya": {
+                    "phone": "+254 20 226 0100",
+                    "email": "nairobi@evergreen-line.com",
+                    "address": "IPS Building, Kimathi Street, Nairobi",
+                },
             },
             "africa_offices_count": 10,
             "market_share_africa_pct": 5,
@@ -148,14 +330,43 @@ LOGISTICS_OPERATORS = {
             "founded": 1967,
             "fleet_teu": 430000,
             "fleet_vessels": 82,
-            "africa_presence": ["ZAF", "EGY", "KEN", "TZA", "MOZ", "MUS", "MDG", "DJI", "SOM", "NGA", "GHA", "SEN"],
+            "africa_presence": [
+                "ZAF",
+                "EGY",
+                "KEN",
+                "TZA",
+                "MOZ",
+                "MUS",
+                "MDG",
+                "DJI",
+                "SOM",
+                "NGA",
+                "GHA",
+                "SEN",
+            ],
             "africa_services": ["IEX (India-East Africa)", "SWAC (South West Africa)"],
             "contacts": {
                 "website": "https://www.pilship.com",
-                "south_africa": {"phone": "+27 21 405 1900", "email": "capetown@pilship.com", "address": "8 Riebeek Street, Cape Town 8001"},
-                "kenya": {"phone": "+254 20 222 0141", "email": "nairobi@pilship.com", "address": "Lonrho House, Standard Street, Nairobi"},
-                "mauritius": {"phone": "+230 202 1700", "email": "port-louis@pilship.com", "address": "Caudan Waterfront, Port Louis"},
-                "egypt": {"phone": "+20 3 487 9500", "email": "alexandria@pilship.com", "address": "6 Midan Qahira, Alexandria"},
+                "south_africa": {
+                    "phone": "+27 21 405 1900",
+                    "email": "capetown@pilship.com",
+                    "address": "8 Riebeek Street, Cape Town 8001",
+                },
+                "kenya": {
+                    "phone": "+254 20 222 0141",
+                    "email": "nairobi@pilship.com",
+                    "address": "Lonrho House, Standard Street, Nairobi",
+                },
+                "mauritius": {
+                    "phone": "+230 202 1700",
+                    "email": "port-louis@pilship.com",
+                    "address": "Caudan Waterfront, Port Louis",
+                },
+                "egypt": {
+                    "phone": "+20 3 487 9500",
+                    "email": "alexandria@pilship.com",
+                    "address": "6 Midan Qahira, Alexandria",
+                },
             },
             "africa_offices_count": 14,
             "market_share_africa_pct": 3,
@@ -169,15 +380,35 @@ LOGISTICS_OPERATORS = {
             "founded": 1947,
             "fleet_teu": None,
             "fleet_vessels": 130,
-            "africa_presence": ["MAR", "DZA", "TUN", "SEN", "CIV", "GHA", "NGA", "CMR", "AGO", "ZAF", "MOZ"],
+            "africa_presence": [
+                "MAR",
+                "DZA",
+                "TUN",
+                "SEN",
+                "CIV",
+                "GHA",
+                "NGA",
+                "CMR",
+                "AGO",
+                "ZAF",
+                "MOZ",
+            ],
             "africa_services": ["West Africa Express", "North Africa Lines"],
             "contacts": {
                 "website": "https://www.grimaldi-lines.com",
-                "headquarters": {"phone": "+39 081 496 111", "email": "grimaldi@grimaldi.napoli.it", "address": "Via Marchese Campodisola 13, 80133 Naples, Italie"},
+                "headquarters": {
+                    "phone": "+39 081 496 111",
+                    "email": "grimaldi@grimaldi.napoli.it",
+                    "address": "Via Marchese Campodisola 13, 80133 Naples, Italie",
+                },
                 "senegal": {"phone": "+221 33 859 11 00", "email": "dakar@grimaldi.it"},
                 "ivory_coast": {"phone": "+225 27 20 21 3700", "email": "abidjan@grimaldi.it"},
                 "morocco": {"phone": "+212 522 420 000", "email": "casablanca@grimaldi.it"},
-                "algeria": {"phone": "+213 21 43 50 85", "email": "alger@grimaldi.it", "address": "2 Avenue du 1er Novembre, Alger"},
+                "algeria": {
+                    "phone": "+213 21 43 50 85",
+                    "email": "alger@grimaldi.it",
+                    "address": "2 Avenue du 1er Novembre, Alger",
+                },
             },
             "africa_offices_count": 12,
         },
@@ -190,8 +421,25 @@ LOGISTICS_OPERATORS = {
             "founded": 2017,
             "fleet_teu": 1900000,
             "fleet_vessels": 240,
-            "africa_presence": ["ZAF", "EGY", "NGA", "KEN", "TZA", "MAR", "GHA", "CIV", "DJI", "MUS", "MOZ", "TGO"],
-            "africa_services": ["Far East – South Africa", "Asia – West Africa", "Asia – East Africa"],
+            "africa_presence": [
+                "ZAF",
+                "EGY",
+                "NGA",
+                "KEN",
+                "TZA",
+                "MAR",
+                "GHA",
+                "CIV",
+                "DJI",
+                "MUS",
+                "MOZ",
+                "TGO",
+            ],
+            "africa_services": [
+                "Far East – South Africa",
+                "Asia – West Africa",
+                "Asia – East Africa",
+            ],
             "contacts": {
                 "website": "https://www.one-line.com",
                 "global_hq": {"address": "2 Harbourfront Place, #06-01/03, Singapour 098499"},
@@ -208,11 +456,26 @@ LOGISTICS_OPERATORS = {
             "founded": 1961,
             "fleet_teu": 3100000,
             "fleet_vessels": 500,
-            "africa_presence": ["ZAF", "EGY", "NGA", "KEN", "MAR", "DZA", "TGO", "DJI", "GHA", "CIV", "AGO", "TZA"],
+            "africa_presence": [
+                "ZAF",
+                "EGY",
+                "NGA",
+                "KEN",
+                "MAR",
+                "DZA",
+                "TGO",
+                "DJI",
+                "GHA",
+                "CIV",
+                "AGO",
+                "TZA",
+            ],
             "africa_services": ["AEW Asia–West Africa", "MED–West Africa", "Far East–South Africa"],
             "contacts": {
                 "website": "https://lines.coscoshipping.com",
-                "global_hq": {"address": "9F, COSCO Plaza, 378 Dong Da Ming Road, Hongkou District, Shanghai 200080, Chine"},
+                "global_hq": {
+                    "address": "9F, COSCO Plaza, 378 Dong Da Ming Road, Hongkou District, Shanghai 200080, Chine"
+                },
             },
             "certifications": ["ISO 9001", "ISO 14001", "ISPS"],
         },
@@ -228,7 +491,10 @@ LOGISTICS_OPERATORS = {
             "africa_presence": ["ZAF", "EGY", "NGA", "KEN", "MAR", "GHA"],
             "contacts": {
                 "website": "https://www.zim.com",
-                "headquarters": {"phone": "+972 4 865 2000", "address": "9 Andrei Sakharov St. (Matam), BP 15067, Haïfa 3190500, Israël"},
+                "headquarters": {
+                    "phone": "+972 4 865 2000",
+                    "address": "9 Andrei Sakharov St. (Matam), BP 15067, Haïfa 3190500, Israël",
+                },
             },
         },
         {
@@ -243,7 +509,10 @@ LOGISTICS_OPERATORS = {
             "africa_presence": ["ZAF", "EGY", "NGA", "KEN", "MAR"],
             "contacts": {
                 "website": "https://www.hmm21.com",
-                "headquarters": {"phone": "+82 2 3706 5114", "address": "108 Yeoui-daero, Yeongdeungpo-gu, Séoul 07345, Corée du Sud"},
+                "headquarters": {
+                    "phone": "+82 2 3706 5114",
+                    "address": "108 Yeoui-daero, Yeongdeungpo-gu, Séoul 07345, Corée du Sud",
+                },
             },
         },
         {
@@ -258,7 +527,10 @@ LOGISTICS_OPERATORS = {
             "africa_presence": ["ZAF", "KEN", "TZA", "NGA", "GHA"],
             "contacts": {
                 "website": "https://www.wanhai.com",
-                "headquarters": {"phone": "+886 2 2567 7961", "address": "10F, No. 136, Sung Chiang Rd., Taipei 104492, Taïwan"},
+                "headquarters": {
+                    "phone": "+886 2 2567 7961",
+                    "address": "10F, No. 136, Sung Chiang Rd., Taipei 104492, Taïwan",
+                },
             },
         },
         {
@@ -273,7 +545,9 @@ LOGISTICS_OPERATORS = {
             "africa_presence": ["ZAF", "EGY", "NGA", "KEN"],
             "contacts": {
                 "website": "https://www.yangming.com",
-                "headquarters": {"address": "No. 271, Mingde 1st Road, Cidu District, Keelung 206006, Taïwan"},
+                "headquarters": {
+                    "address": "No. 271, Mingde 1st Road, Cidu District, Keelung 206006, Taïwan"
+                },
             },
         },
         {
@@ -284,10 +558,26 @@ LOGISTICS_OPERATORS = {
             "hq": "İzmir, Turquie",
             "founded": 1944,
             "fleet_vessels": 60,
-            "africa_presence": ["MAR", "DZA", "TUN", "EGY", "LBY", "SEN", "CIV", "GHA", "NGA", "AGO", "ZAF"],
+            "africa_presence": [
+                "MAR",
+                "DZA",
+                "TUN",
+                "EGY",
+                "LBY",
+                "SEN",
+                "CIV",
+                "GHA",
+                "NGA",
+                "AGO",
+                "ZAF",
+            ],
             "contacts": {
                 "website": "https://arkasline.com.tr/en/",
-                "headquarters": {"phone": "+90 232 477 77 77", "email": "arkasline@arkasline.com.tr", "address": "Liman Caddesi, Arkas Binası No:38, Alsancak 35230, İzmir, Turquie"},
+                "headquarters": {
+                    "phone": "+90 232 477 77 77",
+                    "email": "arkasline@arkasline.com.tr",
+                    "address": "Liman Caddesi, Arkas Binası No:38, Alsancak 35230, İzmir, Turquie",
+                },
             },
         },
         {
@@ -298,14 +588,28 @@ LOGISTICS_OPERATORS = {
             "hq": "Gênes, Italie",
             "founded": 1929,
             "fleet_vessels": 15,
-            "africa_presence": ["DZA", "TUN", "EGY", "LBY", "ZAF", "KEN", "TZA", "MOZ", "DJI", "SDN"],
+            "africa_presence": [
+                "DZA",
+                "TUN",
+                "EGY",
+                "LBY",
+                "ZAF",
+                "KEN",
+                "TZA",
+                "MOZ",
+                "DJI",
+                "SDN",
+            ],
             "contacts": {
                 "website": "https://www.messinaline.it",
-                "headquarters": {"phone": "+39 010 53961", "email": "info@messinaline.it", "address": "Via G. D'Annunzio 91, 16121 Gênes, Italie"},
+                "headquarters": {
+                    "phone": "+39 010 53961",
+                    "email": "info@messinaline.it",
+                    "address": "Via G. D'Annunzio 91, 16121 Gênes, Italie",
+                },
             },
         },
     ],
-
     # =========================================================================
     # 2. OPÉRATEURS PORTUAIRES
     # =========================================================================
@@ -319,8 +623,16 @@ LOGISTICS_OPERATORS = {
             "founded": 1999,
             "africa_terminals": [
                 {"port": "Djeddah (Transit Afrique)", "country": "SAU"},
-                {"port": "Dakar — Dakar Container Terminal", "country": "SEN", "teu_capacity": 550000},
-                {"port": "Abidjan — Abidjan Container Terminal", "country": "CIV", "teu_capacity": 1200000},
+                {
+                    "port": "Dakar — Dakar Container Terminal",
+                    "country": "SEN",
+                    "teu_capacity": 550000,
+                },
+                {
+                    "port": "Abidjan — Abidjan Container Terminal",
+                    "country": "CIV",
+                    "teu_capacity": 1200000,
+                },
                 {"port": "Berbera", "country": "SOM", "teu_capacity": 500000},
                 {"port": "Luanda (concession)", "country": "AGO"},
                 {"port": "Le Havre (transit)", "country": "FRA"},
@@ -363,9 +675,20 @@ LOGISTICS_OPERATORS = {
             ],
             "contacts": {
                 "website": "https://www.apmterminals.com",
-                "nigeria": {"phone": "+234 1 270 6000", "email": "apapa@apmterminals.com", "address": "APMT, Apapa Wharf, Lagos"},
-                "morocco": {"phone": "+212 539 397 000", "email": "tangier@apmterminals.com", "address": "Tanger Med, Zone Spéciale"},
-                "south_africa": {"phone": "+27 41 507 7000", "email": "portelizabeth@apmterminals.com"},
+                "nigeria": {
+                    "phone": "+234 1 270 6000",
+                    "email": "apapa@apmterminals.com",
+                    "address": "APMT, Apapa Wharf, Lagos",
+                },
+                "morocco": {
+                    "phone": "+212 539 397 000",
+                    "email": "tangier@apmterminals.com",
+                    "address": "Tanger Med, Zone Spéciale",
+                },
+                "south_africa": {
+                    "phone": "+27 41 507 7000",
+                    "email": "portelizabeth@apmterminals.com",
+                },
                 "ghana": {"phone": "+233 302 212 888", "email": "tema@apmterminals.com"},
             },
             "africa_offices_count": 10,
@@ -396,10 +719,22 @@ LOGISTICS_OPERATORS = {
             "contacts": {
                 "website": "https://www.africagloballogistics.com",
                 "africa_hq": "AGL Africa — Abidjan",
-                "ivory_coast": {"phone": "+225 27 21 23 8000", "email": "info.abidjan@aglgroup.com", "address": "Zone Industrielle de Vridi, Abidjan"},
-                "cameroon": {"phone": "+237 233 421 313", "email": "info.douala@aglgroup.com", "address": "BP 4057, Douala"},
+                "ivory_coast": {
+                    "phone": "+225 27 21 23 8000",
+                    "email": "info.abidjan@aglgroup.com",
+                    "address": "Zone Industrielle de Vridi, Abidjan",
+                },
+                "cameroon": {
+                    "phone": "+237 233 421 313",
+                    "email": "info.douala@aglgroup.com",
+                    "address": "BP 4057, Douala",
+                },
                 "senegal": {"phone": "+221 33 849 7700", "email": "info.dakar@aglgroup.com"},
-                "togo": {"phone": "+228 22 21 22 21", "email": "info.lome@aglgroup.com", "address": "Boulevard du Mono, Lomé"},
+                "togo": {
+                    "phone": "+228 22 21 22 21",
+                    "email": "info.lome@aglgroup.com",
+                    "address": "Boulevard du Mono, Lomé",
+                },
                 "kenya": {"phone": "+254 20 342 4000", "email": "info.mombasa@aglgroup.com"},
                 "djibouti": {"phone": "+253 21 35 01 00", "email": "info.djibouti@aglgroup.com"},
             },
@@ -419,7 +754,11 @@ LOGISTICS_OPERATORS = {
             ],
             "contacts": {
                 "website": "https://www.ictsi.com",
-                "tanzania": {"phone": "+255 22 211 7930", "email": "dar@ictsi.com", "address": "PO Box 9010, Dar es Salaam"},
+                "tanzania": {
+                    "phone": "+255 22 211 7930",
+                    "email": "dar@ictsi.com",
+                    "address": "PO Box 9010, Dar es Salaam",
+                },
                 "dr_congo": {"phone": "+243 81 070 0000", "email": "matadi@ictsi.com"},
             },
             "africa_offices_count": 3,
@@ -484,7 +823,11 @@ LOGISTICS_OPERATORS = {
             ],
             "contacts": {
                 "website": "https://hutchisonports.com",
-                "egypt_aict": {"website": "https://www.aict.com.eg", "phone": "+20 3 314 8000", "address": "Al Sabah Building B, 20 Mahmoud El Dib St, Zezenia, Alexandrie 21599, Égypte"},
+                "egypt_aict": {
+                    "website": "https://www.aict.com.eg",
+                    "phone": "+20 3 314 8000",
+                    "address": "Al Sabah Building B, 20 Mahmoud El Dib St, Zezenia, Alexandrie 21599, Égypte",
+                },
             },
         },
         {
@@ -501,7 +844,9 @@ LOGISTICS_OPERATORS = {
             ],
             "contacts": {
                 "website": "https://www.cmport.com.hk",
-                "hong_kong": {"address": "38/F, China Merchants Tower, Shun Tak Centre, 168–200 Connaught Road Central, Hong Kong"},
+                "hong_kong": {
+                    "address": "38/F, China Merchants Tower, Shun Tak Centre, 168–200 Connaught Road Central, Hong Kong"
+                },
             },
         },
         {
@@ -516,7 +861,10 @@ LOGISTICS_OPERATORS = {
             ],
             "contacts": {
                 "website": "https://yilport.com",
-                "headquarters": {"phone": "+90 262 679 7600", "address": "Sarıyer, Istanbul 34485, Turquie"},
+                "headquarters": {
+                    "phone": "+90 262 679 7600",
+                    "address": "Sarıyer, Istanbul 34485, Turquie",
+                },
             },
         },
         {
@@ -588,7 +936,6 @@ LOGISTICS_OPERATORS = {
             },
         },
     ],
-
     # =========================================================================
     # 3. TRANSITAIRES / FREIGHT FORWARDERS
     # =========================================================================
@@ -600,18 +947,76 @@ LOGISTICS_OPERATORS = {
             "type_label": "Transitaire mondial / Commissionnaire",
             "hq": "Bonn, Allemagne (présence Africa: Nairobi)",
             "founded": 1969,
-            "africa_presence": ["ZAF", "NGA", "KEN", "EGY", "GHA", "ETH", "TZA", "UGA", "CMR", "SEN", "MAR", "DZA", "TUN", "CIV", "MOZ", "ZMB", "ZWE", "RWA", "AGO"],
-            "services": ["Fret maritime", "Fret aérien", "Dédouanement", "Transport terrestre", "Entreposage"],
+            "africa_presence": [
+                "ZAF",
+                "NGA",
+                "KEN",
+                "EGY",
+                "GHA",
+                "ETH",
+                "TZA",
+                "UGA",
+                "CMR",
+                "SEN",
+                "MAR",
+                "DZA",
+                "TUN",
+                "CIV",
+                "MOZ",
+                "ZMB",
+                "ZWE",
+                "RWA",
+                "AGO",
+            ],
+            "services": [
+                "Fret maritime",
+                "Fret aérien",
+                "Dédouanement",
+                "Transport terrestre",
+                "Entreposage",
+            ],
             "contacts": {
                 "website": "https://www.dhl.com/africa",
-                "africa_hq": {"phone": "+27 11 821 3000", "email": "dhlgf.southafrica@dhl.com", "address": "6th Floor, Standard Bank Building, Johannesburg"},
-                "nigeria": {"phone": "+234 1 271 2230", "email": "dhlgf.nigeria@dhl.com", "address": "20 Creek Road, Apapa, Lagos"},
-                "kenya": {"phone": "+254 20 699 9000", "email": "dhlgf.kenya@dhl.com", "address": "Airport North Road, Nairobi"},
-                "egypt": {"phone": "+20 2 2412 0555", "email": "dhlgf.egypt@dhl.com", "address": "23 Kasr El Nile Street, Cairo"},
-                "ghana": {"phone": "+233 302 773 700", "email": "dhlgf.ghana@dhl.com", "address": "Ring Road, Accra"},
-                "morocco": {"phone": "+212 522 979 000", "email": "dhlgf.maroc@dhl.com", "address": "Sidi Maarouf Parc, Casablanca"},
-                "algeria": {"phone": "+213 21 49 06 49", "email": "dhlgf.algerie@dhl.com", "address": "Zone d'Activités de Bab Ezzouar, Alger"},
-                "ethiopia": {"phone": "+251 11 661 4200", "email": "dhlgf.ethiopia@dhl.com", "address": "Bole Road, Addis-Abeba"},
+                "africa_hq": {
+                    "phone": "+27 11 821 3000",
+                    "email": "dhlgf.southafrica@dhl.com",
+                    "address": "6th Floor, Standard Bank Building, Johannesburg",
+                },
+                "nigeria": {
+                    "phone": "+234 1 271 2230",
+                    "email": "dhlgf.nigeria@dhl.com",
+                    "address": "20 Creek Road, Apapa, Lagos",
+                },
+                "kenya": {
+                    "phone": "+254 20 699 9000",
+                    "email": "dhlgf.kenya@dhl.com",
+                    "address": "Airport North Road, Nairobi",
+                },
+                "egypt": {
+                    "phone": "+20 2 2412 0555",
+                    "email": "dhlgf.egypt@dhl.com",
+                    "address": "23 Kasr El Nile Street, Cairo",
+                },
+                "ghana": {
+                    "phone": "+233 302 773 700",
+                    "email": "dhlgf.ghana@dhl.com",
+                    "address": "Ring Road, Accra",
+                },
+                "morocco": {
+                    "phone": "+212 522 979 000",
+                    "email": "dhlgf.maroc@dhl.com",
+                    "address": "Sidi Maarouf Parc, Casablanca",
+                },
+                "algeria": {
+                    "phone": "+213 21 49 06 49",
+                    "email": "dhlgf.algerie@dhl.com",
+                    "address": "Zone d'Activités de Bab Ezzouar, Alger",
+                },
+                "ethiopia": {
+                    "phone": "+251 11 661 4200",
+                    "email": "dhlgf.ethiopia@dhl.com",
+                    "address": "Bole Road, Addis-Abeba",
+                },
             },
             "africa_offices_count": 51,
             "iata_accredited": True,
@@ -624,17 +1029,65 @@ LOGISTICS_OPERATORS = {
             "type_label": "Transitaire mondial",
             "hq": "Hedehusene, Danemark",
             "founded": 1976,
-            "africa_presence": ["ZAF", "NGA", "KEN", "EGY", "GHA", "ETH", "TZA", "MOZ", "MAR", "CMR", "CIV", "SEN", "AGO", "ZMB"],
-            "services": ["Fret maritime", "Fret aérien", "Solutions douanières", "Projets industrie"],
+            "africa_presence": [
+                "ZAF",
+                "NGA",
+                "KEN",
+                "EGY",
+                "GHA",
+                "ETH",
+                "TZA",
+                "MOZ",
+                "MAR",
+                "CMR",
+                "CIV",
+                "SEN",
+                "AGO",
+                "ZMB",
+            ],
+            "services": [
+                "Fret maritime",
+                "Fret aérien",
+                "Solutions douanières",
+                "Projets industrie",
+            ],
             "contacts": {
                 "website": "https://www.dsv.com/africa",
-                "africa_hq": {"phone": "+27 11 459 6500", "email": "info.za@dsv.com", "address": "Cnr Kelly & Webber Streets, Germiston, Johannesburg"},
-                "nigeria": {"phone": "+234 1 280 8200", "email": "info.ng@dsv.com", "address": "14 Hughes Avenue, Alagomeji, Lagos"},
-                "kenya": {"phone": "+254 20 395 9000", "email": "info.ke@dsv.com", "address": "Airport North Road, Nairobi"},
-                "egypt": {"phone": "+20 2 2264 7000", "email": "info.eg@dsv.com", "address": "Smart Village, 6th October City, Cairo"},
-                "morocco": {"phone": "+212 522 541 600", "email": "info.ma@dsv.com", "address": "CFC Tour, Casablanca"},
-                "ghana": {"phone": "+233 302 760 111", "email": "info.gh@dsv.com", "address": "Spintex Road, Accra"},
-                "ivory_coast": {"phone": "+225 27 22 42 0600", "email": "info.ci@dsv.com", "address": "Zone Industrielle, Abidjan"},
+                "africa_hq": {
+                    "phone": "+27 11 459 6500",
+                    "email": "info.za@dsv.com",
+                    "address": "Cnr Kelly & Webber Streets, Germiston, Johannesburg",
+                },
+                "nigeria": {
+                    "phone": "+234 1 280 8200",
+                    "email": "info.ng@dsv.com",
+                    "address": "14 Hughes Avenue, Alagomeji, Lagos",
+                },
+                "kenya": {
+                    "phone": "+254 20 395 9000",
+                    "email": "info.ke@dsv.com",
+                    "address": "Airport North Road, Nairobi",
+                },
+                "egypt": {
+                    "phone": "+20 2 2264 7000",
+                    "email": "info.eg@dsv.com",
+                    "address": "Smart Village, 6th October City, Cairo",
+                },
+                "morocco": {
+                    "phone": "+212 522 541 600",
+                    "email": "info.ma@dsv.com",
+                    "address": "CFC Tour, Casablanca",
+                },
+                "ghana": {
+                    "phone": "+233 302 760 111",
+                    "email": "info.gh@dsv.com",
+                    "address": "Spintex Road, Accra",
+                },
+                "ivory_coast": {
+                    "phone": "+225 27 22 42 0600",
+                    "email": "info.ci@dsv.com",
+                    "address": "Zone Industrielle, Abidjan",
+                },
             },
             "africa_offices_count": 32,
             "iata_accredited": True,
@@ -647,15 +1100,46 @@ LOGISTICS_OPERATORS = {
             "type_label": "Transitaire mondial",
             "hq": "Schindellegi, Suisse (Africa HQ: Johannesburg)",
             "founded": 1890,
-            "africa_presence": ["ZAF", "NGA", "KEN", "EGY", "GHA", "ETH", "TZA", "MOZ", "MAR", "CIV"],
+            "africa_presence": [
+                "ZAF",
+                "NGA",
+                "KEN",
+                "EGY",
+                "GHA",
+                "ETH",
+                "TZA",
+                "MOZ",
+                "MAR",
+                "CIV",
+            ],
             "services": ["Sea Logistics", "Air Logistics", "Road Logistics", "Contract Logistics"],
             "contacts": {
                 "website": "https://www.kuehne-nagel.com",
-                "africa_hq": {"phone": "+27 11 580 9000", "email": "info.africa@kuehne-nagel.com", "address": "2 Charles Street, Kramerville, Johannesburg 2196"},
-                "nigeria": {"phone": "+234 1 280 0600", "email": "info.ng@kuehne-nagel.com", "address": "9 Bank-Anthony Way, Lagos"},
-                "kenya": {"phone": "+254 20 362 3200", "email": "info.ke@kuehne-nagel.com", "address": "Woodvale Grove, Westlands, Nairobi"},
-                "egypt": {"phone": "+20 2 2614 9700", "email": "info.eg@kuehne-nagel.com", "address": "Nile City, South Tower, Cairo"},
-                "morocco": {"phone": "+212 522 392 100", "email": "info.ma@kuehne-nagel.com", "address": "Technopark, Route de Nouasser, Casablanca"},
+                "africa_hq": {
+                    "phone": "+27 11 580 9000",
+                    "email": "info.africa@kuehne-nagel.com",
+                    "address": "2 Charles Street, Kramerville, Johannesburg 2196",
+                },
+                "nigeria": {
+                    "phone": "+234 1 280 0600",
+                    "email": "info.ng@kuehne-nagel.com",
+                    "address": "9 Bank-Anthony Way, Lagos",
+                },
+                "kenya": {
+                    "phone": "+254 20 362 3200",
+                    "email": "info.ke@kuehne-nagel.com",
+                    "address": "Woodvale Grove, Westlands, Nairobi",
+                },
+                "egypt": {
+                    "phone": "+20 2 2614 9700",
+                    "email": "info.eg@kuehne-nagel.com",
+                    "address": "Nile City, South Tower, Cairo",
+                },
+                "morocco": {
+                    "phone": "+212 522 392 100",
+                    "email": "info.ma@kuehne-nagel.com",
+                    "address": "Technopark, Route de Nouasser, Casablanca",
+                },
                 "ghana": {"phone": "+233 302 747 002", "email": "info.gh@kuehne-nagel.com"},
             },
             "africa_offices_count": 22,
@@ -669,14 +1153,41 @@ LOGISTICS_OPERATORS = {
             "type_label": "Transitaire & Logisticien (filiale SNCF Logistics)",
             "hq": "Paris, France (Africa HQ: Abidjan)",
             "founded": 1904,
-            "africa_presence": ["CIV", "SEN", "NGA", "GHA", "CMR", "MAR", "EGY", "ZAF", "KEN", "TUN"],
+            "africa_presence": [
+                "CIV",
+                "SEN",
+                "NGA",
+                "GHA",
+                "CMR",
+                "MAR",
+                "EGY",
+                "ZAF",
+                "KEN",
+                "TUN",
+            ],
             "services": ["Freight Forwarding", "Douane", "Stockage", "Distribution"],
             "contacts": {
                 "website": "https://geodis.com/africa",
-                "africa_hq": {"phone": "+225 27 21 35 2000", "email": "geodis.africa@geodis.com", "address": "Zone Industrielle de Vridi, Abidjan, Côte d'Ivoire"},
-                "senegal": {"phone": "+221 33 839 5000", "email": "geodis.dakar@geodis.com", "address": "Port de Dakar, Sénégal"},
-                "cameroon": {"phone": "+237 233 429 700", "email": "geodis.douala@geodis.com", "address": "Zone Logistique, Douala"},
-                "morocco": {"phone": "+212 522 406 300", "email": "geodis.maroc@geodis.com", "address": "Zone Industrielle, Ain Sebaâ, Casablanca"},
+                "africa_hq": {
+                    "phone": "+225 27 21 35 2000",
+                    "email": "geodis.africa@geodis.com",
+                    "address": "Zone Industrielle de Vridi, Abidjan, Côte d'Ivoire",
+                },
+                "senegal": {
+                    "phone": "+221 33 839 5000",
+                    "email": "geodis.dakar@geodis.com",
+                    "address": "Port de Dakar, Sénégal",
+                },
+                "cameroon": {
+                    "phone": "+237 233 429 700",
+                    "email": "geodis.douala@geodis.com",
+                    "address": "Zone Logistique, Douala",
+                },
+                "morocco": {
+                    "phone": "+212 522 406 300",
+                    "email": "geodis.maroc@geodis.com",
+                    "address": "Zone Industrielle, Ain Sebaâ, Casablanca",
+                },
                 "ghana": {"phone": "+233 302 664 000", "email": "geodis.accra@geodis.com"},
                 "egypt": {"phone": "+20 2 2291 0900", "email": "geodis.cairo@geodis.com"},
                 "south_africa": {"phone": "+27 11 974 3500", "email": "geodis.jhb@geodis.com"},
@@ -693,7 +1204,11 @@ LOGISTICS_OPERATORS = {
             "africa_presence": ["ZAF", "NGA", "KEN", "EGY", "GHA", "CMR", "MOZ", "ZMB"],
             "contacts": {
                 "website": "https://www.cevalogistics.com",
-                "africa_hq": {"phone": "+27 11 574 4200", "email": "africa@cevalogistics.com", "address": "26 Inyati Road, Meadowdale, Johannesburg"},
+                "africa_hq": {
+                    "phone": "+27 11 574 4200",
+                    "email": "africa@cevalogistics.com",
+                    "address": "26 Inyati Road, Meadowdale, Johannesburg",
+                },
                 "nigeria": {"phone": "+234 1 271 8800", "email": "nigeria@cevalogistics.com"},
                 "kenya": {"phone": "+254 20 344 0200", "email": "kenya@cevalogistics.com"},
                 "egypt": {"phone": "+20 2 2269 6000", "email": "egypt@cevalogistics.com"},
@@ -707,19 +1222,68 @@ LOGISTICS_OPERATORS = {
             "type_label": "Transitaire & Manutention — #1 Afrique",
             "hq": "Paris, France (Acquisition MSC → AGL 2022)",
             "founded": 1867,
-            "africa_presence": ["CIV", "SEN", "NGA", "GHA", "CMR", "KEN", "TZA", "DJI", "ETH", "MAR", "DZA", "TUN", "EGY", "ZAF", "AGO", "COG", "GAB", "GIN", "BEN", "TGO", "BFA", "MLI", "NER", "CMR", "MOZ", "MDG", "MUS"],
-            "services": ["Transit", "Dédouanement", "Manutention portuaire", "Entreposage", "Groupage"],
+            "africa_presence": [
+                "CIV",
+                "SEN",
+                "NGA",
+                "GHA",
+                "CMR",
+                "KEN",
+                "TZA",
+                "DJI",
+                "ETH",
+                "MAR",
+                "DZA",
+                "TUN",
+                "EGY",
+                "ZAF",
+                "AGO",
+                "COG",
+                "GAB",
+                "GIN",
+                "BEN",
+                "TGO",
+                "BFA",
+                "MLI",
+                "NER",
+                "CMR",
+                "MOZ",
+                "MDG",
+                "MUS",
+            ],
+            "services": [
+                "Transit",
+                "Dédouanement",
+                "Manutention portuaire",
+                "Entreposage",
+                "Groupage",
+            ],
             "contacts": {
                 "website": "https://www.africagloballogistics.com",
-                "group_hq": {"phone": "+33 1 44 35 89 00", "address": "31-32 Quai de Dion Bouton, 92811 Puteaux, France"},
-                "ivory_coast": {"phone": "+225 27 21 23 8000", "email": "info.abidjan@aglgroup.com", "address": "Zone Vridi, Abidjan"},
-                "senegal": {"phone": "+221 33 849 7700", "email": "info.dakar@aglgroup.com", "address": "Port de Dakar, Sénégal"},
+                "group_hq": {
+                    "phone": "+33 1 44 35 89 00",
+                    "address": "31-32 Quai de Dion Bouton, 92811 Puteaux, France",
+                },
+                "ivory_coast": {
+                    "phone": "+225 27 21 23 8000",
+                    "email": "info.abidjan@aglgroup.com",
+                    "address": "Zone Vridi, Abidjan",
+                },
+                "senegal": {
+                    "phone": "+221 33 849 7700",
+                    "email": "info.dakar@aglgroup.com",
+                    "address": "Port de Dakar, Sénégal",
+                },
                 "cameroon": {"phone": "+237 233 43 08 00", "email": "info.douala@aglgroup.com"},
                 "kenya": {"phone": "+254 41 222 0000", "email": "info.mombasa@aglgroup.com"},
                 "djibouti": {"phone": "+253 21 35 01 00", "email": "info.djibouti@aglgroup.com"},
                 "ethiopia": {"phone": "+251 11 551 0000", "email": "info.addis@aglgroup.com"},
                 "morocco": {"phone": "+212 522 940 400", "email": "info.casablanca@aglgroup.com"},
-                "algeria": {"phone": "+213 21 74 30 00", "email": "info.alger@aglgroup.com", "address": "Rued des Frères Bouadou, Bir Mourad Raïs, Alger"},
+                "algeria": {
+                    "phone": "+213 21 74 30 00",
+                    "email": "info.alger@aglgroup.com",
+                    "address": "Rued des Frères Bouadou, Bir Mourad Raïs, Alger",
+                },
                 "mali": {"phone": "+223 20 24 32 00", "email": "info.bamako@aglgroup.com"},
             },
             "africa_offices_count": 55,
@@ -732,10 +1296,27 @@ LOGISTICS_OPERATORS = {
             "type": "transitaire",
             "type_label": "Inspection & Certification des marchandises",
             "hq": "Genève, Suisse",
-            "africa_presence": ["MAR", "EGY", "ZAF", "NGA", "KEN", "GHA", "ETH", "CMR", "CIV", "SEN", "TUN", "DZA"],
+            "africa_presence": [
+                "MAR",
+                "EGY",
+                "ZAF",
+                "NGA",
+                "KEN",
+                "GHA",
+                "ETH",
+                "CMR",
+                "CIV",
+                "SEN",
+                "TUN",
+                "DZA",
+            ],
             "contacts": {
                 "website": "https://www.sgs.com",
-                "africa_hq": {"phone": "+27 11 800 4000", "email": "africa.trade@sgs.com", "address": "Maple Place, 1 De Beers Avenue, Motor City, Midrand"},
+                "africa_hq": {
+                    "phone": "+27 11 800 4000",
+                    "email": "africa.trade@sgs.com",
+                    "address": "Maple Place, 1 De Beers Avenue, Motor City, Midrand",
+                },
                 "morocco": {"phone": "+212 522 767 030", "email": "maroc.trade@sgs.com"},
                 "egypt": {"phone": "+20 2 2290 0176", "email": "egypt.trade@sgs.com"},
                 "nigeria": {"phone": "+234 1 261 5420", "email": "nigeria.trade@sgs.com"},
@@ -749,11 +1330,25 @@ LOGISTICS_OPERATORS = {
             "type_label": "Transitaire mondial",
             "hq": "Essen, Allemagne",
             "founded": 1872,
-            "africa_presence": ["ZAF", "NGA", "KEN", "EGY", "GHA", "MAR", "TZA", "CIV", "MOZ", "NAM"],
+            "africa_presence": [
+                "ZAF",
+                "NGA",
+                "KEN",
+                "EGY",
+                "GHA",
+                "MAR",
+                "TZA",
+                "CIV",
+                "MOZ",
+                "NAM",
+            ],
             "services": ["Fret maritime", "Fret aérien", "Logistique contractuelle", "Douane"],
             "contacts": {
                 "website": "https://www.dbschenker.com",
-                "headquarters": {"phone": "+49 201 87810", "address": "Kruppstraße 4, 45128 Essen, Allemagne"},
+                "headquarters": {
+                    "phone": "+49 201 87810",
+                    "address": "Kruppstraße 4, 45128 Essen, Allemagne",
+                },
             },
             "iata_accredited": True,
             "fiata_member": True,
@@ -769,7 +1364,10 @@ LOGISTICS_OPERATORS = {
             "services": ["Fret aérien", "Fret maritime", "Douane", "Distribution"],
             "contacts": {
                 "website": "https://www.expeditors.com",
-                "headquarters": {"phone": "+1 206 674 3400", "address": "1015 Third Avenue, 12th Floor, Seattle, WA 98104, États-Unis"},
+                "headquarters": {
+                    "phone": "+1 206 674 3400",
+                    "address": "1015 Third Avenue, 12th Floor, Seattle, WA 98104, États-Unis",
+                },
             },
             "iata_accredited": True,
         },
@@ -800,7 +1398,11 @@ LOGISTICS_OPERATORS = {
             "services": ["Agence maritime", "Fret", "Logistique", "Soutage"],
             "contacts": {
                 "website": "https://www.gac.com",
-                "headquarters": {"phone": "+971 4 881 1411", "email": "info@gac.com", "address": "Jebel Ali Free Zone, Gate 4, GAC HQ Building, Dubaï, EAU"},
+                "headquarters": {
+                    "phone": "+971 4 881 1411",
+                    "email": "info@gac.com",
+                    "address": "Jebel Ali Free Zone, Gate 4, GAC HQ Building, Dubaï, EAU",
+                },
             },
         },
         {
@@ -814,7 +1416,10 @@ LOGISTICS_OPERATORS = {
             "services": ["Fret maritime", "Fret aérien", "Projets", "Douane"],
             "contacts": {
                 "website": "https://www.sinotrans.com",
-                "headquarters": {"phone": "+86 10 52295721", "address": "Sinotrans Tower B, No. 5 Anding Road, Chaoyang District, Pékin 100029, Chine"},
+                "headquarters": {
+                    "phone": "+86 10 52295721",
+                    "address": "Sinotrans Tower B, No. 5 Anding Road, Chaoyang District, Pékin 100029, Chine",
+                },
             },
         },
         {
@@ -828,7 +1433,11 @@ LOGISTICS_OPERATORS = {
             "services": ["Fret aérien", "Fret maritime", "Logistique contractuelle"],
             "contacts": {
                 "website": "https://www.hellmann.com",
-                "headquarters": {"phone": "+49 541 605 0", "email": "info@hellmann.com", "address": "Elbestrasse 1, 49090 Osnabrück, Allemagne"},
+                "headquarters": {
+                    "phone": "+49 541 605 0",
+                    "email": "info@hellmann.com",
+                    "address": "Elbestrasse 1, 49090 Osnabrück, Allemagne",
+                },
             },
             "iata_accredited": True,
             "fiata_member": True,
@@ -840,15 +1449,37 @@ LOGISTICS_OPERATORS = {
             "type_label": "Inspection, vérification & certification (TIC)",
             "hq": "Genève, Suisse",
             "founded": 1974,
-            "africa_presence": ["NGA", "GHA", "CIV", "SEN", "COD", "AGO", "MLI", "BFA", "GIN", "TGO", "BEN", "CMR", "ZAF"],
-            "services": ["Inspection avant embarquement", "Scanner", "Guichet unique", "Certification"],
+            "africa_presence": [
+                "NGA",
+                "GHA",
+                "CIV",
+                "SEN",
+                "COD",
+                "AGO",
+                "MLI",
+                "BFA",
+                "GIN",
+                "TGO",
+                "BEN",
+                "CMR",
+                "ZAF",
+            ],
+            "services": [
+                "Inspection avant embarquement",
+                "Scanner",
+                "Guichet unique",
+                "Certification",
+            ],
             "contacts": {
                 "website": "https://www.cotecna.com",
-                "headquarters": {"phone": "+41 22 849 69 00", "email": "cotecna.geneva@cotecna.com", "address": "41 Avenue Peschier, 1206 Genève, Suisse"},
+                "headquarters": {
+                    "phone": "+41 22 849 69 00",
+                    "email": "cotecna.geneva@cotecna.com",
+                    "address": "41 Avenue Peschier, 1206 Genève, Suisse",
+                },
             },
         },
     ],
-
     # =========================================================================
     # 4. OPÉRATEURS FERROVIAIRES
     # =========================================================================
@@ -1075,7 +1706,6 @@ LOGISTICS_OPERATORS = {
             },
         },
     ],
-
     # =========================================================================
     # 5. TRANSPORTEURS ROUTIERS (TRUCKING)
     # =========================================================================
@@ -1087,7 +1717,26 @@ LOGISTICS_OPERATORS = {
             "type_label": "Transporteur routier panafricain",
             "hq": "Abidjan, Côte d'Ivoire",
             "fleet_size": 1200,
-            "africa_presence": ["CIV", "SEN", "MLI", "BFA", "NIG", "GHA", "CMR", "GAB", "COG", "COD", "KEN", "TZA", "DJI", "ETH", "MAR", "DZA", "ZAF", "NGA"],
+            "africa_presence": [
+                "CIV",
+                "SEN",
+                "MLI",
+                "BFA",
+                "NIG",
+                "GHA",
+                "CMR",
+                "GAB",
+                "COG",
+                "COD",
+                "KEN",
+                "TZA",
+                "DJI",
+                "ETH",
+                "MAR",
+                "DZA",
+                "ZAF",
+                "NGA",
+            ],
             "contacts": {
                 "website": "https://www.africagloballogistics.com",
                 "phone": "+225 27 21 23 8000",
@@ -1132,7 +1781,18 @@ LOGISTICS_OPERATORS = {
             "type": "trucking",
             "type_label": "Distribution & Logistique — Afrique Sub-saharienne",
             "hq": "Paris, France",
-            "africa_presence": ["CIV", "SEN", "CMR", "GHA", "NGA", "GAB", "COG", "ZAF", "TUN", "MAR"],
+            "africa_presence": [
+                "CIV",
+                "SEN",
+                "CMR",
+                "GHA",
+                "NGA",
+                "GAB",
+                "COG",
+                "ZAF",
+                "TUN",
+                "MAR",
+            ],
             "contacts": {
                 "website": "https://www.cfao.com",
                 "phone": "+33 1 79 98 00 00",
@@ -1180,7 +1840,10 @@ LOGISTICS_OPERATORS = {
             "africa_presence": ["ZAF", "NGA", "KEN", "GHA", "NAM", "BWA", "ZMB", "MOZ", "MWI"],
             "contacts": {
                 "website": "https://www.imperiallogistics.com",
-                "headquarters": {"phone": "+27 11 372 6500", "address": "Imperial Place, 79 Boeing Road East, Bedfordview, Johannesburg 2007, Afrique du Sud"},
+                "headquarters": {
+                    "phone": "+27 11 372 6500",
+                    "address": "Imperial Place, 79 Boeing Road East, Bedfordview, Johannesburg 2007, Afrique du Sud",
+                },
             },
         },
         {
@@ -1192,7 +1855,10 @@ LOGISTICS_OPERATORS = {
             "africa_presence": ["ZAF", "MOZ", "NAM", "BWA", "ZWE"],
             "contacts": {
                 "website": "https://www.bidvestil.com",
-                "headquarters": {"phone": "+27 11 570 6000", "address": "Stoneridge Office Park, Block A, 8 Greenstone Place, Greenstone Hill 1609, Johannesburg"},
+                "headquarters": {
+                    "phone": "+27 11 570 6000",
+                    "address": "Stoneridge Office Park, Block A, 8 Greenstone Place, Greenstone Hill 1609, Johannesburg",
+                },
             },
         },
         {
@@ -1216,7 +1882,9 @@ LOGISTICS_OPERATORS = {
             "africa_presence": ["ZAF", "NAM", "BWA", "MOZ"],
             "contacts": {
                 "website": "https://www.supergroup.co.za",
-                "headquarters": {"address": "27 Impala Road, Chislehurston, Sandton 2196, Afrique du Sud"},
+                "headquarters": {
+                    "address": "27 Impala Road, Chislehurston, Sandton 2196, Afrique du Sud"
+                },
             },
         },
         {
@@ -1228,11 +1896,12 @@ LOGISTICS_OPERATORS = {
             "africa_presence": ["ZAF", "MOZ", "ZMB", "ZWE", "MWI", "NAM", "SWZ", "UGA"],
             "contacts": {
                 "website": "https://www.unitransafrica.com",
-                "headquarters": {"address": "Founders Hill Office Park, Edenvale, Gauteng 1645, Afrique du Sud"},
+                "headquarters": {
+                    "address": "Founders Hill Office Park, Edenvale, Gauteng 1645, Afrique du Sud"
+                },
             },
         },
     ],
-
     # =========================================================================
     # 6. COMPAGNIES AÉRIENNES CARGO
     # =========================================================================
@@ -1257,8 +1926,14 @@ LOGISTICS_OPERATORS = {
                 "kenya": {"phone": "+254 20 222 3700", "email": "cargo.nbo@ethiopianairlines.com"},
                 "nigeria": {"phone": "+234 1 280 0500", "email": "cargo.los@ethiopianairlines.com"},
                 "egypt": {"phone": "+20 2 2265 7000", "email": "cargo.cai@ethiopianairlines.com"},
-                "south_africa": {"phone": "+27 11 827 5100", "email": "cargo.jnb@ethiopianairlines.com"},
-                "morocco": {"phone": "+212 522 538 100", "email": "cargo.cmn@ethiopianairlines.com"},
+                "south_africa": {
+                    "phone": "+27 11 827 5100",
+                    "email": "cargo.jnb@ethiopianairlines.com",
+                },
+                "morocco": {
+                    "phone": "+212 522 538 100",
+                    "email": "cargo.cmn@ethiopianairlines.com",
+                },
             },
             "iata_code": "ET",
             "certifications": ["IATA CEIV Pharma", "IATA CEIV Live Animals"],
@@ -1399,7 +2074,23 @@ LOGISTICS_OPERATORS = {
             "hq": "Dubaï, EAU",
             "fleet_freighters": 11,
             "destinations_cargo": 140,
-            "africa_presence": ["ZAF", "EGY", "NGA", "KEN", "GHA", "MAR", "DZA", "TUN", "ETH", "AGO", "TZA", "SEN", "CIV", "ZMB", "ZWE"],
+            "africa_presence": [
+                "ZAF",
+                "EGY",
+                "NGA",
+                "KEN",
+                "GHA",
+                "MAR",
+                "DZA",
+                "TUN",
+                "ETH",
+                "AGO",
+                "TZA",
+                "SEN",
+                "CIV",
+                "ZMB",
+                "ZWE",
+            ],
             "contacts": {
                 "website": "https://www.skycargo.com",
                 "cargo_reservations": "+971 4 218 4218",
@@ -1415,7 +2106,23 @@ LOGISTICS_OPERATORS = {
             "type_label": "Compagnie cargo mondiale — fort réseau Afrique",
             "hq": "Doha, Qatar",
             "fleet_freighters": 28,
-            "africa_presence": ["ZAF", "EGY", "NGA", "KEN", "GHA", "MAR", "TUN", "ETH", "AGO", "TZA", "SEN", "CIV", "DZA", "MOZ", "RWA"],
+            "africa_presence": [
+                "ZAF",
+                "EGY",
+                "NGA",
+                "KEN",
+                "GHA",
+                "MAR",
+                "TUN",
+                "ETH",
+                "AGO",
+                "TZA",
+                "SEN",
+                "CIV",
+                "DZA",
+                "MOZ",
+                "RWA",
+            ],
             "contacts": {
                 "website": "https://www.qrcargo.com",
                 "cargo_reservations": "+974 4423 5077",
@@ -1432,7 +2139,23 @@ LOGISTICS_OPERATORS = {
             "hq": "Istanbul, Turquie",
             "fleet_freighters": 25,
             "destinations_cargo": 90,
-            "africa_presence": ["ZAF", "EGY", "NGA", "KEN", "GHA", "MAR", "DZA", "TUN", "ETH", "AGO", "TZA", "SEN", "CIV", "DJI", "SOM"],
+            "africa_presence": [
+                "ZAF",
+                "EGY",
+                "NGA",
+                "KEN",
+                "GHA",
+                "MAR",
+                "DZA",
+                "TUN",
+                "ETH",
+                "AGO",
+                "TZA",
+                "SEN",
+                "CIV",
+                "DJI",
+                "SOM",
+            ],
             "contacts": {
                 "website": "https://www.turkishcargo.com",
                 "phone": "+90 850 333 0 777",
@@ -1458,7 +2181,6 @@ LOGISTICS_OPERATORS = {
             "iata_code": "CV",
         },
     ],
-
     # =========================================================================
     # 7. COMMISSIONNAIRES EN DOUANE & AGENTS
     # =========================================================================
@@ -1692,7 +2414,6 @@ LOGISTICS_OPERATORS = {
             },
         },
     ],
-
     # =========================================================================
     # 8. ORGANISMES DE RÉGULATION & ASSOCIATIONS
     # =========================================================================
@@ -1933,6 +2654,7 @@ LOGISTICS_OPERATORS = {
 # Fonctions d'accès
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def get_all_operators_with_contacts(category: str = None) -> dict:
     """Retourne tous les opérateurs, filtrés par catégorie si fournie."""
     if category and category in LOGISTICS_OPERATORS:
@@ -1957,9 +2679,11 @@ def get_operators_by_country(country_iso: str) -> List[dict]:
             presence = op.get("africa_presence", []) or []
             countries = op.get("countries", []) or []
             country_iso_field = op.get("country_iso", "")
-            if (country_iso.upper() in presence
-                    or country_iso.upper() in countries
-                    or country_iso.upper() == country_iso_field):
+            if (
+                country_iso.upper() in presence
+                or country_iso.upper() in countries
+                or country_iso.upper() == country_iso_field
+            ):
                 results.append({**op, "category": category})
     return results
 

@@ -123,7 +123,6 @@ TUN_FORMALITIES_BY_CATEGORY = {
             "is_mandatory": True,
         },
     ],
-
     # -------------------------------------------------------------------------
     # PRODUITS ALIMENTAIRES D'ORIGINE VÉGÉTALE (Ch 06-15, 17-24)
     # Source: code 101 ONAGRI — autorisation phytosanitaire obligatoire
@@ -154,7 +153,6 @@ TUN_FORMALITIES_BY_CATEGORY = {
             "is_mandatory": True,
         },
     ],
-
     # -------------------------------------------------------------------------
     # MÉDICAMENTS ET DISPOSITIFS MÉDICAUX (Ch 30)
     # Source: code 103 DPHM — autorisation ministérielle obligatoire
@@ -177,7 +175,6 @@ TUN_FORMALITIES_BY_CATEGORY = {
             "is_mandatory": True,
         },
     ],
-
     # -------------------------------------------------------------------------
     # PRODUITS CHIMIQUES ET ENGRAIS (Ch 28-29, 31-38)
     # Source: code 105 ANPE — déclaration environnementale pour produits dangereux
@@ -200,7 +197,6 @@ TUN_FORMALITIES_BY_CATEGORY = {
             "is_mandatory": True,
         },
     ],
-
     # -------------------------------------------------------------------------
     # VÉHICULES ET ÉQUIPEMENTS INDUSTRIELS (Ch 84-87, 90)
     # Source: code 104 INNORPI — conformité norme tunisienne NT obligatoire
@@ -223,7 +219,6 @@ TUN_FORMALITIES_BY_CATEGORY = {
             "is_mandatory": True,
         },
     ],
-
     # -------------------------------------------------------------------------
     # HYDROCARBURES ET PRODUITS ÉNERGÉTIQUES (Ch 26-27)
     # Source: code 108 STEG/ETAP — autorisation produits pétroliers
@@ -246,7 +241,6 @@ TUN_FORMALITIES_BY_CATEGORY = {
             "is_mandatory": True,
         },
     ],
-
     # -------------------------------------------------------------------------
     # ARMES, MUNITIONS ET MATÉRIEL DE SÉCURITÉ (Ch 93)
     # Source: code 109 — autorisation Ministère de l'Intérieur obligatoire
@@ -269,7 +263,6 @@ TUN_FORMALITIES_BY_CATEGORY = {
             "is_mandatory": True,
         },
     ],
-
     # -------------------------------------------------------------------------
     # INTRANTS AGRICOLES (Ch 31 — engrais, Ch 12 — semences)
     # Source: code 101 ONAGRI — homologation intrants obligatoire
@@ -292,7 +285,6 @@ TUN_FORMALITIES_BY_CATEGORY = {
             "is_mandatory": True,
         },
     ],
-
     # -------------------------------------------------------------------------
     # RÉGIME GÉNÉRAL (tous les autres chapitres)
     # -------------------------------------------------------------------------
@@ -315,31 +307,99 @@ TUN_FORMALITIES_BY_CATEGORY = {
 # =============================================================================
 
 _ANIMAL_CATS = {
-    "livestock", "live_animals", "poultry", "wildlife",
-    "meat", "fish", "dairy", "eggs", "honey",
-    "animal_products", "meat_preparations",
+    "livestock",
+    "live_animals",
+    "poultry",
+    "wildlife",
+    "meat",
+    "fish",
+    "dairy",
+    "eggs",
+    "honey",
+    "animal_products",
+    "meat_preparations",
 }
 _FOOD_AGRI_CATS = {
-    "plants", "flowers", "vegetables", "legumes", "roots_tubers",
-    "fruits", "nuts", "coffee_tea_spices", "coffee", "tea", "spices",
-    "cereals", "flour", "milling", "starch", "oilseeds", "sugar",
-    "lac_gums", "gums", "vegetable_materials", "fats_oils", "oils",
-    "fats", "waxes", "processed_food", "confectionery", "cocoa",
-    "bakery", "vegetable_preparations", "beverages", "misc_food",
-    "animal_feed", "food_residues", "tobacco",
+    "plants",
+    "flowers",
+    "vegetables",
+    "legumes",
+    "roots_tubers",
+    "fruits",
+    "nuts",
+    "coffee_tea_spices",
+    "coffee",
+    "tea",
+    "spices",
+    "cereals",
+    "flour",
+    "milling",
+    "starch",
+    "oilseeds",
+    "sugar",
+    "lac_gums",
+    "gums",
+    "vegetable_materials",
+    "fats_oils",
+    "oils",
+    "fats",
+    "waxes",
+    "processed_food",
+    "confectionery",
+    "cocoa",
+    "bakery",
+    "vegetable_preparations",
+    "beverages",
+    "misc_food",
+    "animal_feed",
+    "food_residues",
+    "tobacco",
 }
 _PHARMA_CATS = {"pharmaceuticals", "pharma"}
 _CHEMICAL_CATS = {
-    "chemicals", "inorganic_chemicals", "organic_chemicals", "fertilizers",
-    "tanning", "dyes", "tanning_dyes", "pigments", "paints", "inks",
-    "essential_oils", "essential_oils_cosmetics", "fragrances", "cosmetics",
-    "soap", "detergents", "soap_wax", "lubricants", "polishes", "candles",
-    "proteins", "starches", "glues", "enzymes", "explosives", "pyrotechnics",
-    "matches", "fuels", "photography", "pesticides", "chemicals_misc", "biofuels",
+    "chemicals",
+    "inorganic_chemicals",
+    "organic_chemicals",
+    "fertilizers",
+    "tanning",
+    "dyes",
+    "tanning_dyes",
+    "pigments",
+    "paints",
+    "inks",
+    "essential_oils",
+    "essential_oils_cosmetics",
+    "fragrances",
+    "cosmetics",
+    "soap",
+    "detergents",
+    "soap_wax",
+    "lubricants",
+    "polishes",
+    "candles",
+    "proteins",
+    "starches",
+    "glues",
+    "enzymes",
+    "explosives",
+    "pyrotechnics",
+    "matches",
+    "fuels",
+    "photography",
+    "pesticides",
+    "chemicals_misc",
+    "biofuels",
 }
 _VEHICLE_MACH_CATS = {
-    "vehicles", "machinery", "electrical", "electronics",
-    "railway", "aircraft", "ships", "optical_medical", "clocks",
+    "vehicles",
+    "machinery",
+    "electrical",
+    "electronics",
+    "railway",
+    "aircraft",
+    "ships",
+    "optical_medical",
+    "clocks",
 }
 _HYDRO_CATS = {"mineral_fuels", "oil_gas", "coal", "energy", "ores"}
 _ARMS_CATS = {"arms"}

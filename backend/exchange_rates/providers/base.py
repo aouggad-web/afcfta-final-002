@@ -1,6 +1,7 @@
 """
 Base exchange rate provider interface.
 """
+
 import logging
 from abc import ABC, abstractmethod
 from typing import Dict, Optional

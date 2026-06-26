@@ -2,8 +2,8 @@ import asyncio
 import logging
 import uuid
 from datetime import datetime
-from typing import Dict, List, Optional, Any
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -81,16 +81,16 @@ class CrawlOrchestrator:
         block: Optional[str] = None,
         force_generic: bool = False,
     ) -> CrawlJob:
-        from crawlers.scraper_factory import ScraperFactory
         from crawlers.all_countries_registry import (
             AFRICAN_COUNTRIES_REGISTRY,
-            get_priority_countries,
-            get_countries_by_region,
-            get_countries_by_block,
             Priority,
             Region,
             RegionalBlock,
+            get_countries_by_block,
+            get_countries_by_region,
+            get_priority_countries,
         )
+        from crawlers.scraper_factory import ScraperFactory
 
         if country_codes:
             codes = [c.upper() for c in country_codes]
@@ -110,12 +110,16 @@ class CrawlOrchestrator:
             codes = list(AFRICAN_COUNTRIES_REGISTRY.keys())
 
         job_id = str(uuid.uuid4())[:8]
-        job = CrawlJob(job_id, codes, {
-            "force_generic": force_generic,
-            "priority": priority,
-            "region": region,
-            "block": block,
-        })
+        job = CrawlJob(
+            job_id,
+            codes,
+            {
+                "force_generic": force_generic,
+                "priority": priority,
+                "region": region,
+                "block": block,
+            },
+        )
         self.jobs[job_id] = job
 
         task = asyncio.create_task(self._run_job(job, force_generic))
@@ -160,7 +164,9 @@ class CrawlOrchestrator:
                         "records_scraped": result.records_scraped,
                         "records_validated": result.records_validated,
                         "records_saved": result.records_saved,
-                        "duration_seconds": round(result.duration_seconds, 2) if result.duration_seconds else None,
+                        "duration_seconds": (
+                            round(result.duration_seconds, 2) if result.duration_seconds else None
+                        ),
                         "error": result.error,
                     }
                 except Exception as e:
@@ -197,7 +203,11 @@ class CrawlOrchestrator:
             if self.notification_manager:
                 try:
                     summary = job.summary
-                    severity = "info" if job.status == JobStatus.COMPLETED else "error" if job.status == JobStatus.FAILED else "warning"
+                    severity = (
+                        "info"
+                        if job.status == JobStatus.COMPLETED
+                        else "error" if job.status == JobStatus.FAILED else "warning"
+                    )
                     notif_type = "success" if job.status == JobStatus.COMPLETED else "failed"
 
                     await self.notification_manager.send_notification(
@@ -262,6 +272,7 @@ class CrawlOrchestrator:
 
     def _get_notification_type(self, type_str: str):
         from notifications.base_notifier import NotificationType
+
         type_map = {
             "started": NotificationType.CRAWL_STARTED,
             "success": NotificationType.CRAWL_SUCCESS,
@@ -271,6 +282,7 @@ class CrawlOrchestrator:
 
     def _get_severity(self, severity_str: str):
         from notifications.base_notifier import NotificationSeverity
+
         sev_map = {
             "info": NotificationSeverity.INFO,
             "warning": NotificationSeverity.WARNING,

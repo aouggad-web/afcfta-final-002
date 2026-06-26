@@ -8,7 +8,7 @@ def simulate(payload, tariff, country_rules, preference):
 
     duty = cif * dd / 100.0
     prct = cif * float(tariff.get("PRCT", 0)) / 100.0
-    tcs  = cif * float(tariff.get("TCS", 0)) / 100.0
+    tcs = cif * float(tariff.get("TCS", 0)) / 100.0
 
     specific_sum = 0.0
     for st in tariff.get("SPECIFIC", []):
@@ -28,5 +28,5 @@ def simulate(payload, tariff, country_rules, preference):
         "specific_sum": specific_sum,
         "vat": vat,
         "total_taxes": total_taxes,
-        "total_landed_cost": cif + total_taxes
+        "total_landed_cost": cif + total_taxes,
     }

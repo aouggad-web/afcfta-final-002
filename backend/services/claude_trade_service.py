@@ -3,25 +3,28 @@ Claude AI Trade Analysis Service
 Replaces Google Gemini with Anthropic Claude API
 Quality parity with AI Studio app — SH2/SH4/SH6, corrected GAI anchors, full trade schema
 """
-import os
+
 import json
-import re
 import logging
-from typing import Dict, Optional
+import os
+import re
 from datetime import datetime, timezone
+from typing import Dict, Optional
+
 from dotenv import load_dotenv
 
 try:
     import anthropic
+
     ANTHROPIC_AVAILABLE = True
 except ImportError:
     anthropic = None
     ANTHROPIC_AVAILABLE = False
     logging.warning("anthropic package not installed; AI features will be disabled")
 
-from services.redis_cache_service import cache_service, get_data_freshness
-from services.oec_data_service import oec_data_service
 from services import production_capacity_service
+from services.oec_data_service import oec_data_service
+from services.redis_cache_service import cache_service, get_data_freshness
 
 load_dotenv()
 
@@ -29,11 +32,59 @@ logger = logging.getLogger(__name__)
 
 # ── Valid African ISO3 codes (AU member states with trade data) ────────────────
 AFRICAN_ISO3 = {
-    "DZA","AGO","BEN","BWA","BFA","BDI","CMR","CPV","CAF","TCD","COM","COG",
-    "COD","DJI","EGY","GNQ","ERI","SWZ","ETH","GAB","GMB","GHA","GIN","GNB",
-    "CIV","KEN","LSO","LBR","LBY","MDG","MWI","MLI","MRT","MUS","MAR","MOZ",
-    "NAM","NER","NGA","RWA","STP","SEN","SLE","SOM","ZAF","SSD","SDN","TZA",
-    "TGO","TUN","UGA","ZMB","ZWE",
+    "DZA",
+    "AGO",
+    "BEN",
+    "BWA",
+    "BFA",
+    "BDI",
+    "CMR",
+    "CPV",
+    "CAF",
+    "TCD",
+    "COM",
+    "COG",
+    "COD",
+    "DJI",
+    "EGY",
+    "GNQ",
+    "ERI",
+    "SWZ",
+    "ETH",
+    "GAB",
+    "GMB",
+    "GHA",
+    "GIN",
+    "GNB",
+    "CIV",
+    "KEN",
+    "LSO",
+    "LBR",
+    "LBY",
+    "MDG",
+    "MWI",
+    "MLI",
+    "MRT",
+    "MUS",
+    "MAR",
+    "MOZ",
+    "NAM",
+    "NER",
+    "NGA",
+    "RWA",
+    "STP",
+    "SEN",
+    "SLE",
+    "SOM",
+    "ZAF",
+    "SSD",
+    "SDN",
+    "TZA",
+    "TGO",
+    "TUN",
+    "UGA",
+    "ZMB",
+    "ZWE",
 }
 
 # ── System instruction — mirrors AI Studio app quality ─────────────────────────
@@ -142,58 +193,95 @@ For French: include English technical terms in parentheses for trade jargon.
 
 # ── 54 AfCFTA country name → ISO3 mapping for post-processing ─────────────────
 COUNTRY_NAME_TO_ISO3 = {
-    "algeria": "DZA", "algérie": "DZA",
+    "algeria": "DZA",
+    "algérie": "DZA",
     "angola": "AGO",
-    "benin": "BEN", "bénin": "BEN",
+    "benin": "BEN",
+    "bénin": "BEN",
     "botswana": "BWA",
     "burkina faso": "BFA",
     "burundi": "BDI",
-    "cameroon": "CMR", "cameroun": "CMR",
-    "cabo verde": "CPV", "cape verde": "CPV",
-    "central african republic": "CAF", "république centrafricaine": "CAF",
-    "chad": "TCD", "tchad": "TCD",
-    "comoros": "COM", "comores": "COM",
-    "congo": "COG", "republic of congo": "COG", "congo-brazzaville": "COG",
-    "democratic republic of congo": "COD", "drc": "COD", "rdc": "COD",
+    "cameroon": "CMR",
+    "cameroun": "CMR",
+    "cabo verde": "CPV",
+    "cape verde": "CPV",
+    "central african republic": "CAF",
+    "république centrafricaine": "CAF",
+    "chad": "TCD",
+    "tchad": "TCD",
+    "comoros": "COM",
+    "comores": "COM",
+    "congo": "COG",
+    "republic of congo": "COG",
+    "congo-brazzaville": "COG",
+    "democratic republic of congo": "COD",
+    "drc": "COD",
+    "rdc": "COD",
     "djibouti": "DJI",
-    "egypt": "EGY", "égypte": "EGY",
-    "equatorial guinea": "GNQ", "guinée équatoriale": "GNQ",
-    "eritrea": "ERI", "érythrée": "ERI",
-    "eswatini": "SWZ", "swaziland": "SWZ",
-    "ethiopia": "ETH", "éthiopie": "ETH",
+    "egypt": "EGY",
+    "égypte": "EGY",
+    "equatorial guinea": "GNQ",
+    "guinée équatoriale": "GNQ",
+    "eritrea": "ERI",
+    "érythrée": "ERI",
+    "eswatini": "SWZ",
+    "swaziland": "SWZ",
+    "ethiopia": "ETH",
+    "éthiopie": "ETH",
     "gabon": "GAB",
-    "gambia": "GMB", "gambie": "GMB",
+    "gambia": "GMB",
+    "gambie": "GMB",
     "ghana": "GHA",
-    "guinea": "GIN", "guinée": "GIN",
-    "guinea-bissau": "GNB", "guinée-bissau": "GNB",
-    "ivory coast": "CIV", "côte d'ivoire": "CIV", "cote d'ivoire": "CIV",
+    "guinea": "GIN",
+    "guinée": "GIN",
+    "guinea-bissau": "GNB",
+    "guinée-bissau": "GNB",
+    "ivory coast": "CIV",
+    "côte d'ivoire": "CIV",
+    "cote d'ivoire": "CIV",
     "kenya": "KEN",
     "lesotho": "LSO",
     "liberia": "LBR",
-    "libya": "LBY", "libye": "LBY",
+    "libya": "LBY",
+    "libye": "LBY",
     "madagascar": "MDG",
     "malawi": "MWI",
     "mali": "MLI",
-    "mauritania": "MRT", "mauritanie": "MRT",
-    "mauritius": "MUS", "île maurice": "MUS", "ile maurice": "MUS",
-    "morocco": "MAR", "maroc": "MAR",
+    "mauritania": "MRT",
+    "mauritanie": "MRT",
+    "mauritius": "MUS",
+    "île maurice": "MUS",
+    "ile maurice": "MUS",
+    "morocco": "MAR",
+    "maroc": "MAR",
     "mozambique": "MOZ",
-    "namibia": "NAM", "namibie": "NAM",
+    "namibia": "NAM",
+    "namibie": "NAM",
     "niger": "NER",
     "nigeria": "NGA",
     "rwanda": "RWA",
-    "sao tome and principe": "STP", "são tomé-et-príncipe": "STP",
-    "senegal": "SEN", "sénégal": "SEN",
+    "sao tome and principe": "STP",
+    "são tomé-et-príncipe": "STP",
+    "senegal": "SEN",
+    "sénégal": "SEN",
     "sierra leone": "SLE",
-    "somalia": "SOM", "somalie": "SOM",
-    "south africa": "ZAF", "afrique du sud": "ZAF",
-    "south sudan": "SSD", "soudan du sud": "SSD",
-    "sudan": "SDN", "soudan": "SDN",
-    "tanzania": "TZA", "tanzanie": "TZA",
+    "somalia": "SOM",
+    "somalie": "SOM",
+    "south africa": "ZAF",
+    "afrique du sud": "ZAF",
+    "south sudan": "SSD",
+    "soudan du sud": "SSD",
+    "sudan": "SDN",
+    "soudan": "SDN",
+    "tanzania": "TZA",
+    "tanzanie": "TZA",
     "togo": "TGO",
-    "tunisia": "TUN", "tunisie": "TUN",
-    "uganda": "UGA", "ouganda": "UGA",
-    "zambia": "ZMB", "zambie": "ZMB",
+    "tunisia": "TUN",
+    "tunisie": "TUN",
+    "uganda": "UGA",
+    "ouganda": "UGA",
+    "zambia": "ZMB",
+    "zambie": "ZMB",
     "zimbabwe": "ZWE",
 }
 
@@ -212,12 +300,13 @@ class ClaudeTradeService:
 
     # claude-haiku-4-5: $0.80/MTok input, $4/MTok output  (~10× cheaper than Sonnet)
     # claude-sonnet-4-6: $3/MTok input, $15/MTok output
-    BULK_MODEL    = "claude-haiku-4-5-20251001"
+    BULK_MODEL = "claude-haiku-4-5-20251001"
     QUALITY_MODEL = "claude-sonnet-4-6"
 
     @property
     def MODEL(self) -> str:
         import os
+
         if os.environ.get("CLAUDE_BULK_MODE", "").lower() in ("1", "true", "yes"):
             return self.BULK_MODEL
         return self.QUALITY_MODEL
@@ -235,9 +324,7 @@ class ClaudeTradeService:
     async def _call_claude(self, user_prompt: str, max_tokens: int = 8192) -> str:
         """Call Claude API and return raw text."""
         if not self._is_ready():
-            raise RuntimeError(
-                "ANTHROPIC_API_KEY is not set or anthropic package not installed."
-            )
+            raise RuntimeError("ANTHROPIC_API_KEY is not set or anthropic package not installed.")
         client = anthropic.AsyncAnthropic(api_key=self.api_key)
         message = await client.messages.create(
             model=self.MODEL,
@@ -330,11 +417,14 @@ class ClaudeTradeService:
                 opp["estimated_output"] = f"{pv} MUSD"
             ind = opp.get("industrialInput") or opp.get("industrial_input")
             if isinstance(ind, dict):
-                opp.setdefault("industrial_input", {
-                    "name": ind.get("name"),
-                    "hs_code": ind.get("hs6Code") or ind.get("hs_code"),
-                    "import_volume": ind.get("importVolume") or ind.get("import_volume"),
-                })
+                opp.setdefault(
+                    "industrial_input",
+                    {
+                        "name": ind.get("name"),
+                        "hs_code": ind.get("hs6Code") or ind.get("hs_code"),
+                        "import_volume": ind.get("importVolume") or ind.get("import_volume"),
+                    },
+                )
 
     def _post_process_opportunities(
         self, opportunities: list, analyzed_country: str, mode: str
@@ -403,6 +493,7 @@ class ClaudeTradeService:
         if mode in ("export", "industrial"):
             try:
                 from production_data import get_production_data_version
+
                 cache_params["pdv"] = get_production_data_version()
             except Exception as e:
                 logger.debug(f"production data version unavailable: {e}")
@@ -414,7 +505,9 @@ class ClaudeTradeService:
             )
             return cached
 
-        lang_instr = "Réponds UNIQUEMENT en français." if lang == "fr" else "Respond ONLY in English."
+        lang_instr = (
+            "Réponds UNIQUEMENT en français." if lang == "fr" else "Respond ONLY in English."
+        )
 
         if mode == "export":
             prompt = f"""{lang_instr}
@@ -684,9 +777,7 @@ Wrap ALL 15 in this envelope:
 
     # ── Country Economic Profile ───────────────────────────────────────────────
 
-    async def get_country_economic_profile(
-        self, country_name: str, lang: str = "fr"
-    ) -> Dict:
+    async def get_country_economic_profile(self, country_name: str, lang: str = "fr") -> Dict:
         if not self._is_ready():
             return {"error": "ANTHROPIC_API_KEY not configured"}
 
@@ -776,9 +867,7 @@ Return this EXACT JSON structure:
 
     # ── Product Analysis ──────────────────────────────────────────────────────
 
-    async def analyze_product_by_hs_code(
-        self, hs_code: str, lang: str = "fr"
-    ) -> Dict:
+    async def analyze_product_by_hs_code(self, hs_code: str, lang: str = "fr") -> Dict:
         if not self._is_ready():
             return {"error": "ANTHROPIC_API_KEY not configured"}
 
@@ -875,9 +964,7 @@ Return this EXACT JSON structure:
 
     # ── Trade Balance ─────────────────────────────────────────────────────────
 
-    async def get_trade_balance_analysis(
-        self, country_name: str, lang: str = "fr"
-    ) -> Dict:
+    async def get_trade_balance_analysis(self, country_name: str, lang: str = "fr") -> Dict:
         if not self._is_ready():
             return {"error": "ANTHROPIC_API_KEY not configured"}
 
@@ -962,8 +1049,11 @@ Return this EXACT JSON structure with one entry per year, deduplicated:
             return cached
 
         lang_instr = "Réponds en français." if lang == "fr" else "Respond in English."
-        sector_focus = f"Focus specifically on the {sector} value chain." if sector else \
-            "Cover 6 major value chains: coffee/cocoa, cotton/textiles, minerals, petroleum, automotive/assembly, and pharma/chemicals."
+        sector_focus = (
+            f"Focus specifically on the {sector} value chain."
+            if sector
+            else "Cover 6 major value chains: coffee/cocoa, cotton/textiles, minerals, petroleum, automotive/assembly, and pharma/chemicals."
+        )
 
         prompt = f"""{lang_instr}
 
@@ -1014,9 +1104,7 @@ Wrap in: {{"value_chains": [...], "overview": {{"total_potential_musd": 0.0, "ke
 
     # ── Country Comparison ────────────────────────────────────────────────────
 
-    async def compare_countries(
-        self, country_a: str, country_b: str, lang: str = "fr"
-    ) -> Dict:
+    async def compare_countries(self, country_a: str, country_b: str, lang: str = "fr") -> Dict:
         if not self._is_ready():
             return {"error": "ANTHROPIC_API_KEY not configured"}
 

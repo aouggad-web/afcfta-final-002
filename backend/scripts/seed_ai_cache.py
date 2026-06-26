@@ -31,12 +31,12 @@ Cost estimate (Haiku, Dec 2024 pricing):
     TOTAL ONE-TIME COST: ~$5
 """
 
-import asyncio
 import argparse
+import asyncio
+import json
 import os
 import sys
 import time
-import json
 from pathlib import Path
 
 # Add backend root to path
@@ -45,28 +45,63 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 os.environ.setdefault("CLAUDE_BULK_MODE", "true")
 
 from services.claude_trade_service import claude_trade_service
-from services.redis_cache_service import cache_service, CACHE_TTL
+from services.redis_cache_service import CACHE_TTL, cache_service
 
 # ── 54 AfCFTA countries ────────────────────────────────────────────────────────
 COUNTRIES_EN = [
-    ("DZA", "Algeria"),       ("AGO", "Angola"),        ("BEN", "Benin"),
-    ("BWA", "Botswana"),      ("BFA", "Burkina Faso"),   ("BDI", "Burundi"),
-    ("CMR", "Cameroon"),      ("CPV", "Cabo Verde"),     ("CAF", "Central African Republic"),
-    ("TCD", "Chad"),          ("COM", "Comoros"),        ("COG", "Republic of Congo"),
-    ("COD", "DR Congo"),      ("DJI", "Djibouti"),       ("EGY", "Egypt"),
-    ("GNQ", "Equatorial Guinea"), ("ERI", "Eritrea"),   ("SWZ", "Eswatini"),
-    ("ETH", "Ethiopia"),      ("GAB", "Gabon"),          ("GMB", "Gambia"),
-    ("GHA", "Ghana"),         ("GIN", "Guinea"),         ("GNB", "Guinea-Bissau"),
-    ("CIV", "Ivory Coast"),   ("KEN", "Kenya"),          ("LSO", "Lesotho"),
-    ("LBR", "Liberia"),       ("LBY", "Libya"),          ("MDG", "Madagascar"),
-    ("MWI", "Malawi"),        ("MLI", "Mali"),           ("MRT", "Mauritania"),
-    ("MUS", "Mauritius"),     ("MAR", "Morocco"),        ("MOZ", "Mozambique"),
-    ("NAM", "Namibia"),       ("NER", "Niger"),          ("NGA", "Nigeria"),
-    ("RWA", "Rwanda"),        ("STP", "Sao Tome and Principe"), ("SEN", "Senegal"),
-    ("SLE", "Sierra Leone"),  ("SOM", "Somalia"),        ("ZAF", "South Africa"),
-    ("SSD", "South Sudan"),   ("SDN", "Sudan"),          ("TZA", "Tanzania"),
-    ("TGO", "Togo"),          ("TUN", "Tunisia"),        ("UGA", "Uganda"),
-    ("ZMB", "Zambia"),        ("ZWE", "Zimbabwe"),
+    ("DZA", "Algeria"),
+    ("AGO", "Angola"),
+    ("BEN", "Benin"),
+    ("BWA", "Botswana"),
+    ("BFA", "Burkina Faso"),
+    ("BDI", "Burundi"),
+    ("CMR", "Cameroon"),
+    ("CPV", "Cabo Verde"),
+    ("CAF", "Central African Republic"),
+    ("TCD", "Chad"),
+    ("COM", "Comoros"),
+    ("COG", "Republic of Congo"),
+    ("COD", "DR Congo"),
+    ("DJI", "Djibouti"),
+    ("EGY", "Egypt"),
+    ("GNQ", "Equatorial Guinea"),
+    ("ERI", "Eritrea"),
+    ("SWZ", "Eswatini"),
+    ("ETH", "Ethiopia"),
+    ("GAB", "Gabon"),
+    ("GMB", "Gambia"),
+    ("GHA", "Ghana"),
+    ("GIN", "Guinea"),
+    ("GNB", "Guinea-Bissau"),
+    ("CIV", "Ivory Coast"),
+    ("KEN", "Kenya"),
+    ("LSO", "Lesotho"),
+    ("LBR", "Liberia"),
+    ("LBY", "Libya"),
+    ("MDG", "Madagascar"),
+    ("MWI", "Malawi"),
+    ("MLI", "Mali"),
+    ("MRT", "Mauritania"),
+    ("MUS", "Mauritius"),
+    ("MAR", "Morocco"),
+    ("MOZ", "Mozambique"),
+    ("NAM", "Namibia"),
+    ("NER", "Niger"),
+    ("NGA", "Nigeria"),
+    ("RWA", "Rwanda"),
+    ("STP", "Sao Tome and Principe"),
+    ("SEN", "Senegal"),
+    ("SLE", "Sierra Leone"),
+    ("SOM", "Somalia"),
+    ("ZAF", "South Africa"),
+    ("SSD", "South Sudan"),
+    ("SDN", "Sudan"),
+    ("TZA", "Tanzania"),
+    ("TGO", "Togo"),
+    ("TUN", "Tunisia"),
+    ("UGA", "Uganda"),
+    ("ZMB", "Zambia"),
+    ("ZWE", "Zimbabwe"),
 ]
 
 MODES = ["export", "import", "industrial"]
@@ -80,8 +115,8 @@ def estimate_cost(n_countries, modes, langs, sectors):
     # Per call: ~1500 input + ~3500 output tokens
     per_call = (1500 * 0.80 + 3500 * 4.0) / 1_000_000
     n_analysis = n_countries * len(modes) * len(langs)
-    n_sectors  = len(sectors) * len(langs)
-    n_summary  = len(langs)
+    n_sectors = len(sectors) * len(langs)
+    n_summary = len(langs)
     total_calls = n_analysis + n_sectors + n_summary
     return total_calls, total_calls * per_call
 
@@ -92,8 +127,9 @@ def check_cached(country_name, mode, lang):
     return cache_service.get("claude_analysis", params) is not None
 
 
-async def seed_country(country_name: str, modes: list, langs: list,
-                       skip_existing: bool, stats: dict):
+async def seed_country(
+    country_name: str, modes: list, langs: list, skip_existing: bool, stats: dict
+):
     for mode in modes:
         for lang in langs:
             key = f"{country_name}/{mode}/{lang}"
@@ -157,27 +193,33 @@ async def seed_summary(langs: list, skip_existing: bool, stats: dict):
 
 async def main():
     parser = argparse.ArgumentParser(description="Seed AfCFTA AI analysis cache")
-    parser.add_argument("--dry-run",       action="store_true", help="Cost estimate only, no API calls")
+    parser.add_argument("--dry-run", action="store_true", help="Cost estimate only, no API calls")
     parser.add_argument("--skip-existing", action="store_true", help="Skip already-cached entries")
-    parser.add_argument("--country",       default=None, help="Seed single country (English name)")
-    parser.add_argument("--modes",         default="export,import,industrial", help="Comma-separated modes")
-    parser.add_argument("--langs",         default="fr,en", help="Comma-separated langs")
+    parser.add_argument("--country", default=None, help="Seed single country (English name)")
+    parser.add_argument("--modes", default="export,import,industrial", help="Comma-separated modes")
+    parser.add_argument("--langs", default="fr,en", help="Comma-separated langs")
     parser.add_argument("--no-value-chains", action="store_true", help="Skip value chains seeding")
-    parser.add_argument("--no-summary",    action="store_true", help="Skip summary seeding")
+    parser.add_argument("--no-summary", action="store_true", help="Skip summary seeding")
     args = parser.parse_args()
 
     selected_modes = args.modes.split(",")
     selected_langs = args.langs.split(",")
 
     if args.country:
-        countries = [(iso3, name) for iso3, name in COUNTRIES_EN if name.lower() == args.country.lower()]
+        countries = [
+            (iso3, name) for iso3, name in COUNTRIES_EN if name.lower() == args.country.lower()
+        ]
         if not countries:
-            print(f"ERROR: country '{args.country}' not found. Use exact English name from COUNTRIES_EN list.")
+            print(
+                f"ERROR: country '{args.country}' not found. Use exact English name from COUNTRIES_EN list."
+            )
             sys.exit(1)
     else:
         countries = COUNTRIES_EN
 
-    total_calls, cost = estimate_cost(len(countries), selected_modes, selected_langs, VALUE_CHAIN_SECTORS)
+    total_calls, cost = estimate_cost(
+        len(countries), selected_modes, selected_langs, VALUE_CHAIN_SECTORS
+    )
 
     print("=" * 60)
     print(f"AfCFTA AI Cache Seeder — Model: {claude_trade_service.MODEL}")
@@ -227,7 +269,9 @@ async def main():
     print(f"  Generated : {stats['done']} entries")
     print(f"  Skipped   : {stats['skipped']} (already cached)")
     print(f"  Errors    : {stats['errors']}")
-    print(f"  Cache files: {len(cache_files)} claude_*.json in {cache_service._json_cache.cache_dir}")
+    print(
+        f"  Cache files: {len(cache_files)} claude_*.json in {cache_service._json_cache.cache_dir}"
+    )
     print("\nNext step: commit cache files to git so Emergent deploys with pre-populated cache:")
     print(f"  git add backend/data/ai_cache/claude_*.json")
     print(f"  git commit -m 'data: pre-seed Claude AI cache — 54 countries × 3 modes'")

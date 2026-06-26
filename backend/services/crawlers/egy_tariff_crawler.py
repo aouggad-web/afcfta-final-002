@@ -17,8 +17,9 @@ import logging
 import os
 from typing import Any, Dict, List, Optional
 
-from .base_north_africa_crawler import NorthAfricaCrawlerBase
 from config.crawler_configs.egy_config import EGY_CONFIG
+
+from .base_north_africa_crawler import NorthAfricaCrawlerBase
 
 logger = logging.getLogger(__name__)
 
@@ -37,8 +38,14 @@ class EGYTariffCrawler(NorthAfricaCrawlerBase):
 
     _country_code = "EGY"
 
-    def __init__(self, *args, max_positions: Optional[int] = None,
-                 delay: float = 1.5, resume: bool = True, **kwargs):
+    def __init__(
+        self,
+        *args,
+        max_positions: Optional[int] = None,
+        delay: float = 1.5,
+        resume: bool = True,
+        **kwargs,
+    ):
         super().__init__(*args, **kwargs)
         self.max_positions = max_positions
         self.delay = delay
@@ -105,13 +112,12 @@ class EGYTariffCrawler(NorthAfricaCrawlerBase):
 
     async def parse_taxes(self, html: str, country_config: Dict) -> List[Dict]:
         """Parse Egypt-specific tax structure from HTML using JSON-LD."""
-        import re
         import json as json_mod
+        import re
 
         taxes = {}
         json_blocks = re.findall(
-            r'<script type="application/ld\+json">(.*?)</script>',
-            html, re.DOTALL
+            r'<script type="application/ld\+json">(.*?)</script>', html, re.DOTALL
         )
 
         for jb in json_blocks:
@@ -139,8 +145,7 @@ class EGYTariffCrawler(NorthAfricaCrawlerBase):
             return False
 
         valid_count = sum(
-            1 for line in tariff_lines
-            if line.get("hs_code") and line.get("designation")
+            1 for line in tariff_lines if line.get("hs_code") and line.get("designation")
         )
         coverage = valid_count / len(tariff_lines) if tariff_lines else 0
         logger.info(f"EGY: Validation coverage {coverage:.1%} ({valid_count}/{len(tariff_lines)})")

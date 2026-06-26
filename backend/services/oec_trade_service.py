@@ -11,12 +11,13 @@ API Documentation: https://oec.world/en/resources/documentation
 MISE À JOUR 2025: Les données 2024 sont maintenant disponibles
 """
 
-import httpx
 import asyncio
 import json
-from typing import Dict, List, Optional
-from datetime import datetime
 import logging
+from datetime import datetime
+from typing import Dict, List, Optional
+
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -26,12 +27,12 @@ OEC_BASE_URL = "https://api.oec.world/tesseract/data.jsonrecords"
 # Cubes disponibles (datasets)
 # On utilise HS Rev. 2017 car c'est le plus proche de SH2022 et couvre les données récentes
 OEC_CUBES = {
-    "hs92": "trade_i_baci_a_92",      # HS Rev. 1992 (1995-2024)
-    "hs96": "trade_i_baci_a_96",      # HS Rev. 1996 (1998-2024)
-    "hs02": "trade_i_baci_a_02",      # HS Rev. 2002 (2003-2024)
-    "hs07": "trade_i_baci_a_07",      # HS Rev. 2007 (2008-2024)
-    "hs12": "trade_i_baci_a_12",      # HS Rev. 2012 (2013-2024)
-    "hs17": "trade_i_baci_a_17",      # HS Rev. 2017 (2018-2024) - UTILISÉ PAR DÉFAUT
+    "hs92": "trade_i_baci_a_92",  # HS Rev. 1992 (1995-2024)
+    "hs96": "trade_i_baci_a_96",  # HS Rev. 1996 (1998-2024)
+    "hs02": "trade_i_baci_a_02",  # HS Rev. 2002 (2003-2024)
+    "hs07": "trade_i_baci_a_07",  # HS Rev. 2007 (2008-2024)
+    "hs12": "trade_i_baci_a_12",  # HS Rev. 2012 (2013-2024)
+    "hs17": "trade_i_baci_a_17",  # HS Rev. 2017 (2018-2024) - UTILISÉ PAR DÉFAUT
 }
 
 # Année par défaut pour les requêtes - 2024 maintenant disponible
@@ -97,7 +98,11 @@ AFRICAN_COUNTRIES_OEC = {
     "BDI": {"oec_id": "afbdi", "name_fr": "Burundi", "name_en": "Burundi"},
     "CPV": {"oec_id": "afcpv", "name_fr": "Cap-Vert", "name_en": "Cape Verde"},
     "CMR": {"oec_id": "afcmr", "name_fr": "Cameroun", "name_en": "Cameroon"},
-    "CAF": {"oec_id": "afcaf", "name_fr": "République centrafricaine", "name_en": "Central African Republic"},
+    "CAF": {
+        "oec_id": "afcaf",
+        "name_fr": "République centrafricaine",
+        "name_en": "Central African Republic",
+    },
     "TCD": {"oec_id": "aftcd", "name_fr": "Tchad", "name_en": "Chad"},
     "COM": {"oec_id": "afcom", "name_fr": "Comores", "name_en": "Comoros"},
     "COG": {"oec_id": "afcog", "name_fr": "Congo", "name_en": "Congo"},
@@ -106,7 +111,13 @@ AFRICAN_COUNTRIES_OEC = {
     "DJI": {"oec_id": "afdji", "name_fr": "Djibouti", "name_en": "Djibouti"},
     "EGY": {"oec_id": "afegy", "name_fr": "Égypte", "name_en": "Egypt"},
     "GNQ": {"oec_id": "afgnq", "name_fr": "Guinée équatoriale", "name_en": "Equatorial Guinea"},
-    "ERI": {"oec_id": "aferi", "name_fr": "Érythrée", "name_en": "Eritrea", "zlecaf_signatory": False, "note": "Seul membre UA non signataire de la ZLECAf"},
+    "ERI": {
+        "oec_id": "aferi",
+        "name_fr": "Érythrée",
+        "name_en": "Eritrea",
+        "zlecaf_signatory": False,
+        "note": "Seul membre UA non signataire de la ZLECAf",
+    },
     "SWZ": {"oec_id": "afswz", "name_fr": "Eswatini", "name_en": "Eswatini"},
     "ETH": {"oec_id": "afeth", "name_fr": "Éthiopie", "name_en": "Ethiopia"},
     "GAB": {"oec_id": "afgab", "name_fr": "Gabon", "name_en": "Gabon"},
@@ -132,8 +143,19 @@ AFRICAN_COUNTRIES_OEC = {
     # RASD - République Arabe Sahraouie Démocratique
     # Membre fondateur de l'Union Africaine - Signataire de la ZLECAf
     # ATTENTION: Pas de données commerciales disponibles (territoire occupé)
-    "ESH": {"oec_id": None, "name_fr": "RASD (Sahara Occidental)", "name_en": "Sahrawi Arab Democratic Republic", "has_trade_data": False, "zlecaf_signatory": True, "note": "Membre UA - Pas de statistiques commerciales"},
-    "STP": {"oec_id": "afstp", "name_fr": "São Tomé-et-Príncipe", "name_en": "São Tomé and Príncipe"},
+    "ESH": {
+        "oec_id": None,
+        "name_fr": "RASD (Sahara Occidental)",
+        "name_en": "Sahrawi Arab Democratic Republic",
+        "has_trade_data": False,
+        "zlecaf_signatory": True,
+        "note": "Membre UA - Pas de statistiques commerciales",
+    },
+    "STP": {
+        "oec_id": "afstp",
+        "name_fr": "São Tomé-et-Príncipe",
+        "name_en": "São Tomé and Príncipe",
+    },
     "SEN": {"oec_id": "afsen", "name_fr": "Sénégal", "name_en": "Senegal"},
     "SYC": {"oec_id": "afsyc", "name_fr": "Seychelles", "name_en": "Seychelles"},
     "SLE": {"oec_id": "afsle", "name_fr": "Sierra Leone", "name_en": "Sierra Leone"},
@@ -152,7 +174,7 @@ AFRICAN_COUNTRIES_OEC = {
 
 class OECTradeService:
     """Service pour interroger l'API OEC"""
-    
+
     def __init__(self, api_token: Optional[str] = None):
         self.api_token = api_token
         self.timeout = 30.0
@@ -160,13 +182,14 @@ class OECTradeService:
         # Optional cache integration
         try:
             from services.cache_service import cache_get, cache_set, generate_cache_key
+
             self._cache_get = cache_get
             self._cache_set = cache_set
             self._cache_key = generate_cache_key
             self._cache_available = True
         except ImportError:
             self._cache_available = False
-    
+
     async def _make_request(self, params: Dict) -> Dict:
         """Effectue une requête à l'API OEC avec mise en cache optionnelle."""
         if self.api_token:
@@ -180,7 +203,7 @@ class OECTradeService:
             cached = self._cache_get(cache_key)
             if cached is not None:
                 return cached
-        
+
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
                 response = await client.get(OEC_BASE_URL, params=params)
@@ -195,41 +218,37 @@ class OECTradeService:
             except Exception as e:
                 logger.error(f"OEC request failed: {e}")
                 return {"error": str(e), "data": []}
-    
+
     def _build_params(
         self,
         cube: str,
         drilldowns: List[str],
         measures: List[str],
         cuts: Optional[Dict] = None,
-        limit: int = 100
+        limit: int = 100,
     ) -> Dict:
         """Construit les paramètres de requête"""
         params = {
             "cube": cube,
             "drilldowns": ",".join(drilldowns),
             "measures": ",".join(measures),
-            "limit": limit
+            "limit": limit,
         }
         if cuts:
             for key, value in cuts.items():
                 params[key] = value
         return params
-    
+
     async def get_exports_by_product(
-        self,
-        country_iso3: str,
-        year: int,
-        hs_level: str = "HS4",
-        limit: int = 50
+        self, country_iso3: str, year: int, hs_level: str = "HS4", limit: int = 50
     ) -> Dict:
         """
         Récupère les exportations d'un pays par produit avec valeur et volume.
         Utilise le cube HS17 (compatible SH2022) avec HS4 par défaut.
         HS4 offre un bon équilibre entre granularité et couverture des données.
-        
+
         IMPORTANT: Récupère d'abord le total global, puis les produits détaillés.
-        
+
         Args:
             country_iso3: Code ISO3 du pays (ex: "NGA" pour Nigeria)
             year: Année (ex: 2022)
@@ -239,17 +258,14 @@ class OECTradeService:
         country_info = AFRICAN_COUNTRIES_OEC.get(country_iso3.upper())
         if not country_info:
             return {"error": f"Country {country_iso3} not found", "data": []}
-        
+
         # 1. D'abord, récupérer le TOTAL GLOBAL des exportations (sans drilldown par produit)
         total_params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Exporter Country"],
             measures=["Trade Value", "Quantity"],
-            cuts={
-                "Year": str(year),
-                "Exporter Country": country_info["oec_id"]
-            },
-            limit=1
+            cuts={"Year": str(year), "Exporter Country": country_info["oec_id"]},
+            limit=1,
         )
         total_result = await self._make_request(total_params)
         global_total_value = 0
@@ -257,53 +273,46 @@ class OECTradeService:
         if total_result.get("data"):
             global_total_value = total_result["data"][0].get("Trade Value", 0)
             global_total_quantity = total_result["data"][0].get("Quantity", 0)
-        
+
         # 2. Ensuite, récupérer les produits détaillés (avec une limite plus élevée)
         params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Exporter Country", hs_level],
             measures=["Trade Value", "Quantity"],
-            cuts={
-                "Year": str(year),
-                "Exporter Country": country_info["oec_id"]
-            },
-            limit=2000  # Augmenté pour couvrir tous les produits
+            cuts={"Year": str(year), "Exporter Country": country_info["oec_id"]},
+            limit=2000,  # Augmenté pour couvrir tous les produits
         )
-        
+
         result = await self._make_request(params)
         return self._format_product_response(
-            result, "exports", country_info, limit,
+            result,
+            "exports",
+            country_info,
+            limit,
             global_total_value=global_total_value,
-            global_total_quantity=global_total_quantity
+            global_total_quantity=global_total_quantity,
         )
-    
+
     async def get_imports_by_product(
-        self,
-        country_iso3: str,
-        year: int,
-        hs_level: str = "HS4",
-        limit: int = 50
+        self, country_iso3: str, year: int, hs_level: str = "HS4", limit: int = 50
     ) -> Dict:
         """
         Récupère les importations d'un pays par produit avec valeur et volume.
         Utilise le cube HS17 (compatible SH2022) avec HS4 par défaut.
-        
+
         IMPORTANT: Récupère d'abord le total global, puis les produits détaillés.
         """
         country_info = AFRICAN_COUNTRIES_OEC.get(country_iso3.upper())
         if not country_info:
             return {"error": f"Country {country_iso3} not found", "data": []}
-        
+
         # 1. D'abord, récupérer le TOTAL GLOBAL des importations (sans drilldown par produit)
         total_params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Importer Country"],
             measures=["Trade Value", "Quantity"],
-            cuts={
-                "Year": str(year),
-                "Importer Country": country_info["oec_id"]
-            },
-            limit=1
+            cuts={"Year": str(year), "Importer Country": country_info["oec_id"]},
+            limit=1,
         )
         total_result = await self._make_request(total_params)
         global_total_value = 0
@@ -311,27 +320,27 @@ class OECTradeService:
         if total_result.get("data"):
             global_total_value = total_result["data"][0].get("Trade Value", 0)
             global_total_quantity = total_result["data"][0].get("Quantity", 0)
-        
+
         # 2. Ensuite, récupérer les produits détaillés (avec une limite plus élevée)
         # Utiliser une limite de 2000 pour couvrir la plupart des cas
         params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Importer Country", hs_level],
             measures=["Trade Value", "Quantity"],
-            cuts={
-                "Year": str(year),
-                "Importer Country": country_info["oec_id"]
-            },
-            limit=2000  # Augmenté pour couvrir tous les produits
+            cuts={"Year": str(year), "Importer Country": country_info["oec_id"]},
+            limit=2000,  # Augmenté pour couvrir tous les produits
         )
-        
+
         result = await self._make_request(params)
         return self._format_product_response(
-            result, "imports", country_info, limit, 
+            result,
+            "imports",
+            country_info,
+            limit,
             global_total_value=global_total_value,
-            global_total_quantity=global_total_quantity
+            global_total_quantity=global_total_quantity,
         )
-    
+
     def _get_hs6_prefix(self, hs_code: str) -> int:
         """
         Détermine le préfixe OEC correct basé sur le chapitre HS.
@@ -339,22 +348,22 @@ class OECTradeService:
         """
         # Extraire le chapitre (2 premiers chiffres)
         chapter = int(hs_code[:2])
-        
+
         # Trouver le préfixe correspondant
         for (start, end), prefix in OEC_HS6_PREFIXES.items():
             if start <= chapter <= end:
                 return prefix
-        
+
         # Fallback par défaut
         return 2
-    
+
     def _format_oec_hs6_id(self, hs_code: str) -> str:
         """
         Formate un code HS6 pour l'API OEC.
-        
+
         L'OEC utilise un format spécifique: {prefix}{6-digit-hs-code}
         Le préfixe dépend de la section HS du produit.
-        
+
         Exemples:
             - 090111 (café) -> Section II (Ch.06-14) -> préfixe 2 -> 2090111
             - 180100 (cacao) -> Section IV (Ch.16-24) -> préfixe 4 -> 4180100
@@ -364,18 +373,14 @@ class OECTradeService:
         """
         # Normaliser le code à 6 chiffres
         hs6 = hs_code.zfill(6)[:6]
-        
+
         # Obtenir le préfixe basé sur le chapitre
         prefix = self._get_hs6_prefix(hs6)
-        
+
         return f"{prefix}{hs6}"
-    
+
     async def get_trade_by_hs_code(
-        self,
-        hs_code: str,
-        year: int,
-        trade_flow: str = "exports",
-        limit: int = 50
+        self, hs_code: str, year: int, trade_flow: str = "exports", limit: int = 50
     ) -> Dict:
         """
         Récupère les statistiques commerciales pour un code HS6 spécifique avec valeur et volume.
@@ -388,27 +393,24 @@ class OECTradeService:
         if len(hs_code) == 4:
             # Si code HS4 fourni, on ajoute '00' pour avoir le code générique HS6
             hs6_code = hs_code.zfill(4) + "00"
-        
+
         oec_hs_id = self._format_oec_hs6_id(hs6_code)
-        
+
         if trade_flow == "exports":
             drilldowns = ["Year", "Exporter Country"]
         else:
             drilldowns = ["Year", "Importer Country"]
-        
+
         # Utiliser le cube HS17 (compatible SH2022) avec HS6
         # Inclure Trade Value et Quantity (volume)
         params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=drilldowns,
             measures=["Trade Value", "Quantity"],
-            cuts={
-                "Year": str(year),
-                "HS6": oec_hs_id
-            },
-            limit=limit
+            cuts={"Year": str(year), "HS6": oec_hs_id},
+            limit=limit,
         )
-        
+
         result = await self._make_request(params)
         return self._format_hs_response(result, hs6_code, year, trade_flow)
 
@@ -564,24 +566,30 @@ class OECTradeService:
             imp_val = round(imp["trade_value"], 2) if imp else 0
             imp_qty = round(imp["quantity"], 2) if imp else 0
 
-            exports_data.append({
-                "year": y,
-                "trade_value": exp_val,
-                "quantity": exp_qty,
-                **({"no_data": True} if not exp else {}),
-            })
-            imports_data.append({
-                "year": y,
-                "trade_value": imp_val,
-                "quantity": imp_qty,
-                **({"no_data": True} if not imp else {}),
-            })
-            chart_rows.append({
-                "year": y,
-                "exports": exp_val,
-                "imports": imp_val,
-                "balance": round(exp_val - imp_val, 2),
-            })
+            exports_data.append(
+                {
+                    "year": y,
+                    "trade_value": exp_val,
+                    "quantity": exp_qty,
+                    **({"no_data": True} if not exp else {}),
+                }
+            )
+            imports_data.append(
+                {
+                    "year": y,
+                    "trade_value": imp_val,
+                    "quantity": imp_qty,
+                    **({"no_data": True} if not imp else {}),
+                }
+            )
+            chart_rows.append(
+                {
+                    "year": y,
+                    "exports": exp_val,
+                    "imports": imp_val,
+                    "balance": round(exp_val - imp_val, 2),
+                }
+            )
 
         any_exports = any(e["trade_value"] > 0 for e in exports_data)
         any_imports = any(i["trade_value"] > 0 for i in imports_data)
@@ -600,8 +608,8 @@ class OECTradeService:
             "level": lvl,
             "hs4_code": hs4_code,
             "oec_hs_id": oec_hs_id,
-            "hs_labels": hs_labels_sorted,      # [{hs6_id, label, trade_value}, ...]
-            "match_level": match_level,          # "hs6" | "hs4" | "hs2" | "none"
+            "hs_labels": hs_labels_sorted,  # [{hs6_id, label, trade_value}, ...]
+            "match_level": match_level,  # "hs6" | "hs4" | "hs2" | "none"
             "years": years,
             "exports": exports_data,
             "imports": imports_data,
@@ -610,30 +618,30 @@ class OECTradeService:
             "currency": "USD",
             "has_data": any_exports or any_imports,
         }
-    
+
     async def get_bilateral_trade(
         self,
         exporter_iso3: str,
         importer_iso3: str,
         year: int,
         hs_level: str = "HS4",
-        limit: int = 50
+        limit: int = 50,
     ) -> Dict:
         """
         Récupère le commerce bilatéral entre deux pays avec valeur et volume.
         Utilise le cube HS17 (compatible SH2022) avec HS4 par défaut.
-        
+
         IMPORTANT: On récupère 500 produits de l'API pour avoir tous les produits
         y compris les produits énergétiques (pétrole, gaz), puis on trie et limite.
         """
         exporter_info = AFRICAN_COUNTRIES_OEC.get(exporter_iso3.upper())
         importer_info = AFRICAN_COUNTRIES_OEC.get(importer_iso3.upper())
-        
+
         if not exporter_info:
             return {"error": f"Exporter country {exporter_iso3} not found", "data": []}
         if not importer_info:
             return {"error": f"Importer country {importer_iso3} not found", "data": []}
-        
+
         # Récupérer TOUS les produits (500) pour avoir une vue complète
         # incluant les produits énergétiques qui peuvent être loin dans la liste
         params = self._build_params(
@@ -643,25 +651,20 @@ class OECTradeService:
             cuts={
                 "Year": str(year),
                 "Exporter Country": exporter_info["oec_id"],
-                "Importer Country": importer_info["oec_id"]
+                "Importer Country": importer_info["oec_id"],
             },
-            limit=500  # Récupérer plus de données pour avoir tous les produits importants
+            limit=500,  # Récupérer plus de données pour avoir tous les produits importants
         )
-        
+
         result = await self._make_request(params)
         return self._format_bilateral_response(result, exporter_info, importer_info, year, limit)
-    
+
     async def get_available_years(self) -> List[int]:
         """Retourne les années disponibles dans l'API pour le cube HS17"""
         # Le cube HS Rev. 2017 couvre 2018-2024
         return list(range(2018, 2025))
-    
-    async def get_top_african_exporters(
-        self,
-        hs_code: str,
-        year: int,
-        limit: int = 20
-    ) -> Dict:
+
+    async def get_top_african_exporters(self, hs_code: str, year: int, limit: int = 20) -> Dict:
         """
         Récupère les principaux exportateurs africains pour un produit.
         Utilise le cube HS17 avec des codes HS6 pour la cohérence SH2022.
@@ -670,49 +673,51 @@ class OECTradeService:
         hs6_code = hs_code.zfill(6)[:6]
         if len(hs_code) == 4:
             hs6_code = hs_code.zfill(4) + "00"
-        
+
         oec_hs_id = self._format_oec_hs6_id(hs6_code)
-        
+
         params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Exporter Country"],
             measures=["Trade Value"],
-            cuts={
-                "Year": str(year),
-                "HS6": oec_hs_id
-            },
-            limit=200  # Get more to filter African countries
+            cuts={"Year": str(year), "HS6": oec_hs_id},
+            limit=200,  # Get more to filter African countries
         )
-        
+
         result = await self._make_request(params)
-        
+
         # Filter only African countries
         african_oec_ids = {v["oec_id"] for v in AFRICAN_COUNTRIES_OEC.values()}
         african_data = []
-        
+
         for row in result.get("data", []):
             country_id = row.get("Exporter Country ID", "")
             if country_id in african_oec_ids:
                 african_data.append(row)
-        
+
         # Sort by trade value
         african_data.sort(key=lambda x: x.get("Trade Value", 0), reverse=True)
-        
+
         return {
             "hs_code": hs_code,
             "year": year,
             "total_countries": len(african_data),
             "data": african_data[:limit],
-            "source": "OEC/BACI"
+            "source": "OEC/BACI",
         }
-    
+
     def _format_product_response(
-        self, result: Dict, flow: str, country_info: Dict, limit: int = 50,
-        global_total_value: float = 0, global_total_quantity: float = 0
+        self,
+        result: Dict,
+        flow: str,
+        country_info: Dict,
+        limit: int = 50,
+        global_total_value: float = 0,
+        global_total_quantity: float = 0,
     ) -> Dict:
         """
         Formate la réponse pour les produits, triée par valeur décroissante.
-        
+
         Args:
             result: Résultat de la requête OEC
             flow: Type de flux ('exports' ou 'imports')
@@ -722,21 +727,23 @@ class OECTradeService:
             global_total_quantity: Quantité totale globale
         """
         data = result.get("data", [])
-        
+
         # Trier par Trade Value décroissante
         sorted_data = sorted(data, key=lambda x: x.get("Trade Value", 0), reverse=True)
-        
+
         # Limiter au nombre demandé pour l'affichage
         limited_data = sorted_data[:limit]
-        
+
         # Calculer les totaux des données récupérées (pour comparaison)
         fetched_total_value = sum(row.get("Trade Value", 0) for row in sorted_data)
         fetched_total_quantity = sum(row.get("Quantity", 0) for row in sorted_data)
-        
+
         # Utiliser le total global s'il est disponible, sinon utiliser le total calculé
         final_total_value = global_total_value if global_total_value > 0 else fetched_total_value
-        final_total_quantity = global_total_quantity if global_total_quantity > 0 else fetched_total_quantity
-        
+        final_total_quantity = (
+            global_total_quantity if global_total_quantity > 0 else fetched_total_quantity
+        )
+
         return {
             "country": country_info,
             "trade_flow": flow,
@@ -749,19 +756,19 @@ class OECTradeService:
             "currency": "USD",
             "data": limited_data,
             "source": "OEC/BACI",
-            "retrieved_at": datetime.utcnow().isoformat()
+            "retrieved_at": datetime.utcnow().isoformat(),
         }
-    
+
     def _format_hs_response(self, result: Dict, hs_code: str, year: int, flow: str) -> Dict:
         """Formate la réponse pour un code HS, triée par valeur décroissante"""
         data = result.get("data", [])
-        
+
         # Trier par Trade Value décroissante
         sorted_data = sorted(data, key=lambda x: x.get("Trade Value", 0), reverse=True)
-        
+
         # Calculer le volume total
         total_quantity = sum(row.get("Quantity", 0) for row in sorted_data)
-        
+
         return {
             "hs_code": hs_code,
             "year": year,
@@ -773,25 +780,25 @@ class OECTradeService:
             "currency": "USD",
             "data": sorted_data,
             "source": "OEC/BACI",
-            "retrieved_at": datetime.utcnow().isoformat()
+            "retrieved_at": datetime.utcnow().isoformat(),
         }
-    
+
     def _format_bilateral_response(
         self, result: Dict, exporter: Dict, importer: Dict, year: int, limit: int = 50
     ) -> Dict:
         """Formate la réponse pour le commerce bilatéral, triée par valeur décroissante"""
         data = result.get("data", [])
-        
+
         # Trier par Trade Value décroissante pour avoir les produits les plus importants en premier
         sorted_data = sorted(data, key=lambda x: x.get("Trade Value", 0), reverse=True)
-        
+
         # Calculer les totaux sur TOUTES les données (avant limitation)
         total_value = sum(row.get("Trade Value", 0) for row in sorted_data)
         total_quantity = sum(row.get("Quantity", 0) for row in sorted_data)
-        
+
         # Limiter au nombre demandé APRÈS le tri
         limited_data = sorted_data[:limit]
-        
+
         return {
             "exporter": exporter,
             "importer": importer,
@@ -804,7 +811,7 @@ class OECTradeService:
             "currency": "USD",
             "data": limited_data,
             "source": "OEC/BACI",
-            "retrieved_at": datetime.utcnow().isoformat()
+            "retrieved_at": datetime.utcnow().isoformat(),
         }
 
     async def get_revealed_comparative_advantage(
@@ -843,7 +850,9 @@ class OECTradeService:
         if "error" in country_resp:
             return {"error": country_resp["error"], "data": []}
         country_rows = country_resp.get("data", [])
-        x_c = country_resp.get("total_value", 0) or sum(r.get("Trade Value", 0) for r in country_rows)
+        x_c = country_resp.get("total_value", 0) or sum(
+            r.get("Trade Value", 0) for r in country_rows
+        )
         if not x_c or not country_rows:
             return {"error": "No export data for this country/year", "data": []}
 
@@ -882,15 +891,17 @@ class OECTradeService:
             if x_wp <= 0:
                 continue
             rca = (x_cp / x_c) / (x_wp / x_w)
-            results.append({
-                "hs_code": str(pid)[-int(hs_level[2:]):] if pid is not None else "",
-                "product": r.get(hs_level, ""),
-                "country_value": x_cp,
-                "country_share": (x_cp / x_c) * 100,
-                "world_share": (x_wp / x_w) * 100,
-                "rca": round(rca, 3),
-                "has_advantage": rca >= 1,
-            })
+            results.append(
+                {
+                    "hs_code": str(pid)[-int(hs_level[2:]) :] if pid is not None else "",
+                    "product": r.get(hs_level, ""),
+                    "country_value": x_cp,
+                    "country_share": (x_cp / x_c) * 100,
+                    "world_share": (x_wp / x_w) * 100,
+                    "rca": round(rca, 3),
+                    "has_advantage": rca >= 1,
+                }
+            )
 
         # Trier par RCA décroissant (produits les plus spécialisés en premier)
         results.sort(key=lambda x: x["rca"], reverse=True)
@@ -943,16 +954,24 @@ class OECTradeService:
         if not imp_info:
             return {"error": f"Importer country {importer_iso3} not found"}
 
-        exp_resp = await self.get_exports_by_product(exporter_iso3, year, hs_level=hs_level, limit=5000)
+        exp_resp = await self.get_exports_by_product(
+            exporter_iso3, year, hs_level=hs_level, limit=5000
+        )
         if "error" in exp_resp:
             return {"error": exp_resp["error"]}
-        imp_resp = await self.get_imports_by_product(importer_iso3, year, hs_level=hs_level, limit=5000)
+        imp_resp = await self.get_imports_by_product(
+            importer_iso3, year, hs_level=hs_level, limit=5000
+        )
         if "error" in imp_resp:
             return {"error": imp_resp["error"]}
 
         id_field = f"{hs_level} ID"
-        x_total = exp_resp.get("total_value", 0) or sum(r.get("Trade Value", 0) for r in exp_resp.get("data", []))
-        m_total = imp_resp.get("total_value", 0) or sum(r.get("Trade Value", 0) for r in imp_resp.get("data", []))
+        x_total = exp_resp.get("total_value", 0) or sum(
+            r.get("Trade Value", 0) for r in exp_resp.get("data", [])
+        )
+        m_total = imp_resp.get("total_value", 0) or sum(
+            r.get("Trade Value", 0) for r in imp_resp.get("data", [])
+        )
         if not x_total or not m_total:
             return {"error": "Insufficient export/import data for this selection"}
 
@@ -980,13 +999,15 @@ class OECTradeService:
         opportunities = []
         for k in set(x_share) & set(m_share):
             xs, ms = x_share[k], m_share[k]
-            opportunities.append({
-                "hs_code": str(k)[-int(hs_level[2:]):],
-                "product": labels.get(k, ""),
-                "exporter_export_share": round(xs * 100, 2),
-                "importer_import_share": round(ms * 100, 2),
-                "match_score": round(min(xs, ms) * 100, 2),
-            })
+            opportunities.append(
+                {
+                    "hs_code": str(k)[-int(hs_level[2:]) :],
+                    "product": labels.get(k, ""),
+                    "exporter_export_share": round(xs * 100, 2),
+                    "importer_import_share": round(ms * 100, 2),
+                    "match_score": round(min(xs, ms) * 100, 2),
+                }
+            )
         opportunities.sort(key=lambda o: o["match_score"], reverse=True)
 
         return {
@@ -1006,17 +1027,17 @@ class OECTradeService:
         """
         Récupère les totaux d'exportations et d'importations pour toute l'Afrique.
         Fait une requête agrégée à l'API OEC pour tous les pays africains.
-        
+
         Args:
             year: Année des données
-            
+
         Returns:
             Totaux des exports et imports africains
         """
         try:
             # Construire la liste des IDs OEC pour tous les pays africains
             african_ids = [info["oec_id"] for info in AFRICAN_COUNTRIES_OEC.values()]
-            
+
             # Requête pour les exportations totales africaines
             exports_params = self._build_params(
                 cube=OEC_CUBES[DEFAULT_CUBE],
@@ -1025,10 +1046,10 @@ class OECTradeService:
                 cuts={
                     "Year": str(year),
                 },
-                limit=100
+                limit=100,
             )
             exports_result = await self._make_request(exports_params)
-            
+
             # Filtrer et sommer uniquement les pays africains
             total_exports = 0
             total_exports_qty = 0
@@ -1040,13 +1061,15 @@ class OECTradeService:
                     qty = row.get("Quantity", 0)
                     total_exports += value
                     total_exports_qty += qty
-                    exports_by_country.append({
-                        "country_id": country_id,
-                        "country_name": row.get("Exporter Country", ""),
-                        "value": value,
-                        "quantity": qty
-                    })
-            
+                    exports_by_country.append(
+                        {
+                            "country_id": country_id,
+                            "country_name": row.get("Exporter Country", ""),
+                            "value": value,
+                            "quantity": qty,
+                        }
+                    )
+
             # Requête pour les importations totales africaines
             imports_params = self._build_params(
                 cube=OEC_CUBES[DEFAULT_CUBE],
@@ -1055,10 +1078,10 @@ class OECTradeService:
                 cuts={
                     "Year": str(year),
                 },
-                limit=100
+                limit=100,
             )
             imports_result = await self._make_request(imports_params)
-            
+
             # Filtrer et sommer uniquement les pays africains
             total_imports = 0
             total_imports_qty = 0
@@ -1070,17 +1093,19 @@ class OECTradeService:
                     qty = row.get("Quantity", 0)
                     total_imports += value
                     total_imports_qty += qty
-                    imports_by_country.append({
-                        "country_id": country_id,
-                        "country_name": row.get("Importer Country", ""),
-                        "value": value,
-                        "quantity": qty
-                    })
-            
+                    imports_by_country.append(
+                        {
+                            "country_id": country_id,
+                            "country_name": row.get("Importer Country", ""),
+                            "value": value,
+                            "quantity": qty,
+                        }
+                    )
+
             # Trier par valeur décroissante
             exports_by_country.sort(key=lambda x: x["value"], reverse=True)
             imports_by_country.sort(key=lambda x: x["value"], reverse=True)
-            
+
             return {
                 "year": year,
                 "total_exports": total_exports,
@@ -1095,9 +1120,9 @@ class OECTradeService:
                 "total_countries_with_data": len(exports_by_country),
                 "currency": "USD",
                 "source": "OEC/BACI",
-                "retrieved_at": datetime.utcnow().isoformat()
+                "retrieved_at": datetime.utcnow().isoformat(),
             }
-            
+
         except Exception as e:
             logger.error(f"Error getting Africa totals: {str(e)}")
             return {"error": str(e)}
@@ -1131,14 +1156,13 @@ async def get_african_top_exporters(hs_code: str, year: int, limit: int = 10) ->
 def get_african_countries_list(language: str = "fr") -> List[Dict]:
     """Retourne la liste des pays africains avec leurs codes, triés correctement"""
     import unicodedata
-    
+
     def normalize_for_sort(text: str) -> str:
         """Normalise le texte pour le tri (retire les accents)"""
-        return ''.join(
-            c for c in unicodedata.normalize('NFD', text.lower())
-            if unicodedata.category(c) != 'Mn'
+        return "".join(
+            c for c in unicodedata.normalize("NFD", text.lower()) if unicodedata.category(c) != "Mn"
         )
-    
+
     name_key = f"name_{language}"
     return [
         {
@@ -1147,11 +1171,10 @@ def get_african_countries_list(language: str = "fr") -> List[Dict]:
             "name": info.get(name_key, info["name_en"]),
             "has_trade_data": info.get("has_trade_data", True),
             "zlecaf_signatory": info.get("zlecaf_signatory", True),
-            "note": info.get("note", "")
+            "note": info.get("note", ""),
         }
         for iso3, info in sorted(
-            AFRICAN_COUNTRIES_OEC.items(), 
-            key=lambda x: normalize_for_sort(x[1].get(name_key, ""))
+            AFRICAN_COUNTRIES_OEC.items(), key=lambda x: normalize_for_sort(x[1].get(name_key, ""))
         )
     ]
 
@@ -1161,22 +1184,22 @@ def get_country_name_to_iso3_mapping() -> Dict[str, str]:
     Crée un mapping inversé des noms de pays (name_en) vers ISO3.
     Utile pour le frontend qui reçoit des noms de pays de l'API OEC
     et doit les convertir en codes ISO3 pour afficher les drapeaux.
-    
+
     The mapping keys use the "name_en" field from AFRICAN_COUNTRIES_OEC entries.
-    
+
     Inclut également des variantes de noms pour une meilleure compatibilité
     avec les différentes représentations possibles des noms de pays dans l'API OEC.
-    
+
     Returns:
         Dict[str, str]: Mapping of country names to ISO3 codes
     """
     mapping = {}
-    
+
     for iso3, info in AFRICAN_COUNTRIES_OEC.items():
         # Nom principal en anglais
         name_en = info["name_en"]
         mapping[name_en] = iso3
-        
+
         # Ajouter des variantes communes pour certains pays
         # Ces variantes sont nécessaires car l'API OEC peut retourner des noms différents
         if iso3 == "COG":
@@ -1193,5 +1216,5 @@ def get_country_name_to_iso3_mapping() -> Dict[str, str]:
         elif iso3 == "STP":
             # São Tomé avec et sans accents
             mapping["Sao Tome and Principe"] = iso3
-    
+
     return mapping

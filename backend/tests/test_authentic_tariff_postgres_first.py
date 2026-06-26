@@ -15,8 +15,20 @@ class _PostgresProviderSuccess:
             "description": "Produit test PostgreSQL",
             "taxes": {"dd_rate": 5.0, "zlecaf_rate": 0.0},
             "measures": [
-                {"code": "DD", "name": "Droits de Douane", "rate": 5.0, "zlecaf_applicable": True, "zlecaf_rate": 0.0},
-                {"code": "TVA", "name": "TVA", "rate": 20.0, "zlecaf_applicable": False, "zlecaf_rate": None},
+                {
+                    "code": "DD",
+                    "name": "Droits de Douane",
+                    "rate": 5.0,
+                    "zlecaf_applicable": True,
+                    "zlecaf_rate": 0.0,
+                },
+                {
+                    "code": "TVA",
+                    "name": "TVA",
+                    "rate": 20.0,
+                    "zlecaf_applicable": False,
+                    "zlecaf_rate": None,
+                },
             ],
             "requirements": [{"code": "DOC1", "document": "Facture"}],
         }
@@ -57,7 +69,9 @@ def test_get_tariff_line_prefers_postgres(monkeypatch):
     monkeypatch.setattr(
         svc,
         "load_country_tariffs",
-        lambda iso3: {"tariff_lines": [{"hs6": "180100", "dd_rate": 30.0, "description_fr": "ETL"}]},
+        lambda iso3: {
+            "tariff_lines": [{"hs6": "180100", "dd_rate": 30.0, "description_fr": "ETL"}]
+        },
     )
 
     line = svc.get_tariff_line("MAR", "180100")

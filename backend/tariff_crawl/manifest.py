@@ -10,13 +10,14 @@ Le registre des 54 pays (`crawlers/all_countries_registry.py`) est chargé via
 importlib pour éviter de déclencher `crawlers/__init__.py`, qui importe `motor`
 (MongoDB) et casse l'exécution sur une machine de crawl ordinaire.
 """
+
 from __future__ import annotations
 
 import importlib.util
 import sys
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,11 +30,13 @@ class Provenance(str, Enum):
     estimées héritées (etl_computed / taux de chapitre répliqué).
     """
 
-    NATIONAL_CRAWL = "national_crawl"          # lignes nationales scrappées sur le portail douanier
-    REGIONAL_CET = "regional_cet_official"     # tarif extérieur commun officiel du bloc (TEC/CET/TDC/SACU)
-    WTO_MFN_HS6 = "wto_mfn_hs6"                 # taux MFN appliqué OMC/WITS-TRAINS au niveau HS6
-    ESTIMATED = "estimated"                     # NON authentique — à rejeter / purger
-    NONE = "none"                               # aucune source authentique disponible
+    NATIONAL_CRAWL = "national_crawl"  # lignes nationales scrappées sur le portail douanier
+    REGIONAL_CET = (
+        "regional_cet_official"  # tarif extérieur commun officiel du bloc (TEC/CET/TDC/SACU)
+    )
+    WTO_MFN_HS6 = "wto_mfn_hs6"  # taux MFN appliqué OMC/WITS-TRAINS au niveau HS6
+    ESTIMATED = "estimated"  # NON authentique — à rejeter / purger
+    NONE = "none"  # aucune source authentique disponible
 
 
 # Rang d'authenticité (plus élevé = meilleure provenance). Sert au classement
@@ -47,11 +50,13 @@ PROVENANCE_RANK: Dict[str, int] = {
 }
 
 # Provenances considérées comme authentiques (servables à l'utilisateur).
-AUTHENTIC_PROVENANCES = frozenset({
-    Provenance.NATIONAL_CRAWL.value,
-    Provenance.REGIONAL_CET.value,
-    Provenance.WTO_MFN_HS6.value,
-})
+AUTHENTIC_PROVENANCES = frozenset(
+    {
+        Provenance.NATIONAL_CRAWL.value,
+        Provenance.REGIONAL_CET.value,
+        Provenance.WTO_MFN_HS6.value,
+    }
+)
 
 
 # Sources régionales officielles (tarif extérieur commun du bloc).
@@ -81,8 +86,14 @@ REGIONAL_CET_SOURCES: Dict[str, Dict[str, str]] = {
 # Pays disposant déjà d'un crawl national authentique abouti (ligne par ligne).
 # Source de vérité = fichiers data/crawled/*.json validés.
 NATIONAL_CRAWL_READY: Dict[str, Dict[str, str]] = {
-    "DZA": {"source": "conformepro.dz (données douane.gov.dz)", "source_url": "https://www.douane.gov.dz"},
-    "EGY": {"source": "Egyptian Customs Authority (customs.gov.eg)", "source_url": "https://www.customs.gov.eg"},
+    "DZA": {
+        "source": "conformepro.dz (données douane.gov.dz)",
+        "source_url": "https://www.douane.gov.dz",
+    },
+    "EGY": {
+        "source": "Egyptian Customs Authority (customs.gov.eg)",
+        "source_url": "https://www.customs.gov.eg",
+    },
     "MAR": {"source": "douane.gov.ma/adil", "source_url": "https://www.douane.gov.ma"},
     "TUN": {"source": "douane.gov.tn/tarifweb2025", "source_url": "https://www.douane.gov.tn"},
 }
@@ -136,38 +147,46 @@ def build_manifest() -> Dict[str, Dict[str, Any]]:
 
         if iso3 in NATIONAL_CRAWL_READY:
             nat = NATIONAL_CRAWL_READY[iso3]
-            chain.append({
-                "provenance": Provenance.NATIONAL_CRAWL.value,
-                "source": nat["source"],
-                "source_url": nat["source_url"],
-                "status": "ready",
-            })
+            chain.append(
+                {
+                    "provenance": Provenance.NATIONAL_CRAWL.value,
+                    "source": nat["source"],
+                    "source_url": nat["source_url"],
+                    "status": "ready",
+                }
+            )
         elif customs_url:
             # Portail national identifié mais crawl pas encore implémenté/validé.
-            chain.append({
-                "provenance": Provenance.NATIONAL_CRAWL.value,
-                "source": f"Portail douanier national ({customs_url})",
-                "source_url": customs_url,
-                "status": "to_implement",
-            })
+            chain.append(
+                {
+                    "provenance": Provenance.NATIONAL_CRAWL.value,
+                    "source": f"Portail douanier national ({customs_url})",
+                    "source_url": customs_url,
+                    "status": "to_implement",
+                }
+            )
 
         if regional_key:
             r = REGIONAL_CET_SOURCES[regional_key]
-            chain.append({
-                "provenance": Provenance.REGIONAL_CET.value,
-                "source": r["source"],
-                "source_url": r["source_url"],
-                "note": r["note"],
-                "status": "available",
-            })
+            chain.append(
+                {
+                    "provenance": Provenance.REGIONAL_CET.value,
+                    "source": r["source"],
+                    "source_url": r["source_url"],
+                    "note": r["note"],
+                    "status": "available",
+                }
+            )
 
         # Repli international authentique : OMC/WITS-TRAINS MFN HS6.
-        chain.append({
-            "provenance": Provenance.WTO_MFN_HS6.value,
-            "source": "WTO/WITS-TRAINS — taux MFN appliqué (HS6)",
-            "source_url": "https://wits.worldbank.org",
-            "status": "available_with_key",
-        })
+        chain.append(
+            {
+                "provenance": Provenance.WTO_MFN_HS6.value,
+                "source": "WTO/WITS-TRAINS — taux MFN appliqué (HS6)",
+                "source_url": "https://wits.worldbank.org",
+                "status": "available_with_key",
+            }
+        )
 
         primary = chain[0] if chain else {"provenance": Provenance.NONE.value}
         manifest[iso3] = {

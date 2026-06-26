@@ -78,6 +78,7 @@ def score_line(line: Dict[str, Any]) -> float:
 # Dataset-level validation
 # ---------------------------------------------------------------------------
 
+
 class DataValidator:
     """Validates an entire dataset of DZA tariff lines."""
 
@@ -116,7 +117,9 @@ class DataValidator:
             if is_valid:
                 valid_count += 1
             else:
-                line_issues.append({"index": idx, "hs6": line.get("hs6_code", ""), "issues": issues})
+                line_issues.append(
+                    {"index": idx, "hs6": line.get("hs6_code", ""), "issues": issues}
+                )
 
             if conf < self.min_confidence_score:
                 low_confidence += 1
@@ -133,10 +136,7 @@ class DataValidator:
         hs10_coverage = (total - missing_hs10) / total
         valid_pct = valid_count / total
 
-        passed = (
-            vat_coverage >= self.min_vat_coverage
-            and hs10_coverage >= self.min_hs10_coverage
-        )
+        passed = vat_coverage >= self.min_vat_coverage and hs10_coverage >= self.min_hs10_coverage
         if self.strict_mode:
             passed = passed and valid_pct >= 0.9
 

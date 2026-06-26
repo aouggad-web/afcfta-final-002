@@ -2,72 +2,74 @@
 Logistics routes - Ports, Airports, Land corridors, Free Zones
 Multimodal logistics platform for African trade infrastructure
 """
-from fastapi import APIRouter, HTTPException
+
 from typing import Optional
 
+from fastapi import APIRouter, HTTPException
+from free_zones_data import get_free_zones_by_country
+from logistics_air_data import (
+    get_airport_by_id,
+    get_all_airports,
+    get_top_airports_by_cargo,
+    search_airports,
+)
+from logistics_air_fees_data import (
+    get_air_fee_airports,
+    get_air_freight_cost,
+    get_commodity_types,
+)
 from logistics_data import (
     get_all_ports,
     get_port_by_id,
     get_ports_by_type,
     get_top_ports_by_teu,
-    search_ports
+    search_ports,
 )
-from logistics_air_data import (
-    get_all_airports,
-    get_airport_by_id,
-    get_top_airports_by_cargo,
-    search_airports
-)
-from logistics_air_fees_data import (
-    get_air_fee_airports,
-    get_commodity_types,
-    get_air_freight_cost,
-)
-from free_zones_data import get_free_zones_by_country
 from logistics_fees_data import (
-    get_all_shipping_routes,
-    get_routes_from_port,
-    get_route_between,
-    get_port_thc,
     get_all_port_thc,
-    get_total_cost,
+    get_all_shipping_routes,
     get_fee_ports,
+    get_port_thc,
+    get_route_between,
+    get_routes_from_port,
+    get_total_cost,
 )
 from logistics_land_data import (
     get_all_corridors,
-    get_corridors_by_country,
-    get_corridor_by_id,
     get_all_nodes,
-    get_nodes_by_type,
-    get_osbp_nodes,
     get_all_operators,
+    get_corridor_by_id,
+    get_corridors_by_country,
+    get_corridors_statistics,
+    get_nodes_by_type,
     get_operators_by_type,
+    get_osbp_nodes,
     search_corridors,
-    get_corridors_statistics
 )
+from logistics_land_fees_data import get_cargo_types as get_land_cargo_types
 from logistics_land_fees_data import (
     get_land_corridors_list,
-    get_cargo_types as get_land_cargo_types,
     get_land_freight_cost,
 )
 from logistics_operators_data import (
+    LOGISTICS_OPERATORS,
     get_all_operators_with_contacts,
     get_operator_by_id,
     get_operators_by_country,
     get_operators_summary,
-    LOGISTICS_OPERATORS,
 )
 from services.multimodal_freight_service import (
-    compare_multimodal,
+    COUNTRY_DEFAULT_AIRPORT,
+    COUNTRY_PORTS,
     LANDLOCKED_AFRICA,
     LANDLOCKED_GATEWAYS,
-    COUNTRY_PORTS,
-    COUNTRY_DEFAULT_AIRPORT,
+    compare_multimodal,
 )
 
 # Optional cache integration
 try:
     from services.cache_service import cache_get, cache_set, generate_cache_key
+
     CACHE_AVAILABLE = True
 except ImportError:
     CACHE_AVAILABLE = False
@@ -77,6 +79,7 @@ router = APIRouter(prefix="/logistics")
 # ==========================================
 # MARITIME PORTS ENDPOINTS
 # ==========================================
+
 
 @router.get("/ports")
 async def get_ports(country_iso: Optional[str] = None):
@@ -100,6 +103,7 @@ async def get_ports(country_iso: Optional[str] = None):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error loading ports data: {str(e)}")
 
+
 @router.get("/ports/{port_id}")
 async def get_port_details(port_id: str):
     """Get detailed information for a specific port"""
@@ -107,6 +111,7 @@ async def get_port_details(port_id: str):
     if not port:
         raise HTTPException(status_code=404, detail=f"Port {port_id} not found")
     return port
+
 
 @router.get("/ports/type/{port_type}")
 async def get_ports_filtered_by_type(port_type: str):
@@ -117,15 +122,11 @@ async def get_ports_filtered_by_type(port_type: str):
     valid_types = ["Hub Transhipment", "Hub Regional", "Maritime Commercial"]
     if port_type not in valid_types:
         raise HTTPException(
-            status_code=400, 
-            detail=f"Invalid port type. Valid types: {', '.join(valid_types)}"
+            status_code=400, detail=f"Invalid port type. Valid types: {', '.join(valid_types)}"
         )
     ports = get_ports_by_type(port_type)
-    return {
-        "port_type": port_type,
-        "count": len(ports),
-        "ports": ports
-    }
+    return {"port_type": port_type, "count": len(ports), "ports": ports}
+
 
 @router.get("/ports/top/teu")
 async def get_top_ports_teu(limit: int = 20):
@@ -137,10 +138,8 @@ async def get_top_ports_teu(limit: int = 20):
     if limit > 50:
         limit = 50
     ports = get_top_ports_by_teu(limit=limit)
-    return {
-        "count": len(ports),
-        "ports": ports
-    }
+    return {"count": len(ports), "ports": ports}
+
 
 @router.get("/ports/search")
 async def search_ports_endpoint(q: str):
@@ -152,11 +151,8 @@ async def search_ports_endpoint(q: str):
     if len(q) < 2:
         raise HTTPException(status_code=400, detail="Search query must be at least 2 characters")
     results = search_ports(q)
-    return {
-        "query": q,
-        "count": len(results),
-        "results": results
-    }
+    return {"query": q, "count": len(results), "results": results}
+
 
 @router.get("/statistics")
 async def get_logistics_statistics():
@@ -168,43 +164,41 @@ async def get_logistics_statistics():
             return cached
 
     all_ports = get_all_ports()
-    
-    total_teu = sum(
-        p.get('latest_stats', {}).get('container_throughput_teu', 0) 
-        for p in all_ports
-    )
-    total_cargo = sum(
-        p.get('latest_stats', {}).get('cargo_throughput_tons', 0) 
-        for p in all_ports
-    )
-    
+
+    total_teu = sum(p.get("latest_stats", {}).get("container_throughput_teu", 0) for p in all_ports)
+    total_cargo = sum(p.get("latest_stats", {}).get("cargo_throughput_tons", 0) for p in all_ports)
+
     # Count ports by type
     port_types: dict = {}
     for port in all_ports:
-        ptype = port.get('port_type', 'Unknown')
+        ptype = port.get("port_type", "Unknown")
         port_types[ptype] = port_types.get(ptype, 0) + 1
-    
+
     # Count ports by country
     ports_by_country: dict = {}
     for port in all_ports:
-        country = port.get('country_name', 'Unknown')
+        country = port.get("country_name", "Unknown")
         ports_by_country[country] = ports_by_country.get(country, 0) + 1
-    
+
     result = {
         "total_ports": len(all_ports),
         "total_container_throughput_teu": total_teu,
         "total_cargo_throughput_tons": total_cargo,
         "ports_by_type": port_types,
-        "ports_by_country": dict(sorted(ports_by_country.items(), key=lambda x: x[1], reverse=True)),
-        "year": 2024
+        "ports_by_country": dict(
+            sorted(ports_by_country.items(), key=lambda x: x[1], reverse=True)
+        ),
+        "year": 2024,
     }
     if CACHE_AVAILABLE:
         cache_set(cache_key, result, "countries")
     return result
 
+
 # ==========================================
 # AIR CARGO ENDPOINTS
 # ==========================================
+
 
 @router.get("/air/airports")
 async def get_airports(country_iso: Optional[str] = None):
@@ -215,12 +209,10 @@ async def get_airports(country_iso: Optional[str] = None):
     """
     try:
         airports = get_all_airports(country_iso=country_iso)
-        return {
-            "count": len(airports),
-            "airports": airports
-        }
+        return {"count": len(airports), "airports": airports}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error loading airports data: {str(e)}")
+
 
 @router.get("/air/airports/{airport_id}")
 async def get_airport_details(airport_id: str):
@@ -229,6 +221,7 @@ async def get_airport_details(airport_id: str):
     if not airport:
         raise HTTPException(status_code=404, detail=f"Airport {airport_id} not found")
     return airport
+
 
 @router.get("/air/airports/top/cargo")
 async def get_top_airports_cargo(limit: int = 20):
@@ -240,10 +233,8 @@ async def get_top_airports_cargo(limit: int = 20):
     if limit > 50:
         limit = 50
     airports = get_top_airports_by_cargo(limit=limit)
-    return {
-        "count": len(airports),
-        "airports": airports
-    }
+    return {"count": len(airports), "airports": airports}
+
 
 @router.get("/air/airports/search")
 async def search_airports_endpoint(q: str):
@@ -255,42 +246,51 @@ async def search_airports_endpoint(q: str):
     if len(q) < 2:
         raise HTTPException(status_code=400, detail="Search query must be at least 2 characters")
     results = search_airports(q)
-    return {
-        "query": q,
-        "count": len(results),
-        "results": results
-    }
+    return {"query": q, "count": len(results), "results": results}
+
 
 @router.get("/air/statistics")
 async def get_air_logistics_statistics():
     """Get global air cargo statistics for African airports"""
     all_airports = get_all_airports()
-    
+
     total_cargo = sum(
-        a.get('historical_stats', [{}])[0].get('cargo_throughput_tons', 0) if a.get('historical_stats') else 0
+        (
+            a.get("historical_stats", [{}])[0].get("cargo_throughput_tons", 0)
+            if a.get("historical_stats")
+            else 0
+        )
         for a in all_airports
     )
     total_mail = sum(
-        a.get('historical_stats', [{}])[0].get('mail_throughput_tons', 0) if a.get('historical_stats') else 0
+        (
+            a.get("historical_stats", [{}])[0].get("mail_throughput_tons", 0)
+            if a.get("historical_stats")
+            else 0
+        )
         for a in all_airports
     )
-    
+
     airports_by_country = {}
     for airport in all_airports:
-        country = airport.get('country_name', 'Unknown')
+        country = airport.get("country_name", "Unknown")
         airports_by_country[country] = airports_by_country.get(country, 0) + 1
-    
+
     return {
         "total_airports": len(all_airports),
         "total_cargo_throughput_tons": total_cargo,
         "total_mail_throughput_tons": total_mail,
-        "airports_by_country": dict(sorted(airports_by_country.items(), key=lambda x: x[1], reverse=True)),
-        "year": 2024
+        "airports_by_country": dict(
+            sorted(airports_by_country.items(), key=lambda x: x[1], reverse=True)
+        ),
+        "year": 2024,
     }
+
 
 # ==========================================
 # AIR FREIGHT CALCULATOR ENDPOINTS
 # ==========================================
+
 
 @router.get("/air/fees/airports")
 async def get_air_freight_airports():
@@ -344,6 +344,7 @@ async def get_air_freight_cost_endpoint(
 # FREE ZONES ENDPOINTS
 # ==========================================
 
+
 @router.get("/free-zones")
 async def get_free_zones(country_iso: Optional[str] = None):
     """
@@ -353,26 +354,23 @@ async def get_free_zones(country_iso: Optional[str] = None):
     """
     try:
         zones = get_free_zones_by_country(country_iso)
-        return {
-            "count": len(zones),
-            "zones": zones
-        }
+        return {"count": len(zones), "zones": zones}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error loading free zones data: {str(e)}")
+
 
 # ==========================================
 # LAND CORRIDORS ENDPOINTS
 # ==========================================
 
+
 @router.get("/land/corridors")
 async def get_land_corridors(
-    corridor_type: str = None,
-    importance: str = None,
-    country_iso: str = None
+    corridor_type: str = None, importance: str = None, country_iso: str = None
 ):
     """
     Get all land corridors (road/rail) with optional filters
-    
+
     Query parameters:
     - corridor_type: 'road', 'rail', 'multimodal'
     - importance: 'high', 'medium'
@@ -382,11 +380,9 @@ async def get_land_corridors(
         corridors = get_corridors_by_country(country_iso)
     else:
         corridors = get_all_corridors(corridor_type=corridor_type, importance=importance)
-    
-    return {
-        "count": len(corridors),
-        "corridors": corridors
-    }
+
+    return {"count": len(corridors), "corridors": corridors}
+
 
 @router.get("/land/corridors/{corridor_id}")
 async def get_land_corridor_details(corridor_id: str):
@@ -396,11 +392,12 @@ async def get_land_corridor_details(corridor_id: str):
         raise HTTPException(status_code=404, detail=f"Corridor {corridor_id} not found")
     return corridor
 
+
 @router.get("/land/nodes")
 async def get_land_nodes(node_type: str = None, osbp_only: bool = False):
     """
     Get all logistical nodes (border crossings, dry ports, terminals)
-    
+
     Query parameters:
     - node_type: 'border_crossing', 'dry_port', 'rail_terminal', 'intermodal_hub'
     - osbp_only: true to get only One-Stop Border Posts
@@ -411,17 +408,15 @@ async def get_land_nodes(node_type: str = None, osbp_only: bool = False):
         nodes = get_nodes_by_type(node_type)
     else:
         nodes = get_all_nodes()
-    
-    return {
-        "count": len(nodes),
-        "nodes": nodes
-    }
+
+    return {"count": len(nodes), "nodes": nodes}
+
 
 @router.get("/land/operators")
 async def get_land_operators(operator_type: str = None):
     """
     Get all land transport operators
-    
+
     Query parameters:
     - operator_type: 'rail_operator', 'trucking_company'
     """
@@ -429,24 +424,19 @@ async def get_land_operators(operator_type: str = None):
         operators = get_operators_by_type(operator_type)
     else:
         operators = get_all_operators()
-    
-    return {
-        "count": len(operators),
-        "operators": operators
-    }
+
+    return {"count": len(operators), "operators": operators}
+
 
 @router.get("/land/search")
 async def search_land_corridors(q: str):
     """Search corridors by name, country, or description"""
     if not q or len(q) < 2:
         raise HTTPException(status_code=400, detail="Query must be at least 2 characters")
-    
+
     results = search_corridors(q)
-    return {
-        "query": q,
-        "count": len(results),
-        "results": results
-    }
+    return {"query": q, "count": len(results), "results": results}
+
 
 @router.get("/land/statistics")
 async def get_land_logistics_statistics():
@@ -457,6 +447,7 @@ async def get_land_logistics_statistics():
 # ==========================================
 # LAND FREIGHT CALCULATOR ENDPOINTS
 # ==========================================
+
 
 @router.get("/land/fees/corridors")
 async def get_land_freight_corridors():
@@ -504,6 +495,7 @@ async def get_land_freight_cost_endpoint(
 # PORT-TO-PORT SHIPPING FEES ENDPOINTS
 # ==========================================
 
+
 @router.get("/fees/ports")
 async def get_fee_calculator_ports():
     """
@@ -538,19 +530,15 @@ async def get_shipping_routes(origin: Optional[str] = None):
                     "origin_locode": origin.upper(),
                     "count": 0,
                     "routes": [],
-                    "message": f"No routes found departing from {origin.upper()}"
+                    "message": f"No routes found departing from {origin.upper()}",
                 }
-            return {
-                "origin_locode": origin.upper(),
-                "count": len(routes),
-                "routes": routes
-            }
+            return {"origin_locode": origin.upper(), "count": len(routes), "routes": routes}
         routes = get_all_shipping_routes()
         return {
             "count": len(routes),
             "routes": routes,
             "data_year": 2024,
-            "source": "Drewry Maritime Research, UNCTAD MRTS 2024, Maersk/CMA CGM/MSC published tariffs"
+            "source": "Drewry Maritime Research, UNCTAD MRTS 2024, Maersk/CMA CGM/MSC published tariffs",
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error loading shipping fees data: {str(e)}")
@@ -572,17 +560,13 @@ async def get_single_route_fees(origin: str, destination: str):
         raise HTTPException(
             status_code=404,
             detail=f"No direct shipping route found between {origin.upper()} and {destination.upper()}. "
-                   "Check /api/logistics/fees/routes for available routes."
+            "Check /api/logistics/fees/routes for available routes.",
         )
     return route
 
 
 @router.get("/fees/cost")
-async def get_total_shipping_cost(
-    origin: str,
-    destination: str,
-    container_type: str = "teu"
-):
+async def get_total_shipping_cost(origin: str, destination: str, container_type: str = "teu"):
     """
     Compute the all-in shipping cost (ocean freight + THC at origin + THC at destination).
 
@@ -598,13 +582,13 @@ async def get_total_shipping_cost(
     if ctype not in valid_types:
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid container_type '{container_type}'. Valid values: {', '.join(valid_types)}"
+            detail=f"Invalid container_type '{container_type}'. Valid values: {', '.join(valid_types)}",
         )
     result = get_total_cost(origin.upper(), destination.upper(), ctype)
     if not result:
         raise HTTPException(
             status_code=404,
-            detail=f"No shipping route found between {origin.upper()} and {destination.upper()}."
+            detail=f"No shipping route found between {origin.upper()} and {destination.upper()}.",
         )
     return result
 
@@ -624,15 +608,14 @@ async def get_terminal_handling_charges(locode: Optional[str] = None):
         thc = get_port_thc(locode.upper())
         if not thc:
             raise HTTPException(
-                status_code=404,
-                detail=f"THC data not available for port {locode.upper()}."
+                status_code=404, detail=f"THC data not available for port {locode.upper()}."
             )
         return thc
     return {
         "count": len(get_all_port_thc()),
         "ports": get_all_port_thc(),
         "data_year": 2024,
-        "source": "Official port authority tariff books 2024 (TMPA, ANP, NPA, KPA, Transnet, etc.)"
+        "source": "Official port authority tariff books 2024 (TMPA, ANP, NPA, KPA, Transnet, etc.)",
     }
 
 
@@ -640,11 +623,12 @@ async def get_terminal_handling_charges(locode: Optional[str] = None):
 # INTERVENANTS LOGISTIQUES — Opérateurs avec contacts réels
 # =============================================================================
 
+
 @router.get("/operators")
 async def get_logistics_operators(category: Optional[str] = None):
     """
     Retourne tous les intervenants logistiques africains avec leurs coordonnées réelles.
-    
+
     Catégories disponibles :
     - armateurs : Compagnies maritimes (MSC, Maersk, CMA CGM…)
     - port_operators : Opérateurs de terminaux (DP World, APM Terminals, Bolloré…)
@@ -658,7 +642,10 @@ async def get_logistics_operators(category: Optional[str] = None):
     data = get_all_operators_with_contacts(category)
     summary = get_operators_summary()
     if category and category not in data:
-        raise HTTPException(status_code=404, detail=f"Catégorie '{category}' inconnue. Catégories: {list(LOGISTICS_OPERATORS.keys())}")
+        raise HTTPException(
+            status_code=404,
+            detail=f"Catégorie '{category}' inconnue. Catégories: {list(LOGISTICS_OPERATORS.keys())}",
+        )
     return {
         "operators": data,
         "summary": summary,
@@ -685,7 +672,7 @@ async def get_operators_for_country(country_iso: str):
             "country_iso": country_iso.upper(),
             "count": 0,
             "operators": [],
-            "message": f"Aucun intervenant référencé pour {country_iso.upper()}"
+            "message": f"Aucun intervenant référencé pour {country_iso.upper()}",
         }
     return {
         "country_iso": country_iso.upper(),
@@ -710,6 +697,7 @@ async def get_single_operator(operator_id: str):
 # MULTIMODAL FREIGHT COMPARATOR ENDPOINTS
 # ==========================================
 
+
 @router.get("/multimodal/countries")
 async def get_multimodal_supported_countries():
     """
@@ -724,9 +712,7 @@ async def get_multimodal_supported_countries():
         "landlocked_countries": landlocked,
         "air_only_countries": air_only,
         "all_supported": sorted(
-            set(COUNTRY_DEFAULT_AIRPORT.keys())
-            | set(COUNTRY_PORTS.keys())
-            | LANDLOCKED_AFRICA
+            set(COUNTRY_DEFAULT_AIRPORT.keys()) | set(COUNTRY_PORTS.keys()) | LANDLOCKED_AFRICA
         ),
         "landlocked_gateways": LANDLOCKED_GATEWAYS,
     }

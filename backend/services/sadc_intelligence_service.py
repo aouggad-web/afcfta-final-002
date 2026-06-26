@@ -29,10 +29,22 @@ DATA_BASE_DIR = Path(__file__).parent.parent / "data"
 # ---------------------------------------------------------------------------
 
 SADC_COUNTRY_LIST = [
-    "ZAF", "BWA", "NAM", "LSO", "SWZ",  # SACU
-    "AGO", "ZMB", "ZWE", "COD",           # Resource Economies
-    "MUS", "SYC", "COM",                  # Island Nations
-    "MOZ", "MDG", "MWI", "TZA",           # Emerging Markets
+    "ZAF",
+    "BWA",
+    "NAM",
+    "LSO",
+    "SWZ",  # SACU
+    "AGO",
+    "ZMB",
+    "ZWE",
+    "COD",  # Resource Economies
+    "MUS",
+    "SYC",
+    "COM",  # Island Nations
+    "MOZ",
+    "MDG",
+    "MWI",
+    "TZA",  # Emerging Markets
 ]
 
 SACU_MEMBERS = {"ZAF", "BWA", "NAM", "LSO", "SWZ"}
@@ -43,11 +55,21 @@ DUAL_MEMBERSHIP = {
 }
 
 COUNTRY_NAMES = {
-    "ZAF": "South Africa", "BWA": "Botswana", "NAM": "Namibia",
-    "LSO": "Lesotho", "SWZ": "Eswatini", "AGO": "Angola",
-    "ZMB": "Zambia", "ZWE": "Zimbabwe", "COD": "DR Congo",
-    "MUS": "Mauritius", "SYC": "Seychelles", "COM": "Comoros",
-    "MOZ": "Mozambique", "MDG": "Madagascar", "MWI": "Malawi",
+    "ZAF": "South Africa",
+    "BWA": "Botswana",
+    "NAM": "Namibia",
+    "LSO": "Lesotho",
+    "SWZ": "Eswatini",
+    "AGO": "Angola",
+    "ZMB": "Zambia",
+    "ZWE": "Zimbabwe",
+    "COD": "DR Congo",
+    "MUS": "Mauritius",
+    "SYC": "Seychelles",
+    "COM": "Comoros",
+    "MOZ": "Mozambique",
+    "MDG": "Madagascar",
+    "MWI": "Malawi",
     "TZA": "Tanzania",
 }
 
@@ -249,17 +271,19 @@ class SADCIntelligenceService:
             sector_bonus = 2 if sector_match else 0
             total_score = priority_score + sector_bonus
 
-            recommendations.append({
-                "country_code": code,
-                "country_name": COUNTRY_NAMES.get(code, code),
-                "sector_match": sector_match,
-                "sector_strengths": strengths,
-                "priority_score": priority_score,
-                "total_score": total_score,
-                "is_sacu": code in SACU_MEMBERS,
-                "is_ldc": code in LDC_MEMBERS,
-                "dual_memberships": DUAL_MEMBERSHIP.get(code, []),
-            })
+            recommendations.append(
+                {
+                    "country_code": code,
+                    "country_name": COUNTRY_NAMES.get(code, code),
+                    "sector_match": sector_match,
+                    "sector_strengths": strengths,
+                    "priority_score": priority_score,
+                    "total_score": total_score,
+                    "is_sacu": code in SACU_MEMBERS,
+                    "is_ldc": code in LDC_MEMBERS,
+                    "dual_memberships": DUAL_MEMBERSHIP.get(code, []),
+                }
+            )
 
         recommendations.sort(key=lambda x: x["total_score"], reverse=True)
         return recommendations
@@ -289,8 +313,8 @@ class SADCIntelligenceService:
         """Return transport corridor intelligence."""
         try:
             from crawlers.countries.sadc.transport_corridors import (
-                SADC_TRANSPORT_CORRIDORS,
                 SADC_MAJOR_PORTS,
+                SADC_TRANSPORT_CORRIDORS,
             )
         except ImportError:
             return {"error": "Transport corridor data not available"}
@@ -319,10 +343,11 @@ class SADCIntelligenceService:
         """Return the SACU customs union framework details."""
         try:
             from crawlers.countries.sacu_customs_union import (
+                SACU_CET_BANDS,
                 SACU_FRAMEWORK,
                 SACU_REVENUE_SHARES,
-                SACU_CET_BANDS,
             )
+
             return {
                 "framework": SACU_FRAMEWORK,
                 "revenue_shares": SACU_REVENUE_SHARES,
@@ -337,6 +362,7 @@ class SADCIntelligenceService:
         """Calculate landed cost for an import at a SACU entry port."""
         try:
             from crawlers.countries.sacu_customs_union import calculate_total_import_cost
+
             return calculate_total_import_cost(cif_value, hs_chapter, destination, origin)
         except ImportError:
             return {"error": "SACU calculation module not available"}
@@ -353,7 +379,10 @@ class SADCIntelligenceService:
         if protocol:
             data = SADC_TRADE_PROTOCOLS.get(protocol)
             if not data:
-                return {"error": f"Protocol not found: {protocol}", "available": list(SADC_TRADE_PROTOCOLS.keys())}
+                return {
+                    "error": f"Protocol not found: {protocol}",
+                    "available": list(SADC_TRADE_PROTOCOLS.keys()),
+                }
             return data
 
         return SADC_TRADE_PROTOCOLS
@@ -456,6 +485,7 @@ class SADCIntelligenceService:
         """Return SADC regional trade statistics."""
         try:
             from crawlers.countries.sadc.trade_protocols import SADC_TRADE_STATISTICS
+
             return SADC_TRADE_STATISTICS
         except ImportError:
             return {

@@ -3,23 +3,26 @@ API Routes pour les tarifs avec PostgreSQL
 Remplace les anciennes routes basées sur les fichiers JSONL
 """
 
-from fastapi import APIRouter, HTTPException, Query
 import logging
 
+from fastapi import APIRouter, HTTPException, Query
 from services.authentic_tariff_service import (
+    calculate_import_taxes,
+    get_administrative_formalities,
     get_available_countries,
     get_country_summary,
-    get_sub_positions as get_facade_sub_positions,
+)
+from services.authentic_tariff_service import get_sub_positions as get_facade_sub_positions
+from services.authentic_tariff_service import (
     get_tariff_line,
-    search_tariff_lines,
-    calculate_import_taxes,
     get_taxes_detail,
-    get_administrative_formalities,
+    search_tariff_lines,
 )
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/postgres-tariffs", tags=["PostgreSQL Tariffs"])
+
 
 @router.get("/countries")
 async def get_countries():
@@ -44,10 +47,7 @@ async def get_country_info(iso3: str):
         country = get_country_summary(iso3)
         if not country:
             raise HTTPException(status_code=404, detail=f"Country {iso3} not found")
-        return {
-            "success": True,
-            "country": country
-        }
+        return {"success": True, "country": country}
     except HTTPException:
         raise
     except Exception as e:
@@ -56,11 +56,7 @@ async def get_country_info(iso3: str):
 
 
 @router.get("/country/{iso3}/sub-positions/{hs6}")
-async def get_sub_positions(
-    iso3: str, 
-    hs6: str, 
-    language: str = Query("fr", pattern="^(fr|en)$")
-):
+async def get_sub_positions(iso3: str, hs6: str, language: str = Query("fr", pattern="^(fr|en)$")):
     """Sous-positions nationales via la facade tarifaire."""
     try:
         positions = get_facade_sub_positions(iso3, hs6, language=language)
@@ -70,7 +66,7 @@ async def get_sub_positions(
             "hs6": hs6,
             "total": len(positions),
             "sub_positions": positions,
-            "note": "Data from PostgreSQL - Real national tariff descriptions"
+            "note": "Data from PostgreSQL - Real national tariff descriptions",
         }
     except Exception as e:
         logger.error(f"Error getting sub-positions for {iso3}/{hs6}: {e}")
@@ -84,10 +80,7 @@ async def get_commodity_details(iso3: str, code: str):
         details = get_tariff_line(iso3, code)
         if not details:
             raise HTTPException(status_code=404, detail=f"Commodity {code} not found")
-        return {
-            "success": True,
-            "commodity": details
-        }
+        return {"success": True, "commodity": details}
     except HTTPException:
         raise
     except Exception as e:
@@ -100,7 +93,7 @@ async def search_commodities(
     iso3: str,
     q: str = Query(..., min_length=2, description="Search query"),
     limit: int = Query(50, ge=1, le=200),
-    language: str = Query("fr", pattern="^(fr|en)$")
+    language: str = Query("fr", pattern="^(fr|en)$"),
 ):
     """Recherche de marchandises par description"""
     try:
@@ -110,7 +103,7 @@ async def search_commodities(
             "query": q,
             "country_iso3": iso3.upper(),
             "total": len(results),
-            "results": results
+            "results": results,
         }
     except Exception as e:
         logger.error(f"Error searching {iso3} for '{q}': {e}")
@@ -121,7 +114,7 @@ async def search_commodities(
 async def calculate_tariffs(
     country_iso3: str = Query(..., description="Country ISO3 code"),
     hs6: str = Query(..., description="HS6 code"),
-    value: float = Query(1000, ge=0, description="Goods value")
+    value: float = Query(1000, ge=0, description="Goods value"),
 ):
     """Calculer les tarifs pour un code HS6"""
     try:
@@ -157,10 +150,7 @@ async def postgres_health():
         return {
             "status": "healthy",
             "countries_loaded": len(countries),
-            "message": "Tariff facade active (PostgreSQL-first with ETL fallback)"
+            "message": "Tariff facade active (PostgreSQL-first with ETL fallback)",
         }
     except Exception as e:
-        return {
-            "status": "error",
-            "message": str(e)
-        }
+        return {"status": "error", "message": str(e)}

@@ -6,43 +6,45 @@ Fallback: When Redis is unavailable (connection refused), a JSON file cache
 under backend/data/ai_cache/ is used automatically so the cache survives
 server restarts without requiring Redis.
 """
-import os
-import redis
-import json
+
 import hashlib
+import json
 import logging
+import os
 import time
-from pathlib import Path
-from urllib.parse import urlparse
-from typing import Optional, Dict, Any
 from datetime import datetime, timezone
 from functools import wraps
+from pathlib import Path
+from typing import Any, Dict, Optional
+from urllib.parse import urlparse
+
+import redis
 
 logger = logging.getLogger(__name__)
 
 # Cache TTL configurations (in seconds)
 _90_DAYS = 90 * 24 * 60 * 60
 _30_DAYS = 30 * 24 * 60 * 60
-_7_DAYS  =  7 * 24 * 60 * 60
+_7_DAYS = 7 * 24 * 60 * 60
 
 CACHE_TTL = {
     # Claude AI analyses — long TTL: trade data changes slowly, API is paid
-    "claude_analysis":     _90_DAYS,   # 90 days: export/import/industrial opportunities
-    "claude_profile":      _90_DAYS,   # 90 days: country economic profiles
-    "claude_summary":      _30_DAYS,   # 30 days: AfCFTA overview
-    "claude_value_chains": _30_DAYS,   # 30 days: value chain analyses
-    "claude_product":      _30_DAYS,   # 30 days: product analysis by HS code
-    "claude_balance":      _30_DAYS,   # 30 days: trade balance history
-    "claude_comparison":   _30_DAYS,   # 30 days: country comparisons
+    "claude_analysis": _90_DAYS,  # 90 days: export/import/industrial opportunities
+    "claude_profile": _90_DAYS,  # 90 days: country economic profiles
+    "claude_summary": _30_DAYS,  # 30 days: AfCFTA overview
+    "claude_value_chains": _30_DAYS,  # 30 days: value chain analyses
+    "claude_product": _30_DAYS,  # 30 days: product analysis by HS code
+    "claude_balance": _30_DAYS,  # 30 days: trade balance history
+    "claude_comparison": _30_DAYS,  # 30 days: country comparisons
     # Legacy Gemini keys (kept for backwards-compat; Gemini disabled)
-    "gemini_analysis":     _7_DAYS,
-    "gemini_profile":      _7_DAYS,
-    "gemini_summary":      _7_DAYS,
+    "gemini_analysis": _7_DAYS,
+    "gemini_profile": _7_DAYS,
+    "gemini_summary": _7_DAYS,
     "gemini_value_chains": _7_DAYS,
-    "gemini_product":      _7_DAYS,
+    "gemini_product": _7_DAYS,
     # External data sources
-    "oec_data":            _7_DAYS,    # 7 days for OEC API responses
-    "default":             _7_DAYS,
+    "oec_data": _7_DAYS,  # 7 days for OEC API responses
+    "default": _7_DAYS,
 }
 
 # Default directory for JSON file cache
@@ -98,11 +100,7 @@ class JsonFileCacheService:
             return None
 
     def set(
-        self,
-        prefix: str,
-        params: Dict[str, Any],
-        data: Dict[str, Any],
-        ttl_type: str = "default"
+        self, prefix: str, params: Dict[str, Any], data: Dict[str, Any], ttl_type: str = "default"
     ) -> bool:
         key = self._generate_cache_key(prefix, params)
         filepath = self._key_to_filename(key)
@@ -114,13 +112,10 @@ class JsonFileCacheService:
                 "ttl_seconds": ttl,
                 "cache_type": ttl_type,
                 "from_cache": True,
-                "backend": "json_file"
-            }
+                "backend": "json_file",
+            },
         }
-        entry = {
-            "_file_cache_expires_at": time.time() + ttl,
-            "data": cached_data
-        }
+        entry = {"_file_cache_expires_at": time.time() + ttl, "data": cached_data}
         try:
             with filepath.open("w", encoding="utf-8") as f:
                 json.dump(entry, f, ensure_ascii=False, default=str)
@@ -177,7 +172,7 @@ class JsonFileCacheService:
                 "cache_dir": str(self.cache_dir),
                 "total_files": len(files),
                 "active_entries": active,
-                "expired_entries": expired
+                "expired_entries": expired,
             }
         except Exception as e:
             return {"status": "error", "backend": "json_file", "error": str(e)}
@@ -256,11 +251,7 @@ class RedisCacheService:
             return None
 
     def set(
-        self,
-        prefix: str,
-        params: Dict[str, Any],
-        data: Dict[str, Any],
-        ttl_type: str = "default"
+        self, prefix: str, params: Dict[str, Any], data: Dict[str, Any], ttl_type: str = "default"
     ) -> bool:
         client = self._get_client()
         if not client:
@@ -275,8 +266,8 @@ class RedisCacheService:
                     "ttl_seconds": ttl,
                     "cache_type": ttl_type,
                     "from_cache": True,
-                    "backend": "redis"
-                }
+                    "backend": "redis",
+                },
             }
             client.setex(key, ttl, json.dumps(cached_data, default=str))
             logger.debug(f"Cache SET for {key} (TTL: {ttl}s)")
@@ -327,10 +318,11 @@ class RedisCacheService:
                 "hits": info.get("keyspace_hits", 0),
                 "misses": info.get("keyspace_misses", 0),
                 "hit_rate": round(
-                    info.get("keyspace_hits", 0) /
-                    max(info.get("keyspace_hits", 0) + info.get("keyspace_misses", 0), 1) * 100,
-                    2
-                )
+                    info.get("keyspace_hits", 0)
+                    / max(info.get("keyspace_hits", 0) + info.get("keyspace_misses", 0), 1)
+                    * 100,
+                    2,
+                ),
             }
         except Exception as e:
             logger.error(f"Cache stats error: {e}")
@@ -361,11 +353,7 @@ class HybridCacheService:
         return self._file.get(prefix, params)
 
     def set(
-        self,
-        prefix: str,
-        params: Dict[str, Any],
-        data: Dict[str, Any],
-        ttl_type: str = "default"
+        self, prefix: str, params: Dict[str, Any], data: Dict[str, Any], ttl_type: str = "default"
     ) -> bool:
         redis_ok = False
         if self._use_redis():
@@ -389,7 +377,7 @@ class HybridCacheService:
         return {
             "redis": redis_stats,
             "json_file": file_stats,
-            "active_backend": "redis" if self._use_redis() else "json_file"
+            "active_backend": "redis" if self._use_redis() else "json_file",
         }
 
     def clear_all(self) -> int:
@@ -415,13 +403,14 @@ def cached_gemini_call(cache_type: str = "gemini_analysis"):
         async def get_country_profile(country: str, lang: str):
             ...
     """
+
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
             cache_params = {
                 "func": func.__name__,
                 "args": str(args),
-                "kwargs": str(sorted(kwargs.items()))
+                "kwargs": str(sorted(kwargs.items())),
             }
             cached = cache_service.get(cache_type, cache_params)
             if cached:
@@ -430,7 +419,9 @@ def cached_gemini_call(cache_type: str = "gemini_analysis"):
             if result and not result.get("error"):
                 cache_service.set(cache_type, cache_params, result, cache_type)
             return result
+
         return wrapper
+
     return decorator
 
 
@@ -445,7 +436,7 @@ def get_data_freshness(cached_at: Optional[str]) -> Dict[str, Any]:
             "from_cache": False,
             "age_seconds": 0,
             "age_human": "Données en direct",
-            "age_human_en": "Live data"
+            "age_human_en": "Live data",
         }
 
     try:
@@ -476,7 +467,7 @@ def get_data_freshness(cached_at: Optional[str]) -> Dict[str, Any]:
             "age_seconds": age_seconds,
             "age_human": age_human,
             "age_human_en": age_human_en,
-            "cached_at": cached_at
+            "cached_at": cached_at,
         }
     except Exception as e:
         logger.error(f"Error calculating freshness: {e}")
@@ -485,5 +476,5 @@ def get_data_freshness(cached_at: Optional[str]) -> Dict[str, Any]:
             "from_cache": False,
             "age_seconds": 0,
             "age_human": "Données en direct",
-            "age_human_en": "Live data"
+            "age_human_en": "Live data",
         }

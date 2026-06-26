@@ -1,8 +1,9 @@
-import sys
 import os
+import sys
+
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from services.tariff_data_collector import TariffDataCollector, get_collector
 
@@ -51,11 +52,22 @@ class TestTariffDataCollector:
         data = self.collector.collect_country_tariffs("CIV")
         line = data["tariff_lines"][0]
         required_fields = [
-            "hs6", "chapter", "description_fr", "description_en",
-            "category", "sensitivity", "dd_rate", "dd_source",
-            "zlecaf_rate", "zlecaf_source", "vat_rate", "other_taxes_rate",
-            "total_import_taxes", "zlecaf_total_taxes", "has_sub_positions",
-            "sub_position_count"
+            "hs6",
+            "chapter",
+            "description_fr",
+            "description_en",
+            "category",
+            "sensitivity",
+            "dd_rate",
+            "dd_source",
+            "zlecaf_rate",
+            "zlecaf_source",
+            "vat_rate",
+            "other_taxes_rate",
+            "total_import_taxes",
+            "zlecaf_total_taxes",
+            "has_sub_positions",
+            "sub_position_count",
         ]
         for field in required_fields:
             assert field in line, f"Missing field: {field}"
@@ -112,7 +124,9 @@ class TestTariffDataCollector:
     def test_dd_rates_reasonable(self):
         data = self.collector.collect_country_tariffs("MAR")
         for line in data["tariff_lines"]:
-            assert 0 <= line["dd_rate"] <= 100, f"DD rate out of range: {line['dd_rate']} for {line['hs6']}"
+            assert (
+                0 <= line["dd_rate"] <= 100
+            ), f"DD rate out of range: {line['dd_rate']} for {line['hs6']}"
             assert 0 <= line["zlecaf_rate"] <= 100
             assert 0 <= line["vat_rate"] <= 50
 
@@ -123,6 +137,7 @@ class TestTariffDataCollector:
 
     def test_save_and_load(self, tmp_path):
         import services.tariff_data_collector as module
+
         original_dir = module.DATA_DIR
         module.DATA_DIR = tmp_path
 
@@ -146,19 +161,23 @@ class TestTariffDataCollector:
 class TestMiddlewares:
     def test_security_headers_import(self):
         from middlewares.security_headers import SecurityHeadersMiddleware
+
         assert SecurityHeadersMiddleware is not None
 
     def test_csrf_import(self):
         from middlewares.csrf_protection import CSRFMiddleware
+
         assert CSRFMiddleware is not None
 
     def test_rate_limiter_import(self):
         from middlewares.rate_limiter import RateLimitMiddleware
+
         assert RateLimitMiddleware is not None
 
     def test_rate_limiter_cleanup(self):
         import time
         from unittest.mock import MagicMock
+
         from middlewares.rate_limiter import RateLimitMiddleware
 
         app = MagicMock()
@@ -167,6 +186,7 @@ class TestMiddlewares:
         limiter.burst_limit = 10
         limiter.exempt_paths = []
         from collections import defaultdict
+
         limiter._buckets = defaultdict(list)
         limiter._last_cleanup = 0
 
