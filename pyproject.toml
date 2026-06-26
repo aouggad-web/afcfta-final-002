@@ -8,7 +8,16 @@
 [tool.black]
 line-length = 100
 target-version = ["py311"]
-extend-exclude = "frontend|node_modules|build"
+# Anchored to directory boundaries so substrings (e.g. backend/scripts/
+# build_production_real.py) are NOT silently skipped. extend-exclude is a regex
+# matched against the leading-slash path, so `/build/` only matches a dir.
+extend-exclude = '''
+/(
+    frontend
+  | node_modules
+  | build
+)/
+'''
 
 [tool.isort]
 profile = "black"

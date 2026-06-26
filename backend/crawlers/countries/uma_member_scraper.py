@@ -905,7 +905,7 @@ def save_country_results(
         json.dump(result, f, ensure_ascii=False, indent=2)
 
     logger.info(f"  Saved {len(positions)} positions → {out_file}")
-    return out_file
+    return str(out_file)
 
 
 # ---------------------------------------------------------------------------
