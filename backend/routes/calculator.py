@@ -4,7 +4,7 @@ Extracted from server.py for better maintainability
 """
 
 from fastapi import APIRouter, HTTPException
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import logging
 import requests
 
@@ -26,6 +26,8 @@ from etl.country_hs6_detailed import (
 )
 from services.tariff_data_service import tariff_service
 from services.crawled_data_service import crawled_service
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Calculator"])
 

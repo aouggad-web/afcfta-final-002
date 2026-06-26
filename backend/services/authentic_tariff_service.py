@@ -20,7 +20,6 @@ def load_crawled_position_index(country_iso3: str) -> dict:
     Returns {hs_code_10digits: entry_dict} for fast per-position lookup.
     Cached in memory after first load.
     """
-    global _crawled_index_cache
     country_iso3 = _validate_iso3(country_iso3)
     if country_iso3 in _crawled_index_cache:
         return _crawled_index_cache[country_iso3]
@@ -406,7 +405,6 @@ _COUNTRY_NAMES = {
 
 
 def load_country_tariffs(country_iso3):
-    global _tariff_cache
     country_iso3 = _validate_iso3(country_iso3)
     if country_iso3 in _tariff_cache:
         return _tariff_cache[country_iso3]
@@ -425,7 +423,6 @@ def load_country_tariffs(country_iso3):
 
 def load_nomenclature_map(country_iso3):
     """Load nomenclature map for countries with extended sub-positions (like DZA)."""
-    global _nomenclature_cache
     country_iso3 = _validate_iso3(country_iso3)
     if country_iso3 in _nomenclature_cache:
         return _nomenclature_cache[country_iso3]
