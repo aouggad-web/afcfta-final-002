@@ -151,8 +151,8 @@ export default function RegionalAnalytics({ language = 'fr' }) {
             <span>{currentBloc?.emoji}</span>
             <span>{currentBloc?.label}</span>
             {!loading && !error && (
-              <Badge className="ml-2 bg-green-100 text-green-700 border-0 text-xs">
-                {language === 'fr' ? 'En direct' : 'Live'}
+              <Badge className="ml-2 bg-slate-100 text-slate-600 border-0 text-xs">
+                {language === 'fr' ? 'Données de référence' : 'Reference data'}
               </Badge>
             )}
           </CardTitle>
