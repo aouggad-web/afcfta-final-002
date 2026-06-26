@@ -12,9 +12,9 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT_DIR = Path(os.environ.get('APP_ROOT', Path(__file__).parent))
-INPUT_FILE = ROOT_DIR / 'ports_africains.json'
-OUTPUT_FILE = ROOT_DIR / 'ports_africains_enhanced_maritime_logistics.json'
+ROOT_DIR = Path(os.environ.get("APP_ROOT", Path(__file__).parent))
+INPUT_FILE = ROOT_DIR / "ports_africains.json"
+OUTPUT_FILE = ROOT_DIR / "ports_africains_enhanced_maritime_logistics.json"
 
 # ---------------------------------------------------------------------------
 # Comprehensive maritime agent database
@@ -33,7 +33,7 @@ AGENTS_DATABASE = {
                 "Logistics & services",
                 "Cold chain",
                 "Customs brokerage",
-                "Inland transport"
+                "Inland transport",
             ],
             "local_offices": {
                 "DZA": {
@@ -44,7 +44,7 @@ AGENTS_DATABASE = {
                         "manager": "Directeur Commercial Algérie",
                         "services": ["FCL", "LCL", "Inland transport", "Customs"],
                         "operating_hours": "Dim-Jeu 08h-17h",
-                        "certifications": ["ISO 9001", "AEO"]
+                        "certifications": ["ISO 9001", "AEO"],
                     }
                 },
                 "MAR": {
@@ -55,7 +55,7 @@ AGENTS_DATABASE = {
                         "manager": "Country Manager Morocco",
                         "services": ["FCL", "LCL", "Warehousing", "Customs", "Cold chain"],
                         "operating_hours": "Lun-Ven 08h30-17h30",
-                        "certifications": ["ISO 9001", "ISO 14001", "AEO"]
+                        "certifications": ["ISO 9001", "ISO 14001", "AEO"],
                     }
                 },
                 "EGY": {
@@ -66,7 +66,7 @@ AGENTS_DATABASE = {
                         "manager": "Egypt Country Manager",
                         "services": ["FCL", "LCL", "Reefer", "Project cargo", "Customs"],
                         "operating_hours": "Sun-Thu 08h-17h",
-                        "certifications": ["ISO 9001", "AEO", "TAPA"]
+                        "certifications": ["ISO 9001", "AEO", "TAPA"],
                     }
                 },
                 "NGA": {
@@ -77,7 +77,7 @@ AGENTS_DATABASE = {
                         "manager": "Nigeria MD",
                         "services": ["FCL", "LCL", "Inland depot", "Customs brokerage"],
                         "operating_hours": "Mon-Fri 08h-17h",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
                 },
                 "ZAF": {
@@ -88,7 +88,7 @@ AGENTS_DATABASE = {
                         "manager": "SA Country Manager",
                         "services": ["FCL", "LCL", "Warehousing", "Distribution", "Cold chain"],
                         "operating_hours": "Mon-Fri 08h-17h",
-                        "certifications": ["ISO 9001", "ISO 14001", "AEO", "C-TPAT"]
+                        "certifications": ["ISO 9001", "ISO 14001", "AEO", "C-TPAT"],
                     }
                 },
                 "KEN": {
@@ -99,10 +99,10 @@ AGENTS_DATABASE = {
                         "manager": "Kenya Operations Manager",
                         "services": ["FCL", "LCL", "Inland transport", "Customs"],
                         "operating_hours": "Mon-Fri 08h-17h",
-                        "certifications": ["ISO 9001", "AEO"]
+                        "certifications": ["ISO 9001", "AEO"],
                     }
-                }
-            }
+                },
+            },
         },
         "msc": {
             "company_name": "Mediterranean Shipping Company S.A.",
@@ -115,7 +115,7 @@ AGENTS_DATABASE = {
                 "Reefer cargo",
                 "Hazardous cargo",
                 "Project cargo",
-                "Port terminals"
+                "Port terminals",
             ],
             "local_offices": {
                 "DZA": {
@@ -126,7 +126,7 @@ AGENTS_DATABASE = {
                         "manager": "MSC Algeria Manager",
                         "services": ["FCL", "LCL", "Reefer", "Hazardous cargo"],
                         "operating_hours": "Dim-Jeu 08h-17h",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
                 },
                 "MAR": {
@@ -137,7 +137,7 @@ AGENTS_DATABASE = {
                         "manager": "MSC Morocco Director",
                         "services": ["FCL", "LCL", "Reefer", "Project cargo", "Breakbulk"],
                         "operating_hours": "Lun-Ven 08h30-17h30",
-                        "certifications": ["ISO 9001", "ISO 14001"]
+                        "certifications": ["ISO 9001", "ISO 14001"],
                     }
                 },
                 "EGY": {
@@ -148,7 +148,7 @@ AGENTS_DATABASE = {
                         "manager": "MSC Egypt GM",
                         "services": ["FCL", "LCL", "Reefer", "Hazardous", "Ro-Ro"],
                         "operating_hours": "Sun-Thu 08h-17h",
-                        "certifications": ["ISO 9001", "ISPS"]
+                        "certifications": ["ISO 9001", "ISPS"],
                     }
                 },
                 "NGA": {
@@ -159,10 +159,10 @@ AGENTS_DATABASE = {
                         "manager": "MSC Nigeria MD",
                         "services": ["FCL", "LCL", "Reefer", "Project cargo"],
                         "operating_hours": "Mon-Fri 08h-17h",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
-                }
-            }
+                },
+            },
         },
         "cma_cgm": {
             "company_name": "CMA CGM Group",
@@ -175,7 +175,7 @@ AGENTS_DATABASE = {
                 "Logistics solutions",
                 "Multimodal transport",
                 "E-commerce logistics",
-                "Air freight"
+                "Air freight",
             ],
             "local_offices": {
                 "DZA": {
@@ -186,7 +186,7 @@ AGENTS_DATABASE = {
                         "manager": "Directeur Général CMA CGM Algérie",
                         "services": ["FCL", "LCL", "MEDGULF service", "Inland transport"],
                         "operating_hours": "Dim-Jeu 08h-17h",
-                        "certifications": ["ISO 9001", "AEO"]
+                        "certifications": ["ISO 9001", "AEO"],
                     }
                 },
                 "MAR": {
@@ -197,7 +197,7 @@ AGENTS_DATABASE = {
                         "manager": "Directeur Pays Maroc",
                         "services": ["FCL", "LCL", "Hub Tanger Med", "Customs", "Logistics"],
                         "operating_hours": "Lun-Ven 08h30-17h30",
-                        "certifications": ["ISO 9001", "ISO 14001", "AEO"]
+                        "certifications": ["ISO 9001", "ISO 14001", "AEO"],
                     }
                 },
                 "EGY": {
@@ -208,7 +208,7 @@ AGENTS_DATABASE = {
                         "manager": "CMA CGM Egypt Manager",
                         "services": ["FCL", "LCL", "Reefer", "Project cargo", "MEDGULF"],
                         "operating_hours": "Sun-Thu 08h-17h",
-                        "certifications": ["ISO 9001", "AEO"]
+                        "certifications": ["ISO 9001", "AEO"],
                     }
                 },
                 "NGA": {
@@ -219,7 +219,7 @@ AGENTS_DATABASE = {
                         "manager": "CMA CGM Nigeria MD",
                         "services": ["FCL", "LCL", "AFRICA Express", "Customs"],
                         "operating_hours": "Mon-Fri 08h-17h",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
                 },
                 "ZAF": {
@@ -230,10 +230,10 @@ AGENTS_DATABASE = {
                         "manager": "CMA CGM South Africa MD",
                         "services": ["FCL", "LCL", "Southern Africa express", "Cold chain"],
                         "operating_hours": "Mon-Fri 08h-17h",
-                        "certifications": ["ISO 9001", "AEO"]
+                        "certifications": ["ISO 9001", "AEO"],
                     }
-                }
-            }
+                },
+            },
         },
         "hapag_lloyd": {
             "company_name": "Hapag-Lloyd AG",
@@ -246,7 +246,7 @@ AGENTS_DATABASE = {
                 "Specialized reefer",
                 "Dangerous goods",
                 "Out-of-gauge cargo",
-                "Tank containers"
+                "Tank containers",
             ],
             "local_offices": {
                 "MAR": {
@@ -257,7 +257,7 @@ AGENTS_DATABASE = {
                         "manager": "Morocco Agency Manager",
                         "services": ["FCL", "LCL", "Reefer", "Dangerous goods", "OOG"],
                         "operating_hours": "Lun-Ven 08h30-17h30",
-                        "certifications": ["ISO 9001", "ISO 14001"]
+                        "certifications": ["ISO 9001", "ISO 14001"],
                     }
                 },
                 "EGY": {
@@ -268,7 +268,7 @@ AGENTS_DATABASE = {
                         "manager": "Egypt Agency Director",
                         "services": ["FCL", "LCL", "Reefer", "Project cargo"],
                         "operating_hours": "Sun-Thu 08h-17h",
-                        "certifications": ["ISO 9001", "AEO"]
+                        "certifications": ["ISO 9001", "AEO"],
                     }
                 },
                 "NGA": {
@@ -279,10 +279,10 @@ AGENTS_DATABASE = {
                         "manager": "Nigeria Operations Manager",
                         "services": ["FCL", "LCL", "Reefer"],
                         "operating_hours": "Mon-Fri 08h-17h",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
-                }
-            }
+                },
+            },
         },
         "cosco": {
             "company_name": "COSCO Shipping Lines Co., Ltd.",
@@ -295,7 +295,7 @@ AGENTS_DATABASE = {
                 "Asia-Africa routes",
                 "Bulk cargo",
                 "Tanker services",
-                "Port investment"
+                "Port investment",
             ],
             "local_offices": {
                 "DZA": {
@@ -306,7 +306,7 @@ AGENTS_DATABASE = {
                         "manager": "COSCO Algeria Representative",
                         "services": ["FCL", "LCL", "Asia-North Africa routes"],
                         "operating_hours": "Dim-Jeu 08h-17h",
-                        "certifications": ["ISO 9001", "ISO 14001"]
+                        "certifications": ["ISO 9001", "ISO 14001"],
                     }
                 },
                 "EGY": {
@@ -317,7 +317,7 @@ AGENTS_DATABASE = {
                         "manager": "COSCO Egypt Manager",
                         "services": ["FCL", "LCL", "Asia-Med routes", "Suez transit"],
                         "operating_hours": "Sun-Thu 08h-17h",
-                        "certifications": ["ISO 9001", "AEO"]
+                        "certifications": ["ISO 9001", "AEO"],
                     }
                 },
                 "ZAF": {
@@ -328,10 +328,10 @@ AGENTS_DATABASE = {
                         "manager": "Southern Africa GM",
                         "services": ["FCL", "LCL", "Asia-South Africa express"],
                         "operating_hours": "Mon-Fri 08h-17h",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
-                }
-            }
+                },
+            },
         },
         "one": {
             "company_name": "Ocean Network Express Pte. Ltd.",
@@ -344,7 +344,7 @@ AGENTS_DATABASE = {
                 "Digital booking platform",
                 "Reefer services",
                 "Dangerous goods",
-                "Supply chain visibility"
+                "Supply chain visibility",
             ],
             "local_offices": {
                 "DZA": {
@@ -355,7 +355,7 @@ AGENTS_DATABASE = {
                         "manager": "ONE Algeria Agent",
                         "services": ["FCL", "LCL", "Digital services"],
                         "operating_hours": "Dim-Jeu 08h-17h",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
                 },
                 "MAR": {
@@ -366,7 +366,7 @@ AGENTS_DATABASE = {
                         "manager": "ONE Morocco Representative",
                         "services": ["FCL", "LCL", "Digital services", "Reefer"],
                         "operating_hours": "Lun-Ven 08h30-17h30",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
                 },
                 "NGA": {
@@ -377,11 +377,11 @@ AGENTS_DATABASE = {
                         "manager": "ONE Nigeria Agent",
                         "services": ["FCL", "LCL", "Digital booking"],
                         "operating_hours": "Mon-Fri 08h-17h",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
-                }
-            }
-        }
+                },
+            },
+        },
     },
     "regional_specialists": {
         "bollore_africa_logistics": {
@@ -397,7 +397,7 @@ AGENTS_DATABASE = {
                 "Multimodal logistics",
                 "Freight forwarding",
                 "Warehousing",
-                "Customs brokerage"
+                "Customs brokerage",
             ],
             "local_offices": {
                 "CMR": {
@@ -406,9 +406,14 @@ AGENTS_DATABASE = {
                         "phone": "+237 233 42 00 00",
                         "email": "cameroon@agl-africa.com",
                         "manager": "DG Cameroun",
-                        "services": ["Stevedoring", "Freight forwarding", "Customs", "Rail Transcam"],
+                        "services": [
+                            "Stevedoring",
+                            "Freight forwarding",
+                            "Customs",
+                            "Rail Transcam",
+                        ],
                         "operating_hours": "Lun-Ven 07h30-17h30",
-                        "certifications": ["ISO 9001", "ISO 14001", "OHSAS 18001"]
+                        "certifications": ["ISO 9001", "ISO 14001", "OHSAS 18001"],
                     }
                 },
                 "CIV": {
@@ -417,9 +422,14 @@ AGENTS_DATABASE = {
                         "phone": "+225 27 21 75 44 00",
                         "email": "cotedivoire@agl-africa.com",
                         "manager": "DG Côte d'Ivoire",
-                        "services": ["Stevedoring", "Terminal opérations", "Freight forwarding", "Customs"],
+                        "services": [
+                            "Stevedoring",
+                            "Terminal opérations",
+                            "Freight forwarding",
+                            "Customs",
+                        ],
                         "operating_hours": "Lun-Sam 07h-18h",
-                        "certifications": ["ISO 9001", "ISO 14001"]
+                        "certifications": ["ISO 9001", "ISO 14001"],
                     }
                 },
                 "SEN": {
@@ -430,7 +440,7 @@ AGENTS_DATABASE = {
                         "manager": "Directeur Sénégal",
                         "services": ["Stevedoring", "Freight forwarding", "Customs", "Warehousing"],
                         "operating_hours": "Lun-Sam 07h-18h",
-                        "certifications": ["ISO 9001"]
+                        "certifications": ["ISO 9001"],
                     }
                 },
                 "KEN": {
@@ -441,7 +451,7 @@ AGENTS_DATABASE = {
                         "manager": "Kenya Country Manager",
                         "services": ["Stevedoring", "Inland transport", "Customs", "Warehousing"],
                         "operating_hours": "Mon-Fri 07h30-17h30",
-                        "certifications": ["ISO 9001", "AEO"]
+                        "certifications": ["ISO 9001", "AEO"],
                     }
                 },
                 "NGA": {
@@ -450,12 +460,17 @@ AGENTS_DATABASE = {
                         "phone": "+234 1 545 0000",
                         "email": "nigeria@agl-africa.com",
                         "manager": "Nigeria GM",
-                        "services": ["Freight forwarding", "Customs brokerage", "Warehousing", "Inland transport"],
+                        "services": [
+                            "Freight forwarding",
+                            "Customs brokerage",
+                            "Warehousing",
+                            "Inland transport",
+                        ],
                         "operating_hours": "Mon-Fri 07h30-17h30",
-                        "certifications": ["ISO 9001", "CPDM"]
+                        "certifications": ["ISO 9001", "CPDM"],
                     }
-                }
-            }
+                },
+            },
         },
         "apm_terminals": {
             "company_name": "APM Terminals B.V.",
@@ -468,7 +483,7 @@ AGENTS_DATABASE = {
                 "Port development",
                 "Inland container depots",
                 "Gate technology",
-                "Digital port services"
+                "Digital port services",
             ],
             "local_offices": {
                 "MAR": {
@@ -479,7 +494,7 @@ AGENTS_DATABASE = {
                         "manager": "Terminal Director Tanger Med",
                         "services": ["Container terminal", "Transhipment hub", "Gate management"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISO 14001", "ISPS", "AEO"]
+                        "certifications": ["ISO 9001", "ISO 14001", "ISPS", "AEO"],
                     }
                 },
                 "NGA": {
@@ -490,7 +505,7 @@ AGENTS_DATABASE = {
                         "manager": "Apapa Terminal MD",
                         "services": ["Container terminal", "CFS operations", "Inland depot"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISPS"]
+                        "certifications": ["ISO 9001", "ISPS"],
                     }
                 },
                 "GHA": {
@@ -501,7 +516,7 @@ AGENTS_DATABASE = {
                         "manager": "Tema Terminal Director",
                         "services": ["Container terminal", "Reefer handling", "Empty depot"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISO 14001", "ISPS"]
+                        "certifications": ["ISO 9001", "ISO 14001", "ISPS"],
                     }
                 },
                 "CIV": {
@@ -512,10 +527,10 @@ AGENTS_DATABASE = {
                         "manager": "Abidjan Terminal Director",
                         "services": ["Container terminal", "Port operations", "Reefer"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISPS"]
+                        "certifications": ["ISO 9001", "ISPS"],
                     }
-                }
-            }
+                },
+            },
         },
         "dp_world": {
             "company_name": "DP World",
@@ -529,7 +544,7 @@ AGENTS_DATABASE = {
                 "Free zones",
                 "Inland logistics",
                 "Supply chain solutions",
-                "Cold chain"
+                "Cold chain",
             ],
             "local_offices": {
                 "DZA": {
@@ -540,7 +555,7 @@ AGENTS_DATABASE = {
                         "manager": "Algeria Operations Manager",
                         "services": ["Port operations", "Container handling", "Logistics park"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISO 14001", "ISPS", "AEO"]
+                        "certifications": ["ISO 9001", "ISO 14001", "ISPS", "AEO"],
                     }
                 },
                 "SEN": {
@@ -551,7 +566,7 @@ AGENTS_DATABASE = {
                         "manager": "Senegal Terminal Director",
                         "services": ["Container terminal", "Ro-Ro", "General cargo"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISPS"]
+                        "certifications": ["ISO 9001", "ISPS"],
                     }
                 },
                 "MOZ": {
@@ -562,11 +577,11 @@ AGENTS_DATABASE = {
                         "manager": "Maputo Port Director",
                         "services": ["Bulk cargo", "Container operations", "Ship repair"],
                         "operating_hours": "24h/24 - 7j/7",
-                        "certifications": ["ISO 9001", "ISPS"]
+                        "certifications": ["ISO 9001", "ISPS"],
                     }
-                }
-            }
-        }
+                },
+            },
+        },
     },
     "local_agents": {
         "marsa_maroc": {
@@ -580,50 +595,50 @@ AGENTS_DATABASE = {
                 "Container terminal operations",
                 "Bulk cargo handling",
                 "Ro-Ro operations",
-                "Ship berthing"
+                "Ship berthing",
             ],
             "departments": {
                 "commercial": {
                     "phone": "+212 522 23 08 10",
                     "email": "commercial@marsamaroc.co.ma",
-                    "head": "Directeur Commercial"
+                    "head": "Directeur Commercial",
                 },
                 "operations": {
                     "phone": "+212 522 23 08 20",
                     "email": "operations@marsamaroc.co.ma",
-                    "head": "Directeur des Opérations"
+                    "head": "Directeur des Opérations",
                 },
                 "customs_liaison": {
                     "phone": "+212 522 23 08 30",
                     "email": "douane@marsamaroc.co.ma",
-                    "head": "Chef de Service Douanes"
+                    "head": "Chef de Service Douanes",
                 },
                 "security": {
                     "phone": "+212 522 23 08 40",
                     "email": "securite@marsamaroc.co.ma",
-                    "head": "RSSI / Responsable ISPS"
-                }
+                    "head": "RSSI / Responsable ISPS",
+                },
             },
             "terminal_locations": {
                 "Casablanca": {
                     "address": "Port de Casablanca, Casablanca, Maroc",
                     "phone": "+212 522 23 08 00",
                     "throughput_teu": 950000,
-                    "certifications": ["ISO 9001", "ISO 14001", "ISPS", "AEO"]
+                    "certifications": ["ISO 9001", "ISO 14001", "ISPS", "AEO"],
                 },
                 "Tanger_Ville": {
                     "address": "Port de Tanger Ville, Tanger, Maroc",
                     "phone": "+212 539 32 00 00",
                     "throughput_teu": 280000,
-                    "certifications": ["ISO 9001", "ISPS"]
+                    "certifications": ["ISO 9001", "ISPS"],
                 },
                 "Agadir": {
                     "address": "Port d'Agadir, Agadir, Maroc",
                     "phone": "+212 528 82 64 00",
                     "throughput_teu": 180000,
-                    "certifications": ["ISO 9001", "ISPS"]
-                }
-            }
+                    "certifications": ["ISO 9001", "ISPS"],
+                },
+            },
         },
         "algerie_ferries": {
             "company_name": "Algérie Ferries (ENTMV)",
@@ -635,25 +650,25 @@ AGENTS_DATABASE = {
                 "Passenger ferry services",
                 "Ro-Ro freight",
                 "Vehicle transport",
-                "Mediterranean crossings"
+                "Mediterranean crossings",
             ],
             "departments": {
                 "fret_commercial": {
                     "phone": "+213 21 42 24 50",
                     "email": "fret@algerieferries.dz",
-                    "head": "Directeur Fret"
+                    "head": "Directeur Fret",
                 },
                 "reservations": {
                     "phone": "+213 21 42 24 30",
                     "email": "reservations@algerieferries.dz",
-                    "head": "Responsable Réservations"
+                    "head": "Responsable Réservations",
                 },
                 "operations": {
                     "phone": "+213 21 42 24 40",
                     "email": "ops@algerieferries.dz",
-                    "head": "Chef des Opérations Maritimes"
-                }
-            }
+                    "head": "Chef des Opérations Maritimes",
+                },
+            },
         },
         "cnan_group": {
             "company_name": "CNAN Group SPA",
@@ -666,38 +681,43 @@ AGENTS_DATABASE = {
                 "Freight forwarding",
                 "Ship agency",
                 "Port services",
-                "Customs clearance"
+                "Customs clearance",
             ],
             "departments": {
                 "commercial": {
                     "phone": "+213 21 63 20 30",
                     "email": "commercial@cnan.dz",
-                    "head": "Directeur Commercial"
+                    "head": "Directeur Commercial",
                 },
                 "agency": {
                     "phone": "+213 21 63 20 40",
                     "email": "agency@cnan.dz",
-                    "head": "Chef de Service Agence"
+                    "head": "Chef de Service Agence",
                 },
                 "operations": {
                     "phone": "+213 21 63 20 50",
                     "email": "operations@cnan.dz",
-                    "head": "Directeur des Opérations"
-                }
-            }
-        }
+                    "head": "Directeur des Opérations",
+                },
+            },
+        },
     },
     "service_providers": {
         "customs_brokers": [
             {
                 "company_name": "Transitaires Associés d'Afrique (TAA)",
                 "countries": ["MAR", "SEN", "CIV", "CMR", "GHA"],
-                "services": ["Import declarations", "Export declarations", "Transit", "Bond warehouses"],
+                "services": [
+                    "Import declarations",
+                    "Export declarations",
+                    "Transit",
+                    "Bond warehouses",
+                ],
                 "headquarters": "Casablanca, Maroc",
                 "contact": "+212 522 40 10 00",
                 "email": "taa@transitaires-afrique.com",
                 "website": "https://www.transitaires-afrique.com",
-                "certifications": ["AEO", "CNDP"]
+                "certifications": ["AEO", "CNDP"],
             },
             {
                 "company_name": "Geodis Africa Customs",
@@ -707,88 +727,126 @@ AGENTS_DATABASE = {
                 "contact": "+27 11 928 0000",
                 "email": "africa.customs@geodis.com",
                 "website": "https://www.geodis.com/africa",
-                "certifications": ["AEO", "ISO 9001", "C-TPAT"]
-            }
+                "certifications": ["AEO", "ISO 9001", "C-TPAT"],
+            },
         ],
         "freight_forwarders": [
             {
                 "company_name": "Kuehne+Nagel Africa",
                 "countries": ["ZAF", "KEN", "NGA", "EGY", "MAR", "ETH"],
-                "services": ["Sea freight", "Air freight", "Contract logistics", "Customs", "Insurance"],
+                "services": [
+                    "Sea freight",
+                    "Air freight",
+                    "Contract logistics",
+                    "Customs",
+                    "Insurance",
+                ],
                 "headquarters": "Johannesburg, Afrique du Sud",
                 "contact": "+27 11 570 5000",
                 "email": "africa.sea@kuehne-nagel.com",
                 "website": "https://home.kuehne-nagel.com",
-                "certifications": ["ISO 9001", "ISO 14001", "AEO", "TAPA"]
+                "certifications": ["ISO 9001", "ISO 14001", "AEO", "TAPA"],
             },
             {
                 "company_name": "DB Schenker Africa",
                 "countries": ["ZAF", "NGA", "EGY", "KEN", "GHA", "ETH"],
-                "services": ["Sea freight", "Air freight", "Overland", "Contract logistics", "Customs"],
+                "services": [
+                    "Sea freight",
+                    "Air freight",
+                    "Overland",
+                    "Contract logistics",
+                    "Customs",
+                ],
                 "headquarters": "Johannesburg, Afrique du Sud",
                 "contact": "+27 11 978 5000",
                 "email": "schenker.africa@dbschenker.com",
                 "website": "https://www.dbschenker.com/africa",
-                "certifications": ["ISO 9001", "ISO 14001", "AEO", "GDP"]
+                "certifications": ["ISO 9001", "ISO 14001", "AEO", "GDP"],
             },
             {
                 "company_name": "Panalpina (DSV) Africa",
                 "countries": ["ZAF", "KEN", "NGA", "EGY", "MAR", "CIV", "GHA"],
-                "services": ["Sea freight", "Air freight", "Project logistics", "Customs", "Supply chain"],
+                "services": [
+                    "Sea freight",
+                    "Air freight",
+                    "Project logistics",
+                    "Customs",
+                    "Supply chain",
+                ],
                 "headquarters": "Johannesburg, Afrique du Sud",
                 "contact": "+27 11 570 7000",
                 "email": "africa@dsv.com",
                 "website": "https://www.dsv.com/africa",
-                "certifications": ["ISO 9001", "ISO 14001", "AEO", "TAPA"]
-            }
+                "certifications": ["ISO 9001", "ISO 14001", "AEO", "TAPA"],
+            },
         ],
         "trucking_companies": [
             {
                 "company_name": "Trans-Afrique Transport (TAT)",
                 "countries": ["MAR", "DZA", "TUN", "SEN", "CIV", "CMR"],
-                "services": ["Cross-border haulage", "Port delivery", "Tanker transport", "Refrigerated transport"],
+                "services": [
+                    "Cross-border haulage",
+                    "Port delivery",
+                    "Tanker transport",
+                    "Refrigerated transport",
+                ],
                 "headquarters": "Casablanca, Maroc",
                 "contact": "+212 522 35 45 00",
                 "email": "contact@trans-afrique.ma",
                 "website": "https://www.trans-afrique.ma",
                 "fleet_size": 450,
-                "certifications": ["ISO 9001", "ADR"]
+                "certifications": ["ISO 9001", "ADR"],
             },
             {
                 "company_name": "East African Road Transport (EART)",
                 "countries": ["KEN", "TZA", "UGA", "RWA", "BDI", "ETH"],
-                "services": ["Cross-border haulage", "Port collection", "Inland delivery", "Tanker"],
+                "services": [
+                    "Cross-border haulage",
+                    "Port collection",
+                    "Inland delivery",
+                    "Tanker",
+                ],
                 "headquarters": "Nairobi, Kenya",
                 "contact": "+254 20 222 0000",
                 "email": "info@eart.co.ke",
                 "website": "https://www.eart.co.ke",
                 "fleet_size": 380,
-                "certifications": ["ISO 9001", "ADR"]
-            }
+                "certifications": ["ISO 9001", "ADR"],
+            },
         ],
         "warehouse_operators": [
             {
                 "company_name": "Agility Logistics Africa",
                 "countries": ["ZAF", "KEN", "NGA", "EGY", "GHA", "ETH"],
-                "services": ["Bonded warehousing", "Cold storage", "Distribution", "Value-added services"],
+                "services": [
+                    "Bonded warehousing",
+                    "Cold storage",
+                    "Distribution",
+                    "Value-added services",
+                ],
                 "headquarters": "Nairobi, Kenya",
                 "contact": "+254 20 444 0000",
                 "email": "africa@agility.com",
                 "website": "https://www.agility.com/africa",
-                "certifications": ["ISO 9001", "ISO 22000", "GDP", "HACCP"]
+                "certifications": ["ISO 9001", "ISO 22000", "GDP", "HACCP"],
             },
             {
                 "company_name": "Imperial Logistics Africa",
                 "countries": ["ZAF", "ZWE", "ZMB", "MOZ", "BWA", "NAM"],
-                "services": ["Warehousing", "Distribution", "Tanker transport", "Healthcare logistics"],
+                "services": [
+                    "Warehousing",
+                    "Distribution",
+                    "Tanker transport",
+                    "Healthcare logistics",
+                ],
                 "headquarters": "Johannesburg, Afrique du Sud",
                 "contact": "+27 11 961 4000",
                 "email": "info@imperiallogistics.com",
                 "website": "https://www.imperiallogistics.com",
-                "certifications": ["ISO 9001", "ISO 14001", "GDP", "AEO"]
-            }
-        ]
-    }
+                "certifications": ["ISO 9001", "ISO 14001", "GDP", "AEO"],
+            },
+        ],
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -799,34 +857,35 @@ PORT_AUTHORITY_DEPARTMENTS = {
     "port_captain": {
         "department": "Capitainerie",
         "responsibilities": ["Vessel traffic control", "Berthing allocation", "Safety at sea"],
-        "24h_emergency": True
+        "24h_emergency": True,
     },
     "customs_office": {
         "department": "Douanes Portuaires",
         "responsibilities": ["Import/export declarations", "Goods inspection", "Duty collection"],
-        "24h_emergency": False
+        "24h_emergency": False,
     },
     "commercial_department": {
         "department": "Direction Commerciale",
         "responsibilities": ["Tariff negotiation", "Customer relations", "Business development"],
-        "24h_emergency": False
+        "24h_emergency": False,
     },
     "security_department": {
         "department": "Sûreté Portuaire (ISPS)",
         "responsibilities": ["Port security", "ISPS compliance", "Access control"],
-        "24h_emergency": True
+        "24h_emergency": True,
     },
     "environment_department": {
         "department": "Environnement et Qualité",
         "responsibilities": ["Environmental compliance", "ISO certification", "Waste management"],
-        "24h_emergency": False
-    }
+        "24h_emergency": False,
+    },
 }
 
 
 # ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
+
 
 def build_enhanced_agent(original_agent: dict) -> dict:
     """Merge original agent entry with enriched contact template fields."""
@@ -849,7 +908,7 @@ def enrich_port_authority(port_authority: dict) -> dict:
             dept_key: {
                 **dept_info,
                 "contact_phone": authority.get("contact", "N/A"),
-                "contact_email": authority.get("email", "N/A")
+                "contact_email": authority.get("email", "N/A"),
             }
             for dept_key, dept_info in PORT_AUTHORITY_DEPARTMENTS.items()
         }
@@ -872,8 +931,12 @@ def enhance_port(port: dict) -> dict:
     enhanced["logistics_network"] = {
         "global_carriers_present": _carriers_for_country(country_iso),
         "regional_specialists_present": _specialists_for_country(country_iso),
-        "service_providers_available": ["Customs brokers", "Freight forwarders",
-                                        "Trucking companies", "Warehouse operators"]
+        "service_providers_available": [
+            "Customs brokers",
+            "Freight forwarders",
+            "Trucking companies",
+            "Warehouse operators",
+        ],
     }
 
     return enhanced
@@ -899,6 +962,7 @@ def _specialists_for_country(iso: str) -> list:
 # Main
 # ---------------------------------------------------------------------------
 
+
 def main():
     with open(INPUT_FILE, encoding="utf-8") as fh:
         original_ports = json.load(fh)
@@ -913,7 +977,7 @@ def main():
                 "Official company websites",
                 "Industry directories (FIATA, BIMCO, IAPH)",
                 "Port authority annual reports 2024",
-                "African Development Bank logistics data"
+                "African Development Bank logistics data",
             ],
             "coverage": {
                 "total_enhanced": len(enhanced_ports),
@@ -923,12 +987,12 @@ def main():
                     "Local agent enhanced contact information",
                     "Port authority departmental contacts",
                     "Service provider network database",
-                    "Logistics network cross-reference per port"
-                ]
-            }
+                    "Logistics network cross-reference per port",
+                ],
+            },
         },
         "agents_database": AGENTS_DATABASE,
-        "enhanced_locations": enhanced_ports
+        "enhanced_locations": enhanced_ports,
     }
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as fh:

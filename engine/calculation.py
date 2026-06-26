@@ -17,24 +17,28 @@ Exemple Algérie (séquence réelle, Circ. 419 DGD) :
 """
 
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict
+from typing import Dict, List, Optional
 
 from schemas.canonical_model import (
-    CanonicalTariffLine, RateType, DutyBasis, DataStatus,
     LEGAL_DISCLAIMER_FR,
+    CanonicalTariffLine,
+    DataStatus,
+    DutyBasis,
+    RateType,
 )
 
 
 @dataclass
 class MeasureResult:
     """Résultat de calcul pour une mesure"""
+
     code: str
     name_fr: str
     rate_applied_pct: Optional[float]
     basis_label: str
     basis_amount: float
     amount: float
-    regime: str                      # "NPF" ou "ZLECAF"
+    regime: str  # "NPF" ou "ZLECAF"
     legal_reference: Optional[str] = None
     note: Optional[str] = None
 
@@ -42,6 +46,7 @@ class MeasureResult:
 @dataclass
 class CalculationResult:
     """Décomposition complète du calcul"""
+
     country_iso3: str
     national_code: str
     cif_value: float
@@ -123,12 +128,16 @@ def compute_duties(
                 result.warnings.append(f"{m.code}: droit spécifique mais quantité absente")
         else:  # OTHER
             basis_amount = cif_value
-            basis_label = getattr(m, "basis_note", None) or "Assiette non spécifiée (CAF par défaut)"
+            basis_label = (
+                getattr(m, "basis_note", None) or "Assiette non spécifiée (CAF par défaut)"
+            )
             result.warnings.append(f"{m.code}: assiette OTHER — calcul indicatif sur CAF")
 
         # --- Montant ---
         amount = 0.0
-        if rate_type == RateType.EXEMPT or (rate is not None and rate == 0 and rate_type == RateType.AD_VALOREM):
+        if rate_type == RateType.EXEMPT or (
+            rate is not None and rate == 0 and rate_type == RateType.AD_VALOREM
+        ):
             amount = 0.0
         if rate_type in (RateType.AD_VALOREM, RateType.MIXED) and rate:
             amount += basis_amount * rate / 100.0
@@ -136,24 +145,28 @@ def compute_duties(
             spec = getattr(m, "specific_amount", None)
             if spec is not None:
                 if quantity is None:
-                    result.warnings.append(f"{m.code}: montant spécifique ignoré (quantité absente)")
+                    result.warnings.append(
+                        f"{m.code}: montant spécifique ignoré (quantité absente)"
+                    )
                 else:
                     amount += spec * quantity
 
         amount = round(amount, 2)
         computed[m.code] = amount
 
-        result.lines.append(MeasureResult(
-            code=m.code,
-            name_fr=m.name_fr,
-            rate_applied_pct=rate,
-            basis_label=basis_label,
-            basis_amount=round(basis_amount, 2),
-            amount=amount,
-            regime="ZLECAF" if note else "NPF",
-            legal_reference=getattr(m, "legal_reference", None),
-            note=note,
-        ))
+        result.lines.append(
+            MeasureResult(
+                code=m.code,
+                name_fr=m.name_fr,
+                rate_applied_pct=rate,
+                basis_label=basis_label,
+                basis_amount=round(basis_amount, 2),
+                amount=amount,
+                regime="ZLECAF" if note else "NPF",
+                legal_reference=getattr(m, "legal_reference", None),
+                note=note,
+            )
+        )
 
     result.total_duties_taxes = round(sum(l.amount for l in result.lines), 2)
     result.landed_cost = round(cif_value + result.total_duties_taxes, 2)

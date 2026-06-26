@@ -5,66 +5,72 @@ Appliquer les corrections aux fichiers backend
 import json
 import re
 
+
 def apply_tariff_corrections():
     """Appliquer les corrections tarifaires au server.py"""
     print("🔧 APPLICATION DES CORRECTIONS TARIFAIRES")
     print("=" * 60)
-    
+
     # Lire les corrections
-    with open('/app/zlecaf_corrections_2024.json', 'r', encoding='utf-8') as f:
+    with open("/app/zlecaf_corrections_2024.json", "r", encoding="utf-8") as f:
         corrections = json.load(f)
-    
+
     # Lire le fichier server.py
-    with open('/app/backend/server.py', 'r', encoding='utf-8') as f:
+    with open("/app/backend/server.py", "r", encoding="utf-8") as f:
         server_content = f.read()
-    
+
     # Extraire les taux corrigés
-    normal_rates = corrections['tariff_corrections']['normal_rates']
-    zlecaf_rates = corrections['tariff_corrections']['zlecaf_rates']
-    
+    normal_rates = corrections["tariff_corrections"]["normal_rates"]
+    zlecaf_rates = corrections["tariff_corrections"]["zlecaf_rates"]
+
     # Créer les nouvelles structures de taux
-    normal_rates_str = '{\n'
+    normal_rates_str = "{\n"
     for hs2, rate in normal_rates.items():
         normal_rates_str += f'        "{hs2}": {rate:.2f}, '
-    normal_rates_str = normal_rates_str.rstrip(', ') + '\n    }'
-    
-    zlecaf_rates_str = '{\n'
+    normal_rates_str = normal_rates_str.rstrip(", ") + "\n    }"
+
+    zlecaf_rates_str = "{\n"
     for hs2, rate in zlecaf_rates.items():
         zlecaf_rates_str += f'        "{hs2}": {rate:.2f}, '
-    zlecaf_rates_str = zlecaf_rates_str.rstrip(', ') + '\n    }'
-    
+    zlecaf_rates_str = zlecaf_rates_str.rstrip(", ") + "\n    }"
+
     # Remplacer les anciens taux dans le fichier
     # Pattern pour normal_rates
-    normal_pattern = r'normal_rates = \{[^}]+\}'
-    server_content = re.sub(normal_pattern, f'normal_rates = {normal_rates_str}', server_content, flags=re.DOTALL)
-    
+    normal_pattern = r"normal_rates = \{[^}]+\}"
+    server_content = re.sub(
+        normal_pattern, f"normal_rates = {normal_rates_str}", server_content, flags=re.DOTALL
+    )
+
     # Pattern pour zlecaf_rates
-    zlecaf_pattern = r'zlecaf_rates = \{[^}]+\}'
-    server_content = re.sub(zlecaf_pattern, f'zlecaf_rates = {zlecaf_rates_str}', server_content, flags=re.DOTALL)
-    
+    zlecaf_pattern = r"zlecaf_rates = \{[^}]+\}"
+    server_content = re.sub(
+        zlecaf_pattern, f"zlecaf_rates = {zlecaf_rates_str}", server_content, flags=re.DOTALL
+    )
+
     # Écrire le fichier modifié
-    with open('/app/backend/server.py', 'w', encoding='utf-8') as f:
+    with open("/app/backend/server.py", "w", encoding="utf-8") as f:
         f.write(server_content)
-    
+
     print(f"   ✅ Taux normaux mis à jour: {len(normal_rates)} secteurs")
     print(f"   ✅ Taux ZLECAf mis à jour: {len(zlecaf_rates)} secteurs")
     print(f"   ✅ Fichier server.py modifié avec succès")
+
 
 def apply_statistics_corrections():
     """Appliquer les corrections statistiques au server.py"""
     print(f"\n📊 APPLICATION DES CORRECTIONS STATISTIQUES")
     print("=" * 60)
-    
+
     # Lire les corrections
-    with open('/app/zlecaf_corrections_2024.json', 'r', encoding='utf-8') as f:
+    with open("/app/zlecaf_corrections_2024.json", "r", encoding="utf-8") as f:
         corrections = json.load(f)
-    
-    enhanced_stats = corrections['enhanced_statistics']
-    
+
+    enhanced_stats = corrections["enhanced_statistics"]
+
     # Lire le fichier server.py
-    with open('/app/backend/server.py', 'r', encoding='utf-8') as f:
+    with open("/app/backend/server.py", "r", encoding="utf-8") as f:
         server_content = f.read()
-    
+
     # Créer la nouvelle fonction de statistiques
     new_stats_function = f'''@api_router.get("/statistics")
 async def get_comprehensive_statistics():
@@ -151,33 +157,34 @@ async def get_comprehensive_statistics():
         "data_sources": {json.dumps(enhanced_stats['data_sources'], ensure_ascii=False)},
         "last_updated": "{enhanced_stats['last_updated']}"
     }}'''
-    
+
     # Remplacer l'ancienne fonction de statistiques
     stats_pattern = r'@api_router\.get\("/statistics"\).*?return \{.*?\}\s*\}\s*\}\s*\}'
     server_content = re.sub(stats_pattern, new_stats_function, server_content, flags=re.DOTALL)
-    
+
     # Écrire le fichier modifié
-    with open('/app/backend/server.py', 'w', encoding='utf-8') as f:
+    with open("/app/backend/server.py", "w", encoding="utf-8") as f:
         f.write(server_content)
-    
+
     print(f"   ✅ Fonction statistiques remplacée")
     print(f"   ✅ Données 2023-2024 intégrées")
     print(f"   ✅ Top exportateurs/importateurs ajoutés")
     print(f"   ✅ Analyse par groupes de produits ajoutée")
     print(f"   ✅ Performance des corridors régionaux ajoutée")
 
+
 def main():
     """Application principale des corrections"""
     print("🚀 DÉMARRAGE APPLICATION DES CORRECTIONS ZLECAf")
     print("=" * 70)
-    
+
     try:
         # Appliquer les corrections tarifaires
         apply_tariff_corrections()
-        
+
         # Appliquer les corrections statistiques
         apply_statistics_corrections()
-        
+
         print(f"\n🎉 TOUTES LES CORRECTIONS APPLIQUÉES AVEC SUCCÈS")
         print("=" * 70)
         print("RÉSUMÉ DES MODIFICATIONS:")
@@ -192,10 +199,11 @@ def main():
         print("   • Redémarrer le service backend")
         print("   • Tester les nouveaux calculs tarifaires")
         print("   • Vérifier les nouvelles statistiques")
-        
+
     except Exception as e:
         print(f"❌ Erreur lors de l'application des corrections: {e}")
         raise
+
 
 if __name__ == "__main__":
     main()

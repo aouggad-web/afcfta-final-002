@@ -28,8 +28,18 @@ from pathlib import Path
 # Colonnes du Markdown source (position 0-based après N° et CODE_SH et LIBELLE)
 # En-tête: DD|TUB|TVA|DUS|TSB|PSV|TUF|TUE|PCC|PCS|PUA|PSS|RST|TAB|TAI|TBG|TCI|TCB|TCT|TFS|TMP|TPQ|TSM|TSS
 _COL = {
-    "DD": 0, "TUB": 1, "TVA": 2, "DUS": 3, "TSB": 4, "PSV": 5,
-    "TUF": 6, "TUE": 7, "PCC": 8, "PCS": 9, "PUA": 10, "PSS": 11,
+    "DD": 0,
+    "TUB": 1,
+    "TVA": 2,
+    "DUS": 3,
+    "TSB": 4,
+    "PSV": 5,
+    "TUF": 6,
+    "TUE": 7,
+    "PCC": 8,
+    "PCS": 9,
+    "PUA": 10,
+    "PSS": 11,
     "RST": 12,
 }
 
@@ -99,11 +109,11 @@ def _parse_line(line: str) -> list[tuple[str, str, dict]]:
             elif len(vals) == n:
                 taxes[k] = vals[i]
             elif len(vals) == 1:
-                taxes[k] = vals[0]       # valeur unique répétée pour tous
+                taxes[k] = vals[0]  # valeur unique répétée pour tous
             elif i < len(vals):
                 taxes[k] = vals[i]
             else:
-                taxes[k] = vals[-1]      # débordement : prendre la dernière
+                taxes[k] = vals[-1]  # débordement : prendre la dernière
         results.append((code, libelle, taxes))
 
     return results
@@ -126,25 +136,26 @@ def parse(md_path: Path) -> list[dict]:
                 if code in seen:
                     continue
                 seen.add(code)
-                rows.append({
-                    "Code_SH": code,
-                    "Designation": libelle,
-                    "DD": taxes["DD"],
-                    "TVA": taxes["TVA"],
-                    "PCC": taxes["PCC"],
-                    "PCS": taxes["PCS"],
-                    "PUA": taxes["PUA"],
-                    "RST": taxes["RST"],
-                    "TSB": taxes["TSB"],
-                    "PSV": taxes["PSV"],
-                })
+                rows.append(
+                    {
+                        "Code_SH": code,
+                        "Designation": libelle,
+                        "DD": taxes["DD"],
+                        "TVA": taxes["TVA"],
+                        "PCC": taxes["PCC"],
+                        "PCS": taxes["PCS"],
+                        "PUA": taxes["PUA"],
+                        "RST": taxes["RST"],
+                        "TSB": taxes["TSB"],
+                        "PSV": taxes["PSV"],
+                    }
+                )
 
     return rows
 
 
 def write_csv(rows: list[dict], out_path: Path) -> None:
-    fieldnames = ["Code_SH", "Designation", "DD", "TVA", "PCC", "PCS",
-                  "PUA", "RST", "TSB", "PSV"]
+    fieldnames = ["Code_SH", "Designation", "DD", "TVA", "PCC", "PCS", "PUA", "RST", "TSB", "PSV"]
     with out_path.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames, delimiter=";")
         w.writeheader()

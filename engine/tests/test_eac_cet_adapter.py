@@ -11,13 +11,22 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from scripts.eac_cet_md_to_csv import parse, parse_rate, run as md_to_csv
 from adapters.eac_cet_adapter import (
-    EacCetAdapter, COUNTRIES, VAT_BY_COUNTRY, run,
+    COUNTRIES,
+    VAT_BY_COUNTRY,
+    EacCetAdapter,
+    run,
 )
 from schemas.canonical_model import (
-    DataStatus, ReliabilityGrade, DutyBasis, RateType, MeasureType,
+    DataStatus,
+    DutyBasis,
+    MeasureType,
+    RateType,
+    ReliabilityGrade,
 )
+
+from scripts.eac_cet_md_to_csv import parse, parse_rate
+from scripts.eac_cet_md_to_csv import run as md_to_csv
 
 FIXTURE_MD = Path(__file__).parent / "fixtures" / "eac_cet_sample.md"
 
@@ -38,14 +47,18 @@ def adapter(csv_path):
 # Convertisseur Markdown → CSV
 # ----------------------------------------------------------------------
 
+
 def test_parse_rate_formats():
     assert parse_rate("25%")["pct"] == "25"
-    assert parse_rate("kg 25%")["pct"] == "25"          # cellule fusionnée
-    assert parse_rate("25%25%")["pct"] == "25"          # artefact PDF
+    assert parse_rate("kg 25%")["pct"] == "25"  # cellule fusionnée
+    assert parse_rate("25%25%")["pct"] == "25"  # artefact PDF
     mixed = parse_rate("75% or $345/MT whichever is higher")
-    assert mixed == {"pct": "75", "specific": "345",
-                     "specific_unit": "USD/MT",
-                     "raw": "75% or $345/MT whichever is higher"}
+    assert mixed == {
+        "pct": "75",
+        "specific": "345",
+        "specific_unit": "USD/MT",
+        "raw": "75% or $345/MT whichever is higher",
+    }
     usd = parse_rate("35% or USD 0.40/kg whichever is higher")
     assert usd["specific"] == "0.40" and usd["specific_unit"] == "USD/kg"
 
@@ -83,6 +96,7 @@ def test_merged_unit_rate_cell(csv_path):
 # Adaptateur CSV → canonique
 # ----------------------------------------------------------------------
 
+
 def test_parse_source_counts(adapter):
     rows = adapter.parse_source()
     assert len(rows) == 7
@@ -98,9 +112,10 @@ def test_provenance_partial_b(adapter):
 
 
 def test_dd_bands(adapter):
-    rates = {l.commodity.national_code:
-             next(m for m in l.measures if m.code == "D.D").rate_pct
-             for l in adapter.transform("TZA")}
+    rates = {
+        l.commodity.national_code: next(m for m in l.measures if m.code == "D.D").rate_pct
+        for l in adapter.transform("TZA")
+    }
     assert rates["01012100"] == 0.0
     assert rates["01012900"] == 25.0
     assert rates["25232100"] == 10.0
@@ -112,7 +127,7 @@ def test_sensitive_item_alternative_rate(adapter):
     lines = {l.commodity.national_code: l for l in adapter.transform("KEN")}
     rice = lines["10061000"]
     dd = next(m for m in rice.measures if m.code == "D.D")
-    assert dd.rate_type == RateType.ALTERNATIVE   # pas MIXED (additif)
+    assert dd.rate_type == RateType.ALTERNATIVE  # pas MIXED (additif)
     assert dd.rate_pct == 75.0
     assert dd.specific_amount == 345.0
     assert dd.specific_unit == "USD/MT"
@@ -160,13 +175,13 @@ def test_rejects_non_member(adapter):
 # Émission par pays (run)
 # ----------------------------------------------------------------------
 
+
 def test_run_emits_all_countries(csv_path, tmp_path):
     out = tmp_path / "out"
     stats = run(csv_path, str(out))
     assert set(stats["countries"]) == set(COUNTRIES)
     assert all(n == 7 for n in stats["countries"].values())
-    sample = json.loads(
-        (out / "RWA_canonical.jsonl").read_text().splitlines()[0])
+    sample = json.loads((out / "RWA_canonical.jsonl").read_text().splitlines()[0])
     assert sample["provenance"]["data_status"] == "PARTIAL"
     assert sample["commodity"]["country_iso3"] == "RWA"
 

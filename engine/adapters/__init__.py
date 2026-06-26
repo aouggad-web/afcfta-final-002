@@ -10,12 +10,6 @@ Pays majeurs supportés: DZA, MAR, EGY, NGA, ZAF, KEN, CIV, GHA
 
 from .base_adapter import BaseAdapter
 from .dza_adapter import DZAAdapter
-from .generic_adapter import GenericAdapter, create_adapter, COUNTRY_CONFIG
+from .generic_adapter import COUNTRY_CONFIG, GenericAdapter, create_adapter
 
-__all__ = [
-    "BaseAdapter", 
-    "DZAAdapter", 
-    "GenericAdapter", 
-    "create_adapter",
-    "COUNTRY_CONFIG"
-]
+__all__ = ["BaseAdapter", "DZAAdapter", "GenericAdapter", "create_adapter", "COUNTRY_CONFIG"]

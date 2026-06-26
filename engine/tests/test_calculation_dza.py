@@ -15,11 +15,19 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from schemas.canonical_model import (
-    CanonicalTariffLine, CommodityCode, Measure, Provenance,
-    MeasureType, RateType, DutyBasis, DataStatus, ReliabilityGrade, SCHEMA_VERSION,
-)
 from calculation import compute_duties
+from schemas.canonical_model import (
+    SCHEMA_VERSION,
+    CanonicalTariffLine,
+    CommodityCode,
+    DataStatus,
+    DutyBasis,
+    Measure,
+    MeasureType,
+    Provenance,
+    RateType,
+    ReliabilityGrade,
+)
 
 CIF = 1_000_000.0
 
@@ -37,37 +45,54 @@ def _build_line() -> CanonicalTariffLine:
 
     measures = [
         Measure(
-            country_iso3="DZA", national_code="0101211100",
-            measure_type=MeasureType.CUSTOMS_DUTY, code="D.D",
-            name_fr="Droit de Douane", name_en="Customs Duty",
-            rate_pct=5.0, rate_type=RateType.AD_VALOREM,
-            basis=DutyBasis.CIF, sequence=10,
+            country_iso3="DZA",
+            national_code="0101211100",
+            measure_type=MeasureType.CUSTOMS_DUTY,
+            code="D.D",
+            name_fr="Droit de Douane",
+            name_en="Customs Duty",
+            rate_pct=5.0,
+            rate_type=RateType.AD_VALOREM,
+            basis=DutyBasis.CIF,
+            sequence=10,
             legal_reference="Art. 16 Code des Douanes",
-            is_zlecaf_applicable=True, zlecaf_rate_pct=0.0,
+            is_zlecaf_applicable=True,
+            zlecaf_rate_pct=0.0,
         ),
         Measure(
-            country_iso3="DZA", national_code="0101211100",
-            measure_type=MeasureType.OTHER_TAX, code="T.C.S",
+            country_iso3="DZA",
+            national_code="0101211100",
+            measure_type=MeasureType.OTHER_TAX,
+            code="T.C.S",
             name_fr="Taxe de Contribution de Solidarité",
-            rate_pct=3.0, rate_type=RateType.AD_VALOREM,
-            basis=DutyBasis.CIF, sequence=20,
+            rate_pct=3.0,
+            rate_type=RateType.AD_VALOREM,
+            basis=DutyBasis.CIF,
+            sequence=20,
             legal_reference="Circ. 419 DGD",
             is_zlecaf_applicable=False,
         ),
         Measure(
-            country_iso3="DZA", national_code="0101211100",
-            measure_type=MeasureType.LEVY, code="PRCT",
+            country_iso3="DZA",
+            national_code="0101211100",
+            measure_type=MeasureType.LEVY,
+            code="PRCT",
             name_fr="Prélèvement à la Compensation du Transport",
-            rate_pct=2.0, rate_type=RateType.AD_VALOREM,
-            basis=DutyBasis.CIF, sequence=30,
+            rate_pct=2.0,
+            rate_type=RateType.AD_VALOREM,
+            basis=DutyBasis.CIF,
+            sequence=30,
             legal_reference="Circ. 419 DGD",
             is_zlecaf_applicable=False,
         ),
         Measure(
-            country_iso3="DZA", national_code="0101211100",
-            measure_type=MeasureType.VAT, code="T.V.A",
+            country_iso3="DZA",
+            national_code="0101211100",
+            measure_type=MeasureType.VAT,
+            code="T.V.A",
             name_fr="Taxe sur la Valeur Ajoutée",
-            rate_pct=9.0, rate_type=RateType.AD_VALOREM,
+            rate_pct=9.0,
+            rate_type=RateType.AD_VALOREM,
             basis=DutyBasis.CIF_PLUS_INCLUDED,
             basis_includes=["D.D", "T.C.S", "PRCT"],
             sequence=90,
@@ -99,12 +124,12 @@ def test_npf_effective_rate():
     # TVA base = 1 000 000 + 50 000 + 30 000 + 20 000 = 1 100 000
     # TVA = 9 % × 1 100 000 = 99 000
     # Total = 50 000 + 30 000 + 20 000 + 99 000 = 199 000
-    assert result.total_duties_taxes == 199_000.0, (
-        f"Attendu 199 000, obtenu {result.total_duties_taxes}"
-    )
-    assert result.effective_rate_pct == 19.90, (
-        f"Attendu 19.90 %, obtenu {result.effective_rate_pct}"
-    )
+    assert (
+        result.total_duties_taxes == 199_000.0
+    ), f"Attendu 199 000, obtenu {result.total_duties_taxes}"
+    assert (
+        result.effective_rate_pct == 19.90
+    ), f"Attendu 19.90 %, obtenu {result.effective_rate_pct}"
     assert len(result.warnings) == 0, f"Avertissements inattendus : {result.warnings}"
     print(f"  NPF effectif : {result.effective_rate_pct} %  ✓")
 

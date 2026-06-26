@@ -43,14 +43,23 @@ from typing import Optional
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from schemas.canonical_model import (
-    CanonicalTariffLine, CommodityCode, FiscalAdvantage, Measure,
-    MeasureType, Provenance, DataStatus, ReliabilityGrade, RateType,
-    DutyBasis, SCHEMA_VERSION,
+    SCHEMA_VERSION,
+    CanonicalTariffLine,
+    CommodityCode,
+    DataStatus,
+    DutyBasis,
+    FiscalAdvantage,
+    Measure,
+    MeasureType,
+    Provenance,
+    RateType,
+    ReliabilityGrade,
 )
 
 # ----------------------------------------------------------------------
 # Validation de la source
 # ----------------------------------------------------------------------
+
 
 class SourceNotVerifiedException(ValueError):
     """Levée quand un fichier ne contient pas de référence documentaire vérifiable."""
@@ -75,8 +84,7 @@ def _validate_source(data: dict, strict: bool = True) -> tuple[DataStatus, Relia
     auto_generated = False
     if generated_at:
         try:
-            gen_date = datetime.fromisoformat(
-                generated_at.replace("Z", "+00:00")).date()
+            gen_date = datetime.fromisoformat(generated_at.replace("Z", "+00:00")).date()
             today = datetime.now(timezone.utc).date()
             if gen_date == today:
                 auto_generated = True
@@ -84,8 +92,7 @@ def _validate_source(data: dict, strict: bool = True) -> tuple[DataStatus, Relia
             pass
 
     # Un fichier qui se déclare 'authentic' sans source_document est suspect
-    auto_claimed = (data.get("data_source", "").endswith("_authentic")
-                    and not source_doc)
+    auto_claimed = data.get("data_source", "").endswith("_authentic") and not source_doc
 
     has_real_source = bool(source_doc) and not auto_generated
 
@@ -101,9 +108,11 @@ def _validate_source(data: dict, strict: bool = True) -> tuple[DataStatus, Relia
     if auto_claimed:
         reasons.append("'data_source' se termine par '_authentic' sans document justificatif")
 
-    msg = (f"[{country}] Source non vérifiable : {' ; '.join(reasons)}. "
-           f"Ajoutez un champ 'source_document' pointant vers le document officiel "
-           f"(JO, gazette, publication de l'administration douanière).")
+    msg = (
+        f"[{country}] Source non vérifiable : {' ; '.join(reasons)}. "
+        f"Ajoutez un champ 'source_document' pointant vers le document officiel "
+        f"(JO, gazette, publication de l'administration douanière)."
+    )
 
     if strict:
         raise SourceNotVerifiedException(msg)
@@ -116,20 +125,36 @@ def _validate_source(data: dict, strict: bool = True) -> tuple[DataStatus, Relia
 # ----------------------------------------------------------------------
 
 _DUTY_CODES = {"D.D", "DD", "CUSTOMS", "CUSTOMS_DUTY"}
-_VAT_CODES   = {"T.V.A", "TVA", "VAT", "IVA", "IGV", "GST"}
+_VAT_CODES = {"T.V.A", "TVA", "VAT", "IVA", "IGV", "GST"}
 _EXCISE_CODES = {"EXCISE", "DA", "EXCISE_DUTY", "DRE", "ACCISE"}
-_LEVY_CODES  = {
-    "TCI", "TS", "PCC", "PCS", "PUA", "RST", "PC-CEDEAO", "PCS-UEMOA",
-    "CISS", "NHIL", "GETFUND", "CRF", "IDL", "RDL",
+_LEVY_CODES = {
+    "TCI",
+    "TS",
+    "PCC",
+    "PCS",
+    "PUA",
+    "RST",
+    "PC-CEDEAO",
+    "PCS-UEMOA",
+    "CISS",
+    "NHIL",
+    "GETFUND",
+    "CRF",
+    "IDL",
+    "RDL",
 }
 
 
 def _map_type(code: str) -> MeasureType:
     c = code.upper()
-    if c in _DUTY_CODES:   return MeasureType.CUSTOMS_DUTY
-    if c in _VAT_CODES:    return MeasureType.VAT
-    if c in _EXCISE_CODES: return MeasureType.EXCISE
-    if c in _LEVY_CODES:   return MeasureType.LEVY
+    if c in _DUTY_CODES:
+        return MeasureType.CUSTOMS_DUTY
+    if c in _VAT_CODES:
+        return MeasureType.VAT
+    if c in _EXCISE_CODES:
+        return MeasureType.EXCISE
+    if c in _LEVY_CODES:
+        return MeasureType.LEVY
     return MeasureType.OTHER_TAX
 
 
@@ -176,9 +201,10 @@ def _dedup_taxes(taxes: list[dict]) -> list[dict]:
 # Construction des mesures
 # ----------------------------------------------------------------------
 
-def _build_measures(country_iso3: str, hs6: str,
-                    taxes: list[dict],
-                    is_synthetic: bool = False) -> list[Measure]:
+
+def _build_measures(
+    country_iso3: str, hs6: str, taxes: list[dict], is_synthetic: bool = False
+) -> list[Measure]:
     taxes = _dedup_taxes(taxes)
     measures: list[Measure] = []
     seq = 10
@@ -191,9 +217,9 @@ def _build_measures(country_iso3: str, hs6: str,
 
         basis_includes: list[str] = []
         if basis == DutyBasis.CIF_PLUS_INCLUDED:
-            basis_includes = [m.code for m in measures
-                              if m.basis in (DutyBasis.CIF,
-                                             DutyBasis.CIF_PLUS_INCLUDED)]
+            basis_includes = [
+                m.code for m in measures if m.basis in (DutyBasis.CIF, DutyBasis.CIF_PLUS_INCLUDED)
+            ]
 
         obs_parts = [t.get("observation", code)]
         if is_synthetic:
@@ -222,19 +248,20 @@ def _build_measures(country_iso3: str, hs6: str,
     return measures
 
 
-def _build_advantages(country_iso3: str, hs6: str,
-                      raw_adv: list[dict]) -> list[FiscalAdvantage]:
+def _build_advantages(country_iso3: str, hs6: str, raw_adv: list[dict]) -> list[FiscalAdvantage]:
     out = []
     for a in raw_adv or []:
-        out.append(FiscalAdvantage(
-            country_iso3=country_iso3,
-            national_code=hs6,
-            tax_code=a.get("tax", "D.D"),
-            reduced_rate_pct=float(a.get("rate", 0)),
-            condition_fr=a.get("condition_fr", ""),
-            agreement="ZLECAf",
-            required_document="Certificat d'origine ZLECAf",
-        ))
+        out.append(
+            FiscalAdvantage(
+                country_iso3=country_iso3,
+                national_code=hs6,
+                tax_code=a.get("tax", "D.D"),
+                reduced_rate_pct=float(a.get("rate", 0)),
+                condition_fr=a.get("condition_fr", ""),
+                agreement="ZLECAf",
+                required_document="Certificat d'origine ZLECAf",
+            )
+        )
     return out
 
 
@@ -242,9 +269,10 @@ def _build_advantages(country_iso3: str, hs6: str,
 # Provenance
 # ----------------------------------------------------------------------
 
-def _build_provenance(data: dict, status: DataStatus,
-                      reliability: ReliabilityGrade,
-                      warning: str) -> Provenance:
+
+def _build_provenance(
+    data: dict, status: DataStatus, reliability: ReliabilityGrade, warning: str
+) -> Provenance:
     notes = data.get("notes", [])
     if isinstance(notes, list):
         notes = " | ".join(notes)
@@ -254,8 +282,10 @@ def _build_provenance(data: dict, status: DataStatus,
     return Provenance(
         data_status=status,
         reliability=reliability,
-        source_name=(f"{data.get('country_name', data['country_code'])} — "
-                     f"{data.get('data_source', 'inconnu')}"),
+        source_name=(
+            f"{data.get('country_name', data['country_code'])} — "
+            f"{data.get('data_source', 'inconnu')}"
+        ),
         source_url=data.get("source_url", ""),
         source_document=data.get("source_document") or None,
         version_date=None,
@@ -268,9 +298,10 @@ def _build_provenance(data: dict, status: DataStatus,
 # Conversion d'une ligne
 # ----------------------------------------------------------------------
 
-def _convert_line(country_iso3: str, line: dict,
-                  prov: Provenance,
-                  is_synthetic: bool) -> CanonicalTariffLine:
+
+def _convert_line(
+    country_iso3: str, line: dict, prov: Provenance, is_synthetic: bool
+) -> CanonicalTariffLine:
     hs6 = line["hs6"]
     commodity = CommodityCode(
         country_iso3=country_iso3,
@@ -284,12 +315,11 @@ def _convert_line(country_iso3: str, line: dict,
         hs_version="HS2022",
     )
 
-    measures = _build_measures(
-        country_iso3, hs6, line.get("taxes_detail", []), is_synthetic)
-    advantages = _build_advantages(
-        country_iso3, hs6, line.get("fiscal_advantages", []))
-    total_npf = sum(m.rate_pct or 0 for m in measures
-                    if m.basis in (DutyBasis.CIF, DutyBasis.CIF_PLUS_INCLUDED))
+    measures = _build_measures(country_iso3, hs6, line.get("taxes_detail", []), is_synthetic)
+    advantages = _build_advantages(country_iso3, hs6, line.get("fiscal_advantages", []))
+    total_npf = sum(
+        m.rate_pct or 0 for m in measures if m.basis in (DutyBasis.CIF, DutyBasis.CIF_PLUS_INCLUDED)
+    )
 
     return CanonicalTariffLine(
         commodity=commodity,
@@ -306,8 +336,8 @@ def _convert_line(country_iso3: str, line: dict,
 # Point d'entrée
 # ----------------------------------------------------------------------
 
-def process_file(json_path: str, output_dir: str,
-                 strict: bool = True) -> dict:
+
+def process_file(json_path: str, output_dir: str, strict: bool = True) -> dict:
     """
     Ingère un fichier JSON tarifaire.
 
@@ -320,11 +350,11 @@ def process_file(json_path: str, output_dir: str,
     country = data["country_code"].upper()
     if not re.fullmatch(r"[A-Z]{3}", country):
         raise ValueError(
-            f"country_code invalide : {data['country_code']!r} "
-            "(code ISO3 attendu, ex. 'RWA')")
+            f"country_code invalide : {data['country_code']!r} " "(code ISO3 attendu, ex. 'RWA')"
+        )
 
     status, reliability, warning = _validate_source(data, strict=strict)
-    is_synthetic = (status == DataStatus.SYNTHETIC)
+    is_synthetic = status == DataStatus.SYNTHETIC
 
     if warning:
         print(f"  ⚠  {warning}")
@@ -356,8 +386,7 @@ def process_file(json_path: str, output_dir: str,
     }
 
 
-def run(json_paths: list[str], output_dir: str,
-        strict: bool = True) -> dict:
+def run(json_paths: list[str], output_dir: str, strict: bool = True) -> dict:
     results = {}
     for p in json_paths:
         r = process_file(p, output_dir, strict=strict)
@@ -367,19 +396,31 @@ def run(json_paths: list[str], output_dir: str,
 
 if __name__ == "__main__":
     import argparse
+
     ap = argparse.ArgumentParser(
-        description="Ingère les JSON tarifaires officiels → JSONL canoniques v4")
-    ap.add_argument("json_files", nargs="+",
-                    help="Fichiers {ISO3}_tariffs.json (dernier argument = output_dir)")
+        description="Ingère les JSON tarifaires officiels → JSONL canoniques v4"
+    )
+    ap.add_argument(
+        "json_files", nargs="+", help="Fichiers {ISO3}_tariffs.json (dernier argument = output_dir)"
+    )
     mode = ap.add_mutually_exclusive_group()
-    mode.add_argument("--strict", action="store_true", default=True,
-                      help="Refuse les fichiers sans source_document (défaut)")
-    mode.add_argument("--allow-synthetic", action="store_true",
-                      help="Accepte les fichiers non-vérifiés avec statut SYNTHETIC/D")
+    mode.add_argument(
+        "--strict",
+        action="store_true",
+        default=True,
+        help="Refuse les fichiers sans source_document (défaut)",
+    )
+    mode.add_argument(
+        "--allow-synthetic",
+        action="store_true",
+        help="Accepte les fichiers non-vérifiés avec statut SYNTHETIC/D",
+    )
     args = ap.parse_args()
 
     strict = not args.allow_synthetic
-    print(f"Mode : {'STRICT (source_document requis)' if strict else 'PERMISSIF (SYNTHETIC/D si non-vérifié)'}")
+    print(
+        f"Mode : {'STRICT (source_document requis)' if strict else 'PERMISSIF (SYNTHETIC/D si non-vérifié)'}"
+    )
 
     result = run(args.json_files[:-1], args.json_files[-1], strict=strict)
     total = sum(r["lines_written"] for r in result["countries"].values())

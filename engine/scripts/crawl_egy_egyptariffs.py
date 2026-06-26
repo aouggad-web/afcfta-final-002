@@ -38,8 +38,8 @@ capturée dans un champ dédié "table_tax_rate_raw" / "table_tax_rate".
 import argparse
 import json
 import re
-import time
 import sys
+import time
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
@@ -101,9 +101,12 @@ def parse_taxes(taxes: List[str]) -> Dict:
     déclenche à tort la branche DD pour les entrées de type ضريبة الجدول.
     """
     result = {
-        "dd_rate": None,         "dd_rate_raw": "",
-        "vat_rate": None,        "vat_rate_raw": "",
-        "table_tax_rate": None,  "table_tax_rate_raw": "",  # ضريبة الجدول (excise/schedule)
+        "dd_rate": None,
+        "dd_rate_raw": "",
+        "vat_rate": None,
+        "vat_rate_raw": "",
+        "table_tax_rate": None,
+        "table_tax_rate_raw": "",  # ضريبة الجدول (excise/schedule)
     }
     for tax in taxes:
         if ":" in tax:
@@ -146,8 +149,11 @@ def fetch_chapter_page(session: requests.Session, chapter_id: int, page: int) ->
                 codes.append(cells[0])
 
     page_links = soup.find_all("a", href=lambda h: h and "page=" in str(h))
-    page_nums = [int(re.search(r"page=(\d+)", a["href"]).group(1))
-                 for a in page_links if re.search(r"page=(\d+)", a["href"])]
+    page_nums = [
+        int(re.search(r"page=(\d+)", a["href"]).group(1))
+        for a in page_links
+        if re.search(r"page=(\d+)", a["href"])
+    ]
     max_page = max(page_nums) if page_nums else page
 
     return codes, max_page
@@ -193,20 +199,22 @@ def fetch_chapter(session: requests.Session, chapter: str, detail_delay: float) 
         code = format_code(trf_number)
         taxes = parse_taxes(details.get("Taxes", []))
 
-        positions.append({
-            "code": code,
-            "trf_number": trf_number,
-            "description_ar": details.get("ShortDesc", ""),
-            "dd_rate_raw":        taxes["dd_rate_raw"],
-            "dd_rate":            taxes["dd_rate"],
-            "table_tax_rate_raw": taxes["table_tax_rate_raw"],  # ضريبة الجدول
-            "table_tax_rate":     taxes["table_tax_rate"],
-            "vat_rate_raw":       taxes["vat_rate_raw"],
-            "vat_rate":           taxes["vat_rate"],
-            "instructions": details.get("Instructions", []),
-            "chapter": chapter,
-            "digits": len(code),
-        })
+        positions.append(
+            {
+                "code": code,
+                "trf_number": trf_number,
+                "description_ar": details.get("ShortDesc", ""),
+                "dd_rate_raw": taxes["dd_rate_raw"],
+                "dd_rate": taxes["dd_rate"],
+                "table_tax_rate_raw": taxes["table_tax_rate_raw"],  # ضريبة الجدول
+                "table_tax_rate": taxes["table_tax_rate"],
+                "vat_rate_raw": taxes["vat_rate_raw"],
+                "vat_rate": taxes["vat_rate"],
+                "instructions": details.get("Instructions", []),
+                "chapter": chapter,
+                "digits": len(code),
+            }
+        )
 
     return positions
 
@@ -248,8 +256,12 @@ def main():
     parser = argparse.ArgumentParser(description="Crawler Douanes EGY v2")
     parser.add_argument("--chapters", nargs="+", default=ALL_CHAPTERS)
     parser.add_argument("--out", default="egy_raw.json")
-    parser.add_argument("--delay", type=float, default=0.3,
-                        help="Délai entre appels détails en secondes (défaut: 0.3)")
+    parser.add_argument(
+        "--delay",
+        type=float,
+        default=0.3,
+        help="Délai entre appels détails en secondes (défaut: 0.3)",
+    )
     args = parser.parse_args()
 
     data = crawl_all(args.chapters, args.delay)
