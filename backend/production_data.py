@@ -23,6 +23,16 @@ def _normalize_country_iso3(country_iso3: Optional[str]) -> Optional[str]:
         return None
     return country_iso3.strip().upper()
 
+
+def _extract_years(records: List[Dict]) -> List[int]:
+    """Retourne la liste triée des années distinctes présentes dans les records.
+
+    Trié de façon croissante pour que ``years_covered[-1]`` corresponde à
+    l'année la plus récente.
+    """
+    years = {r.get('year') for r in records if r.get('year') is not None}
+    return sorted(years)
+
 def load_production_data():
     """Charge les données de production depuis le fichier JSON"""
     global _production_data

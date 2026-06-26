@@ -901,11 +901,11 @@ def save_country_results(
         "notes": config["notes"],
     }
 
-    with open(output_file, "w", encoding="utf-8") as f:
+    with open(out_file, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
-    logger.info(f"  Saved {len(positions)} positions → {output_file}")
-    return output_file
+    logger.info(f"  Saved {len(positions)} positions → {out_file}")
+    return out_file
 
 
 # ---------------------------------------------------------------------------

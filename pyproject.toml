@@ -1,0 +1,16 @@
+# Tooling configuration for code formatters/linters.
+# flake8 is configured separately in .flake8 (it does not read pyproject.toml).
+#
+# black/isort are NOT yet enforced in CI: a one-shot reformat would touch ~324
+# backend files. These settings define the agreed style so the eventual
+# formatting pass (and local `black .` / `isort .` runs) stays consistent.
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+extend-exclude = "frontend|node_modules|build"
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip = ["frontend", "node_modules", "build"]

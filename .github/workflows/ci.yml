@@ -32,6 +32,25 @@ jobs:
           fi
           echo "No conflict markers found."
 
+  lint:
+    needs: check-conflict-markers
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install flake8
+        run: pip install flake8==7.3.0
+
+      - name: Lint — real-bug gate (undefined names, syntax errors)
+        run: python -m flake8 .
+
   backend-tests:
     needs: check-conflict-markers
     runs-on: ubuntu-latest
