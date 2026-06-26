@@ -11,6 +11,7 @@ vi.mock('axios', () => {
         trade_value: 1000000,
         npf_rate: 10,
         npf_rate_source: 'auto',
+        npf_auto_detected: true,
         category: 'A',
         category_label: 'Catégorie A',
         is_ldc: false,

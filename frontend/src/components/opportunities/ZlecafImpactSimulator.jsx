@@ -191,7 +191,7 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
                 <p className="text-[11px] text-slate-400">{t.npfRate}</p>
                 <p className="text-lg font-bold text-white">{result.npf_rate}%</p>
                 <p className="text-[10px] text-slate-500">
-                  {result.npf_rate_source === 'fourni par l’utilisateur' ? '' : t.sourceAuto}
+                  {result.npf_auto_detected ? t.sourceAuto : ''}
                 </p>
               </div>
               <div className="bg-slate-900/60 rounded-lg p-3 border border-slate-700">

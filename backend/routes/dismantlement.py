@@ -110,11 +110,15 @@ async def dismantlement_impact(
     if len(country) != 3:
         raise HTTPException(400, detail="country_iso3 doit être un code ISO3 à 3 lettres")
 
-    code = hs6.strip().zfill(6)
+    # Code HS6 strict: exactement 6 chiffres (l'UI envoie toujours 6). On ne
+    # complète pas par des zéros à gauche pour éviter d'accepter un code tronqué
+    # (ex: "123" → "000123") qui pointerait vers un mauvais produit.
+    code = hs6.strip()
     if len(code) != 6 or not code.isdigit():
         raise HTTPException(400, detail="hs6 doit être un code à 6 chiffres")
 
     # Taux NPF: fourni par l'appelant, sinon auto-détecté depuis les données tarifaires.
+    npf_auto_detected = npf_rate is None
     npf_source = "fourni par l'utilisateur"
     rate = npf_rate
     if rate is None:
@@ -138,10 +142,10 @@ async def dismantlement_impact(
         ),
         None,
     )
-    current_row = next(
-        (r for r in projection if r["year"] == schedule_info["current_implementation_year"]),
-        None,
-    )
+    # Économie actuelle dérivée directement du taux ZLECAf en vigueur, robuste
+    # aux catégories dont la projection ne couvre pas l'année courante (ex: D).
+    current_rate_now = schedule_info["current_zlecaf_rate"]
+    annual_saving_now = round(trade_value * (rate - current_rate_now) / 100.0, 2)
 
     label_key = f"category_label_{language}"
     return {
@@ -150,12 +154,13 @@ async def dismantlement_impact(
         "trade_value": trade_value,
         "npf_rate": rate,
         "npf_rate_source": npf_source,
+        "npf_auto_detected": npf_auto_detected,
         "category": schedule_info["category"],
         "category_label": schedule_info.get(label_key, schedule_info.get("category_label_fr")),
         "is_ldc": schedule_info["is_ldc"],
         "current_implementation_year": schedule_info["current_implementation_year"],
-        "current_zlecaf_rate": schedule_info["current_zlecaf_rate"],
-        "annual_saving_now": current_row["annual_saving"] if current_row else None,
+        "current_zlecaf_rate": current_rate_now,
+        "annual_saving_now": annual_saving_now,
         "full_liberalization_year": full_year,
         "total_saving_over_schedule": total_saving,
         "projection": projection,
