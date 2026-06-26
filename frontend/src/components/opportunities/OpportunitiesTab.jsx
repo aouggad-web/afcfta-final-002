@@ -4,7 +4,7 @@
  */
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale } from 'lucide-react';
+import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale, Calculator } from 'lucide-react';
 
 import AIAnalysis from './AIAnalysis';
 import SubstitutionAnalysis from './SubstitutionAnalysis';
@@ -12,11 +12,13 @@ import ValueChains from './ValueChains';
 import ProductAnalysisView from './ProductAnalysisView';
 import CountryComparison from './CountryComparison';
 import OpportunitySummary from './OpportunitySummary';
+import ZlecafImpactSimulator from './ZlecafImpactSimulator';
 
 const TABS = {
   fr: [
     { id: 'ai',           label: 'Analyse IA',         icon: Sparkles },
     { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
+    { id: 'simulator',    label: 'Simulateur ZLECAf',   icon: Calculator },
     { id: 'summary',      label: "Vue d'ensemble",      icon: BarChart3 },
     { id: 'valueChains',  label: 'Chaînes de Valeur',   icon: Layers },
     { id: 'byProduct',    label: 'Par Produit',          icon: Package },
@@ -25,6 +27,7 @@ const TABS = {
   en: [
     { id: 'ai',           label: 'AI Analysis',         icon: Sparkles },
     { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
+    { id: 'simulator',    label: 'AfCFTA Simulator',    icon: Calculator },
     { id: 'summary',      label: 'Overview',             icon: BarChart3 },
     { id: 'valueChains',  label: 'Value Chains',         icon: Layers },
     { id: 'byProduct',    label: 'By Product',           icon: Package },
@@ -43,6 +46,7 @@ export default function OpportunitiesTab({ language = 'fr' }) {
     switch (active) {
       case 'ai':           return <AIAnalysis language={lang} />;
       case 'substitution': return <SubstitutionAnalysis language={lang} />;
+      case 'simulator':    return <ZlecafImpactSimulator language={lang} />;
       case 'summary':      return <OpportunitySummary language={lang} />;
       case 'valueChains':  return <ValueChains language={lang} />;
       case 'byProduct':    return <ProductAnalysisView language={lang} />;
