@@ -105,13 +105,14 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     real_data = get_country_data(iso3_code)
 
     profile = CountryEconomicProfile(
-        country_code=country['code'],
+        country_code=iso3_code,
         country_name=country['name'],
         population=real_data.get('population_2024', country['population']),
         region=country['region']
     )
 
-    profile.gdp_usd = real_data.get('gdp_usd_2024')
+    gdp_billion = real_data.get('gdp_usd_2024')
+    profile.gdp_usd = float(gdp_billion) * 1_000_000_000 if gdp_billion is not None else None
     profile.gdp_per_capita = real_data.get('gdp_per_capita_2024')
     profile.inflation_rate = None
 
@@ -154,10 +155,16 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
             s = s.replace('\u2019', "'").replace('\u2018', "'")
             return unicodedata.normalize('NFD', s.lower()).encode('ascii', 'ignore').decode('ascii')
 
+        # Exact (accent/case-insensitive) match on the full official country
+        # name only. Substring/fuzzy matching is deliberately avoided: country
+        # names that contain another country's name (e.g. "République
+        # démocratique du Congo" vs "République du Congo", "Niger" vs
+        # "Nigeria", "Guinée-Bissau" vs "Guinée") would otherwise silently
+        # publish the wrong infrastructure_ranking. Any country absent from
+        # the dataset simply gets no ranking rather than an incorrect one.
         search_name = normalize_name(country['name'])
         for entry in infra_data:
-            entry_name = normalize_name(entry['pays'])
-            if entry_name == search_name or search_name in entry_name or entry_name in search_name:
+            if normalize_name(entry['pays']) == search_name:
                 infra_ranking = {
                     'africa_rank': entry['rang_afrique'],
                     'lpi_infrastructure_score': entry['score_infrastructure_ipl'],
