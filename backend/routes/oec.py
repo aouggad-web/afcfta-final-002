@@ -130,6 +130,26 @@ async def get_country_hs6_history(
     return result
 
 
+@router.get("/country/{country_iso3}/trade-series")
+async def get_oec_country_trade_series(
+    country_iso3: str,
+    start_year: int = Query(2018, ge=2018, le=DEFAULT_YEAR, description="Première année"),
+    end_year: int = Query(DEFAULT_YEAR, ge=2018, le=DEFAULT_YEAR, description="Dernière année"),
+):
+    """
+    Série temporelle du commerce total d'un pays (exports/imports/balance par
+    année, 2018-2024) — vraies données OEC plutôt qu'un instantané sur une année.
+    """
+    result = await oec_service.get_country_trade_series(
+        country_iso3=country_iso3,
+        start_year=start_year,
+        end_year=end_year,
+    )
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+    return result
+
+
 @router.get("/bilateral/{exporter_iso3}/{importer_iso3}")
 async def get_oec_bilateral_trade(
     exporter_iso3: str,

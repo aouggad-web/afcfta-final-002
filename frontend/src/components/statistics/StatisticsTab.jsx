@@ -17,6 +17,7 @@ import TradeProductsTable from '../TradeProductsTable';
 import OECTradeStats from '../stats/OECTradeStats';
 import MultiCountryComparison from './MultiCountryComparison';
 import CountryHS6History from './CountryHS6History';
+import CountryTradeSeries from './CountryTradeSeries';
 import ProductTreemap from './ProductTreemap';
 import AfricaTradeMap from './AfricaTradeMap';
 import RcaAnalysis from './RcaAnalysis';
@@ -318,6 +319,7 @@ export default function StatisticsTab({ language = 'fr' }) {
 
           {/* ── Trends Tab ────────────────────────────────────── */}
           <TabsContent value="trends" className="space-y-8">
+            <CountryTradeSeries language={language} />
             <TradeComparison language={language} />
           </TabsContent>
 
