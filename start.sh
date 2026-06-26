@@ -12,8 +12,8 @@ mkdir -p "$SCRIPT_DIR/backend/data/ai_cache"
 # Without this, leftover processes keep holding ports 8000/5000, the backend
 # fails to bind 8000, Vite falls back to 5001, and the preview pane (port 5000)
 # ends up served by a stale server -> the preview reloads/flickers constantly.
-pkill -9 -f "uvicorn server:app" 2>/dev/null || true
-pkill -9 -f "vite --host 0.0.0.0 --port 5000" 2>/dev/null || true
+pkill -f "uvicorn server:app" 2>/dev/null || true
+pkill -f "vite --host 0.0.0.0 --port 5000" 2>/dev/null || true
 sleep 1
 
 # Cleanly terminate our own children on shutdown/restart so they don't orphan
