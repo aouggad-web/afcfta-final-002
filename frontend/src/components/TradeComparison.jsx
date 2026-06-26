@@ -127,34 +127,34 @@ const TradeComparison = ({ language = 'fr' }) => {
   // Note: le commerce intra-africain représente environ 15-17% du commerce total africain
   const tradeDataByYear = {
     '2022': [
-      { country: 'ZA', name: 'Afrique du Sud', exports: 24.8, imports: 18.3, balance: 6.5, savings: 4.2 },
-      { country: 'NG', name: 'Nigéria', exports: 8.9, imports: 12.4, balance: -3.5, savings: 2.8 },
-      { country: 'DZ', name: 'Algérie', exports: 2.1, imports: 5.8, balance: -3.7, savings: 1.9 },
-      { country: 'EG', name: 'Égypte', exports: 6.7, imports: 8.9, balance: -2.2, savings: 2.3 },
-      { country: 'MA', name: 'Maroc', exports: 5.4, imports: 4.2, balance: 1.2, savings: 1.8 },
-      { country: 'KE', name: 'Kenya', exports: 7.2, imports: 6.8, balance: 0.4, savings: 2.1 },
-      { country: 'GH', name: 'Ghana', exports: 5.8, imports: 6.3, balance: -0.5, savings: 1.6 },
-      { country: 'CI', name: 'Côte d\'Ivoire', exports: 6.1, imports: 5.4, balance: 0.7, savings: 1.5 },
-      { country: 'SN', name: 'Sénégal', exports: 3.2, imports: 4.8, balance: -1.6, savings: 1.2 },
-      { country: 'TZ', name: 'Tanzanie', exports: 4.3, imports: 5.1, balance: -0.8, savings: 1.4 },
-      { country: 'ET', name: 'Éthiopie', exports: 2.8, imports: 4.2, balance: -1.4, savings: 0.9 },
-      { country: 'AO', name: 'Angola', exports: 1.6, imports: 3.7, balance: -2.1, savings: 0.8 },
-      { country: 'TN', name: 'Tunisie', exports: 3.8, imports: 3.9, balance: -0.1, savings: 1.1 }
+      { country: 'ZA', name: 'Afrique du Sud', exports: 24.8, imports: 18.3, balance: 6.5, intra_percentage: 4.2 },
+      { country: 'NG', name: 'Nigéria', exports: 8.9, imports: 12.4, balance: -3.5, intra_percentage: 2.8 },
+      { country: 'DZ', name: 'Algérie', exports: 2.1, imports: 5.8, balance: -3.7, intra_percentage: 1.9 },
+      { country: 'EG', name: 'Égypte', exports: 6.7, imports: 8.9, balance: -2.2, intra_percentage: 2.3 },
+      { country: 'MA', name: 'Maroc', exports: 5.4, imports: 4.2, balance: 1.2, intra_percentage: 1.8 },
+      { country: 'KE', name: 'Kenya', exports: 7.2, imports: 6.8, balance: 0.4, intra_percentage: 2.1 },
+      { country: 'GH', name: 'Ghana', exports: 5.8, imports: 6.3, balance: -0.5, intra_percentage: 1.6 },
+      { country: 'CI', name: 'Côte d\'Ivoire', exports: 6.1, imports: 5.4, balance: 0.7, intra_percentage: 1.5 },
+      { country: 'SN', name: 'Sénégal', exports: 3.2, imports: 4.8, balance: -1.6, intra_percentage: 1.2 },
+      { country: 'TZ', name: 'Tanzanie', exports: 4.3, imports: 5.1, balance: -0.8, intra_percentage: 1.4 },
+      { country: 'ET', name: 'Éthiopie', exports: 2.8, imports: 4.2, balance: -1.4, intra_percentage: 0.9 },
+      { country: 'AO', name: 'Angola', exports: 1.6, imports: 3.7, balance: -2.1, intra_percentage: 0.8 },
+      { country: 'TN', name: 'Tunisie', exports: 3.8, imports: 3.9, balance: -0.1, intra_percentage: 1.1 }
     ],
     '2023': [
-      { country: 'ZA', name: 'Afrique du Sud', exports: 26.3, imports: 19.8, balance: 6.5, savings: 4.5 },
-      { country: 'NG', name: 'Nigéria', exports: 9.7, imports: 13.2, balance: -3.5, savings: 3.1 },
-      { country: 'DZ', name: 'Algérie', exports: 2.4, imports: 6.2, balance: -3.8, savings: 2.1 },
-      { country: 'EG', name: 'Égypte', exports: 7.2, imports: 9.5, balance: -2.3, savings: 2.5 },
-      { country: 'MA', name: 'Maroc', exports: 5.9, imports: 4.6, balance: 1.3, savings: 1.9 },
-      { country: 'KE', name: 'Kenya', exports: 7.8, imports: 7.3, balance: 0.5, savings: 2.3 },
-      { country: 'GH', name: 'Ghana', exports: 6.2, imports: 6.7, balance: -0.5, savings: 1.7 },
-      { country: 'CI', name: 'Côte d\'Ivoire', exports: 6.5, imports: 5.8, balance: 0.7, savings: 1.6 },
-      { country: 'SN', name: 'Sénégal', exports: 3.5, imports: 5.1, balance: -1.6, savings: 1.3 },
-      { country: 'TZ', name: 'Tanzanie', exports: 4.6, imports: 5.5, balance: -0.9, savings: 1.5 },
-      { country: 'ET', name: 'Éthiopie', exports: 3.1, imports: 4.5, balance: -1.4, savings: 1.0 },
-      { country: 'AO', name: 'Angola', exports: 1.8, imports: 4.0, balance: -2.2, savings: 0.9 },
-      { country: 'TN', name: 'Tunisie', exports: 4.1, imports: 4.2, balance: -0.1, savings: 1.2 }
+      { country: 'ZA', name: 'Afrique du Sud', exports: 26.3, imports: 19.8, balance: 6.5, intra_percentage: 4.5 },
+      { country: 'NG', name: 'Nigéria', exports: 9.7, imports: 13.2, balance: -3.5, intra_percentage: 3.1 },
+      { country: 'DZ', name: 'Algérie', exports: 2.4, imports: 6.2, balance: -3.8, intra_percentage: 2.1 },
+      { country: 'EG', name: 'Égypte', exports: 7.2, imports: 9.5, balance: -2.3, intra_percentage: 2.5 },
+      { country: 'MA', name: 'Maroc', exports: 5.9, imports: 4.6, balance: 1.3, intra_percentage: 1.9 },
+      { country: 'KE', name: 'Kenya', exports: 7.8, imports: 7.3, balance: 0.5, intra_percentage: 2.3 },
+      { country: 'GH', name: 'Ghana', exports: 6.2, imports: 6.7, balance: -0.5, intra_percentage: 1.7 },
+      { country: 'CI', name: 'Côte d\'Ivoire', exports: 6.5, imports: 5.8, balance: 0.7, intra_percentage: 1.6 },
+      { country: 'SN', name: 'Sénégal', exports: 3.5, imports: 5.1, balance: -1.6, intra_percentage: 1.3 },
+      { country: 'TZ', name: 'Tanzanie', exports: 4.6, imports: 5.5, balance: -0.9, intra_percentage: 1.5 },
+      { country: 'ET', name: 'Éthiopie', exports: 3.1, imports: 4.5, balance: -1.4, intra_percentage: 1.0 },
+      { country: 'AO', name: 'Angola', exports: 1.8, imports: 4.0, balance: -2.2, intra_percentage: 0.9 },
+      { country: 'TN', name: 'Tunisie', exports: 4.1, imports: 4.2, balance: -0.1, intra_percentage: 1.2 }
     ]
   };
 
