@@ -11,8 +11,8 @@ Covers:
 - API routes: All 7 endpoint paths
 """
 
-import sys
 import importlib.util
+import sys
 from pathlib import Path
 
 # ── Path setup ────────────────────────────────────────────────────────────────
@@ -25,19 +25,20 @@ sys.path.insert(0, str(BACKEND_PATH))
 # 1. UMA Constants Tests
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def test_uma_countries_list():
     """All 7 North African countries are present in UMA_COUNTRIES."""
     from crawlers.countries.north_africa.uma_constants import UMA_COUNTRIES
+
     expected = {"MAR", "EGY", "TUN", "DZA", "LBY", "SDN", "MRT"}
-    assert expected == set(UMA_COUNTRIES), (
-        f"Expected {expected}, got {set(UMA_COUNTRIES)}"
-    )
+    assert expected == set(UMA_COUNTRIES), f"Expected {expected}, got {set(UMA_COUNTRIES)}"
     print("✅ UMA_COUNTRIES contains all 7 North African countries")
 
 
 def test_uma_core_members():
     """UMA core members are exactly the 5 Arab Maghreb Union states."""
     from crawlers.countries.north_africa.uma_constants import UMA_CORE_MEMBERS
+
     expected = {"MAR", "DZA", "TUN", "LBY", "MRT"}
     assert expected == set(UMA_CORE_MEMBERS)
     print("✅ UMA_CORE_MEMBERS: 5 members correct")
@@ -46,9 +47,16 @@ def test_uma_core_members():
 def test_country_metadata_completeness():
     """Each country has required metadata fields."""
     from crawlers.countries.north_africa.uma_constants import COUNTRY_METADATA, UMA_COUNTRIES
+
     required_fields = [
-        "iso3", "name_en", "name_fr", "name_ar", "capital",
-        "currency", "customs_url", "data_reliability",
+        "iso3",
+        "name_en",
+        "name_fr",
+        "name_ar",
+        "capital",
+        "currency",
+        "customs_url",
+        "data_reliability",
     ]
     for code in UMA_COUNTRIES:
         meta = COUNTRY_METADATA.get(code)
@@ -60,7 +68,8 @@ def test_country_metadata_completeness():
 
 def test_vat_rates_all_countries():
     """VAT rates are defined for all 7 countries and are non-negative."""
-    from crawlers.countries.north_africa.uma_constants import UMA_VAT_RATES, UMA_COUNTRIES
+    from crawlers.countries.north_africa.uma_constants import UMA_COUNTRIES, UMA_VAT_RATES
+
     for code in UMA_COUNTRIES:
         assert code in UMA_VAT_RATES, f"VAT rate missing for {code}"
         assert UMA_VAT_RATES[code] >= 0.0, f"Negative VAT for {code}"
@@ -69,7 +78,8 @@ def test_vat_rates_all_countries():
 
 def test_trade_blocs_all_countries():
     """Trade bloc memberships are defined for all 7 countries."""
-    from crawlers.countries.north_africa.uma_constants import UMA_TRADE_BLOCS, UMA_COUNTRIES
+    from crawlers.countries.north_africa.uma_constants import UMA_COUNTRIES, UMA_TRADE_BLOCS
+
     for code in UMA_COUNTRIES:
         assert code in UMA_TRADE_BLOCS, f"Trade blocs missing for {code}"
         assert len(UMA_TRADE_BLOCS[code]) > 0, f"Empty trade blocs for {code}"
@@ -78,7 +88,8 @@ def test_trade_blocs_all_countries():
 
 def test_sector_strengths_all_countries():
     """Sector strengths are defined for all 7 countries."""
-    from crawlers.countries.north_africa.uma_constants import UMA_SECTOR_STRENGTHS, UMA_COUNTRIES
+    from crawlers.countries.north_africa.uma_constants import UMA_COUNTRIES, UMA_SECTOR_STRENGTHS
+
     for code in UMA_COUNTRIES:
         assert code in UMA_SECTOR_STRENGTHS, f"Sector strengths missing for {code}"
         assert len(UMA_SECTOR_STRENGTHS[code]) > 0, f"Empty sectors for {code}"
@@ -88,6 +99,7 @@ def test_sector_strengths_all_countries():
 def test_multilang_names():
     """Multi-language names include Arabic for all countries."""
     from crawlers.countries.north_africa.uma_constants import MULTILANG_NAMES, UMA_COUNTRIES
+
     for code in UMA_COUNTRIES:
         names = MULTILANG_NAMES.get(code, {})
         assert "ar" in names, f"Arabic name missing for {code}"
@@ -99,9 +111,11 @@ def test_multilang_names():
 # 2. Tariff Structures Tests
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def test_morocco_reference_bands():
     """Morocco tariff bands match the specification."""
     from crawlers.countries.north_africa.tariff_structures import MOROCCO_TARIFFS
+
     assert MOROCCO_TARIFFS["raw_materials"] == 2.5
     assert MOROCCO_TARIFFS["intermediate_goods"] == 10.0
     assert MOROCCO_TARIFFS["final_goods"] == 25.0
@@ -113,6 +127,7 @@ def test_morocco_reference_bands():
 def test_get_country_tariff_profile_all_7():
     """Tariff profiles exist for all 7 countries."""
     from crawlers.countries.north_africa.tariff_structures import get_country_tariff_profile
+
     for code in ["MAR", "EGY", "TUN", "DZA", "LBY", "SDN", "MRT"]:
         profile = get_country_tariff_profile(code)
         assert profile is not None, f"Profile missing for {code}"
@@ -124,6 +139,7 @@ def test_get_country_tariff_profile_all_7():
 def test_get_country_tariff_profile_unknown():
     """get_country_tariff_profile returns None for unknown country."""
     from crawlers.countries.north_africa.tariff_structures import get_country_tariff_profile
+
     assert get_country_tariff_profile("ZZZ") is None
     print("✅ Unknown country returns None")
 
@@ -131,7 +147,8 @@ def test_get_country_tariff_profile_unknown():
 def test_get_chapter_rate_agricultural():
     """Chapter 1-24 returns agricultural rate for Morocco."""
     from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
-    rate = get_chapter_rate("MAR", 10)   # Chapter 10 = Cereals
+
+    rate = get_chapter_rate("MAR", 10)  # Chapter 10 = Cereals
     assert rate == 40.0, f"Expected 40.0, got {rate}"
     print("✅ Chapter 10 (cereals) → agricultural rate 40.0% for MAR")
 
@@ -139,6 +156,7 @@ def test_get_chapter_rate_agricultural():
 def test_get_chapter_rate_machinery():
     """Chapter 84 returns final_goods rate."""
     from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
+
     rate = get_chapter_rate("MAR", 84)
     assert rate == 25.0, f"Expected 25.0, got {rate}"
     print("✅ Chapter 84 (machinery) → final_goods rate 25.0% for MAR")
@@ -147,6 +165,7 @@ def test_get_chapter_rate_machinery():
 def test_get_chapter_rate_unknown_country():
     """Unknown country returns 0.0."""
     from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
+
     rate = get_chapter_rate("ZZZ", 84)
     assert rate == 0.0
     print("✅ Unknown country get_chapter_rate → 0.0")
@@ -155,6 +174,7 @@ def test_get_chapter_rate_unknown_country():
 def test_get_regional_tariff_comparison():
     """Regional comparison returns rates for all 7 countries."""
     from crawlers.countries.north_africa.tariff_structures import get_regional_tariff_comparison
+
     comparison = get_regional_tariff_comparison(84)
     for code in ["MAR", "EGY", "TUN", "DZA", "LBY", "SDN", "MRT"]:
         assert code in comparison, f"{code} missing from comparison"
@@ -165,22 +185,20 @@ def test_get_regional_tariff_comparison():
 def test_algeria_higher_than_morocco_intermediates():
     """Algeria intermediate goods rate > Morocco (import substitution)."""
     from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
+
     mar_rate = get_chapter_rate("MAR", 39)  # Plastics (intermediate)
     dza_rate = get_chapter_rate("DZA", 39)
-    assert dza_rate > mar_rate, (
-        f"Expected DZA ({dza_rate}) > MAR ({mar_rate}) for intermediates"
-    )
+    assert dza_rate > mar_rate, f"Expected DZA ({dza_rate}) > MAR ({mar_rate}) for intermediates"
     print(f"✅ Algeria ({dza_rate}%) > Morocco ({mar_rate}%) for intermediate goods")
 
 
 def test_libya_lower_rates_reconstruction():
     """Libya rates are lower than Morocco (reconstruction incentives)."""
     from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
+
     mar_rate = get_chapter_rate("MAR", 84)  # Machinery (final goods)
     lby_rate = get_chapter_rate("LBY", 84)
-    assert lby_rate < mar_rate, (
-        f"Expected LBY ({lby_rate}) < MAR ({mar_rate}) for final goods"
-    )
+    assert lby_rate < mar_rate, f"Expected LBY ({lby_rate}) < MAR ({mar_rate}) for final goods"
     print(f"✅ Libya ({lby_rate}%) < Morocco ({mar_rate}%) for final goods (reconstruction)")
 
 
@@ -188,9 +206,11 @@ def test_libya_lower_rates_reconstruction():
 # 3. Investment Zones Tests
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def test_investment_zones_all_countries():
     """Investment zones are defined for all 7 countries."""
     from crawlers.countries.north_africa.investment_zones import get_investment_zones
+
     for code in ["MAR", "EGY", "TUN", "DZA", "LBY", "SDN", "MRT"]:
         zones = get_investment_zones(code)
         assert isinstance(zones, list), f"{code}: expected list"
@@ -201,6 +221,7 @@ def test_investment_zones_all_countries():
 def test_investment_zones_unknown_country():
     """Unknown country returns empty list."""
     from crawlers.countries.north_africa.investment_zones import get_investment_zones
+
     zones = get_investment_zones("ZZZ")
     assert zones == []
     print("✅ Unknown country → empty zones list")
@@ -209,6 +230,7 @@ def test_investment_zones_unknown_country():
 def test_tangermed_in_morocco_zones():
     """Tanger-Med appears in Morocco zones."""
     from crawlers.countries.north_africa.investment_zones import get_investment_zones
+
     zones = get_investment_zones("MAR")
     names = [z["name"] for z in zones]
     assert any("Tanger" in n for n in names), f"Tanger-Med not found: {names}"
@@ -218,17 +240,17 @@ def test_tangermed_in_morocco_zones():
 def test_sczone_in_egypt_zones():
     """SCZONE appears in Egypt zones."""
     from crawlers.countries.north_africa.investment_zones import get_investment_zones
+
     zones = get_investment_zones("EGY")
     names = [z["name"] for z in zones]
-    assert any("SCZONE" in n or "Suez" in n for n in names), (
-        f"SCZONE not found: {names}"
-    )
+    assert any("SCZONE" in n or "Suez" in n for n in names), f"SCZONE not found: {names}"
     print("✅ SCZONE present in Egypt investment zones")
 
 
 def test_zone_schema_fields():
     """Each zone has required schema fields."""
     from crawlers.countries.north_africa.investment_zones import get_all_sez_data
+
     required_fields = ["name", "type", "location", "incentives", "target_sectors"]
     all_data = get_all_sez_data()
     for country, zones in all_data.items():
@@ -241,24 +263,29 @@ def test_zone_schema_fields():
 def test_zone_summary():
     """Zone summary returns expected structure."""
     from crawlers.countries.north_africa.investment_zones import get_zone_summary
+
     summary = get_zone_summary()
     assert "total_zones" in summary
     assert "operational_zones" in summary
     assert "port_connected_zones" in summary
     assert "by_country" in summary
     assert summary["total_zones"] > 0
-    print(f"✅ Zone summary: {summary['total_zones']} total, "
-          f"{summary['operational_zones']} operational, "
-          f"{summary['port_connected_zones']} port-connected")
+    print(
+        f"✅ Zone summary: {summary['total_zones']} total, "
+        f"{summary['operational_zones']} operational, "
+        f"{summary['port_connected_zones']} port-connected"
+    )
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. Morocco UMA Scraper Tests
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def test_generate_reference_positions():
     """generate_reference_positions produces 96 chapters (skip 77)."""
     from crawlers.countries.morocco_uma_scraper import generate_reference_positions
+
     positions = generate_reference_positions()
     assert len(positions) == 96, f"Expected 96, got {len(positions)}"
     print(f"✅ Morocco UMA: {len(positions)} reference positions generated")
@@ -267,9 +294,18 @@ def test_generate_reference_positions():
 def test_reference_position_schema():
     """Each position has required UMA schema fields."""
     from crawlers.countries.morocco_uma_scraper import generate_reference_positions
+
     positions = generate_reference_positions()
-    required = ["code", "designation", "chapter", "taxes", "taxes_detail",
-                "country", "trade_bloc", "source"]
+    required = [
+        "code",
+        "designation",
+        "chapter",
+        "taxes",
+        "taxes_detail",
+        "country",
+        "trade_bloc",
+        "source",
+    ]
     for pos in positions:
         for field in required:
             assert field in pos, f"Position missing field: {field}"
@@ -279,6 +315,7 @@ def test_reference_position_schema():
 def test_reference_position_dd_rates():
     """DD rates in positions are non-negative."""
     from crawlers.countries.morocco_uma_scraper import generate_reference_positions
+
     positions = generate_reference_positions()
     for pos in positions:
         dd = pos["taxes"].get("DD", 0)
@@ -289,6 +326,7 @@ def test_reference_position_dd_rates():
 def test_build_uma_position():
     """build_uma_position produces correct structure."""
     from crawlers.countries.morocco_uma_scraper import build_uma_position
+
     pos = build_uma_position(
         code="8704100000",
         designation="Véhicules automobiles pour le transport de marchandises",
@@ -298,7 +336,7 @@ def test_build_uma_position():
     assert pos["trade_bloc"] == "UMA"
     assert "DD" in pos["taxes"]
     assert "TVA" in pos["taxes"]
-    assert pos["taxes"]["DD"] == 25.0   # chapter 87 → final_goods band
+    assert pos["taxes"]["DD"] == 25.0  # chapter 87 → final_goods band
     assert pos["taxes"]["TVA"] == 20.0  # standard rate for ch 87
     print("✅ build_uma_position produces correct structure for ch 87")
 
@@ -306,6 +344,7 @@ def test_build_uma_position():
 def test_run_scraper_returns_result(tmp_path):
     """run_scraper returns a valid result dict."""
     from crawlers.countries.morocco_uma_scraper import run_scraper
+
     out = tmp_path / "MAR_test.json"
     result = run_scraper(output_file=str(out))
     assert result["country"] == "MAR"
@@ -318,19 +357,22 @@ def test_run_scraper_returns_result(tmp_path):
 # 5. UMA Member Scraper Tests
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def test_uma_country_configs_all_6_derived():
     """COUNTRY_CONFIGS covers the 6 derived countries (not MAR)."""
     from crawlers.countries.uma_member_scraper import COUNTRY_CONFIGS
+
     expected = {"EGY", "TUN", "DZA", "LBY", "SDN", "MRT"}
-    assert expected == set(COUNTRY_CONFIGS.keys()), (
-        f"Expected {expected}, got {set(COUNTRY_CONFIGS.keys())}"
-    )
+    assert expected == set(
+        COUNTRY_CONFIGS.keys()
+    ), f"Expected {expected}, got {set(COUNTRY_CONFIGS.keys())}"
     print("✅ UMA member scraper has configs for all 6 derived countries")
 
 
 def test_build_country_position_egypt():
     """Egypt position derived from Morocco base uses correct factors."""
-    from crawlers.countries.uma_member_scraper import build_country_position, COUNTRY_CONFIGS
+    from crawlers.countries.uma_member_scraper import COUNTRY_CONFIGS, build_country_position
+
     # Simulate a Morocco base position for chapter 10 (agricultural)
     mar_pos = {
         "code": "1001100000",
@@ -345,15 +387,18 @@ def test_build_country_position_egypt():
     # Agricultural factor for EGY = 0.50 → 40 * 0.50 = 20%
     assert pos["taxes"]["DD"] == 20.0, f"Expected 20.0, got {pos['taxes']['DD']}"
     assert "TVA" in pos["taxes"]
-    assert pos["taxes"]["TVA"] == 14.0   # Egypt VAT standard
+    assert pos["taxes"]["TVA"] == 14.0  # Egypt VAT standard
     print("✅ Egypt position derived correctly from Morocco base (agricultural ch10)")
 
 
 def test_build_country_position_algeria_higher_intermediate():
     """Algeria intermediate goods rate is higher than Morocco base."""
     from crawlers.countries.uma_member_scraper import (
-        build_country_position, COUNTRY_CONFIGS, MOROCCO_BASE_BANDS
+        COUNTRY_CONFIGS,
+        MOROCCO_BASE_BANDS,
+        build_country_position,
     )
+
     mar_pos = {
         "code": "3901100000",
         "designation": "Polyéthylène",
@@ -369,7 +414,8 @@ def test_build_country_position_algeria_higher_intermediate():
 
 def test_build_country_position_libya_low():
     """Libya raw materials are zero (reconstruction waiver)."""
-    from crawlers.countries.uma_member_scraper import build_country_position, COUNTRY_CONFIGS
+    from crawlers.countries.uma_member_scraper import COUNTRY_CONFIGS, build_country_position
+
     mar_pos = {
         "code": "2601100000",
         "designation": "Minerais de fer",
@@ -387,10 +433,12 @@ def test_build_country_position_libya_low():
 # 6. API Routes Tests
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def _build_app():
     """Build a minimal FastAPI app with the UMA regions router."""
     from fastapi import FastAPI
     from routes.uma_regions import router
+
     app = FastAPI()
     app.include_router(router, prefix="/api")
     return app
@@ -399,6 +447,7 @@ def _build_app():
 def test_api_north_africa_countries():
     """GET /api/regions/north-africa/countries returns all 7 countries."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
         response = client.get("/api/regions/north-africa/countries")
@@ -414,11 +463,10 @@ def test_api_north_africa_countries():
 def test_api_north_africa_countries_core_only():
     """GET /api/regions/north-africa/countries?include_extended=false returns 4."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
-        response = client.get(
-            "/api/regions/north-africa/countries?include_extended=false"
-        )
+        response = client.get("/api/regions/north-africa/countries?include_extended=false")
     assert response.status_code == 200
     data = response.json()
     assert data["total_countries"] == 4
@@ -430,6 +478,7 @@ def test_api_north_africa_countries_core_only():
 def test_api_uma_intelligence():
     """GET /api/regions/uma/intelligence returns regional overview."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
         response = client.get("/api/regions/uma/intelligence")
@@ -446,6 +495,7 @@ def test_api_uma_intelligence():
 def test_api_tariffs_country_morocco():
     """GET /api/tariffs/north-africa/MAR returns Morocco tariff profile."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
         response = client.get("/api/tariffs/north-africa/MAR")
@@ -460,6 +510,7 @@ def test_api_tariffs_country_morocco():
 def test_api_tariffs_country_unknown():
     """GET /api/tariffs/north-africa/XYZ returns 404."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
         response = client.get("/api/tariffs/north-africa/XYZ")
@@ -470,6 +521,7 @@ def test_api_tariffs_country_unknown():
 def test_api_investment_zones():
     """GET /api/investment/north-africa/zones returns all zones."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
         response = client.get("/api/investment/north-africa/zones")
@@ -484,6 +536,7 @@ def test_api_investment_zones():
 def test_api_investment_zones_country():
     """GET /api/investment/north-africa/zones/MAR returns Morocco zones."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
         response = client.get("/api/investment/north-africa/zones/MAR")
@@ -499,6 +552,7 @@ def test_api_investment_zones_country():
 def test_api_trade_agreements():
     """GET /api/trade/north-africa/agreements returns agreements matrix."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
         response = client.get("/api/trade/north-africa/agreements")
@@ -514,6 +568,7 @@ def test_api_trade_agreements():
 def test_api_trade_agreements_single_country():
     """GET /api/trade/north-africa/agreements?country_code=EGY returns Egypt."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
         response = client.get("/api/trade/north-africa/agreements?country_code=EGY")
@@ -530,6 +585,7 @@ def test_api_trade_agreements_single_country():
 def test_api_regional_summary():
     """GET /api/regions/north-africa/summary returns concise overview."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
         response = client.get("/api/regions/north-africa/summary")
@@ -543,11 +599,10 @@ def test_api_regional_summary():
 def test_api_compare_countries():
     """GET /api/regions/north-africa/compare returns comparison data."""
     from fastapi.testclient import TestClient
+
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
-        response = client.get(
-            "/api/regions/north-africa/compare?countries=MAR,EGY,TUN&chapter=84"
-        )
+        response = client.get("/api/regions/north-africa/compare?countries=MAR,EGY,TUN&chapter=84")
     assert response.status_code == 200, f"{response.status_code}: {response.text}"
     data = response.json()
     assert "comparison" in data
@@ -561,9 +616,11 @@ def test_api_compare_countries():
 # 7. Regional Config Tests
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def test_regional_config_includes_uma_countries():
     """regional_config.py exports UMA_COUNTRIES with all 7 countries."""
-    from config.regional_config import UMA_COUNTRIES, NORTH_AFRICA_EXTENDED
+    from config.regional_config import NORTH_AFRICA_EXTENDED, UMA_COUNTRIES
+
     expected = {"MAR", "DZA", "TUN", "LBY", "MRT", "EGY", "SDN"}
     assert expected == set(UMA_COUNTRIES)
     assert expected == set(NORTH_AFRICA_EXTENDED)
@@ -573,9 +630,10 @@ def test_regional_config_includes_uma_countries():
 def test_regional_config_vat_rates_extended():
     """NORTH_AFRICA_VAT_RATES covers all 7 countries including LBY, SDN, MRT."""
     from config.regional_config import NORTH_AFRICA_VAT_RATES
+
     for code in ["MAR", "EGY", "TUN", "DZA", "LBY", "SDN", "MRT"]:
         assert code in NORTH_AFRICA_VAT_RATES, f"VAT rate missing for {code}"
-    assert NORTH_AFRICA_VAT_RATES["LBY"] == 0.0   # Libya: no VAT
+    assert NORTH_AFRICA_VAT_RATES["LBY"] == 0.0  # Libya: no VAT
     assert NORTH_AFRICA_VAT_RATES["MAR"] == 20.0
     print("✅ NORTH_AFRICA_VAT_RATES covers all 7 countries")
 
@@ -583,6 +641,7 @@ def test_regional_config_vat_rates_extended():
 def test_regional_config_performance_target():
     """Performance target for full region scrape < 30s is present."""
     from config.regional_config import REGIONAL_CONFIG
+
     targets = REGIONAL_CONFIG["performance_targets"]
     assert "full_region_scrape_s" in targets
     assert targets["full_region_scrape_s"] == 30
@@ -593,10 +652,11 @@ def test_regional_config_performance_target():
 # Runner
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def run_all_tests():
     import inspect
-    import traceback
     import tempfile
+    import traceback
 
     tests = [
         (name, obj)

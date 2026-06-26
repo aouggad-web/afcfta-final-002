@@ -2,22 +2,23 @@
 (libre circulation, recalcul 0 %) et des zones de libre-échange (conditionnel,
 sans recalcul). Couvre l'auto-échange, les blocs chevauchants et la
 normalisation des codes ISO."""
+
 import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from services.regional_blocs import (
-    same_customs_union,
-    shared_free_trade_areas,
+    CUSTOMS_UNION_NAMES,
     CUSTOMS_UNIONS,
     FREE_TRADE_AREAS,
-    CUSTOMS_UNION_NAMES,
     FTA_NAMES,
+    same_customs_union,
+    shared_free_trade_areas,
 )
 
-
 # ── Unions douanières ───────────────────────────────────────────────────────
+
 
 def test_same_customs_union_sacu():
     assert same_customs_union("BWA", "ZAF") == "SACU"
@@ -55,6 +56,7 @@ def test_customs_union_normalizes_case_and_whitespace():
 
 # ── Zones de libre-échange (conditionnelles) ────────────────────────────────
 
+
 def test_shared_fta_comesa():
     # ERI et EGY partagent le COMESA mais aucune union douanière.
     assert same_customs_union("ERI", "EGY") is None
@@ -71,6 +73,7 @@ def test_shared_fta_empty_when_no_common_area():
 
 
 # ── Blocs chevauchants : l'union douanière prime, la ZLE reste signalée ──────
+
 
 def test_overlap_sacu_members_also_share_sadc():
     """ZAF/BWA : union douanière SACU ET zone de libre-échange SADC."""
@@ -95,6 +98,7 @@ def test_eswatini_multi_bloc_membership():
 
 
 # ── Cohérence des tables (codes ↔ libellés) ─────────────────────────────────
+
 
 def test_every_customs_union_has_a_name():
     assert set(CUSTOMS_UNIONS) == set(CUSTOMS_UNION_NAMES)

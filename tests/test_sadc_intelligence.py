@@ -14,11 +14,12 @@ Tests for services/sadc_intelligence_service.py covering:
   - Country tariff data loading
 """
 
-import sys
 import os
+import sys
+
 import pytest
 
-BACKEND_DIR = os.path.join(os.path.dirname(__file__), '..', 'backend')
+BACKEND_DIR = os.path.join(os.path.dirname(__file__), "..", "backend")
 sys.path.insert(0, BACKEND_DIR)
 
 
@@ -26,14 +27,17 @@ sys.path.insert(0, BACKEND_DIR)
 # Service instantiation
 # ===========================================================================
 
+
 class TestSADCIntelligenceServiceInit:
     def test_import_service(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         svc = SADCIntelligenceService()
         assert svc is not None
 
     def test_singleton_factory(self):
         from services.sadc_intelligence_service import get_sadc_intelligence
+
         svc1 = get_sadc_intelligence()
         svc2 = get_sadc_intelligence()
         assert svc1 is svc2
@@ -43,9 +47,11 @@ class TestSADCIntelligenceServiceInit:
 # Regional overview
 # ===========================================================================
 
+
 class TestSADCRegionalOverview:
     def setup_method(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         self.svc = SADCIntelligenceService()
 
     def test_overview_returns_dict(self):
@@ -89,9 +95,11 @@ class TestSADCRegionalOverview:
 # Data freshness
 # ===========================================================================
 
+
 class TestSADCDataFreshness:
     def test_freshness_report(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         svc = SADCIntelligenceService()
         report = svc.get_data_freshness()
         result = report.to_dict()
@@ -101,7 +109,8 @@ class TestSADCDataFreshness:
         assert result["total_countries"] == 16
 
     def test_all_16_countries_in_report(self):
-        from services.sadc_intelligence_service import SADCIntelligenceService, SADC_COUNTRY_LIST
+        from services.sadc_intelligence_service import SADC_COUNTRY_LIST, SADCIntelligenceService
+
         svc = SADCIntelligenceService()
         report = svc.get_data_freshness()
         result = report.to_dict()
@@ -113,9 +122,11 @@ class TestSADCDataFreshness:
 # Investment recommendation
 # ===========================================================================
 
+
 class TestSADCInvestmentRecommendation:
     def setup_method(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         self.svc = SADCIntelligenceService()
 
     def test_returns_list(self):
@@ -157,9 +168,11 @@ class TestSADCInvestmentRecommendation:
 # Mining intelligence
 # ===========================================================================
 
+
 class TestSADCMiningIntelligence:
     def setup_method(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         self.svc = SADCIntelligenceService()
 
     def test_returns_dict(self):
@@ -180,9 +193,11 @@ class TestSADCMiningIntelligence:
 # Transport corridors
 # ===========================================================================
 
+
 class TestSADCTransportCorridors:
     def setup_method(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         self.svc = SADCIntelligenceService()
 
     def test_all_corridors(self):
@@ -201,9 +216,11 @@ class TestSADCTransportCorridors:
 # SACU framework
 # ===========================================================================
 
+
 class TestSADCSACUFramework:
     def setup_method(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         self.svc = SADCIntelligenceService()
 
     def test_sacu_framework_returns_dict(self):
@@ -220,9 +237,11 @@ class TestSADCSACUFramework:
 # Cross-regional comparisons
 # ===========================================================================
 
+
 class TestSADCCrossRegionalComparisons:
     def setup_method(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         self.svc = SADCIntelligenceService()
 
     def test_sadc_vs_eac_returns_dict(self):
@@ -251,9 +270,11 @@ class TestSADCCrossRegionalComparisons:
 # Trade protocols
 # ===========================================================================
 
+
 class TestSADCTradeProtocols:
     def setup_method(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         self.svc = SADCIntelligenceService()
 
     def test_all_protocols_returns_dict(self):
@@ -274,9 +295,11 @@ class TestSADCTradeProtocols:
 # Country tariff data
 # ===========================================================================
 
+
 class TestSADCCountryTariffData:
     def setup_method(self):
         from services.sadc_intelligence_service import SADCIntelligenceService
+
         self.svc = SADCIntelligenceService()
 
     def test_valid_sadc_country(self):

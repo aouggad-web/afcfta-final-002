@@ -1,7 +1,8 @@
+from pathlib import Path
+
 import pandas as pd
 import requests
 import urllib3
-from pathlib import Path
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -11,6 +12,7 @@ NORM_DIR = BASE / "normalized"
 
 PDF_DIR.mkdir(exist_ok=True, parents=True)
 NORM_DIR.mkdir(exist_ok=True, parents=True)
+
 
 def download(url: str, out: Path) -> None:
     if out.exists() and out.stat().st_size > 0:
@@ -40,6 +42,7 @@ def download(url: str, out: Path) -> None:
     out.write_bytes(r.content)
     print("Saved (insecure SSL):", out, f"({out.stat().st_size} bytes)")
 
+
 def ingest_row(row: dict) -> None:
     bloc = row["bloc"]
     parser = row["parser"]
@@ -65,10 +68,12 @@ def ingest_row(row: dict) -> None:
     else:
         raise ValueError(f"Unknown parser: {parser}")
 
+
 def main():
     reg = pd.read_csv("registry.csv").fillna("")
     for _, r in reg.iterrows():
         ingest_row(r.to_dict())
+
 
 if __name__ == "__main__":
     main()

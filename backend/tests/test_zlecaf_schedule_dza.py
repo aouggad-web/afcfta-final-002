@@ -4,11 +4,18 @@ Tests du calendrier de démantèlement ZLECAf à l'importation en Algérie
 classement liste (A)/(B)/(C), gel des règles d'origine, et les facteurs de
 réduction des deux calendriers (standard vs réciprocité) à des dates clés.
 """
+
 import datetime
 
 from services.zlecaf_schedule_dza import (
-    compute_dza_zlecaf_rate, tariff_list, is_frozen, daps_exempt,
-    ACTIVE_PARTNERS, RECIPROCITY_PARTNERS, LIST_B_CODES, LIST_B_BASE_RATES_2019,
+    ACTIVE_PARTNERS,
+    LIST_B_BASE_RATES_2019,
+    LIST_B_CODES,
+    RECIPROCITY_PARTNERS,
+    compute_dza_zlecaf_rate,
+    daps_exempt,
+    is_frozen,
+    tariff_list,
 )
 
 
@@ -53,9 +60,7 @@ def test_list_b_standard_partner_full_rate_during_transition():
     # prévaut sur le taux normal transmis, qui peut être obsolète/différent.
     code = _non_frozen_list_b_code()
     base = LIST_B_BASE_RATES_2019[code]
-    rate, source = compute_dza_zlecaf_rate(
-        code, "TUN", 0.999, as_of=datetime.date(2024, 6, 18)
-    )
+    rate, source = compute_dza_zlecaf_rate(code, "TUN", 0.999, as_of=datetime.date(2024, 6, 18))
     assert rate == base  # transition 2021-2025 : droit commun (taux de base) maintenu
     assert "liste (B)" in source
     assert "taux de base 2019" in source
@@ -64,20 +69,16 @@ def test_list_b_standard_partner_full_rate_during_transition():
 def test_list_b_standard_partner_reduction_starts_2026():
     code = _non_frozen_list_b_code()
     base = LIST_B_BASE_RATES_2019[code]
-    rate, _ = compute_dza_zlecaf_rate(
-        code, "TUN", 0.999, as_of=datetime.date(2026, 6, 18)
-    )
+    rate, _ = compute_dza_zlecaf_rate(code, "TUN", 0.999, as_of=datetime.date(2026, 6, 18))
     assert abs(rate - base * 0.8) < 1e-9  # 80% du droit de base
 
 
 def test_list_c_never_reduced():
-    code = next(iter(__import__(
-        "services.zlecaf_schedule_dza", fromlist=["LIST_C_CODES"]
-    ).LIST_C_CODES))
-    assert tariff_list(code) == "C"
-    rate, source = compute_dza_zlecaf_rate(
-        code, "EGY", 0.30, as_of=datetime.date(2030, 1, 1)
+    code = next(
+        iter(__import__("services.zlecaf_schedule_dza", fromlist=["LIST_C_CODES"]).LIST_C_CODES)
     )
+    assert tariff_list(code) == "C"
+    rate, source = compute_dza_zlecaf_rate(code, "EGY", 0.30, as_of=datetime.date(2030, 1, 1))
     assert rate == 0.30
     assert "liste (C)" in source
 
@@ -110,9 +111,7 @@ def test_list_b_uses_authoritative_2019_base_rate_not_stale_normal_rate():
     # sur le taux de base figé (30%), pas sur le taux normal courant (5%).
     code = "0201101100"
     assert LIST_B_BASE_RATES_2019[code] == 0.30
-    rate, source = compute_dza_zlecaf_rate(
-        code, "TUN", 0.05, as_of=datetime.date(2026, 6, 18)
-    )
+    rate, source = compute_dza_zlecaf_rate(code, "TUN", 0.05, as_of=datetime.date(2026, 6, 18))
     assert abs(rate - 0.30 * 0.8) < 1e-9
     assert "taux de base 2019" in source
 
@@ -120,9 +119,7 @@ def test_list_b_uses_authoritative_2019_base_rate_not_stale_normal_rate():
 def test_list_a_code_keeps_passed_normal_rate_no_base_override():
     # La table de base 2019 ne couvre que la liste (B) : pour la liste (A),
     # le taux normal transmis par l'appelant reste la seule source.
-    rate, _ = compute_dza_zlecaf_rate(
-        "2901101000", "TUN", 0.15, as_of=datetime.date(2026, 6, 18)
-    )
+    rate, _ = compute_dza_zlecaf_rate("2901101000", "TUN", 0.15, as_of=datetime.date(2026, 6, 18))
     assert rate == 0.0
 
 
@@ -147,14 +144,10 @@ def test_reciprocity_partners_count():
 
 
 def test_list_a_full_elimination_after_2030_reciprocity():
-    rate, _ = compute_dza_zlecaf_rate(
-        "2901101000", "ZAF", 0.30, as_of=datetime.date(2031, 1, 1)
-    )
+    rate, _ = compute_dza_zlecaf_rate("2901101000", "ZAF", 0.30, as_of=datetime.date(2031, 1, 1))
     assert rate == 0.0
 
 
 def test_list_a_full_rate_before_agreement_entry():
-    rate, _ = compute_dza_zlecaf_rate(
-        "2901101000", "TUN", 0.30, as_of=datetime.date(2020, 1, 1)
-    )
+    rate, _ = compute_dza_zlecaf_rate("2901101000", "TUN", 0.30, as_of=datetime.date(2020, 1, 1))
     assert rate == 0.30

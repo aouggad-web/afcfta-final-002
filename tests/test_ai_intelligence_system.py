@@ -16,8 +16,9 @@ platform enhancement:
 """
 
 import sys
-import pytest
 from pathlib import Path
+
+import pytest
 
 # Add backend to path
 backend_path = Path(__file__).parent.parent / "backend"
@@ -28,11 +29,13 @@ sys.path.insert(0, str(backend_path))
 # AI Scoring
 # ===========================================================================
 
+
 class TestInvestmentScoringEngine:
     """Tests for the investment scoring engine."""
 
     def setup_method(self):
         from ai.scoring_algorithms import InvestmentScoringEngine
+
         self.engine = InvestmentScoringEngine()
 
     def test_calculate_score_returns_expected_dimensions(self):
@@ -40,9 +43,14 @@ class TestInvestmentScoringEngine:
         d = score.to_dict()
         assert "total_score" in d
         assert "dimensions" in d
-        for dim in ("market_access", "business_environment", "infrastructure",
-                    "economic_fundamentals", "investment_incentives",
-                    "risk_adjusted_return"):
+        for dim in (
+            "market_access",
+            "business_environment",
+            "infrastructure",
+            "economic_fundamentals",
+            "investment_incentives",
+            "risk_adjusted_return",
+        ):
             assert dim in d["dimensions"], f"Missing dimension: {dim}"
 
     def test_score_is_between_0_and_100(self):
@@ -76,11 +84,13 @@ class TestInvestmentScoringEngine:
 # AI Recommendations
 # ===========================================================================
 
+
 class TestPersonalizedRecommendationEngine:
     """Tests for the recommendation engine."""
 
     def setup_method(self):
         from ai.recommendation_engine import PersonalizedRecommendationEngine
+
         self.engine = PersonalizedRecommendationEngine()
 
     def test_generate_returns_list(self):
@@ -91,8 +101,7 @@ class TestPersonalizedRecommendationEngine:
     def test_recommendation_has_required_keys(self):
         recs = self.engine.generate_recommendations({})
         for rec in recs:
-            for key in ("opportunity_id", "country", "sector", "confidence_score",
-                        "match_score"):
+            for key in ("opportunity_id", "country", "sector", "confidence_score", "match_score"):
                 assert key in rec, f"Key missing in recommendation: {key}"
 
     def test_scores_between_0_and_1(self):
@@ -117,11 +126,13 @@ class TestPersonalizedRecommendationEngine:
 # NLP Processing
 # ===========================================================================
 
+
 class TestNLPSearchProcessor:
     """Tests for the NLP search processor."""
 
     def setup_method(self):
         from ai.nlp_processing import NLPSearchProcessor
+
         self.nlp = NLPSearchProcessor()
 
     def test_process_query_returns_dict(self):
@@ -133,6 +144,7 @@ class TestNLPSearchProcessor:
         # Use the AdvancedHSCodeSearch for fuzzy matching (NLPSearchProcessor
         # provides an additional fuzzy_hs_search helper over arbitrary data)
         from search.hs_code_search import AdvancedHSCodeSearch
+
         hs = AdvancedHSCodeSearch()
         results = hs.fuzzy_search("car vehicle", limit=5)
         assert isinstance(results, list)
@@ -147,11 +159,13 @@ class TestNLPSearchProcessor:
 # Regional Analytics
 # ===========================================================================
 
+
 class TestRegionalAnalyticsEngine:
     """Tests for the regional analytics engine."""
 
     def setup_method(self):
         from analytics.regional_intelligence import RegionalAnalyticsEngine
+
         self.engine = RegionalAnalyticsEngine()
 
     def test_get_regional_dashboard_structure(self):
@@ -181,11 +195,13 @@ class TestRegionalAnalyticsEngine:
 # Dashboard Generator
 # ===========================================================================
 
+
 class TestDashboardGenerator:
     """Tests for the dashboard generator."""
 
     def setup_method(self):
         from analytics.dashboard_generator import DashboardGenerator
+
         self.gen = DashboardGenerator()
 
     def test_generate_executive_summary(self):
@@ -206,11 +222,13 @@ class TestDashboardGenerator:
 # HS Code Search
 # ===========================================================================
 
+
 class TestAdvancedHSCodeSearch:
     """Tests for the advanced HS code search."""
 
     def setup_method(self):
         from search.hs_code_search import AdvancedHSCodeSearch
+
         self.search = AdvancedHSCodeSearch()
 
     def test_fuzzy_search_returns_results(self):
@@ -237,11 +255,13 @@ class TestAdvancedHSCodeSearch:
 # Investment Opportunity Search
 # ===========================================================================
 
+
 class TestInvestmentOpportunitySearch:
     """Tests for the investment opportunity search."""
 
     def setup_method(self):
         from search.investment_search import InvestmentOpportunitySearch
+
         self.search = InvestmentOpportunitySearch()
 
     def test_search_returns_results(self):
@@ -261,11 +281,13 @@ class TestInvestmentOpportunitySearch:
 # Redis/Cache Manager
 # ===========================================================================
 
+
 class TestRedisManager:
     """Tests for the multi-layer cache manager."""
 
     def setup_method(self):
         from cache.redis_manager import RedisManager
+
         self.cache = RedisManager()
 
     def test_set_and_get_l1(self):

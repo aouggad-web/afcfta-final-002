@@ -64,4 +64,7 @@ def test_total_cost_breakdown_for_new_route():
     assert result["ocean_freight_usd"] == 907
     assert result["origin_thc_usd"] == PORT_THC["TZDAR"]["feu_hc_usd"]
     assert result["destination_thc_usd"] == PORT_THC["ZADUR"]["feu_hc_usd"]
-    assert result["total_cost_usd"] == 907 + PORT_THC["TZDAR"]["feu_hc_usd"] + PORT_THC["ZADUR"]["feu_hc_usd"]
+    assert (
+        result["total_cost_usd"]
+        == 907 + PORT_THC["TZDAR"]["feu_hc_usd"] + PORT_THC["ZADUR"]["feu_hc_usd"]
+    )

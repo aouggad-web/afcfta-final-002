@@ -7,7 +7,6 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-
 backend_path = Path(__file__).parent.parent
 if str(backend_path) not in sys.path:
     sys.path.insert(0, str(backend_path))
@@ -150,7 +149,9 @@ class TestBankingRoutes:
         assert payload["exchange_rate_info"]["rate_usd"] == 1.0
         assert payload["exchange_rate_info"]["rate_source"] == "N/A"
 
-    def test_get_forex_regulations_handles_rate_service_errors(self, client, banking_module, monkeypatch):
+    def test_get_forex_regulations_handles_rate_service_errors(
+        self, client, banking_module, monkeypatch
+    ):
         monkeypatch.setattr(
             banking_module,
             "get_rate_service",
@@ -169,7 +170,9 @@ class TestBankingRoutes:
         rows = response.json()
         assert any(row["country_code"] == "MA" for row in rows)
 
-    def test_get_african_forex_rates_returns_filtered_rates(self, client, banking_module, monkeypatch):
+    def test_get_african_forex_rates_returns_filtered_rates(
+        self, client, banking_module, monkeypatch
+    ):
         stub_service = StubRateService(
             latest_bundle=_make_bundle({"MAD": 10.0, "NGN": 1500.0, "EUR": 0.92})
         )
@@ -183,7 +186,9 @@ class TestBankingRoutes:
         assert {"MAD", "NGN"}.issubset(codes)
         assert "EUR" not in codes
 
-    def test_get_african_forex_rates_returns_503_when_service_is_unavailable(self, client, banking_module, monkeypatch):
+    def test_get_african_forex_rates_returns_503_when_service_is_unavailable(
+        self, client, banking_module, monkeypatch
+    ):
         monkeypatch.setattr(
             banking_module,
             "get_rate_service",
@@ -193,7 +198,9 @@ class TestBankingRoutes:
         response = client.get("/banking/forex/rates")
         assert response.status_code == 503
 
-    def test_get_african_forex_rates_handles_unexpected_errors(self, client, banking_module, monkeypatch):
+    def test_get_african_forex_rates_handles_unexpected_errors(
+        self, client, banking_module, monkeypatch
+    ):
         monkeypatch.setattr(
             banking_module,
             "get_rate_service",
@@ -204,7 +211,9 @@ class TestBankingRoutes:
         assert response.status_code == 503
         assert "provider error" in response.json()["detail"]
 
-    def test_convert_to_local_currency_returns_conversion_payload(self, client, banking_module, monkeypatch):
+    def test_convert_to_local_currency_returns_conversion_payload(
+        self, client, banking_module, monkeypatch
+    ):
         stub_service = StubRateService(
             conversion_result=_make_conversion("EUR", "MAD", 50.0, 545.0, 10.9)
         )
@@ -217,7 +226,9 @@ class TestBankingRoutes:
         assert payload["to_currency"] == "MAD"
         assert payload["converted_amount"] == pytest.approx(545.0)
 
-    def test_convert_to_local_currency_returns_503_when_rate_is_missing(self, client, banking_module, monkeypatch):
+    def test_convert_to_local_currency_returns_503_when_rate_is_missing(
+        self, client, banking_module, monkeypatch
+    ):
         monkeypatch.setattr(
             banking_module,
             "get_rate_service",
@@ -227,7 +238,9 @@ class TestBankingRoutes:
         response = client.get("/banking/forex/convert?country_code=MA&amount=50")
         assert response.status_code == 503
 
-    def test_convert_to_local_currency_handles_unexpected_errors(self, client, banking_module, monkeypatch):
+    def test_convert_to_local_currency_handles_unexpected_errors(
+        self, client, banking_module, monkeypatch
+    ):
         monkeypatch.setattr(
             banking_module,
             "get_rate_service",
@@ -244,7 +257,9 @@ class TestBankingRoutes:
         assert any(item["code"] == "LC_IRREVOCABLE" for item in response.json())
 
     def test_trade_finance_recommend_endpoint_returns_recommendations(self, client):
-        response = client.get("/banking/trade-finance/recommend?country_code=NG&transaction_type=export&amount_usd=100000")
+        response = client.get(
+            "/banking/trade-finance/recommend?country_code=NG&transaction_type=export&amount_usd=100000"
+        )
         assert response.status_code == 200
         payload = response.json()
         assert payload["country_code"] == "NG"
@@ -264,7 +279,9 @@ class TestBankingRoutes:
         assert any(system["code"] == "SWIFT" for system in systems)
 
     def test_risk_assessment_endpoint_returns_alert_metadata(self, client):
-        response = client.get("/banking/countries/MA/risk-assessment?amount_usd=50000&transaction_type=export")
+        response = client.get(
+            "/banking/countries/MA/risk-assessment?amount_usd=50000&transaction_type=export"
+        )
         assert response.status_code == 200
         payload = response.json()
         assert payload["country_code"] == "MA"
@@ -278,7 +295,9 @@ class TestBankingRoutes:
         assert "aml_framework" in payload
 
     def test_register_endpoint_supports_filters(self, client):
-        response = client.get("/banking/register?country_code=MA&bank_type=central&search=Al-Maghrib")
+        response = client.get(
+            "/banking/register?country_code=MA&bank_type=central&search=Al-Maghrib"
+        )
         assert response.status_code == 200
         payload = response.json()
         assert payload["total"] == 1

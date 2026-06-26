@@ -5,14 +5,14 @@ Sans réseau : la source (le tarif extérieur commun) provient des États membre
 déjà présents dans data/crawled. Vérifie que le droit de douane commun est
 préservé, que la TVA devient nationale, et que le résultat est authentique.
 """
-import pytest
 
+import pytest
 from tariff_crawl.adapters.regional import (
-    build_regional_file,
-    find_gaps,
-    deferred_national,
     NATIONAL_ONLY,
     _swap_vat,
+    build_regional_file,
+    deferred_national,
+    find_gaps,
 )
 from tariff_crawl.canonical import validate_authenticity
 from tariff_crawl.manifest import Provenance
@@ -28,9 +28,9 @@ def test_swap_vat_keeps_duty_changes_only_vat():
         ],
     }
     out = _swap_vat(pos, 15.0)
-    assert out["taxes"]["DD"] == 10.0      # droit commun inchangé
-    assert out["taxes"]["PCS"] == 1.0      # prélèvement communautaire inchangé
-    assert out["taxes"]["TVA"] == 15.0     # TVA -> taux national
+    assert out["taxes"]["DD"] == 10.0  # droit commun inchangé
+    assert out["taxes"]["PCS"] == 1.0  # prélèvement communautaire inchangé
+    assert out["taxes"]["TVA"] == 15.0  # TVA -> taux national
     assert out["taxes_detail"][1]["rate"] == 15.0
     # l'original n'est pas muté
     assert pos["taxes"]["TVA"] == 18.0
@@ -41,11 +41,14 @@ def test_ghana_is_deferred_to_national_crawl():
     assert "GHA" not in find_gaps("ECOWAS")
 
 
-@pytest.mark.parametrize("iso,bloc,expected_vat", [
-    ("GNB", "ECOWAS", 17.0),
-    ("LBR", "ECOWAS", 10.0),
-    ("GNQ", "CEMAC", 15.0),
-])
+@pytest.mark.parametrize(
+    "iso,bloc,expected_vat",
+    [
+        ("GNB", "ECOWAS", 17.0),
+        ("LBR", "ECOWAS", 10.0),
+        ("GNQ", "CEMAC", 15.0),
+    ],
+)
 def test_build_regional_file_authentic_and_national_vat(iso, bloc, expected_vat):
     doc, issues = build_regional_file(iso, bloc)
     assert not issues, issues
