@@ -10,6 +10,7 @@ const API_URL = BACKEND_URL || '';
 const TEXTS = {
   fr: {
     loading: 'Chargement des données commerciales...',
+    selectYear: 'Année',
     intraNoteTitle: 'Données de Commerce INTRA-AFRICAIN',
     intraNoteBodyPre: 'Les données ci-dessous représentent uniquement les ',
     intraNoteBodyStrong: 'échanges commerciaux entre pays africains',
@@ -62,6 +63,7 @@ const TEXTS = {
   },
   en: {
     loading: 'Loading trade data...',
+    selectYear: 'Year',
     intraNoteTitle: 'INTRA-AFRICAN Trade Data',
     intraNoteBodyPre: 'The data below represents only ',
     intraNoteBodyStrong: 'trade flows between African countries',
@@ -117,7 +119,7 @@ const TEXTS = {
 const TradeComparison = ({ language = 'fr' }) => {
   const t = TEXTS[language] || TEXTS.fr;
 
-  const selectedYear = '2024';
+  const [selectedYear, setSelectedYear] = useState('2024');
   const [loading, setLoading] = useState(true);
   const [statistics, setStatistics] = useState(null);
   const [calculationsGlobal, setCalculationsGlobal] = useState([]);
@@ -235,6 +237,22 @@ const TradeComparison = ({ language = 'fr' }) => {
 
   return (
     <div className="space-y-8">
+      {/* ── Year selector ───────────────────────────────────────── */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 700, letterSpacing: 0.4 }}>{t.selectYear}</span>
+          <select
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+            style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.22)', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}
+          >
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+          </select>
+        </label>
+      </div>
+
       {/* ── Info Note: Intra-African data ──────────────────────── */}
       <div className="stats-chart-card" style={{ padding: '16px 20px' }}>
         <div className="flex items-start gap-3">
