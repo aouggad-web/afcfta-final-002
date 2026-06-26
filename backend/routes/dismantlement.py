@@ -12,8 +12,10 @@ from etl.afcfta_schedule import (
     CAT_C,
     CAT_D,
     LDC_COUNTRIES,
+    compute_impact_projection,
     get_dismantlement_schedule,
 )
+from etl.country_tariffs_complete import get_tariff_rate_for_country
 from fastapi import APIRouter, HTTPException, Query
 from services.preference_profile_service import get_preference_profile
 
@@ -78,6 +80,86 @@ async def dismantlement_schedule(
     result["category_label"] = result.get(label_key, result.get("category_label_fr"))
 
     return result
+
+
+@router.get("/impact/{country_iso3}/{hs6}")
+async def dismantlement_impact(
+    country_iso3: str,
+    hs6: str,
+    trade_value: float = Query(..., gt=0, description="Valeur annuelle échangée, en USD"),
+    npf_rate: Optional[float] = Query(
+        None,
+        ge=0.0,
+        le=100.0,
+        description="Taux NPF en %. Auto-détecté depuis les données tarifaires si absent.",
+    ),
+    category: Optional[str] = Query(
+        None, pattern="^[ABCD]$", description="Catégorie ZLECAf (A/B/C/D). Auto-détectée si absent."
+    ),
+    language: str = Query("fr", pattern="^(fr|en)$"),
+):
+    """
+    Simulateur d'impact ZLECAf: projette l'économie de droits de douane
+    année par année (et cumulée) pour un flux commercial donné, en suivant
+    le calendrier officiel de démantèlement tarifaire.
+
+    Exemple: exporter 1 000 000 USD de produit `hs6` vers `country_iso3`,
+    combien d'économie de droits chaque année jusqu'à la pleine libéralisation ?
+    """
+    country = country_iso3.strip().upper()
+    if len(country) != 3:
+        raise HTTPException(400, detail="country_iso3 doit être un code ISO3 à 3 lettres")
+
+    code = hs6.strip().zfill(6)
+    if len(code) != 6 or not code.isdigit():
+        raise HTTPException(400, detail="hs6 doit être un code à 6 chiffres")
+
+    # Taux NPF: fourni par l'appelant, sinon auto-détecté depuis les données tarifaires.
+    npf_source = "fourni par l'utilisateur"
+    rate = npf_rate
+    if rate is None:
+        rate_decimal, npf_source = get_tariff_rate_for_country(country, code)
+        rate = round(rate_decimal * 100.0, 2)
+
+    schedule_info = get_dismantlement_schedule(country, code, rate, category)
+    projection = compute_impact_projection(
+        npf_rate=rate,
+        category=schedule_info["category"],
+        is_ldc=schedule_info["is_ldc"],
+        trade_value=trade_value,
+    )
+
+    total_saving = projection[-1]["cumulative_saving"] if projection else 0.0
+    full_year = next(
+        (
+            r["calendar_year"]
+            for r in projection
+            if r["zlecaf_rate"] == 0.0 and schedule_info["category"] != CAT_C
+        ),
+        None,
+    )
+    current_row = next(
+        (r for r in projection if r["year"] == schedule_info["current_implementation_year"]),
+        None,
+    )
+
+    label_key = f"category_label_{language}"
+    return {
+        "country_iso3": country,
+        "hs6": code,
+        "trade_value": trade_value,
+        "npf_rate": rate,
+        "npf_rate_source": npf_source,
+        "category": schedule_info["category"],
+        "category_label": schedule_info.get(label_key, schedule_info.get("category_label_fr")),
+        "is_ldc": schedule_info["is_ldc"],
+        "current_implementation_year": schedule_info["current_implementation_year"],
+        "current_zlecaf_rate": schedule_info["current_zlecaf_rate"],
+        "annual_saving_now": current_row["annual_saving"] if current_row else None,
+        "full_liberalization_year": full_year,
+        "total_saving_over_schedule": total_saving,
+        "projection": projection,
+    }
 
 
 @router.get("/summary/{country_iso3}")
