@@ -24,6 +24,7 @@ est classé RATIFIED par défaut (50 pays sur 55), sans préjuger du dépôt
 effectif d'une offre tarifaire (qui reste à vérifier au cas par cas via les
 modules bilatéraux dédiés).
 """
+
 from __future__ import annotations
 
 NOT_SIGNED = frozenset({"ERI"})  # Érythrée : seul membre UA non signataire

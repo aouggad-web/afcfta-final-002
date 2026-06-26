@@ -17,9 +17,10 @@ Les taux sont ESTIMÉS par un modèle distance-coût calibré ; les tarifs réel
 fortement (±25-35 %) selon la compagnie, la capacité, la saisonnalité et la nature de
 la marchandise.
 """
-from typing import Optional, List, Dict, Any
-from math import radians, sin, cos, asin, sqrt
+
 from functools import lru_cache
+from math import asin, cos, radians, sin, sqrt
+from typing import Any, Dict, List, Optional
 
 import logistics_air_data
 
@@ -103,19 +104,31 @@ _REGION_CARRIERS = {
 # Multiplicateurs par nature de marchandise (TACT commodity factors)
 COMMODITY_FACTORS = {
     "general": {"factor": 1.0, "label_fr": "Marchandise générale", "label_en": "General cargo"},
-    "perishable": {"factor": 1.18, "label_fr": "Périssable (chaîne du froid)", "label_en": "Perishable (cold chain)"},
-    "pharma": {"factor": 1.45, "label_fr": "Pharmaceutique / temp. contrôlée", "label_en": "Pharma / temp-controlled"},
-    "dangerous": {"factor": 1.55, "label_fr": "Marchandise dangereuse (DGR)", "label_en": "Dangerous goods (DGR)"},
+    "perishable": {
+        "factor": 1.18,
+        "label_fr": "Périssable (chaîne du froid)",
+        "label_en": "Perishable (cold chain)",
+    },
+    "pharma": {
+        "factor": 1.45,
+        "label_fr": "Pharmaceutique / temp. contrôlée",
+        "label_en": "Pharma / temp-controlled",
+    },
+    "dangerous": {
+        "factor": 1.55,
+        "label_fr": "Marchandise dangereuse (DGR)",
+        "label_en": "Dangerous goods (DGR)",
+    },
     "valuable": {"factor": 1.65, "label_fr": "Valeur / sécurisé", "label_en": "Valuable / secured"},
     "live": {"factor": 1.40, "label_fr": "Animaux vivants", "label_en": "Live animals"},
 }
 
 VOLUMETRIC_FACTOR = 167.0  # kg par m³ (norme IATA TACT)
 MIN_CHARGE_USD = 120.0
-FSC_PER_KG = 0.65          # surcharge carburant
-SSC_PER_KG = 0.12          # surcharge sûreté
-AWB_FEE_USD = 40.0         # frais de LTA (AWB)
-TERMINAL_PER_KG = 0.09     # manutention terminal
+FSC_PER_KG = 0.65  # surcharge carburant
+SSC_PER_KG = 0.12  # surcharge sûreté
+AWB_FEE_USD = 40.0  # frais de LTA (AWB)
+TERMINAL_PER_KG = 0.09  # manutention terminal
 
 
 @lru_cache(maxsize=1)
@@ -190,8 +203,8 @@ def _transit_days(o: str, d: str) -> tuple:
     reg = _airport_registry()
     both_hub_side = reg[o]["is_hub"] or reg[d]["is_hub"]
     if both_hub_side:
-        return 1, 3   # direct ou 1 correspondance
-    return 2, 4       # via hub, double correspondance
+        return 1, 3  # direct ou 1 correspondance
+    return 2, 4  # via hub, double correspondance
 
 
 # ------------------------------------------------------------------
@@ -201,8 +214,15 @@ def get_air_fee_airports() -> List[Dict[str, Any]]:
     """Liste des aéroports sélectionnables (triés par région puis nom)."""
     reg = _airport_registry()
     return [
-        {"iata": a["iata"], "name": a["name"], "country": a["country"],
-         "iso": a["iso"], "flag": a["flag"], "region": a["region"], "is_hub": a["is_hub"]}
+        {
+            "iata": a["iata"],
+            "name": a["name"],
+            "country": a["country"],
+            "iso": a["iso"],
+            "flag": a["flag"],
+            "region": a["region"],
+            "is_hub": a["is_hub"],
+        }
         for a in sorted(reg.values(), key=lambda x: (x["region"], x["name"]))
     ]
 

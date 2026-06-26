@@ -1,10 +1,10 @@
-from fastapi import APIRouter, HTTPException, Query
-from typing import Optional, List
-from pydantic import BaseModel
 import logging
+from typing import List, Optional
 
-from services.crawl_orchestrator import get_orchestrator
 from crawlers.all_countries_registry import AFRICAN_COUNTRIES_REGISTRY
+from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel
+from services.crawl_orchestrator import get_orchestrator
 
 logger = logging.getLogger(__name__)
 
@@ -93,12 +93,12 @@ async def list_crawl_countries(
     block: Optional[str] = Query(None),
 ):
     from crawlers.all_countries_registry import (
-        get_priority_countries,
-        get_countries_by_region,
-        get_countries_by_block,
         Priority,
         Region,
         RegionalBlock,
+        get_countries_by_block,
+        get_countries_by_region,
+        get_priority_countries,
     )
 
     try:
@@ -119,15 +119,25 @@ async def list_crawl_countries(
     countries = []
     for code in codes:
         config = AFRICAN_COUNTRIES_REGISTRY.get(code, {})
-        countries.append({
-            "iso3": code,
-            "iso2": config.get("iso2", ""),
-            "name_en": config.get("name_en", ""),
-            "name_fr": config.get("name_fr", ""),
-            "region": config.get("region", "").value if hasattr(config.get("region", ""), "value") else "",
-            "priority": config.get("priority", "").value if hasattr(config.get("priority", ""), "value") else "",
-            "customs_url": config.get("customs_url", ""),
-        })
+        countries.append(
+            {
+                "iso3": code,
+                "iso2": config.get("iso2", ""),
+                "name_en": config.get("name_en", ""),
+                "name_fr": config.get("name_fr", ""),
+                "region": (
+                    config.get("region", "").value
+                    if hasattr(config.get("region", ""), "value")
+                    else ""
+                ),
+                "priority": (
+                    config.get("priority", "").value
+                    if hasattr(config.get("priority", ""), "value")
+                    else ""
+                ),
+                "customs_url": config.get("customs_url", ""),
+            }
+        )
 
     return {"count": len(countries), "countries": countries}
 

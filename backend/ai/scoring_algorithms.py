@@ -410,6 +410,7 @@ _DEFAULT_WEIGHTS: dict[str, float] = {
 # Helper utilities
 # ---------------------------------------------------------------------------
 
+
 def _clamp(value: float, lo: float = 0.0, hi: float = 100.0) -> float:
     return max(lo, min(hi, value))
 
@@ -438,6 +439,7 @@ def _normalize_political_stability(score: float) -> float:
 # Score dataclass
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class InvestmentScore:
     country: str
@@ -459,6 +461,7 @@ class InvestmentScore:
 # ---------------------------------------------------------------------------
 # Main engine
 # ---------------------------------------------------------------------------
+
 
 class InvestmentScoringEngine:
     """Multi-dimensional investment scoring engine for African markets."""
@@ -648,7 +651,9 @@ class InvestmentScoringEngine:
         growth_score = _clamp(data["gdp_growth_pct"] / 10 * 100)
         inflation_penalty = _clamp(100 - data["inflation_pct"] * 2)
         stability_score = _normalize_political_stability(data["political_stability"])
-        fdi_score = _clamp(math.log10(max(data["fdi_inflow_usd_bn"], 0.1) + 1) / math.log10(11) * 100)
+        fdi_score = _clamp(
+            math.log10(max(data["fdi_inflow_usd_bn"], 0.1) + 1) / math.log10(11) * 100
+        )
         currency_score = data["currency_stability"] * 100
         raw = (
             growth_score * 0.25

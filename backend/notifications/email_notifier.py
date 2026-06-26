@@ -4,14 +4,15 @@ Email Notifier
 Sends notifications via email using SMTP (aiosmtplib for async support).
 """
 
-import os
 import logging
-from typing import Dict, Any, Optional
-from email.mime.text import MIMEText
+import os
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from typing import Any, Dict, Optional
 
 try:
     import aiosmtplib
+
     AIOSMTPLIB_AVAILABLE = True
 except ImportError:
     AIOSMTPLIB_AVAILABLE = False
@@ -19,8 +20,8 @@ except ImportError:
 from .base_notifier import (
     BaseNotifier,
     NotificationData,
-    NotificationType,
     NotificationSeverity,
+    NotificationType,
 )
 
 logger = logging.getLogger(__name__)
@@ -29,7 +30,7 @@ logger = logging.getLogger(__name__)
 class EmailNotifier(BaseNotifier):
     """
     Email notification implementation using SMTP.
-    
+
     Configuration via environment variables:
     - EMAIL_NOTIFICATIONS_ENABLED: Enable/disable email notifications
     - EMAIL_SMTP_HOST: SMTP server hostname
@@ -40,10 +41,10 @@ class EmailNotifier(BaseNotifier):
     - EMAIL_TO: Recipient email address(es), comma-separated
     - EMAIL_USE_TLS: Use TLS (default: true)
     """
-    
+
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         super().__init__(config)
-        
+
         self.enabled = os.getenv("EMAIL_NOTIFICATIONS_ENABLED", "false").lower() == "true"
         self.smtp_host = os.getenv("EMAIL_SMTP_HOST", "")
         self.smtp_port = int(os.getenv("EMAIL_SMTP_PORT", "587"))
@@ -51,54 +52,54 @@ class EmailNotifier(BaseNotifier):
         self.smtp_password = os.getenv("EMAIL_SMTP_PASSWORD", "")
         self.from_email = os.getenv("EMAIL_FROM", "noreply@afcfta-crawler.com")
         self.to_emails = [
-            email.strip() 
-            for email in os.getenv("EMAIL_TO", "").split(",") 
-            if email.strip()
+            email.strip() for email in os.getenv("EMAIL_TO", "").split(",") if email.strip()
         ]
         self.use_tls = os.getenv("EMAIL_USE_TLS", "true").lower() == "true"
-        
+
         if not AIOSMTPLIB_AVAILABLE and self.enabled:
             logger.warning("aiosmtplib not installed. Email notifications will be disabled.")
             self.enabled = False
-    
+
     def is_enabled(self) -> bool:
         """Check if email notifications are enabled and configured"""
         return (
-            self.enabled 
-            and bool(self.smtp_host) 
-            and bool(self.smtp_user) 
+            self.enabled
+            and bool(self.smtp_host)
+            and bool(self.smtp_user)
             and bool(self.to_emails)
             and AIOSMTPLIB_AVAILABLE
         )
-    
+
     async def send_notification(self, data: NotificationData) -> bool:
         """
         Send email notification.
-        
+
         Args:
             data: NotificationData object
-            
+
         Returns:
             bool: True if sent successfully
         """
         if not self.is_enabled():
             logger.debug("Email notifications are disabled")
             return False
-        
+
         try:
             # Create message
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"[AfCFTA Crawler] {self.format_subject(data.subject, data.notification_type)}"
+            msg["Subject"] = (
+                f"[AfCFTA Crawler] {self.format_subject(data.subject, data.notification_type)}"
+            )
             msg["From"] = self.from_email
             msg["To"] = ", ".join(self.to_emails)
-            
+
             # Create plain text and HTML versions
             text_content = self._create_text_email(data)
             html_content = self._create_html_email(data)
-            
+
             msg.attach(MIMEText(text_content, "plain"))
             msg.attach(MIMEText(html_content, "html"))
-            
+
             # Send email
             await aiosmtplib.send(
                 msg,
@@ -108,17 +109,17 @@ class EmailNotifier(BaseNotifier):
                 password=self.smtp_password,
                 use_tls=self.use_tls,
             )
-            
+
             logger.info(f"Email notification sent: {data.subject}")
             self.update_stats(True)
             return True
-            
+
         except Exception as e:
             error_msg = f"Failed to send email notification: {str(e)}"
             logger.error(error_msg)
             self.update_stats(False, error_msg)
             return False
-    
+
     def _create_text_email(self, data: NotificationData) -> str:
         """Create plain text email content"""
         lines = [
@@ -132,22 +133,22 @@ class EmailNotifier(BaseNotifier):
             f"{data.message}",
             f"",
         ]
-        
+
         if data.metadata:
             lines.append("Details:")
             lines.append("-" * 50)
             for key, value in data.metadata.items():
                 lines.append(f"{key}: {value}")
             lines.append("")
-        
+
         lines.append("-" * 50)
         lines.append("AfCFTA Crawler System")
-        
+
         return "\n".join(lines)
-    
+
     def _create_html_email(self, data: NotificationData) -> str:
         """Create HTML email content"""
-        
+
         # Color coding by severity
         color_map = {
             NotificationSeverity.INFO: "#17a2b8",
@@ -155,9 +156,9 @@ class EmailNotifier(BaseNotifier):
             NotificationSeverity.ERROR: "#dc3545",
         }
         color = color_map.get(data.severity, "#6c757d")
-        
+
         emoji = self.get_emoji(data.notification_type)
-        
+
         html = f"""
 <!DOCTYPE html>
 <html>
@@ -251,7 +252,7 @@ class EmailNotifier(BaseNotifier):
             {data.message.replace(chr(10), '<br>')}
         </div>
 """
-        
+
         if data.metadata:
             html += """
         <div class="metadata">
@@ -269,7 +270,7 @@ class EmailNotifier(BaseNotifier):
             </table>
         </div>
 """
-        
+
         html += """
     </div>
     <div class="footer">

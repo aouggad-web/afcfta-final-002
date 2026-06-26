@@ -27,7 +27,13 @@ class DashboardGenerator:
             "intra_african_trade_pct_current": 17.6,
             "projected_intra_trade_pct_2035": 52.0,
             "fdi_total_usd_bn": 45.3,
-            "top_performing_sectors": ["technology", "agriculture", "energy", "mining", "logistics"],
+            "top_performing_sectors": [
+                "technology",
+                "agriculture",
+                "energy",
+                "mining",
+                "logistics",
+            ],
         },
         "west_africa": {
             "gdp_usd_bn": 794,
@@ -104,16 +110,56 @@ class DashboardGenerator:
 
     _FLOW_DATA: dict[str, list[dict[str, Any]]] = {
         "2023": [
-            {"quarter": "Q1-2023", "fdi_usd_bn": 9.8, "portfolio_usd_bn": 3.1, "remittances_usd_bn": 22.5},
-            {"quarter": "Q2-2023", "fdi_usd_bn": 10.4, "portfolio_usd_bn": 2.8, "remittances_usd_bn": 23.1},
-            {"quarter": "Q3-2023", "fdi_usd_bn": 11.2, "portfolio_usd_bn": 3.5, "remittances_usd_bn": 24.0},
-            {"quarter": "Q4-2023", "fdi_usd_bn": 13.9, "portfolio_usd_bn": 4.1, "remittances_usd_bn": 26.4},
+            {
+                "quarter": "Q1-2023",
+                "fdi_usd_bn": 9.8,
+                "portfolio_usd_bn": 3.1,
+                "remittances_usd_bn": 22.5,
+            },
+            {
+                "quarter": "Q2-2023",
+                "fdi_usd_bn": 10.4,
+                "portfolio_usd_bn": 2.8,
+                "remittances_usd_bn": 23.1,
+            },
+            {
+                "quarter": "Q3-2023",
+                "fdi_usd_bn": 11.2,
+                "portfolio_usd_bn": 3.5,
+                "remittances_usd_bn": 24.0,
+            },
+            {
+                "quarter": "Q4-2023",
+                "fdi_usd_bn": 13.9,
+                "portfolio_usd_bn": 4.1,
+                "remittances_usd_bn": 26.4,
+            },
         ],
         "2024": [
-            {"quarter": "Q1-2024", "fdi_usd_bn": 10.2, "portfolio_usd_bn": 3.4, "remittances_usd_bn": 23.8},
-            {"quarter": "Q2-2024", "fdi_usd_bn": 11.5, "portfolio_usd_bn": 3.8, "remittances_usd_bn": 25.2},
-            {"quarter": "Q3-2024", "fdi_usd_bn": 12.1, "portfolio_usd_bn": 3.2, "remittances_usd_bn": 25.9},
-            {"quarter": "Q4-2024", "fdi_usd_bn": 11.5, "portfolio_usd_bn": 2.9, "remittances_usd_bn": 24.6},
+            {
+                "quarter": "Q1-2024",
+                "fdi_usd_bn": 10.2,
+                "portfolio_usd_bn": 3.4,
+                "remittances_usd_bn": 23.8,
+            },
+            {
+                "quarter": "Q2-2024",
+                "fdi_usd_bn": 11.5,
+                "portfolio_usd_bn": 3.8,
+                "remittances_usd_bn": 25.2,
+            },
+            {
+                "quarter": "Q3-2024",
+                "fdi_usd_bn": 12.1,
+                "portfolio_usd_bn": 3.2,
+                "remittances_usd_bn": 25.9,
+            },
+            {
+                "quarter": "Q4-2024",
+                "fdi_usd_bn": 11.5,
+                "portfolio_usd_bn": 2.9,
+                "remittances_usd_bn": 24.6,
+            },
         ],
     }
 

@@ -70,18 +70,93 @@ COUNTRY_CONFIGS: Dict[str, Dict] = {
         # Chapter-level DD override: rate% -> chapters
         "tariff_overrides": {
             "0": ["25", "26", "27", "28", "29", "30", "31"],
-            "5": ["01", "02", "03", "06", "07", "08", "09", "10",
-                  "11", "12", "13", "14", "15", "23", "35", "36",
-                  "37", "38", "39", "40", "41", "43", "44", "45",
-                  "46", "47", "48", "49", "50", "51", "52", "53",
-                  "54", "55", "56", "57", "58", "59", "60", "66",
-                  "67", "68", "72", "73", "74", "75", "76", "78",
-                  "79", "80", "81", "82", "83", "84", "85", "86",
-                  "87", "88", "89", "90", "93"],
+            "5": [
+                "01",
+                "02",
+                "03",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "23",
+                "35",
+                "36",
+                "37",
+                "38",
+                "39",
+                "40",
+                "41",
+                "43",
+                "44",
+                "45",
+                "46",
+                "47",
+                "48",
+                "49",
+                "50",
+                "51",
+                "52",
+                "53",
+                "54",
+                "55",
+                "56",
+                "57",
+                "58",
+                "59",
+                "60",
+                "66",
+                "67",
+                "68",
+                "72",
+                "73",
+                "74",
+                "75",
+                "76",
+                "78",
+                "79",
+                "80",
+                "81",
+                "82",
+                "83",
+                "84",
+                "85",
+                "86",
+                "87",
+                "88",
+                "89",
+                "90",
+                "93",
+            ],
             "15": ["05", "32", "65", "69", "70", "71"],
-            "30": ["04", "16", "17", "18", "19", "20", "21", "22",
-                   "24", "33", "34", "42", "61", "62", "63", "64",
-                   "91", "92", "94", "95", "96"],
+            "30": [
+                "04",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "22",
+                "24",
+                "33",
+                "34",
+                "42",
+                "61",
+                "62",
+                "63",
+                "64",
+                "91",
+                "92",
+                "94",
+                "95",
+                "96",
+            ],
         },
         "national_taxes": {
             "TSS": {
@@ -117,11 +192,11 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "data_type": "uma_north_africa_derived",
         # Multiply Morocco DD by this factor for each band:
         "dd_factors": {
-            "raw_materials": 0.80,      # 2.5% → ~2.0%
+            "raw_materials": 0.80,  # 2.5% → ~2.0%
             "intermediate_goods": 1.20,  # 10% → ~12%
-            "final_goods": 1.20,         # 25% → ~30%
-            "agricultural": 0.50,        # 40% → ~20% (food security)
-            "luxury_goods": 0.89,        # 45% → ~40%
+            "final_goods": 1.20,  # 25% → ~30%
+            "agricultural": 0.50,  # 40% → ~20% (food security)
+            "luxury_goods": 0.89,  # 45% → ~40%
         },
         "vat": {"standard": 14.0, "reduced": [5.0]},
         "national_taxes": {
@@ -160,29 +235,63 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "vat_base": "CIF + CD",
         "tariff_overrides": {
             "0": [],
-            "2": ["01", "02", "03", "06", "07", "08", "09", "10",
-                  "11", "12", "15", "23", "25", "26", "27", "28",
-                  "29", "30", "31", "32", "35", "38", "47"],
+            "2": [
+                "01",
+                "02",
+                "03",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11",
+                "12",
+                "15",
+                "23",
+                "25",
+                "26",
+                "27",
+                "28",
+                "29",
+                "30",
+                "31",
+                "32",
+                "35",
+                "38",
+                "47",
+            ],
             "5": ["84", "85", "86", "88", "89", "90"],
-            "12": ["50", "51", "52", "53", "54", "55", "56", "58",
-                   "59", "60", "68", "74", "75"],
-            "22": ["39", "40", "44", "48", "57", "72", "73", "76",
-                   "82", "83"],
-            "30": ["04", "16", "17", "18", "19", "20", "21", "42",
-                   "63", "65", "69", "70", "87", "94"],
+            "12": ["50", "51", "52", "53", "54", "55", "56", "58", "59", "60", "68", "74", "75"],
+            "22": ["39", "40", "44", "48", "57", "72", "73", "76", "82", "83"],
+            "30": [
+                "04",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "42",
+                "63",
+                "65",
+                "69",
+                "70",
+                "87",
+                "94",
+            ],
             "40": ["33", "61", "62", "64", "71", "91", "95"],
             "60": ["22", "24"],
         },
-        "national_taxes": {},   # VAT is the main additional tax
+        "national_taxes": {},  # VAT is the main additional tax
         "tva_exempt_chapters": ["30"],
         "excise_chapters": ["22", "24", "33"],
         # DD derivation factors relative to Morocco base bands (used by build_country_position)
         "dd_factors": {
-            "raw_materials": 0.80,       # 2.5% → ~2.0%
+            "raw_materials": 0.80,  # 2.5% → ~2.0%
             "intermediate_goods": 1.20,  # 10% → ~12%
-            "final_goods": 1.20,         # 25% → ~30%
-            "agricultural": 0.50,        # 40% → ~20% (food security policy)
-            "luxury_goods": 0.89,        # 45% → ~40%
+            "final_goods": 1.20,  # 25% → ~30%
+            "agricultural": 0.50,  # 40% → ~20% (food security policy)
+            "luxury_goods": 0.89,  # 45% → ~40%
         },
         "vat": {"standard": 14.0, "reduced": [5.0]},
         "notes": [
@@ -204,20 +313,88 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "source": "Libyan Customs Authority + Base UMA Maroc",
         "source_url": "https://customs.ly",
         "currency": "LYD (Dinar Libyen)",
-        "vat_rate": 0.0,       # Libya has no VAT
+        "vat_rate": 0.0,  # Libya has no VAT
         "vat_name": "Pas de TVA",
         "vat_base": "N/A",
         "tariff_overrides": {
-            "0": ["06", "10", "11", "12", "23", "32", "35", "38",
-                  "47", "50", "51", "52", "53", "54", "55", "56",
-                  "58", "59", "60", "68", "74", "75"],
-            "5": ["25", "26", "27", "28", "29", "30", "31", "84",
-                  "85", "86", "87", "88", "89", "90"],
-            "15": ["01", "02", "03", "07", "08", "09", "15", "39",
-                   "40", "42", "44", "48", "57", "69", "70", "72",
-                   "73", "76", "82", "83"],
-            "25": ["04", "16", "17", "18", "19", "20", "21", "33",
-                   "61", "62", "63", "64", "94", "95"],
+            "0": [
+                "06",
+                "10",
+                "11",
+                "12",
+                "23",
+                "32",
+                "35",
+                "38",
+                "47",
+                "50",
+                "51",
+                "52",
+                "53",
+                "54",
+                "55",
+                "56",
+                "58",
+                "59",
+                "60",
+                "68",
+                "74",
+                "75",
+            ],
+            "5": [
+                "25",
+                "26",
+                "27",
+                "28",
+                "29",
+                "30",
+                "31",
+                "84",
+                "85",
+                "86",
+                "87",
+                "88",
+                "89",
+                "90",
+            ],
+            "15": [
+                "01",
+                "02",
+                "03",
+                "07",
+                "08",
+                "09",
+                "15",
+                "39",
+                "40",
+                "42",
+                "44",
+                "48",
+                "57",
+                "69",
+                "70",
+                "72",
+                "73",
+                "76",
+                "82",
+                "83",
+            ],
+            "25": [
+                "04",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "33",
+                "61",
+                "62",
+                "63",
+                "64",
+                "94",
+                "95",
+            ],
             "40": ["22", "24"],
         },
         "national_taxes": {
@@ -248,11 +425,11 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "trade_bloc": "UMA + EU-AA + GAFTA + Agadir",
         "data_type": "uma_north_africa_derived",
         "dd_factors": {
-            "raw_materials": 0.0,        # 2.5% → 0% (EU AA largely eliminates)
-            "intermediate_goods": 0.80,   # 10% → ~8%
-            "final_goods": 0.88,          # 25% → ~22%
-            "agricultural": 0.90,         # 40% → ~36%
-            "luxury_goods": 0.96,         # 45% → ~43%
+            "raw_materials": 0.0,  # 2.5% → 0% (EU AA largely eliminates)
+            "intermediate_goods": 0.80,  # 10% → ~8%
+            "final_goods": 0.88,  # 25% → ~22%
+            "agricultural": 0.90,  # 40% → ~36%
+            "luxury_goods": 0.96,  # 45% → ~43%
         },
         "vat": {"standard": 19.0, "reduced": [7.0, 13.0]},
         "national_taxes": {
@@ -289,17 +466,59 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "vat_name": "Taxe sur la Valeur Ajoutée (TVA)",
         "vat_base": "CIF + DD + FODEC",
         "tariff_overrides": {
-            "0":  ["25", "26", "27", "28", "29", "30", "31"],
-            "10": ["06", "10", "11", "12", "23", "32", "35", "38",
-                   "47", "50", "51", "52", "53", "54", "55", "56",
-                   "58", "59", "60", "68", "74", "75", "84", "85",
-                   "86", "88", "89", "90"],
-            "20": ["01", "02", "03", "07", "08", "09", "15", "39",
-                   "40", "44", "48", "57", "72", "73", "76", "82",
-                   "83", "87"],
+            "0": ["25", "26", "27", "28", "29", "30", "31"],
+            "10": [
+                "06",
+                "10",
+                "11",
+                "12",
+                "23",
+                "32",
+                "35",
+                "38",
+                "47",
+                "50",
+                "51",
+                "52",
+                "53",
+                "54",
+                "55",
+                "56",
+                "58",
+                "59",
+                "60",
+                "68",
+                "74",
+                "75",
+                "84",
+                "85",
+                "86",
+                "88",
+                "89",
+                "90",
+            ],
+            "20": [
+                "01",
+                "02",
+                "03",
+                "07",
+                "08",
+                "09",
+                "15",
+                "39",
+                "40",
+                "44",
+                "48",
+                "57",
+                "72",
+                "73",
+                "76",
+                "82",
+                "83",
+                "87",
+            ],
             "30": ["42", "63", "65", "69", "70"],
-            "36": ["04", "16", "17", "18", "19", "20", "21", "71",
-                   "91", "95"],
+            "36": ["04", "16", "17", "18", "19", "20", "21", "71", "91", "95"],
             "43": ["33", "61", "62", "64", "94"],
             "50": ["22", "24"],
         },
@@ -332,11 +551,11 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "trade_bloc": "UMA + EU-AA + GAFTA",
         "data_type": "uma_north_africa_derived",
         "dd_factors": {
-            "raw_materials": 2.0,        # 2.5% → 5% (import substitution)
-            "intermediate_goods": 1.50,   # 10% → 15%
-            "final_goods": 1.20,          # 25% → 30%
-            "agricultural": 0.75,         # 40% → 30%
-            "luxury_goods": 1.33,         # 45% → 60% (luxury excise)
+            "raw_materials": 2.0,  # 2.5% → 5% (import substitution)
+            "intermediate_goods": 1.50,  # 10% → 15%
+            "final_goods": 1.20,  # 25% → 30%
+            "agricultural": 0.75,  # 40% → 30%
+            "luxury_goods": 1.33,  # 45% → 60% (luxury excise)
         },
         "vat": {"standard": 19.0, "reduced": [9.0]},
         "national_taxes": {
@@ -377,11 +596,11 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "trade_bloc": "UMA + GAFTA",
         "data_type": "uma_north_africa_derived",
         "dd_factors": {
-            "raw_materials": 0.0,        # 2.5% → 0% (reconstruction waiver)
-            "intermediate_goods": 0.50,   # 10% → 5%
-            "final_goods": 0.60,          # 25% → 15%
-            "agricultural": 0.25,         # 40% → 10%
-            "luxury_goods": 0.44,         # 45% → 20%
+            "raw_materials": 0.0,  # 2.5% → 0% (reconstruction waiver)
+            "intermediate_goods": 0.50,  # 10% → 5%
+            "final_goods": 0.60,  # 25% → 15%
+            "agricultural": 0.25,  # 40% → 10%
+            "luxury_goods": 0.44,  # 45% → 20%
         },
         "vat": {"standard": 0.0, "notes": "No VAT; sales tax ~4%"},
         "national_taxes": {
@@ -425,17 +644,64 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "vat_name": "Value Added Tax (VAT)",
         "vat_base": "CIF + CD",
         "tariff_overrides": {
-            "0": ["25", "26", "27", "28", "29", "30", "31", "84",
-                  "85", "86", "88", "89", "90"],
-            "10": ["06", "10", "11", "12", "23", "32", "35", "38",
-                   "47", "50", "51", "52", "53", "54", "55", "56",
-                   "58", "59", "60", "68", "74", "75"],
-            "20": ["01", "02", "03", "04", "07", "08", "09", "15",
-                   "16", "17", "18", "19", "20", "21", "39", "40",
-                   "42", "44", "48", "57", "63", "65", "69", "70",
-                   "72", "73", "76", "82", "83", "87"],
-            "25": ["22", "24", "33", "61", "62", "64", "71", "91",
-                   "94", "95"],
+            "0": ["25", "26", "27", "28", "29", "30", "31", "84", "85", "86", "88", "89", "90"],
+            "10": [
+                "06",
+                "10",
+                "11",
+                "12",
+                "23",
+                "32",
+                "35",
+                "38",
+                "47",
+                "50",
+                "51",
+                "52",
+                "53",
+                "54",
+                "55",
+                "56",
+                "58",
+                "59",
+                "60",
+                "68",
+                "74",
+                "75",
+            ],
+            "20": [
+                "01",
+                "02",
+                "03",
+                "04",
+                "07",
+                "08",
+                "09",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "39",
+                "40",
+                "42",
+                "44",
+                "48",
+                "57",
+                "63",
+                "65",
+                "69",
+                "70",
+                "72",
+                "73",
+                "76",
+                "82",
+                "83",
+                "87",
+            ],
+            "25": ["22", "24", "33", "61", "62", "64", "71", "91", "94", "95"],
         },
         "national_taxes": {
             "DS": {
@@ -453,11 +719,11 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "trade_bloc": "COMESA + GAFTA + AfCFTA",
         "data_type": "uma_north_africa_derived",
         "dd_factors": {
-            "raw_materials": 0.0,        # 2.5% → 0%
-            "intermediate_goods": 1.00,   # 10% → 10%
-            "final_goods": 1.00,          # 25% → 25%
-            "agricultural": 0.375,        # 40% → 15% (food security)
-            "luxury_goods": 0.89,         # 45% → 40%
+            "raw_materials": 0.0,  # 2.5% → 0%
+            "intermediate_goods": 1.00,  # 10% → 10%
+            "final_goods": 1.00,  # 25% → 25%
+            "agricultural": 0.375,  # 40% → 15% (food security)
+            "luxury_goods": 0.89,  # 45% → 40%
         },
         "vat": {"standard": 17.0, "reduced": [0.0]},
         "national_taxes": {
@@ -494,16 +760,52 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "vat_name": "Taxe sur la Valeur Ajoutée (TVA)",
         "vat_base": "CIF + DD",
         "tariff_overrides": {
-            "0": ["25", "26", "27", "28", "29", "30", "31", "84",
-                  "85", "86", "88", "89", "90"],
-            "5": ["06", "10", "11", "12", "23", "32", "35", "38",
-                  "47", "50", "51", "52", "53", "54", "55", "56",
-                  "58", "59", "60", "68", "74", "75", "87"],
-            "10": ["01", "02", "03", "07", "08", "09", "15", "39",
-                   "40", "44", "48", "57", "72", "73", "76", "82",
-                   "83"],
-            "15": ["04", "16", "17", "18", "19", "20", "21", "42",
-                   "63", "69", "70", "71"],
+            "0": ["25", "26", "27", "28", "29", "30", "31", "84", "85", "86", "88", "89", "90"],
+            "5": [
+                "06",
+                "10",
+                "11",
+                "12",
+                "23",
+                "32",
+                "35",
+                "38",
+                "47",
+                "50",
+                "51",
+                "52",
+                "53",
+                "54",
+                "55",
+                "56",
+                "58",
+                "59",
+                "60",
+                "68",
+                "74",
+                "75",
+                "87",
+            ],
+            "10": [
+                "01",
+                "02",
+                "03",
+                "07",
+                "08",
+                "09",
+                "15",
+                "39",
+                "40",
+                "44",
+                "48",
+                "57",
+                "72",
+                "73",
+                "76",
+                "82",
+                "83",
+            ],
+            "15": ["04", "16", "17", "18", "19", "20", "21", "42", "63", "69", "70", "71"],
             "20": ["22", "24", "33", "61", "62", "64", "94", "95"],
         },
         "national_taxes": {
@@ -526,11 +828,11 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
         "trade_bloc": "UMA + GAFTA + ECOWAS-Observer + AfCFTA",
         "data_type": "uma_north_africa_derived",
         "dd_factors": {
-            "raw_materials": 0.0,        # 2.5% → 0%
-            "intermediate_goods": 1.00,   # 10% → 10%
-            "final_goods": 0.80,          # 25% → 20%
-            "agricultural": 0.50,         # 40% → 20%
-            "luxury_goods": 0.67,         # 45% → 30%
+            "raw_materials": 0.0,  # 2.5% → 0%
+            "intermediate_goods": 1.00,  # 10% → 10%
+            "final_goods": 0.80,  # 25% → 20%
+            "agricultural": 0.50,  # 40% → 20%
+            "luxury_goods": 0.67,  # 45% → 30%
         },
         "vat": {"standard": 16.0, "reduced": [0.0]},
         "national_taxes": {
@@ -567,6 +869,7 @@ COUNTRY_CONFIGS: Dict[str, Dict[str, Any]] = {
 # Build chapter→rate map from tariff_overrides
 # ---------------------------------------------------------------------------
 
+
 def _build_override_map(overrides: Dict[str, List[str]]) -> Dict[str, float]:
     """Return {chapter: rate_pct} from a tariff_overrides dict."""
     result: Dict[str, float] = {}
@@ -581,6 +884,7 @@ def _build_override_map(overrides: Dict[str, List[str]]) -> Dict[str, float]:
 # Load MAR base positions
 # ---------------------------------------------------------------------------
 
+
 def load_mar_base_positions(output_dir: str = OUTPUT_DIR) -> List[Dict]:
     """
     Load MAR (Morocco) base positions from the crawled data file.
@@ -591,6 +895,7 @@ def load_mar_base_positions(output_dir: str = OUTPUT_DIR) -> List[Dict]:
     if not os.path.exists(mar_file):
         logger.info("MAR base data not found – running NorthAfricaScraper first …")
         from backend.crawlers.countries.north_africa_scraper import run_scraper as run_mar
+
         run_mar(output_dir=output_dir)
 
     with open(mar_file, "r", encoding="utf-8") as f:
@@ -605,7 +910,10 @@ def load_mar_base_positions(output_dir: str = OUTPUT_DIR) -> List[Dict]:
 # Build country position from MAR base
 # ---------------------------------------------------------------------------
 
-def build_country_position(mar_position: Dict, config: Dict, override_map: Dict[str, float]) -> Dict:
+
+def build_country_position(
+    mar_position: Dict, config: Dict, override_map: Dict[str, float]
+) -> Dict:
     """
     Adapt a MAR base position to the target country's tax structure.
 
@@ -623,12 +931,9 @@ def build_country_position(mar_position: Dict, config: Dict, override_map: Dict[
     designation = mar_position.get("designation", "")
 
     # Determine DD/DI/CD rate for this country and chapter
-    dd_rate = override_map.get(chapter, 10.0)   # default 10% if chapter not listed
+    dd_rate = override_map.get(chapter, 10.0)  # default 10% if chapter not listed
 
-    is_tva_exempt = (
-        chapter in config.get("tva_exempt_chapters", [])
-        or config["vat_rate"] == 0.0
-    )
+    is_tva_exempt = chapter in config.get("tva_exempt_chapters", []) or config["vat_rate"] == 0.0
     has_excise = chapter in config.get("excise_chapters", [])
 
     tax_code_label = "DD" if config["country"] not in ("EGY", "SDN") else "CD"
@@ -640,9 +945,9 @@ def build_country_position(mar_position: Dict, config: Dict, override_map: Dict[
         {
             "tax_code": tax_code_label,
             "tax_name": (
-                "Droit d'Importation" if tax_code_label == "DI"
-                else "Customs Duty (CD)" if tax_code_label == "CD"
-                else "Droit de Douane (DD)"
+                "Droit d'Importation"
+                if tax_code_label == "DI"
+                else "Customs Duty (CD)" if tax_code_label == "CD" else "Droit de Douane (DD)"
             ),
             "rate": dd_rate,
             "rate_type": "ad_valorem",
@@ -653,46 +958,54 @@ def build_country_position(mar_position: Dict, config: Dict, override_map: Dict[
     # National taxes
     for key, tax_info in config["national_taxes"].items():
         taxes[tax_info["code"]] = tax_info["rate"]
-        taxes_detail.append({
-            "tax_code": tax_info["code"],
-            "tax_name": tax_info["name"],
-            "rate": tax_info["rate"],
-            "rate_type": tax_info["type"],
-            "base": tax_info["base"],
-        })
+        taxes_detail.append(
+            {
+                "tax_code": tax_info["code"],
+                "tax_name": tax_info["name"],
+                "rate": tax_info["rate"],
+                "rate_type": tax_info["type"],
+                "base": tax_info["base"],
+            }
+        )
 
     # VAT / TVA
     if is_tva_exempt:
         taxes["TVA"] = 0.0
-        taxes_detail.append({
-            "tax_code": "TVA",
-            "tax_name": config["vat_name"],
-            "rate": 0.0,
-            "rate_type": "ad_valorem",
-            "base": config["vat_base"],
-            "note": "Exonéré / Exempt",
-        })
+        taxes_detail.append(
+            {
+                "tax_code": "TVA",
+                "tax_name": config["vat_name"],
+                "rate": 0.0,
+                "rate_type": "ad_valorem",
+                "base": config["vat_base"],
+                "note": "Exonéré / Exempt",
+            }
+        )
     else:
         taxes["TVA"] = config["vat_rate"]
-        taxes_detail.append({
-            "tax_code": "TVA",
-            "tax_name": config["vat_name"],
-            "rate": config["vat_rate"],
-            "rate_type": "ad_valorem",
-            "base": config["vat_base"],
-        })
+        taxes_detail.append(
+            {
+                "tax_code": "TVA",
+                "tax_name": config["vat_name"],
+                "rate": config["vat_rate"],
+                "rate_type": "ad_valorem",
+                "base": config["vat_base"],
+            }
+        )
 
     # Excise / TIC / Droit d'Accise
     if has_excise:
         taxes["DA"] = -1
-        taxes_detail.append({
-            "tax_code": "DA",
-            "tax_name": "Droit d'Accise / Excise Duty",
-            "rate": -1,
-            "rate_type": "variable",
-            "base": "CIF + DD",
-            "note": "Taux variable selon produit – consulter les douanes nationales",
-        })
+        taxes_detail.append(
+            {
+                "tax_code": "DA",
+                "tax_name": "Droit d'Accise / Excise Duty",
+                "rate": -1,
+                "rate_type": "variable",
+                "base": "CIF + DD",
+                "note": "Taux variable selon produit – consulter les douanes nationales",
+            }
+        )
 
     return {
         "code": code,
@@ -715,8 +1028,10 @@ def build_country_position(mar_position: Dict, config: Dict, override_map: Dict[
 # Save results
 # ---------------------------------------------------------------------------
 
-def save_country_results(country_code: str, positions: List[Dict], config: Dict,
-                         output_dir: str = OUTPUT_DIR) -> str:
+
+def save_country_results(
+    country_code: str, positions: List[Dict], config: Dict, output_dir: str = OUTPUT_DIR
+) -> str:
     output_file = os.path.join(output_dir, f"{country_code}_uma_tariffs.json")
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
@@ -728,7 +1043,9 @@ def save_country_results(country_code: str, positions: List[Dict], config: Dict,
     for key, tax_info in config["national_taxes"].items():
         tax_legend[tax_info["code"]] = f"{tax_info['name']} ({tax_info['rate']}%)"
 
+
 # ── Band mapping ─────────────────────────────────────────────────────────────
+
 
 def _get_band(chapter: int) -> str:
     if 1 <= chapter <= 24:
@@ -757,7 +1074,7 @@ MOROCCO_BASE_BANDS = {
 }
 
 MOROCCO_TVA_BANDS = {
-    "agricultural": 7.0,    # food
+    "agricultural": 7.0,  # food
     "raw_materials": 20.0,
     "intermediate_goods": 20.0,
     "final_goods": 20.0,
@@ -781,10 +1098,13 @@ def load_morocco_base_positions() -> List[Dict[str, Any]]:
                 logger.info(f"Loaded {len(positions)} Morocco reference positions from {mar_file}")
                 return positions
         except Exception as exc:
-            logger.warning(f"Could not load Morocco reference file: {exc}. Generating synthetic base.")
+            logger.warning(
+                f"Could not load Morocco reference file: {exc}. Generating synthetic base."
+            )
 
     # Fallback: generate synthetic base positions
     from crawlers.countries.morocco_uma_scraper import generate_reference_positions
+
     logger.info("Generating Morocco reference positions (fallback)...")
     return generate_reference_positions()
 
@@ -912,6 +1232,7 @@ def save_country_results(
 # Main entry point
 # ---------------------------------------------------------------------------
 
+
 def run_scraper(
     countries: Optional[List[str]] = None,
     output_dir: str = OUTPUT_DIR,
@@ -950,8 +1271,7 @@ def run_scraper(
         override_map = _build_override_map(config["tariff_overrides"])
 
         country_positions = [
-            build_country_position(pos, config, override_map)
-            for pos in mar_positions
+            build_country_position(pos, config, override_map) for pos in mar_positions
         ]
 
         # Consistency stats
@@ -1013,6 +1333,7 @@ def run_scraper(
     # Step 1: Generate / load Morocco reference
     if "MAR" in countries:
         from crawlers.countries.morocco_uma_scraper import run_scraper as mar_run
+
         logger.info("\n[1/2] Generating Morocco reference tariffs...")
         mar_result = mar_run()
         results["MAR"] = {
@@ -1036,9 +1357,7 @@ def run_scraper(
         t0 = time.time()
         logger.info(f"\n  Processing {config['country_name']} ({cc})...")
 
-        country_positions = [
-            build_country_position(pos, config) for pos in mar_positions
-        ]
+        country_positions = [build_country_position(pos, config) for pos in mar_positions]
         elapsed = time.time() - t0
         saved_path = save_country_results(cc, country_positions, config, elapsed)
 
@@ -1069,5 +1388,6 @@ def run_scraper(
 if __name__ == "__main__":
     run_scraper()
     import sys
+
     countries_arg = sys.argv[1:] if len(sys.argv) > 1 else None
     run_scraper(countries=countries_arg)

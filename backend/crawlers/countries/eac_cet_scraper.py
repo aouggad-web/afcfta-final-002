@@ -24,13 +24,14 @@ Plus specific rates for certain products (40%-100%)
 Output: HS8 positions with CET duty rate + country-specific taxes
 """
 
-import fitz
-import re
 import json
-import os
 import logging
-from typing import Dict, List, Optional, Tuple
+import os
+import re
 from datetime import datetime
+from typing import Dict, List, Optional, Tuple
+
+import fitz
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -70,11 +71,19 @@ EAC_COUNTRY_TAXES = {
             {"name": "Value Added Tax (VAT)", "rate": 16.0, "base": "CIF+Duty+Fees"},
         ],
         "excise_categories": {
-            "2203": 50.0, "2204": 25.0, "2205": 25.0, "2206": 70.0, "2207": 65.0, "2208": 65.0,
-            "2402": 35.0, "2403": 40.0,
+            "2203": 50.0,
+            "2204": 25.0,
+            "2205": 25.0,
+            "2206": 70.0,
+            "2207": 65.0,
+            "2208": 65.0,
+            "2402": 35.0,
+            "2403": 40.0,
             "8703": 20.0,
-            "3303": 10.0, "3304": 10.0, "3305": 10.0,
-        }
+            "3303": 10.0,
+            "3304": 10.0,
+            "3305": 10.0,
+        },
     },
     "TZA": {
         "name": "Tanzania",
@@ -82,9 +91,12 @@ EAC_COUNTRY_TAXES = {
             {"name": "Value Added Tax (VAT)", "rate": 18.0, "base": "CIF+Duty"},
         ],
         "excise_categories": {
-            "2203": 50.0, "2204": 20.0, "2208": 60.0,
-            "2402": 30.0, "2403": 30.0,
-        }
+            "2203": 50.0,
+            "2204": 20.0,
+            "2208": 60.0,
+            "2402": 30.0,
+            "2403": 30.0,
+        },
     },
     "UGA": {
         "name": "Uganda",
@@ -93,9 +105,11 @@ EAC_COUNTRY_TAXES = {
             {"name": "Value Added Tax (VAT)", "rate": 18.0, "base": "CIF+Duty+Levies"},
         ],
         "excise_categories": {
-            "2203": 60.0, "2204": 20.0, "2208": 60.0,
+            "2203": 60.0,
+            "2204": 20.0,
+            "2208": 60.0,
             "2402": 40.0,
-        }
+        },
     },
     "RWA": {
         "name": "Rwanda",
@@ -103,30 +117,31 @@ EAC_COUNTRY_TAXES = {
             {"name": "Value Added Tax (VAT)", "rate": 18.0, "base": "CIF+Duty"},
         ],
         "excise_categories": {
-            "2203": 30.0, "2208": 40.0,
+            "2203": 30.0,
+            "2208": 40.0,
             "2402": 36.0,
-        }
+        },
     },
     "BDI": {
         "name": "Burundi",
         "taxes": [
             {"name": "Value Added Tax (VAT)", "rate": 18.0, "base": "CIF+Duty"},
         ],
-        "excise_categories": {}
+        "excise_categories": {},
     },
     "SSD": {
         "name": "South Sudan",
         "taxes": [
             {"name": "Value Added Tax (VAT)", "rate": 18.0, "base": "CIF+Duty"},
         ],
-        "excise_categories": {}
+        "excise_categories": {},
     },
     "COD": {
         "name": "DR Congo",
         "taxes": [
             {"name": "Value Added Tax (VAT)", "rate": 16.0, "base": "CIF+Duty"},
         ],
-        "excise_categories": {}
+        "excise_categories": {},
     },
 }
 
@@ -148,7 +163,10 @@ class EACCETScraper:
 
     def download_pdf(self) -> str:
         import urllib.request
-        pdf_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "pdfs")
+
+        pdf_dir = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "pdfs"
+        )
         os.makedirs(pdf_dir, exist_ok=True)
         pdf_path = os.path.join(pdf_dir, "eac_cet_2022.pdf")
         if os.path.exists(pdf_path):
@@ -165,7 +183,7 @@ class EACCETScraper:
             return 0.0
         if rate_str == "SI":
             return None
-        match = re.match(r'^(\d+(?:\.\d+)?)%$', rate_str)
+        match = re.match(r"^(\d+(?:\.\d+)?)%$", rate_str)
         if match:
             return float(match.group(1))
         return None
@@ -180,7 +198,7 @@ class EACCETScraper:
         first_data_page = None
         for i in range(len(doc)):
             text = doc[i].get_text()
-            if re.search(r'\d{4}\.\d{2}\.\d{2}', text):
+            if re.search(r"\d{4}\.\d{2}\.\d{2}", text):
                 first_data_page = i
                 break
 
@@ -190,12 +208,17 @@ class EACCETScraper:
 
         logger.info(f"First data page: {first_data_page + 1}")
 
-        section_pattern = re.compile(r'^Section\s+(I{1,3}V?|V?I{0,3}|X{1,3}I{0,2}V?|V?X{0,3}I{0,3})$', re.IGNORECASE)
-        chapter_pattern = re.compile(r'^Chapter\s+(\d+)', re.IGNORECASE)
-        heading_pattern = re.compile(r'^(\d{2}\.\d{2})$')
-        hs8_pattern = re.compile(r'^(\d{4}\.\d{2}\.\d{2})$')
-        rate_pattern = re.compile(r'^(\d+(?:\.\d+)?%|Free|SI)$')
-        unit_pattern = re.compile(r'^(kg|u|l|m|m2|m3|1000\s*u|1000\s*l|GI|ct|No\.|pair|pa|g|set|m/s|t|kWh|1000\s*kWh|2u)$', re.IGNORECASE)
+        section_pattern = re.compile(
+            r"^Section\s+(I{1,3}V?|V?I{0,3}|X{1,3}I{0,2}V?|V?X{0,3}I{0,3})$", re.IGNORECASE
+        )
+        chapter_pattern = re.compile(r"^Chapter\s+(\d+)", re.IGNORECASE)
+        heading_pattern = re.compile(r"^(\d{2}\.\d{2})$")
+        hs8_pattern = re.compile(r"^(\d{4}\.\d{2}\.\d{2})$")
+        rate_pattern = re.compile(r"^(\d+(?:\.\d+)?%|Free|SI)$")
+        unit_pattern = re.compile(
+            r"^(kg|u|l|m|m2|m3|1000\s*u|1000\s*l|GI|ct|No\.|pair|pa|g|set|m/s|t|kWh|1000\s*kWh|2u)$",
+            re.IGNORECASE,
+        )
 
         pending_hs = None
         pending_desc_lines = []
@@ -204,7 +227,7 @@ class EACCETScraper:
         for page_num in range(first_data_page, len(doc)):
             page = doc[page_num]
             text = page.get_text()
-            lines = text.split('\n')
+            lines = text.split("\n")
 
             for line in lines:
                 line_stripped = line.strip()
@@ -212,9 +235,17 @@ class EACCETScraper:
                     continue
                 if line_stripped.startswith("COMMON EXTERNAL TARIFF"):
                     continue
-                if line_stripped in ("Heading", "H.S. Code /", "Tariff No.", "Description", "Unit of", "Quantity", "Rate"):
+                if line_stripped in (
+                    "Heading",
+                    "H.S. Code /",
+                    "Tariff No.",
+                    "Description",
+                    "Unit of",
+                    "Quantity",
+                    "Rate",
+                ):
                     continue
-                if re.match(r'^\d+$', line_stripped) and len(line_stripped) <= 3:
+                if re.match(r"^\d+$", line_stripped) and len(line_stripped) <= 3:
                     continue
 
                 section_m = section_pattern.match(line_stripped)
@@ -268,7 +299,11 @@ class EACCETScraper:
 
                     pending_desc_lines.append(line_stripped)
                 else:
-                    if line_stripped.startswith("-") or line_stripped.startswith("--") or line_stripped.startswith("---"):
+                    if (
+                        line_stripped.startswith("-")
+                        or line_stripped.startswith("--")
+                        or line_stripped.startswith("---")
+                    ):
                         pass
                     elif not self.current_heading_desc and self.current_heading:
                         self.current_heading_desc = line_stripped
@@ -277,12 +312,16 @@ class EACCETScraper:
             self._flush_pending(pending_hs, pending_desc_lines, pending_unit, None)
 
         doc.close()
-        logger.info(f"Extracted {len(self.positions)} positions from {len(self.stats['chapters_found'])} chapters")
+        logger.info(
+            f"Extracted {len(self.positions)} positions from {len(self.stats['chapters_found'])} chapters"
+        )
         return self.positions
 
-    def _flush_pending(self, hs_code: str, desc_lines: List[str], unit: Optional[str], rate_str: Optional[str]):
+    def _flush_pending(
+        self, hs_code: str, desc_lines: List[str], unit: Optional[str], rate_str: Optional[str]
+    ):
         description = " ".join(desc_lines).strip()
-        description = re.sub(r'\s+', ' ', description)
+        description = re.sub(r"\s+", " ", description)
 
         rate_value = None
         rate_display = rate_str or ""
@@ -298,7 +337,9 @@ class EACCETScraper:
                     rate_display = f"{rate_value}%"
 
         rate_key = rate_display if rate_display else "unknown"
-        self.stats["rate_distribution"][rate_key] = self.stats["rate_distribution"].get(rate_key, 0) + 1
+        self.stats["rate_distribution"][rate_key] = (
+            self.stats["rate_distribution"].get(rate_key, 0) + 1
+        )
 
         position = {
             "hs_code": hs_code,
@@ -328,40 +369,48 @@ class EACCETScraper:
             total_taxes_pct = 0.0
 
             if pos["cet_rate"] is not None:
-                taxes_detail.append({
-                    "tax_name": "CET Import Duty (Droit de Douane)",
-                    "rate": pos["cet_rate"],
-                    "base": "CIF",
-                    "is_cet": True
-                })
+                taxes_detail.append(
+                    {
+                        "tax_name": "CET Import Duty (Droit de Douane)",
+                        "rate": pos["cet_rate"],
+                        "base": "CIF",
+                        "is_cet": True,
+                    }
+                )
                 total_taxes_pct += pos["cet_rate"]
             elif pos["is_sensitive_item"]:
-                taxes_detail.append({
-                    "tax_name": "CET Import Duty (Sensitive Item)",
-                    "rate": None,
-                    "base": "CIF",
-                    "is_cet": True,
-                    "note": "Rate determined by national schedule"
-                })
+                taxes_detail.append(
+                    {
+                        "tax_name": "CET Import Duty (Sensitive Item)",
+                        "rate": None,
+                        "base": "CIF",
+                        "is_cet": True,
+                        "note": "Rate determined by national schedule",
+                    }
+                )
 
             for tax in country_info["taxes"]:
-                taxes_detail.append({
-                    "tax_name": tax["name"],
-                    "rate": tax["rate"],
-                    "base": tax["base"],
-                    "is_cet": False
-                })
+                taxes_detail.append(
+                    {
+                        "tax_name": tax["name"],
+                        "rate": tax["rate"],
+                        "base": tax["base"],
+                        "is_cet": False,
+                    }
+                )
                 total_taxes_pct += tax["rate"]
 
             hs4 = pos["hs_code_normalized"][:4]
             excise_rate = country_info.get("excise_categories", {}).get(hs4)
             if excise_rate:
-                taxes_detail.append({
-                    "tax_name": "Excise Duty",
-                    "rate": excise_rate,
-                    "base": "CIF+Duty",
-                    "is_cet": False
-                })
+                taxes_detail.append(
+                    {
+                        "tax_name": "Excise Duty",
+                        "rate": excise_rate,
+                        "base": "CIF+Duty",
+                        "is_cet": False,
+                    }
+                )
                 total_taxes_pct += excise_rate
 
             entry = {
@@ -379,17 +428,17 @@ class EACCETScraper:
                     {
                         "name": "EAC Intra-Community",
                         "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-                        "conditions": "Certificate of Origin required"
+                        "conditions": "Certificate of Origin required",
                     },
                     {
                         "name": "AfCFTA Tariff Concession",
                         "description": "Progressive duty reduction for AfCFTA member states",
-                        "conditions": "AfCFTA Certificate of Origin required"
-                    }
+                        "conditions": "AfCFTA Certificate of Origin required",
+                    },
                 ],
                 "administrative_formalities": [],
                 "source": "EAC CET 2022 (kra.go.ke)",
-                "data_format": "crawled_authentic"
+                "data_format": "crawled_authentic",
             }
 
             result.append(entry)
@@ -398,7 +447,9 @@ class EACCETScraper:
 
     def save_country_data(self, country_code: str, positions: List[Dict], output_dir: str = None):
         if output_dir is None:
-            output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "crawled")
+            output_dir = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "crawled"
+            )
         os.makedirs(output_dir, exist_ok=True)
 
         country_name = EAC_COUNTRY_TAXES[country_code]["name"]
@@ -416,10 +467,10 @@ class EACCETScraper:
             "hs_version": "HS 2022",
             "tariff_system": "EAC CET 4-band (0%, 10%, 25%, 35%) + specific rates",
             "economic_community": "EAC",
-            "positions": positions
+            "positions": positions,
         }
 
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
         logger.info(f"Saved {len(positions)} positions to {filepath}")
@@ -437,18 +488,22 @@ class EACCETScraper:
         logger.info(f"  Chapters: {len(self.stats['chapters_found'])}")
         logger.info(f"  Sections: {len(self.stats['sections_found'])}")
         logger.info(f"  Rate distribution:")
-        for rate, count in sorted(self.stats["rate_distribution"].items(), key=lambda x: -x[1])[:15]:
+        for rate, count in sorted(self.stats["rate_distribution"].items(), key=lambda x: -x[1])[
+            :15
+        ]:
             logger.info(f"    {rate}: {count}")
 
         saved_files = {}
         for country_code in EAC_COUNTRY_TAXES:
-            logger.info(f"\nGenerating tariff data for {country_code} ({EAC_COUNTRY_TAXES[country_code]['name']})...")
+            logger.info(
+                f"\nGenerating tariff data for {country_code} ({EAC_COUNTRY_TAXES[country_code]['name']})..."
+            )
             country_positions = self.generate_country_tariffs(country_code)
             filepath = self.save_country_data(country_code, country_positions, output_dir)
             saved_files[country_code] = {
                 "file": filepath,
                 "positions": len(country_positions),
-                "country_name": EAC_COUNTRY_TAXES[country_code]["name"]
+                "country_name": EAC_COUNTRY_TAXES[country_code]["name"],
             }
 
         result = {
@@ -457,9 +512,9 @@ class EACCETScraper:
             "chapters": len(self.stats["chapters_found"]),
             "countries": len(saved_files),
             "files": saved_files,
-            "rate_distribution": dict(sorted(
-                self.stats["rate_distribution"].items(), key=lambda x: -x[1]
-            ))
+            "rate_distribution": dict(
+                sorted(self.stats["rate_distribution"].items(), key=lambda x: -x[1])
+            ),
         }
 
         logger.info("\n" + "=" * 60)
@@ -472,6 +527,7 @@ class EACCETScraper:
 
 if __name__ == "__main__":
     import sys
+
     pdf_path = sys.argv[1] if len(sys.argv) > 1 else None
     scraper = EACCETScraper(pdf_path)
     result = scraper.run()

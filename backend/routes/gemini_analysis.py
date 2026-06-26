@@ -3,10 +3,11 @@ AI Trade Analysis Routes — powered by Anthropic Claude
 API endpoints for AI-powered trade analysis (replaces Google Gemini)
 WITH HYBRID CACHING (Redis → JSON file fallback)
 """
-from fastapi import APIRouter, Query, HTTPException, Body
-from typing import Optional
-import logging
 
+import logging
+from typing import Optional
+
+from fastapi import APIRouter, Body, HTTPException, Query
 from services.claude_trade_service import claude_trade_service
 from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
 from services.redis_cache_service import cache_service
@@ -21,7 +22,7 @@ NO_DATA_COUNTRIES = {
     "RASD": "RASD (Sahara Occidental)",
     "Sahara": "RASD (Sahara Occidental)",
     "Western Sahara": "RASD (Sahara Occidental)",
-    "Sahara Occidental": "RASD (Sahara Occidental)"
+    "Sahara Occidental": "RASD (Sahara Occidental)",
 }
 
 
@@ -31,26 +32,29 @@ def check_country_has_data(country_name: str) -> tuple:
     Returns (has_data, country_info) tuple
     """
     name_lower = country_name.lower().strip()
-    
+
     # Check direct match in NO_DATA_COUNTRIES
     for key, value in NO_DATA_COUNTRIES.items():
         if key.lower() in name_lower or name_lower in key.lower():
             return False, {
                 "name": value,
                 "iso3": "ESH",
-                "reason": "Territoire occupé - aucune statistique commerciale disponible dans les bases de données internationales (OEC, WITS)"
+                "reason": "Territoire occupé - aucune statistique commerciale disponible dans les bases de données internationales (OEC, WITS)",
             }
-    
+
     # Check by ISO3
     for iso3, info in AFRICAN_COUNTRIES.items():
-        if info.get("name_fr", "").lower() == name_lower or info.get("name_en", "").lower() == name_lower:
+        if (
+            info.get("name_fr", "").lower() == name_lower
+            or info.get("name_en", "").lower() == name_lower
+        ):
             if not info.get("has_trade_data", True):
                 return False, {
                     "name": info.get("name_fr", country_name),
                     "iso3": iso3,
-                    "reason": info.get("note", "Données non disponibles")
+                    "reason": info.get("note", "Données non disponibles"),
                 }
-    
+
     return True, None
 
 
@@ -58,31 +62,28 @@ def check_country_has_data(country_name: str) -> tuple:
 async def get_ai_trade_opportunities(
     country_name: str,
     mode: str = Query(default="export", description="Analysis mode: export, import, or industrial"),
-    lang: str = Query(default="fr", description="Language for response (fr/en)")
+    lang: str = Query(default="fr", description="Language for response (fr/en)"),
 ):
     """
     Get AI-analyzed trade opportunities for a country
-    
+
     Uses Google Gemini to analyze trade opportunities based on official data sources.
-    
+
     Args:
         country_name: Name of the African country (e.g., "Algeria", "Nigeria", "Kenya")
         mode: Analysis mode
             - export: Find export opportunities
-            - import: Find import substitution opportunities  
+            - import: Find import substitution opportunities
             - industrial: Analyze value chain transformation opportunities
         lang: Language for the response
-    
+
     Returns:
         AI-generated trade opportunities with sources and reliability indicators
     """
     valid_modes = ["export", "import", "industrial"]
     if mode not in valid_modes:
-        raise HTTPException(
-            status_code=400, 
-            detail=f"Invalid mode. Must be one of: {valid_modes}"
-        )
-    
+        raise HTTPException(status_code=400, detail=f"Invalid mode. Must be one of: {valid_modes}")
+
     # Check if country has trade data
     has_data, no_data_info = check_country_has_data(country_name)
     if not has_data:
@@ -98,23 +99,21 @@ async def get_ai_trade_opportunities(
             "summary": {
                 "total_opportunities": 0,
                 "total_potential_value": 0,
-                "status": "NO_DATA_AVAILABLE"
+                "status": "NO_DATA_AVAILABLE",
             },
-            "sources": ["OEC", "WITS - Aucune donnée trouvée"]
+            "sources": ["OEC", "WITS - Aucune donnée trouvée"],
         }
-    
+
     try:
         result = await claude_trade_service.analyze_trade_opportunities(
-            country_name=country_name,
-            mode=mode,
-            lang=lang
+            country_name=country_name, mode=mode, lang=lang
         )
-        
+
         if "error" in result and not result.get("opportunities"):
             raise HTTPException(status_code=500, detail=result["error"])
-        
+
         return result
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -124,36 +123,34 @@ async def get_ai_trade_opportunities(
 
 @router.get("/profile/{country_name}")
 async def get_ai_country_profile(
-    country_name: str,
-    lang: str = Query(default="fr", description="Language for response (fr/en)")
+    country_name: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
     Get AI-generated comprehensive economic profile for a country
-    
+
     Includes:
     - Economic indicators (GDP, inflation, unemployment, debt)
     - Development indices (HDI, GAI)
     - Trade summary with top partners and products
     - AfCFTA potential and opportunities
-    
+
     Args:
         country_name: Name of the African country
         lang: Language for the response
-    
+
     Returns:
         Comprehensive country profile with economic and trade data
     """
     try:
         result = await claude_trade_service.get_country_economic_profile(
-            country_name=country_name,
-            lang=lang
+            country_name=country_name, lang=lang
         )
-        
+
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
-        
+
         return result
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -163,44 +160,37 @@ async def get_ai_country_profile(
 
 @router.get("/product/{hs_code}")
 async def get_ai_product_analysis(
-    hs_code: str,
-    lang: str = Query(default="fr", description="Language for response (fr/en)")
+    hs_code: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
     Get AI-analyzed trade flows for a specific product (HS code)
-    
+
     Provides:
     - Product information and classification
     - African trade flows summary
     - Top African exporters and importers
     - Production capacities
     - Substitution opportunities
-    
+
     Args:
         hs_code: HS code (4 or 6 digits)
         lang: Language for the response
-    
+
     Returns:
         Comprehensive product trade analysis for Africa
     """
     # Validate HS code format
     if not hs_code.isdigit() or len(hs_code) not in [2, 4, 6]:
-        raise HTTPException(
-            status_code=400,
-            detail="HS code must be 2, 4, or 6 digits"
-        )
-    
+        raise HTTPException(status_code=400, detail="HS code must be 2, 4, or 6 digits")
+
     try:
-        result = await claude_trade_service.analyze_product_by_hs_code(
-            hs_code=hs_code,
-            lang=lang
-        )
-        
+        result = await claude_trade_service.analyze_product_by_hs_code(hs_code=hs_code, lang=lang)
+
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
-        
+
         return result
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -210,33 +200,31 @@ async def get_ai_product_analysis(
 
 @router.get("/balance/{country_name}")
 async def get_ai_trade_balance(
-    country_name: str,
-    lang: str = Query(default="fr", description="Language for response (fr/en)")
+    country_name: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
     Get AI-analyzed trade balance history for a country
-    
+
     Returns trade balance data (exports, imports, balance) for 2020-2024
     with trend analysis and outlook.
-    
+
     Args:
         country_name: Name of the African country
         lang: Language for the response
-    
+
     Returns:
         Trade balance history with analysis
     """
     try:
         result = await claude_trade_service.get_trade_balance_analysis(
-            country_name=country_name,
-            lang=lang
+            country_name=country_name, lang=lang
         )
-        
+
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
-        
+
         return result
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -248,12 +236,15 @@ async def get_ai_trade_balance(
 async def check_ai_service_health():
     """Check if the AI service (Claude) is properly configured and operational."""
     import os
+
     from dotenv import load_dotenv
+
     load_dotenv()
 
     has_key = bool(os.environ.get("ANTHROPIC_API_KEY"))
     try:
         import anthropic
+
         sdk_available = True
     except ImportError:
         sdk_available = False
@@ -271,7 +262,7 @@ async def check_ai_service_health():
 async def compare_two_countries(
     country_a: str = Query(..., description="First African country name"),
     country_b: str = Query(..., description="Second African country name"),
-    lang: str = Query(default="fr", description="Language (fr/en)")
+    lang: str = Query(default="fr", description="Language (fr/en)"),
 ):
     """
     Compare two African countries as potential AfCFTA trade partners.
@@ -304,24 +295,24 @@ async def get_ai_trade_summary(
 ):
     """
     Get AI-generated comprehensive African trade summary
-    
+
     Used for the "Vue d'ensemble" (Overview) tab.
     Returns aggregate statistics across all African countries.
-    
+
     Args:
         lang: Language for the response
-    
+
     Returns:
         Trade summary with top countries, sectors, and growth metrics
     """
     try:
         result = await claude_trade_service.get_trade_summary(lang=lang)
-        
+
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
-        
+
         return result
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -331,19 +322,22 @@ async def get_ai_trade_summary(
 
 @router.get("/value-chains")
 async def get_ai_value_chains(
-    sector: str = Query(default=None, description="Specific sector to analyze (coffee, cocoa, cotton, petroleum, minerals, automotive)"),
-    lang: str = Query(default="fr", description="Language for response (fr/en)")
+    sector: str = Query(
+        default=None,
+        description="Specific sector to analyze (coffee, cocoa, cotton, petroleum, minerals, automotive)",
+    ),
+    lang: str = Query(default="fr", description="Language for response (fr/en)"),
 ):
     """
     Get AI-analyzed African value chains
-    
+
     Used for the "Chaînes de Valeur" (Value Chains) tab.
     Analyzes production, transformation, and export opportunities.
-    
+
     Args:
         sector: Optional specific sector (coffee, cocoa, cotton, petroleum, minerals, automotive)
         lang: Language for the response
-    
+
     Returns:
         Value chains analysis with stages, top producers, and AfCFTA opportunities
     """
@@ -351,20 +345,17 @@ async def get_ai_value_chains(
     if sector and sector not in valid_sectors:
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid sector. Must be one of: {[s for s in valid_sectors if s]}"
+            detail=f"Invalid sector. Must be one of: {[s for s in valid_sectors if s]}",
         )
-    
+
     try:
-        result = await claude_trade_service.get_value_chains_analysis(
-            sector=sector,
-            lang=lang
-        )
-        
+        result = await claude_trade_service.get_value_chains_analysis(sector=sector, lang=lang)
+
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
-        
+
         return result
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -376,7 +367,7 @@ async def get_ai_value_chains(
 async def get_cache_statistics():
     """
     Get cache statistics (Redis + JSON file fallback)
-    
+
     Returns:
         Cache status, active backend, hit rate, and entry count
     """
@@ -385,9 +376,14 @@ async def get_cache_statistics():
 
 @router.post("/cache/invalidate")
 async def invalidate_cache(
-    pattern: str = Query(default=None, description="Cache type pattern to invalidate (e.g., 'gemini_summary', 'gemini_value_chains'). Leave empty to invalidate all."),
-    country: str = Query(default=None, description="Country name to invalidate specific country cache entries."),
-    lang: str = Query(default=None, description="Language filter for invalidation (fr/en).")
+    pattern: str = Query(
+        default=None,
+        description="Cache type pattern to invalidate (e.g., 'gemini_summary', 'gemini_value_chains'). Leave empty to invalidate all.",
+    ),
+    country: str = Query(
+        default=None, description="Country name to invalidate specific country cache entries."
+    ),
+    lang: str = Query(default=None, description="Language filter for invalidation (fr/en)."),
 ):
     """
     Invalidate cache entries (admin endpoint)
@@ -407,6 +403,7 @@ async def invalidate_cache(
         # Stamp de version des données de production (modes enrichis export/industrial)
         try:
             from production_data import get_production_data_version
+
             pdv = get_production_data_version()
         except Exception:
             pdv = None
@@ -436,20 +433,23 @@ async def invalidate_cache(
         "status": "ok",
         "invalidated_entries": invalidated,
         "details": details,
-        "message": f"{invalidated} entrée(s) de cache invalidée(s)"
+        "message": f"{invalidated} entrée(s) de cache invalidée(s)",
     }
 
 
 @router.delete("/cache/clear")
 async def clear_cache(
-    pattern: str = Query(default=None, description="Pattern to clear (e.g., 'gemini_analysis'). Leave empty to clear all.")
+    pattern: str = Query(
+        default=None,
+        description="Pattern to clear (e.g., 'gemini_analysis'). Leave empty to clear all.",
+    )
 ):
     """
     Clear cache entries (admin endpoint)
-    
+
     Args:
         pattern: Optional pattern to match (gemini_analysis, gemini_profile, etc.)
-    
+
     Returns:
         Number of cleared entries
     """
@@ -457,11 +457,8 @@ async def clear_cache(
         cleared = cache_service.invalidate_pattern(pattern)
     else:
         cleared = cache_service.clear_all()
-    
-    return {
-        "cleared_entries": cleared,
-        "pattern": pattern or "all"
-    }
+
+    return {"cleared_entries": cleared, "pattern": pattern or "all"}
 
 
 def register_routes(app_router):

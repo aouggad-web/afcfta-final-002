@@ -1,6 +1,7 @@
 """
 Currency service – loads and exposes the complete African currency dataset.
 """
+
 import json
 import logging
 from pathlib import Path
@@ -13,7 +14,12 @@ logger = logging.getLogger(__name__)
 # Path to the canonical currency data file (repo root).
 # Use .resolve() so that non-normalized sys.path entries (e.g. "backend/tests/..")
 # that leave ".." components in __file__ are fully resolved before computing parents.
-_DATA_FILE = Path(__file__).resolve().parent.parent.parent / "data" / "json" / "currencies_african_complete.json"
+_DATA_FILE = (
+    Path(__file__).resolve().parent.parent.parent
+    / "data"
+    / "json"
+    / "currencies_african_complete.json"
+)
 
 
 def _load_currencies() -> Tuple[Dict[str, CurrencyInfo], Dict[str, CurrencyInfo]]:
@@ -62,17 +68,60 @@ def list_currencies() -> List[CurrencyInfo]:
 
 # ISO3 → ISO2 mapping for all 54 African countries
 _ISO3_TO_ISO2: Dict[str, str] = {
-    "DZA": "DZ", "AGO": "AO", "BEN": "BJ", "BWA": "BW", "BFA": "BF",
-    "BDI": "BI", "CMR": "CM", "CPV": "CV", "CAF": "CF", "TCD": "TD",
-    "COM": "KM", "COD": "CD", "COG": "CG", "CIV": "CI", "DJI": "DJ",
-    "EGY": "EG", "GNQ": "GQ", "ERI": "ER", "SWZ": "SZ", "ETH": "ET",
-    "GAB": "GA", "GMB": "GM", "GHA": "GH", "GIN": "GN", "GNB": "GW",
-    "KEN": "KE", "LSO": "LS", "LBR": "LR", "LBY": "LY", "MDG": "MG",
-    "MWI": "MW", "MLI": "ML", "MRT": "MR", "MUS": "MU", "MAR": "MA",
-    "MOZ": "MZ", "NAM": "NA", "NER": "NE", "NGA": "NG", "RWA": "RW",
-    "STP": "ST", "SEN": "SN", "SYC": "SC", "SLE": "SL", "SOM": "SO",
-    "ZAF": "ZA", "SSD": "SS", "SDN": "SD", "TZA": "TZ", "TGO": "TG",
-    "TUN": "TN", "UGA": "UG", "ZMB": "ZM", "ZWE": "ZW",
+    "DZA": "DZ",
+    "AGO": "AO",
+    "BEN": "BJ",
+    "BWA": "BW",
+    "BFA": "BF",
+    "BDI": "BI",
+    "CMR": "CM",
+    "CPV": "CV",
+    "CAF": "CF",
+    "TCD": "TD",
+    "COM": "KM",
+    "COD": "CD",
+    "COG": "CG",
+    "CIV": "CI",
+    "DJI": "DJ",
+    "EGY": "EG",
+    "GNQ": "GQ",
+    "ERI": "ER",
+    "SWZ": "SZ",
+    "ETH": "ET",
+    "GAB": "GA",
+    "GMB": "GM",
+    "GHA": "GH",
+    "GIN": "GN",
+    "GNB": "GW",
+    "KEN": "KE",
+    "LSO": "LS",
+    "LBR": "LR",
+    "LBY": "LY",
+    "MDG": "MG",
+    "MWI": "MW",
+    "MLI": "ML",
+    "MRT": "MR",
+    "MUS": "MU",
+    "MAR": "MA",
+    "MOZ": "MZ",
+    "NAM": "NA",
+    "NER": "NE",
+    "NGA": "NG",
+    "RWA": "RW",
+    "STP": "ST",
+    "SEN": "SN",
+    "SYC": "SC",
+    "SLE": "SL",
+    "SOM": "SO",
+    "ZAF": "ZA",
+    "SSD": "SS",
+    "SDN": "SD",
+    "TZA": "TZ",
+    "TGO": "TG",
+    "TUN": "TN",
+    "UGA": "UG",
+    "ZMB": "ZM",
+    "ZWE": "ZW",
 }
 
 

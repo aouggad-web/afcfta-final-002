@@ -19,7 +19,7 @@ from typing import Dict, List, Optional
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'crawled')
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data", "crawled")
 
 # ---------------------------------------------------------------------------
 # SACU framework constants
@@ -134,17 +134,17 @@ SACU_CET_BANDS = {
 
 SACU_SPECIFIC_RATES: Dict[str, float] = {
     # HS Chapter: CET rate
-    "01": 0.0,   # Live animals
+    "01": 0.0,  # Live animals
     "02": 20.0,  # Meat
-    "03": 0.0,   # Fish
+    "03": 0.0,  # Fish
     "04": 20.0,  # Dairy
     "10": 20.0,  # Cereals
     "17": 20.0,  # Sugar
     "22": 25.0,  # Beverages (excl. water which is 0)
     "24": 30.0,  # Tobacco
-    "28": 0.0,   # Inorganic chemicals
-    "29": 0.0,   # Organic chemicals
-    "30": 0.0,   # Pharmaceutical products (duty-free)
+    "28": 0.0,  # Inorganic chemicals
+    "29": 0.0,  # Organic chemicals
+    "30": 0.0,  # Pharmaceutical products (duty-free)
     "87": 25.0,  # Vehicles
     "50": 22.0,  # Silk
     "51": 22.0,  # Wool
@@ -159,6 +159,7 @@ SACU_SPECIFIC_RATES: Dict[str, float] = {
 # ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
+
 
 def get_cet_rate(hs_chapter: str) -> float:
     """
@@ -218,8 +219,22 @@ def calculate_total_import_cost(
     dict with cif_value, customs_duty, vat, total, effective_rate
     """
     SADC_COUNTRIES = {
-        "ZAF", "BWA", "NAM", "LSO", "SWZ", "AGO", "ZMB", "ZWE", "COD",
-        "MUS", "SYC", "COM", "MOZ", "MDG", "MWI", "TZA",
+        "ZAF",
+        "BWA",
+        "NAM",
+        "LSO",
+        "SWZ",
+        "AGO",
+        "ZMB",
+        "ZWE",
+        "COD",
+        "MUS",
+        "SYC",
+        "COM",
+        "MOZ",
+        "MDG",
+        "MWI",
+        "TZA",
     }
 
     is_sacu_origin = origin in {"ZAF", "BWA", "NAM", "LSO", "SWZ"}
@@ -274,8 +289,8 @@ def run_scraper() -> Dict:
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     summary = generate_sacu_summary()
 
-    output_path = os.path.join(OUTPUT_DIR, 'SACU_framework.json')
-    with open(output_path, 'w', encoding='utf-8') as f:
+    output_path = os.path.join(OUTPUT_DIR, "SACU_framework.json")
+    with open(output_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
 
     logger.info(f"SACU framework data saved to {output_path}")

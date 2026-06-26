@@ -3,7 +3,6 @@
 import importlib
 import sys
 
-
 REQUIRED_PACKAGES = [
     "fastapi",
     "uvicorn",

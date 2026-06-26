@@ -13,10 +13,10 @@ import logging
 from typing import Any, Dict, List, Optional, Tuple
 
 from config.regional_config import (
-    NORTH_AFRICA_COUNTRIES,
-    NORTH_AFRICA_VAT_RATES,
     CEMAC_COUNTRIES,
     CEMAC_VAT_RATES,
+    NORTH_AFRICA_COUNTRIES,
+    NORTH_AFRICA_VAT_RATES,
 )
 
 logger = logging.getLogger(__name__)
@@ -310,7 +310,8 @@ class EnhancedCalculatorV3:
             "best_route": results[0] if results else None,
             "savings_vs_worst": (
                 round(results[-1]["total_taxes"] - results[0]["total_taxes"], 2)
-                if len(results) >= 2 else 0
+                if len(results) >= 2
+                else 0
             ),
         }
 
@@ -335,14 +336,16 @@ class EnhancedCalculatorV3:
             if not zones:
                 continue
             for zone in zones:
-                opportunities.append({
-                    "country": country_code,
-                    "country_name": profile.get("country_name", country_code),
-                    "zone_name": zone,
-                    "hs_code": hs_code,
-                    "estimated_benefit": "Reduced or zero customs duties within zone",
-                    "notes": f"Verify specific rates for HS {hs_code} in {zone}",
-                })
+                opportunities.append(
+                    {
+                        "country": country_code,
+                        "country_name": profile.get("country_name", country_code),
+                        "zone_name": zone,
+                        "hs_code": hs_code,
+                        "estimated_benefit": "Reduced or zero customs duties within zone",
+                        "notes": f"Verify specific rates for HS {hs_code} in {zone}",
+                    }
+                )
 
         return opportunities
 
@@ -371,49 +374,59 @@ class EnhancedCalculatorV3:
                 continue
 
             if dest_upper == "EU" and profile.get("eu_agreement"):
-                rates.append({
-                    "agreement": "EU Association Agreement",
-                    "origin": origin_country,
-                    "destination": "EU",
-                    "type": "preferential",
-                    "note": f"{profile.get('country_name')} EU Association Agreement",
-                })
+                rates.append(
+                    {
+                        "agreement": "EU Association Agreement",
+                        "origin": origin_country,
+                        "destination": "EU",
+                        "type": "preferential",
+                        "note": f"{profile.get('country_name')} EU Association Agreement",
+                    }
+                )
 
             if dest_upper == "US" and profile.get("qiz"):
-                rates.append({
-                    "agreement": "QIZ (Qualified Industrial Zones)",
-                    "origin": origin_country,
-                    "destination": "US",
-                    "type": "preferential",
-                    "note": "Egypt QIZ zones - special US market access",
-                })
+                rates.append(
+                    {
+                        "agreement": "QIZ (Qualified Industrial Zones)",
+                        "origin": origin_country,
+                        "destination": "US",
+                        "type": "preferential",
+                        "note": "Egypt QIZ zones - special US market access",
+                    }
+                )
 
             if dest_upper in ("COMESA", "EAST_AFRICA") and profile.get("comesa"):
-                rates.append({
-                    "agreement": "COMESA Preferential Rates",
-                    "origin": origin_country,
-                    "destination": "COMESA",
-                    "type": "preferential",
-                    "note": "Common Market for Eastern and Southern Africa rates",
-                })
+                rates.append(
+                    {
+                        "agreement": "COMESA Preferential Rates",
+                        "origin": origin_country,
+                        "destination": "COMESA",
+                        "type": "preferential",
+                        "note": "Common Market for Eastern and Southern Africa rates",
+                    }
+                )
 
             if dest_upper in ("ARAB", "ARAB_COUNTRIES", "GAFTA") and profile.get("agadir"):
-                rates.append({
-                    "agreement": "Arab Free Trade Area (GAFTA)",
-                    "origin": origin_country,
-                    "destination": "Arab Countries",
-                    "type": "preferential",
-                    "note": "Pan-Arab Free Trade Area",
-                })
+                rates.append(
+                    {
+                        "agreement": "Arab Free Trade Area (GAFTA)",
+                        "origin": origin_country,
+                        "destination": "Arab Countries",
+                        "type": "preferential",
+                        "note": "Pan-Arab Free Trade Area",
+                    }
+                )
             elif dest_upper in ("ARAB", "ARAB_COUNTRIES", "GAFTA") and not profile.get("agadir"):
                 # GAFTA is broader than Agadir — applies to all North African countries
-                rates.append({
-                    "agreement": "Arab Free Trade Area (GAFTA)",
-                    "origin": origin_country,
-                    "destination": "Arab Countries",
-                    "type": "preferential",
-                    "note": "Pan-Arab Free Trade Area (GAFTA)",
-                })
+                rates.append(
+                    {
+                        "agreement": "Arab Free Trade Area (GAFTA)",
+                        "origin": origin_country,
+                        "destination": "Arab Countries",
+                        "type": "preferential",
+                        "note": "Pan-Arab Free Trade Area (GAFTA)",
+                    }
+                )
 
         return rates
 
@@ -471,11 +484,13 @@ class EnhancedCalculatorV3:
                     cif_value=unit_value,
                 )
                 total_by_country[country] += calc["total_taxes"]
-                hs_results.append({
-                    "country": country,
-                    "total_taxes": calc["total_taxes"],
-                    "landed_cost": calc["total_landed_cost"],
-                })
+                hs_results.append(
+                    {
+                        "country": country,
+                        "total_taxes": calc["total_taxes"],
+                        "landed_cost": calc["total_landed_cost"],
+                    }
+                )
             details_by_hs[hs_code] = sorted(hs_results, key=lambda x: x["total_taxes"])
 
         ranked = sorted(total_by_country.items(), key=lambda x: x[1])
@@ -486,9 +501,7 @@ class EnhancedCalculatorV3:
             "unit_value": unit_value,
             "total_tax_burden_by_country": dict(ranked),
             "optimal_country": ranked[0][0] if ranked else None,
-            "savings_vs_worst": (
-                round(ranked[-1][1] - ranked[0][1], 2) if len(ranked) >= 2 else 0
-            ),
+            "savings_vs_worst": (round(ranked[-1][1] - ranked[0][1], 2) if len(ranked) >= 2 else 0),
             "details_by_hs_code": details_by_hs,
         }
 

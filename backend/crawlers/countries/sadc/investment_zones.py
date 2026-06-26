@@ -365,7 +365,12 @@ SADC_INVESTMENT_ZONES = {
                 "name": "Mauritius Freeport",
                 "location": "Port Louis Harbour + Sir Seewoosagur Ramgoolam Airport",
                 "type": "freeport_logistics",
-                "focus_sectors": ["warehousing", "distribution", "transshipment", "light_manufacturing"],
+                "focus_sectors": [
+                    "warehousing",
+                    "distribution",
+                    "transshipment",
+                    "light_manufacturing",
+                ],
                 "incentives": [
                     "Duty-free operations",
                     "24/7 customs clearance",

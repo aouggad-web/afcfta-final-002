@@ -27,6 +27,7 @@ router = APIRouter(prefix="/mobile", tags=["Mobile API"])
 # ETag helpers
 # ---------------------------------------------------------------------------
 
+
 def _etag(data: Any) -> str:
     raw = json.dumps(data, sort_keys=True, default=str)
     return '"' + hashlib.md5(raw.encode()).hexdigest() + '"'
@@ -40,6 +41,7 @@ def _check_etag(request: Request, etag: str) -> bool:
 # ---------------------------------------------------------------------------
 # Country summary (< 10KB)
 # ---------------------------------------------------------------------------
+
 
 @router.get("/country/summary/{code}")
 async def mobile_country_summary(
@@ -55,6 +57,7 @@ async def mobile_country_summary(
     """
     try:
         from performance.caching.cache_layers import get_cache
+
         cache = get_cache()
         cache_key = cache.l1.build_key(type="mobile_country", key=f"{code.upper()}_{lang}")
         cached = cache.l1.get(cache_key)
@@ -74,6 +77,7 @@ async def mobile_country_summary(
     # Build lightweight payload
     try:
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         score = engine.calculate_investment_score(code_upper, "general")
         investment_summary = {
@@ -87,6 +91,7 @@ async def mobile_country_summary(
 
     try:
         from intelligence.analytics.regional_analytics import REGIONAL_BLOCS
+
         country_bloc = next(
             (bloc for bloc, info in REGIONAL_BLOCS.items() if code_upper in info["countries"]),
             "N/A",
@@ -123,6 +128,7 @@ async def mobile_country_summary(
 # Quick search with autocomplete (< 100ms)
 # ---------------------------------------------------------------------------
 
+
 @router.get("/search/quick")
 async def mobile_quick_search(
     q: str = Query(..., min_length=2, max_length=100, description="Search query"),
@@ -134,6 +140,7 @@ async def mobile_quick_search(
     Returns HS codes and product suggestions in < 100ms.
     """
     from search.enhanced_search import get_search_engine
+
     engine = get_search_engine()
     results = engine.intelligent_hs_search(q, lang=lang)
 
@@ -149,11 +156,13 @@ async def mobile_quick_search(
         code = match.get("hs_code") or match.get("code", "")
         if code not in seen_codes:
             seen_codes.add(code)
-            suggestions.append({
-                "hs_code": code,
-                "label": match.get("description") or match.get("description_en", ""),
-                "type": match.get("match_type", ""),
-            })
+            suggestions.append(
+                {
+                    "hs_code": code,
+                    "label": match.get("description") or match.get("description_en", ""),
+                    "type": match.get("match_type", ""),
+                }
+            )
 
     return {
         "query": q,
@@ -167,6 +176,7 @@ async def mobile_quick_search(
 # Dashboard overview (personalized, mobile-first)
 # ---------------------------------------------------------------------------
 
+
 @router.get("/dashboard/overview")
 async def mobile_dashboard_overview(
     region: Optional[str] = Query(None, description="Focus region (e.g. ECOWAS)"),
@@ -178,13 +188,14 @@ async def mobile_dashboard_overview(
     Smart refresh-friendly: uses ETag for efficient re-validation.
     """
     from intelligence.analytics.regional_analytics import get_regional_analytics
+
     analytics = get_regional_analytics()
 
     heatmap = analytics.get_investment_heatmap()[:5]  # Top 5 blocs
 
-    top_opportunities = heatmap[:3] if not region else [
-        h for h in heatmap if h["bloc"] == region.upper()
-    ][:3]
+    top_opportunities = (
+        heatmap[:3] if not region else [h for h in heatmap if h["bloc"] == region.upper()][:3]
+    )
 
     corridors = analytics.get_trade_corridor_analysis()[:3]
 
@@ -209,6 +220,7 @@ async def mobile_dashboard_overview(
 # Investment alerts feed (mobile push notifications support)
 # ---------------------------------------------------------------------------
 
+
 @router.get("/alerts/feed")
 async def mobile_alerts_feed(
     user_id: Optional[str] = Query(None),
@@ -220,7 +232,11 @@ async def mobile_alerts_feed(
     Paginated investment alerts feed for mobile.
     Designed to be polled by mobile clients or used to populate push notifications.
     """
-    from intelligence.ai_engine.investment_scoring import get_intelligence_engine, COUNTRY_INDICATORS
+    from intelligence.ai_engine.investment_scoring import (
+        COUNTRY_INDICATORS,
+        get_intelligence_engine,
+    )
+
     engine = get_intelligence_engine()
 
     alerts = []
@@ -231,16 +247,18 @@ async def mobile_alerts_feed(
             country, sector or "general", "medium", {"risk_tolerance": risk_tolerance}
         )
         if score.overall_score >= 0.65:
-            alerts.append({
-                "type": "investment_opportunity",
-                "country": country,
-                "sector": sector or "general",
-                "score": score.overall_score,
-                "grade": score.grade,
-                "headline": f"Investment opportunity in {country} — Grade {score.grade}",
-                "summary": score.recommendation_strength.replace("_", " ").title(),
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-            })
+            alerts.append(
+                {
+                    "type": "investment_opportunity",
+                    "country": country,
+                    "sector": sector or "general",
+                    "score": score.overall_score,
+                    "grade": score.grade,
+                    "headline": f"Investment opportunity in {country} — Grade {score.grade}",
+                    "summary": score.recommendation_strength.replace("_", " ").title(),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                }
+            )
 
     alerts.sort(key=lambda x: x["score"], reverse=True)
     return {
@@ -255,6 +273,7 @@ async def mobile_alerts_feed(
 # Progressive loading helpers
 # ---------------------------------------------------------------------------
 
+
 @router.get("/country/details/{code}")
 async def mobile_country_details(
     code: str,
@@ -265,6 +284,7 @@ async def mobile_country_details(
     The mobile client fetches sections lazily as the user scrolls.
     """
     from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
     engine = get_intelligence_engine()
     code_upper = code.upper()
 
@@ -275,10 +295,7 @@ async def mobile_country_details(
         sections["investment"] = {
             "score": score.overall_score,
             "grade": score.grade,
-            "components": [
-                {"name": c.name, "score": c.raw_score}
-                for c in score.component_scores
-            ],
+            "components": [{"name": c.name, "score": c.raw_score} for c in score.component_scores],
             "risk_factors": score.risk_factors,
         }
 

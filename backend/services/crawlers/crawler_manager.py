@@ -19,8 +19,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from config.crawler_config import get_crawler_config, get_quality_config
-from services.crawlers.dza_tariff_connector import DZATariffConnector
 from services.crawlers.data_validator import DataValidator
+from services.crawlers.dza_tariff_connector import DZATariffConnector
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +28,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Session state
 # ---------------------------------------------------------------------------
+
 
 class CrawlSession:
     """Represents a single DZA crawl session."""
@@ -64,6 +65,7 @@ class CrawlSession:
 # ---------------------------------------------------------------------------
 # Crawler Manager
 # ---------------------------------------------------------------------------
+
 
 class CrawlerManager:
     """

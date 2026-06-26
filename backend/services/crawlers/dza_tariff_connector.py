@@ -67,6 +67,7 @@ TAX_COLUMN_MAP: Dict[str, str] = {
 # Data Models (plain dicts – no external deps required)
 # ---------------------------------------------------------------------------
 
+
 def _empty_tariff_line() -> Dict[str, Any]:
     return {
         "hs10_code": "",
@@ -75,12 +76,12 @@ def _empty_tariff_line() -> Dict[str, Any]:
         "description_ar": "",
         "unit": "",
         "taxes": {
-            "dd": None,       # Customs Duty %
-            "tva": None,      # VAT %
-            "prct": None,     # Trade Regulation Levy %
-            "tcs": None,      # Specific Turnover Tax %
-            "daps": None,     # Additional Provisional Duty %
-            "tic": None,      # Excise Tax %
+            "dd": None,  # Customs Duty %
+            "tva": None,  # VAT %
+            "prct": None,  # Trade Regulation Levy %
+            "tcs": None,  # Specific Turnover Tax %
+            "daps": None,  # Additional Provisional Duty %
+            "tic": None,  # Excise Tax %
         },
         "fiscal_advantages": [],
         "administrative_formalities": [],
@@ -93,6 +94,7 @@ def _empty_tariff_line() -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 # Utility helpers
 # ---------------------------------------------------------------------------
+
 
 def _normalize_pct(raw: str) -> Optional[float]:
     """Convert a percentage string like '19%' or '0,19' to float (e.g. 19.0)."""
@@ -171,7 +173,11 @@ def _parse_tariff_table(soup: Any, source_url: str) -> List[Dict[str, Any]]:
                 if pattern in raw_header:
                     col_index[key] = i
                     break
-            if "désignation" in raw_header or "designation" in raw_header or "description" in raw_header:
+            if (
+                "désignation" in raw_header
+                or "designation" in raw_header
+                or "description" in raw_header
+            ):
                 col_index["description_fr"] = i
             if "code" in raw_header or "sh" in raw_header or "nsh" in raw_header:
                 col_index.setdefault("hs_code", i)
@@ -247,6 +253,7 @@ def _extract_links(soup: Any, base_url: str) -> List[str]:
 # Async Crawler
 # ---------------------------------------------------------------------------
 
+
 class DZATariffConnector:
     """
     Async crawler for Algeria's customs tariff website.
@@ -320,10 +327,7 @@ class DZATariffConnector:
             connector=connector,
             timeout=timeout,
         ) as session:
-            workers = [
-                asyncio.create_task(self._worker(session))
-                for _ in range(self.max_workers)
-            ]
+            workers = [asyncio.create_task(self._worker(session)) for _ in range(self.max_workers)]
             await self._queue.join()
             self._stop_requested = True
             for w in workers:
@@ -423,11 +427,15 @@ class DZATariffConnector:
                         else:
                             logger.warning(f"HTTP {resp.status} for {url}")
                 except (aiohttp.ClientError, asyncio.TimeoutError) as exc:
-                    logger.warning(f"Fetch attempt {attempt + 1}/{self.max_retries} failed for {url}: {exc}")
+                    logger.warning(
+                        f"Fetch attempt {attempt + 1}/{self.max_retries} failed for {url}: {exc}"
+                    )
                     if attempt < self.max_retries - 1:
                         await asyncio.sleep(self.retry_delay * (attempt + 1))
                     else:
-                        self._errors.append({"url": url, "error": str(exc), "attempts": attempt + 1})
+                        self._errors.append(
+                            {"url": url, "error": str(exc), "attempts": attempt + 1}
+                        )
                         self._stats["pages_failed"] += 1
                         return None
         return None
@@ -453,9 +461,13 @@ class DZATariffConnector:
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(
             None,
-            lambda: out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"),
+            lambda: out_file.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+            ),
         )
         logger.info(f"DZA tariff data saved to {out_file}")
+
+
 """
 Algeria (DZA) Tariff Connector.
 
@@ -470,8 +482,9 @@ import asyncio
 import logging
 from typing import Any, Dict, List, Optional
 
-from .base_north_africa_crawler import NorthAfricaCrawlerBase
 from config.crawler_configs.dza_config import DZA_CONFIG
+
+from .base_north_africa_crawler import NorthAfricaCrawlerBase
 
 logger = logging.getLogger(__name__)
 
@@ -539,8 +552,8 @@ class DZATariffConnector(NorthAfricaCrawlerBase):
 
     async def parse_taxes(self, html: str, country_config: Dict) -> List[Dict]:
         """Parse Algeria-specific tax structure from HTML."""
-        from crawlers.countries.algeria_conformepro_scraper import AlgeriaConformeproScraper
         from bs4 import BeautifulSoup
+        from crawlers.countries.algeria_conformepro_scraper import AlgeriaConformeproScraper
 
         scraper = AlgeriaConformeproScraper()
         soup = BeautifulSoup(html, "html.parser")
@@ -549,6 +562,7 @@ class DZATariffConnector(NorthAfricaCrawlerBase):
         taxes = {}
         for label, info in tax_names.items():
             import re
+
             h2 = soup.find("h2", string=re.compile(rf"{re.escape(label)}", re.I))
             if h2:
                 next_el = h2.find_next(["p", "div"])

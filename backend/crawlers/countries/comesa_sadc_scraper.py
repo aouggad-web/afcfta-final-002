@@ -40,6 +40,7 @@ from typing import Optional
 # HTTP optionnel
 try:
     import requests
+
     _HAS_REQUESTS = True
 except ImportError:
     _HAS_REQUESTS = False
@@ -54,27 +55,25 @@ OUTPUT_DIR = Path(__file__).parent.parent.parent / "data" / "crawled"
 # ---------------------------------------------------------------------------
 
 COUNTRY_CONFIGS: dict[str, dict] = {
-
     # ---------------------------------------------------------------- AGO --
     "AGO": {
         "country_code": "AGO",
         "country_name": "Angola",
         "source": "SGA Alfândegas de Angola",
         "source_url": "https://www.sga.gov.ao/tarifa/pesquisa",
-        "method": "api_json",          # API JSON SGA
+        "method": "api_json",  # API JSON SGA
         "endpoint": "https://www.sga.gov.ao/tarifa/api/positions",
         "params": {"format": "json", "version": "2023"},
         "auth": None,
-        "fallback": "sadc_schedule",   # Si API indisponible: utiliser SADC Schedule
+        "fallback": "sadc_schedule",  # Si API indisponible: utiliser SADC Schedule
         "tax_structure": {
             "DD": ("Direito Aduaneiro", "CIF"),
             "IVA": ("Imposto sobre o Valor Acrescentado", "CIF+DD"),
-            "IE":  ("Imposto de Exportação", "FOB"),
+            "IE": ("Imposto de Exportação", "FOB"),
         },
         "vat_rate": 14.0,
         "notes": "Angola applique l'IVA 14%. Accord de Luanda 2021.",
     },
-
     # ---------------------------------------------------------------- COM --
     "COM": {
         "country_code": "COM",
@@ -86,14 +85,13 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "params": {},
         "auth": None,
         "tax_structure": {
-            "DD":  ("Droit de Douane", "CIF"),
+            "DD": ("Droit de Douane", "CIF"),
             "TPS": ("Taxe sur les Prestations de Services", "CIF"),
             "TVA": ("Taxe sur la Valeur Ajoutée", "CIF+DD"),
         },
         "vat_rate": 10.0,
         "notes": "Comores — TVA 10%. Membre COMESA. Régime insulaire avec exonérations.",
     },
-
     # ---------------------------------------------------------------- DJI --
     "DJI": {
         "country_code": "DJI",
@@ -105,31 +103,29 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "params": {"lang": "fr"},
         "auth": None,
         "tax_structure": {
-            "DD":  ("Droit de Douane", "CIF"),
+            "DD": ("Droit de Douane", "CIF"),
             "TIC": ("Taxe Intérieure de Consommation", "CIF"),
         },
-        "vat_rate": None,   # Djibouti n'a pas de TVA générale
+        "vat_rate": None,  # Djibouti n'a pas de TVA générale
         "notes": "Djibouti zone franche — pas de TVA générale. DD 0-33%. Membre COMESA+IGAD.",
     },
-
     # ---------------------------------------------------------------- ERI --
     "ERI": {
         "country_code": "ERI",
         "country_name": "Érythrée",
         "source": "Ministry of Finance — Eritrea",
         "source_url": "https://www.mof.gov.er/",
-        "method": "pending",           # Portail très limité, données à obtenir via OMC
+        "method": "pending",  # Portail très limité, données à obtenir via OMC
         "endpoint": None,
         "params": {},
         "auth": None,
         "tax_structure": {
-            "CD":  ("Customs Duty", "CIF"),
-            "ST":  ("Sales Tax", "CIF+CD"),
+            "CD": ("Customs Duty", "CIF"),
+            "ST": ("Sales Tax", "CIF+CD"),
         },
-        "vat_rate": None,   # Sales Tax à taux variable
+        "vat_rate": None,  # Sales Tax à taux variable
         "notes": "Accès web très limité. Données à obtenir via OMC/ITC MacMap.",
     },
-
     # ---------------------------------------------------------------- MDG --
     "MDG": {
         "country_code": "MDG",
@@ -141,14 +137,13 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "params": {"format": "json"},
         "auth": None,
         "tax_structure": {
-            "DD":   ("Droit de Douane", "CIF"),
-            "RS":   ("Redevance Statistique", "CIF"),
-            "TVA":  ("Taxe sur la Valeur Ajoutée", "CIF+DD+RS"),
+            "DD": ("Droit de Douane", "CIF"),
+            "RS": ("Redevance Statistique", "CIF"),
+            "TVA": ("Taxe sur la Valeur Ajoutée", "CIF+DD+RS"),
         },
         "vat_rate": 20.0,
         "notes": "Madagascar — TVA 20%. Membre COMESA + SADC. Bandes DD 0/5/10/20%.",
     },
-
     # ---------------------------------------------------------------- MOZ --
     "MOZ": {
         "country_code": "MOZ",
@@ -160,14 +155,13 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "params": {},
         "auth": None,
         "tax_structure": {
-            "DD":  ("Direito Aduaneiro", "CIF"),
+            "DD": ("Direito Aduaneiro", "CIF"),
             "IVA": ("Imposto sobre o Valor Acrescentado", "CIF+DD"),
-            "IS":  ("Imposto de Sisa (sélectif)", "CIF"),
+            "IS": ("Imposto de Sisa (sélectif)", "CIF"),
         },
         "vat_rate": 17.0,
         "notes": "Mozambique — IVA 17%. Membre SADC. Bandes 0/2.5/5/7.5/20/25%.",
     },
-
     # ---------------------------------------------------------------- MRT --
     "MRT": {
         "country_code": "MRT",
@@ -179,14 +173,13 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "params": {},
         "auth": None,
         "tax_structure": {
-            "DD":  ("Droit de Douane", "CIF"),
+            "DD": ("Droit de Douane", "CIF"),
             "TVA": ("Taxe sur la Valeur Ajoutée", "CIF+DD"),
             "IBS": ("Impôt sur les Bénéfices des Sociétés à l'import (si applicable)", "CIF"),
         },
         "vat_rate": 16.0,
         "notes": "Mauritanie — TVA 16%. Ancienne membre CEDEAO (sortie 2000). Membre UMA. Bandes DD 0/5/13/20%.",
     },
-
     # ---------------------------------------------------------------- MWI --
     "MWI": {
         "country_code": "MWI",
@@ -198,14 +191,13 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "params": {"year": "2025", "format": "json"},
         "auth": None,
         "tax_structure": {
-            "CD":   ("Customs Duty", "CIF"),
-            "VAT":  ("Value Added Tax", "CIF+CD"),
+            "CD": ("Customs Duty", "CIF"),
+            "VAT": ("Value Added Tax", "CIF+CD"),
             "EXCISE": ("Excise Duty", "CIF"),
         },
         "vat_rate": 16.5,
         "notes": "Malawi — VAT 16.5%. Membre COMESA + SADC. Bandes 0/5/10/15/25%.",
     },
-
     # ---------------------------------------------------------------- STP --
     "STP": {
         "country_code": "STP",
@@ -217,13 +209,12 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "params": {},
         "auth": None,
         "tax_structure": {
-            "DP":  ("Direito de Pauta (Droit de Douane)", "CIF"),
+            "DP": ("Direito de Pauta (Droit de Douane)", "CIF"),
             "IVA": ("Imposto sobre o Valor Acrescentado", "CIF+DP"),
         },
         "vat_rate": 15.0,
         "notes": "STP — IVA 15%. Membre CEEAC (CEMAC étendu). Petit État insulaire — données limitées.",
     },
-
     # ---------------------------------------------------------------- ZMB --
     "ZMB": {
         "country_code": "ZMB",
@@ -235,7 +226,7 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "params": {"year": "2025", "lang": "en"},
         "auth": None,
         "tax_structure": {
-            "CD":  ("Customs Duty", "CIF"),
+            "CD": ("Customs Duty", "CIF"),
             "VAT": ("Value Added Tax", "CIF+CD"),
             "EXC": ("Excise Duty", "CIF"),
             "IDL": ("Import Declaration Fee", "CIF"),
@@ -243,7 +234,6 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "vat_rate": 16.0,
         "notes": "Zambie — VAT 16%. Membre COMESA + SADC. Bandes 0/5/15/25%. IDF 0.5% CIF.",
     },
-
     # ---------------------------------------------------------------- ZWE --
     "ZWE": {
         "country_code": "ZWE",
@@ -255,8 +245,8 @@ COUNTRY_CONFIGS: dict[str, dict] = {
         "params": {"year": "2025", "format": "excel"},
         "auth": None,
         "tax_structure": {
-            "CD":   ("Customs Duty", "CIF"),
-            "VAT":  ("Value Added Tax", "CIF+CD"),
+            "CD": ("Customs Duty", "CIF"),
+            "VAT": ("Value Added Tax", "CIF+CD"),
             "SURTAX": ("Surcharge Tax", "CIF"),
         },
         "vat_rate": 15.0,
@@ -269,13 +259,18 @@ COUNTRY_CONFIGS: dict[str, dict] = {
 # Utilitaires de scraping
 # ---------------------------------------------------------------------------
 
+
 def _fetch_json(url: str, params: dict, timeout: int = 30) -> Optional[dict]:
     if not _HAS_REQUESTS:
         logger.error("Module 'requests' non disponible — pip install requests")
         return None
     try:
-        r = requests.get(url, params=params, timeout=timeout,
-                         headers={"User-Agent": "Mozilla/5.0 ZLECAf-Tariff-Research"})
+        r = requests.get(
+            url,
+            params=params,
+            timeout=timeout,
+            headers={"User-Agent": "Mozilla/5.0 ZLECAf-Tariff-Research"},
+        )
         r.raise_for_status()
         return r.json()
     except Exception as e:
@@ -288,8 +283,12 @@ def _fetch_html(url: str, params: dict, timeout: int = 30) -> Optional[str]:
         logger.error("Module 'requests' non disponible — pip install requests")
         return None
     try:
-        r = requests.get(url, params=params, timeout=timeout,
-                         headers={"User-Agent": "Mozilla/5.0 ZLECAf-Tariff-Research"})
+        r = requests.get(
+            url,
+            params=params,
+            timeout=timeout,
+            headers={"User-Agent": "Mozilla/5.0 ZLECAf-Tariff-Research"},
+        )
         r.raise_for_status()
         return r.text
     except Exception as e:
@@ -358,8 +357,9 @@ def scrape_country(country: str) -> Optional[dict]:
     return None
 
 
-def run_scraper(countries: Optional[list[str]] = None,
-                output_dir: Optional[Path] = None) -> dict[str, str]:
+def run_scraper(
+    countries: Optional[list[str]] = None, output_dir: Optional[Path] = None
+) -> dict[str, str]:
     """
     Lance le scraping pour la liste de pays donnée (ou tous si None).
     Retourne un dict {iso3: "OK"|"PENDING"|"ERROR"}.
@@ -394,8 +394,11 @@ def run_scraper(countries: Optional[list[str]] = None,
 
         if raw is None:
             # Écrire un stub PENDING
-            stub = _build_stub(country, config,
-                                f"Portail {config['source_url']} non accessible ou méthode non implémentée")
+            stub = _build_stub(
+                country,
+                config,
+                f"Portail {config['source_url']} non accessible ou méthode non implémentée",
+            )
             out_file.write_text(json.dumps(stub, ensure_ascii=False, indent=2), encoding="utf-8")
             logger.warning(f"[{country}] → PENDING (stub écrit)")
             results[country] = "PENDING"
@@ -403,14 +406,16 @@ def run_scraper(countries: Optional[list[str]] = None,
             # Enrichir avec les métadonnées de provenance
             if isinstance(raw, list):
                 raw = {"positions": raw}
-            raw.update({
-                "country_code": country,
-                "country_name": config["country_name"],
-                "source": config["source"],
-                "source_url": config["source_url"],
-                "crawled_at": datetime.utcnow().isoformat(),
-                "data_status": "PARTIAL",
-            })
+            raw.update(
+                {
+                    "country_code": country,
+                    "country_name": config["country_name"],
+                    "source": config["source"],
+                    "source_url": config["source_url"],
+                    "crawled_at": datetime.utcnow().isoformat(),
+                    "data_status": "PARTIAL",
+                }
+            )
             out_file.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
             logger.info(f"[{country}] → OK")
             results[country] = "OK"

@@ -19,6 +19,7 @@ Fonctionnalités :
   - Historique glissant 30 jours (RateBundle)
   - Alertes de variation ≥ 5 %
 """
+
 import logging
 from collections import deque
 from datetime import datetime, timezone
@@ -26,23 +27,59 @@ from typing import Dict, List, Optional, Tuple
 
 from .models import ConversionResult, ExchangeRate, RateAlert, RateBundle
 from .providers import (
+    AfricanCentralBanksProvider,
     CurrencyFreaksProvider,
     FixerProvider,
     FrankfurterProvider,
     OpenERApiProvider,
-    AfricanCentralBanksProvider,
 )
 
 logger = logging.getLogger(__name__)
 
 # African currency codes (ISO 4217)
 AFRICAN_CURRENCY_CODES = {
-    "AOA", "BWP", "BIF", "CVE", "XAF", "KMF", "CDF", "DJF",
-    "DZD", "EGP", "ERN", "ETB", "GMD", "GHS", "GNF", "KES",
-    "LSL", "LRD", "LYD", "MAD", "MGA", "MWK", "MRU", "MUR",
-    "MZN", "NAD", "NGN", "RWF", "STN", "SCR", "SLE", "SOS",
-    "SSP", "SDG", "SZL", "TZS", "TND", "UGX", "XOF", "ZAR",
-    "ZMW", "ZWL",
+    "AOA",
+    "BWP",
+    "BIF",
+    "CVE",
+    "XAF",
+    "KMF",
+    "CDF",
+    "DJF",
+    "DZD",
+    "EGP",
+    "ERN",
+    "ETB",
+    "GMD",
+    "GHS",
+    "GNF",
+    "KES",
+    "LSL",
+    "LRD",
+    "LYD",
+    "MAD",
+    "MGA",
+    "MWK",
+    "MRU",
+    "MUR",
+    "MZN",
+    "NAD",
+    "NGN",
+    "RWF",
+    "STN",
+    "SCR",
+    "SLE",
+    "SOS",
+    "SSP",
+    "SDG",
+    "SZL",
+    "TZS",
+    "TND",
+    "UGX",
+    "XOF",
+    "ZAR",
+    "ZMW",
+    "ZWL",
 }
 
 # Rate change alert threshold (percent)
@@ -100,7 +137,9 @@ class ExchangeRateService:
                 primary_source = provider.name
                 logger.info(
                     "Rates fetched via %s (base=%s, %d pairs)",
-                    provider.name, base, len(rates),
+                    provider.name,
+                    base,
+                    len(rates),
                 )
                 break
 
@@ -109,10 +148,7 @@ class ExchangeRateService:
             return None
 
         # ── Step 2 : supplement with African central banks ─────────────────
-        missing_african = [
-            code for code in AFRICAN_CURRENCY_CODES
-            if code not in rates
-        ]
+        missing_african = [code for code in AFRICAN_CURRENCY_CODES if code not in rates]
         if missing_african:
             try:
                 supplement = self._supplement_provider.fetch_rates(base)
@@ -198,28 +234,19 @@ class ExchangeRateService:
         bundle = self.get_latest(base)
         if bundle is None:
             return {}
-        return {
-            code: rate
-            for code, rate in bundle.rates.items()
-            if code in AFRICAN_CURRENCY_CODES
-        }
+        return {code: rate for code, rate in bundle.rates.items() if code in AFRICAN_CURRENCY_CODES}
 
     def get_historical(self, date_str: str, base: str = "USD") -> Optional[RateBundle]:
         """Return historical rates for a date (YYYY-MM-DD) from in-memory buffer."""
         for bundle in self._history:
-            if (
-                bundle.timestamp.strftime("%Y-%m-%d") == date_str
-                and bundle.base == base.upper()
-            ):
+            if bundle.timestamp.strftime("%Y-%m-%d") == date_str and bundle.base == base.upper():
                 return bundle
         # Fallback: Frankfurter provides free historical ECB data
         ff = FrankfurterProvider()
         rates = ff.fetch_historical(date_str, base)
         if rates:
             ts = datetime.fromisoformat(f"{date_str}T00:00:00+00:00")
-            return RateBundle(
-                base=base.upper(), timestamp=ts, source="frankfurter", rates=rates
-            )
+            return RateBundle(base=base.upper(), timestamp=ts, source="frankfurter", rates=rates)
         return None
 
     def get_alerts(self) -> List[RateAlert]:
@@ -305,7 +332,10 @@ class ExchangeRateService:
                 self._alerts.append(alert)
                 logger.warning(
                     "Rate alert: %s changed %.2f%% (%s → %s)",
-                    alert.currency_pair, change_pct, old_rate, new_rate,
+                    alert.currency_pair,
+                    change_pct,
+                    old_rate,
+                    new_rate,
                 )
 
 

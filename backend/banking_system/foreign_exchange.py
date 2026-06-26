@@ -25,12 +25,13 @@ Statuts FMI (Article VIII / XIV) :
 """
 
 from typing import Dict, Optional, Tuple
+
 from .models import (
-    DomiciliationRule,
-    ForexRegulation,
     CountryForexProfile,
-    ImportFormalities,
+    DomiciliationRule,
     ExportFormalities,
+    ForexRegulation,
+    ImportFormalities,
 )
 
 # ---------------------------------------------------------------------------
@@ -38,15 +39,16 @@ from .models import (
 # ---------------------------------------------------------------------------
 
 FOREX_PROFILES: Dict[str, CountryForexProfile] = {
-
     # ── MAROC ────────────────────────────────────────────────────────────────
     "MA": CountryForexProfile(
-        country_code="MA", country_name="Maroc",
+        country_code="MA",
+        country_name="Maroc",
         central_bank_name="Bank Al-Maghrib",
         currency_code="MAD",
         currency_name="Dirham marocain",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=10_000,
             mandatory_documents=[
                 "facture_commerciale",
@@ -93,18 +95,27 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
             ),
         ),
         authorized_currencies=["USD", "EUR", "GBP", "CHF", "JPY", "CAD", "AED", "SAR"],
-        restricted_operations=["capital_account_transfers", "speculative_forex", "crypto_transactions"],
-        special_regimes=["CFC_Casablanca_Finance_City", "zones_franches_exportation", "régime_exportateur_permanent"],
+        restricted_operations=[
+            "capital_account_transfers",
+            "speculative_forex",
+            "crypto_transactions",
+        ],
+        special_regimes=[
+            "CFC_Casablanca_Finance_City",
+            "zones_franches_exportation",
+            "régime_exportateur_permanent",
+        ],
     ),
-
     # ── ALGÉRIE ──────────────────────────────────────────────────────────────
     "DZ": CountryForexProfile(
-        country_code="DZ", country_name="Algérie",
+        country_code="DZ",
+        country_name="Algérie",
         central_bank_name="Banque d'Algérie",
         currency_code="DZD",
         currency_name="Dinar algérien",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=0,
             mandatory_documents=[
                 "facture_pro_forma",
@@ -159,8 +170,10 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         ),
         authorized_currencies=["USD", "EUR", "GBP"],
         restricted_operations=[
-            "cash_payments_import", "capital_account_transfers",
-            "crypto_transactions", "open_account_payment",
+            "cash_payments_import",
+            "capital_account_transfers",
+            "crypto_transactions",
+            "open_account_payment",
         ],
         special_regimes=["zones_franches_exportation", "offshore_banking_units"],
         # Formalités de change à l'EXPORTATION fournies explicitement (données
@@ -209,15 +222,16 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
             ),
         ),
     ),
-
     # ── TUNISIE ───────────────────────────────────────────────────────────────
     "TN": CountryForexProfile(
-        country_code="TN", country_name="Tunisie",
+        country_code="TN",
+        country_name="Tunisie",
         central_bank_name="Banque Centrale de Tunisie",
         currency_code="TND",
         currency_name="Dinar tunisien",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=2_000,
             mandatory_documents=[
                 "facture_commerciale",
@@ -271,17 +285,22 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         ),
         authorized_currencies=["USD", "EUR", "GBP", "CHF", "JPY"],
         restricted_operations=["capital_account_transfers", "crypto_transactions"],
-        special_regimes=["entreprises_totalement_exportatrices", "zones_franches", "régime_offshore"],
+        special_regimes=[
+            "entreprises_totalement_exportatrices",
+            "zones_franches",
+            "régime_offshore",
+        ],
     ),
-
     # ── ÉGYPTE ───────────────────────────────────────────────────────────────
     "EG": CountryForexProfile(
-        country_code="EG", country_name="Égypte",
+        country_code="EG",
+        country_name="Égypte",
         central_bank_name="Central Bank of Egypt",
         currency_code="EGP",
         currency_name="Livre égyptienne",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=5_000,
             mandatory_documents=[
                 "commercial_invoice",
@@ -320,8 +339,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "Ministerial Decree No. 770/2022 re: import payment regulations"
             ),
             regulatory_body=(
-                "Central Bank of Egypt (CBE) – "
-                "Foreign Exchange & International Relations Sector"
+                "Central Bank of Egypt (CBE) – " "Foreign Exchange & International Relations Sector"
             ),
             imf_article_status=(
                 "Article VIII – Acceptation du 2 février 2005. "
@@ -330,17 +348,22 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         ),
         authorized_currencies=["USD", "EUR", "GBP", "CHF", "JPY", "AED", "SAR", "KWD"],
         restricted_operations=["speculative_forex", "crypto_transactions"],
-        special_regimes=["zones_economiques_speciales", "Suez_Canal_Zone", "régime_investisseurs_étrangers"],
+        special_regimes=[
+            "zones_economiques_speciales",
+            "Suez_Canal_Zone",
+            "régime_investisseurs_étrangers",
+        ],
     ),
-
     # ── NIGERIA ───────────────────────────────────────────────────────────────
     "NG": CountryForexProfile(
-        country_code="NG", country_name="Nigeria",
+        country_code="NG",
+        country_name="Nigeria",
         central_bank_name="Central Bank of Nigeria",
         currency_code="NGN",
         currency_name="Naira nigérian",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=10_000,
             mandatory_documents=[
                 "Form_M",
@@ -386,8 +409,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "CBN Circular FEM/FPC/GEN/01/0010 du 14 juin 2023 re: unification"
             ),
             regulatory_body=(
-                "Central Bank of Nigeria (CBN) – "
-                "Trade and Exchange Department (TED)"
+                "Central Bank of Nigeria (CBN) – " "Trade and Exchange Department (TED)"
             ),
             imf_article_status=(
                 "Article VIII – Acceptation du 2 août 1962. "
@@ -403,15 +425,16 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         ],
         special_regimes=["Export_Proceeds_Domiciliary_Account", "NEPZ_free_zones", "NAFEM_window"],
     ),
-
     # ── GHANA ─────────────────────────────────────────────────────────────────
     "GH": CountryForexProfile(
-        country_code="GH", country_name="Ghana",
+        country_code="GH",
+        country_name="Ghana",
         central_bank_name="Bank of Ghana",
         currency_code="GHS",
         currency_name="Cedi ghanéen",
         domiciliation=DomiciliationRule(
-            required=False, conditional=True,
+            required=False,
+            conditional=True,
             threshold_usd=50_000,
             mandatory_documents=[
                 "commercial_invoice",
@@ -462,15 +485,16 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         restricted_operations=["speculative_forex", "crypto_unlicensed"],
         special_regimes=["GIPC_investment_incentives", "Ghana_Free_Zones_Authority"],
     ),
-
     # ── CÔTE D'IVOIRE ─────────────────────────────────────────────────────────
     "CI": CountryForexProfile(
-        country_code="CI", country_name="Côte d'Ivoire",
+        country_code="CI",
+        country_name="Côte d'Ivoire",
         central_bank_name="BCEAO",
         currency_code="XOF",
         currency_name="Franc CFA BCEAO",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=5_000,
             mandatory_documents=[
                 "declaration_importation",
@@ -512,23 +536,23 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "Ministère de l'Économie et des Finances de Côte d'Ivoire"
             ),
             imf_article_status=(
-                "Article VIII – Zone UEMOA. "
-                "Acceptation collective du 1er juin 1996."
+                "Article VIII – Zone UEMOA. " "Acceptation collective du 1er juin 1996."
             ),
         ),
         authorized_currencies=["EUR", "USD", "GBP", "XAF"],
         restricted_operations=["speculative_forex", "crypto_non_agréé"],
         special_regimes=["zone_UEMOA_libre_circulation_capitaux", "Zone_Franche_de_Côte_dIvoire"],
     ),
-
     # ── SÉNÉGAL ──────────────────────────────────────────────────────────────
     "SN": CountryForexProfile(
-        country_code="SN", country_name="Sénégal",
+        country_code="SN",
+        country_name="Sénégal",
         central_bank_name="BCEAO",
         currency_code="XOF",
         currency_name="Franc CFA BCEAO",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=5_000,
             mandatory_documents=[
                 "declaration_importation",
@@ -569,23 +593,23 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "Ministère des Finances et du Budget du Sénégal"
             ),
             imf_article_status=(
-                "Article VIII – Zone UEMOA. "
-                "Acceptation collective du 1er juin 1996."
+                "Article VIII – Zone UEMOA. " "Acceptation collective du 1er juin 1996."
             ),
         ),
         authorized_currencies=["EUR", "USD", "GBP"],
         restricted_operations=[],
         special_regimes=["zone_UEMOA", "Dakar_Financial_Centre"],
     ),
-
     # ── KENYA ─────────────────────────────────────────────────────────────────
     "KE": CountryForexProfile(
-        country_code="KE", country_name="Kenya",
+        country_code="KE",
+        country_name="Kenya",
         central_bank_name="Central Bank of Kenya",
         currency_code="KES",
         currency_name="Shilling kenyan",
         domiciliation=DomiciliationRule(
-            required=False, conditional=True,
+            required=False,
+            conditional=True,
             threshold_usd=100_000,
             mandatory_documents=[
                 "commercial_invoice",
@@ -623,10 +647,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "Foreign Exchange (Controls) Regulations (L.N. 241/1967, révisées) ; "
                 "CBK Prudential Guidelines on Foreign Exchange Exposure 2013"
             ),
-            regulatory_body=(
-                "Central Bank of Kenya (CBK) – "
-                "Financial Markets Department"
-            ),
+            regulatory_body=("Central Bank of Kenya (CBK) – " "Financial Markets Department"),
             imf_article_status=(
                 "Article VIII – Acceptation du 30 juin 1994. "
                 "Compte courant et capital libéralisés."
@@ -636,15 +657,16 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         restricted_operations=["crypto_unlicensed"],
         special_regimes=["Nairobi_International_Financial_Centre", "EPZ_Export_Processing_Zone"],
     ),
-
     # ── ÉTHIOPIE ──────────────────────────────────────────────────────────────
     "ET": CountryForexProfile(
-        country_code="ET", country_name="Éthiopie",
+        country_code="ET",
+        country_name="Éthiopie",
         central_bank_name="National Bank of Ethiopia",
         currency_code="ETB",
         currency_name="Birr éthiopien",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=0,
             mandatory_documents=[
                 "commercial_invoice",
@@ -687,8 +709,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "NBE Directive No. SBB/73/2022 re: import payment procedures"
             ),
             regulatory_body=(
-                "National Bank of Ethiopia (NBE) – "
-                "Foreign Exchange Management Directorate"
+                "National Bank of Ethiopia (NBE) – " "Foreign Exchange Management Directorate"
             ),
             imf_article_status=(
                 "Article XIV – Régime transitoire. "
@@ -697,20 +718,23 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         ),
         authorized_currencies=["USD", "EUR"],
         restricted_operations=[
-            "cash_forex", "capital_account_transfers", "speculative_forex",
+            "cash_forex",
+            "capital_account_transfers",
+            "speculative_forex",
             "open_account_payment",
         ],
         special_regimes=["Industrial_Parks_forex_facilities", "Dire_Dawa_Free_Zone"],
     ),
-
     # ── TANZANIE ──────────────────────────────────────────────────────────────
     "TZ": CountryForexProfile(
-        country_code="TZ", country_name="Tanzanie",
+        country_code="TZ",
+        country_name="Tanzanie",
         central_bank_name="Bank of Tanzania",
         currency_code="TZS",
         currency_name="Shilling tanzanien",
         domiciliation=DomiciliationRule(
-            required=False, conditional=True,
+            required=False,
+            conditional=True,
             threshold_usd=50_000,
             mandatory_documents=[
                 "commercial_invoice",
@@ -747,28 +771,25 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "Foreign Exchange Act 1992 (Cap. 271, révisé 2022) ; "
                 "BoT Foreign Exchange Regulations, 2022"
             ),
-            regulatory_body=(
-                "Bank of Tanzania (BoT) – "
-                "Financial Markets Department"
-            ),
+            regulatory_body=("Bank of Tanzania (BoT) – " "Financial Markets Department"),
             imf_article_status=(
-                "Article VIII – Acceptation du 15 juillet 1996. "
-                "Compte courant libéré."
+                "Article VIII – Acceptation du 15 juillet 1996. " "Compte courant libéré."
             ),
         ),
         authorized_currencies=["USD", "EUR", "GBP", "KES", "UGX", "ZAR"],
         restricted_operations=["crypto_unlicensed"],
         special_regimes=["EPZ_Zanzibar_free_zone", "Tanzania_SEZ"],
     ),
-
     # ── AFRIQUE DU SUD ───────────────────────────────────────────────────────
     "ZA": CountryForexProfile(
-        country_code="ZA", country_name="Afrique du Sud",
+        country_code="ZA",
+        country_name="Afrique du Sud",
         central_bank_name="South African Reserve Bank",
         currency_code="ZAR",
         currency_name="Rand sud-africain",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=5_000,
             mandatory_documents=[
                 "commercial_invoice",
@@ -810,27 +831,43 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "Financial Intelligence Centre Act (FICA) No. 38 of 2001"
             ),
             regulatory_body=(
-                "South African Reserve Bank (SARB) – "
-                "Financial Surveillance Department (FinSurv)"
+                "South African Reserve Bank (SARB) – " "Financial Surveillance Department (FinSurv)"
             ),
             imf_article_status=(
                 "Article VIII – Acceptation du 15 septembre 1973. "
                 "Libération progressive du compte de capital."
             ),
         ),
-        authorized_currencies=["USD", "EUR", "GBP", "CHF", "JPY", "AUD", "CNY", "BWP", "LSL", "NAD", "SZL"],
+        authorized_currencies=[
+            "USD",
+            "EUR",
+            "GBP",
+            "CHF",
+            "JPY",
+            "AUD",
+            "CNY",
+            "BWP",
+            "LSL",
+            "NAD",
+            "SZL",
+        ],
         restricted_operations=["offshore_loans_above_limit", "speculative_forex", "round_tripping"],
-        special_regimes=["Authorised_Dealer_network", "loop_structure_exemptions", "SACU_free_movement_ZAR"],
+        special_regimes=[
+            "Authorised_Dealer_network",
+            "loop_structure_exemptions",
+            "SACU_free_movement_ZAR",
+        ],
     ),
-
     # ── ANGOLA ────────────────────────────────────────────────────────────────
     "AO": CountryForexProfile(
-        country_code="AO", country_name="Angola",
+        country_code="AO",
+        country_name="Angola",
         central_bank_name="Banco Nacional de Angola",
         currency_code="AOA",
         currency_name="Kwanza angolais",
         domiciliation=DomiciliationRule(
-            required=True, conditional=False,
+            required=True,
+            conditional=False,
             threshold_usd=0,
             mandatory_documents=[
                 "factura_proforma",
@@ -881,20 +918,22 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         ),
         authorized_currencies=["USD", "EUR"],
         restricted_operations=[
-            "cash_forex", "capital_account_transfers",
+            "cash_forex",
+            "capital_account_transfers",
             "crypto_transactions",
         ],
         special_regimes=["oil_sector_forex_facilities", "ZEE_zones_economiques_especiais"],
     ),
-
     # ── ZAMBIE ────────────────────────────────────────────────────────────────
     "ZM": CountryForexProfile(
-        country_code="ZM", country_name="Zambie",
+        country_code="ZM",
+        country_name="Zambie",
         central_bank_name="Bank of Zambia",
         currency_code="ZMW",
         currency_name="Kwacha zambien",
         domiciliation=DomiciliationRule(
-            required=False, conditional=True,
+            required=False,
+            conditional=True,
             threshold_usd=50_000,
             mandatory_documents=[
                 "commercial_invoice",
@@ -929,13 +968,9 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "Foreign Exchange Management Act (FEMA) 2023 ; "
                 "BoZ Directive on Foreign Currency Accounts 2021"
             ),
-            regulatory_body=(
-                "Bank of Zambia (BoZ) – "
-                "Financial Markets Department"
-            ),
+            regulatory_body=("Bank of Zambia (BoZ) – " "Financial Markets Department"),
             imf_article_status=(
-                "Article VIII – Acceptation du 19 juillet 1995. "
-                "Compte courant libéré."
+                "Article VIII – Acceptation du 19 juillet 1995. " "Compte courant libéré."
             ),
         ),
         authorized_currencies=["USD", "EUR", "GBP", "ZAR"],
@@ -949,10 +984,12 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
 # ---------------------------------------------------------------------------
 
 _DEFAULT_PROFILE = CountryForexProfile(
-    country_code="XX", country_name="Unknown",
+    country_code="XX",
+    country_name="Unknown",
     central_bank_name="Unknown",
     domiciliation=DomiciliationRule(
-        required=False, conditional=True,
+        required=False,
+        conditional=True,
         threshold_usd=10_000,
         mandatory_documents=["commercial_invoice", "customs_declaration"],
         timeline_days=90,
@@ -1040,10 +1077,12 @@ _CURRENCY_META: Dict[str, Tuple[str, str, str]] = {
 # PUBLIC HELPERS
 # ---------------------------------------------------------------------------
 
+
 def _normalize_iso2(country_code: str) -> str:
     """Normalize an ISO2/ISO3 country code to ISO2 for forex lookups."""
     try:
         from currencies.service import to_iso2
+
         return to_iso2(country_code)
     except Exception:
         return (country_code or "").upper()
@@ -1056,9 +1095,7 @@ def get_forex_profile(country_code: str) -> CountryForexProfile:
     if profile is not None:
         return profile
     # Return a copy of the default profile with the correct country code
-    default = _DEFAULT_PROFILE.model_copy(
-        update={"country_code": code}
-    )
+    default = _DEFAULT_PROFILE.model_copy(update={"country_code": code})
     return default
 
 
@@ -1083,7 +1120,9 @@ def get_currency_meta(country_code: str) -> Tuple[str, str, str]:
 
     Falls back to ('USD', 'Dollar américain', 'freely_convertible') if unknown.
     """
-    return _CURRENCY_META.get(_normalize_iso2(country_code), ("USD", "Dollar américain", "freely_convertible"))
+    return _CURRENCY_META.get(
+        _normalize_iso2(country_code), ("USD", "Dollar américain", "freely_convertible")
+    )
 
 
 def get_all_currency_meta() -> Dict[str, Tuple[str, str, str]]:

@@ -4,10 +4,12 @@ Dynamically loads data from the tariff engine and provides high-performance sear
 """
 
 import os
-import pandas as pd
 import re
-from typing import List, Dict, Any, Optional
 from difflib import SequenceMatcher
+from typing import Any, Dict, List, Optional
+
+import pandas as pd
+
 
 class TariffSearchEngine:
     def __init__(self, data_dir: str = "tariff_engine/normalized"):
@@ -22,7 +24,9 @@ class TariffSearchEngine:
         all_data = []
         if not os.path.exists(self.data_dir):
             # Fallback to a sample if directory is empty (initial setup)
-            self.df = pd.DataFrame(columns=["hs_code", "description", "duty_rate_pct", "country", "bloc"])
+            self.df = pd.DataFrame(
+                columns=["hs_code", "description", "duty_rate_pct", "country", "bloc"]
+            )
             return
 
         for file in os.listdir(self.data_dir):
@@ -32,14 +36,16 @@ class TariffSearchEngine:
                     all_data.append(temp_df)
                 except Exception as e:
                     print(f"Error loading {file}: {e}")
-        
+
         if all_data:
             self.df = pd.concat(all_data, ignore_index=True)
             # Ensure descriptions are strings for searching
             self.df["description"] = self.df["description"].fillna("").astype(str)
             print(f"TariffSearchEngine: Loaded {len(self.df)} tariff positions.")
 
-    def search(self, query: str, country: Optional[str] = None, limit: int = 20) -> List[Dict[str, Any]]:
+    def search(
+        self, query: str, country: Optional[str] = None, limit: int = 20
+    ) -> List[Dict[str, Any]]:
         """
         Hybrid search: Handles exact HS codes, partial codes, and fuzzy descriptions.
         """
@@ -69,8 +75,10 @@ class TariffSearchEngine:
         if results.empty:
             # 3. Fuzzy Fallback (Only if no keyword matches found)
             # We use a vectorized approach for performance
-            self.df["temp_ratio"] = self.df["description"].str.lower().apply(
-                lambda x: SequenceMatcher(None, query, x).ratio()
+            self.df["temp_ratio"] = (
+                self.df["description"]
+                .str.lower()
+                .apply(lambda x: SequenceMatcher(None, query, x).ratio())
             )
             fuzzy_matches = self.df[self.df["temp_ratio"] > 0.4].copy()
             fuzzy_matches["score"] = fuzzy_matches["temp_ratio"]
@@ -84,12 +92,16 @@ class TariffSearchEngine:
             results = results[results["country"].str.upper() == country.upper()]
 
         # Deduplicate and sort by score
-        results = results.sort_values(by="score", ascending=False).drop_duplicates(subset=["hs_code", "country"])
-        
+        results = results.sort_values(by="score", ascending=False).drop_duplicates(
+            subset=["hs_code", "country"]
+        )
+
         return results.head(limit).to_dict(orient="records")
+
 
 # Singleton for backend use
 _engine = None
+
 
 def get_search_engine() -> TariffSearchEngine:
     global _engine

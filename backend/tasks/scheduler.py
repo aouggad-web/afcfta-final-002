@@ -13,6 +13,7 @@ Start from server.py startup event:
     from tasks.scheduler import start_scheduler
     start_scheduler()
 """
+
 import logging
 import threading
 from datetime import datetime, timezone

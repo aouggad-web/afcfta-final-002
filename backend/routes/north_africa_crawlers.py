@@ -33,6 +33,7 @@ router = APIRouter(prefix="/crawlers/north-africa", tags=["North Africa Crawlers
 
 # ==================== Request Models ====================
 
+
 class NorthAfricaCrawlRequest(BaseModel):
     countries: Optional[List[str]] = None
     max_per_chapter: Optional[int] = None
@@ -95,17 +96,21 @@ class OpportunityMapRequest(BaseModel):
 
 # ==================== Helper ====================
 
+
 def _get_orchestrator():
     from services.crawlers.regional_orchestrator import get_north_africa_orchestrator
+
     return get_north_africa_orchestrator()
 
 
 def _get_intelligence():
     from services.regional_intelligence_service import get_regional_intelligence
+
     return get_regional_intelligence()
 
 
 # ==================== Endpoints ====================
+
 
 @router.post("/start-all")
 async def start_all_crawl(options: Optional[NorthAfricaCrawlRequest] = None):
@@ -148,10 +153,7 @@ async def start_selective_crawl(request: NorthAfricaCrawlRequest):
     try:
         job = await orchestrator.start_regional_crawl(countries=countries, options=opts)
         return {
-            "message": (
-                f"North Africa crawl job {job.job_id} started "
-                f"for: {job.countries}"
-            ),
+            "message": (f"North Africa crawl job {job.job_id} started " f"for: {job.countries}"),
             "job": job.summary,
         }
     except ValueError as exc:
@@ -226,6 +228,7 @@ async def sync_and_validate():
     """
     try:
         from services.crawlers.cross_validator import NorthAfricaCrossValidator
+
         validator = NorthAfricaCrossValidator()
         result = validator.validate()
         return {
@@ -244,8 +247,8 @@ async def get_supported_countries():
     and their crawler configurations.
     """
     from config.crawler_configs.dza_config import DZA_CONFIG
-    from config.crawler_configs.mar_config import MAR_CONFIG
     from config.crawler_configs.egy_config import EGY_CONFIG
+    from config.crawler_configs.mar_config import MAR_CONFIG
     from config.crawler_configs.tun_config import TUN_CONFIG
 
     configs = {
@@ -257,17 +260,19 @@ async def get_supported_countries():
 
     countries = []
     for code, cfg in configs.items():
-        countries.append({
-            "iso3": code,
-            "country_name": cfg["country_name"],
-            "country_name_fr": cfg["country_name_fr"],
-            "primary_source": cfg["primary_source"],
-            "nomenclature": cfg["nomenclature"],
-            "hs_level": cfg["hs_level"],
-            "tax_codes": list(cfg["tax_structure"].keys()),
-            "preferential_agreements": cfg.get("preferential_agreements", []),
-            "crawl_settings": cfg.get("crawl_settings", {}),
-        })
+        countries.append(
+            {
+                "iso3": code,
+                "country_name": cfg["country_name"],
+                "country_name_fr": cfg["country_name_fr"],
+                "primary_source": cfg["primary_source"],
+                "nomenclature": cfg["nomenclature"],
+                "hs_level": cfg["hs_level"],
+                "tax_codes": list(cfg["tax_structure"].keys()),
+                "preferential_agreements": cfg.get("preferential_agreements", []),
+                "crawl_settings": cfg.get("crawl_settings", {}),
+            }
+        )
 
     return {
         "total_countries": len(countries),
@@ -398,4 +403,3 @@ async def get_opportunity_map(request: OpportunityMapRequest):
     except Exception as exc:
         logger.error(f"Opportunity map generation failed: {exc}")
         raise HTTPException(status_code=500, detail=str(exc))
-

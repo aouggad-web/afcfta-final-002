@@ -7,8 +7,8 @@ Priority order for app-facing tariff data:
 3. Legacy ETL dictionaries/files as fallback through authentic service
 """
 
-from typing import Callable, Dict, List, Optional
 import logging
+from typing import Callable, Dict, List, Optional
 
 from services import authentic_tariff_service as authentic_service
 
@@ -32,6 +32,7 @@ class TariffProviderService:
             factory = self._postgres_factory
             if factory is None:
                 from services.postgres_tariff_service import get_postgres_tariff_service
+
                 factory = get_postgres_tariff_service
             self._postgres_service = factory()
         except Exception as exc:
@@ -103,7 +104,9 @@ class TariffProviderService:
                 ]
         return authentic_service.get_sub_positions(country, hs6_code)
 
-    def search_tariff_lines(self, country_iso3: str, query: str, language: str = "fr", limit: int = 20) -> List[Dict]:
+    def search_tariff_lines(
+        self, country_iso3: str, query: str, language: str = "fr", limit: int = 20
+    ) -> List[Dict]:
         country = country_iso3.upper()
         postgres = self._get_postgres()
         if postgres:

@@ -57,7 +57,7 @@ COUNTRY_TRANSLATIONS = {
     "TN": {"fr": "Tunisie", "en": "Tunisia"},
     "UG": {"fr": "Ouganda", "en": "Uganda"},
     "ZM": {"fr": "Zambie", "en": "Zambia"},
-    "ZW": {"fr": "Zimbabwe", "en": "Zimbabwe"}
+    "ZW": {"fr": "Zimbabwe", "en": "Zimbabwe"},
 }
 
 REGION_TRANSLATIONS = {
@@ -65,20 +65,39 @@ REGION_TRANSLATIONS = {
     "Afrique de l'Ouest": {"fr": "Afrique de l'Ouest", "en": "West Africa"},
     "Afrique de l'Est": {"fr": "Afrique de l'Est", "en": "East Africa"},
     "Afrique Centrale": {"fr": "Afrique Centrale", "en": "Central Africa"},
-    "Afrique Australe": {"fr": "Afrique Australe", "en": "Southern Africa"}
+    "Afrique Australe": {"fr": "Afrique Australe", "en": "Southern Africa"},
 }
 
 RULES_TRANSLATIONS = {
     "Entièrement obtenus": {"fr": "Entièrement obtenus", "en": "Wholly obtained"},
-    "Transformation substantielle": {"fr": "Transformation substantielle", "en": "Substantial transformation"},
-    "Extraction ou transformation substantielle": {"fr": "Extraction ou transformation substantielle", "en": "Extraction or substantial transformation"},
+    "Transformation substantielle": {
+        "fr": "Transformation substantielle",
+        "en": "Substantial transformation",
+    },
+    "Extraction ou transformation substantielle": {
+        "fr": "Extraction ou transformation substantielle",
+        "en": "Extraction or substantial transformation",
+    },
     "Extraction": {"fr": "Extraction", "en": "Extraction"},
     "100% africain": {"fr": "100% africain", "en": "100% African"},
-    "40% valeur ajoutée africaine": {"fr": "40% valeur ajoutée africaine", "en": "40% African value added"},
-    "35% valeur ajoutée africaine": {"fr": "35% valeur ajoutée africaine", "en": "35% African value added"},
-    "45% valeur ajoutée africaine": {"fr": "45% valeur ajoutée africaine", "en": "45% African value added"},
-    "Entièrement extraits en Afrique": {"fr": "Entièrement extraits en Afrique", "en": "Wholly extracted in Africa"}
+    "40% valeur ajoutée africaine": {
+        "fr": "40% valeur ajoutée africaine",
+        "en": "40% African value added",
+    },
+    "35% valeur ajoutée africaine": {
+        "fr": "35% valeur ajoutée africaine",
+        "en": "35% African value added",
+    },
+    "45% valeur ajoutée africaine": {
+        "fr": "45% valeur ajoutée africaine",
+        "en": "45% African value added",
+    },
+    "Entièrement extraits en Afrique": {
+        "fr": "Entièrement extraits en Afrique",
+        "en": "Wholly extracted in Africa",
+    },
 }
+
 
 def translate_country_name(code: str, lang: str = "fr") -> str:
     """Get translated country name"""
@@ -86,11 +105,13 @@ def translate_country_name(code: str, lang: str = "fr") -> str:
         return COUNTRY_TRANSLATIONS[code].get(lang, COUNTRY_TRANSLATIONS[code]["fr"])
     return code
 
+
 def translate_region(region: str, lang: str = "fr") -> str:
     """Get translated region name"""
     if region in REGION_TRANSLATIONS:
         return REGION_TRANSLATIONS[region].get(lang, region)
     return region
+
 
 def translate_rule(text: str, lang: str = "fr") -> str:
     """Get translated rule text"""

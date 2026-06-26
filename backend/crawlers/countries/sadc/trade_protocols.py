@@ -34,9 +34,25 @@ SADC_TRADE_PROTOCOLS = {
             "customs_harmonisation": "SADC Customs Modernisation Programme",
             "e_certificate_of_origin": "Electronic CoO system under development",
         },
-        "members": ["ZAF", "BWA", "NAM", "LSO", "SWZ", "ZMB", "ZWE", "MOZ", "MWI", "TZA", "AGO", "COD", "MUS", "MDG", "SYC", "COM"],
+        "members": [
+            "ZAF",
+            "BWA",
+            "NAM",
+            "LSO",
+            "SWZ",
+            "ZMB",
+            "ZWE",
+            "MOZ",
+            "MWI",
+            "TZA",
+            "AGO",
+            "COD",
+            "MUS",
+            "MDG",
+            "SYC",
+            "COM",
+        ],
     },
-
     # -----------------------------------------------------------------------
     # SACU Agreement (2002)
     # -----------------------------------------------------------------------
@@ -86,7 +102,6 @@ SADC_TRADE_PROTOCOLS = {
             "Divergent development levels within SACU",
         ],
     },
-
     # -----------------------------------------------------------------------
     # SADC Finance and Investment Protocol (2006)
     # -----------------------------------------------------------------------
@@ -106,7 +121,6 @@ SADC_TRADE_PROTOCOLS = {
             "capital_flows": "Progressive liberalisation of capital account",
         },
     },
-
     # -----------------------------------------------------------------------
     # SADC-EAC-COMESA Tripartite FTA (T-FTA)
     # -----------------------------------------------------------------------
@@ -124,7 +138,6 @@ SADC_TRADE_PROTOCOLS = {
             "Mutual recognition of certificates of conformity",
         ],
     },
-
     # -----------------------------------------------------------------------
     # AfCFTA (covers all SADC members)
     # -----------------------------------------------------------------------
@@ -143,7 +156,6 @@ SADC_TRADE_PROTOCOLS = {
         },
         "services": "Services protocol under negotiation (5 priority sectors: financial, transport, tourism, communications, business)",
     },
-
     # -----------------------------------------------------------------------
     # EU-SADC Economic Partnership Agreement (EPA)
     # -----------------------------------------------------------------------
@@ -166,7 +178,6 @@ SADC_TRADE_PROTOCOLS = {
             "wine": "South African wine – reduced EU tariffs",
         },
     },
-
     # -----------------------------------------------------------------------
     # AGOA (US Generalized System of Preferences for sub-Saharan Africa)
     # -----------------------------------------------------------------------
@@ -174,7 +185,19 @@ SADC_TRADE_PROTOCOLS = {
         "name": "African Growth and Opportunity Act (AGOA)",
         "signed": 2000,
         "current_extension_to": 2025,
-        "sadc_beneficiaries": ["ZAF", "BWA", "NAM", "LSO", "SWZ", "MOZ", "MWI", "TZA", "ZMB", "MDG", "MUS"],
+        "sadc_beneficiaries": [
+            "ZAF",
+            "BWA",
+            "NAM",
+            "LSO",
+            "SWZ",
+            "MOZ",
+            "MWI",
+            "TZA",
+            "ZMB",
+            "MDG",
+            "MUS",
+        ],
         "key_benefit": "Duty-free access for 6,500+ products to US market",
         "textile_rule": "Third-country fabric rule allows AGOA LDC garments from Asian fabric",
         "key_exporters": {
@@ -204,9 +227,16 @@ SADC_TRADE_STATISTICS = {
         {"from": "ZAF", "to": "BWA", "value_usd_billion": 3.2},
     ],
     "top_export_products": [
-        "gold", "diamonds", "platinum", "copper", "coal",
-        "vehicles_and_parts", "machinery", "food_and_beverages",
-        "tobacco", "cut_flowers",
+        "gold",
+        "diamonds",
+        "platinum",
+        "copper",
+        "coal",
+        "vehicles_and_parts",
+        "machinery",
+        "food_and_beverages",
+        "tobacco",
+        "cut_flowers",
     ],
     "main_external_partners": ["China", "EU", "USA", "India", "UAE"],
 }

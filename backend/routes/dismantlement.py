@@ -4,9 +4,17 @@ Endpoint: schéma de démantèlement tarifaire ZLECAf officiel
 GET /api/dismantlement/{country_iso3}/{hs6}?npf_rate=X&category=A
 """
 
-from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
-from etl.afcfta_schedule import get_dismantlement_schedule, LDC_COUNTRIES, CAT_A, CAT_B, CAT_C, CAT_D
+
+from etl.afcfta_schedule import (
+    CAT_A,
+    CAT_B,
+    CAT_C,
+    CAT_D,
+    LDC_COUNTRIES,
+    get_dismantlement_schedule,
+)
+from fastapi import APIRouter, HTTPException, Query
 from services.preference_profile_service import get_preference_profile
 
 router = APIRouter(prefix="/dismantlement", tags=["ZLECAf Dismantlement Schedule"])
@@ -33,8 +41,9 @@ async def dismantlement_schedule(
     country_iso3: str,
     hs6: str,
     npf_rate: float = Query(..., ge=0.0, le=100.0, description="Taux NPF (droit normal) en %"),
-    category: Optional[str] = Query(None, pattern="^[ABCD]$",
-                                    description="Catégorie ZLECAf (A/B/C/D). Auto-détectée si absent."),
+    category: Optional[str] = Query(
+        None, pattern="^[ABCD]$", description="Catégorie ZLECAf (A/B/C/D). Auto-détectée si absent."
+    ),
     language: str = Query("fr", pattern="^(fr|en)$"),
 ):
     """
@@ -80,8 +89,10 @@ async def country_dismantlement_summary(country_iso3: str):
     - Année actuelle d'implémentation
     """
     from etl.afcfta_schedule import (
-        CURRENT_IMPLEMENTATION_YEAR, CURRENT_YEAR,
-        AFCFTA_EIF_YEAR, REDUCTION_YEARS
+        AFCFTA_EIF_YEAR,
+        CURRENT_IMPLEMENTATION_YEAR,
+        CURRENT_YEAR,
+        REDUCTION_YEARS,
     )
 
     country = country_iso3.strip().upper()

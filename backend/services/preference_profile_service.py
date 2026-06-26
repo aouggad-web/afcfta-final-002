@@ -16,9 +16,10 @@ calculée sur des données tarifaires réelles. Le taux d'utilisation effectif
 des préférences nécessiterait des données douanières de demandes d'origine,
 non disponibles ici.
 """
+
 import json
-import os
 import logging
+import os
 from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
@@ -51,8 +52,7 @@ def get_preference_profile(country_iso3: str, top_sectors: int = 10) -> Dict:
         return {"error": f"No tariff data for country {country}"}
 
     rated = [
-        ln for ln in lines
-        if ln.get("dd_rate") is not None and ln.get("zlecaf_rate") is not None
+        ln for ln in lines if ln.get("dd_rate") is not None and ln.get("zlecaf_rate") is not None
     ]
     if not rated:
         return {"error": f"No rated tariff lines for country {country}"}

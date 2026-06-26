@@ -3,67 +3,66 @@ Calculator routes - Main tariff calculation endpoint
 Extracted from server.py for better maintainability
 """
 
-from fastapi import APIRouter, HTTPException
-from typing import List, Dict, Any, Optional
 import logging
-import requests
+from typing import Any, Dict, List, Optional
 
+import requests
 from constants import AFRICAN_COUNTRIES
-from models import TariffCalculationRequest, TariffCalculationResponse
 from data_loader import get_tariff_corrections
+from etl.country_hs6_detailed import get_all_sub_positions, get_sub_position_rate, has_varying_rates
 from etl.country_hs6_tariffs import get_country_hs6_tariff
 from etl.country_tariffs_complete import (
-    get_tariff_rate_for_country,
-    get_vat_rate_for_country,
     get_other_taxes_for_country,
     get_product_category,
-    get_zlecaf_reduction_factor
+    get_tariff_rate_for_country,
+    get_vat_rate_for_country,
+    get_zlecaf_reduction_factor,
 )
-from etl.country_hs6_detailed import (
-    get_sub_position_rate,
-    get_all_sub_positions,
-    has_varying_rates
-)
-from services.tariff_data_service import tariff_service
+from fastapi import APIRouter, HTTPException
+from models import TariffCalculationRequest, TariffCalculationResponse
 from services.crawled_data_service import crawled_service
+from services.tariff_data_service import tariff_service
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Calculator"])
+
 
 # API Clients for external data
 class WorldBankAPIClient:
     def __init__(self):
         self.base_url = "https://api.worldbank.org/v2"
         self.session = requests.Session()
-        self.session.headers.update({'User-Agent': 'ZLECAf-API/1.0'})
+        self.session.headers.update({"User-Agent": "ZLECAf-API/1.0"})
 
-    async def get_country_data(self, country_codes: List[str], indicators: List[str] = None) -> Dict[str, Any]:
+    async def get_country_data(
+        self, country_codes: List[str], indicators: List[str] = None
+    ) -> Dict[str, Any]:
         """Fetch economic data from World Bank"""
         if indicators is None:
-            indicators = ['NY.GDP.MKTP.CD', 'SP.POP.TOTL', 'NY.GDP.PCAP.CD', 'FP.CPI.TOTL.ZG']
-        
+            indicators = ["NY.GDP.MKTP.CD", "SP.POP.TOTL", "NY.GDP.PCAP.CD", "FP.CPI.TOTL.ZG"]
+
         try:
             all_data = {}
             for country in country_codes:
                 country_data = {}
                 for indicator in indicators:
                     url = f"{self.base_url}/country/{country}/indicator/{indicator}"
-                    params = {'format': 'json', 'date': '2020:2023', 'per_page': 10}
-                    
+                    params = {"format": "json", "date": "2020:2023", "per_page": 10}
+
                     response = self.session.get(url, params=params, timeout=10)
                     if response.status_code == 200:
                         data = response.json()
                         if len(data) > 1 and data[1]:
                             latest_data = data[1][0] if data[1] else None
-                            if latest_data and latest_data['value']:
+                            if latest_data and latest_data["value"]:
                                 country_data[indicator] = {
-                                    'value': latest_data['value'],
-                                    'date': latest_data['date']
+                                    "value": latest_data["value"],
+                                    "date": latest_data["date"],
                                 }
-                
+
                 all_data[country] = country_data
-            
+
             return all_data
         except Exception as e:
             logging.error(f"World Bank API error: {e}")
@@ -74,40 +73,49 @@ class OECAPIClient:
     def __init__(self):
         self.base_url = "https://api-v2.oec.world"
         self.session = requests.Session()
-        self.session.headers.update({'User-Agent': 'ZLECAf-API/1.0'})
+        self.session.headers.update({"User-Agent": "ZLECAf-API/1.0"})
 
     async def get_top_producers(self, hs_code: str, year: int = 2021) -> List[Dict[str, Any]]:
         """Get top 5 African producers for an HS code"""
         try:
             endpoint = "tesseract/data.jsonrecords"
             params = {
-                'cube': 'trade_i_hs4_eci',
-                'drilldowns': 'Reporter',
-                'measures': 'Export Value',
-                'Product': hs_code[:4] if len(hs_code) > 4 else hs_code,
-                'time': str(year),
-                'Trade Flow': '2'
+                "cube": "trade_i_hs4_eci",
+                "drilldowns": "Reporter",
+                "measures": "Export Value",
+                "Product": hs_code[:4] if len(hs_code) > 4 else hs_code,
+                "time": str(year),
+                "Trade Flow": "2",
             }
-            
+
             response = self.session.get(f"{self.base_url}/{endpoint}", params=params, timeout=15)
             if response.status_code == 200:
                 data = response.json()
-                if 'data' in data and data['data']:
-                    african_codes = [country['iso3'] for country in AFRICAN_COUNTRIES]
+                if "data" in data and data["data"]:
+                    african_codes = [country["iso3"] for country in AFRICAN_COUNTRIES]
                     african_exports = []
-                    
-                    for item in data['data']:
-                        if item.get('Reporter') in african_codes:
-                            african_exports.append({
-                                'country_code': item.get('Reporter'),
-                                'country_name': next((c['name'] for c in AFRICAN_COUNTRIES if c['iso3'] == item.get('Reporter')), item.get('Reporter')),
-                                'export_value': item.get('Export Value', 0),
-                                'year': year
-                            })
-                    
-                    african_exports.sort(key=lambda x: x['export_value'], reverse=True)
+
+                    for item in data["data"]:
+                        if item.get("Reporter") in african_codes:
+                            african_exports.append(
+                                {
+                                    "country_code": item.get("Reporter"),
+                                    "country_name": next(
+                                        (
+                                            c["name"]
+                                            for c in AFRICAN_COUNTRIES
+                                            if c["iso3"] == item.get("Reporter")
+                                        ),
+                                        item.get("Reporter"),
+                                    ),
+                                    "export_value": item.get("Export Value", 0),
+                                    "year": year,
+                                }
+                            )
+
+                    african_exports.sort(key=lambda x: x["export_value"], reverse=True)
                     return african_exports[:5]
-            
+
             return []
         except Exception as e:
             logging.error(f"OEC API error: {e}")
@@ -121,6 +129,7 @@ oec_client = OECAPIClient()
 # Database reference (will be set by server.py)
 db = None
 
+
 def set_database(database):
     """Set the database reference from server.py"""
     global db
@@ -130,46 +139,56 @@ def set_database(database):
 @router.post("/calculate-tariff", response_model=TariffCalculationResponse)
 async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     """Calculate complete tariffs with collected and verified tariff data
-    
+
     Accepts ISO2 (e.g., DZ) or ISO3 (e.g., DZA) country codes
     Supports HS codes from 6 to 12 digits for more precision
-    
+
     DATA SOURCES:
     - Primary: Collected tariff data (1.18M positions, 54 countries)
     - Fallback: ETL modules if collected data unavailable
-    
+
     TARIFF PRIORITY ORDER:
     1. National sub-position (8-12 digits) if provided
     2. Country-specific HS6 tariff
     3. Country chapter tariff
     """
-    
+
     # Find country by ISO3 first, then ISO2 (backward compatibility)
-    origin_country = next((c for c in AFRICAN_COUNTRIES if c['iso3'] == request.origin_country.upper()), None)
+    origin_country = next(
+        (c for c in AFRICAN_COUNTRIES if c["iso3"] == request.origin_country.upper()), None
+    )
     if not origin_country:
-        origin_country = next((c for c in AFRICAN_COUNTRIES if c['code'] == request.origin_country.upper()), None)
-    
-    dest_country = next((c for c in AFRICAN_COUNTRIES if c['iso3'] == request.destination_country.upper()), None)
+        origin_country = next(
+            (c for c in AFRICAN_COUNTRIES if c["code"] == request.origin_country.upper()), None
+        )
+
+    dest_country = next(
+        (c for c in AFRICAN_COUNTRIES if c["iso3"] == request.destination_country.upper()), None
+    )
     if not dest_country:
-        dest_country = next((c for c in AFRICAN_COUNTRIES if c['code'] == request.destination_country.upper()), None)
-    
+        dest_country = next(
+            (c for c in AFRICAN_COUNTRIES if c["code"] == request.destination_country.upper()), None
+        )
+
     if not origin_country or not dest_country:
-        raise HTTPException(status_code=400, detail="L'un des pays sélectionnés n'est pas membre de la ZLECAf")
-    
+        raise HTTPException(
+            status_code=400, detail="L'un des pays sélectionnés n'est pas membre de la ZLECAf"
+        )
+
     # Use ISO3 for calculations
-    dest_iso3 = dest_country['iso3']
+    dest_iso3 = dest_country["iso3"]
     # origin_iso3 available if needed for bilateral calculations
-    
+
     # Clean and normalize HS code
     hs_code_clean = request.hs_code.replace(".", "").replace(" ", "")
     hs6_code = hs_code_clean[:6].zfill(6)
     sector_code = hs6_code[:2]
-    
+
     tariff_precision = "chapter"
     sub_position_used = None
     sub_position_description = None
     data_source = "etl_fallback"
-    
+
     collected_taxes_detail = []
     collected_fiscal_advantages = []
     collected_admin_formalities = []
@@ -189,23 +208,52 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             crawled_raw_taxes = crawled_result["taxes"]
             raw_advantages = crawled_result.get("fiscal_advantages", [])
             collected_fiscal_advantages = [
-                item if isinstance(item, dict) else {"description": item, "source": crawled_result["source"]}
+                (
+                    item
+                    if isinstance(item, dict)
+                    else {"description": item, "source": crawled_result["source"]}
+                )
                 for item in raw_advantages
             ]
             raw_formalities = crawled_result.get("administrative_formalities", [])
             collected_admin_formalities = [
-                item if isinstance(item, dict) else {"description": item, "source": crawled_result["source"]}
+                (
+                    item
+                    if isinstance(item, dict)
+                    else {"description": item, "source": crawled_result["source"]}
+                )
                 for item in raw_formalities
             ]
 
-            dd_tax = next((t for t in crawled_raw_taxes if t["code"] in ("DD", "DI", "DDDROIT", "ID", "GENERAL", "Droit d'Importation (DI)") or "Import Duty" in t.get("name", "") or "Customs Duty" in t.get("name", "")), None)
+            dd_tax = next(
+                (
+                    t
+                    for t in crawled_raw_taxes
+                    if t["code"]
+                    in ("DD", "DI", "DDDROIT", "ID", "GENERAL", "Droit d'Importation (DI)")
+                    or "Import Duty" in t.get("name", "")
+                    or "Customs Duty" in t.get("name", "")
+                ),
+                None,
+            )
             if dd_tax and dd_tax.get("rate_pct") is not None:
                 normal_rate = dd_tax["rate_pct"] / 100.0
             else:
                 normal_rate = 0.0
             npf_source = f"Source officielle: {crawled_result['source']}"
 
-            vat_tax = next((t for t in crawled_raw_taxes if t["code"] in ("TVA", "TVA/APTAXE", "VAT") or "TVA" in t.get("name", "").upper() or "VAT" in t.get("name", "").upper() or "Valeur Ajoutée" in t.get("name", "") or "Value Added Tax" in t.get("name", "")), None)
+            vat_tax = next(
+                (
+                    t
+                    for t in crawled_raw_taxes
+                    if t["code"] in ("TVA", "TVA/APTAXE", "VAT")
+                    or "TVA" in t.get("name", "").upper()
+                    or "VAT" in t.get("name", "").upper()
+                    or "Valeur Ajoutée" in t.get("name", "")
+                    or "Value Added Tax" in t.get("name", "")
+                ),
+                None,
+            )
             if vat_tax and vat_tax.get("rate_pct") is not None:
                 vat_rate = vat_tax["rate_pct"] / 100.0
                 vat_source = f"{vat_tax['name']} ({crawled_result['source']})"
@@ -215,8 +263,18 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             other_taxes_rate = 0.0
             dd_codes = ("DD", "DI", "DDDROIT", "ID", "GENERAL", "Droit d'Importation (DI)")
             for t in crawled_raw_taxes:
-                is_dd = t["code"] in dd_codes or "Import Duty" in t.get("name", "") or "Customs Duty" in t.get("name", "")
-                is_vat = t["code"] in ("TVA", "TVA/APTAXE", "VAT") or "TVA" in t.get("code", "").upper() or "VAT" in t.get("name", "").upper() or "Valeur Ajoutée" in t.get("name", "") or "Value Added Tax" in t.get("name", "")
+                is_dd = (
+                    t["code"] in dd_codes
+                    or "Import Duty" in t.get("name", "")
+                    or "Customs Duty" in t.get("name", "")
+                )
+                is_vat = (
+                    t["code"] in ("TVA", "TVA/APTAXE", "VAT")
+                    or "TVA" in t.get("code", "").upper()
+                    or "VAT" in t.get("name", "").upper()
+                    or "Valeur Ajoutée" in t.get("name", "")
+                    or "Value Added Tax" in t.get("name", "")
+                )
                 is_preferential = t.get("is_preferential", False)
                 if not is_dd and not is_vat and not is_preferential:
                     if t.get("rate_pct") is not None:
@@ -267,22 +325,28 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             vat_rate, vat_source = tariff_service.get_vat_rate(dest_iso3)
 
             if collected_taxes_detail:
-                product_other = sum(
-                    t["rate"] for t in collected_taxes_detail
-                    if t["tax"] not in ("D.D", "T.V.A")
-                ) / 100.0
+                product_other = (
+                    sum(
+                        t["rate"]
+                        for t in collected_taxes_detail
+                        if t["tax"] not in ("D.D", "T.V.A")
+                    )
+                    / 100.0
+                )
                 other_taxes_rate = product_other
                 other_taxes_detail = {
                     t["tax"].lower().replace(".", ""): t["rate"]
                     for t in collected_taxes_detail
                     if t["tax"] not in ("D.D", "T.V.A")
                 }
-                vat_from_detail = next((t["rate"] for t in collected_taxes_detail if t["tax"] == "T.V.A"), None)
+                vat_from_detail = next(
+                    (t["rate"] for t in collected_taxes_detail if t["tax"] == "T.V.A"), None
+                )
                 if vat_from_detail is not None:
                     vat_rate = vat_from_detail / 100.0
             else:
                 other_taxes_rate, other_taxes_detail = tariff_service.get_other_taxes(dest_iso3)
-    
+
     # ============================================================
     # PRIORITY 3: ETL modules (fallback)
     # ============================================================
@@ -322,6 +386,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # ============================================================
     if dest_iso3 == "DZA":
         from services.zlecaf_schedule_dza import compute_dza_zlecaf_rate
+
         _dza_rate, _dza_source = compute_dza_zlecaf_rate(
             hs_code_clean, origin_country.get("iso3", ""), normal_rate
         )
@@ -336,6 +401,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # ============================================================
     if dest_iso3 == "ZAF":
         from services.zlecaf_schedule_zaf import zaf_partner_active
+
         if not zaf_partner_active(origin_country.get("iso3", "")):
             zlecaf_rate = normal_rate
             zlecaf_source = (
@@ -350,11 +416,16 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # préférence, quel que soit le calendrier/facteur générique par ailleurs
     # appliqué pour sa destination.
     # ============================================================
-    from services.zlecaf_membership_status import ratification_status, STATUS_RATIFIED
+    from services.zlecaf_membership_status import STATUS_RATIFIED, ratification_status
+
     _origin_status = ratification_status(origin_country.get("iso3", ""))
     _dest_status = ratification_status(dest_country.get("iso3", ""))
     if _origin_status != STATUS_RATIFIED or _dest_status != STATUS_RATIFIED:
-        _non_ratified_iso3 = origin_country.get("iso3", "") if _origin_status != STATUS_RATIFIED else dest_country.get("iso3", "")
+        _non_ratified_iso3 = (
+            origin_country.get("iso3", "")
+            if _origin_status != STATUS_RATIFIED
+            else dest_country.get("iso3", "")
+        )
         _non_ratified_status = _origin_status if _origin_status != STATUS_RATIFIED else _dest_status
         zlecaf_rate = normal_rate
         zlecaf_source = (
@@ -365,57 +436,89 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
 
     # Source for display
     rate_source = f"Tarif officiel {dest_iso3} - {npf_source}"
-    
+
     # Transition period by sector
     tariff_corrections = get_tariff_corrections()
-    transition_periods = tariff_corrections.get('transition_periods', {})
-    transition_period = transition_periods.get(sector_code, 'immediate')
-    
+    transition_periods = tariff_corrections.get("transition_periods", {})
+    transition_period = transition_periods.get(sector_code, "immediate")
+
     # ============================================================
     # DÉTAIL COMPLET des droits et taxes — MOTEUR UNIQUE (NPF vs ZLECAf)
     # Chaque taxe est calculée sur SA base déclarée (assiette propre au pays) ;
     # à défaut, méthode nationale par défaut. Source unique de vérité : tous les
     # montants agrégés, le détail par taxe et les journaux en dérivent.
     # ============================================================
-    from services.tax_computation import compute_dual_breakdown, build_journal
+    from services.tax_computation import build_journal, compute_dual_breakdown
 
     _engine_lines: List[Dict[str, Any]] = []
     if crawled_raw_taxes:
         for t in crawled_raw_taxes:
             if t.get("rate_pct") is None:
                 continue
-            _engine_lines.append({
-                "code": t.get("code", ""),
-                "name": t.get("name", t.get("code", "")),
-                "rate_pct": t["rate_pct"],
-                "base": t.get("base", ""),
-                "source": t.get("source", npf_source),
-            })
+            _engine_lines.append(
+                {
+                    "code": t.get("code", ""),
+                    "name": t.get("name", t.get("code", "")),
+                    "rate_pct": t["rate_pct"],
+                    "base": t.get("base", ""),
+                    "source": t.get("source", npf_source),
+                }
+            )
     elif collected_taxes_detail:
         for t in collected_taxes_detail:
             if t.get("rate") is None:
                 continue
-            _engine_lines.append({
-                "code": t.get("tax", ""),
-                "name": t.get("tax", ""),
-                "rate_pct": t["rate"],
-                "base": "",
-                "source": t.get("observation", npf_source),
-            })
+            _engine_lines.append(
+                {
+                    "code": t.get("tax", ""),
+                    "name": t.get("tax", ""),
+                    "rate_pct": t["rate"],
+                    "base": "",
+                    "source": t.get("observation", npf_source),
+                }
+            )
     else:
-        _engine_lines.append({"code": "DD", "name": "Droit de douane",
-                              "rate_pct": round(normal_rate * 100, 4), "base": "CIF", "source": npf_source})
+        _engine_lines.append(
+            {
+                "code": "DD",
+                "name": "Droit de douane",
+                "rate_pct": round(normal_rate * 100, 4),
+                "base": "CIF",
+                "source": npf_source,
+            }
+        )
         for _k, _rp in (other_taxes_detail or {}).items():
             if _k == "other" or not isinstance(_rp, (int, float)) or _rp == 0:
                 continue
-            _engine_lines.append({"code": _k.upper(), "name": _k.upper(),
-                                  "rate_pct": _rp, "base": "CIF", "source": npf_source})
-        _engine_lines.append({"code": "TVA", "name": "Taxe sur la valeur ajoutée",
-                              "rate_pct": round(vat_rate * 100, 4), "base": "", "source": vat_source})
+            _engine_lines.append(
+                {
+                    "code": _k.upper(),
+                    "name": _k.upper(),
+                    "rate_pct": _rp,
+                    "base": "CIF",
+                    "source": npf_source,
+                }
+            )
+        _engine_lines.append(
+            {
+                "code": "TVA",
+                "name": "Taxe sur la valeur ajoutée",
+                "rate_pct": round(vat_rate * 100, 4),
+                "base": "",
+                "source": vat_source,
+            }
+        )
 
     if not _engine_lines:
-        _engine_lines.append({"code": "DD", "name": "Droit de douane",
-                              "rate_pct": round(normal_rate * 100, 4), "base": "CIF", "source": npf_source})
+        _engine_lines.append(
+            {
+                "code": "DD",
+                "name": "Droit de douane",
+                "rate_pct": round(normal_rate * 100, 4),
+                "base": "CIF",
+                "source": npf_source,
+            }
+        )
 
     # DZA : le DAPS est exonéré pour les listes (A)/(B) non gelées avec un
     # partenaire ZLECAf actif (circulaire 482/2024, partie II-2 + art. 2 de
@@ -424,18 +527,27 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # détail envoyé au moteur fiscal, pas seulement du taux DD affiché.
     if dest_iso3 == "DZA":
         from services.zlecaf_schedule_dza import daps_exempt
+
         if daps_exempt(hs_code_clean, origin_country.get("iso3", "") if origin_country else ""):
-            _engine_lines = [ln for ln in _engine_lines if str(ln.get("code", "")).upper() != "DAPS"]
+            _engine_lines = [
+                ln for ln in _engine_lines if str(ln.get("code", "")).upper() != "DAPS"
+            ]
 
     legal_refs = {
-        "cif": {"ref": "Incoterms 2020 - CIF", "url": "https://iccwbo.org/resources-for-business/incoterms-rules/incoterms-2020/"},
+        "cif": {
+            "ref": "Incoterms 2020 - CIF",
+            "url": "https://iccwbo.org/resources-for-business/incoterms-rules/incoterms-2020/",
+        },
         "dd": {"ref": f"Tarif douanier {dest_iso3}", "url": None},
         "rs": {"ref": "Règlement UEMOA 02/97/CM", "url": None},
         "pcs": {"ref": "Règlement UEMOA 01/2019", "url": None},
         "cedeao": {"ref": "Protocole CEDEAO A/P1/1/03", "url": None},
         "tci": {"ref": "Règlement CEMAC 02/01", "url": None},
         "vat": {"ref": f"Code Général des Impôts {dest_iso3}", "url": None},
-        "zlecaf": {"ref": "Accord ZLECAf Art. 8", "url": "https://au.int/en/treaties/agreement-establishing-african-continental-free-trade-area"},
+        "zlecaf": {
+            "ref": "Accord ZLECAf Art. 8",
+            "url": "https://au.int/en/treaties/agreement-establishing-african-continental-free-trade-area",
+        },
         "daps": {"ref": f"Décret exécutif - DAPS {dest_iso3}", "url": None},
         "prct": {"ref": f"Loi de Finances {dest_iso3}", "url": None},
         "tcs": {"ref": f"Réglementation sanitaire {dest_iso3}", "url": None},
@@ -466,7 +578,8 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                 _caps[str(_ln.get("code", "")).upper()] = round(_cap["amount"] / _fx_rate, 2)
 
     _dual = compute_dual_breakdown(
-        request.value, _engine_lines,
+        request.value,
+        _engine_lines,
         npf_dd_rate_pct=round(normal_rate * 100, 4),
         zlecaf_dd_rate_pct=round(zlecaf_rate * 100, 4),
         caps=_caps,
@@ -489,14 +602,21 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     savings = taxes_summary["economie_droits"]
     savings_percentage = (savings / normal_customs) * 100 if normal_customs > 0 else 0
     total_savings_with_taxes = taxes_summary["economie_totale"]
-    total_savings_percentage = (total_savings_with_taxes / normal_total) * 100 if normal_total > 0 else 0
+    total_savings_percentage = (
+        (total_savings_with_taxes / normal_total) * 100 if normal_total > 0 else 0
+    )
 
     # Montants par prélèvement (champs dédiés de la réponse).
     def _sum_codes(regime_key: str, codes: set) -> float:
-        return round(sum(
-            b[f"amount_{regime_key}"] for b in taxes_breakdown
-            if str(b["code"]).upper() in codes
-        ), 2)
+        return round(
+            sum(
+                b[f"amount_{regime_key}"]
+                for b in taxes_breakdown
+                if str(b["code"]).upper() in codes
+            ),
+            2,
+        )
+
     _normal_tax_amounts = {
         "rs": _sum_codes("npf", {"RS"}),
         "pcs": _sum_codes("npf", {"PCS"}),
@@ -553,8 +673,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
 
     # Rules of origin - Use official AfCFTA Annex II rules
     from etl.afcfta_rules_of_origin import get_rule_of_origin
+
     roo_data = get_rule_of_origin(hs6_code, "fr")
-    
+
     # Build rules_of_origin object for calculator
     if roo_data.get("status") == "UNKNOWN":
         rules = {
@@ -562,7 +683,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             "requirement": "Consulter le Secrétariat ZLECAf",
             "regional_content": 0,
             "status": "UNKNOWN",
-            "source": "AfCFTA Annex II - Appendix IV"
+            "source": "AfCFTA Annex II - Appendix IV",
         }
     else:
         primary_rule = roo_data.get("primary_rule", {})
@@ -571,7 +692,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         regional_content = roo_data.get("regional_content", 40)
         status = roo_data.get("status", "AGREED")
         chapter_desc = roo_data.get("chapter_description", "")
-        
+
         # Build requirement based on rule type
         if rule_code == "WO":
             requirement = "Entièrement obtenu dans la ZLECAf (100%)"
@@ -580,15 +701,17 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         elif rule_code == "VA":
             requirement = f"{regional_content}% minimum de valeur ajoutée africaine"
         elif rule_code == "SP":
-            requirement = f"Processus spécifique requis avec {regional_content}% minimum de contenu régional"
+            requirement = (
+                f"Processus spécifique requis avec {regional_content}% minimum de contenu régional"
+            )
         else:
             requirement = f"{regional_content}% valeur ajoutée africaine"
-        
+
         # Add alternative if available
         alt_rule = roo_data.get("alternative_rule", {})
         if alt_rule:
             requirement += f" OU {alt_rule.get('name', '')}"
-        
+
         rules = {
             "rule": rule_name,
             "rule_code": rule_code,
@@ -599,15 +722,15 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             "chapter_description": chapter_desc,
             "notes": roo_data.get("notes", ""),
             "source": "AfCFTA Protocol on Trade in Goods - Annex II, Appendix IV",
-            "reference_url": "https://au.int/sites/default/files/treaties/36437-ax-AfCFTA_RULES_OF_ORIGIN_MANUAL.pdf"
+            "reference_url": "https://au.int/sites/default/files/treaties/36437-ax-AfCFTA_RULES_OF_ORIGIN_MANUAL.pdf",
         }
-    
+
     # Get top African producers
     top_producers = await oec_client.get_top_producers(request.hs_code)
-    
+
     # Get country economic data
-    wb_data = await wb_client.get_country_data([origin_country['wb_code'], dest_country['wb_code']])
-    
+    wb_data = await wb_client.get_country_data([origin_country["wb_code"], dest_country["wb_code"]])
+
     # Check if alternative sub-positions exist for this HS6
     if tariff_service.is_loaded() and data_source == "collected_verified":
         collected_subs = tariff_service.get_sub_positions_for_hs6(dest_iso3, hs6_code)
@@ -623,11 +746,11 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     else:
         sub_positions_available = get_all_sub_positions(dest_iso3, hs6_code)
         has_varying, min_rate, max_rate = has_varying_rates(dest_iso3, hs6_code)
-    
+
     # Build warning and details if varying rates
     rate_warning = None
     sub_positions_details = None
-    
+
     if has_varying and len(sub_positions_available) > 0:
         rate_warning = {
             "has_variation": True,
@@ -640,10 +763,10 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             "rate_used": normal_rate,
             "rate_used_pct": f"{normal_rate*100:.1f}%",
             "recommendation_fr": "Pour un calcul plus précis, veuillez spécifier la sous-position nationale complète (8-12 chiffres).",
-            "recommendation_en": "For a more accurate calculation, please specify the complete national sub-heading (8-12 digits)."
+            "recommendation_en": "For a more accurate calculation, please specify the complete national sub-heading (8-12 digits).",
         }
         sub_positions_details = sub_positions_available
-    
+
     # Create complete response with all taxes
     result = TariffCalculationResponse(
         origin_country=request.origin_country,
@@ -658,16 +781,16 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         zlecaf_tariff_amount=round(zlecaf_customs, 2),
         normal_vat_rate=vat_rate,
         normal_vat_amount=round(normal_vat_amount, 2),
-        normal_statistical_fee=_normal_tax_amounts.get('rs', 0),
-        normal_community_levy=_normal_tax_amounts.get('pcs', 0),
-        normal_ecowas_levy=_normal_tax_amounts.get('cedeao', 0),
+        normal_statistical_fee=_normal_tax_amounts.get("rs", 0),
+        normal_community_levy=_normal_tax_amounts.get("pcs", 0),
+        normal_ecowas_levy=_normal_tax_amounts.get("cedeao", 0),
         normal_other_taxes_total=round(other_taxes_amount, 2),
         normal_total_cost=round(normal_total, 2),
         zlecaf_vat_rate=vat_rate,
         zlecaf_vat_amount=round(zlecaf_vat_amount, 2),
-        zlecaf_statistical_fee=_zlecaf_tax_amounts.get('rs', 0),
-        zlecaf_community_levy=_zlecaf_tax_amounts.get('pcs', 0),
-        zlecaf_ecowas_levy=_zlecaf_tax_amounts.get('cedeao', 0),
+        zlecaf_statistical_fee=_zlecaf_tax_amounts.get("rs", 0),
+        zlecaf_community_levy=_zlecaf_tax_amounts.get("pcs", 0),
+        zlecaf_ecowas_levy=_zlecaf_tax_amounts.get("cedeao", 0),
         zlecaf_other_taxes_total=round(zlecaf_other_amount, 2),
         zlecaf_total_cost=round(zlecaf_total, 2),
         # Savings
@@ -680,7 +803,12 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         zlecaf_calculation_journal=zlecaf_journal,
         computation_order_ref="Codes douaniers nationaux + Directives CEDEAO/UEMOA/CEMAC/EAC/SACU",
         last_verified="2025-01",
-        confidence_level="high" if data_source == "collected_verified" or tariff_precision in ["sub_position", "hs6_country", "hs6_collected"] else "medium",
+        confidence_level=(
+            "high"
+            if data_source == "collected_verified"
+            or tariff_precision in ["sub_position", "hs6_country", "hs6_collected"]
+            else "medium"
+        ),
         tariff_precision=tariff_precision,
         sub_position_used=sub_position_used,
         sub_position_description=sub_position_description,
@@ -693,15 +821,17 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         taxes_summary=taxes_summary,
         currency=currency_block,
         fiscal_advantages=collected_fiscal_advantages if collected_fiscal_advantages else None,
-        administrative_formalities=collected_admin_formalities if collected_admin_formalities else None,
+        administrative_formalities=(
+            collected_admin_formalities if collected_admin_formalities else None
+        ),
         data_source=data_source,
         rules_of_origin=rules,
         top_african_producers=top_producers,
-        origin_country_data=wb_data.get(origin_country['wb_code'], {}),
-        destination_country_data=wb_data.get(dest_country['wb_code'], {})
+        origin_country_data=wb_data.get(origin_country["wb_code"], {}),
+        destination_country_data=wb_data.get(dest_country["wb_code"], {}),
     )
-    
+
     if db is not None:
         await db.comprehensive_calculations.insert_one(result.dict())
-    
+
     return result

@@ -18,6 +18,7 @@ router = APIRouter(prefix="/regional-analytics", tags=["Regional Analytics Dashb
 
 def _analytics():
     from intelligence.analytics.regional_analytics import get_regional_analytics
+
     return get_regional_analytics()
 
 
@@ -25,6 +26,7 @@ def _analytics():
 async def list_regional_blocs():
     """List all supported regional blocs with member countries."""
     from intelligence.analytics.regional_analytics import REGIONAL_BLOCS
+
     return {
         "blocs": [
             {
@@ -95,7 +97,9 @@ async def get_trade_corridors(
 @router.get("/visualization/{chart_type}")
 async def get_visualization_data(
     chart_type: str,
-    countries: Optional[str] = Query(None, description="Comma-separated country codes (for radar chart)"),
+    countries: Optional[str] = Query(
+        None, description="Comma-separated country codes (for radar chart)"
+    ),
     blocs: Optional[str] = Query(None, description="Comma-separated bloc codes (for bar chart)"),
     metric: str = Query("investment_score", description="Metric for bar chart"),
     sector: str = Query("general"),
@@ -112,6 +116,7 @@ async def get_visualization_data(
     - line: Country trend analysis
     """
     from dashboard.visualization_engine import get_visualization_engine
+
     viz = get_visualization_engine()
 
     try:
@@ -126,9 +131,7 @@ async def get_visualization_data(
         elif chart_type == "sankey":
             return viz.sankey_data()
         elif chart_type == "line":
-            return viz.line_chart_trend(
-                country=(country or "MAR").upper(), metric=metric
-            )
+            return viz.line_chart_trend(country=(country or "MAR").upper(), metric=metric)
         else:
             raise HTTPException(status_code=400, detail=f"Unsupported chart type: {chart_type}")
     except HTTPException:
@@ -149,8 +152,11 @@ async def export_analysis(
     Returns file download for Excel/PDF or JSON data.
     """
     from fastapi.responses import Response
+    from intelligence.ai_engine.investment_scoring import (
+        COUNTRY_INDICATORS,
+        get_intelligence_engine,
+    )
     from search.enhanced_search import get_search_engine
-    from intelligence.ai_engine.investment_scoring import get_intelligence_engine, COUNTRY_INDICATORS
 
     engine = get_intelligence_engine()
     countries = list(COUNTRY_INDICATORS.keys())
@@ -158,13 +164,15 @@ async def export_analysis(
     opportunities = []
     for country in countries:
         score = engine.calculate_investment_score(country, sector)
-        opportunities.append({
-            "country": country,
-            "sector": sector,
-            "investment_score": score.overall_score,
-            "grade": score.grade,
-            "recommendation": score.recommendation_strength,
-        })
+        opportunities.append(
+            {
+                "country": country,
+                "sector": sector,
+                "investment_score": score.overall_score,
+                "grade": score.grade,
+                "recommendation": score.recommendation_strength,
+            }
+        )
 
     analysis_data = {
         "opportunities": sorted(opportunities, key=lambda x: x["investment_score"], reverse=True),
@@ -173,6 +181,7 @@ async def export_analysis(
     }
 
     from dashboard.export_services import get_export_service
+
     exporter = get_export_service()
 
     if format == "excel":
@@ -185,6 +194,7 @@ async def export_analysis(
         ext = "pdf"
     else:
         import json as _json
+
         data = _json.dumps(analysis_data, default=str, indent=2).encode()
         media_type = "application/json"
         ext = "json"

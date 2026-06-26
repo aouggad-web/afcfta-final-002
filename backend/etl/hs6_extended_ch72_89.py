@@ -22,7 +22,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fondu en Afrique - 40% VA", "requirement_en": "Smelted in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fondu en Afrique - 40% VA",
+            "requirement_en": "Smelted in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "720211": {
         "chapter": "72",
@@ -32,7 +37,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["grade"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "720221": {
         "chapter": "72",
@@ -42,7 +52,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["grade"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "720310": {
         "chapter": "72",
@@ -52,7 +67,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "720410": {
         "chapter": "72",
@@ -62,7 +82,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "720421": {
         "chapter": "72",
@@ -72,7 +97,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
     "720610": {
         "chapter": "72",
@@ -82,7 +112,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Coulé en Afrique - 40% VA", "requirement_en": "Cast in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Coulé en Afrique - 40% VA",
+            "requirement_en": "Cast in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "720711": {
         "chapter": "72",
@@ -92,7 +127,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "720810": {
         "chapter": "72",
@@ -102,7 +142,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "720825": {
         "chapter": "72",
@@ -112,7 +157,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "720915": {
         "chapter": "72",
@@ -122,7 +172,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721011": {
         "chapter": "72",
@@ -132,7 +187,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Revêtement en Afrique - 40% VA", "requirement_en": "Coated in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Revêtement en Afrique - 40% VA",
+            "requirement_en": "Coated in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721041": {
         "chapter": "72",
@@ -142,7 +202,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Galvanisation en Afrique - 40% VA", "requirement_en": "Galvanized in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Galvanisation en Afrique - 40% VA",
+            "requirement_en": "Galvanized in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721049": {
         "chapter": "72",
@@ -152,7 +217,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Galvanisation en Afrique - 40% VA", "requirement_en": "Galvanized in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Galvanisation en Afrique - 40% VA",
+            "requirement_en": "Galvanized in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721070": {
         "chapter": "72",
@@ -162,7 +232,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Revêtement en Afrique - 40% VA", "requirement_en": "Coated in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Revêtement en Afrique - 40% VA",
+            "requirement_en": "Coated in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721310": {
         "chapter": "72",
@@ -172,7 +247,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721391": {
         "chapter": "72",
@@ -182,7 +262,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721410": {
         "chapter": "72",
@@ -192,7 +277,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Forgé en Afrique - 40% VA", "requirement_en": "Forged in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Forgé en Afrique - 40% VA",
+            "requirement_en": "Forged in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721420": {
         "chapter": "72",
@@ -202,7 +292,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721510": {
         "chapter": "72",
@@ -212,7 +307,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Transformation en Afrique - 40% VA", "requirement_en": "Processed in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Transformation en Afrique - 40% VA",
+            "requirement_en": "Processed in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721610": {
         "chapter": "72",
@@ -222,7 +322,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721631": {
         "chapter": "72",
@@ -232,7 +337,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721710": {
         "chapter": "72",
@@ -242,7 +352,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Tréfilé en Afrique - 40% VA", "requirement_en": "Drawn in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Tréfilé en Afrique - 40% VA",
+            "requirement_en": "Drawn in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721720": {
         "chapter": "72",
@@ -252,7 +367,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Revêtement en Afrique - 40% VA", "requirement_en": "Coated in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Revêtement en Afrique - 40% VA",
+            "requirement_en": "Coated in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "721790": {
         "chapter": "72",
@@ -262,9 +382,13 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Revêtement en Afrique - 40% VA", "requirement_en": "Coated in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Revêtement en Afrique - 40% VA",
+            "requirement_en": "Coated in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 73 - OUVRAGES EN FONTE/FER/ACIER (Sélection)
     # =========================================================================
@@ -276,7 +400,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "730210": {
         "chapter": "73",
@@ -286,7 +415,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Laminé en Afrique - 40% VA", "requirement_en": "Rolled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Laminé en Afrique - 40% VA",
+            "requirement_en": "Rolled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "730410": {
         "chapter": "73",
@@ -296,7 +430,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "730511": {
         "chapter": "73",
@@ -306,7 +445,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "730610": {
         "chapter": "73",
@@ -316,7 +460,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "730711": {
         "chapter": "73",
@@ -326,7 +475,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "730810": {
         "chapter": "73",
@@ -336,7 +490,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "730890": {
         "chapter": "73",
@@ -346,7 +505,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "730900": {
         "chapter": "73",
@@ -356,7 +520,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731010": {
         "chapter": "73",
@@ -366,7 +535,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731021": {
         "chapter": "73",
@@ -376,7 +550,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731100": {
         "chapter": "73",
@@ -386,7 +565,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731210": {
         "chapter": "73",
@@ -396,7 +580,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731290": {
         "chapter": "73",
@@ -406,7 +595,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731300": {
         "chapter": "73",
@@ -416,7 +610,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731411": {
         "chapter": "73",
@@ -426,7 +625,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731512": {
         "chapter": "73",
@@ -436,7 +640,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731581": {
         "chapter": "73",
@@ -446,7 +655,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731600": {
         "chapter": "73",
@@ -456,7 +670,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731700": {
         "chapter": "73",
@@ -466,7 +685,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731811": {
         "chapter": "73",
@@ -476,7 +700,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731815": {
         "chapter": "73",
@@ -486,7 +715,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "731816": {
         "chapter": "73",
@@ -496,9 +730,13 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 84 - MACHINES ET APPAREILS (Sélection importante)
     # =========================================================================
@@ -510,7 +748,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "excluded",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Réglementation spéciale", "requirement_en": "Special regulation", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Réglementation spéciale",
+            "requirement_en": "Special regulation",
+            "regional_content": 40,
+        },
     },
     "840211": {
         "chapter": "84",
@@ -520,7 +763,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "840310": {
         "chapter": "84",
@@ -530,7 +778,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "840710": {
         "chapter": "84",
@@ -540,7 +793,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "840810": {
         "chapter": "84",
@@ -550,7 +808,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "840820": {
         "chapter": "84",
@@ -560,7 +823,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "841112": {
         "chapter": "84",
@@ -570,7 +838,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "841191": {
         "chapter": "84",
@@ -580,7 +853,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "841210": {
         "chapter": "84",
@@ -590,7 +868,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "841381": {
         "chapter": "84",
@@ -600,7 +883,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "841410": {
         "chapter": "84",
@@ -610,7 +898,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "841510": {
         "chapter": "84",
@@ -620,7 +913,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "841810": {
         "chapter": "84",
@@ -630,7 +928,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "841821": {
         "chapter": "84",
@@ -640,7 +943,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "842010": {
         "chapter": "84",
@@ -650,7 +958,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "843110": {
         "chapter": "84",
@@ -660,7 +973,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "843210": {
         "chapter": "84",
@@ -670,7 +988,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "843221": {
         "chapter": "84",
@@ -680,7 +1003,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "843320": {
         "chapter": "84",
@@ -690,7 +1018,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "843351": {
         "chapter": "84",
@@ -700,7 +1033,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "847010": {
         "chapter": "84",
@@ -710,7 +1048,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "847110": {
         "chapter": "84",
@@ -720,7 +1063,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "847130": {
         "chapter": "84",
@@ -730,7 +1078,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "847141": {
         "chapter": "84",
@@ -740,7 +1093,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "847150": {
         "chapter": "84",
@@ -750,7 +1108,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "847160": {
         "chapter": "84",
@@ -760,7 +1123,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "847170": {
         "chapter": "84",
@@ -770,9 +1138,13 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 85 - MACHINES ÉLECTRIQUES (Sélection importante)
     # =========================================================================
@@ -784,7 +1156,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "850131": {
         "chapter": "85",
@@ -794,7 +1171,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "850211": {
         "chapter": "85",
@@ -804,7 +1186,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "850220": {
         "chapter": "85",
@@ -814,7 +1201,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "850300": {
         "chapter": "85",
@@ -824,7 +1216,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "850410": {
         "chapter": "85",
@@ -834,7 +1231,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "850610": {
         "chapter": "85",
@@ -844,7 +1246,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "850650": {
         "chapter": "85",
@@ -854,7 +1261,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "850710": {
         "chapter": "85",
@@ -864,7 +1276,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "850760": {
         "chapter": "85",
@@ -874,7 +1291,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "851710": {
         "chapter": "85",
@@ -884,7 +1306,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["new_used", "type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "851762": {
         "chapter": "85",
@@ -894,7 +1321,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "852110": {
         "chapter": "85",
@@ -904,7 +1336,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "852540": {
         "chapter": "85",
@@ -914,7 +1351,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "852872": {
         "chapter": "85",
@@ -924,7 +1366,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "853110": {
         "chapter": "85",
@@ -934,7 +1381,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "854110": {
         "chapter": "85",
@@ -944,7 +1396,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "854140": {
         "chapter": "85",
@@ -954,7 +1411,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "854190": {
         "chapter": "85",
@@ -964,9 +1426,13 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 87 - VÉHICULES (Sélection importante)
     # =========================================================================
@@ -978,7 +1444,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870120": {
         "chapter": "87",
@@ -988,7 +1459,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870130": {
         "chapter": "87",
@@ -998,7 +1474,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870190": {
         "chapter": "87",
@@ -1008,7 +1489,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870210": {
         "chapter": "87",
@@ -1018,7 +1504,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870290": {
         "chapter": "87",
@@ -1028,7 +1519,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870310": {
         "chapter": "87",
@@ -1038,7 +1534,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870321": {
         "chapter": "87",
@@ -1048,7 +1549,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["new_used", "age"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870322": {
         "chapter": "87",
@@ -1058,7 +1564,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["new_used", "age"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870323": {
         "chapter": "87",
@@ -1068,7 +1579,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["new_used", "age"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870324": {
         "chapter": "87",
@@ -1078,7 +1594,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["new_used", "age"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870331": {
         "chapter": "87",
@@ -1088,7 +1609,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["new_used", "age"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870332": {
         "chapter": "87",
@@ -1098,7 +1624,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["new_used", "age"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870333": {
         "chapter": "87",
@@ -1108,7 +1639,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "sensitive",
         "has_sub_positions": True,
         "typical_sub_position_types": ["new_used", "age"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870340": {
         "chapter": "87",
@@ -1118,7 +1654,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870350": {
         "chapter": "87",
@@ -1128,7 +1669,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870421": {
         "chapter": "87",
@@ -1138,7 +1684,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870422": {
         "chapter": "87",
@@ -1148,7 +1699,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870423": {
         "chapter": "87",
@@ -1158,7 +1714,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870431": {
         "chapter": "87",
@@ -1168,7 +1729,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870510": {
         "chapter": "87",
@@ -1178,7 +1744,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870540": {
         "chapter": "87",
@@ -1188,7 +1759,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870590": {
         "chapter": "87",
@@ -1198,7 +1774,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870600": {
         "chapter": "87",
@@ -1208,7 +1789,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870710": {
         "chapter": "87",
@@ -1218,7 +1804,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870810": {
         "chapter": "87",
@@ -1228,7 +1819,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870821": {
         "chapter": "87",
@@ -1238,7 +1834,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870891": {
         "chapter": "87",
@@ -1248,7 +1849,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "870899": {
         "chapter": "87",
@@ -1258,7 +1864,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "871110": {
         "chapter": "87",
@@ -1268,7 +1879,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "871120": {
         "chapter": "87",
@@ -1278,7 +1894,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "871200": {
         "chapter": "87",
@@ -1288,7 +1909,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "871310": {
         "chapter": "87",
@@ -1298,7 +1924,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "871411": {
         "chapter": "87",
@@ -1308,7 +1939,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "871620": {
         "chapter": "87",
@@ -1318,7 +1954,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "871639": {
         "chapter": "87",
@@ -1328,9 +1969,13 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
-    
     # =========================================================================
     # CHAPITRE 88 & 89 - AÉRONEFS ET NAVIRES (Sélection)
     # =========================================================================
@@ -1342,7 +1987,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "880211": {
         "chapter": "88",
@@ -1352,7 +2002,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "880220": {
         "chapter": "88",
@@ -1362,7 +2017,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "880230": {
         "chapter": "88",
@@ -1372,7 +2032,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "880240": {
         "chapter": "88",
@@ -1382,7 +2047,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Assemblage en Afrique - 40% VA", "requirement_en": "Assembled in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Assemblage en Afrique - 40% VA",
+            "requirement_en": "Assembled in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "880260": {
         "chapter": "88",
@@ -1392,7 +2062,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "excluded",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Réglementation spéciale", "requirement_en": "Special regulation", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Réglementation spéciale",
+            "requirement_en": "Special regulation",
+            "regional_content": 40,
+        },
     },
     "880310": {
         "chapter": "88",
@@ -1402,7 +2077,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "880320": {
         "chapter": "88",
@@ -1412,7 +2092,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "880330": {
         "chapter": "88",
@@ -1422,7 +2107,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "880400": {
         "chapter": "88",
@@ -1432,7 +2122,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890110": {
         "chapter": "89",
@@ -1442,7 +2137,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890120": {
         "chapter": "89",
@@ -1452,7 +2152,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890130": {
         "chapter": "89",
@@ -1462,7 +2167,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890190": {
         "chapter": "89",
@@ -1472,7 +2182,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890200": {
         "chapter": "89",
@@ -1482,7 +2197,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890310": {
         "chapter": "89",
@@ -1492,7 +2212,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Fabriqué en Afrique - 40% VA", "requirement_en": "Manufactured in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Fabriqué en Afrique - 40% VA",
+            "requirement_en": "Manufactured in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890391": {
         "chapter": "89",
@@ -1502,7 +2227,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890392": {
         "chapter": "89",
@@ -1512,7 +2242,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890400": {
         "chapter": "89",
@@ -1522,7 +2257,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890510": {
         "chapter": "89",
@@ -1532,7 +2272,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890520": {
         "chapter": "89",
@@ -1542,7 +2287,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890590": {
         "chapter": "89",
@@ -1552,7 +2302,12 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": True,
         "typical_sub_position_types": ["type", "new_used"],
-        "rule_of_origin": {"type": "substantial_transformation", "requirement_fr": "Construit en Afrique - 40% VA", "requirement_en": "Built in Africa - 40% VA", "regional_content": 40}
+        "rule_of_origin": {
+            "type": "substantial_transformation",
+            "requirement_fr": "Construit en Afrique - 40% VA",
+            "requirement_en": "Built in Africa - 40% VA",
+            "regional_content": 40,
+        },
     },
     "890800": {
         "chapter": "89",
@@ -1562,6 +2317,11 @@ HS6_EXTENDED_CH72_89 = {
         "sensitivity": "normal",
         "has_sub_positions": False,
         "typical_sub_position_types": [],
-        "rule_of_origin": {"type": "wholly_obtained", "requirement_fr": "Entièrement obtenu", "requirement_en": "Wholly obtained", "regional_content": 100}
+        "rule_of_origin": {
+            "type": "wholly_obtained",
+            "requirement_fr": "Entièrement obtenu",
+            "requirement_en": "Wholly obtained",
+            "regional_content": 100,
+        },
     },
 }

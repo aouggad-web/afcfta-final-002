@@ -1,8 +1,8 @@
-import logging
 import json
+import logging
 import os
-from typing import Dict, List, Optional, Any, Tuple
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ class TariffDataService:
         for f in files:
             try:
                 country_code = f.stem.replace("_tariffs", "").upper()
-                with open(f, 'r', encoding='utf-8') as fh:
+                with open(f, "r", encoding="utf-8") as fh:
                     data = json.load(fh)
                 self._country_data[country_code] = data
 
@@ -72,9 +72,11 @@ class TariffDataService:
                 logger.error(f"Error loading {f}: {e}")
 
         self._loaded = True
-        logger.info(f"Tariff data loaded: {len(self._country_data)} countries, "
-                     f"{sum(len(idx) for idx in self._hs6_index.values())} HS6 lines, "
-                     f"{sum(len(idx) for idx in self._sub_position_index.values())} sub-positions")
+        logger.info(
+            f"Tariff data loaded: {len(self._country_data)} countries, "
+            f"{sum(len(idx) for idx in self._hs6_index.values())} HS6 lines, "
+            f"{sum(len(idx) for idx in self._sub_position_index.values())} sub-positions"
+        )
 
     def get_country_codes(self) -> List[str]:
         return list(self._country_data.keys())
@@ -132,10 +134,14 @@ class TariffDataService:
                     "description_en": sub_data.get("description_en", ""),
                     "dd_rate": sub_data.get("dd", line.get("dd_rate", 0)),
                     "vat_rate": line.get("vat_rate", 0),
-                    "taxes_detail": sub_taxes if sub_taxes is not None else line.get("taxes_detail", []),
+                    "taxes_detail": (
+                        sub_taxes if sub_taxes is not None else line.get("taxes_detail", [])
+                    ),
                     "total_taxes_pct": line.get("total_taxes_pct", 0),
-                    "fiscal_advantages": sub_data.get("fiscal_advantages") or line.get("fiscal_advantages", []),
-                    "administrative_formalities": sub_data.get("administrative_formalities") or line.get("administrative_formalities", []),
+                    "fiscal_advantages": sub_data.get("fiscal_advantages")
+                    or line.get("fiscal_advantages", []),
+                    "administrative_formalities": sub_data.get("administrative_formalities")
+                    or line.get("administrative_formalities", []),
                     "unit": line.get("unit", "KG"),
                     "category": line.get("category", ""),
                     "precision": "sub_position",
@@ -161,7 +167,9 @@ class TariffDataService:
 
         return None
 
-    def get_sub_position_rate(self, country_code: str, full_code: str) -> Tuple[Optional[float], str, str]:
+    def get_sub_position_rate(
+        self, country_code: str, full_code: str
+    ) -> Tuple[Optional[float], str, str]:
         country_code = country_code.upper()
         full_code = full_code.replace(".", "").replace(" ", "")
         idx = self._sub_position_index.get(country_code, {})
@@ -192,9 +200,15 @@ class TariffDataService:
                 line = self.get_tariff_line(country_code, hs6)
                 sub_data = self._sub_position_index.get(country_code, {}).get(hs_code_clean) or {}
                 # Prefer sub-position level taxes_detail when defined; fall back to parent HS6.
-                taxes_detail = sub_data.get("taxes_detail") or (line.get("taxes_detail", []) if line else [])
-                fiscal_advantages = sub_data.get("fiscal_advantages") or (line.get("fiscal_advantages", []) if line else [])
-                admin_formalities = sub_data.get("administrative_formalities") or (line.get("administrative_formalities", []) if line else [])
+                taxes_detail = sub_data.get("taxes_detail") or (
+                    line.get("taxes_detail", []) if line else []
+                )
+                fiscal_advantages = sub_data.get("fiscal_advantages") or (
+                    line.get("fiscal_advantages", []) if line else []
+                )
+                admin_formalities = sub_data.get("administrative_formalities") or (
+                    line.get("administrative_formalities", []) if line else []
+                )
                 return {
                     "rate": rate,
                     "source": source,

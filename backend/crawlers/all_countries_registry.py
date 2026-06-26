@@ -13,12 +13,13 @@ This module provides comprehensive configuration data for all African countries 
 Last updated: February 2025
 """
 
-from typing import Dict, List, Optional, Any
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
 class Region(str, Enum):
     """African regions classification"""
+
     NORTH_AFRICA = "North Africa"
     WEST_AFRICA = "West Africa"
     CENTRAL_AFRICA = "Central Africa"
@@ -28,24 +29,26 @@ class Region(str, Enum):
 
 class RegionalBlock(str, Enum):
     """African regional economic communities"""
+
     ECOWAS = "ECOWAS"  # Economic Community of West African States
     CEDEAO = "CEDEAO"  # Same as ECOWAS (French)
-    UEMOA = "UEMOA"    # West African Economic and Monetary Union
-    CEMAC = "CEMAC"    # Economic and Monetary Community of Central Africa
-    EAC = "EAC"        # East African Community
-    SACU = "SACU"      # Southern African Customs Union
-    SADC = "SADC"      # Southern African Development Community
+    UEMOA = "UEMOA"  # West African Economic and Monetary Union
+    CEMAC = "CEMAC"  # Economic and Monetary Community of Central Africa
+    EAC = "EAC"  # East African Community
+    SACU = "SACU"  # Southern African Customs Union
+    SADC = "SADC"  # Southern African Development Community
     COMESA = "COMESA"  # Common Market for Eastern and Southern Africa
-    AMU = "AMU"        # Arab Maghreb Union
-    ECCAS = "ECCAS"    # Economic Community of Central African States
-    IGAD = "IGAD"      # Intergovernmental Authority on Development
+    AMU = "AMU"  # Arab Maghreb Union
+    ECCAS = "ECCAS"  # Economic Community of Central African States
+    IGAD = "IGAD"  # Intergovernmental Authority on Development
 
 
 class Priority(int, Enum):
     """Priority levels for crawling (1=highest, 3=lowest)"""
-    HIGH = 1      # Major economies, good data availability
-    MEDIUM = 2    # Medium economies or partial data
-    LOW = 3       # Small economies or limited data availability
+
+    HIGH = 1  # Major economies, good data availability
+    MEDIUM = 2  # Medium economies or partial data
+    LOW = 3  # Small economies or limited data availability
 
 
 class CustomsPlatform(str, Enum):
@@ -57,21 +60,22 @@ class CustomsPlatform(str, Enum):
     UNCTAD NTM-aligned functional codes describing the TYPE of document required.
     They are platform-agnostic and do NOT imply the country uses ASYCUDA.
     """
-    ASYCUDA_WORLD  = "ASYCUDA World"       # UNCTAD ASYCUDA World (most common)
-    ASYCUDA_PP     = "ASYCUDA++"           # Older ASYCUDA++ (some legacy installs)
-    GCNET          = "GCNET"               # Ghana Community Network (Ghana Revenue Authority)
-    NICIS          = "NICIS/CuCMS"         # Nigeria Customs Integrated System (NCS)
-    ICMS           = "iCMS"                # Integrated Customs Mgmt System (Kenya, KRA)
-    SIMBA          = "SIMBA"               # Single Import Billing Manifest & Assessment (Tanzania)
-    BADR           = "BADR"                # Base Automatisée des Douanes en Réseau (Morocco)
-    SINDA          = "SINDA"               # Système Informatique des Douanes (Tunisia)
-    NAFEZA         = "NAFEZA"              # National Single Window (Egypt)
-    ECTS           = "ECTS"                # Ethiopian Customs Tax System (Ethiopia ECC)
-    TRADENET       = "TradeNet"            # TradeNet / TradeLinkMU (Mauritius)
-    SARS_EDI       = "SARS EDI"            # South Africa Revenue Service EDI/RAS
-    GAINDE         = "GAINDE"              # Guichet Automatisé d'Info. pour le Négoce (Senegal)
-    SYDONIA        = "SYDONIA/ASYCUDA"     # SYDONIA (DRC — ASYCUDA-derived variant)
-    UNKNOWN        = "Unknown"             # Limited digitization / data unavailable
+
+    ASYCUDA_WORLD = "ASYCUDA World"  # UNCTAD ASYCUDA World (most common)
+    ASYCUDA_PP = "ASYCUDA++"  # Older ASYCUDA++ (some legacy installs)
+    GCNET = "GCNET"  # Ghana Community Network (Ghana Revenue Authority)
+    NICIS = "NICIS/CuCMS"  # Nigeria Customs Integrated System (NCS)
+    ICMS = "iCMS"  # Integrated Customs Mgmt System (Kenya, KRA)
+    SIMBA = "SIMBA"  # Single Import Billing Manifest & Assessment (Tanzania)
+    BADR = "BADR"  # Base Automatisée des Douanes en Réseau (Morocco)
+    SINDA = "SINDA"  # Système Informatique des Douanes (Tunisia)
+    NAFEZA = "NAFEZA"  # National Single Window (Egypt)
+    ECTS = "ECTS"  # Ethiopian Customs Tax System (Ethiopia ECC)
+    TRADENET = "TradeNet"  # TradeNet / TradeLinkMU (Mauritius)
+    SARS_EDI = "SARS EDI"  # South Africa Revenue Service EDI/RAS
+    GAINDE = "GAINDE"  # Guichet Automatisé d'Info. pour le Négoce (Senegal)
+    SYDONIA = "SYDONIA/ASYCUDA"  # SYDONIA (DRC — ASYCUDA-derived variant)
+    UNKNOWN = "Unknown"  # Limited digitization / data unavailable
 
 
 # =============================================================================
@@ -81,123 +85,123 @@ class CustomsPlatform(str, Enum):
 
 CUSTOMS_PLATFORM_INFO: Dict[str, Dict] = {
     "ASYCUDA World": {
-        "vendor":       "UNCTAD (United Nations Conference on Trade and Development)",
-        "url":          "https://asycuda.org",
+        "vendor": "UNCTAD (United Nations Conference on Trade and Development)",
+        "url": "https://asycuda.org",
         "decl_form_en": "Customs Declaration (SAD — Single Administrative Document)",
         "decl_form_fr": "Déclaration en Douane (DAU — Document Administratif Unique)",
-        "notes":        "Most widely deployed customs platform in Africa. Used by 30+ AU members.",
+        "notes": "Most widely deployed customs platform in Africa. Used by 30+ AU members.",
     },
     "ASYCUDA++": {
-        "vendor":       "UNCTAD",
-        "url":          "https://asycuda.org",
+        "vendor": "UNCTAD",
+        "url": "https://asycuda.org",
         "decl_form_en": "Customs Declaration (SAD — Single Administrative Document)",
         "decl_form_fr": "Déclaration en Douane (DAU — Document Administratif Unique)",
-        "notes":        "Legacy version; most countries have migrated or are migrating to ASYCUDA World.",
+        "notes": "Legacy version; most countries have migrated or are migrating to ASYCUDA World.",
     },
     "GCNET": {
-        "vendor":       "GCNet (Ghana Community Network Services Ltd) / GRA",
-        "url":          "https://www.gra.gov.gh",
+        "vendor": "GCNet (Ghana Community Network Services Ltd) / GRA",
+        "url": "https://www.gra.gov.gh",
         "decl_form_en": "Customs Declaration Form (CUSDEC)",
         "decl_form_fr": "Déclaration en Douane (CUSDEC)",
-        "notes":        "Ghana-specific customs and port management platform. Interfaces with ASYCUDA "
-                        "but is a separate national system.",
+        "notes": "Ghana-specific customs and port management platform. Interfaces with ASYCUDA "
+        "but is a separate national system.",
     },
     "NICIS/CuCMS": {
-        "vendor":       "Nigeria Customs Service (NCS) / in-house / WIPRO",
-        "url":          "https://www.customs.gov.ng",
+        "vendor": "Nigeria Customs Service (NCS) / in-house / WIPRO",
+        "url": "https://www.customs.gov.ng",
         "decl_form_en": "Single Goods Declaration (SGD)",
         "decl_form_fr": "Déclaration Unique de Marchandises (SGD)",
-        "notes":        "Nigeria Customs Integrated System (NICIS II), now migrating to CuCMS. "
-                        "Replaced manual processing; separate from ASYCUDA.",
+        "notes": "Nigeria Customs Integrated System (NICIS II), now migrating to CuCMS. "
+        "Replaced manual processing; separate from ASYCUDA.",
     },
     "iCMS": {
-        "vendor":       "Kenya Revenue Authority (KRA) / in-house",
-        "url":          "https://www.kra.go.ke",
+        "vendor": "Kenya Revenue Authority (KRA) / in-house",
+        "url": "https://www.kra.go.ke",
         "decl_form_en": "Import Declaration Form (IDF)",
         "decl_form_fr": "Formulaire de Déclaration d'Importation (IDF)",
-        "notes":        "Integrated Customs Management System. Replaced SIMBA in Kenya in 2022. "
-                        "End-to-end digitized process.",
+        "notes": "Integrated Customs Management System. Replaced SIMBA in Kenya in 2022. "
+        "End-to-end digitized process.",
     },
     "SIMBA": {
-        "vendor":       "Tanzania Revenue Authority (TRA) / WiseTech Global (CargoWise)",
-        "url":          "https://www.tra.go.tz",
+        "vendor": "Tanzania Revenue Authority (TRA) / WiseTech Global (CargoWise)",
+        "url": "https://www.tra.go.tz",
         "decl_form_en": "Customs Entry / Customs Declaration (TANCIS)",
         "decl_form_fr": "Déclaration en Douane (TANCIS)",
-        "notes":        "Single Import Billing, Manifest and Assessment system. Tanzania-specific. "
-                        "Not ASYCUDA.",
+        "notes": "Single Import Billing, Manifest and Assessment system. Tanzania-specific. "
+        "Not ASYCUDA.",
     },
     "BADR": {
-        "vendor":       "Administration des Douanes et Impôts Indirects (ADII) / in-house",
-        "url":          "https://www.douane.gov.ma",
+        "vendor": "Administration des Douanes et Impôts Indirects (ADII) / in-house",
+        "url": "https://www.douane.gov.ma",
         "decl_form_en": "Customs Declaration — DUM (Déclaration Unique de Marchandises)",
         "decl_form_fr": "Déclaration Unique de Marchandises (DUM) — BADR",
-        "notes":        "Base Automatisée des Douanes en Réseau. Morocco's fully national customs "
-                        "platform; uses national codes C01-C11, 910 etc. Not ASYCUDA.",
+        "notes": "Base Automatisée des Douanes en Réseau. Morocco's fully national customs "
+        "platform; uses national codes C01-C11, 910 etc. Not ASYCUDA.",
     },
     "SINDA": {
-        "vendor":       "Direction Générale des Douanes (DGD-TN) / in-house (ASYCUDA-derived)",
-        "url":          "https://www.douane.finances.tn",
+        "vendor": "Direction Générale des Douanes (DGD-TN) / in-house (ASYCUDA-derived)",
+        "url": "https://www.douane.finances.tn",
         "decl_form_en": "Customs Declaration — DUM (Déclaration Unique de Marchandises) via SINDA",
         "decl_form_fr": "Déclaration Unique de Marchandises (DUM) — SINDA / GUCE",
-        "notes":        "Système Informatique des Douanes et Accises. Evolved from ASYCUDA++ "
-                        "with heavy Tunisian customisation; uses national codes 910, 101-109 etc.",
+        "notes": "Système Informatique des Douanes et Accises. Evolved from ASYCUDA++ "
+        "with heavy Tunisian customisation; uses national codes 910, 101-109 etc.",
     },
     "NAFEZA": {
-        "vendor":       "Egyptian Customs Authority (ECA) / Misr Technology Services",
-        "url":          "https://www.nafeza.gov.eg",
+        "vendor": "Egyptian Customs Authority (ECA) / Misr Technology Services",
+        "url": "https://www.nafeza.gov.eg",
         "decl_form_en": "Electronic Import Notice (EIN) + Customs Declaration via ACS",
         "decl_form_fr": "Avis d'Importation Électronique (EIN) + Déclaration Douanière via ACS",
-        "notes":        "National Single Window for Foreign Trade Facilitation. Integrated "
-                        "with GOEIC, ACS and bank channels. Mandatory for all shipments to Egypt "
-                        "since 2022.",
+        "notes": "National Single Window for Foreign Trade Facilitation. Integrated "
+        "with GOEIC, ACS and bank channels. Mandatory for all shipments to Egypt "
+        "since 2022.",
     },
     "ECTS": {
-        "vendor":       "Ethiopian Customs Commission (ECC) / in-house",
-        "url":          "https://www.customs.gov.et",
+        "vendor": "Ethiopian Customs Commission (ECC) / in-house",
+        "url": "https://www.customs.gov.et",
         "decl_form_en": "Customs Declaration (CD) — Ethiopian Customs Tax System (ECTS)",
         "decl_form_fr": "Déclaration en Douane (CD) — Système ECTS",
-        "notes":        "Ethiopian Customs Tax System. National platform; not ASYCUDA World. "
-                        "Uses ETHPERMIT (MoTRI) as a mandatory pre-clearance step.",
+        "notes": "Ethiopian Customs Tax System. National platform; not ASYCUDA World. "
+        "Uses ETHPERMIT (MoTRI) as a mandatory pre-clearance step.",
     },
     "TradeNet": {
-        "vendor":       "Mauritius Network Services (MNS) / TradeLinkMU",
-        "url":          "https://www.tradenet.intnet.mu",
+        "vendor": "Mauritius Network Services (MNS) / TradeLinkMU",
+        "url": "https://www.tradenet.intnet.mu",
         "decl_form_en": "Import Declaration (TradeNet / TradeLinkMU)",
         "decl_form_fr": "Déclaration d'Importation (TradeNet / TradeLinkMU)",
-        "notes":        "Mauritius TradeNet (now TradeLinkMU). Single-window platform covering "
-                        "customs, port, and regulatory agencies. Interfaces with ASYCUDA++.",
+        "notes": "Mauritius TradeNet (now TradeLinkMU). Single-window platform covering "
+        "customs, port, and regulatory agencies. Interfaces with ASYCUDA++.",
     },
     "SARS EDI": {
-        "vendor":       "South African Revenue Service (SARS) / in-house",
-        "url":          "https://www.sars.gov.za",
+        "vendor": "South African Revenue Service (SARS) / in-house",
+        "url": "https://www.sars.gov.za",
         "decl_form_en": "Bill of Entry (DA 306 / DA 306A) — SARS eFiling",
         "decl_form_fr": "Déclaration en Douane (DA 306 / DA 306A) — SARS eFiling",
-        "notes":        "SARS Customs EDI / Risk Assessment System (RAS). South Africa's fully "
-                        "national customs platform; not ASYCUDA.",
+        "notes": "SARS Customs EDI / Risk Assessment System (RAS). South Africa's fully "
+        "national customs platform; not ASYCUDA.",
     },
     "GAINDE": {
-        "vendor":       "GAINDE 2000 (GIE Douanes-Secteur Privé) / Senegal",
-        "url":          "https://www.gainde2000.sn",
+        "vendor": "GAINDE 2000 (GIE Douanes-Secteur Privé) / Senegal",
+        "url": "https://www.gainde2000.sn",
         "decl_form_en": "Customs Declaration (Déclaration en Douane) via GAINDE 2000",
         "decl_form_fr": "Déclaration en Douane — Guichet GAINDE 2000",
-        "notes":        "Guichet Automatisé d'Information pour le Négoce et le Dédouanement "
-                        "des Exportateurs. Senegal's single-window platform; interfaces with "
-                        "ASYCUDA World (GAINDE 2000 acts as front-end).",
+        "notes": "Guichet Automatisé d'Information pour le Négoce et le Dédouanement "
+        "des Exportateurs. Senegal's single-window platform; interfaces with "
+        "ASYCUDA World (GAINDE 2000 acts as front-end).",
     },
     "SYDONIA/ASYCUDA": {
-        "vendor":       "UNCTAD / DGDA DRC (adapted)",
-        "url":          "https://www.douanes.cd",
+        "vendor": "UNCTAD / DGDA DRC (adapted)",
+        "url": "https://www.douanes.cd",
         "decl_form_en": "Customs Declaration (SYDONIA / ASYCUDA-DRC)",
         "decl_form_fr": "Déclaration en Douane (SYDONIA / ASYCUDA-RDC)",
-        "notes":        "DRC uses a heavily customised ASYCUDA-derived system (historically called "
-                        "SYDONIA). OCC integration is unique to DRC (OCCDECL mandatory for all imports).",
+        "notes": "DRC uses a heavily customised ASYCUDA-derived system (historically called "
+        "SYDONIA). OCC integration is unique to DRC (OCCDECL mandatory for all imports).",
     },
     "Unknown": {
-        "vendor":       "N/A",
-        "url":          None,
+        "vendor": "N/A",
+        "url": None,
         "decl_form_en": "Import Declaration",
         "decl_form_fr": "Déclaration d'Importation",
-        "notes":        "Customs management platform not confirmed / limited digitization.",
+        "notes": "Customs management platform not confirmed / limited digitization.",
     },
 }
 
@@ -216,7 +220,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["fr", "ar"],
         "notes": "Major economy, oil/gas exporter",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "AGO": {
         "iso2": "AO",
@@ -230,7 +234,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["pt"],
         "notes": "Oil exporter, SADC member",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "BEN": {
         "iso2": "BJ",
@@ -244,7 +248,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["fr"],
         "notes": "UEMOA member, Cotonou port hub",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "BWA": {
         "iso2": "BW",
@@ -258,7 +262,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["en"],
         "notes": "SACU member, stable economy",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "BFA": {
         "iso2": "BF",
@@ -272,7 +276,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["fr"],
         "notes": "UEMOA member, landlocked",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "BDI": {
         "iso2": "BI",
@@ -286,7 +290,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["fr", "en"],
         "notes": "EAC member, landlocked",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "CPV": {
         "iso2": "CV",
@@ -300,7 +304,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["pt"],
         "notes": "Island nation, ECOWAS member",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "CMR": {
         "iso2": "CM",
@@ -314,7 +318,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["fr", "en"],
         "notes": "CEMAC member, Douala port",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "CAF": {
         "iso2": "CF",
@@ -328,7 +332,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["fr"],
         "notes": "CEMAC member, landlocked",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "TCD": {
         "iso2": "TD",
@@ -342,7 +346,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["fr", "ar"],
         "notes": "CEMAC member, landlocked, oil producer",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "COM": {
         "iso2": "KM",
@@ -356,7 +360,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["fr", "ar"],
         "notes": "Island nation, COMESA member",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "COG": {
         "iso2": "CG",
@@ -370,7 +374,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["fr"],
         "notes": "CEMAC member, Pointe-Noire port",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "COD": {
         "iso2": "CD",
@@ -384,7 +388,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["fr"],
         "notes": "Large economy, mineral resources",
-        "customs_platform": CustomsPlatform.SYDONIA
+        "customs_platform": CustomsPlatform.SYDONIA,
     },
     "CIV": {
         "iso2": "CI",
@@ -398,7 +402,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["fr"],
         "notes": "UEMOA member, Abidjan port hub",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "DJI": {
         "iso2": "DJ",
@@ -412,7 +416,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["fr", "ar"],
         "notes": "Strategic port for Ethiopia trade",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "EGY": {
         "iso2": "EG",
@@ -426,7 +430,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["ar", "en"],
         "notes": "Largest North African economy",
-        "customs_platform": CustomsPlatform.NAFEZA
+        "customs_platform": CustomsPlatform.NAFEZA,
     },
     "GNQ": {
         "iso2": "GQ",
@@ -440,7 +444,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["es", "fr"],
         "notes": "CEMAC member, oil producer",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "ERI": {
         "iso2": "ER",
@@ -454,7 +458,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["ar", "en"],
         "notes": "Limited data availability",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "SWZ": {
         "iso2": "SZ",
@@ -468,7 +472,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["en"],
         "notes": "SACU member, formerly Swaziland",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "ETH": {
         "iso2": "ET",
@@ -482,7 +486,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["am", "en"],
         "notes": "Large economy, landlocked",
-        "customs_platform": CustomsPlatform.ECTS
+        "customs_platform": CustomsPlatform.ECTS,
     },
     "GAB": {
         "iso2": "GA",
@@ -496,7 +500,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["fr"],
         "notes": "CEMAC member, oil producer",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "GMB": {
         "iso2": "GM",
@@ -510,7 +514,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["en"],
         "notes": "ECOWAS member, small economy",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "GHA": {
         "iso2": "GH",
@@ -524,7 +528,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["en"],
         "notes": "ECOWAS member, Tema port",
-        "customs_platform": CustomsPlatform.GCNET
+        "customs_platform": CustomsPlatform.GCNET,
     },
     "GIN": {
         "iso2": "GN",
@@ -538,7 +542,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["fr"],
         "notes": "ECOWAS member, bauxite/mining",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "GNB": {
         "iso2": "GW",
@@ -552,7 +556,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["pt"],
         "notes": "UEMOA member, small economy",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "KEN": {
         "iso2": "KE",
@@ -566,7 +570,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["en", "sw"],
         "notes": "EAC hub, Mombasa port",
-        "customs_platform": CustomsPlatform.ICMS
+        "customs_platform": CustomsPlatform.ICMS,
     },
     "LSO": {
         "iso2": "LS",
@@ -580,7 +584,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["en"],
         "notes": "SACU member, landlocked",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "LBR": {
         "iso2": "LR",
@@ -594,7 +598,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["en"],
         "notes": "ECOWAS member, Monrovia port",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "LBY": {
         "iso2": "LY",
@@ -608,7 +612,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["ar"],
         "notes": "No VAT, oil producer, unstable",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "MDG": {
         "iso2": "MG",
@@ -622,7 +626,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["fr", "mg"],
         "notes": "Island nation, SADC member",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "MWI": {
         "iso2": "MW",
@@ -636,7 +640,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["en"],
         "notes": "SADC member, landlocked",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "MLI": {
         "iso2": "ML",
@@ -650,7 +654,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["fr"],
         "notes": "UEMOA member, landlocked",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "MRT": {
         "iso2": "MR",
@@ -664,7 +668,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["ar", "fr"],
         "notes": "AMU member, mining/fishing",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "MUS": {
         "iso2": "MU",
@@ -678,7 +682,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["en", "fr"],
         "notes": "Island nation, financial hub",
-        "customs_platform": CustomsPlatform.TRADENET
+        "customs_platform": CustomsPlatform.TRADENET,
     },
     "MAR": {
         "iso2": "MA",
@@ -692,7 +696,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["ar", "fr"],
         "notes": "Major economy, Casablanca/Tangier ports",
-        "customs_platform": CustomsPlatform.BADR
+        "customs_platform": CustomsPlatform.BADR,
     },
     "MOZ": {
         "iso2": "MZ",
@@ -706,7 +710,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["pt"],
         "notes": "SADC member, Maputo port",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "NAM": {
         "iso2": "NA",
@@ -720,7 +724,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["en"],
         "notes": "SACU member, Walvis Bay port",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "NER": {
         "iso2": "NE",
@@ -734,7 +738,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["fr"],
         "notes": "UEMOA member, landlocked",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "NGA": {
         "iso2": "NG",
@@ -748,7 +752,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["en"],
         "notes": "Largest African economy, Lagos/Apapa port",
-        "customs_platform": CustomsPlatform.NICIS
+        "customs_platform": CustomsPlatform.NICIS,
     },
     "RWA": {
         "iso2": "RW",
@@ -762,7 +766,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["en", "fr", "rw"],
         "notes": "EAC member, landlocked, digital leader",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "STP": {
         "iso2": "ST",
@@ -776,7 +780,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["pt"],
         "notes": "Island nation, small economy",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "SEN": {
         "iso2": "SN",
@@ -790,7 +794,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["fr"],
         "notes": "UEMOA member, Dakar port hub",
-        "customs_platform": CustomsPlatform.GAINDE
+        "customs_platform": CustomsPlatform.GAINDE,
     },
     "SYC": {
         "iso2": "SC",
@@ -804,7 +808,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["en", "fr"],
         "notes": "Island nation, tourism economy",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "SLE": {
         "iso2": "SL",
@@ -818,7 +822,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["en"],
         "notes": "ECOWAS member, Freetown port",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "SOM": {
         "iso2": "SO",
@@ -832,7 +836,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["so", "ar"],
         "notes": "No formal VAT, limited government",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "ZAF": {
         "iso2": "ZA",
@@ -846,7 +850,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["en", "af", "zu", "xh"],
         "notes": "Largest SADC economy, Durban/Cape Town ports",
-        "customs_platform": CustomsPlatform.SARS_EDI
+        "customs_platform": CustomsPlatform.SARS_EDI,
     },
     "SSD": {
         "iso2": "SS",
@@ -860,7 +864,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.LOW,
         "languages": ["en"],
         "notes": "EAC member, landlocked, newest nation",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "SDN": {
         "iso2": "SD",
@@ -874,7 +878,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["ar", "en"],
         "notes": "Port Sudan gateway, North Africa UMA regional system",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "TZA": {
         "iso2": "TZ",
@@ -888,7 +892,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["sw", "en"],
         "notes": "EAC member, Dar es Salaam port",
-        "customs_platform": CustomsPlatform.SIMBA
+        "customs_platform": CustomsPlatform.SIMBA,
     },
     "TGO": {
         "iso2": "TG",
@@ -902,7 +906,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["fr"],
         "notes": "UEMOA member, Lomé port hub",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "TUN": {
         "iso2": "TN",
@@ -916,7 +920,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["ar", "fr"],
         "notes": "AMU member, Rades port",
-        "customs_platform": CustomsPlatform.SINDA
+        "customs_platform": CustomsPlatform.SINDA,
     },
     "UGA": {
         "iso2": "UG",
@@ -930,7 +934,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.HIGH,
         "languages": ["en", "sw"],
         "notes": "EAC member, landlocked",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "ZMB": {
         "iso2": "ZM",
@@ -944,7 +948,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["en"],
         "notes": "SADC member, landlocked, copper",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
     "ZWE": {
         "iso2": "ZW",
@@ -958,7 +962,7 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
         "priority": Priority.MEDIUM,
         "languages": ["en"],
         "notes": "SADC member, landlocked",
-        "customs_platform": CustomsPlatform.ASYCUDA_WORLD
+        "customs_platform": CustomsPlatform.ASYCUDA_WORLD,
     },
 }
 
@@ -966,40 +970,80 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
 # Regional blocks membership mapping
 REGIONAL_BLOCKS: Dict[str, List[str]] = {
     RegionalBlock.ECOWAS.value: [
-        "BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB",
-        "LBR", "MLI", "NER", "NGA", "SEN", "SLE", "TGO"
+        "BEN",
+        "BFA",
+        "CPV",
+        "CIV",
+        "GMB",
+        "GHA",
+        "GIN",
+        "GNB",
+        "LBR",
+        "MLI",
+        "NER",
+        "NGA",
+        "SEN",
+        "SLE",
+        "TGO",
     ],
-    RegionalBlock.UEMOA.value: [
-        "BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"
-    ],
-    RegionalBlock.CEMAC.value: [
-        "CMR", "CAF", "TCD", "COG", "GNQ", "GAB"
-    ],
-    RegionalBlock.EAC.value: [
-        "BDI", "KEN", "RWA", "SSD", "TZA", "UGA"
-    ],
-    RegionalBlock.SACU.value: [
-        "BWA", "LSO", "NAM", "ZAF", "SWZ"
-    ],
+    RegionalBlock.UEMOA.value: ["BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"],
+    RegionalBlock.CEMAC.value: ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"],
+    RegionalBlock.EAC.value: ["BDI", "KEN", "RWA", "SSD", "TZA", "UGA"],
+    RegionalBlock.SACU.value: ["BWA", "LSO", "NAM", "ZAF", "SWZ"],
     RegionalBlock.SADC.value: [
-        "AGO", "BWA", "COM", "COD", "LSO", "MDG", "MWI", "MUS",
-        "MOZ", "NAM", "SYC", "ZAF", "SWZ", "TZA", "ZMB", "ZWE"
+        "AGO",
+        "BWA",
+        "COM",
+        "COD",
+        "LSO",
+        "MDG",
+        "MWI",
+        "MUS",
+        "MOZ",
+        "NAM",
+        "SYC",
+        "ZAF",
+        "SWZ",
+        "TZA",
+        "ZMB",
+        "ZWE",
     ],
     RegionalBlock.COMESA.value: [
-        "BDI", "COM", "COD", "DJI", "EGY", "ERI", "ETH", "KEN",
-        "LBY", "MDG", "MWI", "MUS", "RWA", "SYC", "SDN", "SWZ",
-        "UGA", "ZMB", "ZWE"
+        "BDI",
+        "COM",
+        "COD",
+        "DJI",
+        "EGY",
+        "ERI",
+        "ETH",
+        "KEN",
+        "LBY",
+        "MDG",
+        "MWI",
+        "MUS",
+        "RWA",
+        "SYC",
+        "SDN",
+        "SWZ",
+        "UGA",
+        "ZMB",
+        "ZWE",
     ],
-    RegionalBlock.AMU.value: [
-        "DZA", "EGY", "LBY", "MRT", "MAR", "TUN", "SDN"
-    ],
+    RegionalBlock.AMU.value: ["DZA", "EGY", "LBY", "MRT", "MAR", "TUN", "SDN"],
     RegionalBlock.ECCAS.value: [
-        "AGO", "BDI", "CMR", "CAF", "TCD", "COG", "COD", "GNQ",
-        "GAB", "RWA", "STP"
+        "AGO",
+        "BDI",
+        "CMR",
+        "CAF",
+        "TCD",
+        "COG",
+        "COD",
+        "GNQ",
+        "GAB",
+        "RWA",
+        "STP",
     ],
-    RegionalBlock.IGAD.value: [
-        "DJI", "ERI", "ETH", "KEN", "SOM", "SSD", "SDN", "UGA"
-    ]
+    RegionalBlock.IGAD.value: ["DJI", "ERI", "ETH", "KEN", "SOM", "SSD", "SDN", "UGA"],
 }
 
 
@@ -1007,10 +1051,10 @@ REGIONAL_BLOCKS: Dict[str, List[str]] = {
 def get_country_config(country_code: str) -> Optional[Dict[str, Any]]:
     """
     Get configuration for a specific country.
-    
+
     Args:
         country_code: ISO3 country code (e.g., 'GHA', 'NGA')
-        
+
     Returns:
         Country configuration dict or None if not found
     """
@@ -1020,26 +1064,25 @@ def get_country_config(country_code: str) -> Optional[Dict[str, Any]]:
 def get_countries_by_region(region: Region) -> List[str]:
     """
     Get all country codes for a specific region.
-    
+
     Args:
         region: Region enum value
-        
+
     Returns:
         List of ISO3 country codes
     """
     return [
-        code for code, config in AFRICAN_COUNTRIES_REGISTRY.items()
-        if config["region"] == region
+        code for code, config in AFRICAN_COUNTRIES_REGISTRY.items() if config["region"] == region
     ]
 
 
 def get_countries_by_block(block: RegionalBlock) -> List[str]:
     """
     Get all country codes for a specific regional economic block.
-    
+
     Args:
         block: RegionalBlock enum value
-        
+
     Returns:
         List of ISO3 country codes
     """
@@ -1049,15 +1092,16 @@ def get_countries_by_block(block: RegionalBlock) -> List[str]:
 def get_priority_countries(priority: Priority) -> List[str]:
     """
     Get all country codes with a specific priority level.
-    
+
     Args:
         priority: Priority enum value (HIGH, MEDIUM, LOW)
-        
+
     Returns:
         List of ISO3 country codes
     """
     return [
-        code for code, config in AFRICAN_COUNTRIES_REGISTRY.items()
+        code
+        for code, config in AFRICAN_COUNTRIES_REGISTRY.items()
         if config["priority"] == priority
     ]
 
@@ -1065,7 +1109,7 @@ def get_priority_countries(priority: Priority) -> List[str]:
 def get_all_countries_by_priority() -> Dict[str, List[str]]:
     """
     Get all countries grouped by priority level.
-    
+
     Returns:
         Dict with priority levels as keys and lists of country codes as values
     """
@@ -1079,7 +1123,7 @@ def get_all_countries_by_priority() -> Dict[str, List[str]]:
 def get_country_count() -> int:
     """
     Get total number of African countries in registry.
-    
+
     Returns:
         Total count of countries (should be 54)
     """
@@ -1089,7 +1133,7 @@ def get_country_count() -> int:
 def validate_registry() -> Dict[str, Any]:
     """
     Validate the registry data structure and completeness.
-    
+
     Returns:
         Validation report with statistics and any issues
     """
@@ -1099,28 +1143,34 @@ def validate_registry() -> Dict[str, Any]:
         "is_complete": get_country_count() == 54,
         "by_region": {},
         "by_priority": {},
-        "missing_data": []
+        "missing_data": [],
     }
-    
+
     # Count by region
     for region in Region:
         count = len(get_countries_by_region(region))
         report["by_region"][region.value] = count
-    
+
     # Count by priority
     for priority in Priority:
         count = len(get_priority_countries(priority))
         report["by_priority"][priority.name] = count
-    
+
     # Check for missing required fields
     required_fields = [
-        "iso2", "iso3", "name_en", "region", "vat_rate", "customs_url", "customs_platform"
+        "iso2",
+        "iso3",
+        "name_en",
+        "region",
+        "vat_rate",
+        "customs_url",
+        "customs_platform",
     ]
     for code, config in AFRICAN_COUNTRIES_REGISTRY.items():
         for field in required_fields:
             if field not in config or config[field] is None:
                 report["missing_data"].append(f"{code}: missing {field}")
-    
+
     return report
 
 
@@ -1200,6 +1250,7 @@ def get_countries_by_platform(platform: "CustomsPlatform") -> List[str]:
 _validation_report = validate_registry()
 if not _validation_report["is_complete"]:
     import logging
+
     logger = logging.getLogger(__name__)
     logger.warning(
         f"Registry incomplete: {_validation_report['total_countries']}/54 countries registered"
@@ -1210,21 +1261,21 @@ if not _validation_report["is_complete"]:
 def get_scraper_class_mapping() -> Dict[str, Any]:
     """
     Get scraper class mapping for all 54 African countries.
-    
+
     Returns:
         Dict mapping country codes to scraper class references and configuration
     """
     # Lazy import to avoid circular dependency
     from backend.crawlers.countries.generic_scraper import GenericScraper
-    
+
     # Initialize mapping with GenericScraper for all countries
     scraper_mapping = {}
-    
+
     for country_code, config in AFRICAN_COUNTRIES_REGISTRY.items():
         # Determine regional tariff
         regional_tariff = None
         blocks = config.get("blocks", [])
-        
+
         # Priority order for regional tariff assignment
         if RegionalBlock.ECOWAS in blocks or RegionalBlock.UEMOA in blocks:
             regional_tariff = "TEC CEDEAO"
@@ -1234,7 +1285,7 @@ def get_scraper_class_mapping() -> Dict[str, Any]:
             regional_tariff = "TDC CEMAC"
         elif RegionalBlock.SACU in blocks:
             regional_tariff = "SACU Common Tariff"
-        
+
         scraper_mapping[country_code] = {
             "class": GenericScraper,
             "name": config.get("name_en"),
@@ -1245,7 +1296,7 @@ def get_scraper_class_mapping() -> Dict[str, Any]:
             "region": config.get("region"),
             "customs_url": config.get("customs_url"),
         }
-    
+
     return scraper_mapping
 
 
@@ -1256,7 +1307,7 @@ _scraper_mapping_cache = None
 def get_all_scrapers() -> Dict[str, Any]:
     """
     Get all scraper configurations with lazy initialization.
-    
+
     Returns:
         Dict mapping country codes to scraper configurations
     """
@@ -1269,10 +1320,10 @@ def get_all_scrapers() -> Dict[str, Any]:
 def get_scraper_config(country_code: str) -> Optional[Dict[str, Any]]:
     """
     Get scraper configuration for a specific country.
-    
+
     Args:
         country_code: ISO3 country code (e.g., 'GHA', 'NGA')
-        
+
     Returns:
         Scraper configuration dict or None if not found
     """
@@ -1282,19 +1333,19 @@ def get_scraper_config(country_code: str) -> Optional[Dict[str, Any]]:
 def create_scraper_instance(country_code: str, config: Optional[Dict[str, Any]] = None):
     """
     Create a scraper instance for a specific country.
-    
+
     Args:
         country_code: ISO3 country code
         config: Optional configuration overrides
-        
+
     Returns:
         Scraper instance or None if country not found
     """
     scraper_config = get_scraper_config(country_code)
     if not scraper_config:
         return None
-    
+
     scraper_class = scraper_config["class"]
     merged_config = {**scraper_config, **(config or {})}
-    
+
     return scraper_class(country_code, merged_config)

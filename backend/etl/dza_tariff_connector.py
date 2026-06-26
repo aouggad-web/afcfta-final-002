@@ -36,19 +36,18 @@ import sys
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Tuple
-from urllib.parse import urljoin, urlparse, parse_qs
+from urllib.parse import parse_qs, urljoin, urlparse
 
-import requests
 import pandas as pd
+import requests
 from bs4 import BeautifulSoup
-
 
 BASE_URL = "https://www.douane.gov.dz/"
 ENTRY_URL = "https://www.douane.gov.dz/spip.php?page=tarif_douanier"
 
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-                  "(KHTML, like Gecko) Chrome/122.0 Safari/537.36",
+    "(KHTML, like Gecko) Chrome/122.0 Safari/537.36",
     "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.7",
 }
 
@@ -84,6 +83,7 @@ H_FORMALITIES = "Formalités Administratives Particulières"
 
 
 # ----------------------------- utilities -----------------------------
+
 
 def now_iso() -> str:
     return dt.datetime.now(dt.timezone(dt.timedelta(hours=1))).isoformat(timespec="seconds")
@@ -128,6 +128,7 @@ def sleep_jitter(base: float, jitter: float) -> None:
 
 # ----------------------------- data model -----------------------------
 
+
 @dataclass
 class Provenance:
     source_url: str
@@ -138,22 +139,22 @@ class Provenance:
 
 @dataclass
 class TaxComponent:
-    type: str                    # customs_duty, vat, excise, levy, surcharge, other
-    code: str                    # DD, TVA, PRCT, ...
-    rate_kind: str               # ad_valorem, specific, mixed, exempt, formula
+    type: str  # customs_duty, vat, excise, levy, surcharge, other
+    code: str  # DD, TVA, PRCT, ...
+    rate_kind: str  # ad_valorem, specific, mixed, exempt, formula
     rate_value: Optional[float] = None
-    specific: Optional[Dict[str, Any]] = None   # {"amount": 60, "currency":"DZD", "per":"HL"}
-    base: Optional[str] = None   # CIF, quantity, to_confirm_country_rules
+    specific: Optional[Dict[str, Any]] = None  # {"amount": 60, "currency":"DZD", "per":"HL"}
+    base: Optional[str] = None  # CIF, quantity, to_confirm_country_rules
     notes: Optional[str] = None
 
 
 @dataclass
 class Advantage:
-    targets: List[str]           # e.g. ["DD"], ["DD","TVA"]
-    override_kind: str           # rate_to_zero, rate_to_value
+    targets: List[str]  # e.g. ["DD"], ["DD","TVA"]
+    override_kind: str  # rate_to_zero, rate_to_value
     override_value: Optional[float]
-    condition: str               # human-readable condition
-    documents: List[str]         # extracted keywords or placeholders
+    condition: str  # human-readable condition
+    documents: List[str]  # extracted keywords or placeholders
     legal_ref: Optional[str] = None
 
 
@@ -176,9 +177,15 @@ class TariffLine:
 
 # ----------------------------- HTTP client -----------------------------
 
+
 class HttpClient:
-    def __init__(self, timeout: int = 30, max_retries: int = 4, backoff: float = 1.5,
-                 headers: Optional[Dict[str, str]] = None):
+    def __init__(
+        self,
+        timeout: int = 30,
+        max_retries: int = 4,
+        backoff: float = 1.5,
+        headers: Optional[Dict[str, str]] = None,
+    ):
         self.s = requests.Session()
         self.timeout = timeout
         self.max_retries = max_retries
@@ -193,11 +200,12 @@ class HttpClient:
                 return r.status_code, r.text
             except Exception as e:
                 last_exc = e
-                sleep_jitter(self.backoff ** attempt, 0.5)
+                sleep_jitter(self.backoff**attempt, 0.5)
         raise RuntimeError(f"GET failed after retries: {url} ({last_exc})")
 
 
 # ----------------------------- crawler -----------------------------
+
 
 def extract_links(html: str, base_url: str) -> List[str]:
     soup = BeautifulSoup(html, "lxml")
@@ -228,8 +236,13 @@ def is_sous_position_url(url: str) -> bool:
     return qs.get("page", [""])[0] == "sous_position" and "sous_position" in qs
 
 
-def crawl(out_dir: str, max_pages: int = 5000, rate: float = 0.6, jitter: float = 0.4,
-          start_url: str = ENTRY_URL) -> None:
+def crawl(
+    out_dir: str,
+    max_pages: int = 5000,
+    rate: float = 0.6,
+    jitter: float = 0.4,
+    start_url: str = ENTRY_URL,
+) -> None:
     safe_mkdir(out_dir)
     raw_dir = os.path.join(out_dir, "raw", "DZA", dt.date.today().isoformat())
     safe_mkdir(raw_dir)
@@ -258,13 +271,19 @@ def crawl(out_dir: str, max_pages: int = 5000, rate: float = 0.6, jitter: float 
             with open(fpath, "w", encoding="utf-8", errors="ignore") as f:
                 f.write(text or "")
 
-            mf.write(json.dumps({
-                "url": url,
-                "file": fname,
-                "retrieved_at": now_iso(),
-                "status": status,
-                "hash": h
-            }, ensure_ascii=False) + "\n")
+            mf.write(
+                json.dumps(
+                    {
+                        "url": url,
+                        "file": fname,
+                        "retrieved_at": now_iso(),
+                        "status": status,
+                        "hash": h,
+                    },
+                    ensure_ascii=False,
+                )
+                + "\n"
+            )
             mf.flush()
 
             # link discovery
@@ -286,6 +305,7 @@ def crawl(out_dir: str, max_pages: int = 5000, rate: float = 0.6, jitter: float 
 
 
 # ----------------------------- parser -----------------------------
+
 
 def find_heading_node(soup: BeautifulSoup, heading_text: str):
     # headings might be h2/h3/strong/div. We'll search any tag containing that exact phrase.
@@ -381,7 +401,7 @@ def extract_description_fr(soup: BeautifulSoup) -> str:
         if idx is None:
             return ""
     chunk = []
-    for l in lines[idx + 1:]:
+    for l in lines[idx + 1 :]:
         if re.search(r"Groupe\s+d'utilisation\s*:", l, flags=re.IGNORECASE):
             break
         if re.search(r"Unité\s*:", l, flags=re.IGNORECASE):
@@ -419,16 +439,22 @@ def parse_ad_valorem_table(rows: List[List[str]]) -> List[TaxComponent]:
         if rate is None:
             continue
 
-        base = "CIF" if ttype in ("customs_duty", "levy", "surcharge") else ("to_confirm_country_rules" if ttype == "vat" else None)
-        out.append(TaxComponent(
-            type=ttype,
-            code=code,
-            rate_kind="ad_valorem",
-            rate_value=rate,
-            specific=None,
-            base=base,
-            notes=clean_text(obs) if obs else None
-        ))
+        base = (
+            "CIF"
+            if ttype in ("customs_duty", "levy", "surcharge")
+            else ("to_confirm_country_rules" if ttype == "vat" else None)
+        )
+        out.append(
+            TaxComponent(
+                type=ttype,
+                code=code,
+                rate_kind="ad_valorem",
+                rate_value=rate,
+                specific=None,
+                base=base,
+                notes=clean_text(obs) if obs else None,
+            )
+        )
     return out
 
 
@@ -448,15 +474,17 @@ def parse_specific_table(rows: List[List[str]]) -> List[TaxComponent]:
             continue
 
         per_unit = UNIT_CANON.get(per_unit.upper(), per_unit.upper()) if per_unit else per_unit
-        out.append(TaxComponent(
-            type=ttype,
-            code=code,
-            rate_kind="specific",
-            rate_value=None,
-            specific={"amount": amount, "currency": "DZD", "per": per_unit},
-            base="quantity",
-            notes=clean_text(obs) if obs else None
-        ))
+        out.append(
+            TaxComponent(
+                type=ttype,
+                code=code,
+                rate_kind="specific",
+                rate_value=None,
+                specific={"amount": amount, "currency": "DZD", "per": per_unit},
+                base="quantity",
+                notes=clean_text(obs) if obs else None,
+            )
+        )
     return out
 
 
@@ -475,7 +503,11 @@ def parse_advantages_block(soup: BeautifulSoup) -> List[Advantage]:
     i = 1
     while i < len(rows):
         r = rows[i]
-        if len(r) >= 2 and re.search(r"\bD\.?D\b", r[0], flags=re.IGNORECASE) or re.search(r"\bT\.?V\.?A\b", r[0], flags=re.IGNORECASE):
+        if (
+            len(r) >= 2
+            and re.search(r"\bD\.?D\b", r[0], flags=re.IGNORECASE)
+            or re.search(r"\bT\.?V\.?A\b", r[0], flags=re.IGNORECASE)
+        ):
             code_raw = r[0]
             rate = parse_float_fr(r[1])
             ttype, code = normalize_tax_code(code_raw)
@@ -490,15 +522,19 @@ def parse_advantages_block(soup: BeautifulSoup) -> List[Advantage]:
                     i += 1
             condition = clean_text(doc_txt)
             targets = [code]  # override only the tax code referenced
-            override_kind = "rate_to_zero" if (rate is not None and abs(rate) < 1e-9) else "rate_to_value"
-            advs.append(Advantage(
-                targets=targets,
-                override_kind=override_kind,
-                override_value=rate,
-                condition=condition,
-                documents=[slugify_doc_hint(condition)] if condition else [],
-                legal_ref=None
-            ))
+            override_kind = (
+                "rate_to_zero" if (rate is not None and abs(rate) < 1e-9) else "rate_to_value"
+            )
+            advs.append(
+                Advantage(
+                    targets=targets,
+                    override_kind=override_kind,
+                    override_value=rate,
+                    condition=condition,
+                    documents=[slugify_doc_hint(condition)] if condition else [],
+                    legal_ref=None,
+                )
+            )
         i += 1
 
     # Merge common case where same condition applies to DD and TVA (programme santé)
@@ -546,7 +582,9 @@ def parse_formalities(soup: BeautifulSoup) -> List[Formality]:
     return out
 
 
-def parse_page(html: str, url: str, status: int, source_hash: str, retrieved_at: str) -> Optional[TariffLine]:
+def parse_page(
+    html: str, url: str, status: int, source_hash: str, retrieved_at: str
+) -> Optional[TariffLine]:
     if not html or status != 200:
         return None
     soup = BeautifulSoup(html, "lxml")
@@ -570,15 +608,23 @@ def parse_page(html: str, url: str, status: int, source_hash: str, retrieved_at:
     advantages = parse_advantages_block(soup)
     formalities = parse_formalities(soup)
 
-    prov = Provenance(source_url=url, retrieved_at=retrieved_at, source_hash=source_hash, http_status=status)
+    prov = Provenance(
+        source_url=url, retrieved_at=retrieved_at, source_hash=source_hash, http_status=status
+    )
 
     quality_flags = []
     # QA: code presence
-    if not identity.get("national_code") or not re.match(r"^\d{10}$", identity["national_code"] or ""):
+    if not identity.get("national_code") or not re.match(
+        r"^\d{10}$", identity["national_code"] or ""
+    ):
         quality_flags.append("bad_national_code")
     # QA: duty rate plausibility
     for t in taxes:
-        if t.rate_kind == "ad_valorem" and t.rate_value is not None and (t.rate_value < 0 or t.rate_value > 300):
+        if (
+            t.rate_kind == "ad_valorem"
+            and t.rate_value is not None
+            and (t.rate_value < 0 or t.rate_value > 300)
+        ):
             quality_flags.append(f"rate_outlier:{t.code}")
     # QA: VAT missing
     if not any(t.code == "TVA" and t.type == "vat" for t in taxes):
@@ -594,7 +640,7 @@ def parse_page(html: str, url: str, status: int, source_hash: str, retrieved_at:
         advantages=advantages,
         formalities=formalities,
         provenance=prov,
-        quality={"flags": quality_flags, "confidence": 0.9 if not quality_flags else 0.75}
+        quality={"flags": quality_flags, "confidence": 0.9 if not quality_flags else 0.75},
     )
     return line
 
@@ -605,7 +651,9 @@ def parse(out_dir: str) -> None:
     if not os.path.isdir(raw_root):
         raise FileNotFoundError(f"No raw directory found: {raw_root}")
 
-    date_dirs = sorted([d for d in os.listdir(raw_root) if os.path.isdir(os.path.join(raw_root, d))])
+    date_dirs = sorted(
+        [d for d in os.listdir(raw_root) if os.path.isdir(os.path.join(raw_root, d))]
+    )
     if not date_dirs:
         raise FileNotFoundError("No dated raw folders found under raw/DZA")
     raw_dir = os.path.join(raw_root, date_dirs[-1])
@@ -620,7 +668,10 @@ def parse(out_dir: str) -> None:
 
     n_in = 0
     n_ok = 0
-    with open(manifest_path, "r", encoding="utf-8") as mf, open(parsed_path, "w", encoding="utf-8") as out:
+    with (
+        open(manifest_path, "r", encoding="utf-8") as mf,
+        open(parsed_path, "w", encoding="utf-8") as out,
+    ):
         for line in mf:
             n_in += 1
             m = json.loads(line)
@@ -644,6 +695,7 @@ def parse(out_dir: str) -> None:
 
 # ----------------------------- build (curated + variants) -----------------------------
 
+
 def compute_hs6_variants(df: pd.DataFrame) -> pd.DataFrame:
     # hs6_variant = hs6--NN by sorting national_code within each hs6
     df = df.copy()
@@ -663,13 +715,37 @@ def flatten_tax_components(taxes: List[Dict[str, Any]]) -> Tuple[str, str]:
     for t in taxes or []:
         rk = t.get("rate_kind")
         if rk == "ad_valorem":
-            adv.append({"code": t.get("code"), "rate": t.get("rate_value"), "type": t.get("type"), "base": t.get("base"), "notes": t.get("notes")})
+            adv.append(
+                {
+                    "code": t.get("code"),
+                    "rate": t.get("rate_value"),
+                    "type": t.get("type"),
+                    "base": t.get("base"),
+                    "notes": t.get("notes"),
+                }
+            )
         elif rk == "specific":
             s = t.get("specific") or {}
-            spec.append({"code": t.get("code"), "amount": s.get("amount"), "currency": s.get("currency"), "per": s.get("per"),
-                         "type": t.get("type"), "notes": t.get("notes")})
+            spec.append(
+                {
+                    "code": t.get("code"),
+                    "amount": s.get("amount"),
+                    "currency": s.get("currency"),
+                    "per": s.get("per"),
+                    "type": t.get("type"),
+                    "notes": t.get("notes"),
+                }
+            )
         else:
-            adv.append({"code": t.get("code"), "rate": t.get("rate_value"), "type": t.get("type"), "base": t.get("base"), "notes": t.get("notes")})
+            adv.append(
+                {
+                    "code": t.get("code"),
+                    "rate": t.get("rate_value"),
+                    "type": t.get("type"),
+                    "base": t.get("base"),
+                    "notes": t.get("notes"),
+                }
+            )
     return json.dumps(adv, ensure_ascii=False), json.dumps(spec, ensure_ascii=False)
 
 
@@ -677,7 +753,9 @@ def build(out_dir: str) -> None:
     parsed_root = os.path.join(out_dir, "parsed", "DZA")
     if not os.path.isdir(parsed_root):
         raise FileNotFoundError(f"No parsed directory found: {parsed_root}")
-    date_dirs = sorted([d for d in os.listdir(parsed_root) if os.path.isdir(os.path.join(parsed_root, d))])
+    date_dirs = sorted(
+        [d for d in os.listdir(parsed_root) if os.path.isdir(os.path.join(parsed_root, d))]
+    )
     if not date_dirs:
         raise FileNotFoundError("No dated parsed folders found under parsed/DZA")
     parsed_dir = os.path.join(parsed_root, date_dirs[-1])
@@ -712,29 +790,31 @@ def build(out_dir: str) -> None:
         for fl in flags:
             qa_counts[fl] = qa_counts.get(fl, 0) + 1
 
-        flat.append({
-            "country_iso3": ident.get("country_iso3"),
-            "nomenclature_version": ident.get("nomenclature_version"),
-            "effective_from": ident.get("effective_from"),
-            "section": ident.get("section"),
-            "chapter": ident.get("chapter"),
-            "hs6": ident.get("hs6"),
-            "national_code": ident.get("national_code"),
-            "hs6_variant": ident.get("hs6_variant"),  # filled after
-            "key": ident.get("key"),
-            "unit": ident.get("unit"),
-            "use_group": ident.get("use_group"),
-            "description_fr": desc.get("fr"),
-            "advalorem_json": adv_json,
-            "specific_json": spec_json,
-            "advantages_json": json.dumps(advantages, ensure_ascii=False),
-            "formalities_json": json.dumps(formalities, ensure_ascii=False),
-            "source_url": prov.get("source_url"),
-            "retrieved_at": prov.get("retrieved_at"),
-            "source_hash": prov.get("source_hash"),
-            "quality_flags": json.dumps(flags, ensure_ascii=False),
-            "confidence": qual.get("confidence")
-        })
+        flat.append(
+            {
+                "country_iso3": ident.get("country_iso3"),
+                "nomenclature_version": ident.get("nomenclature_version"),
+                "effective_from": ident.get("effective_from"),
+                "section": ident.get("section"),
+                "chapter": ident.get("chapter"),
+                "hs6": ident.get("hs6"),
+                "national_code": ident.get("national_code"),
+                "hs6_variant": ident.get("hs6_variant"),  # filled after
+                "key": ident.get("key"),
+                "unit": ident.get("unit"),
+                "use_group": ident.get("use_group"),
+                "description_fr": desc.get("fr"),
+                "advalorem_json": adv_json,
+                "specific_json": spec_json,
+                "advantages_json": json.dumps(advantages, ensure_ascii=False),
+                "formalities_json": json.dumps(formalities, ensure_ascii=False),
+                "source_url": prov.get("source_url"),
+                "retrieved_at": prov.get("retrieved_at"),
+                "source_hash": prov.get("source_hash"),
+                "quality_flags": json.dumps(flags, ensure_ascii=False),
+                "confidence": qual.get("confidence"),
+            }
+        )
 
     df = pd.DataFrame(flat)
     df = df[df["national_code"].astype(str).str.match(r"^\d{10}$", na=False)]
@@ -752,46 +832,53 @@ def build(out_dir: str) -> None:
     # Curated JSON: group by national_code for clean objects
     curated = []
     for _, r in df.iterrows():
-        curated.append({
-            "identity": {
-                "country_iso3": r["country_iso3"],
-                "nomenclature_version": r["nomenclature_version"],
-                "effective_from": r["effective_from"],
-                "section": r["section"],
-                "chapter": r["chapter"],
-                "hs6": r["hs6"],
-                "national_code": r["national_code"],
-                "hs6_variant": r["hs6_variant"],
-                "key": r["key"],
-                "unit": r["unit"],
-                "use_group": r["use_group"],
-            },
-            "descriptions": {"fr": r["description_fr"], "en": None},
-            "taxes_advalorem": json.loads(r["advalorem_json"]) if r["advalorem_json"] else [],
-            "taxes_specific": json.loads(r["specific_json"]) if r["specific_json"] else [],
-            "advantages": json.loads(r["advantages_json"]) if r["advantages_json"] else [],
-            "formalities": json.loads(r["formalities_json"]) if r["formalities_json"] else [],
-            "provenance": {
-                "source_url": r["source_url"],
-                "retrieved_at": r["retrieved_at"],
-                "source_hash": r["source_hash"],
-            },
-            "quality": {
-                "flags": json.loads(r["quality_flags"]) if r["quality_flags"] else [],
-                "confidence": r["confidence"],
+        curated.append(
+            {
+                "identity": {
+                    "country_iso3": r["country_iso3"],
+                    "nomenclature_version": r["nomenclature_version"],
+                    "effective_from": r["effective_from"],
+                    "section": r["section"],
+                    "chapter": r["chapter"],
+                    "hs6": r["hs6"],
+                    "national_code": r["national_code"],
+                    "hs6_variant": r["hs6_variant"],
+                    "key": r["key"],
+                    "unit": r["unit"],
+                    "use_group": r["use_group"],
+                },
+                "descriptions": {"fr": r["description_fr"], "en": None},
+                "taxes_advalorem": json.loads(r["advalorem_json"]) if r["advalorem_json"] else [],
+                "taxes_specific": json.loads(r["specific_json"]) if r["specific_json"] else [],
+                "advantages": json.loads(r["advantages_json"]) if r["advantages_json"] else [],
+                "formalities": json.loads(r["formalities_json"]) if r["formalities_json"] else [],
+                "provenance": {
+                    "source_url": r["source_url"],
+                    "retrieved_at": r["retrieved_at"],
+                    "source_hash": r["source_hash"],
+                },
+                "quality": {
+                    "flags": json.loads(r["quality_flags"]) if r["quality_flags"] else [],
+                    "confidence": r["confidence"],
+                },
             }
-        })
+        )
 
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(curated, f, ensure_ascii=False, indent=2)
 
     with open(qa_path, "w", encoding="utf-8") as f:
-        json.dump({
-            "generated_at": now_iso(),
-            "total_lines": int(df.shape[0]),
-            "unique_hs6": int(df["hs6"].nunique()),
-            "flags": qa_counts
-        }, f, ensure_ascii=False, indent=2)
+        json.dump(
+            {
+                "generated_at": now_iso(),
+                "total_lines": int(df.shape[0]),
+                "unique_hs6": int(df["hs6"].nunique()),
+                "flags": qa_counts,
+            },
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
 
     print(f"[build] csv={csv_path}")
     print(f"[build] json={json_path}")
@@ -801,6 +888,7 @@ def build(out_dir: str) -> None:
 
 # ----------------------------- CLI -----------------------------
 
+
 def main():
     ap = argparse.ArgumentParser(description="DZA tariff connector (crawl/parse/build)")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -808,7 +896,9 @@ def main():
     ap_c = sub.add_parser("crawl", help="crawl and cache raw HTML")
     ap_c.add_argument("--out", required=True, help="output base directory (e.g., ./data)")
     ap_c.add_argument("--max-pages", type=int, default=5000)
-    ap_c.add_argument("--rate", type=float, default=0.6, help="base sleep between requests (seconds)")
+    ap_c.add_argument(
+        "--rate", type=float, default=0.6, help="base sleep between requests (seconds)"
+    )
     ap_c.add_argument("--jitter", type=float, default=0.4, help="random jitter (seconds)")
     ap_c.add_argument("--start-url", default=ENTRY_URL)
 
@@ -821,7 +911,13 @@ def main():
     args = ap.parse_args()
 
     if args.cmd == "crawl":
-        crawl(args.out, max_pages=args.max_pages, rate=args.rate, jitter=args.jitter, start_url=args.start_url)
+        crawl(
+            args.out,
+            max_pages=args.max_pages,
+            rate=args.rate,
+            jitter=args.jitter,
+            start_url=args.start_url,
+        )
     elif args.cmd == "parse":
         parse(args.out)
     elif args.cmd == "build":

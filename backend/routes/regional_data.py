@@ -25,6 +25,7 @@ CRAWLED_DIR = Path(__file__).parent.parent / "data" / "crawled"
 
 # ==================== Helpers ====================
 
+
 def _iter_country_files():
     """Yield (country_code, raw_dict) for every *_tariffs.json in crawled dir."""
     if not CRAWLED_DIR.exists():
@@ -128,6 +129,7 @@ def _build_country_entry(cc: str, data: Dict) -> Dict[str, Any]:
 
 # ==================== Business logic (testable without FastAPI) ====================
 
+
 def _compute_sub_positions(
     sort: str = "sub_positions",
     min_sub: int = 0,
@@ -205,6 +207,7 @@ def _compute_data_inventory(format_filter: Optional[str] = None) -> Dict[str, An
 
 
 # ==================== Endpoints ====================
+
 
 @router.get("/sub-positions")
 def get_regional_sub_positions(

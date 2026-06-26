@@ -15,15 +15,16 @@ commun authentique détenu par un État de référence du même bloc, avec :
 100 % hors réseau : la source (le TEC) existe déjà dans le dépôt via les États
 membres déjà crawlés. Un futur crawl national pourra superséder ces fichiers.
 """
+
 from __future__ import annotations
 
 import copy
 import json
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
-from ..manifest import _load_registry, Provenance
 from ..canonical import validate_authenticity
+from ..manifest import Provenance, _load_registry
 
 CRAWLED_DIR = Path(__file__).resolve().parents[2] / "data" / "crawled"
 
@@ -154,19 +155,13 @@ def find_gaps(bloc: str) -> List[str]:
     Exclut les pays NATIONAL_ONLY, qui nécessitent un crawl national dédié.
     """
     members = BLOC_REFERENCE[bloc]["members"].split()
-    return [
-        iso for iso in members
-        if _positions_count(iso) <= 0 and iso not in NATIONAL_ONLY
-    ]
+    return [iso for iso in members if _positions_count(iso) <= 0 and iso not in NATIONAL_ONLY]
 
 
 def deferred_national(bloc: str) -> List[str]:
     """Membres du bloc sans données mais réservés à un crawl national."""
     members = BLOC_REFERENCE[bloc]["members"].split()
-    return [
-        iso for iso in members
-        if _positions_count(iso) <= 0 and iso in NATIONAL_ONLY
-    ]
+    return [iso for iso in members if _positions_count(iso) <= 0 and iso in NATIONAL_ONLY]
 
 
 def fill_bloc_gaps(bloc: str, dry_run: bool = True) -> List[Dict[str, Any]]:
@@ -185,11 +180,13 @@ def fill_bloc_gaps(bloc: str, dry_run: bool = True) -> List[Dict[str, Any]]:
             if not dry_run:
                 out = CRAWLED_DIR / f"{iso}_tariffs.json"
                 out.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
-            results.append({
-                "iso3": iso,
-                "status": "would_write" if dry_run else "written",
-                "detail": f"{n} positions (TEC {bloc}, TVA nationale)",
-            })
+            results.append(
+                {
+                    "iso3": iso,
+                    "status": "would_write" if dry_run else "written",
+                    "detail": f"{n} positions (TEC {bloc}, TVA nationale)",
+                }
+            )
         except Exception as e:
             results.append({"iso3": iso, "status": "error", "detail": str(e)})
     return results

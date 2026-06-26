@@ -8,16 +8,17 @@ Implements L1-L4 caching strategy:
   L4 (realtime):       TTL 5m  - Live updates, notifications, system status
 """
 
-import os
-import json
 import hashlib
+import json
 import logging
-from typing import Any, Dict, List, Optional, Callable
+import os
 from datetime import datetime, timezone
 from functools import wraps
+from typing import Any, Callable, Dict, List, Optional
 
 try:
     import redis
+
     REDIS_AVAILABLE = True
 except ImportError:
     REDIS_AVAILABLE = False
@@ -196,6 +197,7 @@ class CacheLayer:
 # Multi-Layer Cache Manager
 # =============================================================================
 
+
 class MultiLayerCache:
     """
     Unified interface for all four cache layers.
@@ -212,18 +214,18 @@ class MultiLayerCache:
     """
 
     def __init__(self) -> None:
-        self.l1 = CacheLayer("L1_hot_data",       CACHE_LAYERS["L1_hot_data"])
-        self.l2 = CacheLayer("L2_regional_intel",  CACHE_LAYERS["L2_regional_intel"])
-        self.l3 = CacheLayer("L3_calculations",    CACHE_LAYERS["L3_calculations"])
-        self.l4 = CacheLayer("L4_realtime",        CACHE_LAYERS["L4_realtime"])
+        self.l1 = CacheLayer("L1_hot_data", CACHE_LAYERS["L1_hot_data"])
+        self.l2 = CacheLayer("L2_regional_intel", CACHE_LAYERS["L2_regional_intel"])
+        self.l3 = CacheLayer("L3_calculations", CACHE_LAYERS["L3_calculations"])
+        self.l4 = CacheLayer("L4_realtime", CACHE_LAYERS["L4_realtime"])
 
     def all_stats(self) -> Dict[str, Any]:
         return {
-            "L1_hot_data":      self.l1.stats(),
+            "L1_hot_data": self.l1.stats(),
             "L2_regional_intel": self.l2.stats(),
-            "L3_calculations":  self.l3.stats(),
-            "L4_realtime":      self.l4.stats(),
-            "timestamp":        datetime.now(timezone.utc).isoformat(),
+            "L3_calculations": self.l3.stats(),
+            "L4_realtime": self.l4.stats(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
     def invalidate_country(self, country_code: str) -> Dict[str, int]:
@@ -248,6 +250,7 @@ class MultiLayerCache:
 # Decorator helpers
 # =============================================================================
 
+
 def cache_with_layer(layer: CacheLayer, key_func: Callable[..., str]):
     """
     Decorator: cache the result of an async function using the given cache layer.
@@ -255,6 +258,7 @@ def cache_with_layer(layer: CacheLayer, key_func: Callable[..., str]):
     ``key_func`` receives the same arguments as the decorated function and must
     return a string cache key.
     """
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         async def wrapper(*args, **kwargs):
@@ -265,7 +269,9 @@ def cache_with_layer(layer: CacheLayer, key_func: Callable[..., str]):
             result = await func(*args, **kwargs)
             layer.set(key, result)
             return result
+
         return wrapper
+
     return decorator
 
 

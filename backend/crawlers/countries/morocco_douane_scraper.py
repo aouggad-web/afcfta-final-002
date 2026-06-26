@@ -1,12 +1,13 @@
 import asyncio
-import httpx
-import json
 import csv
-import re
+import json
 import logging
+import re
 from pathlib import Path
-from bs4 import BeautifulSoup
 from typing import Optional
+
+import httpx
+from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ class MoroccoDouaneScraper:
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                 "Accept-Language": "fr-FR,fr;q=0.9",
-            }
+            },
         )
 
     def _decode(self, content: bytes) -> str:
@@ -65,11 +66,13 @@ class MoroccoDouaneScraper:
                         seen.add(code)
                         designation = a.get_text(strip=True)
                         designation = re.sub(r"^-+\s*", "", designation)
-                        positions.append({
-                            "code": code,
-                            "designation": designation,
-                            "chapter": chapter,
-                        })
+                        positions.append(
+                            {
+                                "code": code,
+                                "designation": designation,
+                                "chapter": chapter,
+                            }
+                        )
             return positions
         finally:
             await client.aclose()
@@ -88,22 +91,34 @@ class MoroccoDouaneScraper:
             for td in soup.find_all("td"):
                 text = td.get_text(strip=True)
 
-                di_match = re.search(r"Droit\s+d['\u2019]Importation.*?\(\s*DI\s*\)\s*:\s*([\d,\.]+)\s*%", text)
+                di_match = re.search(
+                    r"Droit\s+d['\u2019]Importation.*?\(\s*DI\s*\)\s*:\s*([\d,\.]+)\s*%", text
+                )
                 if di_match:
                     taxes["Droit d'Importation (DI)"] = di_match.group(1).replace(",", ".") + " %"
 
-                tpi_match = re.search(r"Taxe\s+Parafiscale.*?\(\s*TPI\s*\)\s*:\s*([\d,\.]+)\s*%", text)
+                tpi_match = re.search(
+                    r"Taxe\s+Parafiscale.*?\(\s*TPI\s*\)\s*:\s*([\d,\.]+)\s*%", text
+                )
                 if tpi_match:
-                    taxes["Taxe Parafiscale à l'Importation (TPI)"] = tpi_match.group(1).replace(",", ".") + " %"
+                    taxes["Taxe Parafiscale à l'Importation (TPI)"] = (
+                        tpi_match.group(1).replace(",", ".") + " %"
+                    )
 
-                tva_match = re.search(r"Taxe\s+sur\s+la\s+Valeur\s+Ajout.*?\(\s*TVA\s*\)\s*:\s*([\d,\.]+)\s*%", text)
+                tva_match = re.search(
+                    r"Taxe\s+sur\s+la\s+Valeur\s+Ajout.*?\(\s*TVA\s*\)\s*:\s*([\d,\.]+)\s*%", text
+                )
                 if tva_match:
-                    taxes["Taxe sur la Valeur Ajoutée (TVA)"] = tva_match.group(1).replace(",", ".") + " %"
+                    taxes["Taxe sur la Valeur Ajoutée (TVA)"] = (
+                        tva_match.group(1).replace(",", ".") + " %"
+                    )
 
-                tic_match = re.search(r"Taxe\s+Int.*?rieure.*?Consommation.*?\(\s*TIC\s*\)\s*:\s*([\d,\.]+)", text)
+                tic_match = re.search(
+                    r"Taxe\s+Int.*?rieure.*?Consommation.*?\(\s*TIC\s*\)\s*:\s*([\d,\.]+)", text
+                )
                 if tic_match:
                     val = tic_match.group(1).replace(",", ".")
-                    if "%" in text[text.find("TIC"):]:
+                    if "%" in text[text.find("TIC") :]:
                         taxes["Taxe Intérieure de Consommation (TIC)"] = val + " %"
                     else:
                         taxes["Taxe Intérieure de Consommation (TIC)"] = val + " DH"
@@ -126,11 +141,23 @@ class MoroccoDouaneScraper:
             formalities = []
             for td in soup.find_all("td"):
                 text = td.get_text(strip=True)
-                if len(text) > 10 and any(k in text.lower() for k in [
-                    "contrôle", "certificat", "autorisation", "licence",
-                    "visa", "norme", "phytosanitaire", "vétérinaire",
-                    "sanitaire", "conformité", "agrément", "homologation",
-                ]):
+                if len(text) > 10 and any(
+                    k in text.lower()
+                    for k in [
+                        "contrôle",
+                        "certificat",
+                        "autorisation",
+                        "licence",
+                        "visa",
+                        "norme",
+                        "phytosanitaire",
+                        "vétérinaire",
+                        "sanitaire",
+                        "conformité",
+                        "agrément",
+                        "homologation",
+                    ]
+                ):
                     if text not in formalities:
                         formalities.append(text)
 
@@ -156,7 +183,9 @@ class MoroccoDouaneScraper:
                 for row in rows:
                     cells = row.find_all("td")
                     if len(cells) >= 2:
-                        text = " | ".join(c.get_text(strip=True) for c in cells if c.get_text(strip=True))
+                        text = " | ".join(
+                            c.get_text(strip=True) for c in cells if c.get_text(strip=True)
+                        )
                         if text and "%" in text:
                             preferences.append(text)
 
@@ -285,17 +314,24 @@ class MoroccoDouaneScraper:
                 with open(progress_path, "w", encoding="utf-8") as f:
                     json.dump(chapter_data, f, ensure_ascii=False, indent=2)
 
-            logger.info(f"Chapter {ch}: {len(chapter_data)} positions (total: {len(all_positions)})")
+            logger.info(
+                f"Chapter {ch}: {len(chapter_data)} positions (total: {len(all_positions)})"
+            )
 
         final_path = data_dir / "MAR_crawled.json"
         with open(final_path, "w", encoding="utf-8") as f:
-            json.dump({
-                "country_code": "MAR",
-                "country_name": "Maroc",
-                "source": self.source,
-                "total_positions": len(all_positions),
-                "positions": all_positions,
-            }, f, ensure_ascii=False, indent=2)
+            json.dump(
+                {
+                    "country_code": "MAR",
+                    "country_name": "Maroc",
+                    "source": self.source,
+                    "total_positions": len(all_positions),
+                    "positions": all_positions,
+                },
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
 
         logger.info(f"Morocco: {len(all_positions)} total positions saved")
         return all_positions
@@ -303,30 +339,34 @@ class MoroccoDouaneScraper:
     def save_csv(self, results: list, output_path: str):
         with open(output_path, "w", encoding="utf-8-sig", newline="") as f:
             writer = csv.writer(f, delimiter=";")
-            writer.writerow([
-                "Chapitre",
-                "Code_Position_10_chiffres",
-                "Designation",
-                "Droit_Importation_DI",
-                "Taxe_Parafiscale_Importation_TPI",
-                "Taxe_Valeur_Ajoutee_TVA",
-                "Taxe_Interieure_Consommation_TIC",
-                "Formalites_particulieres",
-                "Source"
-            ])
+            writer.writerow(
+                [
+                    "Chapitre",
+                    "Code_Position_10_chiffres",
+                    "Designation",
+                    "Droit_Importation_DI",
+                    "Taxe_Parafiscale_Importation_TPI",
+                    "Taxe_Valeur_Ajoutee_TVA",
+                    "Taxe_Interieure_Consommation_TIC",
+                    "Formalites_particulieres",
+                    "Source",
+                ]
+            )
 
             for r in results:
                 taxes = r.get("taxes", {})
                 formalities = r.get("formalities", [])
 
-                writer.writerow([
-                    r.get("chapter", r.get("code", "")[:2]),
-                    r.get("code", ""),
-                    r.get("designation", ""),
-                    taxes.get("Droit d'Importation (DI)", ""),
-                    taxes.get("Taxe Parafiscale à l'Importation (TPI)", ""),
-                    taxes.get("Taxe sur la Valeur Ajoutée (TVA)", ""),
-                    taxes.get("Taxe Intérieure de Consommation (TIC)", ""),
-                    " | ".join(formalities) if formalities else "",
-                    self.source,
-                ])
+                writer.writerow(
+                    [
+                        r.get("chapter", r.get("code", "")[:2]),
+                        r.get("code", ""),
+                        r.get("designation", ""),
+                        taxes.get("Droit d'Importation (DI)", ""),
+                        taxes.get("Taxe Parafiscale à l'Importation (TPI)", ""),
+                        taxes.get("Taxe sur la Valeur Ajoutée (TVA)", ""),
+                        taxes.get("Taxe Intérieure de Consommation (TIC)", ""),
+                        " | ".join(formalities) if formalities else "",
+                        self.source,
+                    ]
+                )

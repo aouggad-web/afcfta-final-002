@@ -15,7 +15,7 @@ import json
 import logging
 import math
 import os
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
@@ -84,96 +84,245 @@ SCORING_ALGORITHM: Dict[str, Any] = {
 # Country-level indicator data (representative, based on public indices)
 COUNTRY_INDICATORS: Dict[str, Dict[str, float]] = {
     "MAR": {
-        "tariff_advantages": 0.75, "trade_agreements": 0.85, "logistics_performance": 0.72,
-        "market_size": 0.60, "ease_of_business": 0.70, "political_stability": 0.68,
-        "regulatory_quality": 0.72, "corruption_index": 0.65, "transport_infrastructure": 0.70,
-        "digital_infrastructure": 0.68, "energy_access": 0.88, "water_sanitation": 0.76,
-        "tax_incentives": 0.80, "sez_benefits": 0.78, "sector_support": 0.74,
-        "training_grants": 0.62, "gdp_growth": 0.65, "consumer_demand": 0.60,
-        "competitive_landscape": 0.68, "regulatory_barriers": 0.70, "labor_costs": 0.72,
-        "operational_costs": 0.68, "compliance_costs": 0.65, "financing_costs": 0.60,
+        "tariff_advantages": 0.75,
+        "trade_agreements": 0.85,
+        "logistics_performance": 0.72,
+        "market_size": 0.60,
+        "ease_of_business": 0.70,
+        "political_stability": 0.68,
+        "regulatory_quality": 0.72,
+        "corruption_index": 0.65,
+        "transport_infrastructure": 0.70,
+        "digital_infrastructure": 0.68,
+        "energy_access": 0.88,
+        "water_sanitation": 0.76,
+        "tax_incentives": 0.80,
+        "sez_benefits": 0.78,
+        "sector_support": 0.74,
+        "training_grants": 0.62,
+        "gdp_growth": 0.65,
+        "consumer_demand": 0.60,
+        "competitive_landscape": 0.68,
+        "regulatory_barriers": 0.70,
+        "labor_costs": 0.72,
+        "operational_costs": 0.68,
+        "compliance_costs": 0.65,
+        "financing_costs": 0.60,
     },
     "EGY": {
-        "tariff_advantages": 0.70, "trade_agreements": 0.80, "logistics_performance": 0.65,
-        "market_size": 0.85, "ease_of_business": 0.65, "political_stability": 0.55,
-        "regulatory_quality": 0.60, "corruption_index": 0.50, "transport_infrastructure": 0.65,
-        "digital_infrastructure": 0.62, "energy_access": 0.92, "water_sanitation": 0.80,
-        "tax_incentives": 0.75, "sez_benefits": 0.72, "sector_support": 0.68,
-        "training_grants": 0.58, "gdp_growth": 0.70, "consumer_demand": 0.80,
-        "competitive_landscape": 0.62, "regulatory_barriers": 0.55, "labor_costs": 0.75,
-        "operational_costs": 0.70, "compliance_costs": 0.55, "financing_costs": 0.58,
+        "tariff_advantages": 0.70,
+        "trade_agreements": 0.80,
+        "logistics_performance": 0.65,
+        "market_size": 0.85,
+        "ease_of_business": 0.65,
+        "political_stability": 0.55,
+        "regulatory_quality": 0.60,
+        "corruption_index": 0.50,
+        "transport_infrastructure": 0.65,
+        "digital_infrastructure": 0.62,
+        "energy_access": 0.92,
+        "water_sanitation": 0.80,
+        "tax_incentives": 0.75,
+        "sez_benefits": 0.72,
+        "sector_support": 0.68,
+        "training_grants": 0.58,
+        "gdp_growth": 0.70,
+        "consumer_demand": 0.80,
+        "competitive_landscape": 0.62,
+        "regulatory_barriers": 0.55,
+        "labor_costs": 0.75,
+        "operational_costs": 0.70,
+        "compliance_costs": 0.55,
+        "financing_costs": 0.58,
     },
     "DZA": {
-        "tariff_advantages": 0.55, "trade_agreements": 0.60, "logistics_performance": 0.58,
-        "market_size": 0.65, "ease_of_business": 0.52, "political_stability": 0.60,
-        "regulatory_quality": 0.55, "corruption_index": 0.48, "transport_infrastructure": 0.62,
-        "digital_infrastructure": 0.55, "energy_access": 0.95, "water_sanitation": 0.82,
-        "tax_incentives": 0.70, "sez_benefits": 0.65, "sector_support": 0.60,
-        "training_grants": 0.55, "gdp_growth": 0.52, "consumer_demand": 0.62,
-        "competitive_landscape": 0.50, "regulatory_barriers": 0.45, "labor_costs": 0.68,
-        "operational_costs": 0.65, "compliance_costs": 0.50, "financing_costs": 0.55,
+        "tariff_advantages": 0.55,
+        "trade_agreements": 0.60,
+        "logistics_performance": 0.58,
+        "market_size": 0.65,
+        "ease_of_business": 0.52,
+        "political_stability": 0.60,
+        "regulatory_quality": 0.55,
+        "corruption_index": 0.48,
+        "transport_infrastructure": 0.62,
+        "digital_infrastructure": 0.55,
+        "energy_access": 0.95,
+        "water_sanitation": 0.82,
+        "tax_incentives": 0.70,
+        "sez_benefits": 0.65,
+        "sector_support": 0.60,
+        "training_grants": 0.55,
+        "gdp_growth": 0.52,
+        "consumer_demand": 0.62,
+        "competitive_landscape": 0.50,
+        "regulatory_barriers": 0.45,
+        "labor_costs": 0.68,
+        "operational_costs": 0.65,
+        "compliance_costs": 0.50,
+        "financing_costs": 0.55,
     },
     "TUN": {
-        "tariff_advantages": 0.72, "trade_agreements": 0.82, "logistics_performance": 0.68,
-        "market_size": 0.50, "ease_of_business": 0.68, "political_stability": 0.58,
-        "regulatory_quality": 0.70, "corruption_index": 0.62, "transport_infrastructure": 0.68,
-        "digital_infrastructure": 0.65, "energy_access": 0.90, "water_sanitation": 0.80,
-        "tax_incentives": 0.78, "sez_benefits": 0.75, "sector_support": 0.72,
-        "training_grants": 0.68, "gdp_growth": 0.55, "consumer_demand": 0.52,
-        "competitive_landscape": 0.65, "regulatory_barriers": 0.62, "labor_costs": 0.70,
-        "operational_costs": 0.65, "compliance_costs": 0.62, "financing_costs": 0.58,
+        "tariff_advantages": 0.72,
+        "trade_agreements": 0.82,
+        "logistics_performance": 0.68,
+        "market_size": 0.50,
+        "ease_of_business": 0.68,
+        "political_stability": 0.58,
+        "regulatory_quality": 0.70,
+        "corruption_index": 0.62,
+        "transport_infrastructure": 0.68,
+        "digital_infrastructure": 0.65,
+        "energy_access": 0.90,
+        "water_sanitation": 0.80,
+        "tax_incentives": 0.78,
+        "sez_benefits": 0.75,
+        "sector_support": 0.72,
+        "training_grants": 0.68,
+        "gdp_growth": 0.55,
+        "consumer_demand": 0.52,
+        "competitive_landscape": 0.65,
+        "regulatory_barriers": 0.62,
+        "labor_costs": 0.70,
+        "operational_costs": 0.65,
+        "compliance_costs": 0.62,
+        "financing_costs": 0.58,
     },
     "KEN": {
-        "tariff_advantages": 0.68, "trade_agreements": 0.72, "logistics_performance": 0.70,
-        "market_size": 0.65, "ease_of_business": 0.72, "political_stability": 0.62,
-        "regulatory_quality": 0.68, "corruption_index": 0.52, "transport_infrastructure": 0.65,
-        "digital_infrastructure": 0.75, "energy_access": 0.75, "water_sanitation": 0.62,
-        "tax_incentives": 0.72, "sez_benefits": 0.68, "sector_support": 0.70,
-        "training_grants": 0.65, "gdp_growth": 0.72, "consumer_demand": 0.68,
-        "competitive_landscape": 0.62, "regulatory_barriers": 0.58, "labor_costs": 0.65,
-        "operational_costs": 0.62, "compliance_costs": 0.58, "financing_costs": 0.55,
+        "tariff_advantages": 0.68,
+        "trade_agreements": 0.72,
+        "logistics_performance": 0.70,
+        "market_size": 0.65,
+        "ease_of_business": 0.72,
+        "political_stability": 0.62,
+        "regulatory_quality": 0.68,
+        "corruption_index": 0.52,
+        "transport_infrastructure": 0.65,
+        "digital_infrastructure": 0.75,
+        "energy_access": 0.75,
+        "water_sanitation": 0.62,
+        "tax_incentives": 0.72,
+        "sez_benefits": 0.68,
+        "sector_support": 0.70,
+        "training_grants": 0.65,
+        "gdp_growth": 0.72,
+        "consumer_demand": 0.68,
+        "competitive_landscape": 0.62,
+        "regulatory_barriers": 0.58,
+        "labor_costs": 0.65,
+        "operational_costs": 0.62,
+        "compliance_costs": 0.58,
+        "financing_costs": 0.55,
     },
     "ZAF": {
-        "tariff_advantages": 0.65, "trade_agreements": 0.75, "logistics_performance": 0.78,
-        "market_size": 0.80, "ease_of_business": 0.78, "political_stability": 0.58,
-        "regulatory_quality": 0.75, "corruption_index": 0.55, "transport_infrastructure": 0.78,
-        "digital_infrastructure": 0.72, "energy_access": 0.82, "water_sanitation": 0.75,
-        "tax_incentives": 0.68, "sez_benefits": 0.72, "sector_support": 0.75,
-        "training_grants": 0.70, "gdp_growth": 0.45, "consumer_demand": 0.78,
-        "competitive_landscape": 0.72, "regulatory_barriers": 0.68, "labor_costs": 0.55,
-        "operational_costs": 0.60, "compliance_costs": 0.68, "financing_costs": 0.65,
+        "tariff_advantages": 0.65,
+        "trade_agreements": 0.75,
+        "logistics_performance": 0.78,
+        "market_size": 0.80,
+        "ease_of_business": 0.78,
+        "political_stability": 0.58,
+        "regulatory_quality": 0.75,
+        "corruption_index": 0.55,
+        "transport_infrastructure": 0.78,
+        "digital_infrastructure": 0.72,
+        "energy_access": 0.82,
+        "water_sanitation": 0.75,
+        "tax_incentives": 0.68,
+        "sez_benefits": 0.72,
+        "sector_support": 0.75,
+        "training_grants": 0.70,
+        "gdp_growth": 0.45,
+        "consumer_demand": 0.78,
+        "competitive_landscape": 0.72,
+        "regulatory_barriers": 0.68,
+        "labor_costs": 0.55,
+        "operational_costs": 0.60,
+        "compliance_costs": 0.68,
+        "financing_costs": 0.65,
     },
     "NGA": {
-        "tariff_advantages": 0.60, "trade_agreements": 0.65, "logistics_performance": 0.55,
-        "market_size": 0.90, "ease_of_business": 0.52, "political_stability": 0.45,
-        "regulatory_quality": 0.48, "corruption_index": 0.35, "transport_infrastructure": 0.52,
-        "digital_infrastructure": 0.60, "energy_access": 0.55, "water_sanitation": 0.45,
-        "tax_incentives": 0.65, "sez_benefits": 0.58, "sector_support": 0.55,
-        "training_grants": 0.48, "gdp_growth": 0.62, "consumer_demand": 0.88,
-        "competitive_landscape": 0.55, "regulatory_barriers": 0.42, "labor_costs": 0.62,
-        "operational_costs": 0.55, "compliance_costs": 0.42, "financing_costs": 0.48,
+        "tariff_advantages": 0.60,
+        "trade_agreements": 0.65,
+        "logistics_performance": 0.55,
+        "market_size": 0.90,
+        "ease_of_business": 0.52,
+        "political_stability": 0.45,
+        "regulatory_quality": 0.48,
+        "corruption_index": 0.35,
+        "transport_infrastructure": 0.52,
+        "digital_infrastructure": 0.60,
+        "energy_access": 0.55,
+        "water_sanitation": 0.45,
+        "tax_incentives": 0.65,
+        "sez_benefits": 0.58,
+        "sector_support": 0.55,
+        "training_grants": 0.48,
+        "gdp_growth": 0.62,
+        "consumer_demand": 0.88,
+        "competitive_landscape": 0.55,
+        "regulatory_barriers": 0.42,
+        "labor_costs": 0.62,
+        "operational_costs": 0.55,
+        "compliance_costs": 0.42,
+        "financing_costs": 0.48,
     },
     "ETH": {
-        "tariff_advantages": 0.58, "trade_agreements": 0.62, "logistics_performance": 0.55,
-        "market_size": 0.80, "ease_of_business": 0.55, "political_stability": 0.42,
-        "regulatory_quality": 0.50, "corruption_index": 0.45, "transport_infrastructure": 0.52,
-        "digital_infrastructure": 0.48, "energy_access": 0.45, "water_sanitation": 0.40,
-        "tax_incentives": 0.72, "sez_benefits": 0.75, "sector_support": 0.65,
-        "training_grants": 0.55, "gdp_growth": 0.75, "consumer_demand": 0.72,
-        "competitive_landscape": 0.52, "regulatory_barriers": 0.45, "labor_costs": 0.80,
-        "operational_costs": 0.72, "compliance_costs": 0.45, "financing_costs": 0.42,
+        "tariff_advantages": 0.58,
+        "trade_agreements": 0.62,
+        "logistics_performance": 0.55,
+        "market_size": 0.80,
+        "ease_of_business": 0.55,
+        "political_stability": 0.42,
+        "regulatory_quality": 0.50,
+        "corruption_index": 0.45,
+        "transport_infrastructure": 0.52,
+        "digital_infrastructure": 0.48,
+        "energy_access": 0.45,
+        "water_sanitation": 0.40,
+        "tax_incentives": 0.72,
+        "sez_benefits": 0.75,
+        "sector_support": 0.65,
+        "training_grants": 0.55,
+        "gdp_growth": 0.75,
+        "consumer_demand": 0.72,
+        "competitive_landscape": 0.52,
+        "regulatory_barriers": 0.45,
+        "labor_costs": 0.80,
+        "operational_costs": 0.72,
+        "compliance_costs": 0.45,
+        "financing_costs": 0.42,
     },
 }
 
 # Fallback indicators for countries not explicitly listed
-DEFAULT_INDICATORS: Dict[str, float] = {k: 0.55 for k in [
-    "tariff_advantages", "trade_agreements", "logistics_performance", "market_size",
-    "ease_of_business", "political_stability", "regulatory_quality", "corruption_index",
-    "transport_infrastructure", "digital_infrastructure", "energy_access", "water_sanitation",
-    "tax_incentives", "sez_benefits", "sector_support", "training_grants",
-    "gdp_growth", "consumer_demand", "competitive_landscape", "regulatory_barriers",
-    "labor_costs", "operational_costs", "compliance_costs", "financing_costs",
-]}
+DEFAULT_INDICATORS: Dict[str, float] = {
+    k: 0.55
+    for k in [
+        "tariff_advantages",
+        "trade_agreements",
+        "logistics_performance",
+        "market_size",
+        "ease_of_business",
+        "political_stability",
+        "regulatory_quality",
+        "corruption_index",
+        "transport_infrastructure",
+        "digital_infrastructure",
+        "energy_access",
+        "water_sanitation",
+        "tax_incentives",
+        "sez_benefits",
+        "sector_support",
+        "training_grants",
+        "gdp_growth",
+        "consumer_demand",
+        "competitive_landscape",
+        "regulatory_barriers",
+        "labor_costs",
+        "operational_costs",
+        "compliance_costs",
+        "financing_costs",
+    ]
+}
 
 # Sector multipliers
 SECTOR_MULTIPLIERS: Dict[str, Dict[str, float]] = {
@@ -227,6 +376,7 @@ RISK_FACTORS: Dict[str, Dict[str, Any]] = {
 # =============================================================================
 # Data classes
 # =============================================================================
+
 
 @dataclass
 class ComponentScore:
@@ -291,6 +441,7 @@ class TradeFlowPrediction:
 # Investment Intelligence Engine
 # =============================================================================
 
+
 class InvestmentIntelligenceEngine:
     """
     AI-powered investment analysis and recommendation system.
@@ -303,6 +454,7 @@ class InvestmentIntelligenceEngine:
     def __init__(self) -> None:
         try:
             from performance.caching.cache_layers import get_cache
+
             self._cache = get_cache()
         except Exception:
             self._cache = None
@@ -333,9 +485,7 @@ class InvestmentIntelligenceEngine:
             score += raw * comp_weight
         return score
 
-    def _identify_risks(
-        self, country: str, indicators: Dict[str, float]
-    ) -> List[Dict[str, str]]:
+    def _identify_risks(self, country: str, indicators: Dict[str, float]) -> List[Dict[str, str]]:
         risks = []
         for risk_name, risk_def in RISK_FACTORS.items():
             ind_value = indicators.get(risk_def["indicator"], 0.55)
@@ -471,9 +621,7 @@ class InvestmentIntelligenceEngine:
 
         scored = []
         for country in candidates:
-            score = self.calculate_investment_score(
-                country, sector, "medium", user_profile
-            )
+            score = self.calculate_investment_score(country, sector, "medium", user_profile)
             # Exclude high-risk countries for low risk-tolerance users
             if risk_tolerance == "low" and len(score.risk_factors) >= 3:
                 continue
@@ -488,11 +636,7 @@ class InvestmentIntelligenceEngine:
             indicators = self._get_indicators(country)
             # Identify top 3 advantages
             advantages = sorted(
-                [
-                    (k, v)
-                    for k, v in indicators.items()
-                    if v >= 0.70
-                ],
+                [(k, v) for k, v in indicators.items() if v >= 0.70],
                 key=lambda x: x[1],
                 reverse=True,
             )[:3]
@@ -542,9 +686,9 @@ class InvestmentIntelligenceEngine:
             "sector": sector,
             "overall_risk_score": round(overall_risk_score, 4),
             "risk_level": (
-                "low" if overall_risk_score < 0.3
-                else "medium" if overall_risk_score < 0.5
-                else "high"
+                "low"
+                if overall_risk_score < 0.3
+                else "medium" if overall_risk_score < 0.5 else "high"
             ),
             "identified_risks": risks,
             "mitigation_strategies": [
@@ -585,21 +729,14 @@ class InvestmentIntelligenceEngine:
             * dest_ind.get("consumer_demand", 0.55)
             * 500_000_000  # $500M reference scale
         )
-        growth_rate = (
-            origin_ind.get("gdp_growth", 0.55)
-            + dest_ind.get("gdp_growth", 0.55)
-        ) / 2
+        growth_rate = (origin_ind.get("gdp_growth", 0.55) + dest_ind.get("gdp_growth", 0.55)) / 2
 
         # Compound growth over timeframe
         monthly_rate = growth_rate * 0.08 / 12
         predicted_value = base_value_usd * ((1 + monthly_rate) ** timeframe_months)
         predicted_volume = predicted_value / 1500  # ~$1500/tonne average
 
-        trend = (
-            "upward" if growth_rate > 0.60
-            else "stable" if growth_rate > 0.45
-            else "downward"
-        )
+        trend = "upward" if growth_rate > 0.60 else "stable" if growth_rate > 0.45 else "downward"
 
         result = TradeFlowPrediction(
             origin_country=origin_country,

@@ -1,12 +1,15 @@
 """
 Pydantic models for trade finance instruments, payment systems and risk assessment
 """
-from pydantic import BaseModel, Field
+
 from typing import List, Optional
+
+from pydantic import BaseModel, Field
 
 
 class TradeFinanceInstrument(BaseModel):
     """Instrument de financement du commerce"""
+
     code: str = Field(..., description="Code interne de l'instrument")
     name: str
     name_fr: str
@@ -28,6 +31,7 @@ class TradeFinanceInstrument(BaseModel):
 
 class PaymentSystem(BaseModel):
     """Système de paiement régional ou international"""
+
     code: str
     name: str
     type: str = Field(
@@ -43,6 +47,7 @@ class PaymentSystem(BaseModel):
 
 class CountryRiskProfile(BaseModel):
     """Profil de risque pays pour les opérations de commerce extérieur"""
+
     country_code: str
     country_name: str
     country_risk_rating: str = Field(

@@ -11,12 +11,12 @@ Consolide les données tarifaires algériennes depuis 3 sources :
 Sortie : DZA_tariffs.json → 17 115 positions complètes
 """
 
-import json
 import glob
-import sys
+import json
 import os
-from pathlib import Path
+import sys
 from datetime import datetime
+from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
 BACKEND_DIR = SCRIPT_DIR.parent
@@ -24,9 +24,9 @@ CRAWLED_DIR = BACKEND_DIR / "data" / "crawled"
 
 sys.path.insert(0, str(BACKEND_DIR))
 from etl.country_taxes_algeria import (
-    get_dza_taxes_for_hs6,
     DZA_FORMALITIES_BY_CATEGORY,
     get_dza_formality_category,
+    get_dza_taxes_for_hs6,
 )
 
 
@@ -40,14 +40,20 @@ def load_progress_index() -> dict:
         with open(pf, encoding="utf-8") as f:
             d = json.load(f)
         for item in d.get("data", []):
-            code = (item.get("hs_code") or item.get("raw_code") or "").replace(".", "").replace(" ", "")
+            code = (
+                (item.get("hs_code") or item.get("raw_code") or "")
+                .replace(".", "")
+                .replace(" ", "")
+            )
             if not code:
                 continue
             if code not in index:
                 index[code] = item
             else:
                 duplicates += 1
-    print(f"  Progress files : {len(progress_files)} fichiers, {len(index)} positions uniques, {duplicates} doublons ignorés")
+    print(
+        f"  Progress files : {len(progress_files)} fichiers, {len(index)} positions uniques, {duplicates} doublons ignorés"
+    )
     return index
 
 
@@ -64,7 +70,12 @@ def build_taxes_from_progress(item: dict) -> tuple:
                 "source": "conformepro.dz",
             }
         elif isinstance(info, (int, float)):
-            taxes[code] = {"name": code, "rate": float(info), "raw": f"{info:.0f}%", "source": "conformepro.dz"}
+            taxes[code] = {
+                "name": code,
+                "rate": float(info),
+                "raw": f"{info:.0f}%",
+                "source": "conformepro.dz",
+            }
 
     advantages = item.get("advantages", [])
     formalities = item.get("formalities", [])
@@ -123,7 +134,9 @@ def build_taxes_from_etl(hs6: str) -> tuple:
     if isinstance(fmts_raw, dict):
         for cat_items in fmts_raw.values():
             for fi in (cat_items if isinstance(cat_items, list) else []):
-                formalities.append(fi.get("document_fr", str(fi)) if isinstance(fi, dict) else str(fi))
+                formalities.append(
+                    fi.get("document_fr", str(fi)) if isinstance(fi, dict) else str(fi)
+                )
     elif isinstance(fmts_raw, list):
         for fi in fmts_raw:
             formalities.append(fi.get("document_fr", str(fi)) if isinstance(fi, dict) else str(fi))
@@ -183,7 +196,9 @@ def main():
     }
 
     for pos in fast_positions:
-        hs_code = (pos.get("hs_code") or pos.get("raw_code") or "").replace(".", "").replace(" ", "")
+        hs_code = (
+            (pos.get("hs_code") or pos.get("raw_code") or "").replace(".", "").replace(" ", "")
+        )
         if not hs_code:
             stats["errors"] += 1
             continue
@@ -210,7 +225,10 @@ def main():
             except Exception as e:
                 taxes = {}
                 advantages = ["Certificat d'origine dans le cadre ZLECAf - Exonération DD"]
-                formalities = ["Déclaration d'importation du produit", "Autorisation de libre circulation"]
+                formalities = [
+                    "Déclaration d'importation du produit",
+                    "Autorisation de libre circulation",
+                ]
                 stats["errors"] += 1
             designation = ""
             designation_full = get_designation_full(pos, None)
@@ -224,7 +242,11 @@ def main():
         name = pos.get("name", "")
         if prog_item and not name:
             raw_name = prog_item.get("name", "")
-            name = raw_name.split("Sous-position")[-1].strip() if "Sous-position" in raw_name else raw_name
+            name = (
+                raw_name.split("Sous-position")[-1].strip()
+                if "Sous-position" in raw_name
+                else raw_name
+            )
 
         description = pos.get("description", "")
         if not description and prog_item:
@@ -252,7 +274,7 @@ def main():
             "designation": designation,
             "designation_full": designation_full or get_designation_full(pos, prog_item),
             "taxes": taxes,
-            "advantages": list(dict.fromkeys(advantages)),   # dédupliqués, ordre préservé
+            "advantages": list(dict.fromkeys(advantages)),  # dédupliqués, ordre préservé
             "formalities": list(dict.fromkeys(formalities)),
             "source": "conformepro.dz",
             "source_quality": source_quality,

@@ -7,11 +7,13 @@ Integrates multiple free data sources:
 
 Provides real trade data for African countries
 """
-import httpx
+
 import asyncio
-from typing import Dict, List
 import logging
 from collections import defaultdict
+from typing import Dict, List
+
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -25,64 +27,395 @@ OEC_BASE_URL = "https://api-v2.oec.world/tesseract/data.jsonrecords"
 # African Countries (55 pays incluant la RASD - Membre UA depuis 1984)
 # Note: La RASD n'a pas de statistiques commerciales (territoire occupé)
 AFRICAN_COUNTRIES = {
-    "DZA": {"name_fr": "Algérie", "name_en": "Algeria", "wits": "DZA", "oec": "afdza", "has_trade_data": True},
-    "AGO": {"name_fr": "Angola", "name_en": "Angola", "wits": "AGO", "oec": "afago", "has_trade_data": True},
-    "BEN": {"name_fr": "Bénin", "name_en": "Benin", "wits": "BEN", "oec": "afben", "has_trade_data": True},
-    "BWA": {"name_fr": "Botswana", "name_en": "Botswana", "wits": "BWA", "oec": "afbwa", "has_trade_data": True},
-    "BFA": {"name_fr": "Burkina Faso", "name_en": "Burkina Faso", "wits": "BFA", "oec": "afbfa", "has_trade_data": True},
-    "BDI": {"name_fr": "Burundi", "name_en": "Burundi", "wits": "BDI", "oec": "afbdi", "has_trade_data": True},
-    "CMR": {"name_fr": "Cameroun", "name_en": "Cameroon", "wits": "CMR", "oec": "afcmr", "has_trade_data": True},
-    "CPV": {"name_fr": "Cap-Vert", "name_en": "Cape Verde", "wits": "CPV", "oec": "afcpv", "has_trade_data": True},
-    "CAF": {"name_fr": "Centrafrique", "name_en": "Central African Republic", "wits": "CAF", "oec": "afcaf", "has_trade_data": True},
-    "TCD": {"name_fr": "Tchad", "name_en": "Chad", "wits": "TCD", "oec": "aftcd", "has_trade_data": True},
-    "COM": {"name_fr": "Comores", "name_en": "Comoros", "wits": "COM", "oec": "afcom", "has_trade_data": True},
-    "COG": {"name_fr": "Congo", "name_en": "Republic of the Congo", "wits": "COG", "oec": "afcog", "has_trade_data": True},
-    "COD": {"name_fr": "RD Congo", "name_en": "DR Congo", "wits": "COD", "oec": "afcod", "has_trade_data": True},
-    "CIV": {"name_fr": "Côte d'Ivoire", "name_en": "Ivory Coast", "wits": "CIV", "oec": "afciv", "has_trade_data": True},
-    "DJI": {"name_fr": "Djibouti", "name_en": "Djibouti", "wits": "DJI", "oec": "afdji", "has_trade_data": True},
-    "EGY": {"name_fr": "Égypte", "name_en": "Egypt", "wits": "EGY", "oec": "afegy", "has_trade_data": True},
-    "GNQ": {"name_fr": "Guinée Équatoriale", "name_en": "Equatorial Guinea", "wits": "GNQ", "oec": "afgnq", "has_trade_data": True},
-    "ERI": {"name_fr": "Érythrée", "name_en": "Eritrea", "wits": "ERI", "oec": "aferi", "has_trade_data": True},
+    "DZA": {
+        "name_fr": "Algérie",
+        "name_en": "Algeria",
+        "wits": "DZA",
+        "oec": "afdza",
+        "has_trade_data": True,
+    },
+    "AGO": {
+        "name_fr": "Angola",
+        "name_en": "Angola",
+        "wits": "AGO",
+        "oec": "afago",
+        "has_trade_data": True,
+    },
+    "BEN": {
+        "name_fr": "Bénin",
+        "name_en": "Benin",
+        "wits": "BEN",
+        "oec": "afben",
+        "has_trade_data": True,
+    },
+    "BWA": {
+        "name_fr": "Botswana",
+        "name_en": "Botswana",
+        "wits": "BWA",
+        "oec": "afbwa",
+        "has_trade_data": True,
+    },
+    "BFA": {
+        "name_fr": "Burkina Faso",
+        "name_en": "Burkina Faso",
+        "wits": "BFA",
+        "oec": "afbfa",
+        "has_trade_data": True,
+    },
+    "BDI": {
+        "name_fr": "Burundi",
+        "name_en": "Burundi",
+        "wits": "BDI",
+        "oec": "afbdi",
+        "has_trade_data": True,
+    },
+    "CMR": {
+        "name_fr": "Cameroun",
+        "name_en": "Cameroon",
+        "wits": "CMR",
+        "oec": "afcmr",
+        "has_trade_data": True,
+    },
+    "CPV": {
+        "name_fr": "Cap-Vert",
+        "name_en": "Cape Verde",
+        "wits": "CPV",
+        "oec": "afcpv",
+        "has_trade_data": True,
+    },
+    "CAF": {
+        "name_fr": "Centrafrique",
+        "name_en": "Central African Republic",
+        "wits": "CAF",
+        "oec": "afcaf",
+        "has_trade_data": True,
+    },
+    "TCD": {
+        "name_fr": "Tchad",
+        "name_en": "Chad",
+        "wits": "TCD",
+        "oec": "aftcd",
+        "has_trade_data": True,
+    },
+    "COM": {
+        "name_fr": "Comores",
+        "name_en": "Comoros",
+        "wits": "COM",
+        "oec": "afcom",
+        "has_trade_data": True,
+    },
+    "COG": {
+        "name_fr": "Congo",
+        "name_en": "Republic of the Congo",
+        "wits": "COG",
+        "oec": "afcog",
+        "has_trade_data": True,
+    },
+    "COD": {
+        "name_fr": "RD Congo",
+        "name_en": "DR Congo",
+        "wits": "COD",
+        "oec": "afcod",
+        "has_trade_data": True,
+    },
+    "CIV": {
+        "name_fr": "Côte d'Ivoire",
+        "name_en": "Ivory Coast",
+        "wits": "CIV",
+        "oec": "afciv",
+        "has_trade_data": True,
+    },
+    "DJI": {
+        "name_fr": "Djibouti",
+        "name_en": "Djibouti",
+        "wits": "DJI",
+        "oec": "afdji",
+        "has_trade_data": True,
+    },
+    "EGY": {
+        "name_fr": "Égypte",
+        "name_en": "Egypt",
+        "wits": "EGY",
+        "oec": "afegy",
+        "has_trade_data": True,
+    },
+    "GNQ": {
+        "name_fr": "Guinée Équatoriale",
+        "name_en": "Equatorial Guinea",
+        "wits": "GNQ",
+        "oec": "afgnq",
+        "has_trade_data": True,
+    },
+    "ERI": {
+        "name_fr": "Érythrée",
+        "name_en": "Eritrea",
+        "wits": "ERI",
+        "oec": "aferi",
+        "has_trade_data": True,
+    },
     # RASD - République Arabe Sahraouie Démocratique (Sahara Occidental)
     # Membre fondateur de l'Union Africaine (UA) depuis 1984
     # ATTENTION: Territoire occupé - PAS DE STATISTIQUES COMMERCIALES DISPONIBLES
-    "ESH": {"name_fr": "RASD (Sahara Occidental)", "name_en": "Sahrawi Arab Democratic Republic", "wits": None, "oec": None, "has_trade_data": False, "note": "Territoire occupé - pas de données commerciales"},
-    "SWZ": {"name_fr": "Eswatini", "name_en": "Eswatini", "wits": "SWZ", "oec": "afswz", "has_trade_data": True},
-    "ETH": {"name_fr": "Éthiopie", "name_en": "Ethiopia", "wits": "ETH", "oec": "afeth", "has_trade_data": True},
-    "GAB": {"name_fr": "Gabon", "name_en": "Gabon", "wits": "GAB", "oec": "afgab", "has_trade_data": True},
-    "GMB": {"name_fr": "Gambie", "name_en": "Gambia", "wits": "GMB", "oec": "afgmb", "has_trade_data": True},
-    "GHA": {"name_fr": "Ghana", "name_en": "Ghana", "wits": "GHA", "oec": "afgha", "has_trade_data": True},
-    "GIN": {"name_fr": "Guinée", "name_en": "Guinea", "wits": "GIN", "oec": "afgin", "has_trade_data": True},
-    "GNB": {"name_fr": "Guinée-Bissau", "name_en": "Guinea-Bissau", "wits": "GNB", "oec": "afgnb", "has_trade_data": True},
-    "KEN": {"name_fr": "Kenya", "name_en": "Kenya", "wits": "KEN", "oec": "afken", "has_trade_data": True},
-    "LSO": {"name_fr": "Lesotho", "name_en": "Lesotho", "wits": "LSO", "oec": "aflso", "has_trade_data": True},
-    "LBR": {"name_fr": "Libéria", "name_en": "Liberia", "wits": "LBR", "oec": "aflbr", "has_trade_data": True},
-    "LBY": {"name_fr": "Libye", "name_en": "Libya", "wits": "LBY", "oec": "aflby", "has_trade_data": True},
-    "MDG": {"name_fr": "Madagascar", "name_en": "Madagascar", "wits": "MDG", "oec": "afmdg", "has_trade_data": True},
-    "MWI": {"name_fr": "Malawi", "name_en": "Malawi", "wits": "MWI", "oec": "afmwi", "has_trade_data": True},
-    "MLI": {"name_fr": "Mali", "name_en": "Mali", "wits": "MLI", "oec": "afmli", "has_trade_data": True},
-    "MRT": {"name_fr": "Mauritanie", "name_en": "Mauritania", "wits": "MRT", "oec": "afmrt", "has_trade_data": True},
-    "MUS": {"name_fr": "Maurice", "name_en": "Mauritius", "wits": "MUS", "oec": "afmus", "has_trade_data": True},
-    "MAR": {"name_fr": "Maroc", "name_en": "Morocco", "wits": "MAR", "oec": "afmar", "has_trade_data": True},
-    "MOZ": {"name_fr": "Mozambique", "name_en": "Mozambique", "wits": "MOZ", "oec": "afmoz", "has_trade_data": True},
-    "NAM": {"name_fr": "Namibie", "name_en": "Namibia", "wits": "NAM", "oec": "afnam", "has_trade_data": True},
-    "NER": {"name_fr": "Niger", "name_en": "Niger", "wits": "NER", "oec": "afner", "has_trade_data": True},
-    "NGA": {"name_fr": "Nigeria", "name_en": "Nigeria", "wits": "NGA", "oec": "afnga", "has_trade_data": True},
-    "RWA": {"name_fr": "Rwanda", "name_en": "Rwanda", "wits": "RWA", "oec": "afrwa", "has_trade_data": True},
-    "STP": {"name_fr": "São Tomé-et-Príncipe", "name_en": "São Tomé and Príncipe", "wits": "STP", "oec": "afstp", "has_trade_data": True},
-    "SEN": {"name_fr": "Sénégal", "name_en": "Senegal", "wits": "SEN", "oec": "afsen", "has_trade_data": True},
-    "SYC": {"name_fr": "Seychelles", "name_en": "Seychelles", "wits": "SYC", "oec": "afsyc", "has_trade_data": True},
-    "SLE": {"name_fr": "Sierra Leone", "name_en": "Sierra Leone", "wits": "SLE", "oec": "afsle", "has_trade_data": True},
-    "SOM": {"name_fr": "Somalie", "name_en": "Somalia", "wits": "SOM", "oec": "afsom", "has_trade_data": True},
-    "ZAF": {"name_fr": "Afrique du Sud", "name_en": "South Africa", "wits": "ZAF", "oec": "afzaf", "has_trade_data": True},
-    "SSD": {"name_fr": "Soudan du Sud", "name_en": "South Sudan", "wits": "SSD", "oec": "afssd", "has_trade_data": True},
-    "SDN": {"name_fr": "Soudan", "name_en": "Sudan", "wits": "SDN", "oec": "afsdn", "has_trade_data": True},
-    "TZA": {"name_fr": "Tanzanie", "name_en": "Tanzania", "wits": "TZA", "oec": "aftza", "has_trade_data": True},
-    "TGO": {"name_fr": "Togo", "name_en": "Togo", "wits": "TGO", "oec": "aftgo", "has_trade_data": True},
-    "TUN": {"name_fr": "Tunisie", "name_en": "Tunisia", "wits": "TUN", "oec": "aftun", "has_trade_data": True},
-    "UGA": {"name_fr": "Ouganda", "name_en": "Uganda", "wits": "UGA", "oec": "afuga", "has_trade_data": True},
-    "ZMB": {"name_fr": "Zambie", "name_en": "Zambia", "wits": "ZMB", "oec": "afzmb", "has_trade_data": True},
-    "ZWE": {"name_fr": "Zimbabwe", "name_en": "Zimbabwe", "wits": "ZWE", "oec": "afzwe", "has_trade_data": True}
+    "ESH": {
+        "name_fr": "RASD (Sahara Occidental)",
+        "name_en": "Sahrawi Arab Democratic Republic",
+        "wits": None,
+        "oec": None,
+        "has_trade_data": False,
+        "note": "Territoire occupé - pas de données commerciales",
+    },
+    "SWZ": {
+        "name_fr": "Eswatini",
+        "name_en": "Eswatini",
+        "wits": "SWZ",
+        "oec": "afswz",
+        "has_trade_data": True,
+    },
+    "ETH": {
+        "name_fr": "Éthiopie",
+        "name_en": "Ethiopia",
+        "wits": "ETH",
+        "oec": "afeth",
+        "has_trade_data": True,
+    },
+    "GAB": {
+        "name_fr": "Gabon",
+        "name_en": "Gabon",
+        "wits": "GAB",
+        "oec": "afgab",
+        "has_trade_data": True,
+    },
+    "GMB": {
+        "name_fr": "Gambie",
+        "name_en": "Gambia",
+        "wits": "GMB",
+        "oec": "afgmb",
+        "has_trade_data": True,
+    },
+    "GHA": {
+        "name_fr": "Ghana",
+        "name_en": "Ghana",
+        "wits": "GHA",
+        "oec": "afgha",
+        "has_trade_data": True,
+    },
+    "GIN": {
+        "name_fr": "Guinée",
+        "name_en": "Guinea",
+        "wits": "GIN",
+        "oec": "afgin",
+        "has_trade_data": True,
+    },
+    "GNB": {
+        "name_fr": "Guinée-Bissau",
+        "name_en": "Guinea-Bissau",
+        "wits": "GNB",
+        "oec": "afgnb",
+        "has_trade_data": True,
+    },
+    "KEN": {
+        "name_fr": "Kenya",
+        "name_en": "Kenya",
+        "wits": "KEN",
+        "oec": "afken",
+        "has_trade_data": True,
+    },
+    "LSO": {
+        "name_fr": "Lesotho",
+        "name_en": "Lesotho",
+        "wits": "LSO",
+        "oec": "aflso",
+        "has_trade_data": True,
+    },
+    "LBR": {
+        "name_fr": "Libéria",
+        "name_en": "Liberia",
+        "wits": "LBR",
+        "oec": "aflbr",
+        "has_trade_data": True,
+    },
+    "LBY": {
+        "name_fr": "Libye",
+        "name_en": "Libya",
+        "wits": "LBY",
+        "oec": "aflby",
+        "has_trade_data": True,
+    },
+    "MDG": {
+        "name_fr": "Madagascar",
+        "name_en": "Madagascar",
+        "wits": "MDG",
+        "oec": "afmdg",
+        "has_trade_data": True,
+    },
+    "MWI": {
+        "name_fr": "Malawi",
+        "name_en": "Malawi",
+        "wits": "MWI",
+        "oec": "afmwi",
+        "has_trade_data": True,
+    },
+    "MLI": {
+        "name_fr": "Mali",
+        "name_en": "Mali",
+        "wits": "MLI",
+        "oec": "afmli",
+        "has_trade_data": True,
+    },
+    "MRT": {
+        "name_fr": "Mauritanie",
+        "name_en": "Mauritania",
+        "wits": "MRT",
+        "oec": "afmrt",
+        "has_trade_data": True,
+    },
+    "MUS": {
+        "name_fr": "Maurice",
+        "name_en": "Mauritius",
+        "wits": "MUS",
+        "oec": "afmus",
+        "has_trade_data": True,
+    },
+    "MAR": {
+        "name_fr": "Maroc",
+        "name_en": "Morocco",
+        "wits": "MAR",
+        "oec": "afmar",
+        "has_trade_data": True,
+    },
+    "MOZ": {
+        "name_fr": "Mozambique",
+        "name_en": "Mozambique",
+        "wits": "MOZ",
+        "oec": "afmoz",
+        "has_trade_data": True,
+    },
+    "NAM": {
+        "name_fr": "Namibie",
+        "name_en": "Namibia",
+        "wits": "NAM",
+        "oec": "afnam",
+        "has_trade_data": True,
+    },
+    "NER": {
+        "name_fr": "Niger",
+        "name_en": "Niger",
+        "wits": "NER",
+        "oec": "afner",
+        "has_trade_data": True,
+    },
+    "NGA": {
+        "name_fr": "Nigeria",
+        "name_en": "Nigeria",
+        "wits": "NGA",
+        "oec": "afnga",
+        "has_trade_data": True,
+    },
+    "RWA": {
+        "name_fr": "Rwanda",
+        "name_en": "Rwanda",
+        "wits": "RWA",
+        "oec": "afrwa",
+        "has_trade_data": True,
+    },
+    "STP": {
+        "name_fr": "São Tomé-et-Príncipe",
+        "name_en": "São Tomé and Príncipe",
+        "wits": "STP",
+        "oec": "afstp",
+        "has_trade_data": True,
+    },
+    "SEN": {
+        "name_fr": "Sénégal",
+        "name_en": "Senegal",
+        "wits": "SEN",
+        "oec": "afsen",
+        "has_trade_data": True,
+    },
+    "SYC": {
+        "name_fr": "Seychelles",
+        "name_en": "Seychelles",
+        "wits": "SYC",
+        "oec": "afsyc",
+        "has_trade_data": True,
+    },
+    "SLE": {
+        "name_fr": "Sierra Leone",
+        "name_en": "Sierra Leone",
+        "wits": "SLE",
+        "oec": "afsle",
+        "has_trade_data": True,
+    },
+    "SOM": {
+        "name_fr": "Somalie",
+        "name_en": "Somalia",
+        "wits": "SOM",
+        "oec": "afsom",
+        "has_trade_data": True,
+    },
+    "ZAF": {
+        "name_fr": "Afrique du Sud",
+        "name_en": "South Africa",
+        "wits": "ZAF",
+        "oec": "afzaf",
+        "has_trade_data": True,
+    },
+    "SSD": {
+        "name_fr": "Soudan du Sud",
+        "name_en": "South Sudan",
+        "wits": "SSD",
+        "oec": "afssd",
+        "has_trade_data": True,
+    },
+    "SDN": {
+        "name_fr": "Soudan",
+        "name_en": "Sudan",
+        "wits": "SDN",
+        "oec": "afsdn",
+        "has_trade_data": True,
+    },
+    "TZA": {
+        "name_fr": "Tanzanie",
+        "name_en": "Tanzania",
+        "wits": "TZA",
+        "oec": "aftza",
+        "has_trade_data": True,
+    },
+    "TGO": {
+        "name_fr": "Togo",
+        "name_en": "Togo",
+        "wits": "TGO",
+        "oec": "aftgo",
+        "has_trade_data": True,
+    },
+    "TUN": {
+        "name_fr": "Tunisie",
+        "name_en": "Tunisia",
+        "wits": "TUN",
+        "oec": "aftun",
+        "has_trade_data": True,
+    },
+    "UGA": {
+        "name_fr": "Ouganda",
+        "name_en": "Uganda",
+        "wits": "UGA",
+        "oec": "afuga",
+        "has_trade_data": True,
+    },
+    "ZMB": {
+        "name_fr": "Zambie",
+        "name_en": "Zambia",
+        "wits": "ZMB",
+        "oec": "afzmb",
+        "has_trade_data": True,
+    },
+    "ZWE": {
+        "name_fr": "Zimbabwe",
+        "name_en": "Zimbabwe",
+        "wits": "ZWE",
+        "oec": "afzwe",
+        "has_trade_data": True,
+    },
 }
 
 
@@ -92,6 +425,7 @@ def has_trade_data(iso3: str) -> bool:
     if not country:
         return False
     return country.get("has_trade_data", True)
+
 
 # HS Product Names (French/English) - EXPANDED
 HS_PRODUCT_NAMES = {
@@ -234,17 +568,14 @@ class RealTradeDataService:
     """
     Service to fetch real trade data from free APIs
     """
-    
+
     def __init__(self):
         self.timeout = 30.0
         self._cache = {}
         self._cache_ttl = 3600  # 1 hour
-    
+
     async def get_oec_imports(
-        self,
-        country_iso3: str,
-        year: int = 2022,
-        limit: int = 100
+        self, country_iso3: str, year: int = 2022, limit: int = 100
     ) -> List[Dict]:
         """
         Get imports for a country from OEC API
@@ -252,9 +583,9 @@ class RealTradeDataService:
         country_info = AFRICAN_COUNTRIES.get(country_iso3.upper())
         if not country_info:
             return []
-        
+
         oec_id = country_info["oec"]
-        
+
         try:
             params = {
                 "cube": "trade_i_baci_a_17",
@@ -262,45 +593,44 @@ class RealTradeDataService:
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Importer Country": oec_id,
-                "limit": str(limit * 5)  # Get more to filter
+                "limit": str(limit * 5),  # Get more to filter
             }
-            
+
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 response = await client.get(OEC_BASE_URL, params=params)
-                
+
                 if response.status_code == 200:
                     data = response.json()
                     records = data.get("data", [])
-                    
+
                     # Sort by trade value and take top items
                     records.sort(key=lambda x: x.get("Trade Value", 0), reverse=True)
-                    
+
                     # Format results
                     results = []
                     for record in records[:limit]:
                         hs4_id = str(record.get("HS4 ID", ""))
                         hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
-                        
-                        results.append({
-                            "hs_code": hs4_code,
-                            "product_name": record.get("HS4", ""),
-                            "trade_value": record.get("Trade Value", 0),
-                            "quantity": record.get("Quantity", 0),
-                            "year": year
-                        })
-                    
+
+                        results.append(
+                            {
+                                "hs_code": hs4_code,
+                                "product_name": record.get("HS4", ""),
+                                "trade_value": record.get("Trade Value", 0),
+                                "quantity": record.get("Quantity", 0),
+                                "year": year,
+                            }
+                        )
+
                     return results
-                    
+
         except Exception as e:
             logger.error(f"OEC API error: {str(e)}")
-        
+
         return []
-    
+
     async def get_oec_exports(
-        self,
-        country_iso3: str,
-        year: int = 2022,
-        limit: int = 100
+        self, country_iso3: str, year: int = 2022, limit: int = 100
     ) -> List[Dict]:
         """
         Get exports for a country from OEC API
@@ -308,9 +638,9 @@ class RealTradeDataService:
         country_info = AFRICAN_COUNTRIES.get(country_iso3.upper())
         if not country_info:
             return []
-        
+
         oec_id = country_info["oec"]
-        
+
         try:
             params = {
                 "cube": "trade_i_baci_a_17",
@@ -318,43 +648,42 @@ class RealTradeDataService:
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Exporter Country": oec_id,
-                "limit": str(limit * 5)
+                "limit": str(limit * 5),
             }
-            
+
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 response = await client.get(OEC_BASE_URL, params=params)
-                
+
                 if response.status_code == 200:
                     data = response.json()
                     records = data.get("data", [])
-                    
+
                     records.sort(key=lambda x: x.get("Trade Value", 0), reverse=True)
-                    
+
                     results = []
                     for record in records[:limit]:
                         hs4_id = str(record.get("HS4 ID", ""))
                         hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
-                        
-                        results.append({
-                            "hs_code": hs4_code,
-                            "product_name": record.get("HS4", ""),
-                            "trade_value": record.get("Trade Value", 0),
-                            "quantity": record.get("Quantity", 0),
-                            "year": year
-                        })
-                    
+
+                        results.append(
+                            {
+                                "hs_code": hs4_code,
+                                "product_name": record.get("HS4", ""),
+                                "trade_value": record.get("Trade Value", 0),
+                                "quantity": record.get("Quantity", 0),
+                                "year": year,
+                            }
+                        )
+
                     return results
-                    
+
         except Exception as e:
             logger.error(f"OEC API error: {str(e)}")
-        
+
         return []
-    
+
     async def get_oec_bilateral_from_world(
-        self,
-        importer_iso3: str,
-        year: int = 2022,
-        limit: int = 50
+        self, importer_iso3: str, year: int = 2022, limit: int = 50
     ) -> Dict:
         """
         Get imports by partner country to identify non-African sources
@@ -362,10 +691,10 @@ class RealTradeDataService:
         country_info = AFRICAN_COUNTRIES.get(importer_iso3.upper())
         if not country_info:
             return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
-        
+
         oec_id = country_info["oec"]
         african_oec_ids = [c["oec"] for c in AFRICAN_COUNTRIES.values()]
-        
+
         try:
             # Get imports by exporter country
             params = {
@@ -374,21 +703,21 @@ class RealTradeDataService:
                 "measures": "Trade Value",
                 "Year": str(year),
                 "Importer Country": oec_id,
-                "limit": "500"
+                "limit": "500",
             }
-            
+
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 response = await client.get(OEC_BASE_URL, params=params)
-                
+
                 if response.status_code == 200:
                     data = response.json()
                     records = data.get("data", [])
-                    
+
                     total_value = 0
                     from_africa = 0
                     from_outside = 0
                     products_from_outside = defaultdict(lambda: {"value": 0, "sources": set()})
-                    
+
                     for record in records:
                         value = record.get("Trade Value", 0)
                         exporter_id = record.get("Exporter Country ID", "")
@@ -396,12 +725,15 @@ class RealTradeDataService:
                         hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
                         product_name = record.get("HS4", "")
                         exporter_name = record.get("Exporter Country", "")
-                        
+
                         total_value += value
-                        
+
                         # Check if from Africa
-                        is_african = any(exporter_id.startswith(af_id.replace("af", "")) for af_id in african_oec_ids)
-                        
+                        is_african = any(
+                            exporter_id.startswith(af_id.replace("af", ""))
+                            for af_id in african_oec_ids
+                        )
+
                         if is_african:
                             from_africa += value
                         else:
@@ -410,37 +742,35 @@ class RealTradeDataService:
                                 products_from_outside[hs4_code]["value"] += value
                                 products_from_outside[hs4_code]["name"] = product_name
                                 products_from_outside[hs4_code]["sources"].add(exporter_name)
-                    
+
                     # Format products from outside
                     products_list = []
                     for hs_code, data in products_from_outside.items():
-                        products_list.append({
-                            "hs_code": hs_code,
-                            "product_name": data["name"],
-                            "import_value": data["value"],
-                            "source_regions": list(data["sources"])[:3]
-                        })
-                    
+                        products_list.append(
+                            {
+                                "hs_code": hs_code,
+                                "product_name": data["name"],
+                                "import_value": data["value"],
+                                "source_regions": list(data["sources"])[:3],
+                            }
+                        )
+
                     products_list.sort(key=lambda x: x["import_value"], reverse=True)
-                    
+
                     return {
                         "total": total_value,
                         "from_africa": from_africa,
                         "from_outside": from_outside,
                         "africa_share": (from_africa / total_value * 100) if total_value > 0 else 0,
-                        "products_from_outside": products_list[:limit]
+                        "products_from_outside": products_list[:limit],
                     }
-                    
+
         except Exception as e:
             logger.error(f"OEC bilateral API error: {str(e)}")
-        
+
         return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
-    
-    async def get_african_exporters_for_product(
-        self,
-        hs_code: str,
-        year: int = 2022
-    ) -> List[Dict]:
+
+    async def get_african_exporters_for_product(self, hs_code: str, year: int = 2022) -> List[Dict]:
         """
         Find African countries that export a specific product
         Queries OEC API for all African exporters
@@ -448,54 +778,72 @@ class RealTradeDataService:
         try:
             # Search for HS4 (first 4 digits)
             hs4 = hs_code[:4] if len(hs_code) >= 4 else hs_code.zfill(4)
-            
+
             # Build list of African OEC IDs
             african_exporters_found = []
-            
+
             # Query OEC for each major African exporter
-            major_exporters = ["NGA", "ZAF", "EGY", "DZA", "AGO", "MAR", "KEN", "ETH", 
-                              "GHA", "CIV", "TZA", "TUN", "SEN", "CMR", "COD", "ZMB"]
-            
+            major_exporters = [
+                "NGA",
+                "ZAF",
+                "EGY",
+                "DZA",
+                "AGO",
+                "MAR",
+                "KEN",
+                "ETH",
+                "GHA",
+                "CIV",
+                "TZA",
+                "TUN",
+                "SEN",
+                "CMR",
+                "COD",
+                "ZMB",
+            ]
+
             for iso3 in major_exporters:
                 country_info = AFRICAN_COUNTRIES.get(iso3)
                 if not country_info:
                     continue
-                
+
                 oec_id = country_info["oec"]
-                
+
                 params = {
                     "cube": "trade_i_baci_a_17",
                     "drilldowns": "Year,Exporter Country,HS4",
                     "measures": "Trade Value,Quantity",
                     "Year": str(year),
                     "Exporter Country": oec_id,
-                    "limit": "100"
+                    "limit": "100",
                 }
-                
+
                 async with httpx.AsyncClient(timeout=self.timeout) as client:
                     response = await client.get(OEC_BASE_URL, params=params)
-                    
+
                     if response.status_code == 200:
                         data = response.json()
                         records = data.get("data", [])
-                        
+
                         for record in records:
                             hs4_id = str(record.get("HS4 ID", ""))
                             record_hs4 = hs4_id[-4:].zfill(4) if hs4_id else ""
-                            
+
                             # Match HS code (at least first 2 digits)
                             if record_hs4[:2] == hs4[:2]:
                                 export_value = record.get("Trade Value", 0)
                                 if export_value > 0:
-                                    african_exporters_found.append({
-                                        "country_iso3": iso3,
-                                        "country_name": country_info["name_fr"],
-                                        "hs_code": record_hs4,
-                                        "product_name": record.get("HS4", ""),
-                                        "export_value": export_value,
-                                        "quantity": record.get("Quantity", 0)
-                                    })
-            
+                                    african_exporters_found.append(
+                                        {
+                                            "country_iso3": iso3,
+                                            "country_name": country_info["name_fr"],
+                                            "hs_code": record_hs4,
+                                            "product_name": record.get("HS4", ""),
+                                            "export_value": export_value,
+                                            "quantity": record.get("Quantity", 0),
+                                        }
+                                    )
+
             # Remove duplicates and aggregate by country
             country_exports = {}
             for exp in african_exporters_found:
@@ -505,82 +853,80 @@ class RealTradeDataService:
                         "country_iso3": iso3,
                         "country_name": exp["country_name"],
                         "export_value": 0,
-                        "products": []
+                        "products": [],
                     }
                 country_exports[iso3]["export_value"] += exp["export_value"]
                 country_exports[iso3]["products"].append(exp["product_name"])
-            
+
             # Convert to list and sort
             result = list(country_exports.values())
             result.sort(key=lambda x: x["export_value"], reverse=True)
-            
+
             return result
-                    
+
         except Exception as e:
             logger.error(f"OEC product exporters API error: {str(e)}")
-        
+
         return []
-    
-    async def get_african_importers_for_product(
-        self,
-        hs_code: str,
-        year: int = 2022
-    ) -> List[Dict]:
+
+    async def get_african_importers_for_product(self, hs_code: str, year: int = 2022) -> List[Dict]:
         """
         Find African countries that import a specific product
         Queries OEC API for all African importers
         """
         try:
             hs4 = hs_code[:4] if len(hs_code) >= 4 else hs_code.zfill(4)
-            
+
             african_importers_found = []
-            
+
             # Sample top importing African countries for efficiency
             top_importers = ["ZAF", "EGY", "NGA", "MAR", "DZA", "KEN", "TUN", "ETH", "GHA", "TZA"]
-            
+
             for iso3 in top_importers:
                 country_info = AFRICAN_COUNTRIES.get(iso3)
                 if not country_info:
                     continue
-                
+
                 oec_id = country_info["oec"]
-                
+
                 params = {
                     "cube": "trade_i_baci_a_17",
                     "drilldowns": "Year,Importer Country,HS4",
                     "measures": "Trade Value",
                     "Year": str(year),
                     "Importer Country": oec_id,
-                    "limit": "100"
+                    "limit": "100",
                 }
-                
+
                 try:
                     async with httpx.AsyncClient(timeout=15.0) as client:
                         response = await client.get(OEC_BASE_URL, params=params)
-                        
+
                         if response.status_code == 200:
                             data = response.json()
                             records = data.get("data", [])
-                            
+
                             for record in records:
                                 hs4_id = str(record.get("HS4 ID", ""))
                                 record_hs4 = hs4_id[-4:].zfill(4) if hs4_id else ""
-                                
+
                                 # Match HS code (at least first 2 digits)
                                 if record_hs4[:2] == hs4[:2]:
                                     import_value = record.get("Trade Value", 0)
                                     if import_value > 0:
-                                        african_importers_found.append({
-                                            "country_iso3": iso3,
-                                            "country_name": country_info["name_fr"],
-                                            "hs_code": record_hs4,
-                                            "product_name": record.get("HS4", ""),
-                                            "import_value": import_value
-                                        })
+                                        african_importers_found.append(
+                                            {
+                                                "country_iso3": iso3,
+                                                "country_name": country_info["name_fr"],
+                                                "hs_code": record_hs4,
+                                                "product_name": record.get("HS4", ""),
+                                                "import_value": import_value,
+                                            }
+                                        )
                 except Exception as e:
                     logger.warning(f"Error fetching imports for {iso3}: {e}")
                     continue
-            
+
             # Aggregate by country
             country_imports = {}
             for imp in african_importers_found:
@@ -589,18 +935,18 @@ class RealTradeDataService:
                     country_imports[iso3] = {
                         "country_iso3": iso3,
                         "country_name": imp["country_name"],
-                        "import_value": 0
+                        "import_value": 0,
                     }
                 country_imports[iso3]["import_value"] += imp["import_value"]
-            
+
             result = list(country_imports.values())
             result.sort(key=lambda x: x["import_value"], reverse=True)
-            
+
             return result
-                    
+
         except Exception as e:
             logger.error(f"OEC product importers API error: {str(e)}")
-        
+
         return []
 
 
@@ -608,31 +954,35 @@ def get_product_name(hs_code: str, lang: str = "fr", oec_name: str = None) -> st
     """Get product name for HS code with fallback to OEC name"""
     if not hs_code:
         return oec_name or "Produit inconnu"
-    
+
     # Clean HS code (remove any prefixes)
     clean_code = str(hs_code).strip()
     if len(clean_code) > 4:
         clean_code = clean_code[-4:]  # Keep last 4 digits if longer
-    
+
     # Try exact match first
     if clean_code in HS_PRODUCT_NAMES:
-        return HS_PRODUCT_NAMES[clean_code].get(lang, HS_PRODUCT_NAMES[clean_code].get("en", clean_code))
-    
+        return HS_PRODUCT_NAMES[clean_code].get(
+            lang, HS_PRODUCT_NAMES[clean_code].get("en", clean_code)
+        )
+
     # Try HS4 (first 4 digits)
     if len(clean_code) >= 4:
         hs4 = clean_code[:4]
         if hs4 in HS_PRODUCT_NAMES:
             return HS_PRODUCT_NAMES[hs4].get(lang, HS_PRODUCT_NAMES[hs4].get("en", f"HS {hs4}"))
-    
+
     # Try chapter (first 2 digits)
     chapter = clean_code[:2]
     if chapter in HS_PRODUCT_NAMES:
-        return HS_PRODUCT_NAMES[chapter].get(lang, HS_PRODUCT_NAMES[chapter].get("en", f"HS {hs_code}"))
-    
+        return HS_PRODUCT_NAMES[chapter].get(
+            lang, HS_PRODUCT_NAMES[chapter].get("en", f"HS {hs_code}")
+        )
+
     # Return OEC name if available, otherwise generic
     if oec_name:
         return oec_name
-    
+
     return f"HS {hs_code}"
 
 

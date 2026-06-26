@@ -20,12 +20,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from config.regional_config import (
-    NORTH_AFRICA_COUNTRIES,
-    REGIONAL_CONFIG,
-    NORTH_AFRICA_VAT_RATES,
-    CEMAC_COUNTRIES,
     CEMAC_CONFIG,
+    CEMAC_COUNTRIES,
     CEMAC_VAT_RATES,
+    NORTH_AFRICA_COUNTRIES,
+    NORTH_AFRICA_VAT_RATES,
+    REGIONAL_CONFIG,
 )
 
 logger = logging.getLogger(__name__)
@@ -350,45 +350,99 @@ class RegionalIntelligenceService:
         # Country suitability rules
         rules: Dict[str, Dict[str, int]] = {
             "DZA": {
-                "hydrocarbons": 10, "agriculture": 7, "manufacturing": 5,
-                "eu_access": 2, "us_access": 1, "regional_hub": 5, "cost": 6,
+                "hydrocarbons": 10,
+                "agriculture": 7,
+                "manufacturing": 5,
+                "eu_access": 2,
+                "us_access": 1,
+                "regional_hub": 5,
+                "cost": 6,
             },
             "MAR": {
-                "automotive": 10, "aerospace": 9, "agriculture": 8, "textiles": 7,
-                "eu_access": 10, "us_access": 8, "regional_hub": 7, "cost": 7,
+                "automotive": 10,
+                "aerospace": 9,
+                "agriculture": 8,
+                "textiles": 7,
+                "eu_access": 10,
+                "us_access": 8,
+                "regional_hub": 7,
+                "cost": 7,
             },
             "EGY": {
-                "textiles": 9, "food_processing": 9, "ict": 8, "petrochemicals": 8,
-                "eu_access": 7, "us_access": 8, "regional_hub": 10, "cost": 6,
+                "textiles": 9,
+                "food_processing": 9,
+                "ict": 8,
+                "petrochemicals": 8,
+                "eu_access": 7,
+                "us_access": 8,
+                "regional_hub": 10,
+                "cost": 6,
             },
             "TUN": {
-                "textiles": 10, "automotive": 8, "ict": 8, "olive_oil": 10,
-                "eu_access": 9, "us_access": 3, "regional_hub": 5, "cost": 7,
+                "textiles": 10,
+                "automotive": 8,
+                "ict": 8,
+                "olive_oil": 10,
+                "eu_access": 9,
+                "us_access": 3,
+                "regional_hub": 5,
+                "cost": 7,
             },
             # CEMAC countries
             "CMR": {
-                "oil_gas": 9, "timber": 8, "agriculture": 7, "mining": 6,
-                "eu_access": 6, "us_access": 2, "regional_hub": 9, "cost": 6,
+                "oil_gas": 9,
+                "timber": 8,
+                "agriculture": 7,
+                "mining": 6,
+                "eu_access": 6,
+                "us_access": 2,
+                "regional_hub": 9,
+                "cost": 6,
             },
             "CAF": {
-                "mining": 7, "agriculture": 5, "timber": 6,
-                "eu_access": 2, "us_access": 1, "regional_hub": 2, "cost": 5,
+                "mining": 7,
+                "agriculture": 5,
+                "timber": 6,
+                "eu_access": 2,
+                "us_access": 1,
+                "regional_hub": 2,
+                "cost": 5,
             },
             "TCD": {
-                "oil": 8, "agriculture": 6, "livestock": 7,
-                "eu_access": 2, "us_access": 1, "regional_hub": 3, "cost": 5,
+                "oil": 8,
+                "agriculture": 6,
+                "livestock": 7,
+                "eu_access": 2,
+                "us_access": 1,
+                "regional_hub": 3,
+                "cost": 5,
             },
             "COG": {
-                "oil_gas": 9, "timber": 7, "mining": 6,
-                "eu_access": 3, "us_access": 1, "regional_hub": 5, "cost": 5,
+                "oil_gas": 9,
+                "timber": 7,
+                "mining": 6,
+                "eu_access": 3,
+                "us_access": 1,
+                "regional_hub": 5,
+                "cost": 5,
             },
             "GNQ": {
-                "oil_gas": 10, "fishing": 6,
-                "eu_access": 2, "us_access": 1, "regional_hub": 3, "cost": 4,
+                "oil_gas": 10,
+                "fishing": 6,
+                "eu_access": 2,
+                "us_access": 1,
+                "regional_hub": 3,
+                "cost": 4,
             },
             "GAB": {
-                "oil_gas": 8, "timber": 9, "mining": 8, "agriculture": 5,
-                "eu_access": 5, "us_access": 1, "regional_hub": 5, "cost": 6,
+                "oil_gas": 8,
+                "timber": 9,
+                "mining": 8,
+                "agriculture": 5,
+                "eu_access": 5,
+                "us_access": 1,
+                "regional_hub": 5,
+                "cost": 6,
             },
         }
 
@@ -402,13 +456,15 @@ class RegionalIntelligenceService:
 
             priority_score = scores.get(priority_lower, 5)
 
-            combined = (sector_score * 0.6 + priority_score * 0.4)
-            recommendations.append({
-                "country_code": country_code,
-                "sector_score": sector_score,
-                "priority_score": priority_score,
-                "combined_score": round(combined, 1),
-            })
+            combined = sector_score * 0.6 + priority_score * 0.4
+            recommendations.append(
+                {
+                    "country_code": country_code,
+                    "sector_score": sector_score,
+                    "priority_score": priority_score,
+                    "combined_score": round(combined, 1),
+                }
+            )
 
         recommendations.sort(key=lambda x: x["combined_score"], reverse=True)
 
@@ -474,7 +530,7 @@ class RegionalIntelligenceService:
             },
             # CEMAC countries
             "CMR": {
-                "EU": True,   # Economic Partnership Agreement (EPA)
+                "EU": True,  # Economic Partnership Agreement (EPA)
                 "US": False,
                 "EFTA": False,
                 "CEMAC": True,
@@ -519,7 +575,7 @@ class RegionalIntelligenceService:
                 "QIZ": False,
             },
             "GAB": {
-                "EU": True,   # Economic Partnership Agreement (EPA)
+                "EU": True,  # Economic Partnership Agreement (EPA)
                 "US": False,
                 "EFTA": False,
                 "CEMAC": True,
@@ -534,8 +590,7 @@ class RegionalIntelligenceService:
         best_by_market = {}
         for market in external_markets:
             countries_with_access = [
-                c for c, agreements in matrix.items()
-                if agreements.get(market)
+                c for c, agreements in matrix.items() if agreements.get(market)
             ]
             best_by_market[market] = countries_with_access
 
@@ -644,7 +699,7 @@ class RegionalIntelligenceService:
         country_routing: Dict[str, Dict[str, Any]] = {
             "DZA": {
                 "country_name": "Algeria",
-                "port_capacity_score": 5,   # Algiers, Oran, Annaba
+                "port_capacity_score": 5,  # Algiers, Oran, Annaba
                 "clearance_days_avg": 5,
                 "eu_agreement": False,
                 "us_agreement": False,
@@ -657,7 +712,7 @@ class RegionalIntelligenceService:
             },
             "MAR": {
                 "country_name": "Morocco",
-                "port_capacity_score": 9,   # Tanger-Med largest in Africa
+                "port_capacity_score": 9,  # Tanger-Med largest in Africa
                 "clearance_days_avg": 2,
                 "eu_agreement": True,
                 "us_agreement": True,
@@ -670,7 +725,7 @@ class RegionalIntelligenceService:
             },
             "EGY": {
                 "country_name": "Egypt",
-                "port_capacity_score": 8,   # Suez Canal gateway
+                "port_capacity_score": 8,  # Suez Canal gateway
                 "clearance_days_avg": 3,
                 "eu_agreement": True,
                 "us_agreement": True,  # via QIZ
@@ -683,7 +738,7 @@ class RegionalIntelligenceService:
             },
             "TUN": {
                 "country_name": "Tunisia",
-                "port_capacity_score": 6,   # Tunis-La Goulette, Sfax
+                "port_capacity_score": 6,  # Tunis-La Goulette, Sfax
                 "clearance_days_avg": 2,
                 "eu_agreement": True,
                 "us_agreement": False,
@@ -730,22 +785,24 @@ class RegionalIntelligenceService:
             )
 
             annual_duty_estimate = annual_volume * profile["dd_rate_typical"] / 100
-            routes.append({
-                "country_code": country_code,
-                "country_name": profile["country_name"],
-                "combined_score": round(combined, 2),
-                "cost_score": round(cost_score, 1),
-                "clearance_speed_score": round(clearance_score, 1),
-                "reliability_score": round(reliability_score, 1),
-                "clearance_days_avg": profile["clearance_days_avg"],
-                "dd_rate_typical_pct": profile["dd_rate_typical"],
-                "annual_duty_estimate_usd": round(annual_duty_estimate, 0),
-                "eu_agreement": profile["eu_agreement"],
-                "us_agreement": profile["us_agreement"],
-                "free_zones": profile["free_zones"],
-                "infrastructure_score": profile["infrastructure_score"],
-                "port_capacity_score": profile["port_capacity_score"],
-            })
+            routes.append(
+                {
+                    "country_code": country_code,
+                    "country_name": profile["country_name"],
+                    "combined_score": round(combined, 2),
+                    "cost_score": round(cost_score, 1),
+                    "clearance_speed_score": round(clearance_score, 1),
+                    "reliability_score": round(reliability_score, 1),
+                    "clearance_days_avg": profile["clearance_days_avg"],
+                    "dd_rate_typical_pct": profile["dd_rate_typical"],
+                    "annual_duty_estimate_usd": round(annual_duty_estimate, 0),
+                    "eu_agreement": profile["eu_agreement"],
+                    "us_agreement": profile["us_agreement"],
+                    "free_zones": profile["free_zones"],
+                    "infrastructure_score": profile["infrastructure_score"],
+                    "port_capacity_score": profile["port_capacity_score"],
+                }
+            )
 
         routes.sort(key=lambda x: x["combined_score"], reverse=True)
 
@@ -800,7 +857,7 @@ class RegionalIntelligenceService:
             "DZA": {
                 "country_name": "Algeria",
                 "sector_strengths": ["hydrocarbons", "agriculture", "mining", "construction"],
-                "labour_cost_index": 4,      # 1=cheapest, 10=most expensive
+                "labour_cost_index": 4,  # 1=cheapest, 10=most expensive
                 "ease_of_investment": 5,
                 "infrastructure_quality": 5,
                 "incentives": ["Tax holidays", "Customs exemptions (ANDI)"],
@@ -813,8 +870,13 @@ class RegionalIntelligenceService:
             "MAR": {
                 "country_name": "Morocco",
                 "sector_strengths": [
-                    "automotive", "aerospace", "textiles", "agriculture",
-                    "renewable_energy", "phosphates", "tourism",
+                    "automotive",
+                    "aerospace",
+                    "textiles",
+                    "agriculture",
+                    "renewable_energy",
+                    "phosphates",
+                    "tourism",
                 ],
                 "labour_cost_index": 4,
                 "ease_of_investment": 8,
@@ -834,10 +896,15 @@ class RegionalIntelligenceService:
             "EGY": {
                 "country_name": "Egypt",
                 "sector_strengths": [
-                    "textiles", "food_processing", "ict", "petrochemicals",
-                    "tourism", "construction", "renewable_energy",
+                    "textiles",
+                    "food_processing",
+                    "ict",
+                    "petrochemicals",
+                    "tourism",
+                    "construction",
+                    "renewable_energy",
                 ],
-                "labour_cost_index": 3,      # lower cost
+                "labour_cost_index": 3,  # lower cost
                 "ease_of_investment": 7,
                 "infrastructure_quality": 7,
                 "incentives": [
@@ -856,8 +923,12 @@ class RegionalIntelligenceService:
             "TUN": {
                 "country_name": "Tunisia",
                 "sector_strengths": [
-                    "textiles", "automotive_components", "ict", "olive_oil",
-                    "phosphates", "tourism",
+                    "textiles",
+                    "automotive_components",
+                    "ict",
+                    "olive_oil",
+                    "phosphates",
+                    "tourism",
                 ],
                 "labour_cost_index": 4,
                 "ease_of_investment": 7,
@@ -916,28 +987,27 @@ class RegionalIntelligenceService:
 
             # Weighted combined
             combined = (
-                sector_score * 0.30
-                + market_score * 0.30
-                + env_score * 0.25
-                + cost_score * 0.15
+                sector_score * 0.30 + market_score * 0.30 + env_score * 0.25 + cost_score * 0.15
             )
 
-            results.append({
-                "country_code": country_code,
-                "country_name": profile["country_name"],
-                "combined_score": round(combined, 2),
-                "sector_score": sector_score,
-                "market_access_score": round(market_score, 1),
-                "environment_score": round(env_score, 1),
-                "cost_efficiency_score": round(cost_score, 1),
-                "markets_accessible": markets_matched,
-                "key_incentives": profile["incentives"],
-                "investment_law": profile["investment_law"],
-                "special_zones": profile["special_zones"],
-                "estimated_op_cost_factor": profile["est_op_cost_factor"],
-                "eu_access": profile["eu_access"],
-                "us_access": profile["us_access"],
-            })
+            results.append(
+                {
+                    "country_code": country_code,
+                    "country_name": profile["country_name"],
+                    "combined_score": round(combined, 2),
+                    "sector_score": sector_score,
+                    "market_access_score": round(market_score, 1),
+                    "environment_score": round(env_score, 1),
+                    "cost_efficiency_score": round(cost_score, 1),
+                    "markets_accessible": markets_matched,
+                    "key_incentives": profile["incentives"],
+                    "investment_law": profile["investment_law"],
+                    "special_zones": profile["special_zones"],
+                    "estimated_op_cost_factor": profile["est_op_cost_factor"],
+                    "eu_access": profile["eu_access"],
+                    "us_access": profile["us_access"],
+                }
+            )
 
         results.sort(key=lambda x: x["combined_score"], reverse=True)
         for rank, rec in enumerate(results, 1):
@@ -946,11 +1016,17 @@ class RegionalIntelligenceService:
         # Size-adjusted recommendation note
         size_note = ""
         if investment_size >= 50_000_000:
-            size_note = "Large-scale investment: Morocco and Egypt offer strongest incentive packages."
+            size_note = (
+                "Large-scale investment: Morocco and Egypt offer strongest incentive packages."
+            )
         elif investment_size >= 10_000_000:
-            size_note = "Mid-scale investment: All four countries offer viable incentive frameworks."
+            size_note = (
+                "Mid-scale investment: All four countries offer viable incentive frameworks."
+            )
         else:
-            size_note = "Smaller investment: Tunisia offshore regime or Morocco CFC may offer best ROI."
+            size_note = (
+                "Smaller investment: Tunisia offshore regime or Morocco CFC may offer best ROI."
+            )
 
         return {
             "industry": industry,
@@ -987,24 +1063,16 @@ class RegionalIntelligenceService:
         if not stripped:
             raise ValueError("Invalid HS code: must not be empty")
         if not stripped.isdigit():
-            raise ValueError(
-                f"Invalid HS code '{hs_code}': must contain only digits"
-            )
+            raise ValueError(f"Invalid HS code '{hs_code}': must contain only digits")
         if len(stripped) < 2:
-            raise ValueError(
-                f"Invalid HS code '{hs_code}': must be at least 2 digits"
-            )
+            raise ValueError(f"Invalid HS code '{hs_code}': must be at least 2 digits")
         if len(stripped) > 14:
-            raise ValueError(
-                f"Invalid HS code '{hs_code}': must be at most 14 digits"
-            )
+            raise ValueError(f"Invalid HS code '{hs_code}': must be at most 14 digits")
 
         # Extract the 2-digit chapter number
         chapter_number = int(stripped[:2])
         if chapter_number < 1 or chapter_number > 99:
-            raise ValueError(
-                f"Invalid HS chapter {chapter_number:02d}: must be between 01 and 99"
-            )
+            raise ValueError(f"Invalid HS chapter {chapter_number:02d}: must be between 01 and 99")
 
         # Determine product category from chapter
         if 1 <= chapter_number <= 24:
@@ -1035,91 +1103,109 @@ class RegionalIntelligenceService:
 
             # GAFTA is universal
             if agreements.get("GAFTA"):
-                applicable.append({
-                    "agreement": "Arab Free Trade Area (GAFTA)",
-                    "markets": "Arab countries",
-                    "indicative_dd_reduction": "0-100%",
-                    "notes": "Applies to most goods",
-                })
+                applicable.append(
+                    {
+                        "agreement": "Arab Free Trade Area (GAFTA)",
+                        "markets": "Arab countries",
+                        "indicative_dd_reduction": "0-100%",
+                        "notes": "Applies to most goods",
+                    }
+                )
 
             # AfCFTA - universal
-            applicable.append({
-                "agreement": "African Continental FTA (AfCFTA)",
-                "markets": "Africa (54 countries)",
-                "indicative_dd_reduction": "Phased to 0% over schedule",
-                "notes": "Tariff phase-down per national schedule",
-            })
+            applicable.append(
+                {
+                    "agreement": "African Continental FTA (AfCFTA)",
+                    "markets": "Africa (54 countries)",
+                    "indicative_dd_reduction": "Phased to 0% over schedule",
+                    "notes": "Tariff phase-down per national schedule",
+                }
+            )
 
             # EU Association
             if agreements.get("EU"):
                 dd_reduction = "0%" if product_category != "agricultural" else "reduced"
-                applicable.append({
-                    "agreement": "EU Association Agreement",
-                    "markets": "European Union (27 members)",
-                    "indicative_dd_reduction": dd_reduction,
-                    "notes": (
-                        "Most preferential rates; agricultural products may have quotas"
-                        if product_category == "agricultural"
-                        else "Duty-free for industrial products"
-                    ),
-                })
+                applicable.append(
+                    {
+                        "agreement": "EU Association Agreement",
+                        "markets": "European Union (27 members)",
+                        "indicative_dd_reduction": dd_reduction,
+                        "notes": (
+                            "Most preferential rates; agricultural products may have quotas"
+                            if product_category == "agricultural"
+                            else "Duty-free for industrial products"
+                        ),
+                    }
+                )
 
             # EFTA
             if agreements.get("EFTA"):
-                applicable.append({
-                    "agreement": "EFTA Agreement",
-                    "markets": "Switzerland, Norway, Iceland, Liechtenstein",
-                    "indicative_dd_reduction": "0-100%",
-                    "notes": "Similar to EU; mainly industrial goods",
-                })
+                applicable.append(
+                    {
+                        "agreement": "EFTA Agreement",
+                        "markets": "Switzerland, Norway, Iceland, Liechtenstein",
+                        "indicative_dd_reduction": "0-100%",
+                        "notes": "Similar to EU; mainly industrial goods",
+                    }
+                )
 
             # Agadir (MAR, EGY, TUN + Jordan)
             if agreements.get("Agadir"):
-                applicable.append({
-                    "agreement": "Agadir Agreement",
-                    "markets": "Morocco, Egypt, Tunisia, Jordan",
-                    "indicative_dd_reduction": "0%",
-                    "notes": "Full liberalisation within member states",
-                })
+                applicable.append(
+                    {
+                        "agreement": "Agadir Agreement",
+                        "markets": "Morocco, Egypt, Tunisia, Jordan",
+                        "indicative_dd_reduction": "0%",
+                        "notes": "Full liberalisation within member states",
+                    }
+                )
 
             # US via Morocco FTA
             if agreements.get("US") and country_code == "MAR":
-                applicable.append({
-                    "agreement": "US-Morocco FTA",
-                    "markets": "United States",
-                    "indicative_dd_reduction": "0-100% (phased)",
-                    "notes": "Comprehensive bilateral FTA since 2006",
-                })
+                applicable.append(
+                    {
+                        "agreement": "US-Morocco FTA",
+                        "markets": "United States",
+                        "indicative_dd_reduction": "0-100% (phased)",
+                        "notes": "Comprehensive bilateral FTA since 2006",
+                    }
+                )
 
             # QIZ (Egypt specific)
             if agreements.get("QIZ") and country_code == "EGY":
-                applicable.append({
-                    "agreement": "QIZ (Qualified Industrial Zones)",
-                    "markets": "United States",
-                    "indicative_dd_reduction": "0%",
-                    "notes": (
-                        "Duty-free US access for qualifying manufactured goods "
-                        "with Israeli content requirement"
-                    ),
-                })
+                applicable.append(
+                    {
+                        "agreement": "QIZ (Qualified Industrial Zones)",
+                        "markets": "United States",
+                        "indicative_dd_reduction": "0%",
+                        "notes": (
+                            "Duty-free US access for qualifying manufactured goods "
+                            "with Israeli content requirement"
+                        ),
+                    }
+                )
 
             # COMESA (Egypt)
             if agreements.get("COMESA") and country_code == "EGY":
-                applicable.append({
-                    "agreement": "COMESA Preferential Rates",
-                    "markets": "COMESA member states (21 countries)",
-                    "indicative_dd_reduction": "0-80%",
-                    "notes": "Common Market for Eastern and Southern Africa",
-                })
+                applicable.append(
+                    {
+                        "agreement": "COMESA Preferential Rates",
+                        "markets": "COMESA member states (21 countries)",
+                        "indicative_dd_reduction": "0-80%",
+                        "notes": "Common Market for Eastern and Southern Africa",
+                    }
+                )
 
             # Turkey FTA
             if agreements.get("Turkey"):
-                applicable.append({
-                    "agreement": "Turkey FTA",
-                    "markets": "Turkey",
-                    "indicative_dd_reduction": "0-100% (sector dependent)",
-                    "notes": "Bilateral FTA covering industrial and agricultural goods",
-                })
+                applicable.append(
+                    {
+                        "agreement": "Turkey FTA",
+                        "markets": "Turkey",
+                        "indicative_dd_reduction": "0-100% (sector dependent)",
+                        "notes": "Bilateral FTA covering industrial and agricultural goods",
+                    }
+                )
 
             matrix[country_code] = {
                 "applicable_agreements": applicable,
@@ -1284,91 +1370,151 @@ class RegionalIntelligenceService:
         sector_profiles: Dict[str, Dict[str, Dict[str, Any]]] = {
             "automotive": {
                 "DZA": {
-                    "cost_structure": 6, "market_access": 4, "regulatory": 5, "infrastructure": 5,
+                    "cost_structure": 6,
+                    "market_access": 4,
+                    "regulatory": 5,
+                    "infrastructure": 5,
                     "notes": "Growing domestic market; limited export FTAs",
                 },
                 "MAR": {
-                    "cost_structure": 7, "market_access": 9, "regulatory": 8, "infrastructure": 8,
+                    "cost_structure": 7,
+                    "market_access": 9,
+                    "regulatory": 8,
+                    "infrastructure": 8,
                     "notes": "Renault, Stellantis plants; Tanger-Med hub for EU export",
                 },
                 "EGY": {
-                    "cost_structure": 8, "market_access": 7, "regulatory": 7, "infrastructure": 7,
+                    "cost_structure": 8,
+                    "market_access": 7,
+                    "regulatory": 7,
+                    "infrastructure": 7,
                     "notes": "Large domestic market; growing regional hub",
                 },
                 "TUN": {
-                    "cost_structure": 7, "market_access": 8, "regulatory": 7, "infrastructure": 7,
+                    "cost_structure": 7,
+                    "market_access": 8,
+                    "regulatory": 7,
+                    "infrastructure": 7,
                     "notes": "Established components cluster; EU proximity",
                 },
             },
             "textile": {
                 "DZA": {
-                    "cost_structure": 6, "market_access": 4, "regulatory": 5, "infrastructure": 5,
+                    "cost_structure": 6,
+                    "market_access": 4,
+                    "regulatory": 5,
+                    "infrastructure": 5,
                     "notes": "Large workforce; limited EU/US access",
                 },
                 "MAR": {
-                    "cost_structure": 7, "market_access": 9, "regulatory": 8, "infrastructure": 8,
+                    "cost_structure": 7,
+                    "market_access": 9,
+                    "regulatory": 8,
+                    "infrastructure": 8,
                     "notes": "Fast-fashion cluster; EU Association near-shoring",
                 },
                 "EGY": {
-                    "cost_structure": 9, "market_access": 8, "regulatory": 7, "infrastructure": 7,
+                    "cost_structure": 9,
+                    "market_access": 8,
+                    "regulatory": 7,
+                    "infrastructure": 7,
                     "notes": "QIZ for US duty-free; very competitive labour cost",
                 },
                 "TUN": {
-                    "cost_structure": 8, "market_access": 9, "regulatory": 8, "infrastructure": 7,
+                    "cost_structure": 8,
+                    "market_access": 9,
+                    "regulatory": 8,
+                    "infrastructure": 7,
                     "notes": "Offshore regime; most advanced EU integration for textile",
                 },
             },
             "agriculture": {
                 "DZA": {
-                    "cost_structure": 7, "market_access": 4, "regulatory": 5, "infrastructure": 5,
+                    "cost_structure": 7,
+                    "market_access": 4,
+                    "regulatory": 5,
+                    "infrastructure": 5,
                     "notes": "Fertile Mitidja plain; subsidized inputs; limited exports",
                 },
                 "MAR": {
-                    "cost_structure": 8, "market_access": 9, "regulatory": 8, "infrastructure": 8,
+                    "cost_structure": 8,
+                    "market_access": 9,
+                    "regulatory": 8,
+                    "infrastructure": 8,
                     "notes": "Plan Maroc Vert; EU seasonal workers; citrus/olive exports",
                 },
                 "EGY": {
-                    "cost_structure": 8, "market_access": 7, "regulatory": 7, "infrastructure": 7,
+                    "cost_structure": 8,
+                    "market_access": 7,
+                    "regulatory": 7,
+                    "infrastructure": 7,
                     "notes": "Nile delta fertility; COMESA/GAFTA market access",
                 },
                 "TUN": {
-                    "cost_structure": 7, "market_access": 8, "regulatory": 7, "infrastructure": 6,
+                    "cost_structure": 7,
+                    "market_access": 8,
+                    "regulatory": 7,
+                    "infrastructure": 6,
                     "notes": "World's largest olive oil exporter; EU origin quotas",
                 },
             },
             "renewable_energy": {
                 "DZA": {
-                    "cost_structure": 9, "market_access": 5, "regulatory": 6, "infrastructure": 6,
+                    "cost_structure": 9,
+                    "market_access": 5,
+                    "regulatory": 6,
+                    "infrastructure": 6,
                     "notes": "World's largest solar potential; Desertec concept",
                 },
                 "MAR": {
-                    "cost_structure": 8, "market_access": 9, "regulatory": 9, "infrastructure": 8,
+                    "cost_structure": 8,
+                    "market_access": 9,
+                    "regulatory": 9,
+                    "infrastructure": 8,
                     "notes": "Noor solar complex; 52% renewable target 2030; EU grid connection",
                 },
                 "EGY": {
-                    "cost_structure": 8, "market_access": 7, "regulatory": 7, "infrastructure": 7,
+                    "cost_structure": 8,
+                    "market_access": 7,
+                    "regulatory": 7,
+                    "infrastructure": 7,
                     "notes": "Benban solar park; wind corridor Zafarana/Gulf of Suez",
                 },
                 "TUN": {
-                    "cost_structure": 7, "market_access": 8, "regulatory": 7, "infrastructure": 6,
+                    "cost_structure": 7,
+                    "market_access": 8,
+                    "regulatory": 7,
+                    "infrastructure": 6,
                     "notes": "TuNur solar export project; EU green hydrogen potential",
                 },
             },
             "ict": {
                 "DZA": {
-                    "cost_structure": 7, "market_access": 4, "regulatory": 5, "infrastructure": 5,
+                    "cost_structure": 7,
+                    "market_access": 4,
+                    "regulatory": 5,
+                    "infrastructure": 5,
                     "notes": "Growing tech ecosystem; large educated workforce",
                 },
                 "MAR": {
-                    "cost_structure": 7, "market_access": 8, "regulatory": 8, "infrastructure": 8,
+                    "cost_structure": 7,
+                    "market_access": 8,
+                    "regulatory": 8,
+                    "infrastructure": 8,
                     "notes": "Casablanca Finance City; nearshore EU IT services",
                 },
                 "EGY": {
-                    "cost_structure": 8, "market_access": 7, "regulatory": 7, "infrastructure": 7,
+                    "cost_structure": 8,
+                    "market_access": 7,
+                    "regulatory": 7,
+                    "infrastructure": 7,
                     "notes": "Smart Village tech park; large developer pool; lower costs",
                 },
                 "TUN": {
-                    "cost_structure": 7, "market_access": 8, "regulatory": 7, "infrastructure": 7,
+                    "cost_structure": 7,
+                    "market_access": 8,
+                    "regulatory": 7,
+                    "infrastructure": 7,
                     "notes": "Strong EU IT service export; offshore regime for IT firms",
                 },
             },
@@ -1388,7 +1534,13 @@ class RegionalIntelligenceService:
             if profile is None:
                 # Generic fallback
                 profile = {
-                    c: {"cost_structure": 6, "market_access": 6, "regulatory": 6, "infrastructure": 6, "notes": ""}
+                    c: {
+                        "cost_structure": 6,
+                        "market_access": 6,
+                        "regulatory": 6,
+                        "infrastructure": 6,
+                        "notes": "",
+                    }
                     for c in NORTH_AFRICA_COUNTRIES
                 }
 
@@ -1401,15 +1553,17 @@ class RegionalIntelligenceService:
                     + scores.get("regulatory", 5) * 0.25
                     + scores.get("infrastructure", 5) * 0.20
                 )
-                sector_results.append({
-                    "country_code": country_code,
-                    "combined_score": round(combined, 2),
-                    "cost_structure": scores.get("cost_structure", 5),
-                    "market_access": scores.get("market_access", 5),
-                    "regulatory_environment": scores.get("regulatory", 5),
-                    "infrastructure_quality": scores.get("infrastructure", 5),
-                    "notes": scores.get("notes", ""),
-                })
+                sector_results.append(
+                    {
+                        "country_code": country_code,
+                        "combined_score": round(combined, 2),
+                        "cost_structure": scores.get("cost_structure", 5),
+                        "market_access": scores.get("market_access", 5),
+                        "regulatory_environment": scores.get("regulatory", 5),
+                        "infrastructure_quality": scores.get("infrastructure", 5),
+                        "notes": scores.get("notes", ""),
+                    }
+                )
 
             sector_results.sort(key=lambda x: x["combined_score"], reverse=True)
             opportunity_map[sector] = {
@@ -1429,8 +1583,7 @@ class RegionalIntelligenceService:
             "sectors_analyzed": sectors,
             "opportunity_map": opportunity_map,
             "overall_ranking": [
-                {"country_code": c, "total_score": round(s, 2)}
-                for c, s in overall_ranking
+                {"country_code": c, "total_score": round(s, 2)} for c, s in overall_ranking
             ],
             "best_overall": overall_ranking[0][0] if overall_ranking else None,
             "generated_at": datetime.utcnow().isoformat(),

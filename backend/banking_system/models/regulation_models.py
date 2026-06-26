@@ -1,12 +1,15 @@
 """
 Pydantic models for foreign-exchange regulations and domiciliation
 """
-from pydantic import BaseModel, Field, model_validator
+
 from typing import List, Optional
+
+from pydantic import BaseModel, Field, model_validator
 
 
 class DomiciliationRule(BaseModel):
     """Règle de domiciliation bancaire pour une opération d'import/export"""
+
     required: bool = Field(..., description="Domiciliation obligatoire (true/false)")
     conditional: bool = Field(default=False, description="Domiciliation conditionnelle")
     threshold_usd: Optional[float] = Field(
@@ -25,6 +28,7 @@ class DomiciliationRule(BaseModel):
 
 class ForexRegulation(BaseModel):
     """Réglementation de change pour un pays"""
+
     regulation_level: str = Field(
         ...,
         description="Niveau: strict | moderate | liberal",
@@ -64,6 +68,7 @@ class ImportFormalities(BaseModel):
     reste `None` lorsque la source ne précise pas de délai réglementaire de
     transfert propre à l'importation, distinct du délai de rapatriement export.
     """
+
     domiciliation_required: bool = False
     domiciliation_conditional: bool = False
     domiciliation_threshold_usd: Optional[float] = None
@@ -92,6 +97,7 @@ class ExportFormalities(BaseModel):
     Dérivé automatiquement de `DomiciliationRule` / `ForexRegulation` (mêmes
     données sources, restructurées par sens de flux).
     """
+
     domiciliation_required: bool = False
     domiciliation_conditional: bool = False
     domiciliation_threshold_usd: Optional[float] = None
@@ -107,6 +113,7 @@ class ExportFormalities(BaseModel):
 
 class ExchangeRateInfo(BaseModel):
     """Informations sur le taux de change d'une devise locale par rapport au USD"""
+
     currency_code: str = Field(..., description="Code ISO 4217 de la devise locale")
     currency_name: str = Field(..., description="Nom de la devise locale")
     rate_usd: Optional[float] = Field(
@@ -133,6 +140,7 @@ class ExchangeRateInfo(BaseModel):
 
 class CountryForexProfile(BaseModel):
     """Profil complet de réglementation des changes pour un pays"""
+
     country_code: str
     country_name: str
     central_bank_name: str

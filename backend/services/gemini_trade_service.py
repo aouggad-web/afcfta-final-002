@@ -4,16 +4,19 @@ Uses Google Gemini 2.0 Flash via google-genai SDK
 IMPROVED: Based on AI Studio app prompts for better data quality
 NOW WITH REDIS CACHING for optimized performance
 """
-import os
+
 import json
 import logging
-from typing import Dict, Optional
+import os
 from datetime import datetime, timezone
+from typing import Dict, Optional
+
 from dotenv import load_dotenv
 
 try:
     from google import genai
     from google.genai import types as genai_types
+
     GENAI_AVAILABLE = True
 except ImportError:
     genai = None
@@ -100,10 +103,7 @@ class GeminiTradeService:
         return response.text
 
     async def analyze_trade_opportunities(
-        self,
-        country_name: str,
-        mode: str = "export",
-        lang: str = "fr"
+        self, country_name: str, mode: str = "export", lang: str = "fr"
     ) -> Dict:
         """
         Analyze trade opportunities for a country using AI
@@ -293,11 +293,7 @@ IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats atte
             logger.error(f"Error in trade opportunity analysis: {str(e)}")
             return {"error": str(e), "opportunities": []}
 
-    async def get_country_economic_profile(
-        self,
-        country_name: str,
-        lang: str = "fr"
-    ) -> Dict:
+    async def get_country_economic_profile(self, country_name: str, lang: str = "fr") -> Dict:
         """
         Generate comprehensive economic profile for a country
         """
@@ -391,11 +387,7 @@ Réponds en JSON valide uniquement.
             logger.error(f"Error generating country profile: {str(e)}")
             return {"error": str(e)}
 
-    async def analyze_product_by_hs_code(
-        self,
-        hs_code: str,
-        lang: str = "fr"
-    ) -> Dict:
+    async def analyze_product_by_hs_code(self, hs_code: str, lang: str = "fr") -> Dict:
         """
         Analyze a product by HS code for African trade
         """
@@ -490,11 +482,7 @@ Réponds en JSON valide uniquement.
             logger.error(f"Error analyzing product {hs_code}: {str(e)}")
             return {"error": str(e)}
 
-    async def get_trade_balance_analysis(
-        self,
-        country_name: str,
-        lang: str = "fr"
-    ) -> Dict:
+    async def get_trade_balance_analysis(self, country_name: str, lang: str = "fr") -> Dict:
         """
         Get trade balance history and analysis for a country
         """
@@ -552,10 +540,7 @@ Réponds en JSON valide uniquement.
             logger.error(f"Error getting trade balance: {str(e)}")
             return {"error": str(e)}
 
-    async def get_trade_summary(
-        self,
-        lang: str = "fr"
-    ) -> Dict:
+    async def get_trade_summary(self, lang: str = "fr") -> Dict:
         """
         Generate a comprehensive African trade summary for the "Vue d'ensemble" tab
         """
@@ -628,11 +613,7 @@ Réponds en JSON valide uniquement.
             logger.error(f"Error generating trade summary: {str(e)}")
             return {"error": str(e)}
 
-    async def get_value_chains_analysis(
-        self,
-        sector: str = None,
-        lang: str = "fr"
-    ) -> Dict:
+    async def get_value_chains_analysis(self, sector: str = None, lang: str = "fr") -> Dict:
         """
         Generate value chain analysis for African sectors
         """
@@ -649,7 +630,11 @@ Réponds en JSON valide uniquement.
 
         try:
             lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
-            sector_filter = f"Concentre-toi sur le secteur {sector}." if sector else "Analyse les 6 principales chaînes de valeur africaines."
+            sector_filter = (
+                f"Concentre-toi sur le secteur {sector}."
+                if sector
+                else "Analyse les 6 principales chaînes de valeur africaines."
+            )
 
             prompt = f"""
 {lang_instruction}
@@ -742,7 +727,7 @@ Réponds en JSON valide uniquement.
             cleaned = cleaned.strip()
 
             json_match = None
-            for start_char, end_char in [('{', '}'), ('[', ']')]:
+            for start_char, end_char in [("{", "}"), ("[", "]")]:
                 start_idx = cleaned.find(start_char)
                 if start_idx != -1:
                     depth = 0
@@ -752,7 +737,7 @@ Réponds en JSON valide uniquement.
                         elif char == end_char:
                             depth -= 1
                             if depth == 0:
-                                json_match = cleaned[start_idx:start_idx + i + 1]
+                                json_match = cleaned[start_idx : start_idx + i + 1]
                                 break
                     if json_match:
                         break
@@ -764,10 +749,7 @@ Réponds en JSON valide uniquement.
 
         except json.JSONDecodeError as e:
             logger.warning(f"Failed to parse JSON response: {e}")
-            return {
-                "raw_response": response,
-                "parse_error": str(e)
-            }
+            return {"raw_response": response, "parse_error": str(e)}
 
 
 # Singleton instance

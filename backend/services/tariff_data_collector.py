@@ -1,10 +1,10 @@
-import logging
-import json
-import os
 import asyncio
-from typing import Dict, List, Optional, Any, Tuple
+import json
+import logging
+import os
 from datetime import datetime
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -26,20 +26,20 @@ class TariffDataCollector:
     def _load_modules(self):
         if self._loaded:
             return
-        from etl.hs6_csv_database import HS6_CSV_DATABASE
-        from etl.hs6_database import HS6_DATABASE, SUB_POSITION_TYPES
+        from etl.country_hs6_detailed import COUNTRY_HS6_DETAILED
         from etl.country_tariffs_complete import (
+            COUNTRY_OTHER_TAXES,
             COUNTRY_TARIFFS_MAP,
             COUNTRY_VAT_RATES,
-            COUNTRY_OTHER_TAXES,
             ISO2_TO_ISO3,
-            get_tariff_rate_for_country,
-            get_zlecaf_tariff_rate,
-            get_vat_rate_for_country,
             get_other_taxes_for_country,
             get_product_category,
+            get_tariff_rate_for_country,
+            get_vat_rate_for_country,
+            get_zlecaf_tariff_rate,
         )
-        from etl.country_hs6_detailed import COUNTRY_HS6_DETAILED
+        from etl.hs6_csv_database import HS6_CSV_DATABASE
+        from etl.hs6_database import HS6_DATABASE, SUB_POSITION_TYPES
 
         self._hs6_csv_db = HS6_CSV_DATABASE
         self._hs6_db = HS6_DATABASE
@@ -56,7 +56,8 @@ class TariffDataCollector:
         self._get_product_category = get_product_category
 
         try:
-            from etl.country_taxes_algeria import get_dza_taxes_for_hs6, get_dza_sub_position_dd
+            from etl.country_taxes_algeria import get_dza_sub_position_dd, get_dza_taxes_for_hs6
+
             self._country_tax_modules["DZA"] = get_dza_taxes_for_hs6
             self._country_sp_dd_modules = {"DZA": get_dza_sub_position_dd}
         except ImportError:
@@ -64,7 +65,15 @@ class TariffDataCollector:
 
         self._loaded = True
 
-    def _get_country_taxes(self, country_code: str, hs6_code: str, default_dd: float, default_vat: float, default_other: float, default_other_detail: dict) -> dict:
+    def _get_country_taxes(
+        self,
+        country_code: str,
+        hs6_code: str,
+        default_dd: float,
+        default_vat: float,
+        default_other: float,
+        default_other_detail: dict,
+    ) -> dict:
         tax_func = self._country_tax_modules.get(country_code)
         if tax_func:
             return tax_func(hs6_code)
@@ -73,22 +82,34 @@ class TariffDataCollector:
         taxes = []
         taxes.append({"tax": "D.D", "rate": default_dd, "observation": "Droit de Douane"})
 
-        named_taxes = {k: v for k, v in default_other_detail.items() if k != "other" and isinstance(v, (int, float)) and v > 0}
+        named_taxes = {
+            k: v
+            for k, v in default_other_detail.items()
+            if k != "other" and isinstance(v, (int, float)) and v > 0
+        }
         for tax_name, rate in named_taxes.items():
             taxes.append({"tax": tax_name.upper(), "rate": rate, "observation": ""})
 
-        taxes.append({"tax": "T.V.A", "rate": default_vat, "observation": "Taxe sur la Valeur Ajoutée"})
+        taxes.append(
+            {"tax": "T.V.A", "rate": default_vat, "observation": "Taxe sur la Valeur Ajoutée"}
+        )
 
         total = default_dd + default_vat + default_other
-        advantages = [{
-            "tax": "D.D",
-            "rate": 0.0,
-            "condition_fr": "Certificat d'Origine dans le cadre ZLECAf - Exonération DD",
-            "condition_en": "Certificate of Origin under AfCFTA - DD Exemption",
-        }]
+        advantages = [
+            {
+                "tax": "D.D",
+                "rate": 0.0,
+                "condition_fr": "Certificat d'Origine dans le cadre ZLECAf - Exonération DD",
+                "condition_en": "Certificate of Origin under AfCFTA - DD Exemption",
+            }
+        ]
 
         formalities = [
-            {"code": "IMPDEC", "document_fr": "Déclaration d'Importation", "document_en": "Import Declaration"},
+            {
+                "code": "IMPDEC",
+                "document_fr": "Déclaration d'Importation",
+                "document_en": "Import Declaration",
+            },
         ]
 
         return {
@@ -103,7 +124,9 @@ class TariffDataCollector:
             "administrative_formalities": formalities,
         }
 
-    def _generate_sub_positions(self, hs6_code: str, hs6_info: dict, dd_rate: float, country_code: str, detailed: dict) -> List[dict]:
+    def _generate_sub_positions(
+        self, hs6_code: str, hs6_info: dict, dd_rate: float, country_code: str, detailed: dict
+    ) -> List[dict]:
         sp_dd_func = self._country_sp_dd_modules.get(country_code)
 
         if detailed and "sub_positions" in detailed:
@@ -118,14 +141,16 @@ class TariffDataCollector:
                     sp_dd = dd_rate
                 if isinstance(sp_dd, float) and sp_dd < 1:
                     sp_dd = round(sp_dd * 100, 2)
-                subs.append({
-                    "code": sp_code,
-                    "digits": len(sp_code),
-                    "dd": sp_dd,
-                    "description_fr": sp_data.get("description_fr", ""),
-                    "description_en": sp_data.get("description_en", ""),
-                    "source": f"Tarif national détaillé {country_code}",
-                })
+                subs.append(
+                    {
+                        "code": sp_code,
+                        "digits": len(sp_code),
+                        "dd": sp_dd,
+                        "description_fr": sp_data.get("description_fr", ""),
+                        "description_en": sp_data.get("description_en", ""),
+                        "source": f"Tarif national détaillé {country_code}",
+                    }
+                )
             return subs
 
         sp_types = hs6_info.get("typical_sub_position_types", [])
@@ -150,14 +175,16 @@ class TariffDataCollector:
                     sp_dd = sp_dd_func(hs6_code, sp_type, suffix, dd_rate)
                 else:
                     sp_dd = dd_rate
-                subs.append({
-                    "code": full_code,
-                    "digits": len(full_code),
-                    "dd": sp_dd,
-                    "description_fr": f"{desc_fr} - {opt_fr}" if opt_fr else desc_fr,
-                    "description_en": f"{desc_en} - {opt_en}" if opt_en else desc_en,
-                    "source": f"Nomenclature nationale {country_code} (type: {sp_type})",
-                })
+                subs.append(
+                    {
+                        "code": full_code,
+                        "digits": len(full_code),
+                        "dd": sp_dd,
+                        "description_fr": f"{desc_fr} - {opt_fr}" if opt_fr else desc_fr,
+                        "description_en": f"{desc_en} - {opt_en}" if opt_en else desc_en,
+                        "source": f"Nomenclature nationale {country_code} (type: {sp_type})",
+                    }
+                )
             break
 
         return subs
@@ -196,8 +223,7 @@ class TariffDataCollector:
             zlecaf_rate_pct = round(zlecaf_rate * 100, 2)
 
             country_taxes = self._get_country_taxes(
-                country_code, hs6_code,
-                dd_rate_pct, vat_pct, other_pct, other_detail
+                country_code, hs6_code, dd_rate_pct, vat_pct, other_pct, other_detail
             )
 
             final_dd = country_taxes["dd_rate"]
@@ -226,19 +252,24 @@ class TariffDataCollector:
                 "zlecaf_source": zlecaf_source,
                 "vat_rate": country_taxes["tva_rate"],
                 "other_taxes_rate": round(
-                    country_taxes.get("daps_rate", 0) +
-                    country_taxes.get("prct_rate", 0) +
-                    country_taxes.get("tcs_rate", 0), 2
+                    country_taxes.get("daps_rate", 0)
+                    + country_taxes.get("prct_rate", 0)
+                    + country_taxes.get("tcs_rate", 0),
+                    2,
                 ),
                 "taxes_detail": country_taxes["taxes_detail"],
                 "total_taxes_pct": country_taxes["total_taxes_pct"],
                 "fiscal_advantages": country_taxes["fiscal_advantages"],
                 "administrative_formalities": country_taxes["administrative_formalities"],
                 "total_import_taxes": country_taxes["total_taxes_pct"],
-                "zlecaf_total_taxes": round(zlecaf_rate_pct + country_taxes["tva_rate"] +
-                    country_taxes.get("daps_rate", 0) +
-                    country_taxes.get("prct_rate", 0) +
-                    country_taxes.get("tcs_rate", 0), 2),
+                "zlecaf_total_taxes": round(
+                    zlecaf_rate_pct
+                    + country_taxes["tva_rate"]
+                    + country_taxes.get("daps_rate", 0)
+                    + country_taxes.get("prct_rate", 0)
+                    + country_taxes.get("tcs_rate", 0),
+                    2,
+                ),
             }
 
             if sub_positions:
@@ -271,11 +302,17 @@ class TariffDataCollector:
                 "total_tariff_lines": len(tariff_lines),
                 "total_sub_positions": total_sub_positions,
                 "total_positions": len(tariff_lines) + total_sub_positions,
-                "lines_with_sub_positions": sum(1 for l in tariff_lines if l.get("has_sub_positions")),
+                "lines_with_sub_positions": sum(
+                    1 for l in tariff_lines if l.get("has_sub_positions")
+                ),
                 "vat_rate_pct": country_taxes["tva_rate"] if tariff_lines else vat_pct,
                 "vat_source": vat_source,
                 "other_taxes_pct": round(other_rate * 100, 2),
-                "other_taxes_detail": other_taxes_summary if other_taxes_summary else {k: v for k, v in other_detail.items() if k != "other"},
+                "other_taxes_detail": (
+                    other_taxes_summary
+                    if other_taxes_summary
+                    else {k: v for k, v in other_detail.items() if k != "other"}
+                ),
                 "dd_rate_range": {
                     "min": min(dd_rates) if dd_rates else 0,
                     "max": max(dd_rates) if dd_rates else 0,
@@ -294,14 +331,18 @@ class TariffDataCollector:
         filepath = DATA_DIR / f"{country_code.upper()}_tariffs.json"
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
-        logger.info(f"Saved {len(data.get('tariff_lines', []))} tariff lines + {data['summary'].get('total_sub_positions', 0)} sub-positions for {country_code}")
+        logger.info(
+            f"Saved {len(data.get('tariff_lines', []))} tariff lines + {data['summary'].get('total_sub_positions', 0)} sub-positions for {country_code}"
+        )
         return str(filepath)
 
     @staticmethod
     def _is_generic_type_label(text: str) -> bool:
         return text.endswith(" - Type 1") or text.endswith(" - Type 2")
 
-    def _resolve_official_sub_position_descriptions(self, codes: List[str]) -> Dict[str, Dict[str, str]]:
+    def _resolve_official_sub_position_descriptions(
+        self, codes: List[str]
+    ) -> Dict[str, Dict[str, str]]:
         """
         Résout les codes 10 chiffres demandés en s'appuyant sur les jeux locaux
         qui contiennent déjà des libellés nationaux détaillés.
@@ -356,8 +397,8 @@ class TariffDataCollector:
             sp.get("code", "")
             for line in data.get("tariff_lines", [])
             for sp in line.get("sub_positions", [])
-            if self._is_generic_type_label(sp.get("description_fr", "")) or
-            self._is_generic_type_label(sp.get("description_en", ""))
+            if self._is_generic_type_label(sp.get("description_fr", ""))
+            or self._is_generic_type_label(sp.get("description_en", ""))
         ]
         official_index = self._resolve_official_sub_position_descriptions(generic_codes)
 
@@ -404,7 +445,9 @@ class TariffDataCollector:
             "filepath": filepath,
         }
 
-    async def collect_all_countries(self, country_codes: Optional[List[str]] = None, max_concurrency: int = 5) -> Dict[str, Any]:
+    async def collect_all_countries(
+        self, country_codes: Optional[List[str]] = None, max_concurrency: int = 5
+    ) -> Dict[str, Any]:
         self._load_modules()
 
         if not country_codes:
@@ -439,6 +482,7 @@ class TariffDataCollector:
 
 
 _collector = None
+
 
 def get_collector() -> TariffDataCollector:
     global _collector

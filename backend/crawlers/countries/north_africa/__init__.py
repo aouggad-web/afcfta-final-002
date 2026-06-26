@@ -11,9 +11,9 @@ Covers all 7 UMA/AMU + extended North African countries:
   MRT - Mauritania
 """
 
-from .uma_constants import UMA_COUNTRIES, UMA_TRADE_BLOCS, NORTH_AFRICA_EXTENDED
+from .investment_zones import get_all_sez_data, get_investment_zones
 from .tariff_structures import MOROCCO_TARIFFS, get_country_tariff_profile
-from .investment_zones import get_investment_zones, get_all_sez_data
+from .uma_constants import NORTH_AFRICA_EXTENDED, UMA_COUNTRIES, UMA_TRADE_BLOCS
 
 __all__ = [
     "UMA_COUNTRIES",

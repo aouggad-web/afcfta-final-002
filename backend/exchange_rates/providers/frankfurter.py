@@ -2,6 +2,7 @@
 Frankfurter provider – free ECB-based rates, no API key required.
 Endpoint: https://api.frankfurter.app/latest?from=USD
 """
+
 import logging
 from typing import Dict, Optional
 
