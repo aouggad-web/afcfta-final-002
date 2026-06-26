@@ -6,6 +6,7 @@ Vérifie le profil fiscal tunisien (DD / DC / FODEC / TCL / TVA) :
   - tous les taux proviennent du crawl (aucun fixe inventé) → garde-fous OK
   - HS6 extrait des 11 digits NDP
 """
+
 import sys
 from pathlib import Path
 
@@ -14,22 +15,35 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from adapters.raw_crawl_adapter import (
-    convert_with_profile, _validate_profile, PROFILES,
+    PROFILES,
+    _validate_profile,
+    convert_with_profile,
 )
 from schemas.canonical_model import DutyBasis, MeasureType
 
 
 def _crawl(positions):
     return {
-        "country_code": "TUN", "country_name": "Tunisia",
+        "country_code": "TUN",
+        "country_name": "Tunisia",
         "source": "Douane Tunisienne — tarifweb (douane.gov.tn)",
         "source_url": "https://www.douane.gov.tn/tarifwebnew/getresultat.php",
-        "crawled_at": "2026-06-15T12:00:00+00:00", "data_type": "raw_crawl",
-        "positions": positions + [
-            {"code": f"99{i:09d}", "description_en": f"x{i}",
-             "dd_rate": [0.0, 10.0, 20.0, 36.0][i % 4], "dd_rate_raw": "x",
-             "dc_rate": None, "fodec_rate": 1.0, "tcl_rate": None,
-             "vat_rate": 19.0, "chapter": "99", "digits": 11}
+        "crawled_at": "2026-06-15T12:00:00+00:00",
+        "data_type": "raw_crawl",
+        "positions": positions
+        + [
+            {
+                "code": f"99{i:09d}",
+                "description_en": f"x{i}",
+                "dd_rate": [0.0, 10.0, 20.0, 36.0][i % 4],
+                "dd_rate_raw": "x",
+                "dc_rate": None,
+                "fodec_rate": 1.0,
+                "tcl_rate": None,
+                "vat_rate": 19.0,
+                "chapter": "99",
+                "digits": 11,
+            }
             for i in range(600)
         ],
     }
@@ -47,12 +61,25 @@ def test_customs_duty_from_crawl():
 
 class TestTunStandard:
     def setup_method(self):
-        recs = convert_with_profile(_crawl([
-            {"code": "01012100000", "description_en": "Chevaux reproducteurs",
-             "dd_rate": 0.0, "dd_rate_raw": "0 %", "dc_rate": None,
-             "fodec_rate": 1.0, "tcl_rate": None, "vat_rate": 19.0,
-             "chapter": "01", "digits": 11},
-        ]), PROFILES["TUN"])
+        recs = convert_with_profile(
+            _crawl(
+                [
+                    {
+                        "code": "01012100000",
+                        "description_en": "Chevaux reproducteurs",
+                        "dd_rate": 0.0,
+                        "dd_rate_raw": "0 %",
+                        "dc_rate": None,
+                        "fodec_rate": 1.0,
+                        "tcl_rate": None,
+                        "vat_rate": 19.0,
+                        "chapter": "01",
+                        "digits": 11,
+                    },
+                ]
+            ),
+            PROFILES["TUN"],
+        )
         self.r = recs[0]
         self.m = {x.code: x for x in self.r.measures}
 
@@ -86,12 +113,25 @@ class TestTunStandard:
 
 class TestTunWithExcise:
     def setup_method(self):
-        recs = convert_with_profile(_crawl([
-            {"code": "22030000000", "description_en": "Bière",
-             "dd_rate": 36.0, "dd_rate_raw": "36 %", "dc_rate": 25.0,
-             "fodec_rate": 1.0, "tcl_rate": None, "vat_rate": 19.0,
-             "chapter": "22", "digits": 11},
-        ]), PROFILES["TUN"])
+        recs = convert_with_profile(
+            _crawl(
+                [
+                    {
+                        "code": "22030000000",
+                        "description_en": "Bière",
+                        "dd_rate": 36.0,
+                        "dd_rate_raw": "36 %",
+                        "dc_rate": 25.0,
+                        "fodec_rate": 1.0,
+                        "tcl_rate": None,
+                        "vat_rate": 19.0,
+                        "chapter": "22",
+                        "digits": 11,
+                    },
+                ]
+            ),
+            PROFILES["TUN"],
+        )
         self.r = recs[0]
         self.m = {x.code: x for x in self.r.measures}
 
@@ -109,10 +149,24 @@ class TestTunWithExcise:
 
 
 def test_reduced_vat_preserved():
-    recs = convert_with_profile(_crawl([
-        {"code": "30049000000", "description_en": "Médicaments", "dd_rate": 0.0,
-         "dd_rate_raw": "0 %", "dc_rate": None, "fodec_rate": None,
-         "tcl_rate": None, "vat_rate": 7.0, "chapter": "30", "digits": 11},
-    ]), PROFILES["TUN"])
+    recs = convert_with_profile(
+        _crawl(
+            [
+                {
+                    "code": "30049000000",
+                    "description_en": "Médicaments",
+                    "dd_rate": 0.0,
+                    "dd_rate_raw": "0 %",
+                    "dc_rate": None,
+                    "fodec_rate": None,
+                    "tcl_rate": None,
+                    "vat_rate": 7.0,
+                    "chapter": "30",
+                    "digits": 11,
+                },
+            ]
+        ),
+        PROFILES["TUN"],
+    )
     vat = next(m for m in recs[0].measures if m.code == "T.V.A")
     assert vat.rate_pct == 7.0

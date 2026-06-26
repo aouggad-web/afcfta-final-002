@@ -8,6 +8,7 @@ réductible en pourcentage :
   - « free »                     → exonéré réel (0 %)
 Et vérifie la structure des 5 profils SACU (TEC commun + TVA domestique).
 """
+
 import sys
 from pathlib import Path
 
@@ -16,10 +17,15 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from adapters.raw_crawl_adapter import (
-    convert_with_profile, _parse_specific_duty, PROFILES,
+    PROFILES,
+    _parse_specific_duty,
+    convert_with_profile,
 )
 from schemas.canonical_model import (
-    DataStatus, RateType, DutyBasis, MeasureType,
+    DataStatus,
+    DutyBasis,
+    MeasureType,
+    RateType,
 )
 
 SACU_MEMBERS = ["ZAF", "NAM", "BWA", "LSO", "SWZ"]
@@ -27,15 +33,19 @@ SACU_MEMBERS = ["ZAF", "NAM", "BWA", "LSO", "SWZ"]
 
 # ── Parseur de droit spécifique ──────────────────────────────────────────────
 
+
 class TestParseSpecificDuty:
-    @pytest.mark.parametrize("raw,amount,unit", [
-        ("5,5c/kg", 5.5, "c/kg"),
-        ("450c/kg", 450.0, "c/kg"),
-        ("8c/kg", 8.0, "c/kg"),
-        ("2,75c/kg", 2.75, "c/kg"),
-        ("483,72c/kg", 483.72, "c/kg"),
-        ("12c/u", 12.0, "c/u"),
-    ])
+    @pytest.mark.parametrize(
+        "raw,amount,unit",
+        [
+            ("5,5c/kg", 5.5, "c/kg"),
+            ("450c/kg", 450.0, "c/kg"),
+            ("8c/kg", 8.0, "c/kg"),
+            ("2,75c/kg", 2.75, "c/kg"),
+            ("483,72c/kg", 483.72, "c/kg"),
+            ("12c/u", 12.0, "c/u"),
+        ],
+    )
     def test_valid_specific(self, raw, amount, unit):
         assert _parse_specific_duty(raw) == (amount, unit)
 
@@ -46,37 +56,70 @@ class TestParseSpecificDuty:
 
 # ── Fixture crawl SACU minimal couvrant tous les cas ─────────────────────────
 
+
 def _sacu_crawl() -> dict:
     positions = [
         # ad valorem normal
-        {"code": "010121", "description_en": "Breeding animals",
-         "dd_rate": 0.0, "dd_rate_raw": "free", "chapter": "01", "digits": 6},
-        {"code": "220300", "description_en": "Beer",
-         "dd_rate": 25.0, "dd_rate_raw": "25%", "chapter": "22", "digits": 6},
+        {
+            "code": "010121",
+            "description_en": "Breeding animals",
+            "dd_rate": 0.0,
+            "dd_rate_raw": "free",
+            "chapter": "01",
+            "digits": 6,
+        },
+        {
+            "code": "220300",
+            "description_en": "Beer",
+            "dd_rate": 25.0,
+            "dd_rate_raw": "25%",
+            "chapter": "22",
+            "digits": 6,
+        },
         # droit spécifique c/kg
-        {"code": "020830", "description_en": "Primate meat",
-         "dd_rate": None, "dd_rate_raw": "8c/kg", "chapter": "02", "digits": 6},
+        {
+            "code": "020830",
+            "description_en": "Primate meat",
+            "dd_rate": None,
+            "dd_rate_raw": "8c/kg",
+            "chapter": "02",
+            "digits": 6,
+        },
         # droit composé non résolu
-        {"code": "010391", "description_en": "Swine",
-         "dd_rate": None, "dd_rate_raw": "u", "chapter": "01", "digits": 6},
+        {
+            "code": "010391",
+            "description_en": "Swine",
+            "dd_rate": None,
+            "dd_rate_raw": "u",
+            "chapter": "01",
+            "digits": 6,
+        },
     ]
     # Padding pour passer le seuil de bandes + volume
     for i in range(600):
-        positions.append({
-            "code": f"99{i:06d}", "description_en": f"x{i}",
-            "dd_rate": [0.0, 10.0, 20.0, 30.0][i % 4],
-            "dd_rate_raw": f"{[0,10,20,30][i % 4]}%",
-            "chapter": "99", "digits": 8})
+        positions.append(
+            {
+                "code": f"99{i:06d}",
+                "description_en": f"x{i}",
+                "dd_rate": [0.0, 10.0, 20.0, 30.0][i % 4],
+                "dd_rate_raw": f"{[0,10,20,30][i % 4]}%",
+                "chapter": "99",
+                "digits": 8,
+            }
+        )
     return {
-        "country_code": "ZAF", "country_name": "South Africa",
+        "country_code": "ZAF",
+        "country_name": "South Africa",
         "source": "SARS — South African Revenue Service",
         "source_url": "https://www.sars.gov.za/legal-tariff/",
         "crawled_at": "2026-06-12T21:00:00+00:00",
-        "data_type": "raw_crawl", "positions": positions,
+        "data_type": "raw_crawl",
+        "positions": positions,
     }
 
 
 # ── Traitement honnête des droits non ad valorem ─────────────────────────────
+
 
 class TestHonestDutyHandling:
     def setup_method(self):
@@ -134,6 +177,7 @@ class TestHonestDutyHandling:
 
 # ── Profils SACU : TEC commun + TVA domestique ───────────────────────────────
 
+
 class TestSacuProfiles:
     def test_all_members_registered(self):
         for iso in SACU_MEMBERS:
@@ -147,9 +191,16 @@ class TestSacuProfiles:
             assert dd.raw_field == "dd_rate_raw"
             assert dd.fixed_rate is None
 
-    @pytest.mark.parametrize("iso,vat", [
-        ("ZAF", 15.0), ("NAM", 15.0), ("BWA", 14.0), ("LSO", 15.0), ("SWZ", 15.0),
-    ])
+    @pytest.mark.parametrize(
+        "iso,vat",
+        [
+            ("ZAF", 15.0),
+            ("NAM", 15.0),
+            ("BWA", 14.0),
+            ("LSO", 15.0),
+            ("SWZ", 15.0),
+        ],
+    )
     def test_member_vat_rate(self, iso, vat):
         vat_comp = next(c for c in PROFILES[iso].components if c.code == "T.V.A")
         assert vat_comp.fixed_rate == vat
@@ -164,11 +215,11 @@ class TestSacuProfiles:
 
     def test_real_crawl_all_members(self):
         """Le crawl SARS réel s'applique aux 5 membres avec la bonne TVA."""
-        path = ("/root/.claude/uploads/d6b855c0-55bf-5ef4-a9c2-f54aa37badf6/"
-                "20da6e3b-zaf_raw.json")
+        path = "/root/.claude/uploads/d6b855c0-55bf-5ef4-a9c2-f54aa37badf6/" "20da6e3b-zaf_raw.json"
         if not Path(path).exists():
             pytest.skip("crawl ZAF non disponible")
         import json
+
         data = json.load(open(path))
         for iso, expected_vat in [("ZAF", 15.0), ("BWA", 14.0)]:
             recs = convert_with_profile(data, PROFILES[iso])

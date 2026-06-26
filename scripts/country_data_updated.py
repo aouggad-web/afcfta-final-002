@@ -11,21 +11,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -33,15 +21,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "DZA": {
         "name": "Algérie",
@@ -52,21 +36,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -74,15 +46,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "AGO": {
         "name": "Angola",
@@ -93,21 +61,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -115,15 +71,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "CIV": {
         "name": "Côte d’Ivoire",
@@ -134,21 +86,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -156,15 +96,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "GHA": {
         "name": "Ghana",
@@ -175,21 +111,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -197,15 +121,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "KEN": {
         "name": "Kenya",
@@ -216,21 +136,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -238,15 +146,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "MAR": {
         "name": "Maroc",
@@ -257,21 +161,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -279,15 +171,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "NGA": {
         "name": "Nigéria",
@@ -298,21 +186,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -320,15 +196,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "UGA": {
         "name": "Ouganda",
@@ -339,21 +211,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -361,15 +221,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "SEN": {
         "name": "Sénégal",
@@ -380,21 +236,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -402,15 +246,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "TZA": {
         "name": "Tanzanie",
@@ -421,21 +261,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -443,15 +271,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "TUN": {
         "name": "Tunisie",
@@ -462,21 +286,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -484,15 +296,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "EGY": {
         "name": "Égypte",
@@ -503,21 +311,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -525,15 +321,11 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
     },
     "ETH": {
         "name": "Éthiopie",
@@ -544,21 +336,9 @@ REAL_COUNTRY_DATA = {
         "africa_rank": 25,
         "growth_forecast_2024": "3.0%",
         "key_sectors": [
-            {
-                "name": "Agriculture",
-                "pib_share": 30.0,
-                "description": "Secteur primaire"
-            },
-            {
-                "name": "Services",
-                "pib_share": 45.0,
-                "description": "Secteur tertiaire"
-            },
-            {
-                "name": "Industrie",
-                "pib_share": 25.0,
-                "description": "Secteur secondaire"
-            }
+            {"name": "Agriculture", "pib_share": 30.0, "description": "Secteur primaire"},
+            {"name": "Services", "pib_share": 45.0, "description": "Secteur tertiaire"},
+            {"name": "Industrie", "pib_share": 25.0, "description": "Secteur secondaire"},
         ],
         "zlecaf_potential": {
             "level": "Modéré",
@@ -566,30 +346,30 @@ REAL_COUNTRY_DATA = {
             "key_opportunities": [
                 "Commerce intra-africain",
                 "Intégration régionale",
-                "Réduction tarifaire"
-            ]
+                "Réduction tarifaire",
+            ],
         },
-        "main_exports": [
-            "Données à compléter"
-        ],
-        "main_imports": [
-            "Données à compléter"
-        ]
-    }
+        "main_exports": ["Données à compléter"],
+        "main_imports": ["Données à compléter"],
+    },
 }
+
 
 def get_country_data(country_code):
     """Retourne les données économiques réelles d'un pays ou des données par défaut"""
-    return REAL_COUNTRY_DATA.get(country_code, {
-        'name': f'Pays {country_code}',
-        'gdp_usd_2024': 10000000000,
-        'gdp_per_capita_2024': 1000,
-        'development_index': 0.500,
-        'africa_rank': 25,
-        'population_2024': 10000000,
-        'growth_forecast_2024': '3.0%',
-        'key_sectors': [],
-        'zlecaf_potential': {'level': 'Modéré'},
-        'main_exports': [],
-        'main_imports': []
-    })
+    return REAL_COUNTRY_DATA.get(
+        country_code,
+        {
+            "name": f"Pays {country_code}",
+            "gdp_usd_2024": 10000000000,
+            "gdp_per_capita_2024": 1000,
+            "development_index": 0.500,
+            "africa_rank": 25,
+            "population_2024": 10000000,
+            "growth_forecast_2024": "3.0%",
+            "key_sectors": [],
+            "zlecaf_potential": {"level": "Modéré"},
+            "main_exports": [],
+            "main_imports": [],
+        },
+    )

@@ -21,9 +21,17 @@ from typing import Generator, Optional
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from schemas.canonical_model import (
-    CanonicalTariffLine, CommodityCode, DutyBasis, FiscalAdvantage,
-    Measure, MeasureType, Provenance, RateType, Requirement,
-    RequirementType, SCHEMA_VERSION,
+    SCHEMA_VERSION,
+    CanonicalTariffLine,
+    CommodityCode,
+    DutyBasis,
+    FiscalAdvantage,
+    Measure,
+    MeasureType,
+    Provenance,
+    RateType,
+    Requirement,
+    RequirementType,
 )
 
 # ------------------------------------------------------------------
@@ -31,12 +39,13 @@ from schemas.canonical_model import (
 # ------------------------------------------------------------------
 
 CRAWLED_DIR = Path(__file__).parent.parent.parent / "backend" / "data" / "crawled"
-OUTPUT_DIR  = Path(__file__).parent.parent / "output"
+OUTPUT_DIR = Path(__file__).parent.parent / "output"
 
 
 # ------------------------------------------------------------------
 # Normalisation des codes HS
 # ------------------------------------------------------------------
+
 
 def clean_hs(code: str) -> str:
     """Supprime les points/tirets d'un code HS."""
@@ -105,14 +114,14 @@ def classify_measure(code: str, name: str) -> MeasureType:
 # Classification des formalités administratives
 # ------------------------------------------------------------------
 
-_CERT_KW  = re.compile(r"certificat|certificate|conformit|phyto|sanit|zoo", re.IGNORECASE)
-_LIC_KW   = re.compile(r"licen[sc]e|autorisation\s+d'import|import\s+licen", re.IGNORECASE)
+_CERT_KW = re.compile(r"certificat|certificate|conformit|phyto|sanit|zoo", re.IGNORECASE)
+_LIC_KW = re.compile(r"licen[sc]e|autorisation\s+d'import|import\s+licen", re.IGNORECASE)
 _PERMIT_KW = re.compile(r"\bpermis\b|permit\b|agrément\b", re.IGNORECASE)
-_INSP_KW  = re.compile(r"inspect|contr.le|visite|analyse|test\b", re.IGNORECASE)
-_AUTH_KW  = re.compile(r"autorisation|approbation|accord\s+préalable|موافقة", re.IGNORECASE)
-_VISA_KW  = re.compile(r"\bvisa\b", re.IGNORECASE)
-_DERO_KW  = re.compile(r"déroga|dérogat", re.IGNORECASE)
-_DECL_KW  = re.compile(r"déclaration|declaration", re.IGNORECASE)
+_INSP_KW = re.compile(r"inspect|contr.le|visite|analyse|test\b", re.IGNORECASE)
+_AUTH_KW = re.compile(r"autorisation|approbation|accord\s+préalable|موافقة", re.IGNORECASE)
+_VISA_KW = re.compile(r"\bvisa\b", re.IGNORECASE)
+_DERO_KW = re.compile(r"déroga|dérogat", re.IGNORECASE)
+_DECL_KW = re.compile(r"déclaration|declaration", re.IGNORECASE)
 
 
 def classify_requirement(text: str) -> RequirementType:
@@ -141,23 +150,35 @@ def classify_requirement(text: str) -> RequirementType:
 # ------------------------------------------------------------------
 
 _AUTHORITY_MAP = [
-    (re.compile(r"m\.\s*agric|min.*(agric|élev|plant|vétéri)", re.IGNORECASE),
-     ("Ministère de l'Agriculture", "M_AGRI")),
-    (re.compile(r"min.*(santé|hygièn|health)", re.IGNORECASE),
-     ("Ministère de la Santé", "M_SANTE")),
-    (re.compile(r"min.*(comm|trade|échange|industri)", re.IGNORECASE),
-     ("Ministère du Commerce", "M_COMM")),
-    (re.compile(r"min.*(environ|écolog)", re.IGNORECASE),
-     ("Ministère de l'Environnement", "M_ENV")),
+    (
+        re.compile(r"m\.\s*agric|min.*(agric|élev|plant|vétéri)", re.IGNORECASE),
+        ("Ministère de l'Agriculture", "M_AGRI"),
+    ),
+    (
+        re.compile(r"min.*(santé|hygièn|health)", re.IGNORECASE),
+        ("Ministère de la Santé", "M_SANTE"),
+    ),
+    (
+        re.compile(r"min.*(comm|trade|échange|industri)", re.IGNORECASE),
+        ("Ministère du Commerce", "M_COMM"),
+    ),
+    (
+        re.compile(r"min.*(environ|écolog)", re.IGNORECASE),
+        ("Ministère de l'Environnement", "M_ENV"),
+    ),
     (re.compile(r"\bONSSA\b", re.IGNORECASE), ("ONSSA", "ONSSA")),
     (re.compile(r"\bNAFDAC\b", re.IGNORECASE), ("NAFDAC Nigeria", "NAFDAC")),
     (re.compile(r"\bKEBS\b", re.IGNORECASE), ("Kenya Bureau of Standards", "KEBS")),
     (re.compile(r"\bSARS\b", re.IGNORECASE), ("South African Revenue Service", "SARS")),
     (re.compile(r"\bDGD\b", re.IGNORECASE), ("Direction Générale des Douanes", "DGD")),
-    (re.compile(r"quarantaine\s*vétéri|وﺯاﺭة.*بيطر|حجر.*بيطر", re.IGNORECASE),
-     ("Direction de la Quarantaine Vétérinaire", "QUARAT_VET")),
-    (re.compile(r"cites|espèces?\s+menacées?", re.IGNORECASE),
-     ("Autorité CITES nationale", "CITES")),
+    (
+        re.compile(r"quarantaine\s*vétéri|وﺯاﺭة.*بيطر|حجر.*بيطر", re.IGNORECASE),
+        ("Direction de la Quarantaine Vétérinaire", "QUARAT_VET"),
+    ),
+    (
+        re.compile(r"cites|espèces?\s+menacées?", re.IGNORECASE),
+        ("Autorité CITES nationale", "CITES"),
+    ),
 ]
 
 
@@ -196,11 +217,15 @@ def parse_duty_value(raw: str, rate_hint: Optional[float] = None) -> dict:
     """
     r = raw.strip().lower() if raw else ""
     if not r or r in ("free", "0", "0.0", "0%", "exonéré", "exempt"):
-        return {"rate_pct": 0.0, "rate_type": RateType.EXEMPT,
-                "specific_amount": None, "specific_unit": None}
+        return {
+            "rate_pct": 0.0,
+            "rate_type": RateType.EXEMPT,
+            "specific_amount": None,
+            "specific_unit": None,
+        }
 
     pct_matches = _PCT_RE.findall(raw)
-    spec_match  = _SPECIFIC_RE.search(raw)
+    spec_match = _SPECIFIC_RE.search(raw)
 
     rate_pct = float(pct_matches[0].replace(",", ".")) if pct_matches else rate_hint
 
@@ -210,10 +235,14 @@ def parse_duty_value(raw: str, rate_hint: Optional[float] = None) -> dict:
             amount = float(spec_match.group("amount").replace(",", "."))
         except (ValueError, AttributeError):
             amount = None
-        unit   = (spec_match.group("unit") or "").upper()
+        unit = (spec_match.group("unit") or "").upper()
         if amount is not None:
-            return {"rate_pct": rate_pct, "rate_type": RateType.MIXED,
-                    "specific_amount": amount, "specific_unit": unit or None}
+            return {
+                "rate_pct": rate_pct,
+                "rate_type": RateType.MIXED,
+                "specific_amount": amount,
+                "specific_unit": unit or None,
+            }
 
     if spec_match and not pct_matches:
         # SPECIFIC pur
@@ -221,22 +250,35 @@ def parse_duty_value(raw: str, rate_hint: Optional[float] = None) -> dict:
             amount = float(spec_match.group("amount").replace(",", "."))
         except (ValueError, AttributeError):
             amount = None
-        unit   = (spec_match.group("unit") or "").upper()
+        unit = (spec_match.group("unit") or "").upper()
         if amount is not None:
-            return {"rate_pct": None, "rate_type": RateType.SPECIFIC,
-                    "specific_amount": amount, "specific_unit": unit or None}
+            return {
+                "rate_pct": None,
+                "rate_type": RateType.SPECIFIC,
+                "specific_amount": amount,
+                "specific_unit": unit or None,
+            }
 
     if rate_pct is not None:
-        return {"rate_pct": rate_pct, "rate_type": RateType.AD_VALOREM,
-                "specific_amount": None, "specific_unit": None}
+        return {
+            "rate_pct": rate_pct,
+            "rate_type": RateType.AD_VALOREM,
+            "specific_amount": None,
+            "specific_unit": None,
+        }
 
-    return {"rate_pct": None, "rate_type": RateType.AD_VALOREM,
-            "specific_amount": None, "specific_unit": None}
+    return {
+        "rate_pct": None,
+        "rate_type": RateType.AD_VALOREM,
+        "specific_amount": None,
+        "specific_unit": None,
+    }
 
 
 # ------------------------------------------------------------------
 # Écriture JSONL
 # ------------------------------------------------------------------
+
 
 def write_jsonl(lines: list[CanonicalTariffLine], path: Path) -> int:
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -29,6 +29,7 @@ if str(_BACKEND) not in sys.path:
 # Live-server skip helper
 # ---------------------------------------------------------------------------
 
+
 def pytest_collection_modifyitems(config, items):
     """
     Skip tests that require a live server when REACT_APP_BACKEND_URL is not set.
@@ -60,9 +61,8 @@ def pytest_collection_modifyitems(config, items):
         try:
             with open(module_src, "r", encoding="utf-8", errors="ignore") as fh:
                 source = fh.read()
-            if (
-                "REACT_APP_BACKEND_URL" in source
-                and ("requests.get" in source or "requests.post" in source)
+            if "REACT_APP_BACKEND_URL" in source and (
+                "requests.get" in source or "requests.post" in source
             ):
                 item.add_marker(skip_live)
         except (OSError, UnicodeDecodeError):

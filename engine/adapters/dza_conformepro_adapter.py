@@ -27,18 +27,27 @@ Séquence de calcul algérienne implémentée (Circ. 419 DGD) :
 import csv
 import io
 import re
-from datetime import datetime, date
+import sys
+from datetime import date, datetime
 from pathlib import Path
 from typing import Generator, List, Optional
 
-import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from schemas.canonical_model import (
-    CommodityCode, Measure, Requirement, FiscalAdvantage,
-    CanonicalTariffLine, MeasureType, RequirementType,
-    Provenance, DataStatus, ReliabilityGrade, RateType, DutyBasis,
     SCHEMA_VERSION,
+    CanonicalTariffLine,
+    CommodityCode,
+    DataStatus,
+    DutyBasis,
+    FiscalAdvantage,
+    Measure,
+    MeasureType,
+    Provenance,
+    RateType,
+    ReliabilityGrade,
+    Requirement,
+    RequirementType,
 )
 
 COUNTRY = "DZA"
@@ -110,8 +119,8 @@ class DZAConformeproAdapter:
             version_date=self.version_date,
             retrieved_at=datetime.now(),
             notes="Source secondaire fidèle au tarif intégré DGD ; passera "
-                  "VERIFIED/A après recoupement avec le tarif officiel "
-                  "DGD / Journal Officiel.",
+            "VERIFIED/A après recoupement avec le tarif officiel "
+            "DGD / Journal Officiel.",
         )
 
     # ------------------------------------------------------------------
@@ -171,52 +180,109 @@ class DZAConformeproAdapter:
 
         measures: List[Measure] = []
 
-        def add(mtype, mcode, name_fr, name_en, rate, seq, *,
-                basis=DutyBasis.CIF, includes=None, legal=None,
-                zlecaf=False, obs=None):
-            measures.append(Measure(
-                country_iso3=COUNTRY, national_code=code,
-                measure_type=mtype, code=mcode,
-                name_fr=name_fr, name_en=name_en,
-                rate_pct=rate if rate is not None else 0.0,
-                rate_type=RateType.EXEMPT if rate in (None, 0.0) else RateType.AD_VALOREM,
-                basis=basis, basis_includes=includes or [],
-                sequence=seq, legal_reference=legal,
-                is_zlecaf_applicable=zlecaf,
-                observation=obs,
-            ))
+        def add(
+            mtype,
+            mcode,
+            name_fr,
+            name_en,
+            rate,
+            seq,
+            *,
+            basis=DutyBasis.CIF,
+            includes=None,
+            legal=None,
+            zlecaf=False,
+            obs=None,
+        ):
+            measures.append(
+                Measure(
+                    country_iso3=COUNTRY,
+                    national_code=code,
+                    measure_type=mtype,
+                    code=mcode,
+                    name_fr=name_fr,
+                    name_en=name_en,
+                    rate_pct=rate if rate is not None else 0.0,
+                    rate_type=RateType.EXEMPT if rate in (None, 0.0) else RateType.AD_VALOREM,
+                    basis=basis,
+                    basis_includes=includes or [],
+                    sequence=seq,
+                    legal_reference=legal,
+                    is_zlecaf_applicable=zlecaf,
+                    observation=obs,
+                )
+            )
 
-        add(MeasureType.CUSTOMS_DUTY, "D.D", "Droit de Douane", "Customs Duty",
-            dd, 10, legal="Art. 16 Code des Douanes", zlecaf=True,
-            obs=None if dd is not None else
-            "Taux absent de la source — vérifier le tarif DGD (exonération probable)")
+        add(
+            MeasureType.CUSTOMS_DUTY,
+            "D.D",
+            "Droit de Douane",
+            "Customs Duty",
+            dd,
+            10,
+            legal="Art. 16 Code des Douanes",
+            zlecaf=True,
+            obs=(
+                None
+                if dd is not None
+                else "Taux absent de la source — vérifier le tarif DGD (exonération probable)"
+            ),
+        )
 
         if daps is not None:
-            add(MeasureType.SAFEGUARD, "DAPS",
+            add(
+                MeasureType.SAFEGUARD,
+                "DAPS",
                 "Droit Additionnel Provisoire de Sauvegarde",
                 "Provisional Additional Safeguard Duty",
-                daps, 15, legal="LF 2018 art. 2 / arrêtés DAPS",
+                daps,
+                15,
+                legal="LF 2018 art. 2 / arrêtés DAPS",
                 obs="Mesure de sauvegarde — son maintien sous régime "
-                    "préférentiel dépend de l'arrêté en vigueur")
+                "préférentiel dépend de l'arrêté en vigueur",
+            )
 
         if tcs is not None:
-            add(MeasureType.OTHER_TAX, "T.C.S", "Taxe de Contribution de Solidarité",
-                "Solidarity Contribution Tax", tcs, 20, legal="Circ. 419 DGD")
+            add(
+                MeasureType.OTHER_TAX,
+                "T.C.S",
+                "Taxe de Contribution de Solidarité",
+                "Solidarity Contribution Tax",
+                tcs,
+                20,
+                legal="Circ. 419 DGD",
+            )
 
         if prct is not None:
-            add(MeasureType.LEVY, "PRCT",
+            add(
+                MeasureType.LEVY,
+                "PRCT",
                 "Prélèvement à la Compensation du Transport",
-                "Transport Compensation Levy", prct, 30, legal="Circ. 419 DGD")
+                "Transport Compensation Levy",
+                prct,
+                30,
+                legal="Circ. 419 DGD",
+            )
 
         # TVA : assiette = CAF + toutes les mesures en amont présentes
         upstream = [m.code for m in measures]
-        add(MeasureType.VAT, "T.V.A", "Taxe sur la Valeur Ajoutée",
-            "Value Added Tax", tva, 90,
-            basis=DutyBasis.CIF_PLUS_INCLUDED, includes=upstream,
+        add(
+            MeasureType.VAT,
+            "T.V.A",
+            "Taxe sur la Valeur Ajoutée",
+            "Value Added Tax",
+            tva,
+            90,
+            basis=DutyBasis.CIF_PLUS_INCLUDED,
+            includes=upstream,
             legal="Code des Taxes sur le Chiffre d'Affaires",
-            obs=None if tva is not None else
-            "Taux absent de la source — produit possiblement exonéré de TVA, "
-            "vérifier le Code des TCA")
+            obs=(
+                None
+                if tva is not None
+                else "Taux absent de la source — produit possiblement exonéré de TVA, "
+                "vérifier le Code des TCA"
+            ),
+        )
 
         return measures
 
@@ -225,16 +291,19 @@ class DZAConformeproAdapter:
         reqs = []
         for i, part in enumerate(p.strip() for p in raw.split("|") if p.strip()):
             label, authority, auth_code = _parse_authority(part)
-            reqs.append(Requirement(
-                country_iso3=COUNTRY, national_code=code,
-                requirement_type=_req_type(label),
-                code=f"DZA-F{i+1:02d}",
-                document_fr=label.capitalize() if label.islower() else label,
-                is_mandatory=True,
-                issuing_authority=authority,
-                issuing_authority_code=auth_code,
-                applies_to="IMPORT",
-            ))
+            reqs.append(
+                Requirement(
+                    country_iso3=COUNTRY,
+                    national_code=code,
+                    requirement_type=_req_type(label),
+                    code=f"DZA-F{i+1:02d}",
+                    document_fr=label.capitalize() if label.islower() else label,
+                    is_mandatory=True,
+                    issuing_authority=authority,
+                    issuing_authority_code=auth_code,
+                    applies_to="IMPORT",
+                )
+            )
         return reqs
 
     # ------------------------------------------------------------------
@@ -243,31 +312,44 @@ class DZAConformeproAdapter:
         for part in (p.strip() for p in raw.split("|") if p.strip()):
             low = part.lower()
             if "zale" in low:
-                advantages.append(FiscalAdvantage(
-                    country_iso3=COUNTRY, national_code=code,
-                    tax_code="D.D", reduced_rate_pct=0.0,
-                    condition_fr="Origine d'un pays membre de la ZALE, "
-                                 "certificat d'origine ZALE à l'appui",
-                    agreement="ZALE (Grande Zone Arabe de Libre-Échange)",
-                    required_document="Certificat d'origine ZALE",
-                ))
+                advantages.append(
+                    FiscalAdvantage(
+                        country_iso3=COUNTRY,
+                        national_code=code,
+                        tax_code="D.D",
+                        reduced_rate_pct=0.0,
+                        condition_fr="Origine d'un pays membre de la ZALE, "
+                        "certificat d'origine ZALE à l'appui",
+                        agreement="ZALE (Grande Zone Arabe de Libre-Échange)",
+                        required_document="Certificat d'origine ZALE",
+                    )
+                )
             elif "algero-jordanienne" in low or "jordan" in low:
                 for tax in ("D.D", "DAPS"):
-                    advantages.append(FiscalAdvantage(
-                        country_iso3=COUNTRY, national_code=code,
-                        tax_code=tax, reduced_rate_pct=0.0,
-                        condition_fr="Origine jordanienne dans le cadre de la "
-                                     "convention algéro-jordanienne",
-                        agreement="Convention Algéro-Jordanienne",
-                        required_document="Certificat d'origine (convention "
-                                          "algéro-jordanienne)",
-                    ))
+                    advantages.append(
+                        FiscalAdvantage(
+                            country_iso3=COUNTRY,
+                            national_code=code,
+                            tax_code=tax,
+                            reduced_rate_pct=0.0,
+                            condition_fr="Origine jordanienne dans le cadre de la "
+                            "convention algéro-jordanienne",
+                            agreement="Convention Algéro-Jordanienne",
+                            required_document="Certificat d'origine (convention "
+                            "algéro-jordanienne)",
+                        )
+                    )
             else:
-                advantages.append(FiscalAdvantage(
-                    country_iso3=COUNTRY, national_code=code,
-                    tax_code="D.D", reduced_rate_pct=0.0,
-                    condition_fr=part, agreement=None,
-                ))
+                advantages.append(
+                    FiscalAdvantage(
+                        country_iso3=COUNTRY,
+                        national_code=code,
+                        tax_code="D.D",
+                        reduced_rate_pct=0.0,
+                        condition_fr=part,
+                        agreement=None,
+                    )
+                )
         return advantages
 
 
@@ -286,6 +368,7 @@ def run(source: str, output: str, version_date: Optional[str] = None) -> dict:
 
 if __name__ == "__main__":
     import argparse
+
     ap = argparse.ArgumentParser()
     ap.add_argument("source", help="CSV conformepro")
     ap.add_argument("output", help="JSONL canonique de sortie")
@@ -293,5 +376,7 @@ if __name__ == "__main__":
     args = ap.parse_args()
     stats = run(args.source, args.output, args.version_date)
     print(f"DZA conformepro -> {args.output}")
-    print(f"  lignes: {stats['lines']} | mesures: {stats['measures']} | "
-          f"formalités: {stats['requirements']} | avantages: {stats['advantages']}")
+    print(
+        f"  lignes: {stats['lines']} | mesures: {stats['measures']} | "
+        f"formalités: {stats['requirements']} | avantages: {stats['advantages']}"
+    )

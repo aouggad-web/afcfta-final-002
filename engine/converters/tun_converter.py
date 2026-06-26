@@ -18,15 +18,33 @@ from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from schemas.canonical_model import (
-    CanonicalTariffLine, CommodityCode, DataStatus, DutyBasis,
-    FiscalAdvantage, Measure, MeasureType, Provenance, RateType,
-    ReliabilityGrade, Requirement, RequirementType, SCHEMA_VERSION,
-)
 from converters.base import (
-    CRAWLED_DIR, OUTPUT_DIR, classify_measure, classify_requirement,
-    clean_hs, digits_from_code, extract_authority, hs6_from_code,
-    load_crawled, parse_duty_value, write_jsonl,
+    CRAWLED_DIR,
+    OUTPUT_DIR,
+    classify_measure,
+    classify_requirement,
+    clean_hs,
+    digits_from_code,
+    extract_authority,
+    hs6_from_code,
+    load_crawled,
+    parse_duty_value,
+    write_jsonl,
+)
+from schemas.canonical_model import (
+    SCHEMA_VERSION,
+    CanonicalTariffLine,
+    CommodityCode,
+    DataStatus,
+    DutyBasis,
+    FiscalAdvantage,
+    Measure,
+    MeasureType,
+    Provenance,
+    RateType,
+    ReliabilityGrade,
+    Requirement,
+    RequirementType,
 )
 
 # ------------------------------------------------------------------
@@ -35,8 +53,8 @@ from converters.base import (
 
 COUNTRY = "TUN"
 SOURCE_NAME = "Direction Générale des Douanes — Tunisie (douane.gov.tn)"
-SOURCE_URL  = "https://www.douane.gov.tn/tarifweb2025"
-SOURCE_DOC  = "Tarif des Douanes 2025 — douane.gov.tn/tarifweb2025"
+SOURCE_URL = "https://www.douane.gov.tn/tarifweb2025"
+SOURCE_DOC = "Tarif des Douanes 2025 — douane.gov.tn/tarifweb2025"
 VERSION_DATE = date(2025, 1, 1)
 
 # Codes de formalités TUN → infos structurées
@@ -44,43 +62,47 @@ VERSION_DATE = date(2025, 1, 1)
 _REGL_CODES: dict[str, tuple] = {
     "705": (RequirementType.CERTIFICATE, "Direction des Services Vétérinaires", "DSV"),
     "706": (RequirementType.CERTIFICATE, "Direction des Services Vétérinaires", "DSV"),
-    "707": (RequirementType.PERMIT,      "Direction des Services Vétérinaires", "DSV"),
+    "707": (RequirementType.PERMIT, "Direction des Services Vétérinaires", "DSV"),
     "715": (RequirementType.CERTIFICATE, "Direction de la Protection des Végétaux", "DPV"),
     "716": (RequirementType.CERTIFICATE, "Direction de la Protection des Végétaux", "DPV"),
     "720": (RequirementType.AUTHORIZATION, "Ministère du Commerce", "MCII"),
-    "725": (RequirementType.LICENSE,     "Ministère du Commerce", "MCII"),
-    "730": (RequirementType.INSPECTION,  "Institut National de la Normalisation", "INNORPI"),
+    "725": (RequirementType.LICENSE, "Ministère du Commerce", "MCII"),
+    "730": (RequirementType.INSPECTION, "Institut National de la Normalisation", "INNORPI"),
     "740": (RequirementType.CERTIFICATE, "Direction Générale des Douanes", "DGD"),
     "745": (RequirementType.AUTHORIZATION, "Ministère de l'Environnement", "ANPE"),
-    "750": (RequirementType.PERMIT,      "Ministère de l'Environnement — CITES", "CITES"),
+    "750": (RequirementType.PERMIT, "Ministère de l'Environnement — CITES", "CITES"),
     "760": (RequirementType.AUTHORIZATION, "Ministère de la Santé Publique", "MSP"),
     "765": (RequirementType.CERTIFICATE, "Ministère de la Santé Publique", "MSP"),
-    "770": (RequirementType.LICENSE,     "Agence Nationale de Contrôle Sanitaire", "ANCSEP"),
+    "770": (RequirementType.LICENSE, "Agence Nationale de Contrôle Sanitaire", "ANCSEP"),
 }
 
 # Codes internes TUN → MeasureType forcé
 _TUN_TAX_TYPE: dict[str, MeasureType] = {
-    "DDDROIT":     MeasureType.CUSTOMS_DUTY,
-    "DD":          MeasureType.CUSTOMS_DUTY,
-    "TVA/APTAXE":  MeasureType.VAT,
-    "TVA":         MeasureType.VAT,
+    "DDDROIT": MeasureType.CUSTOMS_DUTY,
+    "DD": MeasureType.CUSTOMS_DUTY,
+    "TVA/APTAXE": MeasureType.VAT,
+    "TVA": MeasureType.VAT,
     "RPD/IMPORREDEV": MeasureType.OTHER_TAX,
-    "RPD":         MeasureType.OTHER_TAX,
-    "D":           MeasureType.OTHER_TAX,    # droit sanitaire vétérinaire spécifique
-    "DSANIT":      MeasureType.OTHER_TAX,
-    "TXTCE":       MeasureType.LEVY,
-    "PCC":         MeasureType.LEVY,
-    "DRFTF":       MeasureType.OTHER_TAX,
+    "RPD": MeasureType.OTHER_TAX,
+    "D": MeasureType.OTHER_TAX,  # droit sanitaire vétérinaire spécifique
+    "DSANIT": MeasureType.OTHER_TAX,
+    "TXTCE": MeasureType.LEVY,
+    "PCC": MeasureType.LEVY,
+    "DRFTF": MeasureType.OTHER_TAX,
 }
 
 # Séquence d'application par code
 _SEQ: dict[str, int] = {
-    "DDDROIT": 10, "DD": 10,
+    "DDDROIT": 10,
+    "DD": 10,
     "D": 20,
-    "RPD/IMPORREDEV": 30, "RPD": 30,
-    "TXTCE": 35, "PCC": 36,
+    "RPD/IMPORREDEV": 30,
+    "RPD": 30,
+    "TXTCE": 35,
+    "PCC": 36,
     "DRFTF": 40,
-    "TVA/APTAXE": 90, "TVA": 90,
+    "TVA/APTAXE": 90,
+    "TVA": 90,
 }
 
 _PROVENANCE = Provenance(
@@ -94,18 +116,17 @@ _PROVENANCE = Provenance(
 )
 
 
-def _build_measure(tax: dict, country: str, code_nat: str,
-                   applies_to: str = "IMPORT") -> Measure:
+def _build_measure(tax: dict, country: str, code_nat: str, applies_to: str = "IMPORT") -> Measure:
     """Construit une Measure depuis un élément taxes_import/taxes_export TUN."""
     tax_code = (tax.get("code") or "").strip()
     tax_name = (tax.get("name") or tax_code).strip()
-    raw_val  = (tax.get("raw_value") or "").strip()
+    raw_val = (tax.get("raw_value") or "").strip()
     rate_pct = tax.get("rate_pct")
     specific_val = (tax.get("specific_value") or "").strip()
     assiette = (tax.get("assiette") or "").strip()
 
     mtype = _TUN_TAX_TYPE.get(tax_code) or classify_measure(tax_code, tax_name)
-    seq   = _SEQ.get(tax_code, 50)
+    seq = _SEQ.get(tax_code, 50)
 
     # Analyse du taux (peut être spécifique ex: "0.100 dinars")
     if specific_val and specific_val != "0":
@@ -142,8 +163,9 @@ def _build_measure(tax: dict, country: str, code_nat: str,
     )
 
 
-def _build_requirement(regl: dict, country: str, code_nat: str,
-                        applies_to: str = "IMPORT") -> Requirement:
+def _build_requirement(
+    regl: dict, country: str, code_nat: str, applies_to: str = "IMPORT"
+) -> Requirement:
     """Construit une Requirement depuis un élément reglementation TUN."""
     code = str(regl.get("code") or "").strip()
     desc = (regl.get("description") or "").strip()
@@ -152,7 +174,7 @@ def _build_requirement(regl: dict, country: str, code_nat: str,
     if known:
         req_type, authority, auth_code = known
     else:
-        req_type  = classify_requirement(desc)
+        req_type = classify_requirement(desc)
         authority, auth_code = extract_authority(desc)
 
     return Requirement(
@@ -168,11 +190,12 @@ def _build_requirement(regl: dict, country: str, code_nat: str,
     )
 
 
-def _build_fiscal_advantage(pref: dict, country: str, code_nat: str,
-                             tax_code: str = "DD") -> Optional[FiscalAdvantage]:
+def _build_fiscal_advantage(
+    pref: dict, country: str, code_nat: str, tax_code: str = "DD"
+) -> Optional[FiscalAdvantage]:
     """Construit un FiscalAdvantage depuis une préférence TUN."""
     country_name = (pref.get("country_name") or "").strip()
-    rate_raw     = (pref.get("rate") or "").strip()
+    rate_raw = (pref.get("rate") or "").strip()
     if not country_name or not rate_raw:
         return None
     duty = parse_duty_value(rate_raw)
@@ -190,11 +213,11 @@ def _build_fiscal_advantage(pref: dict, country: str, code_nat: str,
 
 
 def convert_position(pos: dict, now: datetime) -> CanonicalTariffLine:
-    hs_raw   = str(pos.get("hs_code") or "").strip()
+    hs_raw = str(pos.get("hs_code") or "").strip()
     code_nat = clean_hs(hs_raw)
-    hs6      = hs6_from_code(code_nat)
-    desc     = (pos.get("designation") or "").strip()
-    chapter  = (pos.get("chapter") or hs6[:2]).zfill(2)
+    hs6 = hs6_from_code(code_nat)
+    desc = (pos.get("designation") or "").strip()
+    chapter = (pos.get("chapter") or hs6[:2]).zfill(2)
 
     commodity = CommodityCode(
         country_iso3=COUNTRY,
@@ -208,30 +231,29 @@ def convert_position(pos: dict, now: datetime) -> CanonicalTariffLine:
     )
 
     measures: list[Measure] = []
-    for tax in (pos.get("taxes_import") or []):
+    for tax in pos.get("taxes_import") or []:
         raw_val = (tax.get("raw_value") or "").strip()
-        rate    = tax.get("rate_pct")
+        rate = tax.get("rate_pct")
         # Ne pas omettre les taxes à 0 — elles font partie du tarif officiel
         measures.append(_build_measure(tax, COUNTRY, code_nat, "IMPORT"))
 
-    for tax in (pos.get("taxes_export") or []):
+    for tax in pos.get("taxes_export") or []:
         measures.append(_build_measure(tax, COUNTRY, code_nat, "EXPORT"))
 
     requirements: list[Requirement] = []
-    for regl in (pos.get("reglementation_import") or []):
+    for regl in pos.get("reglementation_import") or []:
         requirements.append(_build_requirement(regl, COUNTRY, code_nat, "IMPORT"))
-    for regl in (pos.get("reglementation_export") or []):
+    for regl in pos.get("reglementation_export") or []:
         requirements.append(_build_requirement(regl, COUNTRY, code_nat, "EXPORT"))
 
     advantages: list[FiscalAdvantage] = []
-    for pref in (pos.get("preferences") or []):
+    for pref in pos.get("preferences") or []:
         fa = _build_fiscal_advantage(pref, COUNTRY, code_nat)
         if fa:
             advantages.append(fa)
 
     # Total indicatif NPF (import uniquement, ad valorem)
-    import_ad_val = [m for m in measures
-                     if m.rate_pct is not None and m.sequence < 100]
+    import_ad_val = [m for m in measures if m.rate_pct is not None and m.sequence < 100]
     total_npf = sum(m.rate_pct for m in import_ad_val if m.rate_pct)
 
     return CanonicalTariffLine(

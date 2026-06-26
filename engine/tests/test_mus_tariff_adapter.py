@@ -9,6 +9,7 @@ Vérifie la conversion raw_crawl → CanonicalTariffLine pour Maurice :
   - Provenance VERIFIED/A, version_date 2026-04-01
   - HS6 extrait des 8 digits
 """
+
 import sys
 from datetime import date
 from pathlib import Path
@@ -19,13 +20,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from adapters.mus_tariff_adapter import convert
 from schemas.canonical_model import (
-    DataStatus, DutyBasis, MeasureType, RateType, ReliabilityGrade,
+    DataStatus,
+    DutyBasis,
+    MeasureType,
+    RateType,
+    ReliabilityGrade,
 )
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 
-def _raw(code: str, dd: float, excise: float = 0.0, vat: float = 15.0,
-         desc: str = "Test product") -> dict:
+
+def _raw(
+    code: str, dd: float, excise: float = 0.0, vat: float = 15.0, desc: str = "Test product"
+) -> dict:
     return {
         "country_code": "MUS",
         "country_name": "Mauritius",
@@ -34,22 +41,25 @@ def _raw(code: str, dd: float, excise: float = 0.0, vat: float = 15.0,
         "crawled_at": "2026-06-15T23:08:48.273498+00:00",
         "data_type": "raw_crawl",
         "notes": [],
-        "positions": [{
-            "code": code,
-            "description_en": desc,
-            "dd_rate_raw": str(int(dd)),
-            "dd_rate": dd,
-            "excise_rate_raw": str(int(excise)) if excise else "",
-            "excise_rate": excise if excise else None,
-            "vat_rate_raw": str(int(vat)),
-            "vat_rate": vat,
-            "chapter": code[:2],
-            "digits": len(code),
-        }],
+        "positions": [
+            {
+                "code": code,
+                "description_en": desc,
+                "dd_rate_raw": str(int(dd)),
+                "dd_rate": dd,
+                "excise_rate_raw": str(int(excise)) if excise else "",
+                "excise_rate": excise if excise else None,
+                "vat_rate_raw": str(int(vat)),
+                "vat_rate": vat,
+                "chapter": code[:2],
+                "digits": len(code),
+            }
+        ],
     }
 
 
 # ── Tests cas standard (DD + VAT, sans excise) ───────────────────────────────
+
 
 class TestStandardDutyVAT:
     def setup_method(self):
@@ -98,6 +108,7 @@ class TestStandardDutyVAT:
 
 # ── Tests position exonérée de VAT ──────────────────────────────────────────
 
+
 class TestVATExempt:
     def setup_method(self):
         data = _raw("01022100", dd=0.0, vat=0.0, desc="Pure-bred breeding animals")
@@ -122,10 +133,10 @@ class TestVATExempt:
 
 # ── Tests excise élevé (tabac) ───────────────────────────────────────────────
 
+
 class TestHighExciseTobacco:
     def setup_method(self):
-        data = _raw("24031100", dd=0.0, excise=230.0, vat=15.0,
-                    desc="Water pipe tobacco")
+        data = _raw("24031100", dd=0.0, excise=230.0, vat=15.0, desc="Water pipe tobacco")
         self.r = convert(data)[0]
         self.measures = {m.code: m for m in self.r.measures}
 
@@ -143,7 +154,7 @@ class TestHighExciseTobacco:
     def test_vat_includes_excise(self):
         m = self.measures["T.V.A"]
         assert "EXCISE" in m.basis_includes
-        assert "D.D"    in m.basis_includes
+        assert "D.D" in m.basis_includes
 
     def test_total_npf_tobacco(self):
         # DD=0 + Excise=230 + VAT=15 = 245
@@ -154,6 +165,7 @@ class TestHighExciseTobacco:
 
 
 # ── Tests excise modéré (caviar / alcool moyen) ──────────────────────────────
+
 
 def test_excise_moderate():
     data = _raw("16043100", dd=0.0, excise=30.0, vat=15.0, desc="Caviar")
@@ -168,6 +180,7 @@ def test_excise_moderate():
 
 # ── Test DD=100% (sucre) ─────────────────────────────────────────────────────
 
+
 def test_dd_100_sugar():
     data = _raw("17011200", dd=100.0, excise=0.0, vat=0.0, desc="Beet sugar")
     r = convert(data)[0]
@@ -180,12 +193,16 @@ def test_dd_100_sugar():
 
 # ── Test séquence strictement croissante ────────────────────────────────────
 
-@pytest.mark.parametrize("dd,excise,vat", [
-    (0.0, 0.0, 0.0),
-    (15.0, 0.0, 15.0),
-    (0.0, 230.0, 15.0),
-    (30.0, 50.0, 15.0),
-])
+
+@pytest.mark.parametrize(
+    "dd,excise,vat",
+    [
+        (0.0, 0.0, 0.0),
+        (15.0, 0.0, 15.0),
+        (0.0, 230.0, 15.0),
+        (30.0, 50.0, 15.0),
+    ],
+)
 def test_sequence_strictly_ascending(dd, excise, vat):
     data = _raw("09010000", dd=dd, excise=excise, vat=vat)
     r = convert(data)[0]
@@ -195,13 +212,17 @@ def test_sequence_strictly_ascending(dd, excise, vat):
 
 # ── Test HS6 extraction ──────────────────────────────────────────────────────
 
-@pytest.mark.parametrize("code8,expected_hs6", [
-    ("09019000", "090190"),
-    ("24031100", "240311"),
-    ("17011200", "170112"),
-    ("01022100", "010221"),
-    ("98000000", "980000"),
-])
+
+@pytest.mark.parametrize(
+    "code8,expected_hs6",
+    [
+        ("09019000", "090190"),
+        ("24031100", "240311"),
+        ("17011200", "170112"),
+        ("01022100", "010221"),
+        ("98000000", "980000"),
+    ],
+)
 def test_hs6_extraction(code8, expected_hs6):
     data = _raw(code8, dd=0.0, vat=15.0)
     r = convert(data)[0]
@@ -210,6 +231,7 @@ def test_hs6_extraction(code8, expected_hs6):
 
 
 # ── Test batch ───────────────────────────────────────────────────────────────
+
 
 def test_batch_multiple_positions():
     data = {
@@ -221,18 +243,39 @@ def test_batch_multiple_positions():
         "data_type": "raw_crawl",
         "notes": [],
         "positions": [
-            {"code": "01022100", "description_en": "Cattle",
-             "dd_rate": 0.0, "excise_rate": None, "excise_rate_raw": "",
-             "vat_rate": 0.0, "vat_rate_raw": "0",
-             "chapter": "01", "digits": 8},
-            {"code": "24031100", "description_en": "Tobacco",
-             "dd_rate": 0.0, "excise_rate": 230.0, "excise_rate_raw": "230",
-             "vat_rate": 15.0, "vat_rate_raw": "15",
-             "chapter": "24", "digits": 8},
-            {"code": "20011000", "description_en": "Cucumbers",
-             "dd_rate": 15.0, "excise_rate": None, "excise_rate_raw": "",
-             "vat_rate": 15.0, "vat_rate_raw": "15",
-             "chapter": "20", "digits": 8},
+            {
+                "code": "01022100",
+                "description_en": "Cattle",
+                "dd_rate": 0.0,
+                "excise_rate": None,
+                "excise_rate_raw": "",
+                "vat_rate": 0.0,
+                "vat_rate_raw": "0",
+                "chapter": "01",
+                "digits": 8,
+            },
+            {
+                "code": "24031100",
+                "description_en": "Tobacco",
+                "dd_rate": 0.0,
+                "excise_rate": 230.0,
+                "excise_rate_raw": "230",
+                "vat_rate": 15.0,
+                "vat_rate_raw": "15",
+                "chapter": "24",
+                "digits": 8,
+            },
+            {
+                "code": "20011000",
+                "description_en": "Cucumbers",
+                "dd_rate": 15.0,
+                "excise_rate": None,
+                "excise_rate_raw": "",
+                "vat_rate": 15.0,
+                "vat_rate_raw": "15",
+                "chapter": "20",
+                "digits": 8,
+            },
         ],
     }
     records = convert(data)

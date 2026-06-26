@@ -9,6 +9,7 @@ Vérifie la conversion raw_crawl → CanonicalTariffLine pour l'Éthiopie :
   - HS6 extrait des 11 digits
   - total_npf_pct correct
 """
+
 import sys
 from pathlib import Path
 
@@ -18,13 +19,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from adapters.eth_tariff_adapter import convert
 from schemas.canonical_model import (
-    DataStatus, DutyBasis, MeasureType, RateType, ReliabilityGrade,
+    DataStatus,
+    DutyBasis,
+    MeasureType,
+    RateType,
+    ReliabilityGrade,
 )
 
 # ── Fixtures ─────────────────────────────────────────────────────────────────
 
-def _raw(code: str, dd: float, excise: float = 0.0,
-         chapter: str | None = None) -> dict:
+
+def _raw(code: str, dd: float, excise: float = 0.0, chapter: str | None = None) -> dict:
     """Construit une position raw_crawl minimale."""
     return {
         "country_code": "ETH",
@@ -34,23 +39,26 @@ def _raw(code: str, dd: float, excise: float = 0.0,
         "crawled_at": "2026-06-15T19:05:08.873538+00:00",
         "data_type": "raw_crawl",
         "notes": [],
-        "positions": [{
-            "code": code,
-            "description_en": f"Test product {code}",
-            "unit": "KG",
-            "dd_rate_raw": str(int(dd)),
-            "dd_rate": dd,
-            "excise_rate": excise,
-            "vat_rate": 15.0,
-            "withholding_rate": 3.0,
-            "surtax_rate": None,
-            "chapter": chapter or code[:2],
-            "digits": len(code),
-        }],
+        "positions": [
+            {
+                "code": code,
+                "description_en": f"Test product {code}",
+                "unit": "KG",
+                "dd_rate_raw": str(int(dd)),
+                "dd_rate": dd,
+                "excise_rate": excise,
+                "vat_rate": 15.0,
+                "withholding_rate": 3.0,
+                "surtax_rate": None,
+                "chapter": chapter or code[:2],
+                "digits": len(code),
+            }
+        ],
     }
 
 
 # ── Tests séquence taxes sans excise ────────────────────────────────────────
+
 
 class TestNoExcise:
     def setup_method(self):
@@ -85,8 +93,8 @@ class TestNoExcise:
         m = self.measures["T.V.A"]
         assert m.basis == DutyBasis.CIF_PLUS_INCLUDED
         assert "D.D" in m.basis_includes
-        assert "SR"  in m.basis_includes
-        assert "ER"  not in m.basis_includes
+        assert "SR" in m.basis_includes
+        assert "ER" not in m.basis_includes
         assert m.rate_pct == 15.0
         assert m.sequence == 40
 
@@ -119,6 +127,7 @@ class TestNoExcise:
 
 
 # ── Tests séquence taxes AVEC excise ────────────────────────────────────────
+
 
 class TestWithExcise:
     def setup_method(self):
@@ -157,6 +166,7 @@ class TestWithExcise:
 
 # ── Test DD=5 (taux intermédiaire) ──────────────────────────────────────────
 
+
 def test_dd5_no_excise_total():
     data = _raw("52010000000", dd=5.0, chapter="52")
     r = convert(data)[0]
@@ -174,6 +184,7 @@ def test_dd25_total():
 
 # ── Test séquence strictement croissante ─────────────────────────────────────
 
+
 def test_sequence_order_without_excise():
     data = _raw("01012100000", dd=0.0)
     r = convert(data)[0]
@@ -190,12 +201,16 @@ def test_sequence_order_with_excise():
 
 # ── Test HS6 extrait des 11 digits ──────────────────────────────────────────
 
-@pytest.mark.parametrize("code,expected_hs6", [
-    ("09011100000", "090111"),
-    ("18010000000", "180100"),
-    ("27090000000", "270900"),
-    ("71081200000", "710812"),
-])
+
+@pytest.mark.parametrize(
+    "code,expected_hs6",
+    [
+        ("09011100000", "090111"),
+        ("18010000000", "180100"),
+        ("27090000000", "270900"),
+        ("71081200000", "710812"),
+    ],
+)
 def test_hs6_extraction(code, expected_hs6):
     data = _raw(code, dd=5.0)
     r = convert(data)[0]
@@ -204,6 +219,7 @@ def test_hs6_extraction(code, expected_hs6):
 
 
 # ── Test batch — toutes les positions traitées ──────────────────────────────
+
 
 def test_batch_convert_multiple_positions():
     data = {
@@ -215,15 +231,39 @@ def test_batch_convert_multiple_positions():
         "data_type": "raw_crawl",
         "notes": [],
         "positions": [
-            {"code": "01012100000", "description_en": "Horses",
-             "dd_rate": 0.0, "excise_rate": 0.0, "vat_rate": 15.0,
-             "withholding_rate": 3.0, "surtax_rate": None, "chapter": "01", "digits": 11},
-            {"code": "22030000000", "description_en": "Beer",
-             "dd_rate": 35.0, "excise_rate": 40.0, "vat_rate": 15.0,
-             "withholding_rate": 3.0, "surtax_rate": None, "chapter": "22", "digits": 11},
-            {"code": "09011100000", "description_en": "Coffee",
-             "dd_rate": 0.0, "excise_rate": 0.0, "vat_rate": 15.0,
-             "withholding_rate": 3.0, "surtax_rate": None, "chapter": "09", "digits": 11},
+            {
+                "code": "01012100000",
+                "description_en": "Horses",
+                "dd_rate": 0.0,
+                "excise_rate": 0.0,
+                "vat_rate": 15.0,
+                "withholding_rate": 3.0,
+                "surtax_rate": None,
+                "chapter": "01",
+                "digits": 11,
+            },
+            {
+                "code": "22030000000",
+                "description_en": "Beer",
+                "dd_rate": 35.0,
+                "excise_rate": 40.0,
+                "vat_rate": 15.0,
+                "withholding_rate": 3.0,
+                "surtax_rate": None,
+                "chapter": "22",
+                "digits": 11,
+            },
+            {
+                "code": "09011100000",
+                "description_en": "Coffee",
+                "dd_rate": 0.0,
+                "excise_rate": 0.0,
+                "vat_rate": 15.0,
+                "withholding_rate": 3.0,
+                "surtax_rate": None,
+                "chapter": "09",
+                "digits": 11,
+            },
         ],
     }
     records = convert(data)

@@ -19,21 +19,33 @@ from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from schemas.canonical_model import (
-    CanonicalTariffLine, CommodityCode, DataStatus, DutyBasis,
-    Measure, MeasureType, Provenance, RateType,
-    ReliabilityGrade, SCHEMA_VERSION,
-)
 from converters.base import (
-    OUTPUT_DIR, classify_measure, clean_hs, digits_from_code,
-    hs6_from_code, load_crawled, write_jsonl,
+    OUTPUT_DIR,
+    classify_measure,
+    clean_hs,
+    digits_from_code,
+    hs6_from_code,
+    load_crawled,
+    write_jsonl,
+)
+from schemas.canonical_model import (
+    SCHEMA_VERSION,
+    CanonicalTariffLine,
+    CommodityCode,
+    DataStatus,
+    DutyBasis,
+    Measure,
+    MeasureType,
+    Provenance,
+    RateType,
+    ReliabilityGrade,
 )
 
 EAC_MEMBERS = ["KEN", "BDI", "COD", "RWA", "SSD", "TZA", "UGA"]
 
 SOURCE_NAME = "East African Community — EAC Common External Tariff 2022"
-SOURCE_URL  = "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
-SOURCE_DOC  = "EAC CET 2022 (30 June 2022) — kra.go.ke"
+SOURCE_URL = "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+SOURCE_DOC = "EAC CET 2022 (30 June 2022) — kra.go.ke"
 
 # Taxes nationales connues par pays (séquence, code, name, type)
 # Les taxes incluses dans le fichier crawlé sont prioritaires
@@ -49,15 +61,15 @@ _NATIONAL_CONTEXT: dict[str, str] = {
 
 # Déduction du type de mesure depuis le libellé EAC
 _EAC_TYPE_HINTS: list[tuple] = [
-    ("CET Import Duty",          MeasureType.CUSTOMS_DUTY, 10, DutyBasis.CIF),
-    ("Droit de Douane",          MeasureType.CUSTOMS_DUTY, 10, DutyBasis.CIF),
-    ("Import Declaration Fee",   MeasureType.LEVY,         20, DutyBasis.CIF),
-    ("Railway Development Levy", MeasureType.LEVY,         25, DutyBasis.CIF),
-    ("Infrastructure Levy",      MeasureType.LEVY,         26, DutyBasis.CIF),
-    ("Value Added Tax",          MeasureType.VAT,          90, DutyBasis.CIF_PLUS_INCLUDED),
-    ("VAT",                      MeasureType.VAT,          90, DutyBasis.CIF_PLUS_INCLUDED),
-    ("Taxe sur la Valeur",       MeasureType.VAT,          90, DutyBasis.CIF_PLUS_INCLUDED),
-    ("Excise",                   MeasureType.EXCISE,       30, DutyBasis.CIF),
+    ("CET Import Duty", MeasureType.CUSTOMS_DUTY, 10, DutyBasis.CIF),
+    ("Droit de Douane", MeasureType.CUSTOMS_DUTY, 10, DutyBasis.CIF),
+    ("Import Declaration Fee", MeasureType.LEVY, 20, DutyBasis.CIF),
+    ("Railway Development Levy", MeasureType.LEVY, 25, DutyBasis.CIF),
+    ("Infrastructure Levy", MeasureType.LEVY, 26, DutyBasis.CIF),
+    ("Value Added Tax", MeasureType.VAT, 90, DutyBasis.CIF_PLUS_INCLUDED),
+    ("VAT", MeasureType.VAT, 90, DutyBasis.CIF_PLUS_INCLUDED),
+    ("Taxe sur la Valeur", MeasureType.VAT, 90, DutyBasis.CIF_PLUS_INCLUDED),
+    ("Excise", MeasureType.EXCISE, 30, DutyBasis.CIF),
 ]
 
 
@@ -88,17 +100,17 @@ def convert_country(country: str, output_path: Optional[Path] = None) -> int:
     prov = _provenance(country)
     data = load_crawled(country)
     positions = data.get("positions", [])
-    now  = datetime.utcnow()
+    now = datetime.utcnow()
 
     lines: list[CanonicalTariffLine] = []
 
     for pos in positions:
-        hs_raw   = str(pos.get("hs_code") or "").strip()
+        hs_raw = str(pos.get("hs_code") or "").strip()
         code_nat = clean_hs(hs_raw)
-        hs6      = hs6_from_code(code_nat)
-        desc     = (pos.get("designation") or "").strip()
-        chapter  = (pos.get("chapter") or hs6[:2]).zfill(2)
-        unit     = pos.get("unit")
+        hs6 = hs6_from_code(code_nat)
+        desc = (pos.get("designation") or "").strip()
+        chapter = (pos.get("chapter") or hs6[:2]).zfill(2)
+        unit = pos.get("unit")
 
         commodity = CommodityCode(
             country_iso3=country,
@@ -115,16 +127,16 @@ def convert_country(country: str, output_path: Optional[Path] = None) -> int:
         )
 
         measures: list[Measure] = []
-        for tax in (pos.get("taxes_detail") or []):
+        for tax in pos.get("taxes_detail") or []:
             tax_name = str(tax.get("tax_name") or "").strip()
-            rate     = tax.get("rate")
-            base     = str(tax.get("base") or "CIF").strip()
-            is_cet   = tax.get("is_cet", False)
+            rate = tax.get("rate")
+            base = str(tax.get("base") or "CIF").strip()
+            is_cet = tax.get("is_cet", False)
 
             mtype, seq, basis = _match_tax_type(tax_name)
             if is_cet:
                 mtype = MeasureType.CUSTOMS_DUTY
-                seq   = 10
+                seq = 10
 
             # Assiette textuelle → enum
             if "+" in base:
@@ -132,42 +144,48 @@ def convert_country(country: str, output_path: Optional[Path] = None) -> int:
 
             rate_type = RateType.EXEMPT if (rate or 0) == 0 else RateType.AD_VALOREM
 
-            measures.append(Measure(
-                country_iso3=country,
-                national_code=code_nat,
-                measure_type=mtype,
-                code="CET" if is_cet else tax_name[:10].replace(" ", "_").upper(),
-                name_fr=tax_name,
-                name_en=tax_name,
-                rate_pct=float(rate) if rate is not None else None,
-                rate_type=rate_type,
-                basis=basis,
-                basis_note=base if basis == DutyBasis.OTHER else None,
-                sequence=seq,
-                observation="Taxe CET communautaire EAC" if is_cet else None,
-            ))
+            measures.append(
+                Measure(
+                    country_iso3=country,
+                    national_code=code_nat,
+                    measure_type=mtype,
+                    code="CET" if is_cet else tax_name[:10].replace(" ", "_").upper(),
+                    name_fr=tax_name,
+                    name_en=tax_name,
+                    rate_pct=float(rate) if rate is not None else None,
+                    rate_type=rate_type,
+                    basis=basis,
+                    basis_note=base if basis == DutyBasis.OTHER else None,
+                    sequence=seq,
+                    observation="Taxe CET communautaire EAC" if is_cet else None,
+                )
+            )
 
         measures.sort(key=lambda m: m.sequence)
 
-        dd_rate   = next((m.rate_pct for m in measures
-                          if m.measure_type == MeasureType.CUSTOMS_DUTY), 0.0) or 0.0
+        dd_rate = (
+            next((m.rate_pct for m in measures if m.measure_type == MeasureType.CUSTOMS_DUTY), 0.0)
+            or 0.0
+        )
         total_npf = pos.get("total_taxes_pct") or sum(
             m.rate_pct for m in measures if m.rate_pct is not None
         )
 
-        lines.append(CanonicalTariffLine(
-            commodity=commodity,
-            measures=measures,
-            requirements=[],
-            fiscal_advantages=[],
-            total_npf_pct=round(float(total_npf), 4),
-            total_zlecaf_pct=0.0,
-            savings_pct=0.0,
-            source_file=f"backend/data/crawled/{country}_tariffs.json",
-            last_updated=now,
-            schema_version=SCHEMA_VERSION,
-            provenance=prov,
-        ))
+        lines.append(
+            CanonicalTariffLine(
+                commodity=commodity,
+                measures=measures,
+                requirements=[],
+                fiscal_advantages=[],
+                total_npf_pct=round(float(total_npf), 4),
+                total_zlecaf_pct=0.0,
+                savings_pct=0.0,
+                source_file=f"backend/data/crawled/{country}_tariffs.json",
+                last_updated=now,
+                schema_version=SCHEMA_VERSION,
+                provenance=prov,
+            )
+        )
 
     out = output_path or (OUTPUT_DIR / f"{country}_canonical.jsonl")
     count = write_jsonl(lines, out)
@@ -185,6 +203,7 @@ def convert_all(output_dir: Optional[Path] = None) -> dict[str, int]:
 
 if __name__ == "__main__":
     import sys as _sys
+
     arg = _sys.argv[1] if len(_sys.argv) > 1 else "ALL"
     if arg == "ALL":
         convert_all()

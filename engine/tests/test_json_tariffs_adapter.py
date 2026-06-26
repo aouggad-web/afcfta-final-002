@@ -16,19 +16,28 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from adapters.json_tariffs_adapter import (
-    _dedup_taxes, _is_fictitious, _build_measures, process_file, run,
     SourceNotVerifiedException,
+    _build_measures,
+    _dedup_taxes,
+    _is_fictitious,
+    process_file,
+    run,
 )
-from schemas.canonical_model import DataStatus, ReliabilityGrade, DutyBasis, MeasureType
-
+from schemas.canonical_model import DataStatus, DutyBasis, MeasureType, ReliabilityGrade
 
 # ----------------------------------------------------------------------
 # Helpers / fixtures inline
 # ----------------------------------------------------------------------
 
-def _make_file(tmp_path, country: str, lines: list, *,
-               source_document: str = "",
-               generated_at: str = "2026-06-12T14:00:00+00:00") -> str:
+
+def _make_file(
+    tmp_path,
+    country: str,
+    lines: list,
+    *,
+    source_document: str = "",
+    generated_at: str = "2026-06-12T14:00:00+00:00",
+) -> str:
     """Crée un fichier JSON tarifaire de test.
 
     Par défaut : pas de source_document + date = aujourd'hui
@@ -56,7 +65,9 @@ def _make_file(tmp_path, country: str, lines: list, *,
 def _make_verified_file(tmp_path, country: str, lines: list) -> str:
     """Fichier avec source officielle vérifiable (date passée + source_document)."""
     return _make_file(
-        tmp_path, country, lines,
+        tmp_path,
+        country,
+        lines,
         source_document="Direction Générale des Douanes — Tarif officiel 2022",
         generated_at="2024-01-15T10:00:00+00:00",
     )
@@ -75,14 +86,23 @@ SIMPLE_LINE = {
     "vat_rate": 18.0,
     "other_taxes_rate": 0,
     "taxes_detail": [
-        {"tax": "D.D", "rate": 25.0, "base": "CIF", "methode": "CIF × 25%",
-         "observation": "EAC CET 25%"},
-        {"tax": "T.V.A", "rate": 18.0, "base": "CIF + DD",
-         "methode": "(CIF+DD) × 18%", "observation": "VAT"},
+        {
+            "tax": "D.D",
+            "rate": 25.0,
+            "base": "CIF",
+            "methode": "CIF × 25%",
+            "observation": "EAC CET 25%",
+        },
+        {
+            "tax": "T.V.A",
+            "rate": 18.0,
+            "base": "CIF + DD",
+            "methode": "(CIF+DD) × 18%",
+            "observation": "VAT",
+        },
     ],
     "fiscal_advantages": [
-        {"tax": "D.D", "rate": 0.0, "condition_fr": "Exo ZLECAf",
-         "condition_en": "AfCFTA"},
+        {"tax": "D.D", "rate": 0.0, "condition_fr": "Exo ZLECAf", "condition_en": "AfCFTA"},
     ],
     "administrative_formalities": [],
     "total_import_taxes": 29.5,
@@ -106,9 +126,14 @@ LBR_LINE = {
     "hs6": "252329",
     "chapter": "25",
     "taxes_detail": [
-        {"tax": "D.D",  "rate": 20.0, "base": "CIF",    "observation": "TEC CEDEAO 20%"},
-        {"tax": "GST",  "rate": 10.0, "base": "CIF+DD", "observation": "Goods and Services Tax"},
-        {"tax": "T.V.A","rate": 10.0, "base": "CIF + DD","observation": "Goods and Services Tax (GST)"},
+        {"tax": "D.D", "rate": 20.0, "base": "CIF", "observation": "TEC CEDEAO 20%"},
+        {"tax": "GST", "rate": 10.0, "base": "CIF+DD", "observation": "Goods and Services Tax"},
+        {
+            "tax": "T.V.A",
+            "rate": 10.0,
+            "base": "CIF + DD",
+            "observation": "Goods and Services Tax (GST)",
+        },
     ],
 }
 
@@ -117,10 +142,20 @@ CMR_LINE = {
     "hs6": "100630",
     "chapter": "10",
     "taxes_detail": [
-        {"tax": "D.D",   "rate": 10.0, "base": "CIF",           "observation": "TEC CEMAC 10%"},
-        {"tax": "TCI",   "rate": 1.0,  "base": "CIF",           "observation": "Taxe Communautaire d'Intégration"},
-        {"tax": "TS",    "rate": 1.0,  "base": "CIF",           "observation": "Taxe de Solidarité"},
-        {"tax": "T.V.A", "rate": 19.25,"base": "CIF + DD + TCI","observation": "TVA CMR 17.5% + CAC"},
+        {"tax": "D.D", "rate": 10.0, "base": "CIF", "observation": "TEC CEMAC 10%"},
+        {
+            "tax": "TCI",
+            "rate": 1.0,
+            "base": "CIF",
+            "observation": "Taxe Communautaire d'Intégration",
+        },
+        {"tax": "TS", "rate": 1.0, "base": "CIF", "observation": "Taxe de Solidarité"},
+        {
+            "tax": "T.V.A",
+            "rate": 19.25,
+            "base": "CIF + DD + TCI",
+            "observation": "TVA CMR 17.5% + CAC",
+        },
     ],
 }
 
@@ -129,6 +164,7 @@ CMR_LINE = {
 # Tests unitaires (sans I/O — aucune validation de source requise)
 # ----------------------------------------------------------------------
 
+
 def test_fictitious_line_detected():
     assert _is_fictitious(FICTITIOUS_LINE)
     assert not _is_fictitious(SIMPLE_LINE)
@@ -136,13 +172,13 @@ def test_fictitious_line_detected():
 
 def test_dedup_gst_tva():
     taxes = [
-        {"tax": "D.D",   "rate": 20.0},
-        {"tax": "GST",   "rate": 10.0},
-        {"tax": "T.V.A", "rate": 10.0},   # doublon de GST
+        {"tax": "D.D", "rate": 20.0},
+        {"tax": "GST", "rate": 10.0},
+        {"tax": "T.V.A", "rate": 10.0},  # doublon de GST
     ]
     deduped = _dedup_taxes(taxes)
     codes = [t["tax"] for t in deduped]
-    assert codes == ["D.D", "GST"]         # T.V.A supprimé
+    assert codes == ["D.D", "GST"]  # T.V.A supprimé
     assert "T.V.A" not in codes
 
 
@@ -166,8 +202,7 @@ def test_total_npf_includes_vat(tmp_path):
     """total_npf_pct doit inclure la TVA (CIF_PLUS_INCLUDED), pas seulement CIF."""
     f = _make_verified_file(tmp_path, "RWA", [SIMPLE_LINE])
     process_file(f, str(tmp_path))
-    record = json.loads(
-        (tmp_path / "RWA_canonical.jsonl").read_text().splitlines()[0])
+    record = json.loads((tmp_path / "RWA_canonical.jsonl").read_text().splitlines()[0])
     # D.D 25% (CIF) + T.V.A 18% (CIF_PLUS_INCLUDED) = 43.0
     assert record["total_npf_pct"] == pytest.approx(43.0)
 
@@ -185,12 +220,13 @@ def test_lbr_dedup_in_measures():
     # GST et T.V.A sont le même impôt → seul GST conservé
     assert "T.V.A" not in codes
     assert "GST" in codes
-    assert len(measures) == 2    # D.D + GST
+    assert len(measures) == 2  # D.D + GST
 
 
 # ----------------------------------------------------------------------
 # Validation de source — mode strict
 # ----------------------------------------------------------------------
+
 
 def test_strict_rejects_file_without_source_document(tmp_path):
     """Mode strict (défaut) : fichier sans source_document → exception."""
@@ -202,10 +238,15 @@ def test_strict_rejects_file_without_source_document(tmp_path):
 def test_strict_rejects_file_generated_today(tmp_path):
     """Mode strict : même avec source_document, si généré aujourd'hui → exception."""
     import datetime
+
     today = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT12:00:00+00:00")
-    f = _make_file(tmp_path, "TST", [SIMPLE_LINE],
-                   source_document="Doc officiel — version 2022",
-                   generated_at=today)
+    f = _make_file(
+        tmp_path,
+        "TST",
+        [SIMPLE_LINE],
+        source_document="Doc officiel — version 2022",
+        generated_at=today,
+    )
     with pytest.raises(SourceNotVerifiedException, match="généré automatiquement"):
         process_file(f, str(tmp_path), strict=True)
 
@@ -224,8 +265,7 @@ def test_permissive_accepts_unverified_as_synthetic(tmp_path):
     """Mode permissif : fichier non-vérifiable → SYNTHETIC/D accepté."""
     f = _make_file(tmp_path, "TST", [SIMPLE_LINE])
     result = process_file(f, str(tmp_path), strict=False)
-    record = json.loads(
-        (tmp_path / "TST_canonical.jsonl").read_text().splitlines()[0])
+    record = json.loads((tmp_path / "TST_canonical.jsonl").read_text().splitlines()[0])
     assert result["data_status"] == "SYNTHETIC"
     assert record["provenance"]["data_status"] == "SYNTHETIC"
     assert record["provenance"]["reliability"] == "D"
@@ -235,12 +275,12 @@ def test_permissive_accepts_unverified_as_synthetic(tmp_path):
 # Traitement complet avec fichier vérifié (PARTIAL/B)
 # ----------------------------------------------------------------------
 
+
 def test_provenance_partial_b(tmp_path):
     """Fichier avec source officielle + date passée → PARTIAL/B."""
     f = _make_verified_file(tmp_path, "RWA", [SIMPLE_LINE])
     result = process_file(f, str(tmp_path))
-    record = json.loads(
-        (tmp_path / "RWA_canonical.jsonl").read_text().splitlines()[0])
+    record = json.loads((tmp_path / "RWA_canonical.jsonl").read_text().splitlines()[0])
     assert record["provenance"]["data_status"] == "PARTIAL"
     assert record["provenance"]["reliability"] == "B"
     assert record["schema_version"] == "4.0"
@@ -256,8 +296,7 @@ def test_fictitious_line_filtered(tmp_path):
 def test_fiscal_advantages_written(tmp_path):
     f = _make_verified_file(tmp_path, "RWA", [SIMPLE_LINE])
     process_file(f, str(tmp_path))
-    record = json.loads(
-        (tmp_path / "RWA_canonical.jsonl").read_text().splitlines()[0])
+    record = json.loads((tmp_path / "RWA_canonical.jsonl").read_text().splitlines()[0])
     assert len(record["fiscal_advantages"]) == 1
     assert record["fiscal_advantages"][0]["agreement"] == "ZLECAf"
 

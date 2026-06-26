@@ -1,11 +1,10 @@
-
 import json
 from pathlib import Path
 
 # Charger les données existantes
-json_path = '/app/projets_structurants_afrique.json'
+json_path = "/app/projets_structurants_afrique.json"
 try:
-    with open(json_path, 'r', encoding='utf-8') as f:
+    with open(json_path, "r", encoding="utf-8") as f:
         existing_projects = json.load(f)
 except FileNotFoundError:
     existing_projects = {}
@@ -23,7 +22,7 @@ NEW_PROJECTS = {
             "description": "Corridor de transport majeur reliant le nouveau port de Lamu à l'Éthiopie et au Soudan du Sud via Garissa. Inclut routes, pipeline et aéroports.",
             "impact": "Désenclavement du Nord Kenya. Nouvelle porte d'entrée pour l'Afrique de l'Est.",
             "partenaires": "LAPSSET Authority, China Communications Construction",
-            "source": "Gouvernement Kenyan / AfDB 2025"
+            "source": "Gouvernement Kenyan / AfDB 2025",
         },
         {
             "titre": "SGR Phase 2B (Naivasha-Kisumu-Malaba)",
@@ -34,8 +33,8 @@ NEW_PROJECTS = {
             "description": "Extension de la ligne ferroviaire Standard Gauge Railway (SGR) vers la frontière ougandaise pour compléter le corridor Nord.",
             "impact": "Connexion ferroviaire directe Mombasa-Kampala-Kigali. Réduction drastique des coûts logistiques régionaux.",
             "partenaires": "Kenya Railways, Financement Chinois (Potentiel)",
-            "source": "Kenya Railways Corp"
-        }
+            "source": "Kenya Railways Corp",
+        },
     ],
     "TZA": [
         {
@@ -47,7 +46,7 @@ NEW_PROJECTS = {
             "description": "Ligne ferroviaire électrique à écartement standard reliant le port de Dar es Salaam aux Grands Lacs (Rwanda, Burundi, RDC).",
             "impact": "Corridor central modernisé. Accès direct à l'océan pour les pays enclavés.",
             "partenaires": "TRC, Yapi Merkezi, Mota-Engil",
-            "source": "Tanzania Railways Corporation"
+            "source": "Tanzania Railways Corporation",
         },
         {
             "titre": "Projet Gazier LNG Lindi",
@@ -58,8 +57,8 @@ NEW_PROJECTS = {
             "description": "Construction d'un terminal de liquéfaction de gaz naturel à Lindi pour exploiter les immenses réserves offshore.",
             "impact": "Transformation économique de la Tanzanie. Devises majeures via exportations GNL.",
             "partenaires": "Equinor, Shell, ExxonMobil",
-            "source": "Tanzania Petroleum Development Corp"
-        }
+            "source": "Tanzania Petroleum Development Corp",
+        },
     ],
     "ETH": [
         {
@@ -71,10 +70,9 @@ NEW_PROJECTS = {
             "description": "Plus grand barrage hydroélectrique d'Afrique (6.4 GW) sur le Nil Bleu.",
             "impact": "Indépendance énergétique. Exportation d'électricité vers Kenya, Djibouti, Soudan.",
             "partenaires": "EPP (Ethiopian Electric Power)",
-            "source": "Gouvernement Éthiopien"
+            "source": "Gouvernement Éthiopien",
         }
     ],
-    
     # AFRIQUE AUSTRALE
     "ZAF": [
         {
@@ -86,7 +84,7 @@ NEW_PROJECTS = {
             "description": "Nouveau port en eau profonde et zone économique spéciale dédiés à la production et l'exportation d'hydrogène vert.",
             "impact": "Hub mondial de l'hydrogène vert. Réindustrialisation du Northern Cape.",
             "partenaires": "Sasol, Transnet",
-            "source": "Infrastructure South Africa"
+            "source": "Infrastructure South Africa",
         },
         {
             "titre": "Extension Corridor Conteneurs Durban-Gauteng",
@@ -97,8 +95,8 @@ NEW_PROJECTS = {
             "description": "Modernisation de l'axe logistique vital reliant le port de Durban au cœur industriel de Johannesburg (Rail & Route).",
             "impact": "Décongestion du port de Durban. Compétitivité accrue de l'Afrique du Sud.",
             "partenaires": "Transnet",
-            "source": "Transnet"
-        }
+            "source": "Transnet",
+        },
     ],
     "AGO": [
         {
@@ -110,7 +108,7 @@ NEW_PROJECTS = {
             "description": "Construction d'une raffinerie d'une capacité de 200,000 barils/jour.",
             "impact": "Auto-suffisance en produits raffinés. Exportation régionale vers la Zambie et la RDC.",
             "partenaires": "Sonangol",
-            "source": "Ministère des Ressources Minérales"
+            "source": "Ministère des Ressources Minérales",
         },
         {
             "titre": "Corridor Ferroviaire de Lobito",
@@ -121,8 +119,8 @@ NEW_PROJECTS = {
             "description": "Réhabilitation et extension du chemin de fer de Benguela pour relier le port de Lobito aux mines de RDC et Zambie.",
             "impact": "Route d'exportation la plus rapide pour le cuivre/cobalt de la Copperbelt. Soutien stratégique US/UE.",
             "partenaires": "Lobito Atlantic Railway, DFC (USA)",
-            "source": "Gouvernement Angolais / USA"
-        }
+            "source": "Gouvernement Angolais / USA",
+        },
     ],
     "MOZ": [
         {
@@ -134,10 +132,9 @@ NEW_PROJECTS = {
             "description": "Développement des champs gaziers offshore et usine de liquéfaction à Afungi.",
             "impact": "Transformation du Mozambique en acteur gazier mondial majeur.",
             "partenaires": "TotalEnergies",
-            "source": "TotalEnergies / INP"
+            "source": "TotalEnergies / INP",
         }
     ],
-    
     # AFRIQUE DE L'OUEST & CENTRALE
     "CIV": [
         {
@@ -149,7 +146,7 @@ NEW_PROJECTS = {
             "description": "Train urbain de 37km traversant Abidjan du Nord au Sud, reliant l'aéroport.",
             "impact": "Transport de 500,000 passagers/jour. Révolution de la mobilité à Abidjan.",
             "partenaires": "Bouygues, Keolis, Alstom",
-            "source": "Gouvernement Ivoirien"
+            "source": "Gouvernement Ivoirien",
         },
         {
             "titre": "Extension Port d'Abidjan (Terminal TC2)",
@@ -160,8 +157,8 @@ NEW_PROJECTS = {
             "description": "Second terminal à conteneurs capable d'accueillir des navires de 14,000 EVP.",
             "impact": "Consolidation d'Abidjan comme hub portuaire leader en Afrique de l'Ouest.",
             "partenaires": "Port Autonome d'Abidjan, Bolloré (MSC)",
-            "source": "PAA"
-        }
+            "source": "PAA",
+        },
     ],
     "CMR": [
         {
@@ -173,7 +170,7 @@ NEW_PROJECTS = {
             "description": "Extension des terminaux et zones logistiques pour augmenter la capacité de traitement.",
             "impact": "Hub de transbordement régional. Débouché pour le fer de Mbalam et le Tchad/RCA.",
             "partenaires": "CHEC (Chine), Port Autonome de Kribi",
-            "source": "PAK"
+            "source": "PAK",
         },
         {
             "titre": "Barrage de Nachtigal",
@@ -184,8 +181,8 @@ NEW_PROJECTS = {
             "description": "Barrage hydroélectrique de 420 MW sur la Sanaga.",
             "impact": "Augmentation de 30% de la capacité électrique du pays. Exportation vers le Tchad.",
             "partenaires": "EDF, SFI",
-            "source": "NHPC"
-        }
+            "source": "NHPC",
+        },
     ],
     "TUN": [
         {
@@ -197,18 +194,17 @@ NEW_PROJECTS = {
             "description": "Câble sous-marin de 200km reliant le réseau électrique tunisien à l'Europe (Sicile).",
             "impact": "Pont énergétique Afrique-Europe. Exportation d'énergies renouvelables solaires.",
             "partenaires": "STEG, Terna, UE",
-            "source": "Ministère de l'Industrie"
+            "source": "Ministère de l'Industrie",
         }
-    ]
+    ],
 }
 
 # Fusionner les dictionnaires (Mise à jour ou Ajout)
 existing_projects.update(NEW_PROJECTS)
 
 # Sauvegarder
-with open(json_path, 'w', encoding='utf-8') as f:
+with open(json_path, "w", encoding="utf-8") as f:
     json.dump(existing_projects, f, indent=2, ensure_ascii=False)
 
 print(f"✅ Ajouté/Mis à jour les projets pour {len(NEW_PROJECTS)} nouveaux pays.")
 print("Pays couverts maintenant:", list(existing_projects.keys()))
-

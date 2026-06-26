@@ -5,15 +5,15 @@ Script de migration rapide vers PostgreSQL
 Migre les 54 pays africains depuis les fichiers JSONL vers PostgreSQL.
 """
 
+import json
 import os
 import sys
-import json
 import time
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 # Ajouter le répertoire parent au path
-sys.path.insert(0, '/app/engine')
+sys.path.insert(0, "/app/engine")
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -87,7 +87,9 @@ def init_database(engine):
     """Crée les tables si nécessaires"""
     with engine.connect() as conn:
         # Créer les tables
-        conn.execute(text("""
+        conn.execute(
+            text(
+                """
             CREATE TABLE IF NOT EXISTS countries (
                 iso3 VARCHAR(3) PRIMARY KEY,
                 name_fr VARCHAR(100) NOT NULL,
@@ -116,7 +118,9 @@ def init_database(engine):
             CREATE INDEX IF NOT EXISTS idx_comm_hs6 ON commodities(hs6);
             CREATE INDEX IF NOT EXISTS idx_comm_country_hs6 ON commodities(country_iso3, hs6);
             CREATE INDEX IF NOT EXISTS idx_comm_description ON commodities USING gin(to_tsvector('french', description_fr));
-        """))
+        """
+            )
+        )
         conn.commit()
     print("✓ Tables créées")
 
@@ -124,85 +128,111 @@ def init_database(engine):
 def migrate_country(engine, iso3: str):
     """Migre un pays vers PostgreSQL"""
     jsonl_path = DATA_DIR / f"{iso3}_canonical.jsonl"
-    
+
     if not jsonl_path.exists():
         print(f"  ⚠ {iso3}: Fichier non trouvé")
         return 0
-    
+
     country_info = AFRICAN_COUNTRIES.get(iso3, {"name_fr": iso3, "currency": "USD"})
-    
+
     with engine.connect() as conn:
         # Supprimer les anciennes données
         conn.execute(text("DELETE FROM commodities WHERE country_iso3 = :iso3"), {"iso3": iso3})
-        
+
         # Insérer/mettre à jour le pays
-        conn.execute(text("""
+        conn.execute(
+            text(
+                """
             INSERT INTO countries (iso3, name_fr, currency, last_updated)
             VALUES (:iso3, :name_fr, :currency, NOW())
             ON CONFLICT (iso3) DO UPDATE SET
                 name_fr = EXCLUDED.name_fr,
                 currency = EXCLUDED.currency,
                 last_updated = NOW()
-        """), {"iso3": iso3, "name_fr": country_info["name_fr"], "currency": country_info["currency"]})
-        
+        """
+            ),
+            {
+                "iso3": iso3,
+                "name_fr": country_info["name_fr"],
+                "currency": country_info["currency"],
+            },
+        )
+
         # Préparer les données en lot
         batch = []
         batch_size = 500
         count = 0
-        
-        with open(jsonl_path, 'r', encoding='utf-8') as f:
+
+        with open(jsonl_path, "r", encoding="utf-8") as f:
             for line in f:
                 try:
                     data = json.loads(line)
                     commodity = data.get("commodity", {})
-                    
-                    batch.append({
-                        "country_iso3": iso3,
-                        "national_code": commodity.get("national_code", ""),
-                        "hs6": commodity.get("hs6", ""),
-                        "description_fr": commodity.get("description_fr", ""),
-                        "chapter": commodity.get("chapter", ""),
-                        "total_npf_pct": data.get("total_npf_pct", 0),
-                        "total_zlecaf_pct": data.get("total_zlecaf_pct", 0),
-                        "savings_pct": data.get("savings_pct", 0),
-                        "measures": json.dumps(data.get("measures", [])),
-                        "requirements": json.dumps(data.get("requirements", [])),
-                        "fiscal_advantages": json.dumps(data.get("fiscal_advantages", []))
-                    })
+
+                    batch.append(
+                        {
+                            "country_iso3": iso3,
+                            "national_code": commodity.get("national_code", ""),
+                            "hs6": commodity.get("hs6", ""),
+                            "description_fr": commodity.get("description_fr", ""),
+                            "chapter": commodity.get("chapter", ""),
+                            "total_npf_pct": data.get("total_npf_pct", 0),
+                            "total_zlecaf_pct": data.get("total_zlecaf_pct", 0),
+                            "savings_pct": data.get("savings_pct", 0),
+                            "measures": json.dumps(data.get("measures", [])),
+                            "requirements": json.dumps(data.get("requirements", [])),
+                            "fiscal_advantages": json.dumps(data.get("fiscal_advantages", [])),
+                        }
+                    )
                     count += 1
-                    
+
                     if len(batch) >= batch_size:
-                        conn.execute(text("""
+                        conn.execute(
+                            text(
+                                """
                             INSERT INTO commodities 
                             (country_iso3, national_code, hs6, description_fr, chapter,
                              total_npf_pct, total_zlecaf_pct, savings_pct, measures, requirements, fiscal_advantages)
                             VALUES 
                             (:country_iso3, :national_code, :hs6, :description_fr, :chapter,
                              :total_npf_pct, :total_zlecaf_pct, :savings_pct, :measures::jsonb, :requirements::jsonb, :fiscal_advantages::jsonb)
-                        """), batch)
+                        """
+                            ),
+                            batch,
+                        )
                         batch = []
-                        
+
                 except Exception as e:
                     continue
-        
+
         # Insérer le reste
         if batch:
-            conn.execute(text("""
+            conn.execute(
+                text(
+                    """
                 INSERT INTO commodities 
                 (country_iso3, national_code, hs6, description_fr, chapter,
                  total_npf_pct, total_zlecaf_pct, savings_pct, measures, requirements, fiscal_advantages)
                 VALUES 
                 (:country_iso3, :national_code, :hs6, :description_fr, :chapter,
                  :total_npf_pct, :total_zlecaf_pct, :savings_pct, :measures::jsonb, :requirements::jsonb, :fiscal_advantages::jsonb)
-            """), batch)
-        
+            """
+                ),
+                batch,
+            )
+
         # Mettre à jour le compteur
-        conn.execute(text("""
+        conn.execute(
+            text(
+                """
             UPDATE countries SET total_positions = :count WHERE iso3 = :iso3
-        """), {"iso3": iso3, "count": count})
-        
+        """
+            ),
+            {"iso3": iso3, "count": count},
+        )
+
         conn.commit()
-    
+
     return count
 
 
@@ -211,38 +241,40 @@ def main():
     print("=" * 60)
     print("MIGRATION POSTGRESQL - ZLECAf Regulatory Engine")
     print("=" * 60)
-    
+
     start_time = time.time()
-    
+
     # Connexion
     engine = create_engine(DATABASE_URL, pool_pre_ping=True)
-    
+
     # Initialiser les tables
     init_database(engine)
-    
+
     # Trouver les fichiers disponibles
     jsonl_files = list(DATA_DIR.glob("*_canonical.jsonl"))
     countries_to_migrate = [f.stem.replace("_canonical", "") for f in jsonl_files]
-    
+
     print(f"\n📦 {len(countries_to_migrate)} pays à migrer")
     print("-" * 60)
-    
+
     total_records = 0
     migrated_countries = 0
-    
+
     for i, iso3 in enumerate(sorted(countries_to_migrate), 1):
         try:
             count = migrate_country(engine, iso3)
             if count > 0:
                 country_name = AFRICAN_COUNTRIES.get(iso3, {}).get("name_fr", iso3)
-                print(f"  [{i:02d}/{len(countries_to_migrate)}] ✓ {iso3} ({country_name}): {count:,} enregistrements")
+                print(
+                    f"  [{i:02d}/{len(countries_to_migrate)}] ✓ {iso3} ({country_name}): {count:,} enregistrements"
+                )
                 total_records += count
                 migrated_countries += 1
         except Exception as e:
             print(f"  [{i:02d}/{len(countries_to_migrate)}] ✗ {iso3}: Erreur - {str(e)[:50]}")
-    
+
     elapsed = time.time() - start_time
-    
+
     print("-" * 60)
     print(f"\n✅ MIGRATION TERMINÉE")
     print(f"   • Pays migrés: {migrated_countries}")
