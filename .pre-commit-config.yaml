@@ -1,0 +1,29 @@
+# Pre-commit hooks — automatise le formatage/lint avant chaque commit.
+#
+# Installation (une fois par clone) :
+#   pip install pre-commit
+#   pre-commit install
+#
+# Ensuite, `git commit` lance automatiquement black/isort (qui reformatent les
+# fichiers stagés) et flake8 (gate « bugs réels »). Pour lancer sur tout le
+# dépôt manuellement : `pre-commit run --all-files`.
+#
+# Versions alignées sur la CI (.github/workflows/ci.yml) et requirements.txt.
+repos:
+  - repo: https://github.com/psf/black
+    rev: 25.9.0
+    hooks:
+      - id: black
+        # Config dans pyproject.toml [tool.black] (line-length 100, excludes).
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 6.1.0
+    hooks:
+      - id: isort
+        # Config dans pyproject.toml [tool.isort] (profile=black).
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+        # Config dans .flake8 (gate E9,F63,F7,F82 + excludes).
