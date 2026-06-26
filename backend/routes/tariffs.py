@@ -23,6 +23,7 @@ from etl.country_hs6_tariffs import (
 )
 from etl.country_tariffs_complete import (
     ISO2_TO_ISO3,
+    compute_bilateral_tariff_comparison,
     get_all_country_rates,
     get_other_taxes_for_country,
     get_tariff_rate_for_country,
@@ -266,6 +267,41 @@ async def compare_country_tariffs(
         "comparison": results,
         "note": "total_cost_factor = multiplicateur du coût d'importation (1.0 = pas de taxes)",
     }
+
+
+@router.get("/bilateral-tariff/{country_a}/{country_b}/{hs6}")
+async def bilateral_tariff_comparison(country_a: str, country_b: str, hs6: str):
+    """
+    Comparateur tarifaire bilatéral: pour une paire de pays et un produit HS6,
+    le traitement tarifaire dans les deux sens (A→B et B→A) — taux NPF, taux
+    ZLECAf préférentiel, et marge de préférence par direction.
+    """
+
+    def to_iso3(code: str) -> str:
+        c = code.strip().upper()
+        return ISO2_TO_ISO3.get(c, c) if len(c) == 2 else c
+
+    iso_a = to_iso3(country_a)
+    iso_b = to_iso3(country_b)
+    for iso in (iso_a, iso_b):
+        if len(iso) != 3 or not any(c["iso3"] == iso for c in AFRICAN_COUNTRIES):
+            raise HTTPException(404, detail=f"Pays inconnu: {iso}")
+    if iso_a == iso_b:
+        raise HTTPException(400, detail="Les deux pays doivent être différents")
+
+    code = hs6.strip()
+    if len(code) != 6 or not code.isdigit():
+        raise HTTPException(400, detail="hs6 doit être un code à 6 chiffres")
+
+    result = compute_bilateral_tariff_comparison(iso_a, iso_b, code)
+
+    def name_of(iso: str) -> str:
+        country = next((c for c in AFRICAN_COUNTRIES if c["iso3"] == iso), None)
+        return country["name"] if country else iso
+
+    result["country_a_name"] = name_of(iso_a)
+    result["country_b_name"] = name_of(iso_b)
+    return result
 
 
 @router.get("/all-country-rates")

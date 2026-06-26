@@ -888,6 +888,58 @@ def get_zlecaf_tariff_rate(country_code: str, hs_code: str) -> Tuple[float, str]
     return (zlecaf_rate, f"ZLECAf ({category_name})")
 
 
+def compute_bilateral_tariff_comparison(country_a: str, country_b: str, hs6: str) -> dict:
+    """
+    Compare le traitement tarifaire d'un produit dans les DEUX directions d'une
+    paire de pays:
+      - flux A→B: le droit appliqué est le tarif d'importation de B,
+      - flux B→A: le droit appliqué est le tarif d'importation de A.
+
+    Pour chaque direction: taux NPF, taux ZLECAf préférentiel, et marge de
+    préférence (NPF − ZLECAf). Indique aussi la direction où la préférence
+    ZLECAf est la plus avantageuse.
+
+    Réutilise les lookups tarifaires existants (données locales, sans réseau).
+    """
+
+    def direction(importer: str) -> dict:
+        mfn_decimal, mfn_src = get_tariff_rate_for_country(importer, hs6)
+        zlecaf_decimal, zlecaf_src = get_zlecaf_tariff_rate(importer, hs6)
+        mfn = round(mfn_decimal * 100.0, 2)
+        zlecaf = round(zlecaf_decimal * 100.0, 2)
+        return {
+            "importer": importer,
+            "mfn_rate": mfn,
+            "zlecaf_rate": zlecaf,
+            "preference_margin": round(mfn - zlecaf, 2),
+            "mfn_source": mfn_src,
+            "zlecaf_source": zlecaf_src,
+        }
+
+    a = country_a.upper()
+    b = country_b.upper()
+    flow_a_to_b = direction(b)  # A exporte vers B → tarif d'import de B
+    flow_b_to_a = direction(a)  # B exporte vers A → tarif d'import de A
+
+    margin_ab = flow_a_to_b["preference_margin"]
+    margin_ba = flow_b_to_a["preference_margin"]
+    if margin_ab > margin_ba:
+        best = "a_to_b"
+    elif margin_ba > margin_ab:
+        best = "b_to_a"
+    else:
+        best = "equal"
+
+    return {
+        "hs6": hs6,
+        "country_a": a,
+        "country_b": b,
+        "flow_a_to_b": flow_a_to_b,
+        "flow_b_to_a": flow_b_to_a,
+        "best_preference_direction": best,
+    }
+
+
 def get_vat_rate_for_country(country_code: str) -> Tuple[float, str]:
     """
     Obtenir le taux de TVA pour un pays

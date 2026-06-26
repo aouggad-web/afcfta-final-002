@@ -13,12 +13,14 @@ import ProductAnalysisView from './ProductAnalysisView';
 import CountryComparison from './CountryComparison';
 import OpportunitySummary from './OpportunitySummary';
 import ZlecafImpactSimulator from './ZlecafImpactSimulator';
+import BilateralTariffComparator from './BilateralTariffComparator';
 
 const TABS = {
   fr: [
     { id: 'ai',           label: 'Analyse IA',         icon: Sparkles },
     { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
     { id: 'simulator',    label: 'Simulateur ZLECAf',   icon: Calculator },
+    { id: 'bilateral',    label: 'Comparateur bilatéral', icon: Scale },
     { id: 'summary',      label: "Vue d'ensemble",      icon: BarChart3 },
     { id: 'valueChains',  label: 'Chaînes de Valeur',   icon: Layers },
     { id: 'byProduct',    label: 'Par Produit',          icon: Package },
@@ -28,6 +30,7 @@ const TABS = {
     { id: 'ai',           label: 'AI Analysis',         icon: Sparkles },
     { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
     { id: 'simulator',    label: 'AfCFTA Simulator',    icon: Calculator },
+    { id: 'bilateral',    label: 'Bilateral comparator', icon: Scale },
     { id: 'summary',      label: 'Overview',             icon: BarChart3 },
     { id: 'valueChains',  label: 'Value Chains',         icon: Layers },
     { id: 'byProduct',    label: 'By Product',           icon: Package },
@@ -47,6 +50,7 @@ export default function OpportunitiesTab({ language = 'fr' }) {
       case 'ai':           return <AIAnalysis language={lang} />;
       case 'substitution': return <SubstitutionAnalysis language={lang} />;
       case 'simulator':    return <ZlecafImpactSimulator language={lang} />;
+      case 'bilateral':    return <BilateralTariffComparator language={lang} />;
       case 'summary':      return <OpportunitySummary language={lang} />;
       case 'valueChains':  return <ValueChains language={lang} />;
       case 'byProduct':    return <ProductAnalysisView language={lang} />;
