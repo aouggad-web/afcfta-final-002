@@ -23,6 +23,9 @@ from etl.unctad_data import (
     get_all_unctad_data
 )
 from country_data import REAL_COUNTRY_DATA
+from constants import AFRICAN_COUNTRIES
+from gold_reserves_data import GOLD_RESERVES_GAI_DATA
+from translations import translate_country_name
 
 # Import cache service
 try:
@@ -411,6 +414,41 @@ async def get_all_unctad():
 # TRADE PERFORMANCE ENDPOINTS (Global and Intra-African)
 # =============================================================================
 
+# Trade performance datasets (shared by the trade-performance routes and the
+# multi-country comparison endpoint). Values in billions USD (2024).
+TRADE_PERFORMANCE_GLOBAL_2024 = [
+    {"code": "ZA", "country": "Afrique du Sud", "exports_2024": 151.3, "imports_2024": 100.9, "trade_balance_2024": 50.4},
+    {"code": "NG", "country": "Nigéria", "exports_2024": 63.6, "imports_2024": 50.9, "trade_balance_2024": 12.7},
+    {"code": "MA", "country": "Maroc", "exports_2024": 63.3, "imports_2024": 89.2, "trade_balance_2024": -25.9},
+    {"code": "EG", "country": "Égypte", "exports_2024": 53.1, "imports_2024": 99.5, "trade_balance_2024": -46.4},
+    {"code": "DZ", "country": "Algérie", "exports_2024": 48.2, "imports_2024": 43.6, "trade_balance_2024": 4.6},
+    {"code": "AO", "country": "Angola", "exports_2024": 42.6, "imports_2024": 14.8, "trade_balance_2024": 27.8},
+    {"code": "LY", "country": "Libye", "exports_2024": 30.6, "imports_2024": 20.9, "trade_balance_2024": 9.7},
+    {"code": "CD", "country": "RD Congo", "exports_2024": 29.6, "imports_2024": 18.2, "trade_balance_2024": 11.4},
+    {"code": "CI", "country": "Côte d'Ivoire", "exports_2024": 25.6, "imports_2024": 17.3, "trade_balance_2024": 8.3},
+    {"code": "TN", "country": "Tunisie", "exports_2024": 23.0, "imports_2024": 26.1, "trade_balance_2024": -3.1},
+    {"code": "KE", "country": "Kenya", "exports_2024": 12.8, "imports_2024": 23.6, "trade_balance_2024": -10.8},
+    {"code": "GH", "country": "Ghana", "exports_2024": 18.5, "imports_2024": 16.8, "trade_balance_2024": 1.7},
+    {"code": "ET", "country": "Éthiopie", "exports_2024": 4.2, "imports_2024": 15.8, "trade_balance_2024": -11.6}
+]
+
+TRADE_PERFORMANCE_INTRA_AFRICAN_2024 = [
+    {"code": "ZA", "country": "Afrique du Sud", "exports_2024": 28.7, "imports_2024": 8.2, "trade_balance_2024": 20.5, "intra_african_percentage": 19.0},
+    {"code": "NG", "country": "Nigéria", "exports_2024": 8.5, "imports_2024": 4.1, "trade_balance_2024": 4.4, "intra_african_percentage": 13.4},
+    {"code": "KE", "country": "Kenya", "exports_2024": 8.2, "imports_2024": 3.8, "trade_balance_2024": 4.4, "intra_african_percentage": 64.1},
+    {"code": "EG", "country": "Égypte", "exports_2024": 6.8, "imports_2024": 3.2, "trade_balance_2024": 3.6, "intra_african_percentage": 12.8},
+    {"code": "CI", "country": "Côte d'Ivoire", "exports_2024": 6.5, "imports_2024": 2.9, "trade_balance_2024": 3.6, "intra_african_percentage": 25.4},
+    {"code": "GH", "country": "Ghana", "exports_2024": 5.8, "imports_2024": 3.1, "trade_balance_2024": 2.7, "intra_african_percentage": 31.4},
+    {"code": "MA", "country": "Maroc", "exports_2024": 4.9, "imports_2024": 2.8, "trade_balance_2024": 2.1, "intra_african_percentage": 7.7},
+    {"code": "TZ", "country": "Tanzanie", "exports_2024": 4.8, "imports_2024": 2.4, "trade_balance_2024": 2.4, "intra_african_percentage": 37.5},
+    {"code": "TN", "country": "Tunisie", "exports_2024": 4.2, "imports_2024": 1.8, "trade_balance_2024": 2.4, "intra_african_percentage": 18.3},
+    {"code": "SN", "country": "Sénégal", "exports_2024": 3.6, "imports_2024": 2.1, "trade_balance_2024": 1.5, "intra_african_percentage": 42.4},
+    {"code": "DZ", "country": "Algérie", "exports_2024": 3.2, "imports_2024": 1.8, "trade_balance_2024": 1.4, "intra_african_percentage": 6.6},
+    {"code": "ET", "country": "Éthiopie", "exports_2024": 3.1, "imports_2024": 1.5, "trade_balance_2024": 1.6, "intra_african_percentage": 73.8},
+    {"code": "AO", "country": "Angola", "exports_2024": 2.1, "imports_2024": 1.2, "trade_balance_2024": 0.9, "intra_african_percentage": 4.9}
+]
+
+
 @router.get("/trade-performance")
 async def get_trade_performance_global():
     """
@@ -421,21 +459,7 @@ async def get_trade_performance_global():
         "year": 2024,
         "type": "global",
         "description": "Commerce total avec tous les partenaires mondiaux",
-        "countries_global": [
-            {"code": "ZA", "country": "Afrique du Sud", "exports_2024": 151.3, "imports_2024": 100.9, "trade_balance_2024": 50.4},
-            {"code": "NG", "country": "Nigéria", "exports_2024": 63.6, "imports_2024": 50.9, "trade_balance_2024": 12.7},
-            {"code": "MA", "country": "Maroc", "exports_2024": 63.3, "imports_2024": 89.2, "trade_balance_2024": -25.9},
-            {"code": "EG", "country": "Égypte", "exports_2024": 53.1, "imports_2024": 99.5, "trade_balance_2024": -46.4},
-            {"code": "DZ", "country": "Algérie", "exports_2024": 48.2, "imports_2024": 43.6, "trade_balance_2024": 4.6},
-            {"code": "AO", "country": "Angola", "exports_2024": 42.6, "imports_2024": 14.8, "trade_balance_2024": 27.8},
-            {"code": "LY", "country": "Libye", "exports_2024": 30.6, "imports_2024": 20.9, "trade_balance_2024": 9.7},
-            {"code": "CD", "country": "RD Congo", "exports_2024": 29.6, "imports_2024": 18.2, "trade_balance_2024": 11.4},
-            {"code": "CI", "country": "Côte d'Ivoire", "exports_2024": 25.6, "imports_2024": 17.3, "trade_balance_2024": 8.3},
-            {"code": "TN", "country": "Tunisie", "exports_2024": 23.0, "imports_2024": 26.1, "trade_balance_2024": -3.1},
-            {"code": "KE", "country": "Kenya", "exports_2024": 12.8, "imports_2024": 23.6, "trade_balance_2024": -10.8},
-            {"code": "GH", "country": "Ghana", "exports_2024": 18.5, "imports_2024": 16.8, "trade_balance_2024": 1.7},
-            {"code": "ET", "country": "Éthiopie", "exports_2024": 4.2, "imports_2024": 15.8, "trade_balance_2024": -11.6}
-        ],
+        "countries_global": TRADE_PERFORMANCE_GLOBAL_2024,
         "source": "OEC/BACI, World Bank, IMF WEO 2024"
     }
 
@@ -452,20 +476,71 @@ async def get_trade_performance_intra_african():
         "description": "Commerce uniquement entre pays africains",
         "total_intra_african_trade_2024": 123.5,
         "intra_african_share_of_total": 16.3,
-        "countries_intra_african": [
-            {"code": "ZA", "country": "Afrique du Sud", "exports_2024": 28.7, "imports_2024": 8.2, "trade_balance_2024": 20.5, "intra_african_percentage": 19.0},
-            {"code": "NG", "country": "Nigéria", "exports_2024": 8.5, "imports_2024": 4.1, "trade_balance_2024": 4.4, "intra_african_percentage": 13.4},
-            {"code": "KE", "country": "Kenya", "exports_2024": 8.2, "imports_2024": 3.8, "trade_balance_2024": 4.4, "intra_african_percentage": 64.1},
-            {"code": "EG", "country": "Égypte", "exports_2024": 6.8, "imports_2024": 3.2, "trade_balance_2024": 3.6, "intra_african_percentage": 12.8},
-            {"code": "CI", "country": "Côte d'Ivoire", "exports_2024": 6.5, "imports_2024": 2.9, "trade_balance_2024": 3.6, "intra_african_percentage": 25.4},
-            {"code": "GH", "country": "Ghana", "exports_2024": 5.8, "imports_2024": 3.1, "trade_balance_2024": 2.7, "intra_african_percentage": 31.4},
-            {"code": "MA", "country": "Maroc", "exports_2024": 4.9, "imports_2024": 2.8, "trade_balance_2024": 2.1, "intra_african_percentage": 7.7},
-            {"code": "TZ", "country": "Tanzanie", "exports_2024": 4.8, "imports_2024": 2.4, "trade_balance_2024": 2.4, "intra_african_percentage": 37.5},
-            {"code": "TN", "country": "Tunisie", "exports_2024": 4.2, "imports_2024": 1.8, "trade_balance_2024": 2.4, "intra_african_percentage": 18.3},
-            {"code": "SN", "country": "Sénégal", "exports_2024": 3.6, "imports_2024": 2.1, "trade_balance_2024": 1.5, "intra_african_percentage": 42.4},
-            {"code": "DZ", "country": "Algérie", "exports_2024": 3.2, "imports_2024": 1.8, "trade_balance_2024": 1.4, "intra_african_percentage": 6.6},
-            {"code": "ET", "country": "Éthiopie", "exports_2024": 3.1, "imports_2024": 1.5, "trade_balance_2024": 1.6, "intra_african_percentage": 73.8},
-            {"code": "AO", "country": "Angola", "exports_2024": 2.1, "imports_2024": 1.2, "trade_balance_2024": 0.9, "intra_african_percentage": 4.9}
-        ],
+        "countries_intra_african": TRADE_PERFORMANCE_INTRA_AFRICAN_2024,
         "source": "OEC/BACI, UNCTAD, African Development Bank 2024"
+    }
+
+
+@router.get("/country-comparison/{country_code}")
+async def get_country_comparison(country_code: str, lang: str = "fr"):
+    """Profil comparatif complet d'un pays (sans dépendance IA).
+
+    Assemble les indicateurs économiques, commerciaux et de développement à
+    partir des sources internes fiables (Banque Mondiale WDI 2024, OEC/IMF,
+    Mo Ibrahim GAI 2025) pour alimenter la comparaison multi-pays. Accepte les
+    codes ISO3 (DZA) ou ISO2 (DZ). Les champs sans donnée fiable disponible
+    (inflation, chômage, rang IDH mondial) sont renvoyés à null plutôt que
+    d'être inventés.
+    """
+    code = country_code.upper()
+
+    iso3 = None
+    iso2 = None
+    for c in AFRICAN_COUNTRIES:
+        if c["iso3"] == code or c["code"] == code:
+            iso3 = c["iso3"]
+            iso2 = c["code"]
+            break
+    if iso3 is None:
+        iso3 = code
+
+    macro = REAL_COUNTRY_DATA.get(iso3, {})
+
+    population = macro.get("population_2024")
+    population_millions = round(population / 1_000_000, 2) if population else None
+
+    name = macro.get("name") or iso3
+    if lang == "en" and iso2:
+        name = translate_country_name(iso2, "en") or name
+
+    # Global Attractiveness Index 2025 (all 54 countries)
+    gai = GOLD_RESERVES_GAI_DATA.get("global_attractiveness_index_2025", {}).get(iso3, {})
+
+    # Trade performance (major economies only — null otherwise, never fabricated)
+    glob = next((t for t in TRADE_PERFORMANCE_GLOBAL_2024 if t["code"] == iso2), None)
+    intra = next((t for t in TRADE_PERFORMANCE_INTRA_AFRICAN_2024 if t["code"] == iso2), None)
+
+    return {
+        "iso3": iso3,
+        "country_name": name,
+        "economic_indicators": {
+            "gdp_billion_usd": macro.get("gdp_usd_2024"),
+            "gdp_per_capita_usd": macro.get("gdp_per_capita_2024"),
+            "inflation_percent": None,
+            "unemployment_percent": None,
+            "population_millions": population_millions,
+        },
+        "trade_summary": {
+            "total_exports_musd": glob["exports_2024"] * 1000 if glob else None,
+            "total_imports_musd": glob["imports_2024"] * 1000 if glob else None,
+            "trade_balance_musd": glob["trade_balance_2024"] * 1000 if glob else None,
+            "intra_african_trade_percent": intra["intra_african_percentage"] if intra else None,
+        },
+        "development_indices": {
+            "hdi_score": macro.get("development_index"),
+            "hdi_world_rank": None,
+            "gai_score": gai.get("score"),
+            "gai_world_rank": gai.get("rank_global"),
+        },
+        "data_source": "Banque Mondiale (WDI 2024), OEC/IMF WEO 2024, Mo Ibrahim GAI 2025",
     }

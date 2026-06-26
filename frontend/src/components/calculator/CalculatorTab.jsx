@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
@@ -14,7 +14,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { toast } from '../../hooks/use-toast';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
-import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield, DollarSign } from 'lucide-react';
+import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield, DollarSign, RotateCcw } from 'lucide-react';
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import TaxBreakdownDual from './TaxBreakdownDual';
 import CalculationJournal from './CalculationJournal';
@@ -81,21 +81,27 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
   const [regulatorySelectedPosDesc, setRegulatorySelectedPosDesc] = useState(null);
+  const [searchResetKey, setSearchResetKey] = useState(0);
+  const profileRequestRef = useRef(0);
 
   const fetchCountryTariffProfile = useCallback(async (countryCode) => {
     if (!countryCode) {
       setCountryTariffProfile(null);
       return;
     }
+    const requestId = ++profileRequestRef.current;
     setLoadingProfile(true);
     try {
       const response = await axios.get(`${API}/tariff-data/${countryCode}?limit=1`);
+      // Ignore les réponses obsolètes (ex. après une réinitialisation ou un changement de pays)
+      if (requestId !== profileRequestRef.current) return;
       setCountryTariffProfile(response.data);
     } catch (error) {
       console.error('Error fetching country tariff profile:', error);
+      if (requestId !== profileRequestRef.current) return;
       setCountryTariffProfile(null);
     } finally {
-      setLoadingProfile(false);
+      if (requestId === profileRequestRef.current) setLoadingProfile(false);
     }
   }, []);
 
@@ -251,6 +257,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
   const t = texts[language];
 
+  // Code SH6 « pur » : on n'affiche les positions nationales avoisinantes que
+  // lorsque l'utilisateur a saisi exactement un code à 6 chiffres (pas 8/10).
+  const hsCodeDigits = hsCode.replace(/\D/g, '');
+  const isHs6Only = hsCodeDigits.length === 6;
+
   const getSectorName = (hsCode) => {
     const sector = hsCode.substring(0, 2);
     const sectorNames = {
@@ -281,6 +292,28 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const getCountryName = (code) => {
     const country = countries.find(c => c.code === code);
     return country ? country.name : code;
+  };
+
+  const resetSearch = () => {
+    setOriginCountry('');
+    setDestinationCountry('');
+    setHsCode('');
+    setValue('');
+    setResult(null);
+    setDetailedResult(null);
+    setShowHSBrowser(false);
+    setShowDetailedBreakdown(false);
+    setHs6TariffInfo(null);
+    setSubPositions(null);
+    setRuleOfOrigin(null);
+    setSelectedSubPositionDesc(null);
+    setSelectedSubPositionFormalities(null);
+    setCountryTariffProfile(null);
+    setRegulatorySelectedPos(null);
+    setRegulatorySelectedPosDesc(null);
+    setLoadingProfile(false);
+    profileRequestRef.current++;
+    setSearchResetKey((k) => k + 1);
   };
 
   const calculateTariff = async () => {
@@ -799,6 +832,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
             {/* ── Recherche par mot-clé ── */}
             <ProductKeywordSearch
+              key={`pks-${searchResetKey}`}
               destinationCountry={destinationCountry}
               language={language}
               onSelect={(code, desc) => {
@@ -820,6 +854,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
             {useSmartSearch ? (
               <SmartHSSearch
+                key={`smart-${searchResetKey}`}
                 value={hsCode}
                 onChange={setHsCode}
                 destinationCountry={destinationCountry}
@@ -906,12 +941,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             />
           </div>
 
-          {/* Sélecteur de Positions Nationales */}
-          {destinationCountry && hsCode && hsCode.length >= 6 && (
+          {/* Sélecteur de Positions Nationales — uniquement pour un code SH6 (6 chiffres) */}
+          {destinationCountry && isHs6Only && (
             <NationalPositionsSelector
               countryCode={destinationCountry}
-              hs6Code={hsCode}
-              cifValue={value}
+              hs6Code={hsCodeDigits}
               language={language}
               selectedPosition={hsCode}
               onPositionSelect={(code, description) => {
@@ -921,25 +955,39 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             />
           )}
 
-          {/* Bouton Calculer */}
-          <Button 
-            onClick={calculateTariff}
-            disabled={loading}
-            data-testid="calculate-tariff-button"
-            className="w-full h-14 text-lg font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg hover:shadow-xl transition-all"
-          >
-            {loading ? (
-              <>
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
-                {t.calculating}
-              </>
-            ) : (
-              <>
-                <Calculator className="w-5 h-5 mr-2" />
-                {t.calculateBtn}
-              </>
-            )}
-          </Button>
+          {/* Boutons Calculer / Réinitialiser */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button 
+              onClick={calculateTariff}
+              disabled={loading}
+              data-testid="calculate-tariff-button"
+              className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg hover:shadow-xl transition-all"
+            >
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                  {t.calculating}
+                </>
+              ) : (
+                <>
+                  <Calculator className="w-5 h-5 mr-2" />
+                  {t.calculateBtn}
+                </>
+              )}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={resetSearch}
+              disabled={loading}
+              data-testid="reset-search-button"
+              title={language === 'fr' ? 'Réinitialiser la recherche' : 'Reset search'}
+              className="h-14 px-5 border-slate-600 text-slate-300 hover:border-red-500/50 hover:text-red-400 hover:bg-red-500/10 transition-all"
+            >
+              <RotateCcw className="w-5 h-5 mr-2" />
+              {language === 'fr' ? 'Réinitialiser' : 'Reset'}
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
@@ -1190,8 +1238,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             />
           )}
 
-          {/* Sous-positions nationales disponibles */}
-          {subPositions && subPositions.sub_positions && subPositions.sub_positions.length > 0 && (
+          {/* Sous-positions nationales disponibles — uniquement pour un code SH6 (6 chiffres) */}
+          {isHs6Only && subPositions && subPositions.sub_positions && subPositions.sub_positions.length > 0 && (
             <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between flex-wrap gap-2">
@@ -1221,7 +1269,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   {subPositions.sub_positions.map((sp, idx) => {
                     const code = sp.code || sp.national_code || '';
                     const isSelected = hsCode.replace(/[.\s]/g, '').startsWith(code.slice(0, 10));
-                    const ddRate = sp.dd ?? sp.dd_rate ?? sp.rate;
                     const desc = language === 'fr' ? (sp.description_fr || sp.description_en) : (sp.description_en || sp.description_fr);
                     const spFormalities = sp.administrative_formalities || null;
                     return (
@@ -1245,11 +1292,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           <p className="text-slate-300 text-sm truncate">{desc}</p>
                         </div>
                         <div className="flex items-center gap-3 shrink-0 ml-3">
-                          {ddRate !== undefined && ddRate !== null && (
-                            <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-mono">
-                              DD {ddRate}%
-                            </Badge>
-                          )}
                           {spFormalities && spFormalities.length > 0 && (
                             <Badge className="bg-slate-600/50 text-slate-300 border border-slate-600 text-xs">
                               {spFormalities.length} {language === 'fr' ? 'docs' : 'docs'}
@@ -1502,29 +1544,44 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </CardContent>
             </Card>
 
-            {/* Sélecteur de Positions Nationales */}
-            {destinationCountry && hsCode && hsCode.length >= 6 && (
+            {/* Sélecteur de Positions Nationales — uniquement pour un code SH6 (6 chiffres) */}
+            {destinationCountry && isHs6Only && (
               <>
-                <NationalPositionsSelector
-                  countryCode={destinationCountry}
-                  hs6Code={hsCode.substring(0, 6)}
-                  language={language}
-                  selectedPosition={regulatorySelectedPos}
-                  onPositionSelect={(code, description) => {
-                    setRegulatorySelectedPos(code);
-                    setRegulatorySelectedPosDesc(description);
-                  }}
-                />
+                {!regulatorySelectedPos && (
+                  <NationalPositionsSelector
+                    countryCode={destinationCountry}
+                    hs6Code={hsCodeDigits}
+                    language={language}
+                    selectedPosition={regulatorySelectedPos}
+                    onPositionSelect={(code, description) => {
+                      setRegulatorySelectedPos(code);
+                      setRegulatorySelectedPosDesc(description);
+                    }}
+                  />
+                )}
                 {regulatorySelectedPosDesc && (
-                  <div className="flex items-start gap-3 p-4 bg-amber-500/10 rounded-xl border border-amber-500/30">
-                    <FileText className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" />
-                    <div>
-                      <p className="text-xs text-amber-400/70 uppercase tracking-wide font-medium mb-1">
-                        {language === 'fr' ? 'Intitulé exact de la position nationale' : 'Exact title of national position'}
-                      </p>
-                      <p className="text-white font-medium">{regulatorySelectedPosDesc}</p>
-                      <p className="text-amber-400/60 font-mono text-sm mt-1">{regulatorySelectedPos}</p>
+                  <div className="flex items-start justify-between gap-3 p-4 bg-amber-500/10 rounded-xl border border-amber-500/30">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <FileText className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs text-amber-400/70 uppercase tracking-wide font-medium mb-1">
+                          {language === 'fr' ? 'Intitulé exact de la position nationale' : 'Exact title of national position'}
+                        </p>
+                        <p className="text-white font-medium">{regulatorySelectedPosDesc}</p>
+                        <p className="text-amber-400/60 font-mono text-sm mt-1">{regulatorySelectedPos}</p>
+                      </div>
                     </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="shrink-0 border-amber-500/40 text-amber-300 hover:bg-amber-500/10"
+                      onClick={() => {
+                        setRegulatorySelectedPos(null);
+                        setRegulatorySelectedPosDesc(null);
+                      }}
+                    >
+                      {language === 'fr' ? 'Changer' : 'Change'}
+                    </Button>
                   </div>
                 )}
               </>

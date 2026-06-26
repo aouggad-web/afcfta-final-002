@@ -266,7 +266,11 @@
   letter-spacing: 0.07em;
   padding: 10px 12px;
   border-bottom: 2px solid rgba(212, 137, 26, 0.2);
-  white-space: nowrap;
+  /* Allow header labels to wrap onto multiple lines instead of overflowing and
+     overlapping neighbouring columns when the table is squeezed. */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  vertical-align: bottom;
 }
 
 .stats-table thead th:first-child { border-radius: 8px 0 0 0; }
@@ -289,6 +293,98 @@
   color: #EAE0D0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   vertical-align: middle;
+}
+
+/* ── MOBILE: Produits stacked cards (shown below md / 768px) ──
+   Real fl*ex* divs (NOT a CSS table→block conversion, which collapses
+   inside this layout). The desktop <table> is hidden below 768px via
+   Tailwind `hidden md:block`; these cards show via `md:hidden`. */
+.stats-product-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+}
+.stats-product-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid rgba(212, 137, 26, 0.6);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.stats-product-card .spc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.stats-product-card .spc-hs {
+  font-family: monospace;
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(234, 224, 208, 0.75);
+  white-space: nowrap;
+}
+.stats-product-card .spc-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #eae0d0;
+  line-height: 1.35;
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+}
+.stats-product-card .spc-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+/* Very small phones: avoid crowding the growth badge */
+@media (max-width: 380px) {
+  .stats-product-card .spc-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.stats-product-card .spc-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+.stats-product-card .spc-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(142, 155, 174, 0.85);
+}
+.stats-product-card .spc-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #eae0d0;
+}
+.stats-product-card .spc-countries {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stats-product-card .spc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.stats-product-card .spc-chip {
+  font-size: 0.72rem;
+  padding: 2px 9px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(234, 224, 208, 0.82);
 }
 
 /* ── CUSTOM RECHARTS TOOLTIP ────────────────────────────────── */

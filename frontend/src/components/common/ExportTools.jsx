@@ -107,7 +107,7 @@ export function CSVExportButton({
       .map((r) => columns.map((c) => escapeCell(r[c.key])).join(','))
       .join('\n');
     // BOM pour qu'Excel reconnaisse l'UTF-8 (accents)
-    const csv = `﻿${header}\n${body}`;
+    const csv = `\uFEFF${header}\n${body}`;
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

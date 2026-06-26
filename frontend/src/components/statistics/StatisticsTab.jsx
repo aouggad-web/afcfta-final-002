@@ -145,7 +145,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       {/* ── Sub-tabs Navigation ─────────────────────────────── */}
       <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="space-y-6">
         <TabsList
-          className="inline-flex gap-1 p-1 rounded-xl"
+          className="flex flex-wrap h-auto w-full justify-start gap-1 p-1 rounded-xl"
           style={{
             background: 'rgba(18,24,32,0.85)',
             border: '1px solid rgba(212,137,26,0.18)',

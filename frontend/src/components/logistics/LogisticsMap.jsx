@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Tooltip, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Tooltip, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import axios from 'axios';
 
@@ -82,7 +82,8 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
       teuYear: "TEU/an",
       tonsYear: "Tonnes/an",
       portTime: "Temps Port",
-      hours: "h"
+      hours: "h",
+      viewDetails: "Voir les détails"
     },
     en: {
       loading: "Loading map...",
@@ -95,7 +96,8 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
       teuYear: "TEU/year",
       tonsYear: "Tons/year",
       portTime: "Port Time",
-      hours: "h"
+      hours: "h",
+      viewDetails: "View details"
     }
   };
 
@@ -189,6 +191,29 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
                 </span>
               </div>
             </Tooltip>
+            <Popup>
+              <div className="p-2 min-w-[220px]">
+                <h3 className="font-bold text-base mb-1 flex items-center gap-2">
+                  <span>⚓</span>
+                  {port.port_name}
+                </h3>
+                <p className="text-sm text-gray-600 mb-2">
+                  {port.country_name}{port.un_locode ? ` • ${port.un_locode}` : ''}
+                </p>
+                <div className="bg-blue-50 p-2 rounded text-sm mb-1">
+                  <p className="font-semibold text-blue-800">📦 {t.teuYear}</p>
+                  <p className="text-blue-600 font-bold">
+                    {port.latest_stats?.container_throughput_teu?.toLocaleString('fr-FR') || 'N/A'} TEU
+                  </p>
+                </div>
+                <button
+                  onClick={() => onPortClick && onPortClick(port)}
+                  className="mt-2 w-full bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-semibold"
+                >
+                  {t.viewDetails}
+                </button>
+              </div>
+            </Popup>
           </CircleMarker>
         ))}
       </MapContainer>

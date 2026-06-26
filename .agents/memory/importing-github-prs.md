@@ -17,4 +17,8 @@ This repo's Replit local `main` has **diverged** from the GitHub `origin/main` (
 
 **Why manual:** `git fetch origin pull/<N>/head` also came back empty/failed in this environment, and `git apply` is blocked — so the API-diff + manual-edit path is the dependable one.
 
+**Faster path for a full-main sync (not a single PR), e.g. "import the latest changes":** the local Replit checkpoint commits sit on top of the last pushed fork point, and that fork point is the merge-base with `origin/main`. So: `GET /repos/<repo>/compare/<forkpoint-sha>...main` to list changed files, then **overwrite whole files** by fetching raw content (`GET /repos/<repo>/contents/<path>?ref=main` with `Accept: application/vnd.github.raw`) and writing them locally — no hunk-patching needed. This is safe because the local *code* files still match the fork point (only news_cache.json / docs diverge via checkpoints), so a whole-file overwrite == applying the upstream diff. `package.json` unchanged across the range ⇒ no new npm deps; verify new imports resolve anyway. The `listConnections('github')` token works for read/compare/contents but lacks `workflow` scope.
+
+**Backend reload caveat:** `start.sh` runs uvicorn with `--workers 1` and **no `--reload`**, so imported backend route/service changes only take effect after `restart_workflow("Start application")`. Frontend is Vite with HMR (picks up new/changed files live; a new export triggers a full reload, logged as "Could not Fast Refresh (new export)" — that's normal, not an error).
+
 **Note:** `attached_assets/` is the conversation attachment area (untracked); files there are not part of your deliverable — leave them alone.
