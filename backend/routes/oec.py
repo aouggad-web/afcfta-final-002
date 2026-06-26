@@ -17,13 +17,15 @@ router = APIRouter(prefix="/oec")
 
 @router.get("/countries")
 async def get_oec_african_countries(
-    language: str = Query("fr", description="Langue (fr/en)")
+    language: str = Query("fr", description="Langue (fr/en)"),
+    lang: str = Query(None, description="Alias de 'language' (fr/en)")
 ):
     """Liste des pays africains disponibles pour les statistiques OEC"""
+    lang_code = lang or language
     return {
         "success": True,
         "total": len(AFRICAN_COUNTRIES_OEC),
-        "countries": get_african_countries_list(language),
+        "countries": get_african_countries_list(lang_code),
         "source": "OEC/BACI",
         "latest_year": DEFAULT_YEAR
     }

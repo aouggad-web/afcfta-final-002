@@ -143,16 +143,27 @@ function TradeProductsTable({ language = 'fr' }) {
     const valueColor  = isIntra ? '#a78bfa'  : isExport ? '#34d399'  : '#38bdf8';
 
     return (
-      <div style={{ overflowX: 'auto' }}>
-        <table className="stats-table">
+      <>
+      {/* Desktop / tablet (≥768px): full data table */}
+      <div className="hidden md:block" style={{ overflowX: 'auto' }}>
+        <table className="stats-table" style={{ tableLayout: 'fixed', width: '100%', minWidth: 760 }}>
+          <colgroup>
+            <col style={{ width: '44px' }} />
+            <col style={{ width: '26%' }} />
+            <col style={{ width: '94px' }} />
+            <col style={{ width: '124px' }} />
+            <col style={{ width: '70px' }} />
+            <col style={{ width: '104px' }} />
+            <col />
+          </colgroup>
           <thead>
             <tr style={{ borderLeft: `3px solid ${accentColor}` }}>
-              <th style={{ textAlign: 'left', width: 42 }}>#</th>
+              <th style={{ textAlign: 'left' }}>#</th>
               <th style={{ textAlign: 'left' }}>{t.product}</th>
-              <th style={{ textAlign: 'left', width: 80 }}>{t.hsCode}</th>
-              <th style={{ textAlign: 'right', width: 110 }}>{t.value}</th>
-              <th style={{ textAlign: 'right', width: 72 }}>{t.share}</th>
-              <th style={{ textAlign: 'center', width: 100 }}>{t.growth}</th>
+              <th style={{ textAlign: 'left' }}>{t.hsCode}</th>
+              <th style={{ textAlign: 'right' }}>{t.value}</th>
+              <th style={{ textAlign: 'right' }}>{t.share}</th>
+              <th style={{ textAlign: 'center' }}>{t.growth}</th>
               <th style={{ textAlign: 'left' }}>{isExport ? t.topExporters : t.topImporters}</th>
             </tr>
           </thead>
@@ -164,7 +175,7 @@ function TradeProductsTable({ language = 'fr' }) {
                     {product.rank}
                   </span>
                 </td>
-                <td style={{ fontWeight: 600, color: '#EAE0D0' }}>{product.product}</td>
+                <td style={{ fontWeight: 600, color: '#EAE0D0', whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{product.product}</td>
                 <td>
                   <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', padding: '2px 6px', borderRadius: 4, background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(234,224,208,0.7)' }}>
                     {product.hs_code}
@@ -195,6 +206,48 @@ function TradeProductsTable({ language = 'fr' }) {
           </tbody>
         </table>
       </div>
+
+      {/* Mobile (<768px): stacked, fully legible cards */}
+      <div className="md:hidden stats-product-cards">
+        {data.products.map((product, index) => (
+          <div
+            key={product.rank}
+            className="stats-product-card"
+            style={{ borderLeftColor: accentColor }}
+          >
+            <div className="spc-top">
+              <span className={`stats-rank-badge ${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : 'rank-n'}`}>
+                {product.rank}
+              </span>
+              <span className="spc-hs">{product.hs_code}</span>
+            </div>
+            <div className="spc-name">{product.product}</div>
+            <div className="spc-metrics">
+              <div className="spc-metric">
+                <span className="spc-label">{t.value}</span>
+                <span className="spc-value" style={{ color: valueColor }}>{formatValue(product.value_mln_usd)}</span>
+              </div>
+              <div className="spc-metric">
+                <span className="spc-label">{t.share}</span>
+                <span className="spc-value">{product.share_percent}%</span>
+              </div>
+              <div className="spc-metric">
+                <span className="spc-label">{t.growth}</span>
+                {renderGrowthBadge(product.growth_2023_2024)}
+              </div>
+            </div>
+            <div className="spc-countries">
+              <span className="spc-label">{isExport ? t.topExporters : t.topImporters}</span>
+              <div className="spc-chips">
+                {(isExport ? product.top_exporters : product.top_importers)?.slice(0, 3).map((country, i) => (
+                  <span key={i} className="spc-chip">{country}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      </>
     );
   };
 
@@ -221,7 +274,7 @@ function TradeProductsTable({ language = 'fr' }) {
             <div className="stats-kente-bar" style={{ width: 180, marginTop: 10 }} />
           </div>
           {summary && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 flex-1 min-w-0" style={{ maxWidth: 540 }}>
+            <div className="grid grid-cols-2 gap-3 flex-1 min-w-0" style={{ maxWidth: 420 }}>
               {[
                 { label: t.importWorld,  value: formatValue(summary.top_20_imports_world_total_mln_usd),  color: '#38bdf8' },
                 { label: t.exportWorld,  value: formatValue(summary.top_20_exports_world_total_mln_usd),  color: '#34d399' },
@@ -230,7 +283,7 @@ function TradeProductsTable({ language = 'fr' }) {
               ].map((item, i) => (
                 <div key={i} style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(6px)', borderRadius: 10, padding: '10px 14px', border: `1px solid color-mix(in srgb, ${item.color} 20%, transparent)` }}>
                   <p style={{ fontSize: '0.65rem', color: 'rgba(142,155,174,0.8)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: 0 }}>{item.label}</p>
-                  <p style={{ fontSize: '1.2rem', fontWeight: 800, color: item.color, margin: '4px 0 0' }}>{item.value}</p>
+                  <p style={{ fontSize: '1.2rem', fontWeight: 800, color: item.color, margin: '4px 0 0', whiteSpace: 'nowrap' }}>{item.value}</p>
                 </div>
               ))}
             </div>
