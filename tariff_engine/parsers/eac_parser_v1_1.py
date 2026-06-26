@@ -1,5 +1,6 @@
 import re
 import warnings
+
 import camelot
 import pandas as pd
 
@@ -8,19 +9,25 @@ warnings.filterwarnings("ignore")
 HS_RE = re.compile(r"\b(\d{4}\.\d{2}\.\d{2})\b|\b(\d{6,10})\b")
 PCT_RE = re.compile(r"(\d+(?:\.\d+)?)\s*%")
 
+
 def _clean(x: str) -> str:
     return str(x).replace("\n", " ").replace("\r", " ").strip()
+
 
 def _to_hs(code: str) -> str:
     c = _clean(code).replace(".", "")
     return c if c.isdigit() else ""
+
 
 def _rate_pct(rate_cell: str):
     s = _clean(rate_cell)
     m = PCT_RE.search(s)
     return float(m.group(1)) if m else None
 
-def parse_range(pdf_path: str, page_from: int = 14, page_to: int = 80, flavor: str = "stream") -> pd.DataFrame:
+
+def parse_range(
+    pdf_path: str, page_from: int = 14, page_to: int = 80, flavor: str = "stream"
+) -> pd.DataFrame:
     out = []
     current_heading = None  # ex: "15.17" for context if needed
 
@@ -74,23 +81,28 @@ def parse_range(pdf_path: str, page_from: int = 14, page_to: int = 80, flavor: s
 
                 duty = _rate_pct(c6) or _rate_pct(c5)  # parfois le taux glisse
 
-                out.append({
-                    "hs_code": hs,
-                    "heading_ctx": current_heading,
-                    "description": desc,
-                    "unit": unit,
-                    "duty_rate_pct": duty,
-                    "page": p,
-                    "source_pdf": pdf_path
-                })
+                out.append(
+                    {
+                        "hs_code": hs,
+                        "heading_ctx": current_heading,
+                        "description": desc,
+                        "unit": unit,
+                        "duty_rate_pct": duty,
+                        "page": p,
+                        "source_pdf": pdf_path,
+                    }
+                )
 
     df_out = pd.DataFrame(out)
     if df_out.empty:
         return df_out
 
     # Nettoyage: garder la dernière occurrence par hs_code (souvent la plus complète)
-    df_out = df_out.sort_values(by=["hs_code", "page"]).drop_duplicates(subset=["hs_code"], keep="last")
+    df_out = df_out.sort_values(by=["hs_code", "page"]).drop_duplicates(
+        subset=["hs_code"], keep="last"
+    )
     return df_out
+
 
 def run_to_csv(pdf_path: str, out_csv: str, page_from: int = 14, page_to: int = 80) -> str:
     df = parse_range(pdf_path, page_from, page_to, flavor="stream")

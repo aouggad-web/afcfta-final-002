@@ -10,9 +10,10 @@ Covers:
 - Risk assessment
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 # Ensure backend directory is on path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -21,24 +22,29 @@ from banking_system.banks_registry import (
     CENTRAL_BANKS,
     COMMERCIAL_BANKS,
     REGIONAL_BANKS,
+    get_banks_register,
     get_central_bank,
     get_country_banks,
-    get_banks_register,
     get_regional_banks,
 )
 from banking_system.foreign_exchange import (
     FOREX_PROFILES,
-    get_forex_profile,
-    get_domiciliation_rules,
-    get_currency_meta,
     get_all_currency_meta,
+    get_currency_meta,
+    get_domiciliation_rules,
+    get_forex_profile,
 )
-from banking_system.trade_finance import (
-    TRADE_FINANCE_INSTRUMENTS,
-    get_trade_finance_instruments,
-    recommend_instruments,
-    LC_MANDATORY_COUNTRIES,
-    LC_CONFIRMATION_RECOMMENDED,
+from banking_system.models import (
+    BankingSystemInfo,
+    CentralBank,
+    CommercialBank,
+    CountryForexProfile,
+    CountryRiskProfile,
+    DomiciliationRule,
+    ForexRegulation,
+    PaymentSystem,
+    RegionalBank,
+    TradeFinanceInstrument,
 )
 from banking_system.payment_systems import (
     PAYMENT_SYSTEMS,
@@ -46,32 +52,27 @@ from banking_system.payment_systems import (
     get_regional_systems,
 )
 from banking_system.regulatory_compliance import (
-    get_country_compliance,
     check_compliance,
+    get_country_compliance,
 )
 from banking_system.risk_assessment import (
     RISK_PROFILES,
-    get_country_risk,
-    assess_transaction_risk,
     _compute_risk_score,
+    assess_transaction_risk,
+    get_country_risk,
 )
-from banking_system.models import (
-    CentralBank,
-    CommercialBank,
-    RegionalBank,
-    BankingSystemInfo,
-    DomiciliationRule,
-    ForexRegulation,
-    CountryForexProfile,
-    TradeFinanceInstrument,
-    PaymentSystem,
-    CountryRiskProfile,
+from banking_system.trade_finance import (
+    LC_CONFIRMATION_RECOMMENDED,
+    LC_MANDATORY_COUNTRIES,
+    TRADE_FINANCE_INSTRUMENTS,
+    get_trade_finance_instruments,
+    recommend_instruments,
 )
-
 
 # ===========================================================================
 # BANKS REGISTRY TESTS
 # ===========================================================================
+
 
 class TestCentralBanks:
     """Tests for the central banks registry."""
@@ -80,13 +81,28 @@ class TestCentralBanks:
         """The registry must cover all 54 African Union member states."""
         # We check that at least 54 entries exist (some countries share a
         # central bank, e.g., the BCEAO covers 8 UEMOA countries)
-        assert len(CENTRAL_BANKS) >= 54, (
-            f"Expected at least 54 central bank entries, got {len(CENTRAL_BANKS)}"
-        )
+        assert (
+            len(CENTRAL_BANKS) >= 54
+        ), f"Expected at least 54 central bank entries, got {len(CENTRAL_BANKS)}"
 
     def test_phase1_countries_present(self):
         """All 14 phase-1 priority countries must have a central bank entry."""
-        phase1 = ["MA", "DZ", "TN", "EG", "NG", "GH", "CI", "SN", "KE", "ET", "TZ", "ZA", "AO", "ZM"]
+        phase1 = [
+            "MA",
+            "DZ",
+            "TN",
+            "EG",
+            "NG",
+            "GH",
+            "CI",
+            "SN",
+            "KE",
+            "ET",
+            "TZ",
+            "ZA",
+            "AO",
+            "ZM",
+        ]
         for code in phase1:
             assert code in CENTRAL_BANKS, f"Missing central bank for {code}"
 
@@ -161,20 +177,36 @@ class TestCommercialBanks:
         for country_code, banks in COMMERCIAL_BANKS.items():
             for bank in banks:
                 if bank.trade_finance:
-                    assert len(bank.services) > 0, (
-                        f"Bank {bank.name} ({country_code}) has no services listed"
-                    )
+                    assert (
+                        len(bank.services) > 0
+                    ), f"Bank {bank.name} ({country_code}) has no services listed"
 
 
 # ===========================================================================
 # FOREX / DOMICILIATION TESTS
 # ===========================================================================
 
+
 class TestForexProfiles:
     """Tests for foreign exchange and domiciliation rules."""
 
     def test_phase1_countries_have_forex_profiles(self):
-        phase1 = ["MA", "DZ", "TN", "EG", "NG", "GH", "CI", "SN", "KE", "ET", "TZ", "ZA", "AO", "ZM"]
+        phase1 = [
+            "MA",
+            "DZ",
+            "TN",
+            "EG",
+            "NG",
+            "GH",
+            "CI",
+            "SN",
+            "KE",
+            "ET",
+            "TZ",
+            "ZA",
+            "AO",
+            "ZM",
+        ]
         for code in phase1:
             assert code in FOREX_PROFILES, f"Missing forex profile for {code}"
 
@@ -209,16 +241,18 @@ class TestForexProfiles:
     def test_forex_profiles_have_regulation_level(self):
         for code, profile in FOREX_PROFILES.items():
             assert profile.forex_regulation.regulation_level in {
-                "strict", "moderate", "liberal"
+                "strict",
+                "moderate",
+                "liberal",
             }, f"Invalid regulation level for {code}"
 
     def test_mandatory_documents_populated(self):
         """Countries with strict regulations must list mandatory documents."""
         for code in ["MA", "DZ", "NG", "ET"]:
             profile = get_forex_profile(code)
-            assert len(profile.domiciliation.mandatory_documents) > 0, (
-                f"No mandatory documents for strict country {code}"
-            )
+            assert (
+                len(profile.domiciliation.mandatory_documents) > 0
+            ), f"No mandatory documents for strict country {code}"
 
     def test_unknown_currency_meta_uses_usd_defaults(self):
         code, name, convertibility = get_currency_meta("XX")
@@ -236,14 +270,19 @@ class TestForexProfiles:
 # TRADE FINANCE TESTS
 # ===========================================================================
 
+
 class TestTradeFinance:
     """Tests for trade finance instruments."""
 
     def test_catalogue_has_key_instruments(self):
         codes = {i.code for i in TRADE_FINANCE_INSTRUMENTS}
         required = {
-            "LC_IRREVOCABLE", "LC_CONFIRMED", "DOC_COLLECTION_DP",
-            "DOC_COLLECTION_DA", "BANK_GUARANTEE_PERFORMANCE", "EXPORT_FACTORING",
+            "LC_IRREVOCABLE",
+            "LC_CONFIRMED",
+            "DOC_COLLECTION_DP",
+            "DOC_COLLECTION_DA",
+            "BANK_GUARANTEE_PERFORMANCE",
+            "EXPORT_FACTORING",
         }
         assert required.issubset(codes), f"Missing instruments: {required - codes}"
 
@@ -291,6 +330,7 @@ class TestTradeFinance:
 # ===========================================================================
 # PAYMENT SYSTEMS TESTS
 # ===========================================================================
+
 
 class TestPaymentSystems:
     """Tests for payment systems."""
@@ -347,6 +387,7 @@ class TestPaymentSystems:
 # REGULATORY COMPLIANCE TESTS
 # ===========================================================================
 
+
 class TestRegulatoryCompliance:
     """Tests for compliance checks."""
 
@@ -391,11 +432,27 @@ class TestRegulatoryCompliance:
 # RISK ASSESSMENT TESTS
 # ===========================================================================
 
+
 class TestRiskAssessment:
     """Tests for country risk assessment."""
 
     def test_phase1_countries_have_risk_profiles(self):
-        phase1 = ["MA", "DZ", "TN", "EG", "NG", "GH", "CI", "SN", "KE", "ET", "TZ", "ZA", "AO", "ZM"]
+        phase1 = [
+            "MA",
+            "DZ",
+            "TN",
+            "EG",
+            "NG",
+            "GH",
+            "CI",
+            "SN",
+            "KE",
+            "ET",
+            "TZ",
+            "ZA",
+            "AO",
+            "ZM",
+        ]
         for code in phase1:
             assert code in RISK_PROFILES, f"Missing risk profile for {code}"
 
@@ -463,15 +520,19 @@ class TestRiskAssessment:
 # PYDANTIC MODEL TESTS
 # ===========================================================================
 
+
 class TestPydanticModels:
     """Sanity checks on Pydantic model instantiation."""
 
     def test_central_bank_model(self):
         cb = CentralBank(
-            country_code="XX", country_name="Test Country",
-            name="Test Central Bank", abbreviation="TCB",
+            country_code="XX",
+            country_name="Test Country",
+            name="Test Central Bank",
+            abbreviation="TCB",
             forex_regulation="liberal",
-            currency_code="TST", currency_name="Test Dollar",
+            currency_code="TST",
+            currency_name="Test Dollar",
         )
         assert cb.country_code == "XX"
 
@@ -482,7 +543,8 @@ class TestPydanticModels:
 
     def test_country_risk_profile_model(self):
         profile = CountryRiskProfile(
-            country_code="XX", country_name="Test",
+            country_code="XX",
+            country_name="Test",
             country_risk_rating="B",
             forex_risk="moderate",
             political_risk="low",
@@ -492,7 +554,9 @@ class TestPydanticModels:
 
     def test_payment_system_model(self):
         ps = PaymentSystem(
-            code="TEST", name="Test System", type="regional",
+            code="TEST",
+            name="Test System",
+            type="regional",
             region="Test Region",
         )
         assert ps.code == "TEST"
@@ -514,7 +578,9 @@ class TestBanksRegister:
         assert results[0]["abbreviation"] == "Afreximbank"
 
     def test_register_trade_finance_only_excludes_non_trade_finance_banks(self):
-        results = get_banks_register(country_code="ER", bank_type="commercial", trade_finance_only=True)
+        results = get_banks_register(
+            country_code="ER", bank_type="commercial", trade_finance_only=True
+        )
         assert len(results) > 0
         assert all(result["trade_finance"] for result in results)
         assert all(result["name"] != "Housing and Commerce Bank of Eritrea" for result in results)

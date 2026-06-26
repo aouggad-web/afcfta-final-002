@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 from fastapi import FastAPI, HTTPException, Query
 
 DATA_DIR = Path("tariff_engine/normalized")
@@ -7,6 +8,7 @@ DATA_DIR = Path("tariff_engine/normalized")
 app = FastAPI(title="Tariff API (multi-blocs)")
 
 _cache = {}
+
 
 def load_bloc(bloc: str):
     bloc = bloc.upper().strip()
@@ -24,7 +26,10 @@ def load_bloc(bloc: str):
                 _cache[bloc] = json.loads(p.read_text(encoding="utf-8"))
             return _cache[bloc], str(p)
 
-    raise FileNotFoundError(f"No indexed JSON found for bloc={bloc}. Expected one of: {', '.join(str(x) for x in candidates)}")
+    raise FileNotFoundError(
+        f"No indexed JSON found for bloc={bloc}. Expected one of: {', '.join(str(x) for x in candidates)}"
+    )
+
 
 @app.get("/api/tariff/{bloc}")
 def get_tariff(bloc: str, hs: str = Query(..., min_length=2, max_length=12)):
@@ -38,7 +43,10 @@ def get_tariff(bloc: str, hs: str = Query(..., min_length=2, max_length=12)):
         raise HTTPException(status_code=400, detail={"error": "invalid hs", "hs": hs})
     row = data.get(key)
     if not row:
-        raise HTTPException(status_code=404, detail={"error": "not found", "bloc": bloc.upper(), "hs": key, "source": src})
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "not found", "bloc": bloc.upper(), "hs": key, "source": src},
+        )
 
     # ajoute une trace utile côté client
     response = dict(row)

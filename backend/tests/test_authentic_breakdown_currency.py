@@ -2,6 +2,7 @@
 `taxes_breakdown`, `taxes_summary` et `currency` (bi-devise) pour alimenter le
 composant TaxBreakdownDual du frontend.
 """
+
 import os
 import sys
 from datetime import datetime, timezone
@@ -81,8 +82,8 @@ def test_breakdown_and_currency_present_when_fx_available(synthetic_calc):
     assert by_code["DD"]["affected_by_zlecaf"] is True
     # TVA recalculée sur une base réduite (DD retiré) → montant change aussi.
     assert by_code["TVA"]["category"] == "tva"
-    assert by_code["TVA"]["amount_npf"] == 180.0      # 15% de (1000+200)
-    assert by_code["TVA"]["amount_zlecaf"] == 150.0   # 15% de 1000
+    assert by_code["TVA"]["amount_npf"] == 180.0  # 15% de (1000+200)
+    assert by_code["TVA"]["amount_zlecaf"] == 150.0  # 15% de 1000
     assert by_code["TVA"]["affected_by_zlecaf"] is True
 
     # Bi-devise : taux appliqué (1 USD = 100 KES) sur chaque montant.
@@ -98,7 +99,9 @@ def test_breakdown_and_currency_present_when_fx_available(synthetic_calc):
 
 
 def test_currency_degrades_to_usd_when_fx_unavailable(synthetic_calc):
-    synthetic_calc.setattr(exchange_rates_module, "get_service", lambda: _FakeFxService(raise_exc=True))
+    synthetic_calc.setattr(
+        exchange_rates_module, "get_service", lambda: _FakeFxService(raise_exc=True)
+    )
 
     result = svc.calculate_import_taxes("KEN", "100190", 1000.0, origin_country="GHA")
 
@@ -119,8 +122,8 @@ _DZA_LINE = {
     "other_taxes_rate": 0.0,
     "taxes_detail": {
         "DAPS": {"rate": 30.0, "label": "Droit Additionnel Provisoire de Sauvegarde"},
-        "TCS":  {"rate": 3.0,  "label": "Taxe Complémentaire de Sauvegarde"},
-        "PRCT": {"rate": 2.0,  "label": "Précompte (PRCT)"},
+        "TCS": {"rate": 3.0, "label": "Taxe Complémentaire de Sauvegarde"},
+        "PRCT": {"rate": 2.0, "label": "Précompte (PRCT)"},
     },
     "description_fr": "Viande bovine",
     "description_en": "Bovine meat",
@@ -202,8 +205,8 @@ def test_dza_daps_exempt_under_zlecaf_even_when_dd_is_zero(monkeypatch):
     line["zlecaf_rate"] = 0.0
     line["taxes_detail"] = {
         "DAPS": {"rate": 30.0, "label": "Droit Additionnel Provisoire de Sauvegarde"},
-        "TCS":  {"rate": 3.0,  "label": "Taxe Complémentaire de Sauvegarde"},
-        "TVA":  {"rate": 19.0, "label": "Taxe sur la Valeur Ajoutée"},
+        "TCS": {"rate": 3.0, "label": "Taxe Complémentaire de Sauvegarde"},
+        "TVA": {"rate": 19.0, "label": "Taxe sur la Valeur Ajoutée"},
     }
     monkeypatch.setattr(svc, "_get_postgres_provider", lambda: None)
     monkeypatch.setattr(svc, "load_country_tariffs", lambda iso3: {"generated_at": "2025-01-01"})
@@ -264,7 +267,7 @@ def test_null_rates_do_not_crash_and_vat_falls_back_to_taxes_detail(monkeypatch)
         "zlecaf_rate": None,
         "other_taxes_rate": None,
         "taxes_detail": {
-            "DD":  {"rate": 30.0, "label": "Droit de douane"},
+            "DD": {"rate": 30.0, "label": "Droit de douane"},
             "TVA": {"rate": 19.0, "label": "Taxe sur la Valeur Ajoutée"},
         },
         "description_fr": "Ligne réelle à taux nuls",
@@ -297,7 +300,10 @@ def test_dza_precompte_label_normalized_in_legacy_fields(dza_calc):
     officiel, même si la donnée crawled utilisait un ancien libellé."""
     line = dict(_DZA_LINE)
     line["taxes_detail"] = dict(_DZA_LINE["taxes_detail"])
-    line["taxes_detail"]["PRCT"] = {"rate": 2.0, "label": "Prélèvement à la Compensation du Transport"}
+    line["taxes_detail"]["PRCT"] = {
+        "rate": 2.0,
+        "label": "Prélèvement à la Compensation du Transport",
+    }
     dza_calc.setattr(svc, "get_tariff_line", lambda iso3, hs6: dict(line))
 
     result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
@@ -317,9 +323,9 @@ def test_summary_totals_match_breakdown_rows(synthetic_calc):
     cat_map = {"droit_douane": "droit_douane", "tva": "tva", "autre_taxe": "autres_taxes"}
     for regime in ("npf", "zlecaf"):
         for cat, summ_key in cat_map.items():
-            expected = round(sum(
-                b[f"amount_{regime}"] for b in breakdown if b["category"] == cat
-            ), 2)
+            expected = round(
+                sum(b[f"amount_{regime}"] for b in breakdown if b["category"] == cat), 2
+            )
             assert summary[regime][summ_key] == expected
 
     # Cohérence des agrégats dérivés.
@@ -334,6 +340,7 @@ def test_summary_totals_match_breakdown_rows(synthetic_calc):
 # ──────────────────────────────────────────────────────────────────────────
 # Régimes commerciaux : éligibilité ZLECAf, unions douanières, ZLE conditionnelles
 # ──────────────────────────────────────────────────────────────────────────
+
 
 def test_no_origin_yields_npf_no_preference(synthetic_calc):
     """Sans pays d'origine, aucun régime préférentiel : taux NPF, DD non réduit."""

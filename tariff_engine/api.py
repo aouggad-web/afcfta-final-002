@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 from fastapi import FastAPI, HTTPException, Query
 
 DATA_PATH = Path("tariff_engine/normalized/EAC_MASTER_14_80_indexed.json")
@@ -8,6 +9,7 @@ app = FastAPI(title="Tariff API (EAC)")
 
 _cache = None
 
+
 def load_data():
     global _cache
     if _cache is None:
@@ -15,6 +17,7 @@ def load_data():
             raise FileNotFoundError(f"Missing data file: {DATA_PATH}")
         _cache = json.loads(DATA_PATH.read_text(encoding="utf-8"))
     return _cache
+
 
 @app.get("/api/tariff/eac")
 def get_eac(hs: str = Query(..., min_length=2, max_length=12)):

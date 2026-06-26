@@ -5,18 +5,18 @@ Tournent sans réseau ni MongoDB. Vérifient le manifeste (54 pays), le
 validateur d'authenticité (rejet du vide/estimé), la normalisation canonique,
 et la classification de couverture.
 """
-import pytest
 
-from tariff_crawl.manifest import build_manifest, AUTHENTIC_PROVENANCES, Provenance
+import pytest
 from tariff_crawl.canonical import (
-    normalize_position,
     build_file,
+    normalize_position,
     validate_authenticity,
 )
-from tariff_crawl.crawlers import register, AUTHENTIC_CRAWLERS
-
+from tariff_crawl.crawlers import AUTHENTIC_CRAWLERS, register
+from tariff_crawl.manifest import AUTHENTIC_PROVENANCES, Provenance, build_manifest
 
 # ----------------------------- manifest ------------------------------------
+
 
 def test_manifest_covers_54_countries():
     m = build_manifest()
@@ -44,6 +44,7 @@ def test_regional_blocs_assigned():
 
 
 # --------------------------- normalisation ---------------------------------
+
 
 def test_normalize_dict_taxes_label_form():
     raw = {
@@ -73,16 +74,21 @@ def test_normalize_dict_taxes_nested_form():
 
 # ------------------------- validateur authenticité -------------------------
 
+
 def _good_doc():
     return build_file(
-        "MAR", "Maroc",
+        "MAR",
+        "Maroc",
         provenance=Provenance.NATIONAL_CRAWL.value,
         source="douane.gov.ma/adil",
         source_url="https://www.douane.gov.ma",
-        positions=[{
-            "code": "0101210000", "designation": "x",
-            "taxes": {"Droit d'Importation (DI)": "2.5 %"},
-        }],
+        positions=[
+            {
+                "code": "0101210000",
+                "designation": "x",
+                "taxes": {"Droit d'Importation (DI)": "2.5 %"},
+            }
+        ],
     )
 
 
@@ -141,6 +147,7 @@ def test_validator_rejects_non_authentic_provenance():
 
 # ----------------------------- registre ------------------------------------
 
+
 def test_register_decorator():
     @register("ZZZ")
     def _fake():
@@ -153,8 +160,10 @@ def test_register_decorator():
 
 # ----------------------------- couverture ----------------------------------
 
+
 def test_coverage_report_structure():
     from tariff_crawl.coverage import build_coverage_report
+
     r = build_coverage_report()
     assert r["total_countries"] == 54
     assert "by_provenance" in r

@@ -1,12 +1,14 @@
 """
 Tests for export endpoints
 """
-import pytest
-from unittest.mock import MagicMock
-from fastapi.testclient import TestClient
-from routers.export_router import router, init_db
+
 import io
+from unittest.mock import MagicMock
+
 import pandas as pd
+import pytest
+from fastapi.testclient import TestClient
+from routers.export_router import init_db, router
 
 
 @pytest.fixture
@@ -26,7 +28,7 @@ def mock_db():
                     "unit": "Number",
                     "customs_duty": "10%",
                     "vat": "16%",
-                    "source": "Kenya Revenue Authority"
+                    "source": "Kenya Revenue Authority",
                 },
                 {
                     "hs_code": "010120",
@@ -34,19 +36,17 @@ def mock_db():
                     "unit": "Number",
                     "customs_duty": "25%",
                     "vat": "16%",
-                    "source": "Kenya Revenue Authority"
-                }
+                    "source": "Kenya Revenue Authority",
+                },
             ]
         },
-        "regulations": [
-            {"type": "import_license", "description": "Import license required"}
-        ],
+        "regulations": [{"type": "import_license", "description": "Import license required"}],
         "validation": {
             "is_valid": True,
             "score": 95.5,
             "issues": [],
-            "warnings": ["Minor data inconsistency"]
-        }
+            "warnings": ["Minor data inconsistency"],
+        },
     }
 
     # Create mock collection
@@ -54,10 +54,10 @@ def mock_db():
 
     # Mock find_one
     async def mock_find_one(*args, **kwargs):
-        query = args[0] if args else kwargs.get('filter', {})
-        country = query.get('country_code', 'KE')
+        query = args[0] if args else kwargs.get("filter", {})
+        country = query.get("country_code", "KE")
         data = sample_data.copy()
-        data['country_code'] = country
+        data["country_code"] = country
         return data
 
     mock_collection.find_one = mock_find_one
@@ -75,19 +75,19 @@ def mock_db():
 
     def mock_find(*args, **kwargs):
         query = args[0] if args else {}
-        country = query.get('country_code')
+        country = query.get("country_code")
 
         if country:
             # Single country
             data = sample_data.copy()
-            data['country_code'] = country
+            data["country_code"] = country
             return MockCursor([data])
         else:
             # Multiple countries
             ke_data = sample_data.copy()
-            ke_data['country_code'] = 'KE'
+            ke_data["country_code"] = "KE"
             tz_data = sample_data.copy()
-            tz_data['country_code'] = 'TZ'
+            tz_data["country_code"] = "TZ"
             return MockCursor([ke_data, tz_data])
 
     mock_collection.find = mock_find
@@ -103,6 +103,7 @@ def client_with_mock_db(mock_db):
     """Create test client with mocked database"""
     init_db(mock_db)
     from fastapi import FastAPI
+
     app = FastAPI()
     app.include_router(router)
     return TestClient(app)
@@ -136,6 +137,7 @@ class TestExportTariffsCSV:
     @pytest.mark.asyncio
     async def test_export_csv_missing_country(self, mock_db):
         """Test CSV export with missing country code"""
+
         # Mock no data found
         async def mock_find_one_none(*args, **kwargs):
             return None
@@ -144,6 +146,7 @@ class TestExportTariffsCSV:
         init_db(mock_db)
 
         from fastapi import FastAPI
+
         app = FastAPI()
         app.include_router(router)
         client = TestClient(app)
@@ -179,7 +182,7 @@ class TestExportTariffsExcel:
 
         # Read Excel to verify structure
         excel_bytes = io.BytesIO(response.content)
-        df_dict = pd.read_excel(excel_bytes, sheet_name=None, engine='openpyxl')
+        df_dict = pd.read_excel(excel_bytes, sheet_name=None, engine="openpyxl")
 
         assert "KE" in df_dict
         df = df_dict["KE"]
@@ -281,7 +284,7 @@ class TestComparisonCSV:
 
         content = response.text
         # Should only contain specified HS codes
-        lines = content.split('\n')
+        lines = content.split("\n")
         assert any("010110" in line for line in lines)
 
     @pytest.mark.asyncio
@@ -307,6 +310,7 @@ class TestExportErrorHandling:
     @pytest.mark.asyncio
     async def test_handles_database_errors(self, mock_db):
         """Test graceful handling of database errors"""
+
         # Mock database error
         async def mock_error(*args, **kwargs):
             raise Exception("Database connection failed")
@@ -315,6 +319,7 @@ class TestExportErrorHandling:
         init_db(mock_db)
 
         from fastapi import FastAPI
+
         app = FastAPI()
         app.include_router(router)
         client = TestClient(app)

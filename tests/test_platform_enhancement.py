@@ -9,9 +9,9 @@ Tests for the AfCFTA Platform comprehensive enhancement:
 - WebSocket handlers
 """
 
-import sys
-import os
 import importlib.util
+import os
+import sys
 from pathlib import Path
 
 # Add backend to path
@@ -24,11 +24,13 @@ import pytest
 # Performance - Cache Layers
 # ===========================================================================
 
+
 class TestCacheLayers:
     """Tests for multi-layer Redis caching infrastructure."""
 
     def test_cache_layer_config(self):
         from performance.caching.cache_layers import CACHE_LAYERS
+
         assert len(CACHE_LAYERS) == 4
         assert "L1_hot_data" in CACHE_LAYERS
         assert "L2_regional_intel" in CACHE_LAYERS
@@ -37,26 +39,30 @@ class TestCacheLayers:
 
     def test_cache_layer_ttls(self):
         from performance.caching.cache_layers import CACHE_LAYERS
-        assert CACHE_LAYERS["L1_hot_data"]["ttl"] == 3600        # 1 hour
+
+        assert CACHE_LAYERS["L1_hot_data"]["ttl"] == 3600  # 1 hour
         assert CACHE_LAYERS["L2_regional_intel"]["ttl"] == 86400  # 24 hours
-        assert CACHE_LAYERS["L3_calculations"]["ttl"] == 21600    # 6 hours
-        assert CACHE_LAYERS["L4_realtime"]["ttl"] == 300          # 5 minutes
+        assert CACHE_LAYERS["L3_calculations"]["ttl"] == 21600  # 6 hours
+        assert CACHE_LAYERS["L4_realtime"]["ttl"] == 300  # 5 minutes
 
     def test_cache_layer_patterns(self):
         from performance.caching.cache_layers import CACHE_LAYERS
+
         assert "hot:" in CACHE_LAYERS["L1_hot_data"]["pattern"]
         assert "region:" in CACHE_LAYERS["L2_regional_intel"]["pattern"]
         assert "calc:" in CACHE_LAYERS["L3_calculations"]["pattern"]
         assert "live:" in CACHE_LAYERS["L4_realtime"]["pattern"]
 
     def test_multi_layer_cache_singleton(self):
-        from performance.caching.cache_layers import get_cache, MultiLayerCache
+        from performance.caching.cache_layers import MultiLayerCache, get_cache
+
         cache = get_cache()
         assert isinstance(cache, MultiLayerCache)
         assert cache is get_cache()  # singleton
 
     def test_cache_build_key(self):
-        from performance.caching.cache_layers import CacheLayer, CACHE_LAYERS
+        from performance.caching.cache_layers import CACHE_LAYERS, CacheLayer
+
         layer = CacheLayer("L1_hot_data", CACHE_LAYERS["L1_hot_data"])
         key = layer.build_key(type="tariff", key="DZ-0901")
         assert "afcfta" in key
@@ -64,7 +70,8 @@ class TestCacheLayers:
 
     def test_cache_set_get_without_redis(self):
         """Without Redis, set returns False and get returns None."""
-        from performance.caching.cache_layers import CacheLayer, CACHE_LAYERS
+        from performance.caching.cache_layers import CACHE_LAYERS, CacheLayer
+
         layer = CacheLayer("L1_hot_data", CACHE_LAYERS["L1_hot_data"])
         # Force no client
         layer._client = None
@@ -76,6 +83,7 @@ class TestCacheLayers:
 
     def test_multilayer_all_stats(self):
         from performance.caching.cache_layers import get_cache
+
         cache = get_cache()
         stats = cache.all_stats()
         assert "L1_hot_data" in stats
@@ -87,37 +95,43 @@ class TestCacheLayers:
 # Performance - Metrics
 # ===========================================================================
 
+
 class TestPerformanceMetrics:
     """Tests for in-process performance monitoring."""
 
     def test_metrics_singleton(self):
-        from performance.monitoring.performance_metrics import get_metrics, PerformanceMetrics
+        from performance.monitoring.performance_metrics import PerformanceMetrics, get_metrics
+
         m = get_metrics()
         assert isinstance(m, PerformanceMetrics)
         assert m is get_metrics()
 
     def test_record_cache_hit(self):
         from performance.monitoring.performance_metrics import PerformanceMetrics
+
         m = PerformanceMetrics()
         m.record_cache_hit("tariff_lookup")
         assert m._hits["tariff_lookup"] == 1
 
     def test_record_cache_miss(self):
         from performance.monitoring.performance_metrics import PerformanceMetrics
+
         m = PerformanceMetrics()
         m.record_cache_miss("tariff_lookup")
         assert m._misses["tariff_lookup"] == 1
 
     def test_hit_rate_calculation(self):
         from performance.monitoring.performance_metrics import PerformanceMetrics
+
         m = PerformanceMetrics()
         m.record_cache_hit("op")
         m.record_cache_hit("op")
         m.record_cache_miss("op")
-        assert abs(m.cache_hit_rate("op") - 2/3) < 0.001
+        assert abs(m.cache_hit_rate("op") - 2 / 3) < 0.001
 
     def test_latency_recording(self):
         from performance.monitoring.performance_metrics import PerformanceMetrics
+
         m = PerformanceMetrics()
         m.record_latency("search", 0.1)
         m.record_latency("search", 0.3)
@@ -126,7 +140,11 @@ class TestPerformanceMetrics:
         assert 0.0 < p50 <= 0.3
 
     def test_slow_query_detection(self):
-        from performance.monitoring.performance_metrics import PerformanceMetrics, SLOW_QUERY_THRESHOLD_S
+        from performance.monitoring.performance_metrics import (
+            SLOW_QUERY_THRESHOLD_S,
+            PerformanceMetrics,
+        )
+
         m = PerformanceMetrics()
         m.record_latency("slow_op", SLOW_QUERY_THRESHOLD_S + 0.1)
         assert len(m.slow_queries()) == 1
@@ -134,6 +152,7 @@ class TestPerformanceMetrics:
 
     def test_summary_structure(self):
         from performance.monitoring.performance_metrics import PerformanceMetrics
+
         m = PerformanceMetrics()
         m.record_latency("op", 0.05)
         m.record_cache_hit("op")
@@ -147,19 +166,23 @@ class TestPerformanceMetrics:
 # AI Investment Intelligence Engine
 # ===========================================================================
 
+
 class TestInvestmentIntelligenceEngine:
     """Tests for the AI-powered investment scoring and recommendation engine."""
 
     def test_engine_singleton(self):
         from intelligence.ai_engine.investment_scoring import (
-            get_intelligence_engine, InvestmentIntelligenceEngine
+            InvestmentIntelligenceEngine,
+            get_intelligence_engine,
         )
+
         engine = get_intelligence_engine()
         assert isinstance(engine, InvestmentIntelligenceEngine)
         assert engine is get_intelligence_engine()
 
     def test_investment_score_returns_score(self):
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         score = engine.calculate_investment_score("MAR", "general")
         assert score is not None
@@ -167,18 +190,24 @@ class TestInvestmentIntelligenceEngine:
 
     def test_investment_score_has_grade(self):
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         score = engine.calculate_investment_score("EGY", "manufacturing")
         assert score.grade in {"A+", "A", "B+", "B", "C+", "C", "D"}
 
     def test_investment_score_components(self):
-        from intelligence.ai_engine.investment_scoring import get_intelligence_engine, SCORING_ALGORITHM
+        from intelligence.ai_engine.investment_scoring import (
+            SCORING_ALGORITHM,
+            get_intelligence_engine,
+        )
+
         engine = get_intelligence_engine()
         score = engine.calculate_investment_score("KEN")
         assert len(score.component_scores) == len(SCORING_ALGORITHM)
 
     def test_investment_score_confidence_interval(self):
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         score = engine.calculate_investment_score("ZAF")
         ci = score.confidence_interval
@@ -187,6 +216,7 @@ class TestInvestmentIntelligenceEngine:
 
     def test_investment_score_to_dict(self):
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         score = engine.calculate_investment_score("TUN")
         d = score.to_dict()
@@ -197,6 +227,7 @@ class TestInvestmentIntelligenceEngine:
 
     def test_risk_assessment(self):
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         risk = engine.assess_risk("NGA", "ict")
         assert "overall_risk_score" in risk
@@ -206,6 +237,7 @@ class TestInvestmentIntelligenceEngine:
 
     def test_personalized_recommendations(self):
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         user_profile = {"sector": "agriculture", "risk_tolerance": "medium"}
         recs = engine.get_personalized_recommendations(user_profile, limit=5)
@@ -218,6 +250,7 @@ class TestInvestmentIntelligenceEngine:
 
     def test_recommendations_ranked_by_score(self):
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         recs = engine.get_personalized_recommendations({"sector": "general"}, limit=8)
         scores = [r.score.overall_score for r in recs]
@@ -225,6 +258,7 @@ class TestInvestmentIntelligenceEngine:
 
     def test_trade_flow_prediction(self):
         from intelligence.ai_engine.investment_scoring import get_intelligence_engine
+
         engine = get_intelligence_engine()
         pred = engine.predict_trade_flows("MAR", "EGY", "0901", timeframe_months=12)
         assert pred.predicted_value_usd > 0
@@ -235,6 +269,7 @@ class TestInvestmentIntelligenceEngine:
 
     def test_scoring_algorithm_weights_sum_to_one(self):
         from intelligence.ai_engine.investment_scoring import SCORING_ALGORITHM
+
         total_weight = sum(v["weight"] for v in SCORING_ALGORITHM.values())
         assert abs(total_weight - 1.0) < 0.001
 
@@ -243,11 +278,13 @@ class TestInvestmentIntelligenceEngine:
 # Enhanced Search Engine
 # ===========================================================================
 
+
 class TestEnhancedSearchEngine:
     """Tests for HS code fuzzy/semantic search and investment opportunity filtering."""
 
     def test_exact_hs_search(self):
         from search.enhanced_search import get_search_engine
+
         engine = get_search_engine()
         results = engine.intelligent_hs_search("0901")
         assert results["total_matches"] > 0
@@ -257,16 +294,20 @@ class TestEnhancedSearchEngine:
 
     def test_semantic_search_coffee(self):
         from search.enhanced_search import get_search_engine
+
         engine = get_search_engine()
         results = engine.intelligent_hs_search("coffee")
         all_codes = [
-            m["hs_code"] for m in
-            results["exact_matches"] + results["semantic_matches"] + results["fuzzy_matches"]
+            m["hs_code"]
+            for m in results["exact_matches"]
+            + results["semantic_matches"]
+            + results["fuzzy_matches"]
         ]
         assert any("09" in c for c in all_codes), "Expected chapter 09 for coffee"
 
     def test_semantic_search_phone(self):
         from search.enhanced_search import get_search_engine
+
         engine = get_search_engine()
         results = engine.intelligent_hs_search("smartphone")
         semantic = results["semantic_matches"]
@@ -275,12 +316,14 @@ class TestEnhancedSearchEngine:
 
     def test_fuzzy_search_returns_results(self):
         from search.enhanced_search import FuzzyMatcher
+
         matcher = FuzzyMatcher(threshold=0.5)
         results = matcher.search("cereals")
         assert isinstance(results, list)
 
     def test_search_result_structure(self):
         from search.enhanced_search import get_search_engine
+
         engine = get_search_engine()
         results = engine.intelligent_hs_search("wheat")
         assert "query" in results
@@ -291,6 +334,7 @@ class TestEnhancedSearchEngine:
 
     def test_investment_opportunity_search(self):
         from search.enhanced_search import get_search_engine
+
         engine = get_search_engine()
         criteria = {
             "sectors": ["agriculture"],
@@ -305,6 +349,7 @@ class TestEnhancedSearchEngine:
 
     def test_investment_search_sorted_by_score(self):
         from search.enhanced_search import get_search_engine
+
         engine = get_search_engine()
         result = engine.investment_opportunity_search({"sectors": ["general"]})
         scores = [o["investment_score"] for o in result["opportunities"]]
@@ -312,11 +357,14 @@ class TestEnhancedSearchEngine:
 
     def test_investment_search_min_score_filter(self):
         from search.enhanced_search import get_search_engine
+
         engine = get_search_engine()
-        result = engine.investment_opportunity_search({
-            "sectors": ["general"],
-            "min_score": 0.65,
-        })
+        result = engine.investment_opportunity_search(
+            {
+                "sectors": ["general"],
+                "min_score": 0.65,
+            }
+        )
         for opp in result["opportunities"]:
             assert opp["investment_score"] >= 0.65
 
@@ -325,19 +373,23 @@ class TestEnhancedSearchEngine:
 # Regional Analytics
 # ===========================================================================
 
+
 class TestRegionalAnalytics:
     """Tests for the regional analytics engine."""
 
     def test_analytics_singleton(self):
         from intelligence.analytics.regional_analytics import (
-            get_regional_analytics, RegionalAnalyticsEngine
+            RegionalAnalyticsEngine,
+            get_regional_analytics,
         )
+
         a = get_regional_analytics()
         assert isinstance(a, RegionalAnalyticsEngine)
         assert a is get_regional_analytics()
 
     def test_bloc_summary(self):
         from intelligence.analytics.regional_analytics import get_regional_analytics
+
         a = get_regional_analytics()
         summary = a.get_bloc_summary("ECOWAS")
         assert summary["bloc"] == "ECOWAS"
@@ -347,12 +399,14 @@ class TestRegionalAnalytics:
 
     def test_unknown_bloc(self):
         from intelligence.analytics.regional_analytics import get_regional_analytics
+
         a = get_regional_analytics()
         result = a.get_bloc_summary("UNKNOWN")
         assert "error" in result
 
     def test_compare_regions(self):
         from intelligence.analytics.regional_analytics import get_regional_analytics
+
         a = get_regional_analytics()
         comparison = a.compare_regions(blocs=["ECOWAS", "EAC", "SADC"])
         assert "blocs" in comparison
@@ -360,13 +414,15 @@ class TestRegionalAnalytics:
         assert "best_performer" in comparison
 
     def test_all_blocs_listed(self):
-        from intelligence.analytics.regional_analytics import get_regional_analytics, REGIONAL_BLOCS
+        from intelligence.analytics.regional_analytics import REGIONAL_BLOCS, get_regional_analytics
+
         a = get_regional_analytics()
         blocs = a.get_all_blocs()
         assert len(blocs) == len(REGIONAL_BLOCS)
 
     def test_investment_heatmap(self):
         from intelligence.analytics.regional_analytics import get_regional_analytics
+
         a = get_regional_analytics()
         heatmap = a.get_investment_heatmap()
         assert isinstance(heatmap, list)
@@ -379,6 +435,7 @@ class TestRegionalAnalytics:
 
     def test_heatmap_sorted_by_score(self):
         from intelligence.analytics.regional_analytics import get_regional_analytics
+
         a = get_regional_analytics()
         heatmap = a.get_investment_heatmap()
         scores = [h["investment_score"] for h in heatmap]
@@ -386,6 +443,7 @@ class TestRegionalAnalytics:
 
     def test_trade_corridors(self):
         from intelligence.analytics.regional_analytics import get_regional_analytics
+
         a = get_regional_analytics()
         corridors = a.get_trade_corridor_analysis()
         assert isinstance(corridors, list)
@@ -397,6 +455,7 @@ class TestRegionalAnalytics:
 
     def test_corridor_filter_by_origin(self):
         from intelligence.analytics.regional_analytics import get_regional_analytics
+
         a = get_regional_analytics()
         corridors = a.get_trade_corridor_analysis(origin_bloc="EAC")
         assert all(c["origin"] == "EAC" for c in corridors)
@@ -406,13 +465,16 @@ class TestRegionalAnalytics:
 # FastAPI Routes (using TestClient)
 # ===========================================================================
 
+
 class TestAIIntelligenceRoutes:
     """Tests for AI investment intelligence API routes."""
 
     def _make_app(self):
+        import importlib.util
+
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
-        import importlib.util
+
         mod_name = "routes.ai_intelligence"
         if mod_name not in sys.modules:
             spec = importlib.util.spec_from_file_location(
@@ -429,11 +491,14 @@ class TestAIIntelligenceRoutes:
 
     def test_investment_score_endpoint(self):
         client = self._make_app()
-        response = client.post("/api/ai-intelligence/score", json={
-            "country": "MAR",
-            "sector": "general",
-            "investment_size": "medium",
-        })
+        response = client.post(
+            "/api/ai-intelligence/score",
+            json={
+                "country": "MAR",
+                "sector": "general",
+                "investment_size": "medium",
+            },
+        )
         assert response.status_code == 200
         data = response.json()
         assert "overall_score" in data
@@ -441,11 +506,14 @@ class TestAIIntelligenceRoutes:
 
     def test_recommendations_endpoint(self):
         client = self._make_app()
-        response = client.post("/api/ai-intelligence/recommendations", json={
-            "sector": "agriculture",
-            "risk_tolerance": "medium",
-            "limit": 5,
-        })
+        response = client.post(
+            "/api/ai-intelligence/recommendations",
+            json={
+                "sector": "agriculture",
+                "risk_tolerance": "medium",
+                "limit": 5,
+            },
+        )
         assert response.status_code == 200
         data = response.json()
         assert "recommendations" in data
@@ -461,10 +529,13 @@ class TestAIIntelligenceRoutes:
 
     def test_bulk_score_endpoint(self):
         client = self._make_app()
-        response = client.post("/api/ai-intelligence/bulk-score", json={
-            "countries": ["MAR", "EGY", "KEN"],
-            "sector": "general",
-        })
+        response = client.post(
+            "/api/ai-intelligence/bulk-score",
+            json={
+                "countries": ["MAR", "EGY", "KEN"],
+                "sector": "general",
+            },
+        )
         assert response.status_code == 200
         data = response.json()
         assert "scores" in data
@@ -472,12 +543,15 @@ class TestAIIntelligenceRoutes:
 
     def test_predict_trade_flows_endpoint(self):
         client = self._make_app()
-        response = client.post("/api/ai-intelligence/predict-trade-flows", json={
-            "origin_country": "MAR",
-            "destination_country": "EGY",
-            "product_category": "0901",
-            "timeframe_months": 12,
-        })
+        response = client.post(
+            "/api/ai-intelligence/predict-trade-flows",
+            json={
+                "origin_country": "MAR",
+                "destination_country": "EGY",
+                "product_category": "0901",
+                "timeframe_months": 12,
+            },
+        )
         assert response.status_code == 200
         data = response.json()
         assert "predicted_value_usd" in data
@@ -496,9 +570,11 @@ class TestRegionalAnalyticsRoutes:
     """Tests for regional analytics API routes."""
 
     def _make_app(self):
+        import importlib.util
+
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
-        import importlib.util
+
         mod_name = "routes.regional_analytics"
         if mod_name not in sys.modules:
             spec = importlib.util.spec_from_file_location(
@@ -587,9 +663,11 @@ class TestEnhancedSearchRoutes:
     """Tests for enhanced search API routes."""
 
     def _make_app(self):
+        import importlib.util
+
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
-        import importlib.util
+
         mod_name = "routes.enhanced_search"
         if mod_name not in sys.modules:
             spec = importlib.util.spec_from_file_location(
@@ -619,11 +697,14 @@ class TestEnhancedSearchRoutes:
 
     def test_investment_opportunity_search(self):
         client = self._make_app()
-        response = client.post("/api/enhanced-search/investment-opportunities", json={
-            "sectors": ["agriculture"],
-            "risk_tolerance": "medium",
-            "per_page": 10,
-        })
+        response = client.post(
+            "/api/enhanced-search/investment-opportunities",
+            json={
+                "sectors": ["agriculture"],
+                "risk_tolerance": "medium",
+                "per_page": 10,
+            },
+        )
         assert response.status_code == 200
         data = response.json()
         assert "opportunities" in data
@@ -649,9 +730,11 @@ class TestPerformanceRoutes:
     """Tests for performance monitoring API routes."""
 
     def _make_app(self):
+        import importlib.util
+
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
-        import importlib.util
+
         mod_name = "routes.performance"
         if mod_name not in sys.modules:
             spec = importlib.util.spec_from_file_location(
@@ -690,9 +773,10 @@ class TestMobileRoutes:
     """Tests for mobile-optimised API routes."""
 
     def _make_app(self):
+        from api.mobile.lightweight_endpoints import router
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
-        from api.mobile.lightweight_endpoints import router
+
         app = FastAPI()
         app.include_router(router, prefix="/api")
         return TestClient(app, raise_server_exceptions=False)
@@ -750,9 +834,10 @@ class TestGraphQLEndpoint:
     """Tests for GraphQL API endpoint."""
 
     def _make_app(self):
+        from api.graphql.schema import router
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
-        from api.graphql.schema import router
+
         app = FastAPI()
         app.include_router(router, prefix="/api")
         return TestClient(app, raise_server_exceptions=False)
@@ -767,9 +852,12 @@ class TestGraphQLEndpoint:
 
     def test_graphql_health_query(self):
         client = self._make_app()
-        response = client.post("/api/graphql", json={
-            "query": "{ health }",
-        })
+        response = client.post(
+            "/api/graphql",
+            json={
+                "query": "{ health }",
+            },
+        )
         assert response.status_code in (200, 400)
 
     def test_graphql_playground(self):
@@ -783,9 +871,10 @@ class TestWebSocketStatus:
     """Tests for WebSocket status endpoint."""
 
     def _make_app(self):
+        from api.websocket.handlers import router
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
-        from api.websocket.handlers import router
+
         app = FastAPI()
         app.include_router(router, prefix="/api")
         return TestClient(app, raise_server_exceptions=False)
@@ -804,11 +893,13 @@ class TestWebSocketStatus:
 # Dashboard - Visualization Engine
 # ===========================================================================
 
+
 class TestVisualizationEngine:
     """Tests for the dashboard visualization data generator."""
 
     def test_radar_chart_data(self):
         from dashboard.visualization_engine import get_visualization_engine
+
         viz = get_visualization_engine()
         data = viz.radar_chart_data(["MAR", "EGY"], sector="agriculture")
         assert data["type"] == "radar"
@@ -817,6 +908,7 @@ class TestVisualizationEngine:
 
     def test_bar_chart_data(self):
         from dashboard.visualization_engine import get_visualization_engine
+
         viz = get_visualization_engine()
         data = viz.bar_chart_data(blocs=["ECOWAS", "EAC"], metric="investment_score")
         assert data["type"] == "bar"
@@ -824,6 +916,7 @@ class TestVisualizationEngine:
 
     def test_heatmap_data(self):
         from dashboard.visualization_engine import get_visualization_engine
+
         viz = get_visualization_engine()
         data = viz.heatmap_data()
         assert data["type"] == "heatmap"
@@ -835,6 +928,7 @@ class TestVisualizationEngine:
 
     def test_sankey_data(self):
         from dashboard.visualization_engine import get_visualization_engine
+
         viz = get_visualization_engine()
         data = viz.sankey_data()
         assert data["type"] == "sankey"
@@ -843,6 +937,7 @@ class TestVisualizationEngine:
 
     def test_line_chart_trend(self):
         from dashboard.visualization_engine import get_visualization_engine
+
         viz = get_visualization_engine()
         data = viz.line_chart_trend("MAR", metric="investment_score", years=5)
         assert data["type"] == "line"
@@ -855,20 +950,34 @@ class TestVisualizationEngine:
 # Dashboard - Export Services
 # ===========================================================================
 
+
 class TestExportServices:
     """Tests for PDF/Excel/CSV export functionality."""
 
     def _sample_data(self):
         return {
             "opportunities": [
-                {"country": "MAR", "sector": "agriculture", "investment_score": 0.72, "grade": "A", "recommendation": "buy"},
-                {"country": "EGY", "sector": "manufacturing", "investment_score": 0.65, "grade": "B+", "recommendation": "hold"},
+                {
+                    "country": "MAR",
+                    "sector": "agriculture",
+                    "investment_score": 0.72,
+                    "grade": "A",
+                    "recommendation": "buy",
+                },
+                {
+                    "country": "EGY",
+                    "sector": "manufacturing",
+                    "investment_score": 0.65,
+                    "grade": "B+",
+                    "recommendation": "hold",
+                },
             ],
             "total_count": 2,
         }
 
     def test_excel_export_returns_bytes(self):
         from dashboard.export_services import get_export_service
+
         exporter = get_export_service()
         data = exporter.export_investment_analysis_excel(self._sample_data())
         assert isinstance(data, bytes)
@@ -876,6 +985,7 @@ class TestExportServices:
 
     def test_pdf_export_returns_bytes(self):
         from dashboard.export_services import get_export_service
+
         exporter = get_export_service()
         data = exporter.export_investment_analysis_pdf(self._sample_data())
         assert isinstance(data, bytes)
@@ -883,13 +993,16 @@ class TestExportServices:
 
     def test_csv_fallback(self):
         from dashboard.export_services import ExportService
+
         data = ExportService._csv_fallback(self._sample_data())
         assert isinstance(data, bytes)
         assert b"MAR" in data
 
     def test_json_fallback(self):
-        from dashboard.export_services import ExportService
         import json
+
+        from dashboard.export_services import ExportService
+
         data = ExportService._json_fallback(self._sample_data())
         parsed = json.loads(data)
         assert "opportunities" in parsed
@@ -899,40 +1012,49 @@ class TestExportServices:
 # GraphQL Schema Definition
 # ===========================================================================
 
+
 class TestGraphQLSchema:
     """Tests for the GraphQL schema SDL."""
 
     def test_schema_contains_query_type(self):
         from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
+
         assert "type Query" in GRAPHQL_SCHEMA_SDL
 
     def test_schema_contains_mutation_type(self):
         from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
+
         assert "type Mutation" in GRAPHQL_SCHEMA_SDL
 
     def test_schema_contains_subscription_type(self):
         from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
+
         assert "type Subscription" in GRAPHQL_SCHEMA_SDL
 
     def test_schema_investment_score_query(self):
         from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
+
         assert "getInvestmentScore" in GRAPHQL_SCHEMA_SDL
 
     def test_schema_bulk_tariff_query(self):
         from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
+
         assert "bulkTariffCalculation" in GRAPHQL_SCHEMA_SDL
 
     def test_schema_trade_flow_prediction(self):
         from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
+
         assert "predictTradeFlows" in GRAPHQL_SCHEMA_SDL
 
     def test_schema_regional_bloc_enum(self):
         from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
+
         assert "RegionalBloc" in GRAPHQL_SCHEMA_SDL
         assert "ECOWAS" in GRAPHQL_SCHEMA_SDL
 
     def test_schema_websocket_subscriptions(self):
         from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
+
         assert "tariffUpdates" in GRAPHQL_SCHEMA_SDL
         assert "investmentAlerts" in GRAPHQL_SCHEMA_SDL
         assert "liveRegionalData" in GRAPHQL_SCHEMA_SDL

@@ -1,6 +1,7 @@
 """
 Tests for the currencies module and exchange rate service.
 """
+
 import json
 import sys
 from datetime import datetime, timezone
@@ -108,25 +109,25 @@ class TestCurrencyService:
         """UEMOA countries should all have XOF currency code."""
         uemoa = get_by_monetary_union("UEMOA")
         for country in uemoa:
-            assert country.currency_code == "XOF", (
-                f"{country.country_code} expected XOF, got {country.currency_code}"
-            )
+            assert (
+                country.currency_code == "XOF"
+            ), f"{country.country_code} expected XOF, got {country.currency_code}"
 
     def test_cemac_countries_share_xaf(self):
         """CEMAC countries should all have XAF currency code."""
         cemac = get_by_monetary_union("CEMAC")
         for country in cemac:
-            assert country.currency_code == "XAF", (
-                f"{country.country_code} expected XAF, got {country.currency_code}"
-            )
+            assert (
+                country.currency_code == "XAF"
+            ), f"{country.country_code} expected XAF, got {country.currency_code}"
 
 
 # ---------------------------------------------------------------------------
 # Exchange rate service tests
 # ---------------------------------------------------------------------------
 
-from exchange_rates.service import ExchangeRateService, AFRICAN_CURRENCY_CODES
-from exchange_rates.models import RateBundle, ConversionRequest
+from exchange_rates.models import ConversionRequest, RateBundle
+from exchange_rates.service import AFRICAN_CURRENCY_CODES, ExchangeRateService
 
 
 class TestExchangeRateService:

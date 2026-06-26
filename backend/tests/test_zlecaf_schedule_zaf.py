@@ -2,7 +2,8 @@
 Tests des partenaires ZLECAf actifs à l'importation en Afrique du Sud
 (newsletter AfCFTA, the dtic/SARS, mars 2026).
 """
-from services.zlecaf_schedule_zaf import zaf_partner_active, ACTIVE_PARTNERS_ZAF
+
+from services.zlecaf_schedule_zaf import ACTIVE_PARTNERS_ZAF, zaf_partner_active
 
 
 def test_named_implementing_country_is_active():

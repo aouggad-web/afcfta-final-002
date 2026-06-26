@@ -8,17 +8,18 @@ aucune nouvelle donnée chiffrée n'est introduite. Seul le délai de
 rapatriement (`repatriation_deadline_days`) est attribué à l'exportation ;
 `transfer_deadline_days` (importation) reste `None` faute de source.
 """
-import sys
+
 import os
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from banking_system import (
+    get_export_formalities,
     get_forex_profile,
     get_import_formalities,
-    get_export_formalities,
 )
-from banking_system.models import ImportFormalities, ExportFormalities
+from banking_system.models import ExportFormalities, ImportFormalities
 
 
 def test_profile_exposes_import_and_export_formalities():
@@ -29,7 +30,22 @@ def test_profile_exposes_import_and_export_formalities():
 
 def test_import_formalities_has_no_fabricated_transfer_deadline():
     # Aucune source ne fournit de délai de transfert distinct à l'importation.
-    for code in ("MA", "DZ", "TN", "EG", "NG", "GH", "CI", "SN", "KE", "ET", "TZ", "ZA", "AO", "ZM"):
+    for code in (
+        "MA",
+        "DZ",
+        "TN",
+        "EG",
+        "NG",
+        "GH",
+        "CI",
+        "SN",
+        "KE",
+        "ET",
+        "TZ",
+        "ZA",
+        "AO",
+        "ZM",
+    ):
         formalities = get_import_formalities(code)
         assert formalities.transfer_deadline_days is None
 
