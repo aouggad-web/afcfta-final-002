@@ -22,7 +22,7 @@ from services.trade_series_orchestrator import (
 
 
 def _run(coro):
-    return asyncio.get_event_loop().run_until_complete(coro)
+    return asyncio.run(coro)
 
 
 def _series(has_data, src):

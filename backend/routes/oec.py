@@ -146,6 +146,12 @@ async def get_oec_country_trade_series(
     pour ne pas tomber en rade si OEC est indisponible/rate-limité. La réponse
     indique `source_used` et `sources_tried`.
     """
+    # Valide le code pays en amont (400) pour distinguer « pays invalide » de
+    # « pas de données » — cohérent avec les autres endpoints OEC, sans perdre
+    # la résilience (pas de 500) pour un pays valide.
+    if country_iso3.upper() not in AFRICAN_COUNTRIES_OEC:
+        raise HTTPException(status_code=400, detail=f"Pays inconnu: {country_iso3.upper()}")
+
     return await get_trade_series_resilient(
         country_iso3=country_iso3,
         start_year=start_year,

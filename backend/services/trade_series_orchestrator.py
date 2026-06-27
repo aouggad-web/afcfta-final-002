@@ -5,8 +5,12 @@ Objectif: ne jamais "tomber en rade" en production si OEC est indisponible
 ou rate-limité, en essayant plusieurs sources dans l'ordre de priorité.
 
 Chaîne de résilience (combinée au cache + stale-on-error de cache_service):
-    1. OEC / BACI  (source primaire — riche, mise en cache)
-    2. UN Comtrade (secours, OPT-IN: COMTRADE_FALLBACK_ENABLED=true + clé API)
+    1. OEC / BACI    (source primaire — riche, mise en cache)
+    2. UN Comtrade   (secours, OPT-IN: COMTRADE_FALLBACK_ENABLED=true + clé API)
+    3. OMC / WTO     (secours, OPT-IN: WTO_FALLBACK_ENABLED=true)
+    4. CNUCED/UNCTAD (secours, OPT-IN: UNCTAD_FALLBACK_ENABLED=true + UNCTAD_API_URL)
+
+Tous les secours sont désactivés par défaut, le temps d'être validés en réseau.
 
 Propriétés:
 - Chaque source est isolée: une source qui échoue (exception / pas de données)
@@ -19,6 +23,7 @@ La logique d'orchestration est pure/testable (providers injectables).
 Le mapping live Comtrade est opt-in et doit être validé en environnement réseau.
 """
 
+import asyncio
 import logging
 import os
 from typing import Awaitable, Callable, Dict, List, Optional
@@ -194,7 +199,9 @@ async def _comtrade_provider(iso3: str, start_year: int, end_year: int) -> Optio
     years = list(range(start_year, end_year + 1))
     records: List[Dict] = []
     for year in years:
-        rows = comtrade_service.fetch(reporter, partner_code="0", period=str(year))
+        # comtrade_service.fetch est synchrone (requests + time.sleep) → on
+        # l'exécute dans un thread pour ne pas bloquer l'event loop FastAPI.
+        rows = await asyncio.to_thread(comtrade_service.fetch, reporter, "0", str(year))
         if rows:
             records.extend(rows)
     chart_rows = aggregate_comtrade_series(records, years)
@@ -247,9 +254,12 @@ async def _wto_provider(iso3: str, start_year: int, end_year: int) -> Optional[D
     from services.wto_service import wto_service
 
     years = list(range(start_year, end_year + 1))
-    # Indicateurs WTO Timeseries: valeur des exports/imports de marchandises.
-    exp_resp = wto_service.get_trade_indicators(iso3.upper(), indicator="ITS_MTV_AX")
-    imp_resp = wto_service.get_trade_indicators(iso3.upper(), indicator="ITS_MTV_AM")
+    # wto_service.get_trade_indicators est synchrone (requests + time.sleep) → on
+    # exécute les 2 appels dans des threads, en parallèle, sans bloquer l'event loop.
+    exp_resp, imp_resp = await asyncio.gather(
+        asyncio.to_thread(wto_service.get_trade_indicators, iso3.upper(), "ITS_MTV_AX"),
+        asyncio.to_thread(wto_service.get_trade_indicators, iso3.upper(), "ITS_MTV_AM"),
+    )
     exp_rows = (exp_resp or {}).get("data") if isinstance(exp_resp, dict) else None
     imp_rows = (imp_resp or {}).get("data") if isinstance(imp_resp, dict) else None
     exports = extract_year_value_map(exp_rows, "Year", "Value")
