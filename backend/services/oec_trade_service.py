@@ -173,16 +173,19 @@ AFRICAN_COUNTRIES_OEC = {
 
 
 def build_trade_series(
-    exports_rows: List[Dict], imports_rows: List[Dict], years: List[int]
+    exports_rows: Optional[List[Dict]],
+    imports_rows: Optional[List[Dict]],
+    years: List[int],
 ) -> List[Dict]:
     """
     Agrège des lignes OEC (drilldown par année) en une série temporelle
     exports/imports/balance, une entrée par année demandée.
 
     Fonction pure (sans réseau) : facilite le test du parsing/agrégation.
+    Les listes de lignes peuvent être None (flux absent).
     """
 
-    def agg(rows: List[Dict]) -> Dict[int, float]:
+    def agg(rows: Optional[List[Dict]]) -> Dict[int, float]:
         totals = {y: 0.0 for y in years}
         for row in rows or []:
             year = row.get("Year")

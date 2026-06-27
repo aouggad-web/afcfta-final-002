@@ -138,7 +138,8 @@ async def get_oec_country_trade_series(
 ):
     """
     Série temporelle du commerce total d'un pays (exports/imports/balance par
-    année, 2018-2024) — vraies données OEC plutôt qu'un instantané sur une année.
+    année, sur la plage `start_year`..`end_year`) — vraies données OEC plutôt
+    qu'un instantané sur une seule année.
     """
     result = await oec_service.get_country_trade_series(
         country_iso3=country_iso3,

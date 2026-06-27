@@ -6,6 +6,8 @@ import {
 import { TrendingUp } from 'lucide-react';
 import { getAllCountries } from '../../utils/countryCodes';
 
+const API_URL = import.meta.env.VITE_BACKEND_URL || '';
+
 const TEXTS = {
   fr: {
     title: 'Évolution du commerce (2018-2024)',
@@ -49,7 +51,7 @@ const CountryTradeSeries = ({ language = 'fr', defaultCountry = 'NGA' }) => {
     setLoading(true);
     setError(false);
     axios
-      .get(`/api/oec/country/${country}/trade-series`)
+      .get(`${API_URL}/api/oec/country/${country}/trade-series`)
       .then((res) => setData(res.data))
       .catch(() => setError(true))
       .finally(() => setLoading(false));
