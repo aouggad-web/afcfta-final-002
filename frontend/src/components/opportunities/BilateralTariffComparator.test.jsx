@@ -60,4 +60,18 @@ describe('BilateralTariffComparator', () => {
     // Direction la plus avantageuse (a_to_b) = Kenya → Nigéria.
     expect(screen.getByText(/Kenya → Nigéria/)).toBeInTheDocument();
   });
+
+  it('localise les noms de pays en anglais (et non en français du backend)', async () => {
+    render(<BilateralTariffComparator language="en" />);
+    const [selA, selB] = screen.getAllByRole('combobox');
+    await userEvent.selectOptions(selA, 'KEN');
+    await userEvent.selectOptions(selB, 'NGA');
+    await userEvent.type(screen.getByRole('textbox'), '520100');
+    await userEvent.click(screen.getByRole('button', { name: /Compare/i }));
+
+    await waitFor(() => expect(axios.get).toHaveBeenCalled());
+    // Noms résolus côté frontend en anglais : "Nigeria", pas le "Nigéria" du backend.
+    await waitFor(() => expect(screen.getByText(/Kenya → Nigeria/)).toBeInTheDocument());
+    expect(screen.queryByText(/Nigéria/)).toBeNull();
+  });
 });

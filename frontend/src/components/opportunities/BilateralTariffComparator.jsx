@@ -72,6 +72,10 @@ const DirectionCard = ({ title, flow, t, highlight }) => (
 const BilateralTariffComparator = ({ language = 'fr' }) => {
   const t = TEXTS[language] || TEXTS.fr;
   const countries = getAllCountries(language === 'en' ? 'en' : 'fr');
+  // Noms localisés (FR/EN) résolus côté frontend depuis l'ISO3 — l'API ne
+  // renvoie que des libellés FR, donc on ne s'y fie pas pour l'affichage.
+  const nameByIso3 = Object.fromEntries(countries.map((c) => [c.iso3, c.name]));
+  const nameOf = (iso3) => nameByIso3[iso3] || iso3;
 
   const [a, setA] = useState('');
   const [b, setB] = useState('');
@@ -179,13 +183,13 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <DirectionCard
-                title={fill(t.flowAB, { a: result.country_a_name, b: result.country_b_name })}
+                title={fill(t.flowAB, { a: nameOf(result.country_a), b: nameOf(result.country_b) })}
                 flow={result.flow_a_to_b}
                 t={t}
                 highlight={result.best_preference_direction === 'a_to_b'}
               />
               <DirectionCard
-                title={fill(t.flowBA, { a: result.country_a_name, b: result.country_b_name })}
+                title={fill(t.flowBA, { a: nameOf(result.country_a), b: nameOf(result.country_b) })}
                 flow={result.flow_b_to_a}
                 t={t}
                 highlight={result.best_preference_direction === 'b_to_a'}
@@ -198,8 +202,8 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
                   ? t.equal
                   : `${t.best}: ${
                       result.best_preference_direction === 'a_to_b'
-                        ? `${result.country_a_name} → ${result.country_b_name}`
-                        : `${result.country_b_name} → ${result.country_a_name}`
+                        ? `${nameOf(result.country_a)} → ${nameOf(result.country_b)}`
+                        : `${nameOf(result.country_b)} → ${nameOf(result.country_a)}`
                     }`}
               </span>
             </div>
