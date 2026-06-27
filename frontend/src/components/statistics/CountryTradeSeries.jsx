@@ -20,6 +20,7 @@ const TEXTS = {
     imports: 'Imports',
     balance: 'Balance',
     billionUsd: 'Milliards USD',
+    sourceLabel: 'Source',
   },
   en: {
     title: 'Trade evolution (2018-2024)',
@@ -32,6 +33,7 @@ const TEXTS = {
     imports: 'Imports',
     balance: 'Balance',
     billionUsd: 'Billion USD',
+    sourceLabel: 'Source',
   },
 };
 
@@ -100,6 +102,27 @@ const CountryTradeSeries = ({ language = 'fr', defaultCountry = 'NGA' }) => {
           <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.85rem' }}>{t.noData}</p>
         )}
 
+        {!loading && !error && data?.has_data && (data.source_used || data.source) && (
+          <div style={{ marginBottom: 10 }}>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                fontSize: 11,
+                fontWeight: 700,
+                padding: '3px 10px',
+                borderRadius: 100,
+                background: 'rgba(52,211,153,0.14)',
+                color: '#34d399',
+                border: '1px solid rgba(52,211,153,0.3)',
+              }}
+            >
+              {t.sourceLabel}: {data.source_used || data.source}
+            </span>
+          </div>
+        )}
+
         {!loading && !error && data?.has_data && (
           <ResponsiveContainer width="100%" height={320} debounce={300}>
             <LineChart data={chartData} margin={{ top: 10, right: 24, left: 12, bottom: 8 }}>
@@ -123,8 +146,8 @@ const CountryTradeSeries = ({ language = 'fr', defaultCountry = 'NGA' }) => {
           </ResponsiveContainer>
         )}
 
-        {data?.source && (
-          <p className="stats-source-note">{data.source}</p>
+        {(data?.source_used || data?.source) && (
+          <p className="stats-source-note">{data.source_used || data.source}</p>
         )}
       </div>
     </div>

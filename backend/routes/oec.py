@@ -12,6 +12,7 @@ from services.oec_trade_service import (
     get_country_name_to_iso3_mapping,
     oec_service,
 )
+from services.trade_series_orchestrator import get_trade_series_resilient
 
 router = APIRouter(prefix="/oec")
 
@@ -138,17 +139,24 @@ async def get_oec_country_trade_series(
 ):
     """
     Série temporelle du commerce total d'un pays (exports/imports/balance par
-    année, sur la plage `start_year`..`end_year`) — vraies données OEC plutôt
-    qu'un instantané sur une seule année.
+    année, sur la plage `start_year`..`end_year`).
+
+    Résilient: essaie OEC d'abord, puis les sources de secours configurées
+    (Comtrade opt-in), et dégrade proprement si aucune source n'a de données —
+    pour ne pas tomber en rade si OEC est indisponible/rate-limité. La réponse
+    indique `source_used` et `sources_tried`.
     """
-    result = await oec_service.get_country_trade_series(
+    # Valide le code pays en amont (400) pour distinguer « pays invalide » de
+    # « pas de données » — cohérent avec les autres endpoints OEC, sans perdre
+    # la résilience (pas de 500) pour un pays valide.
+    if country_iso3.upper() not in AFRICAN_COUNTRIES_OEC:
+        raise HTTPException(status_code=400, detail=f"Pays inconnu: {country_iso3.upper()}")
+
+    return await get_trade_series_resilient(
         country_iso3=country_iso3,
         start_year=start_year,
         end_year=end_year,
     )
-    if "error" in result:
-        raise HTTPException(status_code=400, detail=result["error"])
-    return result
 
 
 @router.get("/bilateral/{exporter_iso3}/{importer_iso3}")
