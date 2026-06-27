@@ -2343,6 +2343,22 @@
       "product_description_fr": "Contreplaqués ayant au moins un pli extérieur en bois tropicaux (4412.31)",
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"
     },
+    "6203": {
+      "code": "CTH",
+      "alt_code": null,
+      "threshold": null,
+      "ex": false,
+      "raw_fr": "Fabrication à partir de matières de toute position autre que celle du produit, sous réserve d'un réexamen au bout de cinq ans",
+      "name_en": "Men's suits, ensembles, jackets, blazers, trousers, breeches and shorts (other than swimwear)",
+      "description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain), pour hommes ou garçonnets",
+      "time_phase": "Sous réserve d'un réexamen au bout de cinq ans",
+      "status": "AGREED",
+      "notes": [
+        "Règle de position 62.03 (CTH). S'applique à toutes les sous-positions de la position 62.03 non couvertes par une règle de sous-position spécifique (ex: 6203.11/6203.31/6203.41 - laine ou poils fins). Cette entrée corrige une régression connue où l'absence de règle au niveau position faisait retomber ces codes sur la règle YARN du chapitre 62."
+      ],
+      "product_description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain), pour hommes ou garçonnets",
+      "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"
+    },
     "6207": {
       "code": "CTH",
       "alt_code": null,
@@ -3038,7 +3054,7 @@
       "time_phase": "Sous réserve d'un réexamen au bout de cinq ans",
       "status": "AGREED",
       "notes": [
-        "IMPORTANT: cette règle spécifique de la position 62.03 (CTH, réexamen 5 ans) diffère de la règle par défaut du chapitre 62 (Fabrication à partir de fils / YARN). Le module Python existant ne contient PAS d'entrée HEADING_RULES['6203'] et applique donc par erreur la règle YARN du chapitre au lieu de cette règle CTH spécifique à la position."
+        "Cette règle spécifique de sous-position (CTH, réexamen 5 ans) diffère de la règle par défaut du chapitre 62 (YARN). Les autres sous-positions de la position 62.03 sans règle propre utilisent désormais la règle CTH de la position 62.03 (voir headings['6203']) plutôt que de retomber directement sur la règle YARN du chapitre."
       ],
       "product_description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain) - sous-positions 6203.11/6203.31/6203.41 (laine ou poils fins)",
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"
@@ -3054,7 +3070,7 @@
       "time_phase": "Sous réserve d'un réexamen au bout de cinq ans",
       "status": "AGREED",
       "notes": [
-        "IMPORTANT: cette règle spécifique de la position 62.03 (CTH, réexamen 5 ans) diffère de la règle par défaut du chapitre 62 (Fabrication à partir de fils / YARN). Le module Python existant ne contient PAS d'entrée HEADING_RULES['6203'] et applique donc par erreur la règle YARN du chapitre au lieu de cette règle CTH spécifique à la position."
+        "Cette règle spécifique de sous-position (CTH, réexamen 5 ans) diffère de la règle par défaut du chapitre 62 (YARN). Les autres sous-positions de la position 62.03 sans règle propre utilisent désormais la règle CTH de la position 62.03 (voir headings['6203']) plutôt que de retomber directement sur la règle YARN du chapitre."
       ],
       "product_description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain) - sous-positions 6203.11/6203.31/6203.41 (laine ou poils fins)",
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"
@@ -3070,7 +3086,7 @@
       "time_phase": "Sous réserve d'un réexamen au bout de cinq ans",
       "status": "AGREED",
       "notes": [
-        "IMPORTANT: cette règle spécifique de la position 62.03 (CTH, réexamen 5 ans) diffère de la règle par défaut du chapitre 62 (Fabrication à partir de fils / YARN). Le module Python existant ne contient PAS d'entrée HEADING_RULES['6203'] et applique donc par erreur la règle YARN du chapitre au lieu de cette règle CTH spécifique à la position."
+        "Cette règle spécifique de sous-position (CTH, réexamen 5 ans) diffère de la règle par défaut du chapitre 62 (YARN). Les autres sous-positions de la position 62.03 sans règle propre utilisent désormais la règle CTH de la position 62.03 (voir headings['6203']) plutôt que de retomber directement sur la règle YARN du chapitre."
       ],
       "product_description_fr": "Costumes tailleurs, ensembles, vestes, blazers, pantalons, culottes et shorts (autres que pour le bain) - sous-positions 6203.11/6203.31/6203.41 (laine ou poils fins)",
       "source": "AfCFTA Appendix IV (PSR) - December 2023, 12th Council of Ministers"

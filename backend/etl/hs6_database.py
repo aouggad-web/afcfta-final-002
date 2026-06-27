@@ -17,10 +17,6 @@ Dernière mise à jour: Janvier 2025
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
-# Import des règles d'origine ZLECAf officielles
-from .afcfta_rules_of_origin import CHAPTER_RULES, ORIGIN_TYPES, get_chapter_status_summary
-from .afcfta_rules_of_origin import get_rule_of_origin as get_afcfta_rule
-
 # Import de la base CSV complète (5762 codes SH2022)
 from .hs6_csv_database import HS6_CSV_DATABASE
 
@@ -1701,7 +1697,10 @@ def get_hs6_info(hs6_code: str, language: str = "fr") -> Optional[Dict]:
     if info:
         desc_key = f"description_{language}"
 
-        # Récupérer la règle d'origine ZLECAf officielle
+        # Récupérer la règle d'origine ZLECAf officielle (import différé pour
+        # éviter tout import circulaire avec le package routes au chargement)
+        from routes.rules_of_origin import get_rule_of_origin as get_afcfta_rule
+
         afcfta_rule = get_afcfta_rule(hs6, language)
 
         return {
