@@ -671,8 +671,11 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                 "value_usd": round(request.value, 2),
             }
 
-    # Rules of origin - Use official AfCFTA Annex II rules
-    from etl.afcfta_rules_of_origin import get_rule_of_origin
+    # Rules of origin - Use official AfCFTA Annex II rules (single source of
+    # truth shared with the dedicated /rules-of-origin/{hs_code} endpoint;
+    # see routes/rules_of_origin.py for why this replaced the formerly
+    # separate, drifting etl.afcfta_rules_of_origin dataset).
+    from routes.rules_of_origin import get_rule_of_origin
 
     roo_data = get_rule_of_origin(hs6_code, "fr")
 

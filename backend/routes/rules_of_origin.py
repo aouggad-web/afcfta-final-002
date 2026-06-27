@@ -206,6 +206,103 @@ async def get_rules_of_origin(
     }
 
 
+def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
+    """Single source of truth for the rules-of-origin verdict on an HS code.
+
+    Used both by this module's own /{hs_code} endpoint (via _entry_to_response)
+    and, for backend code that needs the same lookup outside an HTTP request
+    (e.g. routes/calculator.py, etl/hs6_database.py), directly as a function
+    call. Returned shape matches the one historically produced by
+    etl.afcfta_rules_of_origin.get_rule_of_origin, which this supersedes —
+    that module duplicated RULES_DATA in a separate, independently
+    maintained Python dict and had drifted out of sync with it (e.g. it was
+    missing a heading-level rule for 62.03, see headings['6203'] above).
+
+    Matching priority: 6-digit subheading -> 4-digit heading -> 2-digit chapter.
+    """
+    lang = lang if lang in ("fr", "en") else "fr"
+    hs_clean = hs_code.replace(".", "").replace(" ", "")
+    hs6 = hs_clean[:6].ljust(6, "0") if hs_clean else "000000"
+    heading = hs_clean[:4] if len(hs_clean) >= 4 else hs_clean
+    chapter = hs_clean[:2].zfill(2) if len(hs_clean) >= 2 else hs_clean.zfill(2)
+
+    chapters = RULES_DATA.get("chapters", {})
+    headings = RULES_DATA.get("headings", {})
+    subheadings = RULES_DATA.get("subheadings", {})
+
+    entry = None
+    match_type = "none"
+    if hs6 in subheadings:
+        entry, match_type = subheadings[hs6], "subheading"
+    elif heading in headings:
+        entry, match_type = headings[heading], "heading"
+    elif chapter in chapters:
+        entry, match_type = chapters[chapter], "chapter"
+
+    chapter_entry = chapters.get(chapter, {})
+    chapter_description = chapter_entry.get(f"description_{lang}") or chapter_entry.get(
+        "raw_fr", ""
+    )
+
+    if entry is None:
+        return {
+            "hs6_code": hs6,
+            "heading": heading,
+            "chapter": chapter,
+            "chapter_description": chapter_description,
+            "status": "UNKNOWN",
+            "primary_rule": {
+                "code": "YTB",
+                "type": "YTB",
+                "name": "En cours de négociation" if lang == "fr" else "Yet to be agreed",
+                "description": (
+                    "Les règles pour ce produit sont encore en négociation"
+                    if lang == "fr"
+                    else "Rules for this product are still under negotiation"
+                ),
+            },
+            "alternative_rule": None,
+            "regional_content": None,
+            "notes": "",
+            "source": "NONE",
+            "source_detail": f"No PSR entry found for {hs_code}",
+        }
+
+    primary_code = entry.get("code")
+    alt_code = entry.get("alt_code")
+    threshold = entry.get("threshold")
+    regional_content = 100 - threshold if threshold is not None else None
+    notes = entry.get("notes") or []
+
+    return {
+        "hs6_code": hs6,
+        "heading": heading,
+        "chapter": chapter,
+        "chapter_description": chapter_description,
+        "status": entry.get("status", "AGREED"),
+        "primary_rule": {
+            "code": primary_code,
+            "type": primary_code,
+            "name": _rule_name(primary_code, lang),
+            "description": entry.get(f"description_{lang}") or entry.get("raw_fr", ""),
+        },
+        "alternative_rule": (
+            {
+                "code": alt_code,
+                "type": alt_code,
+                "name": _rule_name(alt_code, lang),
+                "description": _rule_name(alt_code, lang),
+            }
+            if alt_code
+            else None
+        ),
+        "regional_content": regional_content,
+        "notes": "; ".join(notes) if notes else "",
+        "source": match_type.upper(),
+        "source_detail": f"AfCFTA Appendix IV (PSR) - {match_type} match for {hs_code}",
+    }
+
+
 def register_routes(app_router, rules_data: dict = None, origin_types: dict = None):
     """Register rules of origin routes with the main API router."""
     if rules_data:
