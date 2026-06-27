@@ -22,6 +22,7 @@ vi.mock('axios', () => {
         ],
         has_data: true,
         source: 'OEC / BACI (HS Rev. 2017)',
+        source_used: 'OEC / BACI',
       },
     });
   });
@@ -47,8 +48,14 @@ describe('CountryTradeSeries', () => {
     await waitFor(() =>
       expect(axios.get).toHaveBeenCalledWith('/api/oec/country/NGA/trade-series')
     );
-    // La source OEC apparaît une fois la série chargée.
-    await waitFor(() => expect(screen.getByText(/OEC \/ BACI/)).toBeInTheDocument());
+    // La source OEC apparaît une fois la série chargée (badge + note).
+    await waitFor(() => expect(screen.getAllByText(/OEC \/ BACI/).length).toBeGreaterThan(0));
+  });
+
+  it('affiche la source utilisée (badge) renvoyée par l’API', async () => {
+    render(<CountryTradeSeries language="fr" defaultCountry="NGA" />);
+    // Le badge "Source: <source_used>" est affiché.
+    await waitFor(() => expect(screen.getByText(/Source: OEC \/ BACI/)).toBeInTheDocument());
   });
 
   it('recharge la série quand on change de pays', async () => {

@@ -23,6 +23,7 @@ import logging
 import os
 from typing import Awaitable, Callable, Dict, List, Optional
 
+import httpx
 from services.oec_trade_service import AFRICAN_COUNTRIES_OEC, DEFAULT_YEAR, oec_service
 
 logger = logging.getLogger(__name__)
@@ -126,6 +127,44 @@ def aggregate_comtrade_series(records: Optional[List[Dict]], years: List[int]) -
     return series
 
 
+def series_from_year_maps(
+    exports_by_year: Dict[int, float],
+    imports_by_year: Dict[int, float],
+    years: List[int],
+) -> List[Dict]:
+    """
+    Assemble une série exports/imports/balance à partir de deux dictionnaires
+    {année: valeur}. Helper générique réutilisé par les adaptateurs WTO/UNCTAD.
+    Fonction pure (testable).
+    """
+    rows = []
+    for year in years:
+        e = round(float(exports_by_year.get(year, 0) or 0), 2)
+        i = round(float(imports_by_year.get(year, 0) or 0), 2)
+        rows.append({"year": year, "exports": e, "imports": i, "balance": round(e - i, 2)})
+    return rows
+
+
+def extract_year_value_map(records: Optional[List[Dict]], year_key: str, value_key: str) -> Dict:
+    """
+    Extrait un dict {année:int -> valeur:float} d'une liste d'enregistrements,
+    en lisant `year_key` et `value_key`. Tolérant aux valeurs manquantes/nulles.
+    Utilisé pour normaliser les réponses WTO / UNCTAD (fonction pure, testable).
+    """
+    out: Dict[int, float] = {}
+    for row in records or []:
+        try:
+            year = int(row.get(year_key))
+        except (TypeError, ValueError):
+            continue
+        try:
+            value = float(row.get(value_key) or 0)
+        except (TypeError, ValueError):
+            continue
+        out[year] = out.get(year, 0.0) + value
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Providers
 # ---------------------------------------------------------------------------
@@ -175,11 +214,106 @@ async def _comtrade_provider(iso3: str, start_year: int, end_year: int) -> Optio
     }
 
 
+def _build_country_result(
+    iso3: str, years: List[int], chart_rows: List[Dict], source: str
+) -> Optional[Dict]:
+    """Construit la réponse normalisée d'un provider, ou None si aucune donnée."""
+    has_data = any(r["exports"] > 0 or r["imports"] > 0 for r in chart_rows)
+    if not has_data:
+        return None
+    info = AFRICAN_COUNTRIES_OEC.get(iso3.upper(), {})
+    return {
+        "country_iso3": iso3.upper(),
+        "country_name": info.get("name_fr") or info.get("name_en") or iso3.upper(),
+        "years": years,
+        "chart_rows": chart_rows,
+        "source": source,
+        "source_used": source,
+        "currency": "USD",
+        "has_data": True,
+    }
+
+
+async def _wto_provider(iso3: str, start_year: int, end_year: int) -> Optional[Dict]:
+    """
+    Secours OMC (WTO) — OPT-IN (WTO_FALLBACK_ENABLED=true).
+    Utilise le client wto_service existant; normalise les séries annuelles
+    de valeur d'exports/imports de marchandises. À valider en réseau avant
+    activation (la forme exacte de la réponse WTO dépend de l'indicateur).
+    """
+    if os.environ.get("WTO_FALLBACK_ENABLED", "false").lower() != "true":
+        return None
+
+    from services.wto_service import wto_service
+
+    years = list(range(start_year, end_year + 1))
+    # Indicateurs WTO Timeseries: valeur des exports/imports de marchandises.
+    exp_resp = wto_service.get_trade_indicators(iso3.upper(), indicator="ITS_MTV_AX")
+    imp_resp = wto_service.get_trade_indicators(iso3.upper(), indicator="ITS_MTV_AM")
+    exp_rows = (exp_resp or {}).get("data") if isinstance(exp_resp, dict) else None
+    imp_rows = (imp_resp or {}).get("data") if isinstance(imp_resp, dict) else None
+    exports = extract_year_value_map(exp_rows, "Year", "Value")
+    imports = extract_year_value_map(imp_rows, "Year", "Value")
+    chart_rows = series_from_year_maps(exports, imports, years)
+    return _build_country_result(iso3, years, chart_rows, "OMC / WTO")
+
+
+async def _unctad_provider(iso3: str, start_year: int, end_year: int) -> Optional[Dict]:
+    """
+    Secours CNUCED (UNCTADstat) — OPT-IN (UNCTAD_FALLBACK_ENABLED=true).
+    Appel minimal à l'API UNCTAD; normalise les valeurs annuelles
+    d'exports/imports. À valider en réseau avant activation.
+    """
+    if os.environ.get("UNCTAD_FALLBACK_ENABLED", "false").lower() != "true":
+        return None
+
+    base = os.environ.get("UNCTAD_API_URL", "").rstrip("/")
+    if not base:
+        return None
+
+    years = list(range(start_year, end_year + 1))
+    params = {
+        "iso3": iso3.upper(),
+        "startYear": start_year,
+        "endYear": end_year,
+    }
+    try:
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            resp = await client.get(base, params=params)
+            resp.raise_for_status()
+            payload = resp.json()
+    except Exception as exc:
+        logger.warning("UNCTAD fetch failed: %s", exc)
+        return None
+
+    rows = payload.get("data") if isinstance(payload, dict) else payload
+    exports = extract_year_value_map(
+        [r for r in (rows or []) if str(r.get("flow", "")).lower().startswith("ex")],
+        "year",
+        "value",
+    )
+    imports = extract_year_value_map(
+        [r for r in (rows or []) if str(r.get("flow", "")).lower().startswith("im")],
+        "year",
+        "value",
+    )
+    chart_rows = series_from_year_maps(exports, imports, years)
+    return _build_country_result(iso3, years, chart_rows, "CNUCED / UNCTAD")
+
+
 def default_providers() -> List[tuple]:
-    """Liste ordonnée (nom, provider) des sources, secours opt-in inclus."""
+    """
+    Liste ordonnée (nom, provider) des sources. OEC est primaire; les secours
+    (Comtrade, WTO, UNCTAD) sont opt-in via variables d'environnement et
+    désactivés par défaut, le temps d'être validés en environnement réseau.
+    """
     providers = [("OEC / BACI", _oec_provider)]
     if os.environ.get("COMTRADE_FALLBACK_ENABLED", "false").lower() == "true":
         providers.append(("UN Comtrade", _comtrade_provider))
+    if os.environ.get("WTO_FALLBACK_ENABLED", "false").lower() == "true":
+        providers.append(("OMC / WTO", _wto_provider))
+    if os.environ.get("UNCTAD_FALLBACK_ENABLED", "false").lower() == "true":
+        providers.append(("CNUCED / UNCTAD", _unctad_provider))
     return providers
 
 
