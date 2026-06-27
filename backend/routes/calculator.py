@@ -692,7 +692,10 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         primary_rule = roo_data.get("primary_rule", {})
         rule_name = primary_rule.get("name", "")
         rule_code = primary_rule.get("code", "")
-        regional_content = roo_data.get("regional_content", 40)
+        # None here means "not applicable" (e.g. CTH/CTSH/SP rules have no
+        # percentage threshold in the dataset) - never substitute a
+        # fabricated number, only adjust how it's rendered below.
+        regional_content = roo_data.get("regional_content")
         status = roo_data.get("status", "AGREED")
         chapter_desc = roo_data.get("chapter_description", "")
 
@@ -700,15 +703,21 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         if rule_code == "WO":
             requirement = "Entièrement obtenu dans la ZLECAf (100%)"
         elif rule_code in ["CTH", "CTSH"]:
-            requirement = f"Changement de position tarifaire ({rule_code}) avec {regional_content}% minimum de contenu régional"
+            requirement = f"Changement de position tarifaire ({rule_code})"
+            if regional_content is not None:
+                requirement += f" avec {regional_content}% minimum de contenu régional"
         elif rule_code == "VA":
             requirement = f"{regional_content}% minimum de valeur ajoutée africaine"
         elif rule_code == "SP":
-            requirement = (
-                f"Processus spécifique requis avec {regional_content}% minimum de contenu régional"
-            )
+            requirement = "Processus spécifique requis"
+            if regional_content is not None:
+                requirement += f" avec {regional_content}% minimum de contenu régional"
         else:
-            requirement = f"{regional_content}% valeur ajoutée africaine"
+            requirement = (
+                f"{regional_content}% valeur ajoutée africaine"
+                if regional_content is not None
+                else "Consulter le Secrétariat ZLECAf pour le seuil applicable"
+            )
 
         # Add alternative if available
         alt_rule = roo_data.get("alternative_rule", {})

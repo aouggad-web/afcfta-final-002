@@ -35,6 +35,11 @@ def test_heading_6203_fallback_no_longer_uses_chapter_yarn_rule():
     result = roo.get_rule_of_origin("620319", "fr")
     assert result["primary_rule"]["code"] == "CTH"
     assert result["source"] == "HEADING"
+    # CTH has no percentage threshold in the dataset (it's a tariff-
+    # classification-change rule, not a value-content rule) - None is the
+    # correct, intentional value here, not a missing default to fabricate.
+    # See routes/rules_of_origin.py::_regional_content.
+    assert result["regional_content"] is None
 
 
 def test_explicit_subheading_6203_still_resolves_via_subheading():
@@ -47,6 +52,9 @@ def test_wholly_obtained_products():
     for hs6 in ("100110", "090111"):
         result = roo.get_rule_of_origin(hs6, "fr")
         assert result["primary_rule"]["code"] == "WO"
+        # WO is 100% regional content by definition, even though the
+        # dataset's own `threshold` field is null for WO entries.
+        assert result["regional_content"] == 100
 
 
 def test_unknown_chapter_returns_ytb_shaped_fallback_without_crashing():

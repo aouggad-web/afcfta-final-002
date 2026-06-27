@@ -52,6 +52,23 @@ def _build_rule_obj(code: Optional[str], lang: str) -> Optional[dict]:
     }
 
 
+def _regional_content(primary_code: Optional[str], threshold: Optional[int]) -> Optional[int]:
+    """Regional-content percentage implied by a PSR entry.
+
+    WO ("wholly obtained") is 100% by definition even though the dataset
+    leaves its `threshold` field null (there's no max-non-originating %
+    for a wholly-obtained product). CTH/CTSH/CC/SP entries genuinely have
+    no percentage threshold (they're tariff-classification-change or
+    specific-process rules, not value-content rules), so None there means
+    "not applicable", not a missing value to default/guess at.
+    """
+    if primary_code == "WO":
+        return 100
+    if threshold is not None:
+        return 100 - threshold
+    return None
+
+
 def _entry_to_response(
     hs_code: str, entry: dict, match_type: str, matched_code: str, chapter: str, lang: str
 ) -> dict:
@@ -65,7 +82,7 @@ def _entry_to_response(
     alternative_rule = _build_rule_obj(alt_code, lang)
 
     threshold = entry.get("threshold")
-    regional_content = 100 - threshold if threshold is not None else None
+    regional_content = _regional_content(primary_code, threshold)
     is_wholly_obtained = primary_code == "WO"
     rule_text = entry.get(f"description_{lang}") or entry.get("raw_fr") or ""
 
@@ -209,14 +226,18 @@ async def get_rules_of_origin(
 def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
     """Single source of truth for the rules-of-origin verdict on an HS code.
 
-    Used both by this module's own /{hs_code} endpoint (via _entry_to_response)
-    and, for backend code that needs the same lookup outside an HTTP request
-    (e.g. routes/calculator.py, etl/hs6_database.py), directly as a function
-    call. Returned shape matches the one historically produced by
-    etl.afcfta_rules_of_origin.get_rule_of_origin, which this supersedes —
-    that module duplicated RULES_DATA in a separate, independently
-    maintained Python dict and had drifted out of sync with it (e.g. it was
-    missing a heading-level rule for 62.03, see headings['6203'] above).
+    Used by backend code that needs this lookup outside an HTTP request
+    (e.g. routes/calculator.py, etl/hs6_database.py), as a direct function
+    call. The module's own /{hs_code} endpoint does not call this function —
+    it has its own matching loop that builds its (richer) response via
+    _entry_to_response. Both implement the same subheading -> heading ->
+    chapter priority against the same RULES_DATA, so keep them in sync if
+    that priority ever changes. Returned shape matches the one historically
+    produced by etl.afcfta_rules_of_origin.get_rule_of_origin, which this
+    supersedes — that module duplicated RULES_DATA in a separate,
+    independently maintained Python dict and had drifted out of sync with
+    it (e.g. it was missing a heading-level rule for 62.03, see
+    headings['6203'] above).
 
     Matching priority: 6-digit subheading -> 4-digit heading -> 2-digit chapter.
     """
@@ -271,7 +292,7 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
     primary_code = entry.get("code")
     alt_code = entry.get("alt_code")
     threshold = entry.get("threshold")
-    regional_content = 100 - threshold if threshold is not None else None
+    regional_content = _regional_content(primary_code, threshold)
     notes = entry.get("notes") or []
 
     return {
