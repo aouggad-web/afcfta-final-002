@@ -7,8 +7,10 @@ Exposes cache statistics, performance metrics, and cache management.
 from __future__ import annotations
 
 import logging
+from typing import Annotated
 
-from fastapi import APIRouter, HTTPException
+from auth import require_admin
+from fastapi import APIRouter, Depends, HTTPException
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +18,7 @@ router = APIRouter(prefix="/performance", tags=["Performance Monitoring"])
 
 
 @router.get("/cache/stats")
-async def get_cache_stats():
+async def get_cache_stats(key_doc: Annotated[dict, Depends(require_admin)] = None):
     """
     Get statistics for all four Redis cache layers (L1-L4).
     Includes connection status, TTL configuration, and memory usage.
@@ -30,7 +32,7 @@ async def get_cache_stats():
 
 
 @router.post("/cache/warm")
-async def warm_cache():
+async def warm_cache(key_doc: Annotated[dict, Depends(require_admin)] = None):
     """
     Trigger a full cache warm-up cycle.
     Preloads hot data (countries, HS codes) into L1 and
@@ -50,7 +52,9 @@ async def warm_cache():
 
 
 @router.delete("/cache/country/{country_code}")
-async def invalidate_country_cache(country_code: str):
+async def invalidate_country_cache(
+    country_code: str, key_doc: Annotated[dict, Depends(require_admin)] = None
+):
     """
     Invalidate all cached data for a specific country across all layers.
     Use this after updating country-specific data.
@@ -65,7 +69,9 @@ async def invalidate_country_cache(country_code: str):
 
 
 @router.delete("/cache/region/{bloc}")
-async def invalidate_region_cache(bloc: str):
+async def invalidate_region_cache(
+    bloc: str, key_doc: Annotated[dict, Depends(require_admin)] = None
+):
     """
     Invalidate regional intelligence cache for a specific bloc.
     Use this after updating regional data.

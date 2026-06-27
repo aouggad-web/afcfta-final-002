@@ -5,9 +5,10 @@ WITH HYBRID CACHING (Redis → JSON file fallback)
 """
 
 import logging
-from typing import Optional
+from typing import Annotated, Optional
 
-from fastapi import APIRouter, Body, HTTPException, Query
+from auth import check_ai_quota, require_admin
+from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from services.claude_trade_service import claude_trade_service
 from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
 from services.redis_cache_service import cache_service
@@ -15,6 +16,12 @@ from services.redis_cache_service import cache_service
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/ai", tags=["AI Trade Analysis"])
+
+# These endpoints call the Anthropic Claude API and have real per-request
+# cost, so they're metered against the caller's monthly quota (see auth.py)
+# in addition to the router-wide require_auth dependency applied at
+# registration in routes/__init__.py.
+_ai_quota = [Depends(check_ai_quota)]
 
 # Countries without trade data (occupied territories, etc.)
 NO_DATA_COUNTRIES = {
@@ -58,7 +65,7 @@ def check_country_has_data(country_name: str) -> tuple:
     return True, None
 
 
-@router.get("/opportunities/{country_name}")
+@router.get("/opportunities/{country_name}", dependencies=_ai_quota)
 async def get_ai_trade_opportunities(
     country_name: str,
     mode: str = Query(default="export", description="Analysis mode: export, import, or industrial"),
@@ -121,7 +128,7 @@ async def get_ai_trade_opportunities(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/profile/{country_name}")
+@router.get("/profile/{country_name}", dependencies=_ai_quota)
 async def get_ai_country_profile(
     country_name: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
@@ -158,7 +165,7 @@ async def get_ai_country_profile(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/product/{hs_code}")
+@router.get("/product/{hs_code}", dependencies=_ai_quota)
 async def get_ai_product_analysis(
     hs_code: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
@@ -198,7 +205,7 @@ async def get_ai_product_analysis(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/balance/{country_name}")
+@router.get("/balance/{country_name}", dependencies=_ai_quota)
 async def get_ai_trade_balance(
     country_name: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
@@ -258,7 +265,7 @@ async def check_ai_service_health():
     }
 
 
-@router.get("/compare")
+@router.get("/compare", dependencies=_ai_quota)
 async def compare_two_countries(
     country_a: str = Query(..., description="First African country name"),
     country_b: str = Query(..., description="Second African country name"),
@@ -289,7 +296,7 @@ async def compare_two_countries(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/summary")
+@router.get("/summary", dependencies=_ai_quota)
 async def get_ai_trade_summary(
     lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
@@ -320,7 +327,7 @@ async def get_ai_trade_summary(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/value-chains")
+@router.get("/value-chains", dependencies=_ai_quota)
 async def get_ai_value_chains(
     sector: str = Query(
         default=None,
@@ -364,9 +371,10 @@ async def get_ai_value_chains(
 
 
 @router.get("/cache/stats")
-async def get_cache_statistics():
+async def get_cache_statistics(key_doc: Annotated[dict, Depends(require_admin)] = None):
     """
-    Get cache statistics (Redis + JSON file fallback)
+    Get cache statistics (Redis + JSON file fallback) — admin only,
+    consistent with the other /ai/cache/* management endpoints.
 
     Returns:
         Cache status, active backend, hit rate, and entry count
@@ -384,6 +392,7 @@ async def invalidate_cache(
         default=None, description="Country name to invalidate specific country cache entries."
     ),
     lang: str = Query(default=None, description="Language filter for invalidation (fr/en)."),
+    key_doc: Annotated[dict, Depends(require_admin)] = None,
 ):
     """
     Invalidate cache entries (admin endpoint)
@@ -442,7 +451,8 @@ async def clear_cache(
     pattern: str = Query(
         default=None,
         description="Pattern to clear (e.g., 'gemini_analysis'). Leave empty to clear all.",
-    )
+    ),
+    key_doc: Annotated[dict, Depends(require_admin)] = None,
 ):
     """
     Clear cache entries (admin endpoint)
