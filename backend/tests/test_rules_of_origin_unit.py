@@ -92,3 +92,52 @@ def test_shape_matches_legacy_etl_consumers():
     assert "code" in result["primary_rule"]
     assert "name" in result["primary_rule"]
     assert "description" in result["primary_rule"]
+
+
+# --- Phase 2: HS6 granularity expansion regression tests -------------------
+#
+# These cover entries added by parsing the official AfCFTA Appendice IV PSR
+# document (user-provided source, December 2023 / 12th Council of Ministers)
+# directly, expanding heading/subheading coverage from 101/15 to 239/49.
+# Every assertion below is grounded in that document's literal text - no
+# threshold or rule code here was invented.
+
+
+def test_phase2_heading_coverage_expanded_well_beyond_phase1():
+    headings = roo.RULES_DATA.get("headings", {})
+    subheadings = roo.RULES_DATA.get("subheadings", {})
+    assert len(headings) >= 200
+    assert len(subheadings) >= 40
+
+
+def test_phase2_bracketed_source_code_maps_to_ytb_not_a_guessed_rule():
+    # Source document lists "[52.04]" (brackets = not yet adopted) for
+    # cotton sewing thread - must resolve to YTB, never a fabricated CTH/VA.
+    result = roo.get_rule_of_origin("520400", "fr")
+    assert result["primary_rule"]["code"] == "YTB"
+    assert result["regional_content"] is None
+
+
+def test_phase2_new_heading_cth_rule_grounded_in_source_text():
+    # 85.19 (sound recording/reproducing apparatus): "Fabrication à partir
+    # de matières de toute position autre que celle du produit" -> CTH.
+    result = roo.get_rule_of_origin("851900", "fr")
+    assert result["primary_rule"]["code"] == "CTH"
+    assert result["source"] == "HEADING"
+
+
+def test_phase2_new_heading_va_threshold_matches_source_percentage():
+    # 84.01 (nuclear reactors): "...n'excède pas 60 %..." -> VA60,
+    # implied regional content 40 (100 - 60), not an invented figure.
+    result = roo.get_rule_of_origin("840100", "fr")
+    assert result["primary_rule"]["code"] == "VA60"
+    assert result["regional_content"] == 40
+
+
+def test_phase2_existing_phase1_subheading_entries_untouched():
+    # The Phase 1 6203.11/31/41 entries must survive Phase 2 merge unchanged
+    # (merge policy: never overwrite an existing chapter/heading/subheading).
+    for hs6 in ("620311", "620331", "620341"):
+        result = roo.get_rule_of_origin(hs6, "fr")
+        assert result["primary_rule"]["code"] == "CTH"
+        assert result["source"] == "SUBHEADING"
