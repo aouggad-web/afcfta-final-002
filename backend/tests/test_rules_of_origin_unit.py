@@ -92,3 +92,92 @@ def test_shape_matches_legacy_etl_consumers():
     assert "code" in result["primary_rule"]
     assert "name" in result["primary_rule"]
     assert "description" in result["primary_rule"]
+
+
+# --- Phase 2: HS6 granularity expansion regression tests -------------------
+#
+# These cover entries added by parsing the official AfCFTA Appendice IV PSR
+# document (user-provided source, December 2023 / 12th Council of Ministers)
+# directly, expanding heading/subheading coverage from 101/15 to 239/49.
+# Every assertion below is grounded in that document's literal text - no
+# threshold or rule code here was invented.
+
+
+def test_phase2_heading_coverage_expanded_well_beyond_phase1():
+    headings = roo.RULES_DATA.get("headings", {})
+    subheadings = roo.RULES_DATA.get("subheadings", {})
+    assert len(headings) >= 240
+    assert len(subheadings) >= 45
+
+
+def test_phase2_bracketed_source_code_maps_to_ytb_not_a_guessed_rule():
+    # Source document lists "[52.04]" (brackets = not yet adopted) for
+    # cotton sewing thread - must resolve to YTB, never a fabricated CTH/VA.
+    result = roo.get_rule_of_origin("520400", "fr")
+    assert result["primary_rule"]["code"] == "YTB"
+    assert result["regional_content"] is None
+
+
+def test_phase2_new_heading_cth_rule_grounded_in_source_text():
+    # 85.19 (sound recording/reproducing apparatus): "Fabrication à partir
+    # de matières de toute position autre que celle du produit" -> CTH.
+    result = roo.get_rule_of_origin("851900", "fr")
+    assert result["primary_rule"]["code"] == "CTH"
+    assert result["source"] == "HEADING"
+
+
+def test_phase2_new_heading_va_threshold_matches_source_percentage():
+    # 84.01 (nuclear reactors): "...n'excède pas 60 %..." -> VA60,
+    # implied regional content 40 (100 - 60), not an invented figure.
+    result = roo.get_rule_of_origin("840100", "fr")
+    assert result["primary_rule"]["code"] == "VA60"
+    assert result["regional_content"] == 40
+
+
+def test_phase2_existing_phase1_subheading_entries_untouched():
+    # The Phase 1 6203.11/31/41 entries must survive Phase 2 merge unchanged
+    # (merge policy: never overwrite an existing chapter/heading/subheading).
+    for hs6 in ("620311", "620331", "620341"):
+        result = roo.get_rule_of_origin(hs6, "fr")
+        assert result["primary_rule"]["code"] == "CTH"
+        assert result["source"] == "SUBHEADING"
+
+
+# --- Copilot review follow-up: extraction-artifact regressions -------------
+
+
+def test_no_glued_words_around_ou_alternative_marker():
+    # Heading 50.01's source rule splits two "Ou"-joined alternatives with
+    # no delimiter ("...produitOuImpression...") - the raw text stored in
+    # the dataset must have the word boundary restored, not the glued
+    # artifact.
+    raw = roo.RULES_DATA["headings"]["5001"]["raw_fr"]
+    assert "produitOu" not in raw
+    assert "nonimprimé" not in raw
+
+
+def test_no_leaked_rule_sentence_in_description():
+    # Heading 84.56's source table has a malformed column boundary that
+    # bleeds a "Fabrication dans laquelle..." rule fragment into the
+    # product description cell - that duplicate fragment must not surface
+    # in description_fr.
+    result = roo.get_rule_of_origin("845600", "fr")
+    assert "Fabrication dans laquelle" not in result["primary_rule"]["description"]
+
+
+def test_empty_source_row_is_omitted_not_fabricated():
+    # Subheading 6212.90 has a genuinely empty description and rule cell
+    # in the source document - rather than fabricate placeholder content,
+    # it must be absent so HS 621290 falls back to heading 62.12's rule.
+    assert "621290" not in roo.RULES_DATA.get("subheadings", {})
+    result = roo.get_rule_of_origin("621290", "fr")
+    assert result["source"] in ("HEADING", "CHAPTER")
+
+
+def test_empty_ytb_rule_text_normalized_to_a_determiner():
+    # Subheading 6207.19 is YTB with an empty rule cell in the source -
+    # raw_fr must show the dataset's existing "not yet agreed" placeholder
+    # rather than an empty string.
+    assert roo.RULES_DATA["subheadings"]["620719"]["raw_fr"] == "À déterminer"
+    result = roo.get_rule_of_origin("620719", "fr")
+    assert result["primary_rule"]["code"] == "YTB"
