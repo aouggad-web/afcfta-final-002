@@ -12,7 +12,7 @@ from services.oec_trade_service import (
     get_country_name_to_iso3_mapping,
     oec_service,
 )
-from services.trade_series_orchestrator import get_trade_series_resilient
+from services.trade_series_orchestrator import get_trade_series_resilient, probe_sources
 
 router = APIRouter(prefix="/oec")
 
@@ -157,6 +157,23 @@ async def get_oec_country_trade_series(
         start_year=start_year,
         end_year=end_year,
     )
+
+
+@router.get("/trade-series/sources/{country_iso3}")
+async def get_trade_series_sources_health(
+    country_iso3: str,
+    start_year: int = Query(2018, ge=2018, le=DEFAULT_YEAR),
+    end_year: int = Query(DEFAULT_YEAR, ge=2018, le=DEFAULT_YEAR),
+):
+    """
+    Diagnostic des sources de la série temporelle: sonde CHAQUE source en direct
+    (même désactivée) et rapporte, pour chacune, si elle est gratuite, activée,
+    et si elle renvoie des données — pour valider en réseau avant d'activer un
+    secours (à appeler depuis un environnement avec accès Internet).
+    """
+    if country_iso3.upper() not in AFRICAN_COUNTRIES_OEC:
+        raise HTTPException(status_code=400, detail=f"Pays inconnu: {country_iso3.upper()}")
+    return await probe_sources(country_iso3, start_year=start_year, end_year=end_year)
 
 
 @router.get("/bilateral/{exporter_iso3}/{importer_iso3}")
