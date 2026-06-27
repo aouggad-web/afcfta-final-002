@@ -208,6 +208,24 @@ def test_explanation_absent_for_unknown_code_path():
     assert result["primary_rule"]["explanation"] == roo.ORIGIN_TYPES["YTB"]["explanation"]["fr"]
 
 
+def test_explanations_are_grounded_in_annexe_2_articles():
+    # Explanations cite the actual AfCFTA Annexe 2 sur les Règles d'Origine
+    # articles each rule code implements (art. 4-6), not generic textbook
+    # ROO phrasing, so the wording is traceable to the authoritative source.
+    grounding = {
+        "WO": "5",
+        "CTH": "6(1)(c)",
+        "CTSH": "6(1)(d)",
+        "VA": "6(1)(a)-(b)",
+        "VA60": "6(1)(a)-(b)",
+        "SP": "6(1)(e)",
+    }
+    for code, article_ref in grounding.items():
+        explanation = roo.ORIGIN_TYPES[code]["explanation"]["fr"]
+        assert article_ref in explanation, f"{code} explanation doesn't cite art. {article_ref}"
+        assert "Annexe 2" in explanation
+
+
 def test_va_threshold_explanation_states_the_specific_percentage():
     result = roo.get_rule_of_origin("840100", "fr")
     assert result["primary_rule"]["code"] == "VA60"
