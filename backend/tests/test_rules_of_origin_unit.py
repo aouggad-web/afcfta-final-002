@@ -106,8 +106,8 @@ def test_shape_matches_legacy_etl_consumers():
 def test_phase2_heading_coverage_expanded_well_beyond_phase1():
     headings = roo.RULES_DATA.get("headings", {})
     subheadings = roo.RULES_DATA.get("subheadings", {})
-    assert len(headings) >= 200
-    assert len(subheadings) >= 40
+    assert len(headings) >= 240
+    assert len(subheadings) >= 45
 
 
 def test_phase2_bracketed_source_code_maps_to_ytb_not_a_guessed_rule():
@@ -141,3 +141,43 @@ def test_phase2_existing_phase1_subheading_entries_untouched():
         result = roo.get_rule_of_origin(hs6, "fr")
         assert result["primary_rule"]["code"] == "CTH"
         assert result["source"] == "SUBHEADING"
+
+
+# --- Copilot review follow-up: extraction-artifact regressions -------------
+
+
+def test_no_glued_words_around_ou_alternative_marker():
+    # Heading 50.01's source rule splits two "Ou"-joined alternatives with
+    # no delimiter ("...produitOuImpression...") - the raw text stored in
+    # the dataset must have the word boundary restored, not the glued
+    # artifact.
+    raw = roo.RULES_DATA["headings"]["5001"]["raw_fr"]
+    assert "produitOu" not in raw
+    assert "nonimprimé" not in raw
+
+
+def test_no_leaked_rule_sentence_in_description():
+    # Heading 84.56's source table has a malformed column boundary that
+    # bleeds a "Fabrication dans laquelle..." rule fragment into the
+    # product description cell - that duplicate fragment must not surface
+    # in description_fr.
+    result = roo.get_rule_of_origin("845600", "fr")
+    assert "Fabrication dans laquelle" not in result["primary_rule"]["description"]
+
+
+def test_empty_source_row_is_omitted_not_fabricated():
+    # Subheading 6212.90 has a genuinely empty description and rule cell
+    # in the source document - rather than fabricate placeholder content,
+    # it must be absent so HS 621290 falls back to heading 62.12's rule.
+    assert "621290" not in roo.RULES_DATA.get("subheadings", {})
+    result = roo.get_rule_of_origin("621290", "fr")
+    assert result["source"] in ("HEADING", "CHAPTER")
+
+
+def test_empty_ytb_rule_text_normalized_to_a_determiner():
+    # Subheading 6207.19 is YTB with an empty rule cell in the source -
+    # raw_fr must show the dataset's existing "not yet agreed" placeholder
+    # rather than an empty string.
+    assert roo.RULES_DATA["subheadings"]["620719"]["raw_fr"] == "À déterminer"
+    result = roo.get_rule_of_origin("620719", "fr")
+    assert result["primary_rule"]["code"] == "YTB"
