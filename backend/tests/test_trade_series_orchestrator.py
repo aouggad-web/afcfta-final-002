@@ -189,3 +189,16 @@ def test_aggregate_comtrade_series():
     series = aggregate_comtrade_series(records, years)
     assert series[0] == {"year": 2023, "exports": 100.0, "imports": 60.0, "balance": 40.0}
     assert series[1] == {"year": 2024, "exports": 200.0, "imports": 0, "balance": 200.0}
+
+
+def test_aggregate_comtrade_prefers_total_row_to_avoid_double_count():
+    # Si une ligne agrégée cmdCode='TOTAL' existe, on l'utilise seule.
+    years = [2024]
+    records = [
+        {"period": "2024", "flowCode": "X", "primaryValue": 100.0, "cmdCode": "TOTAL"},
+        {"period": "2024", "flowCode": "X", "primaryValue": 40.0, "cmdCode": "0101"},
+        {"period": "2024", "flowCode": "X", "primaryValue": 60.0, "cmdCode": "0202"},
+    ]
+    series = aggregate_comtrade_series(records, years)
+    # 100 (TOTAL) et non 200 (TOTAL + lignes produits).
+    assert series[0]["exports"] == 100.0

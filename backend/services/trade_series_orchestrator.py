@@ -109,10 +109,17 @@ def aggregate_comtrade_series(records: Optional[List[Dict]], years: List[int]) -
 
     Comtrade: flowCode 'X' = exports, 'M' = imports; primaryValue = valeur USD;
     period = année.
+
+    Comtrade renvoie aussi une ligne agrégée toutes-marchandises (cmdCode
+    'TOTAL'). Si elle est présente, on l'utilise SEULE pour éviter de
+    double-compter avec les lignes par produit; sinon on somme les lignes.
     """
+    rows = records or []
+    totals = [r for r in rows if str(r.get("cmdCode", "")).upper() == "TOTAL"]
+    rows = totals if totals else rows
     exp = {y: 0.0 for y in years}
     imp = {y: 0.0 for y in years}
-    for row in records or []:
+    for row in rows:
         try:
             year = int(row.get("period") or 0)
         except (TypeError, ValueError):
