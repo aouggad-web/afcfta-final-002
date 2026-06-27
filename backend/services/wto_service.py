@@ -96,7 +96,7 @@ class WTOService:
         self._cache_ttl = 7200  # 2 hours cache (tariffs don't change often)
 
     def _auth_headers(self):
-        """Auth header requis par l'API WTO (Azure APIM). None si pas de clé."""
+        """Auth header required by the WTO API (Azure APIM). None when no key is set."""
         return {"Ocp-Apim-Subscription-Key": self.api_key} if self.api_key else None
 
     def _get_cache_key(self, *args) -> str:
