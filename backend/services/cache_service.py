@@ -14,6 +14,7 @@ Cache TTLs:
 import hashlib
 import json
 import os
+import time
 from datetime import timedelta
 from functools import wraps
 from typing import Any, Optional, Union
@@ -37,12 +38,52 @@ CACHE_TTL = {
     "search": 1800,  # 30 minutes
     "calculation": 900,  # 15 minutes
     "regulatory": 3600,  # 1 hour
+    "oec_data": 86400,  # 24 hours (annual trade data changes rarely)
     "default": 600,  # 10 minutes
 }
 
 # Global Redis client (type hinted with a forward reference so it is safe
 # even when the redis package is not installed)
 _redis_client: "Optional[Any]" = None
+
+# ---------------------------------------------------------------------------
+# In-memory fallback cache
+# ---------------------------------------------------------------------------
+# When Redis is unavailable (dev, sandbox, deployments without Redis), this
+# process-local TTL store keeps caching working so we don't hammer upstream
+# APIs (e.g. OEC) on every request. It also retains the last value past expiry
+# to enable "stale-on-error" serving when the upstream source is down/rate-limited.
+_MEMORY_STORE: "dict[str, tuple]" = {}  # key -> (value, expiry_epoch)
+_MEMORY_MAX_ENTRIES = 2000
+
+# Injectable clock (tests can override) — returns epoch seconds.
+_now = time.time
+
+
+def _mem_set(key: str, value: Any, ttl_seconds: int) -> None:
+    """Store a value in the in-memory cache with a TTL (seconds)."""
+    # Cheap capacity guard: drop expired entries, then oldest if still full.
+    if len(_MEMORY_STORE) >= _MEMORY_MAX_ENTRIES:
+        now = _now()
+        expired = [k for k, (_, exp) in _MEMORY_STORE.items() if exp < now]
+        for k in expired:
+            _MEMORY_STORE.pop(k, None)
+        if len(_MEMORY_STORE) >= _MEMORY_MAX_ENTRIES:
+            # Evict the entry closest to expiry.
+            oldest = min(_MEMORY_STORE, key=lambda k: _MEMORY_STORE[k][1])
+            _MEMORY_STORE.pop(oldest, None)
+    _MEMORY_STORE[key] = (value, _now() + ttl_seconds)
+
+
+def _mem_get(key: str, allow_stale: bool = False) -> Optional[Any]:
+    """Read from the in-memory cache. With allow_stale, ignore expiry."""
+    item = _MEMORY_STORE.get(key)
+    if item is None:
+        return None
+    value, expiry = item
+    if allow_stale or _now() < expiry:
+        return value
+    return None
 
 
 def get_redis_client() -> "Optional[Any]":
@@ -91,41 +132,74 @@ def generate_cache_key(prefix: str, *args, **kwargs) -> str:
 
 
 def cache_get(key: str) -> Optional[Any]:
-    """Get value from cache."""
-    client = get_redis_client()
-    if not client:
+    """Get value from cache (Redis if available, else in-memory)."""
+    if not CACHE_ENABLED:
         return None
 
-    try:
-        value = client.get(key)
-        if value:
-            return json.loads(value)
-    except Exception as e:
-        print(f"Cache get error: {e}")
+    client = get_redis_client()
+    if client:
+        try:
+            value = client.get(key)
+            if value:
+                return json.loads(value)
+            return None
+        except Exception as e:
+            print(f"Cache get error: {e}")
+            return None
 
-    return None
+    # No Redis → in-memory fallback
+    return _mem_get(key)
+
+
+def cache_get_stale(key: str) -> Optional[Any]:
+    """
+    Get a cached value even if expired (stale-on-error).
+
+    Used to keep serving the last known good value when the upstream source
+    is down or rate-limited. Only the in-memory backend retains expired
+    entries; Redis evicts on TTL, so this returns its live value there.
+    """
+    if not CACHE_ENABLED:
+        return None
+
+    client = get_redis_client()
+    if client:
+        try:
+            value = client.get(key)
+            return json.loads(value) if value else None
+        except Exception as e:
+            print(f"Cache get(stale) error: {e}")
+            return None
+
+    return _mem_get(key, allow_stale=True)
 
 
 def cache_set(key: str, value: Any, ttl_type: str = "default") -> bool:
-    """Set value in cache with TTL."""
-    client = get_redis_client()
-    if not client:
+    """Set value in cache with TTL (Redis if available, else in-memory)."""
+    if not CACHE_ENABLED:
         return False
 
-    try:
-        ttl = CACHE_TTL.get(ttl_type, CACHE_TTL["default"])
-        client.setex(key, ttl, json.dumps(value, default=str))
-        return True
-    except Exception as e:
-        print(f"Cache set error: {e}")
-        return False
+    ttl = CACHE_TTL.get(ttl_type, CACHE_TTL["default"])
+    client = get_redis_client()
+    if client:
+        try:
+            client.setex(key, ttl, json.dumps(value, default=str))
+            return True
+        except Exception as e:
+            print(f"Cache set error: {e}")
+            return False
+
+    # No Redis → in-memory fallback
+    _mem_set(key, value, ttl)
+    return True
 
 
 def cache_delete(key: str) -> bool:
-    """Delete a key from cache."""
+    """Delete a key from cache (Redis if available, else in-memory)."""
     client = get_redis_client()
     if not client:
-        return False
+        # In-memory fallback so invalidation works without Redis too.
+        return _MEMORY_STORE.pop(key, None) is not None
 
     try:
         client.delete(key)
@@ -136,10 +210,15 @@ def cache_delete(key: str) -> bool:
 
 
 def cache_delete_pattern(pattern: str) -> int:
-    """Delete all keys matching a pattern."""
+    """Delete all keys matching a pattern (Redis if available, else in-memory)."""
     client = get_redis_client()
     if not client:
-        return 0
+        # In-memory fallback: match the same zlecaf:-prefixed key space.
+        prefix = f"zlecaf:{pattern}".rstrip("*")
+        keys = [k for k in list(_MEMORY_STORE) if k.startswith(prefix)]
+        for k in keys:
+            _MEMORY_STORE.pop(k, None)
+        return len(keys)
 
     try:
         keys = client.keys(f"zlecaf:{pattern}")
