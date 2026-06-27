@@ -288,7 +288,8 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
             "primary_rule": {
                 "code": "YTB",
                 "type": "YTB",
-                "name": "En cours de négociation" if lang == "fr" else "Yet to be agreed",
+                "name": ORIGIN_TYPES.get("YTB", {}).get(lang)
+                or ("En cours de négociation" if lang == "fr" else "Yet to be agreed"),
                 "description": (
                     "Les règles pour ce produit sont encore en négociation"
                     if lang == "fr"
