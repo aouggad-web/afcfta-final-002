@@ -18,7 +18,7 @@ router = APIRouter(prefix="/performance", tags=["Performance Monitoring"])
 
 
 @router.get("/cache/stats")
-async def get_cache_stats():
+async def get_cache_stats(key_doc: Annotated[dict, Depends(require_admin)] = None):
     """
     Get statistics for all four Redis cache layers (L1-L4).
     Includes connection status, TTL configuration, and memory usage.

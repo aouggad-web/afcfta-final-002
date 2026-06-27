@@ -11,7 +11,7 @@ import secrets
 from datetime import datetime, timezone
 from typing import Annotated, Optional
 
-from auth import AI_TIER_QUOTAS, get_db, require_admin, require_auth
+from auth import get_db, require_admin, require_auth, resolve_ai_quota
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
@@ -34,16 +34,32 @@ def _hash_key(raw_key: str) -> str:
 
 @router.get("/verify")
 async def verify_key(key_doc: Annotated[dict, Depends(require_auth)]):
-    """Return metadata for the calling key without exposing the hash."""
+    """Verify the calling key and return its metadata (hash excluded).
+
+    Unlike plain data routes, this endpoint must not accept the public
+    passthrough that require_auth grants when MongoDB is unconfigured or
+    (under PUBLIC_DATA_ACCESS) when no key is supplied — verifying a key only
+    makes sense for an actual key, so reject those contexts explicitly.
+    """
+    if key_doc.get("no_db"):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Authentication database is not configured",
+        )
+    if key_doc.get("tier") == "public":
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="A valid API key is required",
+            headers={"WWW-Authenticate": "ApiKey"},
+        )
     tier = key_doc.get("tier")
-    quota = key_doc.get("monthly_quota") or AI_TIER_QUOTAS.get(tier)
     return {
         "valid": True,
         "name": key_doc.get("name"),
         "owner": key_doc.get("owner"),
         "tier": tier,
         "created_at": key_doc.get("created_at"),
-        "ai_monthly_quota": quota if tier != "admin" else None,
+        "ai_monthly_quota": resolve_ai_quota(tier, key_doc.get("monthly_quota")),
         "ai_usage_this_period": key_doc.get("usage_count", 0),
         "ai_usage_period": key_doc.get("usage_period"),
     }
@@ -89,7 +105,7 @@ async def create_key(
         "name": body.name,
         "owner": body.owner,
         "tier": body.tier,
-        "ai_monthly_quota": body.monthly_quota or AI_TIER_QUOTAS.get(body.tier),
+        "ai_monthly_quota": resolve_ai_quota(body.tier, body.monthly_quota),
         "note": "Store this key securely — it will not be shown again.",
     }
 

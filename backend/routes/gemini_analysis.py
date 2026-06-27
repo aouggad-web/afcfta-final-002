@@ -371,9 +371,10 @@ async def get_ai_value_chains(
 
 
 @router.get("/cache/stats")
-async def get_cache_statistics():
+async def get_cache_statistics(key_doc: Annotated[dict, Depends(require_admin)] = None):
     """
-    Get cache statistics (Redis + JSON file fallback)
+    Get cache statistics (Redis + JSON file fallback) — admin only,
+    consistent with the other /ai/cache/* management endpoints.
 
     Returns:
         Cache status, active backend, hit rate, and entry count

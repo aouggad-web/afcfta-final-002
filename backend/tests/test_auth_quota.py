@@ -146,3 +146,34 @@ def test_check_ai_quota_respects_per_key_monthly_quota_override():
     with pytest.raises(HTTPException) as exc:
         asyncio.run(auth.check_ai_quota(x_api_key="customkey"))
     assert exc.value.status_code == 429
+
+
+def test_check_ai_quota_zero_override_disables_ai():
+    # An explicit monthly_quota=0 must disable AI use (not be treated as unset).
+    key_hash = auth._hash_key("blockedkey")
+    auth.set_database(
+        _FakeDB(
+            [
+                {
+                    "_id": "1",
+                    "key_hash": key_hash,
+                    "active": True,
+                    "tier": "pro",
+                    "monthly_quota": 0,
+                }
+            ]
+        )
+    )
+    with pytest.raises(HTTPException) as exc:
+        asyncio.run(auth.check_ai_quota(x_api_key="blockedkey"))
+    assert exc.value.status_code == 429
+
+
+def test_resolve_ai_quota():
+    assert auth.resolve_ai_quota("admin") is None
+    assert auth.resolve_ai_quota("free") == auth.AI_TIER_QUOTAS["free"]
+    assert auth.resolve_ai_quota("pro") == auth.AI_TIER_QUOTAS["pro"]
+    assert auth.resolve_ai_quota("unknown-tier") == auth.AI_TIER_QUOTAS["free"]
+    # Explicit override wins, including a falsy 0.
+    assert auth.resolve_ai_quota("free", 5) == 5
+    assert auth.resolve_ai_quota("pro", 0) == 0

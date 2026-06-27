@@ -2,8 +2,10 @@
 AfCFTA API-key authentication
 ==============================
 Three FastAPI dependencies are exported:
-  require_auth   — any valid active key (standard or admin); public passthrough
-                    when MongoDB is not configured (tariff data is public info)
+  require_auth   — any valid active key of any tier (free/basic/pro/admin);
+                    also allows public passthrough when MongoDB is not
+                    configured, or — if PUBLIC_DATA_ACCESS is true — when no
+                    key is supplied (tariff/trade data is public information).
   require_admin  — admin-tier keys only
   check_ai_quota — valid key + monthly usage quota for AI/Claude-backed
                     endpoints, which have real per-request API cost. No public
@@ -118,6 +120,20 @@ def _current_period() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m")
 
 
+def resolve_ai_quota(tier: Optional[str], monthly_quota: Optional[int] = None) -> Optional[int]:
+    """Effective monthly AI quota for a key.
+
+    Returns None for admin (unlimited). A per-key ``monthly_quota`` override
+    takes precedence when set — including an explicit 0, which disables AI use
+    for that key — so the check is ``is not None``, not a truthiness test.
+    """
+    if tier == "admin":
+        return None
+    if monthly_quota is not None:
+        return monthly_quota
+    return AI_TIER_QUOTAS.get(tier, AI_TIER_QUOTAS["free"])
+
+
 async def check_ai_quota(
     x_api_key: Annotated[Optional[str], Header()] = None,
 ) -> dict:
@@ -150,7 +166,7 @@ async def check_ai_quota(
     if doc.get("tier") == "admin":
         return doc
 
-    quota = doc.get("monthly_quota") or AI_TIER_QUOTAS.get(doc.get("tier"), AI_TIER_QUOTAS["free"])
+    quota = resolve_ai_quota(doc.get("tier"), doc.get("monthly_quota"))
     period = _current_period()
 
     updated = await _db["api_keys"].find_one_and_update(
