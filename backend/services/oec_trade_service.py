@@ -181,9 +181,15 @@ class OECTradeService:
 
         # Optional cache integration
         try:
-            from services.cache_service import cache_get, cache_set, generate_cache_key
+            from services.cache_service import (
+                cache_get,
+                cache_get_stale,
+                cache_set,
+                generate_cache_key,
+            )
 
             self._cache_get = cache_get
+            self._cache_get_stale = cache_get_stale
             self._cache_set = cache_set
             self._cache_key = generate_cache_key
             self._cache_available = True
@@ -196,6 +202,7 @@ class OECTradeService:
             params["token"] = self.api_token
 
         # Build a stable cache key from sorted params (excluding token)
+        cache_key = None
         if self._cache_available:
             cache_params = {k: v for k, v in params.items() if k != "token"}
             raw_key = json.dumps(cache_params, sort_keys=True)
@@ -203,6 +210,15 @@ class OECTradeService:
             cached = self._cache_get(cache_key)
             if cached is not None:
                 return cached
+
+        def _on_failure(err: str) -> Dict:
+            # Stale-on-error: serve the last cached value if OEC is down/rate-limited.
+            if cache_key is not None:
+                stale = self._cache_get_stale(cache_key)
+                if stale is not None:
+                    logger.warning("OEC unavailable (%s) — serving stale cache", err)
+                    return stale
+            return {"error": err, "data": []}
 
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
@@ -214,10 +230,10 @@ class OECTradeService:
                 return data
             except httpx.HTTPStatusError as e:
                 logger.error(f"OEC API error: {e.response.status_code}")
-                return {"error": str(e), "data": []}
+                return _on_failure(str(e))
             except Exception as e:
                 logger.error(f"OEC request failed: {e}")
-                return {"error": str(e), "data": []}
+                return _on_failure(str(e))
 
     def _build_params(
         self,
