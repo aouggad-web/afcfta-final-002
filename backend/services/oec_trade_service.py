@@ -172,6 +172,39 @@ AFRICAN_COUNTRIES_OEC = {
 }
 
 
+def build_trade_series(
+    exports_rows: Optional[List[Dict]],
+    imports_rows: Optional[List[Dict]],
+    years: List[int],
+) -> List[Dict]:
+    """
+    Agrège des lignes OEC (drilldown par année) en une série temporelle
+    exports/imports/balance, une entrée par année demandée.
+
+    Fonction pure (sans réseau) : facilite le test du parsing/agrégation.
+    Les listes de lignes peuvent être None (flux absent).
+    """
+
+    def agg(rows: Optional[List[Dict]]) -> Dict[int, float]:
+        totals = {y: 0.0 for y in years}
+        for row in rows or []:
+            year = row.get("Year")
+            if year in totals:
+                totals[year] += float(row.get("Trade Value") or 0)
+        return totals
+
+    exports = agg(exports_rows)
+    imports = agg(imports_rows)
+    series = []
+    for year in years:
+        exp = round(exports[year], 2)
+        imp = round(imports[year], 2)
+        series.append(
+            {"year": year, "exports": exp, "imports": imp, "balance": round(exp - imp, 2)}
+        )
+    return series
+
+
 class OECTradeService:
     """Service pour interroger l'API OEC"""
 
@@ -617,6 +650,63 @@ class OECTradeService:
             "source": "OEC / BACI (HS Rev. 2017)",
             "currency": "USD",
             "has_data": any_exports or any_imports,
+        }
+
+    async def get_country_trade_series(
+        self,
+        country_iso3: str,
+        start_year: int = 2018,
+        end_year: int = DEFAULT_YEAR,
+    ) -> Dict:
+        """
+        Série temporelle du commerce total (tous produits) d'un pays africain:
+        exports, imports et balance par année sur la plage `start_year..end_year`.
+
+        Deux requêtes seulement (exports + imports), drilldown par année — l'OEC
+        agrège sur tous les produits. Source: OEC / BACI (cube HS Rev. 2017).
+        """
+        iso3 = country_iso3.upper()
+        country_info = AFRICAN_COUNTRIES_OEC.get(iso3)
+        if not country_info:
+            return {"error": f"Country {iso3} not found", "country": iso3}
+        oec_id = country_info.get("oec_id")
+        if not oec_id:
+            return {"error": f"No OEC trade data for {iso3}", "country": iso3}
+
+        if end_year < start_year:
+            start_year, end_year = end_year, start_year
+        years = list(range(start_year, end_year + 1))
+
+        async def fetch_flow(flow: str) -> List[Dict]:
+            country_dim = "Exporter Country" if flow == "exports" else "Importer Country"
+            params = self._build_params(
+                cube=OEC_CUBES[DEFAULT_CUBE],
+                drilldowns=["Year"],
+                measures=["Trade Value"],
+                cuts={country_dim: oec_id, "Year": ",".join(str(y) for y in years)},
+                limit=1000,
+            )
+            try:
+                resp = await self._make_request(params)
+                return resp.get("data") or []
+            except Exception as exc:
+                logger.error(f"OEC trade series {flow} error: {exc}")
+                return []
+
+        exports_rows, imports_rows = await asyncio.gather(
+            fetch_flow("exports"),
+            fetch_flow("imports"),
+        )
+        chart_rows = build_trade_series(exports_rows, imports_rows, years)
+
+        return {
+            "country_iso3": iso3,
+            "country_name": country_info.get("name_fr") or country_info.get("name") or iso3,
+            "years": years,
+            "chart_rows": chart_rows,
+            "source": "OEC / BACI (HS Rev. 2017)",
+            "currency": "USD",
+            "has_data": any(r["exports"] > 0 or r["imports"] > 0 for r in chart_rows),
         }
 
     async def get_bilateral_trade(
