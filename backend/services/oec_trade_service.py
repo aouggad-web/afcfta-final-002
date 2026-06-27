@@ -211,7 +211,15 @@ class OECTradeService:
             if cached is not None:
                 return cached
 
+        def _sanitize(text: str) -> str:
+            # Never let the API token leak into logs or responses (httpx error
+            # strings often embed the full request URL incl. ?token=...).
+            if self.api_token:
+                text = text.replace(self.api_token, "***")
+            return text
+
         def _on_failure(err: str) -> Dict:
+            err = _sanitize(err)
             # Stale-on-error: serve the last cached value if OEC is down/rate-limited.
             if cache_key is not None:
                 stale = self._cache_get_stale(cache_key)
@@ -229,10 +237,11 @@ class OECTradeService:
                     self._cache_set(cache_key, data, "oec_data")
                 return data
             except httpx.HTTPStatusError as e:
+                # Status code only — avoid echoing the URL (which carries the token).
                 logger.error(f"OEC API error: {e.response.status_code}")
-                return _on_failure(str(e))
+                return _on_failure(f"OEC API error {e.response.status_code}")
             except Exception as e:
-                logger.error(f"OEC request failed: {e}")
+                logger.error("OEC request failed: %s", _sanitize(str(e)))
                 return _on_failure(str(e))
 
     def _build_params(

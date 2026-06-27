@@ -14,6 +14,7 @@ Cache TTLs:
 import hashlib
 import json
 import os
+import time
 from datetime import timedelta
 from functools import wraps
 from typing import Any, Optional, Union
@@ -37,6 +38,7 @@ CACHE_TTL = {
     "search": 1800,  # 30 minutes
     "calculation": 900,  # 15 minutes
     "regulatory": 3600,  # 1 hour
+    "oec_data": 86400,  # 24 hours (annual trade data changes rarely)
     "default": 600,  # 10 minutes
 }
 
@@ -51,8 +53,6 @@ _redis_client: "Optional[Any]" = None
 # process-local TTL store keeps caching working so we don't hammer upstream
 # APIs (e.g. OEC) on every request. It also retains the last value past expiry
 # to enable "stale-on-error" serving when the upstream source is down/rate-limited.
-import time  # noqa: E402
-
 _MEMORY_STORE: "dict[str, tuple]" = {}  # key -> (value, expiry_epoch)
 _MEMORY_MAX_ENTRIES = 2000
 
@@ -195,10 +195,11 @@ def cache_set(key: str, value: Any, ttl_type: str = "default") -> bool:
 
 
 def cache_delete(key: str) -> bool:
-    """Delete a key from cache."""
+    """Delete a key from cache (Redis if available, else in-memory)."""
     client = get_redis_client()
     if not client:
-        return False
+        # In-memory fallback so invalidation works without Redis too.
+        return _MEMORY_STORE.pop(key, None) is not None
 
     try:
         client.delete(key)
@@ -209,10 +210,15 @@ def cache_delete(key: str) -> bool:
 
 
 def cache_delete_pattern(pattern: str) -> int:
-    """Delete all keys matching a pattern."""
+    """Delete all keys matching a pattern (Redis if available, else in-memory)."""
     client = get_redis_client()
     if not client:
-        return 0
+        # In-memory fallback: match the same zlecaf:-prefixed key space.
+        prefix = f"zlecaf:{pattern}".rstrip("*")
+        keys = [k for k in list(_MEMORY_STORE) if k.startswith(prefix)]
+        for k in keys:
+            _MEMORY_STORE.pop(k, None)
+        return len(keys)
 
     try:
         keys = client.keys(f"zlecaf:{pattern}")

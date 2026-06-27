@@ -69,3 +69,26 @@ def test_capacity_guard_evicts(monkeypatch):
     for i in range(10):
         cache_service.cache_set(f"key{i}", i, "default")
     assert len(cache_service._MEMORY_STORE) <= 5
+
+
+def test_delete_works_in_memory():
+    cache_service.cache_set("delme", 1, "default")
+    assert cache_service.cache_get("delme") == 1
+    assert cache_service.cache_delete("delme") is True
+    assert cache_service.cache_get("delme") is None
+    # Suppression d'une clé absente → False.
+    assert cache_service.cache_delete("delme") is False
+
+
+def test_delete_pattern_in_memory():
+    cache_service.cache_set("zlecaf:oec_request:a", 1, "default")
+    cache_service.cache_set("zlecaf:oec_request:b", 2, "default")
+    cache_service.cache_set("zlecaf:other:c", 3, "default")
+    removed = cache_service.cache_delete_pattern("oec_request:*")
+    assert removed == 2
+    assert cache_service.cache_get("zlecaf:other:c") == 3
+
+
+def test_oec_data_ttl_is_long():
+    # Le TTL oec_data doit exister et être long (réduit le trafic OEC).
+    assert cache_service.CACHE_TTL.get("oec_data", 0) >= 3600
