@@ -4,13 +4,15 @@ Orchestrateur résilient de séries temporelles commerciales
 Objectif: ne jamais "tomber en rade" en production si OEC est indisponible
 ou rate-limité, en essayant plusieurs sources dans l'ordre de priorité.
 
-Chaîne de résilience (combinée au cache + stale-on-error de cache_service):
-    1. OEC / BACI    (source primaire — riche, mise en cache)
-    2. UN Comtrade   (secours, OPT-IN: COMTRADE_FALLBACK_ENABLED=true + clé API)
-    3. OMC / WTO     (secours, OPT-IN: WTO_FALLBACK_ENABLED=true)
-    4. CNUCED/UNCTAD (secours, OPT-IN: UNCTAD_FALLBACK_ENABLED=true + UNCTAD_API_URL)
+Chaîne de résilience (combinée au cache + stale-on-error de cache_service).
+Les API GRATUITES passent en premier:
+    1. OEC / BACI    (source primaire — riche, mise en cache ; gratuit)
+    2. OMC / WTO     (secours GRATUIT sans clé, OPT-IN: WTO_FALLBACK_ENABLED=true)
+    3. CNUCED/UNCTAD (secours gratuit, OPT-IN: UNCTAD_FALLBACK_ENABLED=true + UNCTAD_API_URL)
+    4. UN Comtrade   (secours à CLÉ, OPT-IN: COMTRADE_FALLBACK_ENABLED=true + clé API)
 
-Tous les secours sont désactivés par défaut, le temps d'être validés en réseau.
+Tous les secours sont désactivés par défaut, le temps d'être validés en réseau
+via GET /api/oec/trade-series/sources/{pays}.
 
 Propriétés:
 - Chaque source est isolée: une source qui échoue (exception / pas de données)
@@ -182,14 +184,11 @@ async def _oec_provider(iso3: str, start_year: int, end_year: int) -> Optional[D
     return result
 
 
-async def _comtrade_provider(iso3: str, start_year: int, end_year: int) -> Optional[Dict]:
+async def _comtrade_fetch(iso3: str, start_year: int, end_year: int) -> Optional[Dict]:
     """
-    Secours UN Comtrade — OPT-IN (COMTRADE_FALLBACK_ENABLED=true + clé API).
-    Désactivé par défaut: à valider en environnement réseau avant activation,
-    pour éviter de servir des données mal mappées.
+    Récupération UN Comtrade (sans garde d'env — utilisée par le provider gardé
+    et par la sonde de diagnostic). Requiert le mapping M49 + une clé API.
     """
-    if os.environ.get("COMTRADE_FALLBACK_ENABLED", "false").lower() != "true":
-        return None
     reporter = AFRICAN_ISO3_TO_M49.get(iso3.upper())
     if not reporter:
         return None
@@ -241,16 +240,11 @@ def _build_country_result(
     }
 
 
-async def _wto_provider(iso3: str, start_year: int, end_year: int) -> Optional[Dict]:
+async def _wto_fetch(iso3: str, start_year: int, end_year: int) -> Optional[Dict]:
     """
-    Secours OMC (WTO) — OPT-IN (WTO_FALLBACK_ENABLED=true).
-    Utilise le client wto_service existant; normalise les séries annuelles
-    de valeur d'exports/imports de marchandises. À valider en réseau avant
-    activation (la forme exacte de la réponse WTO dépend de l'indicateur).
+    Récupération OMC/WTO (sans garde d'env). Utilise le client wto_service
+    existant; normalise les séries annuelles d'exports/imports de marchandises.
     """
-    if os.environ.get("WTO_FALLBACK_ENABLED", "false").lower() != "true":
-        return None
-
     from services.wto_service import wto_service
 
     years = list(range(start_year, end_year + 1))
@@ -268,15 +262,11 @@ async def _wto_provider(iso3: str, start_year: int, end_year: int) -> Optional[D
     return _build_country_result(iso3, years, chart_rows, "OMC / WTO")
 
 
-async def _unctad_provider(iso3: str, start_year: int, end_year: int) -> Optional[Dict]:
+async def _unctad_fetch(iso3: str, start_year: int, end_year: int) -> Optional[Dict]:
     """
-    Secours CNUCED (UNCTADstat) — OPT-IN (UNCTAD_FALLBACK_ENABLED=true).
-    Appel minimal à l'API UNCTAD; normalise les valeurs annuelles
-    d'exports/imports. À valider en réseau avant activation.
+    Récupération CNUCED/UNCTADstat (sans garde d'env). Appel minimal à l'API
+    UNCTAD (UNCTAD_API_URL requis); normalise les valeurs annuelles.
     """
-    if os.environ.get("UNCTAD_FALLBACK_ENABLED", "false").lower() != "true":
-        return None
-
     base = os.environ.get("UNCTAD_API_URL", "").rstrip("/")
     if not base:
         return None
@@ -311,20 +301,85 @@ async def _unctad_provider(iso3: str, start_year: int, end_year: int) -> Optiona
     return _build_country_result(iso3, years, chart_rows, "CNUCED / UNCTAD")
 
 
+# Registre des sources, dans l'ordre de priorité. Les API GRATUITES passent en
+# premier (OEC puis OMC/WTO sans clé), avant les sources nécessitant une clé.
+#   flag=None  → toujours active (source primaire)
+#   free=True  → API gratuite (WTO sans clé ; UNCTAD gratuit mais URL requise)
+#   free=False → nécessite une clé d'API (Comtrade)
+SOURCE_REGISTRY = [
+    {"name": "OEC / BACI", "flag": None, "fetch": _oec_provider, "free": True},
+    {"name": "OMC / WTO", "flag": "WTO_FALLBACK_ENABLED", "fetch": _wto_fetch, "free": True},
+    {
+        "name": "CNUCED / UNCTAD",
+        "flag": "UNCTAD_FALLBACK_ENABLED",
+        "fetch": _unctad_fetch,
+        "free": True,
+    },
+    {
+        "name": "UN Comtrade",
+        "flag": "COMTRADE_FALLBACK_ENABLED",
+        "fetch": _comtrade_fetch,
+        "free": False,
+    },
+]
+
+
+def _is_enabled(entry: Dict) -> bool:
+    """Une source est active si elle est primaire (flag=None) ou son flag d'env est 'true'."""
+    flag = entry["flag"]
+    return flag is None or os.environ.get(flag, "false").lower() == "true"
+
+
 def default_providers() -> List[tuple]:
     """
-    Liste ordonnée (nom, provider) des sources. OEC est primaire; les secours
-    (Comtrade, WTO, UNCTAD) sont opt-in via variables d'environnement et
-    désactivés par défaut, le temps d'être validés en environnement réseau.
+    Liste ordonnée (nom, fetch) des sources actives. OEC est primaire; les
+    secours sont opt-in via variables d'environnement et désactivés par défaut,
+    le temps d'être validés en environnement réseau (gratuit d'abord: WTO).
     """
-    providers = [("OEC / BACI", _oec_provider)]
-    if os.environ.get("COMTRADE_FALLBACK_ENABLED", "false").lower() == "true":
-        providers.append(("UN Comtrade", _comtrade_provider))
-    if os.environ.get("WTO_FALLBACK_ENABLED", "false").lower() == "true":
-        providers.append(("OMC / WTO", _wto_provider))
-    if os.environ.get("UNCTAD_FALLBACK_ENABLED", "false").lower() == "true":
-        providers.append(("CNUCED / UNCTAD", _unctad_provider))
-    return providers
+    return [(e["name"], e["fetch"]) for e in SOURCE_REGISTRY if _is_enabled(e)]
+
+
+async def probe_sources(
+    country_iso3: str,
+    start_year: int = 2018,
+    end_year: int = DEFAULT_YEAR,
+) -> Dict:
+    """
+    Sonde de diagnostic: interroge CHAQUE source en direct (même désactivée) et
+    rapporte son état — pour valider en environnement réseau avant d'activer.
+
+    Pour chaque source: nom, gratuite ?, activée (env) ?, statut (ok/no_data/
+    error) et un échantillon de la dernière année. Ne lève jamais.
+    """
+    iso3 = country_iso3.upper()
+    if start_year > end_year:
+        start_year, end_year = end_year, start_year
+
+    results = []
+    for entry in SOURCE_REGISTRY:
+        report = {
+            "source": entry["name"],
+            "free": entry["free"],
+            "enabled": _is_enabled(entry),
+            "env_flag": entry["flag"],
+        }
+        try:
+            res = await entry["fetch"](iso3, start_year, end_year)
+            if res and res.get("has_data"):
+                report["status"] = "ok"
+                report["sample"] = (res.get("chart_rows") or [])[-1:]
+            else:
+                report["status"] = "no_data"
+        except Exception as exc:  # une source défaillante ne casse pas la sonde
+            report["status"] = "error"
+            report["error"] = str(exc)
+        results.append(report)
+
+    return {
+        "country_iso3": iso3,
+        "years": list(range(start_year, end_year + 1)),
+        "sources": results,
+    }
 
 
 async def get_trade_series_resilient(

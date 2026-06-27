@@ -17,6 +17,7 @@ from services.trade_series_orchestrator import (
     aggregate_comtrade_series,
     extract_year_value_map,
     get_trade_series_resilient,
+    probe_sources,
     series_from_year_maps,
 )
 
@@ -122,6 +123,58 @@ def test_wto_unctad_providers_disabled_by_default(monkeypatch):
         monkeypatch.delenv(var, raising=False)
     names = [name for name, _ in orch.default_providers()]
     assert names == ["OEC / BACI"]
+
+
+def test_free_sources_come_before_paid_in_registry():
+    # Les API gratuites (OEC, WTO) doivent précéder celles à clé (Comtrade).
+    import services.trade_series_orchestrator as orch
+
+    names = [e["name"] for e in orch.SOURCE_REGISTRY]
+    assert names[0] == "OEC / BACI"
+    assert names.index("OMC / WTO") < names.index("UN Comtrade")
+    # WTO est marqué gratuit, Comtrade payant.
+    by_name = {e["name"]: e for e in orch.SOURCE_REGISTRY}
+    assert by_name["OMC / WTO"]["free"] is True
+    assert by_name["UN Comtrade"]["free"] is False
+
+
+def test_when_wto_enabled_it_joins_the_chain(monkeypatch):
+    import services.trade_series_orchestrator as orch
+
+    monkeypatch.setenv("WTO_FALLBACK_ENABLED", "true")
+    for var in ("COMTRADE_FALLBACK_ENABLED", "UNCTAD_FALLBACK_ENABLED"):
+        monkeypatch.delenv(var, raising=False)
+    names = [name for name, _ in orch.default_providers()]
+    assert names == ["OEC / BACI", "OMC / WTO"]
+
+
+def test_probe_sources_reports_each_source(monkeypatch):
+    # La sonde rapporte chaque source du registre avec un statut, sans lever.
+    import services.trade_series_orchestrator as orch
+
+    async def fake_oec(iso3, s, e):
+        return {
+            "has_data": True,
+            "chart_rows": [{"year": e, "exports": 1, "imports": 0, "balance": 1}],
+        }
+
+    async def boom(iso3, s, e):
+        raise RuntimeError("réseau indisponible")
+
+    registry = [
+        {"name": "OEC / BACI", "flag": None, "fetch": fake_oec, "free": True},
+        {"name": "OMC / WTO", "flag": "WTO_FALLBACK_ENABLED", "fetch": boom, "free": True},
+    ]
+    monkeypatch.setattr(orch, "SOURCE_REGISTRY", registry)
+    monkeypatch.delenv("WTO_FALLBACK_ENABLED", raising=False)
+
+    report = _run(probe_sources("KEN", 2023, 2024))
+    by_name = {s["source"]: s for s in report["sources"]}
+    assert by_name["OEC / BACI"]["status"] == "ok"
+    assert by_name["OEC / BACI"]["enabled"] is True
+    # WTO sondé même désactivé; l'exception est capturée en statut "error".
+    assert by_name["OMC / WTO"]["status"] == "error"
+    assert by_name["OMC / WTO"]["enabled"] is False
 
 
 def test_aggregate_comtrade_series():
