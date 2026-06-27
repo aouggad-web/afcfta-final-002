@@ -5663,59 +5663,115 @@
   "origin_types": {
     "WO": {
       "en": "Wholly Obtained",
-      "fr": "Entièrement Obtenu"
+      "fr": "Entièrement Obtenu",
+      "explanation": {
+        "fr": "Le produit doit être entièrement obtenu ou produit sur le territoire d'un État partie, sans aucune matière non originaire (ex. produits agricoles récoltés, minéraux extraits, animaux nés et élevés localement).",
+        "en": "The product must be wholly obtained or produced within a State Party's territory, using no non-originating materials at all (e.g. harvested crops, extracted minerals, animals born and raised locally)."
+      }
     },
     "CC": {
       "en": "Change of Chapter",
-      "fr": "Changement de Chapitre"
+      "fr": "Changement de Chapitre",
+      "explanation": {
+        "fr": "Toutes les matières non originaires utilisées dans la fabrication doivent relever d'un chapitre du Système Harmonisé (2 premiers chiffres du code SH) différent de celui du produit fini.",
+        "en": "All non-originating materials used in manufacture must fall under a different Harmonized System chapter (first 2 digits of the HS code) than the finished product."
+      }
     },
     "CTH": {
       "en": "Change of Tariff Heading",
-      "fr": "Changement de Position Tarifaire"
+      "fr": "Changement de Position Tarifaire",
+      "explanation": {
+        "fr": "Toutes les matières non originaires utilisées dans la fabrication doivent relever d'une position tarifaire (4 premiers chiffres du code SH) différente de celle du produit fini.",
+        "en": "All non-originating materials used in manufacture must fall under a different tariff heading (first 4 digits of the HS code) than the finished product."
+      }
     },
     "CTSH": {
       "en": "Change of Tariff Subheading",
-      "fr": "Changement de Sous-Position"
+      "fr": "Changement de Sous-Position",
+      "explanation": {
+        "fr": "Toutes les matières non originaires utilisées dans la fabrication doivent relever d'une sous-position tarifaire (6 premiers chiffres du code SH) différente de celle du produit fini.",
+        "en": "All non-originating materials used in manufacture must fall under a different tariff subheading (first 6 digits of the HS code) than the finished product."
+      }
     },
     "VA": {
       "en": "Value Added",
-      "fr": "Valeur Ajoutée"
+      "fr": "Valeur Ajoutée",
+      "explanation": {
+        "fr": "La valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser le pourcentage du prix départ usine du produit fini fixé par la règle.",
+        "en": "The value of non-originating materials used in manufacture must not exceed the percentage of the product's ex-works price set by the rule."
+      }
     },
     "VA15": {
       "en": "Max 15% non-originating value",
-      "fr": "Max 15% valeur non-originaire"
+      "fr": "Max 15% valeur non-originaire",
+      "explanation": {
+        "fr": "La valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 15 % du prix départ usine du produit fini.",
+        "en": "The value of non-originating materials used in manufacture must not exceed 15% of the product's ex-works price."
+      }
     },
     "VA40": {
       "en": "Max 40% non-originating value",
-      "fr": "Max 40% valeur non-originaire"
+      "fr": "Max 40% valeur non-originaire",
+      "explanation": {
+        "fr": "La valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 40 % du prix départ usine du produit fini.",
+        "en": "The value of non-originating materials used in manufacture must not exceed 40% of the product's ex-works price."
+      }
     },
     "VA50": {
       "en": "Max 50% non-originating value",
-      "fr": "Max 50% valeur non-originaire"
+      "fr": "Max 50% valeur non-originaire",
+      "explanation": {
+        "fr": "La valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 50 % du prix départ usine du produit fini.",
+        "en": "The value of non-originating materials used in manufacture must not exceed 50% of the product's ex-works price."
+      }
     },
     "VA60": {
       "en": "Max 60% non-originating value",
-      "fr": "Max 60% valeur non-originaire"
+      "fr": "Max 60% valeur non-originaire",
+      "explanation": {
+        "fr": "La valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 60 % du prix départ usine du produit fini.",
+        "en": "The value of non-originating materials used in manufacture must not exceed 60% of the product's ex-works price."
+      }
     },
     "VA65": {
       "en": "Max 65% non-originating value",
-      "fr": "Max 65% valeur non-originaire"
+      "fr": "Max 65% valeur non-originaire",
+      "explanation": {
+        "fr": "La valeur des matières non originaires utilisées dans la fabrication ne doit pas dépasser 65 % du prix départ usine du produit fini.",
+        "en": "The value of non-originating materials used in manufacture must not exceed 65% of the product's ex-works price."
+      }
     },
     "SP": {
       "en": "Specific Process",
-      "fr": "Processus Spécifique"
+      "fr": "Processus Spécifique",
+      "explanation": {
+        "fr": "Le produit doit subir un procédé de fabrication spécifique défini par la règle (ex. filage, tissage, traitement chimique particulier), quelle que soit l'origine tarifaire des matières utilisées.",
+        "en": "The product must undergo a specific manufacturing process defined by the rule (e.g. spinning, weaving, a particular chemical treatment), regardless of the tariff origin of the materials used."
+      }
     },
     "RVC": {
       "en": "Regional Value Content",
-      "fr": "Contenu de Valeur Régionale"
+      "fr": "Contenu de Valeur Régionale",
+      "explanation": {
+        "fr": "Le contenu en valeur régionale du produit (matières et main-d'œuvre originaires des États parties) doit atteindre le seuil minimal fixé par la règle.",
+        "en": "The product's regional value content (materials and labour originating from State Parties) must meet the minimum threshold set by the rule."
+      }
     },
     "YARN": {
       "en": "Manufacture from yarn",
-      "fr": "Fabrication à partir de fils"
+      "fr": "Fabrication à partir de fils",
+      "explanation": {
+        "fr": "Le produit doit être fabriqué à partir de fils (et non de fibres ou de tissus déjà finis), même si ces fils sont eux-mêmes importés.",
+        "en": "The product must be manufactured from yarn (rather than from fibre or already-finished fabric), even if that yarn is itself imported."
+      }
     },
     "YTB": {
       "en": "Yet to be agreed",
-      "fr": "En cours de négociation"
+      "fr": "En cours de négociation",
+      "explanation": {
+        "fr": "La règle d'origine applicable à ce produit n'a pas encore été définitivement adoptée par les États parties (statut au moment de la 12e réunion du Conseil des Ministres, décembre 2023).",
+        "en": "The rule of origin for this product has not yet been formally adopted by the State Parties (status as of the 12th Council of Ministers meeting, December 2023)."
+      }
     }
   },
   "source": "AfCFTA Appendix IV (PSR) - Décembre 2023, 12e réunion du Conseil des Ministres"
