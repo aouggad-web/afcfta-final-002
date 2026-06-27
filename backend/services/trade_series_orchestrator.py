@@ -115,17 +115,28 @@ def aggregate_comtrade_series(records: Optional[List[Dict]], years: List[int]) -
     double-compter avec les lignes par produit; sinon on somme les lignes.
     """
     rows = records or []
-    totals = [r for r in rows if str(r.get("cmdCode", "")).upper() == "TOTAL"]
-    rows = totals if totals else rows
+
+    def _year(row):
+        try:
+            return int(row.get("period") or 0)
+        except (TypeError, ValueError):
+            return None
+
+    # Années disposant d'une ligne agrégée TOTAL : pour CELLES-CI on n'utilise
+    # que les TOTAL (anti double-comptage) ; les autres années somment leurs
+    # lignes détaillées. Décision par année, pas globale.
+    years_with_total = {_year(r) for r in rows if str(r.get("cmdCode", "")).upper() == "TOTAL"}
+    years_with_total.discard(None)
+
     exp = {y: 0.0 for y in years}
     imp = {y: 0.0 for y in years}
     for row in rows:
-        try:
-            year = int(row.get("period") or 0)
-        except (TypeError, ValueError):
-            continue
+        year = _year(row)
         if year not in exp:
             continue
+        is_total = str(row.get("cmdCode", "")).upper() == "TOTAL"
+        if year in years_with_total and not is_total:
+            continue  # année couverte par un TOTAL → ignorer les lignes produits
         flow = str(row.get("flowCode") or "").upper()
         value = float(row.get("primaryValue") or 0)
         if flow == "X":
@@ -261,6 +272,10 @@ async def _wto_fetch(iso3: str, start_year: int, end_year: int) -> Optional[Dict
         asyncio.to_thread(wto_service.get_trade_indicators, iso3.upper(), "ITS_MTV_AX"),
         asyncio.to_thread(wto_service.get_trade_indicators, iso3.upper(), "ITS_MTV_AM"),
     )
+    # get_trade_indicators renvoie None sur erreur HTTP/réseau. Si les deux
+    # échouent, on lève pour que le diagnostic reporte 'error' (et non 'no_data').
+    if exp_resp is None and imp_resp is None:
+        raise RuntimeError("WTO indisponible (aucune réponse)")
     exp_rows = (exp_resp or {}).get("data") if isinstance(exp_resp, dict) else None
     imp_rows = (imp_resp or {}).get("data") if isinstance(imp_resp, dict) else None
     exports = extract_year_value_map(exp_rows, "Year", "Value")
@@ -284,14 +299,12 @@ async def _unctad_fetch(iso3: str, start_year: int, end_year: int) -> Optional[D
         "startYear": start_year,
         "endYear": end_year,
     }
-    try:
-        async with httpx.AsyncClient(timeout=20.0) as client:
-            resp = await client.get(base, params=params)
-            resp.raise_for_status()
-            payload = resp.json()
-    except Exception as exc:
-        logger.warning("UNCTAD fetch failed: %s", exc)
-        return None
+    # On laisse les erreurs HTTP/réseau remonter: la chaîne et la sonde les
+    # capturent et rapportent 'error' (et non 'no_data', trompeur en diagnostic).
+    async with httpx.AsyncClient(timeout=20.0) as client:
+        resp = await client.get(base, params=params)
+        resp.raise_for_status()
+        payload = resp.json()
 
     rows = payload.get("data") if isinstance(payload, dict) else payload
     exports = extract_year_value_map(
@@ -378,8 +391,11 @@ async def probe_sources(
             else:
                 report["status"] = "no_data"
         except Exception as exc:  # une source défaillante ne casse pas la sonde
+            # On logge le détail (avec stack) côté serveur, mais on ne renvoie
+            # qu'un type d'erreur stable/sanitisé au client.
+            logger.warning("probe source %s failed", entry["name"], exc_info=True)
             report["status"] = "error"
-            report["error"] = str(exc)
+            report["error_type"] = type(exc).__name__
         results.append(report)
 
     return {
