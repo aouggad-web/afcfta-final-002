@@ -36,10 +36,17 @@ const CATEGORY_ACCENTS = {
   Économie: { icon: '📊', accent: '#38bdf8' },
 };
 
+const CONTENT_TAG_LABELS = {
+  statistics: { fr: 'Statistiques', en: 'Statistics', icon: '📊', accent: '#38bdf8' },
+  opportunities: { fr: 'Opportunités', en: 'Opportunities', icon: '💡', accent: '#d4a017' },
+  development: { fr: 'Développement', en: 'Development', icon: '🚀', accent: '#20c997' },
+  events: { fr: 'Événement', en: 'Event', icon: '📅', accent: '#9b6ef5' },
+};
+
 const translations = {
   fr: {
     title: "Fil d'Actualités Économiques Africaines",
-    subtitle: 'Sources: AllAfrica, Google News (Reuters, AFP)',
+    subtitle: 'Sources: Agence Ecofin, AllAfrica, médias locaux (20+ pays), Google News',
     lastUpdate: 'Dernière mise à jour',
     refresh: 'Actualiser',
     refreshing: 'Actualisation...',
@@ -62,7 +69,7 @@ const translations = {
   },
   en: {
     title: 'African Economic News Feed',
-    subtitle: 'Sources: AllAfrica, Google News (Reuters, AFP)',
+    subtitle: 'Sources: Agence Ecofin, AllAfrica, local media (20+ countries), Google News',
     lastUpdate: 'Last update',
     refresh: 'Refresh',
     refreshing: 'Refreshing...',
@@ -96,9 +103,10 @@ const formatRelativeDate = (dateString, t) => {
   return t.daysAgo.replace('{days}', diffDays);
 };
 
-const ArticleCard = ({ article, t, featured = false }) => {
+const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
   const regionAccent = REGION_ACCENTS[article.region] || REGION_ACCENTS.Afrique;
   const categoryStyle = CATEGORY_ACCENTS[article.category] || CATEGORY_ACCENTS.Économie;
+  const contentTags = article.content_tags || [];
 
   return (
     <article
@@ -133,6 +141,24 @@ const ArticleCard = ({ article, t, featured = false }) => {
           <MapPin className="w-3 h-3 mr-1" />
           {article.region}
         </Badge>
+
+        {contentTags.map((tag) => {
+          const tagStyle = CONTENT_TAG_LABELS[tag];
+          if (!tagStyle) return null;
+          return (
+            <Badge
+              key={tag}
+              className="border"
+              style={{
+                background: `${tagStyle.accent}18`,
+                color: tagStyle.accent,
+                borderColor: `${tagStyle.accent}40`,
+              }}
+            >
+              {tagStyle.icon} {tagStyle[language] || tagStyle.fr}
+            </Badge>
+          );
+        })}
       </div>
 
       <h3
@@ -182,7 +208,7 @@ const ArticleCard = ({ article, t, featured = false }) => {
   );
 };
 
-const RegionSection = ({ region, articles, t }) => {
+const RegionSection = ({ region, articles, t, language }) => {
   const accent = REGION_ACCENTS[region] || REGION_ACCENTS.Afrique;
 
   return (
@@ -207,14 +233,14 @@ const RegionSection = ({ region, articles, t }) => {
 
       <div className="grid gap-3">
         {articles.slice(0, 5).map((article) => (
-          <ArticleCard key={article.id} article={article} t={t} />
+          <ArticleCard key={article.id} article={article} t={t} language={language} />
         ))}
       </div>
     </section>
   );
 };
 
-const CategorySection = ({ category, articles, t }) => {
+const CategorySection = ({ category, articles, t, language }) => {
   const categoryStyle = CATEGORY_ACCENTS[category] || CATEGORY_ACCENTS.Économie;
 
   return (
@@ -239,7 +265,7 @@ const CategorySection = ({ category, articles, t }) => {
 
       <div className="grid gap-3">
         {articles.slice(0, 5).map((article) => (
-          <ArticleCard key={article.id} article={article} t={t} />
+          <ArticleCard key={article.id} article={article} t={t} language={language} />
         ))}
       </div>
     </section>
@@ -403,7 +429,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
       {featuredArticles.length > 0 && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           {featuredArticles.map((article, index) => (
-            <ArticleCard key={article.id || index} article={article} t={t} featured />
+            <ArticleCard key={article.id || index} article={article} t={t} language={language} featured />
           ))}
         </div>
       )}
@@ -437,7 +463,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
             ) : (
               <div className="grid gap-4">
                 {remainingArticles.map((article) => (
-                  <ArticleCard key={article.id} article={article} t={t} />
+                  <ArticleCard key={article.id} article={article} t={t} language={language} />
                 ))}
               </div>
             )}
@@ -449,7 +475,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
             ) : (
               <div className="grid md:grid-cols-2 gap-6">
                 {Object.entries(news.by_region).map(([region, articles]) => (
-                  <RegionSection key={region} region={region} articles={articles} t={t} />
+                  <RegionSection key={region} region={region} articles={articles} t={t} language={language} />
                 ))}
               </div>
             )}
@@ -461,7 +487,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
             ) : (
               <div className="grid md:grid-cols-2 gap-6">
                 {Object.entries(news.by_category).map(([category, articles]) => (
-                  <CategorySection key={category} category={category} articles={articles} t={t} />
+                  <CategorySection key={category} category={category} articles={articles} t={t} language={language} />
                 ))}
               </div>
             )}

@@ -16,6 +16,10 @@ import aiohttp
 import feedparser
 
 # Configuration des flux RSS
+# Chaque source pan-africaine couvre tout le continent ; les sources "pays" utilisent
+# des requêtes Google News ciblées avec des opérateurs site: sur des médias économiques
+# locaux de premier plan, afin de garantir une couverture par pays sans dépendre de flux
+# RSS directs (souvent absents ou instables sur les sites de presse africains).
 RSS_FEEDS = {
     "allafrica_en": {
         "name": "AllAfrica",
@@ -44,9 +48,35 @@ RSS_FEEDS = {
         "language": "multi",
         "logo": "🌐",
     },
+    # Médias panafricains de référence (premier plan)
+    "agence_ecofin": {
+        "name": "Agence Ecofin",
+        "feeds": {
+            "economie": "https://news.google.com/rss/search?q=site:agenceecofin.com&hl=fr",
+        },
+        "language": "fr",
+        "logo": "📰",
+    },
+    "the_africa_report": {
+        "name": "The Africa Report / Jeune Afrique",
+        "feeds": {
+            "business": "https://news.google.com/rss/search?q=site:theafricareport.com+OR+site:jeuneafrique.com&hl=fr",
+        },
+        "language": "multi",
+        "logo": "🌍",
+    },
+    "african_business": {
+        "name": "African Business / APA News",
+        "feeds": {
+            "business": "https://news.google.com/rss/search?q=site:african.business+OR+site:apanews.net&hl=en",
+        },
+        "language": "en",
+        "logo": "🌍",
+    },
     # PRIORITÉ ALGÉRIE - Flux dédiés
     "google_news_algeria": {
         "name": "Algérie Économie",
+        "country": "DZA",
         "feeds": {
             "economie_dz": "https://news.google.com/rss/search?q=alg%C3%A9rie+%C3%A9conomie+investissement&hl=fr",
             "industry_dz": "https://news.google.com/rss/search?q=algeria+industry+manufacturing&hl=en",
@@ -54,6 +84,146 @@ RSS_FEEDS = {
         "language": "multi",
         "logo": "🇩🇿",
         "priority": True,
+    },
+    # Afrique du Nord
+    "morocco_local": {
+        "name": "Médias24 / La Vie Éco",
+        "country": "MAR",
+        "feeds": {
+            "economie": "https://news.google.com/rss/search?q=site:medias24.com+OR+site:lavieeco.com&hl=fr",
+        },
+        "language": "fr",
+        "logo": "🇲🇦",
+    },
+    "tunisia_local": {
+        "name": "African Manager / WMC",
+        "country": "TUN",
+        "feeds": {
+            "economie": "https://news.google.com/rss/search?q=site:africanmanager.com+OR+site:webmanagercenter.com&hl=fr",
+        },
+        "language": "fr",
+        "logo": "🇹🇳",
+    },
+    "egypt_local": {
+        "name": "Daily News Egypt / Ahram Online",
+        "country": "EGY",
+        "feeds": {
+            "economy": "https://news.google.com/rss/search?q=site:dailynewsegypt.com+OR+site:english.ahram.org.eg&hl=en",
+        },
+        "language": "en",
+        "logo": "🇪🇬",
+    },
+    # Afrique de l'Ouest
+    "nigeria_local": {
+        "name": "BusinessDay / Vanguard Nigeria",
+        "country": "NGA",
+        "feeds": {
+            "economy": "https://news.google.com/rss/search?q=site:businessday.ng+OR+site:vanguardngr.com&hl=en",
+        },
+        "language": "en",
+        "logo": "🇳🇬",
+    },
+    "ghana_local": {
+        "name": "MyJoyOnline / Joy Business",
+        "country": "GHA",
+        "feeds": {
+            "economy": "https://news.google.com/rss/search?q=site:myjoyonline.com+ghana+economy&hl=en",
+        },
+        "language": "en",
+        "logo": "🇬🇭",
+    },
+    "cote_ivoire_local": {
+        "name": "Fraternité Matin / Abidjan.net",
+        "country": "CIV",
+        "feeds": {
+            "economie": "https://news.google.com/rss/search?q=site:fratmat.info+OR+site:abidjan.net+%C3%A9conomie&hl=fr",
+        },
+        "language": "fr",
+        "logo": "🇨🇮",
+    },
+    "senegal_local": {
+        "name": "Le Soleil / APS Sénégal",
+        "country": "SEN",
+        "feeds": {
+            "economie": "https://news.google.com/rss/search?q=site:lesoleil.sn+OR+site:aps.sn+%C3%A9conomie&hl=fr",
+        },
+        "language": "fr",
+        "logo": "🇸🇳",
+    },
+    # Afrique Centrale
+    "cameroon_local": {
+        "name": "Investir au Cameroun / Cameroon Tribune",
+        "country": "CMR",
+        "feeds": {
+            "economie": "https://news.google.com/rss/search?q=site:investiraucameroun.com+OR+site:cameroon-tribune.cm&hl=fr",
+        },
+        "language": "fr",
+        "logo": "🇨🇲",
+    },
+    "drc_local": {
+        "name": "Actualite.cd",
+        "country": "COD",
+        "feeds": {
+            "economie": "https://news.google.com/rss/search?q=site:actualite.cd+%C3%A9conomie&hl=fr",
+        },
+        "language": "fr",
+        "logo": "🇨🇩",
+    },
+    # Afrique de l'Est
+    "kenya_local": {
+        "name": "Business Daily Africa",
+        "country": "KEN",
+        "feeds": {
+            "economy": "https://news.google.com/rss/search?q=site:businessdailyafrica.com&hl=en",
+        },
+        "language": "en",
+        "logo": "🇰🇪",
+    },
+    "ethiopia_local": {
+        "name": "Addis Fortune / The Reporter Ethiopia",
+        "country": "ETH",
+        "feeds": {
+            "economy": "https://news.google.com/rss/search?q=site:addisfortune.news+OR+site:thereporterethiopia.com&hl=en",
+        },
+        "language": "en",
+        "logo": "🇪🇹",
+    },
+    "rwanda_local": {
+        "name": "The New Times Rwanda",
+        "country": "RWA",
+        "feeds": {
+            "economy": "https://news.google.com/rss/search?q=site:newtimes.co.rw+economy&hl=en",
+        },
+        "language": "en",
+        "logo": "🇷🇼",
+    },
+    # Afrique Australe
+    "south_africa_local": {
+        "name": "BusinessTech / Moneyweb",
+        "country": "ZAF",
+        "feeds": {
+            "economy": "https://news.google.com/rss/search?q=site:businesstech.co.za+OR+site:moneyweb.co.za&hl=en",
+        },
+        "language": "en",
+        "logo": "🇿🇦",
+    },
+    "angola_local": {
+        "name": "Jornal de Angola",
+        "country": "AGO",
+        "feeds": {
+            "economia": "https://news.google.com/rss/search?q=site:jornaldeangola.ao+economia&hl=pt",
+        },
+        "language": "pt",
+        "logo": "🇦🇴",
+    },
+    "mozambique_local": {
+        "name": "Club of Mozambique",
+        "country": "MOZ",
+        "feeds": {
+            "economy": "https://news.google.com/rss/search?q=site:clubofmozambique.com+economy&hl=en",
+        },
+        "language": "en",
+        "logo": "🇲🇿",
     },
 }
 
@@ -360,6 +530,113 @@ CATEGORY_KEYWORDS = {
     ],
 }
 
+# Mots-clés pour la priorisation éditoriale: dépêches à plus forte valeur stratégique
+# (statistiques chiffrées, opportunités d'affaires, projets de développement, événements)
+CONTENT_PRIORITY_KEYWORDS = {
+    "statistics": {
+        "label_fr": "Statistiques",
+        "label_en": "Statistics",
+        "icon": "📊",
+        "keywords": [
+            "croissance",
+            "growth",
+            "pib",
+            "gdp",
+            "taux",
+            "rate",
+            "%",
+            "milliard",
+            "billion",
+            "million",
+            "statistique",
+            "statistics",
+            "données",
+            "data",
+            "rapport annuel",
+            "annual report",
+            "indice",
+            "index",
+            "classement",
+            "ranking",
+            "prévisions",
+            "forecast",
+        ],
+    },
+    "opportunities": {
+        "label_fr": "Opportunités",
+        "label_en": "Opportunities",
+        "icon": "💡",
+        "keywords": [
+            "opportunité",
+            "opportunity",
+            "appel d'offres",
+            "tender",
+            "investissement",
+            "investment",
+            "partenariat",
+            "partnership",
+            "accord commercial",
+            "trade deal",
+            "contrat",
+            "contract",
+            "financement",
+            "funding",
+            "joint-venture",
+            "joint venture",
+            "marché public",
+        ],
+    },
+    "development": {
+        "label_fr": "Développement",
+        "label_en": "Development",
+        "icon": "🚀",
+        "keywords": [
+            "développement",
+            "development",
+            "projet structurant",
+            "infrastructure",
+            "usine",
+            "factory",
+            "plant",
+            "zone industrielle",
+            "industrial zone",
+            "zone franche",
+            "free zone",
+            "corridor",
+            "chemin de fer",
+            "railway",
+            "barrage",
+            "dam",
+            "énergie renouvelable",
+            "renewable energy",
+            "transition énergétique",
+        ],
+    },
+    "events": {
+        "label_fr": "Événement",
+        "label_en": "Event",
+        "icon": "📅",
+        "keywords": [
+            "sommet",
+            "summit",
+            "forum",
+            "conférence",
+            "conference",
+            "salon",
+            "exposition",
+            "exhibition",
+            "sommet de l'ua",
+            "au summit",
+            "sommet zlecaf",
+            "afcfta summit",
+            "réunion ministérielle",
+            "ministerial meeting",
+            "assemblée générale",
+            "general assembly",
+        ],
+    },
+}
+
 # Cache des actualités
 NEWS_CACHE_FILE = str(Path(__file__).parent.parent / "data" / "news_cache.json")
 NEWS_CACHE: Dict = {"last_update": None, "articles": []}
@@ -410,6 +687,52 @@ def detect_category(text: str, feed_category: str = "") -> str:
     return "Économie"  # Défaut
 
 
+# Mapping pays (ISO3) -> région, utilisé comme repli quand la source est dédiée à un pays
+# mais que le texte de l'article ne mentionne pas explicitement son nom.
+COUNTRY_REGION_MAP = {
+    "DZA": "Afrique du Nord",
+    "MAR": "Afrique du Nord",
+    "TUN": "Afrique du Nord",
+    "EGY": "Afrique du Nord",
+    "LBY": "Afrique du Nord",
+    "MRT": "Afrique du Nord",
+    "NGA": "Afrique de l'Ouest",
+    "GHA": "Afrique de l'Ouest",
+    "CIV": "Afrique de l'Ouest",
+    "SEN": "Afrique de l'Ouest",
+    "CMR": "Afrique Centrale",
+    "COD": "Afrique Centrale",
+    "GAB": "Afrique Centrale",
+    "KEN": "Afrique de l'Est",
+    "ETH": "Afrique de l'Est",
+    "RWA": "Afrique de l'Est",
+    "TZA": "Afrique de l'Est",
+    "ZAF": "Afrique Australe",
+    "AGO": "Afrique Australe",
+    "MOZ": "Afrique Australe",
+}
+
+
+def region_from_country(country: str, text: str) -> str:
+    """Région d'une source dédiée à un pays, avec repli sur la détection par mots-clés"""
+    detected = detect_region(text)
+    if detected != "Afrique":
+        return detected
+    return COUNTRY_REGION_MAP.get(country, "Afrique")
+
+
+def detect_content_tags(text: str) -> List[str]:
+    """Détecter les signaux à forte valeur éditoriale (stats, opportunités, dev, événements)"""
+    text_lower = text.lower()
+    tags = []
+    for tag, config in CONTENT_PRIORITY_KEYWORDS.items():
+        for keyword in config["keywords"]:
+            if keyword in text_lower:
+                tags.append(tag)
+                break
+    return tags
+
+
 def parse_date(date_str: str) -> datetime:
     """Parser différents formats de date"""
     formats = [
@@ -447,7 +770,11 @@ def truncate_text(text: str, max_length: int = 200) -> str:
 
 
 async def fetch_feed(
-    session: aiohttp.ClientSession, url: str, source_name: str, category: str
+    session: aiohttp.ClientSession,
+    url: str,
+    source_name: str,
+    category: str,
+    source_country: Optional[str] = None,
 ) -> List[Dict]:
     """Récupérer et parser un flux RSS"""
     articles = []
@@ -480,10 +807,11 @@ async def fetch_feed(
                     # Nettoyer le titre aussi
                     title = html.unescape(title)
 
-                    # Détecter région et catégorie
+                    # Détecter région, catégorie et signaux éditoriaux prioritaires
                     full_text = f"{title} {summary}"
-                    region = detect_region(full_text)
+                    region = detect_region(full_text) if not source_country else region_from_country(source_country, full_text)
                     detected_category = detect_category(full_text, category)
+                    content_tags = detect_content_tags(full_text)
 
                     articles.append(
                         {
@@ -494,6 +822,9 @@ async def fetch_feed(
                             "source": source_name,
                             "category": detected_category,
                             "region": region,
+                            "country": source_country,
+                            "content_tags": content_tags,
+                            "content_priority": len(content_tags) > 0,
                             "published_at": (
                                 parse_date(pub_date).isoformat()
                                 if pub_date
@@ -517,7 +848,15 @@ async def fetch_all_news() -> List[Dict]:
 
         for source_key, source_config in RSS_FEEDS.items():
             for category, url in source_config["feeds"].items():
-                tasks.append(fetch_feed(session, url, source_config["name"], category))
+                tasks.append(
+                    fetch_feed(
+                        session,
+                        url,
+                        source_config["name"],
+                        category,
+                        source_config.get("country"),
+                    )
+                )
 
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
@@ -541,6 +880,8 @@ async def fetch_all_news() -> List[Dict]:
                 "is_structural_project": True,
                 "country": "DZA",
                 "priority": True,
+                "content_tags": ["development", "statistics"],
+                "content_priority": True,
             }
         )
 
@@ -553,36 +894,20 @@ async def fetch_all_news() -> List[Dict]:
             seen_titles.add(title_key)
             unique_articles.append(article)
 
-    # Trier: Priorité Algérie d'abord, puis par date
-    def sort_key(article):
-        is_algeria = (
-            "algérie" in article.get("title", "").lower()
-            or "algeria" in article.get("title", "").lower()
-            or article.get("country") == "DZA"
-            or article.get("priority", False)
-        )
-        # Priority: Algeria first (0), then others (1), then by date
-        priority = 0 if is_algeria else 1
-        return (priority, article.get("published_at", ""))
+    # Tri éditorial: projets structurants en tête, puis dépêches à forte valeur
+    # (statistiques / opportunités / développement / événements), puis le reste,
+    # chaque palier étant ordonné par date décroissante.
+    def sort_tier(article):
+        if article.get("priority", False):
+            return 0
+        if article.get("content_priority", False):
+            return 1
+        return 2
 
-    unique_articles.sort(key=sort_key, reverse=False)
-    # Reverse the date part but keep Algeria priority
-    unique_articles.sort(
-        key=lambda x: (
-            (
-                0
-                if (
-                    "algérie" in x.get("title", "").lower()
-                    or "algeria" in x.get("title", "").lower()
-                    or x.get("country") == "DZA"
-                    or x.get("priority", False)
-                )
-                else 1
-            ),
-            x.get("published_at", ""),
-        ),
-        reverse=True,
-    )
+    # Tri stable en deux passes: d'abord par date décroissante, puis par palier
+    # croissant — le tri stable préserve l'ordre par date à l'intérieur d'un palier.
+    unique_articles.sort(key=lambda a: a.get("published_at", ""), reverse=True)
+    unique_articles.sort(key=sort_tier)
 
     return unique_articles[:100]  # Limiter à 100 articles
 

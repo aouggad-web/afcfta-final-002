@@ -37,7 +37,7 @@ async def get_economic_news(
         news_data = await get_news(force_refresh=force_refresh)
         articles = news_data.get("articles", [])
 
-        # Filtrer par pays si spécifié
+        # Filtrer par pays si spécifié (tag source fiable + repli sur le titre)
         if country:
             country_upper = country.upper()
             articles = [
@@ -46,13 +46,6 @@ async def get_economic_news(
                 if (
                     a.get("country") == country_upper
                     or country.lower() in a.get("title", "").lower()
-                    or (
-                        country_upper == "DZA"
-                        and (
-                            "algérie" in a.get("title", "").lower()
-                            or "algeria" in a.get("title", "").lower()
-                        )
-                    )
                 )
             ]
 
