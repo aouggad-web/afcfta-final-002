@@ -8,6 +8,8 @@ from typing import Optional
 from etl.news_aggregator import (
     ALGERIA_STRUCTURAL_PROJECTS,
     COUNTRY_NAME_KEYWORDS,
+    balance_articles_by_country,
+    get_country_of_the_week,
     get_news,
     get_news_by_category,
     get_news_by_region,
@@ -58,6 +60,11 @@ async def get_economic_news(
         # Filtrer par catégorie si spécifié
         if category:
             articles = [a for a in articles if a.get("category", "").lower() == category.lower()]
+
+        # Équilibre éditorial: limiter le nombre de dépêches par pays pour éviter
+        # qu'un seul pays ne domine le fil principal (sauf filtrage explicite par pays)
+        if not country:
+            articles = balance_articles_by_country(articles)
 
         return {
             "success": True,
@@ -112,6 +119,31 @@ async def get_algeria_structural_projects(
         },
         "projects": projects,
     }
+
+
+@router.get("/country-of-the-week")
+async def get_country_of_the_week_route(force_refresh: bool = Query(False)):
+    """
+    Récupérer le "pays de la semaine" mis en avant dans le dashboard
+
+    Rotation hebdomadaire (basée sur le numéro de semaine ISO) parmi les pays
+    disposant d'une source dédiée. Met en avant les dépêches à forte valeur
+    éditoriale (statistiques, opportunités, développement) pour ce pays,
+    afin de faire ressortir ses points forts et ses perspectives.
+    """
+    try:
+        news_data = await get_news(force_refresh=force_refresh)
+        articles = news_data.get("articles", [])
+        spotlight = get_country_of_the_week(articles)
+
+        return {
+            "success": True,
+            "last_update": news_data.get("last_update"),
+            **spotlight,
+        }
+    except Exception as e:
+        logging.error(f"Erreur récupération pays de la semaine: {e}")
+        return {"success": False, "error": str(e)}
 
 
 @router.get("/by-region")
