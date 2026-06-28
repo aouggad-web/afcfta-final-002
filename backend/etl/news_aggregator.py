@@ -809,7 +809,11 @@ async def fetch_feed(
 
                     # Détecter région, catégorie et signaux éditoriaux prioritaires
                     full_text = f"{title} {summary}"
-                    region = detect_region(full_text) if not source_country else region_from_country(source_country, full_text)
+                    region = (
+                        detect_region(full_text)
+                        if not source_country
+                        else region_from_country(source_country, full_text)
+                    )
                     detected_category = detect_category(full_text, category)
                     content_tags = detect_content_tags(full_text)
 
