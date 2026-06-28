@@ -47,7 +47,8 @@ export default function SmartHSSearch({
       excluded: "Exclu",
       regionalContent: "Contenu régional",
       useCode: "Utiliser ce code",
-      viewDetails: "Voir les détails"
+      viewDetails: "Voir les détails",
+      alternativeRule: "Règle alternative"
     },
     en: {
       searchPlaceholder: "Search by code or keyword (e.g.: car, 870323, coffee)",
@@ -65,7 +66,8 @@ export default function SmartHSSearch({
       excluded: "Excluded",
       regionalContent: "Regional content",
       useCode: "Use this code",
-      viewDetails: "View details"
+      viewDetails: "View details",
+      alternativeRule: "Alternative rule"
     }
   };
 
@@ -449,7 +451,7 @@ export default function SmartHSSearch({
               )}
 
               {/* Rule of Origin */}
-              {ruleOfOrigin && ruleOfOrigin.rules && (
+              {ruleOfOrigin && ruleOfOrigin.rule && ruleOfOrigin.rules && (
                 <div>
                   <Separator className="my-3" />
                   <h4 className="text-xs font-semibold text-gray-600 mb-2">{t.ruleOfOrigin}</h4>
@@ -474,7 +476,7 @@ export default function SmartHSSearch({
                     )}
                     {ruleOfOrigin.rules.alternative_rule && (
                       <p className="text-xs text-gray-500">
-                        {language === 'fr' ? 'Alternative' : 'Alternative'}: {ruleOfOrigin.rules.alternative_rule.name}
+                        {t.alternativeRule}: {ruleOfOrigin.rules.alternative_rule.name}
                       </p>
                     )}
                   </div>

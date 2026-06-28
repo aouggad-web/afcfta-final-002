@@ -109,14 +109,26 @@ const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin
 };
 
 // ── Official Rules of Origin (backend dataset, not AI-generated) ─────────────
+// Module-level cache so opportunity cards sharing an HS6 code (or re-renders)
+// don't each fire their own request — this data is static per code+lang.
+const ruleOfOriginCache = new Map();
+
 const OfficialRuleOfOrigin = ({ hs6Code, lang }) => {
   const [rule, setRule] = useState(null);
 
   useEffect(() => {
     if (!hs6Code) return;
+    const cacheKey = `${hs6Code}|${lang}`;
+    if (ruleOfOriginCache.has(cacheKey)) {
+      setRule(ruleOfOriginCache.get(cacheKey));
+      return;
+    }
     let cancelled = false;
     axios.get(`${API}/rules-of-origin/${hs6Code}`, { params: { lang } })
-      .then(r => { if (!cancelled) setRule(r.data); })
+      .then(r => {
+        ruleOfOriginCache.set(cacheKey, r.data);
+        if (!cancelled) setRule(r.data);
+      })
       .catch(() => { if (!cancelled) setRule(null); });
     return () => { cancelled = true; };
   }, [hs6Code, lang]);

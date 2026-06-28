@@ -888,8 +888,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </div>
             )}
 
-            {/* Règle d'origine ZLECAf applicable au code sélectionné */}
-            {ruleOfOrigin && ruleOfOrigin.rules && (
+            {/* Règle d'origine ZLECAf applicable au code sélectionné.
+                hs_code is matched against the current input so a rule loaded
+                for a previous code (e.g. via Smart Search) never lingers
+                after the user switches to simple input or types a new code. */}
+            {ruleOfOrigin && ruleOfOrigin.rule && ruleOfOrigin.rules && ruleOfOrigin.hs_code === hsCode && (
               <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 space-y-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <span className="text-amber-300 text-xs font-semibold uppercase tracking-wide">
