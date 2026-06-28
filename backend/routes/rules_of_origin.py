@@ -43,12 +43,25 @@ def _rule_name(code: Optional[str], lang: str) -> str:
     return ORIGIN_TYPES.get(code, {}).get(lang, code)
 
 
+def _rule_explanation(code: Optional[str], lang: str) -> str:
+    """Plain-language explanation of what satisfying this rule code requires.
+
+    Distinct from `name`, which is just the rule's short label (e.g. "Changement
+    de Position Tarifaire") - this spells out the actual compliance test, since
+    the rule code/name alone doesn't tell a non-specialist what they need to do.
+    """
+    if not code:
+        return ""
+    return ORIGIN_TYPES.get(code, {}).get("explanation", {}).get(lang, "")
+
+
 def _build_rule_obj(code: Optional[str], lang: str) -> Optional[dict]:
     if not code:
         return None
     return {
         "code": code,
         "name": _rule_name(code, lang),
+        "explanation": _rule_explanation(code, lang),
     }
 
 
@@ -275,12 +288,14 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
             "primary_rule": {
                 "code": "YTB",
                 "type": "YTB",
-                "name": "En cours de négociation" if lang == "fr" else "Yet to be agreed",
+                "name": ORIGIN_TYPES.get("YTB", {}).get(lang)
+                or ("En cours de négociation" if lang == "fr" else "Yet to be agreed"),
                 "description": (
                     "Les règles pour ce produit sont encore en négociation"
                     if lang == "fr"
                     else "Rules for this product are still under negotiation"
                 ),
+                "explanation": _rule_explanation("YTB", lang),
             },
             "alternative_rule": None,
             "regional_content": None,
@@ -306,6 +321,7 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
             "type": primary_code,
             "name": _rule_name(primary_code, lang),
             "description": entry.get(f"description_{lang}") or entry.get("raw_fr", ""),
+            "explanation": _rule_explanation(primary_code, lang),
         },
         "alternative_rule": (
             {
@@ -313,6 +329,7 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
                 "type": alt_code,
                 "name": _rule_name(alt_code, lang),
                 "description": _rule_name(alt_code, lang),
+                "explanation": _rule_explanation(alt_code, lang),
             }
             if alt_code
             else None

@@ -92,6 +92,7 @@ def test_shape_matches_legacy_etl_consumers():
     assert "code" in result["primary_rule"]
     assert "name" in result["primary_rule"]
     assert "description" in result["primary_rule"]
+    assert "explanation" in result["primary_rule"]
 
 
 # --- Phase 2: HS6 granularity expansion regression tests -------------------
@@ -181,3 +182,51 @@ def test_empty_ytb_rule_text_normalized_to_a_determiner():
     assert roo.RULES_DATA["subheadings"]["620719"]["raw_fr"] == "À déterminer"
     result = roo.get_rule_of_origin("620719", "fr")
     assert result["primary_rule"]["code"] == "YTB"
+
+
+# --- Phase 3: plain-language rule explanations ------------------------------
+
+
+def test_every_origin_type_has_an_explanation_in_both_languages():
+    for code, entry in roo.ORIGIN_TYPES.items():
+        explanation = entry.get("explanation")
+        assert explanation, f"{code} is missing an explanation"
+        assert explanation.get("fr"), f"{code} is missing a French explanation"
+        assert explanation.get("en"), f"{code} is missing an English explanation"
+
+
+def test_get_rule_of_origin_includes_explanation_for_each_language():
+    result_fr = roo.get_rule_of_origin("620319", "fr")
+    assert result_fr["primary_rule"]["explanation"] == roo.ORIGIN_TYPES["CTH"]["explanation"]["fr"]
+
+    result_en = roo.get_rule_of_origin("620319", "en")
+    assert result_en["primary_rule"]["explanation"] == roo.ORIGIN_TYPES["CTH"]["explanation"]["en"]
+
+
+def test_explanation_absent_for_unknown_code_path():
+    result = roo.get_rule_of_origin("999999", "fr")
+    assert result["primary_rule"]["explanation"] == roo.ORIGIN_TYPES["YTB"]["explanation"]["fr"]
+
+
+def test_explanations_are_grounded_in_annexe_2_articles():
+    # Explanations cite the actual AfCFTA Annexe 2 sur les Règles d'Origine
+    # articles each rule code implements (art. 4-6), not generic textbook
+    # ROO phrasing, so the wording is traceable to the authoritative source.
+    grounding = {
+        "WO": "5",
+        "CTH": "6(1)(c)",
+        "CTSH": "6(1)(d)",
+        "VA": "6(1)(a)-(b)",
+        "VA60": "6(1)(a)-(b)",
+        "SP": "6(1)(e)",
+    }
+    for code, article_ref in grounding.items():
+        explanation = roo.ORIGIN_TYPES[code]["explanation"]["fr"]
+        assert article_ref in explanation, f"{code} explanation doesn't cite art. {article_ref}"
+        assert "Annexe 2" in explanation
+
+
+def test_va_threshold_explanation_states_the_specific_percentage():
+    result = roo.get_rule_of_origin("840100", "fr")
+    assert result["primary_rule"]["code"] == "VA60"
+    assert "60" in result["primary_rule"]["explanation"]
