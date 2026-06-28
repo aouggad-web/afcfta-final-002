@@ -7,6 +7,7 @@ from typing import Optional
 
 from etl.news_aggregator import (
     ALGERIA_STRUCTURAL_PROJECTS,
+    COUNTRY_NAME_KEYWORDS,
     get_news,
     get_news_by_category,
     get_news_by_region,
@@ -37,15 +38,16 @@ async def get_economic_news(
         news_data = await get_news(force_refresh=force_refresh)
         articles = news_data.get("articles", [])
 
-        # Filtrer par pays si spécifié (tag source fiable + repli sur le titre)
+        # Filtrer par pays si spécifié (tag source fiable + repli sur le nom du pays dans le titre)
         if country:
             country_upper = country.upper()
+            name_keywords = COUNTRY_NAME_KEYWORDS.get(country_upper, [])
             articles = [
                 a
                 for a in articles
                 if (
                     a.get("country") == country_upper
-                    or country.lower() in a.get("title", "").lower()
+                    or any(kw in a.get("title", "").lower() for kw in name_keywords)
                 )
             ]
 

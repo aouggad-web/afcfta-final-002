@@ -8,6 +8,7 @@ import asyncio
 import hashlib
 import json
 import os
+import re
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -544,9 +545,6 @@ CATEGORY_KEYWORDS = {
 # (statistiques chiffrées, opportunités d'affaires, projets de développement, événements)
 CONTENT_PRIORITY_KEYWORDS = {
     "statistics": {
-        "label_fr": "Statistiques",
-        "label_en": "Statistics",
-        "icon": "📊",
         "keywords": [
             "croissance",
             "growth",
@@ -573,9 +571,6 @@ CONTENT_PRIORITY_KEYWORDS = {
         ],
     },
     "opportunities": {
-        "label_fr": "Opportunités",
-        "label_en": "Opportunities",
-        "icon": "💡",
         "keywords": [
             "opportunité",
             "opportunity",
@@ -597,9 +592,6 @@ CONTENT_PRIORITY_KEYWORDS = {
         ],
     },
     "development": {
-        "label_fr": "Développement",
-        "label_en": "Development",
-        "icon": "🚀",
         "keywords": [
             "développement",
             "development",
@@ -623,9 +615,6 @@ CONTENT_PRIORITY_KEYWORDS = {
         ],
     },
     "events": {
-        "label_fr": "Événement",
-        "label_en": "Event",
-        "icon": "📅",
         "keywords": [
             "sommet",
             "summit",
@@ -723,12 +712,35 @@ COUNTRY_REGION_MAP = {
 }
 
 
+# Mots-clés (FR/EN) associés au nom de chaque pays, utilisés comme repli pour le
+# filtrage par pays quand un article n'est pas tagué avec son code ISO3 (ex: articles
+# panafricains mentionnant un pays dans leur titre).
+COUNTRY_NAME_KEYWORDS = {
+    "DZA": ["algérie", "algeria", "algérien", "algerian"],
+    "MAR": ["maroc", "morocco", "marocain", "moroccan"],
+    "TUN": ["tunisie", "tunisia", "tunisien", "tunisian"],
+    "EGY": ["égypte", "egypt", "égyptien", "egyptian"],
+    "NGA": ["nigéria", "nigeria", "nigérian", "nigerian"],
+    "GHA": ["ghana", "ghanéen", "ghanaian"],
+    "CIV": ["côte d'ivoire", "ivory coast", "ivoirien", "ivorian"],
+    "SEN": ["sénégal", "senegal", "sénégalais", "senegalese"],
+    "CMR": ["cameroun", "cameroon", "camerounais"],
+    "COD": ["congo", "rdc", "drc", "congolais", "congolese"],
+    "KEN": ["kenya", "kényan", "kenyan"],
+    "ETH": ["éthiopie", "ethiopia", "éthiopien", "ethiopian"],
+    "RWA": ["rwanda", "rwandais", "rwandan"],
+    "ZAF": ["afrique du sud", "south africa", "sud-africain", "south african"],
+    "AGO": ["angola", "angolais", "angolan"],
+    "MOZ": ["mozambique", "mozambicain"],
+}
+
+
 def region_from_country(country: str, text: str) -> str:
     """Région d'une source dédiée à un pays, avec repli sur la détection par mots-clés"""
-    detected = detect_region(text)
-    if detected != "Afrique":
-        return detected
-    return COUNTRY_REGION_MAP.get(country, "Afrique")
+    mapped = COUNTRY_REGION_MAP.get(country)
+    if mapped:
+        return mapped
+    return detect_region(text)
 
 
 def detect_content_tags(text: str) -> List[str]:
@@ -737,7 +749,11 @@ def detect_content_tags(text: str) -> List[str]:
     tags = []
     for tag, config in CONTENT_PRIORITY_KEYWORDS.items():
         for keyword in config["keywords"]:
-            if keyword in text_lower:
+            if keyword == "%":
+                pattern = re.escape(keyword)
+            else:
+                pattern = r"\b" + re.escape(keyword) + r"\b"
+            if re.search(pattern, text_lower):
                 tags.append(tag)
                 break
     return tags
@@ -785,6 +801,7 @@ async def fetch_feed(
     source_name: str,
     category: str,
     source_country: Optional[str] = None,
+    source_priority: bool = False,
 ) -> List[Dict]:
     """Récupérer et parser un flux RSS"""
     articles = []
@@ -808,7 +825,6 @@ async def fetch_feed(
 
                     # Nettoyer le résumé (enlever HTML et décoder entités)
                     import html
-                    import re
 
                     summary = re.sub(r"<[^>]+>", "", summary)
                     summary = html.unescape(summary)
@@ -837,6 +853,7 @@ async def fetch_feed(
                             "category": detected_category,
                             "region": region,
                             "country": source_country,
+                            "priority": source_priority,
                             "content_tags": content_tags,
                             "content_priority": len(content_tags) > 0,
                             "published_at": (
@@ -869,6 +886,7 @@ async def fetch_all_news() -> List[Dict]:
                         source_config["name"],
                         category,
                         source_config.get("country"),
+                        source_config.get("priority", False),
                     )
                 )
 
