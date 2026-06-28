@@ -58,9 +58,9 @@ RSS_FEEDS = {
         "logo": "📰",
     },
     "the_africa_report": {
-        "name": "The Africa Report / Jeune Afrique",
+        "name": "The Africa Report",
         "feeds": {
-            "business": "https://news.google.com/rss/search?q=site:theafricareport.com+OR+site:jeuneafrique.com&hl=fr",
+            "business": "https://news.google.com/rss/search?q=site:theafricareport.com&hl=fr",
         },
         "language": "multi",
         "logo": "🌍",
@@ -82,6 +82,16 @@ RSS_FEEDS = {
             "industry_dz": "https://news.google.com/rss/search?q=algeria+industry+manufacturing&hl=en",
         },
         "language": "multi",
+        "logo": "🇩🇿",
+        "priority": True,
+    },
+    "algeria_local": {
+        "name": "APS / El Watan / Liberté / TSA",
+        "country": "DZA",
+        "feeds": {
+            "economie": "https://news.google.com/rss/search?q=site:aps.dz+OR+site:elwatan.com+OR+site:liberte-algerie.com+OR+site:tsa-algerie.com&hl=fr",
+        },
+        "language": "fr",
         "logo": "🇩🇿",
         "priority": True,
     },
