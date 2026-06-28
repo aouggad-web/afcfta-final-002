@@ -138,8 +138,17 @@ export default function SmartHSSearch({
         }
       });
       setSuggestions(response.data);
+    } catch (error) {
+      console.error('Error loading suggestions:', error);
+    }
 
-      // Also load rule of origin
+    // Load rule of origin in its own try/catch so a failure here
+    // does not leave stale data displayed and always notifies the caller.
+    setRuleOfOrigin(null);
+    if (onRuleOfOriginLoad) {
+      onRuleOfOriginLoad(null);
+    }
+    try {
       const ruleResponse = await axios.get(`${API}/rules-of-origin/${hsCode}`, {
         params: { lang: language }
       });
@@ -148,7 +157,7 @@ export default function SmartHSSearch({
         onRuleOfOriginLoad(ruleResponse.data);
       }
     } catch (error) {
-      console.error('Error loading suggestions:', error);
+      console.error('Error loading rule of origin:', error);
     }
   };
 
