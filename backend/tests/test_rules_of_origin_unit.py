@@ -203,7 +203,7 @@ def test_get_rule_of_origin_includes_explanation_for_each_language():
     assert result_en["primary_rule"]["explanation"] == roo.ORIGIN_TYPES["CTH"]["explanation"]["en"]
 
 
-def test_explanation_present_for_unknown_code_path():
+def test_explanation_absent_for_unknown_code_path():
     result = roo.get_rule_of_origin("999999", "fr")
     assert result["primary_rule"]["explanation"] == roo.ORIGIN_TYPES["YTB"]["explanation"]["fr"]
 
