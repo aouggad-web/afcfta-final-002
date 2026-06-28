@@ -76,7 +76,7 @@ const HSBadge = ({ product }) => {
 };
 
 // ── Advantage Metrics strip ───────────────────────────────────────────────────
-const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin, lang }) => {
+const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin, hs6Code, lang }) => {
   if (!leadTimeSavings && !priceCompetitiveness && !rulesOfOrigin) return null;
   return (
     <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[var(--afcfta-border)] text-center text-[11px]">
@@ -101,8 +101,51 @@ const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin
             <span className="font-medium">{lang === 'fr' ? 'Règles d\'origine ZLECAf' : 'AfCFTA Rules of Origin'}:</span>
           </div>
           <span className="text-[var(--text)] text-[11px] leading-tight">{rulesOfOrigin}</span>
+          <OfficialRuleOfOrigin hs6Code={hs6Code} lang={lang} />
         </div>
       )}
+    </div>
+  );
+};
+
+// ── Official Rules of Origin (backend dataset, not AI-generated) ─────────────
+const OfficialRuleOfOrigin = ({ hs6Code, lang }) => {
+  const [rule, setRule] = useState(null);
+
+  useEffect(() => {
+    if (!hs6Code) return;
+    let cancelled = false;
+    axios.get(`${API}/rules-of-origin/${hs6Code}`, { params: { lang } })
+      .then(r => { if (!cancelled) setRule(r.data); })
+      .catch(() => { if (!cancelled) setRule(null); });
+    return () => { cancelled = true; };
+  }, [hs6Code, lang]);
+
+  const primaryRule = rule?.rules?.primary_rule;
+  if (!primaryRule || !primaryRule.explanation) return null;
+
+  return (
+    <div style={{
+      marginTop: 6,
+      padding: '8px 10px',
+      background: 'rgba(26,122,74,0.06)',
+      border: '1px solid rgba(26,122,74,0.15)',
+      borderRadius: 6,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+        <ShieldCheck style={{ width: 11, height: 11, color: 'var(--green)', flexShrink: 0 }} />
+        <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--green)' }}>
+          {primaryRule.name || primaryRule.code}
+        </span>
+        {rule.status === 'YTB' && (
+          <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--gold)' }}>
+            {lang === 'fr' ? '· en négociation' : '· under negotiation'}
+          </span>
+        )}
+      </div>
+      <p style={{ fontSize: 11, color: 'var(--afcfta-muted)', lineHeight: 1.4, margin: 0 }}>
+        {primaryRule.explanation}
+      </p>
     </div>
   );
 };
@@ -593,6 +636,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
         leadTimeSavings={leadTimeSavings}
         priceCompetitiveness={priceComp}
         rulesOfOrigin={roo}
+        hs6Code={product.hs6Code || product.hs_code}
         lang={lang}
       />
 

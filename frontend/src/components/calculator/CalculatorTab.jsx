@@ -887,7 +887,41 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <span className="text-slate-400 text-xs line-clamp-1">{selectedSubPositionDesc}</span>
               </div>
             )}
-            
+
+            {/* Règle d'origine ZLECAf applicable au code sélectionné */}
+            {ruleOfOrigin && ruleOfOrigin.rules && (
+              <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 space-y-2">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <span className="text-amber-300 text-xs font-semibold uppercase tracking-wide">
+                    {language === 'fr' ? "Règle d'origine ZLECAf" : 'AfCFTA Rule of Origin'}
+                  </span>
+                  <Badge className="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs">
+                    {ruleOfOrigin.rules.primary_rule?.name || ruleOfOrigin.rules.primary_rule?.code}
+                  </Badge>
+                  {ruleOfOrigin.rules.regional_content != null && (
+                    <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs">
+                      {language === 'fr' ? 'Contenu régional' : 'Regional content'}: {ruleOfOrigin.rules.regional_content}%
+                    </Badge>
+                  )}
+                  {ruleOfOrigin.status === 'YTB' && (
+                    <Badge className="bg-orange-500/20 text-orange-300 border border-orange-500/30 text-xs">
+                      {language === 'fr' ? 'En négociation' : 'Under negotiation'}
+                    </Badge>
+                  )}
+                </div>
+                {ruleOfOrigin.rules.primary_rule?.explanation && (
+                  <p className="text-slate-300 text-xs leading-relaxed">
+                    {ruleOfOrigin.rules.primary_rule.explanation}
+                  </p>
+                )}
+                {ruleOfOrigin.rules.alternative_rule && (
+                  <p className="text-slate-500 text-xs">
+                    {language === 'fr' ? 'Règle alternative' : 'Alternative rule'}: {ruleOfOrigin.rules.alternative_rule.name}
+                  </p>
+                )}
+              </div>
+            )}
+
             <Button
               type="button"
               variant="outline"
