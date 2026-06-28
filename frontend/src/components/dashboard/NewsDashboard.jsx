@@ -64,6 +64,8 @@ const translations = {
     daysAgo: 'il y a {days} jours',
     strategicHeadline: 'Lecture stratégique du flux économique africain',
     strategicLead: "Surveillance des signaux commerce, finance, énergie, infrastructures et chaînes d'approvisionnement.",
+    countryOfWeek: 'Pays de la semaine',
+    countryOfWeekLead: 'Points forts et perspectives',
     footer:
       'Actualités agrégées depuis Agence Ecofin, AllAfrica et flux associés. Les articles complets restent consultables sur les sites sources.',
   },
@@ -87,6 +89,8 @@ const translations = {
     daysAgo: '{days} days ago',
     strategicHeadline: 'Strategic reading of the African economic feed',
     strategicLead: 'Monitoring trade, finance, energy, infrastructure and supply-chain signals.',
+    countryOfWeek: 'Country of the week',
+    countryOfWeekLead: 'Strengths and prospects',
     footer:
       'News aggregated from Agence Ecofin, AllAfrica and related feeds. Full articles remain available on source websites.',
   },
@@ -272,8 +276,46 @@ const CategorySection = ({ category, articles, t, language }) => {
   );
 };
 
+const CountrySpotlight = ({ spotlight, t, language }) => {
+  if (!spotlight || !spotlight.country) return null;
+  const countryName = language === 'fr' ? spotlight.country_name_fr : spotlight.country_name_en;
+
+  return (
+    <section
+      className="rounded-2xl border p-4 md:p-5"
+      style={{
+        background:
+          'linear-gradient(135deg, rgba(212,137,26,0.10), rgba(255,255,255,0.02))',
+        borderColor: 'rgba(212,137,26,0.22)',
+      }}
+    >
+      <div className="flex items-center gap-3 mb-4 flex-wrap">
+        <span className="text-3xl">{spotlight.flag}</span>
+        <div>
+          <div className="text-xs uppercase tracking-wide font-bold text-[var(--gold)]">
+            {t.countryOfWeek}
+          </div>
+          <h4 className="text-xl font-bold text-[var(--text)]">{countryName}</h4>
+          <p className="text-xs text-[var(--afcfta-muted)]">{t.countryOfWeekLead}</p>
+        </div>
+      </div>
+
+      {spotlight.highlights.length === 0 ? (
+        <p className="text-sm text-[var(--afcfta-muted)]">{t.noArticles}</p>
+      ) : (
+        <div className="grid gap-3">
+          {spotlight.highlights.map((article) => (
+            <ArticleCard key={article.id} article={article} t={t} language={language} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+};
+
 const NewsDashboard = ({ language = 'fr' }) => {
   const [news, setNews] = useState({ articles: [], by_region: {}, by_category: {} });
+  const [countryOfWeek, setCountryOfWeek] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastUpdate, setLastUpdate] = useState(null);
@@ -303,6 +345,16 @@ const NewsDashboard = ({ language = 'fr' }) => {
       });
       setLastUpdate(allNews.last_update);
       setError(null);
+
+      // Le spotlight est secondaire: une panne de cet appel ne doit pas
+      // empêcher l'affichage du fil principal.
+      fetch(`${API}/news/country-of-the-week?force_refresh=${forceRefresh}`)
+        .then((r) => r.json())
+        .then((spotlight) => setCountryOfWeek(spotlight.success ? spotlight : null))
+        .catch((err) => {
+          console.error('Error fetching country of the week:', err);
+          setCountryOfWeek(null);
+        });
     } catch (err) {
       console.error('Error fetching news:', err);
       setError(err.message);
@@ -425,6 +477,8 @@ const NewsDashboard = ({ language = 'fr' }) => {
           </div>
         </div>
       </div>
+
+      <CountrySpotlight spotlight={countryOfWeek} t={t} language={language} />
 
       {featuredArticles.length > 0 && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">

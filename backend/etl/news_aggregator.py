@@ -734,6 +734,30 @@ COUNTRY_NAME_KEYWORDS = {
     "MOZ": ["mozambique", "mozambicain"],
 }
 
+# Noms d'affichage (FR/EN) et drapeau pour chaque pays disposant d'une source dédiée,
+# utilisés pour le "pays de la semaine" mis en avant dans le dashboard.
+COUNTRY_DISPLAY_NAMES = {
+    "DZA": ("Algérie", "Algeria", "🇩🇿"),
+    "MAR": ("Maroc", "Morocco", "🇲🇦"),
+    "TUN": ("Tunisie", "Tunisia", "🇹🇳"),
+    "EGY": ("Égypte", "Egypt", "🇪🇬"),
+    "NGA": ("Nigéria", "Nigeria", "🇳🇬"),
+    "GHA": ("Ghana", "Ghana", "🇬🇭"),
+    "CIV": ("Côte d'Ivoire", "Côte d'Ivoire", "🇨🇮"),
+    "SEN": ("Sénégal", "Senegal", "🇸🇳"),
+    "CMR": ("Cameroun", "Cameroon", "🇨🇲"),
+    "COD": ("RD Congo", "DR Congo", "🇨🇩"),
+    "KEN": ("Kenya", "Kenya", "🇰🇪"),
+    "ETH": ("Éthiopie", "Ethiopia", "🇪🇹"),
+    "RWA": ("Rwanda", "Rwanda", "🇷🇼"),
+    "ZAF": ("Afrique du Sud", "South Africa", "🇿🇦"),
+    "AGO": ("Angola", "Angola", "🇦🇴"),
+    "MOZ": ("Mozambique", "Mozambique", "🇲🇿"),
+}
+
+# Liste de rotation pour le "pays de la semaine" (ordre fixe, indexé par numéro de semaine ISO)
+COUNTRY_OF_WEEK_ROTATION = list(COUNTRY_DISPLAY_NAMES.keys())
+
 
 def region_from_country(country: str, text: str) -> str:
     """Région d'une source dédiée à un pays, avec repli sur la détection par mots-clés"""
@@ -942,6 +966,49 @@ async def fetch_all_news() -> List[Dict]:
     unique_articles.sort(key=sort_tier)
 
     return unique_articles[:100]  # Limiter à 100 articles
+
+
+def balance_articles_by_country(articles: List[Dict], max_per_country: int = 2) -> List[Dict]:
+    """Limiter le nombre de dépêches par pays dans le fil principal, afin de préserver
+    l'équilibre éditorial (éviter qu'un pays fortement prioritaire comme l'Algérie ne
+    domine le fil au détriment des autres) et de mettre en valeur les progrès et
+    opportunités d'amélioration du climat des affaires à l'échelle du continent."""
+    country_counts: Dict[str, int] = {}
+    balanced = []
+    for article in articles:
+        country = article.get("country")
+        if country:
+            count = country_counts.get(country, 0)
+            if count >= max_per_country:
+                continue
+            country_counts[country] = count + 1
+        balanced.append(article)
+    return balanced
+
+
+def get_country_of_the_week(articles: List[Dict], week_number: Optional[int] = None) -> Dict:
+    """Sélectionner le "pays de la semaine" (rotation hebdomadaire) et ses dépêches les
+    plus marquantes, en mettant en avant points forts et perspectives (priorité aux
+    dépêches taguées développement/opportunités/statistiques)."""
+    if week_number is None:
+        week_number = datetime.now().isocalendar()[1]
+
+    country = COUNTRY_OF_WEEK_ROTATION[(int(week_number) - 1) % len(COUNTRY_OF_WEEK_ROTATION)]
+    name_fr, name_en, flag = COUNTRY_DISPLAY_NAMES.get(country, (country, country, "🌍"))
+
+    country_articles = [a for a in articles if a.get("country") == country]
+    highlights = [a for a in country_articles if a.get("content_priority")]
+    if not highlights:
+        highlights = country_articles
+
+    return {
+        "country": country,
+        "country_name_fr": name_fr,
+        "country_name_en": name_en,
+        "flag": flag,
+        "week_number": week_number,
+        "highlights": highlights[:5],
+    }
 
 
 def load_cache() -> Dict:
