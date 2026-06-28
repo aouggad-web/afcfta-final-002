@@ -332,11 +332,10 @@ const NewsDashboard = ({ language = 'fr' }) => {
       if (forceRefresh) setRefreshing(true);
       else setLoading(true);
 
-      const [allNews, byRegion, byCategory, spotlight] = await Promise.all([
+      const [allNews, byRegion, byCategory] = await Promise.all([
         fetch(`${API}/news?force_refresh=${forceRefresh}`).then((r) => r.json()),
         fetch(`${API}/news/by-region?force_refresh=${forceRefresh}`).then((r) => r.json()),
         fetch(`${API}/news/by-category?force_refresh=${forceRefresh}`).then((r) => r.json()),
-        fetch(`${API}/news/country-of-the-week?force_refresh=${forceRefresh}`).then((r) => r.json()),
       ]);
 
       setNews({
@@ -344,9 +343,18 @@ const NewsDashboard = ({ language = 'fr' }) => {
         by_region: byRegion.articles_by_region || {},
         by_category: byCategory.articles_by_category || {},
       });
-      setCountryOfWeek(spotlight.success ? spotlight : null);
       setLastUpdate(allNews.last_update);
       setError(null);
+
+      // Le spotlight est secondaire: une panne de cet appel ne doit pas
+      // empêcher l'affichage du fil principal.
+      fetch(`${API}/news/country-of-the-week?force_refresh=${forceRefresh}`)
+        .then((r) => r.json())
+        .then((spotlight) => setCountryOfWeek(spotlight.success ? spotlight : null))
+        .catch((err) => {
+          console.error('Error fetching country of the week:', err);
+          setCountryOfWeek(null);
+        });
     } catch (err) {
       console.error('Error fetching news:', err);
       setError(err.message);

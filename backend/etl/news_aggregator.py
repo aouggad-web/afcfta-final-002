@@ -993,7 +993,7 @@ def get_country_of_the_week(articles: List[Dict], week_number: Optional[int] = N
     if week_number is None:
         week_number = datetime.now().isocalendar()[1]
 
-    country = COUNTRY_OF_WEEK_ROTATION[week_number % len(COUNTRY_OF_WEEK_ROTATION)]
+    country = COUNTRY_OF_WEEK_ROTATION[(int(week_number) - 1) % len(COUNTRY_OF_WEEK_ROTATION)]
     name_fr, name_en, flag = COUNTRY_DISPLAY_NAMES.get(country, (country, country, "🌍"))
 
     country_articles = [a for a in articles if a.get("country") == country]
