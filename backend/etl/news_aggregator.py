@@ -15,6 +15,7 @@ from typing import Dict, List, Optional
 
 import aiohttp
 import feedparser
+from country_data import REAL_COUNTRY_DATA
 
 # Configuration des flux RSS
 # Chaque source pan-africaine couvre tout le continent ; les sources "pays" utilisent
@@ -690,25 +691,59 @@ def detect_category(text: str, feed_category: str = "") -> str:
 # mais que le texte de l'article ne mentionne pas explicitement son nom.
 COUNTRY_REGION_MAP = {
     "DZA": "Afrique du Nord",
-    "MAR": "Afrique du Nord",
-    "TUN": "Afrique du Nord",
-    "EGY": "Afrique du Nord",
-    "LBY": "Afrique du Nord",
-    "MRT": "Afrique du Nord",
-    "NGA": "Afrique de l'Ouest",
-    "GHA": "Afrique de l'Ouest",
-    "CIV": "Afrique de l'Ouest",
-    "SEN": "Afrique de l'Ouest",
-    "CMR": "Afrique Centrale",
-    "COD": "Afrique Centrale",
-    "GAB": "Afrique Centrale",
-    "KEN": "Afrique de l'Est",
-    "ETH": "Afrique de l'Est",
-    "RWA": "Afrique de l'Est",
-    "TZA": "Afrique de l'Est",
-    "ZAF": "Afrique Australe",
     "AGO": "Afrique Australe",
+    "BEN": "Afrique de l'Ouest",
+    "BWA": "Afrique Australe",
+    "BFA": "Afrique de l'Ouest",
+    "BDI": "Afrique de l'Est",
+    "CPV": "Afrique de l'Ouest",
+    "CMR": "Afrique Centrale",
+    "CAF": "Afrique Centrale",
+    "TCD": "Afrique Centrale",
+    "COM": "Afrique de l'Est",
+    "COG": "Afrique Centrale",
+    "COD": "Afrique Centrale",
+    "CIV": "Afrique de l'Ouest",
+    "DJI": "Afrique de l'Est",
+    "EGY": "Afrique du Nord",
+    "GNQ": "Afrique Centrale",
+    "ERI": "Afrique de l'Est",
+    "SWZ": "Afrique Australe",
+    "ETH": "Afrique de l'Est",
+    "GAB": "Afrique Centrale",
+    "GMB": "Afrique de l'Ouest",
+    "GHA": "Afrique de l'Ouest",
+    "GIN": "Afrique de l'Ouest",
+    "GNB": "Afrique de l'Ouest",
+    "KEN": "Afrique de l'Est",
+    "LSO": "Afrique Australe",
+    "LBR": "Afrique de l'Ouest",
+    "LBY": "Afrique du Nord",
+    "MDG": "Afrique de l'Est",
+    "MWI": "Afrique Australe",
+    "MLI": "Afrique de l'Ouest",
+    "MRT": "Afrique de l'Ouest",
+    "MUS": "Afrique de l'Est",
+    "MAR": "Afrique du Nord",
     "MOZ": "Afrique Australe",
+    "NAM": "Afrique Australe",
+    "NER": "Afrique de l'Ouest",
+    "NGA": "Afrique de l'Ouest",
+    "RWA": "Afrique de l'Est",
+    "STP": "Afrique Centrale",
+    "SEN": "Afrique de l'Ouest",
+    "SYC": "Afrique de l'Est",
+    "SLE": "Afrique de l'Ouest",
+    "SOM": "Afrique de l'Est",
+    "ZAF": "Afrique Australe",
+    "SSD": "Afrique de l'Est",
+    "SDN": "Afrique du Nord",
+    "TZA": "Afrique de l'Est",
+    "TGO": "Afrique de l'Ouest",
+    "TUN": "Afrique du Nord",
+    "UGA": "Afrique de l'Est",
+    "ZMB": "Afrique Australe",
+    "ZWE": "Afrique Australe",
 }
 
 
@@ -716,208 +751,209 @@ COUNTRY_REGION_MAP = {
 # filtrage par pays quand un article n'est pas tagué avec son code ISO3 (ex: articles
 # panafricains mentionnant un pays dans leur titre).
 COUNTRY_NAME_KEYWORDS = {
-    "DZA": ["algérie", "algeria", "algérien", "algerian"],
-    "MAR": ["maroc", "morocco", "marocain", "moroccan"],
-    "TUN": ["tunisie", "tunisia", "tunisien", "tunisian"],
-    "EGY": ["égypte", "egypt", "égyptien", "egyptian"],
-    "NGA": ["nigéria", "nigeria", "nigérian", "nigerian"],
-    "GHA": ["ghana", "ghanéen", "ghanaian"],
-    "CIV": ["côte d'ivoire", "ivory coast", "ivoirien", "ivorian"],
-    "SEN": ["sénégal", "senegal", "sénégalais", "senegalese"],
-    "CMR": ["cameroun", "cameroon", "camerounais"],
-    "COD": ["congo", "rdc", "drc", "congolais", "congolese"],
-    "KEN": ["kenya", "kényan", "kenyan"],
-    "ETH": ["éthiopie", "ethiopia", "éthiopien", "ethiopian"],
-    "RWA": ["rwanda", "rwandais", "rwandan"],
-    "ZAF": ["afrique du sud", "south africa", "sud-africain", "south african"],
-    "AGO": ["angola", "angolais", "angolan"],
-    "MOZ": ["mozambique", "mozambicain"],
+    "DZA": ["algeria", "algérie"],
+    "AGO": ["angola"],
+    "BEN": ["benin", "bénin"],
+    "BWA": ["botswana"],
+    "BFA": ["burkina faso"],
+    "BDI": ["burundi"],
+    "CPV": ["cap-vert", "cape verde"],
+    "CMR": ["cameroon", "cameroun"],
+    "CAF": ["central african republic", "république centrafricaine"],
+    "TCD": ["chad", "tchad"],
+    "COM": ["comores", "comoros"],
+    "COG": ["republic of the congo", "république du congo"],
+    "COD": ["democratic republic of the congo", "rdc", "drc", "république démocratique du congo"],
+    "CIV": ["côte d'ivoire", "ivory coast"],
+    "DJI": ["djibouti"],
+    "EGY": ["egypt", "égypte"],
+    "GNQ": ["equatorial guinea", "guinée équatoriale"],
+    "ERI": ["eritrea", "érythrée"],
+    "SWZ": ["eswatini"],
+    "ETH": ["ethiopia", "éthiopie"],
+    "GAB": ["gabon"],
+    "GMB": ["gambia", "gambie"],
+    "GHA": ["ghana"],
+    "GIN": ["guinea", "guinée"],
+    "GNB": ["guinea-bissau", "guinée-bissau"],
+    "KEN": ["kenya"],
+    "LSO": ["lesotho"],
+    "LBR": ["liberia", "libéria"],
+    "LBY": ["libya", "libye"],
+    "MDG": ["madagascar"],
+    "MWI": ["malawi"],
+    "MLI": ["mali"],
+    "MRT": ["mauritania", "mauritanie"],
+    "MUS": ["maurice", "mauritius"],
+    "MAR": ["maroc", "morocco"],
+    "MOZ": ["mozambique"],
+    "NAM": ["namibia", "namibie"],
+    "NER": ["niger"],
+    "NGA": ["nigeria", "nigéria"],
+    "RWA": ["rwanda"],
+    "STP": ["são tomé and príncipe", "são tomé-et-príncipe"],
+    "SEN": ["senegal", "sénégal"],
+    "SYC": ["seychelles"],
+    "SLE": ["sierra leone"],
+    "SOM": ["somalia", "somalie"],
+    "ZAF": ["afrique du sud", "south africa"],
+    "SSD": ["soudan du sud", "south sudan"],
+    "SDN": ["soudan", "sudan"],
+    "TZA": ["tanzania", "tanzanie"],
+    "TGO": ["togo"],
+    "TUN": ["tunisia", "tunisie"],
+    "UGA": ["ouganda", "uganda"],
+    "ZMB": ["zambia", "zambie"],
+    "ZWE": ["zimbabwe"],
 }
 
 # Noms d'affichage (FR/EN) et drapeau pour chaque pays disposant d'une source dédiée,
 # utilisés pour le "pays de la semaine" mis en avant dans le dashboard.
 COUNTRY_DISPLAY_NAMES = {
     "DZA": ("Algérie", "Algeria", "🇩🇿"),
-    "MAR": ("Maroc", "Morocco", "🇲🇦"),
-    "TUN": ("Tunisie", "Tunisia", "🇹🇳"),
-    "EGY": ("Égypte", "Egypt", "🇪🇬"),
-    "NGA": ("Nigéria", "Nigeria", "🇳🇬"),
-    "GHA": ("Ghana", "Ghana", "🇬🇭"),
-    "CIV": ("Côte d'Ivoire", "Côte d'Ivoire", "🇨🇮"),
-    "SEN": ("Sénégal", "Senegal", "🇸🇳"),
-    "CMR": ("Cameroun", "Cameroon", "🇨🇲"),
-    "COD": ("RD Congo", "DR Congo", "🇨🇩"),
-    "KEN": ("Kenya", "Kenya", "🇰🇪"),
-    "ETH": ("Éthiopie", "Ethiopia", "🇪🇹"),
-    "RWA": ("Rwanda", "Rwanda", "🇷🇼"),
-    "ZAF": ("Afrique du Sud", "South Africa", "🇿🇦"),
     "AGO": ("Angola", "Angola", "🇦🇴"),
+    "BEN": ("Bénin", "Benin", "🇧🇯"),
+    "BWA": ("Botswana", "Botswana", "🇧🇼"),
+    "BFA": ("Burkina Faso", "Burkina Faso", "🇧🇫"),
+    "BDI": ("Burundi", "Burundi", "🇧🇮"),
+    "CPV": ("Cap-Vert", "Cape Verde", "🇨🇻"),
+    "CMR": ("Cameroun", "Cameroon", "🇨🇲"),
+    "CAF": ("République Centrafricaine", "Central African Republic", "🇨🇫"),
+    "TCD": ("Tchad", "Chad", "🇹🇩"),
+    "COM": ("Comores", "Comoros", "🇰🇲"),
+    "COG": ("République du Congo", "Republic of the Congo", "🇨🇬"),
+    "COD": ("RD Congo", "DR Congo", "🇨🇩"),
+    "CIV": ("Côte d'Ivoire", "Côte d'Ivoire", "🇨🇮"),
+    "DJI": ("Djibouti", "Djibouti", "🇩🇯"),
+    "EGY": ("Égypte", "Egypt", "🇪🇬"),
+    "GNQ": ("Guinée Équatoriale", "Equatorial Guinea", "🇬🇶"),
+    "ERI": ("Érythrée", "Eritrea", "🇪🇷"),
+    "SWZ": ("Eswatini", "Eswatini", "🇸🇿"),
+    "ETH": ("Éthiopie", "Ethiopia", "🇪🇹"),
+    "GAB": ("Gabon", "Gabon", "🇬🇦"),
+    "GMB": ("Gambie", "Gambia", "🇬🇲"),
+    "GHA": ("Ghana", "Ghana", "🇬🇭"),
+    "GIN": ("Guinée", "Guinea", "🇬🇳"),
+    "GNB": ("Guinée-Bissau", "Guinea-Bissau", "🇬🇼"),
+    "KEN": ("Kenya", "Kenya", "🇰🇪"),
+    "LSO": ("Lesotho", "Lesotho", "🇱🇸"),
+    "LBR": ("Libéria", "Liberia", "🇱🇷"),
+    "LBY": ("Libye", "Libya", "🇱🇾"),
+    "MDG": ("Madagascar", "Madagascar", "🇲🇬"),
+    "MWI": ("Malawi", "Malawi", "🇲🇼"),
+    "MLI": ("Mali", "Mali", "🇲🇱"),
+    "MRT": ("Mauritanie", "Mauritania", "🇲🇷"),
+    "MUS": ("Maurice", "Mauritius", "🇲🇺"),
+    "MAR": ("Maroc", "Morocco", "🇲🇦"),
     "MOZ": ("Mozambique", "Mozambique", "🇲🇿"),
+    "NAM": ("Namibie", "Namibia", "🇳🇦"),
+    "NER": ("Niger", "Niger", "🇳🇪"),
+    "NGA": ("Nigéria", "Nigeria", "🇳🇬"),
+    "RWA": ("Rwanda", "Rwanda", "🇷🇼"),
+    "STP": ("São Tomé-et-Príncipe", "São Tomé and Príncipe", "🇸🇹"),
+    "SEN": ("Sénégal", "Senegal", "🇸🇳"),
+    "SYC": ("Seychelles", "Seychelles", "🇸🇨"),
+    "SLE": ("Sierra Leone", "Sierra Leone", "🇸🇱"),
+    "SOM": ("Somalie", "Somalia", "🇸🇴"),
+    "ZAF": ("Afrique du Sud", "South Africa", "🇿🇦"),
+    "SSD": ("Soudan du Sud", "South Sudan", "🇸🇸"),
+    "SDN": ("Soudan", "Sudan", "🇸🇩"),
+    "TZA": ("Tanzanie", "Tanzania", "🇹🇿"),
+    "TGO": ("Togo", "Togo", "🇹🇬"),
+    "TUN": ("Tunisie", "Tunisia", "🇹🇳"),
+    "UGA": ("Ouganda", "Uganda", "🇺🇬"),
+    "ZMB": ("Zambie", "Zambia", "🇿🇲"),
+    "ZWE": ("Zimbabwe", "Zimbabwe", "🇿🇼"),
 }
 
 # Liste de rotation pour le "pays de la semaine" (ordre fixe, indexé par numéro de semaine ISO)
 COUNTRY_OF_WEEK_ROTATION = list(COUNTRY_DISPLAY_NAMES.keys())
 
-# Court profil éditorial (FR/EN) pour chaque pays mis en avant: points forts et
-# perspectives économiques, en lien avec le commerce intra-africain et la ZLECAf.
-COUNTRY_SPOTLIGHT_PROFILES = {
-    "DZA": {
-        "fr": "L'Algérie s'appuie sur ses vastes réserves d'hydrocarbures et sur des "
-        "projets structurants majeurs (Gara Djebilet, phosphates de Tébessa, port "
-        "d'El Hamdania) pour diversifier son économie vers les mines, l'industrie et "
-        "l'énergie renouvelable. Ses perspectives reposent sur le développement d'un "
-        "hub logistique et industriel transsaharien, au service du commerce intra-africain.",
-        "en": "Algeria leverages its vast hydrocarbon reserves and major structural "
-        "projects (Gara Djebilet, Tébessa phosphates, El Hamdania port) to diversify "
-        "into mining, industry and renewable energy. Its outlook centers on becoming a "
-        "trans-Saharan logistics and industrial hub serving intra-African trade.",
-    },
-    "MAR": {
-        "fr": "Le Maroc dispose d'une économie diversifiée (automobile, aéronautique, "
-        "phosphates, textile, tourisme) et d'infrastructures portuaires de premier plan "
-        "comme Tanger Med. Ses perspectives s'orientent vers l'énergie renouvelable et "
-        "le renforcement de son rôle de plateforme entre l'Afrique, l'Europe et "
-        "l'Atlantique.",
-        "en": "Morocco has a diversified economy (automotive, aerospace, phosphates, "
-        "textiles, tourism) and leading port infrastructure such as Tanger Med. Its "
-        "outlook centers on renewable energy growth and strengthening its role as a "
-        "gateway between Africa, Europe and the Atlantic.",
-    },
-    "TUN": {
-        "fr": "La Tunisie bénéficie d'une main-d'œuvre qualifiée et d'une base "
-        "industrielle exportatrice établie (textile, électronique) proche des marchés "
-        "européens. Ses perspectives portent sur l'essor de l'économie numérique et des "
-        "startups ainsi que sur le développement de l'agroalimentaire export.",
-        "en": "Tunisia benefits from a skilled workforce and an established export-"
-        "oriented manufacturing base (textiles, electronics) close to European markets. "
-        "Its outlook centers on a growing digital/startup economy and expanding "
-        "agribusiness exports.",
-    },
-    "EGY": {
-        "fr": "L'Égypte combine une économie diversifiée (industrie, agriculture, "
-        "tourisme) avec les revenus logistiques du canal de Suez et une production "
-        "gazière en expansion. Ses perspectives reposent sur de grands projets "
-        "d'infrastructure et un rôle régional croissant comme hub industriel et "
-        "énergétique.",
-        "en": "Egypt combines a diversified economy (manufacturing, agriculture, "
-        "tourism) with Suez Canal logistics revenue and expanding gas production. Its "
-        "outlook is driven by large infrastructure projects and a growing regional role "
-        "as an industrial and energy hub.",
-    },
-    "NGA": {
-        "fr": "Le Nigéria, première économie d'Afrique, s'appuie sur ses ressources "
-        "pétrolières, un vaste marché de consommation et un secteur technologique/"
-        "fintech dynamique centré sur Lagos. Ses perspectives passent par la "
-        "diversification hors pétrole et la valorisation de son dividende "
-        "démographique.",
-        "en": "Nigeria, Africa's largest economy, relies on oil resources, a vast "
-        "consumer market and a dynamic tech/fintech sector centered on Lagos. Its "
-        "outlook hinges on diversifying beyond oil and capitalizing on its demographic "
-        "dividend.",
-    },
-    "GHA": {
-        "fr": "Le Ghana conjugue stabilité politique, exportations d'or et de cacao, et "
-        "production pétrolière croissante. En tant que siège du Secrétariat de la "
-        "ZLECAf à Accra, ses perspectives s'orientent vers un rôle de hub commercial et "
-        "numérique régional.",
-        "en": "Ghana combines political stability with gold and cocoa exports and "
-        "growing oil production. As host of the AfCFTA Secretariat in Accra, its "
-        "outlook points toward becoming a regional trade and digital hub.",
-    },
-    "CIV": {
-        "fr": "La Côte d'Ivoire, premier producteur mondial de cacao, dispose d'une "
-        "agriculture diversifiée et d'un hub financier régional à Abidjan. Ses "
-        "perspectives reposent sur la transformation locale des matières premières "
-        "agricoles et la poursuite des investissements en infrastructures.",
-        "en": "Côte d'Ivoire, the world's leading cocoa producer, has diversified "
-        "agriculture and a regional financial hub in Abidjan. Its outlook centers on "
-        "local processing of agricultural commodities and continued infrastructure "
-        "investment.",
-    },
-    "SEN": {
-        "fr": "Le Sénégal allie stabilité politique, agriculture et pêche en croissance, "
-        "et une production pétrolière et gazière naissante (champ de Sangomar). Ses "
-        "perspectives s'appuient sur ces nouvelles recettes d'hydrocarbures et sur le "
-        "rôle logistique régional du port de Dakar.",
-        "en": "Senegal combines political stability, growing agriculture and fisheries, "
-        "and emerging oil and gas production (Sangomar field). Its outlook is supported "
-        "by new hydrocarbon revenues and Dakar port's regional logistics role.",
-    },
-    "CMR": {
-        "fr": "Le Cameroun, économie diversifiée d'Afrique centrale (agriculture, "
-        "pétrole, bois), s'appuie sur le port de Douala comme porte d'entrée régionale. "
-        "Ses perspectives portent sur les chaînes de valeur agro-industrielles et "
-        "l'intégration régionale.",
-        "en": "Cameroon, a diversified Central African economy (agriculture, oil, "
-        "timber), relies on the port of Douala as a regional gateway. Its outlook "
-        "centers on agro-industrial value chains and regional integration.",
-    },
-    "COD": {
-        "fr": "La RD Congo détient d'immenses ressources minières (cobalt, cuivre) "
-        "essentielles aux chaînes d'approvisionnement mondiales, ainsi qu'un potentiel "
-        "hydroélectrique considérable. Ses perspectives reposent sur ces minerais "
-        "critiques et sur l'investissement en infrastructures et en énergie.",
-        "en": "DR Congo holds vast mineral resources (cobalt, copper) critical to "
-        "global supply chains, along with significant hydropower potential. Its outlook "
-        "is built on these critical minerals and on infrastructure and energy "
-        "investment.",
-    },
-    "KEN": {
-        "fr": "Le Kenya s'est imposé comme hub financier et technologique régional "
-        "(« Silicon Savannah »), avec une agriculture d'exportation solide (thé, "
-        "horticulture). Ses perspectives portent sur l'innovation fintech et le "
-        "développement des corridors d'infrastructure régionaux.",
-        "en": "Kenya has established itself as a regional financial and technology hub "
-        '("Silicon Savannah"), with strong export agriculture (tea, horticulture). Its '
-        "outlook centers on fintech innovation and regional infrastructure corridor "
-        "development.",
-    },
-    "ETH": {
-        "fr": "L'Éthiopie développe une base manufacturière en croissance (textile, "
-        "industrie légère) et un potentiel hydroélectrique majeur. Ses perspectives "
-        "s'appuient sur les parcs industriels et le potentiel d'exportation d'énergie "
-        "renouvelable.",
-        "en": "Ethiopia is developing a growing manufacturing base (textiles, light "
-        "industry) and major hydropower potential. Its outlook is built on industrial "
-        "parks and renewable energy export potential.",
-    },
-    "RWA": {
-        "fr": "Le Rwanda se distingue par une gouvernance solide, des réformes "
-        "favorables aux affaires et un secteur des services et technologies en "
-        "croissance. Ses perspectives portent sur son rôle de hub régional d'innovation "
-        "et de conférences.",
-        "en": "Rwanda stands out for strong governance, business-friendly reforms and a "
-        "growing services and technology sector. Its outlook centers on its role as a "
-        "regional innovation and conference hub.",
-    },
-    "ZAF": {
-        "fr": "L'Afrique du Sud, économie la plus industrialisée du continent, dispose "
-        "de services financiers sophistiqués et d'une base minière et industrielle "
-        "solide. Ses perspectives reposent sur la transition énergétique et un rôle "
-        "moteur dans le commerce régional sous la ZLECAf.",
-        "en": "South Africa, the continent's most industrialized economy, has "
-        "sophisticated financial services and a strong mining and manufacturing base. "
-        "Its outlook centers on the energy transition and a leading role in regional "
-        "trade under the AfCFTA.",
-    },
-    "AGO": {
-        "fr": "L'Angola, grand producteur de pétrole et de diamants, dispose également "
-        "d'un fort potentiel agricole. Ses perspectives portent sur la diversification "
-        "hors pétrole, la reconstruction des infrastructures et l'agro-industrie.",
-        "en": "Angola, a major oil and diamond producer, also holds strong "
-        "agricultural potential. Its outlook centers on diversifying beyond oil, "
-        "infrastructure reconstruction and agribusiness development.",
-    },
-    "MOZ": {
-        "fr": "Le Mozambique occupe une position côtière stratégique avec des ports "
-        "majeurs (Maputo, Beira) et d'importantes réserves de gaz naturel. Ses "
-        "perspectives reposent sur la croissance liée au GNL et le développement des "
-        "corridors commerciaux régionaux.",
-        "en": "Mozambique occupies a strategic coastal position with major ports "
-        "(Maputo, Beira) and significant natural gas reserves. Its outlook is driven by "
-        "LNG-led growth and the development of regional trade corridors.",
-    },
+# Traduction (FR -> EN) des noms de secteurs clés de country_data.py, utilisée pour
+# générer la variante anglaise du profil du "pays de la semaine".
+SECTOR_NAME_TRANSLATIONS = {
+    "Agriculture": "agriculture",
+    "Diamants": "diamonds",
+    "Hydrocarbures": "hydrocarbons",
+    "Industrie": "industry",
+    "Mines": "mining",
+    "Pétrole": "oil",
+    "Services": "services",
 }
+
+
+def _ordinal_en(rank: Optional[int]) -> str:
+    """Suffixe ordinal anglais (1st, 2nd, 3rd, 4th...) pour un rang donné."""
+    if rank is None:
+        return ""
+    if 10 <= rank % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(rank % 10, "th")
+    return f"{rank}{suffix}"
+
+
+def build_country_profile(country: str) -> Dict[str, str]:
+    """Génère dynamiquement le court profil éditorial (FR/EN) du "pays de la
+    semaine" - points forts et perspectives économiques - à partir des données
+    réelles FMI/Banque Mondiale de country_data.py (REAL_COUNTRY_DATA), afin de
+    couvrir l'ensemble des 54 pays ZLECAf sans inventer de contenu éditorial pour
+    les pays ne disposant pas (encore) d'une source RSS dédiée."""
+    data = REAL_COUNTRY_DATA.get(country)
+    name_fr, name_en, _flag = COUNTRY_DISPLAY_NAMES.get(country, (country, country, "🌍"))
+    if not data:
+        return {"fr": "", "en": ""}
+
+    sectors = sorted(
+        data.get("key_sectors") or [], key=lambda s: s.get("pib_share", 0), reverse=True
+    )
+    top_sectors_fr = [s["name"].lower() for s in sectors[:2] if s.get("name")]
+    top_sectors_en = [
+        SECTOR_NAME_TRANSLATIONS.get(s["name"], s["name"].lower())
+        for s in sectors[:2]
+        if s.get("name")
+    ]
+    sectors_fr = " et ".join(top_sectors_fr) if top_sectors_fr else "une économie diversifiée"
+    sectors_en = " and ".join(top_sectors_en) if top_sectors_en else "a diversified economy"
+
+    rank = data.get("africa_rank")
+    growth_2025 = data.get("growth_projection_2025")
+    growth_2026 = data.get("growth_projection_2026")
+    population = data.get("population_2024")
+    population_m = round(population / 1_000_000, 1) if population else None
+
+    fr = name_fr
+    if rank:
+        fr += f" ({rank}ᵉ économie d'Afrique par le PIB)"
+    fr += f" s'appuie sur {sectors_fr}"
+    if population_m:
+        unit_fr = "million" if population_m == 1 else "millions"
+        fr += f", au service d'une population de près de {population_m} {unit_fr} d'habitants"
+    fr += "."
+    if growth_2025:
+        fr += f" Ses perspectives de croissance sont estimées à {growth_2025}"
+        if growth_2026 and growth_2026 != growth_2025:
+            fr += f" en 2025 et {growth_2026} en 2026"
+        fr += ", portées par le commerce intra-africain et l'intégration régionale sous la ZLECAf."
+    else:
+        fr += " Ses perspectives s'appuient sur le commerce intra-africain et l'intégration régionale sous la ZLECAf."
+
+    en = name_en
+    if rank:
+        en += f" (Africa's {_ordinal_en(rank)}-largest economy by GDP)"
+    en += f" relies on {sectors_en}"
+    if population_m:
+        en += f", serving a population of nearly {population_m} million"
+    en += "."
+    if growth_2025:
+        en += f" Its growth outlook stands at {growth_2025}"
+        if growth_2026 and growth_2026 != growth_2025:
+            en += f" in 2025 and {growth_2026} in 2026"
+        en += ", driven by intra-African trade and regional integration under the AfCFTA."
+    else:
+        en += " Its outlook is anchored in intra-African trade and regional integration under the AfCFTA."
+
+    return {"fr": fr, "en": en}
 
 
 def region_from_country(country: str, text: str) -> str:
@@ -1162,7 +1198,7 @@ def get_country_of_the_week(articles: List[Dict], week_number: Optional[int] = N
     if not highlights:
         highlights = country_articles
 
-    profile = COUNTRY_SPOTLIGHT_PROFILES.get(country, {"fr": "", "en": ""})
+    profile = build_country_profile(country)
 
     return {
         "country": country,
