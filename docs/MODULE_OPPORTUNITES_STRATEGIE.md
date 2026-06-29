@@ -29,7 +29,7 @@ l'IA à un rôle de rédaction de texte (jamais de production de chiffres).
 
 ---
 
-## 2. Objectif
+## 2. Objectifs
 
 | # | Objectif | Indicateur de réussite |
 |---|----------|------------------------|
@@ -118,10 +118,16 @@ le principe retenu est : **chiffres = sources réelles, texte = IA clairement
 
 ### 5.1 Vue d'ensemble (frontend → API → services → données)
 
+> ℹ️ **Schéma logique** — il illustre les flux, pas l'arborescence exacte des
+> fichiers. Les chemins réels sont rappelés sous le schéma ; en résumé, le
+> frontend est sous `frontend/src/` et, côté backend, `routes/`, `services/`,
+> `country_data.py` et `etl/` sont tous des frères sous `backend/` (les
+> `services/` ne sont **pas** dans `routes/`).
+
 ```
-Frontend (React)
-└── components/dashboard/  → App.js (onglet "opportunities")
-    └── components/opportunities/OpportunitiesTab.jsx   (conteneur, 8 sous-onglets)
+Frontend (frontend/src/)
+  App.js  (onglet "opportunities")
+   └── components/opportunities/OpportunitiesTab.jsx   (conteneur, 8 sous-onglets)
         ├── AIAnalysis.jsx ............ GET /ai/opportunities/{pays}   (MIXTE : IA + OEC)
         ├── SubstitutionAnalysis.jsx .. GET /substitution/...          (RÉEL — OEC)
         ├── ZlecafImpactSimulator.jsx . GET /dismantlement/impact/...  (RÉEL — calendrier ZLECAf)
@@ -131,22 +137,22 @@ Frontend (React)
         ├── ProductAnalysisView.jsx .... GET /ai/product/{hs}          (RÉEL — OEC + production)
         └── CountryComparison.jsx ...... GET /ai/compare               (RÉEL — country_data + OEC)
 
-Backend (FastAPI)
-└── routes/
-    ├── gemini_analysis.py   (préfixe /ai — délègue désormais aux services real_*)
-    ├── substitution.py      (préfixe /substitution)
-    ├── production.py, hs_codes.py, statistics.py, dismantlement.py, tariffs.py
-    └── services/
-        ├── real_substitution_service.py
-        ├── real_product_service.py
-        ├── real_comparison_service.py
-        ├── real_summary_service.py
-        ├── real_trade_data_service.py   (connecteurs OEC : exports/imports/bilatéral/par produit)
-        └── production_capacity_service.py
-            └── data/json/production_africaine.json (FAOSTAT/USGS/UNIDO/BM)
-        country_data.py (REAL_COUNTRY_DATA, 54 pays)
-        etl/hs6_database.py (nomenclature WCO)
+Backend (backend/)
+  routes/                         services/
+   ├ gemini_analysis.py (/ai)      ├ real_substitution_service.py
+   ├ substitution.py               ├ real_product_service.py
+   ├ production.py                  ├ real_comparison_service.py
+   ├ hs_codes.py                    ├ real_summary_service.py
+   ├ statistics.py                  ├ real_trade_data_service.py  (connecteurs OEC)
+   ├ dismantlement.py               └ production_capacity_service.py
+   └ tariffs.py                          └ data/json/production_africaine.json
+                                              (FAOSTAT/USGS/UNIDO/BM)
+  country_data.py  (REAL_COUNTRY_DATA, 54 pays)
+  etl/hs6_database.py  (nomenclature WCO HS)
 ```
+
+Les routes `/ai/*` (fichier `routes/gemini_analysis.py`) délèguent désormais aux
+services `real_*` pour les onglets ré-ancrés.
 
 ### 5.2 Flux type — « Par Produit » (exemple représentatif)
 
