@@ -291,7 +291,8 @@ async def compare_two_countries(
             lang=lang,
         )
         if "error" in result and len(result) <= 2:
-            raise HTTPException(status_code=500, detail=result["error"])
+            # Unknown/invalid country is a client input error, not a server fault
+            raise HTTPException(status_code=404, detail=result["error"])
         return result
     except HTTPException:
         raise

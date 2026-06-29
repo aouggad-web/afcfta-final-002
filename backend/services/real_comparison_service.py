@@ -100,13 +100,16 @@ def _exports_by_chapter(products: List[Dict]) -> Dict[str, Dict]:
 
 def _complementarity(
     supplier_exports: Dict[str, Dict], buyer_imports: Dict[str, Dict]
-) -> Tuple[List[Dict], float]:
+) -> Tuple[List[Dict], float, float]:
     """Products the supplier really exports that the buyer really imports.
 
     Potential per chapter is bounded by min(supplier export, buyer import).
-    Returns (top-5 flows, total matched potential in USD)."""
+    Returns (top-5 flows, total matched potential, buyer imports in the matched
+    chapters) — all in USD. The matched-chapter import base is the denominator
+    used for the complementarity score."""
     flows = []
     total_potential = 0.0
+    matched_import_base = 0.0
     for chapter, exp in supplier_exports.items():
         imp = buyer_imports.get(chapter)
         if not imp:
@@ -115,6 +118,7 @@ def _complementarity(
         if potential <= 0:
             continue
         total_potential += potential
+        matched_import_base += imp["value"]
         flows.append(
             {
                 "product": exp["name"] or imp["name"] or f"Chapitre {chapter}",
@@ -123,7 +127,7 @@ def _complementarity(
             }
         )
     flows.sort(key=lambda f: f["potential_musd"], reverse=True)
-    return flows[:5], total_potential
+    return flows[:5], total_potential, matched_import_base
 
 
 async def compare_countries(country_a: str, country_b: str, lang: str = "fr") -> Dict:
@@ -166,15 +170,14 @@ async def compare_countries(country_a: str, country_b: str, lang: str = "fr") ->
     exp_ab = a_to_b.get("total_value", 0)
     exp_ba = b_to_a.get("total_value", 0)
 
-    a_supply, pot_ab = _complementarity(exp_a_ch, imp_b_ch)
-    b_supply, pot_ba = _complementarity(exp_b_ch, imp_a_ch)
+    a_supply, pot_ab, base_ab = _complementarity(exp_a_ch, imp_b_ch)
+    b_supply, pot_ba, base_ba = _complementarity(exp_b_ch, imp_a_ch)
 
-    # Complementarity score: matched potential as a share of the buyers' total
-    # imports in the matched chapters, scaled to /10. Deterministic, bounded.
-    total_imports_ref = sum(c["value"] for c in imp_b_ch.values()) + sum(
-        c["value"] for c in imp_a_ch.values()
-    )
-    coverage = ((pot_ab + pot_ba) / total_imports_ref) if total_imports_ref else 0
+    # Complementarity score: matched potential as a share of the buyers' imports
+    # in the matched chapters, scaled to /10. Deterministic and bounded (potential
+    # <= matched imports, so coverage <= 1 => score <= 10).
+    matched_import_base = base_ab + base_ba
+    coverage = ((pot_ab + pot_ba) / matched_import_base) if matched_import_base else 0
     score = round(min(coverage * 10, 10.0), 1)
 
     econ_a = _economic(iso_a)

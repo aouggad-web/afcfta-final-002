@@ -11,7 +11,9 @@ of LLM-generated figures:
 
 No value is fabricated. When OEC is unreachable the trade tables come back empty
 (rather than invented); the product nomenclature and the real production data are
-still returned, and the response is flagged ``is_estimation`` accordingly.
+still returned. ``is_estimation`` is True only when *no* real data at all is
+available (neither trade nor production); ``data_quality`` further distinguishes
+``real`` (real trade), ``partial`` (production only) and ``unavailable``.
 """
 
 import logging
@@ -49,7 +51,9 @@ def _cache_set(key: str, value) -> None:
 def _product_info(hs_code: str, lang: str) -> Dict:
     """Real HS nomenclature info; the frontend merges /hs-codes for any gaps."""
     hs2 = hs_code[:2]
-    hs4 = hs_code[:4] if len(hs_code) >= 4 else hs_code.zfill(4)
+    # Do not pad: a 2-digit input keeps its raw value for hs4 (matches the
+    # previous response contract; the frontend reads product.hs4_code directly).
+    hs4 = hs_code[:4] if len(hs_code) >= 4 else hs_code
     hs6 = hs_code.zfill(6) if len(hs_code) <= 6 else hs_code[:6]
     name = get_product_name(hs_code, lang)
     return {
