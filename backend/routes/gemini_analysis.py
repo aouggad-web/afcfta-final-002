@@ -10,6 +10,9 @@ from typing import Annotated, Optional
 from auth import check_ai_quota, require_admin
 from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from services.claude_trade_service import claude_trade_service
+from services.real_comparison_service import real_comparison_service
+from services.real_product_service import real_product_service
+from services.real_summary_service import real_summary_service
 from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
 from services.redis_cache_service import cache_service
 
@@ -165,22 +168,21 @@ async def get_ai_country_profile(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/product/{hs_code}", dependencies=_ai_quota)
+@router.get("/product/{hs_code}")
 async def get_ai_product_analysis(
     hs_code: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
-    Get AI-analyzed trade flows for a specific product (HS code)
+    Trade flows for a specific product (HS code), from REAL data.
 
-    Provides:
-    - Product information and classification
-    - African trade flows summary
-    - Top African exporters and importers
-    - Production capacities
-    - Substitution opportunities
+    Provides (all sourced, no LLM-generated figures):
+    - Product information and classification (WCO HS nomenclature)
+    - African trade flows summary (OEC BACI / UN Comtrade)
+    - Top African exporters and importers (OEC)
+    - Production capacities (FAO / USGS / UNIDO)
 
     Args:
-        hs_code: HS code (4 or 6 digits)
+        hs_code: HS code (2, 4 or 6 digits)
         lang: Language for the response
 
     Returns:
@@ -191,7 +193,7 @@ async def get_ai_product_analysis(
         raise HTTPException(status_code=400, detail="HS code must be 2, 4, or 6 digits")
 
     try:
-        result = await claude_trade_service.analyze_product_by_hs_code(hs_code=hs_code, lang=lang)
+        result = await real_product_service.analyze_product_by_hs_code(hs_code=hs_code, lang=lang)
 
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
@@ -265,15 +267,18 @@ async def check_ai_service_health():
     }
 
 
-@router.get("/compare", dependencies=_ai_quota)
+@router.get("/compare")
 async def compare_two_countries(
     country_a: str = Query(..., description="First African country name"),
     country_b: str = Query(..., description="Second African country name"),
     lang: str = Query(default="fr", description="Language (fr/en)"),
 ):
     """
-    Compare two African countries as potential AfCFTA trade partners.
-    Returns bilateral trade data, economic comparison, and trade complementarity analysis.
+    Compare two African countries as AfCFTA trade partners, from REAL data.
+
+    Economic indicators come from country_data (IMF/World Bank/UNDP), bilateral
+    trade and complementarity from OEC (BACI/UN Comtrade). No LLM-generated
+    figures.
     """
     if not country_a or not country_b:
         raise HTTPException(status_code=400, detail="Both country_a and country_b are required")
@@ -281,13 +286,14 @@ async def compare_two_countries(
         raise HTTPException(status_code=400, detail="The two countries must be different")
 
     try:
-        result = await claude_trade_service.compare_countries(
+        result = await real_comparison_service.compare_countries(
             country_a=country_a,
             country_b=country_b,
             lang=lang,
         )
         if "error" in result and len(result) <= 2:
-            raise HTTPException(status_code=500, detail=result["error"])
+            # Unknown/invalid country is a client input error, not a server fault
+            raise HTTPException(status_code=404, detail=result["error"])
         return result
     except HTTPException:
         raise
@@ -296,24 +302,25 @@ async def compare_two_countries(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/summary", dependencies=_ai_quota)
+@router.get("/summary")
 async def get_ai_trade_summary(
     lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
-    Get AI-generated comprehensive African trade summary
+    Comprehensive African trade summary, from REAL data.
 
-    Used for the "Vue d'ensemble" (Overview) tab.
-    Returns aggregate statistics across all African countries.
+    Used for the "Vue d'ensemble" (Overview) tab. Aggregates come from the
+    curated 2024 trade dataset (OEC/World Bank/IMF) and country_data — no
+    LLM-generated figures.
 
     Args:
         lang: Language for the response
 
     Returns:
-        Trade summary with top countries, sectors, and growth metrics
+        Trade summary with real continental aggregates and top trading countries
     """
     try:
-        result = await claude_trade_service.get_trade_summary(lang=lang)
+        result = await real_summary_service.get_trade_summary(lang=lang)
 
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])

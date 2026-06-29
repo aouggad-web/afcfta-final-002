@@ -770,6 +770,63 @@ class RealTradeDataService:
 
         return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
 
+    async def get_bilateral_trade(
+        self, exporter_iso3: str, importer_iso3: str, year: int = 2022, limit: int = 10
+    ) -> Dict:
+        """
+        Real directional trade flow exporter -> importer from the OEC API.
+
+        Returns the total exported value plus the top HS4 products. Used by the
+        country-comparison view to show real bilateral trade (not estimates).
+        """
+        exp_info = AFRICAN_COUNTRIES.get(exporter_iso3.upper())
+        imp_info = AFRICAN_COUNTRIES.get(importer_iso3.upper())
+        if not exp_info or not imp_info or not exp_info.get("oec") or not imp_info.get("oec"):
+            return {"total_value": 0, "top_products": [], "year": year}
+
+        try:
+            params = {
+                "cube": "trade_i_baci_a_17",
+                "drilldowns": "Year,Exporter Country,Importer Country,HS4",
+                "measures": "Trade Value",
+                "Year": str(year),
+                "Exporter Country": exp_info["oec"],
+                "Importer Country": imp_info["oec"],
+                "limit": "300",
+            }
+
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                response = await client.get(OEC_BASE_URL, params=params)
+
+                if response.status_code == 200:
+                    records = response.json().get("data", [])
+                    total_value = 0
+                    products = []
+                    for record in records:
+                        value = record.get("Trade Value", 0)
+                        total_value += value
+                        hs4_id = str(record.get("HS4 ID", ""))
+                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
+                        products.append(
+                            {
+                                "hs_code": hs4_code,
+                                "product_name": record.get("HS4", ""),
+                                "value": value,
+                            }
+                        )
+
+                    products.sort(key=lambda p: p["value"], reverse=True)
+                    return {
+                        "total_value": total_value,
+                        "top_products": products[:limit],
+                        "year": year,
+                    }
+
+        except Exception as e:
+            logger.error(f"OEC bilateral trade API error: {str(e)}")
+
+        return {"total_value": 0, "top_products": [], "year": year}
+
     async def get_african_exporters_for_product(self, hs_code: str, year: int = 2022) -> List[Dict]:
         """
         Find African countries that export a specific product
