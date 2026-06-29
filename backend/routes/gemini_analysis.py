@@ -10,6 +10,7 @@ from typing import Annotated, Optional
 from auth import check_ai_quota, require_admin
 from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from services.claude_trade_service import claude_trade_service
+from services.real_comparison_service import real_comparison_service
 from services.real_product_service import real_product_service
 from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
 from services.redis_cache_service import cache_service
@@ -265,15 +266,18 @@ async def check_ai_service_health():
     }
 
 
-@router.get("/compare", dependencies=_ai_quota)
+@router.get("/compare")
 async def compare_two_countries(
     country_a: str = Query(..., description="First African country name"),
     country_b: str = Query(..., description="Second African country name"),
     lang: str = Query(default="fr", description="Language (fr/en)"),
 ):
     """
-    Compare two African countries as potential AfCFTA trade partners.
-    Returns bilateral trade data, economic comparison, and trade complementarity analysis.
+    Compare two African countries as AfCFTA trade partners, from REAL data.
+
+    Economic indicators come from country_data (IMF/World Bank/UNDP), bilateral
+    trade and complementarity from OEC (BACI/UN Comtrade). No LLM-generated
+    figures.
     """
     if not country_a or not country_b:
         raise HTTPException(status_code=400, detail="Both country_a and country_b are required")
@@ -281,7 +285,7 @@ async def compare_two_countries(
         raise HTTPException(status_code=400, detail="The two countries must be different")
 
     try:
-        result = await claude_trade_service.compare_countries(
+        result = await real_comparison_service.compare_countries(
             country_a=country_a,
             country_b=country_b,
             lang=lang,
