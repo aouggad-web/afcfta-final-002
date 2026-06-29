@@ -10,6 +10,7 @@ from typing import Annotated, Optional
 from auth import check_ai_quota, require_admin
 from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from services.claude_trade_service import claude_trade_service
+from services.real_product_service import real_product_service
 from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
 from services.redis_cache_service import cache_service
 
@@ -165,22 +166,21 @@ async def get_ai_country_profile(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/product/{hs_code}", dependencies=_ai_quota)
+@router.get("/product/{hs_code}")
 async def get_ai_product_analysis(
     hs_code: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
-    Get AI-analyzed trade flows for a specific product (HS code)
+    Trade flows for a specific product (HS code), from REAL data.
 
-    Provides:
-    - Product information and classification
-    - African trade flows summary
-    - Top African exporters and importers
-    - Production capacities
-    - Substitution opportunities
+    Provides (all sourced, no LLM-generated figures):
+    - Product information and classification (WCO HS nomenclature)
+    - African trade flows summary (OEC BACI / UN Comtrade)
+    - Top African exporters and importers (OEC)
+    - Production capacities (FAO / USGS / UNIDO)
 
     Args:
-        hs_code: HS code (4 or 6 digits)
+        hs_code: HS code (2, 4 or 6 digits)
         lang: Language for the response
 
     Returns:
@@ -191,7 +191,7 @@ async def get_ai_product_analysis(
         raise HTTPException(status_code=400, detail="HS code must be 2, 4, or 6 digits")
 
     try:
-        result = await claude_trade_service.analyze_product_by_hs_code(hs_code=hs_code, lang=lang)
+        result = await real_product_service.analyze_product_by_hs_code(hs_code=hs_code, lang=lang)
 
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
