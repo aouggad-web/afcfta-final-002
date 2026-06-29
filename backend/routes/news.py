@@ -7,8 +7,8 @@ from typing import Optional
 
 from etl.news_aggregator import (
     ALGERIA_STRUCTURAL_PROJECTS,
-    COUNTRY_NAME_KEYWORDS,
     balance_articles_by_country,
+    detect_country_in_title,
     get_country_of_the_week,
     get_news,
     get_news_by_category,
@@ -40,16 +40,18 @@ async def get_economic_news(
         news_data = await get_news(force_refresh=force_refresh)
         articles = news_data.get("articles", [])
 
-        # Filtrer par pays si spécifié (tag source fiable + repli sur le nom du pays dans le titre)
+        # Filtrer par pays si spécifié (tag source fiable + repli sur la détection du
+        # nom du pays dans le titre, par mots entiers avec priorité à la correspondance
+        # la plus longue pour éviter les faux positifs entre noms composés, ex:
+        # « Niger »/« Nigeria », « Sudan »/« South Sudan », « Guinea »/« Guinea-Bissau »)
         if country:
             country_upper = country.upper()
-            name_keywords = COUNTRY_NAME_KEYWORDS.get(country_upper, [])
             articles = [
                 a
                 for a in articles
                 if (
                     a.get("country") == country_upper
-                    or any(kw in a.get("title", "").lower() for kw in name_keywords)
+                    or detect_country_in_title(a.get("title", "")) == country_upper
                 )
             ]
 

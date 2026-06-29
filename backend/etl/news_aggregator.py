@@ -15,6 +15,7 @@ from typing import Dict, List, Optional
 
 import aiohttp
 import feedparser
+from country_data import REAL_COUNTRY_DATA
 
 # Configuration des flux RSS
 # Chaque source pan-africaine couvre tout le continent ; les sources "pays" utilisent
@@ -690,25 +691,59 @@ def detect_category(text: str, feed_category: str = "") -> str:
 # mais que le texte de l'article ne mentionne pas explicitement son nom.
 COUNTRY_REGION_MAP = {
     "DZA": "Afrique du Nord",
-    "MAR": "Afrique du Nord",
-    "TUN": "Afrique du Nord",
-    "EGY": "Afrique du Nord",
-    "LBY": "Afrique du Nord",
-    "MRT": "Afrique du Nord",
-    "NGA": "Afrique de l'Ouest",
-    "GHA": "Afrique de l'Ouest",
-    "CIV": "Afrique de l'Ouest",
-    "SEN": "Afrique de l'Ouest",
-    "CMR": "Afrique Centrale",
-    "COD": "Afrique Centrale",
-    "GAB": "Afrique Centrale",
-    "KEN": "Afrique de l'Est",
-    "ETH": "Afrique de l'Est",
-    "RWA": "Afrique de l'Est",
-    "TZA": "Afrique de l'Est",
-    "ZAF": "Afrique Australe",
     "AGO": "Afrique Australe",
+    "BEN": "Afrique de l'Ouest",
+    "BWA": "Afrique Australe",
+    "BFA": "Afrique de l'Ouest",
+    "BDI": "Afrique de l'Est",
+    "CPV": "Afrique de l'Ouest",
+    "CMR": "Afrique Centrale",
+    "CAF": "Afrique Centrale",
+    "TCD": "Afrique Centrale",
+    "COM": "Afrique de l'Est",
+    "COG": "Afrique Centrale",
+    "COD": "Afrique Centrale",
+    "CIV": "Afrique de l'Ouest",
+    "DJI": "Afrique de l'Est",
+    "EGY": "Afrique du Nord",
+    "GNQ": "Afrique Centrale",
+    "ERI": "Afrique de l'Est",
+    "SWZ": "Afrique Australe",
+    "ETH": "Afrique de l'Est",
+    "GAB": "Afrique Centrale",
+    "GMB": "Afrique de l'Ouest",
+    "GHA": "Afrique de l'Ouest",
+    "GIN": "Afrique de l'Ouest",
+    "GNB": "Afrique de l'Ouest",
+    "KEN": "Afrique de l'Est",
+    "LSO": "Afrique Australe",
+    "LBR": "Afrique de l'Ouest",
+    "LBY": "Afrique du Nord",
+    "MDG": "Afrique de l'Est",
+    "MWI": "Afrique Australe",
+    "MLI": "Afrique de l'Ouest",
+    "MRT": "Afrique de l'Ouest",
+    "MUS": "Afrique de l'Est",
+    "MAR": "Afrique du Nord",
     "MOZ": "Afrique Australe",
+    "NAM": "Afrique Australe",
+    "NER": "Afrique de l'Ouest",
+    "NGA": "Afrique de l'Ouest",
+    "RWA": "Afrique de l'Est",
+    "STP": "Afrique Centrale",
+    "SEN": "Afrique de l'Ouest",
+    "SYC": "Afrique de l'Est",
+    "SLE": "Afrique de l'Ouest",
+    "SOM": "Afrique de l'Est",
+    "ZAF": "Afrique Australe",
+    "SSD": "Afrique de l'Est",
+    "SDN": "Afrique du Nord",
+    "TZA": "Afrique de l'Est",
+    "TGO": "Afrique de l'Ouest",
+    "TUN": "Afrique du Nord",
+    "UGA": "Afrique de l'Est",
+    "ZMB": "Afrique Australe",
+    "ZWE": "Afrique Australe",
 }
 
 
@@ -716,47 +751,246 @@ COUNTRY_REGION_MAP = {
 # filtrage par pays quand un article n'est pas tagué avec son code ISO3 (ex: articles
 # panafricains mentionnant un pays dans leur titre).
 COUNTRY_NAME_KEYWORDS = {
-    "DZA": ["algérie", "algeria", "algérien", "algerian"],
-    "MAR": ["maroc", "morocco", "marocain", "moroccan"],
-    "TUN": ["tunisie", "tunisia", "tunisien", "tunisian"],
-    "EGY": ["égypte", "egypt", "égyptien", "egyptian"],
-    "NGA": ["nigéria", "nigeria", "nigérian", "nigerian"],
-    "GHA": ["ghana", "ghanéen", "ghanaian"],
-    "CIV": ["côte d'ivoire", "ivory coast", "ivoirien", "ivorian"],
-    "SEN": ["sénégal", "senegal", "sénégalais", "senegalese"],
-    "CMR": ["cameroun", "cameroon", "camerounais"],
-    "COD": ["congo", "rdc", "drc", "congolais", "congolese"],
-    "KEN": ["kenya", "kényan", "kenyan"],
-    "ETH": ["éthiopie", "ethiopia", "éthiopien", "ethiopian"],
-    "RWA": ["rwanda", "rwandais", "rwandan"],
-    "ZAF": ["afrique du sud", "south africa", "sud-africain", "south african"],
-    "AGO": ["angola", "angolais", "angolan"],
-    "MOZ": ["mozambique", "mozambicain"],
+    "DZA": ["algeria", "algérie"],
+    "AGO": ["angola"],
+    "BEN": ["benin", "bénin"],
+    "BWA": ["botswana"],
+    "BFA": ["burkina faso"],
+    "BDI": ["burundi"],
+    "CPV": ["cap-vert", "cape verde"],
+    "CMR": ["cameroon", "cameroun"],
+    "CAF": ["central african republic", "république centrafricaine"],
+    "TCD": ["chad", "tchad"],
+    "COM": ["comores", "comoros"],
+    "COG": ["republic of the congo", "république du congo"],
+    "COD": ["democratic republic of the congo", "rdc", "drc", "république démocratique du congo"],
+    "CIV": ["côte d'ivoire", "ivory coast"],
+    "DJI": ["djibouti"],
+    "EGY": ["egypt", "égypte"],
+    "GNQ": ["equatorial guinea", "guinée équatoriale"],
+    "ERI": ["eritrea", "érythrée"],
+    "SWZ": ["eswatini"],
+    "ETH": ["ethiopia", "éthiopie"],
+    "GAB": ["gabon"],
+    "GMB": ["gambia", "gambie"],
+    "GHA": ["ghana"],
+    "GIN": ["guinea", "guinée"],
+    "GNB": ["guinea-bissau", "guinée-bissau"],
+    "KEN": ["kenya"],
+    "LSO": ["lesotho"],
+    "LBR": ["liberia", "libéria"],
+    "LBY": ["libya", "libye"],
+    "MDG": ["madagascar"],
+    "MWI": ["malawi"],
+    "MLI": ["mali"],
+    "MRT": ["mauritania", "mauritanie"],
+    "MUS": ["maurice", "mauritius"],
+    "MAR": ["maroc", "morocco"],
+    "MOZ": ["mozambique"],
+    "NAM": ["namibia", "namibie"],
+    "NER": ["niger"],
+    "NGA": ["nigeria", "nigéria"],
+    "RWA": ["rwanda"],
+    "STP": ["são tomé and príncipe", "são tomé-et-príncipe"],
+    "SEN": ["senegal", "sénégal"],
+    "SYC": ["seychelles"],
+    "SLE": ["sierra leone"],
+    "SOM": ["somalia", "somalie"],
+    "ZAF": ["afrique du sud", "south africa"],
+    "SSD": ["soudan du sud", "south sudan"],
+    "SDN": ["soudan", "sudan"],
+    "TZA": ["tanzania", "tanzanie"],
+    "TGO": ["togo"],
+    "TUN": ["tunisia", "tunisie"],
+    "UGA": ["ouganda", "uganda"],
+    "ZMB": ["zambia", "zambie"],
+    "ZWE": ["zimbabwe"],
 }
+
+# Patrons regex précompilés pour les mots-clés pays, triés par longueur décroissante.
+# Le tri par longueur permet de privilégier la correspondance la plus spécifique afin
+# d'éviter les faux positifs entre noms composés/se chevauchant (« Niger » vs
+# « Nigeria », « Guinea » vs « Guinea-Bissau »/« Equatorial Guinea », « Sudan » vs
+# « South Sudan »). Les bornes (?<!\w)/(?!\w) imposent une correspondance par mots
+# entiers (ainsi « mali » ne matche pas « somalia », ni « niger » ne matche « nigeria »).
+_COUNTRY_KEYWORD_PATTERNS = sorted(
+    (
+        (iso3, len(kw), re.compile(r"(?<!\w)" + re.escape(kw) + r"(?!\w)"))
+        for iso3, kws in COUNTRY_NAME_KEYWORDS.items()
+        for kw in kws
+    ),
+    key=lambda item: item[1],
+    reverse=True,
+)
+
+
+def detect_country_in_title(title: str) -> Optional[str]:
+    """Déterminer à quel pays se rapporte un titre via COUNTRY_NAME_KEYWORDS, en
+    privilégiant la correspondance la plus longue (mots entiers) pour éviter les
+    faux positifs entre noms composés. Renvoie le code ISO3 ou None."""
+    text = (title or "").lower()
+    for iso3, _length, pattern in _COUNTRY_KEYWORD_PATTERNS:
+        if pattern.search(text):
+            return iso3
+    return None
+
 
 # Noms d'affichage (FR/EN) et drapeau pour chaque pays disposant d'une source dédiée,
 # utilisés pour le "pays de la semaine" mis en avant dans le dashboard.
 COUNTRY_DISPLAY_NAMES = {
     "DZA": ("Algérie", "Algeria", "🇩🇿"),
-    "MAR": ("Maroc", "Morocco", "🇲🇦"),
-    "TUN": ("Tunisie", "Tunisia", "🇹🇳"),
-    "EGY": ("Égypte", "Egypt", "🇪🇬"),
-    "NGA": ("Nigéria", "Nigeria", "🇳🇬"),
-    "GHA": ("Ghana", "Ghana", "🇬🇭"),
-    "CIV": ("Côte d'Ivoire", "Côte d'Ivoire", "🇨🇮"),
-    "SEN": ("Sénégal", "Senegal", "🇸🇳"),
-    "CMR": ("Cameroun", "Cameroon", "🇨🇲"),
-    "COD": ("RD Congo", "DR Congo", "🇨🇩"),
-    "KEN": ("Kenya", "Kenya", "🇰🇪"),
-    "ETH": ("Éthiopie", "Ethiopia", "🇪🇹"),
-    "RWA": ("Rwanda", "Rwanda", "🇷🇼"),
-    "ZAF": ("Afrique du Sud", "South Africa", "🇿🇦"),
     "AGO": ("Angola", "Angola", "🇦🇴"),
+    "BEN": ("Bénin", "Benin", "🇧🇯"),
+    "BWA": ("Botswana", "Botswana", "🇧🇼"),
+    "BFA": ("Burkina Faso", "Burkina Faso", "🇧🇫"),
+    "BDI": ("Burundi", "Burundi", "🇧🇮"),
+    "CPV": ("Cap-Vert", "Cape Verde", "🇨🇻"),
+    "CMR": ("Cameroun", "Cameroon", "🇨🇲"),
+    "CAF": ("République Centrafricaine", "Central African Republic", "🇨🇫"),
+    "TCD": ("Tchad", "Chad", "🇹🇩"),
+    "COM": ("Comores", "Comoros", "🇰🇲"),
+    "COG": ("République du Congo", "Republic of the Congo", "🇨🇬"),
+    "COD": ("RD Congo", "DR Congo", "🇨🇩"),
+    "CIV": ("Côte d'Ivoire", "Côte d'Ivoire", "🇨🇮"),
+    "DJI": ("Djibouti", "Djibouti", "🇩🇯"),
+    "EGY": ("Égypte", "Egypt", "🇪🇬"),
+    "GNQ": ("Guinée Équatoriale", "Equatorial Guinea", "🇬🇶"),
+    "ERI": ("Érythrée", "Eritrea", "🇪🇷"),
+    "SWZ": ("Eswatini", "Eswatini", "🇸🇿"),
+    "ETH": ("Éthiopie", "Ethiopia", "🇪🇹"),
+    "GAB": ("Gabon", "Gabon", "🇬🇦"),
+    "GMB": ("Gambie", "Gambia", "🇬🇲"),
+    "GHA": ("Ghana", "Ghana", "🇬🇭"),
+    "GIN": ("Guinée", "Guinea", "🇬🇳"),
+    "GNB": ("Guinée-Bissau", "Guinea-Bissau", "🇬🇼"),
+    "KEN": ("Kenya", "Kenya", "🇰🇪"),
+    "LSO": ("Lesotho", "Lesotho", "🇱🇸"),
+    "LBR": ("Libéria", "Liberia", "🇱🇷"),
+    "LBY": ("Libye", "Libya", "🇱🇾"),
+    "MDG": ("Madagascar", "Madagascar", "🇲🇬"),
+    "MWI": ("Malawi", "Malawi", "🇲🇼"),
+    "MLI": ("Mali", "Mali", "🇲🇱"),
+    "MRT": ("Mauritanie", "Mauritania", "🇲🇷"),
+    "MUS": ("Maurice", "Mauritius", "🇲🇺"),
+    "MAR": ("Maroc", "Morocco", "🇲🇦"),
     "MOZ": ("Mozambique", "Mozambique", "🇲🇿"),
+    "NAM": ("Namibie", "Namibia", "🇳🇦"),
+    "NER": ("Niger", "Niger", "🇳🇪"),
+    "NGA": ("Nigéria", "Nigeria", "🇳🇬"),
+    "RWA": ("Rwanda", "Rwanda", "🇷🇼"),
+    "STP": ("São Tomé-et-Príncipe", "São Tomé and Príncipe", "🇸🇹"),
+    "SEN": ("Sénégal", "Senegal", "🇸🇳"),
+    "SYC": ("Seychelles", "Seychelles", "🇸🇨"),
+    "SLE": ("Sierra Leone", "Sierra Leone", "🇸🇱"),
+    "SOM": ("Somalie", "Somalia", "🇸🇴"),
+    "ZAF": ("Afrique du Sud", "South Africa", "🇿🇦"),
+    "SSD": ("Soudan du Sud", "South Sudan", "🇸🇸"),
+    "SDN": ("Soudan", "Sudan", "🇸🇩"),
+    "TZA": ("Tanzanie", "Tanzania", "🇹🇿"),
+    "TGO": ("Togo", "Togo", "🇹🇬"),
+    "TUN": ("Tunisie", "Tunisia", "🇹🇳"),
+    "UGA": ("Ouganda", "Uganda", "🇺🇬"),
+    "ZMB": ("Zambie", "Zambia", "🇿🇲"),
+    "ZWE": ("Zimbabwe", "Zimbabwe", "🇿🇼"),
 }
 
 # Liste de rotation pour le "pays de la semaine" (ordre fixe, indexé par numéro de semaine ISO)
 COUNTRY_OF_WEEK_ROTATION = list(COUNTRY_DISPLAY_NAMES.keys())
+
+# Traduction (FR -> EN) des noms de secteurs clés de country_data.py, utilisée pour
+# générer la variante anglaise du profil du "pays de la semaine".
+SECTOR_NAME_TRANSLATIONS = {
+    "Agriculture": "agriculture",
+    "Diamants": "diamonds",
+    "Hydrocarbures": "hydrocarbons",
+    "Industrie": "industry",
+    "Mines": "mining",
+    "Pétrole": "oil",
+    "Services": "services",
+}
+
+
+def _format_millions(value: float) -> str:
+    """Formate un nombre de millions sans décimale superflue (45.6 -> « 45.6 »,
+    1.0 -> « 1 », 103.5 -> « 103.5 »)."""
+    if value == int(value):
+        return str(int(value))
+    return f"{value:.1f}"
+
+
+def _ordinal_en(rank: Optional[int]) -> str:
+    """Suffixe ordinal anglais (1st, 2nd, 3rd, 4th...) pour un rang donné."""
+    if rank is None:
+        return ""
+    if 10 <= rank % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(rank % 10, "th")
+    return f"{rank}{suffix}"
+
+
+def build_country_profile(country: str) -> Dict[str, str]:
+    """Génère dynamiquement le court profil éditorial (FR/EN) du "pays de la
+    semaine" - points forts et perspectives économiques - à partir des données
+    réelles FMI/Banque Mondiale de country_data.py (REAL_COUNTRY_DATA), afin de
+    couvrir l'ensemble des 54 pays ZLECAf sans inventer de contenu éditorial pour
+    les pays ne disposant pas (encore) d'une source RSS dédiée."""
+    data = REAL_COUNTRY_DATA.get(country)
+    name_fr, name_en, _flag = COUNTRY_DISPLAY_NAMES.get(country, (country, country, "🌍"))
+    if not data:
+        return {"fr": "", "en": ""}
+
+    sectors = sorted(
+        data.get("key_sectors") or [], key=lambda s: s.get("pib_share", 0), reverse=True
+    )
+    top_sectors_fr = [s["name"].lower() for s in sectors[:2] if s.get("name")]
+    top_sectors_en = [
+        SECTOR_NAME_TRANSLATIONS.get(s["name"], s["name"].lower())
+        for s in sectors[:2]
+        if s.get("name")
+    ]
+    sectors_fr = " et ".join(top_sectors_fr) if top_sectors_fr else "une économie diversifiée"
+    sectors_en = " and ".join(top_sectors_en) if top_sectors_en else "a diversified economy"
+
+    rank = data.get("africa_rank")
+    growth_2025 = data.get("growth_projection_2025")
+    growth_2026 = data.get("growth_projection_2026")
+    population = data.get("population_2024")
+    population_m = round(population / 1_000_000, 1) if population else None
+
+    fr = name_fr
+    if rank:
+        fr += f" ({rank}ᵉ économie d'Afrique par le PIB)"
+    fr += f" s'appuie sur {sectors_fr}"
+    if population_m:
+        pop_str = _format_millions(population_m)
+        unit_fr = "million" if population_m < 2 else "millions"
+        fr += f", au service d'une population de près de {pop_str} {unit_fr} d'habitants"
+    fr += "."
+    if growth_2025:
+        fr += f" Ses perspectives de croissance sont estimées à {growth_2025}"
+        if growth_2026 and growth_2026 != growth_2025:
+            fr += f" en 2025 et {growth_2026} en 2026"
+        fr += ", portées par le commerce intra-africain et l'intégration régionale sous la ZLECAf."
+    else:
+        fr += " Ses perspectives s'appuient sur le commerce intra-africain et l'intégration régionale sous la ZLECAf."
+
+    en = name_en
+    if rank:
+        en += f" (Africa's {_ordinal_en(rank)}-largest economy by GDP)"
+    en += f" relies on {sectors_en}"
+    if population_m:
+        en += f", serving a population of nearly {_format_millions(population_m)} million"
+    en += "."
+    if growth_2025:
+        en += f" Its growth outlook stands at {growth_2025}"
+        if growth_2026 and growth_2026 != growth_2025:
+            en += f" in 2025 and {growth_2026} in 2026"
+        en += ", driven by intra-African trade and regional integration under the AfCFTA."
+    else:
+        en += " Its outlook is anchored in intra-African trade and regional integration under the AfCFTA."
+
+    return {"fr": fr, "en": en}
 
 
 def region_from_country(country: str, text: str) -> str:
@@ -991,9 +1225,17 @@ def get_country_of_the_week(articles: List[Dict], week_number: Optional[int] = N
     plus marquantes, en mettant en avant points forts et perspectives (priorité aux
     dépêches taguées développement/opportunités/statistiques)."""
     if week_number is None:
+        # Index hebdomadaire monotone (jours écoulés // 7) plutôt que le numéro de
+        # semaine ISO (borné à 52/53) : avec 54 pays en rotation, l'index ISO ne
+        # pourrait jamais atteindre les derniers pays. On conserve toutefois le numéro
+        # de semaine ISO pour l'affichage.
+        rotation_index = (datetime.now().date().toordinal() // 7) % len(COUNTRY_OF_WEEK_ROTATION)
         week_number = datetime.now().isocalendar()[1]
+    else:
+        # Valeur explicite (tests / appel direct): semaine 1 -> premier pays.
+        rotation_index = (int(week_number) - 1) % len(COUNTRY_OF_WEEK_ROTATION)
 
-    country = COUNTRY_OF_WEEK_ROTATION[(int(week_number) - 1) % len(COUNTRY_OF_WEEK_ROTATION)]
+    country = COUNTRY_OF_WEEK_ROTATION[rotation_index]
     name_fr, name_en, flag = COUNTRY_DISPLAY_NAMES.get(country, (country, country, "🌍"))
 
     country_articles = [a for a in articles if a.get("country") == country]
@@ -1001,12 +1243,16 @@ def get_country_of_the_week(articles: List[Dict], week_number: Optional[int] = N
     if not highlights:
         highlights = country_articles
 
+    profile = build_country_profile(country)
+
     return {
         "country": country,
         "country_name_fr": name_fr,
         "country_name_en": name_en,
         "flag": flag,
         "week_number": week_number,
+        "profile_fr": profile["fr"],
+        "profile_en": profile["en"],
         "highlights": highlights[:5],
     }
 
