@@ -11,7 +11,6 @@ OEC is mocked so the tests are hermetic (no network).
 import asyncio
 
 import pytest
-
 from services import real_substitution_service as mod
 from services.real_substitution_service import RealSubstitutionService
 
