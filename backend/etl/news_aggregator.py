@@ -807,6 +807,34 @@ COUNTRY_NAME_KEYWORDS = {
     "ZWE": ["zimbabwe"],
 }
 
+# Patrons regex précompilés pour les mots-clés pays, triés par longueur décroissante.
+# Le tri par longueur permet de privilégier la correspondance la plus spécifique afin
+# d'éviter les faux positifs entre noms composés/se chevauchant (« Niger » vs
+# « Nigeria », « Guinea » vs « Guinea-Bissau »/« Equatorial Guinea », « Sudan » vs
+# « South Sudan »). Les bornes (?<!\w)/(?!\w) imposent une correspondance par mots
+# entiers (ainsi « mali » ne matche pas « somalia », ni « niger » ne matche « nigeria »).
+_COUNTRY_KEYWORD_PATTERNS = sorted(
+    (
+        (iso3, len(kw), re.compile(r"(?<!\w)" + re.escape(kw) + r"(?!\w)"))
+        for iso3, kws in COUNTRY_NAME_KEYWORDS.items()
+        for kw in kws
+    ),
+    key=lambda item: item[1],
+    reverse=True,
+)
+
+
+def detect_country_in_title(title: str) -> Optional[str]:
+    """Déterminer à quel pays se rapporte un titre via COUNTRY_NAME_KEYWORDS, en
+    privilégiant la correspondance la plus longue (mots entiers) pour éviter les
+    faux positifs entre noms composés. Renvoie le code ISO3 ou None."""
+    text = (title or "").lower()
+    for iso3, _length, pattern in _COUNTRY_KEYWORD_PATTERNS:
+        if pattern.search(text):
+            return iso3
+    return None
+
+
 # Noms d'affichage (FR/EN) et drapeau pour chaque pays disposant d'une source dédiée,
 # utilisés pour le "pays de la semaine" mis en avant dans le dashboard.
 COUNTRY_DISPLAY_NAMES = {
@@ -882,6 +910,14 @@ SECTOR_NAME_TRANSLATIONS = {
 }
 
 
+def _format_millions(value: float) -> str:
+    """Formate un nombre de millions sans décimale superflue (45.6 -> « 45.6 »,
+    1.0 -> « 1 », 103.5 -> « 103.5 »)."""
+    if value == int(value):
+        return str(int(value))
+    return f"{value:.1f}"
+
+
 def _ordinal_en(rank: Optional[int]) -> str:
     """Suffixe ordinal anglais (1st, 2nd, 3rd, 4th...) pour un rang donné."""
     if rank is None:
@@ -927,8 +963,9 @@ def build_country_profile(country: str) -> Dict[str, str]:
         fr += f" ({rank}ᵉ économie d'Afrique par le PIB)"
     fr += f" s'appuie sur {sectors_fr}"
     if population_m:
-        unit_fr = "million" if population_m == 1 else "millions"
-        fr += f", au service d'une population de près de {population_m} {unit_fr} d'habitants"
+        pop_str = _format_millions(population_m)
+        unit_fr = "million" if population_m < 2 else "millions"
+        fr += f", au service d'une population de près de {pop_str} {unit_fr} d'habitants"
     fr += "."
     if growth_2025:
         fr += f" Ses perspectives de croissance sont estimées à {growth_2025}"
@@ -943,7 +980,7 @@ def build_country_profile(country: str) -> Dict[str, str]:
         en += f" (Africa's {_ordinal_en(rank)}-largest economy by GDP)"
     en += f" relies on {sectors_en}"
     if population_m:
-        en += f", serving a population of nearly {population_m} million"
+        en += f", serving a population of nearly {_format_millions(population_m)} million"
     en += "."
     if growth_2025:
         en += f" Its growth outlook stands at {growth_2025}"
@@ -1188,9 +1225,17 @@ def get_country_of_the_week(articles: List[Dict], week_number: Optional[int] = N
     plus marquantes, en mettant en avant points forts et perspectives (priorité aux
     dépêches taguées développement/opportunités/statistiques)."""
     if week_number is None:
+        # Index hebdomadaire monotone (jours écoulés // 7) plutôt que le numéro de
+        # semaine ISO (borné à 52/53) : avec 54 pays en rotation, l'index ISO ne
+        # pourrait jamais atteindre les derniers pays. On conserve toutefois le numéro
+        # de semaine ISO pour l'affichage.
+        rotation_index = (datetime.now().date().toordinal() // 7) % len(COUNTRY_OF_WEEK_ROTATION)
         week_number = datetime.now().isocalendar()[1]
+    else:
+        # Valeur explicite (tests / appel direct): semaine 1 -> premier pays.
+        rotation_index = (int(week_number) - 1) % len(COUNTRY_OF_WEEK_ROTATION)
 
-    country = COUNTRY_OF_WEEK_ROTATION[(int(week_number) - 1) % len(COUNTRY_OF_WEEK_ROTATION)]
+    country = COUNTRY_OF_WEEK_ROTATION[rotation_index]
     name_fr, name_en, flag = COUNTRY_DISPLAY_NAMES.get(country, (country, country, "🌍"))
 
     country_articles = [a for a in articles if a.get("country") == country]
