@@ -758,6 +758,167 @@ COUNTRY_DISPLAY_NAMES = {
 # Liste de rotation pour le "pays de la semaine" (ordre fixe, indexé par numéro de semaine ISO)
 COUNTRY_OF_WEEK_ROTATION = list(COUNTRY_DISPLAY_NAMES.keys())
 
+# Court profil éditorial (FR/EN) pour chaque pays mis en avant: points forts et
+# perspectives économiques, en lien avec le commerce intra-africain et la ZLECAf.
+COUNTRY_SPOTLIGHT_PROFILES = {
+    "DZA": {
+        "fr": "L'Algérie s'appuie sur ses vastes réserves d'hydrocarbures et sur des "
+        "projets structurants majeurs (Gara Djebilet, phosphates de Tébessa, port "
+        "d'El Hamdania) pour diversifier son économie vers les mines, l'industrie et "
+        "l'énergie renouvelable. Ses perspectives reposent sur le développement d'un "
+        "hub logistique et industriel transsaharien, au service du commerce intra-africain.",
+        "en": "Algeria leverages its vast hydrocarbon reserves and major structural "
+        "projects (Gara Djebilet, Tébessa phosphates, El Hamdania port) to diversify "
+        "into mining, industry and renewable energy. Its outlook centers on becoming a "
+        "trans-Saharan logistics and industrial hub serving intra-African trade.",
+    },
+    "MAR": {
+        "fr": "Le Maroc dispose d'une économie diversifiée (automobile, aéronautique, "
+        "phosphates, textile, tourisme) et d'infrastructures portuaires de premier plan "
+        "comme Tanger Med. Ses perspectives s'orientent vers l'énergie renouvelable et "
+        "le renforcement de son rôle de plateforme entre l'Afrique, l'Europe et "
+        "l'Atlantique.",
+        "en": "Morocco has a diversified economy (automotive, aerospace, phosphates, "
+        "textiles, tourism) and leading port infrastructure such as Tanger Med. Its "
+        "outlook centers on renewable energy growth and strengthening its role as a "
+        "gateway between Africa, Europe and the Atlantic.",
+    },
+    "TUN": {
+        "fr": "La Tunisie bénéficie d'une main-d'œuvre qualifiée et d'une base "
+        "industrielle exportatrice établie (textile, électronique) proche des marchés "
+        "européens. Ses perspectives portent sur l'essor de l'économie numérique et des "
+        "startups ainsi que sur le développement de l'agroalimentaire export.",
+        "en": "Tunisia benefits from a skilled workforce and an established export-"
+        "oriented manufacturing base (textiles, electronics) close to European markets. "
+        "Its outlook centers on a growing digital/startup economy and expanding "
+        "agribusiness exports.",
+    },
+    "EGY": {
+        "fr": "L'Égypte combine une économie diversifiée (industrie, agriculture, "
+        "tourisme) avec les revenus logistiques du canal de Suez et une production "
+        "gazière en expansion. Ses perspectives reposent sur de grands projets "
+        "d'infrastructure et un rôle régional croissant comme hub industriel et "
+        "énergétique.",
+        "en": "Egypt combines a diversified economy (manufacturing, agriculture, "
+        "tourism) with Suez Canal logistics revenue and expanding gas production. Its "
+        "outlook is driven by large infrastructure projects and a growing regional role "
+        "as an industrial and energy hub.",
+    },
+    "NGA": {
+        "fr": "Le Nigéria, première économie d'Afrique, s'appuie sur ses ressources "
+        "pétrolières, un vaste marché de consommation et un secteur technologique/"
+        "fintech dynamique centré sur Lagos. Ses perspectives passent par la "
+        "diversification hors pétrole et la valorisation de son dividende "
+        "démographique.",
+        "en": "Nigeria, Africa's largest economy, relies on oil resources, a vast "
+        "consumer market and a dynamic tech/fintech sector centered on Lagos. Its "
+        "outlook hinges on diversifying beyond oil and capitalizing on its demographic "
+        "dividend.",
+    },
+    "GHA": {
+        "fr": "Le Ghana conjugue stabilité politique, exportations d'or et de cacao, et "
+        "production pétrolière croissante. En tant que siège du Secrétariat de la "
+        "ZLECAf à Accra, ses perspectives s'orientent vers un rôle de hub commercial et "
+        "numérique régional.",
+        "en": "Ghana combines political stability with gold and cocoa exports and "
+        "growing oil production. As host of the AfCFTA Secretariat in Accra, its "
+        "outlook points toward becoming a regional trade and digital hub.",
+    },
+    "CIV": {
+        "fr": "La Côte d'Ivoire, premier producteur mondial de cacao, dispose d'une "
+        "agriculture diversifiée et d'un hub financier régional à Abidjan. Ses "
+        "perspectives reposent sur la transformation locale des matières premières "
+        "agricoles et la poursuite des investissements en infrastructures.",
+        "en": "Côte d'Ivoire, the world's leading cocoa producer, has diversified "
+        "agriculture and a regional financial hub in Abidjan. Its outlook centers on "
+        "local processing of agricultural commodities and continued infrastructure "
+        "investment.",
+    },
+    "SEN": {
+        "fr": "Le Sénégal allie stabilité politique, agriculture et pêche en croissance, "
+        "et une production pétrolière et gazière naissante (champ de Sangomar). Ses "
+        "perspectives s'appuient sur ces nouvelles recettes d'hydrocarbures et sur le "
+        "rôle logistique régional du port de Dakar.",
+        "en": "Senegal combines political stability, growing agriculture and fisheries, "
+        "and emerging oil and gas production (Sangomar field). Its outlook is supported "
+        "by new hydrocarbon revenues and Dakar port's regional logistics role.",
+    },
+    "CMR": {
+        "fr": "Le Cameroun, économie diversifiée d'Afrique centrale (agriculture, "
+        "pétrole, bois), s'appuie sur le port de Douala comme porte d'entrée régionale. "
+        "Ses perspectives portent sur les chaînes de valeur agro-industrielles et "
+        "l'intégration régionale.",
+        "en": "Cameroon, a diversified Central African economy (agriculture, oil, "
+        "timber), relies on the port of Douala as a regional gateway. Its outlook "
+        "centers on agro-industrial value chains and regional integration.",
+    },
+    "COD": {
+        "fr": "La RD Congo détient d'immenses ressources minières (cobalt, cuivre) "
+        "essentielles aux chaînes d'approvisionnement mondiales, ainsi qu'un potentiel "
+        "hydroélectrique considérable. Ses perspectives reposent sur ces minerais "
+        "critiques et sur l'investissement en infrastructures et en énergie.",
+        "en": "DR Congo holds vast mineral resources (cobalt, copper) critical to "
+        "global supply chains, along with significant hydropower potential. Its outlook "
+        "is built on these critical minerals and on infrastructure and energy "
+        "investment.",
+    },
+    "KEN": {
+        "fr": "Le Kenya s'est imposé comme hub financier et technologique régional "
+        "(« Silicon Savannah »), avec une agriculture d'exportation solide (thé, "
+        "horticulture). Ses perspectives portent sur l'innovation fintech et le "
+        "développement des corridors d'infrastructure régionaux.",
+        "en": "Kenya has established itself as a regional financial and technology hub "
+        '("Silicon Savannah"), with strong export agriculture (tea, horticulture). Its '
+        "outlook centers on fintech innovation and regional infrastructure corridor "
+        "development.",
+    },
+    "ETH": {
+        "fr": "L'Éthiopie développe une base manufacturière en croissance (textile, "
+        "industrie légère) et un potentiel hydroélectrique majeur. Ses perspectives "
+        "s'appuient sur les parcs industriels et le potentiel d'exportation d'énergie "
+        "renouvelable.",
+        "en": "Ethiopia is developing a growing manufacturing base (textiles, light "
+        "industry) and major hydropower potential. Its outlook is built on industrial "
+        "parks and renewable energy export potential.",
+    },
+    "RWA": {
+        "fr": "Le Rwanda se distingue par une gouvernance solide, des réformes "
+        "favorables aux affaires et un secteur des services et technologies en "
+        "croissance. Ses perspectives portent sur son rôle de hub régional d'innovation "
+        "et de conférences.",
+        "en": "Rwanda stands out for strong governance, business-friendly reforms and a "
+        "growing services and technology sector. Its outlook centers on its role as a "
+        "regional innovation and conference hub.",
+    },
+    "ZAF": {
+        "fr": "L'Afrique du Sud, économie la plus industrialisée du continent, dispose "
+        "de services financiers sophistiqués et d'une base minière et industrielle "
+        "solide. Ses perspectives reposent sur la transition énergétique et un rôle "
+        "moteur dans le commerce régional sous la ZLECAf.",
+        "en": "South Africa, the continent's most industrialized economy, has "
+        "sophisticated financial services and a strong mining and manufacturing base. "
+        "Its outlook centers on the energy transition and a leading role in regional "
+        "trade under the AfCFTA.",
+    },
+    "AGO": {
+        "fr": "L'Angola, grand producteur de pétrole et de diamants, dispose également "
+        "d'un fort potentiel agricole. Ses perspectives portent sur la diversification "
+        "hors pétrole, la reconstruction des infrastructures et l'agro-industrie.",
+        "en": "Angola, a major oil and diamond producer, also holds strong "
+        "agricultural potential. Its outlook centers on diversifying beyond oil, "
+        "infrastructure reconstruction and agribusiness development.",
+    },
+    "MOZ": {
+        "fr": "Le Mozambique occupe une position côtière stratégique avec des ports "
+        "majeurs (Maputo, Beira) et d'importantes réserves de gaz naturel. Ses "
+        "perspectives reposent sur la croissance liée au GNL et le développement des "
+        "corridors commerciaux régionaux.",
+        "en": "Mozambique occupies a strategic coastal position with major ports "
+        "(Maputo, Beira) and significant natural gas reserves. Its outlook is driven by "
+        "LNG-led growth and the development of regional trade corridors.",
+    },
+}
+
 
 def region_from_country(country: str, text: str) -> str:
     """Région d'une source dédiée à un pays, avec repli sur la détection par mots-clés"""
@@ -1001,12 +1162,16 @@ def get_country_of_the_week(articles: List[Dict], week_number: Optional[int] = N
     if not highlights:
         highlights = country_articles
 
+    profile = COUNTRY_SPOTLIGHT_PROFILES.get(country, {"fr": "", "en": ""})
+
     return {
         "country": country,
         "country_name_fr": name_fr,
         "country_name_en": name_en,
         "flag": flag,
         "week_number": week_number,
+        "profile_fr": profile["fr"],
+        "profile_en": profile["en"],
         "highlights": highlights[:5],
     }
 

@@ -279,6 +279,7 @@ const CategorySection = ({ category, articles, t, language }) => {
 const CountrySpotlight = ({ spotlight, t, language }) => {
   if (!spotlight || !spotlight.country) return null;
   const countryName = language === 'fr' ? spotlight.country_name_fr : spotlight.country_name_en;
+  const profile = language === 'fr' ? spotlight.profile_fr : spotlight.profile_en;
 
   return (
     <section
@@ -299,6 +300,12 @@ const CountrySpotlight = ({ spotlight, t, language }) => {
           <p className="text-xs text-[var(--afcfta-muted)]">{t.countryOfWeekLead}</p>
         </div>
       </div>
+
+      {profile && (
+        <p className="text-sm text-[rgba(234,224,208,0.9)] mb-4 leading-relaxed">
+          {profile}
+        </p>
+      )}
 
       {spotlight.highlights.length === 0 ? (
         <p className="text-sm text-[var(--afcfta-muted)]">{t.noArticles}</p>
