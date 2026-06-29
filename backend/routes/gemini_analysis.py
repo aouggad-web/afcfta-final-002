@@ -12,6 +12,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from services.claude_trade_service import claude_trade_service
 from services.real_comparison_service import real_comparison_service
 from services.real_product_service import real_product_service
+from services.real_summary_service import real_summary_service
 from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
 from services.redis_cache_service import cache_service
 
@@ -301,24 +302,25 @@ async def compare_two_countries(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/summary", dependencies=_ai_quota)
+@router.get("/summary")
 async def get_ai_trade_summary(
     lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
-    Get AI-generated comprehensive African trade summary
+    Comprehensive African trade summary, from REAL data.
 
-    Used for the "Vue d'ensemble" (Overview) tab.
-    Returns aggregate statistics across all African countries.
+    Used for the "Vue d'ensemble" (Overview) tab. Aggregates come from the
+    curated 2024 trade dataset (OEC/World Bank/IMF) and country_data — no
+    LLM-generated figures.
 
     Args:
         lang: Language for the response
 
     Returns:
-        Trade summary with top countries, sectors, and growth metrics
+        Trade summary with real continental aggregates and top trading countries
     """
     try:
-        result = await claude_trade_service.get_trade_summary(lang=lang)
+        result = await real_summary_service.get_trade_summary(lang=lang)
 
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
