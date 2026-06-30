@@ -20,7 +20,6 @@ import ToolsTab from './components/tools/ToolsTab';
 import RulesTab from './components/rules/RulesTab';
 import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
-import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
 import BankingInfoPanel from './components/banking/BankingInfoPanel';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -92,7 +91,6 @@ function App() {
         dashboard: 'dashboard',
         calculator: 'calculator',
         stats: 'statistics',
-        opps: 'opportunities',
         production: 'production',
         logistics: 'logistics',
         banking: 'banking',
@@ -111,7 +109,6 @@ function App() {
       dashboard: 'dashboard',
       calculator: 'calculator',
       statistics: 'stats',
-      opportunities: 'opps',
       production: 'production',
       logistics: 'logistics',
       banking: 'banking',
@@ -196,25 +193,6 @@ function App() {
             <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <StatisticsTab language={language} />
-            </div>
-          </div>
-        );
-
-      case 'opportunities':
-        return (
-          <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader
-              title={language === 'fr' ? 'Opportunités Commerciales' : 'Trade Opportunities'}
-              subtitle={
-                language === 'fr'
-                  ? "Analyse des marchés et substitution d'importations"
-                  : 'Market analysis and import substitution'
-              }
-              dotColor="success"
-            />
-            <div style={{ height: 20 }} />
-            <div className="afcfta-card">
-              <OpportunitiesTab language={language} />
             </div>
           </div>
         );
