@@ -350,39 +350,8 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           isAiGenerated: true
         });
       } else {
-        // Fallback to default data
-        const productionCapacities = getProductionData(hsCode, chapter);
-
-        const topImporters = [
-          { country: 'Afrique du Sud', iso3: 'ZAF', tradeValue: 450000000 },
-          { country: 'Égypte', iso3: 'EGY', tradeValue: 320000000 },
-          { country: 'Nigeria', iso3: 'NGA', tradeValue: 280000000 },
-          { country: 'Maroc', iso3: 'MAR', tradeValue: 195000000 },
-          { country: 'Kenya', iso3: 'KEN', tradeValue: 145000000 },
-          { country: 'Algérie', iso3: 'DZA', tradeValue: 120000000 },
-          { country: 'Ghana', iso3: 'GHA', tradeValue: 98000000 },
-          { country: 'Tunisie', iso3: 'TUN', tradeValue: 75000000 }
-        ];
-
-        const topExporters = [
-          { country: "Côte d'Ivoire", iso3: 'CIV', tradeValue: 580000000 },
-          { country: 'Éthiopie', iso3: 'ETH', tradeValue: 420000000 },
-          { country: 'Kenya', iso3: 'KEN', tradeValue: 310000000 },
-          { country: 'Nigeria', iso3: 'NGA', tradeValue: 280000000 },
-          { country: 'Afrique du Sud', iso3: 'ZAF', tradeValue: 220000000 },
-          { country: 'Ghana', iso3: 'GHA', tradeValue: 180000000 },
-          { country: 'Tanzanie', iso3: 'TZA', tradeValue: 145000000 },
-          { country: 'Ouganda', iso3: 'UGA', tradeValue: 120000000 }
-        ];
-
-        const marketShareTrends = [
-          { year: 2020, countryValue: 165, regionalAverage: 140, globalAverage: 200 },
-          { year: 2021, countryValue: 210, regionalAverage: 175, globalAverage: 245 },
-          { year: 2022, countryValue: 280, regionalAverage: 210, globalAverage: 290 },
-          { year: 2023, countryValue: 320, regionalAverage: 245, globalAverage: 330 },
-          { year: 2024, countryValue: 365, regionalAverage: 285, globalAverage: 375 }
-        ];
-
+        // Backend product analysis unavailable: do NOT fabricate trade/production
+        // tables. Show the HS nomenclature + a clear notice instead.
         setProductData({
           product: {
             hsCode: hsCode,
@@ -392,10 +361,13 @@ export default function ProductAnalysisView({ language = 'fr' }) {
             hs4Code: hs4,
             hs4Name: hsInfo.heading_name_fr || `Position ${hs4}`
           },
-          productionCapacities,
-          importers: topImporters,
-          exporters: topExporters,
-          marketShareTrends,
+          productionCapacities: [],
+          importers: [],
+          exporters: [],
+          marketShareTrends: [],
+          note: language === 'fr'
+            ? "Service d'analyse produit temporairement indisponible. Veuillez réessayer plus tard."
+            : 'Product analysis service temporarily unavailable. Please try again later.',
           isAiGenerated: false
         });
       }

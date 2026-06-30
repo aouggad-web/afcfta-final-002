@@ -119,7 +119,8 @@ export default function OpportunitySummary({ language = 'fr' }) {
             afcftaCountries: aiData.overview?.afcfta_countries || 54,
             topPartners: (aiData.top_trading_countries || []).map(c => ({
               name: c.name,
-              value: Math.round((c.trade_volume_billion || 0) * 10),
+              // Real trade volume in billions USD (no opaque scaling)
+              value: Math.round((c.trade_volume_billion || 0) * 10) / 10,
               iso3: c.iso3
             })).slice(0, 8).reverse(),
             topProducts: (aiData.top_sectors || []).map(s => ({
@@ -128,7 +129,8 @@ export default function OpportunitySummary({ language = 'fr' }) {
               count: s.opportunities_count || Math.round(s.value_billion * 10),
               value: s.value_billion
             })).slice(0, 8),
-            yearlyGrowth: aiData.growth_metrics?.yoy_growth_percent
+            // 0 is a valid growth value; only treat null/undefined as missing
+            yearlyGrowth: aiData.growth_metrics?.yoy_growth_percent != null
               ? `+${aiData.growth_metrics.yoy_growth_percent}%`
               : null,
             sources: aiData.sources || ['IMF DOTS 2024', 'UNCTAD'],
@@ -210,6 +212,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
       topPartners: "Principaux Partenaires",
       topProducts: "Secteurs Clés",
       opportunities: "opportunités",
+      tradeVolume: "Commerce (Md$)",
       aiGenerated: "Données réelles",
       sectorsUnavailable: "Données sectorielles continentales indisponibles",
       source: "Sources: IMF DOTS 2024, UNCTAD 2024, Base de données ZLECAf"
@@ -224,6 +227,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
       topPartners: "Top Partners",
       topProducts: "Key Sectors",
       opportunities: "opportunities",
+      tradeVolume: "Trade (B$)",
       aiGenerated: "Real data",
       sectorsUnavailable: "Continental sector data unavailable",
       source: "Sources: IMF DOTS 2024, UNCTAD 2024, AfCFTA Database"
@@ -324,7 +328,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
                   width={90} 
                   interval={0} 
                 />
-                <Tooltip content={<CustomTooltip valueLabel={txt.opportunities} />} cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }} />
+                <Tooltip content={<CustomTooltip valueLabel={txt.tradeVolume} />} cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }} />
                 <Bar dataKey="value" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
               </BarChart>
             </ResponsiveContainer>
