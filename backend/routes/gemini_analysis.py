@@ -267,6 +267,25 @@ async def check_ai_service_health():
     }
 
 
+@router.get("/oec-health")
+async def check_oec_health():
+    """
+    Diagnostic: is the OEC trade API reachable from this deployment?
+
+    The Par Produit and Comparaison tabs need live OEC access for trade flows.
+    Use this to confirm the deployment's network policy allows outbound HTTPS to
+    api-v2.oec.world (returns reachability, HTTP status, latency).
+    """
+    from services.real_trade_data_service import real_trade_service
+
+    result = await real_trade_service.ping_oec()
+    return {
+        "service": "OEC (Observatory of Economic Complexity)",
+        "status": "operational" if result.get("reachable") else "unreachable",
+        **result,
+    }
+
+
 @router.get("/compare")
 async def compare_two_countries(
     country_a: str = Query(..., description="First African country name"),
