@@ -25,8 +25,9 @@ def test_summary_aggregates_are_real_and_positive():
     assert ov["total_african_trade_billion_usd"] > 0
     assert ov["total_gdp_trillion_usd"] > 0
     assert ov["afcfta_countries"] == 54
-    # Not fabricated when no continental source exists
-    assert ov["intra_african_trade_billion_usd"] is None
+    # Now sourced from Afreximbank ATR 2026 (continental 2025 intra-African total)
+    assert ov["intra_african_trade_billion_usd"] == 213.83
+    assert result["continental_2025"]["source"] == "Afreximbank, African Trade Report 2026"
     assert result["top_sectors"] == []
 
 

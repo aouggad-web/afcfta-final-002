@@ -20,6 +20,7 @@ import logging
 from typing import Dict, Optional
 
 from country_data import REAL_COUNTRY_DATA
+from services import afreximbank_data
 
 logger = logging.getLogger(__name__)
 
@@ -83,16 +84,28 @@ async def get_trade_summary(lang: str = "fr") -> Dict:
             }
         )
 
+    # Real continental intra-African trade total (Afreximbank ATR 2026, 2025)
+    intra_african_busd = afreximbank_data.get_intra_african_total_busd()
+    atr = afreximbank_data.get_continental_indicators()
+
     return {
         "overview": {
             "total_african_trade_billion_usd": round(total_trade_billion, 1),
             "total_gdp_trillion_usd": round(total_gdp_billion / 1000, 2),
             "total_opportunities_identified": _hs_code_count(),
             "afcfta_countries": 54,
-            # No continental-level intra-African total in the sourced data; the
-            # dataset only has it per-country for a subset. Not fabricated here.
-            "intra_african_trade_billion_usd": None,
+            # Now sourced from Afreximbank ATR 2026 (continental 2025 total).
+            "intra_african_trade_billion_usd": intra_african_busd,
             "year": 2024,
+        },
+        # Continental 2025 indicators as published by Afreximbank (ATR 2026).
+        "continental_2025": {
+            "real_gdp_growth_pct": atr.get("real_gdp_growth_pct"),
+            "inflation_pct": atr.get("inflation_pct"),
+            "merchandise_trade_busd": atr.get("merchandise_trade_busd_approx"),
+            "intra_african_trade_busd": atr.get("intra_african_trade_busd"),
+            "intra_african_trade_growth_pct": atr.get("intra_african_trade_growth_pct"),
+            "source": afreximbank_data.SOURCE,
         },
         "top_trading_countries": top_trading_countries,
         # No real continental sector aggregation available; left empty rather
@@ -103,9 +116,10 @@ async def get_trade_summary(lang: str = "fr") -> Dict:
             "World Bank",
             "IMF WEO 2024",
             "country_data (IMF/BM/PNUD)",
+            afreximbank_data.SOURCE,
         ],
-        "data_source": "OEC/World Bank/IMF (2024) + country_data",
-        "generated_by": "Données réelles (OEC/BM/FMI, country_data)",
+        "data_source": "OEC/World Bank/IMF + country_data + Afreximbank ATR 2026",
+        "generated_by": "Données réelles (OEC/BM/FMI, country_data, Afreximbank)",
         "is_estimation": False,
     }
 
