@@ -79,3 +79,23 @@ def get_top_intra_african(limit: int = 8) -> List[Dict]:
         )
     rows.sort(key=lambda r: r.get("intra_african_2025_busd") or 0, reverse=True)
     return rows[:limit]
+
+
+def get_merchandise_exports_by_country() -> Dict[str, Dict]:
+    """Merchandise exports by ISO3, 2021-2025 (USD billions) — Table 4.3."""
+    return _load().get("merchandise_exports_by_country", {})
+
+
+def get_country_merchandise_exports(iso3: str) -> Optional[Dict]:
+    """Merchandise exports record for one country, or None."""
+    return get_merchandise_exports_by_country().get((iso3 or "").upper())
+
+
+def get_merchandise_exports_total_busd() -> Optional[float]:
+    """Total African merchandise exports in 2025 (USD billions)."""
+    return _load().get("merchandise_exports_total_busd_2025")
+
+
+def get_dataset() -> Dict:
+    """The full sourced dataset (for the /statistics/afreximbank endpoint)."""
+    return _load()

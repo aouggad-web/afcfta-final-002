@@ -734,6 +734,20 @@ TRADE_PERFORMANCE_INTRA_AFRICAN_2024 = [
 ]
 
 
+@router.get("/afreximbank-atr2026")
+async def get_afreximbank_atr2026():
+    """
+    Sourced indicators from the Afreximbank African Trade Report 2026.
+
+    Continental 2025 indicators + per-country intra-African trade and merchandise
+    exports (2021-2025). Facts only, attributed to Afreximbank (the report itself
+    is not reproduced).
+    """
+    from services import afreximbank_data
+
+    return afreximbank_data.get_dataset()
+
+
 @router.get("/trade-performance")
 async def get_trade_performance_global():
     """
