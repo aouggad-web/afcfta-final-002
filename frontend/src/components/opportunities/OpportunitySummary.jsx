@@ -111,11 +111,15 @@ export default function OpportunitySummary({ language = 'fr' }) {
           setData({
             totalOpportunities: aiData.overview?.total_opportunities_identified || 5387,
             totalPotentialValue: (aiData.overview?.total_african_trade_billion_usd || 1650) * 1e9,
-            intraAfricanTrade: (aiData.overview?.intra_african_trade_billion_usd || 186) * 1e9,
+            // Real values only: when the backend has no sourced figure (null) we
+            // show "—" rather than a fabricated fallback.
+            intraAfricanTrade: aiData.overview?.intra_african_trade_billion_usd != null
+              ? aiData.overview.intra_african_trade_billion_usd * 1e9
+              : null,
             afcftaCountries: aiData.overview?.afcfta_countries || 54,
             topPartners: (aiData.top_trading_countries || []).map(c => ({
               name: c.name,
-              value: Math.round(c.trade_volume_billion * 10) || c.rank * 20,
+              value: Math.round((c.trade_volume_billion || 0) * 10),
               iso3: c.iso3
             })).slice(0, 8).reverse(),
             topProducts: (aiData.top_sectors || []).map(s => ({
@@ -124,9 +128,9 @@ export default function OpportunitySummary({ language = 'fr' }) {
               count: s.opportunities_count || Math.round(s.value_billion * 10),
               value: s.value_billion
             })).slice(0, 8),
-            yearlyGrowth: aiData.growth_metrics?.yoy_growth_percent 
-              ? `+${aiData.growth_metrics.yoy_growth_percent}%` 
-              : '+12.3%',
+            yearlyGrowth: aiData.growth_metrics?.yoy_growth_percent
+              ? `+${aiData.growth_metrics.yoy_growth_percent}%`
+              : null,
             sources: aiData.sources || ['IMF DOTS 2024', 'UNCTAD'],
             dataYear: aiData.overview?.year || 2024
           });
@@ -206,7 +210,8 @@ export default function OpportunitySummary({ language = 'fr' }) {
       topPartners: "Principaux Partenaires",
       topProducts: "Secteurs Clés",
       opportunities: "opportunités",
-      aiGenerated: "Données générées par IA",
+      aiGenerated: "Données réelles",
+      sectorsUnavailable: "Données sectorielles continentales indisponibles",
       source: "Sources: IMF DOTS 2024, UNCTAD 2024, Base de données ZLECAf"
     },
     en: {
@@ -219,7 +224,8 @@ export default function OpportunitySummary({ language = 'fr' }) {
       topPartners: "Top Partners",
       topProducts: "Key Sectors",
       opportunities: "opportunities",
-      aiGenerated: "AI-generated data",
+      aiGenerated: "Real data",
+      sectorsUnavailable: "Continental sector data unavailable",
       source: "Sources: IMF DOTS 2024, UNCTAD 2024, AfCFTA Database"
     }
   };
@@ -257,7 +263,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
         </h2>
         <p className="text-slate-500 mt-2">{txt.subtitle}</p>
         {isAiGenerated && (
-          <Badge className="mt-2 bg-purple-100 text-purple-700 border-purple-200">
+          <Badge className="mt-2 bg-emerald-100 text-emerald-700 border-emerald-200">
             <Sparkles className="h-3 w-3 mr-1" />
             {txt.aiGenerated}
           </Badge>
@@ -281,7 +287,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
         />
         <StatCard
           title={txt.intraAfricanTrade}
-          value={formatValue(data.intraAfricanTrade)}
+          value={data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—'}
           icon={Globe}
           color="purple"
         />
@@ -333,27 +339,33 @@ export default function OpportunitySummary({ language = 'fr' }) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-4">
-              {data.topProducts.map((product, index) => (
-                <li 
-                  key={product.name} 
-                  className="flex justify-between items-center text-sm border-b border-slate-100 pb-3 last:border-0"
-                >
-                  <span className="text-slate-700 truncate pr-4 font-medium flex items-center gap-3">
-                    <span className="font-black text-slate-300 w-6">
-                      {String(index + 1).padStart(2, '0')}
+            {data.topProducts.length > 0 ? (
+              <ul className="space-y-4">
+                {data.topProducts.map((product, index) => (
+                  <li
+                    key={product.name}
+                    className="flex justify-between items-center text-sm border-b border-slate-100 pb-3 last:border-0"
+                  >
+                    <span className="text-slate-700 truncate pr-4 font-medium flex items-center gap-3">
+                      <span className="font-black text-slate-300 w-6">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <Badge variant="outline" className="font-mono text-xs mr-2">
+                        {product.code}
+                      </Badge>
+                      {product.name}
                     </span>
-                    <Badge variant="outline" className="font-mono text-xs mr-2">
-                      {product.code}
-                    </Badge>
-                    {product.name}
-                  </span>
-                  <span className="font-black text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded-md uppercase whitespace-nowrap">
-                    {product.count} {txt.opportunities}
-                  </span>
-                </li>
-              ))}
-            </ul>
+                    <span className="font-black text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded-md uppercase whitespace-nowrap">
+                      {product.count} {txt.opportunities}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="flex items-center justify-center h-[260px] text-sm text-slate-400 text-center px-6">
+                {txt.sectorsUnavailable}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

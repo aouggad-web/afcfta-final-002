@@ -410,17 +410,12 @@ export default function ProductAnalysisView({ language = 'fr' }) {
 
   // Extract trends from historical data if available
   const extractTrends = (exporters) => {
+    // Only return a series when there is REAL historical data; otherwise return
+    // an empty array so the trend chart is hidden rather than showing fabricated
+    // numbers (there is no real per-product time series available offline).
     if (!exporters || exporters.length === 0) {
-      return [
-        { year: 2020, countryValue: 165, regionalAverage: 140, globalAverage: 200 },
-        { year: 2021, countryValue: 210, regionalAverage: 175, globalAverage: 245 },
-        { year: 2022, countryValue: 280, regionalAverage: 210, globalAverage: 290 },
-        { year: 2023, countryValue: 320, regionalAverage: 245, globalAverage: 330 },
-        { year: 2024, countryValue: 365, regionalAverage: 285, globalAverage: 375 }
-      ];
+      return [];
     }
-
-    // Try to extract from historical_data
     const firstExporter = exporters[0];
     if (firstExporter.historical_data && firstExporter.historical_data.length > 0) {
       return firstExporter.historical_data.map(h => ({
@@ -430,12 +425,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         globalAverage: (h.value_musd || 0) * 1.2
       }));
     }
-
-    return [
-      { year: 2022, countryValue: 280, regionalAverage: 210, globalAverage: 290 },
-      { year: 2023, countryValue: 320, regionalAverage: 245, globalAverage: 330 },
-      { year: 2024, countryValue: 365, regionalAverage: 285, globalAverage: 375 }
-    ];
+    return [];
   };
 
   // Get production data based on product type
@@ -643,10 +633,10 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               </Card>
             </div>
 
-            {/* Market Share Trends */}
-            {productData.marketShareTrends && (
-              <MarketShareTrendChart 
-                trends={productData.marketShareTrends} 
+            {/* Market Share Trends (only when a real time series exists) */}
+            {productData.marketShareTrends?.length > 0 && (
+              <MarketShareTrendChart
+                trends={productData.marketShareTrends}
                 language={language}
               />
             )}
