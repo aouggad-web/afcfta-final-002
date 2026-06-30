@@ -185,6 +185,14 @@ async def compare_countries(country_a: str, country_b: str, lang: str = "fr") ->
 
     has_trade = bool(exp_ab or exp_ba or a_supply or b_supply)
 
+    note = None
+    if not has_trade:
+        note = (
+            "Flux commerciaux (OEC) temporairement indisponibles : les indicateurs "
+            "économiques réels (PIB, croissance, IDH) sont affichés, mais le commerce "
+            "bilatéral et la complémentarité nécessitent la source OEC."
+        )
+
     if lang == "fr":
         explanation = (
             f"Complémentarité estimée à partir des structures réelles d'exportation "
@@ -243,6 +251,8 @@ async def compare_countries(country_a: str, country_b: str, lang: str = "fr") ->
         "data_source": "OEC (BACI/UN Comtrade) + IMF/World Bank/UNDP (country_data)",
         "generated_by": "Données réelles (OEC, IMF/BM/PNUD)",
         "is_estimation": not has_trade,
+        "oec_available": has_trade,
+        "note": note,
     }
 
     if has_trade:

@@ -285,6 +285,16 @@ export default function CountryComparison({ language = 'fr' }) {
       {/* Results */}
       {!loading && !error && data && (
         <>
+          {/* Data-status notice (e.g. OEC trade flows temporarily unavailable) */}
+          {data.note && (
+            <div className="afcfta-card" style={{ padding: '12px 16px', borderLeft: '3px solid var(--gold)', background: 'rgba(212,137,26,0.06)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text)' }}>
+                <Info style={{ width: 15, height: 15, color: 'var(--gold)', flexShrink: 0 }} />
+                {data.note}
+              </div>
+            </div>
+          )}
+
           {/* Bilateral trade */}
           {(bilateral.exports_a_to_b_musd != null || bilateral.exports_b_to_a_musd != null) && (
             <div className="afcfta-card" style={{ padding: '18px 22px' }}>

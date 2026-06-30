@@ -11,6 +11,7 @@ Provides real trade data for African countries
 import asyncio
 import logging
 from collections import defaultdict
+from datetime import datetime
 from typing import Dict, List
 
 import httpx
@@ -769,6 +770,50 @@ class RealTradeDataService:
             logger.error(f"OEC bilateral API error: {str(e)}")
 
         return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
+
+    async def ping_oec(self, year: int = 2022) -> Dict:
+        """
+        Lightweight connectivity check against the OEC API.
+
+        Performs a minimal real request and reports whether OEC is reachable,
+        the HTTP status, latency and how many records came back. Used by the
+        /ai/oec-health diagnostic so operators can confirm that outbound access
+        to api-v2.oec.world is allowed by the deployment's network policy.
+        """
+        params = {
+            "cube": "trade_i_baci_a_17",
+            "drilldowns": "Year,Exporter Country,HS4",
+            "measures": "Trade Value",
+            "Year": str(year),
+            "Exporter Country": "afzaf",
+            "limit": "1",
+        }
+        start = datetime.utcnow()
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                response = await client.get(OEC_BASE_URL, params=params)
+            latency_ms = int((datetime.utcnow() - start).total_seconds() * 1000)
+            records = []
+            if response.status_code == 200:
+                records = response.json().get("data", [])
+            return {
+                "reachable": response.status_code == 200 and bool(records),
+                "status_code": response.status_code,
+                "latency_ms": latency_ms,
+                "records": len(records),
+                "endpoint": OEC_BASE_URL,
+                "error": None if response.status_code == 200 else f"HTTP {response.status_code}",
+            }
+        except Exception as e:
+            latency_ms = int((datetime.utcnow() - start).total_seconds() * 1000)
+            return {
+                "reachable": False,
+                "status_code": None,
+                "latency_ms": latency_ms,
+                "records": 0,
+                "endpoint": OEC_BASE_URL,
+                "error": str(e),
+            }
 
     async def get_bilateral_trade(
         self, exporter_iso3: str, importer_iso3: str, year: int = 2022, limit: int = 10

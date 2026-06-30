@@ -127,6 +127,14 @@ async def analyze_product_by_hs_code(hs_code: str, lang: str = "fr", year: int =
     has_trade = bool(top_exporters or top_importers)
     has_data = has_trade or bool(production_capacities)
 
+    note = None
+    if not has_trade:
+        note = (
+            "Flux commerciaux (OEC) temporairement indisponibles : la nomenclature et "
+            "la production réelle (FAO/USGS/UNIDO) sont affichées, mais les classements "
+            "exportateurs/importateurs par valeur nécessitent la source OEC."
+        )
+
     sources = ["OEC BACI", "UN Comtrade"] + prod_sources
     result = {
         "product": product,
@@ -146,6 +154,8 @@ async def analyze_product_by_hs_code(hs_code: str, lang: str = "fr", year: int =
         "generated_by": "Données réelles (OEC, FAO/USGS/UNIDO)",
         "data_quality": "real" if has_trade else ("partial" if has_data else "unavailable"),
         "is_estimation": not has_data,
+        "oec_available": has_trade,
+        "note": note,
     }
 
     if has_data:
