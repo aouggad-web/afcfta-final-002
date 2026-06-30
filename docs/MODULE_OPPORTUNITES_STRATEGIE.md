@@ -1,7 +1,29 @@
 # Module « Opportunités » — Stratégie, méthodologie et architecture
 
 _Plateforme ZLECAf / AfCFTA — Note technique et éditoriale_
-_Dernière mise à jour : 2026-06-29_
+_Dernière mise à jour : 2026-06-30_
+
+---
+
+## 0. Statut — RETIRÉ DE LA PLATEFORME (repris en premium)
+
+> **Décision (2026-06-30).** Le module Opportunités est **retiré de l'interface
+> publique** de la plateforme. Il dépend de flux commerciaux fins (par produit,
+> bilatéraux) qui exigent un accès **OEC en direct** (et d'autres API), aujourd'hui
+> indisponible/instable dans l'environnement, ce qui en faisait le module le plus
+> problématique en l'état.
+>
+> **Ce qui est fait dans cette étape :** seuls les **points de montage UI** sont
+> débranchés — entrée de navigation (sidebar/topbar/header), import et route dans
+> `App.js`. **Tout le code est conservé** (`frontend/src/components/opportunities/*`,
+> services backend `real_*`, endpoints `/ai/*`, `/substitution/*`,
+> `/statistics/afreximbank-atr2026`, diagnostic `/ai/oec-health`) pour la reprise.
+>
+> **Vision de reprise :** en faire un **outil ultra-premium** réservé à certains
+> clients, générant des **rapports sectoriels et périodiques à la demande**,
+> alimenté par des **API payantes (OEC, etc.)** garantissant des flux réels,
+> complets et à jour. Le reste de ce document décrit l'architecture existante qui
+> servira de base à cette reprise.
 
 ---
 

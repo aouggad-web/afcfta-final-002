@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  LayoutDashboard, Calculator, BarChart3, Target, Factory, Ship,
+  LayoutDashboard, Calculator, BarChart3, Factory, Ship,
   Landmark, Wrench, FileCheck, Globe2, ChevronLeft, ChevronRight,
   Moon, Sun,
 } from "lucide-react";
@@ -9,7 +9,6 @@ const NAV_ITEMS = (isFrench) => [
   { id: "dashboard",  label: isFrench ? "Tableau de bord" : "Dashboard",       icon: LayoutDashboard },
   { id: "calculator", label: isFrench ? "Calculateur"     : "Calculator",      icon: Calculator },
   { id: "stats",      label: isFrench ? "Statistiques"    : "Statistics",      icon: BarChart3 },
-  { id: "opps",       label: isFrench ? "Opportunités"    : "Opportunities",   icon: Target },
   { id: "production", label: isFrench ? "Production"      : "Production",      icon: Factory },
   { id: "logistics",  label: isFrench ? "Logistique"      : "Logistics",       icon: Ship },
   { id: "banking",    label: isFrench ? "Banque"          : "Banking",         icon: Landmark },
