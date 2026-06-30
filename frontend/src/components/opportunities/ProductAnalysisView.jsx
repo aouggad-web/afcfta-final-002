@@ -19,8 +19,8 @@ import {
   CartesianGrid, Tooltip, Legend, LineChart, Line, Cell, PieChart, Pie
 } from 'recharts';
 import { 
-  Search, Package, TrendingUp, Globe, Factory, 
-  ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles
+  Search, Package, TrendingUp, Globe, Factory,
+  ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles, Info
 } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
 
@@ -346,6 +346,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           marketShareTrends: extractTrends(ai.top_african_exporters),
           substitutionOpportunities: ai.substitution_opportunities || [],
           sources: ai.sources || ['Gemini AI'],
+          note: ai.note || null,
           isAiGenerated: true
         });
       } else {
@@ -550,6 +551,13 @@ export default function ProductAnalysisView({ language = 'fr' }) {
       {/* Results */}
       {productData && (
         <Card className="shadow-xl overflow-hidden">
+          {/* Data-status notice (e.g. OEC trade flows temporarily unavailable) */}
+          {productData.note && (
+            <div className="flex items-center gap-2 px-4 py-3 text-sm" style={{ background: 'rgba(212,137,26,0.08)', borderBottom: '1px solid rgba(212,137,26,0.25)' }}>
+              <Info className="h-4 w-4" style={{ color: '#d4891a', flexShrink: 0 }} />
+              <span>{productData.note}</span>
+            </div>
+          )}
           {/* Product Header */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8">
             <div className="text-center">
@@ -558,9 +566,9 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                   Rapport d'Intelligence Marché
                 </Badge>
                 {productData.isAiGenerated && (
-                  <Badge className="bg-purple-500/30 text-white border-purple-400">
+                  <Badge className="bg-emerald-500/30 text-white border-emerald-400">
                     <Sparkles className="h-3 w-3 mr-1" />
-                    Données IA
+                    Données réelles
                   </Badge>
                 )}
               </div>
