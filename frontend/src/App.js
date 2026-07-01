@@ -21,6 +21,7 @@ import RulesTab from './components/rules/RulesTab';
 import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import BankingInfoPanel from './components/banking/BankingInfoPanel';
+import OpportunityReportTab from './components/reports/OpportunityReportTab';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -97,6 +98,7 @@ function App() {
         tools: 'tools',
         roo: 'rules',
         profiles: 'profiles',
+        reports: 'reports',
       };
       setActiveTab(tabMapping[value] || value);
     } else if (type === 'language') {
@@ -115,6 +117,7 @@ function App() {
       tools: 'tools',
       rules: 'roo',
       profiles: 'profiles',
+      reports: 'reports',
     };
     return reverseMapping[activeTab] || activeTab;
   };
@@ -302,6 +305,25 @@ function App() {
             <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <CountryProfilesTab language={language} />
+            </div>
+          </div>
+        );
+
+      case 'reports':
+        return (
+          <div className="afcfta-section afcfta-fadeIn">
+            <SectionHeader
+              title={language === 'fr' ? 'Opportunités (Premium)' : 'Opportunities (Premium)'}
+              subtitle={
+                language === 'fr'
+                  ? 'Rapport bilatéral : production, logistique, finance & macro (GAI, réserves, couverture des importations)'
+                  : 'Bilateral report: production, logistics, finance & macro (GAI, reserves, import cover)'
+              }
+              dotColor="copper"
+            />
+            <div style={{ height: 20 }} />
+            <div className="afcfta-card">
+              <OpportunityReportTab countries={countries} language={language} />
             </div>
           </div>
         );
