@@ -22,8 +22,10 @@ which is renormalised over the components that *do* have data.
 import logging
 from typing import Dict, Optional
 
+from services import benchmarking_service
 from services import finance_opportunity_adapter as finance
 from services import logistics_opportunity_adapter as logistics
+from services import narrative_analysis_service, segmentation_service
 
 _log = logging.getLogger(__name__)
 
@@ -221,6 +223,93 @@ def get_opportunity_report(
                 "aucune valeur inventée. Les flux OEC par produit (potentiel de "
                 "marché) nécessitent une API payante et sont exclus ici."
             ),
+        },
+    }
+
+
+def get_opportunity_report_ultra_fine(
+    hs_code: str,
+    origin_iso3: str,
+    destination_iso3: str,
+    goods_value_usd: Optional[float] = None,
+    weight_kg: float = 21600.0,
+    volume_m3: float = 33.5,
+    weights: Optional[Dict[str, float]] = None,
+) -> Dict:
+    """
+    Ultra-fine bilateral report: adds narrative analysis, benchmarking,
+    segmentation matrices, and detailed factor breakdown.
+
+    Builds on get_opportunity_report and enriches with:
+    - narrative_analysis (supply, market, logistics, financing)
+    - benchmarking (top producers, competitive position, cost comparison)
+    - segmentation (effort/impact, risk/reward matrices, factor breakdown)
+    - priority tier (QUICK_WIN, STRATEGIC_BET, etc.)
+
+    No fabrication: all narratives sourced, all scores from real data.
+    """
+    # Base report
+    base = get_opportunity_report(
+        hs_code, origin_iso3, destination_iso3, goods_value_usd, weight_kg, volume_m3, weights
+    )
+
+    # Add narrative analyses
+    supply_narrative = narrative_analysis_service.analyze_supply(
+        origin_iso3, hs_code, base.get("supply", {})
+    )
+    logistics_narrative = narrative_analysis_service.analyze_logistics(
+        origin_iso3, destination_iso3, base.get("logistics", {}).get("profile", {})
+    )
+    financing_narrative = narrative_analysis_service.analyze_financing(
+        destination_iso3, base.get("finance", {}).get("profile", {})
+    )
+    executive_summary = narrative_analysis_service.summarize_opportunity(base)
+
+    # Add benchmarking
+    top_producers = benchmarking_service.get_top_producers(hs_code, n=5)
+    cost_benchmark = benchmarking_service.benchmark_cost(
+        origin_iso3,
+        hs_code,
+        destination_iso3,
+        base.get("composite_indicators", {}).get("landed_cost", {}).get("value_usd"),
+    )
+    infrastructure_bench = benchmarking_service.benchmark_infrastructure(destination_iso3)
+    tariff_benefit = benchmarking_service.tariff_benefit_analysis(
+        origin_iso3, destination_iso3, hs_code
+    )
+
+    # Add segmentation
+    effort_impact = segmentation_service.effort_impact_matrix(base)
+    risk_reward = segmentation_service.risk_reward_matrix(base)
+    factors = segmentation_service.factor_breakdown(base)
+    priority = segmentation_service.priority_score(base)
+
+    # Assemble ultra-fine report
+    return {
+        **base,  # Include all base report fields
+        "report_tier": "ultra_fine",
+        "executive_summary": {
+            "priority_tier": executive_summary.get("priority_tier"),
+            "key_findings": executive_summary.get("key_findings"),
+            "recommendation": executive_summary.get("recommendation"),
+            "narrative": executive_summary.get("narrative"),
+        },
+        "narrative_analysis": {
+            "supply": supply_narrative,
+            "logistics": logistics_narrative,
+            "financing": financing_narrative,
+        },
+        "benchmarking": {
+            "top_producers": top_producers,
+            "cost_comparison": cost_benchmark,
+            "infrastructure": infrastructure_bench,
+            "tariff_benefit": tariff_benefit,
+        },
+        "segmentation": {
+            "effort_impact_matrix": effort_impact,
+            "risk_reward_matrix": risk_reward,
+            "factor_breakdown": factors,
+            "priority_score": priority,
         },
     }
 

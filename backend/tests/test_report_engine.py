@@ -264,6 +264,171 @@ def test_importers_for_product_exact_hs6_all_countries(monkeypatch):
     ]  # sorted desc; non-matching 180200 excluded
 
 
+# ── Narrative Analysis ──────────────────────────────────────────────────────
+def test_narrative_supply_real_producer():
+    from services import narrative_analysis_service as narrative
+
+    supply_profile = {
+        "available": True,
+        "subscore": 0.91,
+        "continental_share_pct": 18.2,
+        "rank": 1,
+        "commodity": "Cocoa beans",
+        "source": "FAO PRODSTAT",
+        "detail": {"year": 2023, "trend": {"growth_pct_annual": 2.1, "period": "2019–2023"}},
+    }
+    result = narrative.analyze_supply("CIV", "1801", supply_profile)
+    assert result["available"] is True
+    assert "1er producteur" in result["narrative"].lower()
+    assert "18.2" in result["narrative"]
+    assert "2023" in result["narrative"]
+
+
+def test_narrative_summarize_opportunity():
+    from services import narrative_analysis_service as narrative
+
+    report = {
+        "composite_indicators": {
+            "end_to_end_score": {"available": True, "score": 0.78},
+        },
+        "supply": {
+            "available": True,
+            "continental_share_pct": 18.2,
+            "rank": 1,
+        },
+        "demand": {
+            "available": True,
+            "total_import_value_usd": 840_000_000,
+        },
+    }
+    result = narrative.summarize_opportunity(report)
+    assert result["priority_tier"] == "QUICK_WIN"
+    assert len(result["key_findings"]) > 0
+    assert "Déployer" in result["recommendation"]
+
+
+# ── Benchmarking Service ─────────────────────────────────────────────────────
+def test_benchmark_top_producers(monkeypatch):
+    from services import benchmarking_service as benchmark
+
+    # Stub production_capacity_service
+    def _mock_continental(hs_code):
+        return {
+            "available": True,
+            "commodity": "Cocoa beans",
+            "unit": "tonnes",
+            "year": 2023,
+            "source": "FAO PRODSTAT",
+            "top_producers": [
+                {"country_iso3": "CIV", "country_name": "Côte d'Ivoire", "country_share_pct": 18.2},
+                {"country_iso3": "GHA", "country_name": "Ghana", "country_share_pct": 16.8},
+            ],
+        }
+
+    monkeypatch.setattr(
+        "services.production_capacity_service.get_continental_producers", _mock_continental
+    )
+    result = benchmark.get_top_producers("1801", n=2)
+    assert result["available"] is True
+    assert len(result["producers"]) == 2
+    assert result["producers"][0]["country_iso3"] == "CIV"
+
+
+def test_benchmark_cost_competitive():
+    from services import benchmarking_service as benchmark
+
+    result = benchmark.benchmark_cost("CIV", "1801", "NGA", landed_cost_usd=100000)
+    assert result["available"] is True
+    assert result["position"] == "best"
+    assert "leader" in result["narrative"].lower()
+
+
+# ── Segmentation Service ─────────────────────────────────────────────────────
+def test_effort_impact_matrix_quick_win():
+    from services import segmentation_service as segmentation
+
+    report = {
+        "inputs": {"goods_value_usd": 100000},
+        "composite_indicators": {
+            "landed_cost": {"breakdown": {"best_operational_freight_usd": 1200}}
+        },
+        "demand": {"available": True, "total_import_value_usd": 500_000_000},
+    }
+    result = segmentation.effort_impact_matrix(report)
+    assert result["effort_score"] < 0.4
+    assert result["impact_score"] > 0.6
+    assert result["quadrant"] == "quick_win"
+
+
+def test_risk_reward_matrix_ideal_corridor():
+    from services import segmentation_service as segmentation
+
+    report = {
+        "composite_indicators": {
+            "financing_feasibility_index": {"available": True, "index": 0.75},
+            "end_to_end_score": {"available": True, "score": 0.78},
+        },
+        "finance": {"country_risk": {"available": True, "risk_score": 3.5, "alert_level": "green"}},
+        "supply": {"available": True, "subscore": 0.9},
+        "demand": {"available": True, "total_import_value_usd": 500_000_000},
+    }
+    result = segmentation.risk_reward_matrix(report)
+    assert result["risk_score"] < 0.4
+    assert result["reward_score"] > 0.7
+    assert result["quadrant"] == "ideal_corridor"
+
+
+def test_factor_breakdown_opportunities_and_risks():
+    from services import segmentation_service as segmentation
+
+    report = {
+        "supply": {"available": True, "continental_share_pct": 18.2, "subscore": 0.91},
+        "demand": {"available": True, "total_import_value_usd": 500_000_000},
+        "composite_indicators": {
+            "logistics_accessibility_index": {"available": True, "index": 0.82},
+            "financing_feasibility_index": {"available": True, "index": 0.73},
+        },
+        "finance": {
+            "country_risk": {"available": True, "alert_level": "orange", "risk_score": 6.2}
+        },
+    }
+    factors = segmentation.factor_breakdown(report)
+    opps = [f for f in factors if f["category"] == "opportunity"]
+    risks = [f for f in factors if f["category"] == "risk"]
+    assert len(opps) > 0
+    assert len(risks) > 0
+
+
+def test_opportunity_report_ultra_fine(_no_network_fx):
+    """Ultra-fine report includes narrative, benchmarking, segmentation."""
+    rep = report_engine.get_opportunity_report_ultra_fine(
+        "1801", "CIV", "NGA", goods_value_usd=50000.0
+    )
+
+    # Base report fields
+    assert rep["report_type"] == "bilateral_product_opportunity"
+    assert rep["report_tier"] == "ultra_fine"
+
+    # Executive summary
+    assert "executive_summary" in rep
+    assert rep["executive_summary"]["priority_tier"] is not None
+
+    # Narrative analysis
+    assert "narrative_analysis" in rep
+    assert rep["narrative_analysis"].get("supply", {}).get("available") is not None
+
+    # Benchmarking
+    assert "benchmarking" in rep
+    assert "top_producers" in rep["benchmarking"]
+
+    # Segmentation
+    assert "segmentation" in rep
+    assert "effort_impact_matrix" in rep["segmentation"]
+    assert "risk_reward_matrix" in rep["segmentation"]
+    assert "factor_breakdown" in rep["segmentation"]
+    assert len(rep["segmentation"]["factor_breakdown"]) > 0
+
+
 def test_market_seeking_report_demand_degrades_supply_real(monkeypatch):
     # Stub the OEC call (network) so demand is deterministically unavailable.
     from services import real_trade_data_service as rt
