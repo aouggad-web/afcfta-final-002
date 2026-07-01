@@ -33,6 +33,12 @@ const translations = {
     authentic: 'Authentique',
     lastLayer: 'Dernière couche',
     blocCountries: 'pays couverts',
+    continentalTitle: 'Indicateurs continentaux 2025',
+    afreximbankSource: 'Source : Afreximbank, African Trade Report 2026',
+    gdpGrowth: 'Croissance du PIB',
+    inflation: 'Inflation',
+    merchExports: 'Exportations de marchandises',
+    intraAfricanTradeShort: 'Commerce intra-africain',
   },
   en: {
     overview: 'AfCFTA Overview',
@@ -53,6 +59,12 @@ const translations = {
     authentic: 'Authentic',
     lastLayer: 'Latest layer',
     blocCountries: 'countries covered',
+    continentalTitle: 'Continental indicators 2025',
+    afreximbankSource: 'Source: Afreximbank, African Trade Report 2026',
+    gdpGrowth: 'GDP growth',
+    inflation: 'Inflation',
+    merchExports: 'Merchandise exports',
+    intraAfricanTradeShort: 'Intra-African trade',
   },
 };
 
@@ -132,6 +144,7 @@ function DashboardMetricCard({ item }) {
 
 const DashboardTabNew = ({ language = 'fr' }) => {
   const [stats, setStats] = useState(null);
+  const [atr, setAtr] = useState(null); // Afreximbank ATR 2026 continental indicators
   const [loading, setLoading] = useState(true);
   const t = translations[language] || translations.fr;
 
@@ -148,6 +161,12 @@ const DashboardTabNew = ({ language = 'fr' }) => {
       }
     };
     fetchStats();
+
+    // Real continental indicators (Afreximbank African Trade Report 2026)
+    fetch(`${API}/statistics/afreximbank-atr2026`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setAtr(d?.continental_indicators_2025 || null))
+      .catch(() => setAtr(null));
   }, []);
 
   // Build KPIs dynamically with real data from API
@@ -176,11 +195,12 @@ const DashboardTabNew = ({ language = 'fr' }) => {
       {
         key: 'trade',
         title: t.intraAfricanTrade,
-        value: '$235B',
-        subtitle: `${t.growth}: +7.7%`,
+        // Real figure from Afreximbank ATR 2026 (2025) when available
+        value: atr?.intra_african_trade_busd ? `$${atr.intra_african_trade_busd}B` : '$213.8B',
+        subtitle: `2025: +${atr?.intra_african_trade_growth_pct ?? 5.5}%`,
         icon: TrendingUp,
         accent: '#4f8ef7',
-        meta: '+7.7%',
+        meta: `+${atr?.intra_african_trade_growth_pct ?? 5.5}%`,
       },
       {
         key: 'coverage',
@@ -201,7 +221,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
         meta: t.lastLayer,
       },
     ];
-  }, [stats, t]);
+  }, [stats, t, atr]);
 
   return (
     <div className="space-y-6">
@@ -263,6 +283,72 @@ const DashboardTabNew = ({ language = 'fr' }) => {
           <DashboardMetricCard key={item.key} item={item} />
         ))}
       </section>
+
+      {/* Real continental indicators — Afreximbank African Trade Report 2026 */}
+      {atr && (
+        <section
+          className="rounded-2xl border p-5 md:p-6"
+          style={{ background: 'rgba(255,255,255,0.025)', borderColor: 'rgba(255,255,255,0.06)' }}
+        >
+          <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
+            <h3 className="text-lg md:text-xl font-bold text-[var(--text)]">{t.continentalTitle}</h3>
+            <span className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[rgba(255,255,255,0.05)] text-xs text-[var(--afcfta-muted)]">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              {t.afreximbankSource}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+            {[
+              {
+                label: t.gdpGrowth,
+                value: atr.real_gdp_growth_pct != null ? `+${atr.real_gdp_growth_pct}%` : '—',
+                accent: '#20c997',
+              },
+              {
+                label: t.inflation,
+                value: atr.inflation_pct != null ? `${atr.inflation_pct}%` : '—',
+                accent: '#e67e22',
+              },
+              {
+                label: t.intraAfricanTradeShort,
+                value: atr.intra_african_trade_busd != null ? `$${atr.intra_african_trade_busd}B` : '—',
+                accent: '#4f8ef7',
+              },
+              {
+                label: t.merchExports,
+                value: atr.merchandise_exports_busd != null ? `$${atr.merchandise_exports_busd}B` : '—',
+                accent: '#d4891a',
+              },
+            ].map(({ label, value, accent }) => (
+              <div
+                key={label}
+                className="rounded-xl border p-5"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))',
+                  borderColor: `${accent}44`,
+                  borderLeftWidth: 3,
+                  borderLeftColor: accent,
+                }}
+              >
+                <div className="text-[11px] font-bold uppercase tracking-[1px]" style={{ color: accent }}>
+                  {label}
+                </div>
+                <div
+                  className="mt-2 font-bold text-[var(--text)]"
+                  style={{
+                    fontSize: 'clamp(24px, 2.6vw, 34px)',
+                    fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)",
+                    lineHeight: 1,
+                  }}
+                >
+                  {value}
+                </div>
+                <div className="mt-2 text-[12px] text-[var(--afcfta-muted)]">2025</div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section
         className="rounded-2xl border p-5 md:p-6"
