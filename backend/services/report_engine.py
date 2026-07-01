@@ -468,6 +468,119 @@ def get_transformation_scenario(
     }
 
 
+def _african_candidate_markets(exclude_iso3: str) -> list:
+    """African markets (ISO3) to consider as export destinations, minus origin."""
+    try:
+        from constants import AFRICAN_COUNTRIES
+
+        return [
+            c["iso3"]
+            for c in AFRICAN_COUNTRIES
+            if c.get("iso3") and c.get("population") and c["iso3"] != exclude_iso3
+        ]
+    except Exception as exc:  # pragma: no cover - defensive
+        _log.warning("candidate markets unavailable: %s", exc)
+        return []
+
+
+def get_direct_export_scenario(
+    hs_code: str,
+    producer_iso3: str,
+    candidate_destinations: Optional[list] = None,
+    top_k: int = 5,
+    goods_value_usd: Optional[float] = None,
+    weight_kg: float = 21600.0,
+    volume_m3: float = 33.5,
+) -> Dict:
+    """
+    Scenario **S2 — national production → direct export**.
+
+    For a producer that already makes ``hs_code``, rank the African markets worth
+    exporting to. Two stages, both real-data:
+
+      1. Cheap pass over all candidate markets: estimate each market's national
+         need (population proxy / apparent consumption) to size the demand.
+      2. Deep-dive the ``top_k`` largest-need markets with the full bilateral
+         opportunity report (logistics, finance, tariff, end-to-end score) and
+         rank them by that score.
+
+    Returns the producer's own supply profile plus a ranked list of destination
+    opportunities. No fabrication: unavailable angles are flagged, not invented.
+    """
+    producer_iso3 = (producer_iso3 or "").upper()
+
+    # Producer's own production capacity for the product (the whole scenario is
+    # only meaningful if the producer actually makes it).
+    supply = _supply_component(producer_iso3, hs_code)
+
+    # Candidate destination markets.
+    if candidate_destinations:
+        candidates = [c.upper() for c in candidate_destinations if c and c.upper() != producer_iso3]
+    else:
+        candidates = _african_candidate_markets(producer_iso3)
+
+    # Stage 1 — size demand per candidate (cheap, local estimate).
+    sized = []
+    for dest in candidates:
+        need = demand_estimation_service.estimate_national_need(hs_code, dest)
+        sized.append({"destination_iso3": dest, "market_need": need})
+    sized.sort(key=lambda s: (s["market_need"].get("value") or 0), reverse=True)
+
+    # Stage 2 — deep-dive the top_k largest-need markets with a full report.
+    opportunities = []
+    for entry in sized[: max(top_k, 0)]:
+        dest = entry["destination_iso3"]
+        report = get_opportunity_report(
+            hs_code, producer_iso3, dest, goods_value_usd, weight_kg, volume_m3
+        )
+        ci = report.get("composite_indicators", {})
+        e2e = ci.get("end_to_end_score", {})
+        opportunities.append(
+            {
+                "destination_iso3": dest,
+                "market_need": entry["market_need"],
+                "end_to_end_score": e2e.get("score"),
+                "score_available": e2e.get("available"),
+                "landed_cost": ci.get("landed_cost", {}),
+                "logistics_accessibility": ci.get("logistics_accessibility_index", {}),
+                "financing_feasibility": ci.get("financing_feasibility_index", {}),
+                "tariff_benefit": benchmarking_service.tariff_benefit_analysis(
+                    producer_iso3, dest, hs_code
+                ),
+            }
+        )
+
+    # Final ranking: by export score (desc), then by market need (desc).
+    opportunities.sort(
+        key=lambda o: ((o["end_to_end_score"] or 0), (o["market_need"].get("value") or 0)),
+        reverse=True,
+    )
+
+    return {
+        "report_type": "value_chain_direct_export",
+        "scenario": "S2_produce_export_direct",
+        "inputs": {
+            "hs_code": hs_code,
+            "producer_iso3": producer_iso3,
+            "goods_value_usd": goods_value_usd,
+            "top_k": top_k,
+        },
+        "producer_supply": supply,
+        "ranked_opportunities": opportunities,
+        "candidates_considered": len(candidates),
+        "deep_dived": len(opportunities),
+        "data_quality": {
+            "is_estimation": False,
+            "note": (
+                "Marchés classés par besoin estimé (proxy population / consommation "
+                "apparente) puis par score d'opportunité réel (logistique, finance, "
+                "tarif). Les besoins sont des estimations transparentes ; les scores "
+                "reposent sur des données réelles ou marquées indisponibles."
+            ),
+        },
+    }
+
+
 def _demand_side(importers: list) -> Dict:
     """Shape the OEC importers list into a demand block (or unavailable)."""
     if not importers:

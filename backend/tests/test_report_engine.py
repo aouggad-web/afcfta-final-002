@@ -611,6 +611,35 @@ def test_benchmark_cost_non_leader_unavailable():
     assert res.get("gap_pct") is None
 
 
+def test_direct_export_scenario_ranks_markets(_no_network_fx):
+    # CIV produces cocoa (1801) -> rank candidate export markets.
+    rep = report_engine.get_direct_export_scenario(
+        "1801",
+        "CIV",
+        candidate_destinations=["NGA", "EGY", "ZAF"],
+        top_k=3,
+        goods_value_usd=50000.0,
+    )
+    assert rep["report_type"] == "value_chain_direct_export"
+    assert rep["scenario"] == "S2_produce_export_direct"
+    assert rep["producer_supply"]["available"] is True  # CIV is a real cocoa producer
+    opps = rep["ranked_opportunities"]
+    assert len(opps) == 3
+    # Producer must never appear as its own destination
+    assert all(o["destination_iso3"] != "CIV" for o in opps)
+    # Each opportunity carries a real bilateral landed cost + tariff block
+    assert all("landed_cost" in o and "tariff_benefit" in o for o in opps)
+    # Ranking is by export score desc (None treated as 0)
+    scores = [o["end_to_end_score"] or 0 for o in opps]
+    assert scores == sorted(scores, reverse=True)
+
+
+def test_direct_export_default_candidates_exclude_producer():
+    rep = report_engine.get_direct_export_scenario("1801", "CIV", top_k=1)
+    assert rep["candidates_considered"] > 40  # ~54 African markets minus CIV
+    assert rep["deep_dived"] == 1
+
+
 def test_transformation_scenario_structure(_no_network_fx):
     # Import cocoa beans (1801), produce cocoa paste (1803) in CIV, export to NGA.
     rep = report_engine.get_transformation_scenario(

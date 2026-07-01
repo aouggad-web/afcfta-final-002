@@ -121,6 +121,35 @@ async def transformation_scenario(
     )
 
 
+@router.get("/direct-export", summary="Scénario S2 : production → export direct (marchés classés)")
+async def direct_export_scenario(
+    hs_code: str = Query(..., description="Code SH du produit"),
+    producer: str = Query(..., description="Pays producteur/exportateur (ISO3)"),
+    top_k: int = Query(
+        default=5, ge=1, le=15, description="Nombre de marchés à analyser en profondeur"
+    ),
+    goods_value_usd: Optional[float] = Query(default=None, description="Valeur FOB (USD)"),
+    weight_kg: float = Query(default=21600.0, description="Poids de l'expédition (kg)"),
+    volume_m3: float = Query(default=33.5, description="Volume de l'expédition (m³)"),
+):
+    """
+    Pour un producteur d'un produit : **quels marchés africains viser en export ?**
+    Classe les marchés par besoin estimé (proxy population / consommation
+    apparente), puis analyse en profondeur les ``top_k`` plus gros (logistique,
+    finance, tarif ZLECAf réel, score de bout en bout) et les ordonne par score.
+
+    Données réelles ou marquées indisponibles ; besoins étiquetés comme estimations.
+    """
+    return report_engine.get_direct_export_scenario(
+        hs_code=hs_code,
+        producer_iso3=producer,
+        top_k=top_k,
+        goods_value_usd=goods_value_usd,
+        weight_kg=weight_kg,
+        volume_m3=volume_m3,
+    )
+
+
 @router.get("/national-need", summary="Estimation du besoin national d'un produit")
 async def national_need(
     hs_code: str = Query(..., description="Code SH du produit (HS6 ou HS4)"),
