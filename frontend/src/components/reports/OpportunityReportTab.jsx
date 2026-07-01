@@ -474,12 +474,24 @@ function BilateralView({ countries, fr }) {
                 sub={gold ? `${fr ? "Rang Afrique" : "Africa rank"} ${dash(gold.rank_africa)}` : undefined}
               />
             </div>
-            {gai?.source && (
-              <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 10 }}>
-                {fr ? "Sources" : "Sources"} : {gai.source}
-                {fx.source ? ` · ${fx.source} (${fx.indicator}, ${cover.indicator})` : ""}
-              </div>
-            )}
+            {(() => {
+              // Show a source only for indicators actually displayed with data.
+              const sources = [];
+              if (gai?.source) sources.push(gai.source);
+              if (gold?.source) sources.push(gold.source);
+              if (fx.available || cover.available) {
+                const inds = [fx.available && fx.indicator, cover.available && cover.indicator]
+                  .filter(Boolean)
+                  .join(", ");
+                const wb = fx.source || cover.source || "World Bank WDI";
+                sources.push(inds ? `${wb} (${inds})` : wb);
+              }
+              return sources.length ? (
+                <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 10 }}>
+                  {fr ? "Sources" : "Sources"} : {sources.join(" · ")}
+                </div>
+              ) : null;
+            })()}
           </div>
 
           <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>{report.data_quality?.note}</div>

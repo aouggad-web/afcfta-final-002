@@ -1020,7 +1020,7 @@ class RealTradeDataService:
 
         sem = asyncio.Semaphore(6)
 
-        async def _one(iso3: str, info: Dict):
+        async def _one(client: httpx.AsyncClient, iso3: str, info: Dict):
             params = {
                 "cube": "trade_i_baci_a_17",
                 "drilldowns": f"Year,Importer Country,{level}",
@@ -1031,8 +1031,7 @@ class RealTradeDataService:
             }
             async with sem:
                 try:
-                    async with httpx.AsyncClient(timeout=self.timeout) as client:
-                        response = await client.get(OEC_BASE_URL, params=_oec_params(params))
+                    response = await client.get(OEC_BASE_URL, params=_oec_params(params))
                     if response.status_code != 200:
                         return None
                     records = response.json().get("data", [])
@@ -1058,7 +1057,10 @@ class RealTradeDataService:
                 }
 
         try:
-            gathered = await asyncio.gather(*[_one(i, inf) for i, inf in importers])
+            # Single pooled client shared across all country tasks (connection
+            # reuse; the semaphore still bounds concurrency).
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                gathered = await asyncio.gather(*[_one(client, i, inf) for i, inf in importers])
         except Exception as e:
             logger.error(f"OEC product importers API error: {str(e)}")
             return []
