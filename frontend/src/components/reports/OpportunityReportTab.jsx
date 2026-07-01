@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
@@ -251,7 +251,7 @@ function MarketSeekingView({ fr }) {
 }
 
 /* ── Mode 2: bilateral opportunity report ─────────────────────────────────── */
-function BilateralView({ countries, fr }) {
+function BilateralView({ countries, fr, prefill }) {
   const [origin, setOrigin] = useState("CIV");
   const [destination, setDestination] = useState("NGA");
   const [hsCode, setHsCode] = useState("1801");
@@ -260,13 +260,19 @@ function BilateralView({ countries, fr }) {
   const [error, setError] = useState(null);
   const [report, setReport] = useState(null);
 
-  const run = async () => {
+  const run = async (overrides = {}) => {
+    const o = { origin, destination, hsCode, goodsValue, ...overrides };
     setLoading(true);
     setError(null);
     setReport(null);
     try {
-      const params = new URLSearchParams({ hs_code: hsCode, origin, destination, mode: "ultra_fine" });
-      if (goodsValue) params.set("goods_value_usd", goodsValue);
+      const params = new URLSearchParams({
+        hs_code: o.hsCode,
+        origin: o.origin,
+        destination: o.destination,
+        mode: "ultra_fine",
+      });
+      if (o.goodsValue) params.set("goods_value_usd", o.goodsValue);
       const res = await axios.get(`${API}/reports/opportunity?${params.toString()}`);
       setReport(res.data);
     } catch (e) {
@@ -275,6 +281,22 @@ function BilateralView({ countries, fr }) {
       setLoading(false);
     }
   };
+
+  // When another scenario hands off (prefill), sync the fields and auto-run.
+  useEffect(() => {
+    if (!prefill || !prefill.k) return;
+    if (prefill.origin) setOrigin(prefill.origin);
+    if (prefill.destination) setDestination(prefill.destination);
+    if (prefill.hsCode) setHsCode(prefill.hsCode);
+    if (prefill.goodsValue) setGoodsValue(prefill.goodsValue);
+    run({
+      origin: prefill.origin,
+      destination: prefill.destination,
+      hsCode: prefill.hsCode,
+      goodsValue: prefill.goodsValue,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefill?.k]);
 
   const ci = report?.composite_indicators || {};
   const e2e = ci.end_to_end_score || {};
@@ -763,7 +785,7 @@ function BilateralView({ countries, fr }) {
 }
 
 /* ── Mode: S2 — national production → direct export (ranked markets) ───────── */
-function DirectExportView({ countries, fr }) {
+function DirectExportView({ countries, fr, onAnalyze }) {
   const [hsCode, setHsCode] = useState("1801");
   const [producer, setProducer] = useState("CIV");
   const [topK, setTopK] = useState("5");
@@ -852,6 +874,7 @@ function DirectExportView({ countries, fr }) {
                   <th style={th}>{fr ? "Besoin estimé" : "Estimated need"}</th>
                   <th style={th}>{fr ? "Avantage tarif" : "Tariff adv."}</th>
                   <th style={th}>{fr ? "Coût rendu" : "Landed cost"}</th>
+                  <th style={th}></th>
                 </tr>
               </thead>
               <tbody>
@@ -869,6 +892,16 @@ function DirectExportView({ countries, fr }) {
                       {o.tariff_benefit?.available ? dash(o.tariff_benefit.tariff_advantage_pct, " %") : "—"}
                     </td>
                     <td style={td}>{o.landed_cost?.available ? money(o.landed_cost.value_usd) : "—"}</td>
+                    <td style={td}>
+                      <button
+                        onClick={() => onAnalyze && onAnalyze(producer, o.destination_iso3, hsCode, goodsValue)}
+                        data-testid={`s2-analyze-${o.destination_iso3}`}
+                        className="afcfta-btn afcfta-btn-secondary"
+                        style={{ padding: "4px 10px", borderRadius: 6, fontSize: 12 }}
+                      >
+                        {fr ? "Analyser ▸" : "Analyze ▸"}
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -882,7 +915,7 @@ function DirectExportView({ countries, fr }) {
 }
 
 /* ── Mode: S1 — import inputs → local production → export ──────────────────── */
-function TransformationView({ countries, fr }) {
+function TransformationView({ countries, fr, onAnalyze }) {
   const [inputHs, setInputHs] = useState("1801");
   const [inputOrigin, setInputOrigin] = useState("GHA");
   const [producer, setProducer] = useState("CIV");
@@ -992,6 +1025,17 @@ function TransformationView({ countries, fr }) {
                 {fr ? "Score export → " : "Export score → "}
                 {rep.inputs?.destination_iso3}
               </div>
+              <button
+                onClick={() =>
+                  onAnalyze &&
+                  onAnalyze(rep.inputs?.producer_iso3, rep.inputs?.destination_iso3, rep.inputs?.finished_hs_code, finishedValue)
+                }
+                data-testid="s1-analyze-export"
+                className="afcfta-btn afcfta-btn-secondary"
+                style={{ padding: "4px 10px", borderRadius: 6, fontSize: 12, marginTop: 8 }}
+              >
+                {fr ? "Analyser l'export ▸" : "Analyze export ▸"}
+              </button>
             </div>
             <div style={card} data-testid="s1-value-added">
               <div style={{ ...label, fontWeight: 700 }}>{fr ? "Valeur ajoutée brute" : "Gross value added"}</div>
@@ -1131,6 +1175,13 @@ function NationalNeedView({ countries, fr }) {
 export default function OpportunityReportTab({ countries = [], language = "fr" }) {
   const fr = language === "fr";
   const [mode, setMode] = useState("market");
+  const [prefill, setPrefill] = useState(null);
+
+  // Hand off from a scenario to the full ultra-fine bilateral report.
+  const openBilateral = (origin, destination, hsCode, goodsValue) => {
+    setPrefill({ origin, destination, hsCode, goodsValue, k: Date.now() });
+    setMode("bilateral");
+  };
 
   const tabBtn = (id, txt) => (
     <button
@@ -1153,9 +1204,9 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
         {tabBtn("s3", fr ? "S3 · Besoin national" : "S3 · National need")}
       </div>
       {mode === "market" && <MarketSeekingView fr={fr} />}
-      {mode === "bilateral" && <BilateralView countries={countries} fr={fr} />}
-      {mode === "s2" && <DirectExportView countries={countries} fr={fr} />}
-      {mode === "s1" && <TransformationView countries={countries} fr={fr} />}
+      {mode === "bilateral" && <BilateralView countries={countries} fr={fr} prefill={prefill} />}
+      {mode === "s2" && <DirectExportView countries={countries} fr={fr} onAnalyze={openBilateral} />}
+      {mode === "s1" && <TransformationView countries={countries} fr={fr} onAnalyze={openBilateral} />}
       {mode === "s3" && <NationalNeedView countries={countries} fr={fr} />}
     </div>
   );

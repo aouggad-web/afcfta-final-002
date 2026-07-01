@@ -347,6 +347,19 @@ def test_tariff_benefit_real_rates():
     assert res["tariff_advantage_pct"] != 8.5
 
 
+def test_tariff_hs4_resolves_to_hs6():
+    from services import benchmarking_service as benchmark
+
+    # HS4 "1801" must resolve to a real HS6 sub-heading and return the real tariff.
+    hs6, resolved = benchmark._resolve_hs6("NGA", "1801")
+    assert hs6 == "180100" and resolved is True
+    res = benchmark.tariff_benefit_analysis("CIV", "NGA", "1801")
+    assert res["available"] is True
+    assert res["hs6_used"] == "180100"
+    assert res["hs6_resolved"] is True
+    assert res["tariff_advantage_pct"] == 5.0
+
+
 def test_tariff_benefit_zero_when_no_duty():
     from services import benchmarking_service as benchmark
 

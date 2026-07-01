@@ -237,6 +237,40 @@ def benchmark_infrastructure(destination_iso3: str, lang: str = "fr") -> Dict:
     }
 
 
+def _resolve_hs6(destination_iso3: str, code: str):
+    """
+    Resolve a product code to an HS6 sub-heading in the destination's schedule.
+
+    Returns ``(hs6, resolved)`` — ``resolved`` is True when a shorter (HS4/HS5)
+    input was widened to a real HS6 line found under its prefix, or padded as a
+    last resort. Returns ``(None, False)`` for an empty code.
+    """
+    clean = "".join(ch for ch in (code or "") if ch.isdigit())
+    if not clean:
+        return None, False
+    if len(clean) >= 6:
+        return clean[:6], False
+    # Find a real HS6 line whose code starts with the given HS4/HS5 prefix.
+    try:
+        from services.authentic_tariff_service import load_country_tariffs
+
+        data = load_country_tariffs(destination_iso3) or {}
+        hs6s = sorted(
+            {
+                (ln.get("hs6") or "")
+                for ln in data.get("tariff_lines", [])
+                if (ln.get("hs6") or "").startswith(clean)
+            }
+            - {""}
+        )
+        if hs6s:
+            return hs6s[0], True
+    except Exception:  # pragma: no cover - defensive
+        pass
+    # Last resort: pad with zeros (may not exist -> caller degrades gracefully).
+    return clean.ljust(6, "0"), True
+
+
 def tariff_benefit_analysis(
     origin_iso3: str,
     destination_iso3: str,
@@ -258,10 +292,20 @@ def tariff_benefit_analysis(
         savings_per_1000usd, tariff_advantage_index (0-1), narrative, source
     }
     """
+    # Tariff schedules are keyed at HS6. Resolve a shorter (HS4/HS5) code to a real
+    # HS6 sub-heading under that prefix (or pad as a last resort) so the lookup
+    # succeeds. hs6_resolved flags that the input was widened, for transparency.
+    hs6, hs6_resolved = _resolve_hs6(destination_iso3, hs_code)
+    if not hs6:
+        return {
+            "available": False,
+            "note": "Code produit invalide pour la recherche tarifaire.",
+            "source": "authentic_tariff_service",
+        }
     try:
         from services.authentic_tariff_service import get_tariff_line
 
-        line = get_tariff_line(destination_iso3, hs_code)
+        line = get_tariff_line(destination_iso3, hs6)
     except Exception as exc:
         _log.warning("tariff benefit analysis unavailable: %s", exc)
         return {"available": False, "note": str(exc)}
@@ -270,7 +314,7 @@ def tariff_benefit_analysis(
         return {
             "available": False,
             "note": (
-                f"Aucune ligne tarifaire pour {destination_iso3.upper()}/{hs_code} "
+                f"Aucune ligne tarifaire pour {destination_iso3.upper()}/{hs6} "
                 "dans le barème national ; avantage tarifaire non calculable."
             ),
             "source": "authentic_tariff_service",
@@ -301,8 +345,14 @@ def tariff_benefit_analysis(
         f"soit {savings:.0f} $ économisés par 1 000 $ CIF"
     )
 
+    note = "Tarif indicatif au niveau HS6 ; vérifier la sous-position nationale exacte."
+    if hs6_resolved:
+        note = f"Code élargi en sous-position HS6 {hs6} pour la recherche tarifaire. " + note
+
     return {
         "available": True,
+        "hs6_used": hs6,
+        "hs6_resolved": hs6_resolved,
         "national_rate_pct": national,
         "zlecaf_rate_pct": zlecaf,
         "tariff_advantage_pct": round(advantage, 2),
@@ -310,5 +360,5 @@ def tariff_benefit_analysis(
         "tariff_advantage_index": advantage_index,
         "narrative": narrative,
         "source": line.get("dd_source") or "authentic_tariff_service (barème national + ZLECAf)",
-        "note": "Tarif indicatif au niveau HS6 ; vérifier la sous-position nationale exacte.",
+        "note": note,
     }
