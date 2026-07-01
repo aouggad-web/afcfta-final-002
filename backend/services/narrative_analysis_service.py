@@ -223,9 +223,12 @@ def analyze_logistics(
     if cheapest and cheapest.get("total_cost_usd"):
         mode = cheapest.get("mode", "transport").capitalize()
         cost = cheapest.get("total_cost_usd")
-        time = cheapest.get("estimated_days")
-        if time:
-            narratives.append(f"{mode} le moins cher : {cost:,.0f} $ ({time} jours)")
+        # Multimodal comparator exposes transit_days_min/max (not estimated_days).
+        d_min = cheapest.get("transit_days_min")
+        d_max = cheapest.get("transit_days_max")
+        if d_min is not None and d_max is not None:
+            span = f"{d_min}" if d_min == d_max else f"{d_min}–{d_max}"
+            narratives.append(f"{mode} le moins cher : {cost:,.0f} $ ({span} jours)")
         else:
             narratives.append(f"{mode} le moins cher : {cost:,.0f} $")
 
@@ -258,7 +261,12 @@ def analyze_financing(
 
     Returns: {narrative: str, source: str, available: bool}
     """
-    if not finance_profile.get("available"):
+    # get_finance_profile does not carry a top-level ``available`` flag; base the
+    # narrative on whether any real sub-component is present instead.
+    if not finance_profile or not any(
+        (finance_profile.get(k) or {}).get("available")
+        for k in ("trade_finance", "payment_coverage", "country_risk", "fx")
+    ):
         return {
             "available": False,
             "narrative": None,
@@ -289,13 +297,16 @@ def analyze_financing(
         alert = risk.get("alert_level", "orange")
         narratives.append(f"Risque pays classé {alert}")
 
-    # FX
+    # FX — show the rate when available; append spread only if actually present
+    # (get_fx does not always populate a spread — never fabricate one).
     fx = finance_profile.get("fx", {})
     if fx.get("available") and fx.get("rate"):
         rate = fx.get("rate")
-        spread = fx.get("spread", 0)
-        if spread:
+        spread = fx.get("spread")
+        if spread is not None:
             narratives.append(f"Taux de change: 1 USD = {rate:.2f} (spread ~{spread:.1f} %)")
+        else:
+            narratives.append(f"Taux de change: 1 USD = {rate:.2f}")
 
     full_narrative = (
         ". ".join(narratives) + "." if narratives else "Données financières partielles."

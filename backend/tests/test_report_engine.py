@@ -550,6 +550,67 @@ def test_gdp_per_capita_degrades_gracefully():
 
 
 # ── Scenario S1: import inputs → production → export ─────────────────────────
+# ── Copilot review fixes (anti-regression) ──────────────────────────────────
+def test_financing_narrative_available_without_top_level_flag():
+    from services import narrative_analysis_service as narrative
+
+    # get_finance_profile has no top-level 'available' — narrative must still work.
+    profile = {
+        "trade_finance": {"available": True, "instruments": [{"code": "LC"}]},
+        "payment_coverage": {"available": True, "papss_covered": True},
+        "country_risk": {"available": False},
+        "fx": {"available": False},
+    }
+    res = narrative.analyze_financing("NGA", profile)
+    assert res["available"] is True
+    assert "Trade finance" in res["narrative"]
+
+
+def test_logistics_narrative_uses_transit_days():
+    from services import narrative_analysis_service as narrative
+
+    profile = {
+        "freight": {"available": True, "options": [{"available": True}, {"available": True}]},
+        "cheapest_operational_option": {
+            "mode": "sea",
+            "total_cost_usd": 1200,
+            "transit_days_min": 5,
+            "transit_days_max": 7,
+        },
+        "free_zones": {"zones": []},
+    }
+    res = narrative.analyze_logistics("CIV", "NGA", profile)
+    assert "5–7 jours" in res["narrative"]
+
+
+def test_effort_impact_matrix_handles_none_goods_value():
+    from services import segmentation_service as segmentation
+
+    # goods_value_usd present but None must not raise (TypeError guard).
+    report = {"inputs": {"goods_value_usd": None}, "composite_indicators": {}}
+    res = segmentation.effort_impact_matrix(report)
+    assert res["effort_score"] == 0.5  # neutral fallback, no crash
+
+
+def test_factor_breakdown_no_fabricated_fx_spread():
+    from services import segmentation_service as segmentation
+
+    # fx available but no spread -> fx_volatility factor must be ABSENT (no default 2%).
+    report = {"finance": {"profile": {"fx": {"available": True, "rate": 1600}}}}
+    factors = segmentation.factor_breakdown(report)
+    assert not any(f["factor"] == "fx_volatility" for f in factors)
+
+
+def test_benchmark_cost_non_leader_unavailable():
+    from services import benchmarking_service as benchmark
+
+    # Ghana is not the #1 cocoa producer (CIV is) -> numeric gap must be unavailable,
+    # not a fabricated heuristic.
+    res = benchmark.benchmark_cost("GHA", "1801", "NGA", landed_cost_usd=100000)
+    assert res["available"] is False
+    assert res.get("gap_pct") is None
+
+
 def test_transformation_scenario_structure(_no_network_fx):
     # Import cocoa beans (1801), produce cocoa paste (1803) in CIV, export to NGA.
     rep = report_engine.get_transformation_scenario(

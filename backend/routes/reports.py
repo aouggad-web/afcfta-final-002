@@ -128,6 +128,13 @@ async def national_need(
     elasticity: float = Query(
         default=0.4, description="Élasticité-revenu (ajustement niveau de vie, L3)"
     ),
+    with_observed_imports: bool = Query(
+        default=False,
+        description=(
+            "Ajouter le signal d'import observé (OEC). Coûteux (~54 requêtes OEC) "
+            "et supplémentaire — désactivé par défaut."
+        ),
+    ),
 ):
     """
     Estime le besoin national d'un produit via une cascade transparente :
@@ -137,25 +144,29 @@ async def national_need(
 
     Toute valeur estimée est marquée ``is_estimation:true`` avec formule, intrants
     et sources — jamais présentée comme mesurée, jamais inventée.
+
+    Le signal d'import observé (OEC) est **opt-in** (``with_observed_imports``) car
+    il déclenche ~54 requêtes OEC ; il n'affecte jamais l'estimation elle-même.
     """
     from services import demand_estimation_service as demand
 
-    # Fetch the country's own observed imports of the product (USD) from OEC, when
-    # reachable, as a direct demand signal. Gracefully None if OEC is blocked.
+    # Observed-imports is a supplemental signal only, and expensive (OEC fan-out).
+    # Off by default so the estimate stays fast and never depends on OEC.
     observed_imports = None
-    try:
-        from services.real_trade_data_service import real_trade_service
+    if with_observed_imports:
+        try:
+            from services.real_trade_data_service import real_trade_service
 
-        importers = await real_trade_service.get_african_importers_for_product(hs_code)
-        for m in importers or []:
-            if (m.get("country_iso3") or "").upper() == country.upper():
-                observed_imports = {
-                    "import_value_usd": m.get("import_value"),
-                    "source": "OEC / UN Comtrade (BACI)",
-                }
-                break
-    except Exception:  # OEC unavailable -> no observed-imports signal
-        observed_imports = None
+            importers = await real_trade_service.get_african_importers_for_product(hs_code)
+            for m in importers or []:
+                if (m.get("country_iso3") or "").upper() == country.upper():
+                    observed_imports = {
+                        "import_value_usd": m.get("import_value"),
+                        "source": "OEC / UN Comtrade (BACI)",
+                    }
+                    break
+        except Exception:  # OEC unavailable -> no observed-imports signal
+            observed_imports = None
 
     return demand.estimate_national_need(
         hs_code, country, income_elasticity=elasticity, observed_imports=observed_imports

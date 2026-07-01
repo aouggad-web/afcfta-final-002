@@ -131,42 +131,28 @@ def benchmark_cost(
             "year": top.get("year"),
         }
 
-    # Non-leader: cost comparison is estimated (no real cost data for all producers).
-    # Mark as estimation to respect zero-fabrication discipline.
-    best_cost_est = landed_cost_usd * 0.92  # Heuristic: leader ~8% cheaper
-    gap = landed_cost_usd - best_cost_est
-    gap_pct = (gap / landed_cost_usd * 100) if landed_cost_usd else 0
-
-    if gap_pct <= 5:
-        position = "competitive"
-        narrative = (
-            f"Coût estimé compétitif ; écart hypothétique de {gap_pct:.1f} % vs leader "
-            f"({best_producer.get('country_name')})"
-        )
-    else:
-        position = "higher_cost"
-        narrative = (
-            f"Coût estimé plus élevé de {gap_pct:.1f} % vs leader "
-            f"({best_producer.get('country_name')})"
-        )
-
+    # Non-leader: we do NOT hold real per-producer cost data, so a numeric gap
+    # would be fabricated. Report the qualitative position only (origin is not the
+    # top producer) and mark the numeric comparison unavailable — no invented cost.
     return {
-        "available": True,
+        "available": False,
+        "position": "not_leader",
         "reference_producer": {
             "iso3": best_producer.get("country_iso3"),
             "country_name": best_producer.get("country_name"),
             "continental_share_pct": best_producer.get("continental_share_pct"),
             "rank": best_producer.get("rank"),
         },
-        "position": position,
-        "gap_pct": round(gap_pct, 1),
-        "origin_cost_est": landed_cost_usd,
-        "reference_cost_est": best_cost_est,
-        "narrative": narrative,
+        "gap_pct": None,
+        "narrative": (
+            f"{origin_iso3.upper()} n'est pas le 1er producteur continental "
+            f"({best_producer.get('country_name')} l'est). Comparaison de coût "
+            "chiffrée indisponible : la plateforme ne dispose pas des coûts réels "
+            "par producteur."
+        ),
         "source": top.get("source"),
         "year": top.get("year"),
-        "note": "Cost comparison for non-leader based on heuristic (real cost data not available for all producers)",
-        "is_estimation": True,
+        "note": "Comparaison de coût chiffrée non disponible (pas de données de coût par producteur).",
     }
 
 

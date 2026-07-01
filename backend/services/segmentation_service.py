@@ -28,13 +28,14 @@ def effort_impact_matrix(report: Dict) -> Dict:
         rationale: str
     }
     """
-    # Extract from report
-    goods_value = report.get("inputs", {}).get("goods_value_usd", 100000)
+    # Extract from report. goods_value_usd may be present but None (the key is set
+    # in report_engine even when the query param is omitted) -> coerce safely.
+    goods_value = report.get("inputs", {}).get("goods_value_usd")
     landed_cost = report.get("composite_indicators", {}).get("landed_cost", {})
-    freight = landed_cost.get("breakdown", {}).get("best_operational_freight_usd", 0)
+    freight = (landed_cost.get("breakdown") or {}).get("best_operational_freight_usd")
 
-    # Effort score: normalize freight burden (0–1)
-    if goods_value > 0:
+    # Effort score: normalize freight burden (0–1); neutral 0.5 if data missing.
+    if goods_value and goods_value > 0 and freight is not None:
         freight_burden = freight / goods_value
         effort_score = min(freight_burden / 0.15, 1.0)  # Normalize by threshold 15%
     else:
@@ -291,10 +292,11 @@ def factor_breakdown(report: Dict) -> List[Dict]:
             {"factor": "country_risk", "category": category, "score": score, "rationale": rationale}
         )
 
-    # FX volatility factor
+    # FX volatility factor — ONLY when a real spread is present. get_fx() does not
+    # always populate a spread; never fabricate a default value for the rationale.
     fx = report.get("finance", {}).get("profile", {}).get("fx", {})
-    if fx.get("available"):
-        spread = fx.get("spread", 2)
+    spread = fx.get("spread") if fx.get("available") else None
+    if spread is not None:
         if spread <= 1.5:
             category = "opportunity"
             score = 0.9
