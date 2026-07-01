@@ -12,6 +12,7 @@ import {
   Menu,
   Moon,
   Sun,
+  TrendingUp,
   X,
 } from "lucide-react";
 
@@ -26,6 +27,7 @@ const NAV_ITEMS = (isFrench) => [
   { id: "tools",      label: isFrench ? "Outils"          : "Tools",          icon: Wrench },
   { id: "roo",        label: isFrench ? "R. d'Origine"    : "Rules of Origin",icon: FileCheck },
   { id: "profiles",   label: isFrench ? "Profils"         : "Profiles",       icon: Globe2 },
+  { id: "reports",    label: isFrench ? "Opportunités"    : "Opportunities",  icon: TrendingUp },
 ];
 
 /* ─── Horizontal topbar component ───────────────────────────── */

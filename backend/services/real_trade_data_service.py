@@ -10,6 +10,7 @@ Provides real trade data for African countries
 
 import asyncio
 import logging
+import os
 from collections import defaultdict
 from datetime import datetime
 from typing import Dict, List
@@ -23,7 +24,24 @@ WITS_BASE_URL = "https://wits.worldbank.org/API/V1/SDMX/V21/rest"
 WITS_DATA_URL = "https://wits.worldbank.org/API/V1"
 
 # OEC API (Already integrated in oec_trade_service.py)
-OEC_BASE_URL = "https://api-v2.oec.world/tesseract/data.jsonrecords"
+# Base URL is overridable via env in case a paid plan uses a distinct host.
+OEC_BASE_URL = os.getenv("OEC_BASE_URL", "https://api-v2.oec.world/tesseract/data.jsonrecords")
+
+# Paid-plan API token. Read from the environment / secret store ONLY — never
+# hardcode a token here or commit one. Accepts either OEC_API_TOKEN or the
+# OEC_API_KEY name already reserved in .env.example. When absent, requests go
+# out unauthenticated (public tier, subject to rate limits and blocking).
+OEC_API_TOKEN = os.getenv("OEC_API_TOKEN") or os.getenv("OEC_API_KEY")
+
+
+def _oec_params(params: Dict) -> Dict:
+    """Inject the OEC token into request params when configured."""
+    if OEC_API_TOKEN:
+        enriched = dict(params)
+        enriched["token"] = OEC_API_TOKEN
+        return enriched
+    return params
+
 
 # African Countries (55 pays incluant la RASD - Membre UA depuis 1984)
 # Note: La RASD n'a pas de statistiques commerciales (territoire occupé)
@@ -598,7 +616,7 @@ class RealTradeDataService:
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     data = response.json()
@@ -653,7 +671,7 @@ class RealTradeDataService:
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     data = response.json()
@@ -708,7 +726,7 @@ class RealTradeDataService:
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     data = response.json()
@@ -791,7 +809,7 @@ class RealTradeDataService:
         start = datetime.utcnow()
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
             latency_ms = int((datetime.utcnow() - start).total_seconds() * 1000)
             records = []
             if response.status_code == 200:
@@ -802,6 +820,7 @@ class RealTradeDataService:
                 "latency_ms": latency_ms,
                 "records": len(records),
                 "endpoint": OEC_BASE_URL,
+                "token_configured": bool(OEC_API_TOKEN),
                 "error": None if response.status_code == 200 else f"HTTP {response.status_code}",
             }
         except Exception as e:
@@ -812,6 +831,7 @@ class RealTradeDataService:
                 "latency_ms": latency_ms,
                 "records": 0,
                 "endpoint": OEC_BASE_URL,
+                "token_configured": bool(OEC_API_TOKEN),
                 "error": str(e),
             }
 
@@ -841,7 +861,7 @@ class RealTradeDataService:
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     records = response.json().get("data", [])
@@ -921,7 +941,7 @@ class RealTradeDataService:
                 }
 
                 async with httpx.AsyncClient(timeout=self.timeout) as client:
-                    response = await client.get(OEC_BASE_URL, params=params)
+                    response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                     if response.status_code == 200:
                         data = response.json()
@@ -973,83 +993,81 @@ class RealTradeDataService:
 
     async def get_african_importers_for_product(self, hs_code: str, year: int = 2022) -> List[Dict]:
         """
-        Find African countries that import a specific product
-        Queries OEC API for all African importers
+        African countries that import a specific product, at the EXACT HS4/HS6
+        level, across ALL 54 African countries (not a 10-country chapter-level
+        sample).
+
+        - 6+ digit code -> HS6 drilldown, exact 6-digit match.
+        - 4-5 digit code -> HS4 drilldown, exact 4-digit match.
+
+        One request per importing country (filtered server-side by Importer
+        Country, so payloads stay bounded), run concurrently with a small
+        semaphore to remain light on the free OEC API. Matching reuses the
+        proven ``"{LEVEL} ID"`` last-N-digits parsing used elsewhere in this
+        module (robust to OEC id prefixes).
         """
-        try:
-            hs4 = hs_code[:4] if len(hs_code) >= 4 else hs_code.zfill(4)
+        clean = "".join(ch for ch in (hs_code or "") if ch.isdigit())
+        if len(clean) >= 6:
+            level, code, id_len, limit = "HS6", clean[:6], 6, "6000"
+        else:
+            level, code, id_len, limit = "HS4", clean[:4].zfill(4), 4, "2000"
 
-            african_importers_found = []
+        importers = [
+            (iso3, info)
+            for iso3, info in AFRICAN_COUNTRIES.items()
+            if info.get("has_trade_data") and info.get("oec")
+        ]
 
-            # Sample top importing African countries for efficiency
-            top_importers = ["ZAF", "EGY", "NGA", "MAR", "DZA", "KEN", "TUN", "ETH", "GHA", "TZA"]
+        sem = asyncio.Semaphore(6)
 
-            for iso3 in top_importers:
-                country_info = AFRICAN_COUNTRIES.get(iso3)
-                if not country_info:
-                    continue
+        async def _one(client: httpx.AsyncClient, iso3: str, info: Dict):
+            params = {
+                "cube": "trade_i_baci_a_17",
+                "drilldowns": f"Year,Importer Country,{level}",
+                "measures": "Trade Value",
+                "Year": str(year),
+                "Importer Country": info["oec"],
+                "limit": limit,
+            }
+            async with sem:
+                try:
+                    response = await client.get(OEC_BASE_URL, params=_oec_params(params))
+                    if response.status_code != 200:
+                        return None
+                    records = response.json().get("data", [])
+                except Exception as e:
+                    logger.warning(f"OEC importers {iso3}: {e}")
+                    return None
 
-                oec_id = country_info["oec"]
-
-                params = {
-                    "cube": "trade_i_baci_a_17",
-                    "drilldowns": "Year,Importer Country,HS4",
-                    "measures": "Trade Value",
-                    "Year": str(year),
-                    "Importer Country": oec_id,
-                    "limit": "100",
+                total = 0.0
+                for record in records:
+                    rid = str(record.get(f"{level} ID", ""))
+                    rcode = rid[-id_len:].zfill(id_len) if rid else ""
+                    if rcode == code:
+                        value = record.get("Trade Value") or 0
+                        if value > 0:
+                            total += value
+                if total <= 0:
+                    return None
+                return {
+                    "country_iso3": iso3,
+                    "country_name": info["name_fr"],
+                    "hs_code": code,
+                    "import_value": total,
                 }
 
-                try:
-                    async with httpx.AsyncClient(timeout=15.0) as client:
-                        response = await client.get(OEC_BASE_URL, params=params)
-
-                        if response.status_code == 200:
-                            data = response.json()
-                            records = data.get("data", [])
-
-                            for record in records:
-                                hs4_id = str(record.get("HS4 ID", ""))
-                                record_hs4 = hs4_id[-4:].zfill(4) if hs4_id else ""
-
-                                # Match HS code (at least first 2 digits)
-                                if record_hs4[:2] == hs4[:2]:
-                                    import_value = record.get("Trade Value", 0)
-                                    if import_value > 0:
-                                        african_importers_found.append(
-                                            {
-                                                "country_iso3": iso3,
-                                                "country_name": country_info["name_fr"],
-                                                "hs_code": record_hs4,
-                                                "product_name": record.get("HS4", ""),
-                                                "import_value": import_value,
-                                            }
-                                        )
-                except Exception as e:
-                    logger.warning(f"Error fetching imports for {iso3}: {e}")
-                    continue
-
-            # Aggregate by country
-            country_imports = {}
-            for imp in african_importers_found:
-                iso3 = imp["country_iso3"]
-                if iso3 not in country_imports:
-                    country_imports[iso3] = {
-                        "country_iso3": iso3,
-                        "country_name": imp["country_name"],
-                        "import_value": 0,
-                    }
-                country_imports[iso3]["import_value"] += imp["import_value"]
-
-            result = list(country_imports.values())
-            result.sort(key=lambda x: x["import_value"], reverse=True)
-
-            return result
-
+        try:
+            # Single pooled client shared across all country tasks (connection
+            # reuse; the semaphore still bounds concurrency).
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                gathered = await asyncio.gather(*[_one(client, i, inf) for i, inf in importers])
         except Exception as e:
             logger.error(f"OEC product importers API error: {str(e)}")
+            return []
 
-        return []
+        result = [r for r in gathered if r]
+        result.sort(key=lambda x: x["import_value"], reverse=True)
+        return result
 
 
 def get_product_name(hs_code: str, lang: str = "fr", oec_name: str = None) -> str:
