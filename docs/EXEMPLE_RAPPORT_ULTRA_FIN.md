@@ -1,5 +1,12 @@
 # Exemple de Rapport Ultra-Fin — Corridor Côte d'Ivoire → Nigeria, Cacao (HS 1801)
 
+> ⚠️ **Document illustratif.** Les valeurs chiffrées ci-dessous (volumes importateurs,
+> coûts par producteur, LPI, etc.) sont des **exemples de mise en forme**, pas une
+> sortie validée du moteur. Les vrais rapports n'affichent que des chiffres sourcés
+> ou marqués `available: false`. En particulier, l'avantage tarifaire est désormais
+> calculé sur les **taux nationaux + ZLECAf réels** (ex. Nigeria/cacao : droit national
+> 5 % → ZLECAf 0 % = 5 % d'avantage), et non une valeur forfaitaire.
+
 ## Vue d'ensemble
 
 Ce document illustre la structure et le contenu d'un **rapport d'opportunité ultra-fin** généré via l'endpoint :

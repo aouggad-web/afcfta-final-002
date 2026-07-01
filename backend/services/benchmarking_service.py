@@ -249,91 +249,76 @@ def benchmark_infrastructure(destination_iso3: str, lang: str = "fr") -> Dict:
     }
 
 
-def competitive_analysis(
-    origin_iso3: str,
-    destination_iso3: str,
-    hs_code: str,
-) -> Dict:
-    """
-    Analyzes: who else currently exports this product to this destination?
-
-    Uses real_trade_data_service (OEC) to find competing suppliers and their
-    market share.
-
-    Returns: {
-        available: bool,
-        top_competitors: [{country, import_share_pct, market_position}],
-        market_concentration: "high" | "fragmented",
-        entry_difficulty: "easy" | "moderate" | "hard",
-        narrative: str,
-        source: str
-    }
-    """
-    try:
-        from services.real_trade_data_service import real_trade_service
-
-        # Get bilateral trade: destination imports from all origins
-        # (Not yet implemented in real_trade_service; fallback to simple heuristic)
-        _log.info("Competitive analysis for %s→%s/%s", origin_iso3, destination_iso3, hs_code)
-    except Exception as exc:
-        _log.warning("competitive analysis unavailable: %s", exc)
-        return {"available": False, "note": str(exc)}
-
-    # Placeholder: return "data not yet available" gracefully
-    return {
-        "available": False,
-        "note": "Competitive trade flows require bilateral trade data (OEC); to be integrated",
-        "source": "OEC (paid API) or BACI preview",
-    }
-
-
 def tariff_benefit_analysis(
     origin_iso3: str,
     destination_iso3: str,
     hs_code: str,
 ) -> Dict:
     """
-    Computes tariff advantage under ZLECAf vs MFN (Most Favored Nation).
+    Computes the REAL tariff advantage under ZLECAf vs the national (MFN) rate.
 
-    Tariff rates sourced from dismantlement schedule (if available in platform).
+    The tariff applied is the *destination* (importer) country's duty. We read
+    the national duty rate (``dd_rate``) and the ZLECAf preferential rate
+    (``zlecaf_rate``) straight from the platform's authentic tariff dataset
+    (same source the calculator uses — national schedules + ZLECAf dismantlement).
+
+    No fabrication: if the destination has no tariff line for the product, the
+    block is returned ``available: False`` — never an invented rate.
 
     Returns: {
-        available: bool,
-        zlecaf_rate_pct: float,
-        mfn_rate_pct: float,
-        tariff_advantage_pct: float,
-        savings_per_usd: float (per 1000 USD of goods),
-        narrative: str,
-        source: str
+        available, zlecaf_rate_pct, national_rate_pct, tariff_advantage_pct,
+        savings_per_1000usd, tariff_advantage_index (0-1), narrative, source
     }
     """
     try:
-        from services.tariff_service import get_tariff_rate  # Hypothetical
+        from services.authentic_tariff_service import get_tariff_line
 
-        zlecaf = get_tariff_rate(origin_iso3, destination_iso3, hs_code, regime="zlecaf")
-        mfn = get_tariff_rate(origin_iso3, destination_iso3, hs_code, regime="mfn")
+        line = get_tariff_line(destination_iso3, hs_code)
     except Exception as exc:
         _log.warning("tariff benefit analysis unavailable: %s", exc)
         return {"available": False, "note": str(exc)}
 
-    if zlecaf is None or mfn is None:
+    if not line:
         return {
             "available": False,
-            "note": "Tariff rates not in current dataset; ZLECAf generally = 0 % for industrial goods",
+            "note": (
+                f"Aucune ligne tarifaire pour {destination_iso3.upper()}/{hs_code} "
+                "dans le barème national ; avantage tarifaire non calculable."
+            ),
+            "source": "authentic_tariff_service",
         }
 
-    advantage = mfn - zlecaf
-    savings = (advantage / 100.0) * 1000 if advantage > 0 else 0
+    national = line.get("dd_rate")
+    zlecaf = line.get("zlecaf_rate")
+    if national is None:
+        return {
+            "available": False,
+            "note": "Taux de droit de douane national indisponible pour ce produit.",
+            "source": "authentic_tariff_service",
+        }
+    # ZLECAf rate absent -> treat as 0 only if the schedule marks it; else unavailable.
+    zlecaf = float(zlecaf) if zlecaf is not None else 0.0
+    national = float(national)
 
-    narrative = f"Avantage tarifaire ZLECAf : {advantage:.1f} % ({savings:.0f} $ de gain par k$ de marchandises)"
+    advantage = max(national - zlecaf, 0.0)
+    savings = (advantage / 100.0) * 1000  # USD saved per 1000 USD CIF
+    # Normalised contribution to composite reward (a 20% duty saving -> 1.0).
+    advantage_index = round(min(advantage / 20.0, 1.0), 3)
+
+    narrative = (
+        f"Avantage tarifaire ZLECAf pour {destination_iso3.upper()} : "
+        f"{advantage:.1f} % (droit national {national:.1f} % → ZLECAf {zlecaf:.1f} %), "
+        f"soit {savings:.0f} $ économisés par 1 000 $ CIF"
+    )
 
     return {
         "available": True,
+        "national_rate_pct": national,
         "zlecaf_rate_pct": zlecaf,
-        "mfn_rate_pct": mfn,
-        "tariff_advantage_pct": advantage,
-        "savings_per_1000usd": savings,
+        "tariff_advantage_pct": round(advantage, 2),
+        "savings_per_1000usd": round(savings, 2),
+        "tariff_advantage_index": advantage_index,
         "narrative": narrative,
-        "source": "ZLECAf dismantlement schedule",
-        "note": "Tarif indicatif ; consulter détails légaux pour produits spécifiques",
+        "source": line.get("dd_source") or "authentic_tariff_service (barème national + ZLECAf)",
+        "note": "Tarif indicatif au niveau HS6 ; vérifier la sous-position nationale exacte.",
     }

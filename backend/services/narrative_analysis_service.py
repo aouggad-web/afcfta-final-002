@@ -15,6 +15,32 @@ from typing import Dict, Optional
 _log = logging.getLogger(__name__)
 
 
+def _fmt_usd(value: float) -> str:
+    """Format a raw USD amount with the correct magnitude label (M$/Md$)."""
+    if value is None:
+        return "—"
+    if value >= 1_000_000_000:
+        return f"{value / 1_000_000_000:.1f} Md$"
+    if value >= 1_000_000:
+        return f"{value / 1_000_000:.1f} M$"
+    if value >= 1_000:
+        return f"{value / 1_000:.0f} k$"
+    return f"{value:.0f} $"
+
+
+def _product_label(hs_code: str, lang: str = "fr") -> str:
+    """Real product name from the platform HS dictionary; graceful fallback."""
+    try:
+        from services.real_trade_data_service import get_product_name
+
+        name = get_product_name((hs_code or "")[:6], lang)
+        if name:
+            return name
+    except Exception:  # pragma: no cover - defensive
+        pass
+    return f"produit (SH {(hs_code or '')[:4]})"
+
+
 def analyze_supply(
     origin_iso3: str,
     hs_code: str,
@@ -109,25 +135,18 @@ def analyze_market_demand(
 
     narratives = []
 
-    # Estimate commodity name from HS code (simplified; ideally cached)
-    commodity_names = {
-        "1801": "cacao",
-        "1803": "pâte de cacao",
-        "1006": "riz",
-        "2709": "pétrole brut",
-        "2701": "charbon",
-    }
-    commodity = commodity_names.get(hs_code[:4], "produit (SH {})".format(hs_code[:4]))
+    # Real product name from the platform's HS dictionary (covers all HS codes).
+    commodity = _product_label(hs_code, lang)
 
     if total_value and year:
-        value_musd = total_value / 1_000_000
         narratives.append(
-            f"Les importations africaines de {commodity} atteignent {value_musd:.1f} Md$ ({year}, {source})"
+            f"Les importations africaines de {commodity} atteignent "
+            f"{_fmt_usd(total_value)} ({year}, {source})"
         )
     elif total_value:
-        value_musd = total_value / 1_000_000
         narratives.append(
-            f"Les importations africaines de {commodity} atteignent {value_musd:.1f} Md$ ({source})"
+            f"Les importations africaines de {commodity} atteignent "
+            f"{_fmt_usd(total_value)} ({source})"
         )
 
     if len(markets) > 0:
@@ -136,9 +155,8 @@ def analyze_market_demand(
         top_value = top.get("import_value_usd")
         top_country = top.get("country_name")
         if top_value:
-            top_musd = top_value / 1_000_000
             narratives.append(
-                f"{top_country} en est le plus grand importateur ({top_musd:.2f} Md$)"
+                f"{top_country} en est le plus grand importateur ({_fmt_usd(top_value)})"
             )
 
     full_narrative = ", ".join(narratives) + "."
@@ -323,14 +341,14 @@ def summarize_opportunity(
 
     # Demand finding
     if demand.get("available") and demand.get("total_import_value_usd"):
-        total = demand["total_import_value_usd"] / 1_000_000
+        total_usd = demand["total_import_value_usd"]
         trend = report.get("market_trend_pct", 0)
         if trend > 2:
             key_findings.append(
-                f"Demande africaine croissante ({total:.1f} Md$, +{trend:.1f} %/an)"
+                f"Demande africaine croissante ({_fmt_usd(total_usd)}, +{trend:.1f} %/an)"
             )
         else:
-            key_findings.append(f"Demande africaine établie ({total:.1f} Md$)")
+            key_findings.append(f"Demande africaine établie ({_fmt_usd(total_usd)})")
 
     # Logistics finding
     if logistics.get("available") and logistics.get("index"):

@@ -334,6 +334,39 @@ def test_benchmark_top_producers(monkeypatch):
     assert result["producers"][0]["country_iso3"] == "CIV"
 
 
+def test_tariff_benefit_real_rates():
+    from services import benchmarking_service as benchmark
+
+    # NGA imports cocoa (180100): national duty 5% -> ZLECAf 0% => real 5% advantage.
+    res = benchmark.tariff_benefit_analysis("CIV", "NGA", "180100")
+    assert res["available"] is True
+    assert res["national_rate_pct"] == 5.0
+    assert res["zlecaf_rate_pct"] == 0.0
+    assert res["tariff_advantage_pct"] == 5.0
+    # Must NOT be the old hardcoded 8.5%
+    assert res["tariff_advantage_pct"] != 8.5
+
+
+def test_tariff_benefit_zero_when_no_duty():
+    from services import benchmarking_service as benchmark
+
+    # EGY rice (100630): national duty already 0% => no ZLECAf advantage.
+    res = benchmark.tariff_benefit_analysis("SEN", "EGY", "100630")
+    assert res["available"] is True
+    assert res["tariff_advantage_pct"] == 0.0
+
+
+def test_segmentation_no_fabricated_tariff_when_unavailable():
+    from services import segmentation_service as segmentation
+
+    # No tariff_benefit in report -> tariff factor must be absent (not a fake 8.5%).
+    report = {
+        "supply": {"available": True, "continental_share_pct": 18.2, "subscore": 0.91},
+    }
+    factors = segmentation.factor_breakdown(report)
+    assert not any(f["factor"] == "tariff_advantage" for f in factors)
+
+
 def test_benchmark_cost_competitive():
     from services import benchmarking_service as benchmark
 

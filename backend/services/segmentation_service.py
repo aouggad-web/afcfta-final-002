@@ -120,11 +120,18 @@ def risk_reward_matrix(report: Dict) -> Dict:
         else 0.5
     )
 
-    # Tariff advantage (ZLECAf)
-    tariff_gain = 0.085  # ~8.5 % gain (typical ZLECAf), scaled to 0–1 contribution
+    # Tariff advantage (ZLECAf) — REAL value from national/ZLECAf schedule when
+    # available; otherwise excluded and the reward weights are renormalised so we
+    # never inject a fabricated tariff contribution.
+    tariff = report.get("tariff_benefit") or {}
+    tariff_index = tariff.get("tariff_advantage_index") if tariff.get("available") else None
 
-    # Reward score: blend of supply × demand × tariff
-    reward_score = supply_score * 0.4 + demand_score * 0.4 + tariff_gain * 0.2
+    if tariff_index is not None:
+        # supply 0.4 + demand 0.4 + tariff 0.2
+        reward_score = supply_score * 0.4 + demand_score * 0.4 + tariff_index * 0.2
+    else:
+        # Renormalise over supply + demand only (0.5 / 0.5).
+        reward_score = supply_score * 0.5 + demand_score * 0.5
     reward_score = min(reward_score, 1.0)
 
     # Quadrant assignment
@@ -309,17 +316,37 @@ def factor_breakdown(report: Dict) -> List[Dict]:
             }
         )
 
-    # Tariff advantage factor (ZLECAf)
-    tariff_benefit = 0.08  # Assume ~8.5 % (typical ZLECAf)
-    if tariff_benefit > 0.05:
-        factors.append(
-            {
-                "factor": "tariff_advantage",
-                "category": "opportunity",
-                "score": min(tariff_benefit * 10, 1.0),  # Scale to 0–1
-                "rationale": f"Accès ZLECAf procure avantage tarifaire ~{tariff_benefit*100:.1f}%.",
-            }
-        )
+    # Tariff advantage factor (ZLECAf) — REAL national/ZLECAf rates only.
+    # Added as a factor solely when a real advantage is computed; never fabricated.
+    tariff = report.get("tariff_benefit") or {}
+    if tariff.get("available"):
+        advantage_pct = tariff.get("tariff_advantage_pct", 0.0)
+        index = tariff.get("tariff_advantage_index", 0.0)
+        if advantage_pct > 0:
+            factors.append(
+                {
+                    "factor": "tariff_advantage",
+                    "category": "opportunity",
+                    "score": index,
+                    "rationale": (
+                        f"Accès ZLECAf : avantage tarifaire réel de {advantage_pct:.1f} % "
+                        f"(droit national {tariff.get('national_rate_pct', 0):.1f} % → "
+                        f"ZLECAf {tariff.get('zlecaf_rate_pct', 0):.1f} %)."
+                    ),
+                }
+            )
+        else:
+            factors.append(
+                {
+                    "factor": "tariff_advantage",
+                    "category": "neutral",
+                    "score": 0.0,
+                    "rationale": (
+                        f"Pas d'avantage tarifaire ZLECAf pour ce produit "
+                        f"(droit national déjà {tariff.get('national_rate_pct', 0):.1f} %)."
+                    ),
+                }
+            )
 
     return factors
 

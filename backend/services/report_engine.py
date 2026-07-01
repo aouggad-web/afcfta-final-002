@@ -278,6 +278,10 @@ def get_opportunity_report_ultra_fine(
         origin_iso3, destination_iso3, hs_code
     )
 
+    # Inject the REAL tariff advantage into the report so the segmentation layer
+    # scores it from actual national/ZLECAf rates instead of a hardcoded value.
+    base["tariff_benefit"] = tariff_benefit
+
     # Add segmentation
     effort_impact = segmentation_service.effort_impact_matrix(base)
     risk_reward = segmentation_service.risk_reward_matrix(base)
