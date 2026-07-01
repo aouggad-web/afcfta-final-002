@@ -223,3 +223,95 @@ def get_opportunity_report(
             ),
         },
     }
+
+
+def _demand_side(importers: list) -> Dict:
+    """Shape the OEC importers list into a demand block (or unavailable)."""
+    if not importers:
+        return {
+            "available": False,
+            "markets": [],
+            "note": (
+                "Statistiques d'importation par produit indisponibles : l'API OEC "
+                "est requise (bloquée dans cet environnement / plan payant)."
+            ),
+            "source": "OEC / UN Comtrade (BACI)",
+        }
+    total = sum((m.get("import_value") or 0) for m in importers)
+    markets = [
+        {
+            "country_iso3": m.get("country_iso3"),
+            "country_name": m.get("country_name"),
+            "import_value_usd": m.get("import_value"),
+            "share_pct": (
+                round((m.get("import_value") or 0) / total * 100.0, 1) if total else None
+            ),
+        }
+        for m in importers
+    ]
+    return {
+        "available": True,
+        "markets": markets,
+        "total_import_value_usd": total or None,
+        "source": "OEC / UN Comtrade (BACI)",
+    }
+
+
+def _supply_side(hs_code: str) -> Dict:
+    """Continental producers of the product from real production data."""
+    try:
+        from services.production_capacity_service import get_continental_producers
+
+        prod = get_continental_producers(hs_code)
+    except Exception as exc:
+        _log.warning("continental producers unavailable: %s", exc)
+        return {"available": False, "producers": [], "note": str(exc)}
+
+    if not prod.get("available"):
+        return {"available": False, "producers": [], "reason": prod.get("reason")}
+    return {
+        "available": True,
+        "commodity": prod.get("commodity"),
+        "producers": prod.get("top_producers", []),
+        "continental_total": prod.get("continental_total"),
+        "unit": prod.get("unit"),
+        "year": prod.get("year"),
+        "source": prod.get("source"),
+    }
+
+
+async def get_market_seeking_report(hs_code: str, year: int = 2022, lang: str = "fr") -> Dict:
+    """
+    Market-seeking report for a producer: for a product (HS6/HS4), which African
+    markets *import* it (demand, via OEC) and who *produces* it on the continent
+    (supply, via real production data).
+
+    Demand degrades gracefully when OEC is unreachable; supply is local/real.
+    """
+    hs_code = (hs_code or "").strip()
+
+    product_name = None
+    importers = []
+    try:
+        from services.real_trade_data_service import get_product_name, real_trade_service
+
+        product_name = get_product_name(hs_code, lang)
+        importers = await real_trade_service.get_african_importers_for_product(hs_code, year)
+    except Exception as exc:
+        _log.warning("importers-for-product unavailable: %s", exc)
+
+    return {
+        "report_type": "market_seeking",
+        "inputs": {"hs_code": hs_code, "year": year},
+        "product_name": product_name,
+        "demand": _demand_side(importers),
+        "supply": _supply_side(hs_code),
+        "data_quality": {
+            "is_estimation": False,
+            "note": (
+                "Demande = importations réelles par pays (OEC) ; offre = production "
+                "continentale réelle (FAO/USGS/UNIDO). Aucune valeur inventée ; "
+                "les champs sans source sont marqués indisponibles."
+            ),
+        },
+    }

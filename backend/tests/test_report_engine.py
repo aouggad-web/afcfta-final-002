@@ -11,6 +11,8 @@ Hermetic: the FX provider (network) is stubbed; all other inputs are local
 datasets, so no test touches the network.
 """
 
+import asyncio
+
 import pytest
 from services import finance_opportunity_adapter as finance
 from services import logistics_opportunity_adapter as logistics
@@ -171,4 +173,43 @@ def test_opportunity_report_structure(_no_network_fx):
     assert mp["counted"] is False
     # supply is real and should be counted
     assert rep["supply"]["available"] is True
+    assert rep["data_quality"]["is_estimation"] is False
+
+
+# ── Market-seeking report (demand + supply) ──────────────────────────────────
+def test_demand_side_computes_shares():
+    importers = [
+        {"country_iso3": "NGA", "country_name": "Nigeria", "import_value": 300},
+        {"country_iso3": "ZAF", "country_name": "South Africa", "import_value": 100},
+    ]
+    d = report_engine._demand_side(importers)
+    assert d["available"] is True
+    assert d["total_import_value_usd"] == 400
+    assert d["markets"][0]["share_pct"] == 75.0
+
+
+def test_demand_side_unavailable_without_oec():
+    d = report_engine._demand_side([])
+    assert d["available"] is False and d["markets"] == []
+    assert "OEC" in d["note"]
+
+
+def test_supply_side_real_producers():
+    s = report_engine._supply_side("1801")  # cocoa
+    assert s["available"] is True
+    assert any(p["country_iso3"] == "CIV" for p in s["producers"])
+
+
+def test_market_seeking_report_demand_degrades_supply_real(monkeypatch):
+    # Stub the OEC call (network) so demand is deterministically unavailable.
+    from services import real_trade_data_service as rt
+
+    async def _empty(hs_code, year=2022):
+        return []
+
+    monkeypatch.setattr(rt.real_trade_service, "get_african_importers_for_product", _empty)
+    rep = asyncio.run(report_engine.get_market_seeking_report("1801", lang="fr"))
+    assert rep["report_type"] == "market_seeking"
+    assert rep["demand"]["available"] is False  # OEC blocked -> graceful
+    assert rep["supply"]["available"] is True  # local production data
     assert rep["data_quality"]["is_estimation"] is False

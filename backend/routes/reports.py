@@ -45,6 +45,23 @@ async def opportunity_report(
     )
 
 
+@router.get("/market-seeking", summary="Marchés potentiels pour un produit (producteur)")
+async def market_seeking_report(
+    hs_code: str = Query(..., description="Code SH du produit (HS6 ou HS4)"),
+    year: int = Query(default=2022, description="Année des flux commerciaux"),
+    lang: str = Query(default="fr", description="Langue du nom de produit (fr/en)"),
+):
+    """
+    Pour un producteur : quels marchés africains **importent** ce produit (la
+    demande, via OEC) et qui le **produit** sur le continent (l'offre, via les
+    données de production réelles FAO/USGS/UNIDO).
+
+    La demande dégrade gracieusement si l'API OEC est injoignable (plan payant) ;
+    l'offre reste disponible localement.
+    """
+    return await report_engine.get_market_seeking_report(hs_code, year=year, lang=lang)
+
+
 @router.get("/macro/{country_iso3}", summary="Profil macro-financier d'un pays")
 async def macro_profile(country_iso3: str):
     """

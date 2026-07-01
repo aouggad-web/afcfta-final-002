@@ -14,6 +14,14 @@ const money = (v) =>
     ? "—"
     : `$${Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 
+/* Source may be a plain string or an object {institution, dataset, url}. */
+const srcText = (s) =>
+  !s
+    ? ""
+    : typeof s === "string"
+    ? s
+    : [s.institution, s.dataset].filter(Boolean).join(" · ");
+
 const card = {
   background: "var(--afcfta-card, #fff)",
   border: "1px solid var(--afcfta-border, rgba(0,0,0,0.08))",
@@ -23,19 +31,183 @@ const card = {
 
 const label = { fontSize: 12, color: "var(--afcfta-muted, #667)", marginBottom: 4 };
 const val = { fontSize: 18, fontWeight: 700 };
+const th = { padding: "4px 8px", textAlign: "left", color: "var(--afcfta-muted,#667)" };
+const td = { padding: "4px 8px" };
 
 function Metric({ title, value, sub }) {
   return (
     <div style={card}>
       <div style={label}>{title}</div>
       <div style={val}>{value}</div>
-      {sub && <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>{sub}</div>}
+      {sub && (
+        <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>{sub}</div>
+      )}
     </div>
   );
 }
 
-export default function OpportunityReportTab({ countries = [], language = "fr" }) {
-  const fr = language === "fr";
+/* ── Mode 1: producer looking for markets ─────────────────────────────────── */
+function MarketSeekingView({ fr }) {
+  const [hsCode, setHsCode] = useState("1801");
+  const [year, setYear] = useState("2022");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [rep, setRep] = useState(null);
+
+  const run = async () => {
+    setLoading(true);
+    setError(null);
+    setRep(null);
+    try {
+      const params = new URLSearchParams({ hs_code: hsCode, year, lang: fr ? "fr" : "en" });
+      const res = await axios.get(`${API}/reports/market-seeking?${params.toString()}`);
+      setRep(res.data);
+    } catch (e) {
+      setError(fr ? "Impossible de générer le rapport." : "Could not generate report.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const demand = rep?.demand || {};
+  const supply = rep?.supply || {};
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 18 }}>
+        <div>
+          <div style={label}>{fr ? "Produit — Code SH (HS6 ou HS4)" : "Product — HS code (HS6 or HS4)"}</div>
+          <input
+            value={hsCode}
+            onChange={(e) => setHsCode(e.target.value)}
+            data-testid="ms-hs"
+            style={{ padding: "8px 10px", borderRadius: 8, width: 160 }}
+          />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Année" : "Year"}</div>
+          <input
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            data-testid="ms-year"
+            style={{ padding: "8px 10px", borderRadius: 8, width: 100 }}
+          />
+        </div>
+        <button
+          onClick={run}
+          disabled={loading}
+          className="afcfta-btn afcfta-btn-primary"
+          data-testid="ms-run"
+          style={{ padding: "10px 18px", borderRadius: 8 }}
+        >
+          {loading ? (fr ? "Recherche…" : "Searching…") : fr ? "Trouver les marchés" : "Find markets"}
+        </button>
+      </div>
+
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+
+      {rep && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          <div style={{ fontSize: 16, fontWeight: 700 }}>
+            {rep.product_name || rep.inputs?.hs_code}{" "}
+            <span style={{ fontSize: 13, fontWeight: 400, color: "var(--afcfta-muted,#667)" }}>
+              (SH {rep.inputs?.hs_code})
+            </span>
+          </div>
+
+          {/* Demand: who imports this product */}
+          <div style={card}>
+            <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+              {fr ? "Demande — marchés importateurs africains" : "Demand — African importing markets"}
+            </div>
+            {demand.available ? (
+              <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
+                <thead>
+                  <tr>
+                    <th style={th}>{fr ? "Pays" : "Country"}</th>
+                    <th style={th}>{fr ? "Importations" : "Imports"}</th>
+                    <th style={th}>{fr ? "Part" : "Share"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {demand.markets.map((m) => (
+                    <tr key={m.country_iso3} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                      <td style={td}>
+                        {m.country_name} ({m.country_iso3})
+                      </td>
+                      <td style={td}>{money(m.import_value_usd)}</td>
+                      <td style={td}>{m.share_pct === null ? "—" : `${m.share_pct}%`}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div style={{ color: "var(--afcfta-muted,#667)", fontSize: 13 }}>
+                — {demand.note}
+              </div>
+            )}
+            {demand.source && (
+              <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
+                {fr ? "Source" : "Source"} : {demand.source}
+              </div>
+            )}
+          </div>
+
+          {/* Supply: who produces this product */}
+          <div style={card}>
+            <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+              {fr ? "Offre — producteurs africains" : "Supply — African producers"}
+              {supply.available && supply.commodity ? ` · ${supply.commodity}` : ""}
+            </div>
+            {supply.available ? (
+              <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
+                <thead>
+                  <tr>
+                    <th style={th}>{fr ? "Pays" : "Country"}</th>
+                    <th style={th}>
+                      {fr ? "Production" : "Production"} {supply.unit ? `(${supply.unit})` : ""}
+                    </th>
+                    <th style={th}>{fr ? "Part" : "Share"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {supply.producers.map((p) => (
+                    <tr key={p.country_iso3} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                      <td style={td}>
+                        {p.country_name} ({p.country_iso3})
+                      </td>
+                      <td style={td}>
+                        {p.value === null || p.value === undefined
+                          ? "—"
+                          : Number(p.value).toLocaleString("en-US")}
+                      </td>
+                      <td style={td}>{p.share_pct === null ? "—" : `${p.share_pct}%`}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div style={{ color: "var(--afcfta-muted,#667)", fontSize: 13 }}>
+                — {fr ? "Aucune donnée de production pour ce code." : "No production data for this code."}
+              </div>
+            )}
+            {supply.source && (
+              <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
+                {fr ? "Source" : "Source"} : {srcText(supply.source)}
+                {supply.year ? ` (${supply.year})` : ""}
+              </div>
+            )}
+          </div>
+
+          <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>{rep.data_quality?.note}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Mode 2: bilateral opportunity report ─────────────────────────────────── */
+function BilateralView({ countries, fr }) {
   const [origin, setOrigin] = useState("CIV");
   const [destination, setDestination] = useState("NGA");
   const [hsCode, setHsCode] = useState("1801");
@@ -49,20 +221,12 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
     setError(null);
     setReport(null);
     try {
-      const params = new URLSearchParams({
-        hs_code: hsCode,
-        origin,
-        destination,
-      });
+      const params = new URLSearchParams({ hs_code: hsCode, origin, destination });
       if (goodsValue) params.set("goods_value_usd", goodsValue);
       const res = await axios.get(`${API}/reports/opportunity?${params.toString()}`);
       setReport(res.data);
     } catch (e) {
-      setError(
-        fr
-          ? "Impossible de générer le rapport (backend injoignable ?)."
-          : "Could not generate report (backend unreachable?)."
-      );
+      setError(fr ? "Impossible de générer le rapport." : "Could not generate report.");
     } finally {
       setLoading(false);
     }
@@ -101,15 +265,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          gap: 12,
-          flexWrap: "wrap",
-          alignItems: "flex-end",
-          marginBottom: 18,
-        }}
-      >
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 18 }}>
         <div>
           <div style={label}>{fr ? "Exportateur (origine)" : "Exporter (origin)"}</div>
           {sel(origin, setOrigin, "report-origin")}
@@ -143,30 +299,15 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
           data-testid="report-run"
           style={{ padding: "10px 18px", borderRadius: 8 }}
         >
-          {loading
-            ? fr
-              ? "Génération…"
-              : "Generating…"
-            : fr
-            ? "Générer le rapport"
-            : "Generate report"}
+          {loading ? (fr ? "Génération…" : "Generating…") : fr ? "Générer le rapport" : "Generate report"}
         </button>
       </div>
 
-      {error && (
-        <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>
-      )}
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
 
       {report && (
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          {/* Composite indicators */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: 12,
-            }}
-          >
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
             <Metric
               title={fr ? "Score de bout en bout" : "End-to-end score"}
               value={e2e.available ? pct(e2e.score) : "—"}
@@ -204,7 +345,6 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
             />
           </div>
 
-          {/* Score breakdown */}
           {e2e.breakdown && (
             <div style={card}>
               <div style={{ ...label, marginBottom: 8 }}>
@@ -212,20 +352,20 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
               </div>
               <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
                 <thead>
-                  <tr style={{ textAlign: "left", color: "var(--afcfta-muted,#667)" }}>
-                    <th style={{ padding: "4px 8px" }}>{fr ? "Composante" : "Component"}</th>
-                    <th style={{ padding: "4px 8px" }}>{fr ? "Poids" : "Weight"}</th>
-                    <th style={{ padding: "4px 8px" }}>{fr ? "Sous-score" : "Sub-score"}</th>
-                    <th style={{ padding: "4px 8px" }}>{fr ? "Comptée" : "Counted"}</th>
+                  <tr>
+                    <th style={th}>{fr ? "Composante" : "Component"}</th>
+                    <th style={th}>{fr ? "Poids" : "Weight"}</th>
+                    <th style={th}>{fr ? "Sous-score" : "Sub-score"}</th>
+                    <th style={th}>{fr ? "Comptée" : "Counted"}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {e2e.breakdown.map((b) => (
                     <tr key={b.component} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
-                      <td style={{ padding: "4px 8px" }}>{b.component}</td>
-                      <td style={{ padding: "4px 8px" }}>{pct(b.weight)}</td>
-                      <td style={{ padding: "4px 8px" }}>{b.subscore === null ? "—" : pct(b.subscore)}</td>
-                      <td style={{ padding: "4px 8px" }}>
+                      <td style={td}>{b.component}</td>
+                      <td style={td}>{pct(b.weight)}</td>
+                      <td style={td}>{b.subscore === null ? "—" : pct(b.subscore)}</td>
+                      <td style={td}>
                         {b.counted ? "✓" : <span style={{ color: "#999" }}>{fr ? "exclue" : "excluded"}</span>}
                       </td>
                     </tr>
@@ -240,7 +380,6 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
             </div>
           )}
 
-          {/* Logistics + Finance detail */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 12 }}>
             <div style={card}>
               <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
@@ -275,7 +414,16 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
               </div>
               <div style={{ fontSize: 14, lineHeight: 1.7 }}>
                 <div>
-                  PAPSS : {pay.available ? (pay.papss_covered ? (fr ? "Couvert ✓" : "Covered ✓") : fr ? "Non couvert" : "Not covered") : "—"}
+                  PAPSS :{" "}
+                  {pay.available
+                    ? pay.papss_covered
+                      ? fr
+                        ? "Couvert ✓"
+                        : "Covered ✓"
+                      : fr
+                      ? "Non couvert"
+                      : "Not covered"
+                    : "—"}
                 </div>
                 <div>
                   {fr ? "Risque pays" : "Country risk"} :{" "}
@@ -294,7 +442,6 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
             </div>
           </div>
 
-          {/* Destination macro: GAI, reserves, import cover */}
           <div style={card}>
             <div style={{ ...label, marginBottom: 10, fontWeight: 700 }}>
               {fr ? "Indicateurs macro du marché" : "Market macro indicators"} — {report.inputs?.destination_iso3}
@@ -335,10 +482,38 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
             )}
           </div>
 
-          <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>
-            {report.data_quality?.note}
-          </div>
+          <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>{report.data_quality?.note}</div>
         </div>
+      )}
+    </div>
+  );
+}
+
+export default function OpportunityReportTab({ countries = [], language = "fr" }) {
+  const fr = language === "fr";
+  const [mode, setMode] = useState("market");
+
+  const tabBtn = (id, txt) => (
+    <button
+      onClick={() => setMode(id)}
+      data-testid={`mode-${id}`}
+      className={`afcfta-btn ${mode === id ? "afcfta-btn-primary" : "afcfta-btn-secondary"}`}
+      style={{ padding: "8px 16px", borderRadius: 8 }}
+    >
+      {txt}
+    </button>
+  );
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
+        {tabBtn("market", fr ? "Trouver des marchés (producteur)" : "Find markets (producer)")}
+        {tabBtn("bilateral", fr ? "Rapport bilatéral" : "Bilateral report")}
+      </div>
+      {mode === "market" ? (
+        <MarketSeekingView fr={fr} />
+      ) : (
+        <BilateralView countries={countries} fr={fr} />
       )}
     </div>
   );
