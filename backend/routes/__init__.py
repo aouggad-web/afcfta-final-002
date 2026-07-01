@@ -350,6 +350,15 @@ except ImportError:
     admin_projects_router = None
     ADMIN_PROJECTS_AVAILABLE = False
 
+try:
+    from .reports import router as reports_router
+
+    REPORTS_AVAILABLE = True
+except ImportError as e:
+    reports_router = None
+    REPORTS_AVAILABLE = False
+    _logger.warning(f"Premium reports route unavailable: {e}")
+
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -481,4 +490,8 @@ def register_routes(api_router: APIRouter):
     if DISMANTLEMENT_AVAILABLE:
         api_router.include_router(
             dismantlement_router, tags=["ZLECAf Dismantlement Schedule"], dependencies=_auth
+        )
+    if REPORTS_AVAILABLE:
+        api_router.include_router(
+            reports_router, tags=["Premium Opportunity Reports"], dependencies=_auth
         )
