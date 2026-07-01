@@ -24,6 +24,12 @@ _Dernière mise à jour : 2026-06-30_
 > alimenté par des **API payantes (OEC, etc.)** garantissant des flux réels,
 > complets et à jour. Le reste de ce document décrit l'architecture existante qui
 > servira de base à cette reprise.
+>
+> 📄 **Plan de reprise détaillé :** voir
+> [`MODULE_OPPORTUNITES_PLAN_PREMIUM.md`](./MODULE_OPPORTUNITES_PLAN_PREMIUM.md)
+> — nouveaux indicateurs et sources, **intégration de la logistique et du système
+> bancaire**, architecture cible (moteur de rapports) et feuille de route par
+> phases.
 
 ---
 
