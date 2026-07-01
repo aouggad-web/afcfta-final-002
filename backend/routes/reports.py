@@ -28,21 +28,43 @@ async def opportunity_report(
     ),
     weight_kg: float = Query(default=21600.0, description="Poids de l'expédition (kg)"),
     volume_m3: float = Query(default=33.5, description="Volume de l'expédition (m³)"),
+    mode: str = Query(
+        default="standard",
+        description="Mode rapport : 'standard' (indicateurs + scores) ou 'ultra_fine' (+ narrative + benchmarking + segmentation)",
+    ),
 ):
     """
     Compose supply (production), logistics (multimodal freight), finance & macro
     (trade finance, PAPSS, risque, change, GAI, réserves, couverture des
     importations) et calcule les indicateurs composites (coût rendu, indices,
     score de bout en bout).
+
+    Mode 'ultra_fine' enrichit le rapport avec :
+    - Analyse narrative factuelle de chaque volet (supply, market, logistics, financing)
+    - Benchmarking : classement meilleurs producteurs, analyse coût, infrastructure
+    - Segmentation : matrices effort/impact et risque/récompense, factor breakdown,
+      priority tier (QUICK_WIN, STRATEGIC_BET, etc.)
+
+    Tous les chiffres sont réels ou flaggés indisponibles (zéro fabrication).
     """
-    return report_engine.get_opportunity_report(
-        hs_code=hs_code,
-        origin_iso3=origin,
-        destination_iso3=destination,
-        goods_value_usd=goods_value_usd,
-        weight_kg=weight_kg,
-        volume_m3=volume_m3,
-    )
+    if mode == "ultra_fine":
+        return report_engine.get_opportunity_report_ultra_fine(
+            hs_code=hs_code,
+            origin_iso3=origin,
+            destination_iso3=destination,
+            goods_value_usd=goods_value_usd,
+            weight_kg=weight_kg,
+            volume_m3=volume_m3,
+        )
+    else:
+        return report_engine.get_opportunity_report(
+            hs_code=hs_code,
+            origin_iso3=origin,
+            destination_iso3=destination,
+            goods_value_usd=goods_value_usd,
+            weight_kg=weight_kg,
+            volume_m3=volume_m3,
+        )
 
 
 @router.get("/market-seeking", summary="Marchés potentiels pour un produit (producteur)")
