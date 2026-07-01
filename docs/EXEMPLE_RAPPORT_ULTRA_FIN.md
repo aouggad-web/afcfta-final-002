@@ -1,4 +1,4 @@
-# Exemple de Rapport Ultra-Fin — Corridoro Côte d'Ivoire → Nigeria, Cacao (HS 1801)
+# Exemple de Rapport Ultra-Fin — Corridor Côte d'Ivoire → Nigeria, Cacao (HS 1801)
 
 ## Vue d'ensemble
 

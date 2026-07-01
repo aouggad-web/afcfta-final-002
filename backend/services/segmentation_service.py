@@ -92,9 +92,16 @@ def risk_reward_matrix(report: Dict) -> Dict:
     finance = report.get("composite_indicators", {}).get("financing_feasibility_index", {})
     fin_idx = finance.get("index", 0.5)
 
-    country_risk = report.get("finance", {}).get("country_risk", {})
-    risk_idx = country_risk.get("risk_score", 5.0)  # 0–10 scale
-    alert = country_risk.get("alert_level", "orange")
+    # Country risk is stored in multiple places by report_engine; try all paths
+    # Priority: risk_component > profile.country_risk > direct country_risk (backward compat)
+    country_risk = (
+        report.get("finance", {}).get("risk_component")
+        or report.get("finance", {}).get("profile", {}).get("country_risk")
+        or report.get("finance", {}).get("country_risk", {})
+    )
+
+    risk_idx = country_risk.get("risk_score", 5.0) if country_risk else 5.0  # 0–10 scale
+    alert = country_risk.get("alert_level", "orange") if country_risk else "orange"
 
     # Risk score: combine country risk + financing
     country_risk_normalized = min(risk_idx / 10.0, 1.0)  # Normalize to 0–1
@@ -114,7 +121,7 @@ def risk_reward_matrix(report: Dict) -> Dict:
     )
 
     # Tariff advantage (ZLECAf)
-    tariff_gain = 0.85  # Assume ~8.5 % gain (typical ZLECAf)
+    tariff_gain = 0.085  # ~8.5 % gain (typical ZLECAf), scaled to 0–1 contribution
 
     # Reward score: blend of supply × demand × tariff
     reward_score = supply_score * 0.4 + demand_score * 0.4 + tariff_gain * 0.2
@@ -252,9 +259,14 @@ def factor_breakdown(report: Dict) -> List[Dict]:
             }
         )
 
-    # Country risk factor
-    country_risk = report.get("finance", {}).get("country_risk", {})
-    if country_risk.get("available"):
+    # Country risk factor (stored in risk_component or profile.country_risk or direct)
+    country_risk = (
+        report.get("finance", {}).get("risk_component")
+        or report.get("finance", {}).get("profile", {}).get("country_risk")
+        or report.get("finance", {}).get("country_risk", {})
+    )
+
+    if country_risk and country_risk.get("available"):
         alert = country_risk.get("alert_level", "orange")
         if alert == "green":
             category = "opportunity"

@@ -104,27 +104,47 @@ def benchmark_cost(
             "note": "Cannot benchmark cost without top producers reference",
         }
 
-    # Heuristic: best producer's cost is ~5–10% lower than average
-    # (simplified; in reality would integrate with freight pricing)
+    # Cost comparison: if origin is the top producer, position is "best" (real data).
+    # Otherwise, we estimate the gap via heuristic (~8% cheaper for leader) — mark as estimation.
     best_producer = top["producers"][0]
-    best_cost_est = landed_cost_usd * 0.92  # Assume leader produces ~8% cheaper (simplified)
+    origin_is_leader = origin_iso3.upper() == best_producer.get("country_iso3", "").upper()
 
+    if origin_is_leader:
+        position = "best"
+        narrative = f"{origin_iso3.upper()} est le producteur le moins cher (position de leader)"
+        return {
+            "available": True,
+            "reference_producer": {
+                "iso3": best_producer.get("country_iso3"),
+                "country_name": best_producer.get("country_name"),
+                "continental_share_pct": best_producer.get("continental_share_pct"),
+                "rank": best_producer.get("rank"),
+            },
+            "position": position,
+            "gap_pct": 0.0,
+            "origin_cost_est": landed_cost_usd,
+            "reference_cost_est": landed_cost_usd,
+            "narrative": narrative,
+            "source": top.get("source"),
+            "year": top.get("year"),
+        }
+
+    # Non-leader: cost comparison is estimated (no real cost data for all producers).
+    # Mark as estimation to respect zero-fabrication discipline.
+    best_cost_est = landed_cost_usd * 0.92  # Heuristic: leader ~8% cheaper
     gap = landed_cost_usd - best_cost_est
     gap_pct = (gap / landed_cost_usd * 100) if landed_cost_usd else 0
 
-    if origin_iso3.upper() == best_producer.get("country_iso3", "").upper():
-        position = "best"
-        narrative = f"{origin_iso3.upper()} est le producteur le moins cher (position de leader)"
-    elif gap_pct <= 5:
+    if gap_pct <= 5:
         position = "competitive"
         narrative = (
-            f"Coût compétitif ; écart de {gap_pct:.1f} % vs leader "
+            f"Coût estimé compétitif ; écart hypothétique de {gap_pct:.1f} % vs leader "
             f"({best_producer.get('country_name')})"
         )
     else:
         position = "higher_cost"
         narrative = (
-            f"Coût plus élevé de {gap_pct:.1f} % vs leader "
+            f"Coût estimé plus élevé de {gap_pct:.1f} % vs leader "
             f"({best_producer.get('country_name')})"
         )
 
@@ -143,6 +163,8 @@ def benchmark_cost(
         "narrative": narrative,
         "source": top.get("source"),
         "year": top.get("year"),
+        "note": "Cost comparison for non-leader based on heuristic (real cost data not available for all producers)",
+        "is_estimation": True,
     }
 
 
@@ -164,17 +186,26 @@ def benchmark_infrastructure(destination_iso3: str, lang: str = "fr") -> Dict:
     """
     # Fetch benchmarks for this destination
     try:
-        from services.finance_opportunity_adapter import get_payment_coverage
         from services.logistics_opportunity_adapter import get_free_zones
         from services.macro_indicators_service import get_gai
 
         free_zones = get_free_zones(destination_iso3)
         zones_count = free_zones.get("count", 0)
 
-        # PAPSS coverage (simple check: check if PAPSS is in any payment systems)
-        # This is a proxy; ideally we'd query against all Africa
-        payment = get_payment_coverage("ZAF", destination_iso3)  # Dummy origin to check dest
-        papss = payment.get("papss_covered", False)
+        # PAPSS coverage: check if destination is in PAPSS network
+        # (via banking_system get_payment_systems, not pair-matching which would miss unilateral members)
+        try:
+            from banking_system import get_payment_systems
+
+            systems = get_payment_systems() or []
+            papss = any(
+                (s.get("code") or "").upper() == "PAPSS"
+                and destination_iso3.upper()
+                in [m.upper() for m in (s.get("member_countries") or [])]
+                for s in systems
+            )
+        except Exception:
+            papss = False  # Fallback: unavailable
 
         gai = get_gai(destination_iso3)
         gai_score = gai.get("score") if gai else None
