@@ -549,6 +549,39 @@ def test_gdp_per_capita_degrades_gracefully():
     assert gdp["available"] is False and gdp["value_usd"] is None
 
 
+# ── Scenario S1: import inputs → production → export ─────────────────────────
+def test_transformation_scenario_structure(_no_network_fx):
+    # Import cocoa beans (1801), produce cocoa paste (1803) in CIV, export to NGA.
+    rep = report_engine.get_transformation_scenario(
+        input_hs_code="1801",
+        input_origin_iso3="GHA",
+        producer_iso3="CIV",
+        finished_hs_code="1803",
+        destination_iso3="NGA",
+        input_value_usd=40000.0,
+        finished_value_usd=70000.0,
+    )
+    assert rep["report_type"] == "value_chain_transformation"
+    assert rep["scenario"] == "S1_import_inputs_produce_export"
+    # Three legs present
+    assert "leg1_input_import" in rep
+    assert "leg2_production" in rep
+    assert rep["leg3_export"]["report_type"] == "bilateral_product_opportunity"
+    # Real input tariff computed at the producer (CIV) for the input HS
+    assert rep["leg1_input_import"]["tariff"]["available"] in (True, False)
+    # Gross value-added = finished - input, flagged partial (not net profit)
+    va = rep["value_added"]
+    assert va["available"] is True
+    assert va["gross_value_added_usd"] == 30000.0  # 70000 - 40000
+    assert va["is_estimation"] is False
+    assert "BRUTE" in va["note"]
+
+
+def test_transformation_value_added_unavailable_without_values():
+    rep = report_engine.get_transformation_scenario("1801", "GHA", "CIV", "1803", "NGA")
+    assert rep["value_added"]["available"] is False
+
+
 def test_market_seeking_report_demand_degrades_supply_real(monkeypatch):
     # Stub the OEC call (network) so demand is deterministically unavailable.
     from services import real_trade_data_service as rt

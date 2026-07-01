@@ -84,6 +84,43 @@ async def market_seeking_report(
     return await report_engine.get_market_seeking_report(hs_code, year=year, lang=lang)
 
 
+@router.get("/transformation", summary="Scénario S1 : import intrants → production → export")
+async def transformation_scenario(
+    input_hs_code: str = Query(..., description="Code SH de l'intrant importé"),
+    input_origin: str = Query(..., description="Origine de l'intrant (ISO3)"),
+    producer: str = Query(..., description="Pays transformateur/producteur (ISO3)"),
+    finished_hs_code: str = Query(..., description="Code SH du produit fini"),
+    destination: str = Query(..., description="Marché d'export du produit fini (ISO3)"),
+    input_value_usd: Optional[float] = Query(
+        default=None, description="Valeur FOB des intrants (USD)"
+    ),
+    finished_value_usd: Optional[float] = Query(
+        default=None, description="Valeur FOB du produit fini (USD)"
+    ),
+    weight_kg: float = Query(default=21600.0, description="Poids de l'expédition (kg)"),
+    volume_m3: float = Query(default=33.5, description="Volume de l'expédition (m³)"),
+):
+    """
+    Modélise la chaîne **import intrants → production locale → export** :
+    coût rendu des intrants (logistique + tarif réel), capacité de production du
+    transformateur, rapport d'opportunité complet pour l'export du produit fini,
+    et valeur ajoutée BRUTE (fini − intrant, hors coûts de transformation).
+
+    Toutes les briques sont réelles ou marquées indisponibles ; aucune fabrication.
+    """
+    return report_engine.get_transformation_scenario(
+        input_hs_code=input_hs_code,
+        input_origin_iso3=input_origin,
+        producer_iso3=producer,
+        finished_hs_code=finished_hs_code,
+        destination_iso3=destination,
+        input_value_usd=input_value_usd,
+        finished_value_usd=finished_value_usd,
+        weight_kg=weight_kg,
+        volume_m3=volume_m3,
+    )
+
+
 @router.get("/national-need", summary="Estimation du besoin national d'un produit")
 async def national_need(
     hs_code: str = Query(..., description="Code SH du produit (HS6 ou HS4)"),

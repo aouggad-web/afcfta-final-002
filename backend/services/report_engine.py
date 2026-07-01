@@ -331,6 +331,143 @@ def get_opportunity_report_ultra_fine(
     }
 
 
+def _gross_value_added(
+    input_value_usd: Optional[float], finished_value_usd: Optional[float]
+) -> Dict:
+    """
+    Gross value-added of the transformation = finished value − input value.
+
+    Explicitly PARTIAL: excludes processing costs (labour, energy, capital,
+    wastage) which the platform does not hold. Never presented as net profit.
+    """
+    if input_value_usd is None or finished_value_usd is None:
+        return {
+            "available": False,
+            "note": "Valeurs de l'intrant et du produit fini requises pour la valeur ajoutée.",
+        }
+    gross = finished_value_usd - input_value_usd
+    margin_pct = round(gross / finished_value_usd * 100, 1) if finished_value_usd else None
+    return {
+        "available": True,
+        "is_estimation": False,
+        "gross_value_added_usd": round(gross, 2),
+        "gross_margin_pct": margin_pct,
+        "inputs": {
+            "input_value_usd": input_value_usd,
+            "finished_value_usd": finished_value_usd,
+        },
+        "note": (
+            "Valeur ajoutée BRUTE (produit fini − intrant). Exclut les coûts de "
+            "transformation (main-d'œuvre, énergie, capital, pertes) non disponibles "
+            "sur la plateforme ; ne pas interpréter comme un profit net."
+        ),
+    }
+
+
+def get_transformation_scenario(
+    input_hs_code: str,
+    input_origin_iso3: str,
+    producer_iso3: str,
+    finished_hs_code: str,
+    destination_iso3: str,
+    input_value_usd: Optional[float] = None,
+    finished_value_usd: Optional[float] = None,
+    weight_kg: float = 21600.0,
+    volume_m3: float = 33.5,
+) -> Dict:
+    """
+    Scenario **S1 — import inputs → local production → export**.
+
+    Chains the platform's real-data bricks along a transformation value chain:
+
+      Leg 1 (import inputs): logistics + real input tariff at the producing
+             country + landed cost of the imported inputs.
+      Leg 2 (production): the producer's real production capacity for the
+             finished good (FAO/USGS/UNIDO).
+      Leg 3 (export): the full bilateral opportunity report for the finished
+             good from the producer to the destination market.
+
+    Plus a transparent, PARTIAL gross value-added (finished − input), clearly
+    flagged as excluding transformation costs. No fabrication throughout.
+    """
+    input_origin_iso3 = (input_origin_iso3 or "").upper()
+    producer_iso3 = (producer_iso3 or "").upper()
+    destination_iso3 = (destination_iso3 or "").upper()
+
+    # ── Leg 1: import the inputs into the producing country ──────────────────
+    input_logistics = logistics.get_logistics_profile(
+        input_origin_iso3, producer_iso3, weight_kg, volume_m3
+    )
+    input_tariff = benchmarking_service.tariff_benefit_analysis(
+        input_origin_iso3, producer_iso3, input_hs_code
+    )
+    input_freight = input_logistics.get("best_operational_cost_usd")
+    input_landed = _landed_cost(input_value_usd, input_freight)
+
+    # ── Leg 2: local production capacity for the finished good ───────────────
+    production = _supply_component(producer_iso3, finished_hs_code)
+
+    # ── Leg 3: export the finished good to the destination market ────────────
+    export_report = get_opportunity_report(
+        finished_hs_code,
+        producer_iso3,
+        destination_iso3,
+        finished_value_usd,
+        weight_kg,
+        volume_m3,
+    )
+
+    value_added = _gross_value_added(input_value_usd, finished_value_usd)
+
+    # Feasibility flags (transparent, boolean facts, not a black-box score).
+    can_produce = bool(production.get("available"))
+    export_score = (
+        export_report.get("composite_indicators", {}).get("end_to_end_score", {}).get("score")
+    )
+
+    return {
+        "report_type": "value_chain_transformation",
+        "scenario": "S1_import_inputs_produce_export",
+        "inputs": {
+            "input_hs_code": input_hs_code,
+            "input_origin_iso3": input_origin_iso3,
+            "producer_iso3": producer_iso3,
+            "finished_hs_code": finished_hs_code,
+            "destination_iso3": destination_iso3,
+            "input_value_usd": input_value_usd,
+            "finished_value_usd": finished_value_usd,
+        },
+        "leg1_input_import": {
+            "logistics": input_logistics,
+            "tariff": input_tariff,
+            "landed_cost": input_landed,
+        },
+        "leg2_production": production,
+        "leg3_export": export_report,
+        "value_added": value_added,
+        "feasibility": {
+            "can_produce_locally": can_produce,
+            "export_end_to_end_score": export_score,
+            "note": (
+                "Faisabilité indicative : la production locale du produit fini est "
+                + (
+                    "confirmée par les données de production."
+                    if can_produce
+                    else "NON confirmée (pas de capacité de production détectée)."
+                )
+            ),
+        },
+        "data_quality": {
+            "is_estimation": False,
+            "note": (
+                "Chaîne de valeur composée de briques réelles (logistique, tarif "
+                "national/ZLECAf, production, export). Valeur ajoutée BRUTE seulement "
+                "(coûts de transformation non disponibles). Aucune valeur inventée."
+            ),
+        },
+    }
+
+
 def _demand_side(importers: list) -> Dict:
     """Shape the OEC importers list into a demand block (or unavailable)."""
     if not importers:
