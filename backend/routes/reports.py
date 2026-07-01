@@ -84,6 +84,47 @@ async def market_seeking_report(
     return await report_engine.get_market_seeking_report(hs_code, year=year, lang=lang)
 
 
+@router.get("/national-need", summary="Estimation du besoin national d'un produit")
+async def national_need(
+    hs_code: str = Query(..., description="Code SH du produit (HS6 ou HS4)"),
+    country: str = Query(..., description="Pays (ISO3)"),
+    elasticity: float = Query(
+        default=0.4, description="Élasticité-revenu (ajustement niveau de vie, L3)"
+    ),
+):
+    """
+    Estime le besoin national d'un produit via une cascade transparente :
+    L1 consommation apparente mesurée (production+import−export) si disponible,
+    sinon L2 proxy population (× disponibilité continentale par habitant), puis
+    L3 ajustement au PIB/habitant si le dataset est présent.
+
+    Toute valeur estimée est marquée ``is_estimation:true`` avec formule, intrants
+    et sources — jamais présentée comme mesurée, jamais inventée.
+    """
+    from services import demand_estimation_service as demand
+
+    # Fetch the country's own observed imports of the product (USD) from OEC, when
+    # reachable, as a direct demand signal. Gracefully None if OEC is blocked.
+    observed_imports = None
+    try:
+        from services.real_trade_data_service import real_trade_service
+
+        importers = await real_trade_service.get_african_importers_for_product(hs_code)
+        for m in importers or []:
+            if (m.get("country_iso3") or "").upper() == country.upper():
+                observed_imports = {
+                    "import_value_usd": m.get("import_value"),
+                    "source": "OEC / UN Comtrade (BACI)",
+                }
+                break
+    except Exception:  # OEC unavailable -> no observed-imports signal
+        observed_imports = None
+
+    return demand.estimate_national_need(
+        hs_code, country, income_elasticity=elasticity, observed_imports=observed_imports
+    )
+
+
 @router.get("/macro/{country_iso3}", summary="Profil macro-financier d'un pays")
 async def macro_profile(country_iso3: str):
     """

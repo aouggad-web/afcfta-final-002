@@ -462,6 +462,85 @@ def test_opportunity_report_ultra_fine(_no_network_fx):
     assert len(rep["segmentation"]["factor_breakdown"]) > 0
 
 
+# ── National-need estimation (S3, transparent cascade) ───────────────────────
+def test_population_is_real_from_constants():
+    from services import demand_estimation_service as demand
+
+    pop = demand.get_population("NGA")
+    assert pop["available"] is True
+    assert pop["value"] > 100_000_000  # Nigeria
+    assert pop["region"]
+
+
+def test_national_need_level2_population_proxy():
+    from services import demand_estimation_service as demand
+
+    # No apparent consumption -> L2 estimate from real FAO production + population.
+    res = demand.estimate_national_need("180100", "NGA")  # cocoa
+    assert res["available"] is True
+    assert res["is_estimation"] is True
+    assert res["estimation_level"] == 2  # GDP dataset absent here -> stays L2
+    assert res["value"] > 0
+    assert res["unit"] == "tonnes"
+    # Transparency: formula + inputs + sources are exposed
+    assert "Population ×" in res["method"]
+    assert res["inputs"]["population"] > 0
+    assert res["inputs"]["continental_production"] > 0
+    assert res["inputs"]["per_capita_reference"] > 0
+    assert len(res["sources"]) >= 2
+
+
+def test_national_need_level1_measured_when_apparent_given():
+    from services import demand_estimation_service as demand
+
+    res = demand.estimate_national_need(
+        "180100",
+        "NGA",
+        apparent={"production": 720000, "imports": 50000, "exports": 600000, "unit": "tonnes"},
+    )
+    assert res["is_estimation"] is False  # measured, not modelled
+    assert res["estimation_level"] == 1
+    assert res["value"] == 170000.0  # 720000 + 50000 - 600000
+
+
+def test_national_need_reference_includes_imports():
+    from services import demand_estimation_service as demand
+
+    # Same product, with vs without continental imports in the per-capita reference.
+    base = demand.estimate_national_need("180100", "NGA")
+    enriched = demand.estimate_national_need("180100", "NGA", continental_imports_tonnes=1_000_000)
+    assert base["reference_basis"] == "production_only"
+    assert enriched["reference_basis"] == "production_plus_imports"
+    # Adding imports raises the per-capita availability -> higher estimated need.
+    assert enriched["value"] > base["value"]
+    assert "importations" in enriched["method"]
+
+
+def test_national_need_attaches_observed_imports():
+    from services import demand_estimation_service as demand
+
+    signal = {"import_value_usd": 840_000_000, "source": "OEC / UN Comtrade (BACI)"}
+    res = demand.estimate_national_need("180100", "NGA", observed_imports=signal)
+    assert res["observed_imports"] == signal  # direct demand signal surfaced
+
+
+def test_national_need_unavailable_without_production():
+    from services import demand_estimation_service as demand
+
+    # Unknown HS -> no continental production -> estimate unavailable, never invented.
+    res = demand.estimate_national_need("999999", "NGA")
+    assert res["available"] is False
+    assert res["value"] is None
+
+
+def test_gdp_per_capita_degrades_gracefully():
+    from services import demand_estimation_service as demand
+
+    # wb_gdp_pc.json not shipped (WB API blocked here) -> unavailable, no fabrication.
+    gdp = demand.get_gdp_per_capita("NGA")
+    assert gdp["available"] is False and gdp["value_usd"] is None
+
+
 def test_market_seeking_report_demand_degrades_supply_real(monkeypatch):
     # Stub the OEC call (network) so demand is deterministically unavailable.
     from services import real_trade_data_service as rt
