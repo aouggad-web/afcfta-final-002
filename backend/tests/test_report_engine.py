@@ -461,6 +461,14 @@ def test_opportunity_report_ultra_fine(_no_network_fx):
     assert "factor_breakdown" in rep["segmentation"]
     assert len(rep["segmentation"]["factor_breakdown"]) > 0
 
+    # National need (S3) wired into the report + narrative + exec finding
+    assert "national_need" in rep
+    nn = rep["national_need"]
+    assert nn["available"] is True  # NGA cocoa -> L2 estimate from real data
+    assert nn["is_estimation"] is True
+    assert rep["narrative_analysis"]["national_need"]["available"] is True
+    assert any("Besoin du marché" in f for f in rep["executive_summary"]["key_findings"])
+
 
 # ── National-need estimation (S3, transparent cascade) ───────────────────────
 def test_population_is_real_from_constants():

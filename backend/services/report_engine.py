@@ -22,7 +22,7 @@ which is renormalised over the components that *do* have data.
 import logging
 from typing import Dict, Optional
 
-from services import benchmarking_service
+from services import benchmarking_service, demand_estimation_service
 from services import finance_opportunity_adapter as finance
 from services import logistics_opportunity_adapter as logistics
 from services import narrative_analysis_service, segmentation_service
@@ -263,7 +263,6 @@ def get_opportunity_report_ultra_fine(
     financing_narrative = narrative_analysis_service.analyze_financing(
         destination_iso3, base.get("finance", {}).get("profile", {})
     )
-    executive_summary = narrative_analysis_service.summarize_opportunity(base)
 
     # Add benchmarking
     top_producers = benchmarking_service.get_top_producers(hs_code, n=5)
@@ -281,6 +280,18 @@ def get_opportunity_report_ultra_fine(
     # Inject the REAL tariff advantage into the report so the segmentation layer
     # scores it from actual national/ZLECAf rates instead of a hardcoded value.
     base["tariff_benefit"] = tariff_benefit
+
+    # National need of the DESTINATION market (S3): how much this market needs the
+    # product. Measured (apparent consumption) when possible, otherwise a
+    # transparent population-proxy estimate — always flagged, never fabricated.
+    national_need = demand_estimation_service.estimate_national_need(hs_code, destination_iso3)
+    base["national_need"] = national_need
+    need_narrative = narrative_analysis_service.analyze_national_need(
+        destination_iso3, national_need
+    )
+
+    # Executive summary is recomputed so it can surface the national-need finding.
+    executive_summary = narrative_analysis_service.summarize_opportunity(base)
 
     # Add segmentation
     effort_impact = segmentation_service.effort_impact_matrix(base)
@@ -302,7 +313,9 @@ def get_opportunity_report_ultra_fine(
             "supply": supply_narrative,
             "logistics": logistics_narrative,
             "financing": financing_narrative,
+            "national_need": need_narrative,
         },
+        "national_need": national_need,
         "benchmarking": {
             "top_producers": top_producers,
             "cost_comparison": cost_benchmark,

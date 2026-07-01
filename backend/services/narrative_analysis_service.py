@@ -298,6 +298,62 @@ def analyze_financing(
     }
 
 
+def analyze_national_need(
+    country_iso3: str,
+    need: Dict,
+    lang: str = "fr",
+) -> Dict:
+    """
+    Narrative for a market's national need (from demand_estimation_service).
+
+    Clearly states whether the figure is MEASURED (apparent consumption) or
+    ESTIMATED (population proxy), with the driving inputs and sources — never
+    blurs the two. Surfaces the observed-imports signal when present.
+    """
+    if not need or not need.get("available"):
+        return {
+            "available": False,
+            "narrative": None,
+            "note": (need or {}).get("note", "Besoin national indisponible"),
+        }
+
+    value = need.get("value")
+    unit = need.get("unit") or "unités"
+    commodity = need.get("commodity", "produit")
+    level = need.get("estimation_level")
+    is_est = need.get("is_estimation")
+
+    if is_est:
+        qualifier = f"estimé (niveau {level}, proxy population)"
+    else:
+        qualifier = "mesuré (consommation apparente)"
+
+    parts = [
+        f"Besoin national {qualifier} de {country_iso3.upper()} en {str(commodity).lower()} : "
+        f"≈ {value:,.0f} {unit}"
+    ]
+
+    # Observed imports (real, USD) as a complementary demand signal.
+    obs = need.get("observed_imports")
+    if obs and obs.get("import_value_usd"):
+        parts.append(
+            f"le pays importe déjà {_fmt_usd(obs['import_value_usd'])} de ce produit "
+            f"({obs.get('source', 'OEC')})"
+        )
+
+    sources = need.get("sources") or []
+    src_txt = "; ".join(str(s) for s in sources[:2]) if sources else "sources internes"
+    narrative = ". ".join(parts) + f". (Méthode : {need.get('method', '—')} — {src_txt})"
+
+    return {
+        "available": True,
+        "narrative": narrative,
+        "is_estimation": is_est,
+        "estimation_level": level,
+        "source": src_txt,
+    }
+
+
 def summarize_opportunity(
     report: Dict,
     lang: str = "fr",
@@ -349,6 +405,20 @@ def summarize_opportunity(
             )
         else:
             key_findings.append(f"Demande africaine établie ({_fmt_usd(total_usd)})")
+
+    # National-need finding (destination market): measured or estimated, flagged.
+    need = report.get("national_need", {})
+    if need.get("available") and need.get("value"):
+        flag = "estimé" if need.get("is_estimation") else "mesuré"
+        obs = need.get("observed_imports") or {}
+        extra = (
+            f", importe déjà {_fmt_usd(obs['import_value_usd'])}"
+            if obs.get("import_value_usd")
+            else ""
+        )
+        key_findings.append(
+            f"Besoin du marché {flag} : ≈ {need['value']:,.0f} {need.get('unit', '')}{extra}"
+        )
 
     # Logistics finding
     if logistics.get("available") and logistics.get("index"):
