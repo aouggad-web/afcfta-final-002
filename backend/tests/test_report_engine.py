@@ -200,6 +200,22 @@ def test_supply_side_real_producers():
     assert any(p["country_iso3"] == "CIV" for p in s["producers"])
 
 
+def test_oec_token_injected_into_params(monkeypatch):
+    from services import real_trade_data_service as rt
+
+    # No token -> params unchanged
+    monkeypatch.setattr(rt, "OEC_API_TOKEN", None)
+    base = {"cube": "trade_i_baci_a_17", "limit": "1"}
+    assert rt._oec_params(base) == base
+    assert "token" not in rt._oec_params(base)
+
+    # Token set -> injected as query param, original dict untouched
+    monkeypatch.setattr(rt, "OEC_API_TOKEN", "secret-xyz")
+    out = rt._oec_params(base)
+    assert out["token"] == "secret-xyz"
+    assert "token" not in base  # non-mutating
+
+
 def test_market_seeking_report_demand_degrades_supply_real(monkeypatch):
     # Stub the OEC call (network) so demand is deterministically unavailable.
     from services import real_trade_data_service as rt

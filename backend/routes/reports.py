@@ -71,6 +71,21 @@ async def macro_profile(country_iso3: str):
     return macro.get_macro_profile(country_iso3)
 
 
+@router.get("/oec-health", summary="Diagnostic de connexion OEC (avec token)")
+async def oec_health(year: int = Query(default=2022, description="Année de test")):
+    """
+    Vérifie la connexion à l'API OEC depuis l'environnement courant et indique
+    si un token payant est configuré (``OEC_API_TOKEN`` / ``OEC_API_KEY``).
+
+    Utile pour valider le branchement OEC sur le déploiement : ``reachable:true``
+    + ``token_configured:true`` confirme que le plan payant répond. Dans ce bac à
+    sable, l'accès OEC est bloqué par la politique réseau (``reachable:false``).
+    """
+    from services.real_trade_data_service import real_trade_service
+
+    return await real_trade_service.ping_oec(year)
+
+
 @router.get("/health", summary="Diagnostic de disponibilité des données du moteur")
 async def reports_health():
     """

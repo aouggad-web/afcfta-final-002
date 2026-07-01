@@ -10,6 +10,7 @@ Provides real trade data for African countries
 
 import asyncio
 import logging
+import os
 from collections import defaultdict
 from datetime import datetime
 from typing import Dict, List
@@ -23,7 +24,24 @@ WITS_BASE_URL = "https://wits.worldbank.org/API/V1/SDMX/V21/rest"
 WITS_DATA_URL = "https://wits.worldbank.org/API/V1"
 
 # OEC API (Already integrated in oec_trade_service.py)
-OEC_BASE_URL = "https://api-v2.oec.world/tesseract/data.jsonrecords"
+# Base URL is overridable via env in case a paid plan uses a distinct host.
+OEC_BASE_URL = os.getenv("OEC_BASE_URL", "https://api-v2.oec.world/tesseract/data.jsonrecords")
+
+# Paid-plan API token. Read from the environment / secret store ONLY — never
+# hardcode a token here or commit one. Accepts either OEC_API_TOKEN or the
+# OEC_API_KEY name already reserved in .env.example. When absent, requests go
+# out unauthenticated (public tier, subject to rate limits and blocking).
+OEC_API_TOKEN = os.getenv("OEC_API_TOKEN") or os.getenv("OEC_API_KEY")
+
+
+def _oec_params(params: Dict) -> Dict:
+    """Inject the OEC token into request params when configured."""
+    if OEC_API_TOKEN:
+        enriched = dict(params)
+        enriched["token"] = OEC_API_TOKEN
+        return enriched
+    return params
+
 
 # African Countries (55 pays incluant la RASD - Membre UA depuis 1984)
 # Note: La RASD n'a pas de statistiques commerciales (territoire occupé)
@@ -598,7 +616,7 @@ class RealTradeDataService:
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     data = response.json()
@@ -653,7 +671,7 @@ class RealTradeDataService:
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     data = response.json()
@@ -708,7 +726,7 @@ class RealTradeDataService:
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     data = response.json()
@@ -791,7 +809,7 @@ class RealTradeDataService:
         start = datetime.utcnow()
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
             latency_ms = int((datetime.utcnow() - start).total_seconds() * 1000)
             records = []
             if response.status_code == 200:
@@ -802,6 +820,7 @@ class RealTradeDataService:
                 "latency_ms": latency_ms,
                 "records": len(records),
                 "endpoint": OEC_BASE_URL,
+                "token_configured": bool(OEC_API_TOKEN),
                 "error": None if response.status_code == 200 else f"HTTP {response.status_code}",
             }
         except Exception as e:
@@ -812,6 +831,7 @@ class RealTradeDataService:
                 "latency_ms": latency_ms,
                 "records": 0,
                 "endpoint": OEC_BASE_URL,
+                "token_configured": bool(OEC_API_TOKEN),
                 "error": str(e),
             }
 
@@ -841,7 +861,7 @@ class RealTradeDataService:
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     records = response.json().get("data", [])
@@ -921,7 +941,7 @@ class RealTradeDataService:
                 }
 
                 async with httpx.AsyncClient(timeout=self.timeout) as client:
-                    response = await client.get(OEC_BASE_URL, params=params)
+                    response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                     if response.status_code == 200:
                         data = response.json()
@@ -1002,7 +1022,7 @@ class RealTradeDataService:
 
                 try:
                     async with httpx.AsyncClient(timeout=15.0) as client:
-                        response = await client.get(OEC_BASE_URL, params=params)
+                        response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                         if response.status_code == 200:
                             data = response.json()
