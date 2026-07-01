@@ -216,6 +216,54 @@ def test_oec_token_injected_into_params(monkeypatch):
     assert "token" not in base  # non-mutating
 
 
+def test_importers_for_product_exact_hs6_all_countries(monkeypatch):
+    """Exact HS6 match, aggregation across all countries, non-match excluded."""
+    from services import real_trade_data_service as rt
+
+    nga_oec = rt.AFRICAN_COUNTRIES["NGA"]["oec"]
+    zaf_oec = rt.AFRICAN_COUNTRIES["ZAF"]["oec"]
+
+    class _Resp:
+        status_code = 200
+
+        def __init__(self, data):
+            self._data = data
+
+        def json(self):
+            return {"data": self._data}
+
+    class _Client:
+        def __init__(self, *a, **k):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *a):
+            return False
+
+        async def get(self, url, params=None):
+            imp = params.get("Importer Country")
+            if imp == nga_oec:
+                # one matching HS6 line (prefixed id) + one non-matching line
+                return _Resp(
+                    [
+                        {"HS6 ID": "52180100", "Trade Value": 1000},
+                        {"HS6 ID": "180200", "Trade Value": 999},
+                    ]
+                )
+            if imp == zaf_oec:
+                return _Resp([{"HS6 ID": "180100", "Trade Value": 500}])
+            return _Resp([])
+
+    monkeypatch.setattr(rt.httpx, "AsyncClient", _Client)
+    res = asyncio.run(rt.real_trade_service.get_african_importers_for_product("180100"))
+    assert [(r["country_iso3"], r["import_value"]) for r in res] == [
+        ("NGA", 1000.0),
+        ("ZAF", 500.0),
+    ]  # sorted desc; non-matching 180200 excluded
+
+
 def test_market_seeking_report_demand_degrades_supply_real(monkeypatch):
     # Stub the OEC call (network) so demand is deterministically unavailable.
     from services import real_trade_data_service as rt
