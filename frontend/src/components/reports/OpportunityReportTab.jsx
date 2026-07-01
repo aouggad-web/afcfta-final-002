@@ -684,7 +684,7 @@ function BilateralView({ countries, fr }) {
                       <td style={td}>{p.rank}</td>
                       <td style={td}>{p.country_name} ({p.country_iso3})</td>
                       <td style={td}>{dash(p.continental_share_pct, " %")}</td>
-                      <td style={td}>{num(p.production_volume, topProducers.year ? "" : "")}</td>
+                      <td style={td}>{num(p.production_volume, p.unit || "")}</td>
                     </tr>
                   ))}
                 </tbody>

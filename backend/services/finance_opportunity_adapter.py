@@ -156,14 +156,23 @@ def get_finance_profile(
     transaction_type: str = "export",
 ) -> Dict:
     """Compose the full finance view for an origin → destination deal."""
+    trade_finance = get_trade_finance(destination_iso3, transaction_type, amount_usd)
+    payment_coverage = get_payment_coverage(origin_iso3, destination_iso3)
+    country_risk = get_country_risk(destination_iso3, amount_usd)
+    fx = get_fx(origin_iso3, destination_iso3)
     return {
         "origin_iso3": (origin_iso3 or "").upper(),
         "destination_iso3": (destination_iso3 or "").upper(),
         "amount_usd": amount_usd,
-        "trade_finance": get_trade_finance(destination_iso3, transaction_type, amount_usd),
-        "payment_coverage": get_payment_coverage(origin_iso3, destination_iso3),
-        "country_risk": get_country_risk(destination_iso3, amount_usd),
-        "fx": get_fx(origin_iso3, destination_iso3),
+        # Top-level flag: true when at least one angle resolved (consumers such as
+        # the narrative layer can rely on it directly).
+        "available": any(
+            (a or {}).get("available") for a in (trade_finance, payment_coverage, country_risk, fx)
+        ),
+        "trade_finance": trade_finance,
+        "payment_coverage": payment_coverage,
+        "country_risk": country_risk,
+        "fx": fx,
         "destination_macro": macro.get_macro_profile(destination_iso3),
     }
 

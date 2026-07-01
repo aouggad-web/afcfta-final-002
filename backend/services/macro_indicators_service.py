@@ -96,10 +96,23 @@ def get_gold_reserves(country_iso3: str) -> Optional[Dict]:
     }
 
 
-def _wb_record(country_iso3: str) -> Optional[Dict]:
+def _wb_reserves() -> Optional[dict]:
+    """
+    Return the WB reserves dataset, lazily (re)loading once if it was absent at
+    import time. Lets a cron/ETL that produces wb_reserves.json AFTER the process
+    started be picked up without a restart.
+    """
+    global _WB_RESERVES
     if not _WB_RESERVES:
+        _WB_RESERVES = _load_json(_DATA_DIR / "wb_reserves.json")
+    return _WB_RESERVES
+
+
+def _wb_record(country_iso3: str) -> Optional[Dict]:
+    data = _wb_reserves()
+    if not data:
         return None
-    return (_WB_RESERVES.get("countries", {}) or {}).get(_iso3(country_iso3))
+    return (data.get("countries", {}) or {}).get(_iso3(country_iso3))
 
 
 def get_fx_reserves(country_iso3: str) -> Dict:

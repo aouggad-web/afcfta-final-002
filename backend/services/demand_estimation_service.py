@@ -25,7 +25,6 @@ is returned ``available: False`` with a note.
 
 import json
 import logging
-import os
 from pathlib import Path
 from typing import Dict, Optional
 

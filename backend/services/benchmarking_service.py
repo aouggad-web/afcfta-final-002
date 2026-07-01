@@ -284,7 +284,9 @@ def tariff_benefit_analysis(
             "note": "Taux de droit de douane national indisponible pour ce produit.",
             "source": "authentic_tariff_service",
         }
-    # ZLECAf rate absent -> treat as 0 only if the schedule marks it; else unavailable.
+    # A missing ZLECAf rate is treated as 0 % — the AfCFTA end-state preferential
+    # rate for the vast majority of tariff lines (full dismantlement target). This
+    # is a documented modelling assumption, not a measured value.
     zlecaf = float(zlecaf) if zlecaf is not None else 0.0
     national = float(national)
 
