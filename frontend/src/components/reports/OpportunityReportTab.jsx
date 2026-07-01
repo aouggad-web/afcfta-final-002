@@ -221,7 +221,7 @@ function BilateralView({ countries, fr }) {
     setError(null);
     setReport(null);
     try {
-      const params = new URLSearchParams({ hs_code: hsCode, origin, destination });
+      const params = new URLSearchParams({ hs_code: hsCode, origin, destination, mode: "ultra_fine" });
       if (goodsValue) params.set("goods_value_usd", goodsValue);
       const res = await axios.get(`${API}/reports/opportunity?${params.toString()}`);
       setReport(res.data);
@@ -247,6 +247,26 @@ function BilateralView({ countries, fr }) {
   const risk = fin.country_risk || {};
   const tf = fin.trade_finance || {};
   const pay = fin.payment_coverage || {};
+
+  // Ultra-fine sections
+  const exec = report?.executive_summary || null;
+  const narr = report?.narrative_analysis || {};
+  const need = report?.national_need || {};
+  const bench = report?.benchmarking || {};
+  const tariff = bench.tariff_benefit || {};
+  const topProducers = bench.top_producers || {};
+  const seg = report?.segmentation || {};
+  const effort = seg.effort_impact_matrix || {};
+  const rr = seg.risk_reward_matrix || {};
+  const factors = seg.factor_breakdown || [];
+  const tierColor = {
+    QUICK_WIN: "#1a7f37",
+    STRATEGIC_BET: "#0969da",
+    HIGH_REWARD_BET: "#9a6700",
+    PASS: "#8b949e",
+  };
+  const num = (v, u = "") =>
+    v === null || v === undefined ? "—" : `${Number(v).toLocaleString("fr-FR")}${u ? " " + u : ""}`;
 
   const sel = (value, onChange, testid) => (
     <select
@@ -307,6 +327,39 @@ function BilateralView({ countries, fr }) {
 
       {report && (
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          {exec && (
+            <div style={{ ...card, borderLeft: `4px solid ${tierColor[exec.priority_tier] || "#0969da"}` }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                <span style={{ ...label, margin: 0 }}>{fr ? "Synthèse exécutive" : "Executive summary"}</span>
+                <span
+                  data-testid="report-priority-tier"
+                  style={{
+                    background: tierColor[exec.priority_tier] || "#0969da",
+                    color: "#fff",
+                    padding: "3px 10px",
+                    borderRadius: 999,
+                    fontSize: 12,
+                    fontWeight: 700,
+                  }}
+                >
+                  {exec.priority_tier}
+                </span>
+              </div>
+              {exec.key_findings?.length > 0 && (
+                <ul style={{ margin: "10px 0 6px", paddingLeft: 18, fontSize: 14, lineHeight: 1.7 }}>
+                  {exec.key_findings.map((f, i) => (
+                    <li key={i}>{f}</li>
+                  ))}
+                </ul>
+              )}
+              {exec.recommendation && (
+                <div style={{ fontSize: 14, fontWeight: 600, marginTop: 4 }}>
+                  → {exec.recommendation}
+                </div>
+              )}
+            </div>
+          )}
+
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
             <Metric
               title={fr ? "Score de bout en bout" : "End-to-end score"}
@@ -493,6 +546,170 @@ function BilateralView({ countries, fr }) {
               ) : null;
             })()}
           </div>
+
+          {/* ── Segmentation matrices + national need ─────────────────── */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
+            <div style={card} data-testid="report-effort-impact">
+              <div style={{ ...label, marginBottom: 6, fontWeight: 700 }}>
+                {fr ? "Matrice effort / impact" : "Effort / impact matrix"}
+              </div>
+              <div style={{ fontSize: 20, fontWeight: 800, textTransform: "uppercase" }}>
+                {(effort.quadrant || "—").replace(/_/g, " ")}
+              </div>
+              <div style={{ fontSize: 13, marginTop: 4 }}>
+                {fr ? "Effort" : "Effort"} {pct(effort.effort_score)} · {fr ? "Impact" : "Impact"} {pct(effort.impact_score)}
+              </div>
+              <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 6 }}>{effort.rationale}</div>
+            </div>
+            <div style={card} data-testid="report-risk-reward">
+              <div style={{ ...label, marginBottom: 6, fontWeight: 700 }}>
+                {fr ? "Matrice risque / récompense" : "Risk / reward matrix"}
+              </div>
+              <div style={{ fontSize: 20, fontWeight: 800, textTransform: "uppercase" }}>
+                {(rr.quadrant || "—").replace(/_/g, " ")}
+              </div>
+              <div style={{ fontSize: 13, marginTop: 4 }}>
+                {fr ? "Risque" : "Risk"} {pct(rr.risk_score)} · {fr ? "Récompense" : "Reward"} {pct(rr.reward_score)}
+              </div>
+              <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 6 }}>{rr.recommendation}</div>
+            </div>
+            <div style={card} data-testid="report-national-need">
+              <div style={{ ...label, marginBottom: 6, fontWeight: 700 }}>
+                {fr ? "Besoin du marché" : "Market need"} — {report.inputs?.destination_iso3}
+              </div>
+              {need.available ? (
+                <>
+                  <div style={{ fontSize: 20, fontWeight: 800 }}>
+                    {num(need.value, need.unit)}
+                  </div>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      marginTop: 4,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: "2px 8px",
+                      borderRadius: 999,
+                      background: need.is_estimation ? "rgba(154,103,0,0.12)" : "rgba(26,127,55,0.12)",
+                      color: need.is_estimation ? "#9a6700" : "#1a7f37",
+                    }}
+                  >
+                    {need.is_estimation
+                      ? `${fr ? "Estimé — niveau" : "Estimated — level"} ${need.estimation_level}`
+                      : fr
+                      ? "Mesuré"
+                      : "Measured"}
+                  </div>
+                  {need.observed_imports?.import_value_usd && (
+                    <div style={{ fontSize: 12, marginTop: 6 }}>
+                      {fr ? "Importe déjà" : "Already imports"} : {money(need.observed_imports.import_value_usd)}
+                    </div>
+                  )}
+                  <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 6 }}>{need.method}</div>
+                </>
+              ) : (
+                <div style={{ color: "var(--afcfta-muted,#667)" }}>{need.note || "—"}</div>
+              )}
+            </div>
+          </div>
+
+          {/* ── Tariff advantage (real ZLECAf) + factor breakdown ─────── */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 12 }}>
+            <div style={card} data-testid="report-tariff">
+              <div style={{ ...label, marginBottom: 6, fontWeight: 700 }}>
+                {fr ? "Avantage tarifaire ZLECAf" : "AfCFTA tariff advantage"}
+              </div>
+              {tariff.available ? (
+                <div style={{ fontSize: 14, lineHeight: 1.7 }}>
+                  <div style={{ fontSize: 22, fontWeight: 800 }}>{dash(tariff.tariff_advantage_pct, " %")}</div>
+                  <div>
+                    {fr ? "Droit national" : "National duty"} {dash(tariff.national_rate_pct, " %")} → ZLECAf{" "}
+                    {dash(tariff.zlecaf_rate_pct, " %")}
+                  </div>
+                  {tariff.savings_per_1000usd ? (
+                    <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>
+                      {money(tariff.savings_per_1000usd)} / 1 000 $ CIF
+                    </div>
+                  ) : null}
+                </div>
+              ) : (
+                <div style={{ color: "var(--afcfta-muted,#667)" }}>{tariff.note || "—"}</div>
+              )}
+            </div>
+            {factors.length > 0 && (
+              <div style={card} data-testid="report-factors">
+                <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+                  {fr ? "Facteurs — opportunités & risques" : "Factors — opportunities & risks"}
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {factors.map((f) => (
+                    <div key={f.factor} style={{ display: "flex", alignItems: "baseline", gap: 8, fontSize: 13 }}>
+                      <span
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          color:
+                            f.category === "opportunity" ? "#1a7f37" : f.category === "risk" ? "#c8102e" : "#8b949e",
+                        }}
+                      >
+                        {f.category === "opportunity" ? "▲" : f.category === "risk" ? "▼" : "■"}
+                      </span>
+                      <span style={{ fontWeight: 600, minWidth: 130 }}>{f.factor}</span>
+                      <span style={{ color: "var(--afcfta-muted,#667)" }}>{f.rationale}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ── Top producers benchmark ───────────────────────────────── */}
+          {topProducers.available && topProducers.producers?.length > 0 && (
+            <div style={card}>
+              <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+                {fr ? "Meilleurs producteurs africains" : "Top African producers"}
+              </div>
+              <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
+                <thead>
+                  <tr>
+                    <th style={th}>#</th>
+                    <th style={th}>{fr ? "Pays" : "Country"}</th>
+                    <th style={th}>{fr ? "Part continentale" : "Continental share"}</th>
+                    <th style={th}>{fr ? "Production" : "Production"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {topProducers.producers.map((p) => (
+                    <tr key={p.country_iso3} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                      <td style={td}>{p.rank}</td>
+                      <td style={td}>{p.country_name} ({p.country_iso3})</td>
+                      <td style={td}>{dash(p.continental_share_pct, " %")}</td>
+                      <td style={td}>{num(p.production_volume, topProducers.year ? "" : "")}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
+                {srcText(topProducers.source)}{topProducers.year ? ` · ${topProducers.year}` : ""}
+              </div>
+            </div>
+          )}
+
+          {/* ── Narrative analysis ────────────────────────────────────── */}
+          {(narr.supply?.narrative || narr.logistics?.narrative || narr.financing?.narrative || narr.national_need?.narrative) && (
+            <div style={card} data-testid="report-narratives">
+              <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+                {fr ? "Analyse rédigée" : "Written analysis"}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, fontSize: 13, lineHeight: 1.6 }}>
+                {[narr.supply, narr.logistics, narr.financing, narr.national_need]
+                  .filter((n) => n && n.available && n.narrative)
+                  .map((n, i) => (
+                    <div key={i}>• {n.narrative}</div>
+                  ))}
+              </div>
+            </div>
+          )}
 
           <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>{report.data_quality?.note}</div>
         </div>

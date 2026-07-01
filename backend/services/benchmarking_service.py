@@ -51,8 +51,10 @@ def get_top_producers(hs_code: str, n: int = 5) -> Dict:
             "rank": i + 1,
             "country_iso3": p.get("country_iso3"),
             "country_name": p.get("country_name"),
-            "continental_share_pct": p.get("country_share_pct"),
-            "production_volume": p.get("production_value"),
+            # production_capacity_service returns share_pct / value; keep fallbacks
+            # for the mocked/alternate key names.
+            "continental_share_pct": p.get("share_pct", p.get("country_share_pct")),
+            "production_volume": p.get("value", p.get("production_value")),
             "unit": result.get("unit"),
             "year": result.get("year"),
             "source": result.get("source"),

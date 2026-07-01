@@ -15,6 +15,16 @@ from typing import Dict, Optional
 _log = logging.getLogger(__name__)
 
 
+def _src(source) -> str:
+    """Human-readable source label from a string or {institution, dataset} dict."""
+    if source is None:
+        return "source interne"
+    if isinstance(source, dict):
+        parts = [source.get("institution"), source.get("dataset")]
+        return " · ".join(p for p in parts if p) or "source interne"
+    return str(source)
+
+
 def _fmt_usd(value: float) -> str:
     """Format a raw USD amount with the correct magnitude label (M$/Md$)."""
     if value is None:
@@ -98,12 +108,13 @@ def analyze_supply(
             f"avec une tendance de {direction} de {abs(growth):.1f} % annuel ({period})"
         )
 
-    narrative = " ".join(narratives) + (f" ({source} {year})" if year else f" ({source})")
+    src = _src(source)
+    narrative = " ".join(narratives) + (f" ({src} {year})" if year else f" ({src})")
 
     return {
         "available": True,
         "narrative": narrative,
-        "source": source,
+        "source": src,
         "year": year,
     }
 
@@ -342,7 +353,7 @@ def analyze_national_need(
         )
 
     sources = need.get("sources") or []
-    src_txt = "; ".join(str(s) for s in sources[:2]) if sources else "sources internes"
+    src_txt = "; ".join(_src(s) for s in sources[:2]) if sources else "sources internes"
     narrative = ". ".join(parts) + f". (Méthode : {need.get('method', '—')} — {src_txt})"
 
     return {
