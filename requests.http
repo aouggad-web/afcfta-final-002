@@ -26,3 +26,17 @@ GET {{host}}/reports/opportunity?hs_code=180100&origin=CIV&destination=NGA&goods
 
 ### Profil macro d'un pays
 GET {{host}}/reports/macro/NGA
+
+# ── Exemple cajou : Guinée-Bissau → Algérie (docs/EXEMPLE_CAJOU_GNB.md) ──────
+
+### Cajou S2 — marchés classés pour le cajou brut (080131) de GNB
+GET {{host}}/reports/direct-export?hs_code=080131&producer=GNB&top_k=5
+
+### Cajou S3 — besoin national algérien
+GET {{host}}/reports/national-need?hs_code=080131&country=DZA
+
+### Cajou — bilatéral ultra-fin GNB → DZA (droit national 30 % → ZLECAf 0 %)
+GET {{host}}/reports/opportunity?hs_code=080131&origin=GNB&destination=DZA&goods_value_usd=50000&mode=ultra_fine
+
+### Cajou S1 — brut GNB → décorticage local → export du décortiqué (080132)
+GET {{host}}/reports/transformation?input_hs_code=080131&input_origin=GNB&producer=CIV&finished_hs_code=080132&destination=DZA&input_value_usd=40000&finished_value_usd=70000
