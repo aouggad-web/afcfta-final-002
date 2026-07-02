@@ -737,7 +737,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
   return (
     <div>
       <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
-        {tabBtn("preview", fr ? "preview du module" : "Module preview")}
+        {tabBtn("preview", fr ? "Preview du module" : "Module preview")}
         {tabBtn("market", fr ? "Trouver des marchés (producteur)" : "Find markets (producer)")}
         {tabBtn("bilateral", fr ? "Rapport bilatéral" : "Bilateral report")}
       </div>

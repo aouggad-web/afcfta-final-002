@@ -316,7 +316,7 @@ function App() {
               title={language === 'fr' ? 'Opportunités' : 'Opportunities'}
               subtitle={
                 language === 'fr'
-                  ? 'preview du module Opportunities et rapports bilatéraux : production, logistique, finance & macro'
+                  ? 'Preview du module Opportunities et rapports bilatéraux : production, logistique, finance & macro'
                   : 'Opportunities module preview and bilateral reports: production, logistics, finance & macro'
               }
               dotColor="copper"
