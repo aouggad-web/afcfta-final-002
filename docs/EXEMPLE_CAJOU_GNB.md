@@ -72,13 +72,18 @@ ici **imposée comme cible** (`--destination DZA`), ce que le script supporte.
 
 Hypothèses d'expédition par défaut : FOB 50 000 $, 21,6 t / 33,5 m³ (1 TEU).
 
-**Avantage tarifaire ZLECAf — maximal** (fourni hors score) :
+**Tarif : pas d'avantage ZLECAf pour cette paire** (fourni hors score) :
 
 | | |
 |---|---|
 | Droit national DZA (080131) | **30 %** (source : DG des Douanes — Algérie) |
-| Taux ZLECAf | **0 %** |
-| Avantage | **30 points → 300 $ économisés par 1 000 $ CIF** (indice 1.0) |
+| Régime appliqué à GNB | **NPF 30 %** — la ZLECAf n'est pas encore activée pour la Guinée-Bissau à l'import en Algérie (réciprocité : 9 partenaires actifs seulement, circulaire DGD 482/2024) |
+| Avantage | **0 point** (indice 0.0) |
+
+C'est la même règle que le calculateur : l'Algérie n'accorde les taux ZLECAf
+qu'à ses 9 partenaires actifs (ZAF, CMR, EGY, GHA, KEN, MUS, RWA, TZA, TUN).
+Un partenaire actif comme l'**Égypte** obtiendrait ici 30 % → **0 %**
+(liste A, calendrier standard).
 
 **Logistique** : maritime direct **Bissau (GWOXB) → Oran (DZORN)**, 3 541 km,
 fréquence hebdomadaire, fret modélisé **985 $** → coût rendu **50 985 $**.
@@ -93,12 +98,14 @@ fréquence hebdomadaire, fret modélisé **985 $** → coût rendu **50 985 $**.
 | financing_feasibility | 0.20 | 0.437 |
 | country_risk | 0.10 | 0.300 |
 
-**Priority tier : PASS** (2 opportunités vs 3 risques) — lecture honnête :
-l'avantage tarifaire est au maximum, mais le score reste médian (financement,
-risque pays) et la demande réelle du marché algérien (imports OEC) n'a pas pu
-être mesurée ici. Rejouer via le workflow Actions avec OEC actif peut faire
-basculer le tier : la composante `market_potential` s'ajoute au score et les
-imports observés remplacent la borne basse démographique.
+**Priority tier : PASS** — lecture honnête : pas de préférence tarifaire
+(NPF 30 %), score médian (financement, risque pays) et demande réelle
+algérienne non mesurée (OEC injoignable ici). Le corridor GNB → DZA n'est
+donc pas prioritaire aujourd'hui — les marchés du top S2 (l'Égypte en tête,
+meilleur couple besoin × score) sont de meilleurs candidats pour le cajou
+bissau-guinéen. Rejouer via le workflow Actions avec OEC actif ajoute
+`market_potential` au score et remplace la borne basse démographique par les
+imports observés.
 
 ## 5. Variantes à un paramètre près
 

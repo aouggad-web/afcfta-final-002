@@ -385,6 +385,72 @@ def test_tariff_hs4_resolves_to_hs6():
     assert res["tariff_advantage_pct"] == 5.0
 
 
+def test_tariff_dza_no_zlecaf_for_non_active_partner():
+    from services import benchmarking_service as benchmark
+
+    # L'Algérie n'accorde les taux ZLECAf qu'à ses 9 partenaires actifs
+    # (réciprocité, circulaire DGD 482/2024). GNB n'en fait pas partie :
+    # cajou 080131 -> taux NPF 30 %, avantage NUL (régression corrigée :
+    # le rapport affichait 30 % -> 0 %).
+    res = benchmark.tariff_benefit_analysis("GNB", "DZA", "080131")
+    assert res["available"] is True
+    assert res["national_rate_pct"] == 30.0
+    assert res["zlecaf_rate_pct"] == 30.0
+    assert res["tariff_advantage_pct"] == 0.0
+    assert res["tariff_advantage_index"] == 0.0
+    assert res["trade_regime"] == "NPF"
+    assert "non encore activé" in (res["trade_regime_note"] or "")
+
+
+def test_tariff_dza_zlecaf_for_active_partner():
+    from services import benchmarking_service as benchmark
+
+    # EGY est un partenaire actif de l'Algérie : le calendrier de
+    # démantèlement DZA s'applique (liste A, calendrier standard -> 0 % dès
+    # 2025), exactement comme dans le calculateur.
+    res = benchmark.tariff_benefit_analysis("EGY", "DZA", "080131")
+    assert res["available"] is True
+    assert res["trade_regime"] == "ZLECAF"
+    assert res["national_rate_pct"] == 30.0
+    assert res["zlecaf_rate_pct"] == 0.0
+    assert res["tariff_advantage_pct"] == 30.0
+
+
+def test_tariff_customs_union_pair():
+    from services import benchmarking_service as benchmark
+
+    # BFA et CIV sont tous deux UEMOA : libre circulation (0 %), régime
+    # prioritaire sur la ZLECAf.
+    res = benchmark.tariff_benefit_analysis("BFA", "CIV", "180100")
+    assert res["available"] is True
+    assert res["trade_regime"] == "CUSTOMS_UNION"
+    assert res["zlecaf_rate_pct"] == 0.0
+    assert res["tariff_advantage_pct"] == res["national_rate_pct"]
+
+
+def test_segmentation_tariff_factor_gives_real_reason_when_no_advantage():
+    from services import segmentation_service as segmentation
+
+    report = {
+        "tariff_benefit": {
+            "available": True,
+            "tariff_advantage_pct": 0.0,
+            "tariff_advantage_index": 0.0,
+            "national_rate_pct": 30.0,
+            "zlecaf_rate_pct": 30.0,
+            "trade_regime": "NPF",
+            "trade_regime_note": (
+                "ZLECAf non encore activé pour GNB à l'import en Algérie "
+                "(circulaire DGD 482/2024) — taux NPF appliqué"
+            ),
+        }
+    }
+    factors = segmentation.factor_breakdown(report)
+    tf = next(f for f in factors if f["factor"] == "tariff_advantage")
+    assert tf["category"] == "neutral"
+    assert "non encore activé" in tf["rationale"]
+
+
 def test_tariff_benefit_zero_when_no_duty():
     from services import benchmarking_service as benchmark
 

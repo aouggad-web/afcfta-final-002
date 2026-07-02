@@ -709,10 +709,23 @@ function BilateralView({ countries, fr, prefill }) {
               {tariff.available ? (
                 <div style={{ fontSize: 14, lineHeight: 1.7 }}>
                   <div style={{ fontSize: 22, fontWeight: 800 }}>{dash(tariff.tariff_advantage_pct, " %")}</div>
-                  <div>
-                    {fr ? "Droit national" : "National duty"} {dash(tariff.national_rate_pct, " %")} → ZLECAf{" "}
-                    {dash(tariff.zlecaf_rate_pct, " %")}
-                  </div>
+                  {tariff.trade_regime && !["ZLECAF", "CUSTOMS_UNION"].includes(tariff.trade_regime) ? (
+                    <div>
+                      {fr ? "Droit national" : "National duty"} {dash(tariff.national_rate_pct, " %")}{" "}
+                      {fr ? "appliqué (NPF)" : "applied (MFN)"}
+                    </div>
+                  ) : (
+                    <div>
+                      {fr ? "Droit national" : "National duty"} {dash(tariff.national_rate_pct, " %")} →{" "}
+                      {tariff.trade_regime === "CUSTOMS_UNION" ? (fr ? "union douanière" : "customs union") : "ZLECAf"}{" "}
+                      {dash(tariff.zlecaf_rate_pct, " %")}
+                    </div>
+                  )}
+                  {tariff.trade_regime_note ? (
+                    <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                      {tariff.trade_regime_note}
+                    </div>
+                  ) : null}
                   {tariff.savings_per_1000usd ? (
                     <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>
                       {money(tariff.savings_per_1000usd)} / 1 000 $ CIF

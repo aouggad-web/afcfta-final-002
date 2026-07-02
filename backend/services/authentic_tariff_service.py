@@ -1077,6 +1077,13 @@ def _resolve_zlecaf_context(
     )
 
 
+# Alias public : le moteur de rapports (benchmarking_service) doit appliquer
+# EXACTEMENT le même régime préférentiel que le calculateur (activation
+# bilatérale Algérie/Afrique du Sud, unions douanières, ratification) — jamais
+# le taux ZLECAf générique de la ligne sans tenir compte de l'origine.
+resolve_zlecaf_context = _resolve_zlecaf_context
+
+
 def calculate_import_taxes(
     country_iso3, hs_code, cif_value, apply_zlecaf=False, language="fr", origin_country=None
 ):

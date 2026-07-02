@@ -28,9 +28,10 @@
   - Couverture FAO OK : GNB 200 000 t (2023), 11,56 %, 3ᵉ des 4 producteurs enregistrés (⚠ dataset cajou partiel : BEN/NGA/BFA absents — levier).
   - S2 top 5 par besoin : EGY/COD/TZA/NGA/ETH ; classement final par score (EGY 0.499).
   - S3 DZA : ≈ 57 029 t (L2, borne basse), `suggested_supplier` CIV.
-  - Bilatéral GNB→DZA : tarif **30 % → 0 %** (avantage max, 300 $/1000 $), maritime Bissau→Oran 985 $, coût rendu 50 985 $, score 0.453 (couverture 0.75, OEC exclu), tier **PASS**.
+  - Bilatéral GNB→DZA : **NPF 30 %, avantage tarifaire 0** (ZLECAf non activé pour GNB en Algérie — 9 partenaires actifs, circulaire DGD 482/2024), maritime Bissau→Oran 985 $, coût rendu 50 985 $, score 0.453 (couverture 0.75, OEC exclu), tier **PASS** → l'Égypte (partenaire actif, 30 %→0 %) est le meilleur candidat S2.
+- **Régression corrigée (cette session)** : le moteur de rapports lisait le `zlecaf_rate` générique de la ligne sans tenir compte de l'ORIGINE — il affichait 30 %→0 % pour GNB→DZA alors que le calculateur applique la réciprocité algérienne. `tariff_benefit_analysis` passe désormais par `resolve_zlecaf_context` (même source de vérité que `routes/calculator.py` : unions douanières → ratification → partenaires actifs DZA/ZAF → taux générique). Champs ajoutés : `trade_regime`, `trade_regime_code`, `trade_regime_note` ; UI et segmentation affichent la vraie raison ; +4 tests (56 au total).
 
-**Qualité :** 52 tests verts (`backend/tests/test_report_engine.py`), lint OK, discipline zéro-fabrication tenue.
+**Qualité :** 56 tests verts (`backend/tests/test_report_engine.py`), lint OK, discipline zéro-fabrication tenue.
 
 ---
 
@@ -46,7 +47,7 @@ Reprends le module Opportunités sur la branche claude/opportunites-scenario-s2 
 Lis docs/ETAT_SESSION.md puis docs/OPPORTUNITES_METHODOLOGIES.md.
 Prochaine tâche : <choisir dans la section 2>.
 ```
-- Tests : `cd backend && python -m pytest tests/test_report_engine.py -q` (52 attendus).
+- Tests : `cd backend && python -m pytest tests/test_report_engine.py -q` (56 attendus).
 - Lint : `black --line-length 100`, `isort`, `flake8` sur les fichiers touchés.
 - Lancement local : `docs/LANCER_VSCODE.md` ; depuis GitHub : `docs/EXECUTER_DEPUIS_GITHUB.md` ; appels API : `requests.http`.
 - Smoke-test : `cd backend && python -m scripts.smoke_opportunites --destination DZA`.
