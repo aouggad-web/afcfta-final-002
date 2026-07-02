@@ -313,11 +313,11 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Opportunités (Premium)' : 'Opportunities (Premium)'}
+              title={language === 'fr' ? 'Opportunités' : 'Opportunities'}
               subtitle={
                 language === 'fr'
-                  ? 'Rapport bilatéral : production, logistique, finance & macro (GAI, réserves, couverture des importations)'
-                  : 'Bilateral report: production, logistics, finance & macro (GAI, reserves, import cover)'
+                  ? 'Preview du module opportunities et rapports bilatéraux : production, logistique, finance & macro'
+                  : 'Opportunities module preview and bilateral reports: production, logistics, finance & macro'
               }
               dotColor="copper"
             />

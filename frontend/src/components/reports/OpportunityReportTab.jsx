@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import OpportunitiesTab from "../opportunities/OpportunitiesTab";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -720,7 +721,7 @@ function BilateralView({ countries, fr }) {
 
 export default function OpportunityReportTab({ countries = [], language = "fr" }) {
   const fr = language === "fr";
-  const [mode, setMode] = useState("market");
+  const [mode, setMode] = useState("preview");
 
   const tabBtn = (id, txt) => (
     <button
@@ -736,10 +737,13 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
   return (
     <div>
       <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
+        {tabBtn("preview", fr ? "Preview du module" : "Module preview")}
         {tabBtn("market", fr ? "Trouver des marchés (producteur)" : "Find markets (producer)")}
         {tabBtn("bilateral", fr ? "Rapport bilatéral" : "Bilateral report")}
       </div>
-      {mode === "market" ? (
+      {mode === "preview" ? (
+        <OpportunitiesTab language={language} />
+      ) : mode === "market" ? (
         <MarketSeekingView fr={fr} />
       ) : (
         <BilateralView countries={countries} fr={fr} />
