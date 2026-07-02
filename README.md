@@ -7,6 +7,16 @@
 
 A comprehensive tariff calculator and trade information system for the African Continental Free Trade Area (AfCFTA/ZLECAf).
 
+## 🐍 Local backend setup
+
+From the repository root:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows : .venv\Scripts\activate
+pip install -r backend/requirements.txt
+```
+
 ## 🚀 Features
 
 - **Tariff Calculations**: Calculate tariffs between 54 African countries
