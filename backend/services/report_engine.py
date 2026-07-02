@@ -69,6 +69,31 @@ def _supply_component(origin_iso3: str, hs_code: str) -> Dict:
     }
 
 
+def _market_component(market_imports: Optional[Dict]) -> Dict:
+    """
+    Market-potential sub-score from the destination's REAL imports of the product
+    (OEC). Transparent normalisation: 100 M$ of annual imports -> 1.0.
+
+    Returns ``available: False`` (excluded from the score, never fabricated) when
+    OEC data was not provided/reachable.
+    """
+    if not market_imports or not market_imports.get("available"):
+        return {
+            "available": False,
+            "subscore": None,
+            "note": "Demande OEC par produit indisponible (OEC requis).",
+        }
+    value = market_imports.get("import_value_usd") or 0.0
+    subscore = round(min(value / 100_000_000, 1.0), 3)  # 100 M$ -> 1.0
+    return {
+        "available": True,
+        "subscore": subscore,
+        "import_value_usd": value,
+        "source": market_imports.get("source", "OEC / UN Comtrade (BACI)"),
+        "note": "Normalisation transparente : 100 M$ d'imports annuels = 1.0.",
+    }
+
+
 def _risk_component(country_risk: Dict) -> Dict:
     """Country-risk sub-score (1 = safest) from the finance risk assessment."""
     if not country_risk.get("available"):
@@ -145,11 +170,17 @@ def get_opportunity_report(
     weight_kg: float = 21600.0,
     volume_m3: float = 33.5,
     weights: Optional[Dict[str, float]] = None,
+    market_imports: Optional[Dict] = None,
 ) -> Dict:
     """
     Bilateral product-opportunity report: origin exports ``hs_code`` to
     destination. Combines supply, logistics, finance/macro and a transparent
     end-to-end score.
+
+    ``market_imports`` (optional): the destination's real OEC imports of the
+    product (from ``get_country_product_imports``). When provided, the
+    market-potential component is activated in the score; otherwise it stays
+    excluded (never fabricated).
     """
     origin_iso3 = (origin_iso3 or "").upper()
     destination_iso3 = (destination_iso3 or "").upper()
@@ -165,12 +196,13 @@ def get_opportunity_report(
     log_access = logistics.summarize_logistics_accessibility(log_profile)
     fin_feasibility = finance.summarize_financing_feasibility(fin_profile)
     risk = _risk_component(fin_profile.get("country_risk") or {})
+    market = _market_component(market_imports)
 
     components = {
         "market_potential": {
-            "available": False,
-            "subscore": None,
-            "note": "Requiert OEC (API payante)",
+            "available": market.get("available"),
+            "subscore": market.get("subscore"),
+            "note": market.get("note"),
         },
         "supply_capacity": {
             "available": supply.get("available"),
@@ -198,6 +230,7 @@ def get_opportunity_report(
             "volume_m3": volume_m3,
         },
         "supply": supply,
+        "market_potential": market,
         "logistics": {
             "profile": log_profile,
             "accessibility_index": log_access,
@@ -220,8 +253,13 @@ def get_opportunity_report(
             "is_estimation": False,
             "note": (
                 "Chiffres issus de sources réelles ou marqués indisponibles ; "
-                "aucune valeur inventée. Les flux OEC par produit (potentiel de "
-                "marché) nécessitent une API payante et sont exclus ici."
+                "aucune valeur inventée."
+                + (
+                    " Potentiel de marché activé via les imports OEC réels du marché."
+                    if market.get("available")
+                    else " Le potentiel de marché (flux OEC par produit) est indisponible"
+                    " ici et exclu du score (jamais estimé)."
+                )
             ),
         },
     }
@@ -235,6 +273,7 @@ def get_opportunity_report_ultra_fine(
     weight_kg: float = 21600.0,
     volume_m3: float = 33.5,
     weights: Optional[Dict[str, float]] = None,
+    market_imports: Optional[Dict] = None,
 ) -> Dict:
     """
     Ultra-fine bilateral report: adds narrative analysis, benchmarking,
@@ -246,11 +285,19 @@ def get_opportunity_report_ultra_fine(
     - segmentation (effort/impact, risk/reward matrices, factor breakdown)
     - priority tier (QUICK_WIN, STRATEGIC_BET, etc.)
 
-    No fabrication: all narratives sourced, all scores from real data.
+    ``market_imports`` (optional) activates the market-potential component in the
+    score (real OEC demand). No fabrication: all narratives sourced, scores real.
     """
     # Base report
     base = get_opportunity_report(
-        hs_code, origin_iso3, destination_iso3, goods_value_usd, weight_kg, volume_m3, weights
+        hs_code,
+        origin_iso3,
+        destination_iso3,
+        goods_value_usd,
+        weight_kg,
+        volume_m3,
+        weights,
+        market_imports=market_imports,
     )
 
     # Add narrative analyses

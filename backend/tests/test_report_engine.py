@@ -163,6 +163,31 @@ def _no_network_fx(monkeypatch):
     )
 
 
+def test_market_component_normalisation():
+    # 100 M$ imports -> subscore 1.0 ; unavailable stays excluded (no fabrication).
+    full = report_engine._market_component({"available": True, "import_value_usd": 100_000_000})
+    assert full["available"] is True and full["subscore"] == 1.0
+    half = report_engine._market_component({"available": True, "import_value_usd": 50_000_000})
+    assert half["subscore"] == 0.5
+    assert report_engine._market_component(None)["available"] is False
+
+
+def test_market_potential_counts_in_score_when_provided(_no_network_fx):
+    # With OEC market imports injected, market_potential is counted in the E2E score.
+    rep = report_engine.get_opportunity_report(
+        "1801",
+        "CIV",
+        "NGA",
+        goods_value_usd=50000.0,
+        market_imports={"available": True, "import_value_usd": 80_000_000},
+    )
+    e2e = rep["composite_indicators"]["end_to_end_score"]
+    mp = next(b for b in e2e["breakdown"] if b["component"] == "market_potential")
+    assert mp["counted"] is True
+    assert mp["subscore"] == 0.8
+    assert rep["market_potential"]["available"] is True
+
+
 def test_opportunity_report_structure(_no_network_fx):
     rep = report_engine.get_opportunity_report("1801", "CIV", "NGA", goods_value_usd=50000.0)
     assert rep["report_type"] == "bilateral_product_opportunity"

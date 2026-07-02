@@ -32,6 +32,14 @@ async def opportunity_report(
         default="standard",
         description="Mode rapport : 'standard' (indicateurs + scores) ou 'ultra_fine' (+ narrative + benchmarking + segmentation)",
     ),
+    with_market_potential: bool = Query(
+        default=True,
+        description=(
+            "Activer la composante potentiel de marché via les imports OEC réels "
+            "du marché destination (1 requête OEC). Dégrade gracieusement si OEC "
+            "injoignable."
+        ),
+    ),
 ):
     """
     Compose supply (production), logistics (multimodal freight), finance & macro
@@ -45,8 +53,25 @@ async def opportunity_report(
     - Segmentation : matrices effort/impact et risque/récompense, factor breakdown,
       priority tier (QUICK_WIN, STRATEGIC_BET, etc.)
 
+    Le potentiel de marché (demande OEC du marché destination) alimente le score
+    quand ``with_market_potential`` est actif et l'OEC répond ; sinon il est exclu
+    (jamais inventé).
+
     Tous les chiffres sont réels ou flaggés indisponibles (zéro fabrication).
     """
+    # Fetch the destination's real imports of the product (single OEC request) to
+    # activate the market-potential component. Gracefully None if OEC is blocked.
+    market_imports = None
+    if with_market_potential:
+        try:
+            from services.real_trade_data_service import real_trade_service
+
+            market_imports = await real_trade_service.get_country_product_imports(
+                destination, hs_code
+            )
+        except Exception:  # OEC unavailable -> component stays excluded
+            market_imports = None
+
     if mode == "ultra_fine":
         return report_engine.get_opportunity_report_ultra_fine(
             hs_code=hs_code,
@@ -55,6 +80,7 @@ async def opportunity_report(
             goods_value_usd=goods_value_usd,
             weight_kg=weight_kg,
             volume_m3=volume_m3,
+            market_imports=market_imports,
         )
     else:
         return report_engine.get_opportunity_report(
@@ -64,6 +90,7 @@ async def opportunity_report(
             goods_value_usd=goods_value_usd,
             weight_kg=weight_kg,
             volume_m3=volume_m3,
+            market_imports=market_imports,
         )
 
 

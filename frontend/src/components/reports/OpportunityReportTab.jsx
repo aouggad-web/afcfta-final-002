@@ -505,9 +505,17 @@ function BilateralView({ countries, fr, prefill }) {
                 </tbody>
               </table>
               <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
-                {fr
-                  ? "Le potentiel de marché par produit (flux OEC) requiert une API payante — exclu, jamais estimé."
-                  : "Per-product market potential (OEC flows) needs a paid API — excluded, never estimated."}
+                {report?.market_potential?.available
+                  ? fr
+                    ? `Potentiel de marché activé via les imports OEC réels du marché (${money(
+                        report.market_potential.import_value_usd
+                      )}/an).`
+                    : `Market potential activated from real OEC imports (${money(
+                        report.market_potential.import_value_usd
+                      )}/yr).`
+                  : fr
+                  ? "Le potentiel de marché par produit (flux OEC) est indisponible ici — exclu, jamais estimé."
+                  : "Per-product market potential (OEC flows) unavailable here — excluded, never estimated."}
               </div>
             </div>
           )}

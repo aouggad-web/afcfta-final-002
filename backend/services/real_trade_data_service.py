@@ -1069,6 +1069,63 @@ class RealTradeDataService:
         result.sort(key=lambda x: x["import_value"], reverse=True)
         return result
 
+    async def get_country_product_imports(
+        self, importer_iso3: str, hs_code: str, year: int = 2022
+    ) -> Dict:
+        """
+        Total imports (USD) of a product by ONE country — a single, cheap OEC
+        request (unlike the 54-country fan-out). Used to feed the bilateral
+        report's market-potential component from real demand.
+
+        Returns {available, import_value_usd, hs_code, year, source} or
+        {available: False} — never fabricated.
+        """
+        info = AFRICAN_COUNTRIES.get((importer_iso3 or "").upper())
+        if not info or not info.get("oec"):
+            return {"available": False, "note": "Pays importateur inconnu de l'OEC."}
+
+        clean = "".join(ch for ch in (hs_code or "") if ch.isdigit())
+        if len(clean) >= 6:
+            level, code, id_len, limit = "HS6", clean[:6], 6, "6000"
+        else:
+            level, code, id_len, limit = "HS4", clean[:4].zfill(4), 4, "2000"
+
+        params = {
+            "cube": "trade_i_baci_a_17",
+            "drilldowns": f"Year,Importer Country,{level}",
+            "measures": "Trade Value",
+            "Year": str(year),
+            "Importer Country": info["oec"],
+            "limit": limit,
+        }
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
+            if response.status_code != 200:
+                return {"available": False, "note": f"HTTP {response.status_code}"}
+            records = response.json().get("data", [])
+        except Exception as e:
+            logger.warning(f"OEC country-product imports {importer_iso3}: {e}")
+            return {"available": False, "note": str(e)}
+
+        total = 0.0
+        for record in records:
+            rid = str(record.get(f"{level} ID", ""))
+            rcode = rid[-id_len:].zfill(id_len) if rid else ""
+            if rcode == code:
+                value = record.get("Trade Value") or 0
+                if value > 0:
+                    total += value
+        if total <= 0:
+            return {"available": False, "note": "Aucune importation observée."}
+        return {
+            "available": True,
+            "import_value_usd": total,
+            "hs_code": code,
+            "year": year,
+            "source": "OEC / UN Comtrade (BACI)",
+        }
+
 
 def get_product_name(hs_code: str, lang: str = "fr", oec_name: str = None) -> str:
     """Get product name for HS code with fallback to OEC name"""
