@@ -260,6 +260,15 @@ def estimate_national_need(
     else:
         basis_note = "Référence basée sur la disponibilité apparente (production + importations)."
 
+    # Suggested supplier: the #1 African producer that isn't the market itself —
+    # a natural "who could serve this need" hand-off to the bilateral report.
+    suggested_supplier = None
+    for p in prod.get("top_producers", []):
+        iso = (p.get("country_iso3") or "").upper()
+        if iso and iso != country_iso3:
+            suggested_supplier = {"iso3": iso, "country_name": p.get("country_name")}
+            break
+
     return {
         "available": True,
         "is_estimation": True,
@@ -270,6 +279,7 @@ def estimate_national_need(
         "commodity": prod.get("commodity"),
         "reference_year": prod.get("year"),
         "reference_basis": reference_basis,
+        "suggested_supplier": suggested_supplier,
         "method": method,
         "inputs": {
             "population": pop["value"],

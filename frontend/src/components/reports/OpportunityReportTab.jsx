@@ -37,6 +37,19 @@ const td = { padding: "4px 8px" };
 const num = (v, u = "") =>
   v === null || v === undefined ? "—" : `${Number(v).toLocaleString("fr-FR")}${u ? " " + u : ""}`;
 
+/* Human-readable labels for composite components / factors. */
+const COMPONENT_LABELS = {
+  market_potential: { fr: "Potentiel de marché", en: "Market potential" },
+  market_demand: { fr: "Demande de marché", en: "Market demand" },
+  supply_capacity: { fr: "Capacité de production", en: "Supply capacity" },
+  logistics_accessibility: { fr: "Accessibilité logistique", en: "Logistics accessibility" },
+  financing_feasibility: { fr: "Faisabilité de financement", en: "Financing feasibility" },
+  country_risk: { fr: "Risque pays", en: "Country risk" },
+  fx_volatility: { fr: "Volatilité du change", en: "FX volatility" },
+  tariff_advantage: { fr: "Avantage tarifaire", en: "Tariff advantage" },
+};
+const compLabel = (key, fr) => COMPONENT_LABELS[key]?.[fr ? "fr" : "en"] || key;
+
 function Metric({ title, value, sub }) {
   return (
     <div style={card}>
@@ -481,7 +494,7 @@ function BilateralView({ countries, fr, prefill }) {
                 <tbody>
                   {e2e.breakdown.map((b) => (
                     <tr key={b.component} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
-                      <td style={td}>{b.component}</td>
+                      <td style={td}>{compLabel(b.component, fr)}</td>
                       <td style={td}>{pct(b.weight)}</td>
                       <td style={td}>{b.subscore === null ? "—" : pct(b.subscore)}</td>
                       <td style={td}>
@@ -707,11 +720,12 @@ function BilateralView({ countries, fr, prefill }) {
                 <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
                   {fr ? "Facteurs — opportunités & risques" : "Factors — opportunities & risks"}
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {factors.map((f) => (
                     <div key={f.factor} style={{ display: "flex", alignItems: "baseline", gap: 8, fontSize: 13 }}>
                       <span
                         style={{
+                          flexShrink: 0,
                           fontSize: 11,
                           fontWeight: 700,
                           color:
@@ -720,8 +734,8 @@ function BilateralView({ countries, fr, prefill }) {
                       >
                         {f.category === "opportunity" ? "▲" : f.category === "risk" ? "▼" : "■"}
                       </span>
-                      <span style={{ fontWeight: 600, minWidth: 130 }}>{f.factor}</span>
-                      <span style={{ color: "var(--afcfta-muted,#667)" }}>{f.rationale}</span>
+                      <span style={{ flex: "0 0 150px", fontWeight: 600 }}>{compLabel(f.factor, fr)}</span>
+                      <span style={{ flex: 1, color: "var(--afcfta-muted,#667)" }}>{f.rationale}</span>
                     </div>
                   ))}
                 </div>
@@ -888,7 +902,14 @@ function DirectExportView({ countries, fr, onAnalyze }) {
                     <td style={td}>
                       {o.market_need?.available ? num(Math.round(o.market_need.value), o.market_need.unit) : "—"}
                     </td>
-                    <td style={td}>
+                    <td
+                      style={td}
+                      title={
+                        o.tariff_benefit?.hs6_used
+                          ? `${fr ? "Sous-position" : "Sub-heading"} HS6 ${o.tariff_benefit.hs6_used}`
+                          : undefined
+                      }
+                    >
                       {o.tariff_benefit?.available ? dash(o.tariff_benefit.tariff_advantage_pct, " %") : "—"}
                     </td>
                     <td style={td}>{o.landed_cost?.available ? money(o.landed_cost.value_usd) : "—"}</td>
@@ -1064,7 +1085,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
 }
 
 /* ── Mode: S3 — national need estimation (transparent cascade) ─────────────── */
-function NationalNeedView({ countries, fr }) {
+function NationalNeedView({ countries, fr, onAnalyze }) {
   const [hsCode, setHsCode] = useState("180100");
   const [country, setCountry] = useState("NGA");
   const [withImports, setWithImports] = useState(false);
@@ -1136,6 +1157,16 @@ function NationalNeedView({ countries, fr }) {
                 <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
                   {fr ? "Méthode" : "Method"} : {rep.method}
                 </div>
+                {rep.suggested_supplier?.iso3 && onAnalyze && (
+                  <button
+                    onClick={() => onAnalyze(rep.suggested_supplier.iso3, country, hsCode)}
+                    data-testid="s3-analyze"
+                    className="afcfta-btn afcfta-btn-secondary"
+                    style={{ padding: "6px 12px", borderRadius: 6, fontSize: 13, marginTop: 10 }}
+                  >
+                    {fr ? "Analyser l'opportunité" : "Analyze opportunity"} : {rep.suggested_supplier.iso3} → {country} ▸
+                  </button>
+                )}
               </>
             ) : (
               <div style={{ color: "var(--afcfta-muted,#667)", marginTop: 6 }}>{rep.note || "—"}</div>
@@ -1207,7 +1238,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
       {mode === "bilateral" && <BilateralView countries={countries} fr={fr} prefill={prefill} />}
       {mode === "s2" && <DirectExportView countries={countries} fr={fr} onAnalyze={openBilateral} />}
       {mode === "s1" && <TransformationView countries={countries} fr={fr} onAnalyze={openBilateral} />}
-      {mode === "s3" && <NationalNeedView countries={countries} fr={fr} />}
+      {mode === "s3" && <NationalNeedView countries={countries} fr={fr} onAnalyze={openBilateral} />}
     </div>
   );
 }

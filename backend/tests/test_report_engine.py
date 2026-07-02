@@ -511,6 +511,14 @@ def test_national_need_level2_population_proxy():
     assert len(res["sources"]) >= 2
 
 
+def test_national_need_suggests_supplier():
+    from services import demand_estimation_service as demand
+
+    # NGA cocoa -> suggested supplier is the #1 African producer (CIV), not NGA.
+    res = demand.estimate_national_need("180100", "NGA")
+    assert res["suggested_supplier"]["iso3"] == "CIV"
+
+
 def test_national_need_level1_measured_when_apparent_given():
     from services import demand_estimation_service as demand
 
@@ -645,6 +653,13 @@ def test_direct_export_scenario_ranks_markets(_no_network_fx):
     # Ranking is by export score desc (None treated as 0)
     scores = [o["end_to_end_score"] or 0 for o in opps]
     assert scores == sorted(scores, reverse=True)
+
+
+def test_direct_export_empty_candidates_stays_empty():
+    # Explicit empty list must NOT fall back to the full 54-market set.
+    rep = report_engine.get_direct_export_scenario("1801", "CIV", candidate_destinations=[])
+    assert rep["candidates_considered"] == 0
+    assert rep["deep_dived"] == 0
 
 
 def test_direct_export_default_candidates_exclude_producer():

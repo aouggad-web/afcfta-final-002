@@ -513,8 +513,9 @@ def get_direct_export_scenario(
     # only meaningful if the producer actually makes it).
     supply = _supply_component(producer_iso3, hs_code)
 
-    # Candidate destination markets.
-    if candidate_destinations:
+    # Candidate destination markets. An explicit list (even empty) is respected;
+    # only ``None`` falls back to the full African market set.
+    if candidate_destinations is not None:
         candidates = [c.upper() for c in candidate_destinations if c and c.upper() != producer_iso3]
     else:
         candidates = _african_candidate_markets(producer_iso3)
@@ -573,9 +574,11 @@ def get_direct_export_scenario(
             "is_estimation": False,
             "note": (
                 "Marchés classés par besoin estimé (proxy population / consommation "
-                "apparente) puis par score d'opportunité réel (logistique, finance, "
-                "tarif). Les besoins sont des estimations transparentes ; les scores "
-                "reposent sur des données réelles ou marquées indisponibles."
+                "apparente) puis par score d'opportunité de bout en bout (production, "
+                "logistique, financement, risque pays). L'avantage tarifaire est "
+                "fourni séparément par marché (hors score). Les besoins sont des "
+                "estimations transparentes ; les scores reposent sur des données "
+                "réelles ou marquées indisponibles."
             ),
         },
     }
