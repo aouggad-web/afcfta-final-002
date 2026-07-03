@@ -33,15 +33,26 @@ def test_gai_none_for_unknown_country():
     assert macro.get_gai("ZZZ") is None
 
 
-def test_fx_reserves_and_import_cover_degrade_gracefully_without_dataset():
-    # data/json/wb_reserves.json is not shipped (World Bank API blocked here);
-    # the accessors must flag unavailable and never invent a number.
+def test_fx_reserves_and_import_cover_degrade_gracefully_without_dataset(monkeypatch):
+    # When wb_reserves.json is absent, the accessors flag unavailable and never
+    # invent a number (deterministic: force the dataset empty).
+    monkeypatch.setattr(macro, "_WB_RESERVES", None)
+    monkeypatch.setattr(macro, "_wb_reserves", lambda: None)
     fx = macro.get_fx_reserves("NGA")
     cover = macro.get_import_cover("NGA")
     assert fx["available"] is False and fx["value_busd"] is None
     assert cover["available"] is False and cover["months"] is None
     assert fx["indicator"] == macro.WB_FX_RESERVES_INDICATOR
     assert cover["indicator"] == macro.WB_IMPORT_COVER_INDICATOR
+
+
+def test_fx_reserves_and_import_cover_available_from_committed_dataset():
+    # data/json/wb_reserves.json is now committed (real WB data via the workflow):
+    # FX reserves and import cover must be available for a covered country.
+    fx = macro.get_fx_reserves("DZA")
+    cover = macro.get_import_cover("DZA")
+    assert fx["available"] is True and fx["value_busd"] > 0
+    assert cover["available"] is True and cover["months"] > 0
 
 
 # ── Financing-feasibility index (pure, deterministic) ────────────────────────
@@ -451,6 +462,29 @@ def test_segmentation_tariff_factor_gives_real_reason_when_no_advantage():
     assert "non encore activé" in tf["rationale"]
 
 
+def test_gdp_per_capita_falls_back_to_country_profiles(monkeypatch):
+    """Sans dataset ETL wb_gdp_pc.json, le PIB/hab vient du module Profils
+    Pays (country_data.REAL_COUNTRY_DATA, déjà embarqué) — L3 marche sans réseau."""
+    from services import demand_estimation_service as d
+
+    # Simule l'absence du dataset ETL -> repli sur les Profils Pays.
+    monkeypatch.setattr(d, "_load_gdp", lambda: {})
+    res = d.get_gdp_per_capita("DZA")
+    assert res["available"] is True
+    assert res["value_usd"] > 0
+    assert "Profils Pays" in res["source"]
+
+
+def test_gdp_per_capita_prefers_etl_when_present(monkeypatch):
+    """Le dataset ETL, s'il est présent, prime sur le repli Profils Pays."""
+    from services import demand_estimation_service as d
+
+    monkeypatch.setattr(d, "_load_gdp", lambda: {"DZA": {"value": 9999.0, "year": 2025}})
+    res = d.get_gdp_per_capita("DZA")
+    assert res["value_usd"] == 9999.0
+    assert "WDI NY.GDP.PCAP.CD" in res["source"]
+
+
 def test_african_importers_use_free_stats_channel(monkeypatch):
     """Le fan-out 54 pays est remplacé par UNE requête sur le canal OEC
     gratuit du module Statistiques (aucun token requis)."""
@@ -782,14 +816,17 @@ def test_population_is_real_from_constants():
     assert pop["region"]
 
 
-def test_national_need_level2_population_proxy():
+def test_national_need_level2_population_proxy(monkeypatch):
     from services import demand_estimation_service as demand
 
-    # No apparent consumption -> L2 estimate from real FAO production + population.
+    # Force GDP unavailable (no ETL dataset, no profiles) -> L2 population proxy.
+    monkeypatch.setattr(demand, "_load_gdp", lambda: {})
+    monkeypatch.setattr(demand, "_gdp_from_country_profiles", lambda iso: None)
+    monkeypatch.setattr(demand, "_gdp_values_map", lambda: {})
     res = demand.estimate_national_need("180100", "NGA")  # cocoa
     assert res["available"] is True
     assert res["is_estimation"] is True
-    assert res["estimation_level"] == 2  # GDP dataset absent here -> stays L2
+    assert res["estimation_level"] == 2  # GDP unavailable -> stays L2
     assert res["value"] > 0
     assert res["unit"] == "tonnes"
     # Transparency: formula + inputs + sources are exposed
@@ -798,6 +835,19 @@ def test_national_need_level2_population_proxy():
     assert res["inputs"]["continental_production"] > 0
     assert res["inputs"]["per_capita_reference"] > 0
     assert len(res["sources"]) >= 2
+
+
+def test_national_need_level3_from_country_profiles(monkeypatch):
+    from services import demand_estimation_service as demand
+
+    # No ETL dataset, but the Country Profiles module supplies GDP/capita for all
+    # 54 countries -> L3 standard-of-living adjustment activates without network.
+    monkeypatch.setattr(demand, "_load_gdp", lambda: {})
+    res = demand.estimate_national_need("180100", "NGA")
+    assert res["available"] is True
+    assert res["estimation_level"] == 3
+    assert "PIB/hab_pays" in res["method"]
+    assert any("Profils Pays" in s for s in res["sources"])
 
 
 def test_national_need_suggests_supplier():
@@ -854,8 +904,9 @@ def test_national_need_unavailable_without_production():
 def test_gdp_per_capita_degrades_gracefully():
     from services import demand_estimation_service as demand
 
-    # wb_gdp_pc.json not shipped (WB API blocked here) -> unavailable, no fabrication.
-    gdp = demand.get_gdp_per_capita("NGA")
+    # An unknown country (no ETL dataset entry, no Country-Profiles entry) ->
+    # unavailable, never fabricated.
+    gdp = demand.get_gdp_per_capita("ZZZ")
     assert gdp["available"] is False and gdp["value_usd"] is None
 
 
