@@ -30,9 +30,11 @@ Le bloc `[deployment]` du `.replit` (cible VM) :
 
 1. **Build** : `cd frontend && npm install --legacy-peer-deps && npm run build`
    (Vite → `frontend/build/`).
-2. **Run** : `uvicorn server:app --port 5000` — FastAPI sert alors **l'API et le
-   frontend buildé sur le même port** (`backend/server.py` supporte les layouts
-   CRA `build/static` et Vite `build/assets`).
+2. **Run** : `python -m uvicorn server:app --host 0.0.0.0 --port 5000`
+   (le `--host 0.0.0.0` est indispensable pour être joignable sur Replit) —
+   FastAPI sert alors **l'API et le frontend buildé sur le même port**
+   (`backend/server.py` supporte les layouts CRA `build/static` et Vite
+   `build/assets`).
 
 ## 4. Optionnel — activer toutes les données
 
