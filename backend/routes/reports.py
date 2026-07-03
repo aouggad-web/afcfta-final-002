@@ -296,19 +296,52 @@ async def macro_profile(country_iso3: str):
     return macro.get_macro_profile(country_iso3)
 
 
-@router.get("/oec-health", summary="Diagnostic de connexion OEC (avec token)")
+@router.get("/oec-health", summary="Diagnostic de connexion OEC (canal gratuit + direct)")
 async def oec_health(year: int = Query(default=2022, description="Année de test")):
     """
-    Vérifie la connexion à l'API OEC depuis l'environnement courant et indique
-    si un token payant est configuré (``OEC_API_TOKEN`` / ``OEC_API_KEY``).
+    Vérifie la connexion à l'OEC depuis l'environnement courant, en sondant
+    d'abord le **canal gratuit du module Statistiques** (``api.oec.world``,
+    aucun token requis — c'est le canal qu'utilise le module Opportunités),
+    puis l'API directe historique (``api-v2.oec.world``).
 
-    Utile pour valider le branchement OEC sur le déploiement : ``reachable:true``
-    + ``token_configured:true`` confirme que le plan payant répond. Dans ce bac à
-    sable, l'accès OEC est bloqué par la politique réseau (``reachable:false``).
+    ``reachable:true`` dès que l'un des deux canaux répond. ``token_configured``
+    indique si un token payant optionnel est présent (``OEC_API_TOKEN``) — il
+    n'est PAS nécessaire au fonctionnement du module.
     """
+    import time
+
     from services.real_trade_data_service import real_trade_service
 
-    return await real_trade_service.ping_oec(year)
+    # 1) Canal gratuit du module Statistiques (celui des Opportunités).
+    free_channel = {"reachable": False, "endpoint": "api.oec.world (module Statistiques)"}
+    try:
+        from services.oec_trade_service import oec_service
+
+        t0 = time.monotonic()
+        res = await oec_service.get_top_african_importers("180100", year)
+        rows = (res or {}).get("data") or []
+        free_channel = {
+            "reachable": bool(rows),
+            "endpoint": "api.oec.world (module Statistiques, gratuit, sans token)",
+            "latency_ms": round((time.monotonic() - t0) * 1000),
+            "records": len(rows),
+        }
+    except Exception as e:
+        free_channel["error"] = str(e)
+
+    # 2) API directe historique (diagnostic complémentaire).
+    direct = await real_trade_service.ping_oec(year)
+
+    return {
+        "reachable": bool(free_channel.get("reachable") or direct.get("reachable")),
+        "primary_channel": "statistics_free",
+        "channels": {"statistics_free": free_channel, "direct_api_v2": direct},
+        "token_configured": direct.get("token_configured"),
+        "note": (
+            "Le module Opportunités consomme l'OEC via le canal gratuit du module "
+            "Statistiques (cache partagé, stale-on-error) ; aucun token requis."
+        ),
+    }
 
 
 @router.get("/health", summary="Diagnostic de disponibilité des données du moteur")

@@ -42,9 +42,10 @@ Le bloc `[deployment]` du `.replit` (cible VM) :
 # L3 + réserves (World Bank, réseau ouvert sur Replit) :
 cd backend && python -m etl.fetch_wb_gdp && python -m etl.fetch_wb_reserves
 
-# OEC avec token (sinon tier gratuit) — Secrets Replit :
-#   OEC_API_TOKEN=ton_token
-# Vérifier : GET /api/reports/oec-health  → attendu "reachable": true
+# OEC : AUCUN token requis — le module Opportunités consomme l'OEC via le
+# canal GRATUIT du module Statistiques (api.oec.world, cache partagé).
+# Vérifier : GET /api/reports/oec-health → "channels.statistics_free.reachable": true
+# (OEC_API_TOKEN reste possible en secret Replit, purement optionnel.)
 
 # Déroulé complet du module Opportunités :
 cd backend && python -m scripts.smoke_opportunites --destination DZA

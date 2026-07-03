@@ -451,6 +451,72 @@ def test_segmentation_tariff_factor_gives_real_reason_when_no_advantage():
     assert "non encore activé" in tf["rationale"]
 
 
+def test_african_importers_use_free_stats_channel(monkeypatch):
+    """Le fan-out 54 pays est remplacé par UNE requête sur le canal OEC
+    gratuit du module Statistiques (aucun token requis)."""
+    from services.real_trade_data_service import real_trade_service
+
+    async def fake_importers(hs_code, year, limit=54):
+        assert hs_code == "180100"
+        return {
+            "data": [
+                {
+                    "country_iso3": "NGA",
+                    "country_name": "Nigéria",
+                    "hs_code": "180100",
+                    "import_value": 9_000_000.0,
+                },
+                {
+                    "country_iso3": "EGY",
+                    "country_name": "Égypte",
+                    "hs_code": "180100",
+                    "import_value": 4_000_000.0,
+                },
+            ],
+            "source": "OEC/BACI (canal gratuit du module Statistiques)",
+        }
+
+    monkeypatch.setattr(
+        "services.oec_trade_service.oec_service.get_top_african_importers", fake_importers
+    )
+    rows = asyncio.run(real_trade_service.get_african_importers_for_product("180100"))
+    assert [r["country_iso3"] for r in rows] == ["NGA", "EGY"]
+    assert rows[0]["import_value"] == 9_000_000.0
+
+
+def test_african_importers_fall_back_to_fanout(monkeypatch):
+    """Canal gratuit indisponible -> repli sur le fan-out historique."""
+    from services import real_trade_data_service as rt
+
+    async def broken(hs_code, year, limit=54):
+        raise RuntimeError("free channel down")
+
+    monkeypatch.setattr("services.oec_trade_service.oec_service.get_top_african_importers", broken)
+
+    class _Resp:
+        status_code = 200
+
+        def json(self):
+            return {"data": [{"HS6 ID": "1180100", "Trade Value": 777.0}]}
+
+    class _Client:
+        def __init__(self, *a, **k):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *a):
+            return False
+
+        async def get(self, *a, **k):
+            return _Resp()
+
+    monkeypatch.setattr(rt.httpx, "AsyncClient", _Client)
+    rows = asyncio.run(rt.real_trade_service.get_african_importers_for_product("180100"))
+    assert rows and all(r["import_value"] == 777.0 for r in rows)
+
+
 def test_list_tracked_products_deduped_with_data():
     from services import production_capacity_service as pcs
 
