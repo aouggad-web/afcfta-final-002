@@ -1106,7 +1106,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
 }
 
 /* ── Mode: S3 — national need estimation (transparent cascade) ─────────────── */
-function NationalNeedView({ countries, fr, onAnalyze }) {
+function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
   const [hsCode, setHsCode] = useState("180100");
   const [country, setCountry] = useState("NGA");
   const [withImports, setWithImports] = useState(false);
@@ -1114,13 +1114,14 @@ function NationalNeedView({ countries, fr, onAnalyze }) {
   const [error, setError] = useState(null);
   const [rep, setRep] = useState(null);
 
-  const run = async () => {
+  const run = async (overrides = {}) => {
+    const o = { hsCode, country, withImports, ...overrides };
     setLoading(true);
     setError(null);
     setRep(null);
     try {
-      const params = new URLSearchParams({ hs_code: hsCode, country });
-      if (withImports) params.set("with_observed_imports", "true");
+      const params = new URLSearchParams({ hs_code: o.hsCode, country: o.country });
+      if (o.withImports) params.set("with_observed_imports", "true");
       const res = await axios.get(`${API}/reports/national-need?${params.toString()}`);
       setRep(res.data);
     } catch (e) {
@@ -1129,6 +1130,17 @@ function NationalNeedView({ countries, fr, onAnalyze }) {
       setLoading(false);
     }
   };
+
+  // Handoff depuis le module Statistiques (recherche SH2/4/6) : pays + code SH
+  // pré-remplis, signal d'import OEC activé, exécution automatique.
+  useEffect(() => {
+    if (!prefill || !prefill.k) return;
+    if (prefill.country) setCountry(prefill.country);
+    if (prefill.hsCode) setHsCode(prefill.hsCode);
+    if (prefill.withImports) setWithImports(true);
+    run({ country: prefill.country, hsCode: prefill.hsCode, withImports: !!prefill.withImports });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefill?.k]);
 
   const inp = rep?.inputs || {};
 
@@ -1147,7 +1159,7 @@ function NationalNeedView({ countries, fr, onAnalyze }) {
           <input type="checkbox" checked={withImports} onChange={(e) => setWithImports(e.target.checked)} data-testid="s3-imports" />
           {fr ? "Signal d'import (OEC, lent)" : "Import signal (OEC, slow)"}
         </label>
-        <button onClick={run} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s3-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
+        <button onClick={() => run()} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s3-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
           {loading ? (fr ? "Estimation…" : "Estimating…") : fr ? "Estimer le besoin" : "Estimate need"}
         </button>
       </div>
@@ -1228,12 +1240,31 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
   const fr = language === "fr";
   const [mode, setMode] = useState("market");
   const [prefill, setPrefill] = useState(null);
+  const [s3Prefill, setS3Prefill] = useState(null);
 
   // Hand off from a scenario to the full ultra-fine bilateral report.
   const openBilateral = (origin, destination, hsCode, goodsValue) => {
     setPrefill({ origin, destination, hsCode, goodsValue, k: Date.now() });
     setMode("bilateral");
   };
+
+  // Handoff inter-modules : la recherche SH2/4/6 du module Statistiques dépose
+  // {country, hsCode} dans sessionStorage puis navigue ici — on ouvre S3
+  // (besoin national) pré-rempli avec le signal d'import OEC activé.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("zlecaf_opportunites_handoff");
+      if (!raw) return;
+      sessionStorage.removeItem("zlecaf_opportunites_handoff");
+      const h = JSON.parse(raw);
+      if (h && h.country && h.hsCode) {
+        setS3Prefill({ country: h.country, hsCode: h.hsCode, withImports: true, k: h.k || Date.now() });
+        setMode("s3");
+      }
+    } catch {
+      /* handoff illisible : ignorer */
+    }
+  }, []);
 
   const tabBtn = (id, txt) => (
     <button
@@ -1259,7 +1290,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
       {mode === "bilateral" && <BilateralView countries={countries} fr={fr} prefill={prefill} />}
       {mode === "s2" && <DirectExportView countries={countries} fr={fr} onAnalyze={openBilateral} />}
       {mode === "s1" && <TransformationView countries={countries} fr={fr} onAnalyze={openBilateral} />}
-      {mode === "s3" && <NationalNeedView countries={countries} fr={fr} onAnalyze={openBilateral} />}
+      {mode === "s3" && <NationalNeedView countries={countries} fr={fr} onAnalyze={openBilateral} prefill={s3Prefill} />}
     </div>
   );
 }

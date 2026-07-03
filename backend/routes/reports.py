@@ -187,8 +187,9 @@ async def national_need(
     with_observed_imports: bool = Query(
         default=False,
         description=(
-            "Ajouter le signal d'import observé (OEC). Coûteux (~54 requêtes OEC) "
-            "et supplémentaire — désactivé par défaut."
+            "Ajouter le signal d'import observé (OEC) du pays. Passe par le canal "
+            "OEC partagé avec le module Statistiques (cache persistant) — "
+            "désactivé par défaut pour rester indépendant du réseau."
         ),
     ),
 ):
@@ -201,26 +202,29 @@ async def national_need(
     Toute valeur estimée est marquée ``is_estimation:true`` avec formule, intrants
     et sources — jamais présentée comme mesurée, jamais inventée.
 
-    Le signal d'import observé (OEC) est **opt-in** (``with_observed_imports``) car
-    il déclenche ~54 requêtes OEC ; il n'affecte jamais l'estimation elle-même.
+    Le signal d'import observé (OEC) est **opt-in** (``with_observed_imports``) ;
+    il n'affecte jamais l'estimation elle-même. Il interroge le pays demandé
+    uniquement (plus de fan-out 54 pays), via le même client OEC que la recherche
+    SH2/SH4/SH6 du module Statistiques : cache persistant partagé, servi même si
+    l'OEC est momentanément injoignable (stale-on-error).
     """
     from services import demand_estimation_service as demand
 
-    # Observed-imports is a supplemental signal only, and expensive (OEC fan-out).
-    # Off by default so the estimate stays fast and never depends on OEC.
+    # Observed-imports is a supplemental signal only. Off by default so the
+    # estimate stays fast and never depends on OEC. Single-country request via
+    # the OEC channel shared with the statistics module (persistent cache).
     observed_imports = None
     if with_observed_imports:
         try:
             from services.real_trade_data_service import real_trade_service
 
-            importers = await real_trade_service.get_african_importers_for_product(hs_code)
-            for m in importers or []:
-                if (m.get("country_iso3") or "").upper() == country.upper():
-                    observed_imports = {
-                        "import_value_usd": m.get("import_value"),
-                        "source": "OEC / UN Comtrade (BACI)",
-                    }
-                    break
+            imp = await real_trade_service.get_country_product_imports(country, hs_code)
+            if imp and imp.get("available"):
+                observed_imports = {
+                    "import_value_usd": imp.get("import_value_usd"),
+                    "year": imp.get("year"),
+                    "source": imp.get("source") or "OEC / UN Comtrade (BACI)",
+                }
         except Exception:  # OEC unavailable -> no observed-imports signal
             observed_imports = None
 

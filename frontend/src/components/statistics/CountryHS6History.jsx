@@ -179,6 +179,22 @@ export default function CountryHS6History({ language = 'fr' }) {
     fetchLabel();
   };
 
+  // Handoff vers le module Opportunités : pays + code SH courant, repris par
+  // OpportunityReportTab (S3 besoin national, signal d'import OEC activé).
+  // Les deux modules partagent désormais le même canal OEC (cache commun).
+  const analyzeInOpportunities = () => {
+    const need = LEVEL_LEN[searchLevel];
+    const cleanHs = String(hsCode).replace(/\D/g, '').slice(0, need);
+    if (!cleanHs) return;
+    try {
+      sessionStorage.setItem(
+        'zlecaf_opportunites_handoff',
+        JSON.stringify({ country: iso3, hsCode: cleanHs, k: Date.now() }),
+      );
+    } catch { /* stockage indisponible : la navigation reste utile */ }
+    window.dispatchEvent(new CustomEvent('zlecaf:goto-tab', { detail: { tab: 'reports' } }));
+  };
+
   const submit = () => (view === 'label' ? fetchLabel() : runQuery());
 
   // Auto-run on mount (deferred to avoid synchronous setState in effect)
@@ -477,9 +493,28 @@ export default function CountryHS6History({ language = 'fr' }) {
             </div>
           )}
 
-          <p className="stats-source-note" style={{ padding: '0 16px 14px', margin: 0 }}>
-            {data.source} · {data.country_name} · HS {data.hs_code} · {data.currency}
-          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', padding: '0 16px 14px' }}>
+            <p className="stats-source-note" style={{ margin: 0, flex: '1 1 auto' }}>
+              {data.source} · {data.country_name} · HS {data.hs_code} · {data.currency}
+            </p>
+            <button
+              data-testid="hs6-to-opportunities"
+              onClick={analyzeInOpportunities}
+              style={{
+                padding: '7px 14px',
+                borderRadius: 8,
+                border: '1px solid rgba(212,175,55,0.45)',
+                background: 'rgba(212,175,55,0.12)',
+                color: 'rgba(212,175,55,0.95)',
+                fontWeight: 700,
+                fontSize: 12.5,
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            >
+              {language === 'fr' ? 'Analyser dans Opportunités ▸' : 'Analyze in Opportunities ▸'}
+            </button>
+          </div>
         </>
       )}
     </div>

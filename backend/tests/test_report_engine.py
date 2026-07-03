@@ -451,6 +451,75 @@ def test_segmentation_tariff_factor_gives_real_reason_when_no_advantage():
     assert "non encore activé" in tf["rationale"]
 
 
+def test_country_product_imports_uses_stats_channel(monkeypatch):
+    """Le module Opportunités lit les imports OEC via le MÊME canal que la
+    recherche SH2/4/6 du module Statistiques (cache persistant partagé)."""
+    import asyncio
+
+    from services.real_trade_data_service import real_trade_service
+
+    async def fake_history(**kwargs):
+        assert kwargs["country_iso3"] == "DZA"
+        assert kwargs["level"] == "hs6"
+        return {
+            "chart_rows": [
+                {"year": 2022, "exports": 0, "imports": 500000.0},
+                {"year": 2024, "exports": 0, "imports": 750000.0},
+                {"year": 2023, "exports": 0, "imports": 0},
+            ],
+            "source": "OEC / BACI (HS Rev. 2017)",
+        }
+
+    monkeypatch.setattr(
+        "services.oec_trade_service.oec_service.get_country_hs6_history", fake_history
+    )
+    res = asyncio.run(real_trade_service.get_country_product_imports("DZA", "080131"))
+    assert res["available"] is True
+    # Dernière année avec des imports observés (2023 = 0 est sautée).
+    assert res["import_value_usd"] == 750000.0
+    assert res["year"] == 2024
+    assert "Statistiques" in res["channel"]
+
+
+def test_country_product_imports_falls_back_to_direct(monkeypatch):
+    """Si le canal Statistiques est indisponible, repli sur la requête OEC
+    directe historique — jamais de valeur fabriquée."""
+    import asyncio
+
+    from services import real_trade_data_service as rt
+
+    async def broken_history(**kwargs):
+        raise RuntimeError("stats channel down")
+
+    monkeypatch.setattr(
+        "services.oec_trade_service.oec_service.get_country_hs6_history", broken_history
+    )
+
+    class _Resp:
+        status_code = 200
+
+        def json(self):
+            return {"data": [{"HS6 ID": "1080131", "Trade Value": 1234.0}]}
+
+    class _Client:
+        def __init__(self, *a, **k):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *a):
+            return False
+
+        async def get(self, *a, **k):
+            return _Resp()
+
+    monkeypatch.setattr(rt.httpx, "AsyncClient", _Client)
+    res = asyncio.run(rt.real_trade_service.get_country_product_imports("DZA", "080131"))
+    assert res["available"] is True
+    assert res["import_value_usd"] == 1234.0
+
+
 def test_tariff_benefit_zero_when_no_duty():
     from services import benchmarking_service as benchmark
 

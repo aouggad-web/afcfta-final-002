@@ -86,6 +86,16 @@ function App() {
     i18n.changeLanguage(newLang);
   };
 
+  // Navigation inter-modules (ex.: Statistiques → Opportunités avec pré-remplissage).
+  useEffect(() => {
+    const onGotoTab = (e) => {
+      const tab = e?.detail?.tab;
+      if (tab) setActiveTab(tab);
+    };
+    window.addEventListener('zlecaf:goto-tab', onGotoTab);
+    return () => window.removeEventListener('zlecaf:goto-tab', onGotoTab);
+  }, []);
+
   const handleTabChange = (type, value) => {
     if (type === 'tab') {
       const tabMapping = {

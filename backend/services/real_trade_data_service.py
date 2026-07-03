@@ -1073,13 +1073,50 @@ class RealTradeDataService:
         self, importer_iso3: str, hs_code: str, year: int = 2022
     ) -> Dict:
         """
-        Total imports (USD) of a product by ONE country — a single, cheap OEC
-        request (unlike the 54-country fan-out). Used to feed the bilateral
-        report's market-potential component from real demand.
+        Total imports (USD) of a product by ONE country. Used to feed the
+        bilateral report's market-potential component and the S3 observed-imports
+        signal from real demand.
+
+        Primary channel: the SAME OEC client as the statistics module's
+        SH2/SH4/SH6 search (``oec_trade_service``) — persistent cache with
+        stale-on-error, and one cached OEC response per (country, period)
+        serves EVERY HS code (the HS filter is client-side). So a country
+        already browsed in the statistics tab keeps feeding the opportunities
+        module even when OEC is momentarily unreachable.
+
+        Fallback: the legacy direct OEC request (kept for environments where
+        the shared client is unavailable).
 
         Returns {available, import_value_usd, hs_code, year, source} or
         {available: False} — never fabricated.
         """
+        clean_hs = "".join(ch for ch in (hs_code or "") if ch.isdigit())
+        try:
+            from services.oec_trade_service import DEFAULT_YEAR, oec_service
+
+            level = "hs6" if len(clean_hs) >= 6 else ("hs4" if len(clean_hs) >= 4 else "hs2")
+            hist = await oec_service.get_country_hs6_history(
+                country_iso3=importer_iso3,
+                hs_code=clean_hs,
+                n_years=3,
+                end_year=max(int(year or 0), DEFAULT_YEAR),
+                level=level,
+            )
+            rows = (hist or {}).get("chart_rows") or []
+            # Most recent year with observed imports (> 0).
+            for row in sorted(rows, key=lambda r: -(r.get("year") or 0)):
+                if (row.get("imports") or 0) > 0:
+                    return {
+                        "available": True,
+                        "import_value_usd": float(row["imports"]),
+                        "hs_code": clean_hs[:6] if len(clean_hs) >= 6 else clean_hs,
+                        "year": row.get("year"),
+                        "source": hist.get("source") or "OEC / BACI",
+                        "channel": "oec_trade_service (cache partagé avec le module Statistiques)",
+                    }
+        except Exception as e:
+            logger.warning(f"OEC shared-channel imports {importer_iso3}/{hs_code}: {e}")
+
         info = AFRICAN_COUNTRIES.get((importer_iso3 or "").upper())
         if not info or not info.get("oec"):
             return {"available": False, "note": "Pays importateur inconnu de l'OEC."}
