@@ -1106,6 +1106,141 @@ function TransformationView({ countries, fr, onAnalyze }) {
 }
 
 /* ── Mode: S3 — national need estimation (transparent cascade) ─────────────── */
+function ImportOpportunitiesView({ countries, fr, onAnalyze }) {
+  const [country, setCountry] = useState("DZA");
+  const [topK, setTopK] = useState("6");
+  const [withImports, setWithImports] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [rep, setRep] = useState(null);
+
+  const run = async () => {
+    setLoading(true);
+    setError(null);
+    setRep(null);
+    try {
+      const params = new URLSearchParams({ country, top_k: topK });
+      if (withImports) params.set("with_observed_imports", "true");
+      const res = await axios.get(`${API}/reports/import-opportunities?${params.toString()}`);
+      setRep(res.data);
+    } catch (e) {
+      setError(fr ? "Impossible de générer le scan d'importation." : "Could not run the import scan.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const opps = rep?.ranked_opportunities || [];
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
+        <div>
+          <div style={label}>{fr ? "Pays importateur" : "Importing country"}</div>
+          <Sel value={country} onChange={setCountry} countries={countries} testid="s4-country" />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Produits analysés" : "Products deep-dived"}</div>
+          <input value={topK} onChange={(e) => setTopK(e.target.value)} data-testid="s4-topk" style={{ padding: "8px 10px", borderRadius: 8, width: 70 }} />
+        </div>
+        <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
+          <input type="checkbox" checked={withImports} onChange={(e) => setWithImports(e.target.checked)} data-testid="s4-imports" />
+          {fr ? "Imports observés (OEC)" : "Observed imports (OEC)"}
+        </label>
+        <button onClick={run} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s4-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
+          {loading ? (fr ? "Scan…" : "Scanning…") : fr ? "Scanner les importations" : "Scan imports"}
+        </button>
+      </div>
+
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+
+      {rep && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={card} data-testid="s4-result">
+            <div style={{ ...label, marginBottom: 4 }}>
+              {fr
+                ? `Meilleures opportunités d'importation — ${country}`
+                : `Best import opportunities — ${country}`}
+            </div>
+            <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginBottom: 10 }}>
+              {rep.products_scanned} {fr ? "produits scannés" : "products scanned"} · {rep.candidates_retained}{" "}
+              {fr ? "retenus" : "retained"} · {rep.deep_dived} {fr ? "analysés en profondeur" : "deep-dived"}
+            </div>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ textAlign: "left", borderBottom: "1px solid var(--afcfta-border,#dde)" }}>
+                    <th style={{ padding: "6px 8px" }}>{fr ? "Produit" : "Product"}</th>
+                    <th style={{ padding: "6px 8px" }}>{fr ? "Besoin estimé" : "Est. need"}</th>
+                    <th style={{ padding: "6px 8px" }}>{fr ? "Fournisseur conseillé" : "Suggested supplier"}</th>
+                    <th style={{ padding: "6px 8px" }}>{fr ? "Avantage tarifaire" : "Tariff advantage"}</th>
+                    <th style={{ padding: "6px 8px" }}>Score</th>
+                    <th style={{ padding: "6px 8px" }} />
+                  </tr>
+                </thead>
+                <tbody>
+                  {opps.map((o) => (
+                    <tr key={o.hs_code} style={{ borderBottom: "1px solid var(--afcfta-border,#eee)" }} data-testid={`s4-row-${o.hs_code}`}>
+                      <td style={{ padding: "6px 8px" }}>
+                        <strong>{o.commodity}</strong>
+                        <span style={{ color: "var(--afcfta-muted,#667)", marginLeft: 6, fontSize: 11 }}>SH {o.hs_code}</span>
+                        {!o.local_production?.recorded && (
+                          <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)" }}>
+                            {fr ? "production locale non enregistrée" : "local production not recorded"}
+                          </div>
+                        )}
+                      </td>
+                      <td style={{ padding: "6px 8px", whiteSpace: "nowrap" }}>
+                        {num(Math.round(o.market_need?.value || 0), o.unit)}
+                        {o.market_need?.is_estimation && (
+                          <span style={{ fontSize: 10, marginLeft: 4, color: "var(--afcfta-muted,#667)" }}>
+                            (L{o.market_need.estimation_level})
+                          </span>
+                        )}
+                        {o.observed_imports?.import_value_usd && (
+                          <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)" }}>
+                            {fr ? "importe déjà" : "already imports"} {money(o.observed_imports.import_value_usd)}
+                          </div>
+                        )}
+                      </td>
+                      <td style={{ padding: "6px 8px" }}>
+                        <strong>{o.best_supplier?.country_iso3}</strong>
+                        <span style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginLeft: 4 }}>
+                          {o.best_supplier?.production_share_pct != null ? `${o.best_supplier.production_share_pct}% prod.` : ""}
+                        </span>
+                      </td>
+                      <td style={{ padding: "6px 8px", whiteSpace: "nowrap" }}>
+                        {o.best_supplier?.tariff_advantage_pct != null ? `${o.best_supplier.tariff_advantage_pct} %` : "—"}
+                        <div style={{ fontSize: 10, color: "var(--afcfta-muted,#667)" }}>{o.best_supplier?.trade_regime}</div>
+                      </td>
+                      <td style={{ padding: "6px 8px", fontWeight: 700 }}>{o.end_to_end_score ?? "—"}</td>
+                      <td style={{ padding: "6px 8px" }}>
+                        {onAnalyze && o.best_supplier?.country_iso3 && (
+                          <button
+                            onClick={() => onAnalyze(o.best_supplier.country_iso3, country, o.hs_code)}
+                            className="afcfta-btn afcfta-btn-secondary"
+                            data-testid={`s4-analyze-${o.hs_code}`}
+                            style={{ padding: "4px 10px", borderRadius: 6, fontSize: 12 }}
+                          >
+                            {fr ? "Analyser ▸" : "Analyze ▸"}
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 10 }}>
+              {rep.data_quality?.note}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
   const [hsCode, setHsCode] = useState("180100");
   const [country, setCountry] = useState("NGA");
@@ -1285,12 +1420,14 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
         {tabBtn("s2", fr ? "S2 · Export direct" : "S2 · Direct export")}
         {tabBtn("s1", fr ? "S1 · Transformation" : "S1 · Transformation")}
         {tabBtn("s3", fr ? "S3 · Besoin national" : "S3 · National need")}
+        {tabBtn("s4", fr ? "S4 · Importations" : "S4 · Imports")}
       </div>
       {mode === "market" && <MarketSeekingView fr={fr} />}
       {mode === "bilateral" && <BilateralView countries={countries} fr={fr} prefill={prefill} />}
       {mode === "s2" && <DirectExportView countries={countries} fr={fr} onAnalyze={openBilateral} />}
       {mode === "s1" && <TransformationView countries={countries} fr={fr} onAnalyze={openBilateral} />}
       {mode === "s3" && <NationalNeedView countries={countries} fr={fr} onAnalyze={openBilateral} prefill={s3Prefill} />}
+      {mode === "s4" && <ImportOpportunitiesView countries={countries} fr={fr} onAnalyze={openBilateral} />}
     </div>
   );
 }

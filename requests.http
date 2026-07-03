@@ -27,6 +27,12 @@ GET {{host}}/reports/opportunity?hs_code=180100&origin=CIV&destination=NGA&goods
 ### Profil macro d'un pays
 GET {{host}}/reports/macro/NGA
 
+### S4 — Meilleures opportunités d'IMPORTATION pour un pays (miroir de S2)
+GET {{host}}/reports/import-opportunities?country=DZA&top_k=6
+
+### S4 avec imports observés (OEC, canal partagé — 1 réponse cachée par pays)
+GET {{host}}/reports/import-opportunities?country=DZA&top_k=6&with_observed_imports=true
+
 # ── Exemple cajou : Guinée-Bissau → Algérie (docs/EXEMPLE_CAJOU_GNB.md) ──────
 
 ### Cajou S2 — marchés classés pour le cajou brut (080131) de GNB

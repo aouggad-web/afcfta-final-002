@@ -111,6 +111,60 @@ async def market_seeking_report(
     return await report_engine.get_market_seeking_report(hs_code, year=year, lang=lang)
 
 
+@router.get(
+    "/import-opportunities",
+    summary="Scénario S4 : meilleures opportunités d'IMPORTATION pour un pays",
+)
+async def import_opportunities_scenario(
+    country: str = Query(..., description="Pays importateur (ISO3)"),
+    top_k: int = Query(default=8, ge=1, le=20, description="Nb de produits analysés en profondeur"),
+    goods_value_usd: float = Query(default=50000.0, description="Valeur FOB de référence (USD)"),
+    with_observed_imports: bool = Query(
+        default=False,
+        description=(
+            "Enrichir chaque produit du top avec les imports observés du pays (OEC, "
+            "canal partagé avec le module Statistiques — une réponse cachée par pays "
+            "sert tous les codes SH)."
+        ),
+    ),
+):
+    """
+    Scénario **S4** — le miroir de S2 côté import : pour un pays, quels produits
+    sourcer en Afrique, auprès de qui, avec quel avantage ZLECAf réel ?
+
+    Interconnecte les modules de la plateforme : production (FAOSTAT/USGS/UNIDO),
+    statistiques (besoins, imports OEC optionnels), calculateur (régime
+    préférentiel réel par origine — ex. réciprocité algérienne), logistique et
+    finance (score bilatéral de bout en bout). Classement par part de besoin non
+    couvert puis pression d'import ; fournisseur choisi par avantage tarifaire
+    réel puis poids de production. Zéro fabrication : estimations étiquetées.
+    """
+    rep = report_engine.get_import_opportunities_scenario(
+        destination_iso3=country, top_k=top_k, goods_value_usd=goods_value_usd
+    )
+
+    # Enrichissement optionnel : imports observés (OEC) par produit du top —
+    # peu coûteux grâce au canal partagé (le cache par pays sert tous les HS).
+    if with_observed_imports:
+        try:
+            from services.real_trade_data_service import real_trade_service
+
+            for opp in rep.get("ranked_opportunities", []):
+                imp = await real_trade_service.get_country_product_imports(
+                    country, opp.get("hs_code")
+                )
+                if imp and imp.get("available"):
+                    opp["observed_imports"] = {
+                        "import_value_usd": imp.get("import_value_usd"),
+                        "year": imp.get("year"),
+                        "source": imp.get("source"),
+                    }
+        except Exception:  # OEC indisponible -> enrichissement simplement absent
+            pass
+
+    return rep
+
+
 @router.get("/transformation", summary="Scénario S1 : import intrants → production → export")
 async def transformation_scenario(
     input_hs_code: str = Query(..., description="Code SH de l'intrant importé"),

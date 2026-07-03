@@ -371,6 +371,26 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
     }
 
 
+def list_tracked_products() -> List[Dict]:
+    """
+    Univers des produits traçables par le référentiel production (FAOSTAT /
+    USGS / UNIDO) : un représentant HS par (dataset, commodity), uniquement
+    ceux qui ont des enregistrements réels. Sert de liste de candidats au
+    scénario S4 (opportunités d'importation par pays) du module Opportunités.
+    """
+    seen = set()
+    products: List[Dict] = []
+    for prefix, dataset, label in HS_TO_COMMODITY:
+        key = (dataset, label)
+        if key in seen:
+            continue
+        seen.add(key)
+        if not _records_for(dataset, label):
+            continue
+        products.append({"hs_code": prefix, "dataset": dataset, "commodity": label})
+    return products
+
+
 def get_continental_producers(hs_code: str) -> Dict:
     """
     Vue continentale (sans pays) : top producteurs africains réels pour un code HS.

@@ -451,6 +451,69 @@ def test_segmentation_tariff_factor_gives_real_reason_when_no_advantage():
     assert "non encore activé" in tf["rationale"]
 
 
+def test_list_tracked_products_deduped_with_data():
+    from services import production_capacity_service as pcs
+
+    products = pcs.list_tracked_products()
+    assert len(products) >= 20
+    # Dédupliqué par commodity/dataset (le cacao a 6 préfixes HS -> 1 entrée).
+    keys = [(p["dataset"], p["commodity"]) for p in products]
+    assert len(keys) == len(set(keys))
+    # Chaque entrée a des données réelles derrière (producteurs continentaux).
+    sample = products[0]
+    assert pcs.get_continental_producers(sample["hs_code"])["available"] is True
+
+
+def test_import_opportunities_scenario_dza():
+    """S4 — miroir de S2 côté import : produits classés pour un pays, avec le
+    fournisseur choisi par régime préférentiel RÉEL (réciprocité algérienne)."""
+    from services import report_engine
+
+    rep = report_engine.get_import_opportunities_scenario("DZA", top_k=3)
+    assert rep["scenario"] == "S4_best_imports_for_country"
+    assert rep["products_scanned"] >= 20
+    opps = rep["ranked_opportunities"]
+    assert len(opps) == 3
+
+    for o in opps:
+        # Jamais le pays lui-même en fournisseur.
+        assert all(s["country_iso3"] != "DZA" for s in o["suppliers_considered"])
+        # Le besoin est une estimation étiquetée, jamais fabriquée.
+        assert o["market_need"]["available"] is True
+        # Production locale absente du référentiel = étiquetée, pas un zéro mesuré.
+        if not o["local_production"]["recorded"]:
+            assert o["unmet_need_note"] is not None
+        # Le régime tarifaire du fournisseur vient du moteur du calculateur.
+        assert o["best_supplier"]["trade_regime"] in (
+            "ZLECAF",
+            "CUSTOMS_UNION",
+            "NPF",
+            "FTA_CONDITIONAL",
+            None,
+        )
+
+    # Classement final par score (desc) comme S2.
+    scores = [o["end_to_end_score"] or 0 for o in opps]
+    assert scores == sorted(scores, reverse=True)
+
+
+def test_import_opportunities_supplier_prefers_real_tariff_regime():
+    """Pour l'Algérie, un fournisseur partenaire ZLECAf actif (avantage réel)
+    doit être préféré à un producteur plus gros au taux NPF, à produit égal."""
+    from services import report_engine
+
+    rep = report_engine.get_import_opportunities_scenario("DZA", top_k=8)
+    by_hs = {o["hs_code"]: o for o in rep["ranked_opportunities"]}
+    tea = by_hs.get("0902")
+    if tea is None:  # le thé peut sortir du top_k si les données évoluent
+        return
+    advs = {
+        s["country_iso3"]: (s["tariff_advantage_pct"] or 0) for s in tea["suppliers_considered"]
+    }
+    best = tea["best_supplier"]["country_iso3"]
+    assert advs[best] == max(advs.values())
+
+
 def test_country_product_imports_uses_stats_channel(monkeypatch):
     """Le module Opportunités lit les imports OEC via le MÊME canal que la
     recherche SH2/4/6 du module Statistiques (cache persistant partagé)."""
