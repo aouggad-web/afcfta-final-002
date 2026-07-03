@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
@@ -34,6 +34,22 @@ const val = { fontSize: 18, fontWeight: 700 };
 const th = { padding: "4px 8px", textAlign: "left", color: "var(--afcfta-muted,#667)" };
 const td = { padding: "4px 8px" };
 
+const num = (v, u = "") =>
+  v === null || v === undefined ? "—" : `${Number(v).toLocaleString("fr-FR")}${u ? " " + u : ""}`;
+
+/* Human-readable labels for composite components / factors. */
+const COMPONENT_LABELS = {
+  market_potential: { fr: "Potentiel de marché", en: "Market potential" },
+  market_demand: { fr: "Demande de marché", en: "Market demand" },
+  supply_capacity: { fr: "Capacité de production", en: "Supply capacity" },
+  logistics_accessibility: { fr: "Accessibilité logistique", en: "Logistics accessibility" },
+  financing_feasibility: { fr: "Faisabilité de financement", en: "Financing feasibility" },
+  country_risk: { fr: "Risque pays", en: "Country risk" },
+  fx_volatility: { fr: "Volatilité du change", en: "FX volatility" },
+  tariff_advantage: { fr: "Avantage tarifaire", en: "Tariff advantage" },
+};
+const compLabel = (key, fr) => COMPONENT_LABELS[key]?.[fr ? "fr" : "en"] || key;
+
 function Metric({ title, value, sub }) {
   return (
     <div style={card}>
@@ -43,6 +59,47 @@ function Metric({ title, value, sub }) {
         <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>{sub}</div>
       )}
     </div>
+  );
+}
+
+/* Reusable country <select> for scenario inputs. */
+function Sel({ value, onChange, countries, testid }) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      data-testid={testid}
+      style={{ padding: "8px 10px", borderRadius: 8, minWidth: 170 }}
+    >
+      {countries.map((c) => (
+        <option key={c.iso3 || c.code} value={c.iso3 || c.code}>
+          {c.name} ({c.iso3 || c.code})
+        </option>
+      ))}
+    </select>
+  );
+}
+
+/* Estimated/measured badge shared by the need-based views. */
+function EstBadge({ isEstimation, level, fr }) {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        fontSize: 11,
+        fontWeight: 700,
+        padding: "2px 8px",
+        borderRadius: 999,
+        background: isEstimation ? "rgba(154,103,0,0.12)" : "rgba(26,127,55,0.12)",
+        color: isEstimation ? "#9a6700" : "#1a7f37",
+      }}
+    >
+      {isEstimation
+        ? `${fr ? "Estimé — niveau" : "Estimated — level"} ${level}`
+        : fr
+        ? "Mesuré"
+        : "Measured"}
+    </span>
   );
 }
 
@@ -207,7 +264,7 @@ function MarketSeekingView({ fr }) {
 }
 
 /* ── Mode 2: bilateral opportunity report ─────────────────────────────────── */
-function BilateralView({ countries, fr }) {
+function BilateralView({ countries, fr, prefill }) {
   const [origin, setOrigin] = useState("CIV");
   const [destination, setDestination] = useState("NGA");
   const [hsCode, setHsCode] = useState("1801");
@@ -216,13 +273,19 @@ function BilateralView({ countries, fr }) {
   const [error, setError] = useState(null);
   const [report, setReport] = useState(null);
 
-  const run = async () => {
+  const run = async (overrides = {}) => {
+    const o = { origin, destination, hsCode, goodsValue, ...overrides };
     setLoading(true);
     setError(null);
     setReport(null);
     try {
-      const params = new URLSearchParams({ hs_code: hsCode, origin, destination, mode: "ultra_fine" });
-      if (goodsValue) params.set("goods_value_usd", goodsValue);
+      const params = new URLSearchParams({
+        hs_code: o.hsCode,
+        origin: o.origin,
+        destination: o.destination,
+        mode: "ultra_fine",
+      });
+      if (o.goodsValue) params.set("goods_value_usd", o.goodsValue);
       const res = await axios.get(`${API}/reports/opportunity?${params.toString()}`);
       setReport(res.data);
     } catch (e) {
@@ -231,6 +294,22 @@ function BilateralView({ countries, fr }) {
       setLoading(false);
     }
   };
+
+  // When another scenario hands off (prefill), sync the fields and auto-run.
+  useEffect(() => {
+    if (!prefill || !prefill.k) return;
+    if (prefill.origin) setOrigin(prefill.origin);
+    if (prefill.destination) setDestination(prefill.destination);
+    if (prefill.hsCode) setHsCode(prefill.hsCode);
+    if (prefill.goodsValue) setGoodsValue(prefill.goodsValue);
+    run({
+      origin: prefill.origin,
+      destination: prefill.destination,
+      hsCode: prefill.hsCode,
+      goodsValue: prefill.goodsValue,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefill?.k]);
 
   const ci = report?.composite_indicators || {};
   const e2e = ci.end_to_end_score || {};
@@ -415,7 +494,7 @@ function BilateralView({ countries, fr }) {
                 <tbody>
                   {e2e.breakdown.map((b) => (
                     <tr key={b.component} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
-                      <td style={td}>{b.component}</td>
+                      <td style={td}>{compLabel(b.component, fr)}</td>
                       <td style={td}>{pct(b.weight)}</td>
                       <td style={td}>{b.subscore === null ? "—" : pct(b.subscore)}</td>
                       <td style={td}>
@@ -426,9 +505,17 @@ function BilateralView({ countries, fr }) {
                 </tbody>
               </table>
               <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
-                {fr
-                  ? "Le potentiel de marché par produit (flux OEC) requiert une API payante — exclu, jamais estimé."
-                  : "Per-product market potential (OEC flows) needs a paid API — excluded, never estimated."}
+                {report?.market_potential?.available
+                  ? fr
+                    ? `Potentiel de marché activé via les imports OEC réels du marché (${money(
+                        report.market_potential.import_value_usd
+                      )}/an).`
+                    : `Market potential activated from real OEC imports (${money(
+                        report.market_potential.import_value_usd
+                      )}/yr).`
+                  : fr
+                  ? "Le potentiel de marché par produit (flux OEC) est indisponible ici — exclu, jamais estimé."
+                  : "Per-product market potential (OEC flows) unavailable here — excluded, never estimated."}
               </div>
             </div>
           )}
@@ -622,10 +709,23 @@ function BilateralView({ countries, fr }) {
               {tariff.available ? (
                 <div style={{ fontSize: 14, lineHeight: 1.7 }}>
                   <div style={{ fontSize: 22, fontWeight: 800 }}>{dash(tariff.tariff_advantage_pct, " %")}</div>
-                  <div>
-                    {fr ? "Droit national" : "National duty"} {dash(tariff.national_rate_pct, " %")} → ZLECAf{" "}
-                    {dash(tariff.zlecaf_rate_pct, " %")}
-                  </div>
+                  {tariff.trade_regime && !["ZLECAF", "CUSTOMS_UNION"].includes(tariff.trade_regime) ? (
+                    <div>
+                      {fr ? "Droit national" : "National duty"} {dash(tariff.national_rate_pct, " %")}{" "}
+                      {fr ? "appliqué (NPF)" : "applied (MFN)"}
+                    </div>
+                  ) : (
+                    <div>
+                      {fr ? "Droit national" : "National duty"} {dash(tariff.national_rate_pct, " %")} →{" "}
+                      {tariff.trade_regime === "CUSTOMS_UNION" ? (fr ? "union douanière" : "customs union") : "ZLECAf"}{" "}
+                      {dash(tariff.zlecaf_rate_pct, " %")}
+                    </div>
+                  )}
+                  {tariff.trade_regime_note ? (
+                    <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                      {tariff.trade_regime_note}
+                    </div>
+                  ) : null}
                   {tariff.savings_per_1000usd ? (
                     <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>
                       {money(tariff.savings_per_1000usd)} / 1 000 $ CIF
@@ -641,11 +741,12 @@ function BilateralView({ countries, fr }) {
                 <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
                   {fr ? "Facteurs — opportunités & risques" : "Factors — opportunities & risks"}
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {factors.map((f) => (
                     <div key={f.factor} style={{ display: "flex", alignItems: "baseline", gap: 8, fontSize: 13 }}>
                       <span
                         style={{
+                          flexShrink: 0,
                           fontSize: 11,
                           fontWeight: 700,
                           color:
@@ -654,8 +755,8 @@ function BilateralView({ countries, fr }) {
                       >
                         {f.category === "opportunity" ? "▲" : f.category === "risk" ? "▼" : "■"}
                       </span>
-                      <span style={{ fontWeight: 600, minWidth: 130 }}>{f.factor}</span>
-                      <span style={{ color: "var(--afcfta-muted,#667)" }}>{f.rationale}</span>
+                      <span style={{ flex: "0 0 150px", fontWeight: 600 }}>{compLabel(f.factor, fr)}</span>
+                      <span style={{ flex: 1, color: "var(--afcfta-muted,#667)" }}>{f.rationale}</span>
                     </div>
                   ))}
                 </div>
@@ -718,9 +819,592 @@ function BilateralView({ countries, fr }) {
   );
 }
 
+/* ── Mode: S2 — national production → direct export (ranked markets) ───────── */
+function DirectExportView({ countries, fr, onAnalyze }) {
+  const [hsCode, setHsCode] = useState("1801");
+  const [producer, setProducer] = useState("CIV");
+  const [topK, setTopK] = useState("5");
+  const [goodsValue, setGoodsValue] = useState("50000");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [rep, setRep] = useState(null);
+
+  const run = async () => {
+    setLoading(true);
+    setError(null);
+    setRep(null);
+    try {
+      const params = new URLSearchParams({ hs_code: hsCode, producer, top_k: topK });
+      if (goodsValue) params.set("goods_value_usd", goodsValue);
+      const res = await axios.get(`${API}/reports/direct-export?${params.toString()}`);
+      setRep(res.data);
+    } catch (e) {
+      setError(fr ? "Impossible de générer le scénario." : "Could not generate scenario.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const supply = rep?.producer_supply || {};
+  const opps = rep?.ranked_opportunities || [];
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
+        <div>
+          <div style={label}>{fr ? "Producteur" : "Producer"}</div>
+          <Sel value={producer} onChange={setProducer} countries={countries} testid="s2-producer" />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Code SH" : "HS code"}</div>
+          <input value={hsCode} onChange={(e) => setHsCode(e.target.value)} data-testid="s2-hs" style={{ padding: "8px 10px", borderRadius: 8, width: 110 }} />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Nb marchés" : "Markets"}</div>
+          <input value={topK} onChange={(e) => setTopK(e.target.value)} data-testid="s2-topk" style={{ padding: "8px 10px", borderRadius: 8, width: 70 }} />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Valeur FOB (USD)" : "FOB value (USD)"}</div>
+          <input value={goodsValue} onChange={(e) => setGoodsValue(e.target.value)} data-testid="s2-value" style={{ padding: "8px 10px", borderRadius: 8, width: 130 }} />
+        </div>
+        <button onClick={run} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s2-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
+          {loading ? (fr ? "Analyse…" : "Analyzing…") : fr ? "Classer les marchés" : "Rank markets"}
+        </button>
+      </div>
+
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+
+      {rep && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={card}>
+            <div style={{ ...label, fontWeight: 700 }}>
+              {fr ? "Production du producteur" : "Producer supply"} — {rep.inputs?.producer_iso3}
+            </div>
+            {supply.available ? (
+              <div style={{ fontSize: 14, marginTop: 4 }}>
+                {supply.commodity} · {dash(supply.continental_share_pct, " %")} {fr ? "de la production continentale" : "of continental production"}
+                {supply.rank ? ` · ${fr ? "rang" : "rank"} #${supply.rank}` : ""}
+              </div>
+            ) : (
+              <div style={{ color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                {fr ? "Pas de production détectée pour ce produit." : "No production detected for this product."}
+              </div>
+            )}
+            <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 6 }}>
+              {rep.candidates_considered} {fr ? "marchés candidats · " : "candidate markets · "}
+              {rep.deep_dived} {fr ? "analysés en profondeur" : "deep-dived"}
+            </div>
+          </div>
+
+          <div style={card}>
+            <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+              {fr ? "Marchés d'export classés" : "Ranked export markets"}
+            </div>
+            <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={th}>#</th>
+                  <th style={th}>{fr ? "Marché" : "Market"}</th>
+                  <th style={th}>{fr ? "Score" : "Score"}</th>
+                  <th style={th}>{fr ? "Besoin estimé" : "Estimated need"}</th>
+                  <th style={th}>{fr ? "Avantage tarif" : "Tariff adv."}</th>
+                  <th style={th}>{fr ? "Coût rendu" : "Landed cost"}</th>
+                  <th style={th}></th>
+                </tr>
+              </thead>
+              <tbody>
+                {opps.map((o, i) => (
+                  <tr key={o.destination_iso3} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                    <td style={td}>{i + 1}</td>
+                    <td style={td}>
+                      <strong>{o.destination_iso3}</strong>
+                    </td>
+                    <td style={td}>{o.score_available ? pct(o.end_to_end_score) : "—"}</td>
+                    <td style={td}>
+                      {o.market_need?.available ? num(Math.round(o.market_need.value), o.market_need.unit) : "—"}
+                    </td>
+                    <td
+                      style={td}
+                      title={
+                        o.tariff_benefit?.hs6_used
+                          ? `${fr ? "Sous-position" : "Sub-heading"} HS6 ${o.tariff_benefit.hs6_used}`
+                          : undefined
+                      }
+                    >
+                      {o.tariff_benefit?.available ? dash(o.tariff_benefit.tariff_advantage_pct, " %") : "—"}
+                    </td>
+                    <td style={td}>{o.landed_cost?.available ? money(o.landed_cost.value_usd) : "—"}</td>
+                    <td style={td}>
+                      <button
+                        onClick={() => onAnalyze && onAnalyze(producer, o.destination_iso3, hsCode, goodsValue)}
+                        data-testid={`s2-analyze-${o.destination_iso3}`}
+                        className="afcfta-btn afcfta-btn-secondary"
+                        style={{ padding: "4px 10px", borderRadius: 6, fontSize: 12 }}
+                      >
+                        {fr ? "Analyser ▸" : "Analyze ▸"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>{rep.data_quality?.note}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Mode: S1 — import inputs → local production → export ──────────────────── */
+function TransformationView({ countries, fr, onAnalyze }) {
+  const [inputHs, setInputHs] = useState("1801");
+  const [inputOrigin, setInputOrigin] = useState("GHA");
+  const [producer, setProducer] = useState("CIV");
+  const [finishedHs, setFinishedHs] = useState("1803");
+  const [destination, setDestination] = useState("NGA");
+  const [inputValue, setInputValue] = useState("40000");
+  const [finishedValue, setFinishedValue] = useState("70000");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [rep, setRep] = useState(null);
+
+  const run = async () => {
+    setLoading(true);
+    setError(null);
+    setRep(null);
+    try {
+      const params = new URLSearchParams({
+        input_hs_code: inputHs,
+        input_origin: inputOrigin,
+        producer,
+        finished_hs_code: finishedHs,
+        destination,
+      });
+      if (inputValue) params.set("input_value_usd", inputValue);
+      if (finishedValue) params.set("finished_value_usd", finishedValue);
+      const res = await axios.get(`${API}/reports/transformation?${params.toString()}`);
+      setRep(res.data);
+    } catch (e) {
+      setError(fr ? "Impossible de générer le scénario." : "Could not generate scenario.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const leg1 = rep?.leg1_input_import || {};
+  const leg2 = rep?.leg2_production || {};
+  const va = rep?.value_added || {};
+  const feas = rep?.feasibility || {};
+  const exportScore = feas.export_end_to_end_score;
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
+        <div>
+          <div style={label}>{fr ? "Intrant SH" : "Input HS"}</div>
+          <input value={inputHs} onChange={(e) => setInputHs(e.target.value)} data-testid="s1-input-hs" style={{ padding: "8px 10px", borderRadius: 8, width: 90 }} />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Origine intrant" : "Input origin"}</div>
+          <Sel value={inputOrigin} onChange={setInputOrigin} countries={countries} testid="s1-input-origin" />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Producteur" : "Producer"}</div>
+          <Sel value={producer} onChange={setProducer} countries={countries} testid="s1-producer" />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Produit fini SH" : "Finished HS"}</div>
+          <input value={finishedHs} onChange={(e) => setFinishedHs(e.target.value)} data-testid="s1-finished-hs" style={{ padding: "8px 10px", borderRadius: 8, width: 90 }} />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Marché export" : "Export market"}</div>
+          <Sel value={destination} onChange={setDestination} countries={countries} testid="s1-destination" />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Val. intrant" : "Input val."}</div>
+          <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} data-testid="s1-input-value" style={{ padding: "8px 10px", borderRadius: 8, width: 100 }} />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Val. fini" : "Finished val."}</div>
+          <input value={finishedValue} onChange={(e) => setFinishedValue(e.target.value)} data-testid="s1-finished-value" style={{ padding: "8px 10px", borderRadius: 8, width: 100 }} />
+        </div>
+        <button onClick={run} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s1-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
+          {loading ? (fr ? "Analyse…" : "Analyzing…") : fr ? "Analyser la chaîne" : "Analyze chain"}
+        </button>
+      </div>
+
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+
+      {rep && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12 }}>
+            <div style={card} data-testid="s1-leg1">
+              <div style={{ ...label, fontWeight: 700 }}>1 · {fr ? "Import intrant" : "Import input"}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>
+                {leg1.landed_cost?.available ? money(leg1.landed_cost.value_usd) : "—"}
+              </div>
+              <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                {fr ? "Coût rendu intrant" : "Input landed cost"}
+                {leg1.tariff?.available ? ` · ${fr ? "tarif" : "tariff"} ${dash(leg1.tariff.tariff_advantage_pct, " %")}` : ""}
+              </div>
+            </div>
+            <div style={card} data-testid="s1-leg2">
+              <div style={{ ...label, fontWeight: 700 }}>2 · {fr ? "Production locale" : "Local production"}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>
+                {leg2.available ? (fr ? "Confirmée ✓" : "Confirmed ✓") : fr ? "Non détectée" : "Not detected"}
+              </div>
+              {leg2.available && (
+                <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                  {leg2.commodity} · {dash(leg2.continental_share_pct, " %")}
+                </div>
+              )}
+            </div>
+            <div style={card} data-testid="s1-leg3">
+              <div style={{ ...label, fontWeight: 700 }}>3 · {fr ? "Export produit fini" : "Export finished"}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>{exportScore != null ? pct(exportScore) : "—"}</div>
+              <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                {fr ? "Score export → " : "Export score → "}
+                {rep.inputs?.destination_iso3}
+              </div>
+              <button
+                onClick={() =>
+                  onAnalyze &&
+                  onAnalyze(rep.inputs?.producer_iso3, rep.inputs?.destination_iso3, rep.inputs?.finished_hs_code, finishedValue)
+                }
+                data-testid="s1-analyze-export"
+                className="afcfta-btn afcfta-btn-secondary"
+                style={{ padding: "4px 10px", borderRadius: 6, fontSize: 12, marginTop: 8 }}
+              >
+                {fr ? "Analyser l'export ▸" : "Analyze export ▸"}
+              </button>
+            </div>
+            <div style={card} data-testid="s1-value-added">
+              <div style={{ ...label, fontWeight: 700 }}>{fr ? "Valeur ajoutée brute" : "Gross value added"}</div>
+              {va.available ? (
+                <>
+                  <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>
+                    {money(va.gross_value_added_usd)}
+                  </div>
+                  <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                    {fr ? "Marge" : "Margin"} {dash(va.gross_margin_pct, " %")}
+                  </div>
+                </>
+              ) : (
+                <div style={{ color: "var(--afcfta-muted,#667)", marginTop: 4 }}>—</div>
+              )}
+            </div>
+          </div>
+          {va.available && (
+            <div style={{ fontSize: 12, color: "#9a6700" }}>⚠ {va.note}</div>
+          )}
+          <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>{rep.data_quality?.note}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Mode: S3 — national need estimation (transparent cascade) ─────────────── */
+function ImportOpportunitiesView({ countries, fr, onAnalyze }) {
+  const [country, setCountry] = useState("DZA");
+  const [topK, setTopK] = useState("6");
+  const [withImports, setWithImports] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [rep, setRep] = useState(null);
+
+  const run = async () => {
+    // Borne top_k à [1, 20] (contrainte de l'API) et normalise une saisie
+    // vide/non numérique à 6 — évite une 422 et un message générique.
+    const parsed = parseInt(topK, 10);
+    const safeTopK = Number.isNaN(parsed) ? 6 : Math.min(20, Math.max(1, parsed));
+    if (String(safeTopK) !== topK) setTopK(String(safeTopK));
+    setLoading(true);
+    setError(null);
+    setRep(null);
+    try {
+      const params = new URLSearchParams({ country, top_k: String(safeTopK) });
+      if (withImports) params.set("with_observed_imports", "true");
+      const res = await axios.get(`${API}/reports/import-opportunities?${params.toString()}`);
+      setRep(res.data);
+    } catch (e) {
+      setError(fr ? "Impossible de générer le scan d'importation." : "Could not run the import scan.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const opps = rep?.ranked_opportunities || [];
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
+        <div>
+          <div style={label}>{fr ? "Pays importateur" : "Importing country"}</div>
+          <Sel value={country} onChange={setCountry} countries={countries} testid="s4-country" />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Produits analysés" : "Products deep-dived"}</div>
+          <input value={topK} onChange={(e) => setTopK(e.target.value)} data-testid="s4-topk" style={{ padding: "8px 10px", borderRadius: 8, width: 70 }} />
+        </div>
+        <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
+          <input type="checkbox" checked={withImports} onChange={(e) => setWithImports(e.target.checked)} data-testid="s4-imports" />
+          {fr ? "Imports observés (OEC)" : "Observed imports (OEC)"}
+        </label>
+        <button onClick={run} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s4-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
+          {loading ? (fr ? "Scan…" : "Scanning…") : fr ? "Scanner les importations" : "Scan imports"}
+        </button>
+      </div>
+
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+
+      {rep && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={card} data-testid="s4-result">
+            <div style={{ ...label, marginBottom: 4 }}>
+              {fr
+                ? `Meilleures opportunités d'importation — ${country}`
+                : `Best import opportunities — ${country}`}
+            </div>
+            <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginBottom: 10 }}>
+              {rep.products_scanned} {fr ? "produits scannés" : "products scanned"} · {rep.candidates_retained}{" "}
+              {fr ? "retenus" : "retained"} · {rep.deep_dived} {fr ? "analysés en profondeur" : "deep-dived"}
+            </div>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ textAlign: "left", borderBottom: "1px solid var(--afcfta-border,#dde)" }}>
+                    <th style={{ padding: "6px 8px" }}>{fr ? "Produit" : "Product"}</th>
+                    <th style={{ padding: "6px 8px" }}>{fr ? "Besoin estimé" : "Est. need"}</th>
+                    <th style={{ padding: "6px 8px" }}>{fr ? "Fournisseur conseillé" : "Suggested supplier"}</th>
+                    <th style={{ padding: "6px 8px" }}>{fr ? "Avantage tarifaire" : "Tariff advantage"}</th>
+                    <th style={{ padding: "6px 8px" }}>Score</th>
+                    <th style={{ padding: "6px 8px" }} />
+                  </tr>
+                </thead>
+                <tbody>
+                  {opps.map((o) => (
+                    <tr key={o.hs_code} style={{ borderBottom: "1px solid var(--afcfta-border,#eee)" }} data-testid={`s4-row-${o.hs_code}`}>
+                      <td style={{ padding: "6px 8px" }}>
+                        <strong>{o.commodity}</strong>
+                        <span style={{ color: "var(--afcfta-muted,#667)", marginLeft: 6, fontSize: 11 }}>SH {o.hs_code}</span>
+                        {!o.local_production?.recorded && (
+                          <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)" }}>
+                            {fr ? "production locale non enregistrée" : "local production not recorded"}
+                          </div>
+                        )}
+                      </td>
+                      <td style={{ padding: "6px 8px", whiteSpace: "nowrap" }}>
+                        {num(Math.round(o.market_need?.value || 0), o.unit)}
+                        {o.market_need?.is_estimation && (
+                          <span style={{ fontSize: 10, marginLeft: 4, color: "var(--afcfta-muted,#667)" }}>
+                            (L{o.market_need.estimation_level})
+                          </span>
+                        )}
+                        {o.observed_imports?.import_value_usd && (
+                          <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)" }}>
+                            {fr ? "importe déjà" : "already imports"} {money(o.observed_imports.import_value_usd)}
+                          </div>
+                        )}
+                      </td>
+                      <td style={{ padding: "6px 8px" }}>
+                        <strong>{o.best_supplier?.country_iso3}</strong>
+                        <span style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginLeft: 4 }}>
+                          {o.best_supplier?.production_share_pct != null ? `${o.best_supplier.production_share_pct}% prod.` : ""}
+                        </span>
+                      </td>
+                      <td style={{ padding: "6px 8px", whiteSpace: "nowrap" }}>
+                        {o.best_supplier?.tariff_advantage_pct != null ? `${o.best_supplier.tariff_advantage_pct} %` : "—"}
+                        <div style={{ fontSize: 10, color: "var(--afcfta-muted,#667)" }}>{o.best_supplier?.trade_regime}</div>
+                      </td>
+                      <td style={{ padding: "6px 8px", fontWeight: 700 }}>{o.end_to_end_score ?? "—"}</td>
+                      <td style={{ padding: "6px 8px" }}>
+                        {onAnalyze && o.best_supplier?.country_iso3 && (
+                          <button
+                            onClick={() => onAnalyze(o.best_supplier.country_iso3, country, o.hs_code)}
+                            className="afcfta-btn afcfta-btn-secondary"
+                            data-testid={`s4-analyze-${o.hs_code}`}
+                            style={{ padding: "4px 10px", borderRadius: 6, fontSize: 12 }}
+                          >
+                            {fr ? "Analyser ▸" : "Analyze ▸"}
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 10 }}>
+              {rep.data_quality?.note}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
+  const [hsCode, setHsCode] = useState("180100");
+  const [country, setCountry] = useState("NGA");
+  const [withImports, setWithImports] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [rep, setRep] = useState(null);
+
+  const run = async (overrides = {}) => {
+    const o = { hsCode, country, withImports, ...overrides };
+    setLoading(true);
+    setError(null);
+    setRep(null);
+    try {
+      const params = new URLSearchParams({ hs_code: o.hsCode, country: o.country });
+      if (o.withImports) params.set("with_observed_imports", "true");
+      const res = await axios.get(`${API}/reports/national-need?${params.toString()}`);
+      setRep(res.data);
+    } catch (e) {
+      setError(fr ? "Impossible d'estimer le besoin." : "Could not estimate need.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handoff depuis le module Statistiques (recherche SH2/4/6) : pays + code SH
+  // pré-remplis, signal d'import OEC activé, exécution automatique.
+  useEffect(() => {
+    if (!prefill || !prefill.k) return;
+    if (prefill.country) setCountry(prefill.country);
+    if (prefill.hsCode) setHsCode(prefill.hsCode);
+    if (prefill.withImports) setWithImports(true);
+    run({ country: prefill.country, hsCode: prefill.hsCode, withImports: !!prefill.withImports });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefill?.k]);
+
+  const inp = rep?.inputs || {};
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
+        <div>
+          <div style={label}>{fr ? "Pays" : "Country"}</div>
+          <Sel value={country} onChange={setCountry} countries={countries} testid="s3-country" />
+        </div>
+        <div>
+          <div style={label}>{fr ? "Code SH" : "HS code"}</div>
+          <input value={hsCode} onChange={(e) => setHsCode(e.target.value)} data-testid="s3-hs" style={{ padding: "8px 10px", borderRadius: 8, width: 120 }} />
+        </div>
+        <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
+          <input type="checkbox" checked={withImports} onChange={(e) => setWithImports(e.target.checked)} data-testid="s3-imports" />
+          {fr ? "Signal d'import (OEC, lent)" : "Import signal (OEC, slow)"}
+        </label>
+        <button onClick={() => run()} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s3-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
+          {loading ? (fr ? "Estimation…" : "Estimating…") : fr ? "Estimer le besoin" : "Estimate need"}
+        </button>
+      </div>
+
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+
+      {rep && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={card} data-testid="s3-result">
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <span style={{ ...label, margin: 0 }}>
+                {fr ? "Besoin national" : "National need"} — {country}
+              </span>
+              {rep.available && (
+                <EstBadge isEstimation={rep.is_estimation} level={rep.estimation_level} fr={fr} />
+              )}
+            </div>
+            {rep.available ? (
+              <>
+                <div style={{ fontSize: 26, fontWeight: 800, marginTop: 6 }}>
+                  {num(Math.round(rep.value), rep.unit)}
+                </div>
+                {rep.observed_imports?.import_value_usd && (
+                  <div style={{ fontSize: 13, marginTop: 4 }}>
+                    {fr ? "Importe déjà" : "Already imports"} : {money(rep.observed_imports.import_value_usd)}
+                  </div>
+                )}
+                <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
+                  {fr ? "Méthode" : "Method"} : {rep.method}
+                </div>
+                {rep.suggested_supplier?.iso3 && onAnalyze && (
+                  <button
+                    onClick={() => onAnalyze(rep.suggested_supplier.iso3, country, hsCode)}
+                    data-testid="s3-analyze"
+                    className="afcfta-btn afcfta-btn-secondary"
+                    style={{ padding: "6px 12px", borderRadius: 6, fontSize: 13, marginTop: 10 }}
+                  >
+                    {fr ? "Analyser l'opportunité" : "Analyze opportunity"} : {rep.suggested_supplier.iso3} → {country} ▸
+                  </button>
+                )}
+              </>
+            ) : (
+              <div style={{ color: "var(--afcfta-muted,#667)", marginTop: 6 }}>{rep.note || "—"}</div>
+            )}
+          </div>
+
+          {rep.available && (
+            <div style={card}>
+              <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+                {fr ? "Intrants du calcul (transparence)" : "Computation inputs (transparency)"}
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10, fontSize: 13 }}>
+                <div>{fr ? "Population" : "Population"} : {num(inp.population)}</div>
+                <div>{fr ? "Production continentale" : "Continental production"} : {num(inp.continental_production, rep.unit)}</div>
+                {inp.continental_imports_tonnes != null && (
+                  <div>{fr ? "Imports continentaux" : "Continental imports"} : {num(inp.continental_imports_tonnes, rep.unit)}</div>
+                )}
+                <div>{fr ? "Réf. par habitant" : "Per-capita ref."} : {num(inp.per_capita_reference)}</div>
+                {inp.gdp_adjustment_factor != null && (
+                  <div>{fr ? "Facteur PIB/hab" : "GDP/cap factor"} : {num(inp.gdp_adjustment_factor)}</div>
+                )}
+              </div>
+              {rep.sources?.length > 0 && (
+                <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
+                  {fr ? "Sources" : "Sources"} : {rep.sources.map((s) => srcText(s)).filter(Boolean).join(" · ")}
+                </div>
+              )}
+            </div>
+          )}
+          <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>{rep.note}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function OpportunityReportTab({ countries = [], language = "fr" }) {
   const fr = language === "fr";
   const [mode, setMode] = useState("market");
+  const [prefill, setPrefill] = useState(null);
+  const [s3Prefill, setS3Prefill] = useState(null);
+
+  // Hand off from a scenario to the full ultra-fine bilateral report.
+  const openBilateral = (origin, destination, hsCode, goodsValue) => {
+    setPrefill({ origin, destination, hsCode, goodsValue, k: Date.now() });
+    setMode("bilateral");
+  };
+
+  // Handoff inter-modules : la recherche SH2/4/6 du module Statistiques dépose
+  // {country, hsCode} dans sessionStorage puis navigue ici — on ouvre S3
+  // (besoin national) pré-rempli avec le signal d'import OEC activé.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("zlecaf_opportunites_handoff");
+      if (!raw) return;
+      sessionStorage.removeItem("zlecaf_opportunites_handoff");
+      const h = JSON.parse(raw);
+      if (h && h.country && h.hsCode) {
+        setS3Prefill({ country: h.country, hsCode: h.hsCode, withImports: true, k: h.k || Date.now() });
+        setMode("s3");
+      }
+    } catch {
+      /* handoff illisible : ignorer */
+    }
+  }, []);
 
   const tabBtn = (id, txt) => (
     <button
@@ -738,12 +1422,17 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
       <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
         {tabBtn("market", fr ? "Trouver des marchés (producteur)" : "Find markets (producer)")}
         {tabBtn("bilateral", fr ? "Rapport bilatéral" : "Bilateral report")}
+        {tabBtn("s2", fr ? "S2 · Export direct" : "S2 · Direct export")}
+        {tabBtn("s1", fr ? "S1 · Transformation" : "S1 · Transformation")}
+        {tabBtn("s3", fr ? "S3 · Besoin national" : "S3 · National need")}
+        {tabBtn("s4", fr ? "S4 · Importations" : "S4 · Imports")}
       </div>
-      {mode === "market" ? (
-        <MarketSeekingView fr={fr} />
-      ) : (
-        <BilateralView countries={countries} fr={fr} />
-      )}
+      {mode === "market" && <MarketSeekingView fr={fr} />}
+      {mode === "bilateral" && <BilateralView countries={countries} fr={fr} prefill={prefill} />}
+      {mode === "s2" && <DirectExportView countries={countries} fr={fr} onAnalyze={openBilateral} />}
+      {mode === "s1" && <TransformationView countries={countries} fr={fr} onAnalyze={openBilateral} />}
+      {mode === "s3" && <NationalNeedView countries={countries} fr={fr} onAnalyze={openBilateral} prefill={s3Prefill} />}
+      {mode === "s4" && <ImportOpportunitiesView countries={countries} fr={fr} onAnalyze={openBilateral} />}
     </div>
   );
 }

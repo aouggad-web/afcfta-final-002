@@ -24,11 +24,11 @@ The World Bank API requires no key.
 
 import json
 import sys
-import urllib.request
 from pathlib import Path
 from typing import Dict, Optional
 
-WB_BASE = "https://api.worldbank.org/v2"
+from etl.wb_fetch import fetch_indicator
+
 GDP_PER_CAPITA = "NY.GDP.PCAP.CD"
 
 # 54 African Union members (ISO3), same list as fetch_wb_reserves.
@@ -93,29 +93,11 @@ _OUT = Path(__file__).resolve().parent.parent.parent / "data" / "json" / "wb_gdp
 
 
 def _fetch_indicator(indicator: str) -> Dict[str, Dict]:
-    """Return {iso3: {"value": float, "year": int}} latest non-null per country."""
-    codes = ";".join(AFRICA_ISO3)
-    url = (
-        f"{WB_BASE}/country/{codes}/indicator/{indicator}"
-        f"?format=json&per_page=20000&date=2010:2025"
-    )
-    with urllib.request.urlopen(url, timeout=60) as resp:  # nosec B310 - fixed WB host
-        payload = json.loads(resp.read().decode("utf-8"))
-
-    if not isinstance(payload, list) or len(payload) < 2 or payload[1] is None:
-        return {}
-
-    latest: Dict[str, Dict] = {}
-    for row in payload[1]:
-        iso3 = (row.get("countryiso3code") or "").upper()
-        value = row.get("value")
-        year = row.get("date")
-        if not iso3 or value is None or year is None:
-            continue
-        year = int(year)
-        if iso3 not in latest or year > latest[iso3]["year"]:
-            latest[iso3] = {"value": round(float(value), 2), "year": year}
-    return latest
+    """Fetch robuste (lots + retries + timeout long) — voir etl/wb_fetch.py."""
+    latest = fetch_indicator(indicator, AFRICA_ISO3)
+    return {
+        iso3: {"value": round(rec["value"], 2), "year": rec["year"]} for iso3, rec in latest.items()
+    }
 
 
 def build() -> Optional[dict]:

@@ -69,6 +69,31 @@ def _supply_component(origin_iso3: str, hs_code: str) -> Dict:
     }
 
 
+def _market_component(market_imports: Optional[Dict]) -> Dict:
+    """
+    Market-potential sub-score from the destination's REAL imports of the product
+    (OEC). Transparent normalisation: 100 M$ of annual imports -> 1.0.
+
+    Returns ``available: False`` (excluded from the score, never fabricated) when
+    OEC data was not provided/reachable.
+    """
+    if not market_imports or not market_imports.get("available"):
+        return {
+            "available": False,
+            "subscore": None,
+            "note": "Demande OEC par produit indisponible (OEC requis).",
+        }
+    value = market_imports.get("import_value_usd") or 0.0
+    subscore = round(min(value / 100_000_000, 1.0), 3)  # 100 M$ -> 1.0
+    return {
+        "available": True,
+        "subscore": subscore,
+        "import_value_usd": value,
+        "source": market_imports.get("source", "OEC / UN Comtrade (BACI)"),
+        "note": "Normalisation transparente : 100 M$ d'imports annuels = 1.0.",
+    }
+
+
 def _risk_component(country_risk: Dict) -> Dict:
     """Country-risk sub-score (1 = safest) from the finance risk assessment."""
     if not country_risk.get("available"):
@@ -145,11 +170,17 @@ def get_opportunity_report(
     weight_kg: float = 21600.0,
     volume_m3: float = 33.5,
     weights: Optional[Dict[str, float]] = None,
+    market_imports: Optional[Dict] = None,
 ) -> Dict:
     """
     Bilateral product-opportunity report: origin exports ``hs_code`` to
     destination. Combines supply, logistics, finance/macro and a transparent
     end-to-end score.
+
+    ``market_imports`` (optional): the destination's real OEC imports of the
+    product (from ``get_country_product_imports``). When provided, the
+    market-potential component is activated in the score; otherwise it stays
+    excluded (never fabricated).
     """
     origin_iso3 = (origin_iso3 or "").upper()
     destination_iso3 = (destination_iso3 or "").upper()
@@ -165,12 +196,13 @@ def get_opportunity_report(
     log_access = logistics.summarize_logistics_accessibility(log_profile)
     fin_feasibility = finance.summarize_financing_feasibility(fin_profile)
     risk = _risk_component(fin_profile.get("country_risk") or {})
+    market = _market_component(market_imports)
 
     components = {
         "market_potential": {
-            "available": False,
-            "subscore": None,
-            "note": "Requiert OEC (API payante)",
+            "available": market.get("available"),
+            "subscore": market.get("subscore"),
+            "note": market.get("note"),
         },
         "supply_capacity": {
             "available": supply.get("available"),
@@ -198,6 +230,7 @@ def get_opportunity_report(
             "volume_m3": volume_m3,
         },
         "supply": supply,
+        "market_potential": market,
         "logistics": {
             "profile": log_profile,
             "accessibility_index": log_access,
@@ -220,8 +253,13 @@ def get_opportunity_report(
             "is_estimation": False,
             "note": (
                 "Chiffres issus de sources réelles ou marqués indisponibles ; "
-                "aucune valeur inventée. Les flux OEC par produit (potentiel de "
-                "marché) nécessitent une API payante et sont exclus ici."
+                "aucune valeur inventée."
+                + (
+                    " Potentiel de marché activé via les imports OEC réels du marché."
+                    if market.get("available")
+                    else " Le potentiel de marché (flux OEC par produit) est indisponible"
+                    " ici et exclu du score (jamais estimé)."
+                )
             ),
         },
     }
@@ -235,6 +273,7 @@ def get_opportunity_report_ultra_fine(
     weight_kg: float = 21600.0,
     volume_m3: float = 33.5,
     weights: Optional[Dict[str, float]] = None,
+    market_imports: Optional[Dict] = None,
 ) -> Dict:
     """
     Ultra-fine bilateral report: adds narrative analysis, benchmarking,
@@ -246,11 +285,19 @@ def get_opportunity_report_ultra_fine(
     - segmentation (effort/impact, risk/reward matrices, factor breakdown)
     - priority tier (QUICK_WIN, STRATEGIC_BET, etc.)
 
-    No fabrication: all narratives sourced, all scores from real data.
+    ``market_imports`` (optional) activates the market-potential component in the
+    score (real OEC demand). No fabrication: all narratives sourced, scores real.
     """
     # Base report
     base = get_opportunity_report(
-        hs_code, origin_iso3, destination_iso3, goods_value_usd, weight_kg, volume_m3, weights
+        hs_code,
+        origin_iso3,
+        destination_iso3,
+        goods_value_usd,
+        weight_kg,
+        volume_m3,
+        weights,
+        market_imports=market_imports,
     )
 
     # Add narrative analyses
@@ -463,6 +510,310 @@ def get_transformation_scenario(
                 "Chaîne de valeur composée de briques réelles (logistique, tarif "
                 "national/ZLECAf, production, export). Valeur ajoutée BRUTE seulement "
                 "(coûts de transformation non disponibles). Aucune valeur inventée."
+            ),
+        },
+    }
+
+
+def _african_candidate_markets(exclude_iso3: str) -> list:
+    """African markets (ISO3) to consider as export destinations, minus origin."""
+    try:
+        from constants import AFRICAN_COUNTRIES
+
+        return [
+            c["iso3"]
+            for c in AFRICAN_COUNTRIES
+            if c.get("iso3") and c.get("population") and c["iso3"] != exclude_iso3
+        ]
+    except Exception as exc:  # pragma: no cover - defensive
+        _log.warning("candidate markets unavailable: %s", exc)
+        return []
+
+
+def get_direct_export_scenario(
+    hs_code: str,
+    producer_iso3: str,
+    candidate_destinations: Optional[list] = None,
+    top_k: int = 5,
+    goods_value_usd: Optional[float] = None,
+    weight_kg: float = 21600.0,
+    volume_m3: float = 33.5,
+) -> Dict:
+    """
+    Scenario **S2 — national production → direct export**.
+
+    For a producer that already makes ``hs_code``, rank the African markets worth
+    exporting to. Two stages, both real-data:
+
+      1. Cheap pass over all candidate markets: estimate each market's national
+         need (population proxy / apparent consumption) to size the demand.
+      2. Deep-dive the ``top_k`` largest-need markets with the full bilateral
+         opportunity report (logistics, finance, tariff, end-to-end score) and
+         rank them by that score.
+
+    Returns the producer's own supply profile plus a ranked list of destination
+    opportunities. No fabrication: unavailable angles are flagged, not invented.
+    """
+    producer_iso3 = (producer_iso3 or "").upper()
+
+    # Producer's own production capacity for the product (the whole scenario is
+    # only meaningful if the producer actually makes it).
+    supply = _supply_component(producer_iso3, hs_code)
+
+    # Candidate destination markets. An explicit list (even empty) is respected;
+    # only ``None`` falls back to the full African market set.
+    if candidate_destinations is not None:
+        candidates = [c.upper() for c in candidate_destinations if c and c.upper() != producer_iso3]
+    else:
+        candidates = _african_candidate_markets(producer_iso3)
+
+    # Stage 1 — size demand per candidate (cheap, local estimate).
+    sized = []
+    for dest in candidates:
+        need = demand_estimation_service.estimate_national_need(hs_code, dest)
+        sized.append({"destination_iso3": dest, "market_need": need})
+    sized.sort(key=lambda s: (s["market_need"].get("value") or 0), reverse=True)
+
+    # Stage 2 — deep-dive the top_k largest-need markets with a full report.
+    opportunities = []
+    for entry in sized[: max(top_k, 0)]:
+        dest = entry["destination_iso3"]
+        report = get_opportunity_report(
+            hs_code, producer_iso3, dest, goods_value_usd, weight_kg, volume_m3
+        )
+        ci = report.get("composite_indicators", {})
+        e2e = ci.get("end_to_end_score", {})
+        opportunities.append(
+            {
+                "destination_iso3": dest,
+                "market_need": entry["market_need"],
+                "end_to_end_score": e2e.get("score"),
+                "score_available": e2e.get("available"),
+                "landed_cost": ci.get("landed_cost", {}),
+                "logistics_accessibility": ci.get("logistics_accessibility_index", {}),
+                "financing_feasibility": ci.get("financing_feasibility_index", {}),
+                "tariff_benefit": benchmarking_service.tariff_benefit_analysis(
+                    producer_iso3, dest, hs_code
+                ),
+            }
+        )
+
+    # Final ranking: by export score (desc), then by market need (desc).
+    opportunities.sort(
+        key=lambda o: ((o["end_to_end_score"] or 0), (o["market_need"].get("value") or 0)),
+        reverse=True,
+    )
+
+    return {
+        "report_type": "value_chain_direct_export",
+        "scenario": "S2_produce_export_direct",
+        "inputs": {
+            "hs_code": hs_code,
+            "producer_iso3": producer_iso3,
+            "goods_value_usd": goods_value_usd,
+            "top_k": top_k,
+        },
+        "producer_supply": supply,
+        "ranked_opportunities": opportunities,
+        "candidates_considered": len(candidates),
+        "deep_dived": len(opportunities),
+        "data_quality": {
+            "is_estimation": False,
+            "note": (
+                "Marchés classés par besoin estimé (proxy population / consommation "
+                "apparente) puis par score d'opportunité de bout en bout (production, "
+                "logistique, financement, risque pays). L'avantage tarifaire est "
+                "fourni séparément par marché (hors score). Les besoins sont des "
+                "estimations transparentes ; les scores reposent sur des données "
+                "réelles ou marquées indisponibles."
+            ),
+        },
+    }
+
+
+def get_import_opportunities_scenario(
+    destination_iso3: str,
+    top_k: int = 8,
+    goods_value_usd: float = 50000.0,
+    weight_kg: float = 21600.0,
+    volume_m3: float = 33.5,
+) -> Dict:
+    """
+    Scenario **S4 — best IMPORT opportunities for a country** (mirror of S2).
+
+    For a destination country, answer: *which products should it source from
+    Africa, from whom, and with what AfCFTA advantage?* — interconnecting the
+    platform's modules: production (FAOSTAT/USGS/UNIDO supply), statistics
+    (needs), calculator (real preferential regime per origin), logistics and
+    finance (end-to-end bilateral score). Two stages, both real-data:
+
+      1. Cheap pass over every tracked product: estimate the destination's
+         national need, its own recorded production, and the continental
+         suppliers. Rank by unmet-need share, then by import pressure
+         (need / continental supply — unitless, comparable across products).
+      2. Deep-dive the ``top_k`` products: pick the best supplier among the top
+         continental producers using the REAL preferential regime (same source
+         of truth as the calculator — e.g. Algeria's 9 active AfCFTA partners),
+         then run the full bilateral opportunity report for that corridor.
+
+    No fabrication: needs are transparent estimates (flagged), local production
+    absent from the dataset is labelled "not recorded", never assumed zero.
+    """
+    from services import production_capacity_service
+
+    dest = (destination_iso3 or "").upper()
+
+    # Stage 1 — scan every tracked product (all local, cheap).
+    candidates = []
+    products = production_capacity_service.list_tracked_products()
+    for prod in products:
+        hs = prod["hs_code"]
+        producers = production_capacity_service.get_continental_producers(hs)
+        if not producers.get("available"):
+            continue
+        suppliers = [
+            p for p in producers.get("top_producers", []) if p.get("country_iso3") != dest
+        ][:3]
+        if not suppliers:
+            continue
+
+        need = demand_estimation_service.estimate_national_need(hs, dest)
+        need_value = need.get("value") if need.get("available") else None
+        if not need_value or need_value <= 0:
+            continue
+
+        local = production_capacity_service.get_capacity(dest, hs)
+        local_recorded = bool(local.get("available")) and local.get("latest_value") is not None
+        local_value = float(local.get("latest_value") or 0.0) if local_recorded else None
+
+        if local_recorded:
+            deficit = max(need_value - local_value, 0.0)
+            deficit_share = round(deficit / need_value, 4) if need_value else None
+            deficit_note = None
+        else:
+            # Production locale non enregistrée dans le référentiel : le besoin
+            # entier est traité comme non couvert, mais c'est étiqueté (jamais
+            # présenté comme un zéro mesuré).
+            deficit = need_value
+            deficit_share = 1.0
+            deficit_note = "Production locale non enregistrée dans le référentiel (borne haute)."
+
+        continental_total = producers.get("continental_total") or 0
+        import_pressure = round(need_value / continental_total, 4) if continental_total else None
+
+        candidates.append(
+            {
+                "hs_code": hs,
+                "commodity": producers.get("commodity"),
+                "dimension": producers.get("dimension"),
+                "unit": producers.get("unit"),
+                "market_need": need,
+                "local_production": {
+                    "recorded": local_recorded,
+                    "value": local_value,
+                    "year": local.get("latest_year") if local_recorded else None,
+                },
+                "unmet_need": round(deficit, 2),
+                "unmet_need_share": deficit_share,
+                "unmet_need_note": deficit_note,
+                "import_pressure": import_pressure,
+                "suppliers_pool": suppliers,
+                "supply_source": producers.get("source"),
+            }
+        )
+
+    candidates.sort(
+        key=lambda c: ((c["unmet_need_share"] or 0), (c["import_pressure"] or 0)),
+        reverse=True,
+    )
+
+    # Stage 2 — deep-dive the top_k products: best supplier by REAL preferential
+    # regime (calculator's source of truth), then full bilateral report.
+    opportunities = []
+    for cand in candidates[: max(top_k, 0)]:
+        hs = cand["hs_code"]
+        judged_suppliers = []
+        for sup in cand["suppliers_pool"]:
+            tariff = benchmarking_service.tariff_benefit_analysis(sup["country_iso3"], dest, hs)
+            judged_suppliers.append(
+                {
+                    "country_iso3": sup["country_iso3"],
+                    "country_name": sup.get("country_name"),
+                    "production_share_pct": sup.get("share_pct"),
+                    "tariff_advantage_pct": (
+                        tariff.get("tariff_advantage_pct") if tariff.get("available") else None
+                    ),
+                    "trade_regime": tariff.get("trade_regime"),
+                    "trade_regime_note": tariff.get("trade_regime_note"),
+                    # Bloc tarif complet conservé pour éviter un recalcul du
+                    # meilleur fournisseur plus bas (non sérialisé dans la réponse).
+                    "_tariff": tariff,
+                }
+            )
+        # Meilleur fournisseur : avantage tarifaire réel d'abord (le régime
+        # préférentiel dépend de l'ORIGINE — ex. réciprocité algérienne),
+        # puis poids dans la production continentale.
+        best = max(
+            judged_suppliers,
+            key=lambda s: (
+                (s["tariff_advantage_pct"] or 0),
+                (s["production_share_pct"] or 0),
+            ),
+        )
+        best_tariff = best.pop("_tariff")
+        # Retirer le bloc tarif complet des autres fournisseurs (réponse allégée).
+        for s in judged_suppliers:
+            s.pop("_tariff", None)
+
+        report = get_opportunity_report(
+            hs, best["country_iso3"], dest, goods_value_usd, weight_kg, volume_m3
+        )
+        ci = report.get("composite_indicators", {})
+        e2e = ci.get("end_to_end_score", {})
+        opportunities.append(
+            {
+                **{k: v for k, v in cand.items() if k != "suppliers_pool"},
+                "suppliers_considered": judged_suppliers,
+                "best_supplier": best,
+                "end_to_end_score": e2e.get("score"),
+                "score_available": e2e.get("available"),
+                "landed_cost": ci.get("landed_cost", {}),
+                "logistics_accessibility": ci.get("logistics_accessibility_index", {}),
+                "financing_feasibility": ci.get("financing_feasibility_index", {}),
+                "tariff_benefit": best_tariff,  # réutilisé (déjà calculé ci-dessus)
+            }
+        )
+
+    # Classement final : par score de bout en bout (corridor exécutable),
+    # puis par pression d'import — même logique que S2.
+    opportunities.sort(
+        key=lambda o: ((o["end_to_end_score"] or 0), (o["import_pressure"] or 0)),
+        reverse=True,
+    )
+
+    return {
+        "report_type": "import_opportunities",
+        "scenario": "S4_best_imports_for_country",
+        "inputs": {
+            "destination_iso3": dest,
+            "top_k": top_k,
+            "goods_value_usd": goods_value_usd,
+        },
+        "ranked_opportunities": opportunities,
+        "products_scanned": len(products),
+        "candidates_retained": len(candidates),
+        "deep_dived": len(opportunities),
+        "data_quality": {
+            "is_estimation": True,
+            "note": (
+                "Produits classés par part de besoin non couvert (besoin estimé − "
+                "production locale enregistrée) puis par pression d'import (besoin / "
+                "offre continentale, sans unité). Le meilleur fournisseur est choisi "
+                "par avantage tarifaire RÉEL (même moteur que le calculateur : "
+                "réciprocité, unions douanières) puis par poids de production. Les "
+                "besoins sont des estimations transparentes ; production locale "
+                "absente du référentiel = étiquetée non enregistrée, jamais un zéro "
+                "mesuré."
             ),
         },
     }
