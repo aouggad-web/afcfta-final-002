@@ -27,6 +27,7 @@ Usage :
     python3 scripts/build_production_faostat_usgs.py --faostat-only
     python3 scripts/build_production_faostat_usgs.py --usgs-path /path/to/mcs2024.xlsx
 """
+
 from __future__ import annotations
 
 import argparse
@@ -235,6 +236,53 @@ FAOSTAT_ITEM_TO_COMMODITY: dict[str, str] = {
     "Teff": "Teff",
     "Beans, dry": "Beans",
     "Soyabeans": "Soybeans",
+    # ── Élargissement : cultures africaines à fort potentiel d'export ──
+    # (noms FAOSTAT QCL modernes ET anciens pour maximiser les correspondances ;
+    #  un item absent du bulk est simplement ignoré, jamais inventé.)
+    "Mangoes, guavas and mangosteens": "Mangoes",
+    "Mangoes": "Mangoes",
+    "Avocados": "Avocados",
+    "Grapes": "Grapes",
+    "Watermelons": "Watermelons",
+    "Papayas": "Papayas",
+    "Ginger, raw": "Ginger",
+    "Ginger": "Ginger",
+    "Garlic": "Garlic",
+    "Sweet potatoes": "Sweet potatoes",
+    "Cabbages": "Cabbages",
+    "Cabbages and other brassicas": "Cabbages",
+    "Carrots and turnips": "Carrots",
+    "Eggplants (aubergines)": "Eggplants",
+    "Okra": "Okra",
+    "Cucumbers and gherkins": "Cucumbers",
+    "Lettuce and chicory": "Lettuce",
+    "Spinach": "Spinach",
+    "Cauliflowers and broccoli": "Cauliflowers",
+    "Lentils": "Lentils",
+    "Lentils, dry": "Lentils",
+    "Chick peas": "Chickpeas",
+    "Chick peas, dry": "Chickpeas",
+    "Peas, dry": "Peas",
+    "Pigeon peas": "Pigeon peas",
+    "Pigeon peas, dry": "Pigeon peas",
+    "Rape or colza seed": "Rapeseed",
+    "Rapeseed": "Rapeseed",
+    "Linseed": "Linseed",
+    "Karite nuts (sheanuts)": "Shea nuts",
+    "Sheanuts": "Shea nuts",
+    "Kola nuts": "Kola nuts",
+    "Pepper (Piper spp.), raw": "Pepper",
+    "Chillies and peppers, dry (Capsicum spp., Pimenta spp.), raw": "Chillies and peppers",
+    "Chillies and peppers, green (Capsicum spp. and Pimenta spp.)": "Chillies and peppers",
+    "Almonds, in shell": "Almonds",
+    "Apples": "Apples",
+    "Oats": "Oats",
+    "Oranges": "Oranges",
+    "Lemons and limes": "Lemons and limes",
+    "Raw milk of cattle": "Cattle milk",
+    "Hen eggs in shell, fresh": "Hen eggs",
+    "Meat of cattle with the bone, fresh or chilled": "Cattle meat",
+    "Meat of chickens, fresh or chilled": "Chicken meat",
 }
 
 # Codes FAOSTAT par commodity (pour traçabilité)

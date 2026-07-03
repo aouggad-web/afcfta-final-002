@@ -69,6 +69,54 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("1510", "agri", "Olives"),
     ("4001", "agri", "Rubber"),
     ("3301", "agri", "Ylang-ylang"),
+    # ── Agriculture : produits déjà présents dans les données FAOSTAT mais
+    #    sans correspondance HS jusqu'ici (résolus désormais par le module
+    #    Opportunités). Codes HS6 spécifiques d'abord (préfixe le plus long gagne).
+    ("080390", "agri", "Bananas"),  # bananes (hors plantains 080310)
+    ("080430", "agri", "Pineapples"),  # ananas (0804=dattes en repli)
+    ("070310", "agri", "Onions"),  # oignons et échalotes
+    ("0702", "agri", "Tomatoes"),  # tomates
+    ("1201", "agri", "Soybeans"),  # fèves de soja
+    ("1206", "agri", "Sunflower seed"),  # graines de tournesol
+    ("071430", "agri", "Yam"),  # ignames
+    ("071333", "agri", "Beans"),  # haricots (Phaseolus)
+    ("5201", "agri", "Seed cotton"),  # coton (fibre) — proxy coton graine
+    ("0603", "agri", "Cut flowers"),  # fleurs coupées
+    ("130120", "agri", "Gum arabic"),  # gomme arabique
+    ("0910", "agri", "Ginger"),  # gingembre/épices
+    ("0708", "agri", "Beans"),  # légumineuses à cosse fraîches
+    # ── Cultures ajoutées (importées au prochain build FAOSTAT ; HS spécifiques) ──
+    ("080450", "agri", "Mangoes"),  # mangues, goyaves
+    ("080440", "agri", "Avocados"),  # avocats
+    ("0806", "agri", "Grapes"),  # raisins
+    ("080711", "agri", "Watermelons"),  # pastèques
+    ("080720", "agri", "Papayas"),  # papayes
+    ("070320", "agri", "Garlic"),  # ail
+    ("071420", "agri", "Sweet potatoes"),  # patates douces
+    ("0704", "agri", "Cabbages"),  # choux
+    ("070610", "agri", "Carrots"),  # carottes
+    ("070930", "agri", "Eggplants"),  # aubergines
+    ("070999", "agri", "Okra"),  # gombo
+    ("0707", "agri", "Cucumbers"),  # concombres
+    ("0705", "agri", "Lettuce"),  # laitue
+    ("071340", "agri", "Lentils"),  # lentilles
+    ("071320", "agri", "Chickpeas"),  # pois chiches
+    ("071310", "agri", "Peas"),  # pois secs
+    ("071360", "agri", "Pigeon peas"),  # pois d'Angole
+    ("1205", "agri", "Rapeseed"),  # colza
+    ("1204", "agri", "Linseed"),  # lin
+    ("120799", "agri", "Shea nuts"),  # karité
+    ("080270", "agri", "Kola nuts"),  # noix de kola
+    ("0904", "agri", "Pepper"),  # poivre/piments
+    ("080211", "agri", "Almonds"),  # amandes
+    ("080810", "agri", "Apples"),  # pommes
+    ("1004", "agri", "Oats"),  # avoine
+    ("080510", "agri", "Oranges"),  # oranges (sous-position de 0805 Citrus)
+    ("0401", "agri", "Cattle milk"),  # lait de vache
+    ("0407", "agri", "Hen eggs"),  # œufs
+    ("0201", "agri", "Cattle meat"),  # viande bovine
+    ("0202", "agri", "Cattle meat"),
+    ("0207", "agri", "Chicken meat"),  # viande de volaille
     # ── Hydrocarbures & Mines (USGS) ──
     ("2709", "mining", "Crude oil"),
     ("2710", "mining", "Crude oil"),
@@ -108,21 +156,59 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2614", "mining", "Ilmenite"),
 ]
 
-# Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large
+# Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large.
+# Couvre les grands secteurs manufacturiers (UNIDO, valeur ajoutée) et agro/mines.
 HS_CHAPTER_FALLBACK: Dict[str, Tuple[str, str]] = {
     "09": ("agri", "Coffee"),
     "10": ("agri", "Maize (corn)"),
     "18": ("agri", "Cocoa beans"),
     "27": ("mining", "Crude oil"),
     "71": ("mining", "Gold"),
+    # Métallurgie de base (UNIDO)
     "72": ("manufacturing", "Manufacture of basic metals"),
     "73": ("manufacturing", "Manufacture of basic metals"),
     "74": ("manufacturing", "Manufacture of basic metals"),
+    "75": ("manufacturing", "Manufacture of basic metals"),
     "76": ("manufacturing", "Manufacture of basic metals"),
+    "78": ("manufacturing", "Manufacture of basic metals"),
+    "79": ("manufacturing", "Manufacture of basic metals"),
+    # Agro-alimentaire (UNIDO)
     "16": ("manufacturing", "Manufacture of food products"),
     "19": ("manufacturing", "Manufacture of food products"),
     "20": ("manufacturing", "Manufacture of food products"),
     "21": ("manufacturing", "Manufacture of food products"),
+    "22": ("manufacturing", "Manufacture of beverages"),
+    # Chimie & pharmacie (UNIDO)
+    "28": ("manufacturing", "Manufacture of chemicals"),
+    "29": ("manufacturing", "Manufacture of chemicals"),
+    "30": ("manufacturing", "Produits pharmaceutiques"),
+    "31": ("manufacturing", "Manufacture of chemicals"),
+    "32": ("manufacturing", "Manufacture of chemicals"),
+    "33": ("manufacturing", "Manufacture of chemicals"),
+    "34": ("manufacturing", "Manufacture of chemicals"),
+    "38": ("manufacturing", "Manufacture of chemicals"),
+    # Caoutchouc & plastiques (UNIDO)
+    "39": ("manufacturing", "Caoutchouc et plastiques"),
+    "40": ("manufacturing", "Caoutchouc et plastiques"),
+    # Textiles & habillement (UNIDO)
+    "50": ("manufacturing", "Manufacture of textiles"),
+    "51": ("manufacturing", "Manufacture of textiles"),
+    "52": ("manufacturing", "Manufacture of textiles"),
+    "53": ("manufacturing", "Manufacture of textiles"),
+    "54": ("manufacturing", "Manufacture of textiles"),
+    "55": ("manufacturing", "Manufacture of textiles"),
+    "56": ("manufacturing", "Manufacture of textiles"),
+    "57": ("manufacturing", "Manufacture of textiles"),
+    "58": ("manufacturing", "Manufacture of textiles"),
+    "59": ("manufacturing", "Manufacture of textiles"),
+    "60": ("manufacturing", "Manufacture of textiles"),
+    "61": ("manufacturing", "Articles d'habillement"),
+    "62": ("manufacturing", "Articles d'habillement"),
+    "63": ("manufacturing", "Articles d'habillement"),
+    # Électronique & équipements électriques (UNIDO)
+    "85": ("manufacturing", "Produits électroniques"),
+    # Véhicules automobiles (UNIDO)
+    "87": ("manufacturing", "Manufacture of motor vehicles"),
 }
 
 DATASET_KEY = {
