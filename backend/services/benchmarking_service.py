@@ -237,31 +237,82 @@ def benchmark_infrastructure(destination_iso3: str, lang: str = "fr") -> Dict:
     }
 
 
+def _resolve_hs6(destination_iso3: str, code: str):
+    """
+    Resolve a product code to an HS6 sub-heading in the destination's schedule.
+
+    Returns ``(hs6, resolved)`` — ``resolved`` is True when a shorter (HS4/HS5)
+    input was widened to a real HS6 line found under its prefix, or padded as a
+    last resort. Returns ``(None, False)`` for an empty code.
+    """
+    clean = "".join(ch for ch in (code or "") if ch.isdigit())
+    if not clean:
+        return None, False
+    if len(clean) >= 6:
+        return clean[:6], False
+    # Find a real HS6 line whose code starts with the given HS4/HS5 prefix.
+    try:
+        from services.authentic_tariff_service import load_country_tariffs
+
+        data = load_country_tariffs(destination_iso3) or {}
+        hs6s = sorted(
+            {
+                (ln.get("hs6") or "")
+                for ln in data.get("tariff_lines", [])
+                if (ln.get("hs6") or "").startswith(clean)
+            }
+            - {""}
+        )
+        if hs6s:
+            return hs6s[0], True
+    except Exception:  # pragma: no cover - defensive
+        pass
+    # Last resort: pad with zeros (may not exist -> caller degrades gracefully).
+    return clean.ljust(6, "0"), True
+
+
 def tariff_benefit_analysis(
     origin_iso3: str,
     destination_iso3: str,
     hs_code: str,
 ) -> Dict:
     """
-    Computes the REAL tariff advantage under ZLECAf vs the national (MFN) rate.
+    Computes the REAL tariff advantage of the preferential regime applicable to
+    the ORIGIN/DESTINATION pair vs the national (MFN) rate.
 
-    The tariff applied is the *destination* (importer) country's duty. We read
-    the national duty rate (``dd_rate``) and the ZLECAf preferential rate
-    (``zlecaf_rate``) straight from the platform's authentic tariff dataset
-    (same source the calculator uses — national schedules + ZLECAf dismantlement).
+    The tariff applied is the *destination* (importer) country's duty. The
+    national duty rate (``dd_rate``) comes straight from the platform's
+    authentic tariff dataset, and the preferential rate goes through the SAME
+    regime resolution as the calculator (``resolve_zlecaf_context``): customs
+    unions, continental ratification, bilateral activation (Algeria grants
+    ZLECAf rates to its active partners only — DGD circular 482/2024 — and
+    South Africa to its activated partners). An origin outside those lists
+    gets the MFN rate, hence a ZERO advantage — never the generic line rate.
 
     No fabrication: if the destination has no tariff line for the product, the
     block is returned ``available: False`` — never an invented rate.
 
     Returns: {
-        available, zlecaf_rate_pct, national_rate_pct, tariff_advantage_pct,
-        savings_per_1000usd, tariff_advantage_index (0-1), narrative, source
+        available, zlecaf_rate_pct (= applied preferential rate),
+        national_rate_pct, tariff_advantage_pct, savings_per_1000usd,
+        tariff_advantage_index (0-1), trade_regime, trade_regime_note,
+        narrative, source
     }
     """
+    # Tariff schedules are keyed at HS6. Resolve a shorter (HS4/HS5) code to a real
+    # HS6 sub-heading under that prefix (or pad as a last resort) so the lookup
+    # succeeds. hs6_resolved flags that the input was widened, for transparency.
+    hs6, hs6_resolved = _resolve_hs6(destination_iso3, hs_code)
+    if not hs6:
+        return {
+            "available": False,
+            "note": "Code produit invalide pour la recherche tarifaire.",
+            "source": "authentic_tariff_service",
+        }
     try:
         from services.authentic_tariff_service import get_tariff_line
 
-        line = get_tariff_line(destination_iso3, hs_code)
+        line = get_tariff_line(destination_iso3, hs6)
     except Exception as exc:
         _log.warning("tariff benefit analysis unavailable: %s", exc)
         return {"available": False, "note": str(exc)}
@@ -270,7 +321,7 @@ def tariff_benefit_analysis(
         return {
             "available": False,
             "note": (
-                f"Aucune ligne tarifaire pour {destination_iso3.upper()}/{hs_code} "
+                f"Aucune ligne tarifaire pour {destination_iso3.upper()}/{hs6} "
                 "dans le barème national ; avantage tarifaire non calculable."
             ),
             "source": "authentic_tariff_service",
@@ -284,31 +335,86 @@ def tariff_benefit_analysis(
             "note": "Taux de droit de douane national indisponible pour ce produit.",
             "source": "authentic_tariff_service",
         }
-    # A missing ZLECAf rate is treated as 0 % — the AfCFTA end-state preferential
-    # rate for the vast majority of tariff lines (full dismantlement target). This
-    # is a documented modelling assumption, not a measured value.
-    zlecaf = float(zlecaf) if zlecaf is not None else 0.0
     national = float(national)
 
-    advantage = max(national - zlecaf, 0.0)
+    # Résolution du régime préférentiel réellement applicable à la paire
+    # origine/destination — même source de vérité que le calculateur
+    # (activation bilatérale DZA/ZAF, unions douanières, ratification).
+    try:
+        from services.authentic_tariff_service import resolve_zlecaf_context
+
+        ctx = resolve_zlecaf_context(
+            destination_iso3,
+            origin_iso3,
+            hs6,
+            national,
+            float(zlecaf) if zlecaf is not None else None,
+        )
+    except Exception as exc:
+        _log.warning("preferential regime resolution failed: %s", exc)
+        return {
+            "available": False,
+            "note": f"Régime préférentiel non résolu ({exc}) ; avantage non calculable.",
+            "source": "authentic_tariff_service",
+        }
+
+    regime = ctx["trade_regime"]
+    applied = ctx["dd_rate_pct"]
+    assumed_end_state = False
+    if applied is None:
+        if regime == "ZLECAF":
+            # A missing ZLECAf rate on the line is treated as 0 % — the AfCFTA
+            # end-state preferential rate for the vast majority of tariff lines
+            # (full dismantlement target). Documented modelling assumption.
+            applied = 0.0
+            assumed_end_state = True
+        else:
+            applied = national
+    applied = float(applied)
+
+    advantage = max(national - applied, 0.0)
     savings = (advantage / 100.0) * 1000  # USD saved per 1000 USD CIF
     # Normalised contribution to composite reward (a 20% duty saving -> 1.0).
     advantage_index = round(min(advantage / 20.0, 1.0), 3)
 
-    narrative = (
-        f"Avantage tarifaire ZLECAf pour {destination_iso3.upper()} : "
-        f"{advantage:.1f} % (droit national {national:.1f} % → ZLECAf {zlecaf:.1f} %), "
-        f"soit {savings:.0f} $ économisés par 1 000 $ CIF"
-    )
+    regime_note = ctx.get("trade_regime_note")
+    if regime in ("ZLECAF", "CUSTOMS_UNION"):
+        regime_label = "ZLECAf" if regime == "ZLECAF" else "union douanière"
+        narrative = (
+            f"Avantage tarifaire {regime_label} pour "
+            f"{origin_iso3.upper()} → {destination_iso3.upper()} : "
+            f"{advantage:.1f} % (droit national {national:.1f} % → {applied:.1f} %), "
+            f"soit {savings:.0f} $ économisés par 1 000 $ CIF"
+        )
+    else:
+        narrative = (
+            f"Aucun avantage tarifaire pour {origin_iso3.upper()} → "
+            f"{destination_iso3.upper()} : "
+            + (regime_note or f"taux NPF {national:.1f} % appliqué")
+        )
+
+    note = "Tarif indicatif au niveau HS6 ; vérifier la sous-position nationale exacte."
+    if assumed_end_state:
+        note = (
+            "Taux ZLECAf de la ligne absent — hypothèse de démantèlement total (0 %) "
+            "documentée. " + note
+        )
+    if hs6_resolved:
+        note = f"Code élargi en sous-position HS6 {hs6} pour la recherche tarifaire. " + note
 
     return {
         "available": True,
+        "hs6_used": hs6,
+        "hs6_resolved": hs6_resolved,
         "national_rate_pct": national,
-        "zlecaf_rate_pct": zlecaf,
+        "zlecaf_rate_pct": applied,
         "tariff_advantage_pct": round(advantage, 2),
         "savings_per_1000usd": round(savings, 2),
         "tariff_advantage_index": advantage_index,
+        "trade_regime": regime,
+        "trade_regime_code": ctx.get("trade_regime_code"),
+        "trade_regime_note": regime_note,
         "narrative": narrative,
         "source": line.get("dd_source") or "authentic_tariff_service (barème national + ZLECAf)",
-        "note": "Tarif indicatif au niveau HS6 ; vérifier la sous-position nationale exacte.",
+        "note": note,
     }

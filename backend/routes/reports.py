@@ -32,6 +32,14 @@ async def opportunity_report(
         default="standard",
         description="Mode rapport : 'standard' (indicateurs + scores) ou 'ultra_fine' (+ narrative + benchmarking + segmentation)",
     ),
+    with_market_potential: bool = Query(
+        default=True,
+        description=(
+            "Activer la composante potentiel de marché via les imports OEC réels "
+            "du marché destination (1 requête OEC). Dégrade gracieusement si OEC "
+            "injoignable."
+        ),
+    ),
 ):
     """
     Compose supply (production), logistics (multimodal freight), finance & macro
@@ -45,8 +53,25 @@ async def opportunity_report(
     - Segmentation : matrices effort/impact et risque/récompense, factor breakdown,
       priority tier (QUICK_WIN, STRATEGIC_BET, etc.)
 
+    Le potentiel de marché (demande OEC du marché destination) alimente le score
+    quand ``with_market_potential`` est actif et l'OEC répond ; sinon il est exclu
+    (jamais inventé).
+
     Tous les chiffres sont réels ou flaggés indisponibles (zéro fabrication).
     """
+    # Fetch the destination's real imports of the product (single OEC request) to
+    # activate the market-potential component. Gracefully None if OEC is blocked.
+    market_imports = None
+    if with_market_potential:
+        try:
+            from services.real_trade_data_service import real_trade_service
+
+            market_imports = await real_trade_service.get_country_product_imports(
+                destination, hs_code
+            )
+        except Exception:  # OEC unavailable -> component stays excluded
+            market_imports = None
+
     if mode == "ultra_fine":
         return report_engine.get_opportunity_report_ultra_fine(
             hs_code=hs_code,
@@ -55,6 +80,7 @@ async def opportunity_report(
             goods_value_usd=goods_value_usd,
             weight_kg=weight_kg,
             volume_m3=volume_m3,
+            market_imports=market_imports,
         )
     else:
         return report_engine.get_opportunity_report(
@@ -64,6 +90,7 @@ async def opportunity_report(
             goods_value_usd=goods_value_usd,
             weight_kg=weight_kg,
             volume_m3=volume_m3,
+            market_imports=market_imports,
         )
 
 
@@ -121,6 +148,35 @@ async def transformation_scenario(
     )
 
 
+@router.get("/direct-export", summary="Scénario S2 : production → export direct (marchés classés)")
+async def direct_export_scenario(
+    hs_code: str = Query(..., description="Code SH du produit"),
+    producer: str = Query(..., description="Pays producteur/exportateur (ISO3)"),
+    top_k: int = Query(
+        default=5, ge=1, le=15, description="Nombre de marchés à analyser en profondeur"
+    ),
+    goods_value_usd: Optional[float] = Query(default=None, description="Valeur FOB (USD)"),
+    weight_kg: float = Query(default=21600.0, description="Poids de l'expédition (kg)"),
+    volume_m3: float = Query(default=33.5, description="Volume de l'expédition (m³)"),
+):
+    """
+    Pour un producteur d'un produit : **quels marchés africains viser en export ?**
+    Classe les marchés par besoin estimé (proxy population / consommation
+    apparente), puis analyse en profondeur les ``top_k`` plus gros (logistique,
+    finance, tarif ZLECAf réel, score de bout en bout) et les ordonne par score.
+
+    Données réelles ou marquées indisponibles ; besoins étiquetés comme estimations.
+    """
+    return report_engine.get_direct_export_scenario(
+        hs_code=hs_code,
+        producer_iso3=producer,
+        top_k=top_k,
+        goods_value_usd=goods_value_usd,
+        weight_kg=weight_kg,
+        volume_m3=volume_m3,
+    )
+
+
 @router.get("/national-need", summary="Estimation du besoin national d'un produit")
 async def national_need(
     hs_code: str = Query(..., description="Code SH du produit (HS6 ou HS4)"),
@@ -131,8 +187,9 @@ async def national_need(
     with_observed_imports: bool = Query(
         default=False,
         description=(
-            "Ajouter le signal d'import observé (OEC). Coûteux (~54 requêtes OEC) "
-            "et supplémentaire — désactivé par défaut."
+            "Ajouter le signal d'import observé (OEC) du pays. Passe par le canal "
+            "OEC partagé avec le module Statistiques (cache persistant) — "
+            "désactivé par défaut pour rester indépendant du réseau."
         ),
     ),
 ):
@@ -145,26 +202,29 @@ async def national_need(
     Toute valeur estimée est marquée ``is_estimation:true`` avec formule, intrants
     et sources — jamais présentée comme mesurée, jamais inventée.
 
-    Le signal d'import observé (OEC) est **opt-in** (``with_observed_imports``) car
-    il déclenche ~54 requêtes OEC ; il n'affecte jamais l'estimation elle-même.
+    Le signal d'import observé (OEC) est **opt-in** (``with_observed_imports``) ;
+    il n'affecte jamais l'estimation elle-même. Il interroge le pays demandé
+    uniquement (plus de fan-out 54 pays), via le même client OEC que la recherche
+    SH2/SH4/SH6 du module Statistiques : cache persistant partagé, servi même si
+    l'OEC est momentanément injoignable (stale-on-error).
     """
     from services import demand_estimation_service as demand
 
-    # Observed-imports is a supplemental signal only, and expensive (OEC fan-out).
-    # Off by default so the estimate stays fast and never depends on OEC.
+    # Observed-imports is a supplemental signal only. Off by default so the
+    # estimate stays fast and never depends on OEC. Single-country request via
+    # the OEC channel shared with the statistics module (persistent cache).
     observed_imports = None
     if with_observed_imports:
         try:
             from services.real_trade_data_service import real_trade_service
 
-            importers = await real_trade_service.get_african_importers_for_product(hs_code)
-            for m in importers or []:
-                if (m.get("country_iso3") or "").upper() == country.upper():
-                    observed_imports = {
-                        "import_value_usd": m.get("import_value"),
-                        "source": "OEC / UN Comtrade (BACI)",
-                    }
-                    break
+            imp = await real_trade_service.get_country_product_imports(country, hs_code)
+            if imp and imp.get("available"):
+                observed_imports = {
+                    "import_value_usd": imp.get("import_value_usd"),
+                    "year": imp.get("year"),
+                    "source": imp.get("source") or "OEC / UN Comtrade (BACI)",
+                }
         except Exception:  # OEC unavailable -> no observed-imports signal
             observed_imports = None
 

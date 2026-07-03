@@ -163,6 +163,31 @@ def _no_network_fx(monkeypatch):
     )
 
 
+def test_market_component_normalisation():
+    # 100 M$ imports -> subscore 1.0 ; unavailable stays excluded (no fabrication).
+    full = report_engine._market_component({"available": True, "import_value_usd": 100_000_000})
+    assert full["available"] is True and full["subscore"] == 1.0
+    half = report_engine._market_component({"available": True, "import_value_usd": 50_000_000})
+    assert half["subscore"] == 0.5
+    assert report_engine._market_component(None)["available"] is False
+
+
+def test_market_potential_counts_in_score_when_provided(_no_network_fx):
+    # With OEC market imports injected, market_potential is counted in the E2E score.
+    rep = report_engine.get_opportunity_report(
+        "1801",
+        "CIV",
+        "NGA",
+        goods_value_usd=50000.0,
+        market_imports={"available": True, "import_value_usd": 80_000_000},
+    )
+    e2e = rep["composite_indicators"]["end_to_end_score"]
+    mp = next(b for b in e2e["breakdown"] if b["component"] == "market_potential")
+    assert mp["counted"] is True
+    assert mp["subscore"] == 0.8
+    assert rep["market_potential"]["available"] is True
+
+
 def test_opportunity_report_structure(_no_network_fx):
     rep = report_engine.get_opportunity_report("1801", "CIV", "NGA", goods_value_usd=50000.0)
     assert rep["report_type"] == "bilateral_product_opportunity"
@@ -347,6 +372,154 @@ def test_tariff_benefit_real_rates():
     assert res["tariff_advantage_pct"] != 8.5
 
 
+def test_tariff_hs4_resolves_to_hs6():
+    from services import benchmarking_service as benchmark
+
+    # HS4 "1801" must resolve to a real HS6 sub-heading and return the real tariff.
+    hs6, resolved = benchmark._resolve_hs6("NGA", "1801")
+    assert hs6 == "180100" and resolved is True
+    res = benchmark.tariff_benefit_analysis("CIV", "NGA", "1801")
+    assert res["available"] is True
+    assert res["hs6_used"] == "180100"
+    assert res["hs6_resolved"] is True
+    assert res["tariff_advantage_pct"] == 5.0
+
+
+def test_tariff_dza_no_zlecaf_for_non_active_partner():
+    from services import benchmarking_service as benchmark
+
+    # L'Algérie n'accorde les taux ZLECAf qu'à ses 9 partenaires actifs
+    # (réciprocité, circulaire DGD 482/2024). GNB n'en fait pas partie :
+    # cajou 080131 -> taux NPF 30 %, avantage NUL (régression corrigée :
+    # le rapport affichait 30 % -> 0 %).
+    res = benchmark.tariff_benefit_analysis("GNB", "DZA", "080131")
+    assert res["available"] is True
+    assert res["national_rate_pct"] == 30.0
+    assert res["zlecaf_rate_pct"] == 30.0
+    assert res["tariff_advantage_pct"] == 0.0
+    assert res["tariff_advantage_index"] == 0.0
+    assert res["trade_regime"] == "NPF"
+    assert "non encore activé" in (res["trade_regime_note"] or "")
+
+
+def test_tariff_dza_zlecaf_for_active_partner():
+    from services import benchmarking_service as benchmark
+
+    # EGY est un partenaire actif de l'Algérie : le calendrier de
+    # démantèlement DZA s'applique (liste A, calendrier standard -> 0 % dès
+    # 2025), exactement comme dans le calculateur.
+    res = benchmark.tariff_benefit_analysis("EGY", "DZA", "080131")
+    assert res["available"] is True
+    assert res["trade_regime"] == "ZLECAF"
+    assert res["national_rate_pct"] == 30.0
+    assert res["zlecaf_rate_pct"] == 0.0
+    assert res["tariff_advantage_pct"] == 30.0
+
+
+def test_tariff_customs_union_pair():
+    from services import benchmarking_service as benchmark
+
+    # BFA et CIV sont tous deux UEMOA : libre circulation (0 %), régime
+    # prioritaire sur la ZLECAf.
+    res = benchmark.tariff_benefit_analysis("BFA", "CIV", "180100")
+    assert res["available"] is True
+    assert res["trade_regime"] == "CUSTOMS_UNION"
+    assert res["zlecaf_rate_pct"] == 0.0
+    assert res["tariff_advantage_pct"] == res["national_rate_pct"]
+
+
+def test_segmentation_tariff_factor_gives_real_reason_when_no_advantage():
+    from services import segmentation_service as segmentation
+
+    report = {
+        "tariff_benefit": {
+            "available": True,
+            "tariff_advantage_pct": 0.0,
+            "tariff_advantage_index": 0.0,
+            "national_rate_pct": 30.0,
+            "zlecaf_rate_pct": 30.0,
+            "trade_regime": "NPF",
+            "trade_regime_note": (
+                "ZLECAf non encore activé pour GNB à l'import en Algérie "
+                "(circulaire DGD 482/2024) — taux NPF appliqué"
+            ),
+        }
+    }
+    factors = segmentation.factor_breakdown(report)
+    tf = next(f for f in factors if f["factor"] == "tariff_advantage")
+    assert tf["category"] == "neutral"
+    assert "non encore activé" in tf["rationale"]
+
+
+def test_country_product_imports_uses_stats_channel(monkeypatch):
+    """Le module Opportunités lit les imports OEC via le MÊME canal que la
+    recherche SH2/4/6 du module Statistiques (cache persistant partagé)."""
+    import asyncio
+
+    from services.real_trade_data_service import real_trade_service
+
+    async def fake_history(**kwargs):
+        assert kwargs["country_iso3"] == "DZA"
+        assert kwargs["level"] == "hs6"
+        return {
+            "chart_rows": [
+                {"year": 2022, "exports": 0, "imports": 500000.0},
+                {"year": 2024, "exports": 0, "imports": 750000.0},
+                {"year": 2023, "exports": 0, "imports": 0},
+            ],
+            "source": "OEC / BACI (HS Rev. 2017)",
+        }
+
+    monkeypatch.setattr(
+        "services.oec_trade_service.oec_service.get_country_hs6_history", fake_history
+    )
+    res = asyncio.run(real_trade_service.get_country_product_imports("DZA", "080131"))
+    assert res["available"] is True
+    # Dernière année avec des imports observés (2023 = 0 est sautée).
+    assert res["import_value_usd"] == 750000.0
+    assert res["year"] == 2024
+    assert "Statistiques" in res["channel"]
+
+
+def test_country_product_imports_falls_back_to_direct(monkeypatch):
+    """Si le canal Statistiques est indisponible, repli sur la requête OEC
+    directe historique — jamais de valeur fabriquée."""
+    import asyncio
+
+    from services import real_trade_data_service as rt
+
+    async def broken_history(**kwargs):
+        raise RuntimeError("stats channel down")
+
+    monkeypatch.setattr(
+        "services.oec_trade_service.oec_service.get_country_hs6_history", broken_history
+    )
+
+    class _Resp:
+        status_code = 200
+
+        def json(self):
+            return {"data": [{"HS6 ID": "1080131", "Trade Value": 1234.0}]}
+
+    class _Client:
+        def __init__(self, *a, **k):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *a):
+            return False
+
+        async def get(self, *a, **k):
+            return _Resp()
+
+    monkeypatch.setattr(rt.httpx, "AsyncClient", _Client)
+    res = asyncio.run(rt.real_trade_service.get_country_product_imports("DZA", "080131"))
+    assert res["available"] is True
+    assert res["import_value_usd"] == 1234.0
+
+
 def test_tariff_benefit_zero_when_no_duty():
     from services import benchmarking_service as benchmark
 
@@ -498,6 +671,14 @@ def test_national_need_level2_population_proxy():
     assert len(res["sources"]) >= 2
 
 
+def test_national_need_suggests_supplier():
+    from services import demand_estimation_service as demand
+
+    # NGA cocoa -> suggested supplier is the #1 African producer (CIV), not NGA.
+    res = demand.estimate_national_need("180100", "NGA")
+    assert res["suggested_supplier"]["iso3"] == "CIV"
+
+
 def test_national_need_level1_measured_when_apparent_given():
     from services import demand_estimation_service as demand
 
@@ -609,6 +790,42 @@ def test_benchmark_cost_non_leader_unavailable():
     res = benchmark.benchmark_cost("GHA", "1801", "NGA", landed_cost_usd=100000)
     assert res["available"] is False
     assert res.get("gap_pct") is None
+
+
+def test_direct_export_scenario_ranks_markets(_no_network_fx):
+    # CIV produces cocoa (1801) -> rank candidate export markets.
+    rep = report_engine.get_direct_export_scenario(
+        "1801",
+        "CIV",
+        candidate_destinations=["NGA", "EGY", "ZAF"],
+        top_k=3,
+        goods_value_usd=50000.0,
+    )
+    assert rep["report_type"] == "value_chain_direct_export"
+    assert rep["scenario"] == "S2_produce_export_direct"
+    assert rep["producer_supply"]["available"] is True  # CIV is a real cocoa producer
+    opps = rep["ranked_opportunities"]
+    assert len(opps) == 3
+    # Producer must never appear as its own destination
+    assert all(o["destination_iso3"] != "CIV" for o in opps)
+    # Each opportunity carries a real bilateral landed cost + tariff block
+    assert all("landed_cost" in o and "tariff_benefit" in o for o in opps)
+    # Ranking is by export score desc (None treated as 0)
+    scores = [o["end_to_end_score"] or 0 for o in opps]
+    assert scores == sorted(scores, reverse=True)
+
+
+def test_direct_export_empty_candidates_stays_empty():
+    # Explicit empty list must NOT fall back to the full 54-market set.
+    rep = report_engine.get_direct_export_scenario("1801", "CIV", candidate_destinations=[])
+    assert rep["candidates_considered"] == 0
+    assert rep["deep_dived"] == 0
+
+
+def test_direct_export_default_candidates_exclude_producer():
+    rep = report_engine.get_direct_export_scenario("1801", "CIV", top_k=1)
+    assert rep["candidates_considered"] > 40  # ~54 African markets minus CIV
+    assert rep["deep_dived"] == 1
 
 
 def test_transformation_scenario_structure(_no_network_fx):

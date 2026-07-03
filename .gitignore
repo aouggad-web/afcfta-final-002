@@ -80,3 +80,6 @@ engine/sources/*
 !engine/sources/README_sources.md
 # Données sources brutes FAOSTAT/USGS (téléchargées par build_production_faostat_usgs.py)
 backend/engine/sources/*
+
+# Sorties generees par backend/scripts/smoke_opportunites.py
+test_reports/
