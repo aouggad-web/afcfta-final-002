@@ -1115,11 +1115,16 @@ function ImportOpportunitiesView({ countries, fr, onAnalyze }) {
   const [rep, setRep] = useState(null);
 
   const run = async () => {
+    // Borne top_k à [1, 20] (contrainte de l'API) et normalise une saisie
+    // vide/non numérique à 6 — évite une 422 et un message générique.
+    const parsed = parseInt(topK, 10);
+    const safeTopK = Number.isNaN(parsed) ? 6 : Math.min(20, Math.max(1, parsed));
+    if (String(safeTopK) !== topK) setTopK(String(safeTopK));
     setLoading(true);
     setError(null);
     setRep(null);
     try {
-      const params = new URLSearchParams({ country, top_k: topK });
+      const params = new URLSearchParams({ country, top_k: String(safeTopK) });
       if (withImports) params.set("with_observed_imports", "true");
       const res = await axios.get(`${API}/reports/import-opportunities?${params.toString()}`);
       setRep(res.data);

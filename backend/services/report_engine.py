@@ -745,6 +745,9 @@ def get_import_opportunities_scenario(
                     ),
                     "trade_regime": tariff.get("trade_regime"),
                     "trade_regime_note": tariff.get("trade_regime_note"),
+                    # Bloc tarif complet conservé pour éviter un recalcul du
+                    # meilleur fournisseur plus bas (non sérialisé dans la réponse).
+                    "_tariff": tariff,
                 }
             )
         # Meilleur fournisseur : avantage tarifaire réel d'abord (le régime
@@ -757,6 +760,10 @@ def get_import_opportunities_scenario(
                 (s["production_share_pct"] or 0),
             ),
         )
+        best_tariff = best.pop("_tariff")
+        # Retirer le bloc tarif complet des autres fournisseurs (réponse allégée).
+        for s in judged_suppliers:
+            s.pop("_tariff", None)
 
         report = get_opportunity_report(
             hs, best["country_iso3"], dest, goods_value_usd, weight_kg, volume_m3
@@ -773,9 +780,7 @@ def get_import_opportunities_scenario(
                 "landed_cost": ci.get("landed_cost", {}),
                 "logistics_accessibility": ci.get("logistics_accessibility_index", {}),
                 "financing_feasibility": ci.get("financing_feasibility_index", {}),
-                "tariff_benefit": benchmarking_service.tariff_benefit_analysis(
-                    best["country_iso3"], dest, hs
-                ),
+                "tariff_benefit": best_tariff,  # réutilisé (déjà calculé ci-dessus)
             }
         )
 
