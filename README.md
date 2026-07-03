@@ -331,6 +331,17 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 
 ## 🔍 Quick Start
 
+### Local backend setup
+
+Create a virtual environment and install the backend dependencies from the
+repository root:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r backend/requirements.txt
+```
+
 ### Check API Health
 
 ```bash
