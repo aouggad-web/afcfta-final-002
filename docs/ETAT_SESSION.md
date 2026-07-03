@@ -32,7 +32,11 @@
 - **Canal OEC unifié Statistiques ↔ Opportunités (cette session)** : le module Opportunités lisait l'OEC via son propre client (`real_trade_data_service`, cache mémoire 1 h) alors que la recherche SH2/4/6 du module Statistiques a un client avec **cache persistant + stale-on-error** (`oec_trade_service`) dont une réponse par (pays, période) sert TOUS les codes SH (filtre client-side). Désormais `get_country_product_imports` (market_potential du bilatéral + signal d'import S3) passe d'abord par ce canal partagé (repli : requête directe). S3 n'utilise plus le fan-out 54 pays (1 appel). UI : bouton « Analyser dans Opportunités ▸ » dans la recherche SH (Statistiques) → handoff sessionStorage + event `zlecaf:goto-tab` → onglet Opportunités S3 pré-rempli, signal OEC activé. +2 tests (58).
 - **Régression corrigée (cette session)** : le moteur de rapports lisait le `zlecaf_rate` générique de la ligne sans tenir compte de l'ORIGINE — il affichait 30 %→0 % pour GNB→DZA alors que le calculateur applique la réciprocité algérienne. `tariff_benefit_analysis` passe désormais par `resolve_zlecaf_context` (même source de vérité que `routes/calculator.py` : unions douanières → ratification → partenaires actifs DZA/ZAF → taux générique). Champs ajoutés : `trade_regime`, `trade_regime_code`, `trade_regime_note` ; UI et segmentation affichent la vraie raison ; +4 tests (56 au total).
 
-**Qualité :** 58 tests verts (`backend/tests/test_report_engine.py`), lint OK, discipline zéro-fabrication tenue.
+- **S4 — opportunités d'IMPORTATION par pays (cette session, branche `claude/setup-github-cli-EngUf` / PR #187)** : le miroir de S2 côté import, concrétisant l'objectif d'interconnexion (production FAOSTAT/USGS/UNIDO × besoins × tarif réel du calculateur × logistique × finance). `GET /api/reports/import-opportunities?country=DZA&top_k=6`. Passe 1 : scan des ~41 produits traçables (`list_tracked_products()`), besoin estimé vs production locale enregistrée (jamais un zéro supposé), classement par part de besoin non couvert puis pression d'import (besoin/offre continentale, sans unité). Passe 2 : top_k → fournisseur choisi par **avantage tarifaire réel** (ex. DZA : le thé va au RWA partenaire actif 30 pts, pas au plus gros producteur NPF) puis rapport bilatéral complet ; classement final par score. Option `with_observed_imports` (OEC canal partagé). UI : onglet **S4 · Importations** avec handoff « Analyser ▸ ». +3 tests (61).
+
+- **OEC 100 % gratuit — plus aucun token requis (cette session, PR #187)** : l'utilisateur n'a pas d'`OEC_API_TOKEN` → tout le module Opportunités consomme désormais l'OEC via le canal GRATUIT du module Statistiques (`api.oec.world`). Le fan-out 54 pays (`get_african_importers_for_product`, utilisé par market-seeking) est remplacé par UNE requête cachée (`oec_service.get_top_african_importers`, cut HS6 + drilldown Importer Country, repli sur le fan-out legacy). `/api/reports/oec-health` sonde d'abord le canal gratuit (`channels.statistics_free`) puis l'API directe ; token affiché comme purement optionnel. Cache : Redis si présent, sinon mémoire (stale-on-error conservé) — OK Replit. +2 tests (63).
+
+**Qualité :** 63 tests verts (`backend/tests/test_report_engine.py`), lint OK, discipline zéro-fabrication tenue.
 
 ---
 
@@ -48,7 +52,7 @@ Reprends le module Opportunités sur la branche claude/opportunites-scenario-s2 
 Lis docs/ETAT_SESSION.md puis docs/OPPORTUNITES_METHODOLOGIES.md.
 Prochaine tâche : <choisir dans la section 2>.
 ```
-- Tests : `cd backend && python -m pytest tests/test_report_engine.py -q` (58 attendus).
+- Tests : `cd backend && python -m pytest tests/test_report_engine.py -q` (63 attendus).
 - Lint : `black --line-length 100`, `isort`, `flake8` sur les fichiers touchés.
 - Lancement local : `docs/LANCER_VSCODE.md` ; depuis GitHub : `docs/EXECUTER_DEPUIS_GITHUB.md` ; appels API : `requests.http`.
 - Smoke-test : `cd backend && python -m scripts.smoke_opportunites --destination DZA`.

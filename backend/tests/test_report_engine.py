@@ -33,15 +33,26 @@ def test_gai_none_for_unknown_country():
     assert macro.get_gai("ZZZ") is None
 
 
-def test_fx_reserves_and_import_cover_degrade_gracefully_without_dataset():
-    # data/json/wb_reserves.json is not shipped (World Bank API blocked here);
-    # the accessors must flag unavailable and never invent a number.
+def test_fx_reserves_and_import_cover_degrade_gracefully_without_dataset(monkeypatch):
+    # When wb_reserves.json is absent, the accessors flag unavailable and never
+    # invent a number (deterministic: force the dataset empty).
+    monkeypatch.setattr(macro, "_WB_RESERVES", None)
+    monkeypatch.setattr(macro, "_wb_reserves", lambda: None)
     fx = macro.get_fx_reserves("NGA")
     cover = macro.get_import_cover("NGA")
     assert fx["available"] is False and fx["value_busd"] is None
     assert cover["available"] is False and cover["months"] is None
     assert fx["indicator"] == macro.WB_FX_RESERVES_INDICATOR
     assert cover["indicator"] == macro.WB_IMPORT_COVER_INDICATOR
+
+
+def test_fx_reserves_and_import_cover_available_from_committed_dataset():
+    # data/json/wb_reserves.json is now committed (real WB data via the workflow):
+    # FX reserves and import cover must be available for a covered country.
+    fx = macro.get_fx_reserves("DZA")
+    cover = macro.get_import_cover("DZA")
+    assert fx["available"] is True and fx["value_busd"] > 0
+    assert cover["available"] is True and cover["months"] > 0
 
 
 # ── Financing-feasibility index (pure, deterministic) ────────────────────────
@@ -451,6 +462,158 @@ def test_segmentation_tariff_factor_gives_real_reason_when_no_advantage():
     assert "non encore activé" in tf["rationale"]
 
 
+def test_gdp_per_capita_falls_back_to_country_profiles(monkeypatch):
+    """Sans dataset ETL wb_gdp_pc.json, le PIB/hab vient du module Profils
+    Pays (country_data.REAL_COUNTRY_DATA, déjà embarqué) — L3 marche sans réseau."""
+    from services import demand_estimation_service as d
+
+    # Simule l'absence du dataset ETL -> repli sur les Profils Pays.
+    monkeypatch.setattr(d, "_load_gdp", lambda: {})
+    res = d.get_gdp_per_capita("DZA")
+    assert res["available"] is True
+    assert res["value_usd"] > 0
+    assert "Profils Pays" in res["source"]
+
+
+def test_gdp_per_capita_prefers_etl_when_present(monkeypatch):
+    """Le dataset ETL, s'il est présent, prime sur le repli Profils Pays."""
+    from services import demand_estimation_service as d
+
+    monkeypatch.setattr(d, "_load_gdp", lambda: {"DZA": {"value": 9999.0, "year": 2025}})
+    res = d.get_gdp_per_capita("DZA")
+    assert res["value_usd"] == 9999.0
+    assert "WDI NY.GDP.PCAP.CD" in res["source"]
+
+
+def test_african_importers_use_free_stats_channel(monkeypatch):
+    """Le fan-out 54 pays est remplacé par UNE requête sur le canal OEC
+    gratuit du module Statistiques (aucun token requis)."""
+    from services.real_trade_data_service import real_trade_service
+
+    async def fake_importers(hs_code, year, limit=54):
+        assert hs_code == "180100"
+        return {
+            "data": [
+                {
+                    "country_iso3": "NGA",
+                    "country_name": "Nigéria",
+                    "hs_code": "180100",
+                    "import_value": 9_000_000.0,
+                },
+                {
+                    "country_iso3": "EGY",
+                    "country_name": "Égypte",
+                    "hs_code": "180100",
+                    "import_value": 4_000_000.0,
+                },
+            ],
+            "source": "OEC/BACI (canal gratuit du module Statistiques)",
+        }
+
+    monkeypatch.setattr(
+        "services.oec_trade_service.oec_service.get_top_african_importers", fake_importers
+    )
+    rows = asyncio.run(real_trade_service.get_african_importers_for_product("180100"))
+    assert [r["country_iso3"] for r in rows] == ["NGA", "EGY"]
+    assert rows[0]["import_value"] == 9_000_000.0
+
+
+def test_african_importers_fall_back_to_fanout(monkeypatch):
+    """Canal gratuit indisponible -> repli sur le fan-out historique."""
+    from services import real_trade_data_service as rt
+
+    async def broken(hs_code, year, limit=54):
+        raise RuntimeError("free channel down")
+
+    monkeypatch.setattr("services.oec_trade_service.oec_service.get_top_african_importers", broken)
+
+    class _Resp:
+        status_code = 200
+
+        def json(self):
+            return {"data": [{"HS6 ID": "1180100", "Trade Value": 777.0}]}
+
+    class _Client:
+        def __init__(self, *a, **k):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *a):
+            return False
+
+        async def get(self, *a, **k):
+            return _Resp()
+
+    monkeypatch.setattr(rt.httpx, "AsyncClient", _Client)
+    rows = asyncio.run(rt.real_trade_service.get_african_importers_for_product("180100"))
+    assert rows and all(r["import_value"] == 777.0 for r in rows)
+
+
+def test_list_tracked_products_deduped_with_data():
+    from services import production_capacity_service as pcs
+
+    products = pcs.list_tracked_products()
+    assert len(products) >= 20
+    # Dédupliqué par commodity/dataset (le cacao a 6 préfixes HS -> 1 entrée).
+    keys = [(p["dataset"], p["commodity"]) for p in products]
+    assert len(keys) == len(set(keys))
+    # Chaque entrée a des données réelles derrière (producteurs continentaux).
+    sample = products[0]
+    assert pcs.get_continental_producers(sample["hs_code"])["available"] is True
+
+
+def test_import_opportunities_scenario_dza():
+    """S4 — miroir de S2 côté import : produits classés pour un pays, avec le
+    fournisseur choisi par régime préférentiel RÉEL (réciprocité algérienne)."""
+    from services import report_engine
+
+    rep = report_engine.get_import_opportunities_scenario("DZA", top_k=3)
+    assert rep["scenario"] == "S4_best_imports_for_country"
+    assert rep["products_scanned"] >= 20
+    opps = rep["ranked_opportunities"]
+    assert len(opps) == 3
+
+    for o in opps:
+        # Jamais le pays lui-même en fournisseur.
+        assert all(s["country_iso3"] != "DZA" for s in o["suppliers_considered"])
+        # Le besoin est une estimation étiquetée, jamais fabriquée.
+        assert o["market_need"]["available"] is True
+        # Production locale absente du référentiel = étiquetée, pas un zéro mesuré.
+        if not o["local_production"]["recorded"]:
+            assert o["unmet_need_note"] is not None
+        # Le régime tarifaire du fournisseur vient du moteur du calculateur.
+        assert o["best_supplier"]["trade_regime"] in (
+            "ZLECAF",
+            "CUSTOMS_UNION",
+            "NPF",
+            "FTA_CONDITIONAL",
+            None,
+        )
+
+    # Classement final par score (desc) comme S2.
+    scores = [o["end_to_end_score"] or 0 for o in opps]
+    assert scores == sorted(scores, reverse=True)
+
+
+def test_import_opportunities_supplier_prefers_real_tariff_regime():
+    """Pour l'Algérie, un fournisseur partenaire ZLECAf actif (avantage réel)
+    doit être préféré à un producteur plus gros au taux NPF, à produit égal."""
+    from services import report_engine
+
+    rep = report_engine.get_import_opportunities_scenario("DZA", top_k=8)
+    by_hs = {o["hs_code"]: o for o in rep["ranked_opportunities"]}
+    tea = by_hs.get("0902")
+    if tea is None:  # le thé peut sortir du top_k si les données évoluent
+        return
+    advs = {
+        s["country_iso3"]: (s["tariff_advantage_pct"] or 0) for s in tea["suppliers_considered"]
+    }
+    best = tea["best_supplier"]["country_iso3"]
+    assert advs[best] == max(advs.values())
+
+
 def test_country_product_imports_uses_stats_channel(monkeypatch):
     """Le module Opportunités lit les imports OEC via le MÊME canal que la
     recherche SH2/4/6 du module Statistiques (cache persistant partagé)."""
@@ -653,14 +816,17 @@ def test_population_is_real_from_constants():
     assert pop["region"]
 
 
-def test_national_need_level2_population_proxy():
+def test_national_need_level2_population_proxy(monkeypatch):
     from services import demand_estimation_service as demand
 
-    # No apparent consumption -> L2 estimate from real FAO production + population.
+    # Force GDP unavailable (no ETL dataset, no profiles) -> L2 population proxy.
+    monkeypatch.setattr(demand, "_load_gdp", lambda: {})
+    monkeypatch.setattr(demand, "_gdp_from_country_profiles", lambda iso: None)
+    monkeypatch.setattr(demand, "_gdp_values_map", lambda: {})
     res = demand.estimate_national_need("180100", "NGA")  # cocoa
     assert res["available"] is True
     assert res["is_estimation"] is True
-    assert res["estimation_level"] == 2  # GDP dataset absent here -> stays L2
+    assert res["estimation_level"] == 2  # GDP unavailable -> stays L2
     assert res["value"] > 0
     assert res["unit"] == "tonnes"
     # Transparency: formula + inputs + sources are exposed
@@ -669,6 +835,19 @@ def test_national_need_level2_population_proxy():
     assert res["inputs"]["continental_production"] > 0
     assert res["inputs"]["per_capita_reference"] > 0
     assert len(res["sources"]) >= 2
+
+
+def test_national_need_level3_from_country_profiles(monkeypatch):
+    from services import demand_estimation_service as demand
+
+    # No ETL dataset, but the Country Profiles module supplies GDP/capita for all
+    # 54 countries -> L3 standard-of-living adjustment activates without network.
+    monkeypatch.setattr(demand, "_load_gdp", lambda: {})
+    res = demand.estimate_national_need("180100", "NGA")
+    assert res["available"] is True
+    assert res["estimation_level"] == 3
+    assert "PIB/hab_pays" in res["method"]
+    assert any("Profils Pays" in s for s in res["sources"])
 
 
 def test_national_need_suggests_supplier():
@@ -725,8 +904,9 @@ def test_national_need_unavailable_without_production():
 def test_gdp_per_capita_degrades_gracefully():
     from services import demand_estimation_service as demand
 
-    # wb_gdp_pc.json not shipped (WB API blocked here) -> unavailable, no fabrication.
-    gdp = demand.get_gdp_per_capita("NGA")
+    # An unknown country (no ETL dataset entry, no Country-Profiles entry) ->
+    # unavailable, never fabricated.
+    gdp = demand.get_gdp_per_capita("ZZZ")
     assert gdp["available"] is False and gdp["value_usd"] is None
 
 

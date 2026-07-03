@@ -1000,13 +1000,23 @@ class RealTradeDataService:
         - 6+ digit code -> HS6 drilldown, exact 6-digit match.
         - 4-5 digit code -> HS4 drilldown, exact 4-digit match.
 
-        One request per importing country (filtered server-side by Importer
-        Country, so payloads stay bounded), run concurrently with a small
-        semaphore to remain light on the free OEC API. Matching reuses the
-        proven ``"{LEVEL} ID"`` last-N-digits parsing used elsewhere in this
-        module (robust to OEC id prefixes).
+        Primary channel: the statistics module's FREE OEC client
+        (``oec_trade_service.get_top_african_importers``) — ONE cached request
+        for all importers, no token needed. Fallback: the legacy per-country
+        fan-out (one request per country, small semaphore).
         """
-        clean = "".join(ch for ch in (hs_code or "") if ch.isdigit())
+        clean_hs = "".join(ch for ch in (hs_code or "") if ch.isdigit())
+        try:
+            from services.oec_trade_service import oec_service
+
+            res = await oec_service.get_top_african_importers(clean_hs, year)
+            rows = (res or {}).get("data") or []
+            if rows:
+                return rows
+        except Exception as e:
+            logger.warning(f"OEC importers via free stats channel {hs_code}: {e}")
+
+        clean = clean_hs
         if len(clean) >= 6:
             level, code, id_len, limit = "HS6", clean[:6], 6, "6000"
         else:

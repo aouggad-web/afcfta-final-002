@@ -111,6 +111,60 @@ async def market_seeking_report(
     return await report_engine.get_market_seeking_report(hs_code, year=year, lang=lang)
 
 
+@router.get(
+    "/import-opportunities",
+    summary="Scénario S4 : meilleures opportunités d'IMPORTATION pour un pays",
+)
+async def import_opportunities_scenario(
+    country: str = Query(..., description="Pays importateur (ISO3)"),
+    top_k: int = Query(default=8, ge=1, le=20, description="Nb de produits analysés en profondeur"),
+    goods_value_usd: float = Query(default=50000.0, description="Valeur FOB de référence (USD)"),
+    with_observed_imports: bool = Query(
+        default=False,
+        description=(
+            "Enrichir chaque produit du top avec les imports observés du pays (OEC, "
+            "canal partagé avec le module Statistiques — une réponse cachée par pays "
+            "sert tous les codes SH)."
+        ),
+    ),
+):
+    """
+    Scénario **S4** — le miroir de S2 côté import : pour un pays, quels produits
+    sourcer en Afrique, auprès de qui, avec quel avantage ZLECAf réel ?
+
+    Interconnecte les modules de la plateforme : production (FAOSTAT/USGS/UNIDO),
+    statistiques (besoins, imports OEC optionnels), calculateur (régime
+    préférentiel réel par origine — ex. réciprocité algérienne), logistique et
+    finance (score bilatéral de bout en bout). Classement par part de besoin non
+    couvert puis pression d'import ; fournisseur choisi par avantage tarifaire
+    réel puis poids de production. Zéro fabrication : estimations étiquetées.
+    """
+    rep = report_engine.get_import_opportunities_scenario(
+        destination_iso3=country, top_k=top_k, goods_value_usd=goods_value_usd
+    )
+
+    # Enrichissement optionnel : imports observés (OEC) par produit du top —
+    # peu coûteux grâce au canal partagé (le cache par pays sert tous les HS).
+    if with_observed_imports:
+        try:
+            from services.real_trade_data_service import real_trade_service
+
+            for opp in rep.get("ranked_opportunities", []):
+                imp = await real_trade_service.get_country_product_imports(
+                    country, opp.get("hs_code")
+                )
+                if imp and imp.get("available"):
+                    opp["observed_imports"] = {
+                        "import_value_usd": imp.get("import_value_usd"),
+                        "year": imp.get("year"),
+                        "source": imp.get("source"),
+                    }
+        except Exception:  # OEC indisponible -> enrichissement simplement absent
+            pass
+
+    return rep
+
+
 @router.get("/transformation", summary="Scénario S1 : import intrants → production → export")
 async def transformation_scenario(
     input_hs_code: str = Query(..., description="Code SH de l'intrant importé"),
@@ -242,19 +296,52 @@ async def macro_profile(country_iso3: str):
     return macro.get_macro_profile(country_iso3)
 
 
-@router.get("/oec-health", summary="Diagnostic de connexion OEC (avec token)")
+@router.get("/oec-health", summary="Diagnostic de connexion OEC (canal gratuit + direct)")
 async def oec_health(year: int = Query(default=2022, description="Année de test")):
     """
-    Vérifie la connexion à l'API OEC depuis l'environnement courant et indique
-    si un token payant est configuré (``OEC_API_TOKEN`` / ``OEC_API_KEY``).
+    Vérifie la connexion à l'OEC depuis l'environnement courant, en sondant
+    d'abord le **canal gratuit du module Statistiques** (``api.oec.world``,
+    aucun token requis — c'est le canal qu'utilise le module Opportunités),
+    puis l'API directe historique (``api-v2.oec.world``).
 
-    Utile pour valider le branchement OEC sur le déploiement : ``reachable:true``
-    + ``token_configured:true`` confirme que le plan payant répond. Dans ce bac à
-    sable, l'accès OEC est bloqué par la politique réseau (``reachable:false``).
+    ``reachable:true`` dès que l'un des deux canaux répond. ``token_configured``
+    indique si un token payant optionnel est présent (``OEC_API_TOKEN``) — il
+    n'est PAS nécessaire au fonctionnement du module.
     """
+    import time
+
     from services.real_trade_data_service import real_trade_service
 
-    return await real_trade_service.ping_oec(year)
+    # 1) Canal gratuit du module Statistiques (celui des Opportunités).
+    free_channel = {"reachable": False, "endpoint": "api.oec.world (module Statistiques)"}
+    try:
+        from services.oec_trade_service import oec_service
+
+        t0 = time.monotonic()
+        res = await oec_service.get_top_african_importers("180100", year)
+        rows = (res or {}).get("data") or []
+        free_channel = {
+            "reachable": bool(rows),
+            "endpoint": "api.oec.world (module Statistiques, gratuit, sans token)",
+            "latency_ms": round((time.monotonic() - t0) * 1000),
+            "records": len(rows),
+        }
+    except Exception as e:
+        free_channel["error"] = str(e)
+
+    # 2) API directe historique (diagnostic complémentaire).
+    direct = await real_trade_service.ping_oec(year)
+
+    return {
+        "reachable": bool(free_channel.get("reachable") or direct.get("reachable")),
+        "primary_channel": "statistics_free",
+        "channels": {"statistics_free": free_channel, "direct_api_v2": direct},
+        "token_configured": direct.get("token_configured"),
+        "note": (
+            "Le module Opportunités consomme l'OEC via le canal gratuit du module "
+            "Statistiques (cache partagé, stale-on-error) ; aucun token requis."
+        ),
+    }
 
 
 @router.get("/health", summary="Diagnostic de disponibilité des données du moteur")

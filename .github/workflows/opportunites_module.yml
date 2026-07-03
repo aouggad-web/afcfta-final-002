@@ -127,9 +127,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/json/wb_gdp_pc.json data/json/wb_reserves.json
-          if git diff --cached --quiet; then
-            echo "Datasets WB inchangés — rien à committer."
+          # N'ajouter que les fichiers réellement produits (l'ETL est non
+          # bloquant : en cas de timeout WB, ne pas faire échouer le job ici).
+          added=0
+          for f in data/json/wb_gdp_pc.json data/json/wb_reserves.json; do
+            if [ -f "$f" ]; then git add "$f"; added=1; else echo "⚠ $f absent (ETL en échec ?) — ignoré"; fi
+          done
+          if [ "$added" = "0" ] || git diff --cached --quiet; then
+            echo "Aucun dataset WB nouveau — rien à committer."
           else
             git commit -m "data: datasets World Bank (PIB/hab + réserves) via workflow"
             git push
