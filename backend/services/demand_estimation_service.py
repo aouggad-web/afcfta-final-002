@@ -80,8 +80,52 @@ def _load_gdp() -> Dict:
     return {}
 
 
+def _gdp_from_country_profiles(country_iso3: str) -> Optional[Dict]:
+    """PIB/habitant depuis le module Profils Pays (``country_data.REAL_COUNTRY_DATA``,
+    Banque Mondiale WDI 2024) — déjà embarqué dans le dépôt pour les 54 pays.
+    Sert de source par défaut : plus besoin d'ETL réseau pour l'ajustement L3."""
+    try:
+        from country_data import REAL_COUNTRY_DATA
+
+        rec = REAL_COUNTRY_DATA.get((country_iso3 or "").upper()) or {}
+        value = rec.get("gdp_per_capita_2024")
+        if value is not None:
+            return {
+                "available": True,
+                "value_usd": float(value),
+                "year": 2024,
+                "source": "Banque Mondiale WDI 2024 (module Profils Pays)",
+            }
+    except Exception as exc:  # pragma: no cover - defensive
+        _log.warning("country-profiles GDP unavailable: %s", exc)
+    return None
+
+
+def _gdp_values_map() -> Dict[str, float]:
+    """Carte {iso3: PIB/hab} depuis la meilleure source disponible : dataset ETL
+    s'il est présent, sinon module Profils Pays (54 pays, embarqué). Utilisée pour
+    la moyenne continentale de l'ajustement L3 — sans dépendance réseau."""
+    data = _load_gdp()
+    if data:
+        return {k: r["value"] for k, r in data.items() if r.get("value") is not None}
+    try:
+        from country_data import REAL_COUNTRY_DATA
+
+        return {
+            k: float(v["gdp_per_capita_2024"])
+            for k, v in REAL_COUNTRY_DATA.items()
+            if v.get("gdp_per_capita_2024") is not None
+        }
+    except Exception as exc:  # pragma: no cover - defensive
+        _log.warning("country-profiles GDP map unavailable: %s", exc)
+        return {}
+
+
 def get_gdp_per_capita(country_iso3: str) -> Dict:
-    """GDP per capita (USD) for a country, from the World Bank ETL. Graceful."""
+    """GDP per capita (USD). Source primaire : le module Profils Pays (déjà
+    embarqué, 54 pays, WDI 2024) ; le dataset ETL ``wb_gdp_pc.json`` prend le
+    dessus s'il est présent (données potentiellement plus récentes). Gracieux."""
+    # Dataset ETL prioritaire s'il a été produit (potentiellement plus récent).
     data = _load_gdp()
     rec = data.get((country_iso3 or "").upper())
     if rec and rec.get("value") is not None:
@@ -91,13 +135,14 @@ def get_gdp_per_capita(country_iso3: str) -> Dict:
             "year": rec.get("year"),
             "source": "World Bank WDI NY.GDP.PCAP.CD",
         }
+    # Repli (défaut) : module Profils Pays — aucune dépendance réseau.
+    from_profiles = _gdp_from_country_profiles(country_iso3)
+    if from_profiles:
+        return from_profiles
     return {
         "available": False,
         "value_usd": None,
-        "note": (
-            "PIB/habitant indisponible (dataset wb_gdp_pc.json absent — "
-            "à produire via etl/fetch_wb_gdp sur un environnement réseau)."
-        ),
+        "note": "PIB/habitant indisponible pour ce pays.",
     }
 
 
@@ -226,10 +271,12 @@ def estimate_national_need(
     gdp_factor = None
 
     # ── L3: standard-of-living adjustment ────────────────────────────────────
+    # PIB/hab du pays ET moyenne continentale depuis la meilleure source (dataset
+    # ETL prioritaire, sinon module Profils Pays) — L3 s'active sans réseau.
     gdp = get_gdp_per_capita(country_iso3)
-    gdp_data = _load_gdp()
-    if gdp.get("available") and gdp_data:
-        vals = [r.get("value") for r in gdp_data.values() if r.get("value")]
+    gdp_map = _gdp_values_map()
+    if gdp.get("available") and gdp_map:
+        vals = [v for v in gdp_map.values() if v]
         gdp_avg = sum(vals) / len(vals) if vals else None
         if gdp_avg:
             gdp_factor = (gdp["value_usd"] / gdp_avg) ** income_elasticity
@@ -249,7 +296,7 @@ def estimate_national_need(
     if reference_basis == "production_plus_imports":
         sources.append("OEC / UN Comtrade (BACI) — importations continentales")
     if level == 3:
-        sources.append("World Bank WDI NY.GDP.PCAP.CD")
+        sources.append(gdp.get("source", "World Bank WDI NY.GDP.PCAP.CD"))
 
     if reference_basis == "production_only":
         basis_note = (
@@ -259,6 +306,15 @@ def estimate_national_need(
         )
     else:
         basis_note = "Référence basée sur la disponibilité apparente (production + importations)."
+
+    # Suggested supplier: the #1 African producer that isn't the market itself —
+    # a natural "who could serve this need" hand-off to the bilateral report.
+    suggested_supplier = None
+    for p in prod.get("top_producers", []):
+        iso = (p.get("country_iso3") or "").upper()
+        if iso and iso != country_iso3:
+            suggested_supplier = {"iso3": iso, "country_name": p.get("country_name")}
+            break
 
     return {
         "available": True,
@@ -270,6 +326,7 @@ def estimate_national_need(
         "commodity": prod.get("commodity"),
         "reference_year": prod.get("year"),
         "reference_basis": reference_basis,
+        "suggested_supplier": suggested_supplier,
         "method": method,
         "inputs": {
             "population": pop["value"],

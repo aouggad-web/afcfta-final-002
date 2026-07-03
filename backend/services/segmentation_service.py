@@ -324,29 +324,35 @@ def factor_breakdown(report: Dict) -> List[Dict]:
     if tariff.get("available"):
         advantage_pct = tariff.get("tariff_advantage_pct", 0.0)
         index = tariff.get("tariff_advantage_index", 0.0)
+        regime = tariff.get("trade_regime")
         if advantage_pct > 0:
+            regime_label = "union douanière" if regime == "CUSTOMS_UNION" else "ZLECAf"
             factors.append(
                 {
                     "factor": "tariff_advantage",
                     "category": "opportunity",
                     "score": index,
                     "rationale": (
-                        f"Accès ZLECAf : avantage tarifaire réel de {advantage_pct:.1f} % "
+                        f"Accès {regime_label} : avantage tarifaire réel de "
+                        f"{advantage_pct:.1f} % "
                         f"(droit national {tariff.get('national_rate_pct', 0):.1f} % → "
-                        f"ZLECAf {tariff.get('zlecaf_rate_pct', 0):.1f} %)."
+                        f"{tariff.get('zlecaf_rate_pct', 0):.1f} %)."
                     ),
                 }
             )
         else:
+            # Sans avantage, donner la VRAIE raison quand elle est connue
+            # (ex. : ZLECAf non activé pour cette origine à l'import en
+            # Algérie — réciprocité, circulaire DGD 482/2024).
+            reason = tariff.get("trade_regime_note") or (
+                f"droit national déjà {tariff.get('national_rate_pct', 0):.1f} %"
+            )
             factors.append(
                 {
                     "factor": "tariff_advantage",
                     "category": "neutral",
                     "score": 0.0,
-                    "rationale": (
-                        f"Pas d'avantage tarifaire ZLECAf pour ce produit "
-                        f"(droit national déjà {tariff.get('national_rate_pct', 0):.1f} %)."
-                    ),
+                    "rationale": f"Pas d'avantage tarifaire : {reason}",
                 }
             )
 

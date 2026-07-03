@@ -821,6 +821,58 @@ class OECTradeService:
             "source": "OEC/BACI",
         }
 
+    async def get_top_african_importers(self, hs_code: str, year: int, limit: int = 54) -> Dict:
+        """
+        Principaux IMPORTATEURS africains d'un produit — miroir de
+        ``get_top_african_exporters``. UNE seule requête (cut HS6, drilldown
+        Importer Country) sur le canal OEC gratuit du module Statistiques,
+        avec son cache — remplace le fan-out 54 pays du module Opportunités.
+        """
+        hs6_code = hs_code.zfill(6)[:6]
+        if len(hs_code) == 4:
+            hs6_code = hs_code.zfill(4) + "00"
+
+        oec_hs_id = self._format_oec_hs6_id(hs6_code)
+
+        params = self._build_params(
+            cube=OEC_CUBES[DEFAULT_CUBE],
+            drilldowns=["Year", "Importer Country"],
+            measures=["Trade Value"],
+            cuts={"Year": str(year), "HS6": oec_hs_id},
+            limit=200,
+        )
+
+        result = await self._make_request(params)
+
+        african_by_oec_id = {
+            v["oec_id"]: (iso3, v) for iso3, v in AFRICAN_COUNTRIES_OEC.items() if v.get("oec_id")
+        }
+        african_data = []
+        for row in result.get("data", []):
+            hit = african_by_oec_id.get(row.get("Importer Country ID", ""))
+            if not hit:
+                continue
+            iso3, info = hit
+            value = row.get("Trade Value") or 0
+            if value > 0:
+                african_data.append(
+                    {
+                        "country_iso3": iso3,
+                        "country_name": info.get("name_fr") or info.get("name_en") or iso3,
+                        "hs_code": hs6_code,
+                        "import_value": value,
+                    }
+                )
+
+        african_data.sort(key=lambda x: x["import_value"], reverse=True)
+        return {
+            "hs_code": hs_code,
+            "year": year,
+            "total_countries": len(african_data),
+            "data": african_data[:limit],
+            "source": "OEC/BACI (canal gratuit du module Statistiques)",
+        }
+
     def _format_product_response(
         self,
         result: Dict,
