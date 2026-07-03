@@ -331,6 +331,7 @@ function BilateralView({ countries, fr, prefill }) {
   const exec = report?.executive_summary || null;
   const narr = report?.narrative_analysis || {};
   const need = report?.national_need || {};
+  const intra = report?.intra_african_context || {};
   const bench = report?.benchmarking || {};
   const tariff = bench.tariff_benefit || {};
   const topProducers = bench.top_producers || {};
@@ -792,6 +793,66 @@ function BilateralView({ countries, fr, prefill }) {
               </table>
               <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
                 {srcText(topProducers.source)}{topProducers.year ? ` · ${topProducers.year}` : ""}
+              </div>
+            </div>
+          )}
+
+          {/* ── Contexte commerce intra-africain (Afreximbank ATR 2026) ── */}
+          {intra.available && (intra.origin?.available || intra.destination?.available) && (
+            <div style={card} data-testid="report-intra-african">
+              <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+                {fr ? "Contexte commerce intra-africain" : "Intra-African trade context"}
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
+                {[
+                  { side: intra.origin, role: fr ? "Origine (exportateur)" : "Origin (exporter)" },
+                  { side: intra.destination, role: fr ? "Destination (marché)" : "Destination (market)" },
+                ].map(({ side, role }, i) =>
+                  side?.available ? (
+                    <div key={i} style={{ padding: 10, borderRadius: 8, background: "var(--afcfta-subtle,rgba(0,0,0,0.03))" }}>
+                      <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
+                        {role} — {side.name} ({side.iso3})
+                      </div>
+                      {side.intra_african_trade && (
+                        <div style={{ fontSize: 13, marginBottom: 4 }}>
+                          {fr ? "Commerce intra-africain 2025" : "Intra-African trade 2025"} :{" "}
+                          <strong>{dash(side.intra_african_trade.value_2025_busd, " Md$")}</strong>{" "}
+                          <span style={{ color: "var(--afcfta-muted,#667)" }}>
+                            ({dash(side.intra_african_trade.share_2025_pct, " %")} {fr ? "du total" : "of total"}
+                            {side.intra_african_trade.growth_2021_2025_pct != null
+                              ? ` · ${side.intra_african_trade.growth_2021_2025_pct >= 0 ? "+" : ""}${side.intra_african_trade.growth_2021_2025_pct}% ${fr ? "depuis 2021" : "since 2021"}`
+                              : ""})
+                          </span>
+                        </div>
+                      )}
+                      {side.merchandise_exports && (
+                        <div style={{ fontSize: 13 }}>
+                          {fr ? "Exports marchandises 2025" : "Merchandise exports 2025"} :{" "}
+                          <strong>{dash(side.merchandise_exports.value_2025_busd, " Md$")}</strong>{" "}
+                          <span style={{ color: "var(--afcfta-muted,#667)" }}>
+                            ({dash(side.merchandise_exports.share_2025_pct, " %")})
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div key={i} style={{ padding: 10, fontSize: 12, color: "var(--afcfta-muted,#667)" }}>
+                      {role} — {fr ? "non couvert par l'ATR 2026" : "not covered by ATR 2026"}
+                    </div>
+                  )
+                )}
+              </div>
+              {intra.continental_2025 && (
+                <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
+                  {fr ? "Continent 2025" : "Continent 2025"} :{" "}
+                  {dash(intra.continental_2025.intra_african_trade_busd, " Md$")} {fr ? "de commerce intra-africain" : "intra-African trade"}
+                  {intra.continental_2025.intra_african_trade_growth_pct != null
+                    ? ` (+${intra.continental_2025.intra_african_trade_growth_pct}%)`
+                    : ""}
+                </div>
+              )}
+              <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 6 }}>
+                {srcText(intra.source)}
               </div>
             </div>
           )}
