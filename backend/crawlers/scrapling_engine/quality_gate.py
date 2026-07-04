@@ -39,7 +39,7 @@ PIVOT_TAX_COLUMNS = {
 
 
 def _pct(raw: Optional[str]) -> Optional[float]:
-    """'2.5 %' / '2,5%' / '15' -> 2.5 (float) ; None/'' -> None."""
+    """'2.5 %' / '2,5%' / '15' -> 2.5 / 2.5 / 15.0 (float) ; None/'' -> None."""
     if raw is None:
         return None
     raw = raw.strip()
