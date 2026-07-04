@@ -38,6 +38,7 @@ if str(BACKEND_DIR) not in sys.path:
 
 from tariff_crawl.canonical import validate_authenticity  # noqa: E402
 from tariff_crawl.coverage import CRAWLED_DIR, build_coverage_report, format_report  # noqa: E402
+from tariff_crawl.collection_queue import build_collection_queue  # noqa: E402
 from tariff_crawl.manifest import build_manifest  # noqa: E402
 
 
@@ -67,6 +68,18 @@ def cmd_dry_run(countries: list[str] | None) -> int:
     out = CRAWLED_DIR / "coverage_report.json"
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Rapport écrit : {out}")
+
+    queue = build_collection_queue(countries)
+    queue_out = CRAWLED_DIR / "country_collection_queue.json"
+    queue_out.write_text(json.dumps(queue, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"File de collecte pays par pays : {queue_out}")
+    if queue["countries"]:
+        print("\nProchains pays à traiter concrètement :")
+        for item in queue["countries"][:10]:
+            print(
+                f"- {item['iso3']} ({item['country_name']}) — "
+                f"{item['target_provenance']} via {item.get('source') or 'source à identifier'}"
+            )
     return 0
 
 

@@ -1,0 +1,306 @@
+{
+  "generated_at": "2026-07-04T17:09:19.667263+00:00",
+  "total_pending_countries": 18,
+  "countries": [
+    {
+      "iso3": "STP",
+      "country_name": "São Tomé-et-Príncipe",
+      "region": "Central Africa",
+      "blocks": [
+        "ECCAS"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.alfandega.st)",
+      "source_url": "https://www.alfandega.st",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country STP"
+    },
+    {
+      "iso3": "COM",
+      "country_name": "Comores",
+      "region": "East Africa",
+      "blocks": [
+        "COMESA"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.douanes.km)",
+      "source_url": "https://www.douanes.km",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country COM"
+    },
+    {
+      "iso3": "DJI",
+      "country_name": "Djibouti",
+      "region": "East Africa",
+      "blocks": [
+        "COMESA",
+        "IGAD"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.douane.dj)",
+      "source_url": "https://www.douane.dj",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country DJI"
+    },
+    {
+      "iso3": "ERI",
+      "country_name": "Érythrée",
+      "region": "East Africa",
+      "blocks": [
+        "COMESA",
+        "IGAD"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.customs.gov.er)",
+      "source_url": "https://www.customs.gov.er",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country ERI"
+    },
+    {
+      "iso3": "ETH",
+      "country_name": "Éthiopie",
+      "region": "East Africa",
+      "blocks": [
+        "COMESA",
+        "IGAD"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.erca.gov.et)",
+      "source_url": "https://www.erca.gov.et",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country ETH"
+    },
+    {
+      "iso3": "MDG",
+      "country_name": "Madagascar",
+      "region": "East Africa",
+      "blocks": [
+        "SADC",
+        "COMESA"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.douanes.gov.mg)",
+      "source_url": "https://www.douanes.gov.mg",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country MDG"
+    },
+    {
+      "iso3": "MUS",
+      "country_name": "Maurice",
+      "region": "East Africa",
+      "blocks": [
+        "SADC",
+        "COMESA"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.mra.mu)",
+      "source_url": "https://www.mra.mu",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country MUS"
+    },
+    {
+      "iso3": "SOM",
+      "country_name": "Somalie",
+      "region": "East Africa",
+      "blocks": [
+        "IGAD"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.customs.gov.so)",
+      "source_url": "https://www.customs.gov.so",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country SOM"
+    },
+    {
+      "iso3": "SYC",
+      "country_name": "Seychelles",
+      "region": "East Africa",
+      "blocks": [
+        "SADC",
+        "COMESA"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.src.gov.sc)",
+      "source_url": "https://www.src.gov.sc",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country SYC"
+    },
+    {
+      "iso3": "LBY",
+      "country_name": "Libye",
+      "region": "North Africa",
+      "blocks": [
+        "AMU"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.customs.gov.ly)",
+      "source_url": "https://www.customs.gov.ly",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country LBY"
+    },
+    {
+      "iso3": "SDN",
+      "country_name": "Soudan",
+      "region": "North Africa",
+      "blocks": [
+        "AMU",
+        "COMESA",
+        "IGAD"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.customs.gov.sd)",
+      "source_url": "https://www.customs.gov.sd",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country SDN"
+    },
+    {
+      "iso3": "AGO",
+      "country_name": "Angola",
+      "region": "Southern Africa",
+      "blocks": [
+        "SADC",
+        "ECCAS"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.agtsaduaneiro.ao)",
+      "source_url": "https://www.agtsaduaneiro.ao",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country AGO"
+    },
+    {
+      "iso3": "MOZ",
+      "country_name": "Mozambique",
+      "region": "Southern Africa",
+      "blocks": [
+        "SADC"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.at.gov.mz)",
+      "source_url": "https://www.at.gov.mz",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country MOZ"
+    },
+    {
+      "iso3": "MWI",
+      "country_name": "Malawi",
+      "region": "Southern Africa",
+      "blocks": [
+        "SADC",
+        "COMESA"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.mra.mw)",
+      "source_url": "https://www.mra.mw",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country MWI"
+    },
+    {
+      "iso3": "ZMB",
+      "country_name": "Zambie",
+      "region": "Southern Africa",
+      "blocks": [
+        "SADC",
+        "COMESA"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.zra.org.zm)",
+      "source_url": "https://www.zra.org.zm",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country ZMB"
+    },
+    {
+      "iso3": "ZWE",
+      "country_name": "Zimbabwe",
+      "region": "Southern Africa",
+      "blocks": [
+        "SADC",
+        "COMESA"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.zimra.co.zw)",
+      "source_url": "https://www.zimra.co.zw",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country ZWE"
+    },
+    {
+      "iso3": "GHA",
+      "country_name": "Ghana",
+      "region": "West Africa",
+      "blocks": [
+        "ECOWAS"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.gra.gov.gh)",
+      "source_url": "https://www.gra.gov.gh",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country GHA"
+    },
+    {
+      "iso3": "MRT",
+      "country_name": "Mauritanie",
+      "region": "West Africa",
+      "blocks": [
+        "AMU"
+      ],
+      "current_provenance": "none",
+      "current_positions": 0,
+      "contaminated": false,
+      "target_provenance": "national_crawl",
+      "source": "Portail douanier national (https://www.douanes.gov.mr)",
+      "source_url": "https://www.douanes.gov.mr",
+      "source_status": "to_implement",
+      "next_action": "Implémenter/brancher le crawler national puis lancer: python backend/scripts/crawl_all_countries.py --run --country MRT"
+    }
+  ]
+}

@@ -152,11 +152,10 @@
     {
       "iso3": "DZA",
       "file_exists": true,
-      "positions": 17115,
+      "positions": 17061,
       "effective_provenance": "national_crawl",
       "source": "conformepro.dz (données douane.gov.dz)",
-      "estimated_positions": 11978,
-      "contaminated": true,
+      "estimated_positions": 0,
       "name_fr": "Algérie",
       "target_primary": "national_crawl",
       "regional_tariff": null
