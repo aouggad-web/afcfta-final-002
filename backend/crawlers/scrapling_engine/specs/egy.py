@@ -31,8 +31,8 @@ def crawl(max_positions: Optional[int] = None) -> List[Dict]:
     from crawlers.countries.egypt_tariffs_scraper import EgyptTariffsScraper
 
     scraper = EgyptTariffsScraper()
-    scraper.scrape(max_positions=max_positions or 60, delay=1.5, resume=False)
-
+    effective_max = 60 if max_positions is None else max_positions
+    scraper.scrape(max_positions=effective_max, delay=1.5, resume=False)
     out: List[Dict] = []
     for pos in scraper.positions:
         code_clean = pos.get("code_clean") or ""
