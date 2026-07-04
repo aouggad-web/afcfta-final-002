@@ -141,6 +141,46 @@ def test_gate_scopes_to_candidate_chapters():
     assert report["verdict"] == "PASS"
 
 
+def test_national_layer_detected_on_dza():
+    """Le crawlé DZA porte une couche nationale riche (TVA/TCS/PRCT/DAPS,
+    formalités, régimes) — check_national_layer doit la voir."""
+    raw = json.load(open(DZA_JSON, encoding="utf-8"))
+    nl = quality_gate.check_national_layer(raw)
+    assert nl["national_layer_present"] is True
+    assert nl["positions_with_tax_beyond_dd"] > 0
+    assert nl["positions_with_advantages"] > 0
+
+
+def test_gate_requires_national_layer_rejects_dd_only():
+    """Un fichier « TEC régional seul » (DD unique, pas de formalité/régime)
+    pour un pays d'un bloc doit ÉCHOUER quand la couche nationale est exigée."""
+    dd_only = normalizer.assemble_output(
+        "KEN",
+        "Kenya",
+        "EAC CET (socle DD régional)",
+        [
+            {
+                "hs_code": "0901110000",
+                "chapter": "09",
+                "taxes": {"DD": {"name": "Droit de Douane", "rate": 25.0}},
+                "formalities": [],
+                "advantages": [],
+            }
+        ],
+    )
+    path = BACKEND / "engine" / "sources" / "_gate_dd_only.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    json.dump(dd_only, open(path, "w", encoding="utf-8"), ensure_ascii=False)
+
+    lenient = quality_gate.run_gate(path, None, None)
+    strict = quality_gate.run_gate(path, None, None, require_national_layer=True)
+    path.unlink()
+
+    assert lenient["national_layer_check"]["national_layer_present"] is False
+    assert lenient["verdict"] == "PASS"  # sans exigence, non bloquant
+    assert strict["verdict"] == "FAIL"  # avec exigence, refusé
+
+
 def test_gate_fails_on_tax_divergence():
     """Un taux modifié doit faire échouer le gate (jamais de données
     silencieusement fausses)."""

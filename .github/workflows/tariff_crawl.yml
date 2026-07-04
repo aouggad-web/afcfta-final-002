@@ -27,6 +27,11 @@ on:
         description: 'Chapitres SH ciblés, séparés par des virgules (ex. 01,02) — crawl par tranches'
         required: false
         default: ''
+      require_national_layer:
+        description: 'Exiger la couche nationale (taxes hors DD + formalités + régimes) — pays de blocs TEC/CET'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -87,6 +92,10 @@ jobs:
           # Pivots CSV vérifiés (DZA / MAR / TUN)
           if [ -f "../frontend/public/${COUNTRY}_tarif_douanier_echantillon.csv" ]; then
             GATE_ARGS+=(--pivots "../frontend/public/${COUNTRY}_tarif_douanier_echantillon.csv")
+          fi
+          # Pays d'un bloc régional : exiger la couche nationale (pas le TEC seul)
+          if [ "${{ inputs.require_national_layer }}" = "true" ]; then
+            GATE_ARGS+=(--require-national-layer)
           fi
           # Le rapport va dans un fichier ; le CODE RETOUR du gate est capturé
           # (le pipe |tee l'avalait). VERDICT exposé comme sortie d'étape.
