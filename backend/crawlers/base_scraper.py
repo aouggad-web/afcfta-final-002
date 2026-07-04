@@ -26,9 +26,12 @@ from pydantic import BaseModel, Field
 
 try:
     from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
-except ImportError:  # pragma: no cover
-    AsyncIOMotorClient = Any  # type: ignore[assignment,misc]
-    AsyncIOMotorDatabase = Any  # type: ignore[assignment,misc]
+except ModuleNotFoundError as e:  # pragma: no cover
+    if e.name and e.name.startswith("motor"):
+        AsyncIOMotorClient = Any  # type: ignore[assignment,misc]
+        AsyncIOMotorDatabase = Any  # type: ignore[assignment,misc]
+    else:
+        raise
 
 from .all_countries_registry import get_country_config
 
