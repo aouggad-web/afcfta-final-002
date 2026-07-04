@@ -150,8 +150,20 @@ def _dump_tariff_links(url: str) -> str:
 def main() -> int:
     args = [a for a in sys.argv[1:]]
     deep = "--links" in args
-    only = {a.upper() for a in args if not a.startswith("--")}
+    # URL brute passée en argument -> sonde directe (repérage ciblé d'une page
+    # tarif découverte, ex. etariff.douanes.gov.mg — sans éditer CANDIDATES).
+    raw_urls = [a for a in args if a.startswith("http://") or a.startswith("https://")]
+    only = {a.upper() for a in args if not a.startswith("--") and a not in raw_urls}
+
+    for url in raw_urls:
+        print(f"\n### URL {url}")
+        print(f"      {_probe(url)}")
+        if deep:
+            print(_dump_tariff_links(url))
+
     for iso, urls in CANDIDATES.items():
+        if raw_urls and not only:
+            break
         if only and iso not in only:
             continue
         if not urls:
