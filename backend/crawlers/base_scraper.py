@@ -22,8 +22,13 @@ from typing import Any, Dict, List, Optional, Union
 from urllib.parse import urljoin
 
 import httpx
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from pydantic import BaseModel, Field
+
+try:
+    from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
+except ImportError:  # pragma: no cover
+    AsyncIOMotorClient = Any  # type: ignore[assignment,misc]
+    AsyncIOMotorDatabase = Any  # type: ignore[assignment,misc]
 
 from .all_countries_registry import get_country_config
 
