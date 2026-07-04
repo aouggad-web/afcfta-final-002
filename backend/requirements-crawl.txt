@@ -1,0 +1,5 @@
+# Dépendances CRAWL uniquement (plan docs/PLAN_SCRAPLING_CRAWLERS.md).
+# ISOLÉES de requirements.txt : le backend servi (Emergent/Replit) reste léger.
+# Installées par le workflow .github/workflows/tariff_crawl.yml.
+scrapling>=0.2
+playwright>=1.45
