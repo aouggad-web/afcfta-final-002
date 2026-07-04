@@ -128,13 +128,27 @@ def _parse(xml_text: str) -> List[Dict]:
             product = (
                 attrs.get("PRODUCTCODE") or attrs.get("PRODUCT") or attrs.get("ProductCode") or ""
             )
+            # TARIFFTYPE distingue MFN / préférentiel (confirmé par reco : le
+            # flux partner/000 est MFN). On le garde comme discriminant.
             indicator = (
-                attrs.get("INDICATOR") or attrs.get("INDICATORCODE") or attrs.get("DATATYPE") or ""
+                attrs.get("TARIFFTYPE")
+                or attrs.get("INDICATOR")
+                or attrs.get("INDICATORCODE")
+                or attrs.get("DATATYPE")
+                or ""
             )
             indicators_seen.add(indicator)
             rate = _pick_rate(attrs)
             if product and rate is not None:
-                rows.append({"hs6": product, "rate": rate, "indicator": indicator})
+                rows.append(
+                    {
+                        "hs6": product,
+                        "rate": rate,
+                        "indicator": indicator,
+                        "measure": attrs.get("OBS_VALUE_MEASURE", ""),
+                        "nbr_mfn": attrs.get("NBR_MFN_LINES", ""),
+                    }
+                )
         for c in children:
             walk(c, attrs)
 
@@ -202,7 +216,10 @@ def crawl(iso3: str, max_positions: Optional[int] = None, year: Optional[int] = 
                     "DD": {
                         "name": "Droit de douane (MFN appliqué, WITS/TRAINS)",
                         "rate": r["rate"],
-                        "raw": f"{r['rate']} % ({r.get('indicator') or 'MFN'}, {used_year})",
+                        "raw": (
+                            f"{r['rate']} % ({r.get('indicator') or 'MFN'}"
+                            f"{', ' + r['measure'] if r.get('measure') else ''}, {used_year})"
+                        ),
                     }
                 },
                 "advantages": [],
