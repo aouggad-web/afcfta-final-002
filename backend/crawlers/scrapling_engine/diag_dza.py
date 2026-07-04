@@ -27,7 +27,6 @@ from pathlib import Path
 from typing import Dict, List
 
 from bs4 import BeautifulSoup
-
 from crawlers.countries.algeria_conformepro_scraper import AlgeriaConformeproScraper
 
 BACKEND = Path(__file__).resolve().parent.parent.parent
