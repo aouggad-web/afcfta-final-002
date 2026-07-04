@@ -29,15 +29,8 @@ from .all_countries_registry import (
     get_priority_countries,
     validate_registry,
 )
-from .base_scraper import BaseScraper, ScraperConfig, ScraperResult
-from .scraper_factory import GenericScraper, ScraperFactory
 
 __all__ = [
-    "BaseScraper",
-    "ScraperConfig",
-    "ScraperResult",
-    "ScraperFactory",
-    "GenericScraper",
     "AFRICAN_COUNTRIES_REGISTRY",
     "REGIONAL_BLOCKS",
     "Region",
@@ -49,5 +42,25 @@ __all__ = [
     "get_priority_countries",
     "validate_registry",
 ]
+
+# BaseScraper/ScraperFactory dépendent de `motor` (MongoDB) — présent dans le
+# backend complet, mais ABSENT de l'environnement crawl minimal des runners
+# GitHub (requirements-crawl.txt). Import tolérant : le moteur Scrapling
+# (crawlers.scrapling_engine) et le scraper conformepro (httpx+bs4) n'en ont
+# pas besoin ; le backend complet garde le comportement historique.
+try:  # pragma: no cover - dépend de l'environnement d'exécution
+    from .base_scraper import BaseScraper, ScraperConfig, ScraperResult
+    from .scraper_factory import GenericScraper, ScraperFactory
+
+    __all__ += [
+        "BaseScraper",
+        "ScraperConfig",
+        "ScraperResult",
+        "ScraperFactory",
+        "GenericScraper",
+    ]
+except ImportError:  # environnement crawl minimal (sans motor/pydantic)
+    BaseScraper = ScraperConfig = ScraperResult = None  # type: ignore
+    GenericScraper = ScraperFactory = None  # type: ignore
 
 __version__ = "1.0.0"
