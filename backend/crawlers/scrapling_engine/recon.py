@@ -147,9 +147,48 @@ def _dump_tariff_links(url: str) -> str:
     return "\n".join(out) if out else "      (aucun lien/formulaire tarifaire détecté)"
 
 
+def _dump_api_endpoints(url: str) -> str:
+    """Pour une SPA : fetche l'index.html, télécharge ses bundles JS, et
+    extrait tous les chemins d'API (Angular embarque les URLs en clair). Révèle
+    définitivement les endpoints à scraper — sans piloter le navigateur."""
+    try:
+        with httpx.Client(headers=HEADERS, timeout=30.0, follow_redirects=True, verify=False) as c:
+            idx = c.get(url)
+            base = str(idx.url)
+            soup = BeautifulSoup(idx.text, "html.parser")
+            scripts = [
+                s["src"] for s in soup.find_all("script", src=True) if s["src"].endswith(".js")
+            ]
+            # Motifs d'endpoint : /api/... et hôtes d'API absolus.
+            ep = re.compile(r"""["'`](https?://[\w.\-]+)?(/?api/[\w/\-]+)["'`?]""")
+            host = re.compile(r"""["'`](https?://[\w.\-]*(?:svc|api)[\w.\-]*\.[a-z]{2,})["'`/]""")
+            found = set()
+            hosts = set()
+            for src in scripts:
+                js_url = str(httpx.URL(base).join(src))
+                try:
+                    js = c.get(js_url).text
+                except Exception:
+                    continue
+                for m in ep.finditer(js):
+                    found.add((m.group(1) or "") + m.group(2))
+                for m in host.finditer(js):
+                    hosts.add(m.group(1))
+        out = [f"      bundles JS: {len(scripts)}"]
+        if hosts:
+            out.append(f"      hôtes API: {sorted(hosts)[:10]}")
+        for e in sorted(found):
+            if "etariff" in e.lower() or "tariff" in e.lower() or "/api/" in e:
+                out.append(f"      API {e}")
+        return "\n".join(out) if len(out) > 1 else "      (aucun endpoint /api/ trouvé dans le JS)"
+    except Exception as e:  # noqa: BLE001
+        return f"ERREUR {type(e).__name__}: {str(e)[:120]}"
+
+
 def main() -> int:
     args = [a for a in sys.argv[1:]]
     deep = "--links" in args
+    endpoints = "--endpoints" in args
     # URL brute passée en argument -> sonde directe (repérage ciblé d'une page
     # tarif découverte, ex. etariff.douanes.gov.mg — sans éditer CANDIDATES).
     raw_urls = [a for a in args if a.startswith("http://") or a.startswith("https://")]
@@ -160,6 +199,8 @@ def main() -> int:
         print(f"      {_probe(url)}")
         if deep:
             print(_dump_tariff_links(url))
+        if endpoints:
+            print(_dump_api_endpoints(url))
 
     for iso, urls in CANDIDATES.items():
         if raw_urls and not only:
