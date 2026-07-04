@@ -125,13 +125,17 @@ def extract_text_from_pdf(pdf_path: Path) -> str:
             "pdftotext est requis pour extraire directement un PDF. "
             "Installe poppler-utils ou fournis --text avec un fichier texte déjà extrait."
         )
-    completed = subprocess.run(
-        [pdftotext, "-layout", str(pdf_path), "-"],
-        check=True,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
+    try:
+        completed = subprocess.run(
+            [pdftotext, "-layout", str(pdf_path), "-"],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+    except subprocess.CalledProcessError as e:
+        details = (e.stderr or "").strip()
+        raise RuntimeError(f"Échec pdftotext{': ' + details if details else ''}") from e
     return completed.stdout
 
 
