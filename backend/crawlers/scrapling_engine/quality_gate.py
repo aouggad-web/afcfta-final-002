@@ -121,7 +121,13 @@ def compare_to_reference(candidate: Dict, reference: Dict, scope_to_candidate: b
     else:
         ref = ref_full
     common = set(cand) & set(ref)
-    coverage = len(common) / len(ref) if ref else 0.0
+    # Référence VIDE (ex. stub pays sans données, 0 position) : elle ne porte
+    # aucune information à reproduire -> couverture non applicable (pass), on ne
+    # fait pas échouer le gate sur du vide. Une référence NON vide (ex. étalon
+    # DZA, ou tarif CET existant) garde la contrainte de couverture pleine —
+    # ce qui bloque, à raison, l'écrasement de données riches par du SH6 WITS.
+    ref_empty = len(ref) == 0
+    coverage = 1.0 if ref_empty else len(common) / len(ref)
 
     tax_divergences: List[Dict] = []
     lost_advantages = 0
@@ -148,7 +154,8 @@ def compare_to_reference(candidate: Dict, reference: Dict, scope_to_candidate: b
         "candidate_positions": len(cand),
         "common_positions": len(common),
         "coverage": round(coverage, 5),
-        "coverage_pass": coverage >= COVERAGE_THRESHOLD,
+        "reference_empty": ref_empty,
+        "coverage_pass": ref_empty or coverage >= COVERAGE_THRESHOLD,
         "tax_divergences": tax_divergences[:50],
         "tax_divergences_count": len(tax_divergences),
         "tax_pass": len(tax_divergences) == 0,
