@@ -485,6 +485,33 @@ def test_gdp_per_capita_prefers_etl_when_present(monkeypatch):
     assert "WDI NY.GDP.PCAP.CD" in res["source"]
 
 
+def test_intra_african_context_real_afreximbank():
+    """Le contexte commerce intra-africain (Afreximbank ATR 2026) est branché
+    dans le rapport bilatéral pour origine + destination — données réelles."""
+    from services import report_engine
+
+    ctx = report_engine.get_intra_african_context("CIV", "NGA")
+    assert ctx["available"] is True
+    assert "Afreximbank" in ctx["source"]
+    # Origine et destination couvertes, avec valeurs réelles et tendance calculée.
+    for side in (ctx["origin"], ctx["destination"]):
+        assert side["available"] is True
+        iat = side["intra_african_trade"]
+        assert iat["value_2025_busd"] > 0
+        assert iat["share_2025_pct"] > 0
+        assert iat["growth_2021_2025_pct"] is not None  # calculée depuis la série 5 ans
+    # Contexte continental réel exposé.
+    assert ctx["continental_2025"]["intra_african_trade_busd"] > 0
+
+
+def test_intra_african_context_degrades_for_uncovered_country():
+    from services import report_engine
+
+    ctx = report_engine.get_intra_african_context("CIV", "ZZZ")
+    assert ctx["origin"]["available"] is True
+    assert ctx["destination"]["available"] is False  # jamais fabriqué
+
+
 def test_african_importers_use_free_stats_channel(monkeypatch):
     """Le fan-out 54 pays est remplacé par UNE requête sur le canal OEC
     gratuit du module Statistiques (aucun token requis)."""
