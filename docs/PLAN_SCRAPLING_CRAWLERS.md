@@ -61,24 +61,98 @@ backend/
 - Fichiers bruts téléchargés → `backend/engine/sources/` (gitignoré) ; seul le
   JSON normalisé et validé est committé.
 
-## 4. Contrat de sortie (inchangé = intégration Calculateur immédiate)
+## 4. Contrat de sortie v2 — le périmètre de capture par position (4 exigences)
+
+Le crawlé algérien capture déjà `taxes` + `advantages` + `formalities`
+(17 025/17 061 positions) mais en texte semi-libre. Le contrat v2 **structure**
+les 4 familles d'informations exigées, par position tarifaire nationale :
 
 ```json
 {
-  "country": "TUN", "country_name": "Tunisie",
-  "source": "douane.gov.tn (portail officiel)",
-  "extracted_at": "…", "source_quality": "crawled_authentic",
+  "country": "DZA", "source": "…", "extracted_at": "…",
+  "source_quality": "crawled_authentic",
   "stats": {"sections": n, "chapters": n, "sub_positions": n, "errors": 0},
+
+  "calculation_rules": {                      // ← (2) MÉTHODE DE CALCUL, niveau pays
+    "order": ["DD", "TCS", "PRCT", "DAPS", "TVA"],
+    "bases": {
+      "DD":   {"basis": "CIF", "type": "ad_valorem"},
+      "TVA":  {"basis": "CIF + DD + TCS + PRCT + DAPS", "type": "ad_valorem"},
+      "DAPS": {"basis": "CIF", "type": "ad_valorem_ou_specifique", "note": "…"}
+    },
+    "source": "Code des douanes / Loi de finances (références citées)"
+  },
+
+  "regimes_registry": [                       // ← (4) RÉFÉRENTIEL DES RÉGIMES, niveau pays
+    {"code": "ZLECAF",    "name": "Zone de libre-échange continentale africaine", "kind": "ALE"},
+    {"code": "ZALE",      "name": "Zone arabe de libre-échange (GAFTA)",          "kind": "ALE"},
+    {"code": "UE_ASSOC",  "name": "Accord d'association UE",                      "kind": "ALE"},
+    {"code": "CONV_JOR",  "name": "Convention algéro-jordanienne",                "kind": "convention_bilaterale"},
+    {"code": "HYDROCARB", "name": "Régime des activités hydrocarbures",           "kind": "regime_economique"},
+    {"code": "ANDI_INVEST","name": "Avantages investissement (ANDI/AAPI)",        "kind": "regime_economique"}
+  ],
+
   "sub_positions": [{
     "hs_code": "0101211100", "heading": "01.01", "chapter": "01",
     "name": "…", "description": "…",
-    "taxes": {"DD": {"name": "Droit de Douane", "rate": 15.0, "raw": "15%"}, "TVA": {…}, …}
+
+    "taxes": {                                // ← (1) TAUX + DÉNOMINATIONS EXACTES
+      "DD":  {"name": "Droit de Douane", "rate": 15.0, "raw": "15%"},
+      "TVA": {"name": "Taxe sur la Valeur Ajoutée", "rate": 19.0, "raw": "19%"},
+      "TCS": {"name": "Taxe de Contrôle Sanitaire", "rate": 3.0, "raw": "3%"}
+    },
+
+    "formalities": [{                         // ← (3) FORMALITÉS PAR POSITION
+      "document": "Dérogation sanitaire vétérinaire",
+      "issuing_authority": "Ministère de l'Agriculture",
+      "raw": "Derogation sanitaire veterinaire (m. agriculture)"
+    }, {
+      "document": "Visa de contrôle sanitaire vétérinaire",
+      "issuing_authority": "Ministère de l'Agriculture",
+      "raw": "…"
+    }],
+
+    "advantages": [{                          // ← (4) AVANTAGES FISCAUX PAR POSITION
+      "regime": "ZLECAF", "tax": "DD", "rate": 0.0,
+      "requires": "Certificat d'origine ZLECAf",
+      "condition_raw": "Certificat d'Origine dans le cadre ZLECAf - Exonération D.D"
+    }, {
+      "regime": "ZALE", "tax": "DD", "rate": 0.0,
+      "requires": "Certificat d'origine ZALE",
+      "condition_raw": "…"
+    }, {
+      "regime": "CONV_JOR", "tax": "DD+DAPS", "rate": 0.0,
+      "condition_raw": "Exonération d.d et d.a.p dans cadre convention algéro-jordanienne"
+    }]
   }]
 }
 ```
 
-Dès qu'un `data/crawled/{ISO3}_tariffs.json` valide existe, le Calculateur
-l'utilise en **priorité 1** pour ce pays — aucun autre branchement à écrire.
+Règles de capture :
+
+- **(2) Méthode de calcul** : rarement publiée par position — capturée au
+  **niveau pays** (`calculation_rules` : ordre d'application, assiette de
+  chaque taxe, ad valorem vs spécifique) depuis le code des douanes / la loi de
+  finances, avec références citées. Les exceptions par position (taux
+  spécifiques, minima de perception) sont portées dans `taxes.{X}.calculation`.
+- **(3) Formalités** : normalisées en `{document, issuing_authority, raw}` —
+  le texte brut est TOUJOURS conservé (`raw`) ; le parseur extrait document et
+  autorité (motif « libellé (autorité) » du portail algérien). Non parsable →
+  `raw` seul, jamais perdu.
+- **(4) Avantages fiscaux** : normalisés en `{regime, tax, rate, requires,
+  condition_raw}` et rattachés au `regimes_registry` du pays — **tous les
+  régimes**, pas seulement les ALE : accords d'association (UE), zone arabe
+  (ZALE/GAFTA), conventions bilatérales, **régimes économiques particuliers**
+  (hydrocarbures, investissement, franchises). Régime non reconnu →
+  `regime: "AUTRE"` + texte brut conservé.
+
+Rétro-compatibilité : les champs v1 (`taxes`, `advantages`, `formalities`)
+restent lisibles par `load_crawled_position_index` — le Calculateur continue de
+fonctionner pendant la migration ; l'affichage des formalités/avantages
+structurés enrichit `RegulatoryDetailsPanel` (déjà présent dans l'UI
+Calculateur). Étape ultérieure (V2 moteur) : utiliser `regimes_registry` +
+`advantages` pour proposer automatiquement le **meilleur régime applicable**
+dans le calcul (aujourd'hui seul le régime ZLECAf est calculé).
 
 ## 5. Étalon Algérie — le gate qualité (cœur de la proposition)
 
@@ -93,6 +167,8 @@ On s'en sert pour **prouver la chaîne Scrapling avant tout nouveau pays** :
 | Couverture des positions (SH10 communs) | ≥ 99,5 % |
 | Divergence sur DD / TVA / TCS / PRCT / DAPS (positions communes) | **0 divergence** non expliquée |
 | Valeurs pivot (12 lignes du CSV échantillon DZA) | 12/12 exactes |
+| Formalités + avantages des pivots (colonnes `Formalites_particulieres` / `Avantages_fiscaux` du CSV) | concordance texte brut 12/12 ; parsing structuré ≥ 90 % (le reste conservé en `raw`) |
+| Régimes détectés sur l'ensemble (ZLECAf, ZALE, conventions, régimes économiques) | chaque régime du `regimes_registry` observé ≥ 1 fois ; 0 avantage perdu vs v1 |
 | Schéma + validators existants (`crawlers/validators/`) | 0 erreur |
 | `stats.errors` | 0 |
 
