@@ -244,20 +244,39 @@ Conséquence sur la méthode :
    pour un pays connu pour en avoir → **FAIL** (règle « couche nationale
    manquante »).
 
-## 8. Vagues de déploiement (ordre = valeur / effort)
+## 8. Vagues de déploiement — **priorité : pays à tarif national autonome**
+
+Ordre décidé (proposition retenue) : commencer par les **22 pays qui ne sont
+dans AUCUNE union douanière à TEC**. Leur tarif est **entièrement national et
+autonome** — une seule couche, exactement le modèle Algérie (déjà prouvé). Pas
+de dépendance à un TEC, pas de coordination inter-pays : ce sont les gains les
+plus propres et ils rôdent le pipeline par pays avant la complexité des blocs.
+
+*(Classification dérivée du registre du projet
+`crawlers/all_countries_registry.py` : les blocs AMU, COMESA, SADC, ECCAS, IGAD
+sont des ZLE **sans TEC contraignant** → tarif national ; ECOWAS/UEMOA, EAC,
+CEMAC, SACU sont des unions douanières **à TEC** → deux couches.)*
+
+| Vague | Pays (22 autonomes) | Priorité au sein de la vague |
+|---|---|---|
+| **0 — Étalon** ✅ | DZA | fait (17 061 positions) |
+| **1 — Autonomes, sources prêtes** | MAR, TUN, EGY, LBY | pivots CSV présents (MAR/TUN) ; gros volumes ; portails structurés |
+| **2 — Autonomes, Est/Corne** | ETH, SDN, DJI, SOM, ERI | COMESA/IGAD, tarifs nationaux |
+| **3 — Autonomes, Australe/Océan Indien** | AGO, MOZ, ZMB, ZWE, MWI, MDG, MUS, SYC, COM, COD, MRT, STP | SADC/COMESA/ECCAS, tarifs nationaux |
+
+Après les vagues 0-3 : **22 pays** à tarif authentique dans le Calculateur, sans
+jamais toucher à la mécanique des TEC.
+
+### Ensuite — pays des unions douanières (32 pays, **deux couches**)
 
 | Vague | Pays | Socle DD | Couche nationale (obligatoire) |
 |---|---|---|---|
-| **0 — Étalon** | DZA | national | ✅ déjà complète (17 061 positions) |
-| **1 — Maghreb** | TUN, MAR, EGY | national | crawl portail national (pivots CSV TUN/MAR) |
-| **2 — Blocs : socle DD** | TEC CEDEAO (15), CET EAC (7), TEC CEMAC (6) | **1 source/bloc** | *ne suffit pas* — déclenche la vague 3 |
-| **3 — Blocs : couche nationale** | chaque pays membre des blocs | hérité du TEC | crawl portail national (taxes hors DD + formalités + régimes) |
-| **4 — Reste** | ZAF/SACU, reste COMESA, îles | selon bloc | même règle : DD + national |
+| **4 — Blocs : socle DD** | TEC CEDEAO/UEMOA (15), CET EAC (7), TEC CEMAC (6), SACU (5) | **1 source/bloc** | *ne suffit pas* → vague 5 |
+| **5 — Blocs : couche nationale** | chaque pays membre | hérité du TEC | crawl portail national (taxes hors DD + formalités + régimes), gate `--require-national-layer` |
 
-Le TEC accélère le **socle DD** de dizaines de pays d'un coup (vague 2), mais la
-**couverture réelle** d'un pays n'est atteinte qu'après sa couche nationale
-(vague 3). Un pays n'est marqué `crawled_authentic` que lorsque **les deux
-couches** sont présentes et passent le gate.
+Rappel : un pays n'est marqué `crawled_authentic` que lorsque **toutes ses
+couches applicables** sont présentes et passent le gate. Pour les 22 autonomes,
+une seule couche suffit ; pour les 32 en union, il en faut deux.
 
 ## 8. Risques & parades
 
