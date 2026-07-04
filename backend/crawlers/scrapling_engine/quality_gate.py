@@ -166,7 +166,16 @@ def check_pivots(candidate: Dict, pivots_csv: Path, scope_to_candidate: bool = T
     présent dans le candidat (crawl par tranches → pas de faux « absent »).
     """
     country = (candidate.get("country") or "DZA").upper()
-    schema = PIVOT_SCHEMAS.get(country, PIVOT_SCHEMAS["DZA"])
+    schema = PIVOT_SCHEMAS.get(country)
+    if not schema:
+        return {
+            "pivots_checked": 0,
+            "pivots_skipped_out_of_scope": 0,
+            "pivot_failures": [],
+            # Aucun schéma pivot défini pour ce pays -> non-applicable (non-bloquant).
+            "pivots_pass": True,
+            "pivots_applicable": False,
+        }
     hs_column = schema["hs_column"]
     tax_columns = schema["tax_columns"]
     parse_rate = schema["parse_rate"]
