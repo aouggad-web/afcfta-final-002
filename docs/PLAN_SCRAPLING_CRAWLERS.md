@@ -303,3 +303,41 @@ une seule couche suffit ; pour les 32 en union, il en faut deux.
 **Définition de « fait »** (par pays) : gate PASS + PR mergée + 3 calculs
 pilotes conformes au site officiel + pays marqué `crawled_authentic` dans le
 registre.
+
+## 10. Reconnaissance des portails nationaux (2026-07-04) — carte réelle
+
+Sondé depuis un runner GitHub (accès réseau réel) via
+`crawlers/scrapling_engine/recon.py`. Objectif : savoir, pour les 18 pays
+autonomes SANS données, ce qui est réellement crawlable AVANT d'écrire un
+scraper. Résultat brut (verdict par pays) :
+
+### Pays à source authentique DÉJÀ branchés sur le gate (specs écrites)
+| Pays | Source | Gate |
+|---|---|---|
+| DZA | conformepro.dz | étalon (crawl frais = vérité ; committé périmé) |
+| MAR | douane.gov.ma/adil | **PASS** (après fix session ADIL) |
+| ETH | customs.erca.gov.et | **PASS** (scrape live) |
+| TUN | douane.gov.tn | non contredit (pivot à construire) |
+| EGY | egyptariffs.com | site instable (522) — retry |
+
+### 18 pays autonomes sans données — verdict de crawlabilité
+| Statut | Pays | Détail |
+|---|---|---|
+| **DNS mort / pas de site** | MRT, DJI, COM, SOM, ERI, STP | aucune base tarifaire en ligne |
+| **Bloqué** | LBY, ZWE (Cloudflare anti-bot), MOZ (TLS obsolète), MWI (SPA-JS) | non accessible en HTTP simple |
+| **PDF seulement** | ZMB | « 2025 National Tariff Book » PDF → parseur PDF dédié |
+| **Pages narratives / pas de base** | GHA (CET), SYC, MUS, AGO, SDN | pas de tarif interrogeable ; SDN = login |
+| **SPA-JS + API** | **MDG** | `etariff.douanes.gov.mg` — appli JS ; API JSON à rétro-concevoir |
+
+**Conclusion** : AUCUN des 18 pays n'a de base tarifaire HTML/JSON directement
+scrapable en httpx+BeautifulSoup. Le seul portail national interrogeable est
+l'eTariff malgache (MDG), mais c'est une SPA JavaScript → nécessite soit la
+rétro-conception de son API JSON, soit un rendu Playwright.
+
+### Voies pour étendre au-delà des 5-6 pays authentiques (à décider)
+1. **MDG** : rétro-concevoir l'API JSON de l'eTariff (recon Playwright pour
+   capturer les XHR) — meilleure piste « portail national » restante.
+2. **ZMB (+ autres PDF)** : parseur PDF (`pdfplumber`) des tariff books officiels.
+3. **Bascule source tierce** : WITS/TRAINS (taux MFN appliqués niveau SH6,
+   source quasi-officielle) pour une couverture large mais moins fine (SH6, DD
+   seul, sans couche nationale) — nature de donnée différente, à assumer.
