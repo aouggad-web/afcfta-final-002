@@ -24,6 +24,14 @@ import sys
 from typing import Dict, List
 
 import httpx
+from bs4 import BeautifulSoup
+
+# Mots-clés d'un lien/formulaire menant à une base tarifaire (FR/EN/PT/AR-lat).
+TARIFF_KEYWORDS = re.compile(
+    r"tarif|tariff|nomenclat|douan|customs|hs\s*code|sh\d|harmoniz|"
+    r"position|pauta|aduaneir|classific|import\s*dut|\bndp\b",
+    re.IGNORECASE,
+)
 
 # Portails douaniers nationaux candidats — pays à tarif autonome sans données.
 # Plusieurs URL par pays quand la page tarifaire probable diffère de l'accueil.
@@ -98,8 +106,51 @@ def _probe(url: str) -> str:
         return f"ERREUR {type(e).__name__}: {str(e)[:120]}"
 
 
+def _dump_tariff_links(url: str) -> str:
+    """Fetche une page et liste ancres + formulaires qui semblent mener à une
+    base tarifaire (mots-clés). Sert à localiser la vraie page tarif avant
+    d'écrire un scraper."""
+    try:
+        with httpx.Client(
+            headers=HEADERS, timeout=25.0, follow_redirects=True, verify=False
+        ) as client:
+            resp = client.get(url)
+    except Exception as e:  # noqa: BLE001
+        return f"ERREUR {type(e).__name__}: {str(e)[:120]}"
+    if resp.status_code != 200:
+        return f"HTTP {resp.status_code} — pas d'analyse de liens"
+    soup = BeautifulSoup(resp.text, "html.parser")
+    base = str(resp.url)
+    out: List[str] = []
+    seen = set()
+    for a in soup.find_all("a", href=True):
+        text = a.get_text(" ", strip=True)
+        href = a["href"]
+        if TARIFF_KEYWORDS.search(text) or TARIFF_KEYWORDS.search(href):
+            full = httpx.URL(base).join(href)
+            key = str(full)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(f"      LIEN [{text[:45]!r}] -> {str(full)[:95]}")
+    for form in soup.find_all("form"):
+        action = form.get("action", "")
+        fields = [i.get("name") for i in form.find_all(["input", "select"]) if i.get("name")]
+        ftext = form.get_text(" ", strip=True)[:60]
+        if (
+            TARIFF_KEYWORDS.search(action)
+            or TARIFF_KEYWORDS.search(ftext)
+            or any(TARIFF_KEYWORDS.search(f or "") for f in fields)
+        ):
+            full = httpx.URL(base).join(action) if action else base
+            out.append(f"      FORM action={str(full)[:80]} champs={fields[:8]}")
+    return "\n".join(out) if out else "      (aucun lien/formulaire tarifaire détecté)"
+
+
 def main() -> int:
-    only = {a.upper() for a in sys.argv[1:]}
+    args = [a for a in sys.argv[1:]]
+    deep = "--links" in args
+    only = {a.upper() for a in args if not a.startswith("--")}
     for iso, urls in CANDIDATES.items():
         if only and iso not in only:
             continue
@@ -109,6 +160,8 @@ def main() -> int:
         for url in urls:
             print(f"  {url}")
             print(f"      {_probe(url)}")
+            if deep:
+                print(_dump_tariff_links(url))
     return 0
 
 
