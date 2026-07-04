@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -34,6 +35,46 @@ PIVOT_TAX_COLUMNS = {
     "TCS_pct": "TCS",
     "PRCT_pct": "PRCT",
     "DAPS_pct": "DAPS",
+}
+
+
+def _pct(raw: Optional[str]) -> Optional[float]:
+    """'2.5 %' / '2,5%' / '15' -> 2.5 (float) ; None/'' -> None."""
+    if raw is None:
+        return None
+    raw = raw.strip()
+    if not raw:
+        return None
+    m = re.search(r"(\d+(?:[.,]\d+)?)", raw)
+    return float(m.group(1).replace(",", ".")) if m else None
+
+
+# Schéma pivot par pays : nom de colonne HS + colonnes de taux -> code, colonnes
+# formalités/avantages. DZA reste le schéma historique (colonnes déjà en %
+# numérique). Un pays sans entrée ici (ex. TUN : export en texte libre
+# pipe-délimité, correspondance code<->libellé live NON confirmée) est
+# simplement ignoré par check_pivots — jamais de correspondance devinée.
+PIVOT_SCHEMAS: Dict[str, Dict] = {
+    "DZA": {
+        "hs_column": "Code_SH_10_chiffres",
+        "tax_columns": PIVOT_TAX_COLUMNS,
+        "parse_rate": lambda raw: float(raw.strip()) if raw and raw.strip() else None,
+        "text_columns": {
+            "Formalites_particulieres": "formalities",
+            "Avantages_fiscaux": "advantages",
+        },
+    },
+    "MAR": {
+        "hs_column": "Code_Position_10_chiffres",
+        "tax_columns": {
+            "Droit_Importation_DI": "DI",
+            "Taxe_Parafiscale_Importation_TPI": "TPI",
+            "Taxe_Valeur_Ajoutee_TVA": "TVA",
+            "Taxe_Interieure_Consommation_TIC": "TIC",
+        },
+        "parse_rate": _pct,
+        "text_columns": {"Formalites_particulieres": "formalities"},
+    },
 }
 
 
@@ -124,6 +165,13 @@ def check_pivots(candidate: Dict, pivots_csv: Path, scope_to_candidate: bool = T
     ``scope_to_candidate`` : ne vérifie que les pivots dont le chapitre est
     présent dans le candidat (crawl par tranches → pas de faux « absent »).
     """
+    country = (candidate.get("country") or "DZA").upper()
+    schema = PIVOT_SCHEMAS.get(country, PIVOT_SCHEMAS["DZA"])
+    hs_column = schema["hs_column"]
+    tax_columns = schema["tax_columns"]
+    parse_rate = schema["parse_rate"]
+    text_columns = schema["text_columns"]
+
     cand = _index(candidate)
     chapters = _candidate_chapters(candidate) if scope_to_candidate else None
     rows = list(csv.DictReader(open(pivots_csv, encoding="utf-8-sig"), delimiter=";"))
@@ -131,7 +179,7 @@ def check_pivots(candidate: Dict, pivots_csv: Path, scope_to_candidate: bool = T
     checked = 0
     skipped_out_of_scope = 0
     for row in rows:
-        hs = (row.get("Code_SH_10_chiffres") or "").strip()
+        hs = (row.get(hs_column) or "").strip()
         if not hs:
             continue
         if chapters is not None and hs[:2] not in chapters:
@@ -143,20 +191,17 @@ def check_pivots(candidate: Dict, pivots_csv: Path, scope_to_candidate: bool = T
             failures.append({"hs_code": hs, "issue": "position absente"})
             continue
         # Taux
-        for col, code in PIVOT_TAX_COLUMNS.items():
-            expected = (row.get(col) or "").strip()
-            if expected == "":
+        for col, code in tax_columns.items():
+            expected = parse_rate(row.get(col))
+            if expected is None:
                 continue
             got = _tax_rate(pos, code)
-            if got is None or abs(float(expected) - float(got)) > 1e-9:
+            if got is None or abs(expected - float(got)) > 1e-9:
                 failures.append(
                     {"hs_code": hs, "issue": f"taux {code}", "expected": expected, "got": got}
                 )
         # Concordance formalités / avantages (fragments séparés par '|')
-        for col, field in [
-            ("Formalites_particulieres", "formalities"),
-            ("Avantages_fiscaux", "advantages"),
-        ]:
+        for col, field in text_columns.items():
             expected_raw = (row.get(col) or "").strip()
             if not expected_raw:
                 continue
