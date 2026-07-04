@@ -172,6 +172,13 @@ On s'en sert pour **prouver la chaîne Scrapling avant tout nouveau pays** :
 | Schéma + validators existants (`crawlers/validators/`) | 0 erreur |
 | `stats.errors` | 0 |
 
+> **Découverte S1 (2026-07-04)** — le gate, testé à vide sur les données du
+> dépôt, a déjà détecté que **5 des 11 pivots CSV divergent du JSON crawlé**
+> (millésimes différents : DD 5↔15 %, TVA 9↔19 %, sucre, carburants — les deux
+> sources citent conformepro.dz à des dates différentes). Preuve que le
+> harnais fonctionne. **L'arbitrage = le crawl frais de S2** sur la source
+> officielle ; les pivots CSV seront re-vérifiés et re-datés à cette occasion.
+
 ➜ Tant que l'étalonnage DZA ne passe pas, **aucun autre pays n'est crawlé**.
 Une fois PASS, le même gate (schéma + pivots + spot-checks) s'applique à chaque
 pays ; pour MAR/TUN les CSV échantillons servent de pivots ; pour les autres,
