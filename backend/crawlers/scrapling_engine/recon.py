@@ -185,10 +185,23 @@ def _dump_api_endpoints(url: str) -> str:
         return f"ERREUR {type(e).__name__}: {str(e)[:120]}"
 
 
+def _dump_body(url: str, n: int = 700) -> str:
+    """Imprime les premiers octets du corps — pour inspecter le format d'une API
+    (ex. WITS/TRAINS SDMX-JSON/XML) et rétro-concevoir le parseur."""
+    try:
+        with httpx.Client(headers=HEADERS, timeout=40.0, follow_redirects=True, verify=False) as c:
+            resp = c.get(url)
+        body = resp.text[:n]
+        return f"      corps[{len(resp.content)}o]: {body!r}"
+    except Exception as e:  # noqa: BLE001
+        return f"      ERREUR {type(e).__name__}: {str(e)[:120]}"
+
+
 def main() -> int:
     args = [a for a in sys.argv[1:]]
     deep = "--links" in args
     endpoints = "--endpoints" in args
+    show_body = "--body" in args
     # URL brute passée en argument -> sonde directe (repérage ciblé d'une page
     # tarif découverte, ex. etariff.douanes.gov.mg — sans éditer CANDIDATES).
     raw_urls = [a for a in args if a.startswith("http://") or a.startswith("https://")]
@@ -201,6 +214,8 @@ def main() -> int:
             print(_dump_tariff_links(url))
         if endpoints:
             print(_dump_api_endpoints(url))
+        if show_body:
+            print(_dump_body(url))
 
     for iso, urls in CANDIDATES.items():
         if raw_urls and not only:
