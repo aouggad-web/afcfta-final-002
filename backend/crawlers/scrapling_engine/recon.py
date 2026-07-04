@@ -185,7 +185,7 @@ def _dump_api_endpoints(url: str) -> str:
         return f"ERREUR {type(e).__name__}: {str(e)[:120]}"
 
 
-def _dump_body(url: str, n: int = 700) -> str:
+def _dump_body(url: str, n: int = 6000) -> str:
     """Imprime les premiers octets du corps — pour inspecter le format d'une API
     (ex. WITS/TRAINS SDMX-JSON/XML) et rétro-concevoir le parseur."""
     try:
