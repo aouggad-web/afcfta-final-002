@@ -80,23 +80,33 @@ def cmd_run(countries: list[str] | None) -> int:
     from tariff_crawl.crawlers import AUTHENTIC_CRAWLERS  # import tardif
 
     results = []
-    for iso3 in targets:
+    total = len(targets)
+    print(f"Démarrage du crawl pays par pays : {total} pays")
+    for idx, iso3 in enumerate(targets, start=1):
+        print(f"\n[{idx}/{total}] {iso3} — démarrage")
         crawler = AUTHENTIC_CRAWLERS.get(iso3)
         if crawler is None:
             results.append((iso3, "skipped", "no_authentic_crawler"))
+            print(f"[{idx}/{total}] {iso3} — skipped: no_authentic_crawler")
             continue
         try:
             doc = crawler()
             ok, issues = validate_authenticity(doc)
             if not ok:
-                results.append((iso3, "rejected", "; ".join(issues)))
+                detail = "; ".join(issues)
+                results.append((iso3, "rejected", detail))
+                print(f"[{idx}/{total}] {iso3} — rejected: {detail}")
                 continue
             out = CRAWLED_DIR / f"{iso3}_tariffs.json"
             out.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
-            results.append((iso3, "ok", f"{doc['stats']['sub_positions']} positions"))
+            detail = f"{doc['stats']['sub_positions']} positions"
+            results.append((iso3, "ok", detail))
+            print(f"[{idx}/{total}] {iso3} — ok: {detail}")
         except Exception as e:  # un pays en échec n'arrête pas les autres
             results.append((iso3, "error", str(e)))
+            print(f"[{idx}/{total}] {iso3} — error: {e}")
 
+    print("\nRésumé final")
     print(f"{'ISO':<5}{'STATUT':<12}DÉTAIL")
     for iso3, status, detail in results:
         print(f"{iso3:<5}{status:<12}{detail}")
