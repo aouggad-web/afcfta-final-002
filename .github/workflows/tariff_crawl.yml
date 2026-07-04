@@ -23,6 +23,10 @@ on:
         description: 'Borne de positions (vide = tout) — pour les essais'
         required: false
         default: ''
+      chapters:
+        description: 'Chapitres SH ciblés, séparés par des virgules (ex. 01,02) — crawl par tranches'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -62,6 +66,7 @@ jobs:
         env:
           COUNTRY: ${{ inputs.country }}
           MAXPOS: ${{ inputs.max_positions }}
+          CRAWL_CHAPTERS: ${{ inputs.chapters }}
         run: |
           ARGS=(--country "$COUNTRY" --out "/tmp/${COUNTRY}_tariffs.json")
           if [ -n "$MAXPOS" ]; then ARGS+=(--max-positions "$MAXPOS"); fi
