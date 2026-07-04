@@ -3,3 +3,4 @@
 # Installées par le workflow .github/workflows/tariff_crawl.yml.
 scrapling>=0.2
 playwright>=1.45
+motor==3.3.1
