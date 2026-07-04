@@ -117,6 +117,11 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("0201", "agri", "Cattle meat"),  # viande bovine
     ("0202", "agri", "Cattle meat"),
     ("0207", "agri", "Chicken meat"),  # viande de volaille
+    # ── Industrie : positions HS4 spécifiques vers secteurs UNIDO ──
+    ("2523", "manufacturing", "Manufacture of other non-metallic mineral products"),  # ciment
+    ("3105", "manufacturing", "Manufacture of chemicals"),  # engrais composés
+    ("3102", "manufacturing", "Manufacture of chemicals"),  # engrais azotés
+    ("3103", "manufacturing", "Manufacture of chemicals"),  # engrais phosphatés
     # ── Hydrocarbures & Mines (USGS) ──
     ("2709", "mining", "Crude oil"),
     ("2710", "mining", "Crude oil"),
@@ -209,6 +214,19 @@ HS_CHAPTER_FALLBACK: Dict[str, Tuple[str, str]] = {
     "85": ("manufacturing", "Produits électroniques"),
     # Véhicules automobiles (UNIDO)
     "87": ("manufacturing", "Manufacture of motor vehicles"),
+    # Minéraux non métalliques : ciment, verre, céramique (UNIDO — 18 pays)
+    "68": ("manufacturing", "Manufacture of other non-metallic mineral products"),
+    "69": ("manufacturing", "Manufacture of other non-metallic mineral products"),
+    "70": ("manufacturing", "Manufacture of other non-metallic mineral products"),
+    # Agro-industrie complémentaire : farines, huiles, aliments pour animaux
+    "11": ("manufacturing", "Manufacture of food products"),
+    "15": ("manufacturing", "Manufacture of food products"),
+    "17": ("agri", "Sugarcane"),
+    "23": ("manufacturing", "Manufacture of food products"),
+    "24": ("agri", "Tobacco"),
+    # Ouvrages en métaux (outillage, coutellerie)
+    "82": ("manufacturing", "Manufacture of basic metals"),
+    "83": ("manufacturing", "Manufacture of basic metals"),
 }
 
 DATASET_KEY = {
