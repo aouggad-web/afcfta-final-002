@@ -36,6 +36,10 @@ on:
         description: 'DIAGNOSTIC : codes SH à dumper (HTML live vs committé). Si rempli, saute crawl/gate/publish.'
         required: false
         default: ''
+      recon:
+        description: 'RECONNAISSANCE : sonder les portails douaniers nationaux (opt. ISO3 séparés par espace). Si rempli, saute crawl/gate/publish.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -76,9 +80,22 @@ jobs:
         run: |
           python -m crawlers.scrapling_engine.diag_dza $HS_CODES
 
+      - name: Reconnaissance des portails douaniers (si recon rempli)
+        if: ${{ inputs.recon != '' }}
+        working-directory: backend
+        env:
+          RECON_ARGS: ${{ inputs.recon }}
+        run: |
+          # 'all' = sonder tous les portails candidats ; sinon liste ISO3.
+          if [ "$RECON_ARGS" = "all" ]; then
+            python -m crawlers.scrapling_engine.recon
+          else
+            python -m crawlers.scrapling_engine.recon $RECON_ARGS
+          fi
+
       - name: Crawl du pays
         id: crawl
-        if: ${{ inputs.diag_hs == '' }}
+        if: ${{ inputs.diag_hs == '' && inputs.recon == '' }}
         working-directory: backend
         timeout-minutes: 60
         env:
@@ -92,7 +109,7 @@ jobs:
 
       - name: Gate qualité (étalon + pivots si disponibles)
         id: gate
-        if: ${{ inputs.diag_hs == '' }}
+        if: ${{ inputs.diag_hs == '' && inputs.recon == '' }}
         working-directory: backend
         env:
           COUNTRY: ${{ inputs.country }}
@@ -140,7 +157,7 @@ jobs:
           retention-days: 30
 
       - name: Publier (branche crawl/{iso3} + PR) — uniquement si gate PASS
-        if: ${{ inputs.diag_hs == '' && inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
+        if: ${{ inputs.diag_hs == '' && inputs.recon == '' && inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
         env:
           COUNTRY: ${{ inputs.country }}
           GH_TOKEN: ${{ github.token }}
