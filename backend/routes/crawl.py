@@ -17,6 +17,7 @@ class CrawlStartRequest(BaseModel):
     region: Optional[str] = None
     block: Optional[str] = None
     force_generic: bool = False
+    country_by_country: bool = True
 
 
 @router.post("/start")
@@ -30,6 +31,7 @@ async def start_crawl(request: CrawlStartRequest):
             region=request.region,
             block=request.block,
             force_generic=request.force_generic,
+            country_by_country=request.country_by_country,
         )
         return {
             "message": f"Crawl job {job.job_id} started for {len(job.country_codes)} countries",
@@ -51,6 +53,26 @@ async def list_jobs(
     return {
         "jobs": orchestrator.list_jobs(status=status, limit=limit),
         "stats": orchestrator.get_stats(),
+    }
+
+
+@router.get("/jobs/{job_id}/progress")
+async def get_job_progress(job_id: str):
+    orchestrator = get_orchestrator()
+    job = orchestrator.get_job(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail=f"Job {job_id} not found")
+    data = job.to_dict()
+    return {
+        "job_id": data["job_id"],
+        "status": data["status"],
+        "progress_pct": data["progress_pct"],
+        "current_country": data["current_country"],
+        "total_countries": data["total_countries"],
+        "succeeded": data["succeeded"],
+        "failed": data["failed"],
+        "pending": data["pending"],
+        "steps": data["progress_steps"],
     }
 
 

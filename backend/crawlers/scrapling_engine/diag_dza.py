@@ -27,7 +27,6 @@ from pathlib import Path
 from typing import Dict, List
 
 from bs4 import BeautifulSoup
-
 from crawlers.countries.algeria_conformepro_scraper import AlgeriaConformeproScraper
 
 BACKEND = Path(__file__).resolve().parent.parent.parent
@@ -66,9 +65,7 @@ async def _run(hs_codes: List[str]) -> None:
                 print(f"\n### {hs} — ABSENT du committé (URL inconnue)")
                 continue
             url = pos.get("source_url", "")
-            committed_taxes = {
-                k: v.get("rate") for k, v in (pos.get("taxes") or {}).items()
-            }
+            committed_taxes = {k: v.get("rate") for k, v in (pos.get("taxes") or {}).items()}
             print(f"\n### {hs}  ch{pos.get('chapter')}  {(pos.get('name') or '')[:55]}")
             print(f"    URL         : {url}")
             print(f"    committé    : {committed_taxes}")
