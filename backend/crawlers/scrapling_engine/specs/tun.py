@@ -86,6 +86,7 @@ def crawl(max_positions: Optional[int] = None) -> List[Dict]:
                             "source": SOURCE,
                         }
                     )
+                    await asyncio.sleep(1.5)
                 if max_positions and len(out) >= max_positions:
                     break
         finally:
