@@ -32,6 +32,10 @@ on:
         required: false
         type: boolean
         default: false
+      diag_hs:
+        description: 'DIAGNOSTIC : codes SH à dumper (HTML live vs committé). Si rempli, saute crawl/gate/publish.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -64,8 +68,17 @@ jobs:
           pip install -r requirements-crawl.txt
           python -m playwright install chromium --with-deps
 
+      - name: Diagnostic HTML live (si diag_hs rempli)
+        if: ${{ inputs.diag_hs != '' }}
+        working-directory: backend
+        env:
+          HS_CODES: ${{ inputs.diag_hs }}
+        run: |
+          python -m crawlers.scrapling_engine.diag_dza $HS_CODES
+
       - name: Crawl du pays
         id: crawl
+        if: ${{ inputs.diag_hs == '' }}
         working-directory: backend
         timeout-minutes: 60
         env:
@@ -79,6 +92,7 @@ jobs:
 
       - name: Gate qualité (étalon + pivots si disponibles)
         id: gate
+        if: ${{ inputs.diag_hs == '' }}
         working-directory: backend
         env:
           COUNTRY: ${{ inputs.country }}
@@ -126,7 +140,7 @@ jobs:
           retention-days: 30
 
       - name: Publier (branche crawl/{iso3} + PR) — uniquement si gate PASS
-        if: ${{ inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
+        if: ${{ inputs.diag_hs == '' && inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
         env:
           COUNTRY: ${{ inputs.country }}
           GH_TOKEN: ${{ github.token }}
