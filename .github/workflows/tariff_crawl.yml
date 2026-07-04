@@ -44,6 +44,12 @@ on:
         description: 'RECON JS : capturer l API XHR d une SPA via Playwright (URL). Si rempli, saute crawl/gate/publish.'
         required: false
         default: ''
+      source:
+        description: 'Source des donnees : spec (portail national dedie) ou wits (WITS/TRAINS SH6, DD seul)'
+        required: false
+        type: choice
+        options: [spec, wits]
+        default: 'spec'
 
 permissions:
   contents: write
@@ -115,7 +121,7 @@ jobs:
           MAXPOS: ${{ inputs.max_positions }}
           CRAWL_CHAPTERS: ${{ inputs.chapters }}
         run: |
-          ARGS=(--country "$COUNTRY" --out "/tmp/${COUNTRY}_tariffs.json")
+          ARGS=(--country "$COUNTRY" --out "/tmp/${COUNTRY}_tariffs.json" --source "${{ inputs.source }}")
           if [ -n "$MAXPOS" ]; then ARGS+=(--max-positions "$MAXPOS"); fi
           python -m crawlers.scrapling_engine.runner "${ARGS[@]}"
 

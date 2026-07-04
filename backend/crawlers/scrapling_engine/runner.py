@@ -53,15 +53,43 @@ def load_spec(country_iso3: str):
         return None
 
 
+def _wits_spec(iso3: str):
+    """Spec synthétique adossée à WITS/TRAINS (couverture SH6 multi-pays) —
+    utilisée quand aucune spec nationale dédiée n'existe et que --source wits
+    est demandé. Voir wits_source.py (nature SH6, DD seul, sans couche nationale)."""
+    from crawlers.scrapling_engine import wits_source
+
+    class _Spec:
+        COUNTRY_NAME = wits_source.COUNTRY_NAMES.get(iso3.upper(), iso3.upper())
+        SOURCE = wits_source.SOURCE
+        CALCULATION_RULES = {
+            "order": ["DD"],
+            "bases": {"DD": {"basis": "CIF", "type": "ad_valorem"}},
+            "source": "MFN appliqué SH6 (WITS/TRAINS) — couche nationale non couverte par cette source.",
+        }
+
+        @staticmethod
+        def crawl(max_positions=None):
+            return wits_source.crawl(iso3, max_positions=max_positions)
+
+    return _Spec
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Crawl Scrapling des tarifs douaniers (1 pays)")
     ap.add_argument("--country", required=True, help="ISO3 (ex. DZA)")
     ap.add_argument("--max-positions", type=int, default=None, help="Borne pour les essais")
     ap.add_argument("--out", type=Path, default=None, help="Chemin de sortie JSON")
+    ap.add_argument(
+        "--source",
+        choices=["spec", "wits"],
+        default="spec",
+        help="spec = portail national dédié ; wits = WITS/TRAINS (SH6, DD seul).",
+    )
     args = ap.parse_args()
 
     iso3 = args.country.upper()
-    spec = load_spec(iso3)
+    spec = _wits_spec(iso3) if args.source == "wits" else load_spec(iso3)
     if spec is None:
         return 2
 
