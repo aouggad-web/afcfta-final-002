@@ -40,6 +40,10 @@ on:
         description: 'RECONNAISSANCE : sonder les portails douaniers nationaux (opt. ISO3 séparés par espace). Si rempli, saute crawl/gate/publish.'
         required: false
         default: ''
+      recon_js:
+        description: 'RECON JS : capturer l API XHR d une SPA via Playwright (URL). Si rempli, saute crawl/gate/publish.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -93,9 +97,17 @@ jobs:
             python -m crawlers.scrapling_engine.recon $RECON_ARGS
           fi
 
+      - name: Reconnaissance SPA JS via Playwright (si recon_js rempli)
+        if: ${{ inputs.recon_js != '' }}
+        working-directory: backend
+        env:
+          RECON_JS_URLS: ${{ inputs.recon_js }}
+        run: |
+          python -m crawlers.scrapling_engine.recon_js $RECON_JS_URLS
+
       - name: Crawl du pays
         id: crawl
-        if: ${{ inputs.diag_hs == '' && inputs.recon == '' }}
+        if: ${{ inputs.diag_hs == '' && inputs.recon == '' && inputs.recon_js == '' }}
         working-directory: backend
         timeout-minutes: 60
         env:
@@ -109,7 +121,7 @@ jobs:
 
       - name: Gate qualité (étalon + pivots si disponibles)
         id: gate
-        if: ${{ inputs.diag_hs == '' && inputs.recon == '' }}
+        if: ${{ inputs.diag_hs == '' && inputs.recon == '' && inputs.recon_js == '' }}
         working-directory: backend
         env:
           COUNTRY: ${{ inputs.country }}
@@ -157,7 +169,7 @@ jobs:
           retention-days: 30
 
       - name: Publier (branche crawl/{iso3} + PR) — uniquement si gate PASS
-        if: ${{ inputs.diag_hs == '' && inputs.recon == '' && inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
+        if: ${{ inputs.diag_hs == '' && inputs.recon == '' && inputs.recon_js == '' && inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
         env:
           COUNTRY: ${{ inputs.country }}
           GH_TOKEN: ${{ github.token }}
