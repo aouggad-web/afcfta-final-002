@@ -9,6 +9,12 @@ long ("Droit d'Importation (DI)") ; on le convertit ici vers le contrat v2
 Les préférences tarifaires par pays (ADIL info_3.asp) ne sont PAS extraites par
 `scrape_chapter_with_taxes` (méthode non appelée dans la boucle production) —
 ce spec les ajoute pour ne pas perdre la couche « avantages » du contrat v2.
+
+ADIL est un portail à SESSION serveur (classic ASP) : chaque position doit être
+sélectionnée par un POST sur SEARCH_URL avant que les pages de détail
+(info_2/3/4.asp) ne renvoient SES données — sans ce POST elles renvoient encore
+celles de la position précédente. Bug réel détecté par le gate qualité (pivots
+CSV décalés d'exactement une position) avant correction ici.
 """
 
 from __future__ import annotations
@@ -37,7 +43,7 @@ _TAX_LABEL_TO_CODE = {
 
 
 def crawl(max_positions: Optional[int] = None) -> List[Dict]:
-    from crawlers.countries.morocco_douane_scraper import MoroccoDouaneScraper
+    from crawlers.countries.morocco_douane_scraper import FORM_URL, SEARCH_URL, MoroccoDouaneScraper
 
     chapters_env = os.getenv("CRAWL_CHAPTERS", "").strip()
     chapters = [c.strip().zfill(2) for c in chapters_env.split(",") if c.strip()] or [
@@ -52,6 +58,8 @@ def crawl(max_positions: Optional[int] = None) -> List[Dict]:
         client = scraper._new_client()
         out: List[Dict] = []
         try:
+            await client.get("https://www.douane.gov.ma/adil/")
+            await client.get(FORM_URL)
             for chapter in chapters:
                 positions = await scraper.get_chapter_positions(chapter)
                 if max_positions:
@@ -61,6 +69,14 @@ def crawl(max_positions: Optional[int] = None) -> List[Dict]:
                     positions = positions[:remaining]
                 for pos in positions:
                     code = pos["code"]
+                    await client.post(
+                        SEARCH_URL,
+                        data={"lposition": code},
+                        headers={
+                            "Referer": FORM_URL,
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                    )
                     taxes_raw = await scraper.get_position_taxes(client, code)
                     formalities_raw = await scraper.get_position_formalities(client, code)
                     preferences_raw = await scraper.get_position_preferences(client, code)
