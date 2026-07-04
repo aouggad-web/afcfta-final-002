@@ -265,6 +265,71 @@ def get_opportunity_report(
     }
 
 
+def _intra_african_profile(iso3: str) -> Dict:
+    """Profil de commerce intra-africain d'un pays — données réelles sourcées
+    Afreximbank (African Trade Report 2026). Retourne available:False si le pays
+    n'est pas couvert, jamais de valeur inventée."""
+    from services import afreximbank_data
+
+    iso3 = (iso3 or "").upper()
+    intra = afreximbank_data.get_country_intra_african(iso3)
+    exports = afreximbank_data.get_country_merchandise_exports(iso3)
+    if not intra and not exports:
+        return {"available": False, "iso3": iso3, "note": "Pays non couvert par l'ATR 2026."}
+
+    def _trend(series):
+        """Croissance 2021→2025 (%) à partir de la série 5 ans, si exploitable."""
+        if not series or len(series) < 2 or not series[0]:
+            return None
+        return round((series[-1] / series[0] - 1.0) * 100.0, 1)
+
+    block = {
+        "available": True,
+        "iso3": iso3,
+        "name": (intra or {}).get("name"),
+        "source": afreximbank_data.SOURCE,
+        "reference_year": 2025,
+    }
+    if intra:
+        block["intra_african_trade"] = {
+            "value_2025_busd": intra.get("intra_african_2025_busd"),
+            "share_2025_pct": intra.get("share_2025_pct"),
+            "series_2021_2025": intra.get("series_2021_2025"),
+            "growth_2021_2025_pct": _trend(intra.get("series_2021_2025")),
+            "continental_total_2025_busd": afreximbank_data.get_intra_african_total_busd(),
+        }
+    if exports:
+        block["merchandise_exports"] = {
+            "value_2025_busd": exports.get("value_2025_busd"),
+            "share_2025_pct": exports.get("share_2025_pct"),
+            "series_2021_2025": exports.get("series_2021_2025"),
+            "growth_2021_2025_pct": _trend(exports.get("series_2021_2025")),
+            "continental_total_2025_busd": afreximbank_data.get_merchandise_exports_total_busd(),
+        }
+    return block
+
+
+def get_intra_african_context(origin_iso3: str, destination_iso3: str) -> Dict:
+    """Contexte de commerce intra-africain (Afreximbank ATR 2026) pour la paire
+    origine/destination : dynamisme export de l'origine + ouverture intra-africaine
+    du marché de destination. Contexte sourcé, hors score (jamais fabriqué)."""
+    from services import afreximbank_data
+
+    ci = afreximbank_data.get_continental_indicators()
+    return {
+        "available": True,
+        "source": afreximbank_data.SOURCE,
+        "origin": _intra_african_profile(origin_iso3),
+        "destination": _intra_african_profile(destination_iso3),
+        "continental_2025": {
+            "intra_african_trade_busd": afreximbank_data.get_intra_african_total_busd(),
+            "intra_african_trade_growth_pct": ci.get("intra_african_trade_growth_pct"),
+            "real_gdp_growth_pct": ci.get("real_gdp_growth_pct"),
+            "note": "Contexte macro-commercial réel ; complète le score sans l'alimenter.",
+        },
+    }
+
+
 def get_opportunity_report_ultra_fine(
     hs_code: str,
     origin_iso3: str,
@@ -333,6 +398,11 @@ def get_opportunity_report_ultra_fine(
     # transparent population-proxy estimate — always flagged, never fabricated.
     national_need = demand_estimation_service.estimate_national_need(hs_code, destination_iso3)
     base["national_need"] = national_need
+
+    # Intra-African trade context (Afreximbank ATR 2026): export dynamism of the
+    # origin + intra-African openness of the destination market. Real, sourced
+    # context that frames the corridor — kept OUT of the score (no fabrication).
+    intra_african_context = get_intra_african_context(origin_iso3, destination_iso3)
     need_narrative = narrative_analysis_service.analyze_national_need(
         destination_iso3, national_need
     )
@@ -363,6 +433,7 @@ def get_opportunity_report_ultra_fine(
             "national_need": need_narrative,
         },
         "national_need": national_need,
+        "intra_african_context": intra_african_context,
         "benchmarking": {
             "top_producers": top_producers,
             "cost_comparison": cost_benchmark,
