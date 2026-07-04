@@ -168,9 +168,13 @@ def main() -> int:
     args = parser.parse_args()
 
     if args.text:
+        if not args.text.exists():
+            raise SystemExit(f"Fichier texte introuvable: {args.text}")
         text = args.text.read_text(encoding="utf-8")
         source_file = str(args.text)
     else:
+        if not args.input.exists():
+            raise SystemExit(f"PDF introuvable: {args.input}")
         text = extract_text_from_pdf(args.input)
         source_file = str(args.input)
 
