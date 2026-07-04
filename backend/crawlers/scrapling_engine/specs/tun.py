@@ -1,5 +1,5 @@
 """
-Spec TUN — Tunisie (wave 1 : pays à tarif national autonome, pivots CSV présents).
+Spec TUN — Tunisie (wave 1 : pays à tarif national autonome ; export CSV existant mais pivots non vérifiables automatiquement).
 
 Adaptateur autour du scraper ÉPROUVÉ `crawlers/countries/tunisia_douane_scraper.py`
 (portail douane.gov.tn/tarifweb2025). Conversion vers le contrat v2 :
