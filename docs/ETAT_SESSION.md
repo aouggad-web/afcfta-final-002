@@ -42,6 +42,8 @@
 
 ## 2. Prochaines tâches possibles
 
+0. **PRIORITÉ ABSOLUE — Crawlers Scrapling des tarifs douaniers** : plan complet dans `docs/PLAN_SCRAPLING_CRAWLERS.md` (étalon qualité = Algérie vs les 17 061 positions crawlées existantes ; workflow GitHub par pays `tariff_crawl.yml` ; intégration Calculateur automatique via `data/crawled/{ISO3}_tariffs.json` ; vagues DZA → TUN/MAR/EGY → TEC CEDEAO/EAC/CEMAC). Prochaine étape : S1 du plan (squelette scrapling_engine + workflow en mode validate).
+
 1. **Rejouer l'exemple cajou avec réseau ouvert** : lancer le workflow Actions (défauts déjà = cajou GNB→DZA) ou Codespaces → `market_potential` (OEC) + L3/réserves (WB) actifs → vérifier si le tier GNB→DZA bascule au-dessus de PASS.
 2. ~~Étendre la couverture FAO cajou~~ **FAIT (2026-07-04)** : workflow `production_etl` + fix parseur format LARGE → agri 287→9 597 lignes, 41→63 commodités, séries 2019-2024, cajou 4→18 producteurs (rang réel GNB : 7ᵉ). Industrie : chapitres HS 13→54 (ciment, engrais, farines, textiles, pharma…).
 3. Leviers §5 de `OPPORTUNITES_METHODOLOGIES.md` (consommation apparente L1, coûts producteur, calendrier tarifaire daté, calibrage pondérations/ε).
