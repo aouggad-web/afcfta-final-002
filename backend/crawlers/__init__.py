@@ -59,8 +59,10 @@ try:  # pragma: no cover - dépend de l'environnement d'exécution
         "ScraperFactory",
         "GenericScraper",
     ]
-except ImportError:  # environnement crawl minimal (sans motor/pydantic)
-    BaseScraper = ScraperConfig = ScraperResult = None  # type: ignore
-    GenericScraper = ScraperFactory = None  # type: ignore
+except ModuleNotFoundError as e:  # environnement crawl minimal (sans motor/pydantic)
+    if e.name in {"motor", "pydantic"}:
+        pass
+    else:
+        raise
 
 __version__ = "1.0.0"
