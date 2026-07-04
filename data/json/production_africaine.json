@@ -15000,7 +15000,7 @@
     }
   ],
   "metadata": {
-    "last_updated": "2026-06-15T20:09:40.323039+00:00",
+    "last_updated": "2026-07-04T00:25:14.109925+00:00",
     "update_source": "build_production_faostat_usgs.py — ingestion FAOSTAT bulk + USGS MCS",
     "sources": {
       "agriculture": "backend/etl/faostat_data.py (curé FAO)",
