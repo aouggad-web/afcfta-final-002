@@ -615,55 +615,27 @@ def fetch_faostat_bulk(
 
         reader = csv.DictReader(io.StringIO(raw_bytes.decode("utf-8", errors="replace")))
 
+        # Le bulk FAOSTAT existe en deux formats :
+        #   - LONG (« Normalized ») : une ligne par (pays, item, année), colonne "Year" ;
+        #   - LARGE (défaut, dont NOFLAG) : une ligne par (pays, item, élément),
+        #     avec UNE COLONNE PAR ANNÉE (Y2019, Y2020, ...).
+        # Le run GitHub 28689166688 a montré « 14 750 lignes lues → 0 retenues » :
+        # le zip Afrique est en format LARGE. On supporte les deux.
+        fieldnames = reader.fieldnames or []
+        year_columns = [
+            (col, int(col[1:]))
+            for col in fieldnames
+            if col.startswith("Y") and col[1:].isdigit() and int(col[1:]) in YEARS_RANGE
+        ]
+        wide_format = "Year" not in fieldnames and bool(year_columns)
+        if wide_format:
+            print(f"      Format LARGE détecté ({len(year_columns)} colonnes années retenues)")
+
         total_rows = 0
         matched_rows = 0
         unknown_items: set[str] = set()
 
-        for row in reader:
-            total_rows += 1
-
-            # Filtre élément : Production quantity uniquement
-            elem = row.get("Element Code", row.get("Element code", "")).strip()
-            if elem != FAOSTAT_ELEMENT_CODE:
-                continue
-
-            # Filtre année
-            try:
-                year = int(row.get("Year", "0").strip())
-            except ValueError:
-                continue
-            if year not in YEARS_RANGE:
-                continue
-
-            # Résolution pays
-            iso3 = _resolve_fao_country(row)
-            if not iso3:
-                continue
-
-            # Résolution commodity
-            item_raw = row.get("Item", "").strip()
-            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw)
-            if not commodity:
-                unknown_items.add(item_raw)
-                continue
-
-            # Valeur
-            val_str = row.get("Value", "").strip()
-            if not val_str:
-                continue
-            try:
-                val = float(val_str)
-            except ValueError:
-                continue
-            if val <= 0:
-                continue
-
-            # Unité (FAOSTAT bulk utilise "t" pour tonnes)
-            raw_unit = row.get("Unit", "t").strip()
-            unit = "tonnes" if raw_unit in ("t", "T") else raw_unit
-
-            item_code = row.get("Item Code", row.get("Item code", "")).strip()
-
+        def _emit(iso3: str, commodity: str, item_code: str, unit: str, year: int, val: float):
             records.append(
                 {
                     "country_name": ISO3_FR_NAME.get(iso3, iso3),
@@ -691,7 +663,63 @@ def fetch_faostat_bulk(
                     "_ingested_from": "FAOSTAT_BULK",
                 }
             )
-            matched_rows += 1
+
+        def _to_value(val_str: str) -> Optional[float]:
+            val_str = (val_str or "").strip()
+            if not val_str:
+                return None
+            try:
+                val = float(val_str)
+            except ValueError:
+                return None
+            return val if val > 0 else None
+
+        for row in reader:
+            total_rows += 1
+
+            # Filtre élément : Production quantity uniquement
+            elem = row.get("Element Code", row.get("Element code", "")).strip()
+            if elem != FAOSTAT_ELEMENT_CODE:
+                continue
+
+            # Résolution pays
+            iso3 = _resolve_fao_country(row)
+            if not iso3:
+                continue
+
+            # Résolution commodity
+            item_raw = row.get("Item", "").strip()
+            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw)
+            if not commodity:
+                unknown_items.add(item_raw)
+                continue
+
+            # Unité (FAOSTAT bulk utilise "t" pour tonnes)
+            raw_unit = row.get("Unit", "t").strip()
+            unit = "tonnes" if raw_unit in ("t", "T") else raw_unit
+            item_code = row.get("Item Code", row.get("Item code", "")).strip()
+
+            if wide_format:
+                # Une ligne = toutes les années : émettre un enregistrement par
+                # colonne Y#### non vide dans la plage.
+                for col, year in year_columns:
+                    val = _to_value(row.get(col, ""))
+                    if val is None:
+                        continue
+                    _emit(iso3, commodity, item_code, unit, year, val)
+                    matched_rows += 1
+            else:
+                try:
+                    year = int(row.get("Year", "0").strip())
+                except ValueError:
+                    continue
+                if year not in YEARS_RANGE:
+                    continue
+                val = _to_value(row.get("Value", ""))
+                if val is None:
+                    continue
+                _emit(iso3, commodity, item_code, unit, year, val)
+                matched_rows += 1
 
         print(f"      {total_rows:,} lignes lues → {matched_rows:,} retenues")
         if unknown_items:
