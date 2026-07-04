@@ -1,5 +1,13 @@
 # Exemple déroulé — Noix de cajou de Guinée-Bissau vers l'Algérie
 
+> **Mise à jour (2026-07-04)** : après l'enrichissement FAOSTAT (workflow
+> `production_etl`), la couverture cajou est passée de **4 à 18 producteurs
+> enregistrés** avec séries 2019-2024. Le rang réel de la Guinée-Bissau est
+> **7ᵉ** (90 229 t en 2024, part continentale 3,5 % ; top : CIV 944 673 t,
+> TZA 528 262 t, GHA 218 576 t, BEN 212 624 t…). Le caveat de couverture
+> ci-dessous — écrit lors du déroulé initial — est donc **levé** ; les
+> chiffres du déroulé restent l'instantané daté du 2026-07-02.
+
 Cas réel de bout en bout : **cajou brut en coque (SH 080131)**, producteur
 **GNB (Guinée-Bissau)**, marché cible **DZA (Algérie)**. Déroulé le 2026-07-02
 dans un environnement **sans OEC ni datasets World Bank** (API bloquées) — les
