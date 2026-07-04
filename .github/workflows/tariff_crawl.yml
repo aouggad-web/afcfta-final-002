@@ -73,12 +73,14 @@ jobs:
           python -m crawlers.scrapling_engine.runner "${ARGS[@]}"
 
       - name: Gate qualité (étalon + pivots si disponibles)
+        id: gate
         working-directory: backend
         env:
           COUNTRY: ${{ inputs.country }}
         run: |
           GATE_ARGS=(--candidate "/tmp/${COUNTRY}_tariffs.json")
-          # Étalon : dataset crawlé authentique existant (obligatoire pour DZA)
+          # Étalon : dataset crawlé authentique existant (obligatoire pour DZA).
+          # Comparaison restreinte aux CHAPITRES crawlés (crawl par tranches).
           if [ -f "data/crawled/${COUNTRY}_tariffs.json" ]; then
             GATE_ARGS+=(--reference "data/crawled/${COUNTRY}_tariffs.json")
           fi
@@ -86,8 +88,22 @@ jobs:
           if [ -f "../frontend/public/${COUNTRY}_tarif_douanier_echantillon.csv" ]; then
             GATE_ARGS+=(--pivots "../frontend/public/${COUNTRY}_tarif_douanier_echantillon.csv")
           fi
+          # Le rapport va dans un fichier ; le CODE RETOUR du gate est capturé
+          # (le pipe |tee l'avalait). VERDICT exposé comme sortie d'étape.
+          set +e
           python -m crawlers.scrapling_engine.quality_gate "${GATE_ARGS[@]}" \
-            | tee "/tmp/${COUNTRY}_gate_report.json"
+            > "/tmp/${COUNTRY}_gate_report.json"
+          GATE_RC=$?
+          set -e
+          cat "/tmp/${COUNTRY}_gate_report.json"
+          if [ "$GATE_RC" -eq 0 ]; then VERDICT=PASS; else VERDICT=FAIL; fi
+          echo "verdict=$VERDICT" >> "$GITHUB_OUTPUT"
+          echo "Verdict du gate : $VERDICT (rc=$GATE_RC)"
+          # En mode publish, un gate FAIL doit faire échouer le job (pas de
+          # publication de données non validées). En validate, on n'échoue pas.
+          if [ "${{ inputs.mode }}" = "publish" ] && [ "$VERDICT" = "FAIL" ]; then
+            echo "::error::Gate FAIL en mode publish — aucune publication." ; exit 1
+          fi
 
       - name: Upload artefacts (JSON + rapport de gate)
         if: always()
@@ -101,7 +117,7 @@ jobs:
           retention-days: 30
 
       - name: Publier (branche crawl/{iso3} + PR) — uniquement si gate PASS
-        if: ${{ inputs.mode == 'publish' }}
+        if: ${{ inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
         env:
           COUNTRY: ${{ inputs.country }}
           GH_TOKEN: ${{ github.token }}

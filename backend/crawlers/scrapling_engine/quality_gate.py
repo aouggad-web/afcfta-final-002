@@ -58,9 +58,27 @@ def _raw_texts(items: List) -> List[str]:
     return out
 
 
-def compare_to_reference(candidate: Dict, reference: Dict) -> Dict:
-    """Couverture, divergences de taxes, avantages/formalités perdus."""
-    cand, ref = _index(candidate), _index(reference)
+def _candidate_chapters(candidate: Dict) -> set:
+    return {
+        (p.get("chapter") or (p.get("hs_code") or "")[:2])
+        for p in candidate.get("sub_positions", [])
+        if p.get("chapter") or p.get("hs_code")
+    }
+
+
+def compare_to_reference(candidate: Dict, reference: Dict, scope_to_candidate: bool = True) -> Dict:
+    """Couverture, divergences de taxes, avantages/formalités perdus.
+
+    ``scope_to_candidate`` (défaut) : restreint l'étalon aux CHAPITRES présents
+    dans le candidat — indispensable pour valider un crawl PAR TRANCHES (ex.
+    chapitre 01 seul) sans le comparer aux 17 061 positions complètes.
+    """
+    cand, ref_full = _index(candidate), _index(reference)
+    chapters = _candidate_chapters(candidate) if scope_to_candidate else None
+    if chapters:
+        ref = {hs: p for hs, p in ref_full.items() if (p.get("chapter") or hs[:2]) in chapters}
+    else:
+        ref = ref_full
     common = set(cand) & set(ref)
     coverage = len(common) / len(ref) if ref else 0.0
 
@@ -83,7 +101,9 @@ def compare_to_reference(candidate: Dict, reference: Dict) -> Dict:
             lost_formalities += 1
 
     return {
+        "scoped_to_chapters": sorted(chapters) if chapters else "all",
         "reference_positions": len(ref),
+        "reference_positions_full": len(ref_full),
         "candidate_positions": len(cand),
         "common_positions": len(common),
         "coverage": round(coverage, 5),
@@ -97,16 +117,25 @@ def compare_to_reference(candidate: Dict, reference: Dict) -> Dict:
     }
 
 
-def check_pivots(candidate: Dict, pivots_csv: Path) -> Dict:
+def check_pivots(candidate: Dict, pivots_csv: Path, scope_to_candidate: bool = True) -> Dict:
     """Valeurs pivot vérifiées : taux exacts + concordance texte des
-    formalités/avantages (repli : fragments contenus, sans accents/casse)."""
+    formalités/avantages (repli : fragments contenus, sans accents/casse).
+
+    ``scope_to_candidate`` : ne vérifie que les pivots dont le chapitre est
+    présent dans le candidat (crawl par tranches → pas de faux « absent »).
+    """
     cand = _index(candidate)
+    chapters = _candidate_chapters(candidate) if scope_to_candidate else None
     rows = list(csv.DictReader(open(pivots_csv, encoding="utf-8-sig"), delimiter=";"))
     failures: List[Dict] = []
     checked = 0
+    skipped_out_of_scope = 0
     for row in rows:
         hs = (row.get("Code_SH_10_chiffres") or "").strip()
         if not hs:
+            continue
+        if chapters is not None and hs[:2] not in chapters:
+            skipped_out_of_scope += 1
             continue
         checked += 1
         pos = cand.get(hs)
@@ -139,8 +168,11 @@ def check_pivots(candidate: Dict, pivots_csv: Path) -> Dict:
                     )
     return {
         "pivots_checked": checked,
+        "pivots_skipped_out_of_scope": skipped_out_of_scope,
         "pivot_failures": failures,
-        "pivots_pass": not failures,
+        # Aucun pivot dans le périmètre crawlé -> non-bloquant (pas d'info).
+        "pivots_pass": not failures and checked > 0,
+        "pivots_applicable": checked > 0,
     }
 
 
@@ -167,15 +199,23 @@ def check_parsing_quality(candidate: Dict) -> Dict:
     }
 
 
-def run_gate(candidate_path: Path, reference_path: Optional[Path], pivots_path: Optional[Path]):
+def run_gate(
+    candidate_path: Path,
+    reference_path: Optional[Path],
+    pivots_path: Optional[Path],
+    scope_to_candidate: bool = True,
+):
     candidate = json.load(open(candidate_path, encoding="utf-8"))
-    report: Dict = {"candidate": str(candidate_path)}
+    report: Dict = {
+        "candidate": str(candidate_path),
+        "scope_to_candidate": scope_to_candidate,
+    }
 
     if reference_path and reference_path.exists():
         reference = json.load(open(reference_path, encoding="utf-8"))
-        report["reference_check"] = compare_to_reference(candidate, reference)
+        report["reference_check"] = compare_to_reference(candidate, reference, scope_to_candidate)
     if pivots_path and pivots_path.exists():
-        report["pivots_check"] = check_pivots(candidate, pivots_path)
+        report["pivots_check"] = check_pivots(candidate, pivots_path, scope_to_candidate)
     report["parsing_check"] = check_parsing_quality(candidate)
     report["stats_errors"] = (candidate.get("stats") or {}).get("errors")
 
@@ -184,7 +224,7 @@ def run_gate(candidate_path: Path, reference_path: Optional[Path], pivots_path: 
     if ref:
         passes += [ref["coverage_pass"], ref["tax_pass"], ref["no_loss_pass"]]
     piv = report.get("pivots_check")
-    if piv:
+    if piv and piv.get("pivots_applicable"):
         passes.append(piv["pivots_pass"])
 
     report["verdict"] = "PASS" if all(passes) else "FAIL"
@@ -196,8 +236,15 @@ def main() -> int:
     ap.add_argument("--candidate", required=True, type=Path)
     ap.add_argument("--reference", type=Path, default=None)
     ap.add_argument("--pivots", type=Path, default=None)
+    ap.add_argument(
+        "--no-scope",
+        action="store_true",
+        help="Comparer au dataset complet (pas seulement aux chapitres crawlés)",
+    )
     args = ap.parse_args()
-    report = run_gate(args.candidate, args.reference, args.pivots)
+    report = run_gate(
+        args.candidate, args.reference, args.pivots, scope_to_candidate=not args.no_scope
+    )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report["verdict"] == "PASS" else 1
 

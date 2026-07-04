@@ -118,6 +118,29 @@ def test_gate_pivots_surface_vintage_discrepancy():
     assert report["verdict"] == "FAIL"
 
 
+def test_gate_scopes_to_candidate_chapters():
+    """Un crawl PAR TRANCHES (ex. chapitre 01 seul) est comparé au seul
+    chapitre 01 de l'étalon — pas aux 17 061 positions (sinon couverture
+    toujours en échec). C'est le correctif du run tariff_crawl #2."""
+    raw = json.load(open(DZA_JSON, encoding="utf-8"))
+    ch01 = [p for p in raw["sub_positions"] if (p.get("chapter") or "") == "01"]
+    assert ch01, "chapitre 01 attendu dans l'étalon"
+    candidate = normalizer.assemble_output("DZA", "Algérie", raw["source"], ch01)
+
+    cand_path = BACKEND / "engine" / "sources" / "_gate_scope_ch01.json"
+    cand_path.parent.mkdir(parents=True, exist_ok=True)
+    json.dump(candidate, open(cand_path, "w", encoding="utf-8"), ensure_ascii=False)
+    report = quality_gate.run_gate(cand_path, DZA_JSON, None)  # scope_to_candidate par défaut
+    cand_path.unlink()
+
+    ref = report["reference_check"]
+    assert ref["scoped_to_chapters"] == ["01"]
+    assert ref["reference_positions"] == len(ch01)  # étalon restreint au chap. 01
+    assert ref["reference_positions_full"] > ref["reference_positions"]
+    assert ref["coverage"] >= 0.995  # couverture pleine SUR LE PÉRIMÈTRE crawlé
+    assert report["verdict"] == "PASS"
+
+
 def test_gate_fails_on_tax_divergence():
     """Un taux modifié doit faire échouer le gate (jamais de données
     silencieusement fausses)."""
