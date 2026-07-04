@@ -72,12 +72,45 @@ async def _probe(url: str, wait_ms: int = 8000) -> None:
             print(f"    goto: {type(e).__name__}: {str(e)[:120]}")
         await page.wait_for_timeout(wait_ms)
 
-        # Liens/boutons visibles pouvant mener à la recherche tarifaire
         try:
             title = await page.title()
             print(f"    <title>: {title!r}")
         except Exception:
             pass
+
+        # Phase interaction : cliquer chaque élément de navigation dont le texte
+        # évoque le tarif (browse/search/parcourir) pour déclencher les XHR de
+        # DONNÉES (les endpoints tarif ne partent qu'après navigation).
+        nav_keywords = [
+            "tariff",
+            "tarif",
+            "browse",
+            "parcour",
+            "search",
+            "recherch",
+            "chapter",
+            "chapitre",
+        ]
+        try:
+            anchors = await page.query_selector_all("a, button, [role=menuitem], li")
+            clicked = 0
+            for el in anchors:
+                if clicked >= 8:
+                    break
+                try:
+                    txt = ((await el.inner_text()) or "").strip().lower()
+                except Exception:
+                    continue
+                if txt and any(k in txt for k in nav_keywords) and len(txt) < 40:
+                    try:
+                        await el.click(timeout=3000)
+                        clicked += 1
+                        await page.wait_for_timeout(3500)
+                    except Exception:
+                        continue
+            print(f"    éléments de nav cliqués : {clicked}")
+        except Exception as e:  # noqa: BLE001
+            print(f"    interaction: {type(e).__name__}: {str(e)[:80]}")
 
         await browser.close()
 
