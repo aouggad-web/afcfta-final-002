@@ -5,10 +5,11 @@ Tout crawl, quelle que soit sa source, est normalisé vers UN schéma canonique
 unique, écrit dans data/crawled/{ISO3}_tariffs.json et lu par
 `services/crawled_data_service.py`.
 
-Le validateur applique le principe directeur : **authentique uniquement**. Il
-REJETTE les fichiers vides, sans source, ou contenant des positions estimées
-(etl_computed / synthétiques). Un fichier qui ne passe pas la validation ne doit
-pas être servi à l'utilisateur.
+Le validateur applique le principe directeur : **authentique uniquement,
+sourcé et traçable**. Il REJETTE les fichiers vides, sans source, sans URL
+de source vérifiable, ou contenant des positions estimées (etl_computed /
+synthétiques). Un fichier qui ne passe pas la validation ne doit pas être
+servi à l'utilisateur.
 """
 
 from __future__ import annotations
@@ -168,10 +169,13 @@ def validate_authenticity(doc: Dict[str, Any]) -> Tuple[bool, List[str]]:
             f"(attendu l'un de {sorted(AUTHENTIC_PROVENANCES)} ou synonyme reconnu)"
         )
 
-    # L'attribution 'source' est obligatoire (principe « avec source »).
-    # 'source_url' est recommandé mais non bloquant.
+    # L'attribution 'source' et une URL vérifiable sont obligatoires : la
+    # priorité absolue est de pouvoir revenir à la base officielle plutôt que
+    # de propager des approximations ou hallucinations héritées.
     if not doc.get("source"):
         issues.append("champ 'source' manquant")
+    if not doc.get("source_url"):
+        issues.append("champ 'source_url' manquant — source officielle vérifiable obligatoire")
 
     if not positions:
         issues.append("aucune position tarifaire (fichier vide)")
