@@ -58,9 +58,27 @@ def _raw_texts(items: List) -> List[str]:
     return out
 
 
-def compare_to_reference(candidate: Dict, reference: Dict) -> Dict:
-    """Couverture, divergences de taxes, avantages/formalités perdus."""
-    cand, ref = _index(candidate), _index(reference)
+def _candidate_chapters(candidate: Dict) -> set:
+    return {
+        (p.get("chapter") or (p.get("hs_code") or "")[:2])
+        for p in candidate.get("sub_positions", [])
+        if p.get("chapter") or p.get("hs_code")
+    }
+
+
+def compare_to_reference(candidate: Dict, reference: Dict, scope_to_candidate: bool = True) -> Dict:
+    """Couverture, divergences de taxes, avantages/formalités perdus.
+
+    ``scope_to_candidate`` (défaut) : restreint l'étalon aux CHAPITRES présents
+    dans le candidat — indispensable pour valider un crawl PAR TRANCHES (ex.
+    chapitre 01 seul) sans le comparer aux 17 061 positions complètes.
+    """
+    cand, ref_full = _index(candidate), _index(reference)
+    chapters = _candidate_chapters(candidate) if scope_to_candidate else None
+    if chapters:
+        ref = {hs: p for hs, p in ref_full.items() if (p.get("chapter") or hs[:2]) in chapters}
+    else:
+        ref = ref_full
     common = set(cand) & set(ref)
     coverage = len(common) / len(ref) if ref else 0.0
 
@@ -83,7 +101,9 @@ def compare_to_reference(candidate: Dict, reference: Dict) -> Dict:
             lost_formalities += 1
 
     return {
+        "scoped_to_chapters": sorted(chapters) if chapters else "all",
         "reference_positions": len(ref),
+        "reference_positions_full": len(ref_full),
         "candidate_positions": len(cand),
         "common_positions": len(common),
         "coverage": round(coverage, 5),
@@ -97,16 +117,25 @@ def compare_to_reference(candidate: Dict, reference: Dict) -> Dict:
     }
 
 
-def check_pivots(candidate: Dict, pivots_csv: Path) -> Dict:
+def check_pivots(candidate: Dict, pivots_csv: Path, scope_to_candidate: bool = True) -> Dict:
     """Valeurs pivot vérifiées : taux exacts + concordance texte des
-    formalités/avantages (repli : fragments contenus, sans accents/casse)."""
+    formalités/avantages (repli : fragments contenus, sans accents/casse).
+
+    ``scope_to_candidate`` : ne vérifie que les pivots dont le chapitre est
+    présent dans le candidat (crawl par tranches → pas de faux « absent »).
+    """
     cand = _index(candidate)
+    chapters = _candidate_chapters(candidate) if scope_to_candidate else None
     rows = list(csv.DictReader(open(pivots_csv, encoding="utf-8-sig"), delimiter=";"))
     failures: List[Dict] = []
     checked = 0
+    skipped_out_of_scope = 0
     for row in rows:
         hs = (row.get("Code_SH_10_chiffres") or "").strip()
         if not hs:
+            continue
+        if chapters is not None and hs[:2] not in chapters:
+            skipped_out_of_scope += 1
             continue
         checked += 1
         pos = cand.get(hs)
@@ -139,8 +168,11 @@ def check_pivots(candidate: Dict, pivots_csv: Path) -> Dict:
                     )
     return {
         "pivots_checked": checked,
+        "pivots_skipped_out_of_scope": skipped_out_of_scope,
         "pivot_failures": failures,
-        "pivots_pass": not failures,
+        # Aucun pivot dans le périmètre crawlé -> non-bloquant (pas d'info).
+        "pivots_pass": not failures and checked > 0,
+        "pivots_applicable": checked > 0,
     }
 
 
@@ -167,16 +199,58 @@ def check_parsing_quality(candidate: Dict) -> Dict:
     }
 
 
-def run_gate(candidate_path: Path, reference_path: Optional[Path], pivots_path: Optional[Path]):
+def check_national_layer(candidate: Dict) -> Dict:
+    """Couche NATIONALE présente ? (docs/PLAN_SCRAPLING_CRAWLERS.md §7)
+
+    Un tarif régional (TEC/CET) n'apporte que le DD. Un fichier pays doit aussi
+    porter les taxes nationales (au-delà du DD), les formalités et/ou les
+    régimes. On mesure la part de positions qui en portent — sert à refuser un
+    fichier qui ne serait qu'un copier-coller du tarif régional."""
+    positions = candidate.get("sub_positions", [])
+    total = len(positions)
+    beyond_dd = with_formalities = with_advantages = 0
+    for pos in positions:
+        taxes = set((pos.get("taxes") or {}).keys())
+        if taxes - {"DD"}:
+            beyond_dd += 1
+        if pos.get("formalities"):
+            with_formalities += 1
+        if pos.get("advantages"):
+            with_advantages += 1
+    share_beyond_dd = beyond_dd / total if total else 0.0
+    present = beyond_dd > 0 or with_formalities > 0 or with_advantages > 0
+    return {
+        "positions": total,
+        "positions_with_tax_beyond_dd": beyond_dd,
+        "share_tax_beyond_dd": round(share_beyond_dd, 4),
+        "positions_with_formalities": with_formalities,
+        "positions_with_advantages": with_advantages,
+        # Présence = au moins une couche nationale observée (taxes hors DD,
+        # formalités ou régimes). Un fichier « DD seul » -> present False.
+        "national_layer_present": present,
+    }
+
+
+def run_gate(
+    candidate_path: Path,
+    reference_path: Optional[Path],
+    pivots_path: Optional[Path],
+    scope_to_candidate: bool = True,
+    require_national_layer: bool = False,
+):
     candidate = json.load(open(candidate_path, encoding="utf-8"))
-    report: Dict = {"candidate": str(candidate_path)}
+    report: Dict = {
+        "candidate": str(candidate_path),
+        "scope_to_candidate": scope_to_candidate,
+    }
 
     if reference_path and reference_path.exists():
         reference = json.load(open(reference_path, encoding="utf-8"))
-        report["reference_check"] = compare_to_reference(candidate, reference)
+        report["reference_check"] = compare_to_reference(candidate, reference, scope_to_candidate)
     if pivots_path and pivots_path.exists():
-        report["pivots_check"] = check_pivots(candidate, pivots_path)
+        report["pivots_check"] = check_pivots(candidate, pivots_path, scope_to_candidate)
     report["parsing_check"] = check_parsing_quality(candidate)
+    report["national_layer_check"] = check_national_layer(candidate)
     report["stats_errors"] = (candidate.get("stats") or {}).get("errors")
 
     passes = [report["parsing_check"]["parsing_pass"], report.get("stats_errors", 0) == 0]
@@ -184,8 +258,12 @@ def run_gate(candidate_path: Path, reference_path: Optional[Path], pivots_path: 
     if ref:
         passes += [ref["coverage_pass"], ref["tax_pass"], ref["no_loss_pass"]]
     piv = report.get("pivots_check")
-    if piv:
+    if piv and piv.get("pivots_applicable"):
         passes.append(piv["pivots_pass"])
+    # Pays d'un bloc régional : refuser un fichier « DD régional seul » sans
+    # couche nationale (taxes hors DD / formalités / régimes).
+    if require_national_layer:
+        passes.append(report["national_layer_check"]["national_layer_present"])
 
     report["verdict"] = "PASS" if all(passes) else "FAIL"
     return report
@@ -196,8 +274,25 @@ def main() -> int:
     ap.add_argument("--candidate", required=True, type=Path)
     ap.add_argument("--reference", type=Path, default=None)
     ap.add_argument("--pivots", type=Path, default=None)
+    ap.add_argument(
+        "--no-scope",
+        action="store_true",
+        help="Comparer au dataset complet (pas seulement aux chapitres crawlés)",
+    )
+    ap.add_argument(
+        "--require-national-layer",
+        action="store_true",
+        help="Échouer si le fichier n'a pas de couche nationale (taxes hors DD / "
+        "formalités / régimes) — pour les pays d'un bloc régional (TEC/CET).",
+    )
     args = ap.parse_args()
-    report = run_gate(args.candidate, args.reference, args.pivots)
+    report = run_gate(
+        args.candidate,
+        args.reference,
+        args.pivots,
+        scope_to_candidate=not args.no_scope,
+        require_national_layer=args.require_national_layer,
+    )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report["verdict"] == "PASS" else 1
 

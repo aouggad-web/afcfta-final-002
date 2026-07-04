@@ -27,6 +27,15 @@ on:
         description: 'Chapitres SH ciblés, séparés par des virgules (ex. 01,02) — crawl par tranches'
         required: false
         default: ''
+      require_national_layer:
+        description: 'Exiger la couche nationale (taxes hors DD + formalités + régimes) — pays de blocs TEC/CET'
+        required: false
+        type: boolean
+        default: false
+      diag_hs:
+        description: 'DIAGNOSTIC : codes SH à dumper (HTML live vs committé). Si rempli, saute crawl/gate/publish.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -59,8 +68,17 @@ jobs:
           pip install -r requirements-crawl.txt
           python -m playwright install chromium --with-deps
 
+      - name: Diagnostic HTML live (si diag_hs rempli)
+        if: ${{ inputs.diag_hs != '' }}
+        working-directory: backend
+        env:
+          HS_CODES: ${{ inputs.diag_hs }}
+        run: |
+          python -m crawlers.scrapling_engine.diag_dza $HS_CODES
+
       - name: Crawl du pays
         id: crawl
+        if: ${{ inputs.diag_hs == '' }}
         working-directory: backend
         timeout-minutes: 60
         env:
@@ -73,12 +91,15 @@ jobs:
           python -m crawlers.scrapling_engine.runner "${ARGS[@]}"
 
       - name: Gate qualité (étalon + pivots si disponibles)
+        id: gate
+        if: ${{ inputs.diag_hs == '' }}
         working-directory: backend
         env:
           COUNTRY: ${{ inputs.country }}
         run: |
           GATE_ARGS=(--candidate "/tmp/${COUNTRY}_tariffs.json")
-          # Étalon : dataset crawlé authentique existant (obligatoire pour DZA)
+          # Étalon : dataset crawlé authentique existant (obligatoire pour DZA).
+          # Comparaison restreinte aux CHAPITRES crawlés (crawl par tranches).
           if [ -f "data/crawled/${COUNTRY}_tariffs.json" ]; then
             GATE_ARGS+=(--reference "data/crawled/${COUNTRY}_tariffs.json")
           fi
@@ -86,8 +107,26 @@ jobs:
           if [ -f "../frontend/public/${COUNTRY}_tarif_douanier_echantillon.csv" ]; then
             GATE_ARGS+=(--pivots "../frontend/public/${COUNTRY}_tarif_douanier_echantillon.csv")
           fi
+          # Pays d'un bloc régional : exiger la couche nationale (pas le TEC seul)
+          if [ "${{ inputs.require_national_layer }}" = "true" ]; then
+            GATE_ARGS+=(--require-national-layer)
+          fi
+          # Le rapport va dans un fichier ; le CODE RETOUR du gate est capturé
+          # (le pipe |tee l'avalait). VERDICT exposé comme sortie d'étape.
+          set +e
           python -m crawlers.scrapling_engine.quality_gate "${GATE_ARGS[@]}" \
-            | tee "/tmp/${COUNTRY}_gate_report.json"
+            > "/tmp/${COUNTRY}_gate_report.json"
+          GATE_RC=$?
+          set -e
+          cat "/tmp/${COUNTRY}_gate_report.json"
+          if [ "$GATE_RC" -eq 0 ]; then VERDICT=PASS; else VERDICT=FAIL; fi
+          echo "verdict=$VERDICT" >> "$GITHUB_OUTPUT"
+          echo "Verdict du gate : $VERDICT (rc=$GATE_RC)"
+          # En mode publish, un gate FAIL doit faire échouer le job (pas de
+          # publication de données non validées). En validate, on n'échoue pas.
+          if [ "${{ inputs.mode }}" = "publish" ] && [ "$VERDICT" = "FAIL" ]; then
+            echo "::error::Gate FAIL en mode publish — aucune publication." ; exit 1
+          fi
 
       - name: Upload artefacts (JSON + rapport de gate)
         if: always()
@@ -101,7 +140,7 @@ jobs:
           retention-days: 30
 
       - name: Publier (branche crawl/{iso3} + PR) — uniquement si gate PASS
-        if: ${{ inputs.mode == 'publish' }}
+        if: ${{ inputs.diag_hs == '' && inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
         env:
           COUNTRY: ${{ inputs.country }}
           GH_TOKEN: ${{ github.token }}

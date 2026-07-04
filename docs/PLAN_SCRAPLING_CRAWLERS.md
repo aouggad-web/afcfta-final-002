@@ -210,18 +210,73 @@ retries réseau, et vérification empirique que les sites douaniers répondent
 depuis les IP GitHub (l'OEC les filtre ; si un site bloque les runners, plan B :
 exécution du même runner depuis Replit/Emergent puis PR manuelle).
 
-## 7. Vagues de déploiement (ordre = valeur / effort)
+## 7. Tarif régional ≠ tarif pays — LES DEUX COUCHES sont obligatoires
 
-| Vague | Pays | Justification |
+⚠️ **Principe non négociable** (correction de cap) : un tarif extérieur commun
+(TEC CEDEAO/CEMAC, CET EAC, SACU) **n'harmonise QUE le droit de douane (DD)** à
+l'importation depuis hors-bloc. Il ne dit **rien** des :
+
+- **taxes nationales** propres à chaque pays membre : TVA (taux national), droits
+  d'accise / excise, prélèvements et redevances (ex. Railway Development Levy et
+  Import Declaration Fee au Kenya, taxes infrastructures, prélèvements
+  statistiques…) — **différents d'un pays à l'autre du même bloc** ;
+- **formalités particulières** par position et par pays (documents exigibles,
+  autorité qui les délivre) ;
+- **régimes et avantages nationaux** (exonérations d'investissement, franchises,
+  régimes hydrocarbures, listes sensibles/exclusions propres au pays).
+
+Donc pour un pays d'un bloc, la donnée finale = **DD régional (TEC/CET) + couche
+NATIONALE complète** (taxes hors DD, formalités, régimes). Un `{ISO3}_tariffs.json`
+n'est **jamais** un simple copier-coller du TEC.
+
+Conséquence sur la méthode :
+
+1. Le **TEC/CET** sert de **socle DD** partagé (une source pour le bloc) et de
+   **contrôle croisé** du DD crawlé par pays.
+2. La **couche nationale** est **toujours** crawlée depuis la **source nationale**
+   du pays (portail douanes national) — comme pour l'Algérie (DD + TVA + TCS +
+   PRCT + DAPS + formalités + avantages, tous nationaux).
+3. Le contrat v2 porte déjà tout ceci par position (`taxes` multiples,
+   `formalities`, `advantages`, `calculation_rules` du pays) : **aucune évolution
+   de schéma**, seulement la discipline de sourcer les deux couches.
+4. Le gate qualité par pays vérifie la présence de la couche nationale : un
+   fichier qui n'aurait QUE le DD (taxes = {DD} seul, 0 formalité, 0 régime)
+   pour un pays connu pour en avoir → **FAIL** (règle « couche nationale
+   manquante »).
+
+## 8. Vagues de déploiement — **priorité : pays à tarif national autonome**
+
+Ordre décidé (proposition retenue) : commencer par les **22 pays qui ne sont
+dans AUCUNE union douanière à TEC**. Leur tarif est **entièrement national et
+autonome** — une seule couche, exactement le modèle Algérie (déjà prouvé). Pas
+de dépendance à un TEC, pas de coordination inter-pays : ce sont les gains les
+plus propres et ils rôdent le pipeline par pays avant la complexité des blocs.
+
+*(Classification dérivée du registre du projet
+`crawlers/all_countries_registry.py` : les blocs AMU, COMESA, SADC, ECCAS, IGAD
+sont des ZLE **sans TEC contraignant** → tarif national ; ECOWAS/UEMOA, EAC,
+CEMAC, SACU sont des unions douanières **à TEC** → deux couches.)*
+
+| Vague | Pays (22 autonomes) | Priorité au sein de la vague |
 |---|---|---|
-| **0 — Étalon** | DZA | Prouver la chaîne contre les 17 061 positions existantes |
-| **1 — Maghreb** | TUN, MAR, EGY | Pivots CSV déjà présents (TUN/MAR), portails douaniers structurés, gros volumes d'échanges |
-| **2 — Tarifs extérieurs communs** | CEDEAO TEC (**15 pays d'un coup**), EAC CET (7), CEMAC TEC (6) | Une source = un bloc entier ; `engine/sources/eac_cet_2022.csv` et les crawlers CEMAC amorcés existent déjà |
-| **3 — Reste** | ZAF/SACU, reste COMESA, îles | Au fil de l'eau, même gate |
+| **0 — Étalon** ✅ | DZA | fait (17 061 positions) |
+| **1 — Autonomes, sources prêtes** | MAR, TUN, EGY, LBY | pivots CSV présents (MAR/TUN) ; gros volumes ; portails structurés |
+| **2 — Autonomes, Est/Corne** | ETH, SDN, DJI, SOM, ERI | COMESA/IGAD, tarifs nationaux |
+| **3 — Autonomes, Australe/Océan Indien** | AGO, MOZ, ZMB, ZWE, MWI, MDG, MUS, SYC, COM, COD, MRT, STP | SADC/COMESA/ECCAS, tarifs nationaux |
 
-Après les vagues 1-2 : **~30 pays** couverts par tarifs authentiques dans le
-Calculateur — et mécaniquement dans les rapports Opportunités (le moteur
-tarifaire est partagé).
+Après les vagues 0-3 : **22 pays** à tarif authentique dans le Calculateur, sans
+jamais toucher à la mécanique des TEC.
+
+### Ensuite — pays des unions douanières (32 pays, **deux couches**)
+
+| Vague | Pays | Socle DD | Couche nationale (obligatoire) |
+|---|---|---|---|
+| **4 — Blocs : socle DD** | TEC CEDEAO/UEMOA (15), CET EAC (7), TEC CEMAC (6), SACU (5) | **1 source/bloc** | *ne suffit pas* → vague 5 |
+| **5 — Blocs : couche nationale** | chaque pays membre | hérité du TEC | crawl portail national (taxes hors DD + formalités + régimes), gate `--require-national-layer` |
+
+Rappel : un pays n'est marqué `crawled_authentic` que lorsque **toutes ses
+couches applicables** sont présentes et passent le gate. Pour les 22 autonomes,
+une seule couche suffit ; pour les 32 en union, il en faut deux.
 
 ## 8. Risques & parades
 
