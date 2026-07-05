@@ -36,6 +36,20 @@ on:
         description: 'DIAGNOSTIC : codes SH à dumper (HTML live vs committé). Si rempli, saute crawl/gate/publish.'
         required: false
         default: ''
+      recon:
+        description: 'RECONNAISSANCE : sonder les portails douaniers nationaux (opt. ISO3 séparés par espace). Si rempli, saute crawl/gate/publish.'
+        required: false
+        default: ''
+      recon_js:
+        description: 'RECON JS : capturer l API XHR d une SPA via Playwright (URL). Si rempli, saute crawl/gate/publish.'
+        required: false
+        default: ''
+      source:
+        description: 'Source des donnees : spec (portail national dedie) ou wits (WITS/TRAINS SH6, DD seul)'
+        required: false
+        type: choice
+        options: [spec, wits]
+        default: 'spec'
 
 permissions:
   contents: write
@@ -76,9 +90,30 @@ jobs:
         run: |
           python -m crawlers.scrapling_engine.diag_dza $HS_CODES
 
+      - name: Reconnaissance des portails douaniers (si recon rempli)
+        if: ${{ inputs.recon != '' }}
+        working-directory: backend
+        env:
+          RECON_ARGS: ${{ inputs.recon }}
+        run: |
+          # 'all' = sonder tous les portails candidats ; sinon liste ISO3.
+          if [ "$RECON_ARGS" = "all" ]; then
+            python -m crawlers.scrapling_engine.recon
+          else
+            python -m crawlers.scrapling_engine.recon $RECON_ARGS
+          fi
+
+      - name: Reconnaissance SPA JS via Playwright (si recon_js rempli)
+        if: ${{ inputs.recon_js != '' }}
+        working-directory: backend
+        env:
+          RECON_JS_URLS: ${{ inputs.recon_js }}
+        run: |
+          python -m crawlers.scrapling_engine.recon_js $RECON_JS_URLS
+
       - name: Crawl du pays
         id: crawl
-        if: ${{ inputs.diag_hs == '' }}
+        if: ${{ inputs.diag_hs == '' && inputs.recon == '' && inputs.recon_js == '' }}
         working-directory: backend
         timeout-minutes: 60
         env:
@@ -86,13 +121,13 @@ jobs:
           MAXPOS: ${{ inputs.max_positions }}
           CRAWL_CHAPTERS: ${{ inputs.chapters }}
         run: |
-          ARGS=(--country "$COUNTRY" --out "/tmp/${COUNTRY}_tariffs.json")
+          ARGS=(--country "$COUNTRY" --out "/tmp/${COUNTRY}_tariffs.json" --source "${{ inputs.source }}")
           if [ -n "$MAXPOS" ]; then ARGS+=(--max-positions "$MAXPOS"); fi
           python -m crawlers.scrapling_engine.runner "${ARGS[@]}"
 
       - name: Gate qualité (étalon + pivots si disponibles)
         id: gate
-        if: ${{ inputs.diag_hs == '' }}
+        if: ${{ inputs.diag_hs == '' && inputs.recon == '' && inputs.recon_js == '' }}
         working-directory: backend
         env:
           COUNTRY: ${{ inputs.country }}
@@ -140,7 +175,7 @@ jobs:
           retention-days: 30
 
       - name: Publier (branche crawl/{iso3} + PR) — uniquement si gate PASS
-        if: ${{ inputs.diag_hs == '' && inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
+        if: ${{ inputs.diag_hs == '' && inputs.recon == '' && inputs.recon_js == '' && inputs.mode == 'publish' && steps.gate.outputs.verdict == 'PASS' }}
         env:
           COUNTRY: ${{ inputs.country }}
           GH_TOKEN: ${{ github.token }}
@@ -148,16 +183,20 @@ jobs:
           set -euo pipefail
           ISO_LOWER=$(echo "$COUNTRY" | tr '[:upper:]' '[:lower:]')
           BRANCH="crawl/${ISO_LOWER}"
-          cp "/tmp/${COUNTRY}_tariffs.json" "data/crawled/${COUNTRY}_tariffs.json"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B "$BRANCH"
+          # Brancher depuis main (pas la branche d'infra) : la PR pays ne
+          # contient QUE le fichier de données, pas tout le code du crawler.
+          git fetch origin main
+          git checkout -B "$BRANCH" origin/main
+          mkdir -p data/crawled
+          cp "/tmp/${COUNTRY}_tariffs.json" "data/crawled/${COUNTRY}_tariffs.json"
           git add "data/crawled/${COUNTRY}_tariffs.json"
           if git diff --cached --quiet; then
             echo "Dataset ${COUNTRY} inchangé — pas de PR."
             exit 0
           fi
-          git commit -m "data(crawl): tarifs douaniers ${COUNTRY} (Scrapling, gate PASS)"
+          git commit -m "data(crawl): tarifs douaniers ${COUNTRY} (WITS/TRAINS, gate PASS)"
           git push -f origin "$BRANCH"
           gh pr create \
             --base main --head "$BRANCH" --draft \

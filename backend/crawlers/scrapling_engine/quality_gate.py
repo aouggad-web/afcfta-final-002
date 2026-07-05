@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -34,6 +35,46 @@ PIVOT_TAX_COLUMNS = {
     "TCS_pct": "TCS",
     "PRCT_pct": "PRCT",
     "DAPS_pct": "DAPS",
+}
+
+
+def _pct(raw: Optional[str]) -> Optional[float]:
+    """'2.5 %' / '2,5%' / '15' -> 2.5 / 2.5 / 15.0 (float) ; None/'' -> None."""
+    if raw is None:
+        return None
+    raw = raw.strip()
+    if not raw:
+        return None
+    m = re.search(r"(\d+(?:[.,]\d+)?)", raw)
+    return float(m.group(1).replace(",", ".")) if m else None
+
+
+# Schéma pivot par pays : nom de colonne HS + colonnes de taux -> code, colonnes
+# formalités/avantages. DZA reste le schéma historique (colonnes déjà en %
+# numérique). Un pays sans entrée ici (ex. TUN : export en texte libre
+# pipe-délimité, correspondance code<->libellé live NON confirmée) est
+# simplement ignoré par check_pivots — jamais de correspondance devinée.
+PIVOT_SCHEMAS: Dict[str, Dict] = {
+    "DZA": {
+        "hs_column": "Code_SH_10_chiffres",
+        "tax_columns": PIVOT_TAX_COLUMNS,
+        "parse_rate": lambda raw: float(raw.strip()) if raw and raw.strip() else None,
+        "text_columns": {
+            "Formalites_particulieres": "formalities",
+            "Avantages_fiscaux": "advantages",
+        },
+    },
+    "MAR": {
+        "hs_column": "Code_Position_10_chiffres",
+        "tax_columns": {
+            "Droit_Importation_DI": "DI",
+            "Taxe_Parafiscale_Importation_TPI": "TPI",
+            "Taxe_Valeur_Ajoutee_TVA": "TVA",
+            "Taxe_Interieure_Consommation_TIC": "TIC",
+        },
+        "parse_rate": _pct,
+        "text_columns": {"Formalites_particulieres": "formalities"},
+    },
 }
 
 
@@ -80,7 +121,13 @@ def compare_to_reference(candidate: Dict, reference: Dict, scope_to_candidate: b
     else:
         ref = ref_full
     common = set(cand) & set(ref)
-    coverage = len(common) / len(ref) if ref else 0.0
+    # Référence VIDE (ex. stub pays sans données, 0 position) : elle ne porte
+    # aucune information à reproduire -> couverture non applicable (pass), on ne
+    # fait pas échouer le gate sur du vide. Une référence NON vide (ex. étalon
+    # DZA, ou tarif CET existant) garde la contrainte de couverture pleine —
+    # ce qui bloque, à raison, l'écrasement de données riches par du SH6 WITS.
+    ref_empty = len(ref) == 0
+    coverage = 1.0 if ref_empty else len(common) / len(ref)
 
     tax_divergences: List[Dict] = []
     lost_advantages = 0
@@ -107,7 +154,8 @@ def compare_to_reference(candidate: Dict, reference: Dict, scope_to_candidate: b
         "candidate_positions": len(cand),
         "common_positions": len(common),
         "coverage": round(coverage, 5),
-        "coverage_pass": coverage >= COVERAGE_THRESHOLD,
+        "reference_empty": ref_empty,
+        "coverage_pass": ref_empty or coverage >= COVERAGE_THRESHOLD,
         "tax_divergences": tax_divergences[:50],
         "tax_divergences_count": len(tax_divergences),
         "tax_pass": len(tax_divergences) == 0,
@@ -124,6 +172,22 @@ def check_pivots(candidate: Dict, pivots_csv: Path, scope_to_candidate: bool = T
     ``scope_to_candidate`` : ne vérifie que les pivots dont le chapitre est
     présent dans le candidat (crawl par tranches → pas de faux « absent »).
     """
+    country = (candidate.get("country") or "DZA").upper()
+    schema = PIVOT_SCHEMAS.get(country)
+    if not schema:
+        return {
+            "pivots_checked": 0,
+            "pivots_skipped_out_of_scope": 0,
+            "pivot_failures": [],
+            # Aucun schéma pivot défini pour ce pays -> non-applicable (non-bloquant).
+            "pivots_pass": True,
+            "pivots_applicable": False,
+        }
+    hs_column = schema["hs_column"]
+    tax_columns = schema["tax_columns"]
+    parse_rate = schema["parse_rate"]
+    text_columns = schema["text_columns"]
+
     cand = _index(candidate)
     chapters = _candidate_chapters(candidate) if scope_to_candidate else None
     rows = list(csv.DictReader(open(pivots_csv, encoding="utf-8-sig"), delimiter=";"))
@@ -131,7 +195,7 @@ def check_pivots(candidate: Dict, pivots_csv: Path, scope_to_candidate: bool = T
     checked = 0
     skipped_out_of_scope = 0
     for row in rows:
-        hs = (row.get("Code_SH_10_chiffres") or "").strip()
+        hs = (row.get(hs_column) or "").strip()
         if not hs:
             continue
         if chapters is not None and hs[:2] not in chapters:
@@ -143,20 +207,17 @@ def check_pivots(candidate: Dict, pivots_csv: Path, scope_to_candidate: bool = T
             failures.append({"hs_code": hs, "issue": "position absente"})
             continue
         # Taux
-        for col, code in PIVOT_TAX_COLUMNS.items():
-            expected = (row.get(col) or "").strip()
-            if expected == "":
+        for col, code in tax_columns.items():
+            expected = parse_rate(row.get(col))
+            if expected is None:
                 continue
             got = _tax_rate(pos, code)
-            if got is None or abs(float(expected) - float(got)) > 1e-9:
+            if got is None or abs(expected - float(got)) > 1e-9:
                 failures.append(
                     {"hs_code": hs, "issue": f"taux {code}", "expected": expected, "got": got}
                 )
         # Concordance formalités / avantages (fragments séparés par '|')
-        for col, field in [
-            ("Formalites_particulieres", "formalities"),
-            ("Avantages_fiscaux", "advantages"),
-        ]:
+        for col, field in text_columns.items():
             expected_raw = (row.get(col) or "").strip()
             if not expected_raw:
                 continue
