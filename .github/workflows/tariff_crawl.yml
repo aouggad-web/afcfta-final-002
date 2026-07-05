@@ -61,7 +61,7 @@ env:
 jobs:
   crawl-country:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 350
 
     steps:
       - name: Checkout repository
@@ -115,7 +115,7 @@ jobs:
         id: crawl
         if: ${{ inputs.diag_hs == '' && inputs.recon == '' && inputs.recon_js == '' }}
         working-directory: backend
-        timeout-minutes: 60
+        timeout-minutes: 330
         env:
           COUNTRY: ${{ inputs.country }}
           MAXPOS: ${{ inputs.max_positions }}
@@ -192,8 +192,13 @@ jobs:
           # IMPORTANT : les datasets vivent dans backend/data/crawled (lu par
           # authentic_tariff_service). Cette étape tourne à la RACINE du repo
           # (pas de working-directory: backend) -> chemin backend/ explicite.
+          # FUSION par code SH (jamais d'écrasement) : un crawl par tranches
+          # (MAR/TUN) remplace ses chapitres et conserve le reste du fichier.
           mkdir -p backend/data/crawled
-          cp "/tmp/${COUNTRY}_tariffs.json" "backend/data/crawled/${COUNTRY}_tariffs.json"
+          (cd backend && python -m crawlers.scrapling_engine.merge_publish \
+            --new "/tmp/${COUNTRY}_tariffs.json" \
+            --existing "data/crawled/${COUNTRY}_tariffs.json" \
+            --out "data/crawled/${COUNTRY}_tariffs.json")
           git add "backend/data/crawled/${COUNTRY}_tariffs.json"
           if git diff --cached --quiet; then
             echo "Dataset ${COUNTRY} inchangé — pas de PR."
