@@ -61,10 +61,21 @@ class EgyptTariffsScraper:
             "skipped": 0,
         }
 
-    def _fetch_sitemap(self) -> List[str]:
+    def _fetch_sitemap(self, retries: int = 4, backoff: float = 15.0) -> List[str]:
         logger.info(f"Fetching sitemap from {SITEMAP_URL}")
-        resp = self.session.get(SITEMAP_URL, timeout=30)
-        resp.raise_for_status()
+        last_exc = None
+        for attempt in range(retries):
+            try:
+                resp = self.session.get(SITEMAP_URL, timeout=30)
+                resp.raise_for_status()
+                break
+            except requests.exceptions.RequestException as e:
+                last_exc = e
+                logger.warning(f"Sitemap fetch failed (attempt {attempt+1}/{retries}): {e}")
+                if attempt < retries - 1:
+                    time.sleep(backoff * (attempt + 1))
+        else:
+            raise last_exc
 
         root = ET.fromstring(resp.content)
         ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
