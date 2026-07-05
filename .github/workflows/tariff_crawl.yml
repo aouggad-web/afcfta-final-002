@@ -189,9 +189,12 @@ jobs:
           # contient QUE le fichier de données, pas tout le code du crawler.
           git fetch origin main
           git checkout -B "$BRANCH" origin/main
-          mkdir -p data/crawled
-          cp "/tmp/${COUNTRY}_tariffs.json" "data/crawled/${COUNTRY}_tariffs.json"
-          git add "data/crawled/${COUNTRY}_tariffs.json"
+          # IMPORTANT : les datasets vivent dans backend/data/crawled (lu par
+          # authentic_tariff_service). Cette étape tourne à la RACINE du repo
+          # (pas de working-directory: backend) -> chemin backend/ explicite.
+          mkdir -p backend/data/crawled
+          cp "/tmp/${COUNTRY}_tariffs.json" "backend/data/crawled/${COUNTRY}_tariffs.json"
+          git add "backend/data/crawled/${COUNTRY}_tariffs.json"
           if git diff --cached --quiet; then
             echo "Dataset ${COUNTRY} inchangé — pas de PR."
             exit 0
