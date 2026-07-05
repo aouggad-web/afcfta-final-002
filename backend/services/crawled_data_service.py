@@ -477,13 +477,27 @@ class CrawledDataService:
                 }
             )
 
-        regulations = pos.get("regulations", [])
         formalities = []
-        for reg in regulations:
+        for reg in pos.get("reglementation_import", []):
             if isinstance(reg, dict):
-                formalities.append(reg.get("text", str(reg)))
+                formalities.append(reg.get("description", "") or str(reg))
             else:
                 formalities.append(str(reg))
+
+        fiscal_advantages = []
+        for pref in pos.get("preferences", []):
+            country_name = (pref.get("country_name") or "").strip()
+            rate = (pref.get("rate") or "").strip()
+            if not country_name:
+                continue
+            fiscal_advantages.append(
+                {
+                    "description": f"Préférence tarifaire {country_name} : {rate}",
+                    "country_code": pref.get("country_code", ""),
+                    "rate": rate,
+                    "source": "douane.gov.tn",
+                }
+            )
 
         return {
             "code_raw": raw_code,
@@ -491,7 +505,7 @@ class CrawledDataService:
             "designation": pos.get("designation", ""),
             "chapter": pos.get("chapter", ""),
             "taxes": taxes,
-            "fiscal_advantages": pos.get("preferential_tariffs", []),
+            "fiscal_advantages": fiscal_advantages,
             "administrative_formalities": formalities,
             "source": "douane.gov.tn",
             "country": "TUN",
