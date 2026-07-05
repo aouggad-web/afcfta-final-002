@@ -12,10 +12,18 @@ from __future__ import annotations
 
 import asyncio
 import os
+import sys
 from typing import Dict, List, Optional
 
 COUNTRY_NAME = "Tunisie"
 SOURCE = "douane.gov.tn/tarifweb2025"
+
+# get_position_detail retourne un dict par défaut (jamais d'exception) même en
+# échec réseau — le scraper retente déjà en interne (_fetch_page, 3 tentatives).
+# Filet de sécurité supplémentaire pour un crawl de plusieurs heures : au-delà
+# d'une longue série de positions manifestement vides (échec réseau persistant
+# malgré les retries internes), on arrête plutôt que de publier un jeu épars.
+_MAX_CONSECUTIVE_EMPTY = 40
 
 CALCULATION_RULES: Dict = {
     "order": [],
@@ -38,6 +46,7 @@ def crawl(max_positions: Optional[int] = None) -> List[Dict]:
     async def _run() -> List[Dict]:
         scraper = TunisiaDouaneScraper()
         out: List[Dict] = []
+        consecutive_empty = 0
         try:
             for chapter in chapters:
                 positions = await scraper.get_chapter_positions(chapter)
@@ -50,6 +59,21 @@ def crawl(max_positions: Optional[int] = None) -> List[Dict]:
                     detail = await scraper.get_position_detail(
                         pos["choix"], pos["chapter"], pos["code"]
                     )
+                    if not any(
+                        detail.get(k)
+                        for k in ("taxes_import", "preferences", "reglementation_import")
+                    ):
+                        consecutive_empty += 1
+                        print(f"[tun] {pos['code']} sans donnée (échec réseau ?)", file=sys.stderr)
+                        if consecutive_empty >= _MAX_CONSECUTIVE_EMPTY:
+                            print(
+                                f"[tun] {consecutive_empty} positions vides consécutives — "
+                                "portail probablement indisponible, arrêt du crawl.",
+                                file=sys.stderr,
+                            )
+                            raise SystemExit(1)
+                        continue
+                    consecutive_empty = 0
 
                     taxes = {}
                     for t in detail.get("taxes_import", []):
