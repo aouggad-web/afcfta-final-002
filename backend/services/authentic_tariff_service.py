@@ -1083,7 +1083,20 @@ def _resolve_zlecaf_context(
             zlecaf_note=None,
         )
 
-    # 4. Autres pays ratifiés des deux côtés : taux ZLECAf générique de la ligne.
+    # 4. Autres pays ratifiés des deux côtés : le taux ZLECAf générique de la
+    #    ligne n'est appliqué que si la DESTINATION a une preuve d'application
+    #    réelle du barème préférentiel (même principe que la circulaire DGD
+    #    482/2024 pour l'Algérie, généralisé) — une ratification seule ne
+    #    garantit aucune réduction effective au poste-frontière.
+    from services.zlecaf_active_implementers import implementation_evidence, is_active_implementer
+
+    if not is_active_implementer(dest):
+        return _no_preference(
+            f"ZLECAf ratifié par {dest} mais aucune preuve d'application réelle "
+            f"du barème préférentiel trouvée à ce jour (recherche 2026-07-06) "
+            f"— taux NPF appliqué"
+        )
+
     eff_dd = line_zlecaf_rate_pct
     applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
     return _result(
@@ -1093,7 +1106,7 @@ def _resolve_zlecaf_context(
         daps=False,
         regime="ZLECAF",
         code="ZLECAF",
-        note=None,
+        note=f"Application réelle : {implementation_evidence(dest)}" if applied else None,
         zlecaf_eligible=True,
         zlecaf_note=None,
     )
