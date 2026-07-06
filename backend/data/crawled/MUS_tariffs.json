@@ -21,7 +21,7 @@
         "type": "ad_valorem"
       }
     },
-    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (VAT) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts."
+    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (VAT) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts. Surcharges par produit ajoutées pour des positions spécifiques (voir taxes[].classification_source par position : 'loi' = code SH cité par le texte réglementaire, 'estimation_ia' = classification technique du produit nommé par la loi)."
   },
   "regimes_registry": [],
   "sub_positions": [
@@ -137525,13 +137525,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137551,13 +137552,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137577,13 +137579,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137603,13 +137606,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137629,13 +137633,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137655,13 +137660,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137681,13 +137687,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137707,13 +137714,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137733,13 +137741,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137759,13 +137768,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137785,13 +137795,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137811,13 +137822,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],
@@ -137837,13 +137849,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Mauritius Revenue Authority / PwC Worldwide Tax Summaries",
+          "name": "VAT — medical/surgical/dental instruments (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Mauritius VAT Act, First Schedule",
           "source_url": "https://www.mra.mu/26-vat",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Liste First Schedule non exhaustive — d'autres sous-positions (tissus, cuirs, soie, cocopeat) existent mais ne sont pas reprises ici."
         }
       },
       "advantages": [],

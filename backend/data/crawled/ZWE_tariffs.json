@@ -21,7 +21,7 @@
         "type": "ad_valorem"
       }
     },
-    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (VAT) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts."
+    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (VAT) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts. Surcharges par produit ajoutées pour des positions spécifiques (voir taxes[].classification_source par position : 'loi' = code SH cité par le texte réglementaire, 'estimation_ia' = classification technique du produit nommé par la loi)."
   },
   "regimes_registry": [],
   "sub_positions": [
@@ -111967,13 +111967,14 @@
           "raw": "17.5 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — tillers / soil-preparation machinery (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire."
         }
       },
       "advantages": [],
@@ -111993,13 +111994,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — tillers / soil-preparation machinery (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire."
         }
       },
       "advantages": [],
@@ -112019,13 +112021,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — tillers / soil-preparation machinery (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire."
         }
       },
       "advantages": [],
@@ -112045,13 +112048,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — tillers / soil-preparation machinery (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire."
         }
       },
       "advantages": [],
@@ -112071,13 +112075,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — tillers / soil-preparation machinery (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire."
         }
       },
       "advantages": [],
@@ -112097,13 +112102,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — tillers / soil-preparation machinery (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire."
         }
       },
       "advantages": [],
@@ -112123,13 +112129,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — tillers / soil-preparation machinery (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire."
         }
       },
       "advantages": [],
@@ -112149,13 +112156,14 @@
           "raw": "15.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — tillers / soil-preparation machinery (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire."
         }
       },
       "advantages": [],
@@ -112175,13 +112183,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — tillers / soil-preparation machinery (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire."
         }
       },
       "advantages": [],
@@ -127723,13 +127732,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — agricultural tractors (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Exclut les semi-tracteurs routiers selon le texte réglementaire."
         }
       },
       "advantages": [],
@@ -127749,13 +127759,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — agricultural tractors (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Exclut les semi-tracteurs routiers selon le texte réglementaire."
         }
       },
       "advantages": [],
@@ -127775,13 +127786,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — agricultural tractors (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Exclut les semi-tracteurs routiers selon le texte réglementaire."
         }
       },
       "advantages": [],
@@ -127801,13 +127813,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — agricultural tractors (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Exclut les semi-tracteurs routiers selon le texte réglementaire."
         }
       },
       "advantages": [],
@@ -127827,13 +127840,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — agricultural tractors (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Exclut les semi-tracteurs routiers selon le texte réglementaire."
         }
       },
       "advantages": [],
@@ -127853,13 +127867,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — agricultural tractors (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Exclut les semi-tracteurs routiers selon le texte réglementaire."
         }
       },
       "advantages": [],
@@ -127879,13 +127894,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — agricultural tractors (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Exclut les semi-tracteurs routiers selon le texte réglementaire."
         }
       },
       "advantages": [],
@@ -127905,13 +127921,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.5,
-          "raw": "15.5 %",
-          "source": "ZIMRA Public Notice 07 of 2026",
-          "source_url": "https://www.zimra.co.zw",
-          "as_of": "2026-01-01 (relevé de 15 % à 15.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — agricultural tractors (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Zimbabwe VAT Act [Chapter 23:12], Second Schedule + S.I. 15 of 2024",
+          "source_url": "https://www.dlapiperafrica.com",
+          "as_of": "2024 (S.I. 15/2024, toujours en vigueur 2026)",
+          "classification_source": "loi",
+          "note": "Code/position SH cité directement par le texte réglementaire. Exclut les semi-tracteurs routiers selon le texte réglementaire."
         }
       },
       "advantages": [],

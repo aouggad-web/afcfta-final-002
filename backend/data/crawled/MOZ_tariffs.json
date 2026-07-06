@@ -21,7 +21,7 @@
         "type": "ad_valorem"
       }
     },
-    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (IVA) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts."
+    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (IVA) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts. Surcharges par produit ajoutées pour des positions spécifiques (voir taxes[].classification_source par position : 'loi' = code SH cité par le texte réglementaire, 'estimation_ia' = classification technique du produit nommé par la loi)."
   },
   "regimes_registry": [],
   "sub_positions": [
@@ -10099,13 +10099,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — batata (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"batata\"."
         }
       },
       "advantages": [],
@@ -10125,13 +10126,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — batata (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"batata\"."
         }
       },
       "advantages": [],
@@ -10151,13 +10153,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — tomate (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"tomate fresco ou refrigerado\"."
         }
       },
       "advantages": [],
@@ -10177,13 +10180,14 @@
           "raw": "13.3333330154419 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — cebola (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"cebola\"."
         }
       },
       "advantages": [],
@@ -10203,13 +10207,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — cebola (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"cebola\"."
         }
       },
       "advantages": [],
@@ -10229,13 +10234,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — cebola (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"cebola\"."
         }
       },
       "advantages": [],
@@ -14623,13 +14629,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — trigo (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"trigo\" (blé)."
         }
       },
       "advantages": [],
@@ -14649,13 +14656,14 @@
           "raw": "7.5 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — trigo (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"trigo\" (blé)."
         }
       },
       "advantages": [],
@@ -14675,13 +14683,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — trigo (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"trigo\" (blé)."
         }
       },
       "advantages": [],
@@ -14701,13 +14710,14 @@
           "raw": "2.5 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — trigo (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"trigo\" (blé)."
         }
       },
       "advantages": [],
@@ -14883,13 +14893,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — milho (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"milho\" (maïs)."
         }
       },
       "advantages": [],
@@ -14909,13 +14920,14 @@
           "raw": "7.5 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — milho (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"milho\" (maïs)."
         }
       },
       "advantages": [],
@@ -14935,13 +14947,14 @@
           "raw": "3.75 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — arroz (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"arroz\" (riz)."
         }
       },
       "advantages": [],
@@ -14961,13 +14974,14 @@
           "raw": "7.5 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — arroz (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"arroz\" (riz)."
         }
       },
       "advantages": [],
@@ -14987,13 +15001,14 @@
           "raw": "7.5 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — arroz (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"arroz\" (riz)."
         }
       },
       "advantages": [],
@@ -15013,13 +15028,14 @@
           "raw": "7.5 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — arroz (exonéré, cesta básica)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"arroz\" (riz)."
         }
       },
       "advantages": [],
@@ -15299,13 +15315,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — farinha de trigo (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"farinha de trigo\"."
         }
       },
       "advantages": [],
@@ -21097,13 +21114,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — pão (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\"."
         }
       },
       "advantages": [],
@@ -21123,13 +21141,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — pão (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\"."
         }
       },
       "advantages": [],
@@ -21149,13 +21168,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — pão (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\"."
         }
       },
       "advantages": [],
@@ -21175,13 +21195,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — pão (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\"."
         }
       },
       "advantages": [],
@@ -21201,13 +21222,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — pão (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\"."
         }
       },
       "advantages": [],
@@ -21227,13 +21249,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — pão (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\"."
         }
       },
       "advantages": [],
@@ -24503,13 +24526,14 @@
           "raw": "20.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — sal iodado (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"sal iodado\"."
         }
       },
       "advantages": [],
@@ -49073,13 +49097,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — insecticidas (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"insecticidas\"."
         }
       },
       "advantages": [],
@@ -56041,13 +56066,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "PwC Worldwide Tax Summaries — Mozambique",
+          "name": "IVA — preservativos (exonéré)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Art. 9(13)/12(a) Código do IVA (Lei 22/2022)",
           "source_url": "https://taxsummaries.pwc.com/mozambique/corporate/other-taxes",
-          "as_of": "2026 (taux en vigueur depuis le 2024-01-01)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 5 % (santé privée, éducation — services, hors marchandises importées)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"preservativos\"."
         }
       },
       "advantages": [],

@@ -21,7 +21,7 @@
         "type": "ad_valorem"
       }
     },
-    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (VAT) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts."
+    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (VAT) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts. Surcharges par produit ajoutées pour des positions spécifiques (voir taxes[].classification_source par position : 'loi' = code SH cité par le texte réglementaire, 'estimation_ia' = classification technique du produit nommé par la loi)."
   },
   "regimes_registry": [],
   "sub_positions": [
@@ -11581,13 +11581,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Seychelles Revenue Commission / IMF Country Report No. 25/147",
-          "source_url": "https://src.gov.sc/seychelles-tax-system/",
+          "name": "VAT — lentils (exempt import)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Seychelles VAT Act 2010, First Schedule Part I",
+          "source_url": "https://seylii.org",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"lentils\"."
         }
       },
       "advantages": [],
@@ -14935,13 +14936,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Seychelles Revenue Commission / IMF Country Report No. 25/147",
-          "source_url": "https://src.gov.sc/seychelles-tax-system/",
+          "name": "VAT — rice (exempt import)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Seychelles VAT Act 2010, First Schedule Part I",
+          "source_url": "https://seylii.org",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"rice\"."
         }
       },
       "advantages": [],
@@ -14961,13 +14963,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Seychelles Revenue Commission / IMF Country Report No. 25/147",
-          "source_url": "https://src.gov.sc/seychelles-tax-system/",
+          "name": "VAT — rice (exempt import)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Seychelles VAT Act 2010, First Schedule Part I",
+          "source_url": "https://seylii.org",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"rice\"."
         }
       },
       "advantages": [],
@@ -14987,13 +14990,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Seychelles Revenue Commission / IMF Country Report No. 25/147",
-          "source_url": "https://src.gov.sc/seychelles-tax-system/",
+          "name": "VAT — rice (exempt import)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Seychelles VAT Act 2010, First Schedule Part I",
+          "source_url": "https://seylii.org",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"rice\"."
         }
       },
       "advantages": [],
@@ -15013,13 +15017,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 15.0,
-          "raw": "15.0 %",
-          "source": "Seychelles Revenue Commission / IMF Country Report No. 25/147",
-          "source_url": "https://src.gov.sc/seychelles-tax-system/",
+          "name": "VAT — rice (exempt import)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Seychelles VAT Act 2010, First Schedule Part I",
+          "source_url": "https://seylii.org",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"rice\"."
         }
       },
       "advantages": [],

@@ -21,7 +21,7 @@
         "type": "ad_valorem"
       }
     },
-    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (TVA) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts."
+    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (TVA) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts. Surcharges par produit ajoutées pour des positions spécifiques (voir taxes[].classification_source par position : 'loi' = code SH cité par le texte réglementaire, 'estimation_ia' = classification technique du produit nommé par la loi)."
   },
   "regimes_registry": [],
   "sub_positions": [
@@ -28507,13 +28507,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 20.0,
-          "raw": "20.0 %",
-          "source": "PwC Worldwide Tax Summaries — Madagascar / Loi n° 2025-021 (Loi de Finances 2026)",
-          "source_url": "https://taxsummaries.pwc.com/madagascar/corporate/other-taxes",
-          "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 10 % (gaz butane), 0 % (exportations)."
+          "name": "TVA — gaz butane",
+          "rate": 10.0,
+          "raw": "10.0 %",
+          "source": "Loi de Finances 2025 (LOI n° 2024-025) — gaz butane",
+          "source_url": "https://www.mef.gov.mg/assets/vendor/ckeditor/plugins/kcfinder/upload/files/lfi_2025/Ampliation%20LOI%20n%C2%B0%202024-025LF2025_VF_PRMLG--12-18.pdf",
+          "as_of": "2025 (en vigueur depuis, confirmé toujours actif en 2026)",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Recherche interrompue avant confirmation finale : la Loi de Finances 2026 mentionnerait une \"détaxation du riz\" (HS 1006) non appliquée ici faute de confirmation dans le texte primaire."
         }
       },
       "advantages": [],

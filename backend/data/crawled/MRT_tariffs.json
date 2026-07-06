@@ -21,7 +21,7 @@
         "type": "ad_valorem"
       }
     },
-    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (TVA) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts."
+    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (TVA) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts. Surcharges par produit ajoutées pour des positions spécifiques (voir taxes[].classification_source par position : 'loi' = code SH cité par le texte réglementaire, 'estimation_ia' = classification technique du produit nommé par la loi)."
   },
   "regimes_registry": [],
   "sub_positions": [
@@ -27233,13 +27233,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27259,13 +27260,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27285,13 +27287,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27311,13 +27314,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27337,13 +27341,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27363,13 +27368,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27389,13 +27395,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27415,13 +27422,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27441,13 +27449,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27467,13 +27476,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27493,13 +27503,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27519,13 +27530,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27545,13 +27557,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27571,13 +27584,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27597,13 +27611,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27623,13 +27638,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27649,13 +27665,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27675,13 +27692,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27701,13 +27719,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27727,13 +27746,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27753,13 +27773,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27779,13 +27800,14 @@
           "raw": "12.1428575515747 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27805,13 +27827,14 @@
           "raw": "10.7692308425903 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27831,13 +27854,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27857,13 +27881,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27883,13 +27908,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27909,13 +27935,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27935,13 +27962,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27961,13 +27989,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -27987,13 +28016,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28013,13 +28043,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28039,13 +28070,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28065,13 +28097,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28091,13 +28124,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28117,13 +28151,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28143,13 +28178,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28169,13 +28205,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28195,13 +28232,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28221,13 +28259,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28247,13 +28286,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28273,13 +28313,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28299,13 +28340,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28325,13 +28367,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],
@@ -28351,13 +28394,14 @@
           "raw": "5.0 % (MFN, SimpleAverage, 2022)"
         },
         "TVA": {
-          "name": "Taxe sur la Valeur Ajoutée (TVA)",
-          "rate": 16.0,
-          "raw": "16.0 %",
-          "source": "Direction Générale des Impôts (Mauritanie)",
+          "name": "TVA — produits pétroliers (chap. 27)",
+          "rate": 20.0,
+          "raw": "20.0 %",
+          "source": "Code Général des Impôts (Mauritanie), doctrine TVA DGI",
           "source_url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
-          "as_of": "2026 (taux en vigueur depuis 2017)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Catégorie légale : \"produits pétroliers\" — chapitre SH 27 entier."
         }
       },
       "advantages": [],

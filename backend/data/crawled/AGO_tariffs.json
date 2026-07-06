@@ -21,7 +21,7 @@
         "type": "ad_valorem"
       }
     },
-    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (IVA) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts."
+    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (IVA) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts. Surcharges par produit ajoutées pour des positions spécifiques (voir taxes[].classification_source par position : 'loi' = code SH cité par le texte réglementaire, 'estimation_ia' = classification technique du produit nommé par la loi)."
   },
   "regimes_registry": [],
   "sub_positions": [
@@ -8565,13 +8565,14 @@
           "raw": "16.6666660308838 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — leite condensado/em pó",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"leite condensado e em pó\"."
         }
       },
       "advantages": [],
@@ -8591,13 +8592,14 @@
           "raw": "16.6666660308838 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — leite condensado/em pó",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"leite condensado e em pó\"."
         }
       },
       "advantages": [],
@@ -8617,13 +8619,14 @@
           "raw": "16.6666660308838 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — leite condensado/em pó",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"leite condensado e em pó\"."
         }
       },
       "advantages": [],
@@ -8643,13 +8646,14 @@
           "raw": "36.6666679382324 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — leite condensado/em pó",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"leite condensado e em pó\"."
         }
       },
       "advantages": [],
@@ -8669,13 +8673,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — leite condensado/em pó",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"leite condensado e em pó\"."
         }
       },
       "advantages": [],
@@ -9007,13 +9012,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — ovos",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"ovos\" (œufs)."
         }
       },
       "advantages": [],
@@ -9033,13 +9039,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — ovos",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"ovos\" (œufs)."
         }
       },
       "advantages": [],
@@ -9059,13 +9066,14 @@
           "raw": "30.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — ovos",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"ovos\" (œufs)."
         }
       },
       "advantages": [],
@@ -9085,13 +9093,14 @@
           "raw": "30.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — ovos",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"ovos\" (œufs)."
         }
       },
       "advantages": [],
@@ -9111,13 +9120,14 @@
           "raw": "30.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — ovos",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"ovos\" (œufs)."
         }
       },
       "advantages": [],
@@ -10099,13 +10109,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — batata",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"batata\" (pomme de terre)."
         }
       },
       "advantages": [],
@@ -10125,13 +10136,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — batata",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"batata\" (pomme de terre)."
         }
       },
       "advantages": [],
@@ -11373,13 +11385,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11399,13 +11412,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11425,13 +11439,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11451,13 +11466,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11477,13 +11493,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11503,13 +11520,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11529,13 +11547,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11555,13 +11574,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11581,13 +11601,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11607,13 +11628,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11633,13 +11655,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -11659,13 +11682,14 @@
           "raw": "10.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — feijão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"feijão\" (haricots)."
         }
       },
       "advantages": [],
@@ -15299,13 +15323,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — farinha de trigo",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"farinha de trigo\" (farine de blé)."
         }
       },
       "advantages": [],
@@ -15325,13 +15350,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — farinha de milho",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"farinha de milho\" (farine de maïs)."
         }
       },
       "advantages": [],
@@ -15351,13 +15377,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — farinha de milho",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"farinha de milho\" (farine de maïs)."
         }
       },
       "advantages": [],
@@ -21097,13 +21124,14 @@
           "raw": "40.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
-          "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "name": "Imposto sobre o Valor Acrescentado (IVA) — pão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
+          "as_of": "2026 (permanent depuis OGE 2026)",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\" (pain)."
         }
       },
       "advantages": [],
@@ -21123,13 +21151,14 @@
           "raw": "40.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
-          "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "name": "Imposto sobre o Valor Acrescentado (IVA) — pão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
+          "as_of": "2026 (permanent depuis OGE 2026)",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\" (pain)."
         }
       },
       "advantages": [],
@@ -21149,13 +21178,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
-          "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "name": "Imposto sobre o Valor Acrescentado (IVA) — pão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
+          "as_of": "2026 (permanent depuis OGE 2026)",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\" (pain)."
         }
       },
       "advantages": [],
@@ -21175,13 +21205,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
-          "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "name": "Imposto sobre o Valor Acrescentado (IVA) — pão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
+          "as_of": "2026 (permanent depuis OGE 2026)",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\" (pain)."
         }
       },
       "advantages": [],
@@ -21201,13 +21232,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
-          "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "name": "Imposto sobre o Valor Acrescentado (IVA) — pão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
+          "as_of": "2026 (permanent depuis OGE 2026)",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\" (pain)."
         }
       },
       "advantages": [],
@@ -21227,13 +21259,14 @@
           "raw": "27.5 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
-          "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "name": "Imposto sobre o Valor Acrescentado (IVA) — pão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
+          "as_of": "2026 (permanent depuis OGE 2026)",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"pão\" (pain)."
         }
       },
       "advantages": [],
@@ -23021,13 +23054,14 @@
           "raw": "70.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — água mineral/de mesa",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"água mineral e de mesa\"."
         }
       },
       "advantages": [],
@@ -23047,13 +23081,14 @@
           "raw": "70.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — água mineral/de mesa",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"água mineral e de mesa\"."
         }
       },
       "advantages": [],
@@ -46577,13 +46612,14 @@
           "raw": "30.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — sabão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"sabão\" (savon)."
         }
       },
       "advantages": [],
@@ -46603,13 +46639,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — sabão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"sabão\" (savon)."
         }
       },
       "advantages": [],
@@ -46629,13 +46666,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — sabão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"sabão\" (savon)."
         }
       },
       "advantages": [],
@@ -46655,13 +46693,14 @@
           "raw": "50.0 % (MFN, SimpleAverage, 2022)"
         },
         "IVA": {
-          "name": "Imposto sobre o Valor Acrescentado (IVA)",
-          "rate": 14.0,
-          "raw": "14.0 %",
-          "source": "PwC Worldwide Tax Summaries — Angola",
-          "source_url": "https://taxsummaries.pwc.com/angola/corporate/other-taxes",
+          "name": "IVA — sabão",
+          "rate": 5.0,
+          "raw": "5.0 %",
+          "source": "Anexo I Código do IVA / minfin.gov.ao",
+          "source_url": "https://www.minfin.gov.ao/sala-de-imprensa/noticias/noticia/nova-taxa-do-iva-em-5-para-os-bens-alimentares-de-amplo-consumo-e-cesta-basica-entra-em-vigor-a-1-de-janeiro-de-2024",
           "as_of": "2026",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7 % (régime simplifié, CA 10M-350M Kwanzas ; alimentation dès 2026), 5 % (équipement industriel à usage productif), exonéré (CA < 10M Kwanzas)."
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"sabão\" (savon)."
         }
       },
       "advantages": [],

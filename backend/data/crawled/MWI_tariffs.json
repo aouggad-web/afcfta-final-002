@@ -21,7 +21,7 @@
         "type": "ad_valorem"
       }
     },
-    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (VAT) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts."
+    "source": "MFN appliqué SH6 (WITS/TRAINS) + TVA/taxes nationales standard (VAT) sourcées individuellement — voir taxes[].source par position. Formalités et avantages fiscaux par position non couverts. Surcharges par produit ajoutées pour des positions spécifiques (voir taxes[].classification_source par position : 'loi' = code SH cité par le texte réglementaire, 'estimation_ia' = classification technique du produit nommé par la loi)."
   },
   "regimes_registry": [],
   "sub_positions": [
@@ -9007,13 +9007,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 17.5,
-          "raw": "17.5 %",
-          "source": "Malawi Revenue Authority — Public Notice (New Tax Measures)",
-          "source_url": "https://www.mra.mw",
-          "as_of": "2026-01-01 (relevé de 16.5 % à 17.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — birds' eggs (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Malawi VAT Act (Cap 42:02), First Schedule",
+          "source_url": "https://malawilii.org/akn/mw/act/2005/7",
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"birds' eggs\"."
         }
       },
       "advantages": [],
@@ -9033,13 +9034,14 @@
           "raw": "25.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 17.5,
-          "raw": "17.5 %",
-          "source": "Malawi Revenue Authority — Public Notice (New Tax Measures)",
-          "source_url": "https://www.mra.mw",
-          "as_of": "2026-01-01 (relevé de 16.5 % à 17.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — birds' eggs (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Malawi VAT Act (Cap 42:02), First Schedule",
+          "source_url": "https://malawilii.org/akn/mw/act/2005/7",
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"birds' eggs\"."
         }
       },
       "advantages": [],
@@ -9059,13 +9061,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 17.5,
-          "raw": "17.5 %",
-          "source": "Malawi Revenue Authority — Public Notice (New Tax Measures)",
-          "source_url": "https://www.mra.mw",
-          "as_of": "2026-01-01 (relevé de 16.5 % à 17.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — birds' eggs (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Malawi VAT Act (Cap 42:02), First Schedule",
+          "source_url": "https://malawilii.org/akn/mw/act/2005/7",
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"birds' eggs\"."
         }
       },
       "advantages": [],
@@ -9085,13 +9088,14 @@
           "raw": "25.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 17.5,
-          "raw": "17.5 %",
-          "source": "Malawi Revenue Authority — Public Notice (New Tax Measures)",
-          "source_url": "https://www.mra.mw",
-          "as_of": "2026-01-01 (relevé de 16.5 % à 17.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — birds' eggs (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Malawi VAT Act (Cap 42:02), First Schedule",
+          "source_url": "https://malawilii.org/akn/mw/act/2005/7",
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"birds' eggs\"."
         }
       },
       "advantages": [],
@@ -9111,13 +9115,14 @@
           "raw": "25.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 17.5,
-          "raw": "17.5 %",
-          "source": "Malawi Revenue Authority — Public Notice (New Tax Measures)",
-          "source_url": "https://www.mra.mw",
-          "as_of": "2026-01-01 (relevé de 16.5 % à 17.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — birds' eggs (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Malawi VAT Act (Cap 42:02), First Schedule",
+          "source_url": "https://malawilii.org/akn/mw/act/2005/7",
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"birds' eggs\"."
         }
       },
       "advantages": [],
@@ -9241,13 +9246,14 @@
           "raw": "25.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 17.5,
-          "raw": "17.5 %",
-          "source": "Malawi Revenue Authority — Public Notice (New Tax Measures)",
-          "source_url": "https://www.mra.mw",
-          "as_of": "2026-01-01 (relevé de 16.5 % à 17.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — natural honey (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Malawi VAT Act (Cap 42:02), First Schedule",
+          "source_url": "https://malawilii.org/akn/mw/act/2005/7",
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"natural honey\"."
         }
       },
       "advantages": [],
@@ -64491,13 +64497,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 17.5,
-          "raw": "17.5 %",
-          "source": "Malawi Revenue Authority — Public Notice (New Tax Measures)",
-          "source_url": "https://www.mra.mw",
-          "as_of": "2026-01-01 (relevé de 16.5 % à 17.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — printed books (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Malawi VAT Act (Cap 42:02), First Schedule",
+          "source_url": "https://malawilii.org/akn/mw/act/2005/7",
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"printed matter — books\"."
         }
       },
       "advantages": [],
@@ -64517,13 +64524,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 17.5,
-          "raw": "17.5 %",
-          "source": "Malawi Revenue Authority — Public Notice (New Tax Measures)",
-          "source_url": "https://www.mra.mw",
-          "as_of": "2026-01-01 (relevé de 16.5 % à 17.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — printed books (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Malawi VAT Act (Cap 42:02), First Schedule",
+          "source_url": "https://malawilii.org/akn/mw/act/2005/7",
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"printed matter — books\"."
         }
       },
       "advantages": [],
@@ -64543,13 +64551,14 @@
           "raw": "0.0 % (MFN, SimpleAverage, 2021)"
         },
         "VAT": {
-          "name": "Value Added Tax (VAT)",
-          "rate": 17.5,
-          "raw": "17.5 %",
-          "source": "Malawi Revenue Authority — Public Notice (New Tax Measures)",
-          "source_url": "https://www.mra.mw",
-          "as_of": "2026-01-01 (relevé de 16.5 % à 17.5 %)",
-          "note": "Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6)."
+          "name": "VAT — printed books (exempt)",
+          "rate": 0.0,
+          "raw": "0.0 %",
+          "source": "Malawi VAT Act (Cap 42:02), First Schedule",
+          "source_url": "https://malawilii.org/akn/mw/act/2005/7",
+          "as_of": "2026",
+          "classification_source": "estimation_ia",
+          "note": "Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : \"printed matter — books\"."
         }
       },
       "advantages": [],
