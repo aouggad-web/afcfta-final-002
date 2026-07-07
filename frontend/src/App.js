@@ -59,7 +59,17 @@ const texts = {
 function App() {
   const { i18n } = useTranslation();
   const [countries, setCountries] = useState([]);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  // Onglet actif persisté en session : si la page se recharge (ex. websocket
+  // HMR coupé par un proxy, mise à jour du service worker...), l'utilisateur
+  // revient sur SON module au lieu d'être renvoyé au dashboard. sessionStorage
+  // (pas localStorage) : une nouvelle visite repart du dashboard, un simple
+  // rechargement conserve la place.
+  const [activeTab, setActiveTab] = useState(
+    () => sessionStorage.getItem('zlecaf_active_tab') || 'dashboard'
+  );
+  useEffect(() => {
+    sessionStorage.setItem('zlecaf_active_tab', activeTab);
+  }, [activeTab]);
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
   const [backendOnline, setBackendOnline] = useState(null);

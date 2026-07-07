@@ -29,6 +29,41 @@ BACKEND_PORT=8001 FRONTEND_PORT=3000 BRANCH=claude/setup-github-cli-EngUf \
 - `SKIP_BUILD=1` : saute le build de production (étape 5/6) si le supervisor
   Emergent lance `yarn start` (serveur Vite de dev) plutôt que de servir
   `frontend/build` — évite un build inutile à chaque synchronisation.
+- `VITE_HMR=off` : **corrige le bug « l'app revient au dashboard / la page se
+  recharge toute seule chaque minute »** (voir la section dédiée ci-dessous).
+  À définir dans l'environnement Emergent avec les ports.
+
+### Bug « retour au dashboard / rechargement chaque minute » — corrigé
+
+Derrière l'ingress Kubernetes, le websocket HMR (rechargement à chaud) de Vite
+tentait de se connecter au port interne de Vite, que l'ingress ne route pas :
+la connexion était coupée au bout de ~60 s et le client Vite **rechargeait
+toute la page**. Comme la navigation entre modules est gérée en mémoire (pas
+dans l'URL), chaque rechargement renvoyait l'utilisateur au dashboard — d'où
+le retour au dashboard après une action et le « sautillement » périodique.
+
+Deux correctifs, désormais dans le dépôt :
+
+1. **`vite.config.js` lit la config HMR depuis l'environnement.** En preview /
+   déploiement (pas de développement à chaud), le plus simple et le plus
+   robuste est de **désactiver HMR** :
+
+   ```bash
+   export VITE_HMR=off
+   ```
+
+   Si vous voulez garder le rechargement à chaud à travers l'ingress :
+   `VITE_HMR_CLIENT_PORT=443 VITE_HMR_PROTOCOL=wss` (et au besoin
+   `VITE_HMR_HOST=<domaine public>`).
+2. **L'onglet actif est persisté en `sessionStorage`** : même si un
+   rechargement survient pour une autre raison (mise à jour du service worker,
+   etc.), l'utilisateur revient sur son module au lieu du dashboard.
+
+À fixer une fois dans l'environnement Emergent (avec les ports) :
+
+```bash
+export BACKEND_PORT=8001 FRONTEND_PORT=3000 VITE_HMR=off
+```
 
 Le script (`sync_emergent.sh`, à la racine) :
 
