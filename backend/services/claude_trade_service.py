@@ -762,6 +762,62 @@ Wrap ALL 15 in this envelope:
                 logger.warning(f"Production capacity enrichment failed: {e}")
                 result["production_enrichment"] = False
 
+            # Enrich with a real logistics profile (multimodal freight cost +
+            # free zones) between the analyzed country and each opportunity's
+            # partner — same adapter as the Reports module
+            # (services/logistics_opportunity_adapter.py). Direction follows
+            # the opportunity's own trade direction: export/industrial =
+            # analyzed country → partner ; import = supplier → analyzed
+            # country.
+            try:
+                from services.logistics_opportunity_adapter import (
+                    get_logistics_profile,
+                    summarize_logistics_accessibility,
+                )
+
+                analyzed_iso3 = self._resolve_iso3(country_name)
+                logistics_ok = 0
+                if analyzed_iso3:
+                    for opp in result.get("opportunities", []):
+                        if mode == "import":
+                            partner_name = opp.get("potential_supplier") or opp.get(
+                                "potentialSupplier"
+                            )
+                        else:
+                            partner_name = opp.get("potential_partner") or opp.get(
+                                "potentialPartner"
+                            )
+                        partner_iso3 = self._resolve_iso3(partner_name) if partner_name else None
+                        if not partner_iso3:
+                            continue
+                        origin_iso3, destination_iso3 = (
+                            (partner_iso3, analyzed_iso3)
+                            if mode == "import"
+                            else (analyzed_iso3, partner_iso3)
+                        )
+                        profile = get_logistics_profile(origin_iso3, destination_iso3)
+                        if profile["freight"].get("available"):
+                            opp["logistics"] = {
+                                "available": True,
+                                "best_operational_cost_usd": profile.get(
+                                    "best_operational_cost_usd"
+                                ),
+                                "accessibility_index": summarize_logistics_accessibility(
+                                    profile
+                                ).get("index"),
+                                "free_zones_at_destination": [
+                                    z.get("name")
+                                    for z in profile["free_zones"].get("zones", [])[:3]
+                                ],
+                            }
+                            logistics_ok += 1
+                        else:
+                            opp["logistics"] = {"available": False}
+                result["logistics_enrichment"] = logistics_ok > 0
+            except Exception as e:
+                logger.warning(f"Logistics enrichment failed: {e}")
+                result["logistics_enrichment"] = False
+
             result["country"] = country_name
             result["mode"] = mode
             result["generated_by"] = f"Claude AI ({self.MODEL})"
@@ -1175,68 +1231,6 @@ Return this EXACT JSON structure:
 
         except Exception as e:
             logger.error(f"Error in country comparison: {e}", exc_info=True)
-            return {"error": str(e)}
-
-    # ── Trade Summary (overview) ──────────────────────────────────────────────
-
-    async def get_trade_summary(self, lang: str = "fr") -> Dict:
-        if not self._is_ready():
-            return {"error": "ANTHROPIC_API_KEY not configured"}
-
-        cache_params = {"lang": lang}
-        cached = cache_service.get("claude_summary", cache_params)
-        if cached:
-            cached["data_freshness"] = get_data_freshness(
-                cached.get("_cache_metadata", {}).get("cached_at")
-            )
-            return cached
-
-        lang_instr = "Réponds en français." if lang == "fr" else "Respond in English."
-
-        prompt = f"""{lang_instr}
-
-Provide a comprehensive overview of African trade under AfCFTA (2023-2024 data).
-
-Return this JSON structure:
-{{
-  "overview": {{
-    "total_african_gdp_trillion": 0.0,
-    "intra_african_trade_percent": 0.0,
-    "intra_african_trade_musd": 0.0,
-    "afcfta_signatories": 54,
-    "afcfta_ratifications": 0,
-    "year": 2023
-  }},
-  "top_trading_countries": [
-    {{"country": "", "iso3": "", "exports_musd": 0.0, "imports_musd": 0.0, "rank": 1}}
-  ],
-  "top_sectors": [
-    {{"sector": "", "value_musd": 0.0, "growth_percent": 0.0, "key_countries": []}}
-  ],
-  "key_corridors": [
-    {{"from": "", "to": "", "value_musd": 0.0, "main_products": []}}
-  ],
-  "afcfta_progress": {{
-    "tariff_liberalization_percent": 0.0,
-    "implementation_challenges": [],
-    "success_stories": []
-  }},
-  "sources": ["UNCTAD 2023", "AfCFTA Secretariat", "AU Commission", "IMF WEO Oct 2024"]
-}}"""
-
-        try:
-            raw = await self._call_claude(prompt, max_tokens=3000)
-            result = self._extract_json(raw)
-            if not result:
-                return {"error": "Failed to parse response"}
-
-            result["generated_by"] = f"Claude AI ({self.MODEL})"
-            result["data_freshness"] = get_data_freshness(None)
-            cache_service.set("claude_summary", cache_params, result, "claude_summary")
-            return result
-
-        except Exception as e:
-            logger.error(f"Error in trade summary: {e}", exc_info=True)
             return {"error": str(e)}
 
 

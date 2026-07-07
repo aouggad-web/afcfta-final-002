@@ -86,15 +86,28 @@ def _economic(iso3: str) -> Dict:
 
 
 def _exports_by_chapter(products: List[Dict]) -> Dict[str, Dict]:
-    """Aggregate OEC export/import records into {chapter: {value, name}}."""
-    by_chapter: Dict[str, Dict] = defaultdict(lambda: {"value": 0.0, "name": ""})
+    """Aggregate OEC export/import records into {chapter: {value, name, top_hs6}}.
+
+    ``top_hs6`` is the single real 6-digit product code with the highest trade
+    value inside the chapter — used downstream for an actual tariff lookup
+    (a 2-digit chapter is too coarse to price a duty rate)."""
+    by_chapter: Dict[str, Dict] = defaultdict(
+        lambda: {"value": 0.0, "name": "", "top_hs6": None, "top_hs6_value": 0.0}
+    )
     for p in products:
-        chapter = (p.get("hs_code") or "")[:2]
+        hs_code = p.get("hs_code") or ""
+        chapter = hs_code[:2]
         if not chapter:
             continue
-        by_chapter[chapter]["value"] += p.get("trade_value", 0)
-        if not by_chapter[chapter]["name"]:
-            by_chapter[chapter]["name"] = p.get("product_name", "")
+        entry = by_chapter[chapter]
+        value = p.get("trade_value", 0) or 0
+        entry["value"] += value
+        if not entry["name"]:
+            entry["name"] = p.get("product_name", "")
+        hs6 = hs_code[:6]
+        if len(hs6) == 6 and value > entry["top_hs6_value"]:
+            entry["top_hs6"] = hs6
+            entry["top_hs6_value"] = value
     return by_chapter
 
 
@@ -122,12 +135,59 @@ def _complementarity(
         flows.append(
             {
                 "product": exp["name"] or imp["name"] or f"Chapitre {chapter}",
-                "hs6Code": chapter,
+                "hs6Code": exp.get("top_hs6") or chapter,
+                "chapter": chapter,
                 "potential_musd": round(potential / 1_000_000, 2),
+                "potential_usd": potential,
             }
         )
     flows.sort(key=lambda f: f["potential_musd"], reverse=True)
     return flows[:5], total_potential, matched_import_base
+
+
+def _tariff_savings_for_flows(
+    flows: List[Dict], origin_iso3: str, destination_iso3: str
+) -> Tuple[float, int, int]:
+    """Real ZLECAf vs NPF duty saving for each supplier→buyer flow.
+
+    Calls the same calculation engine as the Calculateur tab
+    (services/authentic_tariff_service.calculate_import_taxes), which already
+    encodes bilateral ZLECAf reciprocity (ratification + real implementation
+    evidence, see zlecaf_active_implementers.py) — a flow only contributes a
+    saving when a preference genuinely reduces the duty for that HS6/pair.
+
+    Returns (total_saving_usd, flows_with_usable_tariff_data, total_flows).
+    Never fabricates: a flow with no crawled/ETL tariff line for the
+    destination simply contributes 0 and is excluded from the coverage count.
+    """
+    from services.authentic_tariff_service import calculate_import_taxes
+
+    total_saving = 0.0
+    covered = 0
+    for flow in flows:
+        hs6 = flow.get("hs6Code")
+        value_usd = flow.get("potential_usd", 0) or 0
+        if not hs6 or len(hs6) != 6 or value_usd <= 0:
+            continue
+        try:
+            result = calculate_import_taxes(
+                destination_iso3, hs6, value_usd, apply_zlecaf=True, origin_country=origin_iso3
+            )
+        except Exception as exc:
+            logger.debug(f"tariff lookup failed for {destination_iso3}/{hs6}: {exc}")
+            continue
+        if not result or "error" in result:
+            continue
+        rates = result.get("rates", {})
+        dd_pct = rates.get("dd_rate_pct")
+        zlecaf_dd_pct = rates.get("zlecaf_rate_pct")
+        if dd_pct is None or zlecaf_dd_pct is None or not result.get("zlecaf_preference_applied"):
+            covered += 1  # tariff data found, even if no reduction applies
+            continue
+        saving = max(dd_pct - zlecaf_dd_pct, 0) / 100.0 * value_usd
+        total_saving += saving
+        covered += 1
+    return total_saving, covered, len(flows)
 
 
 async def compare_countries(country_a: str, country_b: str, lang: str = "fr") -> Dict:
@@ -183,6 +243,29 @@ async def compare_countries(country_a: str, country_b: str, lang: str = "fr") ->
     econ_a = _economic(iso_a)
     econ_b = _economic(iso_b)
 
+    # Real tariff savings (NPF vs ZLECAf) on the top matched flows — same
+    # calculation engine as the Calculateur tab (authentic_tariff_service),
+    # so the bilateral ZLECAf reciprocity rules (ratification + real
+    # implementation evidence) are honoured rather than assumed.
+    saving_ab, covered_ab, total_ab = _tariff_savings_for_flows(a_supply, iso_a, iso_b)
+    saving_ba, covered_ba, total_ba = _tariff_savings_for_flows(b_supply, iso_b, iso_a)
+    tariff_savings_usd = saving_ab + saving_ba
+    tariff_flows_covered = covered_ab + covered_ba
+    tariff_flows_total = total_ab + total_ba
+    if tariff_flows_total == 0:
+        tariff_savings_musd = None
+        tariff_savings_note = None
+    else:
+        tariff_savings_musd = round(tariff_savings_usd / 1_000_000, 3)
+        tariff_savings_note = (
+            f"Calculé sur {tariff_flows_covered}/{tariff_flows_total} filière(s) "
+            f"disposant d'une donnée tarifaire (Calculateur) ; réciprocité ZLECAf "
+            f"bilatérale appliquée."
+            if lang == "fr"
+            else f"Computed over {tariff_flows_covered}/{tariff_flows_total} flow(s) "
+            f"with usable tariff data (Calculateur); bilateral AfCFTA reciprocity applied."
+        )
+
     has_trade = bool(exp_ab or exp_ba or a_supply or b_supply)
 
     note = None
@@ -207,6 +290,39 @@ async def compare_countries(country_a: str, country_b: str, lang: str = "fr") ->
         )
 
     key_opportunities = [f["product"] for f in (a_supply + b_supply)][:5]
+
+    # Real logistics profile (multimodal freight cost + free zones) both ways —
+    # same adapter as the Reports module (services/logistics_opportunity_adapter.py).
+    # Routes/costs can differ by direction, so both A→B and B→A are computed.
+    try:
+        from services.logistics_opportunity_adapter import (
+            get_logistics_profile,
+            summarize_logistics_accessibility,
+        )
+
+        profile_ab = get_logistics_profile(iso_a, iso_b)
+        profile_ba = get_logistics_profile(iso_b, iso_a)
+        logistics = {
+            "a_to_b": {
+                "available": profile_ab["freight"].get("available", False),
+                "best_operational_cost_usd": profile_ab.get("best_operational_cost_usd"),
+                "accessibility_index": summarize_logistics_accessibility(profile_ab).get("index"),
+                "free_zones_at_destination": [
+                    z.get("name") for z in profile_ab["free_zones"].get("zones", [])[:3]
+                ],
+            },
+            "b_to_a": {
+                "available": profile_ba["freight"].get("available", False),
+                "best_operational_cost_usd": profile_ba.get("best_operational_cost_usd"),
+                "accessibility_index": summarize_logistics_accessibility(profile_ba).get("index"),
+                "free_zones_at_destination": [
+                    z.get("name") for z in profile_ba["free_zones"].get("zones", [])[:3]
+                ],
+            },
+        }
+    except Exception as e:
+        logger.warning(f"Logistics profile failed for {iso_a}/{iso_b}: {e}")
+        logistics = {"a_to_b": {"available": False}, "b_to_a": {"available": False}}
 
     result = {
         "country_a": name_a,
@@ -241,12 +357,15 @@ async def compare_countries(country_a: str, country_b: str, lang: str = "fr") ->
         },
         "afcfta_potential": {
             "total_potential_musd": round((pot_ab + pot_ba) / 1_000_000, 2),
-            # Tariff savings need a per-line tariff computation; omitted (null)
-            # rather than fabricated.
-            "tariff_savings_musd": None,
+            # Calculé réellement via le Calculateur (authentic_tariff_service) sur
+            # les filières de complémentarité — None seulement si aucune des
+            # filières n'a de donnée tarifaire exploitable (jamais fabriqué).
+            "tariff_savings_musd": tariff_savings_musd,
+            "tariff_savings_note": tariff_savings_note,
             "key_opportunities": key_opportunities,
             "barriers": [],
         },
+        "logistics": logistics,
         "sources": ["OEC BACI", "UN Comtrade", "IMF WEO", "World Bank", "UNDP"],
         "data_source": "OEC (BACI/UN Comtrade) + IMF/World Bank/UNDP (country_data)",
         "generated_by": "Données réelles (OEC, IMF/BM/PNUD)",

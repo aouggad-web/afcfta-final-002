@@ -292,6 +292,28 @@ def _normalize_tax_code(code: str) -> str:
     return code.replace(".", "").replace(" ", "").upper()
 
 
+# Codes TVA équivalents selon le pays (portugais IVA, anglais VAT, tunisien
+# TVA/APTAXE) — un seul et même impôt fonctionnellement, jamais deux taxes
+# distinctes. _find_vat_key() doit être utilisé PARTOUT où un code de taxe est
+# comparé à "TVA" pour éviter (a) de rater le taux réel des pays non-DZA/MAR/
+# COM/MDG/MRT (qui utilisent IVA/VAT), et (b) de la compter deux fois — une
+# fois comme "TVA" au taux périmé de l'autre source, une fois comme sa propre
+# entrée "IVA"/"VAT" dans le détail par taxe.
+_VAT_EQUIVALENT_CODES = ("TVA", "IVA", "VAT", "TVAI")
+
+
+def _is_vat_code(code: str) -> bool:
+    norm = _normalize_tax_code(code)
+    return norm in _VAT_EQUIVALENT_CODES or norm.startswith("TVA/") or norm.startswith("TVA-")
+
+
+def _find_vat_key(crawled_taxes: dict) -> Optional[str]:
+    for k in crawled_taxes:
+        if _is_vat_code(k):
+            return k
+    return None
+
+
 def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) -> dict:
     """
     Compute import taxes using the official cascade method for each country.
@@ -1061,7 +1083,20 @@ def _resolve_zlecaf_context(
             zlecaf_note=None,
         )
 
-    # 4. Autres pays ratifiés des deux côtés : taux ZLECAf générique de la ligne.
+    # 4. Autres pays ratifiés des deux côtés : le taux ZLECAf générique de la
+    #    ligne n'est appliqué que si la DESTINATION a une preuve d'application
+    #    réelle du barème préférentiel (même principe que la circulaire DGD
+    #    482/2024 pour l'Algérie, généralisé) — une ratification seule ne
+    #    garantit aucune réduction effective au poste-frontière.
+    from services.zlecaf_active_implementers import implementation_evidence, is_active_implementer
+
+    if not is_active_implementer(dest):
+        return _no_preference(
+            f"ZLECAf ratifié par {dest} mais aucune preuve d'application réelle "
+            f"du barème préférentiel trouvée à ce jour (recherche 2026-07-06) "
+            f"— taux NPF appliqué"
+        )
+
     eff_dd = line_zlecaf_rate_pct
     applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
     return _result(
@@ -1071,7 +1106,7 @@ def _resolve_zlecaf_context(
         daps=False,
         regime="ZLECAF",
         code="ZLECAF",
-        note=None,
+        note=f"Application réelle : {implementation_evidence(dest)}" if applied else None,
         zlecaf_eligible=True,
         zlecaf_note=None,
     )
@@ -1175,9 +1210,11 @@ def calculate_import_taxes(
             for k, v in crawled_taxes.items()
             if isinstance(v, dict)
         }
-        # Inherit VAT and ZLECAf from ETL line (not always in crawled)
-        if "TVA" in crawled_taxes:
-            vat_rate_pct = float(crawled_taxes["TVA"].get("rate", vat_rate_pct))
+        # Inherit VAT and ZLECAf from ETL line (not always in crawled). Le code
+        # varie selon le pays (TVA/IVA/VAT/TVA-APTAXE) — cf. _find_vat_key.
+        _vat_key = _find_vat_key(crawled_taxes)
+        if _vat_key:
+            vat_rate_pct = float(crawled_taxes[_vat_key].get("rate", vat_rate_pct) or 0)
     else:
         # Copie défensive : on ne mute jamais l'objet de ligne (potentiellement
         # mis en cache) lors de la normalisation des libellés. Le format liste
@@ -1228,7 +1265,7 @@ def calculate_import_taxes(
         elif norm == "TCS":
             tcs_rate_pct = rate
         # Capture VAT from taxes_detail when not already set from crawled source
-        elif norm in ("TVA", "TVAI") and vat_rate_pct == 0:
+        elif _is_vat_code(norm) and vat_rate_pct == 0:
             vat_rate_pct = rate
 
     # Normaliser l'intitulé officiel du PRCT dans le dict taxes_detail renvoyé
@@ -1245,7 +1282,9 @@ def calculate_import_taxes(
     # Only add PRCT fallback if other_taxes_pct is not already covered by an
     # explicit individual tax (e.g. TPI for MAR already covers the 0.25%).
     _covered_other = sum(
-        t["rate_pct"] for t in individual_taxes if t["code"] not in ("DD", "TVA", "DAPS")
+        t["rate_pct"]
+        for t in individual_taxes
+        if t["code"] not in ("DD", "DAPS") and not _is_vat_code(t["code"])
     )
     if (
         prct_rate_pct == 0
@@ -1271,10 +1310,14 @@ def calculate_import_taxes(
         taxes_for_cascade["TCS"] = tcs_rate_pct
     if vat_rate_pct > 0:
         taxes_for_cascade["TVA"] = vat_rate_pct
-    # Add any other taxes from individual_taxes not yet covered
+    # Add any other taxes from individual_taxes not yet covered. Les codes TVA
+    # équivalents (IVA/VAT/TVA-APTAXE) sont exclus : déjà représentés par
+    # taxes_for_cascade["TVA"] via vat_rate_pct — les rajouter ici les
+    # compterait deux fois (une fois comme "TVA", une fois sous leur propre
+    # code).
     for t in individual_taxes:
         c = _normalize_tax_code(t["code"])
-        if c not in taxes_for_cascade and t.get("rate_pct", 0) > 0:
+        if c not in taxes_for_cascade and t.get("rate_pct", 0) > 0 and not _is_vat_code(c):
             taxes_for_cascade[c] = t["rate_pct"]
 
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────

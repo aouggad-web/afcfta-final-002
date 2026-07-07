@@ -272,6 +272,24 @@ class CrawledDataService:
         "MRT",
         "STP",
     }
+    # Pays sourcés via WITS/TRAINS (wits_source.py) : positions clées "hs_code",
+    # taxes en dict {code: {...}} (contrat v2) — même forme que DZA/EGY/ETH,
+    # pas la forme "code_raw"/liste de _normalize_standard.
+    WITS_COUNTRIES = {
+        "AGO",
+        "COM",
+        "LBY",
+        "MDG",
+        "MOZ",
+        "MRT",
+        "MUS",
+        "MWI",
+        "SDN",
+        "STP",
+        "SYC",
+        "ZMB",
+        "ZWE",
+    }
 
     def _normalize_position(self, country_code: str, pos: dict) -> Optional[dict]:
         # Check if it's already in enhanced format (from tariff_lines conversion)
@@ -307,6 +325,8 @@ class CrawledDataService:
             return self._normalize_ecowas_member(pos, country_code)
         elif country_code in self.CEMAC_TEC_COUNTRIES:
             return self._normalize_cemac_member(pos, country_code)
+        elif country_code in self.WITS_COUNTRIES:
+            return self._normalize_wits(pos, country_code)
         # Fallback for any other country - use standard normalization
         return self._normalize_standard(pos, country_code)
 
@@ -477,13 +497,27 @@ class CrawledDataService:
                 }
             )
 
-        regulations = pos.get("regulations", [])
         formalities = []
-        for reg in regulations:
+        for reg in pos.get("reglementation_import", []):
             if isinstance(reg, dict):
-                formalities.append(reg.get("text", str(reg)))
+                formalities.append(reg.get("description", "") or str(reg))
             else:
                 formalities.append(str(reg))
+
+        fiscal_advantages = []
+        for pref in pos.get("preferences", []):
+            country_name = (pref.get("country_name") or "").strip()
+            rate = (pref.get("rate") or "").strip()
+            if not country_name:
+                continue
+            fiscal_advantages.append(
+                {
+                    "description": f"Préférence tarifaire {country_name} : {rate}",
+                    "country_code": pref.get("country_code", ""),
+                    "rate": rate,
+                    "source": "douane.gov.tn",
+                }
+            )
 
         return {
             "code_raw": raw_code,
@@ -491,7 +525,7 @@ class CrawledDataService:
             "designation": pos.get("designation", ""),
             "chapter": pos.get("chapter", ""),
             "taxes": taxes,
-            "fiscal_advantages": pos.get("preferential_tariffs", []),
+            "fiscal_advantages": fiscal_advantages,
             "administrative_formalities": formalities,
             "source": "douane.gov.tn",
             "country": "TUN",
@@ -721,6 +755,45 @@ class CrawledDataService:
             "administrative_formalities": [],
             "source": "customs.erca.gov.et",
             "country": "ETH",
+        }
+
+    def _normalize_wits(self, pos: dict, country_code: str) -> Optional[dict]:
+        # Positions WITS/TRAINS (wits_source.py) : {"hs_code", "taxes": {code:
+        # {name, rate, raw, source?}}, "advantages": [...], "formalities": [...]}.
+        code_clean = (pos.get("hs_code") or "").replace(".", "").replace(" ", "")
+        if not code_clean:
+            return None
+
+        taxes = []
+        for tax_code, info in (pos.get("taxes") or {}).items():
+            if not isinstance(info, dict):
+                continue
+            rate = info.get("rate")
+            taxes.append(
+                {
+                    "code": tax_code,
+                    "name": info.get("name", tax_code),
+                    "rate_pct": rate,
+                    "raw_value": info.get("raw", f"{rate}%" if rate is not None else ""),
+                    "source": info.get("source", pos.get("source", "")),
+                    "source_url": info.get("source_url", ""),
+                    "note": info.get("note", ""),
+                }
+            )
+
+        designation = pos.get("name") or pos.get("description") or ""
+
+        return {
+            "code_raw": pos.get("hs_code", code_clean),
+            "code_clean": code_clean,
+            "designation": designation,
+            "chapter": pos.get("chapter") or (code_clean[:2] if len(code_clean) >= 2 else ""),
+            "taxes": taxes,
+            "fiscal_advantages": pos.get("advantages", []),
+            "administrative_formalities": pos.get("formalities", []),
+            "source": pos.get("source", ""),
+            "source_url": pos.get("source_url", ""),
+            "country": country_code,
         }
 
     def _normalize_civ(self, pos: dict) -> Optional[dict]:
