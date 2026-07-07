@@ -7,13 +7,28 @@ non poussée sur GitHub est écrasée par la synchronisation. C'est voulu : ça
 élimine définitivement les déploiements à copie partielle/périmée (cause du
 bug `No module named 'services.regional_blocs'` vu en production).
 
+Seule exception légitime : `backend/data/news_cache.json` est un cache
+régénéré automatiquement par `etl/news_aggregator.py` — le perdre au reset
+n'a aucune conséquence, il se reconstruit tout seul à la prochaine requête.
+
 ## Procédure (une commande)
 
 Dans le **Shell Emergent** du projet :
 
 ```bash
-BRANCH=claude/setup-github-cli-EngUf bash sync_emergent.sh
+BACKEND_PORT=8001 FRONTEND_PORT=3000 BRANCH=claude/setup-github-cli-EngUf \
+  SKIP_BUILD=1 bash sync_emergent.sh
 ```
+
+- `BACKEND_PORT` / `FRONTEND_PORT` : ports imposés par l'ingress Kubernetes
+  d'Emergent, s'ils diffèrent des défauts du dépôt (8000 / 5000). **À fixer
+  dans l'environnement Emergent (variables persistantes du supervisor), pas en
+  patchant `vite.config.js`/`package.json`** — ces deux fichiers lisent
+  désormais `VITE_PORT`/`PORT`/`VITE_BACKEND_URL`, donc un `git reset` ne les
+  écrase plus jamais fonctionnellement.
+- `SKIP_BUILD=1` : saute le build de production (étape 5/6) si le supervisor
+  Emergent lance `yarn start` (serveur Vite de dev) plutôt que de servir
+  `frontend/build` — évite un build inutile à chaque synchronisation.
 
 Le script (`sync_emergent.sh`, à la racine) :
 
@@ -30,8 +45,20 @@ Le script (`sync_emergent.sh`, à la racine) :
    Emergent se retrouve avec les anciennes versions des fichiers de données
    (préférences tunisiennes absentes, TVA des pays WITS absente, registre de
    réciprocité incohérent, Ghana illisible).
-5. **Reconstruit** le frontend (Vite → `frontend/build`).
+5. **Reconstruit** le frontend (Vite → `frontend/build`), sauf si `SKIP_BUILD=1`.
 6. **Arrête** les serveurs périmés pour un redémarrage propre.
+
+### Pourquoi le `git reset --hard` ne casse plus la config de ports Emergent
+
+Avant cette session, `vite.config.js` codait en dur `port: 5000` et le proxy
+`http://localhost:8000`, et `package.json` codait `--port 5000` dans son
+script `start` — Emergent devait donc **patcher ces fichiers localement**
+pour tenir sur ses ports imposés (ex. 3000 / 8001), et chaque synchronisation
+écrasait ce patch. Ces trois fichiers lisent maintenant les ports depuis
+l'environnement (`VITE_PORT`/`PORT`/`FRONTEND_PORT`/`BACKEND_PORT`/
+`VITE_BACKEND_URL`), avec les mêmes défauts qu'avant si rien n'est défini —
+la configuration de ports d'Emergent devient une variable d'environnement
+persistante, plus un patch de fichier voué à disparaître au prochain reset.
 
 ## Ce que cette synchronisation apporte (session du 2026-07-06)
 
@@ -57,18 +84,19 @@ Le script (`sync_emergent.sh`, à la racine) :
 ## Démarrer après synchronisation
 
 ```bash
-# Développement (deux serveurs, aperçu web) :
-bash start.sh                    # backend 8000 + Vite 5000
+# Développement (deux serveurs, aperçu web) — ports par défaut 8000 / 5000,
+# ou ceux fixés dans l'environnement Emergent :
+BACKEND_PORT=8001 FRONTEND_PORT=3000 bash start.sh
 
 # Production mono-processus (FastAPI sert l'API ET le frontend buildé) :
-cd backend && python -m uvicorn server:app --host 0.0.0.0 --port 5000
+cd backend && python -m uvicorn server:app --host 0.0.0.0 --port "${BACKEND_PORT:-8000}"
 ```
 
 ## Vérifier que tout est branché
 
 ```bash
-curl -s http://localhost:8000/api/reports/health       # sources du moteur
-curl -s http://localhost:8000/api/reports/oec-health    # canal OEC gratuit
+curl -s http://localhost:${BACKEND_PORT:-8000}/api/reports/health       # sources du moteur
+curl -s http://localhost:${BACKEND_PORT:-8000}/api/reports/oec-health    # canal OEC gratuit
 ```
 
 - `oec-health` → `channels.statistics_free.reachable: true` : l'OEC gratuit

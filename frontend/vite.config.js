@@ -25,16 +25,21 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0',
-    port: 5000,
+    // Port et backend paramétrables par variable d'environnement : chaque
+    // environnement (Emergent/K8s, sandbox, poste local) fixe la sienne dans
+    // SON environnement (jamais dans ce fichier), pour ne plus jamais avoir
+    // à patcher ce fichier après un `git reset`/déploiement. Défauts inchangés
+    // (5000 / 8000) si rien n'est défini.
+    port: Number(process.env.VITE_PORT || process.env.PORT) || 5000,
     allowedHosts: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: process.env.VITE_BACKEND_URL || 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
       },
       '/banking': {
-        target: 'http://localhost:8000',
+        target: process.env.VITE_BACKEND_URL || 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
       },

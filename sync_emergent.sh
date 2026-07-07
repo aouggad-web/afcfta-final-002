@@ -17,10 +17,24 @@
 # antérieur : ils vérifient uniquement que la copie fraîchement appliquée
 # est complète et importable (anti copie-partielle, cause du bug
 # « No module named 'services.regional_blocs' » vu en production).
+#
+# PORTS : backend/frontend lisent BACKEND_PORT / FRONTEND_PORT (défauts 8000 /
+# 5000) — vite.config.js, package.json et start.sh sont maintenant paramétrés
+# par variable d'environnement, donc PLUS BESOIN de patcher ces fichiers après
+# un `git reset`. Fixez vos ports une fois dans l'environnement Emergent
+# (ex. export BACKEND_PORT=8001 FRONTEND_PORT=3000 dans le profil du
+# supervisor), pas dans les fichiers du dépôt.
+#     BACKEND_PORT=8001 FRONTEND_PORT=3000 bash sync_emergent.sh
+#
+# BUILD : le supervisor Emergent lance généralement `yarn start` (serveur Vite
+# de dev), pas le build de production — l'étape 5/6 est donc sautable :
+#     SKIP_BUILD=1 bash sync_emergent.sh
 # =============================================================================
 set -euo pipefail
 cd "$(dirname "$0")"
 
+BACKEND_PORT="${BACKEND_PORT:-8000}"
+FRONTEND_PORT="${FRONTEND_PORT:-${VITE_PORT:-5000}}"
 BRANCH="${BRANCH:-$(git rev-parse --abbrev-ref HEAD)}"
 echo "── 1/6 · Application de origin/'$BRANCH' (écrase l'état local) ──"
 git fetch origin "$BRANCH"
@@ -120,17 +134,22 @@ assert svc.lookup('GHA', '010121'), 'GHA_tariffs.json absent de data/crawled'
 print('✓ Données de la session appliquées (TUN préférences, TVA WITS, réciprocité, GHA).')
 " )
 
-echo "── 5/6 · Build du frontend (Vite → frontend/build) ──"
-(
-  cd frontend
-  if command -v yarn >/dev/null 2>&1; then
-    yarn install --frozen-lockfile || yarn install
-    yarn build
-  else
-    npm install --legacy-peer-deps
-    npm run build
-  fi
-)
+if [ "${SKIP_BUILD:-0}" = "1" ]; then
+  echo "── 5/6 · Build du frontend SAUTÉ (SKIP_BUILD=1 — supervisor en mode dev) ──"
+  ( cd frontend; if command -v yarn >/dev/null 2>&1; then yarn install --frozen-lockfile || yarn install; else npm install --legacy-peer-deps; fi )
+else
+  echo "── 5/6 · Build du frontend (Vite → frontend/build) ──"
+  (
+    cd frontend
+    if command -v yarn >/dev/null 2>&1; then
+      yarn install --frozen-lockfile || yarn install
+      yarn build
+    else
+      npm install --legacy-peer-deps
+      npm run build
+    fi
+  )
+fi
 
 echo "── 6/6 · Redémarrage des serveurs (si start.sh est présent) ──"
 pkill -f "uvicorn server:app" 2>/dev/null || true
@@ -149,11 +168,11 @@ echo "   • 13 pays WITS enrichis : TVA nationale sourcée + surcharges par pro
 echo "     (traçées loi vs estimation_ia)"
 echo "   • Opportunités : économies tarifaires réelles + profil logistique branchés"
 echo
-echo "▶ Démarrer l'application :"
-echo "   bash start.sh                        # dev : backend 8000 + Vite 5000"
-echo "   # ou mono-processus (prod) :"
-echo "   cd backend && python -m uvicorn server:app --host 0.0.0.0 --port 5000"
+echo "▶ Démarrer l'application (ports actuels : backend $BACKEND_PORT, frontend $FRONTEND_PORT) :"
+echo "   BACKEND_PORT=$BACKEND_PORT FRONTEND_PORT=$FRONTEND_PORT bash start.sh"
+echo "   # ou mono-processus (prod, FastAPI sert aussi le frontend buildé) :"
+echo "   cd backend && python -m uvicorn server:app --host 0.0.0.0 --port \$BACKEND_PORT"
 echo
 echo "▶ Vérifier la santé :"
-echo "   curl -s http://localhost:8000/api/reports/health"
-echo "   curl -s http://localhost:8000/api/reports/oec-health"
+echo "   curl -s http://localhost:$BACKEND_PORT/api/reports/health"
+echo "   curl -s http://localhost:$BACKEND_PORT/api/reports/oec-health"
