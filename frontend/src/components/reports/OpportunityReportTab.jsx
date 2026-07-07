@@ -459,7 +459,18 @@ function BilateralView({ countries, fr, prefill }) {
                 landed.available
                   ? `FOB ${money(landed.breakdown?.goods_value_fob_usd)} + ${fr ? "fret" : "freight"} ${money(
                       landed.breakdown?.best_operational_freight_usd
-                    )}`
+                    )}` +
+                    (landed.breakdown?.containers_needed
+                      ? ` · ${landed.breakdown.containers_needed} × ${
+                          landed.breakdown.container_type === "feu" ? "40′" : "20′"
+                        }${
+                          landed.breakdown.estimated_weight_kg
+                            ? ` (~${Math.round(
+                                landed.breakdown.estimated_weight_kg
+                              ).toLocaleString()} kg${fr ? " est." : " est."})`
+                            : ""
+                        }`
+                      : "")
                   : landed.note
               }
             />
@@ -969,6 +980,7 @@ function DirectExportView({ countries, fr, onAnalyze }) {
                   <th style={th}>{fr ? "Score" : "Score"}</th>
                   <th style={th}>{fr ? "Besoin estimé" : "Estimated need"}</th>
                   <th style={th}>{fr ? "Avantage tarif" : "Tariff adv."}</th>
+                  <th style={th}>{fr ? "Conteneurs" : "Containers"}</th>
                   <th style={th}>{fr ? "Coût rendu" : "Landed cost"}</th>
                   <th style={th}></th>
                 </tr>
@@ -993,6 +1005,28 @@ function DirectExportView({ countries, fr, onAnalyze }) {
                       }
                     >
                       {o.tariff_benefit?.available ? dash(o.tariff_benefit.tariff_advantage_pct, " %") : "—"}
+                    </td>
+                    <td
+                      style={td}
+                      title={
+                        o.landed_cost?.breakdown?.estimated_weight_kg
+                          ? `${fr ? "Poids estimé" : "Est. weight"} ${Math.round(
+                              o.landed_cost.breakdown.estimated_weight_kg
+                            ).toLocaleString()} kg${
+                              o.landed_cost.breakdown.weight_source === "estimé"
+                                ? fr
+                                  ? " (estimé depuis la valeur FOB)"
+                                  : " (estimated from FOB value)"
+                                : ""
+                            }`
+                          : undefined
+                      }
+                    >
+                      {o.landed_cost?.breakdown?.containers_needed
+                        ? `${o.landed_cost.breakdown.containers_needed} × ${
+                            o.landed_cost.breakdown.container_type === "feu" ? "40′" : "20′"
+                          }`
+                        : "—"}
                     </td>
                     <td style={td}>{o.landed_cost?.available ? money(o.landed_cost.value_usd) : "—"}</td>
                     <td style={td}>
