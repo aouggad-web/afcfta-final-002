@@ -26,8 +26,15 @@
 # supervisor), pas dans les fichiers du dépôt.
 #     BACKEND_PORT=8001 FRONTEND_PORT=3000 bash sync_emergent.sh
 #
-# BUILD : le supervisor Emergent lance généralement `yarn start` (serveur Vite
-# de dev), pas le build de production — l'étape 5/6 est donc sautable :
+# SUPERVISOR (cas Emergent) : si `supervisorctl` est présent, le script
+# RECONSTRUIT toujours le frontend (obligatoire car `vite preview` sert
+# frontend/build, ignoré par git — sans rebuild, les mises à jour ne
+# s'affichent jamais) et redémarre les services PAR supervisord
+# (`supervisorctl restart all`), sans pkill ni start.sh : aucun conflit de
+# port, le terminal n'est pas bloqué. SKIP_BUILD est alors ignoré. C'est le
+# réglage DÉFINITIF du « les mises à jour ne s'affichent pas ».
+#
+# BUILD (hors supervisor, dev local) : SKIP_BUILD=1 saute le build.
 #     SKIP_BUILD=1 bash sync_emergent.sh
 # =============================================================================
 set -euo pipefail
@@ -134,11 +141,26 @@ assert svc.lookup('GHA', '010121'), 'GHA_tariffs.json absent de data/crawled'
 print('✓ Données de la session appliquées (TUN préférences, TVA WITS, réciprocité, GHA).')
 " )
 
-if [ "${SKIP_BUILD:-0}" = "1" ]; then
-  echo "── 5/6 · Build du frontend SAUTÉ (SKIP_BUILD=1 — supervisor en mode dev) ──"
+# Détection du superviseur (cas Emergent : services gérés par supervisord, le
+# frontend servi par `vite preview` depuis frontend/build). En mode supervisor,
+# le build du frontend est OBLIGATOIRE (frontend/build est ignoré par git ; sans
+# rebuild, `vite preview` continue de servir l'ancienne version — les nouveautés
+# n'apparaissent jamais). SKIP_BUILD est donc IGNORÉ quand supervisord gère le
+# frontend, pour régler définitivement le « les mises à jour ne s'affichent pas ».
+HAS_SUPERVISOR=0
+if command -v supervisorctl >/dev/null 2>&1 && supervisorctl status >/dev/null 2>&1; then
+  HAS_SUPERVISOR=1
+fi
+
+if [ "${SKIP_BUILD:-0}" = "1" ] && [ "$HAS_SUPERVISOR" = "0" ]; then
+  echo "── 5/6 · Build du frontend SAUTÉ (SKIP_BUILD=1, pas de supervisor) ──"
   ( cd frontend; if command -v yarn >/dev/null 2>&1; then yarn install --frozen-lockfile || yarn install; else npm install --legacy-peer-deps; fi )
 else
-  echo "── 5/6 · Build du frontend (Vite → frontend/build) ──"
+  if [ "${SKIP_BUILD:-0}" = "1" ]; then
+    echo "── 5/6 · Build du frontend (SKIP_BUILD ignoré : supervisor sert frontend/build) ──"
+  else
+    echo "── 5/6 · Build du frontend (Vite → frontend/build) ──"
+  fi
   (
     cd frontend
     if command -v yarn >/dev/null 2>&1; then
@@ -151,27 +173,33 @@ else
   )
 fi
 
-echo "── 6/6 · Redémarrage des serveurs (si start.sh est présent) ──"
-pkill -f "uvicorn server:app" 2>/dev/null || true
-pkill -f "vite --host" 2>/dev/null || true
-sleep 1
+if [ "$HAS_SUPERVISOR" = "1" ]; then
+  echo "── 6/6 · Redémarrage PROPRE via supervisord (pas de pkill/start.sh) ──"
+  # On redémarre par le superviseur : il relance les services avec LEUR config
+  # (ports, vite preview, --reload-exclude). Aucun conflit de port, le terminal
+  # n'est pas bloqué. 'all' couvre backend + frontend quel que soit leur nom.
+  supervisorctl restart all || {
+    echo "  ⚠ 'supervisorctl restart all' a échoué — redémarrez manuellement :"
+    echo "     supervisorctl restart backend frontend"
+  }
+else
+  echo "── 6/6 · Pas de supervisor détecté — arrêt des serveurs de dev périmés ──"
+  pkill -f "uvicorn server:app" 2>/dev/null || true
+  pkill -f "vite" 2>/dev/null || true
+  sleep 1
+fi
 
 echo
-echo "✅ Synchronisation terminée — la branche GitHub est appliquée telle quelle."
-echo "   Mises à jour de cette session incluses :"
-echo "   • Réciprocité ZLECAf généralisée (préférence = application réelle prouvée,"
-echo "     pas simple ratification — principe DGD 482/2024 étendu à tous les pays)"
-echo "   • Calculateur : TVA IVA/VAT enfin reconnue (AGO/MOZ/STP/ZWE/MUS/MWI/SDN/SYC/ZMB),"
-echo "     normaliseur des 13 pays WITS (70 744 positions visibles), fix TUN"
-echo "     (17 512 préférences + formalités restaurées), fix GHA (chemin de données)"
-echo "   • 13 pays WITS enrichis : TVA nationale sourcée + surcharges par produit"
-echo "     (traçées loi vs estimation_ia)"
-echo "   • Opportunités : économies tarifaires réelles + profil logistique branchés"
+echo "✅ Synchronisation terminée — la branche GitHub est appliquée telle quelle,"
+echo "   le frontend est reconstruit, et les services sont relancés proprement."
 echo
-echo "▶ Démarrer l'application (ports actuels : backend $BACKEND_PORT, frontend $FRONTEND_PORT) :"
-echo "   BACKEND_PORT=$BACKEND_PORT FRONTEND_PORT=$FRONTEND_PORT bash start.sh"
-echo "   # ou mono-processus (prod, FastAPI sert aussi le frontend buildé) :"
-echo "   cd backend && python -m uvicorn server:app --host 0.0.0.0 --port \$BACKEND_PORT"
+if [ "$HAS_SUPERVISOR" = "1" ]; then
+  echo "▶ Rien d'autre à lancer : supervisord gère les processus. État :"
+  echo "   supervisorctl status"
+else
+  echo "▶ Démarrer l'application (backend $BACKEND_PORT, frontend $FRONTEND_PORT) :"
+  echo "   BACKEND_PORT=$BACKEND_PORT FRONTEND_PORT=$FRONTEND_PORT VITE_HMR=off bash start.sh"
+fi
 echo
 echo "▶ Vérifier la santé :"
 echo "   curl -s http://localhost:$BACKEND_PORT/api/reports/health"

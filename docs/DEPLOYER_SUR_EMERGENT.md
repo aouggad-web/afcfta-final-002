@@ -11,59 +11,59 @@ Seule exception légitime : `backend/data/news_cache.json` est un cache
 régénéré automatiquement par `etl/news_aggregator.py` — le perdre au reset
 n'a aucune conséquence, il se reconstruit tout seul à la prochaine requête.
 
-## Procédure (une commande)
+## Procédure définitive (une commande, mode supervisor)
 
-Dans le **Shell Emergent** du projet :
+Emergent gère les services via **supervisord** (backend `uvicorn --port 8001`,
+frontend **`vite preview --port 3000`** qui sert `frontend/build`). Dans ce
+mode, la synchronisation doit TOUJOURS reconstruire le frontend et redémarrer
+par supervisord. `sync_emergent.sh` le détecte automatiquement — une seule
+commande dans le **Shell Emergent** :
 
 ```bash
-BACKEND_PORT=8001 FRONTEND_PORT=3000 BRANCH=claude/setup-github-cli-EngUf \
-  SKIP_BUILD=1 bash sync_emergent.sh
+BRANCH=main bash sync_emergent.sh
 ```
 
-- `BACKEND_PORT` / `FRONTEND_PORT` : ports imposés par l'ingress Kubernetes
-  d'Emergent, s'ils diffèrent des défauts du dépôt (8000 / 5000). **À fixer
-  dans l'environnement Emergent (variables persistantes du supervisor), pas en
-  patchant `vite.config.js`/`package.json`** — ces deux fichiers lisent
-  désormais `VITE_PORT`/`PORT`/`VITE_BACKEND_URL`, donc un `git reset` ne les
-  écrase plus jamais fonctionnellement.
-- `SKIP_BUILD=1` : saute le build de production (étape 5/6) si le supervisor
-  Emergent lance `yarn start` (serveur Vite de dev) plutôt que de servir
-  `frontend/build` — évite un build inutile à chaque synchronisation.
-- `VITE_HMR=off` : **corrige le bug « l'app revient au dashboard / la page se
-  recharge toute seule chaque minute »** (voir la section dédiée ci-dessous).
-  À définir dans l'environnement Emergent avec les ports.
+Quand `supervisorctl` est présent, le script :
+- **reconstruit toujours** le frontend (`yarn build`) — `SKIP_BUILD` est
+  ignoré, car `vite preview` sert `frontend/build` (ignoré par git) : sans
+  rebuild, **les mises à jour ne s'affichent jamais** ;
+- **redémarre par supervisord** (`supervisorctl restart all`) — jamais de
+  `pkill` ni de `start.sh`, donc aucun conflit de port et le terminal n'est
+  pas bloqué.
+
+Ne lancez donc PAS `start.sh` sous Emergent : supervisord s'en charge.
+
+### Variables d'environnement à fixer UNE FOIS (profil supervisord)
+
+- `BACKEND_PORT=8001` / `FRONTEND_PORT=3000` : ports imposés par l'ingress
+  Kubernetes. **À fixer dans l'environnement Emergent, pas en patchant
+  `vite.config.js`/`package.json`** — ces fichiers lisent désormais
+  `VITE_PORT`/`PORT`/`VITE_BACKEND_URL`, donc un `git reset` ne les écrase
+  plus jamais fonctionnellement.
+- Le rechargement HMR est déjà neutralisé par `vite preview` (aucun websocket
+  HMR). `VITE_HMR=off` reste disponible pour le mode `vite` dev si un jour
+  vous l'utilisez (voir section ci-dessous).
 
 ### Bug « retour au dashboard / rechargement chaque minute » — corrigé
 
-Derrière l'ingress Kubernetes, le websocket HMR (rechargement à chaud) de Vite
-tentait de se connecter au port interne de Vite, que l'ingress ne route pas :
-la connexion était coupée au bout de ~60 s et le client Vite **rechargeait
-toute la page**. Comme la navigation entre modules est gérée en mémoire (pas
-dans l'URL), chaque rechargement renvoyait l'utilisateur au dashboard — d'où
-le retour au dashboard après une action et le « sautillement » périodique.
+Cause : derrière l'ingress Kubernetes, le websocket HMR (rechargement à chaud)
+du **serveur de dev Vite** tentait de se connecter au port interne de Vite, que
+l'ingress ne route pas ; la connexion était coupée au bout de ~60 s et le client
+Vite **rechargeait toute la page**. Comme la navigation entre modules est gérée
+en mémoire (pas dans l'URL), chaque rechargement renvoyait au dashboard.
 
-Deux correctifs, désormais dans le dépôt :
+Réglé de DEUX façons complémentaires :
 
-1. **`vite.config.js` lit la config HMR depuis l'environnement.** En preview /
-   déploiement (pas de développement à chaud), le plus simple et le plus
-   robuste est de **désactiver HMR** :
-
-   ```bash
-   export VITE_HMR=off
-   ```
-
-   Si vous voulez garder le rechargement à chaud à travers l'ingress :
-   `VITE_HMR_CLIENT_PORT=443 VITE_HMR_PROTOCOL=wss` (et au besoin
-   `VITE_HMR_HOST=<domaine public>`).
-2. **L'onglet actif est persisté en `sessionStorage`** : même si un
-   rechargement survient pour une autre raison (mise à jour du service worker,
-   etc.), l'utilisateur revient sur son module au lieu du dashboard.
-
-À fixer une fois dans l'environnement Emergent (avec les ports) :
-
-```bash
-export BACKEND_PORT=8001 FRONTEND_PORT=3000 VITE_HMR=off
-```
+1. **Emergent sert l'app via `vite preview`** (et non le serveur de dev) :
+   `vite preview` n'a **aucun websocket HMR** — plus aucune boucle de
+   rechargement possible. C'est le réglage retenu côté supervisord.
+2. **Filet de sécurité dans le dépôt**, utiles hors `vite preview` :
+   - `vite.config.js` lit la config HMR depuis l'environnement : `VITE_HMR=off`
+     désactive HMR ; `VITE_HMR_CLIENT_PORT=443 VITE_HMR_PROTOCOL=wss` le fait
+     passer par l'ingress.
+   - l'onglet actif est persisté en `sessionStorage` : même si un rechargement
+     survient pour une autre raison (service worker...), l'utilisateur revient
+     sur son module au lieu du dashboard.
 
 Le script (`sync_emergent.sh`, à la racine) :
 
@@ -80,8 +80,10 @@ Le script (`sync_emergent.sh`, à la racine) :
    Emergent se retrouve avec les anciennes versions des fichiers de données
    (préférences tunisiennes absentes, TVA des pays WITS absente, registre de
    réciprocité incohérent, Ghana illisible).
-5. **Reconstruit** le frontend (Vite → `frontend/build`), sauf si `SKIP_BUILD=1`.
-6. **Arrête** les serveurs périmés pour un redémarrage propre.
+5. **Reconstruit** le frontend (`yarn build` → `frontend/build`). Sous
+   supervisord, toujours ; en dev local seulement, `SKIP_BUILD=1` le saute.
+6. **Redémarre** : `supervisorctl restart all` si supervisord est présent,
+   sinon arrêt des serveurs de dev périmés (`pkill`).
 
 ### Pourquoi le `git reset --hard` ne casse plus la config de ports Emergent
 
@@ -118,14 +120,15 @@ persistante, plus un patch de fichier voué à disparaître au prochain reset.
 
 ## Démarrer après synchronisation
 
-```bash
-# Développement (deux serveurs, aperçu web) — ports par défaut 8000 / 5000,
-# ou ceux fixés dans l'environnement Emergent :
-BACKEND_PORT=8001 FRONTEND_PORT=3000 bash start.sh
+- **Sous Emergent (supervisord)** : rien à lancer, `sync_emergent.sh` a déjà
+  redémarré les services. Vérifier : `supervisorctl status`.
+- **Dev local** (hors supervisord) :
 
-# Production mono-processus (FastAPI sert l'API ET le frontend buildé) :
-cd backend && python -m uvicorn server:app --host 0.0.0.0 --port "${BACKEND_PORT:-8000}"
-```
+  ```bash
+  BACKEND_PORT=8001 FRONTEND_PORT=3000 VITE_HMR=off bash start.sh
+  # ou mono-processus (FastAPI sert l'API ET le frontend buildé) :
+  cd backend && python -m uvicorn server:app --host 0.0.0.0 --port "${BACKEND_PORT:-8000}"
+  ```
 
 ## Vérifier que tout est branché
 
@@ -140,7 +143,7 @@ curl -s http://localhost:${BACKEND_PORT:-8000}/api/reports/oec-health    # canal
 
 ## Quelle branche déployer ?
 
-- Tant que la **PR #222** n'est pas mergée : déployer la branche
-  `claude/setup-github-cli-EngUf` (elle contient tout, y compris les
-  améliorations des PR précédentes déjà mergées sur `main`).
-- Après merge : déployer `main` (`BRANCH=main bash sync_emergent.sh`).
+- **`main`** : toutes les améliorations (PR #222 comprise) y sont mergées.
+  Déployer avec `BRANCH=main bash sync_emergent.sh`.
+- Une branche de travail en cours ne se déploie que pour tester une PR non
+  encore mergée : `BRANCH=<nom-de-branche> bash sync_emergent.sh`.
