@@ -16,7 +16,7 @@ import {
   Loader2, AlertCircle, Target, DollarSign, ArrowRight,
   ChevronDown, ChevronUp, Info, CheckCircle, AlertTriangle,
   Zap, Clock, Tag, ShieldCheck, BarChart2, Lightbulb,
-  XCircle, Award, ListChecks, BadgeCheck, Database,
+  XCircle, Award, ListChecks, BadgeCheck, Database, Truck,
 } from 'lucide-react';
 
 import TradeSankeyDiagram from './TradeSankeyDiagram';
@@ -316,6 +316,63 @@ const SOURCE_BADGE = {
   manufacturing: { label: 'UNIDO · INDSTAT4', color: '#4f8ef7', bg: 'rgba(79,142,247,0.10)' },
 };
 
+const LogisticsSizing = ({ logistics, lang }) => {
+  if (!logistics || !logistics.available) return null;
+  const fr = lang === 'fr';
+  const { containers_needed, container_type, total_freight_usd, estimated_weight_kg, accessibility_index } = logistics;
+
+  return (
+    <div style={{ marginTop: 14, borderTop: '2px solid rgba(79,142,247,0.20)', paddingTop: 14 }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 7,
+        fontSize: 12, fontWeight: 800, color: '#4f8ef7',
+        marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em',
+      }}>
+        <Truck style={{ width: 14, height: 14 }} />
+        {fr ? 'Logistique estimée' : 'Estimated logistics'}
+      </div>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {containers_needed != null && (
+          <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
+              {fr ? 'Conteneurs' : 'Containers'}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
+              {containers_needed} × {container_type === 'feu' ? "40′" : "20′"}
+            </div>
+          </div>
+        )}
+        {total_freight_usd != null && (
+          <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
+              {fr ? 'Fret total estimé' : 'Est. total freight'}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
+              {fmtBig(total_freight_usd, 'USD')}
+            </div>
+          </div>
+        )}
+        {accessibility_index != null && (
+          <div style={{ flex: '1 1 90px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
+              {fr ? 'Accessibilité' : 'Accessibility'}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--gold)' }}>
+              {Math.round(accessibility_index * 100)}%
+            </div>
+          </div>
+        )}
+      </div>
+      {estimated_weight_kg != null && (
+        <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginTop: 6 }}>
+          {fr ? 'Poids estimé depuis la valeur potentielle' : 'Weight estimated from potential value'}:{' '}
+          {Math.round(estimated_weight_kg).toLocaleString()} kg
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ProductionCapacity = ({ capacity, lang }) => {
   if (!capacity || !capacity.available) return null;
   const fr = lang === 'fr';
@@ -466,6 +523,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
   const entryStrategy = opp.entryStrategy || opp.entry_strategy;
   const oecData = opp.oec_data;
   const productionCapacity = opp.production_capacity || opp.productionCapacity;
+  const logistics = opp.logistics;
 
   // Industrial input
   const input = opp.industrialInput || opp.industrial_input || {};
@@ -654,6 +712,9 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
 
       {/* Production Capacity — données réelles FAO/USGS/UNIDO + scénarios */}
       <ProductionCapacity capacity={productionCapacity} lang={lang} />
+
+      {/* Logistique — conteneurs dimensionnés depuis la valeur potentielle */}
+      <LogisticsSizing logistics={logistics} lang={lang} />
 
       {/* Entry Strategy — section clé manquante */}
       <EntryStrategy strategy={entryStrategy} lang={lang} />

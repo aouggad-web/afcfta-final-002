@@ -770,6 +770,7 @@ Wrap ALL 15 in this envelope:
             # analyzed country → partner ; import = supplier → analyzed
             # country.
             try:
+                from services import shipment_estimator
                 from services.logistics_opportunity_adapter import (
                     get_logistics_profile,
                     summarize_logistics_accessibility,
@@ -795,13 +796,51 @@ Wrap ALL 15 in this envelope:
                             if mode == "import"
                             else (analyzed_iso3, partner_iso3)
                         )
-                        profile = get_logistics_profile(origin_iso3, destination_iso3)
+
+                        # Dimensionnement conteneur : potentialTradeValue est en
+                        # MILLIONS de USD (cf. schéma du prompt) — jamais un seul
+                        # conteneur 20' pour une opportunité de plusieurs M$
+                        # (même correctif que S1/S2/S4 du module Rapports).
+                        hs6 = (opp.get("product") or {}).get("hs6Code", "")
+                        value_musd = opp.get("potentialTradeValue")
+                        shipment = (
+                            shipment_estimator.estimate_shipment(float(value_musd) * 1_000_000, hs6)
+                            if value_musd
+                            else {"available": False}
+                        )
+                        if shipment.get("available"):
+                            container_type = shipment["container_type"]
+                            one_container_kg = min(
+                                float(shipment["weight_kg"]),
+                                float(shipment["container_capacity_kg"]),
+                            )
+                            profile = get_logistics_profile(
+                                origin_iso3,
+                                destination_iso3,
+                                one_container_kg,
+                                container_type=container_type,
+                            )
+                        else:
+                            profile = get_logistics_profile(origin_iso3, destination_iso3)
+
                         if profile["freight"].get("available"):
+                            n_containers = (
+                                max(1, int(shipment["containers_needed"]))
+                                if shipment.get("available")
+                                else 1
+                            )
+                            per_container = profile.get("best_operational_cost_usd")
                             opp["logistics"] = {
                                 "available": True,
-                                "best_operational_cost_usd": profile.get(
-                                    "best_operational_cost_usd"
+                                "best_operational_cost_usd": per_container,
+                                "containers_needed": n_containers,
+                                "container_type": shipment.get("container_type"),
+                                "total_freight_usd": (
+                                    round(per_container * n_containers, 2)
+                                    if per_container is not None
+                                    else None
                                 ),
+                                "estimated_weight_kg": shipment.get("weight_kg"),
                                 "accessibility_index": summarize_logistics_accessibility(
                                     profile
                                 ).get("index"),
