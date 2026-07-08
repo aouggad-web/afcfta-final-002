@@ -7,14 +7,30 @@
  *   - Offline page:  served from cache when fully offline
  *
  * Cache names are versioned; old caches are purged on activation.
+ *
+ * DEV / PREVIEW MODE (v3.1.0):
+ * When hosted on a *.preview.emergentagent.com URL or on localhost, the
+ * worker operates in "self-destruct" mode: it unregisters itself, wipes
+ * every cache it created, and disables all fetch interception. This
+ * prevents stale caches from a previous production build from breaking
+ * hot-reload and long-running requests during development preview.
  */
 
-const APP_VERSION = 'v3.0.0';
+const APP_VERSION = 'v3.1.0';
 const STATIC_CACHE  = `afcfta-static-${APP_VERSION}`;
 const API_CACHE     = `afcfta-api-${APP_VERSION}`;
 const IMAGE_CACHE   = `afcfta-images-${APP_VERSION}`;
 
 const OFFLINE_PAGE  = '/offline.html';
+
+// Detect dev/preview environment. In those environments the SW must not
+// intercept any request so that Vite HMR and long API calls work reliably.
+const HOST = self.location.hostname || '';
+const IS_DEV_PREVIEW =
+  HOST === 'localhost' ||
+  HOST === '127.0.0.1' ||
+  HOST.endsWith('.preview.emergentagent.com') ||
+  HOST.endsWith('.emergentagent.com');
 
 /** Static assets to pre-cache on install */
 const PRECACHE_ASSETS = [
@@ -41,9 +57,14 @@ const API_CACHE_PATTERNS = [
 const API_CACHE_TTL_MS = 5 * 60 * 1000;
 
 // ===========================================================================
-// Install event – pre-cache static assets
+// Install event – pre-cache static assets (or self-destruct in dev preview)
 // ===========================================================================
 self.addEventListener('install', (event) => {
+  if (IS_DEV_PREVIEW) {
+    console.log(`[SW] Install in DEV PREVIEW mode (${HOST}) — skipping cache, will self-destruct`);
+    event.waitUntil(self.skipWaiting());
+    return;
+  }
   console.log(`[SW] Installing ${APP_VERSION}`);
   event.waitUntil(
     caches.open(STATIC_CACHE)
@@ -57,9 +78,26 @@ self.addEventListener('install', (event) => {
 });
 
 // ===========================================================================
-// Activate event – purge old caches
+// Activate event – purge old caches (or self-unregister in dev preview)
 // ===========================================================================
 self.addEventListener('activate', (event) => {
+  if (IS_DEV_PREVIEW) {
+    console.log(`[SW] Activate in DEV PREVIEW — wiping all afcfta-* caches and unregistering`);
+    event.waitUntil(
+      caches.keys()
+        .then((keys) => Promise.all(
+          keys.filter((k) => k.startsWith('afcfta-')).map((k) => caches.delete(k))
+        ))
+        .then(() => self.registration.unregister())
+        .then(() => self.clients.matchAll({ type: 'window' }))
+        .then((clients) => {
+          // Nothing more to do — controlled clients will drop the SW on next reload.
+          clients.forEach((c) => c.postMessage({ type: 'sw-unregistered' }));
+        })
+        .catch((err) => console.warn('[SW] Dev unregister failed:', err))
+    );
+    return;
+  }
   console.log(`[SW] Activating ${APP_VERSION}`);
   const validCaches = [STATIC_CACHE, API_CACHE, IMAGE_CACHE];
   event.waitUntil(
@@ -79,9 +117,10 @@ self.addEventListener('activate', (event) => {
 });
 
 // ===========================================================================
-// Fetch event – routing logic
+// Fetch event – routing logic (bypassed in dev preview)
 // ===========================================================================
 self.addEventListener('fetch', (event) => {
+  if (IS_DEV_PREVIEW) return; // do not intercept in dev / preview
   const { request } = event;
   const url = new URL(request.url);
 
