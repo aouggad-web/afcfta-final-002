@@ -1836,7 +1836,7 @@
       "operators": [
         {
           "operator_name": "Transitaires routiers Éthiopie-Djibouti (multiples)",
-          "operator_type": "road_operator"
+          "operator_type": "trucking_company"
         }
       ]
     }
