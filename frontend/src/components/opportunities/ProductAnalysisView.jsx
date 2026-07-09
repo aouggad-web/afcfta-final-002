@@ -23,6 +23,7 @@ import {
   ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles, Info
 } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
+import { useHsLabel } from '../../hooks/useHsLabel';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -248,6 +249,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [productData, setProductData] = useState(null);
+  const { label: hsCodeLabel } = useHsLabel(hsCode, language);
 
   // Popular products for quick selection
   const popularProducts = [
@@ -475,6 +477,11 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                 className="text-lg font-mono"
                 data-testid="product-hs-input"
               />
+              {hsCodeLabel && (
+                <div className="text-xs text-emerald-600 font-medium truncate" title={hsCodeLabel}>
+                  {hsCodeLabel}
+                </div>
+              )}
               {/* Popular products */}
               <div className="flex flex-wrap gap-2 mt-2">
                 <span className="text-xs text-slate-500">{txt.popularProducts}:</span>

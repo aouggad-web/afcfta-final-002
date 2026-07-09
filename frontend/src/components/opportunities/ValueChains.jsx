@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
+import { useHsLabel } from '../../hooks/useHsLabel';
 import { 
   ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip
 } from 'recharts';
@@ -520,6 +521,7 @@ export default function ValueChains({ language = 'fr' }) {
   const [hsSearchResult, setHsSearchResult] = useState(null);
   const [hsSearchLoading, setHsSearchLoading] = useState(false);
   const [hsSearchError, setHsSearchError] = useState(null);
+  const { label: hsQueryLabel } = useHsLabel(hsQuery, language);
 
   // Fetch value chains data from AI API
   useEffect(() => {
@@ -726,6 +728,11 @@ export default function ValueChains({ language = 'fr' }) {
             {txt.searchBtn}
           </button>
         </form>
+        {hsQueryLabel && !hsSearchError && (
+          <p className="mt-2 text-emerald-400 text-xs truncate" title={hsQueryLabel}>
+            {hsQueryLabel}
+          </p>
+        )}
         {hsSearchError && (
           <p className="mt-2 text-red-400 text-xs flex items-center gap-1">
             <AlertCircle className="h-3 w-3" /> {hsSearchError}

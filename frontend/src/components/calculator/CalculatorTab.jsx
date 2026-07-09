@@ -12,6 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { toast } from '../../hooks/use-toast';
+import { useHsLabel } from '../../hooks/useHsLabel';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
 import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield, DollarSign, RotateCcw } from 'lucide-react';
@@ -77,6 +78,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
   const [selectedSubPositionFormalities, setSelectedSubPositionFormalities] = useState(null);
+  // Repli en mode saisie directe (hors recherche intelligente) : celle-ci ne
+  // remplit jamais selectedSubPositionDesc, donc sans ce hook le code SH
+  // reste affiché nu tant qu'aucune sélection via recherche n'a été faite.
+  const { label: hsCodeSimpleLabel } = useHsLabel(hsCode, language);
   const [countryTariffProfile, setCountryTariffProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
@@ -876,7 +881,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   className="h-12 font-mono text-lg bg-slate-800/50 border-slate-600 hover:border-purple-500/50 focus:border-purple-500 transition-colors tracking-wider"
                   data-testid="hs-code-simple-input"
                 />
-                <p className="text-slate-500 text-xs">{t.hsCodeHint}</p>
+                {hsCodeSimpleLabel ? (
+                  <p className="text-emerald-400 text-xs truncate" title={hsCodeSimpleLabel}>
+                    {hsCodeSimpleLabel}
+                  </p>
+                ) : (
+                  <p className="text-slate-500 text-xs">{t.hsCodeHint}</p>
+                )}
               </div>
             )}
 

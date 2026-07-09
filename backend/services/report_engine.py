@@ -1015,15 +1015,21 @@ def _supply_side(hs_code: str) -> Dict:
     }
 
 
-async def get_market_seeking_report(hs_code: str, year: int = 2022, lang: str = "fr") -> Dict:
+async def get_market_seeking_report(hs_code: str, lang: str = "fr") -> Dict:
     """
     Market-seeking report for a producer: for a product (HS6/HS4), which African
     markets *import* it (demand, via OEC) and who *produces* it on the continent
     (supply, via real production data).
 
+    Always uses the latest available data year (no year parameter exposed to
+    callers): both demand (OEC trade flows) and supply (continental production)
+    already resolve to the most recent year internally — a producer looking for
+    markets has no reason to pin an arbitrary past year.
+
     Demand degrades gracefully when OEC is unreachable; supply is local/real.
     """
     hs_code = (hs_code or "").strip()
+    from services.oec_trade_service import DEFAULT_YEAR
 
     product_name = None
     importers = []
@@ -1031,13 +1037,15 @@ async def get_market_seeking_report(hs_code: str, year: int = 2022, lang: str = 
         from services.real_trade_data_service import get_product_name, real_trade_service
 
         product_name = get_product_name(hs_code, lang)
-        importers = await real_trade_service.get_african_importers_for_product(hs_code, year)
+        importers = await real_trade_service.get_african_importers_for_product(
+            hs_code, DEFAULT_YEAR
+        )
     except Exception as exc:
         _log.warning("importers-for-product unavailable: %s", exc)
 
     return {
         "report_type": "market_seeking",
-        "inputs": {"hs_code": hs_code, "year": year},
+        "inputs": {"hs_code": hs_code, "year": DEFAULT_YEAR},
         "product_name": product_name,
         "demand": _demand_side(importers),
         "supply": _supply_side(hs_code),

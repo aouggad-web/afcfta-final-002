@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { ArrowLeftRight, Scale, TrendingDown, Info } from 'lucide-react';
 import { getAllCountries } from '../../utils/countryCodes';
+import { useHsLabel } from '../../hooks/useHsLabel';
 
 const TEXTS = {
   fr: {
@@ -83,6 +84,7 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const { label: hs6Label } = useHsLabel(hs6, language);
 
   const sameCountry = a && b && a === b;
   const canRun = a && b && !sameCountry && /^\d{6}$/.test(hs6);
@@ -153,6 +155,11 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
               inputMode="numeric"
               className="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white"
             />
+            {hs6Label && (
+              <span className="text-xs text-emerald-400 truncate" title={hs6Label}>
+                {hs6Label}
+              </span>
+            )}
           </label>
         </div>
 
