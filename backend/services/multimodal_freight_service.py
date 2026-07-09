@@ -886,6 +886,150 @@ def _sea_then_land_option(
     return options
 
 
+def _land_then_sea_option(
+    origin_country: str,
+    destination_country: str,
+    weight_kg: float,
+    container_type: str,
+    weight_tonnes: float,
+    cargo_type: str = "container",
+) -> List[Dict[str, Any]]:
+    """For landlocked ORIGINS (ex. Éthiopie, Ouganda, Rwanda...) : land (origine
+    -> port passerelle) + sea (port passerelle -> port de destination).
+
+    Symétrique de _sea_then_land_option (qui ne couvre que les DESTINATIONS
+    enclavées) — sans cette fonction, un pays enclavé qui EXPORTE n'a aucune
+    route terre+mer modélisée, seulement l'avion et d'éventuels corridors
+    routiers directs (souvent non opérationnels/mégaprojets encore en
+    construction) : le comparateur recommandait alors systématiquement
+    l'aérien pour des pays comme l'Éthiopie, même pour des envois lourds/
+    bon marché où le fret aérien n'est jamais compétitif dans la réalité.
+    """
+    origin = origin_country.upper()
+    gateways = LANDLOCKED_GATEWAYS.get(origin, [])
+    if not gateways:
+        return []
+    dest_ports = COUNTRY_PORTS.get(destination_country.upper(), [])
+    if not dest_ports:
+        return []
+
+    options: List[Dict[str, Any]] = []
+    for gw in gateways:
+        gw_port = gw["port"]
+        gw_country = gw["port_country"]
+
+        # Leg 1: corridor from the landlocked origin to its gateway country.
+        corridors = _find_all_corridors_for_pair(origin, gw_country)
+
+        # Leg 2: cheapest sea leg from the gateway port to any destination port.
+        sea_candidates = []
+        for d_port in dest_ports:
+            if d_port == gw_port:
+                continue
+            s = sea_get_total_cost(gw_port, d_port, container_type.lower())
+            if s:
+                sea_candidates.append(s)
+        if not sea_candidates:
+            continue
+        sea = min(sea_candidates, key=lambda s: s.get("total_cost_usd") or float("inf"))
+
+        for corridor in corridors:
+            land = get_land_freight_cost(
+                corridor["corridor_id"],
+                corridor.get("type", "road"),
+                weight_tonnes,
+                cargo_type,
+            )
+            if not land:
+                continue
+
+            sea_dist_km = sea["distance_nm"] * NM_TO_KM
+            land_dist_km = land.get("length_km") or corridor.get("length_km", 0)
+            sea_co2 = _co2_kg(weight_tonnes, sea_dist_km, "sea")
+            land_mode = corridor.get("type", "road")
+            co2_mode = "rail" if land_mode == "rail" else "road"
+            land_co2 = _co2_kg(weight_tonnes, land_dist_km, co2_mode)
+
+            total_cost = round((land.get("total_cost_usd") or 0) + (sea["total_cost_usd"] or 0))
+            tmin = (land.get("transit_days_min") or 0) + (sea["transit_days_min"] or 0)
+            tmax = (land.get("transit_days_max") or 0) + (sea["transit_days_max"] or 0)
+
+            phase = _corridor_phase(corridor)
+            is_future = phase != "operational"
+            land_carriers = land.get("operators") or _land_carriers(
+                corridor.get("countries", []), land_mode
+            )
+
+            options.append(
+                {
+                    "mode": "multimodal",
+                    "corridor_mode": land_mode,
+                    "label": (
+                        f"{'Rail' if land_mode == 'rail' else 'Terrestre'} + Maritime — "
+                        f"via {corridor['name']} → {sea['origin_port']}"
+                    ),
+                    "label_en": f"{'Rail' if land_mode == 'rail' else 'Land'} + Sea — via {sea['origin_port']}",
+                    "icon": "truck-ship" if land_mode != "rail" else "rail-ship",
+                    "via_port": sea["origin_port"],
+                    "via_port_locode": gw_port,
+                    "via_country": gw_country,
+                    "corridor_name": corridor["name"],
+                    "phase": phase,
+                    "status": corridor.get("status"),
+                    "is_future": is_future,
+                    "segments": [
+                        {
+                            "mode": co2_mode,
+                            "leg": 1,
+                            "from": corridor.get("start_node"),
+                            "to": corridor.get("end_node"),
+                            "corridor_id": corridor["corridor_id"],
+                            "corridor_name": corridor["name"],
+                            "countries": corridor.get("countries", []),
+                            "distance_km": land_dist_km,
+                            "transit_days_min": land.get("transit_days_min"),
+                            "transit_days_max": land.get("transit_days_max"),
+                            "cost_usd": land.get("total_cost_usd"),
+                            "co2_kg": land_co2,
+                            "carriers": land_carriers,
+                        },
+                        {
+                            "mode": "sea",
+                            "leg": 2,
+                            "from": sea["origin_port"],
+                            "from_locode": sea["origin_locode"],
+                            "to": sea["destination_port"],
+                            "to_locode": sea["destination_locode"],
+                            "distance_km": round(sea_dist_km),
+                            "transit_days_min": sea["transit_days_min"],
+                            "transit_days_max": sea["transit_days_max"],
+                            "cost_usd": sea["total_cost_usd"],
+                            "carriers": sea.get("carriers", []),
+                            "co2_kg": sea_co2,
+                        },
+                    ],
+                    "carriers": _union_carriers(sea.get("carriers", []), land_carriers),
+                    "total_cost_usd": total_cost,
+                    "container_type": container_type.lower(),
+                    "transit_days_min": tmin,
+                    "transit_days_max": tmax,
+                    "co2_kg": round(sea_co2 + land_co2, 1),
+                    "distance_km": round(sea_dist_km + land_dist_km),
+                    "available": not is_future,
+                    "feasibility": "high" if not is_future else "future",
+                    "notes": (
+                        f"Corridor « {corridor['name']} » jusqu'à {sea['origin_port']} "
+                        f"puis trajet maritime vers {sea['destination_port']}."
+                    ),
+                    "source": (
+                        "Maritime: Drewry/CMA CGM/MSC 2024 · "
+                        f"Terrestre: {corridor.get('source_org') or 'Banque Mondiale SSATP / UNECA / AfDB'}"
+                    ),
+                }
+            )
+    return options
+
+
 def _roi_interpretation(
     future_label: str,
     ref_label: str,
@@ -980,6 +1124,19 @@ def compare_multimodal(
         land_cargo_type,
     )
     options.extend(multimodal_opts)
+
+    # Symétrique : origine enclavée (ex. Éthiopie exportatrice) — terre jusqu'au
+    # port passerelle puis mer. Sans cette option, un pays enclavé qui EXPORTE
+    # n'avait que l'aérien ou des corridors directs souvent non opérationnels.
+    land_sea_opts = _land_then_sea_option(
+        origin_country,
+        destination_country,
+        weight_kg,
+        container_type,
+        weight_tonnes,
+        land_cargo_type,
+    )
+    options.extend(land_sea_opts)
 
     # Filter out future options if not requested
     if not include_future:

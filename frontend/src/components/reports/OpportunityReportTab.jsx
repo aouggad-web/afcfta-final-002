@@ -489,6 +489,63 @@ function BilateralView({ countries, fr, prefill }) {
             />
           </div>
 
+          {landed.shipment_sizing?.value_to_weight && (
+            <div style={card}>
+              <div style={{ ...label, marginBottom: 8 }}>
+                {fr
+                  ? "Indice valeur/poids & repère de négociation"
+                  : "Value/weight index & negotiation reference"}
+              </div>
+              <div style={{ fontSize: 13, display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+                <strong>
+                  {landed.shipment_sizing.value_to_weight.usd_per_kg.toLocaleString()} USD/kg
+                </strong>
+                <span
+                  style={{
+                    fontSize: 11,
+                    padding: "2px 8px",
+                    borderRadius: 999,
+                    background:
+                      landed.shipment_sizing.value_to_weight.classification_source === "cours_mondial"
+                        ? "#dcfce7"
+                        : "#fef9c3",
+                    color:
+                      landed.shipment_sizing.value_to_weight.classification_source === "cours_mondial"
+                        ? "#166534"
+                        : "#854d0e",
+                  }}
+                >
+                  {landed.shipment_sizing.value_to_weight.classification_source === "cours_mondial"
+                    ? fr
+                      ? "Cours mondial réel"
+                      : "Real world market price"
+                    : fr
+                    ? "Estimation par chapitre SH"
+                    : "HS-chapter estimate"}
+                </span>
+              </div>
+              <div style={{ fontSize: 12, color: "#64748b", marginTop: 6 }}>
+                {landed.shipment_sizing.value_to_weight.source}
+              </div>
+              {landed.shipment_sizing.negotiation_reference ? (
+                <div style={{ fontSize: 12, color: "#334155", marginTop: 6 }}>
+                  {fr
+                    ? "Utilisable comme repère grossier de négociation d'achat. "
+                    : "Usable as a rough purchase-negotiation reference. "}
+                  <span style={{ color: "#b45309" }}>
+                    {landed.shipment_sizing.negotiation_reference.caveat}
+                  </span>
+                </div>
+              ) : (
+                <div style={{ fontSize: 12, color: "#b45309", marginTop: 6 }}>
+                  {fr
+                    ? "Dimensionnement logistique uniquement — PAS une base de négociation de prix."
+                    : "Logistics sizing only — NOT a price-negotiation basis."}
+                </div>
+              )}
+            </div>
+          )}
+
           {e2e.breakdown && (
             <div style={card}>
               <div style={{ ...label, marginBottom: 8 }}>

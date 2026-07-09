@@ -217,3 +217,39 @@ def test_options_expose_exact_corridor_operators():
     assert "Transrail" in (
         land_seg[0].get("carriers") or []
     ), "Dakar-Bamako land leg must surface its exact rail operator (Transrail)"
+
+
+def test_land_then_sea_option_is_symmetric_to_sea_then_land():
+    # _sea_then_land_option only ever handled landlocked DESTINATIONS. Without
+    # its mirror, a landlocked ORIGIN (e.g. Ethiopia exporting) had no
+    # land+sea route at all — only air and often-nonoperational direct land
+    # corridors, systematically overpricing landlocked-country exports.
+    opts = service._land_then_sea_option(
+        "ETH", "KEN", weight_kg=12_500, container_type="teu", weight_tonnes=12.5
+    )
+    assert opts, "landlocked origin ETH must yield a land+sea option via its Djibouti gateway"
+    assert all(o["mode"] == "multimodal" for o in opts)
+    assert any(o.get("via_country") == "DJI" for o in opts)
+    rail_opt = next(o for o in opts if o.get("corridor_mode") == "rail")
+    assert rail_opt["available"] is True
+    assert rail_opt["total_cost_usd"] > 0
+    seg_modes = [s["mode"] for s in rail_opt["segments"]]
+    assert seg_modes == ["rail", "sea"], "land leg must come first, then the sea leg to destination"
+
+
+def test_landlocked_origin_ethiopia_prefers_real_corridor_over_air():
+    # Regression for the reported bug: $50k of coffee (ETH, landlocked) was
+    # recommended via air freight because no rail/road+sea route existed in
+    # the corridor registry for Ethiopia at all.
+    result = service.compare_multimodal("ETH", "KEN", weight_kg=12_500, container_type="teu")
+    multimodal = [o for o in result["options"] if o["mode"] == "multimodal" and o["available"]]
+    air = next((o for o in result["options"] if o["mode"] == "air"), None)
+    assert multimodal, "Ethiopia (landlocked) must have at least one operational multimodal route"
+    assert air is not None
+    cheapest_multimodal = min(multimodal, key=lambda o: o["total_cost_usd"])
+    assert cheapest_multimodal["total_cost_usd"] < air["total_cost_usd"]
+    assert result.get("options_count", 0) >= 1
+    cheapest_overall = min(
+        (o for o in result["options"] if o["available"]), key=lambda o: o["total_cost_usd"]
+    )
+    assert cheapest_overall["mode"] == "multimodal", "rail+sea via Djibouti must beat air on cost"
