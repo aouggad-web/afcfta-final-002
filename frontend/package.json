@@ -70,7 +70,8 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "vite --host 0.0.0.0",
+    "start": "sh -c 'if [ ! -f build/index.html ]; then vite build; fi && vite preview --host 0.0.0.0 --port ${PORT:-3000}'",
+    "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
