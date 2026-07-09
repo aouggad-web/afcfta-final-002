@@ -49,99 +49,102 @@ _OUT_PATH = os.path.join(
 _CHART_URL = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=5d"
 _USER_AGENT = "Mozilla/5.0 (compatible; afcfta-data-bot; +https://github.com/aouggad-web)"
 
-# Symbole Yahoo -> position SH cible + conversion vers USD/kg.
-# "unit" décrit l'unité BRUTE de la cotation (pour le champ raw_quote).
+# Unité PHYSIQUE de chaque contrat (indépendante de l'échelle cents/dollars,
+# qui est déterminée à l'exécution depuis le champ `currency` de l'API — voir
+# _dollars_from_quote). Associe un diviseur (-> kg) et un libellé d'affichage.
+_PHYSICAL_UNITS = {
+    "lb": (LB_TO_KG, "lb"),
+    "tonne": (TONNE_TO_KG, "tonne"),
+    "troy_oz": (TROY_OZ_TO_KG, "once troy"),
+    "bushel_wheat": (BUSHEL_KG_WHEAT, "boisseau"),
+    "bushel_corn": (BUSHEL_KG_CORN, "boisseau"),
+    "barrel": (BARREL_TO_KG, "baril"),
+}
+
+# Symbole Yahoo -> position SH cible + unité physique de cotation.
+# L'échelle (cents vs dollars pleins) N'EST PAS supposée ici : elle est lue
+# dans le champ `currency` de chaque réponse API ("USd"/"USX" = cents,
+# "USD" = dollars pleins) par _dollars_from_quote — jamais devinée par
+# contrat, pour éviter une conversion silencieusement fausse d'un facteur
+# 100 si la convention de cotation d'un contrat diffère de l'hypothèse.
 SYMBOLS = {
     "KC=F": {
         "hs": "090111",
         "commodity": "Café Arabica (vert, non torréfié, non décaféiné)",
         "benchmark": "ICE Coffee C (contrat rapproché)",
-        "unit": "¢/lb",
-        "to_usd_per_kg": lambda p: p / 100 / LB_TO_KG,
+        "physical_unit": "lb",
     },
     "CC=F": {
         "hs": "1801",
         "commodity": "Cacao (fèves brutes)",
         "benchmark": "ICE Cocoa (contrat rapproché)",
-        "unit": "USD/tonne",
-        "to_usd_per_kg": lambda p: p / TONNE_TO_KG,
+        "physical_unit": "tonne",
     },
     "CT=F": {
         "hs": "5201",
         "commodity": "Coton (brut, non cardé ni peigné)",
         "benchmark": "ICE Cotton No. 2 (contrat rapproché)",
-        "unit": "¢/lb",
-        "to_usd_per_kg": lambda p: p / 100 / LB_TO_KG,
+        "physical_unit": "lb",
     },
     "SB=F": {
         "hs": "1701",
         "commodity": "Sucre (canne ou betterave, brut)",
         "benchmark": "ICE Sugar No. 11 (contrat rapproché)",
-        "unit": "¢/lb",
-        "to_usd_per_kg": lambda p: p / 100 / LB_TO_KG,
+        "physical_unit": "lb",
     },
     "HG=F": {
         "hs": "7403",
         "commodity": "Cuivre affiné (non ouvré)",
         "benchmark": "COMEX Copper (contrat rapproché)",
-        "unit": "USD/lb",
-        "to_usd_per_kg": lambda p: p / LB_TO_KG,
+        "physical_unit": "lb",
     },
     "ALI=F": {
         "hs": "7601",
         "commodity": "Aluminium (non ouvré)",
         "benchmark": "COMEX Aluminum (contrat rapproché)",
-        "unit": "USD/tonne",
-        "to_usd_per_kg": lambda p: p / TONNE_TO_KG,
+        "physical_unit": "tonne",
     },
     "ZW=F": {
         "hs": "1001",
         "commodity": "Blé",
         "benchmark": "CBOT Wheat (contrat rapproché)",
-        "unit": "¢/boisseau",
-        "to_usd_per_kg": lambda p: p / 100 / BUSHEL_KG_WHEAT,
+        "physical_unit": "bushel_wheat",
     },
     "ZC=F": {
         "hs": "1005",
         "commodity": "Maïs",
         "benchmark": "CBOT Corn (contrat rapproché)",
-        "unit": "¢/boisseau",
-        "to_usd_per_kg": lambda p: p / 100 / BUSHEL_KG_CORN,
+        "physical_unit": "bushel_corn",
     },
     "ZS=F": {
         "hs": "1201",
         "commodity": "Soja (fèves)",
         "benchmark": "CBOT Soybeans (contrat rapproché)",
-        "unit": "¢/boisseau",
-        "to_usd_per_kg": lambda p: p / 100 / BUSHEL_KG_WHEAT,
+        "physical_unit": "bushel_wheat",
     },
     "GC=F": {
         "hs": "7108",
         "commodity": "Or (non monétaire, brut ou semi-ouvré)",
         "benchmark": "COMEX Gold (contrat rapproché)",
-        "unit": "USD/once troy",
-        "to_usd_per_kg": lambda p: p / TROY_OZ_TO_KG,
+        "physical_unit": "troy_oz",
     },
     "SI=F": {
         "hs": "7106",
         "commodity": "Argent (brut ou semi-ouvré)",
         "benchmark": "COMEX Silver (contrat rapproché)",
-        "unit": "USD/once troy",
-        "to_usd_per_kg": lambda p: p / TROY_OZ_TO_KG,
+        "physical_unit": "troy_oz",
     },
     "PL=F": {
         "hs": "7110",
         "commodity": "Platine (brut ou semi-ouvré)",
         "benchmark": "NYMEX Platinum (contrat rapproché)",
-        "unit": "USD/once troy",
-        "to_usd_per_kg": lambda p: p / TROY_OZ_TO_KG,
+        "physical_unit": "troy_oz",
     },
     "BZ=F": {
         "hs": "2709",
         "commodity": "Pétrole brut",
         "benchmark": "ICE Brent (contrat rapproché)",
-        "unit": "USD/baril",
-        "to_usd_per_kg": lambda p: p / BARREL_TO_KG,
+        "physical_unit": "barrel",
     },
 }
 
@@ -192,22 +195,44 @@ def parse_chart_response(payload: dict) -> dict:
     }
 
 
+# Devises Yahoo Finance signalant un prix coté en CENTS de dollar (convention
+# ICE/CBOT/COMEX pour cafés, céréales, coton, sucre, cuivre...). "USD" signale
+# un prix déjà en dollars pleins (or, argent, platine, cacao, aluminium,
+# Brent...). Toute autre valeur est rejetée : on ne devine jamais l'échelle
+# à partir du symbole ou d'une hypothèse fixe par contrat — uniquement à
+# partir de ce que l'API annonce elle-même pour CETTE cotation.
+_CENTS_CURRENCIES = {"USd", "USX"}
+_DOLLAR_CURRENCIES = {"USD", None}
+
+
+def _dollars_from_quote(quote: dict) -> float:
+    """Normalise le prix brut en USD pleins selon la devise renvoyée par l'API."""
+    currency = quote.get("currency")
+    if currency in _CENTS_CURRENCIES:
+        return quote["price"] / 100.0
+    if currency in _DOLLAR_CURRENCIES:
+        return quote["price"]
+    raise ValueError(f"devise inattendue: {currency!r}")
+
+
 def build_entry(symbol: str, spec: dict, quote: dict) -> dict:
     """Construit l'entrée cours_mondiaux.json pour un symbole, ou lève ValueError."""
-    if quote.get("currency") not in ("USD", "USd", "USX", None):
-        raise ValueError(f"devise inattendue: {quote.get('currency')!r}")
-    usd_per_kg = spec["to_usd_per_kg"](quote["price"])
+    usd_price = _dollars_from_quote(quote)
+    divisor, unit_label = _PHYSICAL_UNITS[spec["physical_unit"]]
+    usd_per_kg = usd_price / divisor
     lo, hi = PLAUSIBILITY_USD_PER_KG[spec["hs"]]
     if not (lo <= usd_per_kg <= hi):
         raise ValueError(
             f"cours converti {usd_per_kg:.4f} USD/kg hors bornes de vraisemblance "
-            f"[{lo}, {hi}] — rejeté (unité ou symbole probablement cassé)"
+            f"[{lo}, {hi}] — rejeté (devise/unité ou symbole probablement cassé)"
         )
+    is_cents = quote.get("currency") in _CENTS_CURRENCIES
+    raw_unit = f"¢/{unit_label}" if is_cents else f"USD/{unit_label}"
     return {
         "hs": spec["hs"],
         "commodity": spec["commodity"],
         "benchmark": spec["benchmark"],
-        "raw_quote": f"{quote['price']:g} {spec['unit']}",
+        "raw_quote": f"{quote['price']:g} {raw_unit}",
         "as_of": quote["as_of"],
         "usd_per_kg": round(usd_per_kg, 6),
         "source": f"Yahoo Finance ({symbol}) — {spec['benchmark']}",

@@ -63,10 +63,26 @@ def test_build_entry_converts_cocoa_tonnes_to_usd_per_kg():
 
 
 def test_build_entry_converts_coffee_cents_per_lb():
+    # ICE Coffee C est coté en CENTS/lb — Yahoo le signale via currency="USd".
     spec = etl.SYMBOLS["KC=F"]
-    quote = {"price": 315.24, "as_of": "2026-07-08", "currency": "USD"}
+    quote = {"price": 315.24, "as_of": "2026-07-08", "currency": "USd"}
     entry = etl.build_entry("KC=F", spec, quote)
     assert entry["usd_per_kg"] == pytest.approx(6.9499, abs=1e-3)
+    assert entry["raw_quote"] == "315.24 ¢/lb"
+
+
+def test_build_entry_uses_currency_field_not_symbol_guess_for_cents_scale():
+    # Le bug corrigé : NE PAS supposer l'échelle cents/dollars par contrat.
+    # Même unité physique (lb), même symbole -> résultat x100 selon la
+    # devise réellement renvoyée par l'API pour CETTE cotation précise.
+    spec = etl.SYMBOLS["HG=F"]
+    cents_quote = {"price": 605.75, "as_of": "2026-07-08", "currency": "USd"}
+    dollars_quote = {"price": 6.0575, "as_of": "2026-07-08", "currency": "USD"}
+    cents_entry = etl.build_entry("HG=F", spec, cents_quote)
+    dollars_entry = etl.build_entry("HG=F", spec, dollars_quote)
+    assert cents_entry["usd_per_kg"] == pytest.approx(dollars_entry["usd_per_kg"], rel=1e-9)
+    assert cents_entry["raw_quote"] == "605.75 ¢/lb"
+    assert dollars_entry["raw_quote"] == "6.0575 USD/lb"
 
 
 def test_build_entry_rejects_implausible_conversion():
@@ -88,6 +104,7 @@ def test_build_entry_rejects_unexpected_currency():
 def test_every_symbol_has_plausibility_bounds():
     for spec in etl.SYMBOLS.values():
         assert spec["hs"] in etl.PLAUSIBILITY_USD_PER_KG
+        assert spec["physical_unit"] in etl._PHYSICAL_UNITS
 
 
 def test_symbols_target_hs_codes_known_to_the_backend():
