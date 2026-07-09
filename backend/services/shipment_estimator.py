@@ -39,7 +39,9 @@ réel (`weight_kg_override`), toute estimation est ignorée.
 
 from __future__ import annotations
 
+import json
 import math
+import os
 from typing import Dict, Optional
 
 # Capacités utiles (charge maximale) des conteneurs — identiques à celles du
@@ -395,6 +397,57 @@ _WORLD_MARKET_BENCHMARKS: Dict[str, Dict] = {
         "note": "Moyenne de période, pas une cotation ponctuelle.",
     },
 }
+
+# Fichier de cours rafraîchis quotidiennement par le workflow GitHub Actions
+# « update_market_prices » (etl/update_world_market_prices.py). Quand il est
+# présent et lisible, ses entrées PRIMENT sur les valeurs statiques ci-dessus
+# (qui restent le repli daté si un symbole échoue ou si le fichier manque).
+_LIVE_BENCHMARKS_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "..", "data", "json", "cours_mondiaux.json"
+)
+
+
+def _apply_live_benchmarks(static: Dict[str, Dict], live: Dict[str, Dict]) -> Dict[str, Dict]:
+    """
+    Fusionne les cours rafraîchis (live) par-dessus les statiques.
+
+    Seuls les champs de cotation sont remplacés (usd_per_kg, raw_quote, as_of,
+    benchmark, source) ; la `note` métier statique (ex. Robusta non couvert
+    par le cours Arabica) est conservée. Une entrée live sans `usd_per_kg`
+    numérique positif est ignorée — jamais de cours douteux appliqué.
+    """
+    merged = {k: dict(v) for k, v in static.items()}
+    for hs, entry in (live or {}).items():
+        usd_per_kg = entry.get("usd_per_kg")
+        if not isinstance(usd_per_kg, (int, float)) or usd_per_kg <= 0:
+            continue
+        base = merged.get(hs, {})
+        base.update(
+            {
+                "commodity": entry.get("commodity", base.get("commodity")),
+                "benchmark": entry.get("benchmark", base.get("benchmark")),
+                "raw_quote": entry.get("raw_quote", base.get("raw_quote")),
+                "as_of": entry.get("as_of", base.get("as_of")),
+                "usd_per_kg": float(usd_per_kg),
+                "refresh": "auto (workflow quotidien update_market_prices)",
+            }
+        )
+        merged[hs] = base
+    return merged
+
+
+def _load_live_benchmarks(path: str = _LIVE_BENCHMARKS_PATH) -> Dict[str, Dict]:
+    """Charge cours_mondiaux.json ; dict vide si absent/corrompu (repli statique)."""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+        benchmarks = data.get("benchmarks")
+        return benchmarks if isinstance(benchmarks, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+_WORLD_MARKET_BENCHMARKS = _apply_live_benchmarks(_WORLD_MARKET_BENCHMARKS, _load_live_benchmarks())
 
 
 def usd_per_kg_for_hs(hs_code: str) -> Dict:

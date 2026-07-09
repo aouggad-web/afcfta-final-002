@@ -97,3 +97,56 @@ def test_chapter_estimate_has_no_negotiation_reference():
     r = se.estimate_shipment(500_000, "8517")  # électronique, estimation chapitre
     assert r["value_to_weight"]["classification_source"] == "estimation_chapitre"
     assert r["negotiation_reference"] is None
+
+
+def test_apply_live_benchmarks_overrides_quote_but_keeps_business_note():
+    static = {
+        "090111": {
+            "commodity": "Café Arabica",
+            "benchmark": "ICE Coffee C",
+            "raw_quote": "315.24 ¢/lb",
+            "as_of": "2026-07-08",
+            "usd_per_kg": 6.9499,
+            "note": "Cours Arabica uniquement — Robusta non couvert.",
+        }
+    }
+    live = {
+        "090111": {
+            "commodity": "Café Arabica (vert, non torréfié, non décaféiné)",
+            "benchmark": "ICE Coffee C (contrat rapproché)",
+            "raw_quote": "320.1 ¢/lb",
+            "as_of": "2026-07-10",
+            "usd_per_kg": 7.0571,
+        }
+    }
+    merged = se._apply_live_benchmarks(static, live)
+    assert merged["090111"]["usd_per_kg"] == 7.0571
+    assert merged["090111"]["as_of"] == "2026-07-10"
+    assert merged["090111"]["refresh"].startswith("auto")
+    # La note métier statique (Robusta) survit au rafraîchissement.
+    assert "Robusta" in merged["090111"]["note"]
+    # L'original n'est pas muté.
+    assert static["090111"]["usd_per_kg"] == 6.9499
+
+
+def test_apply_live_benchmarks_rejects_invalid_quotes():
+    static = {"1801": {"commodity": "Cacao", "usd_per_kg": 5.877}}
+    live = {
+        "1801": {"usd_per_kg": 0},  # nul -> ignoré
+        "7403": {"usd_per_kg": "13.3"},  # non numérique -> ignoré
+        "9999": {"commodity": "X"},  # sans cours -> ignoré
+    }
+    merged = se._apply_live_benchmarks(static, live)
+    assert merged["1801"]["usd_per_kg"] == 5.877
+    assert "7403" not in merged
+    assert "9999" not in merged
+
+
+def test_load_live_benchmarks_missing_or_corrupt_file_returns_empty(tmp_path):
+    assert se._load_live_benchmarks(str(tmp_path / "absent.json")) == {}
+    bad = tmp_path / "bad.json"
+    bad.write_text("{pas du json", encoding="utf-8")
+    assert se._load_live_benchmarks(str(bad)) == {}
+    no_key = tmp_path / "nokey.json"
+    no_key.write_text('{"autre": 1}', encoding="utf-8")
+    assert se._load_live_benchmarks(str(no_key)) == {}
