@@ -151,11 +151,19 @@ def _landed_cost(
         "la moins chère × nombre de conteneurs."
     )
     if shipment and shipment.get("value_to_weight"):
-        note += (
-            f" Poids estimé via un ratio {shipment['value_to_weight']['usd_per_kg']} "
-            f"USD/kg (chapitre SH {shipment['value_to_weight'].get('hs_chapter', '?')}, "
-            f"estimation de dimensionnement — non contractuel)."
-        )
+        vtw = shipment["value_to_weight"]
+        if vtw.get("classification_source") == "cours_mondial":
+            note += (
+                f" Poids estimé via le cours mondial de {vtw.get('commodity', 'la matière première')} "
+                f"({vtw['usd_per_kg']} USD/kg, {vtw.get('benchmark', '?')}, {vtw.get('as_of', '?')}) "
+                "— repère non contractuel, cf. garde-fou de négociation."
+            )
+        else:
+            note += (
+                f" Poids estimé via un ratio {vtw['usd_per_kg']} "
+                f"USD/kg (chapitre SH {vtw.get('hs_chapter', '?')}, "
+                f"estimation de dimensionnement — non contractuel)."
+            )
     return {
         "available": True,
         "value_usd": round(goods_value_usd + total_freight, 2),

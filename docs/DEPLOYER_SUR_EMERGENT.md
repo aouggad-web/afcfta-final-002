@@ -118,6 +118,31 @@ persistante, plus un patch de fichier voué à disparaître au prochain reset.
   fret multimodal, zones franches) dans la comparaison de pays et les
   opportunités par pays ; suppression du résumé LLM fabriqué (code mort).
 
+## Ce que cette synchronisation apporte (session du 2026-07-09)
+
+- **Dimensionnement conteneurs sur valeur FOB** : le coût rendu (S1/S2/S4 +
+  Opportunités IA) ne facture plus systématiquement UN SEUL conteneur 20′ —
+  le poids est estimé depuis la valeur FOB, le nombre et le type de
+  conteneurs (20′/40′) en découlent, le fret est multiplié en conséquence.
+- **Route terre+mer pour les origines enclavées** : un pays enclavé
+  *exportateur* (ex. Éthiopie) n'était comparé qu'à l'avion, faute de route
+  terre→port→mer symétrique et faute de corridor Éthiopie-Djibouti dans le
+  registre PIDA. Les deux sont corrigés (`_land_then_sea_option()` + 2
+  corridors réels ajoutés) : ETH→KEN passe de 35 665 $ (avion) à 1 362 $
+  (rail+mer via Djibouti).
+- **Indice valeur/poids à cours mondiaux réels** : 21 cours réels, datés et
+  sourcés (ICE, LME, CBOT, COMEX, Platts, Bursa Malaysia, SICOM, Mombasa)
+  remplacent l'estimation par chapitre SH quand un cours existe pour le
+  produit — `classification_source: "cours_mondial"` vs `"estimation_chapitre"`.
+  Sert aussi de repère grossier de négociation d'achat (`negotiation_reference`,
+  avec garde-fou explicite : cours de référence pour un grade standard, pas
+  un devis garanti).
+- **Rafraîchissement quotidien automatique des cours** : nouveau workflow
+  GitHub Actions `update_market_prices` (13 contrats, jours ouvrés 05:30 UTC)
+  écrit `data/json/cours_mondiaux.json`, prioritaire sur les valeurs
+  statiques dans `shipment_estimator`. Rien à faire côté Emergent — c'est un
+  fichier de données synchronisé comme les autres par `sync_emergent.sh`.
+
 ## Démarrer après synchronisation
 
 - **Sous Emergent (supervisord)** : rien à lancer, `sync_emergent.sh` a déjà

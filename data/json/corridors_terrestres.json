@@ -1771,6 +1771,74 @@
       ],
       "nodes": [],
       "operators": []
+    },
+    {
+      "corridor_id": "CORR-RAIL-ETH-DJI-027",
+      "corridor_name": "Chemin de fer Éthio-Djiboutien (Addis-Abeba-Djibouti)",
+      "corridor_type": "rail",
+      "countries_spanned": [
+        "ETH",
+        "DJI"
+      ],
+      "start_node": "Addis-Abeba (gare de Furi)",
+      "end_node": "Port de Djibouti",
+      "length_km": 756,
+      "status": "Opérationnel",
+      "infra_details": "Voie standard électrifiée (25 kV), ouverte en janvier 2018. Construite par China Civil Engineering Construction Corporation (CCECC) et China Railway Group (CREC), financement Exim Bank of China. Corridor par lequel transite l'écrasante majorité (~90-95%) du commerce extérieur éthiopien, pays enclavé depuis l'indépendance de l'Érythrée (1993).",
+      "importance": "high",
+      "description": "Épine dorsale logistique de l'Éthiopie enclavée : relie Addis-Abeba au port de Djibouti (mer Rouge / golfe d'Aden), seule vraie alternative ferroviaire moderne à la route pour le fret éthiopien.",
+      "source_org": "Ethio-Djibouti Railways S.C. · CCECC · Banque Mondiale SSATP",
+      "coordinates": [
+        [
+          9.025,
+          38.7469
+        ],
+        [
+          11.5721,
+          43.1456
+        ]
+      ],
+      "nodes": [],
+      "operators": [
+        {
+          "operator_name": "Ethio-Djibouti Railways S.C. (EDR)",
+          "operator_type": "rail_operator"
+        }
+      ]
+    },
+    {
+      "corridor_id": "CORR-ROAD-ETH-DJI-028",
+      "corridor_name": "Corridor routier Addis-Abeba-Djibouti (RN1/TAH)",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "ETH",
+        "DJI"
+      ],
+      "start_node": "Addis-Abeba",
+      "end_node": "Port de Djibouti",
+      "length_km": 910,
+      "status": "Opérationnel",
+      "infra_details": "Autoroute/route nationale bitumée reliant Addis-Abeba à Djibouti via Dire Dawa et Dewele. Historiquement l'unique voie d'accès à la mer de l'Éthiopie ; reste très utilisée par le transport routier de conteneurs en complément du rail.",
+      "importance": "high",
+      "description": "Route parallèle au chemin de fer Éthio-Djiboutien ; utilisée pour le fret non pris en charge par le rail et les zones non desservies par la voie ferrée.",
+      "source_org": "Ethiopian Roads Authority · Banque Mondiale SSATP",
+      "coordinates": [
+        [
+          9.025,
+          38.7469
+        ],
+        [
+          11.5721,
+          43.1456
+        ]
+      ],
+      "nodes": [],
+      "operators": [
+        {
+          "operator_name": "Transitaires routiers Éthiopie-Djibouti (multiples)",
+          "operator_type": "trucking_company"
+        }
+      ]
     }
   ]
 }
