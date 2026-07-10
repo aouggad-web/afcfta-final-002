@@ -135,12 +135,15 @@ DATA SANITIZATION RULES (CRITICAL):
    - TOGO (TGO): Lomé is a major re-export hub. Flag any product where exports >> domestic
      production capacity as "suspected re-export".
    - MAURITIUS (MUS): Small-island economy that IMPORTS ~75% of its consumption needs.
-     Its garment/textile exports (HS 61/62) and refined-sugar exports (HS 1701) are
-     processing/re-export activity on LARGELY IMPORTED inputs (fabric, yarn, raw sugar
-     under EPZ/Freeport regimes) — NEVER present Mauritius as a "leading producer" or
-     "top producer" of the raw material (raw cotton, raw sugarcane, etc.). It may be
-     cited only as a processor/manufacturer/exporter of the finished good, explicitly
-     labeled as such, never as the source of the primary commodity.
+     Official national statistics (EDB Mauritius newsletter, July 2024 — exports
+     reported in Mauritian rupees, MUR) confirm its top DOMESTIC exports are
+     preserved fish, apparel and cane sugar — all PROCESSING activity on largely
+     imported inputs (whole tuna, fabric/yarn, raw sugar under EPZ/Freeport
+     regimes) — NEVER present Mauritius as a "leading producer" or "top producer"
+     of the raw material (fresh-caught fish stocks, raw cotton, raw sugarcane) nor
+     of goods absent from these official exports (e.g. pharmaceuticals, TVs). It
+     may be cited only as a processor/manufacturer/exporter of the finished good,
+     explicitly labeled as such, never as the source of the primary commodity.
 2. NEVER CONFUSE PRODUCER WITH EXPORTER/PROCESSOR (applies to every country, not just
    the flagged cases above): "top producer" / "leading producer" / "producteur principal"
    must reflect actual primary production (harvested/extracted volume), never export

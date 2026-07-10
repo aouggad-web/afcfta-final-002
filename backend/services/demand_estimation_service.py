@@ -14,10 +14,21 @@ Cascade (best available wins):
   L2 — Population proxy: need ≈ population × per-capita continental availability,
        where per-capita availability = continental production ÷ continental
        population. Uses real FAO/USGS/UNIDO production + curated populations.
-  L3 — Standard-of-living adjustment: L2 × (GDP/capita_country ÷ GDP/capita_avg)^ε
-       with ε an income-elasticity assumption (exposed in the payload). Applied
-       only when GDP-per-capita data is available (World Bank ETL); otherwise the
-       result stays at L2.
+  L3 — Standard-of-living adjustment: L2 × (GDP/capita_country ÷ GDP/capita_avg)^ε.
+       GDP/capita_avg is the POPULATION-WEIGHTED continental average (consistent
+       with the continental per-capita reference of L2); ε is resolved per
+       product class (HS chapter — staples ~0.3, pharma ~0.9, durables ~1.2),
+       overridable, always exposed in the payload.
+
+Garde-fous (chacun exposé dans le payload, jamais silencieux):
+  - reference_scope: correspondance production au chapitre SH2 ⇒ le besoin
+    estimé porte sur tout le SECTEUR, pas le seul produit — dit explicitement.
+  - reference_coverage_caveat: référence de production à couverture partielle
+    (ex. UNIDO ingéré pour 1-2 pays) ⇒ propagé dans la note.
+  - calibration: les importations observées du pays (flux réel OEC) servent de
+    PLANCHER mesuré — un proxy en dessous d'un flux réel est démenti par lui.
+  - value arrondie à 3 chiffres significatifs (précision honnête d'une
+    estimation).
 
 No fabrication: if neither production nor population is available, the estimate
 is returned ``available: False`` with a note.
@@ -35,6 +46,45 @@ _GDP_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "json" / "w
 # Default income elasticity of demand (modelling assumption, exposed to caller).
 # ~0.4 is a common order of magnitude for food staples; discretionary goods higher.
 DEFAULT_INCOME_ELASTICITY = 0.4
+
+# Élasticité-revenu par classe de produit (chapitre SH) — ordres de grandeur de
+# la littérature empirique (loi d'Engel, estimations transnationales type USDA
+# ERS / Banque Mondiale ICP) : la demande d'aliments de base croît moins vite
+# que le revenu (<0,5), celle des biens discrétionnaires (électronique,
+# véhicules) plus vite (≥1). Une élasticité UNIQUE de 0,4 pour tout — des
+# céréales aux téléviseurs — sous-estimait systématiquement l'effet revenu sur
+# les biens manufacturés et l'exagérait sur les produits de base. Hypothèse de
+# modélisation : exposée dans le payload et surchargeable par l'appelant.
+_STAPLE_FOOD_CHAPTERS = {"07", "10", "11", "19"}  # légumes, céréales, minoterie, prép. céréales
+_INCOME_ELASTICITY_BY_CLASS = [
+    # (ensemble de chapitres SH2, élasticité, libellé de la classe)
+    (_STAPLE_FOOD_CHAPTERS, 0.3, "aliments de base"),
+    ({f"{c:02d}" for c in range(1, 25)} - _STAPLE_FOOD_CHAPTERS, 0.5, "autres agroalimentaires"),
+    ({"30"}, 0.9, "produits pharmaceutiques"),
+    ({f"{c:02d}" for c in range(50, 64)}, 0.8, "textiles et habillement"),
+    ({"84", "85", "87"}, 1.2, "biens durables (machines, électronique, véhicules)"),
+]
+
+
+def income_elasticity_for_hs(hs_code: str) -> Dict:
+    """Élasticité-revenu résolue par classe de produit (chapitre SH2)."""
+    chapter = ("".join(ch for ch in str(hs_code or "") if ch.isdigit()))[:2]
+    for chapters, elasticity, label in _INCOME_ELASTICITY_BY_CLASS:
+        if chapter in chapters:
+            return {"value": elasticity, "product_class": label}
+    return {"value": DEFAULT_INCOME_ELASTICITY, "product_class": "défaut (classe non mappée)"}
+
+
+def _round_sig(x: float, sig: int = 3) -> float:
+    """Arrondi à ``sig`` chiffres significatifs — une estimation affichée au
+    centime près (« 3 694 915 962,13 USD ») revendique une précision qu'elle
+    n'a pas ; trois chiffres significatifs disent honnêtement « ≈ 3,69 Md »."""
+    if not x:
+        return 0.0
+    from math import floor, log10
+
+    return round(x, -int(floor(log10(abs(x)))) + (sig - 1))
+
 
 _POP_SOURCE = "constants.AFRICAN_COUNTRIES (populations curées, ~WB SP.POP.TOTL)"
 
@@ -156,11 +206,83 @@ def _apparent_consumption(apparent: Optional[Dict]) -> Optional[float]:
     return float(p) + float(m) - float(x)
 
 
+def _weighted_continental_gdp_avg(
+    gdp_map: Dict[str, float], idx: Dict[str, Dict]
+) -> Optional[float]:
+    """
+    PIB/habitant continental moyen PONDÉRÉ PAR LA POPULATION.
+
+    La référence par habitant du proxy L2 est un agrégat continental
+    (production ÷ population totale) ; pour que la somme des besoins estimés
+    par pays reste cohérente avec la disponibilité continentale, le facteur L3
+    doit être normalisé par la même grandeur : PIB continental ÷ population
+    continentale. La moyenne SIMPLE des PIB/hab nationaux (ancien calcul) est
+    tirée vers le haut par les petits pays riches (Seychelles, Maurice,
+    Gabon...) et écrase donc systématiquement le facteur des grands pays
+    peuplés à faible revenu (Éthiopie, RDC...).
+    """
+    total_gdp, total_pop = 0.0, 0
+    for iso3, gdp_pc in gdp_map.items():
+        pop = (idx.get(iso3) or {}).get("population")
+        if gdp_pc and pop:
+            total_gdp += float(gdp_pc) * int(pop)
+            total_pop += int(pop)
+    return (total_gdp / total_pop) if total_pop else None
+
+
+def _observed_imports_floor(
+    modelled: float, unit: Optional[str], hs_code: str, observed_imports: Optional[Dict]
+) -> Optional[Dict]:
+    """
+    Recalage sur les importations observées (flux réel, USD/an) : le besoin
+    national d'un produit est AU MOINS ce que le pays en importe déjà — un
+    proxy population qui tombe en dessous est démenti par un flux mesuré.
+    Plancher uniquement (jamais de plafond : la production locale s'ajoute aux
+    importations). Conversion USD → unité physique via l'indice valeur/poids
+    quand nécessaire, signalée comme estimation.
+    """
+    annual_usd = (observed_imports or {}).get("import_value_usd")
+    if not annual_usd or annual_usd <= 0:
+        return None
+    if (unit or "").upper() == "USD":
+        floor_value, conversion = float(annual_usd), None
+    else:
+        try:
+            from services.shipment_estimator import usd_per_kg_for_hs
+
+            ratio = usd_per_kg_for_hs(hs_code)
+            usd_per_kg = ratio.get("usd_per_kg") or 0
+            if usd_per_kg <= 0 or "tonne" not in (unit or "").lower():
+                return None
+            floor_value = float(annual_usd) / usd_per_kg / 1000.0  # tonnes
+            conversion = {
+                "usd_per_kg": usd_per_kg,
+                "is_estimate": ratio.get("is_estimate", True),
+                "source": ratio.get("source"),
+            }
+        except Exception as exc:  # pragma: no cover - defensive
+            _log.warning("observed-imports conversion unavailable: %s", exc)
+            return None
+    if floor_value <= modelled:
+        return None
+    return {
+        "applied": True,
+        "floor_value": floor_value,
+        "modelled_value_before_floor": modelled,
+        "conversion": conversion,
+        "note": (
+            "Proxy population recalé au plancher des importations observées "
+            f"({observed_imports.get('source', 'OEC')}, {observed_imports.get('year', '—')}) : "
+            "le pays importe déjà davantage que l'estimation modélisée."
+        ),
+    }
+
+
 def estimate_national_need(
     hs_code: str,
     country_iso3: str,
     apparent: Optional[Dict] = None,
-    income_elasticity: float = DEFAULT_INCOME_ELASTICITY,
+    income_elasticity: Optional[float] = None,
     observed_imports: Optional[Dict] = None,
     continental_imports_tonnes: Optional[float] = None,
 ) -> Dict:
@@ -184,6 +306,16 @@ def estimate_national_need(
     sources, is_estimation, observed_imports, reference_basis).
     """
     country_iso3 = (country_iso3 or "").upper()
+
+    # Élasticité-revenu : résolue par classe de produit (chapitre SH) sauf
+    # surcharge explicite de l'appelant — 0,4 pour tout (des céréales aux
+    # téléviseurs) était une simplification excessive.
+    if income_elasticity is None:
+        elasticity_info = income_elasticity_for_hs(hs_code)
+        income_elasticity = elasticity_info["value"]
+        elasticity_class = elasticity_info["product_class"]
+    else:
+        elasticity_class = "surcharge appelant"
 
     # ── L1: measured apparent consumption (Production + Imports − Exports) ────
     app = _apparent_consumption(apparent)
@@ -273,11 +405,12 @@ def estimate_national_need(
     # ── L3: standard-of-living adjustment ────────────────────────────────────
     # PIB/hab du pays ET moyenne continentale depuis la meilleure source (dataset
     # ETL prioritaire, sinon module Profils Pays) — L3 s'active sans réseau.
+    # Moyenne PONDÉRÉE PAR LA POPULATION (voir _weighted_continental_gdp_avg) :
+    # cohérente avec la référence par habitant continentale du L2.
     gdp = get_gdp_per_capita(country_iso3)
     gdp_map = _gdp_values_map()
     if gdp.get("available") and gdp_map:
-        vals = [v for v in gdp_map.values() if v]
-        gdp_avg = sum(vals) / len(vals) if vals else None
+        gdp_avg = _weighted_continental_gdp_avg(gdp_map, idx)
         if gdp_avg:
             gdp_factor = (gdp["value_usd"] / gdp_avg) ** income_elasticity
             need = need_l2 * gdp_factor
@@ -307,6 +440,37 @@ def estimate_national_need(
     else:
         basis_note = "Référence basée sur la disponibilité apparente (production + importations)."
 
+    # Portée de la référence : une correspondance au chapitre SH2 signifie que
+    # la production de référence couvre tout un SECTEUR (ex. « Manufacture of
+    # chemicals » pour le savon SH 340111) — le besoin estimé porte alors sur ce
+    # secteur, pas sur le seul produit demandé. Sans cette mention, un besoin
+    # sectoriel de plusieurs Md$ passe pour le besoin du produit SH6.
+    match_level = prod.get("match_level") or ""
+    scope_is_sector = match_level.startswith("HS2")
+    scope_note = None
+    if scope_is_sector:
+        scope_note = (
+            f"ATTENTION PORTÉE : correspondance production au chapitre SH2 — la valeur "
+            f"estime le besoin de l'ensemble du secteur « {prod.get('commodity')} », "
+            f"pas du seul produit SH {hs_code}. À lire comme un plafond sectoriel."
+        )
+
+    # Caveat de couverture de la donnée de référence (ex. UNIDO ingéré pour
+    # 1-2 pays africains seulement) : la disponibilité continentale est alors
+    # sous-estimée et l'estimation peu fiable — propagé, plus jamais silencieux.
+    coverage_caveat = prod.get("coverage_caveat")
+
+    # Recalage sur flux réel : les importations observées du pays sont un
+    # plancher mesuré du besoin.
+    calibration = _observed_imports_floor(need, prod.get("unit"), hs_code, observed_imports)
+    if calibration:
+        need = calibration["floor_value"]
+        method += " ; recalé au plancher des importations observées (flux réel OEC)"
+        sources.append(
+            (observed_imports or {}).get("source", "OEC / UN Comtrade (BACI)")
+            + " — importations observées du pays"
+        )
+
     # Suggested supplier: the #1 African producer that isn't the market itself —
     # a natural "who could serve this need" hand-off to the bilateral report.
     suggested_supplier = None
@@ -316,16 +480,34 @@ def estimate_national_need(
             suggested_supplier = {"iso3": iso, "country_name": p.get("country_name")}
             break
 
+    note = (
+        "Estimation transparente : valeur modélisée, non mesurée. "
+        + basis_note
+        + " Affiner via consommation apparente réelle (production + import − export) "
+        "dès que les flux commerciaux du pays sont disponibles."
+    )
+    if scope_note:
+        note = scope_note + " " + note
+    if coverage_caveat:
+        note += " COUVERTURE PARTIELLE de la référence : " + coverage_caveat
+    if calibration:
+        note += " " + calibration["note"]
+
     return {
         "available": True,
         "is_estimation": True,
         "estimation_level": level,
         "level_label": level_label,
-        "value": round(need, 2),
+        # Arrondi à 3 chiffres significatifs : une estimation au centime près
+        # revendiquerait une précision qu'elle n'a pas.
+        "value": _round_sig(need, 3),
         "unit": prod.get("unit"),
         "commodity": prod.get("commodity"),
         "reference_year": prod.get("year"),
         "reference_basis": reference_basis,
+        "reference_scope": "secteur (chapitre SH2)" if scope_is_sector else "produit",
+        "reference_coverage_caveat": coverage_caveat,
+        "calibration": calibration,
         "suggested_supplier": suggested_supplier,
         "method": method,
         "inputs": {
@@ -337,15 +519,11 @@ def estimate_national_need(
             "per_capita_reference": round(per_capita_ref, 6),
             "gdp_adjustment_factor": round(gdp_factor, 3) if gdp_factor else None,
             "income_elasticity": income_elasticity if level == 3 else None,
+            "income_elasticity_class": elasticity_class if level == 3 else None,
         },
         "sources": sources,
         # The country's own observed imports (USD) — a direct demand signal that
         # complements the physical estimate (different unit, shown separately).
         "observed_imports": observed_imports if observed_imports else None,
-        "note": (
-            "Estimation transparente : valeur modélisée, non mesurée. "
-            + basis_note
-            + " Affiner via consommation apparente réelle (production + import − export) "
-            "dès que les flux commerciaux du pays sont disponibles."
-        ),
+        "note": note,
     }

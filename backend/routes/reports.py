@@ -239,8 +239,13 @@ async def direct_export_scenario(
 async def national_need(
     hs_code: str = Query(..., description="Code SH du produit (HS6 ou HS4)"),
     country: str = Query(..., description="Pays (ISO3)"),
-    elasticity: float = Query(
-        default=0.4, description="Élasticité-revenu (ajustement niveau de vie, L3)"
+    elasticity: Optional[float] = Query(
+        default=None,
+        description=(
+            "Élasticité-revenu (ajustement niveau de vie, L3). Défaut : résolue "
+            "par classe de produit (chapitre SH) — aliments de base ~0,3, "
+            "pharma ~0,9, biens durables ~1,2."
+        ),
     ),
     with_observed_imports: bool = Query(
         default=False,
@@ -261,10 +266,12 @@ async def national_need(
     et sources — jamais présentée comme mesurée, jamais inventée.
 
     Le signal d'import observé (OEC) est **opt-in** (``with_observed_imports``) ;
-    il n'affecte jamais l'estimation elle-même. Il interroge le pays demandé
-    uniquement (plus de fan-out 54 pays), via le même client OEC que la recherche
-    SH2/SH4/SH6 du module Statistiques : cache persistant partagé, servi même si
-    l'OEC est momentanément injoignable (stale-on-error).
+    quand il est présent, il sert de PLANCHER mesuré à l'estimation (le besoin
+    d'un pays est au moins ce qu'il importe déjà — recalage signalé dans
+    ``calibration``). Il interroge le pays demandé uniquement (plus de fan-out
+    54 pays), via le même client OEC que la recherche SH2/SH4/SH6 du module
+    Statistiques : cache persistant partagé, servi même si l'OEC est
+    momentanément injoignable (stale-on-error).
     """
     from services import demand_estimation_service as demand
 
