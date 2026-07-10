@@ -235,6 +235,29 @@ DATASET_KEY = {
     "manufacturing": "manufacturing_unido",
 }
 
+# En-deçà de ce nombre de pays ayant une valeur pour l'année de classement,
+# un "rang #1" / "part continentale" n'est PAS un signal de leadership réel —
+# c'est un artefact de couverture incomplète de l'ingestion (ex. seule Maurice
+# capturée pour "Produits pharmaceutiques" UNIDO alors que l'Égypte, le Maroc,
+# l'Afrique du Sud et la Tunisie ont des industries pharmaceutiques réelles
+# non encore ingérées). En dessous du seuil, `coverage_caveat` est renseigné
+# et DOIT être affiché — jamais silencieusement masqué en aval.
+_MIN_RELIABLE_COVERAGE_COUNTRIES = 3
+
+
+def _coverage_caveat(dataset: str, label: str, n_countries: int) -> Optional[str]:
+    if n_countries >= _MIN_RELIABLE_COVERAGE_COUNTRIES:
+        return None
+    institution = SOURCE_META[dataset]["institution"]
+    return (
+        f"Couverture {institution} limitée à {n_countries} pays africain(s) pour "
+        f"« {label} » dans notre base actuelle — un rang ou une part continentale "
+        "calculé sur si peu de pays NE reflète PAS un leadership réel : d'autres "
+        "producteurs africains existent très probablement mais ne sont pas encore "
+        "ingérés. À traiter comme une donnée partielle, pas comme un classement fiable."
+    )
+
+
 SOURCE_META = {
     "agri": {
         "institution": "FAO",
@@ -470,6 +493,7 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
                 else None
             ),
             "top_producers": top_producers,
+            "coverage_caveat": _coverage_caveat(dataset, label, len(year_recs)),
         },
         "integration_scenarios": scenarios,
     }
@@ -544,6 +568,7 @@ def get_continental_producers(hs_code: str) -> Dict:
             }
             for r in year_recs[:10]
         ],
+        "coverage_caveat": _coverage_caveat(dataset, label, len(year_recs)),
     }
 
 
