@@ -133,11 +133,17 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
 
     # Social/WB indicators
     wb_fields = [
-        "life_expectancy_2023", "gini_index_2024", "poverty_rate_3usd_2024",
-        "urban_population_pct_2024", "internet_users_pct_2024",
-        "electricity_access_2022", "mobile_3g_coverage_2024",
-        "female_labor_force_pct_2024", "water_stress_2022",
-        "ghg_emissions_mt_2022", "learning_poverty_2023",
+        "life_expectancy_2023",
+        "gini_index_2024",
+        "poverty_rate_3usd_2024",
+        "urban_population_pct_2024",
+        "internet_users_pct_2024",
+        "electricity_access_2022",
+        "mobile_3g_coverage_2024",
+        "female_labor_force_pct_2024",
+        "water_stress_2022",
+        "ghg_emissions_mt_2022",
+        "learning_poverty_2023",
     ]
     for field in wb_fields:
         value = real_data.get(field)
