@@ -1,1 +1,1297 @@
-{"_file_cache_expires_at": 1786270188.6362329, "data": {"value_chains": [{"sector": "Café / Cacao", "description": "Chaînes de valeur agricoles stratégiques d'Afrique subsaharienne, allant de la culture primaire à la transformation en produits finis (chocolat, café torréfié, extraits). L'Afrique produit ~70% du cacao mondial et ~12% du café mondial mais capture moins de 10% de la valeur finale.", "stages": [{"stage_number": 1, "name": "Production primaire (matière brute)", "hs6Codes": ["090111", "090112", "180100"], "description": "Récolte des cerises de café et des cabosses de cacao, séchage et fermentation de base. Les producteurs africains exportent majoritairement en matière brute non transformée.", "leading_countries": ["ETH", "UGA", "CAF", "GIN", "CIV", "GHA", "NGA", "CMR"], "value_added_percent": 8.0, "bottlenecks": ["Faible productivité à l'hectare", "Dépendance aux intermédiaires informels", "Absence de certification qualité à grande échelle", "Changement climatique affectant les rendements"]}, {"stage_number": 2, "name": "Première transformation (semi-fini)", "hs6Codes": ["090121", "090122", "180310", "180320"], "description": "Torréfaction du café, décorticage, production de pâte et beurre de cacao. Étape critique où la valeur ajoutée augmente de 30 à 50% mais reste largement réalisée hors d'Afrique.", "leading_countries": ["ETH", "UGA", "CIV", "GHA", "CMR"], "value_added_percent": 22.0, "bottlenecks": ["Capacité industrielle insuffisante", "Coût élevé de l'énergie", "Normes sanitaires non harmonisées entre pays africains", "Accès limité au financement industriel"]}, {"stage_number": 3, "name": "Transformation avancée (produit fini)", "hs6Codes": ["090190", "180400", "180500", "180631"], "description": "Production de café soluble, extraits de café, chocolat de couverture, confiseries au cacao. Étape à plus haute valeur ajoutée, quasi-absente en Afrique subsaharienne.", "leading_countries": ["ZAF", "EGY", "MAR"], "value_added_percent": 55.0, "bottlenecks": ["Manque de marques africaines reconnues internationalement", "Faible demande intérieure solvable", "Barrières tarifaires résiduelles intra-africaines sur produits transformés", "Absence d'infrastructure logistique froide"]}, {"stage_number": 4, "name": "Distribution et export", "hs6Codes": ["090190", "180690"], "description": "Commercialisation, emballage final, export vers marchés régionaux africains et internationaux. Les marges de distribution restent captées par des acteurs non africains.", "leading_countries": ["ZAF", "MAR", "EGY", "KEN"], "value_added_percent": 15.0, "bottlenecks": ["Coûts logistiques intra-africains élevés", "Fragmentation des marchés de détail", "Faible pénétration du e-commerce alimentaire"]}], "top_producers": [{"country": "Côte d'Ivoire", "iso3": "CIV", "role": "raw_material", "value_musd": 4200.0}, {"country": "Ghana", "iso3": "GHA", "role": "raw_material", "value_musd": 1480.0}, {"country": "Éthiopie", "iso3": "ETH", "role": "raw_material", "value_musd": 1350.0}, {"country": "Ouganda", "iso3": "UGA", "role": "raw_material", "value_musd": 940.0}, {"country": "Nigéria", "iso3": "NGA", "role": "raw_material", "value_musd": 620.0}, {"country": "Cameroun", "iso3": "CMR", "role": "raw_material", "value_musd": 560.0}, {"country": "Côte d'Ivoire", "iso3": "CIV", "role": "processor", "value_musd": 890.0}, {"country": "Ghana", "iso3": "GHA", "role": "processor", "value_musd": 420.0}, {"country": "Afrique du Sud", "iso3": "ZAF", "role": "manufacturer", "value_musd": 310.0}], "afcfta_opportunities": [{"description": "Élimination des droits de douane sur le cacao transformé (pâte, beurre, poudre) entre pays africains permettrait à la CIV et au Ghana d'exporter vers les marchés nord-africains (EGY, MAR, TUN) à des prix compétitifs face aux importations européennes.", "potential_value_musd": 1200.0, "beneficiary_countries": ["CIV", "GHA", "EGY", "MAR", "TUN"]}, {"description": "Développement d'une chaîne café torréfié éthiopien/ougandais vers les marchés urbains d'Afrique de l'Est et centrale (KEN, TZA, COD, RWA) sous préférences AfCFTA, substituant les importations de café soluble européen.", "potential_value_musd": 480.0, "beneficiary_countries": ["ETH", "UGA", "KEN", "TZA", "COD", "RWA"]}, {"description": "Création de zones de transformation cacao en Afrique de l'Ouest (CIV, GHA, CMR) approvisionnant des chocolatiers africains émergents en Afrique du Nord et australe.", "potential_value_musd": 750.0, "beneficiary_countries": ["CIV", "GHA", "CMR", "NGA", "ZAF", "MAR"]}], "investment_needed_musd": 3800.0, "intra_african_trade_potential_musd": 2430.0, "sources": ["FAOSTAT 2024", "OEC 2022-2023", "UN Comtrade HS 0901/1801/1803/1804/1805/1806", "UNCTAD Trade Analytics 2023", "AfCFTA Secretariat Tariff Schedules"]}, {"sector": "Coton / Textiles / Habillement", "description": "Chaîne de valeur intégrée allant de la culture du coton-graine à la confection de vêtements finis, représentant un potentiel de transformation industrielle majeur pour l'Afrique de l'Ouest et de l'Est. L'Afrique produit ~5% du coton mondial mais ne capture qu'une fraction infime de la valeur textile finale.", "stages": [{"stage_number": 1, "name": "Culture du coton-graine", "hs6Codes": ["520100", "520300"], "description": "Production agricole du coton-graine, égrenage primaire pour séparer la fibre de la graine. L'Afrique de l'Ouest domine la production continentale avec des systèmes coopératifs structurés.", "leading_countries": ["BFA", "MLI", "BEN", "CMR", "SDN"], "value_added_percent": 5.0, "bottlenecks": ["Prix mondiaux volatils du coton", "Dépendance aux intrants importés (engrais, pesticides)", "Faible mécanisation agricole", "Subventions distorsives des producteurs extra-africains"]}, {"stage_number": 2, "name": "Filature et tissage (fil et tissu)", "hs6Codes": ["520511", "520811", "520911", "521011"], "description": "Transformation de la fibre de coton en fil puis en tissu écru ou teint. Maillon quasi-absent en Afrique de l'Ouest malgré l'abondance de la matière première.", "leading_countries": ["EGY", "MAR", "TUN", "ETH", "ZAF"], "value_added_percent": 18.0, "bottlenecks": ["Manque d'usines de filature modernes en Afrique de l'Ouest", "Coût élevé de l'électricité industrielle", "Absence de clusters textiles intégrés", "Concurrence des tissus asiatiques à bas coût"]}, {"stage_number": 3, "name": "Confection et habillement", "hs6Codes": ["610910", "620342", "611020", "620462"], "description": "Coupe, assemblage et finition de vêtements finis. La Tunisie et l'Éthiopie dominent la valeur ajoutée manufacturière africaine dans ce segment selon les données UNIDO 2024.", "leading_countries": ["TUN", "ETH", "MAR"], "value_added_percent": 42.0, "bottlenecks": ["Règles d'origine AfCFTA exigeantes (double transformation)", "Coût de la main-d'œuvre en hausse en Éthiopie post-conflit", "Accès limité aux marchés de détail intra-africains", "Contrefaçon et importations illicites de seconde main (friperie)"]}, {"stage_number": 4, "name": "Distribution et marques africaines", "hs6Codes": ["620520", "611030", "621210"], "description": "Commercialisation sous marques africaines, distribution dans les réseaux de détail formels et informels. Segment émergent avec fort potentiel de montée en gamme.", "leading_countries": ["ZAF", "MAR", "KEN", "NGA"], "value_added_percent": 35.0, "bottlenecks": ["Faible développement de marques africaines à notoriété continentale", "Fragmentation logistique intra-africaine", "Pression des importations de friperie (Article 12 AfCFTA non résolu)"]}], "top_producers": [{"country": "Burkina Faso", "iso3": "BFA", "role": "raw_material", "value_musd": 320.0}, {"country": "Mali", "iso3": "MLI", "role": "raw_material", "value_musd": 265.0}, {"country": "Bénin", "iso3": "BEN", "role": "raw_material", "value_musd": 260.0}, {"country": "Cameroun", "iso3": "CMR", "role": "raw_material", "value_musd": 200.0}, {"country": "Soudan", "iso3": "SDN", "role": "raw_material", "value_musd": 148.0}, {"country": "Tunisie", "iso3": "TUN", "role": "manufacturer", "value_musd": 2800.0}, {"country": "Éthiopie", "iso3": "ETH", "role": "manufacturer", "value_musd": 1540.0}, {"country": "Maurice", "iso3": "MUS", "role": "processor", "value_musd": 950.0}, {"country": "Maroc", "iso3": "MAR", "role": "manufacturer", "value_musd": 3200.0}, {"country": "Égypte", "iso3": "EGY", "role": "manufacturer", "value_musd": 2100.0}], "afcfta_opportunities": [{"description": "Création d'un corridor coton intégré Afrique de l'Ouest → Éthiopie/Tunisie/Maroc : les producteurs de coton-graine (BFA, MLI, BEN) approvisionnent les filatures nord-africaines et éthiopiennes sous tarifs préférentiels AfCFTA, réduisant la dépendance aux importations de fil asiatique.", "potential_value_musd": 1800.0, "beneficiary_countries": ["BFA", "MLI", "BEN", "CMR", "ETH", "TUN", "MAR", "EGY"]}, {"description": "Développement d'une industrie de confection en Afrique de l'Ouest (BEN, GHA, SEN) approvisionnée en tissu par les filatures nord-africaines, ciblant le marché de 400 millions de consommateurs CEDEAO.", "potential_value_musd": 2200.0, "beneficiary_countries": ["BEN", "GHA", "SEN", "CIV", "NGA", "TUN", "MAR"]}, {"description": "Harmonisation des règles d'origine AfCFTA pour le textile (assouplissement de la double transformation) afin de permettre aux confectionneurs africains d'utiliser des tissus importés tout en bénéficiant des préférences régionales.", "potential_value_musd": 950.0, "beneficiary_countries": ["ETH", "TUN", "MAR", "KEN", "ZAF", "GHA"]}], "investment_needed_musd": 5200.0, "intra_african_trade_potential_musd": 4950.0, "sources": ["FAOSTAT 2024 (coton-graine)", "UNIDO Industrial Statistics 2024 (habillement, MVA)", "OEC 2022-2023", "UN Comtrade HS 5201/5205/5208/6109/6203", "WTO Tariff Profiles 2023", "AfCFTA Rules of Origin Annex 2"]}, {"sector": "Minéraux / Métaux (Or, Fer, Cuivre, Cobalt)", "description": "L'Afrique détient plus de 30% des réserves minérales mondiales mais exporte principalement des minerais bruts, capturant moins de 15% de la valeur finale des chaînes métallurgiques mondiales. Le cobalt et le cuivre de la RDC/Zambie sont critiques pour la transition énergétique mondiale.", "stages": [{"stage_number": 1, "name": "Extraction minière (minerai brut)", "hs6Codes": ["260111", "260300", "260400", "260600", "710812"], "description": "Extraction et concentration primaire des minerais (fer, cuivre, cobalt, or). L'Afrique subsaharienne domine la production mondiale de cobalt (97% RDC) et représente une part significative du cuivre mondial.", "leading_countries": ["COD", "ZMB", "ZAF", "GHA", "MLI", "BFA", "MRT", "SLE", "LBR", "SDN"], "value_added_percent": 6.0, "bottlenecks": ["Exportation massive de minerais bruts sans transformation", "Dépendance aux entreprises minières étrangères", "Faible contenu local dans les contrats miniers", "Instabilité politique dans les zones minières (COD, MLI, BFA)"]}, {"stage_number": 2, "name": "Concentration et métallurgie primaire", "hs6Codes": ["740200", "740311", "750210", "720110", "711011"], "description": "Fusion, affinage et production de métaux primaires (cuivre affiné, cobalt métal, lingots d'or, fonte). Étape partiellement réalisée en Afrique mais avec des capacités insuffisantes.", "leading_countries": ["ZMB", "COD", "ZAF", "NAM"], "value_added_percent": 20.0, "bottlenecks": ["Coût et fiabilité de l'approvisionnement électrique pour les fonderies", "Manque de fonderies de cobalt en Afrique (quasi-totalité exportée vers Chine)", "Faible capacité de raffinage de l'or en Afrique de l'Ouest", "Réglementations environnementales insuffisantes"]}, {"stage_number": 3, "name": "Transformation industrielle (produits semi-finis)", "hs6Codes": ["740400", "740811", "740911", "721391", "722819"], "description": "Production de fils, tôles, tubes et produits laminés en cuivre, acier et autres métaux. Maillon quasi-absent en Afrique subsaharienne, présent partiellement en Afrique du Nord et du Sud.", "leading_countries": ["ZAF", "EGY", "MAR", "DZA"], "value_added_percent": 35.0, "bottlenecks": ["Absence d'industrie sidérurgique intégrée en Afrique centrale et de l'Ouest", "Importations massives d'acier laminé d'Asie", "Faible demande industrielle intérieure africaine", "Manque de normes techniques harmonisées"]}, {"stage_number": 4, "name": "Fabrication de produits finis à haute valeur", "hs6Codes": ["850760", "850440", "854430", "730820"], "description": "Production de batteries, câbles électriques, composants électroniques et structures métalliques. Étape à très haute valeur ajoutée, quasi-inexistante en Afrique malgré la détention des matières premières critiques.", "leading_countries": ["ZAF", "MAR", "EGY"], "value_added_percent": 39.0, "bottlenecks": ["Absence de capacité de fabrication de batteries en Afrique", "Manque de capital humain qualifié en métallurgie avancée", "Faible attractivité pour les investisseurs en fabrication de haute technologie", "Dépendance technologique vis-à-vis de l'Asie et de l'Europe"]}], "top_producers": [{"country": "RD Congo", "iso3": "COD", "role": "raw_material", "value_musd": 9800.0}, {"country": "Zambie", "iso3": "ZMB", "role": "raw_material", "value_musd": 2650.0}, {"country": "Afrique du Sud", "iso3": "ZAF", "role": "raw_material", "value_musd": 4200.0}, {"country": "Ghana", "iso3": "GHA", "role": "raw_material", "value_musd": 5800.0}, {"country": "Mali", "iso3": "MLI", "role": "raw_material", "value_musd": 2100.0}, {"country": "Burkina Faso", "iso3": "BFA", "role": "raw_material", "value_musd": 1920.0}, {"country": "Mauritanie", "iso3": "MRT", "role": "raw_material", "value_musd": 1100.0}, {"country": "Zambie", "iso3": "ZMB", "role": "processor", "value_musd": 1200.0}, {"country": "Afrique du Sud", "iso3": "ZAF", "role": "manufacturer", "value_musd": 3100.0}, {"country": "Maroc", "iso3": "MAR", "role": "manufacturer", "value_musd": 980.0}], "afcfta_opportunities": [{"description": "Développement d'une zone de transformation du cobalt et du cuivre en RDC et Zambie (câbles électriques, précurseurs de batteries) pour approvisionner les industries automobiles émergentes du Maroc et d'Afrique du Sud sous AfCFTA.", "potential_value_musd": 4500.0, "beneficiary_countries": ["COD", "ZMB", "ZAF", "MAR", "ZWE"]}, {"description": "Création d'une raffinerie d'or régionale en Afrique de l'Ouest (GHA ou SEN) pour transformer l'or brut de GHA, MLI, BFA en lingots certifiés LBMA, capturant la prime de raffinage actuellement perdue vers l'Europe et les Émirats.", "potential_value_musd": 2800.0, "beneficiary_countries": ["GHA", "MLI", "BFA", "SDN", "SEN"]}, {"description": "Développement d'une industrie sidérurgique régionale en Afrique de l'Ouest approvisionnée par le minerai de fer de MRT, SLE et LBR, ciblant la demande de construction de NGA, GHA, SEN sous préférences AfCFTA.", "potential_value_musd": 3200.0, "beneficiary_countries": ["MRT", "SLE", "LBR", "NGA", "GHA", "SEN", "CIV"]}], "investment_needed_musd": 18500.0, "intra_african_trade_potential_musd": 10500.0, "sources": ["USGS Mineral Commodity Summaries 2023", "OEC 2022-2023", "UN Comtrade HS 2601/2603/2604/7402/7403/7108", "UNCTAD Commodities and Development Report 2023", "World Bank Minerals for Climate Action 2023"]}, {"sector": "Pétrole et Gaz / Pétrochimie", "description": "L'Afrique produit ~8% du pétrole mondial et ~6% du gaz naturel, mais importe massivement des produits raffinés et pétrochimiques faute de capacités de raffinage suffisantes. La chaîne de valeur aval (raffinage, pétrochimie, plastiques) représente l'opportunité de transformation la plus immédiate.", "stages": [{"stage_number": 1, "name": "Extraction d'hydrocarbures bruts", "hs6Codes": ["270900", "271111", "271121"], "description": "Production de pétrole brut et de gaz naturel. Le Nigéria, la Libye, l'Angola et l'Algérie dominent la production continentale selon les données EIA/OPEC 2023.", "leading_countries": ["NGA", "LBY", "AGO", "DZA", "EGY"], "value_added_percent": 12.0, "bottlenecks": ["Vols et sabotages de pipelines (NGA)", "Instabilité politique (LBY)", "Déclin naturel des champs matures (AGO)", "Sous-investissement dans l'exploration post-COVID", "Dépendance aux compagnies pétrolières internationales"]}, {"stage_number": 2, "name": "Raffinage et produits pétroliers", "hs6Codes": ["271012", "271019", "271020", "271091"], "description": "Transformation du brut en carburants (essence, diesel, kérosène) et produits pétroliers. L'Afrique raffine moins de 40% de sa production brute, important massivement des produits raffinés d'Europe et d'Asie.", "leading_countries": ["DZA", "EGY", "NGA", "ZAF", "MAR"], "value_added_percent": 28.0, "bottlenecks": ["Capacité de raffinage insuffisante (déficit structurel de ~3 Mb/j)", "Raffineries vieillissantes nécessitant des investissements massifs", "Subventions aux carburants distordant les signaux de prix", "Dépendance aux importations de produits raffinés d'Europe"]}, {"stage_number": 3, "name": "Pétrochimie de base (oléfines, polymères)", "hs6Codes": ["290110", "290121", "390110", "390210", "390310"], "description": "Production d'éthylène, propylène, polyéthylène et polypropylène à partir du gaz naturel ou des naphtas de raffinage. Segment quasi-absent en Afrique subsaharienne, présent partiellement en Algérie et Égypte.", "leading_countries": ["DZA", "EGY", "ZAF", "NGA"], "value_added_percent": 35.0, "bottlenecks": ["Investissements en capital très élevés (>2 Mds USD par complexe)", "Manque de savoir-faire technologique local", "Marchés intérieurs fragmentés insuffisants pour justifier les économies d'échelle", "Accès limité au financement de projet long terme"]}, {"stage_number": 4, "name": "Produits chimiques et plastiques transformés", "hs6Codes": ["391710", "392010", "392116", "340111", "320410"], "description": "Fabrication d'emballages plastiques, tuyaux, films, détergents et produits chimiques industriels. Segment à forte demande intérieure africaine, actuellement satisfaite par des importations extra-africaines.", "leading_countries": ["ZAF", "EGY", "MAR", "NGA", "DZA"], "value_added_percent": 25.0, "bottlenecks": ["Concurrence des plastiques asiatiques à bas coût", "Faible recyclage et économie circulaire", "Réglementations environnementales sur les plastiques à usage unique", "Fragmentation des marchés de distribution"]}], "top_producers": [{"country": "Nigéria", "iso3": "NGA", "role": "raw_material", "value_musd": 38500.0}, {"country": "Libye", "iso3": "LBY", "role": "raw_material", "value_musd": 33600.0}, {"country": "Angola", "iso3": "AGO", "role": "raw_material", "value_musd": 31600.0}, {"country": "Algérie", "iso3": "DZA", "role": "raw_material", "value_musd": 28400.0}, {"country": "Égypte", "iso3": "EGY", "role": "raw_material", "value_musd": 15900.0}, {"country": "Algérie", "iso3": "DZA", "role": "processor", "value_musd": 8200.0}, {"country": "Égypte", "iso3": "EGY", "role": "processor", "value_musd": 6100.0}, {"country": "Afrique du Sud", "iso3": "ZAF", "role": "manufacturer", "value_musd": 4800.0}, {"country": "Maroc", "iso3": "MAR", "role": "manufacturer", "value_musd": 2200.0}], "afcfta_opportunities": [{"description": "La raffinerie Dangote (NGA, 650 000 b/j) peut approvisionner l'Afrique de l'Ouest en produits raffinés sous AfCFTA, substituant ~8 Mds USD d'importations annuelles de produits pétroliers d'Europe vers la CEDEAO.", "potential_value_musd": 8000.0, "beneficiary_countries": ["NGA", "GHA", "SEN", "CIV", "CMR", "BEN", "TGO"]}, {"description": "Développement d'un hub pétrochimique algéro-égyptien approvisionnant les industries plastiques et chimiques d'Afrique subsaharienne sous préférences AfCFTA, réduisant les importations de polymères asiatiques.", "potential_value_musd": 3500.0, "beneficiary_countries": ["DZA", "EGY", "MAR", "TUN", "NGA", "KEN", "ETH"]}, {"description": "Valorisation du gaz naturel mozambicain (MOZ) en engrais azotés (urée) pour approvisionner les marchés agricoles d'Afrique orientale et australe, réduisant la dépendance aux importations d'engrais extra-africains.", "potential_value_musd": 1800.0, "beneficiary_countries": ["MOZ", "TZA", "ZMB", "ZWE", "MWI", "ETH"]}], "investment_needed_musd": 42000.0, "intra_african_trade_potential_musd": 13300.0, "sources": ["EIA International Energy Statistics 2023", "OPEC Annual Statistical Bulletin 2023", "OEC 2022-2023", "UN Comtrade HS 2709/2710/2711/3901/3902", "IMF WEO October 2024", "UNCTAD Trade Analytics 2023"]}, {"sector": "Automobile / Assemblage", "description": "L'industrie automobile africaine est concentrée en Afrique du Sud et au Maroc, qui représentent 100% de la valeur ajoutée manufacturière continentale selon UNIDO 2024. Le potentiel AfCFTA réside dans l'extension des chaînes d'approvisionnement vers d'autres pays africains et le développement de véhicules adaptés aux marchés africains.", "stages": [{"stage_number": 1, "name": "Matières premières et composants de base", "hs6Codes": ["720839", "740811", "401110", "700711"], "description": "Production d'acier laminé, câbles en cuivre, pneumatiques et verre automobile. Ces intrants sont partiellement produits en Afrique (acier ZAF, cuivre COD/ZMB) mais les composants transformés sont majoritairement importés.", "leading_countries": ["ZAF", "COD", "ZMB", "MAR", "EGY"], "value_added_percent": 8.0, "bottlenecks": ["Absence de producteurs de composants automobiles en Afrique subsaharienne hors ZAF", "Dépendance aux importations d'acier spécial et d'aluminium", "Faible développement de la sous-traitance automobile locale"]}, {"stage_number": 2, "name": "Fabrication de pièces et sous-systèmes", "hs6Codes": ["870829", "870840", "870850", "870870", "854430"], "description": "Production de pièces détachées, faisceaux de câbles, systèmes de freinage, sièges et composants électroniques. Le Maroc a développé un écosystème de sous-traitance automobile (câblage, sièges) exportant vers l'Europe.", "leading_countries": ["MAR", "ZAF", "TUN", "EGY"], "value_added_percent": 25.0, "bottlenecks": ["Concentration géographique excessive (MAR et ZAF captent 100% de la MVA)", "Faible intégration des fournisseurs africains dans les chaînes mondiales", "Exigences de qualité et de certification très élevées (ISO/TS 16949)", "Manque de capital humain technique spécialisé"]}, {"stage_number": 3, "name": "Assemblage de véhicules", "hs6Codes": ["870321", "870322", "870323", "870421", "870431"], "description": "Assemblage final de véhicules particuliers, utilitaires et camions. L'Afrique du Sud (ZAF) assemble pour BMW, Toyota, VW, Ford ; le Maroc (MAR) pour Renault et Stellantis.", "leading_countries": ["ZAF", "MAR"], "value_added_percent": 35.0, "bottlenecks": ["Marché africain fragmenté en 54 marchés avec normes différentes", "Droits d'importation élevés sur les véhicules finis dans de nombreux pays africains", "Faible pouvoir d'achat limitant la demande de véhicules neufs", "Concurrence des véhicules d'occasion importés d'Europe et d'Asie"]}, {"stage_number": 4, "name": "Distribution, après-vente et mobilité électrique", "hs6Codes": ["870899", "870710", "850760", "870380"], "description": "Réseau de distribution, pièces de rechange, maintenance et émergence des véhicules électriques. Segment à fort potentiel de croissance avec la transition vers la mobilité électrique africaine.", "leading_countries": ["ZAF", "MAR", "NGA", "KEN", "EGY"], "value_added_percent": 32.0, "bottlenecks": ["Infrastructure de recharge électrique quasi-inexistante", "Coût prohibitif des véhicules électriques pour les marchés africains", "Réseau de distribution après-vente insuffisant hors grandes métropoles", "Manque de techniciens formés à la maintenance des VE"]}], "top_producers": [{"country": "Afrique du Sud", "iso3": "ZAF", "role": "manufacturer", "value_musd": 8900.0}, {"country": "Maroc", "iso3": "MAR", "role": "manufacturer", "value_musd": 6900.0}, {"country": "Maroc", "iso3": "MAR", "role": "exporter", "value_musd": 5200.0}, {"country": "Afrique du Sud", "iso3": "ZAF", "role": "exporter", "value_musd": 7100.0}, {"country": "Tunisie", "iso3": "TUN", "role": "processor", "value_musd": 1200.0}, {"country": "Égypte", "iso3": "EGY", "role": "processor", "value_musd": 890.0}], "afcfta_opportunities": [{"description": "Développement d'un marché automobile intra-africain unifié sous AfCFTA : élimination des droits de douane sur les véhicules assemblés en ZAF et MAR vers les marchés d'Afrique subsaharienne (NGA, KEN, ETH, GHA) permettrait de substituer des importations extra-africaines estimées à 4,5 Mds USD.", "potential_value_musd": 4500.0, "beneficiary_countries": ["ZAF", "MAR", "NGA", "KEN", "ETH", "GHA", "TZA", "AGO"]}, {"description": "Extension de la chaîne d'approvisionnement automobile marocaine vers la Tunisie et l'Égypte pour les composants électriques (faisceaux de câbles utilisant le cuivre de COD/ZMB), créant un corridor industriel nord-africain.", "potential_value_musd": 2100.0, "beneficiary_countries": ["MAR", "TUN", "EGY", "COD", "ZMB"]}, {"description": "Développement de véhicules utilitaires légers adaptés aux marchés africains (routes non goudronnées, maintenance simplifiée) assemblés en ZAF ou MAR et distribués sous AfCFTA dans toute l'Afrique.", "potential_value_musd": 1800.0, "beneficiary_countries": ["ZAF", "MAR", "NGA", "ETH", "TZA", "MOZ", "ZMB"]}], "investment_needed_musd": 12000.0, "intra_african_trade_potential_musd": 8400.0, "sources": ["UNIDO Industrial Statistics 2024 (MVA automobile)", "OEC 2022-2023", "UN Comtrade HS 8703/8704/8708/8544", "UNCTAD Investment Monitor 2023", "AfCFTA Secretariat Automotive Value Chain Study 2023", "WTO Tariff Profiles 2023"]}, {"sector": "Pharmaceutique / Chimie", "description": "L'Afrique importe ~94% de ses médicaments et principes actifs pharmaceutiques (API), représentant une vulnérabilité stratégique exposée lors de la pandémie COVID-19. La chaîne de valeur pharmaceutique africaine est embryonnaire mais en forte croissance, avec Maurice dominant la valeur ajoutée manufacturière pharmaceutique selon UNIDO 2024.", "stages": [{"stage_number": 1, "name": "Matières premières chimiques et API", "hs6Codes": ["290519", "293359", "294200", "300490", "281410"], "description": "Production de principes actifs pharmaceutiques (API) et de précurseurs chimiques. Quasi-inexistante en Afrique, l'Afrique du Sud et le Maroc disposent de capacités limitées ; l'Afrique importe ~90% de ses API d'Inde et de Chine.", "leading_countries": ["ZAF", "MAR", "EGY", "DZA"], "value_added_percent": 15.0, "bottlenecks": ["Dépendance quasi-totale aux importations d'API d'Asie", "Absence d'industrie chimique fine en Afrique subsaharienne", "Coût élevé des équipements de synthèse chimique", "Manque de chimistes et pharmaciens industriels qualifiés"]}, {"stage_number": 2, "name": "Formulation pharmaceutique", "hs6Codes": ["300410", "300420", "300431", "300439", "300450"], "description": "Transformation des API en formes pharmaceutiques finies (comprimés, gélules, sirops, injectables). Segment en développement en Afrique du Nord, de l'Est et australe.", "leading_countries": ["ZAF", "EGY", "MAR", "NGA", "KEN"], "value_added_percent": 38.0, "bottlenecks": ["Normes GMP (Bonnes Pratiques de Fabrication) non harmonisées entre pays africains", "Coût élevé de la certification OMS-PQ pour accéder aux marchés publics", "Fragmentation réglementaire (54 agences nationales différentes)", "Capacité de production insuffisante pour les maladies tropicales négligées"]}, {"stage_number": 3, "name": "Fabrication de produits chimiques industriels", "hs6Codes": ["280800", "281511", "320110", "340111", "382490"], "description": "Production d'engrais, de produits agrochimiques, de détergents et de produits chimiques industriels. L'Afrique du Sud, le Maroc et l'Égypte dominent ce segment selon UNIDO 2024.", "leading_countries": ["ZAF", "MAR", "EGY", "DZA", "SEN"], "value_added_percent": 28.0, "bottlenecks": ["Dépendance aux importations de soufre et d'ammoniac pour les engrais", "Concurrence des engrais subventionnés extra-africains", "Faible développement de l'agrochimie locale en Afrique subsaharienne", "Réglementations environnementales insuffisantes pour les produits chimiques dangereux"]}, {"stage_number": 4, "name": "Distribution pharmaceutique et chaîne du froid", "hs6Codes": ["300590", "300610", "382100", "902780"], "description": "Distribution de médicaments, dispositifs médicaux et réactifs de diagnostic. La chaîne du froid insuffisante et la contrefaçon représentent les principaux défis de distribution en Afrique subsaharienne.", "leading_countries": ["ZAF", "KEN", "NGA", "EGY", "MAR"], "value_added_percent": 19.0, "bottlenecks": ["Médicaments contrefaits représentant ~30% du marché en Afrique subsaharienne", "Infrastructure de chaîne du froid insuffisante pour les vaccins et biologiques", "Systèmes de pharmacovigilance faibles", "Marchés publics fragmentés limitant les économies d'échelle"]}], "top_producers": [{"country": "Maurice", "iso3": "MUS", "role": "manufacturer", "value_musd": 680.0}, {"country": "Afrique du Sud", "iso3": "ZAF", "role": "manufacturer", "value_musd": 2100.0}, {"country": "Maroc", "iso3": "MAR", "role": "manufacturer", "value_musd": 1620.0}, {"country": "Égypte", "iso3": "EGY", "role": "manufacturer", "value_musd": 1530.0}, {"country": "Algérie", "iso3": "DZA", "role": "manufacturer", "value_musd": 610.0}, {"country": "Sénégal", "iso3": "SEN", "role": "manufacturer", "value_musd": 330.0}, {"country": "Nigéria", "iso3": "NGA", "role": "processor", "value_musd": 420.0}, {"country": "Kenya", "iso3": "KEN", "role": "processor", "value_musd": 380.0}], "afcfta_opportunities": [{"description": "Création d'un marché pharmaceutique africain unifié sous AfCFTA avec reconnaissance mutuelle des autorisations de mise sur le marché (via l'Agence Africaine du Médicament - AMA) permettant aux fabricants de ZAF, EGY, MAR de distribuer dans toute l'Afrique sans re-certification nationale.", "potential_value_musd": 5500.0, "beneficiary_countries": ["ZAF", "EGY", "MAR", "NGA", "KEN", "ETH", "GHA", "TZA", "SEN"]}, {"description": "Développement d'une production africaine d'API génériques (antipaludéens, antirétroviraux, antibiotiques) en ZAF et EGY pour approvisionner les marchés subsahariens sous AfCFTA, réduisant la dépendance aux importations indiennes et chinoises.", "potential_value_musd": 3200.0, "beneficiary_countries": ["ZAF", "EGY", "MAR", "NGA", "KEN", "ETH", "COD", "TZA"]}, {"description": "Valorisation des phosphates marocains (MAR, premier producteur mondial) en engrais phosphatés (DAP, TSP) exportés vers les marchés agricoles d'Afrique subsaharienne sous AfCFTA, substituant les importations extra-africaines d'engrais.", "potential_value_musd": 2400.0, "beneficiary_countries": ["MAR", "SEN", "ETH", "NGA", "GHA", "TZA", "MOZ", "ZMB"]}], "investment_needed_musd": 8500.0, "intra_african_trade_potential_musd": 11100.0, "sources": ["UNIDO Industrial Statistics 2024 (MVA pharmaceutique et chimique)", "OEC 2022-2023", "UN Comtrade HS 2904/3004/3006/2815/3201", "UNCTAD Trade Analytics 2023", "Africa CDC Pharmaceutical Manufacturing Plan 2023", "AfCFTA Secretariat Pharmaceutical Value Chain Report 2022", "African Medicines Agency (AMA) Framework 2023"]}], "overview": {"total_potential_musd": 50680.0, "key_bottlenecks": ["Exportation massive de matières premières brutes sans transformation locale (minerais, cacao, coton, pétrole brut)", "Fragmentation réglementaire : 54 marchés nationaux avec normes, certifications et tarifs différents malgré AfCFTA", "Déficit d'infrastructure énergétique fiable pour l'industrialisation (coût et fiabilité de l'électricité)", "Manque de capital humain qualifié en ingénierie industrielle, chimie, métallurgie et fabrication avancée", "Accès limité au financement industriel à long terme (taux d'intérêt élevés, absence de marchés de capitaux profonds)", "Logistique intra-africaine coûteuse et lente (coût fret intra-africain 2-3x supérieur aux corridors mondiaux comparables)", "Règles d'origine AfCFTA parfois trop restrictives (double transformation textile) ou insuffisamment appliquées", "Dépendance technologique : absence de transfert de technologie dans les contrats miniers et industriels", "Contrefaçon et commerce informel sapant la compétitivité des producteurs africains formels", "Instabilité politique dans des zones de production clés (COD, MLI, BFA, LBY, SDN)"], "priority_sectors": ["Minéraux / Métaux (cobalt, cuivre, or) — transition énergétique mondiale crée une demande structurelle", "Pharmaceutique / Chimie — sécurité sanitaire stratégique post-COVID, marché de 1,4 Md de consommateurs", "Coton / Textiles / Habillement — chaîne de valeur complète disponible sur le continent, emploi intensif", "Café / Cacao — avantage comparatif révélé fort, montée en gamme vers produits transformés à haute marge", "Pétrole / Pétrochimie — raffinage et pétrochimie aval pour substituer les importations intra-africaines", "Automobile / Assemblage — deux pôles industriels matures (ZAF, MAR) pouvant rayonner sur tout le continent"]}, "generated_by": "Claude AI (claude-sonnet-4-6)", "data_freshness": {"is_fresh": true, "from_cache": false, "age_seconds": 0, "age_human": "Données en direct", "age_human_en": "Live data"}, "_cache_metadata": {"cached_at": "2026-07-10T10:09:48.636224+00:00", "ttl_seconds": 2592000, "cache_type": "claude_value_chains", "from_cache": true, "backend": "json_file"}}}
+{
+  "_file_cache_expires_at": 1786270188.6362329,
+  "data": {
+    "_cache_metadata": {
+      "backend": "json_file",
+      "cache_type": "claude_value_chains",
+      "cached_at": "2026-07-10T10:09:48.636224+00:00",
+      "from_cache": true,
+      "ttl_seconds": 2592000
+    },
+    "data_freshness": {
+      "age_human": "Données en direct",
+      "age_human_en": "Live data",
+      "age_seconds": 0,
+      "from_cache": false,
+      "is_fresh": true
+    },
+    "generated_by": "Claude AI (claude-sonnet-4-6)",
+    "overview": {
+      "key_bottlenecks": [
+        "Exportation massive de matières premières brutes sans transformation locale (minerais, cacao, coton, pétrole brut)",
+        "Fragmentation réglementaire : 54 marchés nationaux avec normes, certifications et tarifs différents malgré AfCFTA",
+        "Déficit d'infrastructure énergétique fiable pour l'industrialisation (coût et fiabilité de l'électricité)",
+        "Manque de capital humain qualifié en ingénierie industrielle, chimie, métallurgie et fabrication avancée",
+        "Accès limité au financement industriel à long terme (taux d'intérêt élevés, absence de marchés de capitaux profonds)",
+        "Logistique intra-africaine coûteuse et lente (coût fret intra-africain 2-3x supérieur aux corridors mondiaux comparables)",
+        "Règles d'origine AfCFTA parfois trop restrictives (double transformation textile) ou insuffisamment appliquées",
+        "Dépendance technologique : absence de transfert de technologie dans les contrats miniers et industriels",
+        "Contrefaçon et commerce informel sapant la compétitivité des producteurs africains formels",
+        "Instabilité politique dans des zones de production clés (COD, MLI, BFA, LBY, SDN)"
+      ],
+      "priority_sectors": [
+        "Minéraux / Métaux (cobalt, cuivre, or) — transition énergétique mondiale crée une demande structurelle",
+        "Pharmaceutique / Chimie — sécurité sanitaire stratégique post-COVID, marché de 1,4 Md de consommateurs",
+        "Coton / Textiles / Habillement — chaîne de valeur complète disponible sur le continent, emploi intensif",
+        "Café / Cacao — avantage comparatif révélé fort, montée en gamme vers produits transformés à haute marge",
+        "Pétrole / Pétrochimie — raffinage et pétrochimie aval pour substituer les importations intra-africaines",
+        "Automobile / Assemblage — deux pôles industriels matures (ZAF, MAR) pouvant rayonner sur tout le continent"
+      ],
+      "total_potential_musd": 50680.0
+    },
+    "value_chains": [
+      {
+        "afcfta_opportunities": [
+          {
+            "beneficiary_countries": [
+              "CIV",
+              "GHA",
+              "EGY",
+              "MAR",
+              "TUN"
+            ],
+            "description": "Élimination des droits de douane sur le cacao transformé (pâte, beurre, poudre) entre pays africains permettrait à la CIV et au Ghana d'exporter vers les marchés nord-africains (EGY, MAR, TUN) à des prix compétitifs face aux importations européennes.",
+            "potential_value_musd": 1200.0
+          },
+          {
+            "beneficiary_countries": [
+              "ETH",
+              "UGA",
+              "KEN",
+              "TZA",
+              "COD",
+              "RWA"
+            ],
+            "description": "Développement d'une chaîne café torréfié éthiopien/ougandais vers les marchés urbains d'Afrique de l'Est et centrale (KEN, TZA, COD, RWA) sous préférences AfCFTA, substituant les importations de café soluble européen.",
+            "potential_value_musd": 480.0
+          },
+          {
+            "beneficiary_countries": [
+              "CIV",
+              "GHA",
+              "CMR",
+              "NGA",
+              "ZAF",
+              "MAR"
+            ],
+            "description": "Création de zones de transformation cacao en Afrique de l'Ouest (CIV, GHA, CMR) approvisionnant des chocolatiers africains émergents en Afrique du Nord et australe.",
+            "potential_value_musd": 750.0
+          }
+        ],
+        "description": "Chaînes de valeur agricoles stratégiques d'Afrique subsaharienne, allant de la culture primaire à la transformation en produits finis (chocolat, café torréfié, extraits). L'Afrique produit ~70% du cacao mondial et ~12% du café mondial mais capture moins de 10% de la valeur finale.",
+        "intra_african_trade_potential_musd": 2430.0,
+        "investment_needed_musd": 3800.0,
+        "sector": "Café / Cacao",
+        "sources": [
+          "FAOSTAT 2024",
+          "OEC 2022-2023",
+          "UN Comtrade HS 0901/1801/1803/1804/1805/1806",
+          "UNCTAD Trade Analytics 2023",
+          "AfCFTA Secretariat Tariff Schedules"
+        ],
+        "stages": [
+          {
+            "bottlenecks": [
+              "Faible productivité à l'hectare",
+              "Dépendance aux intermédiaires informels",
+              "Absence de certification qualité à grande échelle",
+              "Changement climatique affectant les rendements"
+            ],
+            "description": "Récolte des cerises de café et des cabosses de cacao, séchage et fermentation de base. Les producteurs africains exportent majoritairement en matière brute non transformée.",
+            "hs6Codes": [
+              "090111",
+              "090112",
+              "180100"
+            ],
+            "leading_countries": [
+              "ETH",
+              "UGA",
+              "CAF",
+              "GIN",
+              "CIV",
+              "GHA",
+              "NGA",
+              "CMR"
+            ],
+            "name": "Production primaire (matière brute)",
+            "stage_number": 1,
+            "value_added_percent": 8.0
+          },
+          {
+            "bottlenecks": [
+              "Capacité industrielle insuffisante",
+              "Coût élevé de l'énergie",
+              "Normes sanitaires non harmonisées entre pays africains",
+              "Accès limité au financement industriel"
+            ],
+            "description": "Torréfaction du café, décorticage, production de pâte et beurre de cacao. Étape critique où la valeur ajoutée augmente de 30 à 50% mais reste largement réalisée hors d'Afrique.",
+            "hs6Codes": [
+              "090121",
+              "090122",
+              "180310",
+              "180320"
+            ],
+            "leading_countries": [
+              "ETH",
+              "UGA",
+              "CIV",
+              "GHA",
+              "CMR"
+            ],
+            "name": "Première transformation (semi-fini)",
+            "stage_number": 2,
+            "value_added_percent": 22.0
+          },
+          {
+            "bottlenecks": [
+              "Manque de marques africaines reconnues internationalement",
+              "Faible demande intérieure solvable",
+              "Barrières tarifaires résiduelles intra-africaines sur produits transformés",
+              "Absence d'infrastructure logistique froide"
+            ],
+            "description": "Production de café soluble, extraits de café, chocolat de couverture, confiseries au cacao. Étape à plus haute valeur ajoutée, quasi-absente en Afrique subsaharienne.",
+            "hs6Codes": [
+              "090190",
+              "180400",
+              "180500",
+              "180631"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "EGY",
+              "MAR"
+            ],
+            "name": "Transformation avancée (produit fini)",
+            "stage_number": 3,
+            "value_added_percent": 55.0
+          },
+          {
+            "bottlenecks": [
+              "Coûts logistiques intra-africains élevés",
+              "Fragmentation des marchés de détail",
+              "Faible pénétration du e-commerce alimentaire"
+            ],
+            "description": "Commercialisation, emballage final, export vers marchés régionaux africains et internationaux. Les marges de distribution restent captées par des acteurs non africains.",
+            "hs6Codes": [
+              "090190",
+              "180690"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "MAR",
+              "EGY",
+              "KEN"
+            ],
+            "name": "Distribution et export",
+            "stage_number": 4,
+            "value_added_percent": 15.0
+          }
+        ],
+        "top_producers": [
+          {
+            "country": "Côte d'Ivoire",
+            "iso3": "CIV",
+            "role": "raw_material",
+            "value_musd": 4200.0
+          },
+          {
+            "country": "Ghana",
+            "iso3": "GHA",
+            "role": "raw_material",
+            "value_musd": 1480.0
+          },
+          {
+            "country": "Éthiopie",
+            "iso3": "ETH",
+            "role": "raw_material",
+            "value_musd": 1350.0
+          },
+          {
+            "country": "Ouganda",
+            "iso3": "UGA",
+            "role": "raw_material",
+            "value_musd": 940.0
+          },
+          {
+            "country": "Nigéria",
+            "iso3": "NGA",
+            "role": "raw_material",
+            "value_musd": 620.0
+          },
+          {
+            "country": "Cameroun",
+            "iso3": "CMR",
+            "role": "raw_material",
+            "value_musd": 560.0
+          },
+          {
+            "country": "Côte d'Ivoire",
+            "iso3": "CIV",
+            "role": "processor",
+            "value_musd": 890.0
+          },
+          {
+            "country": "Ghana",
+            "iso3": "GHA",
+            "role": "processor",
+            "value_musd": 420.0
+          },
+          {
+            "country": "Afrique du Sud",
+            "iso3": "ZAF",
+            "role": "manufacturer",
+            "value_musd": 310.0
+          }
+        ]
+      },
+      {
+        "afcfta_opportunities": [
+          {
+            "beneficiary_countries": [
+              "BFA",
+              "MLI",
+              "BEN",
+              "CMR",
+              "ETH",
+              "TUN",
+              "MAR",
+              "EGY"
+            ],
+            "description": "Création d'un corridor coton intégré Afrique de l'Ouest → Éthiopie/Tunisie/Maroc : les producteurs de coton-graine (BFA, MLI, BEN) approvisionnent les filatures nord-africaines et éthiopiennes sous tarifs préférentiels AfCFTA, réduisant la dépendance aux importations de fil asiatique.",
+            "potential_value_musd": 1800.0
+          },
+          {
+            "beneficiary_countries": [
+              "BEN",
+              "GHA",
+              "SEN",
+              "CIV",
+              "NGA",
+              "TUN",
+              "MAR"
+            ],
+            "description": "Développement d'une industrie de confection en Afrique de l'Ouest (BEN, GHA, SEN) approvisionnée en tissu par les filatures nord-africaines, ciblant le marché de 400 millions de consommateurs CEDEAO.",
+            "potential_value_musd": 2200.0
+          },
+          {
+            "beneficiary_countries": [
+              "ETH",
+              "TUN",
+              "MAR",
+              "KEN",
+              "ZAF",
+              "GHA"
+            ],
+            "description": "Harmonisation des règles d'origine AfCFTA pour le textile (assouplissement de la double transformation) afin de permettre aux confectionneurs africains d'utiliser des tissus importés tout en bénéficiant des préférences régionales.",
+            "potential_value_musd": 950.0
+          }
+        ],
+        "description": "Chaîne de valeur intégrée allant de la culture du coton-graine à la confection de vêtements finis, représentant un potentiel de transformation industrielle majeur pour l'Afrique de l'Ouest et de l'Est. L'Afrique produit ~5% du coton mondial mais ne capture qu'une fraction infime de la valeur textile finale.",
+        "intra_african_trade_potential_musd": 4950.0,
+        "investment_needed_musd": 5200.0,
+        "sector": "Coton / Textiles / Habillement",
+        "sources": [
+          "FAOSTAT 2024 (coton-graine)",
+          "UNIDO Industrial Statistics 2024 (habillement, MVA)",
+          "OEC 2022-2023",
+          "UN Comtrade HS 5201/5205/5208/6109/6203",
+          "WTO Tariff Profiles 2023",
+          "AfCFTA Rules of Origin Annex 2"
+        ],
+        "stages": [
+          {
+            "bottlenecks": [
+              "Prix mondiaux volatils du coton",
+              "Dépendance aux intrants importés (engrais, pesticides)",
+              "Faible mécanisation agricole",
+              "Subventions distorsives des producteurs extra-africains"
+            ],
+            "description": "Production agricole du coton-graine, égrenage primaire pour séparer la fibre de la graine. L'Afrique de l'Ouest domine la production continentale avec des systèmes coopératifs structurés.",
+            "hs6Codes": [
+              "520100",
+              "520300"
+            ],
+            "leading_countries": [
+              "BFA",
+              "MLI",
+              "BEN",
+              "CMR",
+              "SDN"
+            ],
+            "name": "Culture du coton-graine",
+            "stage_number": 1,
+            "value_added_percent": 5.0
+          },
+          {
+            "bottlenecks": [
+              "Manque d'usines de filature modernes en Afrique de l'Ouest",
+              "Coût élevé de l'électricité industrielle",
+              "Absence de clusters textiles intégrés",
+              "Concurrence des tissus asiatiques à bas coût"
+            ],
+            "description": "Transformation de la fibre de coton en fil puis en tissu écru ou teint. Maillon quasi-absent en Afrique de l'Ouest malgré l'abondance de la matière première.",
+            "hs6Codes": [
+              "520511",
+              "520811",
+              "520911",
+              "521011"
+            ],
+            "leading_countries": [
+              "EGY",
+              "MAR",
+              "TUN",
+              "ETH",
+              "ZAF"
+            ],
+            "name": "Filature et tissage (fil et tissu)",
+            "stage_number": 2,
+            "value_added_percent": 18.0
+          },
+          {
+            "bottlenecks": [
+              "Règles d'origine AfCFTA exigeantes (double transformation)",
+              "Coût de la main-d'œuvre en hausse en Éthiopie post-conflit",
+              "Accès limité aux marchés de détail intra-africains",
+              "Contrefaçon et importations illicites de seconde main (friperie)"
+            ],
+            "description": "Coupe, assemblage et finition de vêtements finis. La Tunisie et l'Éthiopie dominent la valeur ajoutée manufacturière africaine dans ce segment selon les données UNIDO 2024.",
+            "hs6Codes": [
+              "610910",
+              "620342",
+              "611020",
+              "620462"
+            ],
+            "leading_countries": [
+              "TUN",
+              "ETH",
+              "MAR"
+            ],
+            "name": "Confection et habillement",
+            "stage_number": 3,
+            "value_added_percent": 42.0
+          },
+          {
+            "bottlenecks": [
+              "Faible développement de marques africaines à notoriété continentale",
+              "Fragmentation logistique intra-africaine",
+              "Pression des importations de friperie (Article 12 AfCFTA non résolu)"
+            ],
+            "description": "Commercialisation sous marques africaines, distribution dans les réseaux de détail formels et informels. Segment émergent avec fort potentiel de montée en gamme.",
+            "hs6Codes": [
+              "620520",
+              "611030",
+              "621210"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "MAR",
+              "KEN",
+              "NGA"
+            ],
+            "name": "Distribution et marques africaines",
+            "stage_number": 4,
+            "value_added_percent": 35.0
+          }
+        ],
+        "top_producers": [
+          {
+            "country": "Burkina Faso",
+            "iso3": "BFA",
+            "role": "raw_material",
+            "value_musd": 320.0
+          },
+          {
+            "country": "Mali",
+            "iso3": "MLI",
+            "role": "raw_material",
+            "value_musd": 265.0
+          },
+          {
+            "country": "Bénin",
+            "iso3": "BEN",
+            "role": "raw_material",
+            "value_musd": 260.0
+          },
+          {
+            "country": "Cameroun",
+            "iso3": "CMR",
+            "role": "raw_material",
+            "value_musd": 200.0
+          },
+          {
+            "country": "Soudan",
+            "iso3": "SDN",
+            "role": "raw_material",
+            "value_musd": 148.0
+          },
+          {
+            "country": "Tunisie",
+            "iso3": "TUN",
+            "role": "manufacturer",
+            "value_musd": 2800.0
+          },
+          {
+            "country": "Éthiopie",
+            "iso3": "ETH",
+            "role": "manufacturer",
+            "value_musd": 1540.0
+          },
+          {
+            "country": "Maurice",
+            "iso3": "MUS",
+            "role": "processor",
+            "value_musd": 950.0
+          },
+          {
+            "country": "Maroc",
+            "iso3": "MAR",
+            "role": "manufacturer",
+            "value_musd": 3200.0
+          },
+          {
+            "country": "Égypte",
+            "iso3": "EGY",
+            "role": "manufacturer",
+            "value_musd": 2100.0
+          }
+        ]
+      },
+      {
+        "afcfta_opportunities": [
+          {
+            "beneficiary_countries": [
+              "COD",
+              "ZMB",
+              "ZAF",
+              "MAR",
+              "ZWE"
+            ],
+            "description": "Développement d'une zone de transformation du cobalt et du cuivre en RDC et Zambie (câbles électriques, précurseurs de batteries) pour approvisionner les industries automobiles émergentes du Maroc et d'Afrique du Sud sous AfCFTA.",
+            "potential_value_musd": 4500.0
+          },
+          {
+            "beneficiary_countries": [
+              "GHA",
+              "MLI",
+              "BFA",
+              "SDN",
+              "SEN"
+            ],
+            "description": "Création d'une raffinerie d'or régionale en Afrique de l'Ouest (GHA ou SEN) pour transformer l'or brut de GHA, MLI, BFA en lingots certifiés LBMA, capturant la prime de raffinage actuellement perdue vers l'Europe et les Émirats.",
+            "potential_value_musd": 2800.0
+          },
+          {
+            "beneficiary_countries": [
+              "MRT",
+              "SLE",
+              "LBR",
+              "NGA",
+              "GHA",
+              "SEN",
+              "CIV"
+            ],
+            "description": "Développement d'une industrie sidérurgique régionale en Afrique de l'Ouest approvisionnée par le minerai de fer de MRT, SLE et LBR, ciblant la demande de construction de NGA, GHA, SEN sous préférences AfCFTA.",
+            "potential_value_musd": 3200.0
+          }
+        ],
+        "description": "L'Afrique détient plus de 30% des réserves minérales mondiales mais exporte principalement des minerais bruts, capturant moins de 15% de la valeur finale des chaînes métallurgiques mondiales. Le cobalt et le cuivre de la RDC/Zambie sont critiques pour la transition énergétique mondiale.",
+        "intra_african_trade_potential_musd": 10500.0,
+        "investment_needed_musd": 18500.0,
+        "sector": "Minéraux / Métaux (Or, Fer, Cuivre, Cobalt)",
+        "sources": [
+          "USGS Mineral Commodity Summaries 2023",
+          "OEC 2022-2023",
+          "UN Comtrade HS 2601/2603/2604/7402/7403/7108",
+          "UNCTAD Commodities and Development Report 2023",
+          "World Bank Minerals for Climate Action 2023"
+        ],
+        "stages": [
+          {
+            "bottlenecks": [
+              "Exportation massive de minerais bruts sans transformation",
+              "Dépendance aux entreprises minières étrangères",
+              "Faible contenu local dans les contrats miniers",
+              "Instabilité politique dans les zones minières (COD, MLI, BFA)"
+            ],
+            "description": "Extraction et concentration primaire des minerais (fer, cuivre, cobalt, or). L'Afrique subsaharienne domine la production mondiale de cobalt (97% RDC) et représente une part significative du cuivre mondial.",
+            "hs6Codes": [
+              "260111",
+              "260300",
+              "260400",
+              "260600",
+              "710812"
+            ],
+            "leading_countries": [
+              "COD",
+              "ZMB",
+              "ZAF",
+              "GHA",
+              "MLI",
+              "BFA",
+              "MRT",
+              "SLE",
+              "LBR",
+              "SDN"
+            ],
+            "name": "Extraction minière (minerai brut)",
+            "stage_number": 1,
+            "value_added_percent": 6.0
+          },
+          {
+            "bottlenecks": [
+              "Coût et fiabilité de l'approvisionnement électrique pour les fonderies",
+              "Manque de fonderies de cobalt en Afrique (quasi-totalité exportée vers Chine)",
+              "Faible capacité de raffinage de l'or en Afrique de l'Ouest",
+              "Réglementations environnementales insuffisantes"
+            ],
+            "description": "Fusion, affinage et production de métaux primaires (cuivre affiné, cobalt métal, lingots d'or, fonte). Étape partiellement réalisée en Afrique mais avec des capacités insuffisantes.",
+            "hs6Codes": [
+              "740200",
+              "740311",
+              "750210",
+              "720110",
+              "711011"
+            ],
+            "leading_countries": [
+              "ZMB",
+              "COD",
+              "ZAF",
+              "NAM"
+            ],
+            "name": "Concentration et métallurgie primaire",
+            "stage_number": 2,
+            "value_added_percent": 20.0
+          },
+          {
+            "bottlenecks": [
+              "Absence d'industrie sidérurgique intégrée en Afrique centrale et de l'Ouest",
+              "Importations massives d'acier laminé d'Asie",
+              "Faible demande industrielle intérieure africaine",
+              "Manque de normes techniques harmonisées"
+            ],
+            "description": "Production de fils, tôles, tubes et produits laminés en cuivre, acier et autres métaux. Maillon quasi-absent en Afrique subsaharienne, présent partiellement en Afrique du Nord et du Sud.",
+            "hs6Codes": [
+              "740400",
+              "740811",
+              "740911",
+              "721391",
+              "722819"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "EGY",
+              "MAR",
+              "DZA"
+            ],
+            "name": "Transformation industrielle (produits semi-finis)",
+            "stage_number": 3,
+            "value_added_percent": 35.0
+          },
+          {
+            "bottlenecks": [
+              "Absence de capacité de fabrication de batteries en Afrique",
+              "Manque de capital humain qualifié en métallurgie avancée",
+              "Faible attractivité pour les investisseurs en fabrication de haute technologie",
+              "Dépendance technologique vis-à-vis de l'Asie et de l'Europe"
+            ],
+            "description": "Production de batteries, câbles électriques, composants électroniques et structures métalliques. Étape à très haute valeur ajoutée, quasi-inexistante en Afrique malgré la détention des matières premières critiques.",
+            "hs6Codes": [
+              "850760",
+              "850440",
+              "854430",
+              "730820"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "MAR",
+              "EGY"
+            ],
+            "name": "Fabrication de produits finis à haute valeur",
+            "stage_number": 4,
+            "value_added_percent": 39.0
+          }
+        ],
+        "top_producers": [
+          {
+            "country": "RD Congo",
+            "iso3": "COD",
+            "role": "raw_material",
+            "value_musd": 9800.0
+          },
+          {
+            "country": "Zambie",
+            "iso3": "ZMB",
+            "role": "raw_material",
+            "value_musd": 2650.0
+          },
+          {
+            "country": "Afrique du Sud",
+            "iso3": "ZAF",
+            "role": "raw_material",
+            "value_musd": 4200.0
+          },
+          {
+            "country": "Ghana",
+            "iso3": "GHA",
+            "role": "raw_material",
+            "value_musd": 5800.0
+          },
+          {
+            "country": "Mali",
+            "iso3": "MLI",
+            "role": "raw_material",
+            "value_musd": 2100.0
+          },
+          {
+            "country": "Burkina Faso",
+            "iso3": "BFA",
+            "role": "raw_material",
+            "value_musd": 1920.0
+          },
+          {
+            "country": "Mauritanie",
+            "iso3": "MRT",
+            "role": "raw_material",
+            "value_musd": 1100.0
+          },
+          {
+            "country": "Zambie",
+            "iso3": "ZMB",
+            "role": "processor",
+            "value_musd": 1200.0
+          },
+          {
+            "country": "Afrique du Sud",
+            "iso3": "ZAF",
+            "role": "manufacturer",
+            "value_musd": 3100.0
+          },
+          {
+            "country": "Maroc",
+            "iso3": "MAR",
+            "role": "manufacturer",
+            "value_musd": 980.0
+          }
+        ]
+      },
+      {
+        "afcfta_opportunities": [
+          {
+            "beneficiary_countries": [
+              "NGA",
+              "GHA",
+              "SEN",
+              "CIV",
+              "CMR",
+              "BEN",
+              "TGO"
+            ],
+            "description": "La raffinerie Dangote (NGA, 650 000 b/j) peut approvisionner l'Afrique de l'Ouest en produits raffinés sous AfCFTA, substituant ~8 Mds USD d'importations annuelles de produits pétroliers d'Europe vers la CEDEAO.",
+            "potential_value_musd": 8000.0
+          },
+          {
+            "beneficiary_countries": [
+              "DZA",
+              "EGY",
+              "MAR",
+              "TUN",
+              "NGA",
+              "KEN",
+              "ETH"
+            ],
+            "description": "Développement d'un hub pétrochimique algéro-égyptien approvisionnant les industries plastiques et chimiques d'Afrique subsaharienne sous préférences AfCFTA, réduisant les importations de polymères asiatiques.",
+            "potential_value_musd": 3500.0
+          },
+          {
+            "beneficiary_countries": [
+              "MOZ",
+              "TZA",
+              "ZMB",
+              "ZWE",
+              "MWI",
+              "ETH"
+            ],
+            "description": "Valorisation du gaz naturel mozambicain (MOZ) en engrais azotés (urée) pour approvisionner les marchés agricoles d'Afrique orientale et australe, réduisant la dépendance aux importations d'engrais extra-africains.",
+            "potential_value_musd": 1800.0
+          }
+        ],
+        "description": "L'Afrique produit ~8% du pétrole mondial et ~6% du gaz naturel, mais importe massivement des produits raffinés et pétrochimiques faute de capacités de raffinage suffisantes. La chaîne de valeur aval (raffinage, pétrochimie, plastiques) représente l'opportunité de transformation la plus immédiate.",
+        "intra_african_trade_potential_musd": 13300.0,
+        "investment_needed_musd": 42000.0,
+        "sector": "Pétrole et Gaz / Pétrochimie",
+        "sources": [
+          "EIA International Energy Statistics 2023",
+          "OPEC Annual Statistical Bulletin 2023",
+          "OEC 2022-2023",
+          "UN Comtrade HS 2709/2710/2711/3901/3902",
+          "IMF WEO October 2024",
+          "UNCTAD Trade Analytics 2023"
+        ],
+        "stages": [
+          {
+            "bottlenecks": [
+              "Vols et sabotages de pipelines (NGA)",
+              "Instabilité politique (LBY)",
+              "Déclin naturel des champs matures (AGO)",
+              "Sous-investissement dans l'exploration post-COVID",
+              "Dépendance aux compagnies pétrolières internationales"
+            ],
+            "description": "Production de pétrole brut et de gaz naturel. Le Nigéria, la Libye, l'Angola et l'Algérie dominent la production continentale selon les données EIA/OPEC 2023.",
+            "hs6Codes": [
+              "270900",
+              "271111",
+              "271121"
+            ],
+            "leading_countries": [
+              "NGA",
+              "LBY",
+              "AGO",
+              "DZA",
+              "EGY"
+            ],
+            "name": "Extraction d'hydrocarbures bruts",
+            "stage_number": 1,
+            "value_added_percent": 12.0
+          },
+          {
+            "bottlenecks": [
+              "Capacité de raffinage insuffisante (déficit structurel de ~3 Mb/j)",
+              "Raffineries vieillissantes nécessitant des investissements massifs",
+              "Subventions aux carburants distordant les signaux de prix",
+              "Dépendance aux importations de produits raffinés d'Europe"
+            ],
+            "description": "Transformation du brut en carburants (essence, diesel, kérosène) et produits pétroliers. L'Afrique raffine moins de 40% de sa production brute, important massivement des produits raffinés d'Europe et d'Asie.",
+            "hs6Codes": [
+              "271012",
+              "271019",
+              "271020",
+              "271091"
+            ],
+            "leading_countries": [
+              "DZA",
+              "EGY",
+              "NGA",
+              "ZAF",
+              "MAR"
+            ],
+            "name": "Raffinage et produits pétroliers",
+            "stage_number": 2,
+            "value_added_percent": 28.0
+          },
+          {
+            "bottlenecks": [
+              "Investissements en capital très élevés (>2 Mds USD par complexe)",
+              "Manque de savoir-faire technologique local",
+              "Marchés intérieurs fragmentés insuffisants pour justifier les économies d'échelle",
+              "Accès limité au financement de projet long terme"
+            ],
+            "description": "Production d'éthylène, propylène, polyéthylène et polypropylène à partir du gaz naturel ou des naphtas de raffinage. Segment quasi-absent en Afrique subsaharienne, présent partiellement en Algérie et Égypte.",
+            "hs6Codes": [
+              "290110",
+              "290121",
+              "390110",
+              "390210",
+              "390310"
+            ],
+            "leading_countries": [
+              "DZA",
+              "EGY",
+              "ZAF",
+              "NGA"
+            ],
+            "name": "Pétrochimie de base (oléfines, polymères)",
+            "stage_number": 3,
+            "value_added_percent": 35.0
+          },
+          {
+            "bottlenecks": [
+              "Concurrence des plastiques asiatiques à bas coût",
+              "Faible recyclage et économie circulaire",
+              "Réglementations environnementales sur les plastiques à usage unique",
+              "Fragmentation des marchés de distribution"
+            ],
+            "description": "Fabrication d'emballages plastiques, tuyaux, films, détergents et produits chimiques industriels. Segment à forte demande intérieure africaine, actuellement satisfaite par des importations extra-africaines.",
+            "hs6Codes": [
+              "391710",
+              "392010",
+              "392116",
+              "340111",
+              "320410"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "EGY",
+              "MAR",
+              "NGA",
+              "DZA"
+            ],
+            "name": "Produits chimiques et plastiques transformés",
+            "stage_number": 4,
+            "value_added_percent": 25.0
+          }
+        ],
+        "top_producers": [
+          {
+            "country": "Nigéria",
+            "iso3": "NGA",
+            "role": "raw_material",
+            "value_musd": 38500.0
+          },
+          {
+            "country": "Libye",
+            "iso3": "LBY",
+            "role": "raw_material",
+            "value_musd": 33600.0
+          },
+          {
+            "country": "Angola",
+            "iso3": "AGO",
+            "role": "raw_material",
+            "value_musd": 31600.0
+          },
+          {
+            "country": "Algérie",
+            "iso3": "DZA",
+            "role": "raw_material",
+            "value_musd": 28400.0
+          },
+          {
+            "country": "Égypte",
+            "iso3": "EGY",
+            "role": "raw_material",
+            "value_musd": 15900.0
+          },
+          {
+            "country": "Algérie",
+            "iso3": "DZA",
+            "role": "processor",
+            "value_musd": 8200.0
+          },
+          {
+            "country": "Égypte",
+            "iso3": "EGY",
+            "role": "processor",
+            "value_musd": 6100.0
+          },
+          {
+            "country": "Afrique du Sud",
+            "iso3": "ZAF",
+            "role": "manufacturer",
+            "value_musd": 4800.0
+          },
+          {
+            "country": "Maroc",
+            "iso3": "MAR",
+            "role": "manufacturer",
+            "value_musd": 2200.0
+          }
+        ]
+      },
+      {
+        "afcfta_opportunities": [
+          {
+            "beneficiary_countries": [
+              "ZAF",
+              "MAR",
+              "NGA",
+              "KEN",
+              "ETH",
+              "GHA",
+              "TZA",
+              "AGO"
+            ],
+            "description": "Développement d'un marché automobile intra-africain unifié sous AfCFTA : élimination des droits de douane sur les véhicules assemblés en ZAF et MAR vers les marchés d'Afrique subsaharienne (NGA, KEN, ETH, GHA) permettrait de substituer des importations extra-africaines estimées à 4,5 Mds USD.",
+            "potential_value_musd": 4500.0
+          },
+          {
+            "beneficiary_countries": [
+              "MAR",
+              "TUN",
+              "EGY",
+              "COD",
+              "ZMB"
+            ],
+            "description": "Extension de la chaîne d'approvisionnement automobile marocaine vers la Tunisie et l'Égypte pour les composants électriques (faisceaux de câbles utilisant le cuivre de COD/ZMB), créant un corridor industriel nord-africain.",
+            "potential_value_musd": 2100.0
+          },
+          {
+            "beneficiary_countries": [
+              "ZAF",
+              "MAR",
+              "NGA",
+              "ETH",
+              "TZA",
+              "MOZ",
+              "ZMB"
+            ],
+            "description": "Développement de véhicules utilitaires légers adaptés aux marchés africains (routes non goudronnées, maintenance simplifiée) assemblés en ZAF ou MAR et distribués sous AfCFTA dans toute l'Afrique.",
+            "potential_value_musd": 1800.0
+          }
+        ],
+        "description": "L'industrie automobile africaine est concentrée en Afrique du Sud et au Maroc, qui représentent 100% de la valeur ajoutée manufacturière continentale selon UNIDO 2024. Le potentiel AfCFTA réside dans l'extension des chaînes d'approvisionnement vers d'autres pays africains et le développement de véhicules adaptés aux marchés africains.",
+        "intra_african_trade_potential_musd": 8400.0,
+        "investment_needed_musd": 12000.0,
+        "sector": "Automobile / Assemblage",
+        "sources": [
+          "UNIDO Industrial Statistics 2024 (MVA automobile)",
+          "OEC 2022-2023",
+          "UN Comtrade HS 8703/8704/8708/8544",
+          "UNCTAD Investment Monitor 2023",
+          "AfCFTA Secretariat Automotive Value Chain Study 2023",
+          "WTO Tariff Profiles 2023"
+        ],
+        "stages": [
+          {
+            "bottlenecks": [
+              "Absence de producteurs de composants automobiles en Afrique subsaharienne hors ZAF",
+              "Dépendance aux importations d'acier spécial et d'aluminium",
+              "Faible développement de la sous-traitance automobile locale"
+            ],
+            "description": "Production d'acier laminé, câbles en cuivre, pneumatiques et verre automobile. Ces intrants sont partiellement produits en Afrique (acier ZAF, cuivre COD/ZMB) mais les composants transformés sont majoritairement importés.",
+            "hs6Codes": [
+              "720839",
+              "740811",
+              "401110",
+              "700711"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "COD",
+              "ZMB",
+              "MAR",
+              "EGY"
+            ],
+            "name": "Matières premières et composants de base",
+            "stage_number": 1,
+            "value_added_percent": 8.0
+          },
+          {
+            "bottlenecks": [
+              "Concentration géographique excessive (MAR et ZAF captent 100% de la MVA)",
+              "Faible intégration des fournisseurs africains dans les chaînes mondiales",
+              "Exigences de qualité et de certification très élevées (ISO/TS 16949)",
+              "Manque de capital humain technique spécialisé"
+            ],
+            "description": "Production de pièces détachées, faisceaux de câbles, systèmes de freinage, sièges et composants électroniques. Le Maroc a développé un écosystème de sous-traitance automobile (câblage, sièges) exportant vers l'Europe.",
+            "hs6Codes": [
+              "870829",
+              "870840",
+              "870850",
+              "870870",
+              "854430"
+            ],
+            "leading_countries": [
+              "MAR",
+              "ZAF",
+              "TUN",
+              "EGY"
+            ],
+            "name": "Fabrication de pièces et sous-systèmes",
+            "stage_number": 2,
+            "value_added_percent": 25.0
+          },
+          {
+            "bottlenecks": [
+              "Marché africain fragmenté en 54 marchés avec normes différentes",
+              "Droits d'importation élevés sur les véhicules finis dans de nombreux pays africains",
+              "Faible pouvoir d'achat limitant la demande de véhicules neufs",
+              "Concurrence des véhicules d'occasion importés d'Europe et d'Asie"
+            ],
+            "description": "Assemblage final de véhicules particuliers, utilitaires et camions. L'Afrique du Sud (ZAF) assemble pour BMW, Toyota, VW, Ford ; le Maroc (MAR) pour Renault et Stellantis.",
+            "hs6Codes": [
+              "870321",
+              "870322",
+              "870323",
+              "870421",
+              "870431"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "MAR"
+            ],
+            "name": "Assemblage de véhicules",
+            "stage_number": 3,
+            "value_added_percent": 35.0
+          },
+          {
+            "bottlenecks": [
+              "Infrastructure de recharge électrique quasi-inexistante",
+              "Coût prohibitif des véhicules électriques pour les marchés africains",
+              "Réseau de distribution après-vente insuffisant hors grandes métropoles",
+              "Manque de techniciens formés à la maintenance des VE"
+            ],
+            "description": "Réseau de distribution, pièces de rechange, maintenance et émergence des véhicules électriques. Segment à fort potentiel de croissance avec la transition vers la mobilité électrique africaine.",
+            "hs6Codes": [
+              "870899",
+              "870710",
+              "850760",
+              "870380"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "MAR",
+              "NGA",
+              "KEN",
+              "EGY"
+            ],
+            "name": "Distribution, après-vente et mobilité électrique",
+            "stage_number": 4,
+            "value_added_percent": 32.0
+          }
+        ],
+        "top_producers": [
+          {
+            "country": "Afrique du Sud",
+            "iso3": "ZAF",
+            "role": "manufacturer",
+            "value_musd": 8900.0
+          },
+          {
+            "country": "Maroc",
+            "iso3": "MAR",
+            "role": "manufacturer",
+            "value_musd": 6900.0
+          },
+          {
+            "country": "Maroc",
+            "iso3": "MAR",
+            "role": "exporter",
+            "value_musd": 5200.0
+          },
+          {
+            "country": "Afrique du Sud",
+            "iso3": "ZAF",
+            "role": "exporter",
+            "value_musd": 7100.0
+          },
+          {
+            "country": "Tunisie",
+            "iso3": "TUN",
+            "role": "processor",
+            "value_musd": 1200.0
+          },
+          {
+            "country": "Égypte",
+            "iso3": "EGY",
+            "role": "processor",
+            "value_musd": 890.0
+          }
+        ]
+      },
+      {
+        "afcfta_opportunities": [
+          {
+            "beneficiary_countries": [
+              "ZAF",
+              "EGY",
+              "MAR",
+              "NGA",
+              "KEN",
+              "ETH",
+              "GHA",
+              "TZA",
+              "SEN"
+            ],
+            "description": "Création d'un marché pharmaceutique africain unifié sous AfCFTA avec reconnaissance mutuelle des autorisations de mise sur le marché (via l'Agence Africaine du Médicament - AMA) permettant aux fabricants de ZAF, EGY, MAR de distribuer dans toute l'Afrique sans re-certification nationale.",
+            "potential_value_musd": 5500.0
+          },
+          {
+            "beneficiary_countries": [
+              "ZAF",
+              "EGY",
+              "MAR",
+              "NGA",
+              "KEN",
+              "ETH",
+              "COD",
+              "TZA"
+            ],
+            "description": "Développement d'une production africaine d'API génériques (antipaludéens, antirétroviraux, antibiotiques) en ZAF et EGY pour approvisionner les marchés subsahariens sous AfCFTA, réduisant la dépendance aux importations indiennes et chinoises.",
+            "potential_value_musd": 3200.0
+          },
+          {
+            "beneficiary_countries": [
+              "MAR",
+              "SEN",
+              "ETH",
+              "NGA",
+              "GHA",
+              "TZA",
+              "MOZ",
+              "ZMB"
+            ],
+            "description": "Valorisation des phosphates marocains (MAR, premier producteur mondial) en engrais phosphatés (DAP, TSP) exportés vers les marchés agricoles d'Afrique subsaharienne sous AfCFTA, substituant les importations extra-africaines d'engrais.",
+            "potential_value_musd": 2400.0
+          }
+        ],
+        "description": "L'Afrique importe ~94% de ses médicaments et principes actifs pharmaceutiques (API), représentant une vulnérabilité stratégique exposée lors de la pandémie COVID-19. La chaîne de valeur pharmaceutique africaine est embryonnaire mais en forte croissance, avec Maurice dominant la valeur ajoutée manufacturière pharmaceutique selon UNIDO 2024.",
+        "intra_african_trade_potential_musd": 11100.0,
+        "investment_needed_musd": 8500.0,
+        "sector": "Pharmaceutique / Chimie",
+        "sources": [
+          "UNIDO Industrial Statistics 2024 (MVA pharmaceutique et chimique)",
+          "OEC 2022-2023",
+          "UN Comtrade HS 2904/3004/3006/2815/3201",
+          "UNCTAD Trade Analytics 2023",
+          "Africa CDC Pharmaceutical Manufacturing Plan 2023",
+          "AfCFTA Secretariat Pharmaceutical Value Chain Report 2022",
+          "African Medicines Agency (AMA) Framework 2023"
+        ],
+        "stages": [
+          {
+            "bottlenecks": [
+              "Dépendance quasi-totale aux importations d'API d'Asie",
+              "Absence d'industrie chimique fine en Afrique subsaharienne",
+              "Coût élevé des équipements de synthèse chimique",
+              "Manque de chimistes et pharmaciens industriels qualifiés"
+            ],
+            "description": "Production de principes actifs pharmaceutiques (API) et de précurseurs chimiques. Quasi-inexistante en Afrique, l'Afrique du Sud et le Maroc disposent de capacités limitées ; l'Afrique importe ~90% de ses API d'Inde et de Chine.",
+            "hs6Codes": [
+              "290519",
+              "293359",
+              "294200",
+              "300490",
+              "281410"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "MAR",
+              "EGY",
+              "DZA"
+            ],
+            "name": "Matières premières chimiques et API",
+            "stage_number": 1,
+            "value_added_percent": 15.0
+          },
+          {
+            "bottlenecks": [
+              "Normes GMP (Bonnes Pratiques de Fabrication) non harmonisées entre pays africains",
+              "Coût élevé de la certification OMS-PQ pour accéder aux marchés publics",
+              "Fragmentation réglementaire (54 agences nationales différentes)",
+              "Capacité de production insuffisante pour les maladies tropicales négligées"
+            ],
+            "description": "Transformation des API en formes pharmaceutiques finies (comprimés, gélules, sirops, injectables). Segment en développement en Afrique du Nord, de l'Est et australe.",
+            "hs6Codes": [
+              "300410",
+              "300420",
+              "300431",
+              "300439",
+              "300450"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "EGY",
+              "MAR",
+              "NGA",
+              "KEN"
+            ],
+            "name": "Formulation pharmaceutique",
+            "stage_number": 2,
+            "value_added_percent": 38.0
+          },
+          {
+            "bottlenecks": [
+              "Dépendance aux importations de soufre et d'ammoniac pour les engrais",
+              "Concurrence des engrais subventionnés extra-africains",
+              "Faible développement de l'agrochimie locale en Afrique subsaharienne",
+              "Réglementations environnementales insuffisantes pour les produits chimiques dangereux"
+            ],
+            "description": "Production d'engrais, de produits agrochimiques, de détergents et de produits chimiques industriels. L'Afrique du Sud, le Maroc et l'Égypte dominent ce segment selon UNIDO 2024.",
+            "hs6Codes": [
+              "280800",
+              "281511",
+              "320110",
+              "340111",
+              "382490"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "MAR",
+              "EGY",
+              "DZA",
+              "SEN"
+            ],
+            "name": "Fabrication de produits chimiques industriels",
+            "stage_number": 3,
+            "value_added_percent": 28.0
+          },
+          {
+            "bottlenecks": [
+              "Médicaments contrefaits représentant ~30% du marché en Afrique subsaharienne",
+              "Infrastructure de chaîne du froid insuffisante pour les vaccins et biologiques",
+              "Systèmes de pharmacovigilance faibles",
+              "Marchés publics fragmentés limitant les économies d'échelle"
+            ],
+            "description": "Distribution de médicaments, dispositifs médicaux et réactifs de diagnostic. La chaîne du froid insuffisante et la contrefaçon représentent les principaux défis de distribution en Afrique subsaharienne.",
+            "hs6Codes": [
+              "300590",
+              "300610",
+              "382100",
+              "902780"
+            ],
+            "leading_countries": [
+              "ZAF",
+              "KEN",
+              "NGA",
+              "EGY",
+              "MAR"
+            ],
+            "name": "Distribution pharmaceutique et chaîne du froid",
+            "stage_number": 4,
+            "value_added_percent": 19.0
+          }
+        ],
+        "top_producers": [
+          {
+            "country": "Maurice",
+            "iso3": "MUS",
+            "role": "manufacturer",
+            "value_musd": 680.0
+          },
+          {
+            "country": "Afrique du Sud",
+            "iso3": "ZAF",
+            "role": "manufacturer",
+            "value_musd": 2100.0
+          },
+          {
+            "country": "Maroc",
+            "iso3": "MAR",
+            "role": "manufacturer",
+            "value_musd": 1620.0
+          },
+          {
+            "country": "Égypte",
+            "iso3": "EGY",
+            "role": "manufacturer",
+            "value_musd": 1530.0
+          },
+          {
+            "country": "Algérie",
+            "iso3": "DZA",
+            "role": "manufacturer",
+            "value_musd": 610.0
+          },
+          {
+            "country": "Sénégal",
+            "iso3": "SEN",
+            "role": "manufacturer",
+            "value_musd": 330.0
+          },
+          {
+            "country": "Nigéria",
+            "iso3": "NGA",
+            "role": "processor",
+            "value_musd": 420.0
+          },
+          {
+            "country": "Kenya",
+            "iso3": "KEN",
+            "role": "processor",
+            "value_musd": 380.0
+          }
+        ]
+      }
+    ]
+  }
+}
