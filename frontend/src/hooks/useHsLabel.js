@@ -26,28 +26,31 @@ export function useHsLabel(hsCode, language = 'fr') {
     const clean = String(hsCode || '').replace(/\D/g, '');
     if (!VALID_LENGTHS.includes(clean.length)) {
       setLabel(null);
+      setLoading(false);
       return;
     }
-    let cancelled = false;
+    const controller = new AbortController();
     setLoading(true);
     const timer = setTimeout(() => {
       axios
-        .get(`${API}/hs-codes/label/${clean}`)
+        .get(`${API}/hs-codes/label/${clean}`, { signal: controller.signal })
         .then((res) => {
-          if (cancelled) return;
           const data = res.data || {};
           setLabel(language === 'en' ? data.label_en || data.label_fr : data.label_fr || data.label_en);
+          setLoading(false);
         })
-        .catch(() => {
-          if (!cancelled) setLabel(null);
-        })
-        .finally(() => {
-          if (!cancelled) setLoading(false);
+        .catch((err) => {
+          // A request aborted by the next keystroke's cleanup is not a real
+          // failure — its own effect run already owns `loading`/`label`, so
+          // updating state here would race it back to a stale value.
+          if (axios.isCancel(err)) return;
+          setLabel(null);
+          setLoading(false);
         });
     }, 300);
     return () => {
-      cancelled = true;
       clearTimeout(timer);
+      controller.abort();
     };
   }, [hsCode, language]);
 

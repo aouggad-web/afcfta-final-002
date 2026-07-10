@@ -1314,6 +1314,8 @@ Wrap in: {{"value_chains": [...], "overview": {{"total_potential_musd": 0.0, "ke
             return 0
         removed = 0
         for chain in result.get("value_chains", []) or []:
+            if not isinstance(chain, dict):
+                continue
             producers = chain.get("top_producers")
             if not isinstance(producers, list):
                 continue

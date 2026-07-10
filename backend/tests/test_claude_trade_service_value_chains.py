@@ -87,3 +87,21 @@ def test_filter_unverified_raw_producers_handles_missing_or_malformed_fields():
     }
     removed = ClaudeTradeService._filter_unverified_raw_producers(result, real_iso3)
     assert removed == 0
+
+
+def test_filter_unverified_raw_producers_handles_non_dict_chain_entries():
+    # Un LLM peut renvoyer une liste "value_chains" mal formée (élément qui
+    # n'est pas un dict) — ne doit jamais lever d'exception et casser toute
+    # la réponse par ailleurs exploitable.
+    result = {
+        "value_chains": [
+            "not-a-dict",
+            42,
+            None,
+            {"top_producers": [{"iso3": "MUS", "role": "raw_material"}]},
+        ]
+    }
+    removed = ClaudeTradeService._filter_unverified_raw_producers(result, {"GHA"})
+    assert removed == 1
+    assert result["value_chains"][0] == "not-a-dict"
+    assert result["value_chains"][3]["top_producers"] == []

@@ -832,9 +832,9 @@ export default function ValueChains({ language = 'fr' }) {
                 <div className="space-y-3">
                   {(chain.topProducers || chain.top_producers || []).map((producer, idx) => {
                     const role = producer.role;
-                    const isNotPrimaryProducer = role === 'processor' || role === 'exporter';
+                    const isNotPrimaryProducer = role === 'processor' || role === 'exporter' || role === 'manufacturer';
                     return (
-                    <div key={producer.iso3} className="flex items-center gap-3">
+                    <div key={`${producer.iso3}-${role || idx}`} className="flex items-center gap-3">
                       <span className="font-black text-slate-300 w-6">{idx + 1}</span>
                       <div className="flex-1">
                         <div className="flex justify-between items-center mb-1">
