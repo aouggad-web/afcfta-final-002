@@ -1175,35 +1175,45 @@ class RealTradeDataService:
 
 
 def get_product_name(hs_code: str, lang: str = "fr", oec_name: str = None) -> str:
-    """Get product name for HS code with fallback to OEC name"""
+    """
+    Intitulé officiel d'un code SH, du plus spécifique au plus général :
+    sous-position SH6 exacte (base OMD 5 800+ codes) -> position SH4 ->
+    chapitre SH2 -> nom OEC fourni -> générique.
+
+    Bug corrigé : l'ancien code tronquait un SH6 à ses 4 DERNIERS chiffres
+    (« 180400 » -> « 0400 »), rattachant chaque sous-position au chapitre de
+    ses chiffres 3-4 — « Beurre de cacao » était étiqueté « Produits
+    laitiers, œufs » (chapitre 04), et tout SH6 dont les chiffres 3-4
+    valaient « 01 » devenait « Animaux vivants ».
+    """
     if not hs_code:
         return oec_name or "Produit inconnu"
 
-    # Clean HS code (remove any prefixes)
-    clean_code = str(hs_code).strip()
-    if len(clean_code) > 4:
-        clean_code = clean_code[-4:]  # Keep last 4 digits if longer
+    clean_code = "".join(ch for ch in str(hs_code) if ch.isdigit())
+    if not clean_code:
+        return oec_name or f"HS {hs_code}"
 
-    # Try exact match first
-    if clean_code in HS_PRODUCT_NAMES:
-        return HS_PRODUCT_NAMES[clean_code].get(
-            lang, HS_PRODUCT_NAMES[clean_code].get("en", clean_code)
-        )
+    # Sous-position SH6 exacte — libellés officiels FR/EN de la base OMD.
+    if len(clean_code) >= 6:
+        try:
+            from etl.hs6_database import HS6_DATABASE
 
-    # Try HS4 (first 4 digits)
-    if len(clean_code) >= 4:
-        hs4 = clean_code[:4]
-        if hs4 in HS_PRODUCT_NAMES:
-            return HS_PRODUCT_NAMES[hs4].get(lang, HS_PRODUCT_NAMES[hs4].get("en", f"HS {hs4}"))
+            entry = HS6_DATABASE.get(clean_code[:6])
+            if entry:
+                label = entry.get(f"description_{lang}") or entry.get("description_en")
+                if label:
+                    return label
+        except ImportError:  # base indisponible — replis ci-dessous
+            pass
 
-    # Try chapter (first 2 digits)
-    chapter = clean_code[:2]
-    if chapter in HS_PRODUCT_NAMES:
-        return HS_PRODUCT_NAMES[chapter].get(
-            lang, HS_PRODUCT_NAMES[chapter].get("en", f"HS {hs_code}")
-        )
+    # Position SH4 puis chapitre SH2, dans la table locale.
+    for prefix_len in (4, 2):
+        prefix = clean_code[:prefix_len]
+        if len(prefix) == prefix_len and prefix in HS_PRODUCT_NAMES:
+            return HS_PRODUCT_NAMES[prefix].get(
+                lang, HS_PRODUCT_NAMES[prefix].get("en", f"HS {prefix}")
+            )
 
-    # Return OEC name if available, otherwise generic
     if oec_name:
         return oec_name
 
