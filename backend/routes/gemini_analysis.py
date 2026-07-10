@@ -444,7 +444,18 @@ async def invalidate_cache(
             pdv = None
         for mode in ["export", "import", "industrial"]:
             for l in ([lang] if lang else ["fr", "en"]):
-                params = {"country": country, "mode": mode, "lang": l}
+                # Doit reproduire EXACTEMENT les clés de cache_params posées par
+                # ClaudeTradeService.analyze_trade_opportunities() (pv, model) —
+                # le cache est un match exact par clé, pas un préfixe : un champ
+                # manquant ici laisse l'ancienne analyse vivre jusqu'au TTL de
+                # 90 jours au lieu d'être invalidée.
+                params = {
+                    "country": country,
+                    "mode": mode,
+                    "lang": l,
+                    "pv": 2,
+                    "model": claude_trade_service.MODEL,
+                }
                 if pdv and mode in ("export", "industrial"):
                     params["pdv"] = pdv
                 if cache_service.invalidate("claude_analysis", params):
