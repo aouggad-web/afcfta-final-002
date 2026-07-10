@@ -335,17 +335,35 @@ class ClaudeTradeService:
         return bool(ANTHROPIC_AVAILABLE and self.api_key)
 
     async def _call_claude(self, user_prompt: str, max_tokens: int = 8192) -> str:
-        """Call Claude API and return raw text."""
+        """Call Claude API and return raw text.
+
+        Uses streaming when max_tokens is large (>10k) because Anthropic
+        requires it for operations expected to take >10 minutes. Aggregates
+        the stream into the final text so the caller sees the same contract.
+        """
         if not self._is_ready():
             raise RuntimeError("ANTHROPIC_API_KEY is not set or anthropic package not installed.")
         client = anthropic.AsyncAnthropic(api_key=self.api_key)
-        message = await client.messages.create(
+
+        common_kwargs = dict(
             model=self.MODEL,
             max_tokens=max_tokens,
             system=TRADE_SYSTEM_INSTRUCTION,
             messages=[{"role": "user", "content": user_prompt}],
             temperature=0.2,
         )
+
+        # Threshold below which non-streaming is fine (< ~10-min SLA).
+        # Sonnet-4-6 typically outputs ~50-80 tok/s; 10 min ≈ 30-48k tokens,
+        # but the API enforces streaming already at 10k so we mirror that.
+        if max_tokens > 10000:
+            chunks: list[str] = []
+            async with client.messages.stream(**common_kwargs) as stream:
+                async for text in stream.text_stream:
+                    chunks.append(text)
+            return "".join(chunks)
+
+        message = await client.messages.create(**common_kwargs)
         return message.content[0].text
 
     @staticmethod
@@ -1275,10 +1293,19 @@ For each value chain provide:
   "sources": []
 }}
 
-Wrap in: {{"value_chains": [...], "overview": {{"total_potential_musd": 0.0, "key_bottlenecks": [], "priority_sectors": []}}}}"""
+Wrap in: {{"value_chains": [...], "overview": {{"total_potential_musd": 0.0, "key_bottlenecks": [], "priority_sectors": []}}}}
+
+IMPORTANT: Return ONLY the raw JSON (no markdown fences, no prose before/after).
+Keep descriptions concise (≤2 sentences each). Each stage may contain the specified
+fields ONLY — no extra keys like "keyProducers", "dataSource", "valueCapture", etc.
+This keeps the payload compact and parseable."""
 
         try:
-            raw = await self._call_claude(prompt, max_tokens=6000)
+            # Sonnet-4-6 supports up to 64k output; 6000 was truncating the
+            # 6-sector value-chain analysis mid-JSON. Raise to 32000 which
+            # comfortably fits the full nested schema even for verbose French
+            # replies (measured ~12k output tokens for 6 sectors × full schema).
+            raw = await self._call_claude(prompt, max_tokens=32000)
             result = self._extract_json(raw)
             if not result:
                 return {"error": "Failed to parse response"}
