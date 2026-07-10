@@ -146,13 +146,20 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     # uniquement dans projections, jamais dans le champ hdi du modèle.
     profile.hdi = real_data.get("development_index")
 
-    # Inflation / chômage : dataset BM auto-actualisé (API officielle) quand
-    # l'ETL les a collectés — null sinon, jamais inventés.
+    # Inflation / chômage — cascade sans double emploi avec la PR #234 :
+    # 1) dataset BM auto-actualisé (API officielle, se rafraîchit via l'ETL) ;
+    # 2) repli sur la valeur curée du dataset Profils Pays
+    #    (inflation_rate_2024, FMI WEO — ajoutée par la PR #234) ;
+    # 3) null sinon — jamais inventés.
     from services import wb_macro_service
 
     wb = wb_macro_service.get_macro(iso3_code).get("indicators", {})
-    profile.inflation_rate = (wb.get("inflation_percent") or {}).get("value")
-    profile.unemployment_rate = (wb.get("unemployment_percent") or {}).get("value")
+    profile.inflation_rate = (wb.get("inflation_percent") or {}).get("value") or real_data.get(
+        "inflation_rate_2024"
+    )
+    profile.unemployment_rate = (wb.get("unemployment_percent") or {}).get(
+        "value"
+    ) or real_data.get("unemployment_rate_2024")
 
     profile.projections = {
         "gdp_growth_forecast_2024": real_data.get("growth_forecast_2024", "3.0%"),
