@@ -135,21 +135,33 @@ DATA SANITIZATION RULES (CRITICAL):
    - TOGO (TGO): Lomé is a major re-export hub. Flag any product where exports >> domestic
      production capacity as "suspected re-export".
    - MAURITIUS (MUS): Small-island economy that IMPORTS ~75% of its consumption needs.
-     Official national statistics (EDB Mauritius newsletter, July 2024 — exports
-     reported in Mauritian rupees, MUR) confirm its top DOMESTIC exports are
-     preserved fish, apparel and cane sugar — all PROCESSING activity on largely
-     imported inputs (whole tuna, fabric/yarn, raw sugar under EPZ/Freeport
-     regimes) — NEVER present Mauritius as a "leading producer" or "top producer"
-     of the raw material (fresh-caught fish stocks, raw cotton, raw sugarcane) nor
-     of goods absent from these official exports (e.g. pharmaceuticals, TVs). It
-     may be cited only as a processor/manufacturer/exporter of the finished good,
-     explicitly labeled as such, never as the source of the primary commodity.
+     Official national statistics (EDB Mauritius, 2023 data in MUR) show its #1
+     DOMESTIC export is canned tuna (HS 1604, 11,500 MUR Mn), followed by apparel
+     (HS 61/62), cane sugar (HS 1701), medical DEVICES (HS 9018 — instruments, NOT
+     HS30 pharmaceuticals), animal feed and fish oils — all PROCESSING activity on
+     largely imported inputs (whole tuna, fabric/yarn, raw sugar under EPZ/Freeport
+     regimes). The EDB tracks RE-EXPORTS separately (top re-export markets: Vietnam,
+     Réunion, USA...) — re-exported merchandise does NOT acquire Mauritian origin.
+     NEVER present Mauritius as a "leading producer" of the raw material (fish
+     stocks, raw cotton, raw sugarcane) nor of goods absent from its official
+     domestic exports (e.g. HS30 pharmaceuticals/medicines, TVs). It may be cited
+     only as a processor/manufacturer/exporter of the finished good, explicitly
+     labeled as such, never as the source of the primary commodity.
 2. NEVER CONFUSE PRODUCER WITH EXPORTER/PROCESSOR (applies to every country, not just
    the flagged cases above): "top producer" / "leading producer" / "producteur principal"
    must reflect actual primary production (harvested/extracted volume), never export
    value, re-export volume, or processing/assembly activity on imported inputs. If you
    are not confident a country actually produces the raw material domestically, omit it
    from producer rankings rather than guess — a missing entry is safer than a wrong one.
+2bis. RE-EXPORTS NEVER CONFER AfCFTA ORIGIN: goods merely transiting or undergoing
+   minimal operations in a free zone / freeport (storage, sorting, splitting,
+   repacking, relabelling) do NOT acquire origin under AfCFTA Annex 2 rules — the very
+   label "re-export" means origin was NOT acquired locally. An AfCFTA-preference
+   opportunity may rely on a re-export hub (MUS, TGO, DJI) as supplier ONLY if the
+   product undergoes SUBSTANTIAL transformation there satisfying the product-specific
+   rule (change of tariff heading, value-addition threshold, or specific process) —
+   and the rationale must say so explicitly. Never count tariff preference on
+   merely re-exported merchandise.
 3. HYDROCARBON BIAS (mandatory diversification):
    - DZA, AGO, NGA, LBY, GAB: max 2–3 hydrocarbon items then pivot to Agriculture,
      Manufacturing, Services. The non-oil economy is the analytical focus.
@@ -275,6 +287,7 @@ COUNTRY_NAME_TO_ISO3 = {
     "mauritania": "MRT",
     "mauritanie": "MRT",
     "mauritius": "MUS",
+    "maurice": "MUS",  # nom officiel français (constants.AFRICAN_COUNTRIES)
     "île maurice": "MUS",
     "ile maurice": "MUS",
     "morocco": "MAR",
@@ -557,6 +570,84 @@ class ClaudeTradeService:
                     },
                 )
 
+    # Hubs dont une part importante des exportations est de la réexportation
+    # (zone franche / freeport / transit) : l'origine ZLECAf n'y est acquise que
+    # par transformation substantielle, jamais par les opérations minimales de
+    # la réexportation elle-même.
+    _REEXPORT_HUBS = {
+        "MUS": "Maurice — part importante de réexportation via la zone franche/Freeport "
+        "(les statistiques officielles EDB distinguent exports domestiques et réexports)",
+        "TGO": "Togo — Lomé, hub majeur de réexportation régionale",
+        "DJI": "Djibouti — débit portuaire essentiellement en transit vers l'hinterland",
+    }
+
+    def _attach_origin_qualification(
+        self, opp: dict, mode: str, analyzed_iso3: Optional[str]
+    ) -> None:
+        """
+        Garde-fou règles d'origine pour les hubs de réexportation : une
+        marchandise simplement réexportée depuis une zone franche (opérations
+        minimales — stockage, tri, fractionnement, reconditionnement,
+        ré-étiquetage) n'acquiert PAS l'origine ZLECAf ; l'intitulé même de
+        « réexportation » signifie que l'origine n'a pas été acquise sur place.
+        La préférence tarifaire ne vaut que si la transformation locale
+        satisfait la règle d'origine du produit (Annexe 2 / Appendice IV).
+
+        On attache la règle RÉELLE du produit (PSR décembre 2023, via
+        routes.rules_of_origin) et l'avertissement — on ne tranche pas la
+        qualification nous-mêmes (elle dépend des opérations effectivement
+        réalisées), on dit précisément ce qu'il faut vérifier.
+        """
+        if mode == "import":
+            supplier = opp.get("potential_supplier") or opp.get("potentialSupplier")
+            hub_iso3 = self._resolve_iso3(supplier) if supplier else None
+        else:
+            hub_iso3 = analyzed_iso3
+        if not hub_iso3 or hub_iso3 not in self._REEXPORT_HUBS:
+            return
+        hs = (opp.get("product") or {}).get("hs6Code") or opp.get("hs_code") or ""
+        rule_summary = None
+        try:
+            from routes.rules_of_origin import get_rule_of_origin
+
+            rule = get_rule_of_origin(hs) if hs else None
+            if rule and rule.get("status") not in (None, "UNKNOWN"):
+                primary = rule.get("primary_rule") or {}
+                rule_summary = {
+                    "code": primary.get("code"),
+                    "name": primary.get("name"),
+                    "regional_content_pct": rule.get("regional_content"),
+                    "status": rule.get("status"),
+                    "source": rule.get("source_detail"),
+                }
+        except Exception as e:
+            logger.debug(f"PSR lookup unavailable for {hs}: {e}")
+        opp["origin_qualification"] = {
+            "warning": True,
+            "hub_iso3": hub_iso3,
+            "hub_profile": self._REEXPORT_HUBS[hub_iso3],
+            "product_specific_rule": rule_summary,
+            "note": (
+                "Fournisseur à forte activité de réexportation : les opérations "
+                "minimales en zone franche (stockage, tri, fractionnement, "
+                "reconditionnement, ré-étiquetage) ne confèrent PAS l'origine "
+                "ZLECAf. La préférence tarifaire ne s'applique que si la "
+                "transformation locale satisfait la règle d'origine du produit"
+                + (
+                    f" ({rule_summary['name']}"
+                    + (
+                        f", contenu régional ≥ {rule_summary['regional_content_pct']} %"
+                        if rule_summary.get("regional_content_pct")
+                        else ""
+                    )
+                    + ")"
+                    if rule_summary and rule_summary.get("name")
+                    else " (Annexe 2 / Appendice IV ZLECAf)"
+                )
+                + ". Exiger un certificat d'origine ZLECAf avant de compter la préférence."
+            ),
+        }
+
     def _post_process_opportunities(
         self, opportunities: list, analyzed_country: str, mode: str
     ) -> list:
@@ -602,6 +693,9 @@ class ClaudeTradeService:
                 opp["importing_country"] = analyzed_country
 
             self._add_legacy_aliases(opp, mode)
+            # Hub de réexportation côté fournisseur ⇒ avertissement règles
+            # d'origine + règle PSR réelle du produit (jamais silencieux).
+            self._attach_origin_qualification(opp, mode, analyzed_iso3)
             cleaned.append(opp)
 
         return cleaned
@@ -626,7 +720,13 @@ class ClaudeTradeService:
           import, les deux pour le mode industrial.
         """
         sections = []
-        stats = {"production_products": 0, "oec_flows": 0, "oec_year": None, "assembly_signals": 0}
+        stats = {
+            "production_products": 0,
+            "oec_flows": 0,
+            "oec_year": None,
+            "assembly_signals": 0,
+            "official_national_stats": False,
+        }
 
         if iso3:
             try:
@@ -691,6 +791,20 @@ class ClaudeTradeService:
                     )
                 except Exception as e:
                     logger.warning(f"OEC grounding ({title}) failed for {iso3}: {e}")
+
+        # Statistiques officielles nationales (bulletins des agences nationales,
+        # ex. EDB Mauritius) : seules à distinguer exports DOMESTIQUES et
+        # RÉEXPORTATIONS — distinction décisive pour les règles d'origine.
+        if iso3:
+            try:
+                from services import national_official_stats
+
+                official_lines = national_official_stats.grounding_lines(iso3)
+                if official_lines:
+                    stats["official_national_stats"] = True
+                    sections.append("\n".join(official_lines))
+            except Exception as e:
+                logger.warning(f"Official national stats grounding failed for {iso3}: {e}")
 
         # Signal d'assemblage par proxy d'intrants (mode industrial uniquement) :
         # comble le trou de données pour les biens d'équipement (réfrigérateurs,
@@ -1824,9 +1938,11 @@ This keeps the payload compact and parseable."""
             return {"error": "ANTHROPIC_API_KEY not configured"}
 
         # "pv" = version du prompt : v2 ajoute l'ancrage sur la production réelle
-        # de chaque pays et les règles anti-fabrication — invalide les
-        # comparaisons en cache générées avec l'ancien prompt non ancré.
-        cache_params = {"country_a": country_a, "country_b": country_b, "lang": lang, "pv": 2}
+        # de chaque pays et les règles anti-fabrication ; v3 écrase le bloc
+        # economic_comparison par les indicateurs réels du module Profils Pays
+        # — invalide les comparaisons en cache aux indicateurs générés de
+        # mémoire (zéros/nulls pour beaucoup de pays).
+        cache_params = {"country_a": country_a, "country_b": country_b, "lang": lang, "pv": 3}
         cached = cache_service.get("claude_comparison", cache_params)
         if cached:
             cached["data_freshness"] = get_data_freshness(
@@ -1905,6 +2021,12 @@ Return this EXACT JSON structure:
             if not result:
                 return {"error": "Failed to parse response"}
 
+            # Le bloc economic_comparison est écrasé par les données RÉELLES du
+            # module Profils Pays (WDI 2024 embarqué + dataset BM auto-actualisé
+            # + GAI 2025) — le LLM les générait de mémoire, avec des zéros/nulls
+            # pour beaucoup de pays, alors que la plateforme les a pour les 54.
+            self._override_economic_comparison(result, iso3_a, iso3_b)
+
             result["generated_by"] = f"Claude AI ({self.last_model_used or self.MODEL})"
             result["data_freshness"] = get_data_freshness(None)
             cache_service.set("claude_comparison", cache_params, result, "claude_comparison")
@@ -1913,6 +2035,49 @@ Return this EXACT JSON structure:
         except Exception as e:
             logger.error(f"Error in country comparison: {e}", exc_info=True)
             return {"error": str(e)}
+
+    @staticmethod
+    def _override_economic_comparison(
+        result: Dict, iso3_a: Optional[str], iso3_b: Optional[str]
+    ) -> None:
+        """
+        Remplace les indicateurs macro LLM par les valeurs réelles du module
+        Profils Pays. Un champ sans donnée réelle devient null (le frontend
+        affiche N/A) — un null honnête vaut mieux qu'un chiffre de mémoire.
+        """
+        try:
+            from country_data import REAL_COUNTRY_DATA
+            from gold_reserves_data import GOLD_RESERVES_GAI_DATA
+
+            from services import wb_macro_service
+
+            eco = result.get("economic_comparison")
+            if not isinstance(eco, dict):
+                eco = {}
+                result["economic_comparison"] = eco
+            gai_map = GOLD_RESERVES_GAI_DATA.get("global_attractiveness_index_2025", {})
+            for suffix, iso3 in (("a", iso3_a), ("b", iso3_b)):
+                if not iso3:
+                    continue
+                macro = REAL_COUNTRY_DATA.get(iso3, {})
+                wb = wb_macro_service.get_macro(iso3).get("indicators", {})
+
+                def _wb(key):
+                    entry = wb.get(key)  # noqa: B023 — wb rebound per iteration
+                    return entry["value"] if entry else None
+
+                eco[f"gdp_{suffix}_billion"] = macro.get("gdp_usd_2024")
+                eco[f"gdp_per_capita_{suffix}"] = macro.get("gdp_per_capita_2024")
+                eco[f"gdp_growth_{suffix}"] = _wb("gdp_growth_percent")
+                eco[f"hdi_{suffix}"] = macro.get("development_index")
+                eco[f"gai_score_{suffix}"] = (gai_map.get(iso3) or {}).get("score")
+                eco[f"inflation_{suffix}"] = _wb("inflation_percent")
+            eco["indicators_source"] = (
+                "Banque Mondiale WDI 2024 (module Profils Pays) + World Bank API "
+                "(worldbank_data_latest) + GAI 2025 — valeurs réelles, non générées"
+            )
+        except Exception as e:
+            logger.warning(f"economic_comparison override failed: {e}")
 
 
 # Singleton

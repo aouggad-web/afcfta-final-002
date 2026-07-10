@@ -595,4 +595,219 @@ def test_compare_countries_cache_key_includes_prompt_version(monkeypatch):
 
     svc._call_claude = fake_call
     asyncio.run(svc.compare_countries("Ghana", "Togo", lang="fr"))
-    assert captured["params"]["pv"] == 2
+    # v3 : le bloc economic_comparison est écrasé par les indicateurs réels
+    # du module Profils Pays — invalide les caches aux chiffres LLM.
+    assert captured["params"]["pv"] == 3
+
+
+# ── Garde-fou origine ZLECAf : hubs de réexportation (zone franche) ──────────
+
+
+def _fake_psr(hs_code, lang="fr"):
+    return {
+        "status": "AGREED",
+        "regional_content": 40,
+        "primary_rule": {"code": "VA40", "name": "Valeur ajoutée ≥ 40 %"},
+        "source_detail": "AfCFTA Appendix IV (PSR) - test",
+    }
+
+
+def test_import_from_mauritius_gets_origin_warning(monkeypatch):
+    # La réexportation depuis la zone franche mauricienne ne confère PAS
+    # l'origine ZLECAf (opérations minimales) : toute opportunité d'import
+    # dont le fournisseur est Maurice doit porter l'avertissement + la règle
+    # d'origine réelle du produit.
+    import routes.rules_of_origin as roo
+
+    monkeypatch.setattr(roo, "get_rule_of_origin", _fake_psr)
+    svc = _service()
+    opps = svc._post_process_opportunities(
+        [
+            {
+                "product": {"name": "Thon en conserve", "hs6Code": "160414"},
+                "potentialSupplier": "Maurice",
+            },
+            {
+                "product": {"name": "Café", "hs6Code": "090111"},
+                "potentialSupplier": "Kenya",
+            },
+        ],
+        "Sénégal",
+        "import",
+    )
+    mus = next(o for o in opps if o.get("potentialSupplier") == "Maurice")
+    ken = next(o for o in opps if o.get("potentialSupplier") == "Kenya")
+    oq = mus["origin_qualification"]
+    assert oq["warning"] is True
+    assert oq["hub_iso3"] == "MUS"
+    assert "ne confèrent PAS l'origine" in oq["note"]
+    assert oq["product_specific_rule"]["regional_content_pct"] == 40
+    assert "certificat d'origine" in oq["note"]
+    # Fournisseur non-hub : aucun avertissement parasite.
+    assert "origin_qualification" not in ken
+
+
+def test_export_mode_hub_analyzed_country_gets_origin_warning(monkeypatch):
+    import routes.rules_of_origin as roo
+
+    monkeypatch.setattr(roo, "get_rule_of_origin", _fake_psr)
+    svc = _service()
+    opps = svc._post_process_opportunities(
+        [
+            {
+                "product": {"name": "Textile", "hs6Code": "610910"},
+                "potentialPartner": "Kenya",
+            }
+        ],
+        "Maurice",
+        "export",
+    )
+    assert opps[0]["origin_qualification"]["hub_iso3"] == "MUS"
+
+
+def test_origin_warning_graceful_without_psr_dataset(monkeypatch):
+    # RULES_DATA non initialisé (hors démarrage app) -> statut UNKNOWN :
+    # l'avertissement reste, la règle produit est absente, rien ne casse.
+    import routes.rules_of_origin as roo
+
+    monkeypatch.setattr(roo, "get_rule_of_origin", lambda hs, lang="fr": {"status": "UNKNOWN"})
+    svc = _service()
+    opps = svc._post_process_opportunities(
+        [{"product": {"name": "X", "hs6Code": "999999"}, "potentialSupplier": "Djibouti"}],
+        "Sénégal",
+        "import",
+    )
+    oq = opps[0]["origin_qualification"]
+    assert oq["warning"] is True
+    assert oq["product_specific_rule"] is None
+    assert "Annexe 2" in oq["note"]
+
+
+def test_non_hub_countries_never_get_origin_warning():
+    svc = _service()
+    opps = svc._post_process_opportunities(
+        [{"product": {"name": "Cacao", "hs6Code": "180100"}, "potentialPartner": "Ghana"}],
+        "Côte d'Ivoire",
+        "export",
+    )
+    assert "origin_qualification" not in opps[0]
+
+
+def test_system_instruction_forbids_preference_on_reexports():
+    from services import claude_trade_service as mod
+
+    instr = mod.TRADE_SYSTEM_INSTRUCTION
+    assert "RE-EXPORTS NEVER CONFER AfCFTA ORIGIN" in instr
+    assert "minimal operations" in instr
+    assert "SUBSTANTIAL transformation" in instr
+
+
+# ── Statistiques officielles nationales (EDB Mauritius 2023) ─────────────────
+
+
+def test_official_stats_mauritius_domestic_vs_reexport():
+    from services import national_official_stats as nos
+
+    stats = nos.get_official_stats("mus")
+    assert stats is not None
+    assert stats["source"]["currency"] == "MUR"
+    assert stats["source"]["data_year"] == 2023
+    # Thon en conserve : 1er produit d'export DOMESTIQUE 2023 (11,5 Md MUR).
+    top = stats["top_domestic_export_product"]
+    assert top["hs4"] == "1604" and top["value_mur_mn"] == 11_500
+    # Les réexportations sont suivies SÉPARÉMENT — leurs marchés diffèrent
+    # des marchés d'export domestique (Vietnam en tête des réexports).
+    assert stats["top_reexport_markets"][0]["iso3"] == "VNM"
+    assert stats["top_domestic_export_markets"][0]["iso3"] == "ZAF"
+    # Aucune statistique inventée pour les autres pays.
+    assert nos.get_official_stats("KEN") is None
+    assert nos.grounding_lines("KEN") == []
+
+
+def test_official_stats_grounding_lines_flag_currency_and_origin():
+    from services import national_official_stats as nos
+
+    text = "\n".join(nos.grounding_lines("MUS"))
+    assert "LOCAL CURRENCY, not USD" in text
+    assert "does NOT acquire local AfCFTA origin" in text
+    assert "Thon en conserve" in text
+
+
+def test_opportunity_grounding_includes_official_stats_for_mauritius(monkeypatch):
+    from services import claude_trade_service as mod
+
+    async def no_flows(iso3, year=None, n=15):
+        return []
+
+    monkeypatch.setattr(mod.oec_data_service, "get_top_exports", no_flows)
+    monkeypatch.setattr(mod.oec_data_service, "get_top_imports", no_flows)
+    svc = _service()
+    text, stats = asyncio.run(svc._country_opportunity_grounding("Maurice", "MUS", "export"))
+    assert stats["official_national_stats"] is True
+    assert "OFFICIAL NATIONAL STATISTICS FOR Maurice" in text
+    assert "RE-EXPORTS are tracked SEPARATELY" in text
+    # Pays sans source officielle intégrée : pas de section, flag False.
+    text2, stats2 = asyncio.run(svc._country_opportunity_grounding("Kenya", "KEN", "export"))
+    assert stats2["official_national_stats"] is False
+    assert "OFFICIAL NATIONAL STATISTICS" not in text2
+
+
+def test_resolve_iso3_accepts_french_name_maurice():
+    # Bug corrigé : « Maurice » (nom officiel français, constants.py) manquait
+    # dans COUNTRY_NAME_TO_ISO3 — le filtre anti-boucle et le garde-fou origine
+    # ne se déclenchaient jamais pour ce nom.
+    svc = _service()
+    assert svc._resolve_iso3("Maurice") == "MUS"
+    assert svc._resolve_iso3("maurice") == "MUS"
+
+
+# ── Indicateurs réels dans /ai/compare (module Profils Pays, jamais LLM) ─────
+
+
+def test_compare_countries_economic_block_uses_real_profile_data(monkeypatch):
+    from services import claude_trade_service as mod
+
+    monkeypatch.setattr(mod.cache_service, "get", lambda *a, **k: None)
+    monkeypatch.setattr(mod.cache_service, "set", lambda *a, **k: None)
+    svc = _service()
+
+    async def fake_call(prompt, max_tokens=8192):
+        # Le LLM renvoie des zéros de mémoire — cas réel pour beaucoup de pays.
+        return json.dumps(
+            {
+                "country_a": "Algérie",
+                "country_b": "Comores",
+                "economic_comparison": {"gdp_a_billion": 0.0, "hdi_a": 0.0, "inflation_a": 12.3},
+            }
+        )
+
+    svc._call_claude = fake_call
+    result = asyncio.run(svc.compare_countries("Algérie", "Comores", lang="fr"))
+    eco = result["economic_comparison"]
+    from country_data import REAL_COUNTRY_DATA
+
+    # Écrasés par les valeurs réelles WDI 2024 du module Profils Pays.
+    assert eco["gdp_a_billion"] == REAL_COUNTRY_DATA["DZA"]["gdp_usd_2024"]
+    assert eco["gdp_b_billion"] == REAL_COUNTRY_DATA["COM"]["gdp_usd_2024"]
+    assert eco["hdi_a"] == REAL_COUNTRY_DATA["DZA"]["development_index"]
+    assert eco["gdp_per_capita_a"] == REAL_COUNTRY_DATA["DZA"]["gdp_per_capita_2024"]
+    # Inflation : pas encore collectée par l'ETL -> null honnête, jamais le
+    # chiffre de mémoire du LLM.
+    assert eco["inflation_a"] is None
+    assert "non générées" in eco["indicators_source"]
+
+
+def test_wb_macro_service_reads_latest_year_and_never_invents():
+    from services import wb_macro_service
+
+    wb_macro_service.reset_cache()
+    macro = wb_macro_service.get_macro("AGO")
+    assert macro["available"] is True
+    gdp = macro["indicators"]["gdp_usd"]
+    assert gdp["value"] > 1e10 and gdp["year"] >= 2023
+    growth = macro["indicators"]["gdp_growth_percent"]
+    assert growth and growth["year"] >= 2023
+    # Indicateurs pas encore collectés par l'ETL : None, pas de valeur inventée.
+    assert macro["indicators"]["inflation_percent"] is None
+    # Pays hors dataset : indisponible.
+    assert wb_macro_service.get_macro("XXX")["available"] is False

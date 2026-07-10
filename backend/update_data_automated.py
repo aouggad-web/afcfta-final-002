@@ -136,6 +136,11 @@ class DataUpdater:
             "GDP_per_capita": "NY.GDP.PCAP.CD",  # GDP per capita (current US$)
             "Population": "SP.POP.TOTL",  # Population, total
             "GDP_growth": "NY.GDP.MKTP.KD.ZG",  # GDP growth (annual %)
+            # Consommés par services/wb_macro_service.py (profil pays +
+            # comparaisons) — tant qu'ils n'ont pas été collectés, ces champs
+            # restent null côté API plutôt que d'être inventés.
+            "Inflation": "FP.CPI.TOTL.ZG",  # Inflation, consumer prices (annual %)
+            "Unemployment": "SL.UEM.TOTL.ZS",  # Unemployment (% labor force, ILO)
         }
 
         country_data = {}
@@ -168,8 +173,10 @@ class DataUpdater:
 
         self.log(f"\n✓ Updated data for {len(country_data)} countries")
 
-        # Save the updated data
-        output_file = Path(__file__).parent.parent / "worldbank_data_latest.json"
+        # Save the updated data — dans data/json/, là où l'application le lit
+        # (services/wb_macro_service.py) ; l'ancien chemin racine n'était
+        # consommé par personne.
+        output_file = Path(__file__).parent.parent / "data" / "json" / "worldbank_data_latest.json"
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(
                 {
