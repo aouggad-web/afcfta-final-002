@@ -441,3 +441,158 @@ def test_assembly_signal_only_grounds_industrial_mode(monkeypatch):
     svc = _service()
     asyncio.run(svc._country_opportunity_grounding("Maroc", "MAR", "export"))
     assert calls == []
+
+
+# ── Ancrage de analyze_product_by_hs_code et compare_countries ─────────────────
+#
+# Plainte utilisateur : malgré l'ancrage des Opportunités, un petit pays
+# (ex. Mauritanie) ressortait toujours comme "producteur majeur" de
+# médicaments et de téléviseurs — deux vues IA distinctes (recherche par code
+# HS, comparaison de pays) n'étaient pas ancrées du tout sur les données
+# réelles de la plateforme et généraient ces classements de mémoire.
+
+
+def _no_op_importers(monkeypatch):
+    """Empêche tout appel réseau OEC réel dans les tests d'ancrage HS."""
+    from services import claude_trade_service as mod
+
+    async def fake_importers(hs_code, year):
+        return {"data": []}
+
+    monkeypatch.setattr(mod.oec_service, "get_top_african_importers", fake_importers)
+
+
+def test_hs_grounding_uses_real_production_when_available(monkeypatch):
+    _no_op_importers(monkeypatch)
+    svc = _service()
+    # HS 1801 (cacao) est couvert par production_capacity_service (FAOSTAT).
+    text, real_iso3 = asyncio.run(svc._hs_code_grounding("1801"))
+    assert "REAL PRODUCTION" in text
+    assert "CIV" in real_iso3
+
+
+def test_hs_grounding_flags_no_data_for_unmapped_code(monkeypatch):
+    _no_op_importers(monkeypatch)
+    svc = _service()
+    # Code HS sans aucune correspondance FAOSTAT/USGS/UNIDO (chaussures).
+    text, real_iso3 = asyncio.run(svc._hs_code_grounding("640299"))
+    assert real_iso3 == set()
+    rules = svc._product_grounding_rules(text, bool(real_iso3))
+    assert "do NOT invent a list of producing countries" in rules
+
+
+def test_hs_grounding_relays_partial_coverage_caveat(monkeypatch):
+    # Cœur du défaut rapporté : pour les médicaments (HS 30) et l'électronique/
+    # TV (HS 85), UNIDO ne couvre qu'1-2 pays africains dans notre base (dont
+    # Maurice) — sans relayer le garde-fou, le LLM voit "Maurice (100.0%)" et
+    # la présente comme producteur majeur continental de médicaments/TV.
+    _no_op_importers(monkeypatch)
+    svc = _service()
+    for hs in ("300490", "8528"):
+        text, real_iso3 = asyncio.run(svc._hs_code_grounding(hs))
+        assert real_iso3, hs
+        assert "[PARTIAL COVERAGE" in text, hs
+        assert "NEVER present as continental leadership" in text, hs
+        rules = svc._product_grounding_rules(text, bool(real_iso3))
+        assert "must NEVER be described as continental" in rules, hs
+
+
+def test_hs_grounding_included_in_product_prompt(monkeypatch):
+    _bypass_cache(monkeypatch)
+    _no_op_importers(monkeypatch)
+    svc = _service()
+
+    captured = {}
+
+    async def fake_call(prompt, max_tokens=8192):
+        captured["prompt"] = prompt
+        return json.dumps({"product": {}, "top_african_exporters": []})
+
+    svc._call_claude = fake_call
+    asyncio.run(svc.analyze_product_by_hs_code("1801", lang="fr"))
+    assert "VERIFIED REAL DATA" in captured["prompt"]
+    assert "STRICT DATA RULES" in captured["prompt"]
+    assert "REAL PRODUCTION" in captured["prompt"]
+
+
+def test_filter_unverified_hs_producers_strips_unverified_entries():
+    svc = _service()
+    result = {
+        "production_capacities": [
+            {"country": "Côte d'Ivoire", "iso3": "CIV", "capacity": "cacao"},
+            {"country": "Mauritanie", "iso3": "MRT", "capacity": "cacao"},
+        ]
+    }
+    removed = svc._filter_unverified_hs_producers(result, {"CIV"})
+    assert removed == 1
+    assert [p["iso3"] for p in result["production_capacities"]] == ["CIV"]
+
+
+def test_filter_unverified_hs_producers_noop_when_no_real_data():
+    svc = _service()
+    result = {"production_capacities": [{"country": "Mauritanie", "iso3": "MRT"}]}
+    removed = svc._filter_unverified_hs_producers(result, set())
+    assert removed == 0
+    assert len(result["production_capacities"]) == 1
+
+
+def test_product_cache_key_includes_prompt_version(monkeypatch):
+    from services import claude_trade_service as mod
+
+    captured = {}
+
+    def fake_set(prefix, params, value, cache_type):
+        captured["params"] = params
+
+    monkeypatch.setattr(mod.cache_service, "get", lambda *a, **k: None)
+    monkeypatch.setattr(mod.cache_service, "set", fake_set)
+    _no_op_importers(monkeypatch)
+
+    svc = _service()
+
+    async def fake_call(prompt, max_tokens=8192):
+        return json.dumps({"product": {}})
+
+    svc._call_claude = fake_call
+    asyncio.run(svc.analyze_product_by_hs_code("1801", lang="fr"))
+    assert captured["params"]["pv"] == 2
+
+
+def test_compare_countries_grounded_on_real_production(monkeypatch):
+    _bypass_cache(monkeypatch)
+    svc = _service()
+
+    captured = {}
+
+    async def fake_call(prompt, max_tokens=8192):
+        captured["prompt"] = prompt
+        return json.dumps({"country_a": "Côte d'Ivoire", "country_b": "Kenya"})
+
+    svc._call_claude = fake_call
+    asyncio.run(svc.compare_countries("Côte d'Ivoire", "Kenya", lang="fr"))
+    prompt = captured["prompt"]
+    assert "VERIFIED REAL DATA" in prompt
+    assert "STRICT DATA RULES" in prompt
+    assert "VERIFIED PRODUCTION OF Côte d'Ivoire" in prompt
+    assert "Cocoa beans" in prompt
+
+
+def test_compare_countries_cache_key_includes_prompt_version(monkeypatch):
+    from services import claude_trade_service as mod
+
+    captured = {}
+
+    def fake_set(prefix, params, value, cache_type):
+        captured["params"] = params
+
+    monkeypatch.setattr(mod.cache_service, "get", lambda *a, **k: None)
+    monkeypatch.setattr(mod.cache_service, "set", fake_set)
+
+    svc = _service()
+
+    async def fake_call(prompt, max_tokens=8192):
+        return json.dumps({"country_a": "Ghana", "country_b": "Togo"})
+
+    svc._call_claude = fake_call
+    asyncio.run(svc.compare_countries("Ghana", "Togo", lang="fr"))
+    assert captured["params"]["pv"] == 2

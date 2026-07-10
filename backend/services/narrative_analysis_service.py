@@ -376,6 +376,70 @@ def analyze_national_need(
     }
 
 
+def _fmt_range(lo: float, hi: float, unit: str) -> str:
+    """Formate une fourchette avec un arrondi lisible (2 chiffres significatifs)."""
+
+    def _round(x: float) -> float:
+        if x >= 100:
+            return round(x, -1)
+        if x >= 10:
+            return round(x)
+        return round(x, 1)
+
+    return f"{_round(lo):g}–{_round(hi):g} {unit}"
+
+
+def _phase1_volume_target(report: Dict) -> Optional[str]:
+    """
+    Volume cible phase 1 dérivé de la demande RÉELLE du marché cible et du
+    ratio valeur/poids du produit — jamais un tonnage forfaitaire.
+
+    L'ancienne recommandation codait en dur « 200–500 MT/mois » quel que soit
+    le produit : banal pour des pommes de terre (~1 USD/kg) mais absurde pour
+    des médicaments SH 300490 (~60 USD/kg, soit 12–30 M$/mois) sur un corridor
+    bilatéral. Ici : 5–10 % des importations annuelles observées du marché de
+    destination (OEC), converties en tonnage via l'indice valeur/poids
+    (cours mondial ou estimation par chapitre SH). Retourne None si aucune
+    importation observée — on ne fabrique pas un tonnage sans donnée.
+    """
+    need = report.get("national_need") or {}
+    obs = need.get("observed_imports") or {}
+    annual_usd = obs.get("import_value_usd")
+    hs_code = (report.get("inputs") or {}).get("hs_code") or ""
+    if not annual_usd or annual_usd <= 0 or not hs_code:
+        return None
+    try:
+        from services.shipment_estimator import usd_per_kg_for_hs
+
+        ratio = usd_per_kg_for_hs(hs_code)
+    except Exception as exc:  # pragma: no cover - defensive
+        _log.warning("usd_per_kg_for_hs unavailable: %s", exc)
+        return None
+    usd_per_kg = ratio.get("usd_per_kg") or 0
+    if usd_per_kg <= 0:
+        return None
+
+    # 5–10 % des importations annuelles observées, en rythme mensuel.
+    lo_usd, hi_usd = annual_usd * 0.05 / 12, annual_usd * 0.10 / 12
+    lo_kg, hi_kg = lo_usd / usd_per_kg, hi_usd / usd_per_kg
+    if hi_kg >= 1_000:
+        volume_txt = _fmt_range(lo_kg / 1_000, hi_kg / 1_000, "MT/mois")
+    else:
+        volume_txt = _fmt_range(lo_kg, hi_kg, "kg/mois")
+
+    ratio_src = (
+        f"cours mondial {ratio.get('benchmark')}"
+        if not ratio.get("is_estimate")
+        else "estimation par chapitre SH"
+    )
+    return (
+        f"Volumes cibles phase 1 : ≈ {volume_txt} "
+        f"(≈ {_fmt_usd(lo_usd)}–{_fmt_usd(hi_usd)}/mois, soit 5–10 % des importations "
+        f"annuelles observées du marché cible, {_fmt_usd(annual_usd)} — "
+        f"ratio ≈ {usd_per_kg:g} USD/kg, {ratio_src}). Estimation de dimensionnement."
+    )
+
+
 def summarize_opportunity(
     report: Dict,
     lang: str = "fr",
@@ -461,7 +525,12 @@ def summarize_opportunity(
     # Priority tier (simple heuristic)
     if score and score >= 0.75:
         priority_tier = "QUICK_WIN"
-        recommendation = "Déployer en priorité. Volumes cibles : 200–500 MT/mois phase 1."
+        volume_hint = _phase1_volume_target(report)
+        recommendation = "Déployer en priorité. " + (
+            volume_hint
+            or "Dimensionner les volumes de phase 1 sur la demande réelle du marché "
+            "cible (importations observées indisponibles pour ce produit)."
+        )
     elif score and score >= 0.65:
         priority_tier = "STRATEGIC_BET"
         recommendation = "Examiner davantage ; analyse complémentaire recommandée."
