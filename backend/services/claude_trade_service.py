@@ -4,6 +4,7 @@ Replaces Google Gemini with Anthropic Claude API
 Quality parity with AI Studio app — SH2/SH4/SH6, corrected GAI anchors, full trade schema
 """
 
+import contextvars
 import json
 import logging
 import os
@@ -30,6 +31,12 @@ from services.redis_cache_service import cache_service, get_data_freshness
 load_dotenv()
 
 logger = logging.getLogger(__name__)
+
+# Isolée par tâche asyncio (contrairement à un attribut d'instance) — voir
+# ClaudeTradeService.last_model_used pour le rationnel complet.
+_last_model_used_var: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar(
+    "claude_last_model_used", default=None
+)
 
 # ── Valid African ISO3 codes (AU member states with trade data) ────────────────
 AFRICAN_ISO3 = {
@@ -321,6 +328,20 @@ class ClaudeTradeService:
     QUALITY_MODEL = "claude-sonnet-5"
     QUALITY_FALLBACK_MODEL = "claude-sonnet-4-6"
 
+    # Modèles qui rejettent les paramètres d'échantillonnage non-défaut
+    # (temperature/top_p/top_k) avec une erreur 400 — cf. doc de migration
+    # Anthropic "Sonnet 5 — sampling parameters not accepted". Passer
+    # temperature=0.2 à l'un de ces modèles casse CHAQUE appel qualité par
+    # défaut (jamais juste un repli de passerelle), d'où l'omission
+    # conditionnelle ci-dessous plutôt qu'un correctif au niveau du repli.
+    _NO_CUSTOM_SAMPLING_MODELS = {
+        "claude-sonnet-5",
+        "claude-opus-4-8",
+        "claude-opus-4-7",
+        "claude-fable-5",
+        "claude-mythos-5",
+    }
+
     @property
     def MODEL(self) -> str:
         import os
@@ -331,9 +352,6 @@ class ClaudeTradeService:
 
     def __init__(self):
         self.api_key = os.environ.get("ANTHROPIC_API_KEY")
-        # Modèle réellement utilisé au dernier appel (repli compris) — pour
-        # que generated_by reflète la vérité, pas l'intention.
-        self.last_model_used: Optional[str] = None
         if not self.api_key:
             logger.warning("ANTHROPIC_API_KEY not found; AI features disabled")
         if not ANTHROPIC_AVAILABLE:
@@ -341,6 +359,21 @@ class ClaudeTradeService:
 
     def _is_ready(self) -> bool:
         return bool(ANTHROPIC_AVAILABLE and self.api_key)
+
+    @property
+    def last_model_used(self) -> Optional[str]:
+        """
+        Modèle réellement utilisé au dernier appel (repli compris) — pour que
+        generated_by reflète la vérité, pas l'intention.
+
+        Stocké dans une contextvar (pas un attribut d'instance) : ce service
+        est un singleton module-level partagé par toutes les requêtes
+        concurrentes (voir `claude_trade_service` en bas de fichier) — un
+        attribut `self.` serait une donnée par-requête mutée sur un objet
+        partagé, corrompue par toute requête concurrente sur le même event
+        loop. Une contextvar est isolée par tâche asyncio.
+        """
+        return _last_model_used_var.get()
 
     async def _call_claude(self, user_prompt: str, max_tokens: int = 8192) -> str:
         """Call Claude API and return raw text.
@@ -351,6 +384,9 @@ class ClaudeTradeService:
         """
         if not self._is_ready():
             raise RuntimeError("ANTHROPIC_API_KEY is not set or anthropic package not installed.")
+        # Réinitialisé à chaque appel : si tout échoue (y compris le repli),
+        # un lecteur ne doit jamais voir le modèle d'un appel précédent.
+        _last_model_used_var.set(None)
         client = anthropic.AsyncAnthropic(api_key=self.api_key)
         model = self.MODEL
 
@@ -360,8 +396,9 @@ class ClaudeTradeService:
                 max_tokens=max_tokens,
                 system=TRADE_SYSTEM_INSTRUCTION,
                 messages=[{"role": "user", "content": user_prompt}],
-                temperature=0.2,
             )
+            if m not in self._NO_CUSTOM_SAMPLING_MODELS:
+                common_kwargs["temperature"] = 0.2
             # Threshold below which non-streaming is fine (< ~10-min SLA).
             # Sonnet-4-6 typically outputs ~50-80 tok/s; 10 min ≈ 30-48k tokens,
             # but the API enforces streaming already at 10k so we mirror that.
@@ -376,18 +413,19 @@ class ClaudeTradeService:
 
         try:
             text = await _create(model)
-            self.last_model_used = model
+            _last_model_used_var.set(model)
         except (anthropic.NotFoundError, anthropic.BadRequestError) as e:
             # Un proxy/passerelle (ex. clé universelle Emergent) peut ne pas
-            # exposer le modèle demandé — replier sur un modèle largement
+            # exposer le modèle demandé, ou rejeter un paramètre de requête
+            # qu'il ne supporte pas encore — replier sur un modèle largement
             # disponible plutôt que de désactiver la fonctionnalité.
-            if model != self.QUALITY_FALLBACK_MODEL and "model" in str(e).lower():
+            if model != self.QUALITY_FALLBACK_MODEL:
                 logger.warning(
-                    f"Model '{model}' rejected by API endpoint ({e}); "
+                    f"Model '{model}' rejected the request ({e}); "
                     f"falling back to '{self.QUALITY_FALLBACK_MODEL}'"
                 )
                 text = await _create(self.QUALITY_FALLBACK_MODEL)
-                self.last_model_used = self.QUALITY_FALLBACK_MODEL
+                _last_model_used_var.set(self.QUALITY_FALLBACK_MODEL)
             else:
                 raise
         return text
@@ -635,7 +673,14 @@ class ClaudeTradeService:
                         for r in rows
                     ]
                     stats["oec_flows"] += len(lines)
-                    stats["oec_year"] = used_year
+                    # En mode industrial, deux flux sont interrogés (imports
+                    # puis exports) ; ne fixer l'année qu'une fois — sinon
+                    # elle reflète arbitrairement le dernier flux exécuté au
+                    # lieu du premier (primaire) si leurs replis d'année
+                    # respectifs divergent. `data_year` (année du prompt +
+                    # enrich_opportunities) dépend de cette valeur.
+                    if stats["oec_year"] is None:
+                        stats["oec_year"] = used_year
                     sections.append(
                         f"{title} OF {country_name} (OEC/UN Comtrade {used_year}, MUSD):\n"
                         + "\n".join(lines)
@@ -716,7 +761,17 @@ STRICT DATA RULES:
         # "pv" = version du prompt : incrémentée à chaque évolution majeure du
         # prompt (ici v2 : ancrage données réelles + règles anti-fabrication)
         # pour invalider les analyses en cache générées avec l'ancien prompt.
-        cache_params = {"country": country_name, "mode": mode, "lang": lang, "pv": 2}
+        # "model" : CLAUDE_QUALITY_MODEL/CLAUDE_BULK_MODE changent la qualité
+        # de sortie sans changer country/mode/lang/pv — sans cette clé, changer
+        # de modèle pour améliorer la qualité ne se voit qu'après 90 jours
+        # (TTL du cache claude_analysis) ou une invalidation manuelle.
+        cache_params = {
+            "country": country_name,
+            "mode": mode,
+            "lang": lang,
+            "pv": 2,
+            "model": self.MODEL,
+        }
         # Stamp de version des données de production : pour les modes enrichis
         # (export/industrial), tout rebuild de production_africaine.json change
         # ce stamp et invalide automatiquement les analyses en cache.
@@ -963,8 +1018,10 @@ Wrap ALL 15 in this envelope:
             result = self._extract_json(raw)
 
             # Réponse tronquée malgré tout : récupérer les opportunités
-            # complètes plutôt que de tout jeter.
-            if not result or not result.get("opportunities"):
+            # complètes plutôt que de tout jeter. `result` peut être une
+            # list (Claude a renvoyé un tableau JSON nu au lieu de l'enveloppe
+            # {"opportunities": [...]}) — `.get()` n'existe pas dessus.
+            if not result or (isinstance(result, dict) and not result.get("opportunities")):
                 salvaged = self._salvage_truncated_list(raw)
                 if salvaged:
                     if not isinstance(result, dict) or not result:
