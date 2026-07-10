@@ -1411,6 +1411,31 @@ Wrap ALL 15 in this envelope:
                 logger.warning(f"Logistics enrichment failed: {e}")
                 result["logistics_enrichment"] = False
 
+            # Ratio de risque composite du pays partenaire de chaque
+            # opportunité (notations souveraines S&P/Moody's/Fitch × évaluation
+            # opérationnelle type assurance-crédit, convention Coface/OCDE) —
+            # bloc compact, détail complet sur /api/reports/risk-ratio/{iso3}.
+            try:
+                from services import country_risk_service
+
+                risk_ok = 0
+                for opp in result.get("opportunities", []):
+                    if mode == "import":
+                        partner_name = opp.get("potential_supplier") or opp.get("potentialSupplier")
+                    else:
+                        partner_name = opp.get("potential_partner") or opp.get("potentialPartner")
+                    partner_iso3 = self._resolve_iso3(partner_name) if partner_name else None
+                    if not partner_iso3:
+                        continue
+                    compact = country_risk_service.compact_risk_for_opportunity(partner_iso3)
+                    if compact:
+                        opp["partner_risk"] = compact
+                        risk_ok += 1
+                result["risk_enrichment"] = risk_ok > 0
+            except Exception as e:
+                logger.warning(f"Risk enrichment failed: {e}")
+                result["risk_enrichment"] = False
+
             result["country"] = country_name
             result["mode"] = mode
             # Transparence : sur quelles données réelles le prompt était ancré

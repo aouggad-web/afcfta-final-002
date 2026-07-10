@@ -298,6 +298,31 @@ async def national_need(
     )
 
 
+@router.get("/risk-ratio/{country_iso3}", summary="Ratio de risque pays composite (détaillé)")
+async def risk_ratio(country_iso3: str):
+    """
+    Ratio de risque composite 0-100 (100 = risque minimal) pour un pays
+    partenaire du module Opportunités :
+
+    - **composante souveraine** : notations Standard & Poor's, Moody's,
+      Fitch Ratings, Scope converties en crans standard (AAA = 100, défaut = 0)
+      — plafond macro-financier du pays ;
+    - **composante opérationnelle** : grade A1→D (convention d'échelle
+      Coface/OCDE, du type des évaluations publiées par la Coface ou Allianz
+      Trade) issu des profils curés de la plateforme — risque d'impayé
+      commercial court terme, change, politique, transfert, assurance-crédit.
+
+    Pondération nominale 60 % opérationnel / 40 % souverain (une opportunité
+    est une transaction commerciale, pas un investissement souverain). La
+    réponse embarque la formule, les poids effectifs, le détail des intrants,
+    la méthodologie complète et les mises en garde — aucune valeur n'est
+    inventée : composante manquante = poids reporté + confiance « dégradée ».
+    """
+    from services import country_risk_service
+
+    return country_risk_service.get_risk_ratio(country_iso3)
+
+
 @router.get("/macro/{country_iso3}", summary="Profil macro-financier d'un pays")
 async def macro_profile(country_iso3: str):
     """
