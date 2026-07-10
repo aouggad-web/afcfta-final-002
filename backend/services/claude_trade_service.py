@@ -22,8 +22,9 @@ except ImportError:
     ANTHROPIC_AVAILABLE = False
     logging.warning("anthropic package not installed; AI features will be disabled")
 
-from services import production_capacity_service
+from services import manufacturing_proxy_service, production_capacity_service
 from services.oec_data_service import oec_data_service
+from services.oec_trade_service import DEFAULT_YEAR as OEC_DEFAULT_YEAR
 from services.redis_cache_service import cache_service, get_data_freshness
 
 load_dotenv()
@@ -312,20 +313,27 @@ class ClaudeTradeService:
     """
 
     # claude-haiku-4-5: $0.80/MTok input, $4/MTok output  (~10× cheaper than Sonnet)
-    # claude-sonnet-4-6: $3/MTok input, $15/MTok output
+    # claude-sonnet-5: dernier Sonnet — nettement meilleur sur l'analyse
+    # structurée longue ; certains proxys (ex. clé universelle Emergent)
+    # peuvent ne pas encore l'exposer, d'où le repli automatique dans
+    # _call_claude sur QUALITY_FALLBACK_MODEL.
     BULK_MODEL = "claude-haiku-4-5-20251001"
-    QUALITY_MODEL = "claude-sonnet-4-6"
+    QUALITY_MODEL = "claude-sonnet-5"
+    QUALITY_FALLBACK_MODEL = "claude-sonnet-4-6"
 
     @property
     def MODEL(self) -> str:
         import os
 
         if os.environ.get("CLAUDE_BULK_MODE", "").lower() in ("1", "true", "yes"):
-            return self.BULK_MODEL
-        return self.QUALITY_MODEL
+            return os.environ.get("CLAUDE_BULK_MODEL") or self.BULK_MODEL
+        return os.environ.get("CLAUDE_QUALITY_MODEL") or self.QUALITY_MODEL
 
     def __init__(self):
         self.api_key = os.environ.get("ANTHROPIC_API_KEY")
+        # Modèle réellement utilisé au dernier appel (repli compris) — pour
+        # que generated_by reflète la vérité, pas l'intention.
+        self.last_model_used: Optional[str] = None
         if not self.api_key:
             logger.warning("ANTHROPIC_API_KEY not found; AI features disabled")
         if not ANTHROPIC_AVAILABLE:
@@ -344,27 +352,45 @@ class ClaudeTradeService:
         if not self._is_ready():
             raise RuntimeError("ANTHROPIC_API_KEY is not set or anthropic package not installed.")
         client = anthropic.AsyncAnthropic(api_key=self.api_key)
+        model = self.MODEL
 
-        common_kwargs = dict(
-            model=self.MODEL,
-            max_tokens=max_tokens,
-            system=TRADE_SYSTEM_INSTRUCTION,
-            messages=[{"role": "user", "content": user_prompt}],
-            temperature=0.2,
-        )
+        async def _create(m: str) -> str:
+            common_kwargs = dict(
+                model=m,
+                max_tokens=max_tokens,
+                system=TRADE_SYSTEM_INSTRUCTION,
+                messages=[{"role": "user", "content": user_prompt}],
+                temperature=0.2,
+            )
+            # Threshold below which non-streaming is fine (< ~10-min SLA).
+            # Sonnet-4-6 typically outputs ~50-80 tok/s; 10 min ≈ 30-48k tokens,
+            # but the API enforces streaming already at 10k so we mirror that.
+            if max_tokens >= 10_000:
+                chunks: list[str] = []
+                async with client.messages.stream(**common_kwargs) as stream:
+                    async for text in stream.text_stream:
+                        chunks.append(text)
+                return "".join(chunks)
+            message = await client.messages.create(**common_kwargs)
+            return message.content[0].text
 
-        # Threshold below which non-streaming is fine (< ~10-min SLA).
-        # Sonnet-4-6 typically outputs ~50-80 tok/s; 10 min ≈ 30-48k tokens,
-        # but the API enforces streaming already at 10k so we mirror that.
-        if max_tokens >= 10_000:
-            chunks: list[str] = []
-            async with client.messages.stream(**common_kwargs) as stream:
-                async for text in stream.text_stream:
-                    chunks.append(text)
-            return "".join(chunks)
-
-        message = await client.messages.create(**common_kwargs)
-        return message.content[0].text
+        try:
+            text = await _create(model)
+            self.last_model_used = model
+        except (anthropic.NotFoundError, anthropic.BadRequestError) as e:
+            # Un proxy/passerelle (ex. clé universelle Emergent) peut ne pas
+            # exposer le modèle demandé — replier sur un modèle largement
+            # disponible plutôt que de désactiver la fonctionnalité.
+            if model != self.QUALITY_FALLBACK_MODEL and "model" in str(e).lower():
+                logger.warning(
+                    f"Model '{model}' rejected by API endpoint ({e}); "
+                    f"falling back to '{self.QUALITY_FALLBACK_MODEL}'"
+                )
+                text = await _create(self.QUALITY_FALLBACK_MODEL)
+                self.last_model_used = self.QUALITY_FALLBACK_MODEL
+            else:
+                raise
+        return text
 
     @staticmethod
     def _extract_json(text: str) -> dict:
@@ -385,6 +411,38 @@ class ClaudeTradeService:
                 except json.JSONDecodeError:
                     pass
         return {}
+
+    @staticmethod
+    def _salvage_truncated_list(text: str, key: str = "opportunities") -> list:
+        """
+        Récupère les objets complets d'un tableau JSON tronqué — cas d'une
+        réponse coupée par max_tokens : plutôt que de tout perdre (l'ancien
+        comportement retournait {}), on garde les N premières opportunités
+        intégralement parsées et on abandonne seulement l'objet coupé.
+        """
+        clean = re.sub(r"```(?:json)?\s*", "", text).replace("```", "")
+        anchor = re.search(rf'"{key}"\s*:\s*\[', clean)
+        if anchor:
+            idx = anchor.end()
+        else:
+            start = clean.find("[")
+            if start < 0:
+                return []
+            idx = start + 1
+        decoder = json.JSONDecoder()
+        items = []
+        while idx < len(clean):
+            while idx < len(clean) and clean[idx] in " \t\r\n,":
+                idx += 1
+            if idx >= len(clean) or clean[idx] != "{":
+                break
+            try:
+                obj, idx = decoder.raw_decode(clean, idx)
+            except json.JSONDecodeError:
+                break
+            if isinstance(obj, dict):
+                items.append(obj)
+        return items
 
     @staticmethod
     def _resolve_iso3(name: str) -> Optional[str]:
@@ -508,6 +566,144 @@ class ClaudeTradeService:
 
     # ── Trade Opportunities ────────────────────────────────────────────────────
 
+    async def _country_opportunity_grounding(
+        self, country_name: str, iso3: Optional[str], mode: str
+    ) -> tuple:
+        """
+        Construit le bloc de DONNÉES RÉELLES injecté dans le prompt
+        d'analyze_trade_opportunities, et des stats de transparence.
+
+        Sans ce bloc, le LLM choisit ses 15 opportunités de mémoire (chiffres
+        approximatifs, produits que le pays ne produit/n'échange pas) et
+        l'enrichissement post-génération (OEC/production/logistique) ne peut
+        plus corriger une mauvaise sélection. Deux sources :
+        - production réelle du pays (FAOSTAT/USGS/UNIDO — locale, toujours
+          disponible) avec rang continental et part africaine ;
+        - flux commerciaux réels du pays (OEC/UN Comtrade — réseau, meilleure
+          année disponible), exports pour le mode export, imports pour le mode
+          import, les deux pour le mode industrial.
+        """
+        sections = []
+        stats = {"production_products": 0, "oec_flows": 0, "oec_year": None, "assembly_signals": 0}
+
+        if iso3:
+            try:
+                profile = production_capacity_service.get_country_profile(iso3, top_n=20)
+                if profile.get("available"):
+                    lines = []
+                    for p in profile["products"]:
+                        caveat = (
+                            " [PARTIAL COVERAGE — never present this rank as continental leadership]"
+                            if p.get("coverage_caveat")
+                            else ""
+                        )
+                        lines.append(
+                            f"- {p['commodity']} (HS {p['hs_code']}, {p['institution']} {p['year']}): "
+                            f"{p['value']:,.0f} {p['unit']}, continental rank {p['rank']}/"
+                            f"{p['total_countries']}, African share {p['share_pct']}%{caveat}"
+                        )
+                    stats["production_products"] = len(lines)
+                    sections.append(
+                        f"VERIFIED PRODUCTION OF {country_name} "
+                        "(FAOSTAT/USGS/UNIDO, latest year — real recorded output):\n"
+                        + "\n".join(lines)
+                    )
+            except Exception as e:
+                logger.warning(f"Production grounding failed for {iso3}: {e}")
+
+        if iso3:
+            flows_wanted = {
+                "export": [("TOP REAL EXPORTS", oec_data_service.get_top_exports)],
+                "import": [("TOP REAL IMPORTS", oec_data_service.get_top_imports)],
+                "industrial": [
+                    ("TOP REAL IMPORTS (candidate INPUTS)", oec_data_service.get_top_imports),
+                    ("TOP REAL EXPORTS", oec_data_service.get_top_exports),
+                ],
+            }.get(mode, [])
+            for title, fetch in flows_wanted:
+                try:
+                    rows, used_year = [], None
+                    for year in (OEC_DEFAULT_YEAR, OEC_DEFAULT_YEAR - 1, 2022):
+                        rows = await fetch(iso3, year=year, n=15)
+                        if rows:
+                            used_year = year
+                            break
+                    if not rows:
+                        continue
+                    lines = [
+                        f"- {r['hs6Name']} (HS {r['hs6Code']}): {r['value_musd']:,.1f} MUSD"
+                        for r in rows
+                    ]
+                    stats["oec_flows"] += len(lines)
+                    stats["oec_year"] = used_year
+                    sections.append(
+                        f"{title} OF {country_name} (OEC/UN Comtrade {used_year}, MUSD):\n"
+                        + "\n".join(lines)
+                    )
+                except Exception as e:
+                    logger.warning(f"OEC grounding ({title}) failed for {iso3}: {e}")
+
+        # Signal d'assemblage par proxy d'intrants (mode industrial uniquement) :
+        # comble le trou de données pour les biens d'équipement (réfrigérateurs,
+        # climatiseurs, téléviseurs...) que FAOSTAT/USGS/UNIDO ne mesurent pas.
+        # Voir services/manufacturing_proxy_service.py pour la méthodologie.
+        if iso3 and mode == "industrial":
+            try:
+                proxy_lines = []
+                for chapter in manufacturing_proxy_service.list_proxy_chapters():
+                    signal = await manufacturing_proxy_service.estimate_assembly_signal(
+                        iso3, chapter["hs_code"]
+                    )
+                    if not signal.get("available"):
+                        continue
+                    for inp in signal["input_signals"]:
+                        if inp.get("country_import_usd") is None:
+                            continue
+                        rank_info = inp["continental_ranking"]
+                        rank_txt = (
+                            f", African importer rank {rank_info['rank']}/{rank_info['total_countries']}"
+                            if rank_info.get("available") and rank_info.get("rank")
+                            else ""
+                        )
+                        proxy_lines.append(
+                            f"- {signal['output_label']} (HS {signal['hs_code']}): "
+                            f"imports ${inp['country_import_usd']:,.0f} of key input "
+                            f"'{inp['input_label']}' (HS {inp['input_hs6']}, {inp['year']}){rank_txt}"
+                        )
+                if proxy_lines:
+                    stats["assembly_signals"] = len(proxy_lines)
+                    sections.append(
+                        f"ASSEMBLY SIGNAL FOR {country_name} (indirect estimate from key-input "
+                        "imports, OEC/UN Comtrade — NOT measured production; use only as a "
+                        "possible transformation opportunity, never state a production rank "
+                        "or output volume from this line):\n" + "\n".join(proxy_lines)
+                    )
+            except Exception as e:
+                logger.warning(f"Assembly-signal grounding failed for {iso3}: {e}")
+
+        return "\n\n".join(sections), stats
+
+    @staticmethod
+    def _grounding_rules(grounding_text: str, data_year: int) -> str:
+        """Bloc prompt : données réelles + règles anti-fabrication."""
+        return f"""
+VERIFIED REAL DATA — GROUND THE ENTIRE ANALYSIS ON THIS (platform datasets):
+{grounding_text or "(no platform data reachable for this country — say so in data_quality and mark every figure as an estimate)"}
+
+STRICT DATA RULES:
+1. SELECT opportunities primarily among products present in the data above (verified
+   production or actual trade flows). A product absent from the data may appear only
+   with an explicit justification in its rationale.
+2. REUSE the figures above EXACTLY as given, citing source and year (e.g. "FAOSTAT
+   {data_year}", "OEC/UN Comtrade"). NEVER invent precise statistics, market shares
+   or values that are not in the data above.
+3. Any quantity NOT derived from the data above must be an order-of-magnitude estimate
+   explicitly marked as such in the rationale (e.g. "estimation" / "estimate").
+4. An entry flagged [PARTIAL COVERAGE] must never be described as continental
+   leadership or top-producer status.
+5. sourceUrl: cite the dataset name and year from the data above — NEVER fabricate a URL.
+"""
+
     async def analyze_trade_opportunities(
         self,
         country_name: str,
@@ -517,7 +713,10 @@ class ClaudeTradeService:
         if not self._is_ready():
             return {"error": "ANTHROPIC_API_KEY not configured", "opportunities": []}
 
-        cache_params = {"country": country_name, "mode": mode, "lang": lang}
+        # "pv" = version du prompt : incrémentée à chaque évolution majeure du
+        # prompt (ici v2 : ancrage données réelles + règles anti-fabrication)
+        # pour invalider les analyses en cache générées avec l'ancien prompt.
+        cache_params = {"country": country_name, "mode": mode, "lang": lang, "pv": 2}
         # Stamp de version des données de production : pour les modes enrichis
         # (export/industrial), tout rebuild de production_africaine.json change
         # ce stamp et invalide automatiquement les analyses en cache.
@@ -540,13 +739,23 @@ class ClaudeTradeService:
             "Réponds UNIQUEMENT en français." if lang == "fr" else "Respond ONLY in English."
         )
 
+        analyzed_iso3 = self._resolve_iso3(country_name)
+        grounding_text, grounding_stats = await self._country_opportunity_grounding(
+            country_name, analyzed_iso3, mode
+        )
+        data_year = grounding_stats.get("oec_year") or OEC_DEFAULT_YEAR
+        grounding_rules = self._grounding_rules(grounding_text, data_year)
+        now = datetime.now(timezone.utc)
+        analysis_quarter = f"{now.year}-Q{(now.month - 1) // 3 + 1}"
+
         if mode == "export":
             prompt = f"""{lang_instr}
 
 Analyze EXPORT opportunities for {country_name} within the AfCFTA framework.
-
+{grounding_rules}
 Identify exactly 15 verified intra-African export opportunities where {country_name} has
-a comparative advantage or demonstrated production surplus (RCA > 1 preferred).
+a comparative advantage or demonstrated production surplus (RCA > 1 preferred) —
+grounded in the verified production and export data above.
 
 For EACH opportunity return this EXACT JSON structure:
 {{
@@ -563,7 +772,7 @@ For EACH opportunity return this EXACT JSON structure:
   "potentialPartner": "African destination country (ISO3 or full name)",
   "currentSource": "Current dominant supplier for that partner (if substitution)",
   "rationale": "3-4 sentence strategic justification citing OEC/UNCTAD/IMF data with specific figures",
-  "year": 2023,
+  "year": {data_year},
   "potentialTradeValue": 0.0,
   "currentTradeValue": 0.0,
   "tariffReductionPotential": 0.0,
@@ -604,16 +813,17 @@ Wrap ALL 15 in this envelope:
     }}
   }},
   "sources": ["OEC 2023", "UN Comtrade 2023", "IMF WEO Oct 2024", "UNCTAD"],
-  "analysis_date": "2024-Q4"
+  "analysis_date": "{analysis_quarter}"
 }}"""
 
         elif mode == "import":
             prompt = f"""{lang_instr}
 
 Analyze IMPORT substitution opportunities for {country_name} within the AfCFTA framework.
-
+{grounding_rules}
 Identify exactly 15 strategic import needs for {country_name} that could be sourced from
-other African countries under AfCFTA preferences, replacing current extra-African suppliers.
+other African countries under AfCFTA preferences, replacing current extra-African suppliers —
+selected primarily among the verified imports listed above.
 
 For EACH opportunity return this EXACT JSON structure:
 {{
@@ -630,7 +840,7 @@ For EACH opportunity return this EXACT JSON structure:
   "potentialSupplier": "African supplier country with proven capacity",
   "currentSource": "Current non-African dominant supplier (e.g. China, EU, India)",
   "rationale": "3-4 sentence justification with import volume data from UNCTAD/OEC",
-  "year": 2023,
+  "year": {data_year},
   "currentImportValue": 0.0,
   "substitutionPotential": 0.0,
   "tariffReductionPotential": 0.0,
@@ -670,16 +880,16 @@ Wrap ALL 15 in this envelope:
     }}
   }},
   "sources": ["OEC 2023", "UN Comtrade 2023", "IMF WEO Oct 2024", "UNCTAD"],
-  "analysis_date": "2024-Q4"
+  "analysis_date": "{analysis_quarter}"
 }}"""
 
         else:  # industrial / value chain
             prompt = f"""{lang_instr}
 
 Analyze VALUE CHAIN TRANSFORMATION opportunities for {country_name} within AfCFTA.
-
-Map current imports of intermediate goods (inputs) to potential manufactured exports (outputs).
-Use UNCTAD 2023-2024 industrial statistics and UNIDO data.
+{grounding_rules}
+Map current imports of intermediate goods (inputs) to potential manufactured exports (outputs),
+anchored on the verified imports (candidate inputs) and production capacities above.
 
 Identify exactly 15 transformation opportunities (input → output chains).
 
@@ -743,12 +953,28 @@ Wrap ALL 15 in this envelope:
     }}
   }},
   "sources": ["UNCTAD 2023", "UNIDO 2023", "OEC 2023", "IMF WEO Oct 2024"],
-  "analysis_date": "2024-Q4"
+  "analysis_date": "{analysis_quarter}"
 }}"""
 
         try:
-            raw = await self._call_claude(prompt, max_tokens=8192)
+            # 15 opportunités détaillées ≈ 9-12k tokens de JSON : 8192 tronquait
+            # régulièrement la réponse (perte totale ou partielle des résultats).
+            raw = await self._call_claude(prompt, max_tokens=16000)
             result = self._extract_json(raw)
+
+            # Réponse tronquée malgré tout : récupérer les opportunités
+            # complètes plutôt que de tout jeter.
+            if not result or not result.get("opportunities"):
+                salvaged = self._salvage_truncated_list(raw)
+                if salvaged:
+                    if not isinstance(result, dict) or not result:
+                        result = {}
+                    result["opportunities"] = salvaged
+                    result["truncated_response_salvaged"] = True
+                    logger.warning(
+                        f"Claude response truncated for {country_name}/{mode}; "
+                        f"salvaged {len(salvaged)} complete opportunities"
+                    )
 
             if not result:
                 return {
@@ -769,7 +995,7 @@ Wrap ALL 15 in this envelope:
             # Enrich with OEC trade data for validation & real numbers
             try:
                 result["opportunities"] = await oec_data_service.enrich_opportunities(
-                    result.get("opportunities", []), year=2023
+                    result.get("opportunities", []), year=data_year
                 )
                 result["oec_enrichment"] = True
             except Exception as e:
@@ -890,7 +1116,14 @@ Wrap ALL 15 in this envelope:
 
             result["country"] = country_name
             result["mode"] = mode
-            result["generated_by"] = f"Claude AI ({self.MODEL})"
+            # Transparence : sur quelles données réelles le prompt était ancré
+            result["grounding"] = {
+                **grounding_stats,
+                "grounded": bool(
+                    grounding_stats.get("production_products") or grounding_stats.get("oec_flows")
+                ),
+            }
+            result["generated_by"] = f"Claude AI ({self.last_model_used or self.MODEL})"
             result["generated_at"] = datetime.now(timezone.utc).isoformat()
             result["data_freshness"] = get_data_freshness(None)
 
@@ -982,7 +1215,7 @@ Return this EXACT JSON structure:
                     ts["intra_african_trade_percent"] = ts["intra_african_share_percent"]
                 result["trade_summary"] = ts
 
-            result["generated_by"] = f"Claude AI ({self.MODEL})"
+            result["generated_by"] = f"Claude AI ({self.last_model_used or self.MODEL})"
             result["data_freshness"] = get_data_freshness(None)
             cache_service.set("claude_profile", cache_params, result, "claude_profile")
             return result
@@ -1079,7 +1312,7 @@ Return this EXACT JSON structure:
                 prod.setdefault("hs4_code", prod.get("hs4Code"))
                 prod.setdefault("hs4_name", prod.get("hs4Name"))
 
-            result["generated_by"] = f"Claude AI ({self.MODEL})"
+            result["generated_by"] = f"Claude AI ({self.last_model_used or self.MODEL})"
             result["data_freshness"] = get_data_freshness(None)
             cache_service.set("claude_product", cache_params, result, "claude_product")
             return result
@@ -1149,7 +1382,7 @@ Return this EXACT JSON structure with one entry per year, deduplicated:
                         deduped.append(entry)
                 result["annual_data"] = sorted(deduped, key=lambda x: x.get("year", 0))
 
-            result["generated_by"] = f"Claude AI ({self.MODEL})"
+            result["generated_by"] = f"Claude AI ({self.last_model_used or self.MODEL})"
             result["data_freshness"] = get_data_freshness(None)
             cache_service.set("claude_balance", cache_params, result, "claude_balance")
             return result
@@ -1301,10 +1534,11 @@ fields ONLY — no extra keys like "keyProducers", "dataSource", "valueCapture",
 This keeps the payload compact and parseable."""
 
         try:
-            # Sonnet-4-6 supports up to 64k output; 6000 was truncating the
-            # 6-sector value-chain analysis mid-JSON. Raise to 32000 which
-            # comfortably fits the full nested schema even for verbose French
-            # replies (measured ~12k output tokens for 6 sectors × full schema).
+            # 6 chaînes de valeur complètes (étapes + producteurs + opportunités)
+            # dépassaient régulièrement 6000 tokens → réponse tronquée. Sonnet
+            # supporte jusqu'à 64k tokens de sortie ; 32000 couvre confortablement
+            # le schéma imbriqué complet même pour des réponses françaises verbeuses
+            # (mesuré ~12k tokens de sortie pour 6 secteurs × schéma complet).
             raw = await self._call_claude(prompt, max_tokens=32000)
             result = self._extract_json(raw)
             if not result:
@@ -1312,7 +1546,7 @@ This keeps the payload compact and parseable."""
 
             filtered_count = self._filter_unverified_raw_producers(result, real_raw_material_iso3)
 
-            result["generated_by"] = f"Claude AI ({self.MODEL})"
+            result["generated_by"] = f"Claude AI ({self.last_model_used or self.MODEL})"
             result["data_freshness"] = get_data_freshness(None)
             if filtered_count:
                 result["unverified_producers_filtered"] = filtered_count
@@ -1425,7 +1659,7 @@ Return this EXACT JSON structure:
             if not result:
                 return {"error": "Failed to parse response"}
 
-            result["generated_by"] = f"Claude AI ({self.MODEL})"
+            result["generated_by"] = f"Claude AI ({self.last_model_used or self.MODEL})"
             result["data_freshness"] = get_data_freshness(None)
             cache_service.set("claude_comparison", cache_params, result, "claude_comparison")
             return result

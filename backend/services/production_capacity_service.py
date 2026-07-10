@@ -519,6 +519,64 @@ def list_tracked_products() -> List[Dict]:
     return products
 
 
+def get_country_profile(country_iso3: str, top_n: int = 20) -> Dict:
+    """
+    Vue pays : ce que le pays produit RÉELLEMENT selon le référentiel
+    production (FAOSTAT / USGS / UNIDO), avec rang continental et part
+    africaine sur la dernière année disponible de chaque produit. Sert de
+    bloc d'ancrage aux prompts IA du module Opportunités : le LLM choisit
+    ses opportunités parmi ces produits vérifiés au lieu de sa mémoire.
+    """
+    iso3 = (country_iso3 or "").strip().upper()
+    seen = set()
+    products: List[Dict] = []
+    for prefix, dataset, label in HS_TO_COMMODITY:
+        key = (dataset, label)
+        if key in seen:
+            continue
+        seen.add(key)
+        all_recs = _records_for(dataset, label)
+        if not all_recs:
+            continue
+        latest_year = max(r["year"] for r in all_recs)
+        year_recs = sorted(
+            [r for r in all_recs if r.get("year") == latest_year and r.get("value")],
+            key=lambda r: r["value"],
+            reverse=True,
+        )
+        rank, country_rec = next(
+            ((i + 1, r) for i, r in enumerate(year_recs) if r.get("country_iso3") == iso3),
+            (None, None),
+        )
+        if country_rec is None:
+            continue
+        total = sum(r["value"] for r in year_recs)
+        meta = SOURCE_META[dataset]
+        products.append(
+            {
+                "hs_code": prefix,
+                "commodity": label,
+                "dataset": dataset,
+                "measure": meta["measure"],
+                "unit": country_rec.get("unit") or meta["unit"],
+                "institution": country_rec.get("source_institution") or meta["institution"],
+                "year": latest_year,
+                "value": country_rec["value"],
+                "rank": rank,
+                "total_countries": len(year_recs),
+                "share_pct": round(country_rec["value"] / total * 100.0, 1) if total else None,
+                "coverage_caveat": _coverage_caveat(dataset, label, len(year_recs)),
+            }
+        )
+    products.sort(key=lambda p: (p["share_pct"] or 0.0), reverse=True)
+    return {
+        "available": bool(products),
+        "country_iso3": iso3,
+        "products": products[:top_n],
+        "total_tracked": len(products),
+    }
+
+
 def get_continental_producers(hs_code: str) -> Dict:
     """
     Vue continentale (sans pays) : top producteurs africains réels pour un code HS.
