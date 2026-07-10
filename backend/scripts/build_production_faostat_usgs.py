@@ -236,6 +236,18 @@ FAOSTAT_ITEM_TO_COMMODITY: dict[str, str] = {
     "Teff": "Teff",
     "Beans, dry": "Beans",
     "Soyabeans": "Soybeans",
+    # Noms QCL modernes manquants — expliquaient l'absence totale de ces
+    # produits pourtant mappés côté HS (soja, tabac, plantain, vanille,
+    # cannelle, girofle) : le bulk FAOSTAT actuel les publie sous ces
+    # libellés-ci, pas sous les anciens.
+    "Soya beans": "Soybeans",
+    "Unmanufactured tobacco": "Tobacco",
+    "Plantains and cooking bananas": "Plantain",
+    "Vanilla, raw": "Vanilla",
+    "Cinnamon and cinnamon-tree flowers, raw": "Cinnamon",
+    "Cloves (whole stems), raw": "Cloves",
+    "Cloves": "Cloves",
+    "Cinnamon (canella)": "Cinnamon",
     # ── Élargissement : cultures africaines à fort potentiel d'export ──
     # (noms FAOSTAT QCL modernes ET anciens pour maximiser les correspondances ;
     #  un item absent du bulk est simplement ignoré, jamais inventé.)
