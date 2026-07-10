@@ -2048,7 +2048,6 @@ Return this EXACT JSON structure:
         try:
             from country_data import REAL_COUNTRY_DATA
             from gold_reserves_data import GOLD_RESERVES_GAI_DATA
-
             from services import wb_macro_service
 
             eco = result.get("economic_comparison")
