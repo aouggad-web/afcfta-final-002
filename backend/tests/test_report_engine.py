@@ -959,6 +959,117 @@ def test_national_need_level1_measured_when_apparent_given():
     assert res["value"] == 170000.0  # 720000 + 50000 - 600000
 
 
+# ── Méthode affinée (cas signalé : ETH ~3,7 Md$ « niveau 3 » sans garde-fous) ──
+
+
+def test_national_need_gdp_average_is_population_weighted():
+    from services import demand_estimation_service as demand
+
+    idx = {
+        "BIG": {"population": 100_000_000},  # grand pays pauvre
+        "RICH": {"population": 1_000_000},  # petit pays riche
+    }
+    gdp_map = {"BIG": 1_000.0, "RICH": 20_000.0}
+    weighted = demand._weighted_continental_gdp_avg(gdp_map, idx)
+    simple = (1_000.0 + 20_000.0) / 2  # ancien calcul
+    # Pondérée population ≈ 1 188 $ ; la moyenne simple (10 500 $) écrasait le
+    # facteur des grands pays peuplés à faible revenu.
+    assert weighted < 1_500
+    assert weighted < simple / 5
+
+
+def test_national_need_elasticity_resolved_by_product_class():
+    from services import demand_estimation_service as demand
+
+    assert demand.income_elasticity_for_hs("100510")["value"] == 0.3  # maïs (base)
+    assert demand.income_elasticity_for_hs("300490")["value"] == 0.9  # pharma
+    assert demand.income_elasticity_for_hs("852872")["value"] == 1.2  # TV (durable)
+    assert demand.income_elasticity_for_hs("610910")["value"] == 0.8  # habillement
+    # Chapitre non mappé -> défaut, classe explicitée
+    fallback = demand.income_elasticity_for_hs("990000")
+    assert fallback["value"] == demand.DEFAULT_INCOME_ELASTICITY
+    # Surcharge explicite de l'appelant respectée
+    res = demand.estimate_national_need("300490", "ETH", income_elasticity=0.5)
+    if res.get("available") and res["estimation_level"] == 3:
+        assert res["inputs"]["income_elasticity"] == 0.5
+
+
+def test_national_need_sector_scope_is_explicit():
+    from services import demand_estimation_service as demand
+
+    # SH 340111 (savon) ne matche qu'au chapitre -> le besoin estimé couvre tout
+    # le secteur « chimie », ce qui doit être dit, pas laissé passer pour le
+    # besoin du seul produit.
+    res = demand.estimate_national_need("340111", "ETH")
+    assert res["available"] is True
+    assert res["reference_scope"] == "secteur (chapitre SH2)"
+    assert "secteur" in res["note"]
+
+
+def test_national_need_propagates_partial_coverage_caveat():
+    from services import demand_estimation_service as demand
+
+    # Pharma HS 30 : référence UNIDO couvrant 1 pays africain seulement — le
+    # caveat de la donnée de référence doit remonter dans l'estimation.
+    res = demand.estimate_national_need("300490", "ETH")
+    assert res["available"] is True
+    assert res["reference_coverage_caveat"]
+    assert "COUVERTURE PARTIELLE" in res["note"]
+
+
+def test_national_need_floored_by_observed_imports():
+    from services import demand_estimation_service as demand
+
+    base = demand.estimate_national_need("300490", "ETH")
+    assert base["available"] is True
+    huge_imports = float(base["value"]) * 10
+    res = demand.estimate_national_need(
+        "300490",
+        "ETH",
+        observed_imports={"import_value_usd": huge_imports, "year": 2023, "source": "OEC"},
+    )
+    # Le proxy en dessous d'un flux réel mesuré est démenti par lui -> plancher.
+    assert res["calibration"] and res["calibration"]["applied"] is True
+    assert res["value"] == demand._round_sig(huge_imports, 3)
+    assert "recalé au plancher" in res["method"]
+
+
+def test_national_need_observed_imports_below_estimate_no_floor():
+    from services import demand_estimation_service as demand
+
+    res = demand.estimate_national_need(
+        "340111",
+        "ETH",
+        observed_imports={"import_value_usd": 1_000.0, "year": 2023, "source": "OEC"},
+    )
+    # Importations observées inférieures à l'estimation : pas de recalage
+    # (plancher seulement, jamais plafond), signal conservé à part.
+    assert res["available"] is True
+    assert not res.get("calibration")
+    assert res["observed_imports"]["import_value_usd"] == 1_000.0
+
+
+def test_national_need_value_honest_rounding():
+    from services import demand_estimation_service as demand
+
+    assert demand._round_sig(3_694_915_962.13, 3) == 3_690_000_000.0
+    assert demand._round_sig(0.0, 3) == 0.0
+    res = demand.estimate_national_need("340111", "ETH")
+    # Jamais plus de 3 chiffres significatifs sur une valeur modélisée.
+    assert res["value"] == demand._round_sig(res["value"], 3)
+
+
+def test_narrative_national_need_relays_sector_scope_and_caveat():
+    from services import demand_estimation_service as demand
+    from services import narrative_analysis_service as narrative
+
+    need = demand.estimate_national_need("300490", "ETH")
+    out = narrative.analyze_national_need("ETH", need)
+    assert out["available"] is True
+    assert "secteur" in out["narrative"]
+    assert "couverture partielle" in out["narrative"]
+
+
 def test_national_need_reference_includes_imports():
     from services import demand_estimation_service as demand
 

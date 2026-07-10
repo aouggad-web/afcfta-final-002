@@ -239,8 +239,13 @@ async def direct_export_scenario(
 async def national_need(
     hs_code: str = Query(..., description="Code SH du produit (HS6 ou HS4)"),
     country: str = Query(..., description="Pays (ISO3)"),
-    elasticity: float = Query(
-        default=0.4, description="Élasticité-revenu (ajustement niveau de vie, L3)"
+    elasticity: Optional[float] = Query(
+        default=None,
+        description=(
+            "Élasticité-revenu (ajustement niveau de vie, L3). Défaut : résolue "
+            "par classe de produit (chapitre SH) — aliments de base ~0,3, "
+            "pharma ~0,9, biens durables ~1,2."
+        ),
     ),
     with_observed_imports: bool = Query(
         default=False,
@@ -261,10 +266,12 @@ async def national_need(
     et sources — jamais présentée comme mesurée, jamais inventée.
 
     Le signal d'import observé (OEC) est **opt-in** (``with_observed_imports``) ;
-    il n'affecte jamais l'estimation elle-même. Il interroge le pays demandé
-    uniquement (plus de fan-out 54 pays), via le même client OEC que la recherche
-    SH2/SH4/SH6 du module Statistiques : cache persistant partagé, servi même si
-    l'OEC est momentanément injoignable (stale-on-error).
+    quand il est présent, il sert de PLANCHER mesuré à l'estimation (le besoin
+    d'un pays est au moins ce qu'il importe déjà — recalage signalé dans
+    ``calibration``). Il interroge le pays demandé uniquement (plus de fan-out
+    54 pays), via le même client OEC que la recherche SH2/SH4/SH6 du module
+    Statistiques : cache persistant partagé, servi même si l'OEC est
+    momentanément injoignable (stale-on-error).
     """
     from services import demand_estimation_service as demand
 
@@ -289,6 +296,31 @@ async def national_need(
     return demand.estimate_national_need(
         hs_code, country, income_elasticity=elasticity, observed_imports=observed_imports
     )
+
+
+@router.get("/risk-ratio/{country_iso3}", summary="Ratio de risque pays composite (détaillé)")
+async def risk_ratio(country_iso3: str):
+    """
+    Ratio de risque composite 0-100 (100 = risque minimal) pour un pays
+    partenaire du module Opportunités :
+
+    - **composante souveraine** : notations Standard & Poor's, Moody's,
+      Fitch Ratings, Scope converties en crans standard (AAA = 100, défaut = 0)
+      — plafond macro-financier du pays ;
+    - **composante opérationnelle** : grade A1→D (convention d'échelle
+      Coface/OCDE, du type des évaluations publiées par la Coface ou Allianz
+      Trade) issu des profils curés de la plateforme — risque d'impayé
+      commercial court terme, change, politique, transfert, assurance-crédit.
+
+    Pondération nominale 60 % opérationnel / 40 % souverain (une opportunité
+    est une transaction commerciale, pas un investissement souverain). La
+    réponse embarque la formule, les poids effectifs, le détail des intrants,
+    la méthodologie complète et les mises en garde — aucune valeur n'est
+    inventée : composante manquante = poids reporté + confiance « dégradée ».
+    """
+    from services import country_risk_service
+
+    return country_risk_service.get_risk_ratio(country_iso3)
 
 
 @router.get("/macro/{country_iso3}", summary="Profil macro-financier d'un pays")

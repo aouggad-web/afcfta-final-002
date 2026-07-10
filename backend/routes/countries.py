@@ -89,6 +89,25 @@ async def get_countries_economic_indicators(lang: str = "fr"):
     }
 
 
+@router.get("/countries/official-stats/{country_iso3}")
+async def get_country_official_stats(country_iso3: str):
+    """
+    Statistiques officielles NATIONALES d'un pays (bulletins des agences
+    nationales — ex. EDB Mauritius 2023, valeurs en monnaie locale), avec
+    distinction exportations domestiques / réexportations. 404 si aucune
+    source officielle n'est intégrée pour ce pays.
+    """
+    from services import national_official_stats
+
+    stats = national_official_stats.get_official_stats(country_iso3)
+    if not stats:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Aucune statistique officielle nationale intégrée pour {country_iso3.upper()}",
+        )
+    return stats
+
+
 @router.get("/country-profile/{country_code}")
 async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     """Récupérer le profil économique complet d'un pays avec données réelles et commerce 2024
@@ -121,7 +140,26 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     gdp_billion = real_data.get("gdp_usd_2024")
     profile.gdp_usd = float(gdp_billion) * 1_000_000_000 if gdp_billion is not None else None
     profile.gdp_per_capita = real_data.get("gdp_per_capita_2024")
-    profile.inflation_rate = real_data.get("inflation_rate_2024")
+    if profile.population:
+        profile.population_millions = round(profile.population / 1_000_000, 2)
+    # development_index de REAL_COUNTRY_DATA = IDH (PNUD) — était exposé
+    # uniquement dans projections, jamais dans le champ hdi du modèle.
+    profile.hdi = real_data.get("development_index")
+
+    # Inflation / chômage — cascade sans double emploi avec la PR #234 :
+    # 1) dataset BM auto-actualisé (API officielle, se rafraîchit via l'ETL) ;
+    # 2) repli sur la valeur curée du dataset Profils Pays
+    #    (inflation_rate_2024, FMI WEO — ajoutée par la PR #234) ;
+    # 3) null sinon — jamais inventés.
+    from services import wb_macro_service
+
+    wb = wb_macro_service.get_macro(iso3_code).get("indicators", {})
+    profile.inflation_rate = (wb.get("inflation_percent") or {}).get("value") or real_data.get(
+        "inflation_rate_2024"
+    )
+    profile.unemployment_rate = (wb.get("unemployment_percent") or {}).get(
+        "value"
+    ) or real_data.get("unemployment_rate_2024")
 
     profile.projections = {
         "gdp_growth_forecast_2024": real_data.get("growth_forecast_2024", "3.0%"),
@@ -166,7 +204,9 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         profile.projections["gai_2025_rating"] = gai_data.get("rating")
         profile.projections["gai_2025_trend"] = gai_data.get("trend")
 
-    profile.risk_ratings = {}
+    # Notations réelles (S&P/Moody's/Fitch/Scope) présentes dans le dataset
+    # Profils Pays pour les 54 pays — étaient écrasées par un dict vide.
+    profile.risk_ratings = real_data.get("risk_ratings") or {}
     profile.customs = get_country_customs_info(country["name"]) or {}
     profile.ongoing_projects = get_country_ongoing_projects(iso3_code)
 

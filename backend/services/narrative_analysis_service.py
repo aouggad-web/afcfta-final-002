@@ -350,16 +350,39 @@ def analyze_national_need(
     else:
         qualifier = "mesuré (consommation apparente)"
 
+    # Portée sectorielle : sans cette mention, un besoin agrégé de tout un
+    # secteur (correspondance production au chapitre SH2) passe pour le besoin
+    # du seul produit SH6 — cas signalé (ETH, ~3,7 Md$ affichés pour un produit).
+    scope_is_sector = (need.get("reference_scope") or "").startswith("secteur")
+    subject = (
+        f"pour l'ensemble du secteur « {commodity} » (référence au chapitre SH2, "
+        "à lire comme plafond sectoriel, pas comme besoin du seul produit)"
+        if scope_is_sector
+        else f"en {str(commodity).lower()}"
+    )
+
     parts = [
-        f"Besoin national {qualifier} de {country_iso3.upper()} en {str(commodity).lower()} : "
+        f"Besoin national {qualifier} de {country_iso3.upper()} {subject} : "
         f"≈ {value:,.0f} {unit}"
     ]
+
+    if need.get("reference_coverage_caveat"):
+        parts.append(
+            "référence de production à couverture partielle (peu de pays ingérés) — "
+            "estimation indicative uniquement"
+        )
 
     # Observed imports (real, USD) as a complementary demand signal.
     obs = need.get("observed_imports")
     if obs and obs.get("import_value_usd"):
+        calibrated = (need.get("calibration") or {}).get("applied")
+        prefix = (
+            "estimation recalée au plancher des importations observées : "
+            if calibrated
+            else "le pays importe déjà "
+        )
         parts.append(
-            f"le pays importe déjà {_fmt_usd(obs['import_value_usd'])} de ce produit "
+            f"{prefix}{_fmt_usd(obs['import_value_usd'])} de ce produit "
             f"({obs.get('source', 'OEC')})"
         )
 

@@ -819,14 +819,26 @@ async def get_country_comparison(country_code: str, lang: str = "fr"):
     glob = next((t for t in TRADE_PERFORMANCE_GLOBAL_2024 if t["code"] == iso2), None)
     intra = next((t for t in TRADE_PERFORMANCE_INTRA_AFRICAN_2024 if t["code"] == iso2), None)
 
+    # Indicateurs macro BM auto-actualisés (data/json/worldbank_data_latest.json,
+    # API officielle) : croissance dès maintenant, inflation/chômage dès que
+    # l'ETL les a collectés — null sinon, jamais inventés.
+    from services import wb_macro_service
+
+    wb = wb_macro_service.get_macro(iso3).get("indicators", {})
+
+    def _wb(key):
+        entry = wb.get(key)
+        return entry["value"] if entry else None
+
     return {
         "iso3": iso3,
         "country_name": name,
         "economic_indicators": {
             "gdp_billion_usd": macro.get("gdp_usd_2024"),
             "gdp_per_capita_usd": macro.get("gdp_per_capita_2024"),
-            "inflation_percent": None,
-            "unemployment_percent": None,
+            "gdp_growth_percent": _wb("gdp_growth_percent"),
+            "inflation_percent": _wb("inflation_percent"),
+            "unemployment_percent": _wb("unemployment_percent"),
             "population_millions": population_millions,
         },
         "trade_summary": {
