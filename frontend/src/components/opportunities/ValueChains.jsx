@@ -444,6 +444,11 @@ const HS6SearchResult = ({ result, language, onClear }) => {
             <p className="text-[10px] text-emerald-600 mt-2 italic">
               {prod.source?.dataset} · {language === 'fr' ? 'Total Afrique' : 'Africa total'}: {fmtProd(prod.continental_total, prod.unit)}
             </p>
+            {prod.coverage_caveat && (
+              <p className="text-[10px] text-amber-700 bg-amber-100 border border-amber-300 rounded px-2 py-1 mt-2">
+                ⚠ {prod.coverage_caveat}
+              </p>
+            )}
           </div>
         )}
 

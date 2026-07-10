@@ -449,6 +449,16 @@ const ProductionCapacity = ({ capacity, lang }) => {
         </div>
       )}
 
+      {continental.coverage_caveat && (
+        <div style={{
+          fontSize: 10.5, color: '#92400e', background: '#fef3c7',
+          border: '1px solid #fde68a', borderRadius: 6, padding: '6px 9px',
+          marginBottom: 10, lineHeight: 1.4,
+        }}>
+          ⚠ {continental.coverage_caveat}
+        </div>
+      )}
+
       {/* Integration scenarios */}
       {scenarioList.length > 0 && (
         <div>
