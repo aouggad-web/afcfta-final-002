@@ -1090,7 +1090,10 @@ class TestAdministrativeFormalities:
         )
         with open(path, encoding="utf-8") as f:
             d = json.load(f)
-        return d["tariff_lines"]
+        # Deux formats coexistent : "tariff_lines" (ancien) et "sub_positions"
+        # (format WITS normalisé) — le backend les lit indifféremment via
+        # crawled_data_service.
+        return d.get("tariff_lines") or d.get("sub_positions") or []
 
     def test_mar_data_has_multiple_document_types(self):
         """MAR crawled data must use more than just code 910."""
@@ -1482,7 +1485,11 @@ class TestAllAfricaFormalities:
             os.path.dirname(__file__), "..", "data", "crawled", f"{cc}_tariffs.json"
         )
         with open(path, encoding="utf-8") as f:
-            return json.load(f)["tariff_lines"]
+            d = json.load(f)
+        # Les fichiers crawlés coexistent sous deux formats : "tariff_lines"
+        # (ancien) et "sub_positions" (format WITS normalisé) — le backend
+        # les lit indifféremment via crawled_data_service.
+        return d.get("tariff_lines") or d.get("sub_positions") or []
 
     def test_every_country_has_multi_doc_formalities(self):
         """Every country must have at least some lines with >1 document (not all single-doc)."""
