@@ -341,6 +341,67 @@ def test_narrative_summarize_opportunity():
     assert result["priority_tier"] == "QUICK_WIN"
     assert len(result["key_findings"]) > 0
     assert "Déployer" in result["recommendation"]
+    # Sans importations observées du marché cible, aucun tonnage n'est inventé.
+    assert "MT/mois" not in result["recommendation"]
+
+
+def _quick_win_report(hs_code, annual_import_usd):
+    return {
+        "composite_indicators": {"end_to_end_score": {"available": True, "score": 0.8}},
+        "inputs": {"hs_code": hs_code},
+        "national_need": {
+            "available": True,
+            "observed_imports": {"import_value_usd": annual_import_usd, "source": "OEC"},
+        },
+    }
+
+
+def test_narrative_phase1_volume_scales_with_product_value():
+    # L'ancienne recommandation codait en dur « 200–500 MT/mois » quel que soit
+    # le produit : 500 MT/mois de médicaments (~60 USD/kg) = 30 M$/mois, absurde
+    # pour un corridor bilatéral (cas signalé : SH 300490 Algérie → Sénégal).
+    from services import narrative_analysis_service as narrative
+
+    pharma = narrative.summarize_opportunity(_quick_win_report("300490", 400_000_000))
+    potatoes = narrative.summarize_opportunity(_quick_win_report("070190", 400_000_000))
+
+    assert "200–500 MT/mois" not in pharma["recommendation"]
+    assert "Estimation de dimensionnement" in pharma["recommendation"]
+
+    def _mt_upper(reco):
+        import re
+
+        m = re.search(r"([\d.]+)–([\d.]+) MT/mois", reco)
+        assert m, reco
+        return float(m.group(2))
+
+    # À valeur d'importation égale, le tonnage cible des médicaments doit être
+    # ~60× plus faible que celui des pommes de terre (ratio USD/kg 60 vs 1).
+    assert _mt_upper(pharma["recommendation"]) < _mt_upper(potatoes["recommendation"]) / 10
+
+
+def test_narrative_phase1_volume_derived_from_observed_demand():
+    from services import narrative_analysis_service as narrative
+
+    result = narrative.summarize_opportunity(_quick_win_report("300490", 400_000_000))
+    reco = result["recommendation"]
+    # 10 % de 400 M$/an = 3,3 M$/mois ; à ~60 USD/kg → ~56 MT/mois maximum.
+    assert "MT/mois" in reco
+    assert "5–10 %" in reco
+    assert "importations annuelles observées" in reco
+
+
+def test_narrative_phase1_no_tonnage_without_demand_data():
+    from services import narrative_analysis_service as narrative
+
+    report = {
+        "composite_indicators": {"end_to_end_score": {"available": True, "score": 0.9}},
+        "inputs": {"hs_code": "300490"},
+    }
+    result = narrative.summarize_opportunity(report)
+    assert result["priority_tier"] == "QUICK_WIN"
+    assert "MT/mois" not in result["recommendation"]
+    assert "demande réelle" in result["recommendation"]
 
 
 # ── Benchmarking Service ─────────────────────────────────────────────────────

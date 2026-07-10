@@ -26,6 +26,7 @@ except ImportError:
 from services import manufacturing_proxy_service, production_capacity_service
 from services.oec_data_service import oec_data_service
 from services.oec_trade_service import DEFAULT_YEAR as OEC_DEFAULT_YEAR
+from services.oec_trade_service import oec_service
 from services.redis_cache_service import cache_service, get_data_freshness
 
 load_dotenv()
@@ -749,6 +750,128 @@ STRICT DATA RULES:
 5. sourceUrl: cite the dataset name and year from the data above — NEVER fabricate a URL.
 """
 
+    async def _hs_code_grounding(self, hs_code: str) -> tuple:
+        """
+        Bloc DONNÉES RÉELLES pour analyze_product_by_hs_code : producteurs
+        continentaux réels (FAOSTAT/USGS/UNIDO) et importateurs africains réels
+        (OEC/UN Comtrade) pour ce code HS précis.
+
+        Sans cet ancrage, le LLM invente un "producteur majeur" de mémoire pour
+        des codes HS que nos jeux de données ne mesurent pour aucun pays africain
+        (ex. médicaments HS 30, téléviseurs HS 8528) — exactement le défaut
+        rapporté (un petit pays cité comme producteur majeur de médicaments et
+        de téléviseurs, sans aucun ancrage réel).
+        """
+        sections = []
+        real_producer_iso3: set = set()
+
+        try:
+            prod = production_capacity_service.get_continental_producers(hs_code)
+            if prod.get("available"):
+                top = prod["top_producers"]
+                real_producer_iso3 = {p["country_iso3"] for p in top}
+                names = ", ".join(
+                    f"{p['country_name']} ({p['country_iso3']}, {p['share_pct']}%)" for p in top
+                )
+                # Certaines catégories manufacturières (UNIDO) n'ont qu'1-2 pays
+                # africains ingérés (ex. électronique, pharma) — un rang/part
+                # calculé dessus n'est PAS un leadership continental réel. Sans
+                # relayer ce garde-fou dans le prompt, le LLM voit "Maurice
+                # (MUS, 100.0%)" et affirme "producteur majeur" sur une
+                # couverture partielle — exactement le défaut rapporté pour
+                # les médicaments (HS 30) et l'électronique/TV (HS 8528).
+                caveat = (
+                    f" [PARTIAL COVERAGE — only {len(top)} African country/ies ingested for "
+                    "this product; NEVER present as continental leadership]"
+                    if prod.get("coverage_caveat")
+                    else ""
+                )
+                sections.append(
+                    f"REAL PRODUCTION for {prod['commodity']} (HS {hs_code}) "
+                    f"[{prod['measure']}, {prod['source']['institution']} "
+                    f"{prod['year']}]: {names}{caveat}"
+                )
+        except Exception as e:
+            logger.warning(f"Production grounding failed for HS {hs_code}: {e}")
+
+        try:
+            for year in (OEC_DEFAULT_YEAR, OEC_DEFAULT_YEAR - 1, OEC_DEFAULT_YEAR - 2):
+                importers = await oec_service.get_top_african_importers(hs_code, year)
+                rows = importers.get("data") or []
+                if rows:
+                    names = ", ".join(
+                        f"{r.get('country_name')} ({r.get('country_iso3')})" for r in rows[:10]
+                    )
+                    sections.append(
+                        f"REAL AFRICAN IMPORTERS of HS {hs_code} (OEC/UN Comtrade {year}): {names}"
+                    )
+                    break
+        except Exception as e:
+            logger.warning(f"OEC importer grounding failed for HS {hs_code}: {e}")
+
+        return "\n\n".join(sections), real_producer_iso3
+
+    @staticmethod
+    def _product_grounding_rules(grounding_text: str, has_real_production: bool) -> str:
+        """Bloc prompt pour analyze_product_by_hs_code : données réelles + anti-fabrication."""
+        no_data_clause = (
+            ""
+            if has_real_production
+            else "\n7. NO verified production data exists in this platform's datasets "
+            "(FAOSTAT/USGS/UNIDO) for this HS code, for any African country. Return an "
+            'EMPTY "production_capacities" array and say so explicitly in '
+            "market_share_trends.notes — do NOT invent a list of producing countries for "
+            "a product with no verified production source."
+        )
+        return f"""
+VERIFIED REAL DATA — GROUND THE ENTIRE ANALYSIS ON THIS (platform datasets):
+{grounding_text or "(no platform data reachable for this HS code)"}
+
+STRICT DATA RULES:
+1. "production_capacities" must list ONLY countries present in the REAL PRODUCTION
+   data above, if any. A country absent from it must NEVER be called a "producteur
+   majeur" / "leading producer" of this good — omit it instead of guessing.
+2. An entry flagged [PARTIAL COVERAGE] above (only 1-2 African countries ingested
+   for that product in our datasets) must NEVER be described as continental
+   leadership, "producteur majeur", or given a leadership percentage — state only
+   that it is a known producer and that African coverage for this product is
+   incomplete in our data (e.g. "no comprehensive African production data exists
+   for this product; X is the only country recorded, not necessarily the leader").
+3. "top_african_importers" should reuse the REAL AFRICAN IMPORTERS figures above
+   where available, citing "OEC/UN Comtrade" and the year given.
+4. A country in "top_african_exporters" that is NOT in the REAL PRODUCTION data
+   above may only be described as a processing/re-export/trade hub, explicitly
+   labeled as such — never presented as a producer of the underlying good.
+5. Any quantity NOT derived from the data above must be an order-of-magnitude
+   estimate explicitly marked as such.
+6. sourceUrl: cite the dataset name/year from the data above — NEVER fabricate a URL.{no_data_clause}
+"""
+
+    @staticmethod
+    def _filter_unverified_hs_producers(result: Dict, real_producer_iso3: set) -> int:
+        """
+        Garde-fou anti-hallucination pour analyze_product_by_hs_code (même principe
+        que _filter_unverified_raw_producers pour les chaînes de valeur) : retire
+        toute entrée "production_capacities" dont le pays n'apparaît pas dans les
+        producteurs réels FAOSTAT/USGS/UNIDO pour ce code HS, plutôt que de
+        l'afficher comme un rang de production non vérifié.
+        """
+        if not real_producer_iso3:
+            return 0
+        entries = result.get("production_capacities")
+        if not isinstance(entries, list):
+            return 0
+        removed = 0
+        kept = []
+        for e in entries:
+            iso3 = (e.get("iso3") or "").upper() if isinstance(e, dict) else None
+            if iso3 and iso3 not in real_producer_iso3:
+                removed += 1
+                continue
+            kept.append(e)
+        result["production_capacities"] = kept
+        return removed
+
     async def analyze_trade_opportunities(
         self,
         country_name: str,
@@ -1287,7 +1410,10 @@ Return this EXACT JSON structure:
         if not self._is_ready():
             return {"error": "ANTHROPIC_API_KEY not configured"}
 
-        cache_params = {"hs_code": hs_code, "lang": lang}
+        # "pv" = version du prompt : v2 ajoute l'ancrage sur données réelles
+        # (production_capacity_service + OEC) et les règles anti-fabrication —
+        # invalide les analyses en cache générées avec l'ancien prompt non ancré.
+        cache_params = {"hs_code": hs_code, "lang": lang, "pv": 2}
         cached = cache_service.get("claude_product", cache_params)
         if cached:
             cached["data_freshness"] = get_data_freshness(
@@ -1297,11 +1423,15 @@ Return this EXACT JSON structure:
 
         lang_instr = "Réponds en français." if lang == "fr" else "Respond in English."
 
+        grounding_text, real_producer_iso3 = await self._hs_code_grounding(hs_code)
+        grounding_rules = self._product_grounding_rules(grounding_text, bool(real_producer_iso3))
+
         prompt = f"""{lang_instr}
 
 Analyze the African trade landscape for HS code {hs_code}.
-
-Provide full SH hierarchy and intra-African trade analysis.
+{grounding_rules}
+Provide full SH hierarchy and intra-African trade analysis, grounded in the
+verified data above.
 
 Return this EXACT JSON structure:
 {{
@@ -1352,6 +1482,10 @@ Return this EXACT JSON structure:
             result = self._extract_json(raw)
             if not result:
                 return {"error": "Failed to parse response"}
+
+            filtered_count = self._filter_unverified_hs_producers(result, real_producer_iso3)
+            if filtered_count:
+                result["unverified_producers_filtered"] = filtered_count
 
             # Normalize field names for ProductAnalysisView.jsx:
             # exporters → export_value_musd, importers → import_value_musd,
@@ -1652,11 +1786,44 @@ This keeps the payload compact and parseable."""
 
     # ── Country Comparison ────────────────────────────────────────────────────
 
+    def _pairwise_production_grounding(
+        self, country_a: str, iso3_a: Optional[str], country_b: str, iso3_b: Optional[str]
+    ) -> str:
+        """
+        Bloc DONNÉES RÉELLES pour compare_countries : ce que chaque pays produit
+        réellement (FAOSTAT/USGS/UNIDO), pour empêcher "a_can_supply_to_b" /
+        "b_can_supply_to_a" de citer un produit sans aucune base de production
+        dans le pays concerné (le même défaut que pour un code HS isolé, mais
+        ici pour la vue comparaison de deux pays).
+        """
+        sections = []
+        for name, iso3 in ((country_a, iso3_a), (country_b, iso3_b)):
+            if not iso3:
+                continue
+            try:
+                profile = production_capacity_service.get_country_profile(iso3, top_n=15)
+                if profile.get("available"):
+                    lines = [
+                        f"- {p['commodity']} (HS {p['hs_code']}, {p['institution']} {p['year']}): "
+                        f"continental rank {p['rank']}/{p['total_countries']}"
+                        for p in profile["products"]
+                    ]
+                    sections.append(
+                        f"VERIFIED PRODUCTION OF {name} (FAOSTAT/USGS/UNIDO, real recorded "
+                        "output):\n" + "\n".join(lines)
+                    )
+            except Exception as e:
+                logger.warning(f"Production grounding failed for {iso3}: {e}")
+        return "\n\n".join(sections)
+
     async def compare_countries(self, country_a: str, country_b: str, lang: str = "fr") -> Dict:
         if not self._is_ready():
             return {"error": "ANTHROPIC_API_KEY not configured"}
 
-        cache_params = {"country_a": country_a, "country_b": country_b, "lang": lang}
+        # "pv" = version du prompt : v2 ajoute l'ancrage sur la production réelle
+        # de chaque pays et les règles anti-fabrication — invalide les
+        # comparaisons en cache générées avec l'ancien prompt non ancré.
+        cache_params = {"country_a": country_a, "country_b": country_b, "lang": lang, "pv": 2}
         cached = cache_service.get("claude_comparison", cache_params)
         if cached:
             cached["data_freshness"] = get_data_freshness(
@@ -1666,10 +1833,29 @@ This keeps the payload compact and parseable."""
 
         lang_instr = "Réponds en français." if lang == "fr" else "Respond in English."
 
+        iso3_a = self._resolve_iso3(country_a)
+        iso3_b = self._resolve_iso3(country_b)
+        grounding_text = self._pairwise_production_grounding(country_a, iso3_a, country_b, iso3_b)
+        grounding_rules = f"""
+VERIFIED REAL DATA — GROUND "a_can_supply_to_b" / "b_can_supply_to_a" ON THIS:
+{grounding_text or "(no platform production data reachable for these countries)"}
+
+STRICT DATA RULES:
+1. "a_can_supply_to_b" must list products {country_a} demonstrably produces (per
+   the data above, or an uncontested, well-known comparative advantage) — never a
+   product with no plausible production base in {country_a}. Same rule for
+   "b_can_supply_to_a" with {country_b}.
+2. A product not present in the data above must be presented as an estimate, never
+   as a specific rank or "leading producer" claim.
+3. If neither country has verified production data for a plausible product,
+   explain that in trade_complementarity.explanation rather than inventing figures.
+"""
+
         prompt = f"""{lang_instr}
 
 Compare {country_a} and {country_b} as AfCFTA trade partners.
 Use OEC 2023, IMF WEO Oct 2024, UNDP HDR 2023 data.
+{grounding_rules}
 
 Return this EXACT JSON structure:
 {{
