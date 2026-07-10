@@ -1080,3 +1080,21 @@ def test_market_seeking_report_demand_degrades_supply_real(monkeypatch):
     assert rep["demand"]["available"] is False  # OEC blocked -> graceful
     assert rep["supply"]["available"] is True  # local production data
     assert rep["data_quality"]["is_estimation"] is False
+
+
+def test_get_product_name_resolves_exact_hs6_not_wrong_chapter():
+    # Bug signalé : « 180400 » (beurre de cacao) était étiqueté « Produits
+    # laitiers, œufs » — l'ancien code gardait les 4 DERNIERS chiffres
+    # (« 0400 ») et rattachait la sous-position au chapitre de ses chiffres
+    # 3-4. Tout SH6 en « xx01xx » devenait « Animaux vivants ».
+    from services.real_trade_data_service import get_product_name
+
+    assert get_product_name("180400", "fr") == "Beurre de cacao"
+    assert get_product_name("180400", "en") == "Cocoa butter"
+    assert "laitier" not in get_product_name("180400", "fr").lower()
+    assert get_product_name("090111", "fr") == "Café non torréfié"
+    assert get_product_name("180100", "fr") == "Cacao en fèves"
+    # Les niveaux moins spécifiques restent corrects.
+    assert get_product_name("1804", "fr") == "Cacao et préparations"
+    assert get_product_name("09", "fr")  # chapitre — ne lève pas
+    assert get_product_name("", "fr") == "Produit inconnu"
