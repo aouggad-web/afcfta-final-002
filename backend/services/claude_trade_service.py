@@ -356,7 +356,7 @@ class ClaudeTradeService:
         # Threshold below which non-streaming is fine (< ~10-min SLA).
         # Sonnet-4-6 typically outputs ~50-80 tok/s; 10 min ≈ 30-48k tokens,
         # but the API enforces streaming already at 10k so we mirror that.
-        if max_tokens > 10000:
+        if max_tokens >= 10_000:
             chunks: list[str] = []
             async with client.messages.stream(**common_kwargs) as stream:
                 async for text in stream.text_stream:
