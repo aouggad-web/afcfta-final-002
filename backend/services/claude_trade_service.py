@@ -125,15 +125,28 @@ DATA SANITIZATION RULES (CRITICAL):
      Only count domestically consumed or produced goods.
    - TOGO (TGO): Lomé is a major re-export hub. Flag any product where exports >> domestic
      production capacity as "suspected re-export".
-2. HYDROCARBON BIAS (mandatory diversification):
+   - MAURITIUS (MUS): Small-island economy that IMPORTS ~75% of its consumption needs.
+     Its garment/textile exports (HS 61/62) and refined-sugar exports (HS 1701) are
+     processing/re-export activity on LARGELY IMPORTED inputs (fabric, yarn, raw sugar
+     under EPZ/Freeport regimes) — NEVER present Mauritius as a "leading producer" or
+     "top producer" of the raw material (raw cotton, raw sugarcane, etc.). It may be
+     cited only as a processor/manufacturer/exporter of the finished good, explicitly
+     labeled as such, never as the source of the primary commodity.
+2. NEVER CONFUSE PRODUCER WITH EXPORTER/PROCESSOR (applies to every country, not just
+   the flagged cases above): "top producer" / "leading producer" / "producteur principal"
+   must reflect actual primary production (harvested/extracted volume), never export
+   value, re-export volume, or processing/assembly activity on imported inputs. If you
+   are not confident a country actually produces the raw material domestically, omit it
+   from producer rankings rather than guess — a missing entry is safer than a wrong one.
+3. HYDROCARBON BIAS (mandatory diversification):
    - DZA, AGO, NGA, LBY, GAB: max 2–3 hydrocarbon items then pivot to Agriculture,
      Manufacturing, Services. The non-oil economy is the analytical focus.
    - SDN: Post-secession — most oil fields are in South Sudan (SSD).
-3. DATA INTEGRITY:
+4. DATA INTEGRITY:
    - Only include products with verified trade flows > $0.5M MUSD.
    - If a product is a plausible major export but has no domestic production base,
      flag rationale with "suspected re-export or informal cross-border trade."
-4. SMALL ISLAND STATES (SYC, COM, CPV, STP): Focus on fisheries, tourism services,
+5. SMALL ISLAND STATES (SYC, COM, CPV, STP): Focus on fisheries, tourism services,
    financial services. Manufacturing is scale-limited by geography.
 
 ECONOMIC ADVANTAGE CALCULATIONS (include in every opportunity):
@@ -1129,6 +1142,73 @@ Return this EXACT JSON structure with one entry per year, deduplicated:
 
     # ── Value Chains ──────────────────────────────────────────────────────────
 
+    # Codes HS représentatifs par secteur, utilisés pour ancrer le prompt sur
+    # des producteurs RÉELS (FAOSTAT/USGS/UNIDO, via production_capacity_service)
+    # avant de laisser le LLM générer sa propre analyse. Sans cet ancrage, le
+    # LLM confond régulièrement "pays exportateur/hub de réexport" (ex. Maurice
+    # — zone franche textile/sucre, qui importe ~75% de ses besoins) avec
+    # "producteur principal" de matière première.
+    _SECTOR_HS_SEEDS = {
+        "coffee/cocoa": ["0901", "1801"],
+        "cotton/textiles": ["5201", "61"],
+        "minerals": ["7108", "2601", "7403", "8105"],
+        "petroleum": ["2709", "2711"],
+        "automotive/assembly": ["87"],
+        "pharma/chemicals": ["30", "28"],
+    }
+
+    # Seuls l'agriculture (FAOSTAT) et les mines/hydrocarbures (USGS) mesurent
+    # une production de MATIÈRE PREMIÈRE. Le dataset "manufacturing" (UNIDO)
+    # mesure une valeur ajoutée de TRANSFORMATION — un pays qui y figure (ex.
+    # Maurice pour la confection, HS 61) est un vrai transformateur, mais ça
+    # ne prouve RIEN sur la production de la matière première en amont (coton
+    # brut). Mélanger les deux ferait passer, à tort, un pays "manufacturing"
+    # comme vérifié pour un rôle "raw_material".
+    _RAW_MATERIAL_DATASETS = {"agri", "mining"}
+
+    def _real_producers_grounding(self, sector: Optional[str]) -> tuple:
+        """
+        Construit (a) un bloc texte listant les producteurs RÉELS (FAOSTAT/USGS/
+        UNIDO) pour les secteurs concernés et (b) l'ensemble des ISO3 confirmés
+        producteurs de MATIÈRE PREMIÈRE (agri/mining uniquement — voir
+        _RAW_MATERIAL_DATASETS) — pour ancrer puis vérifier la réponse du LLM.
+        """
+        if sector:
+            sector_lower = sector.lower()
+            keys = [
+                k
+                for k in self._SECTOR_HS_SEEDS
+                if any(part in sector_lower for part in k.split("/"))
+            ] or list(self._SECTOR_HS_SEEDS)
+        else:
+            keys = list(self._SECTOR_HS_SEEDS)
+
+        lines = []
+        real_raw_material_iso3 = set()
+        seen_commodities = set()
+        for key in keys:
+            for hs in self._SECTOR_HS_SEEDS[key]:
+                data = production_capacity_service.get_continental_producers(hs)
+                if not data.get("available"):
+                    continue
+                commodity = data["commodity"]
+                if commodity in seen_commodities:
+                    continue
+                seen_commodities.add(commodity)
+                top = data["top_producers"][:5]
+                if not top:
+                    continue
+                names = ", ".join(
+                    f"{p['country_name']} ({p['country_iso3']}, {p['share_pct']}%)" for p in top
+                )
+                lines.append(
+                    f"- {commodity} [{data['measure']}, {data['source']['institution']} "
+                    f"{data['year']}] : {names}"
+                )
+                if data["dimension"] in self._RAW_MATERIAL_DATASETS:
+                    real_raw_material_iso3.update(p["country_iso3"] for p in top)
+        return "\n".join(lines), real_raw_material_iso3
+
     async def get_value_chains_analysis(
         self, sector: Optional[str] = None, lang: str = "fr"
     ) -> Dict:
@@ -1150,9 +1230,24 @@ Return this EXACT JSON structure with one entry per year, deduplicated:
             else "Cover 6 major value chains: coffee/cocoa, cotton/textiles, minerals, petroleum, automotive/assembly, and pharma/chemicals."
         )
 
+        grounding_block, real_raw_material_iso3 = self._real_producers_grounding(sector)
+
         prompt = f"""{lang_instr}
 
 Analyze African value chains under AfCFTA. {sector_focus}
+
+REAL PRODUCTION DATA (FAOSTAT / USGS / UNIDO, latest year, top continental producers) —
+this is the ONLY valid source for "leading_countries" of a raw-material/extraction
+stage, and for any "top_producers" entry tagged role="raw_material":
+{grounding_block or "(no matching dataset)"}
+
+STRICT RULE: a country absent from the list above must NEVER be presented as a
+"raw_material" producer, a "leading_country" of an extraction/cultivation stage, or
+a "principal producer" — even if it is a well-known trade/logistics hub (e.g.
+Mauritius, Djibouti, UAE-style free zones that re-export or process imported goods).
+Such a country may only be tagged role="processor" or role="exporter", reflecting
+that it transforms or re-exports goods it largely imports, never that it produces
+the raw material itself.
 
 For each value chain provide:
 {{
@@ -1188,14 +1283,54 @@ Wrap in: {{"value_chains": [...], "overview": {{"total_potential_musd": 0.0, "ke
             if not result:
                 return {"error": "Failed to parse response"}
 
+            filtered_count = self._filter_unverified_raw_producers(result, real_raw_material_iso3)
+
             result["generated_by"] = f"Claude AI ({self.MODEL})"
             result["data_freshness"] = get_data_freshness(None)
+            if filtered_count:
+                result["unverified_producers_filtered"] = filtered_count
             cache_service.set("claude_value_chains", cache_params, result, "claude_value_chains")
             return result
 
         except Exception as e:
             logger.error(f"Error in value chains: {e}", exc_info=True)
             return {"error": str(e)}
+
+    @staticmethod
+    def _filter_unverified_raw_producers(result: Dict, real_raw_material_iso3: set) -> int:
+        """
+        Garde-fou anti-hallucination : malgré l'ancrage du prompt, un LLM peut
+        encore taguer role="raw_material" un pays qui n'est en réalité qu'un
+        hub de transformation/réexport (ex. Maurice, ~75% de ses besoins
+        importés). Toute entrée "top_producers" en role="raw_material" dont le
+        pays n'apparaît pas dans les données de production réelles (FAOSTAT/
+        USGS/UNIDO) est supprimée plutôt qu'affichée comme non vérifiée — pas
+        de reclassement automatique en "exporter", qui serait lui aussi une
+        affirmation non sourcée. Ne touche jamais aux rôles processor/
+        manufacturer/exporter, hors du champ de vérification par production
+        primaire.
+        """
+        if not real_raw_material_iso3:
+            return 0
+        removed = 0
+        for chain in result.get("value_chains", []) or []:
+            if not isinstance(chain, dict):
+                continue
+            producers = chain.get("top_producers")
+            if not isinstance(producers, list):
+                continue
+            kept = []
+            for p in producers:
+                if (
+                    isinstance(p, dict)
+                    and p.get("role") == "raw_material"
+                    and p.get("iso3") not in real_raw_material_iso3
+                ):
+                    removed += 1
+                    continue
+                kept.append(p)
+            chain["top_producers"] = kept
+        return removed
 
     # ── Country Comparison ────────────────────────────────────────────────────
 

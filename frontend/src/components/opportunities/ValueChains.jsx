@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
+import { useHsLabel } from '../../hooks/useHsLabel';
 import { 
   ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip
 } from 'recharts';
@@ -520,6 +521,7 @@ export default function ValueChains({ language = 'fr' }) {
   const [hsSearchResult, setHsSearchResult] = useState(null);
   const [hsSearchLoading, setHsSearchLoading] = useState(false);
   const [hsSearchError, setHsSearchError] = useState(null);
+  const { label: hsQueryLabel } = useHsLabel(hsQuery, language);
 
   // Fetch value chains data from AI API
   useEffect(() => {
@@ -554,7 +556,8 @@ export default function ValueChains({ language = 'fr' }) {
                 country: p.country,
                 iso3: p.iso3,
                 production: p.production_tonnes || p.production || 0,
-                share: p.market_share_percent || p.share || 0
+                share: p.market_share_percent || p.share || 0,
+                role: p.role || null
               })),
               intraAfricanPotential: vc.intra_african_potential_musd || vc.intraAfricanPotential || 0,
               globalExports: vc.global_exports_musd || vc.globalExports || 0,
@@ -631,7 +634,13 @@ export default function ValueChains({ language = 'fr' }) {
       searchPlaceholder: "Entrez un code SH (ex: 090111, 1801, 72)",
       searchBtn: "Analyser",
       searchTitle: "Recherche par code SH",
-      searchSub: "Analysez n'importe quel produit : chaîne de valeur, opportunités ZLECAf, marchés africains"
+      searchSub: "Analysez n'importe quel produit : chaîne de valeur, opportunités ZLECAf, marchés africains",
+      roleLabels: {
+        raw_material: "Producteur de matière première",
+        processor: "Transformateur (pas producteur primaire)",
+        manufacturer: "Fabricant",
+        exporter: "Hub d'exportation/réexport (pas producteur primaire)"
+      }
     },
     en: {
       title: "African Value Chains",
@@ -650,7 +659,13 @@ export default function ValueChains({ language = 'fr' }) {
       searchPlaceholder: "Enter HS code (e.g. 090111, 1801, 72)",
       searchBtn: "Analyze",
       searchTitle: "Search by HS code",
-      searchSub: "Analyze any product: value chain, AfCFTA opportunities, African markets"
+      searchSub: "Analyze any product: value chain, AfCFTA opportunities, African markets",
+      roleLabels: {
+        raw_material: "Raw material producer",
+        processor: "Processor (not a primary producer)",
+        manufacturer: "Manufacturer",
+        exporter: "Export/re-export hub (not a primary producer)"
+      }
     }
   };
 
@@ -713,6 +728,11 @@ export default function ValueChains({ language = 'fr' }) {
             {txt.searchBtn}
           </button>
         </form>
+        {hsQueryLabel && !hsSearchError && (
+          <p className="mt-2 text-emerald-400 text-xs truncate" title={hsQueryLabel}>
+            {hsQueryLabel}
+          </p>
+        )}
         {hsSearchError && (
           <p className="mt-2 text-red-400 text-xs flex items-center gap-1">
             <AlertCircle className="h-3 w-3" /> {hsSearchError}
@@ -810,26 +830,40 @@ export default function ValueChains({ language = 'fr' }) {
                   {txt.topProducers}
                 </h3>
                 <div className="space-y-3">
-                  {(chain.topProducers || chain.top_producers || []).map((producer, idx) => (
-                    <div key={producer.iso3} className="flex items-center gap-3">
+                  {(chain.topProducers || chain.top_producers || []).map((producer, idx) => {
+                    const role = producer.role;
+                    const isNotPrimaryProducer = role === 'processor' || role === 'exporter' || role === 'manufacturer';
+                    return (
+                    <div key={`${producer.iso3}-${role || idx}`} className="flex items-center gap-3">
                       <span className="font-black text-slate-300 w-6">{idx + 1}</span>
                       <div className="flex-1">
                         <div className="flex justify-between items-center mb-1">
-                          <span className="font-medium text-slate-700">{producer.country}</span>
+                          <span className="flex items-center gap-2 font-medium text-slate-700">
+                            {producer.country}
+                            {isNotPrimaryProducer && (
+                              <span
+                                className="text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded bg-amber-100 text-amber-700"
+                                title={txt.roleLabels?.[role]}
+                              >
+                                {txt.roleLabels?.[role] || role}
+                              </span>
+                            )}
+                          </span>
                           <span className="text-sm text-slate-500">{producer.share || producer.market_share_percent}%</span>
                         </div>
                         <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="h-full rounded-full transition-all"
-                            style={{ 
+                            style={{
                               width: `${producer.share || producer.market_share_percent}%`,
-                              backgroundColor: chain.color 
+                              backgroundColor: isNotPrimaryProducer ? '#d97706' : chain.color
                             }}
                           />
                         </div>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 

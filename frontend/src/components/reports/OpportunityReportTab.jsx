@@ -106,7 +106,6 @@ function EstBadge({ isEstimation, level, fr }) {
 /* ── Mode 1: producer looking for markets ─────────────────────────────────── */
 function MarketSeekingView({ fr }) {
   const [hsCode, setHsCode] = useState("1801");
-  const [year, setYear] = useState("2022");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [rep, setRep] = useState(null);
@@ -116,7 +115,7 @@ function MarketSeekingView({ fr }) {
     setError(null);
     setRep(null);
     try {
-      const params = new URLSearchParams({ hs_code: hsCode, year, lang: fr ? "fr" : "en" });
+      const params = new URLSearchParams({ hs_code: hsCode, lang: fr ? "fr" : "en" });
       const res = await axios.get(`${API}/reports/market-seeking?${params.toString()}`);
       setRep(res.data);
     } catch (e) {
@@ -139,15 +138,6 @@ function MarketSeekingView({ fr }) {
             onChange={(e) => setHsCode(e.target.value)}
             data-testid="ms-hs"
             style={{ padding: "8px 10px", borderRadius: 8, width: 160 }}
-          />
-        </div>
-        <div>
-          <div style={label}>{fr ? "Année" : "Year"}</div>
-          <input
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            data-testid="ms-year"
-            style={{ padding: "8px 10px", borderRadius: 8, width: 100 }}
           />
         </div>
         <button

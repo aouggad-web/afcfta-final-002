@@ -6,6 +6,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { TrendingDown, Calculator, Info } from 'lucide-react';
 import { getAllCountries } from '../../utils/countryCodes';
+import { useHsLabel } from '../../hooks/useHsLabel';
 
 const TEXTS = {
   fr: {
@@ -80,6 +81,7 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const { label: hs6Label } = useHsLabel(hs6, language);
 
   const canRun = importer && /^\d{6}$/.test(hs6) && Number(value) > 0;
 
@@ -140,6 +142,11 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
               inputMode="numeric"
               className="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white"
             />
+            {hs6Label && (
+              <span className="text-xs text-emerald-400 truncate" title={hs6Label}>
+                {hs6Label}
+              </span>
+            )}
           </label>
 
           <label className="flex flex-col gap-1">

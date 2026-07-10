@@ -97,7 +97,6 @@ async def opportunity_report(
 @router.get("/market-seeking", summary="Marchés potentiels pour un produit (producteur)")
 async def market_seeking_report(
     hs_code: str = Query(..., description="Code SH du produit (HS6 ou HS4)"),
-    year: int = Query(default=2022, description="Année des flux commerciaux"),
     lang: str = Query(default="fr", description="Langue du nom de produit (fr/en)"),
 ):
     """
@@ -105,10 +104,15 @@ async def market_seeking_report(
     demande, via OEC) et qui le **produit** sur le continent (l'offre, via les
     données de production réelles FAO/USGS/UNIDO).
 
+    Utilise toujours la dernière année de données disponible (pas de choix
+    d'année exposé : les flux commerciaux et la production continentale ne
+    sont pas des séries que l'utilisateur a de raison de vouloir figer dans
+    le passé pour ce cas d'usage — trouver des débouchés aujourd'hui).
+
     La demande dégrade gracieusement si l'API OEC est injoignable (plan payant) ;
     l'offre reste disponible localement.
     """
-    return await report_engine.get_market_seeking_report(hs_code, year=year, lang=lang)
+    return await report_engine.get_market_seeking_report(hs_code, lang=lang)
 
 
 @router.get(
