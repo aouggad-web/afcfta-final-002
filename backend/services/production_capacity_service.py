@@ -282,6 +282,35 @@ SOURCE_META = {
     },
 }
 
+# ── Proxy d'exportation (repli quand FAO/USGS/UNIDO ne couvrent pas le produit) ──
+# Les exportations SH6/SH4 (OEC/BACI) servent d'INDICE de capacité productive
+# UNIQUEMENT là où le référentiel production n'a rien. Ce n'est jamais une mesure
+# de production : une exportation observée en est une BORNE BASSE (la part
+# consommée sur le marché intérieur n'est pas exportée) et peut inclure des
+# réexportations — lesquelles n'attestent d'AUCUNE production locale.
+_EXPORT_PROXY_SOURCE = {
+    "institution": "OEC / BACI (CEPII)",
+    "dataset": "BACI — flux commerciaux bilatéraux (HS Rev. 2017)",
+    "url": "https://oec.world/",
+    "measure": "Exportations (proxy de capacité de production)",
+    "unit": "USD",
+}
+
+_EXPORT_PROXY_CAVEAT = (
+    "PROXY — les exportations ne mesurent PAS la production : elles en sont une "
+    "BORNE BASSE (la production consommée sur le marché intérieur n'est pas "
+    "exportée) et peuvent inclure des réexportations. À lire comme un indice de "
+    "capacité productive en l'absence de données FAO/USGS/UNIDO, jamais comme un "
+    "chiffre de production."
+)
+
+_EXPORT_PROXY_REEXPORT_CAVEAT = (
+    "Ce pays est un hub de réexportation : une part des exportations peut être de "
+    "la marchandise réexportée depuis une zone franche, qui n'atteste d'aucune "
+    "production locale et n'acquiert pas l'origine ZLECAf. Le proxy peut donc "
+    "surestimer nettement la capacité de production réelle."
+)
+
 
 def _normalize_hs(hs_code: Optional[str]) -> str:
     if not hs_code:
@@ -627,6 +656,95 @@ def get_continental_producers(hs_code: str) -> Dict:
             for r in year_recs[:10]
         ],
         "coverage_caveat": _coverage_caveat(dataset, label, len(year_recs)),
+    }
+
+
+def _export_series_stats(
+    exports: Optional[List[Dict]],
+) -> Tuple[Optional[float], Optional[int], Optional[float], List[Dict]]:
+    """
+    (dernière_valeur, dernière_année, CAGR %, série) depuis la série
+    d'exportations OEC. Ignore les années `no_data` et les valeurs nulles.
+    """
+    series = [
+        {
+            "year": e["year"],
+            "value": e.get("trade_value") or 0.0,
+            "quantity": e.get("quantity") or 0.0,
+        }
+        for e in (exports or [])
+        if not e.get("no_data") and (e.get("trade_value") or 0) > 0
+    ]
+    series.sort(key=lambda r: r["year"])
+    if not series:
+        return None, None, None, []
+    latest = series[-1]
+    cagr = None
+    if len(series) >= 2:
+        cagr = _cagr(
+            series[0]["value"], series[-1]["value"], series[-1]["year"] - series[0]["year"]
+        )
+    return latest["value"], latest["year"], cagr, series
+
+
+def build_export_proxy_capacity(
+    hs_code: str, oec_history: Optional[Dict], is_reexport_hub: bool = False
+) -> Dict:
+    """
+    Construit un bloc « capacité » de REPLI à partir de l'historique
+    d'EXPORTATIONS OEC/BACI (correspondance SH6 → SH4 → SH2), à utiliser
+    lorsque FAO / USGS / UNIDO ne couvrent pas le produit.
+
+    Fonction pure (aucune I/O) : reçoit la réponse déjà récupérée de
+    `oec_service.get_country_hs6_history`. Étiquetage strict — `is_proxy=True`,
+    `basis="exports_proxy"`, et un `proxy_caveat` obligatoire rappelant qu'une
+    exportation est une borne basse de la production, jamais une mesure (avec un
+    caveat réexport supplémentaire pour les hubs type Maurice/Togo/Djibouti).
+    """
+    if not oec_history or oec_history.get("error") or not oec_history.get("has_data"):
+        return {"available": False, "reason": "no_export_data", "hs_code": hs_code}
+
+    latest_val, latest_year, cagr_pct, series = _export_series_stats(oec_history.get("exports"))
+    if latest_val is None:
+        return {"available": False, "reason": "no_export_data", "hs_code": hs_code}
+
+    level = str(oec_history.get("match_level") or oec_history.get("level") or "").lower()
+    level_label = {"hs6": "HS6", "hs4": "HS4", "hs2": "HS2 (chapitre)"}.get(level, level or None)
+
+    caveats = [_EXPORT_PROXY_CAVEAT]
+    if is_reexport_hub:
+        caveats.append(_EXPORT_PROXY_REEXPORT_CAVEAT)
+
+    return {
+        "available": True,
+        "is_proxy": True,
+        "basis": "exports_proxy",
+        "hs_code": oec_history.get("hs_code") or hs_code,
+        "hs4_code": oec_history.get("hs4_code"),
+        "match_level": level_label,
+        "measure": _EXPORT_PROXY_SOURCE["measure"],
+        "unit": _EXPORT_PROXY_SOURCE["unit"],
+        "source": {
+            "institution": _EXPORT_PROXY_SOURCE["institution"],
+            "dataset": _EXPORT_PROXY_SOURCE["dataset"],
+            "url": _EXPORT_PROXY_SOURCE["url"],
+        },
+        "country_iso3": oec_history.get("country_iso3"),
+        "latest_value": round(latest_val, 2),
+        "latest_year": latest_year,
+        "cagr_pct": round(cagr_pct, 2) if cagr_pct is not None else None,
+        "timeseries": [
+            {
+                "year": s["year"],
+                "value": round(s["value"], 2),
+                "quantity": round(s["quantity"], 2),
+                "unit": "USD",
+            }
+            for s in series
+        ],
+        "is_reexport_hub": is_reexport_hub,
+        "proxy_caveat": " ".join(caveats),
+        "currency": oec_history.get("currency", "USD"),
     }
 
 
