@@ -4,6 +4,7 @@ Replaces Google Gemini with Anthropic Claude API
 Quality parity with AI Studio app — SH2/SH4/SH6, corrected GAI anchors, full trade schema
 """
 
+import asyncio
 import contextvars
 import json
 import logging
@@ -1328,7 +1329,34 @@ Wrap ALL 15 in this envelope:
                 analyzed_iso3 = self._resolve_iso3(country_name)
                 if analyzed_iso3 and mode in ("export", "industrial"):
                     is_hub = analyzed_iso3 in self._REEXPORT_HUBS
-                    proxied = 0
+
+                    async def _export_proxy_for_hs(hs: str) -> Optional[Dict]:
+                        # Repli progressif SH6 → SH4 → SH2 : on tente le niveau le
+                        # plus spécifique, puis on élargit jusqu'à une série
+                        # d'exports exploitable (build_export_proxy_capacity
+                        # étiquette le match_level réellement retenu par l'OEC).
+                        digits = "".join(c for c in str(hs) if c.isdigit())
+                        tried = set()
+                        for width in (6, 4, 2):
+                            if len(digits) < width:
+                                continue
+                            code = digits[:width]
+                            if code in tried:
+                                continue
+                            tried.add(code)
+                            history = await oec_service.get_country_hs6_history(
+                                analyzed_iso3, code, n_years=5
+                            )
+                            proxy = production_capacity_service.build_export_proxy_capacity(
+                                code, history, is_reexport_hub=is_hub
+                            )
+                            if proxy.get("available"):
+                                return proxy
+                        return None
+
+                    # Opportunités non couvertes par FAO/USGS/UNIDO, dédupliquées
+                    # par code HS : une seule série OEC récupérée par HS distinct.
+                    pending: Dict[str, list] = {}
                     for opp in result.get("opportunities", []):
                         cap = opp.get("production_capacity")
                         if cap and cap.get("available"):
@@ -1340,17 +1368,29 @@ Wrap ALL 15 in this envelope:
                             or opp.get("hs6Code")
                             or opp.get("hs_code")
                         )
-                        if not hs:
-                            continue
-                        history = await oec_service.get_country_hs6_history(
-                            analyzed_iso3, hs, n_years=5
-                        )
-                        proxy = production_capacity_service.build_export_proxy_capacity(
-                            hs, history, is_reexport_hub=is_hub
-                        )
-                        if proxy.get("available"):
-                            opp["production_capacity"] = proxy
-                            proxied += 1
+                        if hs:
+                            pending.setdefault(str(hs), []).append(opp)
+
+                    proxied = 0
+                    if pending:
+                        # Concurrence bornée pour ne pas saturer l'API OEC.
+                        sem = asyncio.Semaphore(5)
+
+                        async def _resolve(hs: str):
+                            async with sem:
+                                return hs, await _export_proxy_for_hs(hs)
+
+                        for res in await asyncio.gather(
+                            *(_resolve(hs) for hs in pending),
+                            return_exceptions=True,
+                        ):
+                            if isinstance(res, Exception) or not res:
+                                continue
+                            hs, proxy = res
+                            if proxy and proxy.get("available"):
+                                for opp in pending[hs]:
+                                    opp["production_capacity"] = proxy
+                                proxied += len(pending[hs])
                     result["export_proxy_enrichment"] = proxied
                 else:
                     result["export_proxy_enrichment"] = 0

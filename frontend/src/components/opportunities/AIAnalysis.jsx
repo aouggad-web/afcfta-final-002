@@ -413,7 +413,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
         <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
           <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
             {is_proxy
-              ? `${fr ? 'Exports' : 'Exports'}${match_level ? ` ${match_level}` : ''} · ${latest_year}`
+              ? `${fr ? 'Exportations' : 'Exports'}${match_level ? ` ${match_level}` : ''} · ${latest_year}`
               : `${commodity} · ${latest_year}`}
           </div>
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
