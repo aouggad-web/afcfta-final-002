@@ -272,12 +272,13 @@ class DataUpdater:
         self.log("Generating update report")
         self.log("=" * 60)
 
+        errors = len([log for log in self.updates_log if "ERROR" in log])
         report = {
             "timestamp": datetime.now().isoformat(),
-            "status": "completed",
+            "status": "completed_with_errors" if errors > 0 else "completed",
             "updates_performed": len([log for log in self.updates_log if "✓" in log]),
             "warnings": len([log for log in self.updates_log if "WARNING" in log]),
-            "errors": len([log for log in self.updates_log if "ERROR" in log]),
+            "errors": errors,
             "log": self.updates_log,
         }
 
