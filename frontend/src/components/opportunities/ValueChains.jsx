@@ -437,12 +437,15 @@ const HS6SearchResult = ({ result, language, onClear }) => {
                   <span className="text-xs font-black text-emerald-300 w-4">{i + 1}</span>
                   <span className="flex-1 text-sm text-slate-700 font-medium">{p.country_name}</span>
                   <span className="text-xs text-slate-500">{fmtProd(p.value, prod.unit)}</span>
-                  <span className="text-xs font-bold text-emerald-700 w-12 text-right">{p.share_pct}%</span>
+                  <span className="text-xs font-bold text-emerald-700 w-12 text-right">{p.share_pct != null ? `${p.share_pct}%` : '—'}</span>
                 </div>
               ))}
             </div>
             <p className="text-[10px] text-emerald-600 mt-2 italic">
-              {prod.source?.dataset} · {language === 'fr' ? 'Total Afrique' : 'Africa total'}: {fmtProd(prod.continental_total, prod.unit)}
+              {prod.source?.dataset}
+              {!prod.coverage_caveat && (
+                <> · {language === 'fr' ? 'Total Afrique' : 'Africa total'}: {fmtProd(prod.continental_total, prod.unit)}</>
+              )}
             </p>
             {prod.coverage_caveat && (
               <p className="text-[10px] text-amber-700 bg-amber-100 border border-amber-300 rounded px-2 py-1 mt-2">

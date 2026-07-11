@@ -471,6 +471,16 @@ const ProductionCapacity = ({ capacity, lang }) => {
         </div>
       )}
 
+      {is_proxy && capacity.measured_reference && (
+        <div style={{ fontSize: 10.5, color: 'var(--afcfta-muted)', marginBottom: 10, lineHeight: 1.4 }}>
+          {fr ? 'Référence mesurée (couverture partielle)' : 'Measured reference (partial coverage)'} :{' '}
+          {capacity.measured_reference.institution} — {capacity.measured_reference.commodity}
+          {capacity.measured_reference.latest_value != null && (
+            <> · {fmtBig(capacity.measured_reference.latest_value, capacity.measured_reference.unit)} ({capacity.measured_reference.latest_year})</>
+          )}
+        </div>
+      )}
+
       {continental.coverage_caveat && (
         <div style={{
           fontSize: 10.5, color: '#92400e', background: '#fef3c7',

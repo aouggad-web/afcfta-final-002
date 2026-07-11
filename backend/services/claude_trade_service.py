@@ -735,16 +735,25 @@ class ClaudeTradeService:
                 if profile.get("available"):
                     lines = []
                     for p in profile["products"]:
-                        caveat = (
-                            " [PARTIAL COVERAGE — never present this rank as continental leadership]"
-                            if p.get("coverage_caveat")
-                            else ""
+                        base = (
+                            f"- {p['commodity']} (HS {p['hs_code']}, {p['institution']} "
+                            f"{p['year']}): {p['value']:,.0f} {p['unit']}"
                         )
-                        lines.append(
-                            f"- {p['commodity']} (HS {p['hs_code']}, {p['institution']} {p['year']}): "
-                            f"{p['value']:,.0f} {p['unit']}, continental rank {p['rank']}/"
-                            f"{p['total_countries']}, African share {p['share_pct']}%{caveat}"
-                        )
+                        if p.get("coverage_caveat"):
+                            # Sous couverture partielle, aucun rang/part n'existe
+                            # (champs nuls côté service) — le prompt reçoit la
+                            # valeur réelle et l'interdiction explicite.
+                            lines.append(
+                                base + " [PARTIAL COVERAGE — too few African countries "
+                                "ingested for this product; NO continental rank or share "
+                                "exists; NEVER present this country as a leading/major "
+                                "producer of it]"
+                            )
+                        else:
+                            lines.append(
+                                base + f", continental rank {p['rank']}/"
+                                f"{p['total_countries']}, African share {p['share_pct']}%"
+                            )
                     stats["production_products"] = len(lines)
                     sections.append(
                         f"VERIFIED PRODUCTION OF {country_name} "
@@ -889,7 +898,12 @@ STRICT DATA RULES:
                 top = prod["top_producers"]
                 real_producer_iso3 = {p["country_iso3"] for p in top}
                 names = ", ".join(
-                    f"{p['country_name']} ({p['country_iso3']}, {p['share_pct']}%)" for p in top
+                    (
+                        f"{p['country_name']} ({p['country_iso3']}, {p['share_pct']}%)"
+                        if p.get("share_pct") is not None
+                        else f"{p['country_name']} ({p['country_iso3']})"
+                    )
+                    for p in top
                 )
                 # Certaines catégories manufacturières (UNIDO) n'ont qu'1-2 pays
                 # africains ingérés (ex. électronique, pharma) — un rang/part
@@ -1000,8 +1014,9 @@ STRICT DATA RULES:
             return {"error": "ANTHROPIC_API_KEY not configured", "opportunities": []}
 
         # "pv" = version du prompt : incrémentée à chaque évolution majeure du
-        # prompt (ici v2 : ancrage données réelles + règles anti-fabrication)
-        # pour invalider les analyses en cache générées avec l'ancien prompt.
+        # prompt OU des enrichissements post-LLM (v3 : proxy d'exportations
+        # SH4/SH6, suppression des rangs/parts sous couverture partielle, ratio
+        # de risque) pour invalider les analyses en cache générées avant.
         # "model" : CLAUDE_QUALITY_MODEL/CLAUDE_BULK_MODE changent la qualité
         # de sortie sans changer country/mode/lang/pv — sans cette clé, changer
         # de modèle pour améliorer la qualité ne se voit qu'après 90 jours
@@ -1010,7 +1025,7 @@ STRICT DATA RULES:
             "country": country_name,
             "mode": mode,
             "lang": lang,
-            "pv": 2,
+            "pv": 3,
             "model": self.MODEL,
         }
         # Stamp de version des données de production : pour les modes enrichis
@@ -1354,13 +1369,16 @@ Wrap ALL 15 in this envelope:
                                 return proxy
                         return None
 
-                    # Opportunités non couvertes par FAO/USGS/UNIDO, dédupliquées
-                    # par code HS : une seule série OEC récupérée par HS distinct.
+                    # Opportunités sans couverture production FIABLE (absente de
+                    # FAO/USGS/UNIDO, ou disponible mais sous le seuil de
+                    # couverture — ex. Maurice seule ingérée pour la pharma
+                    # UNIDO), dédupliquées par code HS : une seule série OEC
+                    # récupérée par HS distinct.
                     pending: Dict[str, list] = {}
                     for opp in result.get("opportunities", []):
                         cap = opp.get("production_capacity")
-                        if cap and cap.get("available"):
-                            continue  # déjà couvert par FAO/USGS/UNIDO
+                        if production_capacity_service.capacity_is_reliable(cap):
+                            continue  # couvert par FAO/USGS/UNIDO avec couverture fiable
                         product = opp.get("product") or {}
                         hs = (
                             product.get("hs6Code")
@@ -1389,7 +1407,28 @@ Wrap ALL 15 in this envelope:
                             hs, proxy = res
                             if proxy and proxy.get("available"):
                                 for opp in pending[hs]:
-                                    opp["production_capacity"] = proxy
+                                    prev = opp.get("production_capacity")
+                                    attached = dict(proxy)
+                                    if prev and prev.get("available"):
+                                        # Donnée mesurée réelle mais trop mince :
+                                        # conservée en référence à côté du proxy
+                                        # (jamais perdue, jamais présentée comme
+                                        # un classement continental).
+                                        attached["measured_reference"] = {
+                                            "commodity": prev.get("commodity"),
+                                            "measure": prev.get("measure"),
+                                            "unit": prev.get("unit"),
+                                            "latest_value": prev.get("latest_value"),
+                                            "latest_year": prev.get("latest_year"),
+                                            "match_level": prev.get("match_level"),
+                                            "institution": (prev.get("source") or {}).get(
+                                                "institution"
+                                            ),
+                                            "coverage_caveat": (prev.get("continental") or {}).get(
+                                                "coverage_caveat"
+                                            ),
+                                        }
+                                    opp["production_capacity"] = attached
                                 proxied += len(pending[hs])
                     result["export_proxy_enrichment"] = proxied
                 else:
@@ -1865,7 +1904,12 @@ Return this EXACT JSON structure with one entry per year, deduplicated:
                 if not top:
                     continue
                 names = ", ".join(
-                    f"{p['country_name']} ({p['country_iso3']}, {p['share_pct']}%)" for p in top
+                    (
+                        f"{p['country_name']} ({p['country_iso3']}, {p['share_pct']}%)"
+                        if p.get("share_pct") is not None
+                        else f"{p['country_name']} ({p['country_iso3']})"
+                    )
+                    for p in top
                 )
                 lines.append(
                     f"- {commodity} [{data['measure']}, {data['source']['institution']} "
@@ -2029,7 +2073,12 @@ This keeps the payload compact and parseable."""
                 if profile.get("available"):
                     lines = [
                         f"- {p['commodity']} (HS {p['hs_code']}, {p['institution']} {p['year']}): "
-                        f"continental rank {p['rank']}/{p['total_countries']}"
+                        + (
+                            f"continental rank {p['rank']}/{p['total_countries']}"
+                            if p.get("rank") is not None
+                            else "[PARTIAL COVERAGE — no reliable continental rank; "
+                            "never present as leading producer]"
+                        )
                         for p in profile["products"]
                     ]
                     sections.append(
