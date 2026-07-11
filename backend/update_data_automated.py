@@ -144,10 +144,16 @@ class DataUpdater:
         }
 
         country_data = {}
+        fetched_indicators = set()
+        failed_indicators = []
 
         for indicator_name, indicator_code in indicators.items():
             self.log(f"\nFetching {indicator_name}...")
             data = self.fetch_world_bank_data(indicator_code, african_countries)
+            if data:
+                fetched_indicators.add(indicator_name)
+            else:
+                failed_indicators.append(indicator_name)
 
             for item in data:
                 country_code = item.get("countryiso3code")
@@ -177,13 +183,39 @@ class DataUpdater:
         # (services/wb_macro_service.py) ; l'ancien chemin racine n'était
         # consommé par personne.
         output_file = Path(__file__).parent.parent / "data" / "json" / "worldbank_data_latest.json"
+
+        # Garde-fou intégrité : un indicateur dont le fetch a échoué cette run
+        # (ex. 400 transitoire de l'API BM) NE DOIT PAS effacer ses valeurs
+        # réelles précédentes. On recharge le fichier existant et on restaure
+        # les indicateurs non récupérés (fusion, jamais écrasement destructif) —
+        # conforme à la règle « valeurs réelles uniquement, jamais effacées
+        # silencieusement ».
+        if failed_indicators:
+            preserved = self._preserve_unfetched_indicators(
+                output_file, country_data, fetched_indicators
+            )
+            self.log(
+                "✗ Indicateur(s) non récupéré(s) cette run — valeurs précédentes "
+                f"conservées pour {preserved} pays : {', '.join(failed_indicators)}",
+                "WARNING",
+            )
+
+        # metadata.indicators reflète les indicateurs RÉELLEMENT présents dans la
+        # sortie (fraîchement récupérés + préservés), jamais une liste déclarative
+        # incluant des indicateurs absents.
+        present_indicators = [
+            name
+            for name in indicators
+            if any(name in c.get("indicators", {}) for c in country_data.values())
+        ]
+
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(
                 {
                     "metadata": {
                         "source": "World Bank API",
                         "updated_at": datetime.now().isoformat(),
-                        "indicators": list(indicators.keys()),
+                        "indicators": present_indicators,
                     },
                     "data": country_data,
                 },
@@ -194,6 +226,48 @@ class DataUpdater:
 
         self.log(f"✓ Saved data to {output_file}")
         return country_data
+
+    @staticmethod
+    def _load_existing_wb(output_file):
+        """Charge le bloc `data` du fichier World Bank existant (ou {} si absent
+        / illisible) — aucune exception ne doit interrompre la run."""
+        try:
+            with open(output_file, "r", encoding="utf-8") as f:
+                return json.load(f).get("data", {}) or {}
+        except (FileNotFoundError, json.JSONDecodeError, OSError):
+            return {}
+
+    def _preserve_unfetched_indicators(self, output_file, country_data, fetched_indicators):
+        """
+        Restaure, pour chaque pays, les indicateurs NON récupérés cette run à
+        partir du fichier existant, afin qu'un échec de fetch transitoire
+        n'efface pas des valeurs réelles déjà servies par l'API.
+
+        Ne touche jamais un indicateur fraîchement récupéré (`fetched_indicators`)
+        ni n'écrase une valeur nouvelle (`setdefault`). Retourne le nombre de
+        pays pour lesquels au moins un indicateur a été conservé.
+        """
+        previous = self._load_existing_wb(output_file)
+        touched = 0
+        for iso3, prev in previous.items():
+            prev_inds = (prev or {}).get("indicators", {})
+            restored = {
+                name: vals
+                for name, vals in prev_inds.items()
+                if name not in fetched_indicators and vals
+            }
+            if not restored:
+                continue
+            if iso3 not in country_data:
+                country_data[iso3] = {
+                    "name": prev.get("name", ""),
+                    "latest_update": prev.get("latest_update", datetime.now().isoformat()),
+                    "indicators": {},
+                }
+            for name, vals in restored.items():
+                country_data[iso3]["indicators"].setdefault(name, vals)
+            touched += 1
+        return touched
 
     def update_csv_data(self, worldbank_data=None):
         """Update CSV data files with latest information"""
