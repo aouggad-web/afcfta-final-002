@@ -23,6 +23,7 @@ from country_data import REAL_COUNTRY_DATA
 # navigateurs/réseaux bloquent).
 try:
     from googlenewsdecoder import gnewsdecoder as _gnews_decode  # type: ignore
+
     GNEWS_DECODER_AVAILABLE = True
 except ImportError:  # optional dependency
     _gnews_decode = None  # type: ignore
@@ -45,6 +46,7 @@ def _resolve_google_news_url(url: str) -> str:
     except Exception:
         pass
     return url
+
 
 # Configuration des flux RSS
 # Chaque source pan-africaine couvre tout le continent ; les sources "pays" utilisent
