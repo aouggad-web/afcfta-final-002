@@ -144,16 +144,10 @@ class DataUpdater:
         }
 
         country_data = {}
-        fetched_indicators = set()
-        failed_indicators = []
 
         for indicator_name, indicator_code in indicators.items():
             self.log(f"\nFetching {indicator_name}...")
             data = self.fetch_world_bank_data(indicator_code, african_countries)
-            if data:
-                fetched_indicators.add(indicator_name)
-            else:
-                failed_indicators.append(indicator_name)
 
             for item in data:
                 country_code = item.get("countryiso3code")
@@ -184,19 +178,20 @@ class DataUpdater:
         # consommé par personne.
         output_file = Path(__file__).parent.parent / "data" / "json" / "worldbank_data_latest.json"
 
-        # Garde-fou intégrité : un indicateur dont le fetch a échoué cette run
-        # (ex. 400 transitoire de l'API BM) NE DOIT PAS effacer ses valeurs
-        # réelles précédentes. On recharge le fichier existant et on restaure
-        # les indicateurs non récupérés (fusion, jamais écrasement destructif) —
-        # conforme à la règle « valeurs réelles uniquement, jamais effacées
-        # silencieusement ».
-        if failed_indicators:
-            preserved = self._preserve_unfetched_indicators(
-                output_file, country_data, fetched_indicators
-            )
+        # Garde-fou intégrité : fusion avec le fichier existant. Toute valeur
+        # (pays × indicateur × année) absente de la collecte de cette run — qu'un
+        # indicateur ait entièrement échoué (400 transitoire de l'API BM),
+        # renvoyé une page 100 % null, ou simplement omis un pays/une année — est
+        # restaurée depuis le fichier précédent. Les valeurs fraîches l'emportent
+        # toujours (on ne comble que les trous). Conforme à la règle « valeurs
+        # réelles uniquement, jamais effacées silencieusement ».
+        countries_touched, series_restored = self._preserve_previous_values(
+            output_file, country_data
+        )
+        if series_restored:
             self.log(
-                "✗ Indicateur(s) non récupéré(s) cette run — valeurs précédentes "
-                f"conservées pour {preserved} pays : {', '.join(failed_indicators)}",
+                f"✗ {series_restored} série(s) (pays × indicateur) non collectée(s) "
+                f"cette run — valeurs précédentes conservées ({countries_touched} pays)",
                 "WARNING",
             )
 
@@ -237,26 +232,33 @@ class DataUpdater:
         except (FileNotFoundError, json.JSONDecodeError, OSError):
             return {}
 
-    def _preserve_unfetched_indicators(self, output_file, country_data, fetched_indicators):
+    def _preserve_previous_values(self, output_file, country_data):
         """
-        Restaure, pour chaque pays, les indicateurs NON récupérés cette run à
-        partir du fichier existant, afin qu'un échec de fetch transitoire
-        n'efface pas des valeurs réelles déjà servies par l'API.
+        Fusionne le fichier World Bank précédent dans les données fraîchement
+        collectées, au grain (pays × indicateur × année). Pour chaque pays du
+        fichier précédent :
+          • un indicateur totalement absent de la collecte (échec, page 100 %
+            null, ou pays omis) est restauré intégralement ;
+          • un indicateur présent mais auquel il manque des années est complété
+            année par année.
+        Les valeurs fraîches l'emportent TOUJOURS : on ne comble que les trous,
+        jamais d'écrasement. Un pays entièrement omis cette run est réintroduit
+        avec toutes ses séries précédentes (aucune perte de pays).
 
-        Ne touche jamais un indicateur fraîchement récupéré (`fetched_indicators`)
-        ni n'écrase une valeur nouvelle (`setdefault`). Retourne le nombre de
-        pays pour lesquels au moins un indicateur a été conservé.
+        Ne se fie à aucun drapeau « récupéré » : seule compte la présence réelle
+        d'une valeur dans `country_data`, ce qui neutralise aussi le cas d'une
+        page renvoyée non vide mais entièrement `null` (rien n'y est stocké, donc
+        tout est considéré comme manquant et restauré).
+
+        Retourne (nombre de pays touchés, nombre de séries pays×indicateur
+        restaurées ou complétées).
         """
         previous = self._load_existing_wb(output_file)
-        touched = 0
+        countries_touched = 0
+        series_restored = 0
         for iso3, prev in previous.items():
-            prev_inds = (prev or {}).get("indicators", {})
-            restored = {
-                name: vals
-                for name, vals in prev_inds.items()
-                if name not in fetched_indicators and vals
-            }
-            if not restored:
+            prev_inds = {n: v for n, v in (prev or {}).get("indicators", {}).items() if v}
+            if not prev_inds:
                 continue
             if iso3 not in country_data:
                 country_data[iso3] = {
@@ -264,10 +266,26 @@ class DataUpdater:
                     "latest_update": prev.get("latest_update", datetime.now().isoformat()),
                     "indicators": {},
                 }
-            for name, vals in restored.items():
-                country_data[iso3]["indicators"].setdefault(name, vals)
-            touched += 1
-        return touched
+            cur_inds = country_data[iso3]["indicators"]
+            touched = False
+            for name, prev_vals in prev_inds.items():
+                cur_vals = cur_inds.get(name)
+                if cur_vals is None:
+                    cur_inds[name] = dict(prev_vals)
+                    series_restored += 1
+                    touched = True
+                else:
+                    filled = False
+                    for year, val in prev_vals.items():
+                        if year not in cur_vals:
+                            cur_vals[year] = val
+                            filled = True
+                    if filled:
+                        series_restored += 1
+                        touched = True
+            if touched:
+                countries_touched += 1
+        return countries_touched, series_restored
 
     def update_csv_data(self, worldbank_data=None):
         """Update CSV data files with latest information"""

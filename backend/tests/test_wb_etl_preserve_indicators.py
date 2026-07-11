@@ -4,8 +4,9 @@ Tests du garde-fou d'intégrité de l'ETL World Bank (update_data_automated.py).
 Contexte : la run automatique #131 a supprimé l'indicateur GDP_per_capita pour
 52 pays à cause d'un 400 transitoire de l'API Banque Mondiale — l'ETL
 reconstruisait le fichier avec les seuls indicateurs récupérés puis l'écrasait.
-Un indicateur dont le fetch échoue ne doit JAMAIS effacer ses valeurs réelles
-précédentes : on les préserve par fusion (jamais d'écrasement destructif).
+Toute valeur (pays × indicateur × année) non collectée cette run doit être
+restaurée depuis le fichier précédent ; les valeurs fraîches l'emportent
+toujours (on ne comble que les trous, jamais d'écrasement).
 
 Ces tests exercent la fonction pure de préservation, sans requête réseau.
 """
@@ -30,7 +31,7 @@ def _write_existing(path):
                 "name": "Algeria",
                 "latest_update": "2026-02-06T00:00:00",
                 "indicators": {
-                    "GDP": {"2024": 260_000_000_000.0},
+                    "GDP": {"2024": 260_000_000_000.0, "2023": 240_000_000_000.0},
                     "GDP_per_capita": {"2024": 5722.0, "2023": 5410.0},
                 },
             },
@@ -52,12 +53,12 @@ def test_failed_indicator_values_are_preserved(tmp_path):
     _write_existing(out)
 
     updater = DataUpdater(verbose=False)
-    # Simule une run où GDP a été re-récupéré mais PAS GDP_per_capita (fetch 400).
+    # Run où GDP a été re-récupéré mais PAS GDP_per_capita (fetch 400).
     country_data = {
         "DZA": {
             "name": "Algeria",
             "latest_update": "2026-07-11T00:00:00",
-            "indicators": {"GDP": {"2024": 261_000_000_000.0}},
+            "indicators": {"GDP": {"2024": 261_000_000_000.0, "2023": 240_000_000_000.0}},
         },
         "AGO": {
             "name": "Angola",
@@ -65,17 +66,17 @@ def test_failed_indicator_values_are_preserved(tmp_path):
             "indicators": {"GDP": {"2024": 103_000_000_000.0}},
         },
     }
-    touched = updater._preserve_unfetched_indicators(out, country_data, fetched_indicators={"GDP"})
+    countries, series = updater._preserve_previous_values(out, country_data)
 
-    assert touched == 2
-    # GDP_per_capita réel restauré à l'identique pour les deux pays
+    assert countries == 2
+    assert series == 2  # GDP_per_capita restauré pour DZA et AGO
     assert country_data["DZA"]["indicators"]["GDP_per_capita"] == {"2024": 5722.0, "2023": 5410.0}
     assert country_data["AGO"]["indicators"]["GDP_per_capita"] == {"2024": 2665.87}
-    # GDP fraîchement récupéré NON écrasé par l'ancienne valeur
+    # GDP fraîchement récupéré NON écrasé
     assert country_data["DZA"]["indicators"]["GDP"]["2024"] == 261_000_000_000.0
 
 
-def test_fetched_indicator_is_never_overwritten(tmp_path):
+def test_fresh_value_is_never_overwritten(tmp_path):
     out = tmp_path / "worldbank_data_latest.json"
     _write_existing(out)
 
@@ -87,35 +88,106 @@ def test_fetched_indicator_is_never_overwritten(tmp_path):
             "indicators": {"GDP_per_capita": {"2024": 9999.0}},  # nouvelle valeur
         }
     }
-    # GDP_per_capita a bien été récupéré cette run -> l'ancienne valeur ne doit
-    # pas revenir écraser la nouvelle.
-    updater._preserve_unfetched_indicators(
-        out, country_data, fetched_indicators={"GDP", "GDP_per_capita"}
-    )
-    assert country_data["DZA"]["indicators"]["GDP_per_capita"] == {"2024": 9999.0}
+    updater._preserve_previous_values(out, country_data)
+    # La valeur fraîche 2024 gagne ; seule l'année manquante 2023 est comblée.
+    assert country_data["DZA"]["indicators"]["GDP_per_capita"]["2024"] == 9999.0
+    assert country_data["DZA"]["indicators"]["GDP_per_capita"]["2023"] == 5410.0
 
 
-def test_country_absent_this_run_is_restored(tmp_path):
+def test_null_only_page_is_treated_as_missing(tmp_path):
+    # Cas Codex #1 : l'API renvoie une page non vide mais 100 % null -> la boucle
+    # d'ingestion n'écrit rien -> l'indicateur est ABSENT de country_data ->
+    # il doit être restauré (aucune dépendance à un drapeau « récupéré »).
     out = tmp_path / "worldbank_data_latest.json"
     _write_existing(out)
 
     updater = DataUpdater(verbose=False)
-    # AGO totalement absent de la run courante -> ses indicateurs non récupérés
-    # doivent être réintroduits (aucune perte de pays).
     country_data = {
-        "DZA": {"name": "Algeria", "latest_update": "x", "indicators": {"GDP": {"2024": 1.0}}}
+        "DZA": {
+            "name": "Algeria",
+            "latest_update": "2026-07-11T00:00:00",
+            # GDP_per_capita n'a produit aucune valeur (page tout-null)
+            "indicators": {"GDP": {"2024": 261_000_000_000.0, "2023": 240_000_000_000.0}},
+        }
     }
-    updater._preserve_unfetched_indicators(out, country_data, fetched_indicators={"GDP"})
+    _, series = updater._preserve_previous_values(out, country_data)
+    assert series >= 1
+    assert country_data["DZA"]["indicators"]["GDP_per_capita"] == {"2024": 5722.0, "2023": 5410.0}
+
+
+def test_country_omitted_from_fetched_indicator_keeps_all_series(tmp_path):
+    # Cas Codex #2 : GDP récupéré pour DZA mais AGO omis cette run. AGO doit être
+    # réintroduit avec TOUTES ses séries précédentes (GDP inclus), pas seulement
+    # les indicateurs ayant échoué.
+    out = tmp_path / "worldbank_data_latest.json"
+    _write_existing(out)
+
+    updater = DataUpdater(verbose=False)
+    country_data = {
+        "DZA": {
+            "name": "Algeria",
+            "latest_update": "2026-07-11T00:00:00",
+            "indicators": {"GDP": {"2024": 261_000_000_000.0}},
+        }
+        # AGO totalement absent de la run
+    }
+    updater._preserve_previous_values(out, country_data)
     assert "AGO" in country_data
+    assert country_data["AGO"]["indicators"]["GDP"] == {"2024": 100_000_000_000.0}
     assert country_data["AGO"]["indicators"]["GDP_per_capita"] == {"2024": 2665.87}
+
+
+def test_missing_years_are_backfilled(tmp_path):
+    # Un indicateur présent mais amputé d'années antérieures : les années
+    # manquantes sont comblées depuis le fichier précédent (série pluriannuelle
+    # préservée), l'année fraîche restant intacte.
+    out = tmp_path / "worldbank_data_latest.json"
+    _write_existing(out)
+
+    updater = DataUpdater(verbose=False)
+    country_data = {
+        "DZA": {
+            "name": "Algeria",
+            "latest_update": "2026-07-11T00:00:00",
+            "indicators": {"GDP": {"2024": 261_000_000_000.0}},  # 2023 manquant
+        }
+    }
+    updater._preserve_previous_values(out, country_data)
+    assert country_data["DZA"]["indicators"]["GDP"]["2024"] == 261_000_000_000.0  # frais
+    assert country_data["DZA"]["indicators"]["GDP"]["2023"] == 240_000_000_000.0  # comblé
+
+
+def test_clean_full_run_is_noop(tmp_path):
+    # Run complète : toutes les valeurs sont fraîches -> rien à restaurer.
+    out = tmp_path / "worldbank_data_latest.json"
+    _write_existing(out)
+
+    updater = DataUpdater(verbose=False)
+    country_data = {
+        "DZA": {
+            "name": "Algeria",
+            "latest_update": "x",
+            "indicators": {
+                "GDP": {"2024": 1.0, "2023": 2.0},
+                "GDP_per_capita": {"2024": 3.0, "2023": 4.0},
+            },
+        },
+        "AGO": {
+            "name": "Angola",
+            "latest_update": "x",
+            "indicators": {"GDP": {"2024": 5.0}, "GDP_per_capita": {"2024": 6.0}},
+        },
+    }
+    countries, series = updater._preserve_previous_values(out, country_data)
+    assert (countries, series) == (0, 0)
 
 
 def test_missing_existing_file_is_safe(tmp_path):
     out = tmp_path / "does_not_exist.json"
     updater = DataUpdater(verbose=False)
     country_data = {"DZA": {"name": "Algeria", "indicators": {"GDP": {"2024": 1.0}}}}
-    touched = updater._preserve_unfetched_indicators(out, country_data, fetched_indicators={"GDP"})
-    assert touched == 0
+    countries, series = updater._preserve_previous_values(out, country_data)
+    assert (countries, series) == (0, 0)
     assert country_data["DZA"]["indicators"] == {"GDP": {"2024": 1.0}}
 
 
@@ -124,6 +196,5 @@ def test_corrupt_existing_file_is_safe(tmp_path):
     out.write_text("{ this is not valid json", encoding="utf-8")
     updater = DataUpdater(verbose=False)
     country_data = {"DZA": {"name": "Algeria", "indicators": {"GDP": {"2024": 1.0}}}}
-    # Ne doit pas lever : un fichier corrompu = repli sur {} (aucune restauration).
-    touched = updater._preserve_unfetched_indicators(out, country_data, fetched_indicators={"GDP"})
-    assert touched == 0
+    countries, series = updater._preserve_previous_values(out, country_data)
+    assert (countries, series) == (0, 0)
