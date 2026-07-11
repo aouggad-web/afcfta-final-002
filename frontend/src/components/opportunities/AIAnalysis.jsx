@@ -377,8 +377,11 @@ const ProductionCapacity = ({ capacity, lang }) => {
   if (!capacity || !capacity.available) return null;
   const fr = lang === 'fr';
   const { commodity, unit, dimension, latest_value, latest_year, cagr_pct,
-          continental = {}, integration_scenarios = {}, source = {} } = capacity;
-  const badge = SOURCE_BADGE[dimension] || SOURCE_BADGE.agri;
+          continental = {}, integration_scenarios = {}, source = {},
+          is_proxy, proxy_caveat, measure, match_level } = capacity;
+  const badge = is_proxy
+    ? { label: source.institution || 'OEC / BACI', bg: '#fef3c7', color: '#92400e' }
+    : (SOURCE_BADGE[dimension] || SOURCE_BADGE.agri);
   const rank = continental.rank;
   const share = continental.country_share_pct;
   const scenarioList = Object.values(integration_scenarios).filter(s => s.annual_growth_pct != null);
@@ -393,7 +396,9 @@ const ProductionCapacity = ({ capacity, lang }) => {
         marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em',
       }}>
         <Factory style={{ width: 14, height: 14 }} />
-        {fr ? 'Capacité de production' : 'Production capacity'}
+        {is_proxy
+          ? (fr ? 'Capacité de production — proxy export' : 'Production capacity — export proxy')
+          : (fr ? 'Capacité de production' : 'Production capacity')}
         <span style={{
           marginLeft: 'auto', fontSize: 9, fontWeight: 700,
           background: badge.bg, color: badge.color,
@@ -407,11 +412,18 @@ const ProductionCapacity = ({ capacity, lang }) => {
       <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
         <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
           <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
-            {commodity} · {latest_year}
+            {is_proxy
+              ? `${fr ? 'Exportations' : 'Exports'}${match_level ? ` ${match_level}` : ''} · ${latest_year}`
+              : `${commodity} · ${latest_year}`}
           </div>
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
             {fmtBig(latest_value, unit)}
           </div>
+          {is_proxy && measure && (
+            <div style={{ fontSize: 9, color: 'var(--afcfta-muted)', marginTop: 2 }}>
+              {measure}
+            </div>
+          )}
         </div>
         {cagr_pct != null && (
           <div style={{ flex: '1 1 90px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
@@ -446,6 +458,16 @@ const ProductionCapacity = ({ capacity, lang }) => {
           {continental.continental_total != null && (
             <> · {fr ? 'Total Afrique' : 'Africa total'}: {fmtBig(continental.continental_total, unit)}</>
           )}
+        </div>
+      )}
+
+      {is_proxy && proxy_caveat && (
+        <div style={{
+          fontSize: 10.5, color: '#92400e', background: '#fef3c7',
+          border: '1px solid #fde68a', borderRadius: 6, padding: '6px 9px',
+          marginBottom: 10, lineHeight: 1.4,
+        }}>
+          ⚠ {proxy_caveat}
         </div>
       )}
 
