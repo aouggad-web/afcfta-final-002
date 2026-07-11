@@ -1,6 +1,6 @@
 {
   "timestamp": "2026-07-11T03:03:08.771110",
-  "status": "completed",
+  "status": "completed_with_errors",
   "updates_performed": 7,
   "warnings": 5,
   "errors": 1,
