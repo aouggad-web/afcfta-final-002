@@ -482,6 +482,18 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
         "url": (ref_rec.get("source_url") if ref_rec else None) or meta["url"],
     }
 
+    # Sous le seuil de couverture fiable, un rang, une part ou un « leader »
+    # continental est un artefact d'ingestion (ex. Maurice seule ingérée pour
+    # « Produits pharmaceutiques » UNIDO → « 1/1, 100 % ») : on n'émet AUCUN de
+    # ces champs — seuls la valeur réelle du pays et le garde-fou subsistent.
+    coverage_caveat = _coverage_caveat(dataset, label, len(year_recs))
+    if coverage_caveat:
+        rank = None
+        country_share = None
+        leader = None
+        continental_total = None
+        top_producers = [{**p, "share_pct": None} for p in top_producers]
+
     scenarios = {}
     if latest_val:
         scenarios = _build_scenarios(
@@ -522,7 +534,7 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
                 else None
             ),
             "top_producers": top_producers,
-            "coverage_caveat": _coverage_caveat(dataset, label, len(year_recs)),
+            "coverage_caveat": coverage_caveat,
         },
         "integration_scenarios": scenarios,
     }
@@ -581,6 +593,9 @@ def get_country_profile(country_iso3: str, top_n: int = 20) -> Dict:
             continue
         total = sum(r["value"] for r in year_recs)
         meta = SOURCE_META[dataset]
+        # Même règle que get_capacity : rang/part jamais émis sous le seuil de
+        # couverture (ils alimenteraient les prompts avec un faux leadership).
+        caveat = _coverage_caveat(dataset, label, len(year_recs))
         products.append(
             {
                 "hs_code": prefix,
@@ -591,10 +606,12 @@ def get_country_profile(country_iso3: str, top_n: int = 20) -> Dict:
                 "institution": country_rec.get("source_institution") or meta["institution"],
                 "year": latest_year,
                 "value": country_rec["value"],
-                "rank": rank,
+                "rank": None if caveat else rank,
                 "total_countries": len(year_recs),
-                "share_pct": round(country_rec["value"] / total * 100.0, 1) if total else None,
-                "coverage_caveat": _coverage_caveat(dataset, label, len(year_recs)),
+                "share_pct": (
+                    round(country_rec["value"] / total * 100.0, 1) if total and not caveat else None
+                ),
+                "coverage_caveat": caveat,
             }
         )
     products.sort(key=lambda p: (p["share_pct"] or 0.0), reverse=True)
@@ -635,6 +652,11 @@ def get_continental_producers(hs_code: str) -> Dict:
         "dataset": (ref_rec.get("source_dataset") if ref_rec else None) or meta["dataset"],
         "url": (ref_rec.get("source_url") if ref_rec else None) or meta["url"],
     }
+    # Sous le seuil de couverture, une « part africaine » calculée sur 1-2 pays
+    # est un artefact (100 % pour l'unique pays ingéré) — jamais émise. Le
+    # continental_total reste fourni (borne basse réelle, consommée par
+    # l'estimation de demande qui relaie déjà le garde-fou).
+    coverage_caveat = _coverage_caveat(dataset, label, len(year_recs))
     return {
         "available": True,
         "hs_code": hs_code,
@@ -651,11 +673,13 @@ def get_continental_producers(hs_code: str) -> Dict:
                 "country_iso3": r["country_iso3"],
                 "country_name": r.get("country_name", r["country_iso3"]),
                 "value": r["value"],
-                "share_pct": round(r["value"] / total * 100.0, 1) if total else None,
+                "share_pct": (
+                    round(r["value"] / total * 100.0, 1) if total and not coverage_caveat else None
+                ),
             }
             for r in year_recs[:10]
         ],
-        "coverage_caveat": _coverage_caveat(dataset, label, len(year_recs)),
+        "coverage_caveat": coverage_caveat,
     }
 
 
@@ -746,6 +770,22 @@ def build_export_proxy_capacity(
         "proxy_caveat": " ".join(caveats),
         "currency": oec_history.get("currency", "USD"),
     }
+
+
+def capacity_is_reliable(cap: Optional[Dict]) -> bool:
+    """
+    True si un bloc `production_capacity` mesuré peut être présenté tel quel :
+    disponible ET couverture continentale fiable. Un bloc disponible mais sous
+    le seuil de couverture (`coverage_caveat` renseigné — ex. Maurice seule
+    ingérée pour les produits pharmaceutiques UNIDO) est trop mince pour ancrer
+    seul l'affichage : le module Opportunités lui adjoint alors le proxy
+    d'exportations OEC/BACI, plus spécifique au produit.
+    """
+    if not cap or not cap.get("available"):
+        return False
+    if cap.get("is_proxy"):
+        return True
+    return not (cap.get("continental") or {}).get("coverage_caveat")
 
 
 def enrich_opportunities(opportunities: List[Dict], country_iso3: str) -> List[Dict]:

@@ -341,7 +341,9 @@ def test_opportunities_cache_key_includes_model(monkeypatch):
     svc._call_claude = fake_call
     asyncio.run(svc.analyze_trade_opportunities("Kenya", mode="export", lang="fr"))
     assert captured["params"]["model"] == "claude-opus-4-8"
-    assert captured["params"]["pv"] == 2
+    # v3 : proxy d'exportations + suppression des rangs/parts sous couverture
+    # partielle + ratio de risque — invalide les analyses en cache antérieures.
+    assert captured["params"]["pv"] == 3
 
 
 def test_industrial_oec_year_uses_first_flow_not_last(monkeypatch):
@@ -791,9 +793,16 @@ def test_compare_countries_economic_block_uses_real_profile_data(monkeypatch):
     assert eco["gdp_b_billion"] == REAL_COUNTRY_DATA["COM"]["gdp_usd_2024"]
     assert eco["hdi_a"] == REAL_COUNTRY_DATA["DZA"]["development_index"]
     assert eco["gdp_per_capita_a"] == REAL_COUNTRY_DATA["DZA"]["gdp_per_capita_2024"]
-    # Inflation : pas encore collectée par l'ETL -> null honnête, jamais le
-    # chiffre de mémoire du LLM.
-    assert eco["inflation_a"] is None
+    # Inflation : doit être EXACTEMENT la valeur du dataset BM (collectée par
+    # l'ETL depuis la run 131) ou null si absente — jamais le chiffre de
+    # mémoire du LLM (12.3 dans la réponse simulée ci-dessus).
+    from services import wb_macro_service
+
+    expected_inf = (
+        wb_macro_service.get_macro("DZA")["indicators"].get("inflation_percent") or {}
+    ).get("value")
+    assert eco["inflation_a"] == expected_inf
+    assert eco["inflation_a"] != 12.3
     assert "non générées" in eco["indicators_source"]
 
 
@@ -807,7 +816,19 @@ def test_wb_macro_service_reads_latest_year_and_never_invents():
     assert gdp["value"] > 1e10 and gdp["year"] >= 2023
     growth = macro["indicators"]["gdp_growth_percent"]
     assert growth and growth["year"] >= 2023
-    # Indicateurs pas encore collectés par l'ETL : None, pas de valeur inventée.
-    assert macro["indicators"]["inflation_percent"] is None
+    # Inflation : collectée par l'ETL depuis la run 131. Si présente, la valeur
+    # doit venir EXACTEMENT du dataset brut (jamais inventée/ajustée) ; si
+    # absente du fichier, None honnête.
+    inf = macro["indicators"]["inflation_percent"]
+    raw_path = os.path.join(
+        os.path.dirname(_backend_dir), "data", "json", "worldbank_data_latest.json"
+    )
+    with open(raw_path, encoding="utf-8") as f:
+        raw_inf = json.load(f)["data"].get("AGO", {}).get("indicators", {}).get("Inflation") or {}
+    if raw_inf:
+        best_year = max(int(y) for y in raw_inf)
+        assert inf == {"value": raw_inf[str(best_year)], "year": best_year}
+    else:
+        assert inf is None
     # Pays hors dataset : indisponible.
     assert wb_macro_service.get_macro("XXX")["available"] is False
