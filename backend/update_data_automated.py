@@ -202,25 +202,25 @@ class DataUpdater:
         self.log("=" * 60)
 
         # Check for the existence of CSV files
+        base_path = Path(__file__).parent.parent
         csv_files = [
-            "ZLECAF_54_PAYS_DONNEES_COMPLETES.csv",
-            "ZLECAF_DATA_UPDATED.csv",
+            base_path / "data" / "csv" / "ZLECAF_54_PAYS_DONNEES_COMPLETES.csv",
+            base_path / "data" / "archive" / "csv" / "ZLECAF_DATA_UPDATED.csv",
         ]
 
-        base_path = Path(__file__).parent.parent
         csv_found = False
 
-        for csv_file in csv_files:
-            file_path = base_path / csv_file
+        for file_path in csv_files:
+            csv_filename = file_path.name
             if file_path.exists():
-                self.log(f"✓ Found {csv_file}")
+                self.log(f"✓ Found {csv_filename}")
                 csv_found = True
 
                 # If World Bank data is available, we could update the CSV
                 # For now, just verify the file exists
                 # Future enhancement: Parse and update CSV with new data
             else:
-                self.log(f"✗ File not found: {csv_file}", "WARNING")
+                self.log(f"✗ File not found: {csv_filename}", "WARNING")
 
         if csv_found:
             self.log("✓ CSV files verified (no updates performed)")
@@ -234,7 +234,7 @@ class DataUpdater:
         self.log("=" * 60)
 
         # Update timestamp in existing JSON files
-        base_path = Path(__file__).parent.parent
+        base_path = Path(__file__).parent.parent / "data" / "json"
         json_files = [
             "ports_africains.json",
             "airports_africains.json",
