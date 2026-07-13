@@ -243,10 +243,11 @@ def get_opportunity_report(
             _one_container_kg,
             volume_m3,
             container_type=_container_type,
+            hs_code=hs_code,
         )
     else:
         log_profile = logistics.get_logistics_profile(
-            origin_iso3, destination_iso3, weight_kg, volume_m3
+            origin_iso3, destination_iso3, weight_kg, volume_m3, hs_code=hs_code
         )
     fin_profile = finance.get_finance_profile(origin_iso3, destination_iso3, amount, "export")
 
@@ -581,10 +582,11 @@ def get_transformation_scenario(
             min(float(input_shipment["weight_kg"]), float(input_shipment["container_capacity_kg"])),
             volume_m3,
             container_type=input_shipment["container_type"],
+            hs_code=input_hs_code,
         )
     else:
         input_logistics = logistics.get_logistics_profile(
-            input_origin_iso3, producer_iso3, weight_kg, volume_m3
+            input_origin_iso3, producer_iso3, weight_kg, volume_m3, hs_code=input_hs_code
         )
     input_tariff = benchmarking_service.tariff_benefit_analysis(
         input_origin_iso3, producer_iso3, input_hs_code

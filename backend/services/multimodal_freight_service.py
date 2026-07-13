@@ -52,6 +52,15 @@ NM_TO_KM = 1.852
 TEU_CAPACITY_KG = 21_600  # max payload of a 20' container
 FEU_CAPACITY_KG = 26_400  # max payload of a 40' container
 
+# PROBLÈME RÉSOLU : l'option aérienne était systématiquement proposée quel que
+# soit le poids (ex. un conteneur de ciment de 26 t se voyait chiffrer un fret
+# aérien) — l'aérien reste par nature réservé aux envois légers/à haute
+# valeur, jamais à un conteneur complet de marchandise en vrac. Plafond
+# général convenu : en-dessous de 1000 kg. Les marchandises en vrac (ciment,
+# minerai, céréales...) sont exclues de l'aérien quel que soit le poids, voir
+# `is_bulk` dans `_air_option` / `compare_multimodal`.
+AIR_FREIGHT_MAX_KG_GENERAL = 1000.0
+
 # Landlocked African countries (ISO3) - need port + corridor combo
 LANDLOCKED_AFRICA = {
     "BFA",  # Burkina Faso
@@ -625,8 +634,19 @@ def _air_option(
     weight_kg: float,
     commodity: str = "general",
     volume_m3: float = 0.0,
+    is_bulk: bool = False,
 ) -> Optional[Dict[str, Any]]:
-    """Air-only option (airport to airport)."""
+    """Air-only option (airport to airport).
+
+    Returns ``None`` (no air option offered) when the cargo is a bulk
+    commodity (never flown, regardless of weight — cement, ores, cereals...)
+    or when the weight exceeds ``AIR_FREIGHT_MAX_KG_GENERAL``: air freight is
+    not a realistic mode for a full container load of low-value goods.
+    """
+    if is_bulk:
+        return None
+    if weight_kg is None or weight_kg > AIR_FREIGHT_MAX_KG_GENERAL:
+        return None
     o_iata = COUNTRY_DEFAULT_AIRPORT.get(origin_country.upper())
     d_iata = COUNTRY_DEFAULT_AIRPORT.get(destination_country.upper())
     if not o_iata or not d_iata or o_iata == d_iata:
@@ -1078,14 +1098,32 @@ def compare_multimodal(
     volume_m3: float = 0.0,
     container_type: str = "teu",
     air_commodity: str = "general",
-    land_cargo_type: str = "container",
+    land_cargo_type: Optional[str] = None,
     include_future: bool = True,
+    is_bulk_commodity: bool = False,
+    bulk_label: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Main comparator: returns all viable route options (operational + future)."""
+    """Main comparator: returns all viable route options (operational + future).
+
+    ``is_bulk_commodity`` flags a genuine bulk raw material (cement, ores,
+    cereals, coal, crude oil, fertilizers...) identified from its HS code —
+    see ``services.shipment_estimator.classify_bulk_commodity``. It never
+    travels by air (regardless of weight) and defaults the land leg to the
+    "bulk" cargo type instead of "container" unless the caller explicitly
+    picked a different ``land_cargo_type``.
+    """
     options: List[Dict[str, Any]] = []
     weight_tonnes = max(weight_kg / 1000.0, 0.0)
+    effective_land_cargo_type = land_cargo_type or ("bulk" if is_bulk_commodity else "container")
 
     sea_opts = _sea_options(origin_country, destination_country, weight_kg, container_type)
+    if is_bulk_commodity:
+        for o in sea_opts:
+            o["bulk_cargo_note"] = (
+                f"{bulk_label or 'Marchandise en vrac'} : le tarif conteneurisé ci-dessus "
+                "est utilisé comme repère faute de données de fret vraquier (bulk carrier) "
+                "dans ce comparateur — le coût réel d'un affrètement en vrac diffère."
+            )
     options.extend(sea_opts)
 
     air_opt = _air_option(
@@ -1094,6 +1132,7 @@ def compare_multimodal(
         weight_kg,
         air_commodity,
         volume_m3,
+        is_bulk=is_bulk_commodity,
     )
     if air_opt:
         options.append(air_opt)
@@ -1102,7 +1141,7 @@ def compare_multimodal(
         origin_country,
         destination_country,
         weight_tonnes,
-        land_cargo_type,
+        effective_land_cargo_type,
     )
     options.extend(land_opts)
 
@@ -1111,7 +1150,7 @@ def compare_multimodal(
         origin_country,
         destination_country,
         weight_tonnes,
-        land_cargo_type,
+        effective_land_cargo_type,
     )
     options.extend(rail_road_opts)
 
@@ -1121,7 +1160,7 @@ def compare_multimodal(
         weight_kg,
         container_type,
         weight_tonnes,
-        land_cargo_type,
+        effective_land_cargo_type,
     )
     options.extend(multimodal_opts)
 
@@ -1134,7 +1173,7 @@ def compare_multimodal(
         weight_kg,
         container_type,
         weight_tonnes,
-        land_cargo_type,
+        effective_land_cargo_type,
     )
     options.extend(land_sea_opts)
 
@@ -1321,6 +1360,10 @@ def compare_multimodal(
         "weight_kg": weight_kg,
         "volume_m3": volume_m3,
         "container_type": container_type.lower(),
+        "land_cargo_type": effective_land_cargo_type,
+        "is_bulk_commodity": is_bulk_commodity,
+        "bulk_label": bulk_label if is_bulk_commodity else None,
+        "air_excluded": air_opt is None,
         "options": options,
         "options_count": len(options),
         "operational_count": sum(1 for o in options if not o.get("is_future")),

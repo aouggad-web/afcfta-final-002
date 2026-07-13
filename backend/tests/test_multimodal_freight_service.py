@@ -241,13 +241,16 @@ def test_landlocked_origin_ethiopia_prefers_real_corridor_over_air():
     # Regression for the reported bug: $50k of coffee (ETH, landlocked) was
     # recommended via air freight because no rail/road+sea route existed in
     # the corridor registry for Ethiopia at all.
+    #
+    # A 12.5 t shipment also exceeds AIR_FREIGHT_MAX_KG_GENERAL (air freight is
+    # only realistic below ~1000 kg for general cargo) — so air is now
+    # excluded outright rather than merely losing on cost, which is a
+    # stronger version of the same fix (see test_multimodal_air_freight_realism.py).
     result = service.compare_multimodal("ETH", "KEN", weight_kg=12_500, container_type="teu")
     multimodal = [o for o in result["options"] if o["mode"] == "multimodal" and o["available"]]
     air = next((o for o in result["options"] if o["mode"] == "air"), None)
     assert multimodal, "Ethiopia (landlocked) must have at least one operational multimodal route"
-    assert air is not None
-    cheapest_multimodal = min(multimodal, key=lambda o: o["total_cost_usd"])
-    assert cheapest_multimodal["total_cost_usd"] < air["total_cost_usd"]
+    assert air is None, "12.5 t exceeds the realistic air-freight weight ceiling"
     assert result.get("options_count", 0) >= 1
     cheapest_overall = min(
         (o for o in result["options"] if o["available"]), key=lambda o: o["total_cost_usd"]
