@@ -72,12 +72,29 @@ def test_compare_multimodal_excludes_air_and_defaults_bulk_cargo_for_cement():
     )
     assert result["is_bulk_commodity"] is True
     assert result["air_excluded"] is True
+    assert "Ciment" in result["air_excluded_reason"]
     assert result["land_cargo_type"] == "bulk"
     assert all(o["mode"] != "air" for o in result["options"])
 
     sea_opts = [o for o in result["options"] if o["mode"] == "sea"]
     if sea_opts:
         assert "bulk_cargo_note" in sea_opts[0]
+
+
+def test_air_excluded_flag_reflects_policy_not_mere_unavailability(monkeypatch):
+    # Light general cargo, air-eligible by policy, but no air option can be
+    # built (e.g. missing default airport / no price data): the flag must stay
+    # False — air was unavailable, not excluded by the realism policy.
+    monkeypatch.setattr(service, "_air_option", lambda *args, **kwargs: None)
+    result = service.compare_multimodal("DZA", "MAR", weight_kg=500.0)
+    assert result["air_excluded"] is False
+    assert result["air_excluded_reason"] is None
+    assert all(o["mode"] != "air" for o in result["options"])
+
+    # Heavy general cargo: excluded by the weight-ceiling policy, with reason.
+    heavy = service.compare_multimodal("DZA", "MAR", weight_kg=21_600.0)
+    assert heavy["air_excluded"] is True
+    assert "plafond" in heavy["air_excluded_reason"]
 
 
 def test_logistics_profile_detects_bulk_from_hs_code_end_to_end():

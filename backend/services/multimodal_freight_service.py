@@ -1126,14 +1126,32 @@ def compare_multimodal(
             )
     options.extend(sea_opts)
 
-    air_opt = _air_option(
-        origin_country,
-        destination_country,
-        weight_kg,
-        air_commodity,
-        volume_m3,
-        is_bulk=is_bulk_commodity,
-    )
+    # Compute the realism-policy exclusion explicitly: _air_option also
+    # returns None when air is merely unavailable (missing default airport,
+    # same airport both ends), which is not a policy exclusion.
+    air_excluded_reason = None
+    if is_bulk_commodity:
+        air_excluded_reason = (
+            f"{bulk_label or 'Marchandise en vrac'} : jamais expédié par avion, "
+            "quel que soit le poids."
+        )
+    elif weight_kg > AIR_FREIGHT_MAX_KG_GENERAL:
+        air_excluded_reason = (
+            f"Poids ({round(weight_kg):,} kg) au-delà du plafond réaliste du fret "
+            f"aérien ({round(AIR_FREIGHT_MAX_KG_GENERAL):,} kg) pour une marchandise "
+            "générale.".replace(",", " ")
+        )
+
+    air_opt = None
+    if air_excluded_reason is None:
+        air_opt = _air_option(
+            origin_country,
+            destination_country,
+            weight_kg,
+            air_commodity,
+            volume_m3,
+            is_bulk=is_bulk_commodity,
+        )
     if air_opt:
         options.append(air_opt)
 
@@ -1363,7 +1381,10 @@ def compare_multimodal(
         "land_cargo_type": effective_land_cargo_type,
         "is_bulk_commodity": is_bulk_commodity,
         "bulk_label": bulk_label if is_bulk_commodity else None,
-        "air_excluded": air_opt is None,
+        # Policy exclusion only — distinct from air being merely unavailable
+        # (no default airport for a country, same airport both ends...).
+        "air_excluded": air_excluded_reason is not None,
+        "air_excluded_reason": air_excluded_reason,
         "options": options,
         "options_count": len(options),
         "operational_count": sum(1 for o in options if not o.get("is_future")),

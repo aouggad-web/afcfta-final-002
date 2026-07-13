@@ -79,7 +79,9 @@ def test_compare_multimodal_tags_options_and_computes_roi(monkeypatch):
         ],
     )
 
-    result = service.compare_multimodal("MAR", "MLI", weight_kg=10_000, include_future=True)
+    # Weight below AIR_FREIGHT_MAX_KG_GENERAL so the (mocked) air option stays
+    # eligible — heavier shipments are policy-excluded from air entirely.
+    result = service.compare_multimodal("MAR", "MLI", weight_kg=900, include_future=True)
 
     assert result["options_count"] == 5
     assert result["operational_count"] == 3
