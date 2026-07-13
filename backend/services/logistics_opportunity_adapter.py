@@ -25,17 +25,28 @@ def get_freight_options(
     weight_kg: float = 21600.0,
     volume_m3: float = 33.5,
     container_type: str = "teu",
+    hs_code: Optional[str] = None,
 ) -> Dict:
-    """Full multimodal comparison for the pair (sea/air/land/multimodal)."""
+    """Full multimodal comparison for the pair (sea/air/land/multimodal).
+
+    ``hs_code``, when provided, is used to detect a genuine bulk commodity
+    (cement, ores, cereals, coal, crude oil, fertilizers...) so the air option
+    is never offered for it and the land leg defaults to "bulk" cargo instead
+    of "container" — see ``services.shipment_estimator.classify_bulk_commodity``.
+    """
     try:
         from services.multimodal_freight_service import compare_multimodal
+        from services.shipment_estimator import classify_bulk_commodity
 
+        bulk = classify_bulk_commodity(hs_code) if hs_code else None
         result = compare_multimodal(
             (origin_iso3 or "").upper(),
             (destination_iso3 or "").upper(),
             weight_kg,
             volume_m3=volume_m3,
             container_type=container_type,
+            is_bulk_commodity=bool(bulk),
+            bulk_label=bulk.get("label") if bulk else None,
         )
         return {"available": True, **result}
     except Exception as exc:
@@ -68,10 +79,11 @@ def get_logistics_profile(
     weight_kg: float = 21600.0,
     volume_m3: float = 33.5,
     container_type: str = "teu",
+    hs_code: Optional[str] = None,
 ) -> Dict:
     """Compose the logistics view for an origin → destination shipment."""
     freight = get_freight_options(
-        origin_iso3, destination_iso3, weight_kg, volume_m3, container_type
+        origin_iso3, destination_iso3, weight_kg, volume_m3, container_type, hs_code=hs_code
     )
     options = freight.get("options", []) if freight.get("available") else []
     cheapest = _cheapest_operational(options)

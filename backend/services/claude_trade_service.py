@@ -1494,9 +1494,12 @@ Wrap ALL 15 in this envelope:
                                 destination_iso3,
                                 one_container_kg,
                                 container_type=container_type,
+                                hs_code=hs6,
                             )
                         else:
-                            profile = get_logistics_profile(origin_iso3, destination_iso3)
+                            profile = get_logistics_profile(
+                                origin_iso3, destination_iso3, hs_code=hs6
+                            )
 
                         if profile["freight"].get("available"):
                             n_containers = (

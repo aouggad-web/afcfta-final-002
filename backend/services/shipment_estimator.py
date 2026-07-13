@@ -63,6 +63,64 @@ _BUSHEL_TO_KG = {"wheat": 27.2155, "soybeans": 27.2155, "corn": 25.40117}
 # (Brent/WTI, ~38-40° API) ~0.85 kg/L — donne ~135 kg/baril.
 _BARREL_TO_KG = 158.987 * 0.85
 
+# ---------------------------------------------------------------------------
+# Classification logistique par code SH : vrac vs conteneurisable, éligibilité
+# à l'aérien.
+#
+# PROBLÈME RÉSOLU : le comparateur multimodal proposait un fret aérien pour
+# n'importe quelle marchandise (ex. ciment) sans limite de poids, et
+# conteneurisait par défaut des matières premières qui ne voyagent jamais en
+# conteneur dans la réalité (blé, minerai de fer, charbon, ciment en vrac...).
+#
+# Deux garde-fous, dans cet ordre de priorité :
+#   1. Vrac (minéral/énergétique ou agricole) : jamais aérien, quel que soit le
+#      poids ; type de cargaison terrestre par défaut = "bulk" (déjà supporté
+#      par CARGO_FACTORS, backend/logistics_land_fees_data.py) au lieu de
+#      "container".
+#   2. Marchandise générale (tout le reste) : aérien éligible seulement en
+#      dessous d'un plafond de poids (voir AIR_FREIGHT_MAX_KG_GENERAL dans
+#      multimodal_freight_service.py) — l'aérien reste par nature réservé aux
+#      envois légers/à haute valeur, pas à un conteneur complet.
+#
+# Recherche par spécificité décroissante (4 chiffres puis 2, chapitre) comme
+# `usd_per_kg_for_hs`. Un code absent des deux tables est considéré comme
+# marchandise générale, conteneurisable et éligible à l'aérien sous plafond.
+_BULK_MINERAL_HS_PREFIXES: Dict[str, str] = {
+    "2523": "Ciment",
+    "25": "Produits minéraux bruts (sel, pierre, plâtre, ciment, gypse...)",
+    "26": "Minerais, scories et cendres (dont minerai de fer)",
+    "27": "Combustibles minéraux (charbon, pétrole brut, coke...)",
+}
+_BULK_AGRI_HS_PREFIXES: Dict[str, str] = {
+    "10": "Céréales en vrac (blé, maïs, riz, orge...)",
+    "1201": "Soja (fèves, vrac)",
+    "1701": "Sucre (canne/betterave, brut)",
+    "31": "Engrais",
+}
+
+
+def classify_bulk_commodity(hs_code: str) -> Optional[Dict]:
+    """
+    Retourne le libellé et la catégorie de vrac si le code SH correspond à une
+    matière première en vrac (jamais aérienne, jamais conteneurisée) — sinon
+    ``None`` (marchandise générale, conteneurisable et éligible à l'aérien
+    sous plafond de poids).
+    """
+    normalized = (hs_code or "").strip().replace(".", "").replace(" ", "")
+    for prefixes, category in (
+        (_BULK_MINERAL_HS_PREFIXES, "bulk_mineral"),
+        (_BULK_AGRI_HS_PREFIXES, "bulk_agri"),
+    ):
+        for prefix_len in (4, 2):
+            prefix = normalized[:prefix_len]
+            if len(prefix) < prefix_len:
+                continue
+            label = prefixes.get(prefix)
+            if label:
+                return {"category": category, "label": label, "hs_match": prefix}
+    return None
+
+
 # Ratio valeur/poids (USD par kg) par chapitre SH (2 chiffres). Ordres de
 # grandeur documentés (valeurs unitaires typiques du commerce mondial) — voir
 # docstring. Un chapitre absent retombe sur _DEFAULT_USD_PER_KG.
