@@ -95,3 +95,25 @@ def value_of(country_iso3: str, out_key: str) -> Optional[float]:
     """Raccourci : valeur seule (dernière année) d'un indicateur, ou None."""
     ind = get_macro(country_iso3).get("indicators", {}).get(out_key)
     return ind["value"] if ind else None
+
+
+def get_series(country_iso3: str, out_key: str) -> Dict[int, float]:
+    """
+    Série pluriannuelle complète {année: valeur} d'un indicateur (ex.
+    "gdp_usd") pour un pays — alimente les graphiques d'historique (module
+    Statistiques). Dict vide si le pays ou l'indicateur est absent.
+    """
+    src_key = next((k for k, v in _FIELDS.items() if v == out_key), None)
+    if not src_key:
+        return {}
+    data = _load()
+    rec = (data.get("data") or {}).get((country_iso3 or "").strip().upper())
+    if not rec:
+        return {}
+    years = (rec.get("indicators") or {}).get(src_key) or {}
+    return {int(y): v for y, v in years.items() if v is not None and str(y).isdigit()}
+
+
+def all_countries_iso3() -> list:
+    """Codes ISO3 présents dans le dataset BM auto-actualisé."""
+    return sorted((_load().get("data") or {}).keys())

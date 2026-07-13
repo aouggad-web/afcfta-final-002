@@ -127,42 +127,61 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     # Utiliser ISO3 pour toutes les requêtes de données
     iso3_code = country["iso3"]
 
-    # Récupérer les données réelles du pays (Banque Mondiale WDI 2024)
+    # Récupérer les données réelles du pays (Banque Mondiale WDI 2024, dataset
+    # curé Profils Pays) et les indicateurs BM auto-actualisés (API officielle,
+    # se rafraîchit via l'ETL update_data_automated.py — cf. donnees.
+    # banquemondiale.org). Cascade sur TOUS les indicateurs partagés, sans
+    # double emploi avec la PR #234 :
+    #   1) dataset BM auto-actualisé (le plus frais, se rafraîchit seul) ;
+    #   2) repli sur la valeur curée du dataset Profils Pays (FMI WEO/BM) ;
+    #   3) null/valeur par défaut sinon — jamais inventé.
     real_data = get_country_data(iso3_code)
+
+    from services import wb_macro_service
+
+    wb = wb_macro_service.get_macro(iso3_code).get("indicators", {})
+
+    def _wb(key):
+        entry = wb.get(key)
+        return entry["value"] if entry else None
+
+    gdp_billion = real_data.get("gdp_usd_2024")
+    gdp_static = float(gdp_billion) * 1_000_000_000 if gdp_billion is not None else None
+    population_static = real_data.get("population_2024", country["population"])
 
     profile = CountryEconomicProfile(
         country_code=iso3_code,
         country_name=country["name"],
-        population=real_data.get("population_2024", country["population"]),
+        population=_wb("population") or population_static,
         region=country["region"],
     )
 
-    gdp_billion = real_data.get("gdp_usd_2024")
-    profile.gdp_usd = float(gdp_billion) * 1_000_000_000 if gdp_billion is not None else None
-    profile.gdp_per_capita = real_data.get("gdp_per_capita_2024")
+    profile.gdp_usd = _wb("gdp_usd") or gdp_static
+    profile.gdp_per_capita = _wb("gdp_per_capita_usd") or real_data.get("gdp_per_capita_2024")
     if profile.population:
         profile.population_millions = round(profile.population / 1_000_000, 2)
     # development_index de REAL_COUNTRY_DATA = IDH (PNUD) — était exposé
     # uniquement dans projections, jamais dans le champ hdi du modèle.
     profile.hdi = real_data.get("development_index")
 
-    # Inflation / chômage — cascade sans double emploi avec la PR #234 :
-    # 1) dataset BM auto-actualisé (API officielle, se rafraîchit via l'ETL) ;
-    # 2) repli sur la valeur curée du dataset Profils Pays
-    #    (inflation_rate_2024, FMI WEO — ajoutée par la PR #234) ;
-    # 3) null sinon — jamais inventés.
-    from services import wb_macro_service
-
-    wb = wb_macro_service.get_macro(iso3_code).get("indicators", {})
-    profile.inflation_rate = (wb.get("inflation_percent") or {}).get("value") or real_data.get(
-        "inflation_rate_2024"
+    profile.inflation_rate = _wb("inflation_percent") or real_data.get("inflation_rate_2024")
+    profile.unemployment_rate = _wb("unemployment_percent") or real_data.get(
+        "unemployment_rate_2024"
     )
-    profile.unemployment_rate = (wb.get("unemployment_percent") or {}).get(
-        "value"
-    ) or real_data.get("unemployment_rate_2024")
+
+    # Croissance 2024 : la BM publie une croissance RÉALISÉE (historique) —
+    # on la préfère à la valeur curée quand disponible. 2025/2026 restent des
+    # PROJECTIONS (FMI WEO) : la BM ne publie pas de prévisions, donc ces deux
+    # champs restent sur le dataset curé.
+    growth_2024_wb = _wb("gdp_growth_percent")
+    growth_2024_display = (
+        f"{growth_2024_wb:.1f}%"
+        if growth_2024_wb is not None
+        else real_data.get("growth_forecast_2024", "3.0%")
+    )
 
     profile.projections = {
-        "gdp_growth_forecast_2024": real_data.get("growth_forecast_2024", "3.0%"),
+        "gdp_growth_forecast_2024": growth_2024_display,
         "gdp_growth_projection_2025": real_data.get("growth_projection_2025", "3.2%"),
         "gdp_growth_projection_2026": real_data.get("growth_projection_2026", "3.5%"),
         "development_index": real_data.get("development_index", 0.500),
