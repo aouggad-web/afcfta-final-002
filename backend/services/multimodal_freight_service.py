@@ -45,6 +45,10 @@ CO2_FACTORS_G_PER_TKM = {
     "road": 62,
     "air": 602,
     "multimodal": 36,  # weighted avg sea+rail+road
+    "sea_bulk_handysize": 8.5,
+    "sea_bulk_supramax": 6.0,
+    "sea_bulk_panamax": 4.5,
+    "sea_bulk_capesize": 3.0,
 }
 
 # Conversions
@@ -628,6 +632,142 @@ def _sea_options(
     ]
 
 
+def _bulk_sea_options(
+    origin_country: str,
+    destination_country: str,
+    weight_kg: float,
+    bulk_commodity: Optional[Dict[str, Any]] = None,
+) -> List[Dict[str, Any]]:
+    """Bulk carrier (vraquier) options for genuine bulk commodities.
+
+    Handles the bascule logic: below container_threshold_tonnes, surfaces
+    containerized option with a note; at/above threshold, surfaces vraquier.
+    For liquid_bulk products (tanker market), returns UNAVAILABLE list with
+    an explanatory note.
+    """
+    if not bulk_commodity:
+        return []
+    if bulk_commodity.get("is_liquid"):
+        return [
+            {
+                "mode": "sea_bulk",
+                "label": "Marché pétrolier / tanker",
+                "label_en": "Tanker market (petroleum / liquid bulk)",
+                "icon": "tanker",
+                "available": False,
+                "feasibility": "unavailable",
+                "notes": (
+                    f"{bulk_commodity.get('label', 'Produit liquide')} relève du marché "
+                    "pétrolier (navires-citernes). Ce comparateur couvre le fret vraquier "
+                    "(bulk carriers) pour marchandises sèches uniquement."
+                ),
+                "source": "Fret vraquier — données AFCFTA",
+            }
+        ]
+
+    origin_port = COUNTRY_DEFAULT_PORT.get(origin_country.upper())
+    dest_port = COUNTRY_DEFAULT_PORT.get(destination_country.upper())
+    if not origin_port or not dest_port or origin_port == dest_port:
+        return []
+
+    weight_tonnes = weight_kg / 1000.0
+    threshold_tonnes = bulk_commodity.get("container_threshold_tonnes", 2000.0)
+
+    # Below threshold: surface containerized option with bulk note
+    if weight_tonnes < threshold_tonnes:
+        return []  # Use containerized (returned by _sea_options with bulk_cargo_note)
+
+    # Above threshold: call get_bulk_freight_cost for vraquier
+    try:
+        from logistics_bulk_fees_data import get_bulk_freight_cost
+
+        bulk_result = get_bulk_freight_cost(
+            origin_port,
+            dest_port,
+            weight_tonnes,
+            allowed_classes=bulk_commodity.get("vessel_classes"),
+            required_terminal=None,  # Let the model decide
+        )
+        if not bulk_result:
+            return []
+
+        # Build the bulk option
+        weight_tonnes_shipped = weight_kg / 1000.0
+        vessel_class = bulk_result.get("vessel_class", "supramax")
+        distance_nm = bulk_result.get("distance_nm", 0)
+        distance_km = distance_nm * NM_TO_KM
+        co2_factor = CO2_FACTORS_G_PER_TKM.get(
+            f"sea_bulk_{vessel_class}",
+            CO2_FACTORS_G_PER_TKM.get("sea", 10),
+        )
+        co2 = round(weight_tonnes_shipped * distance_km * co2_factor / 1000.0, 1)
+
+        constraints_notes = bulk_result.get("constraints_notes", [])
+        voyages_needed = bulk_result.get("voyages_needed", 1)
+        notes = ""
+        if bulk_result.get("is_modeled"):
+            notes = "Tarif vraquier estimé (modèle calibré ±20 %). "
+        if constraints_notes:
+            notes += " ".join(constraints_notes) + " "
+        if voyages_needed > 1:
+            notes += f"Lot divisé en {voyages_needed} voyages. "
+        if bulk_result.get("disclaimer"):
+            notes += "Avertissement : tarifs indicatifs. "
+        notes = notes.strip()
+
+        return [
+            {
+                "mode": "sea_bulk",
+                "label": (
+                    f"Vraquier (bulk carrier) — {vessel_class}"
+                    if vessel_class
+                    else "Vraquier (bulk carrier)"
+                ),
+                "label_en": f"Bulk carrier — {vessel_class}" if vessel_class else "Bulk carrier",
+                "icon": "ship",
+                "origin_locode": origin_port,
+                "destination_locode": dest_port,
+                "vessel_class": vessel_class,
+                "is_modeled": bulk_result.get("is_modeled", False),
+                "segments": [
+                    {
+                        "mode": "sea_bulk",
+                        "from": bulk_result.get("origin_port", ""),
+                        "from_locode": origin_port,
+                        "to": bulk_result.get("destination_port", ""),
+                        "to_locode": dest_port,
+                        "distance_km": round(distance_km),
+                        "transit_days_min": bulk_result.get("transit_days_min"),
+                        "transit_days_max": bulk_result.get("transit_days_max"),
+                        "cost_usd": bulk_result.get("total_cost_usd"),
+                        "cost_breakdown": {
+                            "ocean_usd_per_t": bulk_result.get("ocean_usd_per_t"),
+                            "port_load_usd_per_t": bulk_result.get("port_load_usd_per_t"),
+                            "port_discharge_usd_per_t": bulk_result.get("port_discharge_usd_per_t"),
+                            "total_usd_per_t": bulk_result.get("total_usd_per_t"),
+                        },
+                    }
+                ],
+                "total_cost_usd": bulk_result.get("total_cost_usd"),
+                "transit_days_min": bulk_result.get("transit_days_min"),
+                "transit_days_max": bulk_result.get("transit_days_max"),
+                "co2_kg": co2,
+                "distance_km": round(distance_km),
+                "available": True,
+                "feasibility": "high",
+                "commodity_label": bulk_commodity.get("label"),
+                "commodity_category": bulk_commodity.get("category"),
+                "notes": notes,
+                "source": "Fret vraquier — PLAN_FRET_VRAQUIER Lot A calibration",
+            }
+        ]
+    except ImportError:
+        return []
+    except Exception as exc:
+        logger.warning("bulk freight option failed: %s", exc)
+        return []
+
+
 def _air_option(
     origin_country: str,
     destination_country: str,
@@ -1102,27 +1242,54 @@ def compare_multimodal(
     include_future: bool = True,
     is_bulk_commodity: bool = False,
     bulk_label: Optional[str] = None,
+    bulk_commodity_dict: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Main comparator: returns all viable route options (operational + future).
 
-    ``is_bulk_commodity`` flags a genuine bulk raw material (cement, ores,
-    cereals, coal, crude oil, fertilizers...) identified from its HS code —
-    see ``services.shipment_estimator.classify_bulk_commodity``. It never
-    travels by air (regardless of weight) and defaults the land leg to the
-    "bulk" cargo type instead of "container" unless the caller explicitly
-    picked a different ``land_cargo_type``.
+    ``bulk_commodity_dict`` is the full classification dict from
+    ``services.shipment_estimator.classify_bulk_commodity`` (includes category,
+    vessel_classes, container_threshold_tonnes, is_liquid, etc.). When provided,
+    enables vraquier (bulk carrier) pricing for eligible weight ranges and
+    liquid_bulk exclusion from sea freight.
+
+    For backwards compatibility, ``is_bulk_commodity`` and ``bulk_label`` remain
+    supported — they're used to exclude air and default land cargo type to "bulk".
     """
     options: List[Dict[str, Any]] = []
     weight_tonnes = max(weight_kg / 1000.0, 0.0)
-    effective_land_cargo_type = land_cargo_type or ("bulk" if is_bulk_commodity else "container")
+
+    # Merge bulk flags: is_bulk_commodity may be True from either parameter
+    is_bulk = is_bulk_commodity or (bulk_commodity_dict is not None)
+    effective_label = bulk_label or (bulk_commodity_dict.get("label") if bulk_commodity_dict else None)
+    effective_land_cargo_type = land_cargo_type or ("bulk" if is_bulk else "container")
 
     sea_opts = _sea_options(origin_country, destination_country, weight_kg, container_type)
-    if is_bulk_commodity:
+
+    # If bulk commodity dict is provided and weight is above threshold, offer vraquier
+    bulk_sea_opts = _bulk_sea_options(origin_country, destination_country, weight_kg, bulk_commodity_dict)
+
+    # Bascule logic: if vraquier options exist (weight >= threshold), use them;
+    # otherwise use containerized with a note (below threshold or no bulk commodity dict)
+    if bulk_sea_opts:
+        # Filter sea_opts to exclude the containerized option for this port pair
+        # (vraquier takes precedence above threshold)
+        origin_port = COUNTRY_DEFAULT_PORT.get(origin_country.upper())
+        dest_port = COUNTRY_DEFAULT_PORT.get(destination_country.upper())
+        if origin_port and dest_port:
+            sea_opts = [
+                o
+                for o in sea_opts
+                if not (o.get("origin_locode") == origin_port and o.get("destination_locode") == dest_port)
+            ]
+        options.extend(bulk_sea_opts)
+
+    # If containerized sea options remain, add bulk note if applicable
+    if is_bulk and sea_opts:
         for o in sea_opts:
             o["bulk_cargo_note"] = (
-                f"{bulk_label or 'Marchandise en vrac'} : le tarif conteneurisé ci-dessus "
-                "est utilisé comme repère faute de données de fret vraquier (bulk carrier) "
-                "dans ce comparateur — le coût réel d'un affrètement en vrac diffère."
+                f"{effective_label or 'Marchandise en vrac'} : le tarif conteneurisé ci-dessus "
+                "est utilisé comme repère pour les petits lots ou selon la disponibilité. "
+                "Pour les lots vraquiers importants, consulter les armateurs spécialisés."
             )
     options.extend(sea_opts)
 
@@ -1130,9 +1297,9 @@ def compare_multimodal(
     # returns None when air is merely unavailable (missing default airport,
     # same airport both ends), which is not a policy exclusion.
     air_excluded_reason = None
-    if is_bulk_commodity:
+    if is_bulk:
         air_excluded_reason = (
-            f"{bulk_label or 'Marchandise en vrac'} : jamais expédié par avion, "
+            f"{effective_label or 'Marchandise en vrac'} : jamais expédié par avion, "
             "quel que soit le poids."
         )
     elif weight_kg > AIR_FREIGHT_MAX_KG_GENERAL:
@@ -1150,7 +1317,7 @@ def compare_multimodal(
             weight_kg,
             air_commodity,
             volume_m3,
-            is_bulk=is_bulk_commodity,
+            is_bulk=is_bulk,
         )
     if air_opt:
         options.append(air_opt)
@@ -1379,8 +1546,9 @@ def compare_multimodal(
         "volume_m3": volume_m3,
         "container_type": container_type.lower(),
         "land_cargo_type": effective_land_cargo_type,
-        "is_bulk_commodity": is_bulk_commodity,
-        "bulk_label": bulk_label if is_bulk_commodity else None,
+        "is_bulk_commodity": is_bulk,
+        "bulk_label": effective_label if is_bulk else None,
+        "bulk_commodity_dict": bulk_commodity_dict,
         # Policy exclusion only — distinct from air being merely unavailable
         # (no default airport for a country, same airport both ends...).
         "air_excluded": air_excluded_reason is not None,
