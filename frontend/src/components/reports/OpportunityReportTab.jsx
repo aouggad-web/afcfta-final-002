@@ -50,6 +50,14 @@ const COMPONENT_LABELS = {
 };
 const compLabel = (key, fr) => COMPONENT_LABELS[key]?.[fr ? "fr" : "en"] || key;
 
+const getModeLabelBrief = (mode, fr) => {
+  const labels = {
+    fr: { sea: "Maritime", sea_bulk: "Vraquier", air: "Aérien", land: "Terrestre", multimodal: "Multimodal" },
+    en: { sea: "Sea", sea_bulk: "Bulk carrier", air: "Air", land: "Land", multimodal: "Multimodal" },
+  };
+  return labels[fr ? "fr" : "en"][mode] || mode;
+};
+
 function Metric({ title, value, sub }) {
   return (
     <div style={card}>
@@ -313,6 +321,9 @@ function BilateralView({ countries, fr, prefill }) {
   const cover = macro.import_cover || {};
   const gold = macro.gold_reserves || null;
   const cheapest = report?.logistics?.profile?.cheapest_operational_option || null;
+  const freight = report?.logistics?.profile?.freight || {};
+  const allOptions = freight?.options || [];
+  const seaBulkOptions = allOptions.filter((o) => o.mode === "sea_bulk" && o.available);
   const risk = fin.country_risk || {};
   const tf = fin.trade_finance || {};
   const pay = fin.payment_coverage || {};
@@ -606,6 +617,35 @@ function BilateralView({ countries, fr, prefill }) {
                 <div style={{ color: "var(--afcfta-muted,#667)" }}>—</div>
               )}
             </div>
+
+            {seaBulkOptions.length > 0 && (
+              <div style={card}>
+                <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+                  {fr ? "Vraquier — transports maritimes en vrac" : "Bulk carrier — break-bulk shipping"}
+                </div>
+                <div style={{ fontSize: 13, display: "flex", flexDirection: "column", gap: 8 }}>
+                  {seaBulkOptions.map((opt, idx) => (
+                    <div key={idx} style={{ borderTop: idx > 0 ? "1px solid rgba(0,0,0,0.08)" : "none", paddingTop: idx > 0 ? 8 : 0 }}>
+                      <div style={{ fontWeight: 700, marginBottom: 4 }}>
+                        {opt.vessel_class ? opt.vessel_class.charAt(0).toUpperCase() + opt.vessel_class.slice(1) : "—"}
+                      </div>
+                      <div>{fr ? "Coût" : "Cost"}: {money(opt.total_cost_usd)}</div>
+                      <div>
+                        {fr ? "Délai" : "Transit"}: {dash(opt.transit_days_min)}–{dash(opt.transit_days_max)} {fr ? "jours" : "days"}
+                      </div>
+                      {opt.co2_kg && (
+                        <div>{fr ? "CO₂" : "CO₂"}: {num(opt.co2_kg)} kg</div>
+                      )}
+                      {opt.notes && (
+                        <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                          {opt.notes}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div style={card}>
               <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
