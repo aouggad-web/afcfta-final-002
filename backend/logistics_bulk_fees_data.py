@@ -25,7 +25,9 @@ même distance pour une paire de ports, que le mode soit conteneur ou vrac.
 
 from __future__ import annotations
 
+import json
 import math
+import os
 from typing import Any, Dict, List, Optional
 
 from logistics_fees_data import PORTS, _sea_distance_nm
@@ -370,12 +372,75 @@ def _cap_class(cls: str, cap: Optional[str]) -> str:
     return cls if _CLASS_ORDER.index(cls) <= _CLASS_ORDER.index(cap) else cap
 
 
+# ---------------------------------------------------------------------------
+# Fraîcheur (Lot D) : override live des indices Baltic par classe de navire
+# ---------------------------------------------------------------------------
+# data/json/fret_vraquier.json porte, par classe, un multiplicateur de marché
+# (niveau d'indice Baltic courant / niveau de référence 2024) avec sa date et
+# sa source. Le modèle distance-coût statique est multiplié par ce facteur.
+# Discipline « zéro fabrication » identique aux cours mondiaux : fichier
+# absent/corrompu → repli statique pur ; multiplicateur hors bornes de
+# vraisemblance → ignoré (jamais d'écrasement silencieux du statique).
+_FREIGHT_OVERRIDE_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "data", "json", "fret_vraquier.json"
+)
+# Bornes de vraisemblance du multiplicateur : un flux cassé (0, négatif, ou
+# aberrant) ne doit jamais distordre le tarif. Le marché vraquier bouge fort
+# mais reste dans un rapport ~0,3–3 autour de la moyenne 2024.
+_MULTIPLIER_BOUNDS = (0.3, 3.0)
+
+
+def _load_freight_overrides(path: str = _FREIGHT_OVERRIDE_PATH) -> Dict[str, Dict[str, Any]]:
+    """Charge fret_vraquier.json ; dict vide si absent/corrompu (repli statique).
+
+    Ne retient qu'une entrée par classe dont le ``multiplier`` est numérique et
+    dans les bornes de vraisemblance — une valeur douteuse est écartée, jamais
+    appliquée.
+    """
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+    except (OSError, ValueError):
+        return {}
+    raw = data.get("vessel_class_multipliers")
+    if not isinstance(raw, dict):
+        return {}
+    lo, hi = _MULTIPLIER_BOUNDS
+    out: Dict[str, Dict[str, Any]] = {}
+    for cls, entry in raw.items():
+        if cls not in VESSEL_CLASSES or not isinstance(entry, dict):
+            continue
+        m = entry.get("multiplier")
+        if not isinstance(m, (int, float)) or isinstance(m, bool):
+            continue
+        if not (lo <= m <= hi):
+            continue
+        out[cls] = entry
+    return out
+
+
+_FREIGHT_OVERRIDES: Dict[str, Dict[str, Any]] = _load_freight_overrides()
+
+
+def freight_market_override(vessel_class: str) -> Optional[Dict[str, Any]]:
+    """Override de marché appliqué pour une classe (ou ``None`` si repli statique)."""
+    return _FREIGHT_OVERRIDES.get(vessel_class)
+
+
 def model_bulk_freight_usd_per_t(distance_nm: float, vessel_class: str) -> float:
-    """Fret océanique modélisé (USD/tonne) pour une distance et une classe."""
+    """Fret océanique modélisé (USD/tonne) pour une distance et une classe.
+
+    Applique le multiplicateur de marché live (indice Baltic) si présent et
+    valide pour la classe ; sinon, modèle statique pur (multiplicateur = 1,0).
+    """
     factor = VESSEL_CLASSES[vessel_class]["freight_factor"]
+    override = _FREIGHT_OVERRIDES.get(vessel_class)
+    market_mult = override["multiplier"] if override else 1.0
     rate = (
-        _FREIGHT_MODEL_BASE_USD_PER_T + _FREIGHT_MODEL_SLOPE_USD_PER_T_NM * distance_nm
-    ) * factor
+        (_FREIGHT_MODEL_BASE_USD_PER_T + _FREIGHT_MODEL_SLOPE_USD_PER_T_NM * distance_nm)
+        * factor
+        * market_mult
+    )
     return round(max(_FREIGHT_MODEL_FLOOR_USD_PER_T, rate), 2)
 
 
@@ -461,6 +526,7 @@ def get_bulk_freight_cost(
 
     dist_nm = _sea_distance_nm(o, d)
     ocean_usd_per_t = model_bulk_freight_usd_per_t(dist_nm, chosen)
+    market_override = freight_market_override(chosen)
     load_usd_per_t = BULK_PORT_HANDLING_USD_PER_T_LOAD
     discharge_usd_per_t = BULK_PORT_HANDLING_USD_PER_T_DISCHARGE
     total_usd_per_t = round(ocean_usd_per_t + load_usd_per_t + discharge_usd_per_t, 2)
@@ -503,8 +569,23 @@ def get_bulk_freight_cost(
         "co2_source": "IMO 4th GHG Study 2020 / GLEC Framework v3 (ordre de grandeur par classe)",
         "constraints_notes": constraints_notes,
         "is_modeled": True,
-        "as_of": "calibration moyennes 2024",
+        "as_of": (
+            market_override.get("as_of")
+            if market_override and market_override.get("multiplier") != 1.0
+            else "calibration moyennes 2024"
+        ),
         "calibration_sources": [b["source"] for b in _CALIBRATION_BENCHMARKS],
+        "freight_market_override": (
+            {
+                "vessel_class": chosen,
+                "multiplier": market_override["multiplier"],
+                "index": market_override.get("index"),
+                "as_of": market_override.get("as_of"),
+                "source": market_override.get("source"),
+            }
+            if market_override
+            else None
+        ),
         "currency": "USD",
         "data_year": 2024,
         "disclaimer": _DISCLAIMER,

@@ -638,15 +638,19 @@ def _bulk_sea_options(
     weight_kg: float,
     bulk_commodity: Optional[Dict[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
-    """Bulk carrier (vraquier) options for genuine bulk commodities.
+    """Bulk carrier (vraquier) options for genuine bulk commodities via homogeneous_cargo_service.
 
-    Handles the bascule logic: below container_threshold_tonnes, surfaces
-    containerized option with a note; at/above threshold, surfaces vraquier.
-    For liquid_bulk products (tanker market), returns UNAVAILABLE list with
-    an explanatory note.
+    Delegates classification, mode selection, and costing to homogeneous_cargo_service
+    for uniform, testable handling across all cargaison homogène workflows.
+
+    Handles the bascule logic: below container_threshold_tonnes, returns empty
+    (use containerized); at/above threshold, surfaces vraquier via service.
+    For liquid_bulk products (tanker market), returns UNAVAILABLE list.
     """
     if not bulk_commodity:
         return []
+
+    # Liquid bulk → tanker market (out of scope)
     if bulk_commodity.get("is_liquid"):
         return [
             {
@@ -665,34 +669,45 @@ def _bulk_sea_options(
             }
         ]
 
-    origin_port = COUNTRY_DEFAULT_PORT.get(origin_country.upper())
-    dest_port = COUNTRY_DEFAULT_PORT.get(destination_country.upper())
-    if not origin_port or not dest_port or origin_port == dest_port:
+    # Enumerate ALL origin-country × destination-country ports (like _sea_options)
+    # rather than a single default gateway: a bulk lot is routed through whichever
+    # port pair is cheapest/feasible, not an arbitrary main port. Restricting to
+    # one default port would silently hide valid, cheaper vraquier routes.
+    o_ports = COUNTRY_PORTS.get(origin_country.upper(), [])
+    d_ports = COUNTRY_PORTS.get(destination_country.upper(), [])
+    if not o_ports or not d_ports:
         return []
 
-    weight_tonnes = weight_kg / 1000.0
-    threshold_tonnes = bulk_commodity.get("container_threshold_tonnes", 2000.0)
-
-    # Below threshold: surface containerized option with bulk note
-    if weight_tonnes < threshold_tonnes:
-        return []  # Use containerized (returned by _sea_options with bulk_cargo_note)
-
-    # Above threshold: call get_bulk_freight_cost for vraquier
+    # Use homogeneous_cargo_service for mode selection and costing
     try:
-        from logistics_bulk_fees_data import get_bulk_freight_cost
-
-        bulk_result = get_bulk_freight_cost(
-            origin_port,
-            dest_port,
-            weight_tonnes,
-            allowed_classes=bulk_commodity.get("vessel_classes"),
-            required_terminal=None,  # Let the model decide
+        from services.homogeneous_cargo_service import (
+            get_bulk_freight_option,
+            select_shipping_mode,
         )
-        if not bulk_result:
+
+        # Check mode: below threshold → containerized (no sea_bulk option)
+        mode = select_shipping_mode(weight_kg, bulk_commodity)
+        if mode != "sea_bulk":
+            return []  # Use containerized (returned by _sea_options with bulk_cargo_note)
+
+        # Above threshold: cost every port pair, keep the cheapest operational route.
+        candidates: List[Dict[str, Any]] = []
+        for o_port in o_ports:
+            for d_port in d_ports:
+                if o_port == d_port:
+                    continue
+                res = get_bulk_freight_option(o_port, d_port, weight_kg, bulk_commodity)
+                if res and res.get("total_cost_usd") is not None:
+                    candidates.append(res)
+        if not candidates:
             return []
 
-        # Build the bulk option
-        weight_tonnes_shipped = weight_kg / 1000.0
+        bulk_result = min(candidates, key=lambda r: r["total_cost_usd"])
+        origin_port = bulk_result.get("origin_locode")
+        dest_port = bulk_result.get("destination_locode")
+
+        # Format for multimodal comparator
+        weight_tonnes = weight_kg / 1000.0
         vessel_class = bulk_result.get("vessel_class", "supramax")
         distance_nm = bulk_result.get("distance_nm", 0)
         distance_km = distance_nm * NM_TO_KM
@@ -700,8 +715,9 @@ def _bulk_sea_options(
             f"sea_bulk_{vessel_class}",
             CO2_FACTORS_G_PER_TKM.get("sea", 10),
         )
-        co2 = round(weight_tonnes_shipped * distance_km * co2_factor / 1000.0, 1)
+        co2 = round(weight_tonnes * distance_km * co2_factor / 1000.0, 1)
 
+        # Build notes from constraints
         constraints_notes = bulk_result.get("constraints_notes", [])
         voyages_needed = bulk_result.get("voyages_needed", 1)
         notes = ""
@@ -741,7 +757,7 @@ def _bulk_sea_options(
                         "transit_days_max": bulk_result.get("transit_days_max"),
                         "cost_usd": bulk_result.get("total_cost_usd"),
                         "cost_breakdown": {
-                            "ocean_usd_per_t": bulk_result.get("ocean_usd_per_t"),
+                            "ocean_usd_per_t": bulk_result.get("ocean_freight_usd_per_t"),
                             "port_load_usd_per_t": bulk_result.get("port_load_usd_per_t"),
                             "port_discharge_usd_per_t": bulk_result.get("port_discharge_usd_per_t"),
                             "total_usd_per_t": bulk_result.get("total_usd_per_t"),
@@ -761,7 +777,8 @@ def _bulk_sea_options(
                 "source": "Fret vraquier — PLAN_FRET_VRAQUIER Lot A calibration",
             }
         ]
-    except ImportError:
+    except ImportError as e:
+        logger.warning("homogeneous_cargo_service not available: %s", e)
         return []
     except Exception as exc:
         logger.warning("bulk freight option failed: %s", exc)
@@ -1272,26 +1289,26 @@ def compare_multimodal(
         origin_country, destination_country, weight_kg, bulk_commodity_dict
     )
 
-    # Bascule logic: if vraquier options exist (weight >= threshold), use them;
-    # otherwise use containerized with a note (below threshold or no bulk commodity dict)
+    # Bascule logic: if vraquier options exist (weight >= threshold), they are
+    # THE operational maritime mode — a lot this size sails in bulk, not in
+    # boxes. The containerized per-container quote is not a comparable operational
+    # alternative (it prices one box, not the whole charter), so it is dropped
+    # entirely to avoid ever showing "conteneurs nécessaires" alongside
+    # "affrètement vrac" (cf. PLAN_FRET_VRAQUIER Lot C).
     if bulk_sea_opts:
-        # Filter sea_opts to exclude the containerized option for this port pair
-        # (vraquier takes precedence above threshold)
-        origin_port = COUNTRY_DEFAULT_PORT.get(origin_country.upper())
-        dest_port = COUNTRY_DEFAULT_PORT.get(destination_country.upper())
-        if origin_port and dest_port:
-            sea_opts = [
-                o
-                for o in sea_opts
-                if not (
-                    o.get("origin_locode") == origin_port
-                    and o.get("destination_locode") == dest_port
-                )
-            ]
+        # Keep containerized quotes only as a demoted, non-operational reference
+        # (available=False) so the UI can still cite the small-lot benchmark.
+        for o in sea_opts:
+            o["available"] = False
+            o["feasibility"] = "reference_only"
+            o["bulk_cargo_note"] = (
+                f"{effective_label or 'Marchandise en vrac'} : tarif conteneurisé indiqué à "
+                "titre de repère petit lot ; le mode opérationnel retenu pour ce tonnage "
+                "est l'affrètement vraquier ci-dessus."
+            )
         options.extend(bulk_sea_opts)
-
-    # If containerized sea options remain, add bulk note if applicable
-    if is_bulk and sea_opts:
+    # If containerized sea options remain operational (below threshold), add bulk note
+    elif is_bulk and sea_opts:
         for o in sea_opts:
             o["bulk_cargo_note"] = (
                 f"{effective_label or 'Marchandise en vrac'} : le tarif conteneurisé ci-dessus "

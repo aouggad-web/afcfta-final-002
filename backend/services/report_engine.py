@@ -109,18 +109,95 @@ def _risk_component(country_risk: Dict) -> Dict:
     }
 
 
+def _resolve_logistics_and_landed(
+    origin_iso3: str,
+    destination_iso3: str,
+    goods_value_usd: Optional[float],
+    hs_code: Optional[str],
+    weight_kg: float,
+    volume_m3: float,
+    shipment: Optional[Dict],
+) -> tuple:
+    """Compute the logistics profile + landed cost with UNIFORM cargo handling.
+
+    Single source of truth for the container-vs-vraquier décision, shared by
+    the bilateral report and the value-chain legs so the démarche is identical
+    everywhere:
+
+    - **Vrac sec au-dessus du seuil** : la logistique est calculée sur le
+      TONNAGE COMPLET (l'option d'affrètement vraquier ``sea_bulk`` remonte
+      alors), et le coût rendu utilise le total d'affrètement directement.
+    - **Sinon** : logistique d'UN conteneur (× nombre de conteneurs dans le
+      coût rendu), comportement historique inchangé.
+    """
+    bulk = shipment_estimator.classify_bulk_commodity(hs_code) if hs_code else None
+    total_weight_kg = None
+    if shipment and shipment.get("available"):
+        total_weight_kg = float(shipment.get("weight_kg") or 0)
+
+    threshold_kg = (bulk or {}).get("container_threshold_tonnes", 0) * 1000.0 if bulk else 0
+    use_bulk = bool(
+        bulk
+        and not bulk.get("is_liquid")
+        and total_weight_kg is not None
+        and total_weight_kg >= threshold_kg > 0
+    )
+
+    if use_bulk:
+        # Tonnage complet : c'est ici que l'affrètement vraquier devient éligible.
+        log_profile = logistics.get_logistics_profile(
+            origin_iso3,
+            destination_iso3,
+            total_weight_kg,
+            volume_m3,
+            hs_code=hs_code,
+        )
+    elif shipment and shipment.get("available"):
+        one_container_kg = min(
+            float(shipment["weight_kg"]), float(shipment["container_capacity_kg"])
+        )
+        log_profile = logistics.get_logistics_profile(
+            origin_iso3,
+            destination_iso3,
+            one_container_kg,
+            volume_m3,
+            container_type=shipment["container_type"],
+            hs_code=hs_code,
+        )
+    else:
+        log_profile = logistics.get_logistics_profile(
+            origin_iso3, destination_iso3, weight_kg, volume_m3, hs_code=hs_code
+        )
+
+    cheapest = log_profile.get("cheapest_operational_option") or {}
+    landed = _landed_cost(
+        goods_value_usd,
+        log_profile.get("best_operational_cost_usd"),
+        shipment,
+        cheapest,
+    )
+    return log_profile, landed
+
+
 def _landed_cost(
     goods_value_usd: Optional[float],
-    per_container_freight_usd: Optional[float],
+    freight_usd: Optional[float],
     shipment: Optional[Dict] = None,
+    cheapest_option: Optional[Dict] = None,
 ) -> Dict:
     """FOB + fret rendu, avec décomposition ; null si une jambe manque.
 
-    Le fret est multiplié par le NOMBRE de conteneurs nécessaires (estimé à
-    partir du poids déduit de la valeur FOB — cf. shipment_estimator), au lieu
-    de facturer un seul conteneur quelle que soit la taille de l'opération.
+    Deux régimes, choisis selon le mode opérationnel le moins cher :
+
+    - **Affrètement vraquier** (``mode == "sea_bulk"``) : ``freight_usd`` est déjà
+      le coût TOTAL de l'affrètement pour le tonnage complet (USD/t × tonnage).
+      On ne multiplie jamais par un nombre de conteneurs et on n'affiche jamais
+      « conteneurs nécessaires » — le lot voyage en vrac, pas en boîtes.
+    - **Conteneur** (défaut) : ``freight_usd`` est le coût d'UN conteneur ; le
+      total multiplie par le nombre de conteneurs nécessaires (estimé à partir
+      du poids déduit de la valeur FOB — cf. shipment_estimator).
     """
-    if goods_value_usd is None or per_container_freight_usd is None:
+    if goods_value_usd is None or freight_usd is None:
         return {
             "available": False,
             "value_usd": None,
@@ -133,6 +210,47 @@ def _landed_cost(
                 )
             ),
         }
+
+    is_charter = (cheapest_option or {}).get("mode") == "sea_bulk"
+    if is_charter:
+        # Vrac affrété : freight_usd = coût total pour tout le tonnage.
+        total_freight = round(freight_usd, 2)
+        breakdown = {
+            "goods_value_fob_usd": goods_value_usd,
+            "freight_mode": "sea_bulk",
+            "vessel_class": (cheapest_option or {}).get("vessel_class"),
+            "best_operational_freight_usd": total_freight,
+            "estimated_weight_kg": (shipment or {}).get("weight_kg"),
+            "weight_source": (shipment or {}).get("weight_source"),
+        }
+        note = (
+            "FX inclus séparément (voir volet finance). Fret = affrètement "
+            "vraquier (coût total pour le tonnage complet, USD/t × tonnage) — "
+            "pas de découpage en conteneurs."
+        )
+        if (cheapest_option or {}).get("notes"):
+            note += " " + cheapest_option["notes"]
+        if shipment and shipment.get("value_to_weight"):
+            vtw = shipment["value_to_weight"]
+            if vtw.get("classification_source") == "cours_mondial":
+                note += (
+                    f" Poids estimé via le cours mondial de {vtw.get('commodity', 'la matière première')} "
+                    f"({vtw['usd_per_kg']} USD/kg, {vtw.get('benchmark', '?')}, {vtw.get('as_of', '?')})."
+                )
+            else:
+                note += (
+                    f" Poids estimé via un ratio {vtw['usd_per_kg']} USD/kg "
+                    f"(chapitre SH {vtw.get('hs_chapter', '?')}, estimation de dimensionnement)."
+                )
+        return {
+            "available": True,
+            "value_usd": round(goods_value_usd + total_freight, 2),
+            "breakdown": breakdown,
+            "shipment_sizing": shipment,
+            "note": note,
+        }
+
+    per_container_freight_usd = freight_usd
     n_containers = 1
     if shipment and shipment.get("available") and shipment.get("containers_needed"):
         n_containers = max(1, int(shipment["containers_needed"]))
@@ -226,29 +344,19 @@ def get_opportunity_report(
     active_weights = {**DEFAULT_WEIGHTS, **(weights or {})}
 
     # Dimensionnement de l'expédition : à partir de la valeur FOB et du produit,
-    # estimer le poids → type et nombre de conteneurs. Le profil logistique est
-    # calculé pour UN conteneur du bon type ; le coût rendu multiplie ensuite
-    # par le nombre nécessaire (cf. _landed_cost). Si aucune valeur FOB n'est
-    # fournie, on garde le comportement historique (un conteneur 20′ au poids
-    # par défaut passé en argument).
+    # estimer le poids → type et nombre de conteneurs. Le choix conteneur (coût
+    # d'un conteneur × nombre) vs vraquier (affrètement au tonnage complet) est
+    # centralisé dans _resolve_logistics_and_landed pour une démarche uniforme.
     shipment = shipment_estimator.estimate_shipment(goods_value_usd, hs_code)
-    if shipment.get("available"):
-        _container_type = shipment["container_type"]
-        _one_container_kg = min(
-            float(shipment["weight_kg"]), float(shipment["container_capacity_kg"])
-        )
-        log_profile = logistics.get_logistics_profile(
-            origin_iso3,
-            destination_iso3,
-            _one_container_kg,
-            volume_m3,
-            container_type=_container_type,
-            hs_code=hs_code,
-        )
-    else:
-        log_profile = logistics.get_logistics_profile(
-            origin_iso3, destination_iso3, weight_kg, volume_m3, hs_code=hs_code
-        )
+    log_profile, landed_cost = _resolve_logistics_and_landed(
+        origin_iso3,
+        destination_iso3,
+        goods_value_usd,
+        hs_code,
+        weight_kg,
+        volume_m3,
+        shipment,
+    )
     fin_profile = finance.get_finance_profile(origin_iso3, destination_iso3, amount, "export")
 
     supply = _supply_component(origin_iso3, hs_code)
@@ -300,9 +408,7 @@ def get_opportunity_report(
             "risk_component": risk,
         },
         "composite_indicators": {
-            "landed_cost": _landed_cost(
-                goods_value_usd, log_profile.get("best_operational_cost_usd"), shipment
-            ),
+            "landed_cost": landed_cost,
             "financing_feasibility_index": fin_feasibility,
             "logistics_accessibility_index": log_access,
             "end_to_end_score": _end_to_end_score(components, active_weights),
@@ -572,27 +678,22 @@ def get_transformation_scenario(
     destination_iso3 = (destination_iso3 or "").upper()
 
     # ── Leg 1: import the inputs into the producing country ──────────────────
-    # Même dimensionnement conteneur que S2 : le poids des intrants est estimé
-    # depuis leur valeur, pour compter le bon nombre de conteneurs.
+    # Même démarche que le rapport bilatéral : conteneur vs vraquier tranché de
+    # façon uniforme par _resolve_logistics_and_landed (au tonnage complet pour
+    # un vrac au-dessus du seuil).
     input_shipment = shipment_estimator.estimate_shipment(input_value_usd, input_hs_code)
-    if input_shipment.get("available"):
-        input_logistics = logistics.get_logistics_profile(
-            input_origin_iso3,
-            producer_iso3,
-            min(float(input_shipment["weight_kg"]), float(input_shipment["container_capacity_kg"])),
-            volume_m3,
-            container_type=input_shipment["container_type"],
-            hs_code=input_hs_code,
-        )
-    else:
-        input_logistics = logistics.get_logistics_profile(
-            input_origin_iso3, producer_iso3, weight_kg, volume_m3, hs_code=input_hs_code
-        )
+    input_logistics, input_landed = _resolve_logistics_and_landed(
+        input_origin_iso3,
+        producer_iso3,
+        input_value_usd,
+        input_hs_code,
+        weight_kg,
+        volume_m3,
+        input_shipment,
+    )
     input_tariff = benchmarking_service.tariff_benefit_analysis(
         input_origin_iso3, producer_iso3, input_hs_code
     )
-    input_freight = input_logistics.get("best_operational_cost_usd")
-    input_landed = _landed_cost(input_value_usd, input_freight, input_shipment)
 
     # ── Leg 2: local production capacity for the finished good ───────────────
     production = _supply_component(producer_iso3, finished_hs_code)
