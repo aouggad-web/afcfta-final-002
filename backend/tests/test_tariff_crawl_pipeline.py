@@ -113,11 +113,12 @@ def test_validator_rejects_missing_source():
     assert any("source" in i for i in issues)
 
 
-def test_validator_missing_source_url_is_not_blocking():
+def test_validator_rejects_missing_source_url():
     doc = _good_doc()
     doc.pop("source_url", None)
     ok, issues = validate_authenticity(doc)
-    assert ok, issues
+    assert not ok
+    assert any("source_url" in i for i in issues)
 
 
 def test_validator_infers_provenance_from_position_tags():
