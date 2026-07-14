@@ -74,7 +74,16 @@ jobs:
               echo "🗑️  (dry-run) Serait supprimée: $branch"
             else
               echo "🗑️  Suppression: $branch"
-              git push origin --delete "$branch" 2>/dev/null && echo "  ✓ OK" || echo "  ⚠️  Pas trouvée"
+              if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+                if git push origin --delete "$branch"; then
+                  echo "  ✓ OK"
+                else
+                  echo "  ❌ Échec de suppression"
+                  exit 1
+                fi
+              else
+                echo "  ⚠️  Pas trouvée"
+              fi
             fi
             ((DELETED_COUNT++))
           done
