@@ -34,88 +34,46 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          set -e
-
           # Branches à GARDER
-          KEEP_BRANCHES=(
-            "claude/setup-github-cli-EngUf"
-            "automated-data-update-135"
-            "main"
-          )
+          KEEP_BRANCHES="^(main|claude/setup-github-cli-EngUf|automated-data-update-135)$"
 
-          # Branches à SUPPRIMER (patterns)
-          DELETE_PATTERNS=(
-            "automated-data-update-[0-9]"
-            "automated-data-update-1[0-9]"
-            "automated-data-update-2[0-3]"
-            "automated-data-update-132"
-            "automated-data-update-133"
-            "claude/format-black-isort"
-            "claude/wto-auth-fix"
-            "codex/*"
-            "copilot/*"
-            "conflict_*"
-            "replit*"
-            "fix/ci-restore-yarn-frontend-build"
-            "fix/cleanuo-security-phases-1-4-1"
-            "fix/cleanup-security-phases-1-4"
-            "fix/deploy-pages-v5"
-            "fix/update-deploy-pages-v5"
-            "fix/workflows-checkout-version"
-          )
+          # Branches à SUPPRIMER (regex)
+          DELETE_REGEX="^(automated-data-update-[0-9]+|claude/(format-black-isort|wto-auth-fix)|codex/|copilot/|conflict_|replit|fix/).*$"
 
-          # Fonction pour vérifier si une branche doit être gardée
-          should_keep() {
-            local branch=$1
-            for keep_pattern in "${KEEP_BRANCHES[@]}"; do
-              if [[ "$branch" == "$keep_pattern" ]]; then
-                return 0
-              fi
-            done
-            return 1
-          }
-
-          # Lister toutes les branches distantes
-          echo "🔍 Recherche des branches à supprimer..."
+          echo "🔍 Récupération des branches..."
           DELETED_COUNT=0
+          KEPT_COUNT=0
 
+          # Récupérer les branches via gh
           while IFS= read -r branch; do
-            # Nettoyer le préfixe "origin/"
-            branch_name="${branch#origin/}"
+            # Sauter les branches vides
+            [[ -z "$branch" ]] && continue
 
             # Vérifier si c'est une branche à garder
-            if should_keep "$branch_name"; then
-              echo "✓ Gardée: $branch_name"
+            if echo "$branch" | grep -qE "$KEEP_BRANCHES"; then
+              echo "✓ Gardée: $branch"
+              ((KEPT_COUNT++))
               continue
             fi
 
-            # Vérifier si elle match un pattern de suppression
-            should_delete=false
-            for pattern in "${DELETE_PATTERNS[@]}"; do
-              if [[ "$branch_name" == $pattern ]]; then
-                should_delete=true
-                break
-              fi
-            done
-
-            if [[ "$should_delete" == true ]]; then
+            # Vérifier si elle doit être supprimée
+            if echo "$branch" | grep -qE "$DELETE_REGEX"; then
               if [[ "$DRY_RUN" == "true" ]]; then
-                echo "🗑️  (dry-run) Serait supprimée: $branch_name"
+                echo "🗑️  (dry-run) Serait supprimée: $branch"
               else
-                echo "🗑️  Suppression: $branch_name"
-                gh api repos/${{ github.repository }}/git/refs/heads/$branch_name -X DELETE 2>/dev/null || echo "  ⚠️  Déjà supprimée ou introuvable"
+                echo "🗑️  Suppression: $branch"
+                gh api repos/${{ github.repository }}/git/refs/heads/"$branch" -X DELETE 2>/dev/null && echo "  ✓ Supprimée" || echo "  ⚠️  Erreur ou déjà supprimée"
               fi
               ((DELETED_COUNT++))
             fi
-          done < <(git branch -r | grep -v HEAD)
+          done < <(gh api repos/${{ github.repository }}/branches --paginate -q '.[].name')
 
           echo ""
           if [[ "$DRY_RUN" == "true" ]]; then
             echo "✅ Dry run: $DELETED_COUNT branches auraient été supprimées"
           else
-            echo "✅ $DELETED_COUNT branches supprimées"
-            echo "✓ Branches gardées:"
-            for keep in "${KEEP_BRANCHES[@]}"; do
-              [[ "$keep" != "main" ]] && echo "  - $keep"
-            done
+            echo "✅ Suppression complète: $DELETED_COUNT branches supprimées, $KEPT_COUNT conservées"
           fi
+
+          # Retourner succès
+          exit 0
