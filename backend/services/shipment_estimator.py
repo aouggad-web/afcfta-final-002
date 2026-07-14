@@ -65,59 +65,337 @@ _BARREL_TO_KG = 158.987 * 0.85
 
 # ---------------------------------------------------------------------------
 # Classification logistique par code SH : vrac vs conteneurisable, éligibilité
-# à l'aérien.
+# à l'aérien, classe de navire vraquier.
 #
 # PROBLÈME RÉSOLU : le comparateur multimodal proposait un fret aérien pour
 # n'importe quelle marchandise (ex. ciment) sans limite de poids, et
 # conteneurisait par défaut des matières premières qui ne voyagent jamais en
 # conteneur dans la réalité (blé, minerai de fer, charbon, ciment en vrac...).
 #
-# Deux garde-fous, dans cet ordre de priorité :
-#   1. Vrac (minéral/énergétique ou agricole) : jamais aérien, quel que soit le
-#      poids ; type de cargaison terrestre par défaut = "bulk" (déjà supporté
-#      par CARGO_FACTORS, backend/logistics_land_fees_data.py) au lieu de
-#      "container".
-#   2. Marchandise générale (tout le reste) : aérien éligible seulement en
-#      dessous d'un plafond de poids (voir AIR_FREIGHT_MAX_KG_GENERAL dans
-#      multimodal_freight_service.py) — l'aérien reste par nature réservé aux
-#      envois légers/à haute valeur, pas à un conteneur complet.
+# Table de référence unique (docs/PLAN_FRET_VRAQUIER.md, Annexe A) couvrant
+# tous les produits susceptibles d'utiliser le mode vraquier, en quatre
+# catégories :
+#   - "bulk_major"  : vrac sec majeur (minerai de fer, bauxite, charbon,
+#                     grandes céréales, soja, phosphates) — panamax/capesize
+#                     possibles ;
+#   - "bulk_minor"  : vrac sec mineur (ciment, sucre, engrais, concentrés de
+#                     minerais, tourteaux, ferraille...) — handysize/supramax ;
+#   - "neobulk"     : conventionnel/neo-bulk (grumes, bois sciés, pâtes,
+#                     aciers semi-finis) — cales vraquiers ou navires
+#                     conventionnels ;
+#   - "liquid_bulk" : vrac liquide (brut, raffinés, GPL/GNL, huiles végétales
+#                     en vrac, mélasses...) — marché tanker, hors périmètre du
+#                     comparateur vraquier sec.
 #
-# Recherche par spécificité décroissante (4 chiffres puis 2, chapitre) comme
-# `usd_per_kg_for_hs`. Un code absent des deux tables est considéré comme
-# marchandise générale, conteneurisable et éligible à l'aérien sous plafond.
-_BULK_MINERAL_HS_PREFIXES: Dict[str, str] = {
-    "2523": "Ciment",
-    "25": "Produits minéraux bruts (sel, pierre, plâtre, ciment, gypse...)",
-    "26": "Minerais, scories et cendres (dont minerai de fer)",
-    "27": "Combustibles minéraux (charbon, pétrole brut, coke...)",
+# Chaque entrée peut porter un seuil de bascule propre (`threshold_t`) : en
+# dessous, le mode réel reste le conteneur ensaché/conditionné (bi-modes :
+# riz, farines, arachides, cacao méga-lot...). Défaut :
+# BULK_CONTAINER_THRESHOLD_TONNES.
+#
+# Effets : jamais d'aérien quel que soit le poids ; type de cargaison
+# terrestre par défaut = "bulk" (CARGO_FACTORS, logistics_land_fees_data) ;
+# classe(s) de navire admissible(s) exposée(s) pour le fret vraquier
+# (logistics_bulk_fees_data). Les marchandises générales absentes de la table
+# (café, thé, coton, cajou, manufacturés...) restent au régime général :
+# conteneur, aérien sous plafond de poids (AIR_FREIGHT_MAX_KG_GENERAL).
+#
+# Recherche par spécificité décroissante (6, 4 puis 2 chiffres) — le 6 permet
+# de séparer le coke de pétrole (271311/12, vrac sec) des résidus bitumineux
+# (2713, liquide).
+BULK_CONTAINER_THRESHOLD_TONNES = 2000.0
+
+# Champs par entrée : label, category, vessels (classes admissibles, ordre
+# croissant de taille) ; optionnels : threshold_t (seuil bi-mode), note.
+_BULK_COMMODITY_TABLE: Dict[str, Dict] = {
+    # --- Vrac sec majeur (A.1) ---
+    "1001": {
+        "label": "Blé",
+        "category": "bulk_major",
+        "vessels": ["handysize", "supramax", "panamax"],
+    },
+    "1003": {
+        "label": "Orge",
+        "category": "bulk_major",
+        "vessels": ["handysize", "supramax", "panamax"],
+    },
+    "1005": {
+        "label": "Maïs",
+        "category": "bulk_major",
+        "vessels": ["handysize", "supramax", "panamax"],
+    },
+    "1007": {"label": "Sorgho", "category": "bulk_major", "vessels": ["handysize", "supramax"]},
+    "1201": {"label": "Soja (fèves)", "category": "bulk_major", "vessels": ["supramax", "panamax"]},
+    "2510": {
+        "label": "Phosphates naturels",
+        "category": "bulk_major",
+        "vessels": ["handysize", "supramax", "panamax"],
+    },
+    "2601": {
+        "label": "Minerai de fer",
+        "category": "bulk_major",
+        "vessels": ["panamax", "capesize"],
+    },
+    "2606": {"label": "Bauxite", "category": "bulk_major", "vessels": ["panamax", "capesize"]},
+    "2818": {"label": "Alumine", "category": "bulk_major", "vessels": ["supramax", "panamax"]},
+    "2701": {
+        "label": "Houille (charbon)",
+        "category": "bulk_major",
+        "vessels": ["supramax", "panamax", "capesize"],
+    },
+    "2702": {"label": "Lignite", "category": "bulk_major", "vessels": ["supramax", "panamax"]},
+    "2704": {
+        "label": "Coke de houille",
+        "category": "bulk_major",
+        "vessels": ["supramax", "panamax"],
+    },
+    # --- Vrac sec mineur (A.2) ---
+    "1002": {"label": "Seigle", "category": "bulk_minor", "vessels": ["handysize"]},
+    "1004": {"label": "Avoine", "category": "bulk_minor", "vessels": ["handysize"]},
+    "1006": {
+        "label": "Riz",
+        "category": "bulk_minor",
+        "vessels": ["handysize", "supramax"],
+        "threshold_t": 5000.0,
+        "note": "massivement ensaché en conteneur sous le seuil",
+    },
+    "1008": {"label": "Autres céréales", "category": "bulk_minor", "vessels": ["handysize"]},
+    "11": {
+        "label": "Produits de la minoterie (farines, semoules, malt)",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+        "threshold_t": 5000.0,
+    },
+    "1202": {
+        "label": "Arachides",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+        "threshold_t": 5000.0,
+        "note": "conteneur dominant sous le seuil",
+    },
+    "1205": {"label": "Colza", "category": "bulk_minor", "vessels": ["handysize", "supramax"]},
+    "1206": {
+        "label": "Tournesol (graines)",
+        "category": "bulk_minor",
+        "vessels": ["handysize", "supramax"],
+    },
+    "1207": {
+        "label": "Autres graines oléagineuses",
+        "category": "bulk_minor",
+        "vessels": ["handysize", "supramax"],
+    },
+    "1701": {
+        "label": "Sucre",
+        "category": "bulk_minor",
+        "vessels": ["handysize", "supramax"],
+        "note": "brut en vrac ; sucre blanc souvent ensaché",
+    },
+    "1801": {
+        "label": "Cacao (fèves)",
+        "category": "bulk_minor",
+        "vessels": ["supramax"],
+        "threshold_t": 12000.0,
+        "note": "méga-lot vrac réel (Abidjan/Tema→Europe) ; sacs/conteneurs en dessous",
+    },
+    "2302": {"label": "Sons et remoulages", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2304": {
+        "label": "Tourteaux de soja",
+        "category": "bulk_minor",
+        "vessels": ["handysize", "supramax"],
+    },
+    "2305": {"label": "Tourteaux d'arachide", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2306": {
+        "label": "Autres tourteaux",
+        "category": "bulk_minor",
+        "vessels": ["handysize", "supramax"],
+    },
+    "2308": {
+        "label": "Matières végétales fourragères",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+    },
+    "2309": {
+        "label": "Préparations pour animaux",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+    },
+    "0714": {
+        "label": "Manioc séché (cossettes)",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+    },
+    "2501": {"label": "Sel", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2503": {"label": "Soufre", "category": "bulk_minor", "vessels": ["handysize", "supramax"]},
+    "2507": {"label": "Kaolin", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2508": {"label": "Argiles", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2515": {
+        "label": "Marbre (blocs)",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+        "note": "conventionnel",
+    },
+    "2516": {
+        "label": "Granit (blocs)",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+        "note": "conventionnel",
+    },
+    "2517": {"label": "Granulats", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2520": {"label": "Gypse", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2521": {
+        "label": "Castines (pierres à chaux)",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+    },
+    "2523": {
+        "label": "Ciment et clinker",
+        "category": "bulk_minor",
+        "vessels": ["handysize", "supramax"],
+    },
+    "25": {"label": "Produits minéraux bruts", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2602": {
+        "label": "Minerai de manganèse",
+        "category": "bulk_minor",
+        "vessels": ["supramax", "panamax"],
+    },
+    "2603": {
+        "label": "Concentrés de cuivre",
+        "category": "bulk_minor",
+        "vessels": ["handysize", "supramax"],
+    },
+    "2604": {"label": "Minerai de nickel", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2605": {"label": "Minerai de cobalt", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2607": {"label": "Concentrés de plomb", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2608": {"label": "Concentrés de zinc", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2610": {"label": "Minerai de chrome", "category": "bulk_minor", "vessels": ["supramax"]},
+    "2614": {
+        "label": "Minerais de titane (sables minéralisés)",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+    },
+    "2615": {
+        "label": "Minerais de zirconium et niobium",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+    },
+    "2618": {"label": "Laitiers granulés", "category": "bulk_minor", "vessels": ["handysize"]},
+    "2619": {"label": "Scories et cendres", "category": "bulk_minor", "vessels": ["handysize"]},
+    "26": {
+        "label": "Minerais et concentrés (autres)",
+        "category": "bulk_minor",
+        "vessels": ["handysize", "supramax"],
+    },
+    "271311": {
+        "label": "Coke de pétrole non calciné",
+        "category": "bulk_minor",
+        "vessels": ["supramax"],
+    },
+    "271312": {
+        "label": "Coke de pétrole calciné",
+        "category": "bulk_minor",
+        "vessels": ["supramax"],
+    },
+    "31": {"label": "Engrais", "category": "bulk_minor", "vessels": ["handysize", "supramax"]},
+    "7204": {"label": "Ferraille", "category": "bulk_minor", "vessels": ["handysize", "supramax"]},
+    "27": {
+        "label": "Combustibles minéraux (autres)",
+        "category": "bulk_minor",
+        "vessels": ["handysize"],
+    },
+    # --- Conventionnel / neo-bulk (A.3) ---
+    "4401": {
+        "label": "Copeaux et plaquettes de bois",
+        "category": "neobulk",
+        "vessels": ["handysize", "supramax"],
+    },
+    "4403": {"label": "Grumes (bois bruts)", "category": "neobulk", "vessels": ["handysize"]},
+    "4406": {"label": "Traverses en bois", "category": "neobulk", "vessels": ["handysize"]},
+    "4407": {"label": "Bois sciés", "category": "neobulk", "vessels": ["handysize"]},
+    "47": {"label": "Pâtes de bois", "category": "neobulk", "vessels": ["handysize"]},
+    "7201": {"label": "Fontes brutes", "category": "neobulk", "vessels": ["handysize"]},
+    "7203": {
+        "label": "Produits ferreux primaires",
+        "category": "neobulk",
+        "vessels": ["handysize"],
+    },
+    # --- Vrac liquide (A.4) — marché tanker, hors périmètre vraquier sec ---
+    "2709": {"label": "Pétrole brut", "category": "liquid_bulk", "vessels": ["tanker"]},
+    "2710": {
+        "label": "Produits pétroliers raffinés",
+        "category": "liquid_bulk",
+        "vessels": ["tanker"],
+    },
+    "2711": {"label": "GPL / GNL", "category": "liquid_bulk", "vessels": ["tanker"]},
+    "2712": {"label": "Paraffines et cires", "category": "liquid_bulk", "vessels": ["tanker"]},
+    "2713": {"label": "Résidus bitumineux", "category": "liquid_bulk", "vessels": ["tanker"]},
+    "2714": {"label": "Bitumes naturels", "category": "liquid_bulk", "vessels": ["tanker"]},
+    "2715": {"label": "Mélanges bitumineux", "category": "liquid_bulk", "vessels": ["tanker"]},
+    "1703": {"label": "Mélasses", "category": "liquid_bulk", "vessels": ["tanker"]},
+    "2207": {"label": "Éthanol en vrac", "category": "liquid_bulk", "vessels": ["tanker"]},
+    "2807": {"label": "Acide sulfurique", "category": "liquid_bulk", "vessels": ["tanker"]},
+    "2814": {"label": "Ammoniac", "category": "liquid_bulk", "vessels": ["tanker"]},
 }
-_BULK_AGRI_HS_PREFIXES: Dict[str, str] = {
-    "10": "Céréales en vrac (blé, maïs, riz, orge...)",
-    "1201": "Soja (fèves, vrac)",
-    "1701": "Sucre (canne/betterave, brut)",
-    "31": "Engrais",
-}
+# Aciers semi-finis, longs et plats (7207-7216) : neo-bulk.
+for _hs in ("7207", "7208", "7209", "7210", "7211", "7212", "7213", "7214", "7215", "7216"):
+    _BULK_COMMODITY_TABLE[_hs] = {
+        "label": "Aciers semi-finis, longs et plats (neo-bulk)",
+        "category": "neobulk",
+        "vessels": ["handysize"],
+    }
+# Huiles végétales en vrac (1507-1518) : tanker ; flexitank/conteneur sous seuil.
+for _hs in (
+    "1507",
+    "1508",
+    "1509",
+    "1510",
+    "1511",
+    "1512",
+    "1513",
+    "1514",
+    "1515",
+    "1516",
+    "1517",
+    "1518",
+):
+    _BULK_COMMODITY_TABLE[_hs] = {
+        "label": "Huiles végétales en vrac",
+        "category": "liquid_bulk",
+        "vessels": ["tanker"],
+        "note": "flexitank/conteneur sous le seuil de lot",
+    }
+del _hs
 
 
 def classify_bulk_commodity(hs_code: str) -> Optional[Dict]:
     """
-    Retourne le libellé et la catégorie de vrac si le code SH correspond à une
-    matière première en vrac (jamais aérienne, jamais conteneurisée) — sinon
-    ``None`` (marchandise générale, conteneurisable et éligible à l'aérien
-    sous plafond de poids).
+    Classification vrac d'un code SH selon la table de référence (Annexe A du
+    plan fret vraquier) — ``None`` pour une marchandise générale
+    (conteneurisable, aérien sous plafond de poids).
+
+    Retour : ``category`` (bulk_major | bulk_minor | neobulk | liquid_bulk),
+    ``label``, ``hs_match``, ``vessel_classes`` (classes de navires
+    admissibles), ``container_threshold_tonnes`` (en dessous : conteneur
+    ensaché/conditionné), ``bi_mode`` (seuil propre au produit),
+    ``is_liquid`` (marché tanker) et ``note`` éventuelle.
     """
     normalized = (hs_code or "").strip().replace(".", "").replace(" ", "")
-    for prefixes, category in (
-        (_BULK_MINERAL_HS_PREFIXES, "bulk_mineral"),
-        (_BULK_AGRI_HS_PREFIXES, "bulk_agri"),
-    ):
-        for prefix_len in (4, 2):
-            prefix = normalized[:prefix_len]
-            if len(prefix) < prefix_len:
-                continue
-            label = prefixes.get(prefix)
-            if label:
-                return {"category": category, "label": label, "hs_match": prefix}
+    for prefix_len in (6, 4, 2):
+        prefix = normalized[:prefix_len]
+        if len(prefix) < prefix_len:
+            continue
+        entry = _BULK_COMMODITY_TABLE.get(prefix)
+        if entry is None:
+            continue
+        threshold = entry.get("threshold_t", BULK_CONTAINER_THRESHOLD_TONNES)
+        return {
+            "category": entry["category"],
+            "label": entry["label"],
+            "hs_match": prefix,
+            "vessel_classes": list(entry["vessels"]),
+            "container_threshold_tonnes": threshold,
+            "bi_mode": "threshold_t" in entry,
+            "is_liquid": entry["category"] == "liquid_bulk",
+            "note": entry.get("note"),
+        }
     return None
 
 
