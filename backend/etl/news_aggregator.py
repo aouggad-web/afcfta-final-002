@@ -17,6 +17,37 @@ import aiohttp
 import feedparser
 from country_data import REAL_COUNTRY_DATA
 
+# Décodeur Google News (base64 → URL source réelle). Sans lui, les entrées de
+# `news.google.com/rss/articles/...` renvoient "refused to connect" quand un
+# utilisateur clique dessus (Google News exige un redirect JS que certains
+# navigateurs/réseaux bloquent).
+try:
+    from googlenewsdecoder import gnewsdecoder as _gnews_decode  # type: ignore
+
+    GNEWS_DECODER_AVAILABLE = True
+except ImportError:  # optional dependency
+    _gnews_decode = None  # type: ignore
+    GNEWS_DECODER_AVAILABLE = False
+
+
+def _resolve_google_news_url(url: str) -> str:
+    """Décode une URL redirect Google News (`news.google.com/rss/articles/...`)
+    vers l'URL réelle de l'article source. Si la résolution échoue ou si
+    l'URL n'est pas une redirection Google News, retourne l'URL inchangée.
+    """
+    if not url or "news.google.com/rss/articles/" not in url:
+        return url
+    if not GNEWS_DECODER_AVAILABLE or _gnews_decode is None:
+        return url
+    try:
+        result = _gnews_decode(url, interval=0)
+        if isinstance(result, dict) and result.get("status") and result.get("decoded_url"):
+            return result["decoded_url"]
+    except Exception:
+        pass
+    return url
+
+
 # Configuration des flux RSS
 # Chaque source pan-africaine couvre tout le continent ; les sources "pays" utilisent
 # des requêtes Google News ciblées avec des opérateurs site: sur des médias économiques
@@ -1079,6 +1110,9 @@ async def fetch_feed(
                     title = entry.get("title", "")
                     summary = entry.get("summary", entry.get("description", ""))
                     link = entry.get("link", "")
+                    # Résoudre les liens Google News → URL source réelle
+                    # (évite le "refused to connect" côté client).
+                    link = _resolve_google_news_url(link)
                     pub_date = entry.get("published", entry.get("updated", ""))
 
                     # Nettoyer le résumé (enlever HTML et décoder entités)
