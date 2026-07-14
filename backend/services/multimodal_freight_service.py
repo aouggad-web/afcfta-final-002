@@ -638,15 +638,19 @@ def _bulk_sea_options(
     weight_kg: float,
     bulk_commodity: Optional[Dict[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
-    """Bulk carrier (vraquier) options for genuine bulk commodities.
+    """Bulk carrier (vraquier) options for genuine bulk commodities via homogeneous_cargo_service.
 
-    Handles the bascule logic: below container_threshold_tonnes, surfaces
-    containerized option with a note; at/above threshold, surfaces vraquier.
-    For liquid_bulk products (tanker market), returns UNAVAILABLE list with
-    an explanatory note.
+    Delegates classification, mode selection, and costing to homogeneous_cargo_service
+    for uniform, testable handling across all cargaison homogène workflows.
+
+    Handles the bascule logic: below container_threshold_tonnes, returns empty
+    (use containerized); at/above threshold, surfaces vraquier via service.
+    For liquid_bulk products (tanker market), returns UNAVAILABLE list.
     """
     if not bulk_commodity:
         return []
+
+    # Liquid bulk → tanker market (out of scope)
     if bulk_commodity.get("is_liquid"):
         return [
             {
@@ -665,34 +669,36 @@ def _bulk_sea_options(
             }
         ]
 
+    # Get gateway ports
     origin_port = COUNTRY_DEFAULT_PORT.get(origin_country.upper())
     dest_port = COUNTRY_DEFAULT_PORT.get(destination_country.upper())
     if not origin_port or not dest_port or origin_port == dest_port:
         return []
 
-    weight_tonnes = weight_kg / 1000.0
-    threshold_tonnes = bulk_commodity.get("container_threshold_tonnes", 2000.0)
-
-    # Below threshold: surface containerized option with bulk note
-    if weight_tonnes < threshold_tonnes:
-        return []  # Use containerized (returned by _sea_options with bulk_cargo_note)
-
-    # Above threshold: call get_bulk_freight_cost for vraquier
+    # Use homogeneous_cargo_service for mode selection and costing
     try:
-        from logistics_bulk_fees_data import get_bulk_freight_cost
+        from services.homogeneous_cargo_service import (
+            select_shipping_mode,
+            get_bulk_freight_option,
+        )
 
-        bulk_result = get_bulk_freight_cost(
+        # Check mode: below threshold → containerized (no sea_bulk option)
+        mode = select_shipping_mode(weight_kg, bulk_commodity)
+        if mode != "sea_bulk":
+            return []  # Use containerized (returned by _sea_options with bulk_cargo_note)
+
+        # Above threshold: get bulk freight costing
+        bulk_result = get_bulk_freight_option(
             origin_port,
             dest_port,
-            weight_tonnes,
-            allowed_classes=bulk_commodity.get("vessel_classes"),
-            required_terminal=None,  # Let the model decide
+            weight_kg,
+            bulk_commodity,
         )
         if not bulk_result:
             return []
 
-        # Build the bulk option
-        weight_tonnes_shipped = weight_kg / 1000.0
+        # Format for multimodal comparator
+        weight_tonnes = weight_kg / 1000.0
         vessel_class = bulk_result.get("vessel_class", "supramax")
         distance_nm = bulk_result.get("distance_nm", 0)
         distance_km = distance_nm * NM_TO_KM
@@ -700,8 +706,9 @@ def _bulk_sea_options(
             f"sea_bulk_{vessel_class}",
             CO2_FACTORS_G_PER_TKM.get("sea", 10),
         )
-        co2 = round(weight_tonnes_shipped * distance_km * co2_factor / 1000.0, 1)
+        co2 = round(weight_tonnes * distance_km * co2_factor / 1000.0, 1)
 
+        # Build notes from constraints
         constraints_notes = bulk_result.get("constraints_notes", [])
         voyages_needed = bulk_result.get("voyages_needed", 1)
         notes = ""
@@ -741,7 +748,7 @@ def _bulk_sea_options(
                         "transit_days_max": bulk_result.get("transit_days_max"),
                         "cost_usd": bulk_result.get("total_cost_usd"),
                         "cost_breakdown": {
-                            "ocean_usd_per_t": bulk_result.get("ocean_usd_per_t"),
+                            "ocean_usd_per_t": bulk_result.get("ocean_freight_usd_per_t"),
                             "port_load_usd_per_t": bulk_result.get("port_load_usd_per_t"),
                             "port_discharge_usd_per_t": bulk_result.get("port_discharge_usd_per_t"),
                             "total_usd_per_t": bulk_result.get("total_usd_per_t"),
@@ -761,7 +768,8 @@ def _bulk_sea_options(
                 "source": "Fret vraquier — PLAN_FRET_VRAQUIER Lot A calibration",
             }
         ]
-    except ImportError:
+    except ImportError as e:
+        logger.warning("homogeneous_cargo_service not available: %s", e)
         return []
     except Exception as exc:
         logger.warning("bulk freight option failed: %s", exc)
