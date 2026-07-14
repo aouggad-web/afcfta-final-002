@@ -50,14 +50,6 @@ const COMPONENT_LABELS = {
 };
 const compLabel = (key, fr) => COMPONENT_LABELS[key]?.[fr ? "fr" : "en"] || key;
 
-const getModeLabelBrief = (mode, fr) => {
-  const labels = {
-    fr: { sea: "Maritime", sea_bulk: "Vraquier", air: "Aérien", land: "Terrestre", multimodal: "Multimodal" },
-    en: { sea: "Sea", sea_bulk: "Bulk carrier", air: "Air", land: "Land", multimodal: "Multimodal" },
-  };
-  return labels[fr ? "fr" : "en"][mode] || mode;
-};
-
 function Metric({ title, value, sub }) {
   return (
     <div style={card}>
@@ -461,7 +453,19 @@ function BilateralView({ countries, fr, prefill }) {
                   ? `FOB ${money(landed.breakdown?.goods_value_fob_usd)} + ${fr ? "fret" : "freight"} ${money(
                       landed.breakdown?.best_operational_freight_usd
                     )}` +
-                    (landed.breakdown?.containers_needed
+                    (landed.breakdown?.freight_mode === "sea_bulk"
+                      ? ` · ${fr ? "affrètement vraquier" : "bulk charter"}${
+                          landed.breakdown.vessel_class
+                            ? ` (${landed.breakdown.vessel_class})`
+                            : ""
+                        }${
+                          landed.breakdown.estimated_weight_kg
+                            ? ` · ~${Math.round(
+                                landed.breakdown.estimated_weight_kg / 1000
+                              ).toLocaleString()} t`
+                            : ""
+                        }`
+                      : landed.breakdown?.containers_needed
                       ? ` · ${landed.breakdown.containers_needed} × ${
                           landed.breakdown.container_type === "feu" ? "40′" : "20′"
                         }${
@@ -619,30 +623,84 @@ function BilateralView({ countries, fr, prefill }) {
             </div>
 
             {seaBulkOptions.length > 0 && (
-              <div style={card}>
+              <div style={card} data-testid="report-sea-bulk">
                 <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
-                  {fr ? "Vraquier — transports maritimes en vrac" : "Bulk carrier — break-bulk shipping"}
+                  {fr ? "Vraquier — affrètement en vrac" : "Bulk carrier — charter shipping"}
                 </div>
-                <div style={{ fontSize: 13, display: "flex", flexDirection: "column", gap: 8 }}>
-                  {seaBulkOptions.map((opt, idx) => (
-                    <div key={idx} style={{ borderTop: idx > 0 ? "1px solid rgba(0,0,0,0.08)" : "none", paddingTop: idx > 0 ? 8 : 0 }}>
-                      <div style={{ fontWeight: 700, marginBottom: 4 }}>
-                        {opt.vessel_class ? opt.vessel_class.charAt(0).toUpperCase() + opt.vessel_class.slice(1) : "—"}
-                      </div>
-                      <div>{fr ? "Coût" : "Cost"}: {money(opt.total_cost_usd)}</div>
-                      <div>
-                        {fr ? "Délai" : "Transit"}: {dash(opt.transit_days_min)}–{dash(opt.transit_days_max)} {fr ? "jours" : "days"}
-                      </div>
-                      {opt.co2_kg && (
-                        <div>{fr ? "CO₂" : "CO₂"}: {num(opt.co2_kg)} kg</div>
-                      )}
-                      {opt.notes && (
-                        <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
-                          {opt.notes}
+                <div style={{ fontSize: 13, display: "flex", flexDirection: "column", gap: 10 }}>
+                  {seaBulkOptions.map((opt, idx) => {
+                    const cb = opt.segments?.[0]?.cost_breakdown || {};
+                    return (
+                      <div
+                        key={idx}
+                        style={{
+                          borderTop: idx > 0 ? "1px solid rgba(0,0,0,0.08)" : "none",
+                          paddingTop: idx > 0 ? 10 : 0,
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              fontSize: 11,
+                              fontWeight: 700,
+                              padding: "2px 8px",
+                              borderRadius: 999,
+                              background: "rgba(26,115,232,0.12)",
+                              color: "#1a73e8",
+                              textTransform: "capitalize",
+                            }}
+                          >
+                            🚢 {opt.vessel_class || "vraquier"}
+                          </span>
+                          {opt.is_modeled && (
+                            <span
+                              style={{
+                                fontSize: 10,
+                                fontWeight: 700,
+                                padding: "2px 6px",
+                                borderRadius: 999,
+                                background: "rgba(154,103,0,0.12)",
+                                color: "#9a6700",
+                              }}
+                            >
+                              {fr ? "Modélisé" : "Modeled"}
+                            </span>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  ))}
+                        <div style={{ fontWeight: 700 }}>{money(opt.total_cost_usd)}</div>
+                        {cb.total_usd_per_t != null && (
+                          <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 2 }}>
+                            {num(cb.total_usd_per_t)} USD/t
+                            {cb.ocean_usd_per_t != null && (
+                              <>
+                                {" "}({fr ? "océan" : "ocean"} {num(cb.ocean_usd_per_t)} +{" "}
+                                {fr ? "chargt" : "load"} {num(cb.port_load_usd_per_t)} +{" "}
+                                {fr ? "déchargt" : "disch."} {num(cb.port_discharge_usd_per_t)})
+                              </>
+                            )}
+                          </div>
+                        )}
+                        <div style={{ marginTop: 2 }}>
+                          {fr ? "Délai" : "Transit"}: {dash(opt.transit_days_min)}–{dash(opt.transit_days_max)}{" "}
+                          {fr ? "jours" : "days"}
+                        </div>
+                        {opt.co2_kg && (
+                          <div>{fr ? "CO₂" : "CO₂"}: {num(Math.round(opt.co2_kg))} kg</div>
+                        )}
+                        {opt.notes && (
+                          <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                            {opt.notes}
+                          </div>
+                        )}
+                        {opt.source && (
+                          <div style={{ fontSize: 10, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                            {opt.source}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

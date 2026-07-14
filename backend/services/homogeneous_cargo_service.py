@@ -16,13 +16,15 @@ Determines:
   4. Multiple-voyage scenarios for lots exceeding single-vessel capacity
 """
 
-from typing import Optional, Dict, List, Any
 import logging
+from typing import Any, Dict, List, Optional
 
 _log = logging.getLogger(__name__)
 
 
-def classify_homogeneous_cargo(bulk_commodity_dict: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+def classify_homogeneous_cargo(
+    bulk_commodity_dict: Optional[Dict[str, Any]],
+) -> Optional[Dict[str, Any]]:
     """
     Classify a commodity as homogeneous cargo and return its shipping profile.
     Returns None if not homogeneous cargo (e.g., containerizable goods).
