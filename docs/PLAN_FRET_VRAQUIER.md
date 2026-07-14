@@ -42,10 +42,12 @@ Le vrac ne se résume pas à « gros navire » :
 
 | Classe | Port en lourd (dwt) | Marchandises types | Contrainte portuaire |
 |---|---:|---|---|
-| Handysize | 10 000 – 39 999 t | ciment, engrais, sucre, riz ensaché, petits lots céréaliers | accepté presque partout |
-| Supramax/Ultramax | 40 000 – 64 999 t | céréales, charbon, engrais | tirant d'eau ≥ ~12 m |
-| Panamax | 65 000 – 99 999 t | céréales, charbon, minerai | tirant d'eau ≥ ~13,5 m |
-| Capesize | ≥ 100 000 t | minerai de fer, charbon | rares terminaux africains dédiés (ex. Saldanha) |
+| Handysize | 10 000 – 39 999 t | ciment/clinker, engrais, sucre, sel, soufre, gypse, tourteaux, ferraille, bois, aciers semi-finis, petits lots céréaliers | accepté presque partout |
+| Supramax/Ultramax | 40 000 – 64 999 t | céréales, charbon, engrais, concentrés de minerais, phosphates, cacao méga-lot | tirant d'eau ≥ ~12 m |
+| Panamax | 65 000 – 99 999 t | céréales, charbon, minerai, bauxite | tirant d'eau ≥ ~13,5 m |
+| Capesize | ≥ 100 000 t | minerai de fer, charbon, bauxite | rares terminaux africains dédiés (ex. Saldanha, Nouadhibou minéralier) |
+
+La liste complète des produits couverts, par code SH et par catégorie logistique, figure en **Annexe A** — elle constitue la table de référence unique (`SH → catégorie vrac → classes de navires admissibles`) que le Lot A implémentera dans `classify_bulk_commodity()`.
 
 ### 3.2 Bascule par taille de lot (par expédition)
 
@@ -55,7 +57,7 @@ Le vrac ne se résume pas à « gros navire » :
 | 2 000 – 10 000 t | Vraquier handysize (lot partiel ou complet) | USD/t vraquier |
 | > 10 000 t | Classe de navire choisie selon tonnage + contraintes du port | USD/t vraquier |
 
-Les deux seuils sont des **paramètres nommés à valider** (`BULK_CHARTER_MIN_TONNES`, `BULK_FULL_VESSEL_TONNES`) — valeurs ci-dessus proposées à dire d'expert, ajustables sans toucher au code appelant.
+Les deux seuils sont des **paramètres nommés à valider** (`BULK_CHARTER_MIN_TONNES`, `BULK_FULL_VESSEL_TONNES`) — valeurs ci-dessus proposées à dire d'expert, ajustables sans toucher au code appelant. Les produits **bi-modes** (riz, cacao, arachides, farines…) portent un seuil propre, défini ligne par ligne en Annexe A (A.5), qui prime sur le seuil global.
 
 ### 3.3 Formule de coût (USD/tonne)
 
@@ -76,9 +78,9 @@ Ajouter deux attributs au registre `PORTS` (ou une table parallèle pour ne pas 
 - `max_draft_m` (tirant d'eau admissible) → plafonne la classe de navire ;
 - `bulk_terminals` (liste : `grain`, `mineral`, `cement`, `general`) → si le terminal requis manque, l'option est dégradée (classe inférieure) ou marquée indisponible avec note, jamais inventée.
 
-### 3.5 Vrac liquide (pétrole brut)
+### 3.5 Vrac liquide
 
-**Hors périmètre v1.** Le SH 2709 (et chapitre 27 liquide) reçoit une option maritime `UNAVAILABLE` avec note explicite : « marché tanker (affrètement pétrolier) non couvert par ce comparateur ». Pas de proxy conteneur, pas de proxy vrac sec — les deux seraient faux.
+**Hors périmètre v1.** Tous les produits transportés par navire-citerne — pétrole brut (2709), produits raffinés (2710), GPL/GNL (2711), huiles végétales en vrac (1507–1518, dont palme 1511), mélasses (1703), ammoniac (2814), bitumes (2713–2715), éthanol en vrac (2207) — reçoivent une option maritime `UNAVAILABLE` avec note explicite : « marché tanker (affrètement citerne) non couvert par ce comparateur ». Pas de proxy conteneur, pas de proxy vrac sec — les deux seraient faux. Exception : les huiles végétales conditionnées (bidons, flexitanks) sous le seuil de lot restent en conteneur, comme tout vrac ensaché.
 
 ---
 
@@ -100,10 +102,10 @@ Ajouter deux attributs au registre `PORTS` (ou une table parallèle pour ne pas 
 ### Lot A — Données socle (sans impact utilisateur)
 - `backend/logistics_bulk_fees_data.py` : classes de navires, routes benchmark sourcées, modèle distance-coût vrac, frais portuaires vrac, `get_bulk_freight_cost(origin_locode, destination_locode, tonnes, vessel_class=None)`.
 - Table de contraintes portuaires (tirant d'eau, terminaux).
-- Enrichir `classify_bulk_commodity()` : classe(s) de navire admissible(s) par produit, drapeau `liquid` pour le chapitre 27 liquide.
-- Tests unitaires du module seul.
+- Réécrire `classify_bulk_commodity()` à partir de la **table de référence complète de l'Annexe A** (vrac sec majeur / vrac sec mineur / vrac liquide / conventionnel-neo-bulk / bi-mode), avec classes de navire admissibles, seuil de bascule propre au produit et drapeau `liquid`. Effet immédiat : la couverture de l'exclusion aérienne et du type de cargaison terrestre `bulk` s'étend d'office à tous ces produits, avant même le branchement maritime du Lot B.
+- Tests unitaires du module seul + tests de la classification étendue (un cas par catégorie de l'Annexe A).
 
-**Critères d'acceptation** : 100 % des routes benchmark avec source et période ; toute route modélisée marquée `is_modeled` ; distance vrac = distance conteneur pour une même paire de ports (même `_sea_distance_nm`).
+**Critères d'acceptation** : 100 % des routes benchmark avec source et période ; toute route modélisée marquée `is_modeled` ; distance vrac = distance conteneur pour une même paire de ports (même `_sea_distance_nm`) ; 100 % des lignes de l'Annexe A couvertes par un test de classification.
 
 ### Lot B — Intégration au comparateur multimodal
 - `_bulk_sea_options()` dans `multimodal_freight_service.py`, branché selon les seuils de lot (3.2) ; en-dessous du seuil, l'option conteneur actuelle est conservée avec la note « ensaché » ; le `bulk_cargo_note` proxy actuel disparaît au profit du vrai tarif.
@@ -129,11 +131,12 @@ Ajouter deux attributs au registre `PORTS` (ou une table parallèle pour ne pas 
 
 ## 6. Décisions à valider avant le Lot A
 
-1. **Seuils de bascule** : 2 000 t (conteneur→vraquier) et 10 000 t (choix de classe) — à confirmer ou ajuster à dire d'expert douanier/logistique.
+1. **Seuils de bascule** : 2 000 t (conteneur→vraquier) et 10 000 t (choix de classe) par défaut, avec seuil propre par produit pour les bi-modes (Annexe A, ex. cacao méga-lot ≥ 12 000 t) — à confirmer ou ajuster à dire d'expert douanier/logistique.
 2. **Vrac liquide exclu en v1** (option maritime indisponible avec note) — confirmer.
 3. **Granularité v1 des classes** : 4 classes (handysize/supramax/panamax/capesize) suffisent-elles, ou faut-il distinguer handymax ?
 4. **Périmètre ports v1** : les 55 ports existants avec attributs vrac renseignés progressivement (attribut absent = pas de contrainte, marqué « non vérifié »), plutôt qu'un sous-ensemble bloquant.
-5. **Produits pilotes de recette** : proposé — blé vers Alger, ciment/clinker intra-Maghreb, minerai de fer Mauritanie→export, engrais Maroc→Afrique de l'Ouest, sucre brut vers Afrique de l'Est.
+5. **Produits pilotes de recette** : la **classification** couvre d'emblée tous les produits de l'Annexe A ; la **recette chiffrée** (validation des coûts) porte sur des pilotes représentatifs de chaque catégorie — proposé : blé vers Alger (vrac agricole majeur), ciment/clinker intra-Maghreb (vrac mineur), minerai de fer Mauritanie→export (capesize/minéralier), engrais Maroc→Afrique de l'Ouest (vrac mineur), sucre brut vers Afrique de l'Est (vrac mineur), bauxite Guinée→export (vrac majeur), tourteaux de soja import (vrac agro-industriel), cacao Abidjan→Europe en méga-lot (bi-mode, seuil élevé), bois débité Cameroun/Gabon→export (conventionnel), ferraille import Turquie→Afrique de l'Ouest (neo-bulk).
+6. **Produits bi-modes** (riz, sucre, cacao, arachides en coque décortiquées, farines) : valider produit par produit le mode par défaut sous le seuil (conteneur ensaché) et le seuil de bascule propre (Annexe A).
 
 ---
 
@@ -159,3 +162,95 @@ Ajouter deux attributs au registre `PORTS` (ou une table parallèle pour ne pas 
 | D — Fraîcheur | 1 session | Lot A (parallélisable avec B/C) |
 
 Le Lot A ne modifie aucun comportement visible : il peut être fusionné indépendamment et sans risque dès validation du plan.
+
+---
+
+## Annexe A — Table de référence complète des produits éligibles au vrac
+
+Cette table est la **source de vérité unique** que le Lot A implémente dans `classify_bulk_commodity()`. Elle remplace la liste partielle actuelle (chapitres 25/26/27, 10, 1201, 1701, 31) et couvre l'ensemble des produits susceptibles d'utiliser le mode vraquier, pertinents pour le commerce africain. Recherche par spécificité décroissante (SH6 → SH4 → chapitre), comme aujourd'hui.
+
+Colonnes : classes de navire admissibles ; **seuil** = tonnage de lot en-dessous duquel le mode réel reste le conteneur ensaché/conditionné (défaut 2 000 t sauf mention).
+
+### A.1 Vrac sec majeur (grands volumes, panamax/capesize possibles)
+
+| SH | Produit | Classes navire | Pertinence Afrique |
+|---|---|---|---|
+| 2601 | Minerai de fer | panamax, capesize | Mauritanie, Afrique du Sud, Libéria, Sierra Leone |
+| 2606 (+2818) | Bauxite (et alumine) | panamax, capesize | Guinée (1er exportateur mondial), Ghana, Sierra Leone |
+| 2701–2704 | Charbon, lignite, coke | supramax → capesize | Afrique du Sud, Mozambique (export) ; imports cimenteries |
+| 1001 | Blé | handysize → panamax | 1er poste d'import céréalier du Maghreb et de l'Égypte |
+| 1003 | Orge | handysize → panamax | imports Maghreb (aliment du bétail) |
+| 1005 | Maïs | handysize → panamax | imports Afrique du Nord/Ouest ; exports Afrique australe |
+| 1007 | Sorgho | handysize, supramax | Sahel, Soudan |
+| 1201 | Soja (fèves) | supramax → panamax | imports trituration Maghreb/Égypte |
+| 2510 | Phosphates naturels | handysize → panamax | Maroc, Tunisie, Sénégal, Togo (exports majeurs) |
+
+### A.2 Vrac sec mineur (handysize/supramax)
+
+| SH | Produit | Classes navire | Pertinence Afrique |
+|---|---|---|---|
+| 2523 | Ciment et clinker | handysize, supramax | flux intra-africains massifs ; imports clinker |
+| 1701 | Sucre brut | handysize, supramax | imports raffineries (Algérie, Nigéria) ; exports Eswatini, Maurice |
+| 1006 | Riz | handysize (**seuil 5 000 t** — massivement ensaché en conteneur en-dessous) | 1er poste alimentaire d'import Afrique de l'Ouest |
+| 1002/1004/1008 | Seigle, avoine, autres céréales | handysize | marginal |
+| 1101–1104 | Farines et semoules (**bi-mode**) | handysize (**seuil 5 000 t**) | imports Sahel |
+| 1107 | Malt | handysize | imports brasseries |
+| 1205/1206/1207 | Colza, tournesol, autres oléagineux | handysize, supramax | imports trituration |
+| 1202 | Arachides (**bi-mode**) | handysize (**seuil 5 000 t** — conteneur dominant) | Sénégal, Soudan (exports) |
+| 2302 | Sons et remoulages | handysize | aliment du bétail |
+| 2304–2306 | Tourteaux (soja, arachide, autres) | handysize, supramax | imports aliment du bétail ; exports huileries |
+| 2308/2309 | Préparations pour animaux (vrac) | handysize | imports élevage |
+| 0714 | Manioc séché (cossettes) | handysize | Afrique de l'Ouest/Centrale |
+| 1801 | Cacao en fèves (**bi-mode**) | supramax méga-lot (**seuil 12 000 t** — sacs/conteneurs en-dessous) | Côte d'Ivoire, Ghana, Cameroun : le méga-vrac ABJ/Tema→Europe existe réellement |
+| 2501 | Sel | handysize | Namibie, Égypte (exports) |
+| 2503 | Soufre | handysize, supramax | intrant acide phosphorique (Maroc, imports massifs) |
+| 2507/2508 | Kaolin, argiles | handysize | céramique |
+| 2515/2516 | Marbre, granit (blocs) | handysize (conventionnel) | Égypte, Zimbabwe, Namibie |
+| 2517/2521 | Granulats, castines | handysize | BTP côtier |
+| 2520 | Gypse | handysize | cimenteries |
+| 2602 | Minerai de manganèse | supramax, panamax | Gabon (2e mondial), Afrique du Sud, Ghana |
+| 2603 | Concentrés de cuivre | handysize, supramax | Zambie, RDC (via ports) |
+| 2604/2605 | Nickel, cobalt (concentrés) | handysize | Madagascar, RDC |
+| 2607/2608 | Plomb, zinc (concentrés) | handysize | Maroc, Namibie |
+| 2610 | Minerai de chrome | supramax | Afrique du Sud, Zimbabwe, Madagascar |
+| 2614/2615 | Titane, zirconium (sables minéralisés) | handysize | Sénégal, Mozambique, Madagascar, Sierra Leone |
+| 2609/2611–2617 | Autres minerais (étain, tungstène…) | handysize | Nigéria, RDC, Rwanda |
+| 2618/2619 | Scories et laitiers | handysize | sidérurgie |
+| 2713 (coke de pétrole) | Petcoke | supramax | combustible cimenteries |
+| 31 (3102–3105) | Engrais (urée, DAP, potasse, NPK) | handysize, supramax | Maroc/OCP (export mondial), imports massifs partout |
+| 7204 | Ferraille | handysize, supramax | imports aciéries (Afrique de l'Ouest, Égypte) |
+
+### A.3 Conventionnel / neo-bulk (cales vraquiers ou navires conventionnels)
+
+| SH | Produit | Classes navire | Remarque |
+|---|---|---|---|
+| 4401 | Copeaux et plaquettes de bois | handysize, supramax | biomasse |
+| 4403/4406/4407 | Grumes, traverses, bois sciés | handysize (conventionnel) | Cameroun, Gabon, Congo, Ghana — exports majeurs |
+| 47 (4701–4705) | Pâtes de bois | handysize | conditionné en balles |
+| 7201/7203 | Fontes, produits ferreux primaires | handysize | sidérurgie |
+| 7207–7216 | Aciers semi-finis et longs (billettes, barres, profilés) | handysize (neo-bulk) | imports BTP massifs |
+| 7208–7212 | Aciers plats (bobines) | handysize (neo-bulk) | imports industrie |
+
+Ces produits n'utilisent pas l'aérien et rarement le conteneur au-delà de petits lots — même traitement que le vrac sec mineur en v1, avec note « conventionnel/neo-bulk » dans la sortie.
+
+### A.4 Vrac liquide (tankers — hors périmètre v1, option maritime `UNAVAILABLE` avec note)
+
+| SH | Produit | Marché |
+|---|---|---|
+| 2709 | Pétrole brut | tanker (VLCC/Suezmax/Aframax) |
+| 2710 | Produits raffinés (gazole, essence, jet, fuel) | product tanker |
+| 2711 | GPL / GNL | gazier |
+| 2712–2715 (hors petcoke) | Bitumes, paraffines | bitumier |
+| 1507–1518 | Huiles végétales en vrac (palme, soja, tournesol…) | chemical/product tanker ; conteneur (flexitank) sous le seuil |
+| 1703 | Mélasses | tanker |
+| 2207 | Éthanol en vrac | chemical tanker |
+| 2814 | Ammoniac | gazier |
+| 28/29 (sélection) | Acides et chimie liquide de base (ex. 2807 acide sulfurique) | chemical tanker |
+
+### A.5 Produits bi-modes — règle de traitement
+
+Pour les produits marqués **bi-mode** (riz, farines, arachides, cacao, sucre blanc 1701.99…), le mode par défaut sous le seuil propre au produit est le **conteneur ensaché** (pratique réelle dominante en Afrique), et le vraquier n'est proposé qu'au-delà. Le seuil est un paramètre par ligne de la table, pas une constante globale — c'est ce qui évite à la fois le « ciment par avion » d'hier et un « 500 t de riz en supramax » demain.
+
+### A.6 Produits exclus de cette table
+
+Café (0901), thé (0902), coton (5201), noix de cajou, fruits et légumes, viandes, poissons, produits manufacturés : jamais vraquiers en pratique commerciale courante — ils restent au régime général (conteneur, reefer le cas échéant, aérien sous plafond de poids). Toute demande utilisateur récurrente sur un produit absent de la table alimente la file de priorisation (doctrine de collecte guidée par la demande, §21.3 de l'audit).
