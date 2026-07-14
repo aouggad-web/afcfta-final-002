@@ -34,46 +34,59 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          # Branches à GARDER
-          KEEP_BRANCHES="^(main|claude/setup-github-cli-EngUf|automated-data-update-135)$"
-
-          # Branches à SUPPRIMER (regex)
-          DELETE_REGEX="^(automated-data-update-[0-9]+|claude/(format-black-isort|wto-auth-fix)|codex/|copilot/|conflict_|replit|fix/).*$"
-
-          echo "🔍 Récupération des branches..."
           DELETED_COUNT=0
-          KEPT_COUNT=0
+          KEPT=("main" "claude/setup-github-cli-EngUf" "automated-data-update-135")
 
-          # Récupérer les branches via gh
-          while IFS= read -r branch; do
-            # Sauter les branches vides
-            [[ -z "$branch" ]] && continue
+          # Branches à supprimer (énumération explicite)
+          DELETE=(
+            # automated-data-update runs
+            "automated-data-update-1" "automated-data-update-2" "automated-data-update-3"
+            "automated-data-update-4" "automated-data-update-5" "automated-data-update-6"
+            "automated-data-update-7" "automated-data-update-8" "automated-data-update-9"
+            "automated-data-update-10" "automated-data-update-11" "automated-data-update-12"
+            "automated-data-update-13" "automated-data-update-14" "automated-data-update-15"
+            "automated-data-update-16" "automated-data-update-17" "automated-data-update-18"
+            "automated-data-update-19" "automated-data-update-20" "automated-data-update-21"
+            "automated-data-update-22" "automated-data-update-23" "automated-data-update-132"
+            "automated-data-update-133"
+            # session branches
+            "claude/format-black-isort" "claude/wto-auth-fix"
+            # codex branches
+            "codex/audit-apps-and-fix-pr-42" "codex/audit-et-securisation-git"
+            "codex/commencer-la-collecte-des-tarifs" "codex/compter-le-nombre-de-pays-crawle"
+            "codex/executer-le-workflow-crawl-country" "codex/fix-httperror-for-api-pages-site"
+            "codex/recollecter-les-tarifs-des-pays-africains" "codex/run-cleanup-and-security-phases"
+            # conflict branches
+            "conflict_020526_01444444444444444444" "conflict_050526_00499" "conflict_100726_1330"
+            "conflict_110726_145200000" "conflict_140626_2000-emergent-" "conflict_280226_2348"
+            # fix branches
+            "fix/ci-restore-yarn-frontend-build" "fix/cleanuo-security-phases-1-4-1"
+            "fix/cleanup-security-phases-1-4" "fix/deploy-pages-v5" "fix/update-deploy-pages-v5"
+            "fix/workflows-checkout-version"
+            # replit branches
+            "replit-new" "replit_logistique_production"
+          )
 
-            # Vérifier si c'est une branche à garder
-            if echo "$branch" | grep -qE "$KEEP_BRANCHES"; then
-              echo "✓ Gardée: $branch"
-              ((KEPT_COUNT++))
-              continue
+          echo "🔍 Récupération des branches à supprimer..."
+
+          for branch in "${DELETE[@]}"; do
+            if [[ "$DRY_RUN" == "true" ]]; then
+              echo "🗑️  (dry-run) Serait supprimée: $branch"
+            else
+              echo "🗑️  Suppression: $branch"
+              git push origin --delete "$branch" 2>/dev/null && echo "  ✓ OK" || echo "  ⚠️  Pas trouvée"
             fi
-
-            # Vérifier si elle doit être supprimée
-            if echo "$branch" | grep -qE "$DELETE_REGEX"; then
-              if [[ "$DRY_RUN" == "true" ]]; then
-                echo "🗑️  (dry-run) Serait supprimée: $branch"
-              else
-                echo "🗑️  Suppression: $branch"
-                gh api repos/${{ github.repository }}/git/refs/heads/"$branch" -X DELETE 2>/dev/null && echo "  ✓ Supprimée" || echo "  ⚠️  Erreur ou déjà supprimée"
-              fi
-              ((DELETED_COUNT++))
-            fi
-          done < <(gh api repos/${{ github.repository }}/branches --paginate -q '.[].name')
+            ((DELETED_COUNT++))
+          done
 
           echo ""
+          echo "Branches gardées:"
+          for keep in "${KEPT[@]}"; do
+            echo "  ✓ $keep"
+          done
+
           if [[ "$DRY_RUN" == "true" ]]; then
             echo "✅ Dry run: $DELETED_COUNT branches auraient été supprimées"
           else
-            echo "✅ Suppression complète: $DELETED_COUNT branches supprimées, $KEPT_COUNT conservées"
+            echo "✅ Suppression: $DELETED_COUNT branches traitées"
           fi
-
-          # Retourner succès
-          exit 0
