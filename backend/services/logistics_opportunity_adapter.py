@@ -47,6 +47,7 @@ def get_freight_options(
             container_type=container_type,
             is_bulk_commodity=bool(bulk),
             bulk_label=bulk.get("label") if bulk else None,
+            bulk_commodity_dict=bulk,
         )
         return {"available": True, **result}
     except Exception as exc:

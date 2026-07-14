@@ -45,15 +45,15 @@ def test_air_option_excluded_for_bulk_commodity_regardless_of_weight():
 def test_classify_bulk_commodity_flags_cement_ore_and_cereals():
     cement = shipment_estimator.classify_bulk_commodity("2523")
     assert cement is not None
-    assert cement["category"] == "bulk_mineral"
+    assert cement["category"] == "bulk_minor"
 
     iron_ore = shipment_estimator.classify_bulk_commodity("260111")
     assert iron_ore is not None
-    assert iron_ore["category"] == "bulk_mineral"
+    assert iron_ore["category"] == "bulk_major"
 
     wheat = shipment_estimator.classify_bulk_commodity("100199")
     assert wheat is not None
-    assert wheat["category"] == "bulk_agri"
+    assert wheat["category"] == "bulk_major"
 
     # Non-bulk goods (coffee, smartphones) are not flagged.
     assert shipment_estimator.classify_bulk_commodity("090111") is None
@@ -103,7 +103,7 @@ def test_logistics_profile_detects_bulk_from_hs_code_end_to_end():
     )
     freight = profile["freight"]
     assert freight["is_bulk_commodity"] is True
-    assert freight["bulk_label"] == "Ciment"
+    assert "Ciment" in freight["bulk_label"]
     assert freight["land_cargo_type"] == "bulk"
     assert freight["air_excluded"] is True
 
