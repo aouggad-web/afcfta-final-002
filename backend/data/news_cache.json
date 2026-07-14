@@ -1,5 +1,5 @@
 {
-  "last_update": "2026-07-14T21:19:14.523593",
+  "last_update": "2026-07-14T21:20:36.362359",
   "articles": [
     {
       "id": "dz-project-zone-franche-belloua",
@@ -9,8 +9,8 @@
       "source": "Ministère du Commerce",
       "category": "Commerce",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523169",
-      "fetched_at": "2026-07-14T21:19:14.523170",
+      "published_at": "2026-07-14T21:20:36.361985",
+      "fetched_at": "2026-07-14T21:20:36.361986",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -28,8 +28,8 @@
       "source": "Algerian Qatari Steel (AQS)",
       "category": "Industrie",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523167",
-      "fetched_at": "2026-07-14T21:19:14.523167",
+      "published_at": "2026-07-14T21:20:36.361983",
+      "fetched_at": "2026-07-14T21:20:36.361984",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -47,8 +47,8 @@
       "source": "Sonatrach/NNPC",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523164",
-      "fetched_at": "2026-07-14T21:19:14.523165",
+      "published_at": "2026-07-14T21:20:36.361981",
+      "fetched_at": "2026-07-14T21:20:36.361981",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -66,8 +66,8 @@
       "source": "SKTM/Sonelgaz",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523161",
-      "fetched_at": "2026-07-14T21:19:14.523161",
+      "published_at": "2026-07-14T21:20:36.361978",
+      "fetched_at": "2026-07-14T21:20:36.361979",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -85,8 +85,8 @@
       "source": "Sonatrach",
       "category": "Énergie",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523158",
-      "fetched_at": "2026-07-14T21:19:14.523158",
+      "published_at": "2026-07-14T21:20:36.361975",
+      "fetched_at": "2026-07-14T21:20:36.361976",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -104,8 +104,8 @@
       "source": "Stellantis Algeria",
       "category": "Industrie",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523155",
-      "fetched_at": "2026-07-14T21:19:14.523156",
+      "published_at": "2026-07-14T21:20:36.361973",
+      "fetched_at": "2026-07-14T21:20:36.361974",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -123,8 +123,8 @@
       "source": "Direction des Travaux Publics",
       "category": "Infrastructure",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523152",
-      "fetched_at": "2026-07-14T21:19:14.523152",
+      "published_at": "2026-07-14T21:20:36.361970",
+      "fetched_at": "2026-07-14T21:20:36.361971",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -142,8 +142,8 @@
       "source": "Ministère des Transports",
       "category": "Infrastructure",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523149",
-      "fetched_at": "2026-07-14T21:19:14.523149",
+      "published_at": "2026-07-14T21:20:36.361968",
+      "fetched_at": "2026-07-14T21:20:36.361969",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -161,8 +161,8 @@
       "source": "ASMIDAL/Sonatrach",
       "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523145",
-      "fetched_at": "2026-07-14T21:19:14.523146",
+      "published_at": "2026-07-14T21:20:36.361965",
+      "fetched_at": "2026-07-14T21:20:36.361966",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -180,8 +180,8 @@
       "source": "Ministère de l'Industrie Algérien",
       "category": "Mines",
       "region": "Afrique du Nord",
-      "published_at": "2026-07-14T21:19:14.523134",
-      "fetched_at": "2026-07-14T21:19:14.523140",
+      "published_at": "2026-07-14T21:20:36.361956",
+      "fetched_at": "2026-07-14T21:20:36.361961",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -204,7 +204,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-14T18:22:00",
-      "fetched_at": "2026-07-14T21:18:28.385637"
+      "fetched_at": "2026-07-14T21:19:18.782120"
     },
     {
       "id": "ac2aa27d16b8",
@@ -219,7 +219,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-14T14:54:00",
-      "fetched_at": "2026-07-14T21:18:27.707708"
+      "fetched_at": "2026-07-14T21:19:18.031570"
     },
     {
       "id": "bb3110d9b7c4",
@@ -234,7 +234,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-13T13:42:00",
-      "fetched_at": "2026-07-14T21:18:28.163225"
+      "fetched_at": "2026-07-14T21:19:18.504633"
     },
     {
       "id": "3a164fdffc78",
@@ -249,7 +249,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-12T19:51:07",
-      "fetched_at": "2026-07-14T21:18:57.102779"
+      "fetched_at": "2026-07-14T21:19:34.830809"
     },
     {
       "id": "0bafb617b1ad",
@@ -267,7 +267,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-09T19:14:00",
-      "fetched_at": "2026-07-14T21:19:00.780988"
+      "fetched_at": "2026-07-14T21:19:02.871271"
     },
     {
       "id": "e0cfcfc8c3b8",
@@ -284,7 +284,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-09T12:29:00",
-      "fetched_at": "2026-07-14T21:19:01.267487"
+      "fetched_at": "2026-07-14T21:19:03.362891"
     },
     {
       "id": "6ac13a1bfb3e",
@@ -301,7 +301,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-09T09:01:22",
-      "fetched_at": "2026-07-14T21:19:01.029610"
+      "fetched_at": "2026-07-14T21:19:03.099736"
     },
     {
       "id": "499d78e43bf9",
@@ -316,24 +316,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-06T17:29:00",
-      "fetched_at": "2026-07-14T21:18:27.480135"
-    },
-    {
-      "id": "62f4eedea75e",
-      "title": "L’Algérie, nouvelle « puissance d’investissement » en Afrique : le grand coup de projecteur de USA Today - Just-InfoDZ",
-      "summary": "L’Algérie, nouvelle « puissance d’investissement » en Afrique : le grand coup de projecteur de USA Today  Just-InfoDZ",
-      "link": "https://just-infodz.com/usa-today-economie-algerie-opportunites-investissement/",
-      "source": "Algérie Économie",
-      "category": "Finance",
-      "region": "Afrique du Nord",
-      "country": "DZA",
-      "priority": true,
-      "content_tags": [
-        "opportunities"
-      ],
-      "content_priority": true,
-      "published_at": "2026-07-04T07:00:00",
-      "fetched_at": "2026-07-14T21:19:01.799723"
+      "fetched_at": "2026-07-14T21:19:17.808907"
     },
     {
       "id": "c5d28a576a25",
@@ -348,7 +331,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-01T18:49:29",
-      "fetched_at": "2026-07-14T21:18:56.858850"
+      "fetched_at": "2026-07-14T21:19:34.598943"
     },
     {
       "id": "531280c047cc",
@@ -363,7 +346,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-06-29T22:30:26",
-      "fetched_at": "2026-07-14T21:19:00.544562"
+      "fetched_at": "2026-07-14T21:19:02.666993"
     },
     {
       "id": "2d9e9c449b57",
@@ -378,7 +361,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-06-29T18:45:29",
-      "fetched_at": "2026-07-14T21:18:56.382081"
+      "fetched_at": "2026-07-14T21:19:34.141239"
     },
     {
       "id": "b93c9729771e",
@@ -395,7 +378,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-28T07:25:24",
-      "fetched_at": "2026-07-14T21:19:01.539593"
+      "fetched_at": "2026-07-14T21:19:03.615358"
     },
     {
       "id": "a471cd42ce36",
@@ -412,7 +395,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-27T07:00:00",
-      "fetched_at": "2026-07-14T21:19:02.025658"
+      "fetched_at": "2026-07-14T21:19:03.852403"
     },
     {
       "id": "adb535360948",
@@ -430,7 +413,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-23T13:42:39",
-      "fetched_at": "2026-07-14T21:19:02.246521"
+      "fetched_at": "2026-07-14T21:19:04.165341"
     },
     {
       "id": "c54617f8b9c0",
@@ -447,7 +430,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-22T07:00:00",
-      "fetched_at": "2026-07-14T21:18:55.672268"
+      "fetched_at": "2026-07-14T21:19:33.436986"
     },
     {
       "id": "efe2fcac5785",
@@ -462,7 +445,24 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-06-20T07:00:00",
-      "fetched_at": "2026-07-14T21:18:26.504018"
+      "fetched_at": "2026-07-14T21:19:16.890028"
+    },
+    {
+      "id": "61e7b3606c8f",
+      "title": "Investissement : l’Algérie renforce sa visibilité à Bakou - Just-InfoDZ",
+      "summary": "Investissement : l’Algérie renforce sa visibilité à Bakou  Just-InfoDZ",
+      "link": "https://just-infodz.com/investissement-lalgerie-renforce-sa-visibilite-a-bakou/",
+      "source": "Algérie Économie",
+      "category": "Finance",
+      "region": "Afrique du Nord",
+      "country": "DZA",
+      "priority": true,
+      "content_tags": [
+        "opportunities"
+      ],
+      "content_priority": true,
+      "published_at": "2026-06-19T07:00:00",
+      "fetched_at": "2026-07-14T21:19:04.841812"
     },
     {
       "id": "68bda21451cd",
@@ -477,7 +477,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-06-15T07:00:00",
-      "fetched_at": "2026-07-14T21:18:57.778894"
+      "fetched_at": "2026-07-14T21:19:35.634835"
     },
     {
       "id": "064d2f24d975",
@@ -492,7 +492,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-05-26T07:00:00",
-      "fetched_at": "2026-07-14T21:18:57.564275"
+      "fetched_at": "2026-07-14T21:19:35.312605"
     },
     {
       "id": "84aef0f81ff6",
@@ -509,7 +509,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-05-23T00:19:33",
-      "fetched_at": "2026-07-14T21:19:02.737582"
+      "fetched_at": "2026-07-14T21:19:04.628872"
     },
     {
       "id": "d90e6db44b80",
@@ -527,7 +527,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-05-10T07:00:00",
-      "fetched_at": "2026-07-14T21:19:02.489630"
+      "fetched_at": "2026-07-14T21:19:04.397093"
     },
     {
       "id": "f5c7d9741f97",
@@ -544,7 +544,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-04-30T07:00:00",
-      "fetched_at": "2026-07-14T21:18:56.625040"
+      "fetched_at": "2026-07-14T21:19:34.344138"
     },
     {
       "id": "d44ab78a64cf",
@@ -561,7 +561,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-04-29T07:00:00",
-      "fetched_at": "2026-07-14T21:18:57.324438"
+      "fetched_at": "2026-07-14T21:19:35.050896"
     },
     {
       "id": "7a9a44b2b338",
@@ -576,7 +576,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-04-22T11:42:47",
-      "fetched_at": "2026-07-14T21:18:56.159743"
+      "fetched_at": "2026-07-14T21:19:33.914374"
     },
     {
       "id": "67407a7601fd",
@@ -591,7 +591,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2025-12-02T08:00:00",
-      "fetched_at": "2026-07-14T21:18:55.913381"
+      "fetched_at": "2026-07-14T21:19:33.685974"
     },
     {
       "id": "e3088539bfa8",
@@ -606,7 +606,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2025-09-28T00:01:11",
-      "fetched_at": "2026-07-14T21:18:27.004298"
+      "fetched_at": "2026-07-14T21:19:17.345935"
     },
     {
       "id": "d9a690338a89",
@@ -621,7 +621,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2022-04-03T07:00:00",
-      "fetched_at": "2026-07-14T21:18:27.247598"
+      "fetched_at": "2026-07-14T21:19:17.575243"
     },
     {
       "id": "ce69b86847a8",
@@ -636,7 +636,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2022-03-13T08:00:00",
-      "fetched_at": "2026-07-14T21:18:26.764823"
+      "fetched_at": "2026-07-14T21:19:17.127365"
     },
     {
       "id": "662adf8f2167",
@@ -653,7 +653,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T20:51:03",
-      "fetched_at": "2026-07-14T21:18:18.618338"
+      "fetched_at": "2026-07-14T21:18:18.717473"
     },
     {
       "id": "c1911db2ba40",
@@ -670,7 +670,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T17:05:39",
-      "fetched_at": "2026-07-14T21:18:18.671673"
+      "fetched_at": "2026-07-14T21:18:18.745060"
     },
     {
       "id": "65e83b173c06",
@@ -688,7 +688,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T17:05:38",
-      "fetched_at": "2026-07-14T21:18:18.671898"
+      "fetched_at": "2026-07-14T21:18:18.745288"
     },
     {
       "id": "4fe78923ade2",
@@ -705,7 +705,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T16:09:17",
-      "fetched_at": "2026-07-14T21:18:18.628627"
+      "fetched_at": "2026-07-14T21:18:18.699519"
     },
     {
       "id": "10039cf2d8cd",
@@ -722,7 +722,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T13:50:26",
-      "fetched_at": "2026-07-14T21:18:18.619008"
+      "fetched_at": "2026-07-14T21:18:18.718117"
     },
     {
       "id": "b65db5667b56",
@@ -739,7 +739,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T13:50:24",
-      "fetched_at": "2026-07-14T21:18:18.637522"
+      "fetched_at": "2026-07-14T21:18:18.661666"
     },
     {
       "id": "ce0fe6168430",
@@ -756,7 +756,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T13:50:15",
-      "fetched_at": "2026-07-14T21:18:18.637653"
+      "fetched_at": "2026-07-14T21:18:18.661797"
     },
     {
       "id": "be2c146548e4",
@@ -773,7 +773,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T12:39:34",
-      "fetched_at": "2026-07-14T21:18:18.629146"
+      "fetched_at": "2026-07-14T21:18:18.700041"
     },
     {
       "id": "e867ff2563a5",
@@ -791,7 +791,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T12:15:36",
-      "fetched_at": "2026-07-14T21:18:18.629350"
+      "fetched_at": "2026-07-14T21:18:18.700249"
     },
     {
       "id": "7a5bdaae009e",
@@ -808,7 +808,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T11:14:47",
-      "fetched_at": "2026-07-14T21:18:18.619531"
+      "fetched_at": "2026-07-14T21:18:18.718643"
     },
     {
       "id": "e9c1b8e90a15",
@@ -825,7 +825,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T10:08:19",
-      "fetched_at": "2026-07-14T21:18:40.826575"
+      "fetched_at": "2026-07-14T21:19:19.241235"
     },
     {
       "id": "0e9375289157",
@@ -842,7 +842,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T08:20:36",
-      "fetched_at": "2026-07-14T21:18:58.041042"
+      "fetched_at": "2026-07-14T21:20:30.596204"
     },
     {
       "id": "ee2f5e3669f5",
@@ -859,7 +859,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T06:47:31",
-      "fetched_at": "2026-07-14T21:18:18.617900"
+      "fetched_at": "2026-07-14T21:18:18.717010"
     },
     {
       "id": "be4d5af1fcb4",
@@ -876,7 +876,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T06:42:26",
-      "fetched_at": "2026-07-14T21:18:18.636711"
+      "fetched_at": "2026-07-14T21:18:18.660858"
     },
     {
       "id": "f39ff5315230",
@@ -893,7 +893,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-14T05:15:13",
-      "fetched_at": "2026-07-14T21:18:18.637863"
+      "fetched_at": "2026-07-14T21:18:18.662011"
     },
     {
       "id": "dcd5523b1ffe",
@@ -910,7 +910,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T22:01:00",
-      "fetched_at": "2026-07-14T21:19:06.603581"
+      "fetched_at": "2026-07-14T21:19:22.754406"
     },
     {
       "id": "0fb9cf442023",
@@ -927,7 +927,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T17:34:44",
-      "fetched_at": "2026-07-14T21:18:23.271234"
+      "fetched_at": "2026-07-14T21:19:52.200168"
     },
     {
       "id": "1b4aa01a162d",
@@ -944,7 +944,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T17:07:00",
-      "fetched_at": "2026-07-14T21:19:13.321674"
+      "fetched_at": "2026-07-14T21:19:39.147499"
     },
     {
       "id": "4f3490f25c10",
@@ -961,7 +961,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T15:04:28",
-      "fetched_at": "2026-07-14T21:18:42.317075"
+      "fetched_at": "2026-07-14T21:19:20.684184"
     },
     {
       "id": "2af2a2dcede3",
@@ -978,7 +978,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T14:16:58",
-      "fetched_at": "2026-07-14T21:19:10.339472"
+      "fetched_at": "2026-07-14T21:20:11.043753"
     },
     {
       "id": "ac6cd165e556",
@@ -995,7 +995,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T12:50:18",
-      "fetched_at": "2026-07-14T21:18:42.080323"
+      "fetched_at": "2026-07-14T21:19:20.433659"
     },
     {
       "id": "0b345df0b873",
@@ -1012,7 +1012,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T11:07:29",
-      "fetched_at": "2026-07-14T21:18:18.638121"
+      "fetched_at": "2026-07-14T21:18:18.662272"
     },
     {
       "id": "09d07fd88393",
@@ -1029,7 +1029,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T08:45:55",
-      "fetched_at": "2026-07-14T21:18:34.638371"
+      "fetched_at": "2026-07-14T21:19:10.817652"
     },
     {
       "id": "8f06c040c63e",
@@ -1047,7 +1047,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T07:53:21",
-      "fetched_at": "2026-07-14T21:18:18.638385"
+      "fetched_at": "2026-07-14T21:18:18.662495"
     },
     {
       "id": "fd907c39403d",
@@ -1064,7 +1064,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T06:10:00",
-      "fetched_at": "2026-07-14T21:18:39.413794"
+      "fetched_at": "2026-07-14T21:19:48.838348"
     },
     {
       "id": "3854e63f66de",
@@ -1081,7 +1081,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T06:00:00",
-      "fetched_at": "2026-07-14T21:18:31.732285"
+      "fetched_at": "2026-07-14T21:20:24.738999"
     },
     {
       "id": "92b9115ab837",
@@ -1098,7 +1098,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T05:03:14",
-      "fetched_at": "2026-07-14T21:18:18.638658"
+      "fetched_at": "2026-07-14T21:18:18.662758"
     },
     {
       "id": "65ddbd85d099",
@@ -1115,7 +1115,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-13T04:41:57",
-      "fetched_at": "2026-07-14T21:18:18.638909"
+      "fetched_at": "2026-07-14T21:18:18.663010"
     },
     {
       "id": "88941e3037bf",
@@ -1132,7 +1132,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-12T17:42:38",
-      "fetched_at": "2026-07-14T21:18:23.053815"
+      "fetched_at": "2026-07-14T21:19:51.981135"
     },
     {
       "id": "387bf7a1dbd6",
@@ -1150,7 +1150,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-11T18:43:38",
-      "fetched_at": "2026-07-14T21:18:22.330301"
+      "fetched_at": "2026-07-14T21:19:50.922822"
     },
     {
       "id": "bfb739337e12",
@@ -1167,7 +1167,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-11T05:30:06",
-      "fetched_at": "2026-07-14T21:19:13.798319"
+      "fetched_at": "2026-07-14T21:19:39.621709"
     },
     {
       "id": "7922cb7ecc54",
@@ -1184,7 +1184,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-11T00:45:58",
-      "fetched_at": "2026-07-14T21:18:43.818201"
+      "fetched_at": "2026-07-14T21:19:36.309653"
     },
     {
       "id": "51ad03aa0f37",
@@ -1201,7 +1201,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-10T16:15:52",
-      "fetched_at": "2026-07-14T21:18:34.156737"
+      "fetched_at": "2026-07-14T21:19:10.362537"
     },
     {
       "id": "04a6f2c77341",
@@ -1218,7 +1218,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-09T10:26:00",
-      "fetched_at": "2026-07-14T21:18:29.158751"
+      "fetched_at": "2026-07-14T21:19:53.214486"
     },
     {
       "id": "981e366146a4",
@@ -1235,7 +1235,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-09T04:59:06",
-      "fetched_at": "2026-07-14T21:19:14.032549"
+      "fetched_at": "2026-07-14T21:19:39.875748"
     },
     {
       "id": "2ef1715cb58b",
@@ -1252,7 +1252,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-08T09:08:00",
-      "fetched_at": "2026-07-14T21:18:32.407214"
+      "fetched_at": "2026-07-14T21:20:27.007517"
     },
     {
       "id": "42329aa7b62c",
@@ -1269,7 +1269,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-08T04:13:46",
-      "fetched_at": "2026-07-14T21:19:04.180374"
+      "fetched_at": "2026-07-14T21:20:00.189469"
     },
     {
       "id": "4c2bde8a795f",
@@ -1287,7 +1287,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-06T15:51:00",
-      "fetched_at": "2026-07-14T21:19:07.829378"
+      "fetched_at": "2026-07-14T21:20:16.721685"
     },
     {
       "id": "1e08fddc893d",
@@ -1304,7 +1304,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-06T12:41:02",
-      "fetched_at": "2026-07-14T21:19:02.997539"
+      "fetched_at": "2026-07-14T21:19:56.441283"
     },
     {
       "id": "6f8647ec5d46",
@@ -1321,7 +1321,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-06T07:00:00",
-      "fetched_at": "2026-07-14T21:18:53.959489"
+      "fetched_at": "2026-07-14T21:20:05.657019"
     },
     {
       "id": "c18266fb5b34",
@@ -1338,7 +1338,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-02T01:10:22",
-      "fetched_at": "2026-07-14T21:18:54.462042"
+      "fetched_at": "2026-07-14T21:20:06.883722"
     },
     {
       "id": "a34e5bc31b0b",
@@ -1355,7 +1355,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-17T07:00:00",
-      "fetched_at": "2026-07-14T21:19:09.852012"
+      "fetched_at": "2026-07-14T21:20:22.642690"
     },
     {
       "id": "d33970ac00a5",
@@ -1372,7 +1372,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-16T07:00:00",
-      "fetched_at": "2026-07-14T21:18:58.776309"
+      "fetched_at": "2026-07-14T21:20:32.636317"
     },
     {
       "id": "abc1186a2bbe",
@@ -1389,7 +1389,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-15T07:00:00",
-      "fetched_at": "2026-07-14T21:18:35.579455"
+      "fetched_at": "2026-07-14T21:19:11.749199"
     },
     {
       "id": "4945025db625",
@@ -1407,7 +1407,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-15T07:00:00",
-      "fetched_at": "2026-07-14T21:18:30.775575"
+      "fetched_at": "2026-07-14T21:19:55.458300"
     },
     {
       "id": "6a2fa4aca30c",
@@ -1424,7 +1424,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-05-25T07:00:00",
-      "fetched_at": "2026-07-14T21:19:07.560714"
+      "fetched_at": "2026-07-14T21:19:23.657956"
     },
     {
       "id": "caf8b5447245",
@@ -1441,7 +1441,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-04-18T10:21:31",
-      "fetched_at": "2026-07-14T21:18:49.355866"
+      "fetched_at": "2026-07-14T21:19:29.618845"
     },
     {
       "id": "7785a5163950",
@@ -1458,7 +1458,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-01-22T08:00:00",
-      "fetched_at": "2026-07-14T21:19:07.113591"
+      "fetched_at": "2026-07-14T21:19:23.214938"
     },
     {
       "id": "f196a021949a",
@@ -1475,7 +1475,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-01-14T08:00:00",
-      "fetched_at": "2026-07-14T21:19:06.369461"
+      "fetched_at": "2026-07-14T21:19:22.533291"
     },
     {
       "id": "f48cc2cd5eb0",
@@ -1492,7 +1492,7 @@
       ],
       "content_priority": true,
       "published_at": "2024-09-25T07:00:00",
-      "fetched_at": "2026-07-14T21:18:19.616933"
+      "fetched_at": "2026-07-14T21:18:21.967064"
     },
     {
       "id": "6b06f57bc84f",
@@ -1509,7 +1509,7 @@
       ],
       "content_priority": true,
       "published_at": "2023-05-25T07:00:00",
-      "fetched_at": "2026-07-14T21:18:37.954814"
+      "fetched_at": "2026-07-14T21:19:44.991639"
     },
     {
       "id": "f7e198d3bf37",
@@ -1526,7 +1526,7 @@
       ],
       "content_priority": true,
       "published_at": "2023-04-26T07:00:00",
-      "fetched_at": "2026-07-14T21:18:52.446916"
+      "fetched_at": "2026-07-14T21:19:27.991767"
     },
     {
       "id": "a6eb5550fa29",
@@ -1543,7 +1543,7 @@
       ],
       "content_priority": true,
       "published_at": "2023-04-16T12:56:29",
-      "fetched_at": "2026-07-14T21:18:25.735026"
+      "fetched_at": "2026-07-14T21:19:09.175846"
     },
     {
       "id": "0014fb1a84e5",
@@ -1560,7 +1560,7 @@
       ],
       "content_priority": true,
       "published_at": "2022-05-12T07:00:00",
-      "fetched_at": "2026-07-14T21:18:37.019316"
+      "fetched_at": "2026-07-14T21:19:44.021866"
     },
     {
       "id": "8ddc055b71c6",
@@ -1577,7 +1577,7 @@
       ],
       "content_priority": true,
       "published_at": "2021-06-05T07:00:00",
-      "fetched_at": "2026-07-14T21:18:26.222377"
+      "fetched_at": "2026-07-14T21:19:09.675534"
     },
     {
       "id": "43aea20ce9e1",
@@ -1594,7 +1594,7 @@
       ],
       "content_priority": true,
       "published_at": "2020-11-14T12:18:49",
-      "fetched_at": "2026-07-14T21:18:24.974732"
+      "fetched_at": "2026-07-14T21:19:08.467536"
     },
     {
       "id": "c0e161e6d356",
@@ -1612,7 +1612,7 @@
       ],
       "content_priority": true,
       "published_at": "2020-11-14T08:29:20",
-      "fetched_at": "2026-07-14T21:18:24.739791"
+      "fetched_at": "2026-07-14T21:19:08.249369"
     },
     {
       "id": "299f875508cf",
@@ -1629,7 +1629,7 @@
       ],
       "content_priority": true,
       "published_at": "2020-06-02T07:00:00",
-      "fetched_at": "2026-07-14T21:18:37.256791"
+      "fetched_at": "2026-07-14T21:19:44.255208"
     },
     {
       "id": "1bbfc483985c",
@@ -1646,7 +1646,7 @@
       ],
       "content_priority": true,
       "published_at": "2014-05-08T07:00:00",
-      "fetched_at": "2026-07-14T21:18:37.493572"
+      "fetched_at": "2026-07-14T21:19:44.536723"
     },
     {
       "id": "df479b2ccfcc",
@@ -1661,7 +1661,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-14T17:28:02",
-      "fetched_at": "2026-07-14T21:18:18.671110"
+      "fetched_at": "2026-07-14T21:18:18.744510"
     },
     {
       "id": "92c5355c43af",
@@ -1676,7 +1676,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-14T17:28:01",
-      "fetched_at": "2026-07-14T21:18:18.671346"
+      "fetched_at": "2026-07-14T21:18:18.744755"
     },
     {
       "id": "e3ee8331b2c8",
@@ -1691,7 +1691,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-14T17:25:02",
-      "fetched_at": "2026-07-14T21:18:23.507091"
+      "fetched_at": "2026-07-14T21:19:52.516346"
     }
   ]
 }
