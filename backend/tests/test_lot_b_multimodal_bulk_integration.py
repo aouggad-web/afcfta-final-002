@@ -74,10 +74,7 @@ def test_bulk_sea_options_bascule_below_threshold_uses_containerized():
     sea_opts = [o for o in result["options"] if o.get("mode") == "sea"]
     if sea_opts:
         # At least one should have a bulk cargo note
-        assert any(
-            "vraquier" in o.get("bulk_cargo_note", "").lower()
-            for o in sea_opts
-        )
+        assert any("vraquier" in o.get("bulk_cargo_note", "").lower() for o in sea_opts)
 
 
 def test_bulk_sea_options_liquid_bulk_marked_unavailable():

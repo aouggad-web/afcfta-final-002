@@ -1260,13 +1260,17 @@ def compare_multimodal(
 
     # Merge bulk flags: is_bulk_commodity may be True from either parameter
     is_bulk = is_bulk_commodity or (bulk_commodity_dict is not None)
-    effective_label = bulk_label or (bulk_commodity_dict.get("label") if bulk_commodity_dict else None)
+    effective_label = bulk_label or (
+        bulk_commodity_dict.get("label") if bulk_commodity_dict else None
+    )
     effective_land_cargo_type = land_cargo_type or ("bulk" if is_bulk else "container")
 
     sea_opts = _sea_options(origin_country, destination_country, weight_kg, container_type)
 
     # If bulk commodity dict is provided and weight is above threshold, offer vraquier
-    bulk_sea_opts = _bulk_sea_options(origin_country, destination_country, weight_kg, bulk_commodity_dict)
+    bulk_sea_opts = _bulk_sea_options(
+        origin_country, destination_country, weight_kg, bulk_commodity_dict
+    )
 
     # Bascule logic: if vraquier options exist (weight >= threshold), use them;
     # otherwise use containerized with a note (below threshold or no bulk commodity dict)
@@ -1279,7 +1283,10 @@ def compare_multimodal(
             sea_opts = [
                 o
                 for o in sea_opts
-                if not (o.get("origin_locode") == origin_port and o.get("destination_locode") == dest_port)
+                if not (
+                    o.get("origin_locode") == origin_port
+                    and o.get("destination_locode") == dest_port
+                )
             ]
         options.extend(bulk_sea_opts)
 
