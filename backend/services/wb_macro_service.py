@@ -33,6 +33,16 @@ _FIELDS = {
     "GDP_growth": "gdp_growth_percent",
     "Inflation": "inflation_percent",
     "Unemployment": "unemployment_percent",
+    # Indicateurs sociaux (WDI) — chacun renvoyé avec sa VRAIE année via
+    # get_macro()/_latest(), pour remplacer les valeurs curées figées et les
+    # étiquettes d'année codées en dur du Profil Pays.
+    "LifeExpectancy": "life_expectancy_years",
+    "GiniIndex": "gini_index",
+    "Poverty3usd": "poverty_rate_3usd_pct",
+    "UrbanPopulation": "urban_population_pct",
+    "InternetUsers": "internet_users_pct",
+    "ElectricityAccess": "electricity_access_pct",
+    "FemaleLaborForce": "female_labor_force_pct",
 }
 
 _cache: Optional[Dict] = None

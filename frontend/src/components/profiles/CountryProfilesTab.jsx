@@ -80,7 +80,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       budget: "Budget",
       impact: "Impact",
       partners: "Partenaires",
-      worldBankIndicators: "Indicateurs World Bank Data360 (2024)",
+      worldBankIndicators: "Indicateurs Banque Mondiale (dernière année disponible)",
       officialData: "Données officielles de la Banque Mondiale - Mis à jour 2024",
       socialIndicators: "Indicateurs Sociaux",
       lifeExpectancy: "Espérance de vie",
@@ -153,7 +153,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       budget: "Budget",
       impact: "Impact",
       partners: "Partners",
-      worldBankIndicators: "World Bank Data360 Indicators (2024)",
+      worldBankIndicators: "World Bank Indicators (latest available year)",
       officialData: "Official World Bank data - Updated 2024",
       socialIndicators: "Social Indicators",
       lifeExpectancy: "Life Expectancy",
@@ -678,7 +678,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                               {countryProfile.projections.life_expectancy_2023 != null ? parseFloat(countryProfile.projections.life_expectancy_2023).toFixed(1) : 'N/A'}
                             </p>
-                            <p className="text-xs text-green-200 mt-2 bg-green-950/50 rounded-full px-2 py-1">{t.years} (2023)</p>
+                            <p className="text-xs text-green-200 mt-2 bg-green-950/50 rounded-full px-2 py-1">{t.years} ({countryProfile.projections.life_expectancy_2023_year ?? 2023})</p>
                           </div>
                           
                           {countryProfile.projections.gini_index_2024 != null && (
@@ -687,7 +687,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.gini_index_2024).toFixed(1)}
                               </p>
-                              <p className="text-xs text-orange-200 mt-2 bg-orange-950/50 rounded-full px-2 py-1">{t.outOf100} (2024)</p>
+                              <p className="text-xs text-orange-200 mt-2 bg-orange-950/50 rounded-full px-2 py-1">{t.outOf100} ({countryProfile.projections.gini_index_2024_year ?? 2024})</p>
                             </div>
                           )}
                           
@@ -697,7 +697,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.poverty_rate_3usd_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-red-200 mt-2 bg-red-950/50 rounded-full px-2 py-1">{t.populationPercent} (2024)</p>
+                              <p className="text-xs text-red-200 mt-2 bg-red-950/50 rounded-full px-2 py-1">{t.populationPercent} ({countryProfile.projections.poverty_rate_3usd_2024_year ?? 2024})</p>
                             </div>
                           )}
                           
@@ -707,7 +707,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.urban_population_pct_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-purple-200 mt-2 bg-purple-950/50 rounded-full px-2 py-1">{t.ofTotal} (2024)</p>
+                              <p className="text-xs text-purple-200 mt-2 bg-purple-950/50 rounded-full px-2 py-1">{t.ofTotal} ({countryProfile.projections.urban_population_pct_2024_year ?? 2024})</p>
                             </div>
                           )}
                         </div>
@@ -726,7 +726,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.internet_users_pct_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{t.populationPercent} (2024)</p>
+                              <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{t.populationPercent} ({countryProfile.projections.internet_users_pct_2024_year ?? 2024})</p>
                             </div>
                           )}
                           
@@ -746,7 +746,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.electricity_access_2022).toFixed(0)}%
                               </p>
-                              <p className="text-xs text-yellow-200 mt-2 bg-yellow-950/50 rounded-full px-2 py-1">{t.populationPercent} (2022)</p>
+                              <p className="text-xs text-yellow-200 mt-2 bg-yellow-950/50 rounded-full px-2 py-1">{t.populationPercent} ({countryProfile.projections.electricity_access_2022_year ?? 2022})</p>
                             </div>
                           )}
                           
@@ -775,7 +775,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                               <p className="text-3xl font-extrabold text-white drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.female_labor_force_pct_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-pink-200 mt-2 bg-pink-950/50 rounded-full px-2 py-1">{t.femalePopulation} (2024)</p>
+                              <p className="text-xs text-pink-200 mt-2 bg-pink-950/50 rounded-full px-2 py-1">{t.femalePopulation} ({countryProfile.projections.female_labor_force_pct_2024_year ?? 2024})</p>
                             </div>
                           )}
                           
