@@ -85,7 +85,7 @@ jobs:
                 echo "  ⚠️  Pas trouvée"
               fi
             fi
-            ((DELETED_COUNT++))
+            ((++DELETED_COUNT))
           done
 
           echo ""
