@@ -1,0 +1,121 @@
+name: Cleanup Old Branches
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (show what would be deleted, don't actually delete)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup GitHub CLI
+        run: |
+          # GitHub CLI is pre-installed on runners
+          gh --version
+
+      - name: Delete old branches
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -e
+
+          # Branches à GARDER
+          KEEP_BRANCHES=(
+            "claude/setup-github-cli-EngUf"
+            "automated-data-update-135"
+            "main"
+          )
+
+          # Branches à SUPPRIMER (patterns)
+          DELETE_PATTERNS=(
+            "automated-data-update-[0-9]"
+            "automated-data-update-1[0-9]"
+            "automated-data-update-2[0-3]"
+            "automated-data-update-132"
+            "automated-data-update-133"
+            "claude/format-black-isort"
+            "claude/wto-auth-fix"
+            "codex/*"
+            "copilot/*"
+            "conflict_*"
+            "replit*"
+            "fix/ci-restore-yarn-frontend-build"
+            "fix/cleanuo-security-phases-1-4-1"
+            "fix/cleanup-security-phases-1-4"
+            "fix/deploy-pages-v5"
+            "fix/update-deploy-pages-v5"
+            "fix/workflows-checkout-version"
+          )
+
+          # Fonction pour vérifier si une branche doit être gardée
+          should_keep() {
+            local branch=$1
+            for keep_pattern in "${KEEP_BRANCHES[@]}"; do
+              if [[ "$branch" == "$keep_pattern" ]]; then
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          # Lister toutes les branches distantes
+          echo "🔍 Recherche des branches à supprimer..."
+          DELETED_COUNT=0
+
+          while IFS= read -r branch; do
+            # Nettoyer le préfixe "origin/"
+            branch_name="${branch#origin/}"
+
+            # Vérifier si c'est une branche à garder
+            if should_keep "$branch_name"; then
+              echo "✓ Gardée: $branch_name"
+              continue
+            fi
+
+            # Vérifier si elle match un pattern de suppression
+            should_delete=false
+            for pattern in "${DELETE_PATTERNS[@]}"; do
+              if [[ "$branch_name" == $pattern ]]; then
+                should_delete=true
+                break
+              fi
+            done
+
+            if [[ "$should_delete" == true ]]; then
+              if [[ "$DRY_RUN" == "true" ]]; then
+                echo "🗑️  (dry-run) Serait supprimée: $branch_name"
+              else
+                echo "🗑️  Suppression: $branch_name"
+                gh api repos/${{ github.repository }}/git/refs/heads/$branch_name -X DELETE 2>/dev/null || echo "  ⚠️  Déjà supprimée ou introuvable"
+              fi
+              ((DELETED_COUNT++))
+            fi
+          done < <(git branch -r | grep -v HEAD)
+
+          echo ""
+          if [[ "$DRY_RUN" == "true" ]]; then
+            echo "✅ Dry run: $DELETED_COUNT branches auraient été supprimées"
+          else
+            echo "✅ $DELETED_COUNT branches supprimées"
+            echo "✓ Branches gardées:"
+            for keep in "${KEEP_BRANCHES[@]}"; do
+              [[ "$keep" != "main" ]] && echo "  - $keep"
+            done
+          fi
