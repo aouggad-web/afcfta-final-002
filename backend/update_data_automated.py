@@ -36,19 +36,24 @@ class DataUpdater:
         if self.verbose:
             print(log_entry)
 
-    def fetch_world_bank_data(self, indicator, countries):
+    def fetch_world_bank_data(self, indicator, countries, date_range="2020:2024"):
         """
         Fetch data from World Bank API
         indicator: e.g., 'NY.GDP.MKTP.CD', 'SP.POP.TOTL'
         countries: list of ISO3 country codes
+        date_range: plage d'années "AAAA:AAAA". Élargie pour les indicateurs
+            sociaux (pauvreté, Gini) dont la dernière enquête peut remonter à
+            plusieurs années (ex. pauvreté Algérie = 2011) : sans plage large,
+            leur valeur réelle serait manquée et l'app retomberait sur une
+            valeur curée figée.
         """
-        self.log(f"Fetching World Bank data for indicator: {indicator}")
+        self.log(f"Fetching World Bank data for indicator: {indicator} ({date_range})")
 
         # World Bank API endpoint
         # Format: https://api.worldbank.org/v2/country/{countries}/indicator/{indicator}?format=json&date=2020:2024
         countries_str = ";".join(countries)
         url = f"https://api.worldbank.org/v2/country/{countries_str}/indicator/{indicator}"
-        params = {"format": "json", "date": "2020:2024", "per_page": 500}
+        params = {"format": "json", "date": date_range, "per_page": 2000}
 
         try:
             response = self.session.get(url, params=params, timeout=30)
@@ -130,24 +135,38 @@ class DataUpdater:
             "ZWE",
         ]
 
-        # Fetch key indicators
-        indicators = {
-            "GDP": "NY.GDP.MKTP.CD",  # GDP (current US$)
-            "GDP_per_capita": "NY.GDP.PCAP.CD",  # GDP per capita (current US$)
-            "Population": "SP.POP.TOTL",  # Population, total
-            "GDP_growth": "NY.GDP.MKTP.KD.ZG",  # GDP growth (annual %)
-            # Consommés par services/wb_macro_service.py (profil pays +
-            # comparaisons) — tant qu'ils n'ont pas été collectés, ces champs
-            # restent null côté API plutôt que d'être inventés.
-            "Inflation": "FP.CPI.TOTL.ZG",  # Inflation, consumer prices (annual %)
-            "Unemployment": "SL.UEM.TOTL.ZS",  # Unemployment (% labor force, ILO)
-        }
+        # Fetch key indicators.
+        # date_range : les indicateurs macro annuels restent sur 2020:2024 ;
+        # les indicateurs sociaux (pauvreté, Gini, espérance de vie, accès
+        # électricité/internet…) utilisent une plage large car leur dernière
+        # valeur réelle peut remonter loin (ex. pauvreté = enquête ménages,
+        # parfois 2011). wb_macro_service._latest() ne retient que la dernière
+        # année réellement renseignée, avec cette année réelle affichée.
+        # (name, code, date_range)
+        indicators_spec = [
+            ("GDP", "NY.GDP.MKTP.CD", "2020:2024"),  # GDP (current US$)
+            ("GDP_per_capita", "NY.GDP.PCAP.CD", "2020:2024"),  # GDP/capita (US$)
+            ("Population", "SP.POP.TOTL", "2020:2024"),  # Population, total
+            ("GDP_growth", "NY.GDP.MKTP.KD.ZG", "2020:2024"),  # GDP growth (%)
+            ("Inflation", "FP.CPI.TOTL.ZG", "2020:2024"),  # Inflation (annual %)
+            ("Unemployment", "SL.UEM.TOTL.ZS", "2020:2024"),  # Unemployment (%)
+            # Indicateurs sociaux Banque Mondiale (WDI) — alimentent le bloc
+            # « Indicateurs sociaux » du Profil Pays. Chacun affiché avec sa
+            # VRAIE année (fin des étiquettes d'année figées/inventées).
+            ("LifeExpectancy", "SP.DYN.LE00.IN", "2000:2024"),  # espérance de vie
+            ("GiniIndex", "SI.POV.GINI", "2000:2024"),  # indice de Gini
+            ("Poverty3usd", "SI.POV.DDAY", "2000:2024"),  # pauvreté seuil int. (3,00$ PPA 2021)
+            ("UrbanPopulation", "SP.URB.TOTL.IN.ZS", "2000:2024"),  # pop. urbaine %
+            ("InternetUsers", "IT.NET.USER.ZS", "2000:2024"),  # internautes %
+            ("ElectricityAccess", "EG.ELC.ACCS.ZS", "2000:2024"),  # accès électricité %
+            ("FemaleLaborForce", "SL.TLF.CACT.FE.ZS", "2000:2024"),  # pop. active féminine %
+        ]
 
         country_data = {}
 
-        for indicator_name, indicator_code in indicators.items():
+        for indicator_name, indicator_code, date_range in indicators_spec:
             self.log(f"\nFetching {indicator_name}...")
-            data = self.fetch_world_bank_data(indicator_code, african_countries)
+            data = self.fetch_world_bank_data(indicator_code, african_countries, date_range)
 
             for item in data:
                 country_code = item.get("countryiso3code")
@@ -200,7 +219,7 @@ class DataUpdater:
         # incluant des indicateurs absents.
         present_indicators = [
             name
-            for name in indicators
+            for name, _code, _range in indicators_spec
             if any(name in c.get("indicators", {}) for c in country_data.values())
         ]
 

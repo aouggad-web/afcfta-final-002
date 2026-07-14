@@ -188,24 +188,43 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         "africa_rank": real_data.get("africa_rank", 25),
     }
 
-    # Social/WB indicators
-    wb_fields = [
-        "life_expectancy_2023",
-        "gini_index_2024",
-        "poverty_rate_3usd_2024",
-        "urban_population_pct_2024",
-        "internet_users_pct_2024",
-        "electricity_access_2022",
-        "mobile_3g_coverage_2024",
-        "female_labor_force_pct_2024",
-        "water_stress_2022",
-        "ghg_emissions_mt_2022",
-        "learning_poverty_2023",
+    # Indicateurs sociaux. Pour chacun, on prend la DERNIÈRE année réellement
+    # disponible à la Banque Mondiale (API auto-actualisée) et on affiche CETTE
+    # année réelle — fin des étiquettes d'année figées/inventées. Repli sur la
+    # valeur curée (avec son année d'origine) uniquement quand la BM n'a rien.
+    #
+    # Chaque champ expose deux clés :
+    #   <clé>        -> la valeur ;
+    #   <clé>_year   -> l'année réelle de cette valeur (BM live, sinon curée).
+    #
+    # (clé_frontend, clé_BM ou None si curé-seul, année de repli curée)
+    social_fields = [
+        ("life_expectancy_2023", "life_expectancy_years", 2023),
+        ("gini_index_2024", "gini_index", 2024),
+        ("poverty_rate_3usd_2024", "poverty_rate_3usd_pct", 2024),
+        ("urban_population_pct_2024", "urban_population_pct", 2024),
+        ("internet_users_pct_2024", "internet_users_pct", 2024),
+        ("electricity_access_2022", "electricity_access_pct", 2022),
+        ("female_labor_force_pct_2024", "female_labor_force_pct", 2024),
+        # Indicateurs curés uniquement (pas d'équivalent WDI direct branché) —
+        # conservés tels quels avec leur année d'origine.
+        ("mobile_3g_coverage_2024", None, 2024),
+        ("water_stress_2022", None, 2022),
+        ("ghg_emissions_mt_2022", None, 2022),
+        ("learning_poverty_2023", None, 2023),
     ]
-    for field in wb_fields:
-        value = real_data.get(field)
-        if value is not None:
-            profile.projections[field] = value
+    for field, wb_key, fallback_year in social_fields:
+        wb_entry = wb.get(wb_key) if wb_key else None
+        if wb_entry and wb_entry.get("value") is not None:
+            # BM live : valeur + vraie année.
+            profile.projections[field] = wb_entry["value"]
+            profile.projections[f"{field}_year"] = wb_entry["year"]
+        else:
+            # Repli curé : valeur figée + son année d'origine.
+            value = real_data.get(field)
+            if value is not None:
+                profile.projections[field] = value
+                profile.projections[f"{field}_year"] = fallback_year
 
     # Gold reserves data
     gold_data = GOLD_RESERVES_GAI_DATA["gold_reserves"].get(country["iso3"], {})
