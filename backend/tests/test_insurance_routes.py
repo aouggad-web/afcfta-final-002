@@ -33,6 +33,20 @@ def client(insurance_module):
 
 
 class TestInsuranceRoutes:
+    def test_list_countries_returns_code_and_full_name(self, client):
+        response = client.get("/insurance/countries")
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["success"] is True
+        assert payload["total"] > 0
+        assert len(payload["countries"]) == payload["total"]
+        dz = next((c for c in payload["countries"] if c["country_code"] == "DZ"), None)
+        assert dz is not None
+        assert dz["country_name"] == "Algérie"
+        # sorted alphabetically by full name
+        names = [c["country_name"] for c in payload["countries"]]
+        assert names == sorted(names)
+
     def test_list_insurers_returns_full_directory(self, client):
         response = client.get("/insurance/insurers")
         assert response.status_code == 200

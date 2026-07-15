@@ -18,6 +18,7 @@ from finance.insurance import (
     batch_calculate_quotes,
     calculate_insurance_quote,
     get_country_insurance_profile,
+    get_insurance_registry,
     get_premium_adjustments_for_country,
 )
 from pydantic import BaseModel, Field
@@ -54,6 +55,30 @@ class BatchQuoteRequest(BaseModel):
         description="Product types to compare; defaults to export_credit, political_risk, "
         "performance_guarantee",
     )
+
+
+@router.get(
+    "/countries",
+    summary="Countries with an insurance profile (code + full name)",
+    tags=["Insurance"],
+)
+async def list_countries():
+    """
+    List every country that currently has an insurance profile, with its
+    ISO2 code and full country name, sorted alphabetically by name.
+
+    Intended to populate a country selector in the UI so users pick a full
+    country name rather than typing a raw ISO2 code.
+    """
+    registry = get_insurance_registry()
+    countries = sorted(
+        (
+            {"country_code": code, "country_name": profile.country_name}
+            for code, profile in registry.items()
+        ),
+        key=lambda c: c["country_name"],
+    )
+    return {"success": True, "total": len(countries), "countries": countries}
 
 
 @router.get(

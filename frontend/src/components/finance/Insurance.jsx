@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -42,6 +42,8 @@ const texts = {
     comparison: 'Comparaison des produits',
     rating: 'Notation',
     capacity: 'Capacité',
+    country: 'Pays',
+    noProfile: 'Aucun profil assurance disponible pour ce pays.',
   },
   en: {
     title: '🛡️ Trade Insurance',
@@ -68,6 +70,8 @@ const texts = {
     comparison: 'Product comparison',
     rating: 'Rating',
     capacity: 'Capacity',
+    country: 'Country',
+    noProfile: 'No insurance profile available for this country.',
   },
 };
 
@@ -80,8 +84,27 @@ export default function Insurance({ language = 'en' }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [profileNotFound, setProfileNotFound] = useState(false);
   const [quote, setQuote] = useState(null);
   const [batch, setBatch] = useState(null);
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    axios
+      .get(`${API}/insurance/countries`)
+      .then((res) => {
+        if (!cancelled && res.data.success) {
+          setCountries(res.data.countries);
+        }
+      })
+      .catch(() => {
+        // selector falls back to the default DZ value if the list can't load
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const invalidAmountMessage = {
     fr: 'Veuillez saisir un montant valide supérieur à 0.',
@@ -101,12 +124,15 @@ export default function Insurance({ language = 'en' }) {
       const res = await axios.get(`${API}/insurance/countries/${code.toUpperCase()}/profile`);
       if (res.data.success) {
         setProfile(res.data.profile);
+        setProfileNotFound(false);
       } else {
         setProfile(null);
+        setProfileNotFound(true);
       }
     } catch (err) {
       // profile is best-effort context; quote errors surface separately
       setProfile(null);
+      setProfileNotFound(err.response?.status === 404);
     }
   };
 
@@ -185,14 +211,28 @@ export default function Insurance({ language = 'en' }) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium">{t.countryLabel}</label>
-                <input
-                  type="text"
-                  maxLength="2"
-                  value={countryCode}
-                  onChange={(e) => setCountryCode(e.target.value.toUpperCase())}
-                  className="w-full px-3 py-2 border rounded"
-                  placeholder="DZ"
-                />
+                {countries.length > 0 ? (
+                  <select
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    className="w-full px-3 py-2 border rounded"
+                  >
+                    {countries.map((c) => (
+                      <option key={c.country_code} value={c.country_code}>
+                        {c.country_name} ({c.country_code})
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    maxLength="2"
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value.toUpperCase())}
+                    className="w-full px-3 py-2 border rounded"
+                    placeholder="DZ"
+                  />
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium">{t.amountLabel}</label>
@@ -256,7 +296,12 @@ export default function Insurance({ language = 'en' }) {
           {profile && (
             <Card className="mt-6 bg-blue-50">
               <CardHeader>
-                <CardTitle className="text-base">{t.profile}</CardTitle>
+                <CardTitle className="text-base flex items-center gap-2">
+                  {t.profile}
+                  <Badge variant="outline">
+                    {profile.country_code} — {profile.country_name}
+                  </Badge>
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -284,6 +329,12 @@ export default function Insurance({ language = 'en' }) {
                 )}
               </CardContent>
             </Card>
+          )}
+
+          {!profile && profileNotFound && !error && (
+            <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
+              {t.country} {countryCode.toUpperCase()}: {t.noProfile}
+            </div>
           )}
 
           {quote && (
