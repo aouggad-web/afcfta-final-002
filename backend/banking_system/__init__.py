@@ -10,6 +10,11 @@ Provides data and logic for:
 - Country risk assessment
 """
 
+from .bank_scoring import (
+    BankScorer,
+    get_bank_suitability_score,
+    score_banks_for_transaction,
+)
 from .banking_recommendations import get_trade_recommendations
 from .banks_registry import (
     CENTRAL_BANKS,
@@ -49,6 +54,10 @@ __all__ = [
     "get_regional_banks",
     "get_banks_register",
     "CENTRAL_BANKS",
+    # Bank scoring (Option 2)
+    "BankScorer",
+    "score_banks_for_transaction",
+    "get_bank_suitability_score",
     # Banking recommendations
     "get_trade_recommendations",
     # Forex / domiciliation
