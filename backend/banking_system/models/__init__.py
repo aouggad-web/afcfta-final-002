@@ -48,22 +48,13 @@ __all__ = [
     "TradeFinanceInstrument",
     "PaymentSystem",
     "CountryRiskProfile",
-<<<<<<< HEAD
-    "CountryInsuranceProfile",
-    "InsuranceProduct",
-    "InsuranceProductType",
-    "InsuranceCoverageScope",
-    "InsuranceRiskLevel",
-    "Insurer",
-=======
-    # Insurance (NEW)
+    # Insurance
     "InsuranceProductType",
     "InsuranceCoverageScope",
     "InsuranceRiskLevel",
     "InsuranceProduct",
     "Insurer",
     "CountryInsuranceProfile",
->>>>>>> origin/main
     "InsuranceQuote",
     "InsuranceClaim",
 ]

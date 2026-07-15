@@ -5,10 +5,9 @@ Provides data and logic for:
 - Banks registry (central banks, commercial banks, regional banks)
 - Foreign-exchange regulations and domiciliation rules
 - Trade finance instruments
-- Insurance products and pricing
+- Insurance products and premium pricing (export credit, political risk)
 - Regional payment systems
 - Country risk assessment
-- Insurance products and premium pricing (export credit, political risk)
 """
 
 from .bank_scoring import (
@@ -39,17 +38,11 @@ from .insurance_pricing import (
     get_premium_adjustments_for_country,
 )
 from .insurance_registry import (
-<<<<<<< HEAD
-    get_available_insurers,
-    get_available_products,
-    get_country_insurance_profile,
-=======
     COUNTRY_INSURANCE_PROFILES,
     get_available_insurers,
     get_available_products,
     get_country_insurance_profile,
     get_insurance_registry,
->>>>>>> origin/main
 )
 from .payment_systems import get_payment_systems, get_regional_systems
 from .regulatory_compliance import check_compliance, get_country_compliance
@@ -81,6 +74,8 @@ __all__ = [
     "get_country_insurance_profile",
     "get_available_insurers",
     "get_available_products",
+    "get_insurance_registry",
+    "COUNTRY_INSURANCE_PROFILES",
     "calculate_insurance_quote",
     "batch_calculate_quotes",
     "get_premium_adjustments_for_country",
@@ -96,13 +91,4 @@ __all__ = [
     # Risk assessment
     "get_country_risk",
     "assess_transaction_risk",
-    # Insurance (NEW)
-    "get_country_insurance_profile",
-    "get_available_insurers",
-    "get_available_products",
-    "get_insurance_registry",
-    "COUNTRY_INSURANCE_PROFILES",
-    "calculate_insurance_quote",
-    "get_premium_adjustments_for_country",
-    "batch_calculate_quotes",
 ]
