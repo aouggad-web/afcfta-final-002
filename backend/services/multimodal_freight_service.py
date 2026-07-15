@@ -722,7 +722,9 @@ def _bulk_sea_options(
         # ``is_live`` vient du drapeau explicite posé par l'ETL — jamais déduit
         # de la valeur du facteur (qui peut valoir 1,0 tout en étant live).
         market_override = bulk_result.get("freight_market_override")
-        is_live = bool(market_override and market_override.get("is_live"))
+        # ``is_live`` est déjà un booléen strict normalisé par le backend
+        # (override_is_live) — on le lit tel quel, sans re-deviner.
+        is_live = (market_override or {}).get("is_live") is True
         pricing_as_of = bulk_result.get("as_of")
         market_proxy = (market_override or {}).get("proxy") or "BDRY"
         pricing_source = (

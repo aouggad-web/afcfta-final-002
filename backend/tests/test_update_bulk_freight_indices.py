@@ -281,6 +281,48 @@ def test_backend_neutral_live_factor_still_dates_tariff():
         bulk._FREIGHT_OVERRIDES.update(saved)
 
 
+def test_override_is_live_normalizes_strictly_and_handles_legacy():
+    # Drapeau bool strict
+    assert bulk.override_is_live({"is_live": True, "multiplier": 1.0}) is True
+    assert bulk.override_is_live({"is_live": False, "multiplier": 1.4}) is False
+    # Valeur non-booléenne (ex. chaîne "false") → jamais live
+    assert bulk.override_is_live({"is_live": "false", "multiplier": 1.4}) is False
+    assert bulk.override_is_live({"is_live": "true", "multiplier": 1.4}) is False
+    # Override legacy sans drapeau : live si le facteur bouge, sinon non
+    assert bulk.override_is_live({"multiplier": 1.4}) is True
+    assert bulk.override_is_live({"multiplier": 1.0}) is False
+    assert bulk.override_is_live(None) is False
+
+
+def test_backend_legacy_override_without_flag_still_dates_tariff():
+    # Retour Copilot : un override legacy (multiplier ≠ 1.0, sans is_live) doit
+    # dater le tarif à sa date de marché, pas retomber sur "calibration 2024".
+    legacy = {"multiplier": 1.4, "as_of": "2026-07-10", "proxy": "BDRY-legacy"}
+    saved = dict(bulk._FREIGHT_OVERRIDES)
+    bulk._FREIGHT_OVERRIDES.update({cls: dict(legacy) for cls in bulk.VESSEL_CLASSES})
+    try:
+        r = bulk.get_bulk_freight_cost("ZACPT", "DZORN", 25_000)
+        assert r["as_of"] == "2026-07-10"
+        assert r["freight_market_override"]["is_live"] is True
+    finally:
+        bulk._FREIGHT_OVERRIDES.clear()
+        bulk._FREIGHT_OVERRIDES.update(saved)
+
+
+def test_backend_string_is_live_not_treated_as_live():
+    # Un is_live non-booléen ("false") ne doit jamais marquer le tarif live.
+    bad = {"multiplier": 1.0, "is_live": "false", "as_of": "2026-07-10"}
+    saved = dict(bulk._FREIGHT_OVERRIDES)
+    bulk._FREIGHT_OVERRIDES.update({cls: dict(bad) for cls in bulk.VESSEL_CLASSES})
+    try:
+        r = bulk.get_bulk_freight_cost("ZACPT", "DZORN", 25_000)
+        assert r["as_of"] == "calibration moyennes 2024"
+        assert r["freight_market_override"]["is_live"] is False
+    finally:
+        bulk._FREIGHT_OVERRIDES.clear()
+        bulk._FREIGHT_OVERRIDES.update(saved)
+
+
 def test_committed_seed_file_is_valid():
     ov = bulk._load_freight_overrides(bulk._FREIGHT_OVERRIDE_PATH)
     assert set(ov) == set(bulk.VESSEL_CLASSES)
