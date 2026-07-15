@@ -717,12 +717,28 @@ def _bulk_sea_options(
         )
         co2 = round(weight_tonnes * distance_km * co2_factor / 1000.0, 1)
 
+        # Provenance / fraîcheur du tarif : facteur de marché live (proxy BDRY)
+        # ou repli statique calibré. Remonté jusqu'au frontend Opportunités.
+        market_override = bulk_result.get("freight_market_override")
+        is_live = bool(market_override and market_override.get("multiplier") != 1.0)
+        pricing_as_of = bulk_result.get("as_of")
+        pricing_source = (
+            market_override.get("source")
+            if market_override
+            else "Modèle vraquier calibré (benchmarks Baltic 2024)"
+        )
+
         # Build notes from constraints
         constraints_notes = bulk_result.get("constraints_notes", [])
         voyages_needed = bulk_result.get("voyages_needed", 1)
         notes = ""
         if bulk_result.get("is_modeled"):
             notes = "Tarif vraquier estimé (modèle calibré ±20 %). "
+        if is_live:
+            notes += (
+                f"Ajusté au marché (facteur ×{market_override['multiplier']}, "
+                f"proxy {market_override.get('proxy', 'BDRY')}, {pricing_as_of}). "
+            )
         if constraints_notes:
             notes += " ".join(constraints_notes) + " "
         if voyages_needed > 1:
@@ -774,7 +790,14 @@ def _bulk_sea_options(
                 "commodity_label": bulk_commodity.get("label"),
                 "commodity_category": bulk_commodity.get("category"),
                 "notes": notes,
-                "source": "Fret vraquier — PLAN_FRET_VRAQUIER Lot A calibration",
+                "pricing": {
+                    "is_live": is_live,
+                    "as_of": pricing_as_of,
+                    "market_proxy": (market_override or {}).get("proxy"),
+                    "market_multiplier": (market_override or {}).get("multiplier"),
+                    "source": pricing_source,
+                },
+                "source": pricing_source,
             }
         ]
     except ImportError as e:
