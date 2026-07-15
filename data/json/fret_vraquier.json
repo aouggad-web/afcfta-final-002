@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Multiplicateurs de marché du fret vraquier par classe de navire (indice Baltic courant / référence 2024), appliqués au modèle distance-coût de backend/logistics_bulk_fees_data.py. Une classe en échec reste à 1,0 (repli statique daté). Zéro fabrication.",
-    "generated_at": "2026-07-14T20:44:11Z",
+    "generated_at": "2026-07-15T06:50:36Z",
     "generator": "etl/update_bulk_freight_indices.py (GitHub Actions, jours ouvrés)",
     "baseline": "Niveaux d'indices Baltic — moyennes annuelles 2024 (ordre de grandeur)",
     "plausibility_multiplier_bounds": [
