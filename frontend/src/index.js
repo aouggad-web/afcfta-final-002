@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import axios from "axios";
 import "./index.css";
+import "./services/csrf";
 import App from "./App";
 import AdminProjectsPage from "./components/admin/AdminProjectsPage";
 
