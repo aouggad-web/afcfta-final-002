@@ -82,7 +82,7 @@ class FinancingMatrix:
             elif risk_code == "C":
                 recommended = ["LC_CONFIRMED", "BANK_GUARANTEE_ADVANCE"]
             else:  # D
-                recommended = ["LC_CONFIRMED", "CASH_IN_ADVANCE"]
+                recommended = ["LC_CONFIRMED", "STANDBY_LC"]
 
             # Get full instrument data
             instruments_list = []
@@ -379,7 +379,7 @@ class FinancingMatrix:
         elif max_usd <= 1_000_000:
             return ["LC_IRREVOCABLE", "LC_CONFIRMED", "EXPORT_FACTORING"]
         else:
-            return ["LC_CONFIRMED", "STANDBY_LC", "CURRENCY_SWAP"]
+            return ["LC_CONFIRMED", "STANDBY_LC", "SUPPLY_CHAIN_FINANCE"]
 
     @staticmethod
     def _cost_range_for_size(min_usd: float) -> str:

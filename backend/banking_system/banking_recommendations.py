@@ -16,7 +16,7 @@ from .banks_registry import get_country_banks
 from .insurance_registry import get_country_insurance_profile
 from .models import TradeFinanceInstrument
 from .risk_assessment import get_country_risk
-from .trade_finance import TRADE_FINANCE_INSTRUMENTS, get_trade_finance_instruments
+from .trade_finance import TRADE_FINANCE_INSTRUMENTS
 
 
 class TradeFinanceRecommendation:

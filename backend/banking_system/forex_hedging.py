@@ -8,9 +8,9 @@ Provides hedging recommendations based on:
 - Cost-benefit analysis
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, List
 
-from .foreign_exchange import get_currency_meta, get_forex_profile
+from .foreign_exchange import get_currency_meta
 from .risk_assessment import get_country_risk
 
 
@@ -101,7 +101,6 @@ def recommend_hedging_strategy(
     # Get currency and risk info
     currency_code, currency_name, convertibility = get_currency_meta(country_code)
     risk_profile = get_country_risk(country_code)
-    forex_profile = get_forex_profile(country_code)
 
     # Determine hedging necessity
     hedging_necessity = _assess_hedging_necessity(
@@ -206,8 +205,11 @@ def _assess_hedging_necessity(
     if convertibility == "freely_convertible" and forex_risk == "low":
         return "low"
 
-    # Restricted + high risk = critical
-    if convertibility in ["restricted", "limited"] and forex_risk in ["high", "very_high"]:
+    # Non-convertible / partially convertible + high risk = critical
+    if convertibility in ["non_convertible", "partially_convertible"] and forex_risk in [
+        "high",
+        "very_high",
+    ]:
         return "critical"
 
     # Large amounts need hedging

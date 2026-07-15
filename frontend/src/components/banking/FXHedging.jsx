@@ -144,7 +144,7 @@ export default function FXHedging({ language = 'en' }) {
                   <div className="flex justify-between items-center">
                     <span className="font-medium">{t.necessity}:</span>
                     <Badge className="capitalize">
-                      {result.hedging_necessity}
+                      {result.risk_factors?.hedging_necessity}
                     </Badge>
                   </div>
                   <p className="text-sm text-gray-700 mt-2">{result.explanation}</p>

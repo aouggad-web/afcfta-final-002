@@ -9,7 +9,7 @@ Endpoints:
 """
 
 import logging
-from typing import List, Optional
+from typing import Optional
 
 from banking_system import (
     get_country_banks,
@@ -408,6 +408,8 @@ async def get_cost_benefit_analysis(
     """
     try:
         analysis = FinancingMatrix.get_cost_benefit_analysis(country_code, amount_usd)
+        if "error" in analysis:
+            raise HTTPException(status_code=404, detail=analysis["error"])
         return {
             "success": True,
             "transaction": analysis["transaction"],
@@ -427,6 +429,8 @@ async def get_cost_benefit_analysis(
                 ),
             },
         }
+    except HTTPException:
+        raise
     except Exception as exc:
         logger.error("Cost-benefit error: %s", exc)
         raise HTTPException(status_code=400, detail=str(exc))

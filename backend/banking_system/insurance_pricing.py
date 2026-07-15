@@ -7,11 +7,10 @@ Provides:
 - Multi-product comparison and recommendations
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 
-from .insurance_registry import get_available_products, get_country_insurance_profile
+from .insurance_registry import get_country_insurance_profile
 from .models import InsuranceProductType, InsuranceQuote
-from .risk_assessment import get_country_risk
 
 
 def calculate_insurance_quote(
