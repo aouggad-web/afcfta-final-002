@@ -11,7 +11,7 @@ const NAV_ITEMS = (isFrench) => [
   { id: "stats",      label: isFrench ? "Statistiques"    : "Statistics",      icon: BarChart3 },
   { id: "production", label: isFrench ? "Production"      : "Production",      icon: Factory },
   { id: "logistics",  label: isFrench ? "Logistique"      : "Logistics",       icon: Ship },
-  { id: "banking",    label: isFrench ? "Banque"          : "Banking",         icon: Landmark },
+  { id: "banking",    label: isFrench ? "Finance"         : "Finance",         icon: Landmark },
   { id: "tools",      label: isFrench ? "Outils"          : "Tools",           icon: Wrench },
   { id: "roo",        label: isFrench ? "R. d'Origine"   : "Rules of Origin", icon: FileCheck },
   { id: "profiles",   label: isFrench ? "Profils"         : "Profiles",        icon: Globe2 },
