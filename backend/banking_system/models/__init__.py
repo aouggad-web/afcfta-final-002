@@ -22,6 +22,16 @@ from .regulation_models import (
     ForexRegulation,
     ImportFormalities,
 )
+from .insurance_models import (
+    CountryInsuranceProfile,
+    Insurer,
+    InsuranceClaim,
+    InsuranceCoverageScope,
+    InsuranceProduct,
+    InsuranceProductType,
+    InsuranceQuote,
+    InsuranceRiskLevel,
+)
 
 __all__ = [
     "BankContact",
@@ -38,4 +48,13 @@ __all__ = [
     "TradeFinanceInstrument",
     "PaymentSystem",
     "CountryRiskProfile",
+    # Insurance (NEW)
+    "InsuranceProductType",
+    "InsuranceCoverageScope",
+    "InsuranceRiskLevel",
+    "InsuranceProduct",
+    "Insurer",
+    "CountryInsuranceProfile",
+    "InsuranceQuote",
+    "InsuranceClaim",
 ]

@@ -7,6 +7,7 @@ Provides data and logic for:
 - Trade finance instruments
 - Regional payment systems
 - Country risk assessment
+- Insurance products and premium pricing (export credit, political risk)
 """
 
 from .banks_registry import (
@@ -29,6 +30,18 @@ from .payment_systems import get_payment_systems, get_regional_systems
 from .regulatory_compliance import check_compliance, get_country_compliance
 from .risk_assessment import assess_transaction_risk, get_country_risk
 from .trade_finance import get_trade_finance_instruments, recommend_instruments
+from .insurance_registry import (
+    COUNTRY_INSURANCE_PROFILES,
+    get_available_insurers,
+    get_available_products,
+    get_country_insurance_profile,
+    get_insurance_registry,
+)
+from .insurance_pricing import (
+    batch_calculate_quotes,
+    calculate_insurance_quote,
+    get_premium_adjustments_for_country,
+)
 
 __all__ = [
     # Banks registry
@@ -57,4 +70,13 @@ __all__ = [
     # Risk assessment
     "get_country_risk",
     "assess_transaction_risk",
+    # Insurance (NEW)
+    "get_country_insurance_profile",
+    "get_available_insurers",
+    "get_available_products",
+    "get_insurance_registry",
+    "COUNTRY_INSURANCE_PROFILES",
+    "calculate_insurance_quote",
+    "get_premium_adjustments_for_country",
+    "batch_calculate_quotes",
 ]
