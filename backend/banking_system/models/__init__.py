@@ -48,7 +48,7 @@ __all__ = [
     "TradeFinanceInstrument",
     "PaymentSystem",
     "CountryRiskProfile",
-    # Insurance (NEW)
+    # Insurance
     "InsuranceProductType",
     "InsuranceCoverageScope",
     "InsuranceRiskLevel",
