@@ -1,40 +1,40 @@
 {
   "_meta": {
-    "description": "Multiplicateurs de marché du fret vraquier par classe de navire (indice Baltic courant / référence 2024), appliqués au modèle distance-coût de backend/logistics_bulk_fees_data.py. Une classe en échec reste à 1,0 (repli statique daté). Zéro fabrication.",
-    "generated_at": "2026-07-14T20:44:11Z",
+    "description": "Facteur de marché du fret vrac sec (proxy BDRY) appliqué au modèle distance-coût de backend/logistics_bulk_fees_data.py, uniformément par classe de navire. Proxy, pas l'indice Baltic par classe. Sans facteur live, repli statique 1,0 (modèle calibré Baltic 2024). Zéro fabrication.",
+    "generated_at": "2026-07-15T09:40:04Z",
     "generator": "etl/update_bulk_freight_indices.py (GitHub Actions, jours ouvrés)",
-    "baseline": "Niveaux d'indices Baltic — moyennes annuelles 2024 (ordre de grandeur)",
+    "market_proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
+    "market_proxy_url": "https://finance.yahoo.com/quote/BDRY/",
     "plausibility_multiplier_bounds": [
       0.3,
       3.0
     ],
-    "classes_live": [],
-    "classes_failed_or_static": []
+    "is_live": false
   },
   "vessel_class_multipliers": {
     "handysize": {
       "multiplier": 1.0,
-      "index": "BHSI (Baltic Handysize Index)",
+      "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
       "as_of": "moyenne 2024",
-      "source": "Baltic Exchange — BHSI, moyenne annuelle 2024 (ordre de grandeur) (référence de calibration)"
+      "source": "Modèle calibré sur benchmarks Baltic 2024 (repli statique, aucun facteur live)"
     },
     "supramax": {
       "multiplier": 1.0,
-      "index": "BSI (Baltic Supramax Index)",
+      "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
       "as_of": "moyenne 2024",
-      "source": "Baltic Exchange — BSI, moyenne annuelle 2024 (ordre de grandeur) (référence de calibration)"
+      "source": "Modèle calibré sur benchmarks Baltic 2024 (repli statique, aucun facteur live)"
     },
     "panamax": {
       "multiplier": 1.0,
-      "index": "BPI (Baltic Panamax Index)",
+      "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
       "as_of": "moyenne 2024",
-      "source": "Baltic Exchange — BPI, moyenne annuelle 2024 (ordre de grandeur) (référence de calibration)"
+      "source": "Modèle calibré sur benchmarks Baltic 2024 (repli statique, aucun facteur live)"
     },
     "capesize": {
       "multiplier": 1.0,
-      "index": "BCI (Baltic Capesize Index)",
+      "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
       "as_of": "moyenne 2024",
-      "source": "Baltic Exchange — BCI, moyenne annuelle 2024 (ordre de grandeur) (référence de calibration)"
+      "source": "Modèle calibré sur benchmarks Baltic 2024 (repli statique, aucun facteur live)"
     }
   }
 }

@@ -579,7 +579,9 @@ def get_bulk_freight_cost(
             {
                 "vessel_class": chosen,
                 "multiplier": market_override["multiplier"],
-                "index": market_override.get("index"),
+                # Provenance du facteur : proxy de marché (BDRY) ou, pour
+                # compatibilité, un ancien champ ``index`` par classe.
+                "proxy": market_override.get("proxy") or market_override.get("index"),
                 "as_of": market_override.get("as_of"),
                 "source": market_override.get("source"),
             }
