@@ -719,9 +719,12 @@ def _bulk_sea_options(
 
         # Provenance / fraîcheur du tarif : facteur de marché live (proxy BDRY)
         # ou repli statique calibré. Remonté jusqu'au frontend Opportunités.
+        # ``is_live`` vient du drapeau explicite posé par l'ETL — jamais déduit
+        # de la valeur du facteur (qui peut valoir 1,0 tout en étant live).
         market_override = bulk_result.get("freight_market_override")
-        is_live = bool(market_override and market_override.get("multiplier") != 1.0)
+        is_live = bool(market_override and market_override.get("is_live"))
         pricing_as_of = bulk_result.get("as_of")
+        market_proxy = (market_override or {}).get("proxy") or "BDRY"
         pricing_source = (
             market_override.get("source")
             if market_override
@@ -735,10 +738,17 @@ def _bulk_sea_options(
         if bulk_result.get("is_modeled"):
             notes = "Tarif vraquier estimé (modèle calibré ±20 %). "
         if is_live:
-            notes += (
-                f"Ajusté au marché (facteur ×{market_override['multiplier']}, "
-                f"proxy {market_override.get('proxy', 'BDRY')}, {pricing_as_of}). "
-            )
+            multiplier = market_override.get("multiplier", 1.0)
+            if multiplier != 1.0:
+                notes += (
+                    f"Ajusté au marché (facteur ×{multiplier}, "
+                    f"proxy {market_proxy}, {pricing_as_of}). "
+                )
+            else:
+                notes += (
+                    f"Aligné sur le marché (proxy {market_proxy}, {pricing_as_of}, "
+                    "au niveau de sa moyenne glissante). "
+                )
         if constraints_notes:
             notes += " ".join(constraints_notes) + " "
         if voyages_needed > 1:
@@ -793,7 +803,7 @@ def _bulk_sea_options(
                 "pricing": {
                     "is_live": is_live,
                     "as_of": pricing_as_of,
-                    "market_proxy": (market_override or {}).get("proxy"),
+                    "market_proxy": market_proxy if is_live else None,
                     "market_multiplier": (market_override or {}).get("multiplier"),
                     "source": pricing_source,
                 },

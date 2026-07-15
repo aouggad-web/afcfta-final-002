@@ -62,7 +62,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(data): indices fret vraquier du jour (update_bulk_freight #${{ github.run_number }})"
+          commit-message: "chore(data): facteur de marché fret vraquier du jour (update_bulk_freight #${{ github.run_number }})"
           committer: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
           author: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
           branch: automated-bulk-freight
@@ -93,7 +93,7 @@ jobs:
         run: |
           echo "## Facteur marché fret vraquier — $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
           if [ "${{ steps.check_changes.outputs.changes }}" == "true" ]; then
-            echo "✅ Indices mis à jour — PR créée/actualisée" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Facteur de marché mis à jour — PR créée/actualisée" >> $GITHUB_STEP_SUMMARY
           else
             echo "ℹ️ Aucun changement (repli statique inchangé)" >> $GITHUB_STEP_SUMMARY
           fi

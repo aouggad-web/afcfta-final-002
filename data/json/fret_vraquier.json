@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Facteur de marché du fret vrac sec (proxy BDRY) appliqué au modèle distance-coût de backend/logistics_bulk_fees_data.py, uniformément par classe de navire. Proxy, pas l'indice Baltic par classe. Sans facteur live, repli statique 1,0 (modèle calibré Baltic 2024). Zéro fabrication.",
-    "generated_at": "2026-07-15T09:40:04Z",
+    "generated_at": "2026-07-15T10:11:58Z",
     "generator": "etl/update_bulk_freight_indices.py (GitHub Actions, jours ouvrés)",
     "market_proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
     "market_proxy_url": "https://finance.yahoo.com/quote/BDRY/",
@@ -14,24 +14,28 @@
   "vessel_class_multipliers": {
     "handysize": {
       "multiplier": 1.0,
+      "is_live": false,
       "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
       "as_of": "moyenne 2024",
       "source": "Modèle calibré sur benchmarks Baltic 2024 (repli statique, aucun facteur live)"
     },
     "supramax": {
       "multiplier": 1.0,
+      "is_live": false,
       "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
       "as_of": "moyenne 2024",
       "source": "Modèle calibré sur benchmarks Baltic 2024 (repli statique, aucun facteur live)"
     },
     "panamax": {
       "multiplier": 1.0,
+      "is_live": false,
       "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
       "as_of": "moyenne 2024",
       "source": "Modèle calibré sur benchmarks Baltic 2024 (repli statique, aucun facteur live)"
     },
     "capesize": {
       "multiplier": 1.0,
+      "is_live": false,
       "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
       "as_of": "moyenne 2024",
       "source": "Modèle calibré sur benchmarks Baltic 2024 (repli statique, aucun facteur live)"

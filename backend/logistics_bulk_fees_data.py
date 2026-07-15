@@ -569,9 +569,12 @@ def get_bulk_freight_cost(
         "co2_source": "IMO 4th GHG Study 2020 / GLEC Framework v3 (ordre de grandeur par classe)",
         "constraints_notes": constraints_notes,
         "is_modeled": True,
+        # Fraîcheur : un facteur live (drapeau ``is_live``, posé par l'ETL) date
+        # le tarif à sa date de marché — indépendamment de la valeur du facteur,
+        # qui peut légitimement valoir 1,0 (marché à sa moyenne glissante).
         "as_of": (
             market_override.get("as_of")
-            if market_override and market_override.get("multiplier") != 1.0
+            if market_override and market_override.get("is_live")
             else "calibration moyennes 2024"
         ),
         "calibration_sources": [b["source"] for b in _CALIBRATION_BENCHMARKS],
@@ -579,6 +582,7 @@ def get_bulk_freight_cost(
             {
                 "vessel_class": chosen,
                 "multiplier": market_override["multiplier"],
+                "is_live": bool(market_override.get("is_live")),
                 # Provenance du facteur : proxy de marché (BDRY) ou, pour
                 # compatibilité, un ancien champ ``index`` par classe.
                 "proxy": market_override.get("proxy") or market_override.get("index"),

@@ -143,7 +143,27 @@ def test_build_payload_static_when_no_factor():
     mults = payload["vessel_class_multipliers"]
     assert set(mults) == set(etl.VESSEL_CLASSES)
     assert all(m["multiplier"] == 1.0 for m in mults.values())
+    assert all(m["is_live"] is False for m in mults.values())
     assert payload["_meta"]["is_live"] is False
+
+
+def test_live_and_static_entries_carry_is_live_flag():
+    # Le drapeau is_live distingue live de statique INDÉPENDAMMENT du facteur :
+    # un facteur live neutre (×1.0, marché à sa moyenne) reste bien "live".
+    neutral = {
+        "factor": 1.0,
+        "current": 10.0,
+        "baseline": 10.0,
+        "as_of": "2026-07-14",
+        "window_points": 250,
+    }
+    live_entry = etl.build_live_entry("capesize", neutral)
+    assert live_entry["is_live"] is True
+    assert live_entry["multiplier"] == 1.0
+    assert live_entry["as_of"] == "2026-07-14"  # vraie date conservée, pas "moyenne 2024"
+
+    static_entry = etl.build_static_entry("capesize")
+    assert static_entry["is_live"] is False
 
 
 def test_fetch_market_factor_reads_local_json_seam(monkeypatch):
@@ -235,6 +255,30 @@ def test_multiplier_scales_modeled_rate():
         assert scaled == pytest.approx(base * 1.5, rel=0.02)
     finally:
         del bulk._FREIGHT_OVERRIDES["capesize"]
+
+
+def test_backend_neutral_live_factor_still_dates_tariff():
+    # Régression du retour Copilot : un facteur live neutre (×1.0) doit dater
+    # le tarif à sa date de marché et se signaler live, pas "calibration 2024".
+    # Override posé sur toutes les classes (robuste au plafonnement portuaire).
+    neutral = {
+        "multiplier": 1.0,
+        "is_live": True,
+        "proxy": "BDRY",
+        "as_of": "2026-07-14",
+        "source": "test live neutre",
+    }
+    saved = dict(bulk._FREIGHT_OVERRIDES)
+    bulk._FREIGHT_OVERRIDES.update({cls: dict(neutral) for cls in bulk.VESSEL_CLASSES})
+    try:
+        r = bulk.get_bulk_freight_cost("ZACPT", "DZORN", 25_000)
+        assert r["as_of"] == "2026-07-14"
+        ov = r["freight_market_override"]
+        assert ov["is_live"] is True
+        assert ov["proxy"] == "BDRY"
+    finally:
+        bulk._FREIGHT_OVERRIDES.clear()
+        bulk._FREIGHT_OVERRIDES.update(saved)
 
 
 def test_committed_seed_file_is_valid():

@@ -143,6 +143,7 @@ def build_static_entry(vessel_class: str) -> dict:
     """
     return {
         "multiplier": 1.0,
+        "is_live": False,
         "proxy": MARKET_PROXY_NAME,
         "as_of": "moyenne 2024",
         "source": "Modèle calibré sur benchmarks Baltic 2024 (repli statique, aucun facteur live)",
@@ -153,6 +154,7 @@ def build_live_entry(vessel_class: str, factor_info: dict) -> dict:
     """Entrée live pour une classe : facteur de marché proxy appliqué uniformément."""
     return {
         "multiplier": factor_info["factor"],
+        "is_live": True,
         "proxy": MARKET_PROXY_NAME,
         "proxy_level": factor_info["current"],
         "proxy_baseline_12m": factor_info["baseline"],
