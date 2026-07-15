@@ -427,6 +427,26 @@ def freight_market_override(vessel_class: str) -> Optional[Dict[str, Any]]:
     return _FREIGHT_OVERRIDES.get(vessel_class)
 
 
+def override_is_live(entry: Optional[Dict[str, Any]]) -> bool:
+    """Vrai si l'override de marché reflète une donnée live datée.
+
+    - Drapeau ``is_live`` booléen STRICT prioritaire (une valeur non-booléenne,
+      p. ex. la chaîne « false », n'est jamais interprétée comme live).
+    - Override *legacy* sans drapeau : repli sur l'heuristique historique
+      ``multiplier != 1.0`` (le facteur bouge → donnée live datée), pour ne pas
+      faire repasser à tort la fraîcheur en « calibration 2024 ».
+    """
+    if not entry:
+        return False
+    flag = entry.get("is_live")
+    if isinstance(flag, bool):
+        return flag
+    if flag is None:
+        m = entry.get("multiplier")
+        return isinstance(m, (int, float)) and not isinstance(m, bool) and m != 1.0
+    return False  # valeur non-booléenne : on ne devine jamais
+
+
 def model_bulk_freight_usd_per_t(distance_nm: float, vessel_class: str) -> float:
     """Fret océanique modélisé (USD/tonne) pour une distance et une classe.
 
@@ -527,6 +547,7 @@ def get_bulk_freight_cost(
     dist_nm = _sea_distance_nm(o, d)
     ocean_usd_per_t = model_bulk_freight_usd_per_t(dist_nm, chosen)
     market_override = freight_market_override(chosen)
+    market_is_live = override_is_live(market_override)
     load_usd_per_t = BULK_PORT_HANDLING_USD_PER_T_LOAD
     discharge_usd_per_t = BULK_PORT_HANDLING_USD_PER_T_DISCHARGE
     total_usd_per_t = round(ocean_usd_per_t + load_usd_per_t + discharge_usd_per_t, 2)
@@ -569,17 +590,20 @@ def get_bulk_freight_cost(
         "co2_source": "IMO 4th GHG Study 2020 / GLEC Framework v3 (ordre de grandeur par classe)",
         "constraints_notes": constraints_notes,
         "is_modeled": True,
-        "as_of": (
-            market_override.get("as_of")
-            if market_override and market_override.get("multiplier") != 1.0
-            else "calibration moyennes 2024"
-        ),
+        # Fraîcheur : un facteur live daté (drapeau ``is_live`` normalisé, ou
+        # override legacy dont le multiplicateur bouge) date le tarif à sa date
+        # de marché — indépendamment de la valeur du facteur, qui peut valoir 1,0
+        # (marché à sa moyenne glissante).
+        "as_of": (market_override.get("as_of") if market_is_live else "calibration moyennes 2024"),
         "calibration_sources": [b["source"] for b in _CALIBRATION_BENCHMARKS],
         "freight_market_override": (
             {
                 "vessel_class": chosen,
                 "multiplier": market_override["multiplier"],
-                "index": market_override.get("index"),
+                "is_live": market_is_live,
+                # Provenance du facteur : proxy de marché (BDRY) ou, pour
+                # compatibilité, un ancien champ ``index`` par classe.
+                "proxy": market_override.get("proxy") or market_override.get("index"),
                 "as_of": market_override.get("as_of"),
                 "source": market_override.get("source"),
             }

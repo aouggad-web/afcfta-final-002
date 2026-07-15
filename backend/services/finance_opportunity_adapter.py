@@ -239,3 +239,215 @@ def summarize_financing_feasibility(profile: Dict) -> Dict:
         "max_possible": round(max_score, 3),
         "components": components,
     }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BANKING ENHANCEMENTS (OPTIONS 1-4)
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def get_intelligent_recommendations(
+    destination_iso3: str,
+    amount_usd: float = 0.0,
+    sector: Optional[str] = None,
+    transaction_type: str = "export",
+) -> Dict:
+    """
+    OPTION 1: Intelligent banking recommendations.
+
+    Complete recommendation bundle for a trade operation:
+    - Ranked trade finance instruments
+    - Suitable insurance products
+    - Recommended banks scored by suitability
+    - Country-specific compliance requirements
+    """
+    try:
+        from banking_system import get_trade_recommendations
+
+        recommendations = get_trade_recommendations(_iso2(destination_iso3), amount_usd, sector)
+        return {"available": True, "recommendations": _serialize(recommendations)}
+    except Exception as exc:
+        _log.warning("intelligent recommendations unavailable: %s", exc)
+        return {"available": False, "recommendations": None, "note": str(exc)}
+
+
+def get_bank_scoring(
+    destination_iso3: str,
+    amount_usd: float = 0.0,
+    transaction_type: str = "export",
+    sector: Optional[str] = None,
+    limit: int = 5,
+) -> Dict:
+    """
+    OPTION 2: Enhanced bank scoring and ranking.
+
+    Score banks by multi-factor suitability:
+    - Geographic presence & regional expertise (30%)
+    - Service offering alignment (25%)
+    - Correspondent network quality (25%)
+    - Transaction amount suitability (10%)
+    - Specialization match (10%)
+    """
+    try:
+        from banking_system import get_country_banks
+        from banking_system.bank_scoring import score_banks_for_transaction
+
+        banking_info = get_country_banks(_iso2(destination_iso3))
+        if not banking_info or not banking_info.commercial_banks:
+            return {"available": False, "banks": [], "note": "No banks found"}
+
+        scored_banks = score_banks_for_transaction(
+            banking_info.commercial_banks,
+            _iso2(destination_iso3),
+            transaction_type=transaction_type,
+            amount_usd=amount_usd,
+            sector=sector,
+        )
+
+        # Limit results
+        scored_banks = scored_banks[:limit]
+
+        return {
+            "available": True,
+            "country": banking_info.country_name,
+            "banks_scored": len(scored_banks),
+            "banks": _serialize(scored_banks),
+            "top_bank": (scored_banks[0]["name"] if scored_banks else None),
+        }
+    except Exception as exc:
+        _log.warning("bank scoring unavailable: %s", exc)
+        return {"available": False, "banks": [], "note": str(exc)}
+
+
+def get_fx_hedging_strategy(
+    destination_iso3: str,
+    amount_usd: float = 0.0,
+    transaction_days: int = 90,
+    transaction_type: str = "export",
+) -> Dict:
+    """
+    OPTION 3: FX hedging strategy recommendations.
+
+    Evaluates hedging necessity and ranks strategies:
+    - Forward contracts
+    - FX options
+    - Money market hedges
+    - Natural hedges
+    - Currency swaps
+    - No hedge (for reference)
+
+    Includes cost-benefit analysis and break-even calculations.
+    """
+    try:
+        from banking_system.forex_hedging import (
+            get_hedging_cost_comparison,
+            recommend_hedging_strategy,
+        )
+
+        recommendation = recommend_hedging_strategy(
+            _iso2(destination_iso3),
+            amount_usd,
+            transaction_days=transaction_days,
+            transaction_type=transaction_type,
+        )
+
+        cost_comparison = get_hedging_cost_comparison(
+            _iso2(destination_iso3),
+            amount_usd,
+            transaction_days=transaction_days,
+        )
+
+        return {
+            "available": True,
+            "hedging_necessity": recommendation["risk_factors"]["hedging_necessity"],
+            "recommended_strategy": recommendation["recommended_strategy"],
+            "explanation": recommendation["explanation"],
+            "all_strategies": _serialize(recommendation["all_strategies_ranked"]),
+            "cost_comparison": _serialize(cost_comparison["strategies"]),
+        }
+    except Exception as exc:
+        _log.warning("fx hedging unavailable: %s", exc)
+        return {
+            "available": False,
+            "hedging_necessity": None,
+            "recommended_strategy": None,
+            "note": str(exc),
+        }
+
+
+def get_financing_matrix_analysis(
+    destination_iso3: str,
+    amount_usd: float = 0.0,
+    risk_rating: Optional[str] = None,
+) -> Dict:
+    """
+    OPTION 4: Financing matrix and comparative analysis.
+
+    Provides:
+    - Instrument comparison (cost, protection, speed, suitability)
+    - Risk-based recommendations (A1-D ratings)
+    - Transaction size recommendations (micro-mega brackets)
+    - Cost-benefit analysis for specific transaction
+    - Interactive decision tree
+    """
+    try:
+        from banking_system.financing_matrix import FinancingMatrix
+
+        # Get cost-benefit analysis if amount provided
+        cost_benefit = None
+        if amount_usd > 10000:
+            cost_benefit = FinancingMatrix.get_cost_benefit_analysis(
+                _iso2(destination_iso3), amount_usd
+            )
+
+        return {
+            "available": True,
+            "instruments_matrix": _serialize(FinancingMatrix.get_instrument_comparison()),
+            "risk_matrix": _serialize(FinancingMatrix.get_risk_based_matrix()),
+            "size_matrix": _serialize(FinancingMatrix.get_transaction_size_matrix()),
+            "decision_tree": _serialize(FinancingMatrix.get_quick_decision_tree()),
+            "cost_benefit_analysis": (_serialize(cost_benefit) if cost_benefit else None),
+        }
+    except Exception as exc:
+        _log.warning("financing matrix unavailable: %s", exc)
+        return {"available": False, "note": str(exc)}
+
+
+def get_enhanced_finance_profile(
+    origin_iso3: str,
+    destination_iso3: str,
+    amount_usd: float = 0.0,
+    sector: Optional[str] = None,
+    transaction_type: str = "export",
+    include_enhancements: bool = True,
+) -> Dict:
+    """
+    Enhanced finance profile combining base profile + 4 banking enhancements.
+
+    When include_enhancements=True, adds:
+    - Option 1: Intelligent recommendations
+    - Option 2: Bank scoring
+    - Option 3: FX hedging strategy
+    - Option 4: Financing matrix analysis
+
+    Gracefully degrades if enhancement modules unavailable.
+    """
+    # Base profile (existing)
+    profile = get_finance_profile(origin_iso3, destination_iso3, amount_usd, transaction_type)
+
+    # Add enhancements if requested
+    if include_enhancements:
+        profile["enhancements"] = {
+            "intelligent_recommendations": get_intelligent_recommendations(
+                destination_iso3, amount_usd, sector, transaction_type
+            ),
+            "bank_scoring": get_bank_scoring(
+                destination_iso3, amount_usd, transaction_type, sector, limit=5
+            ),
+            "fx_hedging": get_fx_hedging_strategy(
+                destination_iso3, amount_usd, transaction_days=90, transaction_type=transaction_type
+            ),
+            "financing_matrix": get_financing_matrix_analysis(destination_iso3, amount_usd),
+        }
+
+    return profile

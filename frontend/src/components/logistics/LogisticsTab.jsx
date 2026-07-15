@@ -9,8 +9,9 @@ import LandLogisticsTab from './LandLogisticsTab';
 import FreeZonesTab from './FreeZonesTab';
 import IntervenantsTab from './IntervenantsTab';
 import MultimodalComparator from './MultimodalComparator';
+import VraquierLogisticsTab from './VraquierLogisticsTab';
 import { PDFExportButton } from '../common/ExportTools';
-import { Ship, Plane, Truck, Building2, Globe, Database, Users, Layers } from 'lucide-react';
+import { Ship, Anchor, Plane, Truck, Building2, Globe, Database, Users, Layers } from 'lucide-react';
 
 export default function LogisticsTab({ language = 'fr' }) {
   const { t } = useTranslation();
@@ -46,14 +47,22 @@ export default function LogisticsTab({ language = 'fr' }) {
       <div ref={contentRef}>
         {/* Main Tabs with enhanced styling */}
         <Tabs defaultValue="maritime" className="space-y-5">
-          <TabsList className="tabs-list-boxed cols-6">
-            <TabsTrigger 
-              value="maritime" 
+          <TabsList className="tabs-list-boxed cols-7">
+            <TabsTrigger
+              value="maritime"
               className="tab-trigger-enhanced tab-blue"
               data-testid="maritime-tab-trigger"
             >
               <Ship className="tab-icon" />
               <span>{t('logistics.maritime')}</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="vraquier"
+              className="tab-trigger-enhanced tab-blue"
+              data-testid="vraquier-tab-trigger"
+            >
+              <Anchor className="tab-icon" />
+              <span>Vraquier</span>
             </TabsTrigger>
             <TabsTrigger 
               value="air" 
@@ -99,6 +108,10 @@ export default function LogisticsTab({ language = 'fr' }) {
 
           <TabsContent value="maritime" className="tab-content-enhanced mt-0">
             <MaritimeLogisticsTab language={language} />
+          </TabsContent>
+
+          <TabsContent value="vraquier" className="tab-content-enhanced mt-0">
+            <VraquierLogisticsTab language={language} />
           </TabsContent>
 
           <TabsContent value="air" className="tab-content-enhanced mt-0">

@@ -5,6 +5,7 @@ import { Textarea } from '../ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { toast } from '../../hooks/use-toast';
+import { csrfFetch } from '../../services/csrf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -48,7 +49,7 @@ export default function AdminProjectsPage() {
   // Mount/unmount logger removed (was for debugging)
 
   const adminFetch = async (path, opts = {}) => {
-    const r = await fetch(`${API}${path}`, {
+    const r = await csrfFetch(`${API}${path}`, {
       ...opts,
       headers: {
         ...(opts.body ? { 'Content-Type': 'application/json' } : {}),
@@ -76,7 +77,7 @@ export default function AdminProjectsPage() {
     setAuthed(true);
     let cancelled = false;
     const url = `${API}/admin/projects/countries`;
-    fetch(url, { headers: { 'X-API-Key': adminKey } })
+    csrfFetch(url, { headers: { 'X-API-Key': adminKey } })
       .then((r) => (r.ok ? r.json() : []))
       .then((data) => {
         if (!cancelled) setCountries(Array.isArray(data) ? data : []);

@@ -28,10 +28,12 @@ jobs:
         with:
           python-version: '3.11'
 
-      # Script en stdlib pure — aucune dépendance à installer. En l'absence de
-      # flux Baltic configuré (BALTIC_INDEX_JSON), toutes les classes retombent
-      # sur le multiplicateur statique 1,0 daté (repli, zéro fabrication).
-      - name: Refresh bulk freight multipliers
+      # Script en stdlib pure — aucune dépendance à installer. Récupère le cours
+      # de l'ETF BDRY (proxy du marché vrac sec) via l'API publique Yahoo
+      # Finance. Si le cours échoue ou sort des bornes de vraisemblance, toutes
+      # les classes retombent sur le multiplicateur statique 1,0 daté (repli,
+      # zéro fabrication).
+      - name: Refresh bulk freight market factor (BDRY proxy)
         id: fetch
         run: python backend/etl/update_bulk_freight_indices.py
 
@@ -60,24 +62,25 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(data): indices fret vraquier du jour (update_bulk_freight #${{ github.run_number }})"
+          commit-message: "chore(data): facteur de marché fret vraquier du jour (update_bulk_freight #${{ github.run_number }})"
           committer: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
           author: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
           branch: automated-bulk-freight
           delete-branch: true
-          title: "chore(data): mise à jour des indices de fret vraquier"
+          title: "chore(data): mise à jour du facteur de marché fret vraquier"
           body: |
-            ## Mise à jour automatique des indices de fret vraquier (Baltic)
+            ## Mise à jour automatique du facteur de marché fret vraquier
 
             Rafraîchit `data/json/fret_vraquier.json`, lu par
-            `backend/logistics_bulk_fees_data.py` (multiplicateur de marché
-            par classe de navire appliqué au modèle distance-coût).
+            `backend/logistics_bulk_fees_data.py` (facteur de marché appliqué
+            au modèle distance-coût, par classe de navire).
 
             **Run :** #${{ github.run_number }} · **Déclencheur :** ${{ github.event_name }}
 
-            Chaque classe porte son multiplicateur (indice courant / référence
-            2024), sa date et sa source. Une classe en échec ou hors bornes de
-            vraisemblance reste au repli statique 1,0 daté (zéro fabrication).
+            Facteur = cours de l'ETF BDRY (proxy marché vrac sec) vs sa moyenne
+            glissante 12 mois, avec sa date de marché et sa source. Proxy, pas
+            l'indice Baltic par classe. Cours en échec ou hors bornes de
+            vraisemblance → repli statique 1,0 daté (zéro fabrication).
 
             La branche est fixe (`automated-bulk-freight`) : une PR déjà
             ouverte est mise à jour au lieu d'en créer une nouvelle.
@@ -88,9 +91,9 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "## Indices fret vraquier — $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "## Facteur marché fret vraquier — $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
           if [ "${{ steps.check_changes.outputs.changes }}" == "true" ]; then
-            echo "✅ Indices mis à jour — PR créée/actualisée" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Facteur de marché mis à jour — PR créée/actualisée" >> $GITHUB_STEP_SUMMARY
           else
             echo "ℹ️ Aucun changement (repli statique inchangé)" >> $GITHUB_STEP_SUMMARY
           fi
