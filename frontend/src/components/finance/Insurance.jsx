@@ -42,6 +42,8 @@ const texts = {
     comparison: 'Comparaison des produits',
     rating: 'Notation',
     capacity: 'Capacité',
+    country: 'Pays',
+    noProfile: 'Aucun profil assurance disponible pour ce pays.',
   },
   en: {
     title: '🛡️ Trade Insurance',
@@ -68,6 +70,8 @@ const texts = {
     comparison: 'Product comparison',
     rating: 'Rating',
     capacity: 'Capacity',
+    country: 'Country',
+    noProfile: 'No insurance profile available for this country.',
   },
 };
 
@@ -80,6 +84,7 @@ export default function Insurance({ language = 'en' }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [profileNotFound, setProfileNotFound] = useState(false);
   const [quote, setQuote] = useState(null);
   const [batch, setBatch] = useState(null);
 
@@ -101,12 +106,15 @@ export default function Insurance({ language = 'en' }) {
       const res = await axios.get(`${API}/insurance/countries/${code.toUpperCase()}/profile`);
       if (res.data.success) {
         setProfile(res.data.profile);
+        setProfileNotFound(false);
       } else {
         setProfile(null);
+        setProfileNotFound(true);
       }
     } catch (err) {
       // profile is best-effort context; quote errors surface separately
       setProfile(null);
+      setProfileNotFound(err.response?.status === 404);
     }
   };
 
@@ -256,7 +264,12 @@ export default function Insurance({ language = 'en' }) {
           {profile && (
             <Card className="mt-6 bg-blue-50">
               <CardHeader>
-                <CardTitle className="text-base">{t.profile}</CardTitle>
+                <CardTitle className="text-base flex items-center gap-2">
+                  {t.profile}
+                  <Badge variant="outline">
+                    {profile.country_code} — {profile.country_name}
+                  </Badge>
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -284,6 +297,12 @@ export default function Insurance({ language = 'en' }) {
                 )}
               </CardContent>
             </Card>
+          )}
+
+          {!profile && profileNotFound && !error && (
+            <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
+              {t.country} {countryCode.toUpperCase()}: {t.noProfile}
+            </div>
           )}
 
           {quote && (
