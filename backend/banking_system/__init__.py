@@ -5,6 +5,7 @@ Provides data and logic for:
 - Banks registry (central banks, commercial banks, regional banks)
 - Foreign-exchange regulations and domiciliation rules
 - Trade finance instruments
+- Insurance products and pricing
 - Regional payment systems
 - Country risk assessment
 """
@@ -24,6 +25,16 @@ from .foreign_exchange import (
     get_export_formalities,
     get_forex_profile,
     get_import_formalities,
+)
+from .insurance_pricing import (
+    batch_calculate_quotes,
+    calculate_insurance_quote,
+    get_premium_adjustments_for_country,
+)
+from .insurance_registry import (
+    get_available_insurers,
+    get_available_products,
+    get_country_insurance_profile,
 )
 from .payment_systems import get_payment_systems, get_regional_systems
 from .regulatory_compliance import check_compliance, get_country_compliance
@@ -45,6 +56,13 @@ __all__ = [
     "get_currency_meta",
     "get_all_currency_meta",
     "FOREX_PROFILES",
+    # Insurance
+    "get_country_insurance_profile",
+    "get_available_insurers",
+    "get_available_products",
+    "calculate_insurance_quote",
+    "batch_calculate_quotes",
+    "get_premium_adjustments_for_country",
     # Trade finance
     "get_trade_finance_instruments",
     "recommend_instruments",
