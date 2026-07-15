@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -87,6 +87,24 @@ export default function Insurance({ language = 'en' }) {
   const [profileNotFound, setProfileNotFound] = useState(false);
   const [quote, setQuote] = useState(null);
   const [batch, setBatch] = useState(null);
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    axios
+      .get(`${API}/insurance/countries`)
+      .then((res) => {
+        if (!cancelled && res.data.success) {
+          setCountries(res.data.countries);
+        }
+      })
+      .catch(() => {
+        // selector falls back to the default DZ value if the list can't load
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const invalidAmountMessage = {
     fr: 'Veuillez saisir un montant valide supérieur à 0.',
@@ -193,14 +211,28 @@ export default function Insurance({ language = 'en' }) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium">{t.countryLabel}</label>
-                <input
-                  type="text"
-                  maxLength="2"
-                  value={countryCode}
-                  onChange={(e) => setCountryCode(e.target.value.toUpperCase())}
-                  className="w-full px-3 py-2 border rounded"
-                  placeholder="DZ"
-                />
+                {countries.length > 0 ? (
+                  <select
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    className="w-full px-3 py-2 border rounded"
+                  >
+                    {countries.map((c) => (
+                      <option key={c.country_code} value={c.country_code}>
+                        {c.country_name} ({c.country_code})
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    maxLength="2"
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value.toUpperCase())}
+                    className="w-full px-3 py-2 border rounded"
+                    placeholder="DZ"
+                  />
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium">{t.amountLabel}</label>
