@@ -18,6 +18,13 @@ from logistics_air_fees_data import (
     get_air_freight_cost,
     get_commodity_types,
 )
+from logistics_bulk_fees_data import (
+    _FREIGHT_OVERRIDES,
+    _MULTIPLIER_BOUNDS,
+    BULK_PORT_ATTRIBUTES,
+    VESSEL_CLASSES,
+    get_bulk_freight_cost,
+)
 from logistics_data import (
     get_all_ports,
     get_port_by_id,
@@ -26,6 +33,7 @@ from logistics_data import (
     search_ports,
 )
 from logistics_fees_data import (
+    PORTS,
     get_all_port_thc,
     get_all_shipping_routes,
     get_fee_ports,
@@ -65,6 +73,7 @@ from services.multimodal_freight_service import (
     LANDLOCKED_GATEWAYS,
     compare_multimodal,
 )
+from services.shipment_estimator import classify_bulk_commodity
 
 # Optional cache integration
 try:
@@ -750,3 +759,125 @@ async def compare_freight_modes(
         land_cargo_type=land_cargo_type,
         include_future=include_future,
     )
+
+
+# ==========================================
+# BULK CARRIER (VRAQUIER) ENDPOINTS
+# ==========================================
+
+
+def _freight_market_freshness() -> dict:
+    """État du facteur de marché live (proxy BDRY) lu depuis fret_vraquier.json."""
+    ov = _FREIGHT_OVERRIDES or {}
+    any_entry = next(iter(ov.values()), None)
+    is_live = bool(any_entry and any_entry.get("is_live"))
+    return {
+        "is_live": is_live,
+        "as_of": (any_entry or {}).get("as_of"),
+        "proxy": (any_entry or {}).get("proxy"),
+        "source": (any_entry or {}).get("source"),
+        "multiplier_bounds": list(_MULTIPLIER_BOUNDS),
+        "per_class_multiplier": {cls: (ov.get(cls) or {}).get("multiplier") for cls in ov},
+    }
+
+
+@router.get("/bulk/vessel-classes")
+async def get_bulk_vessel_classes():
+    """Classes de navires vraquiers (référence) + fraîcheur du facteur de marché."""
+    classes = [
+        {
+            "id": cid,
+            "label": spec["label"],
+            "min_dwt": spec["min_dwt"],
+            "max_dwt": spec["max_dwt"],
+            "max_parcel_t": spec["max_parcel_t"],
+            "loaded_draft_m": spec["loaded_draft_m"],
+            "co2_g_per_tkm": spec["co2_g_per_tkm"],
+        }
+        for cid, spec in VESSEL_CLASSES.items()
+    ]
+    return {"vessel_classes": classes, "market": _freight_market_freshness()}
+
+
+@router.get("/bulk/ports")
+async def get_bulk_ports():
+    """Ports du registre avec leurs attributs vrac connus (tirant d'eau, terminaux).
+
+    Un port sans attributs vrac renseignés n'applique AUCUNE contrainte (marqué
+    ``bulk_verified: False`` et ``max_draft_m: null``) — jamais de blocage inventé.
+    """
+    out = []
+    for locode, p in sorted(PORTS.items()):
+        attrs = BULK_PORT_ATTRIBUTES.get(locode)
+        out.append(
+            {
+                "locode": locode,
+                "name": p.get("name"),
+                "country_iso3": p.get("iso"),
+                "max_draft_m": (attrs or {}).get("max_draft_m"),
+                "bulk_terminals": (attrs or {}).get("bulk_terminals") or [],
+                "attributes_known": attrs is not None,
+                "attributes_verified": bool((attrs or {}).get("verified")),
+            }
+        )
+    return {"ports": out, "count": len(out)}
+
+
+@router.get("/bulk/cost")
+async def get_bulk_cost(
+    origin: str,
+    destination: str,
+    tonnes: float,
+    hs_code: Optional[str] = None,
+):
+    """Coût de fret vraquier modélisé entre deux ports (LOCODE) pour un tonnage.
+
+    Si ``hs_code`` est fourni, la classification vrac restreint les classes de
+    navire admissibles et signale le seuil de bascule conteneur→vraquier ainsi
+    que le vrac liquide (marché tanker, hors périmètre).
+    """
+    if tonnes <= 0:
+        raise HTTPException(status_code=400, detail="tonnes must be > 0")
+    o, d = (origin or "").upper(), (destination or "").upper()
+    if o == d:
+        raise HTTPException(status_code=400, detail="origin and destination must differ")
+    if o not in PORTS or d not in PORTS:
+        raise HTTPException(status_code=400, detail="unknown port LOCODE")
+
+    bulk = classify_bulk_commodity(hs_code) if hs_code else None
+    commodity = None
+    if bulk:
+        commodity = {
+            "label": bulk.get("label"),
+            "category": bulk.get("category"),
+            "is_liquid": bulk.get("is_liquid"),
+            "container_threshold_tonnes": bulk.get("container_threshold_tonnes"),
+            "vessel_classes": bulk.get("vessel_classes"),
+        }
+        if bulk.get("is_liquid"):
+            return {
+                "available": False,
+                "reason": "liquid_bulk",
+                "commodity": commodity,
+                "note": (
+                    f"{bulk.get('label', 'Produit liquide')} relève du marché pétrolier "
+                    "(navires-citernes) — hors périmètre du fret vraquier (vrac sec)."
+                ),
+            }
+        threshold = bulk.get("container_threshold_tonnes")
+        if threshold and tonnes < threshold:
+            return {
+                "available": False,
+                "reason": "below_threshold",
+                "commodity": commodity,
+                "note": (
+                    f"Lot de {tonnes:g} t sous le seuil de bascule vraquier "
+                    f"({threshold:g} t) pour {bulk.get('label')} — expédition conteneurisée "
+                    "(ensachée) recommandée."
+                ),
+            }
+
+    result = get_bulk_freight_cost(o, d, tonnes, allowed_classes=(bulk or {}).get("vessel_classes"))
+    if not result:
+        raise HTTPException(status_code=422, detail="bulk freight cost unavailable for this pair")
+    return {"available": True, "commodity": commodity, "cost": result}

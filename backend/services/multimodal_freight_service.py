@@ -717,12 +717,40 @@ def _bulk_sea_options(
         )
         co2 = round(weight_tonnes * distance_km * co2_factor / 1000.0, 1)
 
+        # Provenance / fraîcheur du tarif : facteur de marché live (proxy BDRY)
+        # ou repli statique calibré. Remonté jusqu'au frontend Opportunités.
+        # ``is_live`` vient du drapeau explicite posé par l'ETL — jamais déduit
+        # de la valeur du facteur (qui peut valoir 1,0 tout en étant live).
+        market_override = bulk_result.get("freight_market_override")
+        # ``is_live`` est déjà un booléen strict normalisé par le backend
+        # (override_is_live) — on le lit tel quel, sans re-deviner.
+        is_live = (market_override or {}).get("is_live") is True
+        pricing_as_of = bulk_result.get("as_of")
+        market_proxy = (market_override or {}).get("proxy") or "BDRY"
+        pricing_source = (
+            market_override.get("source")
+            if market_override
+            else "Modèle vraquier calibré (benchmarks Baltic 2024)"
+        )
+
         # Build notes from constraints
         constraints_notes = bulk_result.get("constraints_notes", [])
         voyages_needed = bulk_result.get("voyages_needed", 1)
         notes = ""
         if bulk_result.get("is_modeled"):
             notes = "Tarif vraquier estimé (modèle calibré ±20 %). "
+        if is_live:
+            multiplier = market_override.get("multiplier", 1.0)
+            if multiplier != 1.0:
+                notes += (
+                    f"Ajusté au marché (facteur ×{multiplier}, "
+                    f"proxy {market_proxy}, {pricing_as_of}). "
+                )
+            else:
+                notes += (
+                    f"Aligné sur le marché (proxy {market_proxy}, {pricing_as_of}, "
+                    "au niveau de sa moyenne glissante). "
+                )
         if constraints_notes:
             notes += " ".join(constraints_notes) + " "
         if voyages_needed > 1:
@@ -774,7 +802,14 @@ def _bulk_sea_options(
                 "commodity_label": bulk_commodity.get("label"),
                 "commodity_category": bulk_commodity.get("category"),
                 "notes": notes,
-                "source": "Fret vraquier — PLAN_FRET_VRAQUIER Lot A calibration",
+                "pricing": {
+                    "is_live": is_live,
+                    "as_of": pricing_as_of,
+                    "market_proxy": market_proxy if is_live else None,
+                    "market_multiplier": (market_override or {}).get("multiplier"),
+                    "source": pricing_source,
+                },
+                "source": pricing_source,
             }
         ]
     except ImportError as e:

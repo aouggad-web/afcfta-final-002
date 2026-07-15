@@ -667,6 +667,35 @@ function BilateralView({ countries, fr, prefill }) {
                               {fr ? "Modélisé" : "Modeled"}
                             </span>
                           )}
+                          {opt.pricing?.is_live ? (
+                            <span
+                              title={opt.pricing.source}
+                              style={{
+                                fontSize: 10,
+                                fontWeight: 700,
+                                padding: "2px 6px",
+                                borderRadius: 999,
+                                background: "rgba(26,127,55,0.12)",
+                                color: "#1a7f37",
+                              }}
+                            >
+                              {fr ? "Marché" : "Live"} · {opt.pricing.as_of}
+                            </span>
+                          ) : (
+                            <span
+                              title={opt.pricing?.source}
+                              style={{
+                                fontSize: 10,
+                                fontWeight: 700,
+                                padding: "2px 6px",
+                                borderRadius: 999,
+                                background: "rgba(100,116,139,0.12)",
+                                color: "#64748b",
+                              }}
+                            >
+                              {fr ? "Calibré 2024" : "Calibrated 2024"}
+                            </span>
+                          )}
                         </div>
                         <div style={{ fontWeight: 700 }}>{money(opt.total_cost_usd)}</div>
                         {cb.total_usd_per_t != null && (
