@@ -182,16 +182,6 @@ if _replit_app_domain:
     _escaped = _re.escape(_replit_app_domain)
     _allow_origin_regex = rf"https://{_escaped}"
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=_cors_origins,
-    allow_origin_regex=_allow_origin_regex,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
-    expose_headers=["X-CSRF-Token"],
-)
-
 # Security middlewares (optional)
 try:
     from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
@@ -214,6 +204,16 @@ try:
     logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
 except ImportError as e:
     logger.warning(f"Security middlewares not loaded: {e}")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cors_origins,
+    allow_origin_regex=_allow_origin_regex,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
+    expose_headers=["X-CSRF-Token"],
+)
 
 # API Router with /api prefix
 api_router = APIRouter(prefix="/api")
