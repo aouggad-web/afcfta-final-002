@@ -303,6 +303,14 @@ except ImportError:
     BANKING_ENHANCEMENTS_AVAILABLE = False
 
 try:
+    from .insurance import router as insurance_router
+
+    INSURANCE_AVAILABLE = True
+except ImportError:
+    insurance_router = None
+    INSURANCE_AVAILABLE = False
+
+try:
     from .postgres_tariffs import router as postgres_tariffs_router
 
     POSTGRES_TARIFFS_AVAILABLE = True
@@ -481,6 +489,12 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(
             banking_enhancements_router,
             tags=["Enhancements"],
+            dependencies=_auth,
+        )
+    if INSURANCE_AVAILABLE:
+        api_router.include_router(
+            insurance_router,
+            tags=["Insurance"],
             dependencies=_auth,
         )
     if POSTGRES_TARIFFS_AVAILABLE:
