@@ -83,10 +83,27 @@ export default function Insurance({ language = 'en' }) {
   const [quote, setQuote] = useState(null);
   const [batch, setBatch] = useState(null);
 
+  const invalidAmountMessage = {
+    fr: 'Veuillez saisir un montant valide supérieur à 0.',
+    en: 'Please enter a valid amount greater than 0.',
+  };
+
+  const parseAmount = () => {
+    const value = parseFloat(amount);
+    if (!Number.isFinite(value) || value <= 0) {
+      return null;
+    }
+    return value;
+  };
+
   const fetchProfile = async (code) => {
     try {
       const res = await axios.get(`${API}/insurance/countries/${code.toUpperCase()}/profile`);
-      if (res.data.success) setProfile(res.data.profile);
+      if (res.data.success) {
+        setProfile(res.data.profile);
+      } else {
+        setProfile(null);
+      }
     } catch (err) {
       // profile is best-effort context; quote errors surface separately
       setProfile(null);
@@ -95,17 +112,23 @@ export default function Insurance({ language = 'en' }) {
 
   const handleQuote = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
     setQuote(null);
     setBatch(null);
 
+    const value = parseAmount();
+    if (value === null) {
+      setError(invalidAmountMessage[language] || invalidAmountMessage.en);
+      return;
+    }
+
+    setLoading(true);
     try {
       await fetchProfile(countryCode);
       const res = await axios.post(`${API}/insurance/quote`, {
         country_code: countryCode.toUpperCase(),
         product_type: productType,
-        contract_value_usd: parseFloat(amount),
+        contract_value_usd: value,
         sector: sector || null,
       });
       if (res.data.success) {
@@ -121,16 +144,22 @@ export default function Insurance({ language = 'en' }) {
   };
 
   const handleBatch = async () => {
-    setLoading(true);
     setError(null);
     setQuote(null);
     setBatch(null);
 
+    const value = parseAmount();
+    if (value === null) {
+      setError(invalidAmountMessage[language] || invalidAmountMessage.en);
+      return;
+    }
+
+    setLoading(true);
     try {
       await fetchProfile(countryCode);
       const res = await axios.post(`${API}/insurance/quotes/batch`, {
         country_code: countryCode.toUpperCase(),
-        contract_value_usd: parseFloat(amount),
+        contract_value_usd: value,
       });
       if (res.data.success) {
         setBatch(res.data.quotes);

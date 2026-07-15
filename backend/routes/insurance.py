@@ -173,9 +173,9 @@ async def get_quote(request: InsuranceQuoteRequest):
         return {"success": True, "quote": quote.model_dump()}
     except HTTPException:
         raise
-    except Exception as exc:
-        logger.error("Insurance quote error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception:
+        logger.exception("Unexpected error calculating insurance quote")
+        raise HTTPException(status_code=500, detail="Internal error calculating insurance quote")
 
 
 @router.post(
@@ -214,6 +214,6 @@ async def get_batch_quotes(request: BatchQuoteRequest):
         return {"success": True, **result}
     except HTTPException:
         raise
-    except Exception as exc:
-        logger.error("Batch quote error: %s", exc)
-        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception:
+        logger.exception("Unexpected error calculating batch insurance quotes")
+        raise HTTPException(status_code=500, detail="Internal error calculating insurance quotes")
