@@ -58,8 +58,6 @@ export async function csrfFetch(input, init = {}) {
 }
 
 export function installAxiosCsrf(instance = axios) {
-  instance.defaults.withCredentials = true;
-
   return instance.interceptors.request.use(async (config) => {
     const method = (config.method || 'get').toUpperCase();
     if (MUTATING_METHODS.has(method)) {

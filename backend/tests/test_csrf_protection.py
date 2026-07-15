@@ -21,6 +21,10 @@ def client():
     async def health():
         return {"status": "ok"}
 
+    @app.post("/api/")
+    async def exempt_mutation():
+        return {"status": "exempt"}
+
     @app.api_route(
         "/api/resource",
         methods=["POST", "PUT", "PATCH", "DELETE"],
@@ -64,3 +68,9 @@ def test_exempt_path_does_not_exempt_descendants(client):
     response = client.post("/api/resource")
 
     assert response.status_code == 403
+
+
+def test_exact_exempt_path_allows_mutation_without_token(client):
+    response = client.post("/api/")
+
+    assert response.status_code == 200
