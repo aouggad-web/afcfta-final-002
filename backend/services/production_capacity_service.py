@@ -122,6 +122,107 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("3105", "manufacturing", "Manufacture of chemicals"),  # engrais composés
     ("3102", "manufacturing", "Manufacture of chemicals"),  # engrais azotés
     ("3103", "manufacturing", "Manufacture of chemicals"),  # engrais phosphatés
+    # ── Industrie manufacturière : expansion des codes HS4 pour résolution fine ──
+    # Plutôt que de tomber au niveau chapitre HS2 (qui retournerait le même besoin
+    # pour tous les produits d'un chapitre), on capture maintenant des commodités
+    # spécifiques à HS4. Cela améliore la résolution du mapping et prépare le terrain
+    # pour des données de production plus granulaires. NOTE: Aujourd'hui, la plupart
+    # des secteurs manufacturiers (pharma, chimie, électronique, etc.) ne disposent
+    # que d'UNE seule valeur de production continentale par secteur UNIDO. L'amélioration
+    # réelle du calcul L3 (suppression des doublons au sein d'un chapitre) nécessitera
+    # une expansion des données production_africaine.json avec des commodity_label
+    # distinctes par HS4, pas seulement une meilleure résolution du code.
+    # Chimie & pharmaceutiques (HS28-34, 38)
+    ("2801", "manufacturing", "Manufacture of chemicals"),  # éléments chimiques non métalliques
+    ("2802", "manufacturing", "Manufacture of chemicals"),  # sulfure de carbone, phosphore blanc
+    ("2804", "manufacturing", "Manufacture of chemicals"),  # hydrogène, gaz rares
+    ("2807", "manufacturing", "Manufacture of chemicals"),  # acide sulfurique
+    ("2808", "manufacturing", "Manufacture of chemicals"),  # acide nitrique
+    ("2809", "manufacturing", "Manufacture of chemicals"),  # pentoxyde de phosphore
+    ("2815", "manufacturing", "Manufacture of chemicals"),  # hydroxyde de sodium
+    ("2825", "manufacturing", "Manufacture of chemicals"),  # chlore
+    ("2901", "manufacturing", "Manufacture of chemicals"),  # hydrocarbures acycliques
+    ("2902", "manufacturing", "Manufacture of chemicals"),  # hydrocarbures cycliques
+    ("2905", "manufacturing", "Manufacture of chemicals"),  # alcools acycliques
+    ("2915", "manufacturing", "Manufacture of chemicals"),  # acides gras
+    ("2916", "manufacturing", "Manufacture of chemicals"),  # acides monocarboxyliques
+    ("2930", "manufacturing", "Manufacture of chemicals"),  # composés organosulfurés
+    ("3001", "manufacturing", "Produits pharmaceutiques"),  # principes pharmaceutiques
+    ("3002", "manufacturing", "Produits pharmaceutiques"),  # antisérum et vaccins
+    ("3003", "manufacturing", "Produits pharmaceutiques"),  # médicaments dosés
+    ("3004", "manufacturing", "Produits pharmaceutiques"),  # médicaments non dosés
+    ("3201", "manufacturing", "Manufacture of chemicals"),  # matières tannantes
+    ("3301", "manufacturing", "Manufacture of chemicals"),  # huiles essentielles
+    ("3401", "manufacturing", "Manufacture of chemicals"),  # savons et détergents
+    # Caoutchouc & plastiques (HS39-40)
+    ("3901", "manufacturing", "Caoutchouc et plastiques"),  # polymères linéaires d'éthylène
+    ("3902", "manufacturing", "Caoutchouc et plastiques"),  # polymères de propylène
+    ("3903", "manufacturing", "Caoutchouc et plastiques"),  # polystyrène
+    ("3904", "manufacturing", "Caoutchouc et plastiques"),  # polychlorure de vinyle
+    ("3907", "manufacturing", "Caoutchouc et plastiques"),  # polyéthers, polyesters
+    ("4001", "manufacturing", "Caoutchouc et plastiques"),  # caoutchouc naturel
+    ("4002", "manufacturing", "Caoutchouc et plastiques"),  # caoutchouc synthétique
+    # Textiles (HS50-63)
+    ("5001", "manufacturing", "Manufacture of textiles"),  # soies brutes
+    ("5101", "manufacturing", "Manufacture of textiles"),  # laine brute
+    ("5201", "manufacturing", "Manufacture of textiles"),  # coton brut
+    ("5301", "manufacturing", "Manufacture of textiles"),  # lin brut
+    ("5401", "manufacturing", "Manufacture of textiles"),  # fibres synthétiques filées
+    ("5501", "manufacturing", "Manufacture of textiles"),  # fibrilles de polyester
+    ("5601", "manufacturing", "Manufacture of textiles"),  # filés de filaments synthétiques
+    ("5801", "manufacturing", "Manufacture of textiles"),  # tulles, dentelles
+    ("5901", "manufacturing", "Manufacture of textiles"),  # textiles enduits
+    ("6001", "manufacturing", "Manufacture of textiles"),  # velours
+    ("6101", "manufacturing", "Articles d'habillement"),  # chandails, tricots
+    ("6201", "manufacturing", "Articles d'habillement"),  # vêtements de laine/poil
+    ("6301", "manufacturing", "Articles d'habillement"),  # tissus de ouate, linge
+    # Métaux (HS72-79, 82-83)
+    ("7201", "manufacturing", "Manufacture of basic metals"),  # fontes brutes
+    ("7202", "manufacturing", "Manufacture of basic metals"),  # ferro-alliages
+    ("7208", "manufacturing", "Manufacture of basic metals"),  # produits laminés fer
+    ("7301", "manufacturing", "Manufacture of basic metals"),  # produits en fer
+    ("7402", "manufacturing", "Manufacture of basic metals"),  # cuivre affiné
+    ("7502", "manufacturing", "Manufacture of basic metals"),  # nickel affiné
+    ("7601", "manufacturing", "Manufacture of basic metals"),  # aluminium non allié
+    ("7801", "manufacturing", "Manufacture of basic metals"),  # plomb affiné
+    ("7901", "manufacturing", "Manufacture of basic metals"),  # zinc affiné
+    ("8101", "manufacturing", "Manufacture of basic metals"),  # tungstène
+    ("8206", "manufacturing", "Manufacture of basic metals"),  # outils à main
+    ("8307", "manufacturing", "Manufacture of basic metals"),  # tuyaux flexibles
+    # Électronique (HS85)
+    ("8501", "manufacturing", "Produits électroniques"),  # moteurs électriques
+    ("8502", "manufacturing", "Produits électroniques"),  # groupes électrogènes
+    ("8504", "manufacturing", "Produits électroniques"),  # transformateurs électriques
+    ("8517", "manufacturing", "Produits électroniques"),  # téléphones
+    ("8523", "manufacturing", "Produits électroniques"),  # supports d'enregistrement
+    ("8541", "manufacturing", "Produits électroniques"),  # semiconducteurs
+    ("8542", "manufacturing", "Produits électroniques"),  # circuits intégrés
+    # Véhicules automobiles (HS87)
+    ("8701", "manufacturing", "Manufacture of motor vehicles"),  # tracteurs
+    ("8704", "manufacturing", "Manufacture of motor vehicles"),  # véhicules de transport
+    ("8706", "manufacturing", "Manufacture of motor vehicles"),  # châssis de véhicules
+    ("8708", "manufacturing", "Manufacture of motor vehicles"),  # pièces détachées
+    # Minéraux non métalliques (HS68-70)
+    ("6801", "manufacturing", "Manufacture of other non-metallic mineral products"),  # ardoises
+    ("6902", "manufacturing", "Manufacture of other non-metallic mineral products"),  # céramiques
+    ("6903", "manufacturing", "Manufacture of other non-metallic mineral products"),  # briques et tuiles
+    ("7001", "manufacturing", "Manufacture of other non-metallic mineral products"),  # verres bruts
+    ("7007", "manufacturing", "Manufacture of other non-metallic mineral products"),  # verres de sécurité
+    ("7008", "manufacturing", "Manufacture of other non-metallic mineral products"),  # verres laminés
+    # Agro-industrie : produits alimentaires (HS16, 19-21, 23)
+    ("1601", "manufacturing", "Manufacture of food products"),  # saucisses et charcuterie
+    ("1602", "manufacturing", "Manufacture of food products"),  # viande préparée
+    ("1605", "manufacturing", "Manufacture of food products"),  # crustacés préparés
+    ("1901", "manufacturing", "Manufacture of food products"),  # préparations de céréales
+    ("1902", "manufacturing", "Manufacture of food products"),  # pâtes alimentaires
+    ("1905", "manufacturing", "Manufacture of food products"),  # pain et biscuits
+    ("2001", "manufacturing", "Manufacture of food products"),  # légumes préparés
+    ("2005", "manufacturing", "Manufacture of food products"),  # légumes cuits
+    ("2009", "manufacturing", "Manufacture of food products"),  # jus de fruits
+    ("2106", "manufacturing", "Manufacture of food products"),  # préparations alimentaires
+    ("2301", "manufacturing", "Manufacture of food products"),  # aliments pour animaux
+    ("2207", "manufacturing", "Manufacture of beverages"),  # alcool éthylique
+    ("2208", "manufacturing", "Manufacture of beverages"),  # alcools et spiritueux
     # ── Hydrocarbures & Mines (USGS) ──
     ("2709", "mining", "Crude oil"),
     ("2710", "mining", "Crude oil"),
