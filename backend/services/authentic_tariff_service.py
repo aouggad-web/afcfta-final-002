@@ -125,6 +125,13 @@ _EAC = {  # EAC common profile (Kenya, Tanzania, Uganda, Rwanda, Burundi)
     },
     "source": "EAC Customs Management Act — VAT base = CIF+DD",
 }
+_IMPORT_VAT_CIF_DD = {
+    "taxes_order": ["DD", "TVA"],
+    "tax_bases": {
+        "DD": ("CIF", []),
+        "TVA": ("CIF", ["DD"]),
+    },
+}
 
 COUNTRY_TAX_PROFILES = {
     # ── Algérie — DGD (douane.gov.dz / conformepro.dz) ───────────────────────
@@ -189,13 +196,24 @@ COUNTRY_TAX_PROFILES = {
     # ── Afrique du Sud — SARS (sars.gov.za) ──────────────────────────────────
     # VAT : base = CIF + DD  (VAT Act s.13(2))
     "ZAF": {
-        "taxes_order": ["DD", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "TVA": ("CIF", ["DD"]),  # VAT Act s.13(2)
-        },
+        **_IMPORT_VAT_CIF_DD,
         "source": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
     },
+    # ── Afrique australe et océan Indien ─────────────────────────────────────
+    # Les fichiers tarifaires de ces pays fournissent DD + TVA/IVA par ligne.
+    # La taxe à la consommation à l'importation est assise sur CIF + DD.
+    "ZMB": {**_IMPORT_VAT_CIF_DD, "source": "Zambia Revenue Authority — VAT on imports"},
+    "ZWE": {**_IMPORT_VAT_CIF_DD, "source": "ZIMRA — VAT on imported goods"},
+    "MOZ": {
+        **_IMPORT_VAT_CIF_DD,
+        "source": "Autoridade Tributária de Moçambique — IVA na importação",
+    },
+    "MUS": {**_IMPORT_VAT_CIF_DD, "source": "Mauritius Revenue Authority — VAT on imports"},
+    "MDG": {
+        **_IMPORT_VAT_CIF_DD,
+        "source": "Direction Générale des Impôts Madagascar — TVA à l'importation",
+    },
+    "MWI": {**_IMPORT_VAT_CIF_DD, "source": "Malawi Revenue Authority — import VAT"},
     # ── Kenya / EAC — KRA (kra.go.ke) ────────────────────────────────────────
     # IDF (3.5%): base CIF  (Finance Act 2022)
     # VAT (16%): base = CIF + DD  (VAT Act Cap 476)
@@ -365,6 +383,7 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         legal_source:   official legal reference used
     """
     profile = COUNTRY_TAX_PROFILES.get(country_iso3)
+    profile_status = "country_specific" if profile else "default"
 
     # ── Default profile for unmapped countries ────────────────────────────────
     # All taxes on CIF; TVA on CIF+DD (most common pattern)
@@ -381,8 +400,11 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
             "source": f"Profil par défaut (TVA base = CIF+DD)",
         }
 
-    taxes_order = profile["taxes_order"]
-    tax_bases = profile["tax_bases"]
+    # Work on request-local copies: profiles intentionally share regional base
+    # dictionaries, and a source-specific extra tax must not leak into another
+    # country or a later calculation.
+    taxes_order = list(profile["taxes_order"])
+    tax_bases = dict(profile["tax_bases"])
     legal_source = profile.get("source", "")
 
     # Build a normalized lookup: norm_code → rate
@@ -391,7 +413,7 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
     # Add any taxes present in the data but not in the profile (apply on CIF)
     for code in list(norm_rates.keys()):
         if code not in [_normalize_tax_code(c) for c in taxes_order]:
-            taxes_order = list(taxes_order) + [code]
+            taxes_order.append(code)
             tax_bases[code] = ("CIF", [])
 
     # Compute amounts in order, tracking each computed amount for cascade reuse
@@ -451,6 +473,7 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         "total_to_pay": total_to_pay,
         "effective_rate_pct": effective_rate_pct,
         "legal_source": legal_source,
+        "profile_status": profile_status,
     }
 
 
@@ -1601,6 +1624,7 @@ def calculate_import_taxes(
         "calculation_steps": npf_cascade["steps"],
         "calculation_steps_zlecaf": zlecaf_cascade["steps"],
         "cascade_legal_source": npf_cascade["legal_source"],
+        "calculation_profile_status": npf_cascade["profile_status"],
         # Legacy keys kept for backward compatibility with existing frontend code
         "npf_calculation": npf_legacy,
         "zlecaf_calculation": zlecaf_legacy,

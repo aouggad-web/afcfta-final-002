@@ -6,6 +6,7 @@ VAT and levies use the method declared for each destination country.
 """
 
 import currencies.service as currency_service
+import pytest
 from services import authentic_tariff_service as svc
 
 
@@ -82,3 +83,45 @@ def test_tunisia_tariff_codes_normalize_duty_and_import_levy(monkeypatch):
     assert by_code["TCL"]["base_expr"] == "CIF"
     assert by_code["TCL"]["amount_npf"] == 30.0
     assert result["taxes_summary"]["npf"]["total_taxes_et_droits"] == 390.0
+
+
+@pytest.mark.parametrize(
+    ("country", "hs_code", "vat_rate", "expected_base", "expected_total"),
+    [
+        ("ZMB", "010129", 16.0, 1_150.0, 334.0),
+        ("ZWE", "010129", 15.5, 1_150.0, 328.25),
+        ("MOZ", "010129", 16.0, 1_200.0, 392.0),
+        ("MUS", "010129", 15.0, 1_000.0, 150.0),
+        ("MDG", "010129", 20.0, 1_100.0, 320.0),
+        ("MWI", "010129", 17.5, 1_200.0, 410.0),
+    ],
+)
+def test_southern_africa_and_indian_ocean_use_explicit_import_vat_profiles(
+    monkeypatch, country, hs_code, vat_rate, expected_base, expected_total
+):
+    result = _calc(monkeypatch, country, hs_code)
+    by_code = {row["code"]: row for row in result["taxes_breakdown"]}
+
+    assert result["calculation_profile_status"] == "country_specific"
+    assert "Profil par défaut" not in result["cascade_legal_source"]
+    assert by_code["TVA"]["rate_npf_pct"] == vat_rate
+    assert by_code["TVA"]["base_expr"] == "CIF + DD"
+    assert by_code["TVA"]["base_value_npf"] == expected_base
+    assert result["taxes_summary"]["npf"]["total_taxes_et_droits"] == expected_total
+
+
+def test_unmapped_country_reports_default_profile_instead_of_hiding_fallback():
+    cascade = svc.compute_tax_cascade(1_000.0, {"DD": 10.0, "TVA": 20.0}, "XXX")
+
+    assert cascade["profile_status"] == "default"
+    assert cascade["legal_source"] == "Profil par défaut (TVA base = CIF+DD)"
+
+
+def test_source_specific_tax_does_not_mutate_shared_country_profile():
+    with_extra_tax = svc.compute_tax_cascade(
+        1_000.0, {"DD": 10.0, "TVA": 20.0, "SOURCE_FEE": 2.0}, "ZMB"
+    )
+    without_extra_tax = svc.compute_tax_cascade(1_000.0, {"DD": 10.0, "TVA": 20.0}, "MWI")
+
+    assert [step["code"] for step in with_extra_tax["steps"]] == ["DD", "TVA", "SOURCE_FEE"]
+    assert [step["code"] for step in without_extra_tax["steps"]] == ["DD", "TVA"]
