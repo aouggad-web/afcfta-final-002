@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import CalculationMethodStatus from './CalculationMethodStatus';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import CalculationMethodStatus from "./CalculationMethodStatus";
 
-describe('CalculationMethodStatus', () => {
-  it('shows the country-specific method and legal source', () => {
+describe("CalculationMethodStatus", () => {
+  it("shows the country-specific method and legal source", () => {
     render(
       <CalculationMethodStatus
         status="country_specific"
@@ -13,11 +13,13 @@ describe('CalculationMethodStatus', () => {
       />,
     );
 
-    expect(screen.getByRole('status')).toHaveTextContent('Méthode nationale appliquée');
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Méthode nationale appliquée",
+    );
     expect(screen.getByText(/Zambia Revenue Authority/)).toBeInTheDocument();
   });
 
-  it('warns clearly when the backend used its default method', () => {
+  it("warns clearly when the backend used its default method", () => {
     render(
       <CalculationMethodStatus
         status="default"
@@ -26,7 +28,9 @@ describe('CalculationMethodStatus', () => {
       />,
     );
 
-    expect(screen.getByRole('alert')).toHaveTextContent('Méthode générique à confirmer');
-    expect(screen.getByRole('alert')).toHaveTextContent('TVA = CIF + DD');
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Méthode générique à confirmer",
+    );
+    expect(screen.getByRole("alert")).toHaveTextContent("TVA = CIF + DD");
   });
 });

@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import re
-from typing import Any, Dict, List, Optional
+from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
@@ -397,7 +397,7 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         profile = {
             "taxes_order": ordered_codes,
             "tax_bases": bases,
-            "source": f"Profil par défaut (TVA base = CIF+DD)",
+            "source": "Profil par défaut (TVA base = CIF+DD)",
         }
 
     # Work on request-local copies: profiles intentionally share regional base
@@ -915,11 +915,12 @@ def get_country_summary(country_iso3):
         "country_iso3": country_iso3,
         "total_lines": len(tariff_lines),
         "total_sub_positions": summary.get(
-            "total_sub_positions", sum(len(l.get("sub_positions", [])) for l in tariff_lines)
+            "total_sub_positions",
+            sum(len(line.get("sub_positions", [])) for line in tariff_lines),
         ),
         "total_national_positions": len(nomenclature) if nomenclature else 0,
         "chapters_covered": summary.get(
-            "chapters_covered", len({l.get("chapter", "") for l in tariff_lines})
+            "chapters_covered", len({line.get("chapter", "") for line in tariff_lines})
         ),
         "vat_rate_pct": summary.get("vat_rate_pct", 0),
         "dd_rate_range": summary.get("dd_rate_range", {}),
@@ -1334,16 +1335,14 @@ def calculate_import_taxes(
     # Normaliser l'intitulé officiel du PRCT dans le dict taxes_detail renvoyé
     # (entrée recréée, jamais de mutation des objets de ligne mis en cache).
     for _k in list(taxes_detail.keys()):
-        if (
-            _canonical_tax_code(
-                _k,
+        if _canonical_tax_code(
+            _k,
+            (
                 taxes_detail.get(_k, {}).get("label", "")
                 if isinstance(taxes_detail.get(_k), dict)
-                else "",
-            )
-            == "PRCT"
-            and isinstance(taxes_detail.get(_k), dict)
-        ):
+                else ""
+            ),
+        ) == "PRCT" and isinstance(taxes_detail.get(_k), dict):
             _entry = dict(taxes_detail[_k])
             for _lk in ("label", "name"):
                 if _lk in _entry:

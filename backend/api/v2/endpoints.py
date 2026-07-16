@@ -9,18 +9,24 @@ import sys
 import time
 import uuid
 from datetime import datetime, timezone
+from importlib import import_module
 from pathlib import Path
 from typing import Any, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
+from analytics.dashboard_generator import DashboardGenerator  # type: ignore
+from analytics.regional_intelligence import RegionalAnalyticsEngine  # type: ignore
+from search.hs_code_search import get_search_engine  # type: ignore
+from search.investment_search import InvestmentOpportunitySearch  # type: ignore
+
 _ENGINE_DIR = Path(__file__).resolve().parents[3] / "engine"
 if str(_ENGINE_DIR) not in sys.path:
     sys.path.insert(0, str(_ENGINE_DIR))
 
-from calculation import compute_duties
-from schemas.canonical_model import CanonicalTariffLine
+compute_duties = import_module("calculation").compute_duties
+CanonicalTariffLine = import_module("schemas.canonical_model").CanonicalTariffLine
 
 # ---------------------------------------------------------------------------
 # Internal imports (backend/ is on sys.path)
@@ -42,11 +48,6 @@ try:
 except Exception:
     _SCORER = None
     _SCORING_AVAILABLE = False
-
-from analytics.dashboard_generator import DashboardGenerator  # type: ignore
-from analytics.regional_intelligence import RegionalAnalyticsEngine  # type: ignore
-from search.hs_code_search import get_search_engine  # type: ignore
-from search.investment_search import InvestmentOpportunitySearch  # type: ignore
 
 # ---------------------------------------------------------------------------
 # Module-level singletons
@@ -365,7 +366,7 @@ async def ai_recommendations(profile: UserProfile) -> dict[str, Any]:
                 "profile_used": raw_profile,
                 "generated_at": datetime.now(timezone.utc).isoformat(),
             }
-        except Exception as exc:
+        except Exception:
             # Fall through to heuristic fallback
             pass
 
