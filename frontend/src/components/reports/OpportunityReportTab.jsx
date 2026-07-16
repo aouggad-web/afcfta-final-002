@@ -452,7 +452,10 @@ function BilateralView({ countries, fr, prefill }) {
                 landed.available
                   ? `FOB ${money(landed.breakdown?.goods_value_fob_usd)} + ${fr ? "fret" : "freight"} ${money(
                       landed.breakdown?.best_operational_freight_usd
-                    )}` +
+                    )} + ${fr ? "assurance" : "insurance"} ${money(landed.breakdown?.insurance_usd)}` +
+                    (landed.breakdown?.trade_finance_fee_usd
+                      ? ` + ${fr ? "banque" : "banking"} ${money(landed.breakdown.trade_finance_fee_usd)}`
+                      : "") +
                     (landed.breakdown?.freight_mode === "sea_bulk"
                       ? ` · ${fr ? "affrètement vraquier" : "bulk charter"}${
                           landed.breakdown.vessel_class
@@ -493,6 +496,88 @@ function BilateralView({ countries, fr, prefill }) {
               value={finIdx.available ? pct(finIdx.index) : "—"}
             />
           </div>
+
+          {landed.available && landed.breakdown && (
+            <div style={card} data-testid="report-landed-breakdown">
+              <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
+                {fr ? "Décomposition du coût rendu" : "Landed cost breakdown"}
+              </div>
+              <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
+                <tbody>
+                  {(() => {
+                    const bd = landed.breakdown;
+                    const comp = landed.components || {};
+                    const freightLabel =
+                      bd.freight_excl_port_fees_usd != null
+                        ? fr
+                          ? "Fret (hors frais portuaires)"
+                          : "Freight (excl. port fees)"
+                        : fr
+                        ? "Fret (option la moins chère)"
+                        : "Freight (cheapest option)";
+                    const rows = [
+                      { l: fr ? "Valeur marchandises (FOB)" : "Goods value (FOB)", v: bd.goods_value_fob_usd },
+                      {
+                        l: freightLabel,
+                        v: bd.freight_excl_port_fees_usd != null
+                          ? bd.freight_excl_port_fees_usd
+                          : bd.best_operational_freight_usd,
+                      },
+                      {
+                        l: fr
+                          ? "Frais portuaires — chargement (port d'origine)"
+                          : "Port fees — loading (origin port)",
+                        v: bd.port_fees_loading_usd,
+                      },
+                      {
+                        l: fr
+                          ? "Frais portuaires — déchargement (port de destination)"
+                          : "Port fees — discharge (destination port)",
+                        v: bd.port_fees_discharge_usd,
+                      },
+                      {
+                        l: `${fr ? "Assurance cargo" : "Cargo insurance"} (${
+                          comp.insurance?.rate_pct ?? "0,5"
+                        } % · ${fr ? "estimée" : "estimated"})`,
+                        v: bd.insurance_usd,
+                      },
+                      {
+                        l: bd.trade_finance_instrument
+                          ? `${fr ? "Instrument bancaire recommandé" : "Recommended banking instrument"} — ${
+                              bd.trade_finance_instrument
+                            }${
+                              comp.trade_finance?.typical_cost_pct != null
+                                ? ` (${comp.trade_finance.typical_cost_pct} %)`
+                                : ""
+                            }`
+                          : fr
+                          ? "Instrument bancaire recommandé"
+                          : "Recommended banking instrument",
+                        v: bd.trade_finance_fee_usd,
+                      },
+                    ].filter((r) => r.v !== null && r.v !== undefined);
+                    return (
+                      <>
+                        {rows.map((r, i) => (
+                          <tr key={i} style={{ borderTop: i > 0 ? "1px solid rgba(0,0,0,0.06)" : "none" }}>
+                            <td style={td}>{r.l}</td>
+                            <td style={{ ...td, textAlign: "right" }}>{money(r.v)}</td>
+                          </tr>
+                        ))}
+                        <tr style={{ borderTop: "2px solid rgba(0,0,0,0.15)", fontWeight: 700 }}>
+                          <td style={td}>{fr ? "Coût rendu estimé (total)" : "Estimated landed cost (total)"}</td>
+                          <td style={{ ...td, textAlign: "right" }}>{money(landed.value_usd)}</td>
+                        </tr>
+                      </>
+                    );
+                  })()}
+                </tbody>
+              </table>
+              <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
+                {landed.note}
+              </div>
+            </div>
+          )}
 
           {landed.shipment_sizing?.value_to_weight && (
             <div style={card}>

@@ -138,11 +138,70 @@ def test_end_to_end_score_unavailable_when_nothing_counts():
 
 
 # ── Landed cost (pure, deterministic) ────────────────────────────────────────
-def test_landed_cost_sums_fob_and_freight():
+def test_landed_cost_sums_fob_freight_and_insurance():
     res = report_engine._landed_cost(100000.0, 995.0)
     assert res["available"] is True
-    assert res["value_usd"] == 100995.0
     assert res["breakdown"]["best_operational_freight_usd"] == 995.0
+    # Assurance cargo estimée : 0,5 % × 110 % × (FOB + fret), toujours flaggée.
+    insurance = res["components"]["insurance"]
+    assert insurance["is_estimation"] is True
+    assert insurance["premium_usd"] == round(100995.0 * 1.1 * 0.005, 2)
+    # Sans trade finance fourni, les frais bancaires sont exclus (pas inventés).
+    assert res["components"]["trade_finance"]["available"] is False
+    assert res["breakdown"]["trade_finance_fee_usd"] is None
+    assert res["value_usd"] == round(100995.0 + insurance["premium_usd"], 2)
+
+
+def test_landed_cost_adds_recommended_instrument_fee():
+    trade_finance = {
+        "available": True,
+        "instruments": [
+            {"code": "LC_IRREVOCABLE", "name_fr": "Crédit Documentaire", "typical_cost_pct": 1.5},
+            {"code": "DOC_COLLECTION_DP", "name_fr": "Remise D/P", "typical_cost_pct": 0.5},
+        ],
+    }
+    res = report_engine._landed_cost(100000.0, 995.0, trade_finance=trade_finance)
+    tf = res["components"]["trade_finance"]
+    # Le PREMIER instrument recommandé (le mieux adapté) est facturé, en % du FOB.
+    assert tf["available"] is True and tf["instrument_code"] == "LC_IRREVOCABLE"
+    assert tf["fee_usd"] == 1500.0
+    assert res["breakdown"]["trade_finance_fee_usd"] == 1500.0
+    insurance_usd = res["components"]["insurance"]["premium_usd"]
+    assert res["value_usd"] == round(100995.0 + insurance_usd + 1500.0, 2)
+
+
+def test_landed_cost_surfaces_container_port_fees_without_double_count():
+    shipment = {"available": True, "containers_needed": 3, "container_type": "teu"}
+    cheapest = {
+        "mode": "sea",
+        "port_fees": {
+            "origin_thc_usd": 150,
+            "destination_thc_usd": 200,
+            "total_usd": 350,
+            "basis": "per_container",
+            "included_in_freight": True,
+        },
+    }
+    res = report_engine._landed_cost(100000.0, 1000.0, shipment, cheapest)
+    pf = res["components"]["port_fees"]
+    # THC × nombre de conteneurs, décomposés chargement / déchargement…
+    assert pf["available"] is True and pf["total_usd"] == 1050.0
+    assert pf["loading_usd"] == 450.0 and pf["discharge_usd"] == 600.0
+    assert pf["included_in_freight"] is True
+    bd = res["breakdown"]
+    assert bd["port_fees_loading_usd"] == 450.0
+    assert bd["port_fees_discharge_usd"] == 600.0
+    # …le fret est aussi exposé HORS frais portuaires (lignes additives)…
+    assert bd["freight_excl_port_fees_usd"] == round(3000.0 - 1050.0, 2)
+    # …et JAMAIS ré-additionnés : total = FOB + fret(×3) + assurance seulement.
+    insurance_usd = res["components"]["insurance"]["premium_usd"]
+    assert res["value_usd"] == round(100000.0 + 3000.0 + insurance_usd, 2)
+
+
+def test_landed_cost_port_fees_unavailable_for_other_modes():
+    res = report_engine._landed_cost(100000.0, 995.0, None, {"mode": "road"})
+    assert res["components"]["port_fees"]["available"] is False
+    assert res["breakdown"]["port_fees_included_usd"] is None
 
 
 def test_landed_cost_unavailable_without_freight():

@@ -562,6 +562,18 @@ def _format_sea_option(
         "carriers": sea.get("carriers", []),
         "total_cost_usd": sea["total_cost_usd"],
         "container_type": str(sea.get("container_type", "teu")).lower(),
+        # Frais portuaires (THC origine + destination) : déjà inclus dans
+        # total_cost_usd — remontés séparément pour la transparence du coût rendu.
+        "port_fees": {
+            "origin_thc_usd": sea.get("origin_thc_usd"),
+            "destination_thc_usd": sea.get("destination_thc_usd"),
+            "total_usd": round(
+                (sea.get("origin_thc_usd") or 0) + (sea.get("destination_thc_usd") or 0), 2
+            ),
+            "basis": "per_container",
+            "included_in_freight": True,
+            "source": "Barèmes THC des autorités portuaires 2024",
+        },
         "transit_days_min": sea["transit_days_min"],
         "transit_days_max": sea["transit_days_max"],
         "co2_kg": co2,
@@ -793,6 +805,23 @@ def _bulk_sea_options(
                     }
                 ],
                 "total_cost_usd": bulk_result.get("total_cost_usd"),
+                # Frais portuaires vrac (chargement + déchargement × tonnage) :
+                # déjà inclus dans total_cost_usd — remontés pour la transparence.
+                "port_fees": {
+                    "load_usd_per_t": bulk_result.get("port_load_usd_per_t"),
+                    "discharge_usd_per_t": bulk_result.get("port_discharge_usd_per_t"),
+                    "total_usd": round(
+                        (
+                            (bulk_result.get("port_load_usd_per_t") or 0)
+                            + (bulk_result.get("port_discharge_usd_per_t") or 0)
+                        )
+                        * weight_tonnes,
+                        2,
+                    ),
+                    "basis": "per_tonne_x_tonnage",
+                    "included_in_freight": True,
+                    "source": "Manutention portuaire vrac — benchmarks ports africains 2024",
+                },
                 "transit_days_min": bulk_result.get("transit_days_min"),
                 "transit_days_max": bulk_result.get("transit_days_max"),
                 "co2_kg": co2,
