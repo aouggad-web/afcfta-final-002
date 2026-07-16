@@ -256,13 +256,14 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2301", "manufacturing", "Manufacture of food products"),  # aliments pour animaux
     ("2207", "manufacturing", "Manufacture of beverages"),  # alcool éthylique
     ("2208", "manufacturing", "Manufacture of beverages"),  # alcools et spiritueux
-    # ── Hydrocarbures & Mines (USGS) ──
-    ("2709", "mining", "Crude oil"),  # pétrole brut
+    # ── Raffinage pétrolier (UNIDO) ──
     # 2710 = huiles de pétrole RAFFINÉES (essence, diesel, kérosène...), pas du brut :
     # rattaché à la valeur ajoutée UNIDO "Manufacture of coke and refined petroleum
     # products" (donnée réelle disponible), plutôt que confondu avec la production
-    # minière de brut ci-dessus — l'ancien mapping masquait cette distinction.
+    # minière de brut USGS ci-dessous — l'ancien mapping masquait cette distinction.
     ("2710", "manufacturing", "Manufacture of coke and refined petroleum products"),
+    # ── Hydrocarbures & Mines (USGS) ──
+    ("2709", "mining", "Crude oil"),  # pétrole brut
     ("2711", "mining", "Natural gas"),
     ("2701", "mining", "Coal"),
     ("2702", "mining", "Coal"),

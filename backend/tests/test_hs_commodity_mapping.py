@@ -81,7 +81,9 @@ def test_matched_manufacturing_labels_have_real_production_records():
     # sinon get_continental_producers retombe silencieusement sur le proxy
     # d'exportation malgré un match apparent.
     for hs in ("8501", "2710", "7113"):
-        dataset, label, _ = pcs._match_commodity(hs)
+        match = pcs._match_commodity(hs)
+        assert match is not None, f"aucun mapping pour {hs}"
+        dataset, label, _ = match
         records = pcs._records_for(dataset, label)
         assert records, f"aucun enregistrement pour {hs} -> {label}"
 
