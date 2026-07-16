@@ -19,6 +19,7 @@ import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calcula
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import TaxBreakdownDual from './TaxBreakdownDual';
 import CalculationJournal from './CalculationJournal';
+import CalculationMethodStatus from './CalculationMethodStatus';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
 import DataStatusBanner from '../common/DataStatusBanner';
@@ -440,6 +441,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           taxes_breakdown: authenticResult.taxes_breakdown || [],
           taxes_summary: authenticResult.taxes_summary || null,
           currency: authenticResult.currency || null,
+          calculation_profile_status: authenticResult.calculation_profile_status || 'default',
+          cascade_legal_source: authenticResult.cascade_legal_source || null,
           
           // Détails des taxes
           taxes_detail: authenticResult.taxes_detail || [],
@@ -1267,6 +1270,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           )}
 
           {/* Détail complet NPF vs ZLECAf, base par base + bi-devise */}
+          <CalculationMethodStatus
+            status={result.calculation_profile_status}
+            legalSource={result.cascade_legal_source}
+            language={language}
+          />
+
           {result.taxes_breakdown && result.taxes_breakdown.length > 0 && (
             <TaxBreakdownDual
               breakdown={result.taxes_breakdown}
