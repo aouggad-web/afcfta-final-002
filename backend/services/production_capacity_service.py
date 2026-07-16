@@ -205,10 +205,22 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     # Minéraux non métalliques (HS68-70)
     ("6801", "manufacturing", "Manufacture of other non-metallic mineral products"),  # ardoises
     ("6902", "manufacturing", "Manufacture of other non-metallic mineral products"),  # céramiques
-    ("6903", "manufacturing", "Manufacture of other non-metallic mineral products"),  # briques et tuiles
+    (
+        "6903",
+        "manufacturing",
+        "Manufacture of other non-metallic mineral products",
+    ),  # briques et tuiles
     ("7001", "manufacturing", "Manufacture of other non-metallic mineral products"),  # verres bruts
-    ("7007", "manufacturing", "Manufacture of other non-metallic mineral products"),  # verres de sécurité
-    ("7008", "manufacturing", "Manufacture of other non-metallic mineral products"),  # verres laminés
+    (
+        "7007",
+        "manufacturing",
+        "Manufacture of other non-metallic mineral products",
+    ),  # verres de sécurité
+    (
+        "7008",
+        "manufacturing",
+        "Manufacture of other non-metallic mineral products",
+    ),  # verres laminés
     # Agro-industrie : produits alimentaires (HS16, 19-21, 23)
     ("1601", "manufacturing", "Manufacture of food products"),  # saucisses et charcuterie
     ("1602", "manufacturing", "Manufacture of food products"),  # viande préparée
