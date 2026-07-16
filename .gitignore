@@ -83,3 +83,10 @@ backend/engine/sources/*
 
 # Sorties generees par backend/scripts/smoke_opportunites.py
 test_reports/
+
+# Yarn install state can be generated in nested workspaces
+**/.yarn/install-state.gz
+
+# Local Yarn settings generated during ad hoc installs
+.yarnrc.yml
+**/.yarnrc.yml
