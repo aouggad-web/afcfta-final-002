@@ -1056,10 +1056,12 @@ def test_national_need_elasticity_resolved_by_product_class():
 def test_national_need_sector_scope_is_explicit():
     from services import demand_estimation_service as demand
 
-    # SH 340111 (savon) ne matche qu'au chapitre -> le besoin estimé couvre tout
-    # le secteur « chimie », ce qui doit être dit, pas laissé passer pour le
-    # besoin du seul produit.
-    res = demand.estimate_national_need("340111", "ETH")
+    # SH 392690 (autres ouvrages en matières plastiques) ne matche qu'au
+    # chapitre -> le besoin estimé couvre tout le secteur « plastiques », ce
+    # qui doit être dit, pas laissé passer pour le besoin du seul produit.
+    # (SH 340111 — savon — a depuis obtenu une correspondance HS4 dédiée dans
+    # HS_TO_COMMODITY et ne teste donc plus le repli de chapitre.)
+    res = demand.estimate_national_need("392690", "ETH")
     assert res["available"] is True
     assert res["reference_scope"] == "secteur (chapitre SH2)"
     assert "secteur" in res["note"]
@@ -1122,7 +1124,12 @@ def test_narrative_national_need_relays_sector_scope_and_caveat():
     from services import demand_estimation_service as demand
     from services import narrative_analysis_service as narrative
 
-    need = demand.estimate_national_need("300490", "ETH")
+    # SH 300590 (ouates, gazes, bandages) reste sur le repli de chapitre 30
+    # (pharma) : à la fois portée sectorielle (HS2) ET couverture UNIDO
+    # partielle (1 seul pays) sont donc exercées par ce même appel. (SH
+    # 300490 a depuis obtenu une correspondance HS4 dédiée et ne déclenche
+    # plus la note de portée sectorielle.)
+    need = demand.estimate_national_need("300590", "ETH")
     out = narrative.analyze_national_need("ETH", need)
     assert out["available"] is True
     assert "secteur" in out["narrative"]

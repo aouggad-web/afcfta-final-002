@@ -94,11 +94,15 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("070320", "agri", "Garlic"),  # ail
     ("071420", "agri", "Sweet potatoes"),  # patates douces
     ("0704", "agri", "Cabbages"),  # choux
+    ("070410", "agri", "Cauliflowers"),  # choux-fleurs et brocolis (12 pays)
     ("070610", "agri", "Carrots"),  # carottes
     ("070930", "agri", "Eggplants"),  # aubergines
+    ("070960", "agri", "Chillies and peppers"),  # piments/poivrons frais (37 pays)
+    ("070970", "agri", "Spinach"),  # épinards
     ("070999", "agri", "Okra"),  # gombo
     ("0707", "agri", "Cucumbers"),  # concombres
     ("0705", "agri", "Lettuce"),  # laitue
+    ("080550", "agri", "Lemons and limes"),  # citrons et limes (sous-position de 0805)
     ("071340", "agri", "Lentils"),  # lentilles
     ("071320", "agri", "Chickpeas"),  # pois chiches
     ("071310", "agri", "Peas"),  # pois secs
@@ -189,19 +193,36 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("8101", "manufacturing", "Manufacture of basic metals"),  # tungstène
     ("8206", "manufacturing", "Manufacture of basic metals"),  # outils à main
     ("8307", "manufacturing", "Manufacture of basic metals"),  # tuyaux flexibles
-    # Électronique (HS85)
-    ("8501", "manufacturing", "Produits électroniques"),  # moteurs électriques
-    ("8502", "manufacturing", "Produits électroniques"),  # groupes électrogènes
-    ("8504", "manufacturing", "Produits électroniques"),  # transformateurs électriques
+    # Électronique — ISIC 26 (HS85 : téléphones, semiconducteurs, supports)
     ("8517", "manufacturing", "Produits électroniques"),  # téléphones
     ("8523", "manufacturing", "Produits électroniques"),  # supports d'enregistrement
+    ("8528", "manufacturing", "Produits électroniques"),  # moniteurs, téléviseurs
     ("8541", "manufacturing", "Produits électroniques"),  # semiconducteurs
     ("8542", "manufacturing", "Produits électroniques"),  # circuits intégrés
+    # Équipements électriques — ISIC 27 (HS85 : moteurs, groupes électrogènes,
+    # transformateurs, piles, câblage) : secteur UNIDO distinct de l'électronique
+    # (ISIC 26) — les deux libellés existent séparément dans production_africaine.json,
+    # fusionner les deux sous "Produits électroniques" comme avant faussait le besoin
+    # estimé pour les produits de ce sous-secteur.
+    ("8501", "manufacturing", "Équipements électriques"),  # moteurs électriques
+    ("8502", "manufacturing", "Équipements électriques"),  # groupes électrogènes
+    ("8503", "manufacturing", "Équipements électriques"),  # pièces de moteurs/génératrices
+    ("8504", "manufacturing", "Équipements électriques"),  # transformateurs électriques
+    ("8506", "manufacturing", "Équipements électriques"),  # piles électriques
+    ("8507", "manufacturing", "Équipements électriques"),  # accumulateurs électriques
+    ("8535", "manufacturing", "Équipements électriques"),  # appareillage électrique >1kV
+    ("8536", "manufacturing", "Équipements électriques"),  # appareillage électrique <=1kV
+    ("8537", "manufacturing", "Équipements électriques"),  # tableaux de commande électrique
+    ("8544", "manufacturing", "Équipements électriques"),  # fils et câbles isolés
     # Véhicules automobiles (HS87)
     ("8701", "manufacturing", "Manufacture of motor vehicles"),  # tracteurs
+    ("8702", "manufacturing", "Manufacture of motor vehicles"),  # autobus/autocars
+    ("8703", "manufacturing", "Manufacture of motor vehicles"),  # voitures particulières
     ("8704", "manufacturing", "Manufacture of motor vehicles"),  # véhicules de transport
+    ("8705", "manufacturing", "Manufacture of motor vehicles"),  # véhicules à usage spécial
     ("8706", "manufacturing", "Manufacture of motor vehicles"),  # châssis de véhicules
     ("8708", "manufacturing", "Manufacture of motor vehicles"),  # pièces détachées
+    ("8711", "manufacturing", "Manufacture of motor vehicles"),  # motocycles
     # Minéraux non métalliques (HS68-70)
     ("6801", "manufacturing", "Manufacture of other non-metallic mineral products"),  # ardoises
     ("6902", "manufacturing", "Manufacture of other non-metallic mineral products"),  # céramiques
@@ -235,16 +256,25 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2301", "manufacturing", "Manufacture of food products"),  # aliments pour animaux
     ("2207", "manufacturing", "Manufacture of beverages"),  # alcool éthylique
     ("2208", "manufacturing", "Manufacture of beverages"),  # alcools et spiritueux
+    # ── Raffinage pétrolier (UNIDO) ──
+    # 2710 = huiles de pétrole RAFFINÉES (essence, diesel, kérosène...), pas du brut :
+    # rattaché à la valeur ajoutée UNIDO "Manufacture of coke and refined petroleum
+    # products" (donnée réelle disponible), plutôt que confondu avec la production
+    # minière de brut USGS ci-dessous — l'ancien mapping masquait cette distinction.
+    ("2710", "manufacturing", "Manufacture of coke and refined petroleum products"),
     # ── Hydrocarbures & Mines (USGS) ──
-    ("2709", "mining", "Crude oil"),
-    ("2710", "mining", "Crude oil"),
+    ("2709", "mining", "Crude oil"),  # pétrole brut
     ("2711", "mining", "Natural gas"),
     ("2701", "mining", "Coal"),
     ("2702", "mining", "Coal"),
     ("7108", "mining", "Gold"),
-    ("7106", "mining", "Salt"),  # (placeholder rarely hit)
-    ("7102", "mining", "Diamonds"),
-    ("7103", "mining", "Diamonds"),
+    ("7102", "mining", "Diamonds"),  # diamants bruts
+    ("7103", "mining", "Diamonds"),  # pierres gemmes brutes
+    # 7113 = joaillerie/bijouterie (diamants taillés, sertis) : valeur ajoutée de
+    # transformation (taille, sertissage), pas de la production minière brute —
+    # rattaché au libellé UNIDO "Autres industries (diamants)" plutôt qu'à "Diamonds"
+    # (USGS, qui ne mesure que l'extraction).
+    ("7113", "manufacturing", "Autres industries (diamants)"),  # bijouterie/joaillerie
     ("7110", "mining", "Platinum"),
     ("2510", "mining", "Phosphate"),
     ("2603", "mining", "Copper"),
