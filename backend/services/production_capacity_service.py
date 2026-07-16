@@ -94,11 +94,15 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("070320", "agri", "Garlic"),  # ail
     ("071420", "agri", "Sweet potatoes"),  # patates douces
     ("0704", "agri", "Cabbages"),  # choux
+    ("070410", "agri", "Cauliflowers"),  # choux-fleurs et brocolis (12 pays)
     ("070610", "agri", "Carrots"),  # carottes
     ("070930", "agri", "Eggplants"),  # aubergines
+    ("070960", "agri", "Chillies and peppers"),  # piments/poivrons frais (37 pays)
+    ("070970", "agri", "Spinach"),  # épinards
     ("070999", "agri", "Okra"),  # gombo
     ("0707", "agri", "Cucumbers"),  # concombres
     ("0705", "agri", "Lettuce"),  # laitue
+    ("080550", "agri", "Lemons and limes"),  # citrons et limes (sous-position de 0805)
     ("071340", "agri", "Lentils"),  # lentilles
     ("071320", "agri", "Chickpeas"),  # pois chiches
     ("071310", "agri", "Peas"),  # pois secs

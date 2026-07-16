@@ -84,3 +84,49 @@ def test_matched_manufacturing_labels_have_real_production_records():
         dataset, label, _ = pcs._match_commodity(hs)
         records = pcs._records_for(dataset, label)
         assert records, f"aucun enregistrement pour {hs} -> {label}"
+
+
+def test_newly_added_agri_commodities_resolve_at_hs6_with_data():
+    # Commodités FAOSTAT qui avaient des données mais aucun code HS pointant
+    # vers elles (elles retombaient donc sur le proxy d'exportation) : chacune
+    # doit désormais matcher au niveau HS6 et avoir des enregistrements réels.
+    expected = {
+        "070410": "Cauliflowers",
+        "070960": "Chillies and peppers",
+        "070970": "Spinach",
+        "080550": "Lemons and limes",
+    }
+    for hs, label in expected.items():
+        match = pcs._match_commodity(hs)
+        assert match == ("agri", label, "HS6"), (hs, match)
+        assert pcs._records_for("agri", label), f"aucun enregistrement pour {label}"
+
+
+def test_no_production_commodity_left_without_hs_mapping():
+    # Invariant de couverture : toute commodité (agri FAO, mines USGS, secteur
+    # UNIDO) présente dans production_africaine.json doit être atteignable par
+    # au moins un code HS — sinon sa donnée réelle est inaccessible au module
+    # Opportunités et le besoin national retomberait inutilement sur un proxy.
+    from production_data import load_production_data
+
+    data = load_production_data()
+    mapped = {label for _, _, label in pcs.HS_TO_COMMODITY}
+    mapped |= {label for _, (_, label) in pcs.HS_CHAPTER_FALLBACK.items()}
+
+    orphans = []
+    for rec in data.get("agri_faostat", []):
+        lbl = rec.get("commodity_label")
+        if lbl and lbl not in mapped:
+            orphans.append(("agri", lbl))
+    for rec in data.get("mining_usgs", []):
+        lbl = rec.get("commodity_label")
+        if lbl and lbl not in mapped:
+            orphans.append(("mining", lbl))
+    for rec in data.get("manufacturing_unido", []):
+        lbl = rec.get("isic_label") or rec.get("sector_detail")
+        if lbl and lbl not in mapped:
+            orphans.append(("manufacturing", lbl))
+
+    assert not set(
+        orphans
+    ), f"commodités avec données mais sans mapping HS : {sorted(set(orphans))}"
