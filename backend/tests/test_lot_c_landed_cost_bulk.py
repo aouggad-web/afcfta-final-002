@@ -38,9 +38,30 @@ def test_bulk_above_threshold_uses_charter_not_containers():
     assert "containers_needed" not in bd
     assert "freight_per_container_usd" not in bd
 
-    # Le coût rendu = FOB + affrètement total
+    # Le coût rendu = FOB + affrètement total + assurance + frais bancaires
     assert bd["best_operational_freight_usd"] > 0
-    assert lc["value_usd"] == 50_000_000 + bd["best_operational_freight_usd"]
+    assert bd["insurance_usd"] > 0
+    assert lc["value_usd"] == round(
+        50_000_000
+        + bd["best_operational_freight_usd"]
+        + bd["insurance_usd"]
+        + (bd["trade_finance_fee_usd"] or 0),
+        2,
+    )
+
+    # Les frais portuaires vrac sont décomposés chargement / déchargement,
+    # déjà inclus dans l'affrètement — jamais ré-additionnés.
+    port_fees = lc["components"]["port_fees"]
+    assert port_fees["available"] is True
+    assert port_fees["included_in_freight"] is True
+    assert 0 < port_fees["total_usd"] < bd["best_operational_freight_usd"]
+    assert port_fees["loading_usd"] > 0 and port_fees["discharge_usd"] > 0
+    assert round(port_fees["loading_usd"] + port_fees["discharge_usd"], 1) == round(
+        port_fees["total_usd"], 1
+    )
+    assert bd["freight_excl_port_fees_usd"] == round(
+        bd["best_operational_freight_usd"] - port_fees["total_usd"], 2
+    )
 
     # L'option opérationnelle la moins chère est bien le vraquier
     cheapest = rep["logistics"]["profile"]["cheapest_operational_option"]

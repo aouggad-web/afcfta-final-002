@@ -6,7 +6,9 @@ Composes the platform's real-data angles (production/supply, logistics, finance
 transparent composite indicators described in
 ``docs/MODULE_OPPORTUNITES_PLAN_PREMIUM.md``:
 
-  - **Landed cost** = goods value (FOB) + cheapest operational freight.
+  - **Landed cost** = goods value (FOB) + cheapest operational freight (frais
+    portuaires inclus dans le fret et remontés séparément) + assurance cargo
+    estimée (convention CIF+10 %) + frais de l'instrument bancaire recommandé.
   - **Financing-feasibility index** (from the finance adapter).
   - **Logistics-accessibility index** (from the logistics adapter).
   - **End-to-end opportunity score** = transparent weighted blend of the
@@ -37,6 +39,128 @@ DEFAULT_WEIGHTS: Dict[str, float] = {
     "financing_feasibility": 0.20,  # banking + macro
     "country_risk": 0.10,  # banking risk assessment
 }
+
+# Assurance cargo : convention de marché transparente « CIF + 10 % »
+# (Institute Cargo Clauses (A) : valeur assurée = 110 % de la valeur CIF),
+# prime tous-risques typique 0,3–0,8 % sur les corridors africains — 0,5 %
+# retenu comme point médian. Toujours flaggé is_estimation, jamais caché.
+CARGO_INSURANCE_RATE_PCT = 0.5
+CARGO_INSURANCE_INSURED_VALUE_FACTOR = 1.1
+CARGO_INSURANCE_SOURCE = (
+    "Prime tous-risques cargo typique 0,3–0,8 % (Institute Cargo Clauses (A) ; "
+    "UNCTAD Review of Maritime Transport) — 0,5 % retenu, "
+    "valeur assurée = 110 % × (FOB + fret)."
+)
+
+
+def _insurance_component(goods_value_usd: float, total_freight_usd: float) -> Dict:
+    """Assurance cargo ESTIMÉE pour le coût rendu — convention CIF+10 %.
+
+    Prime = taux typique × valeur assurée, où valeur assurée = 110 % ×
+    (FOB + fret) selon la convention Institute Cargo Clauses. Explicitement
+    marquée ``is_estimation`` : c'est un ordre de grandeur de marché, pas un
+    devis d'assureur.
+    """
+    insured_value = round(
+        (goods_value_usd + total_freight_usd) * CARGO_INSURANCE_INSURED_VALUE_FACTOR, 2
+    )
+    premium = round(insured_value * CARGO_INSURANCE_RATE_PCT / 100.0, 2)
+    return {
+        "available": True,
+        "is_estimation": True,
+        "premium_usd": premium,
+        "rate_pct": CARGO_INSURANCE_RATE_PCT,
+        "insured_value_usd": insured_value,
+        "insured_value_basis": "110 % × (FOB + fret) — convention Institute Cargo Clauses",
+        "source": CARGO_INSURANCE_SOURCE,
+    }
+
+
+def _recommended_instrument_fee(trade_finance: Optional[Dict], goods_value_usd: float) -> Dict:
+    """Frais bancaires de l'instrument trade finance RECOMMANDÉ.
+
+    Applique le coût typique (% du montant) du premier instrument recommandé
+    par ``banking_system.recommend_instruments`` (le mieux adapté à la
+    transaction) à la valeur FOB. Indisponible — et exclu du total, jamais
+    inventé — quand aucune recommandation n'est résolue.
+    """
+    instruments = (trade_finance or {}).get("instruments") or []
+    top = next((i for i in instruments if (i or {}).get("typical_cost_pct") is not None), None)
+    if not (trade_finance or {}).get("available") or top is None:
+        return {
+            "available": False,
+            "fee_usd": None,
+            "note": "Aucun instrument bancaire recommandé résolu — frais exclus du coût rendu.",
+        }
+    fee = round(goods_value_usd * float(top["typical_cost_pct"]) / 100.0, 2)
+    return {
+        "available": True,
+        "fee_usd": fee,
+        "instrument_code": top.get("code"),
+        "instrument_name": top.get("name_fr") or top.get("name"),
+        "typical_cost_pct": top.get("typical_cost_pct"),
+        "source": (
+            "banking_system — catalogue trade finance (coût typique en % du montant, "
+            "instrument recommandé le mieux adapté)"
+        ),
+    }
+
+
+def _port_fees_component(cheapest_option: Optional[Dict], n_containers: int = 1) -> Dict:
+    """Frais portuaires de l'option de fret retenue — déjà INCLUS dans le fret.
+
+    Le module maritime intègre les THC origine/destination dans le coût total
+    (et le vraquier ses frais de chargement/déchargement) : on les remonte ici
+    séparément pour la transparence du coût rendu, sans JAMAIS les
+    ré-additionner au total. Modes sans décomposition portuaire (aérien,
+    terrestre, multimodal) → non séparables, flaggés indisponibles.
+    """
+    pf = (cheapest_option or {}).get("port_fees") or {}
+    if not pf or pf.get("total_usd") is None:
+        return {
+            "available": False,
+            "total_usd": None,
+            "note": (
+                "Frais portuaires non séparables pour ce mode (inclus dans le "
+                "tarif de fret le cas échéant)."
+            ),
+        }
+    if pf.get("basis") == "per_container":
+        n = max(1, int(n_containers or 1))
+        loading = round((pf.get("origin_thc_usd") or 0) * n, 2)
+        discharge = round((pf.get("destination_thc_usd") or 0) * n, 2)
+        total = round((pf.get("total_usd") or 0) * n, 2)
+        detail = {
+            "origin_thc_usd_per_container": pf.get("origin_thc_usd"),
+            "destination_thc_usd_per_container": pf.get("destination_thc_usd"),
+            "containers": n,
+        }
+    else:
+        tonnes = (pf.get("total_usd") or 0) / (
+            (pf.get("load_usd_per_t") or 0) + (pf.get("discharge_usd_per_t") or 0) or 1
+        )
+        loading = round((pf.get("load_usd_per_t") or 0) * tonnes, 2)
+        discharge = round((pf.get("discharge_usd_per_t") or 0) * tonnes, 2)
+        total = round(pf.get("total_usd") or 0, 2)
+        detail = {
+            "load_usd_per_t": pf.get("load_usd_per_t"),
+            "discharge_usd_per_t": pf.get("discharge_usd_per_t"),
+        }
+    return {
+        "available": True,
+        "loading_usd": loading,
+        "discharge_usd": discharge,
+        "total_usd": total,
+        "included_in_freight": True,
+        "basis": pf.get("basis"),
+        "detail": detail,
+        "source": pf.get("source"),
+        "note": (
+            "Chargement (port d'origine) + déchargement (port de destination) — "
+            "compris dans le tarif de fret tout-inclus, décomposés ici comme "
+            "lignes du coût rendu (non ré-additionnés au total)."
+        ),
+    }
 
 
 def _supply_component(origin_iso3: str, hs_code: str) -> Dict:
@@ -117,6 +241,7 @@ def _resolve_logistics_and_landed(
     weight_kg: float,
     volume_m3: float,
     shipment: Optional[Dict],
+    trade_finance: Optional[Dict] = None,
 ) -> tuple:
     """Compute the logistics profile + landed cost with UNIFORM cargo handling.
 
@@ -175,6 +300,7 @@ def _resolve_logistics_and_landed(
         log_profile.get("best_operational_cost_usd"),
         shipment,
         cheapest,
+        trade_finance,
     )
     return log_profile, landed
 
@@ -184,10 +310,11 @@ def _landed_cost(
     freight_usd: Optional[float],
     shipment: Optional[Dict] = None,
     cheapest_option: Optional[Dict] = None,
+    trade_finance: Optional[Dict] = None,
 ) -> Dict:
-    """FOB + fret rendu, avec décomposition ; null si une jambe manque.
+    """Coût rendu = FOB + fret + assurance estimée + frais bancaires ; null si une jambe manque.
 
-    Deux régimes, choisis selon le mode opérationnel le moins cher :
+    Deux régimes de fret, choisis selon le mode opérationnel le moins cher :
 
     - **Affrètement vraquier** (``mode == "sea_bulk"``) : ``freight_usd`` est déjà
       le coût TOTAL de l'affrètement pour le tonnage complet (USD/t × tonnage).
@@ -196,6 +323,16 @@ def _landed_cost(
     - **Conteneur** (défaut) : ``freight_usd`` est le coût d'UN conteneur ; le
       total multiplie par le nombre de conteneurs nécessaires (estimé à partir
       du poids déduit de la valeur FOB — cf. shipment_estimator).
+
+    S'ajoutent au total, quel que soit le régime :
+
+    - **Assurance cargo estimée** (convention CIF+10 %, cf.
+      ``_insurance_component``) — toujours flaggée estimation.
+    - **Frais de l'instrument bancaire recommandé** (coût typique % × FOB,
+      cf. ``_recommended_instrument_fee``) — exclus si aucune recommandation.
+    - **Frais portuaires** : déjà inclus dans le fret (THC conteneur /
+      manutention vrac) ; remontés séparément pour transparence, jamais
+      ré-additionnés.
     """
     if goods_value_usd is None or freight_usd is None:
         return {
@@ -215,6 +352,7 @@ def _landed_cost(
     if is_charter:
         # Vrac affrété : freight_usd = coût total pour tout le tonnage.
         total_freight = round(freight_usd, 2)
+        n_containers = 1
         breakdown = {
             "goods_value_fob_usd": goods_value_usd,
             "freight_mode": "sea_bulk",
@@ -242,50 +380,91 @@ def _landed_cost(
                     f" Poids estimé via un ratio {vtw['usd_per_kg']} USD/kg "
                     f"(chapitre SH {vtw.get('hs_chapter', '?')}, estimation de dimensionnement)."
                 )
-        return {
-            "available": True,
-            "value_usd": round(goods_value_usd + total_freight, 2),
-            "breakdown": breakdown,
-            "shipment_sizing": shipment,
-            "note": note,
+    else:
+        per_container_freight_usd = freight_usd
+        n_containers = 1
+        if shipment and shipment.get("available") and shipment.get("containers_needed"):
+            n_containers = max(1, int(shipment["containers_needed"]))
+        total_freight = round(per_container_freight_usd * n_containers, 2)
+        breakdown = {
+            "goods_value_fob_usd": goods_value_usd,
+            "freight_per_container_usd": per_container_freight_usd,
+            "containers_needed": n_containers,
+            "container_type": (shipment or {}).get("container_type"),
+            "best_operational_freight_usd": total_freight,
+            "estimated_weight_kg": (shipment or {}).get("weight_kg"),
+            "weight_source": (shipment or {}).get("weight_source"),
         }
+        note = (
+            "FX inclus séparément (voir volet finance). Fret = option opérationnelle "
+            "la moins chère × nombre de conteneurs."
+        )
+        if shipment and shipment.get("value_to_weight"):
+            vtw = shipment["value_to_weight"]
+            if vtw.get("classification_source") == "cours_mondial":
+                note += (
+                    f" Poids estimé via le cours mondial de {vtw.get('commodity', 'la matière première')} "
+                    f"({vtw['usd_per_kg']} USD/kg, {vtw.get('benchmark', '?')}, {vtw.get('as_of', '?')}) "
+                    "— repère non contractuel, cf. garde-fou de négociation."
+                )
+            else:
+                note += (
+                    f" Poids estimé via un ratio {vtw['usd_per_kg']} "
+                    f"USD/kg (chapitre SH {vtw.get('hs_chapter', '?')}, "
+                    f"estimation de dimensionnement — non contractuel)."
+                )
 
-    per_container_freight_usd = freight_usd
-    n_containers = 1
-    if shipment and shipment.get("available") and shipment.get("containers_needed"):
-        n_containers = max(1, int(shipment["containers_needed"]))
-    total_freight = round(per_container_freight_usd * n_containers, 2)
-    breakdown = {
-        "goods_value_fob_usd": goods_value_usd,
-        "freight_per_container_usd": per_container_freight_usd,
-        "containers_needed": n_containers,
-        "container_type": (shipment or {}).get("container_type"),
-        "best_operational_freight_usd": total_freight,
-        "estimated_weight_kg": (shipment or {}).get("weight_kg"),
-        "weight_source": (shipment or {}).get("weight_source"),
-    }
-    note = (
-        "FX inclus séparément (voir volet finance). Fret = option opérationnelle "
-        "la moins chère × nombre de conteneurs."
+    # ── Composantes communes aux deux régimes ────────────────────────────────
+    insurance = _insurance_component(goods_value_usd, total_freight)
+    instrument = _recommended_instrument_fee(trade_finance, goods_value_usd)
+    port_fees = _port_fees_component(cheapest_option, n_containers)
+
+    breakdown["insurance_usd"] = insurance["premium_usd"]
+    breakdown["trade_finance_fee_usd"] = instrument.get("fee_usd")
+    breakdown["trade_finance_instrument"] = instrument.get("instrument_name")
+    # Frais portuaires décomposés en lignes chargement / déchargement. Ils sont
+    # compris dans le tarif de fret tout-inclus : le fret est donc aussi exposé
+    # HORS frais portuaires pour que les lignes s'additionnent sans doublon.
+    breakdown["port_fees_loading_usd"] = port_fees.get("loading_usd")
+    breakdown["port_fees_discharge_usd"] = port_fees.get("discharge_usd")
+    breakdown["port_fees_included_usd"] = port_fees.get("total_usd")
+    if port_fees.get("available"):
+        breakdown["freight_excl_port_fees_usd"] = round(
+            total_freight - (port_fees.get("total_usd") or 0), 2
+        )
+
+    note += (
+        f" Assurance cargo estimée ({CARGO_INSURANCE_RATE_PCT} % de la valeur "
+        "assurée CIF+10 %) incluse."
     )
-    if shipment and shipment.get("value_to_weight"):
-        vtw = shipment["value_to_weight"]
-        if vtw.get("classification_source") == "cours_mondial":
-            note += (
-                f" Poids estimé via le cours mondial de {vtw.get('commodity', 'la matière première')} "
-                f"({vtw['usd_per_kg']} USD/kg, {vtw.get('benchmark', '?')}, {vtw.get('as_of', '?')}) "
-                "— repère non contractuel, cf. garde-fou de négociation."
-            )
-        else:
-            note += (
-                f" Poids estimé via un ratio {vtw['usd_per_kg']} "
-                f"USD/kg (chapitre SH {vtw.get('hs_chapter', '?')}, "
-                f"estimation de dimensionnement — non contractuel)."
-            )
+    if instrument.get("available"):
+        note += (
+            f" Frais bancaires de l'instrument recommandé inclus "
+            f"({instrument['instrument_name']}, {instrument['typical_cost_pct']} % du FOB)."
+        )
+    if port_fees.get("available"):
+        note += (
+            f" Frais portuaires inclus : chargement {port_fees['loading_usd']} USD "
+            f"+ déchargement {port_fees['discharge_usd']} USD (compris dans le "
+            "tarif de fret tout-inclus, décomposés sans double comptage)."
+        )
+
+    total = round(
+        goods_value_usd
+        + total_freight
+        + insurance["premium_usd"]
+        + (instrument.get("fee_usd") or 0.0),
+        2,
+    )
     return {
         "available": True,
-        "value_usd": round(goods_value_usd + total_freight, 2),
+        "value_usd": total,
         "breakdown": breakdown,
+        "components": {
+            "insurance": insurance,
+            "trade_finance": instrument,
+            "port_fees": port_fees,
+        },
         "shipment_sizing": shipment,
         "note": note,
     }
@@ -343,6 +522,10 @@ def get_opportunity_report(
     amount = goods_value_usd or 0.0
     active_weights = {**DEFAULT_WEIGHTS, **(weights or {})}
 
+    # Profil finance d'abord : ses instruments trade finance recommandés
+    # alimentent les frais bancaires du coût rendu.
+    fin_profile = finance.get_finance_profile(origin_iso3, destination_iso3, amount, "export")
+
     # Dimensionnement de l'expédition : à partir de la valeur FOB et du produit,
     # estimer le poids → type et nombre de conteneurs. Le choix conteneur (coût
     # d'un conteneur × nombre) vs vraquier (affrètement au tonnage complet) est
@@ -356,8 +539,8 @@ def get_opportunity_report(
         weight_kg,
         volume_m3,
         shipment,
+        trade_finance=fin_profile.get("trade_finance"),
     )
-    fin_profile = finance.get_finance_profile(origin_iso3, destination_iso3, amount, "export")
 
     supply = _supply_component(origin_iso3, hs_code)
     log_access = logistics.summarize_logistics_accessibility(log_profile)
@@ -682,6 +865,9 @@ def get_transformation_scenario(
     # façon uniforme par _resolve_logistics_and_landed (au tonnage complet pour
     # un vrac au-dessus du seuil).
     input_shipment = shipment_estimator.estimate_shipment(input_value_usd, input_hs_code)
+    # Instruments bancaires recommandés pour l'IMPORT des intrants par le
+    # producteur : leurs frais typiques entrent dans le coût rendu de la jambe 1.
+    input_trade_finance = finance.get_trade_finance(producer_iso3, "import", input_value_usd or 0.0)
     input_logistics, input_landed = _resolve_logistics_and_landed(
         input_origin_iso3,
         producer_iso3,
@@ -690,6 +876,7 @@ def get_transformation_scenario(
         weight_kg,
         volume_m3,
         input_shipment,
+        trade_finance=input_trade_finance,
     )
     input_tariff = benchmarking_service.tariff_benefit_analysis(
         input_origin_iso3, producer_iso3, input_hs_code
