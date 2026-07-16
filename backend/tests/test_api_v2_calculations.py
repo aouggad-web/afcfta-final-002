@@ -1,7 +1,6 @@
 """Tests for the canonical v4 calculation endpoint."""
 
 import pytest
-
 from api.v2.endpoints import CalculationRequest, calculate_tariff_v2
 from schemas.canonical_model import (
     SCHEMA_VERSION,

@@ -1,7 +1,6 @@
 """Route topology regression tests."""
 
 from fastapi import APIRouter
-
 from routes.enhanced_calculator import router as enhanced_calculator_router
 from routes.regional_calculator import router as regional_calculator_router
 

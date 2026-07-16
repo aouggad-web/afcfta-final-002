@@ -13,11 +13,10 @@ from importlib import import_module
 from pathlib import Path
 from typing import Any, Optional
 
-from fastapi import APIRouter, HTTPException, Query
-from pydantic import BaseModel, Field
-
 from analytics.dashboard_generator import DashboardGenerator  # type: ignore
 from analytics.regional_intelligence import RegionalAnalyticsEngine  # type: ignore
+from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel, Field
 from search.hs_code_search import get_search_engine  # type: ignore
 from search.investment_search import InvestmentOpportunitySearch  # type: ignore
 
