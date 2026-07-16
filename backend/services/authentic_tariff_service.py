@@ -116,10 +116,11 @@ _CEMAC = {  # shared base profile for CEMAC members
     "source": "Tarif Extérieur Commun CEMAC — Directive TVA CEMAC art. 9",
 }
 _EAC = {  # EAC common profile (Kenya, Tanzania, Uganda, Rwanda, Burundi)
-    "taxes_order": ["DD", "IDF", "TVA"],
+    "taxes_order": ["DD", "IDF", "RDL", "TVA"],
     "tax_bases": {
         "DD": ("CIF", []),
         "IDF": ("CIF", []),  # Import Declaration Fee: base CIF
+        "RDL": ("CIF", []),  # Railway Development Levy: base CIF
         "TVA": ("CIF", ["DD"]),  # EAC Customs Management Act: base = CIF+DD
     },
     "source": "EAC Customs Management Act — VAT base = CIF+DD",
@@ -276,6 +277,7 @@ _TAX_LABELS = {
     "NHIL": "National Health Insurance Levy",
     "CISS": "Comprehensive Import Supervision Scheme",
     "IDF": "Import Declaration Fee",
+    "RDL": "Railway Development Levy",
     "TCI": "Taxe Communautaire d'Intégration",
     "CAC": "Centimes Additionnels Communaux",
     "RS": "Redevance Statistique",
@@ -289,7 +291,39 @@ _TAX_LABELS = {
 
 def _normalize_tax_code(code: str) -> str:
     """Normalise 'D.D' → 'DD', 'T.V.A' → 'TVA', etc."""
-    return code.replace(".", "").replace(" ", "").upper()
+    return code.replace(".", "").replace(" ", "").replace("/", "").replace("-", "").upper()
+
+
+def _canonical_tax_code(code: str, label: str = "") -> str:
+    """Map tax aliases found in generated country tariff files to calculator codes.
+
+    The recent tariff files use source-native labels/codes (DI in Morocco, CET
+    in EAC, VAT/IVA/TVA-APTAXE, GETFL in Ghana, etc.).  The cascade profiles
+    are intentionally expressed with canonical calculator codes, so every tax
+    coming from `taxes_detail` must be canonicalized before selecting bases.
+    """
+    norm = _normalize_tax_code(code)
+    text = f"{norm} {label or ''}".lower()
+
+    if norm in {"DD", "DI", "ID", "DROIT", "DDDROIT", "GENERAL", "CET"}:
+        return "DD"
+    if norm in {"TVA", "TVAI", "TVAAPTAXE", "VAT", "IVA", "VALUEADDE"}:
+        return "TVA"
+    if "value added" in text or "valeur ajoute" in text or "valeur ajout" in text:
+        return "TVA"
+    if "customs duty" in text or "import duty" in text or "droit d'importation" in text:
+        return "DD"
+    if norm in {"IMPORTDEC", "IMPORTDECL", "IDF"} or "import declaration" in text:
+        return "IDF"
+    if norm in {"RAILWAYDE", "RDL"} or "railway development" in text:
+        return "RDL"
+    if norm in {"GETFL", "GETFUND"} or "ghana education" in text:
+        return "GETFUND"
+    if norm in {"SR", "SUR"} or "surtax" in text:
+        return "SUR"
+    if norm in {"RPDIMPORREDEV", "RPDIMPOR", "TCL"}:
+        return "TCL"
+    return norm
 
 
 # Codes TVA équivalents selon le pays (portugais IVA, anglais VAT, tunisien
@@ -352,7 +386,7 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
     legal_source = profile.get("source", "")
 
     # Build a normalized lookup: norm_code → rate
-    norm_rates = {_normalize_tax_code(k): v for k, v in taxes_rates.items()}
+    norm_rates = {_canonical_tax_code(k): v for k, v in taxes_rates.items()}
 
     # Add any taxes present in the data but not in the profile (apply on CIF)
     for code in list(norm_rates.keys()):
@@ -1229,10 +1263,14 @@ def calculate_import_taxes(
     # List format (ETL):         [{'tax': 'D.D', 'rate': 20, 'observation': '...'}, ...]
     if isinstance(taxes_detail, list):
         taxes_detail = {
-            _normalize_tax_code(item.get("tax", item.get("code", ""))): {
+            _canonical_tax_code(
+                item.get("tax", item.get("code", "")),
+                item.get("observation", item.get("label", item.get("tax", ""))),
+            ): {
                 "rate": float(item.get("rate", 0) or 0),
                 "label": item.get("observation", item.get("label", item.get("tax", ""))),
                 "source": "etl",
+                "source_tax_code": item.get("tax", item.get("code", "")),
             }
             for item in taxes_detail
             if item.get("tax") or item.get("code")
@@ -1247,11 +1285,13 @@ def calculate_import_taxes(
     for tax_code, tax_info in taxes_detail.items():
         if not isinstance(tax_info, dict):
             continue
-        norm = _normalize_tax_code(tax_code)
+        label = tax_info.get(
+            "label", tax_info.get("name", _TAX_LABELS.get(_normalize_tax_code(tax_code), tax_code))
+        )
+        norm = _canonical_tax_code(tax_code, label)
         rate = float(tax_info.get("rate", 0) or 0)
         if rate == 0:
             continue
-        label = tax_info.get("label", tax_info.get("name", _TAX_LABELS.get(norm, tax_code)))
         # PRCT : intitulé officiel fixe (« Précompte (PRCT) ») — on ignore les
         # libellés hérités des données crawled (ex. « Prélèvement à la
         # Compensation du Transport »).
@@ -1271,7 +1311,16 @@ def calculate_import_taxes(
     # Normaliser l'intitulé officiel du PRCT dans le dict taxes_detail renvoyé
     # (entrée recréée, jamais de mutation des objets de ligne mis en cache).
     for _k in list(taxes_detail.keys()):
-        if _normalize_tax_code(_k) == "PRCT" and isinstance(taxes_detail.get(_k), dict):
+        if (
+            _canonical_tax_code(
+                _k,
+                taxes_detail.get(_k, {}).get("label", "")
+                if isinstance(taxes_detail.get(_k), dict)
+                else "",
+            )
+            == "PRCT"
+            and isinstance(taxes_detail.get(_k), dict)
+        ):
             _entry = dict(taxes_detail[_k])
             for _lk in ("label", "name"):
                 if _lk in _entry:
@@ -1316,7 +1365,7 @@ def calculate_import_taxes(
     # compterait deux fois (une fois comme "TVA", une fois sous leur propre
     # code).
     for t in individual_taxes:
-        c = _normalize_tax_code(t["code"])
+        c = _canonical_tax_code(t["code"], t.get("label", ""))
         if c not in taxes_for_cascade and t.get("rate_pct", 0) > 0 and not _is_vat_code(c):
             taxes_for_cascade[c] = t["rate_pct"]
 
