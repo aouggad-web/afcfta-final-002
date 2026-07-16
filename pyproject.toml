@@ -23,3 +23,11 @@ extend-exclude = '''
 profile = "black"
 line_length = 100
 skip = ["frontend", "node_modules", "build"]
+
+
+[tool.pytest.ini_options]
+# Keep test modules isolated by path so top-level `tests/`, `backend/tests/`,
+# and `engine/tests/` do not collide as the same `tests.*` package during
+# combined collection.
+addopts = ["--import-mode=importlib"]
+testpaths = ["tests", "backend/tests", "engine/tests"]
