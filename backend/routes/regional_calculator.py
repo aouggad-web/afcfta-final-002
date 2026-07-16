@@ -5,11 +5,11 @@ Provides advanced tariff calculation endpoints leveraging the
 EnhancedCalculatorV3 with regional intelligence for North Africa and CEMAC.
 
 Endpoints:
-  POST /api/enhanced-calculator/regional-route    # Best path analysis
-  GET  /api/enhanced-calculator/investment-map    # Regional opportunities
-  POST /api/enhanced-calculator/supply-chain      # Multi-country optimization
-  GET  /api/enhanced-calculator/preferential      # Preferential agreements
-  POST /api/enhanced-calculator/country-taxes     # Single country calculation
+  POST /api/regional-calculator/regional-route    # Best path analysis
+  GET  /api/regional-calculator/investment-map    # Regional opportunities
+  POST /api/regional-calculator/supply-chain      # Multi-country optimization
+  GET  /api/regional-calculator/preferential      # Preferential agreements
+  POST /api/regional-calculator/country-taxes     # Single country calculation
 """
 
 import logging
@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/enhanced-calculator", tags=["Regional Calculator"])
+router = APIRouter(prefix="/regional-calculator", tags=["Regional Calculator"])
 
 NORTH_AFRICA_COUNTRIES = ["DZA", "MAR", "EGY", "TUN"]
 CEMAC_COUNTRIES = ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"]
