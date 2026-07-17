@@ -917,8 +917,10 @@ def test_factor_breakdown_opportunities_and_risks():
 
 def test_opportunity_report_ultra_fine(_no_network_fx):
     """Ultra-fine report includes narrative, benchmarking, segmentation."""
-    rep = report_engine.get_opportunity_report_ultra_fine(
-        "1801", "CIV", "NGA", goods_value_usd=50000.0
+    rep = asyncio.run(
+        report_engine.get_opportunity_report_ultra_fine(
+            "1801", "CIV", "NGA", goods_value_usd=50000.0
+        )
     )
 
     # Base report fields
@@ -1164,6 +1166,147 @@ def test_national_need_unavailable_without_production():
     res = demand.estimate_national_need("999999", "NGA")
     assert res["available"] is False
     assert res["value"] is None
+
+
+# ── National-need: own-imports fallback when production is unavailable ──────
+def test_long_shelf_life_classifier_durable_vs_perishable():
+    from services import demand_estimation_service as demand
+
+    # Instruments médicaux (SH90, ex. aiguilles d'injection SH901832) : durable.
+    assert demand.is_long_shelf_life_product("901832") is True
+    assert demand.is_long_shelf_life_product("8703") is True  # véhicules
+    assert demand.is_long_shelf_life_product("8501") is True  # équipement électrique
+    # Aliments/vivant/pharma/textile : PAS durable (péremption, cycles courts).
+    assert demand.is_long_shelf_life_product("100590") is False  # maïs
+    assert demand.is_long_shelf_life_product("300490") is False  # médicaments (péremption réelle)
+    assert demand.is_long_shelf_life_product("610910") is False  # t-shirts (mode)
+
+
+def test_own_imports_fallback_averages_multi_year_for_durable_goods():
+    from services import demand_estimation_service as demand
+
+    # SH90 (instrument médical) : aucune production continentale -> repli sur la
+    # moyenne des imports réels du pays sur les années observées.
+    history = [
+        {"year": 2018, "import_value_usd": 100_000, "no_data": False},
+        {"year": 2019, "import_value_usd": 0, "no_data": False},  # vraie année creuse
+        {"year": 2020, "import_value_usd": 500_000, "no_data": True},  # lacune de crawl, exclue
+        {"year": 2021, "import_value_usd": 300_000, "no_data": False},
+    ]
+    res = demand.estimate_need_from_own_imports("901832", "ETH", history)
+    assert res["available"] is True
+    assert res["reference_basis"] == "own_imports_multi_year_average"
+    assert res["is_long_shelf_life"] is True
+    # Moyenne sur les 3 années NON en lacune (100k + 0 + 300k) / 3 = 133 333.33
+    assert res["value"] == demand._round_sig((100_000 + 0 + 300_000) / 3, 3)
+    assert res["inputs"]["n_years_averaged"] == 3
+    assert res["unit"] == "USD"
+
+
+def test_own_imports_fallback_uses_latest_year_only_for_non_durable():
+    from services import demand_estimation_service as demand
+
+    # SH07 (légume frais) : pas de moyenne pluriannuelle, dernière année seulement.
+    history = [
+        {"year": 2019, "import_value_usd": 200_000, "no_data": False},
+        {"year": 2020, "import_value_usd": 0, "no_data": False},
+        {"year": 2021, "import_value_usd": 450_000, "no_data": False},
+    ]
+    res = demand.estimate_need_from_own_imports("070310", "ETH", history)
+    assert res["reference_basis"] == "own_imports_latest_year"
+    assert res["is_long_shelf_life"] is False
+    assert res["value"] == 450_000
+    assert res["inputs"]["years_used"] == [2021]
+
+
+def test_own_imports_fallback_none_without_usable_data():
+    from services import demand_estimation_service as demand
+
+    assert demand.estimate_need_from_own_imports("901832", "ETH", None) is None
+    assert demand.estimate_need_from_own_imports("901832", "ETH", []) is None
+    # Toutes les années à zéro (ou en lacune) -> pas de signal exploitable.
+    all_zero = [
+        {"year": 2020, "import_value_usd": 0, "no_data": False},
+        {"year": 2021, "import_value_usd": 0, "no_data": False},
+    ]
+    assert demand.estimate_need_from_own_imports("901832", "ETH", all_zero) is None
+
+
+def test_national_need_falls_back_to_own_imports_when_production_unavailable():
+    from services import demand_estimation_service as demand
+
+    # SH90 : aucun mapping HS_TO_COMMODITY/HS_CHAPTER_FALLBACK -> "impossible"
+    # SANS historique d'imports fourni ; AVEC historique, repli sur L2-imports.
+    without_history = demand.estimate_national_need("901832", "ETH")
+    assert without_history["available"] is False
+
+    history = [
+        {"year": 2020, "import_value_usd": 200_000, "no_data": False},
+        {"year": 2021, "import_value_usd": 600_000, "no_data": False},
+    ]
+    with_history = demand.estimate_national_need("901832", "ETH", own_imports_history=history)
+    assert with_history["available"] is True
+    assert with_history["is_estimation"] is True
+    assert with_history["estimation_level"] == 2
+    assert with_history["reference_basis"] == "own_imports_multi_year_average"
+    assert with_history["value"] == demand._round_sig((200_000 + 600_000) / 2, 3)
+
+
+def test_national_need_does_not_use_own_imports_when_production_available():
+    from services import demand_estimation_service as demand
+
+    # Cacao (SH1801) a une référence de production réelle -> le repli imports ne
+    # doit JAMAIS être consulté (même si un historique est fourni par erreur).
+    history = [{"year": 2021, "import_value_usd": 999_999_999, "no_data": False}]
+    res = demand.estimate_national_need("180100", "NGA", own_imports_history=history)
+    assert res["reference_basis"] != "own_imports_multi_year_average"
+    assert res["reference_basis"] != "own_imports_latest_year"
+
+
+def test_get_country_product_import_history_reshapes_oec_response(monkeypatch):
+    from services import oec_trade_service as oec
+    from services import real_trade_data_service as rt
+
+    async def fake_history(**kwargs):
+        return {
+            "source": "OEC / BACI (HS Rev. 2017)",
+            "imports": [
+                {"year": 2019, "trade_value": 100_000, "quantity": 10},
+                {"year": 2020, "trade_value": 0, "quantity": 0, "no_data": True},
+            ],
+        }
+
+    monkeypatch.setattr(oec.oec_service, "get_country_hs6_history", fake_history)
+
+    res = asyncio.run(rt.real_trade_service.get_country_product_import_history("ETH", "901832"))
+    assert res["available"] is True
+    assert res["imports"] == [
+        {"year": 2019, "import_value_usd": 100_000, "no_data": False},
+        {"year": 2020, "import_value_usd": 0, "no_data": True},
+    ]
+
+
+def test_ultra_fine_report_falls_back_to_own_imports_for_uncovered_hs(monkeypatch, _no_network_fx):
+    from services import real_trade_data_service as rt
+
+    async def fake_history(importer_iso3, hs_code, **kwargs):
+        return {
+            "available": True,
+            "source": "OEC / BACI",
+            "imports": [
+                {"year": 2020, "import_value_usd": 300_000, "no_data": False},
+                {"year": 2021, "import_value_usd": 700_000, "no_data": False},
+            ],
+        }
+
+    monkeypatch.setattr(rt.real_trade_service, "get_country_product_import_history", fake_history)
+
+    # SH901832 : pas de production de référence -> le rapport ultra-fine doit
+    # activer le repli imports plutôt que renvoyer available: False.
+    rep = asyncio.run(report_engine.get_opportunity_report_ultra_fine("901832", "CIV", "ETH"))
+    nn = rep["national_need"]
+    assert nn["available"] is True
+    assert nn["reference_basis"] == "own_imports_multi_year_average"
 
 
 def test_gdp_per_capita_degrades_gracefully():

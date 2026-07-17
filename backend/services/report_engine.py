@@ -678,7 +678,7 @@ def get_intra_african_context(origin_iso3: str, destination_iso3: str) -> Dict:
     }
 
 
-def get_opportunity_report_ultra_fine(
+async def get_opportunity_report_ultra_fine(
     hs_code: str,
     origin_iso3: str,
     destination_iso3: str,
@@ -745,6 +745,27 @@ def get_opportunity_report_ultra_fine(
     # product. Measured (apparent consumption) when possible, otherwise a
     # transparent population-proxy estimate — always flagged, never fabricated.
     national_need = demand_estimation_service.estimate_national_need(hs_code, destination_iso3)
+
+    # Repli automatique : aucune production continentale de référence pour ce SH
+    # (ex. instruments médicaux SH90) -> imports réels du pays lui-même (canal
+    # OEC partagé, moyennés sur plusieurs années pour les biens durables/longue
+    # conservation). Un seul appel réseau, uniquement quand le repli local échoue.
+    if not national_need.get("available") and "production continentale indisponible" in (
+        national_need.get("note") or ""
+    ):
+        try:
+            from services.real_trade_data_service import real_trade_service
+
+            history = await real_trade_service.get_country_product_import_history(
+                destination_iso3, hs_code
+            )
+            if history and history.get("available") and history.get("imports"):
+                national_need = demand_estimation_service.estimate_national_need(
+                    hs_code, destination_iso3, own_imports_history=history["imports"]
+                )
+        except Exception:  # OEC indisponible -> le message "impossible" est conservé
+            pass
+
     base["national_need"] = national_need
 
     # Intra-African trade context (Afreximbank ATR 2026): export dynamism of the
