@@ -8,7 +8,13 @@ Les unités complémentaires complètent la mesure en poids/volume. Exemples :
 - Vin (2204) → litres
 - Vêtements (6204) → nombre de pièces
 - Véhicules → nombre d'unités
+
+Résolution STRICTEMENT par code HS6 exact — pas de repli sur le préfixe HS4,
+car au sein d'une même position les sous-positions peuvent avoir des unités
+différentes (une unité héritée d'un cousin de chapitre serait trompeuse).
 """
+
+from typing import Optional
 
 HS6_SUPPLEMENTARY_UNITS = {
     # =========================================================================
@@ -133,8 +139,7 @@ HS6_SUPPLEMENTARY_UNITS = {
     # CHAPITRE 21 - PRÉPARATIONS ALIMENTAIRES
     # =========================================================================
     "210610": "kg",  # Levure active
-    "210690": "kg",  # Autres levures, enzymes
-    "210690": "kg",  # Condiments et sauces
+    "210690": "kg",  # Autres préparations alimentaires (condiments, sauces...)
     # =========================================================================
     # CHAPITRE 22 - BOISSONS
     # =========================================================================
@@ -794,11 +799,26 @@ HS6_SUPPLEMENTARY_UNITS = {
     "901570": "nombre",  # Autres instruments de mesure
     "901580": "nombre",  # Parties d'instruments de mesure
     "901590": "nombre",  # Parties d'instruments de mesure
-    "901600": "nombre",  # Compteur d'électricité
-    "901700": "nombre",  # Compteur de gaz
-    "901800": "nombre",  # Compteur de liquides
-    "901900": "nombre",  # Horloge de tableau
-    "902000": "nombre",  # Horloge pour appareils
+    "901600": "nombre",  # Balances sensibles (≤ 5 cg)
+    "901700": "nombre",  # Instruments de dessin/traçage/calcul
+    # Position 9018 — instruments médicaux : unités par sous-position EXACTE
+    # (les aiguilles/seringues se comptent en pièces, PAS héritées du chapitre)
+    "901811": "nombre",  # Électrocardiographes
+    "901812": "nombre",  # Appareils d'échographie
+    "901813": "nombre",  # Appareils IRM
+    "901814": "nombre",  # Appareils de scintigraphie
+    "901819": "nombre",  # Autres appareils d'électrodiagnostic
+    "901820": "nombre",  # Appareils à rayons UV/IR
+    "901831": "nombre",  # Seringues, avec ou sans aiguilles
+    "901832": "nombre",  # Aiguilles tubulaires en métal, aiguilles à sutures
+    "901839": "nombre",  # Cathéters, canules et instruments similaires
+    "901841": "nombre",  # Tours dentaires
+    "901849": "nombre",  # Autres instruments dentaires
+    "901850": "nombre",  # Instruments d'ophtalmologie
+    "901890": "nombre",  # Autres instruments médicaux/chirurgicaux
+    "901910": "nombre",  # Appareils de mécanothérapie/massage
+    "901920": "nombre",  # Appareils d'ozonothérapie/oxygénothérapie/aérosols
+    "902000": "nombre",  # Autres appareils respiratoires et masques à gaz
     "902100": "nombre",  # Autres horloges
     "902210": "nombre",  # Chronomètre à quartz
     "902220": "nombre",  # Autres chronomètres
@@ -924,19 +944,19 @@ HS6_SUPPLEMENTARY_UNITS = {
 }
 
 
-def get_supplementary_unit(hs_code: str) -> str:
-    """Retourne l'unité complémentaire pour un code HS6, ou vide si non applicable."""
+def get_supplementary_unit(hs_code: Optional[str]) -> Optional[str]:
+    """Retourne l'unité complémentaire pour un code HS6 EXACT, sinon None.
+
+    Pas de repli sur le préfixe HS4 : au sein d'une même position SH4, les
+    sous-positions peuvent avoir des unités différentes (ex. 9018 : les
+    aiguilles/seringues 901831-32 se comptent en pièces, d'autres instruments
+    du même chapitre en kg) — hériter de l'unité d'un cousin de chapitre
+    afficherait une unité qui ne reflète pas le produit. Mieux vaut None
+    (le front n'affiche rien) qu'une unité trompeuse.
+    """
     clean_code = "".join(c for c in (hs_code or "") if c.isdigit())
-    # Essayer d'abord le code exact HS6 (6 chiffres)
     if len(clean_code) >= 6:
-        result = HS6_SUPPLEMENTARY_UNITS.get(clean_code[:6])
-        if result:
-            return result
-    # Fallback sur HS4 si le code est mappé
-    if len(clean_code) >= 4:
-        for key, value in HS6_SUPPLEMENTARY_UNITS.items():
-            if key.startswith(clean_code[:4]):
-                return value
+        return HS6_SUPPLEMENTARY_UNITS.get(clean_code[:6])
     return None
 
 

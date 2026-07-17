@@ -16,12 +16,18 @@ def test_get_supplementary_unit_exact_hs6_match():
     assert get_supplementary_unit("100590") == "tonnes"  # Maïs
     assert get_supplementary_unit("220830") == "litres"  # Rhum
     assert get_supplementary_unit("620451") == "nombre"  # T-shirts
+    # Aiguilles d'injection / seringues : mappées EXACTEMENT (pas par chapitre)
+    assert get_supplementary_unit("901831") == "nombre"  # Seringues
+    assert get_supplementary_unit("901832") == "nombre"  # Aiguilles tubulaires
 
 
-def test_get_supplementary_unit_falls_back_to_hs4():
-    # 901832 (aiguilles d'injection) n'est pas dans la table HS6 exacte,
-    # mais le chapitre HS4 9018 (instruments médicaux) y est mappé.
-    assert get_supplementary_unit("901832") == "nombre"
+def test_get_supplementary_unit_no_hs4_fallback():
+    # PAS de repli sur le préfixe HS4 : au sein d'une même position, les
+    # sous-positions peuvent avoir des unités différentes — hériter de l'unité
+    # d'un cousin de chapitre serait trompeur (ex. aiguilles vs autres
+    # instruments de la position 9018). Un code non mappé exactement → None.
+    assert get_supplementary_unit("901835") is None  # sous-position non mappée
+    assert get_supplementary_unit("9018") is None  # HS4 seul, pas d'unité
 
 
 def test_get_supplementary_unit_none_when_unmapped():
