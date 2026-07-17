@@ -75,6 +75,134 @@ def income_elasticity_for_hs(hs_code: str) -> Dict:
     return {"value": DEFAULT_INCOME_ELASTICITY, "product_class": "défaut (classe non mappée)"}
 
 
+# Chapitres SH2 de biens durables / à longue durée de conservation : équipements,
+# instruments, pièces détachées — l'achat est cyclique et ponctuel (une commande
+# groupée peut couvrir plusieurs années), pas un flux régulier comme la nourriture.
+# Une seule année d'import y est un signal bruité (année creuse après un gros lot,
+# ou pic ponctuel) : moyenner sur plusieurs années restitue le besoin ANNUEL
+# TYPIQUE. Exemple type : aiguilles/instruments médicaux (SH90).
+# Exclus délibérément : pharma (30, péremption réelle), textile/habillement/
+# chaussures (50-67, cycles de mode courts), agroalimentaire/vivant (01-24).
+_LONG_SHELF_LIFE_CHAPTERS = (
+    {f"{c:02d}" for c in range(25, 27)}  # minéraux (25-26)
+    | {f"{c:02d}" for c in range(28, 30)}  # chimie de base (hors 30 pharma)
+    | {"31", "32", "34", "38", "39", "40"}  # engrais, teintures, plastiques, caoutchouc
+    | {f"{c:02d}" for c in range(68, 84)}  # verre/céramique/métaux et ouvrages (68-83)
+    | {"84", "85", "86", "87", "88", "89"}  # machines, électrique, véhicules, aéro/naval
+    | {"90", "91", "92"}  # instruments médicaux/optiques/précision, horlogerie
+    | {"94", "95", "96"}  # mobilier, jouets/équipements sportifs, articles divers
+)
+
+
+def is_long_shelf_life_product(hs_code: str) -> bool:
+    """Vrai si le chapitre SH2 correspond à un bien durable / longue conservation
+    (équipement, instrument, pièce) pour lequel un besoin annuel doit être estimé
+    par une MOYENNE pluriannuelle des imports plutôt que la seule dernière année."""
+    chapter = ("".join(ch for ch in str(hs_code or "") if ch.isdigit()))[:2]
+    return chapter in _LONG_SHELF_LIFE_CHAPTERS
+
+
+def estimate_need_from_own_imports(
+    hs_code: str, country_iso3: str, imports_history: Optional[list]
+) -> Optional[Dict]:
+    """
+    Repli quand la production continentale est INDISPONIBLE (aucun mapping
+    HS -> commodité FAO/USGS/UNIDO, ex. instruments médicaux SH90) : plutôt que
+    de renvoyer ``available: False``, utilise les IMPORTS RÉELS du pays lui-même
+    pour ce SH (canal OEC partagé avec le module Statistiques) comme signal
+    direct et mesuré du besoin national.
+
+    ``imports_history`` : liste ``[{"year": .., "import_value_usd": .., "no_data": bool}]``
+    sur plusieurs années (typiquement 5), la plus récente en dernier ou dans le
+    désordre — triée ici.
+
+    Deux régimes, selon la nature du produit :
+    - Bien durable / longue conservation (SH classé via
+      :func:`is_long_shelf_life_product`, ex. équipement, instrument, pièce) :
+      MOYENNE des années effectivement observées. Ces achats sont ponctuels/
+      cycliques (un lot de plusieurs années peut être importé en une seule
+      année puis rien pendant 2-3 ans) — une seule année serait un signal bruité,
+      la moyenne restitue le besoin ANNUEL TYPIQUE.
+    - Autres produits (péremption, cycles de mode, etc.) : dernière année
+      disponible avec un import > 0 seulement — moyenner lisserait à tort une
+      vraie tendance récente (ex. une filière en déclin ou en forte croissance).
+
+    Retourne None si aucune donnée exploitable n'existe (l'appelant garde alors
+    le message "estimation impossible").
+    """
+    rows = sorted(
+        (r for r in (imports_history or []) if not r.get("no_data")),
+        key=lambda r: r.get("year") or 0,
+    )
+    if not rows:
+        return None
+
+    long_shelf = is_long_shelf_life_product(hs_code)
+
+    if long_shelf:
+        values = [float(r.get("import_value_usd") or 0.0) for r in rows]
+        if not any(v > 0 for v in values):
+            return None
+        avg_value = sum(values) / len(values)
+        years_used = [r.get("year") for r in rows]
+        method = (
+            f"Moyenne des importations réelles du pays sur {len(rows)} années "
+            f"({years_used[0]}-{years_used[-1]}) pour ce code SH — bien durable/"
+            "longue conservation : une seule année serait un signal bruité "
+            "(achat ponctuel/cyclique), la moyenne restitue le besoin annuel typique."
+        )
+        note_detail = (
+            f"Moyenne pluriannuelle ({len(rows)} années : "
+            f"{', '.join(str(y) for y in years_used)}) car ce produit relève d'une "
+            "catégorie à longue durée de conservation/vie utile (équipement, "
+            "instrument, pièce détachée...) — l'achat y est cyclique, pas régulier."
+        )
+        basis = "own_imports_multi_year_average"
+    else:
+        latest = next((r for r in reversed(rows) if (r.get("import_value_usd") or 0) > 0), None)
+        if not latest:
+            return None
+        avg_value = float(latest["import_value_usd"])
+        years_used = [latest.get("year")]
+        method = (
+            f"Dernière année d'importations réelles du pays disponible "
+            f"({years_used[0]}) pour ce code SH."
+        )
+        note_detail = (
+            "Basé sur la dernière année d'imports observés (pas de moyenne : produit "
+            "hors catégorie longue conservation, une année récente est plus "
+            "représentative qu'une moyenne pluriannuelle)."
+        )
+        basis = "own_imports_latest_year"
+
+    return {
+        "available": True,
+        "is_estimation": True,
+        "estimation_level": 2,
+        "level_label": "Proxy import national (estimé, sans production continentale)",
+        "value": _round_sig(avg_value, 3),
+        "unit": "USD",
+        "reference_basis": basis,
+        "is_long_shelf_life": long_shelf,
+        "method": method,
+        "inputs": {
+            "years_used": years_used,
+            "n_years_averaged": len(rows) if long_shelf else 1,
+            "per_year_import_value_usd": (
+                {r.get("year"): r.get("import_value_usd") for r in rows} if long_shelf else None
+            ),
+        },
+        "sources": ["OEC / UN Comtrade (BACI) — importations observées du pays"],
+        "observed_imports": None,
+        "note": (
+            "Estimation transparente : aucune production continentale de référence "
+            f"pour ce code SH (SH{hs_code}) — repli sur les importations réelles du "
+            f"pays lui-même comme signal direct de besoin. {note_detail} Cette valeur "
+            "est en USD (pas d'unité physique de référence disponible pour ce produit)."
+        ),
+    }
+
+
 def _round_sig(x: float, sig: int = 3) -> float:
     """Arrondi à ``sig`` chiffres significatifs — une estimation affichée au
     centime près (« 3 694 915 962,13 USD ») revendique une précision qu'elle
@@ -285,6 +413,7 @@ def estimate_national_need(
     income_elasticity: Optional[float] = None,
     observed_imports: Optional[Dict] = None,
     continental_imports_tonnes: Optional[float] = None,
+    own_imports_history: Optional[list] = None,
 ) -> Dict:
     """
     Estimate a country's national need for a product via the transparent cascade.
@@ -301,6 +430,14 @@ def estimate_national_need(
     ``continental_imports_tonnes`` (optional): continental imports in the product's
     physical unit. When provided, the L2 per-capita reference is based on apparent
     continental availability (production + imports) instead of production alone.
+
+    ``own_imports_history`` (optional): ``[{"year": .., "import_value_usd": ..,
+    "no_data": bool}, ...]`` — the COUNTRY's own multi-year import history for this
+    SH code (OEC/BACI). Used ONLY when continental production has no reference at
+    all (no FAO/USGS/UNIDO mapping for this SH, e.g. medical instruments SH90) —
+    the cascade then falls back to the country's own real imports instead of
+    returning ``available: False``. See :func:`estimate_need_from_own_imports`
+    for the durable-goods multi-year averaging rule.
 
     Returns a fully self-describing block (value, unit, level, method, inputs,
     sources, is_estimation, observed_imports, reference_basis).
@@ -350,11 +487,29 @@ def estimate_national_need(
     idx = _country_index()
 
     cont_total = prod.get("continental_total") if prod.get("available") else None
+
+    # Aucune référence de production continentale (pas de mapping HS -> commodité
+    # FAO/USGS/UNIDO, ex. instruments médicaux SH90) : plutôt que d'abandonner,
+    # replier sur les importations réelles du pays lui-même pour ce SH — un
+    # signal mesuré, pas un proxy inventé. Moyenné sur plusieurs années pour les
+    # biens durables/longue conservation (voir estimate_need_from_own_imports).
+    if not cont_total and own_imports_history:
+        own_imports_estimate = estimate_need_from_own_imports(
+            hs_code, country_iso3, own_imports_history
+        )
+        if own_imports_estimate:
+            return own_imports_estimate
+
     if not cont_total or not pop.get("available") or not idx:
         return {
             "available": False,
             "is_estimation": True,
             "value": None,
+            "reason": (
+                "no_continental_production_reference"
+                if not cont_total
+                else "population_unavailable"
+            ),
             "note": (
                 "Estimation impossible : "
                 + (
@@ -383,6 +538,7 @@ def estimate_national_need(
             "available": False,
             "is_estimation": True,
             "value": None,
+            "reason": "continental_population_unavailable",
             "note": "Population continentale indisponible.",
         }
 

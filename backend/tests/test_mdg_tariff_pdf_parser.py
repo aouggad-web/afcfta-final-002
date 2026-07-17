@@ -1,7 +1,17 @@
+import importlib.util
+import sys
 from pathlib import Path
 
-from scripts.parse_mdg_tariff_pdf import build_output, parse_lines
-
+# Chargement par chemin explicite : `backend/scripts` est un namespace package
+# masqué par le package régulier `engine/scripts` (avec __init__.py) dès qu'un
+# test antérieur ajoute engine/ au sys.path — `from scripts...` casserait alors
+# toute la collection de la suite.
+_MODULE_PATH = Path(__file__).parent.parent / "scripts" / "parse_mdg_tariff_pdf.py"
+_spec = importlib.util.spec_from_file_location("parse_mdg_tariff_pdf", _MODULE_PATH)
+_mod = importlib.util.module_from_spec(_spec)
+sys.modules[_spec.name] = _mod  # requis par @dataclass (résolution des annotations)
+_spec.loader.exec_module(_mod)
+build_output, parse_lines = _mod.build_output, _mod.parse_lines
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mdg_tariff_text_sample.txt"
 

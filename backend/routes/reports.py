@@ -9,11 +9,14 @@ Opportunités module described in ``docs/MODULE_OPPORTUNITES_PLAN_PREMIUM.md``.
 All values are real or explicitly flagged unavailable — never fabricated.
 """
 
+import logging
 from typing import Optional
 
 from fastapi import APIRouter, Query
 from services import macro_indicators_service as macro
 from services import report_engine
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/reports")
 
@@ -73,7 +76,7 @@ async def opportunity_report(
             market_imports = None
 
     if mode == "ultra_fine":
-        return report_engine.get_opportunity_report_ultra_fine(
+        return await report_engine.get_opportunity_report_ultra_fine(
             hs_code=hs_code,
             origin_iso3=origin,
             destination_iso3=destination,
@@ -293,9 +296,41 @@ async def national_need(
         except Exception:  # OEC unavailable -> no observed-imports signal
             observed_imports = None
 
-    return demand.estimate_national_need(
+    result = demand.estimate_national_need(
         hs_code, country, income_elasticity=elasticity, observed_imports=observed_imports
     )
+
+    # Repli automatique (pas opt-in) : quand aucune production continentale de
+    # référence n'existe pour ce SH (ex. instruments médicaux SH90 — aucun
+    # mapping FAO/USGS/UNIDO), l'estimation serait sinon "impossible". On va
+    # chercher l'historique d'imports RÉEL du pays lui-même (canal OEC partagé,
+    # cache persistant) et on relance le calcul avec ce signal mesuré — moyenné
+    # sur plusieurs années pour les biens durables/longue conservation.
+    if (
+        not result.get("available")
+        and result.get("reason") == "no_continental_production_reference"
+    ):
+        try:
+            from services.real_trade_data_service import real_trade_service
+
+            history = await real_trade_service.get_country_product_import_history(country, hs_code)
+            if history and history.get("available") and history.get("imports"):
+                result = demand.estimate_national_need(
+                    hs_code,
+                    country,
+                    income_elasticity=elasticity,
+                    observed_imports=observed_imports,
+                    own_imports_history=history["imports"],
+                )
+        except Exception as e:  # OEC indisponible -> le message "impossible" est conservé
+            logger.warning(
+                "own-imports fallback (national-need endpoint) failed for %s/%s: %s",
+                country,
+                hs_code,
+                e,
+            )
+
+    return result
 
 
 @router.get("/risk-ratio/{country_iso3}", summary="Ratio de risque pays composite (détaillé)")

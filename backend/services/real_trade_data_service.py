@@ -1173,6 +1173,57 @@ class RealTradeDataService:
             "source": "OEC / UN Comtrade (BACI)",
         }
 
+    async def get_country_product_import_history(
+        self, importer_iso3: str, hs_code: str, n_years: int = 5, end_year: int = 2022
+    ) -> Dict:
+        """
+        Historique pluriannuel des imports (USD) d'UN pays pour un SH — utilisé
+        par le repli "production continentale indisponible" du module Demande
+        (``demand_estimation_service.estimate_need_from_own_imports``) : quand
+        aucune donnée de production (FAO/USGS/UNIDO) n'existe pour ce SH (ex.
+        instruments médicaux SH90), l'estimation du besoin national se rabat sur
+        les imports RÉELS du pays lui-même, moyennés sur plusieurs années pour
+        les biens durables/longue conservation (achat ponctuel/cyclique).
+
+        Même canal OEC partagé (cache persistant, stale-on-error) que
+        ``get_country_product_imports`` — une réponse par (pays, période) sert
+        tous les codes SH déjà interrogés pour ce pays.
+
+        Retourne {available, imports: [{year, import_value_usd, no_data}], source}
+        ou {available: False} — jamais fabriqué.
+        """
+        clean_hs = "".join(ch for ch in (hs_code or "") if ch.isdigit())
+        try:
+            from services.oec_trade_service import DEFAULT_YEAR, oec_service
+
+            level = "hs6" if len(clean_hs) >= 6 else ("hs4" if len(clean_hs) >= 4 else "hs2")
+            hist = await oec_service.get_country_hs6_history(
+                country_iso3=importer_iso3,
+                hs_code=clean_hs,
+                n_years=n_years,
+                end_year=min(int(end_year or DEFAULT_YEAR), DEFAULT_YEAR),
+                level=level,
+            )
+            rows = (hist or {}).get("imports") or []
+            if not rows:
+                return {"available": False, "note": "Historique d'imports indisponible."}
+            imports = [
+                {
+                    "year": r.get("year"),
+                    "import_value_usd": r.get("trade_value"),
+                    "no_data": bool(r.get("no_data")),
+                }
+                for r in rows
+            ]
+            return {
+                "available": True,
+                "imports": imports,
+                "source": hist.get("source") or "OEC / BACI",
+            }
+        except Exception as e:
+            logger.warning(f"OEC import history {importer_iso3}/{hs_code}: {e}")
+            return {"available": False, "note": str(e)}
+
 
 def get_product_name(hs_code: str, lang: str = "fr", oec_name: str = None) -> str:
     """
