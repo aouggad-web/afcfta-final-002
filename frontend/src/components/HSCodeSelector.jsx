@@ -6,9 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { 
-  Search, X, Package, ChevronDown, ChevronRight, Loader2, 
-  Filter, List, Grid, FileText, Globe, Info
+import {
+  Search, X, Package, ChevronDown, ChevronRight, Loader2,
+  Filter, List, Grid, FileText, Globe, Info, Scale
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -43,7 +43,8 @@ const texts = {
     section: "Section",
     chapter: "Chapitre",
     position: "Position",
-    subPosition: "Sous-position"
+    subPosition: "Sous-position",
+    unit: "Unité"
   },
   en: {
     title: "HS6 Codes - Harmonized System",
@@ -72,9 +73,27 @@ const texts = {
     section: "Section",
     chapter: "Chapter",
     position: "Position",
-    subPosition: "Sub-position"
+    subPosition: "Sub-position",
+    unit: "Unit"
   }
 };
+
+// Badge d'unité complémentaire (OMD) — affiché uniquement quand le backend
+// fournit une unité pour ce code SH6 exact (jamais héritée du chapitre).
+function SupplementaryUnitBadge({ item, className = '' }) {
+  const label = item?.supplementary_unit_label;
+  if (!label) return null;
+  return (
+    <Badge
+      variant="outline"
+      className={`text-[10px] shrink-0 bg-amber-50 text-amber-700 border-amber-200 px-1.5 py-0.5 ${className}`}
+      data-testid={`unit-${item.code}`}
+    >
+      <Scale className="w-3 h-3 mr-1 inline" />
+      {label}
+    </Badge>
+  );
+}
 
 // Sections HS pour affichage hiérarchique
 const HS_SECTIONS = {
@@ -256,6 +275,7 @@ export function HSCodeSearch({ value, onChange, language = 'fr', placeholder, sh
             <div className="flex items-center gap-2">
               <Badge className="font-mono bg-blue-600 text-white">{value}</Badge>
               <span className="text-sm font-medium text-gray-700">{selectedDetails.label}</span>
+              <SupplementaryUnitBadge item={selectedDetails} />
             </div>
             <Badge variant="outline" className="text-xs">
               Ch. {selectedDetails.chapter} - {selectedDetails.chapter_name}
@@ -301,11 +321,12 @@ export function HSCodeSearch({ value, onChange, language = 'fr', placeholder, sh
                   </Badge>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-800">{item.label}</p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-gray-500 mt-1 flex items-center gap-2 flex-wrap">
                       <span className="inline-flex items-center gap-1">
                         <Globe className="w-3 h-3" />
                         Ch. {item.chapter} - {item.chapter_name}
                       </span>
+                      <SupplementaryUnitBadge item={item} />
                     </p>
                   </div>
                 </button>
@@ -517,7 +538,10 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
                       </Badge>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-800">{item.label}</p>
-                        <p className="text-xs text-gray-500">Ch. {item.chapter} - {item.chapter_name}</p>
+                        <p className="text-xs text-gray-500 flex items-center gap-2 flex-wrap">
+                          <span>Ch. {item.chapter} - {item.chapter_name}</span>
+                          <SupplementaryUnitBadge item={item} />
+                        </p>
                       </div>
                     </button>
                   ))}
@@ -597,7 +621,8 @@ export function HSCodeBrowser({ onSelect, language = 'fr', showRulesOfOrigin = t
                               <Badge className="font-mono text-xs bg-green-600 text-white shrink-0">
                                 {code.code}
                               </Badge>
-                              <span className="text-sm text-gray-700">{code.label}</span>
+                              <span className="text-sm text-gray-700 flex-1">{code.label}</span>
+                              <SupplementaryUnitBadge item={code} />
                             </button>
                           ))}
                         </div>

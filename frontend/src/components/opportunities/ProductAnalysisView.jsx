@@ -307,7 +307,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           console.warn('AI product analysis not available:', err.message);
           return { data: null };
         }),
-        axios.get(`${API}/hs-codes/code/${hsCode}`).catch(() => ({ data: null }))
+        axios.get(`${API}/hs-codes/code/${hsCode}`, { params: { language } }).catch(() => ({ data: null }))
       ]);
 
       const chapter = hsCode.substring(0, 2);
@@ -325,7 +325,8 @@ export default function ProductAnalysisView({ language = 'fr' }) {
             hs2Code: ai.product?.hs2_code || chapter,
             hs2Name: ai.product?.hs2_name || hsInfo.chapter_name_fr || `Chapitre ${chapter}`,
             hs4Code: ai.product?.hs4_code || hs4,
-            hs4Name: ai.product?.hs4_name || hsInfo.heading_name_fr || `Position ${hs4}`
+            hs4Name: ai.product?.hs4_name || hsInfo.heading_name_fr || `Position ${hs4}`,
+            supplementaryUnitLabel: hsInfo.supplementary_unit_label || null
           },
           productionCapacities: (ai.production_capacities || []).map(p => ({
             country: p.country,
@@ -361,7 +362,8 @@ export default function ProductAnalysisView({ language = 'fr' }) {
             hs2Code: chapter,
             hs2Name: hsInfo.chapter_name_fr || `Chapitre ${chapter}`,
             hs4Code: hs4,
-            hs4Name: hsInfo.heading_name_fr || `Position ${hs4}`
+            hs4Name: hsInfo.heading_name_fr || `Position ${hs4}`,
+            supplementaryUnitLabel: hsInfo.supplementary_unit_label || null
           },
           productionCapacities: [],
           importers: [],
@@ -551,6 +553,11 @@ export default function ProductAnalysisView({ language = 'fr' }) {
 
               <p className="text-sm text-white/80 mb-2">
                 Code HS6: {productData.product.hsCode}
+                {productData.product.supplementaryUnitLabel && (
+                  <span className="ml-2 inline-flex items-center rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold">
+                    {language === 'fr' ? 'Unité' : 'Unit'} : {productData.product.supplementaryUnitLabel}
+                  </span>
+                )}
               </p>
               <h2 className="text-4xl font-black tracking-tight">
                 {productData.product.name}
