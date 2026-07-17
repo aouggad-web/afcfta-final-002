@@ -2,7 +2,6 @@ from pathlib import Path
 
 from scripts.parse_mdg_tariff_pdf import build_output, parse_lines
 
-
 FIXTURE = Path(__file__).parent / "fixtures" / "mdg_tariff_text_sample.txt"
 
 
