@@ -960,38 +960,41 @@ def get_supplementary_unit(hs_code: Optional[str]) -> Optional[str]:
     return None
 
 
+# Libellés localisés des unités — constante module : appelée pour chaque
+# résultat des endpoints /search, /chapter et /code, ne pas réallouer par appel.
+_UNIT_LABELS = {
+    "fr": {
+        "kg": "kilogrammes",
+        "tonnes": "tonnes",
+        "litres": "litres",
+        "nombre": "nombre de pièces",
+        "nombre d'unités": "nombre d'unités",
+        "paires": "paires",
+        "12 pièces": "douzaines",
+        "100 pièces": "centaines",
+        "1000 pièces": "milliers",
+        "mètres": "mètres linéaires",
+        "m²": "mètres carrés",
+        "m³": "mètres cubes",
+    },
+    "en": {
+        "kg": "kilograms",
+        "tonnes": "metric tons",
+        "litres": "liters",
+        "nombre": "number of pieces",
+        "nombre d'unités": "number of units",
+        "paires": "pairs",
+        "12 pièces": "dozens",
+        "100 pièces": "hundreds",
+        "1000 pièces": "thousands",
+        "mètres": "linear meters",
+        "m²": "square meters",
+        "m³": "cubic meters",
+    },
+}
+
+
 def get_unit_label(unit: str, language: str = "fr") -> str:
     """Retourne le label localisé de l'unité."""
-    unit_labels = {
-        "fr": {
-            "kg": "kilogrammes",
-            "tonnes": "tonnes",
-            "litres": "litres",
-            "nombre": "nombre de pièces",
-            "nombre d'unités": "nombre d'unités",
-            "paires": "paires",
-            "12 pièces": "douzaines",
-            "100 pièces": "centaines",
-            "1000 pièces": "milliers",
-            "mètres": "mètres linéaires",
-            "m²": "mètres carrés",
-            "m³": "mètres cubes",
-        },
-        "en": {
-            "kg": "kilograms",
-            "tonnes": "metric tons",
-            "litres": "liters",
-            "nombre": "number of pieces",
-            "nombre d'unités": "number of units",
-            "paires": "pairs",
-            "12 pièces": "dozens",
-            "100 pièces": "hundreds",
-            "1000 pièces": "thousands",
-            "mètres": "linear meters",
-            "m²": "square meters",
-            "m³": "cubic meters",
-        },
-    }
-
-    labels = unit_labels.get(language, unit_labels["fr"])
+    labels = _UNIT_LABELS.get(language, _UNIT_LABELS["fr"])
     return labels.get(unit, unit)
