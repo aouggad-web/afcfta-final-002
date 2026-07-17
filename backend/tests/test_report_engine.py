@@ -1284,9 +1284,20 @@ def test_get_country_product_import_history_reshapes_oec_response(monkeypatch):
     res = asyncio.run(rt.real_trade_service.get_country_product_import_history("ETH", "901832"))
     assert res["available"] is True
     assert res["imports"] == [
-        {"year": 2019, "import_value_usd": 100_000, "no_data": False},
-        {"year": 2020, "import_value_usd": 0, "no_data": True},
+        {
+            "year": 2019,
+            "import_value_usd": 100_000,
+            "import_quantity_tonnes": 10,
+            "no_data": False,
+        },
+        {
+            "year": 2020,
+            "import_value_usd": 0,
+            "import_quantity_tonnes": None,
+            "no_data": True,
+        },
     ]
+    assert res["quantity_unit"] == "tonnes"
 
 
 def test_ultra_fine_report_falls_back_to_own_imports_for_uncovered_hs(monkeypatch, _no_network_fx):

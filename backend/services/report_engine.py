@@ -213,6 +213,7 @@ def _market_component(market_imports: Optional[Dict]) -> Dict:
         "available": True,
         "subscore": subscore,
         "import_value_usd": value,
+        "import_quantity_tonnes": market_imports.get("import_quantity_tonnes"),
         "source": market_imports.get("source", "OEC / UN Comtrade (BACI)"),
         "note": "Normalisation transparente : 100 M$ d'imports annuels = 1.0.",
     }
@@ -1295,6 +1296,7 @@ def _demand_side(importers: list) -> Dict:
             "country_iso3": m.get("country_iso3"),
             "country_name": m.get("country_name"),
             "import_value_usd": m.get("import_value"),
+            "import_quantity_tonnes": m.get("import_quantity") or None,
             "share_pct": (
                 round((m.get("import_value") or 0) / total * 100.0, 1) if total else None
             ),
@@ -1305,6 +1307,7 @@ def _demand_side(importers: list) -> Dict:
         "available": True,
         "markets": markets,
         "total_import_value_usd": total or None,
+        "quantity_unit": "tonnes",  # BACI : poids net
         "source": "OEC / UN Comtrade (BACI)",
     }
 

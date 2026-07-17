@@ -163,6 +163,8 @@ async def import_opportunities_scenario(
                 if imp and imp.get("available"):
                     opp["observed_imports"] = {
                         "import_value_usd": imp.get("import_value_usd"),
+                        "import_quantity_tonnes": imp.get("import_quantity_tonnes"),
+                        "quantity_unit": imp.get("quantity_unit"),
                         "year": imp.get("year"),
                         "source": imp.get("source"),
                     }
@@ -290,6 +292,8 @@ async def national_need(
             if imp and imp.get("available"):
                 observed_imports = {
                     "import_value_usd": imp.get("import_value_usd"),
+                    "import_quantity_tonnes": imp.get("import_quantity_tonnes"),
+                    "quantity_unit": imp.get("quantity_unit"),
                     "year": imp.get("year"),
                     "source": imp.get("source") or "OEC / UN Comtrade (BACI)",
                 }

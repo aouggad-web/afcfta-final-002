@@ -853,7 +853,7 @@ class RealTradeDataService:
             params = {
                 "cube": "trade_i_baci_a_17",
                 "drilldowns": "Year,Exporter Country,Importer Country,HS4",
-                "measures": "Trade Value",
+                "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Exporter Country": exp_info["oec"],
                 "Importer Country": imp_info["oec"],
@@ -866,10 +866,12 @@ class RealTradeDataService:
                 if response.status_code == 200:
                     records = response.json().get("data", [])
                     total_value = 0
+                    total_quantity = 0.0
                     products = []
                     for record in records:
                         value = record.get("Trade Value", 0)
                         total_value += value
+                        total_quantity += float(record.get("Quantity") or 0)
                         hs4_id = str(record.get("HS4 ID", ""))
                         hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
                         products.append(
@@ -877,12 +879,15 @@ class RealTradeDataService:
                                 "hs_code": hs4_code,
                                 "product_name": record.get("HS4", ""),
                                 "value": value,
+                                "quantity": record.get("Quantity") or 0,
                             }
                         )
 
                     products.sort(key=lambda p: p["value"], reverse=True)
                     return {
                         "total_value": total_value,
+                        "total_quantity": round(total_quantity, 2),
+                        "quantity_unit": "tonnes",  # BACI : poids net
                         "top_products": products[:limit],
                         "year": year,
                     }
@@ -1034,7 +1039,7 @@ class RealTradeDataService:
             params = {
                 "cube": "trade_i_baci_a_17",
                 "drilldowns": f"Year,Importer Country,{level}",
-                "measures": "Trade Value",
+                "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Importer Country": info["oec"],
                 "limit": limit,
@@ -1050,6 +1055,7 @@ class RealTradeDataService:
                     return None
 
                 total = 0.0
+                total_qty = 0.0
                 for record in records:
                     rid = str(record.get(f"{level} ID", ""))
                     rcode = rid[-id_len:].zfill(id_len) if rid else ""
@@ -1057,6 +1063,7 @@ class RealTradeDataService:
                         value = record.get("Trade Value") or 0
                         if value > 0:
                             total += value
+                            total_qty += float(record.get("Quantity") or 0)
                 if total <= 0:
                     return None
                 return {
@@ -1064,6 +1071,7 @@ class RealTradeDataService:
                     "country_name": info["name_fr"],
                     "hs_code": code,
                     "import_value": total,
+                    "import_quantity": round(total_qty, 2),
                 }
 
         try:
@@ -1119,6 +1127,8 @@ class RealTradeDataService:
                     return {
                         "available": True,
                         "import_value_usd": float(row["imports"]),
+                        "import_quantity_tonnes": float(row.get("imports_quantity") or 0) or None,
+                        "quantity_unit": "tonnes",
                         "hs_code": clean_hs[:6] if len(clean_hs) >= 6 else clean_hs,
                         "year": row.get("year"),
                         "source": hist.get("source") or "OEC / BACI",
@@ -1211,6 +1221,7 @@ class RealTradeDataService:
                 {
                     "year": r.get("year"),
                     "import_value_usd": r.get("trade_value"),
+                    "import_quantity_tonnes": r.get("quantity") or None,
                     "no_data": bool(r.get("no_data")),
                 }
                 for r in rows
@@ -1218,6 +1229,7 @@ class RealTradeDataService:
             return {
                 "available": True,
                 "imports": imports,
+                "quantity_unit": "tonnes",  # BACI : poids net
                 "source": hist.get("source") or "OEC / BACI",
             }
         except Exception as e:
