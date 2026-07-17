@@ -185,22 +185,32 @@ def build_trade_series(
     Les listes de lignes peuvent être None (flux absent).
     """
 
-    def agg(rows: Optional[List[Dict]]) -> Dict[int, float]:
-        totals = {y: 0.0 for y in years}
+    def agg(rows: Optional[List[Dict]]) -> Dict[int, Dict[str, float]]:
+        totals = {y: {"value": 0.0, "quantity": 0.0} for y in years}
         for row in rows or []:
             year = row.get("Year")
             if year in totals:
-                totals[year] += float(row.get("Trade Value") or 0)
+                totals[year]["value"] += float(row.get("Trade Value") or 0)
+                totals[year]["quantity"] += float(row.get("Quantity") or 0)
         return totals
 
     exports = agg(exports_rows)
     imports = agg(imports_rows)
     series = []
     for year in years:
-        exp = round(exports[year], 2)
-        imp = round(imports[year], 2)
+        exp = round(exports[year]["value"], 2)
+        imp = round(imports[year]["value"], 2)
         series.append(
-            {"year": year, "exports": exp, "imports": imp, "balance": round(exp - imp, 2)}
+            {
+                "year": year,
+                "exports": exp,
+                "imports": imp,
+                "balance": round(exp - imp, 2),
+                # Volumes BACI (poids net, tonnes) quand la mesure Quantity a
+                # été demandée ; 0 sinon (lignes sans le champ).
+                "exports_quantity": round(exports[year]["quantity"], 2),
+                "imports_quantity": round(imports[year]["quantity"], 2),
+            }
         )
     return series
 
@@ -646,6 +656,10 @@ class OECTradeService:
                     "exports": exp_val,
                     "imports": imp_val,
                     "balance": round(exp_val - imp_val, 2),
+                    # Volumes BACI (poids net, tonnes) — objectif « valeur +
+                    # quantité » : le front affiche les deux côte à côte.
+                    "exports_quantity": exp_qty,
+                    "imports_quantity": imp_qty,
                 }
             )
 
@@ -674,6 +688,7 @@ class OECTradeService:
             "chart_rows": chart_rows,
             "source": "OEC / BACI (HS Rev. 2017)",
             "currency": "USD",
+            "quantity_unit": "tonnes",  # BACI : poids net en tonnes métriques
             "has_data": any_exports or any_imports,
         }
 
@@ -707,7 +722,7 @@ class OECTradeService:
             params = self._build_params(
                 cube=OEC_CUBES[DEFAULT_CUBE],
                 drilldowns=["Year"],
-                measures=["Trade Value"],
+                measures=["Trade Value", "Quantity"],
                 cuts={country_dim: oec_id, "Year": ",".join(str(y) for y in years)},
                 limit=1000,
             )
@@ -731,6 +746,7 @@ class OECTradeService:
             "chart_rows": chart_rows,
             "source": "OEC / BACI (HS Rev. 2017)",
             "currency": "USD",
+            "quantity_unit": "tonnes",  # BACI : poids net en tonnes métriques
             "has_data": any(r["exports"] > 0 or r["imports"] > 0 for r in chart_rows),
         }
 
@@ -794,7 +810,7 @@ class OECTradeService:
         params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Exporter Country"],
-            measures=["Trade Value"],
+            measures=["Trade Value", "Quantity"],
             cuts={"Year": str(year), "HS6": oec_hs_id},
             limit=200,  # Get more to filter African countries
         )
@@ -818,6 +834,7 @@ class OECTradeService:
             "year": year,
             "total_countries": len(african_data),
             "data": african_data[:limit],
+            "quantity_unit": "tonnes",  # champ Quantity des lignes (BACI)
             "source": "OEC/BACI",
         }
 
@@ -837,7 +854,7 @@ class OECTradeService:
         params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Importer Country"],
-            measures=["Trade Value"],
+            measures=["Trade Value", "Quantity"],
             cuts={"Year": str(year), "HS6": oec_hs_id},
             limit=200,
         )
@@ -861,6 +878,7 @@ class OECTradeService:
                         "country_name": info.get("name_fr") or info.get("name_en") or iso3,
                         "hs_code": hs6_code,
                         "import_value": value,
+                        "import_quantity": row.get("Quantity") or 0,
                     }
                 )
 
@@ -870,6 +888,7 @@ class OECTradeService:
             "year": year,
             "total_countries": len(african_data),
             "data": african_data[:limit],
+            "quantity_unit": "tonnes",  # BACI : poids net en tonnes métriques
             "source": "OEC/BACI (canal gratuit du module Statistiques)",
         }
 

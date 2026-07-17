@@ -14,6 +14,12 @@ const money = (v) =>
     ? "—"
     : `$${Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 
+/* Volume BACI (poids net, tonnes métriques) — affiché à côté de la valeur. */
+const tonnes = (v) =>
+  v === null || v === undefined || !(Number(v) > 0)
+    ? null
+    : `${Number(v).toLocaleString("en-US", { maximumFractionDigits: Number(v) < 10 ? 1 : 0 })} t`;
+
 /* Source may be a plain string or an object {institution, dataset, url}. */
 const srcText = (s) =>
   !s
@@ -173,6 +179,7 @@ function MarketSeekingView({ fr }) {
                   <tr>
                     <th style={th}>{fr ? "Pays" : "Country"}</th>
                     <th style={th}>{fr ? "Importations" : "Imports"}</th>
+                    <th style={th}>{fr ? "Volume (t)" : "Volume (t)"}</th>
                     <th style={th}>{fr ? "Part" : "Share"}</th>
                   </tr>
                 </thead>
@@ -183,6 +190,7 @@ function MarketSeekingView({ fr }) {
                         {m.country_name} ({m.country_iso3})
                       </td>
                       <td style={td}>{money(m.import_value_usd)}</td>
+                      <td style={td}>{tonnes(m.import_quantity_tonnes) || "—"}</td>
                       <td style={td}>{m.share_pct === null ? "—" : `${m.share_pct}%`}</td>
                     </tr>
                   ))}
@@ -668,10 +676,18 @@ function BilateralView({ countries, fr, prefill }) {
                   ? fr
                     ? `Potentiel de marché activé via les imports OEC réels du marché (${money(
                         report.market_potential.import_value_usd
-                      )}/an).`
+                      )}/an${
+                        tonnes(report.market_potential.import_quantity_tonnes)
+                          ? ` · ${tonnes(report.market_potential.import_quantity_tonnes)}`
+                          : ""
+                      }).`
                     : `Market potential activated from real OEC imports (${money(
                         report.market_potential.import_value_usd
-                      )}/yr).`
+                      )}/yr${
+                        tonnes(report.market_potential.import_quantity_tonnes)
+                          ? ` · ${tonnes(report.market_potential.import_quantity_tonnes)}`
+                          : ""
+                      }).`
                   : fr
                   ? "Le potentiel de marché par produit (flux OEC) est indisponible ici — exclu, jamais estimé."
                   : "Per-product market potential (OEC flows) unavailable here — excluded, never estimated."}
@@ -961,6 +977,11 @@ function BilateralView({ countries, fr, prefill }) {
                   {need.observed_imports?.import_value_usd && (
                     <div style={{ fontSize: 12, marginTop: 6 }}>
                       {fr ? "Importe déjà" : "Already imports"} : {money(need.observed_imports.import_value_usd)}
+                      {tonnes(need.observed_imports.import_quantity_tonnes) && (
+                        <span style={{ color: "var(--afcfta-muted,#667)" }}>
+                          {" "}· {tonnes(need.observed_imports.import_quantity_tonnes)}
+                        </span>
+                      )}
                     </div>
                   )}
                   <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 6 }}>{need.method}</div>
@@ -1559,6 +1580,8 @@ function ImportOpportunitiesView({ countries, fr, onAnalyze }) {
                         {o.observed_imports?.import_value_usd && (
                           <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)" }}>
                             {fr ? "importe déjà" : "already imports"} {money(o.observed_imports.import_value_usd)}
+                            {tonnes(o.observed_imports.import_quantity_tonnes) &&
+                              ` · ${tonnes(o.observed_imports.import_quantity_tonnes)}`}
                           </div>
                         )}
                       </td>
@@ -1679,6 +1702,11 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
                 {rep.observed_imports?.import_value_usd && (
                   <div style={{ fontSize: 13, marginTop: 4 }}>
                     {fr ? "Importe déjà" : "Already imports"} : {money(rep.observed_imports.import_value_usd)}
+                    {tonnes(rep.observed_imports.import_quantity_tonnes) && (
+                      <span style={{ color: "var(--afcfta-muted,#667)" }}>
+                        {" "}· {tonnes(rep.observed_imports.import_quantity_tonnes)}
+                      </span>
+                    )}
                   </div>
                 )}
                 <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>

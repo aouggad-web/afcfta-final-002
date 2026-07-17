@@ -22,6 +22,14 @@ const fmtUSD = (v) => {
   return `$${v.toFixed(0)}`;
 };
 
+// Volume BACI (poids net, tonnes métriques) — affiché à côté de la valeur USD.
+const fmtTonnes = (v) => {
+  if (v == null || isNaN(v) || v <= 0) return '—';
+  if (v >= 1e6) return `${(v / 1e6).toFixed(2)}M t`;
+  if (v >= 1e3) return `${(v / 1e3).toFixed(1)}K t`;
+  return `${v.toFixed(v < 10 ? 1 : 0)} t`;
+};
+
 const MATCH_LEVEL_LABEL = {
   fr: { hs6: 'SH6 exact', hs4: 'Aggrégat SH4', hs2: 'Chapitre SH2', none: 'Aucune correspondance' },
   en: { hs6: 'Exact HS6', hs4: 'HS4 aggregate', hs2: 'HS2 chapter', none: 'No match' },
@@ -49,6 +57,9 @@ const TXT = {
     totalImports: 'Imports cumulés',
     cumulativeBalance: 'Balance cumulée',
     avgGrowth: 'Croissance moy.',
+    qtyExports: 'Vol. exports',
+    qtyImports: 'Vol. imports',
+    qtyNote: 'Volumes : poids net (tonnes) — source BACI',
     noData: 'Aucune donnée OEC pour ce code dans ce pays.',
     error: 'Erreur de récupération',
     inputError: 'Saisir un code SH valide puis cliquer Rechercher.',
@@ -79,6 +90,9 @@ const TXT = {
     totalImports: 'Total imports',
     cumulativeBalance: 'Cumulative balance',
     avgGrowth: 'Avg growth',
+    qtyExports: 'Export vol.',
+    qtyImports: 'Import vol.',
+    qtyNote: 'Volumes: net weight (metric tons) — BACI source',
     noData: 'No OEC data for this HS in this country.',
     error: 'Fetch error',
     inputError: 'Enter a valid HS code then click Search.',
@@ -450,7 +464,16 @@ export default function CountryHS6History({ language = 'fr' }) {
                   <YAxis tick={{ fontSize: 11, fill: 'rgba(142,155,174,0.85)' }} axisLine={false} tickLine={false} tickFormatter={(v) => fmtUSD(v)} width={62} />
                   <Tooltip
                     contentStyle={{ background: '#1a2332', border: '1px solid rgba(212,137,26,0.4)', borderRadius: 8, color: '#e2e8f0' }}
-                    formatter={(value, name) => [fmtUSD(value), name]}
+                    formatter={(value, name, entry) => {
+                      const row = entry?.payload || {};
+                      if (name === t.exports && row.exports_quantity > 0) {
+                        return [`${fmtUSD(value)} · ${fmtTonnes(row.exports_quantity)}`, name];
+                      }
+                      if (name === t.imports && row.imports_quantity > 0) {
+                        return [`${fmtUSD(value)} · ${fmtTonnes(row.imports_quantity)}`, name];
+                      }
+                      return [fmtUSD(value), name];
+                    }}
                   />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
                   <Bar dataKey="exports" name={t.exports} fill="#10b981" radius={[4, 4, 0, 0]} />
@@ -473,7 +496,9 @@ export default function CountryHS6History({ language = 'fr' }) {
                   <tr style={{ borderBottom: '1px solid rgba(212,175,55,0.25)' }}>
                     <th style={{ textAlign: 'left', padding: '6px 4px', color: 'rgba(212,175,55,0.9)', fontWeight: 700 }}>{t.year}</th>
                     <th style={{ textAlign: 'right', padding: '6px 4px', color: '#10b981', fontWeight: 700 }}>{t.exports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#34d399', fontWeight: 600, fontSize: 12 }}>{t.qtyExports}</th>
                     <th style={{ textAlign: 'right', padding: '6px 4px', color: '#f43f5e', fontWeight: 700 }}>{t.imports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#fb7185', fontWeight: 600, fontSize: 12 }}>{t.qtyImports}</th>
                     <th style={{ textAlign: 'right', padding: '6px 4px', color: '#fbbf24', fontWeight: 700 }}>{t.balance}</th>
                   </tr>
                 </thead>
@@ -482,7 +507,9 @@ export default function CountryHS6History({ language = 'fr' }) {
                     <tr key={row.year} style={{ borderBottom: '1px solid rgba(142,155,174,0.10)' }}>
                       <td style={{ padding: '6px 4px', fontWeight: 700 }}>{row.year}</td>
                       <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.exports)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'rgba(52,211,153,0.85)' }} data-testid={`qty-exp-${row.year}`}>{fmtTonnes(row.exports_quantity)}</td>
                       <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.imports)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'rgba(251,113,133,0.85)' }} data-testid={`qty-imp-${row.year}`}>{fmtTonnes(row.imports_quantity)}</td>
                       <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', color: row.balance >= 0 ? '#10b981' : '#f43f5e' }}>
                         {fmtUSD(row.balance)}
                       </td>
@@ -490,6 +517,7 @@ export default function CountryHS6History({ language = 'fr' }) {
                   ))}
                 </tbody>
               </table>
+              <p className="stats-source-note" style={{ margin: '6px 0 0' }}>{t.qtyNote}</p>
             </div>
           )}
 
