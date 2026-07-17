@@ -25,9 +25,19 @@ def test_get_supplementary_unit_no_hs4_fallback():
     # PAS de repli sur le préfixe HS4 : au sein d'une même position, les
     # sous-positions peuvent avoir des unités différentes — hériter de l'unité
     # d'un cousin de chapitre serait trompeur (ex. aiguilles vs autres
-    # instruments de la position 9018). Un code non mappé exactement → None.
-    assert get_supplementary_unit("901835") is None  # sous-position non mappée
+    # instruments de la position 9018).
     assert get_supplementary_unit("9018") is None  # HS4 seul, pas d'unité
+
+
+def test_derived_units_from_national_tariffs():
+    # Repli sur la table dérivée des tarifs douaniers nationaux (EAC/SACU/NGA)
+    # quand le code n'est pas dans la table curée — résolution HS6 exacte.
+    assert get_supplementary_unit("640351") == "paires"  # Chaussures cuir
+    assert get_supplementary_unit("710231") == "carats"  # Diamants bruts
+    assert get_supplementary_unit("220421") == "litres"  # Vin en bouteille
+    assert get_supplementary_unit("870321") == "nombre"  # Voitures < 1000 cm³
+    # La table curée reste prioritaire sur la table dérivée
+    assert get_supplementary_unit("901832") == "nombre"  # Aiguilles tubulaires
 
 
 def test_get_supplementary_unit_none_when_unmapped():
@@ -66,8 +76,10 @@ def test_code_endpoint_includes_supplementary_unit():
 
 
 def test_code_endpoint_unit_none_when_unmapped():
-    # Code présent en base mais sans unité complémentaire mappée
-    r = client.get("/api/hs-codes/code/180310")
+    # Code présent en base mais absent des deux tables (curée + dérivée) :
+    # 010110 est un code SH2012 (chevaux reproducteurs) retiré des
+    # nomenclatures nationales récentes, donc sans unité publiée.
+    r = client.get("/api/hs-codes/code/010110")
     assert r.status_code == 200
     data = r.json()
     assert data.get("supplementary_unit") is None

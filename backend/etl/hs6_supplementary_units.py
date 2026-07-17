@@ -944,8 +944,28 @@ HS6_SUPPLEMENTARY_UNITS = {
 }
 
 
+# Table dérivée des tarifs douaniers nationaux (EAC, SACU, NGA, ETH) — ~5 600
+# codes HS6 avec l'unité statistique OMD publiée ligne par ligne, agrégée par
+# vote majoritaire (voir etl/build_hs6_units_from_tariffs.py). Sert de repli
+# quand le code n'est pas dans la table curée ci-dessus.
+_DERIVED_UNITS: dict = {}
+try:
+    import json as _json
+    from pathlib import Path as _Path
+
+    _derived_path = _Path(__file__).parent.parent / "data" / "hs6_units_derived.json"
+    with open(_derived_path, "r", encoding="utf-8") as _f:
+        _DERIVED_UNITS = _json.load(_f).get("units", {})
+except Exception:  # fichier absent → on garde uniquement la table curée
+    _DERIVED_UNITS = {}
+
+
 def get_supplementary_unit(hs_code: Optional[str]) -> Optional[str]:
     """Retourne l'unité complémentaire pour un code HS6 EXACT, sinon None.
+
+    Résolution en deux temps, toujours sur le code HS6 exact :
+    1. table curée HS6_SUPPLEMENTARY_UNITS (prioritaire) ;
+    2. table dérivée des tarifs douaniers nationaux (_DERIVED_UNITS).
 
     Pas de repli sur le préfixe HS4 : au sein d'une même position SH4, les
     sous-positions peuvent avoir des unités différentes (ex. 9018 : les
@@ -956,7 +976,8 @@ def get_supplementary_unit(hs_code: Optional[str]) -> Optional[str]:
     """
     clean_code = "".join(c for c in (hs_code or "") if c.isdigit())
     if len(clean_code) >= 6:
-        return HS6_SUPPLEMENTARY_UNITS.get(clean_code[:6])
+        hs6 = clean_code[:6]
+        return HS6_SUPPLEMENTARY_UNITS.get(hs6) or _DERIVED_UNITS.get(hs6)
     return None
 
 
@@ -976,6 +997,8 @@ _UNIT_LABELS = {
         "mètres": "mètres linéaires",
         "m²": "mètres carrés",
         "m³": "mètres cubes",
+        "carats": "carats",
+        "1000 kWh": "milliers de kWh",
     },
     "en": {
         "kg": "kilograms",
@@ -990,6 +1013,8 @@ _UNIT_LABELS = {
         "mètres": "linear meters",
         "m²": "square meters",
         "m³": "cubic meters",
+        "carats": "carats",
+        "1000 kWh": "thousands of kWh",
     },
 }
 
