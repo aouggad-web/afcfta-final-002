@@ -750,8 +750,9 @@ async def get_opportunity_report_ultra_fine(
     # (ex. instruments médicaux SH90) -> imports réels du pays lui-même (canal
     # OEC partagé, moyennés sur plusieurs années pour les biens durables/longue
     # conservation). Un seul appel réseau, uniquement quand le repli local échoue.
-    if not national_need.get("available") and "production continentale indisponible" in (
-        national_need.get("note") or ""
+    if (
+        not national_need.get("available")
+        and national_need.get("reason") == "no_continental_production_reference"
     ):
         try:
             from services.real_trade_data_service import real_trade_service
@@ -763,8 +764,13 @@ async def get_opportunity_report_ultra_fine(
                 national_need = demand_estimation_service.estimate_national_need(
                     hs_code, destination_iso3, own_imports_history=history["imports"]
                 )
-        except Exception:  # OEC indisponible -> le message "impossible" est conservé
-            pass
+        except Exception as e:  # OEC indisponible -> le message "impossible" est conservé
+            _log.warning(
+                "own-imports fallback (ultra-fine report) failed for %s/%s: %s",
+                destination_iso3,
+                hs_code,
+                e,
+            )
 
     base["national_need"] = national_need
 

@@ -1201,7 +1201,7 @@ class RealTradeDataService:
                 country_iso3=importer_iso3,
                 hs_code=clean_hs,
                 n_years=n_years,
-                end_year=max(int(end_year or 0), DEFAULT_YEAR),
+                end_year=min(int(end_year or DEFAULT_YEAR), DEFAULT_YEAR),
                 level=level,
             )
             rows = (hist or {}).get("imports") or []

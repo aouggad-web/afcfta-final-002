@@ -1239,6 +1239,9 @@ def test_national_need_falls_back_to_own_imports_when_production_unavailable():
     # SANS historique d'imports fourni ; AVEC historique, repli sur L2-imports.
     without_history = demand.estimate_national_need("901832", "ETH")
     assert without_history["available"] is False
+    # Code de raison structuré : le déclencheur du repli (routes/report_engine)
+    # branche dessus, pas sur le texte français de la note.
+    assert without_history["reason"] == "no_continental_production_reference"
 
     history = [
         {"year": 2020, "import_value_usd": 200_000, "no_data": False},

@@ -9,11 +9,14 @@ Opportunités module described in ``docs/MODULE_OPPORTUNITES_PLAN_PREMIUM.md``.
 All values are real or explicitly flagged unavailable — never fabricated.
 """
 
+import logging
 from typing import Optional
 
 from fastapi import APIRouter, Query
 from services import macro_indicators_service as macro
 from services import report_engine
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/reports")
 
@@ -303,8 +306,9 @@ async def national_need(
     # chercher l'historique d'imports RÉEL du pays lui-même (canal OEC partagé,
     # cache persistant) et on relance le calcul avec ce signal mesuré — moyenné
     # sur plusieurs années pour les biens durables/longue conservation.
-    if not result.get("available") and "production continentale indisponible" in (
-        result.get("note") or ""
+    if (
+        not result.get("available")
+        and result.get("reason") == "no_continental_production_reference"
     ):
         try:
             from services.real_trade_data_service import real_trade_service
@@ -318,8 +322,13 @@ async def national_need(
                     observed_imports=observed_imports,
                     own_imports_history=history["imports"],
                 )
-        except Exception:  # OEC indisponible -> le message "impossible" est conservé
-            pass
+        except Exception as e:  # OEC indisponible -> le message "impossible" est conservé
+            logger.warning(
+                "own-imports fallback (national-need endpoint) failed for %s/%s: %s",
+                country,
+                hs_code,
+                e,
+            )
 
     return result
 

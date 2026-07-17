@@ -505,6 +505,11 @@ def estimate_national_need(
             "available": False,
             "is_estimation": True,
             "value": None,
+            "reason": (
+                "no_continental_production_reference"
+                if not cont_total
+                else "population_unavailable"
+            ),
             "note": (
                 "Estimation impossible : "
                 + (
@@ -533,6 +538,7 @@ def estimate_national_need(
             "available": False,
             "is_estimation": True,
             "value": None,
+            "reason": "continental_population_unavailable",
             "note": "Population continentale indisponible.",
         }
 
