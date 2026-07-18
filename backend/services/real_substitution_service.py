@@ -24,7 +24,10 @@ from services.real_trade_data_service import (
     has_trade_data,
     real_trade_service,
 )
-from services.substitution_feasibility_service import realistic_substitution_potential
+from services.substitution_feasibility_service import (
+    realistic_substitution_potential,
+    substitutability_for_hs,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -940,6 +943,15 @@ class RealSubstitutionService:
             )[:10]
 
             for chapter, exporter_export_value in top_chapters:
+                # Même discipline que la substitution d'imports : capter un marché
+                # africain de téléphones ou de véhicules se heurte aux mêmes
+                # barrières (effet marque, écart technologique, SAV, certification)
+                # que substituer ses propres imports — la part adressable d'un
+                # marché est bornée par le coefficient de substituabilité du
+                # produit, pas seulement par la capacité d'export du pays.
+                feasibility = substitutability_for_hs(chapter)
+                coef = feasibility["coefficient"]
+
                 potential_markets = []
                 for market in import_index.get(chapter, []):
                     if market["iso3"] == exporter:
@@ -947,13 +959,16 @@ class RealSubstitutionService:
                     market_size = market["value"]
                     if market_size < min_market_size:
                         continue
-                    # Capture potential is bounded by the exporter's real capacity
-                    capture = round(min(exporter_export_value, market_size) / market_size, 2)
+                    addressable = market_size * coef
+                    # Capture bounded by BOTH the exporter's real capacity and the
+                    # realistically addressable share of the market.
+                    capture = round(min(exporter_export_value, addressable) / market_size, 2)
                     potential_markets.append(
                         {
                             "country_iso3": market["iso3"],
                             "country_name": get_country_name(market["iso3"], lang),
                             "market_size": int(market_size),
+                            "addressable_market_size": int(addressable),
                             "capture_potential": capture,
                         }
                     )
@@ -966,6 +981,7 @@ class RealSubstitutionService:
                 total_potential = sum(
                     m["market_size"] * m["capture_potential"] for m in potential_markets
                 )
+                total_addressable = sum(m["addressable_market_size"] for m in potential_markets)
 
                 opportunities.append(
                     {
@@ -975,6 +991,12 @@ class RealSubstitutionService:
                         },
                         "potential_markets": potential_markets,
                         "total_market_potential": int(total_potential),
+                        "substitution_feasibility": feasibility,
+                        "binding_constraint": (
+                            "capacité exportateur"
+                            if exporter_export_value < total_addressable
+                            else "substituabilité"
+                        ),
                         "afcfta_advantage": "Accès préférentiel ZLECAf (droits réduits ou supprimés)",
                     }
                 )
@@ -1018,6 +1040,11 @@ class RealSubstitutionService:
         total_market_potential = 0
         for hs_code in profile.get("export_strengths", []):
             product_name = get_product_name(hs_code, lang)
+            # Même discipline que le chemin OEC réel : le taux de capture
+            # forfaitaire est en plus plafonné par la substituabilité du produit
+            # (un taux de capture ne peut pas dépasser la part adressable).
+            feasibility = substitutability_for_hs(hs_code)
+            effective_capture = min(capture_rate, feasibility["coefficient"])
             potential_markets = []
             for country_iso, country_profile in COUNTRY_SUBSTITUTION_PROFILES.items():
                 if country_iso == exporter:
@@ -1031,7 +1058,10 @@ class RealSubstitutionService:
                                     "country_iso3": country_iso,
                                     "country_name": get_country_name(country_iso, lang),
                                     "market_size": market_size,
-                                    "capture_potential": capture_rate,
+                                    "addressable_market_size": int(
+                                        market_size * feasibility["coefficient"]
+                                    ),
+                                    "capture_potential": effective_capture,
                                 }
                             )
 
@@ -1047,6 +1077,12 @@ class RealSubstitutionService:
                     "export_product": {"hs_code": hs_code, "name": product_name},
                     "potential_markets": potential_markets,
                     "total_market_potential": int(total_potential),
+                    "substitution_feasibility": feasibility,
+                    "binding_constraint": (
+                        "substituabilité"
+                        if feasibility["coefficient"] < capture_rate
+                        else "capacité exportateur"
+                    ),
                     "afcfta_advantage": "Accès préférentiel ZLECAf (droits réduits ou supprimés)",
                 }
             )
