@@ -2,15 +2,14 @@
  * CountryHS6History — Recherche commerce par pays + HS6, sur N dernières années.
  * Source : OEC / BACI (HS Rev. 2017).
  */
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, Line, ComposedChart,
 } from 'recharts';
-import { Search, Loader2, TrendingUp, TrendingDown, Minus, FileDown } from 'lucide-react';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { Search, Loader2, TrendingUp, TrendingDown, Minus, FileDown, Moon } from 'lucide-react';
+import { buildTradeReportPdf, tradeReportFilename } from '../../utils/tradeReportPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -122,8 +121,7 @@ export default function CountryHS6History({ language = 'fr' }) {
   const [error, setError] = useState('');
   const [labelData, setLabelData] = useState(null);
   const [labelLoading, setLabelLoading] = useState(false);
-  const [exporting, setExporting] = useState(false);
-  const chartRef = useRef(null);
+  const [exportingTheme, setExportingTheme] = useState(null); // null | 'light' | 'dark'
 
   useEffect(() => {
     let cancelled = false;
@@ -213,170 +211,28 @@ export default function CountryHS6History({ language = 'fr' }) {
     window.dispatchEvent(new CustomEvent('zlecaf:goto-tab', { detail: { tab: 'reports' } }));
   };
 
-  const exportToPDF = async () => {
+  // Rapport PDF natif (voir utils/tradeReportPdf.js) : tracé vectoriel, deux
+  // variantes thématiques reprenant la palette réelle de l'appli (theme.css /
+  // theme-light.css) — claire pour l'impression, sombre pour l'écran.
+  const exportToPDF = async (themeName) => {
     if (!data || !data.chart_rows || data.chart_rows.length === 0) return;
-    setExporting(true);
+    setExportingTheme(themeName);
     try {
-      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      let yPos = 15;
-      const margin = 12;
-      const contentWidth = pageWidth - 2 * margin;
-
-      pdf.setFont('Helvetica', 'bold');
-      pdf.setFontSize(16);
-      pdf.text(t.title, margin, yPos);
-      yPos += 8;
-
-      pdf.setFont('Helvetica', 'normal');
-      pdf.setFontSize(10);
-      pdf.setTextColor(100, 100, 100);
-      const headerText = `${data.country_name} • SH${LEVEL_LEN[searchLevel]} ${data.hs_code} • ${data.hs_labels?.[0]?.label || ''}`;
-      pdf.text(headerText, margin, yPos, { maxWidth: contentWidth });
-      yPos += 6;
-
-      if (data.hs_labels && data.hs_labels.length > 0) {
-        pdf.setFontSize(9);
-        pdf.text(`Match: ${(MATCH_LEVEL_LABEL[language] || MATCH_LEVEL_LABEL.fr)[data.match_level] || ''}`, margin, yPos);
-        yPos += 4;
-      }
-
-      pdf.setDrawColor(212, 175, 55);
-      pdf.setLineWidth(0.5);
-      pdf.line(margin, yPos, pageWidth - margin, yPos);
-      yPos += 6;
-
-      // Statistics boxes
-      if (totals) {
-        pdf.setFont('Helvetica', 'bold');
-        pdf.setFontSize(9);
-        pdf.setTextColor(0, 0, 0);
-
-        const statBoxWidth = (contentWidth - 9) / 4;
-        const stats = [
-          { label: t.totalExports, value: fmtUSD(totals.exports) },
-          { label: t.totalImports, value: fmtUSD(totals.imports) },
-          { label: t.cumulativeBalance, value: fmtUSD(totals.balance) },
-          { label: t.avgGrowth, value: totals.cagr != null ? `${totals.cagr.toFixed(1)}%` : '—' },
-        ];
-
-        stats.forEach((stat, idx) => {
-          const xStart = margin + idx * (statBoxWidth + 2.25);
-          pdf.setDrawColor(212, 175, 55);
-          pdf.setLineWidth(0.3);
-          pdf.rect(xStart, yPos, statBoxWidth, 12);
-
-          pdf.setFont('Helvetica', 'bold');
-          pdf.setFontSize(8);
-          pdf.text(stat.label, xStart + 1, yPos + 3, { maxWidth: statBoxWidth - 2 });
-
-          pdf.setFont('Helvetica', 'bold');
-          pdf.setFontSize(9);
-          pdf.text(stat.value, xStart + 1, yPos + 8, { maxWidth: statBoxWidth - 2 });
-        });
-        yPos += 15;
-      }
-
-      // Chart as image
-      if (chartRef.current) {
-        try {
-          const canvas = await html2canvas(chartRef.current, { scale: 2, useCORS: true });
-          const chartImage = canvas.toDataURL('image/png');
-          const chartHeight = (contentWidth * canvas.height) / canvas.width;
-          if (yPos + chartHeight + 10 > pageHeight - 10) {
-            pdf.addPage();
-            yPos = 15;
-          }
-          pdf.addImage(chartImage, 'PNG', margin, yPos, contentWidth, chartHeight);
-          yPos += chartHeight + 6;
-        } catch {
-          // Chart capture failed, continue without it
-        }
-      }
-
-      // Table
-      if (yPos + 40 > pageHeight - 10) {
-        pdf.addPage();
-        yPos = 15;
-      }
-
-      pdf.setFont('Helvetica', 'bold');
-      pdf.setFontSize(10);
-      pdf.setTextColor(0, 0, 0);
-      pdf.text(t.years, margin, yPos);
-      yPos += 7;
-
-      const tableStartY = yPos;
-      const colWidths = [12, 20, 18, 20, 18, 20];
-      const headers = [t.year, t.exports, t.qtyExports, t.imports, t.qtyImports, t.balance];
-      const rowHeight = 6;
-
-      pdf.setFont('Helvetica', 'bold');
-      pdf.setFontSize(8);
-      pdf.setTextColor(0, 0, 0);
-
-      let xPos = margin;
-      headers.forEach((header, idx) => {
-        pdf.text(header, xPos + 1, yPos + 4, { maxWidth: colWidths[idx] - 2 });
-        xPos += colWidths[idx];
+      const doc = buildTradeReportPdf({
+        data,
+        totals,
+        language,
+        levelLen: LEVEL_LEN[searchLevel],
+        matchLevelLabel: (MATCH_LEVEL_LABEL[language] || MATCH_LEVEL_LABEL.fr)[data.match_level] || '',
+        fmtUSD,
+        fmtTonnes,
+        theme: themeName,
       });
-
-      pdf.setDrawColor(212, 175, 55);
-      pdf.setLineWidth(0.3);
-      pdf.line(margin, yPos + 5, pageWidth - margin, yPos + 5);
-      yPos += 6;
-
-      pdf.setFont('Helvetica', 'normal');
-      pdf.setFontSize(8);
-
-      data.chart_rows.forEach((row) => {
-        if (yPos + rowHeight > pageHeight - 10) {
-          pdf.addPage();
-          yPos = 15;
-        }
-
-        xPos = margin;
-        const values = [
-          String(row.year),
-          fmtUSD(row.exports),
-          fmtTonnes(row.exports_quantity),
-          fmtUSD(row.imports),
-          fmtTonnes(row.imports_quantity),
-          fmtUSD(row.balance),
-        ];
-
-        values.forEach((value, idx) => {
-          pdf.text(value, xPos + 1, yPos + 4, { maxWidth: colWidths[idx] - 2 });
-          xPos += colWidths[idx];
-        });
-
-        pdf.setDrawColor(142, 155, 174);
-        pdf.setLineWidth(0.1);
-        pdf.line(margin, yPos + 5, pageWidth - margin, yPos + 5);
-        yPos += rowHeight;
-      });
-
-      yPos += 4;
-
-      // Footer
-      pdf.setDrawColor(212, 175, 55);
-      pdf.setLineWidth(0.5);
-      pdf.line(margin, yPos, pageWidth - margin, yPos);
-      yPos += 4;
-
-      pdf.setFont('Helvetica', 'normal');
-      pdf.setFontSize(8);
-      pdf.setTextColor(100, 100, 100);
-      const footerText = `${data.source} • ${t.qtyNote} • ${new Date().toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US')}`;
-      pdf.text(footerText, margin, yPos, { maxWidth: contentWidth });
-
-      const filename = `trade_${data.country_name}_${data.hs_code}_${new Date().toISOString().split('T')[0]}.pdf`;
-      pdf.save(filename);
+      doc.save(`${tradeReportFilename(data)}_${themeName}.pdf`);
     } catch (err) {
       console.error('PDF export failed:', err);
     } finally {
-      setExporting(false);
+      setExportingTheme(null);
     }
   };
 
@@ -627,7 +483,7 @@ export default function CountryHS6History({ language = 'fr' }) {
 
           {/* ─── Chart ─── */}
           {data.chart_rows && data.chart_rows.length > 0 ? (
-            <div style={{ padding: '8px 8px 4px' }} ref={chartRef}>
+            <div style={{ padding: '8px 8px 4px' }}>
               <ResponsiveContainer width="100%" height={300}>
                 <ComposedChart data={data.chart_rows} margin={{ top: 8, right: 16, left: 0, bottom: 4 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(142,155,174,0.15)" />
@@ -697,9 +553,10 @@ export default function CountryHS6History({ language = 'fr' }) {
               {data.source} · {data.country_name} · HS {data.hs_code} · {data.currency}
             </p>
             <button
-              data-testid="hs6-export-pdf"
-              onClick={exportToPDF}
-              disabled={exporting}
+              data-testid="hs6-export-pdf-light"
+              onClick={() => exportToPDF('light')}
+              disabled={exportingTheme != null}
+              title={language === 'fr' ? 'Fiche PDF claire — optimisée impression' : 'Light PDF sheet — optimized for printing'}
               style={{
                 padding: '7px 14px',
                 borderRadius: 8,
@@ -708,16 +565,40 @@ export default function CountryHS6History({ language = 'fr' }) {
                 color: 'rgba(212,175,55,0.95)',
                 fontWeight: 700,
                 fontSize: 12.5,
-                cursor: exporting ? 'not-allowed' : 'pointer',
+                cursor: exportingTheme != null ? 'not-allowed' : 'pointer',
                 flexShrink: 0,
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 6,
-                opacity: exporting ? 0.6 : 1,
+                opacity: exportingTheme != null ? 0.6 : 1,
               }}
             >
-              {exporting ? <Loader2 size={14} className="animate-spin" /> : <FileDown size={14} />}
-              {language === 'fr' ? 'Exporter PDF' : 'Export PDF'}
+              {exportingTheme === 'light' ? <Loader2 size={14} className="animate-spin" /> : <FileDown size={14} />}
+              {language === 'fr' ? 'PDF · Clair' : 'PDF · Light'}
+            </button>
+            <button
+              data-testid="hs6-export-pdf-dark"
+              onClick={() => exportToPDF('dark')}
+              disabled={exportingTheme != null}
+              title={language === 'fr' ? 'Fiche PDF sombre — aligné sur le rendu à l’écran' : 'Dark PDF sheet — matches the on-screen look'}
+              style={{
+                padding: '7px 14px',
+                borderRadius: 8,
+                border: '1px solid rgba(212,175,55,0.45)',
+                background: 'rgba(212,175,55,0.12)',
+                color: 'rgba(212,175,55,0.95)',
+                fontWeight: 700,
+                fontSize: 12.5,
+                cursor: exportingTheme != null ? 'not-allowed' : 'pointer',
+                flexShrink: 0,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                opacity: exportingTheme != null ? 0.6 : 1,
+              }}
+            >
+              {exportingTheme === 'dark' ? <Loader2 size={14} className="animate-spin" /> : <Moon size={14} />}
+              {language === 'fr' ? 'PDF · Sombre' : 'PDF · Dark'}
             </button>
             <button
               data-testid="hs6-to-opportunities"
