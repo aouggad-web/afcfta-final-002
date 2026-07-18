@@ -223,7 +223,10 @@ def cache_get(key: str) -> Optional[Any]:
         return value
     value = _disk_get(key)
     if value is not None:
-        _MEMORY_STORE[key] = (value, _now() + 1)  # short in-memory grace only
+        # Through _mem_set(), not a direct dict write: a raw write would
+        # bypass the capacity guard/eviction policy that keeps the in-memory
+        # store bounded (_MEMORY_MAX_ENTRIES).
+        _mem_set(key, value, 1)  # short in-memory grace only
     return value
 
 
@@ -335,7 +338,10 @@ def cache_stats() -> dict:
             "memory_keys_count": len(_MEMORY_STORE),
             "disk_keys_count": disk_files,
             "disk_cache_enabled": _DISK_CACHE_ENABLED,
-            "disk_cache_dir": str(_DISK_CACHE_DIR),
+            # No absolute filesystem path here: cache_stats() backs a public,
+            # unauthenticated endpoint (routes/cache.py GET /cache/stats) —
+            # the on-disk cache location is infrastructure detail with no
+            # operational value to a caller and shouldn't be disclosed.
             "ttl_config": CACHE_TTL,
         }
 

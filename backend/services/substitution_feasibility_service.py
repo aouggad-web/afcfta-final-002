@@ -395,8 +395,8 @@ def substitutability_for_hs(hs_code: str, override: Optional[float] = None) -> D
 
 
 def realistic_substitution_potential(
-    import_value_usd: float,
-    african_capacity_usd: float,
+    import_value_usd: Optional[float],
+    african_capacity_usd: Optional[float],
     hs_code: str,
     override_coefficient: Optional[float] = None,
 ) -> Dict:
