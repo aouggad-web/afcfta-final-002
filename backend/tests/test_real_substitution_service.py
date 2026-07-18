@@ -11,12 +11,25 @@ OEC is mocked so the tests are hermetic (no network).
 import asyncio
 
 import pytest
+from services import cache_service
 from services import real_substitution_service as mod
 from services.real_substitution_service import RealSubstitutionService
 
 
 def run(coro):
     return asyncio.run(coro)
+
+
+@pytest.fixture(autouse=True)
+def isolated_shared_cache(monkeypatch):
+    """The service now caches through the SHARED cache_service (Redis, or
+    memory+disk fallback) instead of a private per-instance dict. Keep tests
+    hermetic: no Redis, no real disk writes, fresh in-memory store per test."""
+    monkeypatch.setattr(cache_service, "get_redis_client", lambda: None)
+    monkeypatch.setattr(cache_service, "_DISK_CACHE_ENABLED", False)
+    cache_service._MEMORY_STORE.clear()
+    yield
+    cache_service._MEMORY_STORE.clear()
 
 
 @pytest.fixture
@@ -124,7 +137,7 @@ def test_import_substitution_is_reproducible(svc, monkeypatch):
     _patch_oec(monkeypatch, bilateral=bilateral, exports=exports, imports={})
 
     r1 = run(svc.find_import_substitution_opportunities("DZA", year=2022))
-    svc._cache.clear()  # bypass the result cache to prove determinism, not memoisation
+    cache_service._MEMORY_STORE.clear()  # bypass the result cache to prove determinism, not memoisation
     r2 = run(svc.find_import_substitution_opportunities("DZA", year=2022))
     assert r1["opportunities"] == r2["opportunities"]
 
@@ -134,7 +147,7 @@ def test_import_substitution_falls_back_when_oec_unavailable(svc, monkeypatch):
     _patch_oec(monkeypatch, bilateral=bilateral, exports={}, imports={})
 
     r1 = run(svc.find_import_substitution_opportunities("DZA", year=2022))
-    svc._cache.clear()
+    cache_service._MEMORY_STORE.clear()
     r2 = run(svc.find_import_substitution_opportunities("DZA", year=2022))
 
     assert r1["is_estimation"] is True

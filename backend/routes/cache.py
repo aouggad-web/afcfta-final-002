@@ -23,7 +23,7 @@ async def get_cache_stats():
     Get cache statistics and configuration.
 
     Returns:
-    - status: connected/unavailable/error
+    - status: connected/fallback (memory + disk)/error
     - keys_count: number of cached keys
     - used_memory: current memory usage
     - ttl_config: TTL settings for different cache types

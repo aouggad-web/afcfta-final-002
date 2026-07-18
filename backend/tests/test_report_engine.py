@@ -955,6 +955,22 @@ def test_opportunity_report_ultra_fine(_no_network_fx):
     assert any("Besoin du marché" in f for f in rep["executive_summary"]["key_findings"])
 
 
+def test_opportunity_report_ultra_fine_includes_substitution_feasibility(_no_network_fx):
+    """The substitution_feasibility block (brand/technology/certification
+    barriers, see substitution_feasibility_service) must be wired into the
+    ultra-fine report next to national_need — not just importable standalone."""
+    rep = asyncio.run(
+        report_engine.get_opportunity_report_ultra_fine(
+            "1801", "CIV", "NGA", goods_value_usd=50000.0
+        )
+    )
+    assert "substitution_feasibility" in rep
+    sf = rep["substitution_feasibility"]
+    assert sf["hs_code"] == "1801"
+    assert 0.0 <= sf["coefficient"] <= 1.0
+    assert set(sf) >= {"coefficient", "product_class", "barriers", "rationale", "is_estimation"}
+
+
 # ── National-need estimation (S3, transparent cascade) ───────────────────────
 def test_population_is_real_from_constants():
     from services import demand_estimation_service as demand

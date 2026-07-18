@@ -14,12 +14,21 @@ MISE À JOUR 2025: Les données 2024 sont maintenant disponibles
 import asyncio
 import json
 import logging
+import time
 from datetime import datetime
 from typing import Dict, List, Optional
 
 import httpx
 
 logger = logging.getLogger(__name__)
+
+# Disjoncteur : au-delà de _CIRCUIT_FAILURE_THRESHOLD échecs consécutifs,
+# on arrête d'essayer le réseau pendant _CIRCUIT_COOLDOWN_SECONDS et on sert
+# directement le cache périmé (stale) — évite de marteler une API en panne
+# ou sous limitation de débit (observé : blocages 403 côté egress) avec des
+# tentatives réseau coûteuses et vouées à l'échec sur chaque requête utilisateur.
+_CIRCUIT_FAILURE_THRESHOLD = 3
+_CIRCUIT_COOLDOWN_SECONDS = 30
 
 # Configuration de l'API OEC
 OEC_BASE_URL = "https://api.oec.world/tesseract/data.jsonrecords"
@@ -222,6 +231,12 @@ class OECTradeService:
         self.api_token = api_token
         self.timeout = 30.0
 
+        # Disjoncteur : état par instance (le service est utilisé en singleton
+        # — voir ``oec_service`` en bas de fichier — donc partagé par toute
+        # l'application, ce qui est le comportement voulu).
+        self._circuit_open_until = 0.0
+        self._circuit_consecutive_failures = 0
+
         # Optional cache integration
         try:
             from services.cache_service import (
@@ -271,21 +286,44 @@ class OECTradeService:
                     return stale
             return {"error": err, "data": []}
 
+        # Disjoncteur ouvert : ne pas retenter le réseau, servir directement
+        # le repli (cache périmé ou erreur) — la fenêtre de cooldown évite les
+        # tentatives réseau vouées à l'échec pendant une panne/un blocage.
+        if time.monotonic() < self._circuit_open_until:
+            logger.warning(
+                "OEC circuit ouvert (%d échecs consécutifs) — appel réseau sauté",
+                self._circuit_consecutive_failures,
+            )
+            return _on_failure("circuit ouvert (échecs consécutifs récents)")
+
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
                 response = await client.get(OEC_BASE_URL, params=params)
                 response.raise_for_status()
                 data = response.json()
+                self._circuit_consecutive_failures = 0
                 if self._cache_available and "error" not in data:
                     self._cache_set(cache_key, data, "oec_data")
                 return data
             except httpx.HTTPStatusError as e:
                 # Status code only — avoid echoing the URL (which carries the token).
                 logger.error(f"OEC API error: {e.response.status_code}")
+                self._register_circuit_failure()
                 return _on_failure(f"OEC API error {e.response.status_code}")
             except Exception as e:
                 logger.error("OEC request failed: %s", _sanitize(str(e)))
+                self._register_circuit_failure()
                 return _on_failure(str(e))
+
+    def _register_circuit_failure(self) -> None:
+        self._circuit_consecutive_failures += 1
+        if self._circuit_consecutive_failures >= _CIRCUIT_FAILURE_THRESHOLD:
+            self._circuit_open_until = time.monotonic() + _CIRCUIT_COOLDOWN_SECONDS
+            logger.warning(
+                "OEC : %d échecs consécutifs — disjoncteur ouvert %ds",
+                self._circuit_consecutive_failures,
+                _CIRCUIT_COOLDOWN_SECONDS,
+            )
 
     def _build_params(
         self,

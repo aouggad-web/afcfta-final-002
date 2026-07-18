@@ -79,10 +79,21 @@ def test_realistic_potential_binding_constraints():
     assert r["african_capacity_usd"] == 300_000_000
 
 
-def test_report_engine_exposes_substitution_feasibility():
-    from services.substitution_feasibility_service import substitutability_for_hs as fn
+def test_realistic_potential_handles_none_capacity_without_raising():
+    # Régression : la comparaison de bornage doit utiliser la capacité
+    # NORMALISÉE (float), pas la valeur brute — sinon `None < addressable`
+    # lève une TypeError au lieu de simplement traiter la capacité comme 0.
+    r = realistic_substitution_potential(1_000_000_000, None, "8703")
+    assert r["potential_usd"] == 0
+    assert r["african_capacity_usd"] == 0
+    assert r["binding_constraint"] == "capacité africaine"
 
-    # Le bloc intégré au rapport Opportunités est le même payload transparent
-    block = fn("8517")
+
+def test_substitution_feasibility_payload_shape():
+    """Le bloc retourné par substitutability_for_hs est le même payload
+    transparent que celui intégré dans le rapport Opportunités ultra-fin
+    (voir test_report_engine.test_opportunity_report_ultra_fine_includes_substitution_feasibility
+    pour la vérification d'intégration réelle avec report_engine)."""
+    block = substitutability_for_hs("8517")
     assert block["is_estimation"] is True
     assert set(block) >= {"coefficient", "product_class", "barriers", "rationale"}

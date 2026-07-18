@@ -412,12 +412,17 @@ def realistic_substitution_potential(
     feasibility = substitutability_for_hs(hs_code, override=override_coefficient)
     coef = feasibility["coefficient"]
     addressable = float(import_value_usd or 0.0) * coef
-    potential = min(addressable, float(african_capacity_usd or 0.0))
-    binding = "capacité africaine" if african_capacity_usd < addressable else "substituabilité"
+    # Normalisée UNE fois : réutilisée pour le potentiel, la comparaison de
+    # bornage et le champ retourné — une valeur brute non numérique (None,
+    # chaîne...) passée par l'appelant ne doit jamais faire lever une
+    # TypeError sur la comparaison "<" plus bas.
+    capacity = float(african_capacity_usd or 0.0)
+    potential = min(addressable, capacity)
+    binding = "capacité africaine" if capacity < addressable else "substituabilité"
     return {
         "potential_usd": int(potential),
         "addressable_value_usd": int(addressable),
-        "african_capacity_usd": int(african_capacity_usd or 0),
+        "african_capacity_usd": int(capacity),
         "binding_constraint": binding,
         "feasibility": feasibility,
     }
