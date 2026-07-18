@@ -32,6 +32,90 @@ const API = `${BACKEND_URL}/api`;
 
 const COLORS = ['#059669', '#0891b2', '#7c3aed', '#dc2626', '#ea580c', '#ca8a04', '#16a34a', '#2563eb'];
 
+// Sous-module « faisabilité de substitution » (services/substitution_feasibility_service.py) :
+// tous les dollars importés ne sont pas également substituables par une offre africaine — l'effet
+// marque, l'écart technologique, le réseau après-vente et la certification bornent la part
+// réalistement adressable. Le backend calcule déjà coefficient + barrières + justification
+// (champ `substitution_feasibility` sur chaque opportunité d'import) ; ce bloc les affiche.
+const FEASIBILITY_TXT = {
+  fr: {
+    title: 'Faisabilité de substitution',
+    coefficient: 'Part réalistement adressable',
+    bindingCapacity: 'Facteur limitant : capacité africaine (offre insuffisante)',
+    bindingFeasibility: 'Facteur limitant : substituabilité (marque / technologie)',
+    barriers: 'Barrières non tarifaires',
+    brand_effect: 'Effet marque',
+    technology_gap: 'Écart technologique',
+    after_sales_network: 'Réseau après-vente',
+    certification: 'Certification',
+    intensityLabel: { faible: 'Faible', moyen: 'Moyen', fort: 'Fort' },
+  },
+  en: {
+    title: 'Substitution feasibility',
+    coefficient: 'Realistically addressable share',
+    bindingCapacity: 'Binding constraint: African capacity (insufficient supply)',
+    bindingFeasibility: 'Binding constraint: substitutability (brand / technology)',
+    barriers: 'Non-tariff barriers',
+    brand_effect: 'Brand effect',
+    technology_gap: 'Technology gap',
+    after_sales_network: 'After-sales network',
+    certification: 'Certification',
+    intensityLabel: { faible: 'Low', moyen: 'Medium', fort: 'High' },
+  },
+};
+
+const coefficientColor = (coef) => {
+  if (coef >= 0.7) return { bar: 'bg-emerald-500', text: 'text-emerald-700', chip: 'bg-emerald-100 text-emerald-700' };
+  if (coef >= 0.4) return { bar: 'bg-amber-500', text: 'text-amber-700', chip: 'bg-amber-100 text-amber-700' };
+  return { bar: 'bg-red-500', text: 'text-red-700', chip: 'bg-red-100 text-red-700' };
+};
+
+const intensityChipColor = (intensity) => {
+  if (intensity === 'fort') return 'bg-red-100 text-red-700';
+  if (intensity === 'moyen') return 'bg-amber-100 text-amber-700';
+  return 'bg-slate-100 text-slate-600';
+};
+
+// Affiche le coefficient de substituabilité, le facteur limitant (offre vs.
+// barrières) et le détail des barrières non tarifaires pour une opportunité
+// d'import — n'existe que sur le chemin import (real_substitution_service.py
+// n'applique pas cette borne aux opportunités d'export).
+const FeasibilityBlock = ({ feasibility, bindingConstraint, language }) => {
+  if (!feasibility) return null;
+  const txt = FEASIBILITY_TXT[language] || FEASIBILITY_TXT.fr;
+  const coef = feasibility.coefficient;
+  const colors = coefficientColor(coef);
+  const barriers = feasibility.barriers;
+
+  return (
+    <div className="mb-4 bg-slate-50 rounded-lg p-3" data-testid="substitution-feasibility">
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-xs font-medium text-slate-500">{txt.coefficient}</span>
+        <span className={`text-sm font-bold ${colors.text}`}>{Math.round(coef * 100)}%</span>
+      </div>
+      <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mb-2">
+        <div className={`h-full rounded-full ${colors.bar}`} style={{ width: `${Math.round(coef * 100)}%` }} />
+      </div>
+      <p className="text-[11px] text-slate-500 mb-2">
+        {bindingConstraint === 'capacité africaine' ? txt.bindingCapacity : txt.bindingFeasibility}
+      </p>
+      {barriers && (
+        <div className="flex flex-wrap gap-1.5">
+          {Object.entries(barriers).map(([key, intensity]) => (
+            <span
+              key={key}
+              className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${intensityChipColor(intensity)}`}
+              title={feasibility.rationale}
+            >
+              {txt[key] || key} · {txt.intensityLabel[intensity] || intensity}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Format currency values
 const formatValue = (value) => {
   if (!value || isNaN(value)) return '$0';
@@ -69,18 +153,29 @@ const StatCard = ({ title, value, icon: Icon, trend, color = "emerald", subtitle
   );
 };
 
-// Opportunity Card Component
-const OpportunityCard = ({ opportunity, type, language }) => {
+// Opportunity Card Component (exportée pour test unitaire direct — évite de
+// devoir mocker tout le cycle de fetch axios de SubstitutionAnalysis pour
+// vérifier l'affichage difficulté/faisabilité).
+export const OpportunityCard = ({ opportunity, type, language }) => {
   const isImport = type === 'import';
   const product = isImport ? opportunity.imported_product : (opportunity.exportable_product || opportunity.export_product);
   const targets = isImport ? opportunity.african_suppliers : (opportunity.target_markets || opportunity.potential_markets);
   
+  // _assess_difficulty (real_substitution_service.py) renvoie directement les
+  // libellés français "Facile"/"Modéré"/"Difficile"/"Très difficile" — les
+  // comparer à des clés anglaises ('easy'/'moderate'/'difficult') ne matchait
+  // jamais, donc toutes les cartes s'affichaient en "Difficile"/ambre par
+  // défaut quel que soit le niveau réel.
   const difficultyColors = {
-    easy: "bg-emerald-100 text-emerald-700",
-    moderate: "bg-amber-100 text-amber-700",
-    difficult: "bg-red-100 text-red-700"
+    'Facile': "bg-emerald-100 text-emerald-700",
+    'Modéré': "bg-amber-100 text-amber-700",
+    'Difficile': "bg-orange-100 text-orange-700",
+    'Très difficile': "bg-red-100 text-red-700",
   };
-  
+  const difficultyLabelEn = {
+    'Facile': 'Easy', 'Modéré': 'Moderate', 'Difficile': 'Difficult', 'Très difficile': 'Very difficult',
+  };
+
   const competitivenessColors = {
     highly_competitive: "bg-emerald-100 text-emerald-700",
     competitive: "bg-blue-100 text-blue-700",
@@ -101,9 +196,8 @@ const OpportunityCard = ({ opportunity, type, language }) => {
             </h3>
           </div>
           {isImport ? (
-            <Badge className={difficultyColors[opportunity.difficulty] || difficultyColors.moderate}>
-              {opportunity.difficulty === 'easy' ? 'Facile' : 
-               opportunity.difficulty === 'moderate' ? 'Modéré' : 'Difficile'}
+            <Badge className={difficultyColors[opportunity.difficulty] || difficultyColors['Modéré']}>
+              {language === 'en' ? (difficultyLabelEn[opportunity.difficulty] || opportunity.difficulty) : opportunity.difficulty}
             </Badge>
           ) : (
             <Badge className={competitivenessColors[opportunity.competitiveness] || competitivenessColors.competitive}>
@@ -132,6 +226,15 @@ const OpportunityCard = ({ opportunity, type, language }) => {
             </p>
           </div>
         </div>
+
+        {/* Feasibility (imports only — coefficient, binding constraint, barriers) */}
+        {isImport && (
+          <FeasibilityBlock
+            feasibility={opportunity.substitution_feasibility}
+            bindingConstraint={opportunity.binding_constraint}
+            language={language}
+          />
+        )}
 
         {/* Current Source (for imports) */}
         {isImport && product?.current_source && (
