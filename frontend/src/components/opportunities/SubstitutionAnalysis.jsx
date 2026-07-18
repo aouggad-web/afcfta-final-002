@@ -33,7 +33,7 @@ const API = `${BACKEND_URL}/api`;
 const COLORS = ['#059669', '#0891b2', '#7c3aed', '#dc2626', '#ea580c', '#ca8a04', '#16a34a', '#2563eb'];
 
 // Sous-module « faisabilité de substitution » (services/substitution_feasibility_service.py) :
-// un dollar importé n'est pas tous également substituable par une offre africaine — l'effet
+// tous les dollars importés ne sont pas également substituables par une offre africaine — l'effet
 // marque, l'écart technologique, le réseau après-vente et la certification bornent la part
 // réalistement adressable. Le backend calcule déjà coefficient + barrières + justification
 // (champ `substitution_feasibility` sur chaque opportunité d'import) ; ce bloc les affiche.
