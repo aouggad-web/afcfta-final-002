@@ -87,6 +87,23 @@ async def get_import_substitution_opportunities(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
+@router.get("/feasibility/{hs_code}")
+async def get_substitution_feasibility(hs_code: str):
+    """
+    Coefficient de substituabilité (0-1) d'un code SH : part de la valeur
+    importée hors Afrique réalistement adressable par une offre africaine,
+    compte tenu des barrières non tarifaires — effet marque (véhicules),
+    branding/technologie (téléphonie, informatique), certification (pharma),
+    réseau après-vente (machines)...
+
+    Hypothèse de modélisation transparente : classe de produit, barrières et
+    justification sont retournées avec le coefficient (jamais une boîte noire).
+    """
+    from services.substitution_feasibility_service import substitutability_for_hs
+
+    return substitutability_for_hs(hs_code)
+
+
 @router.get("/opportunities/export/{country_iso3}")
 async def get_export_opportunities(
     country_iso3: str,

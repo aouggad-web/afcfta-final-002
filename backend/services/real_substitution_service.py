@@ -23,6 +23,7 @@ from services.real_trade_data_service import (
     has_trade_data,
     real_trade_service,
 )
+from services.substitution_feasibility_service import realistic_substitution_potential
 
 logger = logging.getLogger(__name__)
 
@@ -722,8 +723,12 @@ class RealSubstitutionService:
                     )
 
                 total_supply = sum(s["export_value"] for s in african_suppliers)
-                # Substitutable value is bounded by real African export capacity
-                substitution_potential = int(min(import_value, total_supply))
+                # Substitutable value bounded by BOTH real African export capacity
+                # AND the product's substitutability coefficient (brand effect,
+                # technology gap, after-sales, certification) — a car or phone
+                # dollar is not as substitutable as a wheat dollar.
+                realistic = realistic_substitution_potential(import_value, total_supply, hs_code)
+                substitution_potential = realistic["potential_usd"]
 
                 opportunities.append(
                     {
@@ -736,6 +741,9 @@ class RealSubstitutionService:
                         },
                         "african_suppliers": african_suppliers,
                         "substitution_potential": substitution_potential,
+                        "substitution_feasibility": realistic["feasibility"],
+                        "addressable_value": realistic["addressable_value_usd"],
+                        "binding_constraint": realistic["binding_constraint"],
                         "difficulty": self._assess_difficulty(import_value, total_supply),
                     }
                 )
@@ -799,7 +807,12 @@ class RealSubstitutionService:
                 for supplier_iso in suppliers
             ]
 
-            substitution_potential = int(import_value * substitution_rate)
+            # Même discipline que le chemin OEC réel : le taux forfaitaire de 30 %
+            # est en plus borné par la substituabilité du produit (effet marque...).
+            realistic = realistic_substitution_potential(
+                import_value, import_value * substitution_rate, product["hs_code"]
+            )
+            substitution_potential = realistic["potential_usd"]
             opportunities.append(
                 {
                     "imported_product": {
@@ -811,6 +824,9 @@ class RealSubstitutionService:
                     },
                     "african_suppliers": african_suppliers,
                     "substitution_potential": substitution_potential,
+                    "substitution_feasibility": realistic["feasibility"],
+                    "addressable_value": realistic["addressable_value_usd"],
+                    "binding_constraint": realistic["binding_constraint"],
                     "difficulty": self._assess_difficulty(
                         import_value, sum(s["export_value"] for s in african_suppliers)
                     ),

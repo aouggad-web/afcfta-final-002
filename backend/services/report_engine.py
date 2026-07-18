@@ -775,6 +775,17 @@ async def get_opportunity_report_ultra_fine(
 
     base["national_need"] = national_need
 
+    # Faisabilité de substitution : part de la demande du marché de destination
+    # réalistement adressable par une offre africaine, compte tenu des barrières
+    # non tarifaires (effet marque pour les véhicules, branding/technologie pour
+    # la téléphonie et l'informatique, certification pour la pharma...). Un
+    # besoin national de X $ ne signifie pas X $ captables — le rapport dit
+    # explicitement quelle fraction l'est, et pourquoi.
+    from services.substitution_feasibility_service import substitutability_for_hs
+
+    substitution_feasibility = substitutability_for_hs(hs_code)
+    base["substitution_feasibility"] = substitution_feasibility
+
     # Intra-African trade context (Afreximbank ATR 2026): export dynamism of the
     # origin + intra-African openness of the destination market. Real, sourced
     # context that frames the corridor — kept OUT of the score (no fabrication).
@@ -809,6 +820,7 @@ async def get_opportunity_report_ultra_fine(
             "national_need": need_narrative,
         },
         "national_need": national_need,
+        "substitution_feasibility": substitution_feasibility,
         "intra_african_context": intra_african_context,
         "benchmarking": {
             "top_producers": top_producers,
