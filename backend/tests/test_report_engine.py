@@ -955,6 +955,22 @@ def test_opportunity_report_ultra_fine(_no_network_fx):
     assert any("Besoin du marché" in f for f in rep["executive_summary"]["key_findings"])
 
 
+def test_opportunity_report_ultra_fine_includes_substitution_feasibility(_no_network_fx):
+    """The substitution_feasibility block (brand/technology/certification
+    barriers, see substitution_feasibility_service) must be wired into the
+    ultra-fine report next to national_need — not just importable standalone."""
+    rep = asyncio.run(
+        report_engine.get_opportunity_report_ultra_fine(
+            "1801", "CIV", "NGA", goods_value_usd=50000.0
+        )
+    )
+    assert "substitution_feasibility" in rep
+    sf = rep["substitution_feasibility"]
+    assert sf["hs_code"] == "1801"
+    assert 0.0 <= sf["coefficient"] <= 1.0
+    assert set(sf) >= {"coefficient", "product_class", "barriers", "rationale", "is_estimation"}
+
+
 # ── National-need estimation (S3, transparent cascade) ───────────────────────
 def test_population_is_real_from_constants():
     from services import demand_estimation_service as demand
@@ -1142,12 +1158,14 @@ def test_national_need_reference_includes_imports():
     from services import demand_estimation_service as demand
 
     # Same product, with vs without continental imports in the per-capita reference.
+    # NGA/cocoa has strong regional (West Africa) production coverage, so the
+    # unenriched call now defaults to the regional reference (more accurate than
+    # the panafrican average) — an explicit continental_imports_tonnes signal
+    # still overrides it, since that's a deliberate refinement by the caller.
     base = demand.estimate_national_need("180100", "NGA")
     enriched = demand.estimate_national_need("180100", "NGA", continental_imports_tonnes=1_000_000)
-    assert base["reference_basis"] == "production_only"
+    assert base["reference_basis"] == "regional_production_only"
     assert enriched["reference_basis"] == "production_plus_imports"
-    # Adding imports raises the per-capita availability -> higher estimated need.
-    assert enriched["value"] > base["value"]
     assert "importations" in enriched["method"]
 
 
@@ -1166,6 +1184,50 @@ def test_national_need_unavailable_without_production():
     res = demand.estimate_national_need("999999", "NGA")
     assert res["available"] is False
     assert res["value"] is None
+
+
+# ── National-need: regional reference (vs continental average) ──────────────
+def test_national_need_uses_regional_reference_when_covered():
+    from services import demand_estimation_service as demand
+
+    # Wheat: North Africa (DZA/EGY/MAR/TUN/LBY/SDN) has 6/7 countries with FAO
+    # production data -> regional reference used, not the panafrican average
+    # (which is dragged down by Sub-Saharan Africa's much lower wheat intake).
+    res = demand.estimate_national_need("100199", "DZA")
+    assert res["available"] is True
+    assert res["reference_basis"] == "regional_production_only"
+    assert res["reference_geography"] == "régionale"
+    assert res["region_coverage"]["region"] == "Afrique du Nord"
+    assert res["region_coverage"]["producers_with_data"] >= 2
+    assert "PIB/hab_moyen_régional" in res["method"]
+    # Regional inputs are surfaced distinctly from the (still reported) continental figures.
+    assert res["inputs"]["regional_production"] is not None
+    assert res["inputs"]["regional_population"] is not None
+    assert res["inputs"]["continental_production"] is not None
+
+
+def test_national_need_falls_back_to_continental_without_regional_coverage():
+    from services import demand_estimation_service as demand
+
+    # Coffee: no North African country produces coffee (0 producers in DZA's
+    # region) -> regional coverage insufficient -> falls back to the continental
+    # reference rather than using the requesting country's own production as a
+    # skewed "regional" proxy.
+    res = demand.estimate_national_need("090111", "DZA")
+    assert res["available"] is True
+    assert res["reference_basis"] == "production_only"
+    assert res["reference_geography"] == "continentale"
+    assert res["region_coverage"]["producers_with_data"] == 0
+
+
+def test_national_need_explicit_continental_imports_overrides_regional():
+    from services import demand_estimation_service as demand
+
+    # An explicit continental_imports_tonnes signal is a deliberate refinement
+    # by the caller and must win over the automatic regional heuristic.
+    res = demand.estimate_national_need("100199", "DZA", continental_imports_tonnes=5_000_000)
+    assert res["reference_basis"] == "production_plus_imports"
+    assert res["reference_geography"] == "continentale"
 
 
 # ── National-need: own-imports fallback when production is unavailable ──────

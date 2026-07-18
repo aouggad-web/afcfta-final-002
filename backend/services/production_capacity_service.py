@@ -826,6 +826,54 @@ def get_continental_producers(hs_code: str) -> Dict:
     }
 
 
+def get_regional_producers(hs_code: str, iso3_set) -> Dict:
+    """
+    Vue SOUS-RÉGIONALE (Afrique du Nord / Ouest / Est / Centrale / Australe) :
+    production réelle des pays de la région pour ce code HS, dernière année
+    disponible. Sert de référence per-capita RÉGIONALE au module Opportunités
+    (besoin national) : une moyenne CONTINENTALE mélange des régimes
+    alimentaires très différents (blé/thé dominants en Afrique du Nord, riz/
+    manioc en Afrique de l'Ouest...) — la référence régionale capte mieux le
+    profil de consommation typique du pays évalué que la moyenne panafricaine.
+    """
+    match = _match_commodity(hs_code)
+    if not match:
+        return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+    dataset, label, match_level = match
+    all_recs = _records_for(dataset, label)
+    if not all_recs:
+        return {"available": False, "reason": "no_data", "commodity": label, "hs_code": hs_code}
+
+    latest_year = max(r["year"] for r in all_recs)
+    region_recs = sorted(
+        (
+            r
+            for r in all_recs
+            if r.get("year") == latest_year and r.get("value") and r.get("country_iso3") in iso3_set
+        ),
+        key=lambda r: r["value"],
+        reverse=True,
+    )
+    total = sum(r["value"] for r in region_recs)
+    return {
+        "available": bool(region_recs),
+        "hs_code": hs_code,
+        "match_level": match_level,
+        "commodity": label,
+        "year": latest_year,
+        "region_total": round(total, 1) if total else None,
+        "producer_count": len(region_recs),
+        "top_producers": [
+            {
+                "country_iso3": r["country_iso3"],
+                "country_name": r.get("country_name", r["country_iso3"]),
+                "value": r["value"],
+            }
+            for r in region_recs[:5]
+        ],
+    }
+
+
 def _export_series_stats(
     exports: Optional[List[Dict]],
 ) -> Tuple[Optional[float], Optional[int], Optional[float], List[Dict]]:

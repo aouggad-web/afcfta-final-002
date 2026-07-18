@@ -90,3 +90,7 @@ test_reports/
 # Local Yarn settings generated during ad hoc installs
 .yarnrc.yml
 **/.yarnrc.yml
+
+# Disk-backed cache tier (services/cache_service.py) — persisted OEC/API
+# responses for cold-start resilience without Redis, never source of truth
+backend/data/_cache/

@@ -16,6 +16,7 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from services import cache_service
 from services.real_trade_data_service import (
     AFRICAN_COUNTRIES,
     get_country_name,
@@ -23,6 +24,7 @@ from services.real_trade_data_service import (
     has_trade_data,
     real_trade_service,
 )
+from services.substitution_feasibility_service import realistic_substitution_potential
 
 logger = logging.getLogger(__name__)
 
@@ -581,22 +583,30 @@ class RealSubstitutionService:
 
     def __init__(self):
         self.african_countries = list(AFRICAN_COUNTRIES.keys())
-        self._cache = {}
-        self._cache_ttl = 3600  # 1 hour cache
+
+    @staticmethod
+    def _full_key(key: str) -> str:
+        return cache_service.generate_cache_key("substitution", key)
 
     def _cache_get(self, key: str):
-        """Return a cached value if present and not expired, else None."""
-        entry = self._cache.get(key)
-        if not entry:
-            return None
-        ts, value = entry
-        if (datetime.utcnow() - ts).total_seconds() > self._cache_ttl:
-            self._cache.pop(key, None)
-            return None
-        return value
+        """
+        Return a cached value if present and not expired, else None.
 
-    def _cache_set(self, key: str, value: Any) -> None:
-        self._cache[key] = (datetime.utcnow(), value)
+        Uses the SHARED cache_service (Redis, or in-memory + disk fallback)
+        instead of a private per-instance dict: a private cache is wiped on
+        every process restart AND duplicated across every uvicorn worker, so
+        the expensive multi-country trader index (16 parallel OEC calls) had
+        to be rebuilt from scratch far more often than necessary — needlessly
+        multiplying OEC traffic and exposure to its rate limits/outages.
+        """
+        return cache_service.cache_get(self._full_key(key))
+
+    def _cache_get_stale(self, key: str):
+        """Stale-on-error read: serve the last known value even if expired."""
+        return cache_service.cache_get_stale(self._full_key(key))
+
+    def _cache_set(self, key: str, value: Any, ttl_type: str = "oec_data") -> None:
+        cache_service.cache_set(self._full_key(key), value, ttl_type)
 
     async def _build_african_export_index(self, year: int) -> Dict[str, List[Dict]]:
         """Index real African exports by HS2 chapter: {chapter: [{iso3, value, ...}]}.
@@ -642,9 +652,23 @@ class RealSubstitutionService:
                     }
                 )
 
-        # Only cache a non-empty index (an empty one usually means the API was down)
+        # Only cache a non-empty index (an empty one usually means the API was down).
+        # 24h TTL ("oec_index"): this index is expensive to rebuild (up to 16
+        # parallel OEC calls) and the underlying annual trade data barely moves
+        # day to day — no reason to refetch hourly.
         if index:
-            self._cache_set(cache_key, dict(index))
+            self._cache_set(cache_key, dict(index), ttl_type="oec_index")
+            return index
+
+        # Empty result (OEC down/rate-limited for this batch): serve the last
+        # known-good index rather than silently degrading every per-product
+        # supplier lookup to "no African suppliers found" for this call.
+        stale = self._cache_get_stale(cache_key)
+        if stale is not None:
+            logger.warning(
+                "OEC trader index (%s, %s) unavailable — serving stale index", kind, year
+            )
+            return stale
         return index
 
     async def find_import_substitution_opportunities(
@@ -722,8 +746,12 @@ class RealSubstitutionService:
                     )
 
                 total_supply = sum(s["export_value"] for s in african_suppliers)
-                # Substitutable value is bounded by real African export capacity
-                substitution_potential = int(min(import_value, total_supply))
+                # Substitutable value bounded by BOTH real African export capacity
+                # AND the product's substitutability coefficient (brand effect,
+                # technology gap, after-sales, certification) — a car or phone
+                # dollar is not as substitutable as a wheat dollar.
+                realistic = realistic_substitution_potential(import_value, total_supply, hs_code)
+                substitution_potential = realistic["potential_usd"]
 
                 opportunities.append(
                     {
@@ -736,6 +764,9 @@ class RealSubstitutionService:
                         },
                         "african_suppliers": african_suppliers,
                         "substitution_potential": substitution_potential,
+                        "substitution_feasibility": realistic["feasibility"],
+                        "addressable_value": realistic["addressable_value_usd"],
+                        "binding_constraint": realistic["binding_constraint"],
                         "difficulty": self._assess_difficulty(import_value, total_supply),
                     }
                 )
@@ -799,7 +830,12 @@ class RealSubstitutionService:
                 for supplier_iso in suppliers
             ]
 
-            substitution_potential = int(import_value * substitution_rate)
+            # Même discipline que le chemin OEC réel : le taux forfaitaire de 30 %
+            # est en plus borné par la substituabilité du produit (effet marque...).
+            realistic = realistic_substitution_potential(
+                import_value, import_value * substitution_rate, product["hs_code"]
+            )
+            substitution_potential = realistic["potential_usd"]
             opportunities.append(
                 {
                     "imported_product": {
@@ -811,6 +847,9 @@ class RealSubstitutionService:
                     },
                     "african_suppliers": african_suppliers,
                     "substitution_potential": substitution_potential,
+                    "substitution_feasibility": realistic["feasibility"],
+                    "addressable_value": realistic["addressable_value_usd"],
+                    "binding_constraint": realistic["binding_constraint"],
                     "difficulty": self._assess_difficulty(
                         import_value, sum(s["export_value"] for s in african_suppliers)
                     ),

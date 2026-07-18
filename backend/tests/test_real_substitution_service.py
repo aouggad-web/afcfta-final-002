@@ -11,12 +11,25 @@ OEC is mocked so the tests are hermetic (no network).
 import asyncio
 
 import pytest
+from services import cache_service
 from services import real_substitution_service as mod
 from services.real_substitution_service import RealSubstitutionService
 
 
 def run(coro):
     return asyncio.run(coro)
+
+
+@pytest.fixture(autouse=True)
+def isolated_shared_cache(monkeypatch):
+    """The service now caches through the SHARED cache_service (Redis, or
+    memory+disk fallback) instead of a private per-instance dict. Keep tests
+    hermetic: no Redis, no real disk writes, fresh in-memory store per test."""
+    monkeypatch.setattr(cache_service, "get_redis_client", lambda: None)
+    monkeypatch.setattr(cache_service, "_DISK_CACHE_ENABLED", False)
+    cache_service._MEMORY_STORE.clear()
+    yield
+    cache_service._MEMORY_STORE.clear()
 
 
 @pytest.fixture
@@ -80,13 +93,23 @@ def test_import_substitution_uses_real_oec_values(svc, monkeypatch):
     assert len(result["opportunities"]) == 2
 
     cars = next(o for o in result["opportunities"] if o["imported_product"]["hs_code"] == "8703")
-    # Substitution potential is bounded by real African export capacity in HS2 ch. 87
-    assert cars["substitution_potential"] == min(3_000_000_000, 5_000_000_000 + 1_000_000_000)
+    # Substitution potential is bounded by real African export capacity AND the
+    # product's substitutability coefficient (brand effect for cars: 0.5) —
+    # a car dollar is not as substitutable as a wheat dollar.
+    cars_coef = cars["substitution_feasibility"]["coefficient"]
+    assert cars_coef == 0.5  # 8703: effet marque / réseau après-vente
+    assert cars["substitution_potential"] == int(
+        min(3_000_000_000 * cars_coef, 5_000_000_000 + 1_000_000_000)
+    )
+    assert cars["binding_constraint"] == "substituabilité"
     supplier_isos = {s["country_iso3"] for s in cars["african_suppliers"]}
     assert supplier_isos == {"ZAF", "MAR"}
 
     wheat = next(o for o in result["opportunities"] if o["imported_product"]["hs_code"] == "1001")
+    # Wheat (commodity, coef 0.9): addressable 1.8B, still capped by EGY supply
+    assert wheat["substitution_feasibility"]["coefficient"] == 0.9
     assert wheat["substitution_potential"] == 800_000_000  # capped by EGY supply
+    assert wheat["binding_constraint"] == "capacité africaine"
 
     # Frontend response-shape contract preserved
     ip = cars["imported_product"]
@@ -114,7 +137,7 @@ def test_import_substitution_is_reproducible(svc, monkeypatch):
     _patch_oec(monkeypatch, bilateral=bilateral, exports=exports, imports={})
 
     r1 = run(svc.find_import_substitution_opportunities("DZA", year=2022))
-    svc._cache.clear()  # bypass the result cache to prove determinism, not memoisation
+    cache_service._MEMORY_STORE.clear()  # bypass the result cache to prove determinism, not memoisation
     r2 = run(svc.find_import_substitution_opportunities("DZA", year=2022))
     assert r1["opportunities"] == r2["opportunities"]
 
@@ -124,7 +147,7 @@ def test_import_substitution_falls_back_when_oec_unavailable(svc, monkeypatch):
     _patch_oec(monkeypatch, bilateral=bilateral, exports={}, imports={})
 
     r1 = run(svc.find_import_substitution_opportunities("DZA", year=2022))
-    svc._cache.clear()
+    cache_service._MEMORY_STORE.clear()
     r2 = run(svc.find_import_substitution_opportunities("DZA", year=2022))
 
     assert r1["is_estimation"] is True

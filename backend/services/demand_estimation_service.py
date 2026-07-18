@@ -334,6 +334,23 @@ def _apparent_consumption(apparent: Optional[Dict]) -> Optional[float]:
     return float(p) + float(m) - float(x)
 
 
+def _weighted_regional_gdp_avg(
+    gdp_map: Dict[str, float], idx: Dict[str, Dict], region: str
+) -> Optional[float]:
+    """PIB/habitant moyen pondéré par la population, restreint à une SOUS-RÉGION
+    (cohérent avec une référence per-capita L2 elle-même régionale)."""
+    total_gdp, total_pop = 0.0, 0
+    for iso3, gdp_pc in gdp_map.items():
+        rec = idx.get(iso3) or {}
+        if rec.get("region") != region:
+            continue
+        pop = rec.get("population")
+        if gdp_pc and pop:
+            total_gdp += float(gdp_pc) * int(pop)
+            total_pop += int(pop)
+    return (total_gdp / total_pop) if total_pop else None
+
+
 def _weighted_continental_gdp_avg(
     gdp_map: Dict[str, float], idx: Dict[str, Dict]
 ) -> Optional[float]:
@@ -522,17 +539,70 @@ def estimate_national_need(
 
     cont_pop = _continental_population(idx)
 
+    # ── Référence RÉGIONALE (priorité) ──────────────────────────────────────
+    # Une moyenne per-capita CONTINENTALE mélange des régimes alimentaires très
+    # différents (blé/thé dominants en Afrique du Nord, riz/manioc en Afrique
+    # de l'Ouest...) — vérifié empiriquement : le proxy continental sous-estime
+    # le besoin en blé de 5-6x pour l'Algérie/l'Égypte et surestime le thé
+    # marocain de 2x, alors qu'une référence par sous-région (même échantillon
+    # de pays partageant un profil de consommation proche) réduit ces écarts.
+    # Repli sur le continental si la région manque de couverture (< 2 pays
+    # producteurs de données) pour éviter qu'une "référence régionale" ne soit
+    # en réalité l'auto-production du seul pays évalué divisée par la
+    # population régionale — un artefact, pas une estimation.
+    region = pop.get("region")
+    region_availability = None
+    region_pop = None
+    region_coverage = None
+    reg = {"available": False}
+    if region:
+        region_iso3_set = {iso for iso, rec in idx.items() if rec.get("region") == region}
+        try:
+            from services.production_capacity_service import get_regional_producers
+
+            reg = get_regional_producers(hs_code, region_iso3_set)
+        except Exception as exc:
+            _log.warning("regional producers unavailable: %s", exc)
+            reg = {"available": False}
+        region_pop = sum(
+            int((idx.get(iso) or {}).get("population") or 0) for iso in region_iso3_set
+        )
+        producer_count = reg.get("producer_count") or 0
+        region_coverage = {
+            "region": region,
+            "countries_in_region": len(region_iso3_set),
+            "producers_with_data": producer_count,
+        }
+        if reg.get("available") and reg.get("region_total") and region_pop and producer_count >= 2:
+            region_availability = reg["region_total"]
+
+    regional_available = region_availability is not None
+
     # Reference availability per capita: production, enriched with continental
     # imports when a same-unit (physical) figure is provided — so import-dependent
-    # products (low local production) are not under-estimated.
+    # products (low local production) are not under-estimated. Un signal explicite
+    # de l'appelant (imports continentaux réels) prime sur l'heuristique régionale
+    # automatique — c'est un raffinement délibéré, pas une approximation.
     if continental_imports_tonnes and continental_imports_tonnes > 0:
         cont_availability = cont_total + continental_imports_tonnes
+        ref_pop = cont_pop
         reference_basis = "production_plus_imports"
+    elif regional_available:
+        cont_availability = region_availability
+        ref_pop = region_pop
+        reference_basis = "regional_production_only"
     else:
         cont_availability = cont_total
+        ref_pop = cont_pop
         reference_basis = "production_only"
 
-    per_capita_ref = cont_availability / cont_pop if cont_pop else None
+    # ``regional_used`` reflète la décision EFFECTIVE (après arbitrage avec un
+    # éventuel signal explicite de l'appelant), pas seulement la disponibilité
+    # régionale — sinon un appel avec ``continental_imports_tonnes`` explicite
+    # se retrouverait étiqueté "géographie régionale" à tort.
+    regional_used = reference_basis == "regional_production_only"
+
+    per_capita_ref = cont_availability / ref_pop if ref_pop else None
     if not per_capita_ref:
         return {
             "available": False,
@@ -546,7 +616,12 @@ def estimate_national_need(
     need_l2 = pop["value"] * per_capita_ref
     level = 2
     level_label = "Proxy population (estimé)"
-    if reference_basis == "production_plus_imports":
+    if reference_basis == "regional_production_only":
+        method = (
+            f"Population × (production régionale [{region}] ÷ population régionale) "
+            "[disponibilité apparente par habitant — référence régionale, hors importations]"
+        )
+    elif reference_basis == "production_plus_imports":
         method = (
             "Population × ((production + importations continentales) "
             "÷ population continentale) [disponibilité apparente par habitant]"
@@ -559,20 +634,31 @@ def estimate_national_need(
     gdp_factor = None
 
     # ── L3: standard-of-living adjustment ────────────────────────────────────
-    # PIB/hab du pays ET moyenne continentale depuis la meilleure source (dataset
+    # PIB/hab du pays ET moyenne de référence depuis la meilleure source (dataset
     # ETL prioritaire, sinon module Profils Pays) — L3 s'active sans réseau.
-    # Moyenne PONDÉRÉE PAR LA POPULATION (voir _weighted_continental_gdp_avg) :
-    # cohérente avec la référence par habitant continentale du L2.
+    # Moyenne PONDÉRÉE PAR LA POPULATION, restreinte à la RÉGION quand la
+    # référence L2 est elle-même régionale (cohérence : on compare la richesse
+    # du pays à ses pairs régionaux, pas à l'ensemble du continent — sinon
+    # l'ajustement niveau de vie recolle artificiellement l'écart régional que
+    # la régionalisation du L2 visait justement à corriger). Repli continental
+    # si la moyenne régionale est indisponible (région trop petite/pauvre en
+    # données PIB).
     gdp = get_gdp_per_capita(country_iso3)
     gdp_map = _gdp_values_map()
     if gdp.get("available") and gdp_map:
-        gdp_avg = _weighted_continental_gdp_avg(gdp_map, idx)
+        gdp_avg = _weighted_regional_gdp_avg(gdp_map, idx, region) if regional_used else None
+        gdp_avg_is_regional = gdp_avg is not None
+        if gdp_avg is None:
+            gdp_avg = _weighted_continental_gdp_avg(gdp_map, idx)
         if gdp_avg:
             gdp_factor = (gdp["value_usd"] / gdp_avg) ** income_elasticity
             need = need_l2 * gdp_factor
             level = 3
             level_label = "Proxy population + ajustement niveau de vie (estimé)"
-            method += f" × (PIB/hab_pays ÷ PIB/hab_moyen)^{income_elasticity}"
+            method += (
+                f" × (PIB/hab_pays ÷ PIB/hab_moyen_{'régional' if gdp_avg_is_regional else 'continental'})"
+                f"^{income_elasticity}"
+            )
         else:
             need = need_l2
     else:
@@ -587,7 +673,16 @@ def estimate_national_need(
     if level == 3:
         sources.append(gdp.get("source", "World Bank WDI NY.GDP.PCAP.CD"))
 
-    if reference_basis == "production_only":
+    if reference_basis == "regional_production_only":
+        basis_note = (
+            f"Référence basée sur la production de la sous-région « {region} » "
+            f"({region_coverage['producers_with_data']}/{region_coverage['countries_in_region']} "
+            "pays avec données de production), rapportée à la population régionale — "
+            "capte le profil de consommation régional (ex. blé/thé en Afrique du Nord, "
+            "riz/manioc en Afrique de l'Ouest) mieux qu'une moyenne panafricaine unique. "
+            "Hors importations : reste une borne basse pour les produits fortement importés."
+        )
+    elif reference_basis == "production_only":
         basis_note = (
             "Référence basée sur la production continentale seule (hors importations) : "
             "borne basse pour les produits fortement importés. Fournir les importations "
@@ -661,6 +756,8 @@ def estimate_national_need(
         "commodity": prod.get("commodity"),
         "reference_year": prod.get("year"),
         "reference_basis": reference_basis,
+        "reference_geography": "régionale" if regional_used else "continentale",
+        "region_coverage": region_coverage,
         "reference_scope": "secteur (chapitre SH2)" if scope_is_sector else "produit",
         "reference_coverage_caveat": coverage_caveat,
         "calibration": calibration,
@@ -672,6 +769,8 @@ def estimate_national_need(
             "continental_production": cont_total,
             "continental_imports_tonnes": continental_imports_tonnes,
             "continental_population": cont_pop,
+            "regional_production": region_availability if regional_used else None,
+            "regional_population": region_pop if regional_used else None,
             "per_capita_reference": round(per_capita_ref, 6),
             "gdp_adjustment_factor": round(gdp_factor, 3) if gdp_factor else None,
             "income_elasticity": income_elasticity if level == 3 else None,
