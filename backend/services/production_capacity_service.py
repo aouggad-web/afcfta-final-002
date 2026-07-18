@@ -849,9 +849,7 @@ def get_regional_producers(hs_code: str, iso3_set) -> Dict:
         (
             r
             for r in all_recs
-            if r.get("year") == latest_year
-            and r.get("value")
-            and r.get("country_iso3") in iso3_set
+            if r.get("year") == latest_year and r.get("value") and r.get("country_iso3") in iso3_set
         ),
         key=lambda r: r["value"],
         reverse=True,
