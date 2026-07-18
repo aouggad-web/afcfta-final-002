@@ -42,6 +42,7 @@ const FEASIBILITY_TXT = {
     title: 'Faisabilité de substitution',
     coefficient: 'Part réalistement adressable',
     bindingCapacity: 'Facteur limitant : capacité africaine (offre insuffisante)',
+    bindingExporterCapacity: "Facteur limitant : capacité d'export du pays",
     bindingFeasibility: 'Facteur limitant : substituabilité (marque / technologie)',
     barriers: 'Barrières non tarifaires',
     brand_effect: 'Effet marque',
@@ -54,6 +55,7 @@ const FEASIBILITY_TXT = {
     title: 'Substitution feasibility',
     coefficient: 'Realistically addressable share',
     bindingCapacity: 'Binding constraint: African capacity (insufficient supply)',
+    bindingExporterCapacity: "Binding constraint: the country's export capacity",
     bindingFeasibility: 'Binding constraint: substitutability (brand / technology)',
     barriers: 'Non-tariff barriers',
     brand_effect: 'Brand effect',
@@ -76,16 +78,24 @@ const intensityChipColor = (intensity) => {
   return 'bg-slate-100 text-slate-600';
 };
 
-// Affiche le coefficient de substituabilité, le facteur limitant (offre vs.
-// barrières) et le détail des barrières non tarifaires pour une opportunité
-// d'import — n'existe que sur le chemin import (real_substitution_service.py
-// n'applique pas cette borne aux opportunités d'export).
+// Affiche le coefficient de substituabilité, le facteur limitant et le détail
+// des barrières non tarifaires. Utilisé sur les deux chemins : substitution
+// d'imports (facteur limitant « capacité africaine » vs « substituabilité »)
+// et opportunités d'export (« capacité exportateur » vs « substituabilité ») —
+// real_substitution_service.py applique désormais la même borne aux deux.
+const BINDING_LABEL_KEY = {
+  'capacité africaine': 'bindingCapacity',
+  'capacité exportateur': 'bindingExporterCapacity',
+  'substituabilité': 'bindingFeasibility',
+};
+
 const FeasibilityBlock = ({ feasibility, bindingConstraint, language }) => {
   if (!feasibility) return null;
   const txt = FEASIBILITY_TXT[language] || FEASIBILITY_TXT.fr;
   const coef = feasibility.coefficient;
   const colors = coefficientColor(coef);
   const barriers = feasibility.barriers;
+  const bindingLabel = txt[BINDING_LABEL_KEY[bindingConstraint]] || null;
 
   return (
     <div className="mb-4 bg-slate-50 rounded-lg p-3" data-testid="substitution-feasibility">
@@ -96,9 +106,7 @@ const FeasibilityBlock = ({ feasibility, bindingConstraint, language }) => {
       <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mb-2">
         <div className={`h-full rounded-full ${colors.bar}`} style={{ width: `${Math.round(coef * 100)}%` }} />
       </div>
-      <p className="text-[11px] text-slate-500 mb-2">
-        {bindingConstraint === 'capacité africaine' ? txt.bindingCapacity : txt.bindingFeasibility}
-      </p>
+      {bindingLabel && <p className="text-[11px] text-slate-500 mb-2">{bindingLabel}</p>}
       {barriers && (
         <div className="flex flex-wrap gap-1.5">
           {Object.entries(barriers).map(([key, intensity]) => (
@@ -227,14 +235,12 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
           </div>
         </div>
 
-        {/* Feasibility (imports only — coefficient, binding constraint, barriers) */}
-        {isImport && (
-          <FeasibilityBlock
-            feasibility={opportunity.substitution_feasibility}
-            bindingConstraint={opportunity.binding_constraint}
-            language={language}
-          />
-        )}
+        {/* Feasibility — coefficient, binding constraint, barriers (both flows) */}
+        <FeasibilityBlock
+          feasibility={opportunity.substitution_feasibility}
+          bindingConstraint={opportunity.binding_constraint}
+          language={language}
+        />
 
         {/* Current Source (for imports) */}
         {isImport && product?.current_source && (

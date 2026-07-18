@@ -112,7 +112,34 @@ describe('OpportunityCard — substitution feasibility block', () => {
     expect(screen.queryByTestId('substitution-feasibility')).not.toBeInTheDocument();
   });
 
-  it('is not shown on export opportunities (feasibility bounding is import-only)', () => {
+  it('is shown on export opportunities too (same bounding applies to capturing African markets)', () => {
+    render(
+      <OpportunityCard
+        opportunity={{
+          export_product: { hs_code: '87', name: 'Véhicules' },
+          potential_markets: [{ country_name: 'Nigeria', market_size: 50_000_000, capture_potential: 0.45 }],
+          total_market_potential: 22_500_000,
+          substitution_feasibility: {
+            hs_code: '87',
+            coefficient: 0.45,
+            product_class: 'véhicules et matériel de transport terrestre',
+            barriers: { brand_effect: 'fort', technology_gap: 'moyen', after_sales_network: 'fort', certification: 'moyen' },
+            rationale: 'Effet marque réel...',
+            is_estimation: true,
+          },
+          binding_constraint: 'capacité exportateur',
+          competitiveness: 'competitive',
+        }}
+        type="export"
+        language="fr"
+      />
+    );
+    const block = screen.getByTestId('substitution-feasibility');
+    expect(block).toHaveTextContent('45%');
+    expect(block).toHaveTextContent(/capacité d'export du pays/i);
+  });
+
+  it('renders nothing on an export opportunity lacking the feasibility field (legacy data)', () => {
     render(
       <OpportunityCard
         opportunity={{

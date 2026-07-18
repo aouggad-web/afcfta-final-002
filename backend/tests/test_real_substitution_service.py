@@ -173,16 +173,44 @@ def test_export_opportunities_use_real_oec_values(svc, monkeypatch):
     assert len(result["opportunities"]) == 1
     opp = result["opportunities"][0]
     caps = {m["country_iso3"]: m["capture_potential"] for m in opp["potential_markets"]}
-    # Capture potential is bounded by the exporter's real capacity
-    assert caps["NGA"] == round(min(5_000_000_000, 2_000_000_000) / 2_000_000_000, 2) == 1.0
-    assert caps["EGY"] == round(min(5_000_000_000, 8_000_000_000) / 8_000_000_000, 2)
+    # Capture potential is bounded by BOTH the exporter's real capacity and the
+    # chapter's substitutability coefficient — capturing an African vehicle
+    # market (chapter 87, coef 0.45) faces the same brand/after-sales barriers
+    # as substituting one's own imports. NGA market 2B: addressable 0.9B,
+    # capacity 5B ample -> capture = 0.9B/2B = 0.45 (was 1.0 pre-bounding).
+    coef = opp["substitution_feasibility"]["coefficient"]
+    assert coef == 0.45  # chapter "87": véhicules hors 8703/8708
+    assert caps["NGA"] == round(min(5_000_000_000, 2_000_000_000 * coef) / 2_000_000_000, 2)
+    assert caps["EGY"] == round(min(5_000_000_000, 8_000_000_000 * coef) / 8_000_000_000, 2)
+    # Total addressable (0.9B + 3.6B = 4.5B) < capacity (5B): substitutability binds.
+    assert opp["binding_constraint"] == "substituabilité"
+    markets = {m["country_iso3"]: m for m in opp["potential_markets"]}
+    assert markets["NGA"]["addressable_market_size"] == int(2_000_000_000 * coef)
     # Shape contract
     assert set(opp) >= {
         "export_product",
         "potential_markets",
         "total_market_potential",
+        "substitution_feasibility",
+        "binding_constraint",
         "afcfta_advantage",
     }
+
+
+def test_export_opportunities_capacity_binds_small_exporter(svc, monkeypatch):
+    # Small exporter (100M) vs a 2B market: addressable is 0.9B (coef 0.45)
+    # but capacity is the binding constraint -> capture = 100M / 2B = 0.05.
+    exports = {"ZAF": [{"hs_code": "8703", "product_name": "Cars", "trade_value": 100_000_000}]}
+    imports = {"NGA": [{"hs_code": "8703", "product_name": "Cars", "trade_value": 2_000_000_000}]}
+    _patch_oec(
+        monkeypatch, bilateral={"products_from_outside": []}, exports=exports, imports=imports
+    )
+
+    result = run(svc.find_export_opportunities("ZAF", year=2022))
+    opp = result["opportunities"][0]
+    caps = {m["country_iso3"]: m["capture_potential"] for m in opp["potential_markets"]}
+    assert caps["NGA"] == round(100_000_000 / 2_000_000_000, 2)
+    assert opp["binding_constraint"] == "capacité exportateur"
 
 
 def test_export_opportunities_fall_back_when_oec_unavailable(svc, monkeypatch):
@@ -191,6 +219,15 @@ def test_export_opportunities_fall_back_when_oec_unavailable(svc, monkeypatch):
     result = run(svc.find_export_opportunities("ZAF", year=2022))
     assert result["is_estimation"] is True
     assert "statique" in result["data_source"].lower()
+    # Le repli statique applique la même borne de substituabilité : chaque
+    # opportunité expose le bloc de faisabilité, et le taux de capture effectif
+    # ne dépasse jamais le coefficient du produit.
+    for opp in result["opportunities"]:
+        assert "substitution_feasibility" in opp
+        coef = opp["substitution_feasibility"]["coefficient"]
+        for m in opp["potential_markets"]:
+            assert m["capture_potential"] <= coef + 1e-9
+            assert m["capture_potential"] <= 0.20 + 1e-9  # jamais au-dessus du taux forfaitaire
 
 
 def test_unknown_country_returns_error(svc, monkeypatch):
