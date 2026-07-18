@@ -20,6 +20,21 @@ const tonnes = (v) =>
     ? null
     : `${Number(v).toLocaleString("en-US", { maximumFractionDigits: Number(v) < 10 ? 1 : 0 })} t`;
 
+/* Sous-module « faisabilité de substitution » (substitution_feasibility_service.py) :
+   libellés des barrières non tarifaires (effet marque, écart technologique...)
+   et de leur intensité, fr/en. */
+const BARRIER_LABEL = {
+  brand_effect: { fr: "Effet marque", en: "Brand effect" },
+  technology_gap: { fr: "Écart technologique", en: "Technology gap" },
+  after_sales_network: { fr: "Réseau après-vente", en: "After-sales network" },
+  certification: { fr: "Certification", en: "Certification" },
+};
+const INTENSITY_LABEL = {
+  faible: { fr: "Faible", en: "Low" },
+  moyen: { fr: "Moyen", en: "Medium" },
+  fort: { fr: "Fort", en: "High" },
+};
+
 /* Source may be a plain string or an object {institution, dataset, url}. */
 const srcText = (s) =>
   !s
@@ -262,7 +277,9 @@ function MarketSeekingView({ fr }) {
 }
 
 /* ── Mode 2: bilateral opportunity report ─────────────────────────────────── */
-function BilateralView({ countries, fr, prefill }) {
+// Exportée pour test direct (évite de simuler toute la navigation par onglets
+// du composant top-level juste pour vérifier le rendu d'une carte).
+export function BilateralView({ countries, fr, prefill }) {
   const [origin, setOrigin] = useState("CIV");
   const [destination, setDestination] = useState("NGA");
   const [hsCode, setHsCode] = useState("1801");
@@ -332,6 +349,7 @@ function BilateralView({ countries, fr, prefill }) {
   const exec = report?.executive_summary || null;
   const narr = report?.narrative_analysis || {};
   const need = report?.national_need || {};
+  const subst = report?.substitution_feasibility || {};
   const intra = report?.intra_african_context || {};
   const bench = report?.benchmarking || {};
   const tariff = bench.tariff_benefit || {};
@@ -990,6 +1008,46 @@ function BilateralView({ countries, fr, prefill }) {
                 <div style={{ color: "var(--afcfta-muted,#667)" }}>{need.note || "—"}</div>
               )}
             </div>
+            {subst.coefficient !== undefined && (
+              <div style={card} data-testid="report-substitution-feasibility">
+                <div style={{ ...label, marginBottom: 6, fontWeight: 700 }}>
+                  {fr ? "Faisabilité de substitution" : "Substitution feasibility"}
+                </div>
+                <div style={{ fontSize: 20, fontWeight: 800 }}>{pct(subst.coefficient)}</div>
+                <div style={{ fontSize: 12, marginTop: 2, color: "var(--afcfta-muted,#667)" }}>
+                  {fr ? "part réalistement adressable" : "realistically addressable share"}
+                  {subst.product_class ? ` · ${subst.product_class}` : ""}
+                </div>
+                {subst.barriers && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 }}>
+                    {Object.entries(subst.barriers).map(([key, intensity]) => (
+                      <span
+                        key={key}
+                        title={subst.rationale}
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 700,
+                          padding: "2px 7px",
+                          borderRadius: 999,
+                          background:
+                            intensity === "fort"
+                              ? "rgba(200,16,46,0.12)"
+                              : intensity === "moyen"
+                              ? "rgba(154,103,0,0.12)"
+                              : "rgba(102,102,102,0.12)",
+                          color: intensity === "fort" ? "#c8102e" : intensity === "moyen" ? "#9a6700" : "#667",
+                        }}
+                      >
+                        {(BARRIER_LABEL[key]?.[fr ? "fr" : "en"] || key)} · {(INTENSITY_LABEL[intensity]?.[fr ? "fr" : "en"] || intensity)}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {subst.rationale && (
+                  <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>{subst.rationale}</div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* ── Tariff advantage (real ZLECAf) + factor breakdown ─────── */}
