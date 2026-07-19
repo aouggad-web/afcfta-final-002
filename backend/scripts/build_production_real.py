@@ -411,28 +411,57 @@ def _merge_duplicates(records):
     return list(merged.values())
 
 
-# Libellés ISIC Rev.4 standard (EN) — alignés sur production_capacity_service
+# Libellés ISIC Rev.4 standard — alignés EXACTEMENT sur les libellés reconnus par
+# production_capacity_service.HS_TO_COMMODITY / HS_CHAPTER_FALLBACK. Un code ISIC
+# absent d'ici laisserait passer le nom brut curé dans unido_data.py (qui varie
+# d'un pays à l'autre, ex. "Caoutchouc" vs "Caoutchouc et plastiques") et le
+# rendrait invisible au module Opportunités (cf. test_no_production_commodity_
+# left_without_hs_mapping).
 ISIC_LABELS_EN = {
     "10": "Manufacture of food products",
     "11": "Manufacture of beverages",
+    "12": "Manufacture of tobacco products",
     "13": "Manufacture of textiles",
+    "14": "Articles d'habillement",
+    "16": "Manufacture of wood and wood products",
+    "17": "Manufacture of paper and paper products",
     "19": "Manufacture of coke and refined petroleum products",
     "20": "Manufacture of chemicals",
+    "21": "Produits pharmaceutiques",
+    "22": "Caoutchouc et plastiques",
     "23": "Manufacture of other non-metallic mineral products",
     "24": "Manufacture of basic metals",
+    "26": "Produits électroniques",
+    "27": "Équipements électriques",
     "29": "Manufacture of motor vehicles",
+    "32": "Autres industries (diamants)",
 }
 
 
 def build_manufacturing():
-    """Émet les enregistrements manufacturiers réels depuis UNIDO (unido_data.py)."""
+    """Émet les enregistrements manufacturiers réels depuis UNIDO (unido_data.py).
+
+    Pour les grandes économies, unido_data.py fournit une valeur absolue
+    (value_mln_usd) par secteur. Pour les 32 pays plus petits, seule la part
+    du secteur dans la VA manufacturière totale (share_mva, en %) est curée,
+    sans valeur absolue. Plutôt que d'ignorer ces pays (ce qui les faisait
+    disparaître entièrement du fichier de production), on dérive
+    value_mln_usd = mva_totale × share_mva / 100 à partir de deux chiffres
+    déjà curés UNIDO (aucune valeur inventée) — marqué is_estimation=True
+    pour transparence.
+    """
     records = []
     for iso3, d in UNIDO_INDUSTRY_DATA.items():
         country_name = d.get("country_name", iso3)
         year = d.get("data_year", 2023)
+        mva_total = d.get("mva_2024_mln_usd", d.get("mva_2023_mln_usd"))
         for sector in d.get("top_sectors", []):
             isic = str(sector.get("isic", ""))
             val_mln = sector.get("value_mln_usd")
+            is_estimation = False
+            if not val_mln and mva_total and sector.get("share_mva"):
+                val_mln = mva_total * sector["share_mva"] / 100.0
+                is_estimation = True
             if not val_mln:
                 continue
             label_en = ISIC_LABELS_EN.get(isic, sector.get("name", f"ISIC {isic}"))
@@ -456,6 +485,7 @@ def build_manufacturing():
                     "isic_revision": "4",
                     "isic_code": isic,
                     "isic_label": label_en,
+                    "is_estimation": is_estimation,
                 }
             )
     return records
