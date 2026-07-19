@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import { OpportunityCard } from './SubstitutionAnalysis';
 
 // Reproduit exactement la forme renvoyée par
@@ -216,5 +216,73 @@ describe('OpportunityCard — substitution feasibility block', () => {
       />
     );
     expect(screen.queryByTestId('substitution-feasibility')).not.toBeInTheDocument();
+  });
+});
+
+// Regression coverage for the Statistiques -> Opportunités handoff (see
+// OpportunitiesTab.jsx / CountryHS6History.jsx): selecting a country + HS6
+// code elsewhere in the app deposits `initialCountry` in sessionStorage and
+// should land directly on a pre-filled, already-analyzed import view — no
+// manual re-selection or extra click on "Analyser" required.
+describe('SubstitutionAnalysis — initialCountry handoff', () => {
+  beforeEach(() => {
+    vi.resetModules();
+  });
+
+  it('pre-selects the import tab and auto-triggers analysis for the handoff country', async () => {
+    vi.doMock('axios', () => {
+      const get = vi.fn((url) => {
+        if (url.includes('/substitution/countries')) {
+          return Promise.resolve({
+            data: { countries: [{ iso3: 'DZA', name: 'Algérie', has_trade_data: true }] },
+          });
+        }
+        if (url.includes('/substitution/opportunities/import/DZA')) {
+          return Promise.resolve({
+            data: {
+              opportunities: [],
+              summary: { total_opportunities: 0, total_substitutable_value: 0, top_sectors: [] },
+              is_estimation: false,
+              data_source: 'OEC',
+            },
+          });
+        }
+        if (url.includes('/substitution/opportunities/export/DZA')) {
+          return Promise.resolve({
+            data: {
+              opportunities: [],
+              summary: { total_opportunities: 0, total_market_potential: 0 },
+              is_estimation: false,
+              data_source: 'OEC',
+            },
+          });
+        }
+        return Promise.reject(new Error(`Unexpected URL: ${url}`));
+      });
+      return { default: { get } };
+    });
+
+    const axios = (await import('axios')).default;
+    const { default: SubstitutionAnalysis } = await import('./SubstitutionAnalysis');
+
+    render(
+      <SubstitutionAnalysis language="fr" initialCountry={{ iso3: 'DZA', k: 1 }} />
+    );
+
+    // The handoff never touches activeTab='export': import stays selected.
+    await waitFor(() => {
+      expect(screen.getByTestId('import-tab')).toHaveAttribute('data-state', 'active');
+    });
+    expect(screen.getByTestId('export-tab')).toHaveAttribute('data-state', 'inactive');
+
+    // analyzeCountry() must fire on its own — no click on "Analyser" needed.
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledWith(
+        expect.stringContaining('/substitution/opportunities/import/DZA')
+      );
+      expect(axios.get).toHaveBeenCalledWith(
+        expect.stringContaining('/substitution/opportunities/export/DZA')
+      );
+    });
   });
 });

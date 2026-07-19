@@ -965,10 +965,10 @@ class RealSubstitutionService:
             import_index = await self._build_african_import_index(year, hs_level="HS6")
 
             # Forces d'export au niveau PRODUIT (SH6), spécifique au code SH exact :
-            # un producteur étudie ses opportunités produit par produit — vendre de
-            # la banane Cavendish (code 0803 20 10) n'est pas vendre de la plantain,
-            # et la granularité SH6 permet au producteur d'identifier exactement où
-            # exporter son produit spécifique.
+            # un producteur étudie ses opportunités produit par produit — vendre des
+            # plantains (SH6 080310) n'est pas vendre des bananes fraîches autres que
+            # plantains (SH6 080390), et la granularité SH6 permet au producteur
+            # d'identifier exactement où exporter son produit précis.
             exporter_products: Dict[str, Dict] = {}
             for product in exporter_exports:
                 hs_code = product.get("hs_code", "")
