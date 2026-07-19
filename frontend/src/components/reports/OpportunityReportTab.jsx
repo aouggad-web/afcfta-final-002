@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import SubstitutionAnalysis from "../opportunities/SubstitutionAnalysis";
 import OpportunityPdfExport from "../opportunities/OpportunityPdfExport";
+import { opportunityPdfFilename } from "../../utils/opportunityPdf";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -199,7 +200,7 @@ function MarketSeekingView({ fr }) {
       badge: 'MARCHÉS',
       title: `${rep.product_name || hsCode} — ${fr ? 'recherche de marchés' : 'find markets'} (SH ${rep.inputs?.hs_code || hsCode})`,
       subtitle: demand.source ? `${fr ? 'Source demande' : 'Demand source'}: ${demand.source}` : undefined,
-      filename: `recherche-marchés-${hsCode}`,
+      filename: opportunityPdfFilename('Marchés', hsCode),
       kpis: [
         { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
         { label: fr ? "Marchés importateurs" : "Importing markets", value: String(demand.markets?.length || 0), accent: 'green' },
@@ -504,7 +505,7 @@ export function BilateralView({ countries, fr, prefill }) {
       badge: `${origin} → ${destination}`,
       title: `${fr ? 'Opportunité bilatérale' : 'Bilateral opportunity'} SH ${hsCode} — ${origin} → ${destination}`,
       subtitle: report.report_tier === 'ultra_fine' ? (fr ? 'Rapport ultra-fin' : 'Ultra-fine report') : undefined,
-      filename: `rapport-bilateral-${hsCode}`,
+      filename: opportunityPdfFilename('Bilateral', `${origin}_${destination}_${hsCode}`),
       kpis,
       sections,
       source: 'OEC BACI · référentiels ZLECAf',
@@ -1431,7 +1432,7 @@ function DirectExportView({ countries, fr, onAnalyze }) {
       badge: `S2 · ${producer}`,
       title: `${fr ? 'Export direct' : 'Direct export'} SH ${hsCode} — ${producer}`,
       subtitle: `${rep.candidates_considered ?? '—'} ${fr ? 'marchés candidats' : 'candidate markets'} · ${rep.deep_dived ?? '—'} ${fr ? 'analysés' : 'deep-dived'}`,
-      filename: `s2-export-direct-${hsCode}`,
+      filename: opportunityPdfFilename('S2', `${producer}_${hsCode}`),
       kpis: [
         { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
         { label: fr ? "Producteur" : "Producer", value: producer, accent: 'green' },
@@ -1663,7 +1664,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
       badge: `S1 · ${producer}`,
       title: `${fr ? 'Transformation' : 'Transformation'} ${inputHs} → ${finishedHs} — ${producer}`,
       subtitle: `${inputOrigin} → ${producer} → ${destination}`,
-      filename: `s1-transformation-${finishedHs}`,
+      filename: opportunityPdfFilename('S1', `${producer}_${finishedHs}`),
       kpis: [
         { label: fr ? "Produit fini" : "Finished product", value: finishedHs, accent: 'gold' },
         { label: fr ? "Valeur ajoutée" : "Value added", value: va.available ? money(va.gross_value_added_usd) : '—', accent: 'green' },
@@ -2035,7 +2036,7 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
       badge: `S3 · ${country}`,
       title: fr ? `Besoin national SH ${hsCode} — ${country}` : `National need HS ${hsCode} — ${country}`,
       subtitle: rep.available && rep.method ? rep.method : undefined,
-      filename: `s3-besoin-national-${hsCode}`,
+      filename: opportunityPdfFilename('S3', `${country}_${hsCode}`),
       kpis: [
         { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
         { label: fr ? "Pays" : "Country", value: country, accent: 'green' },
