@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { OpportunityCard } from './SubstitutionAnalysis';
 
 // Reproduit exactement la forme renvoyée par
@@ -284,5 +285,151 @@ describe('SubstitutionAnalysis — initialCountry handoff', () => {
         expect.stringContaining('/substitution/opportunities/export/DZA')
       );
     });
+  });
+});
+
+// Régression « tous les PDF reviennent vides » : la spec passée au bâtisseur
+// commun doit contenir les données RÉELLEMENT chargées (lignes de tableau,
+// production vérifiée, synthèse d'analyse) — pas un squelette. On capture la
+// spec en mockant le module utils/opportunityPdf.
+describe('SubstitutionAnalysis — PDF export carries the loaded results', () => {
+  beforeEach(() => vi.resetModules());
+
+  const importPayload = {
+    importer: { iso3: 'DZA', name: 'Algérie' },
+    year: 2022,
+    data_source: 'OEC (Observatory of Economic Complexity) - BACI',
+    is_estimation: false,
+    summary: {
+      total_opportunities: 1,
+      total_substitutable_value: 720_000_000,
+      total_imports_from_outside: 35_000_000_000,
+      top_sectors: [{ chapter: '10', name: 'Céréales', total_value: 720_000_000, opportunity_count: 1 }],
+      product_hierarchy: [
+        {
+          chapter: '10', name: 'Céréales', total_value: 720_000_000, opportunity_count: 1,
+          hs4: [{
+            hs4_code: '1001', representative_name: 'Blé tendre', total_value: 720_000_000,
+            products: [{ hs_code: '100191', name: 'Blé tendre', value: 720_000_000, feasibility_coefficient: 0.9, binding_constraint: 'capacité africaine' }],
+          }],
+        },
+      ],
+      analysis: {
+        avg_feasibility_coefficient: 0.9,
+        difficulty_distribution: { 'Modéré': 1 },
+        binding_constraint_distribution: { 'capacité africaine': 1 },
+        verified_production_count: 1,
+      },
+    },
+    opportunities: [{
+      imported_product: { hs_code: '100191', name: 'Blé tendre', import_value: 800_000_000, current_source: 'France' },
+      african_suppliers: [{ country_iso3: 'EGY', country_name: 'Égypte', export_value: 720_000_000, share_potential: 90 }],
+      substitution_potential: 720_000_000,
+      substitution_feasibility: { hs_code: '100191', coefficient: 0.9, product_class: 'produits agricoles', barriers: null, rationale: '...', is_estimation: true },
+      addressable_value: 720_000_000,
+      binding_constraint: 'capacité africaine',
+      difficulty: 'Modéré',
+      verified_production: {
+        commodity: 'Wheat', measure: 'Production', unit: 'tonnes', year: 2024,
+        institution: 'FAOSTAT', continental_total: 30_000_000,
+        top_producers: [{ country_iso3: 'EGY', country_name: 'Égypte', value: 9_500_000, share_pct: 31.7 }],
+        coverage_caveat: null,
+      },
+    }],
+  };
+
+  it('passes filled sections (rows, verified production, analysis) to the PDF builder', async () => {
+    vi.doMock('../../utils/opportunityPdf', () => ({
+      buildOpportunityPdf: vi.fn(() => ({ save: vi.fn() })),
+      opportunityPdfFilename: vi.fn(() => 'fichier'),
+    }));
+    vi.doMock('axios', () => ({
+      default: {
+        get: vi.fn((url) => {
+          if (url.includes('/substitution/countries')) {
+            return Promise.resolve({ data: { countries: [{ iso3: 'DZA', name: 'Algérie', has_trade_data: true }] } });
+          }
+          if (url.includes('/substitution/opportunities/import/DZA')) {
+            return Promise.resolve({ data: importPayload });
+          }
+          if (url.includes('/substitution/opportunities/export/DZA')) {
+            return Promise.resolve({
+              data: { opportunities: [], summary: { total_opportunities: 0, total_market_potential: 0 }, is_estimation: false, data_source: 'OEC' },
+            });
+          }
+          return Promise.reject(new Error(`Unexpected URL: ${url}`));
+        }),
+      },
+    }));
+
+    const { buildOpportunityPdf } = await import('../../utils/opportunityPdf');
+    const { default: SubstitutionAnalysis } = await import('./SubstitutionAnalysis');
+
+    render(<SubstitutionAnalysis language="fr" initialCountry={{ iso3: 'DZA', k: 1 }} />);
+
+    const exportBtn = await screen.findByTestId('opportunity-pdf-light');
+    await userEvent.click(exportBtn);
+
+    expect(buildOpportunityPdf).toHaveBeenCalledTimes(1);
+    const spec = buildOpportunityPdf.mock.calls[0][0];
+
+    // Le tableau principal est rempli avec la ligne réellement chargée.
+    const mainTable = spec.sections.find((s) => s.table && s.title.includes('substitution'));
+    expect(mainTable).toBeTruthy();
+    expect(mainTable.table.rows).toHaveLength(1);
+    expect(mainTable.table.rows[0]).toMatchObject({ hs: '100191', name: 'Blé tendre', constraint: 'capacité africaine' });
+
+    // La synthèse d'analyse et la production vérifiée sont embarquées.
+    const analysisSection = spec.sections.find((s) => s.keyValues);
+    expect(analysisSection).toBeTruthy();
+    expect(analysisSection.keyValues.some((kv) => String(kv.value).includes('90%'))).toBe(true);
+
+    const verifiedSection = spec.sections.find((s) => s.title.includes('vérifiée'));
+    expect(verifiedSection).toBeTruthy();
+    expect(verifiedSection.table.rows[0].producers).toContain('Égypte');
+
+    // Le drill-down chapitre -> SH4 -> SH6 est embarqué.
+    const hierarchySection = spec.sections.find((s) => s.title.includes('chapitre'));
+    expect(hierarchySection).toBeTruthy();
+    expect(hierarchySection.table.rows[0]).toMatchObject({ hs4: '1001', hs6: '100191' });
+
+    // Aucune section squelette { text } — le type n'existe pas dans le bâtisseur.
+    expect(spec.sections.every((s) => s.table || s.keyValues || s.paragraphs)).toBe(true);
+  });
+
+  it('renders the enriched panels (analysis summary, verified production, hierarchy) from the payload', async () => {
+    vi.doMock('axios', () => ({
+      default: {
+        get: vi.fn((url) => {
+          if (url.includes('/substitution/countries')) {
+            return Promise.resolve({ data: { countries: [{ iso3: 'DZA', name: 'Algérie', has_trade_data: true }] } });
+          }
+          if (url.includes('/substitution/opportunities/import/DZA')) {
+            return Promise.resolve({ data: importPayload });
+          }
+          if (url.includes('/substitution/opportunities/export/DZA')) {
+            return Promise.resolve({
+              data: { opportunities: [], summary: { total_opportunities: 0, total_market_potential: 0 }, is_estimation: false, data_source: 'OEC' },
+            });
+          }
+          return Promise.reject(new Error(`Unexpected URL: ${url}`));
+        }),
+      },
+    }));
+
+    const { default: SubstitutionAnalysis } = await import('./SubstitutionAnalysis');
+    render(<SubstitutionAnalysis language="fr" initialCountry={{ iso3: 'DZA', k: 1 }} />);
+
+    // Panneau d'analyse + bloc production vérifiée sur la carte.
+    await screen.findByTestId('analysis-summary');
+    expect(screen.getByTestId('verified-production')).toHaveTextContent('Égypte');
+    expect(screen.getByTestId('verified-production')).toHaveTextContent('FAOSTAT');
+
+    // Drill-down : chapitre -> SH4 -> SH6.
+    const chapterBtn = screen.getByTestId('hierarchy-chapter-10');
+    await userEvent.click(chapterBtn);
+    const hs4Btn = await screen.findByTestId('hierarchy-hs4-1001');
+    await userEvent.click(hs4Btn);
+    expect(await screen.findByTestId('hierarchy-hs6-100191')).toHaveTextContent('Blé tendre');
   });
 });

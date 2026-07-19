@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import SubstitutionAnalysis from "../opportunities/SubstitutionAnalysis";
 import OpportunityPdfExport from "../opportunities/OpportunityPdfExport";
+import { opportunityPdfFilename } from "../../utils/opportunityPdf";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -151,18 +152,64 @@ function MarketSeekingView({ fr }) {
   const demand = rep?.demand || {};
   const supply = rep?.supply || {};
 
+  // Le PDF reprend les MÊMES tableaux que l'écran (demande importatrice, offre
+  // productrice) — pas un squelette : une section `text` n'existe pas dans le
+  // bâtisseur (table / keyValues / paragraphs), elle produisait un PDF vide.
   const buildPdfSpec = useCallback(() => {
     if (!rep) return null;
+    const sections = [];
+    if (demand.available && demand.markets?.length) {
+      sections.push({
+        title: fr ? "Demande — marchés importateurs africains" : "Demand — African importing markets",
+        table: {
+          columns: [
+            { key: 'country', label: fr ? 'Pays' : 'Country', width: 1.6 },
+            { key: 'imports', label: fr ? 'Importations' : 'Imports', align: 'right', width: 1.1 },
+            { key: 'volume', label: fr ? 'Volume (t)' : 'Volume (t)', align: 'right', width: 1 },
+            { key: 'share', label: fr ? 'Part' : 'Share', align: 'right', width: 0.7 },
+          ],
+          rows: demand.markets.map((m) => ({
+            country: `${m.country_name} (${m.country_iso3})`,
+            imports: money(m.import_value_usd),
+            volume: tonnes(m.import_quantity_tonnes) || '—',
+            share: m.share_pct === null ? '—' : `${m.share_pct}%`,
+          })),
+        },
+      });
+    }
+    if (supply.available && supply.producers?.length) {
+      sections.push({
+        title: `${fr ? "Offre — producteurs africains" : "Supply — African producers"}${supply.commodity ? ` · ${supply.commodity}` : ''}`,
+        table: {
+          columns: [
+            { key: 'country', label: fr ? 'Pays' : 'Country', width: 1.6 },
+            { key: 'production', label: `${fr ? 'Production' : 'Production'}${supply.unit ? ` (${supply.unit})` : ''}`, align: 'right', width: 1.2 },
+            { key: 'share', label: fr ? 'Part' : 'Share', align: 'right', width: 0.7 },
+          ],
+          rows: supply.producers.map((p) => ({
+            country: `${p.country_name} (${p.country_iso3})`,
+            production: p.value == null ? '—' : Number(p.value).toLocaleString('en-US'),
+            share: p.share_pct === null ? '—' : `${p.share_pct}%`,
+          })),
+        },
+      });
+    }
+    const notes = [demand.note, rep.data_quality?.note].filter(Boolean);
+    if (notes.length) sections.push({ title: fr ? 'Notes' : 'Notes', paragraphs: notes });
     return {
-      badge: `market-${hsCode}`,
-      filename: `recherche-marchés-${hsCode}`,
+      badge: 'MARCHÉS',
+      title: `${rep.product_name || hsCode} — ${fr ? 'recherche de marchés' : 'find markets'} (SH ${rep.inputs?.hs_code || hsCode})`,
+      subtitle: demand.source ? `${fr ? 'Source demande' : 'Demand source'}: ${demand.source}` : undefined,
+      filename: opportunityPdfFilename('Marchés', hsCode),
       kpis: [
         { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
-        { label: fr ? "Demande africaine" : "African demand", value: money(demand.total_import_value_usd), accent: 'green' }
+        { label: fr ? "Marchés importateurs" : "Importing markets", value: String(demand.markets?.length || 0), accent: 'green' },
+        { label: fr ? "Producteurs africains" : "African producers", value: String(supply.producers?.length || 0), accent: 'terra' },
       ],
-      sections: [{ title: fr ? `Recherche de marchés ${hsCode}` : `Find markets ${hsCode}`, text: '' }]
+      sections,
+      source: [demand.source, srcText(supply.source)].filter(Boolean).join(' · ') || 'FAOSTAT / USGS / UNIDO / OEC',
     };
-  }, [rep, hsCode, demand.total_import_value_usd, fr]);
+  }, [rep, hsCode, demand, supply, fr]);
 
   return (
     <div>
@@ -398,24 +445,72 @@ export function BilateralView({ countries, fr, prefill }) {
     </select>
   );
 
+  // Le PDF reflète le rapport ultra-fin affiché : synthèse exécutive, scores
+  // composites, avantage tarifaire ZLECAf, besoin national, substituabilité,
+  // financement — pas un squelette (une section `text` n'est pas un type du
+  // bâtisseur et produisait un PDF vide).
   const buildPdfSpec = useCallback(() => {
     if (!report) return null;
     const kpis = [];
-    const ci = report.composite_indicators || {};
-    if (ci.end_to_end_score?.available) kpis.push({ label: fr ? "Score bout en bout" : "End-to-end score", value: pct(ci.end_to_end_score.score), accent: 'gold' });
-    if (ci.landed_cost?.available) kpis.push({ label: fr ? "Coût débarqué" : "Landed cost", value: money(ci.landed_cost.value_usd), accent: 'green' });
+    if (e2e.available) kpis.push({ label: fr ? "Score bout en bout" : "End-to-end score", value: pct(e2e.score), accent: 'gold' });
+    if (landed.available) kpis.push({ label: fr ? "Coût rendu" : "Landed cost", value: money(landed.value_usd), accent: 'green' });
+    if (logAccess.available) kpis.push({ label: fr ? "Accessibilité logistique" : "Logistics accessibility", value: pct(logAccess.index), accent: 'terra' });
+    if (finIdx.available) kpis.push({ label: fr ? "Faisabilité financement" : "Financing feasibility", value: pct(finIdx.index), accent: 'red' });
+
+    const sections = [];
+    if (exec) {
+      sections.push({
+        title: `${fr ? 'Synthèse exécutive' : 'Executive summary'} — ${exec.priority_tier || ''}`,
+        paragraphs: [...(exec.key_findings || []), exec.recommendation].filter(Boolean),
+      });
+    }
+    const tariffKv = [];
+    if (tariff.available) {
+      if (tariff.national_rate_pct != null) tariffKv.push({ label: fr ? 'Taux NPF national' : 'National MFN rate', value: `${tariff.national_rate_pct}%` });
+      if (tariff.zlecaf_rate_pct != null) tariffKv.push({ label: fr ? 'Taux ZLECAf' : 'AfCFTA rate', value: `${tariff.zlecaf_rate_pct}%` });
+      if (tariff.tariff_advantage_pct != null) tariffKv.push({ label: fr ? 'Avantage tarifaire' : 'Tariff advantage', value: `${tariff.tariff_advantage_pct}%` });
+      if (tariff.savings_per_1000usd != null) tariffKv.push({ label: fr ? 'Économie / 1000 USD' : 'Savings / 1000 USD', value: money(tariff.savings_per_1000usd) });
+      if (tariff.trade_regime) tariffKv.push({ label: fr ? 'Régime commercial' : 'Trade regime', value: tariff.trade_regime });
+    }
+    if (tariffKv.length) sections.push({ title: fr ? 'Avantage tarifaire ZLECAf' : 'AfCFTA tariff benefit', keyValues: tariffKv });
+
+    const needKv = [];
+    if (need.available) {
+      needKv.push({ label: fr ? 'Besoin estimé' : 'Estimated need', value: `${Math.round(need.value || 0).toLocaleString('en-US')} ${need.unit || ''}` });
+      if (need.method) needKv.push({ label: fr ? 'Méthode' : 'Method', value: need.method });
+      if (need.observed_imports?.import_value_usd) needKv.push({ label: fr ? 'Imports observés' : 'Observed imports', value: money(need.observed_imports.import_value_usd) });
+    }
+    if (needKv.length) sections.push({ title: fr ? `Besoin national — ${destination}` : `National need — ${destination}`, keyValues: needKv });
+
+    if (subst.coefficient != null) {
+      sections.push({
+        title: fr ? 'Faisabilité de substitution' : 'Substitution feasibility',
+        keyValues: [
+          { label: fr ? 'Part adressable' : 'Addressable share', value: `${Math.round(subst.coefficient * 100)}%` },
+          { label: fr ? 'Classe produit' : 'Product class', value: subst.product_class || '—' },
+        ],
+      });
+    }
+    const finKv = [];
+    if (risk.available) finKv.push({ label: fr ? 'Risque pays' : 'Country risk', value: `${risk.overall_risk_rating || '—'}${risk.alert_level ? ` (${risk.alert_level})` : ''}` });
+    if (gai) finKv.push({ label: 'GAI', value: `${gai.rating || gai.score || '—'}${gai.rank_africa ? ` · #${gai.rank_africa} Afrique` : ''}` });
+    if (fx.available) finKv.push({ label: fr ? 'Réserves de change' : 'FX reserves', value: `$${fx.value_busd}B (${fx.year || '—'})` });
+    if (cover.available) finKv.push({ label: fr ? "Couverture d'imports" : 'Import cover', value: `${cover.months} ${fr ? 'mois' : 'months'}` });
+    if (finKv.length) sections.push({ title: fr ? 'Profil financier de la destination' : 'Destination financial profile', keyValues: finKv });
+
+    const narrParas = [narr.national_need, narr.supply, narr.logistics, narr.financing].filter(Boolean);
+    if (narrParas.length) sections.push({ title: fr ? 'Analyse narrative' : 'Narrative analysis', paragraphs: narrParas });
+
     return {
-      badge: `${origin}-${destination}`,
-      filename: `rapport-bilateral-${hsCode}`,
+      badge: `${origin} → ${destination}`,
+      title: `${fr ? 'Opportunité bilatérale' : 'Bilateral opportunity'} SH ${hsCode} — ${origin} → ${destination}`,
+      subtitle: report.report_tier === 'ultra_fine' ? (fr ? 'Rapport ultra-fin' : 'Ultra-fine report') : undefined,
+      filename: opportunityPdfFilename('Bilateral', `${origin}_${destination}_${hsCode}`),
       kpis,
-      sections: [
-        {
-          title: fr ? `Opportunité bilatérale ${hsCode}` : `Bilateral opportunity ${hsCode}`,
-          text: fr ? `Flux commerce ${origin} → ${destination}` : `Trade flow ${origin} → ${destination}`
-        }
-      ]
+      sections,
+      source: 'OEC BACI · référentiels ZLECAf',
     };
-  }, [report, origin, destination, hsCode, fr]);
+  }, [report, origin, destination, hsCode, fr, e2e, landed, logAccess, finIdx, exec, tariff, need, subst, risk, gai, fx, cover, narr]);
 
   return (
     <div>
@@ -1294,18 +1389,59 @@ function DirectExportView({ countries, fr, onAnalyze }) {
   const supply = rep?.producer_supply || {};
   const opps = rep?.ranked_opportunities || [];
 
+  // Le PDF reprend le tableau des marchés classés affiché à l'écran — pas un
+  // squelette (une section `text` n'est pas un type du bâtisseur : PDF vide).
   const buildPdfSpec = useCallback(() => {
     if (!rep) return null;
+    const sections = [];
+    if (supply.available) {
+      sections.push({
+        title: fr ? 'Production du producteur' : 'Producer supply',
+        keyValues: [
+          { label: fr ? 'Commodité' : 'Commodity', value: supply.commodity || '—' },
+          { label: fr ? 'Part continentale' : 'Continental share', value: supply.continental_share_pct != null ? `${supply.continental_share_pct}%` : '—' },
+          { label: fr ? 'Rang continental' : 'Continental rank', value: supply.rank ? `#${supply.rank}` : '—' },
+        ],
+      });
+    }
+    if (opps.length) {
+      sections.push({
+        title: fr ? "Marchés d'export classés" : 'Ranked export markets',
+        table: {
+          columns: [
+            { key: 'rank', label: '#', width: 0.4 },
+            { key: 'market', label: fr ? 'Marché' : 'Market', width: 0.9 },
+            { key: 'score', label: 'Score', align: 'right', width: 0.8 },
+            { key: 'need', label: fr ? 'Besoin estimé' : 'Est. need', align: 'right', width: 1.2 },
+            { key: 'tariffAdv', label: fr ? 'Avantage tarif' : 'Tariff adv.', align: 'right', width: 1 },
+            { key: 'landedCost', label: fr ? 'Coût rendu' : 'Landed cost', align: 'right', width: 1.1 },
+          ],
+          rows: opps.map((o, i) => ({
+            rank: String(i + 1),
+            market: o.destination_iso3,
+            score: o.score_available ? pct(o.end_to_end_score) : '—',
+            need: o.market_need?.available ? `${Math.round(o.market_need.value).toLocaleString('en-US')} ${o.market_need.unit || ''}` : '—',
+            tariffAdv: o.tariff_benefit?.available && o.tariff_benefit.tariff_advantage_pct != null ? `${o.tariff_benefit.tariff_advantage_pct}%` : '—',
+            landedCost: o.landed_cost?.available ? money(o.landed_cost.value_usd) : '—',
+          })),
+        },
+      });
+    }
+    if (rep.data_quality?.note) sections.push({ title: fr ? 'Notes' : 'Notes', paragraphs: [rep.data_quality.note] });
     return {
-      badge: `S2-${hsCode}`,
-      filename: `s2-export-direct-${hsCode}`,
+      badge: `S2 · ${producer}`,
+      title: `${fr ? 'Export direct' : 'Direct export'} SH ${hsCode} — ${producer}`,
+      subtitle: `${rep.candidates_considered ?? '—'} ${fr ? 'marchés candidats' : 'candidate markets'} · ${rep.deep_dived ?? '—'} ${fr ? 'analysés' : 'deep-dived'}`,
+      filename: opportunityPdfFilename('S2', `${producer}_${hsCode}`),
       kpis: [
         { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
-        { label: fr ? "Producteur" : "Producer", value: producer, accent: 'blue' }
+        { label: fr ? "Producteur" : "Producer", value: producer, accent: 'green' },
+        { label: fr ? "Marchés classés" : "Ranked markets", value: String(opps.length), accent: 'terra' },
       ],
-      sections: [{ title: fr ? `S2 · Export direct ${hsCode}` : `S2 · Direct export ${hsCode}`, text: rep.deep_dived ? `${rep.deep_dived} ${fr ? 'marchés analysés' : 'markets analyzed'}` : '' }]
+      sections,
+      source: 'FAOSTAT / USGS / UNIDO · OEC BACI · tarifs ZLECAf',
     };
-  }, [rep, hsCode, producer, fr]);
+  }, [rep, hsCode, producer, supply, opps, fr]);
 
   return (
     <div>
@@ -1481,18 +1617,63 @@ function TransformationView({ countries, fr, onAnalyze }) {
   const feas = rep?.feasibility || {};
   const exportScore = feas.export_end_to_end_score;
 
+  // Le PDF détaille les 3 maillons de la chaîne (import intrant, production
+  // locale, export fini) + valeur ajoutée — pas un squelette (une section
+  // `text` n'est pas un type du bâtisseur : PDF vide).
   const buildPdfSpec = useCallback(() => {
     if (!rep) return null;
+    const sections = [
+      {
+        title: fr ? '1 · Import de l’intrant' : '1 · Input import',
+        keyValues: [
+          { label: fr ? 'Intrant' : 'Input', value: `SH ${inputHs} — ${inputOrigin}` },
+          { label: fr ? 'Coût rendu intrant' : 'Input landed cost', value: leg1.landed_cost?.available ? money(leg1.landed_cost.value_usd) : '—' },
+          { label: fr ? 'Avantage tarifaire intrant' : 'Input tariff advantage', value: leg1.tariff?.available && leg1.tariff.tariff_advantage_pct != null ? `${leg1.tariff.tariff_advantage_pct}%` : '—' },
+        ],
+      },
+      {
+        title: fr ? '2 · Production locale' : '2 · Local production',
+        keyValues: [
+          { label: fr ? 'Statut' : 'Status', value: leg2.available ? (fr ? 'Confirmée' : 'Confirmed') : (fr ? 'Non détectée' : 'Not detected') },
+          ...(leg2.available ? [
+            { label: fr ? 'Commodité' : 'Commodity', value: leg2.commodity || '—' },
+            { label: fr ? 'Part continentale' : 'Continental share', value: leg2.continental_share_pct != null ? `${leg2.continental_share_pct}%` : '—' },
+          ] : []),
+        ],
+      },
+      {
+        title: fr ? '3 · Export du produit fini' : '3 · Finished product export',
+        keyValues: [
+          { label: fr ? 'Produit fini' : 'Finished product', value: `SH ${finishedHs} → ${destination}` },
+          { label: fr ? 'Score export' : 'Export score', value: exportScore != null ? pct(exportScore) : '—' },
+        ],
+      },
+    ];
+    if (va.available) {
+      sections.push({
+        title: fr ? 'Valeur ajoutée brute' : 'Gross value added',
+        keyValues: [
+          { label: fr ? 'Valeur ajoutée' : 'Value added', value: money(va.gross_value_added_usd) },
+          { label: fr ? 'Marge brute' : 'Gross margin', value: va.gross_margin_pct != null ? `${va.gross_margin_pct}%` : '—' },
+        ],
+      });
+      if (va.note) sections.push({ title: fr ? 'Note' : 'Note', paragraphs: [va.note] });
+    }
+    if (rep.data_quality?.note) sections.push({ title: fr ? 'Qualité des données' : 'Data quality', paragraphs: [rep.data_quality.note] });
     return {
-      badge: `S1-${finishedHs}`,
-      filename: `s1-transformation-${finishedHs}`,
+      badge: `S1 · ${producer}`,
+      title: `${fr ? 'Transformation' : 'Transformation'} ${inputHs} → ${finishedHs} — ${producer}`,
+      subtitle: `${inputOrigin} → ${producer} → ${destination}`,
+      filename: opportunityPdfFilename('S1', `${producer}_${finishedHs}`),
       kpis: [
         { label: fr ? "Produit fini" : "Finished product", value: finishedHs, accent: 'gold' },
-        { label: fr ? "Valeur ajoutée" : "Value added", value: va.percentage ? `${Math.round(va.percentage)}%` : '—', accent: 'green' }
+        { label: fr ? "Valeur ajoutée" : "Value added", value: va.available ? money(va.gross_value_added_usd) : '—', accent: 'green' },
+        { label: fr ? "Score export" : "Export score", value: exportScore != null ? pct(exportScore) : '—', accent: 'terra' },
       ],
-      sections: [{ title: fr ? `S1 · Transformation (${inputHs} → ${finishedHs})` : `S1 · Transformation (${inputHs} → ${finishedHs})`, text: '' }]
+      sections,
+      source: 'FAOSTAT / USGS / UNIDO · tarifs ZLECAf · OEC',
     };
-  }, [rep, finishedHs, inputHs, va.percentage, fr]);
+  }, [rep, finishedHs, inputHs, inputOrigin, producer, destination, leg1, leg2, va, exportScore, fr]);
 
   return (
     <div>
@@ -1634,18 +1815,46 @@ function ImportOpportunitiesView({ countries, fr, onAnalyze }) {
 
   const opps = rep?.ranked_opportunities || [];
 
+  // Le PDF reprend le tableau des opportunités classées de l'écran — pas un
+  // squelette (une section `text` n'est pas un type du bâtisseur : PDF vide).
   const buildPdfSpec = useCallback(() => {
     if (!rep) return null;
+    const sections = [];
+    if (opps.length) {
+      sections.push({
+        title: fr ? `Meilleures opportunités d'importation — ${country}` : `Best import opportunities — ${country}`,
+        table: {
+          columns: [
+            { key: 'product', label: fr ? 'Produit' : 'Product', width: 2 },
+            { key: 'need', label: fr ? 'Besoin estimé' : 'Est. need', align: 'right', width: 1.2 },
+            { key: 'supplier', label: fr ? 'Fournisseur conseillé' : 'Suggested supplier', width: 1.2 },
+            { key: 'tariffAdv', label: fr ? 'Avantage tarifaire' : 'Tariff advantage', align: 'right', width: 1 },
+            { key: 'score', label: 'Score', align: 'right', width: 0.7 },
+          ],
+          rows: opps.map((o) => ({
+            product: `${o.commodity || '—'} (SH ${o.hs_code})`,
+            need: o.market_need?.value != null ? `${Math.round(o.market_need.value).toLocaleString('en-US')} ${o.unit || ''}` : '—',
+            supplier: `${o.best_supplier?.country_iso3 || '—'}${o.best_supplier?.production_share_pct != null ? ` (${o.best_supplier.production_share_pct}% prod.)` : ''}`,
+            tariffAdv: o.best_supplier?.tariff_advantage_pct != null ? `${o.best_supplier.tariff_advantage_pct}%` : '—',
+            score: o.end_to_end_score ?? '—',
+          })),
+        },
+      });
+    }
     return {
-      badge: `S4-${country}`,
+      badge: `S4 · ${country}`,
+      title: fr ? `Opportunités d'importation — ${country}` : `Import opportunities — ${country}`,
+      subtitle: `${rep.products_scanned ?? 0} ${fr ? 'produits scannés' : 'products scanned'} · ${rep.candidates_retained ?? 0} ${fr ? 'retenus' : 'retained'} · ${rep.deep_dived ?? 0} ${fr ? 'analysés' : 'deep-dived'}`,
       filename: `s4-importations-${country}`,
       kpis: [
         { label: fr ? "Pays" : "Country", value: country, accent: 'gold' },
-        { label: fr ? "Produits scannés" : "Products scanned", value: String(rep.products_scanned || 0), accent: 'blue' }
+        { label: fr ? "Produits scannés" : "Products scanned", value: String(rep.products_scanned || 0), accent: 'green' },
+        { label: fr ? "Opportunités classées" : "Ranked opportunities", value: String(opps.length), accent: 'terra' },
       ],
-      sections: [{ title: fr ? `S4 · Opportunités d'importation` : `S4 · Import opportunities`, text: `${country} · ${rep.candidates_retained || 0} ${fr ? 'retenus' : 'retained'}` }]
+      sections,
+      source: 'FAOSTAT / USGS / UNIDO · OEC BACI · tarifs ZLECAf',
     };
-  }, [rep, country, fr]);
+  }, [rep, country, opps, fr]);
 
   return (
     <div>
@@ -1797,18 +2006,46 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
 
   const inp = rep?.inputs || {};
 
+  // Le PDF détaille l'estimation ET ses intrants de calcul (transparence),
+  // comme à l'écran — pas un squelette (une section `text` n'est pas un type
+  // du bâtisseur : PDF vide).
   const buildPdfSpec = useCallback(() => {
     if (!rep) return null;
+    const sections = [];
+    if (rep.available) {
+      const needKv = [
+        { label: fr ? 'Besoin estimé' : 'Estimated need', value: `${Math.round(rep.value || 0).toLocaleString('en-US')} ${rep.unit || ''}` },
+        { label: fr ? 'Méthode' : 'Method', value: rep.method || '—' },
+      ];
+      if (rep.is_estimation) needKv.push({ label: fr ? 'Statut' : 'Status', value: `${fr ? 'Estimation' : 'Estimate'}${rep.estimation_level ? ` (L${rep.estimation_level})` : ''}` });
+      if (rep.observed_imports?.import_value_usd) needKv.push({ label: fr ? 'Imports observés' : 'Observed imports', value: money(rep.observed_imports.import_value_usd) });
+      if (rep.suggested_supplier?.iso3) needKv.push({ label: fr ? 'Fournisseur conseillé' : 'Suggested supplier', value: rep.suggested_supplier.iso3 });
+      sections.push({ title: fr ? `Besoin national — ${country}` : `National need — ${country}`, keyValues: needKv });
+
+      const inputKv = [
+        { label: fr ? 'Population' : 'Population', value: inp.population != null ? Number(inp.population).toLocaleString('en-US') : '—' },
+        { label: fr ? 'Production continentale' : 'Continental production', value: inp.continental_production != null ? `${Number(inp.continental_production).toLocaleString('en-US')} ${rep.unit || ''}` : '—' },
+        { label: fr ? 'Réf. par habitant' : 'Per-capita ref.', value: inp.per_capita_reference != null ? String(inp.per_capita_reference) : '—' },
+      ];
+      if (inp.continental_imports_tonnes != null) inputKv.push({ label: fr ? 'Imports continentaux' : 'Continental imports', value: `${Number(inp.continental_imports_tonnes).toLocaleString('en-US')} ${rep.unit || ''}` });
+      if (inp.gdp_adjustment_factor != null) inputKv.push({ label: fr ? 'Facteur PIB/hab' : 'GDP/cap factor', value: String(inp.gdp_adjustment_factor) });
+      sections.push({ title: fr ? 'Intrants du calcul (transparence)' : 'Computation inputs (transparency)', keyValues: inputKv });
+    }
+    if (rep.note) sections.push({ title: fr ? 'Note' : 'Note', paragraphs: [rep.note] });
     return {
-      badge: `S3-${hsCode}`,
-      filename: `s3-besoin-national-${hsCode}`,
+      badge: `S3 · ${country}`,
+      title: fr ? `Besoin national SH ${hsCode} — ${country}` : `National need HS ${hsCode} — ${country}`,
+      subtitle: rep.available && rep.method ? rep.method : undefined,
+      filename: opportunityPdfFilename('S3', `${country}_${hsCode}`),
       kpis: [
         { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
-        { label: fr ? "Pays" : "Country", value: country, accent: 'blue' }
+        { label: fr ? "Pays" : "Country", value: country, accent: 'green' },
+        { label: fr ? "Besoin estimé" : "Estimated need", value: rep.available ? `${Math.round(rep.value || 0).toLocaleString('en-US')} ${rep.unit || ''}` : '—', accent: 'terra' },
       ],
-      sections: [{ title: fr ? `S3 · Besoin national ${hsCode}` : `S3 · National need ${hsCode}`, text: rep.available ? `${rep.value || '—'} ${rep.unit || ''}` : '' }]
+      sections,
+      source: (rep.sources || []).map((s) => srcText(s)).filter(Boolean).join(' · ') || 'FAOSTAT / Banque mondiale / OEC',
     };
-  }, [rep, hsCode, country, fr]);
+  }, [rep, hsCode, country, inp, fr]);
 
   return (
     <div>

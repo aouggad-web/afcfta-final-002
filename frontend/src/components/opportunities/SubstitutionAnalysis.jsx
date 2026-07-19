@@ -23,10 +23,11 @@ import {
 import TradeSankeyDiagram from './TradeSankeyDiagram';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
-import { 
+import {
   TrendingUp, TrendingDown, Globe, Package, Factory, Ship,
   ArrowRight, ArrowLeftRight, Loader2, AlertCircle, Search,
-  DollarSign, Target, MapPin, ChevronRight, Sparkles
+  DollarSign, Target, MapPin, ChevronRight, ChevronDown, Sparkles,
+  BarChart3, ShieldCheck
 } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -66,6 +67,47 @@ const FEASIBILITY_TXT = {
     certification: 'Certification',
     intensityLabel: { faible: 'Low', moyen: 'Medium', fort: 'High' },
   },
+};
+
+// Production africaine VÉRIFIÉE (FAOSTAT / UNIDO / USGS) : le backend joint à
+// chaque opportunité la production physique réelle du produit sur le continent
+// (champ `verified_production`) — la preuve matérielle derrière les flux
+// commerciaux. Bloc + textes du panneau d'analyse transversal et du drill-down
+// chapitre (SH2) -> position (SH4) -> produit (SH6).
+const ENRICHED_TXT = {
+  fr: {
+    verifiedTitle: 'Production africaine vérifiée',
+    verifiedNone: 'Produit non couvert par le référentiel production (FAOSTAT / UNIDO / USGS)',
+    analysisTitle: "Synthèse d'analyse",
+    avgCoef: 'Substituabilité moyenne (pondérée par la valeur)',
+    constraints: 'Facteurs limitants',
+    difficulties: 'Difficulté',
+    verifiedCount: 'Opportunités adossées à une production vérifiée',
+    hierarchyTitle: 'Priorités par chapitre — affiner en SH4 puis SH6',
+    hierarchyHint: 'Cliquez un chapitre pour le détailler en positions SH4, puis en produits SH6.',
+    opportunitiesCount: 'opportunités',
+  },
+  en: {
+    verifiedTitle: 'Verified African production',
+    verifiedNone: 'Product not covered by the production reference (FAOSTAT / UNIDO / USGS)',
+    analysisTitle: 'Analysis summary',
+    avgCoef: 'Average substitutability (value-weighted)',
+    constraints: 'Binding constraints',
+    difficulties: 'Difficulty',
+    verifiedCount: 'Opportunities backed by verified production',
+    hierarchyTitle: 'Priorities by chapter — refine to HS4 then HS6',
+    hierarchyHint: 'Click a chapter to break it down into HS4 headings, then HS6 products.',
+    opportunitiesCount: 'opportunities',
+  },
+};
+
+// Valeur de production : l'unité varie selon le référentiel (tonnes FAOSTAT,
+// USD de valeur ajoutée UNIDO, tonnes/carats USGS) — formater en conséquence.
+const fmtProduction = (value, unit) => {
+  if (value == null || isNaN(value)) return '—';
+  if (unit === 'USD') return formatValue(value);
+  const n = value >= 1e6 ? `${(value / 1e6).toFixed(1)}M` : value >= 1e3 ? `${(value / 1e3).toFixed(0)}K` : `${Math.round(value)}`;
+  return `${n} ${unit || ''}`.trim();
 };
 
 // Positionnement prix (opportunités d'export) : le backend compare le prix
@@ -141,6 +183,39 @@ const FeasibilityBlock = ({ feasibility, bindingConstraint, language }) => {
             </span>
           ))}
         </div>
+      )}
+    </div>
+  );
+};
+
+// Production africaine réelle du produit (FAOSTAT / UNIDO / USGS) : commodité,
+// année, institution source et top producteurs mesurés — avec le garde-fou de
+// couverture quand le référentiel n'ingère qu'une poignée de pays.
+const VerifiedProductionBlock = ({ production, language }) => {
+  if (!production) return null;
+  const txt = ENRICHED_TXT[language] || ENRICHED_TXT.fr;
+  return (
+    <div className="mb-4 bg-emerald-50/60 border border-emerald-100 rounded-lg p-3" data-testid="verified-production">
+      <div className="flex items-center gap-1.5 mb-1.5">
+        <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+        <span className="text-xs font-semibold text-emerald-800">{txt.verifiedTitle}</span>
+        <span className="text-[10px] text-emerald-600 ml-auto">
+          {production.institution} · {production.year}
+        </span>
+      </div>
+      <p className="text-[11px] text-slate-600 mb-1.5">{production.commodity}</p>
+      <div className="flex flex-wrap gap-1.5">
+        {(production.top_producers || []).map((p) => (
+          <span key={p.country_iso3} className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-white border border-emerald-200 text-emerald-800">
+            {p.country_name} · {fmtProduction(p.value, production.unit)}
+            {p.share_pct != null && ` (${p.share_pct}%)`}
+          </span>
+        ))}
+      </div>
+      {production.coverage_caveat && (
+        <p className="mt-1.5 text-[10px] text-amber-700" data-testid="verified-production-caveat">
+          ⚠ {production.coverage_caveat}
+        </p>
       )}
     </div>
   );
@@ -264,6 +339,12 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
           language={language}
         />
 
+        {/* Real African production of this product (FAOSTAT / UNIDO / USGS) */}
+        <VerifiedProductionBlock
+          production={opportunity.verified_production}
+          language={language}
+        />
+
         {/* Current Source (for imports) */}
         {isImport && product?.current_source && (
           <div className="mb-4 flex items-center gap-2 text-sm text-slate-500">
@@ -333,6 +414,148 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
             ))}
           </div>
         </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Panneau « synthèse d'analyse » : lecture transversale du portefeuille
+// d'opportunités calculée par le backend (summary.analysis) — substituabilité
+// moyenne pondérée, répartition difficulté / facteur limitant, couverture du
+// référentiel production.
+const AnalysisSummaryPanel = ({ analysis, language }) => {
+  if (!analysis || Object.keys(analysis).length === 0) return null;
+  const txt = ENRICHED_TXT[language] || ENRICHED_TXT.fr;
+  const feasTxt = FEASIBILITY_TXT[language] || FEASIBILITY_TXT.fr;
+  const difficultyLabelEn = {
+    'Facile': 'Easy', 'Modéré': 'Moderate', 'Difficile': 'Difficult', 'Très difficile': 'Very difficult',
+  };
+  const constraintLabels = {
+    fr: { 'capacité africaine': 'Capacité africaine', 'capacité exportateur': 'Capacité exportateur', 'substituabilité': 'Substituabilité' },
+    en: { 'capacité africaine': 'African capacity', 'capacité exportateur': 'Exporter capacity', 'substituabilité': 'Substitutability' },
+  };
+  const cLabels = constraintLabels[language] || constraintLabels.fr;
+
+  return (
+    <Card className="shadow-lg border-slate-200" data-testid="analysis-summary">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg font-bold flex items-center gap-2">
+          <BarChart3 className="h-5 w-5 text-emerald-600" />
+          {txt.analysisTitle}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-slate-50 rounded-lg p-3">
+          <p className="text-xs text-slate-500 mb-1">{txt.avgCoef}</p>
+          <p className="text-2xl font-bold text-slate-900">
+            {analysis.avg_feasibility_coefficient != null
+              ? `${Math.round(analysis.avg_feasibility_coefficient * 100)}%`
+              : '—'}
+          </p>
+        </div>
+        <div className="bg-slate-50 rounded-lg p-3">
+          <p className="text-xs text-slate-500 mb-1.5">{txt.difficulties}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {Object.entries(analysis.difficulty_distribution || {}).map(([label, count]) => (
+              <span key={label} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
+                {language === 'en' ? (difficultyLabelEn[label] || label) : label} · {count}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="bg-slate-50 rounded-lg p-3">
+          <p className="text-xs text-slate-500 mb-1.5">{txt.constraints}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {Object.entries(analysis.binding_constraint_distribution || {}).map(([label, count]) => (
+              <span key={label} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
+                {cLabels[label] || label} · {count}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="bg-emerald-50 rounded-lg p-3">
+          <p className="text-xs text-emerald-600 mb-1">{txt.verifiedCount}</p>
+          <p className="text-2xl font-bold text-emerald-700">
+            {analysis.verified_production_count ?? 0}
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Drill-down chapitre (SH2) -> position (SH4) -> produit (SH6) calculé par le
+// backend (summary.product_hierarchy) : l'utilisateur repère le chapitre
+// porteur, l'ouvre en positions SH4, puis lit les codes SH6 exacts — la
+// granularité où se prend la décision.
+const ProductHierarchyPanel = ({ hierarchy, language }) => {
+  const [openChapter, setOpenChapter] = useState(null);
+  const [openHs4, setOpenHs4] = useState(null);
+  if (!hierarchy?.length) return null;
+  const txt = ENRICHED_TXT[language] || ENRICHED_TXT.fr;
+
+  return (
+    <Card className="shadow-lg" data-testid="product-hierarchy">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg font-bold">{txt.hierarchyTitle}</CardTitle>
+        <CardDescription className="text-xs">{txt.hierarchyHint}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        {hierarchy.map((chapter) => {
+          const isOpen = openChapter === chapter.chapter;
+          return (
+            <div key={chapter.chapter} className="border border-slate-200 rounded-lg overflow-hidden">
+              <button
+                type="button"
+                onClick={() => { setOpenChapter(isOpen ? null : chapter.chapter); setOpenHs4(null); }}
+                className="w-full flex items-center gap-2 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 transition-colors text-left"
+                data-testid={`hierarchy-chapter-${chapter.chapter}`}
+              >
+                {isOpen ? <ChevronDown className="h-4 w-4 text-slate-400" /> : <ChevronRight className="h-4 w-4 text-slate-400" />}
+                <Badge variant="outline" className="font-mono text-xs">SH {chapter.chapter}</Badge>
+                <span className="font-medium text-sm text-slate-800 flex-1">{chapter.name}</span>
+                <span className="text-xs text-slate-500">{chapter.opportunity_count} {txt.opportunitiesCount}</span>
+                <span className="text-sm font-bold text-emerald-700">{formatValue(chapter.total_value)}</span>
+              </button>
+              {isOpen && (
+                <div className="divide-y divide-slate-100">
+                  {(chapter.hs4 || []).map((hs4) => {
+                    const hs4Open = openHs4 === hs4.hs4_code;
+                    return (
+                      <div key={hs4.hs4_code}>
+                        <button
+                          type="button"
+                          onClick={() => setOpenHs4(hs4Open ? null : hs4.hs4_code)}
+                          className="w-full flex items-center gap-2 pl-9 pr-3 py-2 hover:bg-slate-50 transition-colors text-left"
+                          data-testid={`hierarchy-hs4-${hs4.hs4_code}`}
+                        >
+                          {hs4Open ? <ChevronDown className="h-3.5 w-3.5 text-slate-400" /> : <ChevronRight className="h-3.5 w-3.5 text-slate-400" />}
+                          <Badge variant="outline" className="font-mono text-[10px]">SH {hs4.hs4_code}</Badge>
+                          <span className="text-sm text-slate-700 flex-1 truncate">{hs4.representative_name}</span>
+                          <span className="text-xs font-semibold text-emerald-600">{formatValue(hs4.total_value)}</span>
+                        </button>
+                        {hs4Open && (
+                          <div className="pl-16 pr-3 pb-2 space-y-1">
+                            {(hs4.products || []).map((p) => (
+                              <div key={p.hs_code} className="flex items-center gap-2 py-1 text-sm" data-testid={`hierarchy-hs6-${p.hs_code}`}>
+                                <Badge className="font-mono text-[10px] bg-emerald-100 text-emerald-800 hover:bg-emerald-100">SH6 {p.hs_code}</Badge>
+                                <span className="text-slate-600 flex-1 truncate">{p.name}</span>
+                                {p.feasibility_coefficient != null && (
+                                  <span className="text-[10px] text-slate-500">{Math.round(p.feasibility_coefficient * 100)}%</span>
+                                )}
+                                <span className="text-xs font-semibold text-slate-800">{formatValue(p.value)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </CardContent>
     </Card>
   );
@@ -480,6 +703,20 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
     }
 
     const sections = [];
+    // Synthèse d'analyse (mêmes chiffres que le panneau à l'écran).
+    const analysis = summary.analysis || {};
+    if (Object.keys(analysis).length) {
+      const enr = ENRICHED_TXT[fr ? 'fr' : 'en'];
+      sections.push({
+        title: enr.analysisTitle,
+        keyValues: [
+          { label: enr.avgCoef, value: analysis.avg_feasibility_coefficient != null ? `${Math.round(analysis.avg_feasibility_coefficient * 100)}%` : '—' },
+          { label: enr.difficulties, value: Object.entries(analysis.difficulty_distribution || {}).map(([k, v]) => `${k}: ${v}`).join(' · ') || '—' },
+          { label: enr.constraints, value: Object.entries(analysis.binding_constraint_distribution || {}).map(([k, v]) => `${k}: ${v}`).join(' · ') || '—' },
+          { label: enr.verifiedCount, value: String(analysis.verified_production_count ?? 0) },
+        ],
+      });
+    }
     if (isImport) {
       sections.push({
         title: fr ? 'Opportunités de substitution d’imports' : 'Import substitution opportunities',
@@ -553,6 +790,64 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
           },
         });
       }
+    }
+
+    // Production africaine vérifiée (FAOSTAT / UNIDO / USGS) par produit.
+    const enr2 = ENRICHED_TXT[fr ? 'fr' : 'en'];
+    const verifiedRows = opportunities
+      .filter((o) => o.verified_production)
+      .map((o) => {
+        const vp = o.verified_production;
+        const product = isImport ? o.imported_product : o.export_product;
+        return {
+          hs: product?.hs_code || '—',
+          commodity: vp.commodity || '—',
+          producers: (vp.top_producers || [])
+            .map((p) => `${p.country_name} (${fmtProduction(p.value, vp.unit)})`)
+            .join(' · '),
+          source: `${vp.institution || '—'} ${vp.year || ''}`.trim(),
+        };
+      });
+    if (verifiedRows.length) {
+      sections.push({
+        title: enr2.verifiedTitle,
+        table: {
+          columns: [
+            { key: 'hs', label: 'SH', width: 0.7 },
+            { key: 'commodity', label: fr ? 'Commodité' : 'Commodity', width: 1.8 },
+            { key: 'producers', label: fr ? 'Top producteurs réels' : 'Top real producers', width: 3.0 },
+            { key: 'source', label: 'Source', width: 0.9 },
+          ],
+          rows: verifiedRows,
+        },
+      });
+    }
+    // Drill-down chapitre -> SH4 -> SH6 (aplati en tableau).
+    const hierarchyRows = (summary.product_hierarchy || []).flatMap((ch) =>
+      (ch.hs4 || []).flatMap((h4) =>
+        (h4.products || []).map((p) => ({
+          chapter: `${ch.chapter} — ${ch.name}`,
+          hs4: h4.hs4_code,
+          hs6: p.hs_code,
+          name: p.name || '—',
+          value: formatValue(p.value),
+        })),
+      ),
+    );
+    if (hierarchyRows.length) {
+      sections.push({
+        title: enr2.hierarchyTitle,
+        table: {
+          columns: [
+            { key: 'chapter', label: fr ? 'Chapitre' : 'Chapter', width: 1.7 },
+            { key: 'hs4', label: 'SH4', width: 0.6 },
+            { key: 'hs6', label: 'SH6', width: 0.7 },
+            { key: 'name', label: fr ? 'Produit' : 'Product', width: 2.4 },
+            { key: 'value', label: fr ? 'Valeur' : 'Value', align: 'right', width: 0.9 },
+          ],
+          rows: hierarchyRows,
+        },
+      });
     }
 
     return {
@@ -747,13 +1042,19 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
               </CardContent>
             </Card>
 
+            {/* Analyse transversale du portefeuille (summary.analysis) */}
+            <AnalysisSummaryPanel
+              analysis={currentData?.summary?.analysis}
+              language={currentLang}
+            />
+
             {/* Opportunities Grid */}
             <TabsContent value="import" className="mt-0">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {importData?.opportunities?.slice(0, 6).map((opp, idx) => (
-                  <OpportunityCard 
-                    key={idx} 
-                    opportunity={opp} 
+                {importData?.opportunities?.slice(0, 12).map((opp, idx) => (
+                  <OpportunityCard
+                    key={idx}
+                    opportunity={opp}
                     type="import"
                     language={currentLang}
                   />
@@ -763,10 +1064,10 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
 
             <TabsContent value="export" className="mt-0">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {exportData?.opportunities?.slice(0, 6).map((opp, idx) => (
-                  <OpportunityCard 
-                    key={idx} 
-                    opportunity={opp} 
+                {exportData?.opportunities?.slice(0, 12).map((opp, idx) => (
+                  <OpportunityCard
+                    key={idx}
+                    opportunity={opp}
                     type="export"
                     language={currentLang}
                   />
@@ -775,15 +1076,23 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
             </TabsContent>
           </Tabs>
 
-          {/* Top Sectors Chart */}
-          {activeTab === 'import' && currentData?.summary?.top_sectors?.length > 0 && (
+          {/* Drill-down chapitre (SH2) -> position (SH4) -> produit (SH6) */}
+          <ProductHierarchyPanel
+            hierarchy={currentData?.summary?.product_hierarchy}
+            language={currentLang}
+          />
+
+          {/* Top Sectors Chart — imports ET exports (le backend fournit
+              top_sectors pour les deux flux ; dataKey aligné sur total_value,
+              le champ réellement renvoyé — "value" traçait des barres vides) */}
+          {currentData?.summary?.top_sectors?.length > 0 && (
             <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle className="text-lg font-bold">{txt.topSectors}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={250}>
-                  <BarChart 
+                  <BarChart
                     data={currentData.summary.top_sectors}
                     layout="vertical"
                     margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
@@ -792,7 +1101,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
                     <XAxis type="number" tickFormatter={(v) => formatValue(v)} />
                     <YAxis dataKey="name" type="category" width={90} tick={{ fontSize: 11 }} />
                     <Tooltip formatter={(v) => formatValue(v)} />
-                    <Bar dataKey="value" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
+                    <Bar dataKey="total_value" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
