@@ -546,8 +546,13 @@ HS_PRODUCT_NAMES = {
     "96": {"fr": "Ouvrages divers", "en": "Miscellaneous articles"},
     "97": {"fr": "Objets d'art", "en": "Works of art"},
     # Specific HS4 codes
+    "0402": {
+        "fr": "Lait et crème de lait concentrés/sucrés",
+        "en": "Concentrated/sweetened milk and cream",
+    },
     "0603": {"fr": "Fleurs coupées", "en": "Cut flowers"},
     "0713": {"fr": "Légumes secs", "en": "Dried legumes"},
+    "0803": {"fr": "Bananes, y compris les plantains", "en": "Bananas, including plantains"},
     "0805": {"fr": "Agrumes", "en": "Citrus fruits"},
     "0901": {"fr": "Café", "en": "Coffee"},
     "0902": {"fr": "Thé", "en": "Tea"},
@@ -563,23 +568,48 @@ HS_PRODUCT_NAMES = {
     "1801": {"fr": "Cacao en fèves", "en": "Cocoa beans"},
     "2202": {"fr": "Boissons non alcoolisées", "en": "Non-alcoholic beverages"},
     "2523": {"fr": "Ciment", "en": "Cement"},
+    "2601": {"fr": "Minerais de fer et concentrés", "en": "Iron ores and concentrates"},
     "2709": {"fr": "Huiles brutes de pétrole", "en": "Crude petroleum oils"},
     "2710": {"fr": "Huiles de pétrole raffinées", "en": "Refined petroleum oils"},
     "2711": {"fr": "Gaz de pétrole", "en": "Petroleum gases"},
+    "2814": {"fr": "Ammoniac", "en": "Ammonia"},
     "3004": {"fr": "Médicaments", "en": "Medicaments"},
     "3102": {"fr": "Engrais azotés", "en": "Nitrogen fertilizers"},
     "3105": {"fr": "Engrais NPK", "en": "NPK fertilizers"},
     "3901": {"fr": "Polymères d'éthylène", "en": "Ethylene polymers"},
     "3902": {"fr": "Polymères de propylène", "en": "Propylene polymers"},
+    "4001": {"fr": "Caoutchouc naturel", "en": "Natural rubber"},
     "4011": {"fr": "Pneumatiques neufs", "en": "New pneumatic tires"},
     "5201": {"fr": "Coton non cardé", "en": "Cotton, not carded"},
+    "6109": {
+        "fr": "T-shirts et maillots de corps, en bonneterie",
+        "en": "T-shirts, singlets, knitted",
+    },
+    "7102": {"fr": "Diamants", "en": "Diamonds"},
     "7108": {"fr": "Or", "en": "Gold"},
+    "7207": {
+        "fr": "Demi-produits en fer ou aciers non alliés",
+        "en": "Semi-finished iron/non-alloy steel products",
+    },
     "7208": {"fr": "Produits laminés plats en fer", "en": "Flat-rolled iron products"},
+    "7308": {
+        "fr": "Constructions et parties de constructions en fer ou acier",
+        "en": "Structures and parts of structures, of iron or steel",
+    },
     "7403": {"fr": "Cuivre affiné", "en": "Refined copper"},
+    "8471": {
+        "fr": "Ordinateurs et machines de traitement de données",
+        "en": "Automatic data-processing machines (computers)",
+    },
+    "8481": {"fr": "Articles de robinetterie", "en": "Taps, cocks, valves and similar appliances"},
     "8517": {"fr": "Téléphones", "en": "Telephones"},
     "8544": {"fr": "Fils et câbles électriques", "en": "Insulated wire, cable"},
     "8703": {"fr": "Voitures de tourisme", "en": "Motor cars"},
     "8704": {"fr": "Véhicules pour transport de marchandises", "en": "Goods transport vehicles"},
+    "8708": {
+        "fr": "Parties et accessoires de véhicules automobiles",
+        "en": "Motor vehicle parts and accessories",
+    },
 }
 
 
