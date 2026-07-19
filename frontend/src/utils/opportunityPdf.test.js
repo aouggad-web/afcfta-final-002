@@ -109,6 +109,42 @@ describe('buildOpportunityPdf', () => {
   });
 });
 
+describe('buildOpportunityPdf — the data actually lands in the document', () => {
+  // Régression « le PDF sort mais sans données » : les specs squelettes des
+  // modes S1-S4/market/bilateral passaient une section { title, text } — or
+  // `text` n'est PAS un type de section du bâtisseur (table / keyValues /
+  // paragraphs), donc le document généré ne contenait aucune donnée. Ces
+  // tests vérifient le CONTENU des flux de page, pas juste la taille en
+  // octets (un PDF vide pèse déjà > 1000 octets à cause du bandeau).
+  const pageOps = (doc) =>
+    doc.internal.pages
+      .slice(1)
+      .flat()
+      .join('\n');
+
+  it('renders table rows, keyValues and paragraphs into the page streams', () => {
+    const doc = buildOpportunityPdf({ ...richSpec, language: 'fr' });
+    const ops = pageOps(doc);
+    // Table cells
+    expect(ops).toContain('Produit 0');
+    expect(ops).toContain('Produit 59');
+    // KPIs
+    expect(ops).toContain('$4.2B');
+    // keyValues
+    expect(ops).toContain('30%');
+    // paragraphs
+    expect(ops).toContain('Estimation transparente');
+  });
+
+  it('a section with only an unsupported `text` key contributes nothing (the old empty-PDF shape)', () => {
+    const emptyish = buildOpportunityPdf({
+      title: 'T',
+      sections: [{ title: 'Section', text: 'contenu perdu' }],
+    });
+    expect(pageOps(emptyish)).not.toContain('contenu perdu');
+  });
+});
+
 describe('opportunityPdfFilename', () => {
   it('builds a dated, filesystem-safe name', () => {
     const name = opportunityPdfFilename('Substitution', 'DZA import');

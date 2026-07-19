@@ -17,6 +17,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from services import cache_service
+from services import production_capacity_service
 from services.real_trade_data_service import (
     AFRICAN_COUNTRIES,
     get_country_name,
@@ -28,6 +29,12 @@ from services.substitution_feasibility_service import (
     realistic_substitution_potential,
     substitutability_for_hs,
 )
+
+try:
+    # Référentiel complet des 97 chapitres SH (FR/EN) — le même que la base HS6.
+    from etl.hs_codes_data import HS_CHAPTERS
+except ImportError:  # pragma: no cover - le référentiel fait partie du dépôt
+    HS_CHAPTERS = {}
 
 logger = logging.getLogger(__name__)
 
@@ -595,7 +602,167 @@ class RealSubstitutionService:
     # les anciens payloads pendant des heures, et les nouveautés semblent
     # « non implémentées » à l'écran alors que le code est bien déployé
     # (constaté en production après les PR #281/#282).
-    _CACHE_SCHEMA_VERSION = 3
+    # v4 : production vérifiée (FAOSTAT/UNIDO/USGS) sur chaque opportunité +
+    # bloc summary.analysis + top_sectors sur les exports.
+    _CACHE_SCHEMA_VERSION = 4
+
+    @staticmethod
+    def _verified_production(hs_code: str, memo: Dict[str, Optional[Dict]]) -> Optional[Dict]:
+        """
+        Croisement avec le référentiel de production RÉELLE (FAOSTAT / USGS /
+        UNIDO — données locales, aucun appel réseau) : qui produit effectivement
+        ce produit en Afrique, en volume physique, dernière année disponible.
+
+        C'est la preuve matérielle qui manque à la seule lecture des flux
+        commerciaux : un « fournisseur africain potentiel » identifié via ses
+        exports est bien plus crédible quand le référentiel confirme une
+        production continentale mesurée. ``memo`` déduplique les appels — de
+        nombreux SH6 d'un même rapport retombent sur la même commodité.
+        """
+        if hs_code in memo:
+            return memo[hs_code]
+        compact: Optional[Dict] = None
+        try:
+            prod = production_capacity_service.get_continental_producers(hs_code)
+            if prod.get("available"):
+                compact = {
+                    "commodity": prod.get("commodity"),
+                    "measure": prod.get("measure"),
+                    "unit": prod.get("unit"),
+                    "year": prod.get("year"),
+                    "institution": (prod.get("source") or {}).get("institution"),
+                    "continental_total": prod.get("continental_total"),
+                    "top_producers": (prod.get("top_producers") or [])[:3],
+                    "coverage_caveat": prod.get("coverage_caveat"),
+                }
+        except Exception:  # noqa: BLE001 - enrichissement, jamais bloquant
+            logger.warning("verified_production lookup failed for %s", hs_code, exc_info=True)
+        memo[hs_code] = compact
+        return compact
+
+    @staticmethod
+    def _build_product_hierarchy(
+        opportunities: List[Dict], product_key: str, value_key: str, lang: str, top_n: int = 5
+    ) -> List[Dict]:
+        """
+        Drill-down chapitre (SH2) -> position (SH4) -> produit (SH6), pour
+        affiner l'analyse par étapes plutôt que de tout aplatir au chapitre :
+        un utilisateur repère d'abord le CHAPITRE porteur (ex. 87 véhicules),
+        puis affine sur la POSITION SH4 (8703 tourisme vs 8708 pièces), puis
+        sur le CODE SH6 exact — la granularité où se prend la décision
+        d'achat ou de sourcing.
+
+        Aucun nom n'est inventé au niveau SH4 : le libellé retenu est celui du
+        produit SH6 réel de plus forte valeur dans ce groupe (donnée réelle,
+        jamais une description fabriquée pour le niveau intermédiaire).
+        """
+        chapters: Dict[str, Dict] = {}
+        for opp in opportunities:
+            product = opp.get(product_key) or {}
+            hs_code = "".join(ch for ch in str(product.get("hs_code") or "") if ch.isdigit())
+            if len(hs_code) < 2:
+                continue
+            value = int(opp.get(value_key) or 0)
+            chapter_code = hs_code[:2]
+            hs4_code = hs_code[:4] if len(hs_code) >= 4 else hs_code
+
+            chapter_names = HS_CHAPTERS.get(chapter_code, {})
+            chapter = chapters.setdefault(
+                chapter_code,
+                {
+                    "chapter": chapter_code,
+                    "name": chapter_names.get(lang, chapter_names.get("en", f"SH {chapter_code}")),
+                    "total_value": 0,
+                    "opportunity_count": 0,
+                    "_hs4": {},
+                },
+            )
+            chapter["total_value"] += value
+            chapter["opportunity_count"] += 1
+
+            hs4 = chapter["_hs4"].setdefault(
+                hs4_code, {"hs4_code": hs4_code, "total_value": 0, "_hs6": []}
+            )
+            hs4["total_value"] += value
+            hs4["_hs6"].append(
+                {
+                    "hs_code": product.get("hs_code"),
+                    "name": product.get("name"),
+                    "value": value,
+                    "feasibility_coefficient": (opp.get("substitution_feasibility") or {}).get(
+                        "coefficient"
+                    ),
+                    "binding_constraint": opp.get("binding_constraint"),
+                }
+            )
+
+        result = []
+        for chapter in sorted(chapters.values(), key=lambda c: c["total_value"], reverse=True)[
+            :top_n
+        ]:
+            hs4_list = sorted(
+                chapter["_hs4"].values(), key=lambda h: h["total_value"], reverse=True
+            )[:top_n]
+            hs4_out = []
+            for hs4 in hs4_list:
+                hs6_sorted = sorted(hs4["_hs6"], key=lambda p: p["value"], reverse=True)
+                # Libellé de la position SH4 = nom du produit SH6 réel dominant
+                # de ce groupe (pas de nom inventé pour le niveau intermédiaire).
+                representative_name = hs6_sorted[0]["name"] if hs6_sorted else None
+                hs4_out.append(
+                    {
+                        "hs4_code": hs4["hs4_code"],
+                        "representative_name": representative_name,
+                        "total_value": hs4["total_value"],
+                        "products": hs6_sorted[:top_n],
+                    }
+                )
+            result.append(
+                {
+                    "chapter": chapter["chapter"],
+                    "name": chapter["name"],
+                    "total_value": chapter["total_value"],
+                    "opportunity_count": chapter["opportunity_count"],
+                    "hs4": hs4_out,
+                }
+            )
+        return result
+
+    @staticmethod
+    def _build_analysis_block(opportunities: List[Dict]) -> Dict:
+        """
+        Lecture transversale du portefeuille d'opportunités : coefficient de
+        substituabilité moyen (pondéré par la valeur en jeu), répartition des
+        difficultés et des facteurs limitants, couverture du référentiel
+        production. C'est l'étage d'ANALYSE au-dessus de la liste brute.
+        """
+        if not opportunities:
+            return {}
+        difficulty_dist: Dict[str, int] = defaultdict(int)
+        constraint_dist: Dict[str, int] = defaultdict(int)
+        weighted_coef = 0.0
+        weight = 0.0
+        verified = 0
+        for opp in opportunities:
+            if opp.get("difficulty"):
+                difficulty_dist[opp["difficulty"]] += 1
+            if opp.get("binding_constraint"):
+                constraint_dist[opp["binding_constraint"]] += 1
+            if opp.get("verified_production"):
+                verified += 1
+            coef = (opp.get("substitution_feasibility") or {}).get("coefficient")
+            value = (opp.get("imported_product") or {}).get("import_value") or opp.get(
+                "total_market_potential"
+            )
+            if coef is not None and value:
+                weighted_coef += coef * value
+                weight += value
+        return {
+            "avg_feasibility_coefficient": (round(weighted_coef / weight, 2) if weight else None),
+            "difficulty_distribution": dict(difficulty_dist),
+            "binding_constraint_distribution": dict(constraint_dist),
+            "verified_production_count": verified,
+        }
 
     @classmethod
     def _full_key(cls, key: str) -> str:
@@ -745,6 +912,7 @@ class RealSubstitutionService:
             export_index = await self._build_african_export_index(year, hs_level="HS6")
             opportunities = []
             total_substitutable = 0
+            production_memo: Dict[str, Optional[Dict]] = {}
 
             for product in products_outside:
                 import_value = product.get("import_value", 0)
@@ -812,6 +980,9 @@ class RealSubstitutionService:
                         "addressable_value": realistic["addressable_value_usd"],
                         "binding_constraint": realistic["binding_constraint"],
                         "difficulty": self._assess_difficulty(import_value, total_supply),
+                        # Production africaine RÉELLE (FAOSTAT/UNIDO/USGS) du produit :
+                        # la preuve matérielle derrière les fournisseurs potentiels.
+                        "verified_production": self._verified_production(hs_code, production_memo),
                     }
                 )
                 total_substitutable += substitution_potential
@@ -829,6 +1000,11 @@ class RealSubstitutionService:
                     "total_imports_from_outside": int((bilateral or {}).get("from_outside", 0)),
                     "africa_share_percent": round((bilateral or {}).get("africa_share", 0), 1),
                     "top_sectors": self._identify_top_sectors(opportunities, lang),
+                    # Drill-down chapitre (SH2) -> position (SH4) -> produit (SH6).
+                    "product_hierarchy": self._build_product_hierarchy(
+                        opportunities, "imported_product", "substitution_potential", lang
+                    ),
+                    "analysis": self._build_analysis_block(opportunities),
                 },
                 "opportunities": opportunities,
                 "sources": ["OEC BACI", "UN Comtrade"],
@@ -856,6 +1032,7 @@ class RealSubstitutionService:
 
         opportunities = []
         total_substitutable = 0
+        production_memo: Dict[str, Optional[Dict]] = {}
         for product in profile["major_imports"]:
             import_value = product["value_musd"] * 1_000_000
             if import_value < min_value:
@@ -897,6 +1074,9 @@ class RealSubstitutionService:
                     "difficulty": self._assess_difficulty(
                         import_value, sum(s["export_value"] for s in african_suppliers)
                     ),
+                    "verified_production": self._verified_production(
+                        product["hs_code"], production_memo
+                    ),
                 }
             )
             total_substitutable += substitution_potential
@@ -915,6 +1095,10 @@ class RealSubstitutionService:
                 * 1_000_000,
                 "potential_savings_percent": profile["substitution_potential_percent"],
                 "top_sectors": self._identify_top_sectors(opportunities, lang),
+                "product_hierarchy": self._build_product_hierarchy(
+                    opportunities, "imported_product", "substitution_potential", lang
+                ),
+                "analysis": self._build_analysis_block(opportunities),
             },
             "opportunities": opportunities,
             "sources": ["Profils ZLECAf curés (repli)"],
@@ -987,6 +1171,7 @@ class RealSubstitutionService:
 
             opportunities = []
             total_market_potential = 0
+            production_memo: Dict[str, Optional[Dict]] = {}
 
             # Keep the exporter's strongest products
             top_products = sorted(
@@ -1115,6 +1300,9 @@ class RealSubstitutionService:
                             else "substituabilité"
                         ),
                         "afcfta_advantage": "Accès préférentiel ZLECAf (droits réduits ou supprimés)",
+                        # Production africaine RÉELLE (FAOSTAT/UNIDO/USGS) : preuve
+                        # matérielle de la capacité d'export au-delà des seuls flux OEC.
+                        "verified_production": self._verified_production(hs6, production_memo),
                     }
                 )
                 total_market_potential += total_potential
@@ -1130,6 +1318,14 @@ class RealSubstitutionService:
                     "total_opportunities": len(opportunities),
                     "total_market_potential": int(total_market_potential),
                     "export_strengths": len(top_products),
+                    "top_sectors": self._identify_top_sectors(
+                        opportunities, lang, "export_product", "total_market_potential"
+                    ),
+                    # Drill-down chapitre (SH2) -> position (SH4) -> produit (SH6).
+                    "product_hierarchy": self._build_product_hierarchy(
+                        opportunities, "export_product", "total_market_potential", lang
+                    ),
+                    "analysis": self._build_analysis_block(opportunities),
                 },
                 "opportunities": opportunities,
                 "sources": ["OEC BACI", "UN Comtrade"],
@@ -1155,6 +1351,7 @@ class RealSubstitutionService:
 
         opportunities = []
         total_market_potential = 0
+        production_memo: Dict[str, Optional[Dict]] = {}
         for hs_code in profile.get("export_strengths", []):
             product_name = get_product_name(hs_code, lang)
             # Même discipline que le chemin OEC réel : le taux de capture
@@ -1201,6 +1398,7 @@ class RealSubstitutionService:
                         else "capacité exportateur"
                     ),
                     "afcfta_advantage": "Accès préférentiel ZLECAf (droits réduits ou supprimés)",
+                    "verified_production": self._verified_production(hs_code, production_memo),
                 }
             )
             total_market_potential += total_potential
@@ -1216,6 +1414,13 @@ class RealSubstitutionService:
                 "total_opportunities": len(opportunities),
                 "total_market_potential": int(total_market_potential),
                 "export_strengths": len(profile.get("export_strengths", [])),
+                "top_sectors": self._identify_top_sectors(
+                    opportunities, lang, "export_product", "total_market_potential"
+                ),
+                "product_hierarchy": self._build_product_hierarchy(
+                    opportunities, "export_product", "total_market_potential", lang
+                ),
+                "analysis": self._build_analysis_block(opportunities),
             },
             "opportunities": opportunities,
             "sources": ["Profils ZLECAf curés (repli)"],
@@ -1233,41 +1438,39 @@ class RealSubstitutionService:
         else:
             return "Très difficile"
 
-    def _identify_top_sectors(self, opportunities: List[Dict], lang: str) -> List[Dict]:
-        """Identify top sectors from opportunities"""
+    def _identify_top_sectors(
+        self,
+        opportunities: List[Dict],
+        lang: str,
+        product_key: str = "imported_product",
+        value_key: str = "substitution_potential",
+    ) -> List[Dict]:
+        """
+        Regroupe les opportunités par CHAPITRE SH (2 premiers chiffres) avec le
+        référentiel COMPLET des 97 chapitres (etl.hs_codes_data.HS_CHAPTERS) —
+        et non plus une table de 10 chapitres codée en dur qui affichait
+        « Chapitre XX » générique dès qu'un produit sortait de cette liste.
+        """
         sector_values = defaultdict(float)
         sector_counts = defaultdict(int)
 
-        sector_names = {
-            "27": {"fr": "Combustibles minéraux, huiles", "en": "Mineral fuels, oils"},
-            "87": {"fr": "Véhicules automobiles", "en": "Motor vehicles"},
-            "10": {"fr": "Céréales", "en": "Cereals"},
-            "30": {"fr": "Produits pharmaceutiques", "en": "Pharmaceuticals"},
-            "85": {"fr": "Machines et appareils électriques", "en": "Electrical machinery"},
-            "84": {"fr": "Machines et appareils mécaniques", "en": "Mechanical machinery"},
-            "17": {"fr": "Sucres et sucreries", "en": "Sugars and confectionery"},
-            "15": {"fr": "Graisses et huiles", "en": "Animal or vegetable fats"},
-            "73": {"fr": "Ouvrages en fer ou acier", "en": "Articles of iron or steel"},
-            "04": {"fr": "Produits laitiers, œufs, miel", "en": "Dairy products, eggs, honey"},
-        }
-
         for opp in opportunities:
-            hs_code = opp["imported_product"]["hs_code"]
+            hs_code = (opp.get(product_key) or {}).get("hs_code") or ""
+            if len(hs_code) < 2:
+                continue
             chapter = hs_code[:2]
-            value = opp["substitution_potential"]
+            value = opp.get(value_key) or 0
 
             sector_values[chapter] += value
             sector_counts[chapter] += 1
 
         top_sectors = []
         for chapter, value in sorted(sector_values.items(), key=lambda x: x[1], reverse=True)[:5]:
-            names = sector_names.get(
-                chapter, {"fr": f"Chapitre {chapter}", "en": f"Chapter {chapter}"}
-            )
+            names = HS_CHAPTERS.get(chapter, {})
             top_sectors.append(
                 {
                     "chapter": chapter,
-                    "name": names.get(lang, names["en"]),
+                    "name": names.get(lang, names.get("en", f"SH {chapter}")),
                     "total_value": int(value),
                     "opportunity_count": sector_counts[chapter],
                 }
