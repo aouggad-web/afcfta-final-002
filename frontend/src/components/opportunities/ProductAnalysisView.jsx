@@ -24,6 +24,8 @@ import {
 } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
 import { useHsLabel } from '../../hooks/useHsLabel';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -532,7 +534,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           {/* Product Header */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8">
             <div className="text-center">
-              <div className="flex justify-center gap-2 mb-4">
+              <div className="flex justify-center items-center gap-2 mb-4 flex-wrap">
                 <Badge className="bg-white/20 text-white">
                   Rapport d'Intelligence Marché
                 </Badge>
@@ -542,6 +544,55 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                     Données réelles
                   </Badge>
                 )}
+                <OpportunityPdfExport
+                  language={language}
+                  getSpec={() => {
+                    const fr = language !== 'en';
+                    const p = productData.product || {};
+                    const usd = (v) => (v >= 1e9 ? `$${(v / 1e9).toFixed(2)}B` : v >= 1e6 ? `$${(v / 1e6).toFixed(1)}M` : `$${Math.round(v || 0).toLocaleString()}`);
+                    return {
+                      badge: fr ? 'PAR PRODUIT' : 'BY PRODUCT',
+                      title: `${p.name || ''} — SH6 ${p.hsCode || ''}`,
+                      subtitle: `${p.hs2Name || ''} (${p.hs2Code || ''}) · ${p.hs4Name || ''} (${p.hs4Code || ''})`,
+                      sections: [
+                        productData.productionCapacities?.length && {
+                          title: fr ? 'Capacités de production africaines' : 'African production capacities',
+                          table: {
+                            columns: [
+                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
+                              { key: 'volume', label: fr ? 'Volume' : 'Volume', align: 'right', width: 1, fmt: (v, row) => `${Number(v || 0).toLocaleString()} ${row.unit || ''}` },
+                              { key: 'share', label: fr ? 'Part (%)' : 'Share (%)', align: 'right', width: 0.7, fmt: (v) => `${v ?? '—'}%` },
+                            ],
+                            rows: productData.productionCapacities,
+                          },
+                        },
+                        productData.importers?.length && {
+                          title: txt.topImporters,
+                          table: {
+                            columns: [
+                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
+                              { key: 'tradeValue', label: fr ? 'Importations' : 'Imports', align: 'right', width: 1, fmt: usd },
+                            ],
+                            rows: productData.importers,
+                          },
+                        },
+                        productData.exporters?.length && {
+                          title: txt.topExporters,
+                          table: {
+                            columns: [
+                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
+                              { key: 'tradeValue', label: fr ? 'Exportations' : 'Exports', align: 'right', width: 1, fmt: usd },
+                            ],
+                            rows: productData.exporters,
+                          },
+                        },
+                        productData.note && { title: fr ? 'Note' : 'Note', paragraphs: [productData.note] },
+                      ].filter(Boolean),
+                      source: (productData.sources || []).join(', '),
+                      filename: opportunityPdfFilename('ParProduit', p.hsCode),
+                    };
+                  }}
+                />
               </div>
               
               {/* HS Navigation Breadcrumb */}

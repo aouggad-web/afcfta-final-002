@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
   CartesianGrid, Tooltip, PieChart, Pie, Cell 
@@ -258,6 +260,47 @@ export default function OpportunitySummary({ language = 'fr' }) {
 
   if (!data) return null;
 
+  // Rapport PDF de la vue d'ensemble : KPIs + top partenaires + top secteurs.
+  const buildPdfSpec = () => {
+    const fr = language !== 'en';
+    return {
+      badge: fr ? "VUE D'ENSEMBLE" : 'OVERVIEW',
+      title: txt.title,
+      subtitle: txt.subtitle,
+      kpis: [
+        { label: txt.totalOpportunities, value: data.totalOpportunities?.toLocaleString() ?? '—', sub: data.yearlyGrowth || undefined, accent: 'gold' },
+        { label: txt.totalPotentialValue, value: formatValue(data.totalPotentialValue), accent: 'green' },
+        { label: txt.intraAfricanTrade || (fr ? 'Commerce intra-africain' : 'Intra-African trade'), value: data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—', accent: 'terra' },
+        { label: fr ? 'Pays ZLECAf' : 'AfCFTA countries', value: String(data.afcftaCountries ?? '—'), accent: 'gold' },
+      ],
+      sections: [
+        data.topPartners?.length && {
+          title: fr ? 'Premiers pays commerçants (Md$)' : 'Top trading countries ($B)',
+          table: {
+            columns: [
+              { key: 'name', label: fr ? 'Pays' : 'Country', width: 2.5 },
+              { key: 'value', label: fr ? 'Volume (Md$)' : 'Volume ($B)', align: 'right', width: 1 },
+            ],
+            rows: [...data.topPartners].reverse(),
+          },
+        },
+        data.topProducts?.length && {
+          title: fr ? 'Secteurs prioritaires' : 'Priority sectors',
+          table: {
+            columns: [
+              { key: 'code', label: 'SH2', width: 0.6 },
+              { key: 'name', label: fr ? 'Secteur' : 'Sector', width: 2.5 },
+              { key: 'value', label: fr ? 'Valeur (Md$)' : 'Value ($B)', align: 'right', width: 1 },
+            ],
+            rows: data.topProducts,
+          },
+        },
+      ].filter(Boolean),
+      source: data.sources ? data.sources.join(', ') : txt.source,
+      filename: opportunityPdfFilename('VueEnsemble'),
+    };
+  };
+
   return (
     <div className="space-y-8" data-testid="opportunity-summary">
       {/* Header */}
@@ -266,12 +309,15 @@ export default function OpportunitySummary({ language = 'fr' }) {
           {txt.title}
         </h2>
         <p className="text-slate-500 mt-2">{txt.subtitle}</p>
-        {isAiGenerated && (
-          <Badge className="mt-2 bg-emerald-100 text-emerald-700 border-emerald-200">
-            <Sparkles className="h-3 w-3 mr-1" />
-            {txt.aiGenerated}
-          </Badge>
-        )}
+        <div className="mt-2 flex items-center justify-center gap-3 flex-wrap">
+          {isAiGenerated && (
+            <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">
+              <Sparkles className="h-3 w-3 mr-1" />
+              {txt.aiGenerated}
+            </Badge>
+          )}
+          <OpportunityPdfExport getSpec={buildPdfSpec} language={language} />
+        </div>
       </div>
 
       {/* Stats Grid */}

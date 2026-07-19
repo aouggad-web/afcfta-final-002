@@ -587,9 +587,21 @@ class RealSubstitutionService:
     def __init__(self):
         self.african_countries = list(AFRICAN_COUNTRIES.keys())
 
-    @staticmethod
-    def _full_key(key: str) -> str:
-        return cache_service.generate_cache_key("substitution", key)
+    # Version de SCHÉMA des réponses mises en cache. À incrémenter à CHAQUE
+    # évolution de la forme du payload (nouveau champ, granularité...) : le
+    # cache est persistant (Redis/disque, TTL 24h) et SURVIT AUX DÉPLOIEMENTS —
+    # sans ce versionnage, une release qui enrichit la réponse (ex. ajout de
+    # substitution_feasibility, prix moyens, niveau produit) continue de servir
+    # les anciens payloads pendant des heures, et les nouveautés semblent
+    # « non implémentées » à l'écran alors que le code est bien déployé
+    # (constaté en production après les PR #281/#282).
+    _CACHE_SCHEMA_VERSION = 3
+
+    @classmethod
+    def _full_key(cls, key: str) -> str:
+        return cache_service.generate_cache_key(
+            "substitution", f"v{cls._CACHE_SCHEMA_VERSION}", key
+        )
 
     def _cache_get(self, key: str):
         """

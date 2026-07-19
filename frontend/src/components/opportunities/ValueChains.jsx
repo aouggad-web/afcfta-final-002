@@ -9,6 +9,8 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { useHsLabel } from '../../hooks/useHsLabel';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 import { 
   ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip
 } from 'recharts';
@@ -804,13 +806,13 @@ export default function ValueChains({ language = 'fr' }) {
       {/* Selected Chain Details */}
       {chain && (
         <Card className="shadow-xl border-slate-200 overflow-hidden">
-          <CardHeader 
+          <CardHeader
             className="text-white"
             style={{ background: `linear-gradient(135deg, ${chain.color}, ${chain.color}dd)` }}
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap">
               <span className="text-5xl">{chain.icon}</span>
-              <div>
+              <div className="flex-1 min-w-[220px]">
                 <CardTitle className="text-2xl">
                   {chain.name[language] || chain.name.en || chain.name}
                 </CardTitle>
@@ -818,6 +820,39 @@ export default function ValueChains({ language = 'fr' }) {
                   Code HS: {chain.hsCode || chain.hs_code} | Potentiel intra-africain: ${chain.intraAfricanPotential || chain.intra_african_potential_musd}M
                 </CardDescription>
               </div>
+              <OpportunityPdfExport
+                language={language}
+                getSpec={() => {
+                  const fr = language !== 'en';
+                  const chainName = chain.name[language] || chain.name.en || String(chain.name);
+                  const producers = chain.topProducers || chain.top_producers || [];
+                  const stages = (chain.stages || []).map((s) => {
+                    const stageName = typeof s.name === 'object' ? (s.name[language] || s.name.en) : s.name;
+                    return `${stageName} : ${(s.countries || []).join(', ') || '—'}`;
+                  });
+                  return {
+                    badge: fr ? 'CHAÎNES DE VALEUR' : 'VALUE CHAINS',
+                    title: chainName,
+                    subtitle: `HS ${chain.hsCode || chain.hs_code} · ${fr ? 'Potentiel intra-africain' : 'Intra-African potential'}: $${chain.intraAfricanPotential || chain.intra_african_potential_musd}M`,
+                    sections: [
+                      stages.length && { title: txt.stagesTitle, paragraphs: stages },
+                      producers.length && {
+                        title: txt.topProducers,
+                        table: {
+                          columns: [
+                            { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
+                            { key: 'role', label: fr ? 'Rôle' : 'Role', width: 1 },
+                            { key: 'share', label: fr ? 'Part (%)' : 'Share (%)', align: 'right', width: 0.8, fmt: (v, row) => `${v ?? row.market_share_percent ?? '—'}%` },
+                          ],
+                          rows: producers,
+                        },
+                      },
+                    ].filter(Boolean),
+                    source: isAiGenerated ? 'Claude AI + FAO/OEC' : 'Référentiel chaînes de valeur ZLECAf',
+                    filename: opportunityPdfFilename('ChaineValeur', chain.hsCode || chain.hs_code),
+                  };
+                }}
+              />
             </div>
           </CardHeader>
           

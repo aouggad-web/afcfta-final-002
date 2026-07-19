@@ -16,7 +16,10 @@
  * hot-reload and long-running requests during development preview.
  */
 
-const APP_VERSION = 'v3.1.0';
+// Bumper cette version à chaque release notable : l'activation purge les
+// caches des versions précédentes (JS/CSS sont en cache-first — sans bump,
+// d'anciens bundles restent servables indéfiniment sous l'ancien nom de cache).
+const APP_VERSION = 'v3.2.0';
 const STATIC_CACHE  = `afcfta-static-${APP_VERSION}`;
 const API_CACHE     = `afcfta-api-${APP_VERSION}`;
 const IMAGE_CACHE   = `afcfta-images-${APP_VERSION}`;
@@ -37,8 +40,10 @@ const PRECACHE_ASSETS = [
   '/',
   '/offline.html',
   '/manifest.json',
-  '/static/css/main.css',
-  '/static/js/main.js',
+  // NB : pas de bundles JS/CSS ici — Vite émet des noms hachés
+  // (build/assets/index-<hash>.js) inconnus à l'écriture de ce fichier, et
+  // les anciens chemins CRA (/static/js/main.js) n'existent plus : un 404
+  // dans cache.addAll() fait échouer TOUT le précache d'un bloc.
   '/data/zlecaf_tariff_origin_phase.json',
   '/data/zlecaf_rules_of_origin.json',
 ];
