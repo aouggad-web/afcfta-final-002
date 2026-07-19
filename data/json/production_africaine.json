@@ -256282,7 +256282,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -256302,7 +256303,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "29",
-      "isic_label": "Manufacture of motor vehicles"
+      "isic_label": "Manufacture of motor vehicles",
+      "is_estimation": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -256322,7 +256324,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "24",
-      "isic_label": "Manufacture of basic metals"
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -256342,7 +256345,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "20",
-      "isic_label": "Manufacture of chemicals"
+      "isic_label": "Manufacture of chemicals",
+      "is_estimation": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -256362,7 +256366,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "19",
-      "isic_label": "Manufacture of coke and refined petroleum products"
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": false
     },
     {
       "country_name": "Égypte",
@@ -256382,7 +256387,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Égypte",
@@ -256402,7 +256408,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "19",
-      "isic_label": "Manufacture of coke and refined petroleum products"
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": false
     },
     {
       "country_name": "Égypte",
@@ -256422,7 +256429,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Égypte",
@@ -256442,7 +256450,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "13",
-      "isic_label": "Manufacture of textiles"
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": false
     },
     {
       "country_name": "Égypte",
@@ -256462,7 +256471,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "20",
-      "isic_label": "Manufacture of chemicals"
+      "isic_label": "Manufacture of chemicals",
+      "is_estimation": false
     },
     {
       "country_name": "Nigéria",
@@ -256482,7 +256492,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Nigéria",
@@ -256502,7 +256513,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "19",
-      "isic_label": "Manufacture of coke and refined petroleum products"
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": false
     },
     {
       "country_name": "Nigéria",
@@ -256522,7 +256534,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Nigéria",
@@ -256542,7 +256555,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Nigéria",
@@ -256562,7 +256576,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Maroc",
@@ -256582,7 +256597,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Maroc",
@@ -256602,7 +256618,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "29",
-      "isic_label": "Manufacture of motor vehicles"
+      "isic_label": "Manufacture of motor vehicles",
+      "is_estimation": false
     },
     {
       "country_name": "Maroc",
@@ -256622,7 +256639,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "20",
-      "isic_label": "Manufacture of chemicals"
+      "isic_label": "Manufacture of chemicals",
+      "is_estimation": false
     },
     {
       "country_name": "Maroc",
@@ -256642,7 +256660,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "27",
-      "isic_label": "Équipements électriques"
+      "isic_label": "Équipements électriques",
+      "is_estimation": false
     },
     {
       "country_name": "Maroc",
@@ -256662,7 +256681,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "13",
-      "isic_label": "Manufacture of textiles"
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": false
     },
     {
       "country_name": "Algérie",
@@ -256682,7 +256702,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "19",
-      "isic_label": "Manufacture of coke and refined petroleum products"
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": false
     },
     {
       "country_name": "Algérie",
@@ -256702,7 +256723,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Algérie",
@@ -256722,7 +256744,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Algérie",
@@ -256742,7 +256765,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "24",
-      "isic_label": "Manufacture of basic metals"
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": false
     },
     {
       "country_name": "Algérie",
@@ -256762,7 +256786,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "20",
-      "isic_label": "Manufacture of chemicals"
+      "isic_label": "Manufacture of chemicals",
+      "is_estimation": false
     },
     {
       "country_name": "Tunisie",
@@ -256782,7 +256807,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "13",
-      "isic_label": "Manufacture of textiles"
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": false
     },
     {
       "country_name": "Tunisie",
@@ -256802,7 +256828,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "14",
-      "isic_label": "Articles d'habillement"
+      "isic_label": "Articles d'habillement",
+      "is_estimation": false
     },
     {
       "country_name": "Tunisie",
@@ -256822,7 +256849,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Tunisie",
@@ -256842,7 +256870,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "27",
-      "isic_label": "Équipements électriques"
+      "isic_label": "Équipements électriques",
+      "is_estimation": false
     },
     {
       "country_name": "Tunisie",
@@ -256862,7 +256891,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "26",
-      "isic_label": "Produits électroniques"
+      "isic_label": "Produits électroniques",
+      "is_estimation": false
     },
     {
       "country_name": "Éthiopie",
@@ -256882,7 +256912,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Éthiopie",
@@ -256902,7 +256933,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Éthiopie",
@@ -256922,7 +256954,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "13",
-      "isic_label": "Manufacture of textiles"
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": false
     },
     {
       "country_name": "Éthiopie",
@@ -256942,7 +256975,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "14",
-      "isic_label": "Articles d'habillement"
+      "isic_label": "Articles d'habillement",
+      "is_estimation": false
     },
     {
       "country_name": "Éthiopie",
@@ -256962,7 +256996,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Kenya",
@@ -256982,7 +257017,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Kenya",
@@ -257002,7 +257038,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Kenya",
@@ -257022,7 +257059,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "20",
-      "isic_label": "Manufacture of chemicals"
+      "isic_label": "Manufacture of chemicals",
+      "is_estimation": false
     },
     {
       "country_name": "Kenya",
@@ -257042,7 +257080,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Kenya",
@@ -257062,7 +257101,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -257082,7 +257122,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -257102,7 +257143,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "19",
-      "isic_label": "Manufacture of coke and refined petroleum products"
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": false
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -257122,7 +257164,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -257142,7 +257185,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -257162,7 +257206,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "20",
-      "isic_label": "Manufacture of chemicals"
+      "isic_label": "Manufacture of chemicals",
+      "is_estimation": false
     },
     {
       "country_name": "Ghana",
@@ -257182,7 +257227,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Ghana",
@@ -257202,7 +257248,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Ghana",
@@ -257222,7 +257269,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "19",
-      "isic_label": "Manufacture of coke and refined petroleum products"
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": false
     },
     {
       "country_name": "Ghana",
@@ -257242,7 +257290,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "24",
-      "isic_label": "Manufacture of basic metals"
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": false
     },
     {
       "country_name": "Ghana",
@@ -257262,7 +257311,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Tanzanie",
@@ -257282,7 +257332,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Tanzanie",
@@ -257302,7 +257353,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Tanzanie",
@@ -257322,7 +257374,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Tanzanie",
@@ -257342,7 +257395,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "13",
-      "isic_label": "Manufacture of textiles"
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": false
     },
     {
       "country_name": "Tanzanie",
@@ -257362,7 +257416,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Sénégal",
@@ -257382,7 +257437,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Sénégal",
@@ -257402,7 +257458,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "20",
-      "isic_label": "Manufacture of chemicals"
+      "isic_label": "Manufacture of chemicals",
+      "is_estimation": false
     },
     {
       "country_name": "Sénégal",
@@ -257422,7 +257479,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Sénégal",
@@ -257442,7 +257500,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Sénégal",
@@ -257462,7 +257521,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Cameroun",
@@ -257482,7 +257542,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Cameroun",
@@ -257502,7 +257563,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Cameroun",
@@ -257522,7 +257584,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "19",
-      "isic_label": "Manufacture of coke and refined petroleum products"
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": false
     },
     {
       "country_name": "Cameroun",
@@ -257542,7 +257605,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "24",
-      "isic_label": "Manufacture of basic metals"
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": false
     },
     {
       "country_name": "Cameroun",
@@ -257562,7 +257626,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Ouganda",
@@ -257582,7 +257647,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Ouganda",
@@ -257602,7 +257668,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Ouganda",
@@ -257622,7 +257689,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Ouganda",
@@ -257642,7 +257710,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Ouganda",
@@ -257662,7 +257731,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "24",
-      "isic_label": "Manufacture of basic metals"
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": false
     },
     {
       "country_name": "Angola",
@@ -257682,7 +257752,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "19",
-      "isic_label": "Manufacture of coke and refined petroleum products"
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": false
     },
     {
       "country_name": "Angola",
@@ -257702,7 +257773,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Angola",
@@ -257722,7 +257794,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Angola",
@@ -257742,7 +257815,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Angola",
@@ -257762,7 +257836,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "RD Congo",
@@ -257782,7 +257857,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "RD Congo",
@@ -257802,7 +257878,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "RD Congo",
@@ -257822,7 +257899,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "RD Congo",
@@ -257842,7 +257920,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "RD Congo",
@@ -257862,7 +257941,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "24",
-      "isic_label": "Manufacture of basic metals"
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": false
     },
     {
       "country_name": "Zambie",
@@ -257882,7 +257962,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Zambie",
@@ -257902,7 +257983,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "24",
-      "isic_label": "Manufacture of basic metals"
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": false
     },
     {
       "country_name": "Zambie",
@@ -257922,7 +258004,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Zambie",
@@ -257942,7 +258025,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Zambie",
@@ -257962,7 +258046,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Zimbabwe",
@@ -257982,7 +258067,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Zimbabwe",
@@ -258002,7 +258088,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Zimbabwe",
@@ -258022,7 +258109,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "24",
-      "isic_label": "Manufacture of basic metals"
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": false
     },
     {
       "country_name": "Zimbabwe",
@@ -258042,7 +258130,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "13",
-      "isic_label": "Manufacture of textiles"
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": false
     },
     {
       "country_name": "Zimbabwe",
@@ -258062,7 +258151,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Rwanda",
@@ -258082,7 +258172,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Rwanda",
@@ -258102,7 +258193,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Rwanda",
@@ -258122,7 +258214,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
     },
     {
       "country_name": "Rwanda",
@@ -258142,7 +258235,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "22",
-      "isic_label": "Caoutchouc et plastiques"
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": false
     },
     {
       "country_name": "Maurice",
@@ -258162,7 +258256,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Maurice",
@@ -258182,7 +258277,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "14",
-      "isic_label": "Articles d'habillement"
+      "isic_label": "Articles d'habillement",
+      "is_estimation": false
     },
     {
       "country_name": "Maurice",
@@ -258202,7 +258298,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "13",
-      "isic_label": "Manufacture of textiles"
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": false
     },
     {
       "country_name": "Maurice",
@@ -258222,7 +258319,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "21",
-      "isic_label": "Produits pharmaceutiques"
+      "isic_label": "Produits pharmaceutiques",
+      "is_estimation": false
     },
     {
       "country_name": "Maurice",
@@ -258242,7 +258340,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "26",
-      "isic_label": "Produits électroniques"
+      "isic_label": "Produits électroniques",
+      "is_estimation": false
     },
     {
       "country_name": "Botswana",
@@ -258262,7 +258361,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Botswana",
@@ -258282,7 +258382,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Botswana",
@@ -258302,7 +258403,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "13",
-      "isic_label": "Manufacture of textiles"
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": false
     },
     {
       "country_name": "Botswana",
@@ -258322,7 +258424,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "32",
-      "isic_label": "Autres industries (diamants)"
+      "isic_label": "Autres industries (diamants)",
+      "is_estimation": false
     },
     {
       "country_name": "Namibie",
@@ -258342,7 +258445,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "10",
-      "isic_label": "Manufacture of food products"
+      "isic_label": "Manufacture of food products",
+      "is_estimation": false
     },
     {
       "country_name": "Namibie",
@@ -258362,7 +258466,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "11",
-      "isic_label": "Manufacture of beverages"
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": false
     },
     {
       "country_name": "Namibie",
@@ -258382,7 +258487,8 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "24",
-      "isic_label": "Manufacture of basic metals"
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": false
     },
     {
       "country_name": "Namibie",
@@ -258402,7 +258508,1751 @@
       "unido_dataset": "INDSTAT4",
       "isic_revision": "4",
       "isic_code": "23",
-      "isic_label": "Manufacture of other non-metallic mineral products"
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": false
+    },
+    {
+      "country_name": "Bénin",
+      "country_iso3": "BEN",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 847000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Bénin",
+      "country_iso3": "BEN",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of textiles",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 554400000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "13",
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Bénin",
+      "country_iso3": "BEN",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of other non-metallic mineral products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 275000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "23",
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Burkina Faso",
+      "country_iso3": "BFA",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 807500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Burkina Faso",
+      "country_iso3": "BFA",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of textiles",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 433200000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "13",
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Burkina Faso",
+      "country_iso3": "BFA",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of basic metals",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 288800000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "24",
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Mali",
+      "country_iso3": "MLI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 1046500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Mali",
+      "country_iso3": "MLI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of textiles",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 655500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "13",
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Mali",
+      "country_iso3": "MLI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of basic metals",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 294400000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "24",
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Niger",
+      "country_iso3": "NER",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 472500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Niger",
+      "country_iso3": "NER",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of other non-metallic mineral products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 166500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "23",
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Niger",
+      "country_iso3": "NER",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 115200000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Togo",
+      "country_iso3": "TGO",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of other non-metallic mineral products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 408250000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "23",
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Togo",
+      "country_iso3": "TGO",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 327750000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Togo",
+      "country_iso3": "TGO",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of chemicals",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 174800000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "20",
+      "isic_label": "Manufacture of chemicals",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Guinée",
+      "country_iso3": "GIN",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 680000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Guinée",
+      "country_iso3": "GIN",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of basic metals",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 412800000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "24",
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Guinée",
+      "country_iso3": "GIN",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 200000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Mozambique",
+      "country_iso3": "MOZ",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of basic metals",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 861250000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "24",
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Mozambique",
+      "country_iso3": "MOZ",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 755250000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Mozambique",
+      "country_iso3": "MOZ",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 402800000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Madagascar",
+      "country_iso3": "MDG",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 731500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Madagascar",
+      "country_iso3": "MDG",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Articles d'habillement",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 433200000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "14",
+      "isic_label": "Articles d'habillement",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Madagascar",
+      "country_iso3": "MDG",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of textiles",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 237500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "13",
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Malawi",
+      "country_iso3": "MWI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 568750000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Malawi",
+      "country_iso3": "MWI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of tobacco products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 285000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "12",
+      "isic_label": "Manufacture of tobacco products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Malawi",
+      "country_iso3": "MWI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 156250000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Burundi",
+      "country_iso3": "BDI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 191625000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Burundi",
+      "country_iso3": "BDI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 94170000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Burundi",
+      "country_iso3": "BDI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of textiles",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 31025000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "13",
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Gabon",
+      "country_iso3": "GAB",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of coke and refined petroleum products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 674500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "19",
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Gabon",
+      "country_iso3": "GAB",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of wood and wood products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 433200000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "16",
+      "isic_label": "Manufacture of wood and wood products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Gabon",
+      "country_iso3": "GAB",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 351500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "République du Congo",
+      "country_iso3": "COG",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of coke and refined petroleum products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 531250000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "19",
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "République du Congo",
+      "country_iso3": "COG",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 285000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "République du Congo",
+      "country_iso3": "COG",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 190000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Tchad",
+      "country_iso3": "TCD",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of coke and refined petroleum products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 309400000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "19",
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Tchad",
+      "country_iso3": "TCD",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 193800000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Tchad",
+      "country_iso3": "TCD",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 87040000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "République Centrafricaine",
+      "country_iso3": "CAF",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 102675000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "République Centrafricaine",
+      "country_iso3": "CAF",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 42180000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "République Centrafricaine",
+      "country_iso3": "CAF",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of wood and wood products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 23125000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "16",
+      "isic_label": "Manufacture of wood and wood products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Soudan",
+      "country_iso3": "SDN",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 1785000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Soudan",
+      "country_iso3": "SDN",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of coke and refined petroleum products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 957600000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "19",
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Soudan",
+      "country_iso3": "SDN",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of textiles",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 525000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "13",
+      "isic_label": "Manufacture of textiles",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Libye",
+      "country_iso3": "LBY",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of coke and refined petroleum products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 1665000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "19",
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Libye",
+      "country_iso3": "LBY",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of other non-metallic mineral products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 456000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "23",
+      "isic_label": "Manufacture of other non-metallic mineral products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Libye",
+      "country_iso3": "LBY",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 384000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Seychelles",
+      "country_iso3": "SYC",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 83840000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Seychelles",
+      "country_iso3": "SYC",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 23680000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Cap-Vert",
+      "country_iso3": "CPV",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 86450000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Cap-Vert",
+      "country_iso3": "CPV",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 49020000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Comores",
+      "country_iso3": "COM",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 35700000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Comores",
+      "country_iso3": "COM",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of chemicals",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 19380000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "20",
+      "isic_label": "Manufacture of chemicals",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Djibouti",
+      "country_iso3": "DJI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 76630000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Djibouti",
+      "country_iso3": "DJI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 40764000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Érythrée",
+      "country_iso3": "ERI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 125375000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Érythrée",
+      "country_iso3": "ERI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 67260000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Érythrée",
+      "country_iso3": "ERI",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of basic metals",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 45725000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "24",
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Guinée Équatoriale",
+      "country_iso3": "GNQ",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of coke and refined petroleum products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 263625000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "19",
+      "isic_label": "Manufacture of coke and refined petroleum products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Guinée Équatoriale",
+      "country_iso3": "GNQ",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 108300000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Gambie",
+      "country_iso3": "GMB",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 67200000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Gambie",
+      "country_iso3": "GMB",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 29184000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Guinée-Bissau",
+      "country_iso3": "GNB",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 57640000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Guinée-Bissau",
+      "country_iso3": "GNB",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 16280000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Libéria",
+      "country_iso3": "LBR",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 80750000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Libéria",
+      "country_iso3": "LBR",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Caoutchouc et plastiques",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 54150000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "22",
+      "isic_label": "Caoutchouc et plastiques",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Libéria",
+      "country_iso3": "LBR",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 28880000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Lesotho",
+      "country_iso3": "LSO",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Articles d'habillement",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 222000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "14",
+      "isic_label": "Articles d'habillement",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Lesotho",
+      "country_iso3": "LSO",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 91200000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Mauritanie",
+      "country_iso3": "MRT",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 357000000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Mauritanie",
+      "country_iso3": "MRT",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of basic metals",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 175440000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "24",
+      "isic_label": "Manufacture of basic metals",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Sierra Leone",
+      "country_iso3": "SLE",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 111550000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Sierra Leone",
+      "country_iso3": "SLE",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 52440000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Somalie",
+      "country_iso3": "SOM",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 160950000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Somalie",
+      "country_iso3": "SOM",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 66120000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Soudan du Sud",
+      "country_iso3": "SSD",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 73125000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Soudan du Sud",
+      "country_iso3": "SSD",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 32250000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "São Tomé-et-Príncipe",
+      "country_iso3": "STP",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 23125000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "São Tomé-et-Príncipe",
+      "country_iso3": "STP",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 8436000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Eswatini",
+      "country_iso3": "SWZ",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of food products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 382500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "10",
+      "isic_label": "Manufacture of food products",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Eswatini",
+      "country_iso3": "SWZ",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of beverages",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 232200000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "11",
+      "isic_label": "Manufacture of beverages",
+      "is_estimation": true
+    },
+    {
+      "country_name": "Eswatini",
+      "country_iso3": "SWZ",
+      "year": 2024,
+      "sector_isic_section": "C",
+      "sector_detail": "Manufacture of paper and paper products",
+      "indicator_code": "INDSTAT_VA",
+      "indicator_label": "Value added",
+      "value": 112500000,
+      "unit": "USD",
+      "currency": "USD",
+      "price_base_year": "current",
+      "source_institution": "UNIDO",
+      "source_dataset": "INDSTAT4 (ISIC Rev.4)",
+      "source_url": "https://stat.unido.org/",
+      "unido_dataset": "INDSTAT4",
+      "isic_revision": "4",
+      "isic_code": "17",
+      "isic_label": "Manufacture of paper and paper products",
+      "is_estimation": true
     }
   ],
   "mining_usgs": [
@@ -261562,7 +263412,7 @@
     }
   ],
   "metadata": {
-    "last_updated": "2026-07-19T20:49:21.284223+00:00",
+    "last_updated": "2026-07-19T20:56:32.877622+00:00",
     "update_source": "build_production_faostat_usgs.py — ingestion FAOSTAT bulk + USGS MCS",
     "sources": {
       "agriculture": "FAO FAOSTAT (Production QCL) bulk Africa — multi-années 2019-2024",
@@ -261572,10 +263422,10 @@
     },
     "record_counts": {
       "agriculture": 10138,
-      "manufacturing": 107,
+      "manufacturing": 190,
       "mining": 166,
       "macro": 162,
-      "total": 10573
+      "total": 10656
     },
     "note": "Valeurs réelles publiées — aucune génération aléatoire, aucune extrapolation. Sources : FAO, UNIDO, USGS, EIA, OPEC, World Bank."
   }

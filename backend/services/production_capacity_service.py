@@ -256,6 +256,10 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2301", "manufacturing", "Manufacture of food products"),  # aliments pour animaux
     ("2207", "manufacturing", "Manufacture of beverages"),  # alcool éthylique
     ("2208", "manufacturing", "Manufacture of beverages"),  # alcools et spiritueux
+    # Tabac transformé (cigarettes/cigares, ISIC 12) — distinct du tabac brut en
+    # feuilles (chapitre 24 entier, repli agri "Tobacco" ci-dessous) : préfixe
+    # 4 chiffres plus spécifique, prioritaire sur le repli de chapitre.
+    ("2402", "manufacturing", "Manufacture of tobacco products"),  # cigarettes, cigares
     # ── Raffinage pétrolier (UNIDO) ──
     # 2710 = huiles de pétrole RAFFINÉES (essence, diesel, kérosène...), pas du brut :
     # rattaché à la valeur ajoutée UNIDO "Manufacture of coke and refined petroleum
@@ -370,6 +374,9 @@ HS_CHAPTER_FALLBACK: Dict[str, Tuple[str, str]] = {
     # Ouvrages en métaux (outillage, coutellerie)
     "82": ("manufacturing", "Manufacture of basic metals"),
     "83": ("manufacturing", "Manufacture of basic metals"),
+    # Bois, papier (UNIDO ISIC 16-17)
+    "44": ("manufacturing", "Manufacture of wood and wood products"),
+    "48": ("manufacturing", "Manufacture of paper and paper products"),
 }
 
 DATASET_KEY = {
