@@ -1,8 +1,9 @@
 /**
  * Opportunities Tab — main container
- * 5 sub-tabs: Analyse IA · Substitution · Chaînes de Valeur · Par Produit · Comparaison
+ * 8 sub-tabs: Analyse IA · Substitution · Simulateur ZLECAf · Comparateur
+ * bilatéral · Vue d'ensemble · Chaînes de Valeur · Par Produit · Comparaison
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale, Calculator } from 'lucide-react';
 
@@ -42,13 +43,32 @@ export default function OpportunitiesTab({ language = 'fr' }) {
   const { i18n } = useTranslation();
   const lang = i18n.language || language;
   const [active, setActive] = useState('ai');
+  const [handoffCountry, setHandoffCountry] = useState(null);
+
+  // Handoff inter-modules : le module Statistiques dépose {country, hsCode}
+  // dans sessionStorage puis navigue ici (voir CountryHS6History.jsx) — on
+  // ouvre directement le sous-module Substitution pré-rempli avec ce pays.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem('zlecaf_opportunites_handoff');
+      if (!raw) return;
+      sessionStorage.removeItem('zlecaf_opportunites_handoff');
+      const h = JSON.parse(raw);
+      if (h && h.country) {
+        setHandoffCountry({ iso3: h.country, k: h.k || Date.now() });
+        setActive('substitution');
+      }
+    } catch {
+      /* handoff illisible : ignorer */
+    }
+  }, []);
 
   const tabs = TABS[lang] || TABS.fr;
 
   const renderContent = () => {
     switch (active) {
       case 'ai':           return <AIAnalysis language={lang} />;
-      case 'substitution': return <SubstitutionAnalysis language={lang} />;
+      case 'substitution': return <SubstitutionAnalysis language={lang} initialCountry={handoffCountry} />;
       case 'simulator':    return <ZlecafImpactSimulator language={lang} />;
       case 'bilateral':    return <BilateralTariffComparator language={lang} />;
       case 'summary':      return <OpportunitySummary language={lang} />;

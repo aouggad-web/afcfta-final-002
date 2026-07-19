@@ -282,11 +282,11 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
             </span>
           </div>
         )}
-        {!isImport && opportunity.market_match_level === 'hs2' && (
+        {!isImport && opportunity.market_match_level === 'hs4' && (
           <p className="mb-3 text-[11px] text-amber-700 bg-amber-50 rounded-md px-2.5 py-1.5" data-testid="market-match-caveat">
             {language === 'en'
-              ? 'Markets estimated at chapter level (this exact product is absent from the top imports of the countries surveyed).'
-              : "Marchés estimés au niveau chapitre (ce produit exact est absent des top-imports des pays sondés)."}
+              ? 'Markets estimated at HS4 level (this exact HS6 product is absent from the top imports of the countries surveyed).'
+              : "Marchés estimés au niveau SH4 (ce produit SH6 exact est absent des top-imports des pays sondés)."}
           </p>
         )}
 
@@ -339,7 +339,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
 };
 
 // Main Component
-export default function SubstitutionAnalysis({ language = 'fr' }) {
+export default function SubstitutionAnalysis({ language = 'fr', initialCountry = null }) {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || language;
   
@@ -410,6 +410,16 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
     };
     fetchCountries();
   }, [currentLang]);
+
+  // Pré-remplissage venu d'un autre module (voir OpportunitiesTab.jsx) : le
+  // pays du handoff déclenche l'analyse via l'effet auto-analyze ci-dessous.
+  useEffect(() => {
+    if (initialCountry?.iso3) {
+      setActiveTab('import');
+      setSelectedCountry(initialCountry.iso3);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialCountry?.iso3, initialCountry?.k]);
 
   // Analyze function
   const analyzeCountry = useCallback(async () => {
@@ -494,7 +504,7 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
       });
     } else {
       sections.push({
-        title: fr ? 'Opportunités d’export (niveau produit)' : 'Export opportunities (product level)',
+        title: fr ? 'Opportunités d’export (niveau produit SH6)' : 'Export opportunities (SH6 product level)',
         table: {
           columns: [
             { key: 'hs', label: 'SH', width: 0.7 },

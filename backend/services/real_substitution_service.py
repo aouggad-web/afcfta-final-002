@@ -623,20 +623,26 @@ class RealSubstitutionService:
     def _cache_set(self, key: str, value: Any, ttl_type: str = "oec_data") -> None:
         cache_service.cache_set(self._full_key(key), value, ttl_type)
 
-    async def _build_african_export_index(self, year: int) -> Dict[str, List[Dict]]:
-        """Index real African exports by HS2 chapter: {chapter: [{iso3, value, ...}]}.
+    async def _build_african_export_index(
+        self, year: int, hs_level: str = "HS4"
+    ) -> Dict[str, List[Dict]]:
+        """Index real African exports by HS code level: {hs_code: [{iso3, value, ...}]}.
 
         Fetches each major African exporter's top exports once (in parallel) and
-        groups them by HS2 chapter, so per-product supplier lookups need no extra
-        API calls. Cached for ``_cache_ttl`` seconds."""
-        return await self._build_trader_index(year, kind="export")
+        groups them by the specified HS level (HS2, HS4, HS6).
+        Cached for ``_cache_ttl`` seconds."""
+        return await self._build_trader_index(year, kind="export", hs_level=hs_level)
 
-    async def _build_african_import_index(self, year: int) -> Dict[str, List[Dict]]:
-        """Index real African imports by HS2 chapter: {chapter: [{iso3, value, ...}]}."""
-        return await self._build_trader_index(year, kind="import")
+    async def _build_african_import_index(
+        self, year: int, hs_level: str = "HS4"
+    ) -> Dict[str, List[Dict]]:
+        """Index real African imports by HS code level: {hs_code: [{iso3, value, ...}]}."""
+        return await self._build_trader_index(year, kind="import", hs_level=hs_level)
 
-    async def _build_trader_index(self, year: int, kind: str) -> Dict[str, List[Dict]]:
-        cache_key = f"{kind}_index_{year}"
+    async def _build_trader_index(
+        self, year: int, kind: str, hs_level: str = "HS4"
+    ) -> Dict[str, List[Dict]]:
+        cache_key = f"{kind}_index_{year}_{hs_level}"
         cached = self._cache_get(cache_key)
         if cached is not None:
             return cached
@@ -646,7 +652,9 @@ class RealSubstitutionService:
             if kind == "export"
             else real_trade_service.get_oec_imports
         )
-        tasks = [fetch(iso3, year=year, limit=100) for iso3 in MAJOR_AFRICAN_TRADERS]
+        tasks = [
+            fetch(iso3, year=year, limit=100, hs_level=hs_level) for iso3 in MAJOR_AFRICAN_TRADERS
+        ]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
         index: Dict[str, List[Dict]] = defaultdict(list)
@@ -655,10 +663,10 @@ class RealSubstitutionService:
                 continue
             for product in res:
                 hs_code = product.get("hs_code", "")
-                chapter = hs_code[:2]
-                if not chapter:
+                if not hs_code:
                     continue
-                index[chapter].append(
+                # Use the full HS code as the index key
+                index[hs_code].append(
                     {
                         "iso3": iso3,
                         "value": product.get("trade_value", 0),
@@ -684,7 +692,10 @@ class RealSubstitutionService:
         stale = self._cache_get_stale(cache_key)
         if stale is not None:
             logger.warning(
-                "OEC trader index (%s, %s) unavailable — serving stale index", kind, year
+                "OEC trader index (%s, %s, %s) unavailable — serving stale index",
+                kind,
+                year,
+                hs_level,
             )
             return stale
         return index
@@ -725,11 +736,13 @@ class RealSubstitutionService:
             return cached
 
         # --- Primary path: real OEC bilateral trade flows ---
-        bilateral = await real_trade_service.get_oec_bilateral_from_world(importer, year=year)
+        bilateral = await real_trade_service.get_oec_bilateral_from_world(
+            importer, year=year, hs_level="HS6"
+        )
         products_outside = (bilateral or {}).get("products_from_outside", [])
 
         if products_outside:
-            export_index = await self._build_african_export_index(year)
+            export_index = await self._build_african_export_index(year, hs_level="HS6")
             opportunities = []
             total_substitutable = 0
 
@@ -739,14 +752,27 @@ class RealSubstitutionService:
                     continue
 
                 hs_code = product.get("hs_code", "")
-                chapter = hs_code[:2]
 
-                # Aggregate real African export capacity in the same HS2 chapter
+                # For HS6, try exact match first, then fallback to HS4 prefix match
                 by_country: Dict[str, float] = defaultdict(float)
-                for supplier in export_index.get(chapter, []):
-                    if supplier["iso3"] == importer:
-                        continue
-                    by_country[supplier["iso3"]] += supplier["value"]
+                hs4_code = hs_code[:4] if len(hs_code) >= 4 else hs_code
+
+                # Look for exact HS6 matches in export index
+                exact_matches = export_index.get(hs_code, [])
+                if exact_matches:
+                    for supplier in exact_matches:
+                        if supplier["iso3"] == importer:
+                            continue
+                        by_country[supplier["iso3"]] += supplier["value"]
+                else:
+                    # Fallback to HS4 prefix matches if no exact HS6 data available
+                    # Group all exports by HS4 prefix
+                    for export_hs_key, suppliers_list in export_index.items():
+                        if len(export_hs_key) >= 4 and export_hs_key[:4] == hs4_code:
+                            for supplier in suppliers_list:
+                                if supplier["iso3"] == importer:
+                                    continue
+                                by_country[supplier["iso3"]] += supplier["value"]
 
                 african_suppliers = []
                 for iso3, value in sorted(by_country.items(), key=lambda x: x[1], reverse=True)[:5]:
@@ -931,15 +957,18 @@ class RealSubstitutionService:
             return cached
 
         # --- Primary path: real OEC export flows + real African import markets ---
-        exporter_exports = await real_trade_service.get_oec_exports(exporter, year=year, limit=100)
+        exporter_exports = await real_trade_service.get_oec_exports(
+            exporter, year=year, limit=100, hs_level="HS6"
+        )
 
         if exporter_exports:
-            import_index = await self._build_african_import_index(year)
+            import_index = await self._build_african_import_index(year, hs_level="HS6")
 
-            # Forces d'export au niveau PRODUIT (SH4), plus au chapitre SH2 :
-            # un client étudie ses opportunités produit par produit — vendre des
-            # voitures (8703) n'est pas vendre des pièces (8708), et agréger au
-            # chapitre mélangeait les deux (marchés, coefficient, prix).
+            # Forces d'export au niveau PRODUIT (SH6), spécifique au code SH exact :
+            # un producteur étudie ses opportunités produit par produit — vendre des
+            # plantains (SH6 080310) n'est pas vendre des bananes fraîches autres que
+            # plantains (SH6 080390), et la granularité SH6 permet au producteur
+            # d'identifier exactement où exporter son produit précis.
             exporter_products: Dict[str, Dict] = {}
             for product in exporter_exports:
                 hs_code = product.get("hs_code", "")
@@ -964,7 +993,7 @@ class RealSubstitutionService:
                 exporter_products.items(), key=lambda x: x[1]["value"], reverse=True
             )[:10]
 
-            for hs4, export_rec in top_products:
+            for hs6, export_rec in top_products:
                 exporter_export_value = export_rec["value"]
                 # Prix moyen à l'export ($/t, valeur unitaire BACI) : la donnée
                 # dont l'exportateur a besoin pour se positionner face au prix
@@ -976,33 +1005,35 @@ class RealSubstitutionService:
                 )
                 # Même discipline que la substitution d'imports : la part
                 # adressable d'un marché est bornée par le coefficient de
-                # substituabilité du produit (résolu au SH4 : 8703 → 0,5 et non
-                # plus 87 → 0,45), pas seulement par la capacité d'export.
-                feasibility = substitutability_for_hs(hs4)
+                # substituabilité du produit (résolu au SH4 prefix du SH6, ex :
+                # 0803 → 0,9 pour les bananes), pas seulement par la capacité d'export.
+                hs4_prefix = hs6[:4] if len(hs6) >= 4 else hs6
+                feasibility = substitutability_for_hs(hs4_prefix)
                 coef = feasibility["coefficient"]
 
                 # Marchés = pays africains important CE produit (correspondance
-                # SH4 exacte). Repli chapitre uniquement si aucun marché exact
+                # SH6 exacte). Repli HS4 uniquement si aucun marché exact
                 # (le produit n'apparaît dans le top-imports d'aucun pays), et
-                # alors dit explicitement — un marché "chapitre 87" n'est pas
-                # un marché "voitures".
-                chapter = hs4[:2]
-                exact = [
-                    m
-                    for m in import_index.get(chapter, [])
-                    if m["iso3"] != exporter and m.get("hs_code") == hs4
-                ]
-                market_match_level = "hs4"
+                # alors dit explicitement — un marché "HS4" n'est pas un marché
+                # pour le SH6 spécifique.
+                exact = [m for m in import_index.get(hs6, []) if m["iso3"] != exporter]
+                market_match_level = "hs6"
                 pool = exact
                 if not pool:
-                    market_match_level = "hs2"
+                    market_match_level = "hs4"
+                    # Group all imports by HS4 prefix for this product
                     by_country: Dict[str, Dict] = {}
-                    for m in import_index.get(chapter, []):
-                        if m["iso3"] == exporter:
-                            continue
-                        agg = by_country.setdefault(m["iso3"], {"value": 0.0, "quantity": 0.0})
-                        agg["value"] += m["value"]
-                        agg["quantity"] += m.get("quantity", 0) or 0
+                    for hs_key, imports_list in import_index.items():
+                        # Check if this HS key matches the HS4 prefix
+                        if len(hs_key) >= 4 and hs_key[:4] == hs4_prefix:
+                            for m in imports_list:
+                                if m["iso3"] == exporter:
+                                    continue
+                                agg = by_country.setdefault(
+                                    m["iso3"], {"value": 0.0, "quantity": 0.0}
+                                )
+                                agg["value"] += m["value"]
+                                agg["quantity"] += m.get("quantity", 0) or 0
                     pool = [
                         {"iso3": iso, "value": a["value"], "quantity": a["quantity"]}
                         for iso, a in by_country.items()
@@ -1021,16 +1052,16 @@ class RealSubstitutionService:
                     # Positionnement prix : valeur unitaire du marché ($/t) vs
                     # prix moyen d'export du pays — calculable seulement quand
                     # les deux volumes BACI sont présents ET que le marché
-                    # correspond EXACTEMENT au produit (hs4). En repli chapitre
-                    # (hs2), market_price est une moyenne mélangeant plusieurs
-                    # produits différents du même chapitre — le comparer au
+                    # correspond EXACTEMENT au produit (hs6). En repli HS4,
+                    # market_price est une moyenne mélangeant plusieurs
+                    # produits différents du même HS4 — le comparer au
                     # prix d'export d'UN produit précis serait trompeur (et
                     # afficherait un chip prix à côté de l'avertissement
-                    # "marché estimé au niveau chapitre", contradictoire).
+                    # "marché estimé au niveau HS4", contradictoire).
                     market_qty = market.get("quantity", 0) or 0
                     market_price = market_size / market_qty if market_qty > 0 else None
                     price_positioning = None
-                    if market_match_level == "hs4" and exporter_price and market_price:
+                    if market_match_level == "hs6" and exporter_price and market_price:
                         ratio = exporter_price / market_price
                         price_positioning = {
                             "exporter_avg_price_usd_per_tonne": round(exporter_price, 1),
@@ -1068,8 +1099,8 @@ class RealSubstitutionService:
                 opportunities.append(
                     {
                         "export_product": {
-                            "hs_code": hs4,
-                            "name": export_rec["name"] or f"SH {hs4}",
+                            "hs_code": hs6,
+                            "name": export_rec["name"] or f"SH {hs6}",
                         },
                         "exporter_avg_price_usd_per_tonne": (
                             round(exporter_price, 1) if exporter_price else None

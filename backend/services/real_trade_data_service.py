@@ -43,6 +43,26 @@ def _oec_params(params: Dict) -> Dict:
     return params
 
 
+# Supported OEC drilldown/record-key levels and the digit width each HS code
+# is zero-padded to. Centralised so hs_level is validated once instead of
+# duplicating the same if/elif/else in every fetcher below.
+_HS_LEVEL_DIGITS = {"HS2": 2, "HS4": 4, "HS6": 6}
+
+
+def _normalize_hs_level(hs_level: str) -> str:
+    """Normalize a caller-supplied HS level to one of HS2/HS4/HS6.
+
+    A caller-supplied level is interpolated directly into the OEC drilldown
+    string and used as a record-key lookup (``record.get(f"{hs_level} ID")``);
+    left unvalidated, a lowercase or unexpected value (e.g. ``"hs6"``) would
+    silently fall through to HS4 handling while still requesting a
+    non-existent drilldown field from OEC. Uppercase and default to HS4 for
+    anything unrecognized instead of failing that way.
+    """
+    normalized = (hs_level or "").strip().upper()
+    return normalized if normalized in _HS_LEVEL_DIGITS else "HS4"
+
+
 # African Countries (55 pays incluant la RASD - Membre UA depuis 1984)
 # Note: La RASD n'a pas de statistiques commerciales (territoire occupé)
 AFRICAN_COUNTRIES = {
@@ -546,8 +566,13 @@ HS_PRODUCT_NAMES = {
     "96": {"fr": "Ouvrages divers", "en": "Miscellaneous articles"},
     "97": {"fr": "Objets d'art", "en": "Works of art"},
     # Specific HS4 codes
+    "0402": {
+        "fr": "Lait et crème de lait concentrés/sucrés",
+        "en": "Concentrated/sweetened milk and cream",
+    },
     "0603": {"fr": "Fleurs coupées", "en": "Cut flowers"},
     "0713": {"fr": "Légumes secs", "en": "Dried legumes"},
+    "0803": {"fr": "Bananes, y compris les plantains", "en": "Bananas, including plantains"},
     "0805": {"fr": "Agrumes", "en": "Citrus fruits"},
     "0901": {"fr": "Café", "en": "Coffee"},
     "0902": {"fr": "Thé", "en": "Tea"},
@@ -563,23 +588,48 @@ HS_PRODUCT_NAMES = {
     "1801": {"fr": "Cacao en fèves", "en": "Cocoa beans"},
     "2202": {"fr": "Boissons non alcoolisées", "en": "Non-alcoholic beverages"},
     "2523": {"fr": "Ciment", "en": "Cement"},
+    "2601": {"fr": "Minerais de fer et concentrés", "en": "Iron ores and concentrates"},
     "2709": {"fr": "Huiles brutes de pétrole", "en": "Crude petroleum oils"},
     "2710": {"fr": "Huiles de pétrole raffinées", "en": "Refined petroleum oils"},
     "2711": {"fr": "Gaz de pétrole", "en": "Petroleum gases"},
+    "2814": {"fr": "Ammoniac", "en": "Ammonia"},
     "3004": {"fr": "Médicaments", "en": "Medicaments"},
     "3102": {"fr": "Engrais azotés", "en": "Nitrogen fertilizers"},
     "3105": {"fr": "Engrais NPK", "en": "NPK fertilizers"},
     "3901": {"fr": "Polymères d'éthylène", "en": "Ethylene polymers"},
     "3902": {"fr": "Polymères de propylène", "en": "Propylene polymers"},
+    "4001": {"fr": "Caoutchouc naturel", "en": "Natural rubber"},
     "4011": {"fr": "Pneumatiques neufs", "en": "New pneumatic tires"},
     "5201": {"fr": "Coton non cardé", "en": "Cotton, not carded"},
+    "6109": {
+        "fr": "T-shirts et maillots de corps, en bonneterie",
+        "en": "T-shirts, singlets, knitted",
+    },
+    "7102": {"fr": "Diamants", "en": "Diamonds"},
     "7108": {"fr": "Or", "en": "Gold"},
+    "7207": {
+        "fr": "Demi-produits en fer ou aciers non alliés",
+        "en": "Semi-finished iron/non-alloy steel products",
+    },
     "7208": {"fr": "Produits laminés plats en fer", "en": "Flat-rolled iron products"},
+    "7308": {
+        "fr": "Constructions et parties de constructions en fer ou acier",
+        "en": "Structures and parts of structures, of iron or steel",
+    },
     "7403": {"fr": "Cuivre affiné", "en": "Refined copper"},
+    "8471": {
+        "fr": "Ordinateurs et machines de traitement de données",
+        "en": "Automatic data-processing machines (computers)",
+    },
+    "8481": {"fr": "Articles de robinetterie", "en": "Taps, cocks, valves and similar appliances"},
     "8517": {"fr": "Téléphones", "en": "Telephones"},
     "8544": {"fr": "Fils et câbles électriques", "en": "Insulated wire, cable"},
     "8703": {"fr": "Voitures de tourisme", "en": "Motor cars"},
     "8704": {"fr": "Véhicules pour transport de marchandises", "en": "Goods transport vehicles"},
+    "8708": {
+        "fr": "Parties et accessoires de véhicules automobiles",
+        "en": "Motor vehicle parts and accessories",
+    },
 }
 
 
@@ -594,21 +644,36 @@ class RealTradeDataService:
         self._cache_ttl = 3600  # 1 hour
 
     async def get_oec_imports(
-        self, country_iso3: str, year: int = 2022, limit: int = 100
+        self, country_iso3: str, year: int = 2022, limit: int = 100, hs_level: str = "HS4"
     ) -> List[Dict]:
         """
         Get imports for a country from OEC API
+
+        Args:
+            country_iso3: Country ISO3 code
+            year: Year for trade data
+            limit: Number of results to return
+            hs_level: Harmonized System level (HS2, HS4, HS6) - default HS4
         """
         country_info = AFRICAN_COUNTRIES.get(country_iso3.upper())
         if not country_info:
             return []
 
         oec_id = country_info["oec"]
+        if not oec_id:
+            # No OEC identifier for this territory (e.g. ESH/Western Sahara):
+            # sending None would become an empty "Importer Country" query
+            # param rather than raising, silently asking OEC for a bogus
+            # aggregate instead of failing loudly.
+            return []
+
+        hs_level = _normalize_hs_level(hs_level)
+        hs_digits = _HS_LEVEL_DIGITS[hs_level]
 
         try:
             params = {
                 "cube": "trade_i_baci_a_17",
-                "drilldowns": "Year,Importer Country,HS4",
+                "drilldowns": f"Year,Importer Country,{hs_level}",
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Importer Country": oec_id,
@@ -628,13 +693,13 @@ class RealTradeDataService:
                     # Format results
                     results = []
                     for record in records[:limit]:
-                        hs4_id = str(record.get("HS4 ID", ""))
-                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
+                        hs_id = str(record.get(f"{hs_level} ID", ""))
+                        hs_code = hs_id[-hs_digits:].zfill(hs_digits) if hs_id else ""
 
                         results.append(
                             {
-                                "hs_code": hs4_code,
-                                "product_name": record.get("HS4", ""),
+                                "hs_code": hs_code,
+                                "product_name": record.get(hs_level, ""),
                                 "trade_value": record.get("Trade Value", 0),
                                 "quantity": record.get("Quantity", 0),
                                 "year": year,
@@ -649,21 +714,34 @@ class RealTradeDataService:
         return []
 
     async def get_oec_exports(
-        self, country_iso3: str, year: int = 2022, limit: int = 100
+        self, country_iso3: str, year: int = 2022, limit: int = 100, hs_level: str = "HS4"
     ) -> List[Dict]:
         """
         Get exports for a country from OEC API
+
+        Args:
+            country_iso3: Country ISO3 code
+            year: Year for trade data
+            limit: Number of results to return
+            hs_level: Harmonized System level (HS2, HS4, HS6) - default HS4
         """
         country_info = AFRICAN_COUNTRIES.get(country_iso3.upper())
         if not country_info:
             return []
 
         oec_id = country_info["oec"]
+        if not oec_id:
+            # No OEC identifier for this territory (e.g. ESH/Western Sahara):
+            # avoid sending an empty "Exporter Country" query param.
+            return []
+
+        hs_level = _normalize_hs_level(hs_level)
+        hs_digits = _HS_LEVEL_DIGITS[hs_level]
 
         try:
             params = {
                 "cube": "trade_i_baci_a_17",
-                "drilldowns": "Year,Exporter Country,HS4",
+                "drilldowns": f"Year,Exporter Country,{hs_level}",
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Exporter Country": oec_id,
@@ -681,13 +759,13 @@ class RealTradeDataService:
 
                     results = []
                     for record in records[:limit]:
-                        hs4_id = str(record.get("HS4 ID", ""))
-                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
+                        hs_id = str(record.get(f"{hs_level} ID", ""))
+                        hs_code = hs_id[-hs_digits:].zfill(hs_digits) if hs_id else ""
 
                         results.append(
                             {
-                                "hs_code": hs4_code,
-                                "product_name": record.get("HS4", ""),
+                                "hs_code": hs_code,
+                                "product_name": record.get(hs_level, ""),
                                 "trade_value": record.get("Trade Value", 0),
                                 "quantity": record.get("Quantity", 0),
                                 "year": year,
@@ -702,23 +780,38 @@ class RealTradeDataService:
         return []
 
     async def get_oec_bilateral_from_world(
-        self, importer_iso3: str, year: int = 2022, limit: int = 50
+        self, importer_iso3: str, year: int = 2022, limit: int = 50, hs_level: str = "HS4"
     ) -> Dict:
         """
         Get imports by partner country to identify non-African sources
+
+        Args:
+            importer_iso3: Importer country ISO3 code
+            year: Year for trade data
+            limit: Number of results to return
+            hs_level: Harmonized System level (HS2, HS4, HS6) - default HS4
         """
         country_info = AFRICAN_COUNTRIES.get(importer_iso3.upper())
         if not country_info:
             return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
 
         oec_id = country_info["oec"]
-        african_oec_ids = [c["oec"] for c in AFRICAN_COUNTRIES.values()]
+        if not oec_id:
+            # No OEC identifier for this territory (e.g. ESH/Western Sahara):
+            # avoid sending an empty "Importer Country" query param.
+            return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
+
+        hs_level = _normalize_hs_level(hs_level)
+        hs_digits = _HS_LEVEL_DIGITS[hs_level]
+        # Some AfCFTA members have no OEC identifier (e.g. Western Sahara ESH):
+        # skip them so ``af_id.replace(...)`` below never hits a None.
+        african_oec_ids = [c["oec"] for c in AFRICAN_COUNTRIES.values() if c.get("oec")]
 
         try:
             # Get imports by exporter country
             params = {
                 "cube": "trade_i_baci_a_17",
-                "drilldowns": "Year,Importer Country,Exporter Country,HS4",
+                "drilldowns": f"Year,Importer Country,Exporter Country,{hs_level}",
                 "measures": "Trade Value",
                 "Year": str(year),
                 "Importer Country": oec_id,
@@ -739,10 +832,12 @@ class RealTradeDataService:
 
                     for record in records:
                         value = record.get("Trade Value", 0)
-                        exporter_id = record.get("Exporter Country ID", "")
-                        hs4_id = str(record.get("HS4 ID", ""))
-                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
-                        product_name = record.get("HS4", "")
+                        # OEC can return this as a non-string JSON value (or
+                        # None); coerce before .startswith() below.
+                        exporter_id = str(record.get("Exporter Country ID", "") or "")
+                        hs_id = str(record.get(f"{hs_level} ID", ""))
+                        hs_code = hs_id[-hs_digits:].zfill(hs_digits) if hs_id else ""
+                        product_name = record.get(hs_level, "")
                         exporter_name = record.get("Exporter Country", "")
 
                         total_value += value
@@ -757,10 +852,10 @@ class RealTradeDataService:
                             from_africa += value
                         else:
                             from_outside += value
-                            if hs4_code and value > 1000000:  # Only significant imports
-                                products_from_outside[hs4_code]["value"] += value
-                                products_from_outside[hs4_code]["name"] = product_name
-                                products_from_outside[hs4_code]["sources"].add(exporter_name)
+                            if hs_code and value > 1000000:  # Only significant imports
+                                products_from_outside[hs_code]["value"] += value
+                                products_from_outside[hs_code]["name"] = product_name
+                                products_from_outside[hs_code]["sources"].add(exporter_name)
 
                     # Format products from outside
                     products_list = []
