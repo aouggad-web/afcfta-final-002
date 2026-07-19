@@ -623,7 +623,9 @@ class RealSubstitutionService:
     def _cache_set(self, key: str, value: Any, ttl_type: str = "oec_data") -> None:
         cache_service.cache_set(self._full_key(key), value, ttl_type)
 
-    async def _build_african_export_index(self, year: int, hs_level: str = "HS4") -> Dict[str, List[Dict]]:
+    async def _build_african_export_index(
+        self, year: int, hs_level: str = "HS4"
+    ) -> Dict[str, List[Dict]]:
         """Index real African exports by HS code level: {hs_code: [{iso3, value, ...}]}.
 
         Fetches each major African exporter's top exports once (in parallel) and
@@ -631,11 +633,15 @@ class RealSubstitutionService:
         Cached for ``_cache_ttl`` seconds."""
         return await self._build_trader_index(year, kind="export", hs_level=hs_level)
 
-    async def _build_african_import_index(self, year: int, hs_level: str = "HS4") -> Dict[str, List[Dict]]:
+    async def _build_african_import_index(
+        self, year: int, hs_level: str = "HS4"
+    ) -> Dict[str, List[Dict]]:
         """Index real African imports by HS code level: {hs_code: [{iso3, value, ...}]}."""
         return await self._build_trader_index(year, kind="import", hs_level=hs_level)
 
-    async def _build_trader_index(self, year: int, kind: str, hs_level: str = "HS4") -> Dict[str, List[Dict]]:
+    async def _build_trader_index(
+        self, year: int, kind: str, hs_level: str = "HS4"
+    ) -> Dict[str, List[Dict]]:
         cache_key = f"{kind}_index_{year}_{hs_level}"
         cached = self._cache_get(cache_key)
         if cached is not None:
@@ -646,7 +652,9 @@ class RealSubstitutionService:
             if kind == "export"
             else real_trade_service.get_oec_imports
         )
-        tasks = [fetch(iso3, year=year, limit=100, hs_level=hs_level) for iso3 in MAJOR_AFRICAN_TRADERS]
+        tasks = [
+            fetch(iso3, year=year, limit=100, hs_level=hs_level) for iso3 in MAJOR_AFRICAN_TRADERS
+        ]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
         index: Dict[str, List[Dict]] = defaultdict(list)
@@ -684,7 +692,10 @@ class RealSubstitutionService:
         stale = self._cache_get_stale(cache_key)
         if stale is not None:
             logger.warning(
-                "OEC trader index (%s, %s, %s) unavailable — serving stale index", kind, year, hs_level
+                "OEC trader index (%s, %s, %s) unavailable — serving stale index",
+                kind,
+                year,
+                hs_level,
             )
             return stale
         return index
@@ -725,7 +736,9 @@ class RealSubstitutionService:
             return cached
 
         # --- Primary path: real OEC bilateral trade flows ---
-        bilateral = await real_trade_service.get_oec_bilateral_from_world(importer, year=year, hs_level="HS6")
+        bilateral = await real_trade_service.get_oec_bilateral_from_world(
+            importer, year=year, hs_level="HS6"
+        )
         products_outside = (bilateral or {}).get("products_from_outside", [])
 
         if products_outside:
@@ -944,7 +957,9 @@ class RealSubstitutionService:
             return cached
 
         # --- Primary path: real OEC export flows + real African import markets ---
-        exporter_exports = await real_trade_service.get_oec_exports(exporter, year=year, limit=100, hs_level="HS6")
+        exporter_exports = await real_trade_service.get_oec_exports(
+            exporter, year=year, limit=100, hs_level="HS6"
+        )
 
         if exporter_exports:
             import_index = await self._build_african_import_index(year, hs_level="HS6")
@@ -1001,11 +1016,7 @@ class RealSubstitutionService:
                 # (le produit n'apparaît dans le top-imports d'aucun pays), et
                 # alors dit explicitement — un marché "HS4" n'est pas un marché
                 # pour le SH6 spécifique.
-                exact = [
-                    m
-                    for m in import_index.get(hs6, [])
-                    if m["iso3"] != exporter
-                ]
+                exact = [m for m in import_index.get(hs6, []) if m["iso3"] != exporter]
                 market_match_level = "hs6"
                 pool = exact
                 if not pool:
@@ -1018,7 +1029,9 @@ class RealSubstitutionService:
                             for m in imports_list:
                                 if m["iso3"] == exporter:
                                     continue
-                                agg = by_country.setdefault(m["iso3"], {"value": 0.0, "quantity": 0.0})
+                                agg = by_country.setdefault(
+                                    m["iso3"], {"value": 0.0, "quantity": 0.0}
+                                )
                                 agg["value"] += m["value"]
                                 agg["quantity"] += m.get("quantity", 0) or 0
                     pool = [

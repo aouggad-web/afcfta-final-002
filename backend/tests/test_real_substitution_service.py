@@ -98,9 +98,7 @@ def test_import_substitution_uses_real_oec_values(svc, monkeypatch):
     # a car dollar is not as substitutable as a wheat dollar.
     cars_coef = cars["substitution_feasibility"]["coefficient"]
     assert cars_coef == 0.5  # 8703: effet marque / réseau après-vente
-    assert cars["substitution_potential"] == int(
-        min(3_000_000_000 * cars_coef, 5_000_000_000)
-    )
+    assert cars["substitution_potential"] == int(min(3_000_000_000 * cars_coef, 5_000_000_000))
     assert cars["binding_constraint"] == "substituabilité"
     supplier_isos = {s["country_iso3"] for s in cars["african_suppliers"]}
     # With HS6 granularity, only exact product matches (ZAF exports sedans, MAR exports parts)
@@ -235,8 +233,12 @@ def test_export_opportunities_fall_back_to_chapter_markets_when_no_exact_match(s
     # returning nothing, the analysis falls back to HS4-level markets and SAYS SO
     # (market_match_level="hs4"). Note: they're in the same chapter (87) but
     # different HS4, so HS4 fallback finds them.
-    exports = {"ZAF": [{"hs_code": "870321", "product_name": "Sedans", "trade_value": 5_000_000_000}]}
-    imports = {"EGY": [{"hs_code": "870829", "product_name": "Other parts", "trade_value": 8_000_000_000}]}
+    exports = {
+        "ZAF": [{"hs_code": "870321", "product_name": "Sedans", "trade_value": 5_000_000_000}]
+    }
+    imports = {
+        "EGY": [{"hs_code": "870829", "product_name": "Other parts", "trade_value": 8_000_000_000}]
+    }
     _patch_oec(
         monkeypatch, bilateral={"products_from_outside": []}, exports=exports, imports=imports
     )
@@ -289,7 +291,9 @@ def test_export_opportunities_capacity_binds_small_exporter(svc, monkeypatch):
     # Small exporter (100M) vs a 2B market: addressable is 0.5B (coef 0.5 for cars)
     # but capacity is the binding constraint -> capture = 100M / 2B = 0.05.
     exports = {"ZAF": [{"hs_code": "870321", "product_name": "Sedans", "trade_value": 100_000_000}]}
-    imports = {"NGA": [{"hs_code": "870321", "product_name": "Sedans", "trade_value": 2_000_000_000}]}
+    imports = {
+        "NGA": [{"hs_code": "870321", "product_name": "Sedans", "trade_value": 2_000_000_000}]
+    }
     _patch_oec(
         monkeypatch, bilateral={"products_from_outside": []}, exports=exports, imports=imports
     )
