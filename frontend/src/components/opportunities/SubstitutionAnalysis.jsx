@@ -66,6 +66,26 @@ const FEASIBILITY_TXT = {
   },
 };
 
+// Positionnement prix (opportunités d'export) : le backend compare le prix
+// moyen d'export du pays ($/t, valeur unitaire BACI) au prix moyen que le
+// marché cible paie déjà à ses fournisseurs actuels — l'information dont un
+// exportateur a besoin pour savoir s'il peut se placer sur un marché.
+const fmtPerTonne = (v) => {
+  if (v == null || isNaN(v)) return '—';
+  return `$${Math.round(v).toLocaleString('en-US')}/t`;
+};
+
+const POSITIONING_CHIP = {
+  'compétitif': 'bg-emerald-100 text-emerald-700',
+  'aligné': 'bg-blue-100 text-blue-700',
+  'premium': 'bg-amber-100 text-amber-700',
+};
+
+const POSITIONING_LABEL = {
+  fr: { 'compétitif': 'Compétitif', 'aligné': 'Aligné', 'premium': 'Premium' },
+  en: { 'compétitif': 'Competitive', 'aligné': 'Aligned', 'premium': 'Premium' },
+};
+
 const coefficientColor = (coef) => {
   if (coef >= 0.7) return { bar: 'bg-emerald-500', text: 'text-emerald-700', chip: 'bg-emerald-100 text-emerald-700' };
   if (coef >= 0.4) return { bar: 'bg-amber-500', text: 'text-amber-700', chip: 'bg-amber-100 text-amber-700' };
@@ -250,6 +270,24 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
           </div>
         )}
 
+        {/* Average export price + market-match caveat (exports only) */}
+        {!isImport && opportunity.exporter_avg_price_usd_per_tonne != null && (
+          <div className="mb-3 flex items-center gap-2 text-sm text-slate-600" data-testid="exporter-avg-price">
+            <DollarSign className="h-4 w-4 text-slate-400" />
+            <span>
+              {language === 'en' ? 'Average export price' : "Prix moyen à l'export"} :{' '}
+              <strong className="text-slate-800">{fmtPerTonne(opportunity.exporter_avg_price_usd_per_tonne)}</strong>
+            </span>
+          </div>
+        )}
+        {!isImport && opportunity.market_match_level === 'hs2' && (
+          <p className="mb-3 text-[11px] text-amber-700 bg-amber-50 rounded-md px-2.5 py-1.5" data-testid="market-match-caveat">
+            {language === 'en'
+              ? 'Markets estimated at chapter level (this exact product is absent from the top imports of the countries surveyed).'
+              : "Marchés estimés au niveau chapitre (ce produit exact est absent des top-imports des pays sondés)."}
+          </p>
+        )}
+
         {/* Suppliers/Markets */}
         <div>
           <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
@@ -257,20 +295,38 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
           </p>
           <div className="space-y-2">
             {targets?.slice(0, 3).map((target, idx) => (
-              <div key={idx} className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-sm text-slate-700">
-                    {target.country_name}
+              <div key={idx} className="bg-slate-50 rounded-lg px-3 py-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-sm text-slate-700">
+                      {target.country_name}
+                    </span>
+                    {target.quality && (
+                      <Badge variant="outline" className="text-[10px]">
+                        {target.quality}
+                      </Badge>
+                    )}
+                  </div>
+                  <span className="text-sm font-semibold text-emerald-600">
+                    {formatValue(isImport ? (target.export_value || target.production_capacity) : target.market_size)}
                   </span>
-                  {target.quality && (
-                    <Badge variant="outline" className="text-[10px]">
-                      {target.quality}
-                    </Badge>
-                  )}
                 </div>
-                <span className="text-sm font-semibold text-emerald-600">
-                  {formatValue(isImport ? (target.export_value || target.production_capacity) : target.market_size)}
-                </span>
+                {/* Positionnement prix (export) : prix moyen payé par le marché
+                    à ses fournisseurs actuels vs prix moyen d'export du pays. */}
+                {!isImport && target.price_positioning && (
+                  <div className="mt-1.5 flex items-center justify-between gap-2" data-testid="price-positioning">
+                    <span className="text-[11px] text-slate-500">
+                      {language === 'en' ? 'Market pays' : 'Le marché paie'}{' '}
+                      <strong>{fmtPerTonne(target.price_positioning.market_avg_price_usd_per_tonne)}</strong>
+                      {' · '}
+                      {target.price_positioning.price_delta_pct > 0 ? '+' : ''}
+                      {target.price_positioning.price_delta_pct}%
+                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${POSITIONING_CHIP[target.price_positioning.positioning] || POSITIONING_CHIP['aligné']}`}>
+                      {(POSITIONING_LABEL[language] || POSITIONING_LABEL.fr)[target.price_positioning.positioning] || target.price_positioning.positioning}
+                    </span>
+                  </div>
+                )}
               </div>
             ))}
           </div>

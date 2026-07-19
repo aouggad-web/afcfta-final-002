@@ -139,6 +139,69 @@ describe('OpportunityCard — substitution feasibility block', () => {
     expect(block).toHaveTextContent(/capacité d'export du pays/i);
   });
 
+  it('shows exporter average price and per-market price positioning on export cards', () => {
+    render(
+      <OpportunityCard
+        opportunity={{
+          export_product: { hs_code: '8703', name: 'Voitures de tourisme' },
+          exporter_avg_price_usd_per_tonne: 10_000,
+          market_match_level: 'hs4',
+          potential_markets: [
+            {
+              country_name: 'Nigeria',
+              market_size: 2_000_000_000,
+              addressable_market_size: 1_000_000_000,
+              capture_potential: 0.5,
+              price_positioning: {
+                exporter_avg_price_usd_per_tonne: 10_000,
+                market_avg_price_usd_per_tonne: 16_000,
+                price_ratio: 0.63,
+                price_delta_pct: -37.5,
+                positioning: 'compétitif',
+              },
+            },
+          ],
+          total_market_potential: 1_000_000_000,
+          substitution_feasibility: {
+            hs_code: '8703', coefficient: 0.5, product_class: 'véhicules de tourisme',
+            barriers: null, rationale: '...', is_estimation: true,
+          },
+          binding_constraint: 'substituabilité',
+        }}
+        type="export"
+        language="fr"
+      />
+    );
+    expect(screen.getByTestId('exporter-avg-price')).toHaveTextContent('$10,000/t');
+    const pp = screen.getByTestId('price-positioning');
+    expect(pp).toHaveTextContent('$16,000/t');
+    expect(pp).toHaveTextContent('-37.5%');
+    expect(pp).toHaveTextContent('Compétitif');
+    // Exact product match: no chapter-level caveat.
+    expect(screen.queryByTestId('market-match-caveat')).not.toBeInTheDocument();
+  });
+
+  it('shows the chapter-level caveat when markets are hs2 fallback, hides prices when absent', () => {
+    render(
+      <OpportunityCard
+        opportunity={{
+          export_product: { hs_code: '8703', name: 'Voitures de tourisme' },
+          exporter_avg_price_usd_per_tonne: null,
+          market_match_level: 'hs2',
+          potential_markets: [
+            { country_name: 'Égypte', market_size: 8_000_000_000, capture_potential: 0.5, price_positioning: null },
+          ],
+          total_market_potential: 4_000_000_000,
+        }}
+        type="export"
+        language="fr"
+      />
+    );
+    expect(screen.getByTestId('market-match-caveat')).toHaveTextContent(/niveau chapitre/i);
+    expect(screen.queryByTestId('exporter-avg-price')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('price-positioning')).not.toBeInTheDocument();
+  });
+
   it('renders nothing on an export opportunity lacking the feasibility field (legacy data)', () => {
     render(
       <OpportunityCard
