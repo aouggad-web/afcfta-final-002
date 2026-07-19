@@ -158,7 +158,7 @@ function MarketSeekingView({ fr }) {
       filename: `recherche-marchés-${hsCode}`,
       kpis: [
         { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
-        { label: fr ? "Demande africaine" : "African demand", value: demand.total_import_value_usd ? `$${Number(demand.total_import_value_usd).toLocaleString('en-US', { maximumFractionDigits: 0 })}` : '—', accent: 'green' }
+        { label: fr ? "Demande africaine" : "African demand", value: money(demand.total_import_value_usd), accent: 'green' }
       ],
       sections: [{ title: fr ? `Recherche de marchés ${hsCode}` : `Find markets ${hsCode}`, text: '' }]
     };
@@ -402,8 +402,8 @@ export function BilateralView({ countries, fr, prefill }) {
     if (!report) return null;
     const kpis = [];
     const ci = report.composite_indicators || {};
-    if (ci.end_to_end_score?.available) kpis.push({ label: fr ? "Score bout en bout" : "End-to-end score", value: `${Math.round((ci.end_to_end_score.score || 0) * 100)}%`, accent: 'gold' });
-    if (ci.landed_cost?.value_usd !== undefined) kpis.push({ label: fr ? "Coût débarqué" : "Landed cost", value: `$${Number(ci.landed_cost.value_usd).toLocaleString('en-US', { maximumFractionDigits: 0 })}`, accent: 'green' });
+    if (ci.end_to_end_score?.available) kpis.push({ label: fr ? "Score bout en bout" : "End-to-end score", value: pct(ci.end_to_end_score.score), accent: 'gold' });
+    if (ci.landed_cost?.available) kpis.push({ label: fr ? "Coût débarqué" : "Landed cost", value: money(ci.landed_cost.value_usd), accent: 'green' });
     return {
       badge: `${origin}-${destination}`,
       filename: `rapport-bilateral-${hsCode}`,
