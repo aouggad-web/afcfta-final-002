@@ -21,6 +21,8 @@ import {
 
 import TradeSankeyDiagram from './TradeSankeyDiagram';
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -1215,6 +1217,61 @@ export default function AIAnalysis({ language = 'fr' }) {
       {/* Results */}
       {!loading && !error && data && (
         <>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <OpportunityPdfExport
+              language={lang}
+              getSpec={() => {
+                const fr = lang !== 'en';
+                const opps = data.opportunities || [];
+                const musd = (v) => (v ? `$${Number(v).toLocaleString(fr ? 'fr-FR' : 'en-US', { maximumFractionDigits: 1 })}M` : '—');
+                return {
+                  badge: fr ? 'ANALYSE IA' : 'AI ANALYSIS',
+                  title: `${fr ? 'Opportunités' : 'Opportunities'} ${mode === 'export' ? 'export' : mode === 'import' ? 'import' : ''} — ${data.country || selectedCountry}`,
+                  subtitle: fr
+                    ? 'Analyse générée par IA — à recouper avec les flux réels OEC/BACI'
+                    : 'AI-generated analysis — cross-check against real OEC/BACI flows',
+                  sections: [
+                    opps.length && {
+                      title: fr ? 'Opportunités identifiées' : 'Identified opportunities',
+                      table: {
+                        columns: [
+                          { key: 'product', label: fr ? 'Produit' : 'Product', width: 2.4, fmt: (v, o) => o.product?.name || o.output_product || o.product_name || '—' },
+                          {
+                            // Même résolution par mode que la carte à l'écran
+                            // (voir OpportunityCard ci-dessus, isExport/isIndustrial) :
+                            // le mode "industriel" a ses propres champs
+                            // (targetMarkets, potentialTradeValue) et tombait
+                            // sinon dans la branche import -> colonnes à "—".
+                            key: 'partner', label: fr ? 'Partenaire / marché' : 'Partner / market', width: 1.6,
+                            fmt: (v, o) =>
+                              (mode === 'export'
+                                ? (o.potentialPartner || o.potential_partner)
+                                : mode === 'industrial'
+                                ? (o.targetMarkets || o.target_markets || []).slice(0, 2).join(', ')
+                                : (o.potentialSupplier || o.potential_supplier)) || '—',
+                          },
+                          {
+                            key: 'value', label: fr ? 'Potentiel (M$)' : 'Potential ($M)', align: 'right', width: 1,
+                            fmt: (v, o) =>
+                              musd(
+                                mode === 'export'
+                                  ? (o.potentialTradeValue || o.potential_value_musd || o.potential_trade_value)
+                                  : mode === 'industrial'
+                                  ? (o.potentialTradeValue || o.potential_value_musd)
+                                  : (o.substitutionPotential || o.substitution_potential_musd || o.currentImportValue),
+                              ),
+                          },
+                        ],
+                        rows: opps,
+                      },
+                    },
+                  ].filter(Boolean),
+                  source: fr ? 'Claude AI + OEC, UN Comtrade, IMF, UNCTAD' : 'Claude AI + OEC, UN Comtrade, IMF, UNCTAD',
+                  filename: opportunityPdfFilename('AnalyseIA', `${data.country || selectedCountry}_${mode}`),
+                };
+              }}
+            />
+          </div>
           <SummaryStrip data={data} mode={mode} lang={lang} />
 
           {/* Sankey */}

@@ -21,6 +21,8 @@ import {
   CartesianGrid, Tooltip, PieChart, Pie, Cell, Legend
 } from 'recharts';
 import TradeSankeyDiagram from './TradeSankeyDiagram';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 import { 
   TrendingUp, TrendingDown, Globe, Package, Factory, Ship,
   ArrowRight, ArrowLeftRight, Loader2, AlertCircle, Search,
@@ -64,6 +66,26 @@ const FEASIBILITY_TXT = {
     certification: 'Certification',
     intensityLabel: { faible: 'Low', moyen: 'Medium', fort: 'High' },
   },
+};
+
+// Positionnement prix (opportunités d'export) : le backend compare le prix
+// moyen d'export du pays ($/t, valeur unitaire BACI) au prix moyen que le
+// marché cible paie déjà à ses fournisseurs actuels — l'information dont un
+// exportateur a besoin pour savoir s'il peut se placer sur un marché.
+const fmtPerTonne = (v) => {
+  if (v == null || isNaN(v)) return '—';
+  return `$${Math.round(v).toLocaleString('en-US')}/t`;
+};
+
+const POSITIONING_CHIP = {
+  'compétitif': 'bg-emerald-100 text-emerald-700',
+  'aligné': 'bg-blue-100 text-blue-700',
+  'premium': 'bg-amber-100 text-amber-700',
+};
+
+const POSITIONING_LABEL = {
+  fr: { 'compétitif': 'Compétitif', 'aligné': 'Aligné', 'premium': 'Premium' },
+  en: { 'compétitif': 'Competitive', 'aligné': 'Aligned', 'premium': 'Premium' },
 };
 
 const coefficientColor = (coef) => {
@@ -250,6 +272,24 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
           </div>
         )}
 
+        {/* Average export price + market-match caveat (exports only) */}
+        {!isImport && opportunity.exporter_avg_price_usd_per_tonne != null && (
+          <div className="mb-3 flex items-center gap-2 text-sm text-slate-600" data-testid="exporter-avg-price">
+            <DollarSign className="h-4 w-4 text-slate-400" />
+            <span>
+              {language === 'en' ? 'Average export price' : "Prix moyen à l'export"} :{' '}
+              <strong className="text-slate-800">{fmtPerTonne(opportunity.exporter_avg_price_usd_per_tonne)}</strong>
+            </span>
+          </div>
+        )}
+        {!isImport && opportunity.market_match_level === 'hs2' && (
+          <p className="mb-3 text-[11px] text-amber-700 bg-amber-50 rounded-md px-2.5 py-1.5" data-testid="market-match-caveat">
+            {language === 'en'
+              ? 'Markets estimated at chapter level (this exact product is absent from the top imports of the countries surveyed).'
+              : "Marchés estimés au niveau chapitre (ce produit exact est absent des top-imports des pays sondés)."}
+          </p>
+        )}
+
         {/* Suppliers/Markets */}
         <div>
           <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
@@ -257,20 +297,38 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
           </p>
           <div className="space-y-2">
             {targets?.slice(0, 3).map((target, idx) => (
-              <div key={idx} className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-sm text-slate-700">
-                    {target.country_name}
+              <div key={idx} className="bg-slate-50 rounded-lg px-3 py-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-sm text-slate-700">
+                      {target.country_name}
+                    </span>
+                    {target.quality && (
+                      <Badge variant="outline" className="text-[10px]">
+                        {target.quality}
+                      </Badge>
+                    )}
+                  </div>
+                  <span className="text-sm font-semibold text-emerald-600">
+                    {formatValue(isImport ? (target.export_value || target.production_capacity) : target.market_size)}
                   </span>
-                  {target.quality && (
-                    <Badge variant="outline" className="text-[10px]">
-                      {target.quality}
-                    </Badge>
-                  )}
                 </div>
-                <span className="text-sm font-semibold text-emerald-600">
-                  {formatValue(isImport ? (target.export_value || target.production_capacity) : target.market_size)}
-                </span>
+                {/* Positionnement prix (export) : prix moyen payé par le marché
+                    à ses fournisseurs actuels vs prix moyen d'export du pays. */}
+                {!isImport && target.price_positioning && (
+                  <div className="mt-1.5 flex items-center justify-between gap-2" data-testid="price-positioning">
+                    <span className="text-[11px] text-slate-500">
+                      {language === 'en' ? 'Market pays' : 'Le marché paie'}{' '}
+                      <strong>{fmtPerTonne(target.price_positioning.market_avg_price_usd_per_tonne)}</strong>
+                      {' · '}
+                      {target.price_positioning.price_delta_pct > 0 ? '+' : ''}
+                      {target.price_positioning.price_delta_pct}%
+                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${POSITIONING_CHIP[target.price_positioning.positioning] || POSITIONING_CHIP['aligné']}`}>
+                      {(POSITIONING_LABEL[language] || POSITIONING_LABEL.fr)[target.price_positioning.positioning] || target.price_positioning.positioning}
+                    </span>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -392,6 +450,114 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
     return found?.name || selectedCountry;
   }, [countries, selectedCountry]);
 
+  // Spécification du rapport PDF du sous-module (voir utils/opportunityPdf.js) :
+  // décrit en données l'onglet actif — le bâtisseur commun gère la mise en page.
+  const buildPdfSpec = useCallback(() => {
+    if (!currentData) return null;
+    const isImport = activeTab === 'import';
+    const fr = currentLang !== 'en';
+    const summary = currentData.summary || {};
+    const kpis = [
+      { label: txt.totalOpportunities, value: String(summary.total_opportunities ?? 0), accent: 'gold' },
+      {
+        label: isImport ? txt.substitutableValue : (fr ? 'Potentiel de marché' : 'Market potential'),
+        value: formatValue(isImport ? summary.total_substitutable_value : summary.total_market_potential),
+        accent: 'green',
+      },
+    ];
+    if (isImport && summary.total_imports_from_outside) {
+      kpis.push({ label: txt.outsideAfrica, value: formatValue(summary.total_imports_from_outside), accent: 'red' });
+    }
+
+    const sections = [];
+    if (isImport) {
+      sections.push({
+        title: fr ? 'Opportunités de substitution d’imports' : 'Import substitution opportunities',
+        table: {
+          columns: [
+            { key: 'hs', label: 'SH', width: 0.7 },
+            { key: 'name', label: fr ? 'Produit' : 'Product', width: 2.6 },
+            { key: 'imp', label: fr ? 'Import actuel' : 'Current import', align: 'right', width: 1.1 },
+            { key: 'coef', label: fr ? 'Substituabilité' : 'Substitutability', align: 'right', width: 1.0 },
+            { key: 'pot', label: fr ? 'Potentiel' : 'Potential', align: 'right', width: 1.1 },
+            { key: 'constraint', label: fr ? 'Contrainte' : 'Constraint', width: 1.2 },
+          ],
+          rows: opportunities.map((o) => ({
+            hs: o.imported_product?.hs_code || '—',
+            name: o.imported_product?.name || '—',
+            imp: formatValue(o.imported_product?.import_value),
+            coef: o.substitution_feasibility ? `${Math.round(o.substitution_feasibility.coefficient * 100)}%` : '—',
+            pot: formatValue(o.substitution_potential),
+            constraint: o.binding_constraint || '—',
+          })),
+        },
+      });
+    } else {
+      sections.push({
+        title: fr ? 'Opportunités d’export (niveau produit)' : 'Export opportunities (product level)',
+        table: {
+          columns: [
+            { key: 'hs', label: 'SH', width: 0.7 },
+            { key: 'name', label: fr ? 'Produit' : 'Product', width: 2.4 },
+            { key: 'price', label: fr ? 'Prix export' : 'Export price', align: 'right', width: 1.0 },
+            { key: 'coef', label: fr ? 'Substituabilité' : 'Substitutability', align: 'right', width: 1.0 },
+            { key: 'pot', label: fr ? 'Potentiel' : 'Potential', align: 'right', width: 1.1 },
+            { key: 'constraint', label: fr ? 'Contrainte' : 'Constraint', width: 1.2 },
+          ],
+          rows: opportunities.map((o) => ({
+            hs: o.export_product?.hs_code || '—',
+            name: o.export_product?.name || '—',
+            price: o.exporter_avg_price_usd_per_tonne != null ? fmtPerTonne(o.exporter_avg_price_usd_per_tonne) : '—',
+            coef: o.substitution_feasibility ? `${Math.round(o.substitution_feasibility.coefficient * 100)}%` : '—',
+            pot: formatValue(o.total_market_potential),
+            constraint: o.binding_constraint || '—',
+          })),
+        },
+      });
+      // Détail marchés avec positionnement prix — la donnée décisive pour se placer.
+      const marketRows = opportunities.flatMap((o) =>
+        (o.potential_markets || []).map((m) => ({
+          product: `${o.export_product?.hs_code || ''} ${o.export_product?.name || ''}`.trim(),
+          market: m.country_name,
+          size: formatValue(m.market_size),
+          marketPrice: m.price_positioning ? fmtPerTonne(m.price_positioning.market_avg_price_usd_per_tonne) : '—',
+          delta: m.price_positioning ? `${m.price_positioning.price_delta_pct > 0 ? '+' : ''}${m.price_positioning.price_delta_pct}%` : '—',
+          positioning: m.price_positioning
+            ? (POSITIONING_LABEL[currentLang] || POSITIONING_LABEL.fr)[m.price_positioning.positioning] || m.price_positioning.positioning
+            : '—',
+        })),
+      );
+      if (marketRows.length) {
+        sections.push({
+          title: fr ? 'Marchés cibles et positionnement prix' : 'Target markets and price positioning',
+          table: {
+            columns: [
+              { key: 'product', label: fr ? 'Produit' : 'Product', width: 2.2 },
+              { key: 'market', label: fr ? 'Marché' : 'Market', width: 1.2 },
+              { key: 'size', label: fr ? 'Taille' : 'Size', align: 'right', width: 0.9 },
+              { key: 'marketPrice', label: fr ? 'Prix marché' : 'Market price', align: 'right', width: 1.0 },
+              { key: 'delta', label: fr ? 'Écart' : 'Delta', align: 'right', width: 0.7 },
+              { key: 'positioning', label: fr ? 'Position' : 'Position', width: 1.0 },
+            ],
+            rows: marketRows,
+          },
+        });
+      }
+    }
+
+    return {
+      badge: 'SUBSTITUTION',
+      title: `${isImport ? (fr ? 'Substitution d’imports' : 'Import substitution') : (fr ? 'Opportunités d’export' : 'Export opportunities')} — ${countryName}`,
+      subtitle: currentData.is_estimation
+        ? (fr ? 'Estimation (repli statique — OEC indisponible)' : 'Estimate (static fallback — OEC unavailable)')
+        : (fr ? 'Flux réels OEC / BACI' : 'Real OEC / BACI flows'),
+      kpis,
+      sections,
+      source: currentData.data_source || 'OEC BACI',
+      filename: opportunityPdfFilename('Substitution', `${selectedCountry}_${activeTab}`),
+    };
+  }, [currentData, activeTab, currentLang, countryName, opportunities, selectedCountry, txt]);
+
   // Transform substitution data for TradeSankeyDiagram
   // Converts nested API structure to flat format expected by Sankey
   const sankeyOpportunities = useMemo(() => {
@@ -510,16 +676,19 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
         <>
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
-              <TabsTrigger value="import" className="flex items-center gap-2" data-testid="import-tab">
-                <TrendingDown className="h-4 w-4" />
-                {txt.importTab}
-              </TabsTrigger>
-              <TabsTrigger value="export" className="flex items-center gap-2" data-testid="export-tab">
-                <TrendingUp className="h-4 w-4" />
-                {txt.exportTab}
-              </TabsTrigger>
-            </TabsList>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <TabsList className="grid grid-cols-2 max-w-md">
+                <TabsTrigger value="import" className="flex items-center gap-2" data-testid="import-tab">
+                  <TrendingDown className="h-4 w-4" />
+                  {txt.importTab}
+                </TabsTrigger>
+                <TabsTrigger value="export" className="flex items-center gap-2" data-testid="export-tab">
+                  <TrendingUp className="h-4 w-4" />
+                  {txt.exportTab}
+                </TabsTrigger>
+              </TabsList>
+              <OpportunityPdfExport getSpec={buildPdfSpec} language={currentLang} />
+            </div>
 
             {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

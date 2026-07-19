@@ -587,9 +587,21 @@ class RealSubstitutionService:
     def __init__(self):
         self.african_countries = list(AFRICAN_COUNTRIES.keys())
 
-    @staticmethod
-    def _full_key(key: str) -> str:
-        return cache_service.generate_cache_key("substitution", key)
+    # Version de SCHÉMA des réponses mises en cache. À incrémenter à CHAQUE
+    # évolution de la forme du payload (nouveau champ, granularité...) : le
+    # cache est persistant (Redis/disque, TTL 24h) et SURVIT AUX DÉPLOIEMENTS —
+    # sans ce versionnage, une release qui enrichit la réponse (ex. ajout de
+    # substitution_feasibility, prix moyens, niveau produit) continue de servir
+    # les anciens payloads pendant des heures, et les nouveautés semblent
+    # « non implémentées » à l'écran alors que le code est bien déployé
+    # (constaté en production après les PR #281/#282).
+    _CACHE_SCHEMA_VERSION = 3
+
+    @classmethod
+    def _full_key(cls, key: str) -> str:
+        return cache_service.generate_cache_key(
+            "substitution", f"v{cls._CACHE_SCHEMA_VERSION}", key
+        )
 
     def _cache_get(self, key: str):
         """
@@ -650,6 +662,9 @@ class RealSubstitutionService:
                     {
                         "iso3": iso3,
                         "value": product.get("trade_value", 0),
+                        # Volume BACI (poids net, tonnes) : permet les valeurs
+                        # unitaires ($/t) pour le positionnement prix.
+                        "quantity": product.get("quantity", 0) or 0,
                         "hs_code": hs_code,
                         "product_name": product.get("product_name", ""),
                     }
@@ -921,41 +936,80 @@ class RealSubstitutionService:
         if exporter_exports:
             import_index = await self._build_african_import_index(year)
 
-            # Real export value of the exporter aggregated by HS2 chapter
-            export_value_by_chapter: Dict[str, float] = defaultdict(float)
-            product_name_by_chapter: Dict[str, str] = {}
+            # Forces d'export au niveau PRODUIT (SH4), plus au chapitre SH2 :
+            # un client étudie ses opportunités produit par produit — vendre des
+            # voitures (8703) n'est pas vendre des pièces (8708), et agréger au
+            # chapitre mélangeait les deux (marchés, coefficient, prix).
+            exporter_products: Dict[str, Dict] = {}
             for product in exporter_exports:
                 hs_code = product.get("hs_code", "")
-                chapter = hs_code[:2]
-                if not chapter:
+                if not hs_code:
                     continue
-                export_value_by_chapter[chapter] += product.get("trade_value", 0)
-                product_name_by_chapter.setdefault(
-                    chapter, product.get("product_name", "") or get_product_name(hs_code, lang)
+                rec = exporter_products.setdefault(
+                    hs_code,
+                    {
+                        "value": 0.0,
+                        "quantity": 0.0,
+                        "name": product.get("product_name", "") or get_product_name(hs_code, lang),
+                    },
                 )
+                rec["value"] += product.get("trade_value", 0) or 0
+                rec["quantity"] += product.get("quantity", 0) or 0
 
             opportunities = []
             total_market_potential = 0
 
-            # Keep the exporter's strongest chapters
-            top_chapters = sorted(
-                export_value_by_chapter.items(), key=lambda x: x[1], reverse=True
+            # Keep the exporter's strongest products
+            top_products = sorted(
+                exporter_products.items(), key=lambda x: x[1]["value"], reverse=True
             )[:10]
 
-            for chapter, exporter_export_value in top_chapters:
-                # Même discipline que la substitution d'imports : capter un marché
-                # africain de téléphones ou de véhicules se heurte aux mêmes
-                # barrières (effet marque, écart technologique, SAV, certification)
-                # que substituer ses propres imports — la part adressable d'un
-                # marché est bornée par le coefficient de substituabilité du
-                # produit, pas seulement par la capacité d'export du pays.
-                feasibility = substitutability_for_hs(chapter)
+            for hs4, export_rec in top_products:
+                exporter_export_value = export_rec["value"]
+                # Prix moyen à l'export ($/t, valeur unitaire BACI) : la donnée
+                # dont l'exportateur a besoin pour se positionner face au prix
+                # moyen que le marché cible paie déjà à ses fournisseurs actuels.
+                exporter_price = (
+                    exporter_export_value / export_rec["quantity"]
+                    if export_rec["quantity"] > 0
+                    else None
+                )
+                # Même discipline que la substitution d'imports : la part
+                # adressable d'un marché est bornée par le coefficient de
+                # substituabilité du produit (résolu au SH4 : 8703 → 0,5 et non
+                # plus 87 → 0,45), pas seulement par la capacité d'export.
+                feasibility = substitutability_for_hs(hs4)
                 coef = feasibility["coefficient"]
 
+                # Marchés = pays africains important CE produit (correspondance
+                # SH4 exacte). Repli chapitre uniquement si aucun marché exact
+                # (le produit n'apparaît dans le top-imports d'aucun pays), et
+                # alors dit explicitement — un marché "chapitre 87" n'est pas
+                # un marché "voitures".
+                chapter = hs4[:2]
+                exact = [
+                    m
+                    for m in import_index.get(chapter, [])
+                    if m["iso3"] != exporter and m.get("hs_code") == hs4
+                ]
+                market_match_level = "hs4"
+                pool = exact
+                if not pool:
+                    market_match_level = "hs2"
+                    by_country: Dict[str, Dict] = {}
+                    for m in import_index.get(chapter, []):
+                        if m["iso3"] == exporter:
+                            continue
+                        agg = by_country.setdefault(m["iso3"], {"value": 0.0, "quantity": 0.0})
+                        agg["value"] += m["value"]
+                        agg["quantity"] += m.get("quantity", 0) or 0
+                    pool = [
+                        {"iso3": iso, "value": a["value"], "quantity": a["quantity"]}
+                        for iso, a in by_country.items()
+                    ]
+
                 potential_markets = []
-                for market in import_index.get(chapter, []):
-                    if market["iso3"] == exporter:
-                        continue
+                for market in pool:
                     market_size = market["value"]
                     if market_size < min_market_size:
                         continue
@@ -963,6 +1017,33 @@ class RealSubstitutionService:
                     # Capture bounded by BOTH the exporter's real capacity and the
                     # realistically addressable share of the market.
                     capture = round(min(exporter_export_value, addressable) / market_size, 2)
+
+                    # Positionnement prix : valeur unitaire du marché ($/t) vs
+                    # prix moyen d'export du pays — calculable seulement quand
+                    # les deux volumes BACI sont présents ET que le marché
+                    # correspond EXACTEMENT au produit (hs4). En repli chapitre
+                    # (hs2), market_price est une moyenne mélangeant plusieurs
+                    # produits différents du même chapitre — le comparer au
+                    # prix d'export d'UN produit précis serait trompeur (et
+                    # afficherait un chip prix à côté de l'avertissement
+                    # "marché estimé au niveau chapitre", contradictoire).
+                    market_qty = market.get("quantity", 0) or 0
+                    market_price = market_size / market_qty if market_qty > 0 else None
+                    price_positioning = None
+                    if market_match_level == "hs4" and exporter_price and market_price:
+                        ratio = exporter_price / market_price
+                        price_positioning = {
+                            "exporter_avg_price_usd_per_tonne": round(exporter_price, 1),
+                            "market_avg_price_usd_per_tonne": round(market_price, 1),
+                            "price_ratio": round(ratio, 2),
+                            "price_delta_pct": round((ratio - 1) * 100, 1),
+                            "positioning": (
+                                "compétitif"
+                                if ratio <= 0.95
+                                else "aligné" if ratio <= 1.15 else "premium"
+                            ),
+                        }
+
                     potential_markets.append(
                         {
                             "country_iso3": market["iso3"],
@@ -970,6 +1051,7 @@ class RealSubstitutionService:
                             "market_size": int(market_size),
                             "addressable_market_size": int(addressable),
                             "capture_potential": capture,
+                            "price_positioning": price_positioning,
                         }
                     )
 
@@ -986,9 +1068,13 @@ class RealSubstitutionService:
                 opportunities.append(
                     {
                         "export_product": {
-                            "hs_code": chapter,
-                            "name": product_name_by_chapter.get(chapter, f"Chapitre {chapter}"),
+                            "hs_code": hs4,
+                            "name": export_rec["name"] or f"SH {hs4}",
                         },
+                        "exporter_avg_price_usd_per_tonne": (
+                            round(exporter_price, 1) if exporter_price else None
+                        ),
+                        "market_match_level": market_match_level,
                         "potential_markets": potential_markets,
                         "total_market_potential": int(total_potential),
                         "substitution_feasibility": feasibility,
@@ -1012,7 +1098,7 @@ class RealSubstitutionService:
                 "summary": {
                     "total_opportunities": len(opportunities),
                     "total_market_potential": int(total_market_potential),
-                    "export_strengths": len(top_chapters),
+                    "export_strengths": len(top_products),
                 },
                 "opportunities": opportunities,
                 "sources": ["OEC BACI", "UN Comtrade"],

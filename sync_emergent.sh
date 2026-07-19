@@ -92,6 +92,17 @@ CRITICAL=(
   backend/data/crawled/ZWE_tariffs.json
   backend/scripts/enrich_wits_national_vat.py
   backend/scripts/enrich_wits_product_overrides.py
+  # Session du 2026-07-19 — sous-module substitution (bornage par
+  # substituabilité, granularité produit HS4, positionnement prix) + export
+  # PDF natif (Statistiques + tous les sous-modules Opportunités). Ces
+  # fichiers ont concrètement été le symptôme du bug "PR mergées mais pas
+  # affichées" : une copie Emergent sans eux tourne sur l'ancien module
+  # substitution (chapitre SH2, pas de prix) sans que rien ne le signale
+  # côté UI (champs absents = simplement pas rendus).
+  backend/services/substitution_feasibility_service.py
+  frontend/src/utils/tradeReportPdf.js
+  frontend/src/utils/opportunityPdf.js
+  frontend/src/components/opportunities/OpportunityPdfExport.jsx
 )
 for f in "${CRITICAL[@]}"; do
   if [ -f "$f" ]; then echo "  ✓ $f"; else echo "  ✗ MANQUE $f"; MISSING=1; fi
@@ -119,6 +130,8 @@ for m in [
     'services.authentic_tariff_service',
     'services.real_comparison_service',
     'services.logistics_opportunity_adapter',
+    'services.substitution_feasibility_service',
+    'services.real_substitution_service',
     'routes.reports',
 ]:
     importlib.import_module(m)
@@ -138,7 +151,28 @@ from services.crawled_data_service import CrawledDataService
 svc = CrawledDataService(); svc.load(force=True)
 assert svc.lookup('AGO', '010121'), 'normaliseur WITS absent (AGO illisible)'
 assert svc.lookup('GHA', '010121'), 'GHA_tariffs.json absent de data/crawled'
-print('✓ Données de la session appliquées (TUN préférences, TVA WITS, réciprocité, GHA).')
+
+# Session du 2026-07-19 — vérifie le COMPORTEMENT, pas seulement la présence
+# du fichier : une copie Emergent peut importer substitution_feasibility_service
+# sans avoir le calcul attendu si un ancien .pyc/cache a survécu. Le
+# coefficient à 0703 doit se résoudre au préfixe SH4 (0,5), pas être dilué au
+# chapitre SH2 (0,45, l'ancien comportement) — la preuve la plus directe que
+# la granularité produit est bien celle de cette session.
+from services.substitution_feasibility_service import substitutability_for_hs
+coef = substitutability_for_hs('8703')['coefficient']
+assert coef == 0.5, f'substitutability_for_hs périmé : 8703 -> {coef} (attendu 0.5, résolution SH4)'
+
+# Le cache substitution est PERSISTANT (Redis/disque, TTL 24h) et survit aux
+# redémarrages — sans ce numéro de schéma, une release qui enrichit le
+# payload (positionnement prix, granularité produit) continue de servir les
+# anciens payloads en cache jusqu'à 24h après le déploiement : exactement le
+# symptôme « PR mergée mais rien ne s'affiche » qui a motivé cette vérification.
+from services.real_substitution_service import RealSubstitutionService
+assert RealSubstitutionService._CACHE_SCHEMA_VERSION >= 3, (
+    'real_substitution_service périmé : _CACHE_SCHEMA_VERSION < 3 — '
+    'les anciens payloads en cache masqueront les nouveaux champs jusqu à 24h'
+)
+print('✓ Données de la session appliquées (TUN préférences, TVA WITS, réciprocité, GHA, substitution HS4+cache v3).')
 " )
 
 # Détection du superviseur (cas Emergent : services gérés par supervisord, le

@@ -143,6 +143,31 @@ persistante, plus un patch de fichier voué à disparaître au prochain reset.
   statiques dans `shipment_estimator`. Rien à faire côté Emergent — c'est un
   fichier de données synchronisé comme les autres par `sync_emergent.sh`.
 
+## Ce que cette synchronisation apporte (session du 2026-07-19)
+
+- **Sous-module substitution refondu** : bornage par substituabilité (effet
+  marque/technologie/après-vente/certification, `substitution_feasibility_service.py`),
+  granularité **produit HS4** au lieu du chapitre SH2 pour les opportunités
+  d'export, et positionnement prix ($/t export vs marché) — le tout enfin
+  **affiché** dans l'UI (le calcul backend existait mais aucun écran ne le
+  rendait, symptôme exact du bug ci-dessous).
+- **Export PDF natif** pour le module Statistiques et les 8 sous-modules
+  Opportunités (thèmes clair/sombre, palette réelle de l'app).
+- **Cause du bug « PR mergée mais rien ne change à l'écran »** : le cache du
+  service substitution (Redis/disque, TTL 24h, volontairement persistant aux
+  redémarrages) n'était pas versionné — après un déploiement qui enrichit la
+  réponse, l'API continuait de servir les anciens payloads jusqu'à 24h. Un
+  `_CACHE_SCHEMA_VERSION` namespace désormais chaque clé de cache ; toute
+  évolution de forme doit l'incrémenter. **`sync_emergent.sh` vérifie
+  maintenant ce numéro (étape 4) et le comportement réel du calcul
+  (coefficient résolu au SH4, pas dilué au chapitre) — pas seulement la
+  présence des fichiers — et refuse de continuer si la copie appliquée est
+  périmée.**
+- Rappel : la production sert `frontend/build` (généré par `vite build`,
+  ignoré par git). Un déploiement qui ne relance pas la synchronisation
+  complète ne verra JAMAIS les changements frontend, quel que soit l'état de
+  la branche GitHub — `sync_emergent.sh` reste le seul point d'entrée fiable.
+
 ## Démarrer après synchronisation
 
 - **Sous Emergent (supervisord)** : rien à lancer, `sync_emergent.sh` a déjà
