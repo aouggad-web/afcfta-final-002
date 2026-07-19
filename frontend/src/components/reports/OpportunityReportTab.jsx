@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import SubstitutionAnalysis from "../opportunities/SubstitutionAnalysis";
+import OpportunityPdfExport from "../opportunities/OpportunityPdfExport";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -150,6 +151,19 @@ function MarketSeekingView({ fr }) {
   const demand = rep?.demand || {};
   const supply = rep?.supply || {};
 
+  const buildPdfSpec = useCallback(() => {
+    if (!rep) return null;
+    return {
+      badge: `market-${hsCode}`,
+      filename: `recherche-marchés-${hsCode}`,
+      kpis: [
+        { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
+        { label: fr ? "Demande africaine" : "African demand", value: demand.value ? `$${Number(demand.value).toLocaleString('en-US', { maximumFractionDigits: 0 })}` : '—', accent: 'green' }
+      ],
+      sections: [{ title: fr ? `Recherche de marchés ${hsCode}` : `Find markets ${hsCode}`, text: '' }]
+    };
+  }, [rep, hsCode, demand.value, fr]);
+
   return (
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 18 }}>
@@ -171,6 +185,7 @@ function MarketSeekingView({ fr }) {
         >
           {loading ? (fr ? "Recherche…" : "Searching…") : fr ? "Trouver les marchés" : "Find markets"}
         </button>
+        {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
       {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
@@ -383,6 +398,25 @@ export function BilateralView({ countries, fr, prefill }) {
     </select>
   );
 
+  const buildPdfSpec = useCallback(() => {
+    if (!report) return null;
+    const kpis = [];
+    const ci = report.composite_indicators || {};
+    if (ci.end_to_end_score) kpis.push({ label: fr ? "Score bout en bout" : "End-to-end score", value: `${Math.round((ci.end_to_end_score.value || 0) * 100)}%`, accent: 'gold' });
+    if (ci.landed_cost?.value) kpis.push({ label: fr ? "Coût débarqué" : "Landed cost", value: `$${Number(ci.landed_cost.value).toLocaleString('en-US', { maximumFractionDigits: 0 })}`, accent: 'green' });
+    return {
+      badge: `${origin}-${destination}`,
+      filename: `rapport-bilateral-${hsCode}`,
+      kpis,
+      sections: [
+        {
+          title: fr ? `Opportunité bilatérale ${hsCode}` : `Bilateral opportunity ${hsCode}`,
+          text: fr ? `Flux commerce ${origin} → ${destination}` : `Trade flow ${origin} → ${destination}`
+        }
+      ]
+    };
+  }, [report, origin, destination, hsCode, fr]);
+
   return (
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 18 }}>
@@ -421,6 +455,7 @@ export function BilateralView({ countries, fr, prefill }) {
         >
           {loading ? (fr ? "Génération…" : "Generating…") : fr ? "Générer le rapport" : "Generate report"}
         </button>
+        {report && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
       {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
@@ -1259,6 +1294,19 @@ function DirectExportView({ countries, fr, onAnalyze }) {
   const supply = rep?.producer_supply || {};
   const opps = rep?.ranked_opportunities || [];
 
+  const buildPdfSpec = useCallback(() => {
+    if (!rep) return null;
+    return {
+      badge: `S2-${hsCode}`,
+      filename: `s2-export-direct-${hsCode}`,
+      kpis: [
+        { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
+        { label: fr ? "Producteur" : "Producer", value: producer, accent: 'blue' }
+      ],
+      sections: [{ title: fr ? `S2 · Export direct ${hsCode}` : `S2 · Direct export ${hsCode}`, text: rep.deep_dived ? `${rep.deep_dived} ${fr ? 'marchés analysés' : 'markets analyzed'}` : '' }]
+    };
+  }, [rep, hsCode, producer, fr]);
+
   return (
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
@@ -1281,6 +1329,7 @@ function DirectExportView({ countries, fr, onAnalyze }) {
         <button onClick={run} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s2-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
           {loading ? (fr ? "Analyse…" : "Analyzing…") : fr ? "Classer les marchés" : "Rank markets"}
         </button>
+        {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
       {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
@@ -1432,6 +1481,19 @@ function TransformationView({ countries, fr, onAnalyze }) {
   const feas = rep?.feasibility || {};
   const exportScore = feas.export_end_to_end_score;
 
+  const buildPdfSpec = useCallback(() => {
+    if (!rep) return null;
+    return {
+      badge: `S1-${finishedHs}`,
+      filename: `s1-transformation-${finishedHs}`,
+      kpis: [
+        { label: fr ? "Produit fini" : "Finished product", value: finishedHs, accent: 'gold' },
+        { label: fr ? "Valeur ajoutée" : "Value added", value: va.percentage ? `${Math.round(va.percentage)}%` : '—', accent: 'green' }
+      ],
+      sections: [{ title: fr ? `S1 · Transformation (${inputHs} → ${finishedHs})` : `S1 · Transformation (${inputHs} → ${finishedHs})`, text: '' }]
+    };
+  }, [rep, finishedHs, inputHs, va.percentage, fr]);
+
   return (
     <div>
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
@@ -1466,6 +1528,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
         <button onClick={run} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s1-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
           {loading ? (fr ? "Analyse…" : "Analyzing…") : fr ? "Analyser la chaîne" : "Analyze chain"}
         </button>
+        {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
       {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
@@ -1571,6 +1634,19 @@ function ImportOpportunitiesView({ countries, fr, onAnalyze }) {
 
   const opps = rep?.ranked_opportunities || [];
 
+  const buildPdfSpec = useCallback(() => {
+    if (!rep) return null;
+    return {
+      badge: `S4-${country}`,
+      filename: `s4-importations-${country}`,
+      kpis: [
+        { label: fr ? "Pays" : "Country", value: country, accent: 'gold' },
+        { label: fr ? "Produits scannés" : "Products scanned", value: String(rep.products_scanned || 0), accent: 'blue' }
+      ],
+      sections: [{ title: fr ? `S4 · Opportunités d'importation` : `S4 · Import opportunities`, text: `${country} · ${rep.candidates_retained || 0} ${fr ? 'retenus' : 'retained'}` }]
+    };
+  }, [rep, country, fr]);
+
   return (
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
@@ -1589,6 +1665,7 @@ function ImportOpportunitiesView({ countries, fr, onAnalyze }) {
         <button onClick={run} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s4-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
           {loading ? (fr ? "Scan…" : "Scanning…") : fr ? "Scanner les importations" : "Scan imports"}
         </button>
+        {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
       {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
@@ -1720,6 +1797,19 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
 
   const inp = rep?.inputs || {};
 
+  const buildPdfSpec = useCallback(() => {
+    if (!rep) return null;
+    return {
+      badge: `S3-${hsCode}`,
+      filename: `s3-besoin-national-${hsCode}`,
+      kpis: [
+        { label: fr ? "Code produit" : "Product code", value: hsCode, accent: 'gold' },
+        { label: fr ? "Pays" : "Country", value: country, accent: 'blue' }
+      ],
+      sections: [{ title: fr ? `S3 · Besoin national ${hsCode}` : `S3 · National need ${hsCode}`, text: rep.available ? `${rep.value || '—'} ${rep.unit || ''}` : '' }]
+    };
+  }, [rep, hsCode, country, fr]);
+
   return (
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
@@ -1738,6 +1828,7 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
         <button onClick={() => run()} disabled={loading} className="afcfta-btn afcfta-btn-primary" data-testid="s3-run" style={{ padding: "10px 18px", borderRadius: 8 }}>
           {loading ? (fr ? "Estimation…" : "Estimating…") : fr ? "Estimer le besoin" : "Estimate need"}
         </button>
+        {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
       {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
