@@ -143,9 +143,9 @@ describe('OpportunityCard — substitution feasibility block', () => {
     render(
       <OpportunityCard
         opportunity={{
-          export_product: { hs_code: '8703', name: 'Voitures de tourisme' },
+          export_product: { hs_code: '870321', name: 'Voitures de tourisme à moteur à piston' },
           exporter_avg_price_usd_per_tonne: 10_000,
-          market_match_level: 'hs4',
+          market_match_level: 'hs6',
           potential_markets: [
             {
               country_name: 'Nigeria',
@@ -177,17 +177,17 @@ describe('OpportunityCard — substitution feasibility block', () => {
     expect(pp).toHaveTextContent('$16,000/t');
     expect(pp).toHaveTextContent('-37.5%');
     expect(pp).toHaveTextContent('Compétitif');
-    // Exact product match: no chapter-level caveat.
+    // Exact HS6 product match: no HS4-level caveat.
     expect(screen.queryByTestId('market-match-caveat')).not.toBeInTheDocument();
   });
 
-  it('shows the chapter-level caveat when markets are hs2 fallback, hides prices when absent', () => {
+  it('shows the HS4-level caveat when markets are hs4 fallback, hides prices when absent', () => {
     render(
       <OpportunityCard
         opportunity={{
-          export_product: { hs_code: '8703', name: 'Voitures de tourisme' },
+          export_product: { hs_code: '870321', name: 'Voitures de tourisme à moteur à piston' },
           exporter_avg_price_usd_per_tonne: null,
-          market_match_level: 'hs2',
+          market_match_level: 'hs4',
           potential_markets: [
             { country_name: 'Égypte', market_size: 8_000_000_000, capture_potential: 0.5, price_positioning: null },
           ],
@@ -197,7 +197,7 @@ describe('OpportunityCard — substitution feasibility block', () => {
         language="fr"
       />
     );
-    expect(screen.getByTestId('market-match-caveat')).toHaveTextContent(/niveau chapitre/i);
+    expect(screen.getByTestId('market-match-caveat')).toHaveTextContent(/niveau SH4/i);
     expect(screen.queryByTestId('exporter-avg-price')).not.toBeInTheDocument();
     expect(screen.queryByTestId('price-positioning')).not.toBeInTheDocument();
   });

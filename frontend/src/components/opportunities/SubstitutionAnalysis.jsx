@@ -282,11 +282,11 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
             </span>
           </div>
         )}
-        {!isImport && opportunity.market_match_level === 'hs2' && (
+        {!isImport && (opportunity.market_match_level === 'hs4' || opportunity.market_match_level === 'hs2') && (
           <p className="mb-3 text-[11px] text-amber-700 bg-amber-50 rounded-md px-2.5 py-1.5" data-testid="market-match-caveat">
             {language === 'en'
-              ? 'Markets estimated at chapter level (this exact product is absent from the top imports of the countries surveyed).'
-              : "Marchés estimés au niveau chapitre (ce produit exact est absent des top-imports des pays sondés)."}
+              ? 'Markets estimated at HS4 level (this exact HS6 product is absent from the top imports of the countries surveyed).'
+              : "Marchés estimés au niveau SH4 (ce produit SH6 exact est absent des top-imports des pays sondés)."}
           </p>
         )}
 
@@ -504,7 +504,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       });
     } else {
       sections.push({
-        title: fr ? 'Opportunités d’export (niveau produit)' : 'Export opportunities (product level)',
+        title: fr ? 'Opportunités d’export (niveau produit SH6)' : 'Export opportunities (SH6 product level)',
         table: {
           columns: [
             { key: 'hs', label: 'SH', width: 0.7 },

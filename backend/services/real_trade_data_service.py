@@ -624,10 +624,16 @@ class RealTradeDataService:
         self._cache_ttl = 3600  # 1 hour
 
     async def get_oec_imports(
-        self, country_iso3: str, year: int = 2022, limit: int = 100
+        self, country_iso3: str, year: int = 2022, limit: int = 100, hs_level: str = "HS4"
     ) -> List[Dict]:
         """
         Get imports for a country from OEC API
+
+        Args:
+            country_iso3: Country ISO3 code
+            year: Year for trade data
+            limit: Number of results to return
+            hs_level: Harmonized System level (HS2, HS4, HS6) - default HS4
         """
         country_info = AFRICAN_COUNTRIES.get(country_iso3.upper())
         if not country_info:
@@ -638,7 +644,7 @@ class RealTradeDataService:
         try:
             params = {
                 "cube": "trade_i_baci_a_17",
-                "drilldowns": "Year,Importer Country,HS4",
+                "drilldowns": f"Year,Importer Country,{hs_level}",
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Importer Country": oec_id,
@@ -658,13 +664,18 @@ class RealTradeDataService:
                     # Format results
                     results = []
                     for record in records[:limit]:
-                        hs4_id = str(record.get("HS4 ID", ""))
-                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
+                        hs_id = str(record.get(f"{hs_level} ID", ""))
+                        if hs_level == "HS6":
+                            hs_code = hs_id[-6:].zfill(6) if hs_id else ""
+                        elif hs_level == "HS2":
+                            hs_code = hs_id[-2:].zfill(2) if hs_id else ""
+                        else:  # HS4
+                            hs_code = hs_id[-4:].zfill(4) if hs_id else ""
 
                         results.append(
                             {
-                                "hs_code": hs4_code,
-                                "product_name": record.get("HS4", ""),
+                                "hs_code": hs_code,
+                                "product_name": record.get(hs_level, ""),
                                 "trade_value": record.get("Trade Value", 0),
                                 "quantity": record.get("Quantity", 0),
                                 "year": year,
@@ -679,10 +690,16 @@ class RealTradeDataService:
         return []
 
     async def get_oec_exports(
-        self, country_iso3: str, year: int = 2022, limit: int = 100
+        self, country_iso3: str, year: int = 2022, limit: int = 100, hs_level: str = "HS4"
     ) -> List[Dict]:
         """
         Get exports for a country from OEC API
+
+        Args:
+            country_iso3: Country ISO3 code
+            year: Year for trade data
+            limit: Number of results to return
+            hs_level: Harmonized System level (HS2, HS4, HS6) - default HS4
         """
         country_info = AFRICAN_COUNTRIES.get(country_iso3.upper())
         if not country_info:
@@ -693,7 +710,7 @@ class RealTradeDataService:
         try:
             params = {
                 "cube": "trade_i_baci_a_17",
-                "drilldowns": "Year,Exporter Country,HS4",
+                "drilldowns": f"Year,Exporter Country,{hs_level}",
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Exporter Country": oec_id,
@@ -711,13 +728,18 @@ class RealTradeDataService:
 
                     results = []
                     for record in records[:limit]:
-                        hs4_id = str(record.get("HS4 ID", ""))
-                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
+                        hs_id = str(record.get(f"{hs_level} ID", ""))
+                        if hs_level == "HS6":
+                            hs_code = hs_id[-6:].zfill(6) if hs_id else ""
+                        elif hs_level == "HS2":
+                            hs_code = hs_id[-2:].zfill(2) if hs_id else ""
+                        else:  # HS4
+                            hs_code = hs_id[-4:].zfill(4) if hs_id else ""
 
                         results.append(
                             {
-                                "hs_code": hs4_code,
-                                "product_name": record.get("HS4", ""),
+                                "hs_code": hs_code,
+                                "product_name": record.get(hs_level, ""),
                                 "trade_value": record.get("Trade Value", 0),
                                 "quantity": record.get("Quantity", 0),
                                 "year": year,
@@ -732,23 +754,31 @@ class RealTradeDataService:
         return []
 
     async def get_oec_bilateral_from_world(
-        self, importer_iso3: str, year: int = 2022, limit: int = 50
+        self, importer_iso3: str, year: int = 2022, limit: int = 50, hs_level: str = "HS4"
     ) -> Dict:
         """
         Get imports by partner country to identify non-African sources
+
+        Args:
+            importer_iso3: Importer country ISO3 code
+            year: Year for trade data
+            limit: Number of results to return
+            hs_level: Harmonized System level (HS2, HS4, HS6) - default HS4
         """
         country_info = AFRICAN_COUNTRIES.get(importer_iso3.upper())
         if not country_info:
             return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
 
         oec_id = country_info["oec"]
-        african_oec_ids = [c["oec"] for c in AFRICAN_COUNTRIES.values()]
+        # Some AfCFTA members have no OEC identifier (e.g. Western Sahara ESH):
+        # skip them so ``af_id.replace(...)`` below never hits a None.
+        african_oec_ids = [c["oec"] for c in AFRICAN_COUNTRIES.values() if c.get("oec")]
 
         try:
             # Get imports by exporter country
             params = {
                 "cube": "trade_i_baci_a_17",
-                "drilldowns": "Year,Importer Country,Exporter Country,HS4",
+                "drilldowns": f"Year,Importer Country,Exporter Country,{hs_level}",
                 "measures": "Trade Value",
                 "Year": str(year),
                 "Importer Country": oec_id,
@@ -769,10 +799,15 @@ class RealTradeDataService:
 
                     for record in records:
                         value = record.get("Trade Value", 0)
-                        exporter_id = record.get("Exporter Country ID", "")
-                        hs4_id = str(record.get("HS4 ID", ""))
-                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
-                        product_name = record.get("HS4", "")
+                        exporter_id = record.get("Exporter Country ID", "") or ""
+                        hs_id = str(record.get(f"{hs_level} ID", ""))
+                        if hs_level == "HS6":
+                            hs_code = hs_id[-6:].zfill(6) if hs_id else ""
+                        elif hs_level == "HS2":
+                            hs_code = hs_id[-2:].zfill(2) if hs_id else ""
+                        else:  # HS4
+                            hs_code = hs_id[-4:].zfill(4) if hs_id else ""
+                        product_name = record.get(hs_level, "")
                         exporter_name = record.get("Exporter Country", "")
 
                         total_value += value
@@ -787,10 +822,10 @@ class RealTradeDataService:
                             from_africa += value
                         else:
                             from_outside += value
-                            if hs4_code and value > 1000000:  # Only significant imports
-                                products_from_outside[hs4_code]["value"] += value
-                                products_from_outside[hs4_code]["name"] = product_name
-                                products_from_outside[hs4_code]["sources"].add(exporter_name)
+                            if hs_code and value > 1000000:  # Only significant imports
+                                products_from_outside[hs_code]["value"] += value
+                                products_from_outside[hs_code]["name"] = product_name
+                                products_from_outside[hs_code]["sources"].add(exporter_name)
 
                     # Format products from outside
                     products_list = []

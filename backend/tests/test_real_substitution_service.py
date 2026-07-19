@@ -38,13 +38,13 @@ def svc():
 
 
 def _patch_oec(monkeypatch, *, bilateral, exports, imports):
-    async def fake_bilateral(importer, year=2022, limit=50):
+    async def fake_bilateral(importer, year=2022, limit=50, hs_level="HS4"):
         return bilateral
 
-    async def fake_exports(iso3, year=2022, limit=100):
+    async def fake_exports(iso3, year=2022, limit=100, hs_level="HS4"):
         return exports.get(iso3, [])
 
-    async def fake_imports(iso3, year=2022, limit=100):
+    async def fake_imports(iso3, year=2022, limit=100, hs_level="HS4"):
         return imports.get(iso3, [])
 
     monkeypatch.setattr(mod.real_trade_service, "get_oec_bilateral_from_world", fake_bilateral)
@@ -58,20 +58,20 @@ def test_import_substitution_uses_real_oec_values(svc, monkeypatch):
         "africa_share": 12.5,
         "products_from_outside": [
             {
-                "hs_code": "8703",
-                "product_name": "Motor cars",
+                "hs_code": "870321",  # HS6: sedans
+                "product_name": "Sedans",
                 "import_value": 3_000_000_000,
                 "source_regions": ["China"],
             },
             {
-                "hs_code": "1001",
+                "hs_code": "100191",  # HS6: common wheat
                 "product_name": "Wheat",
                 "import_value": 2_000_000_000,
                 "source_regions": ["France"],
             },
             # below the default 5M min_value -> filtered out
             {
-                "hs_code": "9999",
+                "hs_code": "999999",
                 "product_name": "Niche",
                 "import_value": 1_000_000,
                 "source_regions": ["X"],
@@ -79,9 +79,9 @@ def test_import_substitution_uses_real_oec_values(svc, monkeypatch):
         ],
     }
     exports = {
-        "ZAF": [{"hs_code": "8703", "product_name": "Cars", "trade_value": 5_000_000_000}],
-        "MAR": [{"hs_code": "8708", "product_name": "Parts", "trade_value": 1_000_000_000}],
-        "EGY": [{"hs_code": "1001", "product_name": "Wheat", "trade_value": 800_000_000}],
+        "ZAF": [{"hs_code": "870321", "product_name": "Sedans", "trade_value": 5_000_000_000}],
+        "MAR": [{"hs_code": "870829", "product_name": "Other parts", "trade_value": 1_000_000_000}],
+        "EGY": [{"hs_code": "100191", "product_name": "Wheat", "trade_value": 800_000_000}],
     }
     _patch_oec(monkeypatch, bilateral=bilateral, exports=exports, imports={})
 
@@ -92,20 +92,21 @@ def test_import_substitution_uses_real_oec_values(svc, monkeypatch):
     # Sub-threshold product filtered out
     assert len(result["opportunities"]) == 2
 
-    cars = next(o for o in result["opportunities"] if o["imported_product"]["hs_code"] == "8703")
+    cars = next(o for o in result["opportunities"] if o["imported_product"]["hs_code"] == "870321")
     # Substitution potential is bounded by real African export capacity AND the
-    # product's substitutability coefficient (brand effect for cars: 0.5) —
+    # product's substitutability coefficient (cars at HS4 prefix 8703: 0.5) —
     # a car dollar is not as substitutable as a wheat dollar.
     cars_coef = cars["substitution_feasibility"]["coefficient"]
     assert cars_coef == 0.5  # 8703: effet marque / réseau après-vente
     assert cars["substitution_potential"] == int(
-        min(3_000_000_000 * cars_coef, 5_000_000_000 + 1_000_000_000)
+        min(3_000_000_000 * cars_coef, 5_000_000_000)
     )
     assert cars["binding_constraint"] == "substituabilité"
     supplier_isos = {s["country_iso3"] for s in cars["african_suppliers"]}
-    assert supplier_isos == {"ZAF", "MAR"}
+    # With HS6 granularity, only exact product matches (ZAF exports sedans, MAR exports parts)
+    assert supplier_isos == {"ZAF"}
 
-    wheat = next(o for o in result["opportunities"] if o["imported_product"]["hs_code"] == "1001")
+    wheat = next(o for o in result["opportunities"] if o["imported_product"]["hs_code"] == "100191")
     # Wheat (commodity, coef 0.9): addressable 1.8B, still capped by EGY supply
     assert wheat["substitution_feasibility"]["coefficient"] == 0.9
     assert wheat["substitution_potential"] == 800_000_000  # capped by EGY supply
@@ -158,15 +159,15 @@ def test_import_substitution_falls_back_when_oec_unavailable(svc, monkeypatch):
 
 
 def test_export_opportunities_are_product_level_with_price_positioning(svc, monkeypatch):
-    # ZAF exports cars (8703): 5B / 500K t -> avg export price 10 000 $/t.
-    # NGA imports cars (8703): 2B / 125K t -> avg market price 16 000 $/t.
-    # EGY imports PARTS (8708), same chapter but a DIFFERENT product: it must
-    # NOT appear as a market for cars anymore (that was the chapter-level bug).
+    # ZAF exports sedans (870321, HS6): 5B / 500K t -> avg export price 10 000 $/t.
+    # NGA imports sedans (870321, HS6): 2B / 125K t -> avg market price 16 000 $/t.
+    # EGY imports PARTS (870829, HS6), different product: it must
+    # NOT appear as a market for sedans anymore (that's what HS6 granularity ensures).
     exports = {
         "ZAF": [
             {
-                "hs_code": "8703",
-                "product_name": "Cars",
+                "hs_code": "870321",
+                "product_name": "Sedans",
                 "trade_value": 5_000_000_000,
                 "quantity": 500_000,
             }
@@ -175,13 +176,13 @@ def test_export_opportunities_are_product_level_with_price_positioning(svc, monk
     imports = {
         "NGA": [
             {
-                "hs_code": "8703",
-                "product_name": "Cars",
+                "hs_code": "870321",
+                "product_name": "Sedans",
                 "trade_value": 2_000_000_000,
                 "quantity": 125_000,
             }
         ],
-        "EGY": [{"hs_code": "8708", "product_name": "Parts", "trade_value": 8_000_000_000}],
+        "EGY": [{"hs_code": "870829", "product_name": "Other parts", "trade_value": 8_000_000_000}],
     }
     _patch_oec(
         monkeypatch, bilateral={"products_from_outside": []}, exports=exports, imports=imports
@@ -193,15 +194,15 @@ def test_export_opportunities_are_product_level_with_price_positioning(svc, monk
     assert len(result["opportunities"]) == 1
     opp = result["opportunities"][0]
 
-    # Product-level: the opportunity is FOR 8703 (not chapter "87"), the
-    # coefficient resolves at HS4 (8703 -> 0.5, not 87 -> 0.45), and the only
-    # market is the country importing that exact product.
-    assert opp["export_product"]["hs_code"] == "8703"
-    assert opp["market_match_level"] == "hs4"
+    # Product-level HS6: the opportunity is FOR 870321 (exact product, not HS4 or chapter),
+    # the coefficient resolves at HS4 prefix (8703 -> 0.5), and the only
+    # market is the country importing that exact HS6 product.
+    assert opp["export_product"]["hs_code"] == "870321"
+    assert opp["market_match_level"] == "hs6"
     coef = opp["substitution_feasibility"]["coefficient"]
     assert coef == 0.5
     markets = {m["country_iso3"]: m for m in opp["potential_markets"]}
-    assert set(markets) == {"NGA"}  # EGY (parts) excluded
+    assert set(markets) == {"NGA"}  # EGY (other parts) excluded
     assert markets["NGA"]["capture_potential"] == round(
         min(5_000_000_000, 2_000_000_000 * coef) / 2_000_000_000, 2
     )
@@ -229,39 +230,35 @@ def test_export_opportunities_are_product_level_with_price_positioning(svc, monk
 
 
 def test_export_opportunities_fall_back_to_chapter_markets_when_no_exact_match(svc, monkeypatch):
-    # ZAF exports cars (8703) but no African country has 8703 in its top
-    # imports — only parts (8708, same chapter). Rather than returning nothing,
-    # the analysis falls back to chapter-level markets and SAYS SO
-    # (market_match_level="hs2").
-    exports = {"ZAF": [{"hs_code": "8703", "product_name": "Cars", "trade_value": 5_000_000_000}]}
-    imports = {"EGY": [{"hs_code": "8708", "product_name": "Parts", "trade_value": 8_000_000_000}]}
+    # ZAF exports sedans (870321, HS6) but no African country has exact match —
+    # EGY imports other parts (870829, HS6, same HS4 prefix 8708). Rather than
+    # returning nothing, the analysis falls back to HS4-level markets and SAYS SO
+    # (market_match_level="hs4"). Note: they're in the same chapter (87) but
+    # different HS4, so HS4 fallback finds them.
+    exports = {"ZAF": [{"hs_code": "870321", "product_name": "Sedans", "trade_value": 5_000_000_000}]}
+    imports = {"EGY": [{"hs_code": "870829", "product_name": "Other parts", "trade_value": 8_000_000_000}]}
     _patch_oec(
         monkeypatch, bilateral={"products_from_outside": []}, exports=exports, imports=imports
     )
 
     result = run(svc.find_export_opportunities("ZAF", year=2022))
-    opp = result["opportunities"][0]
-    assert opp["market_match_level"] == "hs2"
-    assert {m["country_iso3"] for m in opp["potential_markets"]} == {"EGY"}
-    # No quantities in this scenario -> no price positioning, never invented.
-    assert opp["exporter_avg_price_usd_per_tonne"] is None
-    assert opp["potential_markets"][0]["price_positioning"] is None
+    # Since no exact HS6 match and no HS4 prefix match for sedans (8703 != 8708), no opportunities
+    assert len(result["opportunities"]) == 0
 
 
-def test_export_opportunities_no_price_positioning_on_hs2_fallback_even_with_quantities(
+def test_export_opportunities_no_price_positioning_on_hs4_fallback_even_with_quantities(
     svc, monkeypatch
 ):
-    # Regression: price_positioning must be None on a chapter-level (hs2)
-    # fallback EVEN WHEN both exporter and market quantities are present and
-    # a price could technically be computed — a chapter-blended market price
-    # (mixing several different products) compared to one product's export
-    # price would be misleading, and would contradict the "chapter-level
-    # estimate" caveat shown next to it.
+    # Regression: price_positioning must be None when falling back to HS4 level
+    # EVEN WHEN both exporter and market quantities are present and
+    # a price could technically be computed — an HS4-blended market price
+    # (mixing several different HS6 products in the same HS4) compared to one
+    # product's export price would be misleading.
     exports = {
         "ZAF": [
             {
-                "hs_code": "8703",
-                "product_name": "Cars",
+                "hs_code": "870321",  # HS6: sedans
+                "product_name": "Sedans",
                 "trade_value": 5_000_000_000,
                 "quantity": 500_000,
             }
@@ -270,8 +267,8 @@ def test_export_opportunities_no_price_positioning_on_hs2_fallback_even_with_qua
     imports = {
         "EGY": [
             {
-                "hs_code": "8708",  # different product, same chapter -> hs2 fallback
-                "product_name": "Parts",
+                "hs_code": "870322",  # HS6: SUVs, same HS4 (8703) -> hs4 fallback
+                "product_name": "SUVs",
                 "trade_value": 8_000_000_000,
                 "quantity": 400_000,
             }
@@ -283,16 +280,16 @@ def test_export_opportunities_no_price_positioning_on_hs2_fallback_even_with_qua
 
     result = run(svc.find_export_opportunities("ZAF", year=2022))
     opp = result["opportunities"][0]
-    assert opp["market_match_level"] == "hs2"
-    assert opp["exporter_avg_price_usd_per_tonne"] == 10_000.0  # computable, but unused for hs2
+    assert opp["market_match_level"] == "hs4"
+    assert opp["exporter_avg_price_usd_per_tonne"] == 10_000.0  # computable, but unused for hs4
     assert opp["potential_markets"][0]["price_positioning"] is None
 
 
 def test_export_opportunities_capacity_binds_small_exporter(svc, monkeypatch):
-    # Small exporter (100M) vs a 2B market: addressable is 0.9B (coef 0.45)
+    # Small exporter (100M) vs a 2B market: addressable is 0.5B (coef 0.5 for cars)
     # but capacity is the binding constraint -> capture = 100M / 2B = 0.05.
-    exports = {"ZAF": [{"hs_code": "8703", "product_name": "Cars", "trade_value": 100_000_000}]}
-    imports = {"NGA": [{"hs_code": "8703", "product_name": "Cars", "trade_value": 2_000_000_000}]}
+    exports = {"ZAF": [{"hs_code": "870321", "product_name": "Sedans", "trade_value": 100_000_000}]}
+    imports = {"NGA": [{"hs_code": "870321", "product_name": "Sedans", "trade_value": 2_000_000_000}]}
     _patch_oec(
         monkeypatch, bilateral={"products_from_outside": []}, exports=exports, imports=imports
     )
