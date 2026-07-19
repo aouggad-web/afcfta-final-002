@@ -339,7 +339,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
 };
 
 // Main Component
-export default function SubstitutionAnalysis({ language = 'fr' }) {
+export default function SubstitutionAnalysis({ language = 'fr', initialCountry = null }) {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || language;
   
@@ -410,6 +410,16 @@ export default function SubstitutionAnalysis({ language = 'fr' }) {
     };
     fetchCountries();
   }, [currentLang]);
+
+  // Pré-remplissage venu d'un autre module (voir OpportunitiesTab.jsx) : le
+  // pays du handoff déclenche l'analyse via l'effet auto-analyze ci-dessous.
+  useEffect(() => {
+    if (initialCountry?.iso3) {
+      setActiveTab('import');
+      setSelectedCountry(initialCountry.iso3);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialCountry?.iso3, initialCountry?.k]);
 
   // Analyze function
   const analyzeCountry = useCallback(async () => {

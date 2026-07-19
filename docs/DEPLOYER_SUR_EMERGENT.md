@@ -167,6 +167,17 @@ persistante, plus un patch de fichier voué à disparaître au prochain reset.
   ignoré par git). Un déploiement qui ne relance pas la synchronisation
   complète ne verra JAMAIS les changements frontend, quel que soit l'état de
   la branche GitHub — `sync_emergent.sh` reste le seul point d'entrée fiable.
+- **Deuxième cause, plus radicale, du même symptôme** : l'onglet « Opportunités »
+  de `App.js` ne rendait pas `OpportunitiesTab` (le composant à 8 sous-onglets
+  ci-dessus, y compris Substitution) mais un module distinct et plus ancien,
+  `components/reports/OpportunityReportTab.jsx` (rapport bilatéral S1–S4).
+  Ce dernier n'affichait qu'une carte de substituabilité minimale, jamais le
+  sous-module Substitution complet — aucun cache ni build n'aurait pu le faire
+  apparaître puisqu'il n'était tout simplement jamais monté. Le fichier a été
+  supprimé et `App.js` branche désormais `OpportunitiesTab` sur cet onglet ;
+  le renvoi inter-modules Statistiques → Opportunités (pays + code SH déposés
+  en `sessionStorage`) ouvre maintenant directement le sous-module
+  Substitution pré-rempli avec le pays choisi.
 
 ## Démarrer après synchronisation
 

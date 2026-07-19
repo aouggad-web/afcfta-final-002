@@ -21,7 +21,7 @@ import RulesTab from './components/rules/RulesTab';
 import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import FinanceTab from './components/finance/FinanceTab';
-import OpportunityReportTab from './components/reports/OpportunityReportTab';
+import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -331,17 +331,17 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Opportunités (Premium)' : 'Opportunities (Premium)'}
+              title={language === 'fr' ? 'Opportunités' : 'Opportunities'}
               subtitle={
                 language === 'fr'
-                  ? 'Rapport bilatéral : production, logistique, finance & macro (GAI, réserves, couverture des importations)'
-                  : 'Bilateral report: production, logistics, finance & macro (GAI, reserves, import cover)'
+                  ? 'Substitution, simulateur ZLECAf, comparateur bilatéral, chaînes de valeur et analyse par produit'
+                  : 'Substitution, AfCFTA simulator, bilateral comparator, value chains and product-level analysis'
               }
               dotColor="copper"
             />
             <div style={{ height: 20 }} />
             <div className="afcfta-card">
-              <OpportunityReportTab countries={countries} language={language} />
+              <OpportunitiesTab language={language} />
             </div>
           </div>
         );
