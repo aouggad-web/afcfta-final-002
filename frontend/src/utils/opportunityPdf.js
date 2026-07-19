@@ -148,17 +148,38 @@ function drawTable(doc, theme, table, startY) {
     return yy + 6.6;
   };
 
+  // Hauteur de ligne dynamique : un nom de produit/pays/partenaire plus large
+  // que sa colonne est enroulé sur plusieurs lignes par `maxWidth`, mais une
+  // hauteur de ligne FIXE ne le sait pas — la deuxième ligne se dessinait
+  // dans la ligne suivante et pouvait l'écraser. On pré-calcule le texte
+  // enroulé de chaque cellule, on prend la hauteur nécessaire au maximum sur
+  // la ligne, et cette hauteur sert à la fois au fond et à la pagination.
+  const LINE_H = 3.1;
+  const TOP_PAD = 4.2;
+  const BOTTOM_PAD = 2.0;
+
   let y = ensureRoom(doc, theme, startY, 6.6 + rowH);
   y = header(y);
 
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7);
+
   (table.rows || []).forEach((row, idx) => {
-    if (y + rowH > MM.pageH - 16) {
+    const cellLines = cols.map((c, i) => {
+      const raw = row[c.key];
+      const text = c.fmt ? c.fmt(raw, row) : String(raw ?? '—');
+      return doc.splitTextToSize(text, widths[i] - 4);
+    });
+    const lineCount = Math.max(1, ...cellLines.map((lines) => lines.length));
+    const thisRowH = Math.max(rowH, TOP_PAD + (lineCount - 1) * LINE_H + BOTTOM_PAD);
+
+    if (y + thisRowH > MM.pageH - 16) {
       doc.addPage();
       paintPage(doc, theme);
       y = header(MM.margin + 4);
     }
     doc.setFillColor(...(idx % 2 === 0 ? theme.surface : theme.page));
-    doc.rect(MM.margin, y, totalW, rowH, 'F');
+    doc.rect(MM.margin, y, totalW, thisRowH, 'F');
     let cx = MM.margin;
     cols.forEach((c, i) => {
       const raw = row[c.key];
@@ -169,14 +190,13 @@ function drawTable(doc, theme, table, startY) {
       } else {
         doc.setTextColor(...theme.text);
       }
-      const text = c.fmt ? c.fmt(raw, row) : String(raw ?? '—');
-      doc.text(text, c.align === 'right' ? cx + widths[i] - 2 : cx + 2, y + 4.2, {
-        align: c.align === 'right' ? 'right' : 'left',
-        maxWidth: widths[i] - 4,
+      const xPos = c.align === 'right' ? cx + widths[i] - 2 : cx + 2;
+      cellLines[i].forEach((line, li) => {
+        doc.text(line, xPos, y + TOP_PAD + li * LINE_H, { align: c.align === 'right' ? 'right' : 'left' });
       });
       cx += widths[i];
     });
-    y += rowH;
+    y += thisRowH;
   });
   return y + 4;
 }

@@ -1236,8 +1236,31 @@ export default function AIAnalysis({ language = 'fr' }) {
                       table: {
                         columns: [
                           { key: 'product', label: fr ? 'Produit' : 'Product', width: 2.4, fmt: (v, o) => o.product?.name || o.output_product || o.product_name || '—' },
-                          { key: 'partner', label: fr ? 'Partenaire / marché' : 'Partner / market', width: 1.6, fmt: (v, o) => (mode === 'export' ? (o.potentialPartner || o.potential_partner || (o.targetMarkets || o.target_markets || []).slice(0, 2).join(', ')) : (o.potentialSupplier || o.potential_supplier)) || '—' },
-                          { key: 'value', label: fr ? 'Potentiel (M$)' : 'Potential ($M)', align: 'right', width: 1, fmt: (v, o) => musd(mode === 'export' ? (o.potentialTradeValue || o.potential_value_musd || o.potential_trade_value) : (o.substitutionPotential || o.substitution_potential_musd || o.currentImportValue)) },
+                          {
+                            // Même résolution par mode que la carte à l'écran
+                            // (voir OpportunityCard ci-dessus, isExport/isIndustrial) :
+                            // le mode "industriel" a ses propres champs
+                            // (targetMarkets, potentialTradeValue) et tombait
+                            // sinon dans la branche import -> colonnes à "—".
+                            key: 'partner', label: fr ? 'Partenaire / marché' : 'Partner / market', width: 1.6,
+                            fmt: (v, o) =>
+                              (mode === 'export'
+                                ? (o.potentialPartner || o.potential_partner)
+                                : mode === 'industrial'
+                                ? (o.targetMarkets || o.target_markets || []).slice(0, 2).join(', ')
+                                : (o.potentialSupplier || o.potential_supplier)) || '—',
+                          },
+                          {
+                            key: 'value', label: fr ? 'Potentiel (M$)' : 'Potential ($M)', align: 'right', width: 1,
+                            fmt: (v, o) =>
+                              musd(
+                                mode === 'export'
+                                  ? (o.potentialTradeValue || o.potential_value_musd || o.potential_trade_value)
+                                  : mode === 'industrial'
+                                  ? (o.potentialTradeValue || o.potential_value_musd)
+                                  : (o.substitutionPotential || o.substitution_potential_musd || o.currentImportValue),
+                              ),
+                          },
                         ],
                         rows: opps,
                       },

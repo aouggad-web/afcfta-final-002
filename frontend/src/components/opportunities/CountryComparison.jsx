@@ -215,7 +215,11 @@ export default function CountryComparison({ language = 'fr' }) {
             { label: `${nameB} → ${nameA}`, value: fmtMUSD(bilateral.exports_b_to_a_musd) },
           ],
         },
-        pair(txt.gdp, econ.gdp_a_billion, econ.gdp_b_billion),
+        pair(
+          txt.gdp,
+          econ.gdp_a_billion != null ? `$${Number(econ.gdp_a_billion).toFixed(1)}Bn` : null,
+          econ.gdp_b_billion != null ? `$${Number(econ.gdp_b_billion).toFixed(1)}Bn` : null,
+        ),
         pair(txt.growth, econ.gdp_growth_a != null ? `${econ.gdp_growth_a}%` : null, econ.gdp_growth_b != null ? `${econ.gdp_growth_b}%` : null),
         pair(txt.hdi, econ.hdi_a, econ.hdi_b),
         pair(txt.inflation, econ.inflation_a != null ? `${econ.inflation_a}%` : null, econ.inflation_b != null ? `${econ.inflation_b}%` : null),

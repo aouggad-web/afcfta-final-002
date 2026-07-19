@@ -42,6 +42,35 @@ describe('buildOpportunityPdf', () => {
     expect(doc.output('arraybuffer').byteLength).toBeGreaterThan(500);
   });
 
+  it('grows row height for wrapped text instead of a fixed row height (regression: overlap)', () => {
+    // Same row count, same narrow column — only the text length differs.
+    // A FIXED row height (the bug) would need the same page count either
+    // way; wrapped multi-line cells must consume more vertical space and
+    // therefore more pages once the accumulated extra height overflows a page.
+    const makeSpec = (name) => ({
+      title: 'T',
+      sections: [
+        {
+          table: {
+            columns: [
+              { key: 'hs', label: 'SH', width: 0.6 },
+              { key: 'name', label: 'Produit', width: 0.8 }, // narrow -> forces wrap
+            ],
+            rows: Array.from({ length: 60 }, (_, i) => ({ hs: `87${i}`, name })),
+          },
+        },
+      ],
+    });
+    const short = buildOpportunityPdf(makeSpec('Voiture'));
+    const long = buildOpportunityPdf(
+      makeSpec(
+        'Aiguilles tubulaires en métal et aiguilles de suture pour usage médical vétérinaire ' +
+          'et humain, toutes tailles, conditionnement individuel stérile'
+      )
+    );
+    expect(long.internal.getNumberOfPages()).toBeGreaterThan(short.internal.getNumberOfPages());
+  });
+
   it('applies column fmt with (value, row) and tolerates missing keys', () => {
     const doc = buildOpportunityPdf({
       title: 'T',
