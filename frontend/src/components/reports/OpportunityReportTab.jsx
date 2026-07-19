@@ -402,8 +402,8 @@ export function BilateralView({ countries, fr, prefill }) {
     if (!report) return null;
     const kpis = [];
     const ci = report.composite_indicators || {};
-    if (ci.end_to_end_score?.score) kpis.push({ label: fr ? "Score bout en bout" : "End-to-end score", value: `${Math.round((ci.end_to_end_score.score || 0) * 100)}%`, accent: 'gold' });
-    if (ci.landed_cost?.value_usd) kpis.push({ label: fr ? "Coût débarqué" : "Landed cost", value: `$${Number(ci.landed_cost.value_usd).toLocaleString('en-US', { maximumFractionDigits: 0 })}`, accent: 'green' });
+    if (ci.end_to_end_score?.available) kpis.push({ label: fr ? "Score bout en bout" : "End-to-end score", value: `${Math.round((ci.end_to_end_score.score || 0) * 100)}%`, accent: 'gold' });
+    if (ci.landed_cost?.value_usd !== undefined) kpis.push({ label: fr ? "Coût débarqué" : "Landed cost", value: `$${Number(ci.landed_cost.value_usd).toLocaleString('en-US', { maximumFractionDigits: 0 })}`, accent: 'green' });
     return {
       badge: `${origin}-${destination}`,
       filename: `rapport-bilateral-${hsCode}`,
