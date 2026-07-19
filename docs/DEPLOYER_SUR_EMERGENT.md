@@ -147,10 +147,27 @@ persistante, plus un patch de fichier voué à disparaître au prochain reset.
 
 - **Sous-module substitution refondu** : bornage par substituabilité (effet
   marque/technologie/après-vente/certification, `substitution_feasibility_service.py`),
-  granularité **produit HS4** au lieu du chapitre SH2 pour les opportunités
-  d'export, et positionnement prix ($/t export vs marché) — le tout enfin
+  granularité **produit HS6** (sous-position exacte, ex. 090111 « café non
+  torréfié ») au lieu du chapitre SH2 pour les opportunités d'export ET
+  d'import, et positionnement prix ($/t export vs marché) — le tout enfin
   **affiché** dans l'UI (le calcul backend existait mais aucun écran ne le
   rendait, symptôme exact du bug ci-dessous).
+- **Passage SH4 → SH6** : un producteur d'un produit précis (identifié par son
+  code SH6 exact) cherche à savoir où exporter CE produit ; le SH4 regroupait
+  trop de produits distincts pour être exploitable (berlines vs SUV vs pièces).
+  Les appels OEC (`get_oec_exports`/`get_oec_imports`/`get_oec_bilateral_from_world`)
+  acceptent un niveau `hs_level` (HS2/HS4/HS6) ; le service de substitution
+  indexe fournisseurs et marchés par le code SH complet, avec correspondance
+  **exacte au SH6** et repli sur le préfixe HS4 seulement en l'absence de
+  marché SH6 exact (signalé par `market_match_level="hs4"`). Le coefficient de
+  substituabilité se résout au préfixe HS4 du code SH6.
+- **Correctif : lookup bilatéral OEC qui retombait toujours en estimation
+  statique** : le Sahara occidental (ESH) n'a pas d'identifiant OEC, donc
+  `af_id.replace(...)` heurtait un `None` et faisait échouer tout le lookup
+  bilatéral — la substitution d'imports servait alors le profil statique HS4
+  (`is_estimation=True`). Les identifiants OEC nuls sont désormais filtrés ;
+  la substitution d'imports DZA renvoie de vraies données OEC HS6
+  (`is_estimation=False`).
 - **Export PDF natif** pour le module Statistiques et les 8 sous-modules
   Opportunités (thèmes clair/sombre, palette réelle de l'app).
 - **Cause du bug « PR mergée mais rien ne change à l'écran »** : le cache du
