@@ -8,7 +8,7 @@
  *
  * Cache names are versioned; old caches are purged on activation.
  *
- * DEV / PREVIEW MODE (v3.1.0):
+ * DEV / PREVIEW MODE:
  * When hosted on a *.preview.emergentagent.com URL or on localhost, the
  * worker operates in "self-destruct" mode: it unregisters itself, wipes
  * every cache it created, and disables all fetch interception. This

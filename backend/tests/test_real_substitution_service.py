@@ -248,6 +248,46 @@ def test_export_opportunities_fall_back_to_chapter_markets_when_no_exact_match(s
     assert opp["potential_markets"][0]["price_positioning"] is None
 
 
+def test_export_opportunities_no_price_positioning_on_hs2_fallback_even_with_quantities(
+    svc, monkeypatch
+):
+    # Regression: price_positioning must be None on a chapter-level (hs2)
+    # fallback EVEN WHEN both exporter and market quantities are present and
+    # a price could technically be computed — a chapter-blended market price
+    # (mixing several different products) compared to one product's export
+    # price would be misleading, and would contradict the "chapter-level
+    # estimate" caveat shown next to it.
+    exports = {
+        "ZAF": [
+            {
+                "hs_code": "8703",
+                "product_name": "Cars",
+                "trade_value": 5_000_000_000,
+                "quantity": 500_000,
+            }
+        ]
+    }
+    imports = {
+        "EGY": [
+            {
+                "hs_code": "8708",  # different product, same chapter -> hs2 fallback
+                "product_name": "Parts",
+                "trade_value": 8_000_000_000,
+                "quantity": 400_000,
+            }
+        ]
+    }
+    _patch_oec(
+        monkeypatch, bilateral={"products_from_outside": []}, exports=exports, imports=imports
+    )
+
+    result = run(svc.find_export_opportunities("ZAF", year=2022))
+    opp = result["opportunities"][0]
+    assert opp["market_match_level"] == "hs2"
+    assert opp["exporter_avg_price_usd_per_tonne"] == 10_000.0  # computable, but unused for hs2
+    assert opp["potential_markets"][0]["price_positioning"] is None
+
+
 def test_export_opportunities_capacity_binds_small_exporter(svc, monkeypatch):
     # Small exporter (100M) vs a 2B market: addressable is 0.9B (coef 0.45)
     # but capacity is the binding constraint -> capture = 100M / 2B = 0.05.

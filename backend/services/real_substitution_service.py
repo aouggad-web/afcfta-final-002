@@ -1020,11 +1020,17 @@ class RealSubstitutionService:
 
                     # Positionnement prix : valeur unitaire du marché ($/t) vs
                     # prix moyen d'export du pays — calculable seulement quand
-                    # les deux volumes BACI sont présents.
+                    # les deux volumes BACI sont présents ET que le marché
+                    # correspond EXACTEMENT au produit (hs4). En repli chapitre
+                    # (hs2), market_price est une moyenne mélangeant plusieurs
+                    # produits différents du même chapitre — le comparer au
+                    # prix d'export d'UN produit précis serait trompeur (et
+                    # afficherait un chip prix à côté de l'avertissement
+                    # "marché estimé au niveau chapitre", contradictoire).
                     market_qty = market.get("quantity", 0) or 0
                     market_price = market_size / market_qty if market_qty > 0 else None
                     price_positioning = None
-                    if exporter_price and market_price:
+                    if market_match_level == "hs4" and exporter_price and market_price:
                         ratio = exporter_price / market_price
                         price_positioning = {
                             "exporter_avg_price_usd_per_tonne": round(exporter_price, 1),

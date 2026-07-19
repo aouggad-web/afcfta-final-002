@@ -164,10 +164,17 @@ function drawTable(doc, theme, table, startY) {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
 
+  // `fmt` est fourni par chaque sous-module et peut renvoyer n'importe quoi
+  // (nombre, undefined...) — jsPDF (splitTextToSize/text) exige une chaîne
+  // (ou un tableau de chaînes) et lève sinon. On coerce systématiquement,
+  // en aplatissant un éventuel tableau plutôt que de planter dessus.
+  const toCellText = (value) =>
+    Array.isArray(value) ? value.map(String).join(', ') : String(value ?? '—');
+
   (table.rows || []).forEach((row, idx) => {
     const cellLines = cols.map((c, i) => {
       const raw = row[c.key];
-      const text = c.fmt ? c.fmt(raw, row) : String(raw ?? '—');
+      const text = toCellText(c.fmt ? c.fmt(raw, row) : raw);
       return doc.splitTextToSize(text, widths[i] - 4);
     });
     const lineCount = Math.max(1, ...cellLines.map((lines) => lines.length));

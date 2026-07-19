@@ -85,6 +85,28 @@ describe('buildOpportunityPdf', () => {
     });
     expect(doc.output('arraybuffer').byteLength).toBeGreaterThan(500);
   });
+
+  it('coerces non-string fmt results (number, array, null) instead of throwing', () => {
+    // jsPDF's text()/splitTextToSize() require a string (or string array) —
+    // a raw number or null from a column's fmt() previously reached them
+    // uncoerced and could throw.
+    const doc = buildOpportunityPdf({
+      title: 'T',
+      sections: [
+        {
+          table: {
+            columns: [
+              { key: 'n', label: 'Num', fmt: (v) => v }, // returns a number, not a string
+              { key: 'arr', label: 'Arr', fmt: () => ['a', 'b'] },
+              { key: 'nul', label: 'Null', fmt: () => null },
+            ],
+            rows: [{ n: 42, arr: null, nul: null }],
+          },
+        },
+      ],
+    });
+    expect(doc.output('arraybuffer').byteLength).toBeGreaterThan(500);
+  });
 });
 
 describe('opportunityPdfFilename', () => {
