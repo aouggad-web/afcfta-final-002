@@ -16,8 +16,7 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from services import cache_service
-from services import production_capacity_service
+from services import cache_service, production_capacity_service
 from services.real_trade_data_service import (
     AFRICAN_COUNTRIES,
     get_country_name,
