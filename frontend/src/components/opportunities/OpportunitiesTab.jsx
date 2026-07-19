@@ -1,6 +1,7 @@
 /**
  * Opportunities Tab — main container
- * 5 sub-tabs: Analyse IA · Substitution · Chaînes de Valeur · Par Produit · Comparaison
+ * 8 sub-tabs: Analyse IA · Substitution · Simulateur ZLECAf · Comparateur
+ * bilatéral · Vue d'ensemble · Chaînes de Valeur · Par Produit · Comparaison
  */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

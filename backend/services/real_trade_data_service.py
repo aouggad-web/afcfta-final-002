@@ -43,6 +43,26 @@ def _oec_params(params: Dict) -> Dict:
     return params
 
 
+# Supported OEC drilldown/record-key levels and the digit width each HS code
+# is zero-padded to. Centralised so hs_level is validated once instead of
+# duplicating the same if/elif/else in every fetcher below.
+_HS_LEVEL_DIGITS = {"HS2": 2, "HS4": 4, "HS6": 6}
+
+
+def _normalize_hs_level(hs_level: str) -> str:
+    """Normalize a caller-supplied HS level to one of HS2/HS4/HS6.
+
+    A caller-supplied level is interpolated directly into the OEC drilldown
+    string and used as a record-key lookup (``record.get(f"{hs_level} ID")``);
+    left unvalidated, a lowercase or unexpected value (e.g. ``"hs6"``) would
+    silently fall through to HS4 handling while still requesting a
+    non-existent drilldown field from OEC. Uppercase and default to HS4 for
+    anything unrecognized instead of failing that way.
+    """
+    normalized = (hs_level or "").strip().upper()
+    return normalized if normalized in _HS_LEVEL_DIGITS else "HS4"
+
+
 # African Countries (55 pays incluant la RASD - Membre UA depuis 1984)
 # Note: La RASD n'a pas de statistiques commerciales (territoire occupé)
 AFRICAN_COUNTRIES = {
@@ -640,6 +660,15 @@ class RealTradeDataService:
             return []
 
         oec_id = country_info["oec"]
+        if not oec_id:
+            # No OEC identifier for this territory (e.g. ESH/Western Sahara):
+            # sending None would become an empty "Importer Country" query
+            # param rather than raising, silently asking OEC for a bogus
+            # aggregate instead of failing loudly.
+            return []
+
+        hs_level = _normalize_hs_level(hs_level)
+        hs_digits = _HS_LEVEL_DIGITS[hs_level]
 
         try:
             params = {
@@ -665,12 +694,7 @@ class RealTradeDataService:
                     results = []
                     for record in records[:limit]:
                         hs_id = str(record.get(f"{hs_level} ID", ""))
-                        if hs_level == "HS6":
-                            hs_code = hs_id[-6:].zfill(6) if hs_id else ""
-                        elif hs_level == "HS2":
-                            hs_code = hs_id[-2:].zfill(2) if hs_id else ""
-                        else:  # HS4
-                            hs_code = hs_id[-4:].zfill(4) if hs_id else ""
+                        hs_code = hs_id[-hs_digits:].zfill(hs_digits) if hs_id else ""
 
                         results.append(
                             {
@@ -706,6 +730,13 @@ class RealTradeDataService:
             return []
 
         oec_id = country_info["oec"]
+        if not oec_id:
+            # No OEC identifier for this territory (e.g. ESH/Western Sahara):
+            # avoid sending an empty "Exporter Country" query param.
+            return []
+
+        hs_level = _normalize_hs_level(hs_level)
+        hs_digits = _HS_LEVEL_DIGITS[hs_level]
 
         try:
             params = {
@@ -729,12 +760,7 @@ class RealTradeDataService:
                     results = []
                     for record in records[:limit]:
                         hs_id = str(record.get(f"{hs_level} ID", ""))
-                        if hs_level == "HS6":
-                            hs_code = hs_id[-6:].zfill(6) if hs_id else ""
-                        elif hs_level == "HS2":
-                            hs_code = hs_id[-2:].zfill(2) if hs_id else ""
-                        else:  # HS4
-                            hs_code = hs_id[-4:].zfill(4) if hs_id else ""
+                        hs_code = hs_id[-hs_digits:].zfill(hs_digits) if hs_id else ""
 
                         results.append(
                             {
@@ -770,6 +796,13 @@ class RealTradeDataService:
             return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
 
         oec_id = country_info["oec"]
+        if not oec_id:
+            # No OEC identifier for this territory (e.g. ESH/Western Sahara):
+            # avoid sending an empty "Importer Country" query param.
+            return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
+
+        hs_level = _normalize_hs_level(hs_level)
+        hs_digits = _HS_LEVEL_DIGITS[hs_level]
         # Some AfCFTA members have no OEC identifier (e.g. Western Sahara ESH):
         # skip them so ``af_id.replace(...)`` below never hits a None.
         african_oec_ids = [c["oec"] for c in AFRICAN_COUNTRIES.values() if c.get("oec")]
@@ -799,14 +832,11 @@ class RealTradeDataService:
 
                     for record in records:
                         value = record.get("Trade Value", 0)
-                        exporter_id = record.get("Exporter Country ID", "") or ""
+                        # OEC can return this as a non-string JSON value (or
+                        # None); coerce before .startswith() below.
+                        exporter_id = str(record.get("Exporter Country ID", "") or "")
                         hs_id = str(record.get(f"{hs_level} ID", ""))
-                        if hs_level == "HS6":
-                            hs_code = hs_id[-6:].zfill(6) if hs_id else ""
-                        elif hs_level == "HS2":
-                            hs_code = hs_id[-2:].zfill(2) if hs_id else ""
-                        else:  # HS4
-                            hs_code = hs_id[-4:].zfill(4) if hs_id else ""
+                        hs_code = hs_id[-hs_digits:].zfill(hs_digits) if hs_id else ""
                         product_name = record.get(hs_level, "")
                         exporter_name = record.get("Exporter Country", "")
 
