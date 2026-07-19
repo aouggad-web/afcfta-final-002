@@ -21,7 +21,7 @@ import RulesTab from './components/rules/RulesTab';
 import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import FinanceTab from './components/finance/FinanceTab';
-import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
+import OpportunityReportTab from './components/reports/OpportunityReportTab';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -334,14 +334,14 @@ function App() {
               title={language === 'fr' ? 'Opportunités' : 'Opportunities'}
               subtitle={
                 language === 'fr'
-                  ? 'Substitution, simulateur ZLECAf, comparateur bilatéral, chaînes de valeur et analyse par produit'
-                  : 'Substitution, AfCFTA simulator, bilateral comparator, value chains and product-level analysis'
+                  ? 'Scénarios S1–S4, recherche de marchés, rapport bilatéral et substitution SH6 (S5)'
+                  : 'S1–S4 scenarios, market finding, bilateral report and HS6 substitution (S5)'
               }
               dotColor="copper"
             />
             <div style={{ height: 20 }} />
             <div className="afcfta-card">
-              <OpportunitiesTab language={language} />
+              <OpportunityReportTab countries={countries} language={language} />
             </div>
           </div>
         );
