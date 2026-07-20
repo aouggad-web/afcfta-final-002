@@ -86,7 +86,8 @@ def test_base_and_capacity_and_emerging_flows_all_present():
     #    base exports, surfaced purely from proven industrial capacity vs demand.
     assert "170199" in by_hs
     sugar = by_hs["170199"]
-    assert sugar["signal"] == "Established"
+    assert sugar["signal"] == "High Growth"
+    assert sugar["is_emerging"] is False  # operational champion, not a future mine
     assert sugar["transformation"]["champion"].lower().startswith("raffinage de sucre")
     assert sugar["transformation"]["input_target"] is not None  # raw sugar input volume
 

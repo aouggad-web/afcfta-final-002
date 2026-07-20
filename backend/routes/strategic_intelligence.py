@@ -14,7 +14,6 @@ la base d'intelligence industrielle.
 import logging
 
 from fastapi import APIRouter, HTTPException, Query
-
 from services import industrial_intelligence_service as intel
 from services.real_trade_data_service import AFRICAN_COUNTRIES, get_country_name
 from services.strategic_trade_service import get_strategic_flows

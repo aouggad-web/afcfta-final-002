@@ -22,12 +22,15 @@ def test_kb_loads_and_algeria_present():
 
 
 def test_operational_champion_matched_by_hs():
-    # Urea -> Sorfert/AOA (engrais azotés)
+    # Urea -> Sorfert/AOA (engrais azotés). A value-added champion is a growth
+    # opportunity under AfCFTA, so the display signal is "High Growth"; provenance
+    # (operational) is carried by the champion's status field.
     m = ii.match_for_hs("DZA", "310210")
     assert m["available"] is True
-    assert m["signal"] == "Established"
+    assert m["signal"] == "High Growth"
     assert m["champion"] is not None
     assert "Sorfert" in m["champion"]["name"]
+    assert m["champion"]["status"] == "operational"
     assert m["future_capacity"] is None
 
 
@@ -115,7 +118,7 @@ def test_priority_commodities_deduped():
     assert items
     codes = [it["hs_code"] for it in items]
     assert len(codes) == len(set(codes))  # no duplicate HS codes
-    # Both established and high-growth commodities appear.
+    # All capacity-driven commodities carry the growth signal.
     signals = {it["signal"] for it in items}
-    assert "Established" in signals
+    assert "High Growth" in signals
     assert "High Growth" in signals

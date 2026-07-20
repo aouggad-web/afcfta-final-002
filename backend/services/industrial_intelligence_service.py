@@ -55,7 +55,11 @@ _SECTOR_COMMODITY: Dict[str, Tuple[List[str], str]] = {
 # (« fer » ne doit pas matcher « ferroviaire » ni « transfert »).
 _KEYWORD_COMMODITY: List[Tuple[str, List[str], str]] = [
     (r"phosphate", ["251010", "310310", "310530"], "Phosphates & engrais phosphatés"),
-    (r"\bfer\b|sidérurg|\bacier\b|\bsteel\b|iron ore", ["260111", "260112", "720110"], "Minerai de fer & acier"),
+    (
+        r"\bfer\b|sidérurg|\bacier\b|\bsteel\b|iron ore",
+        ["260111", "260112", "720110"],
+        "Minerai de fer & acier",
+    ),
     (r"terres rares|rare earth", ["280530", "284690"], "Terres rares"),
     (r"lithium", ["282520", "283691"], "Lithium"),
     (r"cuivre|copper", ["260300", "740200"], "Cuivre"),
@@ -280,7 +284,11 @@ def match_for_hs(country_iso3: str, hs_code: str) -> Dict:
     if best_champion is not None:
         result["champion"] = best_champion
         result["available"] = True
-        result["signal"] = "Established"
+        # Signal « High Growth » : toute filière de transformation à valeur
+        # ajoutée est une opportunité de croissance sous la ZLECAf (la capacité
+        # existe, le débouché régional s'ouvre). La provenance opérationnel vs
+        # futur reste portée par ``transformation.status`` / ``is_emerging``.
+        result["signal"] = "High Growth"
 
     # 2) Capacité future (projet structurant) — prime sur le signal.
     for fut in kb.get("future_capacity", []):
@@ -325,7 +333,7 @@ def priority_commodities(country_iso3: str) -> List[Dict]:
                         "hs_code": key,
                         "product": champ.get("output_product") or champ.get("name"),
                         "champion": champ.get("name"),
-                        "signal": "Established",
+                        "signal": "High Growth",
                     }
                 )
     for fut in kb.get("future_capacity", []):

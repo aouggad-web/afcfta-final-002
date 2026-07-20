@@ -112,7 +112,12 @@ def _tariff_edge(hs_code: str) -> Dict:
     """
     mfn = _mfn_rate_pct(hs_code)
     if mfn is None:
-        return {"mfn_rate_pct": None, "afcfta_rate_pct": None, "edge_pct": None, "is_estimate": True}
+        return {
+            "mfn_rate_pct": None,
+            "afcfta_rate_pct": None,
+            "edge_pct": None,
+            "is_estimate": True,
+        }
     afcfta = 0.0
     return {
         "mfn_rate_pct": mfn,

@@ -5,9 +5,10 @@
  */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale, Calculator } from 'lucide-react';
+import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale, Calculator, TrendingUp } from 'lucide-react';
 
 import AIAnalysis from './AIAnalysis';
+import StrategicFlows from './StrategicFlows';
 import SubstitutionAnalysis from './SubstitutionAnalysis';
 import ValueChains from './ValueChains';
 import ProductAnalysisView from './ProductAnalysisView';
@@ -19,6 +20,7 @@ import BilateralTariffComparator from './BilateralTariffComparator';
 const TABS = {
   fr: [
     { id: 'ai',           label: 'Analyse IA',         icon: Sparkles },
+    { id: 'strategic',    label: 'Flux stratégiques',   icon: TrendingUp },
     { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
     { id: 'simulator',    label: 'Simulateur ZLECAf',   icon: Calculator },
     { id: 'bilateral',    label: 'Comparateur bilatéral', icon: Scale },
@@ -29,6 +31,7 @@ const TABS = {
   ],
   en: [
     { id: 'ai',           label: 'AI Analysis',         icon: Sparkles },
+    { id: 'strategic',    label: 'Strategic Flows',      icon: TrendingUp },
     { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
     { id: 'simulator',    label: 'AfCFTA Simulator',    icon: Calculator },
     { id: 'bilateral',    label: 'Bilateral comparator', icon: Scale },
@@ -68,6 +71,7 @@ export default function OpportunitiesTab({ language = 'fr' }) {
   const renderContent = () => {
     switch (active) {
       case 'ai':           return <AIAnalysis language={lang} />;
+      case 'strategic':    return <StrategicFlows language={lang} initialCountry={handoffCountry} />;
       case 'substitution': return <SubstitutionAnalysis language={lang} initialCountry={handoffCountry} />;
       case 'simulator':    return <ZlecafImpactSimulator language={lang} />;
       case 'bilateral':    return <BilateralTariffComparator language={lang} />;

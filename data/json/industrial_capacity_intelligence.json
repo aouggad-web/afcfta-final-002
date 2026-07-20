@@ -22,17 +22,31 @@
         "rationale": "L'Algérie a bâti une capacité massive d'engrais azotés (Sorfert, AOA) en valorisant son gaz naturel domestique. De nombreux marchés africains ont une forte demande d'intrants agricoles aujourd'hui importés hors du continent."
       },
       {
+        "name": "Industrie pharmaceutique (Saidal, Novo Nordisk Algérie)",
+        "sector": "Industrie pharmaceutique & biotechnologie",
+        "hs_products": ["300431", "300490", "300215", "300220"],
+        "output_product": "Insuline, anticancéreux & médicaments",
+        "capacity": {"value": 200, "unit": "médicaments (dont 30 anticancéreux)", "product": "Médicaments finis"},
+        "input_source": "Principes actifs (partiellement importés ; matières premières localisées à Sétif dès 2025)",
+        "input_sourcing": "Mixte (localisation en cours)",
+        "process": "Localisation de la production d'insuline (site de Constantine, Saidal-Novo Nordisk : procédé complet initié, objectif fabrication 100 % locale) et d'anticancéreux (transfert technologique de la biotech Biocad pour 5 molécules ; unités de Constantine et matières premières à Sétif), pour la souveraineté pharmaceutique et l'export africain.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie localise sa production d'insuline et d'anticancéreux : Saidal est passé de 8 à 30 traitements anticancéreux en 2024 (cible 35 % d'un marché national de 600 M$ en 2025) et Novo Nordisk Algérie exporte déjà des stylos à insuline vers l'Afrique (et 2,5 M de stylos vers l'Arabie saoudite). La demande africaine de médicaments, aujourd'hui massivement importée hors continent, en fait un débouché ZLECAf majeur."
+      },
+      {
         "name": "Condor Electronics",
         "sector": "Électronique grand public & électroménager",
         "hs_products": ["852872", "841810", "841821", "845011"],
         "output_product": "Téléviseurs, réfrigérateurs, électroménager",
-        "capacity": {"value": 3000000, "unit": "unités/an", "product": "Téléviseurs & électroménager"},
-        "input_source": "Intrants électroniques importés (dalles, cartes, composants)",
-        "input_sourcing": "Importé (transformation locale)",
-        "process": "Importation d'intrants électroniques, assemblage et intégration locale (dalles, cartes) en téléviseurs et électroménager, désormais exportés en volume et qualité croissants vers le marché régional.",
+        "capacity": {"value": 1500000, "unit": "unités/an", "product": "Téléviseurs assemblés"},
+        "input_capacity": {"value": 1000000, "unit": "unités/an", "product": "Dalles LCD/LED & cartes PCBA (SKD/CKD)"},
+        "input_source": "Dalles LCD/LED & cartes PCBA importées (SKD/CKD)",
+        "input_sourcing": "Importé (assemblage local)",
+        "process": "Importation de kits SKD/CKD (dalles, cartes/puces), injection locale des coques, assemblage final et contrôle qualité en téléviseurs et électroménager, exportés en volume et qualité croissants vers le marché régional.",
         "status": "operational",
-        "price_competitiveness": "High",
-        "rationale": "Condor a développé une grande capacité de production de téléviseurs et d'électroménager à partir d'intrants importés, et a commencé à exporter vers l'Afrique de l'Ouest et le Sahel où l'équipement des ménages progresse rapidement."
+        "price_competitiveness": "Moderate",
+        "rationale": "Les marques électroniques algériennes (Condor…) ont bâti de solides réseaux d'après-vente locaux et étendent agressivement leurs exports vers les marchés voisins (Libye, Sahel, Afrique de l'Ouest) où l'équipement des ménages progresse vite."
       },
       {
         "name": "Raffinage de sucre (Cevital & filière)",
