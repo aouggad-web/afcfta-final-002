@@ -228,25 +228,48 @@
         "rationale": "La sidérurgie algérienne (Tosyali, AQS) dispose d'une capacité de laminage supérieure au marché intérieur, positionnant les rebars pour l'export vers les marchés africains en construction."
       },
       {
-        "name": "MFG (Mediterranean Float Glass) / Cerata",
-        "sector": "Verre plat & céramique",
+        "name": "Verre plat (MFG - Mediterranean Float Glass)",
+        "sector": "Verre plat",
         "hs_products": [
           "700529",
-          "690721",
-          "690722"
+          "700510",
+          "700521"
         ],
-        "output_product": "Verre float & carreaux céramiques",
+        "output_product": "Verre float",
         "capacity": {
-          "value": 800000,
+          "value": 600000,
           "unit": "tonnes/an",
-          "product": "Verre float & carreaux"
+          "product": "Verre float"
         },
         "input_source": "Sable siliceux domestique",
         "input_sourcing": "Domestique",
-        "process": "Fusion de sable siliceux domestique en verre float et fabrication de carreaux céramiques, adossées au marché du bâtiment et à l'export régional.",
+        "process": "Fusion de sable siliceux domestique en verre float (MFG), adossée au bâtiment et à l'export régional.",
         "status": "operational",
         "price_competitiveness": "Medium",
-        "rationale": "Les intrants domestiques (sable, argile) et l'énergie bon marché rendent le verre plat et la céramique algériens compétitifs pour l'export vers les marchés africains de la construction."
+        "rationale": "L'Algérie produit du verre plat à partir d'intrants domestiques et d'une énergie compétitive, avec un potentiel d'export vers les marchés africains de la construction."
+      },
+      {
+        "name": "Carreaux céramiques & faïence (Cerata, Groupe Cerard)",
+        "sector": "Céramique (carreaux & faïence)",
+        "hs_products": [
+          "690721",
+          "690722",
+          "690723",
+          "690740",
+          "690890"
+        ],
+        "output_product": "Carreaux céramiques & faïence",
+        "capacity": {
+          "value": 200000000,
+          "unit": "m²/an",
+          "product": "Carreaux céramiques & faïence"
+        },
+        "input_source": "Argile & feldspath domestiques (+ émaux/pigments importés)",
+        "input_sourcing": "Mixte",
+        "process": "Transformation d'argile et de feldspath domestiques, émaillage (émaux/pigments partiellement importés) et cuisson en carreaux céramiques et faïence, aujourd'hui exportés de façon croissante.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie dispose d'une forte capacité de carreaux céramiques et de faïence (intrants domestiques, énergie bon marché). Le marché africain du bâtiment, en forte croissance, en fait un débouché ZLECAf naturel."
       },
       {
         "name": "Filière dattes (Deglet Nour)",
@@ -266,6 +289,34 @@
         "status": "operational",
         "price_competitiveness": "High",
         "rationale": "L'Algérie est un des premiers producteurs mondiaux de dattes de qualité (Deglet Nour), avec un potentiel d'export intra-africain sous-exploité."
+      },
+      {
+        "name": "Peintures & revêtements (ENAP, Sika Algérie)",
+        "sector": "Chimie (peintures, vernis & adhésifs)",
+        "hs_products": [
+          "320890",
+          "320990",
+          "321000",
+          "321410",
+          "350691"
+        ],
+        "output_product": "Peintures, vernis, enduits & adhésifs",
+        "capacity": {
+          "value": 150000,
+          "unit": "tonnes/an",
+          "product": "Peintures & vernis"
+        },
+        "input_capacity": {
+          "value": 100000,
+          "unit": "tonnes/an",
+          "product": "Résines, pigments & solvants (partiellement importés)"
+        },
+        "input_source": "Résines, pigments, solvants (partiellement importés)",
+        "input_sourcing": "Mixte (formulation locale)",
+        "process": "Formulation de peintures, vernis, enduits et adhésifs à partir de résines et pigments (ENAP, 150 000 t/an, 1er producteur national ; Sika Algérie), réduisant les imports et dégageant un potentiel d'export.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'industrie algérienne des peintures (ENAP, Sika Algérie) a une forte capacité de production qui a réduit les imports nationaux. Le marché africain du bâtiment offre un débouché d'export ZLECAf."
       }
     ],
     "future_capacity": [

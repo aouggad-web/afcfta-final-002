@@ -378,8 +378,11 @@ async def _capacity_driven_flows(
         return []
 
     try:
+        # Index de demande PROFOND (top-400/pays) : les produits transformés de
+        # milieu de gamme d'un champion (peintures, carreaux, détergents…) ont une
+        # demande africaine réelle mais classée au-delà du top-100 des gros postes.
         import_index = await real_substitution_service._build_african_import_index(
-            year, hs_level="HS6"
+            year, hs_level="HS6", limit=400
         )
     except Exception:  # pragma: no cover
         return []

@@ -45,7 +45,7 @@ def mock_oec(monkeypatch):
             ],
         }
 
-    async def fake_import_index(year, hs_level="HS6"):
+    async def fake_import_index(year, hs_level="HS6", limit=100):
         # African demand for refined sugar (Cevital champion) and iron ore
         # (Gara Djebilet future capacity) — neither is in Algeria's top exports.
         return {
