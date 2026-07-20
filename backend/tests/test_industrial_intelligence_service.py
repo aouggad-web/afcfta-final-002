@@ -113,6 +113,22 @@ def test_is_curated_vs_has_intelligence():
     assert ii.has_intelligence("XXX") is False
 
 
+def test_major_economies_have_curated_flagship_champions():
+    # Each big economy's verified flagship must match its signature product.
+    cases = {
+        "MAR": ("251010", "ocp"),  # phosphate rock -> OCP
+        "NGA": ("271000", "dangote refinery"),  # refined petroleum -> Dangote Refinery
+        "EGY": ("721420", "ezz"),  # rebars -> Ezz Steel
+        "ZAF": ("080510", "agrume"),  # oranges -> citrus filière
+    }
+    for iso, (hs, needle) in cases.items():
+        assert ii.is_curated(iso) is True, iso
+        m = ii.match_for_hs(iso, hs)
+        assert m["champion"] is not None, (iso, hs)
+        assert needle in m["champion"]["name"].lower(), (iso, m["champion"]["name"])
+        assert m["signal"] == "High Growth"
+
+
 def test_priority_commodities_deduped():
     items = ii.priority_commodities("DZA")
     assert items

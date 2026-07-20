@@ -10,7 +10,6 @@ origin, aggregation — without any network.
 import asyncio
 
 import pytest
-
 from services import strategic_trade_service as mod
 
 
