@@ -73,6 +73,43 @@ def test_unknown_country_and_product_fail_closed():
     assert m_product["signal"] is None
 
 
+def test_autoderivation_covers_noncurated_countries():
+    # Guinea (Simandou) -> iron ore; DRC -> copper/cobalt; Nigeria -> refined fuel.
+    # None of these are hand-curated, yet their structuring projects must yield
+    # forward-looking "High Growth" capacity.
+    assert ii.is_curated("GIN") is False
+    assert ii.has_intelligence("GIN") is True
+    gin = ii.match_for_hs("GIN", "260111")  # iron ore
+    assert gin["signal"] == "High Growth"
+    assert gin["future_capacity"] is not None
+
+    cod = ii.match_for_hs("COD", "260300")  # copper ore
+    assert cod["signal"] == "High Growth"
+
+    nga = ii.match_for_hs("NGA", "271000")  # refined petroleum
+    assert nga["signal"] == "High Growth"
+
+
+def test_autoderivation_ignores_pure_infrastructure():
+    # A railway/port keyword must never be mistaken for a commodity
+    # ("ferroviaire" must not match the \bfer\b iron-ore rule).
+    from services.industrial_intelligence_service import _commodity_for_project
+
+    assert _commodity_for_project("Transport Ferroviaire", "Ligne Ferroviaire") is None
+    assert _commodity_for_project("Infrastructure Portuaire", "Port en eaux profondes") is None
+    assert _commodity_for_project("Énergie - Hydraulique", "Barrage") is None
+    # But a genuine mining sector maps.
+    assert _commodity_for_project("Mines - Fer", "Mine de fer") is not None
+
+
+def test_is_curated_vs_has_intelligence():
+    assert ii.is_curated("DZA") is True
+    assert ii.has_intelligence("DZA") is True
+    # Unknown country: neither.
+    assert ii.is_curated("XXX") is False
+    assert ii.has_intelligence("XXX") is False
+
+
 def test_priority_commodities_deduped():
     items = ii.priority_commodities("DZA")
     assert items
