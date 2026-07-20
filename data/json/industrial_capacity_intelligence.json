@@ -1,0 +1,126 @@
+{
+  "_meta": {
+    "description": "Base de connaissance d'intelligence industrielle par pays: champions industriels, chaînes de transformation (intrant -> procédé -> extrant), et capacités futures adossées aux projets structurants. Sert à enrichir les flux d'export en 'flux stratégiques' (rationale, stratégie de transformation, signal High Growth).",
+    "schema_version": 1,
+    "units_note": "capacity.value en unités/an; product = extrant exporté; hs_products = codes SH6 des extrants exportables.",
+    "future_capacity.linked_project": "doit correspondre au champ 'titre' d'un projet dans projets_structurants_afrique.json (même pays)."
+  },
+  "DZA": {
+    "country_name_fr": "Algérie",
+    "champions": [
+      {
+        "name": "Sorfert / AOA / Fertial",
+        "sector": "Engrais azotés",
+        "hs_products": ["310210", "310280", "281410"],
+        "output_product": "Urée & ammoniac",
+        "capacity": {"value": 2500000, "unit": "tonnes/an", "product": "Urée"},
+        "input_source": "Gaz naturel domestique",
+        "input_sourcing": "Domestique",
+        "process": "Extraction de gaz naturel domestique transformé via procédé Haber-Bosch en ammoniac, puis synthétisé en urée pour l'export.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie a bâti une capacité massive d'engrais azotés (Sorfert, AOA) en valorisant son gaz naturel domestique. De nombreux marchés africains ont une forte demande d'intrants agricoles aujourd'hui importés hors du continent."
+      },
+      {
+        "name": "Condor Electronics",
+        "sector": "Électronique grand public & électroménager",
+        "hs_products": ["852872", "841810", "841821", "845011"],
+        "output_product": "Téléviseurs, réfrigérateurs, électroménager",
+        "capacity": {"value": 3000000, "unit": "unités/an", "product": "Téléviseurs & électroménager"},
+        "input_source": "Intrants électroniques importés (dalles, cartes, composants)",
+        "input_sourcing": "Importé (transformation locale)",
+        "process": "Importation d'intrants électroniques, assemblage et intégration locale (dalles, cartes) en téléviseurs et électroménager, désormais exportés en volume et qualité croissants vers le marché régional.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Condor a développé une grande capacité de production de téléviseurs et d'électroménager à partir d'intrants importés, et a commencé à exporter vers l'Afrique de l'Ouest et le Sahel où l'équipement des ménages progresse rapidement."
+      },
+      {
+        "name": "Cevital",
+        "sector": "Agroalimentaire (raffinage sucre & huiles)",
+        "hs_products": ["170199", "151790", "150710", "151219", "151710"],
+        "output_product": "Sucre raffiné & huile de table raffinée",
+        "capacity": {"value": 2000000, "unit": "tonnes/an", "product": "Sucre raffiné"},
+        "input_source": "Sucre brut & graines oléagineuses importés",
+        "input_sourcing": "Importé (raffinage local)",
+        "process": "Raffinage de sucre brut importé en sucre blanc, et trituration/raffinage d'huiles brutes en huile de table, pour la consommation nationale et l'export régional.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Cevital est l'un des premiers raffineurs de sucre et d'huile d'Afrique. Sa capacité excède la demande intérieure, dégageant un surplus exportable vers des marchés africains dépendants d'importations hors continent."
+      },
+      {
+        "name": "GICA / LafargeHolcim Algérie",
+        "sector": "Matériaux de construction (ciment)",
+        "hs_products": ["252310", "252329"],
+        "output_product": "Clinker & ciment",
+        "capacity": {"value": 40000000, "unit": "tonnes/an", "product": "Ciment & clinker"},
+        "input_source": "Calcaire & argile domestiques",
+        "input_sourcing": "Domestique",
+        "process": "Extraction de calcaire domestique, cuisson en clinker puis broyage en ciment, avec un excédent structurel désormais orienté vers l'export.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie est passée d'importateur à exportateur net de ciment/clinker. La surcapacité nationale cherche des débouchés régionaux (Afrique de l'Ouest, Sahel) où la construction est en forte croissance."
+      },
+      {
+        "name": "Tosyali Algérie / AQS",
+        "sector": "Sidérurgie",
+        "hs_products": ["721420", "721070", "720110"],
+        "output_product": "Ronds à béton (rebars) & produits sidérurgiques",
+        "capacity": {"value": 4000000, "unit": "tonnes/an", "product": "Acier & rebars"},
+        "input_source": "Minerai de fer / DRI (gaz domestique)",
+        "input_sourcing": "Mixte (domestique + intrants)",
+        "process": "Réduction directe (DRI au gaz naturel) et laminage en ronds à béton et produits longs, avec capacité excédentaire orientée export.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "La sidérurgie algérienne (Tosyali, AQS) dispose d'une capacité de laminage supérieure au marché intérieur, positionnant les rebars pour l'export vers les marchés africains en construction."
+      },
+      {
+        "name": "MFG (Mediterranean Float Glass) / Cerata",
+        "sector": "Verre plat & céramique",
+        "hs_products": ["700529", "690721", "690722"],
+        "output_product": "Verre float & carreaux céramiques",
+        "capacity": {"value": 800000, "unit": "tonnes/an", "product": "Verre float & carreaux"},
+        "input_source": "Sable siliceux domestique",
+        "input_sourcing": "Domestique",
+        "process": "Fusion de sable siliceux domestique en verre float et fabrication de carreaux céramiques, adossées au marché du bâtiment et à l'export régional.",
+        "status": "operational",
+        "price_competitiveness": "Medium",
+        "rationale": "Les intrants domestiques (sable, argile) et l'énergie bon marché rendent le verre plat et la céramique algériens compétitifs pour l'export vers les marchés africains de la construction."
+      },
+      {
+        "name": "Filière dattes (Deglet Nour)",
+        "sector": "Agriculture (dattes)",
+        "hs_products": ["080410"],
+        "output_product": "Dattes fraîches ou séchées",
+        "capacity": {"value": 1200000, "unit": "tonnes/an", "product": "Dattes"},
+        "input_source": "Production oasienne domestique",
+        "input_sourcing": "Domestique",
+        "process": "Récolte, conditionnement et transformation des dattes Deglet Nour, produit d'exportation traditionnel à forte valeur.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie est un des premiers producteurs mondiaux de dattes de qualité (Deglet Nour), avec un potentiel d'export intra-africain sous-exploité."
+      }
+    ],
+    "future_capacity": [
+      {
+        "linked_project": "Mine de Fer Gara Djebilet - Phase de Production",
+        "hs_products": ["260111", "260112", "720110"],
+        "product": "Minerai de fer",
+        "online": "2025-2026",
+        "signal": "High Growth",
+        "logistics": "Évacuation via la ligne ferroviaire Béchar-Tindouf-Gara Djebilet (950 km) en construction.",
+        "impact": "Ouverture d'une nouvelle capacité massive d'export de minerai de fer et d'intrant sidérurgique pour la région, l'un des plus grands gisements au monde (~3,5 Mds t).",
+        "rationale": "La mise en production de Gara Djebilet (2e semestre) crée un flux structurel de minerai de fer, à la fois exportable et intrant de la sidérurgie régionale ZLECAf."
+      },
+      {
+        "linked_project": "Projet Phosphate Intégré (PPI) - Bled El Hadba",
+        "hs_products": ["251010", "310310", "310530", "310390"],
+        "product": "Phosphates & engrais phosphatés",
+        "online": "2025-H2",
+        "signal": "High Growth",
+        "logistics": "Évacuation par voie ferrée El Hadba -> Annaba pour l'export maritime.",
+        "impact": "Production intégrée de phosphate et d'engrais phosphatés, adossée à la voie ferrée El Hadba-Annaba, ciblant l'export vers les marchés agricoles africains.",
+        "rationale": "Le complexe phosphaté de Bled El Hadba (démarrage 2e semestre de l'année) ajoute une capacité d'export d'engrais phosphatés reliée par rail au port d'Annaba, complétant la filière azotée existante."
+      }
+    ]
+  }
+}
