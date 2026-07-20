@@ -603,7 +603,12 @@ class RealSubstitutionService:
     # (constaté en production après les PR #281/#282).
     # v4 : production vérifiée (FAOSTAT/UNIDO/USGS) sur chaque opportunité +
     # bloc summary.analysis + top_sectors sur les exports.
-    _CACHE_SCHEMA_VERSION = 4
+    # v5 : correction du tri OEC (Trade Value.desc). Les index import/export
+    # d'avant le correctif étaient tronqués dans l'ordre du code SH — ils
+    # excluaient les hydrocarbures/machines/véhicules et rendaient l'analyse
+    # d'export vide pour les pays diversifiés (ex : Algérie). Bump indispensable
+    # pour purger ces index tronqués mis en cache sur les instances déployées.
+    _CACHE_SCHEMA_VERSION = 5
 
     @staticmethod
     def _verified_production(hs_code: str, memo: Dict[str, Optional[Dict]]) -> Optional[Dict]:
