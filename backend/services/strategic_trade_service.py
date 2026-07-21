@@ -584,7 +584,7 @@ _DISCOVERY_VA_CAP_FRACTION_NASCENT = 0.10  # jamais exporté par ce pays
 
 
 def _fmt_usd_fr(value: float) -> str:
-    """Montant USD au format FR compact ($B/$M/$K), cohérent avec le frontend."""
+    """Montant USD au format FR compact (Md$/M$/k$), cohérent avec le frontend."""
     v = float(value or 0)
     if v >= 1e9:
         return f"{v/1e9:.1f} Md$"
