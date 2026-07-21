@@ -65,6 +65,14 @@ def mock_oec(monkeypatch):
             ],
         }
 
+    async def fake_get_oec_exports(iso3, year=2022, limit=100, hs_level="HS4"):
+        # Facteur 4 (historique d'export réel, voir _export_history_hs4) : par
+        # défaut aucun historique, pour rester hermétique. get_strategic_flows
+        # l'appelle inconditionnellement dès qu'un candidat tiers 3 existe — un
+        # test qui ne le stub pas atteindrait sinon le service OEC réel (jusqu'à
+        # son délai d'attente HTTP) même en environnement hors-réseau.
+        return []
+
     monkeypatch.setattr(
         mod.real_substitution_service,
         "find_export_opportunities",
@@ -75,6 +83,7 @@ def mock_oec(monkeypatch):
         "_build_african_import_index",
         fake_import_index,
     )
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_exports", fake_get_oec_exports)
     # Lead time is corridor logistics — keep the test offline.
     monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 12)
 
