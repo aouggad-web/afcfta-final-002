@@ -156,3 +156,139 @@ def test_summary_aggregation():
     # Partners are sorted by potential descending.
     pots = [p["potential_usd"] for p in summary["top_partners"]]
     assert pots == sorted(pots, reverse=True)
+
+
+def test_no_fictitious_dairy_flow_for_burundi(monkeypatch):
+    """
+    Régression du bug réel constaté : Burundi -> Algérie, lait en poudre
+    (SH 040210), 246,6 M$ de potentiel — soit PLUS que la totalité de la
+    valeur ajoutée du secteur alimentaire burundais (191,6 M$, UNIDO), pour un
+    pays dont la collecte de lait cru réelle plafonne à ~40 500 t/an (FAOSTAT
+    2024). Deux garde-fous corrigent ce cas : (1) les SH4 laitiers sont exclus
+    de l'index de capacité d'un pays sans intrant laitier corroboré
+    (``unido_discovery_service._has_dairy_input``) ; (2) même sans corroboration
+    d'intrant, le plafond de plausibilité VA (``_DISCOVERY_VA_CAP_FRACTION``)
+    empêcherait tout produit découvert de dépasser 30 % de la VA de sa division.
+    """
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Burundi"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        # Reproduit exactement la demande algérienne réelle en lait en poudre
+        # qui avait généré le flux fictif.
+        return {"040210": [{"iso3": "DZA", "value": 986_400_000, "quantity": 0}]}
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 20)
+
+    res = run(mod.get_strategic_flows("BDI", year=2024, lang="fr", limit=50))
+    assert not any(f["hs_code"] == "040210" for f in res["flows"])
+
+
+def test_discovered_flow_potential_capped_by_sector_value_added(monkeypatch):
+    """Garde-fou général : un flux découvert ne peut jamais dépasser 30 % de la
+    valeur ajoutée réelle de sa division ISIC, quel que soit le produit."""
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Burundi"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        # Coton (textiles, division 13) : demande massive simulée pour
+        # vérifier que le plafond s'applique hors du cas laitier.
+        return {"520512": [{"iso3": "EGY", "value": 500_000_000, "quantity": 0}]}
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 15)
+
+    res = run(mod.get_strategic_flows("BDI", year=2024, lang="fr", limit=50))
+    cotton = next(f for f in res["flows"] if f["hs_code"] == "520512")
+    va = cotton["capacity_evidence"]["value_added_usd"]
+    assert cotton["potential_usd"] <= va * mod._DISCOVERY_VA_CAP_FRACTION + 1  # arrondi
+
+
+def test_no_duplicate_product_titles_in_discovered_tier(monkeypatch):
+    """
+    Régression signalée en production : le panneau « Commodités prioritaires »
+    affichait deux lignes « Gaz de pétrole (GPL) & hydrocarbures gazeux »,
+    deux « Huile de palme » et deux « Lait concentré / en poudre » — parce que
+    le libellé du tiers 3 (découverte UNIDO) ne varie qu'au niveau SH4, alors
+    que la demande d'import est indexée au SH6 : deux sous-positions SH6 du
+    même SH4 (ex. 271111 et 271121, toutes deux « GPL ») produisaient chacune
+    leur propre carte avec un titre identique. Une seule sous-position par SH4
+    doit désormais survivre (la plus demandée).
+    """
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Algérie"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        # Deux sous-positions SH6 du MÊME SH4 2711 (GPL), toutes deux au-dessus
+        # du seuil de marché minimal -> avant le correctif, deux cartes « GPL ».
+        return {
+            "271111": [{"iso3": "EGY", "value": 300_000_000, "quantity": 0}],
+            "271121": [{"iso3": "MAR", "value": 200_000_000, "quantity": 0}],
+        }
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 10)
+
+    res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
+    gpl_flows = [
+        f for f in res["flows"] if f["product"] == "Gaz de pétrole (GPL) & hydrocarbures gazeux"
+    ]
+    gpl_hs_codes = {f["hs_code"] for f in gpl_flows}
+    assert len(gpl_hs_codes) == 1, f"un seul code SH devrait survivre, trouvé {gpl_hs_codes}"
+    # La sous-position gagnante est celle à la demande la plus forte (271111, 300M).
+    assert "271111" in gpl_hs_codes
+
+
+def test_no_duplicate_product_titles_across_champion_sh6_basket(monkeypatch):
+    """
+    Même défaut côté tiers 2 (champions curés) : un champion listant plusieurs
+    SH6 sous un seul libellé d'extrant (ex. Cevital « Huile de table raffinée &
+    margarine » couvre 6 SH6) ne doit produire qu'UNE carte par libellé, même
+    si plusieurs de ses SH6 ont chacun une vraie demande africaine.
+    """
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Algérie"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        # 150790 et 151190 appartiennent tous deux au panier SH6 du champion
+        # "Raffinage d'huiles (Cevital & filière)" (label unique).
+        return {
+            "150790": [{"iso3": "TUN", "value": 60_000_000, "quantity": 0}],
+            "151190": [{"iso3": "MAR", "value": 40_000_000, "quantity": 0}],
+        }
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 10)
+
+    res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
+    all_hs = {f["hs_code"] for f in res["flows"]}
+    assert "150790" in all_hs  # demande la plus forte (60M > 40M) -> survit, tiers 2
+    # 151190 (sous-position perdante du MÊME panier champion) ne doit fuiter
+    # NULLE PART ailleurs — ni comme doublon tiers 2, ni redécouvert par le
+    # tiers 3 sous un titre générique différent ("Huile de palme").
+    assert "151190" not in all_hs

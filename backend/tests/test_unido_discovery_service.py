@@ -61,3 +61,29 @@ def test_all_manufacturing_countries_yield_candidates():
     empty = [c for c in countries if not disco.capacity_hs4_index(c)]
     # Tolérance nulle attendue : chaque pays a au moins un secteur > plancher.
     assert not empty, f"Pays sans candidat malgré une capacité UNIDO: {sorted(empty)}"
+
+
+def test_dairy_hs4_excluded_without_raw_milk_input():
+    """
+    Bug réel constaté : le Burundi (VA « alimentaire » 191,6 M$, en réalité
+    café/thé) a hérité à tort d'une capacité laitière (0402) sur le seul
+    critère de la division ISIC 10, faisant émerger un flux fictif de lait en
+    poudre à 246,6 M$ vers l'Algérie — supérieur à TOUT le secteur alimentaire
+    burundais. Sa collecte de lait cru réelle (~40 500 t/an FAOSTAT 2024) est
+    très en-dessous du plancher de corroboration : les SH4 laitiers doivent
+    être exclus de son index de capacité.
+    """
+    idx = disco.capacity_hs4_index("BDI")
+    assert "0402" not in idx, "Lait en poudre : capacité laitière non corroborée par l'intrant"
+    assert "0406" not in idx, "Fromages : capacité laitière non corroborée par l'intrant"
+    # Les autres candidats de la division alimentaire (café/thé, boissons…)
+    # restent légitimement présents.
+    assert idx, "Le Burundi garde des candidats hors filière laitière"
+
+
+def test_dairy_hs4_present_with_sufficient_raw_milk_input():
+    # Le Nigeria a une collecte de lait cru réelle (~528 000 t/an FAOSTAT
+    # 2024), largement au-dessus du plancher de corroboration : les SH4
+    # laitiers restent des candidats légitimes.
+    idx = disco.capacity_hs4_index("NGA")
+    assert "0402" in idx

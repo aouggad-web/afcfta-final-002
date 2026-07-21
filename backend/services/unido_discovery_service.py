@@ -47,6 +47,51 @@ _MIN_SECTOR_VA_USD = 15_000_000
 # filières où la capacité est la plus crédible.
 _MAX_SECTORS = 6
 
+# --------------------------------------------------------------------------- #
+# Corroboration par l'INTRANT (production réelle FAOSTAT/USGS) pour les SH4 où
+# la seule valeur ajoutée de division ISIC est trop grossière pour justifier le
+# produit précis.
+#
+# Cas constaté : la division ISIC 10 « Manufacture of food products » couvre
+# aussi bien la torréfaction café/thé que la transformation laitière — deux
+# filières industrielles sans rapport, aux intrants et équipements totalement
+# différents. Un pays dont la VA « alimentaire » vient du café (ex. Burundi,
+# 191,6 M$, essentiellement café/thé) hérite alors à tort d'une capacité
+# laitière plausible sur le seul critère de la division, ce qui a fait
+# émerger un flux fictif de lait en poudre Burundi -> Algérie à 246,6 M$ —
+# supérieur à TOUT le secteur alimentaire burundais, et sans rapport avec sa
+# collecte de lait cru réelle (~40 500 t/an FAOSTAT 2024, en repli). Vérifié :
+# le marché laitier burundais total (essentiellement UHT frais, un seul
+# opérateur, Modern Dairy Burundi) est projeté à ~73 M$ à horizon 2028 — la
+# filière poudre de lait industrielle n'existe pas.
+#
+# Avant d'admettre un SH4 laitier comme candidat, on exige donc une collecte
+# de lait cru (FAOSTAT, commodité « Cattle milk ») au-dessus d'un plancher.
+# 300 000 t/an est un repère grossier (delta net entre le Burundi ~40 000 t et
+# des producteurs laitiers établis comme le Nigeria ~528 000 t ou le Mali
+# ~307 000 t) — pas un seuil calibré finement, mais suffisant pour écarter les
+# cas manifestement disproportionnés comme celui constaté.
+_DAIRY_HS4 = {"0402", "0406"}
+_MIN_RAW_MILK_TONNES = 300_000
+
+
+@lru_cache(maxsize=64)
+def _has_dairy_input(iso3: str) -> bool:
+    """Le pays collecte-t-il assez de lait cru pour justifier un SH4 laitier ?"""
+    try:
+        from production_data import get_agriculture_production
+    except Exception:  # pragma: no cover
+        return False
+    latest_year = None
+    latest_value = 0.0
+    for rec in get_agriculture_production(country_iso3=iso3):
+        if rec.get("commodity_label") != "Cattle milk":
+            continue
+        year = rec.get("year") or 0
+        if latest_year is None or year > latest_year:
+            latest_year, latest_value = year, rec.get("value") or 0
+    return latest_value >= _MIN_RAW_MILK_TONNES
+
 
 def _sector_value_added(iso3: str) -> Dict[str, Dict]:
     """
@@ -104,6 +149,8 @@ def capacity_hs4_index(iso3: str) -> Dict[str, Dict]:
         transf = hsmap.transformation_for_isic(isic)
         va = meta.get("value") or 0
         for hs4, label in hsmap.products_for_isic(isic).items():
+            if hs4 in _DAIRY_HS4 and not _has_dairy_input(iso3):
+                continue
             prev = index.get(hs4)
             if prev is not None and (prev.get("value_added_usd") or 0) >= va:
                 continue

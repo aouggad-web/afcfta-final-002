@@ -459,12 +459,38 @@ async def _capacity_driven_flows(
     if not import_index:
         return []
 
-    flows: List[Dict] = []
+    # Un même champion (ou capacité future) liste souvent plusieurs sous-positions
+    # SH6 sous UN SEUL libellé d'extrant (ex. Cevital « Huile de table raffinée &
+    # margarine » couvre 6 SH6 : soja 150790, palme 151190, margarine 151710…).
+    # Si plusieurs de ces SH6 ont chacun une vraie demande africaine, chacun
+    # produisait sa propre carte avec le MÊME titre — redondance visuelle
+    # constatée en production. On ne retient donc qu'UNE seule sous-position par
+    # libellé (celle à la demande la plus forte) ; même principe que le tiers 3
+    # (voir ``_unido_discovered_flows``).
+    best_by_label: Dict[str, tuple] = {}  # label -> (max_demand, hs6, is_future)
     for hs6, product_label, is_future in candidates:
         if not hs6 or hs6 in covered_hs:
             continue
+        # Marque TOUTE sous-position du panier du champion comme couverte, pas
+        # seulement la gagnante : sinon une sous-position perdante (ex. 151190
+        # « huile de palme », battue par 150790 pour le même libellé champion)
+        # reste visible du tiers 3, qui la redécouvre sous un titre générique
+        # différent — un doublon subsiste, juste avec un libellé différent.
         covered_hs.add(hs6)
+        hs4 = hs6[:4]
+        pool = import_index.get(hs6) or []
+        if not pool:
+            pool = [
+                m for k, lst in import_index.items() if len(k) >= 4 and k[:4] == hs4 for m in lst
+            ]
+        max_demand = max((m["value"] for m in pool if m["iso3"] != exporter_iso3), default=0)
+        label = product_label or hs6
+        prev = best_by_label.get(label)
+        if prev is None or max_demand > prev[0]:
+            best_by_label[label] = (max_demand, hs6, is_future)
 
+    flows: List[Dict] = []
+    for label, (_demand, hs6, is_future) in best_by_label.items():
         hs4 = hs6[:4]
         coef = substitutability_for_hs(hs4)["coefficient"]
 
@@ -478,7 +504,7 @@ async def _capacity_driven_flows(
 
         # match_for_hs fournit le bon champion/capacité future + signal pour ce SH.
         match = intel.match_for_hs(exporter_iso3, hs6)
-        product_name = product_label or f"SH {hs6}"
+        product_name = label
         synthetic_opp = {
             "export_product": {"hs_code": hs6, "name": product_name},
             "market_match_level": match_level,
@@ -505,6 +531,22 @@ async def _capacity_driven_flows(
 # Nombre maximal de produits DÉCOUVERTS (non curés) par pays : borne le bruit et
 # concentre la découverte sur les niches à plus forte demande.
 _MAX_DISCOVERED_PRODUCTS = 25
+
+# Plafond de plausibilité : le potentiel d'export total d'un produit DÉCOUVERT
+# (tous marchés confondus) ne peut excéder cette fraction de la valeur ajoutée
+# RÉELLE de la division ISIC dont il est dérivé.
+#
+# Sans ce garde-fou, une demande d'import massive sur un seul marché (ex.
+# l'Algérie importe des centaines de M$ de lait en poudre) combinée à un taux
+# de capture générique produisait un flux Burundi -> Algérie de 246,6 M$ de
+# lait en poudre — supérieur à la valeur ajoutée de TOUT le secteur
+# alimentaire burundais (191,6 M$, essentiellement café/thé). La capacité de
+# division ISIC est un signal macro, pas une preuve de capacité EXCÉDENTAIRE
+# exportable sur un produit précis : elle ne peut donc justifier un potentiel
+# dépassant une fraction de ce que la division produit déjà, au total, dans le
+# pays. Cumulé au garde-fou d'intrant laitier (``unido_discovery_service``),
+# qui aurait de toute façon exclu ce cas précis.
+_DISCOVERY_VA_CAP_FRACTION = 0.3
 
 
 def _unido_transformation_champion(evidence: Dict, product_name: str) -> Dict:
@@ -573,8 +615,14 @@ async def _unido_discovered_flows(
         return []
 
     # Candidats : SH6 de la demande d'import dont le SH4 est une capacité avérée
-    # du pays et qui n'est pas déjà couvert. Classés par demande maximale.
-    candidates: List[tuple] = []
+    # du pays et qui n'est pas déjà couvert. Le libellé produit de ce tiers vient
+    # du mapping ISIC->SH4 (``unido_hs_mapping``), donc IDENTIQUE pour tous les
+    # SH6 partageant un même SH4 (ex. 271111/271121 -> « Gaz de pétrole (GPL) &
+    # hydrocarbures gazeux »). Plusieurs sous-positions du même SH4 ayant chacune
+    # une vraie demande produisaient donc des cartes au titre identique —
+    # redondance visuelle constatée en production. On ne retient qu'UNE seule
+    # sous-position par SH4 (celle à la demande la plus forte).
+    best_by_hs4: Dict[str, tuple] = {}  # hs4 -> (max_demand, hs6)
     for hs6, importers in import_index.items():
         code = _normalize_hs(hs6)
         if len(code) < 6 or code in covered_hs or code[:4] not in cap_index:
@@ -585,9 +633,11 @@ async def _unido_discovered_flows(
         )
         if max_demand < min_market_size:
             continue
-        candidates.append((max_demand, code))
-    candidates.sort(reverse=True)
-    candidates = candidates[:_MAX_DISCOVERED_PRODUCTS]
+        hs4 = code[:4]
+        prev = best_by_hs4.get(hs4)
+        if prev is None or max_demand > prev[0]:
+            best_by_hs4[hs4] = (max_demand, code)
+    candidates = sorted(best_by_hs4.values(), reverse=True)[:_MAX_DISCOVERED_PRODUCTS]
 
     flows: List[Dict] = []
     for _demand, hs6 in candidates:
@@ -603,6 +653,17 @@ async def _unido_discovered_flows(
         )
         if not markets:
             continue
+
+        # Plafond de plausibilité (voir _DISCOVERY_VA_CAP_FRACTION) : le
+        # potentiel total (tous marchés) ne peut dépasser une fraction de la
+        # valeur ajoutée réelle de la division dont ce produit est dérivé.
+        va = evidence.get("value_added_usd") or 0
+        va_cap = va * _DISCOVERY_VA_CAP_FRACTION
+        raw_total = sum(int(m["market_size"] * m["capture_potential"]) for m in markets)
+        if va_cap and raw_total > va_cap:
+            scale = va_cap / raw_total
+            for m in markets:
+                m["capture_potential"] = round(m["capture_potential"] * scale, 4)
 
         champion = _unido_transformation_champion(evidence, product_name)
         match = {
