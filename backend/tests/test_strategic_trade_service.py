@@ -165,10 +165,11 @@ def test_no_fictitious_dairy_flow_for_burundi(monkeypatch):
     valeur ajoutée du secteur alimentaire burundais (191,6 M$, UNIDO), pour un
     pays dont la collecte de lait cru réelle plafonne à ~40 500 t/an (FAOSTAT
     2024). Deux garde-fous corrigent ce cas : (1) les SH4 laitiers sont exclus
-    de l'index de capacité d'un pays sans intrant laitier corroboré
-    (``unido_discovery_service._has_dairy_input``) ; (2) même sans corroboration
-    d'intrant, le plafond de plausibilité VA (``_DISCOVERY_VA_CAP_FRACTION``)
-    empêcherait tout produit découvert de dépasser 30 % de la VA de sa division.
+    de l'index de capacité d'un pays sans intrant laitier corroboré (facteur 2,
+    ``unido_discovery_service._input_corroborated``) ; (2) même sans
+    corroboration d'intrant, le plafond de plausibilité VA gradué (facteur 3
+    x facteur 4) empêcherait tout produit découvert jamais exporté de dépasser
+    10 % de la VA de sa division.
     """
 
     async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
@@ -192,8 +193,10 @@ def test_no_fictitious_dairy_flow_for_burundi(monkeypatch):
 
 
 def test_discovered_flow_potential_capped_by_sector_value_added(monkeypatch):
-    """Garde-fou général : un flux découvert ne peut jamais dépasser 30 % de la
-    valeur ajoutée réelle de sa division ISIC, quel que soit le produit."""
+    """Garde-fou général (facteur 3) : un flux découvert ne peut jamais dépasser
+    le plafond gradué (facteur 4) de la valeur ajoutée réelle de sa division
+    ISIC, quel que soit le produit — ici sans aucun historique d'export réel,
+    donc au plafond le plus prudent (nascent)."""
 
     async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
         return {
@@ -207,14 +210,49 @@ def test_discovered_flow_potential_capped_by_sector_value_added(monkeypatch):
         # vérifier que le plafond s'applique hors du cas laitier.
         return {"520512": [{"iso3": "EGY", "value": 500_000_000, "quantity": 0}]}
 
+    async def fake_exports(iso3, year=2022, limit=100, hs_level="HS4"):
+        return []  # aucun historique d'export réel -> plafond « nascent »
+
     monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
     monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_exports", fake_exports)
     monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 15)
 
     res = run(mod.get_strategic_flows("BDI", year=2024, lang="fr", limit=50))
     cotton = next(f for f in res["flows"] if f["hs_code"] == "520512")
     va = cotton["capacity_evidence"]["value_added_usd"]
-    assert cotton["potential_usd"] <= va * mod._DISCOVERY_VA_CAP_FRACTION + 1  # arrondi
+    assert cotton["capacity_evidence"]["has_export_history"] is False
+    assert cotton["potential_usd"] <= va * mod._DISCOVERY_VA_CAP_FRACTION_NASCENT + 1  # arrondi
+
+
+def test_discovered_flow_gets_corroborated_cap_when_export_history_exists(monkeypatch):
+    """Facteur 4 : un produit déjà exporté (même faiblement) par le pays obtient
+    le plafond standard (30 %), pas le plafond « nascent » (10 %)."""
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Burundi"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        return {"520512": [{"iso3": "EGY", "value": 500_000_000, "quantity": 0}]}
+
+    async def fake_exports(iso3, year=2022, limit=100, hs_level="HS4"):
+        # Historique réel, même modeste, sur le SH4 du coton (5205).
+        return [{"hs_code": "5205", "product_name": "Cotton yarn", "trade_value": 500_000}]
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_exports", fake_exports)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 15)
+
+    res = run(mod.get_strategic_flows("BDI", year=2024, lang="fr", limit=50))
+    cotton = next(f for f in res["flows"] if f["hs_code"] == "520512")
+    va = cotton["capacity_evidence"]["value_added_usd"]
+    assert cotton["capacity_evidence"]["has_export_history"] is True
+    assert cotton["potential_usd"] <= va * mod._DISCOVERY_VA_CAP_FRACTION_CORROBORATED + 1
 
 
 def test_no_duplicate_product_titles_in_discovered_tier(monkeypatch):

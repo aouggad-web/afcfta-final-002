@@ -21,10 +21,41 @@ cette couche se déploie et s'agrandit d'elle-même : dès que les données UNID
 commerciales se mettent à jour, les opportunités se recalculent — y compris pour
 des pays et des produits jamais curés à la main.
 
-Le service est purement lecture : il lit la valeur ajoutée UNIDO via
-``production_data`` (source d'autorité) et ne fait aucun appel réseau. Il
-échoue silencieusement (index vide) si les données sont absentes, afin de ne
-jamais bloquer le moteur de flux.
+Contrôle de plausibilité — système à facteurs multiples
+---------------------------------------------------------
+Une VA de division ISIC seule est un signal MACRO, trop grossier pour
+justifier un produit SH précis (une division peut mélanger des filières sans
+rapport — café/thé et lait sous « alimentaire », par exemple). Ce module
+applique donc, avant d'admettre un candidat, une chaîne de facteurs
+indépendants et inspectables (voir ``strategic_trade_service`` pour les
+facteurs 3-4, appliqués en aval sur les flux) :
+
+1. **Plancher de VA** (``_MIN_SECTOR_VA_USD``) — la division doit peser assez
+   pour être une capacité réelle, pas du bruit statistique.
+2. **Corroboration par l'intrant** (``_INPUT_REQUIREMENTS`` / rejet dur) —
+   pour les produits dont l'intrant primaire ne s'échange pas économiquement à
+   l'échelle d'une petite économie (lait, canne, oléagineux, minerai brut), la
+   production domestique réelle de cet intrant (FAOSTAT/USGS) doit franchir un
+   plancher. Motivé par un bug réel : le Burundi (VA « alimentaire » 191,6 M$,
+   en réalité manioc/café) avait hérité d'une fausse capacité laitière,
+   produisant un flux fictif de lait en poudre à 246,6 M$ vers l'Algérie —
+   supérieur à TOUT son secteur alimentaire. Vérifié sur internet : le marché
+   laitier burundais total est projeté à ~73 M$ à horizon 2028, aucune filière
+   industrielle exportatrice n'existe.
+3. **Plafond de plausibilité VA** (``strategic_trade_service._DISCOVERY_VA_CAP_FRACTION``)
+   — le potentiel d'export d'un produit ne peut excéder une fraction de la VA
+   réelle de sa division (garde-fou générique, au-delà des produits couverts
+   par le facteur 2).
+4. **Historique d'export réel** (``strategic_trade_service._export_history_hs4``)
+   — un produit jamais exporté par le pays (même en faible volume) obtient un
+   plafond de plausibilité plus strict qu'un produit au moins déjà marginalement
+   exporté : la capacité de DIVISION ne vaut pas preuve d'export imminent.
+
+Le service reste purement lecture : il lit la valeur ajoutée UNIDO et la
+production réelle via ``production_data`` (source d'autorité) et ne fait
+aucun appel réseau lui-même. Il échoue silencieusement (index vide / facteur
+non concluant) si les données sont absentes, afin de ne jamais bloquer le
+moteur de flux.
 """
 
 from __future__ import annotations
@@ -48,49 +79,113 @@ _MIN_SECTOR_VA_USD = 15_000_000
 _MAX_SECTORS = 6
 
 # --------------------------------------------------------------------------- #
-# Corroboration par l'INTRANT (production réelle FAOSTAT/USGS) pour les SH4 où
-# la seule valeur ajoutée de division ISIC est trop grossière pour justifier le
-# produit précis.
+# FACTEUR 2 — Corroboration par l'INTRANT (production réelle FAOSTAT/USGS) pour
+# les SH4 où la seule valeur ajoutée de division ISIC est trop grossière pour
+# justifier le produit précis.
 #
-# Cas constaté : la division ISIC 10 « Manufacture of food products » couvre
-# aussi bien la torréfaction café/thé que la transformation laitière — deux
-# filières industrielles sans rapport, aux intrants et équipements totalement
-# différents. Un pays dont la VA « alimentaire » vient du café (ex. Burundi,
-# 191,6 M$, essentiellement café/thé) hérite alors à tort d'une capacité
-# laitière plausible sur le seul critère de la division, ce qui a fait
-# émerger un flux fictif de lait en poudre Burundi -> Algérie à 246,6 M$ —
-# supérieur à TOUT le secteur alimentaire burundais, et sans rapport avec sa
-# collecte de lait cru réelle (~40 500 t/an FAOSTAT 2024, en repli). Vérifié :
-# le marché laitier burundais total (essentiellement UHT frais, un seul
-# opérateur, Modern Dairy Burundi) est projeté à ~73 M$ à horizon 2028 — la
-# filière poudre de lait industrielle n'existe pas.
+# Cas constaté ayant motivé ce garde-fou : la division ISIC 10 « Manufacture of
+# food products » couvre aussi bien la torréfaction café/thé que la
+# transformation laitière — deux filières industrielles sans rapport, aux
+# intrants et équipements totalement différents. Un pays dont la VA
+# « alimentaire » vient du manioc/café (ex. Burundi, 191,6 M$) hérite alors à
+# tort d'une capacité laitière plausible sur le seul critère de la division, ce
+# qui a fait émerger un flux fictif de lait en poudre Burundi -> Algérie à
+# 246,6 M$ — supérieur à TOUT le secteur alimentaire burundais, et sans rapport
+# avec sa collecte de lait cru réelle (~40 500 t/an FAOSTAT 2024, en repli).
+# Vérifié sur internet : le marché laitier burundais total (essentiellement
+# UHT frais, un seul opérateur, Modern Dairy Burundi) est projeté à ~73 M$ à
+# horizon 2028 — la filière poudre de lait industrielle n'existe pas.
 #
-# Avant d'admettre un SH4 laitier comme candidat, on exige donc une collecte
-# de lait cru (FAOSTAT, commodité « Cattle milk ») au-dessus d'un plancher.
-# 300 000 t/an est un repère grossier (delta net entre le Burundi ~40 000 t et
-# des producteurs laitiers établis comme le Nigeria ~528 000 t ou le Mali
-# ~307 000 t) — pas un seuil calibré finement, mais suffisant pour écarter les
-# cas manifestement disproportionnés comme celui constaté.
-_DAIRY_HS4 = {"0402", "0406"}
-_MIN_RAW_MILK_TONNES = 300_000
+# Portée DÉLIBÉRÉMENT ÉTROITE — pourquoi ce facteur ne couvre QUE le laitier.
+#
+# Une première version généralisait ce gate à ~15 SH4 (sucre, huiles, blé,
+# coton, métaux de base, raffinage, engrais) sur la même logique « intrant
+# domestique requis ». Deux défauts réels l'ont fait échouer en test avant
+# même d'atteindre la production :
+#
+# 1) FAUX NÉGATIFS sur des cas déjà VÉRIFIÉS. Le sucre et les huiles de table
+#    en Afrique sont très souvent des industries de RAFFINAGE PORTUAIRE sur
+#    matière première IMPORTÉE, pas de transformation d'une culture locale —
+#    c'est exactement le modèle du champion curé « Raffinage de sucre
+#    (Cevital & filière) » de ce dépôt (sucre de canne brut importé, raffiné
+#    à Béjaïa) : l'Algérie ne cultive quasiment pas de canne à sucre. Gater
+#    1701 sur la production domestique de canne aurait exclu à tort un cas
+#    que j'avais moi-même vérifié sur OEC. Même logique pour la sidérurgie
+#    (Tosyali Algérie transforme des billettes/ferrailles importées, pas le
+#    minerai de Gara Djebilet, pas encore en production) et le raffinage
+#    pétrolier (nombreux pays raffinent du brut importé sans champ pétrolier).
+#    Le lait est un cas GENUINEMENT différent : contrairement au sucre, aux
+#    huiles ou au minerai, le lait cru ne s'échange quasiment pas à l'échelle
+#    internationale pour retransformation (périssable, faible densité de
+#    valeur) — une filière laitière industrielle suppose donc, presque
+#    toujours, une collecte locale réelle. C'est une propriété du PRODUIT, pas
+#    généralisable aux autres intrants agricoles/miniers largement échangés.
+#
+# 2) UNITÉS HÉTÉROGÈNES entre commodités USGS/EIA, invalidant un seuil
+#    uniforme copié depuis les commodités en tonnes : le brut algérien est
+#    mesuré en « 1000 b/d » (valeur ~1000) et le gaz naturel en « bcm »
+#    (valeur ~100) — un plancher de 1 000 000 (calibré sur des tonnages)
+#    aurait exclu à tort l'un des plus gros producteurs de gaz d'Afrique.
+#    Calibrer correctement exigerait une conversion par commodité, source
+#    d'erreur supplémentaire pour un bénéfice marginal face au filet de
+#    sécurité déjà générique du facteur 4 (historique d'export réel).
+#
+# Le lait reste corroboré parce que (a) sa non-échangeabilité en fait un cas
+# structurellement différent et (b) le seuil est en tonnes, cohérent avec la
+# seule autre commodité FAOSTAT comparée (pas de conversion d'unité).
+# Pour tous les AUTRES produits découverts, les facteurs 3 (plafond VA) et 4
+# (historique d'export réel, voir ``strategic_trade_service``) suffisent : ils
+# sont fondés sur des données de commerce RÉELLES plutôt que sur une hypothèse
+# — par produit — de non-échangeabilité de l'intrant, hypothèse qui s'est
+# révélée fausse pour la majorité des cas testés ci-dessus.
+_InputRequirement = Dict[str, object]
+_INPUT_REQUIREMENTS: Dict[str, _InputRequirement] = {
+    # Laitier (0402 poudre/concentré, 0406 fromages) -> lait cru (FAOSTAT).
+    # 300 000 t/an : Burundi ~40 000 t (disqualifié, cas réel corrigé) vs
+    # Nigeria ~528 000 t, Mali ~307 000 t (producteurs établis).
+    "0402": {"dataset": "agri", "commodity": "Cattle milk", "min": 300_000},
+    "0406": {"dataset": "agri", "commodity": "Cattle milk", "min": 300_000},
+}
 
 
-@lru_cache(maxsize=64)
-def _has_dairy_input(iso3: str) -> bool:
-    """Le pays collecte-t-il assez de lait cru pour justifier un SH4 laitier ?"""
+@lru_cache(maxsize=512)
+def _latest_commodity_value(iso3: str, dataset: str, commodity: str) -> float:
+    """Dernière valeur de production réelle (FAOSTAT ou USGS) d'une commodité."""
     try:
-        from production_data import get_agriculture_production
+        if dataset == "agri":
+            from production_data import get_agriculture_production as getter
+        else:
+            from production_data import get_mining_production as getter
     except Exception:  # pragma: no cover
-        return False
+        return 0.0
     latest_year = None
     latest_value = 0.0
-    for rec in get_agriculture_production(country_iso3=iso3):
-        if rec.get("commodity_label") != "Cattle milk":
+    for rec in getter(country_iso3=iso3):
+        if rec.get("commodity_label") != commodity:
             continue
         year = rec.get("year") or 0
         if latest_year is None or year > latest_year:
             latest_year, latest_value = year, rec.get("value") or 0
-    return latest_value >= _MIN_RAW_MILK_TONNES
+    return latest_value
+
+
+def _input_corroborated(iso3: str, hs4: str) -> bool:
+    """
+    Facteur 2 : le pays produit-il réellement l'intrant nécessaire à ce SH4 ?
+
+    Retourne ``True`` si aucune exigence n'est définie pour ce SH4 (le facteur
+    ne s'applique pas — silence, pas un rejet), sinon le résultat de la
+    corroboration contre la production réelle. Quand plusieurs commodités sont
+    acceptées (ex. brut OU gaz pour le raffinage), une seule suffit.
+    """
+    req = _INPUT_REQUIREMENTS.get(hs4)
+    if not req:
+        return True
+    commodities = req["commodity"]
+    if isinstance(commodities, str):
+        commodities = (commodities,)
+    threshold = req["min"]
+    return any(_latest_commodity_value(iso3, req["dataset"], c) >= threshold for c in commodities)
 
 
 def _sector_value_added(iso3: str) -> Dict[str, Dict]:
@@ -149,7 +244,9 @@ def capacity_hs4_index(iso3: str) -> Dict[str, Dict]:
         transf = hsmap.transformation_for_isic(isic)
         va = meta.get("value") or 0
         for hs4, label in hsmap.products_for_isic(isic).items():
-            if hs4 in _DAIRY_HS4 and not _has_dairy_input(iso3):
+            # Facteur 2 (voir _INPUT_REQUIREMENTS) : rejet dur si l'intrant
+            # requis n'est pas produit domestiquement en quantité plausible.
+            if not _input_corroborated(iso3, hs4):
                 continue
             prev = index.get(hs4)
             if prev is not None and (prev.get("value_added_usd") or 0) >= va:
@@ -163,6 +260,12 @@ def capacity_hs4_index(iso3: str) -> Dict[str, Dict]:
                 "product_label": label,
                 "input": transf.get("input"),
                 "process": transf.get("process"),
+                # True si ce SH4 avait une exigence d'intrant VÉRIFIÉE ET
+                # satisfaite (preuve plus forte que la seule VA de division) ;
+                # False si aucune exigence n'était définie pour ce SH4 (le
+                # facteur ne s'applique pas — silence, pas un rejet, mais
+                # l'évidence repose alors uniquement sur la VA macro).
+                "input_requirement_checked": hs4 in _INPUT_REQUIREMENTS,
             }
     return index
 
@@ -199,6 +302,7 @@ def discover(iso3: str) -> Dict:
             "isic_code": meta["isic_code"],
             "isic_label": meta["isic_label_fr"],
             "value_added_usd": meta["value_added_usd"],
+            "input_requirement_checked": meta.get("input_requirement_checked", False),
         }
         for hs4, meta in sorted(
             index.items(), key=lambda kv: kv[1]["value_added_usd"], reverse=True
