@@ -583,17 +583,32 @@ _DISCOVERY_VA_CAP_FRACTION_CORROBORATED = 0.3  # produit déjà exporté (même 
 _DISCOVERY_VA_CAP_FRACTION_NASCENT = 0.10  # jamais exporté par ce pays
 
 
+def _fmt_usd_fr(value: float) -> str:
+    """Montant USD au format FR compact (Md$/M$/k$), cohérent avec le frontend."""
+    v = float(value or 0)
+    if v >= 1e9:
+        return f"{v/1e9:.1f} Md$"
+    if v >= 1e6:
+        return f"{v/1e6:.0f} M$"
+    if v >= 1e3:
+        return f"{v/1e3:.0f} k$"
+    return f"{v:.0f} $"
+
+
 def _unido_transformation_champion(evidence: Dict, product_name: str) -> Dict:
     """
     Fabrique un « champion » synthétique à partir de l'évidence de capacité UNIDO
     (division ISIC + valeur ajoutée), pour narrer la stratégie de transformation
     d'une opportunité découverte via la même mécanique que les champions curés.
+
+    Ne porte PAS de rationale : contrairement à un champion curé (une seule
+    narrative fixe et vérifiée), un flux découvert varie selon le MARCHÉ ciblé
+    et le niveau de confiance (facteur 4) — la rationale est composée par flux
+    dans ``_unido_discovered_flows`` (voir ``_unido_flow_rationale``), pas ici,
+    pour éviter un paragraphe identique d'une carte à l'autre (même sur des
+    marchés différents).
     """
-    va = evidence.get("value_added_usd") or 0
     sector = evidence.get("isic_label_fr") or "industrie manufacturière"
-    # Séparateur de milliers en espace (convention FR), scindé sur le NOMBRE seul
-    # pour ne pas altérer la ponctuation de la phrase.
-    va_m = f"{va/1e6:,.0f}".replace(",", " ")
     return {
         "name": f"Capacité {sector}",
         "sector": sector,
@@ -604,14 +619,49 @@ def _unido_transformation_champion(evidence: Dict, product_name: str) -> Dict:
         "capacity": {"product": product_name},
         "status": "operational",
         "price_competitiveness": None,
-        "rationale": (
-            f"Capacité manufacturière avérée : la division « {sector} » du pays "
-            f"représente {va_m} M$ de valeur ajoutée (UNIDO INDSTAT4), "
-            f"attestant les moyens de produire et d'exporter « {product_name} » "
-            f"vers les marchés africains qui l'importent aujourd'hui hors du "
-            f"continent — cible naturelle sous la ZLECAf."
-        ),
     }
+
+
+def _unido_flow_rationale(
+    exporter_name: str,
+    market_name: str,
+    market_size_usd: float,
+    product_name: str,
+    evidence: Dict,
+    has_export_history: bool,
+) -> str:
+    """
+    Rationale stratégique d'un flux DÉCOUVERT (tiers 3), composée par flux —
+    pas un modèle unique où seuls le secteur/la VA/le produit varient : le
+    marché ciblé (nom + volume d'import réel) et le niveau de confiance
+    (facteur 4 : produit déjà exporté ou encore jamais) varient aussi, pour
+    qu'aucune carte ne se lise comme la copie d'une autre.
+    """
+    sector = evidence.get("isic_label_fr") or "industrie manufacturière"
+    va_txt = _fmt_usd_fr(evidence.get("value_added_usd") or 0)
+    market_txt = _fmt_usd_fr(market_size_usd)
+
+    anchor = (
+        f"{exporter_name} a une capacité manufacturière avérée dans « {sector} » "
+        f"({va_txt} de valeur ajoutée, UNIDO INDSTAT4), suffisante pour produire "
+        f"« {product_name} »."
+    )
+    demand = (
+        f"{market_name} en importe {market_txt} aujourd'hui, sourcés en grande "
+        f"partie hors du continent — un marché accessible sous préférence ZLECAf."
+    )
+    if has_export_history:
+        confidence = (
+            f"{exporter_name} exporte déjà ce type de produit, même modestement : "
+            f"la ZLECAf ouvre la voie à une montée en puissance vers {market_name}."
+        )
+    else:
+        confidence = (
+            f"Aucun flux d'export significatif n'existe encore sur ce produit "
+            f"précis pour {exporter_name} — la capacité de production est avérée, "
+            f"sa conversion en flux commercial reste à amorcer."
+        )
+    return f"{anchor} {demand} {confidence}"
 
 
 async def _unido_discovered_flows(
@@ -729,6 +779,17 @@ async def _unido_discovered_flows(
         for market in markets:
             flow = _build_flow(
                 exporter_iso3, exporter_name, synthetic_opp, market, match, roo, lang, year
+            )
+            # Rationale composée PAR FLUX (marché + confiance) — voir
+            # _unido_flow_rationale : évite le paragraphe identique d'une carte
+            # à l'autre que produirait une rationale fixée par produit.
+            flow["strategic_rationale"] = _unido_flow_rationale(
+                exporter_name,
+                market.get("country_name") or market.get("country_iso3", ""),
+                market.get("market_size", 0) or 0,
+                product_name,
+                evidence,
+                has_export_history,
             )
             flow["is_emerging"] = False
             flow["is_capacity_driven"] = True
