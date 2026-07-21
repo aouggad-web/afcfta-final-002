@@ -99,7 +99,7 @@ const fmtUsd = (v) => {
   if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
   if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
   if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
-  return `$${n}`;
+  return `$${n.toLocaleString()}`;
 };
 
 const fmtQty = (cap) => {
@@ -256,7 +256,7 @@ function FlowCard({ flow, t }) {
                 {inQty && <div style={{ fontSize: 11, color: 'var(--afcfta-muted)' }}>{inQty}</div>}
               </div>
             )}
-            {outQty && (
+            {(tr.output_target?.product || outQty) && (
               <div style={{ flex: '1 1 160px' }}>
                 <div style={{ fontSize: 10, color: 'var(--afcfta-muted)' }}>{t.outputTarget}</div>
                 <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{tr.output_target?.product || '—'}</div>

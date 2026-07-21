@@ -263,9 +263,11 @@ def _build_flow(
 
     price_pos = market.get("price_positioning") or {}
     champ = match.get("champion") or {}
-    price_competitiveness = champ.get("price_competitiveness") or (
-        "Élevée" if price_pos.get("positioning") == "compétitif" else None
-    )
+    # Vocabulaire canonique du champ (base curée : "High"/"Moderate"/"Medium"),
+    # neutre en langue. Le positionnement prix brut reste exposé séparément dans
+    # ``advantage.price_positioning`` : on n'injecte donc PAS de repli en
+    # texte libre (qui mélangeait un libellé FR à un champ à valeurs EN).
+    price_competitiveness = champ.get("price_competitiveness")
 
     return {
         "hs_code": hs6,
