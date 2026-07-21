@@ -15,6 +15,7 @@ import logging
 
 from fastapi import APIRouter, HTTPException, Query
 from services import industrial_intelligence_service as intel
+from services import unido_discovery_service as disco
 from services.real_trade_data_service import AFRICAN_COUNTRIES, get_country_name
 from services.strategic_trade_service import get_strategic_flows
 
@@ -81,3 +82,17 @@ async def get_country_industrial_intelligence(
         "future_capacity": (profile or {}).get("future_capacity", []),
         "priority_commodities": intel.priority_commodities(iso3),
     }
+
+
+@router.get("/discovery/{country_iso3}")
+async def get_country_capacity_discovery(country_iso3: str):
+    """
+    Découverte pilotée par les données UNIDO : produits SH (positions SH4)
+    qu'un pays est en capacité de produire, dérivés de sa valeur ajoutée
+    manufacturière par division ISIC (sans curation manuelle), plus ses produits
+    manufacturés phares curés. Vue de transparence du moteur de découverte.
+    """
+    iso3 = country_iso3.upper()
+    if iso3 not in AFRICAN_COUNTRIES:
+        raise HTTPException(status_code=404, detail=f"Pays {iso3} hors périmètre AfCFTA")
+    return disco.discover(iso3)

@@ -360,6 +360,69 @@ def _intelligence_candidate_products(kb: Dict) -> List[tuple]:
     return out
 
 
+def _markets_for_product(
+    import_index: Dict,
+    hs6: str,
+    exporter_iso3: str,
+    min_market_size: int,
+    coef: float,
+    lang: str,
+) -> tuple:
+    """
+    Marchés africains importateurs d'un produit (SH6 exact, repli SH4 agrégé),
+    hors pays exportateur, au-dessus de la taille minimale. Retourne
+    ``(markets[:5], match_level)`` — chaque marché doté d'une capture prudente
+    plafonnée par la substituabilité du produit.
+    """
+    from services.real_trade_data_service import get_country_name
+
+    hs4 = hs6[:4]
+    pool = [m for m in import_index.get(hs6, []) if m["iso3"] != exporter_iso3]
+    match_level = "hs6"
+    if not pool:
+        match_level = "hs4"
+        by_country: Dict[str, float] = {}
+        for k, lst in import_index.items():
+            if len(k) >= 4 and k[:4] == hs4:
+                for m in lst:
+                    if m["iso3"] == exporter_iso3:
+                        continue
+                    by_country[m["iso3"]] = by_country.get(m["iso3"], 0) + m["value"]
+        pool = [{"iso3": iso, "value": v} for iso, v in by_country.items()]
+
+    markets = []
+    for m in pool:
+        if m["value"] < min_market_size:
+            continue
+        markets.append(
+            {
+                "country_iso3": m["iso3"],
+                "country_name": get_country_name(m["iso3"], lang),
+                "market_size": int(m["value"]),
+                "addressable_market_size": int(m["value"] * coef),
+                "capture_potential": round(min(coef, 0.25), 2),
+                "price_positioning": None,
+            }
+        )
+    markets.sort(key=lambda x: x["market_size"], reverse=True)
+    return markets[:5], match_level
+
+
+async def _load_import_index(year: int) -> Dict:
+    """
+    Index de demande d'import africaine PROFOND (top-400/pays) : les produits
+    transformés de milieu de gamme (peintures, carreaux, détergents, farine…)
+    ont une demande réelle mais classée au-delà du top-100 des gros postes.
+    Dégradation silencieuse (dict vide) hors contexte réseau.
+    """
+    try:
+        return await real_substitution_service._build_african_import_index(
+            year, hs_level="HS6", limit=400
+        )
+    except Exception:  # pragma: no cover
+        return {}
+
+
 async def _capacity_driven_flows(
     exporter_iso3: str,
     exporter_name: str,
@@ -367,6 +430,7 @@ async def _capacity_driven_flows(
     min_market_size: int,
     lang: str,
     covered_hs: set,
+    import_index: Optional[Dict] = None,
 ) -> List[Dict]:
     """
     Flux *pilotés par la capacité* : à la différence des flux OEC historiques
@@ -388,19 +452,10 @@ async def _capacity_driven_flows(
     if not candidates:
         return []
 
-    try:
-        # Index de demande PROFOND (top-400/pays) : les produits transformés de
-        # milieu de gamme d'un champion (peintures, carreaux, détergents…) ont une
-        # demande africaine réelle mais classée au-delà du top-100 des gros postes.
-        import_index = await real_substitution_service._build_african_import_index(
-            year, hs_level="HS6", limit=400
-        )
-    except Exception:  # pragma: no cover
-        return []
+    if import_index is None:
+        import_index = await _load_import_index(year)
     if not import_index:
         return []
-
-    from services.real_trade_data_service import get_country_name
 
     flows: List[Dict] = []
     for hs6, product_label, is_future in candidates:
@@ -411,41 +466,13 @@ async def _capacity_driven_flows(
         hs4 = hs6[:4]
         coef = substitutability_for_hs(hs4)["coefficient"]
 
-        # Marchés africains important ce produit (SH6 exact, repli SH4).
-        pool = [m for m in import_index.get(hs6, []) if m["iso3"] != exporter_iso3]
-        match_level = "hs6"
-        if not pool:
-            match_level = "hs4"
-            by_country: Dict[str, float] = {}
-            for k, lst in import_index.items():
-                if len(k) >= 4 and k[:4] == hs4:
-                    for m in lst:
-                        if m["iso3"] == exporter_iso3:
-                            continue
-                        by_country[m["iso3"]] = by_country.get(m["iso3"], 0) + m["value"]
-            pool = [{"iso3": iso, "value": v} for iso, v in by_country.items()]
-
-        markets = []
-        for m in pool:
-            if m["value"] < min_market_size:
-                continue
-            addressable = int(m["value"] * coef)
-            markets.append(
-                {
-                    "country_iso3": m["iso3"],
-                    "country_name": get_country_name(m["iso3"], lang),
-                    "market_size": int(m["value"]),
-                    "addressable_market_size": addressable,
-                    # Capacité avérée mais flux d'export encore modeste : capture
-                    # prudente, plafonnée par la substituabilité du produit.
-                    "capture_potential": round(min(coef, 0.25), 2),
-                    "price_positioning": None,
-                }
-            )
+        # Marchés africains important ce produit (SH6 exact, repli SH4) : capacité
+        # avérée mais flux d'export encore modeste -> capture prudente.
+        markets, match_level = _markets_for_product(
+            import_index, hs6, exporter_iso3, min_market_size, coef, lang
+        )
         if not markets:
             continue
-        markets.sort(key=lambda x: x["market_size"], reverse=True)
-        markets = markets[:5]
 
         # match_for_hs fournit le bon champion/capacité future + signal pour ce SH.
         match = intel.match_for_hs(exporter_iso3, hs6)
@@ -468,6 +495,142 @@ async def _capacity_driven_flows(
             )
             flow["is_emerging"] = bool(is_future)
             flow["is_capacity_driven"] = True
+            flows.append(flow)
+
+    return flows
+
+
+# Nombre maximal de produits DÉCOUVERTS (non curés) par pays : borne le bruit et
+# concentre la découverte sur les niches à plus forte demande.
+_MAX_DISCOVERED_PRODUCTS = 25
+
+
+def _unido_transformation_champion(evidence: Dict, product_name: str) -> Dict:
+    """
+    Fabrique un « champion » synthétique à partir de l'évidence de capacité UNIDO
+    (division ISIC + valeur ajoutée), pour narrer la stratégie de transformation
+    d'une opportunité découverte via la même mécanique que les champions curés.
+    """
+    va = evidence.get("value_added_usd") or 0
+    sector = evidence.get("isic_label_fr") or "industrie manufacturière"
+    # Séparateur de milliers en espace (convention FR), scindé sur le NOMBRE seul
+    # pour ne pas altérer la ponctuation de la phrase.
+    va_m = f"{va/1e6:,.0f}".replace(",", " ")
+    return {
+        "name": f"Capacité {sector}",
+        "sector": sector,
+        "input_source": evidence.get("input"),
+        "input_sourcing": None,
+        "input_capacity": None,
+        "process": evidence.get("process"),
+        "capacity": {"product": product_name},
+        "status": "operational",
+        "price_competitiveness": None,
+        "rationale": (
+            f"Capacité manufacturière avérée : la division « {sector} » du pays "
+            f"représente {va_m} M$ de valeur ajoutée (UNIDO INDSTAT4), "
+            f"attestant les moyens de produire et d'exporter « {product_name} » "
+            f"vers les marchés africains qui l'importent aujourd'hui hors du "
+            f"continent — cible naturelle sous la ZLECAf."
+        ),
+    }
+
+
+async def _unido_discovered_flows(
+    exporter_iso3: str,
+    exporter_name: str,
+    year: int,
+    min_market_size: int,
+    lang: str,
+    covered_hs: set,
+    import_index: Optional[Dict] = None,
+) -> List[Dict]:
+    """
+    Troisième tiers : flux DÉCOUVERTS automatiquement depuis les données UNIDO.
+
+    À la différence des flux curés (champions nommés), ceux-ci n'exigent aucune
+    curation : la capacité manufacturière par division ISIC (valeur ajoutée
+    UNIDO) est traduite en produits SH exportables (``unido_hs_mapping``), puis
+    croisée avec la demande d'import africaine réelle. C'est le moteur qui « se
+    développe et s'agrandit de lui-même » — dès qu'un pays a de la valeur ajoutée
+    dans une division, ses produits deviennent des candidats à l'export.
+
+    Prudence : ces flux sont adossés à une capacité de division (pas à une usine
+    nommée) ; ils sont donc marqués ``discovery_tier="unido"`` et classés sous
+    les flux curés. On saute tout SH déjà couvert (OEC ou champion).
+    """
+    from services import unido_discovery_service as disco
+
+    cap_index = disco.capacity_hs4_index(exporter_iso3)
+    if not cap_index:
+        return []
+
+    if import_index is None:
+        import_index = await _load_import_index(year)
+    if not import_index:
+        return []
+
+    # Candidats : SH6 de la demande d'import dont le SH4 est une capacité avérée
+    # du pays et qui n'est pas déjà couvert. Classés par demande maximale.
+    candidates: List[tuple] = []
+    for hs6, importers in import_index.items():
+        code = _normalize_hs(hs6)
+        if len(code) < 6 or code in covered_hs or code[:4] not in cap_index:
+            continue
+        max_demand = max(
+            (m["value"] for m in importers if m["iso3"] != exporter_iso3),
+            default=0,
+        )
+        if max_demand < min_market_size:
+            continue
+        candidates.append((max_demand, code))
+    candidates.sort(reverse=True)
+    candidates = candidates[:_MAX_DISCOVERED_PRODUCTS]
+
+    flows: List[Dict] = []
+    for _demand, hs6 in candidates:
+        if hs6 in covered_hs:
+            continue
+        covered_hs.add(hs6)
+
+        evidence = cap_index[hs6[:4]]
+        product_name = evidence.get("product_label") or f"SH {hs6}"
+        coef = substitutability_for_hs(hs6[:4])["coefficient"]
+        markets, match_level = _markets_for_product(
+            import_index, hs6, exporter_iso3, min_market_size, coef, lang
+        )
+        if not markets:
+            continue
+
+        champion = _unido_transformation_champion(evidence, product_name)
+        match = {
+            "available": True,
+            "champion": champion,
+            "future_capacity": None,
+            "signal": "High Growth",
+        }
+        synthetic_opp = {
+            "export_product": {"hs_code": hs6, "name": product_name},
+            "market_match_level": match_level,
+            "afcfta_advantage": "Accès préférentiel ZLECAf (droits réduits ou supprimés)",
+            "binding_constraint": "montée en puissance des exports (capacité avérée)",
+            "verified_production": None,
+        }
+        roo = _rules_of_origin(hs6, lang)
+        for market in markets:
+            flow = _build_flow(
+                exporter_iso3, exporter_name, synthetic_opp, market, match, roo, lang, year
+            )
+            flow["is_emerging"] = False
+            flow["is_capacity_driven"] = True
+            flow["discovery_tier"] = "unido"
+            flow["capacity_evidence"] = {
+                "isic_code": evidence.get("isic_code"),
+                "isic_label": evidence.get("isic_label_fr"),
+                "value_added_usd": evidence.get("value_added_usd"),
+                "va_year": evidence.get("va_year"),
+                "source": "UNIDO INDSTAT4",
+            }
             flows.append(flow)
 
     return flows
@@ -519,17 +682,34 @@ async def get_strategic_flows(
             flow["is_emerging"] = False
             flows.append(flow)
 
-    # Flux pilotés par la capacité industrielle (champions + projets structurants) :
-    # ce que le pays SAIT produire, même si les flux d'export actuels sont modestes.
+    # Index de demande d'import africaine chargé UNE fois, partagé par les deux
+    # tiers pilotés par la capacité (évite un double appel réseau).
+    import_index = await _load_import_index(year)
+
+    # Tiers 2 — flux curés pilotés par la capacité (champions + projets
+    # structurants) : ce que le pays SAIT produire, même si les flux actuels
+    # sont modestes.
     flows.extend(
         await _capacity_driven_flows(
-            exporter_iso3, exporter_name, year, min_market_size, lang, covered_hs
+            exporter_iso3, exporter_name, year, min_market_size, lang, covered_hs, import_index
+        )
+    )
+
+    # Tiers 3 — flux DÉCOUVERTS depuis les données UNIDO (auto-expansion, sans
+    # curation) : valeur ajoutée par division ISIC -> produits SH -> demande.
+    flows.extend(
+        await _unido_discovered_flows(
+            exporter_iso3, exporter_name, year, min_market_size, lang, covered_hs, import_index
         )
     )
 
     # Les flux portant un signal industriel (High Growth puis Established)
-    # remontent, puis tri par potentiel — un flux adossé à une capacité réelle
-    # prime sur un flux OEC nu de potentiel comparable.
+    # remontent, puis tri par potentiel — l'objectif étant de faire émerger les
+    # plus grosses opportunités réelles, quelle que soit la provenance (flux OEC,
+    # champion curé ou découverte UNIDO). La provenance reste tracée par
+    # ``discovery_tier`` / ``capacity_evidence`` pour l'affichage (badge de
+    # confiance), sans reléguer une grosse niche découverte sous une petite
+    # opportunité curée.
     _signal_rank = {"High Growth": 2, "Established": 1, None: 0}
     flows.sort(
         key=lambda f: (_signal_rank.get(f["signal"], 0), f["potential_usd"]),

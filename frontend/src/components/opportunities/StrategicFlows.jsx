@@ -53,6 +53,9 @@ const T = {
     operational: 'Opérationnel',
     regionalDemand: 'Demande régionale',
     noFlows: 'Aucun flux stratégique identifié pour ce pays.',
+    discovered: 'Découverte UNIDO',
+    capacityEvidence: 'Capacité manufacturière (UNIDO)',
+    valueAdded: 'valeur ajoutée',
   },
   en: {
     title: 'Strategic Flows',
@@ -83,6 +86,9 @@ const T = {
     operational: 'Operational',
     regionalDemand: 'Regional demand',
     noFlows: 'No strategic flow identified for this country.',
+    discovered: 'UNIDO discovery',
+    capacityEvidence: 'Manufacturing capacity (UNIDO)',
+    valueAdded: 'value added',
   },
 };
 
@@ -198,6 +204,15 @@ function FlowCard({ flow, t }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
             <code style={{ fontSize: 12, color: 'var(--afcfta-muted)', fontWeight: 700 }}>{flow.hs_code}</code>
             <SignalBadge signal={flow.signal} emerging={flow.is_emerging} t={t} />
+            {flow.discovery_tier === 'unido' && (
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px',
+                borderRadius: 999, background: 'rgba(147,51,234,0.12)', color: '#9333ea',
+                fontSize: 10, fontWeight: 700,
+              }}>
+                <Sparkles style={{ width: 11, height: 11 }} />{t.discovered}
+              </span>
+            )}
           </div>
           <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--text)' }}>{flow.product}</div>
         </div>
@@ -250,6 +265,12 @@ function FlowCard({ flow, t }) {
             )}
           </div>
           {tr.process && <div style={{ fontSize: 12, fontStyle: 'italic', color: 'var(--afcfta-muted)', lineHeight: 1.5 }}>« {tr.process} »</div>}
+          {flow.capacity_evidence?.value_added_usd != null && (
+            <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#9333ea', fontWeight: 600 }}>
+              <Factory style={{ width: 12, height: 12 }} />
+              {t.capacityEvidence} · {flow.capacity_evidence.isic_label} : {fmtUsd(flow.capacity_evidence.value_added_usd)} {t.valueAdded}
+            </div>
+          )}
         </div>
       )}
 

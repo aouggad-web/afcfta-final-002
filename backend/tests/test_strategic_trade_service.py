@@ -48,6 +48,9 @@ def mock_oec(monkeypatch):
     async def fake_import_index(year, hs_level="HS6", limit=100):
         # African demand for refined sugar (Cevital champion) and iron ore
         # (Gara Djebilet future capacity) — neither is in Algeria's top exports.
+        # 720851 (hot-rolled steel) is NOT curated but falls under Algeria's real
+        # UNIDO basic-metals capacity (ISIC 24) -> must be DISCOVERED. 260111
+        # (iron ore) is extractive -> must never be discovered.
         return {
             "170199": [
                 {"iso3": "SEN", "value": 120_000_000, "quantity": 0},
@@ -56,6 +59,9 @@ def mock_oec(monkeypatch):
             ],
             "260111": [
                 {"iso3": "EGY", "value": 400_000_000, "quantity": 0},
+            ],
+            "720851": [
+                {"iso3": "EGY", "value": 300_000_000, "quantity": 0},
             ],
         }
 
@@ -95,6 +101,31 @@ def test_base_and_capacity_and_emerging_flows_all_present():
     iron = by_hs["260111"]
     assert iron["signal"] == "High Growth"
     assert iron["is_emerging"] is True
+
+
+def test_unido_discovered_flow_from_capacity():
+    """
+    Tiers 3 : un produit non curé (acier plat 720851) mais couvert par la
+    capacité UNIDO réelle du pays (métallurgie de base, ISIC 24) émerge comme
+    flux DÉCOUVERT, tandis qu'un minerai extractif (260111) n'émerge jamais.
+    """
+    res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
+    by_hs = {f["hs_code"]: f for f in res["flows"]}
+
+    assert "720851" in by_hs, "L'acier plat devrait être découvert via la capacité UNIDO"
+    steel = by_hs["720851"]
+    assert steel["discovery_tier"] == "unido"
+    assert steel["signal"] == "High Growth"
+    ev = steel["capacity_evidence"]
+    assert ev["isic_code"] == "24"
+    assert ev["value_added_usd"] > 0
+    assert ev["source"] == "UNIDO INDSTAT4"
+    # La transformation est narrée depuis l'évidence de division (pas de champion).
+    assert steel["transformation"]["sector"]
+
+    # Le minerai de fer brut reste porté par la capacité FUTURE (projet), jamais
+    # par la découverte manufacturière UNIDO.
+    assert by_hs["260111"].get("discovery_tier") != "unido"
 
 
 def test_self_market_is_excluded():
