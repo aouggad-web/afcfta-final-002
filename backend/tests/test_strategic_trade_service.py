@@ -339,3 +339,44 @@ def test_no_duplicate_product_titles_across_champion_sh6_basket(monkeypatch):
     # NULLE PART ailleurs — ni comme doublon tiers 2, ni redécouvert par le
     # tiers 3 sous un titre générique différent ("Huile de palme").
     assert "151190" not in all_hs
+
+
+def test_discovered_flow_rationale_varies_by_market_not_templated(monkeypatch):
+    """
+    Signalé en production : la rationale d'un flux découvert (tiers 3) était
+    un modèle unique où seuls le secteur/la VA/le produit variaient — deux
+    marchés du MÊME produit affichaient un paragraphe identique, sans mention
+    du marché ni de son volume réel. Chaque flux doit désormais porter sa
+    propre rationale (marché + demande réelle + niveau de confiance).
+    """
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Algérie"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        return {
+            "720851": [
+                {"iso3": "EGY", "value": 300_000_000, "quantity": 0},
+                {"iso3": "TUN", "value": 50_000_000, "quantity": 0},
+            ]
+        }
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 10)
+
+    res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
+    steel = [f for f in res["flows"] if f["hs_code"] == "720851"]
+    assert len(steel) == 2
+    rationales = {f["strategic_rationale"] for f in steel}
+    assert len(rationales) == 2, "chaque marché doit porter une rationale distincte"
+    egy = next(f for f in steel if f["to"]["iso3"] == "EGY")
+    tun = next(f for f in steel if f["to"]["iso3"] == "TUN")
+    assert "Égypte" in egy["strategic_rationale"]
+    assert "Tunisie" in tun["strategic_rationale"]
+    assert "300 M$" in egy["strategic_rationale"]
+    assert "50 M$" in tun["strategic_rationale"]
