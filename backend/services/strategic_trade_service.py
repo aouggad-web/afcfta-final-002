@@ -29,6 +29,7 @@ from typing import Dict, List, Optional
 
 from services import industrial_intelligence_service as intel
 from services.real_substitution_service import real_substitution_service
+from services.real_trade_data_service import real_trade_service
 from services.substitution_feasibility_service import substitutability_for_hs
 
 logger = logging.getLogger(__name__)
@@ -425,6 +426,32 @@ async def _load_import_index(year: int) -> Dict:
         return {}
 
 
+async def _export_history_hs4(exporter_iso3: str, year: int) -> set:
+    """
+    Facteur 4 (voir ``unido_discovery_service``, section « Contrôle de
+    plausibilité ») : positions SH4 pour lesquelles le pays a un historique
+    d'export RÉEL (OEC/BACI), même modeste — top-100 par valeur.
+
+    Une capacité de division ISIC est un signal macro ; elle ne prouve pas
+    qu'un produit précis a déjà, ne serait-ce qu'une fois, quitté le pays.
+    Un produit DÉCOUVERT sans aucun historique d'export (jamais vu dans le
+    top-100 des exports du pays, tous produits confondus) reste plausible —
+    c'est précisément la logique de l'app de référence, une capacité avérée
+    vaut opportunité même si les flux actuels sont minimes — mais mérite un
+    plafond de potentiel plus prudent qu'un produit déjà marginalement
+    exporté. Dégradation silencieuse (ensemble vide -> tous les candidats
+    traités comme « jamais exportés », plafond le plus prudent) hors contexte
+    réseau : ne bloque jamais le moteur de flux.
+    """
+    try:
+        exports = await real_trade_service.get_oec_exports(
+            exporter_iso3, year=year, limit=100, hs_level="HS4"
+        )
+    except Exception:  # pragma: no cover
+        return set()
+    return {_normalize_hs(e.get("hs_code")) for e in (exports or []) if e.get("hs_code")}
+
+
 async def _capacity_driven_flows(
     exporter_iso3: str,
     exporter_name: str,
@@ -532,9 +559,9 @@ async def _capacity_driven_flows(
 # concentre la découverte sur les niches à plus forte demande.
 _MAX_DISCOVERED_PRODUCTS = 25
 
-# Plafond de plausibilité : le potentiel d'export total d'un produit DÉCOUVERT
-# (tous marchés confondus) ne peut excéder cette fraction de la valeur ajoutée
-# RÉELLE de la division ISIC dont il est dérivé.
+# Plafond de plausibilité (facteur 3) : le potentiel d'export total d'un
+# produit DÉCOUVERT (tous marchés confondus) ne peut excéder une fraction de
+# la valeur ajoutée RÉELLE de la division ISIC dont il est dérivé.
 #
 # Sans ce garde-fou, une demande d'import massive sur un seul marché (ex.
 # l'Algérie importe des centaines de M$ de lait en poudre) combinée à un taux
@@ -544,9 +571,16 @@ _MAX_DISCOVERED_PRODUCTS = 25
 # division ISIC est un signal macro, pas une preuve de capacité EXCÉDENTAIRE
 # exportable sur un produit précis : elle ne peut donc justifier un potentiel
 # dépassant une fraction de ce que la division produit déjà, au total, dans le
-# pays. Cumulé au garde-fou d'intrant laitier (``unido_discovery_service``),
-# qui aurait de toute façon exclu ce cas précis.
-_DISCOVERY_VA_CAP_FRACTION = 0.3
+# pays.
+#
+# La fraction elle-même est GRADUÉE par le facteur 4 (historique d'export réel,
+# voir ``_export_history_hs4``) : un produit que le pays a DÉJÀ exporté, même
+# modestement, a une preuve tangible de capacité d'export ; un produit JAMAIS
+# vu dans ses exports réels reste un candidat légitime (c'est la thèse même de
+# ce tiers — la capacité précède parfois le flux), mais avec un plafond plus
+# prudent, faute de tout précédent commercial.
+_DISCOVERY_VA_CAP_FRACTION_CORROBORATED = 0.3  # produit déjà exporté (même peu)
+_DISCOVERY_VA_CAP_FRACTION_NASCENT = 0.10  # jamais exporté par ce pays
 
 
 def _unido_transformation_champion(evidence: Dict, product_name: str) -> Dict:
@@ -588,6 +622,7 @@ async def _unido_discovered_flows(
     lang: str,
     covered_hs: set,
     import_index: Optional[Dict] = None,
+    export_history: Optional[set] = None,
 ) -> List[Dict]:
     """
     Troisième tiers : flux DÉCOUVERTS automatiquement depuis les données UNIDO.
@@ -613,6 +648,9 @@ async def _unido_discovered_flows(
         import_index = await _load_import_index(year)
     if not import_index:
         return []
+
+    if export_history is None:
+        export_history = await _export_history_hs4(exporter_iso3, year)
 
     # Candidats : SH6 de la demande d'import dont le SH4 est une capacité avérée
     # du pays et qui n'est pas déjà couvert. Le libellé produit de ce tiers vient
@@ -654,11 +692,19 @@ async def _unido_discovered_flows(
         if not markets:
             continue
 
-        # Plafond de plausibilité (voir _DISCOVERY_VA_CAP_FRACTION) : le
-        # potentiel total (tous marchés) ne peut dépasser une fraction de la
-        # valeur ajoutée réelle de la division dont ce produit est dérivé.
+        # Plafond de plausibilité (facteur 3), gradué par le facteur 4 : un
+        # produit déjà exporté (même modestement) garde le plafond standard ;
+        # un produit jamais exporté par ce pays est plafonné plus bas, faute
+        # de tout précédent commercial confirmant la capacité EXPORT (par
+        # opposition à la seule capacité de PRODUCTION domestique).
+        has_export_history = hs6[:4] in export_history
+        va_cap_fraction = (
+            _DISCOVERY_VA_CAP_FRACTION_CORROBORATED
+            if has_export_history
+            else _DISCOVERY_VA_CAP_FRACTION_NASCENT
+        )
         va = evidence.get("value_added_usd") or 0
-        va_cap = va * _DISCOVERY_VA_CAP_FRACTION
+        va_cap = va * va_cap_fraction
         raw_total = sum(int(m["market_size"] * m["capture_potential"]) for m in markets)
         if va_cap and raw_total > va_cap:
             scale = va_cap / raw_total
@@ -693,6 +739,11 @@ async def _unido_discovered_flows(
                 "value_added_usd": evidence.get("value_added_usd"),
                 "va_year": evidence.get("va_year"),
                 "source": "UNIDO INDSTAT4",
+                # Traçabilité du système à facteurs multiples (voir
+                # unido_discovery_service, section « Contrôle de plausibilité »).
+                "input_requirement_checked": evidence.get("input_requirement_checked", False),
+                "has_export_history": has_export_history,
+                "plausibility_cap_fraction": va_cap_fraction,
             }
             flows.append(flow)
 
@@ -760,9 +811,18 @@ async def get_strategic_flows(
 
     # Tiers 3 — flux DÉCOUVERTS depuis les données UNIDO (auto-expansion, sans
     # curation) : valeur ajoutée par division ISIC -> produits SH -> demande.
+    # Historique d'export réel (facteur 4) chargé une fois pour ce tiers.
+    export_history = await _export_history_hs4(exporter_iso3, year)
     flows.extend(
         await _unido_discovered_flows(
-            exporter_iso3, exporter_name, year, min_market_size, lang, covered_hs, import_index
+            exporter_iso3,
+            exporter_name,
+            year,
+            min_market_size,
+            lang,
+            covered_hs,
+            import_index,
+            export_history,
         )
     )
 
