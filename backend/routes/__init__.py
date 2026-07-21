@@ -58,6 +58,7 @@ from .production import router as production_router
 from .rules_of_origin import init_data as init_rules_data
 from .rules_of_origin import router as rules_router
 from .statistics import router as statistics_router
+from .strategic_intelligence import router as strategic_router
 from .substitution import router as substitution_router
 from .tariffs import router as tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
@@ -398,6 +399,9 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(statistics_router, tags=["Statistics"], dependencies=_auth)
     api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_admin)
     api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
+    api_router.include_router(
+        strategic_router, tags=["Strategic Trade Intelligence"], dependencies=_auth
+    )
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"], dependencies=_auth)
     api_router.include_router(rules_router, tags=["Rules of Origin"], dependencies=_auth)

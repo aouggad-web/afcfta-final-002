@@ -603,7 +603,12 @@ class RealSubstitutionService:
     # (constaté en production après les PR #281/#282).
     # v4 : production vérifiée (FAOSTAT/UNIDO/USGS) sur chaque opportunité +
     # bloc summary.analysis + top_sectors sur les exports.
-    _CACHE_SCHEMA_VERSION = 4
+    # v5 : correction du tri OEC (Trade Value.desc). Les index import/export
+    # d'avant le correctif étaient tronqués dans l'ordre du code SH — ils
+    # excluaient les hydrocarbures/machines/véhicules et rendaient l'analyse
+    # d'export vide pour les pays diversifiés (ex : Algérie). Bump indispensable
+    # pour purger ces index tronqués mis en cache sur les instances déployées.
+    _CACHE_SCHEMA_VERSION = 5
 
     @staticmethod
     def _verified_production(hs_code: str, memo: Dict[str, Optional[Dict]]) -> Optional[Dict]:
@@ -800,15 +805,22 @@ class RealSubstitutionService:
         return await self._build_trader_index(year, kind="export", hs_level=hs_level)
 
     async def _build_african_import_index(
-        self, year: int, hs_level: str = "HS4"
+        self, year: int, hs_level: str = "HS4", limit: int = 100
     ) -> Dict[str, List[Dict]]:
-        """Index real African imports by HS code level: {hs_code: [{iso3, value, ...}]}."""
-        return await self._build_trader_index(year, kind="import", hs_level=hs_level)
+        """Index real African imports by HS code level: {hs_code: [{iso3, value, ...}]}.
+
+        ``limit`` = profondeur du top-N par pays (par valeur). Le défaut 100 sert
+        la substitution d'imports (gros postes) ; le moteur de flux stratégiques
+        demande une profondeur supérieure pour capter la demande de produits
+        transformés de milieu de gamme (peintures, cosmétiques, détergents…) qui
+        se classent au-delà du top-100 mais restent des débouchés réels.
+        """
+        return await self._build_trader_index(year, kind="import", hs_level=hs_level, limit=limit)
 
     async def _build_trader_index(
-        self, year: int, kind: str, hs_level: str = "HS4"
+        self, year: int, kind: str, hs_level: str = "HS4", limit: int = 100
     ) -> Dict[str, List[Dict]]:
-        cache_key = f"{kind}_index_{year}_{hs_level}"
+        cache_key = f"{kind}_index_{year}_{hs_level}_{limit}"
         cached = self._cache_get(cache_key)
         if cached is not None:
             return cached
@@ -819,7 +831,7 @@ class RealSubstitutionService:
             else real_trade_service.get_oec_imports
         )
         tasks = [
-            fetch(iso3, year=year, limit=100, hs_level=hs_level) for iso3 in MAJOR_AFRICAN_TRADERS
+            fetch(iso3, year=year, limit=limit, hs_level=hs_level) for iso3 in MAJOR_AFRICAN_TRADERS
         ]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 

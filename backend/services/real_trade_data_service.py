@@ -677,6 +677,14 @@ class RealTradeDataService:
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Importer Country": oec_id,
+                # OEC renvoie les lignes dans l'ordre du code SH (croissant), pas
+                # par valeur. Sans tri serveur, un `limit` tronque avant le
+                # chapitre 27 (hydrocarbures) et au-delà : un importateur diversifié
+                # comme le Nigeria (~4 800 lignes) ne montrerait que les premiers
+                # chapitres (agro/alimentaire) et jamais ses vraies plus grosses
+                # importations (pétrole raffiné 27, machines 84, véhicules 87).
+                # On force donc un tri décroissant sur la valeur côté serveur.
+                "sort": "Trade Value.desc",
                 "limit": str(limit * 5),  # Get more to filter
             }
 
@@ -745,6 +753,10 @@ class RealTradeDataService:
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Exporter Country": oec_id,
+                # Tri serveur décroissant sur la valeur (cf. get_oec_imports) :
+                # sans lui, un `limit` tronque dans l'ordre du code SH et ampute
+                # les vraies forces d'export d'un pays diversifié.
+                "sort": "Trade Value.desc",
                 "limit": str(limit * 5),
             }
 
@@ -815,6 +827,10 @@ class RealTradeDataService:
                 "measures": "Trade Value",
                 "Year": str(year),
                 "Importer Country": oec_id,
+                # Tri serveur décroissant : ce drilldown croise Importateur ×
+                # Exportateur × SH (des dizaines de milliers de lignes), donc un
+                # `limit` sans tri écarterait les plus gros flux (pétrole, etc.).
+                "sort": "Trade Value.desc",
                 "limit": "500",
             }
 
