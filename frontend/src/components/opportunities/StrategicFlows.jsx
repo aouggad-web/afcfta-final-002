@@ -86,11 +86,13 @@ const T = {
   },
 };
 
+// Même convention d'affichage que le reste du module Opportunités
+// (formatValue de SubstitutionAnalysis) : $B / $M / $K.
 const fmtUsd = (v) => {
   const n = Number(v) || 0;
-  if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}Md`;
+  if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
   if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
-  if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}k`;
+  if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
   return `$${n}`;
 };
 
@@ -98,7 +100,7 @@ const fmtQty = (cap) => {
   if (!cap || cap.value == null) return null;
   const v = Number(cap.value);
   const unit = cap.unit || '';
-  const disp = v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : v >= 1e3 ? `${(v / 1e3).toFixed(0)}k` : `${v}`;
+  const disp = v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : v >= 1e3 ? `${(v / 1e3).toFixed(0)}K` : `${v}`;
   return `${disp} ${unit}`.trim();
 };
 

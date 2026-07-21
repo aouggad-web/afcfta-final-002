@@ -47,9 +47,11 @@ async def get_country_strategic_flows(
         result = await get_strategic_flows(
             iso3, year=year, min_market_size=min_market_size, lang=lang, limit=limit
         )
-    except Exception as exc:  # pragma: no cover - garde-fou runtime
+    except Exception:  # pragma: no cover - garde-fou runtime
+        # Détail loggé côté serveur uniquement ; message générique au client
+        # (ne pas exposer messages d'erreur/chemins/dépendances internes).
         logger.exception("Échec du calcul des flux stratégiques pour %s", iso3)
-        raise HTTPException(status_code=502, detail=f"Erreur moteur stratégique: {exc}")
+        raise HTTPException(status_code=502, detail="Erreur interne du moteur stratégique")
 
     if result.get("error"):
         raise HTTPException(status_code=404, detail=result["error"])

@@ -135,10 +135,21 @@ _LEAD_TIME_CACHE: Dict[tuple, Optional[float]] = {}
 def _lead_time_days(origin_iso3: str, dest_iso3: str, hs_code: str) -> Optional[float]:
     """
     Délai de livraison estimé (jours) de l'option opérationnelle la moins chère
-    pour le corridor origine -> destination. Mémoïsé par corridor ; dégradation
-    silencieuse (None) si le comparateur multimodal est indisponible.
+    pour le corridor origine -> destination. Mémoïsé par (corridor, nature vrac) ;
+    dégradation silencieuse (None) si le comparateur multimodal est indisponible.
+
+    La clé inclut la nature « vrac » du produit car ``get_logistics_profile``
+    adapte les options selon le code SH (une commodité vrac — ciment, minerai —
+    exclut l'aérien et bascule la route terrestre en vrac) : réutiliser un délai
+    non-vrac pour un produit vrac (ou l'inverse) serait faux.
     """
-    key = (origin_iso3.upper(), dest_iso3.upper())
+    try:
+        from services.shipment_estimator import classify_bulk_commodity
+
+        is_bulk = bool(classify_bulk_commodity(hs_code)) if hs_code else False
+    except Exception:  # pragma: no cover
+        is_bulk = False
+    key = (origin_iso3.upper(), dest_iso3.upper(), is_bulk)
     if key in _LEAD_TIME_CACHE:
         return _LEAD_TIME_CACHE[key]
     days: Optional[float] = None
