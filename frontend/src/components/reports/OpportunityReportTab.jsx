@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import SubstitutionAnalysis from "../opportunities/SubstitutionAnalysis";
+import StrategicFlows from "../opportunities/StrategicFlows";
 import OpportunityPdfExport from "../opportunities/OpportunityPdfExport";
 import { opportunityPdfFilename } from "../../utils/opportunityPdf";
 
@@ -2196,6 +2197,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
         {tabBtn("s3", fr ? "S3 · Besoin national" : "S3 · National need")}
         {tabBtn("s4", fr ? "S4 · Importations" : "S4 · Imports")}
         {tabBtn("s5", fr ? "S5 · Substitution" : "S5 · Substitution")}
+        {tabBtn("s6", fr ? "S6 · Flux stratégiques" : "S6 · Strategic flows")}
       </div>
       {mode === "market" && <MarketSeekingView fr={fr} />}
       {mode === "bilateral" && <BilateralView countries={countries} fr={fr} prefill={prefill} />}
@@ -2204,6 +2206,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
       {mode === "s3" && <NationalNeedView countries={countries} fr={fr} onAnalyze={openBilateral} prefill={s3Prefill} />}
       {mode === "s4" && <ImportOpportunitiesView countries={countries} fr={fr} onAnalyze={openBilateral} />}
       {mode === "s5" && <SubstitutionAnalysis language={fr ? "fr" : "en"} />}
+      {mode === "s6" && <StrategicFlows language={fr ? "fr" : "en"} />}
     </div>
   );
 }

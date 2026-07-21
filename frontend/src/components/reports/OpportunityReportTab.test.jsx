@@ -88,11 +88,30 @@ describe('OpportunityReportTab — S5 · Substitution mode', () => {
     axios.get.mockResolvedValue({ data: { countries: [] } });
     render(<OpportunityReportTab countries={countries} language="fr" />);
 
-    for (const id of ['market', 'bilateral', 's1', 's2', 's3', 's4', 's5']) {
+    for (const id of ['market', 'bilateral', 's1', 's2', 's3', 's4', 's5', 's6']) {
       expect(screen.getByTestId(`mode-${id}`)).toBeInTheDocument();
     }
 
     await userEvent.click(screen.getByTestId('mode-s5'));
+    await waitFor(() =>
+      expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/substitution/countries'))
+    );
+  });
+});
+
+// S6 câble StrategicFlows (base d'intelligence industrielle + découverte
+// UNIDO, PR #293) sur le composant RÉELLEMENT monté par App.js
+// (OpportunityReportTab) — pas OpportunitiesTab.jsx, qui n'est câblé nulle
+// part depuis que e96f681 a restauré ce composant-ci comme module Opportunités.
+describe('OpportunityReportTab — S6 · Strategic flows mode', () => {
+  it('mounts StrategicFlows and loads the country list when S6 is selected', async () => {
+    // StrategicFlows charge sa propre liste de pays au montage (même endpoint
+    // que SubstitutionAnalysis : /substitution/countries).
+    axios.get.mockResolvedValue({ data: { countries: [] } });
+    render(<OpportunityReportTab countries={countries} language="fr" />);
+
+    await userEvent.click(screen.getByTestId('mode-s6'));
+    expect(screen.getByTestId('strategic-flows')).toBeInTheDocument();
     await waitFor(() =>
       expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('/substitution/countries'))
     );
