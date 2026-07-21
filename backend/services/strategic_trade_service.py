@@ -506,6 +506,22 @@ async def _capacity_driven_flows(
 # concentre la découverte sur les niches à plus forte demande.
 _MAX_DISCOVERED_PRODUCTS = 25
 
+# Plafond de plausibilité : le potentiel d'export total d'un produit DÉCOUVERT
+# (tous marchés confondus) ne peut excéder cette fraction de la valeur ajoutée
+# RÉELLE de la division ISIC dont il est dérivé.
+#
+# Sans ce garde-fou, une demande d'import massive sur un seul marché (ex.
+# l'Algérie importe des centaines de M$ de lait en poudre) combinée à un taux
+# de capture générique produisait un flux Burundi -> Algérie de 246,6 M$ de
+# lait en poudre — supérieur à la valeur ajoutée de TOUT le secteur
+# alimentaire burundais (191,6 M$, essentiellement café/thé). La capacité de
+# division ISIC est un signal macro, pas une preuve de capacité EXCÉDENTAIRE
+# exportable sur un produit précis : elle ne peut donc justifier un potentiel
+# dépassant une fraction de ce que la division produit déjà, au total, dans le
+# pays. Cumulé au garde-fou d'intrant laitier (``unido_discovery_service``),
+# qui aurait de toute façon exclu ce cas précis.
+_DISCOVERY_VA_CAP_FRACTION = 0.3
+
 
 def _unido_transformation_champion(evidence: Dict, product_name: str) -> Dict:
     """
@@ -603,6 +619,17 @@ async def _unido_discovered_flows(
         )
         if not markets:
             continue
+
+        # Plafond de plausibilité (voir _DISCOVERY_VA_CAP_FRACTION) : le
+        # potentiel total (tous marchés) ne peut dépasser une fraction de la
+        # valeur ajoutée réelle de la division dont ce produit est dérivé.
+        va = evidence.get("value_added_usd") or 0
+        va_cap = va * _DISCOVERY_VA_CAP_FRACTION
+        raw_total = sum(int(m["market_size"] * m["capture_potential"]) for m in markets)
+        if va_cap and raw_total > va_cap:
+            scale = va_cap / raw_total
+            for m in markets:
+                m["capture_potential"] = round(m["capture_potential"] * scale, 4)
 
         champion = _unido_transformation_champion(evidence, product_name)
         match = {

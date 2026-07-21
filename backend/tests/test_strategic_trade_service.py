@@ -156,3 +156,62 @@ def test_summary_aggregation():
     # Partners are sorted by potential descending.
     pots = [p["potential_usd"] for p in summary["top_partners"]]
     assert pots == sorted(pots, reverse=True)
+
+
+def test_no_fictitious_dairy_flow_for_burundi(monkeypatch):
+    """
+    Régression du bug réel constaté : Burundi -> Algérie, lait en poudre
+    (SH 040210), 246,6 M$ de potentiel — soit PLUS que la totalité de la
+    valeur ajoutée du secteur alimentaire burundais (191,6 M$, UNIDO), pour un
+    pays dont la collecte de lait cru réelle plafonne à ~40 500 t/an (FAOSTAT
+    2024). Deux garde-fous corrigent ce cas : (1) les SH4 laitiers sont exclus
+    de l'index de capacité d'un pays sans intrant laitier corroboré
+    (``unido_discovery_service._has_dairy_input``) ; (2) même sans corroboration
+    d'intrant, le plafond de plausibilité VA (``_DISCOVERY_VA_CAP_FRACTION``)
+    empêcherait tout produit découvert de dépasser 30 % de la VA de sa division.
+    """
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Burundi"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        # Reproduit exactement la demande algérienne réelle en lait en poudre
+        # qui avait généré le flux fictif.
+        return {"040210": [{"iso3": "DZA", "value": 986_400_000, "quantity": 0}]}
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 20)
+
+    res = run(mod.get_strategic_flows("BDI", year=2024, lang="fr", limit=50))
+    assert not any(f["hs_code"] == "040210" for f in res["flows"])
+
+
+def test_discovered_flow_potential_capped_by_sector_value_added(monkeypatch):
+    """Garde-fou général : un flux découvert ne peut jamais dépasser 30 % de la
+    valeur ajoutée réelle de sa division ISIC, quel que soit le produit."""
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Burundi"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        # Coton (textiles, division 13) : demande massive simulée pour
+        # vérifier que le plafond s'applique hors du cas laitier.
+        return {"520512": [{"iso3": "EGY", "value": 500_000_000, "quantity": 0}]}
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 15)
+
+    res = run(mod.get_strategic_flows("BDI", year=2024, lang="fr", limit=50))
+    cotton = next(f for f in res["flows"] if f["hs_code"] == "520512")
+    va = cotton["capacity_evidence"]["value_added_usd"]
+    assert cotton["potential_usd"] <= va * mod._DISCOVERY_VA_CAP_FRACTION + 1  # arrondi
