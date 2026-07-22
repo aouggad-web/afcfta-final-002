@@ -544,6 +544,13 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                          `➡️ ${t.stable}`}
                       </span>
                     </div>
+                    {(countryProfile.projections.gai_2025_category_fr || countryProfile.projections.gai_2025_category_en) && (
+                      <p className="text-sm font-semibold text-indigo-700 mb-2">
+                        {language === 'fr'
+                          ? countryProfile.projections.gai_2025_category_fr
+                          : countryProfile.projections.gai_2025_category_en}
+                      </p>
+                    )}
                     <div className="flex gap-3 text-xs">
                       <span className="bg-indigo-200 text-indigo-800 px-2 py-1 rounded font-semibold">
                         🌍 {t.africa}: #{countryProfile.projections.gai_2025_rank_africa}
