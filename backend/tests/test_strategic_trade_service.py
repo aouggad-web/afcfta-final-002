@@ -66,11 +66,18 @@ def mock_oec(monkeypatch):
         }
 
     async def fake_get_oec_exports(iso3, year=2022, limit=100, hs_level="HS4"):
-        # Facteur 4 (historique d'export réel, voir _export_history_hs4) : par
-        # défaut aucun historique, pour rester hermétique. get_strategic_flows
-        # l'appelle inconditionnellement dès qu'un candidat tiers 3 existe — un
-        # test qui ne le stub pas atteindrait sinon le service OEC réel (jusqu'à
-        # son délai d'attente HTTP) même en environnement hors-réseau.
+        # Facteur 4 (historique d'export réel, voir _export_history_hs4) et
+        # position nette (facteur 5, voir _national_net_position) : par défaut
+        # aucun flux, pour rester hermétique. get_strategic_flows peut les
+        # appeler selon le flux d'exécution (dès qu'un candidat tiers 2/3
+        # existe) — un test qui ne les stub pas atteindrait sinon le service
+        # OEC réel (jusqu'à son délai d'attente HTTP) même hors-réseau.
+        return []
+
+    async def fake_get_oec_imports(iso3, year=2022, limit=100, hs_level="HS4"):
+        # Facteur 5 (position nette, voir _national_net_position) : aucun
+        # import par défaut -> le garde-fou « besoin national » ne bloque rien
+        # tant qu'un test ne simule pas explicitement un déficit.
         return []
 
     monkeypatch.setattr(
@@ -84,6 +91,7 @@ def mock_oec(monkeypatch):
         fake_import_index,
     )
     monkeypatch.setattr(mod.real_trade_service, "get_oec_exports", fake_get_oec_exports)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_imports", fake_get_oec_imports)
     # Lead time is corridor logistics — keep the test offline.
     monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 12)
 
@@ -203,6 +211,87 @@ def test_no_fictitious_dairy_flow_for_burundi(monkeypatch):
 
     res = run(mod.get_strategic_flows("BDI", year=2024, lang="fr", limit=50))
     assert not any(f["hs_code"] == "040210" for f in res["flows"])
+
+
+def test_national_demand_excludes_dza_milk_powder_despite_real_capacity(monkeypatch):
+    """
+    Régression du cas signalé : l'Algérie ressortait comme exportatrice de
+    lait en poudre (SH 040210) alors qu'elle en IMPORTE plus d'1 Md$/an. Sa
+    production laitière est réelle (le facteur 2 « intrant corroboré » est
+    satisfait — même avec le projet Baladna, ~300 000 vaches) : le bug n'est
+    donc PAS un défaut de capacité de production, mais l'absence de contrôle
+    du besoin national. Le garde-fou « position nette » (facteur 5) doit
+    écarter ce flux même quand la capacité de production est authentique.
+    """
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Algérie"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        return {"040210": [{"iso3": "EGY", "value": 60_000_000, "quantity": 0}]}
+
+    async def fake_imports(iso3, year=2022, limit=100, hs_level="HS4"):
+        # Position nette DZA sur 040210 : grosse demande d'import réelle,
+        # aucun export en face -> importateur net flagrant.
+        return [{"hs_code": "040210", "product_name": "Milk powder", "trade_value": 1_050_000_000}]
+
+    async def fake_exports(iso3, year=2022, limit=100, hs_level="HS4"):
+        return []
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_imports", fake_imports)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_exports", fake_exports)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 15)
+    # Force la corroboration d'intrant laitier (facteur 2) à passer, pour
+    # isoler le garde-fou testé (facteur 5) — sans ce force, le SH4 laitier
+    # serait déjà exclu en amont par le facteur 2, et le test ne prouverait
+    # rien sur le nouveau garde-fou.
+    from services import unido_discovery_service as disco
+
+    monkeypatch.setattr(disco, "_input_corroborated", lambda iso3, hs4: True)
+
+    res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
+    assert not any(
+        f["hs_code"] == "040210" for f in res["flows"]
+    ), "l'Algérie ne doit jamais ressortir exportatrice d'un produit qu'elle importe massivement"
+
+
+def test_national_net_position_does_not_block_genuine_surplus_export(monkeypatch):
+    """
+    Contre-épreuve : un pays qui EXPORTE déjà largement plus qu'il n'importe
+    un produit (excédent réel) ne doit pas être bloqué par le garde-fou —
+    celui-ci cible spécifiquement le déficit nettement en faveur des imports.
+    """
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Algérie"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        return {"170199": [{"iso3": "SEN", "value": 120_000_000, "quantity": 0}]}
+
+    async def fake_imports(iso3, year=2022, limit=100, hs_level="HS4"):
+        return [{"hs_code": "170199", "product_name": "Refined sugar", "trade_value": 2_000_000}]
+
+    async def fake_exports(iso3, year=2022, limit=100, hs_level="HS4"):
+        return [{"hs_code": "170199", "product_name": "Refined sugar", "trade_value": 80_000_000}]
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_imports", fake_imports)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_exports", fake_exports)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 12)
+
+    res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
+    assert any(f["hs_code"] == "170199" for f in res["flows"])
 
 
 def test_discovered_flow_potential_capped_by_sector_value_added(monkeypatch):
