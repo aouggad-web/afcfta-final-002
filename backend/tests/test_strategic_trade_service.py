@@ -68,10 +68,10 @@ def mock_oec(monkeypatch):
     async def fake_get_oec_exports(iso3, year=2022, limit=100, hs_level="HS4"):
         # Facteur 4 (historique d'export réel, voir _export_history_hs4) et
         # position nette (facteur 5, voir _national_net_position) : par défaut
-        # aucun flux, pour rester hermétique. get_strategic_flows les appelle
-        # inconditionnellement dès qu'un candidat tiers 2/3 existe — un test qui
-        # ne les stub pas atteindrait sinon le service OEC réel (jusqu'à son
-        # délai d'attente HTTP) même en environnement hors-réseau.
+        # aucun flux, pour rester hermétique. get_strategic_flows peut les
+        # appeler selon le flux d'exécution (dès qu'un candidat tiers 2/3
+        # existe) — un test qui ne les stub pas atteindrait sinon le service
+        # OEC réel (jusqu'à son délai d'attente HTTP) même hors-réseau.
         return []
 
     async def fake_get_oec_imports(iso3, year=2022, limit=100, hs_level="HS4"):

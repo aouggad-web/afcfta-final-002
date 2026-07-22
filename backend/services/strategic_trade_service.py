@@ -26,7 +26,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Dict, List, Optional
+from typing import Awaitable, Callable, Dict, List, Optional
 
 from services import industrial_intelligence_service as intel
 from services.real_substitution_service import real_substitution_service
@@ -477,7 +477,7 @@ async def _export_history_hs4(exporter_iso3: str, year: int) -> set:
 # exports ET matériels en valeur absolue. La position nette est mesurée au SH6
 # (pas au SH4) pour ne pas confondre l'INTRANT importé et l'EXTRANT exporté
 # d'une même position à 4 chiffres (ex. sucre brut importé 170114 vs sucre
-# raffiné exporté 170199, tous deux sous 1701) : un raffineur genuinement
+# raffiné exporté 170199, tous deux sous 1701) : un raffineur véritablement
 # exportateur de 170199 ne doit pas être écarté parce qu'il importe le brut.
 #
 # Source de la position nette : données OEC/BACI par pays (les mêmes que le
@@ -551,7 +551,7 @@ async def _capacity_driven_flows(
     lang: str,
     covered_hs: set,
     import_index: Optional[Dict] = None,
-    net_position: Optional[Dict] = None,
+    net_position_loader: Optional[Callable[[], Awaitable[Dict]]] = None,
 ) -> List[Dict]:
     """
     Flux *pilotés par la capacité* : à la différence des flux OEC historiques
@@ -578,8 +578,16 @@ async def _capacity_driven_flows(
     if not import_index:
         return []
 
-    if net_position is None:
-        net_position = await _national_net_position(exporter_iso3, year)
+    # Chargée seulement ici (jamais plus tôt) : ce tier a désormais confirmé
+    # qu'il a des candidats réels à filtrer, pas seulement une intelligence
+    # pays vide. `net_position_loader` (voir get_strategic_flows) mémoïse
+    # l'appel OEC pour le partager avec le tiers 3 sans le déclencher pour un
+    # pays qui n'atteint jamais ce point (pas d'intelligence industrielle).
+    net_position = (
+        await net_position_loader()
+        if net_position_loader
+        else await _national_net_position(exporter_iso3, year)
+    )
 
     # Un même champion (ou capacité future) liste souvent plusieurs sous-positions
     # SH6 sous UN SEUL libellé d'extrant (ex. Cevital « Huile de table raffinée &
@@ -783,7 +791,7 @@ async def _unido_discovered_flows(
     covered_hs: set,
     import_index: Optional[Dict] = None,
     export_history: Optional[set] = None,
-    net_position: Optional[Dict] = None,
+    net_position_loader: Optional[Callable[[], Awaitable[Dict]]] = None,
 ) -> List[Dict]:
     """
     Troisième tiers : flux DÉCOUVERTS automatiquement depuis les données UNIDO.
@@ -813,8 +821,15 @@ async def _unido_discovered_flows(
     if export_history is None:
         export_history = await _export_history_hs4(exporter_iso3, year)
 
-    if net_position is None:
-        net_position = await _national_net_position(exporter_iso3, year)
+    # Chargée seulement ici (jamais plus tôt) : ce tier a désormais confirmé
+    # une capacité UNIDO réelle. `net_position_loader` (voir get_strategic_flows)
+    # mémoïse l'appel OEC — partagé avec le tiers 2 sans le déclencher pour un
+    # pays qui n'atteint jamais ce point (pas de capacité manufacturière).
+    net_position = (
+        await net_position_loader()
+        if net_position_loader
+        else await _national_net_position(exporter_iso3, year)
+    )
 
     # Candidats : SH6 de la demande d'import dont le SH4 est une capacité avérée
     # du pays et qui n'est pas déjà couvert. Le libellé produit de ce tiers vient
@@ -974,12 +989,23 @@ async def get_strategic_flows(
         flow["is_emerging"] = False
         flows.append(flow)
 
-    # Index de demande d'import africaine + position commerciale nette du pays
-    # exportateur (facteur 5, garde-fou « besoin national ») chargés UNE fois,
-    # partagés par les deux tiers pilotés par la capacité (évite les doubles
-    # appels réseau).
+    # Index de demande d'import africaine chargé UNE fois, partagé par les deux
+    # tiers pilotés par la capacité (évite les doubles appels réseau).
     import_index = await _load_import_index(year)
-    net_position = await _national_net_position(exporter_iso3, year)
+
+    # Position commerciale nette du pays exportateur (facteur 5, garde-fou
+    # « besoin national ») : chargée PARESSEUSEMENT et mémoïsée. Ni tier 2 ni
+    # tier 3 n'a besoin de cet appel OEC (2 requêtes HTTP) si le pays n'a ni
+    # intelligence industrielle curée ni capacité UNIDO — un cas fréquent qui
+    # ne doit pas payer une latence réseau inutile. `net_position_loader` est
+    # partagé aux deux tiers pour qu'un SEUL appel serve les deux, s'ils en
+    # ont besoin l'un et l'autre.
+    _net_position_cache: List[Dict] = []
+
+    async def net_position_loader() -> Dict:
+        if not _net_position_cache:
+            _net_position_cache.append(await _national_net_position(exporter_iso3, year))
+        return _net_position_cache[0]
 
     # Tiers 2 — flux curés pilotés par la capacité (champions + projets
     # structurants) : ce que le pays SAIT produire, même si les flux actuels
@@ -993,7 +1019,7 @@ async def get_strategic_flows(
             lang,
             covered_hs,
             import_index,
-            net_position,
+            net_position_loader,
         )
     )
 
@@ -1011,7 +1037,7 @@ async def get_strategic_flows(
             covered_hs,
             import_index,
             export_history,
-            net_position,
+            net_position_loader,
         )
     )
 
