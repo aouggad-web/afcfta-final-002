@@ -17,6 +17,7 @@ import TradeProductsTable from '../TradeProductsTable';
 import OECTradeStats from '../stats/OECTradeStats';
 import MultiCountryComparison from './MultiCountryComparison';
 import CountryHS6History from './CountryHS6History';
+import ProductHSSearch from '../common/ProductHSSearch';
 import CountryTradeSeries from './CountryTradeSeries';
 import ProductTreemap from './ProductTreemap';
 import AfricaTradeMap from './AfricaTradeMap';
@@ -325,6 +326,16 @@ export default function StatisticsTab({ language = 'fr' }) {
 
           {/* ── Par Pays & SH6 Tab ───────────────────────────── */}
           <TabsContent value="par-pays" className="space-y-8">
+            {/* Aide à la saisie : retrouver un code SH depuis le nom courant du
+                produit (index OMD) pour les utilisateurs sans bagage douanier. */}
+            <div className="stats-chart-card" style={{ padding: 16 }}>
+              <div className="stats-chart-title" style={{ marginBottom: 10 }}>
+                {language === 'en'
+                  ? 'Find an HS code from a product name'
+                  : 'Trouver un code SH à partir d’un nom de produit'}
+              </div>
+              <ProductHSSearch language={language} lang={language} />
+            </div>
             <CountryHS6History language={language} />
           </TabsContent>
 
