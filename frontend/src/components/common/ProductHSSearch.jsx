@@ -81,6 +81,11 @@ export default function ProductHSSearch({
       setCount(0);
       return;
     }
+    // Verrou d'obsolescence : si une requête plus récente est lancée avant que
+    // celle-ci ne résolve (frappe rapide) ou si le composant est démonté, on
+    // ignore sa réponse — évite d'écraser des résultats plus frais avec une
+    // réponse tardive, et tout setState après démontage.
+    let stale = false;
     debounceRef.current = setTimeout(async () => {
       setLoading(true);
       setTouched(true);
@@ -88,27 +93,35 @@ export default function ProductHSSearch({
         const r = await axios.get(`${API}/hs-codes/product-index`, {
           params: { q, language: uiLang, limit: 25 },
         });
+        if (stale) return;
         setResults(r.data.results || []);
         setCount(r.data.count || 0);
       } catch {
+        if (stale) return;
         setResults([]);
         setCount(0);
       } finally {
-        setLoading(false);
+        if (!stale) setLoading(false);
       }
     }, 280);
-    return () => debounceRef.current && clearTimeout(debounceRef.current);
+    return () => {
+      stale = true;
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
   }, [query, uiLang]);
 
   const handleCode = (code, entry) => {
     if (onSelect) onSelect(code, entry);
-    navigator?.clipboard?.writeText(code).then(
-      () => {
-        setCopied(code);
-        setTimeout(() => setCopied(null), 1200);
-      },
-      () => {},
-    );
+    const clipboard = typeof navigator !== 'undefined' ? navigator.clipboard : null;
+    if (clipboard && typeof clipboard.writeText === 'function') {
+      clipboard.writeText(code).then(
+        () => {
+          setCopied(code);
+          setTimeout(() => setCopied(null), 1200);
+        },
+        () => {},
+      );
+    }
   };
 
   return (
@@ -130,6 +143,7 @@ export default function ProductHSSearch({
           autoFocus={autoFocus}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder || t.placeholder}
+          aria-label={placeholder || t.placeholder}
           data-testid="product-hs-input"
           style={{
             width: '100%',

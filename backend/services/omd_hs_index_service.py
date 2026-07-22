@@ -42,22 +42,40 @@ def _normalize(text: str) -> str:
 
 @lru_cache(maxsize=1)
 def _load() -> Dict:
-    """Charge l'index une fois et pré-calcule la forme normalisée de chaque libellé."""
+    """Charge l'index une fois et pré-calcule la forme normalisée de chaque libellé
+    ainsi que son découpage en MOTS (pour un matching par mot entier, pas par
+    sous-chaîne — sinon le token « or » matcherait à tort « coriandre »)."""
     try:
         payload = json.loads(_INDEX_PATH.read_text(encoding="utf-8"))
     except Exception:
-        return {"source": None, "entries": [], "norm": []}
+        return {"source": None, "entries": [], "norm": [], "words": []}
     entries = payload.get("entries", [])
     norm = [_normalize(e.get("label", "")) for e in entries]
-    return {"source": payload.get("source"), "entries": entries, "norm": norm}
+    words = [set(n.split()) for n in norm]
+    return {"source": payload.get("source"), "entries": entries, "norm": norm, "words": words}
 
 
-def _score(query_norm: str, tokens: List[str], label_norm: str, entry: Dict) -> Optional[int]:
+def _token_matches_label(tok: str, label_words: set) -> bool:
+    """
+    Un token matche un libellé s'il est le préfixe d'un de ses MOTS (ou
+    inversement) — jamais une sous-chaîne en milieu de mot. Ancré sur des
+    limites de mots pour éviter qu'un token comme « or » matche à tort
+    « coriandre » (pas de mot du libellé ne commence par « or », ni n'est
+    préfixe de « or »), tout en couvrant les variations légitimes de
+    singulier/pluriel (« machine » préfixe de « machines », et vice versa).
+    """
+    return any(w.startswith(tok) or tok.startswith(w) for w in label_words)
+
+
+def _score(
+    query_norm: str, tokens: List[str], label_norm: str, label_words: set, entry: Dict
+) -> Optional[int]:
     """
     Score de pertinence (plus haut = mieux) ou None si l'entrée ne matche pas.
-    Tous les tokens de la requête doivent figurer dans le libellé (sémantique ET).
+    Tous les tokens de la requête doivent matcher un mot du libellé (sémantique
+    ET, ancrée sur des limites de mots — pas une sous-chaîne arbitraire).
     """
-    if not all(tok in label_norm for tok in tokens):
+    if not all(_token_matches_label(tok, label_words) for tok in tokens):
         return None
     score = 0
     if label_norm == query_norm:
@@ -99,12 +117,15 @@ def search(query: str, limit: int = 20) -> Dict:
         return {"query": query, "count": 0, "results": [], "source": data.get("source")}
 
     scored: List[tuple] = []
-    for entry, label_norm in zip(data["entries"], data["norm"]):
-        s = _score(query_norm, tokens, label_norm, entry)
+    for entry, label_norm, label_words in zip(data["entries"], data["norm"], data["words"]):
+        s = _score(query_norm, tokens, label_norm, label_words, entry)
         if s is not None:
             scored.append((s, entry))
 
     scored.sort(key=lambda x: (-x[0], len(x[1]["label"])))
+    # Respecte `limit` tel quel (0 -> aucun résultat) : l'endpoint FastAPI valide
+    # déjà limit >= 1, mais le service ne doit pas imposer sa propre valeur
+    # plancher surprenante à un appelant qui passerait volontairement 0.
     results = [
         {
             "label": e["label"],
@@ -115,7 +136,7 @@ def search(query: str, limit: int = 20) -> Dict:
             "is_range": e.get("is_range", False),
             "see_also": e.get("see_also"),
         }
-        for _, e in scored[: max(1, limit)]
+        for _, e in scored[: max(0, limit)]
     ]
     return {
         "query": query,

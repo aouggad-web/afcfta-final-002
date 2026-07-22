@@ -36,6 +36,25 @@ def test_accent_and_case_insensitive():
     assert any(c.startswith("0902") for c in res_lower["results"][0]["hs_codes"])
 
 
+def test_no_mid_word_substring_false_positive():
+    """
+    Régression (revue Copilot) : le matching doit être ancré sur des limites de
+    mot, pas une sous-chaîne arbitraire — le token « or » ne doit jamais matcher
+    « coriandre » (qui ne contient « or » qu'en milieu de mot).
+    """
+    res = omd.search("or", limit=200)
+    labels = [r["label"].lower() for r in res["results"]]
+    assert not any("coriandre" in label for label in labels)
+
+
+def test_singular_plural_prefix_still_matches():
+    """Le matching par préfixe de mot doit continuer à couvrir les variations de
+    singulier/pluriel usuelles (« voiture » -> libellés en « VOITURES »)."""
+    res = omd.search("voiture", limit=10)
+    assert res["results"]
+    assert any("VOITURES" in r["label"] for r in res["results"])
+
+
 def test_all_query_tokens_must_match():
     """Sémantique ET : un mot absent exclut l'entrée (pas de bruit)."""
     res = omd.search("machine à coudre")
