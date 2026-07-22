@@ -447,7 +447,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
             <div style={{ padding: 30, textAlign: 'center', color: 'var(--afcfta-muted)' }}>{t.noFlows}</div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 14 }}>
-              {(data.flows || []).map((f, i) => <FlowCard key={`${f.hs_code}-${i}`} flow={f} t={t} />)}
+              {(data.flows || []).map((f) => <FlowCard key={f.hs_code} flow={f} t={t} />)}
             </div>
           )}
         </>

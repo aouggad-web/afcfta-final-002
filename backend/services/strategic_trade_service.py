@@ -212,7 +212,6 @@ def _strategic_rationale(match: Dict, exporter_name: str, markets: List[Dict], p
         parts.append(fut["rationale"])
     if not parts:
         # Repli générique quand le produit n'est pas encore dans la base curée.
-        top = markets[0] if markets else {}
         market_txt = _markets_phrase(markets)
         parts.append(
             f"{exporter_name} dispose d'une capacité d'export réelle sur « {product} », "
@@ -220,7 +219,6 @@ def _strategic_rationale(match: Dict, exporter_name: str, markets: List[Dict], p
             f"significatifs aujourd'hui sourcés en grande partie hors du continent — "
             f"cible naturelle sous la ZLECAf."
         )
-        _ = top
     return " ".join(parts)
 
 
