@@ -256,9 +256,7 @@ async def search_product_index(
             enriched_codes.append(
                 {
                     "code": code,
-                    "level": {2: "chapter", 4: "heading", 6: "subheading"}.get(
-                        len(code), "other"
-                    ),
+                    "level": {2: "chapter", 4: "heading", 6: "subheading"}.get(len(code), "other"),
                     "official_label": official,
                     "chapter": chapter,
                     "chapter_name": chapters.get(chapter, {}).get(language, ""),
