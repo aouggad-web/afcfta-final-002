@@ -24,6 +24,7 @@ flux reste produit — jamais bloqué.
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from typing import Dict, List, Optional
 
@@ -453,6 +454,95 @@ async def _export_history_hs4(exporter_iso3: str, year: int) -> set:
     return {_normalize_hs(e.get("hs_code")) for e in (exports or []) if e.get("hs_code")}
 
 
+# ---------------------------------------------------------------------------
+# Garde-fou « besoin national » (facteur 5)
+# ---------------------------------------------------------------------------
+# Une capacité de PRODUCTION ne vaut pas capacité d'EXPORT : un pays n'exporte
+# qu'un EXCÉDENT — ce que sa production couvre AU-DELÀ de sa demande intérieure.
+# Or les tiers pilotés par la capacité (champions curés ET découverte UNIDO)
+# partent de la seule capacité de production ; ils faisaient donc ressortir, à
+# tort, des produits dont le pays est lui-même un gros IMPORTATEUR NET — sa
+# production ne suffit même pas à son marché national, il n'a aucun excédent à
+# exporter.
+#
+# Cas réel signalé : l'Algérie ressortait comme exportatrice de lait en poudre
+# (SH 040210) alors qu'elle en IMPORTE >1 Md$/an. Sa production laitière est
+# pourtant réelle (facteur 2 « intrant corroboré » satisfait) — mais très loin
+# de couvrir la demande intérieure : même avec le projet Baladna (~300 000
+# vaches), l'Algérie reste structurellement importatrice nette. La capacité
+# existe, l'excédent exportable non.
+#
+# Règle : sur les tiers capacité, on EXCLUT un produit dont le pays exportateur
+# est un importateur net MAJEUR — imports du produit nettement supérieurs à ses
+# exports ET matériels en valeur absolue. La position nette est mesurée au SH6
+# (pas au SH4) pour ne pas confondre l'INTRANT importé et l'EXTRANT exporté
+# d'une même position à 4 chiffres (ex. sucre brut importé 170114 vs sucre
+# raffiné exporté 170199, tous deux sous 1701) : un raffineur genuinement
+# exportateur de 170199 ne doit pas être écarté parce qu'il importe le brut.
+#
+# Source de la position nette : données OEC/BACI par pays (les mêmes que le
+# sous-module statistique « SH6 par pays »), bornées au top-100 de chaque flux.
+# Un déficit d'import massif y figure toujours ; les déficits marginaux (hors
+# top-100) restent tolérés — l'objectif est d'écarter les cas structurels et
+# flagrants, pas les demi-teintes.
+_NATIONAL_DEMAND_MIN_IMPORT_USD = 20_000_000
+_NATIONAL_DEMAND_NET_RATIO = 2.0
+
+
+async def _national_net_position(exporter_iso3: str, year: int) -> Dict[str, Dict[str, float]]:
+    """
+    Position commerciale nette du PAYS EXPORTATEUR lui-même, par sous-position
+    SH6 : ``{hs6: {"exports": usd, "imports": usd}}`` (top-100 de chaque flux,
+    OEC/BACI). Alimente le garde-fou « besoin national » (facteur 5, voir les
+    constantes ci-dessus). Dégradation silencieuse (dict vide) hors contexte
+    réseau : le garde-fou ne bloque alors aucun flux (fail-open), il ne peut
+    qu'écarter sur preuve d'un déficit national réel.
+    """
+
+    async def _values(flow: str) -> List[Dict]:
+        try:
+            if flow == "imports":
+                return await real_trade_service.get_oec_imports(
+                    exporter_iso3, year=year, limit=100, hs_level="HS6"
+                )
+            return await real_trade_service.get_oec_exports(
+                exporter_iso3, year=year, limit=100, hs_level="HS6"
+            )
+        except Exception:  # pragma: no cover
+            return []
+
+    exports, imports = await asyncio.gather(_values("exports"), _values("imports"))
+    pos: Dict[str, Dict[str, float]] = {}
+    for e in exports or []:
+        code = _normalize_hs(e.get("hs_code"))
+        if code:
+            pos.setdefault(code, {"exports": 0.0, "imports": 0.0})["exports"] += float(
+                e.get("trade_value") or 0
+            )
+    for m in imports or []:
+        code = _normalize_hs(m.get("hs_code"))
+        if code:
+            pos.setdefault(code, {"exports": 0.0, "imports": 0.0})["imports"] += float(
+                m.get("trade_value") or 0
+            )
+    return pos
+
+
+def _is_national_demand_product(net_position: Dict[str, Dict[str, float]], hs6: str) -> bool:
+    """
+    True si le pays exportateur est un IMPORTATEUR NET MAJEUR du produit (SH6) :
+    sa demande intérieure absorbe et dépasse largement sa production — la
+    capacité repérée doit d'abord servir le marché national, elle ne fonde pas
+    un flux d'export. Absence de preuve -> False (ne bloque jamais un flux).
+    """
+    row = net_position.get(_normalize_hs(hs6))
+    if not row:
+        return False
+    imp = row.get("imports", 0.0)
+    exp = row.get("exports", 0.0)
+    return imp >= _NATIONAL_DEMAND_MIN_IMPORT_USD and imp >= exp * _NATIONAL_DEMAND_NET_RATIO
+
+
 async def _capacity_driven_flows(
     exporter_iso3: str,
     exporter_name: str,
@@ -461,6 +551,7 @@ async def _capacity_driven_flows(
     lang: str,
     covered_hs: set,
     import_index: Optional[Dict] = None,
+    net_position: Optional[Dict] = None,
 ) -> List[Dict]:
     """
     Flux *pilotés par la capacité* : à la différence des flux OEC historiques
@@ -486,6 +577,9 @@ async def _capacity_driven_flows(
         import_index = await _load_import_index(year)
     if not import_index:
         return []
+
+    if net_position is None:
+        net_position = await _national_net_position(exporter_iso3, year)
 
     # Un même champion (ou capacité future) liste souvent plusieurs sous-positions
     # SH6 sous UN SEUL libellé d'extrant (ex. Cevital « Huile de table raffinée &
@@ -528,6 +622,12 @@ async def _capacity_driven_flows(
             import_index, hs6, exporter_iso3, min_market_size, coef, lang
         )
         if not markets:
+            continue
+
+        # Garde-fou « besoin national » (facteur 5) : le pays est lui-même un
+        # importateur net majeur de ce SH6 -> capacité de production réelle,
+        # mais absorbée par la demande intérieure, aucun excédent exportable.
+        if _is_national_demand_product(net_position, hs6):
             continue
 
         # match_for_hs fournit le bon champion/capacité future + signal pour ce SH.
@@ -683,6 +783,7 @@ async def _unido_discovered_flows(
     covered_hs: set,
     import_index: Optional[Dict] = None,
     export_history: Optional[set] = None,
+    net_position: Optional[Dict] = None,
 ) -> List[Dict]:
     """
     Troisième tiers : flux DÉCOUVERTS automatiquement depuis les données UNIDO.
@@ -711,6 +812,9 @@ async def _unido_discovered_flows(
 
     if export_history is None:
         export_history = await _export_history_hs4(exporter_iso3, year)
+
+    if net_position is None:
+        net_position = await _national_net_position(exporter_iso3, year)
 
     # Candidats : SH6 de la demande d'import dont le SH4 est une capacité avérée
     # du pays et qui n'est pas déjà couvert. Le libellé produit de ce tiers vient
@@ -750,6 +854,12 @@ async def _unido_discovered_flows(
             import_index, hs6, exporter_iso3, min_market_size, coef, lang
         )
         if not markets:
+            continue
+
+        # Garde-fou « besoin national » (facteur 5, voir _is_national_demand_product) :
+        # le pays est lui-même un importateur net majeur de ce SH6 -> sa
+        # production, même avérée, sert d'abord le marché intérieur.
+        if _is_national_demand_product(net_position, hs6):
             continue
 
         # Plafond de plausibilité (facteur 3), gradué par le facteur 4 : un
@@ -864,16 +974,26 @@ async def get_strategic_flows(
         flow["is_emerging"] = False
         flows.append(flow)
 
-    # Index de demande d'import africaine chargé UNE fois, partagé par les deux
-    # tiers pilotés par la capacité (évite un double appel réseau).
+    # Index de demande d'import africaine + position commerciale nette du pays
+    # exportateur (facteur 5, garde-fou « besoin national ») chargés UNE fois,
+    # partagés par les deux tiers pilotés par la capacité (évite les doubles
+    # appels réseau).
     import_index = await _load_import_index(year)
+    net_position = await _national_net_position(exporter_iso3, year)
 
     # Tiers 2 — flux curés pilotés par la capacité (champions + projets
     # structurants) : ce que le pays SAIT produire, même si les flux actuels
     # sont modestes.
     flows.extend(
         await _capacity_driven_flows(
-            exporter_iso3, exporter_name, year, min_market_size, lang, covered_hs, import_index
+            exporter_iso3,
+            exporter_name,
+            year,
+            min_market_size,
+            lang,
+            covered_hs,
+            import_index,
+            net_position,
         )
     )
 
@@ -891,6 +1011,7 @@ async def get_strategic_flows(
             covered_hs,
             import_index,
             export_history,
+            net_position,
         )
     )
 
