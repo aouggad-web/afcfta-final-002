@@ -208,6 +208,66 @@ async def search_hs_codes_endpoint(
     return {"query": q, "results": results, "count": len(results), "language": language}
 
 
+@router.get("/product-index")
+async def search_product_index(
+    q: str = Query(..., min_length=2, description="Nom courant du produit/marchandise"),
+    language: str = Query("fr", description="Language: fr or en"),
+    limit: int = Query(20, ge=1, le=100, description="Maximum results"),
+):
+    """
+    Recherche « nom de marchandise -> code SH » via l'index alphabétique OFFICIEL
+    de l'OMD (Système Harmonisé, 7e éd. 2022).
+
+    Complète ``/hs-codes/search`` (qui interroge la base technique SH6 par code ou
+    intitulé) en partant du VOCABULAIRE COURANT : un utilisateur sans connaissance
+    douanière tape « huile de palme », « machine à coudre », « thé vert » et
+    obtient les positions SH correspondantes. Chaque code SH6 est enrichi de son
+    intitulé technique officiel pour lever toute ambiguïté.
+    """
+    from services import omd_hs_index_service as omd
+
+    found = omd.search(q, limit=limit)
+    chapters = get_hs_chapters()
+
+    results = []
+    for r in found["results"]:
+        enriched_codes = []
+        for code in r.get("hs_codes", []):
+            chapter = code[:2]
+            official = ""
+            if len(code) == 6:
+                info = get_hs6_info(code, language) or {}
+                official = info.get("description", "") or info.get("label", "")
+            enriched_codes.append(
+                {
+                    "code": code,
+                    "level": {2: "chapter", 4: "heading", 6: "subheading"}.get(len(code), "other"),
+                    "official_label": official,
+                    "chapter": chapter,
+                    "chapter_name": chapters.get(chapter, {}).get(language, ""),
+                }
+            )
+        results.append(
+            {
+                "label": r["label"],
+                "term": r["term"],
+                "qualifier": r.get("qualifier"),
+                "codes": enriched_codes,
+                "codes_display": r.get("codes_display"),
+                "is_range": r.get("is_range", False),
+                "see_also": r.get("see_also"),
+            }
+        )
+
+    return {
+        "query": q,
+        "count": found["count"],
+        "results": results,
+        "source": found.get("source"),
+        "language": language,
+    }
+
+
 @router.get("/chapter/{chapter}")
 async def get_hs_codes_by_chapter(
     chapter: str, language: str = Query("fr", description="Language: fr or en")
