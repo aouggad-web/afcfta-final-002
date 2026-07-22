@@ -171,29 +171,6 @@ def _lead_time_days(origin_iso3: str, dest_iso3: str, hs_code: str) -> Optional[
     return days
 
 
-# CAGR de demande régionale par défaut pour projeter la trajectoire à 5 ans.
-# Repli prudent (~7 %/an) alignant l'ordre de grandeur des trajectoires de
-# demande intra-africaine ; explicitement estimatif.
-_DEFAULT_DEMAND_CAGR = 0.07
-
-
-def _growth_trajectory(market_size: int, year: int) -> Dict:
-    """
-    Trajectoire de demande régionale sur 5 ans [année-3 .. année+1], projetée
-    depuis la demande actuelle du marché avec un CAGR régional. Estimative.
-    """
-    base = float(market_size or 0)
-    points = []
-    for offset in range(-3, 2):  # year-3 .. year+1 (5 points)
-        factor = (1 + _DEFAULT_DEMAND_CAGR) ** offset
-        points.append({"year": year + offset, "demand_usd": int(base * factor)})
-    return {
-        "cagr_pct": round(_DEFAULT_DEMAND_CAGR * 100, 1),
-        "points": points,
-        "is_estimate": True,
-    }
-
-
 def _transformation(match: Dict) -> Optional[Dict]:
     """Stratégie de transformation industrielle depuis l'intelligence pays."""
     champ = match.get("champion")
@@ -224,8 +201,8 @@ def _transformation(match: Dict) -> Optional[Dict]:
     }
 
 
-def _strategic_rationale(match: Dict, exporter_name: str, market_name: str, product: str) -> str:
-    """Compose une rationale stratégique lisible depuis l'intelligence + le marché."""
+def _strategic_rationale(match: Dict, exporter_name: str, markets: List[Dict], product: str) -> str:
+    """Compose une rationale stratégique lisible depuis l'intelligence + les marchés."""
     champ = match.get("champion")
     fut = match.get("future_capacity")
     parts: List[str] = []
@@ -235,65 +212,89 @@ def _strategic_rationale(match: Dict, exporter_name: str, market_name: str, prod
         parts.append(fut["rationale"])
     if not parts:
         # Repli générique quand le produit n'est pas encore dans la base curée.
+        market_txt = _markets_phrase(markets)
         parts.append(
             f"{exporter_name} dispose d'une capacité d'export réelle sur « {product} », "
-            f"et {market_name} en importe des volumes significatifs aujourd'hui sourcés "
-            f"en grande partie hors du continent — cible naturelle sous la ZLECAf."
+            f"et {market_txt} en importe{'nt' if len(markets) > 1 else ''} des volumes "
+            f"significatifs aujourd'hui sourcés en grande partie hors du continent — "
+            f"cible naturelle sous la ZLECAf."
         )
     return " ".join(parts)
+
+
+def _markets_phrase(markets: List[Dict]) -> str:
+    """« l'Égypte » (1 marché) ou « 3 marchés africains (premier : l'Égypte) »."""
+    if not markets:
+        return "des marchés africains"
+    if len(markets) == 1:
+        return markets[0].get("name") or markets[0].get("iso3", "")
+    first = markets[0].get("name") or markets[0].get("iso3", "")
+    return f"{len(markets)} marchés africains (premier : {first})"
 
 
 def _build_flow(
     exporter_iso3: str,
     exporter_name: str,
     opp: Dict,
-    market: Dict,
+    markets: List[Dict],
     match: Dict,
     roo: Optional[Dict],
     lang: str,
     year: int,
 ) -> Dict:
+    """
+    Construit UN flux stratégique par PRODUIT (et non par couple produit×marché) :
+    tous les marchés africains importateurs du produit sont listés dans
+    ``markets`` avec leur volume d'import RÉEL et leur potentiel de capture, au
+    lieu de dupliquer une carte par destination.
+    """
     product = opp.get("export_product") or {}
     hs6 = product.get("hs_code", "")
     product_name = product.get("name") or f"SH {hs6}"
-    market_name = market.get("country_name") or market.get("country_iso3")
 
-    market_size = market.get("market_size", 0) or 0
-    capture = market.get("capture_potential", 0) or 0
-    potential_usd = int(market_size * capture)
+    market_entries: List[Dict] = []
+    total_import = 0
+    total_potential = 0
+    for m in markets:
+        size = int(m.get("market_size", 0) or 0)
+        capture = m.get("capture_potential", 0) or 0
+        pot = int(size * capture)
+        total_import += size
+        total_potential += pot
+        market_entries.append(
+            {
+                "iso3": m.get("country_iso3"),
+                "name": m.get("country_name") or m.get("country_iso3"),
+                "import_usd": size,
+                "potential_usd": pot,
+                "capture_potential": capture,
+                "lead_time_days": _lead_time_days(exporter_iso3, m.get("country_iso3", ""), hs6),
+            }
+        )
+    market_entries.sort(key=lambda x: x["import_usd"], reverse=True)
 
-    price_pos = market.get("price_positioning") or {}
     champ = match.get("champion") or {}
     # Vocabulaire canonique du champ (base curée : "High"/"Moderate"/"Medium"),
-    # neutre en langue. Le positionnement prix brut reste exposé séparément dans
-    # ``advantage.price_positioning`` : on n'injecte donc PAS de repli en
-    # texte libre (qui mélangeait un libellé FR à un champ à valeurs EN).
+    # neutre en langue.
     price_competitiveness = champ.get("price_competitiveness")
 
     return {
         "hs_code": hs6,
         "product": product_name,
         "from": {"iso3": exporter_iso3, "name": exporter_name},
-        "to": {
-            "iso3": market.get("country_iso3"),
-            "name": market_name,
-        },
+        "markets": market_entries,
         "signal": match.get("signal"),  # "High Growth" | "Established" | None
-        "potential_usd": potential_usd,
-        "market_size_usd": int(market_size),
-        "capture_potential": capture,
+        "potential_usd": total_potential,
+        "total_import_usd": total_import,
         "market_match_level": opp.get("market_match_level"),
         "strategic_rationale": _strategic_rationale(
-            match, exporter_name, market_name, product_name
+            match, exporter_name, market_entries, product_name
         ),
         "transformation": _transformation(match),
-        "growth_trajectory": _growth_trajectory(int(market_size), year),
         "advantage": {
             "afcfta_tariff_edge": _tariff_edge(hs6),
             "rules_of_origin": roo,
             "price_competitiveness": price_competitiveness,
-            "price_positioning": price_pos or None,
-            "lead_time_days": _lead_time_days(exporter_iso3, market.get("country_iso3", ""), hs6),
             "afcfta_note": opp.get("afcfta_advantage"),
         },
         "future_project": match.get("future_capacity"),
@@ -311,25 +312,26 @@ def _aggregate(flows: List[Dict], lang: str) -> Dict:
     for f in flows:
         total_potential += f["potential_usd"]
 
-        to = f["to"]
-        p = partners.setdefault(
-            to["iso3"],
-            {"iso3": to["iso3"], "name": to["name"], "flow_count": 0, "potential_usd": 0},
-        )
-        p["flow_count"] += 1
-        p["potential_usd"] += f["potential_usd"]
+        markets = f.get("markets") or []
+        for m in markets:
+            p = partners.setdefault(
+                m["iso3"],
+                {"iso3": m["iso3"], "name": m["name"], "flow_count": 0, "potential_usd": 0},
+            )
+            p["flow_count"] += 1  # nombre de produits acheminés vers ce partenaire
+            p["potential_usd"] += m["potential_usd"]
 
         c = commodities.setdefault(
             f["hs_code"],
             {
                 "hs_code": f["hs_code"],
                 "product": f["product"],
-                "flow_count": 0,
+                "market_count": 0,
                 "potential_usd": 0,
                 "signal": f["signal"],
             },
         )
-        c["flow_count"] += 1
+        c["market_count"] += len(markets)  # nombre de marchés importateurs
         c["potential_usd"] += f["potential_usd"]
 
     top_partners = sorted(partners.values(), key=lambda x: x["potential_usd"], reverse=True)
@@ -404,7 +406,6 @@ def _markets_for_product(
                 "market_size": int(m["value"]),
                 "addressable_market_size": int(m["value"] * coef),
                 "capture_potential": round(min(coef, 0.25), 2),
-                "price_positioning": None,
             }
         )
     markets.sort(key=lambda x: x["market_size"], reverse=True)
@@ -544,13 +545,12 @@ async def _capacity_driven_flows(
             "verified_production": None,
         }
         roo = _rules_of_origin(hs6, lang)
-        for market in markets:
-            flow = _build_flow(
-                exporter_iso3, exporter_name, synthetic_opp, market, match, roo, lang, year
-            )
-            flow["is_emerging"] = bool(is_future)
-            flow["is_capacity_driven"] = True
-            flows.append(flow)
+        flow = _build_flow(
+            exporter_iso3, exporter_name, synthetic_opp, markets, match, roo, lang, year
+        )
+        flow["is_emerging"] = bool(is_future)
+        flow["is_capacity_driven"] = True
+        flows.append(flow)
 
     return flows
 
@@ -624,36 +624,46 @@ def _unido_transformation_champion(evidence: Dict, product_name: str) -> Dict:
 
 def _unido_flow_rationale(
     exporter_name: str,
-    market_name: str,
-    market_size_usd: float,
+    markets: List[Dict],
     product_name: str,
     evidence: Dict,
     has_export_history: bool,
 ) -> str:
     """
-    Rationale stratégique d'un flux DÉCOUVERT (tiers 3), composée par flux —
-    pas un modèle unique où seuls le secteur/la VA/le produit varient : le
-    marché ciblé (nom + volume d'import réel) et le niveau de confiance
-    (facteur 4 : produit déjà exporté ou encore jamais) varient aussi, pour
-    qu'aucune carte ne se lise comme la copie d'une autre.
+    Rationale stratégique d'un flux DÉCOUVERT (tiers 3), composée par PRODUIT à
+    partir de ses marchés réels — pas un modèle unique où seuls le secteur/la
+    VA/le produit varient : le premier marché (nom + volume d'import réel), le
+    nombre de débouchés et la demande totale, plus le niveau de confiance
+    (facteur 4 : produit déjà exporté ou encore jamais) font varier chaque
+    carte, sans qu'aucune ne se lise comme la copie d'une autre.
     """
     sector = evidence.get("isic_label_fr") or "industrie manufacturière"
     va_txt = _fmt_usd_fr(evidence.get("value_added_usd") or 0)
-    market_txt = _fmt_usd_fr(market_size_usd)
+    total_import = sum(m.get("import_usd", 0) or 0 for m in markets)
+    top = markets[0] if markets else {}
+    top_name = top.get("name") or top.get("iso3", "")
+    top_txt = _fmt_usd_fr(top.get("import_usd", 0) or 0)
 
     anchor = (
         f"{exporter_name} a une capacité manufacturière avérée dans « {sector} » "
         f"({va_txt} de valeur ajoutée, UNIDO INDSTAT4), suffisante pour produire "
         f"« {product_name} »."
     )
-    demand = (
-        f"{market_name} en importe {market_txt} aujourd'hui, sourcés en grande "
-        f"partie hors du continent — un marché accessible sous préférence ZLECAf."
-    )
+    if len(markets) <= 1:
+        demand = (
+            f"{top_name} en importe {top_txt} aujourd'hui, sourcés en grande "
+            f"partie hors du continent — un marché accessible sous préférence ZLECAf."
+        )
+    else:
+        demand = (
+            f"{len(markets)} marchés africains en importent {_fmt_usd_fr(total_import)} "
+            f"au total (premier : {top_name}, {top_txt}), sourcés en grande partie "
+            f"hors du continent — autant de débouchés accessibles sous préférence ZLECAf."
+        )
     if has_export_history:
         confidence = (
             f"{exporter_name} exporte déjà ce type de produit, même modestement : "
-            f"la ZLECAf ouvre la voie à une montée en puissance vers {market_name}."
+            f"la ZLECAf ouvre la voie à une montée en puissance régionale."
         )
     else:
         confidence = (
@@ -776,37 +786,32 @@ async def _unido_discovered_flows(
             "verified_production": None,
         }
         roo = _rules_of_origin(hs6, lang)
-        for market in markets:
-            flow = _build_flow(
-                exporter_iso3, exporter_name, synthetic_opp, market, match, roo, lang, year
-            )
-            # Rationale composée PAR FLUX (marché + confiance) — voir
-            # _unido_flow_rationale : évite le paragraphe identique d'une carte
-            # à l'autre que produirait une rationale fixée par produit.
-            flow["strategic_rationale"] = _unido_flow_rationale(
-                exporter_name,
-                market.get("country_name") or market.get("country_iso3", ""),
-                market.get("market_size", 0) or 0,
-                product_name,
-                evidence,
-                has_export_history,
-            )
-            flow["is_emerging"] = False
-            flow["is_capacity_driven"] = True
-            flow["discovery_tier"] = "unido"
-            flow["capacity_evidence"] = {
-                "isic_code": evidence.get("isic_code"),
-                "isic_label": evidence.get("isic_label_fr"),
-                "value_added_usd": evidence.get("value_added_usd"),
-                "va_year": evidence.get("va_year"),
-                "source": "UNIDO INDSTAT4",
-                # Traçabilité du système à facteurs multiples (voir
-                # unido_discovery_service, section « Contrôle de plausibilité »).
-                "input_requirement_checked": evidence.get("input_requirement_checked", False),
-                "has_export_history": has_export_history,
-                "plausibility_cap_fraction": va_cap_fraction,
-            }
-            flows.append(flow)
+        flow = _build_flow(
+            exporter_iso3, exporter_name, synthetic_opp, markets, match, roo, lang, year
+        )
+        # Rationale composée par PRODUIT depuis ses marchés réels (premier marché,
+        # nombre de débouchés, demande totale, confiance) — voir
+        # _unido_flow_rationale : chaque carte porte un texte propre, la liste
+        # des marchés (avec volumes) remplaçant les cartes dupliquées.
+        flow["strategic_rationale"] = _unido_flow_rationale(
+            exporter_name, flow["markets"], product_name, evidence, has_export_history
+        )
+        flow["is_emerging"] = False
+        flow["is_capacity_driven"] = True
+        flow["discovery_tier"] = "unido"
+        flow["capacity_evidence"] = {
+            "isic_code": evidence.get("isic_code"),
+            "isic_label": evidence.get("isic_label_fr"),
+            "value_added_usd": evidence.get("value_added_usd"),
+            "va_year": evidence.get("va_year"),
+            "source": "UNIDO INDSTAT4",
+            # Traçabilité du système à facteurs multiples (voir
+            # unido_discovery_service, section « Contrôle de plausibilité »).
+            "input_requirement_checked": evidence.get("input_requirement_checked", False),
+            "has_export_history": has_export_history,
+            "plausibility_cap_fraction": va_cap_fraction,
+        }
+        flows.append(flow)
 
     return flows
 
@@ -850,12 +855,14 @@ async def get_strategic_flows(
         if not hs6:
             continue
         covered_hs.add(_normalize_hs(hs6))
+        markets = opp.get("potential_markets", [])
+        if not markets:
+            continue
         match = intel.match_for_hs(exporter_iso3, hs6)
         roo = _rules_of_origin(hs6, lang)
-        for market in opp.get("potential_markets", []):
-            flow = _build_flow(exporter_iso3, exporter_name, opp, market, match, roo, lang, year)
-            flow["is_emerging"] = False
-            flows.append(flow)
+        flow = _build_flow(exporter_iso3, exporter_name, opp, markets, match, roo, lang, year)
+        flow["is_emerging"] = False
+        flows.append(flow)
 
     # Index de demande d'import africaine chargé UNE fois, partagé par les deux
     # tiers pilotés par la capacité (évite un double appel réseau).

@@ -8,8 +8,10 @@
  * Consomme GET /api/strategic/flows/{iso3} et affiche :
  *  - une vue agrégée (flux identifiés, potentiel total, partenaires & commodités
  *    prioritaires) ;
- *  - des cartes de flux stratégiques (rationale, stratégie de transformation,
- *    avantage ZLECAf, règles d'origine, trajectoire de demande, potentiel).
+ *  - une carte de flux stratégique PAR PRODUIT (rationale, intrant -> extrant,
+ *    avantage ZLECAf, règles d'origine, potentiel), listant tous les marchés
+ *    africains importateurs avec leur volume d'import réel — au lieu d'une
+ *    carte dupliquée par (produit × marché).
  */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +19,7 @@ import axios from 'axios';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import {
   Loader2, AlertCircle, TrendingUp, MapPin, ArrowRight, Factory,
-  ShieldCheck, Truck, Percent, Package, Sparkles,
+  ShieldCheck, Percent, Package, Sparkles,
 } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -44,18 +46,20 @@ const T = {
     leadTime: 'Délai logistique',
     priceComp: 'Compétitivité prix',
     roo: "Règles d'origine",
-    growth: 'Trajectoire de demande (5 ans)',
     potential: 'Potentiel',
     days: 'j',
     mfnPref: 'NPF → Taux préférentiel ZLECAf',
     estimate: 'estimation',
     emerging: 'Capacité à venir',
     operational: 'Opérationnel',
-    regionalDemand: 'Demande régionale',
     noFlows: 'Aucun flux stratégique identifié pour ce pays.',
     discovered: 'Découverte UNIDO',
     capacityEvidence: 'Capacité manufacturière (UNIDO)',
     valueAdded: 'valeur ajoutée',
+    importMarkets: "Marchés africains importateurs",
+    imports: 'importe',
+    priorityMarkets: 'Marchés prioritaires',
+    markets: 'marchés',
   },
   en: {
     title: 'Strategic Flows',
@@ -77,18 +81,20 @@ const T = {
     leadTime: 'Lead time',
     priceComp: 'Price competitiveness',
     roo: 'Rules of origin',
-    growth: '5-year demand trajectory',
     potential: 'Potential',
     days: 'd',
     mfnPref: 'MFN → AfCFTA preferential rate',
     estimate: 'estimate',
     emerging: 'Upcoming capacity',
     operational: 'Operational',
-    regionalDemand: 'Regional demand',
     noFlows: 'No strategic flow identified for this country.',
     discovered: 'UNIDO discovery',
     capacityEvidence: 'Manufacturing capacity (UNIDO)',
     valueAdded: 'value added',
+    importMarkets: 'African importing markets',
+    imports: 'imports',
+    priorityMarkets: 'Priority markets',
+    markets: 'markets',
   },
 };
 
@@ -98,6 +104,15 @@ const fmtUsd = (v) => {
   const n = Number(v) || 0;
   if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
   if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
+  return `$${n.toLocaleString()}`;
+};
+
+// Volume d'import compact pour la liste des marchés.
+const fmtImport = (v) => {
+  const n = Number(v) || 0;
+  if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}B`;
+  if (n >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
   if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
   return `$${n.toLocaleString()}`;
 };
@@ -134,33 +149,28 @@ function SignalBadge({ signal, emerging, t }) {
   );
 }
 
-function GrowthSparkline({ trajectory, t }) {
-  const pts = trajectory?.points || [];
-  if (pts.length < 2) return null;
-  const vals = pts.map((p) => p.demand_usd);
-  const max = Math.max(...vals, 1);
-  const W = 200, H = 46, bw = W / pts.length;
+function MarketList({ markets, t }) {
+  const rows = markets || [];
+  if (rows.length === 0) return null;
+  const max = Math.max(...rows.map((m) => m.import_usd || 0), 1);
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: H }}>
-        {pts.map((p, i) => (
-          <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: bw }}>
-            <div
-              title={`${p.year}: ${fmtUsd(p.demand_usd)}`}
-              style={{
-                width: '70%',
-                height: Math.max(3, (p.demand_usd / max) * (H - 4)),
-                background: 'linear-gradient(180deg,#059669,#0891b2)',
-                borderRadius: '3px 3px 0 0',
-              }}
-            />
-          </div>
-        ))}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: 'var(--afcfta-muted)', textTransform: 'uppercase', marginBottom: 8 }}>
+        <MapPin style={{ width: 13, height: 13 }} />{t.importMarkets}
       </div>
-      <div style={{ display: 'flex', gap: 3, marginTop: 3 }}>
-        {pts.map((p, i) => (
-          <div key={i} style={{ width: bw, textAlign: 'center', fontSize: 9, color: 'var(--afcfta-muted)' }}>
-            {p.year}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }} data-testid="flow-market-list">
+        {rows.map((m) => (
+          <div key={m.iso3} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ flex: '0 0 34%', display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <MapPin style={{ width: 12, height: 12, color: '#059669', flexShrink: 0 }} />{m.name}
+            </span>
+            <span style={{ flex: 1, height: 6, borderRadius: 3, background: 'var(--afcfta-bg)' }}>
+              <span style={{ display: 'block', height: '100%', width: `${Math.max(5, ((m.import_usd || 0) / max) * 100)}%`, borderRadius: 3, background: 'linear-gradient(90deg,#059669,#0891b2)' }} />
+            </span>
+            <span style={{ flex: '0 0 auto', fontSize: 12, color: 'var(--afcfta-muted)', whiteSpace: 'nowrap' }}>
+              {t.imports} <strong style={{ color: 'var(--text)' }}>{fmtImport(m.import_usd)}</strong>
+              {m.lead_time_days != null && <span> · {m.lead_time_days} {t.days}</span>}
+            </span>
           </div>
         ))}
       </div>
@@ -222,14 +232,14 @@ function FlowCard({ flow, t }) {
         </div>
       </div>
 
-      {/* From -> To */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14 }}>
+      {/* Origine + nombre de marchés */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, flexWrap: 'wrap' }}>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontWeight: 700, color: 'var(--text)' }}>
           <MapPin style={{ width: 14, height: 14, color: 'var(--gold)' }} />{flow.from?.name}
         </span>
         <ArrowRight style={{ width: 16, height: 16, color: 'var(--afcfta-muted)' }} />
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontWeight: 700, color: 'var(--text)' }}>
-          <MapPin style={{ width: 14, height: 14, color: '#059669' }} />{flow.to?.name}
+        <span style={{ fontSize: 13, color: 'var(--afcfta-muted)' }}>
+          {(flow.markets || []).length} {t.markets}
         </span>
       </div>
 
@@ -252,7 +262,11 @@ function FlowCard({ flow, t }) {
             {tr.input_source && (
               <div style={{ flex: '1 1 160px' }}>
                 <div style={{ fontSize: 10, color: 'var(--afcfta-muted)' }}>{t.inputSource}</div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{tr.input_source}</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>
+                  {tr.input_source}
+                  <ArrowRight style={{ width: 12, height: 12, color: 'var(--afcfta-muted)', margin: '0 5px', verticalAlign: 'middle' }} />
+                  <span style={{ color: '#059669' }}>{flow.product}</span>
+                </div>
                 {inQty && <div style={{ fontSize: 11, color: 'var(--afcfta-muted)' }}>{inQty}</div>}
               </div>
             )}
@@ -274,15 +288,8 @@ function FlowCard({ flow, t }) {
         </div>
       )}
 
-      {/* Growth trajectory */}
-      {flow.growth_trajectory?.points?.length > 1 && (
-        <div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--afcfta-muted)', textTransform: 'uppercase', marginBottom: 6 }}>
-            {t.growth} · {t.regionalDemand}
-          </div>
-          <GrowthSparkline trajectory={flow.growth_trajectory} t={t} />
-        </div>
-      )}
+      {/* Marchés africains importateurs (volume d'import réel) */}
+      <MarketList markets={flow.markets} t={t} />
 
       {/* Advantage chips */}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -292,7 +299,6 @@ function FlowCard({ flow, t }) {
           value={edge.edge_pct != null ? `-${edge.edge_pct}%` : null}
           sub={t.mfnPref}
         />
-        <AdvantageChip icon={Truck} label={t.leadTime} value={adv.lead_time_days != null ? `${adv.lead_time_days} ${t.days}` : null} />
         <AdvantageChip icon={Sparkles} label={t.priceComp} value={adv.price_competitiveness} />
         <AdvantageChip icon={ShieldCheck} label={t.roo} value={roo.rule_name || roo.rule_type} />
       </div>
@@ -410,7 +416,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
                   <span style={{ fontSize: 12, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     <span style={{ color: 'var(--afcfta-muted)', fontWeight: 700, marginRight: 6 }}>{String(i + 1).padStart(2, '0')}</span>{c.product}
                   </span>
-                  <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', whiteSpace: 'nowrap' }}>{c.flow_count} {t.flows.toLowerCase()}</span>
+                  <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', whiteSpace: 'nowrap' }}>{c.market_count} {t.markets}</span>
                 </div>
               ))}
             </div>
@@ -441,7 +447,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
             <div style={{ padding: 30, textAlign: 'center', color: 'var(--afcfta-muted)' }}>{t.noFlows}</div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 14 }}>
-              {(data.flows || []).map((f, i) => <FlowCard key={`${f.hs_code}-${f.to?.iso3}-${i}`} flow={f} t={t} />)}
+              {(data.flows || []).map((f) => <FlowCard key={f.hs_code} flow={f} t={t} />)}
             </div>
           )}
         </>

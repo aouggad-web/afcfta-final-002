@@ -258,7 +258,9 @@ def capacity_hs4_index(iso3: str) -> Dict[str, Dict]:
                 "value_added_usd": va,
                 "va_year": meta.get("year"),
                 "product_label": label,
-                "input": transf.get("input"),
+                # Intrant PRÉCIS du produit final (ex. 1701 -> « sucre brut »),
+                # repli sur l'intrant générique de division si non nommé.
+                "input": hsmap.input_for_hs4(hs4, transf.get("input")),
                 "process": transf.get("process"),
                 # True si ce SH4 avait une exigence d'intrant VÉRIFIÉE ET
                 # satisfaite (preuve plus forte que la seule VA de division) ;

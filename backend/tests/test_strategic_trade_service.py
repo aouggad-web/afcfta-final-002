@@ -139,7 +139,8 @@ def test_unido_discovered_flow_from_capacity():
 
 def test_self_market_is_excluded():
     res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
-    sugar_markets = [f["to"]["iso3"] for f in res["flows"] if f["hs_code"] == "170199"]
+    sugar = next(f for f in res["flows"] if f["hs_code"] == "170199")
+    sugar_markets = [m["iso3"] for m in sugar["markets"]]
     assert "DZA" not in sugar_markets  # exporter must never be its own market
 
 
@@ -150,9 +151,12 @@ def test_enrichment_fields_populated():
     # Tariff edge = chapter-17 MFN proxy (15%) minus AfCFTA preferential (0).
     assert adv["afcfta_tariff_edge"]["edge_pct"] == 15.0
     assert adv["rules_of_origin"] is not None  # RoO resolved (lazy-loaded)
-    assert adv["lead_time_days"] == 12
-    # 5-year demand trajectory has 5 points.
-    assert len(sugar["growth_trajectory"]["points"]) == 5
+    # Un flux = un produit, avec ses marchés importateurs listés (lead time par
+    # marché) — plus de carte dupliquée par destination, ni de graphe de demande.
+    assert sugar["markets"], "le produit doit lister ses marchés importateurs"
+    assert all(m["lead_time_days"] == 12 for m in sugar["markets"])
+    assert all(m["import_usd"] > 0 for m in sugar["markets"])
+    assert "growth_trajectory" not in sugar
 
 
 def test_summary_aggregation():
@@ -341,13 +345,13 @@ def test_no_duplicate_product_titles_across_champion_sh6_basket(monkeypatch):
     assert "151190" not in all_hs
 
 
-def test_discovered_flow_rationale_varies_by_market_not_templated(monkeypatch):
+def test_discovered_flow_lists_markets_in_one_card_not_duplicated(monkeypatch):
     """
-    Signalé en production : la rationale d'un flux découvert (tiers 3) était
-    un modèle unique où seuls le secteur/la VA/le produit variaient — deux
-    marchés du MÊME produit affichaient un paragraphe identique, sans mention
-    du marché ni de son volume réel. Chaque flux doit désormais porter sa
-    propre rationale (marché + demande réelle + niveau de confiance).
+    Méthode retenue : au lieu d'une carte par (produit × marché), UN flux par
+    produit qui LISTE ses marchés importateurs avec leur volume d'import réel.
+    Deux marchés du même produit (acier plat 720851) ne produisent donc plus
+    deux cartes, mais une seule carte à deux entrées de marché. La rationale
+    reste spécifique (premier marché + demande totale), jamais un modèle copié.
     """
 
     async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
@@ -371,12 +375,16 @@ def test_discovered_flow_rationale_varies_by_market_not_templated(monkeypatch):
 
     res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
     steel = [f for f in res["flows"] if f["hs_code"] == "720851"]
-    assert len(steel) == 2
-    rationales = {f["strategic_rationale"] for f in steel}
-    assert len(rationales) == 2, "chaque marché doit porter une rationale distincte"
-    egy = next(f for f in steel if f["to"]["iso3"] == "EGY")
-    tun = next(f for f in steel if f["to"]["iso3"] == "TUN")
-    assert "Égypte" in egy["strategic_rationale"]
-    assert "Tunisie" in tun["strategic_rationale"]
-    assert "300 M$" in egy["strategic_rationale"]
-    assert "50 M$" in tun["strategic_rationale"]
+    assert len(steel) == 1, "un seul flux (carte) par produit, marchés listés dedans"
+    flow = steel[0]
+    markets = {m["iso3"]: m for m in flow["markets"]}
+    assert set(markets) == {"EGY", "TUN"}
+    assert markets["EGY"]["import_usd"] == 300_000_000
+    assert markets["TUN"]["import_usd"] == 50_000_000
+    # Marchés triés par volume d'import décroissant.
+    assert flow["markets"][0]["iso3"] == "EGY"
+    # Rationale spécifique : premier marché nommé + cadrage multi-marchés + volume.
+    rat = flow["strategic_rationale"]
+    assert "Égypte" in rat
+    assert "2 marchés" in rat
+    assert "300 M$" in rat

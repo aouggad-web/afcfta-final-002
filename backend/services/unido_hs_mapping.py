@@ -400,6 +400,207 @@ ISIC_HS: Dict[str, Dict] = {
 
 
 # --------------------------------------------------------------------------- #
+# Intrant PRÉCIS par produit final (SH4).
+#
+# Le champ ``input`` de ``ISIC_HS`` décrit l'intrant type de TOUTE la division
+# ISIC — trop générique pour une carte de flux (« matières premières agricoles
+# (céréales, oléagineux, lait, viande, poisson, sucre brut) » s'affichait à
+# l'identique pour le sucre, la farine, le lait…). Cette table nomme, produit
+# final par produit final, la matière première réellement en amont — ce que
+# l'utilisateur doit lire sur la carte (« Sucre raffiné ← sucre brut de canne/
+# betterave », « Farine ← blé », « Acier plat ← brames/ferrailles »).
+#
+# Repli : un SH4 absent de cette table retombe sur l'intrant de division.
+# --------------------------------------------------------------------------- #
+HS4_INPUT: Dict[str, str] = {
+    # 10 — Produits alimentaires
+    "0402": "lait cru",
+    "0406": "lait cru",
+    "1101": "blé (froment)",
+    "1507": "graines de soja",
+    "1511": "régimes de palmier à huile",
+    "1512": "graines de tournesol",
+    "1517": "huiles végétales brutes",
+    "1601": "viande fraîche",
+    "1604": "poisson frais",
+    "1701": "sucre brut de canne / betterave",
+    "1704": "sucre raffiné, sirop de glucose",
+    "1806": "pâte & beurre de cacao, sucre",
+    "1902": "semoule de blé dur",
+    "1905": "farine de blé, sucre",
+    "2005": "légumes frais",
+    "2009": "fruits & concentrés",
+    "2101": "café vert, thé",
+    "2103": "tomates, épices, vinaigre",
+    "2106": "ingrédients alimentaires transformés",
+    "2304": "graines de soja",
+    "2309": "céréales, tourteaux, additifs",
+    # 11 — Boissons
+    "2201": "eau de source, gaz carbonique",
+    "2202": "eau, sucre, concentrés",
+    "2203": "malt d'orge, houblon",
+    "2204": "raisin / moût",
+    "2208": "alcool, plantes aromatiques",
+    # 12 — Tabac
+    "2402": "tabac brut",
+    "2403": "tabac brut",
+    # 13 — Textiles
+    "5205": "coton fibre",
+    "5208": "fils de coton",
+    "5209": "fils de coton",
+    "5407": "filaments synthétiques",
+    "5513": "fibres synthétiques",
+    "5701": "laine, fils",
+    "5703": "fils synthétiques",
+    "6302": "tissus de coton",
+    "6305": "polypropylène tissé / jute",
+    # 14 — Habillement
+    "6109": "bonneterie de coton",
+    "6110": "fils de laine / coton",
+    "6203": "tissus",
+    "6204": "tissus",
+    "6205": "tissus de coton",
+    "6206": "tissus",
+    "6211": "bonneterie",
+    "6212": "tissus élastiques",
+    # 16 — Bois
+    "4407": "grumes",
+    "4408": "grumes",
+    "4410": "copeaux / bois de trituration",
+    "4411": "fibres de bois",
+    "4412": "grumes / placages",
+    "4418": "bois sciés",
+    # 17 — Papier
+    "4802": "pâte à papier",
+    "4804": "pâte kraft",
+    "4810": "pâte à papier, pigments",
+    "4818": "pâte / papier recyclé",
+    "4819": "carton / papier recyclé",
+    # 19 — Raffinage pétrolier
+    "2710": "pétrole brut",
+    "2711": "gaz de champ / pétrole brut",
+    "2713": "résidus de raffinage",
+    "2715": "résidus de distillation",
+    # 20 — Chimie
+    "2814": "gaz naturel",
+    "2815": "sel, électricité",
+    "3102": "ammoniac, gaz naturel",
+    "3103": "phosphates, acide sulfurique",
+    "3105": "azote, phosphate, potasse",
+    "3204": "intermédiaires chimiques",
+    "3208": "résines, solvants, pigments",
+    "3209": "résines, pigments, eau",
+    "3401": "corps gras, soude",
+    "3402": "agents de surface, alcalins",
+    "3808": "matières actives, solvants",
+    "3814": "hydrocarbures, alcools",
+    "3901": "éthylène",
+    "3902": "propylène",
+    # 21 — Pharmacie
+    "3002": "antigènes, milieux biologiques",
+    "3003": "principes actifs (API)",
+    "3004": "principes actifs (API), excipients",
+    "3006": "principes actifs, dispositifs",
+    # 22 — Caoutchouc & plastiques
+    "3917": "polymères (PE/PP/PVC)",
+    "3920": "polymères",
+    "3923": "polymères",
+    "3924": "polymères",
+    "3926": "polymères",
+    "4011": "caoutchouc, noir de carbone, câblés",
+    "4016": "caoutchouc vulcanisé",
+    # 23 — Minéraux non métalliques
+    "2523": "calcaire, argile, gypse",
+    "6802": "blocs de marbre / granit",
+    "6810": "ciment, granulats",
+    "6907": "argile, feldspath, kaolin",
+    "6908": "argile, feldspath, émaux",
+    "6910": "argile, kaolin",
+    "6911": "kaolin, feldspath",
+    "7010": "sable siliceux, soude, calcaire",
+    "7013": "sable siliceux, soude",
+    "7019": "sable siliceux, résines",
+    # 24 — Métallurgie de base
+    "7201": "minerai de fer, coke",
+    "7202": "minerais métalliques, réducteurs",
+    "7207": "fonte / ferrailles",
+    "7208": "brames d'acier / ferrailles",
+    "7210": "tôles laminées, zinc",
+    "7213": "billettes d'acier",
+    "7214": "billettes d'acier",
+    "7216": "billettes d'acier",
+    "7217": "fil machine",
+    "7402": "concentrés de cuivre",
+    "7403": "cuivre blister / cathodes",
+    "7601": "alumine, électricité",
+    "7604": "billettes d'aluminium",
+    "7606": "plaques d'aluminium",
+    # 25 — Produits métalliques fabriqués
+    "7301": "profilés d'acier",
+    "7304": "ronds / billettes d'acier",
+    "7306": "bandes / tôles d'acier",
+    "7308": "profilés, tôles",
+    "7310": "tôles d'acier",
+    "7318": "fil / barres d'acier",
+    "8207": "aciers spéciaux, carbures",
+    "8215": "acier inoxydable",
+    # 26 — Électronique
+    "8471": "composants, cartes (PCBA)",
+    "8517": "composants, cartes, kits SKD/CKD",
+    "8528": "dalles, cartes, kits SKD/CKD",
+    "8541": "wafers de silicium",
+    "8542": "wafers de silicium",
+    "9018": "composants électroniques, plastiques",
+    "9027": "composants, optiques",
+    # 27 — Équipements électriques
+    "8501": "cuivre, acier électrique",
+    "8504": "cuivre, tôles magnétiques",
+    "8506": "zinc, manganèse, lithium",
+    "8507": "plomb / lithium, électrolytes",
+    "8536": "cuivre, plastiques",
+    "8539": "verre, filaments, gaz",
+    "8544": "cuivre / aluminium, isolants",
+    # 28 — Machines & équipements
+    "8413": "acier, fonte, composants",
+    "8418": "acier, compresseurs, plastiques",
+    "8419": "acier, composants",
+    "8422": "acier, moteurs, composants",
+    "8450": "acier, moteurs, plastiques",
+    "8481": "laiton, acier, fonte",
+    # 29 — Véhicules automobiles
+    "8702": "kits CKD/SKD, tôles, moteurs",
+    "8703": "kits CKD/SKD, tôles, moteurs",
+    "8704": "kits CKD/SKD, châssis, moteurs",
+    "8708": "aciers, plastiques, composants",
+    "8716": "profilés d'acier, essieux",
+    # 30 — Autres matériels de transport
+    "8711": "kits, moteurs, cadres",
+    "8712": "tubes d'acier / aluminium, composants",
+    "8901": "tôles d'acier, moteurs",
+    "8904": "tôles d'acier, moteurs",
+    # 31 — Meubles
+    "9401": "bois, mousse, textile, métal",
+    "9403": "bois, panneaux, métal",
+    # 32 — Autres industries manufacturières
+    "7102": "diamants bruts",
+    "7103": "pierres brutes",
+    "7113": "métaux précieux, pierres",
+}
+
+
+def input_for_hs4(hs_code: str, fallback: Optional[str] = None) -> Optional[str]:
+    """
+    Matière première PRÉCISE d'un produit SH4 (ex. 1701 -> « sucre brut »),
+    avec repli sur l'intrant de division (``fallback``) si le SH4 n'est pas
+    nommément couvert.
+    """
+    code = _norm(hs_code)
+    if len(code) >= 4 and code[:4] in HS4_INPUT:
+        return HS4_INPUT[code[:4]]
+    return fallback
+
+
+# --------------------------------------------------------------------------- #
 # Index dérivés (mémoïsés) — construits une fois depuis ``ISIC_HS``.
 # --------------------------------------------------------------------------- #
 @lru_cache(maxsize=1)
