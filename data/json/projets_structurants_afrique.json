@@ -3,13 +3,13 @@
     {
       "titre": "Mine de Fer Gara Djebilet - Phase de Production",
       "secteur": "Mines & Industrie",
-      "statut": "OPÉRATIONNEL (depuis Juillet 2024)",
+      "statut": "OPÉRATIONNEL — 1re unité de traitement du minerai réceptionnée (avril 2026), unité primaire à ~95%",
       "budget": "6 milliards USD (projet intégré)",
-      "echeance": "Phase 2: 2026-2027",
+      "echeance": "Montée en puissance 2026 (2 unités de transformation réceptionnées) / Phase 2 : 2026-2027",
       "description": "Exploitation du gisement de fer de Gara Djebilet à Tindouf, l'un des plus grands au monde (3.5 milliards de tonnes). Phase 1 opérationnelle depuis juillet 2024.",
       "impact": "Production actuelle: 2-3M tonnes/an. Objectif Phase 2: 50M t/an. 12 000 emplois directs. Recettes 2-4 Mrd USD/an.",
       "partenaires": "FERAAL (Algérie), CRCC (Chine), Baowu Steel (Chine)",
-      "source": "Ministère de l'Industrie et des Mines / APS Algérie - 2025"
+      "source": "Ministère de l'Industrie et des Mines / APS / El Watan / L'Algérie Aujourd'hui - 2026"
     },
     {
       "titre": "Ligne Ferroviaire Béchar-Tindouf-Gara Djebilet (950 km)",
@@ -25,13 +25,13 @@
     {
       "titre": "Projet Phosphate Intégré (PPI) - Bled El Hadba",
       "secteur": "Industrie & Mines",
-      "statut": "Études finales / Début Construction",
+      "statut": "Phase de pré-exploitation / Construction accélérée (suivi présidentiel 2026)",
       "budget": "7 milliards USD",
-      "echeance": "2027 (Entrée en production)",
-      "description": "Projet intégré couvrant l'extraction à Tébessa (Bled El Hadba), la transformation à Souk Ahras et la production d'engrais à Skikda/Annaba. Vise à placer l'Algérie dans le Top 3 mondial des exportateurs d'engrais.",
-      "impact": "Production de 6M tonnes d'engrais/an. Recettes d'exportation > 2 Mrd USD/an. 12 000 emplois en construction.",
+      "echeance": "Premières exportations Q1 2027 / Phase 1 : 3,5 Mt (dont 2,5 Mt valorisées fin 2026)",
+      "description": "Projet phosphaté intégré de Bled El Hadba (Tébessa), réserve récupérable de près d'1 milliard de tonnes. Chaîne mine-transformation-export accompagnée de l'extension du port d'Annaba et de la ligne minière Est (422 km, Annaba-Bled El Hadba).",
+      "impact": "Objectifs à moyen terme : ~10 Mt de phosphate et 6 Mt d'engrais/an. Recettes d'export attendues plusieurs Mrd USD/an.",
       "partenaires": "Asmidal, Manal, Wuhuan (Chine), partenaires allemands",
-      "source": "Sonatrach / Ministère de l'Énergie - 2025"
+      "source": "Sonatrach / Ministère de l'Énergie / Algerie Eco / EcotimesDZ - 2026"
     },
     {
       "titre": "Dorsale Ferroviaire Transsaharienne (Alger-Tamanrasset)",
@@ -65,30 +65,19 @@
       "impact": "Diversification minière. Chaîne de valeur batteries (transition énergétique).",
       "partenaires": "ORGM (Office National de Recherche Géologique et Minière), partenaires internationaux à sélectionner",
       "source": "Ministère de l'Énergie et des Mines - 2025"
-    },
-    {
-      "titre": "TEST Projet Admin (Modified)",
-      "secteur": "Test",
-      "statut": "Modifié",
-      "budget": "2M USD",
-      "echeance": "2027",
-      "description": "Modifié",
-      "impact": "Updated",
-      "partenaires": "X",
-      "source": "Test"
     }
   ],
   "EGY": [
     {
       "titre": "Centrale Nucléaire d'El Dabaa (4 réacteurs, 4 800 MW)",
       "secteur": "Énergie - Nucléaire",
-      "statut": "Construction très avancée - Cuve réacteur Unit 1 installée Nov 2025",
+      "statut": "Construction avancée — cuve du réacteur de l'Unité 2 installée le 9 juillet 2026 (en présence de l'AIEA) ; ~25 000 ouvriers sur site",
       "budget": "30 milliards USD (financement Russie 85%)",
-      "echeance": "Première unité: 2028 / Unités complètes: 2030+",
+      "echeance": "1re unité : S2 2028 / 4 unités séquentielles 2028-2030",
       "description": "Première centrale nucléaire d'Égypte, 4 réacteurs VVER-1200 de 1 200 MW chacun. Construction par Rosatom. Plus de 30 000 personnes mobilisées. Cuve sous pression du réacteur Unit 1 (13m × 4.5m) installée en novembre 2025 lors de la 5e Journée annuelle de l'Énergie Nucléaire (présidents Poutine et Sissi).",
       "impact": "4 800 MW (~10% de la capacité électrique nationale). 55% de localisation des contrats. Industrie nucléaire moderne établie en Égypte.",
       "partenaires": "Rosatom (Russie - opérateur principal), Nuclear Power Plants Authority (NPPA), gouvernement égyptien",
-      "source": "Rosatom / Kremlin.ru / Egypt Oil & Gas / Energies Media - Novembre 2025"
+      "source": "Rosatom / MEES / World Nuclear Association / Egypt SIS - Juillet 2026"
     },
     {
       "titre": "Nouvelle Capitale Administrative (NAC)",
@@ -128,13 +117,13 @@
     {
       "titre": "Nador West Med (Port en Eaux Profondes)",
       "secteur": "Infrastructure Portuaire",
-      "statut": "Construction très avancée",
-      "budget": "5.6 milliards USD",
+      "statut": "Achevé — démarrage opérationnel Q4 2026 (en avance sur le calendrier initial 2027)",
+      "budget": "~5,6 milliards USD",
       "echeance": "Mise en service Q4 2026",
-      "description": "2e port méditerranéen marocain à Nador. Capacité initiale 3.5-5 millions EVP, extensible à 12 millions. Focus pétrochimie, vraquier, conteneurs. Connexion route et rail.",
-      "impact": "Doublement capacité portuaire méditerranéenne marocaine. Pôle pétrochimique et industriel.",
+      "description": "Port en eaux profondes méditerranéen (5,4 km de digues, 4 km de quais). Capacité initiale ~5 M conteneurs (extensible à 12 M), 1er terminal GNL du Maroc et terminal hydrocarbures. Zone industrialo-logistique de 700 ha.",
+      "impact": "Accord d'exploitation signé avec CMA CGM ; ~3 M conteneurs/an visés. ~20 Mrd MAD d'investissements privés déjà attirés sur la zone franche.",
       "partenaires": "Nador West Med S.A., TMSA, Gouvernement du Maroc",
-      "source": "TMSA / NWM / Universidad de Navarra 2025"
+      "source": "TMSA / NWM / Maritime Executive / Ecofin / Morocco World News - 2026"
     },
     {
       "titre": "Port Atlantique de Dakhla",
@@ -150,26 +139,37 @@
     {
       "titre": "Centrale Solaire Noor Midelt I (800 MW)",
       "secteur": "Énergie - Solaire",
-      "statut": "Construction en cours",
+      "statut": "Noor Midelt I (CSP-PV) en construction ; Noor Midelt II & III reconfigurés en solaire PV + stockage (BESS, 400 MW ch.) ; programme Noor Atlas lancé (305 MW, mars 2026)",
       "budget": "2.4 milliards USD",
-      "echeance": "Mise en service 2026-2027",
+      "echeance": "Noor Midelt I : mise en service 2026-2027",
       "description": "Centrale hybride photovoltaïque + thermosolaire CSP à Midelt. 800 MW (PV: 200 MW; CSP: 600 MW avec stockage). Stockage thermique 5h.",
       "impact": "Renforcement objectif marocain 52% renouvelable 2030. Stabilité réseau via stockage.",
       "partenaires": "MASEN, EDF Renewables, Masdar (EAU), GreenOf Africa",
-      "source": "MASEN 2025"
+      "source": "MASEN / Power Technology / Renewables Now - 2026"
+    },
+    {
+      "titre": "Xlinks Morocco-UK Power Project (câble sous-marin 3 800 km)",
+      "secteur": "Énergie & Interconnexion",
+      "statut": "Développement — décision finale d'investissement (FID) attendue 2026-2028",
+      "budget": "20+ milliards EUR",
+      "echeance": "Mise en service commerciale visée dans la 2e moitié des années 2030",
+      "description": "Complexe solaire + éolien + stockage batteries à Guelmim-Oued Noun, relié au Royaume-Uni par 4 câbles sous-marins HVDC de ~3 800 km. Doit livrer 3,6 GW de puissance pilotable, soit ~8% des besoins électriques britanniques.",
+      "impact": "Export d'électricité renouvelable marocaine vers l'Europe ; Africa Finance Corporation a investi 14,1 M USD dans le développement du projet.",
+      "partenaires": "Xlinks / Africa Finance Corporation (AFC) / TAQA / GE Vernova",
+      "source": "Xlinks / Africa Finance Corporation / Hespress - 2026"
     }
   ],
   "NGA": [
     {
       "titre": "Raffinerie Dangote (650 000 → 1.4 million b/j)",
       "secteur": "Pétrole - Raffinage",
-      "statut": "OPÉRATIONNELLE (depuis 2024) - Maintenance Dec 2025-Jan 2026",
+      "statut": "OPÉRATIONNELLE — capacité portée à 700 000 b/j (test des licencieurs, juin 2026)",
       "budget": "20 milliards USD (initial)",
-      "echeance": "Capacité 700 000 b/j fin 2026 / 1.4M b/j en 2028",
+      "echeance": "700 000 b/j atteints (2026) / cap 1,4 M b/j visé sous ~30 mois (≈2028)",
       "description": "Plus grande raffinerie d'Afrique. Capacité initiale 650 000 b/j (67% capacité raffinage Nigeria). Production diesel, jet, essence, naphta. Traite 550 000 b/j en mi-2025 (53% pétrole brut nigérian local). Maintenance majeure (turnaround) Dec 2025-Jan 2026 pour stabilisation. Extension CDU vers 700 000 b/j puis 1.4M b/j (seconde ligne) d'ici 2028.",
-      "impact": "Souveraineté pétrolière nigériane. Réduction importations carburants. Export régional Afrique de l'Ouest. ~25 000 emplois.",
+      "impact": "Exports de produits raffinés ~353 000 b/j (avril 2026), dont ~50% vers l'Afrique ; le Nigeria redevient exportateur net d'essence pour la 1re fois depuis des décennies.",
       "partenaires": "Dangote Group, Standard Chartered, Afreximbank",
-      "source": "S&P Global / Argus Media / Africa Business Insider - Décembre 2025"
+      "source": "S&P Global / Bloomberg / CNBC Africa / Premium Times - 2026"
     },
     {
       "titre": "Lagos-Calabar Coastal Highway (700 km)",
@@ -198,13 +198,13 @@
     {
       "titre": "Train Express Régional (TER) Phase 2 - Diamniadio-AIBD",
       "secteur": "Transport Urbain",
-      "statut": "Tests / Mise en service H2 2026 (retard)",
+      "statut": "Tests / mise en service visée avant les Jeux Olympiques de la Jeunesse Dakar 2026 (cible septembre 2026)",
       "budget": "Inclus dans programme TER global ~700M€",
-      "echeance": "Mise en service: H2 2026 (retardée depuis 2023 puis 2025)",
+      "echeance": "Tronçon Diamniadio-AIBD (19 km) : 2026, avant les JOJ Dakar 2026",
       "description": "Extension de 19 km de Diamniadio à l'aéroport AIBD Blaise Diagne. Phase 1 (Dakar-Diamniadio 36 km) opérationnelle depuis Déc 2021. Électrification Diamniadio-AIBD démarrée 28 Nov 2025.",
       "impact": "300 000 passagers/jour ciblés. Connexion Dakar-AIBD <50min. Réseau intégré 55 km.",
       "partenaires": "APIX, Alstom, Eiffage, BOAD, AFD",
-      "source": "SeneNews / Sika Finance / EcomNews Afrique 2025"
+      "source": "APIX / Le Soleil / SenTV / EcomNews Afrique - 2026"
     },
     {
       "titre": "BRT Dakar (Bus Rapid Transit)",
@@ -268,13 +268,13 @@
     {
       "titre": "SGR Naivasha-Kisumu-Malaba (Phase 2B & 2C)",
       "secteur": "Transport Ferroviaire",
-      "statut": "Construction RELANCÉE en 2025 (après gel 2020)",
+      "statut": "Construction LANCÉE — première pierre le 19 mars 2026 ; travaux démarrés à Narok (1er juillet) et Kisumu (2 juillet 2026)",
       "budget": "5.5 milliards USD (total) / 1.7 Mrd USD (segment Naivasha-Kisumu)",
-      "echeance": "Naivasha-Kisumu: Juin 2027 (cible) / Kisumu-Malaba: 2030",
+      "echeance": "Naivasha-Kisumu (264 km, + antenne 8,9 km vers le port de Kisumu) : juin 2027 / puis Kisumu-Malaba",
       "description": "Extension du SGR de Naivasha à la frontière ougandaise (Malaba) via Kisumu. Segment Naivasha-Kisumu: 23 ponts, 13 tunnels (21 km), 550+ buses, 8 gares. Financé via taxe développement Kenya Railways (sans nouveau prêt chinois).",
       "impact": "Connexion intermodale port Mombasa - Kampala/Kigali/Juba. Augmentation part rail dans le fret. Boost commerce EAC.",
       "partenaires": "Kenya Railways Corporation, Gouvernement du Kenya (financement local)",
-      "source": "Kenya Railways Strategic Plan 2022-2027 / Construction Kenya 2025"
+      "source": "Kenya Railways / Railways Africa / The Star / People Daily - 2026"
     },
     {
       "titre": "LAPSSET Corridor (Lamu-South Sudan-Ethiopia Transport)",
@@ -303,13 +303,13 @@
     {
       "titre": "Standard Gauge Railway (SGR) Dar es Salaam-Mwanza",
       "secteur": "Transport Ferroviaire",
-      "statut": "OPÉRATIONNEL Dar-Dodoma (passagers depuis 2024, fret depuis Juin 2025)",
+      "statut": "OPÉRATIONNEL Dar-Dodoma — trains électriques EMU (nouvel horaire au 3 janvier 2026, service EMU renforcé en juin 2026) ; tronçons vers Mwanza en construction",
       "budget": "10+ milliards USD (programme complet)",
-      "echeance": "Mwanza: 2027 / Tanga-Musoma: 2028 / Uvinza-Musongati: 2030-2031",
+      "echeance": "Mwanza : 2026-2027 (en construction) / Tanga-Musoma 2028 / Uvinza-Musongati 2030-2031",
       "description": "Réseau SGR moderne. Tronçon Dar-Dodoma exploité (passagers 160 km/h, fret 120 km/h). Premier train fret 700t Kwala-Dodoma juin 2025. 2.5M+ passagers transportés (TSh 66.8 Mrd recettes Avr 2025). Phase 3 Makutopora-Tabora (368 km, 1.9 Mrd USD): 15% en mai 2025.",
       "impact": "Modernisation transport. Désenclavement EAC. 2.5M+ passagers déjà. Hub régional Dar es Salaam.",
       "partenaires": "Yapi Merkezi (Turquie), Mota-Engil, China Civil Engineering, TRC, Gouvernement de Tanzanie",
-      "source": "Tanzania Railways Corp / Wikipedia / Business Insider TZ / Rail Market - 2025"
+      "source": "Tanzania Railways Corp / Daily News TZ / The Citizen - 2026"
     },
     {
       "titre": "SGR Tanzanie-Burundi (Uvinza-Musongati 282 km)",
@@ -360,13 +360,13 @@
     {
       "titre": "Hub Aérien Bishoftu (Nouvel aéroport Addis Abeba)",
       "secteur": "Transport Aérien",
-      "statut": "Construction lancée 2025",
-      "budget": "10 milliards USD",
-      "echeance": "Phase 1: 2030",
-      "description": "Nouveau méga-aéroport à 40 km au sud-est d'Addis Abeba. Capacité initiale 60 millions passagers/an, extensible à 110 millions. Plus grand aéroport d'Afrique. Construit par Ethiopian Airlines.",
+      "statut": "Construction LANCÉE — première pierre le 10 janvier 2026 (Abusera, Bishoftu)",
+      "budget": "~12,5 milliards USD",
+      "echeance": "Phase 1 : 2030 (2 pistes, 60 M passagers/an) / pleine capacité ~110 M pax/an",
+      "description": "Futur plus grand aéroport d'Afrique, à ~45 km au sud-est d'Addis-Abeba (conception Zaha Hadid Architects). >600 000 m² de terminaux, fret/logistique, liaisons route+rail et Airport City. Répond à la saturation de Bole International.",
       "impact": "Hub aérien africain. Soutien à Ethiopian Airlines (1ère compagnie d'Afrique).",
-      "partenaires": "Ethiopian Airlines Group, AfDB, Gouvernement éthiopien",
-      "source": "Ethiopian Airlines / Bloomberg 2025"
+      "partenaires": "Ethiopian Airlines Group / Dar Al-Handasah / Zaha Hadid Architects",
+      "source": "Ethiopian Airlines / CNN / Arab News / Dar - Janvier 2026"
     }
   ],
   "ZAF": [
@@ -478,13 +478,13 @@
     {
       "titre": "Métro d'Abidjan - Ligne 1",
       "secteur": "Transport Urbain",
-      "statut": "Construction en cours",
+      "statut": "Construction avancée — ~65% d'exécution (janvier 2026), phase d'électrification lancée (dépôt de Sagbé)",
       "budget": "1.7 milliard EUR",
-      "echeance": "Mise en service progressive 2027-2028",
+      "echeance": "Livraison fin 2028",
       "description": "Métro urbain d'Abidjan, Ligne 1: 37 km Anyama-Port-Bouët, 18 stations. Tracé Nord-Sud structurant.",
       "impact": "500 000 passagers/jour. Désengorgement trafic. Réduction CO₂.",
       "partenaires": "STAR (Bouygues, Colas, Alstom, Keolis), AFD, BEI, Gouvernement de Côte d'Ivoire",
-      "source": "STAR / Ministère des Transports CIV 2025"
+      "source": "SICMA / Ministère des Transports CIV / Le360 Afrique / 7info - 2026"
     },
     {
       "titre": "Port de San-Pedro - Extension",

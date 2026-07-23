@@ -36,7 +36,7 @@ class DataUpdater:
         if self.verbose:
             print(log_entry)
 
-    def fetch_world_bank_data(self, indicator, countries, date_range="2020:2024"):
+    def fetch_world_bank_data(self, indicator, countries, date_range="2020:2025"):
         """
         Fetch data from World Bank API
         indicator: e.g., 'NY.GDP.MKTP.CD', 'SP.POP.TOTL'
@@ -136,7 +136,8 @@ class DataUpdater:
         ]
 
         # Fetch key indicators.
-        # date_range : les indicateurs macro annuels restent sur 2020:2024 ;
+        # date_range : les indicateurs macro annuels vont jusqu'à 2025 (la BM
+        # publie désormais des estimations 2025, ex. PIB Algérie 287,03 Md$) ;
         # les indicateurs sociaux (pauvreté, Gini, espérance de vie, accès
         # électricité/internet…) utilisent une plage large car leur dernière
         # valeur réelle peut remonter loin (ex. pauvreté = enquête ménages,
@@ -144,22 +145,22 @@ class DataUpdater:
         # année réellement renseignée, avec cette année réelle affichée.
         # (name, code, date_range)
         indicators_spec = [
-            ("GDP", "NY.GDP.MKTP.CD", "2020:2024"),  # GDP (current US$)
-            ("GDP_per_capita", "NY.GDP.PCAP.CD", "2020:2024"),  # GDP/capita (US$)
-            ("Population", "SP.POP.TOTL", "2020:2024"),  # Population, total
-            ("GDP_growth", "NY.GDP.MKTP.KD.ZG", "2020:2024"),  # GDP growth (%)
-            ("Inflation", "FP.CPI.TOTL.ZG", "2020:2024"),  # Inflation (annual %)
-            ("Unemployment", "SL.UEM.TOTL.ZS", "2020:2024"),  # Unemployment (%)
+            ("GDP", "NY.GDP.MKTP.CD", "2020:2025"),  # GDP (current US$)
+            ("GDP_per_capita", "NY.GDP.PCAP.CD", "2020:2025"),  # GDP/capita (US$)
+            ("Population", "SP.POP.TOTL", "2020:2025"),  # Population, total
+            ("GDP_growth", "NY.GDP.MKTP.KD.ZG", "2020:2025"),  # GDP growth (%)
+            ("Inflation", "FP.CPI.TOTL.ZG", "2020:2025"),  # Inflation (annual %)
+            ("Unemployment", "SL.UEM.TOTL.ZS", "2020:2025"),  # Unemployment (%)
             # Indicateurs sociaux Banque Mondiale (WDI) — alimentent le bloc
             # « Indicateurs sociaux » du Profil Pays. Chacun affiché avec sa
             # VRAIE année (fin des étiquettes d'année figées/inventées).
-            ("LifeExpectancy", "SP.DYN.LE00.IN", "2000:2024"),  # espérance de vie
-            ("GiniIndex", "SI.POV.GINI", "2000:2024"),  # indice de Gini
-            ("Poverty3usd", "SI.POV.DDAY", "2000:2024"),  # pauvreté seuil int. (3,00$ PPA 2021)
-            ("UrbanPopulation", "SP.URB.TOTL.IN.ZS", "2000:2024"),  # pop. urbaine %
-            ("InternetUsers", "IT.NET.USER.ZS", "2000:2024"),  # internautes %
-            ("ElectricityAccess", "EG.ELC.ACCS.ZS", "2000:2024"),  # accès électricité %
-            ("FemaleLaborForce", "SL.TLF.CACT.FE.ZS", "2000:2024"),  # pop. active féminine %
+            ("LifeExpectancy", "SP.DYN.LE00.IN", "2000:2025"),  # espérance de vie
+            ("GiniIndex", "SI.POV.GINI", "2000:2025"),  # indice de Gini
+            ("Poverty3usd", "SI.POV.DDAY", "2000:2025"),  # pauvreté seuil int. (3,00$ PPA 2021)
+            ("UrbanPopulation", "SP.URB.TOTL.IN.ZS", "2000:2025"),  # pop. urbaine %
+            ("InternetUsers", "IT.NET.USER.ZS", "2000:2025"),  # internautes %
+            ("ElectricityAccess", "EG.ELC.ACCS.ZS", "2000:2025"),  # accès électricité %
+            ("FemaleLaborForce", "SL.TLF.CACT.FE.ZS", "2000:2025"),  # pop. active féminine %
         ]
 
         country_data = {}
@@ -423,6 +424,20 @@ def main():
     try:
         # Update country profiles from World Bank
         country_data = updater.update_country_profiles()
+
+        # Projections FMI (WEO) — croissance + inflation pluriannuelles, que la
+        # BM ne publie pas. Isolé : un échec FMI ne doit jamais faire échouer la
+        # mise à jour BM (le fichier FMI existant est alors conservé).
+        try:
+            from etl.imf_weo_projections import build as build_imf_weo
+
+            imf_payload = build_imf_weo()
+            updater.log(
+                f"✓ Projections FMI (WEO) actualisées : "
+                f"{imf_payload['metadata']['country_count']} pays"
+            )
+        except Exception as imf_exc:  # pragma: no cover
+            updater.log(f"✗ Projections FMI non actualisées : {imf_exc}", "WARNING")
 
         # Update CSV files (currently just verifies existence)
         updater.update_csv_data(country_data)
