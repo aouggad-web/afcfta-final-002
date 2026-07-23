@@ -559,9 +559,14 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 const growth = countryProfile.projections.imf_gdp_growth || {};
                 const inflation = countryProfile.projections.imf_inflation || {};
                 const nowY = new Date().getFullYear();
-                const years = Object.keys(growth)
+                // Union des années des DEUX séries (une année peut n'exister que
+                // pour l'inflation), sur tout l'horizon WEO disponible (réalisé
+                // récent + projections, ~2024→2031).
+                const years = Array.from(
+                  new Set([...Object.keys(growth), ...Object.keys(inflation)])
+                )
                   .map(Number)
-                  .filter((y) => y >= nowY - 1 && y <= nowY + 3)
+                  .filter((y) => y >= nowY - 2 && y <= nowY + 5)
                   .sort((a, b) => a - b);
                 if (!years.length) return null;
                 return (

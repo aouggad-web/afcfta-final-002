@@ -44,8 +44,11 @@ def _gdp_africa_ranks() -> Dict[str, int]:
         gdp_by_iso: Dict[str, float] = {}
         for iso, info in data.items():
             series = (info.get("indicators", {}) or {}).get("GDP", {})
-            if series:
-                latest_year = max(series.keys())
+            # Comparaison NUMÉRIQUE de l'année (pas lexicographique sur des clés
+            # string, qui casserait si le format des clés changeait).
+            year_keys = [y for y in series if str(y).isdigit()]
+            if year_keys:
+                latest_year = max(year_keys, key=int)
                 if series[latest_year] is not None:
                     gdp_by_iso[iso] = float(series[latest_year])
         ranks: Dict[str, int] = {}
