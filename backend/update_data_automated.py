@@ -425,6 +425,20 @@ def main():
         # Update country profiles from World Bank
         country_data = updater.update_country_profiles()
 
+        # Projections FMI (WEO) — croissance + inflation pluriannuelles, que la
+        # BM ne publie pas. Isolé : un échec FMI ne doit jamais faire échouer la
+        # mise à jour BM (le fichier FMI existant est alors conservé).
+        try:
+            from etl.imf_weo_projections import build as build_imf_weo
+
+            imf_payload = build_imf_weo()
+            updater.log(
+                f"✓ Projections FMI (WEO) actualisées : "
+                f"{imf_payload['metadata']['country_count']} pays"
+            )
+        except Exception as imf_exc:  # pragma: no cover
+            updater.log(f"✗ Projections FMI non actualisées : {imf_exc}", "WARNING")
+
         # Update CSV files (currently just verifies existence)
         updater.update_csv_data(country_data)
 

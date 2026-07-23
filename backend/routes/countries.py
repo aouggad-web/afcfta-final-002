@@ -234,6 +234,24 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         "africa_rank": _gdp_africa_ranks().get(iso3_code) or real_data.get("africa_rank", 25),
     }
 
+    # Projections FMI (WEO) : croissance + inflation PLURIANNUELLES (que la BM ne
+    # publie pas). Les projections de croissance 2025/2026 du FMI priment sur les
+    # valeurs curées (source unique, auto-actualisable) ; le bloc complet
+    # (jusqu'à ~2031) alimente la vue détaillée « Perspectives FMI » de la fiche.
+    from services import imf_projections_service as imf_svc
+
+    imf_proj = imf_svc.get_projections(iso3_code)
+    if imf_proj:
+        imf_growth = imf_proj.get("gdp_growth") or {}
+        imf_inflation = imf_proj.get("inflation") or {}
+        if imf_growth.get("2025") is not None:
+            profile.projections["gdp_growth_projection_2025"] = f"{imf_growth['2025']:.1f}%"
+        if imf_growth.get("2026") is not None:
+            profile.projections["gdp_growth_projection_2026"] = f"{imf_growth['2026']:.1f}%"
+        profile.projections["imf_gdp_growth"] = imf_growth
+        profile.projections["imf_inflation"] = imf_inflation
+        profile.projections["imf_source"] = imf_svc.source_label()
+
     # Indicateurs sociaux. Pour chacun, on prend la DERNIÈRE année réellement
     # disponible à la Banque Mondiale (API auto-actualisée) et on affiche CETTE
     # année réelle — fin des étiquettes d'année figées/inventées. Repli sur la
